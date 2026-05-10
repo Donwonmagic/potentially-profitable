@@ -29,7 +29,8 @@ right now: the unsubscribe link sits at the bottom of every email.
 
 If you'd rather skip the drip and just send me a one-line note about
 your site, you can reply to this email. It comes to my real inbox and
-I read every one. Same business day, always inside two.
+I read every one. Mondays through Fridays, I write back within 4 hours;
+weekends, by Monday morning.
 
 — Don
 

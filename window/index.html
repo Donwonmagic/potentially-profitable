@@ -45,11 +45,11 @@ header.nav{min-height:64px}
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=a2cd3c1adc15" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-core.css?v=a3cc95eb7ac7" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=47810dd9477a" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a2cd3c1adc15"><link rel="stylesheet" href="/assets/site-article.css?v=47810dd9477a"></noscript>
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a3cc95eb7ac7"><link rel="stylesheet" href="/assets/site-article.css?v=47810dd9477a"></noscript>
 </head>
-<body class="window-canvas">
+<body class="window-canvas" data-locale="en">
 
 <a class="skip-link" href="#main">Skip to content</a>
 
@@ -80,27 +80,187 @@ header.nav{min-height:64px}
     </div>
   </section>
 
-  <!-- Hero: shown when no thread exists yet OR when arriving fresh. -->
-  <section class="window-hero" id="windowHero">
-    <div class="window-hero__inner">
-      <p class="window-hero__eyebrow">A direct line to Don</p>
-      <h1 class="window-hero__headline">Tell me what's on your mind.</h1>
-      <p class="window-hero__sub">I read every one. Usually back to you the same business day, always inside two.</p>
-    </div>
-  </section>
+  <!-- Phase 2 redesign: the sash. One structural article holding the
+       named panes — sidelight (portrait + pulse), muntin (vertical
+       hairline at 50%, matching the brand mark's x=64/128), transom
+       (horizontal hairline at 38.3%, matching the brand mark's
+       y=49/128), sash--top (calendar-honest presence), sash--bottom
+       (the operable light: chips + textarea), sill (reply-time +
+       escape hatches). Real muntins divide a sash into named lights;
+       the CSS class names mirror that vocabulary so the metaphor is
+       structural in source, not just rendered. -->
+  <article class="sash" id="windowSash" aria-label="Write to Don">
 
-  <!-- The muntin line: a 1px hairline at the 38.2% golden split.
-       The literal brand mullion. Drawn in via clip-path on first
-       paint (W.4 polish). -->
-  <div class="window-muntin" aria-hidden="true">
-    <span class="window-muntin__pulse" id="windowPulse" hidden title="Don is around"></span>
-  </div>
+    <!-- Sidelight: Don's portrait + the breathing pulse (off-muntin
+         per audit — the muntin is quiet; the world beyond the glass
+         moves). Aria-hidden because the same operator presence is
+         conveyed via the sash--top text below for screen readers. -->
+    <aside class="sidelight" aria-hidden="true">
+      <img class="sidelight__portrait" src="/about/portrait/don.webp" alt="" width="64" height="64" loading="lazy" decoding="async">
+      <span class="sidelight__pulse" id="windowPulse" hidden title="Don is around"></span>
+    </aside>
 
-  <!-- Thread scroll: empty until messages exist. -->
+    <!-- Literal hairlines: vertical muntin at 50% (matching the brand
+         mark), horizontal transom at 38.3%. 2px on /window/ specifically
+         (the muntin is load-bearing here); 1px elsewhere via
+         --muntin-weight. Decorative — aria-hidden. -->
+    <div class="muntin" aria-hidden="true"></div>
+    <div class="transom" aria-hidden="true"></div>
+
+    <!-- Sash—top (above the transom). Calendar-honest presence line
+         read from window:now when present (Phase 4); falls back to
+         the canonical reply-time. -->
+    <header class="sash--top">
+      <!-- Phase 4 — /now/ presence line. Hidden by default; populated
+           by JS via /api/window/now when WINDOW_NOW_ENABLED is on AND
+           the row is fresh (<14d) AND privacy ≠ 'private'. When
+           visible, the currents line below is hidden (replaced, not
+           supplemented). Plan §4.4 + §11.4. -->
+      <p class="sash--top__now" id="windowNow" aria-live="polite" aria-atomic="true" hidden></p>
+      <p class="sash--top__currents" id="windowCurrents">I read every one. Mondays through Fridays, within 4 hours of when I see your note. On weekends, by Monday morning.</p>
+    </header>
+
+    <!-- Sash—bottom (operable light): the note. -->
+    <section class="sash--bottom" id="windowComposer">
+
+      <!-- Six on-ramp chips. Empathy chips lead (no price); productized
+           offers follow with their canonical labels; "Something else"
+           closes. Audit-pending: prepend strings are operator-note
+           skeletons in plain English (María-tested). -->
+      <div class="window-composer__onramps" id="windowOnramps" role="group" aria-label="What brings you in">
+        <button type="button" class="window-onramp window-onramp--soft" data-prepend="I'm not sure yet. Here's what's going on: ">I&rsquo;m not sure yet &mdash; let me explain</button>
+        <button type="button" class="window-onramp window-onramp--soft" data-prepend="I'm not ready to hire — just want eyes on this: ">I&rsquo;m not ready to hire &mdash; just want a second pair of eyes</button>
+        <button type="button" class="window-onramp" data-prepend="Your place: . Your website (if you have one): . What I want a new site to fix: ">New website &middot; <em>$2,500&ndash;$15k</em></button>
+        <button type="button" class="window-onramp" data-prepend="My website: . What's bothering me about it: ">Look at my site &middot; <em>$499</em></button>
+        <button type="button" class="window-onramp" data-prepend="My website: . Who works on it now: . What's not working: ">Take care of my site every month &middot; <em>$225/mo</em></button>
+        <button type="button" class="window-onramp" data-prepend="">Something else</button>
+      </div>
+
+      <!-- Trust tell. Inherits the about-page voice into the composer:
+           the operator learns, without being told, that Don will tell
+           them they don't need a $2,500 site if that's true. -->
+      <p class="window-composer__trust-tell">If the answer is &lsquo;you don&rsquo;t need to spend money on this,&rsquo; that&rsquo;s what I&rsquo;ll tell you. Has happened before.</p>
+
+      <!-- Hostess line — visible above the textarea (not buried inside
+           the placeholder). Persistent through the typing flow so the
+           welcome doesn't disappear on first character. -->
+      <p class="window-composer__hostess">Whatever you&rsquo;d type to a friend who knows this stuff &mdash; that&rsquo;s enough.</p>
+
+      <form class="window-composer__form" id="windowForm" autocomplete="off">
+
+        <!-- Optional context, collapsed by default — restaurant first
+             (operators identify by room before name), URL second, name
+             third. localStorage keeps these between visits. -->
+        <details class="window-composer__context-details" id="windowContextDetails">
+          <summary class="window-composer__context-summary">Tell me who you are <span class="window-composer__opt">(optional)</span></summary>
+          <div class="window-composer__context">
+            <div class="window-composer__field-pair window-composer__field-pair--full">
+              <label for="windowRestaurant">Restaurant + city</label>
+              <input id="windowRestaurant" name="restaurant" type="text" autocomplete="organization" maxlength="160" placeholder="e.g. Pupuser&iacute;a Mama Tita, Silver Spring" />
+            </div>
+            <div class="window-composer__field-pair window-composer__field-pair--full">
+              <label for="windowSite">Your website (if you have one)</label>
+              <input id="windowSite" name="site" type="url" autocomplete="url" inputmode="url" enterkeyhint="next" spellcheck="false" autocapitalize="off" maxlength="240" placeholder="https://" />
+            </div>
+            <div class="window-composer__field-pair window-composer__field-pair--full">
+              <label for="windowName">Your name</label>
+              <input id="windowName" name="name" type="text" autocomplete="name" maxlength="120" />
+            </div>
+          </div>
+        </details>
+
+        <textarea class="window-composer__field" id="windowBody" name="body" rows="3" placeholder="Start anywhere &mdash; a line is enough." maxlength="4000" required aria-describedby="windowReassurance"></textarea>
+
+        <!-- Crisis allowlist line — revealed by JS (Phase 2.2) when the
+             operator types tier-1 keywords. Stays hidden by default;
+             never auto-fires, never blocks send. -->
+        <p class="window-composer__crisis" id="windowCrisis" hidden role="status">If tonight is heavier than the website, I&rsquo;m still going to read this &mdash; and these folks pick up the phone faster than I can: <a href="tel:988">988</a> (call or text), <a href="https://chefswithissues.com/" rel="noopener" target="_blank">Chefs With Issues</a>, <a href="https://chowco.org/" rel="noopener" target="_blank">CHOW</a>.</p>
+
+        <!-- Phase 3.4 — async voicenote callback chip + form. Hidden
+             by default; revealed by window-callback.js when the
+             /api/window/callback endpoint is reachable (flag on).
+             The form sits inline below the textarea so the operator
+             doesn't lose context; submitting posts to the endpoint
+             and the auto-confirmation lands in the thread. -->
+        <div class="window-composer__callback" id="windowCallback" hidden role="group" aria-label="Ask for a callback">
+          <button type="button" class="window-composer__callback-toggle" id="windowCallbackToggle" aria-expanded="false" aria-controls="windowCallbackForm">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+            </svg>
+            Want me to call back instead?
+          </button>
+          <form class="window-composer__callback-form" id="windowCallbackForm" hidden>
+            <div class="window-composer__field-pair window-composer__field-pair--full">
+              <label for="windowCallbackPhone">A number Don can call</label>
+              <input id="windowCallbackPhone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+1 (240) 555&#8209;1234" required>
+            </div>
+            <fieldset class="window-composer__callback-windows">
+              <legend>When are you free?</legend>
+              <label><input type="radio" name="slot" value="tomorrow-morning" required> Tomorrow before we open (8&ndash;11am)</label>
+              <label><input type="radio" name="slot" value="tomorrow-midday"> Tomorrow in the slow hours (11am&ndash;1pm)</label>
+              <label><input type="radio" name="slot" value="tomorrow-afternoon"> Tomorrow afternoon (2&ndash;4pm)</label>
+              <label><input type="radio" name="slot" value="tomorrow-evening"> Tomorrow evening (5&ndash;7pm)</label>
+              <label><input type="radio" name="slot" value="this-week"> Sometime this week</label>
+              <label><input type="radio" name="slot" value="next-week"> Next week is fine</label>
+            </fieldset>
+            <button type="submit" class="btn btn-primary window-composer__callback-submit">Ask for a callback</button>
+          </form>
+          <p class="window-composer__msg" id="windowCallbackMsg" role="status" hidden></p>
+        </div>
+
+        <!-- Phase 3.2 — photo attachment row. Picker + drag-drop +
+             preview chips. Hidden by default; revealed by JS when
+             WINDOW_PHOTO_ENABLED is on (detected via the kind-aware
+             probe — Phase 3.6 audit fix B1). The container is also
+             un-hidden by the voice client when a recording starts
+             (privacy disclosure + voice preview chips share this
+             space); the photo BUTTON has its own [hidden] so a
+             voice-only deploy doesn't accidentally reveal it. -->
+        <div class="window-composer__attach" id="windowAttach" hidden role="group" aria-label="Attachments to this note">
+          <button type="button" class="window-composer__photo-btn" id="windowPhotoBtn" aria-label="Add a photo" hidden>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="5" width="18" height="14" rx="2"/>
+              <circle cx="9" cy="11" r="2"/>
+              <path d="M21 15l-5-5-9 9"/>
+            </svg>
+            Add a photo
+          </button>
+          <input type="file" id="windowPhotoInput" accept="image/jpeg,image/png,image/webp" multiple hidden capture="environment">
+          <ul class="window-composer__previews" id="windowPreviews" aria-live="polite"></ul>
+        </div>
+
+        <div class="window-composer__row">
+          <button type="button" class="window-composer__mic" id="windowMic" hidden aria-label="Record a voice note (coming soon)" disabled title="Voice notes coming in Phase 3">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="9" y="2" width="6" height="12" rx="3"/>
+              <path d="M5 10v2a7 7 0 0 0 14 0v-2"/>
+              <line x1="12" y1="19" x2="12" y2="22"/>
+            </svg>
+          </button>
+          <span class="window-composer__counter" id="windowCounter" hidden aria-live="polite">0 / 4000</span>
+          <button type="submit" class="btn btn-primary window-composer__submit" id="windowSubmit">Send the note</button>
+        </div>
+        <p class="window-composer__msg" id="windowMsg" role="status" hidden></p>
+      </form>
+    </section>
+
+    <!-- Sill: where the note rests once written. Reply-time +
+         escape-hatch row in one editorial sentence (no help-desk
+         fallback flavor). -->
+    <footer class="sill">
+      <p class="sill__reassurance" id="windowReassurance">I read every one. Mondays through Fridays, within 4 hours. Weekends, by Monday morning. No commitment, no pitch.</p>
+      <p class="sill__alt-row">Prefer to talk? <a href="/studio/call/" rel="noopener" data-event="window-cal-link">Book a 20-minute call</a>. Prefer email? <a href="mailto:don@muntin.digital?subject=Hi%20Don" data-event="window-email-link">don@muntin.digital</a>. Prefer Instagram? <a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener" data-event="window-ig-link">@muntin.digital</a>.</p>
+    </footer>
+  </article>
+
+  <!-- Thread scroll: empty until messages exist. Renders below the
+       composer so a fresh visitor sees the composer first; returning
+       visitors see their thread because the composer collapses to a
+       short reply field via JS once messages exist. -->
   <section class="window-thread" id="windowThread" aria-live="polite">
     <div class="window-thread__empty" id="windowThreadEmpty">
       <div class="window-thread__empty-mark" aria-hidden="true">
-        <svg width="128" height="128" viewBox="0 0 128 128" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter">
+        <svg width="96" height="96" viewBox="0 0 128 128" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter">
           <rect x="20" y="20" width="88" height="88"/>
           <line x1="64" y1="20" x2="64" y2="108"/>
           <line x1="20" y1="51" x2="108" y2="51"/>
@@ -109,78 +269,14 @@ header.nav{min-height:64px}
     </div>
   </section>
 
-  <!-- Composer — Phase-2 redesign.
-       Three sharp on-ramp chips reflect the productized offers on
-       /studio/, prepending sentence stems with the price + scope so
-       a stressed owner picks the right path without thinking. The
-       composer carries optional Name + Restaurant + Current site
-       fields above the textarea — all optional, client-side only,
-       prepended into the body on submit so the worker payload is
-       unchanged. Sign-in is now framed as an upgrade ("keep replies
-       threaded"), not a gate. Email and Cal.com escape hatches are
-       always visible so the "no commitment" promise is structurally
-       true: a visitor can reach Don three ways without signing in. -->
-  <section class="window-composer" id="windowComposer" aria-label="Write to Don">
-
-    <!-- Sharp on-ramp chips (productized offers, exact prices). -->
-    <div class="window-composer__onramps" id="windowOnramps" aria-label="What brings you in">
-      <p class="window-onramps__hint">What brings you in?</p>
-      <button type="button" class="window-onramp" data-prepend="New site — Essentials $2,500 / Full Service $5–9k / Restaurant Group $8–15k+. Here's what I'm thinking: ">New site &middot; <em>$2,500&ndash;$15k</em></button>
-      <button type="button" class="window-onramp" data-prepend="Audit my existing site ($499). Here's the URL and what I'm noticing: ">Audit my existing site &middot; <em>$499</em></button>
-      <button type="button" class="window-onramp" data-prepend="Take over my Care Plan ($225/mo standalone). Here's where the site lives now: ">Take over my Care Plan &middot; <em>$225/mo</em></button>
-      <button type="button" class="window-onramp" data-prepend="">Something else</button>
-    </div>
-
-    <form class="window-composer__form" id="windowForm" autocomplete="off">
-      <span class="window-composer__caption" aria-hidden="true">Don &mdash;</span>
-
-      <!-- Optional context grid. Fields are prepended to the body on
-           submit (see assets/js/window.js). All optional; the only
-           required field is the message body. localStorage keeps the
-           name/restaurant/URL between visits so a returning operator
-           doesn't retype. -->
-      <div class="window-composer__context">
-        <div class="window-composer__field-pair">
-          <label for="windowName">Your name <span class="window-composer__opt">(optional)</span></label>
-          <input id="windowName" name="name" type="text" autocomplete="name" maxlength="120" />
-        </div>
-        <div class="window-composer__field-pair">
-          <label for="windowRestaurant">Restaurant + city <span class="window-composer__opt">(optional)</span></label>
-          <input id="windowRestaurant" name="restaurant" type="text" autocomplete="organization" maxlength="160" placeholder="e.g. The Irish Inn, Glen Echo" />
-        </div>
-        <div class="window-composer__field-pair window-composer__field-pair--full">
-          <label for="windowSite">Current website <span class="window-composer__opt">(optional)</span></label>
-          <input id="windowSite" name="site" type="url" autocomplete="url" inputmode="url" enterkeyhint="next" spellcheck="false" autocapitalize="off" maxlength="240" placeholder="https://" />
-        </div>
-      </div>
-
-      <label for="windowBody" class="window-composer__body-label">What's on your mind <span class="window-composer__req" aria-hidden="true">*</span><span class="sr-only">(required)</span></label>
-      <textarea class="window-composer__field" id="windowBody" name="body" rows="4" placeholder="Start anywhere. A line about what's nudging you to write — I'll do the rest." maxlength="4000" required aria-describedby="windowReassurance"></textarea>
-      <div class="window-composer__row">
-        <span class="window-composer__counter" id="windowCounter" aria-live="polite">0 / 4000</span>
-        <button type="submit" class="btn btn-primary window-composer__submit" id="windowSubmit">Send it over</button>
-      </div>
-      <p class="window-composer__msg" id="windowMsg" role="status" hidden></p>
-    </form>
-
-    <p class="window-composer__reassurance" id="windowReassurance">I read every one. Usually back to you the same business day, always inside two. No commitment, no pitch.</p>
-
-    <!-- Three escape hatches. The library promises no signup; this
-         row makes that promise structurally true — every path here
-         reaches Don without an account. Sign-in (below) becomes the
-         upgrade, not the gate. -->
-    <ul class="window-composer__alt-row" aria-label="Other ways to reach Don">
-      <li><a href="/studio/call/" rel="noopener" data-event="window-cal-link">Book a 20-min call &rarr;</a></li>
-      <li><a href="mailto:don@muntin.digital?subject=Hi%20Don" data-event="window-email-link">Email <span class="serif-italic">don@muntin.digital</span> &rarr;</a></li>
-      <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener" data-event="window-ig-link">DM on Instagram &rarr;</a></li>
-    </ul>
-  </section>
-
-  <!-- Sign-in CTA: shown when /api/auth/me returns 401. Reframed
-       from a gate ("sign in first") to an upgrade ("keep replies
-       threaded"). The escape hatches above are always reachable. -->
+  <!-- Sign-in CTA: Phase 1b reframe. Anon-first means there is no
+       "gate" — visitors can send without an account. This block now
+       hides by default; the assets/js/window.js script reveals it
+       only when the visitor explicitly opts in via a Phase 2 success-
+       state affordance. The default-hidden state means a fresh
+       visitor sees no sign-in CTA at all on first paint. -->
   <section class="window-signin" id="windowSignin" hidden>
-    <p><strong>Want replies threaded with you?</strong> <a href="/sign-in/?return=%2Fwindow%2F">Sign in &rarr;</a> &mdash; one-click via email, no password. Or send the note as-is and I'll reply to your email above.</p>
+    <p>Already have an account here? <a href="/sign-in/?return=%2Fwindow%2F">Sign in</a> &mdash; you&rsquo;ll see your past notes too.</p>
   </section>
 
 <!-- window-fieldnotes-rail:start -->
@@ -196,5 +292,8 @@ header.nav{min-height:64px}
 
 <script src="/assets/site.js?v=20260501-engagement" defer></script>
 <script src="/assets/js/window.js?v=20260501-engagement" defer></script>
+<script src="/assets/js/window-photos.js?v=20260501-engagement" defer></script>
+<script src="/assets/js/window-voice.js?v=20260501-engagement" defer></script>
+<script src="/assets/js/window-callback.js?v=20260501-engagement" defer></script>
 </body>
 </html>

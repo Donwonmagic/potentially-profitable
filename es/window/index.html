@@ -41,9 +41,9 @@ header.nav{min-height:64px}
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=a2cd3c1adc15" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-core.css?v=a3cc95eb7ac7" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=47810dd9477a" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a2cd3c1adc15"><link rel="stylesheet" href="/assets/site-article.css?v=47810dd9477a"></noscript>
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a3cc95eb7ac7"><link rel="stylesheet" href="/assets/site-article.css?v=47810dd9477a"></noscript>
 </head>
 <body class="window-canvas" data-locale="es">
 
@@ -73,22 +73,135 @@ header.nav{min-height:64px}
     </div>
   </section>
 
-  <section class="window-hero" id="windowHero">
-    <div class="window-hero__inner">
-      <p class="window-hero__eyebrow">Una línea directa con Don</p>
-      <h1 class="window-hero__headline">Cuéntame qué tienes en mente.</h1>
-      <p class="window-hero__sub">Leo cada mensaje. Normalmente respondo el mismo día hábil, siempre en menos de dos.</p>
-    </div>
-  </section>
+  <!-- Fase 2: el sash. Un solo art&iacute;culo estructural que sostiene
+       las luces nombradas — sidelight (retrato + pulso), muntin
+       (l&iacute;nea vertical al 50%, igualando la marca), transom
+       (l&iacute;nea horizontal al 38.3%), sash--top (presencia
+       calendar-honest), sash--bottom (la luz operable: chips +
+       textarea), sill (tiempo de respuesta + salidas). -->
+  <article class="sash" id="windowSash" aria-label="Escr&iacute;bele a Don">
 
-  <div class="window-muntin" aria-hidden="true">
-    <span class="window-muntin__pulse" id="windowPulse" hidden title="Don está cerca"></span>
-  </div>
+    <aside class="sidelight" aria-hidden="true">
+      <img class="sidelight__portrait" src="/about/portrait/don.webp" alt="" width="64" height="64" loading="lazy" decoding="async">
+      <span class="sidelight__pulse" id="windowPulse" hidden title="Don est&aacute; cerca"></span>
+    </aside>
+
+    <div class="muntin" aria-hidden="true"></div>
+    <div class="transom" aria-hidden="true"></div>
+
+    <header class="sash--top">
+      <!-- Fase 4 — l&iacute;nea /now/. Oculta por defecto; la rellena JS
+           v&iacute;a /api/window/now cuando WINDOW_NOW_ENABLED est&aacute; activo
+           y la fila es fresca (<14d) y privacidad &ne; 'private'.
+           Cuando se muestra, la l&iacute;nea de operaci&oacute;n de abajo se
+           oculta. Plan §4.4 + §11.4. -->
+      <p class="sash--top__now" id="windowNow" aria-live="polite" aria-atomic="true" hidden></p>
+      <p class="sash--top__currents" id="windowCurrents">Leo cada mensaje. De lunes a viernes, en menos de 4 horas. Los fines de semana, el lunes en la ma&ntilde;ana.</p>
+    </header>
+
+    <section class="sash--bottom" id="windowComposer">
+
+      <div class="window-composer__onramps" id="windowOnramps" role="group" aria-label="&iquest;Qu&eacute; te trae?">
+        <button type="button" class="window-onramp window-onramp--soft" data-prepend="No s&eacute; todav&iacute;a. Esto es lo que est&aacute; pasando: ">No s&eacute; todav&iacute;a &mdash; d&eacute;jame contarte</button>
+        <button type="button" class="window-onramp window-onramp--soft" data-prepend="No estoy lista para contratar &mdash; solo quiero que le eches un vistazo: ">No estoy lista para contratar &mdash; un segundo par de ojos</button>
+        <button type="button" class="window-onramp" data-prepend="Tu local: . Tu sitio web (si tienes uno): . Lo que quiero que un sitio nuevo arregle: ">Sitio web nuevo &middot; <em>USD 2,500&ndash;15k</em></button>
+        <button type="button" class="window-onramp" data-prepend="Mi sitio web: . Lo que no me gusta de &eacute;l: ">Mira mi sitio &middot; <em>USD 499</em></button>
+        <button type="button" class="window-onramp" data-prepend="Mi sitio web: . Qui&eacute;n lo cuida ahora: . Lo que no est&aacute; funcionando: ">Hazte cargo de mi sitio &middot; <em>USD 225/mes</em></button>
+        <button type="button" class="window-onramp" data-prepend="">Otra cosa</button>
+      </div>
+
+      <p class="window-composer__trust-tell">Si la respuesta es &lsquo;no necesitas gastar en esto,&rsquo; eso es lo que te voy a decir. Ya ha pasado.</p>
+
+      <p class="window-composer__hostess">Lo que le escribir&iacute;as a un amigo que sabe del tema &mdash; con eso basta.</p>
+
+      <form class="window-composer__form" id="windowForm" autocomplete="off">
+
+        <details class="window-composer__context-details" id="windowContextDetails">
+          <summary class="window-composer__context-summary">Cu&eacute;ntame qui&eacute;n eres <span class="window-composer__opt">(opcional)</span></summary>
+          <div class="window-composer__context">
+            <div class="window-composer__field-pair window-composer__field-pair--full">
+              <label for="windowRestaurant">Restaurante + ciudad</label>
+              <input id="windowRestaurant" name="restaurant" type="text" autocomplete="organization" maxlength="160" placeholder="ej. Pupuser&iacute;a Mama Tita, Silver Spring" />
+            </div>
+            <div class="window-composer__field-pair window-composer__field-pair--full">
+              <label for="windowSite">Tu sitio web (si tienes uno)</label>
+              <input id="windowSite" name="site" type="url" autocomplete="url" inputmode="url" enterkeyhint="next" spellcheck="false" autocapitalize="off" maxlength="240" placeholder="https://" />
+            </div>
+            <div class="window-composer__field-pair window-composer__field-pair--full">
+              <label for="windowName">Tu nombre</label>
+              <input id="windowName" name="name" type="text" autocomplete="name" maxlength="120" />
+            </div>
+          </div>
+        </details>
+
+        <textarea class="window-composer__field" id="windowBody" name="body" rows="3" placeholder="Empieza por donde sea &mdash; con una l&iacute;nea basta." maxlength="4000" required aria-describedby="windowReassurance"></textarea>
+
+        <p class="window-composer__crisis" id="windowCrisis" hidden role="status">Si esta noche pesa m&aacute;s que el sitio web, voy a leer esto igual &mdash; y estas personas contestan m&aacute;s r&aacute;pido que yo: <a href="tel:988">988</a> (llama o manda texto), <a href="https://chefswithissues.com/" rel="noopener" target="_blank">Chefs With Issues</a>, <a href="https://chowco.org/" rel="noopener" target="_blank">CHOW</a>.</p>
+
+        <div class="window-composer__callback" id="windowCallback" hidden role="group" aria-label="Pedir una llamada">
+          <button type="button" class="window-composer__callback-toggle" id="windowCallbackToggle" aria-expanded="false" aria-controls="windowCallbackForm">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+            </svg>
+            &iquest;Prefieres que Don te llame?
+          </button>
+          <form class="window-composer__callback-form" id="windowCallbackForm" hidden>
+            <div class="window-composer__field-pair window-composer__field-pair--full">
+              <label for="windowCallbackPhone">Un n&uacute;mero al que Don pueda llamar</label>
+              <input id="windowCallbackPhone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+1 (240) 555&#8209;1234" required>
+            </div>
+            <fieldset class="window-composer__callback-windows">
+              <legend>&iquest;Cu&aacute;ndo est&aacute;s libre?</legend>
+              <label><input type="radio" name="slot" value="tomorrow-morning" required> Ma&ntilde;ana antes de abrir (8&ndash;11am)</label>
+              <label><input type="radio" name="slot" value="tomorrow-midday"> Ma&ntilde;ana en las horas lentas (11am&ndash;1pm)</label>
+              <label><input type="radio" name="slot" value="tomorrow-afternoon"> Ma&ntilde;ana en la tarde (2&ndash;4pm)</label>
+              <label><input type="radio" name="slot" value="tomorrow-evening"> Ma&ntilde;ana en la noche (5&ndash;7pm)</label>
+              <label><input type="radio" name="slot" value="this-week"> En alg&uacute;n momento esta semana</label>
+              <label><input type="radio" name="slot" value="next-week"> La pr&oacute;xima semana est&aacute; bien</label>
+            </fieldset>
+            <button type="submit" class="btn btn-primary window-composer__callback-submit">Pedir una llamada</button>
+          </form>
+          <p class="window-composer__msg" id="windowCallbackMsg" role="status" hidden></p>
+        </div>
+
+        <div class="window-composer__attach" id="windowAttach" hidden role="group" aria-label="Adjuntos a esta nota">
+          <button type="button" class="window-composer__photo-btn" id="windowPhotoBtn" aria-label="Agregar una foto" hidden>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="5" width="18" height="14" rx="2"/>
+              <circle cx="9" cy="11" r="2"/>
+              <path d="M21 15l-5-5-9 9"/>
+            </svg>
+            Agregar una foto
+          </button>
+          <input type="file" id="windowPhotoInput" accept="image/jpeg,image/png,image/webp" multiple hidden capture="environment">
+          <ul class="window-composer__previews" id="windowPreviews" aria-live="polite"></ul>
+        </div>
+
+        <div class="window-composer__row">
+          <button type="button" class="window-composer__mic" id="windowMic" hidden aria-label="Mandar nota de voz (pr&oacute;ximamente)" disabled title="Notas de voz en Fase 3">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="9" y="2" width="6" height="12" rx="3"/>
+              <path d="M5 10v2a7 7 0 0 0 14 0v-2"/>
+              <line x1="12" y1="19" x2="12" y2="22"/>
+            </svg>
+          </button>
+          <span class="window-composer__counter" id="windowCounter" hidden aria-live="polite">0 / 4000</span>
+          <button type="submit" class="btn btn-primary window-composer__submit" id="windowSubmit">Enviar a Don</button>
+        </div>
+        <p class="window-composer__msg" id="windowMsg" role="status" hidden></p>
+      </form>
+    </section>
+
+    <footer class="sill">
+      <p class="sill__reassurance" id="windowReassurance">Leo cada una. De lunes a viernes, en menos de 4 horas. Los fines de semana, el lunes en la ma&ntilde;ana. Sin compromiso, sin discurso de venta.</p>
+      <p class="sill__alt-row">&iquest;Prefieres hablar? <a href="/es/studio/call/" rel="noopener" data-event="window-cal-link">Reserva una llamada de 20 minutos</a>. &iquest;Prefieres correo? <a href="mailto:don@muntin.digital?subject=Hola%20Don" data-event="window-email-link">don@muntin.digital</a>. &iquest;Prefieres Instagram? <a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener" data-event="window-ig-link">@muntin.digital</a>.</p>
+    </footer>
+  </article>
 
   <section class="window-thread" id="windowThread" aria-live="polite">
     <div class="window-thread__empty" id="windowThreadEmpty">
       <div class="window-thread__empty-mark" aria-hidden="true">
-        <svg width="128" height="128" viewBox="0 0 128 128" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter">
+        <svg width="96" height="96" viewBox="0 0 128 128" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter">
           <rect x="20" y="20" width="88" height="88"/>
           <line x1="64" y1="20" x2="64" y2="108"/>
           <line x1="20" y1="51" x2="108" y2="51"/>
@@ -97,64 +210,8 @@ header.nav{min-height:64px}
     </div>
   </section>
 
-  <!-- Composer — rediseño Fase 2.
-       Tres chips de entrada agudos reflejan las ofertas productizadas
-       de /es/studio/, prefijando el cuerpo con precio + alcance para
-       que un dueño con poco tiempo elija el camino correcto sin
-       pensar. El compositor lleva campos opcionales de Nombre +
-       Restaurante + Sitio actual sobre el textarea — todos opcionales,
-       solo del lado del cliente, prefijados al cuerpo al enviar. El
-       inicio de sesión ahora se enmarca como mejora ("hilos
-       guardados"), no como puerta. Tres salidas siempre visibles:
-       llamada, correo, Instagram. -->
-  <section class="window-composer" id="windowComposer" aria-label="Escríbele a Don">
-
-    <div class="window-composer__onramps" id="windowOnramps" aria-label="¿Qué te trae?">
-      <p class="window-onramps__hint">¿Qué te trae?</p>
-      <button type="button" class="window-onramp" data-prepend="Sitio nuevo — Essentials USD 2,500 / Full Service USD 5–9k / Restaurant Group USD 8–15k+. Esto es lo que estoy pensando: ">Sitio nuevo &middot; <em>USD 2,500&ndash;15k</em></button>
-      <button type="button" class="window-onramp" data-prepend="Diagn&oacute;stico de mi sitio actual (USD 499). Aqu&iacute; va la URL y lo que estoy notando: ">Diagn&oacute;stico de mi sitio &middot; <em>USD 499</em></button>
-      <button type="button" class="window-onramp" data-prepend="Tomar mi Plan de mantenimiento (USD 225/mes, est&aacute;ndar). Aqu&iacute; vive el sitio actualmente: ">Tomar mi Plan de mantenimiento &middot; <em>USD 225/mes</em></button>
-      <button type="button" class="window-onramp" data-prepend="">Otra cosa</button>
-    </div>
-
-    <form class="window-composer__form" id="windowForm" autocomplete="off">
-      <span class="window-composer__caption" aria-hidden="true">Don &mdash;</span>
-
-      <div class="window-composer__context">
-        <div class="window-composer__field-pair">
-          <label for="windowName">Tu nombre <span class="window-composer__opt">(opcional)</span></label>
-          <input id="windowName" name="name" type="text" autocomplete="name" maxlength="120" />
-        </div>
-        <div class="window-composer__field-pair">
-          <label for="windowRestaurant">Restaurante + ciudad <span class="window-composer__opt">(opcional)</span></label>
-          <input id="windowRestaurant" name="restaurant" type="text" autocomplete="organization" maxlength="160" placeholder="ej. El Tesoro, Hyattsville" />
-        </div>
-        <div class="window-composer__field-pair window-composer__field-pair--full">
-          <label for="windowSite">Sitio web actual <span class="window-composer__opt">(opcional)</span></label>
-          <input id="windowSite" name="site" type="url" autocomplete="url" inputmode="url" enterkeyhint="next" spellcheck="false" autocapitalize="off" maxlength="240" placeholder="https://" />
-        </div>
-      </div>
-
-      <label for="windowBody" class="window-composer__body-label">Qu&eacute; te tiene escribiendo <span class="window-composer__req" aria-hidden="true">*</span><span class="sr-only">(obligatorio)</span></label>
-      <textarea class="window-composer__field" id="windowBody" name="body" rows="4" placeholder="Empieza por donde sea. Una l&iacute;nea sobre lo que te empuja a escribir &mdash; yo me encargo del resto." maxlength="4000" required aria-describedby="windowReassurance"></textarea>
-      <div class="window-composer__row">
-        <span class="window-composer__counter" id="windowCounter" aria-live="polite">0 / 4000</span>
-        <button type="submit" class="btn btn-primary window-composer__submit" id="windowSubmit">Enviar la nota</button>
-      </div>
-      <p class="window-composer__msg" id="windowMsg" role="status" hidden></p>
-    </form>
-
-    <p class="window-composer__reassurance" id="windowReassurance">Leo cada una. Normalmente te respondo el mismo d&iacute;a h&aacute;bil, siempre dentro de dos. Sin compromiso, sin discurso de venta.</p>
-
-    <ul class="window-composer__alt-row" aria-label="Otras maneras de llegar a Don">
-      <li><a href="/es/studio/call/" rel="noopener" data-event="window-cal-link">Reservar llamada de 20 min &rarr;</a></li>
-      <li><a href="mailto:don@muntin.digital?subject=Hola%20Don" data-event="window-email-link">Correo a <span class="serif-italic">don@muntin.digital</span> &rarr;</a></li>
-      <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener" data-event="window-ig-link">DM en Instagram &rarr;</a></li>
-    </ul>
-  </section>
-
   <section class="window-signin" id="windowSignin" hidden>
-    <p><strong>&iquest;Quieres respuestas en hilo contigo?</strong> <a href="/es/sign-in/?return=%2Fes%2Fwindow%2F">Inicia sesi&oacute;n &rarr;</a> &mdash; un clic por correo, sin contrase&ntilde;a. O env&iacute;a la nota tal cual y respondo a tu correo de arriba.</p>
+    <p>&iquest;Ya tienes cuenta aqu&iacute;? <a href="/es/sign-in/?return=%2Fes%2Fwindow%2F">Inicia sesi&oacute;n</a> &mdash; tambi&eacute;n ver&aacute;s tus notas anteriores.</p>
   </section>
 
 <!-- window-fieldnotes-rail:start -->
@@ -170,5 +227,8 @@ header.nav{min-height:64px}
 
 <script src="/assets/site.js?v=20260501-engagement" defer></script>
 <script src="/assets/js/window.js?v=20260501-engagement" defer></script>
+<script src="/assets/js/window-photos.js?v=20260501-engagement" defer></script>
+<script src="/assets/js/window-voice.js?v=20260501-engagement" defer></script>
+<script src="/assets/js/window-callback.js?v=20260501-engagement" defer></script>
 </body>
 </html>

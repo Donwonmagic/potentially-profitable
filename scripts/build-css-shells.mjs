@@ -151,6 +151,12 @@ const SECTIONS = [
   // land in subsequent phases). Article shell — only loaded on
   // /blog/, /learn/, /glossary/.
   { start: 6372, shell: 'article', label: 'Article viz components (.viz-* family)' },
+  // Window redesign — sash/sidelight composer, photo/voice attach,
+  // now-line widget, site-wide pulse propagation, admin attachment
+  // + callback display, /now/ editor. Appended at site.css EOF as
+  // one block; lives in core because it spans /window/, /about/,
+  // every-page nav/footer, and admin pages.
+  { start: 6711, shell: 'core',    label: 'Window Phase 2/3.6/4/5+ additions (sash/sidelight, attach, now, pulses, admin)' },
 ];
 
 // === Validation ===

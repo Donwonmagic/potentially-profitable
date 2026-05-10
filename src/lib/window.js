@@ -41,12 +41,62 @@ export const ADMIN_INDEX_KEY_PREFIX   = 'window:admin-index:';
 export const THROTTLE_KEY_PREFIX      = 'window:throttle:';
 export const PENDING_DON_KEY_PREFIX   = 'window:pending-don:';
 export const META_ACTIVE_KEY          = 'window:meta:active';
+// Phase 4 — operator presence ("/now/" widget). Single key holds the
+// privacy-resolved row. Three privacy tiers: 'precise' (full text),
+// 'fuzz' (DEFAULT — generalized), 'private' (widget hidden entirely).
+// 14-day staleness threshold + 21:00–06:00 precise-mode blackout
+// enforced server-side. See plan §4.4 + §11.4.
+export const META_NOW_KEY             = 'window:meta:now';
+export const NOW_STALENESS_MS         = 14 * 24 * 60 * 60 * 1000;
+export const NOW_DEFAULT_TIMEZONE     = 'America/New_York';
+export const NOW_TEXT_MAX             = 200;
+
+// Phase 1a (Window redesign) — anonymous-first send keys.
+// Anon threads are cookie-bound (md_anon_thread_id, see worker.js).
+// The cookie's anonId IS the thread index — one thread per cookie
+// lifetime. Message keys remain sub-agnostic (window:msg:<threadId>:
+// <msgId>) so a future migration to a sub-keyed thread is a
+// single-thread-row write, not a bulk re-key. See
+// docs/window-redesign-plan.md §2.1 + §2.3.
+export const THREAD_KEY_PREFIX_ANON   = 'window:thread:anon:';
+export const THROTTLE_KEY_PREFIX_ANON = 'window:throttle:anon:';
+export const THROTTLE_KEY_PREFIX_IP   = 'window:throttle:ip:';
 
 export const MAX_MSG_LENGTH         = 4000;
 export const MIN_MSG_LENGTH         = 1;
 export const MAX_MSGS_PER_THREAD    = 100;
 export const MAX_MSGS_PER_DAY       = 50;
+export const MAX_ANON_MSGS_PER_DAY  = 5;   // tighter cap for unidentified anons
 export const APPEND_BACK_PRESSURE_MS = 60 * 1000;
+
+// Phase 3 (Window redesign) — multimodal attachment caps. Plan §2.3
+// + multimodal-engineering review. All values default off via the
+// per-modality flags (WINDOW_PHOTO_ENABLED / WINDOW_VOICE_ENABLED /
+// WINDOW_CALLBACK_ENABLED) until the binding + UI ship in Phase 3.x.
+export const ATTACH_KEY_PREFIX            = 'window:attach:';
+export const TRANSCRIPT_QUEUE_KEY_PREFIX  = 'window:transcript-queue:';
+export const ATTACH_LIFETIME_KEY_PREFIX   = 'window:attach-lifetime:';
+
+// Per-message + per-anon caps (audit S3 hard limits + plan §2.3).
+export const MAX_ATTACHMENTS_PER_MSG          = 4;
+export const MAX_ATTACHMENTS_PER_ANON_LIFETIME = 12;  // 3/day × 4 days enrollment grace
+export const MAX_ATTACH_BYTES_PER_DAY_PER_ANON = 8 * 1024 * 1024; // 8 MB/day cap
+
+// Voice (Phase 3.3) — BIPA-conservative defaults.
+export const MAX_VOICE_DURATION_MS  = 60 * 1000;     // 60s default; extends to 90s on demand
+export const MAX_VOICE_DURATION_HARD_MS = 90 * 1000; // hard cap
+export const MAX_VOICE_PER_DAY      = 5;             // per anon/sub
+export const MAX_VOICE_MINUTES_PER_DAY = 5;          // total minutes/day per anon
+export const VOICE_R2_TTL_DAYS      = 30;            // BIPA-conservative; voice rows expire
+export const PHOTO_R2_TTL_DAYS      = 90;            // photos retain longer
+
+// Photo (Phase 3.2).
+export const MAX_PHOTO_SIZE_BYTES   = 5 * 1024 * 1024;  // 5 MB post-resize
+export const MAX_PHOTO_PIXELS       = 2048;             // longest-edge resize target
+
+// R2 + Workers AI bindings (declared in wrangler.jsonc Phase 3).
+//   env.WINDOW_ATTACHMENTS — R2 bucket binding name
+//   env.AI                  — Workers AI binding for Whisper
 export const THROTTLE_TTL_SEC       = 48 * 3600;
 export const PENDING_DON_TTL_SEC    = 5 * 60;
 export const PENDING_DON_BATCH_MS   = 2 * 60 * 1000;
@@ -237,13 +287,29 @@ async function upsertAdminIndex(env, thread) {
   if (!Array.isArray(row.entries)) row.entries = [];
   // Replace any prior entry for this thread in the same bucket.
   row.entries = row.entries.filter((e) => e.threadId !== thread.id);
-  row.entries.push({
+  // Anon threads carry `kind:'anon'` and `anonId` instead of `sub`.
+  // Admin queue consumers branch on `kind` (or `sub == null`) to
+  // render the "not signed in" chip.
+  const entry = {
     threadId: thread.id,
-    sub: thread.sub,
+    sub: thread.sub || null,
     updatedAt: thread.updatedAt,
     unreadByAdmin: !!thread.unreadByAdmin,
     status: thread.status,
-  });
+  };
+  if (thread.kind === 'anon' || thread.anonId) {
+    entry.kind = 'anon';
+    entry.anonId = thread.anonId;
+  }
+  // Phase 1b — crisis tier surfaces in the admin queue so Don can
+  // see a red/yellow bar at-a-glance. The kind-of-flag persists at
+  // the thread level (above) AND on the index entry (here) so the
+  // queue scan in iterateAdminQueue doesn't have to re-fetch the
+  // thread row to render.
+  if (thread.crisisTier === 'tier1' || thread.crisisTier === 'tier2') {
+    entry.crisisTier = thread.crisisTier;
+  }
+  row.entries.push(entry);
   await env.AUTH_SESSIONS.put(key, JSON.stringify(row));
 }
 
@@ -307,8 +373,14 @@ export async function checkAndStampThrottle(env, sub) {
 // Add a message id to the pending-don batch (for email coalescing).
 // Creates the row if missing; appends if exists. The cron flushes
 // rows whose firstAt is older than PENDING_DON_BATCH_MS.
-export async function pushPendingDon(env, sub, msgId) {
-  const raw = await env.AUTH_SESSIONS.get(pendingDonKey(sub));
+//
+// `kind` is 'identified' (default — keyed by sub) or 'anon' (keyed by
+// anonId). The cron handler dispatches on this so anon threads get
+// notified through the anon-aware path. Without `kind`, anon rows
+// would route through getOpenThreadForUser (sub-keyed) and silently
+// drop. See docs/window-redesign-plan.md §2.1, audit B1.
+export async function pushPendingDon(env, suffix, msgId, kind = 'identified') {
+  const raw = await env.AUTH_SESSIONS.get(pendingDonKey(suffix));
   const now = Date.now();
   let row;
   if (raw) {
@@ -316,17 +388,23 @@ export async function pushPendingDon(env, sub, msgId) {
       row = JSON.parse(raw);
       row.msgIds = Array.isArray(row.msgIds) ? row.msgIds : [];
       row.msgIds.push(msgId);
+      // Preserve existing kind if present; older rows pre-this-fix
+      // default to 'identified'.
+      if (!row.kind) row.kind = kind;
     } catch (_) {
-      row = { firstAt: now, msgIds: [msgId] };
+      row = { firstAt: now, msgIds: [msgId], kind };
     }
   } else {
-    row = { firstAt: now, msgIds: [msgId] };
+    row = { firstAt: now, msgIds: [msgId], kind };
   }
-  await env.AUTH_SESSIONS.put(pendingDonKey(sub), JSON.stringify(row), { expirationTtl: PENDING_DON_TTL_SEC });
+  await env.AUTH_SESSIONS.put(pendingDonKey(suffix), JSON.stringify(row), { expirationTtl: PENDING_DON_TTL_SEC });
   return row;
 }
 
 // Iterate pending-don rows ready to flush (older than batch window).
+// Yields the suffix (sub OR anonId), the row, the kind, and the key.
+// Pre-fix rows without `kind` default to 'identified' for backward
+// compatibility — they'll route through the existing sub-keyed path.
 export async function* iteratePendingDonReady(env) {
   const result = await env.AUTH_SESSIONS.list({ prefix: PENDING_DON_KEY_PREFIX });
   const now = Date.now();
@@ -336,8 +414,18 @@ export async function* iteratePendingDonReady(env) {
     let row;
     try { row = JSON.parse(raw); } catch (_) { continue; }
     if (!row.firstAt || (now - row.firstAt) < PENDING_DON_BATCH_MS) continue;
-    const sub = k.name.slice(PENDING_DON_KEY_PREFIX.length);
-    yield { sub, row, key: k.name };
+    const suffix = k.name.slice(PENDING_DON_KEY_PREFIX.length);
+    const kind = row.kind === 'anon' ? 'anon' : 'identified';
+    // Backward-compatible alias: callers expecting `sub` get the
+    // suffix only when this is an identified row.
+    yield {
+      suffix,
+      sub: kind === 'identified' ? suffix : null,
+      anonId: kind === 'anon' ? suffix : null,
+      kind,
+      row,
+      key: k.name,
+    };
   }
 }
 
@@ -352,4 +440,662 @@ export async function getActiveMeta(env) {
   const raw = await env.AUTH_SESSIONS.get(META_ACTIVE_KEY);
   if (!raw) return null;
   try { return JSON.parse(raw); } catch { return null; }
+}
+
+// Phase 4 — /now/ widget. Read the current row (raw — admin only).
+export async function getNowMeta(env) {
+  const raw = await env.AUTH_SESSIONS.get(META_NOW_KEY);
+  if (!raw) return null;
+  try { return JSON.parse(raw); } catch { return null; }
+}
+
+// Phase 4 — /now/ widget. Persist a new privacy-vetted row. Caller
+// (handleAdminWindowNow) is responsible for the admin auth gate.
+// `payload` shape:
+//   { privacy, fuzzText, fuzzTextEs?, preciseText?, preciseTextEs?,
+//     shift?, timezone? }
+// Server-side validation:
+//   - privacy must be one of {precise, fuzz, private}; fuzz default.
+//   - texts capped at NOW_TEXT_MAX bytes after sanitize.
+//   - timezone defaults to America/New_York if absent or invalid.
+//   - locale variants: ES falls back to EN if the ES field is empty.
+export async function setNowMeta(env, payload) {
+  const validPrivacy = ['precise', 'fuzz', 'private'];
+  const cap = (s) => (typeof s === 'string' ? s.slice(0, NOW_TEXT_MAX) : '');
+  // Phase 4 audit (Issue 1.3 MED): validate the timezone via the
+  // Intl constructor — accepts "America/New_York", rejects "junk-tz"
+  // and 200-char attacker payloads. Today this is defense-in-depth
+  // (isLatePrecisionBlackout already fails-safe), but a future surface
+  // may not. Fail to default on invalid input.
+  let timezone = NOW_DEFAULT_TIMEZONE;
+  if (typeof payload.timezone === 'string') {
+    try {
+      new Intl.DateTimeFormat('en-US', { timeZone: payload.timezone });
+      timezone = payload.timezone;
+    } catch (_) { /* invalid — fall back to default */ }
+  }
+  const next = {
+    privacy: validPrivacy.indexOf(payload && payload.privacy) >= 0 ? payload.privacy : 'fuzz',
+    preciseText:   cap(payload.preciseText),
+    preciseTextEs: cap(payload.preciseTextEs),
+    fuzzText:      cap(payload.fuzzText),
+    fuzzTextEs:    cap(payload.fuzzTextEs),
+    shift: typeof payload.shift === 'string' ? payload.shift.slice(0, 40) : null,
+    timezone,
+    updatedAt: Date.now(),
+    lastSeen: Number.isFinite(payload && payload.lastSeen) ? payload.lastSeen : Date.now(),
+  };
+  await env.AUTH_SESSIONS.put(META_NOW_KEY, JSON.stringify(next));
+  return next;
+}
+
+// Hard-coded refusal: precise mode is silently downgraded to fuzz
+// between 21:00–06:00 local. The late-night precision window is the
+// stalker risk (plan §4.4). Returns true when we're inside the
+// blackout — caller swaps text accordingly. Fail-safe: if the
+// timezone math fails for any reason we return TRUE (refuse precision).
+export function isLatePrecisionBlackout(timezone) {
+  try {
+    const fmt = new Intl.DateTimeFormat('en-US', {
+      timeZone: timezone || NOW_DEFAULT_TIMEZONE,
+      hour: '2-digit',
+      hour12: false,
+    });
+    const parts = fmt.formatToParts(new Date());
+    const hourPart = parts.find((p) => p.type === 'hour');
+    if (!hourPart) return true;
+    const h = parseInt(hourPart.value, 10);
+    if (Number.isNaN(h)) return true;
+    return h >= 21 || h < 6;
+  } catch (_) {
+    return true;
+  }
+}
+
+// Visitor-facing projection. Returns the text + mode the visitor
+// should see, or null when the widget should be hidden entirely.
+// Hides for: missing row, privacy='private', staleness >14d, or
+// post-blackout-downgrade with empty fuzzText. Caller surfaces
+// `{ ok:true, show:false }` when this returns null.
+//
+// Locale param picks the EN or ES text variant. ES falls back to
+// EN if the ES variant is empty (common when admin only fills one).
+export function resolveNowForVisitor(now, locale) {
+  if (!now) return null;
+  if (now.privacy === 'private') return null;
+  // Phase 4 audit (Issue 1.1 LOW): treat missing/zero updatedAt as
+  // STALE (hide). Previously short-circuited on falsy and skipped
+  // the staleness gate, which was the wrong fail direction for a
+  // privacy-relevant freshness check.
+  if (!now.updatedAt || Date.now() - now.updatedAt > NOW_STALENESS_MS) return null;
+  let mode = now.privacy === 'precise' ? 'precise' : 'fuzz';
+  if (mode === 'precise' && isLatePrecisionBlackout(now.timezone)) {
+    mode = 'fuzz';
+  }
+  const isEs = locale === 'es';
+  const fuzz = isEs ? (now.fuzzTextEs || now.fuzzText || '') : (now.fuzzText || '');
+  const precise = isEs ? (now.preciseTextEs || now.preciseText || '') : (now.preciseText || '');
+  // Phase 4 audit (Issue 1.2 LOW): if precise mode has no precise
+  // text (admin set privacy=precise but left preciseText empty),
+  // downgrade mode to 'fuzz' so the styling matches the actual
+  // content (avoids surfacing fuzz text with the precise teal
+  // underline-mark). Server-side admin validation also blocks this
+  // state, but defense-in-depth at read time too.
+  let text;
+  if (mode === 'precise') {
+    if (precise) {
+      text = precise;
+    } else {
+      mode = 'fuzz';
+      text = fuzz;
+    }
+  } else {
+    text = fuzz;
+  }
+  if (!text) return null;
+  return {
+    text,
+    mode,
+    shift: now.shift || null,
+    lastSeen: now.lastSeen || now.updatedAt || null,
+  };
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Phase 1a (Window redesign) — Anonymous-first send.
+//
+// Anon threads are cookie-bound (md_anon_thread_id, see worker.js).
+// The cookie's anonId IS the per-user index — one thread per cookie
+// lifetime. The internal threadId is minted distinct from anonId so
+// a future claim-via-magic-link migration preserves the threadId
+// across the rekey from anon-prefix to sub-prefix.
+//
+// Message keys remain sub-agnostic (`window:msg:<threadId>:<msgId>`)
+// so a claim is a single thread-row write, not a bulk re-key.
+//
+// Lower per-day cap (5 vs 50) because anon identity is unverified.
+// Per-IP throttle on top defeats cookie-cycling abuse.
+//
+// Reference: docs/window-redesign-plan.md §2.1, §2.3.
+
+export const mintAnonId = mintSaveItemId;
+
+export function anonThreadKey(anonId) {
+  return THREAD_KEY_PREFIX_ANON + anonId;
+}
+
+export function anonThrottleKey(anonId) {
+  return THROTTLE_KEY_PREFIX_ANON + anonId;
+}
+
+export function ipThrottleKey(ipHash) {
+  return THROTTLE_KEY_PREFIX_IP + ipHash;
+}
+
+// SHA-256 hex of an IP address. The key-suffix for per-IP throttling
+// on anon paths so we don't write raw IPs into KV.
+export async function hashIp(ip) {
+  if (!ip) return null;
+  const enc = new TextEncoder().encode(String(ip));
+  const buf = await crypto.subtle.digest('SHA-256', enc);
+  const bytes = new Uint8Array(buf);
+  let out = '';
+  for (let i = 0; i < bytes.length; i++) {
+    const h = bytes[i].toString(16);
+    out += h.length === 1 ? '0' + h : h;
+  }
+  return out;
+}
+
+// Returns the anon thread for an anonId or null. anonId IS the index;
+// no scanning needed. Claimed threads are treated as no-thread —
+// after migrateAnonThread runs, the anon row stays in KV with a
+// claimedBy stamp + 30d TTL for audit, but the cookie path must
+// not append to it. (handleAuthVerify also clears the anon cookie
+// on claim; this is defense in depth for the edge case where the
+// cookie outlives session expiry on the same device.)
+export async function getOpenThreadForAnon(env, anonId) {
+  if (!isValidSaveItemIdShape(anonId)) return null;
+  const raw = await env.AUTH_SESSIONS.get(anonThreadKey(anonId));
+  if (!raw) return null;
+  try {
+    const t = JSON.parse(raw);
+    if (t.claimedBy) return null;
+    if (t.status === 'open' || t.status === 'closed') return t;
+  } catch (_) { /* drop */ }
+  return null;
+}
+
+// Create an anon thread. Stores under `window:thread:anon:<anonId>`.
+// `locale` (optional) is recorded so the admin queue + email
+// templates can branch.
+//
+// Audit S3 — refuses to overwrite a row that has been claimed
+// (claimedBy stamp set). Without this, a stale anon-cookie request
+// arriving after migrateAnonThread would clobber the claimed-row
+// audit stamp and replace it with a fresh anon thread (since
+// getOpenThreadForAnon returns null on claimedBy, the caller would
+// otherwise fall straight here). Returns the special error
+// 'anon-id-claimed' so handleWindowAppend can clear the stale cookie
+// and prompt the operator to sign in.
+export async function createAnonThread(env, anonId, locale = null) {
+  if (!isValidSaveItemIdShape(anonId)) throw new Error('invalid-anon-id');
+  const existingRaw = await env.AUTH_SESSIONS.get(anonThreadKey(anonId));
+  if (existingRaw) {
+    try {
+      const existing = JSON.parse(existingRaw);
+      if (existing && existing.claimedBy) {
+        throw new Error('anon-id-claimed');
+      }
+    } catch (err) {
+      if (err && err.message === 'anon-id-claimed') throw err;
+      // Parse error → row is corrupt; safe to overwrite.
+    }
+  }
+  let id = null;
+  for (let attempt = 0; attempt < 3; attempt++) {
+    const candidate = mintThreadId();
+    // Best-effort uniqueness probe via the message-key prefix (msg
+    // keys are global per threadId). Acceptable at 49-bit entropy.
+    const probe = await env.AUTH_SESSIONS.list({ prefix: MSG_KEY_PREFIX + candidate + ':', limit: 1 });
+    if (!probe.keys || probe.keys.length === 0) { id = candidate; break; }
+  }
+  if (!id) throw new Error('mint-collision');
+  const now = Date.now();
+  const thread = {
+    id,
+    kind: 'anon',
+    anonId,
+    sub: null,
+    email: null,
+    locale: locale || null,
+    status: 'open',
+    createdAt: now,
+    updatedAt: now,
+    msgCount: 0,
+    unreadByUser: false,
+    unreadByAdmin: false,
+  };
+  await env.AUTH_SESSIONS.put(anonThreadKey(anonId), JSON.stringify(thread));
+  return thread;
+}
+
+// Same body validation + thread-cap behavior as appendMessageToThread
+// but writes to anonThreadKey + admin index entry tagged with anonId.
+// Message keys remain sub-agnostic so a future claim is a single-row
+// rewrite of the thread metadata, not a bulk re-key.
+export async function appendMessageToAnonThread(env, anonId, thread, from, body) {
+  if (thread.status === 'archived') {
+    return { ok: false, error: 'thread-archived' };
+  }
+  if ((thread.msgCount || 0) >= MAX_MSGS_PER_THREAD) {
+    return { ok: false, error: 'thread-full', max: MAX_MSGS_PER_THREAD };
+  }
+  let msgId = null;
+  for (let attempt = 0; attempt < 3; attempt++) {
+    const candidate = mintMessageId();
+    const probe = await env.AUTH_SESSIONS.get(msgKey(thread.id, candidate));
+    if (!probe) { msgId = candidate; break; }
+  }
+  if (!msgId) return { ok: false, error: 'mint-collision' };
+  const now = Date.now();
+  const msg = { id: msgId, threadId: thread.id, anonId, from, body, createdAt: now };
+  await env.AUTH_SESSIONS.put(msgKey(thread.id, msgId), JSON.stringify(msg));
+
+  thread.msgCount = (thread.msgCount || 0) + 1;
+  thread.updatedAt = now;
+  if (from === 'user') {
+    thread.lastUserMsgAt = now;
+    thread.unreadByAdmin = true;
+    if (thread.status === 'closed') thread.status = 'open';
+  } else {
+    thread.lastDonReplyAt = now;
+    thread.unreadByUser = true;
+  }
+  await env.AUTH_SESSIONS.put(anonThreadKey(anonId), JSON.stringify(thread));
+
+  await upsertAdminIndex(env, thread);
+
+  return { ok: true, msg, thread };
+}
+
+// Per-anonId throttle. 5/day cap (vs 50/day for identified) shares
+// the 60s back-pressure window with the identified path so a
+// signed-in operator who started anon doesn't double-rate-limit.
+export async function checkAndStampAnonThrottle(env, anonId) {
+  const now = Date.now();
+  const today = dayBucket(now);
+  const raw = await env.AUTH_SESSIONS.get(anonThrottleKey(anonId));
+  let row = { lastUserMsgAt: 0, dayCount: 0, dayBucket: today };
+  if (raw) {
+    try { row = JSON.parse(raw); } catch (_) { /* reset */ }
+  }
+  if (row.dayBucket !== today) {
+    row.dayBucket = today;
+    row.dayCount = 0;
+  }
+  const elapsed = now - (row.lastUserMsgAt || 0);
+  if (elapsed < APPEND_BACK_PRESSURE_MS) {
+    return { ok: false, error: 'rate-limited', retryAfter: Math.ceil((APPEND_BACK_PRESSURE_MS - elapsed) / 1000) };
+  }
+  if (row.dayCount >= MAX_ANON_MSGS_PER_DAY) {
+    return { ok: false, error: 'day-cap-reached', max: MAX_ANON_MSGS_PER_DAY };
+  }
+  row.lastUserMsgAt = now;
+  row.dayCount = (row.dayCount || 0) + 1;
+  await env.AUTH_SESSIONS.put(anonThrottleKey(anonId), JSON.stringify(row), { expirationTtl: THROTTLE_TTL_SEC });
+  return { ok: true };
+}
+
+// Per-anon back-pressure on email-attach (audit S2). Different from
+// the message-send throttle: no day-cap, just a 60s cooldown so an
+// attacker with the cookie can't churn the email field before each
+// of Don's replies arrives. Returns the same shape as the other
+// throttle helpers.
+export async function checkAndStampEmailAttachThrottle(env, anonId) {
+  if (!isValidSaveItemIdShape(anonId)) return { ok: false, error: 'invalid-anon-id' };
+  const key = THROTTLE_KEY_PREFIX_ANON + 'email-attach:' + anonId;
+  const now = Date.now();
+  const raw = await env.AUTH_SESSIONS.get(key);
+  let row = { lastAt: 0 };
+  if (raw) {
+    try { row = JSON.parse(raw); } catch (_) { /* reset */ }
+  }
+  const elapsed = now - (row.lastAt || 0);
+  if (elapsed < APPEND_BACK_PRESSURE_MS) {
+    return { ok: false, error: 'rate-limited', retryAfter: Math.ceil((APPEND_BACK_PRESSURE_MS - elapsed) / 1000) };
+  }
+  row.lastAt = now;
+  await env.AUTH_SESSIONS.put(key, JSON.stringify(row), { expirationTtl: THROTTLE_TTL_SEC });
+  return { ok: true };
+}
+
+// Update an anon thread's email field. Returns the updated thread or
+// null if the thread doesn't exist. Idempotent — no-op when the email
+// is already set to the same value. Used by /api/window/email when
+// the operator opts into email replies post-send.
+export async function setAnonThreadEmail(env, anonId, email) {
+  if (!isValidSaveItemIdShape(anonId)) return null;
+  const raw = await env.AUTH_SESSIONS.get(anonThreadKey(anonId));
+  if (!raw) return null;
+  let thread;
+  try { thread = JSON.parse(raw); } catch { return null; }
+  if (thread.email === email) return thread; // idempotent
+  thread.email = email;
+  thread.updatedAt = Date.now();
+  await env.AUTH_SESSIONS.put(anonThreadKey(anonId), JSON.stringify(thread));
+  return thread;
+}
+
+// Migrate an anon thread to sub-keyed identified storage. Runs when
+// an operator clicks Don's reply email (which contains a one-shot
+// claim-magic-link token bound to their anonId). The migration is
+// metadata-only:
+//
+//   - Read anon thread row at window:thread:anon:<anonId>
+//   - Skip if missing or already claimed (idempotent re-run)
+//   - Mint a sub-keyed row at window:thread:<sub>:<threadId> carrying
+//     the SAME threadId, sub, email
+//   - Update window:thread-index:<sub> to include threadId
+//   - Stamp the anon row with {claimedBy:sub, claimedAt} + 30d TTL
+//     for safe rollback
+//   - upsertAdminIndex with the new sub-keyed shape (admin queue
+//     stops showing the anon entry; entries dedupe on threadId)
+//
+// Message keys (window:msg:<threadId>:<msgId>) are NOT moved — they're
+// sub-agnostic by design (src/lib/window.js:64-66). The migration
+// preserves the threadId so the messages remain reachable through
+// either keying.
+//
+// Returns { ok, thread } on success or { ok:false, error } on
+// no-op / failure.
+export async function migrateAnonThread(env, anonId, sub, email) {
+  if (!isValidSaveItemIdShape(anonId)) return { ok: false, error: 'invalid-anon-id' };
+  if (typeof sub !== 'string' || !sub) return { ok: false, error: 'invalid-sub' };
+
+  const anonRaw = await env.AUTH_SESSIONS.get(anonThreadKey(anonId));
+  if (!anonRaw) return { ok: false, error: 'anon-thread-not-found' };
+
+  let anonThread;
+  try { anonThread = JSON.parse(anonRaw); } catch { return { ok: false, error: 'anon-thread-corrupt' }; }
+
+  // Idempotent: a duplicate verify (e.g., user opens the email twice
+  // quickly) finds the row already claimed and returns the existing
+  // sub-keyed thread instead of double-migrating.
+  if (anonThread.claimedBy === sub) {
+    const existingRaw = await env.AUTH_SESSIONS.get(threadKey(sub, anonThread.id));
+    if (existingRaw) {
+      try { return { ok: true, thread: JSON.parse(existingRaw), alreadyClaimed: true }; }
+      catch { /* fall through to re-write */ }
+    }
+  }
+  if (anonThread.claimedBy && anonThread.claimedBy !== sub) {
+    return { ok: false, error: 'anon-thread-already-claimed-by-other' };
+  }
+
+  const now = Date.now();
+  const subThread = {
+    id: anonThread.id,
+    sub,
+    email: email || anonThread.email || null,
+    locale: anonThread.locale || null,
+    status: anonThread.status || 'open',
+    createdAt: anonThread.createdAt || now,
+    updatedAt: now,
+    msgCount: anonThread.msgCount || 0,
+    unreadByUser: !!anonThread.unreadByUser,
+    unreadByAdmin: !!anonThread.unreadByAdmin,
+    claimedFromAnon: anonId,
+    claimedAt: now,
+  };
+  // Carry forward the timestamps if present.
+  if (anonThread.lastUserMsgAt) subThread.lastUserMsgAt = anonThread.lastUserMsgAt;
+  if (anonThread.lastDonReplyAt) subThread.lastDonReplyAt = anonThread.lastDonReplyAt;
+
+  await env.AUTH_SESSIONS.put(threadKey(sub, anonThread.id), JSON.stringify(subThread));
+
+  // Update per-user thread index (idempotent — uses Set semantics).
+  const idxRaw = await env.AUTH_SESSIONS.get(threadIndexKey(sub));
+  let idx = { threadIds: [] };
+  if (idxRaw) {
+    try { idx = JSON.parse(idxRaw); } catch (_) { /* reset */ }
+  }
+  if (!Array.isArray(idx.threadIds)) idx.threadIds = [];
+  if (!idx.threadIds.includes(anonThread.id)) {
+    idx.threadIds.push(anonThread.id);
+    await env.AUTH_SESSIONS.put(threadIndexKey(sub), JSON.stringify(idx));
+  }
+
+  // Stamp the anon row as claimed + set 30d TTL for rollback safety.
+  // Keep the row body intact so a future bug investigation can read
+  // exactly what was migrated.
+  anonThread.claimedBy = sub;
+  anonThread.claimedAt = now;
+  await env.AUTH_SESSIONS.put(anonThreadKey(anonId), JSON.stringify(anonThread), {
+    expirationTtl: 30 * 24 * 3600,
+  });
+
+  // Refresh admin index entry so the queue stops showing the anon
+  // shape and starts showing the sub-keyed shape. Same threadId, so
+  // the existing entries.filter(threadId match) replaces in place.
+  await upsertAdminIndex(env, subThread);
+
+  return { ok: true, thread: subThread, alreadyClaimed: false };
+}
+
+// Phase 1b — PII pre-write gate. Refuses to store a body that
+// looks like it carries credit-card numbers, SSNs, or passwords.
+// Caller surfaces a polite error so the operator emails Don directly
+// (or calls). The plan §2.6 says: "On match: do not store body;
+// reply 'I don't take card numbers or passwords through the Window
+// — email me directly or call.'"
+//
+// Trade-offs: false positives are acceptable (operator just gets
+// nudged toward a more-secure channel); false negatives are NOT
+// (storing a CC means Don's KV is in PCI scope, and we're not).
+//
+// Returns null if the body looks clean, or one of:
+//   { kind: 'credit-card' }
+//   { kind: 'ssn' }
+//   { kind: 'password' }
+export function detectLikelyPII(body) {
+  if (typeof body !== 'string' || !body) return null;
+  const text = body;
+
+  // Credit card: 13-19 digits with common separators (space, dash).
+  // Pre-filter via regex, then verify with Luhn so "1234 5678 9012 3456"
+  // (16 digits but invalid checksum) doesn't trip on receipts/order
+  // numbers a restaurant operator might paste.
+  const ccRegex = /(?:\d[\s-]?){12,18}\d/g;
+  let m;
+  while ((m = ccRegex.exec(text)) !== null) {
+    const digits = m[0].replace(/[\s-]/g, '');
+    if (digits.length >= 13 && digits.length <= 19 && _luhnValid(digits)) {
+      return { kind: 'credit-card' };
+    }
+  }
+
+  // SSN: NNN-NN-NNNN. Boundary anchors prevent the date-format
+  // false positive (e.g., 123-45-6789 vs 2024-01-15 doesn't match).
+  if (/(?:^|[^\d-])\d{3}-\d{2}-\d{4}(?:[^\d]|$)/.test(text)) {
+    return { kind: 'ssn' };
+  }
+
+  // Password keywords (EN + ES). Look for "<word> is/=/:" patterns
+  // that strongly indicate the operator is about to type a credential.
+  // The English alphabet check on the trailing context keeps
+  // common phrases like "password protection is good" from matching.
+  const lower = text.toLowerCase();
+  const passwordPatterns = [
+    /\bpassword\s+is\s+\S/,
+    /\bpassword\s*[:=]\s*\S/,
+    /\bmy\s+password\s+\S/,
+    /\bcontrase[nñ]a\s+es\s+\S/,
+    /\bcontrase[nñ]a\s*[:=]\s*\S/,
+    /\bmi\s+contrase[nñ]a\s+\S/,
+    /\bclave\s+es\s+\S/,
+    /\bclave\s*[:=]\s*\S/,
+  ];
+  for (const re of passwordPatterns) {
+    if (re.test(lower)) return { kind: 'password' };
+  }
+
+  return null;
+}
+
+// Luhn checksum for credit-card validation. Right-to-left, double
+// every second digit, sum digits, mod 10 == 0.
+function _luhnValid(digits) {
+  let sum = 0;
+  let alt = false;
+  for (let i = digits.length - 1; i >= 0; i--) {
+    let d = digits.charCodeAt(i) - 48;
+    if (d < 0 || d > 9) return false;
+    if (alt) {
+      d *= 2;
+      if (d > 9) d -= 9;
+    }
+    sum += d;
+    alt = !alt;
+  }
+  return sum % 10 === 0;
+}
+
+// Phase 1b — crisis-keyword triage (server-side scan only; SMS
+// dispatch deferred to Phase 2). Returns:
+//   null      — no match
+//   'tier1'   — urgent: surface to Don as a red bar in admin
+//   'tier2'   — welfare-check: surface as a yellow bar in admin
+//
+// Allowlist-only matching to avoid pathologizing normal restaurant
+// vocabulary (closing tomorrow could be a planned end-of-week
+// closing, etc — the keyword presence is a signal, not a diagnosis).
+// The crisis path is paired in the worker with an admin-flag write;
+// the operator-facing referral footer (988 / Chefs With Issues /
+// CHOW) lives in the Phase 2 composer UI and is text-only — this
+// scan does not auto-acknowledge or interrupt the send.
+export function detectCrisisTier(body) {
+  if (typeof body !== 'string' || !body) return null;
+  const lower = body.toLowerCase();
+
+  const tier1Keywords = [
+    'kill myself', 'kill my self',
+    'end my life', 'end it all',
+    "can't keep going", 'cant keep going',
+    "can't go on", 'cant go on',
+    'hurt myself', 'harm myself',
+    'suicide', 'suicidal',
+    // ES — narrow allowlist; the Tier-1 set must be specific enough
+    // not to match poetic figures of speech.
+    'suicidio', 'suicida',
+    'quitarme la vida', 'quitar la vida',
+    'acabar con todo', 'acabar conmigo',
+    'no aguanto más', 'no aguanto mas',
+  ];
+  for (const k of tier1Keywords) {
+    if (lower.indexOf(k) !== -1) return 'tier1';
+  }
+
+  const tier2Keywords = [
+    'breakdown', 'mental breakdown',
+    'evicted', 'eviction',
+    'bankruptcy', 'bankrupt',
+    'closing tomorrow', 'closing next week',
+    'domestic violence', 'domestic abuse',
+    // 'crisis' is the same word in EN + ES — listed once.
+    'crisis',
+    // ES
+    'quiebra', 'me quiebro',
+    'desahucio', 'desalojo',
+    'violencia doméstica', 'violencia domestica',
+  ];
+  for (const k of tier2Keywords) {
+    if (lower.indexOf(k) !== -1) return 'tier2';
+  }
+
+  return null;
+}
+
+// Phase 2.6 — email-bounce ledger. Resend webhook writes a row
+// per bounced address (key: window:bounce:<sha256(email)>) so the
+// admin reply path can skip the outbound email and surface the
+// bounce in the admin queue. 90-day TTL so a transient bounce
+// doesn't blackhole the operator forever; if Don knows the address
+// is good, he can manually delete the KV row.
+//
+// Plan §2.6 + §11.3.
+export const BOUNCE_KEY_PREFIX = 'window:bounce:';
+export const BOUNCE_TTL_SEC = 90 * 24 * 3600;
+
+export function bounceKey(emailHash) {
+  return BOUNCE_KEY_PREFIX + emailHash;
+}
+
+// Check whether an email address has bounced recently. Caller passes
+// the plaintext email; we hash internally so the key shape stays
+// consistent across writers.
+export async function isEmailBounced(env, email) {
+  if (!email || typeof email !== 'string') return false;
+  if (!env || !env.AUTH_SESSIONS) return false;
+  const lower = email.trim().toLowerCase();
+  if (!lower) return false;
+  const enc = new TextEncoder().encode(lower);
+  const buf = await crypto.subtle.digest('SHA-256', enc);
+  const bytes = new Uint8Array(buf);
+  let hex = '';
+  for (let i = 0; i < bytes.length; i++) {
+    const h = bytes[i].toString(16);
+    hex += h.length === 1 ? '0' + h : h;
+  }
+  const raw = await env.AUTH_SESSIONS.get(bounceKey(hex));
+  return !!raw;
+}
+
+// Record a bounce. `reason` is the Resend bounce reason (e.g.,
+// 'mailbox-full', 'invalid-address', 'spam-block'). Writes the
+// row idempotently — repeats are harmless because put overwrites.
+export async function recordEmailBounce(env, email, reason) {
+  if (!email || typeof email !== 'string') return false;
+  if (!env || !env.AUTH_SESSIONS) return false;
+  const lower = email.trim().toLowerCase();
+  if (!lower) return false;
+  const enc = new TextEncoder().encode(lower);
+  const buf = await crypto.subtle.digest('SHA-256', enc);
+  const bytes = new Uint8Array(buf);
+  let hex = '';
+  for (let i = 0; i < bytes.length; i++) {
+    const h = bytes[i].toString(16);
+    hex += h.length === 1 ? '0' + h : h;
+  }
+  const row = {
+    email: lower,
+    reason: String(reason || 'unknown').slice(0, 60),
+    bouncedAt: Date.now(),
+  };
+  await env.AUTH_SESSIONS.put(bounceKey(hex), JSON.stringify(row), { expirationTtl: BOUNCE_TTL_SEC });
+  return true;
+}
+
+// Per-IP throttle — defeats cookie-cycling abuse. 5/day cap on the
+// IP-hash regardless of how many anon cookies cycled. Returns ok
+// without writing if no IP is available (best-effort).
+export async function checkAndStampIpThrottle(env, ipHash) {
+  if (!ipHash) return { ok: true };
+  const now = Date.now();
+  const today = dayBucket(now);
+  const raw = await env.AUTH_SESSIONS.get(ipThrottleKey(ipHash));
+  let row = { dayCount: 0, dayBucket: today };
+  if (raw) {
+    try { row = JSON.parse(raw); } catch (_) { /* reset */ }
+  }
+  if (row.dayBucket !== today) {
+    row.dayBucket = today;
+    row.dayCount = 0;
+  }
+  if (row.dayCount >= MAX_ANON_MSGS_PER_DAY) {
+    return { ok: false, error: 'day-cap-reached', max: MAX_ANON_MSGS_PER_DAY };
+  }
+  row.dayCount = (row.dayCount || 0) + 1;
+  await env.AUTH_SESSIONS.put(ipThrottleKey(ipHash), JSON.stringify(row), { expirationTtl: THROTTLE_TTL_SEC });
+  return { ok: true };
 }

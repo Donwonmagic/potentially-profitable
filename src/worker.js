@@ -235,9 +235,68 @@ import {
   msgKey as windowMsgKey,
   setActiveMeta as setWindowActiveMeta,
   getActiveMeta as getWindowActiveMeta,
+  // Phase 4 — /now/ operator presence widget.
+  getNowMeta as getWindowNowMeta,
+  setNowMeta as setWindowNowMeta,
+  resolveNowForVisitor,
   threadKey as windowThreadKey,
+  // Phase 1a (Window redesign) — anonymous-first send.
+  mintAnonId,
+  anonThreadKey as windowAnonThreadKey,
+  getOpenThreadForAnon,
+  createAnonThread,
+  appendMessageToAnonThread,
+  checkAndStampAnonThrottle,
+  checkAndStampIpThrottle,
+  hashIp,
+  // Phase 1a step 2 — magic-link claim flow.
+  setAnonThreadEmail,
+  migrateAnonThread,
+  checkAndStampEmailAttachThrottle,
+  // Phase 1b — PII pre-write gate + crisis keyword scan.
+  detectLikelyPII,
+  detectCrisisTier,
+  // Phase 2.6 — email-bounce ledger.
+  isEmailBounced,
+  recordEmailBounce,
+  // Phase 3.1 — multimodal attachment caps.
+  MAX_ATTACHMENTS_PER_MSG,
+  MAX_PHOTO_SIZE_BYTES,
 } from './lib/window.js';
+import {
+  // Phase 3.2 — photo upload + EXIF strip + attachment KV.
+  mintAttachId,
+  attachKey as windowAttachKey,
+  getAttachmentRow,
+  createAttachmentRow,
+  checkAttachmentLifetime,
+  stampAttachmentLifetime,
+  stripImageExif,
+  r2Key as windowR2Key,
+  r2TtlSeconds,
+  // Phase 3.3 — voice memo + Whisper transcript.
+  markForTranscript,
+  unmarkTranscript,
+  iterateTranscriptQueue,
+  transcribeVoice,
+  setAttachmentTranscript,
+  checkVoiceDailyCap,
+  stampVoiceDaily,
+  // Phase 3.4 — async voicenote callback shim.
+  normalizePhone,
+  maskPhone,
+  getCallbackSlotLabel,
+  createCallbackRequest,
+  // Phase 3.5 — visitor-side attachment display + delete-transcript.
+  listAttachmentsForThread,
+  // Phase 3.6 — voice hard-delete (replaces transcript-only soft-delete).
+  deleteVoiceAttachment,
+  // Phase 3.6b — admin attachment display.
+  listCallbacksForThread,
+} from './lib/window-attachments.js';
+import { MAX_VOICE_DURATION_HARD_MS } from './lib/window.js';
 import { sanitizePlaintext as sanitizeWindowBody } from './lib/submissions.js';
+import { sendCrisisSms } from './lib/sms.js';
 
 
 // ------------------------------------------------------------
@@ -322,11 +381,43 @@ const API_ROUTES = {
   '/api/window/poll':                handleWindowPoll,
   '/api/window/active':              handleWindowActive,
   '/api/window/me-unread':           handleWindowMeUnread,
+  // Phase 1a step 2 — operator attaches an email to their anon
+  // thread so Don's reply email + claim-magic-link can find them.
+  '/api/window/email':               handleWindowEmail,
+  // Phase 2.6 — Resend webhook for email-bounce events.
+  '/api/webhook/resend-bounce':      handleResendBounceWebhook,
+  // Phase 3.2 — multimodal photo upload (POST). Download path
+  // (/api/window/attach/<id>) is dispatched separately from the
+  // path-prefix handler above the exact-match table because of
+  // the dynamic id segment.
+  '/api/window/attach':              handleWindowAttachUpload,
+  // Phase 3.4 — async voicenote callback shim. Operator submits
+  // phone + window slot (+ optional voice memo attachId); worker
+  // records the request and posts an auto-confirmation thread
+  // message from "Don" so the visitor sees acknowledgement.
+  '/api/window/callback':            handleWindowCallback,
+  // Phase 3.6 — visitor-deletable voice attachment. Hard-deletes the
+  // R2 object + tombstones the KV row (deleted:true, deletedAt).
+  // BIPA-aligned with plan §2.9 + §11.6 — operator clicks Delete
+  // and the audio + transcript both vanish immediately. The legacy
+  // path /api/window/attach/transcript-delete is mapped to the same
+  // handler but the handler returns 410 + "refresh" hint (audit
+  // Section 4 MED — Phase 3.5 client's confirm dialog promised
+  // audio retention; the handler now hard-deletes, so refusing the
+  // legacy path is the only honest response).
+  '/api/window/attach/voice-delete':       handleWindowAttachVoiceDelete,
+  '/api/window/attach/transcript-delete':  handleWindowAttachVoiceDelete,
   '/api/admin/window/list':          handleAdminWindowList,
   '/api/admin/window/thread':        handleAdminWindowThread,
   '/api/admin/window/reply':         handleAdminWindowReply,
   '/api/admin/window/close':         handleAdminWindowClose,
   '/api/admin/window/archive':       handleAdminWindowArchive,
+  // Phase 4 — /now/ operator presence widget. Public GET returns
+  // the privacy-resolved view (post-blackout-downgrade, post-
+  // staleness check). Admin GET returns the raw row; admin POST
+  // writes a new row. Plan §4.4 + §11.4.
+  '/api/window/now':                 handleWindowNow,
+  '/api/admin/window/now':           handleAdminWindowNow,
   // Phase G.10 (Growth) — newsletter subscription + double-opt confirm.
   '/api/subscribe':                  handleSubscribe,
   // Phase 3B — Plausible analytics events proxy. Self-hosted tracker
@@ -373,6 +464,20 @@ export default {
     // through handleShareOg which does its own slug parsing.
     if (request.method === 'GET' && pathname.startsWith('/api/share/og/')) {
       return handleShareOg(request, env, ctx);
+    }
+
+    // Phase 3.2 — attachment download proxy. Dynamic id segment, so
+    // dispatched before the exact-match table. Path:
+    //   GET /api/window/attach/<attachId>
+    // Phase 3.6 — kind-aware probe at /api/window/attach/probe?kind=<photo|voice>.
+    // Audit B1 fix: lets each client (window-photos.js / window-voice.js)
+    // detect ITS modality's flag without revealing the other modality's
+    // affordance when partial flags are flipped.
+    if (request.method === 'GET' && pathname === '/api/window/attach/probe') {
+      return handleWindowAttachProbe(request, env, ctx);
+    }
+    if (request.method === 'GET' && pathname.startsWith('/api/window/attach/')) {
+      return handleWindowAttachDownload(request, env, ctx);
     }
 
     // API routes — check the exact-match table first.
@@ -928,12 +1033,21 @@ export default {
       const WINDOW_BATCH_BUDGET = 20;
       try {
         let processed = 0;
-        for await (const { sub, row, key } of iteratePendingDonReady(env)) {
+        for await (const { suffix, sub, anonId, kind, row, key } of iteratePendingDonReady(env)) {
           if (processed >= WINDOW_BATCH_BUDGET) break;
           processed++;
           try {
-            // Resolve the thread + recent excerpts for the email body.
-            const thread = await getOpenThreadForUser(env, sub);
+            // Resolve the thread for the email body. Identified rows
+            // route through the per-user thread index; anon rows
+            // resolve directly by anonId (the cookie IS the index).
+            // Audit B1: anon rows previously fell through getOpenThreadForUser
+            // and silently dropped — fixed by dispatching on `kind`.
+            let thread;
+            if (kind === 'anon') {
+              thread = await getOpenThreadForAnon(env, anonId);
+            } else {
+              thread = await getOpenThreadForUser(env, sub);
+            }
             if (!thread) {
               await env.AUTH_SESSIONS.delete(key);
               continue;
@@ -946,14 +1060,26 @@ export default {
             }
             const excerpts = batch.map((m) => String(m.body || '').slice(0, 240)).reverse();
             const isEs = thread.locale === 'es';
+            // Defensive: anon threads have null email + null sub.
+            // Use anonId.slice for the author label so the template
+            // never receives undefined or null.
+            const authorLabel = thread.email || (suffix && typeof suffix === 'string' ? suffix.slice(0, 8) : 'visitor');
             const tmpl = windowNotifyDonEmail({
               locale: isEs ? 'es' : 'en',
-              author: thread.email || sub.slice(0, 8),
+              author: authorLabel,
               email: thread.email || '',
               excerpts,
               adminUrl: isEs ? 'https://muntin.digital/es/admin/window/' : 'https://muntin.digital/admin/window/',
-              sub,
+              // Pass both: existing templates use `sub`; new admin
+              // queue UI may switch on kind to render anon links.
+              sub: kind === 'identified' ? sub : null,
+              anonId: kind === 'anon' ? anonId : null,
+              kind,
               threadId: thread.id,
+              // Phase 1b — crisis tier surfaces in Don's digest
+              // (subject [urgent]/[heads up] prefix + body banner)
+              // before Phase 2's Twilio SMS dispatcher ships.
+              crisisTier: thread.crisisTier || null,
             });
             await sendEmail({
               from: env.FROM_EMAIL || 'Muntin Digital <hi@muntin.digital>',
@@ -966,11 +1092,75 @@ export default {
             windowBatchesFlushed++;
           } catch (err) {
             windowBatchesFailed++;
-            console.warn('[cron] window batch flush failed', { sub, err: err && err.message });
+            console.warn('[cron] window batch flush failed', { suffix, kind, err: err && err.message });
           }
         }
       } catch (err) {
         console.warn('[cron] iteratePendingDonReady failed', err && err.message);
+      }
+    }
+
+    // Phase 3.3 — voice transcript backfill. Drains up to 5 entries
+    // per tick (each Whisper call ~2-5s; 5×5s = 25s under the 30s
+    // CPU budget). Successes update the attachment row + delete the
+    // queue entry. Failures increment attempts; after 3 attempts
+    // we give up + delete the queue entry (the audio stays in R2,
+    // just transcript-less).
+    let transcriptsAttempted = 0;
+    let transcriptsCompleted = 0;
+    if (_windowGate(env) && env.AI && env.WINDOW_ATTACHMENTS) {
+      try {
+        for await (const { row, key } of iterateTranscriptQueue(env, 5)) {
+          transcriptsAttempted++;
+          try {
+            const attachRow = await getAttachmentRow(env, row.attachId);
+            if (!attachRow || attachRow.transcript || attachRow.deleted) {
+              // Already transcribed by inline path or deleted — drop the queue entry.
+              await env.AUTH_SESSIONS.delete(key);
+              continue;
+            }
+            const obj = await env.WINDOW_ATTACHMENTS.get(attachRow.r2Key);
+            if (!obj) {
+              await env.AUTH_SESSIONS.delete(key);
+              continue;
+            }
+            const audioBytes = new Uint8Array(await obj.arrayBuffer());
+            const result = await transcribeVoice(env, audioBytes);
+            if (result.ok) {
+              await setAttachmentTranscript(env, row.attachId, result.text, result.language);
+              await env.AUTH_SESSIONS.delete(key);
+              transcriptsCompleted++;
+              // Audit B-2 — same crisis re-scan as the inline path.
+              const transcriptTier = detectCrisisTier(result.text);
+              if (transcriptTier === 'tier1') {
+                console.log(JSON.stringify({ event: 'window.crisis-flag', kind: 'voice-transcript', tier: 'tier1', source: 'cron', attachId: row.attachId }));
+                try {
+                  const senderLabel = (attachRow.sub || attachRow.anonId || 'visitor').slice(0, 8) + ' (voice)';
+                  const out = await sendCrisisSms(env, senderLabel, '[voice transcript] ' + result.text);
+                  if (out.ok) {
+                    console.log(JSON.stringify({ event: 'window.crisis-sms.sent', kind: 'voice-transcript', source: 'cron', attachId: row.attachId, sid: out.sid }));
+                  } else {
+                    console.warn('[cron] voice-crisis-sms', { attachId: row.attachId, skipped: out.skipped || null, error: out.error || null });
+                  }
+                } catch (err) {
+                  console.warn('[cron] voice-crisis-sms threw', { attachId: row.attachId, err: err && err.message });
+                }
+              }
+            } else {
+              row.attempts = (row.attempts || 0) + 1;
+              if (row.attempts >= 3) {
+                await env.AUTH_SESSIONS.delete(key);
+                console.warn('[cron] transcript gave up after 3 attempts', { attachId: row.attachId, error: result.error });
+              } else {
+                await env.AUTH_SESSIONS.put(key, JSON.stringify(row), { expirationTtl: 24 * 3600 });
+              }
+            }
+          } catch (err) {
+            console.warn('[cron] transcript backfill threw', { attachId: row.attachId, err: err && err.message });
+          }
+        }
+      } catch (err) {
+        console.warn('[cron] iterateTranscriptQueue failed', err && err.message);
       }
     }
 
@@ -2548,7 +2738,7 @@ function compareAddresses(schemaAddr, placesFormattedAddr) {
   };
 }
 
-function normalizePhone(s) {
+function normalizePhoneDigits(s) {
   if (!s) return '';
   // Keep only digits; drop leading '1' if present for US-style
   // numbers so '+1 (212) 555-1212' matches '(212) 555-1212'.
@@ -2558,8 +2748,8 @@ function normalizePhone(s) {
 }
 
 function comparePhones(schemaPhone, placesPhone) {
-  const a = normalizePhone(schemaPhone);
-  const b = normalizePhone(placesPhone);
+  const a = normalizePhoneDigits(schemaPhone);
+  const b = normalizePhoneDigits(placesPhone);
   const checkable = !!(a && b);
   let match = false;
   if (checkable) match = a === b;
@@ -4721,15 +4911,71 @@ async function handleAuthVerify(request, env, ctx) {
   };
   const cookieValue = await signSession(sessionPayload, env.AUTH_COOKIE_SECRET);
 
-  // Use returnTo from the magic-link payload if it's still
-  // allowlisted (it was at request time, but be defensive). The
-  // query param overrides only when it's also allowlisted.
-  const candidateReturnTo = (typeof parsed.returnTo === 'string' && allowedReturnTo.has(parsed.returnTo))
-    ? parsed.returnTo
-    : returnTo;
+  // Phase 1a step 2 — claim-on-verify branch. When the magic-link
+  // payload carries claimAnonId, the operator is verifying through
+  // Don's reply email and we migrate their anon thread to sub-keyed
+  // storage in the same flow. Best-effort: a migration failure does
+  // NOT block sign-in (the operator still gets their session); they
+  // just see the standalone /window/ page without the migrated
+  // thread merged in. Failure logs loud for ops.
+  let claimedReturnTo = null;
+  if (typeof parsed.claimAnonId === 'string' && parsed.claimAnonId) {
+    try {
+      const migration = await migrateAnonThread(env, parsed.claimAnonId, sub, email);
+      if (migration.ok) {
+        // Allow /window/ + /es/window/ as claim-flow return-tos
+        // (separately from the workbench allowlist). When the magic
+        // link came from Don's reply email, the operator wants to
+        // land on /window/, not /workbench/.
+        const claimReturnAllowed = new Set(['/window/', '/es/window/']);
+        if (typeof parsed.returnTo === 'string' && claimReturnAllowed.has(parsed.returnTo)) {
+          claimedReturnTo = parsed.returnTo + '?claimed=1';
+        }
+        console.log(JSON.stringify({
+          event: 'window.claim',
+          sub,
+          anonId: parsed.claimAnonId,
+          threadId: parsed.claimThreadId || null,
+          alreadyClaimed: !!migration.alreadyClaimed,
+        }));
+      } else {
+        console.warn('[auth/verify] anon-thread claim failed', { error: migration.error, anonId: parsed.claimAnonId, sub });
+      }
+    } catch (err) {
+      console.warn('[auth/verify] migrateAnonThread threw', { err: err && err.message, anonId: parsed.claimAnonId, sub });
+    }
+  }
+
+  // Use returnTo from the claim flow first, then the magic-link
+  // payload if it's still workbench-allowlisted (defensive — it was
+  // at request time, but flags can change), then the query param.
+  // Audit E3 — when the token was a CLAIM token but migration failed,
+  // still honor /window/ + /es/window/ as the landing surface so the
+  // operator doesn't get bounced to /workbench/ from a /window/-flavored
+  // email. The migration log explains the failure for ops; the
+  // operator just sees /window/ standalone (their thread is still
+  // reachable on their device via the anon cookie if it survived).
+  const claimReturnFallback = new Set(['/window/', '/es/window/']);
+  const isClaimToken = typeof parsed.claimAnonId === 'string' && !!parsed.claimAnonId;
+  const candidateReturnTo = claimedReturnTo
+    || (isClaimToken && typeof parsed.returnTo === 'string' && claimReturnFallback.has(parsed.returnTo)
+        ? parsed.returnTo
+        : null)
+    || ((typeof parsed.returnTo === 'string' && allowedReturnTo.has(parsed.returnTo))
+        ? parsed.returnTo
+        : returnTo);
 
   const headers = new Headers({ Location: candidateReturnTo });
   setSessionCookie(headers, cookieValue);
+  // Phase 1a step 2.1 — when the claim flow succeeded, clear the
+  // anon-thread cookie so future requests from this device take the
+  // identified path (the thread now lives at window:thread:<sub>:
+  // <threadId>). Without this, the cookie outlives the session
+  // (90d cookie vs 30d session) and a re-visit after session expiry
+  // would land back on the anon path against a now-claimed thread.
+  if (claimedReturnTo) {
+    headers.append('Set-Cookie', WINDOW_ANON_COOKIE_NAME + '=; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=0');
+  }
   return new Response(null, { status: 302, headers });
 }
 
@@ -5848,6 +6094,72 @@ function _windowGate(env) {
   return env && (env.WINDOW_ENABLED === 'true' || env.WINDOW_ENABLED === true);
 }
 
+// Phase 1a (Window redesign) — anonymous-first send.
+// Sub-flag inside the master WINDOW_ENABLED gate. Default off so the
+// path ships dark and Don can flip via `wrangler` vars when ready.
+function _windowAnonGate(env) {
+  return env && (env.WINDOW_ANON_ENABLED === 'true' || env.WINDOW_ANON_ENABLED === true);
+}
+
+// Phase 2.7 — Turnstile gate on anon POST. When this flag is on AND
+// no anon cookie is yet present (i.e., first POST from this device),
+// the request must carry a valid cf-turnstile-response token.
+// Subsequent POSTs trust the cookie. Plan §2.6.
+//
+// Two-flag design (vs piggybacking on TURNSTILE_SECRET_KEY's
+// presence): the secret is shared with /api/auth/magic-link and
+// the newsletter form, so its mere presence shouldn't activate
+// Window-side Turnstile until the /window/ composer has shipped
+// the widget UI.
+function _windowTurnstileAnonGate(env) {
+  return env && (env.WINDOW_TURNSTILE_ANON_ENABLED === 'true' || env.WINDOW_TURNSTILE_ANON_ENABLED === true);
+}
+
+const WINDOW_ANON_COOKIE_NAME = 'md_anon_thread_id';
+const WINDOW_ANON_COOKIE_MAX_AGE = 90 * 24 * 60 * 60; // 90 days in seconds
+
+// Read the anon-thread cookie from the request. Returns null if
+// missing or shape-invalid (audit B4: malformed cookies must not
+// reach KV — they'd amplify abuse and confuse the throttle).
+function _readWindowAnonCookie(request) {
+  const raw = request && request.headers ? request.headers.get('cookie') : null;
+  if (!raw || typeof raw !== 'string') return null;
+  const parts = raw.split(';');
+  for (const part of parts) {
+    const eq = part.indexOf('=');
+    if (eq === -1) continue;
+    const name = part.slice(0, eq).trim();
+    if (name !== WINDOW_ANON_COOKIE_NAME) continue;
+    const value = part.slice(eq + 1).trim();
+    if (!value) return null;
+    // Shape-validate so a malformed cookie is treated as no-cookie:
+    // the next append re-mints a fresh anonId. Defends against
+    // attacker-forged cookies creating bogus throttle rows or
+    // 500-ing the createAnonThread path with `invalid-anon-id`.
+    if (!isValidSaveItemIdShape(value)) return null;
+    return value;
+  }
+  return null;
+}
+
+// Append a Set-Cookie header for the anon-thread cookie.
+// HttpOnly + SameSite=Lax + Secure + Path=/ + 90-day Max-Age.
+function _setWindowAnonCookie(headers, anonId) {
+  const cookie =
+    WINDOW_ANON_COOKIE_NAME + '=' + anonId +
+    '; HttpOnly; Secure; SameSite=Lax; Path=/' +
+    '; Max-Age=' + WINDOW_ANON_COOKIE_MAX_AGE;
+  headers.append('Set-Cookie', cookie);
+}
+
+// Read the visitor's IP from Cloudflare's CF-Connecting-IP header.
+// Returns null if absent. Used as input to hashIp() for per-IP
+// throttle (we never store the raw IP).
+function _readClientIp(request) {
+  if (!request || !request.headers) return null;
+  return request.headers.get('cf-connecting-ip') || null;
+}
+
 async function handleWindowStart(request, env, ctx) {
   if (!_windowGate(env)) {
     return jsonResponse({ ok: false, error: 'not-found' }, 404);
@@ -5855,15 +6167,32 @@ async function handleWindowStart(request, env, ctx) {
   if (!isOriginAllowed(request)) {
     return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
   }
-  const auth = await _requireWorkbenchSession(request, env);
-  if (auth.error) return auth.error;
-  // Idempotent: returns existing open thread if present.
-  let thread = await getOpenThreadForUser(env, auth.sub);
-  if (!thread || (thread.msgCount || 0) >= 100) {
-    try { thread = await createWindowThread(env, auth.sub, auth.email); }
-    catch (_) { return jsonResponse({ ok: false, error: 'mint-collision' }, 500); }
+  // Phase 1a: try identified path first; if no session and the anon
+  // gate is on, return the anon thread (or null if none yet — first
+  // append mints the cookie).
+  const session = env && env.AUTH_SESSIONS ? await getSessionFromRequest(request, env) : null;
+  if (session) {
+    const sub = session.payload.sub;
+    let thread = await getOpenThreadForUser(env, sub);
+    if (!thread || (thread.msgCount || 0) >= 100) {
+      try { thread = await createWindowThread(env, sub, session.email); }
+      catch (_) { return jsonResponse({ ok: false, error: 'mint-collision' }, 500); }
+    }
+    return jsonResponse({ ok: true, threadId: thread.id, status: thread.status, msgCount: thread.msgCount }, 200);
   }
-  return jsonResponse({ ok: true, threadId: thread.id, status: thread.status, msgCount: thread.msgCount }, 200);
+  if (_windowAnonGate(env)) {
+    const anonId = _readWindowAnonCookie(request);
+    if (anonId) {
+      const thread = await getOpenThreadForAnon(env, anonId);
+      if (thread) {
+        return jsonResponse({ ok: true, threadId: thread.id, status: thread.status, msgCount: thread.msgCount, anon: true }, 200);
+      }
+    }
+    // No cookie yet, or no thread for this cookie — let the visitor
+    // start composing; the first append mints the cookie + thread.
+    return jsonResponse({ ok: true, threadId: null, status: null, msgCount: 0, anon: true }, 200);
+  }
+  return jsonResponse({ ok: false, error: 'unauthenticated' }, 401);
 }
 
 async function handleWindowAppend(request, env, ctx) {
@@ -5873,106 +6202,405 @@ async function handleWindowAppend(request, env, ctx) {
   if (!isOriginAllowed(request)) {
     return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
   }
-  const auth = await _requireWorkbenchSession(request, env);
-  if (auth.error) return auth.error;
+  // 503 first if the binding is missing (matches pre-commit ordering;
+  // audit minor #8 — service-unavailable should out-rank
+  // unauthenticated so monitoring distinguishes config errors from
+  // expected anonymous reads).
+  if (!env || !env.AUTH_SESSIONS) {
+    return jsonResponse({ ok: false, error: 'service-unavailable' }, 503);
+  }
+
+  // Branch 1: identified send (existing behavior, unchanged).
+  // Branch 2 (Phase 1a): anonymous send when no session AND anon gate on.
+  const session = await getSessionFromRequest(request, env);
+  const anonEnabled = _windowAnonGate(env);
+
+  if (!session && !anonEnabled) {
+    return jsonResponse({ ok: false, error: 'unauthenticated' }, 401);
+  }
 
   let body;
   try { body = await parseFormBody(request); } catch (_) {
     return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
   }
   const sanitized = sanitizeWindowBody(body && body.body);
-  const validated = validateWindowMessageBody({ body: sanitized });
-  if (!validated.ok) {
-    return jsonResponse({ ok: false, ...validated }, 400);
-  }
 
-  // Throttle: 60s back-pressure + 50/day cap.
-  const t = await checkAndStampWindowThrottle(env, auth.sub);
-  if (!t.ok) {
-    return jsonResponse({ ok: false, ...t }, t.error === 'rate-limited' ? 429 : 409);
-  }
+  // Phase 3.2 — parse attach_ids (comma-separated, max 4). Each id
+  // shape-validates and ownership is checked further down once we
+  // know the sub/anonId. The textarea body is allowed to be empty
+  // when at least one attachment is present (plan §3.6, thumb-only
+  // path); otherwise the validateWindowMessageBody check below
+  // catches the empty body.
+  const attachIdsRaw = typeof body.attach_ids === 'string' ? body.attach_ids : '';
+  const attachIds = attachIdsRaw.split(',').map(s => s.trim()).filter(Boolean).slice(0, MAX_ATTACHMENTS_PER_MSG);
+  const hasAttachments = attachIds.length > 0;
 
-  // Get or create the open thread (auto-spawn new one when capped).
-  let thread = await getOpenThreadForUser(env, auth.sub);
-  if (!thread || (thread.msgCount || 0) >= 100) {
-    try { thread = await createWindowThread(env, auth.sub, auth.email); }
-    catch (_) { return jsonResponse({ ok: false, error: 'mint-collision' }, 500); }
-  }
-
-  const result = await appendMessageToThread(env, auth.sub, thread, 'user', sanitized);
-  if (!result.ok) {
-    return jsonResponse({ ok: false, ...result }, result.error === 'thread-full' ? 409 : 500);
-  }
-
-  // Push to Don's pending email batch (cron flushes 2-min windows).
-  await pushPendingDon(env, auth.sub, result.msg.id);
-
-  // First-message-in-thread confirmation to the visitor (only fires
-  // when this is the first user message overall — not on every
-  // append). Best-effort.
-  const isFirstUserMessage = (result.thread.msgCount || 0) === 1;
-  if (isFirstUserMessage) {
-    try {
-      if (env.RESEND_API_KEY && auth.email) {
-        const isEs = (request.headers.get('accept-language') || '').toLowerCase().includes('es');
-        const tmpl = windowConfirmationEmail({
-          locale: isEs ? 'es' : 'en',
-          windowUrl: isEs ? 'https://muntin.digital/es/window/' : 'https://muntin.digital/window/',
-        });
-        await sendEmail({
-          from: env.FROM_EMAIL || 'Muntin Digital <hi@muntin.digital>',
-          to: auth.email,
-          subject: tmpl.subject,
-          html: tmpl.html,
-          text: tmpl.text,
-        }, env.RESEND_API_KEY);
-      }
-    } catch (err) {
-      console.warn('[window] confirmation email failed', { msgId: result.msg.id, err: err && err.message });
+  // Allow empty body only when attachments are present.
+  if (!hasAttachments) {
+    const validated = validateWindowMessageBody({ body: sanitized });
+    if (!validated.ok) {
+      return jsonResponse({ ok: false, ...validated }, 400);
     }
   }
 
-  console.log(JSON.stringify({ event: 'window.append', sub: auth.sub, threadId: thread.id, msgId: result.msg.id, ts: result.msg.createdAt, firstMsg: isFirstUserMessage }));
-  return jsonResponse({ ok: true, threadId: thread.id, msgId: result.msg.id, createdAt: result.msg.createdAt, msgCount: result.thread.msgCount }, 200);
+  // Phase 1b — PII pre-write gate. Refuses to store credit-card
+  // numbers, SSNs, or password reveals. Polite redirect to email.
+  // Applies to BOTH identified and anon paths (an authed user can
+  // still accidentally type their own card number).
+  const pii = detectLikelyPII(sanitized);
+  if (pii) {
+    return jsonResponse({
+      ok: false,
+      error: 'pii-blocked',
+      kind: pii.kind,
+    }, 422);
+  }
+
+  // Phase 1b — crisis keyword scan. Returns null / 'tier1' / 'tier2'.
+  // The tier is tagged on the thread row and admin index entry so
+  // Don's queue UI can render a red/yellow bar (UI lands in Phase 2).
+  // SMS dispatch for tier1 is deferred to Phase 2 (Twilio onboarding).
+  const crisisTier = detectCrisisTier(sanitized);
+
+  if (session) {
+    // ── Identified path (unchanged) ─────────────────────────────
+    const sub = session.payload.sub;
+    const email = session.email;
+
+    const t = await checkAndStampWindowThrottle(env, sub);
+    if (!t.ok) {
+      return jsonResponse({ ok: false, ...t }, t.error === 'rate-limited' ? 429 : 409);
+    }
+
+    let thread = await getOpenThreadForUser(env, sub);
+    if (!thread || (thread.msgCount || 0) >= 100) {
+      try { thread = await createWindowThread(env, sub, email); }
+      catch (_) { return jsonResponse({ ok: false, error: 'mint-collision' }, 500); }
+    }
+
+    // Phase 1b — pre-stamp crisis tier on the thread so the
+    // appendMessageToThread → upsertAdminIndex path persists both
+    // the thread row and the index entry with the tier in one pass.
+    // Audit Bug 1 fix: tier1 is sticky — once Don has been alerted
+    // ("urgent surface"), a later tier2 keyword on the same thread
+    // must not silently downgrade the flag.
+    if (crisisTier && (crisisTier === 'tier1' || thread.crisisTier !== 'tier1')) {
+      thread.crisisTier = crisisTier;
+      thread.crisisFlaggedAt = Date.now();
+    }
+
+    const result = await appendMessageToThread(env, sub, thread, 'user', sanitized);
+    if (!result.ok) {
+      return jsonResponse({ ok: false, ...result }, result.error === 'thread-full' ? 409 : 500);
+    }
+    // Phase 3.2 — link pending attachments to the new msg row.
+    if (hasAttachments) {
+      await _linkAttachmentsToMessage(env, attachIds, { sub, anonId: null, threadId: thread.id, msgId: result.msg.id });
+    }
+
+    if (crisisTier) {
+      console.log(JSON.stringify({ event: 'window.crisis-flag', kind: 'identified', tier: crisisTier, sub, threadId: thread.id, msgId: result.msg.id }));
+      // Phase 2.5 — Twilio SMS to Don for tier-1. Best-effort: a
+      // fetch failure here doesn't fail the send. Rate-limited 3/hr.
+      if (crisisTier === 'tier1') {
+        ctx.waitUntil((async () => {
+          try {
+            const out = await sendCrisisSms(env, (sub || 'visitor').slice(0, 8), sanitized);
+            if (!out.ok) {
+              console.warn('[window] crisis-sms', { kind: 'identified', threadId: thread.id, msgId: result.msg.id, skipped: out.skipped || null, error: out.error || null });
+            } else {
+              console.log(JSON.stringify({ event: 'window.crisis-sms.sent', kind: 'identified', threadId: thread.id, msgId: result.msg.id, sid: out.sid }));
+            }
+          } catch (err) {
+            console.warn('[window] crisis-sms threw', { err: err && err.message });
+          }
+        })());
+      }
+    }
+
+    await pushPendingDon(env, sub, result.msg.id);
+
+    const isFirstUserMessage = (result.thread.msgCount || 0) === 1;
+    if (isFirstUserMessage) {
+      try {
+        if (env.RESEND_API_KEY && email) {
+          const isEs = (request.headers.get('accept-language') || '').toLowerCase().includes('es');
+          const tmpl = windowConfirmationEmail({
+            locale: isEs ? 'es' : 'en',
+            windowUrl: isEs ? 'https://muntin.digital/es/window/' : 'https://muntin.digital/window/',
+          });
+          await sendEmail({
+            from: env.FROM_EMAIL || 'Muntin Digital <hi@muntin.digital>',
+            to: email,
+            subject: tmpl.subject,
+            html: tmpl.html,
+            text: tmpl.text,
+          }, env.RESEND_API_KEY);
+        }
+      } catch (err) {
+        console.warn('[window] confirmation email failed', { msgId: result.msg.id, err: err && err.message });
+      }
+    }
+
+    console.log(JSON.stringify({ event: 'window.append', sub, threadId: thread.id, msgId: result.msg.id, ts: result.msg.createdAt, firstMsg: isFirstUserMessage }));
+    return jsonResponse({ ok: true, threadId: thread.id, msgId: result.msg.id, createdAt: result.msg.createdAt, msgCount: result.thread.msgCount }, 200);
+  }
+
+  // ── Anonymous path (Phase 1a) ─────────────────────────────────
+
+  // Phase 1b — Cloudflare threat-score gate. Anon path only;
+  // identified users went through magic-link sign-in which already
+  // checks threat score. Silent 503 keeps the abuse vector
+  // signal-free (an attacker can't probe whether the gate fired
+  // vs the rate limit fired vs the day cap fired).
+  if (isHighThreatIP(request)) {
+    return jsonResponse({ ok: false, error: 'service-unavailable' }, 503);
+  }
+
+  // Mint cookie on first send if not present; reuse on subsequent sends.
+  let anonId = _readWindowAnonCookie(request);
+  let mintedNewCookie = false;
+  if (!anonId) {
+    // Phase 2.7 — Turnstile gate on the cookie-minting path. Only
+    // first POSTs from this device hit this; subsequent POSTs trust
+    // the cookie. checkTurnstile returns { skipped:true } if
+    // TURNSTILE_SECRET_KEY isn't bound; we treat skipped as a hard
+    // no-go when the gate is on so a misconfigured deploy can't
+    // bypass.
+    if (_windowTurnstileAnonGate(env)) {
+      const turnstile = await checkTurnstile(body, env, request);
+      if (!turnstile.ok) {
+        const reason = turnstile.skipped ? 'turnstile-not-configured' : ('turnstile-' + (turnstile.error || 'failed'));
+        return jsonResponse({ ok: false, error: reason }, 403);
+      }
+    }
+    anonId = mintAnonId();
+    mintedNewCookie = true;
+  }
+
+  // Per-anonId throttle (5/day, 60s back-pressure).
+  const aT = await checkAndStampAnonThrottle(env, anonId);
+  if (!aT.ok) {
+    return jsonResponse({ ok: false, ...aT }, aT.error === 'rate-limited' ? 429 : 409);
+  }
+
+  // Per-IP throttle (5/day) defeats cookie-cycling abuse. Best-effort
+  // — if no IP header, skips silently.
+  const clientIp = _readClientIp(request);
+  const ipHash = clientIp ? await hashIp(clientIp) : null;
+  if (ipHash) {
+    const ipT = await checkAndStampIpThrottle(env, ipHash);
+    if (!ipT.ok) {
+      return jsonResponse({ ok: false, ...ipT }, 429);
+    }
+  }
+
+  // Locale hint for the admin queue and future email templates.
+  const acceptLanguage = (request.headers.get('accept-language') || '').toLowerCase();
+  const locale = acceptLanguage.includes('es') ? 'es' : 'en';
+
+  // Get or create the anon thread (one per cookie lifetime).
+  let thread = await getOpenThreadForAnon(env, anonId);
+  if (!thread || (thread.msgCount || 0) >= 100) {
+    try {
+      thread = await createAnonThread(env, anonId, locale);
+    } catch (err) {
+      if (err && err.message === 'anon-id-claimed') {
+        // Audit S3 — stale cookie pointing at a row that's already
+        // been migrated to sub-keyed storage. Clear the cookie + tell
+        // the visitor to sign in (their thread now lives at
+        // window:thread:<claimedBy>:<threadId>).
+        const headers = new Headers({ 'content-type': 'application/json; charset=utf-8' });
+        headers.append('Set-Cookie', WINDOW_ANON_COOKIE_NAME + '=; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=0');
+        return new Response(JSON.stringify({ ok: false, error: 'thread-claimed-please-signin' }), { status: 409, headers });
+      }
+      return jsonResponse({ ok: false, error: 'mint-collision' }, 500);
+    }
+  }
+
+  // Pre-stamp crisis tier on the anon thread so appendMessageToAnonThread
+  // → upsertAdminIndex carries the flag in one pass (mirrors the
+  // identified path). Audit Bug 1 fix: tier1 sticks; tier2 cannot
+  // overwrite an existing tier1.
+  if (crisisTier && (crisisTier === 'tier1' || thread.crisisTier !== 'tier1')) {
+    thread.crisisTier = crisisTier;
+    thread.crisisFlaggedAt = Date.now();
+  }
+
+  const result = await appendMessageToAnonThread(env, anonId, thread, 'user', sanitized);
+  if (!result.ok) {
+    return jsonResponse({ ok: false, ...result }, result.error === 'thread-full' ? 409 : 500);
+  }
+  // Phase 3.2 — link pending attachments to the new anon msg row.
+  if (hasAttachments) {
+    await _linkAttachmentsToMessage(env, attachIds, { sub: null, anonId, threadId: thread.id, msgId: result.msg.id });
+  }
+
+  if (crisisTier) {
+    console.log(JSON.stringify({ event: 'window.crisis-flag', kind: 'anon', tier: crisisTier, anonId, threadId: thread.id, msgId: result.msg.id }));
+    if (crisisTier === 'tier1') {
+      ctx.waitUntil((async () => {
+        try {
+          const out = await sendCrisisSms(env, (anonId || 'visitor').slice(0, 8) + ' (anon)', sanitized);
+          if (!out.ok) {
+            console.warn('[window] crisis-sms', { kind: 'anon', threadId: thread.id, msgId: result.msg.id, skipped: out.skipped || null, error: out.error || null });
+          } else {
+            console.log(JSON.stringify({ event: 'window.crisis-sms.sent', kind: 'anon', threadId: thread.id, msgId: result.msg.id, sid: out.sid }));
+          }
+        } catch (err) {
+          console.warn('[window] crisis-sms threw', { err: err && err.message });
+        }
+      })());
+    }
+  }
+
+  // Anon threads notify Don via the pending-don batch tagged with
+  // kind:'anon'. The cron flush dispatches on kind to use
+  // getOpenThreadForAnon (anonId-keyed) instead of the sub-keyed path.
+  // Audit B1.
+  await pushPendingDon(env, anonId, result.msg.id, 'anon');
+
+  console.log(JSON.stringify({ event: 'window.append.anon', anonId, threadId: thread.id, msgId: result.msg.id, ts: result.msg.createdAt, firstMsg: (result.thread.msgCount || 0) === 1, mintedCookie: mintedNewCookie }));
+
+  const headers = new Headers({ 'content-type': 'application/json; charset=utf-8' });
+  if (mintedNewCookie) {
+    _setWindowAnonCookie(headers, anonId);
+  }
+  const payload = { ok: true, threadId: thread.id, msgId: result.msg.id, createdAt: result.msg.createdAt, msgCount: result.thread.msgCount, anon: true };
+  return new Response(JSON.stringify(payload), { status: 200, headers });
 }
 
 async function handleWindowThread(request, env, ctx) {
   if (!_windowGate(env)) {
     return jsonResponse({ ok: false, error: 'not-found' }, 404);
   }
-  const auth = await _requireWorkbenchSession(request, env);
-  if (auth.error) return auth.error;
-  const thread = await getOpenThreadForUser(env, auth.sub);
-  if (!thread) {
-    return jsonResponse({ ok: true, thread: null, messages: [] }, 200);
+  // Origin gate on read endpoints: anon cookies travel SameSite=Lax
+  // on top-level navigations. A cross-origin top-level GET to
+  // /api/window/thread would otherwise leak the visitor's anon
+  // thread. Cheap defense; matches handleWindowAppend's gate.
+  if (!isOriginAllowed(request)) {
+    return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
   }
-  const messages = await listThreadMessages(env, thread.id, 100);
-  // Mark unread-by-user clear when the user reads.
-  if (thread.unreadByUser) {
-    thread.unreadByUser = false;
-    await env.AUTH_SESSIONS.put(windowThreadKey(auth.sub, thread.id), JSON.stringify(thread));
+  const session = env && env.AUTH_SESSIONS ? await getSessionFromRequest(request, env) : null;
+  if (session) {
+    const sub = session.payload.sub;
+    const thread = await getOpenThreadForUser(env, sub);
+    if (!thread) {
+      return jsonResponse({ ok: true, thread: null, messages: [] }, 200);
+    }
+    const messages = await listThreadMessages(env, thread.id, 100);
+    if (thread.unreadByUser) {
+      thread.unreadByUser = false;
+      await env.AUTH_SESSIONS.put(windowThreadKey(sub, thread.id), JSON.stringify(thread));
+    }
+    const attachmentsByMsgId = await _loadAttachmentsByMsgId(env, thread.id);
+    return jsonResponse({ ok: true, thread, messages, attachmentsByMsgId }, 200);
   }
-  return jsonResponse({ ok: true, thread, messages }, 200);
+  if (_windowAnonGate(env)) {
+    const anonId = _readWindowAnonCookie(request);
+    if (!anonId) {
+      return jsonResponse({ ok: true, thread: null, messages: [], anon: true }, 200);
+    }
+    const thread = await getOpenThreadForAnon(env, anonId);
+    if (!thread) {
+      return jsonResponse({ ok: true, thread: null, messages: [], anon: true }, 200);
+    }
+    const messages = await listThreadMessages(env, thread.id, 100);
+    if (thread.unreadByUser) {
+      thread.unreadByUser = false;
+      await env.AUTH_SESSIONS.put(windowAnonThreadKey(anonId), JSON.stringify(thread));
+    }
+    const attachmentsByMsgId = await _loadAttachmentsByMsgId(env, thread.id);
+    return jsonResponse({ ok: true, thread, messages, attachmentsByMsgId, anon: true }, 200);
+  }
+  return jsonResponse({ ok: false, error: 'unauthenticated' }, 401);
+}
+
+// Phase 3.5 — group thread attachments by msgId for inline render.
+// Strips R2 keys + lifetime details from the visitor-facing payload
+// (only the visitor-relevant fields surface).
+async function _loadAttachmentsByMsgId(env, threadId) {
+  const attachments = await listAttachmentsForThread(env, threadId);
+  const byMsg = {};
+  for (const a of attachments) {
+    if (!a.msgId) continue;  // skip pending uploads (not yet linked)
+    if (!byMsg[a.msgId]) byMsg[a.msgId] = [];
+    // Phase 3.6 audit (Section 4 MED): tombstoned rows surface a
+    // minimal payload only — id + kind + the two deleted flags
+    // the renderer needs. mime / sizeBytes / durationMs would
+    // otherwise leak through (BIPA-relevant for voice). Single
+    // branch covers both the visitor and admin endpoints since
+    // they share this loader.
+    if (a.deleted) {
+      byMsg[a.msgId].push({
+        id: a.id,
+        kind: a.kind,
+        deleted: true,
+        transcriptDeleted: true,
+      });
+      continue;
+    }
+    byMsg[a.msgId].push({
+      id: a.id,
+      kind: a.kind,
+      mime: a.mime,
+      sizeBytes: a.sizeBytes,
+      durationMs: a.durationMs || null,
+      transcript: a.transcript || null,
+      transcriptLanguage: a.transcriptLanguage || null,
+      transcriptDeleted: !!a.transcriptDeleted,
+      deleted: false,
+      altText: a.altText || null,
+      // The download URL is built client-side: /api/window/attach/<id>.
+      // No R2 key, no IP hash, no lifetime row leaks into the response.
+    });
+  }
+  return byMsg;
 }
 
 async function handleWindowPoll(request, env, ctx) {
   if (!_windowGate(env)) {
     return jsonResponse({ ok: false, error: 'not-found' }, 404);
   }
-  const auth = await _requireWorkbenchSession(request, env);
-  if (auth.error) return auth.error;
-  const thread = await getOpenThreadForUser(env, auth.sub);
-  if (!thread) {
-    return jsonResponse({ ok: true, hasThread: false }, 200);
+  if (!isOriginAllowed(request)) {
+    return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
   }
-  return jsonResponse({
-    ok: true,
-    hasThread: true,
-    threadId: thread.id,
-    updatedAt: thread.updatedAt,
-    msgCount: thread.msgCount,
-    unreadByUser: !!thread.unreadByUser,
-  }, 200);
+  const session = env && env.AUTH_SESSIONS ? await getSessionFromRequest(request, env) : null;
+  if (session) {
+    const sub = session.payload.sub;
+    const thread = await getOpenThreadForUser(env, sub);
+    if (!thread) {
+      return jsonResponse({ ok: true, hasThread: false }, 200);
+    }
+    return jsonResponse({
+      ok: true,
+      hasThread: true,
+      threadId: thread.id,
+      updatedAt: thread.updatedAt,
+      msgCount: thread.msgCount,
+      unreadByUser: !!thread.unreadByUser,
+    }, 200);
+  }
+  if (_windowAnonGate(env)) {
+    const anonId = _readWindowAnonCookie(request);
+    if (!anonId) {
+      return jsonResponse({ ok: true, hasThread: false, anon: true }, 200);
+    }
+    const thread = await getOpenThreadForAnon(env, anonId);
+    if (!thread) {
+      return jsonResponse({ ok: true, hasThread: false, anon: true }, 200);
+    }
+    return jsonResponse({
+      ok: true,
+      hasThread: true,
+      threadId: thread.id,
+      updatedAt: thread.updatedAt,
+      msgCount: thread.msgCount,
+      unreadByUser: !!thread.unreadByUser,
+      anon: true,
+    }, 200);
+  }
+  return jsonResponse({ ok: false, error: 'unauthenticated' }, 401);
 }
 
 async function handleWindowActive(request, env, ctx) {
@@ -5988,6 +6616,954 @@ async function handleWindowActive(request, env, ctx) {
       'cache-control': 'public, max-age=60',
     },
   });
+}
+
+// Phase 1a step 2 — operator attaches an email to their anon thread
+// so Don's reply can include a claim-magic-link. Only mutates the
+// anon thread row; identified threads already have email captured at
+// session creation. Per-anon throttle handles abuse.
+async function handleWindowEmail(request, env, ctx) {
+  if (!_windowGate(env)) {
+    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  }
+  if (!isOriginAllowed(request)) {
+    return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
+  }
+  if (!_windowAnonGate(env)) {
+    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  }
+  if (!env || !env.AUTH_SESSIONS) {
+    return jsonResponse({ ok: false, error: 'service-unavailable' }, 503);
+  }
+  // Only meaningful on the anon path; identified visitors already
+  // have email on their thread row from sign-in.
+  const anonId = _readWindowAnonCookie(request);
+  if (!anonId) {
+    return jsonResponse({ ok: false, error: 'no-thread' }, 400);
+  }
+  let body;
+  try { body = await parseFormBody(request); } catch (_) {
+    return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+  }
+  const email = typeof body.email === 'string' ? body.email.trim().toLowerCase() : '';
+  if (!email || !isValidEmail(email)) {
+    return jsonResponse({ ok: false, error: 'invalid-email' }, 400);
+  }
+  // Audit S2 — back-pressure prevents churn-the-email-before-Don-replies abuse.
+  const t = await checkAndStampEmailAttachThrottle(env, anonId);
+  if (!t.ok) {
+    return jsonResponse({ ok: false, ...t }, 429);
+  }
+  const thread = await setAnonThreadEmail(env, anonId, email);
+  if (!thread) {
+    return jsonResponse({ ok: false, error: 'no-thread' }, 404);
+  }
+  console.log(JSON.stringify({ event: 'window.email.attached', anonId, threadId: thread.id }));
+  return jsonResponse({ ok: true, threadId: thread.id }, 200);
+}
+
+// Phase 2.6 — Resend bounce webhook. Resend posts JSON like:
+//   {
+//     "type": "email.bounced",
+//     "data": {
+//       "to": ["recipient@example.com"],
+//       "bounce": { "type": "Permanent", "subType": "General" },
+//       ...
+//     }
+//   }
+// We record a window:bounce:<sha256(email)> row with 90d TTL so the
+// admin reply path can skip outbound email + surface the bounce.
+//
+// Webhook auth: HMAC-SHA256 of the raw body keyed by RESEND_WEBHOOK_SECRET,
+// compared to the `svix-signature` header. The header carries one or more
+// space-separated `v1,<base64sig>` entries; any match passes. Resend
+// rotates the signing secret via the dashboard.
+async function handleResendBounceWebhook(request, env, ctx) {
+  if (request.method !== 'POST') {
+    return jsonResponse({ ok: false, error: 'method-not-allowed' }, 405);
+  }
+  if (!env || !env.AUTH_SESSIONS) {
+    return jsonResponse({ ok: false, error: 'service-unavailable' }, 503);
+  }
+  const secret = env.RESEND_WEBHOOK_SECRET;
+  if (!secret) {
+    // No secret configured → reject loudly so a misconfigured webhook
+    // doesn't silently no-op.
+    return jsonResponse({ ok: false, error: 'webhook-not-configured' }, 503);
+  }
+  // Read the raw body once (signature verify needs the bytes; JSON.parse
+  // also needs them).
+  let raw;
+  try { raw = await request.text(); } catch (_) {
+    return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+  }
+  // Svix signature format: "v1,<base64>" — possibly multiple, space-separated.
+  const sigHeader = request.headers.get('svix-signature') || '';
+  const msgId = request.headers.get('svix-id') || '';
+  const ts = request.headers.get('svix-timestamp') || '';
+  if (!sigHeader || !msgId || !ts) {
+    return jsonResponse({ ok: false, error: 'missing-signature' }, 401);
+  }
+  // Compute HMAC of `${id}.${timestamp}.${body}`.
+  const enc = new TextEncoder();
+  const toSign = msgId + '.' + ts + '.' + raw;
+  let secretBytes;
+  try {
+    // Resend secrets are prefixed `whsec_`; the actual key is base64 after the prefix.
+    const stripped = String(secret).replace(/^whsec_/, '');
+    secretBytes = Uint8Array.from(atob(stripped), c => c.charCodeAt(0));
+  } catch (_) {
+    return jsonResponse({ ok: false, error: 'webhook-secret-bad' }, 503);
+  }
+  const key = await crypto.subtle.importKey('raw', secretBytes, { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
+  const sigBuf = await crypto.subtle.sign('HMAC', key, enc.encode(toSign));
+  const sigBytes = new Uint8Array(sigBuf);
+  let computedB64 = '';
+  // Build base64 manually (Workers btoa expects a string).
+  let bin = '';
+  for (let i = 0; i < sigBytes.length; i++) bin += String.fromCharCode(sigBytes[i]);
+  computedB64 = btoa(bin);
+  // The header may carry multiple sigs; check each. Constant-time
+  // comparison via the simple equal-length string compare (timing
+  // attack risk is low here — webhook caller is Resend, not a user).
+  const sigs = sigHeader.split(' ');
+  let matched = false;
+  for (const entry of sigs) {
+    const idx = entry.indexOf(',');
+    if (idx === -1) continue;
+    const v = entry.slice(0, idx);
+    const sig = entry.slice(idx + 1);
+    if (v === 'v1' && sig === computedB64) {
+      matched = true;
+      break;
+    }
+  }
+  if (!matched) {
+    return jsonResponse({ ok: false, error: 'signature-mismatch' }, 401);
+  }
+  // Parse + dispatch on event type.
+  let payload;
+  try { payload = JSON.parse(raw); } catch (_) {
+    return jsonResponse({ ok: false, error: 'invalid-json' }, 400);
+  }
+  const eventType = payload && payload.type;
+  if (eventType !== 'email.bounced' && eventType !== 'email.complained') {
+    // We only act on bounces + complaints; other events 200 silently.
+    return jsonResponse({ ok: true, ignored: eventType || 'unknown' }, 200);
+  }
+  const data = (payload && payload.data) || {};
+  const recipients = Array.isArray(data.to) ? data.to : [];
+  const reason = (data.bounce && data.bounce.subType) || (eventType === 'email.complained' ? 'spam-complaint' : 'bounce');
+  let recorded = 0;
+  for (const r of recipients) {
+    if (typeof r !== 'string') continue;
+    const ok = await recordEmailBounce(env, r, reason);
+    if (ok) recorded++;
+  }
+  console.log(JSON.stringify({ event: 'window.bounce.recorded', count: recorded, type: eventType, reason }));
+  return jsonResponse({ ok: true, recorded }, 200);
+}
+
+// Phase 3.6 — kind-aware probe. GET /api/window/attach/probe?kind=<photo|voice>.
+//
+// Audit B1: window-photos.js and window-voice.js previously both
+// POSTed to /api/window/attach with no body and treated any non-404
+// as "my modality is enabled." That coupled the two modalities — a
+// voice-only flag flip would still reveal the photo button (uploads
+// then 403'd), and vice versa. This endpoint splits the detection
+// so each client can ask only about its own modality.
+async function handleWindowAttachProbe(request, env, ctx) {
+  if (!_windowGate(env)) {
+    return new Response(null, { status: 404 });
+  }
+  if (!isOriginAllowed(request)) {
+    return new Response(null, { status: 403 });
+  }
+  const u = new URL(request.url);
+  const kind = u.searchParams.get('kind') || '';
+  let enabled = false;
+  if (kind === 'photo') {
+    enabled = env.WINDOW_PHOTO_ENABLED === 'true' || env.WINDOW_PHOTO_ENABLED === true;
+  } else if (kind === 'voice') {
+    enabled = env.WINDOW_VOICE_ENABLED === 'true' || env.WINDOW_VOICE_ENABLED === true;
+  } else {
+    return new Response(null, { status: 400 });
+  }
+  if (!enabled) return new Response(null, { status: 404 });
+  return jsonResponse({ ok: true, kind }, 200);
+}
+
+// Phase 3.6 — visitor-deletable voice attachment.
+// POST /api/window/attach/voice-delete (or legacy /transcript-delete).
+//
+// Body: { attachId }. Worker verifies the caller owns the attachment,
+// then HARD-deletes the R2 audio + tombstones the KV row (audit
+// fix: plan §2.9 promised R2 hard-delete, Phase 3.5 only soft-deleted
+// transcript). Idempotent.
+async function handleWindowAttachVoiceDelete(request, env, ctx) {
+  if (!_windowGate(env)) {
+    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  }
+  if (!isOriginAllowed(request)) {
+    return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
+  }
+  // Phase 3.6 audit (Section 4 MED): refuse the legacy
+  // /transcript-delete alias. The Phase 3.5 client showed a confirm
+  // dialog promising "the audio stays until the retention limit"
+  // but Phase 3.6 hard-deletes it. The dialog lies. A cached
+  // 24h-old client tab is the worst case; rather than silently
+  // change semantics, return 410 + a refresh hint so the visitor
+  // gets accurate consent on the next attempt.
+  const u = new URL(request.url);
+  if (u.pathname === '/api/window/attach/transcript-delete') {
+    return jsonResponse({
+      ok: false,
+      error: 'endpoint-renamed',
+      message: 'This endpoint has moved. Refresh the page and try again.',
+    }, 410);
+  }
+  if (!env || !env.AUTH_SESSIONS) {
+    return jsonResponse({ ok: false, error: 'service-unavailable' }, 503);
+  }
+
+  let body;
+  try { body = await parseFormBody(request); } catch (_) {
+    return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+  }
+  const attachId = typeof body.attachId === 'string' ? body.attachId.trim() : '';
+  if (!isValidSaveItemIdShape(attachId)) {
+    return jsonResponse({ ok: false, error: 'invalid-attach-id' }, 400);
+  }
+  const row = await getAttachmentRow(env, attachId);
+  if (!row) {
+    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  }
+  if (row.kind !== 'voice') {
+    return jsonResponse({ ok: false, error: 'not-voice' }, 400);
+  }
+
+  // Ownership check.
+  const session = await getSessionFromRequest(request, env);
+  const callerSub = session ? session.payload.sub : null;
+  const callerAnon = _readWindowAnonCookie(request);
+  let allowed = false;
+  if (callerSub && row.sub === callerSub) allowed = true;
+  else if (callerAnon && row.anonId === callerAnon) allowed = true;
+  if (!allowed) {
+    return jsonResponse({ ok: false, error: 'not-yours' }, 403);
+  }
+
+  const result = await deleteVoiceAttachment(env, attachId);
+  if (!result.ok) {
+    return jsonResponse({ ok: false, ...result }, 500);
+  }
+  console.log(JSON.stringify({
+    event: 'window.attach.voice-deleted',
+    attachId,
+    sub: callerSub ? callerSub.slice(0, 8) : null,
+    anonId: callerAnon ? callerAnon.slice(0, 8) : null,
+    alreadyDeleted: !!result.alreadyDeleted,
+  }));
+  return jsonResponse({ ok: true, alreadyDeleted: !!result.alreadyDeleted }, 200);
+}
+
+// Phase 3.4 — async voicenote callback shim. POST /api/window/callback.
+//
+// Operator submits {phone, slot, voiceAttachId?} after recording an
+// optional voice memo. Worker:
+//   1. Gates on WINDOW_CALLBACK_ENABLED + identity (sub or anonId
+//      cookie). Anon path requires a thread already (cookie present).
+//   2. Validates phone via E.164 normalization.
+//   3. Validates slot key against the allowlist.
+//   4. (Optional) verifies the voice attachId belongs to the caller.
+//   5. Creates the callback KV row.
+//   6. Posts a 'don' auto-confirmation message into the thread:
+//      "Got it. I'll call you between [slot label]. If something
+//      changes, just write back here."
+//   7. Logs window.callback.requested for ops.
+//
+// Phase 3.4 is the SHIM — no Twilio call dispatched. Don sees
+// requests in admin and replies asynchronously (with his own
+// voicenote, or a regular text note). Phase 5+ adds live calls
+// with Twilio masking for Care-Plan-only.
+async function handleWindowCallback(request, env, ctx) {
+  if (!_windowGate(env)) {
+    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  }
+  if (env.WINDOW_CALLBACK_ENABLED !== 'true' && env.WINDOW_CALLBACK_ENABLED !== true) {
+    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  }
+  if (!isOriginAllowed(request)) {
+    return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
+  }
+  if (!env || !env.AUTH_SESSIONS) {
+    return jsonResponse({ ok: false, error: 'service-unavailable' }, 503);
+  }
+
+  // Identity resolution — same shape as photo/voice upload. Anon
+  // path requires the operator already has a thread (cookie present).
+  const session = await getSessionFromRequest(request, env);
+  let sub = null;
+  let anonId = null;
+  let thread = null;
+  if (session) {
+    sub = session.payload.sub;
+    thread = await getOpenThreadForUser(env, sub);
+  } else if (_windowAnonGate(env)) {
+    anonId = _readWindowAnonCookie(request);
+    if (!anonId) {
+      return jsonResponse({ ok: false, error: 'send-first' }, 409);
+    }
+    thread = await getOpenThreadForAnon(env, anonId);
+  } else {
+    return jsonResponse({ ok: false, error: 'unauthenticated' }, 401);
+  }
+  if (!thread) {
+    return jsonResponse({ ok: false, error: 'no-thread' }, 409);
+  }
+
+  let body;
+  try { body = await parseFormBody(request); } catch (_) {
+    return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+  }
+
+  // Phone — normalize + validate via the lib helper.
+  const phoneE164 = normalizePhone(body.phone);
+  if (!phoneE164) {
+    return jsonResponse({ ok: false, error: 'invalid-phone' }, 400);
+  }
+
+  // Slot — must be in the allowlist; getCallbackSlotLabel returns
+  // null for unknown slots.
+  const slotKey = typeof body.slot === 'string' ? body.slot.trim() : '';
+  const locale = (body.locale === 'es' || thread.locale === 'es') ? 'es' : 'en';
+  const slotLabel = getCallbackSlotLabel(slotKey, locale);
+  if (!slotLabel) {
+    return jsonResponse({ ok: false, error: 'invalid-slot' }, 400);
+  }
+
+  // Optional voice attachment ownership check.
+  const voiceAttachId = typeof body.voiceAttachId === 'string' && body.voiceAttachId.trim()
+    ? body.voiceAttachId.trim()
+    : null;
+  if (voiceAttachId) {
+    if (!isValidSaveItemIdShape(voiceAttachId)) {
+      return jsonResponse({ ok: false, error: 'invalid-attach-id' }, 400);
+    }
+    const attachRow = await getAttachmentRow(env, voiceAttachId);
+    if (!attachRow || attachRow.kind !== 'voice') {
+      return jsonResponse({ ok: false, error: 'attach-not-found' }, 404);
+    }
+    // Ownership: caller must match the attach row's owner.
+    if (sub && attachRow.sub !== sub) return jsonResponse({ ok: false, error: 'attach-not-yours' }, 403);
+    if (anonId && attachRow.anonId !== anonId) return jsonResponse({ ok: false, error: 'attach-not-yours' }, 403);
+  }
+
+  // Audit B2 — order: create the callback row FIRST (with
+  // msgId:null), then append the auto-confirmation, then
+  // best-effort update the row's msgId. Pre-fix order
+  // (append → create) produced an orphan thread message when
+  // KV PUT failed — the visitor saw "Got it. I'll call you"
+  // but Don never saw the request in admin.
+  let callbackRow;
+  try {
+    callbackRow = await createCallbackRequest(env, {
+      threadId: thread.id,
+      msgId: null,
+      sub,
+      anonId,
+      phoneE164,
+      slotKey,
+      voiceAttachId,
+      locale,
+    });
+  } catch (err) {
+    console.warn('[window] callback row create failed', { threadId: thread.id, err: err && err.message });
+    return jsonResponse({ ok: false, error: 'storage-failed' }, 500);
+  }
+
+  const masked = maskPhone(phoneE164);
+  const confirmation = locale === 'es'
+    ? 'Listo. Te llamo al ' + masked + ' ' + slotLabel + '. Si algo cambia, escríbeme aquí.'
+    : "Got it. I'll call " + masked + ' ' + slotLabel + '. If something changes, just write back here.';
+
+  // Audit E1 — dispatch on identity (sub vs anonId) rather than
+  // thread.kind. Identified threads have no `kind` field, but a
+  // claim-flow edge could leave kind:'anon' on a sub-keyed thread;
+  // the prior dispatch would have crashed routing to anon-append
+  // with anonId=null. Sub-vs-anonId is the canonical identity check.
+  const appendResult = sub
+    ? await appendMessageToThread(env, sub, thread, 'don', confirmation)
+    : await appendMessageToAnonThread(env, anonId, thread, 'don', confirmation);
+  if (!appendResult.ok) {
+    // Roll back the callback row so admin doesn't see a request
+    // without a thread message backing it. Best-effort.
+    try { await env.AUTH_SESSIONS.delete('window:callback:' + thread.id + ':' + callbackRow.id); } catch (_) {}
+    return jsonResponse({ ok: false, ...appendResult }, 500);
+  }
+
+  // Update the callback row's msgId so admin display can backref.
+  // Best-effort: a KV failure here doesn't fail the user-visible
+  // success (the auto-confirmation is already in the thread; the
+  // admin queue still has the callback row, just without the
+  // message backref).
+  try {
+    callbackRow.msgId = appendResult.msg.id;
+    await env.AUTH_SESSIONS.put(
+      'window:callback:' + thread.id + ':' + callbackRow.id,
+      JSON.stringify(callbackRow),
+      { expirationTtl: 30 * 24 * 60 * 60 }
+    );
+  } catch (err) {
+    console.warn('[window] callback msgId backref update failed', { threadId: thread.id, callbackId: callbackRow.id, err: err && err.message });
+  }
+
+  console.log(JSON.stringify({
+    event: 'window.callback.requested',
+    callbackId: callbackRow.id,
+    threadId: thread.id,
+    msgId: appendResult.msg.id,
+    slotKey,
+    sub: sub ? sub.slice(0, 8) : null,
+    anonId: anonId ? anonId.slice(0, 8) : null,
+    // Don't log the full E.164 — last-4 only.
+    phoneLast4: phoneE164.slice(-4),
+    voiceAttachId: voiceAttachId || null,
+  }));
+
+  return jsonResponse({
+    ok: true,
+    callbackId: callbackRow.id,
+    threadId: thread.id,
+    msgId: appendResult.msg.id,
+    slotLabel,
+  }, 200);
+}
+
+// Phase 3.2 — photo upload. POST /api/window/attach (multipart).
+//
+// Visitor (anon or identified) uploads a single photo file in the
+// `file` field of a multipart/form-data body. Worker:
+//   1. Gates on WINDOW_PHOTO_ENABLED + WINDOW_ENABLED + origin +
+//      session-or-anon presence.
+//   2. Validates the size + MIME (jpeg/webp/png only).
+//   3. Server-side EXIF strip (defense-in-depth: client also strips).
+//   4. Lifetime cap check via checkAttachmentLifetime.
+//   5. Mints an attachId + a placeholder threadId/msgId binding
+//      (the operator hasn't sent the message yet — we'll associate
+//      via attachIds on the subsequent /api/window/append POST).
+//   6. PUTs the stripped bytes to R2.
+//   7. Writes the KV metadata row.
+//   8. Returns { ok, attachId, mime, sizeBytes } so the client can
+//      pass the attachId in the form body of the actual send.
+//
+// Per-message validation (the attachId belongs to the same anon/sub
+// that's now sending) lives in handleWindowAppend.
+//
+// Per audit S3 + plan §2.3: per-anon lifetime cap (12) + per-day
+// bytes cap (8 MB) enforced here so abusers can't mint orphan
+// attachments forever.
+// Phase 3.2 — link pending attachments to a freshly-appended msg.
+// Best-effort: a single failed link doesn't fail the message send
+// (the message is already persisted; the visitor sees their note,
+// just minus the failing attachment). Each link verifies that the
+// pending row's sub/anonId matches the caller's identity to defend
+// against attachment-id-stuffing attacks.
+async function _linkAttachmentsToMessage(env, attachIds, identity) {
+  const linked = [];
+  for (const attachId of attachIds) {
+    if (!isValidSaveItemIdShape(attachId)) continue;
+    let row;
+    try {
+      const raw = await env.AUTH_SESSIONS.get(windowAttachKey(attachId));
+      if (!raw) continue;
+      row = JSON.parse(raw);
+    } catch (_) { continue; }
+    if (!row.pending) continue;
+    // Ownership check.
+    if (identity.sub && row.sub !== identity.sub) continue;
+    if (identity.anonId && row.anonId !== identity.anonId) continue;
+    if (!identity.sub && !identity.anonId) continue;
+    row.threadId = identity.threadId;
+    row.msgId = identity.msgId;
+    row.pending = false;
+    row.linkedAt = Date.now();
+    try {
+      // Drop the 1h pending TTL — linked rows persist for the
+      // R2 lifecycle window (30d voice / 90d photo).
+      await env.AUTH_SESSIONS.put(windowAttachKey(attachId), JSON.stringify(row));
+      linked.push(attachId);
+    } catch (err) {
+      console.warn('[window] attach link failed', { attachId, err: err && err.message });
+    }
+  }
+  if (linked.length) {
+    console.log(JSON.stringify({
+      event: 'window.attach.linked',
+      count: linked.length,
+      threadId: identity.threadId,
+      msgId: identity.msgId,
+    }));
+  }
+}
+
+async function handleWindowAttachUpload(request, env, ctx) {
+  if (!_windowGate(env)) {
+    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  }
+  // Phase 3.2 + 3.3 — gate is per-modality. Photo flag OR voice flag
+  // unlocks the endpoint; the multipart `kind` field (or MIME sniff)
+  // disambiguates further down.
+  const photoOn = env.WINDOW_PHOTO_ENABLED === 'true' || env.WINDOW_PHOTO_ENABLED === true;
+  const voiceOn = env.WINDOW_VOICE_ENABLED === 'true' || env.WINDOW_VOICE_ENABLED === true;
+  if (!photoOn && !voiceOn) {
+    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  }
+  if (!isOriginAllowed(request)) {
+    return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
+  }
+  if (!env || !env.AUTH_SESSIONS) {
+    return jsonResponse({ ok: false, error: 'service-unavailable' }, 503);
+  }
+  if (!env.WINDOW_ATTACHMENTS) {
+    return jsonResponse({ ok: false, error: 'attachments-not-configured' }, 503);
+  }
+
+  // Identity: sub OR anonId, never both. (Identified path takes
+  // precedence; anon path requires _windowAnonGate.)
+  const session = await getSessionFromRequest(request, env);
+  let identitySuffix = null;  // for lifetime cap
+  let sub = null;
+  let anonId = null;
+  if (session) {
+    sub = session.payload.sub;
+    identitySuffix = sub;
+  } else if (_windowAnonGate(env)) {
+    anonId = _readWindowAnonCookie(request);
+    if (!anonId) {
+      // No anon cookie yet — visitor must send the first message
+      // through /api/window/append (which mints the cookie) before
+      // they can upload attachments. Defends against attackers who
+      // skip the throttle by uploading directly.
+      return jsonResponse({ ok: false, error: 'send-first' }, 409);
+    }
+    identitySuffix = anonId;
+  } else {
+    return jsonResponse({ ok: false, error: 'unauthenticated' }, 401);
+  }
+
+  // Multipart parse — Workers' Request.formData() handles this.
+  let form;
+  try { form = await request.formData(); } catch (_) {
+    return jsonResponse({ ok: false, error: 'invalid-multipart' }, 400);
+  }
+  const file = form.get('file');
+  if (!file || typeof file.arrayBuffer !== 'function') {
+    return jsonResponse({ ok: false, error: 'no-file' }, 400);
+  }
+  const declaredMime = String(file.type || '').toLowerCase();
+  const photoMimes = new Set(['image/jpeg', 'image/jpg', 'image/webp', 'image/png']);
+  const voiceMimes = new Set(['audio/webm', 'audio/webm;codecs=opus', 'audio/mp4', 'audio/mpeg', 'audio/ogg']);
+  // Strip codec suffix for the lookup (Safari sends 'audio/mp4' but
+  // Chrome can send 'audio/webm;codecs=opus').
+  const baseMime = declaredMime.split(';')[0].trim();
+  let kind = null;
+  if (photoMimes.has(declaredMime) || photoMimes.has(baseMime)) kind = 'photo';
+  else if (voiceMimes.has(declaredMime) || voiceMimes.has(baseMime)) kind = 'voice';
+  else {
+    return jsonResponse({ ok: false, error: 'unsupported-mime', mime: declaredMime }, 415);
+  }
+  if (kind === 'photo' && !photoOn) {
+    return jsonResponse({ ok: false, error: 'photo-not-enabled' }, 403);
+  }
+  if (kind === 'voice' && !voiceOn) {
+    return jsonResponse({ ok: false, error: 'voice-not-enabled' }, 403);
+  }
+
+  const buf = await file.arrayBuffer();
+  if (buf.byteLength < 16) {
+    return jsonResponse({ ok: false, error: 'file-too-small' }, 400);
+  }
+
+  let storedBytes;
+  let storedMime;
+  let storedExt;
+  let durationMs = null;
+
+  if (kind === 'photo') {
+    if (buf.byteLength > MAX_PHOTO_SIZE_BYTES) {
+      return jsonResponse({ ok: false, error: 'photo-too-large', max: MAX_PHOTO_SIZE_BYTES }, 413);
+    }
+    // Lifetime + per-day-bytes cap.
+    const lifetimeCheck = await checkAttachmentLifetime(env, identitySuffix, buf.byteLength);
+    if (!lifetimeCheck.ok) {
+      return jsonResponse({ ok: false, ...lifetimeCheck }, 429);
+    }
+    // Server-side EXIF strip (defense-in-depth — client canvas
+    // re-encode already strips, but a curl uploader bypasses JS).
+    const stripped = stripImageExif(new Uint8Array(buf), declaredMime);
+    if (!stripped.ok) {
+      return jsonResponse({ ok: false, ...stripped }, 400);
+    }
+    storedBytes = stripped.bytes;
+    storedMime = stripped.mime;
+    storedExt = stripped.kind === 'jpeg' ? 'jpg' : stripped.kind;
+  } else {
+    // Voice. Per-day cap (voice-daily key tracks count + minutes).
+    // Duration is supplied by the client in the form (durationMs).
+    // Audit S-1 — client-side duration is spoofable: a malicious
+    // client could send durationMs=1 for a 60s recording to evade
+    // the daily-minutes cap. Defense: derive an estimate from the
+    // byte size assuming Opus@64kbps (the typical MediaRecorder
+    // default in Chrome/Firefox); cap the trusted duration at
+    // 1.5× that estimate. The 2 MB hard cap below already bounds
+    // the worst case at ~256s, so this just tightens the inner cap.
+    const declaredDuration = Number(form.get('durationMs') || 0);
+    if (!Number.isFinite(declaredDuration) || declaredDuration <= 0) {
+      return jsonResponse({ ok: false, error: 'duration-required' }, 400);
+    }
+    // Opus @ 64 kbps = 8000 bytes/s. Multiply by 1.5 to allow for
+    // bitrate variance (codecs can spike higher on speech).
+    const estimatedMs = Math.round((buf.byteLength / 8000) * 1000);
+    const estimatedMaxMs = Math.round(estimatedMs * 1.5);
+    durationMs = Math.min(
+      declaredDuration,
+      MAX_VOICE_DURATION_HARD_MS,
+      Math.max(estimatedMaxMs, 1000) // never go below 1s, in case the size estimate underflows on tiny clips
+    );
+    // Voice file size cap: 10s of headroom over Opus@64kbps × 90s ≈
+    // 720KB. Cap at 2MB to be generous to lossier codecs.
+    const VOICE_BYTES_HARD_CAP = 2 * 1024 * 1024;
+    if (buf.byteLength > VOICE_BYTES_HARD_CAP) {
+      return jsonResponse({ ok: false, error: 'voice-too-large', max: VOICE_BYTES_HARD_CAP }, 413);
+    }
+    // Voice-daily cap (count + minutes).
+    const dailyCheck = await checkVoiceDailyCap(env, identitySuffix, durationMs);
+    if (!dailyCheck.ok) {
+      return jsonResponse({ ok: false, ...dailyCheck }, 429);
+    }
+    // Lifetime + per-day-bytes cap (shared with photos).
+    const lifetimeCheck = await checkAttachmentLifetime(env, identitySuffix, buf.byteLength);
+    if (!lifetimeCheck.ok) {
+      return jsonResponse({ ok: false, ...lifetimeCheck }, 429);
+    }
+    // No EXIF-equivalent stripping for voice — Opus/AAC don't carry
+    // location metadata. Pass the bytes through.
+    storedBytes = new Uint8Array(buf);
+    storedMime = baseMime;
+    storedExt = baseMime === 'audio/mp4' ? 'm4a' :
+                baseMime === 'audio/mpeg' ? 'mp3' :
+                baseMime === 'audio/ogg' ? 'ogg' : 'webm';
+  }
+
+  // R2 key uses the identity prefix from the start (audit B2 fix).
+  const attachId = mintAttachId();
+  const identityPrefix = identitySuffix.slice(0, 10);
+  const r2KeyStr = 'attach/' + identityPrefix + '/' + attachId + '.' + storedExt;
+
+  try {
+    await env.WINDOW_ATTACHMENTS.put(r2KeyStr, storedBytes, {
+      httpMetadata: {
+        contentType: storedMime,
+        cacheControl: 'private, max-age=0, must-revalidate',
+      },
+      customMetadata: {
+        attachId,
+        identitySuffix,
+        kind,
+      },
+    });
+  } catch (err) {
+    console.warn('[window] r2 put failed', { attachId, kind, err: err && err.message });
+    return jsonResponse({ ok: false, error: 'storage-failed' }, 500);
+  }
+
+  // Pending KV row.
+  const pendingRow = {
+    id: attachId,
+    pending: true,
+    threadId: null,
+    msgId: null,
+    sub: sub || null,
+    anonId: anonId || null,
+    kind,
+    mime: storedMime,
+    sizeBytes: storedBytes.length,
+    r2Key: r2KeyStr,
+    createdAt: Date.now(),
+  };
+  if (durationMs) pendingRow.durationMs = durationMs;
+  await env.AUTH_SESSIONS.put(windowAttachKey(attachId), JSON.stringify(pendingRow), {
+    expirationTtl: 3600,
+  });
+  await stampAttachmentLifetime(env, identitySuffix, storedBytes.length);
+
+  // Voice path: enqueue for transcription + try inline (fire-and-
+  // forget via ctx.waitUntil — don't block the upload response).
+  if (kind === 'voice') {
+    await stampVoiceDaily(env, identitySuffix, durationMs);
+    await markForTranscript(env, attachId);
+    ctx.waitUntil((async () => {
+      try {
+        const result = await transcribeVoice(env, storedBytes);
+        if (result.ok) {
+          await setAttachmentTranscript(env, attachId, result.text, result.language);
+          await unmarkTranscript(env, attachId);
+          // Audit B-2 — re-run crisis detection on the transcript.
+          // The body-text crisis check (handleWindowAppend) doesn't
+          // see voice content; without this, a tier-1 keyword
+          // SPOKEN into a voice memo would silently bypass the
+          // SMS-to-Don path (plan §11.6 promises Don-facing
+          // SMS work).
+          const transcriptTier = detectCrisisTier(result.text);
+          if (transcriptTier === 'tier1') {
+            console.log(JSON.stringify({ event: 'window.crisis-flag', kind: 'voice-transcript', tier: 'tier1', attachId }));
+            try {
+              const senderLabel = (sub || anonId || 'visitor').slice(0, 8) + ' (voice)';
+              const out = await sendCrisisSms(env, senderLabel, '[voice transcript] ' + result.text);
+              if (!out.ok) {
+                console.warn('[window] voice-crisis-sms', { attachId, skipped: out.skipped || null, error: out.error || null });
+              } else {
+                console.log(JSON.stringify({ event: 'window.crisis-sms.sent', kind: 'voice-transcript', attachId, sid: out.sid }));
+              }
+            } catch (err) {
+              console.warn('[window] voice-crisis-sms threw', { attachId, err: err && err.message });
+            }
+          }
+          console.log(JSON.stringify({ event: 'window.transcribe.inline', attachId, language: result.language || null, len: result.text.length }));
+        } else {
+          // Leave it on the queue — cron will retry.
+          console.warn('[window] inline transcribe deferred to cron', { attachId, error: result.error });
+        }
+      } catch (err) {
+        console.warn('[window] transcribe threw', { attachId, err: err && err.message });
+      }
+    })());
+  }
+
+  console.log(JSON.stringify({
+    event: 'window.attach.upload',
+    attachId,
+    kind,
+    mime: storedMime,
+    sizeBytes: storedBytes.length,
+    durationMs: durationMs || null,
+    sub: sub ? sub.slice(0, 8) : null,
+    anonId: anonId ? anonId.slice(0, 8) : null,
+  }));
+  return jsonResponse({
+    ok: true,
+    attachId,
+    kind,
+    mime: storedMime,
+    sizeBytes: storedBytes.length,
+    durationMs: durationMs || null,
+  }, 200);
+}
+
+// Phase 3.2 — proxied attachment download.
+//   GET /api/window/attach/<attachId>
+// Returns the file bytes streamed from R2. Auth: requester must
+// match the attachment's owner (sub or anonId). Admin bypass: a
+// signed-in admin can fetch any attachment (for the admin reply
+// surface in Phase 3.5).
+async function handleWindowAttachDownload(request, env, ctx) {
+  if (!_windowGate(env)) {
+    return new Response(null, { status: 404 });
+  }
+  if (env.WINDOW_PHOTO_ENABLED !== 'true' && env.WINDOW_PHOTO_ENABLED !== true &&
+      env.WINDOW_VOICE_ENABLED !== 'true' && env.WINDOW_VOICE_ENABLED !== true) {
+    return new Response(null, { status: 404 });
+  }
+  if (!env.WINDOW_ATTACHMENTS) {
+    return new Response(null, { status: 503 });
+  }
+  if (!isOriginAllowed(request)) {
+    return new Response(null, { status: 403 });
+  }
+
+  const u = new URL(request.url);
+  const prefix = '/api/window/attach/';
+  if (!u.pathname.startsWith(prefix)) {
+    return new Response(null, { status: 404 });
+  }
+  const attachId = u.pathname.slice(prefix.length);
+  if (!attachId || !isValidSaveItemIdShape(attachId)) {
+    return new Response(null, { status: 400 });
+  }
+
+  const row = await getAttachmentRow(env, attachId);
+  if (!row || row.deleted) {
+    return new Response(null, { status: 404 });
+  }
+
+  // Ownership check: caller is the original uploader OR a signed-in
+  // admin. Phase 3.5 admin display uses the admin path.
+  const session = await getSessionFromRequest(request, env);
+  const callerSub = session ? session.payload.sub : null;
+  const callerAnon = _readWindowAnonCookie(request);
+  let allowed = false;
+  if (callerSub && row.sub === callerSub) allowed = true;
+  else if (callerAnon && row.anonId === callerAnon) allowed = true;
+  else if (callerSub && env.ADMIN_SUB_HASH && callerSub === env.ADMIN_SUB_HASH) allowed = true;
+  if (!allowed) {
+    return new Response(null, { status: 403 });
+  }
+
+  let obj;
+  try {
+    obj = await env.WINDOW_ATTACHMENTS.get(row.r2Key);
+  } catch (err) {
+    console.warn('[window] r2 get failed', { attachId, err: err && err.message });
+    return new Response(null, { status: 500 });
+  }
+  if (!obj) return new Response(null, { status: 404 });
+
+  return new Response(obj.body, {
+    status: 200,
+    headers: {
+      'content-type': row.mime || 'application/octet-stream',
+      // Worker-proxied (not R2-public); short-cache. Plan §2.7.
+      'cache-control': 'private, max-age=0, must-revalidate',
+      'x-content-type-options': 'nosniff',
+    },
+  });
+}
+
+// Phase 4 — /now/ operator presence widget. Public read endpoint.
+// GET returns the privacy-resolved view: text + mode + lastSeen,
+// or { show: false } when widget should be hidden (private mode,
+// staleness >14d, missing row, or post-blackout-downgrade with
+// empty fuzzText). Cached 60s at the edge — the value changes
+// on weekly cadence, so this matches the 60s pulse cache.
+async function handleWindowNow(request, env, ctx) {
+  if (!_windowGate(env)) {
+    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  }
+  if (env.WINDOW_NOW_ENABLED !== 'true' && env.WINDOW_NOW_ENABLED !== true) {
+    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  }
+  if (!isOriginAllowed(request)) {
+    return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
+  }
+  const now = await getWindowNowMeta(env);
+  const u = new URL(request.url);
+  const locale = u.searchParams.get('locale') === 'es' ? 'es' : 'en';
+  const view = resolveNowForVisitor(now, locale);
+  if (!view) {
+    return jsonResponse({ ok: true, show: false }, 200);
+  }
+  return jsonResponse({
+    ok: true,
+    show: true,
+    text: view.text,
+    mode: view.mode,
+    shift: view.shift,
+    lastSeen: view.lastSeen,
+  }, 200);
+}
+
+// Phase 4 audit (Issue 3.1 HIGH) — tag-stripping validator for the
+// /now/ text fields. The visitor surface renders these via
+// textContent, so we do NOT entity-escape (sanitizeWindowBody does,
+// which would surface `Rosa&#39;s place` literally). Strip <tags>,
+// drop control chars, slice, trim. textContent prevents
+// script-injection at read time regardless of what's stored.
+function _sanitizeNowText(s) {
+  if (typeof s !== 'string') return '';
+  return s
+    .replace(/<[^>]*>/g, '')
+    // eslint-disable-next-line no-control-regex
+    .replace(/[\x00-\x1F\x7F]/g, '')
+    .slice(0, 200)
+    .trim();
+}
+
+// Phase 4 — admin endpoint for the /now/ widget. GET returns the
+// raw row (privacy text in BOTH modes — admin can see what's
+// queued for precise vs fuzz). POST writes a new row.
+//
+// Body shape (POST, form-encoded):
+//   privacy=precise|fuzz|private
+//   fuzzText="in DC tonight"
+//   preciseText="at Tacombi until close"
+//   shift=around|between-shifts|away  (optional)
+//   timezone=America/New_York         (optional, defaults to NY)
+//
+// Plan §4.4 server-side rules:
+//   - 'precise' is downgraded to 'fuzz' between 21:00-06:00 local
+//     at READ time (not at write — admin can queue precise text;
+//     the resolver downgrades on the fly).
+//   - 14-day staleness hides the row at READ time.
+async function handleAdminWindowNow(request, env, ctx) {
+  if (!_windowGate(env)) {
+    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  }
+  const auth = await _requireAdminSession(request, env);
+  if (auth.error) return auth.error;
+  if (request.method === 'GET') {
+    const now = await getWindowNowMeta(env);
+    return jsonResponse({ ok: true, now: now || null }, 200);
+  }
+  if (request.method !== 'POST') {
+    return jsonResponse({ ok: false, error: 'method-not-allowed' }, 405);
+  }
+  if (!isOriginAllowed(request)) {
+    return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
+  }
+  let body;
+  try { body = await parseFormBody(request); } catch (_) {
+    return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+  }
+  const privacy = typeof body.privacy === 'string' ? body.privacy : 'fuzz';
+  if (['precise', 'fuzz', 'private'].indexOf(privacy) === -1) {
+    return jsonResponse({ ok: false, error: 'invalid-privacy' }, 400);
+  }
+  // Phase 4 audit (Issue 2.1 LOW): validate the shift field against
+  // the documented enum. Admin <select> already constrains it, but a
+  // raw POST could store arbitrary 40-char strings that future surfaces
+  // might trust.
+  const shift = typeof body.shift === 'string' ? body.shift : '';
+  if (['', 'around', 'between-shifts', 'away'].indexOf(shift) === -1) {
+    return jsonResponse({ ok: false, error: 'invalid-shift' }, 400);
+  }
+  // Phase 4 audit (Issue 3.1 HIGH): the now text fields render via
+  // textContent on the visitor surface, so sanitizeWindowBody (which
+  // ENTITY-ESCAPES at write time) would produce literal `&#39;` etc.
+  // in the DOM the first time Don types a possessive or quote. Use a
+  // local tag-stripping validator that does NOT escape — textContent
+  // makes script-injection impossible at read time, so the stored
+  // value can stay human-readable.
+  const fuzzText      = _sanitizeNowText(body.fuzzText || '');
+  const fuzzTextEs    = _sanitizeNowText(body.fuzzTextEs || '');
+  const preciseText   = _sanitizeNowText(body.preciseText || '');
+  const preciseTextEs = _sanitizeNowText(body.preciseTextEs || '');
+  if (privacy !== 'private' && !fuzzText) {
+    return jsonResponse({ ok: false, error: 'fuzz-required' }, 400);
+  }
+  // Phase 4 audit (Issue 1.2 LOW): require non-empty preciseText when
+  // privacy is 'precise' — otherwise the resolver silently falls back
+  // to fuzz with the precise underline-mark (visual lie). Mirrors the
+  // fuzz-required check above.
+  if (privacy === 'precise' && !preciseText) {
+    return jsonResponse({ ok: false, error: 'precise-required' }, 400);
+  }
+  const next = await setWindowNowMeta(env, {
+    privacy,
+    fuzzText,
+    fuzzTextEs,
+    preciseText,
+    preciseTextEs,
+    shift: shift || null,
+    timezone: body.timezone || undefined,
+  });
+  console.log(JSON.stringify({
+    event: 'window.now.updated',
+    privacy: next.privacy,
+    hasPrecise: !!next.preciseText,
+    shift: next.shift,
+  }));
+  return jsonResponse({ ok: true, now: next }, 200);
 }
 
 async function handleWindowMeUnread(request, env, ctx) {
@@ -6010,6 +7586,51 @@ async function handleAdminWindowList(request, env, ctx) {
   return jsonResponse({ ok: true, items: queue, count: queue.length }, 200);
 }
 
+// Phase 1a step 1 (audit B3) — resolve the admin's target thread
+// regardless of identified vs anonymous. Callers pass sub OR anonId
+// (mutually exclusive); the helper returns a normalized envelope
+// `{ kind, sub|null, anonId|null, threadId, thread }` on success
+// or `{ error }` on shape failure / not-found.
+async function _resolveAdminWindowThread(env, params) {
+  const sub = typeof params.sub === 'string' ? params.sub.trim() : '';
+  const anonId = typeof params.anonId === 'string' ? params.anonId.trim() : '';
+  const threadId = typeof params.threadId === 'string' ? params.threadId.trim() : '';
+  if (!threadId) return { error: 'invalid-body', status: 400 };
+  if (sub && anonId) return { error: 'invalid-body', status: 400 };
+  if (sub) {
+    const thread = await getThreadById(env, sub, threadId);
+    if (!thread) return { error: 'not-found', status: 404 };
+    return { kind: 'identified', sub, anonId: null, threadId, thread };
+  }
+  if (anonId) {
+    if (!isValidSaveItemIdShape(anonId)) return { error: 'invalid-body', status: 400 };
+    const thread = await getOpenThreadForAnon(env, anonId);
+    if (thread && thread.id === threadId) {
+      return { kind: 'anon', sub: null, anonId, threadId, thread };
+    }
+    // Audit B1 — getOpenThreadForAnon returns null when the row has
+    // a `claimedBy` stamp (step 2.1 defense). For admin replies, that
+    // null doesn't mean "thread gone" — it means "thread migrated."
+    // Read the anon row directly; if it carries claimedBy, route the
+    // admin op to the sub-keyed thread that now lives at
+    // window:thread:<claimedBy>:<threadId>. Failing this re-route,
+    // every concurrent claim+reply would 404.
+    const anonRaw = await env.AUTH_SESSIONS.get(windowAnonThreadKey(anonId));
+    if (anonRaw) {
+      let anonRow;
+      try { anonRow = JSON.parse(anonRaw); } catch (_) { anonRow = null; }
+      if (anonRow && anonRow.claimedBy && anonRow.id === threadId) {
+        const subThread = await getThreadById(env, anonRow.claimedBy, threadId);
+        if (subThread) {
+          return { kind: 'identified', sub: anonRow.claimedBy, anonId: null, threadId, thread: subThread };
+        }
+      }
+    }
+    return { error: 'not-found', status: 404 };
+  }
+  return { error: 'invalid-body', status: 400 };
+}
+
 async function handleAdminWindowThread(request, env, ctx) {
   if (!_windowGate(env)) {
     return jsonResponse({ ok: false, error: 'not-found' }, 404);
@@ -6017,17 +7638,59 @@ async function handleAdminWindowThread(request, env, ctx) {
   const auth = await _requireAdminSession(request, env);
   if (auth.error) return auth.error;
   const u = new URL(request.url);
-  const sub = u.searchParams.get('sub') || '';
-  const threadId = u.searchParams.get('id') || '';
-  if (!sub || !threadId) {
-    return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+  const params = {
+    sub: u.searchParams.get('sub') || '',
+    anonId: u.searchParams.get('anonId') || '',
+    threadId: u.searchParams.get('id') || '',
+  };
+  const resolved = await _resolveAdminWindowThread(env, params);
+  if (resolved.error) {
+    return jsonResponse({ ok: false, error: resolved.error }, resolved.status);
   }
-  const thread = await getThreadById(env, sub, threadId);
-  if (!thread) {
-    return jsonResponse({ ok: false, error: 'not-found' }, 404);
-  }
-  const messages = await listThreadMessages(env, threadId, 100);
-  return jsonResponse({ ok: true, thread, messages }, 200);
+  const messages = await listThreadMessages(env, resolved.threadId, 100);
+  // Phase 3.6b — admin attachment + callback display. Attachments
+  // are returned grouped by msgId so the operator-side renderer can
+  // hang them off the message they belong to. Callbacks are a flat
+  // list (rendered as a separate panel — they're per-thread, not
+  // per-message). Phone numbers ride E.164 but the renderer masks
+  // them by default and reveals on tap (plan §11.6 — admin shoulder-
+  // surf privacy).
+  const attachmentsByMsgId = await _loadAttachmentsByMsgId(env, resolved.threadId);
+  const rawCallbacks = await listCallbacksForThread(env, resolved.threadId);
+  // Phase 3.6 audit (Section 3 MED): a callback row's voiceAttachId
+  // can outlive the underlying attachment if the visitor hits the
+  // "Delete voice note" button between request and dial. Enrich
+  // each callback with a voiceDeleted flag so the admin renderer
+  // can swap the <audio> element for a "Voice memo deleted" marker
+  // instead of rendering a control that 404s on play.
+  const callbacks = await Promise.all(rawCallbacks.map(async (cb) => {
+    let voiceDeleted = false;
+    if (cb.voiceAttachId) {
+      const attachRow = await getAttachmentRow(env, cb.voiceAttachId);
+      voiceDeleted = !attachRow || !!attachRow.deleted;
+    }
+    return {
+      id: cb.id,
+      msgId: cb.msgId || null,
+      phoneE164: cb.phoneE164,
+      phoneMasked: maskPhone(cb.phoneE164),
+      slotKey: cb.slotKey,
+      slotLabel: getCallbackSlotLabel(cb.slotKey, cb.locale || 'en') || cb.slotKey,
+      voiceAttachId: cb.voiceAttachId || null,
+      voiceDeleted,
+      locale: cb.locale || 'en',
+      status: cb.status || 'requested',
+      requestedAt: cb.requestedAt,
+    };
+  }));
+  return jsonResponse({
+    ok: true,
+    thread: resolved.thread,
+    messages,
+    kind: resolved.kind,
+    attachmentsByMsgId,
+    callbacks,
+  }, 200);
 }
 
 async function handleAdminWindowReply(request, env, ctx) {
@@ -6043,39 +7706,93 @@ async function handleAdminWindowReply(request, env, ctx) {
   try { body = await parseFormBody(request); } catch (_) {
     return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
   }
-  const sub = typeof body.sub === 'string' ? body.sub.trim() : '';
-  const threadId = typeof body.threadId === 'string' ? body.threadId.trim() : '';
-  if (!sub || !threadId) {
-    return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+  const resolved = await _resolveAdminWindowThread(env, {
+    sub: body.sub,
+    anonId: body.anonId,
+    threadId: body.threadId,
+  });
+  if (resolved.error) {
+    return jsonResponse({ ok: false, error: resolved.error }, resolved.status);
   }
   const sanitized = sanitizeWindowBody(body.body);
   const validated = validateWindowMessageBody({ body: sanitized });
   if (!validated.ok) {
     return jsonResponse({ ok: false, ...validated }, 400);
   }
-  const thread = await getThreadById(env, sub, threadId);
-  if (!thread) {
-    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  // Append Don's message via the kind-appropriate path.
+  let result;
+  if (resolved.kind === 'anon') {
+    result = await appendMessageToAnonThread(env, resolved.anonId, resolved.thread, 'don', sanitized);
+  } else {
+    result = await appendMessageToThread(env, resolved.sub, resolved.thread, 'don', sanitized);
   }
-  const result = await appendMessageToThread(env, sub, thread, 'don', sanitized);
   if (!result.ok) {
     return jsonResponse({ ok: false, ...result }, result.error === 'thread-full' ? 409 : 500);
   }
   // Update Don's "active" signal so the breathing dot lights up.
-  await setWindowActiveMeta(env, { replyingTo: threadId });
+  await setWindowActiveMeta(env, { replyingTo: resolved.threadId });
 
   // Email the visitor with Don's reply inline. Best-effort — the
   // message is already persisted; visitor will see it on their
-  // next visit/poll regardless of email delivery.
-  const recipientEmail = thread.email || null;
+  // next visit/poll regardless of email delivery. Anon threads have
+  // null email until the operator provides one (via /api/window/email);
+  // reply still lands in the thread, visible on next poll.
+  const recipientEmail = resolved.thread.email || null;
+  // Phase 2.6 — bounce-aware send. If we've recorded a Resend bounce
+  // for this address recently, skip the outbound email and log so
+  // Don sees the skip in the admin queue. The thread still gets the
+  // reply persisted; the visitor sees it on next /window/ poll.
+  let bounceSkipped = false;
   if (recipientEmail) {
+    try {
+      if (await isEmailBounced(env, recipientEmail)) {
+        bounceSkipped = true;
+        console.log(JSON.stringify({ event: 'window.reply.bounce-skipped', kind: resolved.kind, threadId: resolved.threadId, msgId: result.msg.id, recipient: recipientEmail.slice(0, 4) + '…' }));
+      }
+    } catch (_) { /* if KV's down, fall through to send */ }
+  }
+  if (recipientEmail && !bounceSkipped) {
     try {
       if (env.RESEND_API_KEY) {
         const isEs = String(body.locale || '').toLowerCase() === 'es';
+
+        // Phase 1a step 2 — when replying to an anon thread with an
+        // email, mint a one-shot claim-magic-link token bound to the
+        // anonId. The reply email IS the claim ceremony (no separate
+        // "click to verify" step). On verify, handleAuthVerify
+        // detects the claimAnonId payload and runs migrateAnonThread.
+        let claimUrl = '';
+        if (resolved.kind === 'anon' && env.AUTH_SESSIONS) {
+          let token = null;
+          for (let attempt = 0; attempt < 3; attempt++) {
+            const candidate = mintMagicLinkToken();
+            const existing = await env.AUTH_SESSIONS.get('magic:' + candidate);
+            if (!existing) { token = candidate; break; }
+          }
+          if (token) {
+            const claimReturnTo = isEs ? '/es/window/' : '/window/';
+            await env.AUTH_SESSIONS.put('magic:' + token, JSON.stringify({
+              email: recipientEmail,
+              returnTo: claimReturnTo,
+              createdAt: Date.now(),
+              claimAnonId: resolved.anonId,
+              claimThreadId: resolved.threadId,
+            }), { expirationTtl: MAGIC_LINK_TTL_SECONDS });
+            const baseUrl = (env.MAGIC_LINK_BASE_URL && String(env.MAGIC_LINK_BASE_URL))
+              || new URL(request.url).origin;
+            claimUrl = baseUrl
+              + '/api/auth/verify?token=' + encodeURIComponent(token)
+              + '&returnTo=' + encodeURIComponent(claimReturnTo);
+          } else {
+            console.warn('[window] claim-token mint exhausted; reply email omits claim footer', { threadId: resolved.threadId });
+          }
+        }
+
         const tmpl = windowReplyToUserEmail({
           locale: isEs ? 'es' : 'en',
           body: sanitized,
           windowUrl: isEs ? 'https://muntin.digital/es/window/' : 'https://muntin.digital/window/',
+          claimUrl,
         });
         await sendEmail({
           from: env.FROM_EMAIL || 'Muntin Digital <hi@muntin.digital>',
@@ -6088,11 +7805,19 @@ async function handleAdminWindowReply(request, env, ctx) {
     } catch (err) {
       console.warn('[window] reply email failed', { msgId: result.msg.id, err: err && err.message });
     }
-  } else {
-    console.log(JSON.stringify({ event: 'window.reply.no-email', sub, threadId, msgId: result.msg.id }));
-  }
+  } else if (!recipientEmail) {
+    console.log(JSON.stringify({ event: 'window.reply.no-email', kind: resolved.kind, threadId: resolved.threadId, msgId: result.msg.id }));
+  } /* else: bounceSkipped already logged above */
 
-  console.log(JSON.stringify({ event: 'window.reply', sub, threadId, msgId: result.msg.id, ts: result.msg.createdAt }));
+  console.log(JSON.stringify({
+    event: 'window.reply',
+    kind: resolved.kind,
+    sub: resolved.sub,
+    anonId: resolved.anonId,
+    threadId: resolved.threadId,
+    msgId: result.msg.id,
+    ts: result.msg.createdAt,
+  }));
   return jsonResponse({ ok: true, msgId: result.msg.id, createdAt: result.msg.createdAt }, 200);
 }
 
@@ -6109,16 +7834,21 @@ async function handleAdminWindowClose(request, env, ctx) {
   try { body = await parseFormBody(request); } catch (_) {
     return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
   }
-  const sub = typeof body.sub === 'string' ? body.sub.trim() : '';
-  const threadId = typeof body.threadId === 'string' ? body.threadId.trim() : '';
-  const thread = await getThreadById(env, sub, threadId);
-  if (!thread) {
-    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  const resolved = await _resolveAdminWindowThread(env, {
+    sub: body.sub,
+    anonId: body.anonId,
+    threadId: body.threadId,
+  });
+  if (resolved.error) {
+    return jsonResponse({ ok: false, error: resolved.error }, resolved.status);
   }
-  thread.status = 'closed';
-  thread.updatedAt = Date.now();
-  await env.AUTH_SESSIONS.put(windowThreadKey(sub, threadId), JSON.stringify(thread));
-  console.log(JSON.stringify({ event: 'window.close', sub, threadId, ts: thread.updatedAt }));
+  resolved.thread.status = 'closed';
+  resolved.thread.updatedAt = Date.now();
+  const writeKey = resolved.kind === 'anon'
+    ? windowAnonThreadKey(resolved.anonId)
+    : windowThreadKey(resolved.sub, resolved.threadId);
+  await env.AUTH_SESSIONS.put(writeKey, JSON.stringify(resolved.thread));
+  console.log(JSON.stringify({ event: 'window.close', kind: resolved.kind, sub: resolved.sub, anonId: resolved.anonId, threadId: resolved.threadId, ts: resolved.thread.updatedAt }));
   return jsonResponse({ ok: true, status: 'closed' }, 200);
 }
 
@@ -6135,20 +7865,25 @@ async function handleAdminWindowArchive(request, env, ctx) {
   try { body = await parseFormBody(request); } catch (_) {
     return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
   }
-  const sub = typeof body.sub === 'string' ? body.sub.trim() : '';
-  const threadId = typeof body.threadId === 'string' ? body.threadId.trim() : '';
-  const thread = await getThreadById(env, sub, threadId);
-  if (!thread) {
-    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  const resolved = await _resolveAdminWindowThread(env, {
+    sub: body.sub,
+    anonId: body.anonId,
+    threadId: body.threadId,
+  });
+  if (resolved.error) {
+    return jsonResponse({ ok: false, error: resolved.error }, resolved.status);
   }
-  thread.status = 'archived';
-  thread.updatedAt = Date.now();
-  await env.AUTH_SESSIONS.put(windowThreadKey(sub, threadId), JSON.stringify(thread));
+  resolved.thread.status = 'archived';
+  resolved.thread.updatedAt = Date.now();
+  const writeKey = resolved.kind === 'anon'
+    ? windowAnonThreadKey(resolved.anonId)
+    : windowThreadKey(resolved.sub, resolved.threadId);
+  await env.AUTH_SESSIONS.put(writeKey, JSON.stringify(resolved.thread));
   // Note: thread stays in admin-index buckets but the iterator
   // could filter status='archived' if needed. For now, archived
   // threads still appear (visually deprioritized) so Don can
   // un-archive if needed.
-  console.log(JSON.stringify({ event: 'window.archive', sub, threadId, ts: thread.updatedAt }));
+  console.log(JSON.stringify({ event: 'window.archive', kind: resolved.kind, sub: resolved.sub, anonId: resolved.anonId, threadId: resolved.threadId, ts: resolved.thread.updatedAt }));
   return jsonResponse({ ok: true, status: 'archived' }, 200);
 }
 

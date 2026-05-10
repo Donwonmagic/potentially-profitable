@@ -211,6 +211,37 @@
     // surface shows "Direct line is paused." Flip back to
     // "false" for an emergency rollback — KV state persists.
     "WINDOW_ENABLED": "true",
+    // Phase 1a (Window redesign) — anonymous-first send sub-flag.
+    // When "true", visitors without a session can send messages —
+    // server mints `md_anon_thread_id` cookie (HttpOnly, SameSite=Lax,
+    // 90d), creates a thread keyed by the anonId, and accepts up to
+    // MAX_ANON_MSGS_PER_DAY (5) messages with per-IP throttle on top.
+    // The identified path is unchanged. When "false" (default), the
+    // legacy 401 unauthenticated response is returned for unsigned
+    // requests. See docs/window-redesign-plan.md §2.1, §7 Phase 1a.
+    "WINDOW_ANON_ENABLED": "false",
+    // Phase 2.7 — Turnstile gate on the cookie-minting (first-POST)
+    // anon path. When "true", the request must carry a valid
+    // cf-turnstile-response token; the /window/ composer must render
+    // the Turnstile widget. When "false" (default), anon POST proceeds
+    // without Turnstile — the per-IP and per-anonId throttles + threat-
+    // score gate carry the spam floor. Flip ONLY after the widget UI
+    // ships in /window/. See docs/window-redesign-plan.md §2.6.
+    "WINDOW_TURNSTILE_ANON_ENABLED": "false",
+    // Phase 3 (multimodal) — per-modality flags. Each requires the
+    // R2 binding `WINDOW_ATTACHMENTS` and (for voice) the AI binding
+    // for Whisper. Flags ship dark; provision the binding (commented
+    // block below) + flip the flag when each modality lands.
+    "WINDOW_PHOTO_ENABLED":    "false",
+    "WINDOW_VOICE_ENABLED":    "false",
+    "WINDOW_CALLBACK_ENABLED": "false",
+    // Phase 4 — /now/ operator presence widget on /window/ only.
+    // Three-tier privacy (precise / fuzz / private), 14-day staleness
+    // hides the widget entirely, precise mode is hard-downgraded to
+    // fuzz between 21:00-06:00 local (stalker safety). Admin sets the
+    // row via /api/admin/window/now. Flag ships dark; flip after the
+    // first row lands. See docs/window-redesign-plan.md §4.4 + §11.4.
+    "WINDOW_NOW_ENABLED":      "false",
     // Phase G.11 (Growth) — lifecycle email dispatcher feature flag.
     // When "true", the cron tick iterates sub:<hash> records and
     // dispatches welcome/nudge/digest emails per state machine.
@@ -273,39 +304,50 @@
   "kv_namespaces": [
     { "binding": "AUDIT_SNAPSHOTS", "id": "f661208f47644e32bfe965e46f42f88a" },
     { "binding": "AUTH_SESSIONS",   "id": "ee2a0c3542cd44139fb67a4117b0d358" }
-  ]
+  ],
+
+  // Phase 3 (Window redesign) — R2 bucket + Workers AI bindings.
+  // Both ship commented because:
+  //   1. The R2 bucket muntin-window-attachments must be created
+  //      via `wrangler r2 bucket create muntin-window-attachments`
+  //      before the binding can resolve.
+  //   2. The AI binding requires Workers AI to be enabled on the
+  //      account (Cloudflare → Workers AI → Get started).
+  // When both are provisioned, uncomment the blocks below and flip
+  // WINDOW_PHOTO_ENABLED / WINDOW_VOICE_ENABLED / WINDOW_CALLBACK_ENABLED
+  // (per docs/DEPLOY-CHECKPOINTS.md).
+  //
+  // "r2_buckets": [
+  //   { "binding": "WINDOW_ATTACHMENTS", "bucket_name": "muntin-window-attachments" }
+  // ],
+  // "ai": { "binding": "AI" },
 
   // ─────────────────────────────────────────────────────────────────
-  // Phase 3 (Workshop) — Watch list / scheduled re-audits.
+  // Cron Trigger — Phase 0 (Window redesign) ENABLED.
   //
-  // The /api/workbench/watch{,-list,-delete} endpoints are LIVE in
-  // src/worker.js — operators can attach watches, list them, and
-  // detach. Persistence happens in AUTH_SESSIONS under watch:<sub>:<id>
-  // keys. Until the Cron Trigger below is uncommented, those watches
-  // simply persist with lastCheckedAt = null forever; no upstream
-  // API quota burns and no emails go out.
+  // The scheduled() handler in src/worker.js already does substantial
+  // work: tick lock, watch iteration (a stub today — wakes when
+  // src/lib/watch-checks.js lands), Window pending-Don batch flush
+  // (src/lib/window.js iteratePendingDonReady — LIVE), property
+  // rollups, submission stale sweep, lifecycle email dispatcher.
   //
-  // To turn on:
-  //   1. Uncomment the "triggers.crons" block below.
-  //   2. Implement src/lib/watch-checks.js with one function per
-  //      watchable kind (audit / seo / gbp / mobile / schema / speed)
-  //      that takes (env, savedItem) and returns a 0..100 number.
-  //   3. Wire those functions into the iterateAllWatches loop in
-  //      worker.js's scheduled() handler. Today the loop just counts
-  //      so the cron tick is observable in logs without doing work.
-  //   4. Add a watch-diff email template to src/lib/templates.js +
-  //      templates.es.js (locale-aware).
-  //   5. wrangler deploy. The cron fires on the configured cadence;
-  //      no API keys, no extra secrets, no DNS changes.
+  // Cadence: */5 (every 5 minutes). Sized for the Window batch-flush
+  // promise (PENDING_DON_BATCH_MS = 2 minutes — see src/lib/window.js).
+  // Daily 14:00 UTC was the original Watch cadence; */5 is the right
+  // cadence for the Window redesign's batch + SLA-flag + auto-pause
+  // vital-signs needs (docs/window-redesign-plan.md §2.5).
   //
-  // Daily at 14:00 UTC (≈10am ET) keeps emails out of the late-night
-  // window most operators don't read. Switch to weekly with
-  // "0 14 * * 1" (Mondays only) if daily proves chatty.
+  // The scheduled() handler is single-flight via a 60s tick-lock in
+  // AUTH_SESSIONS (cron:tick:lock). PER_TICK_BUDGET = 200 was sized
+  // for daily; at */5 cadence the actual per-tick load stays small
+  // because most subtasks are no-ops on empty queues.
   //
-  // "triggers": {
-  //   "crons": ["0 14 * * *"]
-  // },
+  // Rollback: comment the "triggers" block and `wrangler deploy`.
   // ─────────────────────────────────────────────────────────────────
+
+  "triggers": {
+    "crons": ["*/5 * * * *"]
+  }
 
   // ─────────────────────────────────────────────────────────────────
   // Optional bindings still staged, provisioned on demand:

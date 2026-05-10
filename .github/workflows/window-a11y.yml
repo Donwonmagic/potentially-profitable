@@ -1,0 +1,138 @@
+# Window a11y CI — axe-core gate on /window/ + /es/window/
+#
+# Phase 2.8 (Window redesign). Plan §6.8 — WCAG 2.2 AA target. The
+# Window composer is the most interaction-dense surface on the site
+# and the one most likely to regress on accessibility (forms, ARIA,
+# focus management, color contrast). Axe-core is the cheapest
+# regression net.
+#
+# Status: continue-on-error initially so the workflow doesn't block
+# in-flight PRs while the a11y baseline shakes out. Promote to
+# required-check (Settings → Branches → Branch protection → main)
+# once three consecutive PRs land green. (Same pattern as the
+# Lighthouse CI workflow.)
+
+name: Window a11y (axe-core)
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      # Only run when something Window-touching changed; otherwise
+      # the build chain runs for every doc edit and burns minutes.
+      - 'window/**'
+      - 'es/window/**'
+      - 'assets/js/window*.js'
+      - 'assets/site-core.css'
+      - '_includes/**'
+      - 'src/lib/window.js'
+      - 'src/worker.js'
+      - '.github/workflows/window-a11y.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'window/**'
+      - 'es/window/**'
+      - 'assets/js/window*.js'
+      - 'assets/site-core.css'
+      - '_includes/**'
+      - 'src/lib/window.js'
+      - 'src/worker.js'
+      - '.github/workflows/window-a11y.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: window-a11y-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  axe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    continue-on-error: true   # ← remove when a11y baseline is locked
+
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Set up Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # Minimal build — just the partial-stamping + sentinel-fix steps
+      # that affect /window/ and /es/window/. The full chain in
+      # lighthouse-ci.yml is unnecessary for an a11y check on two
+      # specific URLs.
+      - name: Run minimal build for /window/ surfaces
+        run: |
+          set -e
+          node scripts/sync-includes.mjs
+          node scripts/inject-window-fieldnotes-rail.mjs
+          node scripts/build-css-shells.mjs
+          node scripts/inject-css-shells.mjs
+          node scripts/inject-critical-link-color.mjs
+          node scripts/stamp-hreflang.mjs
+
+      - name: Stage dist/ for serving
+        run: |
+          mkdir -p dist
+          tar -cf - \
+            --exclude=dist \
+            --exclude=.git \
+            --exclude=.github \
+            --exclude=docs \
+            --exclude=node_modules \
+            --exclude=.wrangler \
+            --exclude='.env*' \
+            --exclude=wrangler.jsonc \
+            --exclude='package*.json' \
+            --exclude=.gitignore \
+            --exclude=README.md \
+            --exclude=src \
+            --exclude=scripts \
+            --exclude=_includes \
+            --exclude=pagefind.yml \
+            . | tar -xf - -C dist
+
+      - name: Serve dist on :8788
+        run: |
+          npx -y http-server dist -p 8788 --silent &
+          for i in $(seq 1 20); do
+            if curl -fsS http://localhost:8788/ > /dev/null; then
+              echo "✓ dist server up on :8788"
+              break
+            fi
+            sleep 1
+          done
+
+      # axe-core/cli is a Puppeteer-backed CLI. We point it at the
+      # two Window surfaces. Severity tags: `wcag2a, wcag2aa, wcag21a,
+      # wcag21aa, wcag22aa, best-practice` — covering the AA target
+      # plus practitioner-flagged smells.
+      #
+      # browser-driver-manager syncs ChromeDriver to whatever Chrome
+      # version the runner image ships. axe-cli@4.11+ pulls
+      # chromedriver@148, which mismatches when runners still have
+      # Chrome 147 (PR #318 build May 2026). Sync before each run.
+      - name: Sync ChromeDriver to runner Chrome
+        run: npx -y browser-driver-manager@latest install chrome
+        continue-on-error: true
+
+      - name: Run axe-core on /window/
+        run: |
+          npx -y @axe-core/cli@4 \
+            --tags wcag2a,wcag2aa,wcag21a,wcag21aa,wcag22aa \
+            http://localhost:8788/window/
+        continue-on-error: true
+
+      - name: Run axe-core on /es/window/
+        run: |
+          npx -y @axe-core/cli@4 \
+            --tags wcag2a,wcag2aa,wcag21a,wcag21aa,wcag22aa \
+            http://localhost:8788/es/window/
+        continue-on-error: true

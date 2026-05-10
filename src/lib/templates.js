@@ -1139,37 +1139,70 @@ export function windowNotifyDonEmail(body) {
   const adminUrl     = String(body.adminUrl || 'https://muntin.digital/admin/window/').trim();
   const threadHash   = String(body.threadHash || '').trim();
   const sub          = String(body.sub || '').trim();
+  const anonId       = String(body.anonId || '').trim();
+  const kind         = body.kind === 'anon' ? 'anon' : 'identified';
   const threadId     = String(body.threadId || '').trim();
+  // Phase 1b — crisis tier surfaces in Don's digest so an urgent
+  // thread is identifiable in the inbox before he even opens admin.
+  const crisisTier   = body.crisisTier === 'tier1' || body.crisisTier === 'tier2' ? body.crisisTier : null;
 
   const firstExcerpt = (excerpts[0] || '').slice(0, 60);
-  const subject = excerpts.length > 1
+  const crisisSubjectPrefix = crisisTier === 'tier1'
+    ? '[urgent] '
+    : crisisTier === 'tier2'
+      ? '[heads up] '
+      : '';
+  const subject = crisisSubjectPrefix + (excerpts.length > 1
     ? 'Direct line — ' + firstExcerpt + ' (+' + (excerpts.length - 1) + ' more)'
-    : 'Direct line — ' + firstExcerpt;
+    : 'Direct line — ' + firstExcerpt);
 
-  const adminThreadUrl = sub && threadId
-    ? adminUrl + '#' + encodeURIComponent('thread=' + threadId + '&sub=' + sub)
-    : adminUrl;
+  // Admin link respects kind: anon entries route via &anonId= per
+  // the admin queue UI's parseHash.
+  const adminThreadUrl = (() => {
+    if (!threadId) return adminUrl;
+    if (kind === 'anon' && anonId) {
+      return adminUrl + '#' + encodeURIComponent('thread=' + threadId + '&anonId=' + anonId);
+    }
+    if (sub) {
+      return adminUrl + '#' + encodeURIComponent('thread=' + threadId + '&sub=' + sub);
+    }
+    return adminUrl;
+  })();
 
   const messagesHtml = excerpts.map((e, i) =>
     '<div style="margin:0 0 12px;padding:12px 16px;background:#F8F4EA;border-left:3px solid #1F4E5B;font-style:italic;white-space:pre-wrap;">' +
     escapeHtml(e) + '</div>'
   ).join('');
 
+  // Crisis banner above the messages so Don sees it in any preview pane.
+  const crisisBannerHtml = crisisTier === 'tier1'
+    ? '<p style="margin:0 0 16px;padding:12px 16px;background:#FCEAE7;border-left:3px solid #B83020;color:#2A2D33;font-weight:600;">Tier 1 keyword detected — acknowledge first, business second. Referrals: 988 (call/text), Chefs With Issues, CHOW.</p>'
+    : crisisTier === 'tier2'
+      ? '<p style="margin:0 0 16px;padding:12px 16px;background:#FBF1D9;border-left:3px solid #B8861F;color:#2A2D33;">Tier 2 keyword detected — welfare-check tone may help.</p>'
+      : '';
+
   const html = htmlShell(
     'New note in the Window',
     [
+      crisisBannerHtml,
       field('From',    escapeHtml(author) + ' &lt;' + escapeHtml(authorEmail) + '&gt;'),
       field('Messages', String(excerpts.length)),
       '<p style="margin:18px 0 8px;font-size:13px;color:#6B6B6B;">Most recent first:</p>',
       messagesHtml,
       '<p style="margin:24px 0 0;">' + primaryCta(adminThreadUrl, 'Reply on phone') + '</p>',
-    ].join('\n')
+    ].filter(Boolean).join('\n')
   );
+
+  const crisisTextLine = crisisTier === 'tier1'
+    ? '⚠ Tier 1 crisis keyword — acknowledge first, business second.\n  Referrals: 988 (call/text), Chefs With Issues, CHOW.\n\n'
+    : crisisTier === 'tier2'
+      ? '⚠ Tier 2 keyword detected — welfare-check tone may help.\n\n'
+      : '';
 
   const txt = [
     'New note in the Window',
     '',
-    'From: ' + author + ' <' + authorEmail + '>',
+    crisisTextLine + 'From: ' + author + ' <' + authorEmail + '>',
     'Messages: ' + excerpts.length,
     '',
     excerpts.map((e, i) => (i + 1) + '. ' + e).join('\n\n'),
@@ -1191,8 +1224,20 @@ export function windowReplyToUserEmail(body) {
   }
   const replyBody = String(body.body || '').trim();
   const windowUrl = String(body.windowUrl || 'https://muntin.digital/window/').trim();
+  // Phase 1a step 2 — when present, render a small footer with a
+  // one-shot magic-link claim URL so the operator can sign in and
+  // pull this thread onto their other devices. Don's reply IS the
+  // magic link (one email, two purposes); never a separate claim
+  // ceremony email.
+  const claimUrl = body.claimUrl ? String(body.claimUrl).trim() : '';
 
   const subject = 'Don wrote back';
+
+  const claimFooterHtml = claimUrl ? (
+    '<p style="margin:32px 0 0;padding:14px 18px;background:#FAF7F2;border:1px solid #E5DFD0;font-size:13px;color:#2A2D33;line-height:1.55;">' +
+      'Want this thread on your other devices? <a href="' + escapeHtml(claimUrl) + '" style="color:#1F4E5B;text-decoration:underline;">Sign in with one click</a> — link expires in 15 minutes.' +
+    '</p>'
+  ) : '';
 
   const html = htmlShell(
     'Don wrote back',
@@ -1201,9 +1246,12 @@ export function windowReplyToUserEmail(body) {
         escapeHtml(replyBody) +
       '</div>',
       '<p style="margin:24px 0 0;">' + primaryCta(windowUrl, 'Continue the conversation') + '</p>',
+      claimFooterHtml,
       '<p style="margin:32px 0 0;font-size:13px;color:#6B6B6B;font-style:italic;">I read every one.</p>',
-    ].join('\n')
+    ].filter(Boolean).join('\n')
   );
+
+  const claimFooterText = claimUrl ? '\nKeep this thread on your other devices: ' + claimUrl + ' (link expires in 15 minutes)\n' : '';
 
   const txt = [
     'Don wrote back',
@@ -1211,10 +1259,10 @@ export function windowReplyToUserEmail(body) {
     replyBody,
     '',
     'Continue the conversation: ' + windowUrl,
-    '',
+    claimFooterText,
     '— Don',
     'I read every one.',
-  ].join('\n');
+  ].filter(Boolean).join('\n');
 
   return { subject, html, text: txt };
 }
