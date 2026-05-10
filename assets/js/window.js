@@ -265,7 +265,97 @@
     els.msg.style.color = '';
   }
 
-  function renderMessages(messages) {
+  // Phase 3.5 — render a single attachment row inline. Photos use
+  // <img src="/api/window/attach/<id>"> (worker-proxied download).
+  // Voice uses <audio> + transcript (when available) + a "Delete
+  // transcript" button (visitor-side privacy affordance per plan §11.6).
+  function renderAttachment(att) {
+    var div = document.createElement('div');
+    div.className = 'window-msg__attachment window-msg__attachment--' + att.kind;
+    div.dataset.attachId = att.id;
+    if (att.kind === 'photo') {
+      var img = document.createElement('img');
+      img.src = '/api/window/attach/' + encodeURIComponent(att.id);
+      img.alt = att.altText || '';
+      img.loading = 'lazy';
+      img.decoding = 'async';
+      div.appendChild(img);
+      if (att.altText) {
+        var altCap = document.createElement('p');
+        altCap.className = 'window-msg__attachment-caption';
+        altCap.textContent = att.altText;
+        div.appendChild(altCap);
+      }
+    } else if (att.kind === 'voice') {
+      var audio = document.createElement('audio');
+      audio.src = '/api/window/attach/' + encodeURIComponent(att.id);
+      audio.controls = true;
+      audio.preload = 'none';
+      div.appendChild(audio);
+
+      // Inline transcript (default-on per plan §6.3 — WCAG 1.2.1
+      // accessible alternative to audio-only). Operator can delete
+      // the transcript via the button below.
+      if (att.transcript && !att.transcriptDeleted) {
+        var trans = document.createElement('p');
+        trans.className = 'window-msg__attachment-transcript';
+        trans.textContent = att.transcript;
+        div.appendChild(trans);
+
+        // Delete-transcript affordance — only on the visitor's own
+        // voice messages. Don's replies don't expose this.
+        if (state.threadIsAnon || state.authed) {
+          var delBtn = document.createElement('button');
+          delBtn.type = 'button';
+          delBtn.className = 'window-msg__attachment-delete-transcript';
+          delBtn.textContent = locale === 'es' ? 'Borrar la transcripción' : 'Delete transcript';
+          delBtn.addEventListener('click', function () {
+            if (!confirm(locale === 'es'
+              ? '¿Borrar la transcripción? El audio se queda hasta el límite de retención.'
+              : 'Delete the transcript? The audio stays until the retention limit.'
+            )) return;
+            delBtn.disabled = true;
+            var p = new URLSearchParams();
+            p.set('attachId', att.id);
+            fetch('/api/window/attach/transcript-delete', {
+              method: 'POST',
+              credentials: 'same-origin',
+              headers: { 'content-type': 'application/x-www-form-urlencoded' },
+              body: p.toString(),
+            })
+              .then(function (r) { return r.json().then(function (j) { return { status: r.status, body: j }; }); })
+              .then(function (res) {
+                if (res.status === 200 && res.body && res.body.ok) {
+                  // Remove the transcript paragraph and the button.
+                  if (trans.parentNode) trans.parentNode.removeChild(trans);
+                  if (delBtn.parentNode) delBtn.parentNode.removeChild(delBtn);
+                  var marker = document.createElement('p');
+                  marker.className = 'window-msg__attachment-transcript window-msg__attachment-transcript--deleted';
+                  marker.textContent = locale === 'es' ? 'Transcripción borrada.' : 'Transcript deleted.';
+                  div.appendChild(marker);
+                } else {
+                  delBtn.disabled = false;
+                  alert(locale === 'es' ? 'No se pudo borrar.' : "Couldn't delete.");
+                }
+              })
+              .catch(function () {
+                delBtn.disabled = false;
+                alert(locale === 'es' ? 'No se pudo borrar.' : "Couldn't delete.");
+              });
+          });
+          div.appendChild(delBtn);
+        }
+      } else if (att.transcriptDeleted) {
+        var deletedNote = document.createElement('p');
+        deletedNote.className = 'window-msg__attachment-transcript window-msg__attachment-transcript--deleted';
+        deletedNote.textContent = locale === 'es' ? 'Transcripción borrada.' : 'Transcript deleted.';
+        div.appendChild(deletedNote);
+      }
+    }
+    return div;
+  }
+
+  function renderMessages(messages, attachmentsByMsgId) {
     if (!els.thread) return;
     if (!messages.length) {
       els.threadEmpty.hidden = false;
@@ -309,6 +399,21 @@
       msgEl.innerHTML =
         '<p class="window-msg__stamp"><em>' + escHtml(stamp) + '</em></p>' +
         '<p class="window-msg__body">' + escHtml(m.body).replace(/\n/g, '<br>') + '</p>';
+
+      // Phase 3.5 — render attachments (photos + voice) inline.
+      // Built via DOM (textContent) to honor plan §5.6 rule 11
+      // (operator-derived strings: transcript + altText must NOT
+      // pass through innerHTML).
+      var attaches = attachmentsByMsgId && attachmentsByMsgId[m.id] ? attachmentsByMsgId[m.id] : null;
+      if (attaches && attaches.length) {
+        var attachWrap = document.createElement('div');
+        attachWrap.className = 'window-msg__attachments';
+        for (var ai = 0; ai < attaches.length; ai++) {
+          attachWrap.appendChild(renderAttachment(attaches[ai]));
+        }
+        msgEl.appendChild(attachWrap);
+      }
+
       els.thread.insertBefore(msgEl, els.threadEmpty);
     }
     state.firstRenderDone = true;
@@ -332,8 +437,9 @@
         if (j.thread) {
           state.threadId = j.thread.id;
           state.lastUpdatedAt = j.thread.updatedAt;
+          state.threadIsAnon = !!j.anon;
         }
-        renderMessages(j.messages || []);
+        renderMessages(j.messages || [], j.attachmentsByMsgId || {});
       });
   }
 

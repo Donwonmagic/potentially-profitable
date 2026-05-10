@@ -169,6 +169,58 @@ export async function listAttachmentsForMessage(env, threadId, msgId) {
   return out;
 }
 
+// Phase 3.5 — list attachments for a thread (single KV prefix scan,
+// then in-memory group by msgId). Used by handleWindowThread +
+// handleAdminWindowThread to render attachments inline alongside
+// each message.
+//
+// Cost: O(N) scan over `window:attach:*` filtered to the thread's
+// own attachments. With max 100 messages × max 4 attachments = 400
+// candidates per thread, this stays cheap. For long threads or
+// admin views across many threads, consider a per-thread index
+// (window:attach-by-thread:<threadId>) — Phase 3.5+ optimization.
+export async function listAttachmentsForThread(env, threadId) {
+  if (!isValidSaveItemIdShape(threadId)) return [];
+  const result = await env.AUTH_SESSIONS.list({ prefix: ATTACH_KEY_PREFIX, limit: 1000 });
+  const out = [];
+  for (const k of result.keys) {
+    const raw = await env.AUTH_SESSIONS.get(k.name);
+    if (!raw) continue;
+    let row;
+    try { row = JSON.parse(raw); } catch { continue; }
+    if (row.threadId !== threadId) continue;
+    if (row.deleted) continue;
+    out.push(row);
+  }
+  return out;
+}
+
+// Phase 3.5 — visitor-deletable transcript. Sets transcript = null,
+// transcriptDeleted = true (audit trail kept). The audio bytes
+// stay in R2 until the 30-day TTL — this only affects the text
+// representation that lives in the thread + admin queue.
+//
+// Plan §11.6 / BIPA — operator should be able to remove the text
+// representation of their voice without waiting on the R2 lifecycle.
+export async function deleteAttachmentTranscript(env, attachId) {
+  if (!isValidSaveItemIdShape(attachId)) return { ok: false, error: 'invalid-attach-id' };
+  const raw = await env.AUTH_SESSIONS.get(attachKey(attachId));
+  if (!raw) return { ok: false, error: 'not-found' };
+  let row;
+  try { row = JSON.parse(raw); } catch { return { ok: false, error: 'corrupt-row' }; }
+  if (row.kind !== 'voice') return { ok: false, error: 'not-voice' };
+  // Idempotent — repeated delete is a no-op.
+  if (row.transcriptDeleted) return { ok: true, alreadyDeleted: true };
+  row.transcript = null;
+  row.transcriptLanguage = null;
+  row.transcriptDeleted = true;
+  row.transcriptDeletedAt = Date.now();
+  // Keep the same TTL the row was put with (30d for voice).
+  const opts = { expirationTtl: VOICE_R2_TTL_DAYS * 24 * 60 * 60 };
+  await env.AUTH_SESSIONS.put(attachKey(attachId), JSON.stringify(row), opts);
+  return { ok: true, row };
+}
+
 // Per-anon (or per-sub) lifetime + daily-bytes throttle. Audit S3
 // hard cap of 12 attachments lifetime + 8 MB/day. Returns
 // { ok } or { ok:false, error, ... }. Caller stamps via

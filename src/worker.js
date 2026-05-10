@@ -283,6 +283,9 @@ import {
   maskPhone,
   getCallbackSlotLabel,
   createCallbackRequest,
+  // Phase 3.5 — visitor-side attachment display + delete-transcript.
+  listAttachmentsForThread,
+  deleteAttachmentTranscript,
 } from './lib/window-attachments.js';
 import { MAX_VOICE_DURATION_HARD_MS } from './lib/window.js';
 import { sanitizePlaintext as sanitizeWindowBody } from './lib/submissions.js';
@@ -386,6 +389,11 @@ const API_ROUTES = {
   // records the request and posts an auto-confirmation thread
   // message from "Don" so the visitor sees acknowledgement.
   '/api/window/callback':            handleWindowCallback,
+  // Phase 3.5 — visitor-deletable transcript. Sets the transcript
+  // text to null + transcriptDeleted=true on a voice attachment row.
+  // Audio bytes stay in R2 until 30-day TTL; only the text rep is
+  // removed. BIPA-aligned with plan §11.6.
+  '/api/window/attach/transcript-delete': handleWindowAttachTranscriptDelete,
   '/api/admin/window/list':          handleAdminWindowList,
   '/api/admin/window/thread':        handleAdminWindowThread,
   '/api/admin/window/reply':         handleAdminWindowReply,
@@ -6459,7 +6467,8 @@ async function handleWindowThread(request, env, ctx) {
       thread.unreadByUser = false;
       await env.AUTH_SESSIONS.put(windowThreadKey(sub, thread.id), JSON.stringify(thread));
     }
-    return jsonResponse({ ok: true, thread, messages }, 200);
+    const attachmentsByMsgId = await _loadAttachmentsByMsgId(env, thread.id);
+    return jsonResponse({ ok: true, thread, messages, attachmentsByMsgId }, 200);
   }
   if (_windowAnonGate(env)) {
     const anonId = _readWindowAnonCookie(request);
@@ -6475,9 +6484,36 @@ async function handleWindowThread(request, env, ctx) {
       thread.unreadByUser = false;
       await env.AUTH_SESSIONS.put(windowAnonThreadKey(anonId), JSON.stringify(thread));
     }
-    return jsonResponse({ ok: true, thread, messages, anon: true }, 200);
+    const attachmentsByMsgId = await _loadAttachmentsByMsgId(env, thread.id);
+    return jsonResponse({ ok: true, thread, messages, attachmentsByMsgId, anon: true }, 200);
   }
   return jsonResponse({ ok: false, error: 'unauthenticated' }, 401);
+}
+
+// Phase 3.5 — group thread attachments by msgId for inline render.
+// Strips R2 keys + lifetime details from the visitor-facing payload
+// (only the visitor-relevant fields surface).
+async function _loadAttachmentsByMsgId(env, threadId) {
+  const attachments = await listAttachmentsForThread(env, threadId);
+  const byMsg = {};
+  for (const a of attachments) {
+    if (!a.msgId) continue;  // skip pending uploads (not yet linked)
+    if (!byMsg[a.msgId]) byMsg[a.msgId] = [];
+    byMsg[a.msgId].push({
+      id: a.id,
+      kind: a.kind,
+      mime: a.mime,
+      sizeBytes: a.sizeBytes,
+      durationMs: a.durationMs || null,
+      transcript: a.transcript || null,
+      transcriptLanguage: a.transcriptLanguage || null,
+      transcriptDeleted: !!a.transcriptDeleted,
+      altText: a.altText || null,
+      // The download URL is built client-side: /api/window/attach/<id>.
+      // No R2 key, no IP hash, no lifetime row leaks into the response.
+    });
+  }
+  return byMsg;
 }
 
 async function handleWindowPoll(request, env, ctx) {
@@ -6684,6 +6720,64 @@ async function handleResendBounceWebhook(request, env, ctx) {
   }
   console.log(JSON.stringify({ event: 'window.bounce.recorded', count: recorded, type: eventType, reason }));
   return jsonResponse({ ok: true, recorded }, 200);
+}
+
+// Phase 3.5 — visitor-deletable transcript. POST /api/window/attach/transcript-delete.
+//
+// Body: { attachId }. Worker verifies the caller owns the attachment
+// (sub or anonId match), then nulls the transcript text + stamps
+// transcriptDeleted=true. Audio bytes remain in R2 until VOICE_R2_TTL_DAYS
+// expires; only the text representation is removed. Idempotent.
+async function handleWindowAttachTranscriptDelete(request, env, ctx) {
+  if (!_windowGate(env)) {
+    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  }
+  if (!isOriginAllowed(request)) {
+    return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
+  }
+  if (!env || !env.AUTH_SESSIONS) {
+    return jsonResponse({ ok: false, error: 'service-unavailable' }, 503);
+  }
+
+  let body;
+  try { body = await parseFormBody(request); } catch (_) {
+    return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+  }
+  const attachId = typeof body.attachId === 'string' ? body.attachId.trim() : '';
+  if (!isValidSaveItemIdShape(attachId)) {
+    return jsonResponse({ ok: false, error: 'invalid-attach-id' }, 400);
+  }
+  const row = await getAttachmentRow(env, attachId);
+  if (!row) {
+    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  }
+  if (row.kind !== 'voice') {
+    return jsonResponse({ ok: false, error: 'not-voice' }, 400);
+  }
+
+  // Ownership check.
+  const session = await getSessionFromRequest(request, env);
+  const callerSub = session ? session.payload.sub : null;
+  const callerAnon = _readWindowAnonCookie(request);
+  let allowed = false;
+  if (callerSub && row.sub === callerSub) allowed = true;
+  else if (callerAnon && row.anonId === callerAnon) allowed = true;
+  if (!allowed) {
+    return jsonResponse({ ok: false, error: 'not-yours' }, 403);
+  }
+
+  const result = await deleteAttachmentTranscript(env, attachId);
+  if (!result.ok) {
+    return jsonResponse({ ok: false, ...result }, 500);
+  }
+  console.log(JSON.stringify({
+    event: 'window.attach.transcript-deleted',
+    attachId,
+    sub: callerSub ? callerSub.slice(0, 8) : null,
+    anonId: callerAnon ? callerAnon.slice(0, 8) : null,
+    alreadyDeleted: !!result.alreadyDeleted,
+  }));
+  return jsonResponse({ ok: true, alreadyDeleted: !!result.alreadyDeleted }, 200);
 }
 
 // Phase 3.4 — async voicenote callback shim. POST /api/window/callback.

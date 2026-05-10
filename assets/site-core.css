@@ -2781,6 +2781,18 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
    for the absolute "Don —" caption since the caption was removed). */
 .sash--bottom .window-composer__field{padding-left:14px}
 
+/* ===== [core] Window Phase 3.5 — inline attachment display ===== */
+.window-msg__attachments{margin:10px 0 0;display:flex;flex-direction:column;gap:10px}
+.window-msg__attachment{display:flex;flex-direction:column;gap:6px;max-width:100%}
+.window-msg__attachment--photo img{max-width:100%;max-height:280px;border-radius:var(--r-input);border:1px solid var(--line);object-fit:contain;background:var(--cream-2);display:block}
+.window-msg__attachment--voice audio{width:100%;max-width:360px}
+.window-msg__attachment-caption{margin:0;font-size:12px;color:var(--ink-soft);font-style:italic}
+.window-msg__attachment-transcript{margin:0;padding:10px 12px;background:var(--cream-2);border-left:3px solid var(--teal);font-size:14px;line-height:1.55;color:var(--ink);font-style:italic;white-space:pre-wrap}
+.window-msg__attachment-transcript--deleted{border-left-color:var(--stone);color:var(--stone);font-style:italic}
+.window-msg__attachment-delete-transcript{align-self:flex-start;background:transparent;border:0;color:var(--stone);font-size:12px;cursor:pointer;text-decoration:underline;padding:0}
+.window-msg__attachment-delete-transcript:hover,.window-msg__attachment-delete-transcript:focus-visible{color:var(--rust)}
+.window-msg__attachment-delete-transcript:disabled{opacity:0.5;cursor:not-allowed}
+
 /* ===== [core] Window Phase 3.4 — async voicenote callback =====
    "Want me to call back?" chip + collapsible form. Sits below the
    crisis line, above the photo-attach row. Hidden by default;
