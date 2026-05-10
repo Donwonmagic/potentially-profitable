@@ -38,6 +38,221 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "AboutPage",
+      "@id": "https://muntin.digital/about/#page",
+      "name": "About Don — Muntin Digital",
+      "description": "The operator behind Muntin Digital: restaurant management experience translated into web, brand, and social for independent restaurants.",
+      "url": "https://muntin.digital/about/",
+      "isPartOf": {
+        "@id": "https://muntin.digital/#website"
+      },
+      "about": {
+        "@id": "https://muntin.digital/#person-don"
+      },
+      "mainEntity": {
+        "@id": "https://muntin.digital/#person-don"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://muntin.digital/#person-don",
+      "name": "Donald Goldstein Bushman",
+      "givenName": "Donald",
+      "additionalName": "Goldstein",
+      "familyName": "Bushman",
+      "alternateName": "Don Goldstein",
+      "jobTitle": "Founder & Lead Designer",
+      "description": "Founder of Muntin Digital. Concurrently Manager at The Irish Inn at Glen Echo and Front-of-House Manager at Tacombi in Bethesda, Maryland, where he leads area marketing, outreach, and local design initiatives.",
+      "worksFor": {
+        "@id": "https://muntin.digital/#business"
+      },
+      "knowsAbout": [
+        "Restaurant operations",
+        "Restaurant website design",
+        "Brand identity design",
+        "Social media management",
+        "Front-of-house management",
+        "Hospitality service",
+        "ServSafe Food Protection",
+        "Alcohol awareness"
+      ],
+      "knowsLanguage": [
+        {
+          "@type": "Language",
+          "name": "English",
+          "alternateName": "en"
+        },
+        {
+          "@type": "Language",
+          "name": "Spanish",
+          "alternateName": "es"
+        }
+      ],
+      "hasCredential": [
+        {
+          "@type": "EducationalOccupationalCredential",
+          "name": "ServSafe Food Protection Manager"
+        },
+        {
+          "@type": "EducationalOccupationalCredential",
+          "name": "ServSafe Allergens"
+        },
+        {
+          "@type": "EducationalOccupationalCredential",
+          "name": "ServSafe Food Handler"
+        },
+        {
+          "@type": "EducationalOccupationalCredential",
+          "name": "RAM Alcohol Awareness"
+        },
+        {
+          "@type": "EducationalOccupationalCredential",
+          "name": "MC ABS ALERT"
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Muntin Digital",
+          "item": "https://muntin.digital/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "About",
+          "item": "https://muntin.digital/about/"
+        }
+      ]
+    },
+    {
+      "@type": "Person",
+      "@id": "https://muntin.digital/about/#don-goldstein",
+      "name": "Don Goldstein",
+      "givenName": "Don",
+      "familyName": "Goldstein",
+      "jobTitle": "Founder, Muntin Digital",
+      "worksFor": {
+        "@id": "https://muntin.digital/#business"
+      },
+      "url": "https://muntin.digital/about/",
+      "sameAs": [
+        "https://www.instagram.com/muntin.digital/"
+      ],
+      "knowsAbout": [
+        "Restaurant website design",
+        "Small business SEO",
+        "Google Business Profile",
+        "Restaurant operations",
+        "Website conversion optimization"
+      ]
+    }
+  ]
+}
+</script>
+
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
+
+<script src="/assets/p.js?v=20260503" defer></script>
+<script>
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  plausible.init({ endpoint: '/api/event', logging: false })
+</script>
+
+<style>.breadcrumb{padding-top:100px}</style>
+<style>
+/* Critical CSS — prevents flash of unstyled content while the main
+   stylesheet (assets/site.css) loads non-render-blocking via the
+   <link> below. Carries: token vars used in inline styles elsewhere,
+   body baseline (cream + ink + body-size + line-height), container
+   width, skip-link affordance, and a min-height reservation for the
+   fixed nav so layout doesn't shift when site.css applies. ~600
+   bytes. Documented in Phase 3B perf cutover; the full token set
+   reapplies once site.css arrives. */
+:root{--cream:#FAF7F2;--cream-2:#F3EEE3;--ink:#14161A;--ink-soft:#2A2D33;--teal:#1F4E5B;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
+html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--cream);line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased}
+.container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
+.skip-link{position:absolute;left:-9999px;top:0}
+.skip-link:focus{position:static;display:inline-block;background:#14161A;color:#FAF7F2;padding:12px 16px;z-index:100}
+/* injected by inject-critical-link-color.mjs */
+a{color:inherit}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:500;font-size:15px;text-decoration:none;white-space:nowrap;cursor:pointer}
+.btn-primary{background:var(--ink);color:var(--cream)}
+.btn-ghost{background:transparent;color:var(--ink);border:1px solid #D9D5CB}
+header.nav{min-height:64px}
+</style>
+<!-- Async-load the main stylesheet. Pattern: preload + onload-swap
+     (with a <noscript> fallback for the JS-disabled path). The
+     onload assigns this.rel='stylesheet', which the browser then
+     applies; before that the critical CSS above carries the page. -->
+<link rel="preload" as="style" href="/assets/site-core.css?v=a3cc95eb7ac7" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=47810dd9477a" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a3cc95eb7ac7"><link rel="stylesheet" href="/assets/site-article.css?v=47810dd9477a"></noscript>
+
+<style>
+  /* ===== ABOUT PAGE LOCAL STYLES ===== */
+
+  /* Portrait photo: real headshot with a graceful lettermark fallback
+     rendered underneath. If /about/portrait/don.png is missing or
+     fails to load, the styled .portrait tile behind it still reads. */
+  .about-portrait-frame{position:relative;width:100%;aspect-ratio:4/5;border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--line-dark);background:var(--cream-2)}
+  .about-portrait-frame .portrait{position:absolute;inset:0;border:0;border-radius:0;aspect-ratio:auto;width:100%;height:100%}
+  .about-portrait-frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+
+  /* Career timeline: ordered list, teal rail on the left with a node
+     per role. On mobile it collapses to a simpler stacked list. */
+  .timeline{list-style:none;margin:48px 0 0;padding:0;position:relative}
+  .timeline::before{content:'';position:absolute;left:11px;top:6px;bottom:6px;width:2px;background:var(--line-dark)}
+  .timeline-item{position:relative;padding:0 0 36px 44px}
+  .timeline-item:last-child{padding-bottom:0}
+  .timeline-item::before{content:'';position:absolute;left:4px;top:8px;width:16px;height:16px;border-radius:50%;background:var(--cream);border:2px solid var(--teal);box-shadow:0 0 0 4px var(--cream)}
+  .timeline-item.current::before{background:var(--teal)}
+  .timeline-role{font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0;line-height:1.2;letter-spacing:-0.01em}
+  .timeline-meta{font-size:13px;letter-spacing:0.04em;text-transform:uppercase;color:var(--stone);margin:6px 0 12px;font-weight:500}
+  .timeline-meta .current-pill{display:inline-block;margin-left:8px;padding:2px 8px;border-radius:999px;background:var(--teal-tint);color:var(--teal);font-size:11px;font-weight:600;letter-spacing:0.08em;vertical-align:1px}
+  .timeline-body{font-size:16px;line-height:1.65;color:var(--ink-soft);margin:0;max-width:68ch}
+
+  /* Certifications grid */
+  .certs{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:48px}
+  @media (max-width:960px){.certs{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:640px){.certs{grid-template-columns:1fr}}
+  .cert{background:var(--white);border:1px solid var(--line);border-radius:var(--r-md);padding:28px 24px;transition:transform var(--t-med) var(--ease),border-color var(--t-med) var(--ease),box-shadow var(--t-med) var(--ease)}
+  .cert:hover{transform:translateY(-4px);border-color:var(--line-dark);box-shadow:0 18px 36px rgba(20,22,26,0.06)}
+  .cert-badge{width:36px;height:36px;border-radius:50%;background:var(--teal-tint);color:var(--teal);display:grid;place-items:center;margin-bottom:14px;font-weight:700;font-size:13px;letter-spacing:0.05em}
+  .cert h3{font-family:var(--font-display);font-size:19px;font-weight:500;margin:0 0 8px;color:var(--ink);letter-spacing:-0.005em;line-height:1.25}
+  .cert p{font-size:14px;line-height:1.55;color:var(--stone);margin:0}
+
+  /* Expertise → output mapping: two columns linked by an arrow */
+  .map-grid{display:grid;grid-template-columns:1fr;gap:12px;margin-top:48px;max-width:920px}
+  .map-row{display:grid;grid-template-columns:1fr 28px 1.4fr;gap:18px;align-items:center;padding:20px 24px;background:var(--white);border:1px solid var(--line);border-radius:var(--r-md)}
+  .map-row .from{font-family:var(--font-display);font-size:19px;font-weight:500;color:var(--ink);line-height:1.25}
+  .map-row .arrow{color:var(--teal);font-weight:600;text-align:center}
+  .map-row .to{font-size:15px;line-height:1.55;color:var(--ink-soft)}
+  @media (max-width:640px){.map-row{grid-template-columns:1fr;gap:6px;padding:18px 20px}.map-row .arrow{display:none}}
+
+  /* Narrative stack — denser paragraph rhythm than the hero block */
+  .narrative p{font-size:17px;line-height:1.7;color:var(--ink-soft);margin:0 0 20px;max-width:68ch}
+  .narrative p:last-child{margin-bottom:0}
+  .narrative .signature{margin-top:36px}
+
+  /* References line sits quietly above the CTA */
+  .references-line{text-align:center;font-size:14px;color:rgba(250,247,242,0.62);letter-spacing:0.02em;margin:28px auto 0;max-width:520px}
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to main content</a>
+
 <script>
   /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
      Apple devices. Runs early in <body> so the swap is essentially

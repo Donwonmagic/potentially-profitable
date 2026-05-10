@@ -36,6 +36,185 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Service",
+      "@id": "https://muntin.digital/es/for/restaurants/#service",
+      "name": "Diseño web para restaurantes",
+      "serviceType": "Web Design",
+      "description": "Diseño y desarrollo web a medida para restaurantes independientes en Silver Spring, el área de DC y a lo largo de Estados Unidos. Menús, reservas, pedidos en línea, Google Business Profile y cuidado continuo — hechos por una sola persona. Atención en español e inglés.",
+      "provider": { "@id": "https://muntin.digital/#business" },
+      "availableLanguage": [
+        { "@type": "Language", "name": "Spanish", "alternateName": "es" },
+        { "@type": "Language", "name": "English", "alternateName": "en" }
+      ],
+      "areaServed": [
+        { "@type": "City", "name": "Silver Spring" },
+        { "@type": "City", "name": "Bethesda" },
+        { "@type": "City", "name": "Washington" },
+        { "@type": "AdministrativeArea", "name": "Maryland" },
+        { "@type": "AdministrativeArea", "name": "District of Columbia" },
+        { "@type": "AdministrativeArea", "name": "Virginia" }
+      ],
+      "url": "https://muntin.digital/es/for/restaurants/",
+      "inLanguage": "es"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Muntin Digital", "item": "https://muntin.digital/es/" },
+        { "@type": "ListItem", "position": 2, "name": "Para restaurantes", "item": "https://muntin.digital/es/for/restaurants/" }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "inLanguage": "es",
+      "mainEntity": [
+        { "@type": "Question", "name": "¿Con qué sistemas de punto de venta se integran?", "acceptedAnswer": { "@type": "Answer", "text": "Toast, Square, Clover, Lightspeed y Revel son los habituales. Para pedidos en línea también trabajamos con ChowNow, checkouts directos de Stripe y un par de herramientas más pequeñas enfocadas en el menú." } },
+        { "@type": "Question", "name": "¿Puedo actualizar el menú yo mismo?", "acceptedAnswer": { "@type": "Answer", "text": "Sí. Entras desde el celular, cambias un precio, agregas un especial o cambias un plato, y el sitio se actualiza en segundos. Sin código, sin tickets, sin esperar a un desarrollador." } },
+        { "@type": "Question", "name": "¿Cómo manejan las reservas?", "acceptedAnswer": { "@type": "Answer", "text": "OpenTable, Resy, Tock o Square Reservations empotrados de forma limpia — o un formulario simple integrado que te llega a ti y al host. El flujo que tu equipo ya conoce." } },
+        { "@type": "Question", "name": "¿Y los pedidos en línea?", "acceptedAnswer": { "@type": "Answer", "text": "Dos caminos. Redirección: un botón limpio hacia tu storefront actual de Toast, Square o ChowNow. Directo: un checkout integrado con tu propio procesador de pagos para que te quedes con el margen." } },
+        { "@type": "Question", "name": "¿Ayudan con Google Business Profile?", "acceptedAnswer": { "@type": "Answer", "text": "Sí — configuración, optimización de fotos, horarios, enlace al menú y afinamiento de categorías vienen incluidos en cada proyecto. Suele ser la hora de mayor retorno de todo el proyecto." } },
+        { "@type": "Question", "name": "¿Cuánto cuesta un sitio a medida para restaurante?", "acceptedAnswer": { "@type": "Answer", "text": "Esencial arranca en USD 2,500. La mayoría de los restaurantes quedan en Servicio Completo por USD 5,000 a 9,000. Premium — grupos con varias sucursales y restaurantes con necesidades de integración de POS — va entre USD 8,000 y 15,000+." } },
+        { "@type": "Question", "name": "¿Solo trabajan con restaurantes de Silver Spring?", "acceptedAnswer": { "@type": "Answer", "text": "No. Muntin está en Silver Spring, MD, pero trabajamos con restaurantes en todo el DMV y a distancia con restaurantes en cualquier parte de Estados Unidos." } },
+        { "@type": "Question", "name": "¿Cuánto toma tener el sitio en línea?", "acceptedAnswer": { "@type": "Answer", "text": "Esencial se lanza en 2 a 3 semanas, Servicio Completo en 4 a 6 y Premium en 6 a 10. Solo dos proyectos activos a la vez." } }
+      ]
+    }
+  ]
+}
+</script>
+
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
+
+<script src="/assets/p.js?v=20260503" defer></script>
+<script>
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  plausible.init({ endpoint: '/api/event', logging: false })
+</script>
+
+<style>.breadcrumb{padding-top:100px}
+
+/* ============================================================
+   Restaurant hero — editorial "live menu" portfolio piece.
+   ============================================================
+   Duplicated verbatim from /for/restaurants/. Intentional —
+   keeping per-page inlined CSS in sync with the English page's
+   style block avoids a cross-locale CSS fork.                */
+
+.menu-card{position:relative;width:100%;background:radial-gradient(130% 90% at 50% -20%, rgba(31,78,91,0.06) 0%, transparent 55%),linear-gradient(180deg, #FDFBF5 0%, #F5EEDE 100%);border:1px solid var(--line-dark);border-radius:8px;box-shadow:0 1px 0 rgba(255,255,255,0.6) inset,0 2px 4px rgba(20,22,26,0.04),0 18px 36px -22px rgba(31,78,91,0.14),0 40px 70px -40px rgba(20,22,26,0.18);padding:clamp(26px,3.6vw,40px) clamp(24px,3vw,36px);display:flex;flex-direction:column;overflow:hidden;isolation:isolate;font-family:var(--font-body)}
+.menu-card::before{content:'';position:absolute;inset:clamp(14px,1.6vw,18px);background-image:linear-gradient(to right, rgba(20,22,26,0.05) 0 1px, transparent 1px 100%),linear-gradient(to bottom, rgba(20,22,26,0.05) 0 1px, transparent 1px 100%);background-size:33.333% 100%, 100% 25%;background-position:0 0, 0 0;pointer-events:none;z-index:0;mix-blend-mode:multiply}
+.menu-card > *{position:relative;z-index:1}
+.mc-masthead{text-align:center;padding-bottom:clamp(16px,2.2vw,22px);border-bottom:1px solid rgba(20,22,26,0.14)}
+.mc-kicker{margin:0 0 clamp(10px,1.4vw,14px);font-size:10px;font-weight:600;letter-spacing:0.24em;text-transform:uppercase;color:var(--teal)}
+.mc-name{margin:0;font-family:var(--font-display);font-weight:500;font-size:clamp(30px,3.8vw,44px);line-height:1.02;letter-spacing:-0.02em;color:var(--ink)}
+.mc-amp{font-style:italic;font-weight:400;color:var(--teal);font-size:0.94em}
+.mc-rule{display:flex;align-items:center;justify-content:center;gap:10px;margin:clamp(12px,1.6vw,16px) 0 clamp(10px,1.4vw,14px)}
+.mc-rule::before,.mc-rule::after{content:'';height:1px;width:clamp(28px,4vw,44px);background:var(--line-dark)}
+.mc-rule-dot{width:5px;height:5px;border-radius:50%;background:var(--teal);transform:rotate(45deg)}
+.mc-open{display:inline-flex;align-items:center;gap:7px;font-size:10.5px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-soft);margin:0}
+.mc-open-dot{width:6px;height:6px;border-radius:50%;background:#2BB673;box-shadow:0 0 0 3px rgba(43,182,115,0.2)}
+.mc-section{flex:1;padding:clamp(18px,2.4vw,24px) 0 clamp(10px,1.2vw,14px);display:flex;flex-direction:column;gap:clamp(10px,1.4vw,14px)}
+.mc-section-label{margin:0 0 clamp(6px,0.8vw,8px);font-family:var(--font-display);font-style:italic;font-weight:400;font-size:clamp(14px,1.4vw,16px);color:var(--stone);text-align:center}
+.mc-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:clamp(10px,1.4vw,14px)}
+.mc-dish{display:flex;flex-direction:column;gap:3px}
+.mc-dish-row{display:flex;align-items:baseline;gap:10px}
+.mc-dish-name{font-family:var(--font-display);font-weight:500;font-size:clamp(14px,1.4vw,16px);color:var(--ink);letter-spacing:-0.01em;line-height:1.2;flex:0 1 auto}
+.mc-dish-leader{flex:1;height:1px;background-image:radial-gradient(circle, rgba(20,22,26,0.3) 0.9px, transparent 1.1px);background-size:5px 1px;background-repeat:repeat-x;transform:translateY(-3px)}
+.mc-price{flex:0 0 auto;font-family:var(--font-display);font-weight:500;font-size:clamp(14px,1.4vw,16px);color:var(--ink);letter-spacing:-0.01em;font-variant-numeric:tabular-nums}
+.mc-price::before{content:'$';color:var(--stone);font-weight:400;font-size:0.78em;margin-right:1px;position:relative;top:-2px}
+.mc-dish-note{margin:0;font-family:var(--font-body);font-style:italic;font-size:clamp(11px,1.05vw,13px);line-height:1.35;color:var(--stone)}
+.mc-special{position:relative;background:linear-gradient(180deg, rgba(184,84,26,0.055) 0%, rgba(184,84,26,0.03) 100%);border-left:2px solid var(--rust);padding:clamp(14px,1.8vw,18px) clamp(14px,1.8vw,18px);border-radius:0 6px 6px 0;margin-top:clamp(6px,1vw,10px)}
+.mc-special-label{margin:0 0 6px;font-size:10px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:var(--rust)}
+.mc-special .mc-dish-name{font-style:italic}
+.mc-foot{margin-top:auto;padding-top:clamp(18px,2.4vw,22px);border-top:1px solid rgba(20,22,26,0.14);display:flex;align-items:center;justify-content:space-between;gap:14px}
+.mc-cta{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;background:var(--ink);color:var(--cream);border-radius:999px;font-family:var(--font-body);font-weight:500;font-size:clamp(12.5px,1.15vw,14px);letter-spacing:-0.005em;line-height:1;white-space:nowrap}
+.mc-cta svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+.mc-live{display:inline-flex;align-items:center;gap:7px;font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--stone)}
+.mc-live-dot{width:6px;height:6px;border-radius:50%;background:#2BB673;box-shadow:0 0 0 0 rgba(43,182,115,0.6);animation:mc-pulse 2200ms cubic-bezier(.16,1,.3,1) infinite}
+.mc-watermark{position:absolute;right:clamp(10px,1.4vw,14px);bottom:clamp(10px,1.4vw,14px);width:clamp(14px,1.6vw,18px);height:clamp(14px,1.6vw,18px);color:rgba(20,22,26,0.28);z-index:0;pointer-events:none}
+@keyframes mc-pulse{0%{box-shadow:0 0 0 0 rgba(43,182,115,0.5)}70%{box-shadow:0 0 0 8px rgba(43,182,115,0)}100%{box-shadow:0 0 0 0 rgba(43,182,115,0)}}
+@media (prefers-reduced-motion:reduce){.mc-live-dot{animation:none}}
+.menu-card-caption{margin-top:18px;display:flex;justify-content:space-between;gap:16px;font-size:13px;color:var(--stone);font-variant-numeric:tabular-nums}
+.menu-card-caption em{font-family:var(--font-display);font-style:italic;color:var(--ink-soft)}
+@media (max-width:640px){.menu-card{min-height:600px}.mc-foot{flex-direction:column-reverse;align-items:center;gap:14px}.menu-card-caption{flex-direction:column;gap:4px}}
+
+/* Menu-card + feature-tile drawer system. Parallels the English
+   mirror at /for/restaurants/. Triggered by any [data-drawer]
+   button on this page. Same CSS keys so styles stay in lockstep. */
+.mc-cta, .mc-live{border:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.mc-live{background:transparent;padding:0;font-family:inherit}
+.mc-cta:focus-visible{outline:2px solid var(--cream);outline-offset:3px}
+.mc-live:focus-visible{outline:2px solid var(--teal);outline-offset:4px;border-radius:4px}
+.mc-cta:hover{background:var(--teal)}
+.mc-live:hover .mc-live-dot{transform:scale(1.35);transition:transform 180ms var(--ease-out)}
+.mc-drawer-backdrop{position:fixed;inset:0;background:rgba(20,22,26,0.45);opacity:0;pointer-events:none;transition:opacity 240ms var(--ease-out);z-index:80}
+.mc-drawer-backdrop[data-open="true"]{opacity:1;pointer-events:auto}
+.mc-drawer{position:fixed;top:0;right:0;bottom:0;width:min(520px,92vw);background:var(--cream);box-shadow:-20px 0 60px -20px rgba(20,22,26,0.35);transform:translateX(100%);transition:transform 300ms cubic-bezier(.16,1,.3,1);z-index:90;display:flex;flex-direction:column}
+.mc-drawer[data-open="true"]{transform:translateX(0)}
+.mc-drawer-head{display:flex;justify-content:space-between;align-items:center;padding:22px 28px;border-bottom:1px solid var(--line);flex:0 0 auto;gap:20px}
+.mc-drawer-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0}
+.mc-drawer-close{background:transparent;border:0;padding:8px;margin:-8px;cursor:pointer;color:var(--stone);border-radius:6px;display:flex;align-items:center;justify-content:center;transition:color 180ms var(--ease-out),background 180ms var(--ease-out)}
+.mc-drawer-close:hover{color:var(--ink);background:var(--cream-2)}
+.mc-drawer-close:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.mc-drawer-close svg{width:22px;height:22px;display:block}
+.mc-drawer-body{padding:32px 28px 28px;overflow-y:auto;flex:1 1 auto}
+.mc-drawer-body h2{font-family:var(--font-display);font-size:clamp(24px,3vw,30px);font-weight:500;color:var(--ink);margin:0 0 14px;letter-spacing:-0.01em;line-height:1.2}
+.mc-drawer-lede{font-size:16px;line-height:1.6;color:var(--ink-soft);margin:0 0 26px}
+.mc-drawer-body ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:18px}
+.mc-drawer-body ul li{font-size:15px;line-height:1.6;color:var(--ink-soft);padding-left:22px;position:relative}
+.mc-drawer-body ul li::before{content:'';position:absolute;left:0;top:9px;width:8px;height:8px;border-radius:50%;background:var(--teal)}
+.mc-drawer-body ul li strong{color:var(--ink);font-weight:600}
+.mc-drawer-foot{padding:20px 28px;border-top:1px solid var(--line);background:var(--cream-2);flex:0 0 auto}
+.mc-drawer-foot-text{font-size:13px;color:var(--stone);margin:0 0 12px}
+.mc-drawer-foot-btn{display:inline-flex;align-items:center;gap:8px;padding:12px 22px;background:var(--ink);color:var(--cream);border-radius:999px;font-size:14px;font-weight:600;text-decoration:none;transition:background 180ms var(--ease-out)}
+.mc-drawer-foot-btn:hover{background:var(--teal)}
+.mc-drawer-foot-btn svg{width:14px;height:14px}
+@media (max-width:640px){.mc-drawer{top:auto;left:0;right:0;bottom:0;width:100%;max-height:88vh;border-radius:22px 22px 0 0;transform:translateY(100%)}.mc-drawer[data-open="true"]{transform:translateY(0)}.mc-drawer-head{padding:18px 22px}.mc-drawer-body{padding:24px 22px}.mc-drawer-foot{padding:18px 22px}}
+@media (prefers-reduced-motion:reduce){.mc-drawer,.mc-drawer-backdrop{transition-duration:0ms}}
+.service-link{margin-top:auto;padding:16px 0 0;background:transparent;border:0;font:inherit;font-size:14px;font-weight:600;color:var(--teal);cursor:pointer;display:inline-flex;align-items:center;gap:8px;align-self:flex-start;transition:color 180ms var(--ease-out)}
+.service-link-arrow{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform 200ms var(--ease-out)}
+.service-link:hover{color:var(--ink)}
+.service-link:hover .service-link-arrow{transform:translateX(4px)}
+.service-link:focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-radius:4px}
+</style>
+<style>
+/* Critical CSS — prevents flash of unstyled content while the main
+   stylesheet (assets/site.css) loads non-render-blocking via the
+   <link> below. Carries: token vars used in inline styles elsewhere,
+   body baseline (cream + ink + body-size + line-height), container
+   width, skip-link affordance, and a min-height reservation for the
+   fixed nav so layout doesn't shift when site.css applies. ~600
+   bytes. Documented in Phase 3B perf cutover; the full token set
+   reapplies once site.css arrives. */
+:root{--cream:#FAF7F2;--cream-2:#F3EEE3;--ink:#14161A;--ink-soft:#2A2D33;--teal:#1F4E5B;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
+html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--cream);line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased}
+.container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
+.skip-link{position:absolute;left:-9999px;top:0}
+.skip-link:focus{position:static;display:inline-block;background:#14161A;color:#FAF7F2;padding:12px 16px;z-index:100}
+/* injected by inject-critical-link-color.mjs */
+a{color:inherit}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:500;font-size:15px;text-decoration:none;white-space:nowrap;cursor:pointer}
+.btn-primary{background:var(--ink);color:var(--cream)}
+.btn-ghost{background:transparent;color:var(--ink);border:1px solid #D9D5CB}
+header.nav{min-height:64px}
+</style>
+<!-- Async-load the main stylesheet. Pattern: preload + onload-swap
+     (with a <noscript> fallback for the JS-disabled path). The
+     onload assigns this.rel='stylesheet', which the browser then
+     applies; before that the critical CSS above carries the page. -->
+<link rel="preload" as="style" href="/assets/site-core.css?v=a3cc95eb7ac7" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=47810dd9477a" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a3cc95eb7ac7"><link rel="stylesheet" href="/assets/site-article.css?v=47810dd9477a"></noscript>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Saltar al contenido principal</a>
+
 <script>
   /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
      Apple devices. Runs early in <body> so the swap is essentially
@@ -1037,7 +1216,7 @@
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">La ventana.</p>
-        <p class="foot-blurb">Una biblioteca web y estudio de dise&ntilde;o para restaurantes, con base en Silver Spring, MD &mdash; art&iacute;culos, herramientas gratis, investigaci&oacute;n y un glosario de <!-- count:glossary.terms -->116<!-- /count --> t&eacute;rminos, con el estudio detr&aacute;s cuando quieras contratar. Se habla espa&ntilde;ol.</p>
+        <p class="foot-blurb">Una biblioteca web y estudio de dise&ntilde;o para restaurantes, con base en Silver Spring, MD &mdash; art&iacute;culos, herramientas gratis, investigaci&oacute;n y un glosario de <!-- count:glossary.terms -->139<!-- /count --> t&eacute;rminos, con el estudio detr&aacute;s cuando quieras contratar. Se habla espa&ntilde;ol.</p>
       </div>
 
       <nav class="foot-col" aria-labelledby="foot-explore">

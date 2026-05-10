@@ -32,6 +32,69 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [{
+    "@type": "HowTo",
+    "@id": "https://muntin.digital/learn/checklists/audit-any-tool/#howto",
+    "name": "Audit any free tool — 5-test framework",
+    "description": "Five DevTools-driven tests that tell you whether a free restaurant tool is honest about its data flow.",
+    "totalTime": "PT5M",
+    "inLanguage": "en-US",
+    "step": [
+      { "@type": "HowToStep", "position": 1, "name": "Network — does typing a number trigger a request?", "text": "DevTools → Network. Type a number. The request list should not grow.", "url": "https://muntin.digital/learn/checklists/audit-any-tool/#test-1" },
+      { "@type": "HowToStep", "position": 2, "name": "Privacy claim at the point of input", "text": "Look for a data-handling statement near the form, not just in the footer.", "url": "https://muntin.digital/learn/checklists/audit-any-tool/#test-2" },
+      { "@type": "HowToStep", "position": 3, "name": "Account / newsletter / cookie gate?", "text": "Anything demanding 'accept all' or an email before showing results means the tool is the funnel.", "url": "https://muntin.digital/learn/checklists/audit-any-tool/#test-3" },
+      { "@type": "HowToStep", "position": 4, "name": "Third-party scripts", "text": "DevTools → Network → filter JS. Any GA, Meta Pixel, HubSpot, FullStory, Hotjar = your inputs are surveilled.", "url": "https://muntin.digital/learn/checklists/audit-any-tool/#test-4" },
+      { "@type": "HowToStep", "position": 5, "name": "Source readability", "text": "Right-click → View Source. Unminified, named functions = auditable. Minified SaaS bundle = opaque.", "url": "https://muntin.digital/learn/checklists/audit-any-tool/#test-5" }
+    ]
+  }]
+}
+</script>
+
+<script src="/assets/p.js?v=20260503" defer></script>
+<script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
+
+<style>.breadcrumb{padding-top:100px}</style>
+<style>
+/* Critical CSS — prevents flash of unstyled content while the main
+   stylesheet (assets/site.css) loads non-render-blocking via the
+   <link> below. Carries: token vars used in inline styles elsewhere,
+   body baseline (cream + ink + body-size + line-height), container
+   width, skip-link affordance, and a min-height reservation for the
+   fixed nav so layout doesn't shift when site.css applies. ~600
+   bytes. Documented in Phase 3B perf cutover; the full token set
+   reapplies once site.css arrives. */
+:root{--cream:#FAF7F2;--cream-2:#F3EEE3;--ink:#14161A;--ink-soft:#2A2D33;--teal:#1F4E5B;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
+html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--cream);line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased}
+.container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
+.skip-link{position:absolute;left:-9999px;top:0}
+.skip-link:focus{position:static;display:inline-block;background:#14161A;color:#FAF7F2;padding:12px 16px;z-index:100}
+/* injected by inject-critical-link-color.mjs */
+a{color:inherit}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:500;font-size:15px;text-decoration:none;white-space:nowrap;cursor:pointer}
+.btn-primary{background:var(--ink);color:var(--cream)}
+.btn-ghost{background:transparent;color:var(--ink);border:1px solid #D9D5CB}
+header.nav{min-height:64px}
+</style>
+<!-- Preload the two above-the-fold web fonts so they arrive in
+     parallel with site.css instead of being discovered after parse. -->
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
+<!-- Async-load the main stylesheet. Pattern: preload + onload-swap
+     (with a <noscript> fallback for the JS-disabled path). The
+     onload assigns this.rel='stylesheet', which the browser then
+     applies; before that the critical CSS above carries the page. -->
+<link rel="preload" as="style" href="/assets/site-core.css?v=a3cc95eb7ac7" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=47810dd9477a" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a3cc95eb7ac7"><link rel="stylesheet" href="/assets/site-article.css?v=47810dd9477a"></noscript>
+</head>
+<body>
+
+<a class="skip-link" href="#post-body">Skip to main content</a>
+
 <script>
   /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
      Apple devices. Runs early in <body> so the swap is essentially

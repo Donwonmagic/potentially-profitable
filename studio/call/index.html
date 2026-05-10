@@ -27,6 +27,103 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://muntin.digital/studio/call/#webpage",
+      "name": "Book a 20-min call — Muntin Digital",
+      "description": "Branded landing surface for the Cal.com 20-min consult booking.",
+      "url": "https://muntin.digital/studio/call/",
+      "inLanguage": "en-US",
+      "isPartOf": { "@id": "https://muntin.digital/#website" },
+      "publisher": { "@id": "https://muntin.digital/#business" },
+      "dateModified": "2026-05-03"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Muntin Digital", "item": "https://muntin.digital/" },
+        { "@type": "ListItem", "position": 2, "name": "Studio", "item": "https://muntin.digital/studio/" },
+        { "@type": "ListItem", "position": 3, "name": "Book a call", "item": "https://muntin.digital/studio/call/" }
+      ]
+    }
+  ]
+}
+</script>
+
+<style>
+.breadcrumb{padding-top:100px}
+.call-hero{max-width:760px;margin:32px auto 24px;padding:0 var(--pad-x);text-align:center}
+.call-hero h1{font-family:var(--font-display);font-size:clamp(36px,5vw,56px);font-weight:500;line-height:1.05;letter-spacing:-0.5px;margin:0 0 16px;color:var(--ink)}
+.call-hero h1 .serif-italic{font-style:italic;color:var(--teal)}
+.call-hero p.lead{font-size:17px;line-height:1.55;color:var(--ink-soft);margin:0 auto;max-width:560px}
+.call-prompts{max-width:760px;margin:24px auto 32px;padding:18px 22px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:8px}
+.call-prompts h2{font-family:var(--font-body);font-size:13px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--teal);margin:0 0 10px}
+.call-prompts ul{margin:0;padding-left:22px;font-size:15px;line-height:1.65;color:var(--ink)}
+.call-embed{max-width:1080px;margin:32px auto 64px;padding:0 var(--pad-x)}
+.call-embed-shell{position:relative;min-height:700px;background:var(--surface-1);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.call-embed-loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--stone);pointer-events:none}
+#cal-inline-muntin{min-height:700px}
+#cal-inline-muntin:not(:empty) ~ .call-embed-loading{display:none}
+.call-fallback{margin:32px auto 0;max-width:560px;text-align:center;font-size:14px;color:var(--stone)}
+.call-fallback a{color:var(--teal);font-weight:500;border-bottom:1px solid currentColor;text-decoration:none}
+.call-meta{max-width:760px;margin:48px auto 80px;padding:0 var(--pad-x);font-size:14px;line-height:1.65;color:var(--ink-soft);text-align:center}
+.call-meta a{color:var(--teal)}
+@media (max-width:640px){
+  .call-embed-shell{min-height:600px}
+  #cal-inline-muntin{min-height:600px}
+}
+</style>
+<style>
+/* Critical CSS — prevents flash of unstyled content while the main
+   stylesheet (assets/site.css) loads non-render-blocking via the
+   <link> below. Carries: token vars used in inline styles elsewhere,
+   body baseline (cream + ink + body-size + line-height), container
+   width, skip-link affordance, and a min-height reservation for the
+   fixed nav so layout doesn't shift when site.css applies. ~600
+   bytes. Documented in Phase 3B perf cutover; the full token set
+   reapplies once site.css arrives. */
+:root{--cream:#FAF7F2;--cream-2:#F3EEE3;--ink:#14161A;--ink-soft:#2A2D33;--teal:#1F4E5B;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
+html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--cream);line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased}
+.container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
+.skip-link{position:absolute;left:-9999px;top:0}
+.skip-link:focus{position:static;display:inline-block;background:#14161A;color:#FAF7F2;padding:12px 16px;z-index:100}
+/* injected by inject-critical-link-color.mjs */
+a{color:inherit}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:500;font-size:15px;text-decoration:none;white-space:nowrap;cursor:pointer}
+.btn-primary{background:var(--ink);color:var(--cream)}
+.btn-ghost{background:transparent;color:var(--ink);border:1px solid #D9D5CB}
+header.nav{min-height:64px}
+</style>
+<!-- Preload the two above-the-fold web fonts so they arrive in
+     parallel with site.css instead of being discovered after parse. -->
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
+<!-- Async-load the main stylesheet. Pattern: preload + onload-swap
+     (with a <noscript> fallback for the JS-disabled path). The
+     onload assigns this.rel='stylesheet', which the browser then
+     applies; before that the critical CSS above carries the page. -->
+<link rel="preload" as="style" href="/assets/site-core.css?v=a3cc95eb7ac7" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=47810dd9477a" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a3cc95eb7ac7"><link rel="stylesheet" href="/assets/site-article.css?v=47810dd9477a"></noscript>
+
+<link rel="preconnect" href="https://app.cal.com" crossorigin />
+<link rel="dns-prefetch" href="https://app.cal.com" />
+<script src="/assets/p.js?v=20260503" defer></script>
+<script>
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  plausible.init({ endpoint: '/api/event', logging: false })
+</script>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<!-- ============ NAV (synced from _includes/nav.html) ============ -->
 <script>
   /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
      Apple devices. Runs early in <body> so the swap is essentially

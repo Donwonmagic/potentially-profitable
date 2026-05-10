@@ -41,6 +41,239 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/brand/favicons/favicon-16x16.png" />
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","@id":"https://muntin.digital/tools/storefront-health/#tool","name":"Storefront Health","description":"Unified restaurant-website scorecard across SEO, speed, mobile, schema, GBP, and full audit.","url":"https://muntin.digital/tools/storefront-health/","applicationCategory":"BusinessApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"creator":{"@id":"https://muntin.digital/#business"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Muntin Digital","item":"https://muntin.digital/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://muntin.digital/tools/"},{"@type":"ListItem","position":3,"name":"Storefront Health","item":"https://muntin.digital/tools/storefront-health/"}]}]}
+</script>
+<script src="/assets/p.js?v=20260503" defer></script>
+<script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
+<style>.breadcrumb{padding-top:100px}</style>
+<style>
+/* Critical CSS — prevents flash of unstyled content while the main
+   stylesheet (assets/site.css) loads non-render-blocking via the
+   <link> below. Carries: token vars used in inline styles elsewhere,
+   body baseline (cream + ink + body-size + line-height), container
+   width, skip-link affordance, and a min-height reservation for the
+   fixed nav so layout doesn't shift when site.css applies. ~600
+   bytes. Documented in Phase 3B perf cutover; the full token set
+   reapplies once site.css arrives. */
+:root{--cream:#FAF7F2;--cream-2:#F3EEE3;--ink:#14161A;--ink-soft:#2A2D33;--teal:#1F4E5B;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
+html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--cream);line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased}
+.container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
+.skip-link{position:absolute;left:-9999px;top:0}
+.skip-link:focus{position:static;display:inline-block;background:#14161A;color:#FAF7F2;padding:12px 16px;z-index:100}
+/* injected by inject-critical-link-color.mjs */
+a{color:inherit}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:500;font-size:15px;text-decoration:none;white-space:nowrap;cursor:pointer}
+.btn-primary{background:var(--ink);color:var(--cream)}
+.btn-ghost{background:transparent;color:var(--ink);border:1px solid #D9D5CB}
+header.nav{min-height:64px}
+</style>
+<!-- Preload the two above-the-fold web fonts so they arrive in
+     parallel with site.css instead of being discovered after parse. -->
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
+<!-- Async-load the main stylesheet. Pattern: preload + onload-swap
+     (with a <noscript> fallback for the JS-disabled path). The
+     onload assigns this.rel='stylesheet', which the browser then
+     applies; before that the critical CSS above carries the page. -->
+<link rel="preload" as="style" href="/assets/site-core.css?v=a3cc95eb7ac7" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-tool.css?v=5f214b425aa9" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a3cc95eb7ac7"><link rel="stylesheet" href="/assets/site-tool.css?v=5f214b425aa9"></noscript>
+<style>
+  /* Storefront Health scorecard styles. Form, hero, note, result
+     container, and CTA card live in site.css under "TOOL SHELL". */
+  .sh-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:20px}
+  .sh-row{padding:18px 20px;background:var(--white);border:1px solid var(--line);border-radius:var(--r-input);display:flex;flex-direction:column;gap:6px}
+  .sh-row__head{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+  .sh-row__kind{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--stone)}
+  .sh-row__score{font-family:var(--font-display);font-size:28px;font-weight:500;color:var(--ink);line-height:1}
+  .sh-row__score--missing{color:var(--stone);font-size:16px;font-weight:400;font-family:inherit}
+  .sh-row__label{font-size:14px;color:var(--ink-soft);margin:0}
+  .sh-row__fix{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:500;color:var(--teal);text-decoration:none;margin-top:4px}
+  .sh-row__fix:hover{text-decoration:underline}
+  .sh-overall{margin:24px 0;padding:24px;background:var(--cream-2);border:1px solid var(--line);border-radius:var(--r-input);display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center}
+  .sh-overall__num{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:96px}
+  .sh-overall__score{font-family:var(--font-display);font-size:64px;font-weight:500;color:var(--ink);line-height:1;letter-spacing:-2px}
+  .sh-overall__grade{font-size:13px;color:var(--stone);letter-spacing:.1em;text-transform:uppercase}
+  .sh-overall__narrative{font-size:15px;line-height:1.55;color:var(--ink);margin:0}
+  /* Fix-this-first card sits above the grid. Its job is to convert
+     six numbers into one verb. Color/band reflects severity: red for
+     <50, amber 50-69, otherwise we don't render this card at all
+     (no grid rows are urgent enough to single out). */
+  .sh-fix-first{margin:18px 0 12px;padding:18px 22px;border:1px solid var(--line);border-left:4px solid var(--rust);border-radius:var(--r-input);background:var(--white);display:flex;flex-direction:column;gap:6px}
+  .sh-fix-first[data-band="amber"]{border-left-color:#c89a3c}
+  .sh-fix-first__eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--rust)}
+  .sh-fix-first[data-band="amber"] .sh-fix-first__eyebrow{color:#9c7416}
+  .sh-fix-first__title{font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0;line-height:1.2}
+  .sh-fix-first__why{font-size:14px;color:var(--ink-soft);margin:0;line-height:1.5}
+  .sh-fix-first__cta{margin-top:6px;align-self:flex-start;padding:10px 16px;border-radius:999px;background:var(--ink);color:var(--cream);text-decoration:none;font-weight:600;font-size:13.5px}
+  .sh-fix-first__cta:hover{filter:brightness(0.92)}
+  /* Per-row band stripe — replaces the cool-uniform look with severity. */
+  .sh-row[data-band="red"]{border-left:3px solid var(--rust)}
+  .sh-row[data-band="amber"]{border-left:3px solid #c89a3c}
+  .sh-row[data-band="green"]{border-left:3px solid var(--teal)}
+  .sh-fanout-status{margin:0 0 14px;padding:10px 14px;background:var(--cream-2);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:var(--r-input);font-size:13px;color:var(--ink-soft)}
+  .sh-fanout-status em{font-style:normal}
+  .sh-share{margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .sh-share__btn{padding:8px 14px;border:1px solid var(--line);border-radius:999px;background:var(--white);color:var(--ink);font-size:13px;font-weight:500;cursor:pointer;font:inherit}
+  .sh-share__btn:hover{border-color:var(--teal);color:var(--teal)}
+  .sh-share__msg{font-size:12.5px;color:var(--stone)}
+  @media (max-width:560px){
+    .sh-overall{grid-template-columns:1fr;text-align:left}
+    .sh-overall__num{flex-direction:row;align-items:baseline;gap:10px}
+    .sh-overall__score{font-size:48px}
+  }
+  /* Save affordance follows the canonical workbench-save pattern. */
+  .sh-save{margin-top:24px;padding:18px 22px;background:var(--surface-inset);border:1px solid var(--line);border-radius:var(--r-md);display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:space-between}
+  .sh-save[hidden]{display:none}
+  .sh-save-text{font-size:14px;color:var(--ink-soft);margin:0;line-height:1.5;flex:1 1 100%}
+  @media (min-width:480px){.sh-save-text{flex:1 1 220px}}
+  .sh-save-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid var(--ink);border-radius:999px;background:var(--ink);color:var(--cream);font:inherit;font-size:14px;font-weight:500;cursor:pointer;transition:background var(--t-fast) var(--ease),transform var(--t-fast) var(--ease)}
+  .sh-save-btn:hover{background:var(--teal);transform:translateY(-1px)}
+  .sh-save-btn[disabled]{opacity:.6;cursor:wait}
+  .sh-save-link{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid var(--line-dark);border-radius:999px;color:var(--ink);font-size:14px;font-weight:500;text-decoration:none;transition:border-color var(--t-fast) var(--ease)}
+  .sh-save-link:hover{border-color:var(--ink)}
+  .sh-save-msg{font-size:13px;color:var(--status-good);font-weight:500}
+  .sh-save-msg.error{color:var(--rust)}
+</style>
+<!-- tool-schema:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://muntin.digital/tools/storefront-health/#tool",
+      "applicationCategory": "BusinessApplication",
+      "applicationSubCategory": "RestaurantOps",
+      "operatingSystem": "Web",
+      "screenshot": "https://muntin.digital/brand/og/tool-storefront-health.png",
+      "url": "https://muntin.digital/tools/storefront-health/",
+      "featureList": [
+        "6-tool composite scorecard",
+        "Speed + SEO + mobile + schema + GBP + audit roll-up",
+        "Shareable scorecard permalink"
+      ],
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock"
+      },
+      "name": "Storefront Health",
+      "description": "One URL, six checks, one score. The unified scorecard for your restaurant's full storefront — with the next fix linked to the tool that runs it."
+    },
+    {
+      "@type": "HowTo",
+      "@id": "https://muntin.digital/tools/storefront-health/#howto",
+      "name": "How to read your Storefront Health result",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "Enter your property",
+          "text": "Restaurant URL + GBP listing — both feed the composite.",
+          "url": "https://muntin.digital/tools/storefront-health/#step-1"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "Read the scorecard",
+          "text": "6 sub-scores roll up to one Storefront Health number 0-100.",
+          "url": "https://muntin.digital/tools/storefront-health/#step-2"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "name": "Share or save it",
+          "text": "Permalink the scorecard for a peer or save it to track over time.",
+          "url": "https://muntin.digital/tools/storefront-health/#step-3"
+        }
+      ],
+      "about": {
+        "@id": "https://muntin.digital/tools/storefront-health/#tool"
+      },
+      "inLanguage": "en-US"
+    }
+  ]
+}
+</script>
+<!-- tool-schema:end -->
+<!-- storefront-health-graph:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Service",
+      "@id": "https://muntin.digital/tools/storefront-health/#service",
+      "name": "Storefront Health audit",
+      "provider": {
+        "@id": "https://muntin.digital/#business"
+      },
+      "serviceType": "RestaurantSEOAudit",
+      "areaServed": "United States",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "url": "https://muntin.digital/tools/storefront-health/",
+      "about": {
+        "@id": "https://muntin.digital/tools/storefront-health/#tool"
+      }
+    },
+    {
+      "@type": "ItemList",
+      "@id": "https://muntin.digital/tools/storefront-health/#sub-tools",
+      "numberOfItems": 6,
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "url": "https://muntin.digital/tools/seo-grader/",
+          "name": "SEO Grader"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "url": "https://muntin.digital/tools/speed-test/",
+          "name": "Speed Test"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "url": "https://muntin.digital/tools/mobile-check/",
+          "name": "Mobile Check"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "url": "https://muntin.digital/tools/schema-check/",
+          "name": "Schema Check"
+        },
+        {
+          "@type": "ListItem",
+          "position": 5,
+          "url": "https://muntin.digital/tools/gbp-grader/",
+          "name": "GBP Grader"
+        },
+        {
+          "@type": "ListItem",
+          "position": 6,
+          "url": "https://muntin.digital/tools/audits/restaurant/",
+          "name": "Restaurant Audit"
+        }
+      ]
+    }
+  ]
+}
+</script>
+<!-- storefront-health-graph:end -->
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
 <script>
   /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
      Apple devices. Runs early in <body> so the swap is essentially

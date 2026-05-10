@@ -31,6 +31,294 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/brand/favicons/favicon-32x32.png" />
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","@id":"https://muntin.digital/es/tools/photo-brief/#tool","name":"Constructor de Brief de Fotos","description":"Constructor de brief de fotos del lado del cliente para restaurantes independientes. Lista platos, marca superficies de destino (Yelp, Google, Instagram, hero web, menú), corre la matemática de corte de aspecto y dedup de tomas, y exporta un Brief de Fotos imprimible y una Tarjeta de Fotos de Marca. El brief se queda en el navegador.","url":"https://muntin.digital/es/tools/photo-brief/","applicationCategory":"DesignApplication","operatingSystem":"Web","inLanguage":["es","en"],"isAccessibleForFree":true,"browserRequirements":"Requiere un navegador moderno con JavaScript habilitado","keywords":"brief de fotos, fotografía de restaurantes, brief de fotografía gastronómica, mapa de proporciones, toma héroe, tarifa diaria fotógrafo, dimensiones de imagen, foto Google Business, proporción Instagram, foto Yelp","audience":{"@type":"BusinessAudience","audienceType":"Dueños y operadores de restaurantes independientes"},"featureList":["Ocho superficies de destino canónicas con especificaciones actuales 2026 (hero web, OG, Yelp, Google Business, Instagram feed 4:5, Instagram cuadrado, Instagram story, menú inline, Apple Maps)","Selector de proporción de toma fuente (3:2 / 4:3 / 16:9) — la matemática del corte se redibuja para coincidir con la cámara del fotógrafo","Dedup de tomas (una toma fuente sirve varios destinos con corte de aspecto)","Matemática de ROI con tarifa diaria del fotógrafo y rango de levante de fotos descriptivas (Wansink/Cornell)","Importar pegando desde hoja de cálculo (CSV/TSV con alias en inglés y español)","PNG imprimible del Brief de Fotos y de la Tarjeta de Fotos de Marca","Paquete ZIP (Brief + Tarjeta + brief.html + shot-list.csv + photo-brief.json + README)","Funnels entrantes desde Ingeniería de Menú, Suite de Marca y Costo del Plato vía datos en fragmento de URL","Del lado del cliente: sin fetch, sin almacenamiento, sin cuenta"],"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"creator":{"@id":"https://muntin.digital/#business"}},{"@type":"FAQPage","@id":"https://muntin.digital/es/tools/photo-brief/#faq","mainEntity":[{"@type":"Question","name":"¿Los nombres de mis platos salen de la página cuando uso el Constructor de Brief de Fotos?","acceptedAnswer":{"@type":"Answer","text":"No. Abre DevTools → Network. Escribe un brief y haz clic en cualquier exportación — cero solicitudes con los nombres de tus platos. La matemática corre en tu dispositivo. La página es HTML estático más dos archivos JavaScript no minificados que puedes leer directamente."}},{"@type":"Question","name":"¿De dónde vienen las especificaciones de superficies y con qué frecuencia las revisan?","acceptedAnswer":{"@type":"Answer","text":"Centro de Ayuda de Meta para Instagram (feed por defecto 4:5, 1080×1350; story 9:16, 1080×1920), ayuda de Google Business Profile (portada 16:9, mínimo 1200×675), guía de socios de Yelp (featured 1920×1280) y el protocolo OpenGraph (1.91:1, 1200×630). Las especificaciones se revisan cada trimestre — la lista de superficies muestra la fecha de revisión para que sepas de un vistazo qué tan obsoletos están los valores por defecto."}},{"@type":"Question","name":"¿Qué pasa si mi fotógrafo dispara en 4:3 o 16:9 en lugar de 3:2?","acceptedAnswer":{"@type":"Answer","text":"Elige la proporción de toma fuente arriba del formulario. La matemática del corte, la franja de cobertura en vivo y el PNG imprimible del Brief de Fotos se redibujan para coincidir. Un fotógrafo de celular en 4:3 obtiene cortes correctos; una cámara cinematográfica en 16:9 también. La matemática es sólida para cualquier proporción fuente."}},{"@type":"Question","name":"¿Qué hace exactamente la matemática de deduplicación?","acceptedAnswer":{"@type":"Answer","text":"Ingenuamente, fotografiarías cada plato en cada proporción de cada destino — 6 platos × 4 superficies × 3 ángulos = 72 tomas. La dedup nota que una toma fuente puede servir varios destinos con corte de aspecto. Si hero web, OG y Google Business quieren luz cálida de ventana en ángulo de 45 grados, el fotógrafo dispara esa toma una vez y el brief te dice a qué destinos corta. Un brief típico de 6 platos baja de ~72 tomas ingenuas a ~20 tomas fuente."}},{"@type":"Question","name":"¿Puedo compartir un brief con mi fotógrafo?","acceptedAnswer":{"@type":"Answer","text":"Sí. Descarga el PNG del Brief de Fotos y el paquete ZIP (PNG + HTML imprimible + shot-list CSV + JSON + README). El PNG es para el día de la sesión; el HTML imprimible es la página que el fotógrafo lee en la mesa; el CSV se pega en una hoja de Google Sheets para referencia durante la sesión."}},{"@type":"Question","name":"¿El código fuente es abierto y legible?","acceptedAnswer":{"@type":"Answer","text":"Sí. Sin paso de build, sin minificación, sin framework. El módulo de matemática vive en /tools/photo-brief/photo-brief.js como JavaScript plano con funciones nombradas. Clic derecho en Ver código fuente para leer la UI directamente."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Muntin Digital","item":"https://muntin.digital/es/"},{"@type":"ListItem","position":2,"name":"Herramientas","item":"https://muntin.digital/es/tools/"},{"@type":"ListItem","position":3,"name":"Constructor de Brief de Fotos","item":"https://muntin.digital/es/tools/photo-brief/"}]}]}
+</script>
+<script src="/assets/p.js?v=20260503" defer></script>
+<script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
+<style>
+/* Critical CSS — prevents flash of unstyled content while the main
+   stylesheet (assets/site.css) loads non-render-blocking via the
+   <link> below. Carries: token vars used in inline styles elsewhere,
+   body baseline (cream + ink + body-size + line-height), container
+   width, skip-link affordance, and a min-height reservation for the
+   fixed nav so layout doesn't shift when site.css applies. ~600
+   bytes. Documented in Phase 3B perf cutover; the full token set
+   reapplies once site.css arrives. */
+:root{--cream:#FAF7F2;--cream-2:#F3EEE3;--ink:#14161A;--ink-soft:#2A2D33;--teal:#1F4E5B;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
+html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--cream);line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased}
+.container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
+.skip-link{position:absolute;left:-9999px;top:0}
+.skip-link:focus{position:static;display:inline-block;background:#14161A;color:#FAF7F2;padding:12px 16px;z-index:100}
+/* injected by inject-critical-link-color.mjs */
+a{color:inherit}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:500;font-size:15px;text-decoration:none;white-space:nowrap;cursor:pointer}
+.btn-primary{background:var(--ink);color:var(--cream)}
+.btn-ghost{background:transparent;color:var(--ink);border:1px solid #D9D5CB}
+header.nav{min-height:64px}
+</style>
+<!-- Preload the two above-the-fold web fonts so they arrive in
+     parallel with site.css instead of being discovered after parse. -->
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
+<!-- Async-load the main stylesheet. Pattern: preload + onload-swap
+     (with a <noscript> fallback for the JS-disabled path). The
+     onload assigns this.rel='stylesheet', which the browser then
+     applies; before that the critical CSS above carries the page. -->
+<link rel="preload" as="style" href="/assets/site-core.css?v=a3cc95eb7ac7" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-tool.css?v=5f214b425aa9" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a3cc95eb7ac7"><link rel="stylesheet" href="/assets/site-tool.css?v=5f214b425aa9"></noscript>
+<style>.breadcrumb{padding-top:100px}
+/* === Photo Brief Builder tool-scoped styles. Page-prefix .pb-*. === */
+.pb-warnings{display:flex;flex-direction:column;gap:10px;margin:0 0 18px}
+.pb-warning{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:start;padding:14px 16px;border:1px solid rgba(198,138,44,0.25);border-left-width:4px;border-left-color:#C68A2C;border-radius:var(--r-input);background:rgba(198,138,44,0.06)}
+.pb-warning-icon{font-size:18px;line-height:1.3}
+.pb-warning h3{font-family:var(--font-display);font-size:15px;font-weight:600;margin:0 0 4px;color:var(--ink)}
+.pb-warning p{margin:0;font-size:13px;line-height:1.55;color:var(--ink-soft)}
+.pb-warning a.pb-fix{display:inline-block;padding:6px 12px;border:1px solid var(--teal);border-radius:999px;background:var(--white);color:var(--teal);font-size:12px;font-weight:600;text-decoration:none;white-space:nowrap}
+.pb-warning a.pb-fix:hover{background:var(--teal);color:var(--cream)}
+
+.pb-form{display:flex;flex-direction:column;gap:18px}
+.pb-meta{display:grid;grid-template-columns:1fr;gap:14px;align-items:end}
+@media(min-width:480px){.pb-meta{grid-template-columns:1fr 1fr}}
+@media(min-width:640px){.pb-meta{grid-template-columns:1fr 1fr 1fr}}
+.pb-mode{display:flex;gap:0;margin:0 0 14px;border:1px solid var(--line);border-radius:999px;padding:2px;width:fit-content;background:var(--surface-1)}
+.pb-mode button{padding:7px 14px;border:0;background:transparent;color:var(--ink-soft);font:inherit;font-size:13px;font-weight:500;cursor:pointer;border-radius:999px}
+.pb-mode button[aria-pressed="true"]{background:var(--ink);color:var(--cream)}
+.pb-self-hint{grid-column:1/-1;padding:14px 16px;background:var(--cream-2);border:1px solid var(--line);border-radius:var(--r-input);font-size:14px;color:var(--ink-soft);line-height:1.6;margin:0}
+.pb-shoot{position:fixed;inset:0;z-index:1000;background:var(--ink);color:var(--cream);display:flex;flex-direction:column;padding:env(safe-area-inset-top,16px) 16px env(safe-area-inset-bottom,16px) 16px}
+.pb-shoot[hidden]{display:none}
+.pb-shoot-header{display:flex;align-items:center;justify-content:space-between;padding:12px 4px}
+.pb-shoot-counter{font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(250,246,238,0.7);font-variant-numeric:tabular-nums}
+.pb-shoot-close{background:none;border:0;color:var(--cream);font-size:32px;line-height:1;cursor:pointer;padding:4px 12px}
+.pb-shoot-card{flex:1;display:flex;flex-direction:column;justify-content:center;padding:24px 8px;overflow-y:auto;touch-action:pan-y}
+.pb-shoot-card[data-marked="true"]{opacity:0.55}
+.pb-shoot-dish{font-family:var(--font-display);font-size:clamp(28px,5vw,48px);font-weight:500;line-height:1.1;margin:0 0 4px}
+.pb-shoot-cat{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 22px}
+.pb-shoot-spec{display:grid;grid-template-columns:auto 1fr;gap:6px 18px;margin:18px 0;font-size:18px;line-height:1.5}
+.pb-shoot-spec dt{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(250,246,238,0.6);align-self:start;padding-top:6px}
+.pb-shoot-spec dd{margin:0;color:var(--cream);font-weight:500}
+.pb-shoot-surfaces{margin:18px 0 0}
+.pb-shoot-surfaces-label{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(250,246,238,0.6);margin:0 0 8px}
+.pb-shoot-surfaces-list{display:flex;flex-wrap:wrap;gap:6px;list-style:none;padding:0;margin:0}
+.pb-shoot-surfaces-list li{padding:5px 12px;border:1px solid rgba(250,246,238,0.25);border-radius:999px;font-size:13px;color:var(--cream)}
+.pb-shoot-tip{margin:24px 0 0;padding:12px 14px;background:rgba(250,246,238,0.06);border-left:2px solid var(--teal);border-radius:6px;font-size:14px;line-height:1.5;color:rgba(250,246,238,0.85)}
+.pb-shoot-tips{margin:18px 0 0;padding:14px 16px;background:rgba(250,246,238,0.05);border:1px solid rgba(250,246,238,0.12);border-radius:8px}
+.pb-shoot-tips-label{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(250,246,238,0.6);margin:0 0 10px}
+.pb-shoot-tips-list{margin:0;padding-left:18px;font-size:14px;line-height:1.55;color:rgba(250,246,238,0.85)}
+.pb-shoot-tips-list li{margin-bottom:6px}
+.pb-shoot-tips-list li:last-child{margin-bottom:0}
+.pb-shoot-footer{display:flex;align-items:center;justify-content:space-between;padding:12px 0;gap:8px}
+.pb-shoot-nav{flex:1;padding:14px 16px;background:rgba(250,246,238,0.10);border:1px solid rgba(250,246,238,0.25);border-radius:999px;color:var(--cream);font:inherit;font-size:15px;font-weight:500;cursor:pointer}
+.pb-shoot-nav:hover{background:rgba(250,246,238,0.18)}
+.pb-shoot-nav:disabled{opacity:0.35;cursor:not-allowed}
+#pbShootMark{flex:0 0 auto;padding:14px 22px;background:var(--teal);border-color:var(--teal);color:var(--cream)}
+#pbShootMark[data-marked="true"]{background:rgba(250,246,238,0.10);border-color:rgba(250,246,238,0.25)}
+.pb-rules{padding:0;border:1px dashed var(--line);border-radius:var(--r-input);background:var(--white)}
+.pb-rules-summary{cursor:pointer;padding:14px 18px;font-size:13.5px;font-weight:600;color:var(--ink);list-style:none}
+.pb-rules-summary::-webkit-details-marker{display:none}
+.pb-rules-summary::before{content:'+ ';color:var(--teal);font-weight:700}
+.pb-rules[open] .pb-rules-summary::before{content:'− '}
+.pb-rules-body{padding:0 18px 18px}
+.pb-rules-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin:0 0 14px}
+.pb-rules-card{padding:14px 16px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--cream-2)}
+.pb-rules-card h4{font-family:var(--font-display);font-size:15px;font-weight:600;color:var(--ink);margin:0 0 8px;letter-spacing:.01em}
+.pb-rules-card ul{margin:0;padding-left:18px;font-size:13px;line-height:1.6;color:var(--ink-soft)}
+.pb-rules-card li{margin-bottom:5px}
+.pb-rules-card strong{color:var(--ink);font-weight:600}
+.pb-rules-foot{font-size:12px;color:var(--stone);margin:0;line-height:1.5;padding-top:8px;border-top:1px solid var(--line)}
+.pb-meta label{display:flex;flex-direction:column;gap:4px;font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone)}
+.pb-meta input,.pb-meta select{padding:10px 12px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);font:inherit;font-size:14px;color:var(--ink);font-variant-numeric:tabular-nums}
+.pb-meta input:focus,.pb-meta select:focus{outline:2px solid var(--teal);outline-offset:1px}
+
+.pb-srcframe{margin:0;padding:14px 16px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);display:flex;flex-wrap:wrap;align-items:center;gap:14px}
+.pb-srcframe legend{font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);padding:0;margin:0 8px 0 0}
+.pb-srcframe label{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--ink);cursor:pointer;padding:4px 10px;border:1px solid var(--line);border-radius:999px;background:var(--white);transition:border-color 140ms var(--ease-out)}
+.pb-srcframe label:hover{border-color:var(--teal)}
+.pb-srcframe label small{color:var(--stone);font-size:12.5px;font-weight:400}
+.pb-srcframe input[type="radio"]{margin:0;cursor:pointer}
+.pb-srcframe label[data-checked="true"]{border-color:var(--teal);background:rgba(31,78,91,0.04)}
+.pb-srcframe-note{flex-basis:100%;margin:0;font-size:12.5px;color:var(--stone);line-height:1.5}
+
+.pb-grid{border:1px solid var(--line);border-radius:var(--r-md);background:var(--white);overflow-x:auto;-webkit-overflow-scrolling:touch}
+.pb-grid table{width:100%;border-collapse:collapse;font-size:13px}
+@media(min-width:640px){.pb-grid table{min-width:640px}}
+.pb-grid th{padding:10px 8px;text-align:left;font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);background:var(--cream-2);border-bottom:1px solid var(--line);white-space:nowrap}
+.pb-grid td{padding:8px;border-bottom:1px solid var(--line);vertical-align:top}
+.pb-grid tr:last-child td{border-bottom:0}
+.pb-grid input,.pb-grid select{width:100%;padding:7px 8px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--white);font:inherit;font-size:13px;color:var(--ink)}
+.pb-grid input:focus,.pb-grid select:focus{outline:2px solid var(--teal);outline-offset:1px}
+.pb-grid .pb-num{width:60px;text-align:right;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;color:var(--ink-soft)}
+.pb-grid .pb-prio{width:100px}
+.pb-grid .pb-remove{background:none;border:none;color:var(--stone);cursor:pointer;font-size:18px;line-height:1;padding:0;display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;border-radius:var(--r-sm)}
+.pb-grid .pb-remove:hover{color:var(--rust);background:var(--cream-2)}
+.pb-grid .pb-remove:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+.pb-grid-actions{display:flex;gap:8px;flex-wrap:wrap;padding:10px 12px;background:var(--cream-2);border-top:1px solid var(--line)}
+.pb-paste{margin:0 0 14px;padding:14px 16px;border:1px dashed var(--line-dark);border-radius:var(--r-input);background:var(--white)}
+.pb-paste summary{cursor:pointer;font-size:13.5px;font-weight:600;color:var(--ink);list-style:none;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.pb-paste summary::after{content:"+";font-size:18px;color:var(--stone)}
+.pb-paste[open] summary::after{content:"\2212"}
+.pb-paste summary::-webkit-details-marker{display:none}
+.pb-paste-body{margin-top:12px;display:flex;flex-direction:column;gap:10px}
+.pb-paste textarea{width:100%;min-height:110px;padding:10px 12px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--white);font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12px;line-height:1.5;color:var(--ink);resize:vertical}
+.pb-paste-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.pb-paste-actions .pb-paste-hint{font-size:12px;color:var(--stone);margin-left:auto}
+.pb-paste-btn{padding:6px 14px;border:1px solid var(--teal);border-radius:999px;background:var(--white);color:var(--teal);font:inherit;font-size:12px;font-weight:600;cursor:pointer}
+.pb-paste-btn:hover{background:var(--teal);color:var(--cream)}
+.pb-add-row,.pb-sample-btn,.pb-clear-btn{padding:6px 14px;border:1px dashed var(--line-dark);border-radius:999px;background:transparent;font:inherit;font-size:12px;font-weight:600;color:var(--stone);cursor:pointer}
+.pb-add-row:hover,.pb-sample-btn:hover{border-color:var(--teal);color:var(--teal)}
+.pb-clear-btn{margin-left:auto}
+.pb-clear-btn:hover{border-color:var(--rust);color:var(--rust)}
+
+.pb-surfaces{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.pb-surface{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);cursor:pointer;transition:border-color 140ms var(--ease-out)}
+.pb-surface:hover{border-color:var(--teal)}
+.pb-surface input[type="checkbox"]{margin:3px 0 0;cursor:pointer}
+.pb-surface .pb-surface-title{font-size:13.5px;font-weight:600;color:var(--ink);line-height:1.3}
+.pb-surface .pb-surface-meta{display:block;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12.5px;color:var(--stone);margin-top:2px;font-variant-numeric:tabular-nums}
+.pb-surface[data-checked="true"]{border-color:var(--teal);background:rgba(31,78,91,0.04)}
+
+.pb-math{display:grid;grid-template-columns:1fr;gap:18px;margin-top:24px}
+@media(min-width:1024px){.pb-math{grid-template-columns:1fr 1fr 1fr}}
+.pb-math-card{padding:18px 20px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--white)}
+.pb-math-eyebrow{font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);margin:0 0 6px}
+.pb-math-num{font-family:var(--font-display);font-size:clamp(28px,4vw,40px);font-weight:500;color:var(--ink);line-height:1;margin:0 0 6px;font-variant-numeric:tabular-nums}
+.pb-math-detail{font-size:12.5px;color:var(--ink-soft);line-height:1.55;margin:0}
+.pb-math-detail strong{color:var(--ink)}
+
+.pb-coverage{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-top:12px}
+.pb-coverage-tile{padding:10px 12px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--white);font-size:12px;line-height:1.4}
+.pb-coverage-title{font-weight:600;color:var(--ink);margin:0 0 2px}
+.pb-coverage-ratio{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12.5px;color:var(--stone);font-variant-numeric:tabular-nums}
+.pb-coverage-crop{display:block;margin:6px 0;height:48px;background:var(--cream-2);border:1px solid var(--line);position:relative;--pb-crop-w:100%;--pb-crop-h:100%;--pb-crop-x:0%;--pb-crop-y:0%}
+.pb-coverage-crop::after{content:"";position:absolute;background:rgba(31,78,91,0.10);border:2px solid var(--teal);box-sizing:border-box;top:var(--pb-crop-y);left:var(--pb-crop-x);width:var(--pb-crop-w);height:var(--pb-crop-h)}
+
+/* Panel de paleta. */
+.pb-palette{padding:14px 16px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--white)}
+.pb-palette-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 8px}
+.pb-palette-chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 8px}
+.pb-palette-chip{display:flex;flex-direction:column;align-items:center;gap:4px}
+.pb-palette-swatch{width:36px;height:36px;border-radius:8px;border:1px solid var(--line);box-shadow:inset 0 0 0 1px rgba(255,255,255,0.18)}
+.pb-palette-hex{font:600 11px/1 ui-monospace,SFMono-Regular,Consolas,monospace;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+.pb-palette-note{font-size:13px;color:var(--ink-soft);line-height:1.5;margin:0}
+
+.pb-empty{padding:24px;border:1px dashed var(--line);border-radius:var(--r-input);background:var(--cream-2);font-size:13.5px;color:var(--stone);text-align:center;margin-top:24px}
+
+.pb-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:18px;padding:14px 18px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--white)}
+.pb-actions-label{font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);margin-right:8px}
+.pb-action-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:11px 18px;min-height:44px;border:1px solid var(--teal);border-radius:999px;background:var(--white);color:var(--teal);font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;transition:background 140ms var(--ease-out),color 140ms var(--ease-out);text-decoration:none}
+.pb-action-btn:hover{background:var(--teal);color:var(--cream)}
+.pb-action-btn-primary{background:var(--teal);color:var(--cream)}
+.pb-action-btn-primary:hover{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+.pb-action-btn.copied{background:var(--status-good-tint);color:var(--status-good);border-color:var(--status-good)}
+.pb-action-btn[data-state="loading"]{background:var(--cream-2);color:var(--stone);border-color:var(--line);cursor:progress}
+.pb-action-btn[data-state="error"]{background:rgba(184,84,26,0.08);color:var(--rust);border-color:var(--rust)}
+.pb-action-btn .pb-action-fmt{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12.5px;font-weight:700;color:inherit;opacity:.7}
+
+.pb-handoff{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:10px;padding:14px 18px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--cream-2)}
+.pb-handoff-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border:1px dashed var(--teal);border-radius:999px;background:transparent;color:var(--teal);font-size:12.5px;font-weight:600;text-decoration:none;transition:background 140ms var(--ease-out),color 140ms var(--ease-out)}
+.pb-handoff-btn:hover{background:var(--teal);color:var(--cream);border-style:solid}
+
+/* Reshoot Check-in — la firma Muntin para Brief de Fotos. */
+.pb-signature{margin-top:18px;padding:18px 20px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--white)}
+.pb-signature-eyebrow{font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);margin:0 0 6px}
+.pb-signature h3{font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);margin:0 0 8px;line-height:1.3}
+.pb-signature-blurb{font-size:13.5px;color:var(--ink-soft);line-height:1.6;margin:0 0 12px}
+.pb-signature-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.pb-signature-status{font-size:12px;color:var(--status-good);opacity:0;transition:opacity 240ms var(--ease-out)}
+.pb-signature-status[data-shown="true"]{opacity:1}
+.pb-drift-pill{display:inline-flex;align-items:center;gap:4px;padding:2px 10px;font-size:12.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;border-radius:999px;font-variant-numeric:tabular-nums;margin-left:8px;vertical-align:middle}
+.pb-drift-pill[data-tone="fresh"]{background:var(--status-good-tint);color:var(--status-good)}
+.pb-drift-pill[data-tone="due"]  {background:rgba(198,138,44,0.10);color:#956A1A}
+.pb-drift-pill[data-tone="stale"]{background:rgba(184,84,26,0.12);color:var(--rust)}
+.pb-drift-pill[data-tone="cold"] {background:rgba(184,84,26,0.18);color:var(--rust)}
+.pb-reshoot-banner{display:none;margin:0 0 14px;padding:12px 14px;border:1px solid rgba(198,138,44,0.30);border-left-width:4px;border-left-color:#C68A2C;border-radius:var(--r-sm);background:rgba(198,138,44,0.06)}
+body[data-pb-mode="reshoot"] .pb-reshoot-banner{display:block}
+.pb-reshoot-banner h3{font-family:var(--font-display);font-size:15px;font-weight:600;margin:0 0 4px;color:var(--ink)}
+.pb-reshoot-banner p{margin:0;font-size:13px;line-height:1.55;color:var(--ink-soft)}
+
+.pb-privacy-list{display:flex;flex-direction:column;gap:10px;margin:0;padding:0;list-style:none;counter-reset:pb-step}
+.pb-privacy-list li{counter-increment:pb-step;display:grid;grid-template-columns:32px 1fr;gap:14px;align-items:start;padding:12px 14px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--white)}
+.pb-privacy-list li::before{content:counter(pb-step);font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--teal);font-variant-numeric:tabular-nums}
+.pb-privacy-list li strong{display:block;font-size:14px;color:var(--ink);margin-bottom:2px}
+.pb-privacy-list li p{font-size:13px;line-height:1.55;color:var(--ink-soft);margin:0}
+.pb-privacy-list code{font-size:12px;background:var(--cream-2);padding:1px 4px;border-radius:3px}
+
+@media print{
+  body{background:#fff !important;color:#000 !important}
+  header.nav,.breadcrumb,.foot,footer,.lang-hint,.foot-cta,
+  #how-private,#what-this-isnt,.pb-grid-actions,.pb-clear-btn,.pb-sample-btn{display:none !important}
+  .pb-math-card,.pb-coverage-tile,.pb-grid{break-inside:avoid;page-break-inside:avoid}
+  a[href]:after{content:'' !important}
+}
+</style>
+<!-- tool-schema:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://muntin.digital/es/tools/photo-brief/#tool",
+      "applicationCategory": "BusinessApplication",
+      "applicationSubCategory": "RestaurantOps",
+      "operatingSystem": "Web",
+      "screenshot": "https://muntin.digital/brand/og/tool-photo-brief.png",
+      "url": "https://muntin.digital/es/tools/photo-brief/",
+      "featureList": [
+        "Hoja de especificaciones por superficie",
+        "Guía de aspect-ratio y resolución",
+        "Exportación de brief listo para fotógrafo"
+      ],
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock"
+      },
+      "name": "Constructor de Brief de Fotos",
+      "description": "Lista tus platos, marca a dónde van las fotos (Yelp, Google, Instagram, tu menú). Llévate un brief de una página y las fotos correctas en una sesión."
+    },
+    {
+      "@type": "HowTo",
+      "@id": "https://muntin.digital/es/tools/photo-brief/#howto",
+      "name": "Cómo leer tu resultado del Brief de Fotos",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "Elige las superficies",
+          "text": "GBP, Yelp, hero de tu página, cards de menú, social — cualquier combinación.",
+          "url": "https://muntin.digital/es/tools/photo-brief/#step-1"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "Lee las especificaciones",
+          "text": "Cada superficie tiene aspect-ratio, resolución y guía de contenido.",
+          "url": "https://muntin.digital/es/tools/photo-brief/#step-2"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "name": "Exporta el brief",
+          "text": "Pásalo al fotógrafo o tómalas tú mismo con el teléfono.",
+          "url": "https://muntin.digital/es/tools/photo-brief/#step-3"
+        }
+      ],
+      "about": {
+        "@id": "https://muntin.digital/es/tools/photo-brief/#tool"
+      },
+      "inLanguage": "es-US"
+    }
+  ]
+}
+</script>
+<!-- tool-schema:end -->
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
 <script>
   /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
      Apple devices. Runs early in <body> so the swap is essentially

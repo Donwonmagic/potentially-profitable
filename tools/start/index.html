@@ -29,6 +29,130 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://muntin.digital/tools/start/#webpage",
+      "name": "Start here — pick the right tool first",
+      "description": "Five-question decision tree that routes restaurant operators to the calculators most likely to move their next decision. No login, no save, runs in the browser.",
+      "url": "https://muntin.digital/tools/start/",
+      "inLanguage": "en-US",
+      "isPartOf": { "@id": "https://muntin.digital/#website" },
+      "publisher": { "@id": "https://muntin.digital/#business" }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Muntin Digital", "item": "https://muntin.digital/" },
+        { "@type": "ListItem", "position": 2, "name": "Tools", "item": "https://muntin.digital/tools/" },
+        { "@type": "ListItem", "position": 3, "name": "Start here", "item": "https://muntin.digital/tools/start/" }
+      ]
+    }
+  ]
+}
+</script>
+
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
+
+<script src="/assets/p.js?v=20260503" defer></script>
+<script>
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  plausible.init({ endpoint: '/api/event', logging: false })
+</script>
+
+<style>.breadcrumb{padding-top:100px}</style>
+<style>
+/* Critical CSS — prevents flash of unstyled content while the main
+   stylesheet (assets/site.css) loads non-render-blocking via the
+   <link> below. Carries: token vars used in inline styles elsewhere,
+   body baseline (cream + ink + body-size + line-height), container
+   width, skip-link affordance, and a min-height reservation for the
+   fixed nav so layout doesn't shift when site.css applies. ~600
+   bytes. Documented in Phase 3B perf cutover; the full token set
+   reapplies once site.css arrives. */
+:root{--cream:#FAF7F2;--cream-2:#F3EEE3;--ink:#14161A;--ink-soft:#2A2D33;--teal:#1F4E5B;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
+html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--cream);line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased}
+.container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
+.skip-link{position:absolute;left:-9999px;top:0}
+.skip-link:focus{position:static;display:inline-block;background:#14161A;color:#FAF7F2;padding:12px 16px;z-index:100}
+/* injected by inject-critical-link-color.mjs */
+a{color:inherit}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:500;font-size:15px;text-decoration:none;white-space:nowrap;cursor:pointer}
+.btn-primary{background:var(--ink);color:var(--cream)}
+.btn-ghost{background:transparent;color:var(--ink);border:1px solid #D9D5CB}
+header.nav{min-height:64px}
+</style>
+<!-- Async-load the main stylesheet. Pattern: preload + onload-swap
+     (with a <noscript> fallback for the JS-disabled path). The
+     onload assigns this.rel='stylesheet', which the browser then
+     applies; before that the critical CSS above carries the page. -->
+<link rel="preload" as="style" href="/assets/site-core.css?v=a3cc95eb7ac7" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-tool.css?v=5f214b425aa9" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a3cc95eb7ac7"><link rel="stylesheet" href="/assets/site-tool.css?v=5f214b425aa9"></noscript>
+
+<style>
+  /* /tools/start/ — five-question decision tree.
+     Pure HTML radios. JS only reveals the result panel and
+     reorders the tool list; no router, no state library. */
+  .ts-main { padding: clamp(64px, 10vh, 120px) clamp(20px, 4vw, 64px) clamp(56px, 9vh, 100px); }
+  .ts-shell { max-width: 760px; margin: 0 auto; }
+  .ts-eyebrow { font-family: var(--font-body); font-size: 13px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin: 0 0 14px; display: inline-flex; align-items: center; gap: 10px; }
+  .ts-eyebrow::before { content: ''; width: 28px; height: 1px; background: var(--teal); }
+  .ts-h1 { font-family: var(--font-display); font-size: clamp(34px, 5vw, 48px); font-weight: 500; line-height: 1.08; letter-spacing: -0.02em; color: var(--ink); margin: 0 0 18px; }
+  .ts-sub { font-size: var(--fs-lead); line-height: var(--leading-card); color: var(--ink-soft); margin: 0 0 28px; max-width: 60ch; }
+  .ts-form { display: flex; flex-direction: column; gap: 22px; margin: 0 0 28px; }
+  .ts-q { padding: 18px 22px; border: 1px solid var(--line); border-radius: var(--r-md); background: var(--surface-1); }
+  .ts-q legend { font-family: var(--font-display); font-size: 18px; font-weight: 500; color: var(--ink); padding: 0; margin: 0 0 6px; line-height: 1.35; }
+  .ts-q-help { font-size: 13.5px; color: var(--ink-soft); margin: 0 0 14px; line-height: var(--leading-card); }
+  .ts-options { display: flex; flex-direction: column; gap: 8px; }
+  .ts-option { display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; border: 1px solid var(--line); border-radius: var(--r-sm); background: var(--surface-2); cursor: pointer; font-size: 14px; line-height: var(--leading-card); color: var(--ink); transition: border-color var(--t-fast) var(--ease), background var(--t-fast) var(--ease); }
+  .ts-option:hover { border-color: var(--teal); }
+  .ts-option input { flex: 0 0 auto; margin: 3px 0 0; cursor: pointer; }
+  .ts-option:has(input:checked) { border-color: var(--teal); background: var(--teal-tint); }
+  .ts-option-text strong { display: block; font-weight: 600; color: var(--ink); }
+  .ts-option-text span { display: block; font-size: 12.5px; color: var(--ink-soft); margin-top: 2px; }
+  .ts-actions { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin: 6px 0 0; }
+  .ts-actions .ts-progress { font-size: 12.5px; color: var(--stone); margin-left: auto; font-variant-numeric: tabular-nums; }
+  .ts-result { display: none; padding: 22px 24px; border: 1px solid var(--line); border-left: 3px solid var(--teal); border-radius: var(--r-md); background: var(--surface-1); box-shadow: var(--elev-1); margin-top: 8px; }
+  .ts-result[data-shown="true"] { display: block; }
+  .ts-result h2 { font-family: var(--font-display); font-size: clamp(22px, 2.4vw, 28px); font-weight: 500; line-height: 1.25; color: var(--ink); margin: 0 0 8px; letter-spacing: -0.01em; }
+  .ts-result-lede { font-size: 15.5px; line-height: var(--leading-card); color: var(--ink-soft); margin: 0 0 16px; }
+  .ts-rec-list { list-style: none; padding: 0; margin: 0; counter-reset: rec; display: flex; flex-direction: column; gap: 12px; }
+  .ts-rec-list li { display: grid; grid-template-columns: 28px 1fr; gap: 12px; padding: 12px 14px; border: 1px solid var(--line); border-radius: var(--r-sm); background: var(--surface-2); }
+  .ts-rec-list li::before { counter-increment: rec; content: counter(rec); display: flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 999px; background: var(--teal); color: var(--cream); font-weight: 700; font-size: 13px; }
+  .ts-rec-name { font-weight: 600; color: var(--ink); font-size: 15px; }
+  .ts-rec-name a { color: inherit; text-decoration: none; border-bottom: 1px solid color-mix(in srgb, var(--teal) 35%, transparent); }
+  .ts-rec-name a:hover, .ts-rec-name a:focus-visible { border-bottom-color: var(--teal); }
+  .ts-rec-why { display: block; font-size: 13px; color: var(--ink-soft); line-height: 1.5; margin-top: 2px; }
+  .ts-rec-meta { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 12px; color: var(--stone); margin-top: 8px; line-height: 1.4; font-variant-numeric: tabular-nums; }
+  .ts-rec-meta span { display: inline-flex; align-items: baseline; gap: 4px; }
+  .ts-rec-meta strong { font-weight: 600; color: var(--ink-soft); letter-spacing: 0.02em; text-transform: uppercase; font-size: 10.5px; }
+  .ts-restore { display: none; align-items: center; gap: 8px; padding: 10px 14px; margin: -10px 0 18px; border: 1px solid var(--line); border-left: 3px solid var(--teal); border-radius: var(--r-sm); background: var(--surface-1); font-size: 13.5px; line-height: var(--leading-card); color: var(--ink-soft); }
+  .ts-restore[data-shown="true"] { display: flex; }
+  .ts-restore-fresh { background: none; border: 0; color: var(--teal); font: inherit; padding: 0; cursor: pointer; text-decoration: underline; }
+  .ts-noticed { margin: 18px 0 0; padding: 14px 16px; border: 1px solid var(--amber-border, #d9c179); border-radius: var(--r-sm); background: var(--amber-tint, #fbf3d8); }
+  .ts-noticed-head { font-size: 13.5px; color: var(--ink); margin: 0 0 8px; line-height: var(--leading-card); }
+  .ts-noticed-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; font-size: 13px; line-height: var(--leading-card); color: var(--ink-soft); }
+  .ts-noticed-list li::before { content: '\2192'; color: var(--teal); font-weight: 700; margin-right: 6px; }
+  .ts-skip { font-size: 13px; color: var(--stone); margin: 16px 0 0; line-height: var(--leading-card); }
+  .ts-fallback { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--line); font-size: 13.5px; line-height: var(--leading-card); color: var(--ink-soft); }
+  .ts-fallback a { color: var(--teal); font-weight: 600; text-decoration: none; }
+  .ts-fallback a:hover { text-decoration: underline; }
+  @media (max-width: 540px) {
+    .ts-q { padding: 16px 18px; }
+    .ts-result { padding: 18px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
 <script>
   /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
      Apple devices. Runs early in <body> so the swap is essentially

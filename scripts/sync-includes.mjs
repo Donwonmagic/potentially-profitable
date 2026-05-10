@@ -72,11 +72,17 @@ const FOOTER_MAIN_FUNNEL_MARKER = 'id="foot-learn"';
 // while a fresh copy got injected in front of the new header). Pages
 // accumulated up to 10 duplicates by the time the bug surfaced
 // (May 2026) — same class of bug the FOOTER_RE comment below documents
-// for trailing scripts. The "Platform-aware kbd hint" comment text is
-// the unique marker we can safely match on; matching `<script>` alone
-// would risk consuming unrelated inline scripts that ship between
-// the SEO/JSON-LD blocks and the nav.
-const NAV_RE = /(?:<script\b[^>]*>[\s\S]*?Platform-aware kbd hint[\s\S]*?<\/script>\s*)*<header class="nav" id="nav">[\s\S]*?<\/header>/;
+// for trailing scripts.
+//
+// The leading-script sub-pattern is anchored on the EXACT opening of
+// the partial's script body: `<script>` (bare, no attributes) followed
+// by whitespace and the literal `/* Platform-aware kbd hint`. That
+// keeps the lazy `[\s\S]*?` confined to a single <script> tag — earlier
+// versions used `<script\b[^>]*>...?Platform-aware kbd hint...?</script>`,
+// which spanned multiple <script> boundaries and on pages with inline
+// JSON-LD before the nav (every blog post) ATE the JSON-LD too. Don't
+// loosen this anchor without re-checking blog/an-honest-doordash-math-…
+const NAV_RE = /(?:<script>\s*\/\* Platform-aware kbd hint[\s\S]*?<\/script>\s*)*<header class="nav" id="nav">[\s\S]*?<\/header>/;
 
 // The site footer: <footer> that contains <div class="foot-grid">,
 // plus any trailing canonical script tags (first-touch, save-next-time,

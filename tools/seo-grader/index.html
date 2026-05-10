@@ -46,6 +46,228 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "@id": "https://muntin.digital/tools/seo-grader/#tool",
+      "name": "SEO Title & Description Grader",
+      "description": "Grade your website's title tag and meta description for length, readability, and SEO effectiveness.",
+      "url": "https://muntin.digital/tools/seo-grader/",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "creator": { "@id": "https://muntin.digital/#business" }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Muntin Digital", "item": "https://muntin.digital/" },
+        { "@type": "ListItem", "position": 2, "name": "Tools", "item": "https://muntin.digital/tools/" },
+        { "@type": "ListItem", "position": 3, "name": "SEO Grader", "item": "https://muntin.digital/tools/seo-grader/" }
+      ]
+    }
+  ]
+}
+</script>
+
+<script src="/assets/p.js?v=20260503" defer></script>
+<script>
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  plausible.init({ endpoint: '/api/event', logging: false })
+</script>
+
+<style>.breadcrumb{padding-top:100px}</style>
+<style>
+/* Critical CSS — prevents flash of unstyled content while the main
+   stylesheet (assets/site.css) loads non-render-blocking via the
+   <link> below. Carries: token vars used in inline styles elsewhere,
+   body baseline (cream + ink + body-size + line-height), container
+   width, skip-link affordance, and a min-height reservation for the
+   fixed nav so layout doesn't shift when site.css applies. ~600
+   bytes. Documented in Phase 3B perf cutover; the full token set
+   reapplies once site.css arrives. */
+:root{--cream:#FAF7F2;--cream-2:#F3EEE3;--ink:#14161A;--ink-soft:#2A2D33;--teal:#1F4E5B;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
+html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--cream);line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased}
+.container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
+.skip-link{position:absolute;left:-9999px;top:0}
+.skip-link:focus{position:static;display:inline-block;background:#14161A;color:#FAF7F2;padding:12px 16px;z-index:100}
+/* injected by inject-critical-link-color.mjs */
+a{color:inherit}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:500;font-size:15px;text-decoration:none;white-space:nowrap;cursor:pointer}
+.btn-primary{background:var(--ink);color:var(--cream)}
+.btn-ghost{background:transparent;color:var(--ink);border:1px solid #D9D5CB}
+header.nav{min-height:64px}
+</style>
+<!-- Preload the two above-the-fold web fonts so they arrive in
+     parallel with site.css instead of being discovered after parse. -->
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
+<!-- Async-load the main stylesheet. Pattern: preload + onload-swap
+     (with a <noscript> fallback for the JS-disabled path). The
+     onload assigns this.rel='stylesheet', which the browser then
+     applies; before that the critical CSS above carries the page. -->
+<link rel="preload" as="style" href="/assets/site-core.css?v=a3cc95eb7ac7" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-tool.css?v=5f214b425aa9" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a3cc95eb7ac7"><link rel="stylesheet" href="/assets/site-tool.css?v=5f214b425aa9"></noscript>
+
+<style>
+  /* Tool-specific result rendering. Form, hero, note, result container,
+     and CTA card live in site.css under "TOOL SHELL" — see /docs/. */
+  .seo-card { padding: 28px; border: 1px solid var(--line); border-radius: var(--r-md); background: var(--surface-1); box-shadow: var(--elev-1); margin-bottom: 20px; }
+  .seo-card .card-label { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin: 0 0 8px; }
+  .seo-card .card-label.good { color: var(--status-good); }
+  .seo-card .card-label.warn { color: var(--status-warn); }
+  .seo-card .card-label.bad { color: var(--rust); }
+  .seo-card .card-value { font-family: var(--font-display); font-size: 20px; font-weight: 500; color: var(--ink); line-height: 1.35; margin: 0 0 12px; word-break: break-word; }
+  .seo-card .card-value em { color: var(--teal); font-style: italic; }
+  .seo-bar { height: 6px; border-radius: 999px; background: var(--line); margin: 0 0 14px; overflow: hidden; }
+  .seo-bar .fill { height: 100%; border-radius: 999px; transition: width 0.6s ease-out; }
+  .seo-bar .fill.good { background: var(--status-good); }
+  .seo-bar .fill.warn { background: var(--status-warn-fill); }
+  .seo-bar .fill.bad { background: var(--rust); }
+  .seo-card .checks { list-style: none; padding: 0; margin: 0; }
+  .seo-card .checks li { display: flex; gap: 10px; padding: 8px 0; border-top: 1px solid var(--line); font-size: 14.5px; color: var(--ink-soft); line-height: 1.5; }
+  .seo-card .checks li:first-child { border-top: 0; }
+  .seo-card .checks .mark { flex: 0 0 18px; font-weight: 700; }
+  .seo-card .checks .mark.pass { color: var(--status-pass); }
+  .seo-card .checks .mark.fail { color: var(--rust); }
+  /* Phase 2 (Workshop) — Save to the Workshop affordance.
+     Hidden until the result renders. Two states inside, mutually
+     exclusive: a "Save" button when authenticated, a "Sign in to
+     save" link when anonymous. Toggled via /api/auth/me on page
+     load. The result is locked under a logged-in session, so this
+     row exists only as a save affordance, not a public CTA. */
+  .seo-save { margin-top: 24px; padding: 18px 22px; background: var(--surface-inset); border: 1px solid var(--line); border-radius: var(--r-md); display: flex; gap: 14px; align-items: center; flex-wrap: wrap; justify-content: space-between; }
+  .seo-save[hidden] { display: none; }
+  .seo-save-text { font-size: 14px; color: var(--ink-soft); margin: 0; line-height: 1.5; flex:1 1 100% }
+  @media (min-width:480px){.seo-save-text{flex:1 1 220px}}
+  .seo-save-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border: 1px solid var(--ink); border-radius: 999px; background: var(--ink); color: var(--cream); font: inherit; font-size: 14px; font-weight: 500; cursor: pointer; transition: background var(--t-fast) var(--ease), transform var(--t-fast) var(--ease); }
+  .seo-save-btn:hover { background: var(--teal); transform: translateY(-1px); }
+  .seo-save-btn[disabled] { opacity: 0.6; cursor: wait; }
+  .seo-save-link { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border: 1px solid var(--line-dark); border-radius: 999px; color: var(--ink); font-size: 14px; font-weight: 500; text-decoration: none; transition: border-color var(--t-fast) var(--ease); }
+  .seo-save-link:hover { border-color: var(--ink); }
+  .seo-save-msg { font-size: 13px; color: var(--status-good); font-weight: 500; }
+  .seo-save-msg.error { color: var(--rust); }
+  /* Inspiration banner — Search Ideas handoff. Chips are clickable
+     and drop into seoSignature so the rewrite template uses the
+     queries the owner just picked upstream. */
+  .seo-inspiration { margin: 14px auto 4px; max-width: 540px; text-align: left; border: 1px solid var(--line); border-left: 3px solid var(--teal); border-radius: var(--r-input); padding: 12px 14px; background: var(--white); }
+  .seo-inspiration[hidden] { display: none; }
+  .seo-inspiration-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin: 0 0 8px; }
+  .seo-inspiration-chips { list-style: none; margin: 0 0 6px; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+  .seo-inspiration-chip { display: inline-block; padding: 5px 11px; border: 1px solid var(--line-dark); border-radius: 999px; background: var(--white); font: inherit; font-size: 12.5px; color: var(--ink); cursor: pointer; transition: border-color 140ms ease, background 140ms ease; }
+  .seo-inspiration-chip:hover { border-color: var(--teal); background: var(--cream-2); }
+  .seo-inspiration-note { margin: 0; font-size: 12px; color: var(--stone); line-height: 1.45; }
+
+  .seo-ctx { margin: 14px auto 4px; max-width: 540px; text-align: left; border: 1px dashed var(--line-dark); border-radius: var(--r-input); padding: 10px 14px; background: var(--white); }
+  .seo-ctx-summary { cursor: pointer; font-size: 13px; color: var(--ink); }
+  .seo-ctx-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 10px; }
+  @media (max-width: 640px) { .seo-ctx-grid { grid-template-columns: 1fr; } }
+  .seo-ctx-grid label { display: flex; flex-direction: column; font-size: 11px; font-weight: 600; color: var(--stone); letter-spacing: 0.04em; text-transform: uppercase; gap: 4px; }
+  .seo-ctx-grid input { padding: 8px 10px; border: 1px solid var(--line); border-radius: 6px; font: inherit; font-size: 13px; color: var(--ink); }
+  .seo-serp { padding: 14px 16px; border: 1px solid var(--line); border-radius: var(--r-md); background: var(--surface-1); margin-bottom: 18px; }
+  .seo-serp-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin: 0 0 8px; }
+  .seo-serp-mock { padding: 12px 14px; background: var(--cream-2); border-radius: 6px; font-family: Arial, sans-serif; line-height: 1.4; }
+  .seo-serp-host { font-size: 12px; color: #1a73e8; }
+  .seo-serp-title { font-size: 18px; color: #1a0dab; margin: 2px 0; }
+  .seo-serp-desc { font-size: 13px; color: #4d5156; }
+  .seo-rewrite { padding: 18px 20px; border: 1px solid var(--line); border-left: 3px solid var(--teal); border-radius: var(--r-md); background: var(--surface-1); margin-bottom: 18px; }
+  .seo-rewrite-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin: 0 0 10px; }
+  .seo-rewrite-row { display: flex; flex-direction: column; gap: 4px; margin-bottom: 10px; }
+  .seo-rewrite-row strong { font-size: 12px; font-weight: 600; color: var(--stone); letter-spacing: 0.04em; text-transform: uppercase; }
+  .seo-rewrite-row input, .seo-rewrite-row textarea { padding: 8px 10px; border: 1px solid var(--line); border-radius: 6px; font: inherit; font-size: 14px; color: var(--ink); resize: vertical; }
+  .seo-rewrite-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .seo-rewrite-btn { padding: 8px 14px; border: 1px solid var(--ink); border-radius: 999px; background: var(--ink); color: var(--cream); font: inherit; font-size: 13px; font-weight: 500; cursor: pointer; }
+  .seo-rewrite-btn:hover { background: var(--teal); }
+  .seo-rewrite-msg { font-size: 12.5px; color: var(--status-good); }
+  .seo-rewrite-help { font-size: 12.5px; color: var(--ink-soft); margin: 10px 0 0; line-height: 1.55; }
+  /* Shared MuntinHire disclosure. */
+  .hire-guide{margin-top:12px;padding:0;border:1px dashed var(--line);border-radius:8px;background:var(--surface-1, #faf6ee)}
+  .hire-guide[open]{padding-bottom:4px}
+  .hire-guide-summary{cursor:pointer;padding:8px 12px;font-size:12.5px;font-weight:600;color:var(--ink-soft);list-style:none}
+  .hire-guide-summary::-webkit-details-marker{display:none}
+  .hire-guide-summary::before{content:'+ ';color:var(--ink-soft);font-weight:700}
+  .hire-guide[open] .hire-guide-summary::before{content:'− '}
+  .hire-guide-body{padding:4px 12px 12px}
+  .hire-guide-dl{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;margin:0 0 8px;font-size:13px;line-height:1.5}
+  .hire-guide-dl dt{font-size:11px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:var(--stone);align-self:start;padding-top:2px}
+  .hire-guide-dl dd{margin:0;color:var(--ink)}
+  .hire-guide-dl a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+  .hire-guide-note{font-size:12px;color:var(--ink-soft);line-height:1.5;margin:0;padding:8px 10px;background:var(--white);border-radius:6px;border:1px solid var(--line)}
+  .seo-rewrite-prompt { font-size: 13px; color: var(--ink-soft); margin: 0 0 16px; padding: 12px 14px; background: var(--cream-2); border-radius: 8px; border: 1px solid var(--line); }
+</style>
+<!-- tool-schema:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://muntin.digital/tools/seo-grader/#tool",
+      "applicationCategory": "BusinessApplication",
+      "applicationSubCategory": "RestaurantOps",
+      "operatingSystem": "Web",
+      "screenshot": "https://muntin.digital/brand/og/tool-seo-grader.png",
+      "url": "https://muntin.digital/tools/seo-grader/",
+      "featureList": [
+        "Title tag length + keyword scoring",
+        "Meta description quality grading",
+        "On-page schema + content depth checks"
+      ],
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock"
+      },
+      "name": "Restaurant Website Audit",
+      "description": "Drop your URL. Get a real mobile audit in about thirty seconds — performance, SEO, accessibility, and ten restaurant-specific checks in plain English."
+    },
+    {
+      "@type": "HowTo",
+      "@id": "https://muntin.digital/tools/seo-grader/#howto",
+      "name": "How to read your SEO Grader result",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "Drop your URL",
+          "text": "Paste your homepage or any restaurant page URL into the input.",
+          "url": "https://muntin.digital/tools/seo-grader/#step-1"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "Read your score",
+          "text": "Each on-page section gets a 0-100 grade with the failing checks called out.",
+          "url": "https://muntin.digital/tools/seo-grader/#step-2"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "name": "Fix the highest-impact issue first",
+          "text": "Start with title + meta if either is failing — they move rankings the fastest.",
+          "url": "https://muntin.digital/tools/seo-grader/#step-3"
+        }
+      ],
+      "about": {
+        "@id": "https://muntin.digital/tools/seo-grader/#tool"
+      },
+      "inLanguage": "en-US"
+    }
+  ]
+}
+</script>
+<!-- tool-schema:end -->
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to main content</a>
+
 <script>
   /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
      Apple devices. Runs early in <body> so the swap is essentially

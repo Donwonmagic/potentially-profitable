@@ -37,6 +37,658 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "DefinedTermSet",
+      "@id": "https://muntin.digital/glossary/#glossary",
+      "name": "Muntin Digital Website Glossary",
+      "description": "Plain-English definitions for the web, SEO, mobile, and conversion terms that appear in a Muntin Digital website audit.",
+      "url": "https://muntin.digital/glossary/",
+      "inLanguage": "en-US",
+      "publisher": { "@id": "https://muntin.digital/#business" }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Muntin Digital", "item": "https://muntin.digital/" },
+        { "@type": "ListItem", "position": 2, "name": "Glossary", "item": "https://muntin.digital/glossary/" }
+      ]
+    }
+  ]
+}
+</script>
+
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
+
+<script src="/assets/p.js?v=20260503" defer></script>
+<script>
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  plausible.init({ endpoint: '/api/event', logging: false })
+</script>
+
+<style>.breadcrumb{padding-top:100px}</style>
+<style>
+/* Critical CSS — prevents flash of unstyled content while the main
+   stylesheet (assets/site.css) loads non-render-blocking via the
+   <link> below. Carries: token vars used in inline styles elsewhere,
+   body baseline (cream + ink + body-size + line-height), container
+   width, skip-link affordance, and a min-height reservation for the
+   fixed nav so layout doesn't shift when site.css applies. ~600
+   bytes. Documented in Phase 3B perf cutover; the full token set
+   reapplies once site.css arrives. */
+:root{--cream:#FAF7F2;--cream-2:#F3EEE3;--ink:#14161A;--ink-soft:#2A2D33;--teal:#1F4E5B;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
+html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--cream);line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased}
+.container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
+.skip-link{position:absolute;left:-9999px;top:0}
+.skip-link:focus{position:static;display:inline-block;background:#14161A;color:#FAF7F2;padding:12px 16px;z-index:100}
+/* injected by inject-critical-link-color.mjs */
+a{color:inherit}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:500;font-size:15px;text-decoration:none;white-space:nowrap;cursor:pointer}
+.btn-primary{background:var(--ink);color:var(--cream)}
+.btn-ghost{background:transparent;color:var(--ink);border:1px solid #D9D5CB}
+header.nav{min-height:64px}
+</style>
+<!-- Async-load the main stylesheet. Pattern: preload + onload-swap
+     (with a <noscript> fallback for the JS-disabled path). The
+     onload assigns this.rel='stylesheet', which the browser then
+     applies; before that the critical CSS above carries the page. -->
+<link rel="preload" as="style" href="/assets/site-core.css?v=a3cc95eb7ac7" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=47810dd9477a" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a3cc95eb7ac7"><link rel="stylesheet" href="/assets/site-article.css?v=47810dd9477a"></noscript>
+
+<style>
+  /* Glossary-specific layout. Inline so the page ships self-contained
+     and doesn't balloon site.css for a page only reached from audit
+     "Learn more" links. */
+  .gloss-hero{max-width:780px;margin:0 auto;text-align:center;padding:clamp(32px,5vw,56px) 0 clamp(24px,3vw,40px)}
+  .gloss-hero .eyebrow{justify-content:center}
+  .gloss-hero h1{margin-top:20px;font-size:clamp(40px,5.4vw,64px)}
+  .gloss-hero p{margin:24px auto 0;max-width:620px;font-size:clamp(16px,1.3vw,18px);line-height:1.6;color:var(--ink-soft)}
+
+  .gloss-section{padding:clamp(48px,6vw,80px) 0;border-top:1px solid var(--line)}
+  .gloss-section:first-of-type{border-top:0}
+  .gloss-section-head{max-width:760px;margin-bottom:clamp(28px,3vw,40px)}
+  .gloss-section-head .eyebrow{color:var(--teal)}
+  .gloss-section-head h2{margin-top:14px;font-size:clamp(28px,3.4vw,40px)}
+  .gloss-section-head p{margin-top:14px;font-size:16px;line-height:1.6;color:var(--ink-soft);max-width:620px}
+
+  .gloss-empty{font-size:14px;color:var(--stone);font-style:italic;padding:24px;border:1px dashed var(--line-dark);border-radius:10px;text-align:center}
+
+  /* Term entries. Each .gloss-term is an <article> with a headword,
+     industry tag badges, a plain-English definition, and a "why it
+     matters" paragraph scoped for small-business owners. */
+  .gloss-terms{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(16px,2vw,20px)}
+  @media (max-width:820px){.gloss-terms{grid-template-columns:1fr}}
+
+  .gloss-term{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:var(--r-md);
+    padding:clamp(24px,2.6vw,32px);
+    scroll-margin-top:140px;
+    transition:border-color var(--t-fast) var(--ease),box-shadow var(--t-fast) var(--ease);
+  }
+  .gloss-term:target{
+    border-color:var(--teal);
+    box-shadow:0 0 0 3px var(--teal-tint);
+  }
+  .gloss-term-head{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:16px;
+    flex-wrap:wrap;
+    margin-bottom:10px;
+  }
+  .gloss-term h3{
+    font-family:var(--font-display);
+    font-weight:500;
+    font-size:clamp(20px,2vw,24px);
+    letter-spacing:-0.01em;
+    color:var(--ink);
+    margin:0;
+    line-height:1.2;
+  }
+  .gloss-term h3 .gloss-aka{
+    display:block;
+    font-family:var(--font-body);
+    font-size:13px;
+    font-weight:500;
+    font-style:italic;
+    color:var(--stone);
+    margin-top:4px;
+    letter-spacing:0;
+  }
+  .gloss-tags{display:flex;gap:6px;flex-wrap:wrap}
+  .gloss-tag{
+    font-size:10px;
+    font-weight:600;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--teal);
+    background:var(--teal-tint);
+    padding:4px 10px;
+    border-radius:999px;
+    white-space:nowrap;
+  }
+  .gloss-term-def{
+    margin:0;
+    font-size:15.5px;
+    line-height:1.6;
+    color:var(--ink-soft);
+  }
+  .gloss-term-why{
+    margin:14px 0 0;
+    padding-top:14px;
+    border-top:1px dashed var(--line);
+    font-size:14.5px;
+    line-height:1.6;
+    color:var(--ink-soft);
+  }
+  .gloss-term-why strong{
+    font-weight:600;
+    color:var(--ink);
+    font-family:var(--font-body);
+    font-size:11px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    display:block;
+    margin-bottom:6px;
+    color:var(--teal);
+  }
+
+  /* Industry filter: when a filter other than "all" is active on the
+     filter bar, the <main> gets data-active-filter="<slug>" and any
+     .gloss-term whose data-industries list doesn't contain that slug
+     is hidden. Strict: an entry only tagged "all" is HIDDEN under a
+     specific-industry filter. Tag relevant entries with both tokens
+     ("restaurants all") to keep them visible in both modes. JS only
+     toggles the attribute. */
+  main[data-active-filter="restaurants"] .gloss-term:not([data-industries~="restaurants"]){display:none}
+  /* Filtro "Cualquier negocio" / Universal — muestra entradas
+     marcadas como aplicables a negocios pequeños no restauranteros
+     (data-industries contiene "all"). */
+  main[data-active-filter="universal"] .gloss-term:not([data-industries~="all"]){display:none}
+
+  /* Búsqueda interna del glosario. JS marca data-no-match="1" en las
+     tarjetas que no contienen la consulta. */
+  .gloss-term[data-no-match="1"]{display:none}
+  main[data-search-active="1"] .gloss-section:not(:has(.gloss-term:not([data-no-match="1"]))){display:none}
+
+  .gloss-search{
+    position:relative;display:flex;align-items:center;gap:8px;
+    background:var(--white);border:1px solid var(--line-dark);border-radius:14px;padding:8px 12px;
+    transition:border-color var(--t-fast) var(--ease),box-shadow var(--t-fast) var(--ease);
+  }
+  .gloss-search:focus-within{border-color:var(--teal);box-shadow:0 0 0 3px var(--teal-tint)}
+  .gloss-search__icon{width:18px;height:18px;color:var(--stone);flex:none}
+  .gloss-search__input{
+    border:0;outline:0;background:transparent;font:inherit;font-size:14px;color:var(--ink);
+    flex:1;min-width:0;padding:4px 0;
+  }
+  .gloss-search__input::placeholder{color:var(--stone);font-style:italic}
+  .gloss-search__clear{
+    background:transparent;border:0;padding:4px;border-radius:50%;color:var(--stone);cursor:pointer;line-height:0;
+  }
+  .gloss-search__clear:hover{color:var(--teal);background:var(--teal-tint)}
+  .gloss-search__clear svg{width:16px;height:16px}
+  .gloss-search-empty{
+    display:none;margin:24px auto;max-width:480px;text-align:center;
+    padding:24px;border:1px dashed var(--line-dark);border-radius:14px;color:var(--stone);font-style:italic;
+  }
+  main[data-search-empty="1"] .gloss-search-empty{display:block}
+
+
+  /* Filter bar — sticky under the nav so filter state is always one
+     click away even after a long scroll. Chips are real buttons so
+     they're keyboard + screen-reader navigable without JS. Active
+     chip is marked via aria-pressed=true; the visual treatment is
+     driven off that attribute. Two chip groups stacked: the first
+     jumps to a category section (anchor links styled as chips); the
+     second filters visible entries by industry. */
+  .gloss-filterbar{
+    position:sticky;
+    top:64px;
+    z-index:5;
+    margin:0 auto clamp(32px,4vw,48px);
+    padding:14px clamp(16px,3vw,24px);
+    background:rgba(250,247,242,0.92);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    border:1px solid var(--line);
+    border-radius:22px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    max-width:max-content;
+  }
+  .gloss-filters{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  .gloss-filters-label{
+    font-size:11px;
+    font-weight:600;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--stone);
+    padding-right:8px;
+    border-right:1px solid var(--line);
+    white-space:nowrap;
+  }
+  .gloss-filter{
+    font:inherit;
+    font-size:14px;
+    font-weight:500;
+    padding:8px 16px;
+    border:1px solid var(--line-dark);
+    border-radius:999px;
+    background:transparent;
+    color:var(--ink-soft);
+    cursor:pointer;
+    transition:background var(--t-fast) var(--ease),color var(--t-fast) var(--ease),border-color var(--t-fast) var(--ease);
+    white-space:nowrap;
+  }
+  .gloss-filter:hover{
+    border-color:var(--teal);
+    color:var(--teal);
+  }
+  .gloss-filter:focus-visible{
+    outline:2px solid var(--teal);
+    outline-offset:2px;
+  }
+  .gloss-filter[aria-pressed="true"]{
+    background:var(--ink);
+    border-color:var(--ink);
+    color:var(--cream);
+  }
+  /* Jump-to-category chips — styled to read as tertiary vs the dark
+     industry chips. Smaller, lighter, still obviously interactive. */
+  .gloss-jump{
+    font:inherit;
+    font-size:13px;
+    font-weight:500;
+    padding:6px 14px;
+    border:1px solid transparent;
+    border-radius:999px;
+    background:var(--cream-2);
+    color:var(--ink-soft);
+    cursor:pointer;
+    text-decoration:none;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    transition:background var(--t-fast) var(--ease),color var(--t-fast) var(--ease);
+    white-space:nowrap;
+  }
+  .gloss-jump:hover{
+    background:var(--teal-tint);
+    color:var(--teal);
+  }
+  .gloss-jump:focus-visible{
+    outline:2px solid var(--teal);
+    outline-offset:2px;
+  }
+  .gloss-hero-invite{
+    margin-top:16px;
+    font-size:14.5px;
+    color:var(--stone);
+    font-style:italic;
+  }
+  @media (max-width:640px){
+    .gloss-filterbar{
+      top:56px;
+      max-width:none;
+      border-radius:14px;
+    }
+    .gloss-filters-label{display:none}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .gloss-filter,.gloss-jump{transition:none}
+  }
+</style>
+<!-- hub-collection:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "CollectionPage",
+      "@id": "https://muntin.digital/es/glossary/#collection",
+      "name": "Glosario",
+      "description": "Un glosario bilingüe de términos web para restaurantes, en español claro.",
+      "url": "https://muntin.digital/es/glossary/",
+      "inLanguage": "es-US",
+      "mainEntity": {
+        "@id": "https://muntin.digital/es/glossary/#items"
+      },
+      "publisher": {
+        "@id": "https://muntin.digital/#business"
+      }
+    },
+    {
+      "@type": "ItemList",
+      "@id": "https://muntin.digital/es/glossary/#items",
+      "numberOfItems": 139,
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "url": "https://muntin.digital/es/glossary/above-the-fold/",
+          "name": "Sobre el pliegue"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "url": "https://muntin.digital/es/glossary/accessible-pair/",
+          "name": "Par accesible"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "url": "https://muntin.digital/es/glossary/aggregator/",
+          "name": "Agregador"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "url": "https://muntin.digital/es/glossary/alt-text/",
+          "name": "Texto alternativo"
+        },
+        {
+          "@type": "ListItem",
+          "position": 5,
+          "url": "https://muntin.digital/es/glossary/analogous-colors/",
+          "name": "Colores análogos"
+        },
+        {
+          "@type": "ListItem",
+          "position": 6,
+          "url": "https://muntin.digital/es/glossary/apple-bing-maps/",
+          "name": "Apple Maps y Bing Places"
+        },
+        {
+          "@type": "ListItem",
+          "position": 7,
+          "url": "https://muntin.digital/es/glossary/aspect-ratio/",
+          "name": "Proporción de aspecto"
+        },
+        {
+          "@type": "ListItem",
+          "position": 8,
+          "url": "https://muntin.digital/es/glossary/average-check/",
+          "name": "Ticket promedio"
+        },
+        {
+          "@type": "ListItem",
+          "position": 9,
+          "url": "https://muntin.digital/es/glossary/basics/",
+          "name": "Lo básico"
+        },
+        {
+          "@type": "ListItem",
+          "position": 10,
+          "url": "https://muntin.digital/es/glossary/body-text-size/",
+          "name": "Tamaño del texto de cuerpo"
+        },
+        {
+          "@type": "ListItem",
+          "position": 11,
+          "url": "https://muntin.digital/es/glossary/bounce-rate/",
+          "name": "Tasa de rebote"
+        },
+        {
+          "@type": "ListItem",
+          "position": 12,
+          "url": "https://muntin.digital/es/glossary/brand-design/",
+          "name": "Marca y diseño"
+        },
+        {
+          "@type": "ListItem",
+          "position": 13,
+          "url": "https://muntin.digital/es/glossary/brand-identity/",
+          "name": "Identidad de marca"
+        },
+        {
+          "@type": "ListItem",
+          "position": 14,
+          "url": "https://muntin.digital/es/glossary/breadcrumb/",
+          "name": "CDN"
+        },
+        {
+          "@type": "ListItem",
+          "position": 15,
+          "url": "https://muntin.digital/es/glossary/break-even/",
+          "name": "Punto de equilibrio"
+        },
+        {
+          "@type": "ListItem",
+          "position": 16,
+          "url": "https://muntin.digital/es/glossary/canonical-url/",
+          "name": "URL canónica"
+        },
+        {
+          "@type": "ListItem",
+          "position": 17,
+          "url": "https://muntin.digital/es/glossary/catering-page/",
+          "name": "Página de catering / eventos privados"
+        },
+        {
+          "@type": "ListItem",
+          "position": 18,
+          "url": "https://muntin.digital/es/glossary/cdn/",
+          "name": "CDN"
+        },
+        {
+          "@type": "ListItem",
+          "position": 19,
+          "url": "https://muntin.digital/es/glossary/charm-pricing/",
+          "name": "Precio psicológico"
+        },
+        {
+          "@type": "ListItem",
+          "position": 20,
+          "url": "https://muntin.digital/es/glossary/clearspace/",
+          "name": "Espacio de resguardo"
+        },
+        {
+          "@type": "ListItem",
+          "position": 21,
+          "url": "https://muntin.digital/es/glossary/click-to-call/",
+          "name": "Toque para llamar"
+        },
+        {
+          "@type": "ListItem",
+          "position": 22,
+          "url": "https://muntin.digital/es/glossary/click-to-directions/",
+          "name": "Clic para indicaciones"
+        },
+        {
+          "@type": "ListItem",
+          "position": 23,
+          "url": "https://muntin.digital/es/glossary/client-side/",
+          "name": "Del lado del cliente"
+        },
+        {
+          "@type": "ListItem",
+          "position": 24,
+          "url": "https://muntin.digital/es/glossary/client-side-tool/",
+          "name": "Herramienta client-side"
+        },
+        {
+          "@type": "ListItem",
+          "position": 25,
+          "url": "https://muntin.digital/es/glossary/cls/",
+          "name": "Cumulative Layout Shift"
+        },
+        {
+          "@type": "ListItem",
+          "position": 26,
+          "url": "https://muntin.digital/es/glossary/color-blindness/",
+          "name": "Daltonismo"
+        },
+        {
+          "@type": "ListItem",
+          "position": 27,
+          "url": "https://muntin.digital/es/glossary/color-harmony/",
+          "name": "Armonía cromática"
+        },
+        {
+          "@type": "ListItem",
+          "position": 28,
+          "url": "https://muntin.digital/es/glossary/color-palette/",
+          "name": "Paleta de colores"
+        },
+        {
+          "@type": "ListItem",
+          "position": 29,
+          "url": "https://muntin.digital/es/glossary/commission/",
+          "name": "Comisión"
+        },
+        {
+          "@type": "ListItem",
+          "position": 30,
+          "url": "https://muntin.digital/es/glossary/complementary-colors/",
+          "name": "Colores complementarios"
+        },
+        {
+          "@type": "ListItem",
+          "position": 31,
+          "url": "https://muntin.digital/es/glossary/contribution-margin/",
+          "name": "Margen de contribución"
+        },
+        {
+          "@type": "ListItem",
+          "position": 32,
+          "url": "https://muntin.digital/es/glossary/conversion-rate/",
+          "name": "Tasa de conversión"
+        },
+        {
+          "@type": "ListItem",
+          "position": 33,
+          "url": "https://muntin.digital/es/glossary/conversions/",
+          "name": "Conversiones"
+        },
+        {
+          "@type": "ListItem",
+          "position": 34,
+          "url": "https://muntin.digital/es/glossary/cookie-banner/",
+          "name": "Banner de cookies"
+        },
+        {
+          "@type": "ListItem",
+          "position": 35,
+          "url": "https://muntin.digital/es/glossary/copyable-address/",
+          "name": "Dirección copiable"
+        },
+        {
+          "@type": "ListItem",
+          "position": 36,
+          "url": "https://muntin.digital/es/glossary/core-web-vitals/",
+          "name": "Core Web Vitals"
+        },
+        {
+          "@type": "ListItem",
+          "position": 37,
+          "url": "https://muntin.digital/es/glossary/cover/",
+          "name": "Cubierto"
+        },
+        {
+          "@type": "ListItem",
+          "position": 38,
+          "url": "https://muntin.digital/es/glossary/cta/",
+          "name": "Llamada a la acción"
+        },
+        {
+          "@type": "ListItem",
+          "position": 39,
+          "url": "https://muntin.digital/es/glossary/cuisine-pitch/",
+          "name": "Presentación en una oración"
+        },
+        {
+          "@type": "ListItem",
+          "position": 40,
+          "url": "https://muntin.digital/es/glossary/data-literacy/",
+          "name": "Datos y privacidad"
+        },
+        {
+          "@type": "ListItem",
+          "position": 41,
+          "url": "https://muntin.digital/es/glossary/data-tiering/",
+          "name": "Niveles de datos"
+        },
+        {
+          "@type": "ListItem",
+          "position": 42,
+          "url": "https://muntin.digital/es/glossary/design-token/",
+          "name": "Token de diseño"
+        },
+        {
+          "@type": "ListItem",
+          "position": 43,
+          "url": "https://muntin.digital/es/glossary/dietary-markers/",
+          "name": "Señales de dieta y alérgenos"
+        },
+        {
+          "@type": "ListItem",
+          "position": 44,
+          "url": "https://muntin.digital/es/glossary/direct-ordering/",
+          "name": "Pedidos directos"
+        },
+        {
+          "@type": "ListItem",
+          "position": 45,
+          "url": "https://muntin.digital/es/glossary/domain-name/",
+          "name": "Nombre de dominio"
+        },
+        {
+          "@type": "ListItem",
+          "position": 46,
+          "url": "https://muntin.digital/es/glossary/edible-portion/",
+          "name": "Porción comestible (EP)"
+        },
+        {
+          "@type": "ListItem",
+          "position": 47,
+          "url": "https://muntin.digital/es/glossary/elasticity/",
+          "name": "Elasticidad de precio"
+        },
+        {
+          "@type": "ListItem",
+          "position": 48,
+          "url": "https://muntin.digital/es/glossary/favicon/",
+          "name": "Favicon"
+        },
+        {
+          "@type": "ListItem",
+          "position": 49,
+          "url": "https://muntin.digital/es/glossary/fcp/",
+          "name": "First Contentful Paint"
+        },
+        {
+          "@type": "ListItem",
+          "position": 50,
+          "url": "https://muntin.digital/es/glossary/fetch-request/",
+          "name": "Solicitud fetch"
+        }
+      ]
+    }
+  ]
+}
+</script>
+<!-- hub-collection:end -->
+</head>
+<body data-locale="es">
+
+<a class="skip-link" href="#main">Saltar al contenido principal</a>
+
 <script>
   /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
      Apple devices. Runs early in <body> so the swap is essentially
@@ -1981,7 +2633,7 @@
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">La ventana.</p>
-        <p class="foot-blurb">Una biblioteca web y estudio de dise&ntilde;o para restaurantes, con base en Silver Spring, MD &mdash; art&iacute;culos, herramientas gratis, investigaci&oacute;n y un glosario de <!-- count:glossary.terms -->116<!-- /count --> t&eacute;rminos, con el estudio detr&aacute;s cuando quieras contratar. Se habla espa&ntilde;ol.</p>
+        <p class="foot-blurb">Una biblioteca web y estudio de dise&ntilde;o para restaurantes, con base en Silver Spring, MD &mdash; art&iacute;culos, herramientas gratis, investigaci&oacute;n y un glosario de <!-- count:glossary.terms -->139<!-- /count --> t&eacute;rminos, con el estudio detr&aacute;s cuando quieras contratar. Se habla espa&ntilde;ol.</p>
       </div>
 
       <nav class="foot-col" aria-labelledby="foot-explore">

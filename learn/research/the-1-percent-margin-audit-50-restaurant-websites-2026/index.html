@@ -34,6 +34,97 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "@id": "https://muntin.digital/learn/research/the-1-percent-margin-audit-50-restaurant-websites-2026/#article",
+      "headline": "The 1% margin audit — 50 restaurant websites, every reservation leak, in dollars (2026)",
+      "description": "A research note auditing 50 independent restaurant websites for the six most common reservation-and-conversion leaks. Each leak quantified in dollars per month. The median operator is leaving 0.94% of revenue on the table; the worst-quartile is leaving 2.3%.",
+      "url": "https://muntin.digital/learn/research/the-1-percent-margin-audit-50-restaurant-websites-2026/",
+      "inLanguage": "en-US",
+      "datePublished": "2026-05-02T11:30:00-04:00",
+      "dateModified": "2026-05-02",
+      "author": { "@id": "https://muntin.digital/#don-goldstein", "@type": "Person", "name": "Don Goldstein", "url": "https://muntin.digital/about/" },
+      "publisher": { "@id": "https://muntin.digital/#business" },
+      "image": "https://muntin.digital/brand/og/research-1-percent-margin-2026.png",
+      "articleSection": "Research"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Muntin Digital", "item": "https://muntin.digital/" },
+        { "@type": "ListItem", "position": 2, "name": "Library", "item": "https://muntin.digital/learn/" },
+        { "@type": "ListItem", "position": 3, "name": "Research", "item": "https://muntin.digital/learn/research/" },
+        { "@type": "ListItem", "position": 4, "name": "The 1% margin audit, 2026", "item": "https://muntin.digital/learn/research/the-1-percent-margin-audit-50-restaurant-websites-2026/" }
+      ]
+    }
+  ]
+}
+</script>
+
+<style>
+.breadcrumb{padding-top:100px}
+.note-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:32px 0}
+@media (max-width:680px){.note-stats{grid-template-columns:1fr 1fr}}
+.note-stat{padding:18px 20px;background:var(--cream-2);border:1px solid var(--line);border-radius:8px}
+.note-stat strong{display:block;font-family:var(--font-display);font-size:32px;font-weight:500;color:var(--ink);margin:0 0 4px;letter-spacing:-1px}
+.note-stat span{font-size:13px;line-height:1.4;color:var(--ink-soft)}
+.note-table{width:100%;border-collapse:collapse;font-size:14.5px;margin:28px 0}
+.note-table th,.note-table td{padding:10px 14px;border-bottom:1px solid var(--line);text-align:left}
+.note-table th{font-family:var(--font-display);font-weight:500;font-size:13px;color:var(--ink);text-transform:uppercase;letter-spacing:0.04em;background:var(--cream-2)}
+.note-table td.num{text-align:right;font-variant-numeric:tabular-nums}
+.note-table tfoot td{font-weight:600;border-top:2px solid var(--ink);border-bottom:0}
+.note-callout{padding:18px 22px;background:var(--cream-2);border-left:3px solid var(--teal);border-radius:8px;margin:24px 0}
+.note-callout p{margin:0;font-size:15.5px;line-height:1.6;color:var(--ink)}
+/* The leakage-distribution chart now uses the shared .viz-bars
+   component (assets/site-article.css → "Article viz components").
+   .dist-chart was the per-page predecessor; superseded as part of
+   the Phase-1 graphics refresh. */
+</style>
+<style>
+/* Critical CSS — prevents flash of unstyled content while the main
+   stylesheet (assets/site.css) loads non-render-blocking via the
+   <link> below. Carries: token vars used in inline styles elsewhere,
+   body baseline (cream + ink + body-size + line-height), container
+   width, skip-link affordance, and a min-height reservation for the
+   fixed nav so layout doesn't shift when site.css applies. ~600
+   bytes. Documented in Phase 3B perf cutover; the full token set
+   reapplies once site.css arrives. */
+:root{--cream:#FAF7F2;--cream-2:#F3EEE3;--ink:#14161A;--ink-soft:#2A2D33;--teal:#1F4E5B;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
+html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--cream);line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased}
+.container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
+.skip-link{position:absolute;left:-9999px;top:0}
+.skip-link:focus{position:static;display:inline-block;background:#14161A;color:#FAF7F2;padding:12px 16px;z-index:100}
+/* injected by inject-critical-link-color.mjs */
+a{color:inherit}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:500;font-size:15px;text-decoration:none;white-space:nowrap;cursor:pointer}
+.btn-primary{background:var(--ink);color:var(--cream)}
+.btn-ghost{background:transparent;color:var(--ink);border:1px solid #D9D5CB}
+header.nav{min-height:64px}
+</style>
+<!-- Preload the two above-the-fold web fonts so they arrive in
+     parallel with site.css instead of being discovered after parse. -->
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
+<!-- Async-load the main stylesheet. Pattern: preload + onload-swap
+     (with a <noscript> fallback for the JS-disabled path). The
+     onload assigns this.rel='stylesheet', which the browser then
+     applies; before that the critical CSS above carries the page. -->
+<link rel="preload" as="style" href="/assets/site-core.css?v=a3cc95eb7ac7" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=47810dd9477a" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a3cc95eb7ac7"><link rel="stylesheet" href="/assets/site-article.css?v=47810dd9477a"></noscript>
+
+<script src="/assets/p.js?v=20260503" defer></script>
+<script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to main content</a>
+
 <script>
   /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
      Apple devices. Runs early in <body> so the swap is essentially

@@ -37,6 +37,522 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/brand/favicons/favicon-16x16.png" />
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","@id":"https://muntin.digital/tools/margin-math/#tool","name":"Margin Math","description":"Client-side finance calculators for independent restaurants: delivery break-even, price-raise simulation, prime cost check, break-even covers. Owner inputs stay in the browser.","url":"https://muntin.digital/tools/margin-math/","applicationCategory":"BusinessApplication","operatingSystem":"Web","inLanguage":["en","es"],"isAccessibleForFree":true,"browserRequirements":"Requires a modern browser with JavaScript enabled","keywords":"restaurant finance calculator, delivery break-even, DoorDash commission, prime cost, menu pricing, break-even covers, price elasticity, restaurant margins","audience":{"@type":"BusinessAudience","audienceType":"Independent restaurant owners and operators"},"featureList":["Delivery break-even vs. direct ordering per-order math","Prime cost check calibrated per restaurant segment","Break-even covers with capacity utilization","Price-raise simulator with profit and revenue break-even","Shareable URL-fragment scenario links","Printable Monthly Margin Report","Monthly .ics calendar reminder","Client-side: no fetch, no storage, no account"],"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"creator":{"@id":"https://muntin.digital/#business"}},{"@type":"FAQPage","@id":"https://muntin.digital/tools/margin-math/#faq","mainEntity":[{"@type":"Question","name":"Do my numbers leave the page when I use Margin Math?","acceptedAnswer":{"@type":"Answer","text":"No. No fetch(), XMLHttpRequest, or form submission fires when you type a financial number. The calculator math runs entirely in your browser. The page is static HTML plus two unminified JavaScript files you can read directly."}},{"@type":"Question","name":"Does Margin Math require an account, email, or cookie consent?","acceptedAnswer":{"@type":"Answer","text":"No. No sign-up, no newsletter gate, no cookie banner. You can use every calculator without identifying yourself. Analytics is privacy-first Plausible with bucketed properties only — never your raw values."}},{"@type":"Question","name":"Can I share a Margin Math scenario with my bookkeeper?","acceptedAnswer":{"@type":"Answer","text":"Yes. Each calculator has a Copy scenario link button that encodes your inputs in the URL fragment (after the #). Browsers never send fragments to servers per the HTTP specification, so the link works while the server never sees its contents. A Copy as plain text button composes a labeled summary for email or notes."}},{"@type":"Question","name":"What benchmarks do the calculators use?","acceptedAnswer":{"@type":"Answer","text":"Delivery Break-Even uses DoorDash's published commission tiers at approximately 15%, 25%, and 30%. Prime Cost uses the National Restaurant Association's 55 to 65 percent healthy band for full-service independents, with separate thresholds for fast-casual (compressed at the top) and fine-dining (shifted up five points). Benchmarks are dated in the footer and last reviewed April 2026."}},{"@type":"Question","name":"Is the source code open and readable?","acceptedAnswer":{"@type":"Answer","text":"Yes. No build step, no minification, no framework. The math module lives at /tools/margin-math/margin-math.js as plain JavaScript under roughly five hundred lines, and every calculation function is named. Right-click View Page Source to read the UI directly."}},{"@type":"Question","name":"Can I run Margin Math as a monthly review?","acceptedAnswer":{"@type":"Answer","text":"Yes. Print this month's report opens a browser-native print dialog that renders a clean single-sheet Monthly Margin Report with a timestamp and a Reopen this scenario URL. Add a monthly check-in to your calendar downloads an .ics file with a twelve-occurrence monthly recurring event linked to the current scenario. Both actions are 100 percent client-side."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Muntin Digital","item":"https://muntin.digital/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://muntin.digital/tools/"},{"@type":"ListItem","position":3,"name":"Margin Math","item":"https://muntin.digital/tools/margin-math/"}]}]}
+</script>
+<script src="/assets/p.js?v=20260503" defer></script>
+<script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
+<style>.breadcrumb{padding-top:100px}</style>
+<style>
+/* Critical CSS — prevents flash of unstyled content while the main
+   stylesheet (assets/site.css) loads non-render-blocking via the
+   <link> below. Carries: token vars used in inline styles elsewhere,
+   body baseline (cream + ink + body-size + line-height), container
+   width, skip-link affordance, and a min-height reservation for the
+   fixed nav so layout doesn't shift when site.css applies. ~600
+   bytes. Documented in Phase 3B perf cutover; the full token set
+   reapplies once site.css arrives. */
+:root{--cream:#FAF7F2;--cream-2:#F3EEE3;--ink:#14161A;--ink-soft:#2A2D33;--teal:#1F4E5B;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
+html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--cream);line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased}
+.container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
+.skip-link{position:absolute;left:-9999px;top:0}
+.skip-link:focus{position:static;display:inline-block;background:#14161A;color:#FAF7F2;padding:12px 16px;z-index:100}
+/* injected by inject-critical-link-color.mjs */
+a{color:inherit}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:500;font-size:15px;text-decoration:none;white-space:nowrap;cursor:pointer}
+.btn-primary{background:var(--ink);color:var(--cream)}
+.btn-ghost{background:transparent;color:var(--ink);border:1px solid #D9D5CB}
+header.nav{min-height:64px}
+</style>
+<!-- Preload the two above-the-fold web fonts so they arrive in
+     parallel with site.css instead of being discovered after parse. -->
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
+<!-- Async-load the main stylesheet. Pattern: preload + onload-swap
+     (with a <noscript> fallback for the JS-disabled path). The
+     onload assigns this.rel='stylesheet', which the browser then
+     applies; before that the critical CSS above carries the page. -->
+<link rel="preload" as="style" href="/assets/site-core.css?v=a3cc95eb7ac7" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-tool.css?v=5f214b425aa9" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a3cc95eb7ac7"><link rel="stylesheet" href="/assets/site-tool.css?v=5f214b425aa9"></noscript>
+<style>
+  /* Margin Math — page-scoped styles. Conservative in Phase 0; the
+     calculator-specific layouts land with each phase. Palette borrows
+     tokens from site.css; no new primitives introduced here. */
+  .mm-hero{max-width:720px;margin:0 auto;text-align:center}
+  .mm-pledge{display:inline-flex;align-items:center;gap:8px;margin:22px auto 0;padding:8px 16px;border:1px solid var(--status-good);background:var(--status-good-tint);color:var(--status-good);border-radius:999px;font-size:13px;font-weight:600;letter-spacing:.02em}
+  .mm-pledge::before{content:'\2713';font-weight:700}
+  .mm-pledge a{color:inherit;text-decoration:underline;text-underline-offset:2px}
+  .mm-grid{display:grid;grid-template-columns:1fr;gap:16px;max-width:760px;margin:0 auto}
+  @media (min-width:640px){.mm-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  .mm-card{display:flex;flex-direction:column;padding:22px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--white);gap:12px;position:relative}
+  /* Wave 10.10 — cross-tool cascade banner (break-even shifted) */
+  .mm-cascade-banner{margin:0 0 16px;padding:0}
+  .mm-cascade-banner[hidden]{display:none}
+  .mm-cascade{padding:12px 14px;background:color-mix(in srgb,var(--teal) 6%,var(--cream));border:1px solid color-mix(in srgb,var(--teal) 30%,var(--line));border-left:3px solid var(--teal);border-radius:8px;font-size:13.5px;color:var(--ink);line-height:1.55}
+  .mm-cascade-msg{margin:0}
+  .mm-card.mm-coming{background:var(--cream-2);border-style:dashed;opacity:.85}
+  .mm-card-eyebrow{font-size:12.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal)}
+  .mm-card.mm-coming .mm-card-eyebrow{color:var(--stone)}
+  .mm-card h3{font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0;line-height:1.25}
+  .mm-card p{font-size:14px;line-height:1.55;color:var(--ink-soft);margin:0}
+  .mm-card-link{margin-top:auto;font-size:13px;font-weight:600;color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor;padding-bottom:1px;align-self:flex-start}
+  .mm-next{margin:48px auto 0;max-width:760px;padding:24px;background:var(--cream-2);border:1px solid var(--line);border-radius:var(--r-md)}
+  .mm-next h2{font-family:var(--font-display);font-size:22px;font-weight:500;margin:0 0 12px;color:var(--ink)}
+  .mm-next-links{display:flex;flex-wrap:wrap;gap:10px}
+  .mm-next-links a{font-size:14px;padding:10px 16px;border:1px solid var(--line-dark);border-radius:999px;background:var(--white);color:var(--ink);text-decoration:none;font-weight:500}
+  .mm-next-links a:hover{border-color:var(--teal);color:var(--teal)}
+  /* Live-calculator styles — shared by all four calculators. The
+     "Stays in your browser" badge is visible on every card to
+     reinforce the architectural promise. Real-time updates via
+     aria-live="polite" results region. */
+  .mm-card.mm-live{border-style:solid}
+  .mm-card-header{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:space-between}
+  .mm-badge-safe{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:var(--status-good-tint);color:var(--status-good);border-radius:999px;font-size:12.5px;font-weight:700;letter-spacing:.04em}
+  .mm-badge-safe::before{content:'\2713';font-weight:800}
+  .mm-form{display:flex;flex-direction:column;gap:14px;margin:6px 0 0}
+  .mm-form label{display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:600;color:var(--ink-soft)}
+  .mm-form label > span{display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .mm-form label > span > output{font-family:var(--font-display);font-size:16px;font-weight:500;color:var(--ink);font-variant-numeric:tabular-nums;min-width:56px;text-align:right}
+  .mm-form input[type="range"]{width:100%;accent-color:var(--teal);cursor:grab}
+  .mm-form input[type="range"]:focus-visible{outline:2px solid var(--teal);outline-offset:4px;border-radius:var(--r-sm)}
+  .mm-form input[type="number"]{padding:8px 10px;border:1px solid var(--line-dark);border-radius:var(--r-sm);font:inherit;font-size:15px;background:var(--white);color:var(--ink);width:100%;box-sizing:border-box}
+  .mm-form input[type="number"]:focus{border-color:var(--teal);outline:none}
+  .mm-mode{display:flex;gap:0;margin:4px 0 4px;border:1px solid var(--line);border-radius:999px;padding:2px;width:fit-content;background:var(--surface-1)}
+  .mm-mode button{padding:6px 14px;border:0;background:transparent;color:var(--ink-soft);font:inherit;font-size:12.5px;font-weight:500;cursor:pointer;border-radius:999px}
+  .mm-mode button[aria-pressed="true"]{background:var(--ink);color:var(--cream)}
+  .mm-slider-pair{display:grid;grid-template-columns:1fr 80px auto;gap:8px;align-items:center}
+  .mm-slider-pair input[type="range"]{margin:0}
+  .mm-num-input{width:80px;text-align:right;font-variant-numeric:tabular-nums}
+  .mm-num-input--wide{width:160px}
+  .mm-num-suffix{font-size:13px;color:var(--stone)}
+  .mm-num-row{display:flex;align-items:center;gap:6px}
+  .mm-num-prefix{font-size:18px;color:var(--stone);font-weight:600}
+  .mm-pc-dol{display:flex;flex-direction:column;gap:14px}
+  .mm-pc-dol-hint{font-size:13px;color:var(--ink-soft);margin:0;line-height:1.5;padding:10px 14px;background:var(--cream-2);border-radius:var(--r-sm);border:1px solid var(--line)}
+  .mm-pnl{padding:22px 24px;border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:var(--r-md);background:var(--surface-1);margin:0 0 24px;display:flex;flex-direction:column;gap:14px}
+  .mm-pnl h3{font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0;line-height:1.2}
+  .mm-pnl p{font-size:14px;line-height:1.55;color:var(--ink-soft);margin:0}
+  .mm-pnl-form{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:0}
+  .mm-pnl-form label{display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:600;color:var(--ink-soft)}
+  .mm-pnl-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .mm-pnl-btn{padding:10px 18px;border:1px solid var(--ink);border-radius:999px;background:var(--ink);color:var(--cream);font:inherit;font-size:14px;font-weight:600;cursor:pointer}
+  .mm-pnl-btn:hover{background:var(--teal);border-color:var(--teal)}
+  .mm-pnl-msg{font-size:13px;color:var(--status-good);font-weight:500}
+  .mm-pnl-msg.error{color:var(--rust)}
+  .mm-pnl-foot{font-size:12px;color:var(--stone);margin:0;line-height:1.5}
+  .mm-pnl-foot code{background:var(--cream-2);padding:1px 5px;border-radius:3px;font-size:11.5px}
+  .mm-tier-group{display:flex;gap:6px;border:0;padding:0;margin:0}
+  .mm-tier-group legend{font-size:13px;font-weight:600;color:var(--ink-soft);margin-bottom:6px;padding:0}
+  .mm-tier-btns{display:flex;gap:6px;width:100%}
+  .mm-tier-btns button{flex:1;padding:10px 8px;border:1px solid var(--line-dark);border-radius:var(--r-input);background:var(--white);font:inherit;font-size:13px;font-weight:600;color:var(--ink);cursor:pointer;transition:border-color 140ms,background 140ms;line-height:1.3}
+  .mm-tier-btns button small{display:block;font-size:12.5px;font-weight:500;color:var(--stone);margin-top:2px}
+  .mm-tier-btns button:hover{border-color:var(--teal)}
+  .mm-tier-btns button[aria-pressed="true"]{border-color:var(--teal);background:var(--teal-tint);color:var(--teal)}
+  .mm-tier-btns button[aria-pressed="true"] small{color:var(--teal-dark)}
+  .mm-results{margin-top:4px;padding:14px 16px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--cream-2);display:flex;flex-direction:column;gap:12px}
+  .mm-per-order{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .mm-per-order-col{display:flex;flex-direction:column;gap:2px;text-align:center;padding:10px;background:var(--white);border-radius:var(--r-sm);border:1px solid var(--line)}
+  .mm-result-label{font-size:12.5px;font-weight:600;color:var(--stone);letter-spacing:.04em;text-transform:uppercase}
+  .mm-result-value{font-family:var(--font-display);font-size:24px;font-weight:500;color:var(--ink);font-variant-numeric:tabular-nums}
+  .mm-result-sub{font-size:12.5px;color:var(--stone);font-variant-numeric:tabular-nums;margin-top:1px;letter-spacing:.01em}
+  /* "Copy scenario link" — a discreet per-calculator action that
+     writes the current state into the URL fragment so the owner can
+     bookmark or share the scenario. No server round-trip; the
+     fragment never leaves the browser. */
+  .mm-copy-link{align-self:flex-start;margin-top:-2px;font-size:12px;font-weight:600;color:var(--teal);background:none;border:0;padding:0;cursor:pointer;letter-spacing:.01em;display:inline-flex;align-items:center;gap:5px;font-family:inherit}
+  .mm-copy-link:hover{color:var(--teal-dark)}
+  .mm-copy-link:focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-radius:var(--r-sm)}
+  .mm-copy-link::before{content:'';width:10px;height:10px;border:1.5px solid currentColor;border-radius:var(--r-sm);box-shadow:-3px 3px 0 -1.5px currentColor,-3px 3px 0 0 var(--white);display:inline-block;margin-right:2px;flex:0 0 10px}
+  .mm-copy-link[data-copied="true"]{color:var(--status-good)}
+  .mm-copy-link[data-copied="true"]::before{content:'\2713';border:0;box-shadow:none;width:auto;height:auto;font-weight:800;color:inherit;margin-right:1px;font-size:13px;line-height:1}
+  /* Waterfall — "where each dollar of this order goes." A two-row
+     stacked-bar breakdown of the $ticket into food cost / platform
+     or processing fee / what-you-keep. Sits beneath the per-order
+     numbers so the visual tells the per-dollar story, and the
+     monthly delta below scales it up. */
+  .mm-wf{display:flex;flex-direction:column;gap:6px;margin-top:2px;padding-top:10px;border-top:1px dashed var(--line-dark)}
+  .mm-wf-row{display:grid;grid-template-columns:64px 1fr;gap:10px;align-items:center}
+  .mm-wf-label{font-size:12.5px;color:var(--stone);font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+  .mm-wf-bar{display:flex;height:14px;border-radius:999px;overflow:hidden;border:1px solid var(--line);background:var(--white)}
+  .mm-wf-seg{display:block;height:100%;transition:width 220ms var(--ease-out);min-width:0}
+  /* Triad chosen for deuteranopia safety: neutral stone (cost, just
+     baseline), rust (fee, alarming), and green (keep, good). Distinct
+     hues AND distinct luminance — the bar reads correctly even in
+     red-green color-deficient simulation. The legend dots and legend
+     text remain as redundant non-color encoding. */
+  .mm-wf-food{background:var(--stone)}
+  .mm-wf-fee{background:var(--rust)}
+  .mm-wf-margin{background:var(--status-good)}
+  .mm-wf-legend{list-style:none;padding:0;margin:4px 0 0;display:flex;flex-wrap:wrap;gap:10px 14px;font-size:12.5px;color:var(--stone);justify-content:center}
+  .mm-wf-legend li{display:inline-flex;align-items:center;gap:5px}
+  .mm-wf-dot{display:inline-block;width:8px;height:8px;border-radius:50%;flex:0 0 8px}
+  @media print {
+    .mm-wf-bar{border-color:#000 !important}
+    .mm-wf-food{background:#ddd !important}
+    .mm-wf-fee{background:#888 !important}
+    .mm-wf-margin{background:#222 !important}
+    .mm-wf-dot{border:0.5pt solid #000}
+    .mm-wf-label{color:#000 !important}
+    .mm-wf-legend{color:#000 !important}
+  }
+  /* Bad-band escalation — only surfaces on the worst band of each
+     calculator, routing to the full Restaurant Audit. Quieter than
+     the band-colored .mm-recommendation so the two don't compete. */
+  .mm-escalate{margin:10px 0 0;padding:12px 14px;border-radius:var(--r-input);background:var(--cream-2);border:1px solid var(--line);font-size:13px;line-height:1.55;color:var(--ink-soft);display:none;gap:12px;align-items:center;flex-wrap:wrap}
+  .mm-escalate[data-visible="true"]{display:flex}
+  .mm-escalate p{margin:0;flex:1 1 100%}
+  @media (min-width:480px){.mm-escalate p{flex:1 1 200px}}
+  .mm-escalate a{color:var(--rust);font-weight:700;text-decoration:none;border-bottom:1px solid currentColor;white-space:nowrap}
+  .mm-escalate a:hover{color:var(--status-warn-deep)}
+  /* Cross-calculator suggestion — appears on mid-severity bands
+     (warn / optimize / ok) to nudge the user toward the next
+     calculator that usually matters for this pattern. Mutually
+     exclusive in practice with .mm-escalate (which is worst-band
+     only), so the user sees at most one "where next" row at a time. */
+  .mm-cross-suggest{margin:8px 0 0;padding:10px 14px;border-radius:var(--r-sm);background:var(--teal-tint);color:var(--teal-dark);font-size:12.5px;line-height:1.5;display:none;gap:10px;align-items:center;flex-wrap:wrap}
+  .mm-cross-suggest[data-visible="true"]{display:flex}
+  .mm-cross-suggest span{flex:1 1 100%}
+  @media (min-width:480px){.mm-cross-suggest span{flex:1 1 200px}}
+  .mm-cross-suggest a{color:var(--teal);font-weight:700;text-decoration:none;border-bottom:1px solid currentColor;white-space:nowrap}
+  .mm-cross-suggest a:hover{color:var(--teal-dark)}
+  @media print { .mm-cross-suggest { display: none !important; } }
+  /* Glossary popover — reads definitions from data-def attributes on
+     the underlined in-card links. No fetch, no build, no new script
+     dependency: the definition text travels with the markup so the
+     privacy posture survives intact. Keyboard-accessible via focus
+     and Escape-to-close; hover-to-open is pointer-only. */
+  .mm-popover{position:absolute;z-index:120;max-width:320px;padding:12px 14px;background:var(--white);border:1px solid var(--line-dark);border-radius:var(--r-sm);box-shadow:var(--elev-3);font-size:13px;line-height:1.55;color:var(--ink-soft);pointer-events:auto}
+  .mm-popover[hidden]{display:none}
+  .mm-popover-term{display:block;font-family:var(--font-display);font-size:14px;font-weight:500;color:var(--ink);margin:0 0 4px;letter-spacing:.01em}
+  .mm-popover-def{display:block;margin:0 0 8px}
+  .mm-popover-link{display:inline-flex;align-items:center;gap:3px;color:var(--teal);font-size:12.5px;font-weight:600;text-decoration:none;border-bottom:1px dashed currentColor;padding-bottom:1px}
+  .mm-popover-link:hover{color:var(--teal-dark)}
+  .mm-popover::before{content:'';position:absolute;top:-6px;left:20px;width:10px;height:10px;background:var(--white);border-left:1px solid var(--line-dark);border-top:1px solid var(--line-dark);transform:rotate(45deg)}
+  .mm-popover[data-flip="true"]::before{top:auto;bottom:-6px;border:0;border-right:1px solid var(--line-dark);border-bottom:1px solid var(--line-dark)}
+  @media print { .mm-popover { display: none !important; } }
+  @media (prefers-reduced-motion: no-preference) {
+    .mm-popover{animation:mm-pop-in 120ms var(--ease-out)}
+    @keyframes mm-pop-in { from { opacity:0; transform:translateY(-2px); } to { opacity:1; transform:translateY(0); } }
+  }
+  /* Monthly-report actions — signature Muntin deliverable + .ics
+     reminder. Both actions are 100% client-side: the print dialog
+     is browser-native; the .ics is generated in-browser and
+     downloaded locally. Sits in the hero so the month-end rhythm
+     is the first thing an owner sees on a return visit. */
+  .mm-actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:18px 0 0}
+  .mm-action{font-family:inherit;font-size:13.5px;font-weight:600;padding:11px 18px;min-height:44px;border-radius:999px;cursor:pointer;border:1px solid var(--line-dark);background:var(--white);color:var(--ink);display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:border-color 140ms,color 140ms,background 140ms,transform 140ms;line-height:1.2}
+  .mm-action:hover{border-color:var(--teal);color:var(--teal)}
+  .mm-action:active{transform:translateY(1px)}
+  .mm-action:focus-visible{outline:2px solid var(--teal);outline-offset:3px}
+  .mm-action-primary{background:var(--teal);color:var(--white);border-color:var(--teal)}
+  .mm-action-primary:hover{background:var(--teal-dark);color:var(--white);border-color:var(--teal-dark)}
+  .mm-action-icon{display:inline-flex;width:14px;height:14px;flex:0 0 14px;align-items:center;justify-content:center}
+  .mm-action-icon svg{width:100%;height:auto;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+  .mm-action-note{text-align:center;margin:8px auto 0;max-width:520px;font-size:12.5px;color:var(--stone);line-height:1.5}
+  /* Scenario-diff banner — surfaces only on return visits (when the
+     URL fragment carries any calculator state). Gives bookmark
+     traffic a moment of orientation: "yes, your saved numbers are
+     loaded; tweak from there." Dismissable in-session. */
+  .mm-scenario-banner{max-width:760px;margin:0 auto 20px;padding:12px 18px;background:var(--teal-tint);color:var(--teal-dark);border-radius:var(--r-input);font-size:13.5px;line-height:1.5;display:none;gap:12px;align-items:center;border:1px solid rgba(31,78,91,0.12)}
+  .mm-scenario-banner[data-visible="true"]{display:flex}
+  .mm-scenario-banner-text{flex:1}
+  .mm-scenario-banner-text strong{color:var(--teal)}
+  .mm-scenario-banner-dismiss{background:none;border:0;padding:4px;color:inherit;cursor:pointer;opacity:.7;border-radius:var(--r-sm);display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;line-height:0}
+  .mm-scenario-banner-dismiss:hover{opacity:1}
+  .mm-scenario-banner-dismiss:focus-visible{outline:2px solid currentColor;outline-offset:2px;opacity:1}
+  @media print { .mm-scenario-banner { display: none !important; } }
+  /* Benchmarks-last-updated line — a small, dated annotation that
+     gives returning visitors a reason to pay attention. Every
+     calculator's thresholds trace to published industry references;
+     this footer documents when those references were last reviewed. */
+  .mm-benchmarks{text-align:center;margin:22px auto 0;max-width:760px;font-size:12.5px;color:var(--stone);line-height:1.6;padding:0 12px}
+  .mm-benchmarks time{color:var(--ink-soft);font-weight:600}
+  .mm-benchmarks a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+  .mm-benchmarks a:hover{color:var(--teal-dark)}
+  @media print { .mm-benchmarks { display: none !important; } }
+  /* Print stylesheet — turns the page into a one-sheet Monthly
+     Margin Report. Keeps the four calculator cards (inputs + results
+     as static text) and strips every non-essential surround. The
+     date header and scenario-link footer are data-attribute driven
+     so JS can stamp them just before window.print(). */
+  @media print {
+    @page { margin: 12mm 14mm; size: letter; }
+    body { background: #fff; color: #000; font-size: 10pt; }
+    header.nav, .mobile-menu, .lang-hint, footer, .skip-link, .breadcrumb,
+    section#how-we-protect, section#how-to-check, section#data-sharing,
+    .mm-next, .foot-cta, .hero .mm-pledge, .nav-search-btn, .lang-switch,
+    .mm-badge-safe, .mm-copy-link, .mm-blog-link, .mm-mini-help,
+    [data-copy-link], .mm-escalate,
+    .mm-actions, .mm-action-note { display: none !important; }
+    .hero { padding: 0 !important; margin: 0 0 6pt !important; text-align: left; }
+    .hero .container, .hero .container-wide, main .container, main .container-wide { padding: 0 !important; max-width: none !important; }
+    .hero h1 { font-size: 14pt; margin: 0 0 2pt; }
+    .hero h1 br, .hero .serif-italic { display: none; }
+    .hero-sub { display: none; }
+    .eyebrow { display: none; }
+    main::before {
+      content: 'Margin Math — Monthly Report';
+      display: block;
+      font-family: var(--font-display);
+      font-size: 17pt;
+      font-weight: 500;
+      border-bottom: 0.5pt solid #000;
+      padding-bottom: 3pt;
+      margin: 0 0 3pt;
+      letter-spacing: 0.01em;
+    }
+    body[data-print-date]::before {
+      content: attr(data-print-date) '  ·  muntin.digital/tools/margin-math/';
+      display: block;
+      font-size: 9pt;
+      color: #555;
+      margin: 0 0 10pt;
+      letter-spacing: 0.02em;
+    }
+    .mm-grid { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 8pt !important; }
+    .mm-card { break-inside: avoid; page-break-inside: avoid; border: 0.5pt solid #555 !important; background: #fff !important; padding: 10pt !important; border-radius: 3pt !important; gap: 6pt !important; }
+    .mm-card-header { gap: 6pt; }
+    .mm-card-eyebrow { color: #555; font-size: 8pt; letter-spacing: 0.08em; }
+    .mm-card h3 { margin: 2pt 0 4pt; font-size: 12pt; }
+    .mm-card p { font-size: 9pt; margin: 0 0 4pt; line-height: 1.4; color: #222; }
+    .mm-card p a { color: #000; border: 0; text-decoration: none; }
+    /* Inputs: pipe the slider's <output> value as text, hide the slider. */
+    .mm-form label { display: block; font-size: 9pt; margin: 0 0 2pt; color: #000; font-weight: 500; gap: 0 !important; }
+    .mm-form label > span { display: inline; font-weight: 500; }
+    .mm-form label > span > output { font-weight: 700; margin-left: 3pt; }
+    .mm-form label > small { display: none; }
+    .mm-form input[type="range"] { display: none !important; }
+    .mm-form input[type="number"] { border: 0 !important; background: transparent !important; padding: 0 !important; color: #000; font-weight: 700; font-size: 10pt; width: auto !important; -webkit-appearance: none; appearance: none; display: inline-block; }
+    .mm-tier-group { margin: 0 0 2pt; }
+    .mm-tier-group legend { font-size: 9pt; font-weight: 500; padding: 0; margin: 0 0 1pt; }
+    .mm-tier-btns { gap: 0 !important; }
+    .mm-tier-btns button { display: none !important; }
+    .mm-tier-btns button[aria-pressed="true"] { display: inline-block !important; border: 0.5pt solid #000 !important; background: none !important; color: #000 !important; padding: 1pt 5pt !important; font-weight: 700; border-radius: 2pt !important; font-size: 9pt; }
+    .mm-tier-btns button[aria-pressed="true"] small { color: #555; font-size: 8pt; margin-top: 0; }
+    /* Results */
+    .mm-results { background: none !important; border: 0.5pt solid #999 !important; padding: 6pt 8pt !important; margin-top: 4pt !important; border-radius: 2pt !important; gap: 5pt !important; }
+    .mm-monthly, .mm-per-order-col { padding: 3pt 0 !important; }
+    .mm-per-order-col { border: 0.5pt dotted #999 !important; background: none !important; padding: 3pt 4pt !important; }
+    .mm-monthly-value { font-size: 18pt !important; color: #000 !important; }
+    .mm-result-value { font-size: 13pt !important; color: #000 !important; }
+    .mm-result-label, .mm-monthly-label { color: #555; font-size: 8pt !important; }
+    .mm-monthly-subtext, .mm-result-sub { color: #555; font-size: 8pt; }
+    .mm-recommendation { background: #f4f4f4 !important; color: #000 !important; font-size: 9pt !important; padding: 5pt 7pt !important; line-height: 1.4; border-radius: 2pt !important; }
+    .mm-recommendation a { color: #000; }
+    .mm-footnote { font-size: 8pt; color: #555; margin: 2pt 0 0; }
+    .mm-pc-scale-wrap { margin: 3pt 0 !important; }
+    .mm-pc-scale { height: 4pt !important; }
+    .mm-pc-scale > span { background: #fff !important; border: 0.5pt solid #999 !important; }
+    .mm-pc-marker { background: #000 !important; height: 8pt !important; width: 2pt !important; top: -2pt !important; }
+    .mm-pc-axis { font-size: 7pt; }
+    /* Footer caption: current scenario URL so the printout is a
+       bookmarkable artifact. Truncates gracefully on overflow. */
+    body[data-print-url] main::after {
+      content: 'Reopen this scenario: ' attr(data-print-url);
+      display: block;
+      font-size: 7.5pt;
+      color: #555;
+      margin-top: 10pt;
+      padding-top: 4pt;
+      border-top: 0.5pt solid #bbb;
+      overflow-wrap: anywhere;
+      page-break-inside: avoid;
+    }
+  }
+  .mm-monthly{text-align:center;padding:8px 0;border-top:1px dashed var(--line-dark);display:flex;flex-direction:column;gap:2px}
+  .mm-monthly-label{font-size:12px;font-weight:600;color:var(--stone);letter-spacing:.04em;text-transform:uppercase}
+  .mm-monthly-value{font-family:var(--font-display);font-size:36px;font-weight:500;color:var(--rust);font-variant-numeric:tabular-nums;line-height:1.1}
+  .mm-monthly-subtext{font-size:12px;color:var(--stone)}
+  .mm-recommendation{font-size:13px;line-height:1.55;padding:10px 12px;border-radius:var(--r-sm)}
+  .mm-recommendation[data-rec="keep"],   .mm-recommendation[data-band="good"]{background:var(--status-good-tint);color:var(--status-good)}
+  .mm-recommendation[data-rec="optimize"],.mm-recommendation[data-band="ok"]  {background:var(--status-warn-tint);color:var(--status-warn-deep)}
+  .mm-recommendation[data-band="warn"]                                          {background:#FCE4D4;color:var(--status-warn-deep)}
+  .mm-recommendation[data-rec="consider-leaving"],.mm-recommendation[data-band="bad"]{background:var(--status-bad-tint);color:var(--rust)}
+  .mm-recommendation[data-band="below"]                                         {background:var(--teal-tint);color:var(--teal)}
+  .mm-recommendation a{color:inherit;font-weight:700;border-bottom:1px solid currentColor}
+  /* Big-number color variants for non-monetary calculators (Prime Cost
+     shows a percentage, not a dollar delta). Reuses the .mm-monthly
+     layout; band drives the color. */
+  .mm-monthly[data-band] .mm-monthly-value{transition:color 200ms var(--ease-out)}
+  .mm-monthly[data-band="good"]  .mm-monthly-value{color:var(--status-good)}
+  .mm-monthly[data-band="ok"]    .mm-monthly-value{color:var(--status-warn-deep)}
+  .mm-monthly[data-band="warn"]  .mm-monthly-value{color:var(--status-warn-deep)}
+  .mm-monthly[data-band="bad"]   .mm-monthly-value{color:var(--rust)}
+  .mm-monthly[data-band="below"] .mm-monthly-value{color:var(--teal)}
+  /* Prime Cost band scale — horizontal 5-segment pill from 40% to
+     80% prime cost. Marker indicates the user's current position. */
+  .mm-pc-scale-wrap{position:relative;margin:4px 4px 2px}
+  .mm-pc-scale{display:flex;height:10px;border-radius:999px;overflow:hidden}
+  .mm-pc-scale > span{flex:1;min-width:0}
+  .mm-pc-scale > span:nth-child(1){background:var(--teal-tint)}
+  .mm-pc-scale > span:nth-child(2){background:var(--status-good-tint)}
+  .mm-pc-scale > span:nth-child(3){background:var(--status-warn-tint)}
+  .mm-pc-scale > span:nth-child(4){background:#FCE4D4}
+  .mm-pc-scale > span:nth-child(5){background:var(--status-bad-tint)}
+  .mm-pc-marker{position:absolute;top:-3px;width:4px;height:16px;background:var(--ink);border-radius:999px;transform:translateX(-2px);transition:left 200ms var(--ease-out)}
+  .mm-pc-axis{display:flex;justify-content:space-between;font-size:12.5px;color:var(--stone);margin-top:6px;padding:0 2px;font-variant-numeric:tabular-nums}
+  .mm-blog-link{margin-top:4px;font-size:12px;color:var(--teal);text-decoration:none;font-weight:600}
+  .mm-blog-link:hover{color:var(--teal-dark);border-bottom:1px dashed currentColor}
+  /* "Not modeled" footnote — tells the reader what the calculator is
+     deliberately leaving out so point estimates aren't over-trusted.
+     Quiet visually: sits below results, above any blog link, without
+     competing with the big numbers. */
+  .mm-footnote{margin:-2px 0 0;font-size:12.5px;line-height:1.55;color:var(--stone)}
+  .mm-footnote strong{color:var(--ink-soft);font-weight:600}
+  /* Small in-field helper — an expandable "Worked example" revealer
+     that sits under a form field without dominating it. Shares the
+     visual vocabulary with .mm-step-inspect but is form-scoped. */
+  .mm-mini-help{margin:-4px 0 2px;font-size:12px}
+  .mm-mini-help summary{cursor:pointer;color:var(--teal);font-weight:600;list-style:none;display:inline-flex;align-items:center;gap:4px;letter-spacing:.01em}
+  .mm-mini-help summary::-webkit-details-marker{display:none}
+  .mm-mini-help summary::after{content:'\25BE';font-size:9px;transition:transform 140ms var(--ease-out)}
+  .mm-mini-help[open] summary::after{transform:rotate(180deg)}
+  .mm-mini-help summary:hover{color:var(--teal-dark)}
+  .mm-mini-help-body{margin:6px 0 0;padding:9px 11px;background:var(--cream-2);border-radius:var(--r-sm);color:var(--ink-soft);line-height:1.55;font-weight:400;font-size:12.5px}
+  .mm-mini-help-body strong{color:var(--ink);font-weight:600}
+  /* Privacy-promise steps — 8 verifiable claims, each with an
+     inline "Inspect this" expander. Keyboard-operable via native
+     <details>. Invite the audit; don't dodge it. */
+  .mm-steps{display:flex;flex-direction:column;gap:10px;max-width:760px;margin:20px auto 0}
+  .mm-step{border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);padding:16px 18px}
+  .mm-step-head{display:flex;gap:14px;align-items:flex-start}
+  .mm-step-num{flex:0 0 28px;height:28px;border-radius:50%;background:var(--teal-tint);color:var(--teal);font-family:var(--font-display);font-weight:500;font-size:15px;display:flex;align-items:center;justify-content:center}
+  .mm-step-body{flex:1;min-width:0}
+  .mm-step-title{font-size:15px;font-weight:600;color:var(--ink);margin:0 0 4px;line-height:1.35}
+  .mm-step-claim{font-size:13.5px;color:var(--ink-soft);line-height:1.55;margin:0}
+  .mm-step-inspect{margin-top:10px;font-size:12.5px}
+  .mm-step-inspect summary{cursor:pointer;font-weight:700;color:var(--teal);list-style:none;display:inline-flex;align-items:center;gap:4px;letter-spacing:.02em}
+  .mm-step-inspect summary::-webkit-details-marker{display:none}
+  .mm-step-inspect summary::after{content:'\25BE';font-size:12.5px;transition:transform 140ms var(--ease-out)}
+  .mm-step-inspect[open] summary::after{transform:rotate(180deg)}
+  .mm-step-inspect summary:hover{color:var(--teal-dark)}
+  .mm-step-verify{margin:8px 0 0;padding:10px 12px;background:var(--cream-2);border-radius:var(--r-sm);font-size:12.5px;line-height:1.55;color:var(--ink-soft)}
+  .mm-step-verify code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;background:var(--white);padding:1px 5px;border-radius:var(--r-sm);border:1px solid var(--line);font-size:12px}
+  .mm-step-verify kbd{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;background:var(--white);padding:1px 5px;border-radius:var(--r-sm);border:1px solid var(--line);font-size:12.5px;box-shadow:0 1px 0 var(--line-dark)}
+  /* Safety-checklist table — Margin Math vs. typical free tool.
+     Turns the meta-claim into a side-by-side comparison. */
+  .mm-safety-wrap{max-width:960px;margin:20px auto 0;overflow-x:auto;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white)}
+  .mm-safety{width:100%;border-collapse:collapse;font-size:13.5px}
+  .mm-safety thead th{background:var(--cream-2);text-align:left;padding:12px 16px;font-size:12.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--stone);border-bottom:1px solid var(--line)}
+  .mm-safety tbody td{padding:14px 16px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.55}
+  .mm-safety tbody tr:last-child td{border-bottom:0}
+  .mm-safety td:first-child{font-weight:500;color:var(--ink)}
+  .mm-safety-hint{display:block;margin-top:4px;font-size:12px;color:var(--stone);font-weight:400}
+  .mm-safety-pass{color:var(--status-good);font-weight:600}
+  .mm-safety-pass::before{content:'\2713  ';font-weight:800}
+  .mm-safety-fail{color:var(--rust);font-weight:600}
+  .mm-safety-fail::before{content:'\2715  ';font-weight:800}
+  @media (max-width:639px){
+    .mm-safety,.mm-safety thead,.mm-safety tbody,.mm-safety tr,.mm-safety td,.mm-safety th{display:block}
+    .mm-safety thead{display:none}
+    .mm-safety tr{border-bottom:1px solid var(--line);padding:14px 16px}
+    .mm-safety tr:last-child{border-bottom:0}
+    .mm-safety td{padding:2px 0;border:0}
+    .mm-safety td:nth-child(2)::before{content:'Margin Math: ';color:var(--stone);font-weight:500}
+    .mm-safety td:nth-child(3)::before{content:'Typical free tool: ';color:var(--stone);font-weight:500}
+  }
+  /* 4-tier data-sharing taxonomy — each tier gets a left-border
+     color-coded to its sensitivity. Escalates green → teal →
+     amber → rust from Public through Regulated. */
+  .mm-tiers{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:960px;margin:24px auto 0}
+  @media (max-width:639px){.mm-tiers{grid-template-columns:1fr}}
+  .mm-tier{padding:18px 20px;border:1px solid var(--line);border-left-width:4px;border-radius:var(--r-input);background:var(--white);display:flex;flex-direction:column;gap:10px}
+  .mm-tier[data-tier="public"]     {border-left-color:var(--status-good);background:#FAFBF9}
+  .mm-tier[data-tier="competitive"]{border-left-color:var(--teal);background:#F8FBFB}
+  .mm-tier[data-tier="operational"]{border-left-color:var(--status-warn);background:#FCFAF4}
+  .mm-tier[data-tier="regulated"]  {border-left-color:var(--rust);background:#FCF7F3}
+  .mm-tier header{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin:0}
+  .mm-tier-label{font-size:12.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--stone);padding:2px 8px;border-radius:var(--r-sm);background:var(--cream-2);flex:0 0 auto}
+  .mm-tier h3{font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);margin:0;line-height:1.3}
+  .mm-tier-desc{font-size:13.5px;line-height:1.5;color:var(--ink-soft);margin:0}
+  .mm-tier-examples{margin:0;padding-left:18px;font-size:13px;color:var(--ink-soft);line-height:1.55}
+  .mm-tier-examples li{margin-bottom:4px}
+  .mm-tier-share{font-size:13px;line-height:1.55;color:var(--ink);margin:auto 0 0;padding-top:8px;border-top:1px dashed var(--line)}
+  .mm-tier-foot{max-width:760px;margin:20px auto 0;padding:14px 18px;background:var(--cream-2);border:1px solid var(--line);border-radius:var(--r-input);font-size:13.5px;line-height:1.65;color:var(--ink-soft)}
+  /* Phase 2 (Workshop) — Save-to-Workbench. Recipe: docs/workbench-save-pattern.md.
+     Payload is just the URL fragment (already what the Copy-scenario-link button
+     produces); rehydration sets location.hash + reload, replaying the existing
+     __mmHydratedState boot path. */
+  .mm-save{max-width:760px;margin:24px auto 0;padding:18px 22px;background:var(--surface-inset);border:1px solid var(--line);border-radius:var(--r-md);display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:space-between}
+  .mm-save[hidden]{display:none}
+  .mm-save-text{font-size:14px;color:var(--ink-soft);margin:0;line-height:1.5;flex:1 1 100%}
+  @media (min-width:480px){.mm-save-text{flex:1 1 220px}}
+  .mm-save-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 18px;min-height:44px;border:1px solid var(--ink);border-radius:999px;background:var(--ink);color:var(--cream);font:inherit;font-size:14px;font-weight:500;cursor:pointer;transition:background var(--t-fast) var(--ease),transform var(--t-fast) var(--ease)}
+  .mm-save-btn:hover{background:var(--teal);transform:translateY(-1px)}
+  .mm-save-btn[disabled]{opacity:.6;cursor:wait}
+  .mm-save-link{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 18px;min-height:44px;border:1px solid var(--line-dark);border-radius:999px;color:var(--ink);font-size:14px;font-weight:500;text-decoration:none;transition:border-color var(--t-fast) var(--ease)}
+  .mm-save-link:hover{border-color:var(--ink)}
+  .mm-save-msg{font-size:13px;color:var(--status-good);font-weight:500}
+  .mm-save-msg.error{color:var(--rust)}
+</style>
+<!-- tool-schema:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://muntin.digital/tools/margin-math/#tool",
+      "applicationCategory": "BusinessApplication",
+      "applicationSubCategory": "RestaurantOps",
+      "operatingSystem": "Web",
+      "screenshot": "https://muntin.digital/brand/og/tool-margin-math.png",
+      "url": "https://muntin.digital/tools/margin-math/",
+      "featureList": [
+        "Prime cost calculator (food + labor)",
+        "Break-even pricing model",
+        "Price-raise scenario simulation"
+      ],
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock"
+      },
+      "name": "Margin Math",
+      "description": "Four restaurant calculators — delivery break-even, prime cost, covers needed, and a price-raise simulator. Stays in your browser."
+    },
+    {
+      "@type": "HowTo",
+      "@id": "https://muntin.digital/tools/margin-math/#howto",
+      "name": "How to read your Margin Math result",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "Enter your costs",
+          "text": "Food cost %, labor cost %, fixed overhead — the three honest numbers.",
+          "url": "https://muntin.digital/tools/margin-math/#step-1"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "Read your margin",
+          "text": "Prime cost vs target gets a green / yellow / red read.",
+          "url": "https://muntin.digital/tools/margin-math/#step-2"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "name": "Model the price raise",
+          "text": "Adjust target margin; the tool tells you the exact menu-price change.",
+          "url": "https://muntin.digital/tools/margin-math/#step-3"
+        }
+      ],
+      "about": {
+        "@id": "https://muntin.digital/tools/margin-math/#tool"
+      },
+      "inLanguage": "en-US"
+    }
+  ]
+}
+</script>
+<!-- tool-schema:end -->
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
 <script>
   /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
      Apple devices. Runs early in <body> so the swap is essentially

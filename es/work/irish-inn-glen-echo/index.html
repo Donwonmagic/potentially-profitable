@@ -36,6 +36,134 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "CreativeWork",
+      "@id": "https://muntin.digital/es/work/irish-inn-glen-echo/#work",
+      "name": "The Irish Inn at Glen Echo — Estudio de rediseño",
+      "creator": { "@id": "https://muntin.digital/#business" },
+      "about": "Estudio independiente de rediseño del sitio web de The Irish Inn at Glen Echo, un clásico gastronómico del área de Washington abierto desde 1931.",
+      "url": "https://muntin.digital/es/work/irish-inn-glen-echo/",
+      "dateCreated": "2026",
+      "genre": "Website Redesign",
+      "inLanguage": "es"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Muntin Digital", "item": "https://muntin.digital/es/" },
+        { "@type": "ListItem", "position": 2, "name": "Proyectos", "item": "https://muntin.digital/es/work/" },
+        { "@type": "ListItem", "position": 3, "name": "The Irish Inn at Glen Echo", "item": "https://muntin.digital/es/work/irish-inn-glen-echo/" }
+      ]
+    }
+  ]
+}
+</script>
+
+<!-- Fraunces + Inter ship self-hosted in /assets/fonts/ via site.css.
+     Only Playfair Display + Lato are case-study-specific, so we
+     fetch only those from Google Fonts. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&amp;family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+
+<script src="/assets/p.js?v=20260503" defer></script>
+<script>
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  plausible.init({ endpoint: '/api/event', logging: false })
+</script>
+
+<style>.breadcrumb{padding-top:100px}</style>
+<style>
+/* Critical CSS — prevents flash of unstyled content while the main
+   stylesheet (assets/site.css) loads non-render-blocking via the
+   <link> below. Carries: token vars used in inline styles elsewhere,
+   body baseline (cream + ink + body-size + line-height), container
+   width, skip-link affordance, and a min-height reservation for the
+   fixed nav so layout doesn't shift when site.css applies. ~600
+   bytes. Documented in Phase 3B perf cutover; the full token set
+   reapplies once site.css arrives. */
+:root{--cream:#FAF7F2;--cream-2:#F3EEE3;--ink:#14161A;--ink-soft:#2A2D33;--teal:#1F4E5B;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
+html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--cream);line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased}
+.container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
+.skip-link{position:absolute;left:-9999px;top:0}
+.skip-link:focus{position:static;display:inline-block;background:#14161A;color:#FAF7F2;padding:12px 16px;z-index:100}
+/* injected by inject-critical-link-color.mjs */
+a{color:inherit}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:500;font-size:15px;text-decoration:none;white-space:nowrap;cursor:pointer}
+.btn-primary{background:var(--ink);color:var(--cream)}
+.btn-ghost{background:transparent;color:var(--ink);border:1px solid #D9D5CB}
+header.nav{min-height:64px}
+</style>
+<!-- Preload the two above-the-fold web fonts so they arrive in
+     parallel with site.css instead of being discovered after parse. -->
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
+<!-- Async-load the main stylesheet. Pattern: preload + onload-swap
+     (with a <noscript> fallback for the JS-disabled path). The
+     onload assigns this.rel='stylesheet', which the browser then
+     applies; before that the critical CSS above carries the page. -->
+<link rel="preload" as="style" href="/assets/site-core.css?v=a3cc95eb7ac7" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=47810dd9477a" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a3cc95eb7ac7"><link rel="stylesheet" href="/assets/site-article.css?v=47810dd9477a"></noscript>
+
+<style>
+  /* Irish Inn case-study styles duplicated verbatim from /work/irish-inn-glen-echo/. */
+  :root{--ii-green-dark:#123821;--ii-green-light:#1a472a;--ii-gold:#c5a059;--ii-cream:#f9f7f2;--ii-text:#2c2c2c;--ii-muted:#555555;--ii-display:'Playfair Display',Georgia,serif;--ii-body:'Lato',-apple-system,BlinkMacSystemFont,sans-serif}
+  .case-eyebrow{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border:1px solid var(--line-dark);border-radius:999px;font-size:12px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--stone)}
+  .case-eyebrow::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--rust)}
+  .case-meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:32px;padding:32px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-top:48px}
+  .case-meta > div > .label{font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--stone);margin-bottom:6px}
+  .case-meta > div > .value{font-size:16px;color:var(--ink)}
+  @media (max-width:960px){.case-meta{gap:20px}}
+  .palette-row{display:grid;grid-template-columns:repeat(6,1fr);gap:16px;margin-top:32px}
+  .swatch{aspect-ratio:1 / 1.15;border-radius:8px;border:1px solid rgba(0,0,0,0.08);position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;padding:12px;font-family:var(--ii-body)}
+  .swatch .hex{font-size:12px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase}
+  .swatch .name{font-size:10px;font-weight:400;opacity:0.8;margin-top:2px}
+  @media (max-width:960px){.palette-row{grid-template-columns:repeat(3,1fr)}}
+  .type-specimen{background:var(--ii-cream);border-radius:16px;padding:56px 40px;margin-top:32px;border:1px solid rgba(0,0,0,0.06)}
+  .type-specimen .display-sample{font-family:var(--ii-display);font-weight:700;font-size:clamp(36px,5.6vw,72px);line-height:1.05;color:var(--ii-green-dark);margin:0 0 16px;letter-spacing:-0.01em}
+  .type-specimen .display-sample em{font-style:italic;color:var(--ii-gold)}
+  .type-specimen .body-sample{font-family:var(--ii-body);font-weight:400;font-size:17px;line-height:1.75;color:var(--ii-text);max-width:620px;margin:0}
+  .type-specimen .label{font-family:var(--ii-body);font-size:11px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--ii-gold);margin:0 0 8px}
+  .type-specimen > * + .label{margin-top:40px}
+  .split-hero{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:32px;border-radius:16px;overflow:hidden;min-height:420px;border:1px solid rgba(0,0,0,0.1)}
+  .split-hero > div{padding:56px 40px;display:flex;flex-direction:column;justify-content:flex-end;position:relative;font-family:var(--ii-body)}
+  .split-hero .pub{background:var(--ii-green-dark);color:var(--ii-cream)}
+  .split-hero .dining{background:var(--ii-green-light);color:var(--ii-cream);border-left:1px solid rgba(255,255,255,0.08)}
+  .split-hero .label{font-size:10px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--ii-gold);margin:0 0 12px}
+  .split-hero h4{font-family:var(--ii-display);font-weight:700;font-size:clamp(28px,3.4vw,44px);line-height:1.05;margin:0 0 12px;color:var(--ii-cream)}
+  .split-hero h4 em{font-style:italic;color:var(--ii-gold);font-weight:400}
+  .split-hero p{font-size:14px;line-height:1.6;opacity:0.85;margin:0 0 20px}
+  .split-hero .pill{display:inline-block;padding:10px 18px;border:1px solid var(--ii-gold);color:var(--ii-gold);border-radius:999px;font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;align-self:flex-start}
+  .split-hero-caption{background:var(--ii-cream);padding:14px 20px;border-top:1px solid rgba(0,0,0,0.08);font-family:var(--ii-body);font-size:12px;color:var(--ii-muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+  @media (max-width:960px){.split-hero{grid-template-columns:1fr}.split-hero .dining{border-left:0;border-top:1px solid rgba(255,255,255,0.08)}}
+  .sourcing-row{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:32px}
+  .sourcing-card{background:var(--ii-cream);border:1px solid rgba(0,0,0,0.08);border-top:3px solid var(--ii-gold);border-radius:8px;padding:32px;font-family:var(--ii-body)}
+  .sourcing-card h5{font-family:var(--ii-display);font-weight:700;font-size:20px;color:var(--ii-green-dark);margin:0 0 8px}
+  .sourcing-card .tag{font-size:10px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--ii-gold);margin:0 0 12px}
+  .sourcing-card p{font-size:14px;line-height:1.65;color:var(--ii-text);margin:0}
+  @media (max-width:960px){.sourcing-row{grid-template-columns:1fr}}
+  .press-ticker{background:var(--ii-green-dark);color:var(--ii-cream);padding:40px 32px;border-radius:16px;margin-top:32px;font-family:var(--ii-display)}
+  .press-ticker .label{font-family:var(--ii-body);font-size:10px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--ii-gold);text-align:center;margin:0 0 24px}
+  .press-ticker .outlets{display:flex;flex-wrap:wrap;justify-content:center;gap:32px 56px;align-items:center}
+  .press-ticker .outlet{font-weight:400;font-style:italic;font-size:clamp(16px,1.8vw,22px);color:var(--ii-cream);opacity:0.9}
+  .overview-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:32px}
+  .overview-card{padding:28px;border:1px solid var(--line);border-radius:12px;background:var(--white)}
+  .overview-card .label{font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--teal);margin-bottom:12px}
+  .overview-card h4{font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0 0 12px;letter-spacing:-0.01em}
+  .overview-card p{font-size:15px;line-height:1.65;color:var(--stone);margin:0}
+  @media (max-width:960px){.overview-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Saltar al contenido principal</a>
+
 <script>
   /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
      Apple devices. Runs early in <body> so the swap is essentially
@@ -508,7 +636,7 @@
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">La ventana.</p>
-        <p class="foot-blurb">Una biblioteca web y estudio de dise&ntilde;o para restaurantes, con base en Silver Spring, MD &mdash; art&iacute;culos, herramientas gratis, investigaci&oacute;n y un glosario de <!-- count:glossary.terms -->116<!-- /count --> t&eacute;rminos, con el estudio detr&aacute;s cuando quieras contratar. Se habla espa&ntilde;ol.</p>
+        <p class="foot-blurb">Una biblioteca web y estudio de dise&ntilde;o para restaurantes, con base en Silver Spring, MD &mdash; art&iacute;culos, herramientas gratis, investigaci&oacute;n y un glosario de <!-- count:glossary.terms -->139<!-- /count --> t&eacute;rminos, con el estudio detr&aacute;s cuando quieras contratar. Se habla espa&ntilde;ol.</p>
       </div>
 
       <nav class="foot-col" aria-labelledby="foot-explore">

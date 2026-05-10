@@ -33,6 +33,314 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/brand/favicons/favicon-32x32.png" />
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
+<script src="/assets/p.js?v=20260503" defer></script>
+<script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
+<style>
+/* Critical CSS — prevents flash of unstyled content while the main
+   stylesheet (assets/site.css) loads non-render-blocking via the
+   <link> below. Carries: token vars used in inline styles elsewhere,
+   body baseline (cream + ink + body-size + line-height), container
+   width, skip-link affordance, and a min-height reservation for the
+   fixed nav so layout doesn't shift when site.css applies. ~600
+   bytes. Documented in Phase 3B perf cutover; the full token set
+   reapplies once site.css arrives. */
+:root{--cream:#FAF7F2;--cream-2:#F3EEE3;--ink:#14161A;--ink-soft:#2A2D33;--teal:#1F4E5B;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
+html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--cream);line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased}
+.container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
+.skip-link{position:absolute;left:-9999px;top:0}
+.skip-link:focus{position:static;display:inline-block;background:#14161A;color:#FAF7F2;padding:12px 16px;z-index:100}
+/* injected by inject-critical-link-color.mjs */
+a{color:inherit}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:500;font-size:15px;text-decoration:none;white-space:nowrap;cursor:pointer}
+.btn-primary{background:var(--ink);color:var(--cream)}
+.btn-ghost{background:transparent;color:var(--ink);border:1px solid #D9D5CB}
+header.nav{min-height:64px}
+</style>
+<!-- Preload the two above-the-fold web fonts so they arrive in
+     parallel with site.css instead of being discovered after parse. -->
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
+<!-- Async-load the main stylesheet. Pattern: preload + onload-swap
+     (with a <noscript> fallback for the JS-disabled path). The
+     onload assigns this.rel='stylesheet', which the browser then
+     applies; before that the critical CSS above carries the page. -->
+<link rel="preload" as="style" href="/assets/site-core.css?v=a3cc95eb7ac7" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-tool.css?v=5f214b425aa9" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a3cc95eb7ac7"><link rel="stylesheet" href="/assets/site-tool.css?v=5f214b425aa9"></noscript>
+<style>.breadcrumb{padding-top:100px}
+/* === Open Hours tool-scoped styles. Page-prefix .oh-*. === */
+.oh-form{display:flex;flex-direction:column;gap:18px}
+.oh-row{display:grid;grid-template-columns:140px 1fr;gap:14px;align-items:center}
+@media(max-width:640px){.oh-row{grid-template-columns:1fr}}
+.oh-row > label{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone)}
+.oh-row input[type="text"]{padding:10px 12px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);font:inherit;font-size:14px;color:var(--ink);width:100%}
+.oh-row input:focus{outline:2px solid var(--teal);outline-offset:1px}
+
+.oh-week{display:flex;flex-direction:column;gap:10px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--white);padding:14px}
+.oh-day-row{display:grid;grid-template-columns:84px 1fr auto;gap:14px;align-items:start;padding:8px 0;border-bottom:1px solid var(--line)}
+.oh-row-actions{display:flex;flex-direction:column;gap:4px;align-items:flex-end}
+.oh-copy-prev{padding:3px 10px;border:1px dashed var(--teal);border-radius:999px;background:transparent;font:inherit;font-size:11px;font-weight:600;color:var(--teal);cursor:pointer;white-space:nowrap}
+.oh-copy-prev:hover{background:var(--teal);color:var(--cream)}
+.oh-day-row:last-child{border-bottom:0}
+.oh-day-name{font-family:var(--font-display);font-size:16px;font-weight:500;color:var(--ink);padding-top:6px}
+.oh-day-name small{display:block;font-family:var(--font-body,inherit);font-size:11px;font-weight:400;color:var(--stone);letter-spacing:.04em;text-transform:uppercase;margin-top:2px}
+.oh-services{display:flex;flex-direction:column;gap:6px}
+.oh-service{display:grid;grid-template-columns:auto 100px auto 100px auto auto;gap:6px;align-items:center;font-size:13px}
+@media(max-width:640px){.oh-service{grid-template-columns:1fr 1fr;gap:4px}}
+.oh-service input[type="text"]{padding:6px 8px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--white);font:inherit;font-size:13px;color:var(--ink);width:100%;font-variant-numeric:tabular-nums}
+.oh-service .oh-service-label{font-size:11px;color:var(--stone);font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+.oh-service .oh-next-day{display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--stone)}
+.oh-service .oh-next-day input{margin:0}
+.oh-service .oh-remove{background:none;border:none;color:var(--stone);cursor:pointer;font-size:18px;line-height:1;padding:0 4px}
+.oh-service .oh-remove:hover{color:var(--rust)}
+.oh-svc-hint{grid-column:1 / -1;font-size:11px;color:var(--stone);font-variant-numeric:tabular-nums;margin-top:2px;letter-spacing:.02em;display:block}
+@media(max-width:640px){.oh-svc-hint{grid-column:auto}}
+.oh-add-service{padding:4px 10px;border:1px dashed var(--line-dark);border-radius:999px;background:transparent;font:inherit;font-size:11px;font-weight:600;color:var(--stone);cursor:pointer;align-self:flex-start}
+.oh-add-service:hover{border-color:var(--teal);color:var(--teal)}
+.oh-day-closed{font-size:12px;color:var(--stone);font-style:italic;align-self:center}
+
+.oh-warnings{display:flex;flex-direction:column;gap:6px;font-size:13px;line-height:1.55}
+.oh-warnings li{padding:8px 12px;border-radius:var(--r-sm);background:rgba(184,84,26,0.06);color:var(--rust);border:1px solid rgba(184,84,26,0.18);list-style:none}
+.oh-warnings ul{margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+
+.oh-checklist{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+.oh-check-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);font-size:14px}
+.oh-check-item[data-state="ok"]{border-color:var(--status-good);background:var(--status-good-tint)}
+.oh-check-item[data-state="ok"] .oh-check-icon{color:var(--status-good)}
+.oh-check-item[data-state="todo"] .oh-check-icon{color:var(--stone)}
+.oh-check-icon{font-size:20px;line-height:1}
+.oh-check-text{flex:1}
+.oh-check-fix{font-size:12px;color:var(--teal);font-weight:600;text-decoration:none;border-bottom:1px dashed currentColor}
+
+.oh-output{display:flex;flex-direction:column;gap:24px}
+.oh-task-card{padding:18px 20px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--white)}
+.oh-task-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+.oh-task-head h3{font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);margin:0}
+.oh-task-format{font-size:11px;color:var(--stone);letter-spacing:.04em;text-transform:uppercase;font-weight:600}
+.oh-task-recipe{display:flex;flex-direction:column;gap:6px;font-size:13.5px;line-height:1.55;color:var(--ink-soft);margin:8px 0 12px;padding:10px 14px;background:var(--cream-2);border-radius:var(--r-sm)}
+.oh-task-recipe li{margin-left:18px;list-style:decimal}
+.oh-task-recipe ol{margin:0;padding:0}
+.oh-task-block{margin:0;padding:14px 16px;background:var(--ink);color:var(--cream-2);border-radius:var(--r-input);font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12.5px;line-height:1.5;overflow-x:auto;white-space:pre-wrap;word-break:break-word}
+.oh-task-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.oh-task-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border:1px solid var(--teal);border-radius:999px;background:var(--white);color:var(--teal);font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;transition:background 140ms var(--ease-out),color 140ms var(--ease-out)}
+.oh-task-btn:hover{background:var(--teal);color:var(--cream)}
+.oh-task-btn-primary{background:var(--teal);color:var(--cream)}
+.oh-task-btn-primary:hover{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+.oh-task-btn.copied{background:var(--status-good-tint);color:var(--status-good);border-color:var(--status-good)}
+.oh-task-btn.copy-failed{background:rgba(184,84,26,0.06);color:var(--rust);border-color:var(--rust)}
+.oh-task-btn svg{width:13px;height:13px}
+
+.oh-empty{padding:18px;border:1px dashed var(--line);border-radius:var(--r-input);background:var(--cream-2);font-size:13.5px;color:var(--stone);text-align:center}
+
+.oh-closures{display:flex;flex-direction:column;gap:10px;margin-top:18px}
+.oh-closures-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:4px}
+.oh-closures-head h3{font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);margin:0}
+.oh-closures-head .oh-count{font-size:12px;color:var(--stone);font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+.oh-holiday-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;max-height:380px;overflow-y:auto;padding-right:4px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white)}
+@media(max-width:640px){
+  /* Phase E2 — mobile-first holiday picker. Below 640px, the long
+     scrollable list eats half the viewport. Cap visible height to ~6
+     rows; the user can scroll within the list (it's still scrollable)
+     OR expand .oh-holiday-list with the [data-show-all] attribute
+     toggled by the show-all chip below. */
+  .oh-holiday-list{max-height:280px}
+  .oh-holiday-list[data-show-all="true"]{max-height:none}
+}
+.oh-holiday-show-all{display:none;align-self:flex-start;padding:6px 14px;border:1px dashed var(--line-dark);border-radius:999px;background:transparent;font:inherit;font-size:12px;font-weight:600;color:var(--stone);cursor:pointer;margin-top:4px}
+.oh-holiday-show-all:hover{border-color:var(--teal);color:var(--teal)}
+@media(max-width:640px){.oh-holiday-show-all{display:inline-flex}}
+.oh-holiday{display:grid;grid-template-columns:24px 1fr auto;gap:10px;align-items:start;padding:10px 14px;border-bottom:1px solid var(--line);cursor:pointer}
+.oh-holiday:last-child{border-bottom:0}
+.oh-holiday:hover{background:var(--cream-2)}
+.oh-holiday[data-checked="true"]{background:rgba(31,78,91,0.04)}
+.oh-holiday input[type="checkbox"]{margin:2px 0 0;cursor:pointer}
+.oh-holiday-name{font-size:14px;font-weight:600;color:var(--ink);line-height:1.4}
+.oh-holiday-note{font-size:12.5px;color:var(--ink-soft);line-height:1.45;margin-top:1px}
+.oh-holiday-date{font-size:12px;color:var(--stone);font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-variant-numeric:tabular-nums;white-space:nowrap;align-self:center}
+
+.oh-custom{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:10px 14px;background:var(--cream-2);border-radius:var(--r-input);font-size:13px}
+.oh-custom input[type="date"], .oh-custom input[type="text"]{padding:6px 8px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--white);font:inherit;font-size:13px;color:var(--ink)}
+.oh-custom input[type="text"]{flex:1 1 100%}
+@media(min-width:480px){.oh-custom input[type="text"]{flex:1 1 160px}}
+
+.oh-compare{margin-top:18px;padding:16px;border:1px dashed var(--line-dark);border-radius:var(--r-input);background:var(--white)}
+.oh-compare summary{cursor:pointer;font-size:13.5px;font-weight:600;color:var(--ink);list-style:none;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.oh-compare summary::after{content:"+";font-size:18px;color:var(--stone)}
+.oh-compare[open] summary::after{content:"\2212"}
+.oh-compare summary::-webkit-details-marker{display:none}
+.oh-compare-body{margin-top:12px;display:flex;flex-direction:column;gap:10px}
+.oh-compare textarea{width:100%;min-height:100px;padding:10px 12px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--white);font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12px;line-height:1.5;color:var(--ink);resize:vertical}
+.oh-diff{display:grid;grid-template-columns:84px 1fr 1fr;gap:8px;font-size:12.5px;line-height:1.5}
+.oh-diff-row{display:contents}
+.oh-diff-row > *{padding:6px 10px;border-bottom:1px solid var(--line)}
+.oh-diff-row[data-match="true"] > *{color:var(--stone)}
+.oh-diff-row[data-match="false"] > *{background:rgba(184,84,26,0.06);color:var(--ink)}
+.oh-diff-day{font-weight:600;color:var(--ink)}
+.oh-diff-cell{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12px}
+.oh-diff-empty{font-style:italic;color:var(--stone)}
+
+/* "What's typical" archetype card grid — visible when no analysis
+   is running. A first-time visitor can copy the closest archetype
+   to their own restaurant rather than starting from scratch. */
+.oh-archetypes{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:18px}
+.oh-archetype{padding:16px 18px;border:1px solid var(--line);border-left-width:4px;border-radius:var(--r-input);background:var(--white);display:flex;flex-direction:column;gap:8px}
+.oh-archetype[data-tier="casual"]   {border-left-color:var(--teal)}
+.oh-archetype[data-tier="brunch"]   {border-left-color:#C68A2C}
+.oh-archetype[data-tier="latebar"]  {border-left-color:#6E5DB3}
+.oh-archetype[data-tier="brewery"]  {border-left-color:var(--rust)}
+.oh-archetype h3{font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);margin:0}
+.oh-archetype .oh-archetype-meta{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);font-weight:700}
+.oh-archetype p{margin:0;font-size:13.5px;line-height:1.55;color:var(--ink-soft)}
+.oh-archetype-pattern{margin:0;padding:8px 12px;background:var(--cream-2);border-radius:var(--r-sm);font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12px;line-height:1.6;color:var(--ink);white-space:pre-line}
+.oh-archetype button{align-self:flex-start;padding:6px 14px;border:1px solid var(--teal);border-radius:999px;background:var(--white);color:var(--teal);font:inherit;font-size:12px;font-weight:600;cursor:pointer;transition:background 140ms var(--ease-out),color 140ms var(--ease-out)}
+.oh-archetype button:hover{background:var(--teal);color:var(--cream)}
+
+@media print{
+  /* Phase D5 — Hygiene Report. The "Print the Hygiene Report" button
+     stamps body attributes the rules below read; without those, this
+     block still produces a clean printout (just without the timestamp
+     header / re-open URL footer). */
+  @page{margin:14mm 16mm;size:letter}
+  body{background:#fff !important;color:#000 !important;font-size:10pt}
+  header.nav,.breadcrumb,.foot,footer,.lang-hint,.foot-cta,.oh-form,
+  #how-private,#what-this-isnt,.mm-next,#ohEmptyHint,
+  .tool-deep-links,.oh-archetypes,.oh-task-actions,.oh-task-btn,
+  .oh-other-platforms,.oh-quarterly-card,.oh-cms-hints,
+  .oh-task-card[id="ohIcsCard"],
+  .oh-task-card:has(#ohPrintSign),.oh-task-card:has(#ohDownloadCard),
+  .oh-task-card:has(#ohDownloadZip),.oh-task-card:has(#ohPrintReport){display:none !important}
+  .oh-output{gap:14px !important}
+  .oh-task-card{break-inside:avoid;page-break-inside:avoid;border:1px solid #ccc !important;padding:10px 12px !important;margin:0 !important;box-shadow:none !important;background:#fff !important}
+  .oh-task-card h3{font-size:12pt !important;margin:0 0 4px !important}
+  .oh-task-format{font-size:8pt !important;color:#666 !important}
+  .oh-task-block{font-size:8pt !important;background:#f6f6f6 !important;color:#000 !important;border:1px solid #ddd;padding:8px !important;line-height:1.4 !important;white-space:pre-wrap !important}
+  .oh-checklist .oh-check-item{padding:5px 8px !important;font-size:9pt !important;background:#fff !important;border:1px solid #ddd !important}
+  .oh-week{break-inside:avoid;font-size:9pt !important;padding:8px !important}
+  .oh-day-row{padding:3px 0 !important}
+  .oh-day-name{font-size:9.5pt !important}
+  .oh-service input{border:none !important;background:transparent !important;font-size:9pt !important}
+  .oh-service .oh-remove,.oh-add-service{display:none !important}
+  .oh-warnings{display:none !important}
+  .oh-closures,.oh-compare,details:not([open]){display:none !important}
+  .oh-serp-card{display:none !important}  /* SERP preview is mock-only, omit from print */
+  a[href]:after{content:'' !important}
+  /* Header band: title + timestamp + URL */
+  main::before{
+    content:'Open Hours — Hygiene Report';
+    display:block;
+    font-family:var(--font-display);
+    font-size:16pt;
+    font-weight:500;
+    border-bottom:0.5pt solid #000;
+    padding-bottom:3pt;
+    margin:0 0 3pt;
+    letter-spacing:0.01em;
+  }
+  body[data-print-date] main::before{
+    /* When the print button stamped the date, append it on a sub-line.
+       Without the attr, only the title shows. */
+  }
+  body[data-print-date]::before{
+    content:attr(data-print-date) '  ·  muntin.digital/tools/open-hours/';
+    display:block;
+    font-size:9pt;
+    color:#555;
+    margin:0 0 10pt;
+    letter-spacing:0.02em;
+  }
+  /* Footer caption: re-open scenario URL (carries the saved state) */
+  body[data-print-url] main::after{
+    content:'Reopen this scenario: ' attr(data-print-url);
+    display:block;
+    font-size:7pt;
+    color:#555;
+    margin-top:14pt;
+    padding-top:4pt;
+    border-top:0.5pt solid #bbb;
+    overflow-wrap:anywhere;
+    page-break-inside:avoid;
+  }
+}
+/* Phase 2 (Workshop) — Save-to-Workbench. Recipe: docs/workbench-save-pattern.md. */
+.oh-save{margin-top:24px;padding:18px 22px;background:var(--surface-inset);border:1px solid var(--line);border-radius:var(--r-md);display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:space-between}
+.oh-save[hidden]{display:none}
+.oh-save-text{font-size:14px;color:var(--ink-soft);margin:0;line-height:1.5;flex:1 1 100%}
+  @media (min-width:480px){.oh-save-text{flex:1 1 220px}}
+.oh-save-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid var(--ink);border-radius:999px;background:var(--ink);color:var(--cream);font:inherit;font-size:14px;font-weight:500;cursor:pointer;transition:background var(--t-fast) var(--ease),transform var(--t-fast) var(--ease)}
+.oh-save-btn:hover{background:var(--teal);transform:translateY(-1px)}
+.oh-save-btn[disabled]{opacity:.6;cursor:wait}
+.oh-save-link{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid var(--line-dark);border-radius:999px;color:var(--ink);font-size:14px;font-weight:500;text-decoration:none;transition:border-color var(--t-fast) var(--ease)}
+.oh-save-link:hover{border-color:var(--ink)}
+.oh-save-msg{font-size:13px;color:var(--status-good);font-weight:500}
+.oh-save-msg.error{color:var(--rust)}
+</style>
+<!-- tool-schema:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://muntin.digital/tools/open-hours/#tool",
+      "applicationCategory": "BusinessApplication",
+      "applicationSubCategory": "RestaurantOps",
+      "operatingSystem": "Web",
+      "screenshot": "https://muntin.digital/brand/og/tool-open-hours.png",
+      "url": "https://muntin.digital/tools/open-hours/",
+      "featureList": [
+        "OpeningHoursSpecification schema generator",
+        "Holiday + special-hours coverage",
+        "Day-of-week consistency check"
+      ],
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock"
+      },
+      "name": "Open Hours",
+      "description": "Fill your hours once. Walk away with the exact text for Google and a code block for your website builder. About 15 minutes."
+    },
+    {
+      "@type": "HowTo",
+      "@id": "https://muntin.digital/tools/open-hours/#howto",
+      "name": "How to read your Open Hours result",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "Enter your hours",
+          "text": "Day-of-week regular hours, plus any holiday or special closures.",
+          "url": "https://muntin.digital/tools/open-hours/#step-1"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "Get your schema",
+          "text": "Tool emits valid OpeningHoursSpecification JSON-LD ready to paste.",
+          "url": "https://muntin.digital/tools/open-hours/#step-2"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "name": "Add it to your site head",
+          "text": "Drop it into <head> on the homepage; Google + Apple Maps both read it.",
+          "url": "https://muntin.digital/tools/open-hours/#step-3"
+        }
+      ],
+      "about": {
+        "@id": "https://muntin.digital/tools/open-hours/#tool"
+      },
+      "inLanguage": "en-US"
+    }
+  ]
+}
+</script>
+<!-- tool-schema:end -->
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
 <script>
   /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
      Apple devices. Runs early in <body> so the swap is essentially

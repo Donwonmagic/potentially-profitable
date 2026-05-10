@@ -41,6 +41,161 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/brand/favicons/favicon-16x16.png" />
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","@id":"https://muntin.digital/es/tools/search-ideas/#tool","name":"¿Qué busca la gente cerca de mí?","description":"Mira los patrones de búsqueda más comunes para tu tipo de negocio y tu ciudad.","url":"https://muntin.digital/es/tools/search-ideas/","inLanguage":"es","applicationCategory":"BusinessApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"creator":{"@id":"https://muntin.digital/#business"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Muntin Digital","item":"https://muntin.digital/es/"},{"@type":"ListItem","position":2,"name":"Herramientas","item":"https://muntin.digital/es/tools/"},{"@type":"ListItem","position":3,"name":"Ideas de búsqueda","item":"https://muntin.digital/es/tools/search-ideas/"}]}]}
+</script>
+<script src="/assets/p.js?v=20260503" defer></script>
+<script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
+<style>.breadcrumb{padding-top:100px}</style>
+<style>
+/* Critical CSS — prevents flash of unstyled content while the main
+   stylesheet (assets/site.css) loads non-render-blocking via the
+   <link> below. Carries: token vars used in inline styles elsewhere,
+   body baseline (cream + ink + body-size + line-height), container
+   width, skip-link affordance, and a min-height reservation for the
+   fixed nav so layout doesn't shift when site.css applies. ~600
+   bytes. Documented in Phase 3B perf cutover; the full token set
+   reapplies once site.css arrives. */
+:root{--cream:#FAF7F2;--cream-2:#F3EEE3;--ink:#14161A;--ink-soft:#2A2D33;--teal:#1F4E5B;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
+html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--cream);line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased}
+.container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
+.skip-link{position:absolute;left:-9999px;top:0}
+.skip-link:focus{position:static;display:inline-block;background:#14161A;color:#FAF7F2;padding:12px 16px;z-index:100}
+/* injected by inject-critical-link-color.mjs */
+a{color:inherit}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:500;font-size:15px;text-decoration:none;white-space:nowrap;cursor:pointer}
+.btn-primary{background:var(--ink);color:var(--cream)}
+.btn-ghost{background:transparent;color:var(--ink);border:1px solid #D9D5CB}
+header.nav{min-height:64px}
+</style>
+<!-- Preload the two above-the-fold web fonts so they arrive in
+     parallel with site.css instead of being discovered after parse. -->
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
+<!-- Async-load the main stylesheet. Pattern: preload + onload-swap
+     (with a <noscript> fallback for the JS-disabled path). The
+     onload assigns this.rel='stylesheet', which the browser then
+     applies; before that the critical CSS above carries the page. -->
+<link rel="preload" as="style" href="/assets/site-core.css?v=a3cc95eb7ac7" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-tool.css?v=5f214b425aa9" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a3cc95eb7ac7"><link rel="stylesheet" href="/assets/site-tool.css?v=5f214b425aa9"></noscript>
+<!-- tool-schema:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://muntin.digital/es/tools/search-ideas/#tool",
+      "applicationCategory": "BusinessApplication",
+      "applicationSubCategory": "RestaurantOps",
+      "operatingSystem": "Web",
+      "screenshot": "https://muntin.digital/brand/og/tool-search-ideas.png",
+      "url": "https://muntin.digital/es/tools/search-ideas/",
+      "featureList": [
+        "Descubrimiento de keywords de cola larga",
+        "Sugerencias de búsquedas con intención local",
+        "Solapamiento con consultas de competidores"
+      ],
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock"
+      },
+      "name": "Diagnóstico de sitio de restaurante",
+      "description": "Pega la URL de tu restaurante y recibe un diagnóstico móvil real en unos treinta segundos — desempeño, SEO, accesibilidad, y diez chequeos específicos en español claro."
+    },
+    {
+      "@type": "HowTo",
+      "@id": "https://muntin.digital/es/tools/search-ideas/#howto",
+      "name": "Cómo leer tu resultado de Ideas de Búsqueda",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "Ingresa concepto + ciudad",
+          "text": "Estilo de restaurante + ciudad — suficiente para intención local.",
+          "url": "https://muntin.digital/es/tools/search-ideas/#step-1"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "Lee la lista",
+          "text": "Aparecen búsquedas de cola larga con intención, ordenadas por volumen probable.",
+          "url": "https://muntin.digital/es/tools/search-ideas/#step-2"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "name": "Elige 3 objetivos",
+          "text": "Añádelas al copy del menú, categorías de GBP, o una nueva página.",
+          "url": "https://muntin.digital/es/tools/search-ideas/#step-3"
+        }
+      ],
+      "about": {
+        "@id": "https://muntin.digital/es/tools/search-ideas/#tool"
+      },
+      "inLanguage": "es-US"
+    }
+  ]
+}
+</script>
+<!-- tool-schema:end -->
+</head>
+<style>
+  .si-hero{max-width:680px;margin:0 auto;text-align:center}
+  .si-form{display:flex;flex-wrap:wrap;gap:8px;max-width:560px;margin:24px auto 0}
+  .si-form input{flex:1 1 96px;padding:12px 14px;border:1px solid var(--line-dark);border-radius:10px;font:inherit;font-size:15px;background:var(--white);color:var(--ink)}
+  .si-form input:focus{outline:none;border-color:var(--teal)}
+  .si-form input#siCompetitor{flex:1 1 100%}
+  .si-form button{padding:12px 22px;border:0;border-radius:10px;background:var(--teal);color:var(--cream);font:inherit;font-size:15px;font-weight:600;cursor:pointer}
+  .si-form button:hover{background:var(--ink)}
+  .si-row{display:flex;align-items:center;gap:10px;padding:12px 16px;cursor:pointer}
+  .si-row input[type="checkbox"]{flex:0 0 auto;margin:0;cursor:pointer;accent-color:var(--teal)}
+  .si-q-text{flex:1}
+  .si-items li:has(.si-pick:checked){border-color:var(--teal);background:color-mix(in srgb,var(--teal) 5%,var(--white))}
+  .si-route{font-weight:500;color:var(--ink-soft);text-transform:none;letter-spacing:0;font-size:11.5px;margin-left:6px}
+  .si-route-why{font-size:12.5px;color:var(--stone);margin:-4px 0 8px;line-height:1.5}
+  .si-multi{display:none;margin:18px 0 0;padding:14px 16px;border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:var(--r-sm);background:var(--surface-1)}
+  .si-multi[data-shown="true"]{display:block}
+  .si-multi-head{font-size:14px;color:var(--ink);margin:0 0 10px}
+  .si-multi-clear{background:none;border:0;color:var(--teal);font:inherit;font-size:12.5px;cursor:pointer;text-decoration:underline;padding:0;margin-left:6px}
+  .si-multi-actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  .si-multi-btn{padding:7px 12px;border:1px solid var(--line);border-radius:999px;background:var(--white);color:var(--ink);font:inherit;font-size:12.5px;font-weight:500;cursor:pointer;text-decoration:none}
+  .si-multi-btn:hover{border-color:var(--teal);color:var(--teal)}
+  .si-multi-btn[aria-disabled="true"]{opacity:0.4;pointer-events:none}
+  .si-multi-msg{font-size:12px;color:var(--stone)}
+  .si-multi-tip{font-size:12px;color:var(--ink-soft);margin:10px 0 0;line-height:1.5}
+  .si-note{font-size:13px;color:var(--stone);margin-top:14px;text-align:center}
+  .si-result{display:none;max-width:600px;margin:40px auto 0}
+  .si-result.visible{display:block}
+  .si-group{margin-bottom:28px}
+  .si-group-label{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin:0 0 10px}
+  .si-items{list-style:none;padding:0;margin:0}
+  .si-items li{padding:0;border:1px solid var(--line);border-radius:8px;background:var(--white);margin-bottom:6px;font-size:15px;color:var(--ink)}
+  .si-items .q{color:var(--stone);font-size:14px;flex:0 0 20px}
+  .si-items strong{color:var(--teal)}
+  .si-tip{font-size:14px;color:var(--ink-soft);line-height:1.6;padding:16px;background:var(--cream-2);border:1px solid var(--line);border-radius:10px;margin-top:20px}
+  .si-tip strong{color:var(--ink)}
+  .si-cta{margin-top:28px;padding:28px 32px;background:var(--cream-2);border:1px solid var(--line);border-radius:14px;text-align:center}
+  .si-cta p{font-size:15px;color:var(--stone);margin:0 0 16px}
+  /* Phase 2 (Workshop) — Guardar en mi Taller via el helper compartido. */
+  .si-save{margin-top:24px;padding:18px 22px;background:var(--surface-inset);border:1px solid var(--line);border-radius:var(--r-md);display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:space-between}
+  .si-save[hidden]{display:none}
+  .si-save-text{font-size:14px;color:var(--ink-soft);margin:0;line-height:1.5;flex:1 1 100%}
+  @media (min-width:480px){.si-save-text{flex:1 1 220px}}
+  .si-save-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid var(--ink);border-radius:999px;background:var(--ink);color:var(--cream);font:inherit;font-size:14px;font-weight:500;cursor:pointer;transition:background var(--t-fast) var(--ease),transform var(--t-fast) var(--ease)}
+  .si-save-btn:hover{background:var(--teal);transform:translateY(-1px)}
+  .si-save-btn[disabled]{opacity:.6;cursor:wait}
+  .si-save-link{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid var(--line-dark);border-radius:999px;color:var(--ink);font-size:14px;font-weight:500;text-decoration:none;transition:border-color var(--t-fast) var(--ease)}
+  .si-save-link:hover{border-color:var(--ink)}
+  .si-save-msg{font-size:13px;color:var(--status-good);font-weight:500}
+  .si-save-msg.error{color:var(--rust)}
+</style>
+<body>
+<a class="skip-link" href="#main">Saltar al contenido principal</a>
 <script>
   /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
      Apple devices. Runs early in <body> so the swap is essentially

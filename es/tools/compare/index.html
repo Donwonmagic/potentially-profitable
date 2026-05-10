@@ -41,6 +41,177 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/brand/favicons/favicon-16x16.png" />
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","@id":"https://muntin.digital/es/tools/compare/#tool","name":"Compara tu sitio vs. el de la competencia","description":"Comparación de sitios web lado a lado — velocidad, móvil, SEO, accesibilidad.","url":"https://muntin.digital/es/tools/compare/","inLanguage":"es","applicationCategory":"BusinessApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"creator":{"@id":"https://muntin.digital/#business"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Muntin Digital","item":"https://muntin.digital/es/"},{"@type":"ListItem","position":2,"name":"Herramientas","item":"https://muntin.digital/es/tools/"},{"@type":"ListItem","position":3,"name":"Comparar","item":"https://muntin.digital/es/tools/compare/"}]}]}
+</script>
+<script src="/assets/p.js?v=20260503" defer></script>
+<script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
+<style>.breadcrumb{padding-top:100px}</style>
+<style>
+/* Critical CSS — prevents flash of unstyled content while the main
+   stylesheet (assets/site.css) loads non-render-blocking via the
+   <link> below. Carries: token vars used in inline styles elsewhere,
+   body baseline (cream + ink + body-size + line-height), container
+   width, skip-link affordance, and a min-height reservation for the
+   fixed nav so layout doesn't shift when site.css applies. ~600
+   bytes. Documented in Phase 3B perf cutover; the full token set
+   reapplies once site.css arrives. */
+:root{--cream:#FAF7F2;--cream-2:#F3EEE3;--ink:#14161A;--ink-soft:#2A2D33;--teal:#1F4E5B;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
+html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--cream);line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased}
+.container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
+.skip-link{position:absolute;left:-9999px;top:0}
+.skip-link:focus{position:static;display:inline-block;background:#14161A;color:#FAF7F2;padding:12px 16px;z-index:100}
+/* injected by inject-critical-link-color.mjs */
+a{color:inherit}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:500;font-size:15px;text-decoration:none;white-space:nowrap;cursor:pointer}
+.btn-primary{background:var(--ink);color:var(--cream)}
+.btn-ghost{background:transparent;color:var(--ink);border:1px solid #D9D5CB}
+header.nav{min-height:64px}
+</style>
+<!-- Preload the two above-the-fold web fonts so they arrive in
+     parallel with site.css instead of being discovered after parse. -->
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
+<!-- Async-load the main stylesheet. Pattern: preload + onload-swap
+     (with a <noscript> fallback for the JS-disabled path). The
+     onload assigns this.rel='stylesheet', which the browser then
+     applies; before that the critical CSS above carries the page. -->
+<link rel="preload" as="style" href="/assets/site-core.css?v=a3cc95eb7ac7" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-tool.css?v=5f214b425aa9" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a3cc95eb7ac7"><link rel="stylesheet" href="/assets/site-tool.css?v=5f214b425aa9"></noscript>
+<style>
+  .cmp-hero{max-width:720px;margin:0 auto;text-align:center}
+  .cmp-inputs{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;max-width:640px;margin:32px auto 0;align-items:center}
+  .cmp-inputs input{padding:14px 18px;border:2px solid var(--line-dark);border-radius:12px;font:inherit;font-size:16px;background:var(--white);color:var(--ink);width:100%}
+  .cmp-inputs input:focus{border-color:var(--teal);outline:none}
+  .cmp-inputs .vs{font-family:var(--font-display);font-size:18px;color:var(--stone);font-weight:500;text-align:center}
+  .cmp-btn{display:block;margin:20px auto 0;padding:16px 36px;border:0;border-radius:12px;background:var(--teal);color:var(--cream);font:inherit;font-size:16px;font-weight:600;cursor:pointer}
+  .cmp-btn:hover{background:var(--teal-dark)}
+  .cmp-btn:disabled{opacity:.5;cursor:wait}
+  @media(max-width:640px){.cmp-inputs{grid-template-columns:1fr;}.cmp-inputs .vs{display:none}}
+  .cmp-note{font-size:13px;color:var(--stone);margin-top:14px;text-align:center}
+  .cmp-helper{max-width:540px;margin:24px auto 0;padding:14px 18px;background:var(--white);border:1px solid var(--line);border-radius:12px}
+  .cmp-helper[open]{padding-bottom:18px}
+  .cmp-helper-summary{cursor:pointer;font-size:13.5px;color:var(--ink);font-weight:500}
+  .cmp-helper-body{margin-top:14px}
+  .cmp-helper-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:14px}
+  .cmp-helper-list li{padding:12px 14px;background:var(--cream-2);border-radius:8px;font-size:13.5px;color:var(--ink);line-height:1.55}
+  .cmp-helper-list strong{display:block;font-weight:600;margin-bottom:4px;color:var(--ink)}
+  .cmp-helper-list em{font-style:italic;color:var(--teal)}
+  .cmp-helper-list code{background:var(--white);padding:1px 6px;border-radius:4px;font-size:12px;border:1px solid var(--line);font-family:ui-monospace,SFMono-Regular,monospace;word-break:break-all}
+  .cmp-helper-link{display:inline-block;margin-top:8px;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:var(--white);color:var(--ink);font:inherit;font-size:12.5px;font-weight:500;cursor:pointer;text-decoration:none}
+  .cmp-helper-link:hover{border-color:var(--teal);color:var(--teal)}
+  .cmp-suggest-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+  .cmp-suggest-input{flex:1 1 96px;padding:8px 12px;border:1px solid var(--line);border-radius:6px;font:inherit;font-size:13px;color:var(--ink);background:var(--white)}
+  .cmp-suggest-btn{flex-basis:100%}
+  @media(min-width:520px){.cmp-suggest-btn{flex-basis:auto}}
+  .cmp-suggest-status{margin-top:8px;font-size:12.5px;color:var(--ink-soft)}
+  .cmp-suggest-status.error{color:var(--rust)}
+  .cmp-suggest-results{list-style:none;padding:0;margin:8px 0 0;display:flex;flex-direction:column;gap:6px}
+  .cmp-suggest-result{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 12px;background:var(--white);border:1px solid var(--line);border-radius:6px;font-size:13px;color:var(--ink);flex-wrap:wrap}
+  .cmp-suggest-result-name{font-weight:600}
+  .cmp-suggest-result-meta{font-size:12px;color:var(--stone)}
+  .cmp-suggest-use{padding:6px 12px;border:1px solid var(--ink);border-radius:999px;background:var(--ink);color:var(--cream);font:inherit;font-size:12.5px;font-weight:500;cursor:pointer}
+  .cmp-suggest-use:hover{background:var(--teal)}
+  .cmp-suggest-use[disabled]{opacity:.55;cursor:not-allowed}
+  .cmp-status{text-align:center;margin-top:24px;font-size:14px;color:var(--stone)}
+  .cmp-result{display:none;max-width:680px;margin:40px auto 0}
+  .cmp-result.visible{display:block}
+  .cmp-table{width:100%;border-collapse:separate;border-spacing:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--white)}
+  .cmp-table th,.cmp-table td{padding:14px 18px;text-align:center;font-size:15px}
+  .cmp-table thead th{background:var(--cream-2);font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--stone);border-bottom:1px solid var(--line)}
+  .cmp-table thead th:first-child{text-align:left}
+  .cmp-table tbody td{border-bottom:1px solid var(--line)}
+  .cmp-table tbody tr:last-child td{border-bottom:0}
+  .cmp-table .metric{text-align:left;font-weight:600;color:var(--ink)}
+  .cmp-table .win{color:#1f9d55;font-weight:700}
+  .cmp-table .lose{color:var(--rust)}
+  .cmp-table .tie{color:var(--stone)}
+  .cmp-winner{text-align:center;margin:24px 0;padding:20px;background:var(--cream-2);border:1px solid var(--line);border-radius:12px}
+  .cmp-winner h3{font-family:var(--font-display);font-size:22px;font-weight:500;margin:0 0 6px;color:var(--ink)}
+  .cmp-winner p{font-size:14px;color:var(--stone);margin:0}
+  .cmp-cta{margin-top:28px;padding:28px 32px;background:var(--cream-2);border:1px solid var(--line);border-radius:14px;text-align:center}
+  .cmp-cta p{font-size:15px;color:var(--stone);margin:0 0 16px}
+  /* Phase 2 (Workshop) — Save-to-Workbench. Recipe: docs/workbench-save-pattern.md. */
+  .cmp-save{margin-top:24px;padding:18px 22px;background:var(--surface-inset);border:1px solid var(--line);border-radius:var(--r-md);display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:space-between}
+  .cmp-save[hidden]{display:none}
+  .cmp-save-text{font-size:14px;color:var(--ink-soft);margin:0;line-height:1.5;flex:1 1 100%}
+  @media (min-width:480px){.cmp-save-text{flex:1 1 220px}}
+  .cmp-save-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid var(--ink);border-radius:999px;background:var(--ink);color:var(--cream);font:inherit;font-size:14px;font-weight:500;cursor:pointer;transition:background var(--t-fast) var(--ease),transform var(--t-fast) var(--ease)}
+  .cmp-save-btn:hover{background:var(--teal);transform:translateY(-1px)}
+  .cmp-save-btn[disabled]{opacity:.6;cursor:wait}
+  .cmp-save-link{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid var(--line-dark);border-radius:999px;color:var(--ink);font-size:14px;font-weight:500;text-decoration:none;transition:border-color var(--t-fast) var(--ease)}
+  .cmp-save-link:hover{border-color:var(--ink)}
+  .cmp-save-msg{font-size:13px;color:var(--status-good);font-weight:500}
+  .cmp-save-msg.error{color:var(--rust)}
+</style>
+<!-- tool-schema:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://muntin.digital/es/tools/compare/#tool",
+      "applicationCategory": "BusinessApplication",
+      "applicationSubCategory": "RestaurantOps",
+      "operatingSystem": "Web",
+      "screenshot": "https://muntin.digital/brand/og/tool-compare.png",
+      "url": "https://muntin.digital/es/tools/compare/",
+      "featureList": [
+        "Puntaje lado a lado de velocidad y SEO",
+        "Comparación de fotos y velocidad de reseñas",
+        "Revisión de paridad de schema y on-page"
+      ],
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock"
+      },
+      "name": "Diagnóstico de sitio de restaurante",
+      "description": "Pega la URL de tu restaurante y recibe un diagnóstico móvil real en unos treinta segundos — desempeño, SEO, accesibilidad, y diez chequeos específicos en español claro."
+    },
+    {
+      "@type": "HowTo",
+      "@id": "https://muntin.digital/es/tools/compare/#howto",
+      "name": "Cómo leer tu resultado del Comparador",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "Ingresa ambas URLs",
+          "text": "La tuya + el restaurante de la cuadra que estás midiendo.",
+          "url": "https://muntin.digital/es/tools/compare/#step-1"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "Lee la comparación",
+          "text": "Cada métrica se califica para ambos — verde donde vas delante, rojo donde detrás.",
+          "url": "https://muntin.digital/es/tools/compare/#step-2"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "name": "Elige la brecha a cerrar",
+          "text": "Empieza por la métrica donde estás más atrás que también mueve reservas.",
+          "url": "https://muntin.digital/es/tools/compare/#step-3"
+        }
+      ],
+      "about": {
+        "@id": "https://muntin.digital/es/tools/compare/#tool"
+      },
+      "inLanguage": "es-US"
+    }
+  ]
+}
+</script>
+<!-- tool-schema:end -->
+</head>
+<body>
+<a class="skip-link" href="#main">Saltar al contenido principal</a>
 <script>
   /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
      Apple devices. Runs early in <body> so the swap is essentially
