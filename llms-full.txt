@@ -15,11 +15,15 @@ date: 2026-05-02T10:30:00-04:00
 description: The actual math behind a DoorDash order at an independent DMV restaurant in 2026 — commission, payment processing, packaging, food cost, labor, the marketing fee — with the breakeven for switching channels and a reservation flow that pays itself back in two months.
 ---
 
+**
+
 Skip to main content
 
 Op-ed · May 2, 2026 · 7 min read · By [Don Goldstein](https://muntin.digital/about/#don-goldstein)
 
 # An honest DoorDash math for independent restaurants, 2026.
+
+ Listen to this article
 
 I manage two DMV restaurants. Every quarter I run the same calculation against the same DoorDash partner statement, and every quarter the answer is more or less the same: the platform isn’t a marketing channel. It’s a margin tax with delivery as a side benefit. Here’s the math, the breakeven, and the website fix that pays for itself in two months.
 
@@ -29,33 +33,94 @@ I’m going to do this with a real average ticket and real numbers I can defend.
 
 Below is the full margin walk. The line items are familiar to anyone who’s read a partner statement, but it’s rare to see them stacked in one column with the actual percentages applied. I’m using DoorDash Marketplace Plus (30% commission tier, the most common one for independents under three locations) and the standard payment-processing rate they pass through.
 
- Line$ on a $42 ticket% of ticket
+Where each dollar of a $42 DoorDash ticket goes
 
- Gross ticket$42.00100.0%
- DoorDash commission (Marketplace Plus, 30%)&minus;$12.60&minus;30.0%
- Payment processing (~3.4%)&minus;$1.43&minus;3.4%
- DoorDash “promotion” / sponsored listing fee (avg, when used)&minus;$1.20&minus;2.9%
- Packaging (clamshell, lid, bag, sticker, plasticware)&minus;$1.40&minus;3.3%
- Food cost (28% of menu price, kitchen-side)&minus;$11.76&minus;28.0%
- Variable labor (line cook, runner, ~14% of revenue)&minus;$5.88&minus;14.0%
+ 30%
+ 3%
+ 3%
+ 3%
+ 28%
+ 14%
+ 18.4%
 
- What stays in the restaurant$7.7318.4%
+ DoorDash commission (Marketplace Plus, 30%)
+ &minus;$12.60
+ 30.0%
+
+ Payment processing (~3.4%)
+ &minus;$1.43
+ 3.4%
+
+ DoorDash “promotion” / sponsored listing fee (avg, when used)
+ &minus;$1.20
+ 2.9%
+
+ Packaging (clamshell, lid, bag, sticker, plasticware)
+ &minus;$1.40
+ 3.3%
+
+ Food cost (28% of menu price, kitchen-side)
+ &minus;$11.76
+ 28.0%
+
+ Variable labor (line cook, runner, ~14% of revenue)
+ &minus;$5.88
+ 14.0%
+
+ What stays in the restaurant
+ $7.73
+ 18.4%
+
+ DoorDash commission rate
+ 30%
+
+Marketplace tiers: Basic 15%**, **Plus 25%**, **Premier 30%**. Most independents pay 30%; some negotiate down with volume.
+
+ Drag the slider to see how the commission rate eats into what stays in the restaurant. The teal segment is your keep.
 
 Eighteen percent. That’s before fixed costs — rent, utilities, salaried management, insurance — which on a typical DMV independent run another 12 to 14 points. The contribution margin to fixed costs and profit is, if you’re lucky, around four percent. If you ran a sponsored listing on that order, or if your packaging is heavier than average, you’re working for free.
 
 Now run the same exercise on the same $42 ticket, ordered direct from your own website, paid through your own Stripe account.
 
- Line$ on a $42 ticket% of ticket
+The same $42 ticket, ordered direct (with your own last-mile)
 
- Gross ticket$42.00100.0%
- Stripe / Square payment processing&minus;$1.51&minus;3.6%
- Direct-channel marketing amortization (your time, ~$0.80/order)&minus;$0.80&minus;1.9%
- Packaging&minus;$1.40&minus;3.3%
- Food cost&minus;$11.76&minus;28.0%
- Variable labor&minus;$5.88&minus;14.0%
- Last-mile (DoorDash Drive flat fee, optional)&minus;$8.50&minus;20.2%
+ 4%
+ 2%
+ 3%
+ 28%
+ 14%
+ 20%
+ 28.9%
 
- What stays in the restaurant (with own delivery)$12.1528.9%
+ Stripe / Square payment processing
+ &minus;$1.51
+ 3.6%
+
+ Direct-channel marketing amortization (your time, ~$0.80/order)
+ &minus;$0.80
+ 1.9%
+
+ Packaging
+ &minus;$1.40
+ 3.3%
+
+ Food cost
+ &minus;$11.76
+ 28.0%
+
+ Variable labor
+ &minus;$5.88
+ 14.0%
+
+ Last-mile (DoorDash Drive flat fee, optional)
+ &minus;$8.50
+ 20.2%
+
+ What stays in the restaurant (with own delivery)
+ $12.15
+ 28.9%
+
+ Same ticket, direct channel. The teal segment grows from 18.4% to 28.9% — a $4.42 swing per order.
 
 Twenty-nine percent kept on the same ticket. The marginal lift — the answer to “what does it pay to move an order from DoorDash’s app to your own website?’’ — is **$4.42 per order**. Even if you eat the entire DoorDash Drive last-mile fee yourself, you’re ten points better. If your customer picks up, twenty-eight points better.
 
@@ -561,7 +626,7 @@ Tried this in your own restaurant? 100–400 words, your name on it. Don reads e
 
  Your note
 
- Email Don
+ Send the note
 
 Sources & further reading
 
@@ -997,7 +1062,150 @@ Tried this in your own restaurant? 100–400 words, your name on it. Don reads e
 
  Your note
 
- Email Don
+ Send the note
+
+---
+title: How to get your restaurant cited in Google's AI Overviews
+url: https://muntin.digital/blog/how-to-get-cited-in-google-ai-overviews-restaurant/
+kind: article
+locale: en
+date: 2026-05-10T10:30:00-04:00
+description: The search result is a paragraph Google wrote, citing two or three sources. Here’s the citation pattern AI Overviews reward, and the five paragraph-level moves that get a restaurant’s answer lifted into the box.
+---
+
+Skip to main content
+
+Op-ed · May 10, 2026 · 8 min read · By [Don Goldstein](https://muntin.digital/about/#don-goldstein)
+
+# How to get your restaurant cited in Google's AI Overviews.
+
+ Listen to this article
+
+Google’s AI Overview answered 13.14% of US desktop searches in March 2025. By the start of 2026 it’s closer to one in five, and for restaurant queries it’s higher. The question your guest used to type — “is takeout open in Silver Spring” — gets answered above the map pack now, in a paragraph Google wrote and cited. Three sources get named. If you’re not one of them, you’re not in the conversation. Here’s how the citation is decided.
+
+I’ve been tracking which paragraphs get cited on queries adjacent to the two DMV restaurants I manage. Same query, same hour, same browser — just typed into Google twice a week for ninety days, the citations logged. The pattern is consistent enough to write rules from. None of the rules are about backlinks, domain authority, or any of the levers SEO writing in 2023 was about. They’re about paragraph shape.
+
+## Ranking and being cited are not the same job
+
+The SEO industry has spent twenty years optimizing pages to appear in the top three blue links. That job still exists. The new job — the one that pays bigger right now — is getting your single best paragraph lifted into the AI Overview as one of two or three named sources. The page below the box still gets clicks, but not the way it used to. AI Overviews don’t replace organic traffic; they replace the click that used to read your answer. The citation is your remaining surface.
+
+These two jobs don’t actively fight each other. They reward different paragraphs. The page with the most backlinks doesn’t always get cited — the page with the cleanest extractable answer does. Most restaurant content is written to rank. Almost none is written to be cited. The first independent operator in a market who flips that order owns the answer box for the next twelve months.
+
+## The five moves that get cited
+
+These are written in the order an extractor walks a page. The same order they pay off in.
+
+- 1
+
+Answer first, then explain
+
+The first paragraph below an H2 should be a complete answer in &le;45 words. Extractors take the first paragraph; everything after is context.
+
+- 2
+
+Anchor every entity in schema
+
+Restaurant name, hours, address, menu items, prices — all in JSON-LD. The model cross-references prose against schema; matched entities boost citation odds.
+
+- 3
+
+Specific numbers in the lede sentence
+
+“Most restaurants close around 10pm” is not citable. “Stops seating at 9:30pm Mon–Thu, 10:15pm Fri–Sat” is.
+
+- 4
+
+Predicate-shaped sentences. No hedges.
+
+“X is Y” framing. “Approximately”, “usually”, “in some cases” — pruned by the extractor before the sentence ever ranks.
+
+- 5
+
+Stable URLs. Stable answers.
+
+Once you’re cited, don’t move the page or reorder the paragraph. The crawler revisits cited URLs more often; a changed answer drops you from the rotation.
+
+ Five paragraph-level moves, in the order an extractor walks the page. Moves 1–4 get you cited; move 5 keeps you cited.
+
+## Move 1: Answer first, then explain
+
+The first paragraph below an H2 is the only one most extractors read. Everything after it is supporting context that may or may not get pulled in. If your first paragraph answers the H2’s implied question completely, you have a citation. If it sets up the answer instead, the answer never gets quoted, because the paragraph it lives in is too far down the page.
+
+Forty-five words is the ceiling. I’ve seen the box quote longer paragraphs, but the cut-point is usually 35–55 words, and shorter is more often quoted verbatim than paraphrased. Verbatim is what you want — paraphrase loses the entity-to-schema match the model just made.
+
+## Move 2: Anchor every entity in schema
+
+The model reads your prose, then reads your JSON-LD, then asks itself: are these consistent? When the answer is yes, the page gets a citation-boost flag. When the answer is no — menu prices in prose don’t match the Menu schema, hours in prose don’t match OpeningHours — the page gets a deboost flag. There’s no public signal for this. It’s visible only in which pages get cited and which don’t.
+
+If you already have [the six schema types Google uses](https://muntin.digital/blog/restaurant-schema-markup-6-types-google-uses/) wired up, you have move 2 done. The work that’s usually missing: the prose has to actually match the schema. If your schema says you’re open until 10pm and your prose says “late”, you have a consistency gap. Both should say 10pm.
+
+## Move 3: Numbers in the lede sentence
+
+The first sentence of your answering paragraph should contain at least one number. A price, a time, a count, a percentage, a year — doesn’t matter which. Numbers are what get extracted; sentences without numbers compete with every other vague sentence on the internet, and the extractor picks the one that’s the most specific.
+
+This is the move that most restaurant content gets wrong. The instinct is to lead with welcome language — “We’re thrilled to share our menu”, “Come experience the warmth of our patio”. Welcome language has zero entities and zero numbers. It’s the first thing the extractor skips. Replace it with a sentence that names a thing and quantifies it.
+
+## Move 4: Predicate-shaped sentences. No hedges.
+
+The extractor parses every sentence into a subject-predicate-object shape. “DoorDash is a delivery platform” parses cleanly. “Many people consider DoorDash to be a delivery platform of some kind” does not. The first sentence has one fact. The second has hedge tokens that the model treats as noise, and the underlying fact disappears under the hedging.
+
+The words to strike on a citation rewrite: *approximately*, *usually*, *in some cases*, *most*, *often*, *typically*, *around*, *tend to*, *may*, *can*. Each one drops the citation odds. They’re defensive lawyer-words from a different writing context. In the AI Overview context, they’re costing you the box.
+
+## The before/after
+
+Take a typical restaurant FAQ paragraph and walk it through moves 1–4. This is the kind of paragraph I see on 90% of independent sites; it’s also the kind of paragraph that never gets cited.
+
+A typical restaurant FAQ paragraph, before and after
+
+ Before — never cited
+
+“We’re usually open for dinner, though our hours may vary by season. It’s a good idea to call ahead to confirm. We serve a variety of dishes, with most entrees in the moderate price range.”
+
+ After — gets the box
+
+“Roma Cucina is open for dinner Tuesday through Sunday, 5pm to 10pm. Entrees are priced between $18 and $32. Reservations are recommended on Fridays and Saturdays.”
+
+ Same answer to the same question. Five hedge words removed, four entities anchored, three numbers introduced. Thirty words.
+
+Read both out loud. The first one feels human. The second one feels almost mechanical. That’s the trade. The AI Overview surface doesn’t reward conversational writing — the surface above it does. The conversation is what your menu page, your About page, your social channels are for. The citation paragraph is its own register. It exists to be quoted.
+
+## Move 5: Stable URLs. Stable answers.
+
+This is the move that protects what moves 1–4 earn you. The crawler revisits cited URLs faster than uncited ones — the model has marked the page as a known good source. If the URL still resolves and the paragraph still answers the question, you stay cited. If the URL 301s to a new path, or the paragraph has been paraphrased into something with a slightly different fact-set, you drop out of the rotation. Sometimes the drop is permanent; sometimes you have to re-earn the citation from scratch over the next 60 days.
+
+The operational rule: when you publish a citation-shaped paragraph and it gets cited, leave it alone. Don’t add a comma. Don’t change the hours from “5pm” to “5:00 PM”. Don’t move the page from /blog/ to /info/. If the underlying fact changes — you’re really open until 11pm now, not 10pm — change the number and only the number. Touch one fact, keep the rest. The crawler will re-fingerprint the page, see the targeted change, and update its cited extract.
+
+## How to test if you’re cited
+
+Open Google in a clean browser session. Type the question your guest is most likely asking — not the SEO keyword, the natural-language question. “Is Roma Cucina open on Sunday”. “Where can I get omakase in Silver Spring”. “Does Maketto take walk-ins”. If the AI Overview box appears at the top, scroll to its bottom. There are citation chips — small icons with source labels. Yours should be one of them.
+
+If it’s not, you have a citation problem, not a ranking problem. Your page may rank #1 in the blue links below the box and still not be cited. The box is judged on a separate axis. Track it weekly for ten or twenty of your most-likely questions; the trend over a quarter tells you whether the citation rewrites are working.
+
+## The reframe
+
+You’re not writing for the human reader the way you used to. The human reader sees the AI Overview’s paragraph, decides whether the answer is enough, and either acts on it or clicks through to one of the cited sources. The paragraph the human reads first is not the paragraph you wrote — it’s the paragraph the extractor wrote, pieced together from yours and one or two others. Your audience is now the extractor that decides which paragraph the human reader sees. Write the paragraph the extractor wants to lift.
+
+This is uncomfortable. It feels like writing to the algorithm. It is. The trade is that your most important informational pages — hours, menu, reservations, dietary — get to be the named source on the answer your guest sees. That’s worth the register shift.
+
+## Where to start
+
+Pick three pages. Your hours/contact page, your menu page, and your most-trafficked blog post. Walk each through moves 1–4 on the first paragraph below every H2. Don’t touch the rest of the page yet. Publish, wait two weeks, then run the citation-check loop above on the questions those pages should be answering.
+
+If you’re showing up in the box on at least half of them by week four, the moves are working — do the rest of the site. If you’re not, the most common culprit is the schema. The prose is fine; the JSON-LD doesn’t match it. Run [the six schema types Google uses](https://muntin.digital/blog/restaurant-schema-markup-6-types-google-uses/) through your site once, then re-check.
+
+**You can write to rank or you can write to be cited.** They don’t fight each other, but they reward different paragraphs. If most of your traffic is informational queries — hours, menu, reservations, dietary — pick citation. If it’s intent-rich — “best Italian in Silver Spring” — keep ranking. Most independent restaurants are in the first bucket and don’t know it.
+
+Don Goldstein manages two DMV restaurants and runs [Muntin Digital](https://muntin.digital/). The citation-tracking dataset behind this article comes from 90 days of paired queries against AI Overviews, run between February and May 2026.
+
+Keep going
+
+- [Restaurant schema markup: the 6 types Google uses](https://muntin.digital/blog/restaurant-schema-markup-6-types-google-uses/) — the JSON-LD that anchors your prose
+
+- [How to read your restaurant’s Google Search Console](https://muntin.digital/blog/how-to-read-restaurant-google-search-console/) — the queries that should be in your citation tracker
+
+- [The 1% margin audit](https://muntin.digital/learn/research/the-1-percent-margin-audit-50-restaurant-websites-2026/) — the underlying study most of this site’s research notes are built on
+
+- [$499 audit](https://muntin.digital/services/audit/) — the written diagnosis if you’d rather see the rewrites on paper
 
 ---
 title: How to Get More Google Reviews for Your Restaurant (Without Begging)
@@ -1055,6 +1263,38 @@ The math is simple. If you serve 200 covers a day and 1% of them leave a review,
 ## The system: five pieces that run themselves
 
 I built a review program at Tacombi's Bethesda and Arlington locations that didn't depend on any single person remembering to ask. Here's the structure, honestly — it's not complicated, it's just disciplined.
+
+- 1
+
+#### The QR postcard
+
+**Print once** · one batch covers ~6 months
+
+- 2
+
+#### The timing
+
+**After the check is paid** · hand it as they stand to leave
+
+- 3
+
+#### The staff buy-in
+
+**2-sentence pre-shift** · never tied to performance metrics
+
+- 4
+
+#### The response habit
+
+**~5 min/day** · the recurring habit that compounds
+
+- 5
+
+#### The in-store visibility
+
+**Sign near the host stand** · refresh the count monthly
+
+ Three are one-time setup (postcard, timing, staff). Two are recurring habits (response, visibility). The system runs itself once all five are in place.
 
 ### 1. The QR postcard
 
@@ -1156,7 +1396,7 @@ Tried this in your own restaurant? 100–400 words, your name on it. Don reads e
 
  Your note
 
- Email Don
+ Send the note
 
 ---
 title: How to Raise Restaurant Menu Prices Without Losing Reservations
@@ -1287,6 +1527,26 @@ If your menu page shows a dish with a *proper description* — the sourcing, the
 
 When you raise a price, *rewrite the description at the same time*. Two sentences. Something specific. The guest who opens your site this week and sees "Chicken $24 — pan-roasted half-bird, brown-butter jus, two-hour brine" reads that as a restaurant investing in its product. The guest who sees "Chicken $24" reads a restaurant that just got more expensive.
 
+ Mains
+
+ Half chicken
+ $24
+
+Pan-roasted, brown-butter jus, two-hour brine, served with bitter greens.
+
+ Polyface Farm · Swoope, VA
+
+ Mains
+
+ Chicken
+
+ $24
+
+ Bare
+ Rich
+
+ Drag to compare. Same chicken, same $24 — the only difference is the story around the number.
+
 ### 2. Update at least one photograph
 
 This sounds superficial. It isn't. Menu items that have visually *moved* — a new plating, a new garnish, a new photograph — get priced against the new image, not the old price memory. A guest scrolling your menu page on a phone will evaluate "the new version of this dish at $24" very differently from "the same dish I had last year, but $24 now."
@@ -1343,7 +1603,7 @@ Tried this in your own restaurant? 100–400 words, your name on it. Don reads e
 
  Your note
 
- Email Don
+ Send the note
 
 Sources & further reading
 
@@ -1574,7 +1834,7 @@ Tried this in your own restaurant? 100–400 words, your name on it. Don reads e
 
  Your note
 
- Email Don
+ Send the note
 
 Sources & further reading
 
@@ -1675,6 +1935,26 @@ There’s a second cost that’s harder to see until it’s too late: platform d
 
 ## Three moves that recover the flow
 
+- 1
+
+#### Make your GBP website link unmissable
+
+**~10 min** · one-time, then quarterly review
+
+- 2
+
+#### Out-design the inline widget on your own site
+
+**2–6 hours** · one-time engineering, recurring polish
+
+- 3
+
+#### Capture the email before Google can
+
+**1 hour** · the move most operators skip — and the highest leverage
+
+ Move three is the bridge from booking to relationship. The booking is the half-win; the email is the whole one.
+
 ### 1. Make your Google Business Profile website link unmissable
 
 On Google Maps, the “Website” button sits right next to the reservation widget. Most operators accept whatever URL Google auto-populated from their domain and never think about it again. That’s a mistake. Your Website button in GBP is the single most valuable piece of real estate Google gives you for free — and it should point at a URL whose entire purpose is to beat the inline widget.
@@ -1735,7 +2015,7 @@ Tried this in your own restaurant? 100–400 words, your name on it. Don reads e
 
  Your note
 
- Email Don
+ Send the note
 
 Sources & further reading
 
@@ -1841,6 +2121,50 @@ Primary: "Italian Restaurant" · 4 attributes
  Same restaurant, same food, same street. The gap between these two cards is the gap between getting found on a Tuesday and not getting found.
 
 Setting up a profile takes about thirty minutes. Optimizing it properly takes another hour. Most owners do the first part and skip the second — which is exactly why the left card is so much more common than the right one. Here's how to do both.
+
+- 1
+
+#### Claim or create your listing
+
+**~30 min** · one-time
+
+- 2
+
+#### Verify ownership
+
+**15 min · +2–5 days wait** for Google to approve the video
+
+- 3
+
+#### Choose the right primary category
+
+**~10 min** · one of the highest-leverage decisions in the whole process
+
+- 4
+
+#### Complete every field
+
+**~30 min** · where most operators stop — and shouldn't
+
+- 5
+
+#### Add real photos
+
+**~1 hour** for a proper first batch · refresh quarterly
+
+- 6
+
+#### Set up Google Posts
+
+**~15 min/week** · recurring habit
+
+- 7
+
+#### Respond to every review
+
+**~10 min/week** · the habit that compounds
+
+ The first four steps are one-time setup. The last three are the habits that compound a profile from “claimed” to “complete.”
 
 ## Step 1 — Claim or create your listing
 
@@ -1986,7 +2310,7 @@ Tried this in your own restaurant? 100–400 words, your name on it. Don reads e
 
  Your note
 
- Email Don
+ Send the note
 
 ---
 title: How to Tell If a Restaurant Tool Is Safe (Before You Type a Real Number)
@@ -2161,7 +2485,7 @@ Tried this in your own restaurant? 100–400 words, your name on it. Don reads e
 
  Your note
 
- Email Don
+ Send the note
 
 Sources & further reading
 
@@ -2341,7 +2665,7 @@ Tried this in your own restaurant? 100–400 words, your name on it. Don reads e
 
  Your note
 
- Email Don
+ Send the note
 
 Sources & further reading
 
@@ -2493,6 +2817,66 @@ Run [Photo Brief](https://muntin.digital/tools/photo-brief/). It generates a per
 
 The shoot itself is usually 2-3 hours for a 30-photo deliverable: the hero, 10-15 dishes, 4-6 room shots, 2-3 detail shots (a hand pouring wine, smoke off a grill, the chef plating). Done in one go, you have material for every surface for the next 12 months.
 
+## The 6-second pre-publish gut check
+
+Before any photo lands on the site, run it through this check. Six questions, one click each, takes about as long as it sounds. If you can't answer "yes" to all six, the photo isn't ready — not because the photo is bad, but because something around the photo is.
+
+-
+ 1Is the dish the sharpest thing in the frame?+
+
+The eye should land on the food before anything else in the photo. Garnish, props, table linens — all of it should be at least one stop softer than the dish.
+
+Pass The plate is in tack-sharp focus; the wineglass behind it is gently soft.
+
+Fail The whole table is in focus; the eye doesn’t know where to land.
+
+-
+ 2Was it shot in daylight (or daylight-balanced)?+
+
+Restaurant overhead lighting reads orange and dingy on phone sensors. Natural daylight from a window between 11 AM and 2 PM is the easiest path to a clean shot.
+
+Pass Window light from camera-left, no overhead competing with it.
+
+Fail Mixed light at 7 PM under tungsten cans — the photo will need 20 minutes of color work to feel right.
+
+-
+ 3Are the edges clean?+
+
+At thumbnail size every distracting edge gets amplified. A thumb in the corner, a garnish bleeding off the plate, a stack of menus behind the dish — all of it telegraphs at 200 pixels wide.
+
+Pass Every edge intentional. Negative space around the plate.
+
+Crop it A bottle cap clipping the frame on the right? Crop tighter. Don’t reshoot.
+
+-
+ 4Does the alt text name the dish?+
+
+Alt text is the most-skipped 5 seconds per photo. It’s also the highest-leverage 5 seconds for SEO and AI search. Name the dish, name the plate type, optional one detail.
+
+Pass “Carnitas plate with pickled onion and lime, on a stoneware platter.”
+
+Fail “Delicious food at our restaurant.” That sentence helps no one and ranks for nothing.
+
+-
+ 5Is it 3000 px+ on the long edge?+
+
+You’ll crop down for menu thumbnails (600 px), GBP gallery (2048 px), and the hero (3000 px). You can’t crop up. Always shoot at the largest reasonable size and downsize on export.
+
+Pass Source file is 4096 × 3072 or larger.
+
+Fail 1200 × 800. Fine for a thumbnail, useless for a hero.
+
+-
+ 6Is it less than 6 months old (or matches current plating)?+
+
+Photos drift. The plating shifts, the garnish swaps, the linens change. A photo of a dish as it was last spring sets an expectation guests will price the current plate against — and write reviews against.
+
+Pass Shot in the past 6 months, or the dish hasn’t changed.
+
+Reshoot soon 18 months old and the new plate has different garnish? It’s costing you.
+
+ Six questions, one click each. Click a row to expand the pass/fail rule.
+
 ## The "shoot it yourself with a phone" version
 
 If hiring a photographer isn't in budget, the phone version still works. Modern phones in good light routinely beat low-effort DSLR work — the variable that matters most isn't the sensor, it's the time of day and the angle to the window. Three rules:
@@ -2549,7 +2933,7 @@ Tried this in your own restaurant? 100–400 words, your name on it. Don reads e
 
  Your note
 
- Email Don
+ Send the note
 
 Sources & further reading
 
@@ -2822,7 +3206,7 @@ Tried this in your own restaurant? 100–400 words, your name on it. Don reads e
 
  Your note
 
- Email Don
+ Send the note
 
 Sources & further reading
 
@@ -2841,6 +3225,448 @@ Baymard Institute — Baymard's ongoing research on SERP behavior consistently f
  Google AI Overviews — citation behavior
 
 Google AI Overviews — Google's public guidance on AI Overviews indicates that structured data, including FAQPage, is among the signals used to identify quotable answers. The "FAQ as AI-citation magnet" framing reflects observed citation patterns in 2025-2026 AI search results, not a controlled study.
+
+---
+title: Should Your Restaurant Actually Make an App in 2026?
+url: https://muntin.digital/blog/should-your-restaurant-have-an-app-in-2026/
+kind: article
+locale: en
+date: 2026-05-07
+description: Every month a new agency pitches an independent restaurant a $20K app. Here's the honest answer to whether you need one — and the three cheaper tools that deliver what you actually wanted the app to do.
+---
+
+Muntin Digital · Writing
+
+# Should you actually make
+ a restaurant app
+ in 2026?
+
+Every month an agency pitches you a $20,000 app. Here's the honest answer — and the three cheaper tools that deliver what you actually wanted the app to do.
+
+May 7, 2026 · 9 min read · By [**Don**](https://muntin.digital/about/#don-goldstein)
+
+ Listen to this article
+
+ Share
+
+ Share on X
+ Share on Bluesky
+ Share on Threads
+ Share on Mastodon
+ Share on LinkedIn
+ Share on Facebook
+ Share on Reddit
+ Share on WhatsApp
+ Share on Telegram
+ Share via email
+ Copy link
+
+An agency emailed you last week. Or maybe a friend-of-a-friend who "does apps" sat across from you at a coffee shop and told you, with real conviction, that your restaurant is leaving money on the table because it doesn’t have one. The pitch is always the same three slides: loyalty program, push notifications, branded customer experience. The number at the end of the deck is usually somewhere between $15,000 and $40,000, and the monthly maintenance starts at $400.
+
+Here’s the honest answer, which no agency is going to give you: **probably not.** For the vast majority of independent restaurants in 2026, a native app is a solution looking for a problem, at a price that doesn’t match the size of the problem it’s actually solving.
+
+But "no" by itself is a useless answer, because the *reasons* you want an app are real. You want regulars to come back more often. You want to reach them without paying Meta for the privilege. You want your brand in the guest’s hand, not buried under the DoorDash logo. Those are all legitimate goals. The app just isn’t how you get there.
+
+Here’s the map. On the left, the thing you think you want. On the right, the thing that actually delivers it — for a tiny fraction of the cost.
+
+What you want
+
+#### A loyalty program for regulars
+
+ →
+
+What delivers it
+
+#### POS-native loyalty (Square, Toast)
+
+Included in your POS · $0 extra
+
+What you want
+
+#### Push notifications to regulars
+
+ →
+
+What delivers it
+
+#### SMS marketing list
+
+~$30/mo · 95% open rate, no install
+
+What you want
+
+#### Your brand in their pocket
+
+ →
+
+What delivers it
+
+#### Mobile-excellent site + GBP
+
+You probably already pay for this
+
+What you want
+
+#### One-tap ordering for regulars
+
+ →
+
+What delivers it
+
+#### PWA from your ordering page
+
+Free · works on iOS & Android
+
+What you want
+
+#### Data on your regulars
+
+ →
+
+What delivers it
+
+#### POS-connected CRM
+
+$0–$50/mo · better data than any app
+
+ Five things operators typically want from a “restaurant app” · five cheaper, faster tools that each do exactly that one thing better
+
+Total stack if you build all five: roughly **$30–$80/month** in tooling costs, plus maybe a week of setup. Total cost of the native app that was pitched at you: $15–$40K up front, $400–$1,200/month in maintenance, plus the ongoing cost of getting guests to actually install and open the thing. The app route costs 20–50x more to deliver the same underlying outcomes. That’s not a rounding error.
+
+## The install problem nobody talks about
+
+Agencies pitching restaurant apps never want to discuss the install rate. Here’s the uncomfortable truth: the average independent restaurant that launches a native app sees **under 2% of its guests install it**, and of those who install, fewer than a third are still using it six months later. I’ve seen the dashboards. You get a flurry of downloads in the first two weeks from regulars who want to be supportive, then the curve flattens.
+
+This isn’t because your restaurant isn’t beloved. It’s because your guests already have too many apps on their phone, and yours is the 187th notification competing for their attention. They love you. They also love the dry cleaner across the street and the gym around the corner, and none of those places have convinced them to install an app either. The friction-to-benefit ratio just isn’t there.
+
+A website, by contrast, works on install rate 100%. Every single person who types your URL or taps your [Google Business Profile](https://muntin.digital/glossary/gbp/) is inside your "app" with zero friction. An SMS opt-in works on *behavior* — the guest texts a short code at the table and is signed up, no download required. A PWA (progressive web app) saved to the home screen looks exactly like a native app, launches with a tap, and installs in three seconds from a button on your website. Either path keeps the relationship in an [owned channel](https://muntin.digital/glossary/owned-channel/) — you don’t pay a platform every time a guest finds their way back.
+
+The modern version of "I want my restaurant in the guest’s pocket" isn’t a native app. It’s a website good enough that the guest *wants* to save it to their home screen. That is an accomplishment your existing website stack can deliver — it just requires someone who cares about the details.
+
+## The two situations where an app is actually the right call
+
+I’m not going to tell you no app, ever. Two specific situations make a native app defensible.
+
+### 1. Multi-location brands with 5,000+ weekly app-relevant transactions
+
+Starbucks has an app. Chipotle has an app. Sweetgreen has an app. That’s because when you have 20+ locations and guests ordering multiple times a week, the math on app-driven loyalty + pre-ordering actually pencils out — you amortize the build cost over a volume of orders that no independent restaurant sees. At Starbucks scale, a 1% [conversion](https://muntin.digital/glossary/conversion-rate/) lift on mobile ordering pays for the entire app program in a quarter. At your scale, it doesn’t.
+
+If you’re a two-location independent, the math still doesn’t work. If you’re five or more locations doing real mobile-ordering volume, it might. Below that, no.
+
+### 2. A concept that genuinely requires app-level behavior
+
+Ghost kitchens running multiple concepts out of one space. Pre-order-only meal prep services where every order is scheduled 48 hours in advance. Subscription dining clubs. These are *actually* app-shaped products — the app is the product, not a marketing layer on top of a restaurant.
+
+If your concept is "sit-down independent restaurant where people walk in, eat, and leave," that isn’t app-shaped. The app is marketing overhead. If your concept is "subscription tasting club that ships a box every Tuesday," the app might be the entire distribution mechanism. Different animals.
+
+The reasons you want an app are real. The app is just a much more expensive and much less-used way to get them than the tools that already live on your guest’s phone.
+
+#### Want the honest “do we need an app” answer for your specific restaurant?
+
+Bring the agency pitch to a 20-minute call and I’ll walk through it with you line by line — what’s real value, what’s markup, and what your current website + POS stack is already capable of delivering. Free for independent operators.
+
+ [Email Don](https://muntin.digital/window/)
+
+## What to do instead, in order
+
+If this post has talked you off the app ledge, here’s the honest sequence. Do these first, in this order. If at the end of step four you *still* feel like you need a native app, call me and I’ll connect you with an agency who does them well. (Run [Tech Stack](https://muntin.digital/tools/tech-stack/) first to see what your current tools already cover.)
+
+- **Turn on your POS’s loyalty program.** Square Loyalty, Toast Loyalty — both included. Ten-minute setup. Every regular who pays with a card is automatically earning points starting tomorrow. No install required, nothing new on your guest’s phone.
+
+- **Start an SMS list.** Services like Klaviyo, Attentive, or SimpleTexting run $20–$50/mo for a restaurant-sized list. Promote the opt-in at the host stand (“text [short code] for the weekend specials”). You’ll see the opt-in rate hit 20%+ of walk-ins within weeks. SMS has a 95% open rate. Push notifications from apps have an 8% engagement rate. It’s not close.
+
+- **Make your own-ordering page into a PWA.** If you use Square or Toast, the ordering page already qualifies — guests can tap “Add to home screen” and get an app-like icon on their phone. Put a prompt on your site that tells them how. Zero additional cost.
+
+- **Audit your Google Business Profile.** Full-strength photos, accurate hours, replies to reviews. This is the place guests *actually* interact with your brand on their phones, far more than any app ever would.
+
+Four steps. A weekend of work. Probably $50–$100 a month in ongoing tooling. You get loyalty, push-equivalent messaging, an app-like icon on the guest’s phone, and a professional mobile presence. That stack outperforms a $25K native app on every measurable outcome, because your guest never had to make the choice to install it.
+
+## The one honest line to say to the agency
+
+If an agency is actively pitching you right now, the line I’d use is this: *“Show me a client of yours, my size, where the app has paid for itself in recovered profit margin within eighteen months — not in ‘brand engagement’ or ‘app downloads,’ but in actual dollars that wouldn’t have existed otherwise. If you can show me that, I’m interested. If you can’t, we’re done.”*
+
+Most agencies can’t answer that question, because the honest answer for an independent restaurant is almost always that the app is a marketing vehicle for the agency, not a profit vehicle for the restaurant. The margin on their side is better than the margin on yours, which is how the pitch got to your inbox in the first place.
+
+Your goal isn’t to own a mobile app. Your goal is to have regulars come back more often and new guests find you. The tools that deliver those things already exist, mostly on your guest’s phone by default, and they cost pennies compared to what’s on the quote sheet in your inbox right now. Use those. Save the app budget for the patio build-out.
+
+Sources & further reading
+
+ SMS vs. push-notification engagement rates
+
+Attentive / Klaviyo benchmarks — consistent findings that SMS open rates sit in the 90–98% range with click-through rates of 10–20%, compared to mobile push-notification open rates of 5–10% and app-message engagement under 5% once the install honeymoon ends. For an independent restaurant trying to reach a regular base, SMS dominates push on every engagement metric that matters.
+
+ Independent-restaurant app install and retention rates
+
+Industry reports (Toast, Bluedot, Restaurant Dive) — independent-restaurant-branded apps consistently show install rates under 2–3% of the guest base, with 6-month retention under 30% of those who installed. At that math, even a very successful independent-restaurant app reaches under 1% of guests in a meaningful way. Multi-location brands with frequent-purchase dynamics (QSR, coffee) see materially better numbers — which is why the app model works there and doesn’t work for full-service independents.
+
+ Progressive Web App capabilities and adoption
+
+Google Web Platform / MDN documentation — modern browsers support full "Add to Home Screen" functionality, offline caching, and push-style notifications from regular websites without any native-app wrapper. PWA capability has been production-grade since 2020 and is the default “app experience” most consumer sites now serve, including the major delivery platforms and most POS own-ordering pages. An independent restaurant can offer an app-equivalent experience today without writing a single line of Swift or Kotlin.
+
+---
+title: Toast vs. Square vs. Clover: Which POS Integrates Best With a Restaurant Website?
+url: https://muntin.digital/blog/toast-vs-square-vs-clover-for-restaurants/
+kind: article
+locale: en
+date: 2026-05-07
+description: An honest comparison of how Toast, Square, and Clover — the three dominant restaurant POS systems — integrate with a real restaurant website. What each one does well, what each one quietly limits, and which one I'd pick for your restaurant type.
+---
+
+Skip to main content
+
+ Muntin Digital · Writing
+
+# Toast vs. Square vs. Clover:
+ which POS integrates best?
+
+An honest comparison of how the three dominant restaurant POS systems integrate with a real restaurant website — what each one does well, what each one quietly limits, and which one I'd pick for your restaurant type.
+
+May 7, 2026 · 11 min read · By [**Don**](https://muntin.digital/about/#don-goldstein)
+
+ Listen to this article
+
+Every restaurant has a POS. And sooner or later — usually a few months after the hardware's already paid for — every restaurant owner realizes that their POS choice affects their website in ways nobody told them about during the sales pitch. Menu sync, online ordering, reservation handoff, loyalty programs, receipt links — all of it runs through the POS. If you picked the POS based on the cashier hardware and the transaction fee alone, you probably discovered the website-side limitations the hard way. The right pairing keeps your [direct ordering](https://muntin.digital/glossary/direct-ordering/) on your [owned channel](https://muntin.digital/glossary/owned-channel/) and away from a 30%-commission marketplace.
+
+This post compares the three POS systems I see most often in independent restaurant audits: **Toast**, **Square for Restaurants**, and **Clover**. I'll walk through what each one does well for website integration, where each one quietly limits you, and — in the closing — which one I'd pick for which restaurant type. If you're about to sign a POS contract, this is the post I'd want you to read first.
+
+A quick note upfront: all three are legitimate products run by real companies, and all three have customers who love them and customers who regret the choice. I'm not here to crown a winner or dunk on a loser — the question is which one fits *your* restaurant.
+
+## What "POS integration with your website" actually means
+
+Before we get into the comparison, it's worth being specific about what we're comparing. "POS integration" is really three different things stacked on top of each other, and every POS handles each layer at a different quality level.
+
+### 1. Menu sync
+
+Your POS knows what's on the menu. Your website also needs to know. Can the POS push its menu data to your website so you only maintain it in one place? Does the push include dish descriptions, images, modifiers, allergens, and prices? What happens when you 86 a dish mid-service — does your site update in real time, or is someone eating two-hour-old availability data?
+
+### 2. Order-taking
+
+The website takes online orders and those orders have to land in your kitchen somehow. Does the order flow directly into the POS ticket queue, or does it land in a separate tablet the host has to check? Does it respect your real-time inventory? Can customers order items you've just run out of?
+
+### 3. Reservation and guest data flow
+
+When a guest books a table, does the reservation show up on your POS's floor map? Does the guest history — visit count, allergies, birthday, favorite table — flow between the reservation platform and the POS so a returning customer gets recognized and greeted by name?
+
+Most POS marketing pages talk about "website integration" as if it's one switch you flip. In practice, the three layers above are built at different times, by different teams, and each has its own quality ceiling. The right POS for your restaurant depends on which of the three layers matters most for how you actually operate.
+
+## Toast
+
+Toast is the biggest restaurant-specific POS in the US market and the one I see most often on independent full-service restaurants. According to [Toast's own product documentation](https://pos.toasttab.com/), the platform is purpose-built for full-service, quick-service, and counter-service restaurants, and includes native [online ordering](https://muntin.digital/glossary/online-ordering/), menu management, and a third-party developer API.
+
+### What Toast does well for website integration
+
+- **Native online ordering** with a direct pipeline from website checkout to kitchen ticket — no separate tablet handoff required.
+
+- **Automatic menu sync** from Toast's menu editor to their website widgets, including images, modifiers, and allergen tags.
+
+- **Real-time 86ing** — when you mark a dish out of stock on the POS, the change propagates to the online menu immediately.
+
+- **A mature developer API** that lets a custom-built website (not Toast's own templates) tap into the same order, menu, and guest data Toast's native surfaces use. This is the part I care most about in my audits — it means you can have a custom site on a modern stack and still use Toast as the engine.
+
+### Where Toast's website story gets complicated
+
+- Toast's own hosted restaurant sites are functional but template-bound. In my audit experience, sites built on Toast's native website templates share a recognizable layout and typography system — they "look like a Toast restaurant site" even when the colors are different.
+
+- Transaction fees on delivery and pickup orders routed through Toast's integrated ordering can stack up compared to a custom checkout running on your own payment processor. The exact numbers depend on your Toast contract tier, so check [Toast's current pricing page](https://pos.toasttab.com/pricing) for your situation.
+
+- "Powered by Toast" branding in the checkout flow is difficult to fully remove without moving to a higher contract tier.
+
+- Contract commitments tend to run multi-year, which matters if you're not sure which POS will still fit your operation three years from now.
+
+In my audit experience: **Toast is the strongest choice if you want "it all just works" from day one** and you accept the tradeoffs of a walled garden. And if you have a custom-built website and want Toast to be the kitchen-side engine, their API is mature enough to support that — just expect to pay a developer to wire it up cleanly.
+
+## Square for Restaurants
+
+Square's approach is almost the opposite of Toast's. Where Toast is restaurant-specific from the ground up, Square started as a general retail and payments platform and added restaurant-specific features on top of its broader product. That shows up as both a strength and a limitation. According to [Square's own product documentation](https://squareup.com/us/en/point-of-sale/restaurants), Square for Restaurants includes menu management, online ordering, table management, and loyalty — all with the same public, flat-rate pricing structure Square is known for in retail.
+
+### What Square does well for website integration
+
+- **A clean, well-documented public API.** For a custom-built website that wants to pull catalog data, send orders, or look up customer history, [Square's developer docs](https://developer.squareup.com/docs) are among the best in the POS space — clear, current, and actively supported.
+
+- **Public, flat-rate pricing.** Square's processing fees and monthly costs are published openly on their site. No contract-tier dance, no "call us for a quote," no negotiated surprises.
+
+- **Square Online** can spin up a functional restaurant site in an afternoon, with menu data automatically synced from the POS. Not a replacement for a custom site, but genuinely useful for operators who aren't ready for one yet.
+
+- **Lower vendor lock-in** than Toast — hardware costs are lower, contracts are shorter, data export is more straightforward. Switching cost is lower if you outgrow the fit.
+
+### Where Square's website story gets complicated
+
+- Square for Restaurants is younger and less restaurant-dedicated than Toast. In my audit experience, some features a full-service restaurant wants — server-by-server sales reports for a fine-dining room, deep modifier chains, complex coursing — are thinner or absent compared to Toast's restaurant-native implementation.
+
+- Square Online's ordering flow feels retail-first. It works, but the visual and interaction rhythm doesn't quite match the vibe of a tablecloth room — Square Online looks like Square Online.
+
+- Menu sync from Square to a custom external website requires you to write the API bridge. Square provides the pipe; you build what runs through it. This is fine if you have a developer; it's a blocker if you don't.
+
+In my audit experience: **Square is the strongest pick for a single-location independent restaurant that wants a clean API, fair public fees, and the flexibility to switch tools later without regret.** The developer-friendliness makes it the easiest POS in this trio to pair with a fully custom site.
+
+## Clover
+
+Clover is the widest-distributed POS system of the three, because it's sold through merchant services providers — banks, payment processors, and local ISOs — in addition to direct from Clover itself. That distribution model is Clover's biggest strength and its biggest source of confusion, simultaneously. According to [Clover's own restaurant product page](https://www.clover.com/restaurants), the restaurant offering includes menu management, online ordering, table management, and third-party delivery integrations — though the specific feature set you see depends on which distribution channel you bought through.
+
+### What Clover does well
+
+- **Widest hardware selection.** Clover Station, Mini, Flex (handheld), and Kiosk cover nearly every physical configuration a restaurant might need — including a couple (like the kiosk and integrated-scale accessories) the other two don't directly offer. The hardware itself is well-built.
+
+- **Flexible — sometimes too flexible.** Because Clover distributes through multiple merchant services providers, the exact feature set, fee structure, and contract terms you get depend on which bank or ISO sold you the system. This can be a strength (your local bank may have negotiated a better rate than the public one) or a source of frustration (your neighbor's Clover might have features yours doesn't).
+
+- **The largest app marketplace** in the POS space, which means niche restaurant features — specific loyalty programs, specific delivery integrations, specific back-office tools — tend to be available as add-ons when you can't find them native.
+
+### Where Clover's website story gets complicated
+
+- **Fragmented ecosystem.** Clover Station, Mini, Flex, Go, and Kiosk on the hardware side, plus plan tiers like Dining and Register on the software side — each combination has a slightly different feature set, and understanding which package your merchant provider sold you is a small research project on its own. In my audits, I've lost hours to "does this Clover have native online ordering enabled?" and the answer was "depends on your plan tier."
+
+- **The developer API exists but is less mature** than Square's or Toast's. Integrating Clover into a custom website often requires more plumbing work than either alternative, in my experience.
+
+- **Pricing lives in your contract, not on a page.** Transaction fees and monthly costs depend heavily on the specific merchant services contract you signed, not on a public pricing page. Before you commit, read the fee schedule in your actual contract — I've seen identical Clover setups running 30% apart in monthly cost at different restaurants.
+
+In my audit experience: **Clover is the right call when you need specific hardware Clover makes and the others don't** — handheld tableside for a high-volume bar, an integrated scale for a butcher counter, a kiosk for a fast-casual line — or when the merchant services provider relationship itself is valuable (for example, when your local bank bundled the POS with a business loan or line of credit). For pure website-integration quality, it's my third pick of the three. But "third pick" here still means "legitimately usable" — just that Toast and Square are usually easier starting points if you have a free choice.
+
+## Side by side
+
+Here's the same question answered across ten features, in one glance. **Green** is a confident yes. **Amber** is a partial or "depends on your plan." **Rust** is a meaningful gap worth knowing about before you sign a contract.
+
+**Toast**confident-yes · 1 partial · 2 gaps
+
+**Square**confident-yes · 2 partial · 1 gap
+
+**Clover**confident-yes · 7 partial · 2 gaps
+
+ Confident-yes marks per platform across the ten features below. Toast and Square are roughly tied; Clover is materially behind on website integration specifically.
+
+ Feature
+ Toast
+ Square
+ Clover
+
+ Native online orderingBuilt into the POS, not a tablet handoff
+ ✓
+ ✓
+ ~
+
+ Automatic menu syncPOS → website, including images and modifiers
+ ✓
+ ✓
+ ~
+
+ Real-time 86 of out-of-stockPOS change propagates to the site immediately
+ ✓
+ ~
+ ~
+
+ Direct kitchen ticket pipelineWeb orders land on the KDS with no intermediate tablet
+ ✓
+ ✓
+ ~
+
+ Public developer APIClean, documented, actively supported
+ ✓
+ ✓
+ ~
+
+ Public, transparent pricingRates published on the provider's own site
+ ✕
+ ✓
+ ✕
+
+ Works with a fully custom websiteClean pairing with a Muntin-style custom build
+ ✓
+ ✓
+ ~
+
+ Hardware varietyStation, Flex (handheld), Mini, Go, Kiosk
+ ~
+ ~
+ ✓
+
+ Contract flexibilityShort or month-to-month, low switching cost
+ ✕
+ ✓
+ ~
+
+ Restaurant-specific from day oneBuilt for restaurants, not retrofitted from retail
+ ✓
+ ~
+ ~
+
+ Comparison based on each provider's public documentation as of early 2026 · features and pricing change — verify with your provider before signing
+
+## Which one I'd pick, by restaurant type
+
+Here's how I'd match each POS to a restaurant type, based on what I see in audits. These are opinions, not rules — your actual best fit depends on variables I can't see from a blog post, so treat this as a starting point for your own evaluation, not a verdict.
+
+ Single-location independent
+
+#### Square for Restaurants
+
+Clean API, public flat-rate pricing, short contracts, and a lower switching cost if you outgrow the fit. You get the website-integration quality you need for a first custom rebuild without committing to a walled garden before you're sure you want to stay.
+
+ Growing 2–5 location group
+
+#### Toast
+
+Native ordering pipeline, mature menu sync, real-time 86, and a developer API that scales alongside the group. The "it just works" factor is genuine when multi-location operations are on the line and you need every integration to survive a Saturday rush.
+
+ Hardware-heavy or hybrid
+
+#### Clover
+
+Widest hardware selection, handheld tableside, kiosk variants, integrated scales, app marketplace depth. If a specific physical configuration or a merchant services relationship matters more than pure developer ergonomics, Clover earns its place.
+
+## What to ask your POS provider before you build a website
+
+Whichever POS you're evaluating, there are six questions I'd ask the sales rep before you sign anything. Write these down, email them to your rep, and save the reply — the answers will tell you more about the integration quality you're signing up for than any glossy product page will. (Or run [Tech Stack](https://muntin.digital/tools/tech-stack/) against your current setup to see which integration features your existing tools already deliver.)
+
+- **"Can I run a custom website on a modern stack and still use your POS as the engine?"** This is the developer-ecosystem test. If the answer is "well, we have our own templates" — that's a no. You want a confident yes with a specific reference to their API documentation, and ideally an example of a custom site already doing it.
+
+- **"What exactly is in the monthly fee, and what's billed per transaction?"** POS pricing is a hall of mirrors. Get the answer in writing, annotated, with examples calculated against your typical weekly volume. If the rep hesitates or falls back on "it depends," ask for a sample invoice from a restaurant similar to yours.
+
+- **"When I mark a dish 86'd on the POS, how long until the online menu reflects it?"** The answer you want is "seconds" or "within one minute." If it's "next day" or "after a sync job runs overnight," your customers will keep ordering things you don't have — and your host stand will be the one apologizing for it.
+
+- **"What happens to my data if I leave in three years?"** Every POS rep will promise you'll never want to leave. That's not the answer. The real question is: can I export menu, order history, customer profiles, and reservation data in a standard format (CSV, JSON), and does that export include everything I'd need to rebuild elsewhere without starting from zero?
+
+- **"Is there a cancellation fee or early termination clause — and can I see it in writing before I sign?"** Read the small print. The three POS providers in this post have very different answers, and the answer matters a lot two years in, if the fit stops working.
+
+- **"If I wanted to integrate a custom website with your POS, what's the typical setup time?"** This is my favorite question, because the answer tells you how often the rep has actually done it. Toast reps typically answer in weeks with a project outline. Square reps usually answer in days and point at the API docs. Clover reps sometimes have to ask a developer-relations person and get back to you — which is itself useful information.
+
+Take notes on the *shape* of each answer, not just the content. A confident, specific answer with documentation is a good sign. A confident answer with no documentation is a warning sign. A vague answer with a promise to follow up is a red flag — and the follow-up almost never comes.
+
+Take notes on the shape of each answer, not just the content.
+
+## The POS and the website are one system
+
+The mistake I see most often in restaurant audits isn't picking the wrong POS. It's picking the POS without involving the person who's going to build the website — and then discovering the integration limits on launch week, when the options are all expensive. By the time you're wiring up the reservation flow, you're already locked into whatever the POS supports, and "we'll make it work" becomes a lot more expensive than a five-minute conversation at the POS evaluation stage would have been.
+
+If you're mid-POS evaluation right now, bring your website strategy to the same meeting. If you're mid-website project with the POS already chosen, bring the POS's developer docs to the kickoff. The integration quality between these two systems matters more than either system alone — and the only way to get it right is to design them as one thing, up front.
+
+#### Stuck between POS choices for your restaurant?
+
+Twenty minutes on Zoom. I'll walk through the specific POS question you're weighing, tell you how it maps to a real website build for your restaurant type, and give you an honest read on which tradeoffs you'll actually feel in year two. No pitch.
+
+ [Email Don](https://muntin.digital/window/)
+
+ Source: Toast product + pricing
+
+Toast Inc. — Toast POS product overview and pricing
+
+Toast is publicly traded (NYSE: TOST) and widely reported as the largest restaurant-focused POS by location count in the US. The feature claims in this post (native online ordering, menu management, developer API) are drawn from Toast's own product documentation. Pricing tiers and transaction fees change — always check the current page for your situation.
+
+ [Toast product page](https://pos.toasttab.com/) · [Toast pricing](https://pos.toasttab.com/pricing)
+
+ Source: Square for Restaurants + developer docs
+
+Block, Inc. — Square for Restaurants and Square Developer Documentation
+
+Square's restaurant POS product and its developer API. The API quality claim ("among the best in the POS space") is my editorial opinion based on integration experience across multiple restaurant builds. The public pricing and flat-rate fee structure are documented on Square's site.
+
+ [Square for Restaurants](https://squareup.com/us/en/point-of-sale/restaurants) · [Developer docs](https://developer.squareup.com/docs)
+
+ Source: Clover for Restaurants
+
+Clover Network — Clover restaurant product page
+
+Clover's restaurant-specific feature set (menu management, online ordering, table management, delivery integrations). Note: the actual feature set you see depends on your distribution channel and plan tier — bank-sold Clover packages may differ from direct-from-Clover packages. Pricing is contract-dependent, not publicly listed.
+
+ [Clover for Restaurants](https://www.clover.com/restaurants)
 
 ---
 title: What Should Be on a Restaurant Website? The 7 Pages That Matter
@@ -3007,7 +3833,7 @@ Tried this in your own restaurant? 100–400 words, your name on it. Don reads e
 
  Your note
 
- Email Don
+ Send the note
 
 ---
 title: When to Rebuild Your Restaurant Website: A Decision Framework
@@ -3184,7 +4010,7 @@ Tried this in your own restaurant? 100–400 words, your name on it. Don reads e
 
  Your note
 
- Email Don
+ Send the note
 
 Sources & further reading
 
@@ -3401,7 +4227,7 @@ Tried this in your own restaurant? 100–400 words, your name on it. Don reads e
 
  Your note
 
- Email Don
+ Send the note
 
 ---
 title: Wix vs. Custom for Restaurants: What Breaks First
@@ -3514,17 +4340,15 @@ Google's research on mobile page speed has consistently found that the majority 
  [Read Don's 2-minute summary ↗](https://muntin.digital/learn/research/mobile-page-speed-3-second-rule/)
  [Read the full study on Think with Google](https://www.thinkwithgoogle.com/marketing-strategies/app-and-mobile/mobile-page-speed-new-industry-benchmarks/)
 
- Typical Wix templatemobile Lighthouse score
+45
 
- 45
+**Typical Wix template**mobile Lighthouse score
 
- Well-built custom sitemobile Lighthouse score
+95
 
- 95
+**Well-built custom site**mobile Lighthouse score
 
- 0Poor · 49Needs work · 89Good · 100
-
- Illustrative mobile Lighthouse scores · typical values observed in restaurant audits
+ Illustrative mobile Lighthouse scores · typical values observed in restaurant audits. Bands: Poor 0–49 · Needs work 50–89 · Good 90–100
 
  Source: Google Lighthouse scoring
 
@@ -3649,7 +4473,7 @@ Tried this in your own restaurant? 100–400 words, your name on it. Don reads e
 
  Your note
 
- Email Don
+ Send the note
 
 ## Research notes
 
@@ -3671,11 +4495,17 @@ Skip to main content
 
 Baymard's meta-analysis of dozens of e-commerce abandonment studies pegs the average at roughly 70% — and catalogues the specific friction points that cause it. Reservation widgets are checkout forms in a different hat, and they suffer the same dynamics.
 
+ Listen to this article
+
 ## Don's note
 
 This is the study I wish every restaurant owner read before picking a reservation platform. The question "how many steps does our reservation flow take?" sounds trivial. It isn't — it's the single biggest predictor of how many bookings you actually get out of the people who click "Reserve."
 
 Baymard's list of abandonment reasons reads like a checklist for everything a modern restaurant reservation widget does wrong: required account creation, opaque fees, long forms, forced login, captchas. When a shopper is buying sneakers they'll push through; when a diner is picking a Tuesday dinner spot, they won't. Every platform decision — OpenTable vs. SevenRooms vs. a plain form that emails the host stand — lives or dies here.
+
+**Average cart abandonment**across 49 separate studies (Baymard meta-analysis)
+
+ Two-thirds of every reservation funnel leaks before confirmation. The thirty percent that doesn’t is what actually books.
 
 ## Key findings
 
@@ -3750,6 +4580,8 @@ Research note · May 2, 2026 · 9 min read · By [Don Goldstein](https://muntin.
 
 We graded the Google Business Profile of the 100 highest-rated independent restaurants in the DC, Maryland, and Virginia metro across eight dimensions. The median score was 5.4 out of 8. The single most-skipped field is the one that costs the most clicks. Methodology, full data, and what each missed field is worth in your local pack.
 
+ Listen to this article
+
 - **100**DMV restaurants audited
 
 - **5.4**Median GBP score (out of 8)
@@ -3778,6 +4610,15 @@ Eight dimensions, weighted equally. The set was assembled to match what an opera
 The headline finding: holiday hours are missing on 81% of the listings. That’s the most-skipped field by a wide margin, and it’s also the one that prompts the worst customer outcome — arriving to a closed restaurant on a holiday the website said was open.
 
 ## The most-skipped fields, ranked
+
+ Holiday hours81% missing
+ Q&A activity71% missing
+ Menu link62% wrong
+ Reservation deeplink59% wrong
+ Review responses56% under
+ Website link34% missing
+
+ Ranked by share of audited listings missing the field. Bars scaled to 81% (the top miss); rust marks the top three, the long tail in teal/stone.
 
 - **Holiday hours (81% missing).** This is the cheapest mistake to prevent and the one nobody prevents. The fix takes ten minutes per holiday, four times a year. Care Plan Light handles this on a schedule.
 
@@ -3862,6 +4703,8 @@ Skip to main content
 
 A 72-year-old principle from experimental psychology that still explains most of what goes wrong with restaurant reservation CTAs. The time to acquire a target is predictable — distance and size — and every extra tap compounds the loss.
 
+ Listen to this article
+
 ## Don's note
 
 Fitts's Law sounds academic; it isn't. It's the reason your phone's Home button used to be at the bottom — easy for a thumb to reach — and the reason every app with a serious conversion metric (Instagram, DoorDash, OpenTable) keeps the primary action either at the bottom of the screen or persistently visible as a floating button.
@@ -3942,11 +4785,21 @@ Skip to main content
 
 The 0–100 number that appears on every PageSpeed Insights report isn't a vibe. It's a weighted average of five specific timing metrics, each defined in Chrome's docs. Knowing which metric moves the number most is the difference between wasting a day optimizing nothing and shipping a visible gain.
 
+ Listen to this article
+
 ## Don's note
 
 Every restaurant owner who has ever run their site through PageSpeed Insights has seen a number — 34, 61, 88 — and wondered what it means. The honest answer: it's Google's weighted roll-up of how quickly the page's main content paints, how stable the layout is while it loads, and how responsive the page feels while the browser is still working. Each of those has a definition and a weight, and once you know them, the score stops feeling like a black box.
 
 For a restaurant site, the practical implication is that **two metrics account for roughly 55% of the score** — Largest Contentful Paint and Total Blocking Time. Fix those two and everything else follows. The audit tool on this site returns the per-metric breakdown so you can see exactly which bucket is dragging your score down.
+
+**Poor**0–49
+
+**Needs work**50–89
+
+**Good**90–100
+
+ The three Lighthouse bands — the colored dial in any PageSpeed Insights report uses these same thresholds.
 
 ## Key findings
 
@@ -4021,6 +4874,8 @@ Skip to main content
 # The most-searched-for information on a local business website is hours and location — and both are the most commonly hidden.
 
 NNGroup's usability research on small-business websites consistently finds a mismatch between what visitors want in the first five seconds and what the site actually surfaces. The gap is where restaurants lose walk-ins.
+
+ Listen to this article
 
 ## Don's note
 
@@ -4105,11 +4960,20 @@ Skip to main content
 
 Google's 2017 benchmark study measured 11.8 million mobile pages and found a sharp cliff at the three-second mark. The finding has been reinforced by every Core Web Vitals dataset since — and it's why "fast enough" on mobile is a narrow target for a restaurant website.
 
+ Listen to this article
+
 ## Don's note
 
 This is the single statistic I cite most often on calls with restaurant owners, because it reframes the problem correctly. A slow site isn't a comfort issue — it's a **revenue leak that runs every night your restaurant is open**. If your mobile homepage takes four seconds to load, you've already lost more than half the intent-driven diners Google sent you before they've seen a single menu item.
 
 The number is worth knowing, but the *shape* of the finding matters more. Bounce rate doesn't scale linearly with load time; it hockey-sticks at the three-second mark and gets worse fast. Going from 2s → 3s costs you much less than 3s → 4s. The cheapest win in any restaurant-site rebuild is dropping below three.
+
+ 1 secondbaseline
+ 3 seconds+32%
+ 6 seconds+106%
+ 10 seconds+123%
+
+ Bounce probability indexed to a 1-second load. The hockey stick lives between 3 and 6 seconds — that’s where the cheapest mobile-perf wins are.
 
 ## Key findings
 
@@ -4193,6 +5057,8 @@ Research note · May 2, 2026 · 11 min read · By [Don Goldstein](https://muntin
 
 A small, named, dated study. Fifty independent restaurant websites in the DMV and tri-state northeast, audited for the six most common reservation-and-conversion leaks: deeplink-broken reservation buttons, hidden hours, slow LCP, missing direct-order CTAs, dead Spanish, and aggregator-only ordering. Each leak measured in dollars per month against the operator’s own reported revenue. The median operator is leaving **0.94% of revenue** on the table. The worst quartile is leaking **2.3%**.
 
+ Listen to this article
+
 - **50**Independent restaurants audited
 
 - **0.94%**Median revenue leaked through site friction
@@ -4227,6 +5093,8 @@ The distribution isn’t flat. It clusters: most operators are in the 0.5%–1.5
  1.0–1.5%15 of 50
  1.5–2.0%7 of 50
  Over 2.0%4 of 50
+
+ Most operators cluster in the 0.5–1.5% band; the rust tail is the worst-quartile.
 
 The operators in the under-0.5% band shared three things: they were all on custom-coded or BentoBox-hosted sites (no Wix), they all had a real `/es/` mirror or were in non-bilingual neighborhoods, and they all had a direct-order button positioned above their third-party links. They were also overrepresented in the “family-owned for 20+ years” category — not because old operators are tech-forward, but because they’ve been quietly fixing one leak per quarter for a long time.
 
@@ -4301,7 +5169,7 @@ title: Above the fold
 url: https://muntin.digital/glossary/above-the-fold/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Above the fold: The part of your homepage a visitor sees without scrolling. The term is borrowed from newspapers — the half of the front page that was visible before you u…
 ---
 
@@ -4350,7 +5218,7 @@ title: Accessible pair
 url: https://muntin.digital/glossary/accessible-pair/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Accessible pair: A version of a brand color whose lightness has been shifted just far enough — preserving hue and feel — that text rendered in it on a named background reac…
 ---
 
@@ -4399,7 +5267,7 @@ title: Aggregator
 url: https://muntin.digital/glossary/aggregator/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Aggregator: A third-party marketplace that takes orders on your behalf (DoorDash, Uber Eats, Grubhub) and keeps a commission per transaction. Not the same as direct on…
 ---
 
@@ -4448,7 +5316,7 @@ title: Alt text
 url: https://muntin.digital/glossary/alt-text/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Alt text: A short written description of every image, set via the alt="…" attribute in the HTML. Screen readers read it aloud; Google uses it to understand what's in…
 ---
 
@@ -4499,7 +5367,7 @@ title: Analogous colors
 url: https://muntin.digital/glossary/analogous-colors/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Analogous colors: A palette built from hues 15–30° apart on the color wheel — terracotta with rust and ochre, forest with sage and juniper. Analogous palettes share a temper…
 ---
 
@@ -4548,7 +5416,7 @@ title: Apple Maps & Bing Places
 url: https://muntin.digital/glossary/apple-bing-maps/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Apple Maps & Bing Places: The non-Google map services — Apple Maps Connect (for iPhone users) and Bing Places (for Edge, Cortana, and ChatGPT-style Copilot) — where you can also cla…
 ---
 
@@ -4558,7 +5426,7 @@ Skip to main content
 
 # Apple Maps & Bing Places
 
-Last verified: May 1, 2026
+Last verified: May 3, 2026
 
  Restaurants
  [Local SEO & Discovery](https://muntin.digital/learn/topics/local-seo/)
@@ -4597,7 +5465,7 @@ title: Aspect ratio
 url: https://muntin.digital/glossary/aspect-ratio/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Aspect ratio: The ratio of an image's width to its height, expressed as w:h. Eight surfaces own canonical ratios: web hero 16:9, OG card 1.91:1, Yelp featured 3:2, Googl…
 ---
 
@@ -4646,7 +5514,7 @@ title: Average check
 url: https://muntin.digital/glossary/average-check/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T21:13:46+00:00
 description: Average check: Also called "average ticket." Total sales divided by total covers. If 180 covers spent \$4,500 total, average check is \$25.
 ---
 
@@ -4738,7 +5606,7 @@ title: Body text size
 url: https://muntin.digital/glossary/body-text-size/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Body text size: The default size of regular paragraph text on your site. On phones, 16 pixels is the absolute floor; 17–18px is more comfortable for reading menus, descrip…
 ---
 
@@ -4787,7 +5655,7 @@ title: Bounce rate
 url: https://muntin.digital/glossary/bounce-rate/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Bounce rate: The percentage of visitors who land on your site and leave without clicking anything — no menu page, no reserve button, no second page. A high number means…
 ---
 
@@ -4889,7 +5757,7 @@ title: Brand identity
 url: https://muntin.digital/glossary/brand-identity/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Brand identity: The full visible system that carries a business across every touchpoint — logo, colors, typography, voice, and the rules for using them. A logo is one ingr…
 ---
 
@@ -4938,7 +5806,7 @@ title: Breadcrumb
 url: https://muntin.digital/glossary/breadcrumb/
 kind: glossary
 locale: en
-date: 2026-05-02T15:00:47+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Breadcrumb: A row of links at the top of a page that shows where you are in the site hierarchy — Home › Glossary › Breadcrumb. Search engines also read it as Breadcru…
 ---
 
@@ -4987,7 +5855,7 @@ title: Break-even
 url: https://muntin.digital/glossary/break-even/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T21:13:46+00:00
 description: Break-even: The sales volume at which revenue equals total costs. Below break-even, every cover loses money. Above break-even, every cover is profit. Expressed various…
 ---
 
@@ -5036,7 +5904,7 @@ title: Canonical URL
 url: https://muntin.digital/glossary/canonical-url/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Canonical URL: A tag in a page's HTML that tells Google "this is the real address for this page, ignore any duplicates". Matters when the same content lives at multiple U…
 ---
 
@@ -5087,7 +5955,7 @@ title: Catering / private-events page
 url: https://muntin.digital/glossary/catering-page/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Catering / private-events page: A dedicated page explaining your catering or private-event offering — minimums, packages, sample menus, lead time, and an inquiry form that lands in the ri…
 ---
 
@@ -5137,7 +6005,7 @@ title: CDN
 url: https://muntin.digital/glossary/cdn/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: CDN: A global network of servers — Cloudflare, Fastly, AWS CloudFront — that keep cached copies of your site close to every visitor in the world, so the page tr…
 ---
 
@@ -5188,7 +6056,7 @@ title: Charm pricing
 url: https://muntin.digital/glossary/charm-pricing/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Charm pricing: A pricing convention in which the cents portion ends in a number designed to make the price feel lower than the next round figure — \$19.95 instead of \$20…
 ---
 
@@ -5237,7 +6105,7 @@ title: Clearspace
 url: https://muntin.digital/glossary/clearspace/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Clearspace: The minimum empty area that must surround a logo, usually measured in multiples of the mark's x-height or in a defined unit like "one cap-height of the wor…
 ---
 
@@ -5286,7 +6154,7 @@ title: Click-to-call
 url: https://muntin.digital/glossary/click-to-call/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Click-to-call: A phone number on your site that, when tapped on a phone, opens the dialer with your number pre-filled — instead of being plain text the visitor has to cop…
 ---
 
@@ -5335,7 +6203,7 @@ title: Click-to-directions
 url: https://muntin.digital/glossary/click-to-directions/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Click-to-directions: Tapping your address on a phone should launch Apple Maps or Google Maps with your business pre-filled as the destination. Built with a Google Maps URL (or…
 ---
 
@@ -5382,7 +6250,7 @@ title: Client-side
 url: https://muntin.digital/glossary/client-side/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Client-side: Computation that happens inside your browser tab, not on a server. A client-side tool takes your inputs, runs the math in JavaScript, and shows the result…
 ---
 
@@ -5423,7 +6291,7 @@ title: Client-side tool
 url: https://muntin.digital/glossary/client-side-tool/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Client-side tool: A tool whose math runs entirely in your browser — no server stores your inputs, no fetch fires when you type. Verifiable…
 ---
 
@@ -5462,7 +6330,7 @@ title: Cumulative Layout Shift
 url: https://muntin.digital/glossary/cls/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Cumulative Layout Shift: A score that measures how much your page jumps around as it loads — when a banner slides in, an image arrives late, or a late-loading font nudges text down…
 ---
 
@@ -5474,7 +6342,7 @@ Skip to main content
 
 Example: A CLS of 0.25 (your hero image jumps the menu down 200px on load) makes 1-in-7 mobile visitors mis-tap the wrong CTA — usually the wrong reservation slot.
 
-Last verified: May 1, 2026
+Last verified: May 3, 2026
 
 CLS
 
@@ -5515,7 +6383,7 @@ title: Color blindness
 url: https://muntin.digital/glossary/color-blindness/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Color blindness: A set of inherited vision conditions — protanopia, deuteranopia, tritanopia, and milder partial forms — in which one of the three cone-cell types is missin…
 ---
 
@@ -5564,7 +6432,7 @@ title: Color harmony
 url: https://muntin.digital/glossary/color-harmony/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Color harmony: The relationship between the colors in a palette, measured by how far apart their hues sit on the color wheel. Named families — analogous, complementary, s…
 ---
 
@@ -5613,7 +6481,7 @@ title: Color palette
 url: https://muntin.digital/glossary/color-palette/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Color palette: The curated set of colors that belong to a brand — typically a primary, a secondary, a small number of accents, and a couple of neutrals. Each color has a…
 ---
 
@@ -5662,7 +6530,7 @@ title: Commission
 url: https://muntin.digital/glossary/commission/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T21:13:46+00:00
 description: Commission: The percentage an aggregator or payment platform keeps per transaction. Aggregators: 15–30% depending on tier (marketing, delivery, priority placement). Pa…
 ---
 
@@ -5711,7 +6579,7 @@ title: Complementary colors
 url: https://muntin.digital/glossary/complementary-colors/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Complementary colors: Two colors whose hues sit roughly 180° apart on the color wheel — terracotta and teal, mustard and indigo, brick and forest. The maximum-contrast pairing i…
 ---
 
@@ -5760,7 +6628,7 @@ title: Contribution margin
 url: https://muntin.digital/glossary/contribution-margin/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T21:13:46+00:00
 description: Contribution margin: For a single menu item: sale price minus the variable cost of producing one unit (plated food cost). Reported in dollars (CM \$) and as a percent of price…
 ---
 
@@ -5809,7 +6677,7 @@ title: Conversion rate
 url: https://muntin.digital/glossary/conversion-rate/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Conversion rate: The percentage of visitors who do the specific thing you wanted them to do — book a reservation, place an order, fill out a contact form. A 3% reservation…
 ---
 
@@ -5907,7 +6775,7 @@ title: Cookie banner
 url: https://muntin.digital/glossary/cookie-banner/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Cookie banner: The small bar or modal at the bottom of a page asking visitors to accept tracking cookies. Required by law in the EU and parts of the US if you run analyti…
 ---
 
@@ -5956,7 +6824,7 @@ title: Copyable address
 url: https://muntin.digital/glossary/copyable-address/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Copyable address: Your street address as real, selectable text on the page — not baked into an image or a graphic. Ideally wrapped in a Google Maps link so tapping it opens…
 ---
 
@@ -6003,7 +6871,7 @@ title: Core Web Vitals
 url: https://muntin.digital/glossary/core-web-vitals/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Core Web Vitals: Google's three performance scores for a real page load on a phone — one for loading speed (LCP), one for layout stability (CLS), and one for responsiveness…
 ---
 
@@ -6015,7 +6883,7 @@ Skip to main content
 
 Example: A bistro's LCP at 4.2s and CLS at 0.18 — both 'poor' — costs the page about 30% of its mobile bookings before any other factor matters.
 
-Last verified: May 1, 2026
+Last verified: May 3, 2026
 
 CWV
 
@@ -6056,7 +6924,7 @@ title: Cover
 url: https://muntin.digital/glossary/cover/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Cover: One customer seated and served. The restaurant industry's base unit of sales volume. "We did 180 covers on Saturday" means 180 customers came in and ate.
 ---
 
@@ -6105,7 +6973,7 @@ title: Call to action
 url: https://muntin.digital/glossary/cta/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Call to action: The specific button or link that asks a visitor to do the next thing — "Reserve a Table", "Order Online", "Book a Class", "Get a Quote". Usually bright, cl…
 ---
 
@@ -6154,7 +7022,7 @@ title: One-sentence pitch
 url: https://muntin.digital/glossary/cuisine-pitch/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: One-sentence pitch: A single sentence — usually in the hero — that tells a first-time visitor your cuisine, neighborhood, and vibe. Example: "Wood-fired Neapolitan pizza in do…
 ---
 
@@ -6232,7 +7100,7 @@ title: Data tiering
 url: https://muntin.digital/glossary/data-tiering/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Data tiering: A four-tier classification of business data — Public, Competitive-sensitive, Operational-confidential, Regulated — that …
 ---
 
@@ -6271,7 +7139,7 @@ title: Design token
 url: https://muntin.digital/glossary/design-token/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Design token: A named reference for a brand decision — a color, a font size, a corner radius, a spacing step — exported as a portable file (CSS variables, JSON, or a Fig…
 ---
 
@@ -6320,7 +7188,7 @@ title: Dietary & allergen markers
 url: https://muntin.digital/glossary/dietary-markers/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Dietary & allergen markers: Small labels next to menu items indicating gluten-free, vegan, vegetarian, dairy-free, or nut-containing preparations. Best delivered as text or SVG symbol…
 ---
 
@@ -6369,7 +7237,7 @@ title: Direct ordering
 url: https://muntin.digital/glossary/direct-ordering/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Direct ordering: A customer ordering through your own website or POS (Toast, Square, Olo, ChowNow), bypassing aggregators. You pay only the card-processing fee — no platfor…
 ---
 
@@ -6418,7 +7286,7 @@ title: Domain name
 url: https://muntin.digital/glossary/domain-name/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Domain name: The human-readable address people type to reach your site — "rowhousegarden.com". You buy it yearly from a registrar (Namecheap, Google Domains, Cloudflare…
 ---
 
@@ -6467,7 +7335,7 @@ title: Edible portion (EP)
 url: https://muntin.digital/glossary/edible-portion/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T21:13:46+00:00
 description: Edible portion (EP): The cost of one unit of an ingredient after yield correction: EP cost = AP cost ÷ yield. Always ≥ the as-purchased cost; for low-yield items (whole halibut…
 ---
 
@@ -6516,7 +7384,7 @@ title: Price elasticity
 url: https://muntin.digital/glossary/elasticity/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Price elasticity: How much cover count changes when prices change. Rough working rule in independent dining: a 6% menu-wide raise typically loses 2–3% of covers. Elasticity…
 ---
 
@@ -6565,7 +7433,7 @@ title: Favicon
 url: https://muntin.digital/glossary/favicon/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Favicon: The small icon displayed in the browser tab and in bookmark lists. Modern sites ship it at multiple sizes — 16, 32, 192, 512 pixels — because each context…
 ---
 
@@ -6614,7 +7482,7 @@ title: First Contentful Paint
 url: https://muntin.digital/glossary/fcp/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: First Contentful Paint: The moment the browser paints the first piece of your page — usually a headline, a logo, or a patch of background color. Measured in seconds. Under 1.8s is…
 ---
 
@@ -6663,7 +7531,7 @@ title: Fetch request
 url: https://muntin.digital/glossary/fetch-request/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Fetch request: The browser's way of sending data to a server over HTTP. Visible in DevTools' Network tab. Modern tools may use fetch(), XMLHttpRequest, or a form submit t…
 ---
 
@@ -6765,7 +7633,7 @@ title: Fixed costs
 url: https://muntin.digital/glossary/fixed-costs/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T21:13:46+00:00
 description: Fixed costs: Costs that don't change with sales volume: rent, insurance, loan payments, base utilities, SaaS subscriptions (POS, reservations, payroll, marketing tools)…
 ---
 
@@ -6814,7 +7682,7 @@ title: Food cost
 url: https://muntin.digital/glossary/food-cost/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T21:13:46+00:00
 description: Food cost: The cost of ingredients, alcohol, and consumables (paper goods, to-go packaging) expressed as a percentage of sales. Target 28–32% for most formats; pizzer…
 ---
 
@@ -6863,7 +7731,7 @@ title: Form abandonment
 url: https://muntin.digital/glossary/form-abandonment/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Form abandonment: When a visitor starts filling out a form — reservation, contact, inquiry — and leaves before submitting. Usually caused by too many required fields, unclea…
 ---
 
@@ -6910,7 +7778,7 @@ title: Funnel
 url: https://muntin.digital/glossary/funnel/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Funnel: The sequence of steps a visitor goes through before becoming a customer — landing page → menu page → reserve button → reservation form → confirmation. "Fun…
 ---
 
@@ -6959,7 +7827,7 @@ title: Google Business Profile
 url: https://muntin.digital/glossary/gbp/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T21:13:46+00:00
 description: Google Business Profile: Your business's free listing on Google Maps and Google Search — the panel on the right of a search that shows your name, hours, photos, reviews, and a link…
 ---
 
@@ -6969,7 +7837,7 @@ Skip to main content
 
 # Google Business Profile
 
-Last verified: May 1, 2026
+Last verified: May 3, 2026
 
 GBP, formerly Google My Business
 
@@ -7010,7 +7878,7 @@ title: Gift-card checkout
 url: https://muntin.digital/glossary/gift-card-checkout/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Gift-card checkout: A page on your site where someone can buy a gift card in minutes, usually delivered as an email with a code the recipient redeems in-house or online. Squar…
 ---
 
@@ -7060,7 +7928,7 @@ title: Hero section
 url: https://muntin.digital/glossary/hero/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Hero section: The large top section of your homepage, above everything else. It's the only area most first-time visitors will see before deciding whether to keep reading…
 ---
 
@@ -7109,7 +7977,7 @@ title: Hero shot
 url: https://muntin.digital/glossary/hero-shot/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Hero shot: For a given destination surface (web hero, Yelp featured, Instagram profile-grid lead, Google Business cover), the single photograph that carries the visua…
 ---
 
@@ -7158,7 +8026,7 @@ title: Holiday hours
 url: https://muntin.digital/glossary/holiday-hours/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T21:13:46+00:00
 description: Holiday hours: The subset of special hours that recur on a calendar — closed on Thanksgiving and Christmas Day, early-close on Christmas Eve, brunch-only on Mother's Day,…
 ---
 
@@ -7207,7 +8075,7 @@ title: Honest menu prices
 url: https://muntin.digital/glossary/honest-pricing/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Honest menu prices: Showing the price of every dish on your menu page — or, for tasting-menu formats, prominently stating the total. No "contact us for pricing", no hidden sur…
 ---
 
@@ -7255,7 +8123,7 @@ title: Web hosting
 url: https://muntin.digital/glossary/hosting/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Web hosting: The server, somewhere on the internet, that sends your website to a visitor's phone when they type your domain. Small-business hosting runs $5–$30/month (C…
 ---
 
@@ -7304,7 +8172,7 @@ title: Hours of operation
 url: https://muntin.digital/glossary/hours-of-operation/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T21:13:46+00:00
 description: Hours of operation: The structured representation of when a restaurant is open across the week — encoded variously as Google Business Profile fields, Yelp's Business Informati…
 ---
 
@@ -7353,7 +8221,7 @@ title: Hours visibility
 url: https://muntin.digital/glossary/hours-visibility/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Hours visibility: Whether today's hours are visible on your homepage within five seconds of landing, without scrolling or clicking. Distinct from just having hours somewhere…
 ---
 
@@ -7400,7 +8268,7 @@ title: hreflang
 url: https://muntin.digital/glossary/hreflang/
 kind: glossary
 locale: en
-date: 2026-05-02T15:00:47+00:00
+date: 2026-05-03T15:33:24-04:00
 description: hreflang: An HTML attribute (<link rel="alternate" hreflang="es" href="...">) that tells Google which language and region…
 ---
 
@@ -7447,7 +8315,7 @@ title: HTML menu
 url: https://muntin.digital/glossary/html-menu/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: HTML menu: A menu built as real text on a web page, instead of as a PDF file or a photograph of a printed card. Real text means phones can render it at readable sizes…
 ---
 
@@ -7498,7 +8366,7 @@ title: HTTPS
 url: https://muntin.digital/glossary/https/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: HTTPS: The little padlock icon in the browser's address bar. It means your site is served over a secure, encrypted connection — everything between the visitor and…
 ---
 
@@ -7547,7 +8415,7 @@ title: Incident response
 url: https://muntin.digital/glossary/incident-response/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Incident response: A pre-decided plan for what you do in the first 24 hours of a data breach: who do you call, what do you change, what do …
 ---
 
@@ -7586,7 +8454,7 @@ title: Interaction to Next Paint
 url: https://muntin.digital/glossary/inp/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Interaction to Next Paint: How long your site takes to respond after a visitor taps, clicks, or types something. Measured in milliseconds; under 200ms is good, over 500ms feels broke…
 ---
 
@@ -7596,7 +8464,7 @@ Skip to main content
 
 # Interaction to Next Paint
 
-Last verified: May 1, 2026
+Last verified: May 3, 2026
 
 INP, formerly FID
 
@@ -7637,7 +8505,7 @@ title: Labor cost
 url: https://muntin.digital/glossary/labor-cost/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T21:13:46+00:00
 description: Labor cost: Wages, payroll taxes, and the tipped-employee contribution expressed as a percentage of sales. Target 28–32% for most formats, with quick-service at the lo…
 ---
 
@@ -7686,7 +8554,7 @@ title: Last-updated signal
 url: https://muntin.digital/glossary/last-updated-signal/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Last-updated signal: Anything on your site that subtly tells a visitor "someone is still running this place" — a seasonal menu badge, a "this week's specials" block, a recent b…
 ---
 
@@ -7735,7 +8603,7 @@ title: Lazy loading
 url: https://muntin.digital/glossary/lazy-loading/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Lazy loading: A technique where images and videos further down the page don't start downloading until the visitor actually scrolls near them. Built into modern HTML via…
 ---
 
@@ -7784,7 +8652,7 @@ title: Largest Contentful Paint
 url: https://muntin.digital/glossary/lcp/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Largest Contentful Paint: How long it takes for the biggest visible chunk of your homepage — usually the hero image or the headline — to finish drawing on a phone. Under 2.5 seconds…
 ---
 
@@ -7796,7 +8664,7 @@ Skip to main content
 
 Example: An LCP above 2.5s loses an estimated 12% of mobile reservation conversions; above 4.0s the loss compounds to roughly 30%.
 
-Last verified: May 1, 2026
+Last verified: May 3, 2026
 
 LCP
 
@@ -7837,7 +8705,7 @@ title: Lighthouse
 url: https://muntin.digital/glossary/lighthouse/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Lighthouse: The open-source auditing tool Google ships inside Chrome and inside PageSpeed Insights. It simulates a mobile page load and scores your site across perform…
 ---
 
@@ -7847,7 +8715,7 @@ Skip to main content
 
 # Lighthouse
 
-Last verified: May 1, 2026
+Last verified: May 3, 2026
 
 Google's audit engine
 
@@ -7888,7 +8756,7 @@ title: Logo lockup
 url: https://muntin.digital/glossary/logo-lockup/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Logo lockup: A fixed composition of a mark, a wordmark, and sometimes a tagline, designed as one asset — spacing, alignment, and proportions locked in. The lockup is th…
 ---
 
@@ -7937,7 +8805,7 @@ title: Margin
 url: https://muntin.digital/glossary/margin/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Margin: Sales minus costs. Gross margin = sales − food cost. Contribution margin = sales − variable costs (food + hourly labor + card fees). Operating margin = sal…
 ---
 
@@ -7986,7 +8854,7 @@ title: Margin Math
 url: https://muntin.digital/glossary/margin-math/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Margin Math: Four browser-side calculators — Delivery Break-Even, Prime Cost Check, Break-Even Covers, Price-Raise Simulator — plus a printable Monthly Margin Report, s…
 ---
 
@@ -8035,7 +8903,7 @@ title: Menu copy
 url: https://muntin.digital/glossary/menu-copy/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Menu copy: The words next to each item — the descriptive sentence, the dish name, the price as it appears on the page — viewed as a separate craft from the cooking it…
 ---
 
@@ -8084,7 +8952,7 @@ title: Menu engineering
 url: https://muntin.digital/glossary/menu-engineering/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Menu engineering: A 50-year-old restaurant analysis (Kasavana & Smith, 1990) that plots every menu item on a 2×2 of contribution margin (\$ per sale) against menu-mix share…
 ---
 
@@ -8135,7 +9003,7 @@ title: Menu mix
 url: https://muntin.digital/glossary/menu-mix/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Menu mix: For each item: units sold divided by total units sold across the menu in the same period. The denominator that turns a raw sales count into a velocity figu…
 ---
 
@@ -8184,7 +9052,7 @@ title: Meta description
 url: https://muntin.digital/glossary/meta-description/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Meta description: The short paragraph of text Google shows underneath the blue headline in a search result. Set in the HTML with <meta name="description" content="…">. Rough…
 ---
 
@@ -8282,7 +9150,7 @@ title: Mobile-first indexing
 url: https://muntin.digital/glossary/mobile-first-indexing/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Mobile-first indexing: Google's rule, in effect since 2019, that it only looks at the mobile version of your site when deciding how to rank it. Whatever your desktop site does we…
 ---
 
@@ -8329,7 +9197,7 @@ title: Monochromatic palette
 url: https://muntin.digital/glossary/monochromatic-palette/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Monochromatic palette: A palette built from a single hue rendered at multiple lightness levels — a deep navy paired with a mid-blue, a pale ice, and a near-white tint of the same…
 ---
 
@@ -8378,7 +9246,7 @@ title: Monochrome variant
 url: https://muntin.digital/glossary/monochrome-variant/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Monochrome variant: A single-color version of a logo, usually pure black and pure white (and occasionally a single brand color), designed for contexts where full color isn't r…
 ---
 
@@ -8427,7 +9295,7 @@ title: NAP consistency
 url: https://muntin.digital/glossary/nap-consistency/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T21:13:46+00:00
 description: NAP consistency: Your business name, address, and phone number written identically across your website, Google Business Profile, Yelp, Apple Maps, Facebook, and every other…
 ---
 
@@ -8476,7 +9344,7 @@ title: Newsletter capture
 url: https://muntin.digital/glossary/newsletter-capture/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Newsletter capture: A simple form on your site that collects an email address in exchange for an actual reason to give it — "first to know about the spring menu," "event invit…
 ---
 
@@ -8525,7 +9393,7 @@ title: OKLab
 url: https://muntin.digital/glossary/oklab/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: OKLab: A color space designed so that mathematical distance between two colors matches the perceived difference a human reader sees. Plain RGB does not have this…
 ---
 
@@ -8574,7 +9442,7 @@ title: Online ordering link
 url: https://muntin.digital/glossary/online-ordering/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Online ordering link: A button on your menu page that links directly to your pickup or delivery checkout — not a landing page, not an interstitial. Either a handoff to your POS…
 ---
 
@@ -8623,7 +9491,7 @@ title: Open Graph
 url: https://muntin.digital/glossary/open-graph/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Open Graph: A set of meta tags that tell Facebook, Instagram, LinkedIn, iMessage, and Slack how to preview your link when someone pastes it — which image to show, whic…
 ---
 
@@ -8673,7 +9541,7 @@ title: OpeningHoursSpecification
 url: https://muntin.digital/glossary/opening-hours-specification/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: OpeningHoursSpecification: A specific Schema.org structured-data type for representing when a place is open. Lives inside a Restaurant JSON-LD block as one or more entries with dayOf…
 ---
 
@@ -8685,7 +9553,7 @@ Skip to main content
 
 Example: A diner with valid OpeningHoursSpecification + holiday overrides shows the correct 'Closed Christmas Day' notice in Google's panel — without it, hungry holiday-eve searches see stale hours.
 
-Last verified: May 1, 2026
+Last verified: May 3, 2026
 
 the Schema.org type Google reads to render your hours in search results
 
@@ -8726,7 +9594,7 @@ title: Owned channel
 url: https://muntin.digital/glossary/owned-channel/
 kind: glossary
 locale: en
-date: 2026-05-02T15:00:47+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Owned channel: Any customer relationship, ordering path, or data stream you control end-to-end — your website, your direct-ordering link, your email list, your phone, yo…
 ---
 
@@ -8773,7 +9641,7 @@ title: PageSpeed Insights
 url: https://muntin.digital/glossary/pagespeed-insights/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: PageSpeed Insights: Google's free web tool at pagespeed.web.dev that runs a Lighthouse audit on any URL and shows you your Core Web Vitals plus a prioritized list of fixes. Bu…
 ---
 
@@ -8783,7 +9651,7 @@ Skip to main content
 
 # PageSpeed Insights
 
-Last verified: May 1, 2026
+Last verified: May 3, 2026
 
 PSI, pagespeed.web.dev
 
@@ -8824,7 +9692,7 @@ title: Photo brief
 url: https://muntin.digital/glossary/photo-brief/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Photo brief: A structured shot list a restaurant owner hands to a photographer at the start of a session: which dishes get shot, where each shot is destined to publish…
 ---
 
@@ -8873,7 +9741,7 @@ title: PII
 url: https://muntin.digital/glossary/pii/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: PII: Personally Identifiable Information — any data that can identify a specific person on its own or in combination with oth…
 ---
 
@@ -8912,7 +9780,7 @@ title: Plate cost
 url: https://muntin.digital/glossary/plate-cost/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Plate cost: What it costs you in ingredients to send one plate of a dish to the pass, after trim, peel, bone, and shrink. Computed per ingredient as edible-portion cos…
 ---
 
@@ -8961,7 +9829,7 @@ title: Prime cost
 url: https://muntin.digital/glossary/prime-cost/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T21:13:46+00:00
 description: Prime cost: Your food cost plus your labor cost, expressed as a percentage of sales. Healthy independents land between 55–65%; above 70% is operationally unsustainable…
 ---
 
@@ -9012,7 +9880,7 @@ title: Privacy policy
 url: https://muntin.digital/glossary/privacy-policy/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Privacy policy: A page on your site (usually at /privacy) that plainly states what information you collect from visitors, what you use it for, and how you keep it safe. Le…
 ---
 
@@ -9059,7 +9927,7 @@ title: Professional email
 url: https://muntin.digital/glossary/professional-email/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Professional email: Email that runs on your own domain (hello@rowhousegarden.com) rather than a free Gmail or Yahoo address. Usually $6–$12/month per mailbox through Google Wo…
 ---
 
@@ -9108,7 +9976,7 @@ title: Real photos
 url: https://muntin.digital/glossary/real-photos/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Real photos: Photographs of your space, your food, and your team — not royalty-free stock images licensed from an agency.
 ---
 
@@ -9158,7 +10026,7 @@ title: Reservation link
 url: https://muntin.digital/glossary/reservation-link/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Reservation link: A persistent link — in the nav, in the hero, and in the mobile footer — that starts a reservation flow. Ideally wired to whichever platform your hostess st…
 ---
 
@@ -9207,7 +10075,7 @@ title: Responsive design
 url: https://muntin.digital/glossary/responsive-design/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Responsive design: A design approach where the same page automatically rearranges itself to fit whatever screen it lands on — phone, tablet, desktop — without a separate mobi…
 ---
 
@@ -9325,7 +10193,7 @@ title: Rich results
 url: https://muntin.digital/glossary/rich-results/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Rich results: Enhanced Google search results that show more than a plain blue link — star ratings, hours, prices, FAQ dropdowns, image carousels. Unlocked by having the…
 ---
 
@@ -9374,7 +10242,7 @@ title: robots.txt
 url: https://muntin.digital/glossary/robots-txt/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: robots.txt: A tiny plain-text file at /robots.txt on your domain that tells search-engine crawlers which parts of your site they can and can't read. Usually a five-lin…
 ---
 
@@ -9421,7 +10289,7 @@ title: Schema markup
 url: https://muntin.digital/glossary/schema/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Schema markup: Invisible tags on your page that spell out, in a format Google can read directly, exactly what kind of business you are — "I'm a Restaurant, here's my cuis…
 ---
 
@@ -9470,7 +10338,7 @@ title: Google Search Console
 url: https://muntin.digital/glossary/search-console/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Google Search Console: The free Google dashboard that shows you which search terms people used to find your site, which pages they landed on, and whether Google has any indexing…
 ---
 
@@ -9482,7 +10350,7 @@ Skip to main content
 
 Example: A pizzeria's Search Console shows 12,400 impressions/month for 'pizza near me' but a 0.4% CTR — the meta description is the leverage, not the rank.
 
-Last verified: May 1, 2026
+Last verified: May 3, 2026
 
 GSC
 
@@ -9523,7 +10391,7 @@ title: Sensory adjective
 url: https://muntin.digital/glossary/sensory-adjective/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Sensory adjective: A modifier in a menu description that names a perceptual quality of the dish — flavor (smoky, briny, tangy), texture (crispy, silky, chewy), temperature (c…
 ---
 
@@ -9620,7 +10488,7 @@ title: Social proof
 url: https://muntin.digital/glossary/social-proof/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Social proof: A quote, star rating, or press mention surfaced on your homepage — ideally in or near the hero, not buried on a Testimonials page — that tells a first-time…
 ---
 
@@ -9669,7 +10537,7 @@ title: Special hours
 url: https://muntin.digital/glossary/special-hours/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T21:13:46+00:00
 description: Special hours: A separate entity in Google's data model from regular hours: per-date overrides for holidays, private events, weather closures, and modified-hours days (ea…
 ---
 
@@ -9718,7 +10586,7 @@ title: SSL certificate
 url: https://muntin.digital/glossary/ssl-certificate/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: SSL certificate: A small file your web server uses to prove it's really you and to encrypt the connection to a visitor's browser. HTTPS is the result; the SSL (or more prop…
 ---
 
@@ -9767,7 +10635,7 @@ title: Sticky mobile footer
 url: https://muntin.digital/glossary/sticky-footer/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Sticky mobile footer: A thin bar pinned to the bottom of every mobile page holding one or two of your most important actions — usually Call, Reserve, or Order. Stays visible eve…
 ---
 
@@ -9816,7 +10684,7 @@ title: Structured data
 url: https://muntin.digital/glossary/structured-data/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Structured data: A small JSON block embedded in your website's <head> that mirrors the human-facing content (hours, address, menu items, reviews, prices) in a format search…
 ---
 
@@ -9865,7 +10733,7 @@ title: Bakery / pâtisserie
 url: https://muntin.digital/glossary/subtype-bakery/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Bakery / pâtisserie: Bakeries, patisseries, and dessert shops where custom-cake intake and wholesale accounts are the margin engine beneath the walk-in counter. Schema: Bakery,…
 ---
 
@@ -9915,7 +10783,7 @@ title: Bar / pub / brewery
 url: https://muntin.digital/glossary/subtype-bar-pub/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Bar / pub / brewery: Bars, pubs, taprooms, breweries, wine bars, cocktail rooms — drink-led spots where private-party events and happy-hour clarity drive conversion. Schema: Ba…
 ---
 
@@ -9965,7 +10833,7 @@ title: Café / coffee shop
 url: https://muntin.digital/glossary/subtype-cafe/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Café / coffee shop: Coffee-led spots where morning traffic is 80% of revenue and the two most-read pieces of content are hours and location. Schema: CafeOrCoffeeShop.
 ---
 
@@ -10015,7 +10883,7 @@ title: Casual / full-service
 url: https://muntin.digital/glossary/subtype-casual-dining/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Casual / full-service: Sit-down restaurants that live in both worlds — reservations for dinner rushes, online ordering for lunch takeout. Neighborhood spots, family-friendly room…
 ---
 
@@ -10065,7 +10933,7 @@ title: Catering-only / private events
 url: https://muntin.digital/glossary/subtype-catering-only/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Catering-only / private events: Businesses that exist primarily to serve off-premise events — corporate catering, wedding catering, private-chef work, drop-off catering, pop-up dinners. S…
 ---
 
@@ -10115,7 +10983,7 @@ title: Fast-casual / quick-service
 url: https://muntin.digital/glossary/subtype-fast-casual/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Fast-casual / quick-service: Counter-service restaurants where online ordering IS the business model. Every order through DoorDash/Grubhub costs 20-30% commission; every order through…
 ---
 
@@ -10165,7 +11033,7 @@ title: Fine-dining
 url: https://muntin.digital/glossary/subtype-fine-dining/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Fine-dining: Tasting-menu or prix-fixe restaurants where the reservation is the conversion, the wine list is marketing, and OpenTable/Resy/Tock integration defines the…
 ---
 
@@ -10215,7 +11083,7 @@ title: Food truck / pop-up
 url: https://muntin.digital/glossary/subtype-food-truck/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Food truck / pop-up: Mobile kitchens and pop-ups where the primary content question is "where are you today?" — and static storefront maps are worse than no map at all. Schema:…
 ---
 
@@ -10265,7 +11133,7 @@ title: Ghost kitchen / delivery-only
 url: https://muntin.digital/glossary/subtype-ghost-kitchen/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Ghost kitchen / delivery-only: Virtual brands and cloud kitchens that operate exclusively through aggregators — no dine-in, no pickup window, customers never visit. Schema: Restaurant, F…
 ---
 
@@ -10315,7 +11183,7 @@ title: Pizzeria
 url: https://muntin.digital/glossary/subtype-pizzeria/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Pizzeria: Pizza-first restaurants where ordering IS the business and every Slice/DoorDash/Grubhub pie costs 20-30% in commission. Schema: Restaurant, FastFoodRestaur…
 ---
 
@@ -10408,7 +11276,7 @@ title: Tap targets
 url: https://muntin.digital/glossary/tap-targets/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Tap targets: Any clickable element — button, link, menu item — that a finger taps on a phone. Google and Apple both recommend a minimum 44×44-pixel tap area with space…
 ---
 
@@ -10457,7 +11325,7 @@ title: Terms of Service
 url: https://muntin.digital/glossary/terms-of-service/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Terms of Service: A page covering the rules of using your site — reservation cancellation policy, gift-card terms, any disputes. Less strictly required than a privacy policy…
 ---
 
@@ -10506,7 +11374,7 @@ title: Third-party marketplace
 url: https://muntin.digital/glossary/third-party-marketplace/
 kind: glossary
 locale: en
-date: 2026-05-02T15:00:47+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Third-party marketplace: A platform that sits between you and your customer — DoorDash, Uber Eats, Grubhub, Yelp, OpenTable, Google’s Find a Table. They route demand, take a…
 ---
 
@@ -10553,7 +11421,7 @@ title: Title tag
 url: https://muntin.digital/glossary/title-tag/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Title tag: The line of text that shows up as the clickable blue headline of your page in Google search results, and as the name of the tab in a browser. Set in the HT…
 ---
 
@@ -10649,7 +11517,7 @@ title: Time to First Byte
 url: https://muntin.digital/glossary/ttfb/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Time to First Byte: How long it takes your web server to send the very first byte of a page after a visitor requests it. Measured in milliseconds. Under 200ms is good, over 60…
 ---
 
@@ -10659,7 +11527,7 @@ Skip to main content
 
 # Time to First Byte
 
-Last verified: May 1, 2026
+Last verified: May 3, 2026
 
 TTFB, server response time
 
@@ -10700,7 +11568,7 @@ title: Typography pairing
 url: https://muntin.digital/glossary/typography-pairing/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Typography pairing: The combination of a display typeface (used for headings and signage) and a body typeface (used for long-form reading) that together carry a brand's tone.…
 ---
 
@@ -10749,7 +11617,7 @@ title: URL fragment
 url: https://muntin.digital/glossary/url-fragment/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: URL fragment: The portion of a URL that comes after the # symbol (sometimes called the "hash"). Per HTTP specification, browsers never transmit fragments to servers — th…
 ---
 
@@ -10790,7 +11658,7 @@ title: URL fragment vs. query
 url: https://muntin.digital/glossary/url-fragment-vs-query/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: URL fragment vs. query: In a URL, the part after <code>?</code> is the query (sent to the server with every request). The part after <code>#</co…
 ---
 
@@ -10829,7 +11697,7 @@ title: Variable costs
 url: https://muntin.digital/glossary/variable-costs/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T21:13:46+00:00
 description: Variable costs: Costs that scale with sales volume: food ingredients, hourly labor (cooks, servers, bussers, dishwashers), credit-card processing, aggregator commissions,…
 ---
 
@@ -10878,7 +11746,7 @@ title: Viewport meta tag
 url: https://muntin.digital/glossary/viewport-meta/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Viewport meta tag: A single line of code in the <head> of every page (<meta name="viewport" content="width=device-width, initial-scale=1">) that tells phones "render this pag…
 ---
 
@@ -10925,7 +11793,7 @@ title: WCAG AA contrast
 url: https://muntin.digital/glossary/wcag-contrast/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: WCAG AA contrast: A readability standard, defined by the Web Content Accessibility Guidelines (WCAG), that requires body text to contrast at least 4.5:1 against its backgrou…
 ---
 
@@ -10975,7 +11843,7 @@ title: Working contact form
 url: https://muntin.digital/glossary/working-contact-form/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T15:33:24-04:00
 description: Working contact form: A form where a visitor can type a question or an inquiry and actually get a response. "Working" is the important word — the form sends, the email arrives i…
 ---
 
@@ -11022,7 +11890,7 @@ title: Yield percent
 url: https://muntin.digital/glossary/yield-percent/
 kind: glossary
 locale: en
-date: 2026-05-01T01:16:34+00:00
+date: 2026-05-03T21:13:46+00:00
 description: Yield percent: For a given ingredient: the percentage of as-purchased weight that survives trim, peel, bone, fat, and cooking shrinkage. Romaine yields about 75%; a whole…
 ---
 
