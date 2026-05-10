@@ -462,6 +462,18 @@ export async function getNowMeta(env) {
 export async function setNowMeta(env, payload) {
   const validPrivacy = ['precise', 'fuzz', 'private'];
   const cap = (s) => (typeof s === 'string' ? s.slice(0, NOW_TEXT_MAX) : '');
+  // Phase 4 audit (Issue 1.3 MED): validate the timezone via the
+  // Intl constructor — accepts "America/New_York", rejects "junk-tz"
+  // and 200-char attacker payloads. Today this is defense-in-depth
+  // (isLatePrecisionBlackout already fails-safe), but a future surface
+  // may not. Fail to default on invalid input.
+  let timezone = NOW_DEFAULT_TIMEZONE;
+  if (typeof payload.timezone === 'string') {
+    try {
+      new Intl.DateTimeFormat('en-US', { timeZone: payload.timezone });
+      timezone = payload.timezone;
+    } catch (_) { /* invalid — fall back to default */ }
+  }
   const next = {
     privacy: validPrivacy.indexOf(payload && payload.privacy) >= 0 ? payload.privacy : 'fuzz',
     preciseText:   cap(payload.preciseText),
@@ -469,7 +481,7 @@ export async function setNowMeta(env, payload) {
     fuzzText:      cap(payload.fuzzText),
     fuzzTextEs:    cap(payload.fuzzTextEs),
     shift: typeof payload.shift === 'string' ? payload.shift.slice(0, 40) : null,
-    timezone: typeof payload.timezone === 'string' ? payload.timezone : NOW_DEFAULT_TIMEZONE,
+    timezone,
     updatedAt: Date.now(),
     lastSeen: Number.isFinite(payload && payload.lastSeen) ? payload.lastSeen : Date.now(),
   };
@@ -511,7 +523,11 @@ export function isLatePrecisionBlackout(timezone) {
 export function resolveNowForVisitor(now, locale) {
   if (!now) return null;
   if (now.privacy === 'private') return null;
-  if (now.updatedAt && Date.now() - now.updatedAt > NOW_STALENESS_MS) return null;
+  // Phase 4 audit (Issue 1.1 LOW): treat missing/zero updatedAt as
+  // STALE (hide). Previously short-circuited on falsy and skipped
+  // the staleness gate, which was the wrong fail direction for a
+  // privacy-relevant freshness check.
+  if (!now.updatedAt || Date.now() - now.updatedAt > NOW_STALENESS_MS) return null;
   let mode = now.privacy === 'precise' ? 'precise' : 'fuzz';
   if (mode === 'precise' && isLatePrecisionBlackout(now.timezone)) {
     mode = 'fuzz';
@@ -519,7 +535,23 @@ export function resolveNowForVisitor(now, locale) {
   const isEs = locale === 'es';
   const fuzz = isEs ? (now.fuzzTextEs || now.fuzzText || '') : (now.fuzzText || '');
   const precise = isEs ? (now.preciseTextEs || now.preciseText || '') : (now.preciseText || '');
-  const text = mode === 'precise' ? (precise || fuzz) : fuzz;
+  // Phase 4 audit (Issue 1.2 LOW): if precise mode has no precise
+  // text (admin set privacy=precise but left preciseText empty),
+  // downgrade mode to 'fuzz' so the styling matches the actual
+  // content (avoids surfacing fuzz text with the precise teal
+  // underline-mark). Server-side admin validation also blocks this
+  // state, but defense-in-depth at read time too.
+  let text;
+  if (mode === 'precise') {
+    if (precise) {
+      text = precise;
+    } else {
+      mode = 'fuzz';
+      text = fuzz;
+    }
+  } else {
+    text = fuzz;
+  }
   if (!text) return null;
   return {
     text,

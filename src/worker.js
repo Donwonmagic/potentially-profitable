@@ -7463,6 +7463,22 @@ async function handleWindowNow(request, env, ctx) {
   }, 200);
 }
 
+// Phase 4 audit (Issue 3.1 HIGH) — tag-stripping validator for the
+// /now/ text fields. The visitor surface renders these via
+// textContent, so we do NOT entity-escape (sanitizeWindowBody does,
+// which would surface `Rosa&#39;s place` literally). Strip <tags>,
+// drop control chars, slice, trim. textContent prevents
+// script-injection at read time regardless of what's stored.
+function _sanitizeNowText(s) {
+  if (typeof s !== 'string') return '';
+  return s
+    .replace(/<[^>]*>/g, '')
+    // eslint-disable-next-line no-control-regex
+    .replace(/[\x00-\x1F\x7F]/g, '')
+    .slice(0, 200)
+    .trim();
+}
+
 // Phase 4 — admin endpoint for the /now/ widget. GET returns the
 // raw row (privacy text in BOTH modes — admin can see what's
 // queued for precise vs fuzz). POST writes a new row.
@@ -7503,15 +7519,34 @@ async function handleAdminWindowNow(request, env, ctx) {
   if (['precise', 'fuzz', 'private'].indexOf(privacy) === -1) {
     return jsonResponse({ ok: false, error: 'invalid-privacy' }, 400);
   }
-  // Validate text bodies — sanitize like other operator strings to
-  // avoid script tags slipping into the visitor-facing line. The
-  // resolver caps at NOW_TEXT_MAX (200), this just normalizes.
-  const fuzzText      = sanitizeWindowBody(body.fuzzText || '');
-  const fuzzTextEs    = sanitizeWindowBody(body.fuzzTextEs || '');
-  const preciseText   = sanitizeWindowBody(body.preciseText || '');
-  const preciseTextEs = sanitizeWindowBody(body.preciseTextEs || '');
+  // Phase 4 audit (Issue 2.1 LOW): validate the shift field against
+  // the documented enum. Admin <select> already constrains it, but a
+  // raw POST could store arbitrary 40-char strings that future surfaces
+  // might trust.
+  const shift = typeof body.shift === 'string' ? body.shift : '';
+  if (['', 'around', 'between-shifts', 'away'].indexOf(shift) === -1) {
+    return jsonResponse({ ok: false, error: 'invalid-shift' }, 400);
+  }
+  // Phase 4 audit (Issue 3.1 HIGH): the now text fields render via
+  // textContent on the visitor surface, so sanitizeWindowBody (which
+  // ENTITY-ESCAPES at write time) would produce literal `&#39;` etc.
+  // in the DOM the first time Don types a possessive or quote. Use a
+  // local tag-stripping validator that does NOT escape — textContent
+  // makes script-injection impossible at read time, so the stored
+  // value can stay human-readable.
+  const fuzzText      = _sanitizeNowText(body.fuzzText || '');
+  const fuzzTextEs    = _sanitizeNowText(body.fuzzTextEs || '');
+  const preciseText   = _sanitizeNowText(body.preciseText || '');
+  const preciseTextEs = _sanitizeNowText(body.preciseTextEs || '');
   if (privacy !== 'private' && !fuzzText) {
     return jsonResponse({ ok: false, error: 'fuzz-required' }, 400);
+  }
+  // Phase 4 audit (Issue 1.2 LOW): require non-empty preciseText when
+  // privacy is 'precise' — otherwise the resolver silently falls back
+  // to fuzz with the precise underline-mark (visual lie). Mirrors the
+  // fuzz-required check above.
+  if (privacy === 'precise' && !preciseText) {
+    return jsonResponse({ ok: false, error: 'precise-required' }, 400);
   }
   const next = await setWindowNowMeta(env, {
     privacy,
@@ -7519,7 +7554,7 @@ async function handleAdminWindowNow(request, env, ctx) {
     fuzzTextEs,
     preciseText,
     preciseTextEs,
-    shift: body.shift || null,
+    shift: shift || null,
     timezone: body.timezone || undefined,
   });
   console.log(JSON.stringify({
