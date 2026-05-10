@@ -537,6 +537,126 @@ export async function stampVoiceDaily(env, suffix, addedMs) {
   await env.AUTH_SESSIONS.put(_voiceDailyKey(suffix), JSON.stringify(row), { expirationTtl: 48 * 3600 });
 }
 
+// ─────────────────────────────────────────────────────────────────
+// Phase 3.4 — async voicenote callback request.
+//
+// Operator submits {phone, windowSlot} (slot = 'tomorrow-morning' |
+// 'tomorrow-midday' | etc — not free-form time strings, to keep
+// validation tight and to match the plan §5.3 chip vocabulary).
+// Optional attachId points to a voice memo recorded as part of the
+// request. Worker stores the row + appends a 'don' auto-confirmation
+// message into the thread so the visitor sees acknowledgement
+// without waiting for Don's actual reply.
+//
+// Phase 3.4 is the SHIM — it records the request only. No live
+// Twilio call is dispatched; Don sees the request in admin and
+// either calls back asynchronously (replying with his own voicenote)
+// or escalates to a live call (Phase 5+ Care-Plan-only path).
+//
+// Plan §4.5 + operations review's recommendation.
+
+export const CALLBACK_KEY_PREFIX = 'window:callback:';
+
+const CALLBACK_WINDOWS = {
+  // Map of slot key → human-readable EN/ES labels. The label is
+  // what the auto-confirmation thread message renders. The slot
+  // itself (the key) is what gets stored in KV.
+  'tomorrow-morning':  { en: 'tomorrow morning (8–11am)',     es: 'mañana en la mañana (8–11am)' },
+  'tomorrow-midday':   { en: 'tomorrow midday (11am–1pm)',   es: 'mañana al mediodía (11am–1pm)' },
+  'tomorrow-afternoon':{ en: 'tomorrow afternoon (2–4pm)',    es: 'mañana en la tarde (2–4pm)' },
+  'tomorrow-evening':  { en: 'tomorrow evening (5–7pm)',      es: 'mañana en la noche (5–7pm)' },
+  'this-week':         { en: 'sometime this week',            es: 'en algún momento esta semana' },
+  'next-week':         { en: 'sometime next week',            es: 'la próxima semana' },
+};
+
+export function callbackKey(threadId, callbackId) {
+  return CALLBACK_KEY_PREFIX + threadId + ':' + callbackId;
+}
+
+// Validate a slot key against the allowlist. Returns the slot when
+// valid, null otherwise. The label lookup is locale-aware — falls
+// back to EN if the locale entry is missing.
+export function getCallbackSlotLabel(slotKey, locale) {
+  const slot = CALLBACK_WINDOWS[slotKey];
+  if (!slot) return null;
+  const lang = locale === 'es' ? 'es' : 'en';
+  return slot[lang] || slot.en;
+}
+
+// Normalize a phone number to E.164 best-effort. Accepts US-style
+// (10 digits, prepends +1) or international (existing + prefix).
+// Returns null if the result doesn't look like a valid E.164.
+export function normalizePhone(input) {
+  if (typeof input !== 'string') return null;
+  const trimmed = input.trim();
+  if (!trimmed) return null;
+  const hadPlus = trimmed.startsWith('+');
+  const digits = trimmed.replace(/[^\d]/g, '');
+  if (!digits) return null;
+  if (hadPlus) {
+    // International — keep digits as-is. E.164 max is 15 digits.
+    if (digits.length < 7 || digits.length > 15) return null;
+    return '+' + digits;
+  }
+  // US default: 10-digit local → +1; 11-digit starting with 1 → +1.
+  if (digits.length === 10) return '+1' + digits;
+  if (digits.length === 11 && digits[0] === '1') return '+' + digits;
+  // Anything else without a + is ambiguous — refuse.
+  return null;
+}
+
+// Mask a phone for display: last 4 digits visible, rest as ***.
+// Used for the auto-confirmation thread message + admin queue
+// (privacy: phone numbers shouldn't be cleartext in admin views
+// unless Don explicitly taps to reveal — that affordance ships
+// in Phase 3.5 admin display).
+export function maskPhone(e164) {
+  if (typeof e164 !== 'string' || e164.length < 4) return '***';
+  const last4 = e164.slice(-4);
+  return '***-***-' + last4;
+}
+
+export const mintCallbackId = mintSaveItemId;
+
+// Create a callback request row. Returns the row on success;
+// throws on KV failure.
+export async function createCallbackRequest(env, params) {
+  const callbackId = mintCallbackId();
+  const row = {
+    id: callbackId,
+    threadId: params.threadId,
+    msgId: params.msgId || null,        // links to the auto-confirmation message
+    sub: params.sub || null,
+    anonId: params.anonId || null,
+    phoneE164: params.phoneE164,         // E.164 — never logged in cleartext
+    slotKey: params.slotKey,
+    voiceAttachId: params.voiceAttachId || null,
+    locale: params.locale || 'en',
+    status: 'requested',
+    requestedAt: Date.now(),
+  };
+  await env.AUTH_SESSIONS.put(callbackKey(params.threadId, callbackId), JSON.stringify(row), {
+    // 30-day retention — Don has a month to make the call before
+    // the row expires. Phone numbers in particular shouldn't sit
+    // forever; the TTL is the primary privacy backstop.
+    expirationTtl: 30 * 24 * 60 * 60,
+  });
+  return row;
+}
+
+export async function listCallbacksForThread(env, threadId) {
+  if (!isValidSaveItemIdShape(threadId)) return [];
+  const result = await env.AUTH_SESSIONS.list({ prefix: CALLBACK_KEY_PREFIX + threadId + ':', limit: 100 });
+  const out = [];
+  for (const k of result.keys) {
+    const raw = await env.AUTH_SESSIONS.get(k.name);
+    if (!raw) continue;
+    try { out.push(JSON.parse(raw)); } catch (_) { continue; }
+  }
+  out.sort((a, b) => (a.requestedAt || 0) - (b.requestedAt || 0));
+  return out;
+}
+
 function _stripPngExif(bytes) {
   const SIG = [0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A];
   if (bytes.length < 8) return { ok: false, error: 'png-too-short' };

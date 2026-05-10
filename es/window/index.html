@@ -132,6 +132,32 @@ header.nav{min-height:64px}
 
         <p class="window-composer__crisis" id="windowCrisis" hidden role="status">Si esta noche pesa m&aacute;s que el sitio web, voy a leer esto igual &mdash; y estas personas contestan m&aacute;s r&aacute;pido que yo: <a href="tel:988">988</a> (llama o manda texto), <a href="https://chefswithissues.com/" rel="noopener" target="_blank">Chefs With Issues</a>, <a href="https://chowco.org/" rel="noopener" target="_blank">CHOW</a>.</p>
 
+        <div class="window-composer__callback" id="windowCallback" hidden aria-label="Pedir una llamada">
+          <button type="button" class="window-composer__callback-toggle" id="windowCallbackToggle" aria-expanded="false" aria-controls="windowCallbackForm">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+            </svg>
+            &iquest;Prefieres que Don te llame?
+          </button>
+          <form class="window-composer__callback-form" id="windowCallbackForm" hidden>
+            <div class="window-composer__field-pair window-composer__field-pair--full">
+              <label for="windowCallbackPhone">Un n&uacute;mero al que Don pueda llamar</label>
+              <input id="windowCallbackPhone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+1 (240) 555&#8209;1234" required>
+            </div>
+            <fieldset class="window-composer__callback-windows">
+              <legend>&iquest;Cu&aacute;ndo est&aacute;s libre?</legend>
+              <label><input type="radio" name="slot" value="tomorrow-morning" required> Ma&ntilde;ana antes de abrir (8&ndash;11am)</label>
+              <label><input type="radio" name="slot" value="tomorrow-midday"> Ma&ntilde;ana en las horas lentas (11am&ndash;1pm)</label>
+              <label><input type="radio" name="slot" value="tomorrow-afternoon"> Ma&ntilde;ana en la tarde (2&ndash;4pm)</label>
+              <label><input type="radio" name="slot" value="tomorrow-evening"> Ma&ntilde;ana en la noche (5&ndash;7pm)</label>
+              <label><input type="radio" name="slot" value="this-week"> En alg&uacute;n momento esta semana</label>
+              <label><input type="radio" name="slot" value="next-week"> La pr&oacute;xima semana est&aacute; bien</label>
+            </fieldset>
+            <button type="submit" class="btn btn-primary window-composer__callback-submit">Pedir una llamada</button>
+          </form>
+          <p class="window-composer__msg" id="windowCallbackMsg" role="status" hidden></p>
+        </div>
+
         <div class="window-composer__attach" id="windowAttach" hidden aria-label="Fotos adjuntas a esta nota">
           <button type="button" class="window-composer__photo-btn" id="windowPhotoBtn" aria-label="Agregar una foto">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -197,5 +223,6 @@ header.nav{min-height:64px}
 <script src="/assets/js/window.js?v=20260501-engagement" defer></script>
 <script src="/assets/js/window-photos.js?v=20260501-engagement" defer></script>
 <script src="/assets/js/window-voice.js?v=20260501-engagement" defer></script>
+<script src="/assets/js/window-callback.js?v=20260501-engagement" defer></script>
 </body>
 </html>

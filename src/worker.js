@@ -278,6 +278,11 @@ import {
   setAttachmentTranscript,
   checkVoiceDailyCap,
   stampVoiceDaily,
+  // Phase 3.4 — async voicenote callback shim.
+  normalizePhone,
+  maskPhone,
+  getCallbackSlotLabel,
+  createCallbackRequest,
 } from './lib/window-attachments.js';
 import { MAX_VOICE_DURATION_HARD_MS } from './lib/window.js';
 import { sanitizePlaintext as sanitizeWindowBody } from './lib/submissions.js';
@@ -376,6 +381,11 @@ const API_ROUTES = {
   // path-prefix handler above the exact-match table because of
   // the dynamic id segment.
   '/api/window/attach':              handleWindowAttachUpload,
+  // Phase 3.4 — async voicenote callback shim. Operator submits
+  // phone + window slot (+ optional voice memo attachId); worker
+  // records the request and posts an auto-confirmation thread
+  // message from "Don" so the visitor sees acknowledgement.
+  '/api/window/callback':            handleWindowCallback,
   '/api/admin/window/list':          handleAdminWindowList,
   '/api/admin/window/thread':        handleAdminWindowThread,
   '/api/admin/window/reply':         handleAdminWindowReply,
@@ -6674,6 +6684,153 @@ async function handleResendBounceWebhook(request, env, ctx) {
   }
   console.log(JSON.stringify({ event: 'window.bounce.recorded', count: recorded, type: eventType, reason }));
   return jsonResponse({ ok: true, recorded }, 200);
+}
+
+// Phase 3.4 — async voicenote callback shim. POST /api/window/callback.
+//
+// Operator submits {phone, slot, voiceAttachId?} after recording an
+// optional voice memo. Worker:
+//   1. Gates on WINDOW_CALLBACK_ENABLED + identity (sub or anonId
+//      cookie). Anon path requires a thread already (cookie present).
+//   2. Validates phone via E.164 normalization.
+//   3. Validates slot key against the allowlist.
+//   4. (Optional) verifies the voice attachId belongs to the caller.
+//   5. Creates the callback KV row.
+//   6. Posts a 'don' auto-confirmation message into the thread:
+//      "Got it. I'll call you between [slot label]. If something
+//      changes, just write back here."
+//   7. Logs window.callback.requested for ops.
+//
+// Phase 3.4 is the SHIM — no Twilio call dispatched. Don sees
+// requests in admin and replies asynchronously (with his own
+// voicenote, or a regular text note). Phase 5+ adds live calls
+// with Twilio masking for Care-Plan-only.
+async function handleWindowCallback(request, env, ctx) {
+  if (!_windowGate(env)) {
+    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  }
+  if (env.WINDOW_CALLBACK_ENABLED !== 'true' && env.WINDOW_CALLBACK_ENABLED !== true) {
+    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  }
+  if (!isOriginAllowed(request)) {
+    return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
+  }
+  if (!env || !env.AUTH_SESSIONS) {
+    return jsonResponse({ ok: false, error: 'service-unavailable' }, 503);
+  }
+
+  // Identity resolution — same shape as photo/voice upload. Anon
+  // path requires the operator already has a thread (cookie present).
+  const session = await getSessionFromRequest(request, env);
+  let sub = null;
+  let anonId = null;
+  let thread = null;
+  if (session) {
+    sub = session.payload.sub;
+    thread = await getOpenThreadForUser(env, sub);
+  } else if (_windowAnonGate(env)) {
+    anonId = _readWindowAnonCookie(request);
+    if (!anonId) {
+      return jsonResponse({ ok: false, error: 'send-first' }, 409);
+    }
+    thread = await getOpenThreadForAnon(env, anonId);
+  } else {
+    return jsonResponse({ ok: false, error: 'unauthenticated' }, 401);
+  }
+  if (!thread) {
+    return jsonResponse({ ok: false, error: 'no-thread' }, 409);
+  }
+
+  let body;
+  try { body = await parseFormBody(request); } catch (_) {
+    return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+  }
+
+  // Phone — normalize + validate via the lib helper.
+  const phoneE164 = normalizePhone(body.phone);
+  if (!phoneE164) {
+    return jsonResponse({ ok: false, error: 'invalid-phone' }, 400);
+  }
+
+  // Slot — must be in the allowlist; getCallbackSlotLabel returns
+  // null for unknown slots.
+  const slotKey = typeof body.slot === 'string' ? body.slot.trim() : '';
+  const locale = (body.locale === 'es' || thread.locale === 'es') ? 'es' : 'en';
+  const slotLabel = getCallbackSlotLabel(slotKey, locale);
+  if (!slotLabel) {
+    return jsonResponse({ ok: false, error: 'invalid-slot' }, 400);
+  }
+
+  // Optional voice attachment ownership check.
+  const voiceAttachId = typeof body.voiceAttachId === 'string' && body.voiceAttachId.trim()
+    ? body.voiceAttachId.trim()
+    : null;
+  if (voiceAttachId) {
+    if (!isValidSaveItemIdShape(voiceAttachId)) {
+      return jsonResponse({ ok: false, error: 'invalid-attach-id' }, 400);
+    }
+    const attachRow = await getAttachmentRow(env, voiceAttachId);
+    if (!attachRow || attachRow.kind !== 'voice') {
+      return jsonResponse({ ok: false, error: 'attach-not-found' }, 404);
+    }
+    // Ownership: caller must match the attach row's owner.
+    if (sub && attachRow.sub !== sub) return jsonResponse({ ok: false, error: 'attach-not-yours' }, 403);
+    if (anonId && attachRow.anonId !== anonId) return jsonResponse({ ok: false, error: 'attach-not-yours' }, 403);
+  }
+
+  // Append the auto-confirmation message into the thread BEFORE
+  // creating the callback row, so the row's msgId points at a
+  // real message. The message reads from Don's voice.
+  const masked = maskPhone(phoneE164);
+  const confirmation = locale === 'es'
+    ? 'Listo. Te llamo al ' + masked + ' ' + slotLabel + '. Si algo cambia, escríbeme aquí.'
+    : "Got it. I'll call " + masked + ' ' + slotLabel + '. If something changes, just write back here.';
+
+  const appendResult = thread.kind === 'anon'
+    ? await appendMessageToAnonThread(env, anonId, thread, 'don', confirmation)
+    : await appendMessageToThread(env, sub, thread, 'don', confirmation);
+  if (!appendResult.ok) {
+    return jsonResponse({ ok: false, ...appendResult }, 500);
+  }
+
+  // Now create the callback row, linking to the auto-message.
+  let callbackRow;
+  try {
+    callbackRow = await createCallbackRequest(env, {
+      threadId: thread.id,
+      msgId: appendResult.msg.id,
+      sub,
+      anonId,
+      phoneE164,
+      slotKey,
+      voiceAttachId,
+      locale,
+    });
+  } catch (err) {
+    console.warn('[window] callback row create failed', { threadId: thread.id, err: err && err.message });
+    return jsonResponse({ ok: false, error: 'storage-failed' }, 500);
+  }
+
+  console.log(JSON.stringify({
+    event: 'window.callback.requested',
+    callbackId: callbackRow.id,
+    threadId: thread.id,
+    msgId: appendResult.msg.id,
+    slotKey,
+    sub: sub ? sub.slice(0, 8) : null,
+    anonId: anonId ? anonId.slice(0, 8) : null,
+    // Don't log the full E.164 — last-4 only.
+    phoneLast4: phoneE164.slice(-4),
+    voiceAttachId: voiceAttachId || null,
+  }));
+
+  return jsonResponse({
+    ok: true,
+    callbackId: callbackRow.id,
+    threadId: thread.id,
+    msgId: appendResult.msg.id,
+    slotLabel,
+  }, 200);
 }
 
 // Phase 3.2 — photo upload. POST /api/window/attach (multipart).

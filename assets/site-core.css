@@ -2781,6 +2781,21 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
    for the absolute "Don —" caption since the caption was removed). */
 .sash--bottom .window-composer__field{padding-left:14px}
 
+/* ===== [core] Window Phase 3.4 — async voicenote callback =====
+   "Want me to call back?" chip + collapsible form. Sits below the
+   crisis line, above the photo-attach row. Hidden by default;
+   revealed by JS when WINDOW_CALLBACK_ENABLED is on. */
+.window-composer__callback{margin:10px 0 0}
+.window-composer__callback-toggle{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border:1px solid var(--line-dark);background:var(--white);color:var(--ink-soft);border-radius:999px;font-size:13px;font-weight:500;cursor:pointer}
+.window-composer__callback-toggle:hover,.window-composer__callback-toggle:focus-visible{border-color:var(--teal);color:var(--teal)}
+.window-composer__callback-toggle[aria-expanded="true"]{background:var(--teal-tint);color:var(--teal);border-color:var(--teal)}
+.window-composer__callback-form{margin:12px 0 0;padding:14px 16px;background:var(--cream-2);border:1px solid var(--line);border-radius:var(--r-input);display:flex;flex-direction:column;gap:14px}
+.window-composer__callback-windows{border:0;padding:0;margin:0;display:flex;flex-direction:column;gap:6px}
+.window-composer__callback-windows legend{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:4px;padding:0}
+.window-composer__callback-windows label{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--ink-soft);cursor:pointer;padding:4px 0}
+.window-composer__callback-windows label:hover,.window-composer__callback-windows label:focus-within{color:var(--ink)}
+.window-composer__callback-submit{align-self:flex-start}
+
 /* ===== [core] Window Phase 3.2 — photo attachment row =====
    Sits between the textarea and the submit row. Hidden by default;
    revealed by JS when WINDOW_PHOTO_ENABLED is on. */

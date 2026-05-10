@@ -637,6 +637,13 @@
   // Phase-2 redesign — boot the optional context fields.
   loadContextFromStorage();
 
+  // Phase 3.4 — listen for satellite scripts (window-callback.js,
+  // future window-now.js) that mutate the thread on the server and
+  // need the visitor's view to re-render without a manual refresh.
+  window.addEventListener('muntin:window-thread-changed', function () {
+    loadThread();
+  });
+
   // Phase 2 audit followup — fire Window Claimed when the operator
   // arrives via Don's reply-email magic link (handleAuthVerify
   // redirects to /window/?claimed=1 on success). Plan §9.6.
