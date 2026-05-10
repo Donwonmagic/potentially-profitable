@@ -64,9 +64,25 @@ const NON_DEFAULT_LOCALES = LOCALES.filter((l) => l !== 'en');
 // left alone.
 const FOOTER_MAIN_FUNNEL_MARKER = 'id="foot-learn"';
 
-// The nav block: <header class="nav" id="nav">...</header>.
-// Single occurrence per page; anchored by the unique id.
-const NAV_RE = /<header class="nav" id="nav">[\s\S]*?<\/header>/;
+// The nav block: <header class="nav" id="nav">...</header>, plus any
+// leading copies of the platform-detection <script> that lives at the
+// top of _includes/nav.html. Without consuming those leading scripts,
+// every sync APPENDED another copy onto the page (the partial's leading
+// script became "extra preceding content" not reached by the regex,
+// while a fresh copy got injected in front of the new header). Pages
+// accumulated up to 10 duplicates by the time the bug surfaced
+// (May 2026) — same class of bug the FOOTER_RE comment below documents
+// for trailing scripts.
+//
+// The leading-script sub-pattern is anchored on the EXACT opening of
+// the partial's script body: `<script>` (bare, no attributes) followed
+// by whitespace and the literal `/* Platform-aware kbd hint`. That
+// keeps the lazy `[\s\S]*?` confined to a single <script> tag — earlier
+// versions used `<script\b[^>]*>...?Platform-aware kbd hint...?</script>`,
+// which spanned multiple <script> boundaries and on pages with inline
+// JSON-LD before the nav (every blog post) ATE the JSON-LD too. Don't
+// loosen this anchor without re-checking blog/an-honest-doordash-math-…
+const NAV_RE = /(?:<script>\s*\/\* Platform-aware kbd hint[\s\S]*?<\/script>\s*)*<header class="nav" id="nav">[\s\S]*?<\/header>/;
 
 // The site footer: <footer> that contains <div class="foot-grid">,
 // plus any trailing canonical script tags (first-touch, save-next-time,
