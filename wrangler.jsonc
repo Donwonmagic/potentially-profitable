@@ -235,6 +235,13 @@
     "WINDOW_PHOTO_ENABLED":    "false",
     "WINDOW_VOICE_ENABLED":    "false",
     "WINDOW_CALLBACK_ENABLED": "false",
+    // Phase 4 — /now/ operator presence widget on /window/ only.
+    // Three-tier privacy (precise / fuzz / private), 14-day staleness
+    // hides the widget entirely, precise mode is hard-downgraded to
+    // fuzz between 21:00-06:00 local (stalker safety). Admin sets the
+    // row via /api/admin/window/now. Flag ships dark; flip after the
+    // first row lands. See docs/window-redesign-plan.md §4.4 + §11.4.
+    "WINDOW_NOW_ENABLED":      "false",
     // Phase G.11 (Growth) — lifecycle email dispatcher feature flag.
     // When "true", the cron tick iterates sub:<hash> records and
     // dispatches welcome/nudge/digest emails per state machine.

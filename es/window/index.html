@@ -90,6 +90,12 @@ header.nav{min-height:64px}
     <div class="transom" aria-hidden="true"></div>
 
     <header class="sash--top">
+      <!-- Fase 4 — l&iacute;nea /now/. Oculta por defecto; la rellena JS
+           v&iacute;a /api/window/now cuando WINDOW_NOW_ENABLED est&aacute; activo
+           y la fila es fresca (<14d) y privacidad &ne; 'private'.
+           Cuando se muestra, la l&iacute;nea de operaci&oacute;n de abajo se
+           oculta. Plan §4.4 + §11.4. -->
+      <p class="sash--top__now" id="windowNow" hidden></p>
       <p class="sash--top__currents" id="windowCurrents">Leo cada mensaje. De lunes a viernes, en menos de 4 horas. Los fines de semana, el lunes en la ma&ntilde;ana.</p>
     </header>
 

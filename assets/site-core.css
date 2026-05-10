@@ -2717,8 +2717,16 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .sash > .transom{position:absolute;top:38.3%;left:108px;right:0;height:var(--muntin-weight);background:var(--ink);opacity:0.18;pointer-events:none}
 
 /* Sash—top: above the transom. Calendar-honest presence sentence. */
-.sash--top{grid-area:top;padding:24px 32px 16px;display:flex;align-items:center}
+.sash--top{grid-area:top;padding:24px 32px 16px;display:flex;align-items:center;flex-wrap:wrap;gap:6px}
 .sash--top__currents{margin:0;font-family:var(--font-display);font-style:italic;font-size:18px;line-height:1.45;color:var(--ink-soft)}
+/* Phase 4 — /now/ presence line. Inherits the sash--top__currents
+   typography but in --ink (not --ink-soft) — when the now widget
+   shows it's the most current presence statement and reads with a
+   touch more authority. data-mode="precise" gets a subtle teal
+   underline-mark to telegraph "this is fresh / location-specific";
+   fuzz mode reads as a plain editorial line. */
+.sash--top__now{margin:0;font-family:var(--font-display);font-style:italic;font-size:18px;line-height:1.45;color:var(--ink);font-weight:500}
+.sash--top__now[data-mode="precise"]{border-bottom:1px solid var(--teal);padding-bottom:2px}
 
 /* Sash—bottom: below the transom. The operable light — chips +
    textarea + crisis line + submit row. */
@@ -2745,6 +2753,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
   .sash--bottom{padding:12px 18px 18px}
   .sill{padding:14px 18px}
   .sash--top__currents{font-size:16px}
+  .sash--top__now{font-size:16px}
 }
 
 /* Composer additions — the new pieces inside .sash--bottom. */
@@ -2910,6 +2919,22 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .admin-thread__actions{display:flex;gap:8px;align-items:center}
 .admin-thread__close{font-size:12px;color:var(--stone);background:transparent;border:0;cursor:pointer;text-decoration:underline}
 .admin-thread__close:hover{color:var(--rust)}
+
+/* Phase 4 — /now/ widget admin editor. Sits above the queue list as
+   a collapsed <details> section. Compact but legible — the admin
+   only touches it weekly. */
+.admin-now{margin:14px 0 24px;padding:0 16px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white)}
+.admin-now__summary{padding:12px 0;font-size:14px;color:var(--ink);cursor:pointer;font-weight:500;letter-spacing:0.01em}
+.admin-now__summary code{font-family:var(--font-mono,Menlo,monospace);font-size:13px;color:var(--teal);background:transparent;padding:0}
+.admin-now__form{padding:12px 0 16px;display:flex;flex-direction:column;gap:10px;border-top:1px solid var(--line)}
+.admin-now__current{margin:0;font-size:13px;color:var(--ink-soft);font-style:italic;padding:8px 12px;background:var(--cream-2);border-radius:var(--r-input)}
+.admin-now__field{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--ink-soft)}
+.admin-now__field>span{font-weight:500;color:var(--ink)}
+.admin-now__field input,.admin-now__field select{padding:8px 12px;border:1px solid var(--line-dark);border-radius:var(--r-input);font:inherit;font-size:14px;color:var(--ink);background:var(--white)}
+.admin-now__field input:focus-visible,.admin-now__field select:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+.admin-now__row{display:flex;align-items:center;gap:12px;margin-top:6px}
+.admin-now__msg{font-size:13px;color:var(--ink-soft);font-style:italic}
+.admin-now .btn-sm{padding:8px 16px;font-size:13px}
 
 /* Phase 3.6b — admin attachment display. Mirrors the visitor-side
    styles but with a tighter image cap (admin scrolls many threads;

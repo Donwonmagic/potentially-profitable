@@ -41,6 +41,15 @@ export const ADMIN_INDEX_KEY_PREFIX   = 'window:admin-index:';
 export const THROTTLE_KEY_PREFIX      = 'window:throttle:';
 export const PENDING_DON_KEY_PREFIX   = 'window:pending-don:';
 export const META_ACTIVE_KEY          = 'window:meta:active';
+// Phase 4 — operator presence ("/now/" widget). Single key holds the
+// privacy-resolved row. Three privacy tiers: 'precise' (full text),
+// 'fuzz' (DEFAULT — generalized), 'private' (widget hidden entirely).
+// 14-day staleness threshold + 21:00–06:00 precise-mode blackout
+// enforced server-side. See plan §4.4 + §11.4.
+export const META_NOW_KEY             = 'window:meta:now';
+export const NOW_STALENESS_MS         = 14 * 24 * 60 * 60 * 1000;
+export const NOW_DEFAULT_TIMEZONE     = 'America/New_York';
+export const NOW_TEXT_MAX             = 200;
 
 // Phase 1a (Window redesign) — anonymous-first send keys.
 // Anon threads are cookie-bound (md_anon_thread_id, see worker.js).
@@ -431,6 +440,93 @@ export async function getActiveMeta(env) {
   const raw = await env.AUTH_SESSIONS.get(META_ACTIVE_KEY);
   if (!raw) return null;
   try { return JSON.parse(raw); } catch { return null; }
+}
+
+// Phase 4 — /now/ widget. Read the current row (raw — admin only).
+export async function getNowMeta(env) {
+  const raw = await env.AUTH_SESSIONS.get(META_NOW_KEY);
+  if (!raw) return null;
+  try { return JSON.parse(raw); } catch { return null; }
+}
+
+// Phase 4 — /now/ widget. Persist a new privacy-vetted row. Caller
+// (handleAdminWindowNow) is responsible for the admin auth gate.
+// `payload` shape:
+//   { privacy, fuzzText, fuzzTextEs?, preciseText?, preciseTextEs?,
+//     shift?, timezone? }
+// Server-side validation:
+//   - privacy must be one of {precise, fuzz, private}; fuzz default.
+//   - texts capped at NOW_TEXT_MAX bytes after sanitize.
+//   - timezone defaults to America/New_York if absent or invalid.
+//   - locale variants: ES falls back to EN if the ES field is empty.
+export async function setNowMeta(env, payload) {
+  const validPrivacy = ['precise', 'fuzz', 'private'];
+  const cap = (s) => (typeof s === 'string' ? s.slice(0, NOW_TEXT_MAX) : '');
+  const next = {
+    privacy: validPrivacy.indexOf(payload && payload.privacy) >= 0 ? payload.privacy : 'fuzz',
+    preciseText:   cap(payload.preciseText),
+    preciseTextEs: cap(payload.preciseTextEs),
+    fuzzText:      cap(payload.fuzzText),
+    fuzzTextEs:    cap(payload.fuzzTextEs),
+    shift: typeof payload.shift === 'string' ? payload.shift.slice(0, 40) : null,
+    timezone: typeof payload.timezone === 'string' ? payload.timezone : NOW_DEFAULT_TIMEZONE,
+    updatedAt: Date.now(),
+    lastSeen: Number.isFinite(payload && payload.lastSeen) ? payload.lastSeen : Date.now(),
+  };
+  await env.AUTH_SESSIONS.put(META_NOW_KEY, JSON.stringify(next));
+  return next;
+}
+
+// Hard-coded refusal: precise mode is silently downgraded to fuzz
+// between 21:00–06:00 local. The late-night precision window is the
+// stalker risk (plan §4.4). Returns true when we're inside the
+// blackout — caller swaps text accordingly. Fail-safe: if the
+// timezone math fails for any reason we return TRUE (refuse precision).
+export function isLatePrecisionBlackout(timezone) {
+  try {
+    const fmt = new Intl.DateTimeFormat('en-US', {
+      timeZone: timezone || NOW_DEFAULT_TIMEZONE,
+      hour: '2-digit',
+      hour12: false,
+    });
+    const parts = fmt.formatToParts(new Date());
+    const hourPart = parts.find((p) => p.type === 'hour');
+    if (!hourPart) return true;
+    const h = parseInt(hourPart.value, 10);
+    if (Number.isNaN(h)) return true;
+    return h >= 21 || h < 6;
+  } catch (_) {
+    return true;
+  }
+}
+
+// Visitor-facing projection. Returns the text + mode the visitor
+// should see, or null when the widget should be hidden entirely.
+// Hides for: missing row, privacy='private', staleness >14d, or
+// post-blackout-downgrade with empty fuzzText. Caller surfaces
+// `{ ok:true, show:false }` when this returns null.
+//
+// Locale param picks the EN or ES text variant. ES falls back to
+// EN if the ES variant is empty (common when admin only fills one).
+export function resolveNowForVisitor(now, locale) {
+  if (!now) return null;
+  if (now.privacy === 'private') return null;
+  if (now.updatedAt && Date.now() - now.updatedAt > NOW_STALENESS_MS) return null;
+  let mode = now.privacy === 'precise' ? 'precise' : 'fuzz';
+  if (mode === 'precise' && isLatePrecisionBlackout(now.timezone)) {
+    mode = 'fuzz';
+  }
+  const isEs = locale === 'es';
+  const fuzz = isEs ? (now.fuzzTextEs || now.fuzzText || '') : (now.fuzzText || '');
+  const precise = isEs ? (now.preciseTextEs || now.preciseText || '') : (now.preciseText || '');
+  const text = mode === 'precise' ? (precise || fuzz) : fuzz;
+  if (!text) return null;
+  return {
+    text,
+    mode,
+    shift: now.shift || null,
+    lastSeen: now.lastSeen || now.updatedAt || null,
+  };
 }
 
 // ─────────────────────────────────────────────────────────────────

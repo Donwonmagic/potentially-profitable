@@ -489,4 +489,108 @@
 
   window.addEventListener('hashchange', route);
   route();
+
+  // Phase 4 — /now/ widget editor. Sits in the queue view (admin
+  // /admin/window/index.html). On <details> open, fetch the current
+  // row + populate the form. On submit, POST to /api/admin/window/now
+  // and refresh the summary line. Plan §4.4.
+  (function adminNow() {
+    var nowDetails = document.getElementById('adminNow');
+    var nowForm    = document.getElementById('adminNowForm');
+    var nowCurrent = document.getElementById('adminNowCurrent');
+    var nowMsg     = document.getElementById('adminNowMsg');
+    if (!nowDetails || !nowForm || !nowCurrent) return;
+
+    function describeCurrent(row) {
+      if (!row) return locale === 'es'
+        ? 'Sin estado actual. Establece uno abajo.'
+        : 'No current state. Set one below.';
+      var ageMs = Date.now() - (row.updatedAt || 0);
+      var ageH  = Math.round(ageMs / 3600000);
+      var stale = ageMs > 14 * 24 * 60 * 60 * 1000;
+      var parts = [];
+      parts.push((locale === 'es' ? 'Privacidad: ' : 'Privacy: ') + row.privacy);
+      if (row.privacy === 'fuzz' || row.privacy === 'precise') {
+        var fuzzShown = locale === 'es' ? (row.fuzzTextEs || row.fuzzText || '—') : (row.fuzzText || '—');
+        parts.push((locale === 'es' ? 'Fuzz: ' : 'Fuzz: ') + fuzzShown);
+      }
+      if (row.privacy === 'precise') {
+        var preciseShown = locale === 'es' ? (row.preciseTextEs || row.preciseText || '—') : (row.preciseText || '—');
+        parts.push((locale === 'es' ? 'Preciso: ' : 'Precise: ') + preciseShown);
+      }
+      parts.push((locale === 'es' ? 'Actualizado hace ' : 'Updated ') + ageH + 'h' + (locale === 'es' ? '' : ' ago'));
+      if (stale) parts.push(locale === 'es' ? '(antiguo — oculto)' : '(stale — hidden)');
+      return parts.join(' · ');
+    }
+
+    function populate(row) {
+      var byId = function (id) { return document.getElementById(id); };
+      if (!row) return;
+      if (byId('adminNowPrivacy'))       byId('adminNowPrivacy').value = row.privacy || 'fuzz';
+      if (byId('adminNowFuzzText'))      byId('adminNowFuzzText').value = row.fuzzText || '';
+      if (byId('adminNowFuzzTextEs'))    byId('adminNowFuzzTextEs').value = row.fuzzTextEs || '';
+      if (byId('adminNowPreciseText'))   byId('adminNowPreciseText').value = row.preciseText || '';
+      if (byId('adminNowPreciseTextEs')) byId('adminNowPreciseTextEs').value = row.preciseTextEs || '';
+      if (byId('adminNowShift'))         byId('adminNowShift').value = row.shift || '';
+    }
+
+    function loadCurrent() {
+      fetch('/api/admin/window/now', { credentials: 'same-origin' })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (j) {
+          if (!j || !j.ok) {
+            nowCurrent.textContent = locale === 'es' ? 'No se pudo cargar.' : "Couldn't load.";
+            return;
+          }
+          nowCurrent.textContent = describeCurrent(j.now);
+          if (j.now) populate(j.now);
+        })
+        .catch(function () {
+          nowCurrent.textContent = locale === 'es' ? 'No se pudo cargar.' : "Couldn't load.";
+        });
+    }
+
+    nowDetails.addEventListener('toggle', function () {
+      if (nowDetails.open) loadCurrent();
+    });
+
+    nowForm.addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      var fd = new FormData(nowForm);
+      var p = new URLSearchParams();
+      fd.forEach(function (v, k) { p.set(k, String(v)); });
+      var submitBtn = document.getElementById('adminNowSubmit');
+      if (submitBtn) submitBtn.disabled = true;
+      if (nowMsg) nowMsg.textContent = locale === 'es' ? 'Guardando…' : 'Saving…';
+      fetch('/api/admin/window/now', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'content-type': 'application/x-www-form-urlencoded' },
+        body: p.toString(),
+      })
+        .then(function (r) { return r.json().then(function (j) { return { status: r.status, body: j }; }); })
+        .then(function (res) {
+          if (res.status === 200 && res.body && res.body.ok) {
+            if (nowMsg) nowMsg.textContent = locale === 'es' ? 'Guardado.' : 'Saved.';
+            if (res.body.now) {
+              nowCurrent.textContent = describeCurrent(res.body.now);
+              populate(res.body.now);
+            }
+            try {
+              window.plausible && window.plausible('Window Now Edit', { props: { privacy: res.body.now && res.body.now.privacy } });
+            } catch (_) {}
+          } else {
+            if (nowMsg) nowMsg.textContent = locale === 'es'
+              ? 'Error: ' + ((res.body && res.body.error) || 'desconocido')
+              : 'Error: ' + ((res.body && res.body.error) || 'unknown');
+          }
+        })
+        .catch(function () {
+          if (nowMsg) nowMsg.textContent = locale === 'es' ? 'Error de red.' : 'Network error.';
+        })
+        .finally(function () {
+          if (submitBtn) submitBtn.disabled = false;
+        });
+    });
+  })();
 })();

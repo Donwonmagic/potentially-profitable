@@ -487,6 +487,28 @@
       .catch(function () { /* silent */ });
   }
 
+  // Phase 4 — /now/ presence line. One-shot fetch on init (the widget
+  // changes on weekly cadence; per-page-load is plenty). When the
+  // server returns show=true, the now line takes over and the
+  // currents fallback is hidden. When show=false (private, stale,
+  // or flag off), the currents fallback stays visible. The endpoint
+  // 404s when WINDOW_NOW_ENABLED is off — no error logged. Plan §4.4.
+  function loadNow() {
+    var nowEl = document.getElementById('windowNow');
+    var currentsEl = document.getElementById('windowCurrents');
+    if (!nowEl) return;
+    fetch('/api/window/now?locale=' + encodeURIComponent(locale), { credentials: 'omit' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (j) {
+        if (!j || !j.ok || !j.show || !j.text) return;
+        nowEl.textContent = j.text;
+        nowEl.dataset.mode = j.mode || 'fuzz';
+        nowEl.hidden = false;
+        if (currentsEl) currentsEl.hidden = true;
+      })
+      .catch(function () { /* widget off or network blip — fallback stays visible */ });
+  }
+
   function startPolling() {
     if (state.pollTimer) clearInterval(state.pollTimer);
     state.pollTimer = setInterval(function () {
@@ -750,6 +772,8 @@
   bindOnramps();
   // Phase-2 redesign — boot the optional context fields.
   loadContextFromStorage();
+  // Phase 4 — fire one-shot fetch for the /now/ presence line.
+  loadNow();
 
   // Phase 3.4 — listen for satellite scripts (window-callback.js,
   // future window-now.js) that mutate the thread on the server and

@@ -235,6 +235,10 @@ import {
   msgKey as windowMsgKey,
   setActiveMeta as setWindowActiveMeta,
   getActiveMeta as getWindowActiveMeta,
+  // Phase 4 — /now/ operator presence widget.
+  getNowMeta as getWindowNowMeta,
+  setNowMeta as setWindowNowMeta,
+  resolveNowForVisitor,
   threadKey as windowThreadKey,
   // Phase 1a (Window redesign) — anonymous-first send.
   mintAnonId,
@@ -408,6 +412,12 @@ const API_ROUTES = {
   '/api/admin/window/reply':         handleAdminWindowReply,
   '/api/admin/window/close':         handleAdminWindowClose,
   '/api/admin/window/archive':       handleAdminWindowArchive,
+  // Phase 4 — /now/ operator presence widget. Public GET returns
+  // the privacy-resolved view (post-blackout-downgrade, post-
+  // staleness check). Admin GET returns the raw row; admin POST
+  // writes a new row. Plan §4.4 + §11.4.
+  '/api/window/now':                 handleWindowNow,
+  '/api/admin/window/now':           handleAdminWindowNow,
   // Phase G.10 (Growth) — newsletter subscription + double-opt confirm.
   '/api/subscribe':                  handleSubscribe,
   // Phase 3B — Plausible analytics events proxy. Self-hosted tracker
@@ -7418,6 +7428,107 @@ async function handleWindowAttachDownload(request, env, ctx) {
       'x-content-type-options': 'nosniff',
     },
   });
+}
+
+// Phase 4 — /now/ operator presence widget. Public read endpoint.
+// GET returns the privacy-resolved view: text + mode + lastSeen,
+// or { show: false } when widget should be hidden (private mode,
+// staleness >14d, missing row, or post-blackout-downgrade with
+// empty fuzzText). Cached 60s at the edge — the value changes
+// on weekly cadence, so this matches the 60s pulse cache.
+async function handleWindowNow(request, env, ctx) {
+  if (!_windowGate(env)) {
+    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  }
+  if (env.WINDOW_NOW_ENABLED !== 'true' && env.WINDOW_NOW_ENABLED !== true) {
+    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  }
+  if (!isOriginAllowed(request)) {
+    return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
+  }
+  const now = await getWindowNowMeta(env);
+  const u = new URL(request.url);
+  const locale = u.searchParams.get('locale') === 'es' ? 'es' : 'en';
+  const view = resolveNowForVisitor(now, locale);
+  if (!view) {
+    return jsonResponse({ ok: true, show: false }, 200);
+  }
+  return jsonResponse({
+    ok: true,
+    show: true,
+    text: view.text,
+    mode: view.mode,
+    shift: view.shift,
+    lastSeen: view.lastSeen,
+  }, 200);
+}
+
+// Phase 4 — admin endpoint for the /now/ widget. GET returns the
+// raw row (privacy text in BOTH modes — admin can see what's
+// queued for precise vs fuzz). POST writes a new row.
+//
+// Body shape (POST, form-encoded):
+//   privacy=precise|fuzz|private
+//   fuzzText="in DC tonight"
+//   preciseText="at Tacombi until close"
+//   shift=around|between-shifts|away  (optional)
+//   timezone=America/New_York         (optional, defaults to NY)
+//
+// Plan §4.4 server-side rules:
+//   - 'precise' is downgraded to 'fuzz' between 21:00-06:00 local
+//     at READ time (not at write — admin can queue precise text;
+//     the resolver downgrades on the fly).
+//   - 14-day staleness hides the row at READ time.
+async function handleAdminWindowNow(request, env, ctx) {
+  if (!_windowGate(env)) {
+    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  }
+  const auth = await _requireAdminSession(request, env);
+  if (auth.error) return auth.error;
+  if (request.method === 'GET') {
+    const now = await getWindowNowMeta(env);
+    return jsonResponse({ ok: true, now: now || null }, 200);
+  }
+  if (request.method !== 'POST') {
+    return jsonResponse({ ok: false, error: 'method-not-allowed' }, 405);
+  }
+  if (!isOriginAllowed(request)) {
+    return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
+  }
+  let body;
+  try { body = await parseFormBody(request); } catch (_) {
+    return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+  }
+  const privacy = typeof body.privacy === 'string' ? body.privacy : 'fuzz';
+  if (['precise', 'fuzz', 'private'].indexOf(privacy) === -1) {
+    return jsonResponse({ ok: false, error: 'invalid-privacy' }, 400);
+  }
+  // Validate text bodies — sanitize like other operator strings to
+  // avoid script tags slipping into the visitor-facing line. The
+  // resolver caps at NOW_TEXT_MAX (200), this just normalizes.
+  const fuzzText      = sanitizeWindowBody(body.fuzzText || '');
+  const fuzzTextEs    = sanitizeWindowBody(body.fuzzTextEs || '');
+  const preciseText   = sanitizeWindowBody(body.preciseText || '');
+  const preciseTextEs = sanitizeWindowBody(body.preciseTextEs || '');
+  if (privacy !== 'private' && !fuzzText) {
+    return jsonResponse({ ok: false, error: 'fuzz-required' }, 400);
+  }
+  const next = await setWindowNowMeta(env, {
+    privacy,
+    fuzzText,
+    fuzzTextEs,
+    preciseText,
+    preciseTextEs,
+    shift: body.shift || null,
+    timezone: body.timezone || undefined,
+  });
+  console.log(JSON.stringify({
+    event: 'window.now.updated',
+    privacy: next.privacy,
+    hasPrecise: !!next.preciseText,
+    shift: next.shift,
+  }));
+  return jsonResponse({ ok: true, now: next }, 200);
 }
 
 async function handleWindowMeUnread(request, env, ctx) {

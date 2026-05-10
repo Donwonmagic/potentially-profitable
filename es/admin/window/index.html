@@ -50,6 +50,52 @@ header.nav{min-height:64px}
       <h1 class="admin-window__title">La Ventana</h1>
       <p class="admin-window__sub">Hilos esperándote, los no leídos más antiguos primero.</p>
     </header>
+
+    <!-- Fase 4 — editor de la l&iacute;nea /now/. Plegado por defecto. -->
+    <details class="admin-now" id="adminNow">
+      <summary class="admin-now__summary">Actualizar presencia (widget <code>/now/</code>)</summary>
+      <form class="admin-now__form" id="adminNowForm">
+        <p class="admin-now__current" id="adminNowCurrent" aria-live="polite">Cargando estado&hellip;</p>
+        <label class="admin-now__field">
+          <span>Privacidad</span>
+          <select name="privacy" id="adminNowPrivacy">
+            <option value="fuzz">Fuzz (por defecto &mdash; "en DC esta noche")</option>
+            <option value="precise">Precisa (ubicaci&oacute;n completa &mdash; baja a fuzz 21:00&ndash;06:00)</option>
+            <option value="private">Privada (oculta el widget)</option>
+          </select>
+        </label>
+        <label class="admin-now__field">
+          <span>Texto fuzz (EN)</span>
+          <input type="text" name="fuzzText" id="adminNowFuzzText" maxlength="200" placeholder="in DC tonight">
+        </label>
+        <label class="admin-now__field">
+          <span>Texto fuzz (ES)</span>
+          <input type="text" name="fuzzTextEs" id="adminNowFuzzTextEs" maxlength="200" placeholder="en DC esta noche">
+        </label>
+        <label class="admin-now__field">
+          <span>Texto preciso (EN)</span>
+          <input type="text" name="preciseText" id="adminNowPreciseText" maxlength="200" placeholder="at Tacombi until close">
+        </label>
+        <label class="admin-now__field">
+          <span>Texto preciso (ES)</span>
+          <input type="text" name="preciseTextEs" id="adminNowPreciseTextEs" maxlength="200" placeholder="en Tacombi hasta el cierre">
+        </label>
+        <label class="admin-now__field">
+          <span>Turno</span>
+          <select name="shift" id="adminNowShift">
+            <option value="">&mdash;</option>
+            <option value="around">Cerca (lastSeen &lt;90m)</option>
+            <option value="between-shifts">Entre turnos (90m&ndash;4h)</option>
+            <option value="away">Fuera</option>
+          </select>
+        </label>
+        <div class="admin-now__row">
+          <button type="submit" class="btn btn-primary btn-sm" id="adminNowSubmit">Actualizar</button>
+          <span class="admin-now__msg" id="adminNowMsg" role="status"></span>
+        </div>
+      </form>
+    </details>
+
     <div class="admin-window__list" id="adminWindowList" aria-live="polite">
       <p class="admin-window__empty" id="adminWindowEmpty" hidden>Nada en la cola. Buzón vacío — por ahora.</p>
       <p class="admin-window__empty" id="adminWindowError" hidden>No pudimos cargar la cola. Recarga y vuelve a intentar.</p>
