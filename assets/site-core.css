@@ -2711,9 +2711,10 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
    brand mullion. */
 .sash > .muntin{position:absolute;top:0;bottom:0;left:calc(108px + (100% - 108px) / 2);width:var(--muntin-weight);background:var(--ink);opacity:0.18;pointer-events:none}
 
-/* The transom — horizontal hairline at 35% from the top of the sash.
-   Divides sash--top from sash--bottom inside the right column. */
-.sash > .transom{position:absolute;top:35%;left:108px;right:0;height:var(--muntin-weight);background:var(--ink);opacity:0.18;pointer-events:none}
+/* The transom — horizontal hairline at 38.3% (matches the brand mark
+   at y=49 of viewBox 0 0 128 128 = 49/128 = 0.383). Divides sash--top
+   from sash--bottom inside the right column. */
+.sash > .transom{position:absolute;top:38.3%;left:108px;right:0;height:var(--muntin-weight);background:var(--ink);opacity:0.18;pointer-events:none}
 
 /* Sash—top: above the transom. Calendar-honest presence sentence. */
 .sash--top{grid-area:top;padding:24px 32px 16px;display:flex;align-items:center}

@@ -96,11 +96,16 @@ async function twilioSend(env, to, body) {
 
 // Build the SMS body. Cap aggressively — Twilio splits at 160 chars
 // for one segment; we want one message. Format:
-//   "[Window/urgent] {senderLabel} — {first 80 chars of message body}…"
+//   "[Window/urgent] {senderLabel}: {first 80 chars of message body}..."
+//
+// Audit B1: GSM-7 only. The em-dash (U+2014) and the horizontal
+// ellipsis (U+2026) force UCS-2 encoding, which drops the segment
+// cap from 160 to 70 chars — every alert ships as 2 segments.
+// Replaced with " : " and "..." (three dots) to stay in GSM-7.
 function buildCrisisSmsBody(senderLabel, messageBody) {
   const label = String(senderLabel || 'visitor').slice(0, 16);
   const excerpt = String(messageBody || '').replace(/\s+/g, ' ').slice(0, 80);
-  return '[Window/urgent] ' + label + ' — ' + excerpt + (messageBody && messageBody.length > 80 ? '…' : '');
+  return '[Window/urgent] ' + label + ': ' + excerpt + (messageBody && messageBody.length > 80 ? '...' : '');
 }
 
 // Send a crisis tier-1 SMS to Don. Silent no-op if any secret is
@@ -114,8 +119,13 @@ function buildCrisisSmsBody(senderLabel, messageBody) {
 // Returns { ok, sid?, skipped?, error? } — `skipped` is set when the
 // feature is dark (no secrets) or rate-limited; `error` is set on
 // genuine Twilio failure.
+//
+// Audit B2: precheck ALL four secrets BEFORE incrementing the rate
+// counter. Pre-fix, a partial config (e.g., WINDOW_CRISIS_SMS_TO set
+// but TWILIO_* missing) burned 3 rate slots before any real SMS
+// could land — the rate limiter then declined legitimate sends.
 export async function sendCrisisSms(env, senderLabel, messageBody) {
-  if (!env || !env.WINDOW_CRISIS_SMS_TO) {
+  if (!env || !env.WINDOW_CRISIS_SMS_TO || !env.TWILIO_ACCOUNT_SID || !env.TWILIO_AUTH_TOKEN || !env.TWILIO_FROM) {
     return { ok: false, skipped: 'sms-not-configured' };
   }
   const rate = await checkAndStampSmsRate(env);
