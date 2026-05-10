@@ -428,11 +428,17 @@ export async function* iterateTranscriptQueue(env, limit = 5) {
 
 // Run Whisper on the audio bytes. Returns { ok, text } on success
 // or { ok:false, error } on failure. Workers AI binding is env.AI;
-// the model is @cf/openai/whisper-large-v3-turbo for best speed/
-// quality on short clips. Auto-detects the spoken language —
-// returned text is in the operator's spoken language regardless of
-// the page locale (plan §6.5: a Spanish operator on /window/ EN
-// still gets a Spanish transcript).
+// the model is the canonical `@cf/openai/whisper` (audit B-1: the
+// `whisper-large-v3-turbo` variant has had argument-shape churn
+// in Workers AI; the canonical wrapper is the long-stable version).
+// Auto-detects the spoken language — returned text is in the
+// operator's spoken language regardless of the page locale (plan
+// §6.5: a Spanish operator on /window/ EN still gets a Spanish
+// transcript).
+//
+// Response shape is handled defensively (audit B-1 bullet 2): we
+// accept either `{text}` (canonical) or `{segments:[{text}]}`
+// (alternate shape) and fall through gracefully.
 export async function transcribeVoice(env, audioBytes) {
   if (!env || !env.AI) {
     return { ok: false, error: 'ai-not-configured' };
@@ -440,21 +446,28 @@ export async function transcribeVoice(env, audioBytes) {
   if (!(audioBytes instanceof Uint8Array)) {
     return { ok: false, error: 'invalid-audio' };
   }
-  // Workers AI accepts a Uint8Array directly. We use the larger
-  // model for the small accuracy bump on short, possibly-noisy
-  // restaurant-floor audio. response_format=verbose_json gives us
-  // detected language as a side benefit.
+  // Workers AI Whisper expects `audio` as `number[]`. Array.from
+  // handles the Uint8Array → number[] conversion correctly.
   let res;
   try {
-    res = await env.AI.run('@cf/openai/whisper-large-v3-turbo', {
+    res = await env.AI.run('@cf/openai/whisper', {
       audio: Array.from(audioBytes),
-      response_format: 'verbose_json',
     });
   } catch (err) {
     return { ok: false, error: 'whisper-threw', detail: err && err.message };
   }
-  // Workers AI Whisper returns { text, ... }.
-  const text = res && typeof res.text === 'string' ? res.text.trim() : '';
+  if (!res) return { ok: false, error: 'whisper-empty-response' };
+  // Defensive parse: Workers AI usually returns { text, ... } but
+  // some model variants surface `segments: [{text}]` or
+  // `transcription: '...'`. Try in priority order; if all empty,
+  // give up.
+  let text = '';
+  if (typeof res.text === 'string') text = res.text;
+  else if (typeof res.transcription === 'string') text = res.transcription;
+  else if (Array.isArray(res.segments)) {
+    text = res.segments.map(s => (s && s.text) || '').join(' ');
+  }
+  text = String(text || '').trim();
   if (!text) return { ok: false, error: 'empty-transcript' };
   return {
     ok: true,
@@ -465,6 +478,14 @@ export async function transcribeVoice(env, audioBytes) {
 
 // Update an attachment row with its transcript. Idempotent — repeats
 // just overwrite. Returns true on success.
+//
+// Audit S-4 — voice rows get a 30d TTL on the rewrite so the
+// transcript metadata doesn't outlive the R2 audio (which expires
+// at VOICE_R2_TTL_DAYS via R2 lifecycle policy). Photo rows skip
+// the TTL — photos persist for 90d (PHOTO_R2_TTL_DAYS), but the
+// row itself has no TTL today (admin reaper handles it). When
+// Phase 3.5's per-message delete-transcript ships, that path
+// flips a deleted flag instead of relying on TTL.
 export async function setAttachmentTranscript(env, attachId, transcript, language) {
   if (!isValidSaveItemIdShape(attachId)) return false;
   const raw = await env.AUTH_SESSIONS.get(attachKey(attachId));
@@ -474,7 +495,10 @@ export async function setAttachmentTranscript(env, attachId, transcript, languag
   row.transcript = String(transcript || '').slice(0, 4000);
   if (language) row.transcriptLanguage = String(language).slice(0, 8);
   row.transcriptAt = Date.now();
-  await env.AUTH_SESSIONS.put(attachKey(attachId), JSON.stringify(row));
+  const opts = row.kind === 'voice'
+    ? { expirationTtl: VOICE_R2_TTL_DAYS * 24 * 60 * 60 }
+    : undefined;
+  await env.AUTH_SESSIONS.put(attachKey(attachId), JSON.stringify(row), opts);
   return true;
 }
 

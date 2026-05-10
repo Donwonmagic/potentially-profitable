@@ -1086,6 +1086,22 @@ export default {
               await setAttachmentTranscript(env, row.attachId, result.text, result.language);
               await env.AUTH_SESSIONS.delete(key);
               transcriptsCompleted++;
+              // Audit B-2 — same crisis re-scan as the inline path.
+              const transcriptTier = detectCrisisTier(result.text);
+              if (transcriptTier === 'tier1') {
+                console.log(JSON.stringify({ event: 'window.crisis-flag', kind: 'voice-transcript', tier: 'tier1', source: 'cron', attachId: row.attachId }));
+                try {
+                  const senderLabel = (attachRow.sub || attachRow.anonId || 'visitor').slice(0, 8) + ' (voice)';
+                  const out = await sendCrisisSms(env, senderLabel, '[voice transcript] ' + result.text);
+                  if (out.ok) {
+                    console.log(JSON.stringify({ event: 'window.crisis-sms.sent', kind: 'voice-transcript', source: 'cron', attachId: row.attachId, sid: out.sid }));
+                  } else {
+                    console.warn('[cron] voice-crisis-sms', { attachId: row.attachId, skipped: out.skipped || null, error: out.error || null });
+                  }
+                } catch (err) {
+                  console.warn('[cron] voice-crisis-sms threw', { attachId: row.attachId, err: err && err.message });
+                }
+              }
             } else {
               row.attempts = (row.attempts || 0) + 1;
               if (row.attempts >= 3) {
@@ -6830,15 +6846,27 @@ async function handleWindowAttachUpload(request, env, ctx) {
     storedExt = stripped.kind === 'jpeg' ? 'jpg' : stripped.kind;
   } else {
     // Voice. Per-day cap (voice-daily key tracks count + minutes).
-    // Duration is supplied by the client in the form (durationMs)
-    // — we can't easily decode the audio in a Worker; trust + cap.
+    // Duration is supplied by the client in the form (durationMs).
+    // Audit S-1 — client-side duration is spoofable: a malicious
+    // client could send durationMs=1 for a 60s recording to evade
+    // the daily-minutes cap. Defense: derive an estimate from the
+    // byte size assuming Opus@64kbps (the typical MediaRecorder
+    // default in Chrome/Firefox); cap the trusted duration at
+    // 1.5× that estimate. The 2 MB hard cap below already bounds
+    // the worst case at ~256s, so this just tightens the inner cap.
     const declaredDuration = Number(form.get('durationMs') || 0);
-    durationMs = Number.isFinite(declaredDuration) && declaredDuration > 0
-      ? Math.min(declaredDuration, MAX_VOICE_DURATION_HARD_MS)
-      : null;
-    if (!durationMs) {
+    if (!Number.isFinite(declaredDuration) || declaredDuration <= 0) {
       return jsonResponse({ ok: false, error: 'duration-required' }, 400);
     }
+    // Opus @ 64 kbps = 8000 bytes/s. Multiply by 1.5 to allow for
+    // bitrate variance (codecs can spike higher on speech).
+    const estimatedMs = Math.round((buf.byteLength / 8000) * 1000);
+    const estimatedMaxMs = Math.round(estimatedMs * 1.5);
+    durationMs = Math.min(
+      declaredDuration,
+      MAX_VOICE_DURATION_HARD_MS,
+      Math.max(estimatedMaxMs, 1000) // never go below 1s, in case the size estimate underflows on tiny clips
+    );
     // Voice file size cap: 10s of headroom over Opus@64kbps × 90s ≈
     // 720KB. Cap at 2MB to be generous to lossier codecs.
     const VOICE_BYTES_HARD_CAP = 2 * 1024 * 1024;
@@ -6917,6 +6945,27 @@ async function handleWindowAttachUpload(request, env, ctx) {
         if (result.ok) {
           await setAttachmentTranscript(env, attachId, result.text, result.language);
           await unmarkTranscript(env, attachId);
+          // Audit B-2 — re-run crisis detection on the transcript.
+          // The body-text crisis check (handleWindowAppend) doesn't
+          // see voice content; without this, a tier-1 keyword
+          // SPOKEN into a voice memo would silently bypass the
+          // SMS-to-Don path (plan §11.6 promises Don-facing
+          // SMS work).
+          const transcriptTier = detectCrisisTier(result.text);
+          if (transcriptTier === 'tier1') {
+            console.log(JSON.stringify({ event: 'window.crisis-flag', kind: 'voice-transcript', tier: 'tier1', attachId }));
+            try {
+              const senderLabel = (sub || anonId || 'visitor').slice(0, 8) + ' (voice)';
+              const out = await sendCrisisSms(env, senderLabel, '[voice transcript] ' + result.text);
+              if (!out.ok) {
+                console.warn('[window] voice-crisis-sms', { attachId, skipped: out.skipped || null, error: out.error || null });
+              } else {
+                console.log(JSON.stringify({ event: 'window.crisis-sms.sent', kind: 'voice-transcript', attachId, sid: out.sid }));
+              }
+            } catch (err) {
+              console.warn('[window] voice-crisis-sms threw', { attachId, err: err && err.message });
+            }
+          }
           console.log(JSON.stringify({ event: 'window.transcribe.inline', attachId, language: result.language || null, len: result.text.length }));
         } else {
           // Leave it on the queue — cron will retry.

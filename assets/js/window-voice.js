@@ -24,9 +24,10 @@
 
   var COPY = {
     en: {
-      ariaRecord: 'Record a voice note',
+      ariaRecord: 'Send a voice note (60 sec)',
       ariaStop: 'Stop recording',
       tapToStop: 'Listening. Tap to stop.',
+      privacyDismiss: 'Got it',
       lengthCap: 'Ten seconds left — wrap it up.',
       privacyOnce: "I'll keep voice notes for 30 days, then they're gone. The transcript stays in your thread.",
       micBlocked: "Your phone won't let me use the mic. No problem — type your note, or email don@muntin.digital.",
@@ -35,9 +36,10 @@
       sizeS: function (s) { return s + 's'; },
     },
     es: {
-      ariaRecord: 'Grabar una nota de voz',
+      ariaRecord: 'Manda una nota de voz (60 seg)',
       ariaStop: 'Detener grabación',
       tapToStop: 'Escuchando. Toca para parar.',
+      privacyDismiss: 'Entendido',
       lengthCap: 'Diez segundos — termina.',
       privacyOnce: 'Guardo las notas de voz 30 días y luego se borran. La transcripción se queda en tu conversación.',
       micBlocked: 'Tu teléfono no me deja usar el micrófono. Sin problema — escribe tu nota, o envía un correo a don@muntin.digital.',
@@ -110,21 +112,43 @@
     mime: null,
   };
 
+  // Audit S-3 — fail-closed for privacy. The pre-fix version would
+  // skip the disclosure if localStorage threw (Safari ITP / private
+  // mode), which is the WRONG default for a privacy-sensitive
+  // feature. New default: always render the disclosure. Dismissal
+  // is persisted opportunistically — if localStorage works, the
+  // disclosure won't re-render on future records; if blocked, the
+  // operator sees it every time, which is conservative.
   function showPrivacyOnce() {
+    var alreadyShown = false;
     try {
-      if (localStorage.getItem(PRIVACY_DISCLOSED_KEY) === '1') return;
-      // Inline the disclosure as a status above the mic the first
-      // time the user clicks record. Stays present until they
-      // dismiss; future records skip.
-      var p = document.createElement('p');
-      p.style.fontSize = '12px';
-      p.style.fontStyle = 'italic';
-      p.style.color = 'var(--stone)';
-      p.style.margin = '6px 0 0';
-      p.textContent = copy.privacyOnce;
-      els.attach.appendChild(p);
-      localStorage.setItem(PRIVACY_DISCLOSED_KEY, '1');
-    } catch (_) { /* localStorage may be blocked; harmless */ }
+      if (localStorage.getItem(PRIVACY_DISCLOSED_KEY) === '1') alreadyShown = true;
+    } catch (_) { /* localStorage blocked; treat as not-shown */ }
+    if (alreadyShown) return;
+    // Don't re-stack the paragraph if a prior call already added it
+    // (e.g., recording, stopping, recording again within the same page load).
+    if (els.attach.querySelector('[data-md-voice-privacy]')) return;
+
+    var wrap = document.createElement('p');
+    wrap.setAttribute('data-md-voice-privacy', '1');
+    wrap.style.cssText = 'font-size:12px;font-style:italic;color:var(--stone);margin:6px 0 0;display:flex;align-items:flex-start;gap:8px;';
+
+    var text = document.createElement('span');
+    text.style.flex = '1';
+    text.textContent = copy.privacyOnce;
+    wrap.appendChild(text);
+
+    var dismiss = document.createElement('button');
+    dismiss.type = 'button';
+    dismiss.textContent = copy.privacyDismiss;
+    dismiss.style.cssText = 'background:transparent;border:0;color:var(--teal);font-size:12px;font-weight:500;cursor:pointer;padding:0;';
+    dismiss.addEventListener('click', function () {
+      try { localStorage.setItem(PRIVACY_DISCLOSED_KEY, '1'); } catch (_) {}
+      if (wrap.parentNode) wrap.parentNode.removeChild(wrap);
+    });
+    wrap.appendChild(dismiss);
+
+    els.attach.appendChild(wrap);
   }
 
   function setRecordingUI(on) {
