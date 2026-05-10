@@ -1,0 +1,363 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-09T20:12:05.590Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "ff_siwis",
+  "language": "fr",
+  "total": 565.91,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "Note de recherche &middot; 2 mai 2026 &middot; 11 min de lecture &middot; Par Don Goldstein",
+      "start": 0,
+      "end": 6.22
+    },
+    {
+      "id": 1,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Une petite étude nommée et datée. Cinquante sites web de restaurants indépendants dans la DMV et le nord-est des trois États, ont été auditées pour les six fuites de réservation et de conversion les plus courantes : deeplink-boutons de réservation cassés, heures cachées, LCP lente, liens de commande directe CTA manquants, espagnol mort et commande via agrégateur uniquement. Chaque fuite a été mesurée en dollars par mois par rapport au chiffre d'affaires déclaré par l'opérateur. L'opérateur médian laisse 0,94 % de son chiffre d'affaires sur la table. Le quartile le plus bas est en train de perdre 2,3 %.",
+      "start": 6.57,
+      "end": 37.26
+    },
+    {
+      "id": 2,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "50 Restaurants indépendants auditées",
+      "start": 37.78,
+      "end": 39.83
+    },
+    {
+      "id": 3,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "0,94 % Chiffre d'affaires médian perdu à cause de la friction sur le site",
+      "start": 40.15,
+      "end": 45.55
+    },
+    {
+      "id": 4,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "3 128 dollars Fuite médiane mensuelle en dollars par opérateur",
+      "start": 45.87,
+      "end": 50.02
+    },
+    {
+      "id": 5,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "43/50 Ont au moins 3 des 6 fuites actives en ce moment",
+      "start": 50.34,
+      "end": 54.05
+    },
+    {
+      "id": 6,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "D'où vient le 1 %.",
+      "start": 55.15,
+      "end": 56.29
+    },
+    {
+      "id": 7,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "Le chiffre de 1 % n'est pas une intuition. C'est une somme sur six fuites mesurées, chacune avec un chiffre de levier publié provenant de recherches primaires, appliqué au chiffre d'affaires déclaré par l'opérateur. La méthodologie est ci-dessous ; le résultat principal est dans ce tableau.",
+      "start": 56.99,
+      "end": 72.96
+    },
+    {
+      "id": 8,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "La plus grande fuite est celle qui affecte le moins d'opérateurs : la commande via agrégateur uniquement sans chemin direct. Lorsqu'elle est présente, l'impact est important - près d'un demi-point de chiffre d'affaires - car chaque commande passe par une commission de 30 % au lieu d'un frais de traitement de 3,6 %. Les deux fuites qui affectent le plus d'opérateurs (LCP mobile et lien de commande direct C T A manquant) sont plus petites par incident, mais se cumulent sur plus de commandes.",
+      "start": 73.48,
+      "end": 94.41
+    },
+    {
+      "id": 9,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Distribution des fuites.",
+      "start": 95.51,
+      "end": 96.85
+    },
+    {
+      "id": 10,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "La distribution n'est pas plate. Elle se regroupe : la plupart des opérateurs se situent dans la bande de 0,5 % à 1,5 %, mais une longue queue d'opérateurs perd plus de 2 % - généralement parce qu'ils ont les six fuites actives en même temps.",
+      "start": 97.55,
+      "end": 111.85
+    },
+    {
+      "id": 11,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "Distribution des fuites sur les 50 restaurants. Le plus grand regroupement est la bande de 0,5 à 1 pour cent, avec 17 opérateurs sur 50. 15 se situent dans la bande de 1 à 1,5 pour cent. 7 sont en dessous de 0,5 pour cent et 7 se situent entre 1,5 et 2 pour cent. La queue du quartile le plus bas au-dessus de 2 pour cent compte 4 opérateurs.",
+      "start": 112.65,
+      "end": 131.48
+    },
+    {
+      "id": 12,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "Les opérateurs dans la bande en dessous de 0,5 % partagent trois choses : ils sont tous sur des sites codés sur mesure ou hébergés par BentoBox (pas de Wix), ils ont tous un miroir réel /es/ ou sont dans des quartiers non bilingues, et ils ont tous un bouton de commande direct positionné au-dessus de leurs liens tiers. Ils sont également surreprésentés dans la catégorie « famille possédant pendant 20 ans ou plus » - non pas parce que les anciens opérateurs sont à la pointe de la technologie, mais parce qu'ils ont été en train de réparer discrètement une fuite par trimestre depuis longtemps.",
+      "start": 132.23,
+      "end": 159.2
+    },
+    {
+      "id": 13,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Ce que signifie 0,94 % en dollars.",
+      "start": 160.3,
+      "end": 163.38
+    },
+    {
+      "id": 14,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "Appliqué au chiffre d'affaires déclaré médian de l'opérateur (~ 1,6 million de dollars par an, 133 000 dollars par mois), 0,94 % équivaut à 1 250 dollars par mois, ou 15 012 dollars par an. Pour un opérateur du quartile le plus bas à la même bande de chiffre d'affaires mais avec une fuite de 2,3 %, cela représente 3 069 dollars par mois, ou 36 830 dollars par an. Pour comparaison, une reconstruction de niveau Full Service dans ce studio coûte entre 5 000 dollars et 9 000 dollars - la reconstruction se paye elle-même en 2 à 7 mois à fuite médiane, et en moins de deux mois à fuite du quartile le plus bas.",
+      "start": 164.08,
+      "end": 198.65
+    },
+    {
+      "id": 15,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "Difficulté de correction par fuite.",
+      "start": 199.75,
+      "end": 201.6
+    },
+    {
+      "id": 16,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "Toutes les fuites n'exigent pas le même effort pour être corrigées. Classées par difficulté (la plus facile en premier) :",
+      "start": 202.3,
+      "end": 208.49
+    },
+    {
+      "id": 17,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Bouton de réservation qui ne deeplink (5 minutes). Remplacez https://opentable.com par https://www.opentable.com/restref/client/?rid=YOUR_VENUE_ID . Même correction pour Resy et Tock. Testez sur mobile.",
+      "start": 208.84,
+      "end": 224.43
+    },
+    {
+      "id": 18,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Heures enfouies (15 minutes). Déplacez le bloc « Heures » au-dessus de l'image de présentation. Ajoutez les heures du jour même en texte brut, et non seulement sous forme de graphique. Le graphique peut rester ; le texte doit être présent également.",
+      "start": 224.75,
+      "end": 238.19
+    },
+    {
+      "id": 19,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Appel à l'action de commande directe manquant (30 minutes). Ajoutez un bouton « Commander direct » de couleur principale au-dessus de tout lien de commande tiers. Branchez-le à l'URL de commande en ligne de votre Système de Point de Vente (Toast, Square Online, Olo, ChowNow). Égalisez ou battez le prix du menu des tiers.",
+      "start": 238.51,
+      "end": 255.79
+    },
+    {
+      "id": 20,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "Mobile LCP > 3,0 s (1-3 heures). Comprimez l'image de présentation, basculez vers AVIF + WebP de secours, supprimez les JS inutilisés, chargez les images en dehors de l'écran de manière différée. Testez avec Lighthouse sur Slow 4G + 4 × CPU avant de déclarer la victoire.",
+      "start": 256.11,
+      "end": 274.54
+    },
+    {
+      "id": 21,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(5)",
+      "text": "Commande uniquement par agrégateur (4-8 heures de configuration, puis maintenance). Mettez en place un flux de commande en ligne Toast ou Square si vous n'en avez pas déjà un. Égalisez les prix des menus. Mentionnez les économies sur le reçu de commande et sur l'insert de sac à emporter. La partie la plus difficile n'est pas la technologie — c'est le changement opérationnel de l'exécution de deux flux de commande en parallèle pendant le premier mois.",
+      "start": 274.86,
+      "end": 295.42
+    },
+    {
+      "id": 22,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(6)",
+      "text": "Véritable miroir /es/ (une semaine). Le plus difficile des six, et celui avec le deuxième plus grand impact. Un véritable miroir localisé, et non un plugin Google Translate. Le menu drop-in couvre cela pour la page à plus haut rendement ; un miroir de site complet est un projet de niveau Full Service.",
+      "start": 295.74,
+      "end": 313.75
+    },
+    {
+      "id": 23,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "Les trois premières corrections — sous une heure combinée, sans développeur requis — récupèrent environ la moitié du mediane de fuite. Ce sont un samedi après-midi, et non un projet.",
+      "start": 314.27,
+      "end": 324.29
+    },
+    {
+      "id": 24,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "Ce que j'attendais de trouver et qui n'était pas là.",
+      "start": 325.39,
+      "end": 327.67
+    },
+    {
+      "id": 25,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "La qualité de la photographie ne corrélait pas avec les fuites. Les restaurants avec des photos phénoménales et les restaurants avec des snapshots d'opérateur-iPhone fuyaient à des taux approximativement égaux. La photographie stimule la considération, et non la conversion. Réorganisez vos priorités en conséquence.",
+      "start": 328.37,
+      "end": 345.97
+    },
+    {
+      "id": 26,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Les sites plus anciens ne fuyaient pas plus que les plus récents. Certains des sites avec les moins de fuites ont été construits en deux mille dix-huit et n'ont jamais été touchés à nouveau. Les fonctionnalités qui provoquent les fuites (JS lourd, widget de réservation tiers qui ne deeplink, photo de présentation bloquant les heures) sont des modèles de deux mille vingt-deux à deux mille vingt-quatre.",
+      "start": 346.29,
+      "end": 365.07
+    },
+    {
+      "id": 27,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "Wix n'est pas universellement mauvais. Sur 11 sites Wix dans l'échantillon, 4 étaient dans la bande inférieure à 1 %. Ceux-ci étaient les propriétaires qui avaient passé du temps à corriger le modèle, et non accepté les valeurs par défaut.",
+      "start": 365.39,
+      "end": 379.13
+    },
+    {
+      "id": 28,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "La fine cuisine ne fuyait pas plus que la cuisine décontractée. La fuite de réservation-deeplink frappe les deux de la même manière ; les deux perdent approximativement le même pourcentage de revenu lorsqu'elles en sont affectées.",
+      "start": 379.45,
+      "end": 392.61
+    },
+    {
+      "id": 29,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(6)",
+      "text": "Méthodologie.",
+      "start": 393.71,
+      "end": 394.56
+    },
+    {
+      "id": 30,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "Échantillon : 50 restaurants indépendants, sans chaînes nationales, sans marques détenues par des sociétés de capital-investissement. Mélange géographique : 60 % DMV (DC + MD + VA), 40 % NY-NJ-CT tri-état. Bande de revenu : 800 dollars K-3 dollars M annuel (la médiane DMV indépendante). Mélange de cuisine qui correspond approximativement à la distribution de corridor de RAMW en deux mille vingt-cinq.",
+      "start": 395.26,
+      "end": 417.48
+    },
+    {
+      "id": 31,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "Période d'audit : février-avril vingt vingt-six. Chaque restaurant a été noté manuellement sur les six fuites. L'impact sur les revenus par fuite a été appliqué en utilisant des chiffres de conversion publiés : Whitespark vingt vingt-quatre Local Search Ranking Factors, Baymard Institute's vingt vingt-quatre benchmarks de conversion mobile, Toast's vingt vingt-cinq Restaurant Industry Report, et les données d'exploitation directes de Don provenant de Tacombi Bethesda et de Irish Inn at Glen Echo (taille de l'échantillon de 2 restaurants pour l'étalonnage de l'opérateur).",
+      "start": 418,
+      "end": 450.53
+    },
+    {
+      "id": 32,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "Les chiffres de revenus ont été auto-déclarés par l'opérateur, vérifiés contre des estimations publiées lorsque disponibles (Yelp volume de réservations, OpenTable Sales Index, registres publics de licences de boissons alcoolisées). Lorsque les revenus ne pouvaient pas être vérifiés, le chiffre de l'opérateur a été utilisé tel quel ; un outlier a été exclu pour avoir refusé de confirmer une fourchette.",
+      "start": 451.05,
+      "end": 472.06
+    },
+    {
+      "id": 33,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "Ce que cette étude ne constitue pas : un échantillon aléatoire (les opérateurs ont été recrutés à partir de RAMW + DMV groupes de discussion de restaurants sur Slack), une étude contrôlée (aucune mesure avant/après n'a été prise), ou une liste exhaustive des fuites (six ont été choisies car chacune est bien publiée). C'est un aperçu directionnel, délibérément petit, nommé et daté.",
+      "start": 472.58,
+      "end": 491.83
+    },
+    {
+      "id": 34,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(7)",
+      "text": "Exécutez le vôtre.",
+      "start": 492.93,
+      "end": 494.09
+    },
+    {
+      "id": 35,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "L'outil d'audit de restaurant gratuit note votre site sur les mêmes six fuites, en 30 secondes, dans votre navigateur. Le résultat vous indique quelles fuites vous avez et ce qu'elles vous coûtent probablement par mois.",
+      "start": 494.79,
+      "end": 506.6
+    },
+    {
+      "id": 36,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "Si vous préférez que je fasse un audit approfondi de 499 dollars et que je vous guide à travers les corrections sur une Loom — /services/audit/. L'audit est crédité vers une construction dans les 60 jours.",
+      "start": 507.12,
+      "end": 519.9
+    },
+    {
+      "id": 37,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "Don Goldstein gère deux restaurants DMV et dirige Muntin Digital. Il est membre de RAMW et certifié ServSafe. L'échantillon de 50 sites (anonymisé) et la grille de notation par fuite sont disponibles sur demande à don@muntin.digital.",
+      "start": 520.42,
+      "end": 536.29
+    },
+    {
+      "id": 38,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "Pièces complémentaires",
+      "start": 536.81,
+      "end": 537.91
+    },
+    {
+      "id": 39,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "Une analyse mathématique honnête de DoorDash, vingt vingt-six — les mathématiques par commande derrière la fuite n° 6",
+      "start": 538.26,
+      "end": 544.87
+    },
+    {
+      "id": 40,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "Audit GBP de restaurant DMV, vingt vingt-six — le côté de la découverte du même problème",
+      "start": 545.19,
+      "end": 550.99
+    },
+    {
+      "id": 41,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "Pourquoi votre restaurant perd des réservations chaque nuit — le compagnon en long format",
+      "start": 551.31,
+      "end": 555.56
+    },
+    {
+      "id": 42,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
+      "text": "Cinq modifications de site Web qui récupèrent 1% de marge — la liste de corrections, classée",
+      "start": 555.88,
+      "end": 561.93
+    },
+    {
+      "id": 43,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(5)",
+      "text": "Exécutez l'audit gratuit de 30 secondes sur votre propre site",
+      "start": 562.25,
+      "end": 565.91
+    }
+  ]
+}

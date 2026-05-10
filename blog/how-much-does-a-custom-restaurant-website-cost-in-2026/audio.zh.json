@@ -1,747 +1,843 @@
 {
   "version": 1,
-  "generatedAt": "2026-04-24T19:05:14.032Z",
+  "generatedAt": "2026-05-10T06:19:50.937Z",
   "engine": "kokoro",
   "model": "kokoro-v1.0.onnx",
   "voice": "zm_yunxi",
   "language": "zh",
-  "total": 811.15,
+  "total": 870.35,
   "chunks": [
     {
       "id": 0,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(1)",
-      "text": "The short answer.",
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "",
       "start": 0,
-      "end": 1.25
+      "end": 0
     },
     {
       "id": 1,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(1)",
-      "text": "2,500 dollars to 15,000 dollars, depending on scope. Most independent restaurants land in the 5,000 dollars to 9,000 dollars range. The rest of this post explains why the band is that wide, and where in it you should probably be.",
-      "start": 1.95,
-      "end": 16.43
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "TL;DR",
+      "start": 0.35,
+      "end": 1.49
     },
     {
       "id": 2,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(2)",
-      "text": "Why there is no single price.",
-      "start": 17.53,
-      "end": 19.59
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "2026年独立餐厅自定义网站的价格范围从2,500美元到25,000美元以上，大多数价格落在6,000美元-12,000美元之间。",
+      "start": 1.84,
+      "end": 12.92
     },
     {
       "id": 3,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(2)",
-      "text": "\"Restaurant website\" is not one thing. It is a spectrum from \"a single page that exists\" to \"a full hospitality platform.\" The variables that move the final number are:",
-      "start": 20.29,
-      "end": 31.25
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "有四种真正的选择：DIY平台（25美元-50美元/月），模板驱动的工作室（2.5美元-6,000美元），全自定义（6美元-20,000美元），以及代理商（25,000美元以上）。",
+      "start": 13.24,
+      "end": 26.45
     },
     {
       "id": 4,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "How many pages you actually need. A three-page neighborhood spot is cheaper than a ten-page restaurant with a separate private events page, a catering flow, and a press room.",
-      "start": 31.6,
-      "end": 41.82
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "实际影响价格的因素是：菜单复杂度、预订集成、订购集成和语言数量。",
+      "start": 26.77,
+      "end": 33.14
     },
     {
       "id": 5,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "How complex your menu and ordering flow is. A static P D F menu costs nothing. A self-serve menu C M S with integrated online ordering wired to your P O S costs real money.",
-      "start": 42.14,
-      "end": 53.82
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "简短的答案是：",
+      "start": 34.24,
+      "end": 35.56
     },
     {
       "id": 6,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "Whether you integrate with a P O S, a reservation system, or an online-ordering platform. Each integration is a meaningful chunk of work — and each one saves you real hours every week once it is live.",
-      "start": 54.14,
-      "end": 66.17
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "2,500美元到15,000美元，不同的范围取决于项目的规模。大多数独立餐厅的价格落在5,000美元到9,000美元之间。以下内容将解释为什么价格范围这么广，并且你应该在哪个范围内。",
+      "start": 36.26,
+      "end": 50.23
     },
     {
       "id": 7,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
-      "text": "How much photography, copy, and brand work you already have. If you need a photographer, a copywriter, and a new logo, the number doubles.",
-      "start": 66.49,
-      "end": 75.32
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "为什么没有单一的价格。",
+      "start": 51.33,
+      "end": 53.25
     },
     {
       "id": 8,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(5)",
-      "text": "Whether the site has to be maintainable by you, or only by a developer. \"You can update the menu in thirty seconds\" costs more to build than \"call the developer when the menu changes\" — but it pays for itself within a year.",
-      "start": 75.64,
-      "end": 87.84
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "“餐厅网站”并不是一个单一的东西，它是一个从“仅仅是一个存在的页面”到“一个完整的酒店平台”的谱系。影响最终价格的变量是：",
+      "start": 53.95,
+      "end": 64.41
     },
     {
       "id": 9,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(6)",
-      "text": "How much ongoing care you want after launch. A one-time build is cheaper than a build-plus-care relationship. Most of the time the care relationship is what actually protects your investment.",
-      "start": 88.16,
-      "end": 98.57
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "你实际需要多少页面。一个只有三个页面的街区餐厅比一个有十个页面的餐厅（包括单独的私人活动页面、餐饮流程和新闻室）要便宜。",
+      "start": 64.76,
+      "end": 75.63
     },
     {
       "id": 10,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(3)",
-      "text": "Each of those variables can push the number by 500 dollars to 3,000 dollars. A site that looks simple on paper can cost more than a site that looks complex, if the simple one has hidden integration work and the complex one is mostly content.",
-      "start": 99.09,
-      "end": 112.7
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "你的菜单和订购流程有多复杂。一个静态的PDF菜单不需要花钱，而一个自助菜单CMS，集成了在线订购，并连接到你的POS系统，则需要花费真金白银。",
+      "start": 75.95,
+      "end": 89.1
     },
     {
       "id": 11,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(3)",
-      "text": "The four real options.",
-      "start": 113.8,
-      "end": 115.26
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "是否与POS、预订系统或在线订购平台集成。每个集成都是一个有意义的工作量——并且每一个都能在上线后每周为你节省真正的时间。",
+      "start": 89.42,
+      "end": 100.72
     },
     {
       "id": 12,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(4)",
-      "text": "People talk about restaurant websites like there are a dozen paths, but there are really four. Here they are, honestly:",
-      "start": 115.96,
-      "end": 123.02
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "你已经有多少摄影、文案和品牌工作。如果你需要一个摄影师、一个文案作者和一个新的标志，价格就会翻倍。",
+      "start": 101.04,
+      "end": 109.95
     },
     {
       "id": 13,
-      "kind": "figure",
-      "selector": "#post-body > figure:nth-of-type(1)",
-      "text": "Comparison of four restaurant website options: D I Y template at 200 dollars-400 dollars per year, freelancer at 500 dollars-2,500 dollars, small studio at 2,500 dollars-15,000 dollars, and full agency at 15,000 dollars-80,000 dollars+. Small studio is recommended for most independent restaurants.",
-      "start": 123.82,
-      "end": 145.25
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(5)",
+      "text": "网站是否需要由你自己维护，还是只需要由开发人员维护。“你可以在30秒内更新菜单”比“菜单变化时请联系开发人员”要贵得多——但它在一年内就会收回成本。",
+      "start": 110.27,
+      "end": 122.23
     },
     {
       "id": 14,
-      "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(1)",
-      "text": "Option 1 — D I Y on a template (Wix, Squarespace, Weebly).",
-      "start": 146.35,
-      "end": 151.66
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(6)",
+      "text": "你想要多少持续的关怀。在启动后，一次性的建设比建设加关怀的关系要便宜。大多数时候，关怀关系才是真正保护你的投资的东西。",
+      "start": 122.55,
+      "end": 133.36
     },
     {
       "id": 15,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(5)",
-      "text": "200 dollars–400 dollars/year including hosting, plus your time. Budget fifteen to forty hours to get it looking decent, and another five to ten hours a month to keep it current.",
-      "start": 152.36,
-      "end": 163.61
+      "text": "每个变量都可以将价格推高500美元到3,000美元。一个看起来简单的网站可能比一个看起来复杂的网站更贵，如果简单的网站有隐藏的集成工作，而复杂的网站大多是内容。",
+      "start": 133.71,
+      "end": 148.11
     },
     {
       "id": 16,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(6)",
-      "text": "What you get: a working site that looks like ten thousand other restaurant sites, loads slower than it should on a phone, and hits a ceiling the moment you want to do something the template did not anticipate.",
-      "start": 164.13,
-      "end": 175.29
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "四种真正的选择。",
+      "start": 149.21,
+      "end": 150.96
     },
     {
       "id": 17,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(7)",
-      "text": "When this is fine: the restaurant is new, cash is tight, you are planning to replace the site within a year, and you can accept that the site is a placeholder — not a reflection of the room.",
-      "start": 175.81,
-      "end": 186.94
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "人们谈论餐厅网站就像有十二条路径一样，但实际上只有四种。以下是它们，坦白地说：",
+      "start": 151.66,
+      "end": 159.27
     },
     {
       "id": 18,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(8)",
-      "text": "When this is a trap: when you are already established and your site is reflecting badly on the space. The opportunity cost of every diner who bounced because they could not read your menu on their phone dwarfs the template fee you thought you were saving.",
-      "start": 187.46,
-      "end": 200.16
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "比较四种餐厅网站选项：DIY模板（200美元-400美元/年），自由职业者（500美元-2,500美元），小型工作室（2,500美元-15,000美元），以及全方位代理商（15,000美元-80,000美元以上）。对于大多数独立餐厅，小型工作室是推荐的选择。",
+      "start": 160.07,
+      "end": 179.02
     },
     {
       "id": 19,
       "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(2)",
-      "text": "Option 2 — A freelancer on Upwork or Fiverr.",
-      "start": 201.26,
-      "end": 204.6
+      "selector": "#post-body > h3:nth-of-type(1)",
+      "text": "选项1 —— 使用模板的DIY（Wix，Squarespace，Weebly）。",
+      "start": 180.12,
+      "end": 185.06
     },
     {
       "id": 20,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(9)",
-      "text": "500 dollars–2,500 dollars. Quality ranges from \"a miracle\" to \"a disaster,\" and you usually cannot tell which until you have already paid. The good freelancers are booked out and operate at the top of the range anyway.",
-      "start": 205.3,
-      "end": 218.37
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "200美元-400美元/年，包括托管，还有你的时间。预算15-40小时来使其看起来不错，还需要另外5-10小时每月来保持其更新。",
+      "start": 185.76,
+      "end": 197.25
     },
     {
       "id": 21,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(10)",
-      "text": "When this works: you have clear specs, you have seen the freelancer's portfolio, and they have done restaurant work before.",
-      "start": 218.89,
-      "end": 226.14
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "你得到的是一个看起来像其他十万个餐厅网站一样的网站，加载速度在手机上比预期慢，当你想要做一些模板没有预料到的东西时就会遇到瓶颈。",
+      "start": 197.6,
+      "end": 209.22
     },
     {
       "id": 22,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(11)",
-      "text": "When it does not: \"just make it look nice\" does not travel well across language barriers and timezones. Revisions take weeks. The handoff at the end leaves you with files you cannot maintain, and if something breaks six months later there is nobody to call.",
-      "start": 226.66,
-      "end": 240.07
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "当这种情况是可以接受的：餐厅是新的，资金紧张，你计划在一年内更换网站，你可以接受网站只是一个占位符——而不是反映房间的真实情况。",
+      "start": 209.57,
+      "end": 221.51
     },
     {
       "id": 23,
-      "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(3)",
-      "text": "Option 3 — A small studio (where Muntin sits).",
-      "start": 241.17,
-      "end": 245.04
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "当这种情况是一个陷阱：当你已经建立了自己的品牌，而你的网站却对空间产生了负面影响。每一个因为无法在手机上阅读菜单而放弃的用餐者所带来的机会成本远远超过了你以为自己节省的模板费用。",
+      "start": 221.86,
+      "end": 236.96
     },
     {
       "id": 24,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(12)",
-      "text": "2,500 dollars–15,000 dollars. One or two people, specialized in a specific kind of business, usually working on a fixed price with a clear scope. You meet the actual person who will build your site. They have opinions about your menu, and they will not ship a logo they do not believe in.",
-      "start": 245.74,
-      "end": 261.39
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(2)",
+      "text": "选项2 — Upwork或Fiverr上的自由职业者。",
+      "start": 238.06,
+      "end": 241.63
     },
     {
       "id": 25,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(13)",
-      "text": "When this works: you want one person accountable end to end, you value the conversation more than the deliverable, and you want something that looks and works like a studio built it — not like a template did.",
-      "start": 261.91,
-      "end": 273.41
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "500美元–2,500美元。质量从“奇迹”到“灾难”不等，你通常无法预测结果，直到你已经支付了费用。好的自由职业者通常已经被预订，并且收费在较高的范围内。",
+      "start": 242.33,
+      "end": 254.46
     },
     {
       "id": 26,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(14)",
-      "text": "When it does not: if the scope genuinely requires a team (multi-location rollouts, custom ordering apps, enterprise integrations), a one-person studio is the wrong shape. You would be paying for something they are not built to deliver.",
-      "start": 273.93,
-      "end": 287.01
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "当这种情况有效：你有明确的规格，你已经看过自由职业者的作品集，他们以前也做过餐厅的项目。",
+      "start": 254.81,
+      "end": 263.1
     },
     {
       "id": 27,
-      "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(4)",
-      "text": "Option 4 — A full agency.",
-      "start": 288.11,
-      "end": 290.4
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "当这种情况无效：仅仅说“让它看起来好一点”并不能很好地跨越语言障碍和时区。修订需要数周，最后的交付结果会让你得到无法维护的文件，如果六个月后出现问题，也没有人可以联系。",
+      "start": 263.45,
+      "end": 276.86
     },
     {
       "id": 28,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(15)",
-      "text": "15,000 dollars–80,000 dollars+. You will get a project manager, a designer, a developer, an S E O specialist, a copywriter, a content strategist. Timeline: three to nine months. You will get a PowerPoint presentation before you see a wireframe.",
-      "start": 291.1,
-      "end": 306.58
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(3)",
+      "text": "选项3 — 一家小型工作室（Muntin属于这种类型）。",
+      "start": 277.96,
+      "end": 282.47
     },
     {
       "id": 29,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(16)",
-      "text": "When this is right: you are a restaurant group with five or more locations, you have an in-house marketing team, or you are operating in an enterprise context with procurement requirements.",
-      "start": 307.1,
-      "end": 318.09
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "2,500美元–15,000美元。一到两个人，专门从事某种类型的业务，通常以固定价格和明确的范围工作。你可以见到实际建造你网站的人。他们对你的菜单有自己的意见，并且不会交付他们不相信的标志。",
+      "start": 283.17,
+      "end": 297.34
     },
     {
       "id": 30,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(17)",
-      "text": "When it is wrong: you are a single-location independent. You are paying for organizational overhead you do not need, and your project will always be the least important one on somebody's roadmap.",
-      "start": 318.61,
-      "end": 329.38
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "当这种情况有效：你想要一个人从头到尾负责，你更看重对话而不是交付结果，你想要一个看起来和工作起来像工作室建造的东西——而不是像模板一样。",
+      "start": 297.69,
+      "end": 310.58
     },
     {
       "id": 31,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(4)",
-      "text": "What actually drives the price.",
-      "start": 330.48,
-      "end": 332.68
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "当这种情况无效：如果范围真正需要一个团队（多地点推出、自定义订购应用程序、企业集成），一家小型工作室就是错误的选择。你会为他们无法交付的东西付费。",
+      "start": 310.93,
+      "end": 323.41
     },
     {
       "id": 32,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(18)",
-      "text": "Inside the Muntin-size band — the 2,500 dollars to 15,000 dollars range where most independent restaurant projects actually live — here is how the line items stack, honestly:",
-      "start": 333.38,
-      "end": 345.28
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(4)",
+      "text": "选项4 — 一家全方位代理机构。",
+      "start": 324.51,
+      "end": 326.91
     },
     {
       "id": 33,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
-      "text": "Base build (3–6 page custom site, mobile-first, launched) 2,500 dollars–4,000 dollars",
-      "start": 345.63,
-      "end": 353.27
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "15,000美元–80,000美元+。你会得到一个项目经理、设计师、开发人员、SEO专家、文案撰写者、内容策略师。时间表：三个月到九个月。你会在看到线框图之前得到一个PowerPoint演示文稿。",
+      "start": 327.61,
+      "end": 342.28
     },
     {
       "id": 34,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
-      "text": "Menu system you can update yourself, no developer needed +500 dollars–1,200 dollars",
-      "start": 353.59,
-      "end": 360.26
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "当这种情况是正确的：你是一家拥有五个或更多地点的餐厅集团，你有一个内部营销团队，或者你是在具有采购要求的企业环境中运作。",
+      "start": 342.63,
+      "end": 353.87
     },
     {
       "id": 35,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
-      "text": "Reservation integration (OpenTable, Resy, Tock, Square) +300 dollars–800 dollars",
-      "start": 360.58,
-      "end": 368.67
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(19)",
+      "text": "当这种情况是错误的：你是一家单一地点的独立餐厅。你正在支付不需要的组织开支，你的项目将永远是某人路线图上最不重要的一个。",
+      "start": 354.22,
+      "end": 365.1
     },
     {
       "id": 36,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
-      "text": "Online ordering handoff (Toast, Square, ChowNow) +400 dollars–1,000 dollars",
-      "start": 368.99,
-      "end": 376.11
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "什么真正驱动着价格。",
+      "start": 366.2,
+      "end": 368.54
     },
     {
       "id": 37,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(5)",
-      "text": "Google Business Profile setup and optimization +200 dollars–500 dollars",
-      "start": 376.43,
-      "end": 382.65
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(20)",
+      "text": "在Muntin大小的范围内——2,500美元到15,000美元的范围内，大多数独立餐厅项目实际上都存在这里——这是行项的堆栈，坦白地说：",
+      "start": 369.24,
+      "end": 379.41
     },
     {
       "id": 38,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(6)",
-      "text": "Photography direction (you hire the photographer, we art direct) +300 dollars–800 dollars",
-      "start": 382.97,
-      "end": 390.7
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "基础建设（3–6页自定义网站，移动优先，启动）2,500美元–4,000美元",
+      "start": 379.76,
+      "end": 385.65
     },
     {
       "id": 39,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(7)",
-      "text": "Brand identity (logo, colors, type, brand board) +1,500 dollars–3,000 dollars",
-      "start": 391.02,
-      "end": 398.8
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "你可以自己更新的菜单系统，无需开发人员+500美元–1,200美元",
+      "start": 385.97,
+      "end": 391.48
     },
     {
       "id": 40,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(8)",
-      "text": "Multi-location routing and store locator +1,000 dollars–2,500 dollars",
-      "start": 399.12,
-      "end": 405.2
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "预订集成（OpenTable, Resy, Tock, Square）+300美元–800美元",
+      "start": 391.8,
+      "end": 397.83
     },
     {
       "id": 41,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(9)",
-      "text": "Direct P O S integration (Toast, Square, Lightspeed A P I) +1,500 dollars–3,500 dollars",
-      "start": 405.52,
-      "end": 413.69
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
+      "text": "在线订购交接（Toast, Square, ChowNow）+400美元–1,000美元",
+      "start": 398.15,
+      "end": 403.84
     },
     {
       "id": 42,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(10)",
-      "text": "Custom ordering checkout (your payment processor, your margin) +2,000 dollars–4,500 dollars",
-      "start": 414.01,
-      "end": 421.86
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(5)",
+      "text": "Google Business Profile 设置和优化 +200美元–500美元",
+      "start": 404.16,
+      "end": 409
     },
     {
       "id": 43,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(19)",
-      "text": "Three real examples, so the ranges feel less abstract:",
-      "start": 422.21,
-      "end": 425.93
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(6)",
+      "text": "摄影指导（您雇佣摄影师，我们负责艺术指导）+300美元–800美元",
+      "start": 409.32,
+      "end": 415.35
     },
     {
       "id": 44,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
-      "text": "A neighborhood Italian spot getting Essentials + reservation integration + photo direction lands around 3,400 dollars .",
-      "start": 426.28,
-      "end": 433.9
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(7)",
+      "text": "品牌识别（logo, 颜色, 字体, 品牌板）+1,500美元–3,000美元",
+      "start": 415.67,
+      "end": 421.67
     },
     {
       "id": 45,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
-      "text": "A bistro adding a real self-serve menu C M S, online ordering, and Google Business Profile work lands around 6,500 dollars .",
-      "start": 434.22,
-      "end": 442.94
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(8)",
+      "text": "多地点路由和店铺定位器 +1,000美元–2,500美元",
+      "start": 421.99,
+      "end": 426.71
     },
     {
       "id": 46,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
-      "text": "A two-location group adding multi-location routing and direct P O S integration lands around 11,000 dollars .",
-      "start": 443.26,
-      "end": 451.74
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(9)",
+      "text": "直接POS集成（Toast, Square, Lightspeed API）+1,500美元–3,500美元",
+      "start": 427.03,
+      "end": 434.19
     },
     {
       "id": 47,
-      "kind": "figure",
-      "selector": "#post-body > figure:nth-of-type(2)",
-      "text": "Three example restaurant website bundles showing what drives the price: Neighborhood Italian at 3,400 dollars (base build plus reservation integration plus photo direction), Bistro at 6,500 dollars (base build plus menu C M S, online ordering, and Google Business Profile), Two-Location Group at 11,000 dollars (base build plus multi-location routing plus direct P O S integration).",
-      "start": 452.54,
-      "end": 476.56
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(10)",
+      "text": "自定义订购结账（您的支付处理器, 您的利润率）+2,000美元–4,500美元",
+      "start": 434.51,
+      "end": 440.6
     },
     {
       "id": 48,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(5)",
-      "text": "What you are actually paying for.",
-      "start": 477.66,
-      "end": 479.69
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(21)",
+      "text": "三个真实的例子，使价格范围感觉不那么抽象：",
+      "start": 440.95,
+      "end": 445.25
     },
     {
       "id": 49,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(20)",
-      "text": "The line items above are only half the story. The other half is the work that never shows up on an invoice, but shows up in the finished product anyway:",
-      "start": 480.39,
-      "end": 489.4
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(1)",
+      "text": "一家邻里意大利餐厅获取基础功能 + 预订集成 + 摄影指导，大约花费 3,400美元。",
+      "start": 445.6,
+      "end": 453.35
     },
     {
       "id": 50,
-      "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(5)",
-      "text": "Strategy conversations.",
-      "start": 490.5,
-      "end": 492.43
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(2)",
+      "text": "一家小酒馆添加真正的自助菜单CMS、在线订购和Google Business Profile工作，大约花费 6,500美元。",
+      "start": 453.67,
+      "end": 462.44
     },
     {
       "id": 51,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(21)",
-      "text": "Before any design happens, you need someone asking the uncomfortable questions. Why is your current site not working? Which pages are earning their keep? Which ones are dead weight? A good studio starts with an hour of conversation that exposes what is actually broken before anyone picks a font.",
-      "start": 493.13,
-      "end": 507.61
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(3)",
+      "text": "一家两地点的集团添加多地点路由和直接POS集成，大约花费 11,000美元。",
+      "start": 462.76,
+      "end": 470.3
     },
     {
       "id": 52,
-      "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(6)",
-      "text": "Copy.",
-      "start": 508.71,
-      "end": 509.47
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(2)",
+      "text": "三个示例餐厅网站套餐，展示了驱动价格的因素：邻里意大利餐厅 3,400美元（基础构建 + 预订集成 + 摄影指导），小酒馆 6,500美元（基础构建 + 菜单CMS + 在线订购 + Google Business Profile），两地点集团 11,000美元（基础构建 + 多地点路由 + 直接POS集成）。",
+      "start": 471.1,
+      "end": 493.68
     },
     {
       "id": 53,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(22)",
-      "text": "Template sites assume you already wrote your copy. You probably did not — and even if you did, it was probably written for the old menu you have since changed. Good studios either write it for you or edit yours into something that actually sells the room.",
-      "start": 510.17,
-      "end": 524.19
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "您实际支付的费用。",
+      "start": 494.78,
+      "end": 496.5
     },
     {
       "id": 54,
-      "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(7)",
-      "text": "S E O fundamentals.",
-      "start": 525.29,
-      "end": 527.03
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(22)",
+      "text": "上面的项目仅是故事的一半。另一半是永远不会出现在发票上的工作，但最终会出现在完成的产品中：",
+      "start": 497.2,
+      "end": 506.48
     },
     {
       "id": 55,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(23)",
-      "text": "Title tags, meta descriptions, schema markup, a sitemap, H T T P S, alt text, a working contact form, a Google Business Profile that matches the site. None of these show up in a portfolio. All of them take time. All of them are why you show up on Google at all. (If you want to see how many of these your current site is missing, the free Restaurant Website Audit will run through them in about thirty seconds.)",
-      "start": 527.73,
-      "end": 550.08
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(5)",
+      "text": "战略对话。",
+      "start": 507.58,
+      "end": 508.4
     },
     {
       "id": 56,
-      "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(8)",
-      "text": "Mobile testing.",
-      "start": 551.18,
-      "end": 553.03
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(23)",
+      "text": "在设计开始之前，您需要有人提出不舒服的问题。为什么您的当前网站不起作用？哪些页面值得保留？哪些页面是死重量？一个好的工作室从一小时的对话开始，暴露实际上破碎的东西，然后再选择字体。",
+      "start": 509.1,
+      "end": 524.09
     },
     {
       "id": 57,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(24)",
-      "text": "Your cousin's Android, your friend's iPhone 12, the cheap tablet at the hostess stand. Real testing on real devices — not the desktop browser's \"responsive view,\" which lies about half the bugs.",
-      "start": 553.73,
-      "end": 565.83
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(6)",
+      "text": "文案。",
+      "start": 525.19,
+      "end": 525.61
     },
     {
       "id": 58,
-      "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(9)",
-      "text": "Accessibility.",
-      "start": 566.93,
-      "end": 568.44
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(24)",
+      "text": "模板网站假设您已经写好了文案。您可能没有——即使您写了，也可能是为旧菜单写的，而您已经更换了菜单。好的工作室要么为您写文案，要么编辑您的文案，使其真正卖出房间。",
+      "start": 526.31,
+      "end": 539.58
     },
     {
       "id": 59,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(25)",
-      "text": "Keyboard navigation, screen reader support, sufficient color contrast, proper form labels. Half of this is legally required depending on your state. None of it is optional for a site you want people to actually use — including the people with arthritis, reading glasses, and low-end phones who make up a real slice of your customers.",
-      "start": 569.14,
-      "end": 586.45
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(7)",
+      "text": "SEO基础。",
+      "start": 540.68,
+      "end": 542.55
     },
     {
       "id": 60,
-      "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(10)",
-      "text": "Care after launch.",
-      "start": 587.55,
-      "end": 589.15
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(25)",
+      "text": "标题标签、元描述、schema markup、站点地图、HTTPS、替代文本、有效的联系表单、与网站匹配的Google Business Profile。这些都不会出现在作品集中。所有这些都需要时间。所有这些都是您出现在Google上的原因。（如果您想看到您的当前网站缺少多少这些，请使用免费的餐厅网站审计工具，大约30秒钟即可完成。）",
+      "start": 543.25,
+      "end": 568.47
     },
     {
       "id": 61,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(26)",
-      "text": "Updating a menu price in thirty seconds instead of three days. Catching a broken contact form before a customer does. Replacing a dead photo plugin before it takes down the homepage on a Friday night. This is where freelancers disappear and studios earn their retainers.",
-      "start": 589.85,
-      "end": 604.7
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(8)",
+      "text": "移动测试。",
+      "start": 569.57,
+      "end": 570.61
     },
     {
       "id": 62,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(6)",
-      "text": "Red flags on both ends.",
-      "start": 605.8,
-      "end": 607.83
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(26)",
+      "text": "您的表弟的安卓手机，您朋友的iPhone 12，女主人台的廉价平板电脑。在真实设备上进行真实测试——而不是桌面浏览器的“响应式视图”，它会对一半的错误撒谎。",
+      "start": 571.31,
+      "end": 584.16
     },
     {
       "id": 63,
-      "kind": "figure",
-      "selector": "#post-body > figure:nth-of-type(3)",
-      "text": "Red flags to watch for: five signs a website quote is suspiciously cheap, and four signs it is overpriced.",
-      "start": 608.63,
-      "end": 615.62
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(9)",
+      "text": "无障碍访问。",
+      "start": 585.26,
+      "end": 586.41
     },
     {
       "id": 64,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(7)",
-      "text": "The realistic timeline.",
-      "start": 616.72,
-      "end": 618.22
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(27)",
+      "text": "键盘导航、屏幕阅读器支持、足够的颜色对比、适当的表单标签。其中一半在某些州是法律要求的。对于您想要人们实际使用的网站来说，所有这些都是必不可少的——包括患有关节炎、阅读眼镜和低端手机的顾客，他们占据了您客户群的一部分。",
+      "start": 587.11,
+      "end": 604.39
     },
     {
       "id": 65,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(27)",
-      "text": "A good 5,000 dollars to 9,000 dollars custom restaurant website launches in four to six weeks . Here is what a real calendar looks like:",
-      "start": 618.92,
-      "end": 628.57
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(10)",
+      "text": "上线后的维护。",
+      "start": 605.49,
+      "end": 606.62
     },
     {
       "id": 66,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(1)",
-      "text": "Week 1 — Kickoff call, brand audit, content gathering, photo review, menu audit, P O S and reservation system inventory.",
-      "start": 628.92,
-      "end": 638.36
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(28)",
+      "text": "在30秒内更新菜单价格，而不是三天。发现并修复联系表单的错误，以免顾客先发现。更换死掉的照片插件，以免它在星期五晚上使主页崩溃。这就是自由职业者消失，而工作室赚取保留费的地方。",
+      "start": 607.32,
+      "end": 622
     },
     {
       "id": 67,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(2)",
-      "text": "Week 2 — Sitemap, wireframes, first full design pass.",
-      "start": 638.68,
-      "end": 643
+      "kind": "quote",
+      "selector": "#post-body > blockquote:nth-of-type(1)",
+      "text": "廉价的报价和昂贵的报价往往会产生相同的网站。中等报价才是包含了双方都认为需要做的工作的报价。",
+      "start": 622.75,
+      "end": 632.15
     },
     {
       "id": 68,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(3)",
-      "text": "Week 3 — Design iteration based on feedback, second design pass, content entry starts.",
-      "start": 643.32,
-      "end": 649.91
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(6)",
+      "text": "双方都有红旗。",
+      "start": 633.25,
+      "end": 634.87
     },
     {
       "id": 69,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(4)",
-      "text": "Week 4 — Development, integrations, mobile QA on real devices.",
-      "start": 650.23,
-      "end": 655.61
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(3)",
+      "text": "需要注意的红旗：五个迹象表明网站报价可疑地便宜，四个迹象表明它过于昂贵。",
+      "start": 635.67,
+      "end": 642.33
     },
     {
       "id": 70,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(5)",
-      "text": "Week 5 — Launch prep, final content review, pre-launch accessibility and speed audit.",
-      "start": 655.93,
-      "end": 662.43
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(7)",
+      "text": "现实的时间表。",
+      "start": 643.43,
+      "end": 645.14
     },
     {
       "id": 71,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(6)",
-      "text": "Week 6 — Launch, Google Business Profile updates, handoff documentation, and the first week of live monitoring.",
-      "start": 662.75,
-      "end": 671.22
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(29)",
+      "text": "一个好的5,000美元到9,000美元的定制餐厅网站需要四到六周才能上线。以下是真正的日历看起来像什么：",
+      "start": 645.84,
+      "end": 654.54
     },
     {
       "id": 72,
-      "kind": "figure",
-      "selector": "#post-body > figure:nth-of-type(4)",
-      "text": "A six-week project timeline for a custom restaurant website: Week 1 Discovery, Week 2 Design, Week 3 Iteration, Week 4 Build, Week 5 Launch Prep, Week 6 Launch.",
-      "start": 672.02,
-      "end": 684.76
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(1)",
+      "text": "第1周 — 启动电话会议、品牌审计、内容收集、照片审查、菜单审计、POS和预订系统库存。",
+      "start": 654.89,
+      "end": 663.13
     },
     {
       "id": 73,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(28)",
-      "text": "Anything faster than three weeks is suspicious — nobody can design, build, and launch a good custom site in two weeks unless it is actually a template with a new logo. Anything slower than eight weeks usually means the scope was not clear from day one and the project is bleeding time on revision rounds.",
-      "start": 685.51,
-      "end": 700.85
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(2)",
+      "text": "第2周 — 网站地图、线框图、第一次完整的设计草稿。",
+      "start": 663.45,
+      "end": 667.71
     },
     {
       "id": 74,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(8)",
-      "text": "What to budget for after launch.",
-      "start": 701.95,
-      "end": 704.13
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(3)",
+      "text": "第3周 — 根据反馈进行设计迭代、第二次设计草稿、内容输入开始。",
+      "start": 668.03,
+      "end": 673.77
     },
     {
       "id": 75,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(29)",
-      "text": "A website is not a one-time purchase. Most independent restaurants should budget 125 dollars to 350 dollars per month for ongoing care, which covers:",
-      "start": 704.83,
-      "end": 715.53
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(4)",
+      "text": "第4周 — 开发、集成、移动设备上的真实设备测试。",
+      "start": 674.09,
+      "end": 678.6
     },
     {
       "id": 76,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(1)",
-      "text": "Hosting, SSL, and domain maintenance",
-      "start": 715.88,
-      "end": 719.74
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(5)",
+      "text": "第5周 — 上线准备、最终内容审查、上线前无障碍和速度审计。",
+      "start": 678.92,
+      "end": 684.69
     },
     {
       "id": 77,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(2)",
-      "text": "Security patches and software updates",
-      "start": 720.06,
-      "end": 723
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(6)",
+      "text": "第6周 — 上线、Google Business Profile更新、交接文档，以及第一周的实时监控。",
+      "start": 685.01,
+      "end": 691.91
     },
     {
       "id": 78,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(3)",
-      "text": "Menu changes, hours updates, new photos, seasonal specials",
-      "start": 723.32,
-      "end": 728.31
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(4)",
+      "text": "定制餐厅网站的六周项目时间表：第1周发现、第2周设计、第3周迭代、第4周构建、第5周上线准备、第6周上线。",
+      "start": 692.71,
+      "end": 702.38
     },
     {
       "id": 79,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(4)",
-      "text": "Broken-link and form monitoring",
-      "start": 728.63,
-      "end": 731.09
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(30)",
+      "text": "任何快于三周的项目都令人怀疑 —— 除非它实际上是一个带有新标志的模板，否则没有人能够在两周内设计、构建和上线一个好的定制网站。任何慢于八周的项目通常意味着项目范围从第一天开始就不明确，项目正在因修订轮而流失时间。",
+      "start": 703.13,
+      "end": 721.01
     },
     {
       "id": 80,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(5)",
-      "text": "Performance and uptime monitoring",
-      "start": 731.41,
-      "end": 734.06
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(8)",
+      "text": "上线后的预算。",
+      "start": 722.11,
+      "end": 723.39
     },
     {
       "id": 81,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(6)",
-      "text": "Emergency fixes when something breaks on a Friday night",
-      "start": 734.38,
-      "end": 738.18
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(31)",
+      "text": "网站不是一次性购买。大多数独立餐厅应该预算每月125美元到350美元用于持续维护，这包括：",
+      "start": 724.09,
+      "end": 732.75
     },
     {
       "id": 82,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(30)",
-      "text": "Skipping the care plan and hoping nothing breaks is how most small business sites rot within eighteen months. \"I will call my developer when I need something\" becomes \"my developer stopped responding\" becomes \"I am paying someone new five hundred dollars to fix what should have been a two-minute update.\" The care plan is insurance you actually use.",
-      "start": 738.53,
-      "end": 755.28
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(1)",
+      "text": "托管、SSL和域名维护",
+      "start": 733.1,
+      "end": 735.18
     },
     {
       "id": 83,
-      "kind": "quote",
-      "selector": "#post-body > p:nth-of-type(31)",
-      "text": "If your developer disappears after launch, the site you paid for starts dying on day one.",
-      "start": 756.03,
-      "end": 761.15
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(2)",
+      "text": "安全补丁和软件更新",
+      "start": 735.5,
+      "end": 737.35
     },
     {
       "id": 84,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(9)",
-      "text": "So what is the right number for your restaurant?",
-      "start": 762.25,
-      "end": 765.24
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(3)",
+      "text": "菜单更改、营业时间更新、新照片、季节特价",
+      "start": 737.67,
+      "end": 741.71
     },
     {
       "id": 85,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(32)",
-      "text": "If you are a single-location independent trying to get off Wix and onto something that actually matches the room:",
-      "start": 765.94,
-      "end": 772.73
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(4)",
+      "text": "断链和表单监控",
+      "start": 742.03,
+      "end": 743.69
     },
     {
       "id": 86,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(1)",
-      "text": "Your budget floor is 2,500 dollars .",
-      "start": 773.08,
-      "end": 775.71
+      "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(5)",
+      "text": "性能和正常运行时间监控",
+      "start": 744.01,
+      "end": 746.85
     },
     {
       "id": 87,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(2)",
-      "text": "Your realistic mid-range is 5,000 dollars to 9,000 dollars .",
-      "start": 776.03,
-      "end": 781.38
+      "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(6)",
+      "text": "星期五晚上出现故障时的紧急修复",
+      "start": 747.17,
+      "end": 750.56
     },
     {
       "id": 88,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(3)",
-      "text": "Budget another 125 dollars to 350 dollars a month for ongoing care after launch.",
-      "start": 781.7,
-      "end": 788.72
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(32)",
+      "text": "跳过维护计划并希望没有什么会坏掉，这就是大多数小型企业网站在十八个月内腐烂的原因。“我需要时会打电话给我的开发者”变成了“我的开发者停止了响应”变成了“支付给新人500美元来修复本应该是两分钟更新的东西”。维护计划是你实际使用的保险。",
+      "start": 750.91,
+      "end": 770.71
     },
     {
       "id": 89,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(4)",
-      "text": "Your timeline should be four to six weeks .",
-      "start": 789.04,
-      "end": 791.46
+      "kind": "quote",
+      "selector": "#post-body > p:nth-of-type(33)",
+      "text": "如果你的开发者在上线后消失，你支付的网站将从第一天开始死亡。",
+      "start": 771.46,
+      "end": 777.72
     },
     {
       "id": 90,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(5)",
-      "text": "You should be talking directly to the person who will build it.",
-      "start": 791.78,
-      "end": 795.69
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(9)",
+      "text": "那么，对于你的餐厅来说，什么是正确的数字？",
+      "start": 778.82,
+      "end": 782.32
     },
     {
       "id": 91,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(33)",
-      "text": "If you want a real number for your own situation, the fastest way to get one is a twenty-minute Zoom call. We will cover your current site, your menu, your P O S, your reservation workflow, and your budget — then you will have a written estimate in your inbox within an hour of hanging up.",
-      "start": 796.21,
-      "end": 811.15
+      "selector": "#post-body > p:nth-of-type(34)",
+      "text": "如果你是一家单一地点的独立餐厅，想要摆脱Wix，转移到真正匹配房间的东西：",
+      "start": 783.02,
+      "end": 790.4
+    },
+    {
+      "id": 92,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(7) > li:nth-of-type(1)",
+      "text": "你的预算底线是2,500美元。",
+      "start": 790.75,
+      "end": 792.84
+    },
+    {
+      "id": 93,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(7) > li:nth-of-type(2)",
+      "text": "你的现实中等预算是5,000美元到9,000美元。",
+      "start": 793.16,
+      "end": 797.68
+    },
+    {
+      "id": 94,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(7) > li:nth-of-type(3)",
+      "text": "上线后再预算每月125美元到350美元用于持续维护。",
+      "start": 798,
+      "end": 803.68
+    },
+    {
+      "id": 95,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(7) > li:nth-of-type(4)",
+      "text": "你的时间表应该是四到六周。",
+      "start": 804,
+      "end": 806.31
+    },
+    {
+      "id": 96,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(7) > li:nth-of-type(5)",
+      "text": "",
+      "start": 806.63,
+      "end": 806.63
+    },
+    {
+      "id": 97,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(35)",
+      "text": "如果你想要一个适合自己情况的真实数字，获取它的最快方式就是进行一个20分钟的Zoom通话。我们将讨论你的当前网站、菜单、P O S（点餐系统）、预订工作流程和预算——然后，在挂断电话后1小时内，你将在邮箱中收到一份书面估价。",
+      "start": 806.98,
+      "end": 825.45
+    },
+    {
+      "id": 98,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(36)",
+      "text": "关键要点",
+      "start": 825.8,
+      "end": 826.71
+    },
+    {
+      "id": 99,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(8) > li:nth-of-type(1)",
+      "text": "纯粹的设计优化并不能带来预订量的增长——加载速度、移动端用户体验（U X）和搜索引擎优化（S E O）基础才是关键。",
+      "start": 827.06,
+      "end": 837.35
+    },
+    {
+      "id": 100,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(8) > li:nth-of-type(2)",
+      "text": "一个真正的定制网站通常在12-18个月内就能收回成本，前提是月收入超过$40,000。",
+      "start": 837.67,
+      "end": 846.26
+    },
+    {
+      "id": 101,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(8) > li:nth-of-type(3)",
+      "text": "低价端的警示信号：没有合同、没有Lighthouse评分保证、没有源代码交付。",
+      "start": 846.58,
+      "end": 852.85
+    },
+    {
+      "id": 102,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(8) > li:nth-of-type(4)",
+      "text": "高价端的警示信号：在制作模拟图之前需要“探索阶段”，需要为你自己应该做的内容更新支付保留费。",
+      "start": 853.17,
+      "end": 861.95
+    },
+    {
+      "id": 103,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(8) > li:nth-of-type(5)",
+      "text": "在获取任何报价之前，先在你的当前网站上运行Tech Stack Detector——基准测试很重要。",
+      "start": 862.27,
+      "end": 870.35
     }
   ]
 }

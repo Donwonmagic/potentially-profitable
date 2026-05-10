@@ -1,267 +1,379 @@
 {
   "version": 1,
-  "generatedAt": "2026-04-24T19:30:14.868Z",
+  "generatedAt": "2026-05-10T05:25:18.793Z",
   "engine": "kokoro",
   "model": "kokoro-v1.0.onnx",
   "voice": "im_nicola",
   "language": "it",
-  "total": 602.29,
+  "total": 780.71,
   "chunks": [
     {
       "id": 0,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(1)",
-      "text": "Most independent restaurants run somewhere between 4 and 8 points of operating margin in a good year. In a year like this one — food cost up, labor up, rent up, insurance up — that margin has narrowed by two or three points, and the conversation at every operator meetup I go to eventually turns to the same sentence: \"I just need to find another point or two of margin and I will be fine.\"",
+      "text": "Leggi questo articolo in italiano &rarr;",
       "start": 0,
-      "end": 22.69
+      "end": 2.85
     },
     {
       "id": 1,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(2)",
-      "text": "Here is the honest news. You probably can. Not by cutting staff, not by shrinking portions, not by switching suppliers to a cheaper sysco line that your regulars will absolutely notice. By fixing five small things on your website. Each one is under an hour of work. Individually, none of them will change your year. Stacked, they return roughly one full point of margin — which, on a typical single-location independent restaurant doing 1.2 dollars–1.5 dollarsM in revenue, works out to 8,000 dollars–15,000 dollars a year . Every year. Compounding.",
-      "start": 23.04,
-      "end": 59.51
+      "text": "TL;DR",
+      "start": 3.2,
+      "end": 4.31
     },
     {
       "id": 2,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(3)",
-      "text": "The five moves are boring. That is the point. Restaurant owners hear \"website optimization\" and their head goes to a six-month redesign project with a consultant, a pitch deck, and a 30,000 dollars invoice. What I am describing is five fixes you can do with your own hands between Sunday evening and Monday lunch. Your exact numbers will vary — bigger restaurants recover more dollars on the same percentage, higher-trafficked sites compound the wins — but the shape of these five moves shows up on every independent restaurant site I audit.",
-      "start": 60.03,
-      "end": 91.43
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Cinque piccoli aggiustamenti al sito web, nessuno dei quali richiede una ridesign, si traducono in una ripresa di margine di circa l'1% per un ristorante di media entità.",
+      "start": 4.66,
+      "end": 16.53
     },
     {
       "id": 3,
-      "kind": "figure",
-      "selector": "#post-body > figure:nth-of-type(1)",
-      "text": "Here is the stack. Five website changes, each one contributing a small slice of margin recovery. Move one: make your hours visible above the fold on every page. Recovers about a fifth of a point of margin by converting visitors who currently bounce because they cannot tell if you are open. Move two: put a single primary reservation call to action in one obvious place, not three weaker ones competing for attention. Recovers another quarter point by eliminating decision friction. Move three: add a direct own-ordering link to your homepage, above the fold, in a color that does not blend into the design. Recovers about three tenths of a point by shifting delivery orders off DoorDash. Move four: rewrite descriptions on the three or four menu items with the highest profit margin so they are the ones guests are most likely to pick. Recovers about fifteen hundredths of a point just by steering order mix. Move five: delete every stale discount, expired promo banner, and outdated P D F menu on your site. Recovers another tenth of a point by eliminating price confusion and trust breaks. Five small moves, stacked. Total: roughly one full point of profit margin. On a typical independent restaurant, that is eight to fifteen thousand dollars a year.",
-      "start": 92.23,
-      "end": 160.32
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Ogni modifica è indipendente — scegli quella più facile nel tuo contesto e mettila online questa settimana.",
+      "start": 16.85,
+      "end": 24.05
     },
     {
       "id": 4,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(4)",
-      "text": "Here&rsquo;s each move up close, with the actual hour of work it takes.",
-      "start": 161.07,
-      "end": 166.03
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "L'argomentazione della somma è matematica onesta, non una trovata pubblicitaria: ogni punto percentuale vale $X all'anno al tuo volume.",
+      "start": 24.37,
+      "end": 34.15
     },
     {
       "id": 5,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(1)",
-      "text": "Move 1 — Hours visible above the fold &middot; +0.20%.",
-      "start": 167.13,
-      "end": 171.83
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "La maggior parte dei ristoranti indipendenti ha un margine operativo che oscilla tra 4 e 8 punti in un anno buono. In un anno come questo — con i costi del cibo in aumento, del lavoro in aumento, dell'affitto in aumento, delle assicurazioni in aumento — quel margine si è ridotto di due o tre punti, e la conversazione in ogni incontro di operatori a cui partecipo alla fine si riduce sempre alla stessa frase: \"Ho solo bisogno di trovare un altro punto o due di margine e starò bene.\"",
+      "start": 34.67,
+      "end": 65.3
     },
     {
       "id": 6,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(5)",
-      "text": "The most common question on a restaurant website is \"are you open right now.\" The most common place that question gets answered is the footer , or on a separate Contact page three clicks away. That gap — between what the guest came to find and where you put it — is the single highest-leverage leak on most independent restaurant sites.",
-      "start": 172.53,
-      "end": 191.82
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "Ecco la notizia onesta. Probabilmente ci riesci. Non tagliando lo staff, non riducendo le porzioni, non cambiando i fornitori con una linea Sysco più economica che i tuoi clienti abituali noteranno sicuramente. Ma correggendo cinque piccole cose sul tuo sito web. Ognuna di esse richiede meno di un'ora di lavoro. Individualmente, nessuna di esse cambierà il tuo anno. Ma sommate, restituiscono circa un punto intero di margine — che, per un ristorante indipendente a gestione singola con un fatturato di 1,2-1,5 milioni di dollari, si traduce in 8.000-15.000 dollari all'anno. Ogni anno. Con interessi composti.",
+      "start": 65.65,
+      "end": 103.88
     },
     {
       "id": 7,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(6)",
-      "text": "Put your hours in the hero. Or in a sticky bar under the nav. Or as a small \"Open now &middot; until 10 PM\" indicator that updates with a little JavaScript. Any of these work; the specific implementation matters less than the principle: the visitor should see whether you&rsquo;re open within three seconds of the page loading, without scrolling, without clicking.",
-      "start": 192.34,
-      "end": 212.65
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "I cinque passi sono noiosi. È questo il punto. I proprietari di ristoranti sentono \"ottimizzazione del sito web\" e pensano a un progetto di ridesign di sei mesi con un consulente, una presentazione e una fattura da 30.000 dollari. Quello che sto descrivendo sono cinque correzioni che puoi fare con le tue mani tra la sera di domenica e il pranzo di lunedì. I tuoi numeri esatti varieranno — i ristoranti più grandi recuperano più dollari con lo stesso percentage, i siti con più traffico sommano le vincite — ma la forma di questi cinque passi si presenta in ogni sito di ristoranti indipendenti che audito.",
+      "start": 104.4,
+      "end": 142.88
     },
     {
       "id": 8,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(7)",
-      "text": "The hour of work: write today&rsquo;s hours into the hero section of your homepage and every page that has a visible header block. If you&rsquo;re on Wix or Squarespace, this is a 10-minute content edit. If you&rsquo;re on a custom site, it&rsquo;s 30 minutes with a web developer. Either way, one hour tops.",
-      "start": 213.17,
-      "end": 232.03
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "Ecco la pila. Cinque modifiche al sito web, ognuna delle quali contribuisce a una piccola fetta di recupero del margine. Passo uno: rendi le tue ore visibili sopra la piega in ogni pagina. Recupera circa un quinto di punto di margine convertendo i visitatori che attualmente abbandonano il sito perché non possono capire se sei aperto. Passo due: metti un'unica azione primaria di prenotazione in un posto ovvio, non tre azioni più deboli che competono per l'attenzione. Recupera un altro quarto di punto eliminando la frizione decisionale. Passo tre: aggiungi un link di ordinazione diretta alla tua homepage, sopra la piega, in un colore che non si confonde con il design. Recupera circa tre decimi di punto spostando gli ordini di consegna fuori da DoorDash. Passo quattro: riscrivi le descrizioni dei tre o quattro piatti del menu con il margine di profitto più alto in modo che siano quelli che gli ospiti sono più probabili a scegliere. Recupera circa quindici centesimi di punto solo dirigendo la miscela degli ordini. Passo cinque: elimina ogni sconto scaduto, ogni banner promozionale scaduto e ogni menu PDF obsoleto sul tuo sito. Recupera un altro decimo di punto eliminando la confusione dei prezzi e le rotture della fiducia. Cinque piccoli passi, impilati. Totale: circa un punto intero di margine di profitto. Per un ristorante indipendente tipico, si tratta di 8.000-15.000 dollari all'anno.",
+      "start": 143.68,
+      "end": 227.88
     },
     {
       "id": 9,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(2)",
-      "text": "Move 2 — One primary reservation C T A &middot; +0.25%.",
-      "start": 233.13,
-      "end": 238.73
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "Ecco ogni passo da vicino, con l'effettiva ora di lavoro che richiede.",
+      "start": 228.63,
+      "end": 232.82
     },
     {
       "id": 10,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(8)",
-      "text": "Most restaurant sites have the reservation C T A in three places: a button in the nav, a block in the middle of the homepage, and a \"Book now\" callout in the footer. Each one is a different color, a different size, and — critically — sometimes even points to different destinations (OpenTable for the nav, a phone number for the middle, an email for the footer).",
-      "start": 239.43,
-      "end": 259.53
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Passo 1 — Ore visibili sopra la piega &middot; +0,20%.",
+      "start": 233.92,
+      "end": 238.83
     },
     {
       "id": 11,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(9)",
-      "text": "Pick one. Make it prominent. Point all of them at the same place. The neuroscience here is boring and well-documented: when you give a visitor two equal-weighted options for the same action, they pick neither and leave. When you give them one, they pick it.",
-      "start": 260.05,
-      "end": 275.17
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "La domanda più comune su un sito web di ristorante è \"sei aperto adesso\". La risposta a questa domanda si trova più spesso nel footer o in una pagina di contatto separata, tre clic più in là. Questo gap — tra ciò che il cliente è venuto a cercare e dove l'hai messo — è la perdita più critica nella maggior parte dei siti web di ristoranti indipendenti.",
+      "start": 239.53,
+      "end": 259.75
     },
     {
       "id": 12,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(10)",
-      "text": "The hour of work: decide which reservation destination is your primary (OpenTable? Resy? Your own form?). Update the three C T A spots to all point there, same label, same visual weight. If you want to keep the phone number as a secondary option, put it in small text next to the main button, not competing with it.",
-      "start": 275.69,
-      "end": 294.15
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "Metti le tue ore nel hero. O in una barra appiccicosa sotto la navigazione. O come un piccolo indicatore \"Aperto adesso · fino alle 22:00\" che si aggiorna con un po' di JavaScript. Qualsiasi di questi funziona; l'implementazione specifica conta meno del principio: il visitatore dovrebbe vedere se sei aperto entro tre secondi dal caricamento della pagina, senza scorrere, senza cliccare.",
+      "start": 260.27,
+      "end": 283.22
     },
     {
       "id": 13,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(3)",
-      "text": "Move 3 — Direct own-ordering link up top &middot; +0.30%.",
-      "start": 295.25,
-      "end": 300.74
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "L'ora di lavoro: scrivi le ore di oggi nella sezione hero della tua homepage e di ogni pagina che ha un blocco di intestazione visibile. Se sei su Wix o Squarespace, si tratta di una modifica al contenuto di 10 minuti. Se sei su un sito personalizzato, sono 30 minuti con uno sviluppatore web. In ogni caso, un'ora al massimo.",
+      "start": 283.74,
+      "end": 303.51
     },
     {
       "id": 14,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(11)",
-      "text": "This one&rsquo;s the biggest single win, and it&rsquo;s also the one most restaurants accidentally sabotage. If you use Square or Toast for P O S, you already have an own-ordering page at something like yourrestaurant.square.site or yourrestaurant.toasttab.com . Most restaurants bury that link three clicks deep in a \"Takeout\" page that nobody finds. Meanwhile the DoorDash button on your homepage is huge and yellow.",
-      "start": 301.44,
-      "end": 326.34
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Mossa 2 — Un'unica CTA di prenotazione primaria · +0,25%.",
+      "start": 304.61,
+      "end": 310.29
     },
     {
       "id": 15,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(12)",
-      "text": "Put the own-ordering link in the nav, above the fold, in a visually strong button. If you&rsquo;re going to keep a DoorDash link, put it below your own link, smaller, with something like \"or order via DoorDash &rarr;\" so the guest who wants the DoorDash experience still has it but the default path is your direct site.",
-      "start": 326.86,
-      "end": 345.48
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "La maggior parte dei siti web di ristoranti ha la CTA di prenotazione in tre posti: un pulsante nella navigazione, un blocco al centro della homepage e un richiamo \"Prenota adesso\" nel footer. Ognuno di essi è di un colore diverso, di una dimensione diversa e — criticamente — a volte punta anche a destinazioni diverse (OpenTable per la navigazione, un numero di telefono per il centro, un indirizzo email per il footer).",
+      "start": 310.99,
+      "end": 333.55
     },
     {
       "id": 16,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(13)",
-      "text": "The math here is leveraged: every direct order you steal back from DoorDash is roughly 20% more margin on that order. Even shifting 15% of weekly delivery volume to direct ordering recovers real money.",
-      "start": 346,
-      "end": 361.1
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "Scegli uno. Rendilo prominente. Puntali tutti allo stesso posto. La neuroscienza qui è noiosa e ben documentata: quando dai a un visitatore due opzioni con lo stesso peso per la stessa azione, non sceglie nessuna delle due e se ne va. Quando gliene dai una sola, la sceglie.",
+      "start": 334.07,
+      "end": 350.95
     },
     {
       "id": 17,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(14)",
-      "text": "The hour of work: add a single \"Order direct &rarr;\" button to your nav and your homepage hero, link it to your existing Square/Toast/other own-ordering page. Make sure the button is the brightest thing above the fold.",
-      "start": 361.62,
-      "end": 375.74
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "L'ora di lavoro: decidi quale destinazione di prenotazione è la tua primaria (OpenTable? Resy? Il tuo modulo?). Aggiorna i tre punti CTA per puntare tutti lì, con lo stesso etichetta, lo stesso peso visivo. Se vuoi tenere il numero di telefono come opzione secondaria, mettilo in piccolo testo accanto al pulsante principale, senza competere con esso.",
+      "start": 351.47,
+      "end": 372.14
     },
     {
       "id": 18,
       "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(4)",
-      "text": "Move 4 — Better descriptions on top-margin items &middot; +0.15%.",
-      "start": 376.84,
-      "end": 383.07
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Mossa 3 — Collegamento diretto per ordinare in alto · +0,30%.",
+      "start": 373.24,
+      "end": 378.59
     },
     {
       "id": 19,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(15)",
-      "text": "Look at your last 90 days of item-level sales. Rank every dish by contribution margin per cover — what that dish pays you after food cost. You&rsquo;ll find three or four items that are substantially more profitable than your average. On most menus, those are: the pasta with the cheap-grain base and the expensive-protein garnish, the pizza, the signature cocktail, and one dessert.",
-      "start": 383.77,
-      "end": 405.23
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "Questa è la vittoria più grande e più semplice, ed è anche quella che la maggior parte dei ristoranti sabota accidentalmente. Se usi Square o Toast per P O S, hai già una pagina di ordinazione diretta a qualcosa come yourrestaurant.square.site o yourrestaurant.toasttab.com. La maggior parte dei ristoranti seppellisce quel collegamento tre clic più in là in una pagina \"Takeout\" che nessuno trova. Nel frattempo, il pulsante DoorDash sulla tua homepage è enorme e giallo.",
+      "start": 379.29,
+      "end": 406.53
     },
     {
       "id": 20,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(16)",
-      "text": "Those are the items your menu descriptions should work hardest to sell. Most restaurants give their signature steak a three-paragraph description and leave the house pasta with two words. Invert that for the items you actually make money on. \"Orecchiette\" becomes \"Hand-cut orecchiette, slow-cooked lamb rag&ugrave;, pecorino from our supplier in Lazio since twenty nineteen — the dish the kitchen argues about.\" Now it&rsquo;s the dish the guest wants to order.",
-      "start": 405.75,
-      "end": 430.67
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "Metti il collegamento di ordinazione diretta nella navigazione, sopra la piega, in un pulsante visivamente forte. Se vuoi tenere un collegamento DoorDash, mettilo sotto il tuo collegamento, più piccolo, con qualcosa come \"o ordina via DoorDash →\" in modo che il cliente che vuole l'esperienza DoorDash possa ancora averla, ma il percorso predefinito sia il tuo sito diretto.",
+      "start": 407.05,
+      "end": 428.63
     },
     {
       "id": 21,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(17)",
-      "text": "The hour of work: identify your top 3–4 margin items, write 2 sentences each with specific sourcing / preparation / story detail. Update the menu page on your website.",
-      "start": 431.19,
-      "end": 443.89
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "La matematica qui è leverata: ogni ordine diretto che rubi a DoorDash è grossomodo il 20% di margine in più su quell'ordine. Anche spostare il 15% del volume di consegna settimanale all'ordinazione diretta recupera denaro reale.",
+      "start": 429.15,
+      "end": 446.05
     },
     {
       "id": 22,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(5)",
-      "text": "Move 5 — Delete every stale promo and old P D F &middot; +0.10%.",
-      "start": 444.99,
-      "end": 451.08
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "L'ora di lavoro: aggiungi un unico pulsante \"Ordina direttamente →\" alla tua navigazione e al tuo hero homepage, collegalo alla tua pagina di ordinazione diretta esistente Square/Toast/altro. Assicurati che il pulsante sia la cosa più luminosa sopra la piega.",
+      "start": 446.57,
+      "end": 464.62
     },
     {
       "id": 23,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(18)",
-      "text": "Walk your own website as if you were a first-time visitor with no context. You will find at least one: a happy-hour card that still references twenty twenty-three pricing, a banner promoting a summer special that ended in October, a P D F menu titled &ldquo;Fall twenty twenty-four&rdquo; still linked from a sidebar, a gift-card promo that expired six months ago.",
-      "start": 451.78,
-      "end": 472.59
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "Mossa 4 — Descrizioni migliori sugli articoli con margine superiore · +0,15%.",
+      "start": 465.72,
+      "end": 472.57
     },
     {
       "id": 24,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(19)",
-      "text": "Each of these is a tiny trust break. The guest sees one stale item and unconsciously starts to wonder what else on the site isn&rsquo;t current. That erodes the tiny moment of confidence that leads to a booking. Kill them all.",
-      "start": 473.11,
-      "end": 487.26
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "Guarda le tue vendite di singoli articoli degli ultimi 90 giorni. Classifica ogni piatto per margine di contribuzione per coperto — ciò che quel piatto ti paga dopo il costo del cibo. Troverai tre o quattro articoli che sono sostanzialmente più redditizi della tua media. Nella maggior parte dei menu, questi sono: i pasta con base a grano economico e guarnizione di proteine costose, la pizza, il cocktail signature e un dessert.",
+      "start": 473.27,
+      "end": 496.26
     },
     {
       "id": 25,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(20)",
-      "text": "The hour of work: open every page of your site, note every price / promo / seasonal reference that isn&rsquo;t current, remove or update. You&rsquo;ll find 4–8 of these on a typical site. None take more than 5 minutes each to fix.",
-      "start": 487.78,
-      "end": 504.65
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "Questi sono gli articoli per cui le tue descrizioni del menu dovrebbero lavorare più duramente per vendere. La maggior parte dei ristoranti dà al loro signature steak una descrizione di tre paragrafi e lascia la pasta della casa con due parole. Inverti questo per gli articoli di cui effettivamente ti guadagni. \"Orecchiette\" diventa \"Orecchiette fatte a mano, ragù di agnello cotto a lungo, pecorino del nostro fornitore nel Lazio dal 2019 — il piatto di cui la cucina discute\". Ora è il piatto che il cliente vuole ordinare.",
+      "start": 496.78,
+      "end": 528.13
     },
     {
       "id": 26,
-      "kind": "quote",
-      "selector": "#post-body > p:nth-of-type(21)",
-      "text": "Five moves. None of them are redesigns. None of them require a consultant. Done on a slow Sunday, they return one full point of margin — which is more than most restaurants will get from a year of switching suppliers.",
-      "start": 505.4,
-      "end": 518.68
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(19)",
+      "text": "L'ora di lavoro: identifica i tuoi 3-4 articoli con margine più alto, scrivi 2 frasi ciascuno con dettagli specifici di fornitura / preparazione / storia. Aggiorna la pagina del menu sul tuo sito web.",
+      "start": 528.65,
+      "end": 543.32
     },
     {
       "id": 27,
       "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(6)",
-      "text": "The honest compounding argument.",
-      "start": 519.78,
-      "end": 521.86
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "Mossa 5 — Elimina ogni promo stagnante e ogni vecchio P D F · +0,10%.",
+      "start": 544.42,
+      "end": 550.56
     },
     {
       "id": 28,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(22)",
-      "text": "One percent doesn&rsquo;t sound impressive in a pitch. It&rsquo;s the kind of number a consultant would bury on slide seven. But here&rsquo;s the thing about margin recovery on a restaurant: it compounds with volume. A restaurant doing 1.2 dollarsM/year that gains a point of margin gains 12 dollarsK. A restaurant doing 2.5 dollarsM that gains the same point gains 25 dollarsK. And next year, when you&rsquo;re doing a little more volume, the same stack of five moves returns a little more money — because the percentage is always against the larger revenue number.",
-      "start": 522.56,
-      "end": 559.97
+      "selector": "#post-body > p:nth-of-type(20)",
+      "text": "Visita il tuo stesso sito web come se fossi un visitatore per la prima volta senza contesto. Troverai almeno uno: una carta di happy hour che fa ancora riferimento ai prezzi del 2023, un banner che promuove una specialità estiva che è finita in ottobre, un menu P D F intitolato \"Autunno 2024\" ancora collegato da una barra laterale, una promo di gift card scaduta sei mesi fa.",
+      "start": 551.26,
+      "end": 573.95
     },
     {
       "id": 29,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(23)",
-      "text": "Over five years, a single point of margin on a growing independent restaurant is conservatively 60 dollarsK–100 dollarsK back in the business. That&rsquo;s a real thing. That&rsquo;s a year of a line cook&rsquo;s salary. That&rsquo;s a new hood vent. That&rsquo;s the down payment on the patio build-out you&rsquo;ve been putting off.",
-      "start": 560.49,
-      "end": 581.47
+      "selector": "#post-body > p:nth-of-type(21)",
+      "text": "Ognuno di questi è una piccola rottura della fiducia. Il cliente vede un articolo stagnante e inizia inconsciamente a chiedersi cosa altro sul sito non sia aggiornato. Ciò erode il piccolo momento di fiducia che porta a una prenotazione. Uccidili tutti.",
+      "start": 574.47,
+      "end": 590.74
     },
     {
       "id": 30,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(24)",
-      "text": "All five of these moves can be done this Sunday. None of them require hiring anybody. None of them require a redesign. They just require an hour of attention each, and the willingness to treat your website as an operating system for your restaurant, not as a brochure you did once and forgot.",
-      "start": 581.99,
-      "end": 599.1
+      "selector": "#post-body > p:nth-of-type(22)",
+      "text": "L'ora di lavoro: apri ogni pagina del tuo sito, annota ogni prezzo / promo / riferimento stagionale che non è aggiornato, rimuovi o aggiorna. Troverai 4-8 di questi su un sito tipico. Nessuno richiede più di 5 minuti ciascuno per essere risolto.",
+      "start": 591.26,
+      "end": 608.32
     },
     {
       "id": 31,
+      "kind": "quote",
+      "selector": "#post-body > p:nth-of-type(23)",
+      "text": "Cinque mosse. Nessuna di esse è una riduzione. Nessuna di esse richiede un consulente. Fatte in una domenica lenta, restituiscono un punto intero di margine — che è più di quanto la maggior parte dei ristoranti otterrà da un anno di cambio dei fornitori.",
+      "start": 609.07,
+      "end": 624.45
+    },
+    {
+      "id": 32,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(6)",
+      "text": "L'argomento onesto della capitalizzazione.",
+      "start": 625.55,
+      "end": 628.51
+    },
+    {
+      "id": 33,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(24)",
+      "text": "Abbinare con la documentazione",
+      "start": 629.21,
+      "end": 631.31
+    },
+    {
+      "id": 34,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(25)",
-      "text": "The margin is already there. Go get it.",
-      "start": 599.62,
-      "end": 602.29
+      "text": "La checklist di 12 punti funziona come un compagno stampabile per questo articolo. Apri su un telefono reale, visita ogni checkpoint con valutazioni di priorità e mantieni la lista dei punti come un CSV quando lo dai al tuo sviluppatore.",
+      "start": 631.66,
+      "end": 647.36
+    },
+    {
+      "id": 35,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(26)",
+      "text": "Checklist di conversione del sito web · Passa o fallisci per riga, con priorità di risoluzione per lo sviluppatore.",
+      "start": 647.88,
+      "end": 655.06
+    },
+    {
+      "id": 36,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(27)",
+      "text": "Un percentuale non sembra impressionante in una presentazione. È il tipo di numero che un consulente seppellirebbe sulla slide sette. Ma ecco la cosa sulla ripresa del margine in un ristorante: si capitalizza con il volume. Un ristorante che fa 1,2 milioni di dollari all'anno che guadagna un punto di margine guadagna 12.000 dollari. Un ristorante che fa 2,5 milioni di dollari che guadagna lo stesso punto guadagna 25.000 dollari. E l'anno prossimo, quando stai facendo un po' più di volume, lo stesso insieme di cinque mosse restituisce un po' più di denaro — perché la percentuale è sempre contro il numero di entrate più grande.",
+      "start": 655.58,
+      "end": 693.77
+    },
+    {
+      "id": 37,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(28)",
+      "text": "In oltre cinque anni, un solo punto di margine su un ristorante indipendente in crescita significa conservativamente 60 dollarsK–100 dollarsK in più per l'attività. È una cosa reale. È lo stipendio annuo di un cuoco di linea. È un nuovo sistema di ventilazione. È l'acconto per la costruzione del patio che hai rimandato.",
+      "start": 694.29,
+      "end": 714.59
+    },
+    {
+      "id": 38,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(29)",
+      "text": "Tutti e cinque di questi passi possono essere fatti già questa domenica. Nessuno di loro richiede l'assunzione di personale. Nessuno di loro richiede una ridesignazione. Richiedono solo un'ora di attenzione ciascuno, e la volontà di trattare il tuo sito web come un sistema operativo per il tuo ristorante, e non come un opuscolo che hai fatto una volta e dimenticato.",
+      "start": 715.11,
+      "end": 735.71
+    },
+    {
+      "id": 39,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(30)",
+      "text": "Il margine è già lì. Vai a prenderlo.",
+      "start": 736.23,
+      "end": 738.8
+    },
+    {
+      "id": 40,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(31)",
+      "text": "Punti chiave",
+      "start": 739.32,
+      "end": 740.23
+    },
+    {
+      "id": 41,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Ore sopra la piega: +0,20% di margine, 30 minuti di lavoro.",
+      "start": 740.58,
+      "end": 746.08
+    },
+    {
+      "id": 42,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Un solo pulsante di prenotazione primario C T A: +0,25%, sostituisce ogni altro link di prenotazione.",
+      "start": 746.4,
+      "end": 754.85
+    },
+    {
+      "id": 43,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "Link di ordinazione diretta in alto: +0,30%, batte ogni piattaforma di terze parti in termini di margine.",
+      "start": 755.17,
+      "end": 763.59
+    },
+    {
+      "id": 44,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "Descrizioni migliori degli articoli con margine più alto: +0,15%, richiede Menu Copy Inspector.",
+      "start": 763.91,
+      "end": 771.41
+    },
+    {
+      "id": 45,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(5)",
+      "text": "Elimina ogni promo scaduta e ogni vecchio P D F: +0,10%, la pulizia che nessuno programma ma che tutti hanno bisogno.",
+      "start": 771.73,
+      "end": 780.71
     }
   ]
 }

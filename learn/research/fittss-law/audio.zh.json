@@ -1,0 +1,107 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-09T21:26:41.634Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "zm_yunxi",
+  "language": "zh",
+  "total": 121.67,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "关键发现。",
+      "start": 0,
+      "end": 0.92
+    },
+    {
+      "id": 1,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "1954年，Paul Fitts基于快速目标获取实验正式提出。发现：到达目标的时间是一个可预测的函数，取决于目标的距离和大小。",
+      "start": 1.62,
+      "end": 12.3
+    },
+    {
+      "id": 2,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "经典公式：T = a + b · log₂(1 + D/W)，其中D是到目标的距离，W是目标的宽度，a和b是用户和设备的常数。目标越大，获取越快；目标越近，获取越快。",
+      "start": 12.62,
+      "end": 25.5
+    },
+    {
+      "id": 3,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "小按钮更容易被错过。iOS人机接口指南中44×44pt的最小点击目标不是一个风格偏好——它是对Fitts法则的适应。",
+      "start": 25.82,
+      "end": 36.91
+    },
+    {
+      "id": 4,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "屏幕边缘和角落是“无限”的。您可以在不受惩罚的情况下将其滑过，这就是为什么macOS将菜单栏固定在顶部边缘的原因。底部粘性移动CTA利用了相同的属性。",
+      "start": 37.23,
+      "end": 49.72
+    },
+    {
+      "id": 5,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(5)",
+      "text": "每一个额外的点击都会加剧损失。一个预订流程打开导航→选择“预订”→打开嵌入式页面，会叠加三个Fitts法则的惩罚。压缩总是会赢。",
+      "start": 50.04,
+      "end": 60.91
+    },
+    {
+      "id": 6,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Muntin如何使用它。",
+      "start": 62.01,
+      "end": 63.73
+    },
+    {
+      "id": 7,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "为什么您的餐厅每晚都会失去预订。泄漏编号4——“预订按钮被埋藏或丢失”——是Fitts法则在图书馆中发挥作用最大的地方。粘性底部C T A推荐是Fitts法则在实践中的应用。",
+      "start": 64.43,
+      "end": 77.71
+    },
+    {
+      "id": 8,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Wix与自定义的餐厅：什么会首先破坏。破坏编号4（“预订流程摩擦”）依靠Fitts法则来解释为什么Wix的默认导航模式会相对于自定义的粘性C T A布局可衡量地损失转化率。",
+      "start": 78.03,
+      "end": 91.54
+    },
+    {
+      "id": 9,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "完整引用。",
+      "start": 92.64,
+      "end": 93.54
+    },
+    {
+      "id": 10,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "Budiu, R. Fitts法则及其在U X中的应用。Nielsen Norman Group。nngroup.com。（基于：Fitts, P. M. (1954). 人类运动系统在控制运动幅度方面的信息容量。实验心理学杂志，47（6），381–391。",
+      "start": 94.24,
+      "end": 111.66
+    },
+    {
+      "id": 11,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "最后审查：2026年4月——Fitts法则是基础U X，不会被修订；其应用继续被每个移动交互研究所强化。",
+      "start": 112.01,
+      "end": 121.67
+    }
+  ]
+}

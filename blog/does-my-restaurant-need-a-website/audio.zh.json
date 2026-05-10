@@ -1,307 +1,403 @@
 {
   "version": 1,
-  "generatedAt": "2026-04-24T19:11:26.364Z",
+  "generatedAt": "2026-05-10T04:59:00.692Z",
   "engine": "kokoro",
   "model": "kokoro-v1.0.onnx",
   "voice": "zm_yunxi",
   "language": "zh",
-  "total": 371,
+  "total": 452.93,
   "chunks": [
     {
       "id": 0,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(1)",
-      "text": "The short answer.",
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "阅读本文的英文版 &larr;",
       "start": 0,
-      "end": 1.25
+      "end": 2.39
     },
     {
       "id": 1,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(1)",
-      "text": "Probably yes. But not for the reason most web designers will tell you, and not in the way you are probably imagining.",
-      "start": 1.95,
-      "end": 9.49
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "TL;DR",
+      "start": 2.74,
+      "end": 3.88
     },
     {
       "id": 2,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(2)",
-      "text": "I manage two restaurants in the DMV. I also build websites for restaurants through my studio, Muntin Digital. That means I have been on both sides of this question — the side that is paying for a site and the side that is selling one. So here is the version I would give a friend who asked me at the bar after a shift: you need a website if your Google Business Profile is not enough to answer the questions a first-time customer has before they walk in. For most restaurants, it is not.",
-      "start": 10.01,
-      "end": 36.13
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "如果你有一个Google Business Profile，并且对它能够完成所有工作感到满意，那么答案可能确实是没有必要。",
+      "start": 4.23,
+      "end": 13.25
     },
     {
       "id": 3,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(2)",
-      "text": "What your Google Business Profile already does.",
-      "start": 37.23,
-      "end": 40.28
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "GBP（谷歌我的商家）在哪里不足：它不能展示你的故事、你的真实菜单，或任何直接关系渠道。",
+      "start": 13.57,
+      "end": 21.82
     },
     {
       "id": 4,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(3)",
-      "text": "Before we talk about websites, let us be honest about what Google already gives you for free:",
-      "start": 40.98,
-      "end": 46.62
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "一个五分钟的测试，可以告诉你是否需要一个网站——以及如果需要的话，它实际上会花费多少。",
+      "start": 22.14,
+      "end": 29.24
     },
     {
       "id": 5,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "Hours and location. Google Maps shows your hours, your address, and a one-tap directions button. For \"where are you and when are you open,\" Google handles this better than your website does — because it is where people are already looking.",
-      "start": 46.97,
-      "end": 60.21
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "简短的答案。",
+      "start": 30.34,
+      "end": 31.37
     },
     {
       "id": 6,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "Phone number. Tap to call, right from the listing. No extra click needed.",
-      "start": 60.53,
-      "end": 65.91
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "可能是的。但不是因为大多数网页设计师会告诉你的原因，也不是你想象的那样。",
+      "start": 32.07,
+      "end": 38.73
     },
     {
       "id": 7,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "Photos. Customers upload their own. You can add official ones. Google surfaces them prominently.",
-      "start": 66.23,
-      "end": 72.65
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "我在DMV管理两家餐厅。我也通过我的工作室Muntin Digital为餐厅建网站。这意味着我曾站在这个问题的两边——支付网站费用的一方和销售网站的一方。所以，这是我会在酒吧里告诉问我这个问题的朋友的答案：如果你的Google Business Profile不能回答第一次光顾的顾客在进入餐厅之前的疑问，那么你需要一个网站。大多数餐厅的情况是，Google Business Profile是不够的。",
+      "start": 39.08,
+      "end": 67
     },
     {
       "id": 8,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
-      "text": "Reviews. The most powerful trust signal in local search, and it lives on Google, not on your site.",
-      "start": 72.97,
-      "end": 79.13
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "你的Google Business Profile已经能做什么。",
+      "start": 68.1,
+      "end": 71.47
     },
     {
       "id": 9,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(5)",
-      "text": "Reservation links. If you use OpenTable, Resy, or another major platform, Google shows a \"Reserve a table\" button directly in the listing.",
-      "start": 79.45,
-      "end": 89.79
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "在我们讨论网站之前，让我们诚实地谈谈Google已经免费提供了什么：",
+      "start": 72.17,
+      "end": 78.43
     },
     {
       "id": 10,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(4)",
-      "text": "If your restaurant is a taco truck, a pop-up, or a counter-service spot where the entire customer journey is \"see you on Google Maps, drive there, order at the counter\" — a website might genuinely be optional. Google Business Profile handles the essentials, and you could spend that website budget on better signage, a faster P O S, or a neighborhood postcard campaign instead.",
-      "start": 90.31,
-      "end": 108.96
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "营业时间和位置。Google Maps显示你的营业时间、地址和一键导航按钮。对于“你在哪里和什么时候开门”，Google处理得比你的网站更好——因为它是人们已经在寻找的地方。",
+      "start": 78.78,
+      "end": 91.33
     },
     {
       "id": 11,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(3)",
-      "text": "Where Google Business Profile falls short.",
-      "start": 110.06,
-      "end": 112.71
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "电话号码。直接从列表中点击拨打，无需额外点击。",
+      "start": 91.65,
+      "end": 95.97
     },
     {
       "id": 12,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(5)",
-      "text": "But here is what Google does not give you — and this is where the website earns its keep:",
-      "start": 113.41,
-      "end": 118.66
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "照片。顾客上传自己的照片，你可以添加官方照片。Google突出显示它们。",
+      "start": 96.29,
+      "end": 103.03
     },
     {
       "id": 13,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
-      "text": "Your full menu, the way you want it. Google's built-in menu editor is plain text — no photos, no seasonal flags, no wine descriptions, no prix fixe formatting. It works for basic dishes-and-prices, but if your menu is part of the experience (tasting notes, pairings, rotating specials), Google's version undersells you.",
-      "start": 119.01,
-      "end": 137.19
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "评论。最强大的信任信号，位于Google上，而不是你的网站上。",
+      "start": 103.35,
+      "end": 108.63
     },
     {
       "id": 14,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
-      "text": "Your story. Who cooks the food? Where do you source? Why does this restaurant exist? None of that lives on Google. A first-time visitor decides based on vibes, and Google's vibes are \"beige listing with user-uploaded photos.\"",
-      "start": 137.51,
-      "end": 150.74
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(5)",
+      "text": "预订链接。如果你使用OpenTable、Resy或其他主要平台，Google直接在列表中显示“预订桌子”按钮。",
+      "start": 108.95,
+      "end": 118.1
     },
     {
       "id": 15,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
-      "text": "Online ordering you control. Google can link to third-party ordering (DoorDash, Uber Eats), but every order through a third party costs you 15–30% in commission fees. Your own site can route orders through your P O S at a fraction of that cost.",
-      "start": 151.06,
-      "end": 166
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "如果你的餐厅是一辆墨西哥玉米卷卡车、一个弹出式餐厅或一个柜台服务点，整个客户旅程就是“在Google Maps上看到你，开车到那里，在柜台上下单”——那么，一个网站可能确实是可选的。Google Business Profile处理了基本的信息，你可以将网站预算花在更好的标识、更快的POS系统或社区明信片活动上。",
+      "start": 118.45,
+      "end": 140.67
     },
     {
       "id": 16,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
-      "text": "Private events, catering, and group inquiries. There is no Google Business Profile field for \"we do private buyouts on Mondays.\" That is a page on your website, or it does not exist at all.",
-      "start": 166.32,
-      "end": 178.25
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Google Business Profile在哪里不足。",
+      "start": 141.77,
+      "end": 144.32
     },
     {
       "id": 17,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(5)",
-      "text": "S E O for long-tail discovery. Google Business Profile is already the primary driver of the local map pack — when someone searches \"Italian restaurant near me,\" your G B P listing is what appears. But a website with real content helps you rank in the organic results below the map, and for more specific queries like \"restaurants with private dining Bethesda\" or \"best brunch Silver Spring gluten free.\" Those long-tail searches are where a website earns traffic that G B P alone cannot capture.",
-      "start": 178.57,
-      "end": 206.8
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "但是Google不能提供什么——这就是网站发挥作用的地方：",
+      "start": 145.02,
+      "end": 149.93
     },
     {
       "id": 18,
-      "kind": "quote",
-      "selector": "#post-body > p:nth-of-type(6)",
-      "text": "The question is not \"do I need a website?\" It is \"is there anything my customers need to know that Google Business Profile cannot tell them?\"",
-      "start": 207.55,
-      "end": 216.17
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "你的完整菜单，以你想要的方式呈现。Google的内置菜单编辑器是纯文本——没有照片、没有季节标志、没有葡萄酒描述、没有套餐格式。如果你的菜单是体验的一部分（品尝笔记、搭配、轮换特价），Google的版本低估了你。",
+      "start": 150.28,
+      "end": 165.92
     },
     {
       "id": 19,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(4)",
-      "text": "The five-minute test.",
-      "start": 217.27,
-      "end": 218.84
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "你的故事。谁做的食物？你从哪里采购？为什么这个餐厅存在？这些都不会出现在Google上。第一次访问的游客根据氛围决定，而Google的氛围是“米色列表，带有用户上传的照片”。",
+      "start": 166.24,
+      "end": 179.22
     },
     {
       "id": 20,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(7)",
-      "text": "Open your Google Business Profile listing on your phone as if you were a first-time customer. Ask yourself:",
-      "start": 219.54,
-      "end": 226.27
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "你控制的在线订购。Google可以链接到第三方订购（DoorDash、Uber Eats），但每个通过第三方的订单都会花费你15-30%的佣金费用。你的网站可以将订单通过你的POS系统路由，成本仅为此的一小部分。",
+      "start": 179.54,
+      "end": 195.86
     },
     {
       "id": 21,
       "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "Can I read the full menu without downloading a P D F?",
-      "start": 226.62,
-      "end": 230.53
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
+      "text": "私人活动、餐饮服务和团体询问。没有Google Business Profile字段用于“我们每周一提供私人包场服务”。这要么是你网站上的一个页面，要么根本不存在。",
+      "start": 196.18,
+      "end": 207.84
     },
     {
       "id": 22,
       "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "Can I make a reservation without leaving Google?",
-      "start": 230.85,
-      "end": 234.11
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(5)",
+      "text": "搜索引擎优化（S E O）用于长尾发现。Google Business Profile已经是本地地图包的主要驱动力——当有人搜索“附近的意大利餐厅”时，你的G B P列表就是出现的结果。但是，拥有真正内容的网站可以帮助你在地图下面的有机结果中排名，并且可以处理更具体的查询，如“具有私人餐厅Bethesda”或“最好的无麸质早午餐Silver Spring”。这些长尾搜索是网站可以获得而G B P无法捕捉到的流量。",
+      "start": 208.16,
+      "end": 237.69
     },
     {
       "id": 23,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "Can I order food for pickup without paying a third-party commission?",
-      "start": 234.43,
-      "end": 238.57
+      "kind": "quote",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "问题不是“我是否需要一个网站？”，而是“我的顾客需要知道什么Google Business Profile无法告诉他们？”",
+      "start": 238.44,
+      "end": 246.1
     },
     {
       "id": 24,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(4)",
-      "text": "Can I find out about private dining or catering?",
-      "start": 238.89,
-      "end": 242.75
+      "kind": "quote",
+      "selector": "#post-body > blockquote:nth-of-type(1)",
+      "text": "如果你的Google Business Profile无法回答第一次访问的顾客即将提出的问题，那么你需要一个网站。大多数独立餐厅都是如此。",
+      "start": 246.85,
+      "end": 257
     },
     {
       "id": 25,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(5)",
-      "text": "Can I understand what makes this restaurant different from the three others on the same block?",
-      "start": 243.07,
-      "end": 248.37
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "五分钟测试。",
+      "start": 258.1,
+      "end": 259.5
     },
     {
       "id": 26,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(8)",
-      "text": "If you answered \"no\" to two or more, you need a website. Not because a designer told you so — because your customers have questions that Google cannot answer, and every unanswered question is a diner who went somewhere else.",
-      "start": 248.89,
-      "end": 261.84
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "在手机上打开你的Google Business Profile列表，就像你是一个第一次访问的顾客。问问自己：",
+      "start": 260.2,
+      "end": 267.59
     },
     {
       "id": 27,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(5)",
-      "text": "When you genuinely do not need one.",
-      "start": 262.94,
-      "end": 265.82
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "我可以在不下载P D F的情况下阅读完整菜单吗？",
+      "start": 267.94,
+      "end": 272.48
     },
     {
       "id": 28,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(9)",
-      "text": "I promised honesty, so here it is. You can skip the website if:",
-      "start": 266.52,
-      "end": 270.9
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "我可以在不离开Google的情况下预订座位吗？",
+      "start": 272.8,
+      "end": 276.27
     },
     {
       "id": 29,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
-      "text": "You are a pop-up or seasonal concept that might not exist in six months. Put that budget into signage and a strong Instagram instead.",
-      "start": 271.25,
-      "end": 279.29
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "我可以在不支付第三方佣金的情况下订购外卖吗？",
+      "start": 276.59,
+      "end": 280.63
     },
     {
       "id": 30,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
-      "text": "Your entire model is counter-service with no menu complexity. A taco window, a coffee cart, a single-item concept. Google Maps + a phone number is genuinely all you need.",
-      "start": 279.61,
-      "end": 291.05
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "我可以找到关于私人餐饮或餐饮服务的信息吗？",
+      "start": 280.95,
+      "end": 284.56
     },
     {
       "id": 31,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
-      "text": "You just opened and the concept is still changing. Wait until the menu settles and you know what Tuesdays look like before investing in a site. A Wix placeholder is fine for the first six to twelve months while you figure out who you are.",
-      "start": 291.37,
-      "end": 303.9
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(5)",
+      "text": "我可以理解这家餐厅与同一街区的其他三家餐厅有什么不同之处吗？",
+      "start": 284.88,
+      "end": 291.48
     },
     {
       "id": 32,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
-      "text": "You are in a food hall. The food hall's website handles discovery. You just need to show up in their vendor list.",
-      "start": 304.22,
-      "end": 310.56
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "如果你对两个或更多问题回答“否”，那么你需要一个网站。不因为设计师告诉你这样——而是因为你的顾客有Google无法回答的问题，每一个未回答的问题都意味着有一位顾客去了别的地方。",
+      "start": 291.83,
+      "end": 305.04
     },
     {
       "id": 33,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(10)",
-      "text": "For everyone else — full-service restaurants, multi-location groups, places with private dining programs, anyone who wants to rank in discovery searches, anyone paying third-party commission on orders they could route directly — a website pays for itself. The question is just when and how much.",
-      "start": 311.08,
-      "end": 326.93
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "何时不需要网站。",
+      "start": 306.14,
+      "end": 307.82
     },
     {
       "id": 34,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(6)",
-      "text": "What a good restaurant website actually costs.",
-      "start": 328.03,
-      "end": 330.88
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "我承诺诚实，所以这里是真相。你可以在以下情况下跳过网站：",
+      "start": 308.52,
+      "end": 313.75
     },
     {
       "id": 35,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(11)",
-      "text": "If you have decided you need one, the next question is always about money. The honest range for an independent restaurant: 2,500 dollars to 15,000 dollars depending on scope, with most single-location places landing between 5,000 dollars and 9,000 dollars. I wrote an entire breakdown of what drives the price, what each line item costs, and three real-world example bundles — read the full pricing post here .",
-      "start": 331.58,
-      "end": 356.41
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(1)",
+      "text": "你是一个弹出式或季节性的概念，可能在六个月内就不存在了。将预算投入到标识和强大的Instagram中。",
+      "start": 314.1,
+      "end": 322.78
     },
     {
       "id": 36,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(2)",
+      "text": "你的整个模式是反向服务，没有菜单复杂性。一个墨西哥玉米卷窗口、一个咖啡车、一个单品概念。Google Maps + 电话号码确实是你所需要的全部。",
+      "start": 323.1,
+      "end": 334.65
+    },
+    {
+      "id": 37,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(3)",
+      "text": "你刚刚开业，概念还在不断变化。等菜单稳定下来，你知道星期二的样子是什么样的，然后再投资网站。在前六到十二个月内，一个Wix占位符是可以的，这样你可以弄清楚你是谁。",
+      "start": 334.97,
+      "end": 348.29
+    },
+    {
+      "id": 38,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(4)",
+      "text": "你在一个美食广场。美食广场的网站处理发现问题。你只需要出现在他们的供应商列表中。",
+      "start": 348.61,
+      "end": 356.52
+    },
+    {
+      "id": 39,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(12)",
-      "text": "The short version: a good site pays for itself within a few months through recovered reservations, eliminated third-party ordering fees, and discovery traffic that did not exist before. The math almost always works — I show it with real numbers in that post.",
-      "start": 356.93,
-      "end": 371
+      "text": "对于其他人——全服务餐厅、多地点集团、具有私人餐饮计划的餐厅、任何想要在发现搜索中排名的餐厅、任何支付第三方佣金的餐厅，他们可以直接处理订单——一个网站是值得的。问题只是何时和多少钱。",
+      "start": 356.87,
+      "end": 371.91
+    },
+    {
+      "id": 40,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(6)",
+      "text": "一个好的餐厅网站的实际成本。",
+      "start": 373.01,
+      "end": 375.8
+    },
+    {
+      "id": 41,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "如果你已经决定需要一个网站，那么下一个问题总是关于钱。对于独立餐厅来说，诚实的价格范围是2,500美元到15,000美元，取决于范围，大多数单地点餐厅的价格在5,000美元到9,000美元之间。我写了一整篇关于价格驱动因素、每个项目的成本以及三个真实世界的示例包的文章——在这里阅读完整的价格文章。",
+      "start": 376.5,
+      "end": 400.72
+    },
+    {
+      "id": 42,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "简短来说：一个好的网站可以在几个月内通过恢复预订、消除第三方订餐费用和以前不存在的发现流量来收回成本。数学计算几乎总是有效 —— 我在那篇文章中用真实数字来演示。",
+      "start": 401.07,
+      "end": 414.8
+    },
+    {
+      "id": 43,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "主要收获",
+      "start": 415.15,
+      "end": 416.12
+    },
+    {
+      "id": 44,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(1)",
+      "text": "GBP 为你提供了可发现性和基本信息；一个网站为你提供了关系。",
+      "start": 416.47,
+      "end": 422.52
+    },
+    {
+      "id": 45,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(2)",
+      "text": "没有网站，你就是从 Google 租用观众 —— 直到 Google 的算法改变。",
+      "start": 422.84,
+      "end": 429.09
+    },
+    {
+      "id": 46,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(3)",
+      "text": "五分钟测试：如果每个常客都通过不同的方式找到你，你还不需要一个网站。",
+      "start": 429.41,
+      "end": 435.93
+    },
+    {
+      "id": 47,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(4)",
+      "text": "如果你真的不需要一个网站，就做一个 30 分钟的 GBP 审计，然后离开。",
+      "start": 436.25,
+      "end": 443.43
+    },
+    {
+      "id": 48,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(5)",
+      "text": "当你需要一个网站时，一个 2,500 美元的模板网站足以开始；全定制的网站会在客厅需求的时候才会实现。",
+      "start": 443.75,
+      "end": 452.93
     }
   ]
 }

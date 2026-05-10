@@ -1,267 +1,379 @@
 {
   "version": 1,
-  "generatedAt": "2026-04-20T18:33:50.257Z",
+  "generatedAt": "2026-05-10T05:14:02.224Z",
   "engine": "kokoro",
   "model": "kokoro-v1.0.onnx",
   "voice": "em_alex",
   "language": "es",
-  "total": 644.82,
+  "total": 729.93,
   "chunks": [
     {
       "id": 0,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(1)",
-      "text": "La mayoría de los restaurantes independientes tienen entre 4 y 8 puntos de margen operativo en un buen año. En un año como este (aumento del costo de los alimentos, aumento de la mano de obra, aumento del alquiler, aumento del seguro), ese margen se ha reducido en dos o tres puntos, y la conversación en cada reunión de operadores a la que asisto eventualmente gira en la misma frase: \"Sólo necesito encontrar uno o dos puntos más de margen y estaré bien\".",
+      "text": "Leer este artículo en español",
       "start": 0,
-      "end": 25.91
+      "end": 1.65
     },
     {
       "id": 1,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(2)",
-      "text": "Aquí están las noticias honestas. Probablemente puedas. No recortando personal, ni reduciendo porciones, ni cambiando de proveedores a una línea sysco más barata que sus clientes habituales notarán por completo. Arreglando cinco pequeñas cosas en su sitio web. Cada uno tiene menos de una hora de trabajo. Individualmente, ninguno de ellos cambiará tu año. Apilados, devuelven aproximadamente un punto completo de margen, lo que, en un restaurante independiente típico de una sola ubicación que genera entre 1,2 y 1,5 millones de dólares en ingresos, equivale a entre 8.000 y 15.000 dólares al año. Cada año. Compuesto.",
-      "start": 26.43,
-      "end": 63.04
+      "text": "TL;DR",
+      "start": 2,
+      "end": 2.96
     },
     {
       "id": 2,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(3)",
-      "text": "Los cinco movimientos son aburridos. Ese es el punto. Los dueños de restaurantes escuchan \"optimización de sitios web\" y su cabeza se dirige a un proyecto de rediseño de seis meses con un consultor, una presentación y una factura de 30.000 dólares. Lo que estoy describiendo son cinco arreglos que puedes hacer con tus propias manos entre el domingo por la noche y el lunes al mediodía. Sus cifras exactas variarán: los restaurantes más grandes recuperan más dólares con el mismo porcentaje, los sitios con mayor tráfico aumentan las ganancias, pero la forma de estos cinco movimientos aparece en cada sitio de restaurante independiente que audito.",
-      "start": 63.56,
-      "end": 100.7
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Cinco pequeños ajustes en el sitio web, ninguno de los cuales requiere un rediseño, se traducen en una recuperación de margen de aproximadamente 1% para un restaurante de volumen medio típico.",
+      "start": 3.31,
+      "end": 14.97
     },
     {
       "id": 3,
-      "kind": "figure",
-      "selector": "#post-body > figure:nth-of-type(1)",
-      "text": "Aquí está la pila. Cinco cambios en el sitio web, cada uno de los cuales contribuye con una pequeña porción de recuperación del margen. Muévase uno: haga que sus horas sean visibles en la mitad superior de cada página. Recupera aproximadamente una quinta parte de un margen al convertir a los visitantes que actualmente rebotan porque no pueden saber si está abierto. Paso dos: coloque un único llamado a la acción de reserva principal en un lugar obvio, no tres más débiles compitiendo por la atención. Recupera otro cuarto de punto al eliminar la fricción en la decisión. Paso tres: agregue un enlace directo de pedido propio a su página de inicio, en la mitad superior de la página, en un color que no se mezcle con el diseño. Recupera aproximadamente tres décimas de punto al transferir los pedidos de entrega fuera de DoorDash. Paso cuatro: reescriba las descripciones de los tres o cuatro elementos del menú con el margen de beneficio más alto para que sean los que los invitados tengan más probabilidades de elegir. Recupera alrededor de quince centésimas de punto simplemente mediante la combinación de órdenes de dirección. Paso cinco: elimine todos los descuentos obsoletos, los banners promocionales caducados y los menús P D F obsoletos de su sitio. Recupera otra décima de punto al eliminar la confusión de precios y las rupturas de confianza. Cinco pequeños movimientos, apilados. Total: aproximadamente un punto completo de margen de beneficio. En un típico restaurante independiente, eso supone entre ocho y quince mil dólares al año.",
-      "start": 101.5,
-      "end": 186.77
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Cada ajuste es independiente — elige el que sea más fácil en tu contexto y hazlo esta semana.",
+      "start": 15.29,
+      "end": 20.53
     },
     {
       "id": 4,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(4)",
-      "text": "Aquí se muestra cada movimiento de cerca, con la hora real de trabajo que requiere.",
-      "start": 187.52,
-      "end": 191.93
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "El argumento de la acumulación es matemática honesta, no un discurso de marketing: cada punto porcentual vale $X al año en tu volumen.",
+      "start": 20.85,
+      "end": 29.09
     },
     {
       "id": 5,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(1)",
-      "text": "Movimiento 1: Horas visibles en la mitad superior de la página · +0,20%.",
-      "start": 193.03,
-      "end": 198.99
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "La mayoría de los restaurantes independientes funcionan con una margen de operación de entre 4 y 8 puntos en un buen año. En un año como este — con el costo de los alimentos al alza, el costo laboral al alza, el alquiler al alza, el seguro al alza — esa margen se ha reducido en dos o tres puntos, y la conversación en cada reunión de operadores a la que asisto eventualmente se centra en la misma frase: \"Solo necesito encontrar otro punto o dos de margen y estaré bien\".",
+      "start": 29.61,
+      "end": 56.44
     },
     {
       "id": 6,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(5)",
-      "text": "La pregunta más común en el sitio web de un restaurante es \"¿estás abierto ahora mismo?\". El lugar más común donde se responde esa pregunta es en el pie de página o en una página de contacto separada a tres clics de distancia. Esa brecha, entre lo que el huésped vino a buscar y dónde lo puso, es la filtración de mayor influencia en la mayoría de los sitios de restaurantes independientes.",
-      "start": 199.69,
-      "end": 220.35
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "Aquí está la noticia honesta. Probablemente puedas. No cortando personal, no reduciendo las porciones, no cambiando a proveedores más baratos que tus clientes habituales notarán absolutamente. Al arreglar cinco pequeñas cosas en tu sitio web. Cada una de ellas lleva menos de una hora de trabajo. Individualmente, none de ellas cambiará tu año. Apiladas, devuelven aproximadamente un punto completo de margen — lo que, en un restaurante independiente típico de una sola ubicación que genera $1,2 millones–$1,5 millones en ingresos, se traduce en $8.000–$15.000 al año . Cada año. Acumulando.",
+      "start": 56.96,
+      "end": 92.97
     },
     {
       "id": 7,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(6)",
-      "text": "Pon tus horas en el héroe. O en una barra adhesiva debajo del navegador. O como un pequeño indicador \"Abierto ahora · hasta las 10 p.m.\" que se actualiza con un poco de JavaScript. Cualquiera de estos funciona; la implementación específica importa menos que el principio: el visitante debe ver si está abierta dentro de los tres segundos posteriores a la carga de la página, sin desplazarse ni hacer clic.",
-      "start": 220.87,
-      "end": 243.1
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "Los cinco ajustes son aburridos. Ese es el punto. Los dueños de restaurantes escuchan \"optimización del sitio web\" y su cabeza se va a un proyecto de rediseño de seis meses con un consultor, una presentación y una factura de $30.000. Lo que estoy describiendo son cinco arreglos que puedes hacer con tus propias manos entre el domingo por la tarde y el lunes al mediodía. Tus números exactos variarán — restaurantes más grandes recuperan más dólares en el mismo porcentaje, sitios con más tráfico acumulan las ganancias — pero la forma de estos cinco ajustes se muestra en cada sitio web de restaurante independiente que audito.",
+      "start": 93.49,
+      "end": 130.1
     },
     {
       "id": 8,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(7)",
-      "text": "La hora de trabajo: escriba el horario de hoy en la sección principal de su página de inicio y en cada página que tenga un bloque de encabezado visible. Si estás en Wix o Squarespace, esta es una edición de contenido de 10 minutos. Si estás en un sitio personalizado, son 30 minutos con un desarrollador web. De cualquier manera, una hora como máximo.",
-      "start": 243.62,
-      "end": 262.92
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "Aquí está la pila. Cinco cambios en el sitio web, cada uno contribuyendo a una pequeña porción de recuperación de margen. Ajuste uno: haz que tus horas sean visibles por encima del pliegue en cada página. Recupera alrededor de una quinta parte de un punto de margen al convertir a los visitantes que actualmente abandonan porque no pueden decir si estás abierto. Ajuste dos: coloca una sola llamada a la acción principal de reserva en un lugar obvio, no tres más débiles que compiten por la atención. Recupera otro cuarto de punto al eliminar la fricción de decisión. Ajuste tres: agrega un enlace de pedido directo a tu página de inicio, por encima del pliegue, en un color que no se mezcle con el diseño. Recupera alrededor de tres décimas de un punto al desviar pedidos de entrega de DoorDash. Ajuste cuatro: reescribe las descripciones de los tres o cuatro artículos del menú con la mayor margen de beneficio para que sean los que los invitados probablemente elijan. Recupera alrededor de quince centésimas de un punto solo por dirigir la mezcla de pedidos. Ajuste cinco: elimina todos los descuentos estancados, banners de promociones caducados y menús PDF obsoletos en tu sitio. Recupera otro décimo de un punto al eliminar la confusión de precios y las rupturas de confianza. Cinco ajustes pequeños, apilados. Total: aproximadamente un punto completo de margen de beneficio. En un restaurante independiente típico, eso es $8.000 a $15.000 al año.",
+      "start": 130.9,
+      "end": 212.57
     },
     {
       "id": 9,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(2)",
-      "text": "Movimiento 2 — Una reserva primaria C T A · +0,25%.",
-      "start": 264.02,
-      "end": 269.21
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "Aquí está cada ajuste de cerca, con la hora real de trabajo que lleva.",
+      "start": 213.32,
+      "end": 217.16
     },
     {
       "id": 10,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(8)",
-      "text": "La mayoría de los sitios de restaurantes tienen la C T A de reserva en tres lugares: un botón en la navegación, un bloque en el medio de la página de inicio y una leyenda \"Reserve ahora\" en el pie de página. Cada uno tiene un color diferente, un tamaño diferente y, lo que es más importante, a veces incluso apunta a destinos diferentes (OpenTable para la navegación, un número de teléfono para el medio, un correo electrónico para el pie de página).",
-      "start": 269.91,
-      "end": 293.69
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Ajuste 1 — Horas visibles por encima del pliegue · +0,20%.",
+      "start": 218.26,
+      "end": 223.4
     },
     {
       "id": 11,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(9)",
-      "text": "Elige uno. Hazlo prominente. Apunta todos al mismo lugar. La neurociencia aquí es aburrida y está bien documentada: cuando le das a un visitante dos opciones con el mismo peso para la misma acción, no elige ninguna y se marcha. Cuando les das uno, lo eligen.",
-      "start": 294.21,
-      "end": 308.95
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "La pregunta más común en un sitio web de restaurante es \"¿estás abierto ahora\". El lugar más común donde se responde a esta pregunta es el pie de página, o en una página de Contacto separada a tres clics de distancia. Ese vacío — entre lo que el invitado vino a buscar y dónde lo pones — es la fuga de mayor influencia en la mayoría de los sitios web de restaurantes independientes.",
+      "start": 224.1,
+      "end": 244.44
     },
     {
       "id": 12,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(10)",
-      "text": "La hora de trabajo: decide qué destino de reserva es tu principal (¿OpenTable? ¿Resy? ¿Tu propio formulario?). Actualice los tres puntos C T A para que todos apunten allí, misma etiqueta, mismo peso visual. Si deseas mantener el número de teléfono como opción secundaria, colócalo en texto pequeño al lado del botón principal, sin competir con él.",
-      "start": 309.47,
-      "end": 328.76
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "Pon tus horas en el héroe. O en una barra pegajosa debajo de la navegación. O como un pequeño indicador \"Abierto ahora · hasta las 10 PM\" que se actualiza con un poco de JavaScript. Cualquiera de estas opciones funciona; la implementación específica importa menos que el principio: el visitante debe ver si estás abierto dentro de tres segundos de carga de la página, sin desplazarse, sin hacer clic.",
+      "start": 244.96,
+      "end": 267.04
     },
     {
       "id": 13,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(3)",
-      "text": "Movimiento 3: enlace directo de pedido propio hacia arriba · +0,30%.",
-      "start": 329.86,
-      "end": 335.67
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "La hora de trabajo: escribe las horas de hoy en la sección del héroe de tu página de inicio y en cada página que tenga un bloque de encabezado visible. Si estás en Wix o Squarespace, esto es una edición de contenido de 10 minutos. Si estás en un sitio personalizado, son 30 minutos con un desarrollador web. De cualquier manera, una hora como máximo.",
+      "start": 267.56,
+      "end": 286.76
     },
     {
       "id": 14,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(11)",
-      "text": "Esta es la mayor victoria individual y también la que la mayoría de los restaurantes sabotean accidentalmente. Si usa Square o Toast para P O S, ya tiene una página de pedidos propia en algo como yourrestaurant.square.site o yourrestaurant.toasttab.com. La mayoría de los restaurantes entierran ese enlace a tres clics de profundidad en una página de \"comida para llevar\" que nadie encuentra. Mientras tanto, el botón DoorDash en su página de inicio es enorme y amarillo.",
-      "start": 336.37,
-      "end": 362.11
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Movimiento 2 — Un CTA de reserva principal · +0,25%.",
+      "start": 287.86,
+      "end": 293.25
     },
     {
       "id": 15,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(12)",
-      "text": "Coloque el enlace de pedido propio en la navegación, en la mitad superior de la página, en un botón visualmente potente. Si va a conservar un enlace de DoorDash, colóquelo debajo de su propio enlace, más pequeño, con algo como \"o haga su pedido a través de DoorDash →\" para que el huésped que desee la experiencia DoorDash todavía la tenga, pero la ruta predeterminada sea su sitio directo.",
-      "start": 362.63,
-      "end": 383.23
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "La mayoría de los sitios web de restaurantes tienen el CTA de reserva en tres lugares: un botón en la navegación, un bloque en el medio de la página de inicio y un llamado a la acción \"Reservar ahora\" en el pie de página. Cada uno es de un color diferente, un tamaño diferente y — críticamente — a veces incluso apunta a destinos diferentes (OpenTable para la navegación, un número de teléfono para el medio, un correo electrónico para el pie de página).",
+      "start": 293.95,
+      "end": 318
     },
     {
       "id": 16,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(13)",
-      "text": "Las matemáticas aquí están aprovechadas: cada orden directa que usted roba de DoorDash es aproximadamente un 20% más de margen en esa orden. Incluso trasladar el 15% del volumen de entrega semanal a pedidos directos recupera dinero real.",
-      "start": 383.75,
-      "end": 399.56
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "Elige uno. Haz que sea destacado. Apunta todos ellos al mismo lugar. La neurociencia aquí es aburrida y bien documentada: cuando le das a un visitante dos opciones con el mismo peso para la misma acción, elige ninguna y se va. Cuando le das una sola opción, la elige.",
+      "start": 318.52,
+      "end": 333.82
     },
     {
       "id": 17,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(14)",
-      "text": "La hora de trabajo: agregue un único botón \"Pedido directo →\" a su navegador y a su página de inicio, vincúlelo a su Square/Toast/otra página de pedidos propia existente. Asegúrate de que el botón sea lo más brillante en la mitad superior de la página.",
-      "start": 400.08,
-      "end": 414.52
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "La hora de trabajo: decide qué destino de reserva es tu principal (OpenTable? Resy? Tu propio formulario?). Actualiza los tres lugares del CTA para que apunten allí, mismo etiqueta, mismo peso visual. Si quieres mantener el número de teléfono como opción secundaria, ponlo en texto pequeño al lado del botón principal, no compitiendo con él.",
+      "start": 334.34,
+      "end": 353.28
     },
     {
       "id": 18,
       "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(4)",
-      "text": "Paso 4: mejores descripciones en artículos de margen superior · +0,15 %.",
-      "start": 415.62,
-      "end": 421.85
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Movimiento 3 — Enlace de pedido directo en la parte superior · +0,30%.",
+      "start": 354.38,
+      "end": 360.27
     },
     {
       "id": 19,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(15)",
-      "text": "Mire sus últimos 90 días de ventas a nivel de artículo. Clasifique cada plato por margen de contribución por cobertura: lo que ese plato le paga después del costo de la comida. Encontrará tres o cuatro artículos que son sustancialmente más rentables que el promedio. En la mayoría de los menús, estos son: la pasta con una base de cereales baratos y una guarnición de proteínas cara, la pizza, el cóctel exclusivo y un postre.",
-      "start": 422.55,
-      "end": 445.5
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "Este es el mayor beneficio individual, y también es el que la mayoría de los restaurantes sabotean accidentalmente. Si usas Square o Toast para P O S, ya tienes una página de pedido directo en algo como tu-restaurante.square.site o tu-restaurante.toasttab.com. La mayoría de los restaurantes entierran ese enlace tres clics profundos en una página \"Para llevar\" que nadie encuentra. Mientras tanto, el botón de DoorDash en tu página de inicio es grande y amarillo.",
+      "start": 360.97,
+      "end": 386.44
     },
     {
       "id": 20,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(16)",
-      "text": "Esos son los elementos que las descripciones de su menú deberían esforzarse más en vender. La mayoría de los restaurantes dan a su filete exclusivo una descripción de tres párrafos y dejan la pasta de la casa con dos palabras. Invierte eso para los artículos con los que realmente ganas dinero. \"Orecchiette\" se convierte en \"Orecchiette cortada a mano, ragú de cordero cocido a fuego lento, pecorino de nuestro proveedor en Lacio desde el año 2019: el plato sobre el que se discute en la cocina\". Ahora es el plato que el invitado quiere pedir.",
-      "start": 446.02,
-      "end": 476.1
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "Pon el enlace de pedido directo en la navegación, por encima del pliegue, en un botón visualmente fuerte. Si vas a mantener un enlace de DoorDash, ponlo debajo de tu enlace, más pequeño, con algo como \"o pedir a través de DoorDash →\" para que el invitado que quiere la experiencia de DoorDash todavía la tenga, pero el camino predeterminado sea tu sitio directo.",
+      "start": 386.96,
+      "end": 406.35
     },
     {
       "id": 21,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(17)",
-      "text": "La hora de trabajo: identifique los 3 o 4 elementos principales del margen, escriba 2 oraciones cada una con detalles específicos sobre el origen, la preparación y la historia. Actualice la página del menú en su sitio web.",
-      "start": 476.62,
-      "end": 489.99
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "Las matemáticas aquí son aprovechadas: cada pedido directo que recuperes de DoorDash es aproximadamente un 20% más de margen en ese pedido. Incluso desplazar el 15% del volumen de entrega semanal a pedidos directos recupera dinero real.",
+      "start": 406.87,
+      "end": 422.71
     },
     {
       "id": 22,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(5)",
-      "text": "Paso 5: elimina todas las promociones obsoletas y antiguas P D F · +0,10 %.",
-      "start": 491.09,
-      "end": 497.58
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "La hora de trabajo: agrega un solo botón \"Pedir directo →\" a tu navegación y al héroe de tu página de inicio, enlázalo a tu página de pedido directo existente Square/Toast/otro. Asegúrate de que el botón sea lo más destacado por encima del pliegue.",
+      "start": 423.23,
+      "end": 437.64
     },
     {
       "id": 23,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(18)",
-      "text": "Recorra su propio sitio web como si fuera la primera vez que lo visita sin contexto. Encontrará al menos uno: una tarjeta de happy hour que todavía hace referencia al precio de Twenty Twenty-Three, un cartel que promociona un especial de verano que finalizó en octubre, un menú en PDF titulado \"Otoño Twenty Twenty-four\" todavía vinculado desde una barra lateral, una promoción de tarjeta de regalo que expiró hace seis meses.",
-      "start": 498.28,
-      "end": 520.64
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "Movimiento 4 — Descripciones mejores en artículos con margen superior · +0,15%.",
+      "start": 438.74,
+      "end": 445.25
     },
     {
       "id": 24,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(19)",
-      "text": "Cada uno de estos es una pequeña ruptura de confianza. El huésped ve un elemento obsoleto e inconscientemente comienza a preguntarse qué más en el sitio no está actualizado. Eso erosiona el pequeño momento de confianza que conduce a una reserva. Mátalos a todos.",
-      "start": 521.16,
-      "end": 536.12
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "Mira tus últimos 90 días de ventas a nivel de artículo. Clasifica cada plato por margen de contribución por cubierto — lo que te paga ese plato después del costo de los alimentos. Encontrarás tres o cuatro artículos que son sustancialmente más rentables que tu promedio. En la mayoría de los menús, esos son: la pasta con base de grano barato y adorno de proteína costosa, la pizza, el cóctel signature y un postre.",
+      "start": 445.95,
+      "end": 468.73
     },
     {
       "id": 25,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(20)",
-      "text": "La hora de trabajo: abra cada página de su sitio, anote cada precio/promoción/referencia de temporada que no esté actualizada, elimínela o actualícela. Encontrará entre 4 y 8 de estos en un sitio típico. Ninguno tarda más de 5 minutos en arreglarse.",
-      "start": 536.64,
-      "end": 552.38
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "Esos son los artículos que tus descripciones de menú deberían esforzarse más por vender. La mayoría de los restaurantes le dan a su bistec signature una descripción de tres párrafos y dejan la pasta de la casa con dos palabras. Invierte eso para los artículos de los que realmente ganas dinero. \"Orecchiette\" se convierte en \"Orecchiette cortado a mano, ragú de cordero cocido a fuego lento, pecorino de nuestro proveedor en Lazio desde dos mil diecinueve — el plato del que la cocina discute\". Ahora es el plato que el comensal quiere pedir.",
+      "start": 469.25,
+      "end": 498.44
     },
     {
       "id": 26,
-      "kind": "quote",
-      "selector": "#post-body > p:nth-of-type(21)",
-      "text": "Cinco movimientos. Ninguno de ellos son rediseños. Ninguno de ellos requiere un consultor. Hecho en un domingo lento, devuelven un punto completo de margen, que es más de lo que la mayoría de los restaurantes obtendrán tras un año de cambiar de proveedor.",
-      "start": 553.13,
-      "end": 567.02
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(19)",
+      "text": "La hora de trabajo: identifica tus 3–4 artículos con mayor margen, escribe 2 oraciones cada uno con detalles específicos de origen, preparación y historia. Actualiza la página de menú en tu sitio web.",
+      "start": 498.96,
+      "end": 511.22
     },
     {
       "id": 27,
       "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(6)",
-      "text": "El argumento compuesto honesto.",
-      "start": 568.12,
-      "end": 569.94
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "Movimiento 5 — Elimina cada promoción estancada y cada P D F antiguo — +0,10%.",
+      "start": 512.32,
+      "end": 518.26
     },
     {
       "id": 28,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(22)",
-      "text": "El uno por ciento no suena impresionante en un tono. Es el tipo de número que un consultor escondería en la diapositiva siete. Pero esto es lo que pasa con la recuperación del margen en un restaurante: se agrava con el volumen. Un restaurante que gana 1,2M$/año y gana un punto de margen gana 12K$. Un restaurante que gana 2,5 dólares M y gana el mismo punto gana 25 dólares K. Y el año que viene, cuando hagas un poco más de volumen, la misma pila de cinco movimientos generará un poco más de dinero, porque el porcentaje siempre va contra la cifra de ingresos mayor.",
-      "start": 570.64,
-      "end": 602.94
+      "selector": "#post-body > p:nth-of-type(20)",
+      "text": "Recorre tu propio sitio web como si fueras un visitante por primera vez sin contexto. Encontrarás al menos uno: una tarjeta de happy hour que aún hace referencia a los precios de dos mil veintitrés, un banner que promueve una especial de verano que terminó en octubre, un menú en P D F titulado \"Otoño dos mil veinticuatro\" todavía enlazado desde una barra lateral, una promoción de tarjeta de regalo que expiró hace seis meses.",
+      "start": 518.96,
+      "end": 541.35
     },
     {
       "id": 29,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(23)",
-      "text": "En cinco años, un solo punto de margen en un restaurante independiente en crecimiento equivale, de forma conservadora, a entre 60.000 y 100.000 dólares de regreso al negocio. Eso es algo real. Eso es un año del salario de un cocinero de línea. Esa es una nueva ventilación del capó. Ese es el pago inicial de la construcción del patio que ha estado posponiendo.",
-      "start": 603.46,
-      "end": 624.28
+      "selector": "#post-body > p:nth-of-type(21)",
+      "text": "Cada uno de estos es una pequeña ruptura de confianza. El comensal ve un artículo estancado y comienza a preguntarse inconscientemente qué más en el sitio no está actualizado. Eso erosiona el pequeño momento de confianza que conduce a una reserva. Elimínalos todos.",
+      "start": 541.87,
+      "end": 556.98
     },
     {
       "id": 30,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(24)",
-      "text": "Los cinco movimientos se pueden realizar este domingo. Ninguno de ellos requiere contratar a nadie. Ninguno de ellos requiere un rediseño. Sólo requieren una hora de atención cada uno y la voluntad de tratar su sitio web como un sistema operativo para su restaurante, no como un folleto que hizo una vez y olvidó.",
-      "start": 624.8,
-      "end": 642.15
+      "selector": "#post-body > p:nth-of-type(22)",
+      "text": "La hora de trabajo: abre cada página de tu sitio, anota cada precio, promoción y referencia estacional que no esté actualizado, elimínalo o actualízalo. Encontrarás 4–8 de estos en un sitio típico. Ninguno requiere más de 5 minutos para arreglar.",
+      "start": 557.5,
+      "end": 572.26
     },
     {
       "id": 31,
+      "kind": "quote",
+      "selector": "#post-body > p:nth-of-type(23)",
+      "text": "Cinco movimientos. Ninguno de ellos es un rediseño. Ninguno de ellos requiere un consultor. Hechos en un domingo lento, devuelven un punto completo de margen — lo que es más de lo que la mayoría de los restaurantes obtendrán de un año de cambio de proveedores.",
+      "start": 573.01,
+      "end": 587.27
+    },
+    {
+      "id": 32,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(6)",
+      "text": "El argumento honesto de compounding.",
+      "start": 588.37,
+      "end": 590.32
+    },
+    {
+      "id": 33,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(24)",
+      "text": "Pareja con papeleo",
+      "start": 591.02,
+      "end": 592.26
+    },
+    {
+      "id": 34,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(25)",
-      "text": "El margen ya está ahí. Ve a buscarlo.",
-      "start": 642.67,
-      "end": 644.82
+      "text": "La lista de verificación de doce puntos funciona como un compañero imprimible de este artículo. Ábrelo en un teléfono real, recorre cada punto de verificación con calificaciones de prioridad y mantén la lista de tareas como un CSV cuando se la entregues a tu desarrollador.",
+      "start": 592.61,
+      "end": 607.9
+    },
+    {
+      "id": 35,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(26)",
+      "text": "Lista de verificación de conversión de sitio web — Aprobado o reprobado por fila, con prioridad de arreglo para el desarrollador.",
+      "start": 608.42,
+      "end": 615.46
+    },
+    {
+      "id": 36,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(27)",
+      "text": "Un uno por ciento no suena impresionante en una presentación. Es el tipo de número que un consultor enterraría en la diapositiva siete. Pero aquí está la cosa sobre la recuperación de margen en un restaurante: se compone con volumen. Un restaurante que hace 1,2 millones de dólares al año que gana un punto de margen gana 12 mil dólares. Un restaurante que hace 2,5 millones de dólares que gana el mismo punto gana 25 mil dólares. Y el próximo año, cuando estés haciendo un poco más de volumen, el mismo conjunto de cinco movimientos devuelve un poco más de dinero — porque el porcentaje siempre es contra el número de ingresos más grande.",
+      "start": 615.98,
+      "end": 650.71
+    },
+    {
+      "id": 37,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(28)",
+      "text": "En más de cinco años, un solo punto de margen en un restaurante independiente en crecimiento es conservativamente $60K–$100K que regresan al negocio. Eso es algo real. Eso es un año del salario de un cocinero de línea. Eso es una nueva ventilación de campana. Eso es el pago inicial para la ampliación de la terraza que has estado posponiendo.",
+      "start": 651.23,
+      "end": 670.83
+    },
+    {
+      "id": 38,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(29)",
+      "text": "Todos estos cinco movimientos se pueden hacer este domingo. Ninguno de ellos requiere contratar a alguien. Ninguno de ellos requiere un rediseño. Solo requieren una hora de atención cada uno, y la voluntad de tratar tu sitio web como un sistema operativo para tu restaurante, no como un folleto que hiciste una vez y olvidaste.",
+      "start": 671.35,
+      "end": 689.31
+    },
+    {
+      "id": 39,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(30)",
+      "text": "La margen ya está ahí. Ve a buscarla.",
+      "start": 689.83,
+      "end": 692.08
+    },
+    {
+      "id": 40,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(31)",
+      "text": "Puntos clave",
+      "start": 692.6,
+      "end": 693.4
+    },
+    {
+      "id": 41,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Horas por encima del pliegue: +0,20% de margen, 30 minutos de trabajo.",
+      "start": 693.75,
+      "end": 699.01
+    },
+    {
+      "id": 42,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Un enlace de reserva principal CTA: +0,25%, reemplaza todos los demás enlaces de reserva.",
+      "start": 699.33,
+      "end": 706.34
+    },
+    {
+      "id": 43,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "Enlace de pedido directo en la parte superior: +0,30%, supera a todas las plataformas de terceros en margen.",
+      "start": 706.66,
+      "end": 713.98
+    },
+    {
+      "id": 44,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "Mejores descripciones en artículos con margen superior: +0,15%, requiere Menu Copy Inspector.",
+      "start": 714.3,
+      "end": 720.97
+    },
+    {
+      "id": 45,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(5)",
+      "text": "Eliminar todos los promociones estancadas y PDFs antiguos: +0,10%, la limpieza que nadie programa pero que todos necesitan.",
+      "start": 721.29,
+      "end": 729.93
     }
   ]
 }

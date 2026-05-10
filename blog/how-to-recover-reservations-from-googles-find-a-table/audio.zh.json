@@ -1,275 +1,371 @@
 {
   "version": 1,
-  "generatedAt": "2026-04-24T19:43:31.279Z",
+  "generatedAt": "2026-05-10T08:03:25.260Z",
   "engine": "kokoro",
   "model": "kokoro-v1.0.onnx",
   "voice": "zm_yunxi",
   "language": "zh",
-  "total": 625.11,
+  "total": 700.51,
   "chunks": [
     {
       "id": 0,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(1)",
-      "text": "If you&rsquo;ve watched your Google Analytics in the last year and felt vaguely like something was off — the same Google Business Profile impressions, but noticeably fewer clicks through to your website — you weren&rsquo;t imagining it. Something changed. Google started doing something to restaurant listings that restaurant operators mostly missed, because it was rolled out quietly, and because it looks like a feature instead of a taking.",
+      "text": "阅读本文的中文版 &rarr;",
       "start": 0,
-      "end": 22.13
+      "end": 2.76
     },
     {
       "id": 1,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(2)",
-      "text": "In the last year or so, Google Maps began surfacing reservation widgets directly inside the listing for most restaurants that use OpenTable, Resy, SevenRooms, or Tock. A guest can now search &ldquo;Italian near me,&rdquo; tap your restaurant, pick a party size and time, and complete the reservation without ever leaving Google. Your website is never visited. Your homepage hero, your menu descriptions, your brand story — all of it bypassed. The guest books, the booking drops into your reservation system, and Google quietly keeps the session.",
-      "start": 22.65,
-      "end": 53.86
+      "text": "TL;DR",
+      "start": 3.11,
+      "end": 4.25
     },
     {
       "id": 2,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(3)",
-      "text": "If you&rsquo;re thinking \"well, at least I got the reservation\" — yes, you did, this time. But something important also happened: Google trained that guest that your restaurant is a row in a search result, not a destination. Next time they want to eat out, they&rsquo;ll go back to Google first, tap through the Maps card, and book again without ever learning a single thing about your place. Over time that&rsquo;s a very different relationship with your restaurant than the one your website was supposed to build.",
-      "start": 54.38,
-      "end": 82.2
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Find a Table改变了Google处理餐厅查询的方式——预订发生在Google中，甚至在访客访问您的网站之前。",
+      "start": 4.6,
+      "end": 13.81
     },
     {
       "id": 3,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(4)",
-      "text": "Here&rsquo;s what the flow actually looks like, and what it quietly costs.",
-      "start": 82.72,
-      "end": 87.85
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "如果您的预订系统不在Find a Table上，您将会失去8-15%的搜索驱动的预订给已经在Find a Table上的竞争对手。",
+      "start": 14.13,
+      "end": 24.18
     },
     {
       "id": 4,
-      "kind": "figure",
-      "selector": "#post-body > figure:nth-of-type(1)",
-      "text": "Here is the bypass, side by side. On the left, the flow Google pushes today. A guest searches for your restaurant on Google, lands on the Maps card, taps the 'Find a table' button, picks a party size and time inside the OpenTable or Resy widget embedded directly in Google Maps, and completes the booking. Your website is never visited. The guest has no idea what your place looks like, what makes your menu different, or that you have a story worth knowing. They booked a generic table at a generic name. On the right, the flow you want. The guest searches, lands on the Maps card, taps through to your website link, sees your hero image and your voice and your menu, and then books through a reservation widget on your own site — which still routes to OpenTable or Resy under the hood. Same reservation, same back-end, same end result for the restaurant. But now the guest has seen your restaurant's actual brand, which dramatically increases their likelihood of remembering you next time, telling a friend, or ordering direct from your site instead of through DoorDash next week. The booking is not the whole win. The brand impression is. Google's shortcut steals the brand impression, not the reservation.",
-      "start": 88.65,
-      "end": 153.12
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "有三个具体的方法可以在不放弃您自己的预订表面的情况下恢复大部分丢失的流量。",
+      "start": 24.5,
+      "end": 31.92
     },
     {
       "id": 5,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(5)",
-      "text": "Both flows result in a reservation on your books. But only one of them results in a guest who&rsquo;s actually met your restaurant.",
-      "start": 153.87,
-      "end": 162.19
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "如果您在过去的一年里观看过Google Analytics，并感到有些不对劲——相同的Google Business Profile印象，但明显较少的点击通过到您的网站——您并没有想象它。有些事情发生了变化。Google开始对餐厅列表做一些事情，大多数餐厅经营者都没有注意到，因为它是悄悄推出的，而且看起来像是一个功能，而不是一个夺取。",
+      "start": 32.27,
+      "end": 56.99
     },
     {
       "id": 6,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(1)",
-      "text": "Why it matters — in dollars, not in vibes.",
-      "start": 163.29,
-      "end": 166.28
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "在过去的一年或这么长时间里，Google Maps开始在大多数使用OpenTable、Resy、SevenRooms或Tock的餐厅列表中直接显示预订小部件。现在，客人可以搜索“附近的意大利餐厅”，点击您的餐厅，选择人数和时间，并在不离开Google的情况下完成预订。您的网站从未被访问过。您的首页英雄、菜单描述、品牌故事——所有这些都被绕过了。客人预订，预订信息被发送到您的预订系统，Google悄悄地保留了会话。",
+      "start": 57.34,
+      "end": 87.12
     },
     {
       "id": 7,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(6)",
-      "text": "If the argument so far feels a little abstract — \"brand impression\" isn&rsquo;t a line item anyone argues about in an operator meeting — let&rsquo;s put some numbers on it.",
-      "start": 166.98,
-      "end": 178.66
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "如果您在想“至少我得到了预订”——是的，您这次得到了。但是，有一些重要的事情也发生了：Google教会了客人，您的餐厅只是一个搜索结果中的行，而不是一个目的地。下次他们想出去吃饭时，他们会回到Google，点击地图卡，并再次预订，而不需要了解您餐厅的任何信息。随着时间的推移，这与您的网站原本要建立的关系大不相同。",
+      "start": 87.47,
+      "end": 112.55
     },
     {
       "id": 8,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(7)",
-      "text": "A guest who books through your website and actually lands on your homepage has roughly a 3x higher chance of returning within 90 days, based on the cohort patterns I see in restaurants with proper analytics. They&rsquo;re more likely to order delivery direct from you later (because they know the U R L). They&rsquo;re more likely to sign up for your SMS list (because they saw the opt-in on the booking page). They&rsquo;re more likely to tell a friend in the exact words you used on your homepage, because your homepage gave them words.",
-      "start": 179.18,
-      "end": 208.99
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "以下是实际的流量流程，以及它悄悄地带来的成本。",
+      "start": 112.9,
+      "end": 117.68
     },
     {
       "id": 9,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(8)",
-      "text": "A guest who books inline through Google remembers that they ate at \"some Italian place on 4th,\" maybe. That guest is worth the cover but almost nothing else. Across a year of dinner service, the compounding difference between those two guest behaviors is real, especially when those recurring-visit dollars are the exact margin cushion most restaurants are trying to build right now.",
-      "start": 209.51,
-      "end": 228.08
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "这是旁路，左右并列。左边是Google今天推动的流量流程。客人在Google上搜索您的餐厅，进入地图卡，点击“找到一张桌子”按钮，在OpenTable或Resy小部件中选择人数和时间（该小部件直接嵌入在Google Maps中），并完成预订。您的网站从未被访问过。客人不知道您的餐厅是什么样子，您的菜单有什么不同之处，或者您有一个值得了解的故事。他们预订了一个通用的桌子，属于一个通用的名称。右边是您想要的流量流程。客人搜索，进入地图卡，点击您的网站链接，看到您的英雄图像、您的语音和您的菜单，然后通过您自己的网站上的预订小部件预订——该小部件仍然路由到OpenTable或Resy的后端。相同的预订，相同的后端，相同的结果对于餐厅。但是现在，客人已经看到了您的餐厅的实际品牌，这大大增加了他们下次记住您、告诉朋友或直接从您的网站而不是通过DoorDash下周订购的可能性。预订并不是整个胜利。品牌印象才是。Google的快捷方式偷走了品牌印象，而不是预订。",
+      "start": 118.48,
+      "end": 186.62
     },
     {
       "id": 10,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(9)",
-      "text": "There&rsquo;s a second cost that&rsquo;s harder to see until it&rsquo;s too late: platform dependency. Google&rsquo;s whole playbook over the last decade — in travel, in local services, in reviews, in shopping — is to insert itself as an intermediary, prove you can live without the click-through to your own site, then eventually start charging for the traffic it used to give you for free. If your reservation flow doesn&rsquo;t touch your website, you&rsquo;re one algorithm change away from being fully disintermediated. You own nothing. Google owns the guest.",
-      "start": 228.6,
-      "end": 261.31
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "两种流程都会在您的预订系统中产生一条记录。但只有其中一种会让客人真正地了解您的餐厅。",
+      "start": 187.37,
+      "end": 196.25
     },
     {
       "id": 11,
       "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(2)",
-      "text": "Three moves that recover the flow.",
-      "start": 262.41,
-      "end": 264.58
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "为什么这很重要 — 用美元来计算，而不是感觉。",
+      "start": 197.35,
+      "end": 201.63
     },
     {
       "id": 12,
-      "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(1)",
-      "text": "1. Make your Google Business Profile website link unmissable.",
-      "start": 265.68,
-      "end": 269.17
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "如果到目前为止的论点感觉有点抽象 — “品牌印象”不是运营商会议上讨论的项目 — 那么让我们来看一些数字。",
+      "start": 202.33,
+      "end": 211.7
     },
     {
       "id": 13,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(10)",
-      "text": "On Google Maps, the &ldquo;Website&rdquo; button sits right next to the reservation widget. Most operators accept whatever U R L Google auto-populated from their domain and never think about it again. That&rsquo;s a mistake. Your Website button in G B P is the single most valuable piece of real estate Google gives you for free — and it should point at a U R L whose entire purpose is to beat the inline widget.",
-      "start": 269.87,
-      "end": 295.66
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "通过您的网站预订并实际访问您的主页的客人，大约有3倍的可能性会在90天内再次光顾，基于我在具有适当分析的餐厅中看到的群体模式。他们更有可能直接从您这里订购外卖（因为他们知道您的网址）。他们更有可能注册您的 SMS 列表（因为他们在预订页面上看到的选项）。他们更有可能用您在主页上使用的确切词语告诉朋友，因为您的主页给了他们词语。",
+      "start": 212.05,
+      "end": 238.93
     },
     {
       "id": 14,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(11)",
-      "text": "Specifically: point your G B P Website U R L at a landing page designed as a reservation page , not your homepage. Hero image of your room. One sentence of voice. A prominent &ldquo;Book a table&rdquo; widget that routes to the same OpenTable/Resy back-end Google is routing to. Maybe a small &ldquo;or see full menu&rdquo; link. That&rsquo;s it. The page exists to give the guest who clicked \"Website\" instead of \"Find a table\" a reason to feel they made the right call, and a frictionless path to the same booking.",
-      "start": 296.18,
-      "end": 327.33
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "通过 Google 内联预订的客人可能只记得他们在“4th街的某个意大利餐厅”吃过饭。这种客人只值一份菜单，但几乎没有其他价值。在一年晚餐服务中，两种客人行为之间的差异是实实在在的，特别是当那些重复访问的美元是大多数餐厅目前试图建立的确切利润缓冲区时。",
+      "start": 239.28,
+      "end": 261.32
     },
     {
       "id": 15,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(12)",
-      "text": "The move: build a /reserve page on your website, set your Google Business Profile &ldquo;Website&rdquo; U R L to that page. Takes an hour.",
-      "start": 327.85,
-      "end": 338.32
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "还有一个更难以看到的成本，直到为时已晚：平台依赖。 Google 过去十年的整个游戏计划 — 在旅行、当地服务、评论、购物中 — 是将自己作为中介插入，证明您可以在没有点击自己的网站的情况下生存，然后最终开始为曾经免费提供的流量收费。如果您的预订流程不涉及您的网站，您只有一步算法变化就可能被完全中介化。您拥有一无所有。 Google 拥有客人。",
+      "start": 261.67,
+      "end": 288.79
     },
     {
       "id": 16,
       "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(2)",
-      "text": "2. Out-design the inline widget on your own site.",
-      "start": 339.42,
-      "end": 342.23
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "三步恢复流程。",
+      "start": 289.89,
+      "end": 291.14
     },
     {
       "id": 17,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(13)",
-      "text": "The reason the inline widget wins right now is that it&rsquo;s friction-less. The guest taps, picks a time, done. If your website&rsquo;s booking flow requires a click-through to an OpenTable page, then a load, then a captcha, then a signup — you lose the speed race.",
-      "start": 342.93,
-      "end": 358.87
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(2)",
+      "text": "三步，按顺序。第一步：使您的 Google Business Profile 网站链接不可忽视 — 这是 Google 给您的免费广告位，将其指向一个旨在击败内联小部件的网址。第二步：在您自己的网站上设计一个比内联小部件更好的预订体验 — 如果您自己的页面上的预订体验比 Google Maps 内的更差，客人会理性地选择内联小部件。第三步：在 Google 之前捕获电子邮件 — 预订是半个胜利；电子邮件是整个胜利，因为它允许您在不向 Google 或 OpenTable 支付第二次的情况下将客人带回。第三步是大多数运营商跳过的步骤。",
+      "start": 291.94,
+      "end": 326.95
     },
     {
       "id": 18,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(14)",
-      "text": "Embed the widget directly in your page instead of linking out. OpenTable, Resy, SevenRooms, and Tock all provide an iframe widget you can drop into your own homepage or reserve page that completes the booking in the same session. Do the work to make that embed beautiful — proper fonts, your color palette, party-size selector above the fold. The goal is that the guest who arrived from Google feels like they got a better booking experience, not a worse one, for having come through you.",
-      "start": 359.39,
-      "end": 386.35
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(1)",
+      "text": "1. 使您的 Google Business Profile 网站链接不可忽视。",
+      "start": 328.05,
+      "end": 332.39
     },
     {
       "id": 19,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(15)",
-      "text": "The move: contact your reservation platform&rsquo;s support, ask for the widget embed code, have your developer (or you, on most modern sites) drop it in. Takes 2–4 hours total.",
-      "start": 386.87,
-      "end": 399.56
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "在 Google Maps 上，“网站”按钮位于预订小部件旁边。大多数运营商接受 Google 从其域名自动填充的网址，并且从不再思考它。这是一个错误。在 G B P 中，您的“网站”按钮是 Google 免费给您的最有价值的广告位 — 并且它应该指向一个旨在击败内联小部件的网址。",
+      "start": 333.09,
+      "end": 353.67
     },
     {
       "id": 20,
-      "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(3)",
-      "text": "3. Capture the email before Google can.",
-      "start": 400.66,
-      "end": 403.32
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "将你的GBP网站URL指向一个专门的预订页面，而不是首页。这个页面应该有你餐厅的英雄图片，一句介绍语，一個突出的“预订桌子”按钮，直接链接到OpenTable/Resy的后台Google，也许还有一個小的“或查看完整菜单”链接。这个页面的目的就是让客人觉得点击“网站”而不是“查找桌子”是正确的选择，并提供一个无缝的预订路径。",
+      "start": 354.02,
+      "end": 379.87
     },
     {
       "id": 21,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(16)",
-      "text": "The inline Google widget takes the guest&rsquo;s email and gives it to the reservation platform, not to you. Many operators don&rsquo;t realize that OpenTable and Resy don&rsquo;t share those emails directly — you get diner records only for the guests who actually sat in your restaurant, and only if you&rsquo;re on specific tier plans. The guest who booked but cancelled? You don&rsquo;t have them.",
-      "start": 404.02,
-      "end": 429.37
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "第一步：在你的网站上创建一个/reserve页面，并将Google Business Profile的“网站”URL设置为该页面。只需一个小时。",
+      "start": 380.22,
+      "end": 390.14
     },
     {
       "id": 22,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(17)",
-      "text": "On your own booking page, add a single checkbox: &ldquo;Also send me the occasional email from [restaurant name] — menu changes, events, and our weekly specials.&rdquo; That checkbox, checked by default if your jurisdiction allows it, builds a first-party email list that nobody can take away from you. Every guest who comes through your site becomes a future reactivation, a future direct order, a future referral. Every guest who books inline on Google becomes a row in OpenTable&rsquo;s database.",
-      "start": 429.89,
-      "end": 459.72
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(2)",
+      "text": "2. 在你的网站上设计一个更好的内联小工具。",
+      "start": 391.24,
+      "end": 395
     },
     {
       "id": 23,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(18)",
-      "text": "The move: add the checkbox to your reservation widget, send the emails to your Klaviyo / Mailchimp / Attentive list, nurture. Ninety minutes of work. Compounds forever.",
-      "start": 460.24,
-      "end": 471.17
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "现在内联小工具占优势是因为它无缝。客人点击，选择时间，完成。但如果你的网站的预订流程需要点击跳转到OpenTable页面，然后加载，接着是验证码和注册——你就会输掉速度竞争。",
+      "start": 395.7,
+      "end": 409.05
     },
     {
       "id": 24,
-      "kind": "quote",
-      "selector": "#post-body > p:nth-of-type(19)",
-      "text": "Google isn&rsquo;t stealing your reservations. It&rsquo;s stealing the guest relationship around your reservations — which is worth far more over time than any single booking.",
-      "start": 471.92,
-      "end": 483.33
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "将小工具直接嵌入你的页面，而不是链接出去。OpenTable、Resy、SevenRooms和Tock都提供了一个iframe小工具，你可以将其直接放入你的首页或预订页面，完成预订流程。做好工作，让嵌入的小工具看起来漂亮——使用正确的字体、你的颜色方案，聚会大小选择器在页面上方。目标是让从Google来的客人觉得他们通过你的网站获得了更好的预订体验，而不是更差的体验。",
+      "start": 409.4,
+      "end": 437.85
     },
     {
       "id": 25,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(3)",
-      "text": "What not to do: disable reservations in G B P.",
-      "start": 484.43,
-      "end": 488.72
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "第一步：联系你的预订平台的支持团队，请求小工具嵌入代码，让你的开发人员（或你自己，在大多数现代网站上）将其放入你的网站。总共需要2-4个小时。",
+      "start": 438.2,
+      "end": 449.84
     },
     {
       "id": 26,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(20)",
-      "text": "I&rsquo;ve seen operators, frustrated by the bypass, toggle off the reservation integration in their Google Business Profile entirely. The thinking is: if Google can&rsquo;t show the inline widget, the guest is forced to click through to my website. Don&rsquo;t do this.",
-      "start": 489.42,
-      "end": 505.88
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(3)",
+      "text": "3. 在Google之前捕获电子邮件。",
+      "start": 450.94,
+      "end": 453.94
     },
     {
       "id": 27,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(21)",
-      "text": "What actually happens is the guest looks at your Google listing, sees no booking option, assumes you&rsquo;re hard to book, and taps the next restaurant on the list. You lose the guest entirely instead of keeping them with a partial brand impression. The inline widget is not the enemy — the inline widget being the only path is the enemy. Keep the inline widget on. Make your website path also obvious, also fast, and better-designed than what Google serves.",
-      "start": 506.4,
-      "end": 530.41
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "内联Google小工具会获取客人的电子邮件并将其提供给预订平台，而不是你。许多运营商没有意识到OpenTable和Resy不会直接分享这些电子邮件——你只会为实际坐在你餐厅的客人获取就餐记录，而且仅当你在特定层级计划中时才会这样。取消预订的客人？你没有他们的信息。",
+      "start": 454.64,
+      "end": 478
     },
     {
       "id": 28,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(22)",
-      "text": "Think of it as optionality, not opposition. Some guests are time-pressed and will always tap the inline widget. That&rsquo;s fine — you still got a booking. Other guests, especially regulars and guests who care about matching restaurant vibe to occasion, will happily click through to your site if you make that path inviting. Over a year of bookings, even shifting 20–30% of the flow back to your website is a meaningful recovery of brand ownership.",
-      "start": 530.93,
-      "end": 555.8
+      "selector": "#post-body > p:nth-of-type(19)",
+      "text": "在你的预订页面上添加一个单一的复选框：“也将来自分[餐厅名称]的偶尔电子邮件——菜单变化、活动和我们的每周特惠。”这个复选框，默认情况下如果你的管辖区允许，会建立一个第一方电子邮件列表，这是没有人可以从你那里夺走的。每个通过你的网站来的客人都成为未来的重新激活、直接订单和推荐的来源。每个在Google上进行内联预订的客人都成为OpenTable数据库中的一个记录。",
+      "start": 478.35,
+      "end": 506.95
     },
     {
       "id": 29,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(4)",
-      "text": "The wider pattern.",
-      "start": 556.9,
-      "end": 558.14
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(20)",
+      "text": "第一步：在你的预订小工具中添加复选框，将电子邮件发送到你的Klaviyo / Mailchimp / Attentive列表中，进行培养。90分钟的工作。会随着时间的推移而增长。",
+      "start": 507.3,
+      "end": 520.94
     },
     {
       "id": 30,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(23)",
-      "text": "Google&rsquo;s &ldquo;find a table&rdquo; isn&rsquo;t unique. It&rsquo;s an early, mild version of a pattern Google applies every few years: take a behavior that used to funnel traffic to small-business websites, pull it inside the Google ecosystem, call it a feature, and watch click-through rates decline. Reviews happened first. Hours happened next. Menus partially happened. Reservations are happening now. Online ordering is next.",
-      "start": 558.84,
-      "end": 586.02
+      "kind": "quote",
+      "selector": "#post-body > p:nth-of-type(21)",
+      "text": "Google并不是在偷窃你的预订。它是在偷窃围绕你的预订的客人关系——这在长期内比任何单个预订都值得更多。",
+      "start": 521.69,
+      "end": 530.35
     },
     {
       "id": 31,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(24)",
-      "text": "The defensive play isn&rsquo;t to fight Google — nobody wins that. The play is to make sure that when the guest chooses to click through to your site, they&rsquo;re rewarded with something better than the shortcut. Good design, fast loading, a clear booking path, a small moment of brand that makes them remember your name. Google keeps the commoditized flow. You keep the customers who care about the difference — and those are the customers who actually sustain a restaurant over time.",
-      "start": 586.54,
-      "end": 612.63
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "什么不应该做：禁用GBP的预订。",
+      "start": 531.45,
+      "end": 534.47
     },
     {
       "id": 32,
       "kind": "body",
+      "selector": "#post-body > p:nth-of-type(22)",
+      "text": "我见过运营商，出于对绕过的沮丧，完全禁用了他们的Google Business Profile中的预订集成。他们的想法是：如果Google不能显示内联小工具，客人就会被迫点击到我的网站。但是不要这样做。",
+      "start": 535.17,
+      "end": 549.06
+    },
+    {
+      "id": 33,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(23)",
+      "text": "实际发生的情况是，客人查看你的Google列表，发现没有预订选项，于是认为你很难预订，然后点击列表上的下一家餐厅。这样，你完全失去了客人，而不是保留他们的部分品牌印象。内联小部件并不是敌人——内联小部件是唯一的路径才是敌人。保持内联小部件开启。同时，使你的网站路径明显、快速、设计比Google提供的更好。",
+      "start": 549.41,
+      "end": 573.28
+    },
+    {
+      "id": 34,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(24)",
+      "text": "可以把这当作是选择性，而不是对立。有些客人时间紧迫，总会点击内联小部件。这也没关系——你还是得到了预订。其他客人，尤其是常客和那些关心餐厅氛围与场合匹配的客人，如果你让他们的路径更有吸引力，他们会很乐意点击你的网站。超过一年预订，即使将20–30%的流量转回你的网站，也是对品牌所有权的有意义的恢复。",
+      "start": 573.63,
+      "end": 599.16
+    },
+    {
+      "id": 35,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "更广泛的模式。",
+      "start": 600.26,
+      "end": 601.52
+    },
+    {
+      "id": 36,
+      "kind": "body",
       "selector": "#post-body > p:nth-of-type(25)",
-      "text": "Build the /reserve page. Embed the widget. Capture the email. Three moves, under a day of work total. You&rsquo;ll keep the brand relationship Google would otherwise have quietly walked away with.",
-      "start": 613.15,
-      "end": 625.11
+      "text": "Google的“找到一张桌子”并不是独一无二的。这是Google每隔几年应用的一个模式的早期、温和版本：将以前用于将流量引导到小型企业网站的行为拉入Google生态系统，称之为功能，并观察点击率的下降。评论首先发生。营业时间接着发生。菜单部分发生。预订现在正在发生。在线订购是下一个。",
+      "start": 602.22,
+      "end": 624.72
+    },
+    {
+      "id": 37,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(26)",
+      "text": "防御性的策略不是与Google对抗——没人会赢得这场战斗。策略是确保当客人选择点击你的网站时，他们会因为有更好的体验而得到奖励：良好的设计，快速加载，清晰的预订路径，一个小小的品牌时刻，让他们记住你的名字。Google保留了商品化的流量。你保留了关心差异的客户——而这些客户实际上是支撑餐厅长期发展的客户。",
+      "start": 625.07,
+      "end": 648.74
+    },
+    {
+      "id": 38,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(27)",
+      "text": "建立/reserve页面。嵌入小部件。捕获电子邮件。三步，总共不到一天的工作。你将保留Google原本会悄悄带走的品牌关系。",
+      "start": 649.09,
+      "end": 659.61
+    },
+    {
+      "id": 39,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(28)",
+      "text": "关键要点",
+      "start": 659.96,
+      "end": 660.87
+    },
+    {
+      "id": 40,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "OpenTable、Resy、Tock和SevenRooms目前都连接到“找到一张桌子”——如果你没有使用任何一个，请选择一个。",
+      "start": 661.22,
+      "end": 670.91
+    },
+    {
+      "id": 41,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "不要在GBP中禁用预订——这也会使你失去电话和走进来的查询。",
+      "start": 671.23,
+      "end": 677.32
+    },
+    {
+      "id": 42,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "在你的网站上添加预订schema，以便Google可以验证集成是真实的。",
+      "start": 677.64,
+      "end": 683.81
+    },
+    {
+      "id": 43,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "餐厅审计的GBP部分将“找到一张桌子”的资格作为一个单独的评分。",
+      "start": 684.13,
+      "end": 690.61
+    },
+    {
+      "id": 44,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(5)",
+      "text": "更广泛的模式：每一个Google的表面都在你的网站之前接受预订，这都会使你失去关系——先接受预订，然后接受电子邮件。",
+      "start": 690.93,
+      "end": 700.51
     }
   ]
 }

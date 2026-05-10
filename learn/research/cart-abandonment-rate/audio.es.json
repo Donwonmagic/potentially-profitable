@@ -1,0 +1,115 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-09T21:00:57.280Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "em_alex",
+  "language": "es",
+  "total": 157.47,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "El número destacado de la metaanálisis de Baymard de 49 estudios separados sobre el abandono de la compra en línea: un promedio de 70.19% de los carros son abandonados antes de completar la compra. Dos tercios de cada embudo de reserva se filtran antes de la confirmación. El 30% restante es lo que realmente se reserva.",
+      "start": 0,
+      "end": 19.98
+    },
+    {
+      "id": 1,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Hallazgos clave.",
+      "start": 21.08,
+      "end": 22.05
+    },
+    {
+      "id": 2,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "La metaanálisis cubre 49 estudios separados sobre el abandono de la compra en línea en una amplia gama de categorías minoristas. La tasa de abandono promedio es aproximadamente 70.19%.",
+      "start": 22.75,
+      "end": 35.56
+    },
+    {
+      "id": 3,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Las razones más citadas para el abandono, en todos los estudios: costos adicionales demasiado altos (envío, tarifas, impuestos mostrados tarde), se requiere crear una cuenta, entrega demasiado lenta, no se puede ver/calcular el total de la orden de antemano, el sitio pide demasiada información, y no hay suficientes métodos de pago.",
+      "start": 35.88,
+      "end": 54.83
+    },
+    {
+      "id": 4,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "El requisito de creación de cuenta es consistentemente una de las tres razones principales por las que la gente abandona durante la compra. Las opciones de pago de invitado tienen una tasa de abandono significativamente más baja.",
+      "start": 55.15,
+      "end": 68.29
+    },
+    {
+      "id": 5,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "Cada campo adicional requerido se correlaciona con una disminución medible en la finalización. Los campos prellenados y los formularios más cortos consistentemente superan a los largos.",
+      "start": 68.61,
+      "end": 79.55
+    },
+    {
+      "id": 6,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(5)",
+      "text": "La tasa de abandono se mantiene en todos los tipos de dispositivos, pero el abandono en dispositivos móviles es significativamente más alto que en escritorio — a menudo 10+ puntos porcentuales — debido a los campos pequeños, la red irregular y los problemas de autofill.",
+      "start": 79.87,
+      "end": 95.27
+    },
+    {
+      "id": 7,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Cómo Muntin utiliza esto.",
+      "start": 96.37,
+      "end": 98.04
+    },
+    {
+      "id": 8,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Por qué su restaurante pierde reservas todas las noches La fuga número 5 (\"fricción en el flujo de reservas\") se basa enteramente en este estudio. Cada punto en la lista de \"qué pide un mal flujo de reservas\" es un desencadenante de abandono de Baymard.",
+      "start": 98.74,
+      "end": 112.78
+    },
+    {
+      "id": 9,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Wix versus personalizado para restaurantes: qué se rompe primero La fuga número 5 (fricción en el widget de reservas) utiliza los números de Baymard para explicar por qué un sistema de reservas más simple, con menos campos, supera significativamente a un widget de terceros personalizado para independientes de bajo volumen.",
+      "start": 113.1,
+      "end": 131.48
+    },
+    {
+      "id": 10,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Cita completa.",
+      "start": 132.58,
+      "end": 133.52
+    },
+    {
+      "id": 11,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "Instituto Baymard. Estadísticas de la tasa de abandono del carrito de compras. Metaanálisis actualizado continuamente de la investigación sobre el abandono del carrito de compras en línea. baymard.com",
+      "start": 134.22,
+      "end": 145.16
+    },
+    {
+      "id": 12,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Última revisión: abril veintiséis — Baymard actualiza la metaanálisis de forma continua a medida que se publican nuevos estudios. El titular del 70% ha sido estable en las actualizaciones.",
+      "start": 145.51,
+      "end": 157.47
+    }
+  ]
+}

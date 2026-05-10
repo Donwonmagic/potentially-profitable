@@ -1,0 +1,155 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-09T19:55:49.654Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "em_alex",
+  "language": "es",
+  "total": 79.97,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "Si solo necesitas el ejemplo, está aquí. Si quieres entender qué hace cada parte, lee los seis tipos de schema markup que Google usa primero. Lo de abajo combina los seis en un solo @graph , que es lo que recomienda Google.",
+      "start": 0,
+      "end": 12.36
+    },
+    {
+      "id": 1,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Cómo usarlo.",
+      "start": 13.46,
+      "end": 14.34
+    },
+    {
+      "id": 2,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Copia el JSON de abajo.",
+      "start": 15.04,
+      "end": 16.67
+    },
+    {
+      "id": 3,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Reemplaza cada valor con tus datos reales (nombre, dirección, teléfono, menú, horarios, etc.).",
+      "start": 16.99,
+      "end": 22.36
+    },
+    {
+      "id": 4,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Pega el bloque dentro de un <script type=\"application/ld+json\"> en el <head> de tu página de inicio.",
+      "start": 22.68,
+      "end": 29.23
+    },
+    {
+      "id": 5,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "Valida con Schema Checker antes de publicar.",
+      "start": 29.55,
+      "end": 32
+    },
+    {
+      "id": 6,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Ejemplo completo.",
+      "start": 33.1,
+      "end": 34.17
+    },
+    {
+      "id": 7,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Antes de publicar.",
+      "start": 35.27,
+      "end": 36.42
+    },
+    {
+      "id": 8,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Reemplaza tu-restaurante.com con tu dominio real en cada URL.",
+      "start": 37.12,
+      "end": 41.18
+    },
+    {
+      "id": 9,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Quita los rangos de horarios que no apliquen (no inventes que estás abierto los lunes si estás cerrado).",
+      "start": 41.5,
+      "end": 46.85
+    },
+    {
+      "id": 10,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "El aggregateRating solo si tienes reseñas en tu propio sitio. No copies las reseñas de Google.",
+      "start": 47.17,
+      "end": 52.74
+    },
+    {
+      "id": 11,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "Las descripciones del menú son las que las AI Overviews citan textualmente — vale la pena escribirlas bien.",
+      "start": 53.06,
+      "end": 58.91
+    },
+    {
+      "id": 12,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Después de pegarlo, ejecuta Schema Checker y el Rich Results Test de Google. Si ambos validan, está bien implementado.",
+      "start": 59.43,
+      "end": 66
+    },
+    {
+      "id": 13,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "Si tienes dudas sobre algún campo, escríbeme por La Ventana. Leo cada mensaje.",
+      "start": 66.52,
+      "end": 71.14
+    },
+    {
+      "id": 14,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "Qué hacer ahora",
+      "start": 71.66,
+      "end": 72.51
+    },
+    {
+      "id": 15,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Lee: el término del glosario relacionado →",
+      "start": 72.86,
+      "end": 75.21
+    },
+    {
+      "id": 16,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Prueba: la herramienta que acompaña este artículo →",
+      "start": 75.53,
+      "end": 77.99
+    },
+    {
+      "id": 17,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "O escríbele a Don: La Ventana →",
+      "start": 78.31,
+      "end": 79.97
+    }
+  ]
+}

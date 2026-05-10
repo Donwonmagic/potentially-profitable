@@ -1,0 +1,115 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-09T20:28:44.292Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "am_michael",
+  "language": "en",
+  "total": 162.64,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "Three sample Lighthouse score rings, one per band. A 35 sits in the Poor band (0 to 49), painted rust. A 65 sits in the Needs work band (50 to 89), painted gold. A 95 sits in the Good band (90 to 100), painted green. The colored dial in any PageSpeed Insights or Lighthouse report maps to these same thresholds.",
+      "start": 0,
+      "end": 24.5
+    },
+    {
+      "id": 1,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Key findings.",
+      "start": 25.6,
+      "end": 26.49
+    },
+    {
+      "id": 2,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "The Lighthouse performance score is a weighted average of five metrics (as of the current major version): First Contentful Paint, Speed Index, Largest Contentful Paint, Total Blocking Time, and Cumulative Layout Shift.",
+      "start": 27.19,
+      "end": 41.81
+    },
+    {
+      "id": 3,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Current weights: FCP 10%, SI 10%, LCP 25%, TBT 30%, CLS 25% . TBT and LCP together account for over half the final number; optimizing them moves the score the most.",
+      "start": 42.13,
+      "end": 60.35
+    },
+    {
+      "id": 4,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Each metric is scored against a log-normal curve built from the top ~10% of real-world sites on the HTTP Archive. So \"100\" does not mean perfect — it means you are in the fastest bucket of real sites.",
+      "start": 60.67,
+      "end": 76.49
+    },
+    {
+      "id": 5,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "Scores above 90 are \"Good,\" 50–89 are \"Needs improvement,\" and below 50 is \"Poor.\" The colored dial in the report maps to these thresholds.",
+      "start": 76.81,
+      "end": 87.47
+    },
+    {
+      "id": 6,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(5)",
+      "text": "Lighthouse simulates a mid-tier mobile device on a throttled network by default, which is intentionally conservative — faster than average real-world conditions would be misleading for a restaurant audience.",
+      "start": 87.79,
+      "end": 101.61
+    },
+    {
+      "id": 7,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "How Muntin uses this.",
+      "start": 102.71,
+      "end": 104.19
+    },
+    {
+      "id": 8,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Wix versus custom for restaurants: what breaks first Break number 2 references the Lighthouse performance methodology when comparing platform-builder sites to custom ones. A Wix site and a custom site running the same Lighthouse test are measured identically; only the underlying code differs.",
+      "start": 104.89,
+      "end": 124.49
+    },
+    {
+      "id": 9,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Restaurant Website Audit (interactive tool) Muntin's audit runs against real PageSpeed Insights data for your U R L and reports the component metrics that make up the Lighthouse score, not just the final number.",
+      "start": 124.81,
+      "end": 139.36
+    },
+    {
+      "id": 10,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Full citation.",
+      "start": 140.46,
+      "end": 141.48
+    },
+    {
+      "id": 11,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "Chrome DevTools. Lighthouse performance scoring . Chrome for Developers documentation. developer.chrome.com",
+      "start": 142.18,
+      "end": 149.96
+    },
+    {
+      "id": 12,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Last reviewed: April twenty twenty-six — Lighthouse metric weights have shifted slightly across major versions; Muntin reviews this page whenever a new Lighthouse major is released.",
+      "start": 150.31,
+      "end": 162.64
+    }
+  ]
+}

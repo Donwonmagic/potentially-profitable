@@ -1,0 +1,411 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-09T19:40:23.452Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "zm_yunxi",
+  "language": "zh",
+  "total": 267.08,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "\"你会为一个网站收多少钱?\"几乎每个餐馆老板都会问我这个问题，我总是想回答另一个问题：\"什么类型的网站?\"因为没有一个固定的价格，有四个真正的选项，它们的价格不同，解决的问题也不同。",
+      "start": 0,
+      "end": 14.68
+    },
+    {
+      "id": 1,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "简短的答案。",
+      "start": 15.78,
+      "end": 16.81
+    },
+    {
+      "id": 2,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "对于2026年的独立餐馆：$2,500到$25,000+，大多数价格在$6,000到$12,000之间。低端和高端之间的差异不是\"更多的设计\"——而是平台、集成和是否最终拥有源代码。",
+      "start": 17.51,
+      "end": 31.74
+    },
+    {
+      "id": 3,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "四个真正的选项。",
+      "start": 32.84,
+      "end": 34.4
+    },
+    {
+      "id": 4,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(1)",
+      "text": "选项1：D I Y平台（$25-50/月，0美元设置费用）。",
+      "start": 35.5,
+      "end": 41.03
+    },
+    {
+      "id": 5,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "Wix，Squarespace，GoDaddy。你可以使用模板自己创建网站。适合：",
+      "start": 41.73,
+      "end": 47.45
+    },
+    {
+      "id": 6,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "弹出式餐馆或鬼厨房。",
+      "start": 47.8,
+      "end": 49.9
+    },
+    {
+      "id": 7,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "开业不足一年，无预算。",
+      "start": 50.22,
+      "end": 51.83
+    },
+    {
+      "id": 8,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "真正可以丢弃的——一个占位符，当你成长时会被替换。",
+      "start": 52.15,
+      "end": 56.85
+    },
+    {
+      "id": 9,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "何时不适用：任何菜单繁多、需要特定集成或已开业超过一年的餐馆。Wix会在6个地方出现问题，导致最终成本更高。",
+      "start": 57.2,
+      "end": 67.47
+    },
+    {
+      "id": 10,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(2)",
+      "text": "选项2：模板工作室（$2,500-$6,000）。",
+      "start": 68.57,
+      "end": 71.59
+    },
+    {
+      "id": 11,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "一个工作室会选择一个不错的模板，添加你的品牌标识，并在2-4周内发布。结果可预测。你会得到：",
+      "start": 72.29,
+      "end": 80.17
+    },
+    {
+      "id": 12,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "与你的品牌一致的设计。",
+      "start": 80.52,
+      "end": 82.46
+    },
+    {
+      "id": 13,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "5-7个页面（首页、菜单、预订、历史、联系、位置）。",
+      "start": 82.78,
+      "end": 86.28
+    },
+    {
+      "id": 14,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "与预订系统的集成。",
+      "start": 86.6,
+      "end": 88.15
+    },
+    {
+      "id": 15,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "第一年包含托管。",
+      "start": 88.47,
+      "end": 89.77
+    },
+    {
+      "id": 16,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "你不会得到：自定义schema、复杂集成、源代码所有权。",
+      "start": 90.12,
+      "end": 94.73
+    },
+    {
+      "id": 17,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(3)",
+      "text": "选项3：完全自定义（$6,000-$20,000）。",
+      "start": 95.83,
+      "end": 99.33
+    },
+    {
+      "id": 18,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "定制设计和代码。大多数已建立的餐馆最终需要的东西。你会得到：",
+      "start": 100.03,
+      "end": 105.54
+    },
+    {
+      "id": 19,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "快速、移动优先、完整的schema。",
+      "start": 105.89,
+      "end": 108.73
+    },
+    {
+      "id": 20,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "真正的HTML菜单（不是PDF）、集成预订、直接订购。",
+      "start": 109.05,
+      "end": 114.83
+    },
+    {
+      "id": 21,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "源代码所有权——你可以在不重新开始的情况下更换提供商。",
+      "start": 115.15,
+      "end": 120.54
+    },
+    {
+      "id": 22,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
+      "text": "Lighthouse评分保证（移动设备90+）。",
+      "start": 120.86,
+      "end": 124.91
+    },
+    {
+      "id": 23,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "周期：6-12周。可选的维护费用（$150-$400/月）。",
+      "start": 125.26,
+      "end": 130.5
+    },
+    {
+      "id": 24,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(4)",
+      "text": "选项4：记录机构（$25,000+）。",
+      "start": 131.6,
+      "end": 134.82
+    },
+    {
+      "id": 25,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "只适用于餐馆集团（3+个地点）、高端概念或复杂的电子商务需求。",
+      "start": 135.52,
+      "end": 142.16
+    },
+    {
+      "id": 26,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "真正影响价格的因素。",
+      "start": 143.26,
+      "end": 145.2
+    },
+    {
+      "id": 27,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "菜单复杂度。一个有30个菜品的菜单可以在4小时内完成，而一个有200个菜品、每个菜品都有修改器和照片的菜单需要30+小时。",
+      "start": 145.9,
+      "end": 157.24
+    },
+    {
+      "id": 28,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "集成。预订+订购+POS+忠诚度=4个集成。每个集成大约需要$500-$1,500的工作。",
+      "start": 157.56,
+      "end": 166.07
+    },
+    {
+      "id": 29,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "语言。双语（EN+ES）会使内容和结构复杂度增加一倍，通常会增加$1,000-$2,500。",
+      "start": 166.39,
+      "end": 173.59
+    },
+    {
+      "id": 30,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "schema标记。Google使用的6种类型，如果做得好，需要2-4小时。",
+      "start": 173.91,
+      "end": 179.57
+    },
+    {
+      "id": 31,
+      "kind": "quote",
+      "selector": "#post-body > blockquote:nth-of-type(1)",
+      "text": "便宜的报价和昂贵的报价往往会产生相同的网站。中等的报价是包含了两个极端都认为不需要做的工作。",
+      "start": 180.32,
+      "end": 189.53
+    },
+    {
+      "id": 32,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "两个极端的危险信号。",
+      "start": 190.63,
+      "end": 192.46
+    },
+    {
+      "id": 33,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "低端（低于$2,500）：",
+      "start": 193.16,
+      "end": 194.45
+    },
+    {
+      "id": 34,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(1)",
+      "text": "没有书面合同。",
+      "start": 194.8,
+      "end": 195.96
+    },
+    {
+      "id": 35,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(2)",
+      "text": "没有Lighthouse评分的保证。",
+      "start": 196.28,
+      "end": 198.44
+    },
+    {
+      "id": 36,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(3)",
+      "text": "\"包含托管\"却不告诉你第二年的价格。",
+      "start": 198.76,
+      "end": 201.76
+    },
+    {
+      "id": 37,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(4)",
+      "text": "他们不会给你源代码。",
+      "start": 202.08,
+      "end": 203.69
+    },
+    {
+      "id": 38,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "非常昂贵（单个地点超过$25）：",
+      "start": 204.04,
+      "end": 207.14
+    },
+    {
+      "id": 39,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(1)",
+      "text": "在制作模拟图之前进行\"发现阶段\"。",
+      "start": 207.49,
+      "end": 210.65
+    },
+    {
+      "id": 40,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(2)",
+      "text": "强制每月保留更新内容。",
+      "start": 210.97,
+      "end": 213.17
+    },
+    {
+      "id": 41,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(3)",
+      "text": "\"我们将在另一个报价中讨论SEO\"。",
+      "start": 213.49,
+      "end": 217.26
+    },
+    {
+      "id": 42,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "适合你餐厅的正确数字。",
+      "start": 218.36,
+      "end": 220.65
+    },
+    {
+      "id": 43,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "在请求报价之前，在你的当前网站上运行Tech Stack Detector和Storefront Health，以便有一个参考基准。这可以为你节省几个月的\"但是当前网站很糟糕\"的争论，因为你已经有了真实的评分。",
+      "start": 221.35,
+      "end": 236.09
+    },
+    {
+      "id": 44,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "如果你的月度交易额超过$40,000，那么一个完整的自定义网站可以在12-18个月内通过Google的预订改善来收回成本。如果低于$40,000，模板研究是正确的决定，直到你发展壮大。",
+      "start": 236.44,
+      "end": 250.57
+    },
+    {
+      "id": 45,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "如果你想对收到的报价有第二个意见，可以通过La Ventana将它们发送给我。我会阅读每一个。",
+      "start": 250.92,
+      "end": 258.22
+    },
+    {
+      "id": 46,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "接下来做什么",
+      "start": 258.57,
+      "end": 259.72
+    },
+    {
+      "id": 47,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "阅读：相关词汇表的术语 →",
+      "start": 260.07,
+      "end": 262.04
+    },
+    {
+      "id": 48,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "测试：本文配套的工具 →",
+      "start": 262.36,
+      "end": 264.23
+    },
+    {
+      "id": 49,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "或者写信给Don：La Ventana →",
+      "start": 264.55,
+      "end": 267.08
+    }
+  ]
+}

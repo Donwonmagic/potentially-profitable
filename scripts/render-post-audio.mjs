@@ -617,24 +617,30 @@ function renderLanguage(postDir, chunks, lang) {
     });
   });
 
-  const concatList = path.join(tmpDir, 'concat.txt');
-  fs.writeFileSync(concatList,
-    segments.map((p) => `file '${p.replace(/'/g, "'\\''")}'`).join('\n'));
-  const combinedWav = path.join(tmpDir, '_all.wav');
-  // Re-encode to PCM during concat (instead of `-c copy`) so any minor
-  // DTS misalignment between segments — including the 0.3s silent
-  // placeholders that kokoro_render writes for empty/failed chunks —
-  // gets normalized into a contiguous WAV. The cost is a few seconds
-  // of CPU per article; the codec stays lossless.
-  run('ffmpeg', ['-y', '-f', 'concat', '-safe', '0', '-i', concatList, '-c:a', 'pcm_s16le', combinedWav]);
-
   // English keeps the legacy audio.mp3 / audio.json filenames for
   // backward compatibility with existing HTML (data-audio-src="audio.mp3");
   // other languages get audio.<lang>.mp3 / audio.<lang>.json alongside.
   const mp3Name  = lang === 'en' ? 'audio.mp3'  : `audio.${lang}.mp3`;
   const jsonName = lang === 'en' ? 'audio.json' : `audio.${lang}.json`;
   const mp3Out = path.join(postDir, mp3Name);
-  run('ffmpeg', ['-y', '-i', combinedWav, '-codec:a', 'libmp3lame', '-q:a', '4', mp3Out]);
+
+  // Single-pass concat → MP3 via the concat *filter* (not the demuxer).
+  // The filter regenerates timestamps from scratch, sidestepping the
+  // DTS-monotonicity errors that ffmpeg 8.x raises when the demuxer
+  // stitches a long sequence of same-rate WAVs. Each segment is a
+  // separate -i input; the filter merges them and libmp3lame writes
+  // the final file in one shot. Fewer disk writes, no DTS warnings.
+  const ffmpegArgs = ['-y'];
+  for (const seg of segments) ffmpegArgs.push('-i', seg);
+  const concatFilter = `concat=n=${segments.length}:v=0:a=1[out]`;
+  ffmpegArgs.push(
+    '-filter_complex', concatFilter,
+    '-map', '[out]',
+    '-codec:a', 'libmp3lame',
+    '-q:a', '4',
+    mp3Out,
+  );
+  run('ffmpeg', ffmpegArgs);
 
   const manifest = {
     version: 1,

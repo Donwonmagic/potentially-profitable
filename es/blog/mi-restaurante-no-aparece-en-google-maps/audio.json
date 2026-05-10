@@ -1,0 +1,243 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-09T19:42:38.873Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "am_michael",
+  "language": "en",
+  "total": 291.83,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "Esta es una de las llamadas más frecuentes que recibo. \"Don, mi restaurante no sale en Google Maps. Mi competencia sí. ¿Qué pasa?\" La buena noticia: el 90% de las veces es uno de cuatro problemas, y todos se arreglan en menos de una semana.",
+      "start": 0,
+      "end": 20.37
+    },
+    {
+      "id": 1,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Causa 1 — No has reclamado el listing (40% de los casos).",
+      "start": 21.47,
+      "end": 26.43
+    },
+    {
+      "id": 2,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Google crea automáticamente un listing para tu restaurante cuando suficientes personas lo buscan. Si nunca lo reclamaste, existe pero está \"huérfano\" — sin fotos, sin horarios actualizados, ranqueando bajo.",
+      "start": 27.13,
+      "end": 44.06
+    },
+    {
+      "id": 3,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "Cómo verificar: busca tu restaurante en Google. Si ves un panel con tu nombre pero NO ves el botón \"Soy el dueño de este negocio,\" entonces ya está reclamado por alguien. Si lo ves, hazle clic.",
+      "start": 44.58,
+      "end": 60.39
+    },
+    {
+      "id": 4,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "Cómo arreglarlo: sigue los 7 pasos para configurar G B P . La verificación tarda 5-14 días por correo postal.",
+      "start": 60.91,
+      "end": 71.75
+    },
+    {
+      "id": 5,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Causa 2 — La categoría primaria está mal (30%).",
+      "start": 72.85,
+      "end": 76.59
+    },
+    {
+      "id": 6,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "Tu categoría primaria controla para qué búsquedas Google te muestra. Si elegiste \"Restaurant\" en general en vez de \"Mexican Restaurant\" específico, no compites en las búsquedas que realmente importan.",
+      "start": 77.29,
+      "end": 92.53
+    },
+    {
+      "id": 7,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "Cómo verificar: corre G B P Grader sobre tu listing. Te dice qué categoría primaria tienes y cuáles deberías considerar.",
+      "start": 93.05,
+      "end": 103.14
+    },
+    {
+      "id": 8,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "Cómo arreglarlo: en G B P, ve a Edit profile → Business information → Category → Primary category. Cámbialo a la opción más específica para la que tu restaurante realmente califica.",
+      "start": 103.66,
+      "end": 120.28
+    },
+    {
+      "id": 9,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Causa 3 — El listing está suspendido (15%).",
+      "start": 121.38,
+      "end": 125.15
+    },
+    {
+      "id": 10,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "Google suspende listings cuando detecta inconsistencias entre tu dirección, tu nombre legal, y la información en tu sitio web. Síntoma: el listing existe pero no aparece en búsquedas, ni siquiera para tu propio nombre.",
+      "start": 125.85,
+      "end": 143.85
+    },
+    {
+      "id": 11,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "Cómo verificar: busca tu restaurante por nombre + ciudad. Si no aparece pero sí aparecen otros restaurantes que NO mencionaste, está suspendido.",
+      "start": 144.37,
+      "end": 156.11
+    },
+    {
+      "id": 12,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "Cómo arreglarlo: necesitas reinstaurarlo. Hazlo desde tu cuenta G B P — Settings → Reinstate. Te piden documentación: foto del frontis con tu nombre visible, factura de servicios públicos a tu nombre comercial, y a veces licencia de funcionamiento. Tarda 5-21 días.",
+      "start": 156.63,
+      "end": 180.4
+    },
+    {
+      "id": 13,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "Causa 4 — Listing duplicado (15%).",
+      "start": 181.5,
+      "end": 184.6
+    },
+    {
+      "id": 14,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "Si Google detecta dos listings para la misma dirección (porque cambiaste de nombre, te mudaste 3 cuadras, o un agregador creó uno automáticamente), suprime ambos hasta que uno se \"gane.\" Síntoma: aparece a veces, otras no, dependiendo del día.",
+      "start": 185.3,
+      "end": 204.27
+    },
+    {
+      "id": 15,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "Cómo verificar: busca tu dirección en Google Maps. Si ves dos pines del mismo establecimiento (o nombres similares), tienes duplicado.",
+      "start": 204.79,
+      "end": 215.8
+    },
+    {
+      "id": 16,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "Cómo arreglarlo: marca el incorrecto como \"Place is permanently closed\" desde tu cuenta G B P. Tarda 7-14 días para que Google fusione.",
+      "start": 216.32,
+      "end": 228.43
+    },
+    {
+      "id": 17,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "El plan de 10 minutos.",
+      "start": 229.53,
+      "end": 231.06
+    },
+    {
+      "id": 18,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Busca tu restaurante en Google + Maps. ¿Aparece el panel?",
+      "start": 231.76,
+      "end": 236.09
+    },
+    {
+      "id": 19,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Si no, ¿hay un listing huérfano para reclamar? Causa 1.",
+      "start": 236.41,
+      "end": 240.4
+    },
+    {
+      "id": 20,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Si sí, ¿la categoría primaria es la específica? Causa 2.",
+      "start": 240.72,
+      "end": 244.82
+    },
+    {
+      "id": 21,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "¿Hay un mensaje \"suspended\"? Causa 3.",
+      "start": 245.14,
+      "end": 247.8
+    },
+    {
+      "id": 22,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(5)",
+      "text": "¿Ves dos pines en la misma dirección? Causa 4.",
+      "start": 248.12,
+      "end": 251.64
+    },
+    {
+      "id": 23,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "Si después de revisar los cuatro no encuentras la causa, es posible que estés en un mercado super-competitivo y simplemente no ranquees alto suficiente. Restaurant Audit compara tu listing contra el promedio de tu zona y te dice qué falta.",
+      "start": 252.16,
+      "end": 271.26
+    },
+    {
+      "id": 24,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "Si quieres que mire tu caso específico, escríbeme por La Ventana . Leo cada mensaje.",
+      "start": 271.78,
+      "end": 278.37
+    },
+    {
+      "id": 25,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "Qué hacer ahora",
+      "start": 278.89,
+      "end": 280.14
+    },
+    {
+      "id": 26,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Lee: el término del glosario relacionado →",
+      "start": 280.49,
+      "end": 284.12
+    },
+    {
+      "id": 27,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Prueba: la herramienta que acompaña este artículo →",
+      "start": 284.44,
+      "end": 288.46
+    },
+    {
+      "id": 28,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "O escríbele a Don: La Ventana →",
+      "start": 288.78,
+      "end": 291.83
+    }
+  ]
+}

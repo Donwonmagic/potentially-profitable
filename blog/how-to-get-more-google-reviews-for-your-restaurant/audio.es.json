@@ -1,355 +1,451 @@
 {
   "version": 1,
-  "generatedAt": "2026-04-18T17:48:56.859Z",
+  "generatedAt": "2026-05-10T06:28:36.606Z",
   "engine": "kokoro",
   "model": "kokoro-v1.0.onnx",
   "voice": "em_alex",
   "language": "es",
-  "total": 558.78,
+  "total": 679.04,
   "chunks": [
     {
       "id": 0,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(1)",
-      "text": "Por qué las reseñas importan más de lo que crees.",
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "Leer este artículo en español",
       "start": 0,
-      "end": 2.75
+      "end": 1.65
     },
     {
       "id": 1,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(1)",
-      "text": "Google las reseñas son la señal de confianza más visible que tiene un restaurante. Antes de que un nuevo cliente entre por su puerta, ya leyó lo que las últimas treinta personas dijeron sobre usted, y lo hizo en la misma pantalla donde verificaron su horario, su menú y su ubicación. Su Google Business Profile es su escaparate para las personas que aún no han visitado, y las reseñas son el escaparate.",
-      "start": 3.2,
-      "end": 24.46
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "TL;DR",
+      "start": 2,
+      "end": 2.96
     },
     {
       "id": 2,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(2)",
-      "text": "Pero aquí está la parte que la mayoría de los propietarios de restaurantes pasan por alto: las reseñas no son sólo una prueba social. Son un factor de clasificación. La propia documentación de Google confirma que el recuento de reseñas y la puntuación de reseñas influyen en la clasificación de su empresa en los resultados de búsqueda locales y en Google Maps. Las investigaciones de la industria SEO también muestran consistentemente que lo reciente importa: los restaurantes con un flujo constante de reseñas recientes tienden a ubicarse por encima de aquellos con perfiles obsoletos. Un restaurante con 340 reseñas y un promedio de 4,6 aparecerá constantemente por encima de un restaurante idéntico con 28 reseñas y un 4,8, porque Google pesa el volumen junto con el recuento de estrellas, y las reseñas nuevas indican un negocio activo.",
-      "start": 24.78,
-      "end": 74.11
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Las reseñas se acumulan — un restaurante que pasa de 50 a 200 reseñas suele ver un aumento del 15-25% en los clics en la tarjeta de paquete.",
+      "start": 3.31,
+      "end": 13.17
     },
     {
       "id": 3,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(3)",
-      "text": "La matemática es simple. Si sirve 200 portadas por día y el 1% de ellos deja una reseña, agregará dos reseñas por día: sesenta por mes. La mayoría de sus competidores agregan dos por mes, tal vez cinco. En seis meses, serás el restaurante con más reseñas de tu vecindario en Google Maps. Eso no es una campaña de marketing. Eso es un sistema.",
-      "start": 74.43,
-      "end": 94.41
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Sistema de cinco piezas: una tarjeta QR impresa, una línea de mensaje de comprobante, un mensaje de texto de seguimiento, una llamada a la acción en el sitio web y un gerente que realmente lee las reseñas.",
+      "start": 13.49,
+      "end": 25.33
     },
     {
       "id": 4,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(2)",
-      "text": "El sistema: cinco piezas que funcionan solas.",
-      "start": 95.21,
-      "end": 97.73
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "No compre reseñas, no bloquee, no filtre — la detección de spam de Google ha mejorado dramáticamente.",
+      "start": 25.65,
+      "end": 31.31
     },
     {
       "id": 5,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(4)",
-      "text": "Creé un programa de revisión en las ubicaciones de Tacombi en Bethesda y Arlington que no dependía de que una sola persona recordara preguntar. Honestamente, esta es la estructura: no es complicada, simplemente es disciplinada.",
-      "start": 98.18,
-      "end": 110.9
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Por qué las reseñas importan más de lo que cree.",
+      "start": 32.41,
+      "end": 35.1
     },
     {
       "id": 6,
-      "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(1)",
-      "text": "1. La postal QR.",
-      "start": 111.7,
-      "end": 113.09
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "Las reseñas de Google son la señal de confianza más visible que tiene un restaurante. Antes de que un nuevo cliente cruce su puerta, ya ha leído lo que dijeron los últimos treinta personas sobre usted — y lo hizo en la misma pantalla donde revisó sus horarios, su menú y su ubicación. Su Google Business Profile es su vitrina para las personas que no han entrado aún, y las reseñas son el escaparate.",
+      "start": 35.8,
+      "end": 56.91
     },
     {
       "id": 7,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(5)",
-      "text": "Imprima una tarjeta pequeña, del tamaño de un recibo o de una postal, con un código QR que enlace directamente a su página de revisión Google. No tu sitio web. No es tu Instagram. La revisión Google solicita específicamente , por lo que el cliente escanea, selecciona una calificación de estrellas, escribe una oración y termina en menos de treinta segundos.",
-      "start": 113.54,
-      "end": 133.2
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "Pero aquí está la parte que la mayoría de los propietarios de restaurantes se pierden: las reseñas no son solo pruebas sociales. Son un factor de clasificación. La propia documentación de Google confirma que la cantidad de reseñas y la puntuación de las reseñas influyen en cómo se clasifica su negocio en los resultados de búsqueda local y Google Maps. La investigación de la industria de SEO también muestra consistentemente que la recencia importa — los restaurantes con un flujo constante de reseñas recientes tienden a clasificarse por encima de aquellos con perfiles estancados. Un restaurante con 340 reseñas y un promedio de 4,6 aparecerá consistentemente por encima de un restaurante idéntico con 28 reseñas y un promedio de 4,8, porque Google pondera el volumen junto con la cantidad de estrellas, y las reseñas frescas señalan un negocio activo.",
+      "start": 57.43,
+      "end": 107.41
     },
     {
       "id": 8,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(6)",
-      "text": "En Tacombi imprimimos postales bilingües (inglés y español) que decían \"¿Te encantan los tacos? ¡Déjalo saber al mundo!\" con un código QR que enlaza directamente a la página de revisión Google. La tarjeta también tenía un descuento para el vecindario en el reverso, pero ese descuento era una oferta de bienvenida independiente para el vecino, no condicionada a dejar una reseña. Esta distinción es importante: las políticas de Google prohíben ofrecer cualquier incentivo a cambio de una revisión, punto. Puede solicitar reseñas y realizar promociones independientes, pero no puede unir ambas cosas.",
-      "start": 133.52,
-      "end": 167.12
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "Las matemáticas son simples. Si sirve 200 comensales al día y el 1% de ellos deja una reseña, está agregando dos reseñas al día — sesenta al mes. La mayoría de sus competidores están agregando dos al mes, tal vez cinco. Dentro de seis meses, es el restaurante más reseñado en su vecindario en Google Maps. Eso no es una campaña de marketing. Eso es un sistema.",
+      "start": 107.93,
+      "end": 128.71
     },
     {
       "id": 9,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(7)",
-      "text": "Cómo obtener su enlace de reseña directa: abra Google Maps, busque su restaurante, haga clic en \"Escribir una reseña\" y copie la URL de su navegador. O vaya a su panel de control Google Business Profile, haga clic en \"Solicitar reseñas\" y Google le brindará un enlace breve que puede pegar en cualquier generador de códigos QR.",
-      "start": 167.44,
-      "end": 185.69
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "El sistema: cinco piezas que se ejecutan solas.",
+      "start": 129.81,
+      "end": 132.6
     },
     {
       "id": 10,
-      "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(2)",
-      "text": "2. El momento.",
-      "start": 186.49,
-      "end": 187.51
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "Construí un programa de reseñas en las ubicaciones Tacombi's Bethesda y Arlington que no dependía de que una sola persona recordara pedir. Aquí está la estructura, honestamente — no es complicada, solo es disciplinada.",
+      "start": 133.3,
+      "end": 145.7
     },
     {
       "id": 11,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(8)",
-      "text": "No entregue la tarjeta con el cheque. Entréguelo después de pagar la comida, cuando el cliente esté de pie, feliz y a punto de irse. La psicología es sencilla: ya se han comprometido con la experiencia, la transacción está cerrada y se encuentran en el momento de mayor satisfacción de la visita. Si se lo entregas mientras todavía están decidiendo el postre, parece una encuesta. Si se lo das mientras se ponen el abrigo, se siente como un cumplido.",
-      "start": 187.96,
-      "end": 210.68
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "Cinco piezas, en orden. Una: la tarjeta QR — tarjeta de imprimir una vez, para entregar con un enlace de reseña directo. Dos: el momento — entregarla después de que se pague la comida, nunca con la cuenta. Tres: la aceptación del personal — explicar el porqué, hacerlo sin esfuerzo, nunca vincularlo al rendimiento. Cuatro: el hábito de respuesta — cinco minutos al día, cada reseña, manteniéndolo breve y humano. Cinco: la visibilidad en la tienda — un pequeño letrero cerca del host stand que muestra su calificación en vivo. Tres de estas son configuraciones de una sola vez. Dos son hábitos que se acumulan durante meses.",
+      "start": 146.5,
+      "end": 180.45
     },
     {
       "id": 12,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(9)",
-      "text": "En Tacombi, el anfitrión o el camarero entregaría la tarjeta con un simple \"Gracias por venir. Si tiene treinta segundos, nos encantaría recibir una reseña de Google. Hay un pequeño agradecimiento en el reverso\". Eso es todo. Ningún guión de más de dos frases.",
-      "start": 211,
-      "end": 225.49
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(1)",
+      "text": "1. La tarjeta QR.",
+      "start": 181.55,
+      "end": 182.97
     },
     {
       "id": 13,
-      "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(3)",
-      "text": "3. La aceptación del personal.",
-      "start": 226.29,
-      "end": 228.14
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "Imprima una tarjeta pequeña — del tamaño de un recibo o de una tarjeta postal — con un código QR que enlace directamente a su página de reseñas de Google. No a su sitio web. No a su Instagram. El prompt de reseña de Google específicamente, para que el cliente escanee, toque una calificación de estrellas, escriba una oración y termine en menos de treinta segundos.",
+      "start": 183.67,
+      "end": 203.23
     },
     {
       "id": 14,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(10)",
-      "text": "El sistema muere en el momento en que su personal piensa que es molesto. A continuación le indicamos cómo evitarlo:",
-      "start": 228.59,
-      "end": 235.21
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "En Tacombi, imprimimos tarjetas postales bilingües (inglés y español) que decían \"¿Te encantan los tacos? ¡Haz que el mundo lo sepa!\" con un código QR que enlazaba directamente a la página de reseñas Google. La tarjeta también tenía un descuento de vecindario en la parte posterior — pero ese descuento era una oferta de bienvenida a los vecinos independiente, no condicionada a dejar una reseña. Esta distinción es importante: las políticas de Google prohíben ofrecer cualquier incentivo a cambio de una reseña, punto. Puedes pedir reseñas y puedes realizar promociones separadas, pero no puedes unir las dos cosas.",
+      "start": 203.75,
+      "end": 237.97
     },
     {
       "id": 15,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "Explica el por qué. \"Las revisiones Google son la forma en que nos encuentran las personas nuevas. Más revisiones significan más coberturas, lo que significa más horas y mejores turnos para todos\". Se trata de una sesión informativa previa al turno de dos frases, no de un módulo de formación.",
-      "start": 235.43,
-      "end": 251.57
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "Cómo obtener tu enlace de reseña directa: abre Google Maps, encuentra tu restaurante, haz clic en \"Escribir una reseña\" y copia la URL de tu navegador. O ve a tu panel de control Google Business Profile, haz clic en \"Pedir reseñas\" y Google te da un enlace corto que puedes pegar en cualquier generador de códigos QR.",
+      "start": 238.49,
+      "end": 256.24
     },
     {
       "id": 16,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "Hazlo sin esfuerzo. La tarjeta hace el trabajo. El miembro del personal simplemente se lo entrega. Sin discurso, sin tono, sin \"¿Te importaría...?\" - simplemente \"Aquí tienes, hay un agradecimiento en la parte de atrás\".",
-      "start": 251.79,
-      "end": 263.93
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(2)",
+      "text": "2. El momento.",
+      "start": 257.34,
+      "end": 258.36
     },
     {
       "id": 17,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "Nunca lo vincules a métricas de desempeño. En el momento en que diga \"Quiero que cada servidor reciba tres revisiones por turno\", habrá convertido una solicitud genuina en una cuota y su personal se resentirá. Deje que las postales hagan el trabajo de volumen.",
-      "start": 264.15,
-      "end": 279.06
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "No entregues la tarjeta con la cuenta. Entregúela después de que el cliente haya pagado la comida — cuando esté de pie, contento y a punto de salir. La psicología es sencilla: ya han comprometido con la experiencia, la transacción está cerrada y están en el momento de mayor satisfacción de la visita. Si les entregas la tarjeta mientras aún están decidiendo sobre el postre, se siente como una encuesta. Si les entregas la tarjeta mientras se ponen el abrigo, se siente como un cumplido.",
+      "start": 259.06,
+      "end": 283.5
     },
     {
       "id": 18,
-      "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(4)",
-      "text": "4. El hábito de respuesta.",
-      "start": 279.86,
-      "end": 281.61
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "En Tacombi, el anfitrión o el servidor entregaban la tarjeta con un simple \"Gracias por venir — si tienes treinta segundos, nos encantaría una reseña en Google. Hay un pequeño agradecimiento en la parte posterior\". Eso es todo. No hay guión más largo que dos oraciones.",
+      "start": 284.02,
+      "end": 298.88
     },
     {
       "id": 19,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(11)",
-      "text": "Responder a las reseñas, especialmente a las malas, es más importante de lo que la mayoría de los propietarios creen. La propia documentación de ayuda de Google dice que responder a las reseñas mejora su clasificación local. Pero la verdadera razón es más simple: un cliente potencial que lee una mala crítica seguida de una respuesta reflexiva del propietario piensa que \"a ese lugar le importa\". Una mala reseña sin respuesta dice \"no los leen\".",
-      "start": 282.06,
-      "end": 305.2
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(3)",
+      "text": "3. La aceptación del personal.",
+      "start": 299.98,
+      "end": 301.83
     },
     {
       "id": 20,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(12)",
-      "text": "Establece una alarma diaria. Cinco minutos, una vez al día, responda a cada nueva reseña. Sea breve, específico y humano. \"Gracias, María, me alegra que te hayan gustado los esquites. Nos vemos el próximo martes\", late \"¡Gracias por tus amables palabras! ¡Esperamos poder servirte nuevamente!\" cada vez. El primero suena como una persona. El segundo suena como un robot.",
-      "start": 305.52,
-      "end": 326.09
+      "text": "El sistema muere en el momento en que tu personal piensa que es molesto. Aquí está cómo evitar eso:",
+      "start": 302.53,
+      "end": 308.14
     },
     {
       "id": 21,
-      "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(5)",
-      "text": "5. La visibilidad en la tienda.",
-      "start": 326.89,
-      "end": 328.86
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Explica el porqué. \"Las reseñas en Google son cómo la gente nueva nos encuentra. Más reseñas significan más comensales, lo que significa más horas y mejores turnos para todos\". Eso es una breve explicación antes del turno, no un módulo de capacitación.",
+      "start": 308.49,
+      "end": 322.83
     },
     {
       "id": 22,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(13)",
-      "text": "Coloque su calificación Google donde los clientes puedan verla. Un pequeño letrero cerca del puesto del anfitrión o de la caja registradora que dice \"4.6 estrellas en Google - 340 reseñas\" hace dos cosas: les dice a los clientes satisfechos que opinar es algo normal aquí (prueba social) y les dice a los clientes insatisfechos que este restaurante toma en serio los comentarios (lo que a veces desactiva una queja antes de que se convierta en una reseña de 1 estrella).",
-      "start": 329.31,
-      "end": 356.62
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Haz que sea sin esfuerzo. La tarjeta hace el trabajo. El miembro del personal solo la entrega. No hay discurso, no hay presentación, no \"¿Le importaría...?\" — solo \"Aquí tiene, hay un agradecimiento en la parte posterior\".",
+      "start": 323.15,
+      "end": 335.26
     },
     {
       "id": 23,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(14)",
-      "text": "Actualiza el número mensualmente. Ver cómo aumenta el conteo también es motivador para el personal.",
-      "start": 356.94,
-      "end": 362.71
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "Nunca la unes a las métricas de desempeño. En el momento en que dices \"Quiero que cada servidor obtenga tres reseñas por turno\", has convertido una solicitud genuina en una cuota, y tu personal la resentirá. Deja que las tarjetas postales hagan el trabajo de volumen.",
+      "start": 335.58,
+      "end": 351.02
     },
     {
       "id": 24,
       "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(3)",
-      "text": "Qué no hacer.",
-      "start": 363.51,
-      "end": 364.29
+      "selector": "#post-body > h3:nth-of-type(4)",
+      "text": "4. El hábito de respuesta.",
+      "start": 352.12,
+      "end": 353.87
     },
     {
       "id": 25,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(15)",
-      "text": "He visto restaurantes sabotear sus propios programas de reseñas de algunas maneras predecibles. Evite estos:",
-      "start": 364.74,
-      "end": 370.86
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "Responder a las reseñas — especialmente las malas — es más importante de lo que la mayoría de los propietarios se dan cuenta. La propia documentación de ayuda de Google dice que responder a las reseñas mejora tu clasificación local. Pero la razón real es más sencilla: un cliente potencial que lee una mala reseña seguida de una respuesta reflexiva del propietario piensa \"ese lugar se preocupa\". Una mala reseña sin respuesta dice \"no leen estas\".",
+      "start": 354.57,
+      "end": 378.2
     },
     {
       "id": 26,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
-      "text": "No compres reseñas. La detección de Google es mejor de lo que cree y la penalización (eliminar todo su historial de revisiones) es catastrófica. Un lote de reseñas falsas puede deshacer años de reseñas reales.",
-      "start": 371.08,
-      "end": 383.12
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "Configura una alarma diaria. Cinco minutos, una vez al día, responde a cada nueva reseña. Manténla breve, específica y humana. \"Gracias, María — me alegra que te gustaran los esquites. Nos vemos el próximo martes\" es mejor que \"Gracias por tus amables palabras. Esperamos servirte de nuevo\" cada vez. La primera suena como una persona. La segunda suena como un bot.",
+      "start": 378.72,
+      "end": 399.1
     },
     {
       "id": 27,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
-      "text": "No revises la puerta. Algunas herramientas preguntan \"¿Cómo fue tu experiencia?\" y solo muestre el enlace de revisión Google si la respuesta es positiva. Google lo prohíbe explícitamente. Si solicita reseñas, pregúnteles a todos, no solo a las personas felices.",
-      "start": 383.34,
-      "end": 398.18
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(5)",
+      "text": "5. La visibilidad en la tienda.",
+      "start": 400.2,
+      "end": 402.17
     },
     {
       "id": 28,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
-      "text": "No ignores las malas críticas. Una reseña de 1 estrella con una respuesta atenta del propietario es menos dañina que una reseña de 3 estrellas con silencio. Los clientes potenciales leen las respuestas. Esa es tu oportunidad de mostrar carácter.",
-      "start": 398.4,
-      "end": 412.79
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "Coloca tu calificación Google donde los clientes puedan verla. Un pequeño letrero cerca del host stand o la caja registradora que diga \"4.6 estrellas en Google — 340 reseñas\" hace dos cosas: les dice a los clientes satisfechos que dejar reseñas es algo normal que se hace aquí (prueba social), y les dice a los clientes insatisfechos que este restaurante toma en serio los comentarios (lo que a veces desactiva una queja antes de que se convierta en una reseña de 1 estrella).",
+      "start": 402.87,
+      "end": 431.02
     },
     {
       "id": 29,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
-      "text": "No preguntes en las redes sociales. \"¡Déjanos una reseña de Google!\" ya que una publicación Instagram llega a las personas que ya te siguen, no a las personas que acaban de comer en tu restaurante por primera vez. El sistema de postal al momento de pagar llega al público adecuado en el momento adecuado.",
-      "start": 413.01,
-      "end": 429.57
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "Actualiza el número mensualmente. Ver cómo aumenta el recuento es motivador para el personal también.",
+      "start": 431.54,
+      "end": 437.43
     },
     {
       "id": 30,
       "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(4)",
-      "text": "El efecto compuesto.",
-      "start": 430.37,
-      "end": 431.66
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Qué no hacer.",
+      "start": 438.53,
+      "end": 439.31
     },
     {
       "id": 31,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(16)",
-      "text": "Esto es lo que la mayoría de los propietarios no ven porque renuncian después de dos semanas: Google revisa el compuesto. Un restaurante que recibe 60 reseñas al mes no sólo tiene más reseñas, sino que tiene reseñas más recientes. Google pesa lo reciente. Un cliente potencial ve \"Hace 2 semanas\" en la reseña más reciente y piensa \"este lugar está activo\". Ven \"hace 8 meses\" y piensan \"¿este lugar todavía está abierto?\"",
-      "start": 432.11,
-      "end": 454.68
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "He visto cómo los restaurantes sabotearon sus propios programas de reseñas de maneras predecibles. Evita estas:",
+      "start": 440.01,
+      "end": 446.28
     },
     {
       "id": 32,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(17)",
-      "text": "Después de seis meses de distribución constante de postales, los locales de Tacombi con los que trabajé tuvieron una velocidad de revisión que los colocó entre los restaurantes con más reseñas en sus respectivos vecindarios en Google Maps. No porque pusiéramos anuncios. No porque hayamos suplicado. Porque construimos un sistema y lo dejamos funcionar.",
-      "start": 454.9,
-      "end": 474.24
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "No compres reseñas. La detección de Google es mejor de lo que crees, y la penalización — perder toda la historia de reseñas — es catastrófica. Un lote de reseñas falsas puede deshacer años de reseñas reales.",
+      "start": 446.63,
+      "end": 458.39
     },
     {
       "id": 33,
-      "kind": "quote",
-      "selector": "#post-body > p:nth-of-type(18)",
-      "text": "Comentarios compuestos. Sesenta al mes no sólo significa más estrellas: significa estrellas más recientes, que es lo que tanto a Google como a los clientes les importa.",
-      "start": 474.79,
-      "end": 484.4
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "No \"revisa\" (review-gate). Algunas herramientas preguntan \"¿Cómo fue tu experiencia?\" y solo muestran el enlace de reseña de Google si la respuesta es positiva. Google prohíbe explícitamente esto. Si pides reseñas, pide a todos — no solo a la gente feliz.",
+      "start": 458.71,
+      "end": 472.77
     },
     {
       "id": 34,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(5)",
-      "text": "La preparación de diez minutos.",
-      "start": 485.2,
-      "end": 487.01
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "No ignores las malas reseñas. Una reseña de 1 estrella con una respuesta reflexiva del propietario es menos perjudicial que una reseña de 3 estrellas con silencio. Los clientes potenciales leen las respuestas. Esa es tu oportunidad de mostrar carácter.",
+      "start": 473.09,
+      "end": 487.78
     },
     {
       "id": 35,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(19)",
-      "text": "Si quieres empezar esto hoy, aquí tienes la lista de pendientes:",
-      "start": 487.46,
-      "end": 490.88
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
+      "text": "No pidas reseñas en las redes sociales. \"Deja una reseña en Google\" como publicación en Instagram alcanza a la gente que ya te sigue — no a la gente que acaba de comer en tu restaurante por primera vez. El sistema de tarjetas postales en el momento de la cuenta alcanza al público adecuado en el momento adecuado.",
+      "start": 488.1,
+      "end": 505.56
     },
     {
       "id": 36,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "Obtenga su enlace de revisión Google. Panel Google Business Profile → \"Solicitar reseñas\" → copie el enlace corto.",
-      "start": 491.1,
-      "end": 497.56
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "El efecto compuesto.",
+      "start": 506.66,
+      "end": 507.95
     },
     {
       "id": 37,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "Genera un código QR. Pegue el enlace en cualquier generador de QR gratuito (qr-code-generator.com funciona bien). Descarga la imagen.",
-      "start": 497.78,
-      "end": 505.6
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "Aquí hay algo que la mayoría de los propietarios no ven porque se rinden después de dos semanas: las reseñas de Google se compponen. Un restaurante que obtiene 60 reseñas al mes no solo tiene más reseñas — tiene reseñas más recientes. Google pondera la recencia. Un cliente potencial ve \"hace 2 semanas\" en la reseña más reciente y piensa \"este lugar está activo\". Ve \"hace 8 meses\" y piensa \"¿este lugar todavía está abierto?\"",
+      "start": 508.65,
+      "end": 531.72
     },
     {
       "id": 38,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "Diseñar una postal. Postal estándar o del tamaño de un recibo. Su logotipo, una pregunta de una línea, el código QR y un pequeño incentivo de agradecimiento en la parte posterior. Canva, una imprenta local o su diseñador pueden hacerlo en una hora.",
-      "start": 505.82,
-      "end": 519.96
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(19)",
+      "text": "Después de seis meses de distribución consistente de tarjetas postales, las ubicaciones Tacombi con las que trabajé tenían una velocidad de reseñas que las colocó entre los restaurantes más reseñados en sus respectivos barrios en Google Maps. No porque corrimos anuncios. No porque suplicamos. Porque construimos un sistema y lo dejamos funcionar.",
+      "start": 532.07,
+      "end": 551.58
     },
     {
       "id": 39,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(4)",
-      "text": "Print 500. Cuesta entre 30 y 60 dólares en la mayoría de las imprentas. Esto equivale a 500 reseñas potenciales por menos del costo de un solo anuncio Instagram.",
-      "start": 520.18,
-      "end": 530.81
+      "kind": "quote",
+      "selector": "#post-body > p:nth-of-type(20)",
+      "text": "Las reseñas se compponen. Sesenta al mes no solo significa más estrellas — significa estrellas más recientes, lo que es lo que Google y los clientes ambos cuidan.",
+      "start": 552.33,
+      "end": 561.74
     },
     {
       "id": 40,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(5)",
-      "text": "Informe a su equipo. Antes del turno de dos oraciones: \"Entréguelos después de cerrar el cheque. No lance, simplemente entréguelo y diga gracias\".",
-      "start": 531.03,
-      "end": 539.12
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "La configuración de diez minutos.",
+      "start": 562.84,
+      "end": 564.74
     },
     {
       "id": 41,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(6)",
-      "text": "Establece una alarma diaria. Cinco minutos, una vez al día, responda a cada nueva reseña. Breve, específico, humano.",
-      "start": 539.34,
-      "end": 546.17
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(21)",
+      "text": "Si quieres empezar hoy, aquí está la lista de tareas:",
+      "start": 565.44,
+      "end": 568.24
     },
     {
       "id": 42,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Obtén el enlace de reseña de Google. Panel de Google Business Profile → \"Pide reseñas\" → copia el enlace corto.",
+      "start": 568.59,
+      "end": 574.73
+    },
+    {
+      "id": 43,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Genera un código QR. Pega el enlace en cualquier generador de códigos QR gratuito (qr-code-generator.com funciona bien). Descarga la imagen.",
+      "start": 575.05,
+      "end": 583.44
+    },
+    {
+      "id": 44,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Diseña una tarjeta postal. Tamaño de recibo o tarjeta postal estándar. Tu logotipo, una línea de petición, el código QR y un pequeño incentivo de agradecimiento en la parte posterior. Canva, una tienda de impresión local o tu diseñador pueden hacer esto en una hora.",
+      "start": 583.76,
+      "end": 599.35
+    },
+    {
+      "id": 45,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "Imprime 500. Cuesta $30-$60 en la mayoría de las tiendas de impresión. Eso son 500 reseñas potenciales por menos que el costo de un solo anuncio en Instagram.",
+      "start": 599.67,
+      "end": 610.33
+    },
+    {
+      "id": 46,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(5)",
+      "text": "Informa a tu equipo. Dos oraciones antes del turno: \"Distribuye estas tarjetas después de que se cierre la cuenta. No hagas un discurso — solo entrégasela y da las gracias\".",
+      "start": 610.65,
+      "end": 620.56
+    },
+    {
+      "id": 47,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(6)",
+      "text": "Establece una alarma diaria. Cinco minutos, una vez al día, responde a cada nueva reseña. Breve, específico, humano.",
+      "start": 620.88,
+      "end": 627.71
+    },
+    {
+      "id": 48,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(20)",
-      "text": "Eso es todo. Sin suscripción de software. Ninguna agencia de marketing. Sin aprobación de presupuesto. La instalación del sistema completo cuesta unos 50 dólares y diez minutos y funciona indefinidamente.",
-      "start": 546.49,
-      "end": 558.78
+      "selector": "#post-body > p:nth-of-type(22)",
+      "text": "Eso es todo. No suscripción de software. No agencia de marketing. No aprobación de presupuesto. Todo el sistema cuesta unos $50 y diez minutos para configurarlo, y funciona indefinidamente.",
+      "start": 628.23,
+      "end": 640.04
+    },
+    {
+      "id": 49,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(23)",
+      "text": "Puntos clave",
+      "start": 640.56,
+      "end": 641.36
+    },
+    {
+      "id": 50,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(1)",
+      "text": "La tarjeta QR en la cuenta supera a cualquier otro método de solicitud 4 a 1 en pruebas de campo.",
+      "start": 641.71,
+      "end": 647.75
+    },
+    {
+      "id": 51,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(2)",
+      "text": "Un breve mensaje de texto después de la comida — \"esperamos que hayas disfrutado de la cena; leemos todas las reseñas\" — funciona cuando se envía dentro de las 12 horas.",
+      "start": 648.07,
+      "end": 657.26
+    },
+    {
+      "id": 52,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(3)",
+      "text": "Las reseñas de cinco estrellas importan menos que las de 4 y 3 estrellas a las que respondes bien (Google lee la capacidad de respuesta).",
+      "start": 657.58,
+      "end": 665.47
+    },
+    {
+      "id": 53,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(4)",
+      "text": "Las reseñas negativas no son fatales; las reseñas negativas ignoradas sí lo son.",
+      "start": 665.79,
+      "end": 670.83
+    },
+    {
+      "id": 54,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(5)",
+      "text": "La ventana de compounding es de 90 días — el sistema que lleva funcionando 90+ días supera al que lleva funcionando 30.",
+      "start": 671.15,
+      "end": 679.04
     }
   ]
 }

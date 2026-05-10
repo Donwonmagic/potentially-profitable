@@ -1,355 +1,451 @@
 {
   "version": 1,
-  "generatedAt": "2026-04-24T17:34:08.412Z",
+  "generatedAt": "2026-05-10T06:44:23.668Z",
   "engine": "kokoro",
   "model": "kokoro-v1.0.onnx",
   "voice": "pm_alex",
   "language": "pt",
-  "total": 502.45,
+  "total": 669.51,
   "chunks": [
     {
       "id": 0,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(1)",
-      "text": "Why reviews matter more than you think.",
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "Leia este artigo em português &rarr;",
       "start": 0,
-      "end": 2.12
+      "end": 2.27
     },
     {
       "id": 1,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(1)",
-      "text": "Google reviews are the single most visible trust signal a restaurant has. Before a new customer walks through your door, they have already read what the last thirty people said about you — and they did it on the same screen where they checked your hours, your menu, and your location. Your Google Business Profile is your storefront for people who have not been in yet, and reviews are the window display.",
-      "start": 2.82,
-      "end": 23.5
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "TL;DR",
+      "start": 2.62,
+      "end": 3.63
     },
     {
       "id": 2,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(2)",
-      "text": "But here is the part most restaurant owners miss: reviews are not just social proof. They are a ranking factor. Google's own documentation confirms that review count and review score influence how your business ranks in local search results and Google Maps. S E O industry research also consistently shows that recency matters — restaurants with a steady stream of recent reviews tend to rank above those with stale profiles. A restaurant with 340 reviews and a 4.6 average will consistently appear above an identical restaurant with 28 reviews and a 4.8, because Google weighs volume alongside the star count, and fresh reviews signal an active business.",
-      "start": 24.02,
-      "end": 62.78
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "As avaliações se somam — um restaurante que passa de 50 para 200 avaliações geralmente vê um aumento de 15-25% no clique na ficha de pacote.",
+      "start": 3.98,
+      "end": 14.32
     },
     {
       "id": 3,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(3)",
-      "text": "The math is simple. If you serve 200 covers a day and 1% of them leave a review, you are adding two reviews a day — sixty a month. Most of your competitors are adding two a month, maybe five. Within six months, you are the most-reviewed restaurant in your neighborhood on Google Maps. That is not a marketing campaign. That is a system.",
-      "start": 63.3,
-      "end": 81.57
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Sistema de cinco peças: um cartão QR impresso, uma linha de mensagem de acompanhamento, um texto de follow-up, um CTA (chamada para ação) no site e um gerente que realmente lê as avaliações.",
+      "start": 14.64,
+      "end": 25.95
     },
     {
       "id": 4,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(2)",
-      "text": "The system: five pieces that run themselves.",
-      "start": 82.67,
-      "end": 85.33
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Não compre avaliações, não bloqueie, não filtre — a detecção de spam do Google melhorou dramaticamente.",
+      "start": 26.27,
+      "end": 32.11
     },
     {
       "id": 5,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(4)",
-      "text": "I built a review program at Tacombi's Bethesda and Arlington locations that did not depend on any single person remembering to ask. Here is the structure, honestly — it is not complicated, it is just disciplined.",
-      "start": 86.03,
-      "end": 98.88
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Por que as avaliações importam mais do que você pensa.",
+      "start": 33.21,
+      "end": 36.39
     },
     {
       "id": 6,
-      "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(1)",
-      "text": "1. The QR postcard.",
-      "start": 99.98,
-      "end": 101.43
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "As avaliações do Google são o sinal de confiança mais visível que um restaurante tem. Antes que um novo cliente entre pela sua porta, ele já leu o que as últimas trinta pessoas disseram sobre você — e fez isso na mesma tela onde verificou seus horários, menu e localização. Seu Google Business Profile é a vitrine para as pessoas que ainda não entraram, e as avaliações são a exibição na janela.",
+      "start": 37.09,
+      "end": 57.88
     },
     {
       "id": 7,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(5)",
-      "text": "Print a small card — receipt-sized or postcard-sized — with a QR code that links directly to your Google review page. Not your website. Not your Instagram. The Google review prompt specifically , so the customer scans, taps a star rating, types a sentence, and they are done in under thirty seconds.",
-      "start": 102.13,
-      "end": 118.67
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "Mas aqui está a parte que a maioria dos proprietários de restaurantes perde: as avaliações não são apenas prova social. Elas são um fator de classificação. A própria documentação do Google confirma que a contagem de avaliações e a pontuação influenciam como seu negócio é classificado nos resultados de busca local e no Google Maps. Pesquisas da indústria de SEO também mostram consistentemente que a recência importa — restaurantes com um fluxo constante de avaliações recentes tendem a ser classificados acima daqueles com perfis desatualizados. Um restaurante com 340 avaliações e uma média de 4,6 aparecerá consistentemente acima de um restaurante idêntico com 28 avaliações e uma média de 4,8, porque o Google pondera o volume junto com a contagem de estrelas, e as avaliações recentes sinalizam um negócio ativo.",
+      "start": 58.4,
+      "end": 108.91
     },
     {
       "id": 8,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(6)",
-      "text": "At Tacombi, we printed bilingual postcards (English and Spanish) that said \"Love tacos? Let the world know!\" with a QR code linking straight to the Google review page. The card also had a neighborhood discount on the back — but that discount was a standalone neighbor welcome offer, not conditioned on leaving a review. This distinction matters: Google's policies prohibit offering any incentive in exchange for a review, period. You can ask for reviews and you can run separate promotions, but you cannot tie the two together.",
-      "start": 119.19,
-      "end": 148.82
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "A matemática é simples. Se você serve 200 refeições por dia e 1% delas deixa uma avaliação, você está adicionando duas avaliações por dia — sessenta por mês. A maioria dos seus concorrentes está adicionando duas por mês, talvez cinco. Em seis meses, você é o restaurante mais avaliado na sua região no Google Maps. Isso não é uma campanha de marketing. Isso é um sistema.",
+      "start": 109.43,
+      "end": 130.61
     },
     {
       "id": 9,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(7)",
-      "text": "How to get your direct review link: open Google Maps, find your restaurant, click \"Write a review,\" and copy the U R L from your browser. Or go to your Google Business Profile dashboard, click \"Ask for reviews,\" and Google gives you a short link you can paste into any QR code generator.",
-      "start": 149.34,
-      "end": 165.17
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "O sistema: cinco peças que funcionam sozinhas.",
+      "start": 131.71,
+      "end": 134.41
     },
     {
       "id": 10,
-      "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(2)",
-      "text": "2. The timing.",
-      "start": 166.27,
-      "end": 167.32
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "Eu criei um programa de avaliações no Tacombi's Bethesda e Arlington que não dependia de nenhuma pessoa se lembrar de pedir. Aqui está a estrutura, honestamente — não é complicada, é apenas disciplinada.",
+      "start": 135.11,
+      "end": 146.68
     },
     {
       "id": 11,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(8)",
-      "text": "Do not hand the card out with the check. Hand it out after the meal is paid — when the customer is standing, happy, and about to walk out. The psychology is straightforward: they have already committed to the experience, the transaction is closed, and they are in the highest-satisfaction moment of the visit. If you hand it to them while they are still deciding on dessert, it feels like a survey. If you hand it to them as they are putting on their coat, it feels like a compliment.",
-      "start": 168.02,
-      "end": 193.4
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "Cinco peças, em ordem. Uma: o cartão QR — imprima uma vez, entregue um cartão com um link direto para a avaliação. Dois: o timing — entregue após a refeição ser paga, nunca com a conta. Três: o comprometimento da equipe — explique o porquê, faça com que seja zero-esforço, nunca o ligue ao desempenho. Quatro: o hábito de resposta — cinco minutos por dia, todas as avaliações, mantidas curtas e humanas. Cinco: a visibilidade no local — um pequeno sinal perto do host stand mostrando sua classificação ao vivo. Três dessas são configurações de uma vez. Duas são hábitos que se somam ao longo dos meses.",
+      "start": 147.48,
+      "end": 180
     },
     {
       "id": 12,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(9)",
-      "text": "At Tacombi, the host or the server would hand the card with a simple \"Thanks for coming in — if you have thirty seconds, we would love a Google review. There is a little thank-you on the back.\" That is it. No script longer than two sentences.",
-      "start": 193.92,
-      "end": 206.98
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(1)",
+      "text": "1. O cartão QR.",
+      "start": 181.1,
+      "end": 182.38
     },
     {
       "id": 13,
-      "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(3)",
-      "text": "3. The staff buy-in.",
-      "start": 208.08,
-      "end": 209.37
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "Imprima um cartão pequeno — do tamanho de um recibo ou de um cartão-postal — com um código QR que linka diretamente para a página de avaliações do Google. Não para o seu site. Não para o seu Instagram. O prompt de avaliação do Google específico, para que o cliente digitalize, toque em uma classificação de estrelas, digite uma frase e esteja pronto em menos de trinta segundos.",
+      "start": 183.08,
+      "end": 203.29
     },
     {
       "id": 14,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(10)",
-      "text": "The system dies the moment your staff thinks it is annoying. Here is how to prevent that:",
-      "start": 210.07,
-      "end": 215.16
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "No Tacombi, imprimimos cartões-postais bilíngues (inglês e espanhol) que diziam \"Amam tacos? Deixe o mundo saber!\" com um código QR que linkava diretamente à página de revisão do Google. O cartão também tinha um desconto de bairro no verso — mas esse desconto era uma oferta de boas-vindas de vizinho independente, não condicionada a deixar uma revisão. Essa distinção é importante: as políticas do Google proíbem oferecer qualquer incentivo em troca de uma revisão, ponto. Você pode pedir revisões e pode executar promoções separadas, mas não pode vincular as duas coisas.",
+      "start": 203.81,
+      "end": 236.28
     },
     {
       "id": 15,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "Explain the why. \"Google reviews are how new people find us. More reviews means more covers, which means more hours and better shifts for everyone.\" That is a two-sentence pre-shift briefing, not a training module.",
-      "start": 215.51,
-      "end": 227.27
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "Como obter o link de revisão direto: abra o Google Maps, encontre seu restaurante, clique em \"Escrever uma revisão\" e copie a URL do seu navegador. Ou vá para o painel do Google Business Profile, clique em \"Pedir revisões\" e o Google fornece um link curto que você pode colar em qualquer gerador de código QR.",
+      "start": 236.8,
+      "end": 254.36
     },
     {
       "id": 16,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "Make it zero-effort. The card does the work. The staff member just hands it over. No speech, no pitch, no \"Would you mind...?\" — just \"Here you go, there is a thank-you on the back.\"",
-      "start": 227.59,
-      "end": 237.16
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(2)",
+      "text": "2. O timing.",
+      "start": 255.46,
+      "end": 256.46
     },
     {
       "id": 17,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "Never tie it to performance metrics. The moment you say \"I want each server to get three reviews per shift,\" you have turned a genuine ask into a quota, and your staff will resent it. Let the postcards do the volume work.",
-      "start": 237.48,
-      "end": 250.3
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "Não distribua o cartão com a conta. Distribua-o após a refeição ser paga — quando o cliente está de pé, feliz e prestes a sair. A psicologia é direta: eles já se comprometeram com a experiência, a transação está fechada e eles estão no momento de maior satisfação da visita. Se você lhes der enquanto ainda estão decidindo sobre o dessert, parece um questionário. Se você lhes der enquanto eles estão colocando o casaco, parece um elogio.",
+      "start": 257.16,
+      "end": 280.99
     },
     {
       "id": 18,
-      "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(4)",
-      "text": "4. The response habit.",
-      "start": 251.4,
-      "end": 252.97
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "No Tacombi, o anfitrião ou o garçom entregaria o cartão com um simples \"Obrigado por vir — se você tiver trinta segundos, adoraríamos uma revisão do Google. Há um pequeno agradecimento no verso\". É isso. Sem roteiro mais longo que duas frases.",
+      "start": 281.51,
+      "end": 295.3
     },
     {
       "id": 19,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(11)",
-      "text": "Responding to reviews — especially the bad ones — matters more than most owners realize. Google's own help documentation says that responding to reviews improves your local ranking. But the real reason is simpler: a potential customer reading a bad review followed by a thoughtful owner response thinks \"that place cares.\" A bad review with no response says \"they do not read these.\"",
-      "start": 253.67,
-      "end": 274.03
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(3)",
+      "text": "3. A adesão da equipe.",
+      "start": 296.4,
+      "end": 297.84
     },
     {
       "id": 20,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(12)",
-      "text": "Set a daily alarm. Five minutes, once a day, respond to every new review. Keep it short, specific, and human. \"Thanks, Maria — glad you liked the esquites. See you next Tuesday\" beats \"Thank you for your kind words! We look forward to serving you again!\" every time. The first one sounds like a person. The second one sounds like a bot.",
-      "start": 274.38,
-      "end": 291.94
+      "text": "O sistema morre no momento em que sua equipe acha que é chato. Aqui está como evitar isso:",
+      "start": 298.54,
+      "end": 303.51
     },
     {
       "id": 21,
-      "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(5)",
-      "text": "5. The in-store visibility.",
-      "start": 293.04,
-      "end": 294.98
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Explique o porquê. \"As revisões do Google são como as pessoas novas nos encontram. Mais revisões significam mais clientes, o que significa mais horas e turnos melhores para todos\". Isso é uma breve reunião pré-turno, não um módulo de treinamento.",
+      "start": 303.86,
+      "end": 317.73
     },
     {
       "id": 22,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(13)",
-      "text": "Put your Google rating where customers can see it. A small sign near the host stand or the register that says \"4.6 stars on Google — 340 reviews\" does two things: it tells happy customers that reviewing is a normal thing to do here (social proof), and it tells unhappy customers that this restaurant takes feedback seriously (which sometimes defuses a complaint before it becomes a 1-star review).",
-      "start": 295.68,
-      "end": 316.76
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Torne-o sem esforço. O cartão faz o trabalho. O membro da equipe apenas o entrega. Sem discurso, sem pitch, sem \"Você se importaria...\" — apenas \"Aqui está, há um agradecimento no verso\".",
+      "start": 318.05,
+      "end": 328.46
     },
     {
       "id": 23,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(14)",
-      "text": "Update the number monthly. Watching the count climb is motivating for staff too.",
-      "start": 317.28,
-      "end": 321.8
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "Nunca o vincule a métricas de desempenho. No momento em que você diz \"Quero que cada garçom obtenha três revisões por turno\", você transformou um pedido genuíno em uma cota, e sua equipe o ressentirá. Deixe os cartões-postais fazerem o trabalho de volume.",
+      "start": 328.78,
+      "end": 343.08
     },
     {
       "id": 24,
       "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(3)",
-      "text": "What not to do.",
-      "start": 322.9,
-      "end": 324.11
+      "selector": "#post-body > h3:nth-of-type(4)",
+      "text": "4. O hábito de resposta.",
+      "start": 344.18,
+      "end": 345.93
     },
     {
       "id": 25,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(15)",
-      "text": "I have watched restaurants sabotage their own review programs in a few predictable ways. Avoid these:",
-      "start": 324.81,
-      "end": 330.59
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "Responder a revisões — especialmente as ruins — é mais importante do que a maioria dos proprietários percebe. A própria documentação de ajuda do Google diz que responder a revisões melhora seu ranking local. Mas o motivo real é mais simples: um cliente potencial lendo uma revisão ruim seguida de uma resposta pensada do proprietário pensa \"aquele lugar se importa\". Uma revisão ruim sem resposta diz \"eles não lêem essas coisas\".",
+      "start": 346.63,
+      "end": 370.16
     },
     {
       "id": 26,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
-      "text": "Do not buy reviews. Google's detection is better than you think, and the penalty — having your entire review history stripped — is catastrophic. One batch of fake reviews can undo years of real ones.",
-      "start": 330.94,
-      "end": 342.09
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "Defina um alarme diário. Cinco minutos, uma vez por dia, responda a cada nova revisão. Mantenha-a curta, específica e humana. \"Obrigado, Maria — feliz que você gostou dos esquites. Até terça-feira\" é melhor do que \"Obrigado por suas palavras gentis! Esperamos servi-lo novamente!\" sempre. A primeira soa como uma pessoa. A segunda soa como um robô.",
+      "start": 370.68,
+      "end": 389.53
     },
     {
       "id": 27,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
-      "text": "Do not review-gate. Some tools ask \"How was your experience?\" and only show the Google review link if the answer is positive. Google explicitly prohibits this. If you ask for reviews, ask everyone — not just the happy people.",
-      "start": 342.41,
-      "end": 355.21
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(5)",
+      "text": "5. A visibilidade dentro da loja.",
+      "start": 390.63,
+      "end": 392.9
     },
     {
       "id": 28,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
-      "text": "Do not ignore bad reviews. A 1-star review with a thoughtful owner response is less damaging than a 3-star review with silence. Potential customers read the responses. That is your chance to show character.",
-      "start": 355.53,
-      "end": 367.5
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "Coloque sua avaliação Google onde os clientes possam vê-la. Um pequeno sinal perto do host stand ou do caixa que diz \"4,6 estrelas no Google — 340 avaliações\" faz duas coisas: informa aos clientes satisfeitos que avaliar é uma coisa normal aqui (prova social), e informa aos clientes insatisfeitos que este restaurante leva os feedbacks a sério (o que às vezes desarma uma reclamação antes que ela se torne uma avaliação de 1 estrela).",
+      "start": 393.6,
+      "end": 419.76
     },
     {
       "id": 29,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
-      "text": "Do not ask on social media. \"Leave us a Google review!\" as an Instagram post reaches the people who already follow you — not the people who just ate at your restaurant for the first time. The postcard-at-checkout system reaches the right audience at the right moment.",
-      "start": 367.82,
-      "end": 382.68
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "Atualize o número mensalmente. Ver a contagem subir é motivador para a equipe também.",
+      "start": 420.28,
+      "end": 425.5
     },
     {
       "id": 30,
       "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(4)",
-      "text": "The compounding effect.",
-      "start": 383.78,
-      "end": 385.3
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "O que não fazer.",
+      "start": 426.6,
+      "end": 427.62
     },
     {
       "id": 31,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(16)",
-      "text": "Here is what most owners do not see because they quit after two weeks: Google reviews compound. A restaurant that gets 60 reviews a month does not just have more reviews — it has more recent reviews. Google weighs recency. A potential customer sees \"2 weeks ago\" on the most recent review and thinks \"this place is active.\" They see \"8 months ago\" and think \"is this place still open?\"",
-      "start": 386,
-      "end": 407.01
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "Eu vi restaurantes sabotarem seus próprios programas de avaliação de algumas maneiras previsíveis. Evite essas:",
+      "start": 428.32,
+      "end": 434.98
     },
     {
       "id": 32,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(17)",
-      "text": "After six months of consistent postcard distribution, the Tacombi locations I worked with had a review velocity that put them among the most-reviewed restaurants in their respective neighborhoods on Google Maps. Not because we ran ads. Not because we begged. Because we built a system and let it run.",
-      "start": 407.36,
-      "end": 425.1
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "Não compre avaliações. A detecção do Google é melhor do que você pensa, e a penalidade — ter toda a história de avaliações removida — é catastrófica. Um lote de avaliações falsas pode desfazer anos de avaliações reais.",
+      "start": 435.33,
+      "end": 448.05
     },
     {
       "id": 33,
-      "kind": "quote",
-      "selector": "#post-body > p:nth-of-type(18)",
-      "text": "Reviews compound. Sixty a month does not just mean more stars — it means more recent stars, which is what Google and customers both care about.",
-      "start": 425.85,
-      "end": 434.44
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "Não faça \"review-gate\". Algumas ferramentas perguntam \"Como foi sua experiência?\" e só mostram o link de avaliação do Google se a resposta for positiva. O Google proíbe explicitamente isso. Se você pedir avaliações, peça a todos — não apenas às pessoas felizes.",
+      "start": 448.37,
+      "end": 463.35
     },
     {
       "id": 34,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(5)",
-      "text": "The ten-minute setup.",
-      "start": 435.54,
-      "end": 436.99
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "Não ignore as avaliações ruins. Uma avaliação de 1 estrela com uma resposta pensada do proprietário é menos prejudicial do que uma avaliação de 3 estrelas com silêncio. Os clientes potenciais lêem as respostas. Essa é sua chance de mostrar caráter.",
+      "start": 463.67,
+      "end": 478.31
     },
     {
       "id": 35,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(19)",
-      "text": "If you want to start this today, here is the punch list:",
-      "start": 437.69,
-      "end": 440.66
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
+      "text": "Não peça nas mídias sociais. \"Deixe uma avaliação no Google!\" como uma postagem no Instagram alcança as pessoas que já seguem você — não as pessoas que acabaram de comer no seu restaurante pela primeira vez. O sistema de postais no caixa alcança o público-alvo no momento certo.",
+      "start": 478.63,
+      "end": 493.95
     },
     {
       "id": 36,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "Get your Google review link. Google Business Profile dashboard → \"Ask for reviews\" → copy the short link.",
-      "start": 441.01,
-      "end": 448.27
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "O efeito composto.",
+      "start": 495.05,
+      "end": 496.4
     },
     {
       "id": 37,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "Generate a QR code. Paste the link into any free QR generator (qr-code-generator.com works fine). Download the image.",
-      "start": 448.59,
-      "end": 455.77
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "Aqui está o que a maioria dos proprietários não vê porque desistem após duas semanas: as avaliações do Google se compõem. Um restaurante que recebe 60 avaliações por mês não tem apenas mais avaliações — tem avaliações mais recentes. O Google valoriza a recentidade. Um cliente potencial vê \"2 semanas atrás\" na avaliação mais recente e pensa \"este lugar é ativo\". Ele vê \"8 meses atrás\" e pensa \"este lugar ainda está aberto?\"",
+      "start": 497.1,
+      "end": 521.86
     },
     {
       "id": 38,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "Design a postcard. Receipt-sized or standard postcard. Your logo, a one-line ask, the QR code, and a small thank-you incentive on the back. Canva, a local print shop, or your designer can do this in an hour.",
-      "start": 456.09,
-      "end": 467.92
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(19)",
+      "text": "Após seis meses de distribuição consistente de postais, as localizações do Tacombi com as quais eu trabalhei tinham uma velocidade de avaliação que as colocou entre os restaurantes mais avaliados em seus respectivos bairros no Google Maps. Não porque rodamos anúncios. Não porque pedimos. Porque construímos um sistema e o deixamos funcionar.",
+      "start": 522.21,
+      "end": 541.1
     },
     {
       "id": 39,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(4)",
-      "text": "Print 500. Costs 30 dollars–60 dollars at most print shops. That is 500 potential reviews for less than the cost of a single Instagram ad.",
-      "start": 468.24,
-      "end": 477.71
+      "kind": "quote",
+      "selector": "#post-body > p:nth-of-type(20)",
+      "text": "As avaliações se compõem. 60 por mês não significa apenas mais estrelas — significa estrelas mais recentes, o que é o que o Google e os clientes ambos se importam.",
+      "start": 541.85,
+      "end": 551.63
     },
     {
       "id": 40,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(5)",
-      "text": "Brief your team. Two-sentence pre-shift: \"Hand these out after the check is closed. Do not pitch — just hand it over and say thanks.\"",
-      "start": 478.03,
-      "end": 485.17
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "A configuração de dez minutos.",
+      "start": 552.73,
+      "end": 554.83
     },
     {
       "id": 41,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(6)",
-      "text": "Set a daily alarm. Five minutes, once a day, respond to every new review. Short, specific, human.",
-      "start": 485.49,
-      "end": 490.96
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(21)",
+      "text": "Se você quiser começar hoje, aqui está a lista de tarefas:",
+      "start": 555.53,
+      "end": 558.94
     },
     {
       "id": 42,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Obtenha o link de avaliação do Google. Painel do Google Business Profile → \"Peça avaliações\" → copie o link curto.",
+      "start": 559.29,
+      "end": 567.06
+    },
+    {
+      "id": 43,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Gere um código QR. Cole o link em qualquer gerador de código QR gratuito (qr-code-generator.com funciona bem). Baixe a imagem.",
+      "start": 567.38,
+      "end": 575.48
+    },
+    {
+      "id": 44,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Desenhe um postal. Tamanho de recibo ou tamanho de postal padrão. Seu logotipo, uma linha de solicitação, o código QR e um pequeno incentivo de agradecimento na parte de trás. O Canva, uma gráfica local ou seu designer podem fazer isso em uma hora.",
+      "start": 575.8,
+      "end": 590.38
+    },
+    {
+      "id": 45,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "Imprima 500. Custo de 30 a 60 dólares na maioria das gráficas. Isso são 500 avaliações potenciais por menos do que o custo de um anúncio único no Instagram.",
+      "start": 590.7,
+      "end": 600.96
+    },
+    {
+      "id": 46,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(5)",
+      "text": "Instrua sua equipe. Duas frases antes do turno: \"Distribua esses após o fechamento da conta. Não faça um discurso — apenas entregue e agradeça.\"",
+      "start": 601.28,
+      "end": 609.73
+    },
+    {
+      "id": 47,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(6)",
+      "text": "Configure um alarme diário. Cinco minutos, uma vez por dia, responda a todas as novas avaliações. Curto, específico, humano.",
+      "start": 610.05,
+      "end": 617.49
+    },
+    {
+      "id": 48,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(20)",
-      "text": "That is it. No software subscription. No marketing agency. No budget approval. The whole system costs about 50 dollars and ten minutes to set up, and it runs indefinitely.",
-      "start": 491.48,
-      "end": 502.45
+      "selector": "#post-body > p:nth-of-type(22)",
+      "text": "É isso. Sem assinatura de software, sem agência de marketing, sem aprovação de orçamento. Todo o sistema custa cerca de $50 e dez minutos para configurar, e funciona indefinidamente.",
+      "start": 618.01,
+      "end": 629.4
+    },
+    {
+      "id": 49,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(23)",
+      "text": "Pontos principais",
+      "start": 629.92,
+      "end": 631.05
+    },
+    {
+      "id": 50,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(1)",
+      "text": "O cartão QR na conta supera todos os outros métodos de solicitação 4 para 1 em testes de campo.",
+      "start": 631.4,
+      "end": 637.8
+    },
+    {
+      "id": 51,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(2)",
+      "text": "Um texto curto após a refeição — \"esperamos que você tenha gostado do jantar; lemos todas as avaliações\" — é eficaz quando enviado dentro de 12 horas.",
+      "start": 638.12,
+      "end": 646.99
+    },
+    {
+      "id": 52,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(3)",
+      "text": "Avaliações de cinco estrelas importam menos do que as de 4 e 3 estrelas às quais você responde bem (Google lê a capacidade de resposta).",
+      "start": 647.31,
+      "end": 655.81
+    },
+    {
+      "id": 53,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(4)",
+      "text": "Avaliações negativas não são fatais; avaliações negativas ignoradas, sim.",
+      "start": 656.13,
+      "end": 660.83
+    },
+    {
+      "id": 54,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(5)",
+      "text": "A janela de compounding é de 90 dias — o sistema que está em funcionamento há 90+ dias supera o que está em funcionamento há 30.",
+      "start": 661.15,
+      "end": 669.51
     }
   ]
 }

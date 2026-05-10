@@ -1,0 +1,131 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-09T21:11:43.566Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "im_nicola",
+  "language": "it",
+  "total": 184.51,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "La probabilità di abbandono in base al tempo di caricamento della pagina mobile, indicizzata rispetto a un baseline di un secondo. A 1 secondo: baseline di riferimento. A 3 secondi: probabilità di abbandono del 32% più alta. A 6 secondi: probabilità di abbandono del 106% più alta. A 10 secondi: probabilità di abbandono del 123% più alta.",
+      "start": 0,
+      "end": 23.75
+    },
+    {
+      "id": 1,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Risultati chiave.",
+      "start": 24.85,
+      "end": 26.31
+    },
+    {
+      "id": 2,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Il 53% delle visite ai siti mobile viene abbandonato se una pagina impiega più di tre secondi per caricarsi.",
+      "start": 27.01,
+      "end": 35.36
+    },
+    {
+      "id": 3,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Il sito mobile medio nello studio ha impiegato 22 secondi per caricarsi completamente — circa sette volte la soglia.",
+      "start": 35.68,
+      "end": 43.68
+    },
+    {
+      "id": 4,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "La probabilità di abbandono aumenta notevolmente nell'intervallo di 3-10 secondi: un caricamento di 3 secondi ha una probabilità di abbandono del 32% più alta di un caricamento di 1 secondo; a 6 secondi è del 106% più alta; a 10 secondi è del 123% più alta.",
+      "start": 44,
+      "end": 64.38
+    },
+    {
+      "id": 5,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "Lo studio ha misurato 11,8 milioni di pagine mobile in settori retail, travel e publisher, conferendogli un peso statistico reale.",
+      "start": 64.7,
+      "end": 73.75
+    },
+    {
+      "id": 6,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(5)",
+      "text": "La successiva struttura Google (a partire dal 2020) ha codificato la soglia dei tre secondi nella metrica Largest Contentful Paint, dove il bucket \"buono\" termina a 2,5 secondi.",
+      "start": 74.07,
+      "end": 87.37
+    },
+    {
+      "id": 7,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Come Muntin utilizza questo studio.",
+      "start": 88.47,
+      "end": 90.89
+    },
+    {
+      "id": 8,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "Questo è lo studio di riferimento dietro ogni affermazione \"la velocità mobile conta\" nella libreria. Si presenta in:",
+      "start": 91.59,
+      "end": 99.01
+    },
+    {
+      "id": 9,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Perché il tuo ristorante perde prenotazioni ogni notte La perdita numero 1 — caricamento mobile lento — è basata su questo studio. Il tasso di abbandono del 53% è ciò che rende la frase \"perde la metà del traffico prima del menu\" reale piuttosto che retorica.",
+      "start": 99.36,
+      "end": 117.23
+    },
+    {
+      "id": 10,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Quanto costa un sito web personalizzato per ristoranti nel 2026? La sezione budget-prestazioni dell'articolo sui prezzi si riferisce a questo studio per spiegare perché un caricamento mobile inferiore a due secondi è considerato un deliverable di base, non un upgrade.",
+      "start": 117.55,
+      "end": 135.67
+    },
+    {
+      "id": 11,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "Wix versus personalizzato per ristoranti: cosa si rompe per primo Il punto di rottura numero 2 — il soffitto delle prestazioni della piattaforma — fa riferimento a questo studio per spiegare perché la soglia dei tre secondi non è raggiungibile nella maggior parte dei template builder senza una ricostruzione.",
+      "start": 135.99,
+      "end": 155
+    },
+    {
+      "id": 12,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Cittazione completa.",
+      "start": 156.1,
+      "end": 157.78
+    },
+    {
+      "id": 13,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "An, D. (2017, febbraio). Scopri come ti poni rispetto ai nuovi benchmark di settore per la velocità di caricamento delle pagine mobile. Think with Google. thinkwithgoogle.com",
+      "start": 158.48,
+      "end": 170.44
+    },
+    {
+      "id": 14,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "Ultima revisione: aprile 2026 — il risultato di base è rafforzato dai dati attuali Core Web Vitals di Google e rimane ampiamente citato nella ricerca sull'esperienza utente mobile.",
+      "start": 170.79,
+      "end": 184.51
+    }
+  ]
+}

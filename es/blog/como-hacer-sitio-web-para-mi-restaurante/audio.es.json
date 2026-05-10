@@ -1,0 +1,275 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-08T22:54:06.145Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "em_alex",
+  "language": "es",
+  "total": 221.11,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "La pregunta \"cómo hago el sitio web de mi restaurante\" tiene tantas respuestas malas en internet que la mayoría de operadores termina tomando una de tres rutas: el sobrino que sabe Wix, la agencia que cobra $15K y nunca termina, o el \"lo dejo para después\" que se vuelve dos años. Las tres son malas decisiones. Esta guía es la versión honesta.",
+      "start": 0,
+      "end": 19.08
+    },
+    {
+      "id": 1,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Decisión 1: ¿Realmente necesitas un sitio?",
+      "start": 20.18,
+      "end": 22.97
+    },
+    {
+      "id": 2,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Empieza por la prueba de 5 minutos. Si tu Google Business Profile está fuerte, recibes reservas por OpenTable o Resy, y tus regulares te encuentran sin sitio — quizás todavía no lo necesitas. Si haces más de $40K al mes y dependes de Google search para descubrimiento, sí lo necesitas, y postergarlo te sale más caro cada trimestre.",
+      "start": 23.67,
+      "end": 43.5
+    },
+    {
+      "id": 3,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Decisión 2: ¿Qué plataforma?",
+      "start": 44.6,
+      "end": 46.32
+    },
+    {
+      "id": 4,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "Cuatro opciones reales:",
+      "start": 47.02,
+      "end": 48.4
+    },
+    {
+      "id": 5,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "D I Y (Wix, Squarespace): $25-$50/mes. Funciona el primer día. Te alcanza si eres pop-up, ghost kitchen, o realmente operas como placeholder. Wix se rompe rápido en cualquier restaurante con más de un año.",
+      "start": 48.75,
+      "end": 62.38
+    },
+    {
+      "id": 6,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Estudio de templates: $2,500-$6,000. Un studio toma una plantilla decente y la viste con tu marca. Resultado predecible, plazo corto.",
+      "start": 62.7,
+      "end": 72.61
+    },
+    {
+      "id": 7,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Custom completo: $6,000-$20,000. Diseño + código a medida. Lo que la mayoría de restaurantes establecidos eventualmente necesita.",
+      "start": 72.93,
+      "end": 83.15
+    },
+    {
+      "id": 8,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "Agencia de récord: $25,000+. Solo justificado si tienes 10+ ubicaciones o un grupo restaurantero.",
+      "start": 83.47,
+      "end": 91.54
+    },
+    {
+      "id": 9,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Decisión 3: ¿Qué páginas tener?",
+      "start": 92.64,
+      "end": 94.54
+    },
+    {
+      "id": 10,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "Siete páginas hacen casi todo el trabajo: home, menú, horarios y ubicación, reservas, historia, contacto, y una promo actual. Lo que debe estar en el sitio tiene la versión completa. Páginas que probablemente no necesitas: una de \"eventos\" aparte, blog, galería (el sitio mismo es la galería).",
+      "start": 95.24,
+      "end": 111.75
+    },
+    {
+      "id": 11,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "Decisión 4: ¿Qué integraciones?",
+      "start": 112.85,
+      "end": 114.8
+    },
+    {
+      "id": 12,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "Tres importan más que cualquier otra:",
+      "start": 115.5,
+      "end": 117.72
+    },
+    {
+      "id": 13,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Reservas: OpenTable, Resy, Tock, o SevenRooms. Si quieres aparecer en Find a Table de Google, esto es no negociable.",
+      "start": 118.07,
+      "end": 124.93
+    },
+    {
+      "id": 14,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Ordering directo: Toast, Square, ChowNow, Olo. La diferencia entre 30% de comisión a DoorDash y 0% es enorme — corre la cuenta.",
+      "start": 125.25,
+      "end": 134.01
+    },
+    {
+      "id": 15,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Schema markup: Restaurant + Menu + OpeningHoursSpecification al mínimo. Los seis tipos que Google usa tienen los detalles.",
+      "start": 134.33,
+      "end": 141.55
+    },
+    {
+      "id": 16,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "Los errores que obligan a rehacerlo todo.",
+      "start": 142.65,
+      "end": 144.99
+    },
+    {
+      "id": 17,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "He auditado cientos de sitios. Los errores que obligan al rebuild son siempre los mismos:",
+      "start": 145.69,
+      "end": 150.55
+    },
+    {
+      "id": 18,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Menú en PDF. Google no lo lee, AI search no lo cita, móvil lo descarga lento. Tiene que ser HTML real.",
+      "start": 150.9,
+      "end": 157.49
+    },
+    {
+      "id": 19,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Horarios solo en imagen. Schema obligatorio, texto plano siempre.",
+      "start": 157.81,
+      "end": 161.43
+    },
+    {
+      "id": 20,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "Reservas en formulario custom sin schema. Sin Reservation schema, no apareces en Find a Table.",
+      "start": 161.75,
+      "end": 167.51
+    },
+    {
+      "id": 21,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "Sin dueño del código. Si la agencia se cae o cambias de proveedor, no tienes dónde irte.",
+      "start": 167.83,
+      "end": 172.95
+    },
+    {
+      "id": 22,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(6)",
+      "text": "El plan honesto en cinco pasos.",
+      "start": 174.05,
+      "end": 175.9
+    },
+    {
+      "id": 23,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Corre Storefront Health en tu sitio actual (si tienes uno). Guarda el puntaje en tu Workshop.",
+      "start": 176.6,
+      "end": 181.6
+    },
+    {
+      "id": 24,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Decide la plataforma según tu volumen y horizonte (si abres dentro de un año, custom; si pop-up, D I Y).",
+      "start": 181.92,
+      "end": 187.84
+    },
+    {
+      "id": 25,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "Pide cotizaciones de 3 estudios. Pide ejemplos de Lighthouse score, no solo screenshots de diseño.",
+      "start": 188.16,
+      "end": 193.85
+    },
+    {
+      "id": 26,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "Lanzar con las 7 páginas básicas + 3 integraciones críticas. No esperes a tener \"todo listo\".",
+      "start": 194.17,
+      "end": 200.26
+    },
+    {
+      "id": 27,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(5)",
+      "text": "Vuelve a correr Storefront Health 30 días después del lanzamiento — mes a mes después.",
+      "start": 200.58,
+      "end": 205.47
+    },
+    {
+      "id": 28,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "Si quieres una segunda opinión sobre tu plan, escríbeme por La Ventana (mi enlace de contacto). Leo cada mensaje.",
+      "start": 205.99,
+      "end": 212.28
+    },
+    {
+      "id": 29,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "Qué hacer ahora",
+      "start": 212.8,
+      "end": 213.65
+    },
+    {
+      "id": 30,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "Lee: el término del glosario relacionado →",
+      "start": 214,
+      "end": 216.35
+    },
+    {
+      "id": 31,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "Prueba: la herramienta que acompaña este artículo →",
+      "start": 216.67,
+      "end": 219.13
+    },
+    {
+      "id": 32,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "O escríbele a Don: La Ventana →",
+      "start": 219.45,
+      "end": 221.11
+    }
+  ]
+}

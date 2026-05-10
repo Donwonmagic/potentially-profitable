@@ -1,0 +1,115 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-09T20:34:14.073Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "pm_alex",
+  "language": "pt",
+  "total": 152.82,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "Três anéis de pontuação de exemplo Lighthouse, um por faixa. Um 35 está na faixa Ruim (0 a 49), pintado de ferrugem. Um 65 está na faixa Precisa de melhoria (50 a 89), pintado de ouro. Um 95 está na faixa Bom (90 a 100), pintado de verde. O mostrador colorido em qualquer relatório PageSpeed Insights ou Lighthouse mapeia para esses mesmos limites.",
+      "start": 0,
+      "end": 21.64
+    },
+    {
+      "id": 1,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Principais descobertas.",
+      "start": 22.74,
+      "end": 24.31
+    },
+    {
+      "id": 2,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "A pontuação de desempenho Lighthouse é uma média ponderada de cinco métricas (até a versão principal atual): First Contentful Paint, Speed Index, Largest Contentful Paint, Total Blocking Time e Cumulative Layout Shift.",
+      "start": 25.01,
+      "end": 38.05
+    },
+    {
+      "id": 3,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Pesos atuais: FCP 10%, SI 10%, LCP 25%, TBT 30%, CLS 25%. TBT e LCP juntos respondem por mais da metade do número final; otimizá-los move a pontuação mais.",
+      "start": 38.37,
+      "end": 52.89
+    },
+    {
+      "id": 4,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Cada métrica é pontuada contra uma curva log-normal construída a partir dos ~10% principais de sites do mundo real no HTTP Archive. Então, \"100\" não significa perfeito — significa que você está no bucket mais rápido de sites reais.",
+      "start": 53.21,
+      "end": 67.91
+    },
+    {
+      "id": 5,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "Pontuações acima de 90 são \"Boas\", 50–89 são \"Precisa de melhoria\" e abaixo de 50 é \"Ruim\". O mostrador colorido no relatório mapeia para esses limites.",
+      "start": 68.23,
+      "end": 78.45
+    },
+    {
+      "id": 6,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(5)",
+      "text": "Lighthouse simula um dispositivo móvel de nível médio em uma rede limitada por padrão, o que é intencionalmente conservador — condições mais rápidas do que a média do mundo real seriam enganosas para uma audiência de restaurantes.",
+      "start": 78.77,
+      "end": 92.48
+    },
+    {
+      "id": 7,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Como a Muntin usa isso.",
+      "start": 93.58,
+      "end": 95.15
+    },
+    {
+      "id": 8,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Wix versus personalizado para restaurantes: o que quebra primeiro — a quebra de número 2 refere-se à metodologia de desempenho Lighthouse ao comparar sites de plataforma-construtor com personalizados. Um site Wix e um site personalizado executando o mesmo teste Lighthouse são medidos de forma idêntica; apenas o código subjacente difere.",
+      "start": 95.85,
+      "end": 115.47
+    },
+    {
+      "id": 9,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Auditoria de site de restaurante (ferramenta interativa) — a auditoria da Muntin é executada contra dados PageSpeed Insights reais para o seu URL e relata as métricas de componente que compõem a pontuação Lighthouse, não apenas o número final.",
+      "start": 115.79,
+      "end": 130.23
+    },
+    {
+      "id": 10,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Citação completa.",
+      "start": 131.33,
+      "end": 132.54
+    },
+    {
+      "id": 11,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "Chrome DevTools. Pontuação de desempenho Lighthouse. Documentação do Chrome para Desenvolvedores. developer.chrome.com",
+      "start": 133.24,
+      "end": 139.98
+    },
+    {
+      "id": 12,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Última revisão: abril vinte e seis — os pesos das métricas Lighthouse mudaram ligeiramente ao longo das versões principais; a Muntin revisa esta página sempre que uma nova versão principal Lighthouse é lançada.",
+      "start": 140.33,
+      "end": 152.82
+    }
+  ]
+}
