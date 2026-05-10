@@ -83,7 +83,24 @@
     cta.className = 'window-handoff__cta';
     cta.href = buildHandoffUrl(topic, finding);
     cta.textContent = ctaText;
+    // Phase 2 audit followup — fire on click for measurement
+    // (plan §9.6 Window Aside Clicked).
+    cta.addEventListener('click', function () {
+      try {
+        window.plausible && window.plausible('Window Aside Clicked', { props: { topic: topic, locale: locale } });
+      } catch (_) { /* ignore */ }
+    });
     aside.appendChild(cta);
+
+    // Window Aside Shown — fires once per render (suppress duplicates
+    // by stamping a data attribute). Avoids double-counting on the
+    // initial no-prefill render + the subsequent update() call.
+    if (!aside.dataset.shownFired) {
+      aside.dataset.shownFired = '1';
+      try {
+        window.plausible && window.plausible('Window Aside Shown', { props: { topic: topic, locale: locale } });
+      } catch (_) { /* ignore */ }
+    }
   }
 
   // Public API for tool pages that need to update the aside after

@@ -444,6 +444,14 @@
       else if (code === 'thread-claimed-please-signin') { text = copy.errorClaimed; showSignin(); }
       else if (code === 'unauthenticated') { showSignin(); return; }
       else if (code === 'not-found') { showPaused(); return; }
+      // Phase 2 audit followup — measurement event per plan §9.6.
+      // Single Window Error event with code prop covers what plan-§9.6
+      // listed as window-day-cap, window-rate-limit, window-pii-blocked,
+      // window-thread-claimed (one event + cohort split, easier to
+      // query in Plausible than 5+ separate events).
+      try {
+        window.plausible && window.plausible('Window Error', { props: { code: code, locale: locale } });
+      } catch (_) { /* ignore */ }
       showMsg(text, true);
     }).catch(function () {
       showMsg(copy.error, true);
@@ -487,6 +495,10 @@
         var prepend = btn.getAttribute('data-prepend') || '';
         // Track for the success-state artifact lookup.
         lastChipKey = chipKeyFor(btn);
+        // Phase 2 audit followup — measurement event per plan §9.6.
+        try {
+          window.plausible && window.plausible('Window Chip', { props: { key: lastChipKey || 'unknown', locale: locale } });
+        } catch (_) { /* ignore */ }
         if (els.body) {
           els.body.value = prepend + (els.body.value || '');
           els.body.focus();
@@ -504,12 +516,24 @@
   // last keystroke. Reveals when Tier-1 keywords appear; hides when
   // they're deleted. Never blocks send. Plan §3.12.
   var crisisDebounceTimer = null;
+  var crisisFiredThisSession = false;
   function maybeShowCrisis() {
     if (!els.crisis || !els.body) return;
     if (crisisDebounceTimer) clearTimeout(crisisDebounceTimer);
     crisisDebounceTimer = setTimeout(function () {
       var hit = detectClientCrisis(els.body.value);
+      var wasHidden = els.crisis.hidden;
       els.crisis.hidden = !hit;
+      // Phase 2 audit followup — fire Plausible once per session
+      // when the line first reveals. Subsequent reveals (operator
+      // deletes + re-types the keyword) don't re-fire. No PII —
+      // we don't send the keyword or the body. Plan §9.6.
+      if (hit && wasHidden && !crisisFiredThisSession) {
+        crisisFiredThisSession = true;
+        try {
+          window.plausible && window.plausible('Window Crisis Flag', { props: { surface: 'composer-line', locale: locale } });
+        } catch (_) { /* ignore */ }
+      }
     }, CRISIS_DEBOUNCE_MS);
   }
 
@@ -593,6 +617,18 @@
   bindOnramps();
   // Phase-2 redesign — boot the optional context fields.
   loadContextFromStorage();
+
+  // Phase 2 audit followup — fire Window Claimed when the operator
+  // arrives via Don's reply-email magic link (handleAuthVerify
+  // redirects to /window/?claimed=1 on success). Plan §9.6.
+  (function detectClaimedReturn() {
+    try {
+      var search = new URLSearchParams(window.location.search || '');
+      if (search.get('claimed') === '1') {
+        window.plausible && window.plausible('Window Claimed', { props: { locale: locale } });
+      }
+    } catch (_) { /* ignore */ }
+  })();
 
   // Phase 2.4 — handoff prefill receiver. URL convention:
   //   /window/?topic=<key>&prefill=<base64-encoded text>

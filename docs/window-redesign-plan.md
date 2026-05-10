@@ -785,21 +785,33 @@ visitor instead of bouncing them.
 Phase 0 prerequisite: **measure baseline send-rate for 14 days** before
 shipping anything. Today this number is unknown.
 
-Plausible custom events (additive to v2's set):
+**Naming convention** (Phase 2 audit reconciliation): Plausible
+events use **Title Case** with **props for cohort distinguishers**,
+not kebab-case-with-suffix-per-cohort. One event + props is easier
+to query in Plausible's UI than 5+ near-identical events. Example:
+`Window Send` with `props.kind: 'anon' | 'identified'` instead of
+two events `window-send-anon` + `window-send-identified`.
 
-- `window-send-anon`, `window-send-identified`
-- `window-attach-photo`, `window-attach-voice`
-- `window-callback-request` (Phase 5+)
-- `window-magic-link-claim`, `window-magic-link-claim-rejected`
-- `window-day-cap`, `window-rate-limit`
-- `window-aside-shown`, `window-aside-clicked`
-- `window-now-edit`
-- **NEW:** `window-newsletter-optin`, `window-send-followup`,
-  `window-url-preview-shown`, `window-url-preview-converted`,
-  `window-fieldnotes-peek-opened`, `window-chip-clicked`
-  (with `data-chip-id`), `window-paste-detected`,
-  `window-back-to-composer-from-success`,
-  `window-crisis-flag-tier1`, `window-crisis-flag-tier2`
+| Event name | Props | Phase | Status |
+|---|---|---|---|
+| `Window Send` | `kind: 'anon' \| 'identified'`, `locale` | 0/1a | ✅ wired |
+| `Window Prefill` | `topic`, `locale` | 2.4 | ✅ wired |
+| `Window Chip` | `key: 'not-sure' \| 'not-ready' \| 'new-site' \| 'audit' \| 'care' \| 'else'`, `locale` | 2 audit followup | ✅ wired |
+| `Window Error` | `code: 'rate-limited' \| 'day-cap-reached' \| 'pii-blocked' \| 'thread-claimed-please-signin' \| ...`, `locale` | 2 audit followup | ✅ wired |
+| `Window Crisis Flag` | `surface: 'composer-line'`, `locale` (fires once per session) | 2 audit followup | ✅ wired |
+| `Window Claimed` | `locale` (fires when /window/?claimed=1 boots) | 2 audit followup | ✅ wired |
+| `Window Aside Shown` | `topic`, `locale` | 2.4 | ✅ wired |
+| `Window Aside Clicked` | `topic`, `locale` | 2.4 | ✅ wired |
+| `Window Newsletter Optin` | `locale` | Phase 2 success-state UI | pending |
+| `Window Followup` | `locale` (sender's 2nd+ message in same thread) | Phase 2.x | pending |
+| `Window URL Preview Shown` | `domain`, `locale` | Phase 2.x | pending |
+| `Window Fieldnotes Peek Opened` | `locale` | Phase 2.x | pending (fieldnotes UI not shipped) |
+| `Window Paste Detected` | `locale` (paste event in textarea) | Phase 2.x | pending |
+| `Window Back To Composer From Success` | `locale` | Phase 2.x | pending |
+| `Window Attach Photo` | `locale` | Phase 3 | pending |
+| `Window Attach Voice` | `locale`, `durationSec` | Phase 3 | pending |
+| `Window Callback Request` | `locale` | Phase 5+ | pending |
+| `Window Now Edit` | (admin-only) | Phase 4 | pending |
 
 North-star: sends per 100 pageviews on `/window/` + window-affordance
 entries. Cohort: 14d rolling, segmented by entry path (homepage / blog
