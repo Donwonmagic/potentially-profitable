@@ -23,10 +23,23 @@
 //       deleted?: { at, by: 'visitor' | 'admin' }
 //     }
 //
-//   R2: attach/<threadId>/<msgId>/<attachId>.<ext>
-//     The slash-delimited prefix lets us list all attachments for a
-//     thread (cleanup) or a message (admin view) with a single
-//     prefix scan. Per audit S3, the per-anon lifetime counter
+//   R2: attach/<identityPrefix>/<attachId>.<ext>
+//     identityPrefix = first 10 chars of sub or anonId. Schema is
+//     stable across upload→link (the operator hasn't sent the
+//     message yet at upload time, so we don't know threadId or
+//     msgId yet). Cleanup-by-thread is NOT supported by prefix
+//     listing — admin-by-message scans go through the msg row's
+//     attachIds[] array (Phase 3.5) or via KV scan of
+//     window:attach:* filtered on threadId/msgId.
+//
+//     Audit B2 fix: the original schema promised
+//     attach/<threadId>/<msgId>/<attachId>.<ext> but we'd have to
+//     R2 PUT-new + DELETE-old on every link to honor it. We
+//     instead commit to an identity-keyed schema from upload time
+//     and accept that thread-based cleanup uses the KV index, not
+//     the R2 prefix.
+//
+//     Per audit S3, the per-anon lifetime counter
 //     window:attach-lifetime:<anonId> caps gross uploads regardless
 //     of message-cap evasion via cookie cycling.
 //
@@ -213,9 +226,14 @@ function _dayBucket(ts) {
 // Coverage:
 //   - JPEG: rebuilds without APP1 (Exif/XMP) segments
 //   - WEBP: rebuilds without EXIF + XMP chunks
-//   - PNG: passes through (no EXIF metadata in baseline PNG; rare
-//     iCCP profiles can carry GPS, but the cost of a full chunk
-//     walk for a vanishingly rare risk isn't justified Phase 3.2)
+//   - PNG: validates magic bytes, walks chunks, drops EXIF/text/ICC
+//
+// Each path validates the format's magic bytes before walking
+// segments. Audit B1 — without this, an attacker could declare
+// `image/png` in their multipart `file.type` and upload arbitrary
+// bytes; the worker would write them to R2 unchecked. Rejecting
+// on signature mismatch keeps R2 from holding anything we can't
+// audit as a real image of the declared type.
 //
 // Rejects unknown formats — we won't store anything we can't audit.
 export function stripImageExif(bytes, mime) {
@@ -230,7 +248,7 @@ export function stripImageExif(bytes, mime) {
     return _stripWebpExif(bytes);
   }
   if (m === 'image/png') {
-    return { ok: true, bytes, kind: 'png', mime: 'image/png' };
+    return _stripPngExif(bytes);
   }
   return { ok: false, error: 'unsupported-mime' };
 }
@@ -320,8 +338,10 @@ function _stripWebpExif(bytes) {
   while (i < bytes.length) {
     if (i + 8 > bytes.length) break;
     const fourcc = String.fromCharCode(bytes[i], bytes[i + 1], bytes[i + 2], bytes[i + 3]);
-    const size = bytes[i + 4] | (bytes[i + 5] << 8) | (bytes[i + 6] << 16) | (bytes[i + 7] << 24);
-    if (size < 0 || i + 8 + size > bytes.length) {
+    // >>> 0 keeps the 32-bit value unsigned; bit-31 sign-extension
+    // would otherwise produce a negative value (audit S4 hygiene).
+    const size = (bytes[i + 4] | (bytes[i + 5] << 8) | (bytes[i + 6] << 16) | (bytes[i + 7] << 24)) >>> 0;
+    if (i + 8 + size > bytes.length) {
       return { ok: false, error: 'webp-bad-chunk-size' };
     }
     const chunkLen = 8 + size + (size & 1); // pad to even
@@ -339,4 +359,51 @@ function _stripWebpExif(bytes) {
     'W'.charCodeAt(0), 'E'.charCodeAt(0), 'B'.charCodeAt(0), 'P'.charCodeAt(0),
   ].concat(kept);
   return { ok: true, bytes: new Uint8Array(out), kind: 'webp', mime: 'image/webp' };
+}
+
+// PNG: 8-byte magic (89 50 4E 47 0D 0A 1A 0A) then a sequence of
+// chunks each with size32BE + 4-byte type + data + 4-byte CRC32.
+// Drop the chunks that can carry identifying / locating info:
+//   - eXIf (EXIF metadata)
+//   - tEXt, zTXt, iTXt (textual metadata, often "Software" / GPS)
+//   - iCCP (ICC color profile — can carry serial/manufacturer)
+// Required chunks (IHDR, IDAT, IEND) and benign visual ones
+// (PLTE, tRNS, gAMA, sRGB, cHRM, bKGD, pHYs, sBIT, hIST, tIME)
+// are preserved.
+//
+// Audit B1 — without this, declaring image/png in the multipart
+// upload bypassed signature validation entirely (the prior
+// passthrough wrote any bytes verbatim to R2).
+function _stripPngExif(bytes) {
+  const SIG = [0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A];
+  if (bytes.length < 8) return { ok: false, error: 'png-too-short' };
+  for (let i = 0; i < 8; i++) {
+    if (bytes[i] !== SIG[i]) return { ok: false, error: 'png-bad-signature' };
+  }
+  const DROP = new Set(['eXIf', 'tEXt', 'zTXt', 'iTXt', 'iCCP']);
+  // Output starts with the magic bytes verbatim.
+  const out = [];
+  for (let i = 0; i < 8; i++) out.push(bytes[i]);
+
+  let i = 8;
+  let sawIend = false;
+  while (i < bytes.length) {
+    if (i + 12 > bytes.length) {
+      return { ok: false, error: 'png-truncated' };
+    }
+    // length is BE 32-bit unsigned.
+    const len = ((bytes[i] << 24) | (bytes[i + 1] << 16) | (bytes[i + 2] << 8) | bytes[i + 3]) >>> 0;
+    const type = String.fromCharCode(bytes[i + 4], bytes[i + 5], bytes[i + 6], bytes[i + 7]);
+    const total = 12 + len; // 4 length + 4 type + len data + 4 CRC
+    if (i + total > bytes.length) {
+      return { ok: false, error: 'png-bad-chunk-length' };
+    }
+    if (!DROP.has(type)) {
+      for (let k = i; k < i + total; k++) out.push(bytes[k]);
+    }
+    if (type === 'IEND') { sawIend = true; break; }
+    i += total;
+  }
+  if (!sawIend) return { ok: false, error: 'png-no-iend' };
+  return { ok: true, bytes: new Uint8Array(out), kind: 'png', mime: 'image/png' };
 }

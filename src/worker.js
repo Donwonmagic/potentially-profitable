@@ -6635,7 +6635,7 @@ async function handleResendBounceWebhook(request, env, ctx) {
 async function _linkAttachmentsToMessage(env, attachIds, identity) {
   const linked = [];
   for (const attachId of attachIds) {
-    if (!/^[A-HJ-NP-Z2-9]{10}$/i.test(attachId)) continue;
+    if (!isValidSaveItemIdShape(attachId)) continue;
     let row;
     try {
       const raw = await env.AUTH_SESSIONS.get(windowAttachKey(attachId));
@@ -6746,16 +6746,16 @@ async function handleWindowAttachUpload(request, env, ctx) {
     return jsonResponse({ ok: false, ...stripped }, 400);
   }
 
-  // The attachment doesn't have a threadId/msgId yet — the operator
-  // hasn't sent the message. We mint a "pending" attachId now; the
-  // subsequent /api/window/append POST will associate it. To make
-  // the R2 key valid before binding, we use 'pending' as a stand-in
-  // for threadId/msgId; the linker rewrites the row + R2 key on
-  // append. Simpler: use the attachId itself as the placeholder
-  // bucket so listing-by-prefix still works for cleanup.
+  // R2 key uses the identity prefix from the start (audit B2 fix —
+  // we don't know threadId/msgId at upload time, and rewriting the
+  // R2 object on link would cost a PUT+DELETE per attachment with
+  // its own failure modes). Schema: attach/<identityPrefix>/<id>.<ext>
+  // where identityPrefix is the first 10 chars of sub or anonId.
+  // Cleanup-by-thread uses the KV index, not the R2 prefix.
   const attachId = mintAttachId();
-  const placeholderThread = identitySuffix.slice(0, 10);  // anon/sub prefix
-  const r2KeyStr = 'attach/_pending/' + placeholderThread + '/' + attachId + '.' + (stripped.kind === 'jpeg' ? 'jpg' : stripped.kind);
+  const identityPrefix = identitySuffix.slice(0, 10);
+  const ext = stripped.kind === 'jpeg' ? 'jpg' : stripped.kind;
+  const r2KeyStr = 'attach/' + identityPrefix + '/' + attachId + '.' + ext;
 
   try {
     await env.WINDOW_ATTACHMENTS.put(r2KeyStr, stripped.bytes, {
@@ -6842,7 +6842,7 @@ async function handleWindowAttachDownload(request, env, ctx) {
     return new Response(null, { status: 404 });
   }
   const attachId = u.pathname.slice(prefix.length);
-  if (!attachId || !/^[A-HJ-NP-Z2-9]{10}$/i.test(attachId)) {
+  if (!attachId || !isValidSaveItemIdShape(attachId)) {
     return new Response(null, { status: 400 });
   }
 
