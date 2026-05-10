@@ -1,539 +1,659 @@
 {
   "version": 1,
-  "generatedAt": "2026-04-24T18:52:28.960Z",
+  "generatedAt": "2026-05-10T08:44:44.260Z",
   "engine": "kokoro",
   "model": "kokoro-v1.0.onnx",
   "voice": "zm_yunxi",
   "language": "zh",
-  "total": 742.33,
+  "total": 846.01,
   "chunks": [
     {
       "id": 0,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(1)",
-      "text": "Here is an uncomfortable thing to realize: the first Google result for your restaurant's name probably is not your website. It is the sidebar panel that slides in on the right — the hours, the phone, the five tiny photos, the one-and-a-half star review from twenty nineteen, the \"permanently closed\" chip somebody added by accident in twenty twenty-one. That panel is your Google Business Profile, and for most independent restaurants, it is doing eighty percent of the work your website thinks it is doing.",
+      "text": "阅读本文的中文版 &rarr;",
       "start": 0,
-      "end": 26.42
+      "end": 2.76
     },
     {
       "id": 1,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(2)",
-      "text": "I manage two restaurants and I build websites for a few dozen more. When a new client books a call, the first tab I open is not their homepage. It is their G B P. I want to see which fields they have touched, which categories they have picked, when they last posted a photo, whether they are responding to reviews or pretending they do not exist. Ninety percent of the time I can tell inside of thirty seconds why they are losing walk-in traffic to the place on the next block over. It is almost never the food.",
-      "start": 26.94,
-      "end": 53.36
+      "text": "TL;DR",
+      "start": 3.11,
+      "end": 4.25
     },
     {
       "id": 2,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(3)",
-      "text": "This post is the checklist I run through on that call — in the order I run through it, with the specific settings nobody tells you about until a Google re-review catches them.",
-      "start": 53.88,
-      "end": 63.57
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "声明、验证，然后完成每个字段——大多数餐厅会留下30%+的空白资料。",
+      "start": 4.6,
+      "end": 11.79
     },
     {
       "id": 3,
-      "kind": "figure",
-      "selector": "#post-body > figure:nth-of-type(1)",
-      "text": "Here is what Google sees when it looks at a restaurant's profile. On the left, an incomplete profile: the name, the address, and the phone. Maybe a single blurry photo of the storefront. Opened date blank. Attributes blank. Menu link pointing at a P D F. Two reviews from three years ago, both un-responded-to. On the right, a complete profile: specific primary category, ten additional attributes, a business description that mentions the neighborhood and the signature dish, a menu link pointing at a real H T M L page, a reservation link, weekly Google Posts, twenty recent photos, a ninety-five-percent review response rate. Same restaurant. Completely different ranking in the local map pack. The gap between those two cards is the gap between getting found on a Tuesday and not getting found.",
-      "start": 64.37,
-      "end": 108.94
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "类别比其他任何东西都重要：选择最具体的主要类别，适合你的餐厅。",
+      "start": 12.11,
+      "end": 18.09
     },
     {
       "id": 4,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(4)",
-      "text": "Setting up a profile takes about thirty minutes. Optimizing it properly takes another hour. Most owners do the first part and skip the second — which is exactly why the left card is so much more common than the right one. Here is how to do both.",
-      "start": 109.69,
-      "end": 122.88
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "照片和帖子都会过期——如果没有每周15分钟的习惯，资料在一个季度内就会停止工作。",
+      "start": 18.41,
+      "end": 25.76
     },
     {
       "id": 5,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(1)",
-      "text": "Step 1 — Claim or create your listing.",
-      "start": 123.98,
-      "end": 126.7
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "这里有一个令人不舒服的现实：搜索你的餐厅名称的第一个Google结果可能不是你的网站。它是右侧滑入的侧边面板——营业时间、电话、五张小照片、2019年的1.5星评论，以及2021年有人不小心添加的\"永久关闭\"标签。这个面板是你的Google Business Profile，对于大多数独立餐厅来说，它正在做80%你网站认为自己在做的工作。",
+      "start": 26.11,
+      "end": 52.48
     },
     {
       "id": 6,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(5)",
-      "text": "Google may have already created a listing for your restaurant based on public data. Search for your restaurant name on Google Maps. If it appears, click \"Claim this business\" or \"Own this business?\" and follow the prompts. If it does not appear, create one from scratch:",
-      "start": 127.4,
-      "end": 142.1
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "我管理两家餐厅，并为几十家其他餐厅建网站。当新客户预约通话时，我打开的第一个标签页不是他们的首页，而是他们的GBP。我想看看他们填写了哪些字段，选择了哪些类别，最后一次发布照片的时间，以及他们是否对评论做出回应，还是假装评论不存在。90%的时间，我可以在30秒内判断出为什么他们会失去步行流量，落后于隔壁的餐厅。几乎每次，问题都不是食物。",
+      "start": 52.83,
+      "end": 81.18
     },
     {
       "id": 7,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "Go to business.google.com",
-      "start": 142.45,
-      "end": 145.46
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "这篇文章是我在通话中运行的检查清单——按照我运行的顺序，包括没有人告诉你的具体设置，直到Google重新审查时才会发现。",
+      "start": 81.53,
+      "end": 92.88
     },
     {
       "id": 8,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "Click \"Manage now\" or \"Add your business\"",
-      "start": 145.78,
-      "end": 149.05
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "这里是Google查看餐厅资料时看到的内容。左边是一个不完整的资料：名称、地址和电话。也许有一张模糊的店铺照片。开业日期为空，属性为空，菜单链接指向一个PDF文件。三年前有两条评论，都没有回应。右边是一个完整的资料：具体的主要类别，十个额外的属性，业务描述提到了社区和招牌菜，菜单链接指向一个真正的HTML页面，预订链接，每周Google帖子，二十张最近的照片，95%的评论回应率。同一家餐厅，完全不同的本地地图包排名。两个卡片之间的差距就是在星期二被找到和没有被找到的差距。这里就是如何做到这两点。",
+      "start": 93.68,
+      "end": 135.58
     },
     {
       "id": 9,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "Enter your restaurant's exact legal name — the name on your sign, not a keyword-stuffed version. \"The Irish Inn at Glen Echo\" is correct. \"The Irish Inn — Best Irish Pub Restaurant Glen Echo MD\" is not, and Google may suspend your listing for it.",
-      "start": 149.37,
-      "end": 163.43
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "设置资料大约需要30分钟。正确优化需要另一个小时。大多数老板做了第一部分，但跳过了第二部分——这就是为什么左边的卡片比右边的卡片更常见的原因。这里就是如何做到这两点。",
+      "start": 136.33,
+      "end": 150.54
     },
     {
       "id": 10,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(4)",
-      "text": "Select your business category. Start with \"Restaurant\" and then add a more specific primary category (see Step 3 below).",
-      "start": 163.75,
-      "end": 172.1
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(2)",
+      "text": "以下是七步设置的概览。步骤一：在business.google.com上认领或创建您的列表，大约需要30分钟。步骤二：通过视频验证所有权，通常需要几天的等待。步骤三：选择正确的主要类别，大约需要10分钟，这是整个过程中最重要的决定之一。步骤四：完成每个字段，大约需要30分钟——这是大多数运营商停止的地方，但不应该停止。步骤五：添加真实照片，大约需要1小时，用于创建第一批照片。步骤六：设置Google帖子，每周15分钟。步骤七：响应每个评论，每周10分钟。前四步是一次性的工作；最后三步是需要在一年中不断复制的习惯。",
+      "start": 151.34,
+      "end": 191.94
     },
     {
       "id": 11,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(5)",
-      "text": "Enter your address. If you are a brick-and-mortar restaurant, use your physical address. Do not check \"I deliver goods and services to my customers at their location\" unless you actually run delivery from your own staff.",
-      "start": 172.42,
-      "end": 184.95
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "步骤1 — 认领或创建您的列表。",
+      "start": 193.04,
+      "end": 195.42
     },
     {
       "id": 12,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(6)",
-      "text": "Add your phone number and website U R L.",
-      "start": 185.27,
-      "end": 188.26
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "Google可能已经根据公开数据为您的餐厅创建了一个列表。在Google Maps上搜索您的餐厅名称。如果它出现，点击“认领此业务”或“拥有此业务？”并按照提示进行。如果它没有出现，从头开始创建一个：",
+      "start": 196.12,
+      "end": 210.55
     },
     {
       "id": 13,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(2)",
-      "text": "Step 2 — Verify ownership.",
-      "start": 189.36,
-      "end": 191.67
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "前往business.google.com",
+      "start": 210.9,
+      "end": 213.67
     },
     {
       "id": 14,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(6)",
-      "text": "Google needs to confirm you actually own or manage this restaurant. The most common verification methods in twenty twenty-six:",
-      "start": 192.37,
-      "end": 200.09
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "点击“立即管理”或“添加您的业务”",
+      "start": 213.99,
+      "end": 216.48
     },
     {
       "id": 15,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "Video verification. This is now the default method for most new listings. Google asks you to record a short video showing your storefront, signage, and interior. Upload it through the G B P app or dashboard. Approval typically takes a few days.",
-      "start": 200.44,
-      "end": 215.11
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "输入您餐厅的确切法律名称——标志上的名称，而不是关键词填充的版本。“The Irish Inn at Glen Echo”是正确的。“The Irish Inn — 最好的爱尔兰酒吧餐厅Glen Echo MD”是不正确的，Google可能会因而暂停您的列表。",
+      "start": 216.8,
+      "end": 231.94
     },
     {
       "id": 16,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "Phone call or text. Available for some businesses. Google calls or texts the number on file with a verification code.",
-      "start": 215.43,
-      "end": 223.83
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "选择您的业务类别。从“餐厅”开始，然后添加一个更具体的主要类别（见下面的步骤3）。",
+      "start": 232.26,
+      "end": 239.32
     },
     {
       "id": 17,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "Email. Sometimes available if Google can confirm your domain ownership.",
-      "start": 224.15,
-      "end": 228.84
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(5)",
+      "text": "输入您的地址。如果您是实体餐厅，请使用您的物理地址。除非您实际上运行自己的送货服务，否则不要选中“我将商品和服务送到客户的位置”。",
+      "start": 239.64,
+      "end": 251.07
     },
     {
       "id": 18,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
-      "text": "Postcard by mail. Google used to send a postcard with a PIN to your address (5–14 days). This method has been largely phased out in favor of video verification but may still appear as an option in some cases.",
-      "start": 229.16,
-      "end": 241.75
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(6)",
+      "text": "添加您的电话号码和网站URL。",
+      "start": 251.39,
+      "end": 254.84
     },
     {
       "id": 19,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(7)",
-      "text": "Do not skip verification. An unverified listing cannot respond to reviews, post updates, or access analytics — and it ranks worse than a verified one.",
-      "start": 242.27,
-      "end": 252.14
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "步骤2 — 验证所有权。",
+      "start": 255.94,
+      "end": 257.8
     },
     {
       "id": 20,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(8)",
-      "text": "Video verification sounds like the fastest option on paper and then your approval sits pending for eleven days and you are about to open a new patio. My honest tip: if you are ever offered postcard-by-mail as a fallback, take it. Slower on average, but it has an actual bounded timer — you know within two weeks if it worked. Video verification can ghost you for a month and you have no recourse but to re-record and re-upload.",
-      "start": 252.66,
-      "end": 276.66
+      "text": "Google需要确认您实际上拥有或管理这个餐厅。2026年最常见的验证方法：",
+      "start": 258.5,
+      "end": 265.97
     },
     {
       "id": 21,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(9)",
-      "text": "Also: record the video on the same phone you will use to manage the listing afterward . Google's systems correlate device fingerprints. Switching devices mid-process triggers a manual review that adds days.",
-      "start": 277.18,
-      "end": 289.13
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "视频验证。这现在是大多数新列表的默认方法。Google要求您录制一段短视频，展示您的店面、标志和内部。通过GBP应用程序或仪表板上传它。批准通常需要几天。",
+      "start": 266.32,
+      "end": 279.83
     },
     {
       "id": 22,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(3)",
-      "text": "Step 3 — Choose the right categories.",
-      "start": 290.23,
-      "end": 293.05
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "电话或短信。适用于一些企业。Google会拨打或发送短信到您存档的号码，包含一个验证代码。",
+      "start": 280.15,
+      "end": 287.59
     },
     {
       "id": 23,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(10)",
-      "text": "If I could only fix one thing on most of the profiles I look at, it would be the primary category. It is the single biggest lever you have for local search ranking, and it is the one owners treat like a formality.",
-      "start": 293.75,
-      "end": 305.59
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "电子邮件。有时如果Google可以确认您的域名所有权，则可用。",
+      "start": 287.91,
+      "end": 293.25
     },
     {
       "id": 24,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(11)",
-      "text": "Here is what Google is doing under the hood: when someone types \"Italian restaurant near me,\" Google filters the local map pack down to listings whose primary category is \"Italian Restaurant.\" Listings with \"Italian Restaurant\" in their additional categories are candidates, but they rank below the primary-matches. So if you are an Italian place with \"Restaurant\" as your primary, you are losing to every other Italian spot in the neighborhood before the query even looks at your reviews or photos.",
-      "start": 306.11,
-      "end": 333
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "邮寄明信片。Google曾经会发送一张带有PIN的明信片到您的地址（5-14天）。这种方法已经基本被视频验证取代，但在某些情况下仍可能出现作为一个选项。",
+      "start": 293.57,
+      "end": 306.34
     },
     {
       "id": 25,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
-      "text": "Primary category: pick the most specific one that applies. \"Italian Restaurant\" beats \"Restaurant.\" \"Brunch Restaurant\" beats \"American Restaurant\" if brunch is your main draw. You get exactly one — make it count.",
-      "start": 333.52,
-      "end": 347.12
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "不要跳过验证。未经验证的列表无法响应评论、发布更新或访问分析——并且它的排名比经过验证的列表要低。",
+      "start": 306.69,
+      "end": 315.01
     },
     {
       "id": 26,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
-      "text": "Additional categories: add 2–5 more that accurately describe your business. A restaurant that also does catering might add \"Caterer.\" A place with a strong bar program might add \"Bar\" or \"Cocktail Bar.\" Do not add categories you do not actually serve — Google suspends listings for misleading categories, and re-verification takes weeks.",
-      "start": 347.44,
-      "end": 365.28
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "视频验证看起来像是最快的选择，但您的批准可能会等待11天，您即将开设一个新露台。我的诚实建议：如果您曾经被提供邮寄明信片作为备选，请接受它。平均而言，它更慢，但它有一个实际的有界计时器——您可以在两周内知道它是否有效。视频验证可能会让您等待一个月，您没有任何补救方法，只能重新录制和重新上传。",
+      "start": 315.36,
+      "end": 340.86
     },
     {
       "id": 27,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(12)",
-      "text": "I ran one of my restaurants on \"Restaurant\" as the primary category for the first two years we were open . That is me, somebody who does this for a living, sitting on a generic primary because nobody on staff thought to check. The day I switched it to the specific cuisine, our weekday rankings for \"[cuisine] near me\" moved up roughly five positions in the local pack. Not overnight — it took about a week. No other change, no new reviews, no new photos. Just the category.",
-      "start": 365.8,
-      "end": 391.95
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "录制视频时，请使用同一部手机来管理列表 — Google 的系统会关联设备指纹。切换设备会触发手动审查，增加几天的处理时间。",
+      "start": 341.21,
+      "end": 352.34
     },
     {
       "id": 28,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(13)",
-      "text": "If you do nothing else on this list, pull up your profile and look at your primary. If it says \"Restaurant\" and you are any kind of specific cuisine, that is thirty seconds to fix and real ranking in return.",
-      "start": 392.47,
-      "end": 404.17
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "步骤 3 — 选择合适的类别。",
+      "start": 353.44,
+      "end": 355.55
     },
     {
       "id": 29,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(4)",
-      "text": "Step 4 — Complete every field.",
-      "start": 405.27,
-      "end": 407.74
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "如果我只能修复大多数个人资料中的一个问题，那就是主要类别。它是您在本地搜索排名中最大的杠杆，而且它是业主们最不重视的东西。",
+      "start": 356.25,
+      "end": 367.33
     },
     {
       "id": 30,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(14)",
-      "text": "Most owners fill in name, address, phone, and hours — then stop. Here is what they miss:",
-      "start": 408.44,
-      "end": 414.75
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "Google 在内部是如何工作的：当有人输入“附近的意大利餐厅”时，Google 会将本地地图包过滤到主要类别为“意大利餐厅”的列表。具有“意大利餐厅”在其附加类别中的列表是候选项，但它们的排名低于主要匹配项。所以，如果您是一家意大利餐厅，但主要类别是“餐厅”，您就会在查询甚至查看您的评论或照片之前就输给其他意大利餐厅。",
+      "start": 367.68,
+      "end": 392.46
     },
     {
       "id": 31,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
-      "text": "Business description. You get 750 characters. Use them. Name your cuisine, your neighborhood, your sourcing philosophy, and your signature dishes. This is crawled by Google and shown to customers.",
-      "start": 415.1,
-      "end": 428
+      "text": "主要类别：选择最具体的类别。 “意大利餐厅”优于“餐厅”。如果早午餐是您的主要吸引点，“早午餐餐厅”优于“美国餐厅”。您只能选择一个 —— 请认真选择。",
+      "start": 392.81,
+      "end": 403.95
     },
     {
       "id": 32,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
-      "text": "Menu link. Point this at your website's menu page, not a P D F. If you do not have a website yet, you can use Google's built-in menu editor — but a real web page is better for S E O and for the customer's reading experience.",
-      "start": 428.32,
-      "end": 441.46
+      "text": "附加类别：添加 2-5 个能够准确描述您的业务的类别。提供外卖服务的餐厅可能会添加“外卖服务”。拥有强大酒吧项目的餐厅可能会添加“酒吧”或“鸡尾酒吧”。不要添加您实际上不提供的类别 —— Google 会因误导性类别而暂停列表，重新验证需要几周时间。",
+      "start": 404.27,
+      "end": 423.15
     },
     {
       "id": 33,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
-      "text": "Reservation link. If you use OpenTable, Resy, Tock, or any other platform, add the direct booking U R L here. Google will show a \"Reserve a table\" button on your listing.",
-      "start": 441.78,
-      "end": 453.47
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "我曾经以“餐厅”作为主要类别运行我的一家餐厅，持续两年。就是我，一个以此为生的专业人士，却因为员工没有检查而使用了通用类别。直到我将其更改为具体的菜系，我们在周内的“[菜系]附近”排名在本地包中上升了大约五个位置。不是一夜之间 —— 大约需要一周。没有其他变化，没有新的评论，没有新的照片。只是类别的变化。",
+      "start": 423.5,
+      "end": 447.78
     },
     {
       "id": 34,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
-      "text": "Order link. Same idea — point to your direct ordering page (through Toast, Square, or your website), not to a third-party marketplace that charges you 30%.",
-      "start": 453.79,
-      "end": 465.19
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "如果您不做其他事情，请打开您的个人资料并查看您的主要类别。如果它显示“餐厅”，而您是某种特定的菜系，那么这就是需要 30 秒来修复的，并且可以真正提高排名。",
+      "start": 448.13,
+      "end": 460.72
     },
     {
       "id": 35,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(5)",
-      "text": "Attributes. Google lets you specify: outdoor seating, wheelchair accessible, takes reservations, good for groups, good for kids, serves alcohol, live music, et cetera Check every attribute that applies. These filter into customer searches (\"restaurants with outdoor seating near me\").",
-      "start": 465.51,
-      "end": 482.11
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "步骤 4 — 完成每个字段。",
+      "start": 461.82,
+      "end": 463.69
     },
     {
       "id": 36,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(6)",
-      "text": "Opening date. If your restaurant has been open since 1931 (like one of mine), put that date in. Heritage is a trust signal.",
-      "start": 482.43,
-      "end": 492.46
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "大多数业主填写名称、地址、电话和营业时间 —— 然后就停止了。以下是他们错过的内容：",
+      "start": 464.39,
+      "end": 471.91
     },
     {
       "id": 37,
-      "kind": "quote",
-      "selector": "#post-body > p:nth-of-type(15)",
-      "text": "The restaurant on the next block is not beating you because their food is better. They are beating you because they filled in the attributes you left blank.",
-      "start": 493.21,
-      "end": 501.53
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(1)",
+      "text": "商业描述。您有 750 个字符。请使用它们。命名您的菜系、您的社区、您的采购理念和您的招牌菜。这将被 Google 爬取并显示给客户。",
+      "start": 472.26,
+      "end": 482.76
     },
     {
       "id": 38,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(5)",
-      "text": "Step 5 — Add real photos.",
-      "start": 502.63,
-      "end": 504.77
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(2)",
+      "text": "菜单链接。将其指向您的网站菜单页面，而不是 PDF。如果您还没有网站，您可以使用 Google 的内置菜单编辑器 —— 但对于 SEO 和客户的阅读体验来说，真正的网页更好。",
+      "start": 483.08,
+      "end": 496.48
     },
     {
       "id": 39,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(16)",
-      "text": "Profiles with photos get meaningfully more clicks and direction-requests than profiles without. Google has said this publicly for years. What they do not say out loud is which photos actually move the needle. After shooting a few hundred of them for restaurants, I can tell you the ranking is roughly: the exterior with your sign clearly visible, the dining room at dinner service with people in it, one hero plate of your signature dish, a clear shot of your menu board, and then everything else. Stock photography is worse than nothing — Google seems to detect and down-rank obvious stock.",
-      "start": 505.47,
-      "end": 535.97
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(3)",
+      "text": "预订链接。如果您使用 OpenTable、Resy、Tock 或任何其他平台，请在此添加直接预订 URL。Google 将在您的列表中显示“预订桌子”按钮。",
+      "start": 496.8,
+      "end": 508.45
     },
     {
       "id": 40,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(17)",
-      "text": "What to upload:",
-      "start": 536.49,
-      "end": 537.68
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(4)",
+      "text": "订购链接。同样的想法 —— 将其指向您的直接订购页面（通过 Toast、Square 或您的网站），而不是向第三方市场支付 30% 的费用。",
+      "start": 508.77,
+      "end": 520.43
     },
     {
       "id": 41,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(1)",
-      "text": "Cover photo: the single best shot of your food or your room. This is what appears in search results.",
-      "start": 538.03,
-      "end": 544.36
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(5)",
+      "text": "属性。Google 允许您指定：户外座位、轮椅无障碍、接受预订、适合团体、适合儿童、提供酒精饮料、现场音乐等。选中所有适用的属性。这些属性会被过滤到客户搜索中（\"附近有户外座位的餐厅\"）。",
+      "start": 520.75,
+      "end": 534.44
     },
     {
       "id": 42,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(2)",
-      "text": "Logo: your restaurant's mark, square format, clean background.",
-      "start": 544.68,
-      "end": 549.28
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(6)",
+      "text": "开业日期。如果您的餐厅自 1931 年以来一直营业（像我的一家餐厅一样），请填写该日期。遗产是一个信任信号。",
+      "start": 534.76,
+      "end": 544.51
     },
     {
       "id": 43,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(3)",
-      "text": "Interior photos: the dining room, the bar, the patio. At least 3–5.",
-      "start": 549.6,
-      "end": 555.13
+      "kind": "quote",
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "隔壁的餐厅不一定因为食物更好而击败你，他们之所以击败你，是因为他们填写了你留空的属性。",
+      "start": 545.26,
+      "end": 552.58
     },
     {
       "id": 44,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(4)",
-      "text": "Food photos: your most photogenic dishes. Professional quality if possible — phone photos are fine if the lighting is good. At least 5–10.",
-      "start": 555.45,
-      "end": 565.46
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "步骤 5 — 添加真实照片。",
+      "start": 553.68,
+      "end": 556.13
     },
     {
       "id": 45,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(5)",
-      "text": "Team photos: the chef, the bartender, the host stand. People trust faces.",
-      "start": 565.78,
-      "end": 571.56
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "带有照片的资料会比没有照片的资料获得更多的点击和方向请求。Google 多年来一直公开表示这一点。他们没有公开说明的是，哪些照片实际上能带来效果。在为几百家餐厅拍摄照片后，我可以告诉你，大致的排名是：带有清晰可见标志的外观照、晚餐服务时有人的餐厅内部照、您招牌菜的英雄盘照、清晰的菜单板照，然后是其他一切。股票照片比没有照片更糟糕 — Google 似乎能检测并降级明显的股票照片。",
+      "start": 556.83,
+      "end": 586.7
     },
     {
       "id": 46,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(6)",
-      "text": "Exterior photo: the storefront, clearly showing your sign. This helps customers find you on arrival.",
-      "start": 571.88,
-      "end": 578.78
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(19)",
+      "text": "上传什么：",
+      "start": 587.05,
+      "end": 588.22
     },
     {
       "id": 47,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(18)",
-      "text": "Upload new photos at least once a month. Fresh photos signal an active business, and they give Google fresh content to surface.",
-      "start": 579.3,
-      "end": 587.67
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(1)",
+      "text": "封面照片：您最好的食物或房间照片。这是在搜索结果中显示的内容。",
+      "start": 588.57,
+      "end": 595.32
     },
     {
       "id": 48,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(19)",
-      "text": "At one of my places we used to batch-upload a dozen photos once a quarter when I had time. Then one month I tested a cadence of two photos a week — Monday morning, Thursday afternoon — for a season. Same restaurant, same quality of photos, just a slower drip. Map-pack impressions on weekday lunch queries roughly doubled over the quarter.",
-      "start": 588.19,
-      "end": 606.18
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(2)",
+      "text": "Logo：您的餐厅标志，方形格式，干净的背景。",
+      "start": 595.64,
+      "end": 599.64
     },
     {
       "id": 49,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(20)",
-      "text": "I cannot prove causation. But I have seen the pattern enough times now to believe Google treats a steady drip of fresh content as a liveness signal in a way it never treats a big one-time batch. A slow drip beats a big dump, every time.",
-      "start": 606.7,
-      "end": 619.1
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(3)",
+      "text": "内部照片：餐厅、酒吧、露台。至少 3-5 张。",
+      "start": 599.96,
+      "end": 603.36
     },
     {
       "id": 50,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(6)",
-      "text": "Step 6 — Set up Google Posts.",
-      "start": 620.2,
-      "end": 622.47
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(4)",
+      "text": "食物照片：您最好看的菜肴。尽可能使用专业质量的照片 — 如果光线良好，手机照片也可以。至少 5-10 张。",
+      "start": 603.68,
+      "end": 612.94
     },
     {
       "id": 51,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(21)",
-      "text": "Google Posts are short updates that appear directly on your listing — like social media for Google Maps. Most restaurants never use them, which means the ones that do stand out immediately. Use them for:",
-      "start": 623.17,
-      "end": 634.75
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(5)",
+      "text": "团队照片：厨师、调酒师、host stand。人们相信面孔。",
+      "start": 613.26,
+      "end": 618.18
     },
     {
       "id": 52,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(1)",
-      "text": "Weekly specials and seasonal menu changes",
-      "start": 635.1,
-      "end": 638.27
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(6)",
+      "text": "外部照片：商店外观，清晰显示您的标志。这有助于客户在到达时找到您。",
+      "start": 618.5,
+      "end": 624.92
     },
     {
       "id": 53,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(2)",
-      "text": "Events (live music, trivia night, holiday hours)",
-      "start": 638.59,
-      "end": 642.58
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(20)",
+      "text": "至少每月上传新照片一次。新鲜的照片表明业务正在进行，并为 Google 提供新内容。",
+      "start": 625.27,
+      "end": 633.18
     },
     {
       "id": 54,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(3)",
-      "text": "Promotions (happy hour, neighborhood discounts)",
-      "start": 642.9,
-      "end": 646.12
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(21)",
+      "text": "在我的一家餐厅，我们过去曾经每季度批量上传一打照片，当我有时间时。然后有一次，我测试了一种每周两张照片的节奏 — 星期一早上，星期四下午 — 持续一个季度。同一家餐厅，同样的照片质量，只是更慢的速度。地图包印象在周日午餐查询中大约在一个季度内翻倍。",
+      "start": 633.53,
+      "end": 654.46
     },
     {
       "id": 55,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(4)",
-      "text": "New menu items or seasonal drinks",
-      "start": 646.44,
-      "end": 649.18
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(22)",
+      "text": "我无法证明因果关系。但我已经看到这种模式足够多次，现在我相信 Google 将稳定的新内容滴漏作为一个生命信号，以一种它从未对大批量一次性上传的方式对待它。慢速滴漏每次都胜过大批量上传。",
+      "start": 654.81,
+      "end": 669.63
     },
     {
       "id": 56,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(22)",
-      "text": "Standard posts are archived after about six months (events expire after the event date). But freshness matters — Google surfaces recent posts more prominently than stale ones. Think of posting as a weekly habit, not a one-time setup. One post per week, published on Monday or Tuesday, keeps your listing active and signals to both Google and customers that the restaurant is alive.",
-      "start": 649.53,
-      "end": 672.25
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(6)",
+      "text": "步骤 6 — 设置 Google 帖子。",
+      "start": 670.73,
+      "end": 673.15
     },
     {
       "id": 57,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(7)",
-      "text": "Step 7 — Respond to every review.",
-      "start": 673.35,
-      "end": 676.22
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(23)",
+      "text": "Google 帖子是直接出现在您的列表上的短更新 — 类似于 Google Maps 的社交媒体。大多数餐厅从不使用它们，这意味着那些使用它们的餐厅会立即脱颖而出。使用它们进行：",
+      "start": 673.85,
+      "end": 687.21
     },
     {
       "id": 58,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(23)",
-      "text": "I wrote an entire post about Google reviews , but the short version: respond to every review, positive and negative, within 24 hours. Keep responses short, specific, and human. Responding to reviews is both a customer service signal and a ranking signal — Google confirms this in their local ranking documentation.",
-      "start": 676.92,
-      "end": 695.18
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(1)",
+      "text": "每周特价和季节菜单变化",
+      "start": 687.56,
+      "end": 690.14
     },
     {
       "id": 59,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(8)",
-      "text": "The fifteen-minute weekly habit.",
-      "start": 696.28,
-      "end": 698.11
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(2)",
+      "text": "活动（现场音乐、问答之夜、假日营业时间）",
+      "start": 690.46,
+      "end": 694.24
     },
     {
       "id": 60,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(24)",
-      "text": "Once your profile is set up, maintenance is minimal. Here is the weekly routine:",
-      "start": 698.81,
-      "end": 704.42
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(3)",
+      "text": "促销（欢乐时光、社区折扣）",
+      "start": 694.56,
+      "end": 696.78
     },
     {
       "id": 61,
       "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(1)",
-      "text": "Monday: publish one Google Post (this week's special, an event, or a fresh photo).",
-      "start": 704.77,
-      "end": 710.66
+      "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(4)",
+      "text": "新菜单项或季节性饮料",
+      "start": 697.1,
+      "end": 699.24
     },
     {
       "id": 62,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(2)",
-      "text": "Daily (5 min): respond to any new reviews.",
-      "start": 710.98,
-      "end": 714.32
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(24)",
+      "text": "标准帖子在大约六个月后被存档（事件在事件日期后过期）。但是，新鲜度很重要 — Google 更加突出近期帖子，而不是陈旧的帖子。把发布看作是一种每周的习惯，而不是一次性的设置。每周一篇帖子，于星期一或星期二发布，保持您的列表活跃，并向 Google 和顾客发出信号，表明餐厅是活跃的。",
+      "start": 699.59,
+      "end": 720.91
     },
     {
       "id": 63,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(3)",
-      "text": "Monthly: upload 2–3 new photos. Update hours if they have changed. Check that your menu link still works.",
-      "start": 714.64,
-      "end": 722.38
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(7)",
+      "text": "第 7 步 — 回应每条评论。",
+      "start": 722.01,
+      "end": 723.84
     },
     {
       "id": 64,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(4)",
-      "text": "Quarterly: review your attributes, update your description if your concept has evolved, and check your analytics to see which searches are finding you.",
-      "start": 722.7,
-      "end": 731.77
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(25)",
+      "text": "我写了一整篇关于 Google 评论的文章，但简短的版本是：在 24 小时内回应每条评论，无论是正面还是负面的。保持回应简短、具体和人性化。回应评论既是客户服务信号，也是排名信号 — Google 在其本地排名文档中确认了这一点。",
+      "start": 724.54,
+      "end": 742.01
     },
     {
       "id": 65,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(8)",
+      "text": "每周 15 分钟的习惯。",
+      "start": 743.11,
+      "end": 744.91
+    },
+    {
+      "id": 66,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(25)",
-      "text": "That is it. Fifteen minutes a week, plus a monthly check-in. The restaurants that do this consistently outrank the ones that set up their profile once and never touched it again.",
-      "start": 732.29,
-      "end": 742.33
+      "selector": "#post-body > p:nth-of-type(26)",
+      "text": "与文书工作配对",
+      "start": 745.61,
+      "end": 747.12
+    },
+    {
+      "id": 67,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(27)",
+      "text": "一旦设置完成，这就是维护的常规 15 分钟步骤。每月审计表与 G B P 评分工具配对 — 工具评分，表格给您下周需要采取的行动清单。",
+      "start": 747.47,
+      "end": 758.79
+    },
+    {
+      "id": 68,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(28)",
+      "text": "G B P 每月健康检查 · 每月的待办事项清单：什么是当前的，什么已经变化了，什么需要在本周内修复。",
+      "start": 759.14,
+      "end": 767.5
+    },
+    {
+      "id": 69,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(29)",
+      "text": "一旦您的个人资料设置完成，维护是最小的。以下是每周的例行程序：",
+      "start": 767.85,
+      "end": 773.31
+    },
+    {
+      "id": 70,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "星期一：发布一篇 Google 帖子（本周的特惠、活动或新照片）。",
+      "start": 773.66,
+      "end": 778.64
+    },
+    {
+      "id": 71,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "每日（5 分钟）：回应任何新评论。",
+      "start": 778.96,
+      "end": 781.49
+    },
+    {
+      "id": 72,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "每月：上传 2-3 张新照片。更新营业时间如果它们已经改变。检查您的菜单链接是否仍然有效。",
+      "start": 781.81,
+      "end": 789.95
+    },
+    {
+      "id": 73,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "每季度：审查您的属性，更新您的描述如果您的概念已经演变，并检查您的分析以查看哪些搜索正在找到您。",
+      "start": 790.27,
+      "end": 798.99
+    },
+    {
+      "id": 74,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(30)",
+      "text": "就是这样。每周 15 分钟，加上每月一次的检查。那些始终如一地做到这一点的餐厅在排名中优于那些设置个人资料后从不再次触碰它的餐厅。",
+      "start": 799.34,
+      "end": 810.86
+    },
+    {
+      "id": 75,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(31)",
+      "text": "关键要点",
+      "start": 811.21,
+      "end": 812.12
+    },
+    {
+      "id": 76,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(7) > li:nth-of-type(1)",
+      "text": "主要类别控制 Google 为您显示哪些查询 — 小心更改。",
+      "start": 812.47,
+      "end": 817.53
+    },
+    {
+      "id": 77,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(7) > li:nth-of-type(2)",
+      "text": "在设置时添加至少 10 张真实照片；在前 90 天内目标是 30 张。",
+      "start": 817.85,
+      "end": 825.38
+    },
+    {
+      "id": 78,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(7) > li:nth-of-type(3)",
+      "text": "在 48 小时内回应每条评论 — Google 将回应率读作活跃业务信号。",
+      "start": 825.7,
+      "end": 831.68
+    },
+    {
+      "id": 79,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(7) > li:nth-of-type(4)",
+      "text": "Google 帖子在 7 天后过期；一个安静的个人资料会在本地包排名中下滑。",
+      "start": 832,
+      "end": 838.47
+    },
+    {
+      "id": 80,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(7) > li:nth-of-type(5)",
+      "text": "每周 15 分钟的习惯（1 张照片，1 篇帖子，所有评论回复）比任何一次性修复都更有效。",
+      "start": 838.79,
+      "end": 846.01
     }
   ]
 }
