@@ -441,6 +441,147 @@ Google Search Central — Los cuatro reportes destacados son la organización ca
 Advanced Web Ranking — Los estudios anuales encuentran que la calidad del snippet explica 30-50% de la varianza en CTR.
 
 ---
+title: Cómo lograr que Google cite tu restaurante en AI Overviews
+url: https://muntin.digital/es/blog/como-lograr-que-google-cite-tu-restaurante-en-ai-overview/
+kind: article
+locale: es
+date: 2026-05-10T10:30:00-04:00
+description: El resultado de búsqueda es un párrafo que escribió Google, citando dos o tres fuentes. Aquí está el patrón de citación que premian los AI Overviews y las cinco jugadas a nivel párrafo que logran que la respuesta de tu restaurante suba al recuadro.
+---
+
+Saltar al contenido principal
+
+Opinión · 10 de mayo de 2026 · 8 min de lectura · Por [Don Goldstein](https://muntin.digital/es/about/#don-goldstein)
+
+# Cómo lograr que Google cite tu restaurante en AI Overviews.
+
+ Escuchar este artículo
+
+El AI Overview de Google respondió el 13.14% de las búsquedas de escritorio en Estados Unidos en marzo de 2025. A principios de 2026 ya es cerca de una de cada cinco, y para consultas de restaurante es más alto. La pregunta que tu comensal solía escribir —“¿hay restaurante abierto para llevar en Silver Spring?”— ahora se responde arriba del mapa, en un párrafo que escribió Google y citó. Se nombran tres fuentes. Si no eres una de ellas, no estás en la conversación. Así se decide la cita.
+
+He estado rastreando qué párrafos se citan en consultas cercanas a los dos restaurantes que manejo en el DMV. Misma consulta, misma hora, mismo navegador — sólo escrito en Google dos veces por semana durante noventa días, las citas registradas. El patrón es lo bastante consistente como para escribir reglas. Ninguna de las reglas trata de backlinks, autoridad del dominio, ni ninguna de las palancas que dominaban el SEO en 2023. Tratan de la forma del párrafo.
+
+## Posicionar y ser citado no son el mismo trabajo
+
+La industria del SEO pasó veinte años optimizando páginas para aparecer en los tres primeros enlaces azules. Ese trabajo sigue existiendo. El nuevo trabajo —el que paga más ahora mismo— es lograr que tu mejor párrafo suba al AI Overview como una de las dos o tres fuentes nombradas. La página debajo del recuadro sigue recibiendo clics, pero no de la forma que antes. Los AI Overviews no reemplazan al tráfico orgánico; reemplazan al clic que antes leía tu respuesta. La cita es tu superficie restante.
+
+Los dos trabajos no se pelean activamente. Premian párrafos distintos. La página con más backlinks no siempre es la citada — la página con la respuesta más limpiamente extraíble sí. La mayoría del contenido de restaurante está escrito para posicionar. Casi nada está escrito para ser citado. El primer operador independiente de un mercado que invierte ese orden se queda con el recuadro de respuesta por los próximos doce meses.
+
+## Las cinco jugadas que logran la cita
+
+Están escritas en el orden en que un extractor recorre una página. El mismo orden en que pagan.
+
+- 1
+
+Responde primero, explica después
+
+El primer párrafo bajo un H2 debe ser una respuesta completa en &le;45 palabras. Los extractores toman el primer párrafo; todo lo demás es contexto.
+
+- 2
+
+Ancla cada entidad en schema
+
+Nombre del restaurante, horarios, dirección, platos, precios — todo en JSON-LD. El modelo coteja la prosa contra el schema; las entidades coincidentes suben las probabilidades.
+
+- 3
+
+Números específicos en la oración inicial
+
+“La mayoría cierra alrededor de las 10” no es citable. “Deja de sentar a las 9:30 lun–jue, 10:15 vie–sáb” sí.
+
+- 4
+
+Oraciones con forma de predicado. Sin atenuantes.
+
+Estructura “X es Y”. “Aproximadamente”, “usualmente”, “en algunos casos” — podadas por el extractor antes de que la oración llegue a competir.
+
+- 5
+
+URLs estables. Respuestas estables.
+
+Una vez citado, no muevas la página ni reordenes el párrafo. El crawler vuelve más seguido a URLs citadas; una respuesta cambiada te saca de la rotación.
+
+ Cinco jugadas a nivel párrafo, en el orden en que el extractor recorre la página. Las jugadas 1–4 te logran la cita; la 5 te la mantiene.
+
+## Jugada 1: Responde primero, explica después
+
+El primer párrafo bajo un H2 es el único que la mayoría de los extractores lee. Todo lo que viene después es contexto de apoyo que puede o no entrar. Si tu primer párrafo responde completa la pregunta implícita del H2, tienes una cita. Si arma la respuesta en vez de darla, la respuesta nunca se cita, porque el párrafo donde vive está demasiado abajo en la página.
+
+Cuarenta y cinco palabras es el techo. He visto al recuadro citar párrafos más largos, pero el corte suele estar entre 35 y 55 palabras, y los más cortos se citan textualmente con más frecuencia que se parafrasean. Textual es lo que quieres — parafrasear pierde el cotejo entidad–schema que el modelo acaba de hacer.
+
+## Jugada 2: Ancla cada entidad en schema
+
+El modelo lee tu prosa, después lee tu JSON-LD, y se pregunta: ¿son consistentes? Cuando la respuesta es sí, la página recibe una bandera de impulso para citación. Cuando la respuesta es no —los precios del menú en la prosa no coinciden con el schema Menu, los horarios en la prosa no coinciden con OpeningHours— recibe una bandera de penalización. No hay una señal pública de esto. Sólo es visible en qué páginas se citan y cuáles no.
+
+Si ya tienes [los seis tipos de schema que Google usa](https://muntin.digital/es/blog/los-6-tipos-de-schema-markup-que-google-usa/) bien puestos, ya tienes la jugada 2 hecha. Lo que suele faltar: la prosa realmente tiene que coincidir con el schema. Si el schema dice que cierras a las 10pm y la prosa dice “tarde”, tienes un hueco de consistencia. Ambos deben decir 10pm.
+
+## Jugada 3: Números en la oración inicial
+
+La primera oración de tu párrafo de respuesta debe contener al menos un número. Un precio, una hora, un conteo, un porcentaje, un año — no importa cuál. Los números son lo que se extrae; las oraciones sin números compiten con cada otra oración vaga en internet, y el extractor elige la que es más específica.
+
+Esta es la jugada que más contenido de restaurante hace mal. El instinto es abrir con lenguaje de bienvenida — “Nos da mucho gusto compartir nuestro menú”, “Ven a vivir la calidez de nuestra terraza”. El lenguaje de bienvenida tiene cero entidades y cero números. Es lo primero que el extractor salta. Reemplázalo con una oración que nombre algo y lo cuantifique.
+
+## Jugada 4: Oraciones con forma de predicado. Sin atenuantes.
+
+El extractor parsea cada oración en una forma sujeto-predicado-objeto. “DoorDash es una plataforma de delivery” parsea limpio. “Mucha gente considera que DoorDash es una especie de plataforma de delivery” no. La primera oración tiene un hecho. La segunda tiene tokens de atenuante que el modelo trata como ruido, y el hecho subyacente desaparece bajo la atenuación.
+
+Las palabras a tachar en una reescritura para cita: *aproximadamente*, *usualmente*, *en algunos casos*, *la mayoría*, *seguido*, *típicamente*, *alrededor de*, *tiende a*, *puede*. Cada una baja las probabilidades de cita. Son palabras-abogado defensivas de otro contexto de escritura. En el contexto del AI Overview, te cuestan el recuadro.
+
+## El antes y el después
+
+Toma un párrafo típico de FAQ de restaurante y camínalo por las jugadas 1–4. Es el tipo de párrafo que veo en el 90% de los sitios independientes; también es el tipo de párrafo que nunca se cita.
+
+Un párrafo típico de FAQ de restaurante, antes y después
+
+ Antes — nunca citado
+
+“Usualmente estamos abiertos para cenar, aunque nuestros horarios pueden variar por temporada. Es una buena idea llamar antes para confirmar. Servimos una variedad de platos, con la mayoría de las entradas en el rango de precio moderado.”
+
+ Después — se gana el recuadro
+
+“Roma Cucina está abierto para cenar de martes a domingo, de 5pm a 10pm. Las entradas tienen un precio entre $18 y $32. Se recomienda reserva los viernes y sábados.”
+
+ La misma respuesta a la misma pregunta. Cinco atenuantes fuera, cuatro entidades ancladas, tres números introducidos. Treinta palabras.
+
+Léelos en voz alta. El primero suena humano. El segundo suena casi mecánico. Esa es la negociación. La superficie del AI Overview no premia la escritura conversacional — la superficie encima de ella sí. La conversación es para lo que sirven tu página de menú, tu Sobre nosotros, tus redes sociales. El párrafo de cita es su propio registro. Existe para ser citado.
+
+## Jugada 5: URLs estables. Respuestas estables.
+
+Esta es la jugada que protege lo que las jugadas 1–4 te ganaron. El crawler vuelve a las URLs citadas más rápido que a las no citadas — el modelo marcó la página como una fuente conocida buena. Si la URL sigue resolviendo y el párrafo sigue respondiendo la pregunta, te quedas citado. Si la URL se redirige a una nueva ruta, o el párrafo se parafraseó a algo con un conjunto de hechos ligeramente distinto, sales de la rotación. A veces la salida es permanente; a veces tienes que volver a ganarte la cita desde cero los próximos 60 días.
+
+La regla operacional: cuando publicas un párrafo con forma de cita y se cita, déjalo en paz. No agregues una coma. No cambies los horarios de “5pm” a “5:00 PM”. No muevas la página de /blog/ a /info/. Si el hecho de base cambia —ahora cierras de verdad a las 11pm, no a las 10pm— cambia el número y sólo el número. Toca un hecho, deja el resto. El crawler vuelve a marcar la página, ve el cambio puntual, y actualiza su extracto citado.
+
+## Cómo saber si te citaron
+
+Abre Google en una sesión limpia del navegador. Escribe la pregunta que tu comensal está más probable de hacer —no la keyword de SEO, la pregunta en lenguaje natural. “¿Roma Cucina abre los domingos?”. “¿Dónde como omakase en Silver Spring?”. “¿Maketto acepta sin reserva?”. Si aparece el recuadro de AI Overview arriba, baja hasta el final. Hay chips de cita —iconos pequeños con etiquetas de fuente. El tuyo debería ser uno de ellos.
+
+Si no lo es, tienes un problema de cita, no un problema de posicionamiento. Tu página puede estar en el #1 de los enlaces azules debajo del recuadro y aun así no ser citada. El recuadro se juzga en un eje aparte. Rastréalo semanalmente para diez o veinte de tus preguntas más probables; la tendencia a lo largo de un trimestre te dice si las reescrituras de cita están funcionando.
+
+## El re-encuadre
+
+Ya no escribes para el lector humano como antes. El lector humano ve el párrafo del AI Overview, decide si la respuesta basta, y o actúa con eso o hace clic a una de las fuentes citadas. El párrafo que el humano lee primero no es el que tú escribiste — es el que escribió el extractor, armado a partir del tuyo y de uno o dos más. Tu audiencia ahora es el extractor que decide qué párrafo ve el lector humano. Escribe el párrafo que el extractor quiere alzar.
+
+Esto es incómodo. Se siente como escribir para el algoritmo. Es así. La negociación es que tus páginas informacionales más importantes —horarios, menú, reservas, dieta— pasan a ser la fuente nombrada en la respuesta que ve tu comensal. Eso vale el cambio de registro.
+
+## Por dónde empezar
+
+Elige tres páginas. Tu página de horarios/contacto, tu página de menú, y tu artículo más visitado. Camina cada una por las jugadas 1–4 sobre el primer párrafo bajo cada H2. No toques el resto de la página todavía. Publica, espera dos semanas, después corre el ciclo de verificación de citas de arriba sobre las preguntas que esas páginas deberían responder.
+
+Si estás apareciendo en el recuadro en al menos la mitad para la semana cuatro, las jugadas están funcionando — haz el resto del sitio. Si no, el culpable más común es el schema. La prosa está bien; el JSON-LD no coincide. Pasa [los seis tipos de schema que Google usa](https://muntin.digital/es/blog/los-6-tipos-de-schema-markup-que-google-usa/) sobre tu sitio una vez, y vuelve a revisar.
+
+**Puedes escribir para posicionar o puedes escribir para ser citado.** No se pelean, pero premian párrafos distintos. Si la mayoría de tu tráfico son consultas informacionales —horarios, menú, reservas, dieta— elige cita. Si es de intención rica —“mejor italiano en Silver Spring”— sigue con posicionamiento. La mayoría de los restaurantes independientes están en el primer cubo y no lo saben.
+
+Don Goldstein maneja dos restaurantes en el DMV y dirige [Muntin Digital](https://muntin.digital/es/). El dataset de rastreo de citas detrás de este artículo viene de 90 días de consultas pareadas contra AI Overviews, corridas entre febrero y mayo de 2026.
+
+Sigue leyendo
+
+- [Los 6 tipos de schema markup que Google usa](https://muntin.digital/es/blog/los-6-tipos-de-schema-markup-que-google-usa/) — el JSON-LD que ancla tu prosa
+
+- [Cómo leer el Google Search Console de tu restaurante](https://muntin.digital/es/blog/como-leer-google-search-console-de-tu-restaurante/) — las consultas que deberían estar en tu rastreador de citas
+
+- [Auditoría de $499](https://muntin.digital/services/audit/) — el diagnóstico por escrito si prefieres ver las reescrituras en papel
+
+---
 title: Cómo Saber Si una Herramienta de Restaurante Es Segura
 url: https://muntin.digital/es/blog/como-saber-si-una-herramienta-de-restaurante-es-segura/
 kind: article
