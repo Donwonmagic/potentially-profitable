@@ -1,459 +1,547 @@
 {
   "version": 1,
-  "generatedAt": "2026-04-18T19:09:09.971Z",
+  "generatedAt": "2026-05-10T10:56:15.178Z",
   "engine": "kokoro",
   "model": "kokoro-v1.0.onnx",
   "voice": "zm_yunxi",
   "language": "zh",
-  "total": 670.72,
+  "total": 753.87,
   "chunks": [
     {
       "id": 0,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(1)",
-      "text": "我并不讨厌 Wix。我在 Wix 上搭过东西。对很多小生意来说,它确实是对的答案——第一天很容易,月费不贵,结果是「一个存在的网站」,这比「根本没网站」好。但餐厅是一种很特殊的小生意,比起我合作过的几乎所有其他行业,它们更快就会撞到 Wix 的墙。这篇文章是这场比较诚实的版本:六个让 Wix 对独立餐厅失灵的地方、R O I 的账怎么算、以及什么时候 Wix 才真的是对的选择。",
+      "text": "阅读本文的英文版 &rarr;",
       "start": 0,
-      "end": 28.21
+      "end": 2.34
     },
     {
       "id": 1,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(1)",
-      "text": "Wix 真正胜出的地方。",
-      "start": 29.01,
-      "end": 30.89
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "TL;DR",
+      "start": 2.69,
+      "end": 3.83
     },
     {
       "id": 2,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(2)",
-      "text": "先让我在这件事上公平一点,否则这篇文章剩下的部分会显得一边倒:",
-      "start": 31.34,
-      "end": 38.8
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Wix 适合第一天、占位、弹出式网站 —— 但对于任何超过一年的餐厅来说，它很快就会遇到瓶颈。",
+      "start": 4.18,
+      "end": 12.13
     },
     {
       "id": 3,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "你一个周末就可以上线——不用开发者,从零做起大约四十小时,就能做出一个真的、在运行的、勉强算适配手机的网站。",
-      "start": 39.02,
-      "end": 50.11
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "六个地方它会失效：封闭的菜单系统、慢速的移动端、被劫持的预订、模板化的SEO、没有真正的自定义、退出成本。",
+      "start": 12.45,
+      "end": 21.76
     },
     {
       "id": 4,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "模板确实比以前好多了。排版现代、默认配色合理,不会一打开就让你觉得难为情。",
-      "start": 50.33,
-      "end": 58.13
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "计算：自定义网站通常在12-18个月内为每月收入40美元K+的餐厅带来回报。",
+      "start": 22.08,
+      "end": 29.65
     },
     {
       "id": 5,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "托管和 SSL 都含在月费里,你根本不用去管这些。",
-      "start": 58.35,
-      "end": 62.82
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "我并不讨厌 Wix。我曾在 Wix 上构建过东西。对于许多小企业来说，它确实是正确的答案 —— 第一天很容易，月费很低，结果是“有一个网站”，这比“没有网站”要好。但是餐厅是一种特殊的小企业，它们比我合作的其他任何行业都更快地遇到了 Wix 的瓶颈。本文是比较的真实版本：六个地方 Wix 失效的独立餐厅、R O I 数学，以及 Wix 何时真正是正确的选择。",
+      "start": 30,
+      "end": 56.66
     },
     {
       "id": 6,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
-      "text": "更新权归你自己。理论上,你可以不打任何电话就改菜单或改营业时间——对很多老板来说,这就是全部吸引力。",
-      "start": 63.04,
-      "end": 72.83
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Wix真正获胜的地方。",
+      "start": 57.76,
+      "end": 59.78
     },
     {
       "id": 7,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(5)",
-      "text": "它便宜到可以随时扔掉。如果你开了一家快闪店,不确定明年春天它还在不在,每月 25 美元就是对的预算。",
-      "start": 73.05,
-      "end": 83.14
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "让我首先公平地说明这一点，因为如果我不这样做，剩下的文章会显得不平衡：",
+      "start": 60.48,
+      "end": 67.33
     },
     {
       "id": 8,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(3)",
-      "text": "如果你是刚开业、现金紧张,而且你真的能接受这个网站只是一个占位符——不是这家店的镜像——那 Wix 可以。这篇文章不是写给你的。下面所有内容,是写给那家开了一年以上、有回头客、有一份值得拍照的菜单、已经开始意识到网站出问题的餐厅的。",
-      "start": 83.36,
-      "end": 102.18
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "您可以在一个周末内无需开发人员就能启动 —— 从零开始，大约40个小时的时间就可以拥有一个真正的、可用的、移动友好的网站。",
+      "start": 67.68,
+      "end": 78.18
     },
     {
       "id": 9,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(2)",
-      "text": "失灵点一——菜单管理是个陷阱。",
-      "start": 102.98,
-      "end": 105.46
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "模板确实比以前更好了。它们具有现代的字体、合理的默认颜色，不会让您感到尴尬。",
+      "start": 78.5,
+      "end": 85.05
     },
     {
       "id": 10,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(4)",
-      "text": "Wix 有一个「菜单」组件。它在模板预览里看起来很棒。你把分类、菜品、价格都丢进去,它会在页面上渲染出一张整洁的菜单卡。",
-      "start": 105.91,
-      "end": 116.7
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "托管和SSL包含在月费中，因此您不需要处理它们。",
+      "start": 85.37,
+      "end": 90.02
     },
     {
       "id": 11,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(5)",
-      "text": "这里有一件事你是要和它真正一起过日子之后才会看到的:你的菜单是活在 Wix 的封闭系统里,不是活在你页面上真正的 H T M L 里。这听上去像一个技术细节。它其实不是。",
-      "start": 116.92,
-      "end": 129.12
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "您拥有更新权。理论上，您可以在不需要打电话给任何人的情况下更改菜单或营业时间 —— 对于许多老板来说，这就是全部的推销点。",
+      "start": 90.34,
+      "end": 100.86
     },
     {
       "id": 12,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(6)",
-      "text": "它在现实里意味着什么:Google 没法干净地抓取每一道菜的描述,所以你没法像原本可以的那样,在「我附近的 chicken parm」这种查询里排上来。客人也没法点一下某道菜把它分享给朋友。你在 Wix 上更新菜单之后,还是得在 Google Business Profile、DoorDash、Yelp 和其他所有放着你菜单的地方再更新一遍——因为没有任何东西会自动同步。「轻松更新」这个宣传点,悄悄变成了「每次调价都要在四个不同的地方更新」。",
-      "start": 129.34,
-      "end": 157.57
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(5)",
+      "text": "它足够廉价，可以被丢弃。如果您开了一个弹出式餐厅，并且不知道它是否会在下个春天仍然存在，25美元的月费就是合适的预算。",
+      "start": 101.18,
+      "end": 111.94
     },
     {
       "id": 13,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(7)",
-      "text": "一个有真正菜单 C M S 的定制网站,更新一次,就把改动推送到所有接好的地方。而 Wix 的菜单改一处,其他四处还是旧的。",
-      "start": 157.79,
-      "end": 169.73
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "如果您是新开业的，资金紧张，并且可以真正接受网站只是一个占位符 —— 不是房间的反映 —— Wix 就可以了。本文不是为您写的。以下所有内容都是为已经开业一年或以上、有常客、有值得拍照的菜单、并且开始注意到网站存在问题的餐厅而写的。",
+      "start": 112.29,
+      "end": 130.54
     },
     {
       "id": 14,
-      "kind": "figure",
-      "selector": "#post-body > figure:nth-of-type(1)",
-      "text": "菜单数据在封闭平台和真正的 H T M L 菜单中流动方式的对比",
-      "start": 170.28,
-      "end": 176.57
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "第一个问题 —— 菜单管理是一个陷阱。",
+      "start": 131.64,
+      "end": 134.27
     },
     {
       "id": 15,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(3)",
-      "text": "失灵点二——手机上的加载速度永远比它本该有的速度慢。",
-      "start": 177.37,
-      "end": 181.37
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "Wix 有一个“菜单”小部件。在模板预览中它看起来很棒。您可以将类别、菜肴、价格拖放进去，它会在页面上渲染出干净的卡片布局。",
+      "start": 134.97,
+      "end": 146.12
     },
     {
       "id": 16,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(8)",
-      "text": "这是我可以拿一个 URL 来证明的:把任何一家 Wix 餐厅网站放进免费的餐厅网站审查工具,看 Performance 分数。你几乎总会看到 100 分里打 40 或 50 多的成绩。那不是餐厅的错——是平台的错。",
-      "start": 181.82,
-      "end": 195.7
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "以下是您在使用过它之后才会看到的东西：您的菜单在 Wix 的封闭系统中，而不是在页面上的真正 HTML 中。这听起来像是一个技术细节，但它不是。",
+      "start": 146.47,
+      "end": 158.6
     },
     {
       "id": 17,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(9)",
-      "text": "Wix 模板默认就带了很多 JavaScript——多到我在审查经验里一再看到,Wix 餐厅模板在手机上的 Lighthouse 性能分数稳定地落在 60 以下。在你餐厅门口的 4G 网络上,这经常就意味着 first-contentful-paint 要跑到四秒以上。Google 关于手机页面速度的研究一直表明,大多数手机访客会从加载超过三秒的页面跳出——也就是说一个慢的 Wix 网站,正在默默丢掉相当一部分带着饥肠辘辘打开它的手机访客,而他们连菜单都还没看到。",
-      "start": 195.92,
-      "end": 227.01
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "在实践中，这意味着什么：Google 不能清晰地爬取单个菜肴描述，因此您不能像以前那样为“附近的鸡排”排名。用餐者不能点击一个菜肴与朋友分享。当您在 Wix 上更新菜单时，您仍然需要在 Google Business Profile 上、DoorDash 上、Yelp 上以及菜单存在的任何其他地方更新它 —— 因为没有自动同步。“易于更新”的推销点悄悄地变成了“每次更改价格时更新四个单独的地方”。",
+      "start": 158.95,
+      "end": 187.12
     },
     {
       "id": 18,
-      "kind": "figure",
-      "selector": "#post-body > figure:nth-of-type(2)",
-      "text": "手机端 Lighthouse 性能分数的示意:一个典型的 Wix 餐厅模板大约拿 45 分(满分 100),而一个做得好的定制网站大约拿 95 分",
-      "start": 227.56,
-      "end": 237.82
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "具有真正菜单 CMS 的自定义网站可以更新一次并推送到所有连接的地方。Wix 菜单更新在一个地方，并使其他四个地方过时。",
+      "start": 187.47,
+      "end": 198.4
     },
     {
       "id": 19,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(4)",
-      "text": "失灵点三——预订整合受 Wix 的合作协议牵制。",
-      "start": 238.62,
-      "end": 243.21
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "",
+      "start": 199.2,
+      "end": 199.2
     },
     {
       "id": 20,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(10)",
-      "text": "Wix 的餐厅模板对 OpenTable 依赖很重——在大多数模板里,它是默认整合,如果 OpenTable 也是你偏好的平台,那 OpenTable 用起来是没问题的。但如果你的餐厅用的是 Resy、Tock、SevenRooms 或者 Square Reservations,根据我审查过的经验,你通常会发现所谓「整合」不过是一个通用的 iframe 嵌入,或者一个外跳链接。什么东西都不住在你的页面里,什么都和你的品牌对不上,什么也没法干净地回到分析里,而两年后第三方供应商改掉它们的嵌入 URL 时,你是靠着某个周五晚上预订按钮静悄悄地坏掉,才知道的。",
-      "start": 243.66,
-      "end": 279.83
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "比较封闭平台和真正的HTML菜单的菜单数据流动",
+      "start": 200.3,
+      "end": 205.6
     },
     {
       "id": 21,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(11)",
-      "text": "一个定制网站让你选一个真正配合你工作流程的预订系统,并干净地把它接上来——不管那是哪一家平台。",
-      "start": 280.05,
-      "end": 288.66
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "这是我可以通过一个U R L证明的：将任何Wix餐厅网站运行通过免费的餐厅网站审计，并查看性能评分。你几乎总会看到40或50的评分，满分100。这不是餐厅的错 —— 这是平台的错。",
+      "start": 206.3,
+      "end": 220.71
     },
     {
       "id": 22,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(5)",
-      "text": "失灵点四—— S E O 只能算「模板级的好」,不是「真正的好」。",
-      "start": 289.46,
-      "end": 293.76
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "Wix模板默认带有大量的JavaScript —— 足以在我的审计经验中，Lighthouse性能评分在移动Wix餐厅网站上持续低于60。在餐厅外的4G连接中，这通常意味着首次内容绘制需要四秒钟或更长时间。Google的移动页面速度研究一致表明，大多数移动访客会从加载时间超过三秒的页面上跳出 —— 这意味着一个慢的Wix网站会在任何人看到菜单之前默默地丢失一部分饥饿的移动流量。",
+      "start": 221.06,
+      "end": 252.12
     },
     {
       "id": 23,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(12)",
-      "text": "Wix 会告诉你,它的 S E O 很强。从技术上说它没说错:title 标签存在,会自动生成 sitemap,页面是可索引的。这是地板。不是天花板。",
-      "start": 294.21,
-      "end": 305.33
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(2)",
+      "text": "移动Lighthouse评分的例子。一个典型的Wix餐厅模板的评分约为45分，满分100 —— 正好处于“差”级别。一个精心设计的自定义网站的评分约为95分，满分100 —— 处于“好”级别。Lighthouse的评分范围是49和89：0到49是“差”（红色），50到89是“需要改进”（金色），90到100是“好”（绿色）。",
+      "start": 252.92,
+      "end": 275.7
     },
     {
       "id": 24,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(13)",
-      "text": "我在餐厅审查里一再看到 Wix 在这些点上落后:",
-      "start": 305.55,
-      "end": 309.62
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "第三个问题 —— 预订集成受制于Wix的合作。",
+      "start": 276.8,
+      "end": 280.39
     },
     {
       "id": 25,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
-      "text": "餐厅的 schema 标记(也就是那段告诉 Google 你的菜系、营业时间、价格档位、菜单 URL 和评价的 JSON-LD),在我审查过的大多数 Wix 餐厅模板里,要么完全缺失,要么留着一堆空的占位符,而老板并不知道要去找出来再填上。",
-      "start": 309.84,
-      "end": 324.92
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "Wix的餐厅模板严重依赖OpenTable —— 它是大多数模板中的默认集成，OpenTable如果也是你的首选的话，工作得很好。但如果你的餐厅使用Resy、Tock、SevenRooms或Square预订系统，在我的审计经验中，你通常会发现“集成”是一个通用的iframe嵌入或链接。没有内容嵌入你的页面，没有品牌匹配，没有干净的分析跟踪，当第三方提供商两年后改变其嵌入U R L时，你会在星期五晚上发现你的预订按钮悄悄地破裂了。",
+      "start": 281.09,
+      "end": 311.52
     },
     {
       "id": 26,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
-      "text": "meta description 在你不手动覆盖每一页的时候,往往会从页面正文自动生成——而在实际操作中,大多数老板不会去手动改。结果就是 Google 搜索里的摘要读起来像「欢迎来到我们的首页——我们很高兴与您分享……」这种。",
-      "start": 325.14,
-      "end": 338.94
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "自定义网站允许你选择适合你的工作流程的预订系统，并干净地将其集成 —— 无论平台是什么。",
+      "start": 311.87,
+      "end": 319.65
     },
     {
       "id": 27,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
-      "text": "图片的 alt 文本,在你不手动设置的时候,通常会自动用文件名。你上传的每一张照片都叫 IMG_2041.jpg,然后就保留着这个名字,对 Google 图片来说是隐形的。",
-      "start": 339.16,
-      "end": 352.42
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "第四个问题 —— SEO是“模板良好”，而不是“真正良好”。",
+      "start": 320.75,
+      "end": 325.4
     },
     {
       "id": 28,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
-      "text": "网站速度——第二失灵点里已经讲过了——本身就是一个排名因素,而我在 Wix 餐厅模板上看到的分数,通常都低到足以影响移动优先的排名。",
-      "start": 352.64,
-      "end": 363.81
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "Wix会告诉你它的SEO很强。从技术上讲，它并没有错：标题标签存在，站点地图被生成，页面可索引。这是最低限度。它不是最高限度。",
+      "start": 326.1,
+      "end": 337.59
     },
     {
       "id": 29,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(14)",
-      "text": "净结果是:你在自己餐厅的名字上能排上(任何人都能做到这一点),但在「附近的[菜系]」或「[城市]最好的[某道菜]」这种查询上排不上,而新客人就是从这些查询里来的。",
-      "start": 364.03,
-      "end": 375.8
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "在我对餐厅的审计中，Wix通常会在哪里失败：",
+      "start": 337.94,
+      "end": 342.48
     },
     {
       "id": 30,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(6)",
-      "text": "失灵点五——你想做任何定制,都得雇一个 Wix Partner。",
-      "start": 376.6,
-      "end": 382.47
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "餐厅schema markup（告诉Google你的菜系、营业时间、价格范围、菜单U R L和评论的JSON-LD）在大多数Wix餐厅模板中要么完全缺失，要么留有空白占位符，所有者不知道去哪里填写。",
+      "start": 342.83,
+      "end": 357.41
     },
     {
       "id": 31,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(15)",
-      "text": "早晚每家餐厅都会想要一点模板做不到的东西。一份和印刷版菜单一致的菜单布局;一个会和私人活动日历对照的预订流程;一个会发去另一个收件箱的定制宴请表单;一个从电子表格里更新的「本周特色」模块。",
-      "start": 382.92,
-      "end": 396.78
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "元描述倾向于从页面复制自动生成，除非你手动覆盖每个页面 —— 在实践中，大多数所有者都不会这样做。结果是Google搜索片段读起来像“欢迎来到我们的主页 —— 我们很高兴分享…”",
+      "start": 357.73,
+      "end": 372
     },
     {
       "id": 32,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(16)",
-      "text": "在 Wix 上,每一个这种需求,要么要走 Wix Studio(他们的专业开发者模式),要么要找一个 Wix Partner——一个被 Wix 认证的服务商,用定制开发的价钱,在一个仍然被 Wix 架构绑着的平台里工作。你花的是代理机构的价钱,拿到的却是一个还顶着 Wix 天花板的网站。",
-      "start": 397,
-      "end": 413.01
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "图像alt文本通常默认为文件名，除非你手动设置。每张你上传的照片都会以IMG_2041.jpg的形式出现，并保持这种状态，对Google图像搜索不可见。",
+      "start": 372.32,
+      "end": 385.73
     },
     {
       "id": 33,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(17)",
-      "text": "在一个真正的定制网站上,「我们想要一个从电子表格更新的特色模块」是半天的活,不是一场重新谈判。",
-      "start": 413.23,
-      "end": 421.62
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
+      "text": "网站速度——在第2个问题中已经讨论过——本身就是一个排名因素，我看到的Wix餐厅模板的评分通常足够低，以至于影响移动优先排名。",
+      "start": 386.05,
+      "end": 396.77
     },
     {
       "id": 34,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(7)",
-      "text": "失灵点六——退出成本是真实存在的,而你在想要离开之前看不见它。",
-      "start": 422.42,
-      "end": 429.38
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "最终结果是：你可以排名自己的餐厅名称（任何人都可以做到），但你不能排名“附近的[cuisine]”或“[城市]最好的[dish]”，这才是新顾客的来源。",
+      "start": 397.12,
+      "end": 407.77
     },
     {
       "id": 35,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(18)",
-      "text": "这一条是你注册的时候没有人会告诉你的。如果哪一天你想离开 Wix,你几乎导不出任何有用的东西。",
-      "start": 429.83,
-      "end": 437.95
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(6)",
+      "text": "第5个问题——你不能在没有聘请Wix合作伙伴的情况下进行任何自定义操作。",
+      "start": 408.87,
+      "end": 415.1
     },
     {
       "id": 36,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(19)",
-      "text": "你的内容不是放在一堆你可以拿起来搬到别处的 H T M L 文件里。你的图片住在 Wix 的媒体库里。你的菜单住在他们的组件里。整套东西是一个封闭系统,你在里面是房客,不是业主,而你想搬走的那一天,就是你发现:要么你永远留下,要么你花钱请人从头重建。",
-      "start": 438.17,
-      "end": 458.36
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "迟早，每个餐厅都会想要模板无法做到的事情。例如，菜单布局与印刷卡片相匹配，预订流程检查私人活动日历，外卖询问路由到不同的收件箱，或者“本周特价”模块从电子表格更新。",
+      "start": 415.8,
+      "end": 429.33
     },
     {
       "id": 37,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(20)",
-      "text": "重建几乎总是对的决定——但它仍然是重建。你以为自己拥有的那两三年内容,实际上是从零开始。一个建在真正 H T M L 上的定制网站,可以被整体拿起来、放在任何一个主机上、被任何一个懂文本编辑器的人修改、并在一个下午之内从一家服务商搬到另一家。那种所有权,是 Wix 那份月费根本没给你买到的东西。",
-      "start": 458.58,
-      "end": 482.14
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "在Wix上，这些功能都需要Wix Studio（他们的专业级开发者模式）或Wix合作伙伴——Wix认证的承包商，他们会收取自定义建设费用来在Wix的平台上工作。你最终会为一个仍然受到Wix架构限制的网站支付代理价格。",
+      "start": 429.68,
+      "end": 446.46
     },
     {
       "id": 38,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(8)",
-      "text": "那笔几乎总是算得通的账。",
-      "start": 482.94,
-      "end": 484.8
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(19)",
+      "text": "在自定义构建中，“我们想要一个从电子表格更新的特价模块”只需要半天的工作，而不是重新谈判。",
+      "start": 446.81,
+      "end": 455.4
     },
     {
       "id": 39,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(21)",
-      "text": "这是大多数餐厅老板从来没有真正坐下来算过的那笔账:",
-      "start": 485.25,
-      "end": 489.62
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(7)",
+      "text": "第6个问题——退出成本是真实的，你在尝试离开时才会看到它们。",
+      "start": 456.5,
+      "end": 462.57
     },
     {
       "id": 40,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
-      "text": "Wix 两年:每月大约 25 美元 × 24 个月 = 600 美元,加上大约 120 小时你自己的时间用来维护(哪怕按一个保守的 25 美元每小时的机会成本算,也还要 3 000 美元)。两年的真实总成本:约 3 600 美元。",
-      "start": 489.84,
-      "end": 507.02
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(20)",
+      "text": "这是签约时没有人告诉你的一个问题。如果你曾经想离开Wix，你几乎无法导出任何有用的东西。",
+      "start": 463.27,
+      "end": 471.92
     },
     {
       "id": 41,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
-      "text": "定制网站两年:首付 2 500 美元(Muntin 的 Essentials 档)+ 每月 125 至 350 美元的维护方案 × 24 个月(3 000 至 8 400 美元)。两年总计:5 500 至 10 900 美元。",
-      "start": 507.24,
-      "end": 521.44
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(21)",
+      "text": "你的内容不在HTML文件中，你可以拾取并移动到其他地方。你的图像存储在Wix的媒体库中。你的菜单存储在他们的控件中。整个系统是一个封闭的系统，你是一个租户，而不是所有者，当你尝试移动时，你会意识到你要么永远留下，要么支付重建的费用。",
+      "start": 472.27,
+      "end": 492.04
     },
     {
       "id": 42,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(22)",
-      "text": "毛差两年算下来大约是 1 900 美元。这是真金白银。现在再叠上 Wix 那笔账很顺手地没算进去的东西:",
-      "start": 521.66,
-      "end": 529.35
+      "text": "重建几乎总是正确的选择——但它是一个重建。两三年来的内容你以为你拥有，实际上是从头开始。一个使用真实HTML构建的自定义网站可以被拾取，托管在任何地方，使用任何文本编辑器编辑，并在一个下午内在提供商之间移动。这种所有权是Wix每月费用无法购买的功能。",
+      "start": 492.39,
+      "end": 514.24
     },
     {
       "id": 43,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(23)",
-      "text": "一个在手机上加载慢、schema 单薄、菜单不好读的 Wix 网站,依据我审查过的经验,完全可能让一家餐厅每周损失好几个原本应该完成的预订,相比一个做得好的网站来说——这些人点了链接、等了三秒、在手机上没能读清楚菜单、然后去了别家订位。按人均 55 美元算,哪怕每周只丢三个预订,一年就是大约 8 500 美元从来没进过门的毛收入。(你真实的数字会看你的客流和菜单,但方向始终是一样的。)",
-      "start": 529.57,
-      "end": 556.37
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(8)",
+      "text": "几乎总是有效的数学计算。",
+      "start": 515.34,
+      "end": 517.62
     },
     {
       "id": 44,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(24)",
-      "text": "定制网站大概会在头四个月里用找回来的预订就把自己付清。之后的一切都是纯增量。",
-      "start": 556.59,
-      "end": 563.68
+      "selector": "#post-body > p:nth-of-type(23)",
+      "text": "这是大多数餐厅老板从未实际进行的比较：",
+      "start": 518.32,
+      "end": 522.49
     },
     {
       "id": 45,
-      "kind": "quote",
-      "selector": "#post-body > p:nth-of-type(25)",
-      "text": "定制网站会在头四个月里用找回来的预订就把自己付清。之后的一切都是纯增量。",
-      "start": 564.23,
-      "end": 571.41
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(1)",
+      "text": "Wix两年：~25美元/月×24个月=600美元，加上大约120小时的自己的时间来更新（即使在保守的25美元/小时机会成本下，这是另外3,000美元）。两年实际总计：约3,600美元。",
+      "start": 522.84,
+      "end": 539.51
     },
     {
       "id": 46,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(9)",
-      "text": "那么 Wix 到底在什么时候是对的选择?",
-      "start": 572.21,
-      "end": 575.61
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(2)",
+      "text": "自定义网站两年：2,500美元起步（Muntin的Essentials级别）+ 125美元-350美元/月的维护计划×24个月（3,000美元-8,400美元）。两年总计：5,500美元-10,900美元。",
+      "start": 539.83,
+      "end": 554.14
     },
     {
       "id": 47,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(26)",
-      "text": "我开头那几段是认真的—— Wix 并不是坏东西,在几种很具体的情况下,它就是对的答案:",
-      "start": 576.06,
-      "end": 583.2
+      "selector": "#post-body > p:nth-of-type(24)",
+      "text": "原始差异约为1,900美元，两年内。这个差异是真实的钱。现在，加上Wix数学方便省略的东西：",
+      "start": 554.49,
+      "end": 562.33
     },
     {
       "id": 48,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(1)",
-      "text": "你刚开业。菜单还在调整,你还不知道星期二长什么样,在还不确定这个概念能不能做起来之前先花 5 000 美元做网站,是下错了赌注。Wix 作为前六到十二个月的占位符是完全可以的。",
-      "start": 583.42,
-      "end": 596.83
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(25)",
+      "text": "一个 Wix 网站在手机上加载速度慢，schema 薄弱，菜单难以阅读 — 在我的审计经验中，这很容易导致一家餐厅每周损失几次预订，相比之下，一个设计良好的网站可以带来更多转化。人们点击链接，等待三秒钟，无法在手机上阅读菜单，然后在别处预订。在平均每人消费 55 美元的情况下，即使每周损失三次预订，也相当于每年大约 8,500 美元的毛收入从未走进门（你的实际数字取决于你的业务量和菜单，但方向始终相同）。",
+      "start": 562.68,
+      "end": 593.53
     },
     {
       "id": 49,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(2)",
-      "text": "你是一家快闪店或者季节性概念。整件事到明年春天可能就不存在了。「可以随时扔掉」本身是一个优点。",
-      "start": 597.05,
-      "end": 605.01
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(26)",
+      "text": "自定义网站在前四个月内通过恢复预订就可以收回成本。之后的一切都是纯粹的增量。",
+      "start": 593.88,
+      "end": 601.26
     },
     {
       "id": 50,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(3)",
-      "text": "你真的只需要一个电话号码和营业时间。如果你的整份菜单就是「主厨今天想做什么我们就做什么」,整套预订系统就是「打电话给我们」,那一页的 Wix 网站就够了。",
-      "start": 605.23,
-      "end": 618.95
+      "kind": "quote",
+      "selector": "#post-body > p:nth-of-type(27)",
+      "text": "自定义网站在前四个月内通过恢复预订就可以收回成本。之后的一切都是纯粹的增量。",
+      "start": 602.01,
+      "end": 609.39
     },
     {
       "id": 51,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(4)",
-      "text": "你是一个单打独斗的老板,所有事情都自己做,而网站是你清单上的第三十件事。一个存在着的占位符,比一个因为你没时间找工作室而拖了六个月的定制网站要好。",
-      "start": 619.17,
-      "end": 631.91
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(9)",
+      "text": "那么，什么时候 Wix 才是正确的选择？",
+      "start": 610.49,
+      "end": 613.82
     },
     {
       "id": 52,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(27)",
-      "text": "除此之外的所有人——已经站稳脚跟、有回头客、有拍过照的菜单、有真正品牌的餐厅——通常已经越过了 Wix 的天花板,而为了继续留在里面,付出的比自己以为的要多。",
-      "start": 632.13,
-      "end": 641.89
+      "selector": "#post-body > p:nth-of-type(28)",
+      "text": "我在介绍中说的意思是 Wix 并非邪恶，它在某些特定情况下是正确的答案：",
+      "start": 614.52,
+      "end": 621.39
     },
     {
       "id": 53,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(10)",
-      "text": "那个真正的测试。",
-      "start": 642.69,
-      "end": 643.92
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(1)",
+      "text": "你刚刚开业。菜单仍在调整，你不知道星期二的状况如何，在不知道概念是否可行之前花 5,000 美元建网站是错误的赌注。Wix 占位符在前六到十二个月是可以的。",
+      "start": 621.74,
+      "end": 634.95
     },
     {
       "id": 54,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(28)",
-      "text": "这是我在想弄清楚一家 Wix 网站到底是在真正地工作还是只是技术上在线时,会用的问题:你愿意把这个 URL 递给一位美食评论人吗?",
-      "start": 644.37,
-      "end": 656
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(2)",
+      "text": "你是一个弹出式或季节性的概念。整个项目可能在明年春天就不存在了。一次性的特性是可取的。",
+      "start": 635.27,
+      "end": 643.58
     },
     {
       "id": 55,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(3)",
+      "text": "你真正只需要一个电话号码和营业时间。如果你的整个菜单是“我们提供厨师想做的任何东西”，你的整个预订系统是“打电话给我们”，那么一个 Wix 单页网站就足够了。",
+      "start": 643.9,
+      "end": 656.56
+    },
+    {
+      "id": 56,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(4)",
+      "text": "你是一个单独的业主经营者，自己做所有事情，网站是你清单上的第30件事。一个存在的占位符比一个因你没有时间雇佣一个工作室而延迟六个月的自定义网站更好。",
+      "start": 656.88,
+      "end": 670.06
+    },
+    {
+      "id": 57,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(29)",
-      "text": "如果答案是不,升级一下模板是救不回这件事的。而你花在试着让它变成「愿意」上的那些小时——学习那个菜单组件、和布局搏斗、看着你的 Lighthouse 分数怎么拉也拉不起来——几乎总是比直接做一件正确的事要多花钱。",
-      "start": 656.22,
-      "end": 670.72
+      "text": "其他人 —— 已经建立的餐厅，拥有常客、拍摄好的菜单和真正的品牌 —— 通常已经超过了 Wix 的上限，并且正在支付比他们想象中更高的费用来维持它。",
+      "start": 670.41,
+      "end": 682.24
+    },
+    {
+      "id": 58,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(10)",
+      "text": "真正的测试。",
+      "start": 683.34,
+      "end": 684.54
+    },
+    {
+      "id": 59,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(30)",
+      "text": "我用来判断某人的 Wix 网站是否真正有效还是只是技术上在线的問題是：你是否会为向美食评论家展示这个 URL 而感到自豪？",
+      "start": 685.24,
+      "end": 696.15
+    },
+    {
+      "id": 60,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(31)",
+      "text": "如果答案是 нет，那么没有模板升级可以解决这个问题。而你尝试让它变得更好的时间 —— 学习菜单小部件，争论布局，观看你的 Lighthouse 评分拒绝改善 —— 几乎总是超过了直接建造正确事物的成本。",
+      "start": 696.5,
+      "end": 711.95
+    },
+    {
+      "id": 61,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(32)",
+      "text": "关键要点",
+      "start": 712.3,
+      "end": 713.21
+    },
+    {
+      "id": 62,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(1)",
+      "text": "你的菜单在 Wix 内部不可作为 Restaurant schema 进行爬取 —— Google 不能对个别菜肴进行排名。",
+      "start": 713.56,
+      "end": 721.19
+    },
+    {
+      "id": 63,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(2)",
+      "text": "Wix 移动速度评分通常在 40-50 分之间（满分 100 分）；这是平台的问题，而不是你的设置。",
+      "start": 721.51,
+      "end": 730.52
+    },
+    {
+      "id": 64,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(3)",
+      "text": "如果你的预订系统不在 Wix 的合作伙伴名单中，你将被困在他们提供的选项中。",
+      "start": 730.84,
+      "end": 737.99
+    },
+    {
+      "id": 65,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(4)",
+      "text": "退出成本（导出、重定向、重建）是真实的，并且在你尝试离开之前是不可见的。",
+      "start": 738.31,
+      "end": 746.55
+    },
+    {
+      "id": 66,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(5)",
+      "text": "Wix 是正确的选择，当网站真正是一次性的 —— 弹出式餐厅、鬼厨房、季节测试。",
+      "start": 746.87,
+      "end": 753.87
     }
   ]
 }
