@@ -249,8 +249,15 @@ export async function deleteVoiceAttachment(env, attachId) {
   row.deleted = true;
   row.deletedAt = Date.now();
   // Drop the bytes-related fields — auditors should see the row
-  // as a tombstone, not a usable attachment.
+  // as a tombstone, not a usable attachment. Phase 3.6 audit
+  // (Section 2 MED): also null mime, durationMs, sizeBytes —
+  // "they recorded a 47-second voice note" is the kind of
+  // forensic detail BIPA scrutiny calls "voice biometric
+  // metadata," and zero use to anyone post-delete.
   row.r2Key = null;
+  row.mime = null;
+  row.durationMs = null;
+  row.sizeBytes = 0;
   // Keep TTL at 30d so the tombstone naturally expires when the
   // original audio would have. Maintains a window for ops to
   // verify the deletion happened.

@@ -28,6 +28,7 @@
       callbackHeading: 'Callback requested',
       callbackTapReveal: 'Tap to reveal phone',
       callbackVoiceLabel: 'Voice memo attached',
+      callbackVoiceDeleted: 'Voice memo attached — deleted.',
       callbackRequestedAt: 'Requested',
     },
     es: {
@@ -43,6 +44,7 @@
       callbackHeading: 'Llamada solicitada',
       callbackTapReveal: 'Toca para revelar el número',
       callbackVoiceLabel: 'Nota de voz adjunta',
+      callbackVoiceDeleted: 'Nota de voz adjunta — borrada.',
       callbackRequestedAt: 'Solicitada',
     },
   };
@@ -265,17 +267,28 @@
       phoneRow.appendChild(phoneBtn);
       card.appendChild(phoneRow);
 
-      // Optional voice memo attached to the callback.
+      // Optional voice memo attached to the callback. Phase 3.6
+      // audit (Section 3 MED): the voice attachment may have been
+      // deleted between request and dial — in that case render a
+      // "Voice memo deleted" marker instead of an <audio> control
+      // that would 404 on play.
       if (cb.voiceAttachId) {
-        var voiceLabel = document.createElement('p');
-        voiceLabel.className = 'admin-callbacks__voice-label';
-        voiceLabel.textContent = copy.callbackVoiceLabel;
-        card.appendChild(voiceLabel);
-        var voiceAudio = document.createElement('audio');
-        voiceAudio.src = '/api/window/attach/' + encodeURIComponent(cb.voiceAttachId);
-        voiceAudio.controls = true;
-        voiceAudio.preload = 'none';
-        card.appendChild(voiceAudio);
+        if (cb.voiceDeleted) {
+          var deletedLabel = document.createElement('p');
+          deletedLabel.className = 'admin-callbacks__voice-label admin-callbacks__voice-label--deleted';
+          deletedLabel.textContent = copy.callbackVoiceDeleted;
+          card.appendChild(deletedLabel);
+        } else {
+          var voiceLabel = document.createElement('p');
+          voiceLabel.className = 'admin-callbacks__voice-label';
+          voiceLabel.textContent = copy.callbackVoiceLabel;
+          card.appendChild(voiceLabel);
+          var voiceAudio = document.createElement('audio');
+          voiceAudio.src = '/api/window/attach/' + encodeURIComponent(cb.voiceAttachId);
+          voiceAudio.controls = true;
+          voiceAudio.preload = 'none';
+          card.appendChild(voiceAudio);
+        }
       }
 
       var meta = document.createElement('p');

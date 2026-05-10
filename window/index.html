@@ -204,10 +204,14 @@ header.nav{min-height:64px}
 
         <!-- Phase 3.2 — photo attachment row. Picker + drag-drop +
              preview chips. Hidden by default; revealed by JS when
-             WINDOW_PHOTO_ENABLED is on (detected via the upload
-             endpoint's response — opt-in nudge). -->
-        <div class="window-composer__attach" id="windowAttach" hidden aria-label="Photos attached to this note">
-          <button type="button" class="window-composer__photo-btn" id="windowPhotoBtn" aria-label="Add a photo">
+             WINDOW_PHOTO_ENABLED is on (detected via the kind-aware
+             probe — Phase 3.6 audit fix B1). The container is also
+             un-hidden by the voice client when a recording starts
+             (privacy disclosure + voice preview chips share this
+             space); the photo BUTTON has its own [hidden] so a
+             voice-only deploy doesn't accidentally reveal it. -->
+        <div class="window-composer__attach" id="windowAttach" hidden aria-label="Attachments to this note">
+          <button type="button" class="window-composer__photo-btn" id="windowPhotoBtn" aria-label="Add a photo" hidden>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <rect x="3" y="5" width="18" height="14" rx="2"/>
               <circle cx="9" cy="11" r="2"/>

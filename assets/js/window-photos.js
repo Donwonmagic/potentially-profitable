@@ -75,7 +75,15 @@
   // reveal the photo button.
   fetch('/api/window/attach/probe?kind=photo', { method: 'GET', credentials: 'same-origin' })
     .then(function (r) {
-      if (r.status === 200) els.attach.hidden = false;
+      if (r.status === 200) {
+        els.attach.hidden = false;
+        // Phase 3.6 audit (Section 1 MED): photo button now carries
+        // its own [hidden] so a voice-only deploy can un-hide the
+        // shared #windowAttach container without revealing the
+        // photo affordance. Photo client reveals the button only
+        // when WINDOW_PHOTO_ENABLED is on.
+        if (els.photoBtn) els.photoBtn.hidden = false;
+      }
     })
     .catch(function () { /* network blip — leave hidden */ });
 

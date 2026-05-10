@@ -396,8 +396,11 @@ const API_ROUTES = {
   // R2 object + tombstones the KV row (deleted:true, deletedAt).
   // BIPA-aligned with plan §2.9 + §11.6 — operator clicks Delete
   // and the audio + transcript both vanish immediately. The legacy
-  // path /api/window/attach/transcript-delete remains as an alias
-  // for any in-flight client that hasn't picked up the rename.
+  // path /api/window/attach/transcript-delete is mapped to the same
+  // handler but the handler returns 410 + "refresh" hint (audit
+  // Section 4 MED — Phase 3.5 client's confirm dialog promised
+  // audio retention; the handler now hard-deletes, so refusing the
+  // legacy path is the only honest response).
   '/api/window/attach/voice-delete':       handleWindowAttachVoiceDelete,
   '/api/window/attach/transcript-delete':  handleWindowAttachVoiceDelete,
   '/api/admin/window/list':          handleAdminWindowList,
@@ -6512,6 +6515,21 @@ async function _loadAttachmentsByMsgId(env, threadId) {
   for (const a of attachments) {
     if (!a.msgId) continue;  // skip pending uploads (not yet linked)
     if (!byMsg[a.msgId]) byMsg[a.msgId] = [];
+    // Phase 3.6 audit (Section 4 MED): tombstoned rows surface a
+    // minimal payload only — id + kind + the two deleted flags
+    // the renderer needs. mime / sizeBytes / durationMs would
+    // otherwise leak through (BIPA-relevant for voice). Single
+    // branch covers both the visitor and admin endpoints since
+    // they share this loader.
+    if (a.deleted) {
+      byMsg[a.msgId].push({
+        id: a.id,
+        kind: a.kind,
+        deleted: true,
+        transcriptDeleted: true,
+      });
+      continue;
+    }
     byMsg[a.msgId].push({
       id: a.id,
       kind: a.kind,
@@ -6521,10 +6539,7 @@ async function _loadAttachmentsByMsgId(env, threadId) {
       transcript: a.transcript || null,
       transcriptLanguage: a.transcriptLanguage || null,
       transcriptDeleted: !!a.transcriptDeleted,
-      // Phase 3.6 — tombstone flag. When true, the renderer skips
-      // the <audio> element (R2 object is gone, would 404) and
-      // shows only the "Voice note deleted." marker.
-      deleted: !!a.deleted,
+      deleted: false,
       altText: a.altText || null,
       // The download URL is built client-side: /api/window/attach/<id>.
       // No R2 key, no IP hash, no lifetime row leaks into the response.
@@ -6781,6 +6796,21 @@ async function handleWindowAttachVoiceDelete(request, env, ctx) {
   }
   if (!isOriginAllowed(request)) {
     return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
+  }
+  // Phase 3.6 audit (Section 4 MED): refuse the legacy
+  // /transcript-delete alias. The Phase 3.5 client showed a confirm
+  // dialog promising "the audio stays until the retention limit"
+  // but Phase 3.6 hard-deletes it. The dialog lies. A cached
+  // 24h-old client tab is the worst case; rather than silently
+  // change semantics, return 410 + a refresh hint so the visitor
+  // gets accurate consent on the next attempt.
+  const u = new URL(request.url);
+  if (u.pathname === '/api/window/attach/transcript-delete') {
+    return jsonResponse({
+      ok: false,
+      error: 'endpoint-renamed',
+      message: 'This endpoint has moved. Refresh the page and try again.',
+    }, 410);
   }
   if (!env || !env.AUTH_SESSIONS) {
     return jsonResponse({ ok: false, error: 'service-unavailable' }, 503);
@@ -7481,17 +7511,31 @@ async function handleAdminWindowThread(request, env, ctx) {
   // surf privacy).
   const attachmentsByMsgId = await _loadAttachmentsByMsgId(env, resolved.threadId);
   const rawCallbacks = await listCallbacksForThread(env, resolved.threadId);
-  const callbacks = rawCallbacks.map((cb) => ({
-    id: cb.id,
-    msgId: cb.msgId || null,
-    phoneE164: cb.phoneE164,
-    phoneMasked: maskPhone(cb.phoneE164),
-    slotKey: cb.slotKey,
-    slotLabel: getCallbackSlotLabel(cb.slotKey, cb.locale || 'en') || cb.slotKey,
-    voiceAttachId: cb.voiceAttachId || null,
-    locale: cb.locale || 'en',
-    status: cb.status || 'requested',
-    requestedAt: cb.requestedAt,
+  // Phase 3.6 audit (Section 3 MED): a callback row's voiceAttachId
+  // can outlive the underlying attachment if the visitor hits the
+  // "Delete voice note" button between request and dial. Enrich
+  // each callback with a voiceDeleted flag so the admin renderer
+  // can swap the <audio> element for a "Voice memo deleted" marker
+  // instead of rendering a control that 404s on play.
+  const callbacks = await Promise.all(rawCallbacks.map(async (cb) => {
+    let voiceDeleted = false;
+    if (cb.voiceAttachId) {
+      const attachRow = await getAttachmentRow(env, cb.voiceAttachId);
+      voiceDeleted = !attachRow || !!attachRow.deleted;
+    }
+    return {
+      id: cb.id,
+      msgId: cb.msgId || null,
+      phoneE164: cb.phoneE164,
+      phoneMasked: maskPhone(cb.phoneE164),
+      slotKey: cb.slotKey,
+      slotLabel: getCallbackSlotLabel(cb.slotKey, cb.locale || 'en') || cb.slotKey,
+      voiceAttachId: cb.voiceAttachId || null,
+      voiceDeleted,
+      locale: cb.locale || 'en',
+      status: cb.status || 'requested',
+      requestedAt: cb.requestedAt,
+    };
   }));
   return jsonResponse({
     ok: true,

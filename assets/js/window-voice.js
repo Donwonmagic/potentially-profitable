@@ -157,6 +157,13 @@
 
   function startRecording() {
     if (state.recorder) return;
+    // Phase 3.6 audit (Section 1 MED): in a voice-only deploy
+    // (WINDOW_VOICE_ENABLED=true, WINDOW_PHOTO_ENABLED=false) the
+    // photo client never unhides #windowAttach, so the privacy
+    // disclosure + voice preview chip would land in a hidden
+    // parent. Unhide here so voice-only deploys actually surface
+    // the chrome the visitor expects to see.
+    if (els.attach.hidden) els.attach.hidden = false;
     showPrivacyOnce();
     var mime = pickMimeType();
     state.mime = mime;
