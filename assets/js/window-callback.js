@@ -100,17 +100,17 @@
     params.set('slot', slot.value);
     params.set('locale', locale);
     // If a voice memo was just recorded, attach it as the request's
-    // voicenote so Don has context before calling. Voice attachIds
-    // flow through the muntinPhotos collector (Phase 3.3 bridge).
-    if (window.muntinPhotos && typeof window.muntinPhotos.collectAttachIds === 'function') {
-      var ids = window.muntinPhotos.collectAttachIds();
+    // voicenote so Don has context before calling. Audit B1 — this
+    // is gated only on muntinVoiceItems existence, NOT on
+    // muntinPhotos: the photo flag may be off while voice is on,
+    // and the prior nesting under muntinPhotos silently disabled
+    // voice forwarding in that mix.
+    var voiceItems = window.muntinVoiceItems || [];
+    if (voiceItems.length && voiceItems[0].attachId) {
       // Use the first voice attach id only — the callback request is
-      // single-message context. Photos aren't relevant here (they're
-      // visual; a callback doesn't need a photo).
-      var voiceItems = window.muntinVoiceItems || [];
-      if (voiceItems.length && voiceItems[0].attachId) {
-        params.set('voiceAttachId', voiceItems[0].attachId);
-      }
+      // single-message context. Photos aren't relevant here (a
+      // callback doesn't need a visual).
+      params.set('voiceAttachId', voiceItems[0].attachId);
     }
 
     fetch('/api/window/callback', {

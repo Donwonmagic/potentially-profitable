@@ -586,16 +586,27 @@ export function getCallbackSlotLabel(slotKey, locale) {
 // Normalize a phone number to E.164 best-effort. Accepts US-style
 // (10 digits, prepends +1) or international (existing + prefix).
 // Returns null if the result doesn't look like a valid E.164.
+//
+// Audit P2: rejects multi-plus inputs (`++1...`) and country codes
+// starting with `0` (no E.164 country code is `0...`).
 export function normalizePhone(input) {
   if (typeof input !== 'string') return null;
   const trimmed = input.trim();
   if (!trimmed) return null;
-  const hadPlus = trimmed.startsWith('+');
+  // Multi-plus is malformed; refuse rather than coerce. A single
+  // leading + is the only valid plus position.
+  const firstPlus = trimmed.indexOf('+');
+  const lastPlus = trimmed.lastIndexOf('+');
+  if (firstPlus !== lastPlus) return null;
+  if (firstPlus > 0) return null;  // + must be the very first char if present
+  const hadPlus = firstPlus === 0;
   const digits = trimmed.replace(/[^\d]/g, '');
   if (!digits) return null;
   if (hadPlus) {
     // International — keep digits as-is. E.164 max is 15 digits.
     if (digits.length < 7 || digits.length > 15) return null;
+    // No valid country code starts with 0. Reject.
+    if (digits[0] === '0') return null;
     return '+' + digits;
   }
   // US default: 10-digit local → +1; 11-digit starting with 1 → +1.

@@ -6778,27 +6778,17 @@ async function handleWindowCallback(request, env, ctx) {
     if (anonId && attachRow.anonId !== anonId) return jsonResponse({ ok: false, error: 'attach-not-yours' }, 403);
   }
 
-  // Append the auto-confirmation message into the thread BEFORE
-  // creating the callback row, so the row's msgId points at a
-  // real message. The message reads from Don's voice.
-  const masked = maskPhone(phoneE164);
-  const confirmation = locale === 'es'
-    ? 'Listo. Te llamo al ' + masked + ' ' + slotLabel + '. Si algo cambia, escríbeme aquí.'
-    : "Got it. I'll call " + masked + ' ' + slotLabel + '. If something changes, just write back here.';
-
-  const appendResult = thread.kind === 'anon'
-    ? await appendMessageToAnonThread(env, anonId, thread, 'don', confirmation)
-    : await appendMessageToThread(env, sub, thread, 'don', confirmation);
-  if (!appendResult.ok) {
-    return jsonResponse({ ok: false, ...appendResult }, 500);
-  }
-
-  // Now create the callback row, linking to the auto-message.
+  // Audit B2 — order: create the callback row FIRST (with
+  // msgId:null), then append the auto-confirmation, then
+  // best-effort update the row's msgId. Pre-fix order
+  // (append → create) produced an orphan thread message when
+  // KV PUT failed — the visitor saw "Got it. I'll call you"
+  // but Don never saw the request in admin.
   let callbackRow;
   try {
     callbackRow = await createCallbackRequest(env, {
       threadId: thread.id,
-      msgId: appendResult.msg.id,
+      msgId: null,
       sub,
       anonId,
       phoneE164,
@@ -6809,6 +6799,42 @@ async function handleWindowCallback(request, env, ctx) {
   } catch (err) {
     console.warn('[window] callback row create failed', { threadId: thread.id, err: err && err.message });
     return jsonResponse({ ok: false, error: 'storage-failed' }, 500);
+  }
+
+  const masked = maskPhone(phoneE164);
+  const confirmation = locale === 'es'
+    ? 'Listo. Te llamo al ' + masked + ' ' + slotLabel + '. Si algo cambia, escríbeme aquí.'
+    : "Got it. I'll call " + masked + ' ' + slotLabel + '. If something changes, just write back here.';
+
+  // Audit E1 — dispatch on identity (sub vs anonId) rather than
+  // thread.kind. Identified threads have no `kind` field, but a
+  // claim-flow edge could leave kind:'anon' on a sub-keyed thread;
+  // the prior dispatch would have crashed routing to anon-append
+  // with anonId=null. Sub-vs-anonId is the canonical identity check.
+  const appendResult = sub
+    ? await appendMessageToThread(env, sub, thread, 'don', confirmation)
+    : await appendMessageToAnonThread(env, anonId, thread, 'don', confirmation);
+  if (!appendResult.ok) {
+    // Roll back the callback row so admin doesn't see a request
+    // without a thread message backing it. Best-effort.
+    try { await env.AUTH_SESSIONS.delete('window:callback:' + thread.id + ':' + callbackRow.id); } catch (_) {}
+    return jsonResponse({ ok: false, ...appendResult }, 500);
+  }
+
+  // Update the callback row's msgId so admin display can backref.
+  // Best-effort: a KV failure here doesn't fail the user-visible
+  // success (the auto-confirmation is already in the thread; the
+  // admin queue still has the callback row, just without the
+  // message backref).
+  try {
+    callbackRow.msgId = appendResult.msg.id;
+    await env.AUTH_SESSIONS.put(
+      'window:callback:' + thread.id + ':' + callbackRow.id,
+      JSON.stringify(callbackRow),
+      { expirationTtl: 30 * 24 * 60 * 60 }
+    );
+  } catch (err) {
+    console.warn('[window] callback msgId backref update failed', { threadId: thread.id, callbackId: callbackRow.id, err: err && err.message });
   }
 
   console.log(JSON.stringify({
