@@ -228,6 +228,13 @@
     // score gate carry the spam floor. Flip ONLY after the widget UI
     // ships in /window/. See docs/window-redesign-plan.md §2.6.
     "WINDOW_TURNSTILE_ANON_ENABLED": "false",
+    // Phase 3 (multimodal) — per-modality flags. Each requires the
+    // R2 binding `WINDOW_ATTACHMENTS` and (for voice) the AI binding
+    // for Whisper. Flags ship dark; provision the binding (commented
+    // block below) + flip the flag when each modality lands.
+    "WINDOW_PHOTO_ENABLED":    "false",
+    "WINDOW_VOICE_ENABLED":    "false",
+    "WINDOW_CALLBACK_ENABLED": "false",
     // Phase G.11 (Growth) — lifecycle email dispatcher feature flag.
     // When "true", the cron tick iterates sub:<hash> records and
     // dispatches welcome/nudge/digest emails per state machine.
@@ -291,6 +298,22 @@
     { "binding": "AUDIT_SNAPSHOTS", "id": "f661208f47644e32bfe965e46f42f88a" },
     { "binding": "AUTH_SESSIONS",   "id": "ee2a0c3542cd44139fb67a4117b0d358" }
   ],
+
+  // Phase 3 (Window redesign) — R2 bucket + Workers AI bindings.
+  // Both ship commented because:
+  //   1. The R2 bucket muntin-window-attachments must be created
+  //      via `wrangler r2 bucket create muntin-window-attachments`
+  //      before the binding can resolve.
+  //   2. The AI binding requires Workers AI to be enabled on the
+  //      account (Cloudflare → Workers AI → Get started).
+  // When both are provisioned, uncomment the blocks below and flip
+  // WINDOW_PHOTO_ENABLED / WINDOW_VOICE_ENABLED / WINDOW_CALLBACK_ENABLED
+  // (per docs/DEPLOY-CHECKPOINTS.md).
+  //
+  // "r2_buckets": [
+  //   { "binding": "WINDOW_ATTACHMENTS", "bucket_name": "muntin-window-attachments" }
+  // ],
+  // "ai": { "binding": "AI" },
 
   // ─────────────────────────────────────────────────────────────────
   // Cron Trigger — Phase 0 (Window redesign) ENABLED.

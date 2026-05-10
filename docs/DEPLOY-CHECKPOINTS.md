@@ -147,4 +147,53 @@ the time per Cloudflare's own claim.
 **Rollback:** flip the flag back to `"false"` and `wrangler deploy`.
 Server gate falls back to the existing throttle floor.
 
+## ⏳ PENDING — Phase 3 multimodal R2 + Workers AI provisioning
+
+**Status:** Phase 3.1 data layer shipped (constants + helper lib).
+The R2 binding + AI binding ship **commented** in wrangler.jsonc;
+all per-modality flags default `"false"`. No multimodal endpoints
+exist yet (Phase 3.2/3.3/3.4 land them).
+
+**Pre-flip prerequisites:**
+
+```bash
+# 1. Create the R2 bucket
+wrangler r2 bucket create muntin-window-attachments
+
+# 2. Enable Workers AI (Cloudflare dashboard → Workers AI →
+#    Get started; account-level toggle, not a wrangler command)
+
+# 3. Uncomment the r2_buckets + ai blocks in wrangler.jsonc
+#    (search for "Phase 3 (Window redesign)" comment block)
+
+# 4. wrangler deploy
+```
+
+**Per-modality flag flips happen later, once the corresponding
+endpoint + UI ship:**
+
+- `WINDOW_PHOTO_ENABLED` — flip after Phase 3.2 (photo upload + EXIF
+  strip + admin display).
+- `WINDOW_VOICE_ENABLED` — flip after Phase 3.3 (voice memo +
+  Whisper transcript). Voice has BIPA implications (Illinois /
+  Texas / Washington biometric statutes); legal sign-off required
+  before flip per plan §10.
+- `WINDOW_CALLBACK_ENABLED` — flip after Phase 3.4 (async
+  voicenote-pickup callback shim).
+
+**Cost notes (rough order-of-magnitude at 100 sends/day):**
+- R2 storage at 30% voice (~500KB avg, 30d retention) + 20% photo
+  (~1MB avg, 90d retention) ≈ $0.01/mo storage. Egress free on R2.
+- Workers AI Whisper ≈ $0.005/min × 30 voice memos × 1.5 min avg
+  ≈ $7/mo at peak.
+
+**Hard limits enforced by code (audit S3 + multimodal review):**
+- Per-message attachments: 4 max
+- Per-anon lifetime: 12 attachments total
+- Per-anon-per-day: 8 MB
+- Voice duration: 60s default, 90s hard cap, 5/day, 5 min total/day
+- Photo size: 5 MB post-resize, longest edge 2048px
+- Voice retention: 30 days (BIPA-conservative)
+- Photo retention: 90 days
+
 ## (No other checkpoints currently pending)

@@ -59,6 +59,35 @@ export const MAX_MSGS_PER_THREAD    = 100;
 export const MAX_MSGS_PER_DAY       = 50;
 export const MAX_ANON_MSGS_PER_DAY  = 5;   // tighter cap for unidentified anons
 export const APPEND_BACK_PRESSURE_MS = 60 * 1000;
+
+// Phase 3 (Window redesign) — multimodal attachment caps. Plan §2.3
+// + multimodal-engineering review. All values default off via the
+// per-modality flags (WINDOW_PHOTO_ENABLED / WINDOW_VOICE_ENABLED /
+// WINDOW_CALLBACK_ENABLED) until the binding + UI ship in Phase 3.x.
+export const ATTACH_KEY_PREFIX            = 'window:attach:';
+export const TRANSCRIPT_QUEUE_KEY_PREFIX  = 'window:transcript-queue:';
+export const ATTACH_LIFETIME_KEY_PREFIX   = 'window:attach-lifetime:';
+
+// Per-message + per-anon caps (audit S3 hard limits + plan §2.3).
+export const MAX_ATTACHMENTS_PER_MSG          = 4;
+export const MAX_ATTACHMENTS_PER_ANON_LIFETIME = 12;  // 3/day × 4 days enrollment grace
+export const MAX_ATTACH_BYTES_PER_DAY_PER_ANON = 8 * 1024 * 1024; // 8 MB/day cap
+
+// Voice (Phase 3.3) — BIPA-conservative defaults.
+export const MAX_VOICE_DURATION_MS  = 60 * 1000;     // 60s default; extends to 90s on demand
+export const MAX_VOICE_DURATION_HARD_MS = 90 * 1000; // hard cap
+export const MAX_VOICE_PER_DAY      = 5;             // per anon/sub
+export const MAX_VOICE_MINUTES_PER_DAY = 5;          // total minutes/day per anon
+export const VOICE_R2_TTL_DAYS      = 30;            // BIPA-conservative; voice rows expire
+export const PHOTO_R2_TTL_DAYS      = 90;            // photos retain longer
+
+// Photo (Phase 3.2).
+export const MAX_PHOTO_SIZE_BYTES   = 5 * 1024 * 1024;  // 5 MB post-resize
+export const MAX_PHOTO_PIXELS       = 2048;             // longest-edge resize target
+
+// R2 + Workers AI bindings (declared in wrangler.jsonc Phase 3).
+//   env.WINDOW_ATTACHMENTS — R2 bucket binding name
+//   env.AI                  — Workers AI binding for Whisper
 export const THROTTLE_TTL_SEC       = 48 * 3600;
 export const PENDING_DON_TTL_SEC    = 5 * 60;
 export const PENDING_DON_BATCH_MS   = 2 * 60 * 1000;
