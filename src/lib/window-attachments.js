@@ -174,11 +174,18 @@ export async function listAttachmentsForMessage(env, threadId, msgId) {
 // handleAdminWindowThread to render attachments inline alongside
 // each message.
 //
+// Phase 3.6 — deleted voice tombstones STAY in the response so the
+// thread renderer can show "Voice note deleted." where the audio
+// used to be. The renderer + the response-shape sanitizer are
+// responsible for not leaking transcripts/r2Keys from tombstoned
+// rows. Photo deletes (admin-only, future) skip.
+//
 // Cost: O(N) scan over `window:attach:*` filtered to the thread's
 // own attachments. With max 100 messages × max 4 attachments = 400
 // candidates per thread, this stays cheap. For long threads or
 // admin views across many threads, consider a per-thread index
-// (window:attach-by-thread:<threadId>) — Phase 3.5+ optimization.
+// (window:attach-by-thread:<threadId>) — Phase 4+ optimization
+// (audit final §4 cost flag).
 export async function listAttachmentsForThread(env, threadId) {
   if (!isValidSaveItemIdShape(threadId)) return [];
   const result = await env.AUTH_SESSIONS.list({ prefix: ATTACH_KEY_PREFIX, limit: 1000 });
@@ -189,20 +196,31 @@ export async function listAttachmentsForThread(env, threadId) {
     let row;
     try { row = JSON.parse(raw); } catch { continue; }
     if (row.threadId !== threadId) continue;
-    if (row.deleted) continue;
+    // Tombstones for voice deletes stay in the response (renderer
+    // shows "Voice note deleted."). Photo deletes (Phase 5+ admin)
+    // would skip — but no path creates them today.
     out.push(row);
   }
   return out;
 }
 
-// Phase 3.5 — visitor-deletable transcript. Sets transcript = null,
-// transcriptDeleted = true (audit trail kept). The audio bytes
-// stay in R2 until the 30-day TTL — this only affects the text
-// representation that lives in the thread + admin queue.
+// Phase 3.6 — visitor-deletable voice note (HARD delete).
 //
-// Plan §11.6 / BIPA — operator should be able to remove the text
-// representation of their voice without waiting on the R2 lifecycle.
-export async function deleteAttachmentTranscript(env, attachId) {
+// Plan §2.9 promised: "KV row replaced with {deleted:true,
+// deletedAt}; R2 object hard-deleted." The Phase 3.5 implementation
+// only nulled the transcript, leaving the audio in R2 until 30d
+// TTL. The audit flagged this drift as BIPA-relevant: operators in
+// immigration-status / DV cases who tap "Delete" expect the audio
+// to vanish, not linger 30 days.
+//
+// New behavior (audit fix):
+//   - R2 object is DELETED immediately.
+//   - KV row keeps id + threadId + msgId + createdAt for audit trail
+//     but nulls transcript + sets deleted:true + deletedAt.
+//   - Idempotent on re-run.
+//
+// Caller must have already verified ownership (sub OR anonId match).
+export async function deleteVoiceAttachment(env, attachId) {
   if (!isValidSaveItemIdShape(attachId)) return { ok: false, error: 'invalid-attach-id' };
   const raw = await env.AUTH_SESSIONS.get(attachKey(attachId));
   if (!raw) return { ok: false, error: 'not-found' };
@@ -210,16 +228,40 @@ export async function deleteAttachmentTranscript(env, attachId) {
   try { row = JSON.parse(raw); } catch { return { ok: false, error: 'corrupt-row' }; }
   if (row.kind !== 'voice') return { ok: false, error: 'not-voice' };
   // Idempotent — repeated delete is a no-op.
-  if (row.transcriptDeleted) return { ok: true, alreadyDeleted: true };
+  if (row.deleted) return { ok: true, alreadyDeleted: true };
+
+  // Hard-delete the R2 object first. If R2 fails, leave the KV row
+  // intact so a retry can re-attempt; a partial state where the
+  // KV row says deleted but the audio still exists is the WORSE
+  // failure mode under BIPA scrutiny.
+  if (env.WINDOW_ATTACHMENTS && row.r2Key) {
+    try {
+      await env.WINDOW_ATTACHMENTS.delete(row.r2Key);
+    } catch (err) {
+      return { ok: false, error: 'r2-delete-failed', detail: err && err.message };
+    }
+  }
+
   row.transcript = null;
   row.transcriptLanguage = null;
   row.transcriptDeleted = true;
   row.transcriptDeletedAt = Date.now();
-  // Keep the same TTL the row was put with (30d for voice).
+  row.deleted = true;
+  row.deletedAt = Date.now();
+  // Drop the bytes-related fields — auditors should see the row
+  // as a tombstone, not a usable attachment.
+  row.r2Key = null;
+  // Keep TTL at 30d so the tombstone naturally expires when the
+  // original audio would have. Maintains a window for ops to
+  // verify the deletion happened.
   const opts = { expirationTtl: VOICE_R2_TTL_DAYS * 24 * 60 * 60 };
   await env.AUTH_SESSIONS.put(attachKey(attachId), JSON.stringify(row), opts);
   return { ok: true, row };
 }
+
+// Backward-compat alias for any caller still using the old name.
+// Prefer deleteVoiceAttachment in new code.
+export const deleteAttachmentTranscript = deleteVoiceAttachment;
 
 // Per-anon (or per-sub) lifetime + daily-bytes throttle. Audit S3
 // hard cap of 12 attachments lifetime + 8 MB/day. Returns

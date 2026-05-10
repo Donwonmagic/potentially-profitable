@@ -285,7 +285,8 @@ import {
   createCallbackRequest,
   // Phase 3.5 — visitor-side attachment display + delete-transcript.
   listAttachmentsForThread,
-  deleteAttachmentTranscript,
+  // Phase 3.6 — voice hard-delete (replaces transcript-only soft-delete).
+  deleteVoiceAttachment,
 } from './lib/window-attachments.js';
 import { MAX_VOICE_DURATION_HARD_MS } from './lib/window.js';
 import { sanitizePlaintext as sanitizeWindowBody } from './lib/submissions.js';
@@ -389,11 +390,14 @@ const API_ROUTES = {
   // records the request and posts an auto-confirmation thread
   // message from "Don" so the visitor sees acknowledgement.
   '/api/window/callback':            handleWindowCallback,
-  // Phase 3.5 — visitor-deletable transcript. Sets the transcript
-  // text to null + transcriptDeleted=true on a voice attachment row.
-  // Audio bytes stay in R2 until 30-day TTL; only the text rep is
-  // removed. BIPA-aligned with plan §11.6.
-  '/api/window/attach/transcript-delete': handleWindowAttachTranscriptDelete,
+  // Phase 3.6 — visitor-deletable voice attachment. Hard-deletes the
+  // R2 object + tombstones the KV row (deleted:true, deletedAt).
+  // BIPA-aligned with plan §2.9 + §11.6 — operator clicks Delete
+  // and the audio + transcript both vanish immediately. The legacy
+  // path /api/window/attach/transcript-delete remains as an alias
+  // for any in-flight client that hasn't picked up the rename.
+  '/api/window/attach/voice-delete':       handleWindowAttachVoiceDelete,
+  '/api/window/attach/transcript-delete':  handleWindowAttachVoiceDelete,
   '/api/admin/window/list':          handleAdminWindowList,
   '/api/admin/window/thread':        handleAdminWindowThread,
   '/api/admin/window/reply':         handleAdminWindowReply,
@@ -450,6 +454,13 @@ export default {
     // Phase 3.2 — attachment download proxy. Dynamic id segment, so
     // dispatched before the exact-match table. Path:
     //   GET /api/window/attach/<attachId>
+    // Phase 3.6 — kind-aware probe at /api/window/attach/probe?kind=<photo|voice>.
+    // Audit B1 fix: lets each client (window-photos.js / window-voice.js)
+    // detect ITS modality's flag without revealing the other modality's
+    // affordance when partial flags are flipped.
+    if (request.method === 'GET' && pathname === '/api/window/attach/probe') {
+      return handleWindowAttachProbe(request, env, ctx);
+    }
     if (request.method === 'GET' && pathname.startsWith('/api/window/attach/')) {
       return handleWindowAttachDownload(request, env, ctx);
     }
@@ -6508,6 +6519,10 @@ async function _loadAttachmentsByMsgId(env, threadId) {
       transcript: a.transcript || null,
       transcriptLanguage: a.transcriptLanguage || null,
       transcriptDeleted: !!a.transcriptDeleted,
+      // Phase 3.6 — tombstone flag. When true, the renderer skips
+      // the <audio> element (R2 object is gone, would 404) and
+      // shows only the "Voice note deleted." marker.
+      deleted: !!a.deleted,
       altText: a.altText || null,
       // The download URL is built client-side: /api/window/attach/<id>.
       // No R2 key, no IP hash, no lifetime row leaks into the response.
@@ -6722,13 +6737,43 @@ async function handleResendBounceWebhook(request, env, ctx) {
   return jsonResponse({ ok: true, recorded }, 200);
 }
 
-// Phase 3.5 — visitor-deletable transcript. POST /api/window/attach/transcript-delete.
+// Phase 3.6 — kind-aware probe. GET /api/window/attach/probe?kind=<photo|voice>.
 //
-// Body: { attachId }. Worker verifies the caller owns the attachment
-// (sub or anonId match), then nulls the transcript text + stamps
-// transcriptDeleted=true. Audio bytes remain in R2 until VOICE_R2_TTL_DAYS
-// expires; only the text representation is removed. Idempotent.
-async function handleWindowAttachTranscriptDelete(request, env, ctx) {
+// Audit B1: window-photos.js and window-voice.js previously both
+// POSTed to /api/window/attach with no body and treated any non-404
+// as "my modality is enabled." That coupled the two modalities — a
+// voice-only flag flip would still reveal the photo button (uploads
+// then 403'd), and vice versa. This endpoint splits the detection
+// so each client can ask only about its own modality.
+async function handleWindowAttachProbe(request, env, ctx) {
+  if (!_windowGate(env)) {
+    return new Response(null, { status: 404 });
+  }
+  if (!isOriginAllowed(request)) {
+    return new Response(null, { status: 403 });
+  }
+  const u = new URL(request.url);
+  const kind = u.searchParams.get('kind') || '';
+  let enabled = false;
+  if (kind === 'photo') {
+    enabled = env.WINDOW_PHOTO_ENABLED === 'true' || env.WINDOW_PHOTO_ENABLED === true;
+  } else if (kind === 'voice') {
+    enabled = env.WINDOW_VOICE_ENABLED === 'true' || env.WINDOW_VOICE_ENABLED === true;
+  } else {
+    return new Response(null, { status: 400 });
+  }
+  if (!enabled) return new Response(null, { status: 404 });
+  return jsonResponse({ ok: true, kind }, 200);
+}
+
+// Phase 3.6 — visitor-deletable voice attachment.
+// POST /api/window/attach/voice-delete (or legacy /transcript-delete).
+//
+// Body: { attachId }. Worker verifies the caller owns the attachment,
+// then HARD-deletes the R2 audio + tombstones the KV row (audit
+// fix: plan §2.9 promised R2 hard-delete, Phase 3.5 only soft-deleted
+// transcript). Idempotent.
+async function handleWindowAttachVoiceDelete(request, env, ctx) {
   if (!_windowGate(env)) {
     return jsonResponse({ ok: false, error: 'not-found' }, 404);
   }
@@ -6766,12 +6811,12 @@ async function handleWindowAttachTranscriptDelete(request, env, ctx) {
     return jsonResponse({ ok: false, error: 'not-yours' }, 403);
   }
 
-  const result = await deleteAttachmentTranscript(env, attachId);
+  const result = await deleteVoiceAttachment(env, attachId);
   if (!result.ok) {
     return jsonResponse({ ok: false, ...result }, 500);
   }
   console.log(JSON.stringify({
-    event: 'window.attach.transcript-deleted',
+    event: 'window.attach.voice-deleted',
     attachId,
     sub: callerSub ? callerSub.slice(0, 8) : null,
     anonId: callerAnon ? callerAnon.slice(0, 8) : null,

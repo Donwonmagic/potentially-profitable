@@ -62,19 +62,11 @@
   };
   if (!els.mic || !els.attach || !els.previews) return;
 
-  // Probe the same /api/window/attach endpoint used by photos.
-  // If WINDOW_VOICE_ENABLED is on, the endpoint accepts voice MIMEs;
-  // we test by sending an empty multipart with no file (returns
-  // 400 no-file when the gate is on, 404 when off). Reuse the
-  // photo-probe response if window-photos.js already detected the
-  // gate is on for at least one modality.
-  fetch('/api/window/attach', { method: 'POST', credentials: 'same-origin' })
+  // Phase 3.6 — kind-aware probe (audit B1). Ask specifically about
+  // the voice flag; photo-only deploys no longer enable the mic.
+  fetch('/api/window/attach/probe?kind=voice', { method: 'GET', credentials: 'same-origin' })
     .then(function (r) {
-      if (r.status === 404) return false;
-      return true;
-    })
-    .then(function (enabled) {
-      if (enabled) {
+      if (r.status === 200) {
         els.mic.hidden = false;
         els.mic.disabled = false;
         els.mic.removeAttribute('disabled');

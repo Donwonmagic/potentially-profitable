@@ -287,6 +287,17 @@
         div.appendChild(altCap);
       }
     } else if (att.kind === 'voice') {
+      // Phase 3.6 — tombstone branch. Hard-deleted voice notes have
+      // no R2 object on reload, so don't render <audio> (it would
+      // just 404). Show only the "Voice note deleted." marker.
+      if (att.deleted || att.transcriptDeleted) {
+        var deletedNote = document.createElement('p');
+        deletedNote.className = 'window-msg__attachment-transcript window-msg__attachment-transcript--deleted';
+        deletedNote.textContent = locale === 'es' ? 'Nota de voz borrada.' : 'Voice note deleted.';
+        div.appendChild(deletedNote);
+        return div;
+      }
+
       var audio = document.createElement('audio');
       audio.src = '/api/window/attach/' + encodeURIComponent(att.id);
       audio.controls = true;
@@ -294,62 +305,59 @@
       div.appendChild(audio);
 
       // Inline transcript (default-on per plan §6.3 — WCAG 1.2.1
-      // accessible alternative to audio-only). Operator can delete
-      // the transcript via the button below.
-      if (att.transcript && !att.transcriptDeleted) {
+      // accessible alternative to audio-only).
+      if (att.transcript) {
         var trans = document.createElement('p');
         trans.className = 'window-msg__attachment-transcript';
         trans.textContent = att.transcript;
         div.appendChild(trans);
+      }
 
-        // Delete-transcript affordance — only on the visitor's own
-        // voice messages. Don's replies don't expose this.
-        if (state.threadIsAnon || state.authed) {
-          var delBtn = document.createElement('button');
-          delBtn.type = 'button';
-          delBtn.className = 'window-msg__attachment-delete-transcript';
-          delBtn.textContent = locale === 'es' ? 'Borrar la transcripción' : 'Delete transcript';
-          delBtn.addEventListener('click', function () {
-            if (!confirm(locale === 'es'
-              ? '¿Borrar la transcripción? El audio se queda hasta el límite de retención.'
-              : 'Delete the transcript? The audio stays until the retention limit.'
-            )) return;
-            delBtn.disabled = true;
-            var p = new URLSearchParams();
-            p.set('attachId', att.id);
-            fetch('/api/window/attach/transcript-delete', {
-              method: 'POST',
-              credentials: 'same-origin',
-              headers: { 'content-type': 'application/x-www-form-urlencoded' },
-              body: p.toString(),
-            })
-              .then(function (r) { return r.json().then(function (j) { return { status: r.status, body: j }; }); })
-              .then(function (res) {
-                if (res.status === 200 && res.body && res.body.ok) {
-                  // Remove the transcript paragraph and the button.
-                  if (trans.parentNode) trans.parentNode.removeChild(trans);
-                  if (delBtn.parentNode) delBtn.parentNode.removeChild(delBtn);
-                  var marker = document.createElement('p');
-                  marker.className = 'window-msg__attachment-transcript window-msg__attachment-transcript--deleted';
-                  marker.textContent = locale === 'es' ? 'Transcripción borrada.' : 'Transcript deleted.';
-                  div.appendChild(marker);
-                } else {
-                  delBtn.disabled = false;
-                  alert(locale === 'es' ? 'No se pudo borrar.' : "Couldn't delete.");
-                }
-              })
-              .catch(function () {
+      // Delete-voice-note affordance on the visitor's own thread.
+      // Phase 3.6: HARD-deletes R2 audio + tombstones the KV row
+      // (plan §2.9). Available regardless of transcript status —
+      // operator may want to delete a voice note before the
+      // transcript backfill drains.
+      if (state.threadIsAnon || state.authed) {
+        var delBtn = document.createElement('button');
+        delBtn.type = 'button';
+        delBtn.className = 'window-msg__attachment-delete-transcript';
+        delBtn.textContent = locale === 'es' ? 'Borrar la nota de voz' : 'Delete voice note';
+        delBtn.addEventListener('click', function () {
+          if (!confirm(locale === 'es'
+            ? '¿Borrar la nota de voz? El audio y la transcripción se borran ahora mismo.'
+            : 'Delete the voice note? The audio and transcript are deleted right now.'
+          )) return;
+          delBtn.disabled = true;
+          var p = new URLSearchParams();
+          p.set('attachId', att.id);
+          fetch('/api/window/attach/voice-delete', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: { 'content-type': 'application/x-www-form-urlencoded' },
+            body: p.toString(),
+          })
+            .then(function (r) { return r.json().then(function (j) { return { status: r.status, body: j }; }); })
+            .then(function (res) {
+              if (res.status === 200 && res.body && res.body.ok) {
+                // Replace the entire attachment block with a tombstone
+                // (audio is gone — the <audio> element shouldn't render).
+                while (div.firstChild) div.removeChild(div.firstChild);
+                var marker = document.createElement('p');
+                marker.className = 'window-msg__attachment-transcript window-msg__attachment-transcript--deleted';
+                marker.textContent = locale === 'es' ? 'Nota de voz borrada.' : 'Voice note deleted.';
+                div.appendChild(marker);
+              } else {
                 delBtn.disabled = false;
                 alert(locale === 'es' ? 'No se pudo borrar.' : "Couldn't delete.");
-              });
-          });
-          div.appendChild(delBtn);
-        }
-      } else if (att.transcriptDeleted) {
-        var deletedNote = document.createElement('p');
-        deletedNote.className = 'window-msg__attachment-transcript window-msg__attachment-transcript--deleted';
-        deletedNote.textContent = locale === 'es' ? 'Transcripción borrada.' : 'Transcript deleted.';
-        div.appendChild(deletedNote);
+              }
+            })
+            .catch(function () {
+              delBtn.disabled = false;
+              alert(locale === 'es' ? 'No se pudo borrar.' : "Couldn't delete.");
+            });
+        });
+        div.appendChild(delBtn);
       }
     }
     return div;

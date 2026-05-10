@@ -69,18 +69,13 @@
   // Internal state — list of { attachId, name, sizeBytes, status }.
   var attachments = [];
 
-  // Probe whether the photo endpoint is enabled. Cheapest way: send
-  // an OPTIONS-style ping; the endpoint returns 404 when the flag is
-  // off (env.WINDOW_PHOTO_ENABLED !== 'true'). If 404, we leave the
-  // attach row hidden — operator never sees the affordance.
-  fetch('/api/window/attach', { method: 'POST', credentials: 'same-origin' })
+  // Phase 3.6 — kind-aware probe (audit B1). Ask the server
+  // specifically about the photo flag; only reveal the affordance
+  // when WINDOW_PHOTO_ENABLED is on. Voice-only deploys no longer
+  // reveal the photo button.
+  fetch('/api/window/attach/probe?kind=photo', { method: 'GET', credentials: 'same-origin' })
     .then(function (r) {
-      // 404 → flag off; 401/409 → flag on, just no auth/cookie yet.
-      if (r.status === 404) return false;
-      return true;
-    })
-    .then(function (enabled) {
-      if (enabled) els.attach.hidden = false;
+      if (r.status === 200) els.attach.hidden = false;
     })
     .catch(function () { /* network blip — leave hidden */ });
 
