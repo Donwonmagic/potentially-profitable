@@ -11434,13 +11434,15 @@ main{padding-top:64px}
       if (!ghGbpHours || !ghSchemaObjs) return makeResult(def, 'unverified');
 
       // Parse schema's openingHoursSpecification entries into a
-      // day-name → {opens, closes} map. Schema's `dayOfWeek` can be
+      // day-name → [{opens, closes}, ...] map (Batch-B item 8:
+      // accumulate multiple specs per day to support split shifts,
+      // e.g. lunch 11-2 + dinner 5-10). Schema's `dayOfWeek` can be
       // a string or array of strings. Times are HH:MM ISO format.
       var ghDayMap = {
         monday: 0, tuesday: 1, wednesday: 2, thursday: 3,
         friday: 4, saturday: 5, sunday: 6
       };
-      var ghSchemaWeek = [null, null, null, null, null, null, null];
+      var ghSchemaWeek = [[], [], [], [], [], [], []];
       function ghAddSpec(spec) {
         if (!spec || typeof spec !== 'object') return;
         var days = spec.dayOfWeek;
@@ -11450,10 +11452,10 @@ main{padding-top:64px}
           var dn = String(dayList[di]).toLowerCase().replace(/^https?:\/\/schema\.org\//, '');
           var idx = ghDayMap[dn];
           if (typeof idx !== 'number') continue;
-          ghSchemaWeek[idx] = {
+          ghSchemaWeek[idx].push({
             opens: spec.opens || null,
             closes: spec.closes || null
-          };
+          });
         }
       }
       for (var ghOi = 0; ghOi < ghSchemaObjs.length; ghOi++) {
@@ -11465,7 +11467,7 @@ main{padding-top:64px}
           for (var ghKi = 0; ghKi < ghOh.length; ghKi++) ghAddSpec(ghOh[ghKi]);
         } else ghAddSpec(ghOh);
       }
-      var ghSchemaHasAny = ghSchemaWeek.some(function(d){ return d != null; });
+      var ghSchemaHasAny = ghSchemaWeek.some(function(d){ return d && d.length > 0; });
       if (!ghSchemaHasAny) return makeResult(def, 'unverified');
 
       // GBP weekdayHoursText format: "Monday: 11:00 AM – 10:00 PM" or
@@ -11474,10 +11476,10 @@ main{padding-top:64px}
       function ghParseGbpDay(s) {
         if (!s || typeof s !== 'string') return null;
         var t = s.toLowerCase().replace(/[–—]/g, '-').replace(/[ \s]+/g, ' ').trim();
-        if (/closed/.test(t)) return { closed: true };
-        // Match "11:00 am - 10:00 pm" or "11 am - 10 pm" or "11-22"
-        var m = t.match(/(\d{1,2})(?::(\d{2}))?\s*(am|pm)?\s*[-–—]\s*(\d{1,2})(?::(\d{2}))?\s*(am|pm)?/);
-        if (!m) return null;
+        // Batch-B item 10: locale-aware closed detection (en/es/fr/it/pt/de).
+        if (/closed|cerrado|fermé|chiuso|fechado|geschlossen/.test(t)) {
+          return { closed: true, ranges: [] };
+        }
         function to24(h, mn, ap) {
           h = parseInt(h, 10);
           mn = mn ? parseInt(mn, 10) : 0;
@@ -11485,7 +11487,35 @@ main{padding-top:64px}
           if (ap === 'am' && h === 12) h = 0;
           return (h < 10 ? '0' + h : '' + h) + ':' + (mn < 10 ? '0' + mn : '' + mn);
         }
-        return { opens: to24(m[1], m[2], m[3]), closes: to24(m[4], m[5], m[6]) };
+        // Batch-B item 8: parse ALL ranges (was single-match before),
+        // so split-shift days "11 AM - 2 PM, 5 PM - 10 PM" compare
+        // correctly against schema with two openingHoursSpecification
+        // entries for the same day.
+        var ranges = [];
+        var re = /(\d{1,2})(?::(\d{2}))?\s*(am|pm)?\s*-\s*(\d{1,2})(?::(\d{2}))?\s*(am|pm)?/g;
+        var m;
+        while ((m = re.exec(t)) !== null) {
+          ranges.push({ opens: to24(m[1], m[2], m[3]), closes: to24(m[4], m[5], m[6]) });
+        }
+        if (ranges.length === 0) return null;
+        return { closed: false, ranges: ranges };
+      }
+
+      // Set-equality comparison on (opens, closes) tuples — order-
+      // independent so "5pm-10pm, 11am-2pm" matches schema's
+      // "11:00-14:00, 17:00-22:00" cleanly.
+      function ghRangeSetMatches(schemaRanges, gbpRanges) {
+        if (schemaRanges.length !== gbpRanges.length) return false;
+        var schemaKeys = schemaRanges.map(function(r){
+          return String(r.opens||'').slice(0,5) + '|' + String(r.closes||'').slice(0,5);
+        }).sort();
+        var gbpKeys = gbpRanges.map(function(r){
+          return r.opens + '|' + r.closes;
+        }).sort();
+        for (var sk = 0; sk < schemaKeys.length; sk++) {
+          if (schemaKeys[sk] !== gbpKeys[sk]) return false;
+        }
+        return true;
       }
 
       var ghDisagreements = 0;
@@ -11493,19 +11523,19 @@ main{padding-top:64px}
       for (var ghI = 0; ghI < 7 && ghI < ghGbpHours.length; ghI++) {
         var ghSchemaDay = ghSchemaWeek[ghI];
         var ghGbpDay = ghParseGbpDay(ghGbpHours[ghI]);
-        if (!ghSchemaDay || !ghGbpDay) continue;
+        if (!ghSchemaDay || ghSchemaDay.length === 0 || !ghGbpDay) continue;
         ghCompared++;
-        // Both closed? Agree.
-        if (ghGbpDay.closed && (ghSchemaDay.opens === null || ghSchemaDay.closes === null)) continue;
-        // One closed, other open? Disagree.
-        if (ghGbpDay.closed !== !!(ghSchemaDay.opens === null || ghSchemaDay.closes === null)) {
-          ghDisagreements++;
-          continue;
-        }
-        // Both open — compare times (already normalized to HH:MM).
-        var ghSchemaOpens  = String(ghSchemaDay.opens  || '').slice(0, 5);
-        var ghSchemaCloses = String(ghSchemaDay.closes || '').slice(0, 5);
-        if (ghSchemaOpens !== ghGbpDay.opens || ghSchemaCloses !== ghGbpDay.closes) {
+        // Schema-closed marker: every spec for the day has null
+        // opens AND null closes.
+        var ghSchemaClosed = ghSchemaDay.every(function(r){
+          return r.opens === null && r.closes === null;
+        });
+        if (ghGbpDay.closed && ghSchemaClosed) continue; // both closed
+        if (ghGbpDay.closed !== ghSchemaClosed) { ghDisagreements++; continue; }
+        // Both open — set-compare ranges (Batch-B item 8 handles
+        // split shifts: order-insensitive equality of (opens, closes)
+        // tuples across all ranges for the day).
+        if (!ghRangeSetMatches(ghSchemaDay, ghGbpDay.ranges)) {
           ghDisagreements++;
         }
       }
@@ -14964,10 +14994,19 @@ main{padding-top:64px}
       }
       results.push({ def: resolvedDef, result: result, idx: idx });
     });
-    // Stable sort: fail → unverified → pass
+    // Stable sort: fail → unverified → pass, with a secondary sort
+    // by descending weight WITHIN each status group so D2/D3
+    // (weight 0.9–1.0) display ahead of D5 (weight 0.5) within the
+    // 'fail' group. Batch-B item 7: ties before this fell back to
+    // array-index order, which placed brand-new checks at the
+    // bottom of their status group regardless of weight.
     results.sort(function(a, b){
       var rank = { fail: 0, unverified: 1, pass: 2 };
-      return rank[a.result.mark.cls] - rank[b.result.mark.cls];
+      var statusDelta = rank[a.result.mark.cls] - rank[b.result.mark.cls];
+      if (statusDelta !== 0) return statusDelta;
+      var aw = (a.def && typeof a.def.weight === 'number') ? a.def.weight : 1.0;
+      var bw = (b.def && typeof b.def.weight === 'number') ? b.def.weight : 1.0;
+      return bw - aw;
     });
     // Phase I2: expose the sorted results so renderTopFixes() can
     // rank and render the top-3 action card without re-running
@@ -15018,18 +15057,21 @@ main{padding-top:64px}
       // fine-dining boosts conversions to 2.0 over the default 1.5.
       accumulateRestaurantReadiness(readinessState, def, result.mark.cls, btype);
 
-      // Batch-A item 3: when a byType override sets weight:0 for the
-      // current subtype, skip rendering the row entirely. The prior
-      // behavior cleared `impact` text to empty but still rendered
-      // the row, leaving a confusing "We couldn't tell if you offer
-      // delivery" with an empty body on fine-dining audits (D6's
-      // fine-dining suppression). subtypeWeights() reads the
-      // effective weight from subtypes.js + def.byType[subtype].weight.
-      var effectiveWeight = def.weight;
-      if (btype && def.byType && def.byType[btype] && typeof def.byType[btype].weight === 'number') {
-        effectiveWeight = def.byType[btype].weight;
-      }
-      if (effectiveWeight === 0) return;
+      // Batch-A item 3: when the effective weight (already
+      // resolved via resolveCheckForType, which merges
+      // def.byType[subtype] over the base def at this point) is
+      // zero, skip rendering the row entirely. The prior behavior
+      // cleared `impact` text to empty but still rendered the row,
+      // leaving a confusing "We couldn't tell if you offer delivery"
+      // with an empty body on fine-dining audits (D6's fine-dining
+      // suppression).
+      //
+      // Audit-6 follow-up: the prior version also re-read
+      // def.byType[btype].weight as a defensive fallback, but
+      // resolveCheckForType already strips byType and merges the
+      // override values onto the resolved def — so the fallback
+      // was dead code. Removed for clarity.
+      if (def.weight === 0) return;
 
       var row = document.createElement('div');
       row.className = 'priority-item ' + result.mark.cls;
@@ -15822,6 +15864,13 @@ main{padding-top:64px}
         var emailEvalContext = buildDetectorContext();
         PRIORITY_CHECKS.forEach(function(def, idx){
           var resolvedDef = resolveCheckForType(def, emailType);
+          // Audit-6 fix: weight:0 checks (e.g. D6 delivery-presence
+          // on fine-dining via byType.weight:0) are hidden from the
+          // priority list — they must also be excluded from the
+          // email-report payload so the inbox doesn't mention a
+          // finding the owner can't see in the report they're
+          // reading.
+          if (resolvedDef.weight === 0) return;
           var result = evaluatePriorityCheck(resolvedDef, audits, allUrls, pageText, emailEvalContext);
           if (!result) return;
           if (USER_OVERRIDES[idx] === 'pass' && result.mark.cls === 'unverified') return;
@@ -16668,10 +16717,30 @@ main{padding-top:64px}
     // node a retain root. The `auditteardown` event below lets
     // any future SPA shell call `dispatchEvent(new Event(
     // 'auditteardown'))` to disconnect the observer cleanly.
+    // Batch-B item 6: rAF coalesce the MutationObserver callback.
+    // A full priority-list re-render (renderPriorityChecks via the
+    // deep-scan refresh hook, feedback overrides, or a snapshot
+    // hydrate) fires many mutation events back-to-back. Without
+    // coalescing, updateCount runs once per mutation per microtask
+    // flush — typically 10–30 times for a full render. rAF batches
+    // them into a single pass per animation frame. The existing
+    // `updating` re-entrancy guard is still load-bearing (handles
+    // updateCount's own textContent writes); the rAF coalesce is
+    // additional cheap insurance.
     try {
       var wrap = document.getElementById('priorityListWrap');
       if (wrap && typeof MutationObserver === 'function') {
-        var mo = new MutationObserver(updateCount);
+        var rafPending = false;
+        function scheduleUpdate() {
+          if (rafPending) return;
+          rafPending = true;
+          var raf = window.requestAnimationFrame || function(cb){ return setTimeout(cb, 16); };
+          raf(function(){
+            rafPending = false;
+            updateCount();
+          });
+        }
+        var mo = new MutationObserver(scheduleUpdate);
         mo.observe(wrap, { childList: true, subtree: true });
         window.addEventListener('auditteardown', function once(){
           try { mo.disconnect(); } catch (_) {}

@@ -2351,11 +2351,21 @@ function checkOgShareMeta(html) {
   // non-empty value that LOOKS like a URL (has at least one /).
   function ogImageOk(v) {
     if (!v) return false;
+    var trimmed = v.trim();
+    if (!trimmed) return false;
     // Reject obviously-bad placeholders we sometimes see in
     // unconfigured templates.
-    if (/^(none|null|undefined|todo|tbd)$/i.test(v.trim())) return false;
-    // Accept absolute, protocol-relative, root-relative, or page-relative.
-    return /^https?:\/\//i.test(v) || /^\/\//.test(v) || /^\//.test(v) || /^[a-z0-9._-]+\.(jpg|jpeg|png|webp|avif|gif|svg)/i.test(v);
+    if (/^(none|null|undefined|todo|tbd)$/i.test(trimmed)) return false;
+    // Accept absolute, protocol-relative, root-relative.
+    if (/^https?:\/\//i.test(trimmed)) return true;
+    if (/^\/\//.test(trimmed)) return true;
+    if (/^\//.test(trimmed)) return true;
+    // Page-relative: any path that ends in a known image extension
+    // anywhere (including folder-prefixed like "img/hero.jpg" —
+    // Batch-B item 9 fix; prior regex only matched top-level
+    // filename forms like "hero.jpg" with no slashes).
+    if (/\.(jpg|jpeg|png|webp|avif|gif|svg)(\?|#|$)/i.test(trimmed)) return true;
+    return false;
   }
   var out = {
     ogTitle:       hasMeta('og:title', nonEmpty),
