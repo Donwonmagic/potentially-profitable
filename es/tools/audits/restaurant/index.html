@@ -3102,8 +3102,15 @@ main{padding-top:64px}
      The label is swapped from JS so screen readers announce the
      state change. */
   body.weekend-mode .weekend-mode-btn { display: none; }
+  /* Critique-fix (UX#1): the card visual chrome used to be scoped
+     to `body.weekend-mode`, but the no-self path deliberately
+     doesn't engage weekend mode — so clicking the button with no
+     self-fixable items produced unstyled raw text + buttons on the
+     page background. The styling now applies whenever the card is
+     visible regardless of mode. The `body.weekend-mode` ancestor
+     selector only governs which OTHER cards stay visible. */
   .weekend-mode-close[hidden] { display: none; }
-  body.weekend-mode .weekend-mode-close {
+  .weekend-mode-close {
     display: block;
     margin-top: 18px;
     padding: 18px 20px;
@@ -3111,6 +3118,8 @@ main{padding-top:64px}
     border: 1px solid var(--teal);
     border-radius: 14px;
   }
+  /* Variant blocks: only the visible variant takes layout space. */
+  .weekend-mode-close-variant[hidden] { display: none; }
   .weekend-mode-close-copy {
     margin: 0 0 14px;
     font-size: 14px;
@@ -6262,9 +6271,15 @@ main{padding-top:64px}
                button toggles `body.weekend-mode` which the CSS below
                uses to fold the rest of the report. -->
           <div class="top-fixes-actions">
-            <button type="button" id="weekendModeBtn" class="weekend-mode-btn" aria-pressed="false" data-tr="weekendMode.enter">
-              Show me only the 2 things to fix this weekend <span aria-hidden="true">→</span>
-            </button>
+            <!--
+              Critique-fix (SB3): the trailing arrow is appended in JS
+              as an aria-hidden span (see appendArrow in
+              wireWeekendMode), NOT inline. Inline `<span aria-hidden>`
+              gets wiped when __muntinTranslate swaps textContent on
+              ES — screen readers in any non-EN locale would read
+              "right arrow" otherwise.
+            -->
+            <button type="button" id="weekendModeBtn" class="weekend-mode-btn" aria-pressed="false" data-tr="weekendMode.enter">Show me only the 2 things to fix this weekend</button>
           </div>
         </div>
         <ol class="top-fixes-list" id="topFixesList"></ol>
@@ -6272,13 +6287,33 @@ main{padding-top:64px}
              Hidden in normal view. When weekend-mode is on it shows
              total minutes for the surfaced fixes + a "Re-audit
              Sunday night" CTA that scrolls back to the run form. -->
+        <!--
+          Critique-fix (UX#3, QA#2, Arch#1): the close-card used to
+          carry one .weekend-mode-close-actions block whose children
+          were innerHTML-replaced by showWeekendModeNoSelfMessage on
+          the no-self path. That permanently destroyed the original
+          Re-audit / Exit buttons + leaked event listeners. The two
+          variants now live as sibling DOM blocks (success / no-self)
+          toggled via `hidden`. JS only flips visibility — never
+          mutates innerHTML — so the success buttons can never be
+          orphaned and the IIFE's listeners stay live.
+        -->
         <div class="weekend-mode-close" id="weekendModeClose" role="status" aria-live="polite" tabindex="-1" hidden>
-          <p class="weekend-mode-close-copy" data-tr="weekendMode.close.copy">
-            Knock these two out this weekend. Your checkmarks are saved on this device — come back Sunday night, re-run the audit, and you'll see exactly which numbers moved.
-          </p>
-          <div class="weekend-mode-close-actions">
-            <button type="button" id="weekendReauditBtn" class="weekend-mode-cta" data-tr="weekendMode.close.reaudit">Re-audit my site <span aria-hidden="true">→</span></button>
-            <button type="button" id="weekendModeExitBtn" class="weekend-mode-exit" data-tr="weekendMode.close.exit">Show me everything</button>
+          <div class="weekend-mode-close-variant" data-variant="success">
+            <p class="weekend-mode-close-copy" data-tr="weekendMode.close.copy">
+              Knock these two out this weekend. Your checkmarks are saved on this device — come back Sunday night, re-run the audit, and you'll see exactly which numbers moved.
+            </p>
+            <div class="weekend-mode-close-actions">
+              <button type="button" id="weekendReauditBtn" class="weekend-mode-cta" data-tr="weekendMode.close.reaudit">Re-audit my site</button>
+              <button type="button" id="weekendModeExitBtn" class="weekend-mode-exit" data-tr="weekendMode.close.exit">Show me everything</button>
+            </div>
+          </div>
+          <div class="weekend-mode-close-variant" data-variant="no-self" hidden>
+            <p class="weekend-mode-close-copy" data-tr="weekendMode.noSelf.copy">Your top 3 fixes all need a web person — there isn't a self-fix in the list this weekend. If you don't have someone, email don@muntin.digital and we'll route it.</p>
+            <div class="weekend-mode-close-actions">
+              <a id="weekendNoSelfMail" class="weekend-mode-cta" href="mailto:don@muntin.digital" data-tr="weekendMode.noSelf.email">Email Don</a>
+              <button type="button" id="weekendNoSelfDismissBtn" class="weekend-mode-exit" data-tr="weekendMode.noSelf.dismiss">Back to the report</button>
+            </div>
           </div>
         </div>
       </section>
@@ -16006,11 +16041,52 @@ main{padding-top:64px}
     var exit  = document.getElementById('weekendModeExitBtn');
     var reaudit = document.getElementById('weekendReauditBtn');
     var closeCard = document.getElementById('weekendModeClose');
+    var dismissNoSelf = document.getElementById('weekendNoSelfDismissBtn');
+    var mailtoNoSelf = document.getElementById('weekendNoSelfMail');
     if (!enter || !exit || !closeCard) return;
+    // Critique-fix (SB3): the in-button arrow characters used to live
+    // in the i18n strings (so __muntinTranslate's textContent swap
+    // wiped the inline <span aria-hidden> wrap). The arrows are now
+    // dropped from the strings and re-appended programmatically as a
+    // separate aria-hidden span after every translate pass so screen
+    // readers never read "right arrow" regardless of locale.
+    function appendArrow(btn) {
+      if (!btn) return;
+      // Re-append on every call — translate may have wiped it.
+      var existing = btn.querySelector('.weekend-arrow');
+      if (existing) existing.remove();
+      var span = document.createElement('span');
+      span.className = 'weekend-arrow';
+      span.setAttribute('aria-hidden', 'true');
+      span.textContent = ' →';
+      btn.appendChild(span);
+    }
+    function ensureArrows() {
+      appendArrow(enter);
+      appendArrow(reaudit);
+    }
+    ensureArrows();
+    // Re-attach arrows after the i18n DOM scanner runs at
+    // DOMContentLoaded — without this, a Spanish visitor's first
+    // paint after translate has bare button text.
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', ensureArrows);
+    }
     // Wave-A4: remember where the user was before entering so exit
     // restores that scroll position. Otherwise the long report
     // unfolds back in and the user is dropped wherever it lands.
     var preEnterScrollY = null;
+    // Critique-fix (SB2): variant-toggle helper. Replaces the
+    // previous innerHTML-mutation pattern; both variants live in
+    // the DOM permanently and we just flip their hidden flag. The
+    // success buttons are never destroyed, so the IIFE's listeners
+    // stay live across any number of empty/full Weekend Mode cycles.
+    function showVariant(name) {
+      var variants = closeCard.querySelectorAll('.weekend-mode-close-variant');
+      for (var i = 0; i < variants.length; i++) {
+        variants[i].hidden = (variants[i].getAttribute('data-variant') !== name);
+      }
+    }
     // Wave-A1: count self-items in #topFixesList. When the top-3 are
     // all flagged dev / rebuild (rare but real — happens on small
     // sites whose top three are server-side fixes only), Weekend
@@ -16023,6 +16099,7 @@ main{padding-top:64px}
     function applyMode(on) {
       document.body.classList.toggle('weekend-mode', !!on);
       closeCard.hidden = !on;
+      if (on) showVariant('success');
       // Wave-B4: announce state via aria-pressed so screen readers
       // hear the toggle's new value. CSS still hides the visual
       // button in weekend mode, but the close card has its own
@@ -16043,10 +16120,10 @@ main{padding-top:64px}
         smoothScrollInto(document.getElementById('topFixes'));
         // Wave-B1 + B3: move keyboard/AT focus to the close card so
         // screen readers announce it and tab order picks up there.
-        // Without this, focus on a previously-clicked item that's
-        // now display:none collapses to <body> and the SR goes
-        // silent mid-flow.
-        setTimeout(function(){ try { closeCard.focus(); } catch (_) {} }, 60);
+        // requestAnimationFrame guards against the focus() firing
+        // before display:none reflows on slow devices, which would
+        // silently send focus to <body>.
+        requestAnimationFrame(function(){ try { closeCard.focus(); } catch (_) {} });
       } else {
         // Wave-A4: restore prior scroll position rather than dumping
         // user at the top of the page when the long report unfolds.
@@ -16055,16 +16132,32 @@ main{padding-top:64px}
         }
         // Wave-B1: send focus back to the enter button on exit so a
         // keyboard user is positioned to re-toggle if they want.
-        try { enter.focus(); } catch (_) {}
+        // RAF for the same reason as above — let display:none reflow
+        // back to visible before we focus.
+        requestAnimationFrame(function(){ try { enter.focus(); } catch (_) {} });
       }
     }
     enter.addEventListener('click', function(){
       // Wave-A1: refuse to enter if there's nothing self-fixable in
       // the top-3. Surface an explanatory card instead of an empty
-      // focused view. The card lives in #topFixes head so the user
-      // sees WHY their click didn't produce the expected result.
+      // focused view. The card uses a sibling variant (no body class)
+      // so the rest of the report stays visible — Maria still sees
+      // her score, her checks, and the email-Don path.
       if (countSelf() < 1) {
-        showWeekendModeNoSelfMessage();
+        showVariant('no-self');
+        // Critique-fix: mailto subject uses HOSTNAME only, not the
+        // full URL. Long Wix preview URLs (200+ chars with query
+        // params) make the email subject illegible.
+        try {
+          if (mailtoNoSelf && window.__auditLastResult && window.__auditLastResult.url) {
+            var host;
+            try { host = new URL(window.__auditLastResult.url).hostname; } catch (_) { host = 'my site'; }
+            mailtoNoSelf.href = 'mailto:don@muntin.digital?subject=' +
+              encodeURIComponent('Audit follow-up: weekend fixes for ' + host);
+          }
+        } catch (_) {}
+        closeCard.hidden = false;
+        requestAnimationFrame(function(){ try { closeCard.focus(); } catch (_) {} });
         if (window.plausible) window.plausible('Audit Weekend Mode No Self Items');
         return;
       }
@@ -16078,6 +16171,13 @@ main{padding-top:64px}
       try { sessionStorage.removeItem('muntin-weekend-mode'); } catch (_) {}
       if (window.plausible) window.plausible('Audit Weekend Mode Exit');
     });
+    if (dismissNoSelf) {
+      dismissNoSelf.addEventListener('click', function(){
+        closeCard.hidden = true;
+        showVariant('success'); // reset to success for the next entry
+        try { enter.focus(); } catch (_) {}
+      });
+    }
     reaudit.addEventListener('click', function(){
       // Pre-fill the URL field with the last-audited URL (if any) and
       // scroll back to the run form. The owner gets a one-click path
@@ -16088,6 +16188,10 @@ main{padding-top:64px}
           if (input) input.value = window.__auditLastResult.url;
         }
       } catch (_) {}
+      // Use applyMode(false) ONLY to flip state; skip its scroll-
+      // restore by clearing preEnterScrollY first, so we don't
+      // double-scroll (restore → form smoothScroll).
+      preEnterScrollY = null;
       applyMode(false);
       try { sessionStorage.removeItem('muntin-weekend-mode'); } catch (_) {}
       smoothScrollInto(document.querySelector('form#auditForm') || document.querySelector('form'));
@@ -16104,45 +16208,6 @@ main{padding-top:64px}
         sessionStorage.removeItem('muntin-weekend-mode');
       }
     } catch (_) {}
-
-    // Wave-A1: explanatory card shown when the user clicks the
-    // Weekend Mode button but there's nothing self-fixable to
-    // surface. Reuses the #weekendModeClose container — same teal
-    // surface, same role=status announcement — but swaps the copy
-    // to a context-appropriate message and routes the primary
-    // action to the email contact path. Self-resetting: clicking
-    // exit re-hides the card and clears the empty state.
-    function showWeekendModeNoSelfMessage() {
-      var copyEl = closeCard.querySelector('.weekend-mode-close-copy');
-      if (copyEl) {
-        copyEl.textContent = tr(
-          'weekendMode.noSelf.copy',
-          "Your top 3 fixes all need a web person — there isn't a self-fix in the list this weekend. If you don't have someone, email don@muntin.digital and I'll take it from here."
-        );
-      }
-      // Swap the primary CTA to a mailto: anchor for one-tap contact;
-      // keep the exit button to dismiss without commitment. Renders
-      // once per click; resets on dismiss.
-      var actions = closeCard.querySelector('.weekend-mode-close-actions');
-      if (actions) {
-        actions.innerHTML = '';
-        var mailto = document.createElement('a');
-        mailto.className = 'weekend-mode-cta';
-        mailto.href = 'mailto:don@muntin.digital?subject=' + encodeURIComponent('Audit follow-up: weekend fixes for ' + ((window.__auditLastResult && window.__auditLastResult.url) || 'my site'));
-        mailto.textContent = tr('weekendMode.noSelf.email', 'Email Don');
-        var dismiss = document.createElement('button');
-        dismiss.type = 'button';
-        dismiss.className = 'weekend-mode-exit';
-        dismiss.textContent = tr('weekendMode.noSelf.dismiss', 'Close this');
-        dismiss.addEventListener('click', function(){
-          closeCard.hidden = true;
-        });
-        actions.appendChild(mailto);
-        actions.appendChild(dismiss);
-      }
-      closeCard.hidden = false;
-      setTimeout(function(){ try { closeCard.focus(); } catch (_) {} }, 60);
-    }
   })();
 
   // Sprint AUDIT-EMPOWERMENT: self-fix filter. Hides every priority
@@ -16207,18 +16272,16 @@ main{padding-top:64px}
       apply();
       if (window.plausible) window.plausible('Audit Self-Fix Filter', { props: { on: box.checked } });
     });
-    // Re-apply count after every render. renderPriorityChecks runs
-    // multiple times in the audit lifecycle (initial paint, feedback
-    // mutations, deep-scan re-render); a MutationObserver on the list
-    // wrap keeps the count chip in sync without coupling to those
-    // call sites. childList:false on the wrap itself + watching only
-    // direct children (`.priority-item` rows are inserted/removed
-    // at this level) is enough — subtree:true was overkill and the
-    // source of the re-entrancy hazard above.
+    // Critique-fix (SB4): renderPriorityChecks appends rows into
+    // #priorityItems (a GRANDCHILD of #priorityListWrap), not into
+    // the wrap directly — so subtree:false was missing every render
+    // after the first. The actual re-entrancy fix is the `updating`
+    // flag in updateCount above; subtree:true is required to catch
+    // grandchild row inserts/removes from the renderer.
     try {
       var wrap = document.getElementById('priorityListWrap');
       if (wrap && typeof MutationObserver === 'function') {
-        new MutationObserver(updateCount).observe(wrap, { childList: true, subtree: false });
+        new MutationObserver(updateCount).observe(wrap, { childList: true, subtree: true });
       }
     } catch (_) {}
   })();

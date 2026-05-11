@@ -2396,13 +2396,23 @@ var UI_I18N = {
   // entry beat is different but the close (action + next step) is
   // consistent. ES strings drop "literalmente" (Twitter register)
   // and "ejecuta" (technical) for warmer equivalents.
+  // Critique-fix (P3): the prior ES rendering had "vuelve...vuelve"
+  // back-to-back ("regresa el domingo y vuelve a pasar la auditoría"
+  // is also natural; "corre la auditoría otra vez" works too). Both
+  // bands now use "regresa" (return) + "pasa la auditoría otra vez"
+  // (run it again) so the same imperative doesn't repeat in the
+  // same sentence.
+  // Critique-fix (a11y/Spanish verdict.50): "no puede tocar tu
+  // teléfono lo bastante rápido" parsed as "they can't touch your
+  // phone" (poss. weak grip). Rewrote to "no puede pulsar el botón
+  // de teléfono" which is unambiguous.
   'verdict.70': {
     en: "Solid bones, two or three leaky pipes. Most restaurants at this score are on a template site that just needs a careful weekend — not a rebuild. Your Top 3 fixes are below, sorted by how much real money each one costs you per year. Start with the first one and work down; come back Sunday and re-run to see the score move.",
-    es: 'Buenos cimientos, con dos o tres goteras. La mayoría de restaurantes con esta puntuación están en un sitio plantilla al que le falta un fin de semana cuidadoso — no una reconstrucción. Tus 3 arreglos prioritarios están abajo, ordenados por cuánto dinero te cuesta cada uno al año. Empieza por el primero y baja desde ahí; vuelve el domingo y vuelve a pasar la auditoría para ver cómo se mueve la puntuación.'
+    es: 'Buenos cimientos, con dos o tres goteras. La mayoría de restaurantes con esta puntuación están en un sitio plantilla al que le falta un fin de semana cuidadoso — no una reconstrucción. Tus 3 arreglos prioritarios están abajo, ordenados por cuánto dinero te cuesta cada uno al año. Empieza por el primero y baja desde ahí; regresa el domingo y pasa la auditoría otra vez para ver cómo se mueve la puntuación.'
   },
   'verdict.50': {
     en: "The site works, but it's quietly losing you customers — most likely on mobile, on a Saturday night, when the visitor can't find your hours or your phone tap fast enough. The good news: the biggest wins below are usually a few hours of work, not a redesign. Start at the top of the list, then come back and re-run this audit — you'll see exactly which numbers moved.",
-    es: 'El sitio funciona, pero está perdiendo clientes en silencio — casi siempre en el móvil, un sábado por la noche, cuando alguien no encuentra tus horarios o no puede tocar tu teléfono lo bastante rápido. La buena noticia: las mayores ganancias de abajo suelen ser unas pocas horas de trabajo, no un rediseño. Empieza por arriba de la lista, luego vuelve y vuelve a pasar esta auditoría — verás exactamente qué números se movieron.'
+    es: 'El sitio funciona, pero está perdiendo clientes en silencio — casi siempre en el móvil, un sábado por la noche, cuando alguien no encuentra tus horarios o no puede pulsar el botón de teléfono lo bastante rápido. La buena noticia: las mayores ganancias de abajo suelen ser unas pocas horas de trabajo, no un rediseño. Empieza por arriba de la lista, luego regresa y pasa esta auditoría otra vez — verás exactamente qué números se movieron.'
   },
   'verdict.below': {
     en: "There's real work to do here, and that's okay — most scores in this range come from a template site that's quietly aged out, not from anything you did wrong. The fastest path forward is the Top 3 list below: pick the first one, block out Saturday morning, fix it, and re-run the audit. If something needs a web person and you don't have one, email don@muntin.digital — that's what Muntin is here for.",
@@ -2994,21 +3004,25 @@ var UI_I18N = {
     en: "Sorted by estimated revenue at risk. Pick two — that's your weekend.",
     es: 'Ordenado por ingresos estimados en riesgo. Escoge dos — ese es tu fin de semana.'
   },
-  // Wave-C4 (a11y/Spanish-fluency reviewer): "cosas para arreglar"
-  // read childlike — chore-list register, not the warm-operator
-  // voice. "arreglos" is cleaner and reads like a complete object
-  // on a button.
+  // Critique-fix (SB3): the "→" arrow USED to live in these strings;
+  // textContent swap in __muntinTranslate would then wipe an inline
+  // <span aria-hidden> wrap on the button, defeating B7. The arrow
+  // is now appended programmatically in wireWeekendMode's
+  // appendArrow helper so it's always wrapped in aria-hidden and
+  // never embedded in the translated string.
+  // Wave-C4: "cosas para arreglar" read childlike; "arreglos"
+  // cleaner.
   'weekendMode.enter': {
-    en: 'Show me only the 2 things to fix this weekend →',
-    es: 'Muéstrame solo los 2 arreglos para este fin de semana →'
+    en: 'Show me only the 2 things to fix this weekend',
+    es: 'Muéstrame solo los 2 arreglos para este fin de semana'
   },
   'weekendMode.close.copy': {
     en: "Knock these two out this weekend. Your checkmarks are saved on this device — come back Sunday night, re-run the audit, and you'll see exactly which numbers moved.",
     es: 'Resuelve estos dos este fin de semana. Tus marcas están guardadas en este dispositivo — vuelve el domingo por la noche, ejecuta otra vez la auditoría y verás exactamente qué cifras se movieron.'
   },
   'weekendMode.close.reaudit': {
-    en: 'Re-audit my site →',
-    es: 'Volver a auditar mi sitio →'
+    en: 'Re-audit my site',
+    es: 'Volver a auditar mi sitio'
   },
   'weekendMode.close.exit': {
     en: 'Show me everything',
@@ -3019,12 +3033,25 @@ var UI_I18N = {
   // to surface. Reuses the close card with swapped copy + a mailto:
   // primary action so the owner has a one-tap path to "I don't have
   // a developer; what now?"
+  // Critique-fix (P1, P2, P4):
+  //   P1: dropped first-person "I'll take it from here" — the rest of
+  //       the audit is third-person tool voice, so the "I" had no
+  //       antecedent. "We'll route it" matches the verdict.below
+  //       "that's what Muntin is here for" register.
+  //   P2: aligned vocabulary to "ayuda técnica" (matches effort.dev).
+  //       The old "una persona de la web" contradicted the chip the
+  //       owner had just read on the dev-effort top-3 items.
+  //   P4: "Escribirle a Don" (infinitive) is wrong button register
+  //       in Spanish UI convention. "Escríbele a Don" (imperative).
+  //   Also: changed dismiss from "Close this" to "Back to the
+  //   report" — "Close this" is procedural; the user is returning
+  //   to the report, name the destination.
   'weekendMode.noSelf.copy': {
-    en: "Your top 3 fixes all need a web person — there isn't a self-fix in the list this weekend. If you don't have someone, email don@muntin.digital and I'll take it from here.",
-    es: 'Tus 3 arreglos prioritarios necesitan a una persona de la web — esta semana no hay nada que puedas resolver tú. Si no tienes a quien acudir, escribe a don@muntin.digital y yo me encargo.'
+    en: "Your top 3 fixes all need a web person — there isn't a self-fix in the list this weekend. If you don't have someone, email don@muntin.digital and we'll route it.",
+    es: 'Tus 3 arreglos prioritarios necesitan ayuda técnica — esta semana no hay nada que puedas resolver tú. Si no tienes a quien acudir, escribe a don@muntin.digital y lo dirigimos desde aquí.'
   },
-  'weekendMode.noSelf.email': { en: 'Email Don',  es: 'Escribirle a Don' },
-  'weekendMode.noSelf.dismiss': { en: 'Close this', es: 'Cerrar' },
+  'weekendMode.noSelf.email': { en: 'Email Don',  es: 'Escríbele a Don' },
+  'weekendMode.noSelf.dismiss': { en: 'Back to the report', es: 'Volver al informe' },
   // Sprint AUDIT-EMPOWERMENT: Core Web Vitals strip — plain-English
   // headline first, technical acronym second. The .label cell now
   // reads ".plain" and the .hint footnote reads ".tech".
