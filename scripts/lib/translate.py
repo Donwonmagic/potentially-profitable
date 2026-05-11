@@ -106,10 +106,18 @@ GLOSSARY = [
     # Tools / services (keep English — restaurant owners know the
     # product name in English regardless of the UI language they use)
     "Google Business Profile",
+    "Google Search Console",
     "Google Maps",
     "Google Search",
     "Google Reviews",
     "Google",
+    "Margin Math",
+    "Workshop",
+    "The Window",
+    "Roma Cucina",
+    "Maketto",
+    "Georgia Ave",
+    "Georgia Avenue",
     "Wix",
     "Squarespace",
     "Shopify",
@@ -246,6 +254,14 @@ GLOSSARY = [
     "KDS",
     "BOH",
     "FOH",
+    "ROI",
+    "CSV",
+    "NAP",
+    "USD",
+    "MD",
+    "PR",
+    "DM",
+    "DMs",
     # Restaurant-industry terms that translate badly when machine-
     # translated literally. We preserve the English term and let the
     # surrounding sentence carry the meaning. For locales where a
