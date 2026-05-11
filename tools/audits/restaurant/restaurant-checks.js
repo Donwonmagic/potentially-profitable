@@ -1711,6 +1711,88 @@ var RESTAURANT_PRIORITY_CHECKS = [
     unverified_es: 'No pudimos cargar tu página principal para verificar las vistas previas del enlace',
     unverifiedNote: "We couldn't fetch your homepage to inspect Open Graph metadata. Re-run the audit in a few seconds — most of the time this resolves on retry.",
     unverifiedNote_es: 'No pudimos cargar tu página principal para inspeccionar el marcado Open Graph. Vuelve a ejecutar la auditoría en unos segundos — la mayoría de las veces se resuelve al reintentar.'
+  },
+
+  // ─────────────────────────────────────────────────────────────────
+  // Wave-D batch 2: three more priority checks.
+  //
+  // D2 owner-reply-rate: deep-scan signal (window.__auditGbpDetails).
+  // D3 transport-security: deep-scan signal (window.__auditObservatory).
+  // D5 stale-copyright: main-cycle (homepage footer text).
+  //
+  // D2 and D3 evaluators return 'unverified' until the deep scan
+  // completes. The deep-scan orchestrator (runDeepSignals in
+  // index.html) re-triggers renderPriorityChecks on signal arrival
+  // so the rows update without a full audit re-run.
+  // ─────────────────────────────────────────────────────────────────
+
+  // D2: Did the owner reply to recent Google reviews?
+  {
+    type: 'review-responsiveness',
+    weight: 0.9,
+    anchor: '#review-responsiveness',
+    effort: 'self',
+    minutes: 45,
+    impact: "Diners read the most recent 2-3 reviews before deciding. Zero replies signals an absentee operator and shifts borderline picks to a competitor who answers every one. A quick reply to even half of recent reviews — even just 'thanks for coming in' on the 5-stars and 'I'm sorry, I'd like to make it right, please email me' on the 1-stars — measurably moves first-time visits.",
+    impact_es: 'Los comensales leen las 2-3 reseñas más recientes antes de decidir. Cero respuestas señala un operador ausente y desvía las decisiones de borde hacia un competidor que responde cada una. Una respuesta rápida incluso a la mitad de las reseñas recientes — solo "gracias por venir" en las de 5 estrellas y "lo siento, me gustaría compensarlo, por favor escríbeme" en las de 1 estrella — mueve mensurable mente las primeras visitas.',
+    pass: 'You reply to most of your Google reviews',
+    pass_es: 'Respondes a la mayoría de tus reseñas de Google',
+    passNote: 'You\'re replying to most of your recent Google reviews. That\'s the single highest-leverage signal you can send to a scanning diner: "this place is operated, not abandoned."',
+    passNote_es: 'Estás respondiendo a la mayoría de tus reseñas recientes de Google. Esa es la señal de mayor impacto que puedes dar a un comensal que está investigando: "este lugar está operado, no abandonado."',
+    fail: 'You haven\'t replied to most recent Google reviews',
+    fail_es: 'No has respondido a la mayoría de las reseñas recientes de Google',
+    failNote: 'Most of your recent Google reviews are unanswered. To a diner doing a 30-second decision check, that reads as absentee ownership. Spend 30 minutes this weekend replying to your last 10 reviews — short and human is fine. Reply to the 5-stars first (build the warmth), then the 1-stars (turn anger into a path back). After that, set a recurring 15-minute weekly slot for replies and the gap closes itself.',
+    failNote_es: 'La mayoría de tus reseñas recientes de Google están sin responder. Para un comensal en una decisión de 30 segundos, eso se lee como dueño ausente. Dedica 30 minutos este fin de semana a responder tus últimas 10 reseñas — corto y humano está bien. Responde primero a las de 5 estrellas (construye calidez), luego a las de 1 estrella (convierte el enojo en un camino de regreso). Después, agenda un slot semanal recurrente de 15 minutos para responder y la brecha se cierra sola.',
+    unverified: "We couldn't check your review response rate",
+    unverified_es: 'No pudimos verificar tu tasa de respuesta a reseñas',
+    unverifiedNote: "We couldn't pull your recent reviews from Google Business Profile. Either we didn't match this site to a verified profile, or the Places API didn't return enough reviews to measure. If you have a profile, make sure its website field points to this exact URL.",
+    unverifiedNote_es: 'No pudimos extraer tus reseñas recientes del Perfil de Empresa de Google. O no emparejamos este sitio con un perfil verificado, o la API de Places no devolvió suficientes reseñas para medir. Si tienes un perfil, asegúrate de que el campo "sitio web" apunte exactamente a esta URL.'
+  },
+
+  // D3: HTTPS + HSTS + security headers (Mozilla Observatory grade).
+  {
+    type: 'transport-security',
+    weight: 1.0, // trust signal — Chrome "Not secure" warnings actively repel
+    anchor: '#transport-security',
+    effort: 'dev',
+    minutes: 90,
+    impact: "If a diner hits your site and sees Chrome's \"Not secure\" warning at the top, the party-of-12 holiday booking dies before the booker has scrolled to your menu. Modern restaurant sites should pass HTTPS plus the basic security headers (HSTS, Content-Security-Policy) so visitors never see the warning and so card-data-adjacent flows (Toast checkout, OpenTable widgets) load cleanly.",
+    impact_es: 'Si un comensal entra a tu sitio y ve la advertencia «No es seguro» de Chrome arriba, la reserva de la fiesta de 12 personas para las fiestas muere antes de que llegue a tu menú. Los sitios modernos de restaurante deben pasar HTTPS más los encabezados de seguridad básicos (HSTS, Content-Security-Policy) para que los visitantes nunca vean la advertencia y para que los flujos cercanos a datos de tarjeta (checkout de Toast, widgets de OpenTable) carguen limpios.',
+    pass: 'Your site is on a modern, secure foundation',
+    pass_es: 'Tu sitio está sobre cimientos modernos y seguros',
+    passNote: "Your site passes Mozilla's transport-security checks — HTTPS works, the right headers are present, no diner will see a 'Not secure' warning.",
+    passNote_es: 'Tu sitio pasa las verificaciones de seguridad de transporte de Mozilla — HTTPS funciona, los encabezados correctos están presentes, ningún comensal verá una advertencia de "No es seguro".',
+    fail: 'Your site is missing modern security headers',
+    fail_es: 'A tu sitio le faltan encabezados modernos de seguridad',
+    failNote: "Mozilla Observatory flagged your site as missing one or more standard security headers (HSTS, X-Content-Type-Options, Content-Security-Policy, etc). These are small one-line additions in your CDN or hosting provider's settings — on Cloudflare, Vercel, or Netlify it's a checkbox. For Wix and Squarespace these ship correctly by default; if you're failing here you're probably on an older host. Ask your web person to add HSTS and a basic CSP — it's a 90-minute job that prevents the 'Not secure' warning permanently.",
+    failNote_es: 'Mozilla Observatory marcó tu sitio como sin uno o más encabezados de seguridad estándar (HSTS, X-Content-Type-Options, Content-Security-Policy, etc). Estos son pequeños agregados de una línea en la configuración de tu CDN o proveedor de hosting — en Cloudflare, Vercel o Netlify es un checkbox. Para Wix y Squarespace estos vienen correctos por defecto; si fallas aquí probablemente estás en un host antiguo. Pídele a tu persona de la web que agregue HSTS y un CSP básico — es un trabajo de 90 minutos que previene la advertencia de "No es seguro" permanentemente.',
+    unverified: "We couldn't scan your site's security headers",
+    unverified_es: 'No pudimos escanear los encabezados de seguridad de tu sitio',
+    unverifiedNote: "Mozilla Observatory didn't return results for your site this run. Either the deep scan hasn't completed yet (this check runs in the deep-scan phase, which finishes 1-2 minutes after the main report), or the Observatory service was unavailable. Re-run the audit with the Deep Scan toggle on if it's not already.",
+    unverifiedNote_es: 'Mozilla Observatory no devolvió resultados para tu sitio en esta ejecución. O el escaneo profundo aún no se ha completado (esta verificación corre en la fase profunda, que termina 1-2 minutos después del informe principal), o el servicio de Observatory no estaba disponible. Vuelve a ejecutar la auditoría con el interruptor de Deep Scan activado si no lo está ya.'
+  },
+
+  // D5: Stale copyright / freshness.
+  {
+    type: 'stale-copyright',
+    weight: 0.5,
+    anchor: '#stale-copyright',
+    effort: 'self',
+    minutes: 2,
+    impact: 'A "© 2019" footer reads to an anxious diner — particularly one planning a birthday or anniversary — as "are they still open after COVID?" It costs nothing to update and removes a silent doubt signal. Two-minute fix: change the year (or better, set it to auto-render from the current year so it never goes stale again).',
+    impact_es: 'Un pie de página "© 2019" se lee — particularmente para alguien planeando un cumpleaños o aniversario — como "¿siguen abiertos después del COVID?" No cuesta nada actualizarlo y elimina una señal silenciosa de duda. Arreglo de dos minutos: cambia el año (o mejor, configúralo para que se renderice automáticamente con el año actual para que nunca se quede viejo).',
+    pass: 'Your copyright year is current',
+    pass_es: 'El año de tu copyright está al día',
+    passNote: "Your footer copyright is current — no silent doubt-signal to the anxious diner planning a special meal.",
+    passNote_es: 'El copyright de tu pie de página está actualizado — sin señales silenciosas de duda para el comensal ansioso que planea una comida especial.',
+    fail: 'Your copyright year is more than a year old',
+    fail_es: 'El año de tu copyright es de hace más de un año',
+    failNote: 'Your homepage footer shows a copyright year more than one year behind the current year. Diners reading this don\'t consciously notice it, but the "are they still open?" doubt-signal lands subconsciously. Two-minute fix: open your site\'s footer in the page editor (Wix: Site Footer → Edit; Squarespace: Footer → Edit) and update the year. Better, replace the static year with a snippet that auto-renders the current year so you never have to think about it again.',
+    failNote_es: 'El pie de página de tu sitio muestra un año de copyright más de un año atrasado. Los comensales que lo leen no lo notan conscientemente, pero la señal de duda "¿siguen abiertos?" entra inconscientemente. Arreglo de dos minutos: abre el pie de tu sitio en el editor (Wix: Pie del sitio → Editar; Squarespace: Pie → Editar) y actualiza el año. Mejor, reemplaza el año estático con un snippet que renderice automáticamente el año actual para que nunca tengas que pensar en eso de nuevo.',
+    unverified: "We couldn't find a copyright in your footer",
+    unverified_es: 'No pudimos encontrar un copyright en tu pie de página',
+    unverifiedNote: "Either your homepage doesn't carry a visible copyright year, or we couldn't read the footer. If your footer has a year, it's fine; if it doesn't, consider adding one — diners use it as a subtle freshness signal.",
+    unverifiedNote_es: 'O tu página principal no tiene un año de copyright visible, o no pudimos leer el pie de página. Si tu pie tiene un año, está bien; si no, considera agregar uno — los comensales lo usan como una señal sutil de actualidad.'
   }
 ];
 

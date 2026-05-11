@@ -7367,6 +7367,33 @@ main{padding-top:64px}
   // running count ("2 / 6 signals returned") so the owner can see
   // Deep Scan actually doing work even when individual chips have
   // nothing to show.
+  // Wave-D batch 2: deep-scan priority-check refresh hook. The
+  // D2 (review-responsiveness) and D3 (transport-security) checks
+  // read from window.__auditGbpDetails and window.__auditObservatory
+  // respectively, both populated by deep-scan fetches that complete
+  // AFTER the main renderPriorityChecks call. When those fetches
+  // land, call this helper to re-evaluate the priority list so the
+  // affected rows update from 'unverified' to pass/fail without a
+  // full audit re-run. Safe to call from any deep-scan completion
+  // hook; no-ops gracefully if no audit state exists yet (snapshot
+  // hydrate path doesn't populate __auditScoreState).
+  function refreshDeepScanPriorityChecks() {
+    try {
+      var state = window.__auditScoreState;
+      if (!state || !state.audits) return;
+      renderPriorityChecks(state.audits, state.allUrls, state.pageText);
+      // Re-run the overall-score recompute since checks may have
+      // flipped from 'unverified' (half-weight) to 'pass' or 'fail'
+      // (full weight). recomputeOverallFromCurrentState handles
+      // the ranking + score-card updates atomically.
+      if (typeof recomputeOverallFromCurrentState === 'function') {
+        recomputeOverallFromCurrentState();
+      }
+    } catch (e) {
+      try { console.warn('[audit] deep-scan priority refresh failed:', e); } catch (_) {}
+    }
+  }
+
   function runDeepSignals(url) {
     var stripEl     = document.getElementById('deepScanStrip');
     var statusEl    = document.getElementById('deepScanStatus');
@@ -7431,6 +7458,10 @@ main{padding-top:64px}
     track(callObservatory(url).then(function(data){
       window.__auditObservatory = data;
       if (typeof renderSecurityGrade === 'function') renderSecurityGrade(data);
+      // Wave-D batch 2: D3 (transport-security) priority check reads
+      // from window.__auditObservatory. Re-trigger the priority-check
+      // render so the row updates from 'unverified' to pass/fail.
+      refreshDeepScanPriorityChecks();
       return data;
     }), function(data){ return !!(data && data.ok && data.grade); });
 
@@ -7450,6 +7481,10 @@ main{padding-top:64px}
       track(callGbpDetails(placeId).then(function(data){
         window.__auditGbpDetails = data;
         if (typeof renderReviewsCard === 'function') renderReviewsCard(data);
+        // Wave-D batch 2: D2 (review-responsiveness) priority check
+        // reads ownerReplyRate from window.__auditGbpDetails. Update
+        // the priority-list row in place.
+        refreshDeepScanPriorityChecks();
         return data;
       }), function(data){ return !!(data && data.ok); });
     }
@@ -11454,6 +11489,75 @@ main{padding-top:64px}
       // pass; either missing = fail.
       if (ogMeta.ogImage && ogMeta.ogTitle) return makeResult(def, 'pass');
       return makeResult(def, 'fail');
+    }
+
+    // ─────────────────────────────────────────────────────────
+    // Wave-D batch 2: three more evaluators.
+    // ─────────────────────────────────────────────────────────
+
+    // D2: review-responsiveness — owner reply rate on Google reviews.
+    // Reads from window.__auditGbpDetails (deep-scan signal). When
+    // the deep scan hasn't run yet (or returned ok:false), evaluator
+    // returns 'unverified' honestly. The deep-scan completion hook
+    // in runDeepSignals re-triggers renderPriorityChecks so this
+    // updates from 'unverified' to pass/fail without a full re-run.
+    if (def.type === 'review-responsiveness') {
+      var rrGbp = (typeof window !== 'undefined') ? window.__auditGbpDetails : null;
+      if (!rrGbp || !rrGbp.ok || typeof rrGbp.ownerReplyRate !== 'number') {
+        return makeResult(def, 'unverified');
+      }
+      // Threshold: 50%+ of recent reviews replied to = pass. Below = fail.
+      // The Places API window is ~5 most-recent reviews; replying to
+      // 3 of 5 (60%) reads as engaged to a scanning diner, while
+      // 1 of 5 (20%) reads as absentee.
+      return makeResult(def, rrGbp.ownerReplyRate >= 0.5 ? 'pass' : 'fail');
+    }
+
+    // D3: transport-security — Mozilla Observatory grade.
+    // Reads from window.__auditObservatory (deep-scan signal). The
+    // grade comes back as 'A+'/'A'/'B'/'C'/'D'/'F'. A or B = pass
+    // (modern, secure foundation); C and below = fail (missing
+    // headers); unverified pre-deep-scan.
+    if (def.type === 'transport-security') {
+      var tsObs = (typeof window !== 'undefined') ? window.__auditObservatory : null;
+      if (!tsObs || !tsObs.ok || typeof tsObs.grade !== 'string' || !tsObs.grade) {
+        return makeResult(def, 'unverified');
+      }
+      // A and B grades = pass (HTTPS + HSTS + at least basic CSP).
+      // C and below = fail (missing one or more critical headers).
+      return makeResult(def, /^[AB]/.test(tsObs.grade) ? 'pass' : 'fail');
+    }
+
+    // D5: stale-copyright — homepage footer year vs current year.
+    // Reads from context.crawl.homepage.html (main cycle).
+    if (def.type === 'stale-copyright') {
+      var scCrawl = context && context.crawl;
+      var scHomepage = scCrawl && scCrawl.homepage;
+      if (!scHomepage || scHomepage.status !== 200 || !scHomepage.html) {
+        return makeResult(def, 'unverified');
+      }
+      // Look for © YYYY or "Copyright YYYY" patterns. Pick the
+      // LATEST year mentioned (most footers carry just one, but
+      // older sites sometimes have "© 2018-2024" ranges or stale
+      // marketing copy).
+      var scYears = [];
+      var scRe = /(?:©|copyright|copyleft|&copy;)[\s\S]{0,60}?(20\d{2})/gi;
+      var scMatch;
+      while ((scMatch = scRe.exec(scHomepage.html)) !== null) {
+        scYears.push(parseInt(scMatch[1], 10));
+      }
+      // Also pick "(c) YYYY" without the word
+      var scRe2 = /\(c\)\s*(20\d{2})/gi;
+      while ((scMatch = scRe2.exec(scHomepage.html)) !== null) {
+        scYears.push(parseInt(scMatch[1], 10));
+      }
+      if (scYears.length === 0) return makeResult(def, 'unverified');
+      var scLatest = Math.max.apply(null, scYears);
+      var scNow = new Date().getFullYear();
+      // Pass if within 1 year (current year OR prior year — many
+      // sites lag a few weeks into January before updating). Fail
+      // if 2+ years stale.
+      return makeResult(def, (scNow - scLatest) <= 1 ? 'pass' : 'fail');
     }
 
     return null;
