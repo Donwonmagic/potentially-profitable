@@ -197,11 +197,15 @@ function siblingsForTerm(slug) {
   const me = termIndex[slug];
   if (!me || !me.topics.length) return [];
   const ts = new Set(me.topics);
+  // Audit-8 fix: return the FULL candidate set, sorted but NOT
+  // capped here. The caller (renderKnit) needs to filter to siblings
+  // with an actual per-term page BEFORE capping at 4 — otherwise a
+  // hub-only entry filtered out at cap-time silently shrinks the
+  // related-terms list. The cap stays a caller responsibility.
   return Object.entries(termIndex)
     .filter(([s, info]) => s !== slug && info.topics.some((t) => ts.has(t)))
     .map(([s]) => s)
-    .sort()
-    .slice(0, 4);
+    .sort();
 }
 
 // --- label resolvers --------------------------------------------------
@@ -337,7 +341,26 @@ ${articlesList}
       </div>`;
 
   // RELATED TERMS — same-topic siblings, alphabetical, max 4.
-  const siblings = siblingsForTerm(slug);
+  // Audit-8 fix: filter siblings to those with an actual per-term
+  // page on disk. Without this, hub-only entries (added to
+  // glossary/index.html as anchored articles but lacking a
+  // /glossary/<slug>/index.html page) would render as raw-slug
+  // links pointing at 404 URLs in every related-terms footer.
+  // The siblingsForTerm helper takes a global "all terms in the
+  // hub" view; pages have a stricter requirement that the link
+  // target actually exists.
+  function hasPerTermPage(sg) {
+    const enFile = path.join(REPO, 'glossary', sg, 'index.html');
+    if (locale === 'es') {
+      const esFile = path.join(REPO, 'es', 'glossary', sg, 'index.html');
+      return fs.existsSync(esFile);
+    }
+    return fs.existsSync(enFile);
+  }
+  // Filter to per-term-page candidates FIRST, then cap at 4. This
+  // way a hub-only entry getting filtered out doesn't shrink the
+  // list below 4 — the next candidate moves up.
+  const siblings = siblingsForTerm(slug).filter(hasPerTermPage).slice(0, 4);
   const siblingsList = siblings.length
     ? siblings.map((sg) => {
         const href = locale === 'en' ? `/glossary/${sg}/` : `/es/glossary/${sg}/`;
