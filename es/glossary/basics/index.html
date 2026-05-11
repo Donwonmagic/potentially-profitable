@@ -37,7 +37,9 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<link rel="stylesheet" href="/assets/site.css?v=c8817cf4dfa3">
+<link rel="preload" as="style" href="/assets/site-core.css?v=a3cc95eb7ac7" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=47810dd9477a" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a3cc95eb7ac7"><link rel="stylesheet" href="/assets/site-article.css?v=47810dd9477a"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -282,6 +284,7 @@
     <div class="hero-center">
       <span class="eyebrow">Sección del glosario</span>
       <h1 class="mt-20 topic-hero-h1">Lo básico</h1>
+      <!-- glossary-backlinks:start --><!-- glossary-backlinks:end -->
       <p class="hero-sub hero-sub-narrow">El puñado de cosas que todo sitio de negocio pequeño necesita antes que cualquier otra. Si estas no están bien puestas, lo demás no importa.</p>
     </div>
   </div>

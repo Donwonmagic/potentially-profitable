@@ -37,7 +37,9 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<link rel="stylesheet" href="/assets/site.css?v=c8817cf4dfa3">
+<link rel="preload" as="style" href="/assets/site-core.css?v=a3cc95eb7ac7" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=47810dd9477a" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a3cc95eb7ac7"><link rel="stylesheet" href="/assets/site-article.css?v=47810dd9477a"></noscript>
 
 </head>
 <body>
@@ -222,6 +224,83 @@
   </div>
 </section>
 
+<!-- topic-essay:start -->
+<section class="topic-essay">
+  <div class="container">
+    <p class="topic-essay__eyebrow">Ensayo del pilar &middot; nuevo en mayo de 2026</p>
+    <h2 class="topic-essay__title">La b&uacute;squeda con IA no es Google con un cuadro de chat.</h2>
+    <div class="topic-essay__body"><p>A mediados de 2026, los motores de b&uacute;squeda con IA &mdash; ChatGPT, Perplexity, Claude, Google AI Overviews, Bing Copilot &mdash; representan un estimado del 8&ndash;14% de las consultas de descubrimiento de restaurantes en el DMV, dependiendo de la mezcla demogr&aacute;fica del operador. Comensales m&aacute;s j&oacute;venes (18&ndash;34) usan m&aacute;s b&uacute;squeda con IA; los mayores (55+) siguen usando Google Maps directo. El punto de cruce se mueve constantemente; para 2027 la cuota para restaurantes probablemente est&eacute; en la franja 20&ndash;30%.</p>
+
+        <p>Este pilar es la gu&iacute;a de campo para un operador independiente que quiere ser citado por nombre en esas respuestas, no solo indexado donde un crawler lo encuentre. Tres cosas que saber antes de empezar: la b&uacute;squeda con IA no es Google con un cuadro de chat; los algoritmos se preocupan por se&ntilde;ales distintas a las del local-pack; y la mayor&iacute;a de lo que puedes hacer para influir en la cita es el mismo trabajo que mejora el resto de tu sitio.</p>
+
+        <h3>C&oacute;mo funcionan los motores de b&uacute;squeda con IA en 2026</h3>
+
+        <p>Diferentes de una b&uacute;squeda en Google en tres formas:</p>
+
+        <ul>
+          <li><strong>Recuperaci&oacute;n, no ranking.</strong> Un motor de b&uacute;squeda con IA no ordena diez enlaces azules; recupera 3&ndash;8 fuentes, las resume y cita por URL o sitio. La recuperaci&oacute;n suele ser una b&uacute;squeda vectorial sobre un corpus indexado + un fetch en tiempo real de la fuente m&aacute;s fresca para consultas sensibles al tiempo (horarios, precios, reservas). Tu trabajo es estar en el corpus Y ser fetcheable cuando se pregunta.</li>
+          <li><strong>La cita es una se&ntilde;al separada del indexado.</strong> Indexar significa que el crawler lleg&oacute; a tu URL. Citar significa que el LLM eligi&oacute; citarte (con un enlace) cuando respondi&oacute; una pregunta. Las se&ntilde;ales que ganan la cita: afirmaciones claras y autoritativas, fuentes nombradas, datos estructurados, fechas de frescura, y la ausencia de relleno de marketing. El mismo operador que ser&iacute;a citado en una pieza del New York Times es el operador al que la b&uacute;squeda con IA cita.</li>
+          <li><strong>La unidad de la cita es un p&aacute;rrafo, no una p&aacute;gina.</strong> La b&uacute;squeda con IA toma el bloque de 40&ndash;80 palabras debajo de un H2 con forma de pregunta (&laquo;&iquest;Cu&aacute;nto cuesta&hellip;?&raquo;, &laquo;&iquest;Qu&eacute; schema usa Google para&hellip;?&raquo;) mucho m&aacute;s que un p&aacute;rrafo h&eacute;roe vagabundo. Escribe como quieras ser citado: una pregunta, despu&eacute;s un p&aacute;rrafo apretado que la responde, despu&eacute;s el contexto de soporte.</li>
+        </ul>
+
+        <h3>La superficie del corpus</h3>
+
+        <p>La mayor&iacute;a de los motores de b&uacute;squeda con IA hacen fetch e indexan dos archivos espec&iacute;ficos cuando deciden de qu&eacute; trata un sitio:</p>
+
+        <ul>
+          <li><strong><code>/llms.txt</code></strong> &mdash; el mapa curado. T&iacute;tulo + meta-descripci&oacute;n + URL para cada art&iacute;culo, t&eacute;rmino del glosario y herramienta. Mantenido por <a href="https://github.com/donwonmagic/potentially-profitable/blob/main/scripts/build-llms-txt.mjs" target="_blank" rel="noopener">scripts/build-llms-txt.mjs</a> en este sitio; reconstruido en cada deploy.</li>
+          <li><strong><code>/llms-full.txt</code></strong> &mdash; el corpus de cuerpo completo. Cada art&iacute;culo + nota de investigaci&oacute;n + t&eacute;rmino del glosario en Markdown, con front matter estable por &iacute;tem (t&iacute;tulo, URL can&oacute;nica, locale, fecha, tipo). El <a href="/es/llms-full.txt">corpus en este sitio</a> pesa ~570 KB para ES; <a href="/llms-full.txt">/llms-full.txt</a> es la versi&oacute;n EN.</li>
+          <li><strong><code>/feed-llm.json</code></strong> &mdash; JSON Feed 1.1 con <code>content_text</code> por &iacute;tem. Los motores de b&uacute;squeda con IA que prefieren forma-de-feed sobre texto plano usan esto. Locales mixtos etiquetados por <code>language</code>.</li>
+        </ul>
+
+        <p>Adem&aacute;s las se&ntilde;ales de descubrimiento convencionales: <a href="/sitemap.xml">/sitemap.xml</a> (456 URLs, EN + ES), <a href="/feed.xml">/feed.xml</a> (RSS), <a href="/robots.txt">/robots.txt</a> (con permisos expl&iacute;citos por agente para GPTBot, ClaudeBot, anthropic-ai, Claude-Web, PerplexityBot, Google-Extended, Bytespider, Applebot-Extended). La p&aacute;gina <a href="/es/ai/">/es/ai/</a> documenta para qu&eacute; usa el estudio la IA y para qu&eacute; nunca &mdash; la postura de confianza que los motores de b&uacute;squeda con IA buscan al decidir si citar una fuente como autoritativa.</p>
+
+        <h3>Por qu&eacute; el schema es el segundo corpus</h3>
+
+        <p>Los motores de b&uacute;squeda con IA parsean JSON-LD agresivamente. Los mismos cinco tipos de schema que mueven la aguja para SEO tradicional (Restaurant, LocalBusiness, OpeningHoursSpecification, Menu, Reservation) son los que la b&uacute;squeda con IA toma cuando responde una consulta como &laquo;&iquest;est&aacute; abierto el Irish Inn en Nochebuena?&raquo;. Un sitio cuyo JSON-LD dice &laquo;cerrado el 24 de diciembre&raquo; obtiene la cita; un sitio cuyo JSON-LD est&aacute; en silencio se cuestiona.</p>
+
+        <p>Tres implicaciones para el operador:</p>
+
+        <ul>
+          <li><strong>Horarios festivos en JSON-LD, no solo en GBP.</strong> Usa el <a href="/es/tools/holiday-hours/">Generador de horarios festivos</a> para emitir el override <code>specialOpeningHoursSpecification</code>; p&eacute;galo en el bloque schema de tu sitio.</li>
+          <li><strong>Men&uacute; en HTML + JSON-LD, no como PDF.</strong> Usa el <a href="/es/tools/menu-converter/">Conversor de men&uacute;</a> para convertir texto pegado en ambos. La b&uacute;squeda con IA no puede parsear un PDF; puede parsear un bloque Menu schema en dos segundos.</li>
+          <li><strong>Deeplink de reserva en schema.</strong> El tipo <code>Reservation</code> con un <code>potentialAction</code> apuntando a la p&aacute;gina de tu local en OpenTable / Resy permite a los motores de b&uacute;squeda con IA responder &laquo;res&eacute;rvame una mesa en &lt;nombre&gt;&raquo; con la URL correcta al primer intento. <a href="/es/blog/los-6-tipos-de-schema-markup-que-google-usa/">Los 6 tipos de schema que Google usa</a> recorre el JSON-LD.</li>
+        </ul>
+
+        <h3>Lo que los motores de b&uacute;squeda con IA NO citar&aacute;n</h3>
+
+        <p>Patrones que hacen que una fuente sea efectivamente no-citable, en este orden:</p>
+
+        <ol>
+          <li><strong>Relleno de marketing.</strong> Una p&aacute;gina cuyo primer p&aacute;rrafo es &laquo;Bienvenido a un viaje culinario de sabores aut&eacute;nticos&raquo; se indexa pero no se cita. Los modelos de b&uacute;squeda con IA aprendieron a descontar este registro porque rara vez es verdadero y nunca espec&iacute;fico. El contrato de voz en este sitio (<a href="/es/methods/#voice-contract">/es/methods/#voice-contract</a>) es el registro citable: declarativos cortos, fuentes nombradas, sin abstracciones.</li>
+          <li><strong>Afirmaciones sin fecha.</strong> &laquo;Los restaurantes t&iacute;picamente operan con 4&ndash;7% de margen neto&raquo; sin fecha o fuente se cita raramente. La misma afirmaci&oacute;n con &laquo;seg&uacute;n el reporte 2025 de RAMW&raquo; se cita seguido. Fecha todo; cita todo.</li>
+          <li><strong>P&aacute;ginas que mienten v&iacute;a SEO.</strong> Una p&aacute;gina titulada &laquo;Mejor pizza en Bethesda 2026&raquo; que es un disfraz delgado de afiliados pierde peso de cita cada trimestre. Los motores de b&uacute;squeda con IA est&aacute;n entrenados expl&iacute;citamente para descontar estos patrones.</li>
+          <li><strong>Contenido solo-JS.</strong> Si tu men&uacute; solo se renderiza despu&eacute;s de que JavaScript corra, los crawlers de b&uacute;squeda con IA (que muchas veces no ejecutan JS) ven una p&aacute;gina vac&iacute;a. El fallback: server-render del men&uacute;, o env&iacute;a los datos en JSON-LD tambi&eacute;n. El <a href="/es/tools/menu-converter/">Conversor de men&uacute; gratis</a> emite ambos.</li>
+          <li><strong>Sitios con robots.txt hostil.</strong> Bloquear GPTBot, ClaudeBot, Google-Extended y PerplexityBot garantiza que no ser&aacute;s citado. La postura del sitio es lo opuesto: permisos expl&iacute;citos por agente para los crawlers de citaci&oacute;n en tiempo real, con denies nombrados solo para scrapers solo-de-entrenamiento (CCBot, Omgilibot, ImagesiftBot).</li>
+        </ol>
+
+        <h3>Qu&eacute; hacer este mes</h3>
+
+        <p>Tres acciones, en orden de palanca:</p>
+
+        <ol>
+          <li><strong>Env&iacute;a un /llms-full.txt en tu propio sitio.</strong> Si los motores de b&uacute;squeda con IA leen cuerpos completos pero solo env&iacute;as un sitemap, est&aacute;s dejando la superficie de cita plana. El <a href="https://github.com/donwonmagic/potentially-profitable/blob/main/scripts/build-llms-full.mjs" target="_blank" rel="noopener">build script</a> en este sitio est&aacute; abierto; c&oacute;pialo, adapta a tu CMS, env&iacute;a.</li>
+          <li><strong>Audita tu robots.txt contra la lista de crawlers de IA.</strong> Stanzas por agente para GPTBot, ClaudeBot, anthropic-ai, Claude-Web, PerplexityBot, Google-Extended, Bytespider, Applebot-Extended. Permite cada uno, con los mismos disallows que tu wildcard. El <a href="/robots.txt">robots.txt en este sitio</a> es una plantilla funcional.</li>
+          <li><strong>Reescribe tus tres p&aacute;ginas de m&aacute;s tr&aacute;fico en registro de cita.</strong> Primer p&aacute;rrafo: una respuesta declarativa corta a la pregunta que alguien har&iacute;a. Segundo p&aacute;rrafo: la matem&aacute;tica de soporte, con fuentes nombradas. Tercero: una conclusi&oacute;n apretada. Quita el primer p&aacute;rrafo de relleno de marketing; reempl&aacute;zalo con la respuesta. El <a href="/es/methods/#voice-contract">contrato de voz</a> en este sitio es el modelo.</li>
+        </ol>
+
+        <p>El compuesto a observar: <strong>citas en el campo</strong>. No hay un equivalente Plausible-dashboard para esto a&uacute;n; el m&eacute;todo pr&aacute;ctico es teclear el nombre de tu negocio + una pregunta en ChatGPT, Perplexity, y Claude mensualmente y ver si tu sitio aparece como fuente. La l&iacute;nea de tendencia a seis meses te dice si el trabajo est&aacute; aterrizando.</p>
+
+        <h3>D&oacute;nde toca este tema a los otros</h3>
+
+        <ul>
+          <li><strong><a href="/es/learn/topics/local-seo/">SEO local y Descubrimiento</a></strong> &mdash; porque la b&uacute;squeda con IA y el SEO local compiten por algo de la misma atenci&oacute;n del operador, pero el trabajo se compone. Schema fuerte, contenido fuerte, patrones de respuesta del due&ntilde;o construyen ambos. D&oacute;nde divergen: la b&uacute;squeda con IA premia profundidad y cita; el SEO local premia consistencia y frescura.</li>
+          <li><strong><a href="/es/learn/topics/conversions/">Conversiones y Contenido</a></strong> &mdash; porque el visitante que aterriza en tu sitio despu&eacute;s de una cita de b&uacute;squeda con IA es, al click, el visitante de mayor intenci&oacute;n que tienes. No filtres a ese visitante con una p&aacute;gina lenta o un bot&oacute;n de reserva escondido.</li>
+          <li><strong><a href="/es/learn/topics/information-security/">Seguridad inform&aacute;tica</a></strong> &mdash; porque las se&ntilde;ales de confianza que los motores de b&uacute;squeda con IA leen (autor nombrado, afirmaciones fechadas, lista transparente de proveedores) son las mismas se&ntilde;ales que construyen confianza del lado del operador. La p&aacute;gina <a href="/es/security/">/es/security/</a> en este sitio es un solo artefacto que sirve a ambas audiencias.</li>
+        </ul></div>
+  </div>
+</section>
+<!-- topic-essay:end -->
 <section class="block final">
   <div class="container">
     <div class="section-header reveal section-center">

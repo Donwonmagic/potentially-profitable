@@ -19,7 +19,7 @@
 <meta property="og:description" content="OpeningHoursSpecification: Un tipo específico de datos estructurados de Schema.org para representar cuándo un lugar está abierto. Vive dentro de un bloque JSON-LD de Restaurant como…" />
 <meta property="og:url" content="https://muntin.digital/es/glossary/opening-hours-specification/" />
 <meta property="og:site_name" content="Muntin Digital" />
-<meta property="og:image" content="https://muntin.digital/brand/og/glossary-es.png" />
+<meta property="og:image" content="https://muntin.digital/brand/og/glossary-opening-hours-specification-es.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
@@ -27,7 +27,7 @@
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="OpeningHoursSpecification — Glosario Muntin Digital" />
 <meta name="twitter:description" content="OpeningHoursSpecification: Un tipo específico de datos estructurados de Schema.org para representar cuándo un lugar está abierto. Vive dentro de un bloque JSON-LD de Restaurant como…" />
-<meta name="twitter:image" content="https://muntin.digital/brand/og/glossary-es.png" />
+<meta name="twitter:image" content="https://muntin.digital/brand/og/glossary-opening-hours-specification-es.png" />
 
 <link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
 <link rel="icon" type="image/png" sizes="192x192" href="/brand/favicons/android-chrome-192x192.png" />
@@ -37,7 +37,9 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<link rel="stylesheet" href="/assets/site.css?v=c8817cf4dfa3">
+<link rel="preload" as="style" href="/assets/site-core.css?v=a3cc95eb7ac7" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=47810dd9477a" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a3cc95eb7ac7"><link rel="stylesheet" href="/assets/site-article.css?v=47810dd9477a"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -78,6 +80,51 @@
   ]
 }
 </script>
+<!-- glossary-article-schema:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "@id": "https://muntin.digital/es/glossary/opening-hours-specification/#article",
+      "headline": "OpeningHoursSpecification",
+      "abstract": "Un tipo específico de datos estructurados de Schema.org para representar cuándo un lugar está abierto. Vive dentro de un bloque JSON-LD de Restaurant como una o más entradas con campos dayOfWeek, opens y closes. Las excepciones por feriados usan el mismo tipo a través de la propiedad paralela specialOpeningHoursSpecification. El formato que el parser de Rich Results de Google sí consume — la diferencia entre \"los horarios varían\" y una cuadrícula semanal completa en tu snippet de búsqueda.",
+      "description": "Un tipo específico de datos estructurados de Schema.org para representar cuándo un lugar está abierto. Vive dentro de un bloque JSON-LD de Restaurant como una o más entradas con campos dayOfWeek, opens y closes. Las excepciones por feriados usan el mismo tipo a través de la propiedad paralela specialOpeningHoursSpecification. El formato que el parser de Rich Results de Google sí consume — la diferencia entre \"los horarios varían\" y una cuadrícula semanal completa en tu snippet de búsqueda.",
+      "url": "https://muntin.digital/es/glossary/opening-hours-specification/",
+      "mainEntityOfPage": {
+        "@id": "https://muntin.digital/es/glossary/opening-hours-specification/#term"
+      },
+      "about": {
+        "@id": "https://muntin.digital/es/glossary/opening-hours-specification/#term"
+      },
+      "inLanguage": "es-US",
+      "author": {
+        "@type": "Person",
+        "@id": "https://muntin.digital/#don-goldstein",
+        "name": "Don Goldstein",
+        "url": "https://muntin.digital/about/"
+      },
+      "publisher": {
+        "@id": "https://muntin.digital/#business"
+      },
+      "image": "https://muntin.digital/brand/og/glossary-opening-hours-specification-es.png",
+      "datePublished": "2026-04-26T01:40:14Z",
+      "isPartOf": {
+        "@id": "https://muntin.digital/glossary/#muntin-glossary"
+      }
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "https://muntin.digital/es/glossary/opening-hours-specification/#term",
+      "sameAs": [
+        "https://schema.org/OpeningHoursSpecification"
+      ]
+    }
+  ]
+}
+</script>
+<!-- glossary-article-schema:end -->
 </head>
 <body>
 
@@ -221,6 +268,26 @@
     <header class="term-head">
       <span class="eyebrow"><a href="/es/glossary/findability/">Que te encuentren</a></span>
       <h1 class="term-h1">OpeningHoursSpecification</h1>
+      <!-- term-example:start -->
+            <p class="term-example">Ejemplo: Un diner con OpeningHoursSpecification válido + overrides de feriado muestra el aviso correcto 'Cerrado el Día de Navidad' en el panel de Google — sin él, las búsquedas de víspera ven horarios desactualizados.</p>
+            <!-- term-example:end -->
+      <!-- glossary-verified:start -->
+            <p class="glossary-verified">Última revisión: <time datetime="2026-04-26">26 de abril de 2026</time></p>
+            <!-- glossary-verified:end -->
+      <!-- glossary-backlinks:start -->
+      <aside class="see-also glossary-backlinks" aria-labelledby="glossary-backlinks-h">
+        <p class="see-also-label" id="glossary-backlinks-h">Dónde aparece este término</p>
+        <ul class="see-also-list">
+        <li>
+          <a class="see-also-card" href="/es/blog/los-6-tipos-de-schema-markup-que-google-usa/">
+            <span class="see-also-kind">Artículo</span>
+            <h3>Schema Markup para Restaurantes: Los 6 Tipos que Google Usa</h3>
+            <p>Los seis tipos de schema.org que mueven la aguja para los resultados de búsqueda de restaurantes en 2026 — Restaurant, Menu, OpeningHoursSpecification, AggregateRating, Reservation y FAQ — con JSON-LD listo para copiar y pegar.</p>
+          </a>
+        </li>
+        </ul>
+      </aside>
+      <!-- glossary-backlinks:end -->
       <p class="term-aka">el tipo de Schema.org que Google lee para mostrar tus horarios en los resultados</p>
       <div class="term-meta">
         <div class="term-tags"><span class="gloss-tag">Restaurantes</span></div>
@@ -231,7 +298,7 @@
     <div class="term-body">
       <p class="term-def">Un tipo específico de datos estructurados de Schema.org para representar cuándo un lugar está abierto. Vive dentro de un bloque JSON-LD de <a href="/es/glossary/schema/"><code>Restaurant</code></a> como una o más entradas con campos <code>dayOfWeek</code>, <code>opens</code> y <code>closes</code>. Las excepciones por feriados usan el mismo tipo a través de la propiedad paralela <code>specialOpeningHoursSpecification</code>. El formato que el parser de Rich Results de Google sí consume — la diferencia entre &ldquo;los horarios varían&rdquo; y una cuadrícula semanal completa en tu snippet de búsqueda.</p>
       <h2 class="term-why-h">Por qué importa</h2>
-      <p class="term-why">El cliente que busca &ldquo;¿está abierto [restaurante] ahora?&rdquo; no abre tu sitio web — mira el rich snippet y decide. Sin un bloque <code>OpeningHoursSpecification</code> en cada página, Google recurre a &ldquo;los horarios varían&rdquo; o a lo que diga tu Google Business Profile, y cuando esas dos fuentes no coinciden tu ficha hereda la confianza más baja. <a href="/es/tools/open-hours/">Open Hours</a> genera el bloque completo (con el patrón defensivo del cruce de medianoche correctamente manejado) para cualquier semana + calendario de cierres que ingreses.</p>
+      <p class="term-why">El cliente que busca &ldquo;¿está abierto [restaurante] ahora?&rdquo; no abre tu sitio web — mira el rich snippet y decide. Sin un bloque <code>OpeningHoursSpecification</code> en cada página, Google recurre a &ldquo;los horarios varían&rdquo; o a lo que diga tu Google Business Profile, y cuando esas dos fuentes no coinciden tu ficha hereda la confianza más baja. <a href="/es/tools/open-hours/#result">Open Hours</a> genera el bloque completo (con el patrón defensivo del cruce de medianoche correctamente manejado) para cualquier semana + calendario de cierres que ingreses.</p>
       <aside class="term-research">
       <p class="term-research-label">Ver la investigación</p>
       <p><a href="/es/learn/research/local-business-websites/">Usabilidad de sitios de negocios locales <span aria-hidden="true">↗</span></a></p>
@@ -269,13 +336,50 @@
       <p class="final-sub">Definiciones en lenguaje claro para cada término en tu auditoría, organizadas por categoría.</p>
     </div>
     <div class="hero-ctas reveal hero-ctas-center">
-      <a class="btn btn-primary" href="/es/tools/open-hours/">Abrir Horario Abierto</a>
+      <a class="btn btn-primary" href="/es/tools/open-hours/#result">Abrir Horario Abierto</a>
       <a class="btn btn-ghost" href="/es/glossary/">Abrir el glosario completo</a>
     </div>
   </div>
 </section>
 
 <!-- glossary-knit -->
+<aside class="glossary-knit" aria-labelledby="glossary-knit-h-opening-hours-specification">
+    <div class="container">
+      <h2 id="glossary-knit-h-opening-hours-specification" class="glossary-knit__h">Sigue.</h2>
+      <div class="glossary-knit__grid">
+      <div class="glossary-knit__col">
+        <h3>Tema</h3>
+        <a href="/es/learn/topics/local-seo/">SEO local y descubrimiento</a>
+      </div>
+      <div class="glossary-knit__col">
+        <h3>Aparece en</h3>
+        <ul>
+          <li><a href="/es/tools/open-hours/#result">Horario Abierto</a></li>
+          <li><a href="/es/tools/holiday-hours/#result">Generador de horarios festivos</a></li>
+        </ul>
+      </div>
+      <div class="glossary-knit__col">
+        <h3>Lee</h3>
+        <ul>
+          <li><a href="/es/blog/how-to-set-up-google-business-profile-for-your-restaurant/">Configurar Google Business Profile</a></li>
+          <li><a href="/es/blog/how-to-recover-reservations-from-googles-find-a-table/">Recuperar reservas de Find a Table de Google</a></li>
+          <li><a href="/es/blog/restaurant-schema-markup-6-types-google-uses/">Los 6 tipos de schema que Google usa</a></li>
+          <li><a href="/es/blog/how-to-read-restaurant-google-search-console/">Cómo leer Google Search Console</a></li>
+          <li><a href="/es/blog/how-to-get-more-google-reviews-for-your-restaurant/">Conseguir más reseñas de Google</a></li>
+        </ul>
+      </div>
+      <div class="glossary-knit__col">
+        <h3>Términos relacionados</h3>
+        <ul>
+          <li><a href="/es/glossary/alt-text/">Texto alternativo</a></li>
+          <li><a href="/es/glossary/apple-bing-maps/">Apple Maps y Bing Places</a></li>
+          <li><a href="/es/glossary/canonical-url/">URL canónica</a></li>
+          <li><a href="/es/glossary/gbp/">Ficha de Google Business</a></li>
+        </ul>
+      </div>
+      </div>
+    </div>
+  </aside>
 <!-- /glossary-knit -->
 </main>
 

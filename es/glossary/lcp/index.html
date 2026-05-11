@@ -19,7 +19,7 @@
 <meta property="og:description" content="Largest Contentful Paint: Cuánto tarda en terminarse de dibujar la pieza visible más grande de tu portada — normalmente la foto del hero o el titular — en un celular. Menos de 2,5 s…" />
 <meta property="og:url" content="https://muntin.digital/es/glossary/lcp/" />
 <meta property="og:site_name" content="Muntin Digital" />
-<meta property="og:image" content="https://muntin.digital/brand/og/glossary-es.png" />
+<meta property="og:image" content="https://muntin.digital/brand/og/glossary-lcp-es.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
@@ -27,7 +27,7 @@
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Largest Contentful Paint — Glosario Muntin Digital" />
 <meta name="twitter:description" content="Largest Contentful Paint: Cuánto tarda en terminarse de dibujar la pieza visible más grande de tu portada — normalmente la foto del hero o el titular — en un celular. Menos de 2,5 s…" />
-<meta name="twitter:image" content="https://muntin.digital/brand/og/glossary-es.png" />
+<meta name="twitter:image" content="https://muntin.digital/brand/og/glossary-lcp-es.png" />
 
 <link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
 <link rel="icon" type="image/png" sizes="192x192" href="/brand/favicons/android-chrome-192x192.png" />
@@ -37,7 +37,9 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<link rel="stylesheet" href="/assets/site.css?v=c8817cf4dfa3">
+<link rel="preload" as="style" href="/assets/site-core.css?v=a3cc95eb7ac7" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=47810dd9477a" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a3cc95eb7ac7"><link rel="stylesheet" href="/assets/site-article.css?v=47810dd9477a"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -78,6 +80,51 @@
   ]
 }
 </script>
+<!-- glossary-article-schema:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "@id": "https://muntin.digital/es/glossary/lcp/#article",
+      "headline": "Largest Contentful Paint",
+      "abstract": "Cuánto tarda en terminarse de dibujar la pieza visible más grande de tu portada — normalmente la foto del hero o el titular — en un celular. Menos de 2,5 segundos es «bueno», más de 4 segundos es «pobre».",
+      "description": "Cuánto tarda en terminarse de dibujar la pieza visible más grande de tu portada — normalmente la foto del hero o el titular — en un celular. Menos de 2,5 segundos es «bueno», más de 4 segundos es «pobre».",
+      "url": "https://muntin.digital/es/glossary/lcp/",
+      "mainEntityOfPage": {
+        "@id": "https://muntin.digital/es/glossary/lcp/#term"
+      },
+      "about": {
+        "@id": "https://muntin.digital/es/glossary/lcp/#term"
+      },
+      "inLanguage": "es-US",
+      "author": {
+        "@type": "Person",
+        "@id": "https://muntin.digital/#don-goldstein",
+        "name": "Don Goldstein",
+        "url": "https://muntin.digital/about/"
+      },
+      "publisher": {
+        "@id": "https://muntin.digital/#business"
+      },
+      "image": "https://muntin.digital/brand/og/glossary-lcp-es.png",
+      "datePublished": "2026-04-24T23:03:21Z",
+      "isPartOf": {
+        "@id": "https://muntin.digital/glossary/#muntin-glossary"
+      }
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "https://muntin.digital/es/glossary/lcp/#term",
+      "sameAs": [
+        "https://web.dev/articles/lcp"
+      ]
+    }
+  ]
+}
+</script>
+<!-- glossary-article-schema:end -->
 </head>
 <body>
 
@@ -221,6 +268,26 @@
     <header class="term-head">
       <span class="eyebrow"><a href="/es/glossary/mobile/">Móvil y velocidad</a></span>
       <h1 class="term-h1">Largest Contentful Paint</h1>
+      <!-- term-example:start -->
+            <p class="term-example">Ejemplo: Un LCP sobre 2.5s pierde un estimado 12% de conversiones móviles de reserva; sobre 4.0s la pérdida compone hasta cerca del 30%.</p>
+            <!-- term-example:end -->
+      <!-- glossary-verified:start -->
+            <p class="glossary-verified">Última revisión: <time datetime="2026-04-24">24 de abril de 2026</time></p>
+            <!-- glossary-verified:end -->
+      <!-- glossary-backlinks:start -->
+      <aside class="see-also glossary-backlinks" aria-labelledby="glossary-backlinks-h">
+        <p class="see-also-label" id="glossary-backlinks-h">Dónde aparece este término</p>
+        <ul class="see-also-list">
+        <li>
+          <a class="see-also-card" href="/es/blog/cuando-rehacer-tu-sitio-web-de-restaurante/">
+            <span class="see-also-kind">Artículo</span>
+            <h3>Cuándo Rehacer el Sitio Web de Tu Restaurante: Un Framework de Decisión</h3>
+            <p>La mayoría de los operadores rehace su sitio web 18 meses tarde. Este es el framework de siete preguntas para tomar la decisión — y los tres patrones de caso que muestran qué cambia cada respuesta.</p>
+          </a>
+        </li>
+        </ul>
+      </aside>
+      <!-- glossary-backlinks:end -->
       <p class="term-aka">LCP</p>
       <div class="term-meta">
         <div class="term-tags"><span class="gloss-tag">Restaurantes</span></div>
@@ -276,6 +343,40 @@
 </section>
 
 <!-- glossary-knit -->
+<aside class="glossary-knit" aria-labelledby="glossary-knit-h-lcp">
+    <div class="container">
+      <h2 id="glossary-knit-h-lcp" class="glossary-knit__h">Sigue.</h2>
+      <div class="glossary-knit__grid">
+      <div class="glossary-knit__col">
+        <h3>Tema</h3>
+        <a href="/es/learn/topics/speed-mobile/">Velocidad y móvil</a>
+      </div>
+      <div class="glossary-knit__col">
+        <h3>Aparece en</h3>
+        <ul>
+          <li><a href="/es/tools/audits/restaurant/">Diagnóstico de sitio de restaurante</a></li>
+        </ul>
+      </div>
+      <div class="glossary-knit__col">
+        <h3>Lee</h3>
+        <ul>
+          <li><a href="/es/blog/why-your-restaurant-loses-reservations-every-night/">Por qué pierdes reservas cada noche</a></li>
+          <li><a href="/es/blog/how-to-tell-if-a-restaurant-tool-is-safe/">Cómo saber si una herramienta es segura</a></li>
+          <li><a href="/es/blog/when-to-rebuild-your-restaurant-website/">Cuándo rehacer tu sitio</a></li>
+        </ul>
+      </div>
+      <div class="glossary-knit__col">
+        <h3>Términos relacionados</h3>
+        <ul>
+          <li><a href="/es/glossary/body-text-size/">Tamaño del texto de cuerpo</a></li>
+          <li><a href="/es/glossary/cdn/">CDN</a></li>
+          <li><a href="/es/glossary/cls/">Cumulative Layout Shift</a></li>
+          <li><a href="/es/glossary/core-web-vitals/">Core Web Vitals</a></li>
+        </ul>
+      </div>
+      </div>
+    </div>
+  </aside>
 <!-- /glossary-knit -->
 </main>
 
