@@ -1,0 +1,315 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-11T05:10:21.666Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "zm_yunxi",
+  "language": "zh",
+  "total": 572.2,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "简而言之",
+      "start": 0,
+      "end": 1.19
+    },
+    {
+      "id": 1,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "我在2026年4月7日将两家DMV餐厅中的一个从DoorDash中删除；第一周的日均收入下降了11%，到第四周恢复到了基线的2.6%以内。",
+      "start": 1.54,
+      "end": 14.7
+    },
+    {
+      "id": 2,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "由于每个重新捕获的订单从18.4%的DoorDash渠道转移到了28.9%的直接渠道，因此与基线相比，第四周的日均保留利润增加了56%。",
+      "start": 15.02,
+      "end": 29.01
+    },
+    {
+      "id": 3,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "总增量保留利润：约4,000美元，占月度总收入58,000美元的餐厅。该平台90%的订单是被取代的关系订单，10%是净新增订单——这与我之前的想法不同。",
+      "start": 29.33,
+      "end": 42.79
+    },
+    {
+      "id": 4,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "实地笔记 &middot; 2026年5月11日 &middot; 9分钟阅读 &middot; 作者：Don Goldstein",
+      "start": 43.14,
+      "end": 52.47
+    },
+    {
+      "id": 5,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "我在2026年4月7日将两家DMV餐厅中的一个从DoorDash中删除——那家较小的餐厅，渠道数学最差的那家。这是30天的实地报告：实际发生了什么变化，什么没有变化，我在哪里正确，哪里错误，以及每个变化的美元金额。不是一个推荐，只是诚实地讲述了这些数字。",
+      "start": 52.82,
+      "end": 75.13
+    },
+    {
+      "id": 6,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "在4月7日之前，餐厅通过DoorDash单独完成了大约每季度1,800个第三方应用订单，平均票价为39.60美元。Marketplace Plus级别，30%的佣金，标准的费用栈——我在做出决定的三周前在DoorDash利润分析中讲过的相同费用栈。在这些订单上，保留的百分比在所有费用和食物/劳动力成本之后是18.4%。我已经承担了这个渠道两年了，假设发现表面值得支付利润税。数学最终表明，事实并非如此。",
+      "start": 75.48,
+      "end": 108.34
+    },
+    {
+      "id": 7,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "我在星期日晚上删除了餐厅。关闭了DoorDash的商店，并没有重新打开，也没有公开宣布，也没有在Instagram上提及。电话和走进来的顾客仍然如常。以下是删除后的四个星期的情况。",
+      "start": 108.69,
+      "end": 121.55
+    },
+    {
+      "id": 8,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "第1周：没有到来的恐慌。",
+      "start": 122.65,
+      "end": 124.57
+    },
+    {
+      "id": 9,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "我已经准备好面对20-30%的收入下降。DoorDash渠道在删除前每天大约有580美元的订单，扣除佣金后，餐厅的净收入约为107美元。预计我会看到400美元-500美元的收入蒸发，可能在一个季度内有60%的收入通过其他渠道回流。",
+      "start": 125.27,
+      "end": 145.01
+    },
+    {
+      "id": 10,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "第一周实际发生的情况：所有渠道的收入下降了215美元/天，而不是580美元。失去的收入约为预期的63%。DoorDash订单在同一周内部分重新分配——有些转移到了走进来的顾客，有些转移到了直接电话订单，有些转移到了餐厅自己的网站。没有订单转移到Uber Eats或Grubhub，因为餐厅不在这些平台上。",
+      "start": 145.36,
+      "end": 171.47
+    },
+    {
+      "id": 11,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "在DoorDash下架后的四周里，所有渠道的日均收入。基准周，即下架前的平均日均总收入为1940美元。下架后的第一周，日均收入下降到1725美元，跌幅为11.1%。第二周恢复到1780美元，距基准周的差距为8.2%。第三周进一步恢复到1820美元，差距为6.2%。第四周的日均收入为1890美元，仅距基准周的差距为2.6%。与此同时，每天的保留利润（kept margin）从基准周的大约230美元增加到第四周的360美元，增长了56%。收入减少，保留利润却增加了。",
+      "start": 172.27,
+      "end": 215.38
+    },
+    {
+      "id": 12,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "第二周：关于“DoorDash是否下线”的电话。",
+      "start": 216.48,
+      "end": 219.74
+    },
+    {
+      "id": 13,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "投诉量在第11天达到峰值。那些通过DoorDash经常下单的顾客开始打电话到餐厅，询问我们是否已经关闭，DoorDash是否出现了问题，或者他们的订单历史是否被删除。DoorDash应用程序，predictably，不再显示我们——对于习惯通过DoorDash下单的顾客来说，我们的消失看起来像是餐厅已经关闭，而不是我们故意离开该平台的决定。",
+      "start": 220.44,
+      "end": 245.13
+    },
+    {
+      "id": 14,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "第二周的总投诉量：23个电话，4个Instagram DMs，1条负面的Google评论（后来在我解释了情况后被删除）。我以同样的方式回答每一个：我们离开了DoorDash，你可以直接从我们的网站下单，价格比DoorDash低10%，这里是链接。在这28次对话中，19次转化为直接下单，6次选择停止下单，3次仍然“正在考虑”（根据他们最后的回复）。",
+      "start": 245.48,
+      "end": 272.42
+    },
+    {
+      "id": 15,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "第三周：成本线的变化。",
+      "start": 273.52,
+      "end": 275.49
+    },
+    {
+      "id": 16,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "这是我没有预料到的变化。尽管总订单量已经恢复到距基准周的6%以内，但包装成本在第三周却增加了18%。原因是直接下单的订单平均金额更大（46.30美元的ticket，相比基准周的39.60美元），并且订单中包含的商品更多，这意味着每个订单的包装成本更高，尤其是我们现在通过DoorDash Drive的固定费率来履行的配送订单。每个订单的包装成本从1.40美元增加到1.65美元。这是一个小的运营问题，但在利润方面并不重要。",
+      "start": 276.19,
+      "end": 311.74
+    },
+    {
+      "id": 17,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "我预料会出现问题的劳动力成本，并没有出现任何问题。厨房的排班已经能够覆盖订单量；我们只是将一些晚上的DoorDash准备时间转移到晚上的堂食准备时间。没有人员变动。同样的劳动力预算。劳动力成本线略微下降，因为厨房不再需要在晚上8点到闭店之间处理DoorDash订单的第二波包装和打包。",
+      "start": 312.09,
+      "end": 336.18
+    },
+    {
+      "id": 18,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "第四周：结果。",
+      "start": 337.28,
+      "end": 338.42
+    },
+    {
+      "id": 19,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "到四月底，每天的收入已经恢复到基线水平的97.4%。在这个餐厅里，这是可以接受的波动范围，因为天气和活动日历就能导致每周收入8-10%的波动。然而，每天的保留利润却比基线水平高出56%，因为每一笔重新捕获的订单现在都是通过直接渠道完成的，享受28.9%的直接渠道利润率，而不是之前的DoorDash渠道的18.4%利润率。在整个月份里，保留利润的增加大约是4,000美元——对于一个每月大约有58,000美元营业额的餐厅来说，这是一个可观的数字。",
+      "start": 339.12,
+      "end": 377.7
+    },
+    {
+      "id": 20,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "投诉大约在第18天停止了。 Google 的一条负面评价在第21天被删除，因为顾客接受了20美元的直接订单抵用券，并要求我们删除这条评价。 Instagram DM 的量在第24天恢复到了失活前的基线水平。",
+      "start": 378.05,
+      "end": 393.76
+    },
+    {
+      "id": 21,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "我做错了什么。",
+      "start": 394.86,
+      "end": 396.14
+    },
+    {
+      "id": 22,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "我低估了DoorDash渠道已经被“取代”而不是“新增”的程度。恢复速度比我预期的快，因为大多数订单来自已经认识我们的顾客；平台只是一个习惯，而不是一个发现的表面。我曾经假设这个平台能带来大约40%的新增顾客和60%的现有顾客使用更方便的接口。实际上，比例更接近10/90。发现表面主要是一个虚荣的层面；关系已经属于我了。",
+      "start": 396.84,
+      "end": 423.46
+    },
+    {
+      "id": 23,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "我也高估了直接网站的转化率提升。向重新捕获的顾客提供10%的折扣是有效的，但转化率低于我预期的——68%的投诉顾客转化为直接订单，而不是我希望的80%。32%的顾客只是停止了频繁下单，这是可以接受的，但这与我之前失活前自我讲述的“他们都会转化”的故事不同。",
+      "start": 423.81,
+      "end": 448.28
+    },
+    {
+      "id": 24,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(6)",
+      "text": "我做对了什么。",
+      "start": 449.38,
+      "end": 450.47
+    },
+    {
+      "id": 25,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "基本前提——DoorDash渠道是一个30%的利润率税收，换取大约20%的增量收入——被证实是正确的。第四周保留利润率提升56%是这一论点最直接的证据。我不会再回到原来的状态。我也正确地判断了第二家餐厅应该继续使用这个平台——因为那里的城市密度和Uber流量意味着DoorDash渠道在那里是真正的发现驱动，而不是仅仅的关系取代。",
+      "start": 451.17,
+      "end": 478.77
+    },
+    {
+      "id": 26,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "Don Goldstein管理两家DMV餐厅，并运营Muntin Digital。上述案例研究是基于其中一家餐厅从2026年4月7日到5月5日的实际运营数据。餐厅身份在运营商的要求下被保密。",
+      "start": 479.12,
+      "end": 493.22
+    },
+    {
+      "id": 27,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "继续",
+      "start": 493.57,
+      "end": 493.91
+    },
+    {
+      "id": 28,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "一个诚实的DoorDash数学——底层利润率分析",
+      "start": 494.26,
+      "end": 497.9
+    },
+    {
+      "id": 29,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Uber vs DoorDash vs Grubhub —— 三个平台的比较",
+      "start": 498.22,
+      "end": 501.73
+    },
+    {
+      "id": 30,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "Margin Math工具——在决定之前运行自己的数字预测",
+      "start": 502.05,
+      "end": 506.62
+    },
+    {
+      "id": 31,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "499美元审计——针对您的渠道组合的书面诊断",
+      "start": 506.94,
+      "end": 511.97
+    },
+    {
+      "id": 32,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(19)",
+      "text": "关键收获",
+      "start": 512.32,
+      "end": 513.33
+    },
+    {
+      "id": 33,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "顾客投诉在第11天达到峰值，共有28次联系事件；68%的投诉顾客在两周内以10%的折扣转化为直接订单，32%停止下单。",
+      "start": 513.68,
+      "end": 527.19
+    },
+    {
+      "id": 34,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "包装成本在第三周增加了18%，因为重新捕获的订单平均票价更高（46美元vs 39美元），每单项目也更多。",
+      "start": 527.51,
+      "end": 538.79
+    },
+    {
+      "id": 35,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "劳动力并没有出现断裂——线上厨师排班通过将晚间DoorDash准备时间转移到中晚间随到准备时间，吸收了渠道转变。",
+      "start": 539.11,
+      "end": 550.25
+    },
+    {
+      "id": 36,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
+      "text": "Google的负面评价是在第21天出现的，当时顾客接受了20美元的直接渠道积分——大多数下架投诉都是可以解决的。",
+      "start": 550.57,
+      "end": 560.72
+    },
+    {
+      "id": 37,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(5)",
+      "text": "这只是一个市场中的一个餐厅；我管理的第二家餐厅之所以留在平台上，是因为那里的人口密度和Uber流量动态真正具有发现驱动力。",
+      "start": 561.04,
+      "end": 572.2
+    }
+  ]
+}

@@ -39,36 +39,6 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<style>
-/* Critical CSS — prevents flash of unstyled content while the main
-   stylesheet (assets/site.css) loads non-render-blocking via the
-   <link> below. Carries: token vars used in inline styles elsewhere,
-   body baseline (cream + ink + body-size + line-height), container
-   width, skip-link affordance, and a min-height reservation for the
-   fixed nav so layout doesn't shift when site.css applies. ~600
-   bytes. Documented in Phase 3B perf cutover; the full token set
-   reapplies once site.css arrives. */
-:root{--cream:#FAF7F2;--cream-2:#F3EEE3;--ink:#14161A;--ink-soft:#2A2D33;--teal:#1F4E5B;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
-html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
-body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--cream);line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased}
-.container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
-.skip-link{position:absolute;left:-9999px;top:0}
-.skip-link:focus{position:static;display:inline-block;background:#14161A;color:#FAF7F2;padding:12px 16px;z-index:100}
-/* injected by inject-critical-link-color.mjs */
-a{color:inherit}
-.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:500;font-size:15px;text-decoration:none;white-space:nowrap;cursor:pointer}
-.btn-primary{background:var(--ink);color:var(--cream)}
-.btn-ghost{background:transparent;color:var(--ink);border:1px solid #D9D5CB}
-header.nav{min-height:64px}
-</style>
-<!-- Preload the two above-the-fold web fonts so they arrive in
-     parallel with site.css instead of being discovered after parse. -->
-<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
-<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
-<!-- Async-load the main stylesheet. Pattern: preload + onload-swap
-     (with a <noscript> fallback for the JS-disabled path). The
-     onload assigns this.rel='stylesheet', which the browser then
-     applies; before that the critical CSS above carries the page. -->
 <link rel="preload" as="style" href="/assets/site-core.css?v=a3cc95eb7ac7" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=47810dd9477a" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="/assets/site-core.css?v=a3cc95eb7ac7"><link rel="stylesheet" href="/assets/site-article.css?v=47810dd9477a"></noscript>
@@ -333,23 +303,6 @@ header.nav{min-height:64px}
   </div>
 </section>
 
-<section class="block">
-  <div class="container" style="max-width:760px">
-    <figure class="viz-figure reveal" data-audio-alt="The headline number behind every article in this topic: 53 percent of mobile site visits are abandoned if a page takes longer than three seconds to load. Bounce probability hockey-sticks between three and six seconds. Drop below three and the rest of the speed work is downstream optimization.">
-      <div class="viz-rings">
-        <div class="viz-ring" data-band="bad" style="--score:53;">
-          <svg class="viz-ring__svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-labelledby="topic-speed-ring" focusable="false">
-            <title id="topic-speed-ring">53% of mobile visits bounce after 3 seconds of load</title>
-            <circle class="viz-ring__track" cx="60" cy="60" r="52" fill="none" stroke-width="8"/>
-            <circle class="viz-ring__fill" cx="60" cy="60" r="52" fill="none" stroke-width="8" transform="rotate(-90 60 60)"/>
-            <text class="viz-ring__num" x="60" y="60" text-anchor="middle">53%</text>
-          </svg>
-          <p class="viz-ring__label"><strong>Of mobile visits bounce</strong>after 3 seconds of load (Google) &middot; <a href="/learn/research/mobile-page-speed-3-second-rule/">read the research</a></p>
-        </div>
-      </div>
-    </figure>
-  </div>
-</section>
 
 <section class="topic-section">
   <div class="container">
@@ -467,6 +420,13 @@ header.nav{min-height:64px}
           <span class="topic-tool-cta">Open the tool <span aria-hidden="true">→</span></span>
         </a>
       </li>
+<li>
+        <a class="topic-tool-card" href="/tools/menu-converter/">
+          <h4>Menu Converter</h4>
+          <p>Paste menu text, get semantic HTML + JSON-LD Menu schema in two seconds. Replaces a PDF that nobody on a phone can read.</p>
+          <span class="topic-tool-cta">Open the tool <span aria-hidden="true">→</span></span>
+        </a>
+      </li>
     </ul>
   </div>
 </section>
@@ -581,6 +541,7 @@ header.nav{min-height:64px}
       <li><a href="/learn/topics/trust-reviews/">Trust &amp; Reviews</a></li>
       <li><a href="/learn/topics/brand-design/">Brand &amp; Design</a></li>
       <li><a href="/learn/topics/information-security/">Information Security</a></li>
+      <li><a href="/learn/topics/ai-search/">AI Search &amp; Citation</a></li>
     </ul>
     <div class="hero-ctas reveal hero-ctas-center" style="margin-top:32px">
       <a class="btn btn-primary" href="/learn/">Back to the Library</a>
@@ -610,7 +571,7 @@ header.nav{min-height:64px}
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a <!-- count:glossary.terms -->139<!-- /count -->-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
+        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a <!-- count:glossary.terms -->142<!-- /count -->-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
       </div>
 
       <nav class="foot-col" aria-labelledby="foot-explore">

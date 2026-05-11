@@ -1,0 +1,315 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-11T06:24:58.605Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "pm_alex",
+  "language": "pt",
+  "total": 662.34,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "Em resumo",
+      "start": 0,
+      "end": 0.81
+    },
+    {
+      "id": 1,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "A fase de eliminação da DC’s Initiative 82 torna a questão da gorjeta versus serviço carregado urgente; três modelos estão agora em jogo em toda a DMV: gorjeta tradicional, serviço carregado de 20% e híbrido (aumento de 5% no menu + gorjeta opcional).",
+      "start": 1.16,
+      "end": 17.96
+    },
+    {
+      "id": 2,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Mesma conta de jantar de 200 dólares: o que o garçom leva para casa varia 9 dólares, o lucro do operador varia 7 dólares, o cliente paga aproximadamente o mesmo nas três opções, mas se sente diferente em relação a isso.",
+      "start": 18.28,
+      "end": 31.7
+    },
+    {
+      "id": 3,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Eu escolheria o serviço carregado de 20% se estivesse abrindo hoje — matemática mais limpa para retenção da cozinha, estrutura de conformidade mais simples e isso obriga o operador a ser honesto sobre o que a refeição realmente custa.",
+      "start": 32.02,
+      "end": 45.87
+    },
+    {
+      "id": 4,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Opinião &middot; 11 de maio de vinte e seis &middot; 8 min de leitura &middot; Por Don Goldstein",
+      "start": 46.39,
+      "end": 52.45
+    },
+    {
+      "id": 5,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "A DC’s Initiative 82 terminou a fase de eliminação do salário mínimo com gorjeta em vinte e sete. A maioria dos restaurantes da DMV agora está sentada em um de três modelos: gorjeta tradicional, serviço carregado de 20% na conta ou híbrido. Os três modelos pagam os garçons de maneira diferente, custam ao operador de maneira diferente e são lidos de maneira diferente pelo convidado. Aqui está a matemática, a estrutura legal e o modelo que eu escolheria se estivesse abrindo hoje.",
+      "start": 52.8,
+      "end": 81.74
+    },
+    {
+      "id": 6,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "Não vou fingir que tenho a resposta perfeita aqui. Os dois restaurantes que gerencio executam modelos diferentes — um é um serviço carregado de 20%, o outro é gorjeta tradicional — e os dados de comparação após doze meses são genuinamente mistos. O argumento abaixo é o que os números dizem, com as ressalvas onde os números dizem mais de uma coisa.",
+      "start": 82.26,
+      "end": 102.14
+    },
+    {
+      "id": 7,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Os três modelos em jogo em toda a DMV.",
+      "start": 103.24,
+      "end": 105.81
+    },
+    {
+      "id": 8,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "Cada modelo é uma resposta diferente para a mesma pergunta legal: à medida que o salário mínimo com gorjeta é eliminado sob a Initiative 82, quem financia a lacuna entre o salário horário do garçom e o salário horário prevalecente? O cliente, via os mesmos dólares com um nome diferente? O menu, via um aumento de 4–7% nos preços? Ou ambos?",
+      "start": 106.51,
+      "end": 125.8
+    },
+    {
+      "id": 9,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Gorjeta tradicional. Preços do menu inalterados. Linhas de gorjeta permanecem. O que o garçom leva para casa depende do comportamento do convidado. O custo de mão de obra do operador aumenta à medida que a Initiative 82 é totalmente implementada.",
+      "start": 126.32,
+      "end": 141.56
+    },
+    {
+      "id": 10,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Serviço carregado de 20%. A conta carrega um item de 20% automaticamente, sem linha de gorjeta. O serviço carregado é a receita do restaurante, distribuída pelo operador para FOH e BOH de acordo com uma política publicada. Preços do menu inalterados, mas a conta é efetivamente 20% mais alta.",
+      "start": 141.88,
+      "end": 160.84
+    },
+    {
+      "id": 11,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Híbrido (serviço incluído + gorjeta opcional). Preços do menu aumentados 5–8% para financiar um salário horário mais alto para o garçom. Linha de gorjeta ainda presente, sugerida em 0–15%, opcional. Alguns operadores mostram uma linha \"já incluída\" na conta.",
+      "start": 161.16,
+      "end": 177.08
+    },
+    {
+      "id": 12,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "A conta de jantar de 200 dólares, de três maneiras.",
+      "start": 178.18,
+      "end": 181.37
+    },
+    {
+      "id": 13,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "Pegue uma conta de jantar de 200 dólares antes dos impostos em um restaurante independente da DMV — perto da média móvel de doze meses para dois na parte superior do casual-fino. Dois convidados, dois coquetéis cada, dois pratos principais, uma sobremesa compartilhada, dois cafés. Compare o que o garçom, o restaurante e o convidado cada um vê nos três modelos.",
+      "start": 182.07,
+      "end": 202.67
+    },
+    {
+      "id": 14,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "Uma conta de jantar de duzentos dólares antes dos impostos, três modelos de compensação, lado a lado. Modelo um, gorjeta tradicional: o hóspede vê um subtotal de duzentos dólares mais quinze dólares de imposto sobre vendas, total de 2,15, mais uma linha de gorjeta sugerida em vinte por cento ou quarenta dólares. O servidor leva para casa, supondo um modelo de divisão de gorjetas padrão: trinta e dois dólares em dinheiro. A receita líquida do restaurante após o trabalho: setenta e três dólares com uma margem de operação de doze por cento. O total do cliente saindo: 2,55. Modelo dois, serviço com cobrança de vinte por cento: o hóspede vê o mesmo subtotal de duzentos dólares, quinze dólares de imposto sobre vendas, mais uma cobrança de serviço de quarenta dólares listada claramente. Total: 2,55. O servidor leva para casa, supondo uma divisão de sessenta e cinco por cento com a cozinha: vinte e seis dólares em dinheiro. A receita líquida do restaurante após o trabalho: setenta e oito dólares. O total do cliente saindo: 2,55, o mesmo que o modelo um, mas psicologicamente diferente porque o hóspede não teve escolha. Modelo três, híbrido com aumento de cinco por cento no menu e sem gorjeta sugerida: o hóspede vê um subtotal de 2,10, imposto sobre vendas de 15,75, sem cobrança de serviço, linha de gorjeta sugerida em zero. Total antes da gorjeta opcional: 2,25,75. O servidor leva para casa, em um salário horário mais alto de vinte e dois dólares por hora, em um serviço de cinco horas: aproximadamente vinte e cinco dólares do salário horário mais qualquer gorjeta voluntária. Se a gorjeta voluntária média em um modelo híbrido for de cinco por cento, o servidor adiciona mais dez dólares, totalizando trinta e cinco. A receita líquida do restaurante após o trabalho: setenta e um dólares. O total do cliente saindo: 2,36 ou 2,46, dependendo se eles dão gorjeta. O veredito: o modelo dois, a cobrança de serviço de vinte por cento, dá ao operador e à cozinha a matemática mais clara ao custo de uma remuneração ligeiramente menor para o servidor, enquanto o modelo três, o híbrido, tem a complexidade operacional mais alta para o menor aumento mensurável.",
+      "start": 203.47,
+      "end": 327.96
+    },
+    {
+      "id": 15,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Onde a percepção realmente muda.",
+      "start": 329.06,
+      "end": 331.19
+    },
+    {
+      "id": 16,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "Os três modelos custam ao cliente aproximadamente o mesmo. Onde eles diferem é em como o cliente lê a conta. O modelo de cobrança de serviço é o mais limpo no papel, mas gera as mais reclamações dos clientes — a taxa de reclamações por ocorrência no restaurante com cobrança de serviço que eu gerencio é de aproximadamente 1,4% das contas, em comparação com 0,2% no restaurante com gorjeta tradicional no mesmo período de tempo. As reclamações são leves — uma crítica de uma estrela Google a cada dois meses, o ocasional \"Eu não vi a cobrança\" na mesa —, mas são reais e consistentes.",
+      "start": 331.89,
+      "end": 366.14
+    },
+    {
+      "id": 17,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "O modelo híbrido tem a menor taxa de reclamação, mas a maior complexidade operacional. Você precisa treinar o FOH na conversa \"por favor, dê gorjeta se quiser, já está incluída\", o seu sistema de ponto de venda precisa ser configurado para sugerir zero, e o aumento no preço do menu precisa ser acompanhado de sinais de qualidade visíveis ou parece um aumento de preço sigiloso. Os DC restaurantes que eu auditei e que executam modelos híbridos me disseram que o custo de tempo do operador do híbrido é aproximadamente o dobro dos outros dois modelos, em curso.",
+      "start": 366.66,
+      "end": 399.37
+    },
+    {
+      "id": 18,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "O que eu escolheria se estivesse abrindo hoje.",
+      "start": 400.47,
+      "end": 403
+    },
+    {
+      "id": 19,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "A cobrança de serviço de vinte por cento, postada claramente no menu e na porta. Três razões.",
+      "start": 403.7,
+      "end": 409.18
+    },
+    {
+      "id": 20,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "Um: a matemática é a mais simples. O operador e a cozinha recebem a distribuição de receita mais limpa, a compensação do garçom é mais estável em noites lentas e movimentadas, e os cozinheiros da cozinha finalmente recebem uma participação mensurável dos dólares do lado de serviço que anteriormente não viam — um argumento real para a retenção de funcionários da cozinha em uma indústria onde a rotatividade de cozinheiros é o custo dominante.",
+      "start": 409.7,
+      "end": 436.47
+    },
+    {
+      "id": 21,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "Dois: o quadro legal é o mais simples. O DC Escritório de Salário e Hora trata as taxas de serviço como receita do restaurante, distribuída ao critério do operador sob uma política publicada. Isso é um caminho de conformidade limpo. O sistema tradicional de gorjetas pós-Iniciativa-82 é mais complexo em termos de conformidade, pois o operador precisa absorver a diferença de salário mínimo ao preço cheio; os modelos híbridos convidam a escrutínio sobre a linha \"já incluída\".",
+      "start": 436.99,
+      "end": 465.55
+    },
+    {
+      "id": 22,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "Três: isso obriga o operador a ser honesto sobre o que a refeição custa. O preço no cardápio mais a taxa de serviço é o preço da refeição. As gorjetas permitiam que os operadores publicassem um preço de cardápio que mentia ao convidado sobre o que eles realmente pagariam. O modelo de taxa de serviço coloca o preço real na conta, o que é a coisa certa a fazer, independentemente da conformidade.",
+      "start": 466.07,
+      "end": 487.54
+    },
+    {
+      "id": 23,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "O que eu vigiaria se estivesse executando um já.",
+      "start": 488.64,
+      "end": 491.31
+    },
+    {
+      "id": 24,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "Se você estiver executando uma taxa de serviço, as duas coisas a acertar: uma política de distribuição claramente publicada (garçom recebe X%, cozinha recebe Y%, por escrito em uma página que os clientes possam encontrar), e a sinalização do cardápio/da porta que torna a linha de item de 20% inesperada. As reclamações que vejo quase todas traçam de um convidado que não notou a política no momento da reserva. Corrija isso e a taxa de reclamação cai para menos de 0,5%.",
+      "start": 492.01,
+      "end": 521.64
+    },
+    {
+      "id": 25,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "Se você estiver executando gorjetas tradicionais, os próximos dezoito meses serão os mais difíceis — a diferença de salário mínimo se ampliará à medida que o Initiative 82 for totalmente implementado, e seu custo de mão de obra fixo aumentará. A decisão de migrar para uma taxa de serviço é mais fácil de tomar em um momento de mudança de modelo (uma reforma, uma reescrita do cardápio, um novo conceito) do que no meio do caminho. Planeje para o próximo ponto de inflexão que você tiver.",
+      "start": 522.16,
+      "end": 549.64
+    },
+    {
+      "id": 26,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "Se você estiver executando um modelo híbrido, audite sua taxa de gorjeta voluntária média. Se estiver abaixo de 4%, o modelo não está funcionando como projetado — seu garçom está levando para casa o aumento de preço do cardápio por hora, mas perdendo a vantagem variável que o modelo híbrido deveria preservar. Migrar para uma taxa de serviço limpa.",
+      "start": 550.16,
+      "end": 569.94
+    },
+    {
+      "id": 27,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "O Don Goldstein gerencia dois DMV restaurantes (um com taxa de serviço, um com gorjeta tradicional) e executa o Muntin Digital. Ele é membro do RAMW e os dados de comparação acima são de doze meses de registros de operação de restaurantes emparelhados, de maio de vinte e cinco a abril de vinte e seis.",
+      "start": 570.46,
+      "end": 588.64
+    },
+    {
+      "id": 28,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "Continue",
+      "start": 589.16,
+      "end": 589.83
+    },
+    {
+      "id": 29,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "A caminhada da margem do DoorDash — a outra grande conversa sobre margem",
+      "start": 590.18,
+      "end": 594.31
+    },
+    {
+      "id": 30,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Programas de fidelidade que funcionam — a conversa sobre retenção",
+      "start": 594.63,
+      "end": 598.37
+    },
+    {
+      "id": 31,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "499 dólares de auditoria — o diagnóstico escrito sobre o ajuste do seu modelo de compensação",
+      "start": 598.69,
+      "end": 605.66
+    },
+    {
+      "id": 32,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "Pontos principais",
+      "start": 606.01,
+      "end": 607.14
+    },
+    {
+      "id": 33,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "O restaurante com taxa de serviço atrai uma taxa de reclamação do cliente de 1,4% versus 0,2% no restaurante com gorjeta tradicional em dados de restaurantes emparelhados — real, mas gerenciável.",
+      "start": 607.49,
+      "end": 620.78
+    },
+    {
+      "id": 34,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "O modelo híbrido tem a taxa de reclamação mais baixa, mas o maior custo de tempo do operador (aproximadamente 2x os outros dois modelos, contínuo).",
+      "start": 621.1,
+      "end": 630.27
+    },
+    {
+      "id": 35,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "Uma política de distribuição claramente publicada (garçom X%, cozinha Y%) reduz as reclamações de taxa de serviço de 1,4% para menos de 0,5%.",
+      "start": 630.59,
+      "end": 642.26
+    },
+    {
+      "id": 36,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
+      "text": "As janelas de migração são mais fáceis nos momentos de mudança de modelo — uma reforma, uma reescrita do cardápio, um lançamento de conceito — do que no meio do caminho.",
+      "start": 642.58,
+      "end": 652
+    },
+    {
+      "id": 37,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(5)",
+      "text": "Se você está executando um modelo híbrido e a gorjeta voluntária média está abaixo de 4%, o modelo não está funcionando — migre para uma taxa de serviço limpa.",
+      "start": 652.32,
+      "end": 662.34
+    }
+  ]
+}

@@ -1,0 +1,323 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-11T03:59:20.876Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "am_michael",
+  "language": "en",
+  "total": 672.94,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "In short",
+      "start": 0,
+      "end": 0.63
+    },
+    {
+      "id": 1,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "The headline 30% commission is roughly identical across DoorDash, Uber Eats, and Grubhub; the second-layer fee stack opens a 2.5-point spread.",
+      "start": 0.98,
+      "end": 12.04
+    },
+    {
+      "id": 2,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "On the same 42 dollars ticket, DoorDash Marketplace Plus keeps 18.4%, Grubhub Premium keeps 17.6%, Uber Eats Pro keeps 15.9%; direct keeps 28.9%.",
+      "start": 12.36,
+      "end": 28.17
+    },
+    {
+      "id": 3,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Drop Grubhub first if you’re going to drop one — lowest volume, middle-pack kept-percent, highest rate of phantom-listing complaints in the DMV market.",
+      "start": 28.49,
+      "end": 38.76
+    },
+    {
+      "id": 4,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Op-ed &middot; May 11, twenty twenty-six &middot; 8 min read &middot; By Don Goldstein",
+      "start": 39.28,
+      "end": 46.41
+    },
+    {
+      "id": 5,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "I&rsquo;ve run the partner-statement math against all three platforms across the two restaurants I manage. The headline percentages look identical: DoorDash 30%, Uber Eats 30%, Grubhub 30% on the standard tier most independents pay. The actual margin walk — once you add the marketing fee, the payment-processing pass-through, the &ldquo;promo&rdquo; charge that nobody negotiated — tells a different story per platform. Here it is.",
+      "start": 46.76,
+      "end": 78.78
+    },
+    {
+      "id": 6,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "The headline rate — the commission — is roughly the same across all three. What differs is the layer of incidental fees stacked on top, the cap on which orders you can actually opt out of, and what the platform does to your direct-channel conversion. This article is the side-by-side I wish someone had handed me in twenty twenty-two when I first started keeping spreadsheets.",
+      "start": 79.3,
+      "end": 102.8
+    },
+    {
+      "id": 7,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "The same 42 dollars ticket, three platforms.",
+      "start": 103.9,
+      "end": 106.92
+    },
+    {
+      "id": 8,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "I&rsquo;m using a 42 dollars ticket because that&rsquo;s the rolling-12-month average across both restaurants I manage in the DMV. Your ticket will be different. The percentage spread is what carries the argument, not the dollar amount.",
+      "start": 107.62,
+      "end": 125.63
+    },
+    {
+      "id": 9,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "Three platforms, same forty-two dollar ticket, the side-by-side margin walk. DoorDash Marketplace Plus tier at thirty percent commission takes twelve dollars sixty, payment processing takes another dollar forty-three, sponsored-listing promo fee averages a dollar twenty, packaging is a dollar forty, food cost is twenty-eight percent or eleven dollars seventy-six, variable labor is fourteen percent or five dollars eighty-eight, and what stays in the restaurant is seven dollars seventy-three or eighteen point four percent. Uber Eats at the standard thirty percent commission takes twelve dollars sixty, payment processing takes a dollar forty-three through Uber's own gateway, the Uber Eats Pro membership fee adds another dollar five if opted in, packaging is the same dollar forty, food cost is the same eleven dollars seventy-six, variable labor the same five dollars eighty-eight, what stays is six dollars sixty-eight or fifteen point nine percent. Grubhub Premium tier at thirty percent commission takes twelve dollars sixty, processing is a dollar fifty-eight because Grubhub passes the higher rate, the order-relay 'communication fee' adds another seventy-five cents, packaging the same dollar forty, food cost and labor the same, what stays is seven dollars forty or seventeen point six percent. The kept percentage ranges from fifteen point nine percent on Uber Eats Pro to eighteen point four percent on DoorDash Marketplace Plus, a difference of about a dollar five per ticket once you compound the second-tier fees.",
+      "start": 126.43,
+      "end": 226.21
+    },
+    {
+      "id": 10,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "The DoorDash row is repeated from my earlier DoorDash margin walk . The headline numbers are about the same across the three platforms. The story is in the spread — eighteen point four to fifteen point nine percent — and where that spread comes from.",
+      "start": 226.96,
+      "end": 243.12
+    },
+    {
+      "id": 11,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Where the spread actually comes from.",
+      "start": 244.22,
+      "end": 245.95
+    },
+    {
+      "id": 12,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "The base commission isn&rsquo;t the variable to focus on. Each platform offers a 15%/25%/30% tiered structure (with slightly different names and inclusions). Most independent restaurants land on the 30% tier because the 15% and 25% tiers don&rsquo;t include placement in the in-app discovery surfaces — you exist but nobody finds you. The 30% is the price of being findable. That part doesn&rsquo;t differ much across platforms.",
+      "start": 246.65,
+      "end": 282
+    },
+    {
+      "id": 13,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "What differs is the second layer:",
+      "start": 282.52,
+      "end": 284.4
+    },
+    {
+      "id": 14,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "DoorDash adds a sponsored-listing fee when you opt in to the in-app promo system. Roughly 3% additional, applied per-order on promo-attributed orders. Opt-in — you can decline it — but the discovery throughput drops sharply if you do.",
+      "start": 284.75,
+      "end": 301.37
+    },
+    {
+      "id": 15,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Uber Eats has the Pro membership fee — about 2.50 dollars/order on opted-in orders — which gets you placement in the &ldquo;Pro&rdquo; tier of the app. Like DoorDash&rsquo;s sponsored listings, it&rsquo;s opt-in but functionally required for the discovery surface to work.",
+      "start": 301.69,
+      "end": 323.11
+    },
+    {
+      "id": 16,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Grubhub has a per-order &ldquo;communication fee&rdquo; (their language) of roughly 1.8% that&rsquo;s not opt-in. It funds the order-relay system. It looks like a smaller surcharge but applies to every order, which is why the Grubhub row ends up close to DoorDash overall despite the lower promo cost.",
+      "start": 323.43,
+      "end": 346.84
+    },
+    {
+      "id": 17,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "The marketing-fee trap nobody talks about.",
+      "start": 347.94,
+      "end": 350.51
+    },
+    {
+      "id": 18,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "This is the part operators miss most. The 30% commission is on the menu price, not the take-home. You can&rsquo;t deduct food cost or labor from it before the percentage applies — it&rsquo;s 30% off the top. Most operators&rsquo; mental model treats it as a marketing cost, which is wrong; marketing budgets compete against profit, not against revenue. The three platforms are aggregators in the classic sense: discovery surface for one side, margin tax on the other.",
+      "start": 351.21,
+      "end": 384.34
+    },
+    {
+      "id": 19,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "The math: at a typical 12% operating margin and a 30% platform commission, every third-party order has to drive 250% incremental revenue compared to the same order at the door for the platform spend to break even on a marketing basis. It almost never does. The customer would have come anyway 80% of the time. The platform is, structurally, a 30% margin tax for ~20% incremental revenue. That&rsquo;s the trap.",
+      "start": 384.86,
+      "end": 415.26
+    },
+    {
+      "id": 20,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "Which one to drop, if you&rsquo;re going to drop one.",
+      "start": 416.36,
+      "end": 419.99
+    },
+    {
+      "id": 21,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "For most independents the answer is Grubhub. Three reasons. One: the order volume per Grubhub channel is the lowest of the three in nearly every DMV market I&rsquo;ve measured, by a factor of three to five. Two: the kept-percent at 17.6% is in the middle of the pack, so dropping it costs the least kept margin per lost order. Three: Grubhub has the highest rate of phantom-listing complaints in this market — restaurants showing up on the platform without their consent or with stale menus — which is a brand-control problem on top of the margin problem.",
+      "start": 420.69,
+      "end": 459.31
+    },
+    {
+      "id": 22,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "The harder call is dropping Uber Eats. The kept-percent is the worst of the three. But Uber Eats has the highest first-order conversion to a return customer in this market, and the in-app cross-pollination with Uber rides means the platform brings discovery volume that the other two don&rsquo;t. If your restaurant is in a high-foot-traffic urban node where Uber rides are a meaningful customer-flow source, Uber Eats is probably the one to keep.",
+      "start": 459.83,
+      "end": 488.79
+    },
+    {
+      "id": 23,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "I&rsquo;m on DoorDash and Uber Eats at one restaurant and DoorDash only at the other. Grubhub I dropped two years ago and have not regretted. The dropped Grubhub volume came back to the restaurants through other channels within a quarter — almost entirely to direct — suggesting the Grubhub orders were displaced, not net-new.",
+      "start": 489.31,
+      "end": 511.56
+    },
+    {
+      "id": 24,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "What this changes about your channel mix.",
+      "start": 512.66,
+      "end": 514.81
+    },
+    {
+      "id": 25,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "If you&rsquo;re on all three: pull a Grubhub partner statement for the last 90 days. Calculate the contribution margin (revenue minus the full third-party fee stack minus your variable cost per order). Compare to the direct-channel contribution on the same restaurant. If Grubhub is contributing less than 8% of total third-party volume and your direct channel has any pulse at all, the move is straightforward. Pause, watch the channel mix for a quarter, then delist if the pause held.",
+      "start": 515.51,
+      "end": 547.06
+    },
+    {
+      "id": 26,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "If you&rsquo;re on two: the question is whether to drop to one. The math says yes most of the time, but the political cost of phantom listings (Grubhub especially) and the operator time needed to police your menu across two platforms vs one are real, just less measurable. I keep DoorDash on both restaurants because the kept-percent is the highest. I drop the second platform restaurant-by-restaurant based on the local discovery surface.",
+      "start": 547.58,
+      "end": 575.83
+    },
+    {
+      "id": 27,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "Don Goldstein manages two DMV restaurants and runs Muntin Digital . The three-platform comparison above runs against partner statements dated April twenty twenty-six.",
+      "start": 576.35,
+      "end": 589.03
+    },
+    {
+      "id": 28,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "Keep going",
+      "start": 589.55,
+      "end": 590.27
+    },
+    {
+      "id": 29,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "The DoorDash-only margin walk — the deeper dive on one platform",
+      "start": 590.62,
+      "end": 594.8
+    },
+    {
+      "id": 30,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Margin Math tool — run the calculation on your numbers",
+      "start": 595.12,
+      "end": 598.58
+    },
+    {
+      "id": 31,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "Is DoorDash worth it for restaurants in twenty twenty-six? — the strategic frame",
+      "start": 598.9,
+      "end": 603.91
+    },
+    {
+      "id": 32,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "499 dollars audit — the written diagnosis if you&rsquo;d rather see your channel mix on paper",
+      "start": 604.23,
+      "end": 612.24
+    },
+    {
+      "id": 33,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "Key takeaways",
+      "start": 612.59,
+      "end": 613.53
+    },
+    {
+      "id": 34,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "The platforms aren’t marketing — they’re a 30% margin tax for ~20% incremental revenue.",
+      "start": 613.88,
+      "end": 620.96
+    },
+    {
+      "id": 35,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "DoorDash adds sponsored-listing fees (~3% per promo order), Uber Eats adds Pro membership (2.50 dollars/order), Grubhub charges a non-opt-in 1.8% communication fee per order.",
+      "start": 621.28,
+      "end": 637.1
+    },
+    {
+      "id": 36,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "At 12% operating margin, every third-party order has to drive 250% incremental revenue to break even on the platform spend as marketing — it almost never does.",
+      "start": 637.42,
+      "end": 650.57
+    },
+    {
+      "id": 37,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
+      "text": "Most operators are running ≥80% displaced relationship orders on the platform, not net-new discovery; the platform is a habit layer, not a discovery layer.",
+      "start": 650.89,
+      "end": 663.3
+    },
+    {
+      "id": 38,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(5)",
+      "text": "Convert third-party guests to direct on their second order through receipts and packaging inserts — that’s where the 30% commission actually pays back.",
+      "start": 663.62,
+      "end": 672.94
+    }
+  ]
+}

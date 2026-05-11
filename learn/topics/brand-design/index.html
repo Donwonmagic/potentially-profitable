@@ -39,36 +39,6 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<style>
-/* Critical CSS — prevents flash of unstyled content while the main
-   stylesheet (assets/site.css) loads non-render-blocking via the
-   <link> below. Carries: token vars used in inline styles elsewhere,
-   body baseline (cream + ink + body-size + line-height), container
-   width, skip-link affordance, and a min-height reservation for the
-   fixed nav so layout doesn't shift when site.css applies. ~600
-   bytes. Documented in Phase 3B perf cutover; the full token set
-   reapplies once site.css arrives. */
-:root{--cream:#FAF7F2;--cream-2:#F3EEE3;--ink:#14161A;--ink-soft:#2A2D33;--teal:#1F4E5B;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
-html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
-body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--cream);line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased}
-.container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
-.skip-link{position:absolute;left:-9999px;top:0}
-.skip-link:focus{position:static;display:inline-block;background:#14161A;color:#FAF7F2;padding:12px 16px;z-index:100}
-/* injected by inject-critical-link-color.mjs */
-a{color:inherit}
-.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:500;font-size:15px;text-decoration:none;white-space:nowrap;cursor:pointer}
-.btn-primary{background:var(--ink);color:var(--cream)}
-.btn-ghost{background:transparent;color:var(--ink);border:1px solid #D9D5CB}
-header.nav{min-height:64px}
-</style>
-<!-- Preload the two above-the-fold web fonts so they arrive in
-     parallel with site.css instead of being discovered after parse. -->
-<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
-<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
-<!-- Async-load the main stylesheet. Pattern: preload + onload-swap
-     (with a <noscript> fallback for the JS-disabled path). The
-     onload assigns this.rel='stylesheet', which the browser then
-     applies; before that the critical CSS above carries the page. -->
 <link rel="preload" as="style" href="/assets/site-core.css?v=a3cc95eb7ac7" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=47810dd9477a" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="/assets/site-core.css?v=a3cc95eb7ac7"><link rel="stylesheet" href="/assets/site-article.css?v=47810dd9477a"></noscript>
@@ -126,21 +96,26 @@ header.nav{min-height:64px}
     {
       "@type": "ItemList",
       "@id": "https://muntin.digital/learn/topics/brand-design/#articles",
-      "numberOfItems": 3,
+      "numberOfItems": 4,
       "itemListElement": [
         {
           "@type": "ListItem",
           "position": 1,
-          "url": "https://muntin.digital/blog/restaurant-photo-spec-sheet/"
+          "url": "https://muntin.digital/blog/instagram-as-restaurant-seo-strategy-2026/"
         },
         {
           "@type": "ListItem",
           "position": 2,
-          "url": "https://muntin.digital/blog/wix-vs-custom-for-restaurants/"
+          "url": "https://muntin.digital/blog/restaurant-photo-spec-sheet/"
         },
         {
           "@type": "ListItem",
           "position": 3,
+          "url": "https://muntin.digital/blog/wix-vs-custom-for-restaurants/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
           "url": "https://muntin.digital/blog/how-much-does-a-custom-restaurant-website-cost-in-2026/"
         }
       ]
@@ -337,6 +312,13 @@ header.nav{min-height:64px}
     </header>
     <ul class="topic-article-list">
       <li>
+        <a class="topic-article-card" href="/blog/instagram-as-restaurant-seo-strategy-2026/">
+          <span class="topic-article-date">May 11, 2026</span>
+          <h3>Instagram Is a Search Engine Now. Post Like It.</h3>
+          <p>Google has indexed Instagram captions since 2024 and the in-app search bar handles 40% of restaurant discovery for under-35 guests. Five caption-level moves that make a restaurant post indexable, with the 4.3x save lift from running the discipline on a real account.</p>
+        </a>
+      </li>
+<li>
         <a class="topic-article-card" href="/blog/restaurant-photo-spec-sheet/">
           <span class="topic-article-date">Apr 30, 2026</span>
           <h3>The Restaurant Photo Spec Sheet: Every Image Size for Every Surface</h3>
@@ -417,61 +399,6 @@ header.nav{min-height:64px}
   </div>
 </section>
 
-<!-- topic-sheets-rail:start -->
-<section class="topic-section">
-  <div class="container">
-    <header class="topic-section-head">
-      <span class="eyebrow">Operator sheets</span>
-      <h2>Hand off to the designer.</h2>
-    </header>
-    <ul class="topic-tool-list">
-      <li>
-        <a class="topic-tool-card" href="/sheets/menu-redesign-brief/">
-          <h4>Menu Redesign Brief</h4>
-          <p>What the designer needs to do the work — top 10 sellers, dogs to cut, price changes, callout items, dietary flags, print and digital and POS targets.</p>
-          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
-        </a>
-      </li>
-      <li>
-        <a class="topic-tool-card" href="/sheets/brand-asset-inventory/">
-          <h4>Brand Asset Inventory</h4>
-          <p>Asset type, file location, last updated, owner, license. Catches the logo that only exists on a former employee's laptop.</p>
-          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
-        </a>
-      </li>
-      <li>
-        <a class="topic-tool-card" href="/sheets/signage-spec-sheet/">
-          <h4>Signage &amp; Print Spec Sheet</h4>
-          <p>Sign type, dimensions, material, color codes, mounting, vendor, install date. Hands the printer everything they need to start.</p>
-          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
-        </a>
-      </li>
-      <li>
-        <a class="topic-tool-card" href="/sheets/photo-shot-list/">
-          <h4>Photo Shoot Shot List</h4>
-          <p>Dish, plate type, garnish, props, channel target, priority. Lives on set, ticks off as you go.</p>
-          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
-        </a>
-      </li>
-      <li>
-        <a class="topic-tool-card" href="/sheets/social-content-calendar/">
-          <h4>Social Content Calendar</h4>
-          <p>Date, channel, post type, asset link, caption draft, CTA, status. Thirty days planned at a time so you stop posting the same hero shot.</p>
-          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
-        </a>
-      </li>
-      <li>
-        <a class="topic-tool-card" href="/sheets/vendor-contact-sheet/">
-          <h4>Vendor Contact Sheet</h4>
-          <p>Vendor, contact, phone, email, account number, delivery days, payment terms. Lives by the office phone for the day a vendor disappears.</p>
-          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
-        </a>
-      </li>
-    </ul>
-  </div>
-</section>
-<!-- topic-sheets-rail:end -->
-
 <!-- topic-essay:start -->
 <section class="topic-essay">
   <div class="container">
@@ -548,6 +475,7 @@ header.nav{min-height:64px}
       <li><a href="/learn/topics/operations-margin/">Operations &amp; Margin</a></li>
       <li><a href="/learn/topics/trust-reviews/">Trust &amp; Reviews</a></li>
       <li><a href="/learn/topics/information-security/">Information Security</a></li>
+      <li><a href="/learn/topics/ai-search/">AI Search &amp; Citation</a></li>
     </ul>
     <div class="hero-ctas reveal hero-ctas-center" style="margin-top:32px">
       <a class="btn btn-primary" href="/learn/">Back to the Library</a>
@@ -555,6 +483,61 @@ header.nav{min-height:64px}
     </div>
   </div>
 </section>
+
+<!-- topic-sheets-rail:start -->
+<section class="topic-section">
+  <div class="container">
+    <header class="topic-section-head">
+      <span class="eyebrow">Operator sheets</span>
+      <h2>Hand off to the designer.</h2>
+    </header>
+    <ul class="topic-tool-list">
+      <li>
+        <a class="topic-tool-card" href="/sheets/menu-redesign-brief/">
+          <h4>Menu Redesign Brief</h4>
+          <p>What the designer needs to do the work — top 10 sellers, dogs to cut, price changes, callout items, dietary flags, print and digital and POS targets.</p>
+          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
+        </a>
+      </li>
+      <li>
+        <a class="topic-tool-card" href="/sheets/brand-asset-inventory/">
+          <h4>Brand Asset Inventory</h4>
+          <p>Asset type, file location, last updated, owner, license. Catches the logo that only exists on a former employee's laptop.</p>
+          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
+        </a>
+      </li>
+      <li>
+        <a class="topic-tool-card" href="/sheets/signage-spec-sheet/">
+          <h4>Signage &amp; Print Spec Sheet</h4>
+          <p>Sign type, dimensions, material, color codes, mounting, vendor, install date. Hands the printer everything they need to start.</p>
+          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
+        </a>
+      </li>
+      <li>
+        <a class="topic-tool-card" href="/sheets/photo-shot-list/">
+          <h4>Photo Shoot Shot List</h4>
+          <p>Dish, plate type, garnish, props, channel target, priority. Lives on set, ticks off as you go.</p>
+          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
+        </a>
+      </li>
+      <li>
+        <a class="topic-tool-card" href="/sheets/social-content-calendar/">
+          <h4>Social Content Calendar</h4>
+          <p>Date, channel, post type, asset link, caption draft, CTA, status. Thirty days planned at a time so you stop posting the same hero shot.</p>
+          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
+        </a>
+      </li>
+      <li>
+        <a class="topic-tool-card" href="/sheets/vendor-contact-sheet/">
+          <h4>Vendor Contact Sheet</h4>
+          <p>Vendor, contact, phone, email, account number, delivery days, payment terms. Lives by the office phone for the day a vendor disappears.</p>
+          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</section>
+<!-- topic-sheets-rail:end -->
 
 </main>
 
@@ -577,7 +560,7 @@ header.nav{min-height:64px}
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a <!-- count:glossary.terms -->139<!-- /count -->-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
+        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a <!-- count:glossary.terms -->142<!-- /count -->-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
       </div>
 
       <nav class="foot-col" aria-labelledby="foot-explore">

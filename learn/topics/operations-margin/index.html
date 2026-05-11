@@ -39,36 +39,6 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<style>
-/* Critical CSS — prevents flash of unstyled content while the main
-   stylesheet (assets/site.css) loads non-render-blocking via the
-   <link> below. Carries: token vars used in inline styles elsewhere,
-   body baseline (cream + ink + body-size + line-height), container
-   width, skip-link affordance, and a min-height reservation for the
-   fixed nav so layout doesn't shift when site.css applies. ~600
-   bytes. Documented in Phase 3B perf cutover; the full token set
-   reapplies once site.css arrives. */
-:root{--cream:#FAF7F2;--cream-2:#F3EEE3;--ink:#14161A;--ink-soft:#2A2D33;--teal:#1F4E5B;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
-html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
-body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--cream);line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased}
-.container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
-.skip-link{position:absolute;left:-9999px;top:0}
-.skip-link:focus{position:static;display:inline-block;background:#14161A;color:#FAF7F2;padding:12px 16px;z-index:100}
-/* injected by inject-critical-link-color.mjs */
-a{color:inherit}
-.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:500;font-size:15px;text-decoration:none;white-space:nowrap;cursor:pointer}
-.btn-primary{background:var(--ink);color:var(--cream)}
-.btn-ghost{background:transparent;color:var(--ink);border:1px solid #D9D5CB}
-header.nav{min-height:64px}
-</style>
-<!-- Preload the two above-the-fold web fonts so they arrive in
-     parallel with site.css instead of being discovered after parse. -->
-<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
-<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
-<!-- Async-load the main stylesheet. Pattern: preload + onload-swap
-     (with a <noscript> fallback for the JS-disabled path). The
-     onload assigns this.rel='stylesheet', which the browser then
-     applies; before that the critical CSS above carries the page. -->
 <link rel="preload" as="style" href="/assets/site-core.css?v=a3cc95eb7ac7" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=47810dd9477a" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="/assets/site-core.css?v=a3cc95eb7ac7"><link rel="stylesheet" href="/assets/site-article.css?v=47810dd9477a"></noscript>
@@ -126,47 +96,67 @@ header.nav{min-height:64px}
     {
       "@type": "ItemList",
       "@id": "https://muntin.digital/learn/topics/operations-margin/#articles",
-      "numberOfItems": 8,
+      "numberOfItems": 12,
       "itemListElement": [
         {
           "@type": "ListItem",
           "position": 1,
-          "url": "https://muntin.digital/blog/how-to-tell-if-a-restaurant-tool-is-safe/"
+          "url": "https://muntin.digital/blog/uber-eats-vs-doordash-vs-grubhub-restaurant-math-2026/"
         },
         {
           "@type": "ListItem",
           "position": 2,
-          "url": "https://muntin.digital/blog/when-to-rebuild-your-restaurant-website/"
+          "url": "https://muntin.digital/blog/30-days-after-leaving-doordash-restaurant-case-study/"
         },
         {
           "@type": "ListItem",
           "position": 3,
-          "url": "https://muntin.digital/blog/five-restaurant-website-changes-recover-one-percent-margin/"
+          "url": "https://muntin.digital/blog/loyalty-programs-for-independent-restaurants-what-works-2026/"
         },
         {
           "@type": "ListItem",
           "position": 4,
-          "url": "https://muntin.digital/blog/is-doordash-worth-it-for-restaurants-in-2026/"
+          "url": "https://muntin.digital/blog/service-charges-vs-tipping-restaurant-operator-math-2026/"
         },
         {
           "@type": "ListItem",
           "position": 5,
-          "url": "https://muntin.digital/blog/how-to-raise-restaurant-menu-prices-without-losing-reservations/"
+          "url": "https://muntin.digital/blog/may-2026-wave-publishing-for-citation/"
         },
         {
           "@type": "ListItem",
           "position": 6,
-          "url": "https://muntin.digital/blog/wix-vs-custom-for-restaurants/"
+          "url": "https://muntin.digital/blog/how-to-tell-if-a-restaurant-tool-is-safe/"
         },
         {
           "@type": "ListItem",
           "position": 7,
-          "url": "https://muntin.digital/blog/how-much-does-a-custom-restaurant-website-cost-in-2026/"
+          "url": "https://muntin.digital/blog/when-to-rebuild-your-restaurant-website/"
         },
         {
           "@type": "ListItem",
           "position": 8,
-          "url": "https://muntin.digital/blog/an-honest-doordash-math-for-independent-restaurants-2026/"
+          "url": "https://muntin.digital/blog/five-restaurant-website-changes-recover-one-percent-margin/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 9,
+          "url": "https://muntin.digital/blog/is-doordash-worth-it-for-restaurants-in-2026/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 10,
+          "url": "https://muntin.digital/blog/how-to-raise-restaurant-menu-prices-without-losing-reservations/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 11,
+          "url": "https://muntin.digital/blog/wix-vs-custom-for-restaurants/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 12,
+          "url": "https://muntin.digital/blog/how-much-does-a-custom-restaurant-website-cost-in-2026/"
         }
       ]
     }
@@ -353,23 +343,6 @@ header.nav{min-height:64px}
   </div>
 </section>
 
-<section class="block">
-  <div class="container" style="max-width:760px">
-    <figure class="viz-figure reveal" data-audio-alt="The headline finding behind every article in this topic: across 50 audited independent restaurant websites, the median operator is leaking 0.94 percent of revenue through six small, fixable, well-understood site-friction leaks. At a median 1.6 million dollar annual revenue, that&rsquo;s roughly 15 thousand dollars a year recoverable with a Saturday-afternoon checklist.">
-      <div class="viz-rings">
-        <div class="viz-ring" data-band="warn" style="--score:50;">
-          <svg class="viz-ring__svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-labelledby="topic-ops-ring" focusable="false">
-            <title id="topic-ops-ring">$15K per year median recoverable revenue from website friction (1% margin audit)</title>
-            <circle class="viz-ring__track" cx="60" cy="60" r="52" fill="none" stroke-width="8"/>
-            <circle class="viz-ring__fill" cx="60" cy="60" r="52" fill="none" stroke-width="8" transform="rotate(-90 60 60)"/>
-            <text class="viz-ring__num" x="60" y="64" text-anchor="middle" style="font-size:28px">$15K</text>
-          </svg>
-          <p class="viz-ring__label"><strong>Median annual revenue recoverable</strong>from website friction (1% margin audit, 50 sites) &middot; <a href="/learn/research/the-1-percent-margin-audit-50-restaurant-websites-2026/">read the audit</a></p>
-        </div>
-      </div>
-    </figure>
-  </div>
-</section>
 
 <section class="topic-section">
   <div class="container">
@@ -379,6 +352,41 @@ header.nav{min-height:64px}
     </header>
     <ul class="topic-article-list">
       <li>
+        <a class="topic-article-card" href="/blog/uber-eats-vs-doordash-vs-grubhub-restaurant-math-2026/">
+          <span class="topic-article-date">May 11, 2026</span>
+          <h3>Uber Eats vs DoorDash vs Grubhub: The Honest Math, 2026</h3>
+          <p>The headline 30% commission looks identical across all three platforms. The second-layer fee stack — sponsored listings, Pro membership, communication fee — opens a 2.5-point spread. Side-by-side margin walks on the same $42 ticket, plus which platform to drop first.</p>
+        </a>
+      </li>
+<li>
+        <a class="topic-article-card" href="/blog/30-days-after-leaving-doordash-restaurant-case-study/">
+          <span class="topic-article-date">May 11, 2026</span>
+          <h3>30 Days After Leaving DoorDash: A Restaurant Operator’s Case Study</h3>
+          <p>I delisted one of two DMV restaurants on April 7, 2026. Week-by-week breakdown of revenue, recovered margin, customer complaints, and the cost line that broke. Kept margin climbed 56% by week four. What I got wrong, what I got right.</p>
+        </a>
+      </li>
+<li>
+        <a class="topic-article-card" href="/blog/loyalty-programs-for-independent-restaurants-what-works-2026/">
+          <span class="topic-article-date">May 11, 2026</span>
+          <h3>Loyalty Programs for Independent Restaurants: What Actually Pays</h3>
+          <p>Four models, one restaurant, twelve months. Paper punch cards return 75:1; standalone platforms return 1.17:1. The CRM-direct path returns 7x the punch card but only when the direct channel is already converting. Side-by-side ROI.</p>
+        </a>
+      </li>
+<li>
+        <a class="topic-article-card" href="/blog/service-charges-vs-tipping-restaurant-operator-math-2026/">
+          <span class="topic-article-date">May 11, 2026</span>
+          <h3>Service Charges vs Tipping: The Operator’s Math for 2026</h3>
+          <p>Three compensation models compared on the same $200 dinner check. Server take-home varies $9, operator net varies $7. The customer pays roughly the same all three ways but reads each differently. The model I’d pick if I were opening today, with the DC Initiative 82 compliance frame.</p>
+        </a>
+      </li>
+<li>
+        <a class="topic-article-card" href="/blog/may-2026-wave-publishing-for-citation/">
+          <span class="topic-article-date">May 10, 2026</span>
+          <h3>The May 2026 Wave: Nine Pieces, One Operating Thesis</h3>
+          <p>An overview of the May 2026 weekly batch — nine articles on AI Overview citation, schema markup, Google Maps invisibility, review responses, Instagram-as-SEO, three-platform delivery math, the 30-day case study, loyalty programs, and service charges. The through-line, the data behind each, and the order to read them in.</p>
+        </a>
+      </li>
+<li>
         <a class="topic-article-card" href="/blog/how-to-tell-if-a-restaurant-tool-is-safe/">
           <span class="topic-article-date">Apr 30, 2026</span>
           <h3>How to Tell If a Restaurant Tool Is Safe</h3>
@@ -490,85 +498,16 @@ header.nav{min-height:64px}
           <span class="topic-tool-cta">Open the tool <span aria-hidden="true">→</span></span>
         </a>
       </li>
-    </ul>
-  </div>
-</section>
-
-<!-- topic-sheets-rail:start -->
-<section class="topic-section">
-  <div class="container">
-    <header class="topic-section-head">
-      <span class="eyebrow">Operator sheets</span>
-      <h2>Pull out the paperwork.</h2>
-    </header>
-    <ul class="topic-tool-list">
-      <li>
-        <a class="topic-tool-card" href="/sheets/recipe-cost-card/">
-          <h4>Recipe Cost Card</h4>
-          <p>Drop in ingredients, AP prices, and yields. Walk away with plate cost, target price at your food-cost goal, and a printable card for the binder.</p>
-          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
-        </a>
-      </li>
-      <li>
-        <a class="topic-tool-card" href="/sheets/weekly-prime-cost-worksheet/">
-          <h4>Weekly Prime Cost Worksheet</h4>
-          <p>The single most important number a small operator can track. Plug in food, beverage, and labor costs against net sales. See your prime cost percent and where it sits versus the 60 percent ceiling.</p>
-          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
-        </a>
-      </li>
-      <li>
-        <a class="topic-tool-card" href="/sheets/daily-sales-recap/">
-          <h4>Daily Sales &amp; Cover Recap</h4>
-          <p>End-of-night close-out, one page per shift. Net sales, covers, voids, comps, cash over and short, weather note, manager initials.</p>
-          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
-        </a>
-      </li>
-      <li>
-        <a class="topic-tool-card" href="/sheets/line-check-sheet/">
-          <h4>Pre-Service Line Check</h4>
-          <p>Ten-minute walk before doors open — temps, prep par, 86 list, expo notes. Lives on a clipboard; built to print.</p>
-          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
-        </a>
-      </li>
-      <li>
-        <a class="topic-tool-card" href="/sheets/waste-log/">
-          <h4>Waste &amp; Spoilage Log</h4>
-          <p>Translate "we throw a lot away" into a dollar number nobody can argue with. Item, quantity, reason code, cost.</p>
-          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
-        </a>
-      </li>
-      <li>
-        <a class="topic-tool-card" href="/sheets/invoice-receiving-checklist/">
-          <h4>Invoice Receiving Checklist</h4>
-          <p>Catch short-shipped, substituted, or price-creep items at the back door — before the truck leaves. Vendor, line, qty ordered versus received, unit-price change, temps for proteins and dairy.</p>
-          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
-        </a>
-      </li>
-      <li>
-        <a class="topic-tool-card" href="/sheets/monthly-pnl-snapshot/">
-          <h4>Monthly P&amp;L Snapshot</h4>
-          <p>A one-page P&amp;L the operator can read in 90 seconds — not the accountant's version. Sales by daypart, COGS, labor, occupancy, marketing.</p>
-          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
-        </a>
-      </li>
-      <li>
-        <a class="topic-tool-card" href="/sheets/inventory-count-sheet/">
-          <h4>Period-End Inventory Count Sheet</h4>
-          <p>Walk-through count, organized by storage location, not alphabet. Counted on a clipboard, keyed in later.</p>
-          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
-        </a>
-      </li>
-      <li>
-        <a class="topic-tool-card" href="/sheets/cash-handling-log/">
-          <h4>Cash Drop &amp; Deposit Log</h4>
-          <p>Chain of custody for cash from drawer to bank. Drawer number, opening bank, cash sales, paid-outs, drop, two initials, deposit slip number.</p>
-          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
+<li>
+        <a class="topic-tool-card" href="/tools/cost-pulse/">
+          <h4>Cost Pulse</h4>
+          <p>Drift alerts, category sparklines, and rolling medians across the invoices you&#39;ve saved. Your data only — no pooled benchmarks.</p>
+          <span class="topic-tool-cta">Open the tool <span aria-hidden="true">→</span></span>
         </a>
       </li>
     </ul>
   </div>
 </section>
-<!-- topic-sheets-rail:end -->
 
 <!-- topic-essay:start -->
 <section class="topic-essay">
@@ -671,6 +610,7 @@ header.nav{min-height:64px}
       <li><a href="/learn/topics/trust-reviews/">Trust &amp; Reviews</a></li>
       <li><a href="/learn/topics/brand-design/">Brand &amp; Design</a></li>
       <li><a href="/learn/topics/information-security/">Information Security</a></li>
+      <li><a href="/learn/topics/ai-search/">AI Search &amp; Citation</a></li>
     </ul>
     <div class="hero-ctas reveal hero-ctas-center" style="margin-top:32px">
       <a class="btn btn-primary" href="/learn/">Back to the Library</a>
@@ -678,6 +618,82 @@ header.nav{min-height:64px}
     </div>
   </div>
 </section>
+
+<!-- topic-sheets-rail:start -->
+<section class="topic-section">
+  <div class="container">
+    <header class="topic-section-head">
+      <span class="eyebrow">Operator sheets</span>
+      <h2>Pull out the paperwork.</h2>
+    </header>
+    <ul class="topic-tool-list">
+      <li>
+        <a class="topic-tool-card" href="/sheets/recipe-cost-card/">
+          <h4>Recipe Cost Card</h4>
+          <p>Drop in ingredients, AP prices, and yields. Walk away with plate cost, target price at your food-cost goal, and a printable card for the binder.</p>
+          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
+        </a>
+      </li>
+      <li>
+        <a class="topic-tool-card" href="/sheets/weekly-prime-cost-worksheet/">
+          <h4>Weekly Prime Cost Worksheet</h4>
+          <p>The single most important number a small operator can track. Plug in food, beverage, and labor costs against net sales. See your prime cost percent and where it sits versus the 60 percent ceiling.</p>
+          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
+        </a>
+      </li>
+      <li>
+        <a class="topic-tool-card" href="/sheets/daily-sales-recap/">
+          <h4>Daily Sales &amp; Cover Recap</h4>
+          <p>End-of-night close-out, one page per shift. Net sales, covers, voids, comps, cash over and short, weather note, manager initials.</p>
+          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
+        </a>
+      </li>
+      <li>
+        <a class="topic-tool-card" href="/sheets/line-check-sheet/">
+          <h4>Pre-Service Line Check</h4>
+          <p>Ten-minute walk before doors open — temps, prep par, 86 list, expo notes. Lives on a clipboard; built to print.</p>
+          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
+        </a>
+      </li>
+      <li>
+        <a class="topic-tool-card" href="/sheets/waste-log/">
+          <h4>Waste &amp; Spoilage Log</h4>
+          <p>Translate "we throw a lot away" into a dollar number nobody can argue with. Item, quantity, reason code, cost.</p>
+          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
+        </a>
+      </li>
+      <li>
+        <a class="topic-tool-card" href="/sheets/invoice-receiving-checklist/">
+          <h4>Invoice Receiving Checklist</h4>
+          <p>Catch short-shipped, substituted, or price-creep items at the back door — before the truck leaves. Vendor, line, qty ordered versus received, unit-price change, temps for proteins and dairy.</p>
+          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
+        </a>
+      </li>
+      <li>
+        <a class="topic-tool-card" href="/sheets/monthly-pnl-snapshot/">
+          <h4>Monthly P&amp;L Snapshot</h4>
+          <p>A one-page P&amp;L the operator can read in 90 seconds — not the accountant's version. Sales by daypart, COGS, labor, occupancy, marketing.</p>
+          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
+        </a>
+      </li>
+      <li>
+        <a class="topic-tool-card" href="/sheets/inventory-count-sheet/">
+          <h4>Period-End Inventory Count Sheet</h4>
+          <p>Walk-through count, organized by storage location, not alphabet. Counted on a clipboard, keyed in later.</p>
+          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
+        </a>
+      </li>
+      <li>
+        <a class="topic-tool-card" href="/sheets/cash-handling-log/">
+          <h4>Cash Drop &amp; Deposit Log</h4>
+          <p>Chain of custody for cash from drawer to bank. Drawer number, opening bank, cash sales, paid-outs, drop, two initials, deposit slip number.</p>
+          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</section>
+<!-- topic-sheets-rail:end -->
 
 </main>
 
@@ -700,7 +716,7 @@ header.nav{min-height:64px}
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a <!-- count:glossary.terms -->139<!-- /count -->-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
+        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a <!-- count:glossary.terms -->142<!-- /count -->-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
       </div>
 
       <nav class="foot-col" aria-labelledby="foot-explore">

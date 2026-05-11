@@ -39,36 +39,6 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<style>
-/* Critical CSS — prevents flash of unstyled content while the main
-   stylesheet (assets/site.css) loads non-render-blocking via the
-   <link> below. Carries: token vars used in inline styles elsewhere,
-   body baseline (cream + ink + body-size + line-height), container
-   width, skip-link affordance, and a min-height reservation for the
-   fixed nav so layout doesn't shift when site.css applies. ~600
-   bytes. Documented in Phase 3B perf cutover; the full token set
-   reapplies once site.css arrives. */
-:root{--cream:#FAF7F2;--cream-2:#F3EEE3;--ink:#14161A;--ink-soft:#2A2D33;--teal:#1F4E5B;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
-html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
-body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--cream);line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased}
-.container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
-.skip-link{position:absolute;left:-9999px;top:0}
-.skip-link:focus{position:static;display:inline-block;background:#14161A;color:#FAF7F2;padding:12px 16px;z-index:100}
-/* injected by inject-critical-link-color.mjs */
-a{color:inherit}
-.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:500;font-size:15px;text-decoration:none;white-space:nowrap;cursor:pointer}
-.btn-primary{background:var(--ink);color:var(--cream)}
-.btn-ghost{background:transparent;color:var(--ink);border:1px solid #D9D5CB}
-header.nav{min-height:64px}
-</style>
-<!-- Preload the two above-the-fold web fonts so they arrive in
-     parallel with site.css instead of being discovered after parse. -->
-<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
-<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
-<!-- Async-load the main stylesheet. Pattern: preload + onload-swap
-     (with a <noscript> fallback for the JS-disabled path). The
-     onload assigns this.rel='stylesheet', which the browser then
-     applies; before that the critical CSS above carries the page. -->
 <link rel="preload" as="style" href="/assets/site-core.css?v=a3cc95eb7ac7" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=47810dd9477a" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="/assets/site-core.css?v=a3cc95eb7ac7"><link rel="stylesheet" href="/assets/site-article.css?v=47810dd9477a"></noscript>
@@ -126,46 +96,56 @@ header.nav{min-height:64px}
     {
       "@type": "ItemList",
       "@id": "https://muntin.digital/learn/topics/conversions/#articles",
-      "numberOfItems": 8,
+      "numberOfItems": 10,
       "itemListElement": [
         {
           "@type": "ListItem",
           "position": 1,
-          "url": "https://muntin.digital/blog/restaurant-photo-spec-sheet/"
+          "url": "https://muntin.digital/blog/30-days-after-leaving-doordash-restaurant-case-study/"
         },
         {
           "@type": "ListItem",
           "position": 2,
-          "url": "https://muntin.digital/blog/five-restaurant-website-changes-recover-one-percent-margin/"
+          "url": "https://muntin.digital/blog/loyalty-programs-for-independent-restaurants-what-works-2026/"
         },
         {
           "@type": "ListItem",
           "position": 3,
-          "url": "https://muntin.digital/blog/how-to-recover-reservations-from-googles-find-a-table/"
+          "url": "https://muntin.digital/blog/restaurant-photo-spec-sheet/"
         },
         {
           "@type": "ListItem",
           "position": 4,
-          "url": "https://muntin.digital/blog/how-to-raise-restaurant-menu-prices-without-losing-reservations/"
+          "url": "https://muntin.digital/blog/five-restaurant-website-changes-recover-one-percent-margin/"
         },
         {
           "@type": "ListItem",
           "position": 5,
-          "url": "https://muntin.digital/blog/why-your-restaurant-loses-reservations-every-night/"
+          "url": "https://muntin.digital/blog/how-to-recover-reservations-from-googles-find-a-table/"
         },
         {
           "@type": "ListItem",
           "position": 6,
-          "url": "https://muntin.digital/blog/an-honest-doordash-math-for-independent-restaurants-2026/"
+          "url": "https://muntin.digital/blog/how-to-raise-restaurant-menu-prices-without-losing-reservations/"
         },
         {
           "@type": "ListItem",
           "position": 7,
-          "url": "https://muntin.digital/blog/wix-vs-custom-for-restaurants/"
+          "url": "https://muntin.digital/blog/why-your-restaurant-loses-reservations-every-night/"
         },
         {
           "@type": "ListItem",
           "position": 8,
+          "url": "https://muntin.digital/blog/an-honest-doordash-math-for-independent-restaurants-2026/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 9,
+          "url": "https://muntin.digital/blog/wix-vs-custom-for-restaurants/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 10,
           "url": "https://muntin.digital/blog/what-should-be-on-a-restaurant-website/"
         }
       ]
@@ -353,24 +333,6 @@ header.nav{min-height:64px}
   </div>
 </section>
 
-<section class="block">
-  <div class="container" style="max-width:760px">
-    <figure class="viz-figure reveal" data-audio-alt="The headline number behind every article in this topic: a Baymard meta-analysis of 49 separate studies pegs average online cart abandonment at 70.19 percent. Two-thirds of every reservation funnel leaks before confirmation. The articles below are about the 30 percent that doesn&rsquo;t.">
-      <div class="viz-rings">
-        <div class="viz-ring" data-band="bad" style="--score:70.19;">
-          <svg class="viz-ring__svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-labelledby="topic-conv-ring" focusable="false">
-            <title id="topic-conv-ring">70.19% average cart abandonment across 49 studies</title>
-            <circle class="viz-ring__track" cx="60" cy="60" r="52" fill="none" stroke-width="8"/>
-            <circle class="viz-ring__fill" cx="60" cy="60" r="52" fill="none" stroke-width="8" transform="rotate(-90 60 60)"/>
-            <text class="viz-ring__num" x="60" y="60" text-anchor="middle">70%</text>
-          </svg>
-          <p class="viz-ring__label"><strong>Average cart abandonment</strong>across 49 studies (Baymard meta-analysis) &middot; <a href="/learn/research/cart-abandonment-rate/">read the research</a></p>
-        </div>
-      </div>
-    </figure>
-  </div>
-</section>
-
 
 <section class="topic-section">
   <div class="container">
@@ -380,6 +342,20 @@ header.nav{min-height:64px}
     </header>
     <ul class="topic-article-list">
       <li>
+        <a class="topic-article-card" href="/blog/30-days-after-leaving-doordash-restaurant-case-study/">
+          <span class="topic-article-date">May 11, 2026</span>
+          <h3>30 Days After Leaving DoorDash: A Restaurant Operator’s Case Study</h3>
+          <p>I delisted one of two DMV restaurants on April 7, 2026. Week-by-week breakdown of revenue, recovered margin, customer complaints, and the cost line that broke. Kept margin climbed 56% by week four. What I got wrong, what I got right.</p>
+        </a>
+      </li>
+<li>
+        <a class="topic-article-card" href="/blog/loyalty-programs-for-independent-restaurants-what-works-2026/">
+          <span class="topic-article-date">May 11, 2026</span>
+          <h3>Loyalty Programs for Independent Restaurants: What Actually Pays</h3>
+          <p>Four models, one restaurant, twelve months. Paper punch cards return 75:1; standalone platforms return 1.17:1. The CRM-direct path returns 7x the punch card but only when the direct channel is already converting. Side-by-side ROI.</p>
+        </a>
+      </li>
+<li>
         <a class="topic-article-card" href="/blog/restaurant-photo-spec-sheet/">
           <span class="topic-article-date">Apr 30, 2026</span>
           <h3>The Restaurant Photo Spec Sheet: Every Image Size for Every Surface</h3>
@@ -509,6 +485,13 @@ header.nav{min-height:64px}
           <span class="topic-tool-cta">Open the tool <span aria-hidden="true">→</span></span>
         </a>
       </li>
+<li>
+        <a class="topic-tool-card" href="/tools/menu-converter/">
+          <h4>Menu Converter</h4>
+          <p>Paste menu text, get semantic HTML + JSON-LD Menu schema in two seconds. Replaces a PDF that nobody on a phone can read.</p>
+          <span class="topic-tool-cta">Open the tool <span aria-hidden="true">→</span></span>
+        </a>
+      </li>
     </ul>
   </div>
 </section>
@@ -530,54 +513,6 @@ header.nav{min-height:64px}
     </ul>
   </div>
 </section>
-
-<!-- topic-sheets-rail:start -->
-<section class="topic-section">
-  <div class="container">
-    <header class="topic-section-head">
-      <span class="eyebrow">Operator sheets</span>
-      <h2>Pull out the paperwork.</h2>
-    </header>
-    <ul class="topic-tool-list">
-      <li>
-        <a class="topic-tool-card" href="/sheets/third-party-channel-pnl/">
-          <h4>Third-Party Channel P&amp;L</h4>
-          <p>Run the honest math on DoorDash, Uber Eats, or Grubhub. Gross sales minus commission, marketing fees, refunds, packaging, and the labor those orders cost. Settles the argument.</p>
-          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
-        </a>
-      </li>
-      <li>
-        <a class="topic-tool-card" href="/sheets/reservation-no-show-log/">
-          <h4>Reservation &amp; No-Show Log</h4>
-          <p>Booking source, party size, deposit yes or no, showed or no-show or late-cancel, revenue lost. Names what each empty seat actually cost.</p>
-          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
-        </a>
-      </li>
-      <li>
-        <a class="topic-tool-card" href="/sheets/website-conversion-checklist/">
-          <h4>Website Conversion Checklist</h4>
-          <p>Mobile menu loads in three seconds, click-to-call above the fold, reservation CTA above the fold, hours visible, address tap-to-map, allergen and menu PDFs mobile-readable.</p>
-          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
-        </a>
-      </li>
-      <li>
-        <a class="topic-tool-card" href="/sheets/daypart-traffic-map/">
-          <h4>Daypart Traffic Map</h4>
-          <p>Day by hour grid — covers, sales, labor hours. Reveals where you are paying for staff that has nothing to serve.</p>
-          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
-        </a>
-      </li>
-      <li>
-        <a class="topic-tool-card" href="/sheets/email-list-growth-log/">
-          <h4>Email &amp; SMS List Growth Log</h4>
-          <p>Source by month — table tent, QR, reservation, online order — with new sign-ups, unsubs, opens, clicks. Names which channels actually grow the list.</p>
-          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
-        </a>
-      </li>
-    </ul>
-  </div>
-</section>
-<!-- topic-sheets-rail:end -->
 
 <!-- topic-essay:start -->
 <section class="topic-essay">
@@ -670,6 +605,7 @@ header.nav{min-height:64px}
       <li><a href="/learn/topics/trust-reviews/">Trust &amp; Reviews</a></li>
       <li><a href="/learn/topics/brand-design/">Brand &amp; Design</a></li>
       <li><a href="/learn/topics/information-security/">Information Security</a></li>
+      <li><a href="/learn/topics/ai-search/">AI Search &amp; Citation</a></li>
     </ul>
     <div class="hero-ctas reveal hero-ctas-center" style="margin-top:32px">
       <a class="btn btn-primary" href="/learn/">Back to the Library</a>
@@ -677,6 +613,54 @@ header.nav{min-height:64px}
     </div>
   </div>
 </section>
+
+<!-- topic-sheets-rail:start -->
+<section class="topic-section">
+  <div class="container">
+    <header class="topic-section-head">
+      <span class="eyebrow">Operator sheets</span>
+      <h2>Pull out the paperwork.</h2>
+    </header>
+    <ul class="topic-tool-list">
+      <li>
+        <a class="topic-tool-card" href="/sheets/third-party-channel-pnl/">
+          <h4>Third-Party Channel P&amp;L</h4>
+          <p>Run the honest math on DoorDash, Uber Eats, or Grubhub. Gross sales minus commission, marketing fees, refunds, packaging, and the labor those orders cost. Settles the argument.</p>
+          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
+        </a>
+      </li>
+      <li>
+        <a class="topic-tool-card" href="/sheets/reservation-no-show-log/">
+          <h4>Reservation &amp; No-Show Log</h4>
+          <p>Booking source, party size, deposit yes or no, showed or no-show or late-cancel, revenue lost. Names what each empty seat actually cost.</p>
+          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
+        </a>
+      </li>
+      <li>
+        <a class="topic-tool-card" href="/sheets/website-conversion-checklist/">
+          <h4>Website Conversion Checklist</h4>
+          <p>Mobile menu loads in three seconds, click-to-call above the fold, reservation CTA above the fold, hours visible, address tap-to-map, allergen and menu PDFs mobile-readable.</p>
+          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
+        </a>
+      </li>
+      <li>
+        <a class="topic-tool-card" href="/sheets/daypart-traffic-map/">
+          <h4>Daypart Traffic Map</h4>
+          <p>Day by hour grid — covers, sales, labor hours. Reveals where you are paying for staff that has nothing to serve.</p>
+          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
+        </a>
+      </li>
+      <li>
+        <a class="topic-tool-card" href="/sheets/email-list-growth-log/">
+          <h4>Email &amp; SMS List Growth Log</h4>
+          <p>Source by month — table tent, QR, reservation, online order — with new sign-ups, unsubs, opens, clicks. Names which channels actually grow the list.</p>
+          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</section>
+<!-- topic-sheets-rail:end -->
 
 </main>
 
@@ -699,7 +683,7 @@ header.nav{min-height:64px}
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a <!-- count:glossary.terms -->139<!-- /count -->-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
+        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a <!-- count:glossary.terms -->142<!-- /count -->-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
       </div>
 
       <nav class="foot-col" aria-labelledby="foot-explore">

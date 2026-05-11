@@ -48,7 +48,7 @@ function escHtml(s) {
 }
 
 function buildTldr(bullets, locale) {
-  const eyebrow = locale === 'es' ? 'Resumen' : 'TL;DR';
+  const eyebrow = locale === 'es' ? 'En resumen' : 'In short';
   const items = bullets.map((b) => `        <li>${escHtml(b)}</li>`).join('\n');
   return [
     '<!-- article-tldr:start -->',

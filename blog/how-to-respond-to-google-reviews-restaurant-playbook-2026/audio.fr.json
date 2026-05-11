@@ -1,0 +1,355 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-11T05:48:09.373Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "ff_siwis",
+  "language": "fr",
+  "total": 506.85,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "En bref",
+      "start": 0,
+      "end": 0.54
+    },
+    {
+      "id": 1,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Quatre archétypes de commentaires nécessitent quatre formes de réponses : le commentaire élogieux 5 étoiles (court, chaleureux, mentionner un détail), le commentaire déçu 3 étoiles (reconnaître le problème spécifique, nommer la solution, inviter à revenir avec un geste), le commentaire en colère 1 étoile (calme, factuel, ne jamais répondre sur le même ton), et le commentaire légitime 2 étoiles (assumer la responsabilité sans fioritures).",
+      "start": 0.89,
+      "end": 21.97
+    },
+    {
+      "id": 2,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Le lecteur futur, et non le commentateur, est votre audience — la réponse aux commentaires 3 étoiles est la plus lue car c'est là que les futurs clients hésitants calibrent leur opinion.",
+      "start": 22.29,
+      "end": 32.11
+    },
+    {
+      "id": 3,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Ne jamais écrire « Merci pour vos commentaires », « Nous nous efforçons de fournir », « Nous prenons cela très au sérieux », ou « Je suis désolé que vous vous sentiez ainsi » — les formules toutes faites signalent que le message ne vient pas d'un propriétaire.",
+      "start": 32.43,
+      "end": 45.09
+    },
+    {
+      "id": 4,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Opinion &middot; 10 mai 2026 &middot; 7 min de lecture &middot; Par Don Goldstein",
+      "start": 45.61,
+      "end": 51.22
+    },
+    {
+      "id": 5,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "La zone de réponse sous un commentaire Google est le texte le plus lu que publie un restaurant et que personne n'écrit vraiment. Les futurs clients lisent les réponses avant de lire les commentaires. Le propriétaire qui répond de manière défensive à un mauvais commentaire sera perçu comme défensif sur chaque aperçu de résultat de recherche pendant les six mois suivants. Les quatre modèles ci-dessous sont ceux qui fonctionnent.",
+      "start": 51.57,
+      "end": 71.2
+    },
+    {
+      "id": 6,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "J'ai écrit ou co-écrit plus de 600 réponses à des commentaires dans deux restaurants depuis 2022. Certaines d'entre elles me font plaisir. D'autres me font grimacer. Le schéma dans les réponses qui me font grimacer est constant : j'ai répondu au commentaire, et non au lecteur futur. L'opinion du commentateur est fixée ; ce qui change, c'est la façon dont les 1 000 personnes suivantes qui lisent cette conversation perçoivent le restaurant. Écrivez pour ces 1 000 personnes.",
+      "start": 71.72,
+      "end": 93.06
+    },
+    {
+      "id": 7,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Les quatre types de commentaires que vous obtiendrez.",
+      "start": 94.16,
+      "end": 96.68
+    },
+    {
+      "id": 8,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "Les commentaires de restaurant sur Google correspondent à l'un des quatre archétypes. La forme de la réponse est différente pour chacun. Essayer d'utiliser le même modèle pour les quatre est l'erreur la plus courante que commettent les exploitants — la chaleur qui convient à un commentaire 5 étoiles paraît obséquieuse sur un commentaire 3 étoiles, la directness qui fonctionne sur un commentaire 1 étoile paraît froide sur un commentaire 5 étoiles. Choisissez le bon registre d'abord.",
+      "start": 97.38,
+      "end": 119.13
+    },
+    {
+      "id": 9,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "Quatre archétypes de commentaires Google et la forme de réponse pour chacun. Archétype un : le commentaire élogieux 5 étoiles, où le client a déjà aimé le repas et le fait savoir. Forme de la réponse : court, chaleureux, mentionner un détail spécifique de leur commentaire, ne pas leur proposer quoi que ce soit. Longueur inférieure à trois lignes. Archétype deux : le commentaire déçu 3 étoiles, où quelque chose de spécifique a mal tourné mais le client a été raisonnable. Forme de la réponse : reconnaître le problème spécifique, expliquer la solution que vous avez mise en place ou que vous mettez en place, inviter le client à revenir avec un geste spécifique, ne pas s'excuser de manière générale. Longueur de cinq à sept lignes. Archétype trois : le commentaire en colère 1 étoile, où le client ventile plus qu'il ne signale. Forme de la réponse : calme, factuel, nommer ce que vous pouvez vérifier, nommer ce que vous ne pouvez pas, offrir un chemin de contact spécifique, ne pas répondre sur le même ton. Longueur de trois à cinq lignes, jamais plus. Archétype quatre : le commentaire légitime 2 étoiles où le problème opérationnel mentionné est réel et était de la faute du restaurant. Forme de la réponse : assumer la responsabilité sans fioritures, nommer ce que vous avez fait, offrir un geste de réparation spécifique, terminer par le chemin de contact. Longueur de quatre à six lignes, c'est celui où la réponse elle-même devient la déclaration de marque que les futurs clients liront.",
+      "start": 119.93,
+      "end": 185.44
+    },
+    {
+      "id": 10,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "La réponse aux commentaires 5 étoiles.",
+      "start": 186.54,
+      "end": 188.52
+    },
+    {
+      "id": 11,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "La tentation lors d'une critique à cinq étoiles est de remercier le client de manière extensive et d'ajouter une offre douce pour leur prochaine visite. Résistez aux deux. La critique à cinq étoiles fait déjà son travail ; le rôle de votre réponse est simplement de faire paraître le fil de discussion comme un endroit où le propriétaire lit les critiques.",
+      "start": 189.22,
+      "end": 207.08
+    },
+    {
+      "id": 12,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "Le modèle :",
+      "start": 207.6,
+      "end": 208.35
+    },
+    {
+      "id": 13,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "Trois lignes. Il nomme les noms. Il nomme l'article. Il nomme l'opérateur. La signature compte — elle indique aux futurs lecteurs qu'un humain est à l'autre bout. Évitez d'ajouter « Revenez nous voir ! » ou l'U R L de votre page de réservation. Le lecteur à cinq étoiles sait déjà où vous trouver.",
+      "start": 208.7,
+      "end": 224.39
+    },
+    {
+      "id": 14,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "La réponse à trois étoiles.",
+      "start": 225.49,
+      "end": 226.92
+    },
+    {
+      "id": 15,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "La critique à trois étoiles est le type de critique le plus lu car c'est là que les futurs clients calibrent. Un lecteur à cinq étoiles est déjà convaincu ; un lecteur à une étoile est déjà sceptique. Le lecteur à trois étoiles est vraiment indécis et lit votre réponse avec attention. C'est celle-ci où la réponse est le facteur de différenciation.",
+      "start": 227.62,
+      "end": 245.52
+    },
+    {
+      "id": 16,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "Cinq éléments : nommez le problème spécifique (temps d'attente, pâtes froides), nommez la solution opérationnelle spécifique (troisième serveur, démarré la semaine dernière), assumez la partie qui était de la faute du restaurant, offrez un geste de bonne volonté spécifique (demandez-moi, offrez l'apéritif), signez. La réponse elle-même devient la preuve que l'opération répond aux commentaires. Cela vaut plus que la critique à trois étoiles ne vous fait de mal.",
+      "start": 246.04,
+      "end": 266.96
+    },
+    {
+      "id": 17,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "La réponse à une étoile.",
+      "start": 268.06,
+      "end": 269.32
+    },
+    {
+      "id": 18,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "La plus difficile. L'instinct est de devenir soit défensif (le pire) soit d'apologiser de manière générale (presque aussi mauvais). Ni l'un ni l'autre ne sert le lecteur futur. Le lecteur futur veut savoir si la critique à une étoile est une mauvaise nuit ou une expérience représentative. Votre réponse est ce qui répond à cette question.",
+      "start": 270.02,
+      "end": 287.67
+    },
+    {
+      "id": 19,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "Quatre éléments : reconnaissance concise sans apologie générale, confirmation factuelle de ce qui est vérifiable, non-confirmation factuelle de ce qui ne l'est pas, chemin de contact spécifique. Ne correspondez jamais au ton en colère. N'écrivez jamais plus de 5 lignes — plus la réponse est longue, plus elle ressemble à une lutte contre la critique au lieu de la laisser être.",
+      "start": 288.19,
+      "end": 306.69
+    },
+    {
+      "id": 20,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "Une chose à ne jamais écrire : « J'aimerais discuter de cela en privé ». Cette phrase ressemble à du PR de formulaire. Remplacez-la par l'adresse e-mail spécifique et une raison spécifique — « écrivez-moi à X pour que je puisse récupérer la réservation » — qui ressemble à un chemin réel, et non à une déviation.",
+      "start": 307.21,
+      "end": 323.93
+    },
+    {
+      "id": 21,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "La réponse à deux étoiles.",
+      "start": 325.03,
+      "end": 326.43
+    },
+    {
+      "id": 22,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "C'est la réponse qui compte le plus pour la marque car le problème opérationnel est réel et vous devez l'assumer de manière visible. Le lecteur futur utilise cette réponse pour juger si l'opération a de l'intégrité. Si vous répondez bien, la critique à deux étoiles finit par vous servir mieux que cinq critiques à cinq étoiles supplémentaires.",
+      "start": 327.13,
+      "end": 345.11
+    },
+    {
+      "id": 23,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "Cinq éléments : assumez explicitement (« vous avez raison et je suis désolé »), nommez le problème opérationnel spécifique en vos propres mots, nommez la solution spécifique, faites une offre concrète spécifique, donnez le chemin de contact. Le lecteur futur voit une opération qui répond à des problèmes réels avec des solutions réelles, et non avec un théâtre d'apologie.",
+      "start": 345.63,
+      "end": 364.17
+    },
+    {
+      "id": 24,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(6)",
+      "text": "Ce qu'il ne faut jamais écrire, quelle que soit la note.",
+      "start": 365.27,
+      "end": 367.91
+    },
+    {
+      "id": 25,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "« Merci pour vos commentaires » — un formulaire de société, ressemble à ce qui n'est pas écrit par un propriétaire.",
+      "start": 368.61,
+      "end": 374.61
+    },
+    {
+      "id": 26,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "« Nous nous efforçons de fournir… » — même chose.",
+      "start": 374.93,
+      "end": 377.16
+    },
+    {
+      "id": 27,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "« Nous prenons cela très au sérieux » — dévie plutôt que d'agir.",
+      "start": 377.48,
+      "end": 380.65
+    },
+    {
+      "id": 28,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "« Contactez-nous à l'adresse email spécifique pour que nous puissions régler ce problème » — vague, remplacez-le par un email spécifique et une raison.",
+      "start": 380.97,
+      "end": 389.79
+    },
+    {
+      "id": 29,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(5)",
+      "text": "« Je suis désolé que vous vous sentiez ainsi » — non-excuse, signale la défensivité même lorsque vous n'en avez pas l'intention.",
+      "start": 390.11,
+      "end": 397.12
+    },
+    {
+      "id": 30,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(7)",
+      "text": "Pourquoi cela compte plus qu'avant.",
+      "start": 398.22,
+      "end": 399.73
+    },
+    {
+      "id": 31,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "Les changements de Google en 2024 pour AI Overview signifient que les réponses aux commentaires apparaissent parfois dans le paragraphe cité au-dessus des résultats de recherche. Le système lit vos réponses comme faisant partie de la voix du restaurant, aux côtés du menu et du texte « À propos ». Si vos réponses sont des textes génériques d'entreprise, le AI Overview les citera comme tels. Si vos réponses sont spécifiques et humaines, le AI Overview les citera comme spécifiques et humaines. La réponse aux commentaires est maintenant une surface de recherche, et non plus seulement une surface de service client.",
+      "start": 400.43,
+      "end": 429.36
+    },
+    {
+      "id": 32,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "Don Goldstein gère deux restaurants DMV et dirige Muntin Digital . Les 600+ réponses aux commentaires derrière ce livre de jeu sont réparties entre les deux restaurants entre 2022 et 2026.",
+      "start": 429.88,
+      "end": 442.7
+    },
+    {
+      "id": 33,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "Continuez",
+      "start": 443.22,
+      "end": 443.85
+    },
+    {
+      "id": 34,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "Comment être cité dans les AI Overview — la zone de réponse fait maintenant partie de cette surface",
+      "start": 444.2,
+      "end": 449.82
+    },
+    {
+      "id": 35,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "Les 6 types de schéma que Google utilise — y compris AggregateRating",
+      "start": 450.14,
+      "end": 455
+    },
+    {
+      "id": 36,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "Audit de 499 dollars — le diagnostic écrit avec vos 30 dernières réponses réécrites",
+      "start": 455.32,
+      "end": 461.52
+    },
+    {
+      "id": 37,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(19)",
+      "text": "Points clés",
+      "start": 461.87,
+      "end": 462.38
+    },
+    {
+      "id": 38,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(1)",
+      "text": "Signez la réponse avec votre prénom et votre titre — la signature indique aux lecteurs futurs qu'un humain est à l'origine.",
+      "start": 462.73,
+      "end": 469.6
+    },
+    {
+      "id": 39,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(2)",
+      "text": "Nommez le problème spécifique, la solution spécifique et la compensation spécifique ; la vague signale la déflection.",
+      "start": 469.92,
+      "end": 476.77
+    },
+    {
+      "id": 40,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(3)",
+      "text": "N'adoptez jamais le ton de l'auteur de la critique en colère — la calme dans la réponse signale la maturité opérationnelle aux 1 000 lecteurs suivants.",
+      "start": 477.09,
+      "end": 485.5
+    },
+    {
+      "id": 41,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(4)",
+      "text": "Les AI Overview peuvent maintenant intégrer les réponses aux commentaires dans le paragraphe cité aux côtés du menu et du texte « À propos » ; les textes génériques d'entreprise font que vous êtes cité comme tel.",
+      "start": 485.82,
+      "end": 497.36
+    },
+    {
+      "id": 42,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(5)",
+      "text": "La réponse à une critique de 1 étoile reste en dessous de 5 lignes — les réponses plus longues donnent l'impression de lutter contre la critique au lieu de la laisser être.",
+      "start": 497.68,
+      "end": 506.85
+    }
+  ]
+}

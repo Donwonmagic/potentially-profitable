@@ -1,0 +1,259 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-11T05:14:17.013Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "am_michael",
+  "language": "en",
+  "total": 623.14,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "In short",
+      "start": 0,
+      "end": 0.63
+    },
+    {
+      "id": 1,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Four loyalty models compete for an independent operator’s setup time: paper punch cards, integrated P O S loyalty (Toast/Square), standalone platforms (Fivestars/Como), and CRM-direct (Mailchimp/Klaviyo + own checkout).",
+      "start": 0.98,
+      "end": 20.43
+    },
+    {
+      "id": 2,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Paper punch cards return 75:1 on a 500-customer base; standalone platforms return 1.17:1; CRM-direct returns ~7x the punch card but only when the direct channel is already converting.",
+      "start": 20.75,
+      "end": 38.15
+    },
+    {
+      "id": 3,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "The loyalty conversation is downstream of the channel conversation — fix the channel first, layer the loyalty after, on the direct surface where margin can fund a real customer relationship.",
+      "start": 38.47,
+      "end": 51.13
+    },
+    {
+      "id": 4,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Op-ed &middot; May 11, twenty twenty-six &middot; 7 min read &middot; By Don Goldstein",
+      "start": 51.65,
+      "end": 58.93
+    },
+    {
+      "id": 5,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "Four loyalty models compete for the independent restaurant operator&rsquo;s setup time and monthly fee. Three of them don&rsquo;t pay back. One does, but only when the kitchen is already running a healthy direct channel. Here&rsquo;s the side-by-side — cost, return, time to break even, and which one to keep if you only have bandwidth for one.",
+      "start": 59.28,
+      "end": 83.51
+    },
+    {
+      "id": 6,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "I ran two of these programs for over a year on the same restaurant, then dropped both and replaced them with a third. The numbers below are mine, not industry benchmarks. Your conversion rates and average check will differ. The order of magnitude is what carries the argument: the gap between the best and worst model isn&rsquo;t 20%, it&rsquo;s 4x.",
+      "start": 84.03,
+      "end": 108.42
+    },
+    {
+      "id": 7,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "The four models in play.",
+      "start": 109.52,
+      "end": 110.95
+    },
+    {
+      "id": 8,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "Every loyalty program a US independent restaurant runs in twenty twenty-six fits one of four shapes. The implementations differ; the underlying economics don&rsquo;t. Walk through them in order of operator cost-to-implement.",
+      "start": 111.65,
+      "end": 128.07
+    },
+    {
+      "id": 9,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "Four loyalty program models for independent restaurants, compared on monthly cost, twelve-month return, and break-even threshold. Model one: paper punch cards. Monthly cost is essentially zero, ten dollars in printing. Twelve-month return on a five-hundred-customer base is about seven hundred fifty dollars in repeat-visit margin. Break-even is under a month. The hard truth: punch cards work but are inherently capped at low frequency and have no operator-side analytics. Model two: integrated P O S loyalty like Toast Rewards or Square Loyalty. Monthly cost is forty-five to seventy-five dollars depending on terminal count. Twelve-month return on the same base is approximately two thousand four hundred dollars, three point two times the punch card. Break-even is roughly four months in. The catch: the P O S controls the data, so when you change processors, the loyalty data does not come with you. Model three: standalone loyalty platforms like Fivestars or Como Sense. Monthly cost is one hundred sixty-five to two hundred forty-nine dollars. Twelve-month return is about two thousand eight hundred dollars, slightly better than the integrated P O S but only because the platforms invest more in SMS reactivation. Break-even is around month seven. The catch: the SMS reactivation campaigns can feel spammy and you lose customers to opt-outs at a faster rate than the program acquires them past month nine. Model four: a CRM stitched to your own checkout, run through Mailchimp or Klaviyo with a customer-segment loyalty layer on the direct channel. Monthly cost is twenty dollars for Mailchimp basic, eighty if you go Klaviyo. Twelve-month return is approximately five thousand two hundred dollars in repeat-visit margin and three thousand one hundred dollars in lifted average ticket from segmentation alone. Break-even is month two. The catch: it only works if the direct channel is already converting at a reasonable rate. If your direct channel is dormant, the loyalty layer has nothing to layer onto.",
+      "start": 128.87,
+      "end": 264.8
+    },
+    {
+      "id": 10,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Why the CRM-direct path wins by 2x.",
+      "start": 265.9,
+      "end": 268.92
+    },
+    {
+      "id": 11,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "The three competitor models — punch cards, P O S loyalty, standalone loyalty platforms — share a structural problem. They all treat every customer the same. The frequent guest who already comes in every week gets the same 10%-off-after-10-visits offer as the once-a-quarter customer who needs an entirely different intervention. The reward is undifferentiated, so the spend is undifferentiated, so the margin lift is mediocre across the board.",
+      "start": 269.62,
+      "end": 299.42
+    },
+    {
+      "id": 12,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "The CRM-direct path lets you segment. A weekly regular gets early access to the chef&rsquo;s upcoming tasting menu and zero discounts — they don&rsquo;t need a discount, they need to feel known. A lapsed customer who hasn&rsquo;t visited in 60 days gets a specific 15 dollars-off-your-next-visit email at day 58 (right before they&rsquo;d normally lapse to 90+ days). A first-time direct buyer gets a thank-you with their next-time-save offer. Three customers, three different interventions, three different margin profiles. That&rsquo;s where the 2x comes from.",
+      "start": 299.94,
+      "end": 341.95
+    },
+    {
+      "id": 13,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Why the punch card still beats the standalone platform on R O I.",
+      "start": 343.05,
+      "end": 347.09
+    },
+    {
+      "id": 14,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "This is the one that surprises most operators. The punch card returns 750 dollars against 10 dollars in cost — a 75:1 return. The Fivestars/Como standalone returns 2,800 dollars against 2,400 dollars in cost — a 1.17:1 return. The standalone returns more absolute dollars, but the percentage return is worse by a factor of 64. If you have 200 dollars/month to spend on customer marketing, it&rsquo;s almost never going to be best-spent on the standalone loyalty platform. The same 200 dollars goes further almost anywhere else.",
+      "start": 347.79,
+      "end": 391.51
+    },
+    {
+      "id": 15,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "The punch card works because it costs essentially nothing and has a real (if small) behavioral effect on repeat visits. The standalone loyalty platform doesn&rsquo;t work because its cost structure is too high for the modest behavioral lift it produces. The integrated P O S loyalty sits in between — the cost is low enough that the modest lift still pays back, but only just.",
+      "start": 392.03,
+      "end": 417.51
+    },
+    {
+      "id": 16,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "What this means for your setup.",
+      "start": 418.61,
+      "end": 420.12
+    },
+    {
+      "id": 17,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "If you have a direct channel that&rsquo;s already converting: run the CRM-direct path. Klaviyo for the segmentation; your own Stripe/Toast/Square checkout for the order data; a manually-curated regulars list for the highest-value 50 customers; automated re-engagement at day 58. Total monthly cost: 50 dollars–120 dollars depending on email send volume. Total margin lift on a 500-customer base in year one: roughly 5,000 dollars–8,000 dollars in kept margin.",
+      "start": 420.82,
+      "end": 459.31
+    },
+    {
+      "id": 18,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "If you don&rsquo;t have a direct channel: run paper punch cards while you build one. The 750 dollars/year is real money, and the punch card teaches your kitchen staff to track repeat behavior in a way that pays off when you eventually migrate to the CRM-direct path. Don&rsquo;t spend the 200 dollars/month on a standalone loyalty platform thinking it&rsquo;s the bridge — it isn&rsquo;t. It&rsquo;s a worse-margin version of the punch card with extra complexity.",
+      "start": 459.83,
+      "end": 494.04
+    },
+    {
+      "id": 19,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "If you&rsquo;re already running P O S loyalty: keep it. The break-even is reasonable and the data is real, even if the data is owned by your P O S vendor and gets stranded when you switch processors. Just don&rsquo;t pay the standalone platform on top of it — that&rsquo;s a double-spend with overlapping returns.",
+      "start": 494.56,
+      "end": 518.66
+    },
+    {
+      "id": 20,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "Don Goldstein manages two DMV restaurants and runs Muntin Digital . The four-model comparison above is from running each variant on the same restaurant between twenty twenty-four and twenty twenty-five.",
+      "start": 519.18,
+      "end": 533.3
+    },
+    {
+      "id": 21,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "Keep going",
+      "start": 533.82,
+      "end": 534.54
+    },
+    {
+      "id": 22,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "The DoorDash margin walk — the channel conversation that comes first",
+      "start": 534.89,
+      "end": 539.32
+    },
+    {
+      "id": 23,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Instagram as restaurant S E O — the discovery layer above the loyalty layer",
+      "start": 539.64,
+      "end": 545.01
+    },
+    {
+      "id": 24,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "499 dollars audit — the written diagnosis on which loyalty model fits your operation",
+      "start": 545.33,
+      "end": 552.24
+    },
+    {
+      "id": 25,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "Key takeaways",
+      "start": 552.59,
+      "end": 553.53
+    },
+    {
+      "id": 26,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "Standalone loyalty platforms (Fivestars, Como Sense) cost 165 dollars–249 dollars/month and return ~2,800 dollars/year — a 1.17:1 ratio that loses to the 10 dollars/year punch card on percentage terms.",
+      "start": 553.88,
+      "end": 575.1
+    },
+    {
+      "id": 27,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "P O S-integrated loyalty (Toast Rewards, Square Loyalty) sits in the middle on R O I but the data is owned by your processor — it doesn’t come with you if you switch.",
+      "start": 575.42,
+      "end": 587.6
+    },
+    {
+      "id": 28,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "The CRM-direct path wins because it lets you segment: weekly regulars get tasting-menu invites with no discount, lapsed customers get a 15 dollars-off email at day 58, first-time direct buyers get a thank-you with a next-visit offer.",
+      "start": 587.92,
+      "end": 604.99
+    },
+    {
+      "id": 29,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
+      "text": "Don’t pay both a standalone platform and a P O S-integrated loyalty — that’s a double-spend with overlapping returns.",
+      "start": 605.31,
+      "end": 613.71
+    },
+    {
+      "id": 30,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(5)",
+      "text": "If your channel mix is wrong (mostly third-party app orders, no direct flow), no loyalty layer fixes it; fix the channel first.",
+      "start": 614.03,
+      "end": 623.14
+    }
+  ]
+}

@@ -39,36 +39,6 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<style>
-/* Critical CSS — prevents flash of unstyled content while the main
-   stylesheet (assets/site.css) loads non-render-blocking via the
-   <link> below. Carries: token vars used in inline styles elsewhere,
-   body baseline (cream + ink + body-size + line-height), container
-   width, skip-link affordance, and a min-height reservation for the
-   fixed nav so layout doesn't shift when site.css applies. ~600
-   bytes. Documented in Phase 3B perf cutover; the full token set
-   reapplies once site.css arrives. */
-:root{--cream:#FAF7F2;--cream-2:#F3EEE3;--ink:#14161A;--ink-soft:#2A2D33;--teal:#1F4E5B;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
-html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
-body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--cream);line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased}
-.container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
-.skip-link{position:absolute;left:-9999px;top:0}
-.skip-link:focus{position:static;display:inline-block;background:#14161A;color:#FAF7F2;padding:12px 16px;z-index:100}
-/* injected by inject-critical-link-color.mjs */
-a{color:inherit}
-.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:500;font-size:15px;text-decoration:none;white-space:nowrap;cursor:pointer}
-.btn-primary{background:var(--ink);color:var(--cream)}
-.btn-ghost{background:transparent;color:var(--ink);border:1px solid #D9D5CB}
-header.nav{min-height:64px}
-</style>
-<!-- Preload the two above-the-fold web fonts so they arrive in
-     parallel with site.css instead of being discovered after parse. -->
-<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
-<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
-<!-- Async-load the main stylesheet. Pattern: preload + onload-swap
-     (with a <noscript> fallback for the JS-disabled path). The
-     onload assigns this.rel='stylesheet', which the browser then
-     applies; before that the critical CSS above carries the page. -->
 <link rel="preload" as="style" href="/assets/site-core.css?v=a3cc95eb7ac7" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=47810dd9477a" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="/assets/site-core.css?v=a3cc95eb7ac7"><link rel="stylesheet" href="/assets/site-article.css?v=47810dd9477a"></noscript>
@@ -126,31 +96,61 @@ header.nav{min-height:64px}
     {
       "@type": "ItemList",
       "@id": "https://muntin.digital/learn/topics/local-seo/#articles",
-      "numberOfItems": 5,
+      "numberOfItems": 11,
       "itemListElement": [
         {
           "@type": "ListItem",
           "position": 1,
-          "url": "https://muntin.digital/blog/restaurant-schema-markup-6-types-google-uses/"
+          "url": "https://muntin.digital/blog/instagram-as-restaurant-seo-strategy-2026/"
         },
         {
           "@type": "ListItem",
           "position": 2,
-          "url": "https://muntin.digital/blog/how-to-read-restaurant-google-search-console/"
+          "url": "https://muntin.digital/blog/how-to-get-cited-in-google-ai-overviews-restaurant/"
         },
         {
           "@type": "ListItem",
           "position": 3,
-          "url": "https://muntin.digital/blog/how-to-recover-reservations-from-googles-find-a-table/"
+          "url": "https://muntin.digital/blog/how-to-respond-to-google-reviews-restaurant-playbook-2026/"
         },
         {
           "@type": "ListItem",
           "position": 4,
-          "url": "https://muntin.digital/blog/how-to-set-up-google-business-profile-for-your-restaurant/"
+          "url": "https://muntin.digital/blog/my-restaurant-isnt-on-google-maps-10-minute-diagnostic/"
         },
         {
           "@type": "ListItem",
           "position": 5,
+          "url": "https://muntin.digital/blog/restaurant-schema-markup-complete-paste-ready-example/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 6,
+          "url": "https://muntin.digital/blog/may-2026-wave-publishing-for-citation/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 7,
+          "url": "https://muntin.digital/blog/restaurant-schema-markup-6-types-google-uses/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 8,
+          "url": "https://muntin.digital/blog/how-to-read-restaurant-google-search-console/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 9,
+          "url": "https://muntin.digital/blog/how-to-recover-reservations-from-googles-find-a-table/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 10,
+          "url": "https://muntin.digital/blog/how-to-set-up-google-business-profile-for-your-restaurant/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 11,
           "url": "https://muntin.digital/blog/how-to-get-more-google-reviews-for-your-restaurant/"
         }
       ]
@@ -338,23 +338,6 @@ header.nav{min-height:64px}
   </div>
 </section>
 
-<section class="block">
-  <div class="container" style="max-width:760px">
-    <figure class="viz-figure reveal" data-audio-alt="The headline finding behind every article in this topic: 81 percent of the 100 highest-rated DMV restaurants we audited are missing holiday hours on their Google Business Profile. The most-skipped field is also one of the cheapest to fix.">
-      <div class="viz-rings">
-        <div class="viz-ring" data-band="bad" style="--score:81;">
-          <svg class="viz-ring__svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-labelledby="topic-local-ring" focusable="false">
-            <title id="topic-local-ring">81% of audited DMV restaurants are missing holiday hours</title>
-            <circle class="viz-ring__track" cx="60" cy="60" r="52" fill="none" stroke-width="8"/>
-            <circle class="viz-ring__fill" cx="60" cy="60" r="52" fill="none" stroke-width="8" transform="rotate(-90 60 60)"/>
-            <text class="viz-ring__num" x="60" y="60" text-anchor="middle">81%</text>
-          </svg>
-          <p class="viz-ring__label"><strong>Of audited DMV restaurants</strong>are missing holiday hours on GBP &middot; <a href="/learn/research/dmv-restaurant-gbp-audit-2026/">read the audit</a></p>
-        </div>
-      </div>
-    </figure>
-  </div>
-</section>
 
 <section class="topic-section">
   <div class="container">
@@ -364,6 +347,48 @@ header.nav{min-height:64px}
     </header>
     <ul class="topic-article-list">
       <li>
+        <a class="topic-article-card" href="/blog/instagram-as-restaurant-seo-strategy-2026/">
+          <span class="topic-article-date">May 11, 2026</span>
+          <h3>Instagram Is a Search Engine Now. Post Like It.</h3>
+          <p>Google has indexed Instagram captions since 2024 and the in-app search bar handles 40% of restaurant discovery for under-35 guests. Five caption-level moves that make a restaurant post indexable, with the 4.3x save lift from running the discipline on a real account.</p>
+        </a>
+      </li>
+<li>
+        <a class="topic-article-card" href="/blog/how-to-get-cited-in-google-ai-overviews-restaurant/">
+          <span class="topic-article-date">May 10, 2026</span>
+          <h3>How to Get Your Restaurant Cited in Google’s AI Overviews</h3>
+          <p>Search results are now a paragraph Google wrote, citing two or three sources. Five paragraph-level moves that get a restaurant lifted into the answer box — answer-first 45-word leads, schema-anchored entities, predicate-shaped sentences, stable URLs.</p>
+        </a>
+      </li>
+<li>
+        <a class="topic-article-card" href="/blog/how-to-respond-to-google-reviews-restaurant-playbook-2026/">
+          <span class="topic-article-date">May 10, 2026</span>
+          <h3>How to Respond to Google Reviews: A Restaurant Operator’s Playbook</h3>
+          <p>Four review archetypes, four response shapes. What to write, what to never write, and how AI Overviews now lift review responses into the cited paragraph. Templates for the glowing 5-star, the disappointed 3-star, the angry 1-star, and the legitimate-complaint 2-star.</p>
+        </a>
+      </li>
+<li>
+        <a class="topic-article-card" href="/blog/my-restaurant-isnt-on-google-maps-10-minute-diagnostic/">
+          <span class="topic-article-date">May 10, 2026</span>
+          <h3>My Restaurant Isn’t on Google Maps: The 10-Minute Diagnostic</h3>
+          <p>Four causes cover 100% of map-pack-invisibility cases I’ve diagnosed across ~50 DMV restaurants. Unclaimed listing (40%), wrong primary category (30%), suspended listing (15%), duplicate listing (15%). Three of the four fixes you can do yourself the same day.</p>
+        </a>
+      </li>
+<li>
+        <a class="topic-article-card" href="/blog/restaurant-schema-markup-complete-paste-ready-example/">
+          <span class="topic-article-date">May 10, 2026</span>
+          <h3>Restaurant Schema Markup: A Complete, Paste-Ready Example</h3>
+          <p>Sixty lines of JSON-LD that cover the six schema types Google reads first on a restaurant page — Restaurant, Menu, OpeningHoursSpecification, AggregateRating, Reservation, and FAQ. Seven fields to edit. Three checks before you ship. Worked example from a live DMV restaurant.</p>
+        </a>
+      </li>
+<li>
+        <a class="topic-article-card" href="/blog/may-2026-wave-publishing-for-citation/">
+          <span class="topic-article-date">May 10, 2026</span>
+          <h3>The May 2026 Wave: Nine Pieces, One Operating Thesis</h3>
+          <p>An overview of the May 2026 weekly batch — nine articles on AI Overview citation, schema markup, Google Maps invisibility, review responses, Instagram-as-SEO, three-platform delivery math, the 30-day case study, loyalty programs, and service charges. The through-line, the data behind each, and the order to read them in.</p>
+        </a>
+      </li>
+<li>
         <a class="topic-article-card" href="/blog/restaurant-schema-markup-6-types-google-uses/">
           <span class="topic-article-date">Apr 30, 2026</span>
           <h3>Restaurant Schema Markup: The 6 Types Google Actually Uses</h3>
@@ -500,6 +525,13 @@ header.nav{min-height:64px}
           <span class="topic-tool-cta">Open the tool <span aria-hidden="true">→</span></span>
         </a>
       </li>
+<li>
+        <a class="topic-tool-card" href="/tools/holiday-hours/">
+          <h4>Holiday Hours Generator</h4>
+          <p>Generate JSON-LD specialOpeningHoursSpecification + a Google Business Profile-ready holiday hours block. Stays current with the next four restaurant holidays.</p>
+          <span class="topic-tool-cta">Open the tool <span aria-hidden="true">→</span></span>
+        </a>
+      </li>
     </ul>
   </div>
 </section>
@@ -521,54 +553,6 @@ header.nav{min-height:64px}
     </ul>
   </div>
 </section>
-
-<!-- topic-sheets-rail:start -->
-<section class="topic-section">
-  <div class="container">
-    <header class="topic-section-head">
-      <span class="eyebrow">Operator sheets</span>
-      <h2>Pull out the paperwork.</h2>
-    </header>
-    <ul class="topic-tool-list">
-      <li>
-        <a class="topic-tool-card" href="/sheets/gbp-monthly-audit/">
-          <h4>GBP Monthly Health Check</h4>
-          <p>Fifteen-minute walk of your Google Business Profile. Hours, primary category, photo count, posts, Q&amp;A, review velocity, NAP match versus your website. Pass or fail per row, with a fix list.</p>
-          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
-        </a>
-      </li>
-      <li>
-        <a class="topic-tool-card" href="/sheets/nap-consistency-tracker/">
-          <h4>NAP Consistency Tracker</h4>
-          <p>Same name, address, phone everywhere — Google Business Profile, Yelp, Apple, TripAdvisor, OpenTable, your own footer, your schema. One mismatch and Google starts doubting which one is you.</p>
-          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
-        </a>
-      </li>
-      <li>
-        <a class="topic-tool-card" href="/sheets/holiday-hours-planner/">
-          <h4>Holiday Hours Update Planner</h4>
-          <p>A quarter ahead of every federal and local holiday — planned hours, GBP updated yes or no, website updated, voicemail updated.</p>
-          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
-        </a>
-      </li>
-      <li>
-        <a class="topic-tool-card" href="/sheets/local-keyword-map/">
-          <h4>Local Keyword × Page Map</h4>
-          <p>Which keyword each page targets, neighborhood modifier, current rank, page H1, schema type. Surfaces cannibalization and coverage gaps.</p>
-          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
-        </a>
-      </li>
-      <li>
-        <a class="topic-tool-card" href="/sheets/photo-refresh-tracker/">
-          <h4>Photo Refresh Tracker</h4>
-          <p>Channel — GBP, Instagram, website, Yelp — by shot type, by last upload date. Catches stale heroes and the channel you forgot about.</p>
-          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
-        </a>
-      </li>
-    </ul>
-  </div>
-</section>
-<!-- topic-sheets-rail:end -->
 
 <!-- topic-essay:start -->
 <section class="topic-essay">
@@ -654,6 +638,7 @@ header.nav{min-height:64px}
       <li><a href="/learn/topics/trust-reviews/">Trust &amp; Reviews</a></li>
       <li><a href="/learn/topics/brand-design/">Brand &amp; Design</a></li>
       <li><a href="/learn/topics/information-security/">Information Security</a></li>
+      <li><a href="/learn/topics/ai-search/">AI Search &amp; Citation</a></li>
     </ul>
     <div class="hero-ctas reveal hero-ctas-center" style="margin-top:32px">
       <a class="btn btn-primary" href="/learn/">Back to the Library</a>
@@ -661,6 +646,54 @@ header.nav{min-height:64px}
     </div>
   </div>
 </section>
+
+<!-- topic-sheets-rail:start -->
+<section class="topic-section">
+  <div class="container">
+    <header class="topic-section-head">
+      <span class="eyebrow">Operator sheets</span>
+      <h2>Pull out the paperwork.</h2>
+    </header>
+    <ul class="topic-tool-list">
+      <li>
+        <a class="topic-tool-card" href="/sheets/gbp-monthly-audit/">
+          <h4>GBP Monthly Health Check</h4>
+          <p>Fifteen-minute walk of your Google Business Profile. Hours, primary category, photo count, posts, Q&amp;A, review velocity, NAP match versus your website. Pass or fail per row, with a fix list.</p>
+          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
+        </a>
+      </li>
+      <li>
+        <a class="topic-tool-card" href="/sheets/nap-consistency-tracker/">
+          <h4>NAP Consistency Tracker</h4>
+          <p>Same name, address, phone everywhere — Google Business Profile, Yelp, Apple, TripAdvisor, OpenTable, your own footer, your schema. One mismatch and Google starts doubting which one is you.</p>
+          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
+        </a>
+      </li>
+      <li>
+        <a class="topic-tool-card" href="/sheets/holiday-hours-planner/">
+          <h4>Holiday Hours Update Planner</h4>
+          <p>A quarter ahead of every federal and local holiday — planned hours, GBP updated yes or no, website updated, voicemail updated.</p>
+          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
+        </a>
+      </li>
+      <li>
+        <a class="topic-tool-card" href="/sheets/local-keyword-map/">
+          <h4>Local Keyword × Page Map</h4>
+          <p>Which keyword each page targets, neighborhood modifier, current rank, page H1, schema type. Surfaces cannibalization and coverage gaps.</p>
+          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
+        </a>
+      </li>
+      <li>
+        <a class="topic-tool-card" href="/sheets/photo-refresh-tracker/">
+          <h4>Photo Refresh Tracker</h4>
+          <p>Channel — GBP, Instagram, website, Yelp — by shot type, by last upload date. Catches stale heroes and the channel you forgot about.</p>
+          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</section>
+<!-- topic-sheets-rail:end -->
 
 </main>
 
@@ -683,7 +716,7 @@ header.nav{min-height:64px}
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a <!-- count:glossary.terms -->139<!-- /count -->-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
+        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a <!-- count:glossary.terms -->142<!-- /count -->-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
       </div>
 
       <nav class="foot-col" aria-labelledby="foot-explore">

@@ -106,10 +106,18 @@ GLOSSARY = [
     # Tools / services (keep English — restaurant owners know the
     # product name in English regardless of the UI language they use)
     "Google Business Profile",
+    "Google Search Console",
     "Google Maps",
     "Google Search",
     "Google Reviews",
     "Google",
+    "Margin Math",
+    "Workshop",
+    "The Window",
+    "Roma Cucina",
+    "Maketto",
+    "Georgia Ave",
+    "Georgia Avenue",
     "Wix",
     "Squarespace",
     "Shopify",
@@ -127,6 +135,21 @@ GLOSSARY = [
     "Klaviyo",
     "Attentive",
     "SimpleTexting",
+    "Mailchimp",
+    "Fivestars",
+    "Como Sense",
+    "Como",
+    "Toast Rewards",
+    "Square Loyalty",
+    "DoorDash Drive",
+    "DoorDash",
+    "Uber Eats Pro",
+    "Uber Eats",
+    "Uber",
+    "Grubhub Premium",
+    "Grubhub",
+    "Marketplace Plus",
+    "Marketplace",
     "Yelp",
     "TripAdvisor",
     "Instagram",
@@ -164,6 +187,18 @@ GLOSSARY = [
     "Arlington",
     "DMV",
     "DC",
+    "Marche",
+    # Legislation + Google product names (keep verbatim — translating
+    # "Initiative 82" loses the legal-citation specificity, and "AI
+    # Overview" is Google's product name, not a description.)
+    "Initiative 82",
+    "AI Overview",
+    "AI Overviews",
+    "Find a Table",
+    "map pack",
+    "local pack",
+    "Rich Results",
+    "Schema.org",
     # Italian dishes (keep original Italian — they're already loanwords
     # in every target language and any translation would reduce
     # culinary specificity)
@@ -173,7 +208,13 @@ GLOSSARY = [
     "Bucatini all'amatriciana",
     "Tonnarelli",
     "Tiramisù",
-    "Tiramisù",
+    "Pici al ragù",
+    "Pici",
+    "Ragù",
+    "Carbonara",
+    "Crudo",
+    # Japanese loanwords used by name in the library
+    "Omakase",
     # Acronyms — spelled out by the TTS via the pronunciation
     # dictionary, but kept verbatim in source text so the translator
     # doesn't expand them inconsistently per language
@@ -213,6 +254,14 @@ GLOSSARY = [
     "KDS",
     "BOH",
     "FOH",
+    "ROI",
+    "CSV",
+    "NAP",
+    "USD",
+    "MD",
+    "PR",
+    "DM",
+    "DMs",
     # Restaurant-industry terms that translate badly when machine-
     # translated literally. We preserve the English term and let the
     # surrounding sentence carry the meaning. For locales where a
@@ -228,8 +277,6 @@ GLOSSARY = [
     "four-top",
     "host stand",
     "PWA",
-    "Marketplace Plus",
-    "Marketplace",
     "Speed Index",
     "Core Web Vitals",
     "knowledge panel",

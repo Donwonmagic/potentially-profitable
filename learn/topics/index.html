@@ -39,36 +39,6 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<style>
-/* Critical CSS — prevents flash of unstyled content while the main
-   stylesheet (assets/site.css) loads non-render-blocking via the
-   <link> below. Carries: token vars used in inline styles elsewhere,
-   body baseline (cream + ink + body-size + line-height), container
-   width, skip-link affordance, and a min-height reservation for the
-   fixed nav so layout doesn't shift when site.css applies. ~600
-   bytes. Documented in Phase 3B perf cutover; the full token set
-   reapplies once site.css arrives. */
-:root{--cream:#FAF7F2;--cream-2:#F3EEE3;--ink:#14161A;--ink-soft:#2A2D33;--teal:#1F4E5B;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
-html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
-body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--cream);line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased}
-.container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
-.skip-link{position:absolute;left:-9999px;top:0}
-.skip-link:focus{position:static;display:inline-block;background:#14161A;color:#FAF7F2;padding:12px 16px;z-index:100}
-/* injected by inject-critical-link-color.mjs */
-a{color:inherit}
-.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:500;font-size:15px;text-decoration:none;white-space:nowrap;cursor:pointer}
-.btn-primary{background:var(--ink);color:var(--cream)}
-.btn-ghost{background:transparent;color:var(--ink);border:1px solid #D9D5CB}
-header.nav{min-height:64px}
-</style>
-<!-- Preload the two above-the-fold web fonts so they arrive in
-     parallel with site.css instead of being discovered after parse. -->
-<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
-<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
-<!-- Async-load the main stylesheet. Pattern: preload + onload-swap
-     (with a <noscript> fallback for the JS-disabled path). The
-     onload assigns this.rel='stylesheet', which the browser then
-     applies; before that the critical CSS above carries the page. -->
 <link rel="preload" as="style" href="/assets/site-core.css?v=a3cc95eb7ac7" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=47810dd9477a" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="/assets/site-core.css?v=a3cc95eb7ac7"><link rel="stylesheet" href="/assets/site-article.css?v=47810dd9477a"></noscript>
@@ -262,42 +232,42 @@ header.nav{min-height:64px}
       <a class="topics-hub-card" href="/learn/topics/speed-mobile/">
         <h3>Speed &amp; Mobile</h3>
         <p>Why every second of load time costs you diners, and the 80/20 of speed work that actually moves the needle.</p>
-        <span class="topics-hub-meta">2 articles · 2 research · 5 tools</span>
+        <span class="topics-hub-meta">2 articles · 2 research · 6 tools</span>
       </a>
     </li>
 <li>
       <a class="topics-hub-card" href="/learn/topics/conversions/">
         <h3>Conversions &amp; Reservations</h3>
         <p>The patterns that turn a passing visitor into a booked table — and the leaks that quietly cost you bookings every night.</p>
-        <span class="topics-hub-meta">5 articles · 4 research · 3 tools</span>
+        <span class="topics-hub-meta">7 articles · 4 research · 4 tools</span>
       </a>
     </li>
 <li>
       <a class="topics-hub-card" href="/learn/topics/local-seo/">
         <h3>Local SEO &amp; Discovery</h3>
         <p>How Google decides which local restaurant to show — Google Business Profile, schema, reviews, and the on-site signals that matter.</p>
-        <span class="topics-hub-meta">5 articles · 1 research · 7 tools</span>
+        <span class="topics-hub-meta">11 articles · 1 research · 8 tools</span>
       </a>
     </li>
 <li>
       <a class="topics-hub-card" href="/learn/topics/operations-margin/">
         <h3>Operations &amp; Margin</h3>
         <p>The honest math of running an independent restaurant — delivery, pricing, prime cost, and the website&#39;s role in protecting margin.</p>
-        <span class="topics-hub-meta">7 articles · 4 tools</span>
+        <span class="topics-hub-meta">12 articles · 5 tools</span>
       </a>
     </li>
 <li>
       <a class="topics-hub-card" href="/learn/topics/trust-reviews/">
         <h3>Trust &amp; Reviews</h3>
         <p>Reviews, photos, response systems — the slow-compounding signals that keep first-time guests from bouncing.</p>
-        <span class="topics-hub-meta">1 article · 4 tools</span>
+        <span class="topics-hub-meta">3 articles · 5 tools</span>
       </a>
     </li>
 <li>
       <a class="topics-hub-card" href="/learn/topics/brand-design/">
         <h3>Brand &amp; Design</h3>
         <p>Why the website&#39;s tone, type, and palette decide whether a guest believes the food before they taste it.</p>
-        <span class="topics-hub-meta">3 articles · 3 tools</span>
+        <span class="topics-hub-meta">4 articles · 3 tools</span>
       </a>
     </li>
 <li>
@@ -305,6 +275,13 @@ header.nav{min-height:64px}
         <h3>Information Security</h3>
         <p>How to tell if a free restaurant tool is safe — and how to handle the four tiers of your business data so the supplier list and the tax ID don&#39;t sit in the same mental bucket.</p>
         <span class="topics-hub-meta">1 article</span>
+      </a>
+    </li>
+<li>
+      <a class="topics-hub-card" href="/learn/topics/ai-search/">
+        <h3>AI Search &amp; Citation</h3>
+        <p>How AI search engines (ChatGPT, Perplexity, Claude, Google AI Overviews) read independent restaurant content in 2026 — what they cite, where the corpus lives, and the operator moves that earn citation.</p>
+        <span class="topics-hub-meta">3 articles</span>
       </a>
     </li>
     </ul>
@@ -332,7 +309,7 @@ header.nav{min-height:64px}
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a <!-- count:glossary.terms -->139<!-- /count -->-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
+        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a <!-- count:glossary.terms -->142<!-- /count -->-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
       </div>
 
       <nav class="foot-col" aria-labelledby="foot-explore">

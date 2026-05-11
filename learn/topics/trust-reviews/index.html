@@ -39,36 +39,6 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<style>
-/* Critical CSS — prevents flash of unstyled content while the main
-   stylesheet (assets/site.css) loads non-render-blocking via the
-   <link> below. Carries: token vars used in inline styles elsewhere,
-   body baseline (cream + ink + body-size + line-height), container
-   width, skip-link affordance, and a min-height reservation for the
-   fixed nav so layout doesn't shift when site.css applies. ~600
-   bytes. Documented in Phase 3B perf cutover; the full token set
-   reapplies once site.css arrives. */
-:root{--cream:#FAF7F2;--cream-2:#F3EEE3;--ink:#14161A;--ink-soft:#2A2D33;--teal:#1F4E5B;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
-html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
-body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--cream);line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased}
-.container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
-.skip-link{position:absolute;left:-9999px;top:0}
-.skip-link:focus{position:static;display:inline-block;background:#14161A;color:#FAF7F2;padding:12px 16px;z-index:100}
-/* injected by inject-critical-link-color.mjs */
-a{color:inherit}
-.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:500;font-size:15px;text-decoration:none;white-space:nowrap;cursor:pointer}
-.btn-primary{background:var(--ink);color:var(--cream)}
-.btn-ghost{background:transparent;color:var(--ink);border:1px solid #D9D5CB}
-header.nav{min-height:64px}
-</style>
-<!-- Preload the two above-the-fold web fonts so they arrive in
-     parallel with site.css instead of being discovered after parse. -->
-<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
-<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
-<!-- Async-load the main stylesheet. Pattern: preload + onload-swap
-     (with a <noscript> fallback for the JS-disabled path). The
-     onload assigns this.rel='stylesheet', which the browser then
-     applies; before that the critical CSS above carries the page. -->
 <link rel="preload" as="style" href="/assets/site-core.css?v=a3cc95eb7ac7" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=47810dd9477a" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="/assets/site-core.css?v=a3cc95eb7ac7"><link rel="stylesheet" href="/assets/site-article.css?v=47810dd9477a"></noscript>
@@ -126,17 +96,22 @@ header.nav{min-height:64px}
     {
       "@type": "ItemList",
       "@id": "https://muntin.digital/learn/topics/trust-reviews/#articles",
-      "numberOfItems": 2,
+      "numberOfItems": 3,
       "itemListElement": [
         {
           "@type": "ListItem",
           "position": 1,
-          "url": "https://muntin.digital/blog/how-to-get-more-google-reviews-for-your-restaurant/"
+          "url": "https://muntin.digital/blog/service-charges-vs-tipping-restaurant-operator-math-2026/"
         },
         {
           "@type": "ListItem",
           "position": 2,
-          "url": "https://muntin.digital/blog/does-my-restaurant-need-a-website/"
+          "url": "https://muntin.digital/blog/how-to-respond-to-google-reviews-restaurant-playbook-2026/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "url": "https://muntin.digital/blog/how-to-get-more-google-reviews-for-your-restaurant/"
         }
       ]
     }
@@ -332,17 +307,24 @@ header.nav{min-height:64px}
     </header>
     <ul class="topic-article-list">
       <li>
+        <a class="topic-article-card" href="/blog/service-charges-vs-tipping-restaurant-operator-math-2026/">
+          <span class="topic-article-date">May 11, 2026</span>
+          <h3>Service Charges vs Tipping: The Operator’s Math for 2026</h3>
+          <p>Three compensation models compared on the same $200 dinner check. Server take-home varies $9, operator net varies $7. The customer pays roughly the same all three ways but reads each differently. The model I’d pick if I were opening today, with the DC Initiative 82 compliance frame.</p>
+        </a>
+      </li>
+<li>
+        <a class="topic-article-card" href="/blog/how-to-respond-to-google-reviews-restaurant-playbook-2026/">
+          <span class="topic-article-date">May 10, 2026</span>
+          <h3>How to Respond to Google Reviews: A Restaurant Operator’s Playbook</h3>
+          <p>Four review archetypes, four response shapes. What to write, what to never write, and how AI Overviews now lift review responses into the cited paragraph. Templates for the glowing 5-star, the disappointed 3-star, the angry 1-star, and the legitimate-complaint 2-star.</p>
+        </a>
+      </li>
+<li>
         <a class="topic-article-card" href="/blog/how-to-get-more-google-reviews-for-your-restaurant/">
           <span class="topic-article-date">Apr 23, 2026</span>
           <h3>How to Get More Google Reviews for Your Restaurant</h3>
-          <p>A proven system for getting more Google reviews &mdash; QR postcards, timing, staff scripts, and the one thing most owners skip.</p>
-        </a>
-      </li>
-      <li>
-        <a class="topic-article-card" href="/blog/does-my-restaurant-need-a-website/">
-          <span class="topic-article-date">Apr 27, 2026</span>
-          <h3>Does My Restaurant Need a Website in 2026?</h3>
-          <p>The honest answer &mdash; and why the trust signals a website carries (story, photos, real menu, real hours) are exactly what GBP alone can&rsquo;t replace.</p>
+          <p>A proven system for getting more Google reviews — QR postcards, timing, staff scripts, and the one thing most owners skip.</p>
         </a>
       </li>
     </ul>
@@ -408,6 +390,13 @@ header.nav{min-height:64px}
           <span class="topic-tool-cta">Open the tool <span aria-hidden="true">→</span></span>
         </a>
       </li>
+<li>
+        <a class="topic-tool-card" href="/tools/holiday-hours/">
+          <h4>Holiday Hours Generator</h4>
+          <p>Generate JSON-LD specialOpeningHoursSpecification + a Google Business Profile-ready holiday hours block. Stays current with the next four restaurant holidays.</p>
+          <span class="topic-tool-cta">Open the tool <span aria-hidden="true">→</span></span>
+        </a>
+      </li>
     </ul>
   </div>
 </section>
@@ -429,61 +418,6 @@ header.nav{min-height:64px}
     </ul>
   </div>
 </section>
-
-<!-- topic-sheets-rail:start -->
-<section class="topic-section">
-  <div class="container">
-    <header class="topic-section-head">
-      <span class="eyebrow">Operator sheets</span>
-      <h2>Defensible paperwork, ready to print.</h2>
-    </header>
-    <ul class="topic-tool-list">
-      <li>
-        <a class="topic-tool-card" href="/sheets/review-response-log/">
-          <h4>Review Response Log</h4>
-          <p>Platform, reviewer, stars, theme tag, response date, responder, follow-up needed. Catches the recurring complaint hiding in the 3-star reviews.</p>
-          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
-        </a>
-      </li>
-      <li>
-        <a class="topic-tool-card" href="/sheets/complaint-root-cause-tracker/">
-          <h4>Complaint Root-Cause Tracker</h4>
-          <p>Date, channel, category, root cause, fix, owner. Logs the cause, not the symptom — "expo gap," not "cold food."</p>
-          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
-        </a>
-      </li>
-      <li>
-        <a class="topic-tool-card" href="/sheets/health-inspection-prep/">
-          <h4>Health Inspection Prep Checklist</h4>
-          <p>Last violation list, temp logs current, hand-sink stocked, chemical labels, dating system, certifications posted. Treats inspection-ready as standing practice.</p>
-          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
-        </a>
-      </li>
-      <li>
-        <a class="topic-tool-card" href="/sheets/staff-onboarding-checklist/">
-          <h4>Staff Onboarding Checklist (Operational)</h4>
-          <p>Tour, uniform, POS login, food-handler card, manager intro, week-one trail shifts. Operational only — no I-9, no W-4, no state new-hire reporting.</p>
-          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
-        </a>
-      </li>
-      <li>
-        <a class="topic-tool-card" href="/sheets/incident-report/">
-          <h4>Incident Report (Slip · Injury · Customer)</h4>
-          <p>Date and time, location, persons, witnesses, description, photos, actions taken, manager signature. Filled the day it happens, not the week after.</p>
-          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
-        </a>
-      </li>
-      <li>
-        <a class="topic-tool-card" href="/sheets/allergen-matrix/">
-          <h4>Menu Allergen Matrix</h4>
-          <p>Menu item by top-9 US allergens grid, with modifications-on-request notes. Updates with every menu change. Server reference, liability defense.</p>
-          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
-        </a>
-      </li>
-    </ul>
-  </div>
-</section>
-<!-- topic-sheets-rail:end -->
 
 <!-- topic-essay:start -->
 <section class="topic-essay">
@@ -581,6 +515,7 @@ header.nav{min-height:64px}
       <li><a href="/learn/topics/operations-margin/">Operations &amp; Margin</a></li>
       <li><a href="/learn/topics/brand-design/">Brand &amp; Design</a></li>
       <li><a href="/learn/topics/information-security/">Information Security</a></li>
+      <li><a href="/learn/topics/ai-search/">AI Search &amp; Citation</a></li>
     </ul>
     <div class="hero-ctas reveal hero-ctas-center" style="margin-top:32px">
       <a class="btn btn-primary" href="/learn/">Back to the Library</a>
@@ -588,6 +523,61 @@ header.nav{min-height:64px}
     </div>
   </div>
 </section>
+
+<!-- topic-sheets-rail:start -->
+<section class="topic-section">
+  <div class="container">
+    <header class="topic-section-head">
+      <span class="eyebrow">Operator sheets</span>
+      <h2>Defensible paperwork, ready to print.</h2>
+    </header>
+    <ul class="topic-tool-list">
+      <li>
+        <a class="topic-tool-card" href="/sheets/review-response-log/">
+          <h4>Review Response Log</h4>
+          <p>Platform, reviewer, stars, theme tag, response date, responder, follow-up needed. Catches the recurring complaint hiding in the 3-star reviews.</p>
+          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
+        </a>
+      </li>
+      <li>
+        <a class="topic-tool-card" href="/sheets/complaint-root-cause-tracker/">
+          <h4>Complaint Root-Cause Tracker</h4>
+          <p>Date, channel, category, root cause, fix, owner. Logs the cause, not the symptom — "expo gap," not "cold food."</p>
+          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
+        </a>
+      </li>
+      <li>
+        <a class="topic-tool-card" href="/sheets/health-inspection-prep/">
+          <h4>Health Inspection Prep Checklist</h4>
+          <p>Last violation list, temp logs current, hand-sink stocked, chemical labels, dating system, certifications posted. Treats inspection-ready as standing practice.</p>
+          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
+        </a>
+      </li>
+      <li>
+        <a class="topic-tool-card" href="/sheets/staff-onboarding-checklist/">
+          <h4>Staff Onboarding Checklist (Operational)</h4>
+          <p>Tour, uniform, POS login, food-handler card, manager intro, week-one trail shifts. Operational only — no I-9, no W-4, no state new-hire reporting.</p>
+          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
+        </a>
+      </li>
+      <li>
+        <a class="topic-tool-card" href="/sheets/incident-report/">
+          <h4>Incident Report (Slip · Injury · Customer)</h4>
+          <p>Date and time, location, persons, witnesses, description, photos, actions taken, manager signature. Filled the day it happens, not the week after.</p>
+          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
+        </a>
+      </li>
+      <li>
+        <a class="topic-tool-card" href="/sheets/allergen-matrix/">
+          <h4>Menu Allergen Matrix</h4>
+          <p>Menu item by top-9 US allergens grid, with modifications-on-request notes. Updates with every menu change. Server reference, liability defense.</p>
+          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</section>
+<!-- topic-sheets-rail:end -->
 
 </main>
 
@@ -610,7 +600,7 @@ header.nav{min-height:64px}
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a <!-- count:glossary.terms -->139<!-- /count -->-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
+        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a <!-- count:glossary.terms -->142<!-- /count -->-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
       </div>
 
       <nav class="foot-col" aria-labelledby="foot-explore">

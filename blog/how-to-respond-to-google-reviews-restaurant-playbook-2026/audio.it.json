@@ -1,0 +1,355 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-11T05:52:46.389Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "im_nicola",
+  "language": "it",
+  "total": 586.96,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "In breve",
+      "start": 0,
+      "end": 0.65
+    },
+    {
+      "id": 1,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Ci sono quattro archetipi di recensioni che richiedono quattro forme di risposta: la recensione a 5 stelle entusiasta (breve, calda, citare un dettaglio), la recensione delusa a 3 stelle (riconoscere il problema specifico, citare la soluzione, invitare a tornare con un gesto), la recensione arrabbiata a 1 stella (calma, fattuale, non rispondere allo stesso tono), e la recensione a 2 stelle con una lamentela legittima (ammettere l'errore senza ornamenti).",
+      "start": 1,
+      "end": 28.24
+    },
+    {
+      "id": 2,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Il lettore futuro, non il recensore, è il tuo pubblico — la risposta a 3 stelle è la più letta perché è lì che i potenziali clienti si orientano.",
+      "start": 28.56,
+      "end": 37.96
+    },
+    {
+      "id": 3,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Non scrivere mai “Grazie per il tuo feedback”, “Ci impegniamo a fornire”, “Prendiamo molto seriamente”, o “Mi dispiace che tu lo senta così” — il linguaggio standard delle aziende segnala che non si tratta di un messaggio dell'owner.",
+      "start": 38.28,
+      "end": 52.4
+    },
+    {
+      "id": 4,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Opinione &middot; 10 maggio, ventisei &middot; 7 min di lettura &middot; Di Don Goldstein",
+      "start": 52.92,
+      "end": 59.32
+    },
+    {
+      "id": 5,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "La casella di risposta sotto una recensione Google è il testo più letto che un ristorante pubblica e che nessuno scrive appositamente. I futuri clienti leggono le risposte prima di leggere le recensioni. L'owner che risponde in modo difensivo a una cattiva recensione sembrerà difensivo in ogni anteprima dei risultati di ricerca per i prossimi sei mesi. I quattro modelli qui sotto sono quelli che funzionano.",
+      "start": 59.67,
+      "end": 82.72
+    },
+    {
+      "id": 6,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "Ho scritto o co-scritto oltre 600 risposte a recensioni in due ristoranti dal 2022. Ne sono orgoglioso di alcune, mentre altre le guardo con imbarazzo. Il pattern in quelle che mi fanno imbarazzo è coerente: ho risposto alla recensione, non al lettore futuro. L'opinione del recensore è già formata; ciò che cambia è come i prossimi 1.000 lettori percepiscono il ristorante. Scrivi per loro 1.000.",
+      "start": 83.24,
+      "end": 107.32
+    },
+    {
+      "id": 7,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Le quattro recensioni che riceverai.",
+      "start": 108.42,
+      "end": 111.06
+    },
+    {
+      "id": 8,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "Le recensioni dei ristoranti su Google rientrano in uno di quattro archetipi. La forma della risposta è diversa per ognuno. Provare a utilizzare lo stesso modello per tutti e quattro è l'errore più comune che fanno gli operatori — la calore che funziona su una recensione a 5 stelle sembra ossequiosa su una a 3 stelle, la diretta che funziona su una a 1 stella sembra fredda su una a 5 stelle. Scegli il registro giusto per primo.",
+      "start": 111.76,
+      "end": 134.88
+    },
+    {
+      "id": 9,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "Quattro archetipi di recensioni Google e la forma della risposta per ognuno. Archetipo uno: la recensione a 5 stelle entusiasta, dove il cliente ha già apprezzato il pasto e lo sta condividendo. Forma della risposta: breve, calda, citare un dettaglio specifico dalla loro recensione, non proporre nulla. Lunghezza inferiore a tre righe. Archetipo due: la recensione delusa a 3 stelle, dove qualcosa è andato storto ma il cliente è stato ragionevole. Forma della risposta: riconoscere il problema specifico per nome, spiegare la soluzione che si è adottata o si sta adottando, invitare a tornare con un gesto specifico, non scusarsi in generale. Lunghezza da cinque a sette righe. Archetipo tre: la recensione arrabbiata a 1 stella, dove il cliente sta sfogando più che segnalando. Forma della risposta: calma, fattuale, citare ciò che si può verificare, citare ciò che non si può, offrire un percorso di contatto specifico, non rispondere allo stesso tono. Lunghezza da tre a cinque righe, mai più. Archetipo quattro: la recensione a 2 stelle con una lamentela legittima dove il problema operativo segnalato è reale e è stato colpa del ristorante. Forma della risposta: ammettere l'errore senza ornamenti, citare ciò che si è fatto, offrire un gesto di riparazione specifico, concludere con il percorso di contatto. Lunghezza da quattro a sei righe, questa è la risposta che diventa la dichiarazione del marchio che i futuri clienti leggeranno.",
+      "start": 135.68,
+      "end": 217.73
+    },
+    {
+      "id": 10,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "La risposta a 5 stelle.",
+      "start": 218.83,
+      "end": 220.89
+    },
+    {
+      "id": 11,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "La tentazione quando si legge una recensione a 5 stelle è quella di ringraziare il cliente in modo esteso e aggiungere una promozione soft per la sua prossima visita. Resistere a entrambe. La recensione a 5 stelle sta già facendo il suo lavoro; il tuo compito è solo far sembrare il thread un posto dove il proprietario legge le recensioni.",
+      "start": 221.59,
+      "end": 241.85
+    },
+    {
+      "id": 12,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "Il modello:",
+      "start": 242.37,
+      "end": 243.18
+    },
+    {
+      "id": 13,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "Tre righe. Nomina i nomi. Nomina l'articolo. Nomina l'operatore. La firma è importante — dice ai lettori futuri che c'è un essere umano dall'altra parte. Evita di aggiungere \"Per favore torna!\" o l'URL della tua pagina di prenotazione. Il lettore a 5 stelle già sa dove trovarti.",
+      "start": 243.53,
+      "end": 261.74
+    },
+    {
+      "id": 14,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "La risposta a 3 stelle.",
+      "start": 262.84,
+      "end": 264.7
+    },
+    {
+      "id": 15,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "La recensione a 3 stelle è il tipo più letto perché è lì che i futuri clienti si orientano. Un lettore a 5 stelle è già convinto; un lettore a 1 stella è già scettico. Il lettore a 3 stelle è realmente indeciso e legge la tua risposta con attenzione. Questa è la risposta che fa la differenza.",
+      "start": 265.4,
+      "end": 284.39
+    },
+    {
+      "id": 16,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "Cinque elementi: nomina il problema specifico (tempo di attesa, pasta fredda), nomina la soluzione operativa specifica (terzo server, a partire dall'ultimo weekend), assumiti la responsabilità della parte che è colpa del ristorante, offri un risarcimento specifico (chiedi di me, comprensivo dell'antipasto), firma. La risposta stessa diventa la prova che l'operazione risponde ai feedback. Questo vale più della recensione originale a 3 stelle che ti sta danneggiando.",
+      "start": 284.91,
+      "end": 311.88
+    },
+    {
+      "id": 17,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "La risposta a 1 stella.",
+      "start": 312.98,
+      "end": 314.79
+    },
+    {
+      "id": 18,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "La più difficile. L'istinto è quello di diventare difensivi (peggio) o scusarsi in modo generico (quasi altrettanto male). Nessuna delle due opzioni serve al lettore futuro. Il lettore futuro vuole sapere se la recensione a 1 stella è una notte storta o un'esperienza rappresentativa. La tua risposta è ciò che risponde a questa domanda.",
+      "start": 315.49,
+      "end": 335.52
+    },
+    {
+      "id": 19,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "Quattro elementi: breve riconoscimento senza scuse generiche, conferma fattuale di ciò che è verificabile, non conferma fattuale di ciò che non lo è, percorso di contatto specifico. Non mai corrispondere al tono arrabbiato. Non scrivere più di 5 righe — più lunga è la risposta, più sembra combattere la recensione invece di lasciarla essere.",
+      "start": 336.04,
+      "end": 356.71
+    },
+    {
+      "id": 20,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "Una cosa da non scrivere mai: \"Mi piacerebbe discuterne offline.\" Questa frase sembra PR di routine. Sostituiscila con l'indirizzo email specifico e un motivo specifico — \"scrivimi a X in modo che possa recuperare la prenotazione\" — che sembra un percorso reale, non una deviazione.",
+      "start": 357.23,
+      "end": 374.94
+    },
+    {
+      "id": 21,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "La risposta a 2 stelle.",
+      "start": 376.04,
+      "end": 377.86
+    },
+    {
+      "id": 22,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "Questa è la risposta che conta di più per il marchio perché il problema operativo è reale e devi assumerne la responsabilità in modo visibile. Il lettore futuro usa questa risposta per giudicare se l'operazione ha integrità. Se rispondi bene, la recensione a 2 stelle finisce per servirti meglio di cinque recensioni a 5 stelle aggiuntive.",
+      "start": 378.56,
+      "end": 399.42
+    },
+    {
+      "id": 23,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "Cinque elementi: assumiti la responsabilità in modo esplicito (\"hai ragione e mi scuso\"), nomina il problema operativo specifico con le tue parole, nomina la soluzione specifica, fai un'offerta concreta specifica, fornisci il percorso di contatto. Il lettore futuro vede un'operazione che risponde a problemi reali con soluzioni reali, non con un teatro di scuse.",
+      "start": 399.94,
+      "end": 421.67
+    },
+    {
+      "id": 24,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(6)",
+      "text": "Cosa non scrivere, indipendentemente dal numero di stelle.",
+      "start": 422.77,
+      "end": 426.4
+    },
+    {
+      "id": 25,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "\"Grazie per il tuo feedback\" — routine aziendale, sembra non provenire da un proprietario.",
+      "start": 427.1,
+      "end": 432.6
+    },
+    {
+      "id": 26,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "\"Ci impegniamo a fornire…\" — stesso.",
+      "start": 432.92,
+      "end": 435.09
+    },
+    {
+      "id": 27,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "\"Prendiamo questo molto seriamente\" — devia invece di agire.",
+      "start": 435.41,
+      "end": 439.27
+    },
+    {
+      "id": 28,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "&ldquo;Per favore, contattaci così possiamo risolvere questo problema&rdquo; — vago, sostituisci con un indirizzo email specifico e un motivo.",
+      "start": 439.59,
+      "end": 448.98
+    },
+    {
+      "id": 29,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(5)",
+      "text": "&ldquo;Mi dispiace che tu la pensi così&rdquo; — non è una vera scusa, segnala una posizione difensiva anche quando non è intenzionale.",
+      "start": 449.3,
+      "end": 458.43
+    },
+    {
+      "id": 30,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(7)",
+      "text": "Perché questo è più importante di quanto non fosse in passato.",
+      "start": 459.53,
+      "end": 463.2
+    },
+    {
+      "id": 31,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "I cambiamenti di Google nel ventiquattro significano che le risposte alle recensioni possono apparire a volte nel paragrafo citato sopra i risultati di ricerca. Il sistema legge le tue risposte come parte della voce del ristorante, insieme al menu e alla copia \"About\". Se le tue risposte sono un linguaggio aziendale standard, il AI Overview citerà un linguaggio aziendale standard. Se le tue risposte sono specifiche e umane, il AI Overview citerà un linguaggio specifico e umano. La risposta alla recensione è ora una superficie di ricerca, non solo una superficie di customer-service.",
+      "start": 463.9,
+      "end": 498.86
+    },
+    {
+      "id": 32,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "Don Goldstein gestisce due ristoranti DMV e gestisce Muntin Digital . Le oltre 600 risposte alle recensioni dietro questo playbook sono state scritte per entrambi i ristoranti tra il ventidue e il ventisei.",
+      "start": 499.38,
+      "end": 514.1
+    },
+    {
+      "id": 33,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "Continua",
+      "start": 514.62,
+      "end": 515.35
+    },
+    {
+      "id": 34,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "Come essere citati in AI Overview — la casella di risposta fa ora parte di questa superficie",
+      "start": 515.7,
+      "end": 521.43
+    },
+    {
+      "id": 35,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "I 6 tipi di schema che Google utilizza — compreso AggregateRating",
+      "start": 521.75,
+      "end": 526.54
+    },
+    {
+      "id": 36,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "Audit di 499 dollari — la diagnosi scritta con le tue ultime 30 risposte riscritte",
+      "start": 526.86,
+      "end": 533.56
+    },
+    {
+      "id": 37,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(19)",
+      "text": "Punti chiave",
+      "start": 533.91,
+      "end": 534.82
+    },
+    {
+      "id": 38,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(1)",
+      "text": "Firma la risposta con il tuo nome e titolo — la firma indica ai lettori futuri che c'è un essere umano dall'altra parte.",
+      "start": 535.17,
+      "end": 542.92
+    },
+    {
+      "id": 39,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(2)",
+      "text": "Nomina il problema specifico, la soluzione specifica e il risarcimento specifico; la vaghezza si legge come deflessione.",
+      "start": 543.24,
+      "end": 551.67
+    },
+    {
+      "id": 40,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(3)",
+      "text": "Non imitare mai il tono dell'autore della recensione arrabbiato — la calma nella risposta segnala la maturità operativa ai prossimi 1.000 lettori.",
+      "start": 551.99,
+      "end": 562.57
+    },
+    {
+      "id": 41,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(4)",
+      "text": "AI Overview a volte inserisce le risposte alle recensioni nel paragrafo citato insieme al menu e alla copia \"About\"; il linguaggio aziendale standard lo rende citabile come linguaggio aziendale standard.",
+      "start": 562.89,
+      "end": 576.66
+    },
+    {
+      "id": 42,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(5)",
+      "text": "La risposta a 1 stella rimane sotto le 5 righe — risposte più lunghe si leggono come se stessero combattendo la recensione invece di lasciarla essere.",
+      "start": 576.98,
+      "end": 586.96
+    }
+  ]
+}

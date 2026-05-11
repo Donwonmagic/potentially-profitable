@@ -1,0 +1,227 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-11T07:10:28.112Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "am_michael",
+  "language": "en",
+  "total": 366.46,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "Library Letter · May 10, twenty twenty-six · 5 min read &middot; By Don Goldstein",
+      "start": 0,
+      "end": 6.07
+    },
+    {
+      "id": 1,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Nine new pieces shipped this weekend, all in English and Spanish, all backed by first-party operating data. They share one operating thesis: search results aren&rsquo;t ten blue links anymore. They&rsquo;re a paragraph Google wrote, citing two or three sources. For restaurant queries, that paragraph now appears above the map pack. If you&rsquo;re not one of the cited sources, you&rsquo;re not in the conversation. Here&rsquo;s the wave, in the order I&rsquo;d read it.",
+      "start": 6.42,
+      "end": 38.58
+    },
+    {
+      "id": 2,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "This is the first weekly batch under a new editorial cadence. Each batch ships Sunday night through Monday morning, with this overview as the entry point. Future batches will hook to whatever&rsquo;s moving in the restaurant industry that week — a Google product update, a delivery-platform policy change, a wage-law phase-in. This week, the batch is bigger than usual because it lays down the foundation the future ones build on: AI Overview citation is the new discovery surface, and almost no independent restaurant writes for it yet.",
+      "start": 39.1,
+      "end": 75.11
+    },
+    {
+      "id": 3,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "The through-line.",
+      "start": 76.21,
+      "end": 77.1
+    },
+    {
+      "id": 4,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "Two things are happening at the same time, and they compound. One: Google&rsquo;s search-result page is a paragraph the model wrote, citing two or three sources. As of March twenty twenty-five it triggered on 13.14% of US desktop searches; by spring twenty twenty-six it&rsquo;s approaching one in five, and restaurant queries trigger it more often than the average. Two: the map pack still sits beneath that paragraph, and it&rsquo;s still where most local-intent traffic clicks. So you&rsquo;re competing on two surfaces at once — one new and shaped by paragraph quality, one old and shaped by Google Business Profile health.",
+      "start": 77.8,
+      "end": 121.07
+    },
+    {
+      "id": 5,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "Five of the nine pieces address those two surfaces directly. The remaining four address the operating-economics decisions that determine what your restaurant actually has to say on those surfaces — what your menu costs to put in front of a guest, who handles the discovery, what compensation model your kitchen runs on.",
+      "start": 121.59,
+      "end": 142.4
+    },
+    {
+      "id": 6,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "The reading order.",
+      "start": 143.5,
+      "end": 144.41
+    },
+    {
+      "id": 7,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "Each piece stands alone, but they were written to ladder. The order below is the order they reward most.",
+      "start": 145.11,
+      "end": 151.28
+    },
+    {
+      "id": 8,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "The May twenty twenty-six wave at a glance. Nine pieces grouped into three operating themes. Search citation theme, four pieces: How to get your restaurant cited in Google's AI Overviews; restaurant schema markup complete paste-ready example; my restaurant is not on Google Maps the 10-minute diagnostic; how to respond to Google reviews the operator's playbook. Social discovery theme, one piece: Instagram is a search engine now, post like it. Delivery economics and operations theme, four pieces: Uber Eats vs DoorDash vs Grubhub the honest math twenty twenty-six; 30 days after leaving DoorDash a restaurant operator's case study; loyalty programs for independent restaurants what actually pays; service charges vs tipping the operator's math for twenty twenty-six. The arrow from each piece points to the next one that ladders from it in the reading order.",
+      "start": 152.08,
+      "end": 207.49
+    },
+    {
+      "id": 9,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "What the data behind these pieces is.",
+      "start": 208.59,
+      "end": 210.69
+    },
+    {
+      "id": 10,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "Three first-party datasets carry the operating-floor claims across the nine articles. Each is named on the methodology page with the articles it powers.",
+      "start": 211.39,
+      "end": 221.87
+    },
+    {
+      "id": 11,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Paired-restaurant operating ledgers, twenty twenty-four–present. Twelve months of rolling P&L, daily revenue, channel mix, and labor cost from the two DMV restaurants I manage. Powers the DoorDash margin walk, the three-platform comparison, the 30-day case study, the service-charge math, and the loyalty comparison.",
+      "start": 222.39,
+      "end": 244.2
+    },
+    {
+      "id": 12,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "AI Overviews citation-tracking, February–May twenty twenty-six. 90 days of paired Google queries, twice a week per query, with the citation chips logged per Muntin-managed restaurant U R L. Powers the AI Overview citation article&rsquo;s five-move framework.",
+      "start": 244.52,
+      "end": 264.07
+    },
+    {
+      "id": 13,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "DMV Google Business Profile audit, twenty twenty-three–twenty twenty-six. Diagnostics on roughly 50 independent DMV restaurants. Powers the four-cause distribution behind the GMaps invisibility piece (40% unclaimed, 30% wrong primary category, 15% suspended, 15% duplicate).",
+      "start": 264.39,
+      "end": 288.02
+    },
+    {
+      "id": 14,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "What&rsquo;s coming next.",
+      "start": 289.12,
+      "end": 291.09
+    },
+    {
+      "id": 15,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "Future weekly batches will mostly be smaller than this one — one or two pieces, an overview, and the issue that batch is tied to. The cadence is roughly Sunday night to Monday morning, with batches keyed to a Google update, a delivery-platform policy change, a wage-law inflection, or whatever&rsquo;s genuinely moving in the industry that week. The May twenty twenty-six wave is large because it&rsquo;s the foundation. The June 7 batch will be small because, with luck, June 7 will look like a normal Sunday.",
+      "start": 291.79,
+      "end": 325.99
+    },
+    {
+      "id": 16,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "Don Goldstein manages two DMV restaurants and runs Muntin Digital . He is a member of RAMW, ServSafe certified, and writes the weekly batches that ship on this page.",
+      "start": 326.51,
+      "end": 339.39
+    },
+    {
+      "id": 17,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "Read the wave",
+      "start": 339.91,
+      "end": 340.74
+    },
+    {
+      "id": 18,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "1. AI Overview citation — the thesis piece",
+      "start": 341.09,
+      "end": 344.13
+    },
+    {
+      "id": 19,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "2. Schema markup, paste-ready — the technical companion",
+      "start": 344.45,
+      "end": 348.02
+    },
+    {
+      "id": 20,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "3. GMaps invisibility, 10-min diagnostic",
+      "start": 348.34,
+      "end": 351.79
+    },
+    {
+      "id": 21,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "4. Review response playbook",
+      "start": 352.11,
+      "end": 353.85
+    },
+    {
+      "id": 22,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(5)",
+      "text": "5. Instagram as search engine",
+      "start": 354.17,
+      "end": 356.22
+    },
+    {
+      "id": 23,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(6)",
+      "text": "6. Three-platform delivery math",
+      "start": 356.54,
+      "end": 358.57
+    },
+    {
+      "id": 24,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(7)",
+      "text": "7. 30 days after DoorDash, case study",
+      "start": 358.89,
+      "end": 361.66
+    },
+    {
+      "id": 25,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(8)",
+      "text": "8. Loyalty programs that pay",
+      "start": 361.98,
+      "end": 363.87
+    },
+    {
+      "id": 26,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(9)",
+      "text": "9. Service charges vs tipping",
+      "start": 364.19,
+      "end": 366.46
+    }
+  ]
+}
