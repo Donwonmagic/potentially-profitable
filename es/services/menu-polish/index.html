@@ -59,7 +59,150 @@
 }
 </script>
 
-<style>.breadcrumb{padding-top:100px}.offer-price{font-family:var(--font-display);font-size:clamp(48px,7vw,72px);font-weight:500;line-height:1;color:var(--ink);margin:0;letter-spacing:-1.5px}.offer-price small{font-family:var(--font-body);font-size:16px;font-weight:500;color:var(--ink-soft);letter-spacing:0;display:inline-block;margin-left:8px;vertical-align:baseline}.offer-cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:32px}</style>
+<style>
+/* Page-scoped under .polish-* — won't leak to the rest of the site. */
+.breadcrumb{padding-top:100px}
+
+.polish-hero{margin:32px auto 56px;max-width:1000px;padding:0 var(--pad-x)}
+.polish-hero .eyebrow{margin-bottom:18px}
+.polish-hero h1{font-family:var(--font-display);font-size:clamp(44px,7vw,76px);font-weight:500;line-height:1.02;letter-spacing:-1.5px;color:var(--ink);margin:0 0 22px}
+.polish-hero h1 .serif-italic{font-style:italic;font-weight:400;color:var(--teal)}
+.polish-hero__lede{font-size:19px;line-height:1.55;color:var(--ink-soft);max-width:720px;margin:0 0 28px}
+.polish-hero__voice{font-family:var(--font-display);font-style:italic;font-weight:400;font-size:21px;line-height:1.45;color:var(--ink);max-width:680px;margin:0 0 36px;padding-left:18px;border-left:2px solid var(--teal)}
+
+.polish-pricebar{display:grid;grid-template-columns:auto 1fr;gap:32px;align-items:end;padding:28px 0 0;border-top:1px solid var(--line)}
+@media (max-width:720px){.polish-pricebar{grid-template-columns:1fr;gap:18px;align-items:start}}
+.polish-pricebar__price{font-family:var(--font-display);font-size:clamp(56px,9vw,88px);font-weight:500;line-height:.95;color:var(--ink);letter-spacing:-2px;margin:0}
+.polish-pricebar__price small{font-family:var(--font-body);font-size:14px;font-weight:500;color:var(--ink-soft);letter-spacing:0;display:block;margin-top:6px}
+.polish-pricebar__cap{font-size:14px;line-height:1.5;color:var(--ink-soft);padding-bottom:6px}
+.polish-pricebar__cap-label{display:block;font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);margin-bottom:8px}
+.polish-cap-meter{display:flex;gap:6px;margin:0 0 6px;padding:0;list-style:none}
+.polish-cap-meter li{width:36px;height:8px;border-radius:2px;background:var(--cream-2);border:1px solid var(--line)}
+.polish-cap-meter li[data-taken]{background:var(--teal);border-color:var(--teal)}
+.polish-cap-note{font-size:12.5px;color:var(--stone);font-style:italic}
+
+.polish-typesample{margin:64px auto;max-width:1000px;padding:0 var(--pad-x)}
+.polish-typesample__head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:18px}
+.polish-typesample__h{font-family:var(--font-display);font-size:24px;font-weight:500;color:var(--ink);margin:0}
+.polish-typesample__sub{font-size:14px;color:var(--ink-soft)}
+.polish-typesample__grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden}
+@media (max-width:780px){.polish-typesample__grid{grid-template-columns:1fr}}
+.polish-typesample__panel{background:var(--white);padding:32px 32px 36px;position:relative}
+.polish-typesample__tag{position:absolute;top:14px;right:18px;font-size:10px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--stone)}
+.polish-typesample__panel--after .polish-typesample__tag{color:var(--teal)}
+.polish-typesample__panel--after{background:#fcfaf5}
+.polish-typesample__menu-title{font-family:Georgia,serif;font-size:14px;font-weight:600;letter-spacing:0.02em;color:var(--ink);margin:0 0 14px;text-transform:uppercase}
+.polish-typesample__panel--after .polish-typesample__menu-title{font-family:var(--font-display);font-weight:500;letter-spacing:0.18em;font-size:13px;color:var(--teal);margin-bottom:18px;display:flex;align-items:center;gap:12px}
+.polish-typesample__panel--after .polish-typesample__menu-title::before,
+.polish-typesample__panel--after .polish-typesample__menu-title::after{content:'';height:1px;flex:1;background:var(--teal);opacity:.4}
+.polish-typesample__row{display:flex;justify-content:space-between;align-items:baseline;margin:0 0 12px;gap:14px;font-family:Georgia,serif}
+.polish-typesample__panel--after .polish-typesample__row{font-family:var(--font-display);margin-bottom:14px}
+.polish-typesample__row-name{font-size:16px;color:var(--ink);font-weight:600}
+.polish-typesample__panel--after .polish-typesample__row-name{font-weight:500;font-size:17px;letter-spacing:.005em}
+.polish-typesample__row-dots{flex:1;border-bottom:1px dotted var(--stone-2);transform:translateY(-4px);min-width:24px;opacity:.5}
+.polish-typesample__panel--after .polish-typesample__row-dots{display:none}
+.polish-typesample__row-price{font-size:16px;color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+.polish-typesample__panel--after .polish-typesample__row-price{font-weight:400;color:var(--ink-soft);font-feature-settings:'tnum' 1, 'lnum' 1}
+.polish-typesample__row-desc{display:block;font-size:13px;color:var(--stone);font-weight:400;margin-top:2px;line-height:1.4}
+.polish-typesample__panel--after .polish-typesample__row-desc{font-style:italic;color:var(--ink-soft);font-size:13.5px;line-height:1.5;letter-spacing:.01em}
+.polish-typesample__caption{margin-top:14px;font-size:13px;color:var(--ink-soft);line-height:1.55;text-align:center;font-style:italic}
+
+.polish-deliverables{margin:80px auto;max-width:1000px;padding:0 var(--pad-x)}
+.polish-deliverables__h{font-family:var(--font-display);font-size:clamp(28px,3.5vw,36px);font-weight:500;color:var(--ink);margin:0 0 28px;letter-spacing:-0.5px}
+.polish-deliverables__grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden}
+@media (max-width:720px){.polish-deliverables__grid{grid-template-columns:1fr}}
+.polish-deliverable{background:var(--white);padding:26px 26px 28px;display:flex;gap:18px;align-items:flex-start}
+.polish-deliverable__icon{flex:0 0 44px;width:44px;height:44px;color:var(--teal);background:var(--teal-tint);border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center}
+.polish-deliverable__icon svg{width:24px;height:24px}
+.polish-deliverable__body h3{font-family:var(--font-body);font-size:16px;font-weight:600;color:var(--ink);margin:2px 0 4px;letter-spacing:-.01em}
+.polish-deliverable__body p{font-size:14.5px;line-height:1.55;color:var(--ink-soft);margin:0}
+
+.polish-pressspec{margin:0 auto 80px;max-width:1000px;padding:24px var(--pad-x);background:var(--ink);color:var(--cream);border-radius:var(--r-md)}
+.polish-pressspec__inner{display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:center}
+@media (max-width:720px){.polish-pressspec__inner{grid-template-columns:1fr}}
+.polish-pressspec__label{font-family:var(--font-display);font-style:italic;font-size:18px;line-height:1.3;color:var(--cream);max-width:220px}
+.polish-pressspec__chips{display:flex;gap:10px;flex-wrap:wrap}
+.polish-pressspec__chip{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;background:rgba(250,247,242,.08);border:1px solid rgba(250,247,242,.18);border-radius:999px;font-size:13px;font-weight:500;color:var(--cream);letter-spacing:.02em}
+.polish-pressspec__chip svg{width:14px;height:14px;color:var(--gold)}
+
+.polish-process{margin:80px auto;max-width:1100px;padding:0 var(--pad-x)}
+.polish-process__h{font-family:var(--font-display);font-size:clamp(28px,3.5vw,36px);font-weight:500;color:var(--ink);margin:0 0 28px;letter-spacing:-0.5px}
+.polish-process__grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden}
+@media (max-width:880px){.polish-process__grid{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.polish-process__grid{grid-template-columns:1fr}}
+.polish-step{background:var(--white);padding:30px 26px 32px;position:relative;display:flex;flex-direction:column;gap:12px}
+.polish-step__num{font-family:var(--font-display);font-size:54px;font-weight:400;font-style:italic;color:var(--teal);line-height:.9;letter-spacing:-1px}
+.polish-step__when{font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--stone)}
+.polish-step h3{font-family:var(--font-display);font-size:21px;font-weight:500;color:var(--ink);margin:0;letter-spacing:-.01em}
+.polish-step p{font-size:14.5px;line-height:1.55;color:var(--ink-soft);margin:0}
+
+.polish-promise{margin:0 auto 80px;max-width:1000px;padding:0 var(--pad-x)}
+.polish-promise__card{background:var(--cream-2);border:1px solid var(--line);border-radius:var(--r-md);padding:32px 36px}
+.polish-promise__h{display:flex;align-items:center;gap:12px;font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0 0 18px;letter-spacing:-.01em}
+.polish-promise__h svg{width:22px;height:22px;color:var(--teal);flex:0 0 22px}
+.polish-promise__grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+@media (max-width:720px){.polish-promise__grid{grid-template-columns:1fr}}
+.polish-promise__row strong{display:block;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:4px;letter-spacing:.01em}
+.polish-promise__row p{font-size:14.5px;line-height:1.55;color:var(--ink-soft);margin:0}
+
+.polish-ramp{margin:0 auto 80px;max-width:1000px;padding:0 var(--pad-x)}
+.polish-ramp__card{background:linear-gradient(135deg,var(--teal-tint) 0%,var(--cream) 65%);border:1px solid var(--teal);border-radius:var(--r-md);padding:36px 40px;position:relative;overflow:hidden}
+.polish-ramp__h{font-family:var(--font-display);font-size:24px;font-weight:500;color:var(--ink);margin:0 0 14px;letter-spacing:-.01em}
+.polish-ramp__body{font-size:16px;line-height:1.65;color:var(--ink);margin:0;max-width:680px}
+.polish-ramp__math{display:flex;align-items:center;gap:14px;margin-top:22px;font-family:var(--font-display);font-size:18px;color:var(--ink);flex-wrap:wrap}
+.polish-ramp__math-num{font-weight:500;font-size:22px;color:var(--teal)}
+.polish-ramp__math-op{color:var(--stone-2);font-size:18px}
+
+.polish-cta{margin:0 auto 80px;max-width:1000px;padding:0 var(--pad-x);display:flex;gap:14px;flex-wrap:wrap}
+.polish-cta .btn-primary{padding:18px 32px;font-size:16px}
+.polish-cta .btn-ghost{padding:18px 28px}
+
+.polish-ladder{margin:0 auto 80px;max-width:1000px;padding:0 var(--pad-x)}
+.polish-ladder__h{font-family:var(--font-body);font-size:13px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);margin:0 0 18px;text-align:center}
+.polish-ladder__rail{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;align-items:end}
+@media (max-width:720px){.polish-ladder__rail{grid-template-columns:1fr 1fr;gap:14px}}
+.polish-ladder__rung{display:block;text-decoration:none;color:inherit;background:var(--white);border:1px solid var(--line);border-radius:var(--r-sm);padding:18px 18px 22px;transition:border-color var(--t-fast) var(--ease),transform var(--t-fast) var(--ease)}
+.polish-ladder__rung:hover{border-color:var(--teal);transform:translateY(-2px)}
+.polish-ladder__rung--here{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+.polish-ladder__rung--here:hover{transform:none}
+.polish-ladder__rung-label{font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--stone);margin:0 0 6px}
+.polish-ladder__rung--here .polish-ladder__rung-label{color:var(--gold)}
+.polish-ladder__rung-price{font-family:var(--font-display);font-size:24px;font-weight:500;color:var(--ink);margin:0;letter-spacing:-.5px}
+.polish-ladder__rung--here .polish-ladder__rung-price{color:var(--cream)}
+.polish-ladder__rung-name{font-size:13px;color:var(--ink-soft);margin:4px 0 0;line-height:1.35}
+.polish-ladder__rung--here .polish-ladder__rung-name{color:rgba(250,247,242,.78)}
+
+.polish-sisters{margin:0 auto 80px;max-width:1000px;padding:0 var(--pad-x)}
+.polish-sisters__h{font-family:var(--font-body);font-size:13px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);margin:0 0 18px}
+.polish-sisters__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media (max-width:780px){.polish-sisters__grid{grid-template-columns:1fr}}
+.polish-sister{background:var(--white);border:1px solid var(--line);border-radius:var(--r-sm);padding:18px 20px;text-decoration:none;color:inherit;transition:border-color var(--t-fast) var(--ease)}
+.polish-sister:hover{border-color:var(--teal)}
+.polish-sister__label{font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);margin:0 0 6px}
+.polish-sister__name{font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);margin:0 0 4px;letter-spacing:-.01em}
+.polish-sister__why{font-size:13.5px;line-height:1.5;color:var(--ink-soft);margin:0}
+
+.polish-divider{display:flex;justify-content:center;margin:0 auto;padding:14px 0;color:var(--line-dark)}
+.polish-divider svg{width:22px;height:22px}
+
+.polish-inputs{margin:0 auto 80px;max-width:1000px;padding:0 var(--pad-x)}
+.polish-inputs__h{font-family:var(--font-display);font-size:clamp(24px,3vw,30px);font-weight:500;color:var(--ink);margin:0 0 8px;letter-spacing:-0.4px}
+.polish-inputs__intro{font-size:15.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 22px;max-width:680px}
+.polish-inputs__strip{display:flex;gap:10px;flex-wrap:wrap}
+.polish-input-chip{display:inline-flex;align-items:center;gap:9px;padding:10px 16px;background:var(--white);border:1px solid var(--line);border-radius:999px;font-size:13.5px;font-weight:500;color:var(--ink);letter-spacing:.01em}
+.polish-input-chip svg{width:16px;height:16px;color:var(--teal);flex:0 0 16px}
+.polish-inputs__fallback{margin:20px 0 0;font-size:14px;line-height:1.6;color:var(--ink-soft);max-width:720px;padding:14px 18px;background:var(--cream-2);border-left:3px solid var(--rust);border-radius:0 var(--r-sm) var(--r-sm) 0}
+.polish-inputs__fallback a{color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none}
+
+.polish-for{margin:0 auto 80px;max-width:1000px;padding:0 var(--pad-x)}
+.polish-for__h{font-family:var(--font-display);font-size:clamp(24px,3vw,30px);font-weight:500;color:var(--ink);margin:0 0 22px;letter-spacing:-0.4px}
+.polish-for__grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:720px){.polish-for__grid{grid-template-columns:1fr}}
+.polish-for__item{padding:16px 18px;background:var(--white);border:1px solid var(--line);border-radius:var(--r-sm);font-size:15px;line-height:1.6;color:var(--ink);display:flex;gap:14px;align-items:flex-start}
+.polish-for__item svg{flex:0 0 18px;width:18px;height:18px;color:var(--teal);margin-top:3px}
+
+.offer-cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:32px}
+</style>
 <style>
 :root{--cream:#FAF7F2;--cream-2:#F3EEE3;--ink:#14161A;--ink-soft:#2A2D33;--teal:#1F4E5B;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
 html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
@@ -201,101 +344,353 @@ header.nav{min-height:64px}
     </ol>
   </nav>
 
-  <article class="container" style="max-width:880px;margin:32px auto 80px;padding:0 var(--pad-x)">
-    <header style="margin-bottom:40px">
-      <p class="eyebrow">Una oferta productizada</p>
-      <h1 style="font-family:var(--font-display);font-size:clamp(40px,6vw,64px);font-weight:500;line-height:1.05;letter-spacing:-0.5px;margin:0 0 18px">
-        El Menu <span class="serif-italic">Polish de USD 249.</span>
-      </h1>
-      <p style="font-size:18px;line-height:1.55;color:var(--ink-soft);margin:0 0 24px">
-        Dise&ntilde;aste el men&uacute; t&uacute; mismo &mdash; en la <a href="/es/studio/" style="color:var(--teal)">Suite de Dise&ntilde;o de Men&uacute;</a> gratis, en InDesign, en Word, en una servilleta que fotografiaste con buena luz. Va al 80%. El 20% que falta es lo que un dise&ntilde;ador ve y t&uacute; no: un kerning que est&aacute; un pelo desviado, una jerarqu&iacute;a que pelea consigo misma, un quiebre de secci&oacute;n que rompe la lectura. Tres d&iacute;as h&aacute;biles. PDF/X-3 listo para imprenta de regreso. USD 249 fijos.
-      </p>
-      <p style="font-size:15.5px;line-height:1.55;color:var(--ink);margin:0 0 24px;font-weight:500">
-        Lo que ya hiciste, pulido. Sin herramienta DIY. Sin adivinanzas de IA. Hecho a mano, por una persona, en escrito.
-      </p>
-      <p class="offer-price">USD 249<small>fijos &middot; 3 d&iacute;as h&aacute;biles</small></p>
-    </header>
+  <!-- ==================== HERO ==================== -->
+  <section class="polish-hero">
+    <p class="eyebrow eyebrow--glyph">
+      <span class="eyebrow-glyph" aria-hidden="true">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" stroke-linejoin="miter">
+          <rect x="3" y="3" width="18" height="18"/>
+          <line x1="12" y1="3" x2="12" y2="21"/>
+          <line x1="3" y1="9" x2="21" y2="9"/>
+        </svg>
+      </span>
+      Una oferta productizada
+    </p>
+    <h1>
+      El Menu <span class="serif-italic">Polish de USD 249.</span>
+    </h1>
+    <p class="polish-hero__lede">
+      Dise&ntilde;aste el men&uacute; t&uacute; mismo &mdash; en InDesign, en Word, en Canva, en una servilleta que fotografiaste con buena luz. Va al 80%. El 20% que falta es lo que un dise&ntilde;ador ve y t&uacute; no. Tres d&iacute;as h&aacute;biles. PDF/X-3 listo para imprenta de regreso.
+    </p>
+    <p class="polish-hero__voice">
+      &ldquo;Polish es lo que ya hiciste, pulido. Sin herramienta DIY. Sin adivinanzas de IA. Hecho a mano, por una persona, en escrito.&rdquo;
+    </p>
 
-    <section style="margin-bottom:40px">
-      <h2 style="font-size:22px;font-weight:600;color:var(--ink);margin:0 0 16px">Qu&eacute; recibes</h2>
-      <ul style="font-size:16px;line-height:1.7;color:var(--ink);margin:0;padding-left:22px">
-        <li style="margin-bottom:10px"><strong>Un PDF/X-3 listo para imprenta</strong> de tu men&uacute;, exportado en CMYK ISO-coated con fuentes incrustadas y marcas de sangrado. Se lo entregas a cualquier imprenta del pa&iacute;s y sabr&aacute;n exactamente qu&eacute; hacer.</li>
-        <li style="margin-bottom:10px"><strong>JPG y PNG amigables para web,</strong> con perfil de color y tama&ntilde;o correcto, listos para el sitio y para la foto de Google Business.</li>
-        <li style="margin-bottom:10px"><strong>El archivo fuente de InDesign.</strong> Es tuyo. Si en la pr&oacute;xima ronda lo toma tu sobrino, parte del mismo punto que part&iacute; yo.</li>
-        <li style="margin-bottom:10px"><strong>Tipograf&iacute;a refinada.</strong> Pareja tipogr&aacute;fica ajustada, tama&ntilde;os balanceados, interlineado puesto contra una grilla real. Encabezados de secci&oacute;n alineados al ojo, no s&oacute;lo al n&uacute;mero.</li>
-        <li style="margin-bottom:10px"><strong>Layout balanceado.</strong> Espacio en blanco donde el men&uacute; lo merece; densidad donde el men&uacute; la aguanta. Descripciones de plato recortadas (con tu visto bueno) para que la p&aacute;gina no pelee consigo misma.</li>
-        <li><strong>Pase tipogr&aacute;fico EN+ES.</strong> Si tu men&uacute; lleva texto en espa&ntilde;ol, ambas columnas reciben el mismo cuidado &mdash; control de viudas, kerning de acentos, y la tilde no se queda hu&eacute;rfana al final de un rengl&oacute;n.</li>
-      </ul>
-    </section>
-
-    <section style="margin-bottom:40px">
-      <h2 style="font-size:22px;font-weight:600;color:var(--ink);margin:0 0 16px">Para qui&eacute;n es</h2>
-      <ul style="font-size:16px;line-height:1.7;color:var(--ink);margin:0;padding-left:22px">
-        <li style="margin-bottom:10px">Hiciste un men&uacute; y va al 80%. Sientes el 20% que falta pero no le pones nombre.</li>
-        <li style="margin-bottom:10px">Imprimes esta semana y no quieres caminar a la imprenta con un Word.</li>
-        <li style="margin-bottom:10px">Eres bilingue y la columna en espa&ntilde;ol nunca termina de calzar al lado de la inglesa.</li>
-        <li>No necesitas un <a href="/es/services/menu-drop-in/" style="color:var(--teal)">Menu Drop-In de USD 1,500</a> &mdash; el dise&ntilde;o ya es tuyo, s&oacute;lo quieres que un dise&ntilde;ador lo limpie antes de que salga.</li>
-      </ul>
-    </section>
-
-    <section style="margin-bottom:40px">
-      <h2 style="font-size:22px;font-weight:600;color:var(--ink);margin:0 0 16px">Qu&eacute; acepto como entrada</h2>
-      <p style="font-size:16px;line-height:1.7;color:var(--ink);margin:0 0 12px">
-        La <a href="/es/studio/" style="color:var(--teal)">Suite de Dise&ntilde;o de Men&uacute;</a> gratuita exporta un draft limpio y es el camino m&aacute;s suave. Pero trabajo con lo que tengas:
-      </p>
-      <ul style="font-size:16px;line-height:1.7;color:var(--ink);margin:0;padding-left:22px">
-        <li style="margin-bottom:6px">Export de la Suite de Dise&ntilde;o de Men&uacute; (.indd, .pdf o link compartible)</li>
-        <li style="margin-bottom:6px">Documento de Word o Google Doc</li>
-        <li style="margin-bottom:6px">PDF existente (incluso uno hecho desde un Word)</li>
-        <li style="margin-bottom:6px">Una foto clara de un men&uacute; impreso (buena luz, plano, sin reflejos)</li>
-        <li>Archivos fuente de InDesign o Affinity Publisher</li>
-      </ul>
-      <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:14px 0 0">
-        Si lo que mandas est&aacute; demasiado lejos de un punto de partida &mdash; una lista de nombres de plato sin estructura, un escaneo que no puedo leer &mdash; te devuelvo los USD 249 el mismo d&iacute;a y te explico por qu&eacute; un <a href="/es/services/menu-drop-in/" style="color:var(--teal)">Menu Drop-In</a> calza mejor.
-      </p>
-    </section>
-
-    <section style="margin-bottom:40px;padding:24px 28px;background:var(--cream-2);border-radius:12px;border:1px solid var(--line)">
-      <h2 style="font-size:20px;font-weight:600;color:var(--ink);margin:0 0 12px">La rampa de upgrade</h2>
-      <p style="font-size:16px;line-height:1.65;color:var(--ink);margin:0">
-        Si dentro de 60 d&iacute;as decides que quieres que construya la p&aacute;gina de men&uacute; completa en tu sitio en vivo, los USD 249 cuentan como cr&eacute;dito &mdash; pagas la diferencia de USD 1,251 y entrego el <a href="/es/services/menu-drop-in/" style="color:var(--teal)">Menu Drop-In de USD 1,500</a> completo. Sin recotizaci&oacute;n, sin re-discovery. Mismo operador, misma semana.
-      </p>
-    </section>
-
-    <section style="margin-bottom:40px">
-      <h2 style="font-size:22px;font-weight:600;color:var(--ink);margin:0 0 16px">C&oacute;mo funciona</h2>
-      <ol style="font-size:16px;line-height:1.7;color:var(--ink);margin:0;padding-left:22px">
-        <li style="margin-bottom:10px"><strong>D&iacute;a cero.</strong> Me mandas el draft (cualquiera de los formatos de arriba) y un p&aacute;rrafo sobre la voz de tu marca y qu&eacute; te molesta del men&uacute;. La factura de Stripe sale el mismo d&iacute;a; pago completo antes de empezar.</li>
-        <li style="margin-bottom:10px"><strong>D&iacute;a 1.</strong> Leo el men&uacute; como lo lee un operador &mdash; en el tel&eacute;fono, despu&eacute;s en papel, despu&eacute;s en voz alta. Vuelvo con notas si algo me trabe.</li>
-        <li style="margin-bottom:10px"><strong>D&iacute;a 2.</strong> Pase tipogr&aacute;fico, pase de layout, chequeo de color. La columna ES revisada por un lector hispanohablante con fluidez si tu men&uacute; lleva una.</li>
-        <li><strong>D&iacute;a 3.</strong> PDF/X-3 listo para imprenta + JPG/PNG para web + archivo fuente de InDesign entregados. Una ronda de ediciones dentro de la misma semana si algo se ve fuera de lugar.</li>
-      </ol>
-    </section>
-
-    <section style="margin-bottom:40px">
-      <h2 style="font-size:22px;font-weight:600;color:var(--ink);margin:0 0 16px">Capacidad y reembolsos</h2>
-      <ul style="font-size:16px;line-height:1.7;color:var(--ink);margin:0;padding-left:22px">
-        <li style="margin-bottom:10px"><strong>Seis polishes por semana, un solo operador.</strong> La lista de espera es real. Si la semana est&aacute; llena, vas a ver &ldquo;an&oacute;tate en la lista de espera&rdquo; en lugar de &ldquo;comprar &mdash; USD 249,&rdquo; y la pr&oacute;xima semana abierta queda nombrada en la p&aacute;gina.</li>
-        <li><strong>Pol&iacute;tica de reembolso.</strong> Reembolso completo en cualquier momento antes de que mandes el intake. Una vez que el intake lleva 24 horas adentro, ya estamos en imprenta &mdash; el trabajo va en marcha y la tarifa queda firme.</li>
-      </ul>
-    </section>
-
-    <div class="offer-cta">
-      <a class="btn btn-primary js-window" href="/es/window/?topic=menu-polish">Empezar un menu polish</a>
-      <a class="btn btn-ghost" href="/es/services/menu-drop-in/">O construir la p&aacute;gina de men&uacute; completa (USD 1,500)</a>
+    <div class="polish-pricebar">
+      <p class="polish-pricebar__price">USD 249<small>fijos &middot; 3 d&iacute;as h&aacute;biles &middot; una ronda de ediciones</small></p>
+      <div class="polish-pricebar__cap">
+        <span class="polish-pricebar__cap-label">Esta semana &middot; capacidad</span>
+        <ul class="polish-cap-meter" aria-label="3 de 6 espacios tomados esta semana">
+          <li data-taken aria-hidden="true"></li>
+          <li data-taken aria-hidden="true"></li>
+          <li data-taken aria-hidden="true"></li>
+          <li aria-hidden="true"></li>
+          <li aria-hidden="true"></li>
+          <li aria-hidden="true"></li>
+        </ul>
+        <p class="polish-cap-note">3 de 6 espacios tomados &middot; seis polishes por semana, un solo operador</p>
+      </div>
     </div>
+  </section>
 
-    <section style="margin-top:56px;padding-top:32px;border-top:1px solid var(--line)">
-      <p class="eyebrow" style="margin-bottom:10px">Superficies hermanas</p>
-      <ul style="font-size:15.5px;line-height:1.7;color:var(--teal);margin:0;padding-left:22px">
-        <li><a href="/es/studio/">Suite de Dise&ntilde;o de Men&uacute; gratuita</a> &mdash; haz t&uacute; mismo el draft primero; Polish despu&eacute;s refina lo que hiciste</li>
-        <li><a href="/es/services/menu-drop-in/">Menu Drop-In de USD 1,500</a> &mdash; la p&aacute;gina de men&uacute; HTML hecha a mano sobre tu sitio en vivo</li>
-        <li><a href="/es/services/audit/">Auditor&iacute;a de USD 499</a> &mdash; si el men&uacute; est&aacute; bien y el resto del sitio es la fuga</li>
-        <li><a href="/es/services/care-plan-light/">Care Plan Light de USD 99/mes</a> &mdash; mantener el men&uacute; nuevo al d&iacute;a, mes con mes</li>
-        <li><a href="/es/services/">Servicios y precios</a> &mdash; las cuatro ofertas productizadas y las tres tiers de build completo</li>
-      </ul>
-    </section>
-  </article>
+  <div class="polish-divider" aria-hidden="true">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter"><rect x="3" y="3" width="18" height="18"/><line x1="12" y1="3" x2="12" y2="21"/><line x1="3" y1="9" x2="21" y2="9"/></svg>
+  </div>
+
+  <!-- ==================== TYPE SAMPLE ==================== -->
+  <section class="polish-typesample" aria-labelledby="typesample-h">
+    <div class="polish-typesample__head">
+      <h2 class="polish-typesample__h" id="typesample-h">As&iacute; se ve el 20%.</h2>
+      <span class="polish-typesample__sub">Mismo plato. Mismas palabras. Otra mano.</span>
+    </div>
+    <div class="polish-typesample__grid">
+      <div class="polish-typesample__panel" aria-label="Antes — draft del operador">
+        <span class="polish-typesample__tag">Antes</span>
+        <p class="polish-typesample__menu-title">Entradas</p>
+        <div class="polish-typesample__row">
+          <div>
+            <span class="polish-typesample__row-name">Pulpo a la Plancha</span>
+            <span class="polish-typesample__row-desc">pulpo a la parrilla, paprika ahumado, papas fingerling, salsa verde</span>
+          </div>
+          <span class="polish-typesample__row-dots"></span>
+          <span class="polish-typesample__row-price">$18.00</span>
+        </div>
+        <div class="polish-typesample__row">
+          <div>
+            <span class="polish-typesample__row-name">Tu&eacute;tano al Horno</span>
+            <span class="polish-typesample__row-desc">tu&eacute;tano asado, pan de masa madre, gremolata, sal de mar</span>
+          </div>
+          <span class="polish-typesample__row-dots"></span>
+          <span class="polish-typesample__row-price">$14.00</span>
+        </div>
+        <div class="polish-typesample__row">
+          <div>
+            <span class="polish-typesample__row-name">Ensalada de Betarraga y Queso de Cabra</span>
+            <span class="polish-typesample__row-desc">betarragas heirloom asadas, queso de cabra batido, nueces caramelizadas, frisee</span>
+          </div>
+          <span class="polish-typesample__row-dots"></span>
+          <span class="polish-typesample__row-price">$13.00</span>
+        </div>
+      </div>
+      <div class="polish-typesample__panel polish-typesample__panel--after" aria-label="Despu&eacute;s — versi&oacute;n pulida">
+        <span class="polish-typesample__tag">Despu&eacute;s</span>
+        <p class="polish-typesample__menu-title">Entradas</p>
+        <div class="polish-typesample__row">
+          <div>
+            <span class="polish-typesample__row-name">Pulpo a la Plancha</span>
+            <span class="polish-typesample__row-desc">paprika ahumado, fingerlings, salsa verde</span>
+          </div>
+          <span class="polish-typesample__row-price">18</span>
+        </div>
+        <div class="polish-typesample__row">
+          <div>
+            <span class="polish-typesample__row-name">Tu&eacute;tano al Horno</span>
+            <span class="polish-typesample__row-desc">masa madre, gremolata, sal de mar</span>
+          </div>
+          <span class="polish-typesample__row-price">14</span>
+        </div>
+        <div class="polish-typesample__row">
+          <div>
+            <span class="polish-typesample__row-name">Betarraga &amp; Chèvre Batido</span>
+            <span class="polish-typesample__row-desc">heirloom asadas, nueces caramelizadas, frisée</span>
+          </div>
+          <span class="polish-typesample__row-price">13</span>
+        </div>
+      </div>
+    </div>
+    <p class="polish-typesample__caption">Polish conserva los platos. Aprieta la tipograf&iacute;a, recorta la descripci&oacute;n a lo que el comensal lee de un vistazo, quita el &ldquo;.00&rdquo; y deja que el espacio en blanco cargue la p&aacute;gina.</p>
+  </section>
+
+  <!-- ==================== DELIVERABLES ==================== -->
+  <section class="polish-deliverables" aria-labelledby="deliverables-h">
+    <h2 class="polish-deliverables__h" id="deliverables-h">Qu&eacute; recibes de vuelta.</h2>
+    <div class="polish-deliverables__grid">
+      <div class="polish-deliverable">
+        <span class="polish-deliverable__icon" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M9 13h6M9 17h4" stroke-width="1.5"/></svg>
+        </span>
+        <div class="polish-deliverable__body">
+          <h3>PDF/X-3 listo para imprenta</h3>
+          <p>CMYK ISO-coated, fuentes incrustadas, marcas de sangrado. Se lo entregas a cualquier imprenta del pa&iacute;s.</p>
+        </div>
+      </div>
+      <div class="polish-deliverable">
+        <span class="polish-deliverable__icon" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        </span>
+        <div class="polish-deliverable__body">
+          <h3>JPG + PNG para web</h3>
+          <p>Con perfil de color y tama&ntilde;o correcto, listo para el sitio, la foto de Google Business y el mailing.</p>
+        </div>
+      </div>
+      <div class="polish-deliverable">
+        <span class="polish-deliverable__icon" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5z"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+        </span>
+        <div class="polish-deliverable__body">
+          <h3>Archivo fuente de InDesign</h3>
+          <p>Es tuyo. Si la pr&oacute;xima ronda la toma tu sobrino, parte del mismo punto que part&iacute; yo.</p>
+        </div>
+      </div>
+      <div class="polish-deliverable">
+        <span class="polish-deliverable__icon" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16M4 20h16M7 4v16M17 4v16"/><path d="M4 12h16" stroke-width="1.25" stroke-dasharray="2 2"/></svg>
+        </span>
+        <div class="polish-deliverable__body">
+          <h3>Tipograf&iacute;a refinada</h3>
+          <p>Pareja tipogr&aacute;fica ajustada, tama&ntilde;os balanceados, interlineado contra una grilla real. Encabezados alineados al ojo, no al n&uacute;mero.</p>
+        </div>
+      </div>
+      <div class="polish-deliverable">
+        <span class="polish-deliverable__icon" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
+        </span>
+        <div class="polish-deliverable__body">
+          <h3>Layout balanceado</h3>
+          <p>Espacio en blanco donde el men&uacute; lo merece; densidad donde lo aguanta. Descripciones recortadas (con tu visto bueno) para que la p&aacute;gina no pelee consigo misma.</p>
+        </div>
+      </div>
+      <div class="polish-deliverable">
+        <span class="polish-deliverable__icon" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8a4 4 0 0 1 4-4M19 16a4 4 0 0 1-4 4"/><path d="M2 12h6m8 0h6"/><circle cx="12" cy="12" r="3"/></svg>
+        </span>
+        <div class="polish-deliverable__body">
+          <h3>Pase tipogr&aacute;fico EN + ES</h3>
+          <p>Ambas columnas reciben el mismo cuidado &mdash; control de viudas, kerning de acentos, la tilde no se queda hu&eacute;rfana al final del rengl&oacute;n.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== PRESS-SPEC STRIP ==================== -->
+  <section class="polish-pressspec" aria-label="Qu&eacute; lleva por dentro un PDF/X-3">
+    <div class="polish-pressspec__inner">
+      <p class="polish-pressspec__label">Qu&eacute; significa &ldquo;PDF/X-3 listo para imprenta&rdquo; de verdad.</p>
+      <div class="polish-pressspec__chips">
+        <span class="polish-pressspec__chip"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg>CMYK ISO-coated</span>
+        <span class="polish-pressspec__chip"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg>Marcas de sangrado</span>
+        <span class="polish-pressspec__chip"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg>Fuentes incrustadas</span>
+        <span class="polish-pressspec__chip"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg>Im&aacute;genes a 300 dpi</span>
+        <span class="polish-pressspec__chip"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg>Preflight limpio</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== INPUTS ACCEPTED ==================== -->
+  <section class="polish-inputs" aria-labelledby="inputs-h">
+    <h2 class="polish-inputs__h" id="inputs-h">Qu&eacute; acepto como entrada.</h2>
+    <p class="polish-inputs__intro">
+      Lo que tengas, sirve. Cuanto m&aacute;s limpio el archivo, menos rondas de ida y vuelta &mdash; pero no te rebote por mandar un Word.
+    </p>
+    <div class="polish-inputs__strip">
+      <span class="polish-input-chip"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Word / Google Doc</span>
+      <span class="polish-input-chip"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>PDF existente</span>
+      <span class="polish-input-chip"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>Foto clara de un men&uacute; impreso</span>
+      <span class="polish-input-chip"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5z"/><polyline points="2 17 12 22 22 17"/></svg>InDesign / Affinity</span>
+      <span class="polish-input-chip"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>Canva, Figma, donde sea</span>
+    </div>
+    <p class="polish-inputs__fallback">
+      <strong>Si lo que mandas est&aacute; demasiado lejos de un punto de partida</strong> &mdash; una lista de nombres de plato sin estructura, un escaneo que no puedo leer &mdash; te devuelvo los USD 249 el mismo d&iacute;a y te explico por qu&eacute; un <a href="/es/services/menu-drop-in/">Menu Drop-In de USD 1,500</a> calza mejor.
+    </p>
+  </section>
+
+  <!-- ==================== WHO IT'S FOR ==================== -->
+  <section class="polish-for" aria-labelledby="for-h">
+    <h2 class="polish-for__h" id="for-h">Para qui&eacute;n es.</h2>
+    <div class="polish-for__grid">
+      <div class="polish-for__item">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>
+        <span>Hiciste un men&uacute; y va al 80%. Sientes el 20% pero no le pones nombre.</span>
+      </div>
+      <div class="polish-for__item">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>
+        <span>Imprimes esta semana y no quieres caminar a la imprenta con un Word.</span>
+      </div>
+      <div class="polish-for__item">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>
+        <span>Eres bilingue y la columna en espa&ntilde;ol no termina de calzar al lado de la inglesa.</span>
+      </div>
+      <div class="polish-for__item">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>
+        <span>El dise&ntilde;o ya es tuyo &mdash; s&oacute;lo quieres que un dise&ntilde;ador lo limpie antes de que salga.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== PROCESS ==================== -->
+  <section class="polish-process" aria-labelledby="process-h">
+    <h2 class="polish-process__h" id="process-h">Cuatro d&iacute;as, de inicio a entrega.</h2>
+    <div class="polish-process__grid">
+      <div class="polish-step">
+        <span class="polish-step__num">00</span>
+        <span class="polish-step__when">D&iacute;a cero</span>
+        <h3>Me mandas el draft.</h3>
+        <p>Cualquiera de los formatos de arriba, m&aacute;s un p&aacute;rrafo sobre la voz de tu marca y qu&eacute; te molesta. La factura de Stripe sale el mismo d&iacute;a.</p>
+      </div>
+      <div class="polish-step">
+        <span class="polish-step__num">01</span>
+        <span class="polish-step__when">D&iacute;a 1</span>
+        <h3>Lo leo como operador.</h3>
+        <p>En el tel&eacute;fono, despu&eacute;s en papel, despu&eacute;s en voz alta. Notas de regreso si algo me trabe.</p>
+      </div>
+      <div class="polish-step">
+        <span class="polish-step__num">02</span>
+        <span class="polish-step__when">D&iacute;a 2</span>
+        <h3>Tipo, layout, color.</h3>
+        <p>Pase tipogr&aacute;fico, pase de layout, chequeo de color. La columna ES revisada por un lector hispanohablante si tu men&uacute; lleva una.</p>
+      </div>
+      <div class="polish-step">
+        <span class="polish-step__num">03</span>
+        <span class="polish-step__when">D&iacute;a 3</span>
+        <h3>Entregado.</h3>
+        <p>PDF/X-3 + JPG/PNG web + archivo fuente de InDesign. Una ronda de ediciones dentro de la misma semana si algo se ve fuera de lugar.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== PROMISE CARD ==================== -->
+  <section class="polish-promise" aria-labelledby="promise-h">
+    <div class="polish-promise__card">
+      <h2 class="polish-promise__h" id="promise-h">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.5 9.5 8 11 4.5-1.5 8-6 8-11V5l-8-3z"/><polyline points="9 12 11 14 15 10"/></svg>
+        Dos cosas que deber&iacute;as saber antes de darle a comprar.
+      </h2>
+      <div class="polish-promise__grid">
+        <div class="polish-promise__row">
+          <strong>Capacidad acotada a 6 polishes por semana.</strong>
+          <p>Si la semana est&aacute; llena, el bot&oacute;n cambia a un link de lista de espera y la pr&oacute;xima semana abierta queda nombrada en la p&aacute;gina. Capacidad acotada por dise&ntilde;o: es feature, no bug.</p>
+        </div>
+        <div class="polish-promise__row">
+          <strong>Reembolso completo antes de mandar el intake.</strong>
+          <p>Una vez que el intake lleva 24 horas adentro, ya estamos en imprenta &mdash; el trabajo va en marcha y la tarifa queda firme. Te lo digo aqu&iacute; para que no tengas que preguntar.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== UPGRADE RAMP ==================== -->
+  <section class="polish-ramp" aria-labelledby="ramp-h">
+    <div class="polish-ramp__card">
+      <h2 class="polish-ramp__h" id="ramp-h">Si polish no basta &mdash; los USD 249 cuentan como cr&eacute;dito.</h2>
+      <p class="polish-ramp__body">
+        Dentro de 60 d&iacute;as, si decides que quieres la p&aacute;gina de men&uacute; completa construida sobre tu sitio en vivo, los USD 249 cuentan en su totalidad contra el <a href="/es/services/menu-drop-in/" style="color:var(--teal);font-weight:500;border-bottom:1px dashed currentColor;text-decoration:none">Menu Drop-In de USD 1,500</a>. Sin recotizaci&oacute;n. Sin re-discovery. Mismo operador, misma semana.
+      </p>
+      <p class="polish-ramp__math">
+        <span class="polish-ramp__math-num">USD 249</span>
+        <span class="polish-ramp__math-op">pagados</span>
+        <span class="polish-ramp__math-op">+</span>
+        <span class="polish-ramp__math-num">USD 1,251</span>
+        <span class="polish-ramp__math-op">restantes</span>
+        <span class="polish-ramp__math-op">=</span>
+        <span class="polish-ramp__math-num">Drop-In de USD 1,500</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- ==================== CTAs ==================== -->
+  <section class="polish-cta">
+    <a class="btn btn-primary js-window" href="/es/window/?topic=menu-polish">Empezar un menu polish &rarr;</a>
+    <a class="btn btn-ghost js-window" href="/es/window/?topic=not-sure">&iquest;No est&aacute;s seguro si calza? Preg&uacute;ntale a Don</a>
+  </section>
+
+  <!-- ==================== PRICE LADDER ==================== -->
+  <section class="polish-ladder" aria-labelledby="ladder-h">
+    <p class="polish-ladder__h" id="ladder-h">D&oacute;nde se sit&uacute;a polish en la escalera</p>
+    <div class="polish-ladder__rail">
+      <a class="polish-ladder__rung" href="/es/tools/audits/restaurant/">
+        <p class="polish-ladder__rung-label">Gratis</p>
+        <p class="polish-ladder__rung-price">USD 0</p>
+        <p class="polish-ladder__rung-name">Auditor&iacute;a de 30 segundos</p>
+      </a>
+      <span class="polish-ladder__rung polish-ladder__rung--here" aria-current="page">
+        <p class="polish-ladder__rung-label">Est&aacute;s aqu&iacute;</p>
+        <p class="polish-ladder__rung-price">USD 249</p>
+        <p class="polish-ladder__rung-name">Menu Polish &middot; 3 d&iacute;as</p>
+      </span>
+      <a class="polish-ladder__rung" href="/es/services/audit/">
+        <p class="polish-ladder__rung-label">Diagn&oacute;stico</p>
+        <p class="polish-ladder__rung-price">USD 499</p>
+        <p class="polish-ladder__rung-name">Auditor&iacute;a de sitio &middot; 5 d&iacute;as</p>
+      </a>
+      <a class="polish-ladder__rung" href="/es/services/menu-drop-in/">
+        <p class="polish-ladder__rung-label">Una p&aacute;gina</p>
+        <p class="polish-ladder__rung-price">USD 1,500</p>
+        <p class="polish-ladder__rung-name">Menu Drop-In &middot; 7 d&iacute;as</p>
+      </a>
+    </div>
+  </section>
+
+  <!-- ==================== SISTER SURFACES ==================== -->
+  <section class="polish-sisters" aria-labelledby="sisters-h">
+    <p class="polish-sisters__h" id="sisters-h">Superficies hermanas</p>
+    <div class="polish-sisters__grid">
+      <a class="polish-sister" href="/es/tools/audits/restaurant/">
+        <p class="polish-sister__label">Herramienta gratis</p>
+        <p class="polish-sister__name">Auditor&iacute;a de 30 segundos</p>
+        <p class="polish-sister__why">Si no est&aacute;s seguro si el men&uacute; es la fuga, corre la auditor&iacute;a gratis sobre tu sitio primero.</p>
+      </a>
+      <a class="polish-sister" href="/es/services/care-plan-light/">
+        <p class="polish-sister__label">USD 99/mes &middot; mensual</p>
+        <p class="polish-sister__name">Care Plan Light</p>
+        <p class="polish-sister__why">Mantener precios del men&uacute; y horarios al d&iacute;a en sitio, GBP, Yelp y Apple Maps.</p>
+      </a>
+      <a class="polish-sister" href="/es/blog/restaurant-photo-spec-sheet/">
+        <p class="polish-sister__label">Lectura gratis</p>
+        <p class="polish-sister__name">Hoja de especificaciones de fotos</p>
+        <p class="polish-sister__why">El brief de fotos que mando a los operadores antes de un build o un polish.</p>
+      </a>
+    </div>
+  </section>
 </main>
 
 <footer>
