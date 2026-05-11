@@ -1592,6 +1592,125 @@ var RESTAURANT_PRIORITY_CHECKS = [
     unverified_es: 'No pudimos confirmar los horarios del schema',
     unverifiedNote: 'Your schema markup didn\'t declare opening hours at all (or we couldn\'t read it). Adding a complete openingHoursSpecification block is one of the highest-impact single edits you can make for local-search click-through. <a href="/tools/open-hours/" style="color:var(--teal);font-weight:600;">Generate it with Open Hours →</a>',
     unverifiedNote_es: 'Tu schema no declaró horarios en absoluto (o no pudimos leerlo). Agregar un bloque openingHoursSpecification completo es una de las ediciones individuales de mayor impacto que puedes hacer para el click-through en búsqueda local. <a href="/es/tools/open-hours/" style="color:var(--teal);font-weight:600;">Genéralo con Open Hours →</a>'
+  },
+
+  // ─────────────────────────────────────────────────────────────────
+  // Wave-D batch 1: four new high-impact priority checks that surface
+  // data the audit already fetches but never displayed. All run in
+  // the main audit cycle (gbp-lookup + page-crawl + schema-check
+  // happen before render); no deep-scan dependency.
+  //
+  // D1 hours-mismatch: site schema hours vs Google Business Profile.
+  // D4 gbp-photo-count: GBP carousel under a confidence floor.
+  // D6 delivery-presence: third-party aggregators (DoorDash/UberEats/Grubhub).
+  // D7 og-share-preview: link preview metadata for share-to-friends.
+  //
+  // The remaining 3 Wave-D checks (D2 owner-reply, D3 HTTPS/HSTS,
+  // D5 stale-copyright) ship in batch 2 — D2 and D3 need deep-scan
+  // data, D5 ships with them for atomicity.
+  // ─────────────────────────────────────────────────────────────────
+
+  // D1: Site-declared hours vs Google Business Profile hours.
+  {
+    type: 'gbp-hours-mismatch',
+    weight: 1.5, // high — a wrong-hours signal directly costs Friday-night reservations
+    anchor: '#gbp-hours-mismatch',
+    effort: 'self',
+    minutes: 10,
+    impact: "When your site says one set of hours and Google says another, Google's the one a Friday-night party of six trusts — they search 'open now', see your name with the wrong hours, and either bounce or show up to a closed door. A 10-minute fix in your Google Business Profile or your site's hours block prevents one of the most invisible reservation killers in independent dining.",
+    impact_es: 'Cuando tu sitio dice un horario y Google dice otro, la gente le cree a Google — un grupo de seis un viernes por la noche busca "abierto ahora", ve tu nombre con el horario incorrecto y se va a otro lado, o aparece a una puerta cerrada. Un arreglo de 10 minutos en tu Perfil de Empresa de Google o en el bloque de horarios de tu sitio evita uno de los asesinos de reservas más invisibles del comer independiente.',
+    pass: 'Your site hours match your Google Business Profile',
+    pass_es: 'Los horarios de tu sitio coinciden con tu Perfil de Empresa de Google',
+    passNote: "Your weekly hours match across your site (schema markup) and your Google Business Profile. That's exactly what a Friday-night searcher needs to see — no contradiction between the two sources Google trusts most.",
+    passNote_es: 'Tus horarios semanales coinciden entre tu sitio (marcado schema) y tu Perfil de Empresa de Google. Eso es exactamente lo que un buscador de viernes por la noche necesita ver — sin contradicción entre las dos fuentes en las que Google más confía.',
+    fail: "Your site and Google Business Profile show different hours",
+    fail_es: 'Tu sitio y tu Perfil de Empresa de Google muestran horarios diferentes',
+    failNote: "Your site's hours don't match what Google Business Profile shows. Google's the source most diners trust — and the one their 'open now' search reads from. Fix this in your Google Business Profile (preferred: it updates everywhere) or in your site's schema block. The whole edit usually takes 10 minutes once you find which day is wrong.",
+    failNote_es: 'Los horarios de tu sitio no coinciden con lo que muestra el Perfil de Empresa de Google. Google es la fuente en la que más confían los comensales — y la que lee su búsqueda de "abierto ahora". Arréglalo en tu Perfil de Empresa de Google (preferido: se actualiza en todos lados) o en el bloque schema de tu sitio. La edición completa suele tomar 10 minutos una vez que encuentras el día que está mal.',
+    unverified: "We couldn't compare your site hours to your Google profile",
+    unverified_es: 'No pudimos comparar los horarios de tu sitio con tu perfil de Google',
+    unverifiedNote: "Either your site doesn't publish hours in schema markup, or we couldn't match your Google Business Profile to this site. Add openingHoursSpecification to your schema and re-run the audit so we can verify both sides agree.",
+    unverifiedNote_es: 'O tu sitio no publica horarios en el marcado schema, o no pudimos emparejar tu Perfil de Empresa de Google con este sitio. Agrega openingHoursSpecification a tu schema y vuelve a ejecutar la auditoría para verificar que ambos lados coincidan.'
+  },
+
+  // D4: Google Business Profile photo count vs a confidence floor.
+  {
+    type: 'gbp-photo-count',
+    weight: 0.8, // medium — photos drive carousel engagement but aren't a hard signal
+    anchor: '#gbp-photo-count',
+    effort: 'self',
+    minutes: 30,
+    impact: 'Diners scrolling the Google carousel make a decision in 4-6 photos. Under ten and the carousel runs out before they\'ve seen a dish, the room, and the patio — so they swipe over to a competitor whose 80 photos let them eat with their eyes first. Adding 15-20 strong photos (food, room, exterior, smiling staff) takes one focused hour with your phone and pays back for years.',
+    impact_es: 'Los comensales que pasan el carrusel de Google deciden con 4-6 fotos. Con menos de diez, el carrusel se queda corto antes de que vean un plato, el salón y la terraza — así que pasan al competidor cuyas 80 fotos los dejan comer con los ojos primero. Agregar 15-20 fotos buenas (comida, salón, exterior, personal sonriendo) toma una hora con tu teléfono y rinde durante años.',
+    pass: 'Your Google profile has enough photos to tell your story',
+    pass_es: 'Tu perfil de Google tiene suficientes fotos para contar tu historia',
+    passNote: 'Your Google Business Profile carries enough photos that a casual scroller sees food, room, and exterior before running out — exactly the call-to-tap that drives bookings on mobile search.',
+    passNote_es: 'Tu Perfil de Empresa de Google tiene suficientes fotos para que alguien que solo pasa vea comida, salón y exterior antes de quedarse sin material — exactamente la llamada-al-tap que genera reservas en búsqueda móvil.',
+    fail: 'Your Google profile is light on photos',
+    fail_es: 'Tu perfil de Google tiene pocas fotos',
+    failNote: "Under ten photos on your Google Business Profile means the carousel runs out before a scrolling diner has seen what they need. Add 10-15 more this week: a few signature dishes, the front of the building, the dining room, and at least one photo of people enjoying themselves. Upload from your phone via the Google Maps app — it takes 20 minutes.",
+    failNote_es: 'Con menos de diez fotos en tu Perfil de Empresa de Google, el carrusel se queda corto antes de que un comensal vea lo que necesita. Agrega 10-15 más esta semana: algunos platos estrella, la fachada, el comedor y al menos una foto de gente disfrutando. Súbelas desde tu teléfono con la app de Google Maps — toma 20 minutos.',
+    unverified: "We couldn't find your Google Business Profile",
+    unverified_es: 'No pudimos encontrar tu Perfil de Empresa de Google',
+    unverifiedNote: "We couldn't match your site URL to a verified Google Business Profile. If you have one, make sure its website field points to this exact URL. If you don't, claiming your profile at google.com/business is the single highest-leverage move you can make for local search.",
+    unverifiedNote_es: 'No pudimos emparejar la URL de tu sitio con un Perfil de Empresa de Google verificado. Si tienes uno, asegúrate de que el campo "sitio web" apunte exactamente a esta URL. Si no, reclamar tu perfil en google.com/business es la jugada de mayor impacto que puedes hacer para la búsqueda local.'
+  },
+
+  // D6: Third-party delivery aggregator presence.
+  {
+    type: 'delivery-presence',
+    weight: 0.7,
+    anchor: '#delivery-presence',
+    effort: 'self',
+    minutes: 60,
+    impact: 'A hungry-at-9pm customer who can\'t find a delivery option on your site opens DoorDash and orders from someone else. Being on at least one major aggregator (DoorDash, Uber Eats, Grubhub) catches that demand. Aggregator fees hurt — but losing the customer entirely hurts more.',
+    impact_es: 'Un cliente con hambre a las 9pm que no encuentra opción de delivery en tu sitio abre DoorDash y pide en otro lado. Estar en al menos un agregador grande (DoorDash, Uber Eats, Grubhub) atrapa esa demanda. Las comisiones duelen — pero perder al cliente por completo duele más.',
+    pass: "You're on at least one delivery aggregator",
+    pass_es: 'Estás en al menos un agregador de delivery',
+    passNote: "We found a link to a third-party delivery aggregator from your site — that catches the late-night ordering demand that doesn't want to call.",
+    passNote_es: 'Encontramos un enlace a un agregador de delivery desde tu sitio — eso captura la demanda nocturna de quien no quiere llamar.',
+    fail: "We didn't find any delivery aggregator on your site",
+    fail_es: 'No encontramos ningún agregador de delivery en tu sitio',
+    failNote: "Your site doesn't link out to DoorDash, Uber Eats, Grubhub, or any other delivery aggregator. If you do delivery and you're not on at least one of them, hungry-at-9pm customers default to whichever restaurant IS on the platform they opened. The aggregator math works for most independent restaurants on at least one platform; consider DoorDash or Uber Eats as a starting point.",
+    failNote_es: 'Tu sitio no enlaza a DoorDash, Uber Eats, Grubhub ni a ningún otro agregador de delivery. Si haces delivery y no estás en al menos uno de ellos, los clientes con hambre a las 9pm caen en cualquier restaurante que SÍ esté en la plataforma que abrieron. Las matemáticas de los agregadores funcionan para la mayoría de los restaurantes independientes en al menos una plataforma; considera DoorDash o Uber Eats como punto de partida.',
+    unverified: "We couldn't tell if you offer delivery",
+    unverified_es: 'No pudimos saber si ofreces delivery',
+    unverifiedNote: "We didn't find a delivery link on your site, but that doesn't necessarily mean you don't deliver. If you're dine-in only, ignore this. If you do deliver via your own drivers, consider adding a 'Delivery' page so search visitors can find it.",
+    unverifiedNote_es: 'No encontramos un enlace de delivery en tu sitio, pero eso no significa necesariamente que no entregues. Si solo tienes consumo en local, ignora esto. Si entregas con tus propios conductores, considera agregar una página "Delivery" para que los visitantes de búsqueda la encuentren.',
+    byType: {
+      'fine-dining': {
+        // Fine dining typically doesn't deliver — suppress check.
+        impact: '',
+        weight: 0
+      },
+      'fast-casual': {
+        impact: 'Fast-casual lives or dies by delivery aggregator presence. The 9pm-Tuesday-takeout demand IS the business at this segment — if you\'re not on DoorDash, you\'re losing it. Most fast-casual operators carry 2-3 aggregators; the marginal cost of the second platform is small once you\'ve set up the first.',
+        impact_es: 'El fast-casual vive o muere por la presencia en agregadores de delivery. La demanda de "martes 9pm para llevar" ES el negocio en este segmento — si no estás en DoorDash, la pierdes. La mayoría de operadores fast-casual están en 2-3 agregadores; el costo marginal de la segunda plataforma es bajo una vez configurada la primera.'
+      }
+    }
+  },
+
+  // D7: OG share preview metadata.
+  {
+    type: 'og-share-preview',
+    weight: 0.9,
+    anchor: '#og-share-preview',
+    effort: 'self',
+    minutes: 15,
+    impact: "When someone texts your URL to four friends to plan dinner, those friends see a preview card in iMessage / WhatsApp / Messenger. If the preview is missing — blank box, just the domain — half of those friends never tap through. The fix is one image and one title in your platform's SEO settings; the upside is dozens of lost meal plans per year that suddenly become bookings.",
+    impact_es: 'Cuando alguien envía tu URL a cuatro amigos para planear cenar, esos amigos ven una tarjeta de previsualización en iMessage / WhatsApp / Messenger. Si falta — caja en blanco, solo el dominio — la mitad nunca toca el enlace. El arreglo es una imagen y un título en la configuración SEO de tu plataforma; la ganancia son docenas de planes de comida perdidos al año que de repente se convierten en reservas.',
+    pass: 'Your link previews look great when shared',
+    pass_es: 'La vista previa de tu enlace se ve bien al compartirla',
+    passNote: 'When someone shares your URL, iMessage / WhatsApp / Twitter all show a proper preview with your title, description, and a photo. That preview is half the click decision.',
+    passNote_es: 'Cuando alguien comparte tu URL, iMessage / WhatsApp / Twitter muestran una vista previa adecuada con tu título, descripción y una foto. Esa vista previa es la mitad de la decisión de hacer clic.',
+    fail: 'Your link previews are missing or incomplete',
+    fail_es: 'Las vistas previas de tu enlace están ausentes o incompletas',
+    failNote: "Your homepage is missing the Open Graph metadata that messaging apps use to build a preview card. When someone texts your URL to friends, they see a blank box and a domain string — not a photo of a steak. Fix: add og:image (a 1200×630 photo), og:title, and og:description meta tags to your homepage <head>. On Wix and Squarespace this is one screen in SEO settings; on a custom site it's three lines in the &lt;head&gt;.",
+    failNote_es: 'A tu página principal le falta el marcado Open Graph que las apps de mensajería usan para construir la tarjeta de previsualización. Cuando alguien envía tu URL a amigos, ven una caja en blanco y una cadena de dominio — no una foto de un bistec. Arréglalo: agrega los meta tags og:image (una foto de 1200×630), og:title y og:description en el &lt;head&gt; de tu página principal. En Wix y Squarespace esto es una pantalla en configuración SEO; en un sitio a medida son tres líneas en el &lt;head&gt;.',
+    unverified: "We couldn't load your homepage to check link previews",
+    unverified_es: 'No pudimos cargar tu página principal para verificar las vistas previas del enlace',
+    unverifiedNote: "We couldn't fetch your homepage to inspect Open Graph metadata. Re-run the audit in a few seconds — most of the time this resolves on retry.",
+    unverifiedNote_es: 'No pudimos cargar tu página principal para inspeccionar el marcado Open Graph. Vuelve a ejecutar la auditoría en unos segundos — la mayoría de las veces se resuelve al reintentar.'
   }
 ];
 

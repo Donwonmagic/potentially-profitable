@@ -11343,6 +11343,117 @@ main{padding-top:64px}
       return makeResult(def, 'unverified');
     }
 
+    // ─────────────────────────────────────────────────────────
+    // Wave-D batch 1: four new evaluators.
+    // ─────────────────────────────────────────────────────────
+
+    // D1: gbp-hours-mismatch — site schema hours vs GBP hours.
+    // Both signals come from the main audit cycle (places + schema
+    // fetch in parallel before render). Compares the parsed weekday
+    // hours from each source; a string-match disagreement is fail,
+    // exact match is pass, missing data is unverified.
+    if (def.type === 'gbp-hours-mismatch') {
+      var ghCtx = context || {};
+      var ghPlace = ghCtx.places && ghCtx.places.place;
+      var ghSchema = ghCtx.schema && ghCtx.schema.validation;
+      var ghGbpHours = ghPlace && Array.isArray(ghPlace.weekdayHoursText)
+        ? ghPlace.weekdayHoursText : null;
+      var ghSchemaHours = ghSchema && ghSchema.openingHours;
+      // Need both sides to compare. If GBP missing OR schema missing
+      // OR schema doesn't have a populated week, it's unverified —
+      // we honestly don't know if they agree.
+      if (!ghGbpHours || !Array.isArray(ghSchemaHours) || ghSchemaHours.length === 0) {
+        return makeResult(def, 'unverified');
+      }
+      // Normalize both: lowercase + trim + collapse whitespace. GBP's
+      // weekdayHoursText is already day-prefixed ("Monday: 11–22");
+      // schema's openingHours is a normalized day-list. We do a
+      // permissive substring match: as long as schema's hours-for-day
+      // text appears in the corresponding GBP entry, count it as
+      // agreeing. Mismatch = at least one day disagrees.
+      function normHours(s){ return String(s || '').toLowerCase().replace(/\s+/g, ' ').replace(/[–—]/g, '-').trim(); }
+      var disagreements = 0;
+      var compared = 0;
+      for (var ghI = 0; ghI < 7 && ghI < ghGbpHours.length && ghI < ghSchemaHours.length; ghI++) {
+        var ghG = normHours(ghGbpHours[ghI]);
+        var ghS = normHours(ghSchemaHours[ghI]);
+        if (!ghG || !ghS) continue;
+        compared++;
+        // Permissive: extract HH:MM ranges and compare numerically.
+        var rangeRe = /(\d{1,2}):?(\d{2})?\s*(?:am|pm)?\s*-\s*(\d{1,2}):?(\d{2})?\s*(?:am|pm)?/g;
+        var ghGRanges = (ghG.match(rangeRe) || []).join('|');
+        var ghSRanges = (ghS.match(rangeRe) || []).join('|');
+        // If either range is empty (e.g. "closed"), require both to be empty for agreement.
+        var ghGClosed = /closed|cerrado/.test(ghG);
+        var ghSClosed = /closed|cerrado/.test(ghS);
+        if (ghGClosed !== ghSClosed) { disagreements++; continue; }
+        if (ghGClosed && ghSClosed) continue;
+        if (ghGRanges && ghSRanges && ghGRanges !== ghSRanges) {
+          disagreements++;
+        }
+      }
+      if (compared === 0) return makeResult(def, 'unverified');
+      return makeResult(def, disagreements > 0 ? 'fail' : 'pass');
+    }
+
+    // D4: gbp-photo-count — under 10 photos on Google Business Profile.
+    if (def.type === 'gbp-photo-count') {
+      var gpCtx = context || {};
+      var gpPlace = gpCtx.places && gpCtx.places.place;
+      // No GBP match → can't tell.
+      if (!gpPlace || typeof gpPlace.photoCount !== 'number') {
+        return makeResult(def, 'unverified');
+      }
+      var gpFloor = 10;
+      return makeResult(def, gpPlace.photoCount >= gpFloor ? 'pass' : 'fail');
+    }
+
+    // D6: delivery-presence — third-party aggregator detected.
+    if (def.type === 'delivery-presence') {
+      // Reuse the existing ordering platform detector — it already
+      // knows DoorDash, Uber Eats, Grubhub, Slice, ChowNow, etc.
+      // (see RESTAURANT_ORDERING_HOSTS in src/worker.js).
+      var dpDetection = detectPlatforms(['ordering'], allUrls);
+      if (dpDetection.detected) {
+        // Filter to aggregator-only hits (not first-party ordering like Toast)
+        var dpAggregators = ['doordash', 'ubereats', 'uber eats', 'grubhub', 'seamless', 'postmates', 'slice', 'chownow'];
+        var dpHasAggregator = (dpDetection.found || []).some(function(p){
+          var hostname = String((p && p.host) || p || '').toLowerCase();
+          return dpAggregators.some(function(a){ return hostname.indexOf(a) !== -1; });
+        });
+        if (dpHasAggregator) return makeResult(def, 'pass');
+      }
+      // Places signal: a verified delivery=true is some indication
+      // (covers self-driver delivery), but doesn't tell us about
+      // aggregator presence. Treat as unverified rather than pass.
+      var dpPlace = context && context.places && context.places.place;
+      if (dpPlace && dpPlace.delivery === true) {
+        // The business delivers somehow, just not via known aggregator URLs.
+        return makeResult(def, 'unverified');
+      }
+      // No delivery signal at all — honestly unverified, not fail.
+      // The byType override above suppresses this for fine-dining.
+      return makeResult(def, 'unverified');
+    }
+
+    // D7: og-share-preview — homepage OG metadata for share cards.
+    if (def.type === 'og-share-preview') {
+      var ogCrawl = context && context.crawl;
+      var ogHomepage = ogCrawl && ogCrawl.homepage;
+      if (!ogHomepage || ogHomepage.status !== 200 || !ogHomepage.html) {
+        return makeResult(def, 'unverified');
+      }
+      if (typeof checkOgShareMeta !== 'function') {
+        return makeResult(def, 'unverified');
+      }
+      var ogMeta = checkOgShareMeta(ogHomepage.html);
+      // ogImage is the most important — without it the preview is
+      // just a domain string. Require both ogTitle and ogImage for
+      // pass; either missing = fail.
+      if (ogMeta.ogImage && ogMeta.ogTitle) return makeResult(def, 'pass');
+      return makeResult(def, 'fail');
+    }
+
     return null;
   }
 
