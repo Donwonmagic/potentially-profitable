@@ -219,7 +219,7 @@
     // The identified path is unchanged. When "false" (default), the
     // legacy 401 unauthenticated response is returned for unsigned
     // requests. See docs/window-redesign-plan.md §2.1, §7 Phase 1a.
-    "WINDOW_ANON_ENABLED": "false",
+    "WINDOW_ANON_ENABLED": "true",
     // Phase 2.7 — Turnstile gate on the cookie-minting (first-POST)
     // anon path. When "true", the request must carry a valid
     // cf-turnstile-response token; the /window/ composer must render
