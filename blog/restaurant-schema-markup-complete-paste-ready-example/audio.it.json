@@ -1,0 +1,291 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-11T07:02:37.726Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "im_nicola",
+  "language": "it",
+  "total": 400.11,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "In breve",
+      "start": 0,
+      "end": 0.65
+    },
+    {
+      "id": 1,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Sessanta righe di JSON-LD che coprono i sei tipi di schema Google che legge per primo su una pagina del ristorante — Ristorante, Menu, Orari di apertura, Valutazione aggregata, Prenotazione e F A Q.",
+      "start": 1,
+      "end": 15.57
+    },
+    {
+      "id": 2,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Sette campi contrassegnati // EDIT (nome, parti dell'indirizzo, telefono, orari, valutazione, voci del menu) sono tutto ciò che devi cambiare per rendere l'esempio tuo.",
+      "start": 15.89,
+      "end": 26.96
+    },
+    {
+      "id": 3,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Tre controlli pre-pubblicazione: validator.schema.org per le proprietà sconosciute, view-source per i bug di escaping del C M S e il test Rich Results di Google per confermare su quali superfici il tuo schema è idoneo.",
+      "start": 27.28,
+      "end": 42.4
+    },
+    {
+      "id": 4,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Istruzioni &middot; 10 maggio, ventisei &middot; 5 min di lettura &middot; Di Don Goldstein",
+      "start": 42.92,
+      "end": 49.48
+    },
+    {
+      "id": 5,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "Il schema markup che eseguo sui due ristoranti che gestisco, in un blocco JSON-LD pronto per l'incolla. Sei tipi di schema annidati correttamente, i sette campi che devi cambiare per ogni ristorante chiaramente contrassegnati e il passaggio di convalida che coglie i quattro errori di battitura che rompono tutto. L'esempio di lavoro segue lo stesso modello a sei tipi dell'articolo precedente — questo ti fornisce il codice effettivo.",
+      "start": 49.83,
+      "end": 73.44
+    },
+    {
+      "id": 6,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "Se hai letto l'articolo sui sei tipi, sai cosa fa ogni tipo di schema. Questo pezzo è il follow-up tattico: il JSON-LD effettivo che incollo nella <head> di un ristorante la prima volta che lo imposto. Puoi copiarlo, cambiare i sette campi contrassegnati nei commenti e passarlo attraverso il validatore Schema.org. Se il validatore restituisce verde, sei pronto per la pubblicazione.",
+      "start": 73.96,
+      "end": 96.28
+    },
+    {
+      "id": 7,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Come utilizzarlo.",
+      "start": 97.38,
+      "end": 98.8
+    },
+    {
+      "id": 8,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "Tre passaggi:",
+      "start": 99.5,
+      "end": 100.68
+    },
+    {
+      "id": 9,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Copia il blocco seguente in un'unica tag <script type=\"application/ld+json\"> all'interno della <head>. Una sola tag, non sei.",
+      "start": 101.03,
+      "end": 110.36
+    },
+    {
+      "id": 10,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Cambia i sette campi contrassegnati // EDIT: il nome del ristorante, le parti dell'indirizzo (via, città, regione, cap), telefono, orari di apertura e le voci del menu.",
+      "start": 110.68,
+      "end": 121.79
+    },
+    {
+      "id": 11,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Convalida su validator.schema.org incollando l'U R L della tua pagina. Risolvi eventuali errori rossi. La maggior parte degli errori sono virgole mancanti o virgolette sparse.",
+      "start": 122.11,
+      "end": 134.6
+    },
+    {
+      "id": 12,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "L'esempio completo.",
+      "start": 135.7,
+      "end": 137.19
+    },
+    {
+      "id": 13,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "Di seguito è riportato lo schema che ho eseguito su un ristorante italiano da 60 posti. La struttura annida sei tipi: Ristorante (radice), Menu, Orari di apertura, Valutazione aggregata, Prenotazione e F A Q. Ognuno di essi sblocca una diversa superficie Google (come descritto nell'articolo sui sei tipi). Salvalo come punto di partenza; adattalo come necessario.",
+      "start": 137.89,
+      "end": 160.3
+    },
+    {
+      "id": 14,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "Sono 60 righe di JSON-LD che coprono i sei tipi che Google legge per primo su una pagina del ristorante. I sette campi // EDIT sono tutto ciò che devi cambiare per renderlo tuo.",
+      "start": 160.82,
+      "end": 175.05
+    },
+    {
+      "id": 15,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Prima di pubblicare.",
+      "start": 176.15,
+      "end": 177.68
+    },
+    {
+      "id": 16,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "Tre controlli. Ognuno di essi coglie una classe di errori che altrimenti sarebbe invisibile fino a quando non ti chiederai perché il local-pack non ti ha ancora mostrato.",
+      "start": 178.38,
+      "end": 188.86
+    },
+    {
+      "id": 17,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Passalo attraverso validator.schema.org. Incolla l'U R L della tua pagina. Il validatore segnala proprietà sconosciute (errori di battitura), campi obbligatori mancanti e annidamento scorretto. Risolvi gli elementi rossi. Il giallo di solito è okay per la pubblicazione.",
+      "start": 189.38,
+      "end": 207.53
+    },
+    {
+      "id": 18,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Conferma che la pagina renderizzata corrisponda. Apri la tua pagina in un browser, view-source, cerca application/ld+json. Conferma che la tag script è presente e che il JSON è quello che ti aspetti. I bug di escaping del C M S a volte rimuovono le virgolette; devi vedere l'output renderizzato.",
+      "start": 207.85,
+      "end": 227.73
+    },
+    {
+      "id": 19,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "Testa con il test Rich Results di Google. Questo è lo strumento ufficiale che Google utilizza per decidere se il tuo schema è idoneo per i rich results. Ti dice su quali superfici il tuo schema è idoneo. Eseguilo dopo che il validatore ha superato il test.",
+      "start": 228.05,
+      "end": 245.07
+    },
+    {
+      "id": 20,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "Cosa succede dopo la spedizione.",
+      "start": 246.17,
+      "end": 248.5
+    },
+    {
+      "id": 21,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "Non aspettatevi un effetto immediato. Il crawler di Google potrebbe impiegare 24–72 ore per ritornare alla vostra pagina e rilevare il nuovo schema. Alcune superfici (il local-pack, le stelle di AggregateRating) si aggiornano entro una settimana. Altre (deeplink di prenotazione via Find a Table, snippet di F A Q) possono impiegare 30+ giorni. Le più lunghe sono le citazioni di AI Overview, che possono impiegare 90 giorni per iniziare ad atterrare.",
+      "start": 249.2,
+      "end": 276.87
+    },
+    {
+      "id": 22,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "Una volta spedito, lasciate stare lo schema. Il crawler ritorna alle citazioni di URL più spesso di quelle non citate, e un blocco JSON-LD stabile costruisce la fiducia dell'entità nel tempo. Modificate un campo se un fatto cambia (nuovo orario di chiusura, nuovo elemento del menu, contatore di recensioni aggiornato), ma resistete alla tentazione di ristrutturare.",
+      "start": 277.39,
+      "end": 299.18
+    },
+    {
+      "id": 23,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "Don Goldstein gestisce due ristoranti di DMV e gestisce Muntin Digital. Lo schema di esempio sopra è adattato da uno di quei due ristoranti, produzione del 26 maggio 2020.",
+      "start": 299.7,
+      "end": 312.58
+    },
+    {
+      "id": 24,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "Continuate",
+      "start": 313.1,
+      "end": 313.93
+    },
+    {
+      "id": 25,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "I 6 tipi di schema che Google utilizza — cosa ognuno sblocca",
+      "start": 314.28,
+      "end": 318.58
+    },
+    {
+      "id": 26,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Come essere citati in AI Overview — cosa lo schema fa riferimento a",
+      "start": 318.9,
+      "end": 323.05
+    },
+    {
+      "id": 27,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "Strumento di controllo dello schema — valida il JSON-LD su qualsiasi URL",
+      "start": 323.37,
+      "end": 329.41
+    },
+    {
+      "id": 28,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "Audit di $499 — la diagnosi scritta se il vostro schema non funziona",
+      "start": 329.73,
+      "end": 335.86
+    },
+    {
+      "id": 29,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "Punti chiave",
+      "start": 336.21,
+      "end": 337.12
+    },
+    {
+      "id": 30,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "Lo schema è una \"plumbing\" — non sposta l'ago della bilancia da solo, ma rende voi eleggibili per superfici (local-pack, stelle di AggregateRating, deeplink di prenotazione, snippet di F A Q, citazioni di AI Overview) per cui non eravate eleggibili prima.",
+      "start": 337.47,
+      "end": 353.21
+    },
+    {
+      "id": 31,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "Una volta spedito, lasciate stare lo schema — il crawler ritorna allo schema JSON-LD stabile più spesso e costruisce la fiducia dell'entità nel tempo.",
+      "start": 353.53,
+      "end": 364.48
+    },
+    {
+      "id": 32,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "Tempistica delle superfici: local-pack e stelle di rating si aggiornano in una settimana; deeplink di prenotazione e snippet di F A Q impiegano 30+ giorni; citazioni di AI Overview impiegano fino a 90.",
+      "start": 364.8,
+      "end": 378.88
+    },
+    {
+      "id": 33,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
+      "text": "Quando un fatto cambia, modificate un campo — nuovo orario di chiusura, nuovo elemento del menu — e resistete alla tentazione di ristrutturare.",
+      "start": 379.2,
+      "end": 388.26
+    },
+    {
+      "id": 34,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(5)",
+      "text": "Accoppiate lo schema con la scrittura a forma di citazione dal pezzo di AI Overview per il singolo edit di più alto livello che un sito di ristoranti può spedire nel 2026.",
+      "start": 388.58,
+      "end": 400.11
+    }
+  ]
+}
