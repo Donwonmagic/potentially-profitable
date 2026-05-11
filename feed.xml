@@ -12,6 +12,16 @@
     <generator>scripts/build-rss.mjs</generator>
     <atom:link href="https://muntin.digital/feed.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>The May 2026 wave: nine pieces, one operating thesis</title>
+      <link>https://muntin.digital/blog/may-2026-wave-publishing-for-citation/</link>
+      <guid isPermaLink="true">https://muntin.digital/blog/may-2026-wave-publishing-for-citation/</guid>
+      <pubDate>Invalid Date</pubDate>
+      <description>An overview of the nine new pieces in the May 2026 publication batch — AI Overview citation, schema markup, Google Maps invisibility, review responses, Instagram as SEO, three-platform delivery math, the 30-day case study, loyalty programs, and service charges vs tipping. The through-line, the data behind each, and the order to read them in.</description>
+      <category>Article</category>
+      <dc:creator>Don Goldstein</dc:creator>
+      <enclosure url="https://muntin.digital/brand/og/blog-may-2026-overview.png" type="image/png" length="0" />
+    </item>
+    <item>
       <title>Service charges vs tipping: the operator&apos;s math for 2026</title>
       <link>https://muntin.digital/blog/service-charges-vs-tipping-restaurant-operator-math-2026/</link>
       <guid isPermaLink="true">https://muntin.digital/blog/service-charges-vs-tipping-restaurant-operator-math-2026/</guid>
@@ -100,16 +110,6 @@
       <category>Article</category>
       <dc:creator>Don Goldstein</dc:creator>
       <enclosure url="https://muntin.digital/brand/og/blog-ai-overviews-citation.png" type="image/png" length="0" />
-    </item>
-    <item>
-      <title>The May 2026 wave: nine pieces, one operating thesis</title>
-      <link>https://muntin.digital/blog/may-2026-wave-publishing-for-citation/</link>
-      <guid isPermaLink="true">https://muntin.digital/blog/may-2026-wave-publishing-for-citation/</guid>
-      <pubDate>Invalid Date</pubDate>
-      <description>An overview of the nine new pieces in the May 2026 publication batch — AI Overview citation, schema markup, Google Maps invisibility, review responses, Instagram as SEO, three-platform delivery math, the 30-day case study, loyalty programs, and service charges vs tipping. The through-line, the data behind each, and the order to read them in.</description>
-      <category>Article</category>
-      <dc:creator>Don Goldstein</dc:creator>
-      <enclosure url="https://muntin.digital/brand/og/blog-may-2026-overview.png" type="image/png" length="0" />
     </item>
     <item>
       <title>Should Your Restaurant Actually Make an App in 2026?</title>
@@ -289,7 +289,7 @@
       <description>OpeningHoursSpecification: A specific Schema.org structured-data type for representing when a place is open. Lives inside a Restaurant JSON-LD block as one or more entries with dayOf…</description>
       <category>Glossary</category>
       <dc:creator>Don Goldstein</dc:creator>
-      <enclosure url="https://muntin.digital/brand/og/glossary-opening-hours-specification.png" type="image/png" length="0" />
+      <enclosure url="https://muntin.digital/brand/og/glossary.png" type="image/png" length="0" />
     </item>
     <item>
       <title>Holiday hours</title>
@@ -299,7 +299,7 @@
       <description>Holiday hours: The subset of special hours that recur on a calendar — closed on Thanksgiving and Christmas Day, early-close on Christmas Eve, brunch-only on Mother&amp;#39;s Day,…</description>
       <category>Glossary</category>
       <dc:creator>Don Goldstein</dc:creator>
-      <enclosure url="https://muntin.digital/brand/og/glossary-holiday-hours.png" type="image/png" length="0" />
+      <enclosure url="https://muntin.digital/brand/og/glossary.png" type="image/png" length="0" />
     </item>
     <item>
       <title>How to Stop Losing Reservations to Google&amp;rsquo;s &amp;ldquo;Find a Table&amp;rdquo; Feature</title>
@@ -349,7 +349,7 @@
       <description>Menu engineering: A 50-year-old restaurant analysis (Kasavana &amp;amp; Smith, 1990) that plots every menu item on a 2×2 of contribution margin (\$ per sale) against menu-mix share…</description>
       <category>Glossary</category>
       <dc:creator>Don Goldstein</dc:creator>
-      <enclosure url="https://muntin.digital/brand/og/glossary-menu-engineering.png" type="image/png" length="0" />
+      <enclosure url="https://muntin.digital/brand/og/glossary.png" type="image/png" length="0" />
     </item>
     <item>
       <title>Plate cost</title>
@@ -359,7 +359,7 @@
       <description>Plate cost: What it costs you in ingredients to send one plate of a dish to the pass, after trim, peel, bone, and shrink. Computed per ingredient as edible-portion cos…</description>
       <category>Glossary</category>
       <dc:creator>Don Goldstein</dc:creator>
-      <enclosure url="https://muntin.digital/brand/og/glossary-plate-cost.png" type="image/png" length="0" />
+      <enclosure url="https://muntin.digital/brand/og/glossary.png" type="image/png" length="0" />
     </item>
     <item>
       <title>Yield percent</title>
@@ -369,7 +369,7 @@
       <description>Yield percent: For a given ingredient: the percentage of as-purchased weight that survives trim, peel, bone, fat, and cooking shrinkage. Romaine yields about 75%; a whole…</description>
       <category>Glossary</category>
       <dc:creator>Don Goldstein</dc:creator>
-      <enclosure url="https://muntin.digital/brand/og/glossary-yield-percent.png" type="image/png" length="0" />
+      <enclosure url="https://muntin.digital/brand/og/glossary.png" type="image/png" length="0" />
     </item>
     <item>
       <title>Edible portion (EP)</title>
@@ -379,7 +379,7 @@
       <description>Edible portion (EP): The cost of one unit of an ingredient after yield correction: EP cost = AP cost ÷ yield. Always ≥ the as-purchased cost; for low-yield items (whole halibut…</description>
       <category>Glossary</category>
       <dc:creator>Don Goldstein</dc:creator>
-      <enclosure url="https://muntin.digital/brand/og/glossary-edible-portion.png" type="image/png" length="0" />
+      <enclosure url="https://muntin.digital/brand/og/glossary.png" type="image/png" length="0" />
     </item>
     <item>
       <title>Storefront Health</title>
@@ -409,7 +409,7 @@
       <description>Photo brief: A structured shot list a restaurant owner hands to a photographer at the start of a session: which dishes get shot, where each shot is destined to publish…</description>
       <category>Glossary</category>
       <dc:creator>Don Goldstein</dc:creator>
-      <enclosure url="https://muntin.digital/brand/og/glossary-photo-brief.png" type="image/png" length="0" />
+      <enclosure url="https://muntin.digital/brand/og/glossary.png" type="image/png" length="0" />
     </item>
     <item>
       <title>Aspect ratio</title>
@@ -419,7 +419,7 @@
       <description>Aspect ratio: The ratio of an image&amp;#39;s width to its height, expressed as w:h. Eight surfaces own canonical ratios: web hero 16:9, OG card 1.91:1, Yelp featured 3:2, Googl…</description>
       <category>Glossary</category>
       <dc:creator>Don Goldstein</dc:creator>
-      <enclosure url="https://muntin.digital/brand/og/glossary-aspect-ratio.png" type="image/png" length="0" />
+      <enclosure url="https://muntin.digital/brand/og/glossary.png" type="image/png" length="0" />
     </item>
     <item>
       <title>Hero shot</title>
@@ -429,7 +429,7 @@
       <description>Hero shot: For a given destination surface (web hero, Yelp featured, Instagram profile-grid lead, Google Business cover), the single photograph that carries the visua…</description>
       <category>Glossary</category>
       <dc:creator>Don Goldstein</dc:creator>
-      <enclosure url="https://muntin.digital/brand/og/glossary-hero-shot.png" type="image/png" length="0" />
+      <enclosure url="https://muntin.digital/brand/og/glossary.png" type="image/png" length="0" />
     </item>
     <item>
       <title>Sensory adjective</title>
@@ -439,7 +439,7 @@
       <description>Sensory adjective: A modifier in a menu description that names a perceptual quality of the dish — flavor (smoky, briny, tangy), texture (crispy, silky, chewy), temperature (c…</description>
       <category>Glossary</category>
       <dc:creator>Don Goldstein</dc:creator>
-      <enclosure url="https://muntin.digital/brand/og/glossary-sensory-adjective.png" type="image/png" length="0" />
+      <enclosure url="https://muntin.digital/brand/og/glossary.png" type="image/png" length="0" />
     </item>
     <item>
       <title>Charm pricing</title>
@@ -449,7 +449,7 @@
       <description>Charm pricing: A pricing convention in which the cents portion ends in a number designed to make the price feel lower than the next round figure — \$19.95 instead of \$20…</description>
       <category>Glossary</category>
       <dc:creator>Don Goldstein</dc:creator>
-      <enclosure url="https://muntin.digital/brand/og/glossary-charm-pricing.png" type="image/png" length="0" />
+      <enclosure url="https://muntin.digital/brand/og/glossary.png" type="image/png" length="0" />
     </item>
     <item>
       <title>Menu copy</title>
@@ -459,7 +459,7 @@
       <description>Menu copy: The words next to each item — the descriptive sentence, the dish name, the price as it appears on the page — viewed as a separate craft from the cooking it…</description>
       <category>Glossary</category>
       <dc:creator>Don Goldstein</dc:creator>
-      <enclosure url="https://muntin.digital/brand/og/glossary-menu-copy.png" type="image/png" length="0" />
+      <enclosure url="https://muntin.digital/brand/og/glossary.png" type="image/png" length="0" />
     </item>
     <item>
       <title>Why Your Restaurant Loses Reservations Every Night (And How to Fix It)</title>
