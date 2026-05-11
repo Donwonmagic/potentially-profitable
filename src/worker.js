@@ -3533,26 +3533,45 @@ async function handlePsi(request, env, ctx) {
   });
   upstream.searchParams.set('key', env.PSI_API_KEY);
 
-  // Sprint AUDIT-LOAD-FIX: tightened to 25s upstream cap. The frontend
-  // detects errorKind:'psi-timeout' on the 504 body and transparently
-  // retries with ?strategy=desktop (much faster, often passes when the
-  // mobile-throttled Lighthouse run stalls on Wix/Squarespace origins).
-  // The 25s ceiling here leaves headroom inside Cloudflare's 30s wall-
-  // time budget so the worker can return the structured 504 cleanly
-  // instead of the edge tripping a generic gateway error.
+  // Sprint AUDIT-LOAD-FIX + Wave-E4: PSI fetch budget.
+  //
+  // Cloudflare Workers enforce a per-fetch wall-time limit of ~30s for
+  // outbound subrequests. The 30s is PER FETCH, not aggregate across
+  // the handler — so each individual `fetch()` below sits inside that
+  // budget. But the Cloudflare HTTP edge will close the client
+  // connection if the overall worker invocation exceeds ~100s of upstream
+  // wait, and the frontend's own AbortController caps the request at
+  // 35s (see callPsi in tools/audits/restaurant/index.html). Practical
+  // total budget is therefore: 35s client cap ≥ first-attempt + retry
+  // wall time + small grace.
+  //
+  // First attempt: 25s. Retry (429/503 only): 4s. Sleep between: 1.0s.
+  // Worst case 30.0s — fits inside the 35s client cap with headroom.
+  //
+  // Wave-E4 tightening: the prior retry timeout was 20s, giving 46.5s
+  // worst-case total that exceeded the frontend's 35s client cap and
+  // wasted retry budget on a path that's only useful for transient
+  // throttling. 4s is enough to clear a typical PSI burst-throttle
+  // without compounding a slow first attempt.
+  //
+  // On real timeout (TimeoutError below), the frontend transparently
+  // retries with ?strategy=desktop — that's where the meaningful
+  // recovery happens, not in this worker.
   try {
     let res = await fetch(upstream.toString(), {
       headers: { 'Accept': 'application/json' },
       signal: AbortSignal.timeout(25000)
     });
     if (res.status === 429 || res.status === 503) {
-      // Sprint B2: PSI throttles on burst traffic (e.g. the competitor-
-      // comparison flow fires 3 audits back-to-back); a single short
-      // retry recovers the most common transient case.
-      await new Promise((r) => setTimeout(r, 1500));
+      // PSI throttles on burst traffic (e.g. competitor-comparison
+      // flow fires 3 audits back-to-back); a short retry recovers the
+      // most common transient case. Wave-E4 cut from 20s to 4s — if
+      // PSI is THAT slow after a throttle, the frontend's desktop
+      // fallback is the better recovery path.
+      await new Promise((r) => setTimeout(r, 1000));
       res = await fetch(upstream.toString(), {
         headers: { 'Accept': 'application/json' },
-        signal: AbortSignal.timeout(20000)
+        signal: AbortSignal.timeout(4000)
       });
     }
     const body = await res.text();

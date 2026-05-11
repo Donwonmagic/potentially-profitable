@@ -7592,6 +7592,15 @@ main{padding-top:64px}
   // Falls back silently to the original markup when a key is missing
   // — the page renders in English regardless. Re-runs whenever new
   // markup is injected by calling window.__muntinTranslate(root).
+  //
+  // Wave-E1 DEPRECATION:
+  //   This dict is FROZEN as of audit close-out. New i18n strings
+  //   MUST land in restaurant-checks.js's UI_I18N map (the canonical
+  //   EN+ES source) — `tr()` and `resolveTr()` both fall back to it.
+  //   The 70 legacy entries below stay until a dedicated migration
+  //   commit moves them. Once migrated, this entire block + the
+  //   __MUNTIN_UI_ES branch in tr()/resolveTr() can be deleted.
+  //   Do not add new entries here.
   window.__MUNTIN_UI_ES = {
     // Nav
     'nav.services':     'Servicios',
@@ -16278,10 +16287,22 @@ main{padding-top:64px}
     // after the first. The actual re-entrancy fix is the `updating`
     // flag in updateCount above; subtree:true is required to catch
     // grandchild row inserts/removes from the renderer.
+    //
+    // Wave-E5: lifecycle. Today this audit page is per-page-reload
+    // (no SPA navigation), so the observer's never-disconnected
+    // state is harmless. Future SPA routing would make the wrap
+    // node a retain root. The `auditteardown` event below lets
+    // any future SPA shell call `dispatchEvent(new Event(
+    // 'auditteardown'))` to disconnect the observer cleanly.
     try {
       var wrap = document.getElementById('priorityListWrap');
       if (wrap && typeof MutationObserver === 'function') {
-        new MutationObserver(updateCount).observe(wrap, { childList: true, subtree: true });
+        var mo = new MutationObserver(updateCount);
+        mo.observe(wrap, { childList: true, subtree: true });
+        window.addEventListener('auditteardown', function once(){
+          try { mo.disconnect(); } catch (_) {}
+          window.removeEventListener('auditteardown', once);
+        });
       }
     } catch (_) {}
   })();
