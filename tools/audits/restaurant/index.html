@@ -15016,6 +15016,19 @@ main{padding-top:64px}
       // fine-dining boosts conversions to 2.0 over the default 1.5.
       accumulateRestaurantReadiness(readinessState, def, result.mark.cls, btype);
 
+      // Batch-A item 3: when a byType override sets weight:0 for the
+      // current subtype, skip rendering the row entirely. The prior
+      // behavior cleared `impact` text to empty but still rendered
+      // the row, leaving a confusing "We couldn't tell if you offer
+      // delivery" with an empty body on fine-dining audits (D6's
+      // fine-dining suppression). subtypeWeights() reads the
+      // effective weight from subtypes.js + def.byType[subtype].weight.
+      var effectiveWeight = def.weight;
+      if (btype && def.byType && def.byType[btype] && typeof def.byType[btype].weight === 'number') {
+        effectiveWeight = def.byType[btype].weight;
+      }
+      if (effectiveWeight === 0) return;
+
       var row = document.createElement('div');
       row.className = 'priority-item ' + result.mark.cls;
       if (result.overridden) row.className += ' overridden';
@@ -16674,8 +16687,9 @@ main{padding-top:64px}
     // stayed on — the new report rendered in weekend mode without
     // consent, hiding the score and the long report. Clear the mode
     // (and its sessionStorage mirror) at submit time.
-    if (document.body.classList.contains('weekend-mode')) {
-      // Wave-E3: applyDisplayMode for the form-submit cleanup path.
+    // Batch-A item 4: read displayMode state via the abstraction
+    // (consistent w/ Wave E3) instead of probing the DOM directly.
+    if (window.__auditDisplayMode && window.__auditDisplayMode.focus === 'weekend') {
       applyDisplayMode({ focus: 'all' });
       try { sessionStorage.removeItem('muntin-weekend-mode'); } catch (_) {}
       var closeCard = document.getElementById('weekendModeClose');
