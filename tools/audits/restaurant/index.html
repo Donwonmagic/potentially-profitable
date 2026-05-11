@@ -2269,7 +2269,13 @@ main{padding-top:64px}
   body.snapshot-view .email-report,
   body.snapshot-view #businessTypeOverride,
   body.snapshot-view #score-override-container,
-  body.snapshot-view .score-override-banner {
+  body.snapshot-view .score-override-banner,
+  /* Wave-A2: the snapshot rebuild path doesn't carry the source
+     snapshot's effort data, so the self-fix filter would silently
+     mismatch ("Showing 0 of N" because rows have no data-effort).
+     Hide the filter in snapshot view — the recipient can't act on
+     the checks anyway, so the filter has no UX value. */
+  body.snapshot-view #priorityFilter {
     display: none !important;
   }
   /* Error variant: score section stays visible (it's carrying the
@@ -3095,8 +3101,15 @@ main{padding-top:64px}
      The label is swapped from JS so screen readers announce the
      state change. */
   body.weekend-mode .weekend-mode-btn { display: none; }
+  /* Critique-fix (UX#1): the card visual chrome used to be scoped
+     to `body.weekend-mode`, but the no-self path deliberately
+     doesn't engage weekend mode — so clicking the button with no
+     self-fixable items produced unstyled raw text + buttons on the
+     page background. The styling now applies whenever the card is
+     visible regardless of mode. The `body.weekend-mode` ancestor
+     selector only governs which OTHER cards stay visible. */
   .weekend-mode-close[hidden] { display: none; }
-  body.weekend-mode .weekend-mode-close {
+  .weekend-mode-close {
     display: block;
     margin-top: 18px;
     padding: 18px 20px;
@@ -3104,6 +3117,8 @@ main{padding-top:64px}
     border: 1px solid var(--teal);
     border-radius: 14px;
   }
+  /* Variant blocks: only the visible variant takes layout space. */
+  .weekend-mode-close-variant[hidden] { display: none; }
   .weekend-mode-close-copy {
     margin: 0 0 14px;
     font-size: 14px;
@@ -3142,6 +3157,14 @@ main{padding-top:64px}
     padding: 8px 12px;
     cursor: pointer;
     text-decoration: underline;
+  }
+  /* Wave-B5: focus-visible parity with the other 3 new buttons. The
+     exit button is small-text and easy to lose visually; without an
+     explicit ring, keyboard users land on it invisibly. */
+  .weekend-mode-exit:focus-visible {
+    outline: 2px solid var(--teal);
+    outline-offset: 2px;
+    border-radius: 4px;
   }
   /* Hide the long report when weekend mode is on. The Top-3 card +
      the score header are the only things the owner sees, plus the
@@ -3854,6 +3877,17 @@ main{padding-top:64px}
     text-transform: uppercase;
     color: var(--stone-2);
     margin-top: 6px;
+  }
+  /* Wave-B6: visible threshold row. The old `title=` tooltip was
+     inaccessible to keyboard / touch / most screen readers. Now the
+     "Good under X · Slow over Y" thresholds are a real row below
+     the acronym hint, sized like fine print so they're available
+     to everyone but don't compete with the value. */
+  .vitals-strip .threshold {
+    font-size: 11px;
+    color: var(--stone);
+    margin-top: 4px;
+    line-height: 1.35;
   }
 
   /* Not-a-restaurant notice. Replaces the priority-list for sites
@@ -5999,8 +6033,13 @@ main{padding-top:64px}
                internal placeholder copy never leaks into the live
                DOM (e.g. when the user views the page before
                submitting a URL, or during a brief moment between
-               showOnly() phases). -->
-          <p class="verdict" id="verdictCopy"></p>
+               showOnly() phases).
+               Wave-B9: aria-live="polite" so screen-reader users
+               hear the verdict on audit completion. The score ring
+               above has its own aria-live; the verdict is the
+               accompanying answer to "what does this score mean?"
+               and needed announcement parity. -->
+          <p class="verdict" id="verdictCopy" aria-live="polite"></p>
           <!-- Phase 2 U7: subtype-benchmark chip. Populated by
                setScoreBenchmark() after setScoreRing() lands. Hidden
                when no benchmark is known for the resolved subtype. -->
@@ -6242,9 +6281,15 @@ main{padding-top:64px}
                button toggles `body.weekend-mode` which the CSS below
                uses to fold the rest of the report. -->
           <div class="top-fixes-actions">
-            <button type="button" id="weekendModeBtn" class="weekend-mode-btn" data-tr="weekendMode.enter">
-              Show me only the 2 things to fix this weekend →
-            </button>
+            <!--
+              Critique-fix (SB3): the trailing arrow is appended in JS
+              as an aria-hidden span (see appendArrow in
+              wireWeekendMode), NOT inline. Inline `<span aria-hidden>`
+              gets wiped when __muntinTranslate swaps textContent on
+              ES — screen readers in any non-EN locale would read
+              "right arrow" otherwise.
+            -->
+            <button type="button" id="weekendModeBtn" class="weekend-mode-btn" aria-pressed="false" data-tr="weekendMode.enter">Show me only the 2 things to fix this weekend</button>
           </div>
         </div>
         <ol class="top-fixes-list" id="topFixesList"></ol>
@@ -6252,13 +6297,33 @@ main{padding-top:64px}
              Hidden in normal view. When weekend-mode is on it shows
              total minutes for the surfaced fixes + a "Re-audit
              Sunday night" CTA that scrolls back to the run form. -->
-        <div class="weekend-mode-close" id="weekendModeClose" hidden>
-          <p class="weekend-mode-close-copy" data-tr="weekendMode.close.copy">
-            Knock these two out this weekend. Your checkmarks are saved on this device — come back Sunday night, re-run the audit, and you'll see exactly which numbers moved.
-          </p>
-          <div class="weekend-mode-close-actions">
-            <button type="button" id="weekendReauditBtn" class="weekend-mode-cta" data-tr="weekendMode.close.reaudit">Re-audit my site →</button>
-            <button type="button" id="weekendModeExitBtn" class="weekend-mode-exit" data-tr="weekendMode.close.exit">Show me everything</button>
+        <!--
+          Critique-fix (UX#3, QA#2, Arch#1): the close-card used to
+          carry one .weekend-mode-close-actions block whose children
+          were innerHTML-replaced by showWeekendModeNoSelfMessage on
+          the no-self path. That permanently destroyed the original
+          Re-audit / Exit buttons + leaked event listeners. The two
+          variants now live as sibling DOM blocks (success / no-self)
+          toggled via `hidden`. JS only flips visibility — never
+          mutates innerHTML — so the success buttons can never be
+          orphaned and the IIFE's listeners stay live.
+        -->
+        <div class="weekend-mode-close" id="weekendModeClose" role="status" aria-live="polite" tabindex="-1" hidden>
+          <div class="weekend-mode-close-variant" data-variant="success">
+            <p class="weekend-mode-close-copy" data-tr="weekendMode.close.copy">
+              Knock these two out this weekend. Your checkmarks are saved on this device — come back Sunday night, re-run the audit, and you'll see exactly which numbers moved.
+            </p>
+            <div class="weekend-mode-close-actions">
+              <button type="button" id="weekendReauditBtn" class="weekend-mode-cta" data-tr="weekendMode.close.reaudit">Re-audit my site</button>
+              <button type="button" id="weekendModeExitBtn" class="weekend-mode-exit" data-tr="weekendMode.close.exit">Show me everything</button>
+            </div>
+          </div>
+          <div class="weekend-mode-close-variant" data-variant="no-self" hidden>
+            <p class="weekend-mode-close-copy" data-tr="weekendMode.noSelf.copy">Your top 3 fixes all need a web person — there isn't a self-fix in the list this weekend. If you don't have someone, email don@muntin.digital and we'll route it.</p>
+            <div class="weekend-mode-close-actions">
+              <a id="weekendNoSelfMail" class="weekend-mode-cta" href="mailto:don@muntin.digital" data-tr="weekendMode.noSelf.email">Email Don</a>
+              <button type="button" id="weekendNoSelfDismissBtn" class="weekend-mode-exit" data-tr="weekendMode.noSelf.dismiss">Back to the report</button>
+            </div>
           </div>
         </div>
       </section>
@@ -6407,36 +6472,48 @@ main{padding-top:64px}
            card in 3 seconds, with the technical acronym demoted to
            a small caption. Each card also carries a `title` tooltip
            with the "good vs. poor" threshold for quick reference. -->
+      <!-- Wave-B6: thresholds moved from inaccessible `title=` to a
+           visible `.threshold` row under the hint. `title` is not
+           keyboard-reachable and inconsistently announced by AT, so
+           the threshold context (the whole reason for plain-English
+           labels) was invisible to non-mouse users. Visible threshold
+           rows also help sighted owners decide whether their number
+           is a problem without hovering. -->
       <div class="vitals-strip">
-        <div data-vital-card="lcp" title="Good: under 2.5s · Poor: over 4s">
+        <div data-vital-card="lcp">
           <div class="label" data-tr="cwv.lcp.plain">Time to see the page</div>
           <div class="v" data-vital="lcp">—</div>
           <div class="v-source"></div>
           <div class="hint" data-tr="cwv.lcp.tech">LCP · Largest Contentful Paint</div>
+          <div class="threshold" data-tr="cwv.lcp.threshold">Good under 2.5s · Slow over 4s</div>
         </div>
-        <div data-vital-card="cls" title="Good: under 0.10 · Poor: over 0.25">
+        <div data-vital-card="cls">
           <div class="label" data-tr="cwv.cls.plain">How much the page jumps</div>
           <div class="v" data-vital="cls">—</div>
           <div class="v-source"></div>
           <div class="hint" data-tr="cwv.cls.tech">CLS · Cumulative Layout Shift</div>
+          <div class="threshold" data-tr="cwv.cls.threshold">Good under 0.10 · Slow over 0.25</div>
         </div>
-        <div data-vital-card="inp" title="Good: under 200ms · Poor: over 500ms">
+        <div data-vital-card="inp">
           <div class="label" data-tr="cwv.inp.plain">How fast it reacts to taps</div>
           <div class="v" data-vital="inp">—</div>
           <div class="v-source"></div>
           <div class="hint" data-tr="cwv.inp.tech">INP · Interaction to Next Paint</div>
+          <div class="threshold" data-tr="cwv.inp.threshold">Good under 200ms · Slow over 500ms</div>
         </div>
-        <div data-vital-card="tbt" title="Good: under 200ms · Poor: over 600ms">
+        <div data-vital-card="tbt">
           <div class="label" data-tr="cwv.tbt.plain">How long it’s frozen at start</div>
           <div class="v" data-vital="tbt">—</div>
           <div class="v-source"></div>
           <div class="hint" data-tr="cwv.tbt.tech">TBT · Total Blocking Time</div>
+          <div class="threshold" data-tr="cwv.tbt.threshold">Good under 200ms · Slow over 600ms</div>
         </div>
-        <div data-vital-card="fcp" title="Good: under 1.8s · Poor: over 3s">
+        <div data-vital-card="fcp">
           <div class="label" data-tr="cwv.fcp.plain">Time to first pixel</div>
           <div class="v" data-vital="fcp">—</div>
           <div class="v-source"></div>
           <div class="hint" data-tr="cwv.fcp.tech">FCP · First Contentful Paint</div>
+          <div class="threshold" data-tr="cwv.fcp.threshold">Good under 1.8s · Slow over 3s</div>
         </div>
       </div>
 
@@ -7299,6 +7376,42 @@ main{padding-top:64px}
   // running count ("2 / 6 signals returned") so the owner can see
   // Deep Scan actually doing work even when individual chips have
   // nothing to show.
+  // Wave-D batch 2: deep-scan priority-check refresh hook. The
+  // D2 (review-responsiveness) and D3 (transport-security) checks
+  // read from window.__auditGbpDetails and window.__auditObservatory
+  // respectively, both populated by deep-scan fetches that complete
+  // AFTER the main renderPriorityChecks call. When those fetches
+  // land, call this helper to re-evaluate the priority list so the
+  // affected rows update from 'unverified' to pass/fail without a
+  // full audit re-run. Safe to call from any deep-scan completion
+  // hook; no-ops gracefully if no audit state exists yet (snapshot
+  // hydrate path doesn't populate __auditScoreState).
+  function refreshDeepScanPriorityChecks() {
+    try {
+      var state = window.__auditScoreState;
+      if (!state || !state.audits) return;
+      // Audit-5 fix: skip non-restaurant audits entirely. The
+      // priority list is hidden via toggleRestaurantUi for sites
+      // we didn't classify as restaurants; running the renderer
+      // into that hidden container wastes work AND triggers a
+      // restaurant-readiness recompute the rollup intentionally
+      // suppresses.
+      if (!state.isRestaurant) return;
+      // Audit-5 follow-up: drop the redundant direct
+      // renderPriorityChecks call — recomputeOverallFromCurrentState
+      // below already re-renders via the same code path. Two calls
+      // were a 2x render cost on every deep-scan signal landing.
+      if (typeof recomputeOverallFromCurrentState === 'function') {
+        recomputeOverallFromCurrentState();
+      } else {
+        // Defensive fallback: only re-render if the helper is missing.
+        renderPriorityChecks(state.audits, state.allUrls, state.pageText);
+      }
+    } catch (e) {
+      try { console.warn('[audit] deep-scan priority refresh failed:', e); } catch (_) {}
+    }
+  }
+
   function runDeepSignals(url) {
     var stripEl     = document.getElementById('deepScanStrip');
     var statusEl    = document.getElementById('deepScanStatus');
@@ -7363,6 +7476,10 @@ main{padding-top:64px}
     track(callObservatory(url).then(function(data){
       window.__auditObservatory = data;
       if (typeof renderSecurityGrade === 'function') renderSecurityGrade(data);
+      // Wave-D batch 2: D3 (transport-security) priority check reads
+      // from window.__auditObservatory. Re-trigger the priority-check
+      // render so the row updates from 'unverified' to pass/fail.
+      refreshDeepScanPriorityChecks();
       return data;
     }), function(data){ return !!(data && data.ok && data.grade); });
 
@@ -7382,6 +7499,10 @@ main{padding-top:64px}
       track(callGbpDetails(placeId).then(function(data){
         window.__auditGbpDetails = data;
         if (typeof renderReviewsCard === 'function') renderReviewsCard(data);
+        // Wave-D batch 2: D2 (review-responsiveness) priority check
+        // reads ownerReplyRate from window.__auditGbpDetails. Update
+        // the priority-list row in place.
+        refreshDeepScanPriorityChecks();
         return data;
       }), function(data){ return !!(data && data.ok); });
     }
@@ -7517,125 +7638,54 @@ main{padding-top:64px}
     window.__muntinLang = 'en';
   })();
 
-  // Phase L4b: tool-page UI translator. Walks every element tagged
-  // with data-tr (text content), data-tr-html (innerHTML), or
-  // data-tr-attr-X (an arbitrary attribute) and swaps in the Spanish
-  // string when LANG === 'es'. Keys live in window.__MUNTIN_UI_ES.
-  // Falls back silently to the original markup when a key is missing
-  // — the page renders in English regardless. Re-runs whenever new
-  // markup is injected by calling window.__muntinTranslate(root).
-  window.__MUNTIN_UI_ES = {
-    // Nav
-    'nav.services':     'Servicios',
-    'nav.restaurants':  'Restaurantes',
-    'nav.work':         'Trabajos',
-    'nav.blog':         'Blog',
-    'nav.about':        'Acerca de',
-    'nav.book':         'Reserva una llamada de 20 min',
-    'nav.openMenu':     'Abrir men\u00fa',
-    'nav.bookNewTab':   ' (se abre en una nueva pesta\u00f1a)',
-    'nav.mobile':       'Navegaci\u00f3n m\u00f3vil',
-    'nav.primary':      'Primaria',
-    // Breadcrumb
-    'crumb.home':       'Inicio',
-    'crumb.tools':      'Herramientas',
-    'crumb.audits':     'Auditor\u00edas',
-    'crumb.current':    'Restaurante',
-    'crumb.label':      'Ruta de navegaci\u00f3n',
-    'crumb.skip':       'Saltar al contenido principal',
-    // Hero
-    'hero.eyebrow':     'Herramienta gratuita \u00b7 Diagn\u00f3stico m\u00f3vil ajustado a restaurantes \u00b7 30 segundos',
-    'hero.h1.full':     '\u00bfC\u00f3mo est\u00e1 realmente<br><span class="serif-italic">el sitio web de tu restaurante</span><br>funcionando?',
-    'hero.sub':         'Pega tu URL abajo y har\u00e9 una auditor\u00eda m\u00f3vil real en unos treinta segundos: rendimiento, SEO, accesibilidad y las verificaciones espec\u00edficas que importan para un restaurante. El informe completo aparece en esta p\u00e1gina \u2014 sin registro, sin email, sin rastreo. (Hay un formulario opcional al final si quieres recibir una copia en PDF.)',
-    'form.placeholder': 'https://turestaurante.com',
-    'form.submit':      'Ejecutar auditor\u00eda',
-    'form.urlLabel':    'URL del sitio web de tu restaurante',
-    'hero.note':        'Impulsada por la API de PageSpeed Insights de Google m\u00e1s nuestro propio esc\u00e1ner espec\u00edfico para restaurantes: plataformas de pedidos, widgets de reservas, mapas, click-to-call y legibilidad del men\u00fa m\u00f3vil. Funciona con cualquier URL p\u00fablicamente accesible (sin entornos de prueba ni muros de inicio de sesi\u00f3n).',
-    // Loading
-    'load.h2':          'Ejecutando tu auditor\u00eda\u2026',
-    'load.sub':         'Esto suele tardar entre 15 y 40 segundos.',
-    'load.subSlow':     'Google est\u00e1 tardando m\u00e1s de lo habitual con este sitio \u2014 a\u00fan procesando\u2026',
-    'load.step1':       'Enviando tu sitio al test de velocidad',
-    'load.step2':       'Test de velocidad m\u00f3vil (Google PageSpeed)',
-    'load.step3':       'Leyendo tu men\u00fa, horarios, pedidos y perfil de Google',
-    'load.step4':       'Escribiendo tu informe',
-    // Sprint AUDIT-LOAD-FIX: per-step sub-status strings.
-    'load.sub.starting':       'Iniciando\u2026',
-    'load.sub.submitting':     'Enviando\u2026',
-    'load.sub.lighthouse':     'Google est\u00e1 ejecutando Lighthouse en tu sitio ({n}s)',
-    'load.sub.lighthouseSlow': 'A\u00fan ejecut\u00e1ndose en los servidores de Google ({n}s) \u2014 los sitios lentos pueden tardar 20\u201330s',
-    'load.sub.lighthouseStart':'Pidiendo a Google PageSpeed que pruebe la vista m\u00f3vil\u2026',
-    'load.sub.psiFallback':       'M\u00f3vil agot\u00f3 el tiempo \u2014 probando vista de escritorio\u2026',
-    'load.sub.psiFallbackStart':  'M\u00f3vil agot\u00f3 el tiempo \u2014 probando vista de escritorio\u2026',
-    'load.sub.psiFallbackElapsed':'M\u00f3vil agot\u00f3 el tiempo \u2014 probando vista de escritorio ({n}s)',
-    'load.sub.psiDesktop':        'Puntuado en escritorio (m\u00f3vil fue demasiado lento)',
-    'load.sub.psiDone':        'Test de velocidad completado',
-    'load.sub.psiFailed':      'Test de velocidad no disponible \u2014 continuando sin \u00e9l',
-    'load.sub.reading':        'Leyendo tu p\u00e1gina principal y p\u00e1ginas de seguimiento\u2026',
-    'load.sub.readingElapsed': 'Leyendo tu sitio ({n}s)',
-    'load.sub.pagesRead':      'p\u00e1ginas le\u00eddas',
-    'load.sub.schemaFound':    'datos estructurados encontrados',
-    'load.sub.gbpFound':       'perfil de Google encontrado',
-    'load.sub.contentDoneBare':'Listo',
-    'load.sub.rendering':      'Construyendo tu informe\u2026',
-    'load.sub.doneIn':         'Listo en {n}s',
-    // Sprint AUDIT-LOAD-FIX: error copy for PSI failures.
-    'err.psiTimeout.h2':       'El test de velocidad de Google est\u00e1 saturado ahora mismo.',
-    'err.psiTimeout.body':     'Probamos primero la vista m\u00f3vil y luego la de escritorio \u2014 ambas tardaron m\u00e1s de lo permitido por Google. Esto ocurre frecuentemente cuando un sitio est\u00e1 en Wix, Squarespace u otra plataforma lenta para pintar la primera vista, o cuando la capa gratuita de PSI est\u00e1 limitada. Espera 30 segundos e int\u00e9ntalo de nuevo. Si sigue pasando, escribe a don@muntin.digital y har\u00e9 el test de velocidad a mano.',
-    'err.psiFailed.h2':        'No pudimos conectar con el test de velocidad de Google.',
-    'err.psiFailed.body':      'Int\u00e9ntalo de nuevo en un momento, o escribe a don@muntin.digital y har\u00e9 la auditor\u00eda a mano y te enviar\u00e9 el informe.',
-    'err.rateLimit.h2':        'Estamos un poco limitados ahora mismo.',
-    'err.rateLimit.body':      'La capa gratuita de Google est\u00e1 temporalmente saturada. Espera unos 30 segundos antes de intentarlo de nuevo, o escribe a don@muntin.digital para una auditor\u00eda manual.',
-    // Error
-    'err.h2':           'No pudimos auditar esa URL.',
-    'err.body':         'Verifica la direcci\u00f3n e int\u00e9ntalo de nuevo. El sitio debe ser p\u00fablicamente accesible \u2014 si est\u00e1 detr\u00e1s de un inicio de sesi\u00f3n o en una red local, la auditor\u00eda no puede verlo.',
-    'err.retry':        'Intentar de nuevo',
-    'err.newUrl':       'Usar una URL diferente',
-    // Score / verdict
-    'score.h2':         'Tu puntuaci\u00f3n general',
-    'score.audited':    'Auditado:',
-    // Sprint AUDIT-EMPOWERMENT: the live element is empty pre-run, so
-    // the placeholder string is no longer needed. Kept here as an
-    // empty entry so the translation key remains addressable from
-    // legacy callsites without leaking dev copy into the page.
-    'score.verdict.placeholder': '',
-    'score.share':      'Compartir',
-    'score.shareX':     'Compartir en X (Twitter)',
-    'score.shareFB':    'Compartir en Facebook',
-    'score.shareLI':    'Compartir en LinkedIn',
-    'score.shareEmail': 'Compartir por correo',
-    // PDF CTA top
-    'pdf.cta.title':    'Recibe tu PDF por correo',
-    'pdf.cta.body':     'Te enviaremos el informe completo \u2014 sin sign-up, sin newsletter, sin spam.',
-    'pdf.cta.placeholder': 'tu@turestaurante.com',
-    'pdf.cta.submit':   'Env\u00edame el PDF',
-    'pdf.cta.email':    'Tu direcci\u00f3n de correo'
-  };
+  // Phase L4b + Wave-E1-full: tool-page UI translator. Walks every
+  // element tagged with data-tr (text content), data-tr-html
+  // (innerHTML), or data-tr-attr-X (an arbitrary attribute) and
+  // swaps in the Spanish string when LANG === 'es'. Translations
+  // now live exclusively in UI_I18N (restaurant-checks.js);
+  // resolveTr() reads via the global t(). Falls back silently to
+  // the original markup when a key is missing — the page renders
+  // in English regardless. Re-runs whenever new markup is injected
+  // by calling window.__muntinTranslate(root).
+  //
+  // Wave-E1-full (this commit): the legacy window.__MUNTIN_UI_ES
+  // dictionary was deleted. 50 live entries moved to UI_I18N with
+  // {en, es} pairs; 22 dead nav.* / score.* / pdf.cta.* entries
+  // (referenced by neither data-tr nor any JS callsite) were dropped.
+  // tr() and resolveTr() now read a single source of truth.
+  //
+  // window.__MUNTIN_UI_ES kept as an empty object only because some
+  // call sites (resolveTr, tr) read it defensively; assigning empty
+  // keeps the runtime contract while signalling "do not add here".
+  window.__MUNTIN_UI_ES = {};
 
-  // Phase 2 U4: unified translation lookup. The tool has two
-  // translation maps for historical reasons:
-  //   1. window.__MUNTIN_UI_ES  (declared just above this function)
-  //      — page-chrome strings used by the data-tr DOM scanner.
-  //   2. UI_I18N in restaurant-checks.js, accessed via t(key)
-  //      — runtime-rendered strings used by chip / card renderers.
-  // The two grew separately and drifted: 49 of 68 data-tr keys live
-  // ONLY in UI_I18N, so a Spanish visitor saw Spanish chips but
-  // English headings. resolveTr() consults __MUNTIN_UI_ES first
-  // (so existing strings keep winning) and falls back to t(key) so
-  // any key in either source resolves correctly. Result: UI_I18N is
-  // effectively the single source of truth for translation; new
-  // strings only need to be added there.
+  // Wave-E1-full archaeology: the entries below USED to live in
+  // __MUNTIN_UI_ES. Listed here so future maintainers grepping for
+  // an old key find this comment and the migration log.
+  //   MIGRATED (50): crumb.*, hero.eyebrow/.h1.full/.sub/.note,
+  //     form.placeholder/.submit/.urlLabel, load.h2/.sub/.subSlow/.step1-4,
+  //     load.sub.starting/.submitting/.lighthouse/.lighthouseSlow/
+  //     .lighthouseStart/.psiFallback/.psiFallbackStart/.psiFallbackElapsed/
+  //     .psiDesktop/.psiDone/.psiFailed/.reading/.readingElapsed/
+  //     .pagesRead/.schemaFound/.gbpFound/.contentDoneBare/.rendering/
+  //     .doneIn, err.h2/.body/.retry/.newUrl/.psiTimeout.h2/.psiTimeout.body/
+  //     .psiFailed.h2/.psiFailed.body/.rateLimit.h2/.rateLimit.body
+  //   DROPPED (22, dead code): nav.services/.restaurants/.work/.blog/
+  //     .about/.book/.openMenu/.bookNewTab/.mobile/.primary,
+  //     score.h2/.audited/.verdict.placeholder/.share/.shareX/.shareFB/
+  //     .shareLI/.shareEmail, pdf.cta.title/.body/.placeholder/.submit/
+  //     .email
+
+  // Wave-E1-full: unified translation lookup. UI_I18N (in
+  // restaurant-checks.js, accessed via the global t()) is now the
+  // SINGLE source of truth for translation. resolveTr() returns the
+  // Spanish value when one exists, or null when t() returns the key
+  // (which means "no translation found" — don't clobber the live
+  // English text with a key string).
   function resolveTr(key) {
-    var dict = window.__MUNTIN_UI_ES || {};
-    if (dict[key] != null) return dict[key];
-    if (typeof t === 'function') {
-      var fallback = t(key, null, 'es');
-      // t() returns the key itself when missing; treat that as "not
-      // translated" rather than silently swapping the live English
-      // text with a key string.
-      if (fallback != null && fallback !== key) return fallback;
-    }
-    return null;
+    if (typeof t !== 'function') return null;
+    var v = t(key, null, 'es');
+    return (v != null && v !== key) ? v : null;
   }
 
   window.__muntinTranslate = function(root){
@@ -7829,7 +7879,7 @@ main{padding-top:64px}
           'cover.tagline':    'La estructura aporta claridad.',
           'pillar.mobile':    'Rendimiento m\u00f3vil',
           'pillar.a11y':      'Accesibilidad',
-          'pillar.bp':        'Configuraci\u00f3n moderna y segura',
+          'pillar.bp':        'Bases modernas y seguras',
           'pillar.seo':       'SEO',
           'pillar.rest':      'Preparaci\u00f3n del restaurante',
           'exec.eyebrow':     'Resumen ejecutivo',
@@ -7875,7 +7925,7 @@ main{padding-top:64px}
           'method.pillar.mobile.desc':  'Velocidad m\u00f3vil seg\u00fan Lighthouse. Core Web Vitals: qu\u00e9 tan r\u00e1pido pinta la p\u00e1gina, qu\u00e9 tan estable es el dise\u00f1o y qu\u00e9 tan r\u00e1pido responde.',
           'method.pillar.a11y.label':   'ACCESIBILIDAD',
           'method.pillar.a11y.desc':    'Si el sitio puede ser usado por todos, incluidas personas con tecnolog\u00edas de asistencia. Contraste, etiquetas, puntos de referencia, rutas de teclado.',
-          'method.pillar.bp.label':     'CONFIGURACI\u00d3N MODERNA Y SEGURA',
+          'method.pillar.bp.label':     'BASES MODERNAS Y SEGURAS',
           'method.pillar.bp.desc':      'Seguridad e higiene web moderna \u2014 HTTPS, sin errores de consola, manejo seguro de APIs antiguas y tama\u00f1o correcto de im\u00e1genes. Un sitio bien hecho saca 100 por defecto.',
           'method.pillar.seo.label':    'SEO',
           'method.pillar.seo.desc':     'Qu\u00e9 tan detectable eres en b\u00fasquedas. Metaetiquetas, enlaces, datos estructurados y rastreabilidad de p\u00e1ginas clave.',
@@ -9049,39 +9099,97 @@ main{padding-top:64px}
   var stepStartedAt = [null, null, null, null, null];
   var stepFinishedAt = [null, null, null, null, null];
 
-  // Critique-fix (code architecture review): tr() used to consult
-  // ONLY the legacy __MUNTIN_UI_ES dictionary. Any new key landed in
-  // restaurant-checks.js's canonical UI_I18N map (the modern source
-  // of truth) silently fell back to the English literal when called
-  // dynamically from JS, even for Spanish-locale visitors. Now we
-  // try the legacy map first (preserves any string that's explicitly
-  // there), then delegate to UI_I18N's t() for any miss, then fall
-  // back to the English literal. UI_I18N is the single source of
-  // truth going forward; __MUNTIN_UI_ES should be retired as the
-  // last entries migrate.
+  // Wave-E1-full: tr() now reads ONLY from UI_I18N (via the global
+  // t() defined in restaurant-checks.js). The legacy __MUNTIN_UI_ES
+  // dictionary has been deleted; tr() returns the Spanish value
+  // from UI_I18N when LANG==='es' and the key resolves, or the
+  // English fallback string otherwise. Callsites should still pass
+  // the EN string as the second arg so the page renders correctly
+  // when UI_I18N is missing a key (the fallback also doubles as
+  // documentation of what the rendered string is).
   function tr(key, fallback) {
     try {
-      var lang = window.__muntinLang || 'en';
-      if (lang === 'es') {
-        if (window.__MUNTIN_UI_ES && window.__MUNTIN_UI_ES[key]) {
-          return window.__MUNTIN_UI_ES[key];
-        }
-        // Defer to UI_I18N via the global t() defined in
-        // restaurant-checks.js. t() returns the key itself on a
-        // miss — treat that as "not translated" rather than
-        // letting it leak into the UI.
-        if (typeof t === 'function') {
-          var fromCanonical = t(key, null, 'es');
-          if (fromCanonical != null && fromCanonical !== key) return fromCanonical;
-        }
+      if ((window.__muntinLang || 'en') === 'es' && typeof t === 'function') {
+        var fromCanonical = t(key, null, 'es');
+        if (fromCanonical != null && fromCanonical !== key) return fromCanonical;
       }
     } catch (_) {}
     return fallback;
   }
-  // Sprint AUDIT-LOAD-FIX: cross-call flag the heartbeat reads to
-  // generate fallback-aware labels for step 2 without the runAudit
-  // closure having to thread state into setStepState.
-  var psiFallbackInFlight = false;
+  // Wave-E2: per-runAudit context object. Replaces three separate
+  // state vehicles that the prior implementation maintained in parallel
+  // (psiFallbackInFlight module flag, psiFellBackToDesktop closure
+  // var, window.__auditPsiFallback global) plus a payload-side
+  // data.__fallbackFromMobile annotation. Each `runAudit()` invocation
+  // creates its own ctx and assigns it here; consumers outside the
+  // closure (the heartbeat, the PSI fallback note display) read from
+  // `currentAuditCtx` instead of the three independent flags.
+  //
+  // Shape: { psi: { inflight, fallback, fallbackFromMobile } }
+  //   psi.inflight       — true while the desktop fallback fetch is
+  //                        running (heartbeat uses this to switch
+  //                        label to "Mobile timed out — trying desktop
+  //                        view ({n}s)").
+  //   psi.fallback       — true if THIS audit fell back to desktop
+  //                        (success or failure). Used by the .then
+  //                        handler in runAudit to mark step 2 as
+  //                        warn vs done.
+  //   psi.fallbackFromMobile — true if the audit RESULT came from
+  //                        desktop (i.e. mobile timed out). Drives
+  //                        the in-report disclosure banner.
+  //
+  // The module slot holds one ctx — comparison-flow audits use
+  // callPsi directly (not runAudit), so concurrent runs never race
+  // here. New runAudit overwrites the slot; the old run's closure
+  // still holds its own reference if it's mid-flight.
+  var currentAuditCtx = null;
+  function createAuditCtx() {
+    return { psi: { inflight: false, fallback: false, fallbackFromMobile: false } };
+  }
+
+  // Wave-E3: applyDisplayMode — single source of truth for body-class
+  // display state. The audit used to scatter 9 direct
+  // classList.add/.remove/.toggle calls for {weekend-mode,
+  // priority-self-only, snapshot-view, snapshot-hydrating,
+  // snapshot-error}. Accidental composition risks (weekend-mode hiding
+  // the snapshot banner, snapshot-view leaking through a weekend-mode
+  // entry) all funneled through this one helper now.
+  //
+  // print-worksheet and report-revealed stay out: print-worksheet
+  // has a different lifecycle (print media), report-revealed is an
+  // animation marker with its own lifecycle.
+  //
+  // Shape:
+  //   focus:  'all' | 'weekend' | 'snapshot' | 'snapshot-hydrating' | 'snapshot-error'
+  //   filter: 'all' | 'self-only'
+  //
+  // Mapping (preserves pre-refactor behavior — including the
+  // deliberate decision NOT to set snapshot-view when in
+  // snapshot-error state, because that path surfaces the live form
+  // for the recipient):
+  //   focus === 'weekend'           → body.weekend-mode
+  //   focus === 'snapshot-hydrating'→ body.snapshot-hydrating
+  //   focus === 'snapshot'          → body.snapshot-view
+  //   focus === 'snapshot-error'    → body.snapshot-error
+  //   filter === 'self-only'        → body.priority-self-only
+  //
+  // applyDisplayMode(patch) takes a partial state object; missing
+  // keys preserve current value. Idempotent.
+  window.__auditDisplayMode = { focus: 'all', filter: 'all' };
+  function applyDisplayMode(patch) {
+    var m = window.__auditDisplayMode;
+    if (patch) {
+      if (patch.focus !== undefined)  m.focus  = patch.focus;
+      if (patch.filter !== undefined) m.filter = patch.filter;
+    }
+    var body = document.body;
+    if (!body) return;
+    body.classList.toggle('weekend-mode',        m.focus === 'weekend');
+    body.classList.toggle('snapshot-hydrating',  m.focus === 'snapshot-hydrating');
+    body.classList.toggle('snapshot-view',       m.focus === 'snapshot');
+    body.classList.toggle('snapshot-error',      m.focus === 'snapshot-error');
+    body.classList.toggle('priority-self-only',  m.filter === 'self-only');
+  }
 
   // Render one step's DOM from its current state object.
   function paintStep(n) {
@@ -9171,7 +9279,12 @@ main{padding-top:64px}
           // the wait isn't local.
           var label;
           if (i === 2) {
-            if (psiFallbackInFlight) {
+            // Wave-E2: heartbeat reads inflight state from the
+            // per-runAudit ctx instead of a module-scoped flag.
+            // `currentAuditCtx` is null between audits (e.g. when
+            // the heartbeat fires from leftover state on a fresh
+            // page load before runAudit ran).
+            if (currentAuditCtx && currentAuditCtx.psi.inflight) {
               label = tr('load.sub.psiFallbackElapsed', 'Mobile timed out — trying desktop view ({n}s)').replace('{n}', elapsed);
             } else if (elapsed < 4) label = tr('load.sub.starting', 'Starting…');
             else if (elapsed < 15) label = tr('load.sub.lighthouse', 'Google is running Lighthouse on your site (' + elapsed + 's)').replace('{n}', elapsed);
@@ -9237,6 +9350,12 @@ main{padding-top:64px}
   function finishProgress() {
     if (progressTimer) { clearInterval(progressTimer); progressTimer = null; }
     if (progressFill) progressFill.style.width = '100%';
+    // Wave-E3 follow-up (audit-2 finding): null the ctx slot after
+    // an audit completes so a future cycleLoading() / snapshot
+    // rehydrate / heartbeat-restart can't read stale psi.inflight
+    // and paint "Mobile timed out — trying desktop view" on a
+    // completed audit's UI.
+    currentAuditCtx = null;
   }
 
   function resetProgress() {
@@ -10761,10 +10880,30 @@ main{padding-top:64px}
     var places = window.__auditPlaces || null;
     var schema = window.__auditSchema || null;
     var crawl  = window.__auditCrawl  || null;
+    // Audit-4 follow-up: expose the businessType subtype STRING (not
+    // the whole detector object) so check evaluators can branch on
+    // `=== 'fast-casual'` etc. directly.
+    //
+    // Final-audit fix: the prior version exposed the raw
+    // detectBusinessType() return value, which is an object
+    // `{type, label, confidence, ...}` — so `dpSubtype === 'fast-casual'`
+    // was permanently false and the D6 fast-casual fail branch was
+    // dead code. The unwrap to .type lives here (one place) rather
+    // than in every evaluator that branches on subtype.
+    var scoreState = window.__auditScoreState || null;
+    var subtypeStr = null;
+    if (scoreState && scoreState.businessType) {
+      // `businessType` from renderReport is the full object; .type
+      // is the subtype identifier ('fast-casual', 'fine-dining', etc).
+      subtypeStr = (typeof scoreState.businessType === 'string')
+        ? scoreState.businessType
+        : (scoreState.businessType.type || null);
+    }
     return {
       places: (places && places.ok && places.place) ? places : null,
       schema: (schema && schema.ok) ? schema : null,
-      crawl:  (crawl  && crawl.ok)  ? crawl  : null
+      crawl:  (crawl  && crawl.ok)  ? crawl  : null,
+      businessType: subtypeStr
     };
   }
 
@@ -11277,6 +11416,278 @@ main{padding-top:64px}
         return makeResult(def, 'pass', diet.markers.map(function(m){ return { name: m }; }));
       }
       return makeResult(def, 'unverified');
+    }
+
+    // ─────────────────────────────────────────────────────────
+    // Wave-D batch 1: four new evaluators.
+    // ─────────────────────────────────────────────────────────
+
+    // D1: gbp-hours-mismatch — site schema hours vs GBP hours.
+    //
+    // Audit-4 fix: prior implementation read context.schema.validation
+    // .openingHours expecting a day-indexed array; the validator
+    // actually returns a SUMMARY object {present, dayCount, ...} so
+    // the comparison branch was permanent dead code. Now we parse
+    // openingHoursSpecification directly from the raw JSON-LD objects
+    // on context.schema.objects and convert to a day→[open,close]
+    // table on each side, then compare numerically — eliminating both
+    // the data-shape bug and the 12h/24h false-positive risk from
+    // the prior string-comparison approach.
+    if (def.type === 'gbp-hours-mismatch') {
+      var ghCtx = context || {};
+      var ghPlace = ghCtx.places && ghCtx.places.place;
+      var ghGbpHours = ghPlace && Array.isArray(ghPlace.weekdayHoursText)
+        ? ghPlace.weekdayHoursText : null;
+      var ghSchemaObjs = ghCtx.schema && Array.isArray(ghCtx.schema.objects)
+        ? ghCtx.schema.objects : null;
+      if (!ghGbpHours || !ghSchemaObjs) return makeResult(def, 'unverified');
+
+      // Parse schema's openingHoursSpecification entries into a
+      // day-name → {opens, closes} map. Schema's `dayOfWeek` can be
+      // a string or array of strings. Times are HH:MM ISO format.
+      var ghDayMap = {
+        monday: 0, tuesday: 1, wednesday: 2, thursday: 3,
+        friday: 4, saturday: 5, sunday: 6
+      };
+      var ghSchemaWeek = [null, null, null, null, null, null, null];
+      function ghAddSpec(spec) {
+        if (!spec || typeof spec !== 'object') return;
+        var days = spec.dayOfWeek;
+        if (!days) return;
+        var dayList = Array.isArray(days) ? days : [days];
+        for (var di = 0; di < dayList.length; di++) {
+          var dn = String(dayList[di]).toLowerCase().replace(/^https?:\/\/schema\.org\//, '');
+          var idx = ghDayMap[dn];
+          if (typeof idx !== 'number') continue;
+          ghSchemaWeek[idx] = {
+            opens: spec.opens || null,
+            closes: spec.closes || null
+          };
+        }
+      }
+      for (var ghOi = 0; ghOi < ghSchemaObjs.length; ghOi++) {
+        var ghObj = ghSchemaObjs[ghOi];
+        if (!ghObj) continue;
+        var ghOh = ghObj.openingHoursSpecification;
+        if (!ghOh) continue;
+        if (Array.isArray(ghOh)) {
+          for (var ghKi = 0; ghKi < ghOh.length; ghKi++) ghAddSpec(ghOh[ghKi]);
+        } else ghAddSpec(ghOh);
+      }
+      var ghSchemaHasAny = ghSchemaWeek.some(function(d){ return d != null; });
+      if (!ghSchemaHasAny) return makeResult(def, 'unverified');
+
+      // GBP weekdayHoursText format: "Monday: 11:00 AM – 10:00 PM" or
+      // "Monday: Closed" (Google Places). Parse to {opens, closes}
+      // in 24h HH:MM, matching schema's format for direct comparison.
+      function ghParseGbpDay(s) {
+        if (!s || typeof s !== 'string') return null;
+        var t = s.toLowerCase().replace(/[–—]/g, '-').replace(/[ \s]+/g, ' ').trim();
+        if (/closed/.test(t)) return { closed: true };
+        // Match "11:00 am - 10:00 pm" or "11 am - 10 pm" or "11-22"
+        var m = t.match(/(\d{1,2})(?::(\d{2}))?\s*(am|pm)?\s*[-–—]\s*(\d{1,2})(?::(\d{2}))?\s*(am|pm)?/);
+        if (!m) return null;
+        function to24(h, mn, ap) {
+          h = parseInt(h, 10);
+          mn = mn ? parseInt(mn, 10) : 0;
+          if (ap === 'pm' && h < 12) h += 12;
+          if (ap === 'am' && h === 12) h = 0;
+          return (h < 10 ? '0' + h : '' + h) + ':' + (mn < 10 ? '0' + mn : '' + mn);
+        }
+        return { opens: to24(m[1], m[2], m[3]), closes: to24(m[4], m[5], m[6]) };
+      }
+
+      var ghDisagreements = 0;
+      var ghCompared = 0;
+      for (var ghI = 0; ghI < 7 && ghI < ghGbpHours.length; ghI++) {
+        var ghSchemaDay = ghSchemaWeek[ghI];
+        var ghGbpDay = ghParseGbpDay(ghGbpHours[ghI]);
+        if (!ghSchemaDay || !ghGbpDay) continue;
+        ghCompared++;
+        // Both closed? Agree.
+        if (ghGbpDay.closed && (ghSchemaDay.opens === null || ghSchemaDay.closes === null)) continue;
+        // One closed, other open? Disagree.
+        if (ghGbpDay.closed !== !!(ghSchemaDay.opens === null || ghSchemaDay.closes === null)) {
+          ghDisagreements++;
+          continue;
+        }
+        // Both open — compare times (already normalized to HH:MM).
+        var ghSchemaOpens  = String(ghSchemaDay.opens  || '').slice(0, 5);
+        var ghSchemaCloses = String(ghSchemaDay.closes || '').slice(0, 5);
+        if (ghSchemaOpens !== ghGbpDay.opens || ghSchemaCloses !== ghGbpDay.closes) {
+          ghDisagreements++;
+        }
+      }
+      if (ghCompared === 0) return makeResult(def, 'unverified');
+      return makeResult(def, ghDisagreements > 0 ? 'fail' : 'pass');
+    }
+
+    // D4: gbp-photo-count — under 10 photos on Google Business Profile.
+    if (def.type === 'gbp-photo-count') {
+      var gpCtx = context || {};
+      var gpPlace = gpCtx.places && gpCtx.places.place;
+      // No GBP match → can't tell.
+      if (!gpPlace || typeof gpPlace.photoCount !== 'number') {
+        return makeResult(def, 'unverified');
+      }
+      var gpFloor = 10;
+      return makeResult(def, gpPlace.photoCount >= gpFloor ? 'pass' : 'fail');
+    }
+
+    // D6: delivery-presence — third-party aggregator detected.
+    //
+    // Audit-4 fixes:
+    //   1. `detectPlatforms` returns objects shaped {label, name},
+    //      not {host, ...} — the prior `p.host || p` fallback gave
+    //      `[object Object]` for every iteration, and the indexOf
+    //      check never matched. Now reads `p.name` directly (already
+    //      lowercased + whitespace-stripped per the comment at
+    //      restaurant-checks.js:258).
+    //   2. Added a real `fail` path. For fast-casual, absence of a
+    //      delivery aggregator IS a problem worth flagging — the
+    //      segment lives or dies on aggregator presence. For other
+    //      subtypes, the unverified path is more honest (we don't
+    //      know if they should be delivering). The byType.weight:0
+    //      gate already suppresses the check entirely for fine-dining.
+    if (def.type === 'delivery-presence') {
+      var dpDetection = detectPlatforms(['ordering'], allUrls);
+      var dpAggregatorNames = ['doordash', 'ubereats', 'uber eats', 'grubhub', 'seamless', 'postmates', 'slice', 'chownow'];
+      function dpHitIsAggregator(p) {
+        var name = String((p && p.name) || '').toLowerCase();
+        if (!name) return false;
+        for (var di = 0; di < dpAggregatorNames.length; di++) {
+          if (name.indexOf(dpAggregatorNames[di]) !== -1) return true;
+        }
+        return false;
+      }
+      if (dpDetection.detected) {
+        var dpHasAggregator = (dpDetection.found || []).some(dpHitIsAggregator);
+        if (dpHasAggregator) return makeResult(def, 'pass');
+      }
+      // No aggregator detected. Distinguish by subtype:
+      //   - fast-casual: this IS a fail (their bread-and-butter)
+      //   - everyone else: honestly unverified (might be by-design dine-in only)
+      var dpSubtype = (context && context.businessType) || null;
+      if (dpSubtype === 'fast-casual') return makeResult(def, 'fail');
+      // Places signal: a verified delivery=true means they deliver
+      // somehow (own driver or aggregator we didn't detect). Treat
+      // as a softer unverified — they're doing delivery, just not
+      // visibly via the standard aggregators.
+      var dpPlace = context && context.places && context.places.place;
+      if (dpPlace && dpPlace.delivery === true) return makeResult(def, 'unverified');
+      return makeResult(def, 'unverified');
+    }
+
+    // D7: og-share-preview — homepage OG metadata for share cards.
+    if (def.type === 'og-share-preview') {
+      var ogCrawl = context && context.crawl;
+      var ogHomepage = ogCrawl && ogCrawl.homepage;
+      if (!ogHomepage || ogHomepage.status !== 200 || !ogHomepage.html) {
+        return makeResult(def, 'unverified');
+      }
+      if (typeof checkOgShareMeta !== 'function') {
+        return makeResult(def, 'unverified');
+      }
+      var ogMeta = checkOgShareMeta(ogHomepage.html);
+      // ogImage is the most important — without it the preview is
+      // just a domain string. Require both ogTitle and ogImage for
+      // pass; either missing = fail.
+      if (ogMeta.ogImage && ogMeta.ogTitle) return makeResult(def, 'pass');
+      return makeResult(def, 'fail');
+    }
+
+    // ─────────────────────────────────────────────────────────
+    // Wave-D batch 2: three more evaluators.
+    // ─────────────────────────────────────────────────────────
+
+    // D2: review-responsiveness — owner reply rate on Google reviews.
+    // Reads from window.__auditGbpDetails (deep-scan signal). When
+    // the deep scan hasn't run yet (or returned ok:false), evaluator
+    // returns 'unverified' honestly. The deep-scan completion hook
+    // in runDeepSignals re-triggers renderPriorityChecks so this
+    // updates from 'unverified' to pass/fail without a full re-run.
+    if (def.type === 'review-responsiveness') {
+      var rrGbp = (typeof window !== 'undefined') ? window.__auditGbpDetails : null;
+      if (!rrGbp || !rrGbp.ok || typeof rrGbp.ownerReplyRate !== 'number') {
+        return makeResult(def, 'unverified');
+      }
+      // Threshold: 50%+ of recent reviews replied to = pass. Below = fail.
+      // The Places API window is ~5 most-recent reviews; replying to
+      // 3 of 5 (60%) reads as engaged to a scanning diner, while
+      // 1 of 5 (20%) reads as absentee.
+      return makeResult(def, rrGbp.ownerReplyRate >= 0.5 ? 'pass' : 'fail');
+    }
+
+    // D3: transport-security — Mozilla Observatory grade.
+    // Reads from window.__auditObservatory (deep-scan signal). The
+    // grade comes back as 'A+'/'A'/'B'/'C'/'D'/'F'. A or B = pass
+    // (modern, secure foundation); C and below = fail (missing
+    // headers); unverified pre-deep-scan.
+    if (def.type === 'transport-security') {
+      var tsObs = (typeof window !== 'undefined') ? window.__auditObservatory : null;
+      if (!tsObs || !tsObs.ok || typeof tsObs.grade !== 'string' || !tsObs.grade) {
+        return makeResult(def, 'unverified');
+      }
+      // A and B grades = pass (HTTPS + HSTS + at least basic CSP).
+      // C and below = fail (missing one or more critical headers).
+      return makeResult(def, /^[AB]/.test(tsObs.grade) ? 'pass' : 'fail');
+    }
+
+    // D5: stale-copyright — homepage footer year vs current year.
+    // Reads from context.crawl.homepage.html (main cycle).
+    //
+    // Audit-5 fix: scope the regex to the <footer> element when one
+    // exists; falls back to whole document only when no <footer>
+    // is present. The prior whole-document scan was prone to false-
+    // pass: a body-copy mention like "© 2025 Toast Inc." in an
+    // embedded checkout widget masked a stale "© 2019" footer
+    // because Math.max picked the latest year regardless of context.
+    // The footer-scoping eliminates this class of leak entirely.
+    if (def.type === 'stale-copyright') {
+      var scCrawl = context && context.crawl;
+      var scHomepage = scCrawl && scCrawl.homepage;
+      if (!scHomepage || scHomepage.status !== 200 || !scHomepage.html) {
+        return makeResult(def, 'unverified');
+      }
+      // Extract <footer>...</footer> content if present. Some sites
+      // have multiple footers (a page-level footer + a section-level
+      // one); concatenate them all so a year in either counts.
+      var scFooterRe = /<footer\b[^>]*>([\s\S]*?)<\/footer>/gi;
+      var scFooterChunks = [];
+      var scFm;
+      while ((scFm = scFooterRe.exec(scHomepage.html)) !== null) {
+        scFooterChunks.push(scFm[1]);
+      }
+      // If no <footer> element exists, fall back to the last 4KB
+      // of the document — most copyright lines live there even on
+      // sites that use a <div class="footer"> instead of the tag.
+      var scScopedHtml;
+      if (scFooterChunks.length > 0) {
+        scScopedHtml = scFooterChunks.join('\n');
+      } else {
+        var scLen = scHomepage.html.length;
+        scScopedHtml = scHomepage.html.slice(Math.max(0, scLen - 4096));
+      }
+      // Look for © YYYY or "Copyright YYYY" patterns. Pick the
+      // LATEST year mentioned — within the footer scope this is
+      // safe (most footers carry just one current year).
+      var scYears = [];
+      var scRe = /(?:©|copyright|copyleft|&copy;)[\s\S]{0,60}?(20\d{2})/gi;
+      var scMatch;
+      while ((scMatch = scRe.exec(scScopedHtml)) !== null) {
+        scYears.push(parseInt(scMatch[1], 10));
+      }
+      var scRe2 = /\(c\)\s*(20\d{2})/gi;
+      while ((scMatch = scRe2.exec(scScopedHtml)) !== null) {
+        scYears.push(parseInt(scMatch[1], 10));
+      }
+      if (scYears.length === 0) return makeResult(def, 'unverified');
+      var scLatest = Math.max.apply(null, scYears);
+      var scNow = new Date().getFullYear();
+      // Pass if within 1 year (current year OR prior year — many
+      // sites lag a few weeks into January before updating). Fail
+      // if 2+ years stale.
+      return makeResult(def, (scNow - scLatest) <= 1 ? 'pass' : 'fail');
     }
 
     return null;
@@ -12678,7 +13089,30 @@ main{padding-top:64px}
     'loyalty':                 [0.01, 0.03],
     'email-capture':           [0.005, 0.02],
     'catering-page':           [0.01, 0.04],
-    'hours-accuracy':          [0.005, 0.02]
+    'hours-accuracy':          [0.005, 0.02],
+    // Audit-4 follow-up (Wave D batch 1 + 2): revenue coefficients
+    // for the 7 new priority checks. Without these the new types
+    // sort BELOW trivial existing checks in rankActionablesByImpact
+    // — defeating the per-check weight (D1's 1.5, D3's 1.0, etc).
+    //   D1 hours-mismatch:    2–6% — a wrong-hours signal directly
+    //                          kills bookings via Google search panel.
+    //   D2 review-responsiveness: 1–3% — soft signal but compounds.
+    //   D3 transport-security: 1–4% — Chrome "Not secure" repels
+    //                          high-value parties hardest.
+    //   D4 gbp-photo-count:   0.5–2% — carousel under-merchandised.
+    //   D5 stale-copyright:   0.2–1% — subtle doubt signal.
+    //   D6 delivery-presence: 2–5% (fast-casual subtype reweights
+    //                          via byType; coefficient is the
+    //                          baseline before subtype scaling).
+    //   D7 og-share-preview:  0.5–2% — broken share previews cost
+    //                          word-of-mouth click-throughs.
+    'gbp-hours-mismatch':      [0.02, 0.06],
+    'review-responsiveness':   [0.01, 0.03],
+    'transport-security':      [0.01, 0.04],
+    'gbp-photo-count':         [0.005, 0.02],
+    'stale-copyright':         [0.002, 0.01],
+    'delivery-presence':       [0.02, 0.05],
+    'og-share-preview':        [0.005, 0.02]
   };
   function estimateRevenueAtRiskRange(def, owner) {
     var key = def && (def.audit || def.type);
@@ -15674,10 +16108,15 @@ main{padding-top:64px}
       return fmt.replace('{n}', s);
     }
 
-    var psiFellBackToDesktop = false;
-    // Reset the module-scoped fallback flag so a second audit run
-    // (Try again button) doesn't see stale state.
-    psiFallbackInFlight = false;
+    // Wave-E2: create a per-invocation ctx for this audit run. The
+    // module slot `currentAuditCtx` is read by the heartbeat (outside
+    // this closure) to drive the "Mobile timed out — trying desktop
+    // view ({n}s)" label, and by the renderReport flow below to
+    // surface the desktop-fallback disclosure. Each runAudit gets
+    // its own fresh ctx; a "Try again" submit overwrites the slot
+    // cleanly without sharing state with the prior run.
+    var ctx = createAuditCtx();
+    currentAuditCtx = ctx;
 
     // Kick off step 2 (PSI) and step 3 (crawl + schema + places) in
     // parallel. We start the heartbeat right after step 1 paints so
@@ -15692,8 +16131,8 @@ main{padding-top:64px}
     // Wrap each fetch so its outcome flips its own step independently
     // and the orchestrator gets a uniform { ok, value | err } shape.
     var psiPromise = callPsiWithFallback(url, function(){
-      psiFellBackToDesktop = true;
-      psiFallbackInFlight = true;
+      ctx.psi.fallback = true;
+      ctx.psi.inflight = true;
       // Keep state='active' so the heartbeat keeps ticking with the
       // fallback-aware label. Reset the elapsed timer so the counter
       // shows the desktop run's duration, not the cumulative 25+
@@ -15704,9 +16143,9 @@ main{padding-top:64px}
     }).then(function(data){
       // PSI is done (success path). Mark step 2 done OR warn (if it
       // fell back to desktop, the result is still useful but degraded).
-      psiFallbackInFlight = false;
+      ctx.psi.inflight = false;
       var elapsed = fmtDoneIn(2);
-      if (psiFellBackToDesktop) {
+      if (ctx.psi.fallback) {
         setStepState(2, 'warn', tr('load.sub.psiDesktop', 'Desktop view scored (mobile was too slow)') + ' · ' + elapsed);
       } else {
         setStepState(2, 'done', tr('load.sub.psiDone', 'Speed test complete') + ' · ' + elapsed);
@@ -15714,7 +16153,7 @@ main{padding-top:64px}
       return { ok: true, data: data };
     }, function(err){
       // Both mobile and desktop failed, OR a non-timeout error.
-      psiFallbackInFlight = false;
+      ctx.psi.inflight = false;
       setStepState(2, 'warn', tr('load.sub.psiFailed', 'Speed test unavailable — continuing without it'));
       return { ok: false, err: err };
     });
@@ -15795,9 +16234,14 @@ main{padding-top:64px}
       .then(function(data){
         if (!data) return; // handled-error short-circuit
         try {
-          // Expose so renderReport can surface the desktop-fallback
-          // disclosure in the score header.
-          window.__auditPsiFallback = !!(data && data.__fallbackFromMobile);
+          // Wave-E2/E3: ctx is the single source of truth for whether
+          // this audit fell back to desktop. The audit's earlier
+          // window.__auditPsiFallback mirror has been removed — no
+          // external readers exist anywhere in the codebase (verified
+          // by repo-wide grep). If a future external consumer needs
+          // this signal, expose it via a documented API rather than
+          // re-introducing a hidden global write.
+          ctx.psi.fallbackFromMobile = !!(data && data.__fallbackFromMobile);
           renderReport(data, url);
           // Show the PSI desktop-fallback disclosure under the verdict
           // when the mobile run timed out and we transparently re-ran
@@ -15805,12 +16249,12 @@ main{padding-top:64px}
           // friendlier than mobile, and they'd otherwise overestimate
           // their site's speed.
           var psiNoteEl = document.getElementById('auditPsiFallbackNote');
-          if (psiNoteEl) psiNoteEl.hidden = !window.__auditPsiFallback;
+          if (psiNoteEl) psiNoteEl.hidden = !ctx.psi.fallbackFromMobile;
           setStepState(4, 'done', fmtDoneIn(4));
           finishProgress();
           if (window.plausible) {
             window.plausible('Audit Completed');
-            if (window.__auditPsiFallback) window.plausible('Audit PSI Desktop Fallback');
+            if (ctx.psi.fallbackFromMobile) window.plausible('Audit PSI Desktop Fallback');
           }
           // Sprint D3: snapshot the score for the embeddable badge.
           // Fire-and-forget — failure to persist the snapshot
@@ -15955,15 +16399,90 @@ main{padding-top:64px}
   // handle, and auto-expands the platform-recipe disclosure on the
   // #1 fix so the Wix/Squarespace steps are immediately visible.
   // The exit button + a "Re-audit my site" CTA close the loop.
+  // Wave-B8: smoothScrollInto — single helper that respects
+  // prefers-reduced-motion. Three call sites now reach for the same
+  // behavior (TOC link handler, Weekend Mode enter/exit, Re-audit
+  // button), and skipping the reduced-motion gate breaks the contract
+  // for vestibular-disorder users.
+  function smoothScrollInto(el) {
+    if (!el || typeof el.scrollIntoView !== 'function') return;
+    var prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    try {
+      el.scrollIntoView({ behavior: prefersReduced ? 'auto' : 'smooth', block: 'start' });
+    } catch (_) { el.scrollIntoView(); }
+  }
+
   (function wireWeekendMode(){
     var enter = document.getElementById('weekendModeBtn');
     var exit  = document.getElementById('weekendModeExitBtn');
     var reaudit = document.getElementById('weekendReauditBtn');
     var closeCard = document.getElementById('weekendModeClose');
+    var dismissNoSelf = document.getElementById('weekendNoSelfDismissBtn');
+    var mailtoNoSelf = document.getElementById('weekendNoSelfMail');
     if (!enter || !exit || !closeCard) return;
+    // Critique-fix (SB3): the in-button arrow characters used to live
+    // in the i18n strings (so __muntinTranslate's textContent swap
+    // wiped the inline <span aria-hidden> wrap). The arrows are now
+    // dropped from the strings and re-appended programmatically as a
+    // separate aria-hidden span after every translate pass so screen
+    // readers never read "right arrow" regardless of locale.
+    function appendArrow(btn) {
+      if (!btn) return;
+      // Re-append on every call — translate may have wiped it.
+      var existing = btn.querySelector('.weekend-arrow');
+      if (existing) existing.remove();
+      var span = document.createElement('span');
+      span.className = 'weekend-arrow';
+      span.setAttribute('aria-hidden', 'true');
+      span.textContent = ' →';
+      btn.appendChild(span);
+    }
+    function ensureArrows() {
+      appendArrow(enter);
+      appendArrow(reaudit);
+    }
+    ensureArrows();
+    // Re-attach arrows after the i18n DOM scanner runs at
+    // DOMContentLoaded — without this, a Spanish visitor's first
+    // paint after translate has bare button text.
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', ensureArrows);
+    }
+    // Wave-A4: remember where the user was before entering so exit
+    // restores that scroll position. Otherwise the long report
+    // unfolds back in and the user is dropped wherever it lands.
+    var preEnterScrollY = null;
+    // Critique-fix (SB2): variant-toggle helper. Replaces the
+    // previous innerHTML-mutation pattern; both variants live in
+    // the DOM permanently and we just flip their hidden flag. The
+    // success buttons are never destroyed, so the IIFE's listeners
+    // stay live across any number of empty/full Weekend Mode cycles.
+    function showVariant(name) {
+      var variants = closeCard.querySelectorAll('.weekend-mode-close-variant');
+      for (var i = 0; i < variants.length; i++) {
+        variants[i].hidden = (variants[i].getAttribute('data-variant') !== name);
+      }
+    }
+    // Wave-A1: count self-items in #topFixesList. When the top-3 are
+    // all flagged dev / rebuild (rare but real — happens on small
+    // sites whose top three are server-side fixes only), Weekend
+    // Mode would otherwise enter an empty focused state with a
+    // triumphant closing CTA. countSelf reads the renderer's
+    // data-effort stamps; renderTopFixes is the source of truth.
+    function countSelf() {
+      return document.querySelectorAll('#topFixesList li[data-effort="self"]').length;
+    }
     function applyMode(on) {
-      document.body.classList.toggle('weekend-mode', !!on);
+      // Wave-E3: route through applyDisplayMode for consistency with
+      // the snapshot + filter state machines.
+      applyDisplayMode({ focus: on ? 'weekend' : 'all' });
       closeCard.hidden = !on;
+      if (on) showVariant('success');
+      // Wave-B4: announce state via aria-pressed so screen readers
+      // hear the toggle's new value. CSS still hides the visual
+      // button in weekend mode, but the close card has its own
+      // "Show me everything" exit so SR users still have an out.
+      enter.setAttribute('aria-pressed', on ? 'true' : 'false');
       // Auto-expand the first recipe in weekend mode so platform
       // steps for the #1 fix are visible without an extra click.
       var firstRecipe = document.querySelector('#topFixesList .top-fixes-recipe');
@@ -15976,13 +16495,51 @@ main{padding-top:64px}
         // Scroll the Top-3 section to the top of the viewport so the
         // user's focus lands on the two surviving items, not on the
         // score header that's now scrolled away.
-        var topFixes = document.getElementById('topFixes');
-        if (topFixes && typeof topFixes.scrollIntoView === 'function') {
-          topFixes.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        smoothScrollInto(document.getElementById('topFixes'));
+        // Wave-B1 + B3: move keyboard/AT focus to the close card so
+        // screen readers announce it and tab order picks up there.
+        // requestAnimationFrame guards against the focus() firing
+        // before display:none reflows on slow devices, which would
+        // silently send focus to <body>.
+        requestAnimationFrame(function(){ try { closeCard.focus(); } catch (_) {} });
+      } else {
+        // Wave-A4: restore prior scroll position rather than dumping
+        // user at the top of the page when the long report unfolds.
+        if (preEnterScrollY !== null && typeof window.scrollTo === 'function') {
+          try { window.scrollTo({ top: preEnterScrollY, behavior: 'auto' }); } catch (_) { window.scrollTo(0, preEnterScrollY); }
         }
+        // Wave-B1: send focus back to the enter button on exit so a
+        // keyboard user is positioned to re-toggle if they want.
+        // RAF for the same reason as above — let display:none reflow
+        // back to visible before we focus.
+        requestAnimationFrame(function(){ try { enter.focus(); } catch (_) {} });
       }
     }
     enter.addEventListener('click', function(){
+      // Wave-A1: refuse to enter if there's nothing self-fixable in
+      // the top-3. Surface an explanatory card instead of an empty
+      // focused view. The card uses a sibling variant (no body class)
+      // so the rest of the report stays visible — Maria still sees
+      // her score, her checks, and the email-Don path.
+      if (countSelf() < 1) {
+        showVariant('no-self');
+        // Critique-fix: mailto subject uses HOSTNAME only, not the
+        // full URL. Long Wix preview URLs (200+ chars with query
+        // params) make the email subject illegible.
+        try {
+          if (mailtoNoSelf && window.__auditLastResult && window.__auditLastResult.url) {
+            var host;
+            try { host = new URL(window.__auditLastResult.url).hostname; } catch (_) { host = 'my site'; }
+            mailtoNoSelf.href = 'mailto:don@muntin.digital?subject=' +
+              encodeURIComponent('Audit follow-up: weekend fixes for ' + host);
+          }
+        } catch (_) {}
+        closeCard.hidden = false;
+        requestAnimationFrame(function(){ try { closeCard.focus(); } catch (_) {} });
+        if (window.plausible) window.plausible('Audit Weekend Mode No Self Items');
+        return;
+      }
+      preEnterScrollY = window.scrollY || window.pageYOffset || 0;
       applyMode(true);
       try { sessionStorage.setItem('muntin-weekend-mode', '1'); } catch (_) {}
       if (window.plausible) window.plausible('Audit Weekend Mode Enter');
@@ -15992,6 +16549,13 @@ main{padding-top:64px}
       try { sessionStorage.removeItem('muntin-weekend-mode'); } catch (_) {}
       if (window.plausible) window.plausible('Audit Weekend Mode Exit');
     });
+    if (dismissNoSelf) {
+      dismissNoSelf.addEventListener('click', function(){
+        closeCard.hidden = true;
+        showVariant('success'); // reset to success for the next entry
+        try { enter.focus(); } catch (_) {}
+      });
+    }
     reaudit.addEventListener('click', function(){
       // Pre-fill the URL field with the last-audited URL (if any) and
       // scroll back to the run form. The owner gets a one-click path
@@ -16002,17 +16566,25 @@ main{padding-top:64px}
           if (input) input.value = window.__auditLastResult.url;
         }
       } catch (_) {}
+      // Use applyMode(false) ONLY to flip state; skip its scroll-
+      // restore by clearing preEnterScrollY first, so we don't
+      // double-scroll (restore → form smoothScroll).
+      preEnterScrollY = null;
       applyMode(false);
       try { sessionStorage.removeItem('muntin-weekend-mode'); } catch (_) {}
-      var form = document.querySelector('form#auditForm') || document.querySelector('form');
-      if (form && typeof form.scrollIntoView === 'function') {
-        form.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
+      smoothScrollInto(document.querySelector('form#auditForm') || document.querySelector('form'));
       if (window.plausible) window.plausible('Audit Reaudit Click');
     });
-    // Restore from sessionStorage so a soft reload keeps focus mode.
+    // Restore from sessionStorage so a soft reload keeps focus mode —
+    // but only if there are self-fixable items to surface. Stale
+    // sessionStorage from a different audit's top-3 shouldn't drag
+    // the new audit into an empty focused state.
     try {
-      if (sessionStorage.getItem('muntin-weekend-mode') === '1') applyMode(true);
+      if (sessionStorage.getItem('muntin-weekend-mode') === '1' && countSelf() >= 1) {
+        applyMode(true);
+      } else {
+        sessionStorage.removeItem('muntin-weekend-mode');
+      }
     } catch (_) {}
   })();
 
@@ -16026,7 +16598,14 @@ main{padding-top:64px}
     var box = document.getElementById('priorityFilterSelf');
     var countEl = document.getElementById('priorityFilterCount');
     if (!box) return;
-    var STORAGE_KEY = 'muntin-priority-self-only';
+    // Wave-A3: the filter used to persist globally via localStorage,
+    // bleeding the choice across every audit the user ran on this
+    // device. That made sense if "I only ever look at self-fixable"
+    // was a stable preference, but in practice it's a per-audit
+    // choice. Defaulting to OFF on every fresh audit keeps the
+    // initial paint owner-neutral; the per-session toggle still
+    // works for the duration of the visit (the change handler below
+    // doesn't reach for storage anymore).
     // Critique-fix (functional QA): the count chip lives INSIDE
     // #priorityListWrap, and the MutationObserver below watches that
     // wrap with subtree:true. Without a re-entrancy guard, writing
@@ -16061,30 +16640,39 @@ main{padding-top:64px}
       }
     }
     function apply() {
-      document.body.classList.toggle('priority-self-only', !!box.checked);
+      // Wave-E3: route through applyDisplayMode for consistency.
+      applyDisplayMode({ filter: box.checked ? 'self-only' : 'all' });
       updateCount();
     }
-    try {
-      box.checked = localStorage.getItem(STORAGE_KEY) === '1';
-    } catch (_) {}
+    // Wave-A3: explicit default-off. No localStorage read.
+    box.checked = false;
     apply();
     box.addEventListener('change', function(){
-      try { localStorage.setItem(STORAGE_KEY, box.checked ? '1' : '0'); } catch (_) {}
       apply();
       if (window.plausible) window.plausible('Audit Self-Fix Filter', { props: { on: box.checked } });
     });
-    // Re-apply count after every render. renderPriorityChecks runs
-    // multiple times in the audit lifecycle (initial paint, feedback
-    // mutations, deep-scan re-render); a MutationObserver on the list
-    // wrap keeps the count chip in sync without coupling to those
-    // call sites. childList:false on the wrap itself + watching only
-    // direct children (`.priority-item` rows are inserted/removed
-    // at this level) is enough — subtree:true was overkill and the
-    // source of the re-entrancy hazard above.
+    // Critique-fix (SB4): renderPriorityChecks appends rows into
+    // #priorityItems (a GRANDCHILD of #priorityListWrap), not into
+    // the wrap directly — so subtree:false was missing every render
+    // after the first. The actual re-entrancy fix is the `updating`
+    // flag in updateCount above; subtree:true is required to catch
+    // grandchild row inserts/removes from the renderer.
+    //
+    // Wave-E5: lifecycle. Today this audit page is per-page-reload
+    // (no SPA navigation), so the observer's never-disconnected
+    // state is harmless. Future SPA routing would make the wrap
+    // node a retain root. The `auditteardown` event below lets
+    // any future SPA shell call `dispatchEvent(new Event(
+    // 'auditteardown'))` to disconnect the observer cleanly.
     try {
       var wrap = document.getElementById('priorityListWrap');
       if (wrap && typeof MutationObserver === 'function') {
-        new MutationObserver(updateCount).observe(wrap, { childList: true, subtree: false });
+        var mo = new MutationObserver(updateCount);
+        mo.observe(wrap, { childList: true, subtree: true });
+        window.addEventListener('auditteardown', function once(){
+          try { mo.disconnect(); } catch (_) {}
+          window.removeEventListener('auditteardown', once);
+        });
       }
     } catch (_) {}
   })();
@@ -16098,10 +16686,16 @@ main{padding-top:64px}
     // consent, hiding the score and the long report. Clear the mode
     // (and its sessionStorage mirror) at submit time.
     if (document.body.classList.contains('weekend-mode')) {
-      document.body.classList.remove('weekend-mode');
+      // Wave-E3: applyDisplayMode for the form-submit cleanup path.
+      applyDisplayMode({ focus: 'all' });
       try { sessionStorage.removeItem('muntin-weekend-mode'); } catch (_) {}
       var closeCard = document.getElementById('weekendModeClose');
       if (closeCard) closeCard.hidden = true;
+      // Wave-B4 (paired with wireWeekendMode): keep aria-pressed in
+      // sync with the visual state when the form clears weekend mode
+      // without going through applyMode.
+      var weekendBtn = document.getElementById('weekendModeBtn');
+      if (weekendBtn) weekendBtn.setAttribute('aria-pressed', 'false');
     }
     var remain = cooldownRemaining();
     if (remain > 0) {
@@ -17709,7 +18303,8 @@ main{padding-top:64px}
     // Mark the body immediately so CSS can hide "not in snapshot"
     // UI (the autoRunFromParam 300ms delay means we need a signal
     // before the measuring-pill starts animating).
-    document.body.classList.add('snapshot-hydrating');
+    // Wave-E3: applyDisplayMode for the hydrate-start state.
+    applyDisplayMode({ focus: 'snapshot-hydrating' });
     fetch('/api/audit-snapshot?token=' + encodeURIComponent(token), {
       credentials: 'omit',
       headers: { 'accept': 'application/json' },
@@ -17733,8 +18328,9 @@ main{padding-top:64px}
   }
 
   function renderSnapshotView(snapshot) {
-    document.body.classList.remove('snapshot-hydrating');
-    document.body.classList.add('snapshot-view');
+    // Wave-E3: applyDisplayMode handles the hydrating→view transition
+    // atomically (removes 'snapshot-hydrating' and adds 'snapshot-view').
+    applyDisplayMode({ focus: 'snapshot' });
 
     // URL: show in the input so a "Re-run audit" click (D4) picks it up
     // without requiring the user to retype.
@@ -17849,8 +18445,8 @@ main{padding-top:64px}
   }
 
   function renderSnapshotError(kind) {
-    document.body.classList.remove('snapshot-hydrating');
-    document.body.classList.add('snapshot-error');
+    // Wave-E3: applyDisplayMode handles the hydrating→error transition.
+    applyDisplayMode({ focus: 'snapshot-error' });
     // Minimal error state for D3 — D4 adds the polished banner +
     // call-to-run-fresh-audit CTA. For now, surface the error in
     // the hero form area using the existing #progressBar / verdict
@@ -17979,8 +18575,12 @@ main{padding-top:64px}
         }
       } catch (_) {}
       // Un-do the snapshot-view state so the live-audit UI sections
-      // become eligible to render again.
-      document.body.classList.remove('snapshot-view', 'snapshot-error', 'report-revealed');
+      // become eligible to render again. Wave-E3: applyDisplayMode
+      // owns the two snapshot classes; `report-revealed` is a
+      // separate animation marker with its own lifecycle and is
+      // removed here directly.
+      applyDisplayMode({ focus: 'all' });
+      document.body.classList.remove('report-revealed');
       // Clear the read-only priority list; the live runner repopulates.
       try {
         var list = document.getElementById('priorityListWrap');

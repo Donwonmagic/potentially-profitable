@@ -1592,6 +1592,207 @@ var RESTAURANT_PRIORITY_CHECKS = [
     unverified_es: 'No pudimos confirmar los horarios del schema',
     unverifiedNote: 'Your schema markup didn\'t declare opening hours at all (or we couldn\'t read it). Adding a complete openingHoursSpecification block is one of the highest-impact single edits you can make for local-search click-through. <a href="/tools/open-hours/" style="color:var(--teal);font-weight:600;">Generate it with Open Hours →</a>',
     unverifiedNote_es: 'Tu schema no declaró horarios en absoluto (o no pudimos leerlo). Agregar un bloque openingHoursSpecification completo es una de las ediciones individuales de mayor impacto que puedes hacer para el click-through en búsqueda local. <a href="/es/tools/open-hours/" style="color:var(--teal);font-weight:600;">Genéralo con Open Hours →</a>'
+  },
+
+  // ─────────────────────────────────────────────────────────────────
+  // Wave-D batch 1: four new high-impact priority checks that surface
+  // data the audit already fetches but never displayed. All run in
+  // the main audit cycle (gbp-lookup + page-crawl + schema-check
+  // happen before render); no deep-scan dependency.
+  //
+  // D1 hours-mismatch: site schema hours vs Google Business Profile.
+  // D4 gbp-photo-count: GBP carousel under a confidence floor.
+  // D6 delivery-presence: third-party aggregators (DoorDash/UberEats/Grubhub).
+  // D7 og-share-preview: link preview metadata for share-to-friends.
+  //
+  // The remaining 3 Wave-D checks (D2 owner-reply, D3 HTTPS/HSTS,
+  // D5 stale-copyright) ship in batch 2 — D2 and D3 need deep-scan
+  // data, D5 ships with them for atomicity.
+  // ─────────────────────────────────────────────────────────────────
+
+  // D1: Site-declared hours vs Google Business Profile hours.
+  {
+    type: 'gbp-hours-mismatch',
+    weight: 1.5, // high — a wrong-hours signal directly costs Friday-night reservations
+    anchor: '#gbp-hours-mismatch',
+    effort: 'self',
+    minutes: 10,
+    impact: "When your site says one set of hours and Google says another, Google's the one a Friday-night party of six trusts — they search 'open now', see your name with the wrong hours, and either bounce or show up to a closed door. A 10-minute fix in your Google Business Profile or your site's hours block prevents one of the most invisible reservation killers in independent dining.",
+    impact_es: 'Cuando tu sitio dice un horario y Google dice otro, la gente le cree a Google — un grupo de seis un viernes por la noche busca "abierto ahora", ve tu nombre con el horario incorrecto y se va a otro lado, o aparece a una puerta cerrada. Un arreglo de 10 minutos en tu Perfil de Empresa de Google o en el bloque de horarios de tu sitio evita uno de los asesinos de reservas más invisibles del comer independiente.',
+    pass: 'Your site hours match your Google Business Profile',
+    pass_es: 'Los horarios de tu sitio coinciden con tu Perfil de Empresa de Google',
+    passNote: "Your weekly hours match across your site (schema markup) and your Google Business Profile. That's exactly what a Friday-night searcher needs to see — no contradiction between the two sources Google trusts most.",
+    passNote_es: 'Tus horarios semanales coinciden entre tu sitio (marcado schema) y tu Perfil de Empresa de Google. Eso es exactamente lo que un buscador de viernes por la noche necesita ver — sin contradicción entre las dos fuentes en las que Google más confía.',
+    fail: "Your site and Google Business Profile show different hours",
+    fail_es: 'Tu sitio y tu Perfil de Empresa de Google muestran horarios diferentes',
+    failNote: "Your site's hours don't match what Google Business Profile shows. Google's the source most diners trust — and the one their 'open now' search reads from. Fix this in your Google Business Profile (preferred: it updates everywhere) or in your site's schema block. The whole edit usually takes 10 minutes once you find which day is wrong.",
+    failNote_es: 'Los horarios de tu sitio no coinciden con lo que muestra el Perfil de Empresa de Google. Google es la fuente en la que más confían los comensales — y la que lee su búsqueda de "abierto ahora". Arréglalo en tu Perfil de Empresa de Google (preferido: se actualiza en todos lados) o en el bloque schema de tu sitio. La edición completa suele tomar 10 minutos una vez que encuentras el día que está mal.',
+    unverified: "We couldn't compare your site hours to your Google profile",
+    unverified_es: 'No pudimos comparar los horarios de tu sitio con tu perfil de Google',
+    unverifiedNote: "Either your site doesn't publish hours in schema markup, or we couldn't match your Google Business Profile to this site. Add openingHoursSpecification to your schema and re-run the audit so we can verify both sides agree.",
+    unverifiedNote_es: 'O tu sitio no publica horarios en el marcado schema, o no pudimos emparejar tu Perfil de Empresa de Google con este sitio. Agrega openingHoursSpecification a tu schema y vuelve a ejecutar la auditoría para verificar que ambos lados coincidan.'
+  },
+
+  // D4: Google Business Profile photo count vs a confidence floor.
+  {
+    type: 'gbp-photo-count',
+    weight: 0.8, // medium — photos drive carousel engagement but aren't a hard signal
+    anchor: '#gbp-photo-count',
+    effort: 'self',
+    minutes: 30,
+    impact: 'Diners scrolling the Google carousel make a decision in 4-6 photos. Under ten and the carousel runs out before they\'ve seen a dish, the room, and the patio — so they swipe over to a competitor whose 80 photos let them eat with their eyes first. Adding 15-20 strong photos (food, room, exterior, smiling staff) takes one focused hour with your phone and pays back for years.',
+    impact_es: 'Los comensales que pasan el carrusel de Google deciden con 4-6 fotos. Con menos de diez, el carrusel se queda corto antes de que vean un plato, el salón y la terraza — así que pasan al competidor cuyas 80 fotos los dejan comer con los ojos primero. Agregar 15-20 fotos buenas (comida, salón, exterior, personal sonriendo) toma una hora con tu teléfono y rinde durante años.',
+    pass: 'Your Google profile has enough photos to tell your story',
+    pass_es: 'Tu perfil de Google tiene suficientes fotos para contar tu historia',
+    passNote: 'Your Google Business Profile carries enough photos that a casual scroller sees food, room, and exterior before running out — exactly the call-to-tap that drives bookings on mobile search.',
+    passNote_es: 'Tu Perfil de Empresa de Google tiene suficientes fotos para que alguien que solo pasa vea comida, salón y exterior antes de quedarse sin material — exactamente la llamada-al-tap que genera reservas en búsqueda móvil.',
+    fail: 'Your Google profile is light on photos',
+    fail_es: 'Tu perfil de Google tiene pocas fotos',
+    failNote: "Under ten photos on your Google Business Profile means the carousel runs out before a scrolling diner has seen what they need. Add 10-15 more this week: a few signature dishes, the front of the building, the dining room, and at least one photo of people enjoying themselves. Upload from your phone via the Google Maps app — it takes 20 minutes.",
+    failNote_es: 'Con menos de diez fotos en tu Perfil de Empresa de Google, el carrusel se queda corto antes de que un comensal vea lo que necesita. Agrega 10-15 más esta semana: algunos platos estrella, la fachada, el comedor y al menos una foto de gente disfrutando. Súbelas desde tu teléfono con la app de Google Maps — toma 20 minutos.',
+    unverified: "We couldn't find your Google Business Profile",
+    unverified_es: 'No pudimos encontrar tu Perfil de Empresa de Google',
+    unverifiedNote: "We couldn't match your site URL to a verified Google Business Profile. If you have one, make sure its website field points to this exact URL. If you don't, claiming your profile at google.com/business is the single highest-leverage move you can make for local search.",
+    unverifiedNote_es: 'No pudimos emparejar la URL de tu sitio con un Perfil de Empresa de Google verificado. Si tienes uno, asegúrate de que el campo "sitio web" apunte exactamente a esta URL. Si no, reclamar tu perfil en google.com/business es la jugada de mayor impacto que puedes hacer para la búsqueda local.'
+  },
+
+  // D6: Third-party delivery aggregator presence.
+  {
+    type: 'delivery-presence',
+    weight: 0.7,
+    anchor: '#delivery-presence',
+    effort: 'self',
+    minutes: 60,
+    impact: 'A hungry-at-9pm customer who can\'t find a delivery option on your site opens DoorDash and orders from someone else. Being on at least one major aggregator (DoorDash, Uber Eats, Grubhub) catches that demand. Aggregator fees hurt — but losing the customer entirely hurts more.',
+    impact_es: 'Un cliente con hambre a las 9pm que no encuentra opción de delivery en tu sitio abre DoorDash y pide en otro lado. Estar en al menos un agregador grande (DoorDash, Uber Eats, Grubhub) atrapa esa demanda. Las comisiones duelen — pero perder al cliente por completo duele más.',
+    pass: "You're on at least one delivery aggregator",
+    pass_es: 'Estás en al menos un agregador de delivery',
+    passNote: "We found a link to a third-party delivery aggregator from your site — that catches the late-night ordering demand that doesn't want to call.",
+    passNote_es: 'Encontramos un enlace a un agregador de delivery desde tu sitio — eso captura la demanda nocturna de quien no quiere llamar.',
+    fail: "We didn't find any delivery aggregator on your site",
+    fail_es: 'No encontramos ningún agregador de delivery en tu sitio',
+    failNote: "Your site doesn't link out to DoorDash, Uber Eats, Grubhub, or any other delivery aggregator. If you do delivery and you're not on at least one of them, hungry-at-9pm customers default to whichever restaurant IS on the platform they opened. The aggregator math works for most independent restaurants on at least one platform; consider DoorDash or Uber Eats as a starting point.",
+    failNote_es: 'Tu sitio no enlaza a DoorDash, Uber Eats, Grubhub ni a ningún otro agregador de delivery. Si haces delivery y no estás en al menos uno de ellos, los clientes con hambre a las 9pm caen en cualquier restaurante que SÍ esté en la plataforma que abrieron. Las matemáticas de los agregadores funcionan para la mayoría de los restaurantes independientes en al menos una plataforma; considera DoorDash o Uber Eats como punto de partida.',
+    unverified: "We couldn't tell if you offer delivery",
+    unverified_es: 'No pudimos saber si ofreces delivery',
+    unverifiedNote: "We didn't find a delivery link on your site, but that doesn't necessarily mean you don't deliver. If you're dine-in only, ignore this. If you do deliver via your own drivers, consider adding a 'Delivery' page so search visitors can find it.",
+    unverifiedNote_es: 'No encontramos un enlace de delivery en tu sitio, pero eso no significa necesariamente que no entregues. Si solo tienes consumo en local, ignora esto. Si entregas con tus propios conductores, considera agregar una página "Delivery" para que los visitantes de búsqueda la encuentren.',
+    byType: {
+      'fine-dining': {
+        // Fine dining typically doesn't deliver — suppress check.
+        impact: '',
+        weight: 0
+      },
+      'fast-casual': {
+        impact: 'Fast-casual lives or dies by delivery aggregator presence. The 9pm-Tuesday-takeout demand IS the business at this segment — if you\'re not on DoorDash, you\'re losing it. Most fast-casual operators carry 2-3 aggregators; the marginal cost of the second platform is small once you\'ve set up the first.',
+        impact_es: 'El fast-casual vive o muere por la presencia en agregadores de delivery. La demanda de "martes 9pm para llevar" ES el negocio en este segmento — si no estás en DoorDash, la pierdes. La mayoría de operadores fast-casual están en 2-3 agregadores; el costo marginal de la segunda plataforma es bajo una vez configurada la primera.'
+      }
+    }
+  },
+
+  // D7: OG share preview metadata.
+  {
+    type: 'og-share-preview',
+    weight: 0.9,
+    anchor: '#og-share-preview',
+    effort: 'self',
+    minutes: 15,
+    impact: "When someone texts your URL to four friends to plan dinner, those friends see a preview card in iMessage / WhatsApp / Messenger. If the preview is missing — blank box, just the domain — half of those friends never tap through. The fix is one image and one title in your platform's SEO settings; the upside is dozens of lost meal plans per year that suddenly become bookings.",
+    impact_es: 'Cuando alguien envía tu URL a cuatro amigos para planear cenar, esos amigos ven una tarjeta de previsualización en iMessage / WhatsApp / Messenger. Si falta — caja en blanco, solo el dominio — la mitad nunca toca el enlace. El arreglo es una imagen y un título en la configuración SEO de tu plataforma; la ganancia son docenas de planes de comida perdidos al año que de repente se convierten en reservas.',
+    pass: 'Your link previews look great when shared',
+    pass_es: 'La vista previa de tu enlace se ve bien al compartirla',
+    passNote: 'When someone shares your URL, iMessage / WhatsApp / Twitter all show a proper preview with your title, description, and a photo. That preview is half the click decision.',
+    passNote_es: 'Cuando alguien comparte tu URL, iMessage / WhatsApp / Twitter muestran una vista previa adecuada con tu título, descripción y una foto. Esa vista previa es la mitad de la decisión de hacer clic.',
+    fail: 'Your link previews are missing or incomplete',
+    fail_es: 'Las vistas previas de tu enlace están ausentes o incompletas',
+    failNote: "Your homepage is missing the Open Graph metadata that messaging apps use to build a preview card. When someone texts your URL to friends, they see a blank box and a domain string — not a photo of a steak. Fix: add og:image (a 1200×630 photo), og:title, and og:description meta tags to your homepage <head>. On Wix and Squarespace this is one screen in SEO settings; on a custom site it's three lines in the &lt;head&gt;.",
+    failNote_es: 'A tu página principal le falta el marcado Open Graph que las apps de mensajería usan para construir la tarjeta de previsualización. Cuando alguien envía tu URL a amigos, ven una caja en blanco y una cadena de dominio — no una foto de un bistec. Arréglalo: agrega los meta tags og:image (una foto de 1200×630), og:title y og:description en el &lt;head&gt; de tu página principal. En Wix y Squarespace esto es una pantalla en configuración SEO; en un sitio a medida son tres líneas en el &lt;head&gt;.',
+    unverified: "We couldn't load your homepage to check link previews",
+    unverified_es: 'No pudimos cargar tu página principal para verificar las vistas previas del enlace',
+    unverifiedNote: "We couldn't fetch your homepage to inspect Open Graph metadata. Re-run the audit in a few seconds — most of the time this resolves on retry.",
+    unverifiedNote_es: 'No pudimos cargar tu página principal para inspeccionar el marcado Open Graph. Vuelve a ejecutar la auditoría en unos segundos — la mayoría de las veces se resuelve al reintentar.'
+  },
+
+  // ─────────────────────────────────────────────────────────────────
+  // Wave-D batch 2: three more priority checks.
+  //
+  // D2 owner-reply-rate: deep-scan signal (window.__auditGbpDetails).
+  // D3 transport-security: deep-scan signal (window.__auditObservatory).
+  // D5 stale-copyright: main-cycle (homepage footer text).
+  //
+  // D2 and D3 evaluators return 'unverified' until the deep scan
+  // completes. The deep-scan orchestrator (runDeepSignals in
+  // index.html) re-triggers renderPriorityChecks on signal arrival
+  // so the rows update without a full audit re-run.
+  // ─────────────────────────────────────────────────────────────────
+
+  // D2: Did the owner reply to recent Google reviews?
+  {
+    type: 'review-responsiveness',
+    weight: 0.9,
+    anchor: '#review-responsiveness',
+    effort: 'self',
+    minutes: 45,
+    impact: "Diners read the most recent 2-3 reviews before deciding. Zero replies signals an absentee operator and shifts borderline picks to a competitor who answers every one. A quick reply to even half of recent reviews — even just 'thanks for coming in' on the 5-stars and 'I'm sorry, I'd like to make it right, please email me' on the 1-stars — measurably moves first-time visits.",
+    impact_es: 'Los comensales leen las 2-3 reseñas más recientes antes de decidir. Cero respuestas señala un operador ausente y desvía las decisiones de borde hacia un competidor que responde cada una. Una respuesta rápida incluso a la mitad de las reseñas recientes — solo "gracias por venir" en las de 5 estrellas y "lo siento, me gustaría compensarlo, por favor escríbeme" en las de 1 estrella — mueve mensurable mente las primeras visitas.',
+    pass: 'You reply to most of your Google reviews',
+    pass_es: 'Respondes a la mayoría de tus reseñas de Google',
+    passNote: 'You\'re replying to most of your recent Google reviews. That\'s the single highest-leverage signal you can send to a scanning diner: "this place is operated, not abandoned."',
+    passNote_es: 'Estás respondiendo a la mayoría de tus reseñas recientes de Google. Esa es la señal de mayor impacto que puedes dar a un comensal que está investigando: "este lugar está operado, no abandonado."',
+    fail: 'You haven\'t replied to most recent Google reviews',
+    fail_es: 'No has respondido a la mayoría de las reseñas recientes de Google',
+    failNote: 'Most of your recent Google reviews are unanswered. To a diner doing a 30-second decision check, that reads as absentee ownership. Spend 30 minutes this weekend replying to your last 10 reviews — short and human is fine. Reply to the 5-stars first (build the warmth), then the 1-stars (turn anger into a path back). After that, set a recurring 15-minute weekly slot for replies and the gap closes itself.',
+    failNote_es: 'La mayoría de tus reseñas recientes de Google están sin responder. Para un comensal en una decisión de 30 segundos, eso se lee como dueño ausente. Dedica 30 minutos este fin de semana a responder tus últimas 10 reseñas — corto y humano está bien. Responde primero a las de 5 estrellas (construye calidez), luego a las de 1 estrella (convierte el enojo en un camino de regreso). Después, agenda un slot semanal recurrente de 15 minutos para responder y la brecha se cierra sola.',
+    unverified: "We couldn't check your review response rate",
+    unverified_es: 'No pudimos verificar tu tasa de respuesta a reseñas',
+    unverifiedNote: "We couldn't pull your recent reviews from Google Business Profile. Either we didn't match this site to a verified profile, or the Places API didn't return enough reviews to measure. If you have a profile, make sure its website field points to this exact URL.",
+    unverifiedNote_es: 'No pudimos extraer tus reseñas recientes del Perfil de Empresa de Google. O no emparejamos este sitio con un perfil verificado, o la API de Places no devolvió suficientes reseñas para medir. Si tienes un perfil, asegúrate de que el campo "sitio web" apunte exactamente a esta URL.'
+  },
+
+  // D3: HTTPS + HSTS + security headers (Mozilla Observatory grade).
+  {
+    type: 'transport-security',
+    weight: 1.0, // trust signal — Chrome "Not secure" warnings actively repel
+    anchor: '#transport-security',
+    effort: 'dev',
+    minutes: 90,
+    impact: "If a diner hits your site and sees Chrome's \"Not secure\" warning at the top, the party-of-12 holiday booking dies before the booker has scrolled to your menu. Modern restaurant sites should pass HTTPS plus the basic security headers (HSTS, Content-Security-Policy) so visitors never see the warning and so card-data-adjacent flows (Toast checkout, OpenTable widgets) load cleanly.",
+    impact_es: 'Si un comensal entra a tu sitio y ve la advertencia «No es seguro» de Chrome arriba, la reserva de la fiesta de 12 personas para las fiestas muere antes de que llegue a tu menú. Los sitios modernos de restaurante deben pasar HTTPS más los encabezados de seguridad básicos (HSTS, Content-Security-Policy) para que los visitantes nunca vean la advertencia y para que los flujos cercanos a datos de tarjeta (checkout de Toast, widgets de OpenTable) carguen limpios.',
+    pass: 'Your site is on a modern, secure foundation',
+    pass_es: 'Tu sitio está sobre cimientos modernos y seguros',
+    passNote: "Your site passes Mozilla's transport-security checks — HTTPS works, the right headers are present, no diner will see a 'Not secure' warning.",
+    passNote_es: 'Tu sitio pasa las verificaciones de seguridad de transporte de Mozilla — HTTPS funciona, los encabezados correctos están presentes, ningún comensal verá una advertencia de "No es seguro".',
+    fail: 'Your site is missing modern security headers',
+    fail_es: 'A tu sitio le faltan encabezados modernos de seguridad',
+    failNote: "Mozilla Observatory flagged your site as missing one or more standard security headers (HSTS, X-Content-Type-Options, Content-Security-Policy, etc). These are small one-line additions in your CDN or hosting provider's settings — on Cloudflare, Vercel, or Netlify it's a checkbox. For Wix and Squarespace these ship correctly by default; if you're failing here you're probably on an older host. Ask your web person to add HSTS and a basic CSP — it's a 90-minute job that prevents the 'Not secure' warning permanently.",
+    failNote_es: 'Mozilla Observatory marcó tu sitio como sin uno o más encabezados de seguridad estándar (HSTS, X-Content-Type-Options, Content-Security-Policy, etc). Estos son pequeños agregados de una línea en la configuración de tu CDN o proveedor de hosting — en Cloudflare, Vercel o Netlify es un checkbox. Para Wix y Squarespace estos vienen correctos por defecto; si fallas aquí probablemente estás en un host antiguo. Pídele a tu persona de la web que agregue HSTS y un CSP básico — es un trabajo de 90 minutos que previene la advertencia de "No es seguro" permanentemente.',
+    unverified: "We couldn't scan your site's security headers",
+    unverified_es: 'No pudimos escanear los encabezados de seguridad de tu sitio',
+    unverifiedNote: "Mozilla Observatory didn't return results for your site this run. Either the deep scan hasn't completed yet (this check runs in the deep-scan phase, which finishes 1-2 minutes after the main report), or the Observatory service was unavailable. Re-run the audit with the Deep Scan toggle on if it's not already.",
+    unverifiedNote_es: 'Mozilla Observatory no devolvió resultados para tu sitio en esta ejecución. O el escaneo profundo aún no se ha completado (esta verificación corre en la fase profunda, que termina 1-2 minutos después del informe principal), o el servicio de Observatory no estaba disponible. Vuelve a ejecutar la auditoría con el interruptor de Deep Scan activado si no lo está ya.'
+  },
+
+  // D5: Stale copyright / freshness.
+  {
+    type: 'stale-copyright',
+    weight: 0.5,
+    anchor: '#stale-copyright',
+    effort: 'self',
+    minutes: 2,
+    impact: 'A "© 2019" footer reads to an anxious diner — particularly one planning a birthday or anniversary — as "are they still open after COVID?" It costs nothing to update and removes a silent doubt signal. Two-minute fix: change the year (or better, set it to auto-render from the current year so it never goes stale again).',
+    impact_es: 'Un pie de página "© 2019" se lee — particularmente para alguien planeando un cumpleaños o aniversario — como "¿siguen abiertos después del COVID?" No cuesta nada actualizarlo y elimina una señal silenciosa de duda. Arreglo de dos minutos: cambia el año (o mejor, configúralo para que se renderice automáticamente con el año actual para que nunca se quede viejo).',
+    pass: 'Your copyright year is current',
+    pass_es: 'El año de tu copyright está al día',
+    passNote: "Your footer copyright is current — no silent doubt-signal to the anxious diner planning a special meal.",
+    passNote_es: 'El copyright de tu pie de página está actualizado — sin señales silenciosas de duda para el comensal ansioso que planea una comida especial.',
+    fail: 'Your copyright year is more than a year old',
+    fail_es: 'El año de tu copyright es de hace más de un año',
+    failNote: 'Your homepage footer shows a copyright year more than one year behind the current year. Diners reading this don\'t consciously notice it, but the "are they still open?" doubt-signal lands subconsciously. Two-minute fix: open your site\'s footer in the page editor (Wix: Site Footer → Edit; Squarespace: Footer → Edit) and update the year. Better, replace the static year with a snippet that auto-renders the current year so you never have to think about it again.',
+    failNote_es: 'El pie de página de tu sitio muestra un año de copyright más de un año atrasado. Los comensales que lo leen no lo notan conscientemente, pero la señal de duda "¿siguen abiertos?" entra inconscientemente. Arreglo de dos minutos: abre el pie de tu sitio en el editor (Wix: Pie del sitio → Editar; Squarespace: Pie → Editar) y actualiza el año. Mejor, reemplaza el año estático con un snippet que renderice automáticamente el año actual para que nunca tengas que pensar en eso de nuevo.',
+    unverified: "We couldn't find a copyright in your footer",
+    unverified_es: 'No pudimos encontrar un copyright en tu pie de página',
+    unverifiedNote: "Either your homepage doesn't carry a visible copyright year, or we couldn't read the footer. If your footer has a year, it's fine; if it doesn't, consider adding one — diners use it as a subtle freshness signal.",
+    unverifiedNote_es: 'O tu página principal no tiene un año de copyright visible, o no pudimos leer el pie de página. Si tu pie tiene un año, está bien; si no, considera agregar uno — los comensales lo usan como una señal sutil de actualidad.'
   }
 ];
 
@@ -2139,12 +2340,29 @@ function checkOgShareMeta(html) {
     return contentCheck ? contentCheck(val) : val.length > 0;
   }
   var nonEmpty = function(v){ return v.length > 0; };
+  // Audit-4 fix (Wave-D batch 1): og:image content can be absolute
+  // (http(s)://), protocol-relative (//host/path), root-relative
+  // (/path), or page-relative (path). All four resolve correctly
+  // in modern social previewers (Facebook, iMessage, Twitter,
+  // WhatsApp) which run the URL through `new URL(content, pageUrl)`
+  // before fetching. The prior `^https?://` check failed sites with
+  // root-relative og:image references — common on Squarespace and
+  // Wix templates — and reported a false-fail on D7. Accept any
+  // non-empty value that LOOKS like a URL (has at least one /).
+  function ogImageOk(v) {
+    if (!v) return false;
+    // Reject obviously-bad placeholders we sometimes see in
+    // unconfigured templates.
+    if (/^(none|null|undefined|todo|tbd)$/i.test(v.trim())) return false;
+    // Accept absolute, protocol-relative, root-relative, or page-relative.
+    return /^https?:\/\//i.test(v) || /^\/\//.test(v) || /^\//.test(v) || /^[a-z0-9._-]+\.(jpg|jpeg|png|webp|avif|gif|svg)/i.test(v);
+  }
   var out = {
     ogTitle:       hasMeta('og:title', nonEmpty),
     ogDescription: hasMeta('og:description', nonEmpty),
-    ogImage:       hasMeta('og:image', function(v){ return /^https?:\/\//i.test(v); }),
+    ogImage:       hasMeta('og:image', ogImageOk),
     twitterCard:   hasMeta('twitter:card', nonEmpty),
-    twitterImage:  hasMeta('twitter:image', function(v){ return /^https?:\/\//i.test(v); })
+    twitterImage:  hasMeta('twitter:image', ogImageOk)
   };
   // Score 0-5, for quick comparison against a subtype benchmark.
   out.score = (out.ogTitle?1:0) + (out.ogDescription?1:0) + (out.ogImage?1:0) +
@@ -2382,26 +2600,41 @@ var UI_I18N = {
     es: '{score}/100 · {count} verificaci{on} sin confirmar'
   },
   'verdict.90': {
-    en: "Your site is in great shape — most restaurants would be thrilled to hit this score. The items below are polish, not problems. Skim them, pick the one or two that catch your eye, and you're done.",
-    es: 'Tu sitio está en gran forma — la mayoría de restaurantes estaría encantada con esta puntuación. Lo de abajo es pulir, no arreglar. Échale un vistazo, escoge una o dos cosas y listo.'
+    en: "You're in the top tier for restaurant sites — most owners would be thrilled to hit this. The items below are polish, not problems. Only worth your weekend if you're already in a tweaking mood.",
+    es: 'Estás en el primer nivel para sitios de restaurante — la mayoría de operadores estaría encantada con esta puntuación. Lo de abajo es pulir, no arreglar. Solo vale tu fin de semana si ya tienes ganas de afinar detalles.'
   },
-  // Critique-fix (UX + QA): the verdict copy used to instruct
-  // "pick the two with the green 'Fix yourself' chip." When the
-  // Top-3 fixes ranked out as all dev/rebuild (perf-only regression
-  // on a small site, for example), no green chip existed and the
-  // verdict became a typo. Reworded to describe ACTION rather than
-  // CHIP COLOR — true in every state of the Top-3 list.
+  // Wave-C5/C6 (UX + Spanish-fluency reviewers): one-editor voice
+  // pass across all four bands. Voice cheat-sheet:
+  //   - Warm operator, leaning across the pass; not a corporate audit
+  //   - First-person occasionally ("I'll take it from here")
+  //   - Never apologetic; always actionable
+  //   - End with a concrete next step
+  // verdict.70 leads with the metaphor; verdict.50 leads with the
+  // scene; verdict.below leads with the reassurance — each band's
+  // entry beat is different but the close (action + next step) is
+  // consistent. ES strings drop "literalmente" (Twitter register)
+  // and "ejecuta" (technical) for warmer equivalents.
+  // Critique-fix (P3): the prior ES rendering had "vuelve...vuelve"
+  // back-to-back ("regresa el domingo y vuelve a pasar la auditoría"
+  // is also natural; "corre la auditoría otra vez" works too). Both
+  // bands now use "regresa" (return) + "pasa la auditoría otra vez"
+  // (run it again) so the same imperative doesn't repeat in the
+  // same sentence.
+  // Critique-fix (a11y/Spanish verdict.50): "no puede tocar tu
+  // teléfono lo bastante rápido" parsed as "they can't touch your
+  // phone" (poss. weak grip). Rewrote to "no puede pulsar el botón
+  // de teléfono" which is unambiguous.
   'verdict.70': {
-    en: "Solid bones, two or three leaky pipes. Most restaurants at this score are running a template site that just needs a careful weekend — not a rebuild. Your Top 3 fixes are below, sorted by how much real money each one costs you per year. Start with the first one and work down.",
-    es: 'Buenos cimientos, con dos o tres goteras. La mayoría de restaurantes con esta puntuación tiene un sitio plantilla al que le falta un fin de semana cuidadoso — no una reconstrucción. Tus 3 arreglos prioritarios están abajo, ordenados por cuánto dinero te cuesta cada uno al año. Empieza por el primero y baja desde ahí.'
+    en: "Solid bones, two or three leaky pipes. Most restaurants at this score are on a template site that just needs a careful weekend — not a rebuild. Your Top 3 fixes are below, sorted by how much real money each one costs you per year. Start with the first one and work down; come back Sunday and re-run to see the score move.",
+    es: 'Buenos cimientos, con dos o tres goteras. La mayoría de restaurantes con esta puntuación están en un sitio plantilla al que le falta un fin de semana cuidadoso — no una reconstrucción. Tus 3 arreglos prioritarios están abajo, ordenados por cuánto dinero te cuesta cada uno al año. Empieza por el primero y baja desde ahí; regresa el domingo y pasa la auditoría otra vez para ver cómo se mueve la puntuación.'
   },
   'verdict.50': {
     en: "The site works, but it's quietly losing you customers — most likely on mobile, on a Saturday night, when the visitor can't find your hours or your phone tap fast enough. The good news: the biggest wins below are usually a few hours of work, not a redesign. Start at the top of the list, then come back and re-run this audit — you'll see exactly which numbers moved.",
-    es: 'El sitio funciona, pero está perdiendo clientes en silencio — casi siempre en el móvil, un sábado por la noche, cuando alguien no encuentra tus horarios o tu teléfono lo bastante rápido. La buena noticia: las mayores ganancias de abajo suelen ser unas pocas horas de trabajo, no un rediseño. Empieza por arriba de la lista, luego vuelve a pasar esta auditoría — verás exactamente qué números se movieron.'
+    es: 'El sitio funciona, pero está perdiendo clientes en silencio — casi siempre en el móvil, un sábado por la noche, cuando alguien no encuentra tus horarios o no puede pulsar el botón de teléfono lo bastante rápido. La buena noticia: las mayores ganancias de abajo suelen ser unas pocas horas de trabajo, no un rediseño. Empieza por arriba de la lista, luego regresa y pasa esta auditoría otra vez — verás exactamente qué números se movieron.'
   },
   'verdict.below': {
     en: "There's real work to do here, and that's okay — most scores in this range come from a template site that's quietly aged out, not from anything you did wrong. The fastest path forward is the Top 3 list below: pick the first one, block out Saturday morning, fix it, and re-run the audit. If something needs a web person and you don't have one, email don@muntin.digital — that's what Muntin is here for.",
-    es: 'Hay trabajo real por hacer, y no pasa nada — la mayoría de las puntuaciones en este rango vienen de un sitio plantilla que envejeció en silencio, no de nada que hiciste mal. El camino más rápido es la lista de los 3 arreglos prioritarios abajo: empieza por el primero, reserva un sábado por la mañana, arréglalo y vuelve a pasar la auditoría. Si algo necesita una persona de la web y tú no tienes una, escribe a don@muntin.digital — para eso existe Muntin.'
+    es: 'Hay trabajo real por hacer aquí, y no pasa nada — la mayoría de las puntuaciones en este rango vienen de un sitio plantilla que envejeció en silencio, no de algo que hiciste mal. El camino más rápido es la lista de los 3 arreglos prioritarios abajo: escoge el primero, reserva un sábado por la mañana, arréglalo y vuelve a pasar la auditoría. Si algo necesita ayuda técnica y tú no la tienes a mano, escribe a don@muntin.digital — para eso existe Muntin.'
   },
   'verdict.unverifiedSuffix': {
     en: " {count} check{s} need your eyes — confirming them on the right takes about 90 seconds and sharpens your score either direction with no other work.",
@@ -2950,8 +3183,18 @@ var UI_I18N = {
   // owner feel like they're missing infrastructure they should have.
   // Same logic for "Rebuild needed" → "Bigger project": less ominous,
   // doesn't immediately imply "throw your site away."
-  'effort.self':    { en: 'Fix yourself',      es: 'Lo arreglas tú' },
-  'effort.dev':     { en: 'Needs a web person', es: 'Necesita una persona de la web' },
+  // Wave-C critique-fix (a11y/Spanish-fluency reviewer):
+  //   C3: "Lo arreglas tú" was grammatically fine but lacked a clear
+  //       antecedent on a stand-alone chip (the EN imperative form
+  //       doesn't carry over). Updated to "Lo puedes hacer tú" so it
+  //       scans as a complete thought without context.
+  //   C1: "Necesita una persona de la web" was a literal calque
+  //       no Spanish-speaking restaurant culture uses. Replaced with
+  //       "Necesita ayuda técnica" (universal, region-neutral, no
+  //       calque) — covers a freelancer, platform support, a
+  //       tech-savvy friend, or Muntin.
+  'effort.self':    { en: 'Fix yourself',      es: 'Lo puedes hacer tú' },
+  'effort.dev':     { en: 'Needs a web person', es: 'Necesita ayuda técnica' },
   'effort.rebuild': { en: 'Bigger project',     es: 'Proyecto más grande' },
   // Sprint AUDIT-EMPOWERMENT: priority-list self-fix filter copy.
   // Owner-aware: "no web person needed" instead of "self-effort" or
@@ -2979,22 +3222,54 @@ var UI_I18N = {
     en: "Sorted by estimated revenue at risk. Pick two — that's your weekend.",
     es: 'Ordenado por ingresos estimados en riesgo. Escoge dos — ese es tu fin de semana.'
   },
+  // Critique-fix (SB3): the "→" arrow USED to live in these strings;
+  // textContent swap in __muntinTranslate would then wipe an inline
+  // <span aria-hidden> wrap on the button, defeating B7. The arrow
+  // is now appended programmatically in wireWeekendMode's
+  // appendArrow helper so it's always wrapped in aria-hidden and
+  // never embedded in the translated string.
+  // Wave-C4: "cosas para arreglar" read childlike; "arreglos"
+  // cleaner.
   'weekendMode.enter': {
-    en: 'Show me only the 2 things to fix this weekend →',
-    es: 'Muéstrame solo las 2 cosas para arreglar este fin de semana →'
+    en: 'Show me only the 2 things to fix this weekend',
+    es: 'Muéstrame solo los 2 arreglos para este fin de semana'
   },
   'weekendMode.close.copy': {
     en: "Knock these two out this weekend. Your checkmarks are saved on this device — come back Sunday night, re-run the audit, and you'll see exactly which numbers moved.",
     es: 'Resuelve estos dos este fin de semana. Tus marcas están guardadas en este dispositivo — vuelve el domingo por la noche, ejecuta otra vez la auditoría y verás exactamente qué cifras se movieron.'
   },
   'weekendMode.close.reaudit': {
-    en: 'Re-audit my site →',
-    es: 'Volver a auditar mi sitio →'
+    en: 'Re-audit my site',
+    es: 'Volver a auditar mi sitio'
   },
   'weekendMode.close.exit': {
     en: 'Show me everything',
     es: 'Mostrarme todo'
   },
+  // Wave-A1: shown when the user clicks the Weekend Mode button but
+  // the top-3 fixes are ALL flagged dev/rebuild — nothing self-fixable
+  // to surface. Reuses the close card with swapped copy + a mailto:
+  // primary action so the owner has a one-tap path to "I don't have
+  // a developer; what now?"
+  // Critique-fix (P1, P2, P4):
+  //   P1: dropped first-person "I'll take it from here" — the rest of
+  //       the audit is third-person tool voice, so the "I" had no
+  //       antecedent. "We'll route it" matches the verdict.below
+  //       "that's what Muntin is here for" register.
+  //   P2: aligned vocabulary to "ayuda técnica" (matches effort.dev).
+  //       The old "una persona de la web" contradicted the chip the
+  //       owner had just read on the dev-effort top-3 items.
+  //   P4: "Escribirle a Don" (infinitive) is wrong button register
+  //       in Spanish UI convention. "Escríbele a Don" (imperative).
+  //   Also: changed dismiss from "Close this" to "Back to the
+  //   report" — "Close this" is procedural; the user is returning
+  //   to the report, name the destination.
+  'weekendMode.noSelf.copy': {
+    en: "Your top 3 fixes all need a web person — there isn't a self-fix in the list this weekend. If you don't have someone, email don@muntin.digital and we'll route it.",
+    es: 'Tus 3 arreglos prioritarios necesitan ayuda técnica — esta semana no hay nada que puedas resolver tú. Si no tienes a quien acudir, escribe a don@muntin.digital y lo dirigimos desde aquí.'
+  },
+  'weekendMode.noSelf.email': { en: 'Email Don',  es: 'Escríbele a Don' },
+  'weekendMode.noSelf.dismiss': { en: 'Back to the report', es: 'Volver al informe' },
   // Sprint AUDIT-EMPOWERMENT: Core Web Vitals strip — plain-English
   // headline first, technical acronym second. The .label cell now
   // reads ".plain" and the .hint footnote reads ".tech".
@@ -3015,6 +3290,13 @@ var UI_I18N = {
   'cwv.tbt.tech':  { en: 'TBT · Total Blocking Time',      es: 'TBT · Total Blocking Time' },
   'cwv.fcp.plain': { en: 'Time to first pixel',           es: 'Tiempo al primer pixel' },
   'cwv.fcp.tech':  { en: 'FCP · First Contentful Paint',   es: 'FCP · First Contentful Paint' },
+  // Wave-B6: visible-threshold copy for each CWV card. Replaces the
+  // keyboard-inaccessible `title=` tooltip with a real footnote row.
+  'cwv.lcp.threshold': { en: 'Good under 2.5s · Slow over 4s',     es: 'Bien menos de 2.5s · Lento más de 4s' },
+  'cwv.cls.threshold': { en: 'Good under 0.10 · Slow over 0.25',   es: 'Bien menos de 0.10 · Lento más de 0.25' },
+  'cwv.inp.threshold': { en: 'Good under 200ms · Slow over 500ms', es: 'Bien menos de 200ms · Lento más de 500ms' },
+  'cwv.tbt.threshold': { en: 'Good under 200ms · Slow over 600ms', es: 'Bien menos de 200ms · Lento más de 600ms' },
+  'cwv.fcp.threshold': { en: 'Good under 1.8s · Slow over 3s',     es: 'Bien menos de 1.8s · Lento más de 3s' },
   // Critique-fix: a duplicate `'effort.rebuild'` key used to live here
   // and silently revert the new "Bigger project" copy back to "Rebuild
   // needed" — JS object-literal semantics let the later key win.
@@ -3132,7 +3414,112 @@ var UI_I18N = {
   'reaudit.genericError': {
     en: "Couldn't schedule the reminder. Try again in a moment?",
     es: 'No pudimos programar el recordatorio. ¿Intenta de nuevo en un momento?'
-  }
+  },
+
+  // ─────────────────────────────────────────────────────────────────
+  // Wave-E1-full migration block.
+  //
+  // The audit used to carry a separate window.__MUNTIN_UI_ES dict for
+  // "page-chrome" Spanish strings (nav/hero/form/load/err/score/pdf),
+  // consumed by an ES-only DOM scanner. UI_I18N was the canonical
+  // EN+ES source for everything else. New strings drifted between
+  // the two for two years, and the lookup chain (tr / resolveTr /
+  // t / PDF-local t) was its own maze.
+  //
+  // This commit moves all 50 live entries into UI_I18N (the 23
+  // auto-detectable from data-tr inlines + the 27 dynamic strings my
+  // own JS sets via tr(key, EN_FALLBACK) — JS callsites now read
+  // UI_I18N via the unified tr() that landed in 14776a64). 22 nav.* /
+  // score.* / pdf.cta.* entries were dead code (defined but never
+  // referenced — no data-tr usage, no JS tr() callsite) and were
+  // dropped entirely rather than carried forward.
+  //
+  // After this block, __MUNTIN_UI_ES is deleted and tr()/resolveTr()
+  // simplify to pure UI_I18N lookups.
+  // ─────────────────────────────────────────────────────────────────
+
+  // Breadcrumb (was nav-area legacy keys)
+  'crumb.home':       { en: 'Home',                    es: 'Inicio' },
+  'crumb.tools':      { en: 'Tools',                   es: 'Herramientas' },
+  'crumb.audits':     { en: 'Audits',                  es: 'Auditorías' },
+  'crumb.current':    { en: 'Restaurant',              es: 'Restaurante' },
+  'crumb.label':      { en: 'Breadcrumb',              es: 'Ruta de navegación' },
+  'crumb.skip':       { en: 'Skip to main content',    es: 'Saltar al contenido principal' },
+
+  // Hero block (data-tr / data-tr-html on the homepage of the audit)
+  'hero.eyebrow':     { en: 'Free tool · Restaurant-tuned mobile audit · 30 seconds',
+                        es: 'Herramienta gratuita · Diagnóstico móvil ajustado a restaurantes · 30 segundos' },
+  'hero.h1.full':     { en: 'How is your<br>\n        <span class="serif-italic">restaurant website</span><br>\n        actually doing?',
+                        es: '¿Cómo está realmente<br><span class="serif-italic">el sitio web de tu restaurante</span><br>funcionando?' },
+  'hero.sub':         { en: 'Drop your URL below and I\'ll run a real mobile audit in about thirty seconds — performance, SEO, accessibility, and the specific checks that matter for a restaurant. The full report renders on this page — no sign-up, no email, no tracking. (An optional form at the bottom emails you a PDF copy if you want one.)',
+                        es: 'Pega tu URL abajo y haré una auditoría móvil real en unos treinta segundos: rendimiento, SEO, accesibilidad y las verificaciones específicas que importan para un restaurante. El informe completo aparece en esta página — sin registro, sin email, sin rastreo. (Hay un formulario opcional al final si quieres recibir una copia en PDF.)' },
+  'hero.note':        { en: 'Powered by Google\'s PageSpeed Insights API plus our own restaurant-specific scanner — ordering platforms, reservation widgets, maps, click-to-call, and mobile menu readability. Works on any publicly accessible URL (no staging environments or login walls).',
+                        es: 'Impulsada por la API de PageSpeed Insights de Google más nuestro propio escáner específico para restaurantes: plataformas de pedidos, widgets de reservas, mapas, click-to-call y legibilidad del menú móvil. Funciona con cualquier URL públicamente accesible (sin entornos de prueba ni muros de inicio de sesión).' },
+
+  // Form
+  'form.placeholder': { en: 'https://yourrestaurant.com',           es: 'https://turestaurante.com' },
+  'form.submit':      { en: 'Run audit',                            es: 'Ejecutar auditoría' },
+  'form.urlLabel':    { en: 'Your restaurant website URL',          es: 'URL del sitio web de tu restaurante' },
+
+  // Loader (data-tr static + JS-dynamic via setStepState/heartbeat)
+  'load.h2':          { en: 'Running your audit…',                  es: 'Ejecutando tu auditoría…' },
+  'load.sub':         { en: 'This usually takes 15–40 seconds.',    es: 'Esto suele tardar entre 15 y 40 segundos.' },
+  'load.subSlow':     { en: "Google is taking longer than usual on this one — still running…",
+                        es: 'Google está tardando más de lo habitual con este sitio — aún procesando…' },
+  'load.step1':       { en: 'Submitting your site for the speed test',
+                        es: 'Enviando tu sitio al test de velocidad' },
+  'load.step2':       { en: 'Mobile speed test (Google PageSpeed)',
+                        es: 'Test de velocidad móvil (Google PageSpeed)' },
+  'load.step3':       { en: 'Reading your menu, hours, ordering, and Google profile',
+                        es: 'Leyendo tu menú, horarios, pedidos y perfil de Google' },
+  'load.step4':       { en: 'Writing your report',                  es: 'Escribiendo tu informe' },
+  'load.sub.starting':       { en: 'Starting…',                     es: 'Iniciando…' },
+  'load.sub.submitting':     { en: 'Submitting…',                   es: 'Enviando…' },
+  'load.sub.lighthouse':     { en: 'Google is running Lighthouse on your site ({n}s)',
+                               es: 'Google está ejecutando Lighthouse en tu sitio ({n}s)' },
+  'load.sub.lighthouseSlow': { en: 'Still running on Google’s servers ({n}s) — slow restaurant sites can take 20–30s',
+                               es: 'Aún ejecutándose en los servidores de Google ({n}s) — los sitios lentos pueden tardar 20–30s' },
+  'load.sub.lighthouseStart':{ en: 'Asking Google PageSpeed to test the mobile view…',
+                               es: 'Pidiendo a Google PageSpeed que pruebe la vista móvil…' },
+  'load.sub.psiFallback':    { en: 'Mobile timed out — trying desktop view…',
+                               es: 'Móvil agotó el tiempo — probando vista de escritorio…' },
+  'load.sub.psiFallbackStart':{ en: 'Mobile timed out — trying desktop view…',
+                                es: 'Móvil agotó el tiempo — probando vista de escritorio…' },
+  'load.sub.psiFallbackElapsed':{ en: 'Mobile timed out — trying desktop view ({n}s)',
+                                  es: 'Móvil agotó el tiempo — probando vista de escritorio ({n}s)' },
+  'load.sub.psiDesktop':     { en: 'Desktop view scored (mobile was too slow)',
+                               es: 'Puntuado en escritorio (móvil fue demasiado lento)' },
+  'load.sub.psiDone':        { en: 'Speed test complete',           es: 'Test de velocidad completado' },
+  'load.sub.psiFailed':      { en: 'Speed test unavailable — continuing without it',
+                               es: 'Test de velocidad no disponible — continuando sin él' },
+  'load.sub.reading':        { en: 'Reading your homepage and follow-up pages…',
+                               es: 'Leyendo tu página principal y páginas de seguimiento…' },
+  'load.sub.readingElapsed': { en: 'Reading your site ({n}s)',      es: 'Leyendo tu sitio ({n}s)' },
+  'load.sub.pagesRead':      { en: 'pages read',                    es: 'páginas leídas' },
+  'load.sub.schemaFound':    { en: 'schema found',                  es: 'datos estructurados encontrados' },
+  'load.sub.gbpFound':       { en: 'Google profile found',          es: 'perfil de Google encontrado' },
+  'load.sub.contentDoneBare':{ en: 'Done',                          es: 'Listo' },
+  'load.sub.rendering':      { en: 'Building your report…',         es: 'Construyendo tu informe…' },
+  'load.sub.doneIn':         { en: 'Done in {n}s',                  es: 'Listo en {n}s' },
+
+  // Error state (data-tr static + JS-dynamic via showError)
+  'err.h2':                { en: "We couldn't audit that URL.",     es: 'No pudimos auditar esa URL.' },
+  'err.body':              { en: "Check the address and try again. The site needs to be publicly reachable — if it's behind a login or a local network, the audit can't see it.",
+                             es: 'Verifica la dirección e inténtalo de nuevo. El sitio debe ser públicamente accesible — si está detrás de un inicio de sesión o en una red local, la auditoría no puede verlo.' },
+  'err.retry':             { en: 'Try again',                       es: 'Intentar de nuevo' },
+  'err.newUrl':            { en: 'Use a different URL',             es: 'Usar una URL diferente' },
+  'err.psiTimeout.h2':     { en: "Google's speed test is overloaded right now.",
+                             es: 'El test de velocidad de Google está saturado ahora mismo.' },
+  'err.psiTimeout.body':   { en: "We tried the mobile view first and then desktop — both took longer than Google allows. This happens most often when a site is on Wix, Squarespace, or another platform that's slow to first paint, or when Google's free PSI tier is throttled. Wait 30 seconds and try again. If it keeps happening, email don@muntin.digital and I'll run the speed test by hand and send you the report.",
+                             es: 'Probamos primero la vista móvil y luego la de escritorio — ambas tardaron más de lo permitido por Google. Esto ocurre frecuentemente cuando un sitio está en Wix, Squarespace u otra plataforma lenta para pintar la primera vista, o cuando la capa gratuita de PSI está limitada. Espera 30 segundos e inténtalo de nuevo. Si sigue pasando, escribe a don@muntin.digital y haré el test de velocidad a mano.' },
+  'err.psiFailed.h2':      { en: "We couldn't reach Google's speed test.",
+                             es: 'No pudimos conectar con el test de velocidad de Google.' },
+  'err.psiFailed.body':    { en: "Try again in a moment, or email don@muntin.digital and I'll run the audit by hand and send you the report.",
+                             es: 'Inténtalo de nuevo en un momento, o escribe a don@muntin.digital y haré la auditoría a mano y te enviaré el informe.' },
+  'err.rateLimit.h2':      { en: "We're a little rate-limited right now.",
+                             es: 'Estamos un poco limitados ahora mismo.' },
+  'err.rateLimit.body':    { en: "Google's free tier is temporarily throttled. Give it about 30 seconds before trying again, or email don@muntin.digital for a manual audit.",
+                             es: 'La capa gratuita de Google está temporalmente saturada. Espera unos 30 segundos antes de intentarlo de nuevo, o escribe a don@muntin.digital para una auditoría manual.' }
 };
 
 // Pluralization helper for ES: most nouns just take -es / -s, but
