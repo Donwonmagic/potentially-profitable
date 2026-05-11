@@ -9061,10 +9061,36 @@ main{padding-top:64px}
     } catch (_) {}
     return fallback;
   }
-  // Sprint AUDIT-LOAD-FIX: cross-call flag the heartbeat reads to
-  // generate fallback-aware labels for step 2 without the runAudit
-  // closure having to thread state into setStepState.
-  var psiFallbackInFlight = false;
+  // Wave-E2: per-runAudit context object. Replaces three separate
+  // state vehicles that the prior implementation maintained in parallel
+  // (psiFallbackInFlight module flag, psiFellBackToDesktop closure
+  // var, window.__auditPsiFallback global) plus a payload-side
+  // data.__fallbackFromMobile annotation. Each `runAudit()` invocation
+  // creates its own ctx and assigns it here; consumers outside the
+  // closure (the heartbeat, the PSI fallback note display) read from
+  // `currentAuditCtx` instead of the three independent flags.
+  //
+  // Shape: { psi: { inflight, fallback, fallbackFromMobile } }
+  //   psi.inflight       — true while the desktop fallback fetch is
+  //                        running (heartbeat uses this to switch
+  //                        label to "Mobile timed out — trying desktop
+  //                        view ({n}s)").
+  //   psi.fallback       — true if THIS audit fell back to desktop
+  //                        (success or failure). Used by the .then
+  //                        handler in runAudit to mark step 2 as
+  //                        warn vs done.
+  //   psi.fallbackFromMobile — true if the audit RESULT came from
+  //                        desktop (i.e. mobile timed out). Drives
+  //                        the in-report disclosure banner.
+  //
+  // The module slot holds one ctx — comparison-flow audits use
+  // callPsi directly (not runAudit), so concurrent runs never race
+  // here. New runAudit overwrites the slot; the old run's closure
+  // still holds its own reference if it's mid-flight.
+  var currentAuditCtx = null;
+  function createAuditCtx() {
+    return { psi: { inflight: false, fallback: false, fallbackFromMobile: false } };
+  }
 
   // Render one step's DOM from its current state object.
   function paintStep(n) {
@@ -9154,7 +9180,12 @@ main{padding-top:64px}
           // the wait isn't local.
           var label;
           if (i === 2) {
-            if (psiFallbackInFlight) {
+            // Wave-E2: heartbeat reads inflight state from the
+            // per-runAudit ctx instead of a module-scoped flag.
+            // `currentAuditCtx` is null between audits (e.g. when
+            // the heartbeat fires from leftover state on a fresh
+            // page load before runAudit ran).
+            if (currentAuditCtx && currentAuditCtx.psi.inflight) {
               label = tr('load.sub.psiFallbackElapsed', 'Mobile timed out — trying desktop view ({n}s)').replace('{n}', elapsed);
             } else if (elapsed < 4) label = tr('load.sub.starting', 'Starting…');
             else if (elapsed < 15) label = tr('load.sub.lighthouse', 'Google is running Lighthouse on your site (' + elapsed + 's)').replace('{n}', elapsed);
@@ -15657,10 +15688,15 @@ main{padding-top:64px}
       return fmt.replace('{n}', s);
     }
 
-    var psiFellBackToDesktop = false;
-    // Reset the module-scoped fallback flag so a second audit run
-    // (Try again button) doesn't see stale state.
-    psiFallbackInFlight = false;
+    // Wave-E2: create a per-invocation ctx for this audit run. The
+    // module slot `currentAuditCtx` is read by the heartbeat (outside
+    // this closure) to drive the "Mobile timed out — trying desktop
+    // view ({n}s)" label, and by the renderReport flow below to
+    // surface the desktop-fallback disclosure. Each runAudit gets
+    // its own fresh ctx; a "Try again" submit overwrites the slot
+    // cleanly without sharing state with the prior run.
+    var ctx = createAuditCtx();
+    currentAuditCtx = ctx;
 
     // Kick off step 2 (PSI) and step 3 (crawl + schema + places) in
     // parallel. We start the heartbeat right after step 1 paints so
@@ -15675,8 +15711,8 @@ main{padding-top:64px}
     // Wrap each fetch so its outcome flips its own step independently
     // and the orchestrator gets a uniform { ok, value | err } shape.
     var psiPromise = callPsiWithFallback(url, function(){
-      psiFellBackToDesktop = true;
-      psiFallbackInFlight = true;
+      ctx.psi.fallback = true;
+      ctx.psi.inflight = true;
       // Keep state='active' so the heartbeat keeps ticking with the
       // fallback-aware label. Reset the elapsed timer so the counter
       // shows the desktop run's duration, not the cumulative 25+
@@ -15687,9 +15723,9 @@ main{padding-top:64px}
     }).then(function(data){
       // PSI is done (success path). Mark step 2 done OR warn (if it
       // fell back to desktop, the result is still useful but degraded).
-      psiFallbackInFlight = false;
+      ctx.psi.inflight = false;
       var elapsed = fmtDoneIn(2);
-      if (psiFellBackToDesktop) {
+      if (ctx.psi.fallback) {
         setStepState(2, 'warn', tr('load.sub.psiDesktop', 'Desktop view scored (mobile was too slow)') + ' · ' + elapsed);
       } else {
         setStepState(2, 'done', tr('load.sub.psiDone', 'Speed test complete') + ' · ' + elapsed);
@@ -15697,7 +15733,7 @@ main{padding-top:64px}
       return { ok: true, data: data };
     }, function(err){
       // Both mobile and desktop failed, OR a non-timeout error.
-      psiFallbackInFlight = false;
+      ctx.psi.inflight = false;
       setStepState(2, 'warn', tr('load.sub.psiFailed', 'Speed test unavailable — continuing without it'));
       return { ok: false, err: err };
     });
@@ -15778,9 +15814,13 @@ main{padding-top:64px}
       .then(function(data){
         if (!data) return; // handled-error short-circuit
         try {
-          // Expose so renderReport can surface the desktop-fallback
-          // disclosure in the score header.
-          window.__auditPsiFallback = !!(data && data.__fallbackFromMobile);
+          // Wave-E2: stamp ctx with the fallback bit. window.__auditPsiFallback
+          // is kept as a public read-only mirror for back-compat — any
+          // external consumer (an analytics script, a future PDF builder,
+          // a snapshot rebuild path) that read the global pre-E2 still
+          // sees it. The CANONICAL source is now ctx.psi.fallbackFromMobile.
+          ctx.psi.fallbackFromMobile = !!(data && data.__fallbackFromMobile);
+          window.__auditPsiFallback = ctx.psi.fallbackFromMobile;
           renderReport(data, url);
           // Show the PSI desktop-fallback disclosure under the verdict
           // when the mobile run timed out and we transparently re-ran
@@ -15788,12 +15828,12 @@ main{padding-top:64px}
           // friendlier than mobile, and they'd otherwise overestimate
           // their site's speed.
           var psiNoteEl = document.getElementById('auditPsiFallbackNote');
-          if (psiNoteEl) psiNoteEl.hidden = !window.__auditPsiFallback;
+          if (psiNoteEl) psiNoteEl.hidden = !ctx.psi.fallbackFromMobile;
           setStepState(4, 'done', fmtDoneIn(4));
           finishProgress();
           if (window.plausible) {
             window.plausible('Audit Completed');
-            if (window.__auditPsiFallback) window.plausible('Audit PSI Desktop Fallback');
+            if (ctx.psi.fallbackFromMobile) window.plausible('Audit PSI Desktop Fallback');
           }
           // Sprint D3: snapshot the score for the embeddable badge.
           // Fire-and-forget — failure to persist the snapshot
