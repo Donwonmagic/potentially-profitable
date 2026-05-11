@@ -2516,6 +2516,38 @@ var UI_I18N = {
     es: 'No hubo señales adicionales disponibles para este sitio.'
   },
   'deepScan.eyebrow': { en: 'Deep scan', es: 'Deep scan' },
+  // Sprint AUDIT-LOAD-FIX: idle (pre-start) + progress count keys so
+  // the strip in tools/audits/restaurant/index.html can show the owner
+  // visible movement even before any of the six fetches resolve. The
+  // previous version went silent until the first chip rendered, which
+  // for most small-restaurant sites meant the strip looked dead. The
+  // loaderHint string is shown beneath the main loader subhead when
+  // the Deep Scan toggle is checked, so the owner knows the audit
+  // will continue after the report appears (otherwise the surprise
+  // "still running" strip looks broken).
+  'deepScan.idle': {
+    en: 'Queued — runs after your report appears',
+    es: 'En cola — se ejecuta después de que aparezca tu informe'
+  },
+  'deepScan.progress': {
+    en: '{done}/{total} signals returned',
+    es: '{done}/{total} señales devueltas'
+  },
+  'deepScan.loaderHint': {
+    en: 'Deep scan continues after the report (1–2 min): security headers, site age, real-user data, Google reviews, email-deliverability.',
+    es: 'El escaneo profundo continúa después del informe (1–2 min): encabezados de seguridad, antigüedad del sitio, datos reales de usuarios, reseñas de Google, salud del email.'
+  },
+  // Sprint AUDIT-LOAD-FIX: shown under the score verdict when the
+  // mobile PSI run timed out and the tool fell back to desktop view.
+  // Owners must know the score they're reading is the more forgiving
+  // desktop view — otherwise they think their site is faster than it
+  // actually is on a phone, which is exactly the device most of their
+  // customers use. Lives in UI_I18N as data-tr-html so the <strong>
+  // markup in EN survives translation to ES.
+  'psi.fallback.note': {
+    en: 'Speed test ran on <strong>desktop</strong> view — the mobile test took longer than Google allows. Mobile numbers usually score 15–30 points lower, so treat this as the optimistic case and prioritize the mobile fixes in the report below.',
+    es: 'El test de velocidad se ejecutó en vista de <strong>escritorio</strong> — el test móvil tardó más de lo permitido por Google. Las puntuaciones móviles suelen estar 15–30 puntos por debajo, así que considera esto como el caso optimista y prioriza las correcciones móviles en el informe siguiente.'
+  },
   // Phase 2 U4: hero deep-scan toggle copy. Was referenced as a
   // data-tr attribute in index.html but had no entry here, so a
   // Spanish visitor saw English on this single line. Adding it

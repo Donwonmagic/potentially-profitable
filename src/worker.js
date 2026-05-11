@@ -3503,7 +3503,7 @@ async function fetchPageForCrawl(target, timeoutMs) {
 async function handlePsi(request, env, ctx) {
   if (!env.PSI_API_KEY) {
     return jsonResponse(
-      { ok: false, error: 'psi-proxy-unconfigured' },
+      { ok: false, error: 'psi-proxy-unconfigured', errorKind: 'psi-unconfigured' },
       503
     );
   }
@@ -3511,7 +3511,7 @@ async function handlePsi(request, env, ctx) {
   const incoming = new URL(request.url);
   const target   = (incoming.searchParams.get('url') || '').trim();
   if (!target) {
-    return jsonResponse({ ok: false, error: 'Missing ?url= parameter' }, 400);
+    return jsonResponse({ ok: false, error: 'Missing ?url= parameter', errorKind: 'bad-request' }, 400);
   }
   // Require http(s) — don't let the client coax us into hitting
   // javascript:, data:, file:, or internal http://10.x URLs via PSI
@@ -3519,10 +3519,10 @@ async function handlePsi(request, env, ctx) {
   try {
     parsedTarget = new URL(target);
   } catch (e) {
-    return jsonResponse({ ok: false, error: 'Invalid URL' }, 400);
+    return jsonResponse({ ok: false, error: 'Invalid URL', errorKind: 'bad-request' }, 400);
   }
   if (parsedTarget.protocol !== 'http:' && parsedTarget.protocol !== 'https:') {
-    return jsonResponse({ ok: false, error: 'Only http(s) URLs are supported' }, 400);
+    return jsonResponse({ ok: false, error: 'Only http(s) URLs are supported', errorKind: 'bad-request' }, 400);
   }
 
   // Pass through all the audit's forwarded params; just swap in our key.
@@ -3533,30 +3533,33 @@ async function handlePsi(request, env, ctx) {
   });
   upstream.searchParams.set('key', env.PSI_API_KEY);
 
+  // Sprint AUDIT-LOAD-FIX: tightened to 25s upstream cap. The frontend
+  // detects errorKind:'psi-timeout' on the 504 body and transparently
+  // retries with ?strategy=desktop (much faster, often passes when the
+  // mobile-throttled Lighthouse run stalls on Wix/Squarespace origins).
+  // The 25s ceiling here leaves headroom inside Cloudflare's 30s wall-
+  // time budget so the worker can return the structured 504 cleanly
+  // instead of the edge tripping a generic gateway error.
   try {
-    // Sprint B1: cap the PSI call at 30s. Lighthouse runs occasionally
-    // stall longer than that on origin-side issues, and without an
-    // explicit signal the Worker previously held the connection open
-    // up to Cloudflare's 120s ceiling, blocking the frontend loader
-    // UI and tying up a Worker invocation slot.
-    // Sprint B2: on 429/503 retry once after 2s. PSI throttles on
-    // burst traffic (e.g. the competitor-comparison flow fires 3
-    // audits back-to-back); a single retry recovers the most common
-    // transient case without materially extending worst-case latency.
     let res = await fetch(upstream.toString(), {
       headers: { 'Accept': 'application/json' },
-      signal: AbortSignal.timeout(30000)
+      signal: AbortSignal.timeout(25000)
     });
     if (res.status === 429 || res.status === 503) {
-      await new Promise((r) => setTimeout(r, 2000));
+      // Sprint B2: PSI throttles on burst traffic (e.g. the competitor-
+      // comparison flow fires 3 audits back-to-back); a single short
+      // retry recovers the most common transient case.
+      await new Promise((r) => setTimeout(r, 1500));
       res = await fetch(upstream.toString(), {
         headers: { 'Accept': 'application/json' },
-        signal: AbortSignal.timeout(30000)
+        signal: AbortSignal.timeout(20000)
       });
     }
     const body = await res.text();
     // Pass through status + JSON body so the client can see PSI's
-    // structured error shape (body.error.message) unchanged.
+    // structured error shape (body.error.message) unchanged. Echo the
+    // strategy that was used (defaults to mobile) so the frontend can
+    // label the result correctly when it falls back to desktop.
     return new Response(body, {
       status: res.status,
       headers: {
@@ -3565,6 +3568,7 @@ async function handlePsi(request, env, ctx) {
         'Access-Control-Allow-Origin': '*',
         'X-Generator': MUNTIN_GENERATOR,
         'X-Powered-By': 'Muntin Digital',
+        'X-Muntin-Psi-Strategy': (incoming.searchParams.get('strategy') || 'mobile'),
       }
     });
   } catch (err) {
@@ -3573,14 +3577,23 @@ async function handlePsi(request, env, ctx) {
     // Sprint ES3: localized PSI error messages.
     const L = pickLang(request);
     const MSG = {
-      timeout: { en: 'PageSpeed Insights took longer than 30s — please retry',
-                 es: 'PageSpeed Insights tardó más de 30s — por favor reintenta' },
+      timeout: { en: 'PageSpeed Insights took longer than 25s — please retry',
+                 es: 'PageSpeed Insights tardó más de 25s — por favor reintenta' },
       fail:    { en: 'Failed to reach PageSpeed Insights',
                  es: 'No se pudo conectar con PageSpeed Insights' }
     };
     const pick = (m) => (L === 'es' && m.es) || m.en;
+    // Sprint AUDIT-LOAD-FIX: include errorKind so the frontend can
+    // distinguish a timeout (retry with desktop strategy) from a hard
+    // network failure (surface to the user). The legacy `error` string
+    // stays for back-compat.
     return jsonResponse(
-      { ok: false, error: isTimeout ? pick(MSG.timeout) : pick(MSG.fail) },
+      {
+        ok: false,
+        error: isTimeout ? pick(MSG.timeout) : pick(MSG.fail),
+        errorKind: isTimeout ? 'psi-timeout' : 'psi-fetch-failed',
+        strategy: (incoming.searchParams.get('strategy') || 'mobile')
+      },
       isTimeout ? 504 : 502
     );
   }

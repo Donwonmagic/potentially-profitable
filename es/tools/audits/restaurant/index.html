@@ -332,16 +332,95 @@ main{padding-top:64px}
 
   /* Sprint S2.7: Deep Scan chips + sections. Chips sit above the
      audit-summary so they read as "extras we found" not mandatory
-     report content. Sections live deeper in the report flow. */
+     report content. Sections live deeper in the report flow.
+     Sprint AUDIT-LOAD-FIX: the strip now has a real surface (cream
+     tint + teal border, matching the deep-scan toggle in the hero)
+     so the owner can see at a glance that Deep Scan is running or
+     has finished — previously the strip was visually empty whenever
+     the underlying chips had no data to inject, leaving owners
+     convinced Deep Scan "did nothing." Status text + progress count
+     stays visible across all states. */
   .deep-scan-strip {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 10px;
+    align-items: center;
     max-width: 1100px;
     margin: 0 auto 18px;
-    padding: 0 4px;
+    padding: 12px 16px;
+    background: var(--cream-2, #faf6ee);
+    border: 1px solid var(--line, #E6DFCE);
+    border-radius: 12px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.4;
   }
   .deep-scan-strip[hidden] { display: none; }
+  .deep-scan-strip[data-state="running"] {
+    border-color: var(--teal);
+    background: var(--teal-tint, #e8f1f3);
+    color: var(--teal-dark, #1a3f4a);
+  }
+  .deep-scan-strip[data-state="done"] {
+    border-color: var(--status-good, #2d7a4d);
+  }
+  .deep-scan-strip[data-state="empty"] {
+    color: var(--stone);
+  }
+  .deep-scan-strip-status {
+    font-weight: 500;
+    flex: 0 0 auto;
+  }
+  .deep-scan-strip-status::before {
+    content: 'Deep Scan · ';
+    color: var(--teal);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    font-size: 11px;
+  }
+  .deep-scan-strip[data-state="done"] .deep-scan-strip-status::before {
+    color: var(--status-good, #2d7a4d);
+  }
+  .deep-scan-strip-chips {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+  .deep-scan-strip-progress {
+    font-variant-numeric: tabular-nums;
+    font-size: 12px;
+    color: var(--stone);
+    flex: 0 0 auto;
+  }
+  .deep-scan-strip-progress:empty { display: none; }
+  /* Spinner: a small CSS-only spinner the strip swaps in via a
+     data-state hook so we don't ship an SVG just for one indicator.
+     prefers-reduced-motion users get a static dot. */
+  .deep-scan-strip[data-state="running"] .deep-scan-strip-status::after {
+    content: '';
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin-left: 8px;
+    border-radius: 50%;
+    border: 2px solid var(--teal);
+    border-top-color: transparent;
+    vertical-align: -2px;
+    animation: deep-scan-spin 0.85s linear infinite;
+  }
+  @keyframes deep-scan-spin {
+    to { transform: rotate(360deg); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .deep-scan-strip[data-state="running"] .deep-scan-strip-status::after {
+      animation: none;
+      border-top-color: var(--teal);
+      opacity: 0.5;
+    }
+  }
   /* .deep-chip is the audit's bespoke variant of the global
      .status-chip component (defined in /assets/site.css "Status
      components" cluster). Differences from the global chip:
@@ -1950,11 +2029,28 @@ main{padding-top:64px}
     text-align: center;
   }
   .audit-loading-sub {
-    margin: 0 0 28px;
+    margin: 0 0 14px;
     color: var(--stone);
     font-size: 14px;
     text-align: center;
   }
+  /* Sprint AUDIT-LOAD-FIX: deep-scan loader hint. Subtle teal-tinted
+     pill below the main sub-line so the owner sees that the audit
+     will continue running after the report appears. Stays hidden
+     unless the user explicitly toggled Deep Scan at submit. */
+  .audit-loading-deep-hint {
+    margin: 0 auto 28px;
+    max-width: 560px;
+    padding: 8px 14px;
+    color: var(--teal-dark, #1a3f4a);
+    background: var(--teal-tint, #e8f1f3);
+    border: 1px solid #C7DFE4;
+    border-radius: 999px;
+    font-size: 12px;
+    line-height: 1.45;
+    text-align: center;
+  }
+  .audit-loading-deep-hint[hidden] { display: none; }
   .audit-progress-bar {
     height: 6px;
     background: var(--line);
@@ -2022,9 +2118,53 @@ main{padding-top:64px}
   .audit-step.done .step-indicator::before {
     content: '✓';
   }
+  /* Sprint AUDIT-LOAD-FIX: "warn" state for a step whose underlying
+     fetch returned a soft failure (PSI 504 with desktop fallback in
+     flight, page-crawl returned empty, Places quota exhausted, etc).
+     Visually distinct from "done" (green check) and "active" (pulsing
+     teal) so the user understands the audit hit a snag but is still
+     producing a useful report. The amber matches the rest of the
+     report's --status-warn token so the visual language is consistent. */
+  .audit-step.warn {
+    color: var(--ink-soft);
+  }
+  .audit-step.warn .step-indicator {
+    border-color: var(--status-warn, #c97a18);
+    background: var(--status-warn, #c97a18);
+    color: var(--cream);
+  }
+  .audit-step.warn .step-indicator::before {
+    content: '!';
+  }
   .audit-step.active .step-indicator::before,
   .audit-step .step-indicator::before {
     display: block;
+  }
+  /* Sprint AUDIT-LOAD-FIX: each step now has a sub-status row that
+     tracks the underlying fetch ("Starting…" → "Running on Google's
+     servers (12s)" → "Done in 14.3s" or "Mobile timed out — trying
+     desktop view"). Empty by default so unused rows stay tight. */
+  .audit-step .step-body {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+  .audit-step .step-label {
+    display: block;
+  }
+  .audit-step .step-sub {
+    display: block;
+    font-size: 12px;
+    color: var(--stone);
+    line-height: 1.35;
+    min-height: 0;
+  }
+  .audit-step .step-sub:empty {
+    display: none;
+  }
+  .audit-step.warn .step-sub {
+    color: var(--status-warn, #c97a18);
   }
   @keyframes audit-step-pulse {
     0%, 100% { box-shadow: 0 0 0 4px rgba(31, 78, 91, 0.12); }
@@ -2500,6 +2640,23 @@ main{padding-top:64px}
     color: var(--ink-soft);
     margin: 16px 0 0;
   }
+  /* Sprint AUDIT-LOAD-FIX: PSI desktop-fallback note. Renders as an
+     amber accent block (not a chip — too long to read at chip size)
+     directly under the verdict, so the owner sees the disclosure
+     before they look at the per-pillar scores. */
+  .audit-psi-fallback-note {
+    margin: 14px 0 0;
+    padding: 10px 14px;
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: var(--status-warn-deep, #7a4710);
+    background: var(--status-warn-tint, #fbf0d9);
+    border: 1px solid var(--status-warn, #c97a18);
+    border-left-width: 3px;
+    border-radius: 8px;
+  }
+  .audit-psi-fallback-note[hidden] { display: none; }
+  .audit-psi-fallback-note strong { color: var(--status-warn-deep, #7a4710); }
   /* Phase 2 U7: subtype-benchmark chip. Anchors the raw overall score
      ("74") against a typical median for the owner's subtype so they
      read it as "a bit above average for a pizzeria" rather than a
@@ -5111,16 +5268,16 @@ main{padding-top:64px}
   "@graph": [
     {
       "@type": "SoftwareApplication",
-      "@id": "https://muntin.digital/es/tools/audits/restaurant/#tool",
+      "@id": "https://muntin.digital/tools/audits/restaurant/#tool",
       "applicationCategory": "BusinessApplication",
       "applicationSubCategory": "RestaurantOps",
       "operatingSystem": "Web",
       "screenshot": "https://muntin.digital/brand/og/tool-audits-restaurant.png",
-      "url": "https://muntin.digital/es/tools/audits/restaurant/",
+      "url": "https://muntin.digital/tools/audits/restaurant/",
       "featureList": [
-        "Puntaje compuesto de SEO + UX de restaurante",
-        "Diagnóstico por sección con quick-wins",
-        "Guardado al Workshop para seguimiento"
+        "Composite restaurant SEO + UX scoring",
+        "Per-section diagnostic with quick-win flags",
+        "Save-to-Workshop for tracking over time"
       ],
       "offers": {
         "@type": "Offer",
@@ -5128,40 +5285,40 @@ main{padding-top:64px}
         "priceCurrency": "USD",
         "availability": "https://schema.org/InStock"
       },
-      "name": "Diagnóstico de sitio de restaurante",
-      "description": "Pega la URL de tu restaurante y recibe un diagnóstico móvil real en unos treinta segundos — desempeño, SEO, accesibilidad, y diez chequeos específicos en español claro."
+      "name": "Restaurant Website Audit",
+      "description": "Drop your URL. Get a real mobile audit in about thirty seconds — performance, SEO, accessibility, and ten restaurant-specific checks in plain English."
     },
     {
       "@type": "HowTo",
-      "@id": "https://muntin.digital/es/tools/audits/restaurant/#howto",
-      "name": "Cómo leer tu auditoría de restaurante",
+      "@id": "https://muntin.digital/tools/audits/restaurant/#howto",
+      "name": "How to read your Restaurant Audit result",
       "step": [
         {
           "@type": "HowToStep",
           "position": 1,
-          "name": "Pega tu URL",
-          "text": "La página principal funciona mejor — la auditoría revisa todas las superficies.",
-          "url": "https://muntin.digital/es/tools/audits/restaurant/#step-1"
+          "name": "Drop your restaurant URL",
+          "text": "Homepage works best — the audit checks every reachable surface.",
+          "url": "https://muntin.digital/tools/audits/restaurant/#step-1"
         },
         {
           "@type": "HowToStep",
           "position": 2,
-          "name": "Lee el puntaje compuesto",
-          "text": "Cada sección (velocidad, SEO, schema, GBP, fotos) se califica por separado y se suma.",
-          "url": "https://muntin.digital/es/tools/audits/restaurant/#step-2"
+          "name": "Read the composite score",
+          "text": "Each section (speed, SEO, schema, GBP, photos) scores separately + rolls up.",
+          "url": "https://muntin.digital/tools/audits/restaurant/#step-2"
         },
         {
           "@type": "HowToStep",
           "position": 3,
-          "name": "Guárdalo y vuelve",
-          "text": "Guárdalo en tu Workshop; vuelve a correrlo mensualmente.",
-          "url": "https://muntin.digital/es/tools/audits/restaurant/#step-3"
+          "name": "Save it + come back",
+          "text": "Save to your Workshop; rerun monthly to watch the score move.",
+          "url": "https://muntin.digital/tools/audits/restaurant/#step-3"
         }
       ],
       "about": {
-        "@id": "https://muntin.digital/es/tools/audits/restaurant/#tool"
+        "@id": "https://muntin.digital/tools/audits/restaurant/#tool"
       },
-      "inLanguage": "es-US"
+      "inLanguage": "en-US"
     }
   ]
 }
@@ -5183,14 +5340,8 @@ main{padding-top:64px}
   }
 </script>
 <header class="nav" id="nav">
-  <script>/* i18n runtime dictionary — read by assets/site.js via window.__i18n.
-             Placed inside <header> so sync-includes replaces it atomically
-             along with the rest of the nav block on every build, keeping
-             the partial strictly idempotent. Valid HTML5: <script> may
-             appear in any flow-content context. */
-  window.__i18n=Object.assign(window.__i18n||{},{"nav.open_menu":"Abrir menú","nav.close_menu":"Cerrar menú","form.field_required":"Este campo es obligatorio.","form.invalid_email":"Ingresa un correo electrónico válido.","form.services_min_one":"Selecciona al menos una opción.","form.submit_fallback":"Algo falló. Inténtalo de nuevo o escribe directamente a don@muntin.digital.","audio.resume":"Reanudar audio","audio.pause":"Pausar","audio.play":"Reproducir versión en audio","audio.stop":"Detener y cerrar audio","audio.minimize":"Minimizar controles de audio","audio.expand":"Ampliar controles de audio","audio.prev":"Párrafo anterior","audio.next":"Párrafo siguiente","audio.back15":"Retroceder 15 segundos","audio.fwd15":"Adelantar 15 segundos","audio.progress":"Progreso del audio","audio.controls":"Controles del reproductor de audio","audio.article_label":"Versión en audio de este artículo","audio.speed":"Velocidad de reproducción","audio.voice":"Voz del narrador","search.placeholder":"Busca artículos, herramientas, términos del glosario…","search.close":"Cerrar","search.hint_title":"¿Qué estás buscando?","search.hint_body":"Prueba con \"DoorDash\", \"Core Web Vitals\" o \"precios del menú\". Los resultados vienen de cada artículo, herramienta y término del glosario.","search.empty":"Sin resultados para","search.empty_hint":"Prueba una consulta más corta o una palabra distinta.","search.loading":"Buscando…","search.nav_hint":"para moverte","search.open_hint":"para abrir","search.close_hint":"para cerrar","search.kind_article":"Artículo","search.kind_tool":"Herramienta","search.kind_term":"Glosario","search.kind_resource":"Guía","search.kind_library":"Biblioteca","search.kind_case":"Caso de estudio","search.kind_service":"Servicios","search.kind_industry":"Para ti","search.kind_page":"Página","drawer.kicker":"Nota de investigación","drawer.close":"Cerrar","drawer.loading":"Cargando el resumen…","drawer.err_title":"No pudimos cargar el resumen","drawer.err_body":"Abre la nota completa en una pestaña nueva — es el mismo contenido, solo que más completo.","drawer.findings_label":"Hallazgos clave","drawer.note_label":"La nota de Don","drawer.read_full":"Leer la nota completa","drawer.read_original":"Ver la fuente original","drawer.open_new_tab":"se abre en una pestaña nueva"});</script>
   <div class="container nav-inner">
-    <a href="/es/" class="logo" aria-label="Muntin Digital — inicio">
+    <a href="/" class="logo" aria-label="Muntin Digital home">
       <svg class="logo-mark" width="28" height="28" viewBox="0 0 128 128" fill="none" aria-hidden="true">
         <g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
           <rect x="18" y="18" width="92" height="92"/>
@@ -5200,69 +5351,103 @@ main{padding-top:64px}
       </svg>
       Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
     </a>
-    <!-- Phase 7: nav de 5 elementos, según el plan de lanzamiento Parte II.
-         Biblioteca / Herramientas / Proyectos / Estudio / Acceder.
-         Biblioteca apunta al hub canónico /es/library/. Herramientas
-         se promueve del antiguo mega-menú a un elemento de primer
-         nivel. Estudio reemplaza Servicios + Restaurantes + Sobre
-         Don &mdash; todo vive bajo /es/studio/ ahora. El mega-menú
-         se retira (el hub ES el menú); el controlador del script
-         también desaparece. -->
-    <nav class="nav-links" aria-label="Principal">
-      <a href="/es/library/">Biblioteca</a>
-      <a href="/es/tools/">Herramientas</a>
-      <a href="/es/work/">Proyectos</a>
-      <a href="/es/studio/">Estudio</a>
-      <a class="js-nav-signin nav-link-auth" href="/es/sign-in/" hidden>Acceder</a>
-      <a class="js-nav-workshop nav-link-auth" href="/es/workbench/" hidden>El Taller</a>
+    <!-- Phase 7: 5-item nav, per launch plan Part II.
+         Library / Tools / Work / Studio / Sign in.
+         Library now points at the canonical /library/ hub (the
+         three-doors page). Tools is promoted from the old Library
+         mega-menu to a top-level item. Studio replaces Services +
+         Restaurants + About — they all live under /studio/ now,
+         either as anchored sections (#pricing, #offers, #cities,
+         #process, #about) or as full child pages (/studio/compare/,
+         /studio/silver-spring/, etc.). The old Services and
+         Restaurants pages remain reachable via /studio/ and the
+         _redirects table; /about/ is unchanged. The mega-menu is
+         retired (the hub IS the menu now); the controller script
+         is gone too. -->
+    <nav class="nav-links" aria-label="Primary">
+      <a href="/library/">Library</a>
+      <a href="/tools/">Tools</a>
+      <a href="/work/">Work</a>
+      <a href="/studio/">Studio</a>
+      <!-- Both sign-in / workshop ship hidden by default; the
+           auth-state JS at the bottom of this file calls
+           /api/auth/me and reveals exactly one. No-JS visitors see
+           neither, which is acceptable: the library and tools work
+           fully without sign-in (Workshop is the only auth surface). -->
+      <a class="js-nav-signin nav-link-auth" href="/sign-in/" hidden>Sign in</a>
+      <a class="js-nav-workshop nav-link-auth" href="/workbench/" hidden>Workshop</a>
     </nav>
-    <button type="button" class="nav-search-btn js-open-search" aria-label="Abrir búsqueda (Cmd+K)" title="Buscar — Cmd K">
+    <button type="button" class="nav-search-btn js-open-search" aria-label="Open search (Cmd+K)" title="Search — Cmd K">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <circle cx="11" cy="11" r="7"/>
         <line x1="21" y1="21" x2="16.5" y2="16.5"/>
       </svg>
-      <span class="nav-search-label">Buscar</span>
+      <span class="nav-search-label">Search</span>
       <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mac"><span class="nav-search-kbd-mod">⌘</span>K</span><span class="nav-search-kbd-pc">Ctrl+K</span></kbd>
     </button>
-    <nav class="lang-switch" aria-label="Idioma">
-      <a href="/tools/audits/restaurant/" hreflang="en" lang="en" class="js-lang-switch" data-set-locale="en">English</a>
-      <span class="lang-switch-current" aria-current="true">ES</span>
+    <nav class="lang-switch" aria-label="Language">
+      <a href="/es/tools/audits/restaurant/" hreflang="es" lang="es" class="js-lang-switch" data-set-locale="es">Español</a>
+      <span class="lang-switch-current" aria-current="true">EN</span>
     </nav>
-    <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">
-      <span class="nav-window-pulse" id="navWindowPulse" hidden aria-hidden="true" title="Don está cerca"></span>
-      Contacta a Don
+    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">
+      <!-- Phase 5+ — site-wide pulse propagation. Hidden by default;
+           window-state.js reveals when lastSeen <4h. Decorative; the
+           label "Reach Don" remains the accessible affordance. -->
+      <span class="nav-window-pulse" id="navWindowPulse" hidden aria-hidden="true" title="Don is around"></span>
+      Reach Don
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
     </a>
-    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-controls="mobileMenu" aria-expanded="false">
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
   </div>
-  <nav class="mobile-menu" id="mobileMenu" aria-label="Navegación móvil" hidden>
-    <a href="/es/library/">Biblioteca</a>
-    <a href="/es/tools/">Herramientas</a>
-    <a href="/es/work/">Proyectos</a>
-    <a href="/es/studio/">Estudio</a>
-    <a class="js-nav-signin mobile-auth" href="/es/sign-in/" hidden>Acceder</a>
-    <a class="js-nav-workshop mobile-auth" href="/es/workbench/" hidden>El Taller</a>
+  <!-- Mobile menu mirrors the 5-item desktop nav, plus search, lang
+       switcher, and the Reach Don CTA. The auth-state JS below
+       toggles js-nav-signin vs js-nav-workshop in both surfaces. -->
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
+    <a href="/library/">Library</a>
+    <a href="/tools/">Tools</a>
+    <a href="/work/">Work</a>
+    <a href="/studio/">Studio</a>
+    <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
+    <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
     <button type="button" class="mobile-search js-open-search">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
-      <span>Buscar en la biblioteca</span>
+      <span>Search the library</span>
     </button>
-    <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Contacta a Don</a>
-    <a href="/tools/audits/restaurant/" hreflang="en" lang="en" class="mobile-lang js-lang-switch" data-set-locale="en">View in English</a>
+    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Reach Don</a>
+    <a href="/es/tools/audits/restaurant/" hreflang="es" lang="es" class="mobile-lang js-lang-switch" data-set-locale="es">Ver en español</a>
   </nav>
 
-  <!-- Mega-menu controller retired in Phase 7: Biblioteca is now a
-       single link to /es/library/ (the canonical three-doors hub IS
-       the menu). Las reglas CSS de .nav-library-* permanecen para
-       reusar el patrón si vuelve un mega-menú en el futuro. -->
+  <!-- Opt-in Spanish banner. Rendered hidden by default; site.js
+       removes the hidden attribute only when (a) the reader's browser
+       lists Spanish in navigator.languages, (b) no md_locale cookie
+       has been set yet, and (c) the banner hasn't been dismissed.
+       Speaks directly in Spanish because its audience, by definition,
+       is a Spanish-speaking visitor. Link target is the page's own
+       hreflang="es" alternate from <head>, read at runtime. -->
+  <aside class="lang-hint" id="langHint" role="complementary" aria-label="Sugerencia de idioma" lang="es" hidden>
+    <div class="container lang-hint-inner">
+      <span class="lang-hint-text"><strong>¿Prefieres este sitio en español?</strong> Tenemos una versión completa.</span>
+      <a href="/es/tools/audits/restaurant/" class="lang-hint-accept js-lang-switch" data-set-locale="es" hreflang="es" lang="es">Ver en español &rarr;</a>
+      <button type="button" class="lang-hint-dismiss" id="langHintDismiss" aria-label="Cerrar">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+      </button>
+    </div>
+  </aside>
 
-  <!-- Phase 2 (Workshop) — toggle del estado de auth para el nav.
-       Llama a /api/auth/me y revela el enlace "Acceder" o "El Taller"
-       según la respuesta. Ambos enlaces empiezan ocultos para que un
-       visitante anónimo sin JS no vea ninguno (la biblioteca y las
-       herramientas funcionan completas sin acceso, así que la
-       affordance ausente es aceptable). -->
+  <!-- Mega-menu controller retired in Phase 7: Library is a single
+       link to /library/ now (the canonical three-doors hub IS the
+       menu). The CSS rules in site.css for .nav-library-* remain in
+       place defensively so any future mega-menu reuses the pattern. -->
+
+  <!-- Phase 2 (Workshop) — auth-state toggle for the nav.
+       Calls /api/auth/me and reveals either the "Sign in" or
+       "Workshop" link based on the response. Both links ship hidden
+       so anonymous visitors with JS disabled see neither (the
+       library + tools work fully without sign-in, so the missing
+       affordance is acceptable). The script runs once, fire-and-
+       forget; no observable side effects on a 401. -->
   <script>
     (function () {
       var signin   = document.querySelectorAll('.js-nav-signin');
@@ -5273,6 +5458,7 @@ main{padding-top:64px}
         .then(function (r) {
           if (r.status === 200) {
             show(workshop);
+            // Phase G.10 — append (N) badge with the user's save count.
             fetch('/api/workbench/count', { credentials: 'same-origin' })
               .then(function (r2) { return r2.ok ? r2.json() : null; })
               .then(function (j) {
@@ -5285,7 +5471,7 @@ main{padding-top:64px}
                   n.appendChild(b);
                 });
               })
-              .catch(function () {});
+              .catch(function () { /* silent */ });
             return;
           }
           show(signin);
@@ -5318,17 +5504,17 @@ main{padding-top:64px}
         actually doing?
       </h1>
       <!-- tool-verified:start -->
-            <p class="tool-verified">Última revisión: <time datetime="2026-05-11">11 de mayo de 2026</time></p>
+            <p class="tool-verified">Last verified: <time datetime="2026-05-11">May 11, 2026</time></p>
             <!-- tool-verified:end -->
       <!-- data-promise:start -->
-            <aside class="tool-data-promise" aria-label="Promesa de datos">
-              <p class="tool-data-promise__line">Corre en tu navegador. Sin cuentas, sin fetches, sin tracking.</p>
-              <p class="tool-data-promise__line">Verifícalo: abre DevTools → Network → usa la herramienta. La pestaña Network se mantiene vacía.</p>
-              <p class="tool-data-promise__links"><a href="/es/security/">Lee la promesa completa &rarr;</a> &middot; <a href="/es/learn/checklists/audit-any-tool/">Audita cualquier herramienta &rarr;</a></p>
+            <aside class="tool-data-promise" aria-label="Data promise">
+              <p class="tool-data-promise__line">Runs in your browser. No accounts, no fetches, no tracking.</p>
+              <p class="tool-data-promise__line">Verify it: open DevTools → Network → run the tool. The Network tab stays empty.</p>
+              <p class="tool-data-promise__links"><a href="/security/">Read the full data promise &rarr;</a> &middot; <a href="/learn/checklists/audit-any-tool/">Audit any tool &rarr;</a></p>
             </aside>
             <!-- data-promise:end -->
       <!-- storefront-rail:start -->
-            <p class="tool-storefront-rail">Forma parte de <a href="/es/tools/storefront-health/"><strong>Salud del Escaparate</strong></a> — el puntaje compuesto que junta esta señal con cinco más en una sola tarjeta.</p>
+            <p class="tool-storefront-rail">Part of <a href="/tools/storefront-health/"><strong>Storefront Health</strong></a> — the composite score that pairs this signal with five others on one scorecard.</p>
             <!-- storefront-rail:end -->
       <p class="hero-sub" style="margin:24px auto 0; max-width:580px;" data-tr="hero.sub">
         Drop your URL below and I'll run a real mobile audit in about thirty seconds — performance, SEO, accessibility, and the specific checks that matter for a restaurant. The full report renders on this page — no sign-up, no email, no tracking. (An optional form at the bottom emails you a PDF copy if you want one.)
@@ -5366,17 +5552,57 @@ main{padding-top:64px}
     </div>
 
     <!-- Loading state (hidden until fetch starts) -->
+    <!--
+      Sprint AUDIT-LOAD-FIX: the four loader rows used to be driven by
+      a sequential setStep(n) that only advanced when Promise.all of
+      PSI + page-crawl + schema-check + Places resolved. If any one
+      hung (typically PSI 504), the UI sat on step 2 forever even
+      though the other three signals had already returned. The rebuild
+      below gives every step its own status row (pending / active /
+      done / warn) and its own sub-status line so the loader reflects
+      what's actually happening in the network, not a timed fiction.
+    -->
     <div class="audit-loading" id="auditLoading" hidden aria-live="polite">
       <h2 data-tr="load.h2">Ejecutando tu auditoría…</h2>
       <p class="audit-loading-sub" id="auditLoadingSub" data-tr="load.sub">Normalmente tarda de 15 a 40 segundos.</p>
+      <!-- Sprint AUDIT-LOAD-FIX: shown only when the Deep Scan toggle
+           was checked at submit. Tells the owner up-front that the
+           audit continues after the report appears — otherwise the
+           still-running deep-scan strip looks broken when it shows
+           up under a finished report. -->
+      <p class="audit-loading-deep-hint" id="auditLoadingDeepHint" data-tr="deepScan.loaderHint" hidden>Deep scan continues after the report (1–2 min): security headers, site age, real-user data, Google reviews, email-deliverability.</p>
       <div class="audit-progress-bar" aria-hidden="true">
         <div class="fill" id="auditProgressFill"></div>
       </div>
       <ol class="audit-steps" id="auditSteps">
-        <li class="audit-step" data-step="1"><span class="step-indicator">1</span><span data-tr="load.step1">Submitting your site for the speed test</span></li>
-        <li class="audit-step" data-step="2"><span class="step-indicator">2</span><span data-tr="load.step2">Loading your site in a simulated phone</span></li>
-        <li class="audit-step" data-step="3"><span class="step-indicator">3</span><span data-tr="load.step3">Reading your menu, hours, ordering, and Google profile</span></li>
-        <li class="audit-step" data-step="4"><span class="step-indicator">4</span><span data-tr="load.step4">Writing your report</span></li>
+        <li class="audit-step" data-step="1">
+          <span class="step-indicator">1</span>
+          <span class="step-body">
+            <span class="step-label" data-tr="load.step1">Submitting your site for the speed test</span>
+            <span class="step-sub" data-step-sub="1" aria-live="polite"></span>
+          </span>
+        </li>
+        <li class="audit-step" data-step="2">
+          <span class="step-indicator">2</span>
+          <span class="step-body">
+            <span class="step-label" data-tr="load.step2">Mobile speed test (Google PageSpeed)</span>
+            <span class="step-sub" data-step-sub="2" aria-live="polite"></span>
+          </span>
+        </li>
+        <li class="audit-step" data-step="3">
+          <span class="step-indicator">3</span>
+          <span class="step-body">
+            <span class="step-label" data-tr="load.step3">Reading your menu, hours, ordering, and Google profile</span>
+            <span class="step-sub" data-step-sub="3" aria-live="polite"></span>
+          </span>
+        </li>
+        <li class="audit-step" data-step="4">
+          <span class="step-indicator">4</span>
+          <span class="step-body">
+            <span class="step-label" data-tr="load.step4">Writing your report</span>
+            <span class="step-sub" data-step-sub="4" aria-live="polite"></span>
+          </span>
+        </li>
       </ol>
     </div>
 
@@ -5445,10 +5671,24 @@ main{padding-top:64px}
       <!-- Sprint S2.5: Deep Scan status strip + data chips. Appears
            only when the toggle is checked. Chips inside (.deep-age-
            chip, .deep-security-chip) stay hidden until their upstream
-           returns real data — we never render a placeholder value. -->
+           returns real data — we never render a placeholder value.
+           Sprint AUDIT-LOAD-FIX: the chip injection used to live
+           directly under #deepScanStrip; runDeepSignals would then
+           call `stripEl.textContent = …` which wiped the chip
+           children, so even when the underlying fetches returned good
+           data the chips never made it back into the DOM. Now the
+           status label has its own #deepScanStatus span, the chips
+           stay in a #deepScanChips container, and the strip itself
+           gets a stronger visual treatment so the owner can SEE that
+           Deep Scan is running (or completed) instead of relying on
+           the small Wayback/Observatory chips being the only proof. -->
       <div class="deep-scan-strip" id="deepScanStrip" hidden>
-        <span class="deep-chip deep-age-chip" id="deepAgeChip" hidden></span>
-        <span class="deep-chip deep-security-chip" id="deepSecurityChip" hidden></span>
+        <span class="deep-scan-strip-status" id="deepScanStatus" data-tr="deepScan.idle"></span>
+        <span class="deep-scan-strip-chips" id="deepScanChips">
+          <span class="deep-chip deep-age-chip" id="deepAgeChip" hidden></span>
+          <span class="deep-chip deep-security-chip" id="deepSecurityChip" hidden></span>
+        </span>
+        <span class="deep-scan-strip-progress" id="deepScanProgress" aria-live="polite"></span>
       </div>
 
       <!-- D4: snapshot banner. Hidden by default; shown only when the
@@ -5560,6 +5800,13 @@ main{padding-top:64px}
                looking at a fresh run or a stale snapshot. The full ISO
                stamp lives in the title attribute for the curious. -->
           <time class="audit-freshness" id="auditFreshness" hidden></time>
+          <!-- Sprint AUDIT-LOAD-FIX: PSI fallback disclosure. Shown
+               only when the mobile Lighthouse run timed out and the
+               tool transparently re-ran on desktop. Users absolutely
+               need to know that — a "desktop" perf score is much more
+               forgiving than mobile, so without this disclosure the
+               owner would think their site was faster than it is. -->
+          <p class="audit-psi-fallback-note" id="auditPsiFallbackNote" data-tr-html="psi.fallback.note" hidden>Speed test ran on <strong>desktop</strong> view — the mobile test took longer than Google allows. Mobile numbers usually score 15–30 points lower, so treat this as the optimistic case and prioritize the mobile fixes in the report below.</p>
           <p class="verdict" id="verdictCopy">Verdict copy populates here after a run — explains what the score means and what to focus on first.</p>
           <!-- Phase 2 U7: subtype-benchmark chip. Populated by
                setScoreBenchmark() after setScoreRing() lands. Hidden
@@ -6451,26 +6698,43 @@ main{padding-top:64px}
   // All traffic goes through the same-origin /api/psi worker, which
   // adds the PSI API key server-side from env.PSI_API_KEY. Neither
   // the client code nor the static HTML ever sees the key.
-  function callPsi(targetUrl) {
+  //
+  // Sprint AUDIT-LOAD-FIX: opts={ strategy: 'mobile'|'desktop' }.
+  // Defaulted to 'mobile' for back-compat with the comparison flow.
+  // On a 504 errorKind:'psi-timeout' the *orchestrator* (not this
+  // function) decides whether to retry with strategy:'desktop' — this
+  // function stays pure so callsites that don't want a fallback
+  // (e.g. competitor compare on multiple URLs) keep their existing
+  // semantics.
+  function callPsi(targetUrl, opts) {
+    var strategy = (opts && opts.strategy) || 'mobile';
     var params = new URLSearchParams();
     params.append('url', targetUrl);
-    params.append('strategy', 'mobile');
+    params.append('strategy', strategy);
     CATEGORIES.forEach(function(c){ params.append('category', c); });
-    // Client-side hard cap. The /api/psi worker has its own 30s
+    // Client-side hard cap. The /api/psi worker has its own 25s
     // AbortSignal.timeout, but if the Cloudflare edge buffers or the
     // connection stalls, the fetch can hang indefinitely from the
-    // browser's perspective. 45s gives the worker its full 30s budget
-    // (+ retry on 429) plus a small grace window, then trips the
+    // browser's perspective. 35s gives the worker its full 25s budget
+    // (+ short retry on 429) plus a small grace window, then trips the
     // client error path so the loader doesn't spin forever.
     var ctrl;
     var signal;
     try {
       ctrl = (typeof AbortController === 'function') ? new AbortController() : null;
       signal = ctrl ? ctrl.signal : undefined;
-      if (ctrl) setTimeout(function(){ try { ctrl.abort(); } catch (_) {} }, 45000);
+      if (ctrl) setTimeout(function(){ try { ctrl.abort(); } catch (_) {} }, 35000);
     } catch (_) { signal = undefined; }
     return fetch(PSI_PROXY_ENDPOINT + '?' + params.toString(), { signal: signal }).then(function(res){
-      if (res.ok) return res.json();
+      if (res.ok) {
+        return res.json().then(function(json){
+          // Tag the result with the strategy used so renderReport can
+          // label desktop fallbacks differently. PSI doesn't echo
+          // strategy in the JSON, so we annotate.
+          if (json && typeof json === 'object') json.__strategy = strategy;
+          return json;
+        });
+      }
       return res.json().then(function(body){
         var msg = (body && body.error && body.error.message)
                || (body && body.error)
@@ -6478,11 +6742,40 @@ main{padding-top:64px}
         var err = new Error(String(msg));
         err.status = res.status;
         err.body = body;
+        err.errorKind = body && body.errorKind;
+        err.strategy = strategy;
         throw err;
       }, function(){
         var err = new Error('PageSpeed returned ' + res.status);
         err.status = res.status;
+        err.strategy = strategy;
         throw err;
+      });
+    });
+  }
+
+  // Sprint AUDIT-LOAD-FIX: PSI wrapper that automatically falls back
+  // to strategy=desktop when mobile times out (errorKind:'psi-timeout'
+  // OR client-side abort). Many restaurant sites on Wix, Squarespace,
+  // and GoDaddy themes pass the desktop Lighthouse run but stall on
+  // mobile's Slow-4G simulation; in that case desktop is roughly half
+  // the wall-time and almost always finishes inside the worker budget.
+  //
+  // The optional `onFallback` callback fires the moment we decide to
+  // retry on desktop, so the loader can paint "Mobile timed out — trying
+  // desktop view" inline instead of looking frozen.
+  function callPsiWithFallback(targetUrl, onFallback) {
+    return callPsi(targetUrl, { strategy: 'mobile' }).catch(function(err){
+      var isAbort = err && (err.name === 'AbortError' || err.name === 'TimeoutError');
+      var isTimeout = err && (err.errorKind === 'psi-timeout' || err.status === 504 || isAbort);
+      if (!isTimeout) throw err;
+      try { if (typeof onFallback === 'function') onFallback(err); } catch (_) {}
+      return callPsi(targetUrl, { strategy: 'desktop' }).then(function(json){
+        // Annotate so the report can show a "Speed test ran on desktop
+        // (mobile timed out)" disclosure instead of pretending these
+        // are mobile numbers.
+        if (json && typeof json === 'object') json.__fallbackFromMobile = true;
+        return json;
       });
     });
   }
@@ -6759,14 +7052,25 @@ main{padding-top:64px}
   // Each fetch is independent; if one fails, the others still land
   // and render. Hot-patches the DOM via per-section render helpers
   // (S2.7) that NO-OP when their upstream data is missing.
+  //
+  // Sprint AUDIT-LOAD-FIX: the previous implementation cleared the
+  // strip's children via `stripEl.textContent = …` which destroyed
+  // the chip <span>s before any render call could un-hide them — net
+  // effect was Deep Scan completing silently for almost every site.
+  // Now we write only to the #deepScanStatus and #deepScanProgress
+  // children, leaving the chip container alone. We also publish a
+  // running count ("2 / 6 signals returned") so the owner can see
+  // Deep Scan actually doing work even when individual chips have
+  // nothing to show.
   function runDeepSignals(url) {
-    // Prep: the UI shows a live status strip while fetches resolve.
-    var stripEl = document.getElementById('deepScanStrip');
+    var stripEl     = document.getElementById('deepScanStrip');
+    var statusEl    = document.getElementById('deepScanStatus');
+    var progressEl  = document.getElementById('deepScanProgress');
     if (stripEl) {
       stripEl.hidden = false;
       stripEl.setAttribute('data-state', 'running');
-      stripEl.textContent = t('deepScan.running');
     }
+    if (statusEl) statusEl.textContent = t('deepScan.running');
 
     var placeId = null;
     var placesSnap = window.__auditPlaces;
@@ -6774,63 +7078,96 @@ main{padding-top:64px}
       placeId = placesSnap.place.placeId;
     }
 
+    var total = 0;
     var pending = 0;
-    function done() {
-      pending--;
-      if (pending <= 0 && stripEl) {
-        // Accuracy rule: if every fetch returned ok:false, show a
-        // neutral "no additional signals available" message rather
-        // than fake success. If at least one rendered, show a
-        // completion state.
-        var anyRendered =
-          !!document.querySelector('.deep-age-chip:not([hidden])') ||
-          !!document.querySelector('.deep-security-chip:not([hidden])') ||
-          !!document.querySelector('.deep-crux-spark:not([hidden])') ||
-          !!document.querySelector('.deep-reviews-card:not([hidden])');
-        stripEl.setAttribute('data-state', anyRendered ? 'done' : 'empty');
-        stripEl.textContent = anyRendered
-          ? t('deepScan.done')
-          : t('deepScan.noSignals');
+    var rendered = 0;
+    function fmtProgress() {
+      var doneCount = total - pending;
+      var fmt = t('deepScan.progress') || '{done}/{total} signals returned';
+      return fmt.replace('{done}', doneCount).replace('{total}', total);
+    }
+    function paintProgress() {
+      if (progressEl) progressEl.textContent = fmtProgress();
+    }
+    function track(promise, didRenderCheck) {
+      total++;
+      pending++;
+      return promise.then(function(data){
+        pending--;
+        try {
+          if (typeof didRenderCheck === 'function' && didRenderCheck(data)) rendered++;
+        } catch (_) {}
+        paintProgress();
+        if (pending <= 0) finish();
+        return data;
+      }, function(){
+        pending--;
+        paintProgress();
+        if (pending <= 0) finish();
+      });
+    }
+    function finish() {
+      // Accuracy rule: if every fetch returned ok:false (or rendered
+      // nothing visible), show a neutral "no additional signals
+      // available" message rather than fake success.
+      var anyRendered =
+        rendered > 0 ||
+        !!document.querySelector('.deep-age-chip:not([hidden])') ||
+        !!document.querySelector('.deep-security-chip:not([hidden])') ||
+        !!document.querySelector('.deep-crux-spark') ||
+        (document.getElementById('deepReviewsCard') && !document.getElementById('deepReviewsCard').hidden) ||
+        (document.getElementById('deepEmailCard') && !document.getElementById('deepEmailCard').hidden);
+      if (stripEl) stripEl.setAttribute('data-state', anyRendered ? 'done' : 'empty');
+      if (statusEl) {
+        statusEl.textContent = anyRendered ? t('deepScan.done') : t('deepScan.noSignals');
       }
     }
 
-    pending++; callObservatory(url).then(function(data){
+    track(callObservatory(url).then(function(data){
       window.__auditObservatory = data;
       if (typeof renderSecurityGrade === 'function') renderSecurityGrade(data);
-      done();
-    });
-    pending++; callWaybackFirstSeen(url).then(function(data){
+      return data;
+    }), function(data){ return !!(data && data.ok && data.grade); });
+
+    track(callWaybackFirstSeen(url).then(function(data){
       window.__auditWayback = data;
       if (typeof renderSiteAge === 'function') renderSiteAge(data);
-      done();
-    });
-    pending++; callCruxHistory(url).then(function(data){
+      return data;
+    }), function(data){ return !!(data && data.ok && typeof data.year === 'number'); });
+
+    track(callCruxHistory(url).then(function(data){
       window.__auditCruxHistory = data;
       if (typeof renderCruxHistory === 'function') renderCruxHistory(data);
-      done();
-    });
+      return data;
+    }), function(data){ return !!(data && data.ok && data.hasData); });
+
     if (placeId) {
-      pending++; callGbpDetails(placeId).then(function(data){
+      track(callGbpDetails(placeId).then(function(data){
         window.__auditGbpDetails = data;
         if (typeof renderReviewsCard === 'function') renderReviewsCard(data);
-        done();
-      });
+        return data;
+      }), function(data){ return !!(data && data.ok); });
     }
+
     // Sprint D1: DNS email health (SPF / DMARC / DKIM).
-    pending++; callDnsEmailHealth(url).then(function(data){
+    track(callDnsEmailHealth(url).then(function(data){
       window.__auditDnsEmail = data;
       if (typeof renderDnsEmailHealth === 'function') renderDnsEmailHealth(data);
-      done();
-    });
+      return data;
+    }), function(data){ return !!(data && data.ok); });
+
     // Sprint T4: facts dossier. Fires last so it can read the
     // freshest window.__audit* signals. Renders only when the
     // server-side strict-citation validation passes; silently
     // no-ops otherwise (including when AI Gateway isn't configured).
-    pending++; callBrandDossier(url).then(function(data){
+    track(callBrandDossier(url).then(function(data){
       window.__auditBrandDossier = data;
       if (typeof renderBrandDossier === 'function') renderBrandDossier(data);
-      done();
-    });
+      return data;
+    }), function(data){ return !!(data && data.ok); });
+
+    // Paint initial 0/N so the owner sees "0/6" right away.
+    paintProgress();
   }
 
   // (Phase G3 client-side callYelpLookup removed — Yelp no longer
@@ -6980,10 +7317,38 @@ main{padding-top:64px}
     // Loading
     'load.h2':          'Ejecutando tu auditor\u00eda\u2026',
     'load.sub':         'Esto suele tardar entre 15 y 40 segundos.',
+    'load.subSlow':     'Google est\u00e1 tardando m\u00e1s de lo habitual con este sitio \u2014 a\u00fan procesando\u2026',
     'load.step1':       'Enviando tu sitio al test de velocidad',
-    'load.step2':       'Cargando tu sitio en un tel\u00e9fono simulado',
+    'load.step2':       'Test de velocidad m\u00f3vil (Google PageSpeed)',
     'load.step3':       'Leyendo tu men\u00fa, horarios, pedidos y perfil de Google',
     'load.step4':       'Escribiendo tu informe',
+    // Sprint AUDIT-LOAD-FIX: per-step sub-status strings.
+    'load.sub.starting':       'Iniciando\u2026',
+    'load.sub.submitting':     'Enviando\u2026',
+    'load.sub.lighthouse':     'Google est\u00e1 ejecutando Lighthouse en tu sitio ({n}s)',
+    'load.sub.lighthouseSlow': 'A\u00fan ejecut\u00e1ndose en los servidores de Google ({n}s) \u2014 los sitios lentos pueden tardar 20\u201330s',
+    'load.sub.lighthouseStart':'Pidiendo a Google PageSpeed que pruebe la vista m\u00f3vil\u2026',
+    'load.sub.psiFallback':       'M\u00f3vil agot\u00f3 el tiempo \u2014 probando vista de escritorio\u2026',
+    'load.sub.psiFallbackStart':  'M\u00f3vil agot\u00f3 el tiempo \u2014 probando vista de escritorio\u2026',
+    'load.sub.psiFallbackElapsed':'M\u00f3vil agot\u00f3 el tiempo \u2014 probando vista de escritorio ({n}s)',
+    'load.sub.psiDesktop':        'Puntuado en escritorio (m\u00f3vil fue demasiado lento)',
+    'load.sub.psiDone':        'Test de velocidad completado',
+    'load.sub.psiFailed':      'Test de velocidad no disponible \u2014 continuando sin \u00e9l',
+    'load.sub.reading':        'Leyendo tu p\u00e1gina principal y p\u00e1ginas de seguimiento\u2026',
+    'load.sub.readingElapsed': 'Leyendo tu sitio ({n}s)',
+    'load.sub.pagesRead':      'p\u00e1ginas le\u00eddas',
+    'load.sub.schemaFound':    'datos estructurados encontrados',
+    'load.sub.gbpFound':       'perfil de Google encontrado',
+    'load.sub.contentDoneBare':'Listo',
+    'load.sub.rendering':      'Construyendo tu informe\u2026',
+    'load.sub.doneIn':         'Listo en {n}s',
+    // Sprint AUDIT-LOAD-FIX: error copy for PSI failures.
+    'err.psiTimeout.h2':       'El test de velocidad de Google est\u00e1 saturado ahora mismo.',
+    'err.psiTimeout.body':     'Probamos primero la vista m\u00f3vil y luego la de escritorio \u2014 ambas tardaron m\u00e1s de lo permitido por Google. Esto ocurre frecuentemente cuando un sitio est\u00e1 en Wix, Squarespace u otra plataforma lenta para pintar la primera vista, o cuando la capa gratuita de PSI est\u00e1 limitada. Espera 30 segundos e int\u00e9ntalo de nuevo. Si sigue pasando, escribe a don@muntin.digital y har\u00e9 el test de velocidad a mano.',
+    'err.psiFailed.h2':        'No pudimos conectar con el test de velocidad de Google.',
+    'err.psiFailed.body':      'Int\u00e9ntalo de nuevo en un momento, o escribe a don@muntin.digital para una auditor\u00eda manual. (T\u00e9cnico: ',
+    'err.rateLimit.h2':        'Estamos un poco limitados ahora mismo.',
+    'err.rateLimit.body':      'La capa gratuita de Google est\u00e1 temporalmente saturada. Espera unos 30 segundos antes de intentarlo de nuevo, o escribe a don@muntin.digital para una auditor\u00eda manual.',
     // Error
     'err.h2':           'No pudimos auditar esa URL.',
     'err.body':         'Verifica la direcci\u00f3n e int\u00e9ntalo de nuevo. El sitio debe ser p\u00fablicamente accesible \u2014 si est\u00e1 detr\u00e1s de un inicio de sesi\u00f3n o en una red local, la auditor\u00eda no puede verlo.',
@@ -8419,48 +8784,193 @@ main{padding-top:64px}
     if (which) which.hidden = false;
   }
 
-  // Set the active step by number (1-4). Previous steps get marked
-  // done with a check, future steps stay neutral. Called at real
-  // milestones in the audit pipeline.
-  function setStep(n) {
-    if (!stepsEl) return;
-    currentStep = n;
-    var steps = stepsEl.querySelectorAll('.audit-step');
-    steps.forEach(function(el, idx){
-      var stepNum = idx + 1;
-      el.classList.remove('active', 'done');
-      if (stepNum < n) {
-        el.classList.add('done');
-      } else if (stepNum === n) {
-        el.classList.add('active');
+  // Sprint AUDIT-LOAD-FIX: per-step state machine.
+  //
+  // The old setStep(n) was strictly sequential: every step <n got
+  // marked done, n got marked active, n+1.. stayed pending. That
+  // worked when the audit really was a linear pipeline. In practice
+  // the audit fires four network calls in parallel and we want each
+  // row to track its own underlying signal, so any individual fetch
+  // can return / fail / fall back without the loader appearing
+  // frozen on step 2.
+  //
+  // Each step is { state: 'pending' | 'active' | 'done' | 'warn',
+  //                sub: '<status text>' }. setStepState writes both.
+  // localizedSubText() resolves a short status key to a localized
+  // string so we don't have to hand-translate every message at the
+  // call site.
+  var stepStates = [null, // 1-indexed
+    { state: 'pending', sub: '' },
+    { state: 'pending', sub: '' },
+    { state: 'pending', sub: '' },
+    { state: 'pending', sub: '' }
+  ];
+  var stepStartedAt = [null, null, null, null, null];
+  var stepFinishedAt = [null, null, null, null, null];
+
+  function tr(key, fallback) {
+    try {
+      var lang = window.__muntinLang || 'en';
+      if (lang === 'es' && window.__MUNTIN_UI_ES && window.__MUNTIN_UI_ES[key]) {
+        return window.__MUNTIN_UI_ES[key];
       }
-    });
+    } catch (_) {}
+    return fallback;
+  }
+  // Sprint AUDIT-LOAD-FIX: cross-call flag the heartbeat reads to
+  // generate fallback-aware labels for step 2 without the runAudit
+  // closure having to thread state into setStepState.
+  var psiFallbackInFlight = false;
+
+  // Render one step's DOM from its current state object.
+  function paintStep(n) {
+    if (!stepsEl) return;
+    var li = stepsEl.querySelector('.audit-step[data-step="' + n + '"]');
+    if (!li) return;
+    var s = stepStates[n] || { state: 'pending', sub: '' };
+    li.classList.remove('active', 'done', 'warn');
+    if (s.state === 'active') li.classList.add('active');
+    else if (s.state === 'done') li.classList.add('done');
+    else if (s.state === 'warn') li.classList.add('warn');
+    var subEl = stepsEl.querySelector('[data-step-sub="' + n + '"]');
+    if (subEl) subEl.textContent = s.sub || '';
   }
 
-  // Drive the progress bar based on elapsed time during step 2
-  // (the long Lighthouse wait). Uses an ease-out curve so the bar
-  // moves fast at first (giving the user immediate visual feedback)
-  // and slows down as it approaches the target, which psychologically
-  // masks variable network latency. Caps at 90% until a real
-  // milestone fires.
-  function startProgress() {
-    progressStartTime = Date.now();
-    if (progressFill) progressFill.style.width = '4%';
-    progressTimer = setInterval(function(){
-      var elapsed = (Date.now() - progressStartTime) / 1000;
-      var t = Math.min(elapsed / PROGRESS_TARGET_SECONDS, 1);
-      // Ease out: fast start, slow finish. 1 - (1-t)^2
-      var eased = 1 - (1 - t) * (1 - t);
-      var pct = Math.min(eased * 90, 90); // cap at 90% until real done
-      if (progressFill) progressFill.style.width = pct.toFixed(1) + '%';
+  // Set one step's state and optional sub-status. Repaints just that
+  // row plus recomputes the top-level progress bar.
+  function setStepState(n, state, sub) {
+    if (n < 1 || n > 4) return;
+    stepStates[n] = { state: state, sub: sub || '' };
+    if (state === 'active' && !stepStartedAt[n]) stepStartedAt[n] = Date.now();
+    if ((state === 'done' || state === 'warn') && !stepFinishedAt[n]) stepFinishedAt[n] = Date.now();
+    paintStep(n);
+    repaintProgress();
+  }
 
-      // Update the "this usually takes X seconds" subcopy with a
-      // countdown after we've run longer than expected so the user
-      // knows we haven't stalled.
-      if (loadingSubEl && elapsed > PROGRESS_TARGET_SECONDS + 5) {
-        loadingSubEl.textContent = "Google is taking longer than usual on this one — still running…";
+  // Legacy alias retained for the rest of the codebase. Walks 1..n-1
+  // and marks any still-pending step as done. The new orchestration
+  // path uses setStepState directly.
+  function setStep(n) {
+    currentStep = n;
+    for (var i = 1; i <= 4; i++) {
+      if (i < n) {
+        if (stepStates[i] && stepStates[i].state === 'pending') {
+          setStepState(i, 'done', '');
+        }
+      } else if (i === n) {
+        if (!stepStates[i] || stepStates[i].state === 'pending') {
+          setStepState(i, 'active', '');
+        }
       }
-    }, 200);
+    }
+  }
+
+  // Drive the progress bar from real signal completion. Each finished
+  // step (done OR warn) is worth 25% of the bar; the currently-active
+  // step contributes a smooth elapsed-time-based fill within its
+  // slice, capped at 90% of its slice until it actually finishes.
+  // Result: the bar reflects what the network is actually doing
+  // instead of pretending PSI takes exactly 28s.
+  function repaintProgress() {
+    if (!progressFill) return;
+    var pct = 0;
+    for (var i = 1; i <= 4; i++) {
+      var s = stepStates[i];
+      if (!s) continue;
+      if (s.state === 'done' || s.state === 'warn') {
+        pct += 25;
+      } else if (s.state === 'active' && stepStartedAt[i]) {
+        var elapsed = (Date.now() - stepStartedAt[i]) / 1000;
+        // Each step's slice eases out over ~12s so a fast PSI feels
+        // fast and a slow PSI keeps inching forward.
+        var t = Math.min(elapsed / 12, 1);
+        var eased = 1 - (1 - t) * (1 - t);
+        pct += Math.min(eased * 22, 22);
+      }
+    }
+    pct = Math.min(pct, 96);
+    progressFill.style.width = pct.toFixed(1) + '%';
+  }
+
+  // Heartbeat: refresh elapsed-time sub-status on the active steps
+  // every 600ms so the user sees the seconds tick. Stops when no
+  // step is in `active` state.
+  function startProgressHeartbeat() {
+    progressStartTime = Date.now();
+    if (progressTimer) clearInterval(progressTimer);
+    progressTimer = setInterval(function(){
+      var anyActive = false;
+      for (var i = 1; i <= 4; i++) {
+        var s = stepStates[i];
+        if (s && s.state === 'active' && stepStartedAt[i]) {
+          anyActive = true;
+          var elapsed = Math.floor((Date.now() - stepStartedAt[i]) / 1000);
+          // Step 2 (PSI) gets a friendlier "Google is running this on
+          // their servers" message after 8s so the user understands
+          // the wait isn't local.
+          var label;
+          if (i === 2) {
+            if (psiFallbackInFlight) {
+              label = tr('load.sub.psiFallbackElapsed', 'Mobile timed out — trying desktop view ({n}s)').replace('{n}', elapsed);
+            } else if (elapsed < 4) label = tr('load.sub.starting', 'Starting…');
+            else if (elapsed < 15) label = tr('load.sub.lighthouse', 'Google is running Lighthouse on your site (' + elapsed + 's)').replace('{n}', elapsed);
+            else label = tr('load.sub.lighthouseSlow', 'Still running on Google’s servers (' + elapsed + 's) — slow restaurant sites can take 20–30s').replace('{n}', elapsed);
+          } else if (i === 3) {
+            if (elapsed < 2) label = tr('load.sub.reading', 'Reading your homepage and follow-up pages…');
+            else label = tr('load.sub.readingElapsed', 'Reading your site (' + elapsed + 's)').replace('{n}', elapsed);
+          } else if (i === 1) {
+            label = tr('load.sub.submitting', 'Submitting…');
+          } else if (i === 4) {
+            label = tr('load.sub.rendering', 'Building your report…');
+          }
+          if (label) {
+            // While a step is `active`, its sub-status IS the elapsed-
+            // time label — always overwrite. (Explicit one-shot
+            // messages set the step to `warn` instead, which the
+            // heartbeat skips because we gated on state === 'active'
+            // above.) Earlier versions used a regex allowlist to
+            // protect specific phrasings; that turned out to be both
+            // fragile (Spanish translations didn't match the EN
+            // regexes) and a real bug (the desktop-fallback elapsed
+            // counter froze at first paint).
+            stepStates[i].sub = label;
+            paintStep(i);
+          }
+        }
+      }
+      repaintProgress();
+      // The legacy sub-line under the title used to say "Google is
+      // taking longer than usual…" after 33s; keep that affordance
+      // since some users see it as global progress reassurance.
+      var totalElapsed = (Date.now() - progressStartTime) / 1000;
+      if (loadingSubEl && totalElapsed > PROGRESS_TARGET_SECONDS + 5 && stepStates[2] && stepStates[2].state === 'active') {
+        loadingSubEl.textContent = tr('load.subSlow', "Google is taking longer than usual on this one — still running…");
+      }
+      if (!anyActive) {
+        clearInterval(progressTimer);
+        progressTimer = null;
+      }
+    }, 600);
+  }
+
+  // Convenience: mark the rest of an in-flight audit as cancelled
+  // visually. Used when the whole audit hits a fatal error so the
+  // user doesn't see a half-running loader behind the error panel.
+  function cancelInFlightSteps() {
+    for (var i = 1; i <= 4; i++) {
+      var s = stepStates[i];
+      if (s && s.state === 'active') {
+        stepStates[i] = { state: 'pending', sub: '' };
+        paintStep(i);
+      }
+    }
+  }
+
+  function startProgress() {
+    // Back-compat wrapper. The new orchestration kicks the heartbeat
+    // directly; this exists for any older code path that still calls
+    // startProgress() expecting the legacy elapsed-time bar.
+    startProgressHeartbeat();
   }
 
   function finishProgress() {
@@ -8472,14 +8982,20 @@ main{padding-top:64px}
     if (progressTimer) { clearInterval(progressTimer); progressTimer = null; }
     progressStartTime = null;
     if (progressFill) progressFill.style.width = '0%';
-    if (loadingSubEl) loadingSubEl.textContent = 'Normalmente tarda de 15 a 40 segundos.';
-    setStep(0);
+    if (loadingSubEl) loadingSubEl.textContent = tr('load.sub', 'Normalmente tarda de 15 a 40 segundos.');
+    for (var i = 1; i <= 4; i++) {
+      stepStates[i] = { state: 'pending', sub: '' };
+      stepStartedAt[i] = null;
+      stepFinishedAt[i] = null;
+      paintStep(i);
+    }
+    currentStep = 0;
   }
 
   // Kept for back-compat with any code that still calls cycleLoading/
   // stopCycling — in Sprint 6c these are thin wrappers around the
   // new stepwise API.
-  function cycleLoading() { setStep(1); setTimeout(function(){ setStep(2); startProgress(); }, 400); }
+  function cycleLoading() { setStep(1); setTimeout(function(){ setStep(2); startProgressHeartbeat(); }, 400); }
   function stopCycling() { finishProgress(); }
 
   function gradeScore(score) {
@@ -14831,49 +15347,168 @@ main{padding-top:64px}
     // so a mid-audit toggle flip doesn't confuse the state machine.
     var deepToggle = document.getElementById('auditDeepScan');
     window.__auditDeepScanRequested = !!(deepToggle && deepToggle.checked);
+    // Sprint AUDIT-LOAD-FIX: surface a clear "deep scan continues
+    // after the report" hint inside the loader the moment the audit
+    // starts, but only when the toggle was actually checked. Without
+    // this, owners had no signal during the loader phase that the
+    // tool would keep working after the report appeared, and they
+    // either thought the deep-scan strip was an error or never
+    // noticed it at all.
+    var deepHintEl = document.getElementById('auditLoadingDeepHint');
+    if (deepHintEl) deepHintEl.hidden = !window.__auditDeepScanRequested;
 
-    // Step 1: submitting the request through the same-origin /api/psi
-    // proxy (which adds the PSI API key server-side — see callPsi).
-    setStep(1);
+    // Sprint AUDIT-LOAD-FIX: each step now tracks its own underlying
+    // signal. Step 1 = submit (resolves locally as soon as the fetches
+    // are wired up). Step 2 = PSI (with automatic desktop fallback on
+    // mobile timeout). Step 3 = site-content reads (page-crawl +
+    // schema-check + GBP-lookup). Step 4 = render. Steps advance the
+    // moment their underlying signal returns, so a slow PSI no longer
+    // hides the fact that the rest of the audit already finished.
+    setStepState(1, 'active', tr('load.sub.submitting', 'Submitting…'));
 
-    // A tiny delay before moving to step 2 so the user perceives the
-    // submit phase as a real step — otherwise steps 1 and 2 flip so
-    // fast that the UI looks glitchy. The progress bar then animates
-    // for the duration of the actual Lighthouse call.
+    // Helpers: format "Done in 12.3s" with the elapsed time.
+    function fmtDoneIn(stepNum) {
+      var start = stepStartedAt[stepNum];
+      var end = stepFinishedAt[stepNum] || Date.now();
+      if (!start) return '';
+      var s = ((end - start) / 1000).toFixed(1);
+      var fmt = tr('load.sub.doneIn', 'Done in {n}s');
+      return fmt.replace('{n}', s);
+    }
+
+    var psiFellBackToDesktop = false;
+    // Reset the module-scoped fallback flag so a second audit run
+    // (Try again button) doesn't see stale state.
+    psiFallbackInFlight = false;
+
+    // Kick off step 2 (PSI) and step 3 (crawl + schema + places) in
+    // parallel. We start the heartbeat right after step 1 paints so
+    // the elapsed-time sub-status begins ticking immediately.
     setTimeout(function(){
-      setStep(2);
-      startProgress();
-    }, 350);
+      setStepState(1, 'done', '');
+      setStepState(2, 'active', tr('load.sub.lighthouseStart', 'Asking Google PageSpeed to test the mobile view…'));
+      setStepState(3, 'active', tr('load.sub.reading', 'Reading your homepage and follow-up pages…'));
+      startProgressHeartbeat();
+    }, 200);
 
-    // Kick off PSI + multi-page crawl + schema-check + Places lookup
-    // in parallel so all four network calls overlap with the long
-    // Lighthouse wait. The schema-check call also serves the Phase H14
-    // hours-accuracy check; Places lookup (Sprint M1.4) feeds the
-    // detector-fusion sprints (M1.5–M1.14). Any of these can fail
-    // without blocking the audit — they resolve to null-shaped
-    // fallback objects and detectors gracefully degrade.
-    Promise.all([callPsi(url), callPageCrawl(url), callSchemaCheck(url), callGbpLookup(url)])
-      .then(function(results){
-        var data = results[0];
-        var crawl = results[1];
-        var schema = results[2];
-        var places = results[3];
-        window.__auditCrawl  = crawl;  // exposed for evaluators + later phases
-        window.__auditSchema = schema;
-        window.__auditPlaces = places;
-        // Step 3: Lighthouse response received, scoring restaurant checks
-        setStep(3);
+    // Wrap each fetch so its outcome flips its own step independently
+    // and the orchestrator gets a uniform { ok, value | err } shape.
+    var psiPromise = callPsiWithFallback(url, function(){
+      psiFellBackToDesktop = true;
+      psiFallbackInFlight = true;
+      // Keep state='active' so the heartbeat keeps ticking with the
+      // fallback-aware label. Reset the elapsed timer so the counter
+      // shows the desktop run's duration, not the cumulative 25+
+      // seconds we already spent on the mobile attempt.
+      stepStartedAt[2] = Date.now();
+      stepFinishedAt[2] = null;
+      setStepState(2, 'active', tr('load.sub.psiFallbackStart', 'Mobile timed out — trying desktop view…'));
+    }).then(function(data){
+      // PSI is done (success path). Mark step 2 done OR warn (if it
+      // fell back to desktop, the result is still useful but degraded).
+      psiFallbackInFlight = false;
+      var elapsed = fmtDoneIn(2);
+      if (psiFellBackToDesktop) {
+        setStepState(2, 'warn', tr('load.sub.psiDesktop', 'Desktop view scored (mobile was too slow)') + ' · ' + elapsed);
+      } else {
+        setStepState(2, 'done', tr('load.sub.psiDone', 'Speed test complete') + ' · ' + elapsed);
+      }
+      return { ok: true, data: data };
+    }, function(err){
+      // Both mobile and desktop failed, OR a non-timeout error.
+      psiFallbackInFlight = false;
+      setStepState(2, 'warn', tr('load.sub.psiFailed', 'Speed test unavailable — continuing without it'));
+      return { ok: false, err: err };
+    });
+
+    var contentPromise = Promise.allSettled([
+      callPageCrawl(url),
+      callSchemaCheck(url),
+      callGbpLookup(url)
+    ]).then(function(results){
+      var crawl  = results[0].status === 'fulfilled' ? results[0].value : { ok:false, homepage:null, pages:[], candidates:[] };
+      var schema = results[1].status === 'fulfilled' ? results[1].value : { ok:false, validation:null, objects:[] };
+      var places = results[2].status === 'fulfilled' ? results[2].value : { ok:false, place:null };
+      // Mark step 3 done (we always have at least null-shaped fallbacks)
+      var elapsed = fmtDoneIn(3);
+      var pieces = [];
+      if (crawl && crawl.ok && Array.isArray(crawl.pages))  pieces.push(crawl.pages.length + ' ' + tr('load.sub.pagesRead', 'pages read'));
+      if (schema && schema.ok) pieces.push(tr('load.sub.schemaFound', 'schema found'));
+      if (places && places.ok && places.place) pieces.push(tr('load.sub.gbpFound', 'Google profile found'));
+      var summary = pieces.length ? pieces.join(', ') : tr('load.sub.contentDoneBare', 'Done');
+      setStepState(3, 'done', summary + ' · ' + elapsed);
+      return { crawl: crawl, schema: schema, places: places };
+    });
+
+    Promise.all([psiPromise, contentPromise])
+      .then(function(both){
+        var psiOutcome = both[0];
+        var content   = both[1];
+        window.__auditCrawl  = content.crawl;
+        window.__auditSchema = content.schema;
+        window.__auditPlaces = content.places;
+
+        // If PSI failed completely, we can't render the Lighthouse-
+        // dependent priority-checks (extractAllUrls/extractPageText
+        // both walk lighthouseResult.audits). Surface that as a clear
+        // error with retry guidance instead of crashing renderReport.
+        if (!psiOutcome.ok) {
+          finishProgress();
+          var psiErr = psiOutcome.err;
+          var msg = (psiErr && psiErr.message) || '';
+          var isAbort = psiErr && (psiErr.name === 'AbortError' || psiErr.name === 'TimeoutError');
+          var isTimeout = psiErr && (psiErr.errorKind === 'psi-timeout' || psiErr.status === 504 || isAbort);
+          if (isTimeout) {
+            showError(
+              tr('err.psiTimeout.h2', "Google's speed test is overloaded right now."),
+              tr('err.psiTimeout.body',
+                "We tried the mobile view first and then desktop — both took longer than Google allows. This happens most often when a site is on Wix, Squarespace, or another platform that's slow to first paint, or when Google's free PSI tier is throttled. Wait 30 seconds and try again. If it keeps happening, email don@muntin.digital and I'll run the speed test by hand and send you the report."),
+              url
+            );
+          } else if (/quota|rate|exceed/i.test(msg) || (psiErr && psiErr.status === 429)) {
+            startCooldown(30);
+            showError(
+              tr('err.rateLimit.h2', "We're a little rate-limited right now."),
+              tr('err.rateLimit.body', "Google's free tier is temporarily throttled. Give it about 30 seconds before trying again, or email don@muntin.digital for a manual audit.")
+            );
+          } else {
+            showError(
+              tr('err.psiFailed.h2', "We couldn't reach Google's speed test."),
+              tr('err.psiFailed.body', "Try again in a moment, or email don@muntin.digital for a manual audit. (Technical: ") + (msg || 'unknown error') + ')',
+              url
+            );
+          }
+          if (window.plausible) window.plausible('Audit Error: PSI Failed' + (isTimeout ? ' (Timeout)' : ''));
+          return Promise.reject({ handled: true });
+        }
+
+        // Step 4: rendering. Mark it active first so the user sees the
+        // last row light up before the report appears.
+        setStepState(4, 'active', tr('load.sub.rendering', 'Building your report…'));
         return new Promise(function(resolve){
-          setTimeout(function(){ resolve(data); }, 250);
+          setTimeout(function(){ resolve(psiOutcome.data); }, 200);
         });
       })
       .then(function(data){
-        // Step 4: rendering
-        setStep(4);
+        if (!data) return; // handled-error short-circuit
         try {
+          // Expose so renderReport can surface the desktop-fallback
+          // disclosure in the score header.
+          window.__auditPsiFallback = !!(data && data.__fallbackFromMobile);
           renderReport(data, url);
+          // Show the PSI desktop-fallback disclosure under the verdict
+          // when the mobile run timed out and we transparently re-ran
+          // on desktop. Users must know — a desktop score is much
+          // friendlier than mobile, and they'd otherwise overestimate
+          // their site's speed.
+          var psiNoteEl = document.getElementById('auditPsiFallbackNote');
+          if (psiNoteEl) psiNoteEl.hidden = !window.__auditPsiFallback;
+          setStepState(4, 'done', fmtDoneIn(4));
           finishProgress();
-          if (window.plausible) window.plausible('Audit Completed');
+          if (window.plausible) {
+            window.plausible('Audit Completed');
+            if (window.__auditPsiFallback) window.plausible('Audit PSI Desktop Fallback');
+          }
           // Sprint D3: snapshot the score for the embeddable badge.
           // Fire-and-forget — failure to persist the snapshot
           // (binding missing, network blip) never affects the
@@ -14908,15 +15543,18 @@ main{padding-top:64px}
         }
       })
       .catch(function(err){
+        // Sprint AUDIT-LOAD-FIX: `{ handled: true }` is the short-
+        // circuit we throw from the inline PSI-failure branch — we
+        // already painted an error, no need to repaint here.
+        if (err && err.handled) return;
         finishProgress();
+        cancelInFlightSteps();
         console.error('[audit] fetch failed', err);
         var msg = (err && err.message) || '';
         var isAbort = err && (err.name === 'AbortError' || err.name === 'TimeoutError');
         if (isAbort) {
-          // 45s client-side cap tripped. PSI legitimately stalls on
-          // sites with very large JS bundles (Tacombi, Toast-hosted
-          // sites, etc.) — surface it as a soft error rather than a
-          // permanent failure so the user can retry without panic.
+          // 35s client-side cap tripped. Surface as a soft error so
+          // the user can retry without panic.
           showError(
             "Google's audit is taking longer than expected.",
             "This sometimes happens with large or slow-loading sites. Give it a minute and try again. If it keeps timing out, email don@muntin.digital and I'll run the audit manually."
@@ -14931,17 +15569,7 @@ main{padding-top:64px}
             "Google Lighthouse couldn't load the URL. Make sure it's publicly accessible — no login wall, no staging environment, and no rate limiter blocking bots.",
             url
           );
-        } else if (/quota|rate|exceed/i.test(msg) || err.status === 429) {
-          // Start a 30-second cooldown so rapid retries don't compound
-          // the rate-limit pressure. The submit button shows a
-          // countdown and the Try-again button short-circuits with
-          // the remaining time.
-          startCooldown(30);
-          showError(
-            "We're a little rate-limited right now.",
-            "Google's free tier is temporarily throttled. Give it about 30 seconds before trying again, or email don@muntin.digital for a manual audit."
-          );
-        } else if (err.status === 400) {
+        } else if (err && err.status === 400) {
           // DYM2: 400 from PSI is often a typo (unknown domain, bad
           // hostname). Pass the URL so did-you-mean can surface a
           // correction.
@@ -14950,7 +15578,7 @@ main{padding-top:64px}
             "Check the address and try again. PageSpeed rejected the request — usually that means a typo, a redirect loop, or a site that blocks the Lighthouse crawler.",
             url
           );
-        } else if (/referer.*blocked|referrer.*blocked|api[- ]key.*referer|forbidden.*referer/i.test(msg) || err.status === 403) {
+        } else if (/referer.*blocked|referrer.*blocked|api[- ]key.*referer|forbidden.*referer/i.test(msg) || (err && err.status === 403)) {
           showError(
             "We hit a configuration snag.",
             "This is a temporary issue on our end, not with your site. Try again in a few minutes, or email don@muntin.digital and I'll run the audit manually."
@@ -17088,32 +17716,32 @@ main{padding-top:64px}
 <!-- tool-knit -->
 <aside class="tool-knit" aria-labelledby="tool-knit-heading-restaurant-audit">
     <div class="container">
-      <h2 id="tool-knit-heading-restaurant-audit" class="tool-knit__h">Sigue.</h2>
+      <h2 id="tool-knit-heading-restaurant-audit" class="tool-knit__h">Keep going.</h2>
       <div class="tool-knit__grid">
       <div class="tool-knit__col">
-        <h3>Tema</h3>
-        <a href="/es/learn/topics/local-seo/">SEO local y descubrimiento</a>
+        <h3>Topic</h3>
+        <a href="/learn/topics/local-seo/">Local SEO &amp; Discovery</a>
       </div>
       <div class="tool-knit__col">
-        <h3>Herramientas relacionadas</h3>
+        <h3>Related tools</h3>
         <ul>
-          <li><a href="/es/tools/gbp-grader/">Calificador de Google Business Profile</a></li>
-          <li><a href="/es/tools/open-hours/">Horario Abierto</a></li>
+          <li><a href="/tools/gbp-grader/">Google Business Profile Grader</a></li>
+          <li><a href="/tools/open-hours/">Open Hours</a></li>
         </ul>
       </div>
       <div class="tool-knit__col">
-        <h3>Lee</h3>
+        <h3>Read</h3>
         <ul>
-          <li><a href="/es/blog/why-your-restaurant-loses-reservations-every-night/">Por qué pierdes reservas cada noche</a></li>
-          <li><a href="/es/blog/wix-vs-custom-for-restaurants/">Wix vs. sitio a la medida</a></li>
+          <li><a href="/blog/why-your-restaurant-loses-reservations-every-night/">Why your restaurant loses reservations every night</a></li>
+          <li><a href="/blog/wix-vs-custom-for-restaurants/">Wix vs. custom for restaurants</a></li>
         </ul>
       </div>
       <div class="tool-knit__col">
-        <h3>Palabras</h3>
+        <h3>Words</h3>
         <ul>
-          <li><a href="/es/glossary/lighthouse/">Lighthouse</a></li>
-          <li><a href="/es/glossary/core-web-vitals/">Core Web Vitals</a></li>
-          <li><a href="/es/glossary/lcp/">Largest Contentful Paint</a></li>
+          <li><a href="/glossary/lighthouse/">Lighthouse</a></li>
+          <li><a href="/glossary/core-web-vitals/">Métricas Web Esenciales</a></li>
+          <li><a href="/glossary/lcp/">Mayor elemento renderizado</a></li>
         </ul>
       </div>
       </div>
@@ -17148,107 +17776,125 @@ main{padding-top:64px}
 
 <footer>
   <div class="container">
-    <!-- Phase 2.3: pulse propagation — same footer pulse as the EN
-         partial. Stays hidden until assets/js/window-state.js confirms
-         Don has been seen recently. -->
     <div class="foot-cta">
       <div class="foot-cta-text">
-        <span class="foot-cta-pulse" id="footCtaPulse" hidden aria-hidden="true" title="Don está cerca"></span>
-        ¿Tienes una pregunta? La Ventana está abierta.
+        <span class="foot-cta-pulse" id="footCtaPulse" hidden aria-hidden="true" title="Don is around"></span>
+        Got a question? The Window is open.
       </div>
-      <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Contacta a Don
+      <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Reach Don
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
       </a>
     </div>
 
     <div class="foot-grid">
       <div class="foot-col foot-brand">
-        <a href="/es/" class="foot-lockup-wrap" aria-label="Muntin Digital — inicio">
+        <a href="/" class="foot-lockup-wrap" aria-label="Muntin Digital home">
           <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53" loading="lazy" decoding="async">
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
-        <p class="foot-tagline">La ventana.</p>
-        <p class="foot-blurb">Una biblioteca web y estudio de dise&ntilde;o para restaurantes, con base en Silver Spring, MD &mdash; art&iacute;culos, herramientas gratis, investigaci&oacute;n y un glosario de <!-- count:glossary.terms -->142<!-- /count --> t&eacute;rminos, con el estudio detr&aacute;s cuando quieras contratar. Se habla espa&ntilde;ol.</p>
+        <p class="foot-tagline">The window in.</p>
+        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a <!-- count:glossary.terms -->142<!-- /count -->-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
       </div>
 
       <nav class="foot-col" aria-labelledby="foot-explore">
-        <p class="foot-heading" id="foot-explore">Explorar</p>
+        <p class="foot-heading" id="foot-explore">Studio</p>
         <ul class="foot-links">
-          <li><a href="/es/services/">Servicios</a></li>
-          <li><a href="/es/for/restaurants/">Para restaurantes</a></li>
-          <li><a href="/es/work/">Proyectos</a></li>
-          <li><a href="/es/about/">Sobre Don</a></li>
-          <li><a href="/es/system/">El sistema</a></li>
-          <li><a href="/receipts/" hreflang="en" lang="en">Receipts</a></li>
-          <li><a href="/methods/" hreflang="en" lang="en">Methods</a></li>
-          <li><a href="/changelog/" hreflang="en" lang="en">Changelog</a></li>
+          <li><a href="/services/">Services &amp; pricing</a></li>
+          <li><a href="/for/restaurants/">For restaurants</a></li>
+          <li><a href="/studio/compare/">Compare options</a></li>
+          <li><a href="/work/">Case studies</a></li>
+          <li><a href="/about/">About Don</a></li>
+        </ul>
+      </nav>
+
+      <nav class="foot-col" aria-labelledby="foot-trust">
+        <p class="foot-heading" id="foot-trust">Trust</p>
+        <ul class="foot-links">
+          <li><a href="/never/">Never</a></li>
+          <li><a href="/ai/">AI policy</a></li>
+          <li><a href="/security/">Data &amp; security</a></li>
+          <li><a href="/methods/">Methods</a></li>
+          <li><a href="/receipts/">Receipts</a></li>
+          <li><a href="/changelog/">Changelog</a></li>
+          <li><a href="/system/">The system</a></li>
         </ul>
       </nav>
 
       <nav class="foot-col" aria-labelledby="foot-learn">
-        <p class="foot-heading" id="foot-learn">Biblioteca</p>
+        <p class="foot-heading" id="foot-learn">Library</p>
         <ul class="foot-links">
-          <li><a href="/es/learn/">Inicio de la biblioteca</a></li>
-          <li><a href="/es/learn/start-here/">Empieza aquí</a></li>
-          <li><a href="/es/learn/topics/">Temas</a></li>
-          <li><a href="/es/blog/">Artículos</a></li>
-          <li><a href="/es/tools/">Herramientas gratis</a></li>
-          <li><a href="/es/glossary/">Glosario</a></li>
-          <li><a href="/es/learn/research/">Investigación</a></li>
-          <li><a href="/es/learn/checklists/">Listas y recursos</a></li>
-          <li><a href="/es/sheets/">Hojas del operador</a></li>
+          <li><a href="/learn/">Library home</a></li>
+          <li><a href="/learn/start-here/">Start here</a></li>
+          <li><a href="/learn/topics/">Topics</a></li>
+          <li><a href="/blog/">Articles</a></li>
+          <li><a href="/tools/">Free tools</a></li>
+          <li><a href="/glossary/">Glossary</a></li>
+          <li><a href="/learn/research/">Research</a></li>
+          <li><a href="/learn/checklists/">Checklists &amp; guides</a></li>
+          <li><a href="/sheets/">Operator sheets</a></li>
         </ul>
       </nav>
 
       <nav class="foot-col foot-contact" aria-labelledby="foot-contact">
-        <p class="foot-heading" id="foot-contact">Contacto</p>
+        <p class="foot-heading" id="foot-contact">Contact</p>
         <ul class="foot-links">
           <li><a href="mailto:don@muntin.digital">don@muntin.digital</a></li>
-          <li><a href="/es/window/">Contacta a Don</a></li>
+          <li><a href="/window/">Reach Don</a></li>
           <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (se abre en una pestaña nueva)</span></a></li>
         </ul>
-        <p class="foot-trust"><strong>Respuesta:</strong> de lunes a viernes, en menos de 4 horas. Los fines de semana, el lunes en la mañana.</p>
+        <p class="foot-trust"><strong>Reply:</strong> Mondays through Fridays, within 4 hours. Weekends, by Monday morning.</p>
       </nav>
     </div>
 
     <!-- newsletter-capture:start -->
     <div class="foot-newsletter">
-      <form action="/api/subscribe" method="post" class="foot-newsletter-form" data-locale="es">
-        <p class="foot-newsletter-pitch">Te aviso cuando publique algo &mdash; cuatro notas por trimestre, sin secuencias automatizadas.</p>
-        <label class="foot-newsletter-label" for="foot-news-email">Tu correo</label>
-        <input id="foot-news-email" name="email" type="email" required autocomplete="email" inputmode="email" enterkeyhint="send" autocapitalize="off" spellcheck="false" placeholder="tu@turestaurante.com" />
-        <input type="hidden" name="locale" value="es" />
+      <form action="/api/subscribe" method="post" class="foot-newsletter-form" data-locale="en">
+        <p class="foot-newsletter-pitch">I send a short note when I publish something &mdash; four notes a quarter, no funnels.</p>
+        <label class="foot-newsletter-label" for="foot-news-email">Your email</label>
+        <input id="foot-news-email" name="email" type="email" required autocomplete="email" inputmode="email" enterkeyhint="send" autocapitalize="off" spellcheck="false" placeholder="you@yourrestaurant.com" />
+        <input type="hidden" name="locale" value="en" />
         <input type="hidden" name="source" value="footer" />
         <input type="hidden" name="ts" value="" />
         <input type="text" name="hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;" />
-        <!-- Turnstile (Phase 3B). Auto-injects cf-turnstile-response on pass. -->
-        <div class="cf-turnstile" data-sitekey="0x4AAAAAADIgoGh56MvqeE8L" data-action="newsletter" data-language="es" data-size="flexible"></div>
-        <button type="submit">Suscribirme</button>
+        <!-- Turnstile widget (Phase 3B). Auto-injects a hidden
+             cf-turnstile-response field on the form when the user
+             passes; the worker validates via /api/lib/turnstile.js.
+             Managed mode: invisible 99% of the time, falls back to
+             a visible challenge for high-risk requests. -->
+        <div class="cf-turnstile" data-sitekey="0x4AAAAAADIgoGh56MvqeE8L" data-action="newsletter" data-size="flexible"></div>
+        <button type="submit">Subscribe</button>
       </form>
     </div>
     <!-- newsletter-capture:end -->
 
     <div class="foot-bottom">
-      <p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; LLC de Maryland &middot; Silver Spring, MD</p>
+      <p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; Maryland LLC &middot; Silver Spring, MD</p>
       <nav class="foot-legal" aria-label="Legal">
-        <a href="/es/terms.html">Términos</a>
-        <a href="/es/privacy.html">Privacidad</a>
-        <a href="/es/security/">Datos y seguridad</a>
-        <a href="/es/accessibility.html">Accesibilidad</a>
-        <a href="/es/cookies.html">Cookies</a>
-        <a href="/es/feed.xml" type="application/rss+xml" title="Muntin Digital RSS">RSS</a>
+        <a href="/terms.html">Terms</a>
+        <a href="/privacy.html">Privacy</a>
+        <a href="/security/">Data &amp; security</a>
+        <a href="/accessibility.html">Accesibilidad</a>
+        <a href="/cookies.html">Cookies</a>
+        <a href="/feed.xml" type="application/rss+xml" title="Muntin Digital RSS">RSS</a>
       </nav>
     </div>
   </div>
-  <aside class="mobile-cta-bar" id="mobileCtaBar" aria-label="Acciones r&aacute;pidas">
-    <a class="mobile-cta-bar__btn mobile-cta-bar__btn--primary" href="/es/tools/audits/restaurant/" data-event="sticky-cta-audit">
+  <!-- Mobile sticky bottom action bar. Phones only (max-width: 720px),
+       coarse pointer required so a tablet with a mouse doesn't get it.
+       Hidden when <body data-hide-sticky-bar> is set (set on /window/,
+       /sign-in/, /account/, and tool-result pages where a sticky bottom
+       would compete with the page's own bottom UI). Lives inside the
+       <footer> so sync-includes captures it as part of the canonical
+       footer block and stays idempotent across re-syncs. -->
+  <aside class="mobile-cta-bar" id="mobileCtaBar" aria-label="Quick actions">
+    <a class="mobile-cta-bar__btn mobile-cta-bar__btn--primary" href="/tools/audits/restaurant/" data-event="sticky-cta-audit">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
-      Auditor&iacute;a gratis
+      Run free audit
     </a>
-    <a class="mobile-cta-bar__btn mobile-cta-bar__btn--ghost js-window" href="/es/window/" data-event="sticky-cta-window">
-      <span class="mobile-cta-bar__pulse" id="mobileCtaBarPulse" hidden aria-hidden="true" title="Don está cerca"></span>
+    <a class="mobile-cta-bar__btn mobile-cta-bar__btn--ghost js-window" href="/window/" data-event="sticky-cta-window">
+      <span class="mobile-cta-bar__pulse" id="mobileCtaBarPulse" hidden aria-hidden="true" title="Don is around"></span>
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
-      Contacta a Don
+      Reach Don
     </a>
   </aside>
   <script>
@@ -17267,9 +17913,19 @@ main{padding-top:64px}
 <script src="/assets/js/save-next-time.js" defer></script>
 <script src="/assets/js/share-hydrate.js" defer></script>
 <script src="/assets/js/window-state.js" defer></script>
-<!-- Cloudflare Turnstile (Phase 3B). Carga global porque el formulario
-     de newsletter vive en este pie de página y aparece en cada vista. -->
-<!-- Skip Turnstile on localhost / 127.0.0.1 / dev hosts (ver footer EN para detalle). -->
+<!-- Cloudflare Turnstile (Phase 3B). Loaded site-wide because the
+     newsletter form lives in this footer, which renders on every page.
+     Async + defer so it never blocks render. ~28 KB; one outbound
+     request to challenges.cloudflare.com per cold load. Worker-side
+     verification lives in src/lib/turnstile.js and runs only when
+     env.TURNSTILE_SECRET_KEY is bound. -->
+<!-- Skip Turnstile on localhost / 127.0.0.1 / dev hosts. The widget
+     calls back to challenges.cloudflare.com to validate the host
+     against the Turnstile site's allowlist; localhost isn't in the
+     allowlist (and adding it would weaken the prod gate), so the
+     widget logs a console error on every dev/CI page load. We
+     gate the script load instead — Turnstile only matters on real
+     production traffic where forms actually submit. -->
 <script>(function(){var h=location.hostname;if(h==='localhost'||h==='127.0.0.1'||h==='0.0.0.0'||/^\[?::1?\]?$/.test(h))return;var s=document.createElement('script');s.src='https://challenges.cloudflare.com/turnstile/v0/api.js';s.async=true;s.defer=true;document.head.appendChild(s);})();</script>
 
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>

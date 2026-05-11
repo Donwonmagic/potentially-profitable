@@ -331,16 +331,95 @@ main{padding-top:64px}
 
   /* Sprint S2.7: Deep Scan chips + sections. Chips sit above the
      audit-summary so they read as "extras we found" not mandatory
-     report content. Sections live deeper in the report flow. */
+     report content. Sections live deeper in the report flow.
+     Sprint AUDIT-LOAD-FIX: the strip now has a real surface (cream
+     tint + teal border, matching the deep-scan toggle in the hero)
+     so the owner can see at a glance that Deep Scan is running or
+     has finished — previously the strip was visually empty whenever
+     the underlying chips had no data to inject, leaving owners
+     convinced Deep Scan "did nothing." Status text + progress count
+     stays visible across all states. */
   .deep-scan-strip {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 10px;
+    align-items: center;
     max-width: 1100px;
     margin: 0 auto 18px;
-    padding: 0 4px;
+    padding: 12px 16px;
+    background: var(--cream-2, #faf6ee);
+    border: 1px solid var(--line, #E6DFCE);
+    border-radius: 12px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.4;
   }
   .deep-scan-strip[hidden] { display: none; }
+  .deep-scan-strip[data-state="running"] {
+    border-color: var(--teal);
+    background: var(--teal-tint, #e8f1f3);
+    color: var(--teal-dark, #1a3f4a);
+  }
+  .deep-scan-strip[data-state="done"] {
+    border-color: var(--status-good, #2d7a4d);
+  }
+  .deep-scan-strip[data-state="empty"] {
+    color: var(--stone);
+  }
+  .deep-scan-strip-status {
+    font-weight: 500;
+    flex: 0 0 auto;
+  }
+  .deep-scan-strip-status::before {
+    content: 'Deep Scan · ';
+    color: var(--teal);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    font-size: 11px;
+  }
+  .deep-scan-strip[data-state="done"] .deep-scan-strip-status::before {
+    color: var(--status-good, #2d7a4d);
+  }
+  .deep-scan-strip-chips {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+  .deep-scan-strip-progress {
+    font-variant-numeric: tabular-nums;
+    font-size: 12px;
+    color: var(--stone);
+    flex: 0 0 auto;
+  }
+  .deep-scan-strip-progress:empty { display: none; }
+  /* Spinner: a small CSS-only spinner the strip swaps in via a
+     data-state hook so we don't ship an SVG just for one indicator.
+     prefers-reduced-motion users get a static dot. */
+  .deep-scan-strip[data-state="running"] .deep-scan-strip-status::after {
+    content: '';
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin-left: 8px;
+    border-radius: 50%;
+    border: 2px solid var(--teal);
+    border-top-color: transparent;
+    vertical-align: -2px;
+    animation: deep-scan-spin 0.85s linear infinite;
+  }
+  @keyframes deep-scan-spin {
+    to { transform: rotate(360deg); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .deep-scan-strip[data-state="running"] .deep-scan-strip-status::after {
+      animation: none;
+      border-top-color: var(--teal);
+      opacity: 0.5;
+    }
+  }
   /* .deep-chip is the audit's bespoke variant of the global
      .status-chip component (defined in /assets/site.css "Status
      components" cluster). Differences from the global chip:
@@ -1949,11 +2028,28 @@ main{padding-top:64px}
     text-align: center;
   }
   .audit-loading-sub {
-    margin: 0 0 28px;
+    margin: 0 0 14px;
     color: var(--stone);
     font-size: 14px;
     text-align: center;
   }
+  /* Sprint AUDIT-LOAD-FIX: deep-scan loader hint. Subtle teal-tinted
+     pill below the main sub-line so the owner sees that the audit
+     will continue running after the report appears. Stays hidden
+     unless the user explicitly toggled Deep Scan at submit. */
+  .audit-loading-deep-hint {
+    margin: 0 auto 28px;
+    max-width: 560px;
+    padding: 8px 14px;
+    color: var(--teal-dark, #1a3f4a);
+    background: var(--teal-tint, #e8f1f3);
+    border: 1px solid #C7DFE4;
+    border-radius: 999px;
+    font-size: 12px;
+    line-height: 1.45;
+    text-align: center;
+  }
+  .audit-loading-deep-hint[hidden] { display: none; }
   .audit-progress-bar {
     height: 6px;
     background: var(--line);
@@ -2021,9 +2117,53 @@ main{padding-top:64px}
   .audit-step.done .step-indicator::before {
     content: '✓';
   }
+  /* Sprint AUDIT-LOAD-FIX: "warn" state for a step whose underlying
+     fetch returned a soft failure (PSI 504 with desktop fallback in
+     flight, page-crawl returned empty, Places quota exhausted, etc).
+     Visually distinct from "done" (green check) and "active" (pulsing
+     teal) so the user understands the audit hit a snag but is still
+     producing a useful report. The amber matches the rest of the
+     report's --status-warn token so the visual language is consistent. */
+  .audit-step.warn {
+    color: var(--ink-soft);
+  }
+  .audit-step.warn .step-indicator {
+    border-color: var(--status-warn, #c97a18);
+    background: var(--status-warn, #c97a18);
+    color: var(--cream);
+  }
+  .audit-step.warn .step-indicator::before {
+    content: '!';
+  }
   .audit-step.active .step-indicator::before,
   .audit-step .step-indicator::before {
     display: block;
+  }
+  /* Sprint AUDIT-LOAD-FIX: each step now has a sub-status row that
+     tracks the underlying fetch ("Starting…" → "Running on Google's
+     servers (12s)" → "Done in 14.3s" or "Mobile timed out — trying
+     desktop view"). Empty by default so unused rows stay tight. */
+  .audit-step .step-body {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+  .audit-step .step-label {
+    display: block;
+  }
+  .audit-step .step-sub {
+    display: block;
+    font-size: 12px;
+    color: var(--stone);
+    line-height: 1.35;
+    min-height: 0;
+  }
+  .audit-step .step-sub:empty {
+    display: none;
+  }
+  .audit-step.warn .step-sub {
+    color: var(--status-warn, #c97a18);
   }
   @keyframes audit-step-pulse {
     0%, 100% { box-shadow: 0 0 0 4px rgba(31, 78, 91, 0.12); }
@@ -2499,6 +2639,23 @@ main{padding-top:64px}
     color: var(--ink-soft);
     margin: 16px 0 0;
   }
+  /* Sprint AUDIT-LOAD-FIX: PSI desktop-fallback note. Renders as an
+     amber accent block (not a chip — too long to read at chip size)
+     directly under the verdict, so the owner sees the disclosure
+     before they look at the per-pillar scores. */
+  .audit-psi-fallback-note {
+    margin: 14px 0 0;
+    padding: 10px 14px;
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: var(--status-warn-deep, #7a4710);
+    background: var(--status-warn-tint, #fbf0d9);
+    border: 1px solid var(--status-warn, #c97a18);
+    border-left-width: 3px;
+    border-radius: 8px;
+  }
+  .audit-psi-fallback-note[hidden] { display: none; }
+  .audit-psi-fallback-note strong { color: var(--status-warn-deep, #7a4710); }
   /* Phase 2 U7: subtype-benchmark chip. Anchors the raw overall score
      ("74") against a typical median for the owner's subtype so they
      read it as "a bit above average for a pizzeria" rather than a
@@ -5394,17 +5551,57 @@ main{padding-top:64px}
     </div>
 
     <!-- Loading state (hidden until fetch starts) -->
+    <!--
+      Sprint AUDIT-LOAD-FIX: the four loader rows used to be driven by
+      a sequential setStep(n) that only advanced when Promise.all of
+      PSI + page-crawl + schema-check + Places resolved. If any one
+      hung (typically PSI 504), the UI sat on step 2 forever even
+      though the other three signals had already returned. The rebuild
+      below gives every step its own status row (pending / active /
+      done / warn) and its own sub-status line so the loader reflects
+      what's actually happening in the network, not a timed fiction.
+    -->
     <div class="audit-loading" id="auditLoading" hidden aria-live="polite">
       <h2 data-tr="load.h2">Running your audit…</h2>
       <p class="audit-loading-sub" id="auditLoadingSub" data-tr="load.sub">This usually takes 15–40 seconds.</p>
+      <!-- Sprint AUDIT-LOAD-FIX: shown only when the Deep Scan toggle
+           was checked at submit. Tells the owner up-front that the
+           audit continues after the report appears — otherwise the
+           still-running deep-scan strip looks broken when it shows
+           up under a finished report. -->
+      <p class="audit-loading-deep-hint" id="auditLoadingDeepHint" data-tr="deepScan.loaderHint" hidden>Deep scan continues after the report (1–2 min): security headers, site age, real-user data, Google reviews, email-deliverability.</p>
       <div class="audit-progress-bar" aria-hidden="true">
         <div class="fill" id="auditProgressFill"></div>
       </div>
       <ol class="audit-steps" id="auditSteps">
-        <li class="audit-step" data-step="1"><span class="step-indicator">1</span><span data-tr="load.step1">Submitting your site for the speed test</span></li>
-        <li class="audit-step" data-step="2"><span class="step-indicator">2</span><span data-tr="load.step2">Loading your site in a simulated phone</span></li>
-        <li class="audit-step" data-step="3"><span class="step-indicator">3</span><span data-tr="load.step3">Reading your menu, hours, ordering, and Google profile</span></li>
-        <li class="audit-step" data-step="4"><span class="step-indicator">4</span><span data-tr="load.step4">Writing your report</span></li>
+        <li class="audit-step" data-step="1">
+          <span class="step-indicator">1</span>
+          <span class="step-body">
+            <span class="step-label" data-tr="load.step1">Submitting your site for the speed test</span>
+            <span class="step-sub" data-step-sub="1" aria-live="polite"></span>
+          </span>
+        </li>
+        <li class="audit-step" data-step="2">
+          <span class="step-indicator">2</span>
+          <span class="step-body">
+            <span class="step-label" data-tr="load.step2">Mobile speed test (Google PageSpeed)</span>
+            <span class="step-sub" data-step-sub="2" aria-live="polite"></span>
+          </span>
+        </li>
+        <li class="audit-step" data-step="3">
+          <span class="step-indicator">3</span>
+          <span class="step-body">
+            <span class="step-label" data-tr="load.step3">Reading your menu, hours, ordering, and Google profile</span>
+            <span class="step-sub" data-step-sub="3" aria-live="polite"></span>
+          </span>
+        </li>
+        <li class="audit-step" data-step="4">
+          <span class="step-indicator">4</span>
+          <span class="step-body">
+            <span class="step-label" data-tr="load.step4">Writing your report</span>
+            <span class="step-sub" data-step-sub="4" aria-live="polite"></span>
+          </span>
+        </li>
       </ol>
     </div>
 
@@ -5473,10 +5670,24 @@ main{padding-top:64px}
       <!-- Sprint S2.5: Deep Scan status strip + data chips. Appears
            only when the toggle is checked. Chips inside (.deep-age-
            chip, .deep-security-chip) stay hidden until their upstream
-           returns real data — we never render a placeholder value. -->
+           returns real data — we never render a placeholder value.
+           Sprint AUDIT-LOAD-FIX: the chip injection used to live
+           directly under #deepScanStrip; runDeepSignals would then
+           call `stripEl.textContent = …` which wiped the chip
+           children, so even when the underlying fetches returned good
+           data the chips never made it back into the DOM. Now the
+           status label has its own #deepScanStatus span, the chips
+           stay in a #deepScanChips container, and the strip itself
+           gets a stronger visual treatment so the owner can SEE that
+           Deep Scan is running (or completed) instead of relying on
+           the small Wayback/Observatory chips being the only proof. -->
       <div class="deep-scan-strip" id="deepScanStrip" hidden>
-        <span class="deep-chip deep-age-chip" id="deepAgeChip" hidden></span>
-        <span class="deep-chip deep-security-chip" id="deepSecurityChip" hidden></span>
+        <span class="deep-scan-strip-status" id="deepScanStatus" data-tr="deepScan.idle"></span>
+        <span class="deep-scan-strip-chips" id="deepScanChips">
+          <span class="deep-chip deep-age-chip" id="deepAgeChip" hidden></span>
+          <span class="deep-chip deep-security-chip" id="deepSecurityChip" hidden></span>
+        </span>
+        <span class="deep-scan-strip-progress" id="deepScanProgress" aria-live="polite"></span>
       </div>
 
       <!-- D4: snapshot banner. Hidden by default; shown only when the
@@ -5588,6 +5799,13 @@ main{padding-top:64px}
                looking at a fresh run or a stale snapshot. The full ISO
                stamp lives in the title attribute for the curious. -->
           <time class="audit-freshness" id="auditFreshness" hidden></time>
+          <!-- Sprint AUDIT-LOAD-FIX: PSI fallback disclosure. Shown
+               only when the mobile Lighthouse run timed out and the
+               tool transparently re-ran on desktop. Users absolutely
+               need to know that — a "desktop" perf score is much more
+               forgiving than mobile, so without this disclosure the
+               owner would think their site was faster than it is. -->
+          <p class="audit-psi-fallback-note" id="auditPsiFallbackNote" data-tr-html="psi.fallback.note" hidden>Speed test ran on <strong>desktop</strong> view — the mobile test took longer than Google allows. Mobile numbers usually score 15–30 points lower, so treat this as the optimistic case and prioritize the mobile fixes in the report below.</p>
           <p class="verdict" id="verdictCopy">Verdict copy populates here after a run — explains what the score means and what to focus on first.</p>
           <!-- Phase 2 U7: subtype-benchmark chip. Populated by
                setScoreBenchmark() after setScoreRing() lands. Hidden
@@ -6478,26 +6696,43 @@ main{padding-top:64px}
   // All traffic goes through the same-origin /api/psi worker, which
   // adds the PSI API key server-side from env.PSI_API_KEY. Neither
   // the client code nor the static HTML ever sees the key.
-  function callPsi(targetUrl) {
+  //
+  // Sprint AUDIT-LOAD-FIX: opts={ strategy: 'mobile'|'desktop' }.
+  // Defaulted to 'mobile' for back-compat with the comparison flow.
+  // On a 504 errorKind:'psi-timeout' the *orchestrator* (not this
+  // function) decides whether to retry with strategy:'desktop' — this
+  // function stays pure so callsites that don't want a fallback
+  // (e.g. competitor compare on multiple URLs) keep their existing
+  // semantics.
+  function callPsi(targetUrl, opts) {
+    var strategy = (opts && opts.strategy) || 'mobile';
     var params = new URLSearchParams();
     params.append('url', targetUrl);
-    params.append('strategy', 'mobile');
+    params.append('strategy', strategy);
     CATEGORIES.forEach(function(c){ params.append('category', c); });
-    // Client-side hard cap. The /api/psi worker has its own 30s
+    // Client-side hard cap. The /api/psi worker has its own 25s
     // AbortSignal.timeout, but if the Cloudflare edge buffers or the
     // connection stalls, the fetch can hang indefinitely from the
-    // browser's perspective. 45s gives the worker its full 30s budget
-    // (+ retry on 429) plus a small grace window, then trips the
+    // browser's perspective. 35s gives the worker its full 25s budget
+    // (+ short retry on 429) plus a small grace window, then trips the
     // client error path so the loader doesn't spin forever.
     var ctrl;
     var signal;
     try {
       ctrl = (typeof AbortController === 'function') ? new AbortController() : null;
       signal = ctrl ? ctrl.signal : undefined;
-      if (ctrl) setTimeout(function(){ try { ctrl.abort(); } catch (_) {} }, 45000);
+      if (ctrl) setTimeout(function(){ try { ctrl.abort(); } catch (_) {} }, 35000);
     } catch (_) { signal = undefined; }
     return fetch(PSI_PROXY_ENDPOINT + '?' + params.toString(), { signal: signal }).then(function(res){
-      if (res.ok) return res.json();
+      if (res.ok) {
+        return res.json().then(function(json){
+          // Tag the result with the strategy used so renderReport can
+          // label desktop fallbacks differently. PSI doesn't echo
+          // strategy in the JSON, so we annotate.
+          if (json && typeof json === 'object') json.__strategy = strategy;
+          return json;
+        });
+      }
       return res.json().then(function(body){
         var msg = (body && body.error && body.error.message)
                || (body && body.error)
@@ -6505,11 +6740,40 @@ main{padding-top:64px}
         var err = new Error(String(msg));
         err.status = res.status;
         err.body = body;
+        err.errorKind = body && body.errorKind;
+        err.strategy = strategy;
         throw err;
       }, function(){
         var err = new Error('PageSpeed returned ' + res.status);
         err.status = res.status;
+        err.strategy = strategy;
         throw err;
+      });
+    });
+  }
+
+  // Sprint AUDIT-LOAD-FIX: PSI wrapper that automatically falls back
+  // to strategy=desktop when mobile times out (errorKind:'psi-timeout'
+  // OR client-side abort). Many restaurant sites on Wix, Squarespace,
+  // and GoDaddy themes pass the desktop Lighthouse run but stall on
+  // mobile's Slow-4G simulation; in that case desktop is roughly half
+  // the wall-time and almost always finishes inside the worker budget.
+  //
+  // The optional `onFallback` callback fires the moment we decide to
+  // retry on desktop, so the loader can paint "Mobile timed out — trying
+  // desktop view" inline instead of looking frozen.
+  function callPsiWithFallback(targetUrl, onFallback) {
+    return callPsi(targetUrl, { strategy: 'mobile' }).catch(function(err){
+      var isAbort = err && (err.name === 'AbortError' || err.name === 'TimeoutError');
+      var isTimeout = err && (err.errorKind === 'psi-timeout' || err.status === 504 || isAbort);
+      if (!isTimeout) throw err;
+      try { if (typeof onFallback === 'function') onFallback(err); } catch (_) {}
+      return callPsi(targetUrl, { strategy: 'desktop' }).then(function(json){
+        // Annotate so the report can show a "Speed test ran on desktop
+        // (mobile timed out)" disclosure instead of pretending these
+        // are mobile numbers.
+        if (json && typeof json === 'object') json.__fallbackFromMobile = true;
+        return json;
       });
     });
   }
@@ -6786,14 +7050,25 @@ main{padding-top:64px}
   // Each fetch is independent; if one fails, the others still land
   // and render. Hot-patches the DOM via per-section render helpers
   // (S2.7) that NO-OP when their upstream data is missing.
+  //
+  // Sprint AUDIT-LOAD-FIX: the previous implementation cleared the
+  // strip's children via `stripEl.textContent = …` which destroyed
+  // the chip <span>s before any render call could un-hide them — net
+  // effect was Deep Scan completing silently for almost every site.
+  // Now we write only to the #deepScanStatus and #deepScanProgress
+  // children, leaving the chip container alone. We also publish a
+  // running count ("2 / 6 signals returned") so the owner can see
+  // Deep Scan actually doing work even when individual chips have
+  // nothing to show.
   function runDeepSignals(url) {
-    // Prep: the UI shows a live status strip while fetches resolve.
-    var stripEl = document.getElementById('deepScanStrip');
+    var stripEl     = document.getElementById('deepScanStrip');
+    var statusEl    = document.getElementById('deepScanStatus');
+    var progressEl  = document.getElementById('deepScanProgress');
     if (stripEl) {
       stripEl.hidden = false;
       stripEl.setAttribute('data-state', 'running');
-      stripEl.textContent = t('deepScan.running');
     }
+    if (statusEl) statusEl.textContent = t('deepScan.running');
 
     var placeId = null;
     var placesSnap = window.__auditPlaces;
@@ -6801,63 +7076,96 @@ main{padding-top:64px}
       placeId = placesSnap.place.placeId;
     }
 
+    var total = 0;
     var pending = 0;
-    function done() {
-      pending--;
-      if (pending <= 0 && stripEl) {
-        // Accuracy rule: if every fetch returned ok:false, show a
-        // neutral "no additional signals available" message rather
-        // than fake success. If at least one rendered, show a
-        // completion state.
-        var anyRendered =
-          !!document.querySelector('.deep-age-chip:not([hidden])') ||
-          !!document.querySelector('.deep-security-chip:not([hidden])') ||
-          !!document.querySelector('.deep-crux-spark:not([hidden])') ||
-          !!document.querySelector('.deep-reviews-card:not([hidden])');
-        stripEl.setAttribute('data-state', anyRendered ? 'done' : 'empty');
-        stripEl.textContent = anyRendered
-          ? t('deepScan.done')
-          : t('deepScan.noSignals');
+    var rendered = 0;
+    function fmtProgress() {
+      var doneCount = total - pending;
+      var fmt = t('deepScan.progress') || '{done}/{total} signals returned';
+      return fmt.replace('{done}', doneCount).replace('{total}', total);
+    }
+    function paintProgress() {
+      if (progressEl) progressEl.textContent = fmtProgress();
+    }
+    function track(promise, didRenderCheck) {
+      total++;
+      pending++;
+      return promise.then(function(data){
+        pending--;
+        try {
+          if (typeof didRenderCheck === 'function' && didRenderCheck(data)) rendered++;
+        } catch (_) {}
+        paintProgress();
+        if (pending <= 0) finish();
+        return data;
+      }, function(){
+        pending--;
+        paintProgress();
+        if (pending <= 0) finish();
+      });
+    }
+    function finish() {
+      // Accuracy rule: if every fetch returned ok:false (or rendered
+      // nothing visible), show a neutral "no additional signals
+      // available" message rather than fake success.
+      var anyRendered =
+        rendered > 0 ||
+        !!document.querySelector('.deep-age-chip:not([hidden])') ||
+        !!document.querySelector('.deep-security-chip:not([hidden])') ||
+        !!document.querySelector('.deep-crux-spark') ||
+        (document.getElementById('deepReviewsCard') && !document.getElementById('deepReviewsCard').hidden) ||
+        (document.getElementById('deepEmailCard') && !document.getElementById('deepEmailCard').hidden);
+      if (stripEl) stripEl.setAttribute('data-state', anyRendered ? 'done' : 'empty');
+      if (statusEl) {
+        statusEl.textContent = anyRendered ? t('deepScan.done') : t('deepScan.noSignals');
       }
     }
 
-    pending++; callObservatory(url).then(function(data){
+    track(callObservatory(url).then(function(data){
       window.__auditObservatory = data;
       if (typeof renderSecurityGrade === 'function') renderSecurityGrade(data);
-      done();
-    });
-    pending++; callWaybackFirstSeen(url).then(function(data){
+      return data;
+    }), function(data){ return !!(data && data.ok && data.grade); });
+
+    track(callWaybackFirstSeen(url).then(function(data){
       window.__auditWayback = data;
       if (typeof renderSiteAge === 'function') renderSiteAge(data);
-      done();
-    });
-    pending++; callCruxHistory(url).then(function(data){
+      return data;
+    }), function(data){ return !!(data && data.ok && typeof data.year === 'number'); });
+
+    track(callCruxHistory(url).then(function(data){
       window.__auditCruxHistory = data;
       if (typeof renderCruxHistory === 'function') renderCruxHistory(data);
-      done();
-    });
+      return data;
+    }), function(data){ return !!(data && data.ok && data.hasData); });
+
     if (placeId) {
-      pending++; callGbpDetails(placeId).then(function(data){
+      track(callGbpDetails(placeId).then(function(data){
         window.__auditGbpDetails = data;
         if (typeof renderReviewsCard === 'function') renderReviewsCard(data);
-        done();
-      });
+        return data;
+      }), function(data){ return !!(data && data.ok); });
     }
+
     // Sprint D1: DNS email health (SPF / DMARC / DKIM).
-    pending++; callDnsEmailHealth(url).then(function(data){
+    track(callDnsEmailHealth(url).then(function(data){
       window.__auditDnsEmail = data;
       if (typeof renderDnsEmailHealth === 'function') renderDnsEmailHealth(data);
-      done();
-    });
+      return data;
+    }), function(data){ return !!(data && data.ok); });
+
     // Sprint T4: facts dossier. Fires last so it can read the
     // freshest window.__audit* signals. Renders only when the
     // server-side strict-citation validation passes; silently
     // no-ops otherwise (including when AI Gateway isn't configured).
-    pending++; callBrandDossier(url).then(function(data){
+    track(callBrandDossier(url).then(function(data){
       window.__auditBrandDossier = data;
       if (typeof renderBrandDossier === 'function') renderBrandDossier(data);
-      done();
-    });
+      return data;
+    }), function(data){ return !!(data && data.ok); });
+
+    // Paint initial 0/N so the owner sees "0/6" right away.
+    paintProgress();
   }
 
   // (Phase G3 client-side callYelpLookup removed — Yelp no longer
@@ -7007,10 +7315,38 @@ main{padding-top:64px}
     // Loading
     'load.h2':          'Ejecutando tu auditor\u00eda\u2026',
     'load.sub':         'Esto suele tardar entre 15 y 40 segundos.',
+    'load.subSlow':     'Google est\u00e1 tardando m\u00e1s de lo habitual con este sitio \u2014 a\u00fan procesando\u2026',
     'load.step1':       'Enviando tu sitio al test de velocidad',
-    'load.step2':       'Cargando tu sitio en un tel\u00e9fono simulado',
+    'load.step2':       'Test de velocidad m\u00f3vil (Google PageSpeed)',
     'load.step3':       'Leyendo tu men\u00fa, horarios, pedidos y perfil de Google',
     'load.step4':       'Escribiendo tu informe',
+    // Sprint AUDIT-LOAD-FIX: per-step sub-status strings.
+    'load.sub.starting':       'Iniciando\u2026',
+    'load.sub.submitting':     'Enviando\u2026',
+    'load.sub.lighthouse':     'Google est\u00e1 ejecutando Lighthouse en tu sitio ({n}s)',
+    'load.sub.lighthouseSlow': 'A\u00fan ejecut\u00e1ndose en los servidores de Google ({n}s) \u2014 los sitios lentos pueden tardar 20\u201330s',
+    'load.sub.lighthouseStart':'Pidiendo a Google PageSpeed que pruebe la vista m\u00f3vil\u2026',
+    'load.sub.psiFallback':       'M\u00f3vil agot\u00f3 el tiempo \u2014 probando vista de escritorio\u2026',
+    'load.sub.psiFallbackStart':  'M\u00f3vil agot\u00f3 el tiempo \u2014 probando vista de escritorio\u2026',
+    'load.sub.psiFallbackElapsed':'M\u00f3vil agot\u00f3 el tiempo \u2014 probando vista de escritorio ({n}s)',
+    'load.sub.psiDesktop':        'Puntuado en escritorio (m\u00f3vil fue demasiado lento)',
+    'load.sub.psiDone':        'Test de velocidad completado',
+    'load.sub.psiFailed':      'Test de velocidad no disponible \u2014 continuando sin \u00e9l',
+    'load.sub.reading':        'Leyendo tu p\u00e1gina principal y p\u00e1ginas de seguimiento\u2026',
+    'load.sub.readingElapsed': 'Leyendo tu sitio ({n}s)',
+    'load.sub.pagesRead':      'p\u00e1ginas le\u00eddas',
+    'load.sub.schemaFound':    'datos estructurados encontrados',
+    'load.sub.gbpFound':       'perfil de Google encontrado',
+    'load.sub.contentDoneBare':'Listo',
+    'load.sub.rendering':      'Construyendo tu informe\u2026',
+    'load.sub.doneIn':         'Listo en {n}s',
+    // Sprint AUDIT-LOAD-FIX: error copy for PSI failures.
+    'err.psiTimeout.h2':       'El test de velocidad de Google est\u00e1 saturado ahora mismo.',
+    'err.psiTimeout.body':     'Probamos primero la vista m\u00f3vil y luego la de escritorio \u2014 ambas tardaron m\u00e1s de lo permitido por Google. Esto ocurre frecuentemente cuando un sitio est\u00e1 en Wix, Squarespace u otra plataforma lenta para pintar la primera vista, o cuando la capa gratuita de PSI est\u00e1 limitada. Espera 30 segundos e int\u00e9ntalo de nuevo. Si sigue pasando, escribe a don@muntin.digital y har\u00e9 el test de velocidad a mano.',
+    'err.psiFailed.h2':        'No pudimos conectar con el test de velocidad de Google.',
+    'err.psiFailed.body':      'Int\u00e9ntalo de nuevo en un momento, o escribe a don@muntin.digital para una auditor\u00eda manual. (T\u00e9cnico: ',
+    'err.rateLimit.h2':        'Estamos un poco limitados ahora mismo.',
+    'err.rateLimit.body':      'La capa gratuita de Google est\u00e1 temporalmente saturada. Espera unos 30 segundos antes de intentarlo de nuevo, o escribe a don@muntin.digital para una auditor\u00eda manual.',
     // Error
     'err.h2':           'No pudimos auditar esa URL.',
     'err.body':         'Verifica la direcci\u00f3n e int\u00e9ntalo de nuevo. El sitio debe ser p\u00fablicamente accesible \u2014 si est\u00e1 detr\u00e1s de un inicio de sesi\u00f3n o en una red local, la auditor\u00eda no puede verlo.',
@@ -8446,48 +8782,193 @@ main{padding-top:64px}
     if (which) which.hidden = false;
   }
 
-  // Set the active step by number (1-4). Previous steps get marked
-  // done with a check, future steps stay neutral. Called at real
-  // milestones in the audit pipeline.
-  function setStep(n) {
-    if (!stepsEl) return;
-    currentStep = n;
-    var steps = stepsEl.querySelectorAll('.audit-step');
-    steps.forEach(function(el, idx){
-      var stepNum = idx + 1;
-      el.classList.remove('active', 'done');
-      if (stepNum < n) {
-        el.classList.add('done');
-      } else if (stepNum === n) {
-        el.classList.add('active');
+  // Sprint AUDIT-LOAD-FIX: per-step state machine.
+  //
+  // The old setStep(n) was strictly sequential: every step <n got
+  // marked done, n got marked active, n+1.. stayed pending. That
+  // worked when the audit really was a linear pipeline. In practice
+  // the audit fires four network calls in parallel and we want each
+  // row to track its own underlying signal, so any individual fetch
+  // can return / fail / fall back without the loader appearing
+  // frozen on step 2.
+  //
+  // Each step is { state: 'pending' | 'active' | 'done' | 'warn',
+  //                sub: '<status text>' }. setStepState writes both.
+  // localizedSubText() resolves a short status key to a localized
+  // string so we don't have to hand-translate every message at the
+  // call site.
+  var stepStates = [null, // 1-indexed
+    { state: 'pending', sub: '' },
+    { state: 'pending', sub: '' },
+    { state: 'pending', sub: '' },
+    { state: 'pending', sub: '' }
+  ];
+  var stepStartedAt = [null, null, null, null, null];
+  var stepFinishedAt = [null, null, null, null, null];
+
+  function tr(key, fallback) {
+    try {
+      var lang = window.__muntinLang || 'en';
+      if (lang === 'es' && window.__MUNTIN_UI_ES && window.__MUNTIN_UI_ES[key]) {
+        return window.__MUNTIN_UI_ES[key];
       }
-    });
+    } catch (_) {}
+    return fallback;
+  }
+  // Sprint AUDIT-LOAD-FIX: cross-call flag the heartbeat reads to
+  // generate fallback-aware labels for step 2 without the runAudit
+  // closure having to thread state into setStepState.
+  var psiFallbackInFlight = false;
+
+  // Render one step's DOM from its current state object.
+  function paintStep(n) {
+    if (!stepsEl) return;
+    var li = stepsEl.querySelector('.audit-step[data-step="' + n + '"]');
+    if (!li) return;
+    var s = stepStates[n] || { state: 'pending', sub: '' };
+    li.classList.remove('active', 'done', 'warn');
+    if (s.state === 'active') li.classList.add('active');
+    else if (s.state === 'done') li.classList.add('done');
+    else if (s.state === 'warn') li.classList.add('warn');
+    var subEl = stepsEl.querySelector('[data-step-sub="' + n + '"]');
+    if (subEl) subEl.textContent = s.sub || '';
   }
 
-  // Drive the progress bar based on elapsed time during step 2
-  // (the long Lighthouse wait). Uses an ease-out curve so the bar
-  // moves fast at first (giving the user immediate visual feedback)
-  // and slows down as it approaches the target, which psychologically
-  // masks variable network latency. Caps at 90% until a real
-  // milestone fires.
-  function startProgress() {
-    progressStartTime = Date.now();
-    if (progressFill) progressFill.style.width = '4%';
-    progressTimer = setInterval(function(){
-      var elapsed = (Date.now() - progressStartTime) / 1000;
-      var t = Math.min(elapsed / PROGRESS_TARGET_SECONDS, 1);
-      // Ease out: fast start, slow finish. 1 - (1-t)^2
-      var eased = 1 - (1 - t) * (1 - t);
-      var pct = Math.min(eased * 90, 90); // cap at 90% until real done
-      if (progressFill) progressFill.style.width = pct.toFixed(1) + '%';
+  // Set one step's state and optional sub-status. Repaints just that
+  // row plus recomputes the top-level progress bar.
+  function setStepState(n, state, sub) {
+    if (n < 1 || n > 4) return;
+    stepStates[n] = { state: state, sub: sub || '' };
+    if (state === 'active' && !stepStartedAt[n]) stepStartedAt[n] = Date.now();
+    if ((state === 'done' || state === 'warn') && !stepFinishedAt[n]) stepFinishedAt[n] = Date.now();
+    paintStep(n);
+    repaintProgress();
+  }
 
-      // Update the "this usually takes X seconds" subcopy with a
-      // countdown after we've run longer than expected so the user
-      // knows we haven't stalled.
-      if (loadingSubEl && elapsed > PROGRESS_TARGET_SECONDS + 5) {
-        loadingSubEl.textContent = "Google is taking longer than usual on this one — still running…";
+  // Legacy alias retained for the rest of the codebase. Walks 1..n-1
+  // and marks any still-pending step as done. The new orchestration
+  // path uses setStepState directly.
+  function setStep(n) {
+    currentStep = n;
+    for (var i = 1; i <= 4; i++) {
+      if (i < n) {
+        if (stepStates[i] && stepStates[i].state === 'pending') {
+          setStepState(i, 'done', '');
+        }
+      } else if (i === n) {
+        if (!stepStates[i] || stepStates[i].state === 'pending') {
+          setStepState(i, 'active', '');
+        }
       }
-    }, 200);
+    }
+  }
+
+  // Drive the progress bar from real signal completion. Each finished
+  // step (done OR warn) is worth 25% of the bar; the currently-active
+  // step contributes a smooth elapsed-time-based fill within its
+  // slice, capped at 90% of its slice until it actually finishes.
+  // Result: the bar reflects what the network is actually doing
+  // instead of pretending PSI takes exactly 28s.
+  function repaintProgress() {
+    if (!progressFill) return;
+    var pct = 0;
+    for (var i = 1; i <= 4; i++) {
+      var s = stepStates[i];
+      if (!s) continue;
+      if (s.state === 'done' || s.state === 'warn') {
+        pct += 25;
+      } else if (s.state === 'active' && stepStartedAt[i]) {
+        var elapsed = (Date.now() - stepStartedAt[i]) / 1000;
+        // Each step's slice eases out over ~12s so a fast PSI feels
+        // fast and a slow PSI keeps inching forward.
+        var t = Math.min(elapsed / 12, 1);
+        var eased = 1 - (1 - t) * (1 - t);
+        pct += Math.min(eased * 22, 22);
+      }
+    }
+    pct = Math.min(pct, 96);
+    progressFill.style.width = pct.toFixed(1) + '%';
+  }
+
+  // Heartbeat: refresh elapsed-time sub-status on the active steps
+  // every 600ms so the user sees the seconds tick. Stops when no
+  // step is in `active` state.
+  function startProgressHeartbeat() {
+    progressStartTime = Date.now();
+    if (progressTimer) clearInterval(progressTimer);
+    progressTimer = setInterval(function(){
+      var anyActive = false;
+      for (var i = 1; i <= 4; i++) {
+        var s = stepStates[i];
+        if (s && s.state === 'active' && stepStartedAt[i]) {
+          anyActive = true;
+          var elapsed = Math.floor((Date.now() - stepStartedAt[i]) / 1000);
+          // Step 2 (PSI) gets a friendlier "Google is running this on
+          // their servers" message after 8s so the user understands
+          // the wait isn't local.
+          var label;
+          if (i === 2) {
+            if (psiFallbackInFlight) {
+              label = tr('load.sub.psiFallbackElapsed', 'Mobile timed out — trying desktop view ({n}s)').replace('{n}', elapsed);
+            } else if (elapsed < 4) label = tr('load.sub.starting', 'Starting…');
+            else if (elapsed < 15) label = tr('load.sub.lighthouse', 'Google is running Lighthouse on your site (' + elapsed + 's)').replace('{n}', elapsed);
+            else label = tr('load.sub.lighthouseSlow', 'Still running on Google’s servers (' + elapsed + 's) — slow restaurant sites can take 20–30s').replace('{n}', elapsed);
+          } else if (i === 3) {
+            if (elapsed < 2) label = tr('load.sub.reading', 'Reading your homepage and follow-up pages…');
+            else label = tr('load.sub.readingElapsed', 'Reading your site (' + elapsed + 's)').replace('{n}', elapsed);
+          } else if (i === 1) {
+            label = tr('load.sub.submitting', 'Submitting…');
+          } else if (i === 4) {
+            label = tr('load.sub.rendering', 'Building your report…');
+          }
+          if (label) {
+            // While a step is `active`, its sub-status IS the elapsed-
+            // time label — always overwrite. (Explicit one-shot
+            // messages set the step to `warn` instead, which the
+            // heartbeat skips because we gated on state === 'active'
+            // above.) Earlier versions used a regex allowlist to
+            // protect specific phrasings; that turned out to be both
+            // fragile (Spanish translations didn't match the EN
+            // regexes) and a real bug (the desktop-fallback elapsed
+            // counter froze at first paint).
+            stepStates[i].sub = label;
+            paintStep(i);
+          }
+        }
+      }
+      repaintProgress();
+      // The legacy sub-line under the title used to say "Google is
+      // taking longer than usual…" after 33s; keep that affordance
+      // since some users see it as global progress reassurance.
+      var totalElapsed = (Date.now() - progressStartTime) / 1000;
+      if (loadingSubEl && totalElapsed > PROGRESS_TARGET_SECONDS + 5 && stepStates[2] && stepStates[2].state === 'active') {
+        loadingSubEl.textContent = tr('load.subSlow', "Google is taking longer than usual on this one — still running…");
+      }
+      if (!anyActive) {
+        clearInterval(progressTimer);
+        progressTimer = null;
+      }
+    }, 600);
+  }
+
+  // Convenience: mark the rest of an in-flight audit as cancelled
+  // visually. Used when the whole audit hits a fatal error so the
+  // user doesn't see a half-running loader behind the error panel.
+  function cancelInFlightSteps() {
+    for (var i = 1; i <= 4; i++) {
+      var s = stepStates[i];
+      if (s && s.state === 'active') {
+        stepStates[i] = { state: 'pending', sub: '' };
+        paintStep(i);
+      }
+    }
+  }
+
+  function startProgress() {
+    // Back-compat wrapper. The new orchestration kicks the heartbeat
+    // directly; this exists for any older code path that still calls
+    // startProgress() expecting the legacy elapsed-time bar.
+    startProgressHeartbeat();
   }
 
   function finishProgress() {
@@ -8499,14 +8980,20 @@ main{padding-top:64px}
     if (progressTimer) { clearInterval(progressTimer); progressTimer = null; }
     progressStartTime = null;
     if (progressFill) progressFill.style.width = '0%';
-    if (loadingSubEl) loadingSubEl.textContent = 'This usually takes 15–40 seconds.';
-    setStep(0);
+    if (loadingSubEl) loadingSubEl.textContent = tr('load.sub', 'This usually takes 15–40 seconds.');
+    for (var i = 1; i <= 4; i++) {
+      stepStates[i] = { state: 'pending', sub: '' };
+      stepStartedAt[i] = null;
+      stepFinishedAt[i] = null;
+      paintStep(i);
+    }
+    currentStep = 0;
   }
 
   // Kept for back-compat with any code that still calls cycleLoading/
   // stopCycling — in Sprint 6c these are thin wrappers around the
   // new stepwise API.
-  function cycleLoading() { setStep(1); setTimeout(function(){ setStep(2); startProgress(); }, 400); }
+  function cycleLoading() { setStep(1); setTimeout(function(){ setStep(2); startProgressHeartbeat(); }, 400); }
   function stopCycling() { finishProgress(); }
 
   function gradeScore(score) {
@@ -14858,49 +15345,168 @@ main{padding-top:64px}
     // so a mid-audit toggle flip doesn't confuse the state machine.
     var deepToggle = document.getElementById('auditDeepScan');
     window.__auditDeepScanRequested = !!(deepToggle && deepToggle.checked);
+    // Sprint AUDIT-LOAD-FIX: surface a clear "deep scan continues
+    // after the report" hint inside the loader the moment the audit
+    // starts, but only when the toggle was actually checked. Without
+    // this, owners had no signal during the loader phase that the
+    // tool would keep working after the report appeared, and they
+    // either thought the deep-scan strip was an error or never
+    // noticed it at all.
+    var deepHintEl = document.getElementById('auditLoadingDeepHint');
+    if (deepHintEl) deepHintEl.hidden = !window.__auditDeepScanRequested;
 
-    // Step 1: submitting the request through the same-origin /api/psi
-    // proxy (which adds the PSI API key server-side — see callPsi).
-    setStep(1);
+    // Sprint AUDIT-LOAD-FIX: each step now tracks its own underlying
+    // signal. Step 1 = submit (resolves locally as soon as the fetches
+    // are wired up). Step 2 = PSI (with automatic desktop fallback on
+    // mobile timeout). Step 3 = site-content reads (page-crawl +
+    // schema-check + GBP-lookup). Step 4 = render. Steps advance the
+    // moment their underlying signal returns, so a slow PSI no longer
+    // hides the fact that the rest of the audit already finished.
+    setStepState(1, 'active', tr('load.sub.submitting', 'Submitting…'));
 
-    // A tiny delay before moving to step 2 so the user perceives the
-    // submit phase as a real step — otherwise steps 1 and 2 flip so
-    // fast that the UI looks glitchy. The progress bar then animates
-    // for the duration of the actual Lighthouse call.
+    // Helpers: format "Done in 12.3s" with the elapsed time.
+    function fmtDoneIn(stepNum) {
+      var start = stepStartedAt[stepNum];
+      var end = stepFinishedAt[stepNum] || Date.now();
+      if (!start) return '';
+      var s = ((end - start) / 1000).toFixed(1);
+      var fmt = tr('load.sub.doneIn', 'Done in {n}s');
+      return fmt.replace('{n}', s);
+    }
+
+    var psiFellBackToDesktop = false;
+    // Reset the module-scoped fallback flag so a second audit run
+    // (Try again button) doesn't see stale state.
+    psiFallbackInFlight = false;
+
+    // Kick off step 2 (PSI) and step 3 (crawl + schema + places) in
+    // parallel. We start the heartbeat right after step 1 paints so
+    // the elapsed-time sub-status begins ticking immediately.
     setTimeout(function(){
-      setStep(2);
-      startProgress();
-    }, 350);
+      setStepState(1, 'done', '');
+      setStepState(2, 'active', tr('load.sub.lighthouseStart', 'Asking Google PageSpeed to test the mobile view…'));
+      setStepState(3, 'active', tr('load.sub.reading', 'Reading your homepage and follow-up pages…'));
+      startProgressHeartbeat();
+    }, 200);
 
-    // Kick off PSI + multi-page crawl + schema-check + Places lookup
-    // in parallel so all four network calls overlap with the long
-    // Lighthouse wait. The schema-check call also serves the Phase H14
-    // hours-accuracy check; Places lookup (Sprint M1.4) feeds the
-    // detector-fusion sprints (M1.5–M1.14). Any of these can fail
-    // without blocking the audit — they resolve to null-shaped
-    // fallback objects and detectors gracefully degrade.
-    Promise.all([callPsi(url), callPageCrawl(url), callSchemaCheck(url), callGbpLookup(url)])
-      .then(function(results){
-        var data = results[0];
-        var crawl = results[1];
-        var schema = results[2];
-        var places = results[3];
-        window.__auditCrawl  = crawl;  // exposed for evaluators + later phases
-        window.__auditSchema = schema;
-        window.__auditPlaces = places;
-        // Step 3: Lighthouse response received, scoring restaurant checks
-        setStep(3);
+    // Wrap each fetch so its outcome flips its own step independently
+    // and the orchestrator gets a uniform { ok, value | err } shape.
+    var psiPromise = callPsiWithFallback(url, function(){
+      psiFellBackToDesktop = true;
+      psiFallbackInFlight = true;
+      // Keep state='active' so the heartbeat keeps ticking with the
+      // fallback-aware label. Reset the elapsed timer so the counter
+      // shows the desktop run's duration, not the cumulative 25+
+      // seconds we already spent on the mobile attempt.
+      stepStartedAt[2] = Date.now();
+      stepFinishedAt[2] = null;
+      setStepState(2, 'active', tr('load.sub.psiFallbackStart', 'Mobile timed out — trying desktop view…'));
+    }).then(function(data){
+      // PSI is done (success path). Mark step 2 done OR warn (if it
+      // fell back to desktop, the result is still useful but degraded).
+      psiFallbackInFlight = false;
+      var elapsed = fmtDoneIn(2);
+      if (psiFellBackToDesktop) {
+        setStepState(2, 'warn', tr('load.sub.psiDesktop', 'Desktop view scored (mobile was too slow)') + ' · ' + elapsed);
+      } else {
+        setStepState(2, 'done', tr('load.sub.psiDone', 'Speed test complete') + ' · ' + elapsed);
+      }
+      return { ok: true, data: data };
+    }, function(err){
+      // Both mobile and desktop failed, OR a non-timeout error.
+      psiFallbackInFlight = false;
+      setStepState(2, 'warn', tr('load.sub.psiFailed', 'Speed test unavailable — continuing without it'));
+      return { ok: false, err: err };
+    });
+
+    var contentPromise = Promise.allSettled([
+      callPageCrawl(url),
+      callSchemaCheck(url),
+      callGbpLookup(url)
+    ]).then(function(results){
+      var crawl  = results[0].status === 'fulfilled' ? results[0].value : { ok:false, homepage:null, pages:[], candidates:[] };
+      var schema = results[1].status === 'fulfilled' ? results[1].value : { ok:false, validation:null, objects:[] };
+      var places = results[2].status === 'fulfilled' ? results[2].value : { ok:false, place:null };
+      // Mark step 3 done (we always have at least null-shaped fallbacks)
+      var elapsed = fmtDoneIn(3);
+      var pieces = [];
+      if (crawl && crawl.ok && Array.isArray(crawl.pages))  pieces.push(crawl.pages.length + ' ' + tr('load.sub.pagesRead', 'pages read'));
+      if (schema && schema.ok) pieces.push(tr('load.sub.schemaFound', 'schema found'));
+      if (places && places.ok && places.place) pieces.push(tr('load.sub.gbpFound', 'Google profile found'));
+      var summary = pieces.length ? pieces.join(', ') : tr('load.sub.contentDoneBare', 'Done');
+      setStepState(3, 'done', summary + ' · ' + elapsed);
+      return { crawl: crawl, schema: schema, places: places };
+    });
+
+    Promise.all([psiPromise, contentPromise])
+      .then(function(both){
+        var psiOutcome = both[0];
+        var content   = both[1];
+        window.__auditCrawl  = content.crawl;
+        window.__auditSchema = content.schema;
+        window.__auditPlaces = content.places;
+
+        // If PSI failed completely, we can't render the Lighthouse-
+        // dependent priority-checks (extractAllUrls/extractPageText
+        // both walk lighthouseResult.audits). Surface that as a clear
+        // error with retry guidance instead of crashing renderReport.
+        if (!psiOutcome.ok) {
+          finishProgress();
+          var psiErr = psiOutcome.err;
+          var msg = (psiErr && psiErr.message) || '';
+          var isAbort = psiErr && (psiErr.name === 'AbortError' || psiErr.name === 'TimeoutError');
+          var isTimeout = psiErr && (psiErr.errorKind === 'psi-timeout' || psiErr.status === 504 || isAbort);
+          if (isTimeout) {
+            showError(
+              tr('err.psiTimeout.h2', "Google's speed test is overloaded right now."),
+              tr('err.psiTimeout.body',
+                "We tried the mobile view first and then desktop — both took longer than Google allows. This happens most often when a site is on Wix, Squarespace, or another platform that's slow to first paint, or when Google's free PSI tier is throttled. Wait 30 seconds and try again. If it keeps happening, email don@muntin.digital and I'll run the speed test by hand and send you the report."),
+              url
+            );
+          } else if (/quota|rate|exceed/i.test(msg) || (psiErr && psiErr.status === 429)) {
+            startCooldown(30);
+            showError(
+              tr('err.rateLimit.h2', "We're a little rate-limited right now."),
+              tr('err.rateLimit.body', "Google's free tier is temporarily throttled. Give it about 30 seconds before trying again, or email don@muntin.digital for a manual audit.")
+            );
+          } else {
+            showError(
+              tr('err.psiFailed.h2', "We couldn't reach Google's speed test."),
+              tr('err.psiFailed.body', "Try again in a moment, or email don@muntin.digital for a manual audit. (Technical: ") + (msg || 'unknown error') + ')',
+              url
+            );
+          }
+          if (window.plausible) window.plausible('Audit Error: PSI Failed' + (isTimeout ? ' (Timeout)' : ''));
+          return Promise.reject({ handled: true });
+        }
+
+        // Step 4: rendering. Mark it active first so the user sees the
+        // last row light up before the report appears.
+        setStepState(4, 'active', tr('load.sub.rendering', 'Building your report…'));
         return new Promise(function(resolve){
-          setTimeout(function(){ resolve(data); }, 250);
+          setTimeout(function(){ resolve(psiOutcome.data); }, 200);
         });
       })
       .then(function(data){
-        // Step 4: rendering
-        setStep(4);
+        if (!data) return; // handled-error short-circuit
         try {
+          // Expose so renderReport can surface the desktop-fallback
+          // disclosure in the score header.
+          window.__auditPsiFallback = !!(data && data.__fallbackFromMobile);
           renderReport(data, url);
+          // Show the PSI desktop-fallback disclosure under the verdict
+          // when the mobile run timed out and we transparently re-ran
+          // on desktop. Users must know — a desktop score is much
+          // friendlier than mobile, and they'd otherwise overestimate
+          // their site's speed.
+          var psiNoteEl = document.getElementById('auditPsiFallbackNote');
+          if (psiNoteEl) psiNoteEl.hidden = !window.__auditPsiFallback;
+          setStepState(4, 'done', fmtDoneIn(4));
           finishProgress();
-          if (window.plausible) window.plausible('Audit Completed');
+          if (window.plausible) {
+            window.plausible('Audit Completed');
+            if (window.__auditPsiFallback) window.plausible('Audit PSI Desktop Fallback');
+          }
           // Sprint D3: snapshot the score for the embeddable badge.
           // Fire-and-forget — failure to persist the snapshot
           // (binding missing, network blip) never affects the
@@ -14935,15 +15541,18 @@ main{padding-top:64px}
         }
       })
       .catch(function(err){
+        // Sprint AUDIT-LOAD-FIX: `{ handled: true }` is the short-
+        // circuit we throw from the inline PSI-failure branch — we
+        // already painted an error, no need to repaint here.
+        if (err && err.handled) return;
         finishProgress();
+        cancelInFlightSteps();
         console.error('[audit] fetch failed', err);
         var msg = (err && err.message) || '';
         var isAbort = err && (err.name === 'AbortError' || err.name === 'TimeoutError');
         if (isAbort) {
-          // 45s client-side cap tripped. PSI legitimately stalls on
-          // sites with very large JS bundles (Tacombi, Toast-hosted
-          // sites, etc.) — surface it as a soft error rather than a
-          // permanent failure so the user can retry without panic.
+          // 35s client-side cap tripped. Surface as a soft error so
+          // the user can retry without panic.
           showError(
             "Google's audit is taking longer than expected.",
             "This sometimes happens with large or slow-loading sites. Give it a minute and try again. If it keeps timing out, email don@muntin.digital and I'll run the audit manually."
@@ -14958,17 +15567,7 @@ main{padding-top:64px}
             "Google Lighthouse couldn't load the URL. Make sure it's publicly accessible — no login wall, no staging environment, and no rate limiter blocking bots.",
             url
           );
-        } else if (/quota|rate|exceed/i.test(msg) || err.status === 429) {
-          // Start a 30-second cooldown so rapid retries don't compound
-          // the rate-limit pressure. The submit button shows a
-          // countdown and the Try-again button short-circuits with
-          // the remaining time.
-          startCooldown(30);
-          showError(
-            "We're a little rate-limited right now.",
-            "Google's free tier is temporarily throttled. Give it about 30 seconds before trying again, or email don@muntin.digital for a manual audit."
-          );
-        } else if (err.status === 400) {
+        } else if (err && err.status === 400) {
           // DYM2: 400 from PSI is often a typo (unknown domain, bad
           // hostname). Pass the URL so did-you-mean can surface a
           // correction.
@@ -14977,7 +15576,7 @@ main{padding-top:64px}
             "Check the address and try again. PageSpeed rejected the request — usually that means a typo, a redirect loop, or a site that blocks the Lighthouse crawler.",
             url
           );
-        } else if (/referer.*blocked|referrer.*blocked|api[- ]key.*referer|forbidden.*referer/i.test(msg) || err.status === 403) {
+        } else if (/referer.*blocked|referrer.*blocked|api[- ]key.*referer|forbidden.*referer/i.test(msg) || (err && err.status === 403)) {
           showError(
             "We hit a configuration snag.",
             "This is a temporary issue on our end, not with your site. Try again in a few minutes, or email don@muntin.digital and I'll run the audit manually."
