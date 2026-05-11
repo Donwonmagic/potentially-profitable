@@ -1,0 +1,323 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-11T04:31:30.481Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "zm_yunxi",
+  "language": "zh",
+  "total": 560.07,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "",
+      "start": 0,
+      "end": 0
+    },
+    {
+      "id": 1,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "头条30%的佣金在DoorDash、Uber Eats和Grubhub平台上大致相同；第二层费用的堆叠打开了2.5个百分点的差距。",
+      "start": 0.35,
+      "end": 10.86
+    },
+    {
+      "id": 2,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "在同一张42美元的订单上，DoorDash Marketplace Plus保留18.4%，Grubhub Premium保留17.6%，Uber Eats Pro保留15.9%；直接保留28.9%。",
+      "start": 11.18,
+      "end": 25.94
+    },
+    {
+      "id": 3,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "如果你要放弃一个平台，先放弃Grubhub——它的交易量最低，保留百分比中等，DMV市场的虚假列表投诉率最高。",
+      "start": 26.26,
+      "end": 36.16
+    },
+    {
+      "id": 4,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "评论 · 2026年5月11日 · 8分钟阅读 · 作者Don Goldstein",
+      "start": 36.51,
+      "end": 42.17
+    },
+    {
+      "id": 5,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "我已经对我管理的两家餐厅的合作伙伴报表进行了数学计算，比较了三个平台。头条百分比看起来相同：DoorDash 30%，Uber Eats 30%，Grubhub 30%是大多数独立餐厅支付的标准层级。但是，一旦你添加了营销费、支付处理费、没有人协商的“促销”费用等，实际的利润率——每个平台的利润率就有所不同了。以下是结果。",
+      "start": 42.52,
+      "end": 69.26
+    },
+    {
+      "id": 6,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "头条率——佣金——在所有三个平台上大致相同。不同的是每个平台上附加的额外费用层、可以选择退出的订单上限，以及平台对直接渠道转换的影响。这篇文章是我在2022年刚开始使用电子表格时希望有人能给我的对比分析。",
+      "start": 69.61,
+      "end": 87.21
+    },
+    {
+      "id": 7,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "同一张42美元的订单，三个平台。",
+      "start": 88.31,
+      "end": 91.61
+    },
+    {
+      "id": 8,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "我使用42美元的订单，因为这是在DMV的两个餐厅中过去12个月的平均值。你的订单金额可能会有所不同。百分比差距是论点的核心，而不是美元金额。",
+      "start": 92.31,
+      "end": 104.32
+    },
+    {
+      "id": 9,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "三个平台，同一张42美元的订单，对比分析。DoorDash Marketplace Plus层级的30%佣金扣除12.60美元，支付处理费另扣1.43美元，赞助列表促销费平均为1.20美元，包装费为1.40美元，食物成本为28%或11.76美元，变动劳动力成本为14%或5.88美元，餐厅保留7.73美元或18.4%。Uber Eats在标准30%佣金下扣除12.60美元，支付处理费通过Uber的自己的网关扣1.43美元，Uber Eats Pro会员费添加另1.05美元，包装费为1.40美元，食物成本和劳动力成本相同，保留6.68美元或15.9%。Grubhub Premium层级的30%佣金扣除12.60美元，处理费为1.58美元，因为Grubhub传递了更高的费率，订单中继“通信费”添加了0.75美元，包装费为1.40美元，食物成本和劳动力成本相同，保留7.40美元或17.6%。保留百分比从Uber Eats Pro的15.9%到DoorDash Marketplace Plus的18.4%，差异约为每张订单1.5美元，一旦你合并了第二层费用。",
+      "start": 105.12,
+      "end": 180.69
+    },
+    {
+      "id": 10,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "DoorDash 行重复了我之前的 DoorDash 利润率分析。三个平台的头条数字差异不大，故事的关键在于差距——十八点四到十五点九百分比——以及这个差距的来源。",
+      "start": 181.44,
+      "end": 193.58
+    },
+    {
+      "id": 11,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "差距的真正来源。",
+      "start": 194.68,
+      "end": 196.36
+    },
+    {
+      "id": 12,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "基础佣金并不是我们需要关注的变量。每个平台都提供 15%/25%/30% 的分级结构（名称和包含内容略有不同）。大多数独立餐厅最终都会选择 30% 的分级，因为 15% 和 25% 的分级不包括在应用内发现界面的位置——你存在，但没人能找到你。30% 是被发现的成本。这部分在各个平台上差异不大。",
+      "start": 197.06,
+      "end": 225.41
+    },
+    {
+      "id": 13,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "不同的是第二层：",
+      "start": 225.76,
+      "end": 227.13
+    },
+    {
+      "id": 14,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "DoorDash 在你选择加入应用内促销系统时会添加一个赞助列表费用。每笔订单大约增加 3%，仅适用于促销归属订单。可以选择不加入——但如果你不加入，发现量会大幅下降。",
+      "start": 227.48,
+      "end": 241.53
+    },
+    {
+      "id": 15,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Uber Eats 有一个 Pro 会员费——每笔订单大约 2.50 美元，仅适用于选择加入的订单——这可以让你在应用的“Pro”级别获得位置。与 DoorDash 的赞助列表类似，这是可选择的，但功能上是必需的，以使发现界面生效。",
+      "start": 241.85,
+      "end": 256.5
+    },
+    {
+      "id": 16,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Grubhub 有一个每笔订单的“通信费”（他们的说法）大约为 1.8%，不需要选择加入。这笔费用用于资助订单转发系统。看起来像是较小的附加费，但适用于每笔订单，这就是为什么 Grubhub 行最终与 DoorDash 总体上接近，尽管促销成本较低。",
+      "start": 256.82,
+      "end": 274.12
+    },
+    {
+      "id": 17,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "没有人讨论的营销费陷阱。",
+      "start": 275.22,
+      "end": 277.27
+    },
+    {
+      "id": 18,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "这是运营商最容易忽略的部分。30% 的佣金是基于菜单价格，而不是实际收入。你不能在计算百分比之前从中扣除食物成本或劳动力——这是从顶部扣除的 30%。大多数运营商的心理模型将其视为营销成本，这是错误的；营销预算与利润竞争，而不是与收入竞争。三个平台都是经典意义上的聚合器：一方面是发现界面，另一方面是利润税。",
+      "start": 277.97,
+      "end": 305.16
+    },
+    {
+      "id": 19,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "数学计算：在典型的 12% 经营利润率和 30% 平台佣金的情况下，每笔第三方订单必须比门店相同订单产生 250% 的增量收入，才能在营销基础上实现平台支出的收支平衡。几乎从不这样做。80% 的时间，客户本来就会来。平台在结构上是一个 30% 的利润税，大约为 20% 的增量收入。这就是陷阱。",
+      "start": 305.51,
+      "end": 332.88
+    },
+    {
+      "id": 20,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "如果你要放弃一个，那么应该放弃哪一个。",
+      "start": 333.98,
+      "end": 336.96
+    },
+    {
+      "id": 21,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "对于大多数独立餐厅来说，答案是 Grubhub。有三个原因。第一：Grubhub 渠道的订单量在几乎每个 DMV 市场中都是三个平台中最低的，低于其他平台三到五倍。第二：保留百分比为 17.6%，处于中等水平，因此放弃它会损失最少的保留利润率。第三：Grubhub 在这个市场中有最高的幽灵列表投诉率——餐厅在未经同意或菜单过时的情况下出现在平台上——这是一个品牌控制问题，除了利润问题之外。",
+      "start": 337.66,
+      "end": 366.47
+    },
+    {
+      "id": 22,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "更难的决定是放弃 Uber Eats。保留百分比是最差的三个选项中最差的。但 Uber Eats 在这个市场中具有最高的首次转化为回头客的能力，而且在应用内与 Uber 的交叉推广意味着该平台带来了其他两个选项所没有的发现量。如果你的餐厅位于高人流量的城市节点，Uber 的流量是有意义的客户流来源，那么 Uber Eats 可能是你应该保留的选项。",
+      "start": 366.82,
+      "end": 393.19
+    },
+    {
+      "id": 23,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "我在一家餐厅同时使用 DoorDash 和 Uber Eats，在另一家餐厅只使用 DoorDash。两年前，我放弃了 Grubhub，并没有后悔。放弃 Grubhub 后的订单量通过其他渠道回流到餐厅中，几乎全部是直接订单，这意味着 Grubhub 的订单是被替代的，而不是新增的。",
+      "start": 393.54,
+      "end": 411.72
+    },
+    {
+      "id": 24,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "这如何改变你的渠道组合。",
+      "start": 412.82,
+      "end": 415
+    },
+    {
+      "id": 25,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "如果你同时使用三个平台：请拉取 Grubhub 的合作伙伴对账单，计算过去 90 天的贡献边际（收入减去全部第三方费用栈减去每个订单的变动成本）。将其与同一家餐厅的直接渠道贡献边际进行比较。如果 Grubhub 的贡献边际低于总第三方订单量的 8%，且你的直接渠道有一定的活力，那么决定就很简单了。暂停，观察渠道组合一个季度，然后如果暂停保持了效果，就解除合作。",
+      "start": 415.7,
+      "end": 445.69
+    },
+    {
+      "id": 26,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "如果你同时使用两个平台：问题是是否应该减少到一个平台。数学计算表明，大多数情况下答案是肯定的，但是 Grubhub （尤其是）虚假列表的政治成本和操作员在两个平台上维护菜单所需的时间都是真实的，只是难以衡量。我在两个餐厅都保留 DoorDash，因为保留百分比是最高的。我根据当地发现表面逐个餐厅决定是否放弃第二个平台。",
+      "start": 446.04,
+      "end": 472.04
+    },
+    {
+      "id": 27,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "Don Goldstein 管理两个 DMV 餐厅，并运行 Muntin Digital。上述三个平台的比较基于 2026 年四月的合作伙伴对账单。",
+      "start": 472.39,
+      "end": 482.63
+    },
+    {
+      "id": 28,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "继续",
+      "start": 482.98,
+      "end": 483.32
+    },
+    {
+      "id": 29,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "DoorDash 的利润率分析 —— 对一个平台的更深入分析",
+      "start": 483.67,
+      "end": 487.65
+    },
+    {
+      "id": 30,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Margin Math 工具 —— 使用你的数据运行计算",
+      "start": 487.97,
+      "end": 491.44
+    },
+    {
+      "id": 31,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "2026 年 DoorDash 对于餐厅来说是否值得？—— 战略框架",
+      "start": 491.76,
+      "end": 497.22
+    },
+    {
+      "id": 32,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "499 美元的审计 —— 如果你更愿意看到你的渠道组合在纸面上",
+      "start": 497.54,
+      "end": 503.05
+    },
+    {
+      "id": 33,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "关键要点",
+      "start": 503.4,
+      "end": 504.31
+    },
+    {
+      "id": 34,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "这些平台并不是营销 —— 它们是 30% 的利润率税收，用于 ~20% 的增量收入。",
+      "start": 504.66,
+      "end": 513.05
+    },
+    {
+      "id": 35,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "DoorDash 添加了赞助列表费用（~ 每个促销订单 3%），Uber Eats 添加了 Pro 会员（每个订单 2.50 美元），Grubhub 收取每个订单 1.8% 的非选项通信费。",
+      "start": 513.37,
+      "end": 527.06
+    },
+    {
+      "id": 36,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "在 12% 的营业利润率下，每个第三方订单必须产生 250% 的增量收入才能在平台支出上打平 —— 几乎不可能实现。",
+      "start": 527.38,
+      "end": 537.99
+    },
+    {
+      "id": 37,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
+      "text": "大多数运营商在平台上运行 ≥80% 的被替代的关系订单，而不是新增的发现订单；该平台是一个习惯层，而不是发现层。",
+      "start": 538.31,
+      "end": 548.83
+    },
+    {
+      "id": 38,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(5)",
+      "text": "通过收据和包装插页将第三方客人在第二个订单时转化为直接客人 —— 那才是 30% 的佣金真正发挥作用的地方。",
+      "start": 549.15,
+      "end": 560.07
+    }
+  ]
+}
