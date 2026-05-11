@@ -127,6 +127,21 @@ GLOSSARY = [
     "Klaviyo",
     "Attentive",
     "SimpleTexting",
+    "Mailchimp",
+    "Fivestars",
+    "Como Sense",
+    "Como",
+    "Toast Rewards",
+    "Square Loyalty",
+    "DoorDash Drive",
+    "DoorDash",
+    "Uber Eats Pro",
+    "Uber Eats",
+    "Uber",
+    "Grubhub Premium",
+    "Grubhub",
+    "Marketplace Plus",
+    "Marketplace",
     "Yelp",
     "TripAdvisor",
     "Instagram",
@@ -164,6 +179,18 @@ GLOSSARY = [
     "Arlington",
     "DMV",
     "DC",
+    "Marche",
+    # Legislation + Google product names (keep verbatim — translating
+    # "Initiative 82" loses the legal-citation specificity, and "AI
+    # Overview" is Google's product name, not a description.)
+    "Initiative 82",
+    "AI Overview",
+    "AI Overviews",
+    "Find a Table",
+    "map pack",
+    "local pack",
+    "Rich Results",
+    "Schema.org",
     # Italian dishes (keep original Italian — they're already loanwords
     # in every target language and any translation would reduce
     # culinary specificity)
@@ -173,7 +200,13 @@ GLOSSARY = [
     "Bucatini all'amatriciana",
     "Tonnarelli",
     "Tiramisù",
-    "Tiramisù",
+    "Pici al ragù",
+    "Pici",
+    "Ragù",
+    "Carbonara",
+    "Crudo",
+    # Japanese loanwords used by name in the library
+    "Omakase",
     # Acronyms — spelled out by the TTS via the pronunciation
     # dictionary, but kept verbatim in source text so the translator
     # doesn't expand them inconsistently per language
@@ -228,8 +261,6 @@ GLOSSARY = [
     "four-top",
     "host stand",
     "PWA",
-    "Marketplace Plus",
-    "Marketplace",
     "Speed Index",
     "Core Web Vitals",
     "knowledge panel",
