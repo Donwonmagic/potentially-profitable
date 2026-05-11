@@ -3196,7 +3196,112 @@ var UI_I18N = {
   'reaudit.genericError': {
     en: "Couldn't schedule the reminder. Try again in a moment?",
     es: 'No pudimos programar el recordatorio. ¿Intenta de nuevo en un momento?'
-  }
+  },
+
+  // ─────────────────────────────────────────────────────────────────
+  // Wave-E1-full migration block.
+  //
+  // The audit used to carry a separate window.__MUNTIN_UI_ES dict for
+  // "page-chrome" Spanish strings (nav/hero/form/load/err/score/pdf),
+  // consumed by an ES-only DOM scanner. UI_I18N was the canonical
+  // EN+ES source for everything else. New strings drifted between
+  // the two for two years, and the lookup chain (tr / resolveTr /
+  // t / PDF-local t) was its own maze.
+  //
+  // This commit moves all 50 live entries into UI_I18N (the 23
+  // auto-detectable from data-tr inlines + the 27 dynamic strings my
+  // own JS sets via tr(key, EN_FALLBACK) — JS callsites now read
+  // UI_I18N via the unified tr() that landed in 14776a64). 22 nav.* /
+  // score.* / pdf.cta.* entries were dead code (defined but never
+  // referenced — no data-tr usage, no JS tr() callsite) and were
+  // dropped entirely rather than carried forward.
+  //
+  // After this block, __MUNTIN_UI_ES is deleted and tr()/resolveTr()
+  // simplify to pure UI_I18N lookups.
+  // ─────────────────────────────────────────────────────────────────
+
+  // Breadcrumb (was nav-area legacy keys)
+  'crumb.home':       { en: 'Home',                    es: 'Inicio' },
+  'crumb.tools':      { en: 'Tools',                   es: 'Herramientas' },
+  'crumb.audits':     { en: 'Audits',                  es: 'Auditorías' },
+  'crumb.current':    { en: 'Restaurant',              es: 'Restaurante' },
+  'crumb.label':      { en: 'Breadcrumb',              es: 'Ruta de navegación' },
+  'crumb.skip':       { en: 'Skip to main content',    es: 'Saltar al contenido principal' },
+
+  // Hero block (data-tr / data-tr-html on the homepage of the audit)
+  'hero.eyebrow':     { en: 'Free tool · Restaurant-tuned mobile audit · 30 seconds',
+                        es: 'Herramienta gratuita · Diagnóstico móvil ajustado a restaurantes · 30 segundos' },
+  'hero.h1.full':     { en: 'How is your<br>\n        <span class="serif-italic">restaurant website</span><br>\n        actually doing?',
+                        es: '¿Cómo está realmente<br><span class="serif-italic">el sitio web de tu restaurante</span><br>funcionando?' },
+  'hero.sub':         { en: 'Drop your URL below and I\'ll run a real mobile audit in about thirty seconds — performance, SEO, accessibility, and the specific checks that matter for a restaurant. The full report renders on this page — no sign-up, no email, no tracking. (An optional form at the bottom emails you a PDF copy if you want one.)',
+                        es: 'Pega tu URL abajo y haré una auditoría móvil real en unos treinta segundos: rendimiento, SEO, accesibilidad y las verificaciones específicas que importan para un restaurante. El informe completo aparece en esta página — sin registro, sin email, sin rastreo. (Hay un formulario opcional al final si quieres recibir una copia en PDF.)' },
+  'hero.note':        { en: 'Powered by Google\'s PageSpeed Insights API plus our own restaurant-specific scanner — ordering platforms, reservation widgets, maps, click-to-call, and mobile menu readability. Works on any publicly accessible URL (no staging environments or login walls).',
+                        es: 'Impulsada por la API de PageSpeed Insights de Google más nuestro propio escáner específico para restaurantes: plataformas de pedidos, widgets de reservas, mapas, click-to-call y legibilidad del menú móvil. Funciona con cualquier URL públicamente accesible (sin entornos de prueba ni muros de inicio de sesión).' },
+
+  // Form
+  'form.placeholder': { en: 'https://yourrestaurant.com',           es: 'https://turestaurante.com' },
+  'form.submit':      { en: 'Run audit',                            es: 'Ejecutar auditoría' },
+  'form.urlLabel':    { en: 'Your restaurant website URL',          es: 'URL del sitio web de tu restaurante' },
+
+  // Loader (data-tr static + JS-dynamic via setStepState/heartbeat)
+  'load.h2':          { en: 'Running your audit…',                  es: 'Ejecutando tu auditoría…' },
+  'load.sub':         { en: 'This usually takes 15–40 seconds.',    es: 'Esto suele tardar entre 15 y 40 segundos.' },
+  'load.subSlow':     { en: "Google is taking longer than usual on this one — still running…",
+                        es: 'Google está tardando más de lo habitual con este sitio — aún procesando…' },
+  'load.step1':       { en: 'Submitting your site for the speed test',
+                        es: 'Enviando tu sitio al test de velocidad' },
+  'load.step2':       { en: 'Mobile speed test (Google PageSpeed)',
+                        es: 'Test de velocidad móvil (Google PageSpeed)' },
+  'load.step3':       { en: 'Reading your menu, hours, ordering, and Google profile',
+                        es: 'Leyendo tu menú, horarios, pedidos y perfil de Google' },
+  'load.step4':       { en: 'Writing your report',                  es: 'Escribiendo tu informe' },
+  'load.sub.starting':       { en: 'Starting…',                     es: 'Iniciando…' },
+  'load.sub.submitting':     { en: 'Submitting…',                   es: 'Enviando…' },
+  'load.sub.lighthouse':     { en: 'Google is running Lighthouse on your site ({n}s)',
+                               es: 'Google está ejecutando Lighthouse en tu sitio ({n}s)' },
+  'load.sub.lighthouseSlow': { en: 'Still running on Google’s servers ({n}s) — slow restaurant sites can take 20–30s',
+                               es: 'Aún ejecutándose en los servidores de Google ({n}s) — los sitios lentos pueden tardar 20–30s' },
+  'load.sub.lighthouseStart':{ en: 'Asking Google PageSpeed to test the mobile view…',
+                               es: 'Pidiendo a Google PageSpeed que pruebe la vista móvil…' },
+  'load.sub.psiFallback':    { en: 'Mobile timed out — trying desktop view…',
+                               es: 'Móvil agotó el tiempo — probando vista de escritorio…' },
+  'load.sub.psiFallbackStart':{ en: 'Mobile timed out — trying desktop view…',
+                                es: 'Móvil agotó el tiempo — probando vista de escritorio…' },
+  'load.sub.psiFallbackElapsed':{ en: 'Mobile timed out — trying desktop view ({n}s)',
+                                  es: 'Móvil agotó el tiempo — probando vista de escritorio ({n}s)' },
+  'load.sub.psiDesktop':     { en: 'Desktop view scored (mobile was too slow)',
+                               es: 'Puntuado en escritorio (móvil fue demasiado lento)' },
+  'load.sub.psiDone':        { en: 'Speed test complete',           es: 'Test de velocidad completado' },
+  'load.sub.psiFailed':      { en: 'Speed test unavailable — continuing without it',
+                               es: 'Test de velocidad no disponible — continuando sin él' },
+  'load.sub.reading':        { en: 'Reading your homepage and follow-up pages…',
+                               es: 'Leyendo tu página principal y páginas de seguimiento…' },
+  'load.sub.readingElapsed': { en: 'Reading your site ({n}s)',      es: 'Leyendo tu sitio ({n}s)' },
+  'load.sub.pagesRead':      { en: 'pages read',                    es: 'páginas leídas' },
+  'load.sub.schemaFound':    { en: 'schema found',                  es: 'datos estructurados encontrados' },
+  'load.sub.gbpFound':       { en: 'Google profile found',          es: 'perfil de Google encontrado' },
+  'load.sub.contentDoneBare':{ en: 'Done',                          es: 'Listo' },
+  'load.sub.rendering':      { en: 'Building your report…',         es: 'Construyendo tu informe…' },
+  'load.sub.doneIn':         { en: 'Done in {n}s',                  es: 'Listo en {n}s' },
+
+  // Error state (data-tr static + JS-dynamic via showError)
+  'err.h2':                { en: "We couldn't audit that URL.",     es: 'No pudimos auditar esa URL.' },
+  'err.body':              { en: "Check the address and try again. The site needs to be publicly reachable — if it's behind a login or a local network, the audit can't see it.",
+                             es: 'Verifica la dirección e inténtalo de nuevo. El sitio debe ser públicamente accesible — si está detrás de un inicio de sesión o en una red local, la auditoría no puede verlo.' },
+  'err.retry':             { en: 'Try again',                       es: 'Intentar de nuevo' },
+  'err.newUrl':            { en: 'Use a different URL',             es: 'Usar una URL diferente' },
+  'err.psiTimeout.h2':     { en: "Google's speed test is overloaded right now.",
+                             es: 'El test de velocidad de Google está saturado ahora mismo.' },
+  'err.psiTimeout.body':   { en: "We tried the mobile view first and then desktop — both took longer than Google allows. This happens most often when a site is on Wix, Squarespace, or another platform that's slow to first paint, or when Google's free PSI tier is throttled. Wait 30 seconds and try again. If it keeps happening, email don@muntin.digital and I'll run the speed test by hand and send you the report.",
+                             es: 'Probamos primero la vista móvil y luego la de escritorio — ambas tardaron más de lo permitido por Google. Esto ocurre frecuentemente cuando un sitio está en Wix, Squarespace u otra plataforma lenta para pintar la primera vista, o cuando la capa gratuita de PSI está limitada. Espera 30 segundos e inténtalo de nuevo. Si sigue pasando, escribe a don@muntin.digital y haré el test de velocidad a mano.' },
+  'err.psiFailed.h2':      { en: "We couldn't reach Google's speed test.",
+                             es: 'No pudimos conectar con el test de velocidad de Google.' },
+  'err.psiFailed.body':    { en: "Try again in a moment, or email don@muntin.digital and I'll run the audit by hand and send you the report.",
+                             es: 'Inténtalo de nuevo en un momento, o escribe a don@muntin.digital y haré la auditoría a mano y te enviaré el informe.' },
+  'err.rateLimit.h2':      { en: "We're a little rate-limited right now.",
+                             es: 'Estamos un poco limitados ahora mismo.' },
+  'err.rateLimit.body':    { en: "Google's free tier is temporarily throttled. Give it about 30 seconds before trying again, or email don@muntin.digital for a manual audit.",
+                             es: 'La capa gratuita de Google está temporalmente saturada. Espera unos 30 segundos antes de intentarlo de nuevo, o escribe a don@muntin.digital para una auditoría manual.' }
 };
 
 // Pluralization helper for ES: most nouns just take -es / -s, but
