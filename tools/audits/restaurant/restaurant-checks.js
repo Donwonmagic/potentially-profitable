@@ -2351,11 +2351,21 @@ function checkOgShareMeta(html) {
   // non-empty value that LOOKS like a URL (has at least one /).
   function ogImageOk(v) {
     if (!v) return false;
+    var trimmed = v.trim();
+    if (!trimmed) return false;
     // Reject obviously-bad placeholders we sometimes see in
     // unconfigured templates.
-    if (/^(none|null|undefined|todo|tbd)$/i.test(v.trim())) return false;
-    // Accept absolute, protocol-relative, root-relative, or page-relative.
-    return /^https?:\/\//i.test(v) || /^\/\//.test(v) || /^\//.test(v) || /^[a-z0-9._-]+\.(jpg|jpeg|png|webp|avif|gif|svg)/i.test(v);
+    if (/^(none|null|undefined|todo|tbd)$/i.test(trimmed)) return false;
+    // Accept absolute, protocol-relative, root-relative.
+    if (/^https?:\/\//i.test(trimmed)) return true;
+    if (/^\/\//.test(trimmed)) return true;
+    if (/^\//.test(trimmed)) return true;
+    // Page-relative: any path that ends in a known image extension
+    // anywhere (including folder-prefixed like "img/hero.jpg" —
+    // Batch-B item 9 fix; prior regex only matched top-level
+    // filename forms like "hero.jpg" with no slashes).
+    if (/\.(jpg|jpeg|png|webp|avif|gif|svg)(\?|#|$)/i.test(trimmed)) return true;
+    return false;
   }
   var out = {
     ogTitle:       hasMeta('og:title', nonEmpty),
@@ -3438,6 +3448,12 @@ var UI_I18N = {
   // simplify to pure UI_I18N lookups.
   // ─────────────────────────────────────────────────────────────────
 
+  // Wave-D follow-up batch A item 1: lone orphan from Audit-1.
+  // history.sparkCaption was the only data-tr key not migrated to
+  // UI_I18N in Wave E1-full because it wasn't in the legacy
+  // __MUNTIN_UI_ES dict at all (pre-existing orphan).
+  'history.sparkCaption': { en: 'Your last audits', es: 'Tus últimas auditorías' },
+
   // Breadcrumb (was nav-area legacy keys)
   'crumb.home':       { en: 'Home',                    es: 'Inicio' },
   'crumb.tools':      { en: 'Tools',                   es: 'Herramientas' },
@@ -3511,7 +3527,7 @@ var UI_I18N = {
   'err.psiTimeout.h2':     { en: "Google's speed test is overloaded right now.",
                              es: 'El test de velocidad de Google está saturado ahora mismo.' },
   'err.psiTimeout.body':   { en: "We tried the mobile view first and then desktop — both took longer than Google allows. This happens most often when a site is on Wix, Squarespace, or another platform that's slow to first paint, or when Google's free PSI tier is throttled. Wait 30 seconds and try again. If it keeps happening, email don@muntin.digital and I'll run the speed test by hand and send you the report.",
-                             es: 'Probamos primero la vista móvil y luego la de escritorio — ambas tardaron más de lo permitido por Google. Esto ocurre frecuentemente cuando un sitio está en Wix, Squarespace u otra plataforma lenta para pintar la primera vista, o cuando la capa gratuita de PSI está limitada. Espera 30 segundos e inténtalo de nuevo. Si sigue pasando, escribe a don@muntin.digital y haré el test de velocidad a mano.' },
+                             es: 'Probamos primero la vista móvil y luego la de escritorio — ambas tardaron más de lo permitido por Google. Esto ocurre frecuentemente cuando un sitio está en Wix, Squarespace u otra plataforma lenta para pintar la primera vista, o cuando la capa gratuita de PSI está limitada. Espera 30 segundos e inténtalo de nuevo. Si sigue pasando, escribe a don@muntin.digital y haré el test de velocidad a mano y te enviaré el informe.' },
   'err.psiFailed.h2':      { en: "We couldn't reach Google's speed test.",
                              es: 'No pudimos conectar con el test de velocidad de Google.' },
   'err.psiFailed.body':    { en: "Try again in a moment, or email don@muntin.digital and I'll run the audit by hand and send you the report.",
