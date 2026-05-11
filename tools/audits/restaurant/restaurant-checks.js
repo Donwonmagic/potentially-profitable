@@ -647,8 +647,8 @@ var RESTAURANT_PRIORITY_CHECKS = [
     pass_es: 'Los visitantes pueden tocar tu número para llamar',
     passNote: 'A tappable phone number is on your page — mobile visitors can call you with one tap, which matters for takeout orders, reservation questions, and "are you still open" calls.',
     passNote_es: 'Hay un número tocable en tu página — los visitantes móviles te pueden llamar con un solo tap, lo que importa para pedidos para llevar, preguntas de reservas y llamadas de "¿aún están abiertos?".',
-    passNoteText: 'We found a phone number in your page text, but it is not wrapped in a clickable <code>tel:</code> link. Mobile visitors have to copy the number into their dialer manually instead of tapping to call. Ask your developer to wrap the number in <code>&lt;a href="tel:+1..."&gt;</code>.',
-    passNoteText_es: 'Encontramos un número en el texto, pero no está envuelto en un enlace <code>tel:</code> clicable. Los visitantes móviles tienen que copiar el número al marcador manualmente en vez de tocar para llamar. Pídele a tu desarrollador que envuelva el número en <code>&lt;a href="tel:+1..."&gt;</code>.',
+    passNoteText: 'We found a phone number in your page text, but it is not wrapped in a clickable <code>tel:</code> link — mobile visitors have to copy the number into their dialer manually instead of tapping to call. On Wix or Squarespace this is a 30-second fix in the inline-text editor (highlight the number → Insert link → choose "Phone number"). On a hand-coded site, wrap the number in <code>&lt;a href="tel:+1..."&gt;</code>.',
+    passNoteText_es: 'Encontramos un número en el texto, pero no está envuelto en un enlace <code>tel:</code> tocable — los visitantes móviles tienen que copiar el número al marcador en vez de tocar para llamar. En Wix o Squarespace es un arreglo de 30 segundos en el editor de texto (selecciona el número → Insertar enlace → "Número de teléfono"). En un sitio hecho a mano, envuelve el número en <code>&lt;a href="tel:+1..."&gt;</code>.',
     fail: "We couldn't find a phone number on your site",
     fail_es: 'No encontramos un número de teléfono en tu sitio',
     failNote: "No click-to-call link and no visible phone number in the page text. Every restaurant gets calls — about 'are you open now', about table availability, about special requests — and if your site doesn't make calling one tap, you are losing those conversations. Add a phone number to your site and wrap it in a <code>tel:</code> link.",
@@ -2382,24 +2382,30 @@ var UI_I18N = {
     es: '{score}/100 · {count} verificaci{on} sin confirmar'
   },
   'verdict.90': {
-    en: 'Your site is in great shape. Most restaurants would be thrilled to hit this score. Small polish items may remain — check the breakdown below.',
-    es: 'Tu sitio está en excelente forma. La mayoría de los restaurantes estaría feliz con esta puntuación. Quedan pulidos menores — revisa el desglose abajo.'
+    en: "Your site is in great shape — most restaurants would be thrilled to hit this score. The items below are polish, not problems. Skim them, pick the one or two that catch your eye, and you're done.",
+    es: 'Tu sitio está en gran forma — la mayoría de restaurantes estaría encantada con esta puntuación. Lo de abajo es pulir, no arreglar. Échale un vistazo, escoge una o dos cosas y listo.'
   },
+  // Critique-fix (UX + QA): the verdict copy used to instruct
+  // "pick the two with the green 'Fix yourself' chip." When the
+  // Top-3 fixes ranked out as all dev/rebuild (perf-only regression
+  // on a small site, for example), no green chip existed and the
+  // verdict became a typo. Reworded to describe ACTION rather than
+  // CHIP COLOR — true in every state of the Top-3 list.
   'verdict.70': {
-    en: 'Solid foundation with room to tighten up. Focus on the red and amber items below — most are mechanical fixes that push your scores into the green (90+) zone.',
-    es: 'Base sólida con margen para ajustar. Concéntrate en los elementos rojos y ámbar abajo — la mayoría son arreglos mecánicos que suben tu puntuación a la zona verde (90+).'
+    en: "Solid bones, two or three leaky pipes. Most restaurants at this score are running a template site that just needs a careful weekend — not a rebuild. Your Top 3 fixes are below, sorted by how much real money each one costs you per year. Start with the first one and work down.",
+    es: 'Buenos cimientos, con dos o tres goteras. La mayoría de restaurantes con esta puntuación tiene un sitio plantilla al que le falta un fin de semana cuidadoso — no una reconstrucción. Tus 3 arreglos prioritarios están abajo, ordenados por cuánto dinero te cuesta cada uno al año. Empieza por el primero y baja desde ahí.'
   },
   'verdict.50': {
-    en: "The site works, but it's leaking conversions. The good news: the wins here — load speed, image alt text, meta tags, schema — take days, not months, and they're listed in priority order below.",
-    es: 'El sitio funciona, pero está dejando conversiones en la mesa. La buena noticia: las ganancias aquí — velocidad de carga, texto alternativo de imágenes, meta tags, schema — toman días, no meses, y están listadas por prioridad abajo.'
+    en: "The site works, but it's quietly losing you customers — most likely on mobile, on a Saturday night, when the visitor can't find your hours or your phone tap fast enough. The good news: the biggest wins below are usually a few hours of work, not a redesign. Start at the top of the list, then come back and re-run this audit — you'll see exactly which numbers moved.",
+    es: 'El sitio funciona, pero está perdiendo clientes en silencio — casi siempre en el móvil, un sábado por la noche, cuando alguien no encuentra tus horarios o tu teléfono lo bastante rápido. La buena noticia: las mayores ganancias de abajo suelen ser unas pocas horas de trabajo, no un rediseño. Empieza por arriba de la lista, luego vuelve a pasar esta auditoría — verás exactamente qué números se movieron.'
   },
   'verdict.below': {
-    en: "There's real work to do. Scores in this range usually track with a template site hitting its ceiling — font sizes, tap targets, page speed, and schema markup all tend to be fixable, but they add up. Start with the failing items below, in the order they're listed.",
-    es: 'Hay trabajo real por hacer. Puntuaciones en este rango suelen venir de un sitio plantilla que llegó a su tope — tamaños de fuente, áreas tocables, velocidad y marcado schema todos se pueden arreglar, pero se acumulan. Empieza con los elementos fallidos abajo, en el orden listado.'
+    en: "There's real work to do here, and that's okay — most scores in this range come from a template site that's quietly aged out, not from anything you did wrong. The fastest path forward is the Top 3 list below: pick the first one, block out Saturday morning, fix it, and re-run the audit. If something needs a web person and you don't have one, email don@muntin.digital — that's what Muntin is here for.",
+    es: 'Hay trabajo real por hacer, y no pasa nada — la mayoría de las puntuaciones en este rango vienen de un sitio plantilla que envejeció en silencio, no de nada que hiciste mal. El camino más rápido es la lista de los 3 arreglos prioritarios abajo: empieza por el primero, reserva un sábado por la mañana, arréglalo y vuelve a pasar la auditoría. Si algo necesita una persona de la web y tú no tienes una, escribe a don@muntin.digital — para eso existe Muntin.'
   },
   'verdict.unverifiedSuffix': {
-    en: " We couldn't verify {count} checks on this pass — each one is counted at half weight. Confirming them below will sharpen the score in either direction.",
-    es: ' No pudimos verificar {count} verificaciones esta vez — cada una cuenta a medio peso. Confirmarlas abajo afinará la puntuación en cualquier dirección.'
+    en: " {count} check{s} need your eyes — confirming them on the right takes about 90 seconds and sharpens your score either direction with no other work.",
+    es: ' {count} verificaci{on} necesita{n} tu ojo — confirmarlas a la derecha toma unos 90 segundos y afina tu puntuación en cualquier dirección sin más trabajo.'
   },
   // Sprint M1.16: after detector fusion, most well-covered
   // restaurants see zero unverified checks. Celebrate the
@@ -2516,6 +2522,38 @@ var UI_I18N = {
     es: 'No hubo señales adicionales disponibles para este sitio.'
   },
   'deepScan.eyebrow': { en: 'Deep scan', es: 'Deep scan' },
+  // Sprint AUDIT-LOAD-FIX: idle (pre-start) + progress count keys so
+  // the strip in tools/audits/restaurant/index.html can show the owner
+  // visible movement even before any of the six fetches resolve. The
+  // previous version went silent until the first chip rendered, which
+  // for most small-restaurant sites meant the strip looked dead. The
+  // loaderHint string is shown beneath the main loader subhead when
+  // the Deep Scan toggle is checked, so the owner knows the audit
+  // will continue after the report appears (otherwise the surprise
+  // "still running" strip looks broken).
+  'deepScan.idle': {
+    en: 'Queued — runs after your report appears',
+    es: 'En cola — se ejecuta después de que aparezca tu informe'
+  },
+  'deepScan.progress': {
+    en: '{done}/{total} signals returned',
+    es: '{done}/{total} señales devueltas'
+  },
+  'deepScan.loaderHint': {
+    en: 'Deep scan continues after the report (1–2 min): security headers, site age, real-user data, Google reviews, email-deliverability.',
+    es: 'El escaneo profundo continúa después del informe (1–2 min): encabezados de seguridad, antigüedad del sitio, datos reales de usuarios, reseñas de Google, salud del email.'
+  },
+  // Sprint AUDIT-LOAD-FIX: shown under the score verdict when the
+  // mobile PSI run timed out and the tool fell back to desktop view.
+  // Owners must know the score they're reading is the more forgiving
+  // desktop view — otherwise they think their site is faster than it
+  // actually is on a phone, which is exactly the device most of their
+  // customers use. Lives in UI_I18N as data-tr-html so the <strong>
+  // markup in EN survives translation to ES.
+  'psi.fallback.note': {
+    en: 'Speed test ran on <strong>desktop</strong> view — the mobile test took longer than Google allows. Mobile numbers usually score 15–30 points lower, so treat this as the optimistic case and prioritize the mobile fixes in the report below.',
+    es: 'El test de velocidad se ejecutó en vista de <strong>escritorio</strong> — el test móvil tardó más de lo permitido por Google. Las puntuaciones móviles suelen estar 15–30 puntos por debajo, así que considera esto como el caso optimista y prioriza las correcciones móviles en el informe siguiente.'
+  },
   // Phase 2 U4: hero deep-scan toggle copy. Was referenced as a
   // data-tr attribute in index.html but had no entry here, so a
   // Spanish visitor saw English on this single line. Adding it
@@ -2569,8 +2607,8 @@ var UI_I18N = {
     es: 'Lo que los visitantes reales experimentan'
   },
   'deep.crux.sub': {
-    en: 'Page load, response time, and layout stability — measured from real Chrome users on your site over the last 25 weeks. Only shown when Google has enough samples to publish a trend. (Technical: Core Web Vitals from CrUX.)',
-    es: 'Carga de página, tiempo de respuesta y estabilidad del diseño — medidos desde usuarios reales de Chrome en tu sitio durante las últimas 25 semanas. Solo se muestra cuando Google tiene suficientes muestras para publicar una tendencia. (Técnico: Core Web Vitals de CrUX.)'
+    en: 'Page load, response time, and layout stability — measured from real Chrome visitors over the last 25 weeks. We only show this when Google has enough samples to publish a real trend, so a brand-new or low-traffic site may not have data here yet.',
+    es: 'Carga de página, tiempo de respuesta y estabilidad del diseño — medidos desde visitantes reales de Chrome durante las últimas 25 semanas. Solo lo mostramos cuando Google tiene suficientes muestras para publicar una tendencia real, así que un sitio nuevo o de bajo tráfico puede no tener datos aquí todavía.'
   },
   'deep.reviews.heading': {
     en: 'Google reviews snapshot',
@@ -2905,9 +2943,82 @@ var UI_I18N = {
   // Effort/time meta strings reused inside the action plan column
   // items. Kept separate from the Top-3 chip text because these render
   // as plain meta labels without chip styling.
-  'effort.self':    { en: 'Fix yourself',      es: 'Arreglo propio' },
-  'effort.dev':     { en: 'Ask your developer', es: 'Pregunta a tu desarrollador' },
-  'effort.rebuild': { en: 'Rebuild needed',    es: 'Se necesita rehacer' },
+  // Sprint AUDIT-EMPOWERMENT: "Ask your developer" silently alienated
+  // the 70% of small-restaurant owners who don't have one. "Needs a
+  // web person" is wider — covers a freelancer, a Wix support chat,
+  // a tech-savvy nephew, or Muntin Digital — without making the
+  // owner feel like they're missing infrastructure they should have.
+  // Same logic for "Rebuild needed" → "Bigger project": less ominous,
+  // doesn't immediately imply "throw your site away."
+  'effort.self':    { en: 'Fix yourself',      es: 'Lo arreglas tú' },
+  'effort.dev':     { en: 'Needs a web person', es: 'Necesita una persona de la web' },
+  'effort.rebuild': { en: 'Bigger project',     es: 'Proyecto más grande' },
+  // Sprint AUDIT-EMPOWERMENT: priority-list self-fix filter copy.
+  // Owner-aware: "no web person needed" instead of "self-effort" or
+  // "developer task" jargon.
+  'priority.filter.self': {
+    en: 'Show me only the items I can fix myself (no web person needed)',
+    es: 'Muéstrame solo lo que puedo arreglar yo (sin necesitar a alguien de la web)'
+  },
+  'priority.filter.count.filtered': {
+    en: 'Showing {self} of {all} items you can do yourself',
+    es: 'Mostrando {self} de {all} cosas que puedes hacer tú'
+  },
+  // Critique-fix (UX): passive preview when the filter is OFF so the
+  // owner sees the size of the self-fix slice before clicking.
+  'priority.filter.count.preview': {
+    en: '{self} of {all} are things you can do yourself',
+    es: '{self} de {all} son cosas que puedes hacer tú'
+  },
+  // Sprint AUDIT-EMPOWERMENT: Top-3 sub-copy + Weekend Mode strings.
+  // The sub-copy now tells the owner WHY the items are ranked (dollar
+  // estimate) AND what action to take (pick 2). The Weekend Mode
+  // button is a focused-mode entry point: one click, see the 2
+  // self-fixable items, fix them, come back Sunday.
+  'topFixes.sub': {
+    en: "Sorted by estimated revenue at risk. Pick two — that's your weekend.",
+    es: 'Ordenado por ingresos estimados en riesgo. Escoge dos — ese es tu fin de semana.'
+  },
+  'weekendMode.enter': {
+    en: 'Show me only the 2 things to fix this weekend →',
+    es: 'Muéstrame solo las 2 cosas para arreglar este fin de semana →'
+  },
+  'weekendMode.close.copy': {
+    en: "Knock these two out this weekend. Your checkmarks are saved on this device — come back Sunday night, re-run the audit, and you'll see exactly which numbers moved.",
+    es: 'Resuelve estos dos este fin de semana. Tus marcas están guardadas en este dispositivo — vuelve el domingo por la noche, ejecuta otra vez la auditoría y verás exactamente qué cifras se movieron.'
+  },
+  'weekendMode.close.reaudit': {
+    en: 'Re-audit my site →',
+    es: 'Volver a auditar mi sitio →'
+  },
+  'weekendMode.close.exit': {
+    en: 'Show me everything',
+    es: 'Mostrarme todo'
+  },
+  // Sprint AUDIT-EMPOWERMENT: Core Web Vitals strip — plain-English
+  // headline first, technical acronym second. The .label cell now
+  // reads ".plain" and the .hint footnote reads ".tech".
+  'cwv.lcp.plain': { en: 'Time to see the page',         es: 'Tiempo en ver la página' },
+  'cwv.lcp.tech':  { en: 'LCP · Largest Contentful Paint', es: 'LCP · Largest Contentful Paint' },
+  'cwv.cls.plain': { en: 'How much the page jumps',       es: 'Cuánto se mueve la página' },
+  'cwv.cls.tech':  { en: 'CLS · Cumulative Layout Shift',  es: 'CLS · Cumulative Layout Shift' },
+  'cwv.inp.plain': { en: 'How fast it reacts to taps',    es: 'Qué tan rápido responde cuando lo tocas' },
+  'cwv.inp.tech':  { en: 'INP · Interaction to Next Paint', es: 'INP · Interaction to Next Paint' },
+  // Critique-fix (Spanish-fluency reviewer): web-perf acronyms are
+  // ALWAYS left untranslated in Spanish docs (MDN, web.dev/es, Google
+  // Search Central). "Mayor pintado de contenido" / "Primer pintado de
+  // contenido" / "Interacción al siguiente pintado" are inventions no
+  // real Spanish-speaking developer would recognize. Acronym labels
+  // stay identical EN/ES — the plain-English LEADER above each card
+  // (cwv.*.plain) carries the meaning.
+  'cwv.tbt.plain': { en: 'How long it’s frozen at start', es: 'Cuánto tarda en responder al inicio' },
+  'cwv.tbt.tech':  { en: 'TBT · Total Blocking Time',      es: 'TBT · Total Blocking Time' },
+  'cwv.fcp.plain': { en: 'Time to first pixel',           es: 'Tiempo al primer pixel' },
+  'cwv.fcp.tech':  { en: 'FCP · First Contentful Paint',   es: 'FCP · First Contentful Paint' },
+  // Critique-fix: a duplicate `'effort.rebuild'` key used to live here
+  // and silently revert the new "Bigger project" copy back to "Rebuild
+  // needed" — JS object-literal semantics let the later key win.
+  // Canonical definition is at line ~2949. Do NOT re-add it here.
   'effort.halfday': { en: 'Half-day project',  es: 'Proyecto de medio día' },
   // Sprint N1: NAP cross-check card (Name/Address/Phone consistency
   // across Google Places, schema.org, and on-page text). Rows render
@@ -3029,7 +3140,18 @@ var UI_I18N = {
 // locale-aware plural suffixes that English doesn't. Keep this
 // map small and extend only as new strings land.
 var ES_PLURAL = {
-  'on': function(n){ return n === 1 ? 'ón' : 'ones'; }
+  'on': function(n){ return n === 1 ? 'ón' : 'ones'; },
+  // Critique-fix (functional QA): the new `verdict.unverifiedSuffix`
+  // ES string uses `{n}` to alternate the verb ending (`necesita` /
+  // `necesitan`). Without a handler here, `{n}` rendered as an empty
+  // string and the suffix always read `necesita` regardless of count
+  // — and that suffix only fires when count > 2, so the wrong-grammar
+  // path was the only one hit.
+  'n': function(n){ return n === 1 ? '' : 'n'; },
+  // Generic `{s}` plural-marker used in EN (e.g. `check{s}` -> check
+  // / checks). The English `count of unverified` template adds an
+  // `s` only when count > 1.
+  's': function(n){ return n === 1 ? '' : 's'; }
 };
 
 function t(key, vars, lang) {
