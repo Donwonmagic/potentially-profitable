@@ -2340,12 +2340,29 @@ function checkOgShareMeta(html) {
     return contentCheck ? contentCheck(val) : val.length > 0;
   }
   var nonEmpty = function(v){ return v.length > 0; };
+  // Audit-4 fix (Wave-D batch 1): og:image content can be absolute
+  // (http(s)://), protocol-relative (//host/path), root-relative
+  // (/path), or page-relative (path). All four resolve correctly
+  // in modern social previewers (Facebook, iMessage, Twitter,
+  // WhatsApp) which run the URL through `new URL(content, pageUrl)`
+  // before fetching. The prior `^https?://` check failed sites with
+  // root-relative og:image references — common on Squarespace and
+  // Wix templates — and reported a false-fail on D7. Accept any
+  // non-empty value that LOOKS like a URL (has at least one /).
+  function ogImageOk(v) {
+    if (!v) return false;
+    // Reject obviously-bad placeholders we sometimes see in
+    // unconfigured templates.
+    if (/^(none|null|undefined|todo|tbd)$/i.test(v.trim())) return false;
+    // Accept absolute, protocol-relative, root-relative, or page-relative.
+    return /^https?:\/\//i.test(v) || /^\/\//.test(v) || /^\//.test(v) || /^[a-z0-9._-]+\.(jpg|jpeg|png|webp|avif|gif|svg)/i.test(v);
+  }
   var out = {
     ogTitle:       hasMeta('og:title', nonEmpty),
     ogDescription: hasMeta('og:description', nonEmpty),
-    ogImage:       hasMeta('og:image', function(v){ return /^https?:\/\//i.test(v); }),
+    ogImage:       hasMeta('og:image', ogImageOk),
     twitterCard:   hasMeta('twitter:card', nonEmpty),
-    twitterImage:  hasMeta('twitter:image', function(v){ return /^https?:\/\//i.test(v); })
+    twitterImage:  hasMeta('twitter:image', ogImageOk)
   };
   // Score 0-5, for quick comparison against a subtype benchmark.
   out.score = (out.ogTitle?1:0) + (out.ogDescription?1:0) + (out.ogImage?1:0) +

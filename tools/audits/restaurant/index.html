@@ -7379,13 +7379,22 @@ main{padding-top:64px}
     try {
       var state = window.__auditScoreState;
       if (!state || !state.audits) return;
-      renderPriorityChecks(state.audits, state.allUrls, state.pageText);
-      // Re-run the overall-score recompute since checks may have
-      // flipped from 'unverified' (half-weight) to 'pass' or 'fail'
-      // (full weight). recomputeOverallFromCurrentState handles
-      // the ranking + score-card updates atomically.
+      // Audit-5 fix: skip non-restaurant audits entirely. The
+      // priority list is hidden via toggleRestaurantUi for sites
+      // we didn't classify as restaurants; running the renderer
+      // into that hidden container wastes work AND triggers a
+      // restaurant-readiness recompute the rollup intentionally
+      // suppresses.
+      if (!state.isRestaurant) return;
+      // Audit-5 follow-up: drop the redundant direct
+      // renderPriorityChecks call — recomputeOverallFromCurrentState
+      // below already re-renders via the same code path. Two calls
+      // were a 2x render cost on every deep-scan signal landing.
       if (typeof recomputeOverallFromCurrentState === 'function') {
         recomputeOverallFromCurrentState();
+      } else {
+        // Defensive fallback: only re-render if the helper is missing.
+        renderPriorityChecks(state.audits, state.allUrls, state.pageText);
       }
     } catch (e) {
       try { console.warn('[audit] deep-scan priority refresh failed:', e); } catch (_) {}
@@ -10860,10 +10869,15 @@ main{padding-top:64px}
     var places = window.__auditPlaces || null;
     var schema = window.__auditSchema || null;
     var crawl  = window.__auditCrawl  || null;
+    // Audit-4 follow-up: expose businessType so check evaluators
+    // (D6 delivery-presence) can branch by subtype without reaching
+    // for the score-state global directly.
+    var scoreState = window.__auditScoreState || null;
     return {
       places: (places && places.ok && places.place) ? places : null,
       schema: (schema && schema.ok) ? schema : null,
-      crawl:  (crawl  && crawl.ok)  ? crawl  : null
+      crawl:  (crawl  && crawl.ok)  ? crawl  : null,
+      businessType: scoreState ? scoreState.businessType : null
     };
   }
 
@@ -11383,52 +11397,103 @@ main{padding-top:64px}
     // ─────────────────────────────────────────────────────────
 
     // D1: gbp-hours-mismatch — site schema hours vs GBP hours.
-    // Both signals come from the main audit cycle (places + schema
-    // fetch in parallel before render). Compares the parsed weekday
-    // hours from each source; a string-match disagreement is fail,
-    // exact match is pass, missing data is unverified.
+    //
+    // Audit-4 fix: prior implementation read context.schema.validation
+    // .openingHours expecting a day-indexed array; the validator
+    // actually returns a SUMMARY object {present, dayCount, ...} so
+    // the comparison branch was permanent dead code. Now we parse
+    // openingHoursSpecification directly from the raw JSON-LD objects
+    // on context.schema.objects and convert to a day→[open,close]
+    // table on each side, then compare numerically — eliminating both
+    // the data-shape bug and the 12h/24h false-positive risk from
+    // the prior string-comparison approach.
     if (def.type === 'gbp-hours-mismatch') {
       var ghCtx = context || {};
       var ghPlace = ghCtx.places && ghCtx.places.place;
-      var ghSchema = ghCtx.schema && ghCtx.schema.validation;
       var ghGbpHours = ghPlace && Array.isArray(ghPlace.weekdayHoursText)
         ? ghPlace.weekdayHoursText : null;
-      var ghSchemaHours = ghSchema && ghSchema.openingHours;
-      // Need both sides to compare. If GBP missing OR schema missing
-      // OR schema doesn't have a populated week, it's unverified —
-      // we honestly don't know if they agree.
-      if (!ghGbpHours || !Array.isArray(ghSchemaHours) || ghSchemaHours.length === 0) {
-        return makeResult(def, 'unverified');
-      }
-      // Normalize both: lowercase + trim + collapse whitespace. GBP's
-      // weekdayHoursText is already day-prefixed ("Monday: 11–22");
-      // schema's openingHours is a normalized day-list. We do a
-      // permissive substring match: as long as schema's hours-for-day
-      // text appears in the corresponding GBP entry, count it as
-      // agreeing. Mismatch = at least one day disagrees.
-      function normHours(s){ return String(s || '').toLowerCase().replace(/\s+/g, ' ').replace(/[–—]/g, '-').trim(); }
-      var disagreements = 0;
-      var compared = 0;
-      for (var ghI = 0; ghI < 7 && ghI < ghGbpHours.length && ghI < ghSchemaHours.length; ghI++) {
-        var ghG = normHours(ghGbpHours[ghI]);
-        var ghS = normHours(ghSchemaHours[ghI]);
-        if (!ghG || !ghS) continue;
-        compared++;
-        // Permissive: extract HH:MM ranges and compare numerically.
-        var rangeRe = /(\d{1,2}):?(\d{2})?\s*(?:am|pm)?\s*-\s*(\d{1,2}):?(\d{2})?\s*(?:am|pm)?/g;
-        var ghGRanges = (ghG.match(rangeRe) || []).join('|');
-        var ghSRanges = (ghS.match(rangeRe) || []).join('|');
-        // If either range is empty (e.g. "closed"), require both to be empty for agreement.
-        var ghGClosed = /closed|cerrado/.test(ghG);
-        var ghSClosed = /closed|cerrado/.test(ghS);
-        if (ghGClosed !== ghSClosed) { disagreements++; continue; }
-        if (ghGClosed && ghSClosed) continue;
-        if (ghGRanges && ghSRanges && ghGRanges !== ghSRanges) {
-          disagreements++;
+      var ghSchemaObjs = ghCtx.schema && Array.isArray(ghCtx.schema.objects)
+        ? ghCtx.schema.objects : null;
+      if (!ghGbpHours || !ghSchemaObjs) return makeResult(def, 'unverified');
+
+      // Parse schema's openingHoursSpecification entries into a
+      // day-name → {opens, closes} map. Schema's `dayOfWeek` can be
+      // a string or array of strings. Times are HH:MM ISO format.
+      var ghDayMap = {
+        monday: 0, tuesday: 1, wednesday: 2, thursday: 3,
+        friday: 4, saturday: 5, sunday: 6
+      };
+      var ghSchemaWeek = [null, null, null, null, null, null, null];
+      function ghAddSpec(spec) {
+        if (!spec || typeof spec !== 'object') return;
+        var days = spec.dayOfWeek;
+        if (!days) return;
+        var dayList = Array.isArray(days) ? days : [days];
+        for (var di = 0; di < dayList.length; di++) {
+          var dn = String(dayList[di]).toLowerCase().replace(/^https?:\/\/schema\.org\//, '');
+          var idx = ghDayMap[dn];
+          if (typeof idx !== 'number') continue;
+          ghSchemaWeek[idx] = {
+            opens: spec.opens || null,
+            closes: spec.closes || null
+          };
         }
       }
-      if (compared === 0) return makeResult(def, 'unverified');
-      return makeResult(def, disagreements > 0 ? 'fail' : 'pass');
+      for (var ghOi = 0; ghOi < ghSchemaObjs.length; ghOi++) {
+        var ghObj = ghSchemaObjs[ghOi];
+        if (!ghObj) continue;
+        var ghOh = ghObj.openingHoursSpecification;
+        if (!ghOh) continue;
+        if (Array.isArray(ghOh)) {
+          for (var ghKi = 0; ghKi < ghOh.length; ghKi++) ghAddSpec(ghOh[ghKi]);
+        } else ghAddSpec(ghOh);
+      }
+      var ghSchemaHasAny = ghSchemaWeek.some(function(d){ return d != null; });
+      if (!ghSchemaHasAny) return makeResult(def, 'unverified');
+
+      // GBP weekdayHoursText format: "Monday: 11:00 AM – 10:00 PM" or
+      // "Monday: Closed" (Google Places). Parse to {opens, closes}
+      // in 24h HH:MM, matching schema's format for direct comparison.
+      function ghParseGbpDay(s) {
+        if (!s || typeof s !== 'string') return null;
+        var t = s.toLowerCase().replace(/[–—]/g, '-').replace(/[ \s]+/g, ' ').trim();
+        if (/closed/.test(t)) return { closed: true };
+        // Match "11:00 am - 10:00 pm" or "11 am - 10 pm" or "11-22"
+        var m = t.match(/(\d{1,2})(?::(\d{2}))?\s*(am|pm)?\s*[-–—]\s*(\d{1,2})(?::(\d{2}))?\s*(am|pm)?/);
+        if (!m) return null;
+        function to24(h, mn, ap) {
+          h = parseInt(h, 10);
+          mn = mn ? parseInt(mn, 10) : 0;
+          if (ap === 'pm' && h < 12) h += 12;
+          if (ap === 'am' && h === 12) h = 0;
+          return (h < 10 ? '0' + h : '' + h) + ':' + (mn < 10 ? '0' + mn : '' + mn);
+        }
+        return { opens: to24(m[1], m[2], m[3]), closes: to24(m[4], m[5], m[6]) };
+      }
+
+      var ghDisagreements = 0;
+      var ghCompared = 0;
+      for (var ghI = 0; ghI < 7 && ghI < ghGbpHours.length; ghI++) {
+        var ghSchemaDay = ghSchemaWeek[ghI];
+        var ghGbpDay = ghParseGbpDay(ghGbpHours[ghI]);
+        if (!ghSchemaDay || !ghGbpDay) continue;
+        ghCompared++;
+        // Both closed? Agree.
+        if (ghGbpDay.closed && (ghSchemaDay.opens === null || ghSchemaDay.closes === null)) continue;
+        // One closed, other open? Disagree.
+        if (ghGbpDay.closed !== !!(ghSchemaDay.opens === null || ghSchemaDay.closes === null)) {
+          ghDisagreements++;
+          continue;
+        }
+        // Both open — compare times (already normalized to HH:MM).
+        var ghSchemaOpens  = String(ghSchemaDay.opens  || '').slice(0, 5);
+        var ghSchemaCloses = String(ghSchemaDay.closes || '').slice(0, 5);
+        if (ghSchemaOpens !== ghGbpDay.opens || ghSchemaCloses !== ghGbpDay.closes) {
+          ghDisagreements++;
+        }
+      }
+      if (ghCompared === 0) return makeResult(def, 'unverified');
+      return makeResult(def, ghDisagreements > 0 ? 'fail' : 'pass');
     }
 
     // D4: gbp-photo-count — under 10 photos on Google Business Profile.
@@ -11444,30 +11509,46 @@ main{padding-top:64px}
     }
 
     // D6: delivery-presence — third-party aggregator detected.
+    //
+    // Audit-4 fixes:
+    //   1. `detectPlatforms` returns objects shaped {label, name},
+    //      not {host, ...} — the prior `p.host || p` fallback gave
+    //      `[object Object]` for every iteration, and the indexOf
+    //      check never matched. Now reads `p.name` directly (already
+    //      lowercased + whitespace-stripped per the comment at
+    //      restaurant-checks.js:258).
+    //   2. Added a real `fail` path. For fast-casual, absence of a
+    //      delivery aggregator IS a problem worth flagging — the
+    //      segment lives or dies on aggregator presence. For other
+    //      subtypes, the unverified path is more honest (we don't
+    //      know if they should be delivering). The byType.weight:0
+    //      gate already suppresses the check entirely for fine-dining.
     if (def.type === 'delivery-presence') {
-      // Reuse the existing ordering platform detector — it already
-      // knows DoorDash, Uber Eats, Grubhub, Slice, ChowNow, etc.
-      // (see RESTAURANT_ORDERING_HOSTS in src/worker.js).
       var dpDetection = detectPlatforms(['ordering'], allUrls);
+      var dpAggregatorNames = ['doordash', 'ubereats', 'uber eats', 'grubhub', 'seamless', 'postmates', 'slice', 'chownow'];
+      function dpHitIsAggregator(p) {
+        var name = String((p && p.name) || '').toLowerCase();
+        if (!name) return false;
+        for (var di = 0; di < dpAggregatorNames.length; di++) {
+          if (name.indexOf(dpAggregatorNames[di]) !== -1) return true;
+        }
+        return false;
+      }
       if (dpDetection.detected) {
-        // Filter to aggregator-only hits (not first-party ordering like Toast)
-        var dpAggregators = ['doordash', 'ubereats', 'uber eats', 'grubhub', 'seamless', 'postmates', 'slice', 'chownow'];
-        var dpHasAggregator = (dpDetection.found || []).some(function(p){
-          var hostname = String((p && p.host) || p || '').toLowerCase();
-          return dpAggregators.some(function(a){ return hostname.indexOf(a) !== -1; });
-        });
+        var dpHasAggregator = (dpDetection.found || []).some(dpHitIsAggregator);
         if (dpHasAggregator) return makeResult(def, 'pass');
       }
-      // Places signal: a verified delivery=true is some indication
-      // (covers self-driver delivery), but doesn't tell us about
-      // aggregator presence. Treat as unverified rather than pass.
+      // No aggregator detected. Distinguish by subtype:
+      //   - fast-casual: this IS a fail (their bread-and-butter)
+      //   - everyone else: honestly unverified (might be by-design dine-in only)
+      var dpSubtype = (context && context.businessType) || null;
+      if (dpSubtype === 'fast-casual') return makeResult(def, 'fail');
+      // Places signal: a verified delivery=true means they deliver
+      // somehow (own driver or aggregator we didn't detect). Treat
+      // as a softer unverified — they're doing delivery, just not
+      // visibly via the standard aggregators.
       var dpPlace = context && context.places && context.places.place;
-      if (dpPlace && dpPlace.delivery === true) {
-        // The business delivers somehow, just not via known aggregator URLs.
-        return makeResult(def, 'unverified');
-      }
-      // No delivery signal at all — honestly unverified, not fail.
-      // The byType override above suppresses this for fine-dining.
+      if (dpPlace && dpPlace.delivery === true) return makeResult(def, 'unverified');
       return makeResult(def, 'unverified');
     }
 
@@ -11528,25 +11609,50 @@ main{padding-top:64px}
 
     // D5: stale-copyright — homepage footer year vs current year.
     // Reads from context.crawl.homepage.html (main cycle).
+    //
+    // Audit-5 fix: scope the regex to the <footer> element when one
+    // exists; falls back to whole document only when no <footer>
+    // is present. The prior whole-document scan was prone to false-
+    // pass: a body-copy mention like "© 2025 Toast Inc." in an
+    // embedded checkout widget masked a stale "© 2019" footer
+    // because Math.max picked the latest year regardless of context.
+    // The footer-scoping eliminates this class of leak entirely.
     if (def.type === 'stale-copyright') {
       var scCrawl = context && context.crawl;
       var scHomepage = scCrawl && scCrawl.homepage;
       if (!scHomepage || scHomepage.status !== 200 || !scHomepage.html) {
         return makeResult(def, 'unverified');
       }
+      // Extract <footer>...</footer> content if present. Some sites
+      // have multiple footers (a page-level footer + a section-level
+      // one); concatenate them all so a year in either counts.
+      var scFooterRe = /<footer\b[^>]*>([\s\S]*?)<\/footer>/gi;
+      var scFooterChunks = [];
+      var scFm;
+      while ((scFm = scFooterRe.exec(scHomepage.html)) !== null) {
+        scFooterChunks.push(scFm[1]);
+      }
+      // If no <footer> element exists, fall back to the last 4KB
+      // of the document — most copyright lines live there even on
+      // sites that use a <div class="footer"> instead of the tag.
+      var scScopedHtml;
+      if (scFooterChunks.length > 0) {
+        scScopedHtml = scFooterChunks.join('\n');
+      } else {
+        var scLen = scHomepage.html.length;
+        scScopedHtml = scHomepage.html.slice(Math.max(0, scLen - 4096));
+      }
       // Look for © YYYY or "Copyright YYYY" patterns. Pick the
-      // LATEST year mentioned (most footers carry just one, but
-      // older sites sometimes have "© 2018-2024" ranges or stale
-      // marketing copy).
+      // LATEST year mentioned — within the footer scope this is
+      // safe (most footers carry just one current year).
       var scYears = [];
       var scRe = /(?:©|copyright|copyleft|&copy;)[\s\S]{0,60}?(20\d{2})/gi;
       var scMatch;
-      while ((scMatch = scRe.exec(scHomepage.html)) !== null) {
+      while ((scMatch = scRe.exec(scScopedHtml)) !== null) {
         scYears.push(parseInt(scMatch[1], 10));
       }
-      // Also pick "(c) YYYY" without the word
       var scRe2 = /\(c\)\s*(20\d{2})/gi;
-      while ((scMatch = scRe2.exec(scHomepage.html)) !== null) {
+      while ((scMatch = scRe2.exec(scScopedHtml)) !== null) {
         scYears.push(parseInt(scMatch[1], 10));
       }
       if (scYears.length === 0) return makeResult(def, 'unverified');
@@ -12957,7 +13063,30 @@ main{padding-top:64px}
     'loyalty':                 [0.01, 0.03],
     'email-capture':           [0.005, 0.02],
     'catering-page':           [0.01, 0.04],
-    'hours-accuracy':          [0.005, 0.02]
+    'hours-accuracy':          [0.005, 0.02],
+    // Audit-4 follow-up (Wave D batch 1 + 2): revenue coefficients
+    // for the 7 new priority checks. Without these the new types
+    // sort BELOW trivial existing checks in rankActionablesByImpact
+    // — defeating the per-check weight (D1's 1.5, D3's 1.0, etc).
+    //   D1 hours-mismatch:    2–6% — a wrong-hours signal directly
+    //                          kills bookings via Google search panel.
+    //   D2 review-responsiveness: 1–3% — soft signal but compounds.
+    //   D3 transport-security: 1–4% — Chrome "Not secure" repels
+    //                          high-value parties hardest.
+    //   D4 gbp-photo-count:   0.5–2% — carousel under-merchandised.
+    //   D5 stale-copyright:   0.2–1% — subtle doubt signal.
+    //   D6 delivery-presence: 2–5% (fast-casual subtype reweights
+    //                          via byType; coefficient is the
+    //                          baseline before subtype scaling).
+    //   D7 og-share-preview:  0.5–2% — broken share previews cost
+    //                          word-of-mouth click-throughs.
+    'gbp-hours-mismatch':      [0.02, 0.06],
+    'review-responsiveness':   [0.01, 0.03],
+    'transport-security':      [0.01, 0.04],
+    'gbp-photo-count':         [0.005, 0.02],
+    'stale-copyright':         [0.002, 0.01],
+    'delivery-presence':       [0.02, 0.05],
+    'og-share-preview':        [0.005, 0.02]
   };
   function estimateRevenueAtRiskRange(def, owner) {
     var key = def && (def.audit || def.type);
