@@ -4,20 +4,20 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-<title>Care Plan Light &mdash; $99/month, hours &amp; hygiene kept current. Bookable without a call. | Muntin Digital</title>
-<meta name="description" content="The cheapest care plan I offer, the one that prevents the most expensive failure: a customer who shows up to a closed restaurant. Hosting, daily backups, and a monthly check that your hours, holiday hours, and menu prices match across your site, GBP, Yelp, and Apple Maps. $99/month, cancel any time." />
+<title>Standard Care &mdash; $225/month, hygiene plus two hours of real work. | Muntin Digital</title>
+<meta name="description" content="Everything in Care Plan Light, plus two hours of edits a month, a quarterly strategy review, and priority placement in the Window queue. For operators whose site keeps moving &mdash; new specials, new sections, new press &mdash; not just standing still. $225/month, cancel any time." />
 <meta name="theme-color" content="#1F4E5B" />
-<link rel="canonical" href="https://muntin.digital/services/care-plan-light/" />
-<link rel="alternate" hreflang="en" href="https://muntin.digital/services/care-plan-light/" />
-<link rel="alternate" hreflang="es" href="https://muntin.digital/es/services/care-plan-light/" />
-<link rel="alternate" hreflang="x-default" href="https://muntin.digital/services/care-plan-light/" />
+<link rel="canonical" href="https://muntin.digital/services/care-plan-full/" />
+<link rel="alternate" hreflang="en" href="https://muntin.digital/services/care-plan-full/" />
+<link rel="alternate" hreflang="es" href="https://muntin.digital/es/services/care-plan-full/" />
+<link rel="alternate" hreflang="x-default" href="https://muntin.digital/services/care-plan-full/" />
 <meta property="og:locale" content="en_US" />
 <meta property="og:locale:alternate" content="es_US" />
 
 <meta property="og:type" content="website" />
-<meta property="og:title" content="Care Plan Light &mdash; $99/month. Hours &amp; hygiene, kept current." />
-<meta property="og:description" content="Hosting + daily backups + monthly verification of hours, holiday hours, and menu prices across site, GBP, Yelp, and Apple Maps. $99/mo. Bookable without a call." />
-<meta property="og:url" content="https://muntin.digital/services/care-plan-light/" />
+<meta property="og:title" content="Standard Care &mdash; $225/month. Hygiene plus two hours of real work." />
+<meta property="og:description" content="Everything in Light, plus 2 hours of monthly edits, quarterly strategy review, and priority Window queue. $225/month, cancel any time." />
+<meta property="og:url" content="https://muntin.digital/services/care-plan-full/" />
 <meta property="og:site_name" content="Muntin Digital" />
 
 <link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
@@ -31,16 +31,16 @@
   "@graph": [
     {
       "@type": "Service",
-      "@id": "https://muntin.digital/services/care-plan-light/#service",
-      "name": "Care Plan Light",
-      "description": "Hosting, daily backups, monthly hours-and-prices hygiene across the operator's site, GBP, Yelp, and Apple Maps, with one small request per month. Bookable without a sales call. $99/month, cancel any time.",
-      "url": "https://muntin.digital/services/care-plan-light/",
+      "@id": "https://muntin.digital/services/care-plan-full/#service",
+      "name": "Standard Care",
+      "description": "Everything in Care Plan Light, plus two hours of edits a month, a quarterly strategy review, and priority placement in the Window queue. $225/month, cancel any time.",
+      "url": "https://muntin.digital/services/care-plan-full/",
       "provider": { "@id": "https://muntin.digital/#business" },
       "serviceType": "Restaurant website care plan",
       "areaServed": { "@type": "Country", "name": "United States" },
       "offers": {
         "@type": "Offer",
-        "price": "99.00",
+        "price": "225.00",
         "priceCurrency": "USD",
         "availability": "https://schema.org/InStock"
       }
@@ -50,7 +50,7 @@
       "itemListElement": [
         { "@type": "ListItem", "position": 1, "name": "Muntin Digital", "item": "https://muntin.digital/" },
         { "@type": "ListItem", "position": 2, "name": "Services", "item": "https://muntin.digital/services/" },
-        { "@type": "ListItem", "position": 3, "name": "Care Plan Light", "item": "https://muntin.digital/services/care-plan-light/" }
+        { "@type": "ListItem", "position": 3, "name": "Standard Care", "item": "https://muntin.digital/services/care-plan-full/" }
       ]
     }
   ]
@@ -78,6 +78,7 @@
 .spec-section--wide{max-width:1100px}
 .spec-section__h{font-family:var(--font-display);font-size:clamp(28px,3.5vw,36px);font-weight:500;color:var(--ink);margin:0 0 12px;letter-spacing:-0.5px}
 .spec-section__sub{font-size:15.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 28px;max-width:680px}
+
 .spec-trust{margin:0 auto 80px;max-width:1000px;padding:0 var(--pad-x)}
 .spec-trust__rail{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden}
 @media (max-width:720px){.spec-trust__rail{grid-template-columns:1fr 1fr}}
@@ -85,76 +86,47 @@
 .spec-trust__num{font-family:var(--font-display);font-size:38px;font-weight:500;font-style:italic;color:var(--teal);margin:0;letter-spacing:-1px;line-height:1}
 .spec-trust__label{font-size:13px;line-height:1.45;color:var(--ink-soft);margin:8px 0 0}
 
-/* Care plan-specific: monthly note mock + drift detector */
-.care-note{background:var(--white);border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden;box-shadow:0 30px 80px -40px rgba(20,22,26,.18)}
-.care-note__head{display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;padding:18px 22px;background:var(--cream-2);border-bottom:1px solid var(--line);font-size:13px}
-.care-note__avatar{width:36px;height:36px;border-radius:50%;background:var(--teal);color:var(--cream);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:500;font-size:18px;font-style:italic}
-.care-note__meta strong{display:block;font-weight:600;color:var(--ink);font-size:13.5px}
-.care-note__meta span{color:var(--ink-soft);font-size:12.5px}
-.care-note__date{color:var(--ink-soft);font-size:12px;text-align:right;font-feature-settings:'tnum' 1}
-.care-note__subject{padding:14px 24px;font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);border-bottom:1px solid var(--line);letter-spacing:-.01em}
-.care-note__body{padding:24px 28px;font-size:14.5px;line-height:1.65;color:var(--ink)}
-.care-note__body p{margin:0 0 14px}
-.care-note__body p:last-child{margin-bottom:0}
-.care-note__hr{height:1px;background:var(--line);border:0;margin:6px 0 14px}
-.care-note__ul{margin:0 0 14px;padding:0;list-style:none}
-.care-note__ul li{display:flex;align-items:flex-start;gap:10px;margin:0 0 8px;font-size:14px;line-height:1.55}
-.care-note__ul li svg{flex:0 0 16px;width:16px;height:16px;margin-top:3px}
-.care-note__ul li svg.ok{color:var(--teal)}
-.care-note__ul li svg.warn{color:var(--rust)}
-.care-note__signoff{font-family:var(--font-display);font-style:italic;color:var(--ink-soft);font-size:14px;margin:18px 0 0;line-height:1.4}
+/* Edits log — Standard Care moment of proof */
+.care-edits{background:var(--white);border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden}
+.care-edits__head{display:grid;grid-template-columns:1fr auto auto;gap:24px;padding:18px 24px;background:var(--ink);color:var(--cream);align-items:center}
+.care-edits__head h3{font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--cream);margin:0;letter-spacing:-.01em}
+.care-edits__head h3 em{font-style:italic;color:var(--gold)}
+.care-edits__head-meter{font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);font-weight:600}
+.care-edits__head-bar{width:140px;height:8px;background:rgba(250,247,242,.12);border-radius:99px;overflow:hidden;position:relative}
+.care-edits__head-bar-fill{position:absolute;left:0;top:0;bottom:0;background:var(--gold);width:78%;border-radius:99px}
+.care-edits__row{display:grid;grid-template-columns:90px 1fr 90px;gap:18px;padding:18px 24px;border-bottom:1px solid var(--line);align-items:center}
+@media (max-width:720px){.care-edits__row{grid-template-columns:1fr 60px;gap:12px}.care-edits__row-date{font-size:11px;color:var(--stone);grid-column:1;order:-1}}
+.care-edits__row:last-child{border-bottom:0}
+.care-edits__row-date{font-family:var(--font-display);font-size:14px;font-weight:500;color:var(--ink-soft);font-feature-settings:'tnum' 1}
+.care-edits__row-what{font-size:14.5px;line-height:1.55;color:var(--ink)}
+.care-edits__row-what strong{font-weight:600}
+.care-edits__row-time{font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--teal);text-align:right;font-feature-settings:'tnum' 1;letter-spacing:-.01em}
+.care-edits__foot{display:grid;grid-template-columns:1fr auto;gap:18px;padding:18px 24px;background:var(--cream-2);border-top:2px solid var(--ink);align-items:center}
+.care-edits__foot-label{font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink);font-family:var(--font-body)}
+.care-edits__foot-time{font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);letter-spacing:-.01em;font-feature-settings:'tnum' 1}
 
-/* Drift detector grid */
-.care-drift{margin-top:28px}
-.care-drift__h{font-size:13px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);margin:0 0 18px}
-.care-drift__grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden}
-@media (max-width:720px){.care-drift__grid{grid-template-columns:1fr 1fr}}
-.care-drift__cell{background:var(--white);padding:18px 18px 20px}
-.care-drift__source{font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--stone);margin:0 0 8px;display:flex;align-items:center;gap:6px}
-.care-drift__source svg{width:12px;height:12px}
-.care-drift__hours{font-family:var(--font-display);font-size:16px;font-weight:500;color:var(--ink);margin:0;letter-spacing:-.005em;line-height:1.35}
-.care-drift__status{display:inline-flex;align-items:center;gap:5px;margin-top:10px;font-size:11px;font-weight:600;letter-spacing:.02em;padding:4px 10px;border-radius:99px}
-.care-drift__status--ok{background:var(--teal-tint);color:var(--teal)}
-.care-drift__status--drift{background:#F7E7DC;color:var(--rust)}
-.care-drift__status svg{width:11px;height:11px}
+/* Quarterly review card */
+.care-review{background:linear-gradient(135deg,var(--teal-tint) 0%,var(--cream) 65%);border:1px solid var(--teal);border-radius:var(--r-md);padding:28px 32px;margin-top:24px}
+.care-review__eyebrow{font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);margin:0 0 10px}
+.care-review__h{font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0 0 12px;letter-spacing:-.01em}
+.care-review__body{font-size:15px;line-height:1.6;color:var(--ink-soft);margin:0 0 14px}
+.care-review__list{margin:0;padding:0;list-style:none;display:grid;gap:6px}
+.care-review__list li{font-size:14px;color:var(--ink);padding-left:22px;position:relative;line-height:1.5}
+.care-review__list li::before{content:'';position:absolute;left:0;top:9px;width:14px;height:1.5px;background:var(--teal)}
 
-/* Shared spec-* blocks (kept the same across spec sheets) */
-.spec-deliverables__grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden}
-@media (max-width:720px){.spec-deliverables__grid{grid-template-columns:1fr}}
-.spec-deliverable{background:var(--white);padding:26px 26px 28px;display:flex;gap:18px;align-items:flex-start}
-.spec-deliverable__icon{flex:0 0 44px;width:44px;height:44px;color:var(--teal);background:var(--teal-tint);border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center}
-.spec-deliverable__icon svg{width:24px;height:24px}
-.spec-deliverable__body h3{font-family:var(--font-body);font-size:16px;font-weight:600;color:var(--ink);margin:2px 0 4px;letter-spacing:-.01em}
-.spec-deliverable__body p{font-size:14.5px;line-height:1.55;color:var(--ink-soft);margin:0}
-
+/* Reuse shared spec-* blocks */
 .spec-pressspec{margin:0 auto 80px;max-width:1000px;padding:24px var(--pad-x);background:var(--ink);color:var(--cream);border-radius:var(--r-md)}
 .spec-pressspec__inner{display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:center}
 @media (max-width:720px){.spec-pressspec__inner{grid-template-columns:1fr}}
-.spec-pressspec__label{font-family:var(--font-display);font-style:italic;font-size:18px;line-height:1.3;color:var(--cream);max-width:240px}
+.spec-pressspec__label{font-family:var(--font-display);font-style:italic;font-size:18px;line-height:1.3;color:var(--cream);max-width:260px}
 .spec-pressspec__chips{display:flex;gap:10px;flex-wrap:wrap}
 .spec-pressspec__chip{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;background:rgba(250,247,242,.08);border:1px solid rgba(250,247,242,.18);border-radius:999px;font-size:13px;font-weight:500;color:var(--cream);letter-spacing:.02em}
 .spec-pressspec__chip svg{width:14px;height:14px;color:var(--gold)}
-
-/* Monthly cadence (replaces multi-step process for subscriptions) */
-.care-cadence{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden}
-@media (max-width:880px){.care-cadence{grid-template-columns:1fr 1fr}}
-@media (max-width:520px){.care-cadence{grid-template-columns:1fr}}
-.care-cadence__cell{background:var(--white);padding:26px 24px;display:flex;flex-direction:column;gap:8px}
-.care-cadence__when{font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);margin:0}
-.care-cadence__what{font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);margin:0;letter-spacing:-.01em}
-.care-cadence__detail{font-size:13.5px;color:var(--ink-soft);margin:0;line-height:1.55}
 
 .spec-for__grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 @media (max-width:720px){.spec-for__grid{grid-template-columns:1fr}}
 .spec-for__item{padding:16px 18px;background:var(--white);border:1px solid var(--line);border-radius:var(--r-sm);font-size:15px;line-height:1.6;color:var(--ink);display:flex;gap:14px;align-items:flex-start}
 .spec-for__item svg{flex:0 0 18px;width:18px;height:18px;color:var(--teal);margin-top:3px}
-
-.spec-notthis{background:var(--white);border:1px solid var(--line);border-radius:var(--r-md);padding:24px 28px}
-.spec-notthis__h{font-family:var(--font-body);font-size:13px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--rust);margin:0 0 14px}
-.spec-notthis ul{margin:0;padding:0;list-style:none;display:grid;gap:10px}
-.spec-notthis li{font-size:14.5px;line-height:1.55;color:var(--ink-soft);padding-left:24px;position:relative}
-.spec-notthis li::before{content:'';position:absolute;left:0;top:9px;width:14px;height:1.5px;background:var(--rust);opacity:.7}
-.spec-notthis li strong{color:var(--ink);font-weight:600}
 
 .spec-promise__card{background:var(--cream-2);border:1px solid var(--line);border-radius:var(--r-md);padding:32px 36px}
 .spec-promise__h{display:flex;align-items:center;gap:12px;font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0 0 18px;letter-spacing:-.01em}
@@ -164,7 +136,6 @@
 .spec-promise__row strong{display:block;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:4px;letter-spacing:.01em}
 .spec-promise__row p{font-size:14.5px;line-height:1.55;color:var(--ink-soft);margin:0}
 
-/* Care-plan comparison (replaces "ramp" with a horizontal tier compare) */
 .care-compare{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden}
 @media (max-width:780px){.care-compare{grid-template-columns:1fr}}
 .care-compare__tier{background:var(--white);padding:28px 24px 30px;display:flex;flex-direction:column;text-decoration:none;color:inherit}
@@ -217,7 +188,8 @@
 .included-grid li{background:var(--white);padding:22px 22px 24px}
 .included-grid li strong{display:block;font-family:var(--font-display);font-size:16px;font-weight:500;color:var(--ink);margin-bottom:6px;letter-spacing:-.01em}
 .included-grid li p{font-size:13.5px;line-height:1.55;color:var(--ink-soft);margin:0}
-.offer-cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:32px}
+.included-grid li.included-grid__new{background:linear-gradient(135deg,var(--teal-tint) 0%,var(--white) 60%)}
+.included-grid li.included-grid__new strong::after{content:'New in Standard';margin-left:8px;font-family:var(--font-body);font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);background:var(--ink);padding:3px 8px;border-radius:99px;vertical-align:middle}
 </style>
 <style>
 :root{--cream:#FAF7F2;--cream-2:#F3EEE3;--ink:#14161A;--ink-soft:#2A2D33;--teal:#1F4E5B;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
@@ -232,18 +204,6 @@ a{color:inherit}
 .btn-primary{background:var(--ink);color:var(--cream)}
 .btn-ghost{background:transparent;color:var(--ink);border:1px solid #D9D5CB}
 header.nav{min-height:64px}
-/* nav-critical */
-.nav{position:fixed;top:0;left:0;right:0;background:var(--cream);z-index:50;border-bottom:1px solid #E8E2D6}
-.nav-inner{display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:64px;padding:12px 0}
-.logo{display:flex;align-items:center;gap:10px;font-family:Georgia,serif;font-size:22px;font-weight:600;letter-spacing:-0.02em;flex-shrink:0;white-space:nowrap;color:inherit;text-decoration:none}
-.logo-mark{width:28px;height:28px;flex:0 0 28px}
-.tm{font-size:0.5em;vertical-align:super;margin-left:1px}
-.nav-links{display:flex;gap:36px;font-size:15px}
-.nav-links a{text-decoration:none;color:inherit}
-.nav-toggle{display:none}
-.nav-search-btn,.lang-switch{display:none}
-@media (max-width:1100px){.nav-links{display:none}.nav-toggle{display:flex;width:44px;height:44px;flex-direction:column;justify-content:center;align-items:center;gap:5px;background:transparent;border:0;padding:0}.nav-toggle span{display:block;width:22px;height:2px;background:var(--ink)}.nav-inner .btn-primary{display:none}}
-main{padding-top:64px}
 </style>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
@@ -262,11 +222,6 @@ main{padding-top:64px}
 <a class="skip-link" href="#main">Skip to main content</a>
 
 <script>
-  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
-     Apple devices. Runs early in <body> so the swap is essentially
-     invisible — script tags execute synchronously when the parser hits
-     them, before .nav-search-kbd renders below. CSS in site-core.css
-     conditions on <html data-platform="mac">. */
   if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
     document.documentElement.dataset.platform = 'mac';
   }
@@ -300,24 +255,18 @@ main{padding-top:64px}
       <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mac"><span class="nav-search-kbd-mod">⌘</span>K</span><span class="nav-search-kbd-pc">Ctrl+K</span></kbd>
     </button>
     <nav class="lang-switch" aria-label="Language">
-      <a href="/es/services/care-plan-light/" hreflang="es" lang="es" class="js-lang-switch" data-set-locale="es">Español</a>
+      <a href="/es/services/care-plan-full/" hreflang="es" lang="es" class="js-lang-switch" data-set-locale="es">Español</a>
       <span class="lang-switch-current" aria-current="true">EN</span>
     </nav>
     <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">
-      <!-- Phase 5+ — site-wide pulse propagation. Hidden by default;
-           window-state.js reveals when lastSeen <4h. Decorative; the
-           label "Reach Don" remains the accessible affordance. -->
       <span class="nav-window-pulse" id="navWindowPulse" hidden aria-hidden="true" title="Don is around"></span>
-      Reach Don
+      Email Don
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
     </a>
     <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
   </div>
-  <!-- Mobile menu mirrors the 5-item desktop nav, plus search, lang
-       switcher, and the Reach Don CTA. The auth-state JS below
-       toggles js-nav-signin vs js-nav-workshop in both surfaces. -->
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
     <a href="/library/">Library</a>
     <a href="/tools/">Tools</a>
@@ -329,19 +278,9 @@ main{padding-top:64px}
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
       <span>Search the library</span>
     </button>
-    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Reach Don</a>
-    <a href="/es/services/care-plan-light/" hreflang="es" lang="es" class="mobile-lang js-lang-switch" data-set-locale="es">Ver en español</a>
+    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Email Don</a>
+    <a href="/es/services/care-plan-full/" hreflang="es" lang="es" class="mobile-lang js-lang-switch" data-set-locale="es">Ver en español</a>
   </nav>
-
-  <aside class="lang-hint" id="langHint" role="complementary" aria-label="Sugerencia de idioma" lang="es" hidden>
-    <div class="container lang-hint-inner">
-      <span class="lang-hint-text"><strong>¿Prefieres este sitio en español?</strong> Tenemos una versión completa.</span>
-      <a href="/es/services/care-plan-light/" class="lang-hint-accept js-lang-switch" data-set-locale="es" hreflang="es" lang="es">Ver en español &rarr;</a>
-      <button type="button" class="lang-hint-dismiss" id="langHintDismiss" aria-label="Cerrar">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
-      </button>
-    </div>
-  </aside>
 
   <script>
     (function () {
@@ -351,23 +290,7 @@ main{padding-top:64px}
       var show = function (nodes) { nodes.forEach(function (n) { n.hidden = false; }); };
       fetch('/api/auth/me', { credentials: 'same-origin' })
         .then(function (r) {
-          if (r.status === 200) {
-            show(workshop);
-            fetch('/api/workbench/count', { credentials: 'same-origin' })
-              .then(function (r2) { return r2.ok ? r2.json() : null; })
-              .then(function (j) {
-                if (!j || typeof j.count !== 'number' || j.count <= 0) return;
-                workshop.forEach(function (n) {
-                  if (n.querySelector('.nav-workshop-count')) return;
-                  var b = document.createElement('span');
-                  b.className = 'nav-workshop-count';
-                  b.textContent = ' (' + j.count + ')';
-                  n.appendChild(b);
-                });
-              })
-              .catch(function () { /* silent */ });
-            return;
-          }
+          if (r.status === 200) { show(workshop); return; }
           show(signin);
         })
         .catch(function () { show(signin); });
@@ -382,7 +305,7 @@ main{padding-top:64px}
       <li aria-hidden="true">›</li>
       <li><a href="/services/" style="color:var(--teal)">Services</a></li>
       <li aria-hidden="true">›</li>
-      <li aria-current="page">Care Plan Light</li>
+      <li aria-current="page">Standard Care</li>
     </ol>
   </nav>
 
@@ -396,23 +319,23 @@ main{padding-top:64px}
           <line x1="3" y1="9" x2="21" y2="9"/>
         </svg>
       </span>
-      A productized offer &middot; bookable without a call
+      A productized offer &middot; recommended for active operators
     </p>
     <h1>
-      Care Plan Light. <span class="serif-italic">Hours &amp; hygiene, kept current.</span>
+      Standard Care. <span class="serif-italic">Hygiene plus two hours of real work.</span>
     </h1>
     <p class="spec-hero__lede">
-      The cheapest care plan I offer, the one that prevents the most expensive failure: a customer who shows up to a closed restaurant. Hosting, daily backups, and a monthly check that your hours, holiday hours, and menu prices match across your site, Google Business Profile, Yelp, and Apple Maps.
+      Everything in <a href="/services/care-plan-light/" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none">Care Plan Light</a>, plus two hours of edits a month, a quarterly strategy review, and priority placement in the Window queue. For operators whose site keeps moving &mdash; new specials, new sections, new press, fresh photography &mdash; not just standing still.
     </p>
     <p class="spec-hero__voice">
-      &ldquo;Hours hygiene isn&rsquo;t glamorous work. It&rsquo;s the work that keeps a Tuesday-night two-top from leaving a one-star review because your Yelp said 9pm and your door said 8.&rdquo;
+      &ldquo;Most operators don&rsquo;t need on-call. They need someone who actually does the next thing on the list this month, without having to send three reminders.&rdquo;
     </p>
 
     <div class="spec-pricebar">
-      <p class="spec-pricebar__price">$99<small>/month &middot; cancel any time &middot; no setup fee</small></p>
+      <p class="spec-pricebar__price">$225<small>/month &middot; cancel any time &middot; rollover unused hours one cycle</small></p>
       <div class="spec-pricebar__cap">
-        <span class="spec-pricebar__cap-label">Cadence &middot; bookable without a call</span>
-        <p class="spec-cap-note" style="margin:6px 0 0">One monthly hygiene pass &middot; one Friday note &middot; one small request per month &middot; cancel from your dashboard, not a phone call.</p>
+        <span class="spec-pricebar__cap-label">Cadence &middot; included this month</span>
+        <p class="spec-cap-note" style="margin:6px 0 0">One hygiene pass &middot; one Friday note &middot; two hours of edits, batched across the month &middot; quarterly strategy review every 90 days.</p>
       </div>
     </div>
   </section>
@@ -422,145 +345,107 @@ main{padding-top:64px}
   </div>
 
   <!-- ==================== TRUST STRIP ==================== -->
-  <section class="spec-trust" aria-label="The operator behind the care plan">
+  <section class="spec-trust" aria-label="The operator behind Standard Care">
     <div class="spec-trust__rail">
       <div class="spec-trust__cell">
-        <p class="spec-trust__num">2<span style="font-size:22px;color:var(--ink-soft)">nd Fri</span></p>
-        <p class="spec-trust__label">Of every month, the note lands. Set your watch by it.</p>
+        <p class="spec-trust__num">2<span style="font-size:22px;color:var(--ink-soft)">hr</span></p>
+        <p class="spec-trust__label">Of real edits every month, no nickel-and-dime tickets</p>
       </div>
       <div class="spec-trust__cell">
-        <p class="spec-trust__num">5<span style="font-size:22px;color:var(--ink-soft)">min</span></p>
-        <p class="spec-trust__label">Uptime probe cadence &mdash; if it breaks at 2am, I see it</p>
+        <p class="spec-trust__num">4<span style="font-size:22px;color:var(--ink-soft)">hr</span></p>
+        <p class="spec-trust__label">Priority Window response, weekdays</p>
       </div>
       <div class="spec-trust__cell">
-        <p class="spec-trust__num">30<span style="font-size:22px;color:var(--ink-soft)">d</span></p>
-        <p class="spec-trust__label">Rolling backup window, snapshotted nightly, separate region</p>
+        <p class="spec-trust__num">1<span style="font-size:22px;color:var(--ink-soft)">/qtr</span></p>
+        <p class="spec-trust__label">Strategy review &mdash; ~45 min, what to ship next</p>
       </div>
       <div class="spec-trust__cell">
         <p class="spec-trust__num">$0</p>
-        <p class="spec-trust__label">Setup fee. No annual contract. Stripe handles the rest.</p>
+        <p class="spec-trust__label">Setup fee. Roll unused hours one month. Cancel any time.</p>
       </div>
     </div>
   </section>
 
-  <!-- ==================== MOMENT OF PROOF: THE MONTHLY NOTE ==================== -->
+  <!-- ==================== MOMENT OF PROOF: EDITS LOG ==================== -->
   <section class="spec-section spec-section--wide" aria-labelledby="proof-h">
-    <h2 class="spec-section__h" id="proof-h">What lands in your inbox the second Friday of every month.</h2>
-    <p class="spec-section__sub">One short email. Two minutes to read. What I checked, what I changed, what to keep an eye on. Below is the exact format &mdash; nothing dressed up, nothing buried.</p>
+    <h2 class="spec-section__h" id="proof-h">What two hours of attention actually looks like.</h2>
+    <p class="spec-section__sub">Every Friday note carries the edits log: a timestamped record of what landed on your site this month, what each one took, and what hours you have left. No invoice math, no &ldquo;was that included?&rdquo; back-and-forth.</p>
 
-    <article class="care-note" aria-label="Sample monthly note">
-      <header class="care-note__head">
-        <div class="care-note__avatar" aria-hidden="true">D</div>
-        <div class="care-note__meta">
-          <strong>Don Goldstein &middot; Muntin Digital</strong>
-          <span>To: <em>you@yourrestaurant.com</em></span>
-        </div>
-        <span class="care-note__date">Fri, Mar 14, 7:42 AM</span>
+    <article class="care-edits" aria-label="Sample edits log for the month">
+      <header class="care-edits__head">
+        <h3>March edits log &middot; <em>Casa Tita</em></h3>
+        <span class="care-edits__head-meter">93 of 120 min used</span>
+        <span class="care-edits__head-bar" aria-hidden="true"><span class="care-edits__head-bar-fill"></span></span>
       </header>
-      <p class="care-note__subject">Casa Tita &mdash; March hygiene pass</p>
-      <div class="care-note__body">
-        <p>Quick one. Site&rsquo;s clean and your hours are matching everywhere except Yelp, which I&rsquo;ve flagged below. No restore needed this month.</p>
 
-        <hr class="care-note__hr">
+      <div class="care-edits__row">
+        <span class="care-edits__row-date">Mar 04</span>
+        <p class="care-edits__row-what"><strong>Press: Washington Post mention added to homepage.</strong> Created the &ldquo;Press&rdquo; band under the hero, dropped in the pull quote + the dated link, made sure the typography matched the rest of the page.</p>
+        <span class="care-edits__row-time">22 min</span>
+      </div>
+      <div class="care-edits__row">
+        <span class="care-edits__row-date">Mar 09</span>
+        <p class="care-edits__row-what"><strong>Menu: three spring items swapped in, two winter items archived.</strong> Pulpo replaced with whole branzino; bone marrow rotated for asparagus mille-feuille. Schema updated, PDF re-exported, GBP photo re-uploaded.</p>
+        <span class="care-edits__row-time">38 min</span>
+      </div>
+      <div class="care-edits__row">
+        <span class="care-edits__row-date">Mar 14</span>
+        <p class="care-edits__row-what"><strong>Photography: replaced six dish photos sent over Tuesday.</strong> AVIF + WebP encoded, alt text written, schema imageOf updated, lazy-load thresholds checked.</p>
+        <span class="care-edits__row-time">25 min</span>
+      </div>
+      <div class="care-edits__row">
+        <span class="care-edits__row-date">Mar 21</span>
+        <p class="care-edits__row-what"><strong>Hours: pushed Easter Sunday closure 14 days early.</strong> Site, GBP, Yelp, Apple Maps. Bonus: caught and fixed a stale &ldquo;closed Mondays&rdquo; line on your About page.</p>
+        <span class="care-edits__row-time">8 min</span>
+      </div>
 
-        <ul class="care-note__ul">
-          <li><svg width="24" height="24" class="ok" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg><span><strong>Hours match across site, GBP, and Apple Maps.</strong> All three say Tue&ndash;Sun, 5&ndash;10pm; closed Mondays.</span></li>
-          <li><svg width="24" height="24" class="warn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span><strong>Yelp still has you closing at 9pm.</strong> Edit requested via Yelp&rsquo;s biz tools yesterday; usually clears in 48h. I&rsquo;ll confirm next month.</span></li>
-          <li><svg width="24" height="24" class="ok" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg><span><strong>Menu prices match the kitchen.</strong> Spot-checked 8 items against the printed menu Marcus sent over &mdash; all aligned.</span></li>
-          <li><svg width="24" height="24" class="ok" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg><span><strong>Easter Sunday closure flagged 14 days out.</strong> Hours pushed to site + GBP this morning; Yelp + Apple Maps queued.</span></li>
-          <li><svg width="24" height="24" class="ok" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg><span><strong>Uptime: 100% this month.</strong> 8,640 probes, zero failed. SSL renewed automatically on March 2.</span></li>
-        </ul>
-
-        <p><strong>Small request used this month:</strong> Added the WaPo press mention to your homepage Wednesday afternoon. Took about 15 minutes. One more small request available before April 14.</p>
-
-        <p class="care-note__signoff">&mdash; Don<br>Sent from the floor at Tacombi, between lunch and dinner.</p>
+      <div class="care-edits__foot">
+        <span class="care-edits__foot-label">Used &middot; remaining this cycle</span>
+        <span class="care-edits__foot-time">1h 33m used &middot; 27 min left</span>
       </div>
     </article>
 
-    <!-- Drift detector -->
-    <div class="care-drift">
-      <p class="care-drift__h">Where I check, what each one currently says</p>
-      <div class="care-drift__grid">
-        <div class="care-drift__cell">
-          <p class="care-drift__source"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><line x1="3" y1="12" x2="21" y2="12"/></svg>Your site</p>
-          <p class="care-drift__hours">Tue&ndash;Sun &middot; 5&ndash;10pm</p>
-          <span class="care-drift__status care-drift__status--ok"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg>Matches</span>
-        </div>
-        <div class="care-drift__cell">
-          <p class="care-drift__source"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Google Business</p>
-          <p class="care-drift__hours">Tue&ndash;Sun &middot; 5&ndash;10pm</p>
-          <span class="care-drift__status care-drift__status--ok"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg>Matches</span>
-        </div>
-        <div class="care-drift__cell">
-          <p class="care-drift__source"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15 8 22 9 17 14 18 21 12 18 6 21 7 14 2 9 9 8 12 2"/></svg>Yelp</p>
-          <p class="care-drift__hours">Tue&ndash;Sun &middot; 5&ndash;9pm</p>
-          <span class="care-drift__status care-drift__status--drift"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>1h drift</span>
-        </div>
-        <div class="care-drift__cell">
-          <p class="care-drift__source"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Apple Maps</p>
-          <p class="care-drift__hours">Tue&ndash;Sun &middot; 5&ndash;10pm</p>
-          <span class="care-drift__status care-drift__status--ok"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg>Matches</span>
-        </div>
-      </div>
-    </div>
+    <aside class="care-review">
+      <p class="care-review__eyebrow">Quarterly strategy review &middot; included</p>
+      <h3 class="care-review__h">Every 90 days, we sit down for 45 minutes.</h3>
+      <p class="care-review__body">Not a sales call. A working session, on Zoom or at your bar after lunch, where I walk you through the last three months of data and we agree on what to ship next. Examples of what comes out of one:</p>
+      <ul class="care-review__list">
+        <li>An honest read on what&rsquo;s moving and what isn&rsquo;t &mdash; reservations, GBP clicks, mobile speed, the photo-to-order pipeline.</li>
+        <li>One specific thing the site is ready for now (a new section, a press wall, a private-events page) and what it would cost to ship it.</li>
+        <li>One specific thing you should stop spending time or money on. There&rsquo;s always one.</li>
+        <li>The next 90 days&rsquo; calendar &mdash; what fits inside the 2-hour cap, what would be a quoted ad-hoc.</li>
+      </ul>
+    </aside>
   </section>
 
   <!-- ==================== WHAT'S INCLUDED ==================== -->
   <section class="spec-section" aria-labelledby="included-h">
     <h2 class="spec-section__h" id="included-h">What&rsquo;s included, every month.</h2>
-    <p class="spec-section__sub">Nine line items, every one of them a thing that costs more not to do than to do. The whole thing fits inside two hours of my attention every month, by design.</p>
+    <p class="spec-section__sub">Everything in <a href="/services/care-plan-light/" style="color:var(--teal)">Care Plan Light</a>, plus three line items new in Standard. Bigger asks still get quoted, but the surface area of &ldquo;normal monthly work&rdquo; is meaningfully wider here.</p>
     <ul class="included-grid">
-      <li><strong>Hosting</strong><p>Cloudflare Pages or your existing host, with the SSL renewal monitored. Five-nines uptime, no theatre.</p></li>
-      <li><strong>Daily backups</strong><p>Site + database snapshotted nightly to a separate region. 30-day rolling restore window.</p></li>
-      <li><strong>Hours hygiene</strong><p>Once a month I check that the hours on your site, GBP, Yelp, and Apple Maps match. Holiday hours flagged 14 days out.</p></li>
-      <li><strong>Menu price audit</strong><p>Spot-check that your published prices match the kitchen&rsquo;s. Mismatches surfaced in your monthly note.</p></li>
-      <li><strong>Menu refresh, quarterly</strong><p>Once a quarter I take your menu changes &mdash; price bumps, item swaps, seasonal ingredients &mdash; and hand-build a fresh press-ready PDF. Bundled in.</p></li>
-      <li><strong>Uptime monitoring</strong><p>UptimeRobot probes your homepage and contact form every five minutes. If anything breaks at 2am, I see it before you do.</p></li>
-      <li><strong>SSL + domain renewal</strong><p>Reminders 60 days out, paid by you, set up in your registrar account. No domain held hostage.</p></li>
-      <li><strong>One small request per month</strong><p>A new menu line item, a Thanksgiving hours swap, a press-mention added to the homepage. Up to 30 minutes; bigger asks get quoted.</p></li>
-      <li><strong>Monthly note</strong><p>One email, second Friday of the month: what I checked, what I changed, what to keep an eye on. Two minutes to read.</p></li>
+      <li><strong>Hosting, SSL, daily backups</strong><p>Same as Light: 30-day rolling restore window, 5-minute uptime probe, SSL renewal monitored.</p></li>
+      <li><strong>Hours &amp; price hygiene</strong><p>Same monthly check across site, GBP, Yelp, Apple Maps. Holiday hours flagged 14 days out.</p></li>
+      <li><strong>Quarterly menu refresh</strong><p>Same quarterly press-ready PDF. Item swaps and price bumps bundled in.</p></li>
+      <li class="included-grid__new"><strong>2 hours of edits / month</strong><p>Real edits, batched across the month: press mentions, photo swaps, copy changes, schema updates, new sections. Rolls one month if unused.</p></li>
+      <li class="included-grid__new"><strong>Quarterly strategy review</strong><p>One 45-minute working session every 90 days. What&rsquo;s moving, what to ship next, what to stop. Notes back in writing within 48 hours.</p></li>
+      <li class="included-grid__new"><strong>Priority Window queue</strong><p>Your replies jump the queue. Standard-Care threads get 4-hour weekday response targets &mdash; faster than Light&rsquo;s same-day SLA.</p></li>
+      <li><strong>Uptime monitoring + alerts</strong><p>UptimeRobot every 5 minutes. Synthetic form-submit test. If it breaks at 2am, I see it before you do.</p></li>
+      <li><strong>One small request slot</strong><p>Carryover from Light, on top of the 2-hour budget &mdash; small touch-ups (15 min or less) don&rsquo;t count against your hours.</p></li>
+      <li><strong>Monthly note + edits log</strong><p>Second Friday email, plus the timestamped edits log you saw above. No invoice math, no surprises.</p></li>
     </ul>
   </section>
 
-  <!-- ==================== WHAT GETS WATCHED (PRESS-SPEC STRIP) ==================== -->
-  <section class="spec-pressspec" aria-label="What I monitor between Fridays">
+  <!-- ==================== PRESS-SPEC STRIP ==================== -->
+  <section class="spec-pressspec" aria-label="What two hours can comfortably ship">
     <div class="spec-pressspec__inner">
-      <p class="spec-pressspec__label">What I monitor between Fridays.</p>
+      <p class="spec-pressspec__label">What two hours can comfortably ship.</p>
       <div class="spec-pressspec__chips">
-        <span class="spec-pressspec__chip"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg>5-min uptime probe</span>
-        <span class="spec-pressspec__chip"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg>Contact-form synthetic test</span>
-        <span class="spec-pressspec__chip"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg>SSL expiry alert (60d out)</span>
-        <span class="spec-pressspec__chip"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg>Backup restore drill (quarterly)</span>
-        <span class="spec-pressspec__chip"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg>GBP / Yelp / Maps drift</span>
-        <span class="spec-pressspec__chip"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg>Holiday hours, 14 days out</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- ==================== CADENCE ==================== -->
-  <section class="spec-section" aria-labelledby="cadence-h">
-    <h2 class="spec-section__h" id="cadence-h">The monthly cadence, calendared.</h2>
-    <p class="spec-section__sub">A month at Care Plan Light, predictable enough that the kitchen can ignore it. Predictable on purpose.</p>
-    <div class="care-cadence">
-      <div class="care-cadence__cell">
-        <p class="care-cadence__when">Week 1</p>
-        <p class="care-cadence__what">The hygiene pass.</p>
-        <p class="care-cadence__detail">I run the hours-and-prices check across your site, GBP, Yelp, and Apple Maps. Drift flagged, fixes pushed.</p>
-      </div>
-      <div class="care-cadence__cell">
-        <p class="care-cadence__when">Week 2</p>
-        <p class="care-cadence__what">The Friday note.</p>
-        <p class="care-cadence__detail">Second Friday. What I checked, what I changed, what to watch. Two minutes to read.</p>
-      </div>
-      <div class="care-cadence__cell">
-        <p class="care-cadence__when">Weeks 3&ndash;4</p>
-        <p class="care-cadence__what">Your one small request.</p>
-        <p class="care-cadence__detail">A new menu line, a press mention, a holiday hours swap. Up to 30 minutes &mdash; reply to the note and it&rsquo;s queued.</p>
-      </div>
-      <div class="care-cadence__cell">
-        <p class="care-cadence__when">All month</p>
-        <p class="care-cadence__what">Uptime + SSL watch.</p>
-        <p class="care-cadence__detail">Every 5 minutes a probe checks your homepage + contact form. SSL alert fires 60 days before expiry.</p>
+        <span class="spec-pressspec__chip"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg>Menu items swapped (5&ndash;8)</span>
+        <span class="spec-pressspec__chip"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg>Press band added</span>
+        <span class="spec-pressspec__chip"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg>6&ndash;10 dish photos swapped</span>
+        <span class="spec-pressspec__chip"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg>Hours / holiday push</span>
+        <span class="spec-pressspec__chip"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg>A small new section (events, FAQ)</span>
+        <span class="spec-pressspec__chip"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg>Reservations widget swap</span>
       </div>
     </div>
   </section>
@@ -571,33 +456,20 @@ main{padding-top:64px}
     <div class="spec-for__grid">
       <div class="spec-for__item">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>
-        <span>Your site works fine. You&rsquo;d just rather not be the one remembering to update the holiday hours in four places.</span>
+        <span>Your menu changes monthly. New seasonal items, new specials, new wine list &mdash; you need a reliable hand to put them on the site.</span>
       </div>
       <div class="spec-for__item">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>
-        <span>You&rsquo;ve had one too many one-star reviews from guests who showed up when Yelp said you were open.</span>
+        <span>You collect press regularly and want someone to actually add it to the homepage, not just promise to remember.</span>
       </div>
       <div class="spec-for__item">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>
-        <span>You just had me ship an Essentials build or a Menu Drop-In, and you want me to keep the surface current.</span>
+        <span>You just had a build land and want a single line item on the books for monthly maintenance + active edits, not two contracts.</span>
       </div>
       <div class="spec-for__item">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>
-        <span>You don&rsquo;t need real-time on-call (yet). One small request a month and a calm Friday email is enough.</span>
+        <span>You want a quarterly conversation with someone who has been on the floor, looking at the data and telling you what&rsquo;s next.</span>
       </div>
-    </div>
-  </section>
-
-  <!-- ==================== WHAT IT IS NOT ==================== -->
-  <section class="spec-section" aria-labelledby="not-h">
-    <h2 class="spec-section__h" id="not-h">What it is not.</h2>
-    <div class="spec-notthis">
-      <p class="spec-notthis__h">In writing, before you click subscribe</p>
-      <ul>
-        <li><strong>Not a redesign retainer.</strong> Layout changes, new pages, photo replacements, brand work &mdash; those get quoted separately. Care Plan Light is hygiene, not new construction.</li>
-        <li><strong>Not 24/7 white-glove.</strong> If your site breaks at 2am Sunday, I see the alert and fix it Monday morning. For real-time on-call, look at the <a href="/services/care-plan-full/" style="color:var(--teal);font-weight:500">full Care Plan ($225/mo)</a>.</li>
-        <li><strong>Not for sites I didn&rsquo;t build.</strong> The plan only covers sites the studio shipped, or sites we&rsquo;ve done a takeover on (which is a separate one-time engagement starting at $750).</li>
-      </ul>
     </div>
   </section>
 
@@ -606,28 +478,28 @@ main{padding-top:64px}
     <div class="spec-promise__card">
       <h2 class="spec-promise__h" id="promise-h">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.5 9.5 8 11 4.5-1.5 8-6 8-11V5l-8-3z"/><polyline points="9 12 11 14 15 10"/></svg>
-        Cancel any time. No call required to start or stop.
+        How the two hours actually work.
       </h2>
       <div class="spec-promise__grid">
         <div class="spec-promise__row">
-          <strong>Bookable without a sales call.</strong>
-          <p>Send a one-line note with your URL through The Window. I confirm fit within four business hours. If your site isn&rsquo;t one I can care for, I&rsquo;ll tell you straight &mdash; no upsell, no callback funnel.</p>
+          <strong>Unused hours roll one cycle.</strong>
+          <p>If a month is quiet and you only used 45 minutes, the remaining 75 carry into the next month (and no further &mdash; the plan stays a service, not a savings account). The Friday note shows the running balance in plain numbers.</p>
         </div>
         <div class="spec-promise__row">
-          <strong>Cancel from your dashboard, not a phone call.</strong>
-          <p>Stripe handles the monthly $99. Cancel any time, any reason, no questions, no &ldquo;just one more month&rdquo; rep call. The 30-day backup window stays accessible for 30 days after cancellation.</p>
+          <strong>Bigger asks get quoted, in writing, before any work starts.</strong>
+          <p>If a request needs more than two hours, I&rsquo;ll send a short scope + flat-fee quote before I touch it &mdash; same culture as the rest of the studio. The Plan covers what fits inside two hours; bigger work is a separate line.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ==================== CARE-PLAN COMPARE ==================== -->
+  <!-- ==================== COMPARE ==================== -->
   <section class="spec-section spec-section--wide" aria-labelledby="compare-h">
-    <h2 class="spec-section__h" id="compare-h">If Light isn&rsquo;t enough &mdash; the next two rungs.</h2>
-    <p class="spec-section__sub">Same operator, same Friday note discipline. More hours of attention, more responsiveness, the same flat-fee culture.</p>
+    <h2 class="spec-section__h" id="compare-h">Standard sits between Light and Concierge.</h2>
+    <p class="spec-section__sub">Same operator across all three tiers, same Friday-note discipline. The difference is hours of attention and how fast I reply.</p>
     <div class="care-compare">
-      <span class="care-compare__tier care-compare__tier--here" aria-current="page">
-        <p class="care-compare__label">You are here</p>
+      <a class="care-compare__tier" href="/services/care-plan-light/">
+        <p class="care-compare__label">Hygiene</p>
         <p class="care-compare__name">Care Plan Light</p>
         <p class="care-compare__price">$99<small>/month &middot; cancel any time</small></p>
         <ul class="care-compare__incl">
@@ -637,21 +509,21 @@ main{padding-top:64px}
           <li>One small request / month (up to 30 min)</li>
           <li>Monthly note, second Friday</li>
         </ul>
-        <span class="care-compare__cta">Current tier</span>
-      </span>
-      <a class="care-compare__tier" href="/services/care-plan-full/">
-        <p class="care-compare__label">More attention</p>
+        <span class="care-compare__cta">See Care Plan Light &rarr;</span>
+      </a>
+      <span class="care-compare__tier care-compare__tier--here" aria-current="page">
+        <p class="care-compare__label">You are here &middot; recommended</p>
         <p class="care-compare__name">Standard Care</p>
         <p class="care-compare__price">$225<small>/month &middot; cancel any time</small></p>
         <ul class="care-compare__incl">
           <li>Everything in Light</li>
-          <li>2 hours of edits / month</li>
-          <li>Quarterly strategy review</li>
-          <li>Priority Window queue</li>
-          <li>Two requests, any size, per month</li>
+          <li><strong style="color:var(--gold)">2 hours of edits / month</strong></li>
+          <li><strong style="color:var(--gold)">Quarterly strategy review</strong></li>
+          <li><strong style="color:var(--gold)">Priority Window queue</strong></li>
+          <li>Edits log with monthly note</li>
         </ul>
-        <span class="care-compare__cta">See Standard Care &rarr;</span>
-      </a>
+        <span class="care-compare__cta">Current tier</span>
+      </span>
       <a class="care-compare__tier" href="/services/">
         <p class="care-compare__label">Concierge tier</p>
         <p class="care-compare__name">Care Plan Concierge</p>
@@ -659,7 +531,7 @@ main{padding-top:64px}
         <ul class="care-compare__incl">
           <li>Everything in Standard</li>
           <li>5 hours of work / month</li>
-          <li>SEO tuning + monthly review</li>
+          <li>Monthly SEO tuning + review</li>
           <li>Direct Don access (SMS)</li>
           <li>Strategy calls as needed</li>
         </ul>
@@ -670,29 +542,29 @@ main{padding-top:64px}
 
   <!-- ==================== CTAs ==================== -->
   <section class="spec-cta">
-    <a class="btn btn-primary js-window" href="/window/?topic=care-plan-light">Start Care Plan Light &rarr;</a>
-    <a class="btn btn-ghost" href="/services/care-plan-full/">Or compare to Standard Care ($225/mo)</a>
+    <a class="btn btn-primary js-window" href="/window/?topic=care-plan">Start Standard Care &rarr;</a>
+    <a class="btn btn-ghost" href="/services/care-plan-light/">Or compare to Light ($99/mo)</a>
   </section>
 
   <!-- ==================== PRICE LADDER ==================== -->
   <section class="spec-section" aria-labelledby="ladder-h">
-    <p class="spec-ladder__h" id="ladder-h">Where Care Plan Light sits on the ladder</p>
+    <p class="spec-ladder__h" id="ladder-h">Where Standard Care sits on the ladder</p>
     <div class="spec-ladder__rail">
       <a class="spec-ladder__rung" href="/tools/audits/restaurant/">
         <p class="spec-ladder__rung-label">Free</p>
         <p class="spec-ladder__rung-price">$0</p>
         <p class="spec-ladder__rung-name">30-second restaurant audit</p>
       </a>
+      <a class="spec-ladder__rung" href="/services/care-plan-light/">
+        <p class="spec-ladder__rung-label">Hygiene</p>
+        <p class="spec-ladder__rung-price">$99<small style="font-size:13px">/mo</small></p>
+        <p class="spec-ladder__rung-name">Care Plan Light</p>
+      </a>
       <span class="spec-ladder__rung spec-ladder__rung--here" aria-current="page">
         <p class="spec-ladder__rung-label">You are here</p>
-        <p class="spec-ladder__rung-price">$99<small style="font-size:13px">/mo</small></p>
-        <p class="spec-ladder__rung-name">Care Plan Light &middot; hygiene</p>
-      </span>
-      <a class="spec-ladder__rung" href="/services/care-plan-full/">
-        <p class="spec-ladder__rung-label">More attention</p>
         <p class="spec-ladder__rung-price">$225<small style="font-size:13px">/mo</small></p>
-        <p class="spec-ladder__rung-name">Standard Care &middot; 2hr edits</p>
-      </a>
+        <p class="spec-ladder__rung-name">Standard Care &middot; 2h edits</p>
+      </span>
       <a class="spec-ladder__rung" href="/services/">
         <p class="spec-ladder__rung-label">Concierge</p>
         <p class="spec-ladder__rung-price">$350<small style="font-size:13px">/mo</small></p>
@@ -705,20 +577,20 @@ main{padding-top:64px}
   <section class="spec-section" aria-labelledby="sisters-h">
     <p class="spec-sisters__h" id="sisters-h">Sister surfaces</p>
     <div class="spec-sisters__grid">
-      <a class="spec-sister" href="/services/menu-polish/">
-        <p class="spec-sister__label">$249 &middot; one-shot</p>
-        <p class="spec-sister__name">Menu Polish</p>
-        <p class="spec-sister__why">Refinement of a menu you already drafted, before it goes to print.</p>
+      <a class="spec-sister" href="/services/care-plan-light/">
+        <p class="spec-sister__label">$99/mo &middot; hygiene only</p>
+        <p class="spec-sister__name">Care Plan Light</p>
+        <p class="spec-sister__why">The entry tier &mdash; hours and price hygiene, no edit hours included.</p>
       </a>
-      <a class="spec-sister" href="/services/audit/">
-        <p class="spec-sister__label">$499 &middot; diagnostic</p>
-        <p class="spec-sister__name">Website Audit</p>
-        <p class="spec-sister__why">A 90-minute Loom + 8-page action sheet before you commit to anything bigger.</p>
+      <a class="spec-sister" href="/services/menu-drop-in/">
+        <p class="spec-sister__label">$1,500 &middot; one-shot</p>
+        <p class="spec-sister__name">Menu Drop-In</p>
+        <p class="spec-sister__why">If you want a new menu page on top of an existing site &mdash; before subscribing to Standard.</p>
       </a>
-      <a class="spec-sister" href="/tools/open-hours/">
-        <p class="spec-sister__label">Free tool</p>
-        <p class="spec-sister__name">Hours-consistency check</p>
-        <p class="spec-sister__why">The tool I run during the monthly hygiene pass &mdash; yours to use anytime.</p>
+      <a class="spec-sister" href="/services/">
+        <p class="spec-sister__label">Builds</p>
+        <p class="spec-sister__name">Full-build packages</p>
+        <p class="spec-sister__why">Essentials, Full Service, Premier &mdash; Standard Care is what we put you on after launch.</p>
       </a>
     </div>
   </section>
@@ -731,7 +603,7 @@ main{padding-top:64px}
         <span class="foot-cta-pulse" id="footCtaPulse" hidden aria-hidden="true" title="Don is around"></span>
         Got a question? The Window is open.
       </div>
-      <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Reach Don
+      <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Email Don
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
       </a>
     </div>
@@ -743,7 +615,7 @@ main{padding-top:64px}
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a <!-- count:glossary.terms -->142<!-- /count -->-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
+        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a <!-- count:glossary.terms -->139<!-- /count -->-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
       </div>
 
       <nav class="foot-col" aria-labelledby="foot-explore">
@@ -789,7 +661,7 @@ main{padding-top:64px}
         <p class="foot-heading" id="foot-contact">Contact</p>
         <ul class="foot-links">
           <li><a href="mailto:don@muntin.digital">don@muntin.digital</a></li>
-          <li><a href="/window/">Reach Don</a></li>
+          <li><a href="/window/">Email Don</a></li>
           <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (opens in new tab)</span></a></li>
         </ul>
         <p class="foot-trust"><strong>Reply:</strong> Mondays through Fridays, within 4 hours. Weekends, by Monday morning.</p>
@@ -832,7 +704,7 @@ main{padding-top:64px}
     <a class="mobile-cta-bar__btn mobile-cta-bar__btn--ghost js-window" href="/window/" data-event="sticky-cta-window">
       <span class="mobile-cta-bar__pulse" id="mobileCtaBarPulse" hidden aria-hidden="true" title="Don is around"></span>
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
-      Reach Don
+      Email Don
     </a>
   </aside>
   <script>
