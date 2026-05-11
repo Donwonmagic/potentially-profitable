@@ -45,6 +45,13 @@ function shellHash(name) {
 }
 const SHELL_HASH = { core: shellHash('site-core.css'), article: shellHash('site-article.css') };
 
+
+// Strip the batch-banner block before comparison so the injector-stamped
+// banner content doesn't trip the generator's check-mode drift detector.
+function normalizeBatchBanner(html) {
+  return html.replace(/<!-- batch-banner:start -->[\s\S]*?<!-- batch-banner:end -->/, '<!-- batch-banner:start --><!-- batch-banner:end -->');
+}
+
 const checkMode  = process.argv.includes('--check');
 
 function loadModule(relPath) {
@@ -350,6 +357,7 @@ main{padding-top:64px}
 </head>
 <body>
 <a class="skip-link" href="#main">${locale === 'es' ? 'Saltar al contenido' : 'Skip to content'}</a>
+<!-- batch-banner:start --><!-- batch-banner:end -->
 <header class="nav" id="nav">
   <div class="container nav-inner">
     <a href="${baseSlash}/" class="logo" aria-label="Muntin Digital">
@@ -423,7 +431,7 @@ for (const tgt of targets) {
   const dirPath  = path.dirname(fullPath);
   if (checkMode) {
     const existing = fs.existsSync(fullPath) ? fs.readFileSync(fullPath, 'utf8') : null;
-    if (existing !== tgt.content) {
+    if (normalizeBatchBanner(existing || "") !== normalizeBatchBanner(tgt.content)) {
       drift++;
       console.log(`would update ${tgt.path}`);
     }
