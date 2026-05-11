@@ -107,10 +107,22 @@ h1,h2,h3,h4,h5,.serif-italic{font-family:var(--font-display)}
 .hero-counts{display:flex;flex-wrap:wrap;gap:10px 14px;list-style:none;padding:0;margin:18px 0 22px;font-size:13.5px;font-weight:600;letter-spacing:0.02em;color:var(--ink-soft)}
 .hero-counts__chip{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:var(--cream-2)}
 .hero-counts__chip strong{color:var(--teal)}
+section.block{padding:clamp(80px,10vw,140px) 0}
+.bg-cream2{background:var(--cream-2)}
 .section-header{max-width:760px;margin-bottom:64px}
 .section-header h2{margin-top:16px}
 .section-header p{margin-top:20px;font-size:19px;line-height:1.55;color:var(--ink-soft);max-width:640px}
 .section-center{text-align:center;margin-left:auto;margin-right:auto}
+.compare,.services,.care,.steps{display:grid;grid-template-columns:1fr;gap:20px}
+.work{display:grid;grid-template-columns:repeat(12,1fr);gap:24px}
+.work-item{grid-column:span 12}
+.about-grid{display:grid;grid-template-columns:1fr;gap:48px;align-items:center}
+.contact-grid{display:grid;grid-template-columns:1fr;gap:clamp(40px,6vw,80px);align-items:start}
+.form-row{display:grid;grid-template-columns:1fr;gap:16px}
+@media (min-width:961px){.compare,.services,.care{grid-template-columns:repeat(3,1fr)}.steps{grid-template-columns:repeat(4,1fr)}.work-item:nth-child(1){grid-column:span 7}.work-item:nth-child(2){grid-column:span 5}.work-item:nth-child(3){grid-column:span 5}.work-item:nth-child(4){grid-column:span 7}.about-grid{grid-template-columns:0.9fr 1.1fr;gap:80px}.contact-grid{grid-template-columns:1fr 1.2fr}}
+@media (min-width:641px){.form-row{grid-template-columns:1fr 1fr}}
+@media (max-width:960px){.window,.window-caption{display:none}}
+.mobile-cta-bar{display:none}
 .trust-strip{padding:18px 0;background:var(--cream-2);border-block:1px solid var(--line)}
 .trust-strip__list{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 18px;list-style:none;padding:0;margin:0;font-size:13.5px;color:var(--ink-soft);line-height:1.5}
 footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;border-top:1px solid rgba(250,247,242,0.08);font-size:14px}
@@ -122,7 +134,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 @media (max-width:640px){.foot-grid{grid-template-columns:1fr 1fr}.foot-cta{flex-direction:column;align-items:flex-start;gap:20px}}
 @media (max-width:420px){.foot-grid{grid-template-columns:1fr}}
 .foot-bottom{display:flex;justify-content:space-between;gap:24px;align-items:center;flex-wrap:wrap}
-.below-fold-island{content-visibility:auto;contain-intrinsic-size:auto 800px}
+.below-fold-island{content-visibility:auto;contain-intrinsic-size:auto 1200px}
 @media print{.below-fold-island{content-visibility:visible}}
 </style>
 <!-- Preload the two above-the-fold web fonts so they arrive in

@@ -107,6 +107,14 @@ const BLOCK = [
   `.hero-counts{display:flex;flex-wrap:wrap;gap:10px 14px;list-style:none;padding:0;margin:18px 0 22px;font-size:13.5px;font-weight:600;letter-spacing:0.02em;color:var(--ink-soft)}`,
   `.hero-counts__chip{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:var(--cream-2)}`,
   `.hero-counts__chip strong{color:var(--teal)}`,
+  // Universal section padding. Every below-hero section is
+  // <section class="block ...">; without this rule inline, all 9
+  // sections render at zero vertical padding on first paint then
+  // snap to ~80–140px when site-core.css applies. Major visible
+  // reflow, especially compounded on mobile where the cascade is
+  // CPU-bound by ~4×.
+  `section.block{padding:clamp(80px,10vw,140px) 0}`,
+  `.bg-cream2{background:var(--cream-2)}`,
   // Section heading skeleton — used by every below-fold section.
   // Without these the section headers collapse onto a single
   // unsized line when site-core.css hasn't applied yet.
@@ -114,6 +122,43 @@ const BLOCK = [
   `.section-header h2{margin-top:16px}`,
   `.section-header p{margin-top:20px;font-size:19px;line-height:1.55;color:var(--ink-soft);max-width:640px}`,
   `.section-center{text-align:center;margin-left:auto;margin-right:auto}`,
+  // Multi-column grid skeletons. Desktop-first CSS in site-core.css
+  // declares these as 3–12 column grids that collapse to 1fr at
+  // ≤960px. Without the collapse rule inline, mobile users see
+  // these sections render as desktop columns (overflowing the
+  // viewport) until site-core.css arrives — the single biggest
+  // mobile-only reflow source on this site. Declaring the mobile
+  // shape FIRST (single column / span 12) means the first paint is
+  // mobile-correct; on wider viewports site-core.css then upgrades
+  // to multi-column.
+  `.compare,.services,.care,.steps{display:grid;grid-template-columns:1fr;gap:20px}`,
+  `.work{display:grid;grid-template-columns:repeat(12,1fr);gap:24px}`,
+  `.work-item{grid-column:span 12}`,
+  `.about-grid{display:grid;grid-template-columns:1fr;gap:48px;align-items:center}`,
+  `.contact-grid{display:grid;grid-template-columns:1fr;gap:clamp(40px,6vw,80px);align-items:start}`,
+  `.form-row{display:grid;grid-template-columns:1fr;gap:16px}`,
+  `@media (min-width:961px){`+
+    `.compare,.services,.care{grid-template-columns:repeat(3,1fr)}`+
+    `.steps{grid-template-columns:repeat(4,1fr)}`+
+    `.work-item:nth-child(1){grid-column:span 7}`+
+    `.work-item:nth-child(2){grid-column:span 5}`+
+    `.work-item:nth-child(3){grid-column:span 5}`+
+    `.work-item:nth-child(4){grid-column:span 7}`+
+    `.about-grid{grid-template-columns:0.9fr 1.1fr;gap:80px}`+
+    `.contact-grid{grid-template-columns:1fr 1.2fr}`+
+  `}`,
+  `@media (min-width:641px){.form-row{grid-template-columns:1fr 1fr}}`,
+  // Hide the .window hero graphic on mobile in advance. site-core.css
+  // sets display:none at ≤960px, but until it arrives the heavy
+  // 12-pane window + muntin bars try to render at their intrinsic
+  // (unstyled) size — causing a layout shove that resets when CSS
+  // arrives. Declaring display:none inline kills the shove.
+  `@media (max-width:960px){.window,.window-caption{display:none}}`,
+  // Mobile sticky CTA bar starts hidden; site-core.css enables it
+  // only at ≤720px AND coarse-pointer. Declaring display:none here
+  // prevents a brief flash on first paint before site-core.css
+  // re-asserts the same default.
+  `.mobile-cta-bar{display:none}`,
   // Trust strip — the band immediately under the hero on several
   // landing pages. Background + border, flex centering for the list.
   `.trust-strip{padding:18px 0;background:var(--cream-2);border-block:1px solid var(--line)}`,
@@ -132,27 +177,23 @@ const BLOCK = [
   `.foot-bottom{display:flex;justify-content:space-between;gap:24px;align-items:center;flex-wrap:wrap}`,
   // Below-fold island utility — wrapper elements with class
   // below-fold-island skip painting + layout work until they scroll
-  // near the viewport. Print stylesheet overrides for paper output.
-  `.below-fold-island{content-visibility:auto;contain-intrinsic-size:auto 800px}`,
+  // near the viewport. `auto` lets the browser cache the rendered
+  // size after first render, so the 1200px fallback only matters on
+  // the very first encounter (and over-reserving is benign: the
+  // scrollbar briefly shows more remaining content). Print
+  // stylesheet override so paper output isn't blank.
+  `.below-fold-island{content-visibility:auto;contain-intrinsic-size:auto 1200px}`,
   `@media print{.below-fold-island{content-visibility:visible}}`,
 ].join('\n') + '\n';
 
-// Anchor: end of the critical-CSS <style> block. The nav-critical
-// injector terminates with `main{padding-top:64px}`. We insert our
-// block immediately after, before the closing </style>.
-const ANCHOR = 'main{padding-top:64px}\n</style>';
-const ANCHOR_REPLACE = 'main{padding-top:64px}\n' + BLOCK + '</style>';
-
-// Strip a prior version of the block if the sentinel exists, then
-// re-inject. Allows the injector to absorb edits to BLOCK without
-// leaving a stale duplicate.
-const STRIP_RE = new RegExp(
-  SENTINEL.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') +
-    '[\\s\\S]*?(?=' +
-    'main\\{padding-top:64px\\}\\n</style>' +
-    ')',
-  'g'
-);
+// Anchor pair: the block lives between `main{padding-top:64px}\n`
+// (the last line of the nav-critical injection) and the closing
+// `</style>` of the page's inline critical-CSS <style> element. On
+// first injection there is nothing between them; on re-injection a
+// prior perf-critical block sits there and must be replaced.
+const HEAD_ANCHOR = 'main{padding-top:64px}\n';
+const TAIL_ANCHOR = '</style>';
+const NEW_REGION  = HEAD_ANCHOR + BLOCK + TAIL_ANCHOR;
 
 let touched = 0;
 let scanned = 0;
@@ -161,24 +202,20 @@ for (const f of walk(REPO)) {
   scanned++;
   const src = fs.readFileSync(f, 'utf8');
   if (!src.includes('Critical CSS — prevents flash')) continue;
-  if (!src.includes(ANCHOR)) continue;
+  if (!src.includes(HEAD_ANCHOR)) continue;
 
-  // Strip any prior injection of the same sentinel block first, so
-  // edits to BLOCK propagate cleanly across re-runs.
-  let next = src.replace(STRIP_RE, '');
+  const headIdx = src.indexOf(HEAD_ANCHOR);
+  // Locate the next `</style>` after the head anchor. That closes
+  // the critical-CSS <style> block; any content between is either
+  // the prior perf-critical block (re-injection) or empty (first
+  // injection).
+  const tailIdx = src.indexOf(TAIL_ANCHOR, headIdx);
+  if (tailIdx < 0) continue;
 
-  // If the canonical block is already present (exact match), no-op.
-  if (next.includes(SENTINEL) && next.includes(ANCHOR_REPLACE)) {
-    if (next !== src) {
-      if (!checkOnly) fs.writeFileSync(f, next);
-      touched++;
-    }
-    continue;
-  }
+  const currentRegion = src.slice(headIdx, tailIdx + TAIL_ANCHOR.length);
+  if (currentRegion === NEW_REGION) continue;  // already canonical
 
-  next = next.replace(ANCHOR, ANCHOR_REPLACE);
-  if (next === src) continue;
-
+  const next = src.slice(0, headIdx) + NEW_REGION + src.slice(tailIdx + TAIL_ANCHOR.length);
   if (!checkOnly) fs.writeFileSync(f, next);
   touched++;
 }
