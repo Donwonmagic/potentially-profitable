@@ -61,8 +61,8 @@ main{padding-top:64px}
 </style>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
-<link rel="preload" as="style" href="/assets/site-core.css?v=a3cc95eb7ac7" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a3cc95eb7ac7"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=ca265f67308b" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ca265f67308b"></noscript>
 <link rel="stylesheet" href="/assets/sheets.css?v=20260503">
 </head>
 <body data-page="sheet" data-sheet-slug="inventory-count-sheet" data-sheet-pack="operations-margin" data-pagefind-meta="kind:sheet,pack:operations-margin">
@@ -88,6 +88,16 @@ main{padding-top:64px}
   </div>
 </aside>
 <!-- batch-banner:end -->
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
 <header class="nav" id="nav">
   <div class="container nav-inner">
     <a href="/" class="logo" aria-label="Muntin Digital home">
@@ -198,7 +208,11 @@ main{padding-top:64px}
        affordance is acceptable). The script runs once, fire-and-
        forget; no observable side effects on a 401. -->
   <script>
-    (function () {
+    /* Phase 3C-perf — deferred via requestIdleCallback so the
+       /api/auth/me round-trip stays off the critical path. Both
+       .js-nav-signin / .js-nav-workshop ship hidden, so a one-frame
+       delay before the correct affordance reveals is invisible. */
+    (window.requestIdleCallback || function (cb) { return setTimeout(cb, 200); })(function () {
       var signin   = document.querySelectorAll('.js-nav-signin');
       var workshop = document.querySelectorAll('.js-nav-workshop');
       if (!signin.length && !workshop.length) return;
@@ -226,7 +240,7 @@ main{padding-top:64px}
           show(signin);
         })
         .catch(function () { show(signin); });
-    })();
+    });
   </script>
 </header>
 
@@ -447,7 +461,7 @@ main{padding-top:64px}
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a <!-- count:glossary.terms -->142<!-- /count -->-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
+        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a <!-- count:glossary.terms -->139<!-- /count -->-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
       </div>
 
       <nav class="foot-col" aria-labelledby="foot-explore">

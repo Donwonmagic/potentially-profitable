@@ -627,7 +627,7 @@
 @font-face{font-family:'Inter Fallback';src:local('Arial');size-adjust:100%;ascent-override:96.875%;descent-override:24.121%;line-gap-override:0%}
 
 
-/* ===== [core] Breakpoint scale (lines 607-712) ===== */
+/* ===== [core] Breakpoint scale (lines 607-750) ===== */
 /* ============ BREAKPOINT SCALE ============
    The site transitions at exactly these widths, everywhere:
 
@@ -734,8 +734,6 @@ pre code{overflow-wrap:normal;word-break:normal;white-space:pre}
 .post-end-mark p{font-family:var(--font-display);font-style:italic;font-size:18px;color:var(--stone);margin:0}
 .container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
 /* ============ Button vocabulary (Sprint 4 — locked) ============
-
-/* ===== [core] Button vocabulary (.btn family) (lines 713-1281) ===== */
    The site has ONE button family. Every interactive control should
    compose from these primitives unless it is a registered exception
    (see scripts/check-button-vocabulary.mjs for the allowlist).
@@ -774,6 +772,8 @@ pre code{overflow-wrap:normal;word-break:normal;white-space:pre}
    New button-shaped class? Add it to the allowlist OR refactor to
    compose primitives. scripts/check-button-vocabulary.mjs catches
    ad-hoc *-btn additions in CI. */
+
+/* ===== [core] Button vocabulary (.btn family) (lines 751-1281) ===== */
 
 .btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:500;font-size:15px;letter-spacing:-0.005em;transition:transform var(--t-fast) var(--ease),background var(--t-fast) var(--ease),color var(--t-fast) var(--ease),box-shadow var(--t-fast) var(--ease);white-space:nowrap;cursor:pointer}
 .btn svg{width:16px;height:16px;transition:transform var(--t-med) var(--ease-out)}

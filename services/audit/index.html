@@ -247,9 +247,9 @@ main{padding-top:64px}
 </style>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
-<link rel="preload" as="style" href="/assets/site-core.css?v=a3cc95eb7ac7" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-core.css?v=ca265f67308b" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=47810dd9477a" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a3cc95eb7ac7"><link rel="stylesheet" href="/assets/site-article.css?v=47810dd9477a"></noscript>
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ca265f67308b"><link rel="stylesheet" href="/assets/site-article.css?v=47810dd9477a"></noscript>
 
 <script src="/assets/p.js?v=20260503" defer></script>
 <script>
@@ -282,6 +282,16 @@ main{padding-top:64px}
   </div>
 </aside>
 <!-- batch-banner:end -->
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
 <header class="nav" id="nav">
   <div class="container nav-inner">
     <a href="/" class="logo" aria-label="Muntin Digital home">
@@ -294,11 +304,29 @@ main{padding-top:64px}
       </svg>
       Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
     </a>
+    <!-- Phase 7: 5-item nav, per launch plan Part II.
+         Library / Tools / Work / Studio / Sign in.
+         Library now points at the canonical /library/ hub (the
+         three-doors page). Tools is promoted from the old Library
+         mega-menu to a top-level item. Studio replaces Services +
+         Restaurants + About — they all live under /studio/ now,
+         either as anchored sections (#pricing, #offers, #cities,
+         #process, #about) or as full child pages (/studio/compare/,
+         /studio/silver-spring/, etc.). The old Services and
+         Restaurants pages remain reachable via /studio/ and the
+         _redirects table; /about/ is unchanged. The mega-menu is
+         retired (the hub IS the menu now); the controller script
+         is gone too. -->
     <nav class="nav-links" aria-label="Primary">
       <a href="/library/">Library</a>
       <a href="/tools/">Tools</a>
       <a href="/work/">Work</a>
       <a href="/studio/">Studio</a>
+      <!-- Both sign-in / workshop ship hidden by default; the
+           auth-state JS at the bottom of this file calls
+           /api/auth/me and reveals exactly one. No-JS visitors see
+           neither, which is acceptable: the library and tools work
+           fully without sign-in (Workshop is the only auth surface). -->
       <a class="js-nav-signin nav-link-auth" href="/sign-in/" hidden>Sign in</a>
       <a class="js-nav-workshop nav-link-auth" href="/workbench/" hidden>Workshop</a>
     </nav>
@@ -344,6 +372,13 @@ main{padding-top:64px}
     <a href="/es/services/audit/" hreflang="es" lang="es" class="mobile-lang js-lang-switch" data-set-locale="es">Ver en español</a>
   </nav>
 
+  <!-- Opt-in Spanish banner. Rendered hidden by default; site.js
+       removes the hidden attribute only when (a) the reader's browser
+       lists Spanish in navigator.languages, (b) no md_locale cookie
+       has been set yet, and (c) the banner hasn't been dismissed.
+       Speaks directly in Spanish because its audience, by definition,
+       is a Spanish-speaking visitor. Link target is the page's own
+       hreflang="es" alternate from <head>, read at runtime. -->
   <aside class="lang-hint" id="langHint" role="complementary" aria-label="Sugerencia de idioma" lang="es" hidden>
     <div class="container lang-hint-inner">
       <span class="lang-hint-text"><strong>¿Prefieres este sitio en español?</strong> Tenemos una versión completa.</span>
@@ -354,8 +389,24 @@ main{padding-top:64px}
     </div>
   </aside>
 
+  <!-- Mega-menu controller retired in Phase 7: Library is a single
+       link to /library/ now (the canonical three-doors hub IS the
+       menu). The CSS rules in site.css for .nav-library-* remain in
+       place defensively so any future mega-menu reuses the pattern. -->
+
+  <!-- Phase 2 (Workshop) — auth-state toggle for the nav.
+       Calls /api/auth/me and reveals either the "Sign in" or
+       "Workshop" link based on the response. Both links ship hidden
+       so anonymous visitors with JS disabled see neither (the
+       library + tools work fully without sign-in, so the missing
+       affordance is acceptable). The script runs once, fire-and-
+       forget; no observable side effects on a 401. -->
   <script>
-    (function () {
+    /* Phase 3C-perf — deferred via requestIdleCallback so the
+       /api/auth/me round-trip stays off the critical path. Both
+       .js-nav-signin / .js-nav-workshop ship hidden, so a one-frame
+       delay before the correct affordance reveals is invisible. */
+    (window.requestIdleCallback || function (cb) { return setTimeout(cb, 200); })(function () {
       var signin   = document.querySelectorAll('.js-nav-signin');
       var workshop = document.querySelectorAll('.js-nav-workshop');
       if (!signin.length && !workshop.length) return;
@@ -364,6 +415,7 @@ main{padding-top:64px}
         .then(function (r) {
           if (r.status === 200) {
             show(workshop);
+            // Phase G.10 — append (N) badge with the user's save count.
             fetch('/api/workbench/count', { credentials: 'same-origin' })
               .then(function (r2) { return r2.ok ? r2.json() : null; })
               .then(function (j) {
@@ -382,7 +434,7 @@ main{padding-top:64px}
           show(signin);
         })
         .catch(function () { show(signin); });
-    })();
+    });
   </script>
 </header>
 
@@ -774,7 +826,7 @@ main{padding-top:64px}
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a <!-- count:glossary.terms -->142<!-- /count -->-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
+        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a <!-- count:glossary.terms -->139<!-- /count -->-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
       </div>
 
       <nav class="foot-col" aria-labelledby="foot-explore">
@@ -837,6 +889,11 @@ main{padding-top:64px}
         <input type="hidden" name="source" value="footer" />
         <input type="hidden" name="ts" value="" />
         <input type="text" name="hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;" />
+        <!-- Turnstile widget (Phase 3B). Auto-injects a hidden
+             cf-turnstile-response field on the form when the user
+             passes; the worker validates via /api/lib/turnstile.js.
+             Managed mode: invisible 99% of the time, falls back to
+             a visible challenge for high-risk requests. -->
         <div class="cf-turnstile" data-sitekey="0x4AAAAAADIgoGh56MvqeE8L" data-action="newsletter" data-size="flexible"></div>
         <button type="submit">Subscribe</button>
       </form>
@@ -855,6 +912,13 @@ main{padding-top:64px}
       </nav>
     </div>
   </div>
+  <!-- Mobile sticky bottom action bar. Phones only (max-width: 720px),
+       coarse pointer required so a tablet with a mouse doesn't get it.
+       Hidden when <body data-hide-sticky-bar> is set (set on /window/,
+       /sign-in/, /account/, and tool-result pages where a sticky bottom
+       would compete with the page's own bottom UI). Lives inside the
+       <footer> so sync-includes captures it as part of the canonical
+       footer block and stays idempotent across re-syncs. -->
   <aside class="mobile-cta-bar" id="mobileCtaBar" aria-label="Quick actions">
     <a class="mobile-cta-bar__btn mobile-cta-bar__btn--primary" href="/tools/audits/restaurant/" data-event="sticky-cta-audit">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
@@ -882,6 +946,19 @@ main{padding-top:64px}
 <script src="/assets/js/save-next-time.js" defer></script>
 <script src="/assets/js/share-hydrate.js" defer></script>
 <script src="/assets/js/window-state.js" defer></script>
+<!-- Cloudflare Turnstile (Phase 3B). Loaded site-wide because the
+     newsletter form lives in this footer, which renders on every page.
+     Async + defer so it never blocks render. ~28 KB; one outbound
+     request to challenges.cloudflare.com per cold load. Worker-side
+     verification lives in src/lib/turnstile.js and runs only when
+     env.TURNSTILE_SECRET_KEY is bound. -->
+<!-- Skip Turnstile on localhost / 127.0.0.1 / dev hosts. The widget
+     calls back to challenges.cloudflare.com to validate the host
+     against the Turnstile site's allowlist; localhost isn't in the
+     allowlist (and adding it would weaken the prod gate), so the
+     widget logs a console error on every dev/CI page load. We
+     gate the script load instead — Turnstile only matters on real
+     production traffic where forms actually submit. -->
 <script>(function(){var h=location.hostname;if(h==='localhost'||h==='127.0.0.1'||h==='0.0.0.0'||/^\[?::1?\]?$/.test(h))return;var s=document.createElement('script');s.src='https://challenges.cloudflare.com/turnstile/v0/api.js';s.async=true;s.defer=true;document.head.appendChild(s);})();</script>
 
 <script src="/assets/site.js?v=20260501-engagement" defer></script>

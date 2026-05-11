@@ -187,16 +187,29 @@
     });
   });
 
-  // Reveal on scroll
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach((e) => {
-      if (e.isIntersecting) {
-        e.target.classList.add('in');
-        io.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-  document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+  // Reveal on scroll. Only adopt elements that exist (most pages
+  // have zero .reveal now — the no-op homepage instances were
+  // trimmed in Phase 3C-perf; the class is reserved for the viz
+  // containers (.funnel, .recovery-stack, gauge wrappers) where
+  // the .in class drives a real CSS animation).
+  const revealEls = document.querySelectorAll('.reveal');
+  if (revealEls.length) {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      // Reduced-motion users skip the staged reveal entirely —
+      // every .reveal goes straight to its .in (final) state.
+      revealEls.forEach((el) => el.classList.add('in'));
+    } else {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add('in');
+            io.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+      revealEls.forEach((el) => io.observe(el));
+    }
+  }
 
   // ============================================================
   // Intake form — validation + async Formspree submission
