@@ -647,8 +647,8 @@ var RESTAURANT_PRIORITY_CHECKS = [
     pass_es: 'Los visitantes pueden tocar tu número para llamar',
     passNote: 'A tappable phone number is on your page — mobile visitors can call you with one tap, which matters for takeout orders, reservation questions, and "are you still open" calls.',
     passNote_es: 'Hay un número tocable en tu página — los visitantes móviles te pueden llamar con un solo tap, lo que importa para pedidos para llevar, preguntas de reservas y llamadas de "¿aún están abiertos?".',
-    passNoteText: 'We found a phone number in your page text, but it is not wrapped in a clickable <code>tel:</code> link. Mobile visitors have to copy the number into their dialer manually instead of tapping to call. Ask your developer to wrap the number in <code>&lt;a href="tel:+1..."&gt;</code>.',
-    passNoteText_es: 'Encontramos un número en el texto, pero no está envuelto en un enlace <code>tel:</code> clicable. Los visitantes móviles tienen que copiar el número al marcador manualmente en vez de tocar para llamar. Pídele a tu desarrollador que envuelva el número en <code>&lt;a href="tel:+1..."&gt;</code>.',
+    passNoteText: 'We found a phone number in your page text, but it is not wrapped in a clickable <code>tel:</code> link — mobile visitors have to copy the number into their dialer manually instead of tapping to call. On Wix or Squarespace this is a 30-second fix in the inline-text editor (highlight the number → Insert link → choose "Phone number"). On a hand-coded site, wrap the number in <code>&lt;a href="tel:+1..."&gt;</code>.',
+    passNoteText_es: 'Encontramos un número en el texto, pero no está envuelto en un enlace <code>tel:</code> tocable — los visitantes móviles tienen que copiar el número al marcador en vez de tocar para llamar. En Wix o Squarespace es un arreglo de 30 segundos en el editor de texto (selecciona el número → Insertar enlace → "Número de teléfono"). En un sitio hecho a mano, envuelve el número en <code>&lt;a href="tel:+1..."&gt;</code>.',
     fail: "We couldn't find a phone number on your site",
     fail_es: 'No encontramos un número de teléfono en tu sitio',
     failNote: "No click-to-call link and no visible phone number in the page text. Every restaurant gets calls — about 'are you open now', about table availability, about special requests — and if your site doesn't make calling one tap, you are losing those conversations. Add a phone number to your site and wrap it in a <code>tel:</code> link.",
@@ -2382,24 +2382,24 @@ var UI_I18N = {
     es: '{score}/100 · {count} verificaci{on} sin confirmar'
   },
   'verdict.90': {
-    en: 'Your site is in great shape. Most restaurants would be thrilled to hit this score. Small polish items may remain — check the breakdown below.',
-    es: 'Tu sitio está en excelente forma. La mayoría de los restaurantes estaría feliz con esta puntuación. Quedan pulidos menores — revisa el desglose abajo.'
+    en: "Your site is in great shape — most restaurants would be thrilled to hit this score. The items below are polish, not problems. Skim them, pick the one or two that catch your eye, and you're done.",
+    es: 'Tu sitio está en gran forma — la mayoría de restaurantes estaría encantada con esta puntuación. Lo de abajo es pulir, no arreglar. Échale un vistazo, escoge una o dos cosas y listo.'
   },
   'verdict.70': {
-    en: 'Solid foundation with room to tighten up. Focus on the red and amber items below — most are mechanical fixes that push your scores into the green (90+) zone.',
-    es: 'Base sólida con margen para ajustar. Concéntrate en los elementos rojos y ámbar abajo — la mayoría son arreglos mecánicos que suben tu puntuación a la zona verde (90+).'
+    en: "Solid bones, two or three leaky pipes. Most restaurants at this score are running a template site that just needs a careful weekend — not a rebuild. Your Top 3 fixes are below, sorted by how much real money each one costs you per year. Pick the two with the green “Fix yourself” chip and block out Saturday morning.",
+    es: 'Buenos cimientos, con dos o tres goteras. La mayoría de restaurantes con esta puntuación tiene un sitio plantilla al que le falta un fin de semana cuidadoso — no una reconstrucción. Tus 3 arreglos prioritarios están abajo, ordenados por cuánto dinero te cuesta cada uno al año. Escoge los dos con el chip verde de “Lo arreglas tú” y reserva un sábado por la mañana.'
   },
   'verdict.50': {
-    en: "The site works, but it's leaking conversions. The good news: the wins here — load speed, image alt text, meta tags, schema — take days, not months, and they're listed in priority order below.",
-    es: 'El sitio funciona, pero está dejando conversiones en la mesa. La buena noticia: las ganancias aquí — velocidad de carga, texto alternativo de imágenes, meta tags, schema — toman días, no meses, y están listadas por prioridad abajo.'
+    en: "The site works, but it's quietly losing you customers — most likely on mobile, on a Saturday night, when the visitor can't find your hours or your phone tap fast enough. The good news: the biggest wins below are usually a few hours of work, not a redesign. Start with the top two you can fix yourself, then come back and re-run this audit — you'll see exactly which numbers moved.",
+    es: 'El sitio funciona, pero está perdiendo clientes en silencio — casi siempre en el móvil, un sábado por la noche, cuando alguien no encuentra tus horarios o tu teléfono lo bastante rápido. La buena noticia: las mayores ganancias de abajo suelen ser unas pocas horas de trabajo, no un rediseño. Empieza con los dos primeros que puedas resolver tú mismo, luego vuelve y ejecuta otra vez esta auditoría — verás exactamente qué cifras se movieron.'
   },
   'verdict.below': {
-    en: "There's real work to do. Scores in this range usually track with a template site hitting its ceiling — font sizes, tap targets, page speed, and schema markup all tend to be fixable, but they add up. Start with the failing items below, in the order they're listed.",
-    es: 'Hay trabajo real por hacer. Puntuaciones en este rango suelen venir de un sitio plantilla que llegó a su tope — tamaños de fuente, áreas tocables, velocidad y marcado schema todos se pueden arreglar, pero se acumulan. Empieza con los elementos fallidos abajo, en el orden listado.'
+    en: "There's real work to do here, and that's okay — most scores in this range come from a template site that's quietly aged out, not from anything you did wrong. The fastest path forward is the Top 3 list below: tackle the two with the green “Fix yourself” chip this weekend, then re-run the audit and watch the score move. If a fix is flagged for a web person and you don't have one, email don@muntin.digital — that's literally what Muntin does.",
+    es: 'Hay trabajo real por hacer, y no pasa nada — la mayoría de las puntuaciones en este rango vienen de un sitio plantilla que envejeció en silencio, no de nada que hiciste mal. El camino más rápido es la lista de los 3 arreglos prioritarios abajo: ocúpate este fin de semana de los dos con el chip verde de “Lo arreglas tú”, luego vuelve a ejecutar la auditoría y mira cómo se mueve la puntuación. Si un arreglo necesita una persona de la web y tú no tienes una, escribe a don@muntin.digital — Muntin existe literalmente para esto.'
   },
   'verdict.unverifiedSuffix': {
-    en: " We couldn't verify {count} checks on this pass — each one is counted at half weight. Confirming them below will sharpen the score in either direction.",
-    es: ' No pudimos verificar {count} verificaciones esta vez — cada una cuenta a medio peso. Confirmarlas abajo afinará la puntuación en cualquier dirección.'
+    en: " {count} check{s} need your eyes — confirming them on the right takes about 90 seconds and sharpens your score either direction with no other work.",
+    es: ' {count} verificaci{on} necesita{n} tu ojo — confirmarlas a la derecha toma unos 90 segundos y afina tu puntuación en cualquier dirección sin más trabajo.'
   },
   // Sprint M1.16: after detector fusion, most well-covered
   // restaurants see zero unverified checks. Celebrate the
@@ -2601,8 +2601,8 @@ var UI_I18N = {
     es: 'Lo que los visitantes reales experimentan'
   },
   'deep.crux.sub': {
-    en: 'Page load, response time, and layout stability — measured from real Chrome users on your site over the last 25 weeks. Only shown when Google has enough samples to publish a trend. (Technical: Core Web Vitals from CrUX.)',
-    es: 'Carga de página, tiempo de respuesta y estabilidad del diseño — medidos desde usuarios reales de Chrome en tu sitio durante las últimas 25 semanas. Solo se muestra cuando Google tiene suficientes muestras para publicar una tendencia. (Técnico: Core Web Vitals de CrUX.)'
+    en: 'Page load, response time, and layout stability — measured from real Chrome visitors over the last 25 weeks. We only show this when Google has enough samples to publish a real trend, so a brand-new or low-traffic site may not have data here yet.',
+    es: 'Carga de página, tiempo de respuesta y estabilidad del diseño — medidos desde visitantes reales de Chrome durante las últimas 25 semanas. Solo lo mostramos cuando Google tiene suficientes muestras para publicar una tendencia real, así que un sitio nuevo o de bajo tráfico puede no tener datos aquí todavía.'
   },
   'deep.reviews.heading': {
     en: 'Google reviews snapshot',
@@ -2937,8 +2937,65 @@ var UI_I18N = {
   // Effort/time meta strings reused inside the action plan column
   // items. Kept separate from the Top-3 chip text because these render
   // as plain meta labels without chip styling.
-  'effort.self':    { en: 'Fix yourself',      es: 'Arreglo propio' },
-  'effort.dev':     { en: 'Ask your developer', es: 'Pregunta a tu desarrollador' },
+  // Sprint AUDIT-EMPOWERMENT: "Ask your developer" silently alienated
+  // the 70% of small-restaurant owners who don't have one. "Needs a
+  // web person" is wider — covers a freelancer, a Wix support chat,
+  // a tech-savvy nephew, or Muntin Digital — without making the
+  // owner feel like they're missing infrastructure they should have.
+  // Same logic for "Rebuild needed" → "Bigger project": less ominous,
+  // doesn't immediately imply "throw your site away."
+  'effort.self':    { en: 'Fix yourself',      es: 'Lo arreglas tú' },
+  'effort.dev':     { en: 'Needs a web person', es: 'Necesita una persona de la web' },
+  'effort.rebuild': { en: 'Bigger project',     es: 'Proyecto más grande' },
+  // Sprint AUDIT-EMPOWERMENT: priority-list self-fix filter copy.
+  // Owner-aware: "no web person needed" instead of "self-effort" or
+  // "developer task" jargon.
+  'priority.filter.self': {
+    en: 'Show me only the items I can fix myself (no web person needed)',
+    es: 'Muéstrame solo lo que puedo arreglar yo (sin necesitar a alguien de la web)'
+  },
+  'priority.filter.count.filtered': {
+    en: 'Showing {self} of {all} items you can do yourself',
+    es: 'Mostrando {self} de {all} cosas que puedes hacer tú'
+  },
+  // Sprint AUDIT-EMPOWERMENT: Top-3 sub-copy + Weekend Mode strings.
+  // The sub-copy now tells the owner WHY the items are ranked (dollar
+  // estimate) AND what action to take (pick 2). The Weekend Mode
+  // button is a focused-mode entry point: one click, see the 2
+  // self-fixable items, fix them, come back Sunday.
+  'topFixes.sub': {
+    en: "Sorted by estimated revenue at risk. Pick two — that's your weekend.",
+    es: 'Ordenado por ingresos estimados en riesgo. Escoge dos — ese es tu fin de semana.'
+  },
+  'weekendMode.enter': {
+    en: 'Show me only the 2 things to fix this weekend →',
+    es: 'Muéstrame solo las 2 cosas para arreglar este fin de semana →'
+  },
+  'weekendMode.close.copy': {
+    en: "Knock these two out this weekend. Your checkmarks are saved on this device — come back Sunday night, re-run the audit, and you'll see exactly which numbers moved.",
+    es: 'Resuelve estos dos este fin de semana. Tus marcas están guardadas en este dispositivo — vuelve el domingo por la noche, ejecuta otra vez la auditoría y verás exactamente qué cifras se movieron.'
+  },
+  'weekendMode.close.reaudit': {
+    en: 'Re-audit my site →',
+    es: 'Volver a auditar mi sitio →'
+  },
+  'weekendMode.close.exit': {
+    en: 'Show me everything',
+    es: 'Mostrarme todo'
+  },
+  // Sprint AUDIT-EMPOWERMENT: Core Web Vitals strip — plain-English
+  // headline first, technical acronym second. The .label cell now
+  // reads ".plain" and the .hint footnote reads ".tech".
+  'cwv.lcp.plain': { en: 'Time to see the page',         es: 'Tiempo en ver la página' },
+  'cwv.lcp.tech':  { en: 'LCP · Largest Contentful Paint', es: 'LCP · Mayor pintado de contenido' },
+  'cwv.cls.plain': { en: 'How much the page jumps',       es: 'Cuánto salta la página' },
+  'cwv.cls.tech':  { en: 'CLS · Cumulative Layout Shift',  es: 'CLS · Cambio acumulado de diseño' },
+  'cwv.inp.plain': { en: 'How fast it reacts to taps',    es: 'Qué tan rápido reacciona a tus toques' },
+  'cwv.inp.tech':  { en: 'INP · Interaction to Next Paint', es: 'INP · Interacción al siguiente pintado' },
+  'cwv.tbt.plain': { en: 'How long it’s frozen at start', es: 'Cuánto se queda congelada al inicio' },
+  'cwv.tbt.tech':  { en: 'TBT · Total Blocking Time',      es: 'TBT · Tiempo total de bloqueo' },
+  'cwv.fcp.plain': { en: 'Time to first pixel',           es: 'Tiempo al primer pixel' },
+  'cwv.fcp.tech':  { en: 'FCP · First Contentful Paint',   es: 'FCP · Primer pintado de contenido' },
   'effort.rebuild': { en: 'Rebuild needed',    es: 'Se necesita rehacer' },
   'effort.halfday': { en: 'Half-day project',  es: 'Proyecto de medio día' },
   // Sprint N1: NAP cross-check card (Name/Address/Phone consistency
