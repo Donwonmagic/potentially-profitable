@@ -10871,15 +10871,30 @@ main{padding-top:64px}
     var places = window.__auditPlaces || null;
     var schema = window.__auditSchema || null;
     var crawl  = window.__auditCrawl  || null;
-    // Audit-4 follow-up: expose businessType so check evaluators
-    // (D6 delivery-presence) can branch by subtype without reaching
-    // for the score-state global directly.
+    // Audit-4 follow-up: expose the businessType subtype STRING (not
+    // the whole detector object) so check evaluators can branch on
+    // `=== 'fast-casual'` etc. directly.
+    //
+    // Final-audit fix: the prior version exposed the raw
+    // detectBusinessType() return value, which is an object
+    // `{type, label, confidence, ...}` — so `dpSubtype === 'fast-casual'`
+    // was permanently false and the D6 fast-casual fail branch was
+    // dead code. The unwrap to .type lives here (one place) rather
+    // than in every evaluator that branches on subtype.
     var scoreState = window.__auditScoreState || null;
+    var subtypeStr = null;
+    if (scoreState && scoreState.businessType) {
+      // `businessType` from renderReport is the full object; .type
+      // is the subtype identifier ('fast-casual', 'fine-dining', etc).
+      subtypeStr = (typeof scoreState.businessType === 'string')
+        ? scoreState.businessType
+        : (scoreState.businessType.type || null);
+    }
     return {
       places: (places && places.ok && places.place) ? places : null,
       schema: (schema && schema.ok) ? schema : null,
       crawl:  (crawl  && crawl.ok)  ? crawl  : null,
-      businessType: scoreState ? scoreState.businessType : null
+      businessType: subtypeStr
     };
   }
 
