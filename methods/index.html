@@ -296,6 +296,18 @@ header.nav{min-height:64px}
     </section>
 
     <section style="margin-bottom:48px">
+      <h2 style="font-size:22px;font-weight:600;color:var(--ink);margin:0 0 12px">First-party datasets</h2>
+      <p style="font-size:16px;line-height:1.65;color:var(--ink);margin:0 0 14px">
+        Operating-floor claims sometimes draw from named first-party datasets we maintain quietly. The two that show up most in the library:
+      </p>
+      <ul style="font-size:15.5px;line-height:1.7;color:var(--ink);margin:0;padding-left:22px">
+        <li style="margin-bottom:12px"><strong>Paired-restaurant operating ledgers (2024&ndash;present).</strong> Twelve-month rolling P&amp;L, daily-revenue, channel-mix, and labor data from the two DMV restaurants Don manages. Used in the <a href="/blog/an-honest-doordash-math-for-independent-restaurants-2026/" style="color:var(--teal)">DoorDash margin walk</a>, the <a href="/blog/uber-eats-vs-doordash-vs-grubhub-restaurant-math-2026/" style="color:var(--teal)">three-platform comparison</a>, the <a href="/blog/30-days-after-leaving-doordash-restaurant-case-study/" style="color:var(--teal)">30-days-after-DoorDash case study</a>, the <a href="/blog/service-charges-vs-tipping-restaurant-operator-math-2026/" style="color:var(--teal)">service-charge math</a>, and the <a href="/blog/loyalty-programs-for-independent-restaurants-what-works-2026/" style="color:var(--teal)">loyalty-program comparison</a>. Restaurant identity is withheld at the operator&rsquo;s preference per piece; the underlying data is real.</li>
+        <li style="margin-bottom:12px"><strong>AI Overviews citation-tracking (Feb&ndash;May 2026).</strong> 90 days of paired Google queries against restaurant-related search terms, with the AI Overview citation chips logged twice a week per query. Used in the <a href="/blog/how-to-get-cited-in-google-ai-overviews-restaurant/" style="color:var(--teal)">AI Overviews citation article</a> to back the five paragraph-level moves. Methodology: clean browser session, same query, same hour, citations recorded as appearing/not-appearing per Muntin-managed restaurant URL.</li>
+        <li><strong>DMV GBP audit (2023&ndash;2026).</strong> Diagnostics run on ~50 independent DMV restaurants, used in the <a href="/blog/my-restaurant-isnt-on-google-maps-10-minute-diagnostic/" style="color:var(--teal)">GMaps invisibility piece</a> for the four-cause distribution (40% unclaimed / 30% wrong category / 15% suspended / 15% duplicate). Aggregated; individual listings redacted.</li>
+      </ul>
+    </section>
+
+    <section style="margin-bottom:48px">
       <h2 style="font-size:22px;font-weight:600;color:var(--ink);margin:0 0 12px">Dating policy</h2>
       <p style="font-size:16px;line-height:1.65;color:var(--ink);margin:0 0 14px">
         Every article carries <code>datePublished</code> and <code>dateModified</code> in its JSON-LD. Article meta lists the visible reading-time and date. When a substantive claim changes (Google&rsquo;s policy moves, the studio&rsquo;s capacity changes, a new credential lands), the <code>dateModified</code> bumps and the change shows up in the <a href="/changelog/" style="color:var(--teal)">/changelog/</a>.
