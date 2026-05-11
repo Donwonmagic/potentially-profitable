@@ -190,8 +190,34 @@
     if (els.site && els.site.value.trim()) {
       pieces.push('Current site: ' + els.site.value.trim());
     }
+    // Topic param: smart-next CTAs in articles pass ?topic=<slug>; if
+    // present, surface it as a "Topic" header so Don can sort/filter
+    // by which article the inquiry came from. Silently ignored when
+    // absent — keeps backward compatibility with direct /window/ entries.
+    var topic = readTopicParam();
+    if (topic) {
+      pieces.push('Topic: ' + topic);
+    }
     if (!pieces.length) return rawBody;
     return pieces.join('\n') + '\n---\n' + rawBody;
+  }
+
+  // Phase G — Window topic routing. Reads `?topic=<slug>` from the
+  // URL (set by smart-next CTAs in /blog/<slug>/index.html templates),
+  // returns the human-readable slug for inclusion in the outbound
+  // message header. Defensive: returns null on missing or malformed
+  // values so existing direct entries (no topic) keep working.
+  function readTopicParam() {
+    try {
+      var params = new URLSearchParams(window.location.search);
+      var raw = params.get('topic');
+      if (!raw) return null;
+      // Slug allowlist: lowercase letters, numbers, hyphens, max 120
+      // chars. Anything else is dropped silently — keeps junk out of
+      // the operator inbox without surfacing an error to the visitor.
+      if (!/^[a-z0-9-]{1,120}$/.test(raw)) return null;
+      return raw;
+    } catch (_) { return null; }
   }
 
   var state = {
