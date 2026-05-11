@@ -102,7 +102,7 @@ header.nav{min-height:64px}
   "@context": "https://schema.org",
   "@type": "Article",
   "@id": "https://muntin.digital/blog/restaurant-schema-markup-complete-paste-ready-example/#article",
-  "abstract": "The full JSON-LD block I use on real restaurant sites &mdash; Restaurant, Menu, OpeningHoursSpecification, AggregateRating, Reservation, and FAQ in one file. Drop it into your <head>, fill in seven fields, validate, ship. Worked example from a live DMV restaurant.",
+  "abstract": "Sixty lines of JSON-LD that cover the six schema types Google reads first on a restaurant page — Restaurant, Menu, OpeningHoursSpecification, AggregateRating, Reservation, and FAQ. Seven fields marked // EDIT (name, address parts, phone, hours, rating, menu items) are everything you have to change to make the example yours. Three pre-publish checks: validator.schema.org for unknown properties, view-source for CMS-escaping bugs, and Google’s Rich Results test to confirm which surfaces your schema is eligible for.",
   "mentions": []
 }
 </script>
@@ -276,6 +276,17 @@ header.nav{min-height:64px}
   </nav>
 
   <article class="container article-body" id="post-body" style="max-width:720px;margin:32px auto 80px;padding:0 var(--pad-x)">
+      <!-- article-tldr:start -->
+            <aside class="tldr" data-llm="tldr" aria-label="TL;DR">
+              <p class="tldr__eyebrow">TL;DR</p>
+              <ul class="tldr__list">
+              <li>Sixty lines of JSON-LD that cover the six schema types Google reads first on a restaurant page — Restaurant, Menu, OpeningHoursSpecification, AggregateRating, Reservation, and FAQ.</li>
+        <li>Seven fields marked // EDIT (name, address parts, phone, hours, rating, menu items) are everything you have to change to make the example yours.</li>
+        <li>Three pre-publish checks: validator.schema.org for unknown properties, view-source for CMS-escaping bugs, and Google’s Rich Results test to confirm which surfaces your schema is eligible for.</li>
+              </ul>
+            </aside>
+            <!-- article-tldr:end -->
+
     <header style="margin-bottom:32px">
       <p class="eyebrow">How-to · May 11, 2026 · 5 min read &middot; By <a href="/about/#don-goldstein" style="color:var(--teal)">Don Goldstein</a></p>
       <h1 style="font-family:var(--font-display);font-size:clamp(36px,5.5vw,56px);font-weight:500;line-height:1.05;letter-spacing:-0.5px;margin:0 0 18px">
@@ -419,7 +430,19 @@ header.nav{min-height:64px}
     </section>
 
 
-  </article>
+  <!-- article-takeaways:start -->
+            <aside class="key-takeaways" data-llm="takeaways" aria-label="Key takeaways">
+              <p class="key-takeaways__eyebrow">Key takeaways</p>
+              <ul class="key-takeaways__list">
+              <li>Schema is plumbing — it doesn’t move the needle on its own but it makes you eligible for surfaces (local-pack, AggregateRating stars, Reservation deep links, FAQ rich snippets, AI Overview citations) you weren’t eligible for before.</li>
+        <li>Once shipped, leave the schema alone — the crawler revisits stable JSON-LD more often and builds entity confidence over time.</li>
+        <li>Surface timing: local-pack and rating stars update in a week; Reservation deep links and FAQ snippets take 30+ days; AI Overview citations take up to 90.</li>
+        <li>When a fact changes, touch one field — new closing time, new menu item — and resist the urge to refactor.</li>
+        <li>Pair the schema with the citation-shaped writing from the AI Overviews piece for the highest-leverage single edit a restaurant site can ship in 2026.</li>
+              </ul>
+            </aside>
+            <!-- article-takeaways:end -->
+    </article>
 
   <aside class="post-end-mark" aria-hidden="true">
     <hr/>

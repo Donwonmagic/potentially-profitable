@@ -200,6 +200,132 @@
         "Contract flexibility (month-to-month, low switching cost) is a Square-only win at this scale.",
         "Match the POS to your operating model, not the sales-rep pitch — kitchen-ticket pipeline matters more than brand fit."
       ]
+    },
+    "how-to-get-cited-in-google-ai-overviews-restaurant": {
+      "tldr": [
+        "Google’s AI Overview answered 13.14% of US desktop searches in March 2025 and is approaching one in five in 2026; restaurant queries trigger it more often.",
+        "Five paragraph-level moves get a restaurant cited: answer-first ≤45-word paragraphs under each H2, numbers in the lede sentence, predicate-shaped “X is Y” sentences with no hedge words, schema-anchored entity matches between prose and JSON-LD, and stable URLs once cited.",
+        "Citation is a different ranking axis than blue-link SEO — the page with the most backlinks doesn’t always get cited; the page with the cleanest extractable answer does."
+      ],
+      "key_takeaways": [
+        "Strike these hedge tokens on the citation rewrite: approximately, usually, in some cases, most, often, typically, around, tend to, may, can.",
+        "The first paragraph below each H2 is the only one most AI extractors read — bury the answer in paragraph three and the page is invisible to the box.",
+        "The model cross-references your prose against your JSON-LD; mismatches between schema and prose drop citation odds, matches boost them.",
+        "Once cited, don’t move the page or paraphrase the paragraph — the crawler revisits cited URLs faster and a changed answer drops you from rotation.",
+        "If your traffic is mostly informational queries (hours, menu, reservations, dietary), pick citation; intent-rich (best Italian near me), keep ranking."
+      ]
+    },
+    "instagram-as-restaurant-seo-strategy-2026": {
+      "tldr": [
+        "Google has indexed Instagram captions since 2024 and the in-app search bar handles 40% of restaurant discovery for guests under 35; almost no independent restaurant writes captions like it.",
+        "Five caption-level moves: the first nine words carry the keyword load, name the dish/cuisine/neighborhood, write for the search query not the photo, hashtags inside the sentence not stacked, fill the alt-text field every time.",
+        "Running the discipline on a real DMV account delivered 4.3x the saves and 2.1x the profile clicks vs the same restaurant’s old grid — saves and profile clicks are the only Instagram metrics that correlate with reservations."
+      ],
+      "key_takeaways": [
+        "Instagram truncates the caption at ~125 characters on the feed — that’s nine to fifteen words; bury the dish name later and the post is invisible to search.",
+        "Three entities per caption is the discipline: the dish (specific, not category), the cuisine, and the neighborhood.",
+        "Stacked hashtags at the bottom were penalized in Instagram’s late-2024 update; two or three tags woven into the sentence outperform fifteen at the end.",
+        "Alt-text is searchable on both Instagram and Google; 90% of restaurant accounts skip the field and forfeit the surface free.",
+        "Likes don’t convert to bookings — saves and profile clicks do. Optimize captions for the metrics that actually move revenue."
+      ]
+    },
+    "uber-eats-vs-doordash-vs-grubhub-restaurant-math-2026": {
+      "tldr": [
+        "The headline 30% commission is roughly identical across DoorDash, Uber Eats, and Grubhub; the second-layer fee stack opens a 2.5-point spread.",
+        "On the same $42 ticket, DoorDash Marketplace Plus keeps 18.4%, Grubhub Premium keeps 17.6%, Uber Eats Pro keeps 15.9%; direct keeps 28.9%.",
+        "Drop Grubhub first if you’re going to drop one — lowest volume, middle-pack kept-percent, highest rate of phantom-listing complaints in the DMV market."
+      ],
+      "key_takeaways": [
+        "The platforms aren’t marketing — they’re a 30% margin tax for ~20% incremental revenue.",
+        "DoorDash adds sponsored-listing fees (~3% per promo order), Uber Eats adds Pro membership ($2.50/order), Grubhub charges a non-opt-in 1.8% communication fee per order.",
+        "At 12% operating margin, every third-party order has to drive 250% incremental revenue to break even on the platform spend as marketing — it almost never does.",
+        "Most operators are running ≥80% displaced relationship orders on the platform, not net-new discovery; the platform is a habit layer, not a discovery layer.",
+        "Convert third-party guests to direct on their second order through receipts and packaging inserts — that’s where the 30% commission actually pays back."
+      ]
+    },
+    "30-days-after-leaving-doordash-restaurant-case-study": {
+      "tldr": [
+        "I delisted one of two DMV restaurants from DoorDash on April 7, 2026; daily revenue dropped 11% in week one and recovered to within 2.6% of baseline by week four.",
+        "Kept margin in dollars per day climbed 56% over baseline by week four because every recaptured order shifted from the 18.4% DoorDash channel to the 28.9% direct channel.",
+        "Total incremental kept margin: ~$4,000 across the month on a $58,000-gross restaurant. The platform was 90% displaced relationship orders, 10% net-new — not what I’d told myself."
+      ],
+      "key_takeaways": [
+        "Customer complaints peaked at day 11 with 28 contact events; 68% of complainers converted to direct within two weeks at a 10% discount, 32% stopped ordering.",
+        "Packaging cost rose 18% in week three because the recaptured orders ran a larger average ticket ($46 vs $39) and more items per order.",
+        "Labor didn’t break — the line-cook schedule absorbed the channel shift by moving hours from late-evening DoorDash prep into mid-evening walk-in prep.",
+        "The Google review that went negative came down at day 21 when the customer accepted a $20 direct-channel credit — most delisting complaints are resolvable.",
+        "This is one restaurant in one market; the second restaurant I manage stays on the platform because the urban-density and Uber-flow dynamics there are genuinely discovery-driven."
+      ]
+    },
+    "loyalty-programs-for-independent-restaurants-what-works-2026": {
+      "tldr": [
+        "Four loyalty models compete for an independent operator’s setup time: paper punch cards, integrated POS loyalty (Toast/Square), standalone platforms (Fivestars/Como), and CRM-direct (Mailchimp/Klaviyo + own checkout).",
+        "Paper punch cards return 75:1 on a 500-customer base; standalone platforms return 1.17:1; CRM-direct returns ~7x the punch card but only when the direct channel is already converting.",
+        "The loyalty conversation is downstream of the channel conversation — fix the channel first, layer the loyalty after, on the direct surface where margin can fund a real customer relationship."
+      ],
+      "key_takeaways": [
+        "Standalone loyalty platforms (Fivestars, Como Sense) cost $165–$249/month and return ~$2,800/year — a 1.17:1 ratio that loses to the $10/year punch card on percentage terms.",
+        "POS-integrated loyalty (Toast Rewards, Square Loyalty) sits in the middle on ROI but the data is owned by your processor — it doesn’t come with you if you switch.",
+        "The CRM-direct path wins because it lets you segment: weekly regulars get tasting-menu invites with no discount, lapsed customers get a $15-off email at day 58, first-time direct buyers get a thank-you with a next-visit offer.",
+        "Don’t pay both a standalone platform and a POS-integrated loyalty — that’s a double-spend with overlapping returns.",
+        "If your channel mix is wrong (mostly third-party app orders, no direct flow), no loyalty layer fixes it; fix the channel first."
+      ]
+    },
+    "how-to-respond-to-google-reviews-restaurant-playbook-2026": {
+      "tldr": [
+        "Four review archetypes need four response shapes: the glowing 5-star (short, warm, name a detail), the disappointed 3-star (acknowledge the specific issue, name the fix, invite back with a gesture), the angry 1-star (calm, factual, never match tone), and the legitimate-complaint 2-star (own it without ornament).",
+        "The future reader, not the reviewer, is your audience — the 3-star response is the most-read because that’s where undecided guests calibrate.",
+        "Never write “Thank you for your feedback,” “We strive to provide,” “We take this very seriously,” or “I’m sorry you feel that way” — corporate boilerplate signals not-from-an-owner."
+      ],
+      "key_takeaways": [
+        "Sign the response with your first name and title — the signature tells future readers a human is on the other end.",
+        "Name the specific issue, the specific fix, and the specific make-good; vagueness reads as deflection.",
+        "Never match the angry reviewer’s tone — calmness in the response signals operational maturity to the next 1,000 readers.",
+        "AI Overviews now sometimes lift review responses into the cited paragraph alongside menu and About copy; corporate boilerplate makes you cite-able as corporate boilerplate.",
+        "The 1-star response stays under five lines — longer responses read as fighting the review instead of letting it be."
+      ]
+    },
+    "service-charges-vs-tipping-restaurant-operator-math-2026": {
+      "tldr": [
+        "DC’s Initiative 82 phase-out makes the tipping-vs-service-charge question urgent; three models are now in play across the DMV: traditional tipping, 20% service charge, and hybrid (5% menu lift + optional tip).",
+        "Same $200 dinner check: server take-home varies $9, operator net varies $7, customer pays roughly the same all three ways but feels different about it.",
+        "I’d pick the 20% service charge if opening today — cleanest math for kitchen-retention, simplest compliance frame, and it forces operator honesty about what the meal actually costs."
+      ],
+      "key_takeaways": [
+        "The service-charge restaurant draws 1.4% customer complaint rate vs 0.2% at the traditional-tipping restaurant in paired-restaurant data — real but manageable.",
+        "The hybrid model has the lowest complaint rate but the highest operator-time cost (roughly 2x the other two models, ongoing).",
+        "A clearly-posted distribution policy (server X%, kitchen Y%) cuts service-charge complaints from 1.4% to under 0.5%.",
+        "Migration windows are easiest at model-change moments — a renovation, a menu rewrite, a concept launch — rather than mid-stream.",
+        "If running hybrid and your average voluntary tip is below 4%, the model isn’t working — migrate to a clean service charge."
+      ]
+    },
+    "my-restaurant-isnt-on-google-maps-10-minute-diagnostic": {
+      "tldr": [
+        "Four causes cover 100% of restaurant map-pack invisibility in the DMV market: unclaimed listing (40%), wrong primary category (30%), suspended listing (15%), duplicate listing (15%).",
+        "Three of the four fixes are same-day operator work; suspension and duplicate removal take 7–21 days but are tractable with documentation.",
+        "85% of restaurants find the fix within the first three diagnostic checks — the map pack is almost always a Google Business Profile problem, not a website problem."
+      ],
+      "key_takeaways": [
+        "Primary category “Restaurant” is the worst possible choice — it puts you in competition with every other restaurant in your zip code; pick the narrowest cuisine-specific category instead.",
+        "Unclaimed listings rank lower than claimed ones by default and don’t show in the map pack at all post-Q1-2024.",
+        "A suspended listing reads as “Your Business Profile has been suspended” in the dashboard; reinstatement needs lease, business license, or utility-bill documentation.",
+        "Duplicate listings drop both pins from the map pack because Google can’t tell which is canonical — file the duplicate removal with proof.",
+        "If the 10-minute walk doesn’t resolve it, the residual ~5% of cases need NAP-consistency cleanup across the top 30 directories (60–90 minutes of work)."
+      ]
+    },
+    "restaurant-schema-markup-complete-paste-ready-example": {
+      "tldr": [
+        "Sixty lines of JSON-LD that cover the six schema types Google reads first on a restaurant page — Restaurant, Menu, OpeningHoursSpecification, AggregateRating, Reservation, and FAQ.",
+        "Seven fields marked // EDIT (name, address parts, phone, hours, rating, menu items) are everything you have to change to make the example yours.",
+        "Three pre-publish checks: validator.schema.org for unknown properties, view-source for CMS-escaping bugs, and Google’s Rich Results test to confirm which surfaces your schema is eligible for."
+      ],
+      "key_takeaways": [
+        "Schema is plumbing — it doesn’t move the needle on its own but it makes you eligible for surfaces (local-pack, AggregateRating stars, Reservation deep links, FAQ rich snippets, AI Overview citations) you weren’t eligible for before.",
+        "Once shipped, leave the schema alone — the crawler revisits stable JSON-LD more often and builds entity confidence over time.",
+        "Surface timing: local-pack and rating stars update in a week; Reservation deep links and FAQ snippets take 30+ days; AI Overview citations take up to 90.",
+        "When a fact changes, touch one field — new closing time, new menu item — and resist the urge to refactor.",
+        "Pair the schema with the citation-shaped writing from the AI Overviews piece for the highest-leverage single edit a restaurant site can ship in 2026."
+      ]
     }
   }
 }

@@ -37,166 +37,19 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<style>
-/* Critical CSS — prevents flash of unstyled content while the main
-   stylesheet (assets/site.css) loads non-render-blocking via the
-   <link> below. Carries: token vars used in inline styles elsewhere,
-   body baseline (cream + ink + body-size + line-height), container
-   width, skip-link affordance, and a min-height reservation for the
-   fixed nav so layout doesn't shift when site.css applies. ~600
-   bytes. Documented in Phase 3B perf cutover; the full token set
-   reapplies once site.css arrives. */
-:root{--cream:#FAF7F2;--cream-2:#F3EEE3;--ink:#14161A;--ink-soft:#2A2D33;--teal:#1F4E5B;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
-html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
-body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--cream);line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased}
-.container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
-.skip-link{position:absolute;left:-9999px;top:0}
-.skip-link:focus{position:static;display:inline-block;background:#14161A;color:#FAF7F2;padding:12px 16px;z-index:100}
-/* injected by inject-critical-link-color.mjs */
-a{color:inherit}
-.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:500;font-size:15px;text-decoration:none;white-space:nowrap;cursor:pointer}
-.btn-primary{background:var(--ink);color:var(--cream)}
-.btn-ghost{background:transparent;color:var(--ink);border:1px solid #D9D5CB}
-header.nav{min-height:64px}
-</style>
-<!-- Preload the two above-the-fold web fonts so they arrive in
-     parallel with site.css instead of being discovered after parse. -->
-<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
-<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
-<!-- Async-load the main stylesheet. Pattern: preload + onload-swap
-     (with a <noscript> fallback for the JS-disabled path). The
-     onload assigns this.rel='stylesheet', which the browser then
-     applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=a3cc95eb7ac7" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=47810dd9477a" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a3cc95eb7ac7"><link rel="stylesheet" href="/assets/site-article.css?v=47810dd9477a"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=20260503-shells" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=20260503-shells" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=20260503-shells"><link rel="stylesheet" href="/assets/site-article.css?v=20260503-shells"></noscript>
 
-<!-- topic-schema:start -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "Article",
-      "@id": "https://muntin.digital/es/learn/topics/conversions/#article",
-      "headline": "Conversiones",
-      "url": "https://muntin.digital/es/learn/topics/conversions/",
-      "inLanguage": "es-US",
-      "author": {
-        "@id": "https://muntin.digital/#don-goldstein"
-      },
-      "publisher": {
-        "@id": "https://muntin.digital/#business"
-      },
-      "isPartOf": {
-        "@id": "https://muntin.digital/es/learn/#collection"
-      }
-    },
-    {
-      "@type": "BreadcrumbList",
-      "itemListElement": [
-        {
-          "@type": "ListItem",
-          "position": 1,
-          "name": "Inicio",
-          "item": "https://muntin.digital/es/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 2,
-          "name": "Biblioteca",
-          "item": "https://muntin.digital/es/learn/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 3,
-          "name": "Temas",
-          "item": "https://muntin.digital/es/learn/topics/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 4,
-          "name": "Conversiones",
-          "item": "https://muntin.digital/es/learn/topics/conversions/"
-        }
-      ]
-    },
-    {
-      "@type": "ItemList",
-      "@id": "https://muntin.digital/es/learn/topics/conversions/#articles",
-      "numberOfItems": 8,
-      "itemListElement": [
-        {
-          "@type": "ListItem",
-          "position": 1,
-          "url": "https://muntin.digital/es/blog/restaurant-photo-spec-sheet/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 2,
-          "url": "https://muntin.digital/es/blog/five-restaurant-website-changes-recover-one-percent-margin/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 3,
-          "url": "https://muntin.digital/es/blog/how-to-recover-reservations-from-googles-find-a-table/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 4,
-          "url": "https://muntin.digital/es/blog/how-to-raise-restaurant-menu-prices-without-losing-reservations/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 5,
-          "url": "https://muntin.digital/es/blog/why-your-restaurant-loses-reservations-every-night/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 6,
-          "url": "https://muntin.digital/es/blog/an-honest-doordash-math-for-independent-restaurants-2026/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 7,
-          "url": "https://muntin.digital/es/blog/wix-vs-custom-for-restaurants/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 8,
-          "url": "https://muntin.digital/es/blog/what-should-be-on-a-restaurant-website/"
-        }
-      ]
-    }
-  ]
-}
-</script>
-<!-- topic-schema:end -->
 </head>
 <body>
 
 <a class="skip-link" href="#main">Skip to main content</a>
 
-<script>
-  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
-     Apple devices. Runs early in <body> so the swap is essentially
-     invisible — script tags execute synchronously when the parser hits
-     them, before .nav-search-kbd renders below. CSS in site-core.css
-     conditions on <html data-platform="mac">. */
-  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
-    document.documentElement.dataset.platform = 'mac';
-  }
-</script>
 <header class="nav" id="nav">
-  <script>/* i18n runtime dictionary — read by assets/site.js via window.__i18n.
-             Placed inside <header> so sync-includes replaces it atomically
-             along with the rest of the nav block on every build, keeping
-             the partial strictly idempotent. Valid HTML5: <script> may
-             appear in any flow-content context. */
-  window.__i18n=Object.assign(window.__i18n||{},{"nav.open_menu":"Abrir menú","nav.close_menu":"Cerrar menú","form.field_required":"Este campo es obligatorio.","form.invalid_email":"Ingresa un correo electrónico válido.","form.services_min_one":"Selecciona al menos una opción.","form.submit_fallback":"Algo falló. Inténtalo de nuevo o escribe directamente a don@muntin.digital.","audio.resume":"Reanudar audio","audio.pause":"Pausar","audio.play":"Reproducir versión en audio","audio.stop":"Detener y cerrar audio","audio.minimize":"Minimizar controles de audio","audio.expand":"Ampliar controles de audio","audio.prev":"Párrafo anterior","audio.next":"Párrafo siguiente","audio.back15":"Retroceder 15 segundos","audio.fwd15":"Adelantar 15 segundos","audio.progress":"Progreso del audio","audio.controls":"Controles del reproductor de audio","audio.article_label":"Versión en audio de este artículo","audio.speed":"Velocidad de reproducción","audio.voice":"Voz del narrador","search.placeholder":"Busca artículos, herramientas, términos del glosario…","search.close":"Cerrar","search.hint_title":"¿Qué estás buscando?","search.hint_body":"Prueba con \"DoorDash\", \"Core Web Vitals\" o \"precios del menú\". Los resultados vienen de cada artículo, herramienta y término del glosario.","search.empty":"Sin resultados para","search.empty_hint":"Prueba una consulta más corta o una palabra distinta.","search.loading":"Buscando…","search.nav_hint":"para moverte","search.open_hint":"para abrir","search.close_hint":"para cerrar","search.kind_article":"Artículo","search.kind_tool":"Herramienta","search.kind_term":"Glosario","search.kind_resource":"Guía","search.kind_library":"Biblioteca","search.kind_case":"Caso de estudio","search.kind_service":"Servicios","search.kind_industry":"Para ti","search.kind_page":"Página","drawer.kicker":"Nota de investigación","drawer.close":"Cerrar","drawer.loading":"Cargando el resumen…","drawer.err_title":"No pudimos cargar el resumen","drawer.err_body":"Abre la nota completa en una pestaña nueva — es el mismo contenido, solo que más completo.","drawer.findings_label":"Hallazgos clave","drawer.note_label":"La nota de Don","drawer.read_full":"Leer la nota completa","drawer.read_original":"Ver la fuente original","drawer.open_new_tab":"se abre en una pestaña nueva"});</script>
   <div class="container nav-inner">
-    <a href="/es/" class="logo" aria-label="Muntin Digital — inicio">
-      <svg class="logo-mark" width="28" height="28" viewBox="0 0 128 128" fill="none" aria-hidden="true">
+    <a href="/" class="logo" aria-label="Muntin Digital home">
+      <svg class="logo-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true">
         <g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
           <rect x="18" y="18" width="92" height="92"/>
           <line x1="64" y1="18" x2="64" y2="110"/>
@@ -205,99 +58,55 @@ header.nav{min-height:64px}
       </svg>
       Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
     </a>
-    <!-- Phase 7: nav de 5 elementos, según el plan de lanzamiento Parte II.
-         Biblioteca / Herramientas / Proyectos / Estudio / Acceder.
-         Biblioteca apunta al hub canónico /es/library/. Herramientas
-         se promueve del antiguo mega-menú a un elemento de primer
-         nivel. Estudio reemplaza Servicios + Restaurantes + Sobre
-         Don &mdash; todo vive bajo /es/studio/ ahora. El mega-menú
-         se retira (el hub ES el menú); el controlador del script
-         también desaparece. -->
-    <nav class="nav-links" aria-label="Principal">
-      <a href="/es/library/">Biblioteca</a>
-      <a href="/es/tools/">Herramientas</a>
-      <a href="/es/work/">Proyectos</a>
-      <a href="/es/studio/">Estudio</a>
-      <a class="js-nav-signin nav-link-auth" href="/es/sign-in/" hidden>Acceder</a>
-      <a class="js-nav-workshop nav-link-auth" href="/es/workbench/" hidden>El Taller</a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="/services/">Services</a>
+      <a href="/for/restaurants/">Restaurants</a>
+      <a href="/learn/">Learn</a>
+      <a href="/work/">Work</a>
+      <a href="/about/">About</a>
     </nav>
-    <button type="button" class="nav-search-btn js-open-search" aria-label="Abrir búsqueda (Cmd+K)" title="Buscar — Cmd K">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <button type="button" class="nav-search-btn js-open-search" aria-label="Open search (Cmd+K)" title="Search — Cmd K">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <circle cx="11" cy="11" r="7"/>
         <line x1="21" y1="21" x2="16.5" y2="16.5"/>
       </svg>
-      <span class="nav-search-label">Buscar</span>
-      <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mac"><span class="nav-search-kbd-mod">⌘</span>K</span><span class="nav-search-kbd-pc">Ctrl+K</span></kbd>
+      <span class="nav-search-label">Search</span>
+      <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mod">⌘</span>K</kbd>
     </button>
-    <nav class="lang-switch" aria-label="Idioma">
-      <a href="/learn/topics/conversions/" hreflang="en" lang="en" class="js-lang-switch" data-set-locale="en">English</a>
-      <span class="lang-switch-current" aria-current="true">ES</span>
+    <nav class="lang-switch" aria-label="Language">
+      <a href="/learn/topics/conversions/" hreflang="es" lang="es" class="js-lang-switch" data-set-locale="es">Español</a>
+      <span class="lang-switch-current" aria-current="true">EN</span>
     </nav>
-    <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">
-      <span class="nav-window-pulse" id="navWindowPulse" hidden aria-hidden="true" title="Don está cerca"></span>
-      Escríbele a Don
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
+    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Write to Don
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
     </a>
-    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-controls="mobileMenu" aria-expanded="false">
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
   </div>
-  <nav class="mobile-menu" id="mobileMenu" aria-label="Navegación móvil" hidden>
-    <a href="/es/library/">Biblioteca</a>
-    <a href="/es/tools/">Herramientas</a>
-    <a href="/es/work/">Proyectos</a>
-    <a href="/es/studio/">Estudio</a>
-    <a class="js-nav-signin mobile-auth" href="/es/sign-in/" hidden>Acceder</a>
-    <a class="js-nav-workshop mobile-auth" href="/es/workbench/" hidden>El Taller</a>
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
+    <a href="/services/">Services</a>
+    <a href="/for/restaurants/">Restaurants</a>
+    <a href="/learn/">Learn</a>
+    <a href="/work/">Work</a>
+    <a href="/about/">About</a>
     <button type="button" class="mobile-search js-open-search">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
-      <span>Buscar en la biblioteca</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+      <span>Search the library</span>
     </button>
-    <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Escríbele a Don</a>
-    <a href="/learn/topics/conversions/" hreflang="en" lang="en" class="mobile-lang js-lang-switch" data-set-locale="en">View in English</a>
+    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Write to Don</a>
+    <a href="/learn/topics/conversions/" hreflang="es" lang="es" class="mobile-lang js-lang-switch" data-set-locale="es">Ver en español</a>
   </nav>
 
-  <!-- Mega-menu controller retired in Phase 7: Biblioteca is now a
-       single link to /es/library/ (the canonical three-doors hub IS
-       the menu). Las reglas CSS de .nav-library-* permanecen para
-       reusar el patrón si vuelve un mega-menú en el futuro. -->
-
-  <!-- Phase 2 (Workshop) — toggle del estado de auth para el nav.
-       Llama a /api/auth/me y revela el enlace "Acceder" o "El Taller"
-       según la respuesta. Ambos enlaces empiezan ocultos para que un
-       visitante anónimo sin JS no vea ninguno (la biblioteca y las
-       herramientas funcionan completas sin acceso, así que la
-       affordance ausente es aceptable). -->
-  <script>
-    (function () {
-      var signin   = document.querySelectorAll('.js-nav-signin');
-      var workshop = document.querySelectorAll('.js-nav-workshop');
-      if (!signin.length && !workshop.length) return;
-      var show = function (nodes) { nodes.forEach(function (n) { n.hidden = false; }); };
-      fetch('/api/auth/me', { credentials: 'same-origin' })
-        .then(function (r) {
-          if (r.status === 200) {
-            show(workshop);
-            fetch('/api/workbench/count', { credentials: 'same-origin' })
-              .then(function (r2) { return r2.ok ? r2.json() : null; })
-              .then(function (j) {
-                if (!j || typeof j.count !== 'number' || j.count <= 0) return;
-                workshop.forEach(function (n) {
-                  if (n.querySelector('.nav-workshop-count')) return;
-                  var b = document.createElement('span');
-                  b.className = 'nav-workshop-count';
-                  b.textContent = ' (' + j.count + ')';
-                  n.appendChild(b);
-                });
-              })
-              .catch(function () {});
-            return;
-          }
-          show(signin);
-        })
-        .catch(function () { show(signin); });
-    })();
-  </script>
+  <aside class="lang-hint" id="langHint" role="complementary" aria-label="Sugerencia de idioma" lang="es" hidden>
+    <div class="container lang-hint-inner">
+      <span class="lang-hint-text"><strong>¿Prefieres este sitio en español?</strong> Tenemos una versión completa.</span>
+      <a href="/learn/topics/conversions/" class="lang-hint-accept js-lang-switch" data-set-locale="es" hreflang="es" lang="es">Ver en español &rarr;</a>
+      <button type="button" class="lang-hint-dismiss" id="langHintDismiss" aria-label="Cerrar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+      </button>
+    </div>
+  </aside>
 </header>
 
 <main id="main">
@@ -322,24 +131,6 @@ header.nav{min-height:64px}
   </div>
 </section>
 
-<section class="block">
-  <div class="container" style="max-width:760px">
-    <figure class="viz-figure reveal" data-audio-alt="El n&uacute;mero detr&aacute;s de cada art&iacute;culo en este tema: un meta-an&aacute;lisis de Baymard sobre 49 estudios fija el abandono promedio en 70.19 por ciento. Dos tercios de cada embudo de reserva se fugan antes de la confirmaci&oacute;n. Los art&iacute;culos abajo son sobre el 30 por ciento que no.">
-      <div class="viz-rings">
-        <div class="viz-ring" data-band="bad" style="--score:70.19;">
-          <svg class="viz-ring__svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-labelledby="topic-conv-ring-es" focusable="false">
-            <title id="topic-conv-ring-es">70.19% de abandono promedio en 49 estudios</title>
-            <circle class="viz-ring__track" cx="60" cy="60" r="52" fill="none" stroke-width="8"/>
-            <circle class="viz-ring__fill" cx="60" cy="60" r="52" fill="none" stroke-width="8" transform="rotate(-90 60 60)"/>
-            <text class="viz-ring__num" x="60" y="60" text-anchor="middle">70%</text>
-          </svg>
-          <p class="viz-ring__label"><strong>Abandono promedio</strong>en 49 estudios (meta-an&aacute;lisis Baymard) &middot; <a href="/es/learn/research/cart-abandonment-rate/">lee la investigaci&oacute;n</a></p>
-        </div>
-      </div>
-    </figure>
-  </div>
-</section>
-
 
 <section class="topic-section">
   <div class="container">
@@ -349,6 +140,20 @@ header.nav{min-height:64px}
     </header>
     <ul class="topic-article-list">
       <li>
+        <a class="topic-article-card" href="/es/blog/30-days-after-leaving-doordash-restaurant-case-study/">
+          <span class="topic-article-date">10 may 2026</span>
+          <h3>30 Days After Leaving DoorDash: A Restaurant Operator’s Case Study</h3>
+          <p>I delisted one of two DMV restaurants on April 7, 2026. Week-by-week breakdown of revenue, recovered margin, customer complaints, and the cost line that broke. Kept margin climbed 56% by week four. What I got wrong, what I got right.</p>
+        </a>
+      </li>
+<li>
+        <a class="topic-article-card" href="/es/blog/loyalty-programs-for-independent-restaurants-what-works-2026/">
+          <span class="topic-article-date">10 may 2026</span>
+          <h3>Loyalty Programs for Independent Restaurants: What Actually Pays</h3>
+          <p>Four models, one restaurant, twelve months. Paper punch cards return 75:1; standalone platforms return 1.17:1. The CRM-direct path returns 7x the punch card but only when the direct channel is already converting. Side-by-side ROI.</p>
+        </a>
+      </li>
+<li>
         <a class="topic-article-card" href="/es/blog/restaurant-photo-spec-sheet/">
           <span class="topic-article-date">30 abr 2026</span>
           <h3>The Restaurant Photo Spec Sheet: Every Image Size for Every Surface</h3>
@@ -478,6 +283,13 @@ header.nav{min-height:64px}
           <span class="topic-tool-cta">Abrir la herramienta <span aria-hidden="true">→</span></span>
         </a>
       </li>
+<li>
+        <a class="topic-tool-card" href="/es/tools/menu-converter/">
+          <h4>Conversor de menú — pega texto, recibe HTML + JSON-LD schema</h4>
+          <p>Pega tu menú en texto plano. Lleva HTML semántico para tu sitio y un bloque JSON-LD Menu schema indexable por Google. Secciones, ítems, precios y descripciones, todo parseado en tu navegador. Nada se sube; tu menú nunca sale de la página.</p>
+          <span class="topic-tool-cta">Abrir la herramienta <span aria-hidden="true">→</span></span>
+        </a>
+      </li>
     </ul>
   </div>
 </section>
@@ -500,132 +312,6 @@ header.nav{min-height:64px}
   </div>
 </section>
 
-<!-- topic-sheets-rail:start -->
-<section class="topic-section">
-  <div class="container">
-    <header class="topic-section-head">
-      <span class="eyebrow">Hojas del operador</span>
-      <h2>Saca el papeleo.</h2>
-    </header>
-    <ul class="topic-tool-list">
-      <li>
-        <a class="topic-tool-card" href="/es/sheets/third-party-channel-pnl/">
-          <h4>P&amp;G por canal de terceros</h4>
-          <p>Corre las cuentas honestas de DoorDash, Uber Eats o Grubhub. Ventas brutas menos comisión, tarifas de marketing, reembolsos, empaques y la mano de obra que cuestan esos pedidos. Cierra la discusión.</p>
-          <span class="topic-tool-cta">Abrir la hoja <span aria-hidden="true">→</span></span>
-        </a>
-      </li>
-      <li>
-        <a class="topic-tool-card" href="/es/sheets/reservation-no-show-log/">
-          <h4>Registro de reservas y no-shows</h4>
-          <p>Fuente de reserva, tamaño del grupo, depósito sí o no, llegó o no-show o cancelación tardía, ingreso perdido. Nombra lo que cada silla vacía costó.</p>
-          <span class="topic-tool-cta">Abrir la hoja <span aria-hidden="true">→</span></span>
-        </a>
-      </li>
-      <li>
-        <a class="topic-tool-card" href="/es/sheets/website-conversion-checklist/">
-          <h4>Lista de conversión del sitio</h4>
-          <p>Menú móvil carga en tres segundos, click-to-call sobre el fold, CTA de reserva sobre el fold, horarios visibles, dirección tap-to-map, PDFs de alérgenos y menú legibles en móvil.</p>
-          <span class="topic-tool-cta">Abrir la hoja <span aria-hidden="true">→</span></span>
-        </a>
-      </li>
-      <li>
-        <a class="topic-tool-card" href="/es/sheets/daypart-traffic-map/">
-          <h4>Mapa de tráfico por daypart</h4>
-          <p>Cuadrícula día por hora — cubiertos, ventas, horas de mano de obra. Revela dónde pagas personal que no tiene a quién servir.</p>
-          <span class="topic-tool-cta">Abrir la hoja <span aria-hidden="true">→</span></span>
-        </a>
-      </li>
-      <li>
-        <a class="topic-tool-card" href="/es/sheets/email-list-growth-log/">
-          <h4>Registro de crecimiento de lista de correo y SMS</h4>
-          <p>Fuente por mes — table tent, QR, reserva, pedido online — con altas nuevas, bajas, aperturas, clics. Nombra qué canales realmente crecen la lista.</p>
-          <span class="topic-tool-cta">Abrir la hoja <span aria-hidden="true">→</span></span>
-        </a>
-      </li>
-    </ul>
-  </div>
-</section>
-<!-- topic-sheets-rail:end -->
-
-<!-- topic-essay:start -->
-<section class="topic-essay">
-  <div class="container">
-    <p class="topic-essay__eyebrow">Ensayo del pilar &middot; actualizado en mayo de 2026</p>
-    <h2 class="topic-essay__title">Donde el visitante se vuelve comensal.</h2>
-    <div class="topic-essay__body"><p>La mayoría de los sitios de restaurante hacen bien la parte del descubrimiento &mdash; Google les manda tr&aacute;fico. La fuga llega despu&eacute;s: los visitantes aterrizan, miran un rato, no encuentran lo que buscan y se van. La reserva nunca pasa. Las conversiones son ese medio del embudo &mdash; poco vistoso, donde vive casi todo el dinero perdido, y donde los arreglos suelen ser peque&ntilde;os, nada glamorosos y de menos de una hora.</p>
-
-      <p>El embudo honesto de reservas de un independiente de volumen medio se ve as&iacute;: 1,000 clics mensuales desde Google &rarr; 600 aterrizan en una p&aacute;gina que carga en menos de 3 segundos &rarr; 350 encuentran el men&uacute; sin tener que hacer pinch-zoom a un PDF &rarr; 180 llegan a la p&aacute;gina de reservas &rarr; 90 reservan de verdad. Eso es 9% de conversi&oacute;n de punta a punta. Mu&eacute;velo a 12% y le has sumado entre $1,200 y $3,000 de margen mensual sin gastar un peso en anuncios. Mu&eacute;velo del 9% al 16% del cuartil superior &mdash; lo que la sola jerarqu&iacute;a de CTA &laquo;pedir directo&raquo; suele lograr &mdash; y est&aacute;s viendo m&aacute;s de $4,000 en margen recuperado al mes.</p>
-
-      <p>Este pilar junta los manuales, t&eacute;rminos del glosario y herramientas que cierran esa brecha. L&eacute;elo de corrido si est&aacute;s auditando tu embudo por primera vez; salta a la secci&oacute;n que toque si ya sabes cu&aacute;l paso est&aacute; goteando.</p>
-
-      <h3>Los seis puntos donde la conversi&oacute;n se fuga, en orden de impacto en d&oacute;lares</h3>
-
-      <p>La <a href="/es/learn/research/the-1-percent-margin-audit-50-restaurant-websites-2026/">auditor&iacute;a del 1% de margen</a> calific&oacute; 50 sitios de restaurantes independientes contra las seis fugas m&aacute;s comunes de reserva y conversi&oacute;n. El operador mediano fuga 0.94% del ingreso; el peor cuartil 2.3%. Las seis, ordenadas por impacto por incidente:</p>
-
-      <ol>
-        <li><strong>Pedidos solo por agregadores, sin camino directo</strong> &mdash; impacto del 0.45% sobre el ingreso cuando est&aacute; presente. Cada orden pasa por una comisi&oacute;n del 30% en lugar de una tarifa de procesador del 3.6%. Es tambi&eacute;n la fuga m&aacute;s f&aacute;cil de detectar en una prueba de cinco segundos en tu p&aacute;gina de men&uacute;.</li>
-        <li><strong>El bot&oacute;n de reserva no hace deeplink</strong> &mdash; impacto del 0.34%, presente en el 59% de los sitios auditados. El bot&oacute;n de OpenTable / Resy / Tock manda al visitante a la p&aacute;gina principal de la plataforma en lugar de a la p&aacute;gina de tu local. Un clic de m&aacute;s es una reserva menos. Arreglo de cinco minutos.</li>
-        <li><strong>Solo en ingl&eacute;s en una zona biling&uuml;e</strong> &mdash; impacto del 0.31%, presente en el 38%. Un espejo real <code>/es/</code> con hreflang duplica la demanda accesible en aproximadamente el 35% de los barrios del DMV. El <a href="/es/services/menu-drop-in/">menu drop-in de $1,500</a> entrega la versi&oacute;n de la p&aacute;gina de men&uacute; en siete d&iacute;as; la versi&oacute;n de sitio completo va dentro de cualquiera de las tres tiers del estudio.</li>
-        <li><strong>Sin CTA de pedido directo arriba de los enlaces de terceros</strong> &mdash; impacto del 0.27%, presente en el 71%. El arreglo individual que m&aacute;s margen recupera: un bot&oacute;n &laquo;Pedir directo&raquo; en color primario, ubicado por encima de los enlaces a DoorDash / Uber Eats. Iguala el precio del men&uacute; del agregador; el cliente lo nota, t&uacute; te quedas con los 26.4 puntos.</li>
-        <li><strong>Horarios escondidos debajo del fold en m&oacute;vil</strong> &mdash; impacto del 0.21%, presente en el 52%. Los tel&eacute;fonos pierden 800 ms con un hero pesado; el visitante se va antes de descubrir que est&aacute;s abierto. Mueve el bloque de horarios encima del hero. 15 minutos.</li>
-        <li><strong>LCP m&oacute;vil &gt; 3.0s</strong> &mdash; impacto del 0.18%, presente en el 68%. La fuga m&aacute;s lenta de arreglar (1 a 3 horas de compresi&oacute;n de im&aacute;genes y poda de JS) pero la que se compone con cada otra fuga arriba.</li>
-      </ol>
-
-      <p>Los primeros tres arreglos &mdash; menos de una hora combinados, sin necesidad de desarrollador &mdash; recuperan aproximadamente la mitad de la fuga mediana. Son una tarde de s&aacute;bado, no un proyecto. Los &uacute;ltimos tres son donde una construcci&oacute;n pagada se gana su lugar.</p>
-
-      <h3>La cuenta de DoorDash es la cuenta de la conversi&oacute;n</h3>
-
-      <p>Una orden de agregador no es solo un canal m&aacute;s caro; es un embudo paralelo que compite con tu embudo directo por el mismo visitante. El alza marginal de mover una orden de DoorDash a directa, sobre un ticket de $42: <strong>$4.42 de margen</strong>. En un operador con 2,400 &oacute;rdenes anuales por terceros, un cambio del 40% a directo son $4,243 sumados al resultado. El recorrido completo est&aacute; en <a href="/es/blog/an-honest-doordash-math-for-independent-restaurants-2026/">Una cuenta honesta de DoorDash, 2026</a>; la calculadora que la corre contra tus n&uacute;meros est&aacute; en <a href="/es/tools/margin-math/">/es/tools/margin-math/</a>.</p>
-
-      <p>Donde el lado de la conversi&oacute;n se cruza con el lado del margen: cada CTA de pedido directo arriba de los enlaces a terceros no es solo un movimiento de UX &mdash; es una palanca de margen. El alza de conversi&oacute;n se compone con el alza de margen; est&aacute;s moviendo m&aacute;s &oacute;rdenes <em>y</em> qued&aacute;ndote con m&aacute;s de cada una.</p>
-
-      <h3>Lo que convierte no es lo que se ve bonito</h3>
-
-      <p>Tres hallazgos de la auditor&iacute;a del 1% que van contra el instinto del operador:</p>
-
-      <ul>
-        <li><strong>La calidad de la fotograf&iacute;a no correlacion&oacute; con la fuga.</strong> Fotos espectaculares y fotos del iPhone del operador fugaban a tasas pr&aacute;cticamente iguales. La fotograf&iacute;a empuja la consideraci&oacute;n, no la conversi&oacute;n. Los $4,000 que gastar&iacute;as en un fot&oacute;grafo &mdash; en t&eacute;rminos de fuga de conversi&oacute;n &mdash; rinden m&aacute;s puestos primero en la plomer&iacute;a del pedido directo, y despu&eacute;s en las fotos. <a href="/es/blog/restaurant-photo-spec-sheet/">La hoja de especificaciones de fotos</a> es para despu&eacute;s de arreglar el embudo, no antes.</li>
-        <li><strong>Los sitios viejos no fugaban m&aacute;s que los nuevos.</strong> Algunos de los sitios con menos fuga en la muestra fueron construidos en 2018 y nunca tocados de nuevo. Las funciones que causan fugas &mdash; JS pesado, widgets de reserva de terceros que no hacen deeplink, hero photos que tapan los horarios &mdash; son patrones de 2022 a 2024.</li>
-        <li><strong>Wix no es universalmente malo.</strong> De 11 sitios Wix en la muestra, 4 estaban en la banda de menos del 1% de fuga. Eran aquellos cuyos due&ntilde;os hab&iacute;an pasado tiempo arreglando la plantilla, no aceptando los defaults. <a href="/es/blog/wix-vs-custom-for-restaurants/">Wix versus a la medida</a> recorre los seis lugares donde Wix se rompe primero.</li>
-      </ul>
-
-      <p>La conclusi&oacute;n: no gastes en un redise&ntilde;o antes de auditar el embudo. El costo por punto porcentual recuperado en un arreglo de fuga es aproximadamente $200; el costo por punto porcentual recuperado en una reconstrucci&oacute;n completa es m&aacute;s cerca de $4,000.</p>
-
-      <h3>Men&uacute;, horarios y reserva: las tres p&aacute;ginas que convierten</h3>
-
-      <p>De las siete p&aacute;ginas que necesita el sitio de un restaurante independiente (<a href="/es/blog/what-should-be-on-a-restaurant-website/">listadas aqu&iacute;</a>), tres cargan el 80% del peso de la conversi&oacute;n:</p>
-
-      <ul>
-        <li><strong>P&aacute;gina de men&uacute;.</strong> Si es un PDF, est&aacute;s fugando. Un men&uacute; HTML real carga al instante, indexa para consultas como &laquo;cacio e pepe cerca de m&iacute;&raquo; y se ve bien en una pantalla de tel&eacute;fono de 360px. La <a href="/es/tools/menu-converter/">Menu Converter</a> gratuita convierte texto pegado del men&uacute; en HTML sem&aacute;ntico m&aacute;s schema JSON-LD <code>Menu</code> en dos segundos. La versi&oacute;n armada por el estudio es el <a href="/es/services/menu-drop-in/">menu drop-in de $1,500</a>.</li>
-        <li><strong>Bloque de horarios.</strong> El visitante quiere saber si est&aacute;s abierto ahora. Cualquier cosa m&aacute;s es fricci&oacute;n. Por encima del fold, en texto plano, formato &laquo;Abierto hasta las 10 PM hoy&raquo; le gana a una tabla de horarios est&aacute;tica. Agrega horarios festivos con la <a href="/es/tools/holiday-hours/">Holiday Hours Generator</a>; la misma herramienta emite el override JSON-LD y el bloque de GBP.</li>
-        <li><strong>P&aacute;gina de reservas.</strong> O &mdash; mejor &mdash; el widget de reservas embebido en la p&aacute;gina de men&uacute;. De un modo u otro: deeplink al local, no a la p&aacute;gina principal de la plataforma. Usa el script nativo de la plataforma (OpenTable Direct, Resy Widgets v2) en lugar de un iframe; el script nativo mantiene al visitante en tu dominio y te deja medir la conversi&oacute;n en tu propia anal&iacute;tica.</li>
-      </ul>
-
-      <h3>Qu&eacute; hacer esta semana</h3>
-
-      <p>Tres acciones, en orden, alrededor de una hora en total:</p>
-
-      <ol>
-        <li><strong>Corre la <a href="/es/tools/audits/restaurant/">Auditor&iacute;a de Restaurante</a> gratis sobre tu propia URL.</strong> El resultado te dice cu&aacute;les de las seis fugas est&aacute;n activas. Gu&aacute;rdalo en tu Workshop y vuelve a correrlo cada mes.</li>
-        <li><strong>Corre <a href="/es/tools/storefront-health/">Storefront Health</a> como lectura compuesta.</strong> La auditor&iacute;a califica las fugas t&eacute;cnicas; Storefront Health califica las fugas de contenido y flujo. Juntas cubren las seis.</li>
-        <li><strong>Elige una fuga. Arr&eacute;glala esta semana.</strong> Deeplink de reserva (5 min), horarios sobre el fold (15 min) o CTA de pedido directo (30 min) son los tres arreglos de menos de una hora. Elige el que tu auditor&iacute;a haya rankeado m&aacute;s alto. Vuelve a correr la auditor&iacute;a despu&eacute;s; el puntaje se mueve de inmediato.</li>
-      </ol>
-
-      <p>Los operadores que no logran sacar la hora pueden tercerizarla: la <a href="/es/services/audit/">auditor&iacute;a a fondo de $499</a> entrega un Loom m&aacute;s una hoja de acci&oacute;n de 8 p&aacute;ginas en cinco d&iacute;as h&aacute;biles, ordenada por impacto en d&oacute;lares y con cr&eacute;dito hacia una construcci&oacute;n dentro de los 60 d&iacute;as. El <a href="/es/services/menu-drop-in/">menu drop-in de $1,500</a> resuelve la fuga de la p&aacute;gina de men&uacute; directamente; el <a href="/es/services/care-plan-light/">Care Plan Light</a> resuelve el lado de horarios e higiene cada mes.</p>
-
-      <h3>D&oacute;nde este tema toca a los otros</h3>
-
-      <ul>
-        <li><strong><a href="/es/learn/topics/local-seo/">SEO local y descubrimiento</a></strong> &mdash; porque el embudo de conversi&oacute;n empieza con el clic en GBP. Los dos pilares comparten m&aacute;s lectores que cualquier otro par del sitio.</li>
-        <li><strong><a href="/es/learn/topics/speed-mobile/">Velocidad y m&oacute;vil</a></strong> &mdash; porque la fuga de carga lenta est&aacute; r&iacute;o arriba de cada arreglo de conversi&oacute;n. Un LCP de 4 segundos vuelve marginal cualquier otra mejora.</li>
-        <li><strong><a href="/es/learn/topics/operations-margin/">Operaciones y margen</a></strong> &mdash; porque el mix de canales de conversi&oacute;n (directo vs. agregador) es la palanca individual m&aacute;s grande sobre el margen del restaurante independiente. La cuenta de DoorDash vive a caballo entre ambos pilares.</li>
-      </ul>
-
-      <p>El puntaje compuesto que quieres seguir: <strong>Storefront Health</strong>. C&oacute;rrelo cada mes, guarda la l&iacute;nea de tendencia y mira c&oacute;mo se compone el n&uacute;mero de conversiones. Todo en este pilar alimenta esa sola m&eacute;trica.</p></div>
-  </div>
-</section>
-<!-- topic-essay:end -->
 <section class="block final">
   <div class="container">
     <div class="section-header reveal section-center">
@@ -639,6 +325,7 @@ header.nav{min-height:64px}
       <li><a href="/es/learn/topics/trust-reviews/">Confianza y reseñas</a></li>
       <li><a href="/es/learn/topics/brand-design/">Marca y diseño</a></li>
       <li><a href="/es/learn/topics/information-security/">Seguridad informática</a></li>
+      <li><a href="/es/learn/topics/ai-search/">Búsqueda con IA y citas</a></li>
     </ul>
     <div class="hero-ctas reveal hero-ctas-center" style="margin-top:32px">
       <a class="btn btn-primary" href="/es/learn/">Volver a la biblioteca</a>
@@ -651,129 +338,70 @@ header.nav{min-height:64px}
 
 <footer>
   <div class="container">
-    <!-- Phase 2.3: pulse propagation — same footer pulse as the EN
-         partial. Stays hidden until assets/js/window-state.js confirms
-         Don has been seen recently. -->
     <div class="foot-cta">
-      <div class="foot-cta-text">
-        <span class="foot-cta-pulse" id="footCtaPulse" hidden aria-hidden="true" title="Don está cerca"></span>
-        ¿Tienes una pregunta? La Ventana está abierta.
-      </div>
-      <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Escríbele a Don
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
+      <div class="foot-cta-text">Ready to build something worth the time?</div>
+      <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Write to Don
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
       </a>
     </div>
 
     <div class="foot-grid">
       <div class="foot-col foot-brand">
-        <a href="/es/" class="foot-lockup-wrap" aria-label="Muntin Digital — inicio">
+        <a href="/" class="foot-lockup-wrap" aria-label="Muntin Digital home">
           <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53" loading="lazy" decoding="async">
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
-        <p class="foot-tagline">La ventana.</p>
-        <p class="foot-blurb">Una biblioteca web y estudio de dise&ntilde;o para restaurantes, con base en Silver Spring, MD &mdash; art&iacute;culos, herramientas gratis, investigaci&oacute;n y un glosario de <!-- count:glossary.terms -->139<!-- /count --> t&eacute;rminos, con el estudio detr&aacute;s cuando quieras contratar. Se habla espa&ntilde;ol.</p>
+        <p class="foot-tagline">The window in.</p>
+        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a <!-- count:glossary.terms -->139<!-- /count -->-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
       </div>
 
       <nav class="foot-col" aria-labelledby="foot-explore">
-        <p class="foot-heading" id="foot-explore">Explorar</p>
+        <p class="foot-heading" id="foot-explore">Explore</p>
         <ul class="foot-links">
-          <li><a href="/es/services/">Servicios</a></li>
-          <li><a href="/es/for/restaurants/">Para restaurantes</a></li>
-          <li><a href="/es/work/">Proyectos</a></li>
-          <li><a href="/es/about/">Sobre Don</a></li>
-          <li><a href="/es/system/">El sistema</a></li>
-          <li><a href="/receipts/" hreflang="en" lang="en">Receipts</a></li>
-          <li><a href="/methods/" hreflang="en" lang="en">Methods</a></li>
-          <li><a href="/changelog/" hreflang="en" lang="en">Changelog</a></li>
+          <li><a href="/services/">Services</a></li>
+          <li><a href="/for/restaurants/">For restaurants</a></li>
+          <li><a href="/work/">Work</a></li>
+          <li><a href="/about/">About Don</a></li>
+          <li><a href="/system/">The system</a></li>
         </ul>
       </nav>
 
       <nav class="foot-col" aria-labelledby="foot-learn">
-        <p class="foot-heading" id="foot-learn">Biblioteca</p>
+        <p class="foot-heading" id="foot-learn">Learn</p>
         <ul class="foot-links">
-          <li><a href="/es/learn/">Inicio de la biblioteca</a></li>
-          <li><a href="/es/learn/start-here/">Empieza aquí</a></li>
-          <li><a href="/es/learn/topics/">Temas</a></li>
-          <li><a href="/es/blog/">Artículos</a></li>
-          <li><a href="/es/tools/">Herramientas gratis</a></li>
-          <li><a href="/es/glossary/">Glosario</a></li>
-          <li><a href="/es/learn/research/">Investigación</a></li>
-          <li><a href="/es/learn/checklists/">Listas y recursos</a></li>
-          <li><a href="/es/sheets/">Hojas del operador</a></li>
+          <li><a href="/learn/">Library home</a></li>
+          <li><a href="/learn/start-here/">Start here</a></li>
+          <li><a href="/learn/topics/">Topics</a></li>
+          <li><a href="/blog/">Articles</a></li>
+          <li><a href="/tools/">Free tools</a></li>
+          <li><a href="/glossary/">Glossary</a></li>
+          <li><a href="/learn/research/">Research</a></li>
+          <li><a href="/learn/checklists/">Checklists &amp; guides</a></li>
         </ul>
       </nav>
 
       <nav class="foot-col foot-contact" aria-labelledby="foot-contact">
-        <p class="foot-heading" id="foot-contact">Contacto</p>
+        <p class="foot-heading" id="foot-contact">Contact</p>
         <ul class="foot-links">
           <li><a href="mailto:don@muntin.digital">don@muntin.digital</a></li>
-          <li><a href="/es/window/">Escríbele a Don</a></li>
-          <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (se abre en una pestaña nueva)</span></a></li>
+          <li><a href="/window/">Write to Don</a></li>
+          <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (opens in new tab)</span></a></li>
         </ul>
-        <p class="foot-trust"><strong>Respuesta:</strong> de lunes a viernes, en menos de 4 horas. Los fines de semana, el lunes en la mañana.</p>
+        <p class="foot-trust"><strong>Reply:</strong> Mondays through Fridays, within 4 hours. Weekends, by Monday morning.</p>
       </nav>
     </div>
 
-    <!-- newsletter-capture:start -->
-    <div class="foot-newsletter">
-      <form action="/api/subscribe" method="post" class="foot-newsletter-form" data-locale="es">
-        <p class="foot-newsletter-pitch">Te aviso cuando publique algo &mdash; cuatro notas por trimestre, sin secuencias automatizadas.</p>
-        <label class="foot-newsletter-label" for="foot-news-email">Tu correo</label>
-        <input id="foot-news-email" name="email" type="email" required autocomplete="email" inputmode="email" enterkeyhint="send" autocapitalize="off" spellcheck="false" placeholder="tu@turestaurante.com" />
-        <input type="hidden" name="locale" value="es" />
-        <input type="hidden" name="source" value="footer" />
-        <input type="hidden" name="ts" value="" />
-        <input type="text" name="hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;" />
-        <!-- Turnstile (Phase 3B). Auto-injects cf-turnstile-response on pass. -->
-        <div class="cf-turnstile" data-sitekey="0x4AAAAAADIgoGh56MvqeE8L" data-action="newsletter" data-language="es" data-size="flexible"></div>
-        <button type="submit">Suscribirme</button>
-      </form>
-    </div>
-    <!-- newsletter-capture:end -->
-
     <div class="foot-bottom">
-      <p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; LLC de Maryland &middot; Silver Spring, MD</p>
+      <p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; Maryland LLC &middot; Silver Spring, MD</p>
       <nav class="foot-legal" aria-label="Legal">
-        <a href="/es/terms.html">Términos</a>
-        <a href="/es/privacy.html">Privacidad</a>
-        <a href="/es/security/">Datos y seguridad</a>
-        <a href="/es/accessibility.html">Accesibilidad</a>
-        <a href="/es/cookies.html">Cookies</a>
-        <a href="/es/feed.xml" type="application/rss+xml" title="Muntin Digital RSS">RSS</a>
+        <a href="/terms.html">Terms</a>
+        <a href="/privacy.html">Privacy</a>
+        <a href="/accessibility.html">Accessibility</a>
+        <a href="/cookies.html">Cookies</a>
       </nav>
     </div>
   </div>
-  <aside class="mobile-cta-bar" id="mobileCtaBar" aria-label="Acciones r&aacute;pidas">
-    <a class="mobile-cta-bar__btn mobile-cta-bar__btn--primary" href="/es/tools/audits/restaurant/" data-event="sticky-cta-audit">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
-      Auditor&iacute;a gratis
-    </a>
-    <a class="mobile-cta-bar__btn mobile-cta-bar__btn--ghost js-window" href="/es/window/" data-event="sticky-cta-window">
-      <span class="mobile-cta-bar__pulse" id="mobileCtaBarPulse" hidden aria-hidden="true" title="Don está cerca"></span>
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
-      Escr&iacute;bele a Don
-    </a>
-  </aside>
-  <script>
-    (function () {
-      var bar = document.getElementById('mobileCtaBar');
-      if (!bar) return;
-      var hide = document.body.dataset && document.body.dataset.hideStickyBar !== undefined;
-      var path = location.pathname;
-      if (hide || /^\/(window|sign-in|account|workbench|admin|es\/(window|sign-in|account|workbench|admin))/.test(path)) {
-        bar.hidden = true;
-      }
-    })();
-  </script>
 </footer>
-<script src="/assets/js/first-touch.js" defer></script>
-<script src="/assets/js/save-next-time.js" defer></script>
-<script src="/assets/js/share-hydrate.js" defer></script>
-<script src="/assets/js/window-state.js" defer></script>
-<!-- Cloudflare Turnstile (Phase 3B). Carga global porque el formulario
-     de newsletter vive en este pie de página y aparece en cada vista. -->
-<!-- Skip Turnstile on localhost / 127.0.0.1 / dev hosts (ver footer EN para detalle). -->
-<script>(function(){var h=location.hostname;if(h==='localhost'||h==='127.0.0.1'||h==='0.0.0.0'||/^\[?::1?\]?$/.test(h))return;var s=document.createElement('script');s.src='https://challenges.cloudflare.com/turnstile/v0/api.js';s.async=true;s.defer=true;document.head.appendChild(s);})();</script>
 
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
 </body>

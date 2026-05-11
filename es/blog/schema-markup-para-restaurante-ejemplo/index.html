@@ -93,7 +93,7 @@ header.nav{min-height:64px}
   "@context": "https://schema.org",
   "@type": "Article",
   "@id": "https://muntin.digital/es/blog/schema-markup-para-restaurante-ejemplo/#article",
-  "abstract": "Un ejemplo completo de schema markup para restaurante — los seis tipos en un solo bloque JSON-LD listo para copiar y pegar en tu sitio. Restaurant + Menu + OpeningHoursSpecification + AggregateRating + Reservation + FAQ con datos realistas.",
+  "abstract": "Sesenta líneas de JSON-LD que cubren los seis tipos de schema que Google lee primero en una página de restaurante — Restaurant, Menu, OpeningHoursSpecification, AggregateRating, Reservation y FAQ. Siete campos marcados // EDIT (nombre, partes de dirección, teléfono, horarios, rating, ítems de menú) son todo lo que tienes que cambiar para hacer tuyo el ejemplo. Tres revisiones pre-publicación: validator.schema.org para propiedades desconocidas, view-source para bugs de escapado del CMS, y el Rich Results test de Google para confirmar para qué superficies eres elegible.",
   "mentions": [
     {
       "@type": "DefinedTerm",
@@ -261,6 +261,17 @@ header.nav{min-height:64px}
   <section class="block">
     <div class="container">
     <article class="article-body" id="post-body">
+      <!-- article-tldr:start -->
+            <aside class="tldr" data-llm="tldr" aria-label="Resumen">
+              <p class="tldr__eyebrow">Resumen</p>
+              <ul class="tldr__list">
+              <li>Sesenta líneas de JSON-LD que cubren los seis tipos de schema que Google lee primero en una página de restaurante — Restaurant, Menu, OpeningHoursSpecification, AggregateRating, Reservation y FAQ.</li>
+        <li>Siete campos marcados // EDIT (nombre, partes de dirección, teléfono, horarios, rating, ítems de menú) son todo lo que tienes que cambiar para hacer tuyo el ejemplo.</li>
+        <li>Tres revisiones pre-publicación: validator.schema.org para propiedades desconocidas, view-source para bugs de escapado del CMS, y el Rich Results test de Google para confirmar para qué superficies eres elegible.</li>
+              </ul>
+            </aside>
+            <!-- article-tldr:end -->
+
 
       <p>Si solo necesitas el ejemplo, está aquí. Si quieres entender qué hace cada parte, lee <a href="/es/blog/restaurant-schema-markup-6-types-google-uses/">los seis tipos de schema markup que Google usa</a> primero. Lo de abajo combina los seis en un solo <code>@graph</code>, que es lo que recomienda Google.</p>
 
@@ -458,7 +469,19 @@ header.nav{min-height:64px}
   </div>
 </aside>
 <!-- article-author-card:end -->
-  </article>
+  <!-- article-takeaways:start -->
+            <aside class="key-takeaways" data-llm="takeaways" aria-label="Lo que importa">
+              <p class="key-takeaways__eyebrow">Lo que importa</p>
+              <ul class="key-takeaways__list">
+              <li>El schema es plomería — no mueve la aguja por sí mismo pero te hace elegible para superficies (local-pack, estrellas de rating, deep-links de reserva, snippets de FAQ, citas de AI Overview) para las que no eras elegible antes.</li>
+        <li>Una vez publicado, deja el schema en paz — el crawler vuelve más seguido al JSON-LD estable y construye confianza de entidad con el tiempo.</li>
+        <li>Timing de superficies: local-pack y estrellas de rating actualizan en una semana; deep-links de reserva y snippets de FAQ toman 30+ días; citas de AI Overview toman hasta 90.</li>
+        <li>Cuando un hecho cambia, toca un campo — nuevo horario de cierre, nuevo ítem de menú — y resiste el impulso de refactorizar.</li>
+        <li>Empareja el schema con la escritura con forma de cita del artículo de AI Overviews para la edición individual de mayor leverage que un sitio de restaurante puede publicar en 2026.</li>
+              </ul>
+            </aside>
+            <!-- article-takeaways:end -->
+    </article>
 
     <aside class="post-end-mark" aria-hidden="true">
   <hr/>

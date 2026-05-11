@@ -37,156 +37,19 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<style>
-/* Critical CSS — prevents flash of unstyled content while the main
-   stylesheet (assets/site.css) loads non-render-blocking via the
-   <link> below. Carries: token vars used in inline styles elsewhere,
-   body baseline (cream + ink + body-size + line-height), container
-   width, skip-link affordance, and a min-height reservation for the
-   fixed nav so layout doesn't shift when site.css applies. ~600
-   bytes. Documented in Phase 3B perf cutover; the full token set
-   reapplies once site.css arrives. */
-:root{--cream:#FAF7F2;--cream-2:#F3EEE3;--ink:#14161A;--ink-soft:#2A2D33;--teal:#1F4E5B;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
-html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
-body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--cream);line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased}
-.container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
-.skip-link{position:absolute;left:-9999px;top:0}
-.skip-link:focus{position:static;display:inline-block;background:#14161A;color:#FAF7F2;padding:12px 16px;z-index:100}
-/* injected by inject-critical-link-color.mjs */
-a{color:inherit}
-.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:500;font-size:15px;text-decoration:none;white-space:nowrap;cursor:pointer}
-.btn-primary{background:var(--ink);color:var(--cream)}
-.btn-ghost{background:transparent;color:var(--ink);border:1px solid #D9D5CB}
-header.nav{min-height:64px}
-</style>
-<!-- Preload the two above-the-fold web fonts so they arrive in
-     parallel with site.css instead of being discovered after parse. -->
-<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
-<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
-<!-- Async-load the main stylesheet. Pattern: preload + onload-swap
-     (with a <noscript> fallback for the JS-disabled path). The
-     onload assigns this.rel='stylesheet', which the browser then
-     applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=a3cc95eb7ac7" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=47810dd9477a" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a3cc95eb7ac7"><link rel="stylesheet" href="/assets/site-article.css?v=47810dd9477a"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=20260503-shells" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=20260503-shells" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=20260503-shells"><link rel="stylesheet" href="/assets/site-article.css?v=20260503-shells"></noscript>
 
-<!-- topic-schema:start -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "Article",
-      "@id": "https://muntin.digital/es/learn/topics/local-seo/#article",
-      "headline": "SEO local",
-      "url": "https://muntin.digital/es/learn/topics/local-seo/",
-      "inLanguage": "es-US",
-      "author": {
-        "@id": "https://muntin.digital/#don-goldstein"
-      },
-      "publisher": {
-        "@id": "https://muntin.digital/#business"
-      },
-      "isPartOf": {
-        "@id": "https://muntin.digital/es/learn/#collection"
-      }
-    },
-    {
-      "@type": "BreadcrumbList",
-      "itemListElement": [
-        {
-          "@type": "ListItem",
-          "position": 1,
-          "name": "Inicio",
-          "item": "https://muntin.digital/es/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 2,
-          "name": "Biblioteca",
-          "item": "https://muntin.digital/es/learn/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 3,
-          "name": "Temas",
-          "item": "https://muntin.digital/es/learn/topics/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 4,
-          "name": "SEO local",
-          "item": "https://muntin.digital/es/learn/topics/local-seo/"
-        }
-      ]
-    },
-    {
-      "@type": "ItemList",
-      "@id": "https://muntin.digital/es/learn/topics/local-seo/#articles",
-      "numberOfItems": 6,
-      "itemListElement": [
-        {
-          "@type": "ListItem",
-          "position": 1,
-          "url": "https://muntin.digital/es/blog/restaurant-schema-markup-6-types-google-uses/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 2,
-          "url": "https://muntin.digital/es/blog/how-to-read-restaurant-google-search-console/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 3,
-          "url": "https://muntin.digital/es/blog/how-to-recover-reservations-from-googles-find-a-table/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 4,
-          "url": "https://muntin.digital/es/blog/how-to-set-up-google-business-profile-for-your-restaurant/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 5,
-          "url": "https://muntin.digital/es/blog/how-to-get-more-google-reviews-for-your-restaurant/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 6,
-          "url": "https://muntin.digital/es/blog/los-6-tipos-de-schema-markup-que-google-usa/"
-        }
-      ]
-    }
-  ]
-}
-</script>
-<!-- topic-schema:end -->
 </head>
 <body>
 
 <a class="skip-link" href="#main">Skip to main content</a>
 
-<script>
-  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
-     Apple devices. Runs early in <body> so the swap is essentially
-     invisible — script tags execute synchronously when the parser hits
-     them, before .nav-search-kbd renders below. CSS in site-core.css
-     conditions on <html data-platform="mac">. */
-  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
-    document.documentElement.dataset.platform = 'mac';
-  }
-</script>
 <header class="nav" id="nav">
-  <script>/* i18n runtime dictionary — read by assets/site.js via window.__i18n.
-             Placed inside <header> so sync-includes replaces it atomically
-             along with the rest of the nav block on every build, keeping
-             the partial strictly idempotent. Valid HTML5: <script> may
-             appear in any flow-content context. */
-  window.__i18n=Object.assign(window.__i18n||{},{"nav.open_menu":"Abrir menú","nav.close_menu":"Cerrar menú","form.field_required":"Este campo es obligatorio.","form.invalid_email":"Ingresa un correo electrónico válido.","form.services_min_one":"Selecciona al menos una opción.","form.submit_fallback":"Algo falló. Inténtalo de nuevo o escribe directamente a don@muntin.digital.","audio.resume":"Reanudar audio","audio.pause":"Pausar","audio.play":"Reproducir versión en audio","audio.stop":"Detener y cerrar audio","audio.minimize":"Minimizar controles de audio","audio.expand":"Ampliar controles de audio","audio.prev":"Párrafo anterior","audio.next":"Párrafo siguiente","audio.back15":"Retroceder 15 segundos","audio.fwd15":"Adelantar 15 segundos","audio.progress":"Progreso del audio","audio.controls":"Controles del reproductor de audio","audio.article_label":"Versión en audio de este artículo","audio.speed":"Velocidad de reproducción","audio.voice":"Voz del narrador","search.placeholder":"Busca artículos, herramientas, términos del glosario…","search.close":"Cerrar","search.hint_title":"¿Qué estás buscando?","search.hint_body":"Prueba con \"DoorDash\", \"Core Web Vitals\" o \"precios del menú\". Los resultados vienen de cada artículo, herramienta y término del glosario.","search.empty":"Sin resultados para","search.empty_hint":"Prueba una consulta más corta o una palabra distinta.","search.loading":"Buscando…","search.nav_hint":"para moverte","search.open_hint":"para abrir","search.close_hint":"para cerrar","search.kind_article":"Artículo","search.kind_tool":"Herramienta","search.kind_term":"Glosario","search.kind_resource":"Guía","search.kind_library":"Biblioteca","search.kind_case":"Caso de estudio","search.kind_service":"Servicios","search.kind_industry":"Para ti","search.kind_page":"Página","drawer.kicker":"Nota de investigación","drawer.close":"Cerrar","drawer.loading":"Cargando el resumen…","drawer.err_title":"No pudimos cargar el resumen","drawer.err_body":"Abre la nota completa en una pestaña nueva — es el mismo contenido, solo que más completo.","drawer.findings_label":"Hallazgos clave","drawer.note_label":"La nota de Don","drawer.read_full":"Leer la nota completa","drawer.read_original":"Ver la fuente original","drawer.open_new_tab":"se abre en una pestaña nueva"});</script>
   <div class="container nav-inner">
-    <a href="/es/" class="logo" aria-label="Muntin Digital — inicio">
-      <svg class="logo-mark" width="28" height="28" viewBox="0 0 128 128" fill="none" aria-hidden="true">
+    <a href="/" class="logo" aria-label="Muntin Digital home">
+      <svg class="logo-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true">
         <g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
           <rect x="18" y="18" width="92" height="92"/>
           <line x1="64" y1="18" x2="64" y2="110"/>
@@ -195,99 +58,55 @@ header.nav{min-height:64px}
       </svg>
       Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
     </a>
-    <!-- Phase 7: nav de 5 elementos, según el plan de lanzamiento Parte II.
-         Biblioteca / Herramientas / Proyectos / Estudio / Acceder.
-         Biblioteca apunta al hub canónico /es/library/. Herramientas
-         se promueve del antiguo mega-menú a un elemento de primer
-         nivel. Estudio reemplaza Servicios + Restaurantes + Sobre
-         Don &mdash; todo vive bajo /es/studio/ ahora. El mega-menú
-         se retira (el hub ES el menú); el controlador del script
-         también desaparece. -->
-    <nav class="nav-links" aria-label="Principal">
-      <a href="/es/library/">Biblioteca</a>
-      <a href="/es/tools/">Herramientas</a>
-      <a href="/es/work/">Proyectos</a>
-      <a href="/es/studio/">Estudio</a>
-      <a class="js-nav-signin nav-link-auth" href="/es/sign-in/" hidden>Acceder</a>
-      <a class="js-nav-workshop nav-link-auth" href="/es/workbench/" hidden>El Taller</a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="/services/">Services</a>
+      <a href="/for/restaurants/">Restaurants</a>
+      <a href="/learn/">Learn</a>
+      <a href="/work/">Work</a>
+      <a href="/about/">About</a>
     </nav>
-    <button type="button" class="nav-search-btn js-open-search" aria-label="Abrir búsqueda (Cmd+K)" title="Buscar — Cmd K">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <button type="button" class="nav-search-btn js-open-search" aria-label="Open search (Cmd+K)" title="Search — Cmd K">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <circle cx="11" cy="11" r="7"/>
         <line x1="21" y1="21" x2="16.5" y2="16.5"/>
       </svg>
-      <span class="nav-search-label">Buscar</span>
-      <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mac"><span class="nav-search-kbd-mod">⌘</span>K</span><span class="nav-search-kbd-pc">Ctrl+K</span></kbd>
+      <span class="nav-search-label">Search</span>
+      <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mod">⌘</span>K</kbd>
     </button>
-    <nav class="lang-switch" aria-label="Idioma">
-      <a href="/learn/topics/local-seo/" hreflang="en" lang="en" class="js-lang-switch" data-set-locale="en">English</a>
-      <span class="lang-switch-current" aria-current="true">ES</span>
+    <nav class="lang-switch" aria-label="Language">
+      <a href="/learn/topics/local-seo/" hreflang="es" lang="es" class="js-lang-switch" data-set-locale="es">Español</a>
+      <span class="lang-switch-current" aria-current="true">EN</span>
     </nav>
-    <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">
-      <span class="nav-window-pulse" id="navWindowPulse" hidden aria-hidden="true" title="Don está cerca"></span>
-      Escríbele a Don
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
+    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Write to Don
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
     </a>
-    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-controls="mobileMenu" aria-expanded="false">
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
   </div>
-  <nav class="mobile-menu" id="mobileMenu" aria-label="Navegación móvil" hidden>
-    <a href="/es/library/">Biblioteca</a>
-    <a href="/es/tools/">Herramientas</a>
-    <a href="/es/work/">Proyectos</a>
-    <a href="/es/studio/">Estudio</a>
-    <a class="js-nav-signin mobile-auth" href="/es/sign-in/" hidden>Acceder</a>
-    <a class="js-nav-workshop mobile-auth" href="/es/workbench/" hidden>El Taller</a>
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
+    <a href="/services/">Services</a>
+    <a href="/for/restaurants/">Restaurants</a>
+    <a href="/learn/">Learn</a>
+    <a href="/work/">Work</a>
+    <a href="/about/">About</a>
     <button type="button" class="mobile-search js-open-search">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
-      <span>Buscar en la biblioteca</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+      <span>Search the library</span>
     </button>
-    <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Escríbele a Don</a>
-    <a href="/learn/topics/local-seo/" hreflang="en" lang="en" class="mobile-lang js-lang-switch" data-set-locale="en">View in English</a>
+    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Write to Don</a>
+    <a href="/learn/topics/local-seo/" hreflang="es" lang="es" class="mobile-lang js-lang-switch" data-set-locale="es">Ver en español</a>
   </nav>
 
-  <!-- Mega-menu controller retired in Phase 7: Biblioteca is now a
-       single link to /es/library/ (the canonical three-doors hub IS
-       the menu). Las reglas CSS de .nav-library-* permanecen para
-       reusar el patrón si vuelve un mega-menú en el futuro. -->
-
-  <!-- Phase 2 (Workshop) — toggle del estado de auth para el nav.
-       Llama a /api/auth/me y revela el enlace "Acceder" o "El Taller"
-       según la respuesta. Ambos enlaces empiezan ocultos para que un
-       visitante anónimo sin JS no vea ninguno (la biblioteca y las
-       herramientas funcionan completas sin acceso, así que la
-       affordance ausente es aceptable). -->
-  <script>
-    (function () {
-      var signin   = document.querySelectorAll('.js-nav-signin');
-      var workshop = document.querySelectorAll('.js-nav-workshop');
-      if (!signin.length && !workshop.length) return;
-      var show = function (nodes) { nodes.forEach(function (n) { n.hidden = false; }); };
-      fetch('/api/auth/me', { credentials: 'same-origin' })
-        .then(function (r) {
-          if (r.status === 200) {
-            show(workshop);
-            fetch('/api/workbench/count', { credentials: 'same-origin' })
-              .then(function (r2) { return r2.ok ? r2.json() : null; })
-              .then(function (j) {
-                if (!j || typeof j.count !== 'number' || j.count <= 0) return;
-                workshop.forEach(function (n) {
-                  if (n.querySelector('.nav-workshop-count')) return;
-                  var b = document.createElement('span');
-                  b.className = 'nav-workshop-count';
-                  b.textContent = ' (' + j.count + ')';
-                  n.appendChild(b);
-                });
-              })
-              .catch(function () {});
-            return;
-          }
-          show(signin);
-        })
-        .catch(function () { show(signin); });
-    })();
-  </script>
+  <aside class="lang-hint" id="langHint" role="complementary" aria-label="Sugerencia de idioma" lang="es" hidden>
+    <div class="container lang-hint-inner">
+      <span class="lang-hint-text"><strong>¿Prefieres este sitio en español?</strong> Tenemos una versión completa.</span>
+      <a href="/learn/topics/local-seo/" class="lang-hint-accept js-lang-switch" data-set-locale="es" hreflang="es" lang="es">Ver en español &rarr;</a>
+      <button type="button" class="lang-hint-dismiss" id="langHintDismiss" aria-label="Cerrar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+      </button>
+    </div>
+  </aside>
 </header>
 
 <main id="main">
@@ -312,23 +131,6 @@ header.nav{min-height:64px}
   </div>
 </section>
 
-<section class="block">
-  <div class="container" style="max-width:760px">
-    <figure class="viz-figure reveal" data-audio-alt="El hallazgo detr&aacute;s de cada art&iacute;culo en este tema: 81 por ciento de los 100 restaurantes mejor calificados del DMV que auditamos no tienen horarios festivos en su Google Business Profile. El campo m&aacute;s saltado es tambi&eacute;n uno de los m&aacute;s baratos de arreglar.">
-      <div class="viz-rings">
-        <div class="viz-ring" data-band="bad" style="--score:81;">
-          <svg class="viz-ring__svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-labelledby="topic-local-ring-es" focusable="false">
-            <title id="topic-local-ring-es">81% de los restaurantes auditados del DMV no tienen horarios festivos</title>
-            <circle class="viz-ring__track" cx="60" cy="60" r="52" fill="none" stroke-width="8"/>
-            <circle class="viz-ring__fill" cx="60" cy="60" r="52" fill="none" stroke-width="8" transform="rotate(-90 60 60)"/>
-            <text class="viz-ring__num" x="60" y="60" text-anchor="middle">81%</text>
-          </svg>
-          <p class="viz-ring__label"><strong>De los restaurantes auditados del DMV</strong>no tienen horarios festivos en GBP &middot; <a href="/es/learn/research/dmv-restaurant-gbp-audit-2026/">lee la auditor&iacute;a</a></p>
-        </div>
-      </div>
-    </figure>
-  </div>
-</section>
 
 <section class="topic-section">
   <div class="container">
@@ -338,6 +140,41 @@ header.nav{min-height:64px}
     </header>
     <ul class="topic-article-list">
       <li>
+        <a class="topic-article-card" href="/es/blog/restaurant-schema-markup-complete-paste-ready-example/">
+          <span class="topic-article-date">11 may 2026</span>
+          <h3>Restaurant Schema Markup: A Complete, Paste-Ready Example</h3>
+          <p>Sixty lines of JSON-LD that cover the six schema types Google reads first on a restaurant page — Restaurant, Menu, OpeningHoursSpecification, AggregateRating, Reservation, and FAQ. Seven fields to edit. Three checks before you ship. Worked example from a live DMV restaurant.</p>
+        </a>
+      </li>
+<li>
+        <a class="topic-article-card" href="/es/blog/how-to-get-cited-in-google-ai-overviews-restaurant/">
+          <span class="topic-article-date">10 may 2026</span>
+          <h3>How to Get Your Restaurant Cited in Google’s AI Overviews</h3>
+          <p>Search results are now a paragraph Google wrote, citing two or three sources. Five paragraph-level moves that get a restaurant lifted into the answer box — answer-first 45-word leads, schema-anchored entities, predicate-shaped sentences, stable URLs.</p>
+        </a>
+      </li>
+<li>
+        <a class="topic-article-card" href="/es/blog/instagram-as-restaurant-seo-strategy-2026/">
+          <span class="topic-article-date">10 may 2026</span>
+          <h3>Instagram Is a Search Engine Now. Post Like It.</h3>
+          <p>Google has indexed Instagram captions since 2024 and the in-app search bar handles 40% of restaurant discovery for under-35 guests. Five caption-level moves that make a restaurant post indexable, with the 4.3x save lift from running the discipline on a real account.</p>
+        </a>
+      </li>
+<li>
+        <a class="topic-article-card" href="/es/blog/how-to-respond-to-google-reviews-restaurant-playbook-2026/">
+          <span class="topic-article-date">10 may 2026</span>
+          <h3>How to Respond to Google Reviews: A Restaurant Operator’s Playbook</h3>
+          <p>Four review archetypes, four response shapes. What to write, what to never write, and how AI Overviews now lift review responses into the cited paragraph. Templates for the glowing 5-star, the disappointed 3-star, the angry 1-star, and the legitimate-complaint 2-star.</p>
+        </a>
+      </li>
+<li>
+        <a class="topic-article-card" href="/es/blog/my-restaurant-isnt-on-google-maps-10-minute-diagnostic/">
+          <span class="topic-article-date">10 may 2026</span>
+          <h3>My Restaurant Isn’t on Google Maps: The 10-Minute Diagnostic</h3>
+          <p>Four causes cover 100% of map-pack-invisibility cases I’ve diagnosed across ~50 DMV restaurants. Unclaimed listing (40%), wrong primary category (30%), suspended listing (15%), duplicate listing (15%). Three of the four fixes you can do yourself the same day.</p>
+        </a>
+      </li>
+<li>
         <a class="topic-article-card" href="/es/blog/restaurant-schema-markup-6-types-google-uses/">
           <span class="topic-article-date">30 abr 2026</span>
           <h3>Restaurant Schema Markup: The 6 Types Google Actually Uses</h3>
@@ -474,6 +311,13 @@ header.nav{min-height:64px}
           <span class="topic-tool-cta">Abrir la herramienta <span aria-hidden="true">→</span></span>
         </a>
       </li>
+<li>
+        <a class="topic-tool-card" href="/es/tools/holiday-hours/">
+          <h4>Generador de horarios festivos — horarios de restaurante para sitio, GBP, schema</h4>
+          <p>Genera los tres resultados de horarios festivos que tu restaurante necesita cada noviembre y diciembre: bloque de texto plano para el sitio, override JSON-LD OpeningHoursSpecification para schema, y un bloque listo para Google Business Profile. Gratis, en tu navegador, tus horarios nunca salen de la página.</p>
+          <span class="topic-tool-cta">Abrir la herramienta <span aria-hidden="true">→</span></span>
+        </a>
+      </li>
     </ul>
   </div>
 </section>
@@ -496,123 +340,6 @@ header.nav{min-height:64px}
   </div>
 </section>
 
-<!-- topic-sheets-rail:start -->
-<section class="topic-section">
-  <div class="container">
-    <header class="topic-section-head">
-      <span class="eyebrow">Hojas del operador</span>
-      <h2>Saca el papeleo.</h2>
-    </header>
-    <ul class="topic-tool-list">
-      <li>
-        <a class="topic-tool-card" href="/es/sheets/gbp-monthly-audit/">
-          <h4>Chequeo mensual de Google Business Profile</h4>
-          <p>Recorrido de quince minutos por tu Google Business Profile. Horarios, categoría principal, conteo de fotos, posts, Q&amp;A, velocidad de reseñas, coincidencia NAP con tu sitio. Pasa o falla por fila, con lista de arreglos.</p>
-          <span class="topic-tool-cta">Abrir la hoja <span aria-hidden="true">→</span></span>
-        </a>
-      </li>
-      <li>
-        <a class="topic-tool-card" href="/es/sheets/nap-consistency-tracker/">
-          <h4>Seguimiento de consistencia NAP</h4>
-          <p>El mismo nombre, dirección y teléfono en todos lados — Google Business Profile, Yelp, Apple, TripAdvisor, OpenTable, tu pie de página, tu schema. Una inconsistencia y Google empieza a dudar cuál eres.</p>
-          <span class="topic-tool-cta">Abrir la hoja <span aria-hidden="true">→</span></span>
-        </a>
-      </li>
-      <li>
-        <a class="topic-tool-card" href="/es/sheets/holiday-hours-planner/">
-          <h4>Planificador de horarios festivos</h4>
-          <p>Un trimestre antes de cada feriado federal y local — horarios planeados, GBP actualizado, sitio actualizado, contestadora actualizada.</p>
-          <span class="topic-tool-cta">Abrir la hoja <span aria-hidden="true">→</span></span>
-        </a>
-      </li>
-      <li>
-        <a class="topic-tool-card" href="/es/sheets/local-keyword-map/">
-          <h4>Mapa de palabras clave locales por página</h4>
-          <p>Qué palabra clave apunta cada página, modificador de barrio, posición actual, H1, tipo de schema. Saca a la luz canibalización y huecos de cobertura.</p>
-          <span class="topic-tool-cta">Abrir la hoja <span aria-hidden="true">→</span></span>
-        </a>
-      </li>
-      <li>
-        <a class="topic-tool-card" href="/es/sheets/photo-refresh-tracker/">
-          <h4>Seguimiento de actualización de fotos</h4>
-          <p>Canal — GBP, Instagram, sitio, Yelp — por tipo de toma, por última fecha de subida. Atrapa hero shots viejos y el canal que olvidaste.</p>
-          <span class="topic-tool-cta">Abrir la hoja <span aria-hidden="true">→</span></span>
-        </a>
-      </li>
-    </ul>
-  </div>
-</section>
-<!-- topic-sheets-rail:end -->
-
-<!-- topic-essay:start -->
-<section class="topic-essay">
-  <div class="container">
-    <p class="topic-essay__eyebrow">Ensayo del pilar &middot; actualizado en mayo de 2026</p>
-    <h2 class="topic-essay__title">El SEO local es la diferencia entre que te encuentren y que te pierdan.</h2>
-    <div class="topic-essay__body"><p>El SEO local es el &uacute;nico canal de marketing en el que, si no haces nada, no te quedas igual &mdash; pierdes terreno activamente cada trimestre. Cada restaurante independiente de tu c&oacute;digo postal compite por el mismo slot finito en el local-pack: los tres resultados con pin de mapa que aparecen cuando alguien busca &laquo;pizza cerca de m&iacute;&raquo; en el celular. El algoritmo premia a los operadores que mantienen el pack-card al d&iacute;a. Si configuraste tu Google Business Profile en 2022 y no lo has tocado desde entonces, no sigues donde estabas &mdash; bajaste detr&aacute;s de cada competidor que ha estado a&ntilde;adiendo fotos, respondiendo rese&ntilde;as y publicando cada semana.</p>
-
-      <p>La buena noticia es que el SEO local se acumula. El h&aacute;bito semanal de 15 minutos &mdash; una foto nueva, un Google Post, respuestas a cada rese&ntilde;a &mdash; le gana a un compromiso de agencia de una sola vez al triple del costo. La ventana de acumulaci&oacute;n es de unos 90 d&iacute;as. Los restaurantes que llevan 90+ d&iacute;as con el h&aacute;bito le ganan en ranking a competidores id&eacute;nticos que empezaron hace 30 d&iacute;as, incluso cuando ambos tienen fotos m&aacute;s fuertes y m&aacute;s rese&ntilde;as en papel. El algoritmo local de Google pesa espec&iacute;ficamente la frescura y la consistencia por encima de los absolutos en bruto; esa es la palanca que un operador puede mover.</p>
-
-      <p>Este pilar re&uacute;ne las gu&iacute;as, la investigaci&oacute;n, los t&eacute;rminos del glosario y las herramientas que cubren ese h&aacute;bito. L&eacute;elo en orden si eres nuevo en SEO local; salta a una secci&oacute;n si ya sabes qu&eacute; est&aacute; roto en tu ficha.</p>
-
-      <h3>Las tres se&ntilde;ales que el algoritmo local de Google realmente lee</h3>
-
-      <p>La literatura sobre &laquo;factores de ranking de b&uacute;squeda local&raquo; ha convergido en tres categor&iacute;as, en este orden de peso. La encuesta 2024 de Whitespark las clasifica como <strong>relevancia &middot; prominencia &middot; proximidad</strong>; los factores nombrados dentro de cada una se mueven cada par de a&ntilde;os, pero las categor&iacute;as son estables.</p>
-
-      <ul>
-        <li><strong>Relevancia</strong> &mdash; qu&eacute; tan bien la categor&iacute;a primaria de tu ficha, las categor&iacute;as secundarias, el nombre del negocio, la lista de servicios y el men&uacute; coinciden con la consulta del buscador. El error m&aacute;s grande de SEO local que veo en independientes es una categor&iacute;a primaria equivocada. &laquo;Restaurante&raquo; es una primaria equivocada; &laquo;Restaurante italiano&raquo; o &laquo;Pizzer&iacute;a&raquo; es la correcta. Las secundarias siguen la misma regla: elige las tres que describen lo que realmente sirves, no lo que <em>te gustar&iacute;a</em> que te buscaran.</li>
-        <li><strong>Prominencia</strong> &mdash; n&uacute;mero de rese&ntilde;as, velocidad de rese&ntilde;as, tasa de respuesta a rese&ntilde;as, n&uacute;mero de fotos, frescura de las fotos, posts en los &uacute;ltimos 30 d&iacute;as, precisi&oacute;n de las citaciones en Yelp/Apple Maps/Bing/Yellow Pages, calidad de los enlaces de regreso a tu sitio. Esta es la categor&iacute;a que se acumula. Cada operador que trata el GBP como un toque-de-tambor semanal de 15 minutos construye prominencia m&aacute;s r&aacute;pido que el operador que contrata una vez al trimestre.</li>
-        <li><strong>Proximidad</strong> &mdash; la ubicaci&oacute;n f&iacute;sica del buscador relativa a tu pin. La menos manipulable. La &uacute;nica acci&oacute;n del operador que importa aqu&iacute; es asegurarse de que tu pin sea preciso y tu direcci&oacute;n sea consistente en cada fuente de citaci&oacute;n.</li>
-      </ul>
-
-      <p>D&oacute;nde la mayor&iacute;a de los operadores pierde tiempo: trabajo de relevancia que deber&iacute;a ser un arreglo de cinco minutos (categor&iacute;as) y limpieza de citaciones que deber&iacute;a ser una ma&ntilde;ana de s&aacute;bado. D&oacute;nde la mayor&iacute;a de los operadores no invierte lo suficiente: volumen de respuesta a rese&ntilde;as, frescura de fotos y Google Posts.</p>
-
-      <h3>La ventana de acumulaci&oacute;n y lo que cuesta saltarla</h3>
-
-      <p>La ventana de 90 d&iacute;as es real y medible. Los restaurantes que responden a &ge;50% de las rese&ntilde;as de los &uacute;ltimos 90 d&iacute;as ven un alza de +0.3% en clics de &laquo;direcciones&raquo; seg&uacute;n los datos de Whitespark; los restaurantes que publican un Google Post en los &uacute;ltimos 30 d&iacute;as ven aproximadamente el mismo +0.3%. Apila los ocho campos de GBP rankeados en la <a href="/learn/research/dmv-restaurant-gbp-audit-2026/">nota de investigaci&oacute;n del audit GBP del DMV</a> y el operador mediano recupera unos 456 clics incrementales por mes. A una conversi&oacute;n conservadora de 4% del clic a una acci&oacute;n real (reserva, llamada, toque de direcciones que termina en visita), eso son 18 clientes incrementales por mes por restaurante &mdash; antes de que el sitio web cambie.</p>
-
-      <p>Compara con la alternativa: una limpieza de agencia de $2.000 que reinicia la ficha al estado &oacute;ptimo pero no instala el h&aacute;bito semanal. La limpieza te regresa a la mediana, despu&eacute;s te resbalas otra vez. El h&aacute;bito de 15 minutos a la semana te lleva por encima de la mediana y te mantiene ah&iacute;.</p>
-
-      <h3>El schema es el segundo pilar</h3>
-
-      <p>El algoritmo local de Google lee los datos estructurados <em>de tu sitio</em> junto con tu ficha de GBP, despu&eacute;s cruza ambos para verificar consistencia. Las inconsistencias te cuestan. Los cinco tipos de schema.org que mueven la aguja para un restaurante independiente: <strong>Restaurant</strong> (el padre), <strong>LocalBusiness</strong> (la herencia), <strong>OpeningHoursSpecification</strong> (horarios regulares y festivos), <strong>Menu</strong> (secciones e &iacute;tems), y <strong>Reservation</strong> (deeplink a tu local en OpenTable / Resy / Tock).</p>
-
-      <p>La versi&oacute;n en lenguaje claro: cada afirmaci&oacute;n que tu GBP hace &mdash; cocina, horarios, direcci&oacute;n, enlace de men&uacute;, enlace de reserva &mdash; deber&iacute;a aparecer dentro del JSON-LD de tu p&aacute;gina principal tambi&eacute;n. Cuando los parsers de Google ven los mismos datos en ambos lugares, conf&iacute;an m&aacute;s en la ficha y suben tu ranking en relevancia. <a href="/es/blog/los-6-tipos-de-schema-markup-que-google-usa/">Los 6 tipos de schema que Google usa</a> recorre cada uno con JSON-LD para copiar y pegar; el <a href="/es/tools/holiday-hours/">Generador de horarios festivos</a> emite el bloque override para horarios especiales; el <a href="/es/tools/menu-converter/">Conversor de men&uacute;</a> emite el Menu schema desde un men&uacute; pegado en dos segundos.</p>
-
-      <h3>La ventaja espec&iacute;fica del DMV</h3>
-
-      <p>El SEO local es estructuralmente nacional &mdash; el algoritmo es el mismo en Bethesda que en Bismarck &mdash; pero la competencia del lado del operador no lo es. El DMV (DC + suburbios de Maryland + norte de Virginia) tiene la densidad m&aacute;s alta de restaurantes independientes per c&aacute;pita en la Costa Este, la segunda escena restaurantera biling&uuml;e m&aacute;s grande de EE.UU. (Adams Morgan, Mt Pleasant, Wheaton, Columbia Pike, Long Branch), y una curva de demanda de brunch dominical que comprime las reservas en una ventana de cuatro horas cada fin de semana. Tres implicaciones para el SEO local en el DMV:</p>
-
-      <ul>
-        <li><strong>Las fichas solo en ingl&eacute;s ceden el mercado biling&uuml;e.</strong> Un espejo real de <code>/es/</code> con hreflang, m&aacute;s el men&uacute; y los horarios en espa&ntilde;ol en GBP, duplica la demanda direccionable en aproximadamente el 35% de los vecindarios del DMV. El <a href="/services/menu-drop-in/">drop-in de men&uacute; de $1.500</a> env&iacute;a la versi&oacute;n de p&aacute;gina del men&uacute; en siete d&iacute;as; la versi&oacute;n del sitio completo est&aacute; en cualquiera de los <a href="/es/services/">tres niveles de sitio</a>.</li>
-        <li><strong>Los horarios festivos se filtran m&aacute;s en el DMV que en el promedio nacional.</strong> El 81% de los operadores del DMV en nuestro audit de 100 restaurantes no ten&iacute;a horarios festivos configurados; el promedio nacional est&aacute; m&aacute;s cerca del 65%. El fin de semana del Memorial Day, el 4 de julio, los cuatro feriados religiosos en oto&ntilde;o, Acci&oacute;n de Gracias, y el bloque Navidad/A&ntilde;o Nuevo todos manejan tr&aacute;fico de b&uacute;squeda 1.2&times; el volumen normal en el DMV. Conf&iacute;guralos una vez al a&ntilde;o v&iacute;a el <a href="/es/tools/holiday-hours/">Generador de horarios festivos</a>.</li>
-        <li><strong>La paridad de citaciones es m&aacute;s dura aqu&iacute;.</strong> Los operadores multi-jurisdiccionales (un local de DC y uno de Bethesda, o uno de Tysons y uno de Reston) acumulan deriva de citaciones m&aacute;s r&aacute;pido porque cada uno de los cuatro directorios principales &mdash; Yelp, Apple Business Connect, Bing Places, Yellow Pages &mdash; los trata como pines separados. La pasada de higiene mensual del <a href="/services/care-plan-light/">Care Plan Light</a> est&aacute; construida alrededor de arreglar esto.</li>
-      </ul>
-
-      <h3>Qu&eacute; hacer esta semana</h3>
-
-      <p>Tres acciones, en orden, tiempo total aproximado de una hora:</p>
-
-      <ol>
-        <li><strong>Abre <a href="https://business.google.com/" target="_blank" rel="noopener">business.google.com</a> y audita tu ficha contra los ocho campos que el <a href="/learn/research/dmv-restaurant-gbp-audit-2026/">audit GBP del DMV</a> califica.</strong> Horarios al d&iacute;a, horarios festivos configurados, enlace al sitio web presente, deeplink de reserva correcto, enlace al men&uacute; HTML (no PDF), foto en los &uacute;ltimos 90 d&iacute;as, actividad de Q&amp;A, tasa de respuesta a rese&ntilde;as por encima del 50%. El operador mediano puntea 5.4/8; apunta a 8/8.</li>
-        <li><strong>Corre el <a href="/es/tools/gbp-grader/">GBP Grader</a> gratis en tu ficha.</strong> La herramienta te muestra los huecos que tu auditor&iacute;a manual omiti&oacute; y te da el arreglo espec&iacute;fico para cada uno.</li>
-        <li><strong>Establece el h&aacute;bito semanal de 15 minutos.</strong> El mismo d&iacute;a cada semana (martes en la ma&ntilde;ana, antes del servicio del almuerzo, es lo que yo hago). Una foto, un Google Post, respuestas a cada rese&ntilde;a desde la semana pasada. El h&aacute;bito es el multiplicador; todo lo dem&aacute;s es la plataforma.</li>
-      </ol>
-
-      <p>Los operadores que no pueden sacar los 15 minutos pueden subcontratarlos: el <a href="/services/care-plan-light/">Care Plan Light a $99/mes</a> cubre la higiene mensual en sitio + GBP + Yelp + Apple Maps. El Care Plan completo ($225/mes) a&ntilde;ade el toque-de-tambor semanal. De cualquier manera, la respuesta es consistencia, no un empuj&oacute;n &uacute;nico.</p>
-
-      <h3>D&oacute;nde toca este tema a los otros</h3>
-
-      <ul>
-        <li><strong><a href="/es/learn/topics/conversions/">Conversiones y Contenido</a></strong> &mdash; porque el clic de GBP tiene que aterrizar en un sitio que convierte. Deeplinks de reserva, velocidad m&oacute;vil, y una p&aacute;gina de men&uacute; que no requiere pellizcar para hacer zoom importan tanto como la ficha que gener&oacute; el clic.</li>
-        <li><strong><a href="/es/learn/topics/speed-mobile/">Velocidad y M&oacute;vil</a></strong> &mdash; porque Google penaliza los sitios m&oacute;viles lentos en el local-pack sin importar lo bien optimizado que est&eacute; el GBP. Un LCP de 3.5 segundos en celular te cuesta una posici&oacute;n de ranking incluso con todo lo dem&aacute;s perfecto.</li>
-        <li><strong><a href="/es/learn/topics/trust-reviews/">Confianza y Rese&ntilde;as</a></strong> &mdash; las rese&ntilde;as son la se&ntilde;al de prominencia #2 despu&eacute;s de las fotos. Restaurantes que llegan a 50+ rese&ntilde;as en sus primeros seis meses tienden a acumular desde ah&iacute;; los que no, pasan el siguiente a&ntilde;o luchando.</li>
-      </ul>
-
-      <p>Corre el <a href="/es/tools/audits/restaurant/">Restaurant Website Audit</a> para ver las cuatro bandas a la vez. Guarda el resultado en el Taller y vuelve a correrlo mensualmente &mdash; la l&iacute;nea de tendencia es la &uacute;nica m&eacute;trica que importa.</p></div>
-  </div>
-</section>
-<!-- topic-essay:end -->
 <section class="block final">
   <div class="container">
     <div class="section-header reveal section-center">
@@ -626,6 +353,7 @@ header.nav{min-height:64px}
       <li><a href="/es/learn/topics/trust-reviews/">Confianza y reseñas</a></li>
       <li><a href="/es/learn/topics/brand-design/">Marca y diseño</a></li>
       <li><a href="/es/learn/topics/information-security/">Seguridad informática</a></li>
+      <li><a href="/es/learn/topics/ai-search/">Búsqueda con IA y citas</a></li>
     </ul>
     <div class="hero-ctas reveal hero-ctas-center" style="margin-top:32px">
       <a class="btn btn-primary" href="/es/learn/">Volver a la biblioteca</a>
@@ -638,129 +366,70 @@ header.nav{min-height:64px}
 
 <footer>
   <div class="container">
-    <!-- Phase 2.3: pulse propagation — same footer pulse as the EN
-         partial. Stays hidden until assets/js/window-state.js confirms
-         Don has been seen recently. -->
     <div class="foot-cta">
-      <div class="foot-cta-text">
-        <span class="foot-cta-pulse" id="footCtaPulse" hidden aria-hidden="true" title="Don está cerca"></span>
-        ¿Tienes una pregunta? La Ventana está abierta.
-      </div>
-      <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Escríbele a Don
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
+      <div class="foot-cta-text">Ready to build something worth the time?</div>
+      <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Write to Don
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
       </a>
     </div>
 
     <div class="foot-grid">
       <div class="foot-col foot-brand">
-        <a href="/es/" class="foot-lockup-wrap" aria-label="Muntin Digital — inicio">
+        <a href="/" class="foot-lockup-wrap" aria-label="Muntin Digital home">
           <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53" loading="lazy" decoding="async">
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
-        <p class="foot-tagline">La ventana.</p>
-        <p class="foot-blurb">Una biblioteca web y estudio de dise&ntilde;o para restaurantes, con base en Silver Spring, MD &mdash; art&iacute;culos, herramientas gratis, investigaci&oacute;n y un glosario de <!-- count:glossary.terms -->139<!-- /count --> t&eacute;rminos, con el estudio detr&aacute;s cuando quieras contratar. Se habla espa&ntilde;ol.</p>
+        <p class="foot-tagline">The window in.</p>
+        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a <!-- count:glossary.terms -->139<!-- /count -->-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
       </div>
 
       <nav class="foot-col" aria-labelledby="foot-explore">
-        <p class="foot-heading" id="foot-explore">Explorar</p>
+        <p class="foot-heading" id="foot-explore">Explore</p>
         <ul class="foot-links">
-          <li><a href="/es/services/">Servicios</a></li>
-          <li><a href="/es/for/restaurants/">Para restaurantes</a></li>
-          <li><a href="/es/work/">Proyectos</a></li>
-          <li><a href="/es/about/">Sobre Don</a></li>
-          <li><a href="/es/system/">El sistema</a></li>
-          <li><a href="/receipts/" hreflang="en" lang="en">Receipts</a></li>
-          <li><a href="/methods/" hreflang="en" lang="en">Methods</a></li>
-          <li><a href="/changelog/" hreflang="en" lang="en">Changelog</a></li>
+          <li><a href="/services/">Services</a></li>
+          <li><a href="/for/restaurants/">For restaurants</a></li>
+          <li><a href="/work/">Work</a></li>
+          <li><a href="/about/">About Don</a></li>
+          <li><a href="/system/">The system</a></li>
         </ul>
       </nav>
 
       <nav class="foot-col" aria-labelledby="foot-learn">
-        <p class="foot-heading" id="foot-learn">Biblioteca</p>
+        <p class="foot-heading" id="foot-learn">Learn</p>
         <ul class="foot-links">
-          <li><a href="/es/learn/">Inicio de la biblioteca</a></li>
-          <li><a href="/es/learn/start-here/">Empieza aquí</a></li>
-          <li><a href="/es/learn/topics/">Temas</a></li>
-          <li><a href="/es/blog/">Artículos</a></li>
-          <li><a href="/es/tools/">Herramientas gratis</a></li>
-          <li><a href="/es/glossary/">Glosario</a></li>
-          <li><a href="/es/learn/research/">Investigación</a></li>
-          <li><a href="/es/learn/checklists/">Listas y recursos</a></li>
-          <li><a href="/es/sheets/">Hojas del operador</a></li>
+          <li><a href="/learn/">Library home</a></li>
+          <li><a href="/learn/start-here/">Start here</a></li>
+          <li><a href="/learn/topics/">Topics</a></li>
+          <li><a href="/blog/">Articles</a></li>
+          <li><a href="/tools/">Free tools</a></li>
+          <li><a href="/glossary/">Glossary</a></li>
+          <li><a href="/learn/research/">Research</a></li>
+          <li><a href="/learn/checklists/">Checklists &amp; guides</a></li>
         </ul>
       </nav>
 
       <nav class="foot-col foot-contact" aria-labelledby="foot-contact">
-        <p class="foot-heading" id="foot-contact">Contacto</p>
+        <p class="foot-heading" id="foot-contact">Contact</p>
         <ul class="foot-links">
           <li><a href="mailto:don@muntin.digital">don@muntin.digital</a></li>
-          <li><a href="/es/window/">Escríbele a Don</a></li>
-          <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (se abre en una pestaña nueva)</span></a></li>
+          <li><a href="/window/">Write to Don</a></li>
+          <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (opens in new tab)</span></a></li>
         </ul>
-        <p class="foot-trust"><strong>Respuesta:</strong> de lunes a viernes, en menos de 4 horas. Los fines de semana, el lunes en la mañana.</p>
+        <p class="foot-trust"><strong>Reply:</strong> Mondays through Fridays, within 4 hours. Weekends, by Monday morning.</p>
       </nav>
     </div>
 
-    <!-- newsletter-capture:start -->
-    <div class="foot-newsletter">
-      <form action="/api/subscribe" method="post" class="foot-newsletter-form" data-locale="es">
-        <p class="foot-newsletter-pitch">Te aviso cuando publique algo &mdash; cuatro notas por trimestre, sin secuencias automatizadas.</p>
-        <label class="foot-newsletter-label" for="foot-news-email">Tu correo</label>
-        <input id="foot-news-email" name="email" type="email" required autocomplete="email" inputmode="email" enterkeyhint="send" autocapitalize="off" spellcheck="false" placeholder="tu@turestaurante.com" />
-        <input type="hidden" name="locale" value="es" />
-        <input type="hidden" name="source" value="footer" />
-        <input type="hidden" name="ts" value="" />
-        <input type="text" name="hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;" />
-        <!-- Turnstile (Phase 3B). Auto-injects cf-turnstile-response on pass. -->
-        <div class="cf-turnstile" data-sitekey="0x4AAAAAADIgoGh56MvqeE8L" data-action="newsletter" data-language="es" data-size="flexible"></div>
-        <button type="submit">Suscribirme</button>
-      </form>
-    </div>
-    <!-- newsletter-capture:end -->
-
     <div class="foot-bottom">
-      <p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; LLC de Maryland &middot; Silver Spring, MD</p>
+      <p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; Maryland LLC &middot; Silver Spring, MD</p>
       <nav class="foot-legal" aria-label="Legal">
-        <a href="/es/terms.html">Términos</a>
-        <a href="/es/privacy.html">Privacidad</a>
-        <a href="/es/security/">Datos y seguridad</a>
-        <a href="/es/accessibility.html">Accesibilidad</a>
-        <a href="/es/cookies.html">Cookies</a>
-        <a href="/es/feed.xml" type="application/rss+xml" title="Muntin Digital RSS">RSS</a>
+        <a href="/terms.html">Terms</a>
+        <a href="/privacy.html">Privacy</a>
+        <a href="/accessibility.html">Accessibility</a>
+        <a href="/cookies.html">Cookies</a>
       </nav>
     </div>
   </div>
-  <aside class="mobile-cta-bar" id="mobileCtaBar" aria-label="Acciones r&aacute;pidas">
-    <a class="mobile-cta-bar__btn mobile-cta-bar__btn--primary" href="/es/tools/audits/restaurant/" data-event="sticky-cta-audit">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
-      Auditor&iacute;a gratis
-    </a>
-    <a class="mobile-cta-bar__btn mobile-cta-bar__btn--ghost js-window" href="/es/window/" data-event="sticky-cta-window">
-      <span class="mobile-cta-bar__pulse" id="mobileCtaBarPulse" hidden aria-hidden="true" title="Don está cerca"></span>
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
-      Escr&iacute;bele a Don
-    </a>
-  </aside>
-  <script>
-    (function () {
-      var bar = document.getElementById('mobileCtaBar');
-      if (!bar) return;
-      var hide = document.body.dataset && document.body.dataset.hideStickyBar !== undefined;
-      var path = location.pathname;
-      if (hide || /^\/(window|sign-in|account|workbench|admin|es\/(window|sign-in|account|workbench|admin))/.test(path)) {
-        bar.hidden = true;
-      }
-    })();
-  </script>
 </footer>
-<script src="/assets/js/first-touch.js" defer></script>
-<script src="/assets/js/save-next-time.js" defer></script>
-<script src="/assets/js/share-hydrate.js" defer></script>
-<script src="/assets/js/window-state.js" defer></script>
-<!-- Cloudflare Turnstile (Phase 3B). Carga global porque el formulario
-     de newsletter vive en este pie de página y aparece en cada vista. -->
-<!-- Skip Turnstile on localhost / 127.0.0.1 / dev hosts (ver footer EN para detalle). -->
-<script>(function(){var h=location.hostname;if(h==='localhost'||h==='127.0.0.1'||h==='0.0.0.0'||/^\[?::1?\]?$/.test(h))return;var s=document.createElement('script');s.src='https://challenges.cloudflare.com/turnstile/v0/api.js';s.async=true;s.defer=true;document.head.appendChild(s);})();</script>
 
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
 </body>
