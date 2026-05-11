@@ -2385,17 +2385,23 @@ var UI_I18N = {
     en: "Your site is in great shape — most restaurants would be thrilled to hit this score. The items below are polish, not problems. Skim them, pick the one or two that catch your eye, and you're done.",
     es: 'Tu sitio está en gran forma — la mayoría de restaurantes estaría encantada con esta puntuación. Lo de abajo es pulir, no arreglar. Échale un vistazo, escoge una o dos cosas y listo.'
   },
+  // Critique-fix (UX + QA): the verdict copy used to instruct
+  // "pick the two with the green 'Fix yourself' chip." When the
+  // Top-3 fixes ranked out as all dev/rebuild (perf-only regression
+  // on a small site, for example), no green chip existed and the
+  // verdict became a typo. Reworded to describe ACTION rather than
+  // CHIP COLOR — true in every state of the Top-3 list.
   'verdict.70': {
-    en: "Solid bones, two or three leaky pipes. Most restaurants at this score are running a template site that just needs a careful weekend — not a rebuild. Your Top 3 fixes are below, sorted by how much real money each one costs you per year. Pick the two with the green “Fix yourself” chip and block out Saturday morning.",
-    es: 'Buenos cimientos, con dos o tres goteras. La mayoría de restaurantes con esta puntuación tiene un sitio plantilla al que le falta un fin de semana cuidadoso — no una reconstrucción. Tus 3 arreglos prioritarios están abajo, ordenados por cuánto dinero te cuesta cada uno al año. Escoge los dos con el chip verde de “Lo arreglas tú” y reserva un sábado por la mañana.'
+    en: "Solid bones, two or three leaky pipes. Most restaurants at this score are running a template site that just needs a careful weekend — not a rebuild. Your Top 3 fixes are below, sorted by how much real money each one costs you per year. Start with the first one and work down.",
+    es: 'Buenos cimientos, con dos o tres goteras. La mayoría de restaurantes con esta puntuación tiene un sitio plantilla al que le falta un fin de semana cuidadoso — no una reconstrucción. Tus 3 arreglos prioritarios están abajo, ordenados por cuánto dinero te cuesta cada uno al año. Empieza por el primero y baja desde ahí.'
   },
   'verdict.50': {
-    en: "The site works, but it's quietly losing you customers — most likely on mobile, on a Saturday night, when the visitor can't find your hours or your phone tap fast enough. The good news: the biggest wins below are usually a few hours of work, not a redesign. Start with the top two you can fix yourself, then come back and re-run this audit — you'll see exactly which numbers moved.",
-    es: 'El sitio funciona, pero está perdiendo clientes en silencio — casi siempre en el móvil, un sábado por la noche, cuando alguien no encuentra tus horarios o tu teléfono lo bastante rápido. La buena noticia: las mayores ganancias de abajo suelen ser unas pocas horas de trabajo, no un rediseño. Empieza con los dos primeros que puedas resolver tú mismo, luego vuelve y ejecuta otra vez esta auditoría — verás exactamente qué cifras se movieron.'
+    en: "The site works, but it's quietly losing you customers — most likely on mobile, on a Saturday night, when the visitor can't find your hours or your phone tap fast enough. The good news: the biggest wins below are usually a few hours of work, not a redesign. Start at the top of the list, then come back and re-run this audit — you'll see exactly which numbers moved.",
+    es: 'El sitio funciona, pero está perdiendo clientes en silencio — casi siempre en el móvil, un sábado por la noche, cuando alguien no encuentra tus horarios o tu teléfono lo bastante rápido. La buena noticia: las mayores ganancias de abajo suelen ser unas pocas horas de trabajo, no un rediseño. Empieza por arriba de la lista, luego vuelve a pasar esta auditoría — verás exactamente qué números se movieron.'
   },
   'verdict.below': {
-    en: "There's real work to do here, and that's okay — most scores in this range come from a template site that's quietly aged out, not from anything you did wrong. The fastest path forward is the Top 3 list below: tackle the two with the green “Fix yourself” chip this weekend, then re-run the audit and watch the score move. If a fix is flagged for a web person and you don't have one, email don@muntin.digital — that's literally what Muntin does.",
-    es: 'Hay trabajo real por hacer, y no pasa nada — la mayoría de las puntuaciones en este rango vienen de un sitio plantilla que envejeció en silencio, no de nada que hiciste mal. El camino más rápido es la lista de los 3 arreglos prioritarios abajo: ocúpate este fin de semana de los dos con el chip verde de “Lo arreglas tú”, luego vuelve a ejecutar la auditoría y mira cómo se mueve la puntuación. Si un arreglo necesita una persona de la web y tú no tienes una, escribe a don@muntin.digital — Muntin existe literalmente para esto.'
+    en: "There's real work to do here, and that's okay — most scores in this range come from a template site that's quietly aged out, not from anything you did wrong. The fastest path forward is the Top 3 list below: pick the first one, block out Saturday morning, fix it, and re-run the audit. If something needs a web person and you don't have one, email don@muntin.digital — that's what Muntin is here for.",
+    es: 'Hay trabajo real por hacer, y no pasa nada — la mayoría de las puntuaciones en este rango vienen de un sitio plantilla que envejeció en silencio, no de nada que hiciste mal. El camino más rápido es la lista de los 3 arreglos prioritarios abajo: empieza por el primero, reserva un sábado por la mañana, arréglalo y vuelve a pasar la auditoría. Si algo necesita una persona de la web y tú no tienes una, escribe a don@muntin.digital — para eso existe Muntin.'
   },
   'verdict.unverifiedSuffix': {
     en: " {count} check{s} need your eyes — confirming them on the right takes about 90 seconds and sharpens your score either direction with no other work.",
@@ -2958,6 +2964,12 @@ var UI_I18N = {
     en: 'Showing {self} of {all} items you can do yourself',
     es: 'Mostrando {self} de {all} cosas que puedes hacer tú'
   },
+  // Critique-fix (UX): passive preview when the filter is OFF so the
+  // owner sees the size of the self-fix slice before clicking.
+  'priority.filter.count.preview': {
+    en: '{self} of {all} are things you can do yourself',
+    es: '{self} de {all} son cosas que puedes hacer tú'
+  },
   // Sprint AUDIT-EMPOWERMENT: Top-3 sub-copy + Weekend Mode strings.
   // The sub-copy now tells the owner WHY the items are ranked (dollar
   // estimate) AND what action to take (pick 2). The Weekend Mode
@@ -2987,16 +2999,26 @@ var UI_I18N = {
   // headline first, technical acronym second. The .label cell now
   // reads ".plain" and the .hint footnote reads ".tech".
   'cwv.lcp.plain': { en: 'Time to see the page',         es: 'Tiempo en ver la página' },
-  'cwv.lcp.tech':  { en: 'LCP · Largest Contentful Paint', es: 'LCP · Mayor pintado de contenido' },
-  'cwv.cls.plain': { en: 'How much the page jumps',       es: 'Cuánto salta la página' },
-  'cwv.cls.tech':  { en: 'CLS · Cumulative Layout Shift',  es: 'CLS · Cambio acumulado de diseño' },
-  'cwv.inp.plain': { en: 'How fast it reacts to taps',    es: 'Qué tan rápido reacciona a tus toques' },
-  'cwv.inp.tech':  { en: 'INP · Interaction to Next Paint', es: 'INP · Interacción al siguiente pintado' },
-  'cwv.tbt.plain': { en: 'How long it’s frozen at start', es: 'Cuánto se queda congelada al inicio' },
-  'cwv.tbt.tech':  { en: 'TBT · Total Blocking Time',      es: 'TBT · Tiempo total de bloqueo' },
+  'cwv.lcp.tech':  { en: 'LCP · Largest Contentful Paint', es: 'LCP · Largest Contentful Paint' },
+  'cwv.cls.plain': { en: 'How much the page jumps',       es: 'Cuánto se mueve la página' },
+  'cwv.cls.tech':  { en: 'CLS · Cumulative Layout Shift',  es: 'CLS · Cumulative Layout Shift' },
+  'cwv.inp.plain': { en: 'How fast it reacts to taps',    es: 'Qué tan rápido responde cuando lo tocas' },
+  'cwv.inp.tech':  { en: 'INP · Interaction to Next Paint', es: 'INP · Interaction to Next Paint' },
+  // Critique-fix (Spanish-fluency reviewer): web-perf acronyms are
+  // ALWAYS left untranslated in Spanish docs (MDN, web.dev/es, Google
+  // Search Central). "Mayor pintado de contenido" / "Primer pintado de
+  // contenido" / "Interacción al siguiente pintado" are inventions no
+  // real Spanish-speaking developer would recognize. Acronym labels
+  // stay identical EN/ES — the plain-English LEADER above each card
+  // (cwv.*.plain) carries the meaning.
+  'cwv.tbt.plain': { en: 'How long it’s frozen at start', es: 'Cuánto tarda en responder al inicio' },
+  'cwv.tbt.tech':  { en: 'TBT · Total Blocking Time',      es: 'TBT · Total Blocking Time' },
   'cwv.fcp.plain': { en: 'Time to first pixel',           es: 'Tiempo al primer pixel' },
-  'cwv.fcp.tech':  { en: 'FCP · First Contentful Paint',   es: 'FCP · Primer pintado de contenido' },
-  'effort.rebuild': { en: 'Rebuild needed',    es: 'Se necesita rehacer' },
+  'cwv.fcp.tech':  { en: 'FCP · First Contentful Paint',   es: 'FCP · First Contentful Paint' },
+  // Critique-fix: a duplicate `'effort.rebuild'` key used to live here
+  // and silently revert the new "Bigger project" copy back to "Rebuild
+  // needed" — JS object-literal semantics let the later key win.
+  // Canonical definition is at line ~2949. Do NOT re-add it here.
   'effort.halfday': { en: 'Half-day project',  es: 'Proyecto de medio día' },
   // Sprint N1: NAP cross-check card (Name/Address/Phone consistency
   // across Google Places, schema.org, and on-page text). Rows render
@@ -3118,7 +3140,18 @@ var UI_I18N = {
 // locale-aware plural suffixes that English doesn't. Keep this
 // map small and extend only as new strings land.
 var ES_PLURAL = {
-  'on': function(n){ return n === 1 ? 'ón' : 'ones'; }
+  'on': function(n){ return n === 1 ? 'ón' : 'ones'; },
+  // Critique-fix (functional QA): the new `verdict.unverifiedSuffix`
+  // ES string uses `{n}` to alternate the verb ending (`necesita` /
+  // `necesitan`). Without a handler here, `{n}` rendered as an empty
+  // string and the suffix always read `necesita` regardless of count
+  // — and that suffix only fires when count > 2, so the wrong-grammar
+  // path was the only one hit.
+  'n': function(n){ return n === 1 ? '' : 'n'; },
+  // Generic `{s}` plural-marker used in EN (e.g. `check{s}` -> check
+  // / checks). The English `count of unverified` template adds an
+  // `s` only when count > 1.
+  's': function(n){ return n === 1 ? '' : 's'; }
 };
 
 function t(key, vars, lang) {
