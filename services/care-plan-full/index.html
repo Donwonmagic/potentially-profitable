@@ -204,6 +204,18 @@ a{color:inherit}
 .btn-primary{background:var(--ink);color:var(--cream)}
 .btn-ghost{background:transparent;color:var(--ink);border:1px solid #D9D5CB}
 header.nav{min-height:64px}
+/* nav-critical */
+.nav{position:fixed;top:0;left:0;right:0;background:var(--cream);z-index:50;border-bottom:1px solid #E8E2D6}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:64px;padding:12px 0}
+.logo{display:flex;align-items:center;gap:10px;font-family:Georgia,serif;font-size:22px;font-weight:600;letter-spacing:-0.02em;flex-shrink:0;white-space:nowrap;color:inherit;text-decoration:none}
+.logo-mark{width:28px;height:28px;flex:0 0 28px}
+.tm{font-size:0.5em;vertical-align:super;margin-left:1px}
+.nav-links{display:flex;gap:36px;font-size:15px}
+.nav-links a{text-decoration:none;color:inherit}
+.nav-toggle{display:none}
+.nav-search-btn,.lang-switch{display:none}
+@media (max-width:1100px){.nav-links{display:none}.nav-toggle{display:flex;width:44px;height:44px;flex-direction:column;justify-content:center;align-items:center;gap:5px;background:transparent;border:0;padding:0}.nav-toggle span{display:block;width:22px;height:2px;background:var(--ink)}.nav-inner .btn-primary{display:none}}
+main{padding-top:64px}
 </style>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
@@ -260,7 +272,7 @@ header.nav{min-height:64px}
     </nav>
     <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">
       <span class="nav-window-pulse" id="navWindowPulse" hidden aria-hidden="true" title="Don is around"></span>
-      Email Don
+      Reach Don
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
     </a>
     <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
@@ -278,7 +290,7 @@ header.nav{min-height:64px}
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
       <span>Search the library</span>
     </button>
-    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Email Don</a>
+    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Reach Don</a>
     <a href="/es/services/care-plan-full/" hreflang="es" lang="es" class="mobile-lang js-lang-switch" data-set-locale="es">Ver en español</a>
   </nav>
 
@@ -603,7 +615,7 @@ header.nav{min-height:64px}
         <span class="foot-cta-pulse" id="footCtaPulse" hidden aria-hidden="true" title="Don is around"></span>
         Got a question? The Window is open.
       </div>
-      <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Email Don
+      <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Reach Don
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
       </a>
     </div>
@@ -615,7 +627,7 @@ header.nav{min-height:64px}
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a <!-- count:glossary.terms -->139<!-- /count -->-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
+        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a <!-- count:glossary.terms -->142<!-- /count -->-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
       </div>
 
       <nav class="foot-col" aria-labelledby="foot-explore">
@@ -661,7 +673,7 @@ header.nav{min-height:64px}
         <p class="foot-heading" id="foot-contact">Contact</p>
         <ul class="foot-links">
           <li><a href="mailto:don@muntin.digital">don@muntin.digital</a></li>
-          <li><a href="/window/">Email Don</a></li>
+          <li><a href="/window/">Reach Don</a></li>
           <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (opens in new tab)</span></a></li>
         </ul>
         <p class="foot-trust"><strong>Reply:</strong> Mondays through Fridays, within 4 hours. Weekends, by Monday morning.</p>
@@ -704,7 +716,7 @@ header.nav{min-height:64px}
     <a class="mobile-cta-bar__btn mobile-cta-bar__btn--ghost js-window" href="/window/" data-event="sticky-cta-window">
       <span class="mobile-cta-bar__pulse" id="mobileCtaBarPulse" hidden aria-hidden="true" title="Don is around"></span>
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
-      Email Don
+      Reach Don
     </a>
   </aside>
   <script>
