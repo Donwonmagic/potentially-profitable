@@ -5479,16 +5479,16 @@ main{padding-top:64px}
   "@graph": [
     {
       "@type": "SoftwareApplication",
-      "@id": "https://muntin.digital/tools/audits/restaurant/#tool",
+      "@id": "https://muntin.digital/es/tools/audits/restaurant/#tool",
       "applicationCategory": "BusinessApplication",
       "applicationSubCategory": "RestaurantOps",
       "operatingSystem": "Web",
       "screenshot": "https://muntin.digital/brand/og/tool-audits-restaurant.png",
-      "url": "https://muntin.digital/tools/audits/restaurant/",
+      "url": "https://muntin.digital/es/tools/audits/restaurant/",
       "featureList": [
-        "Composite restaurant SEO + UX scoring",
-        "Per-section diagnostic with quick-win flags",
-        "Save-to-Workshop for tracking over time"
+        "Puntaje compuesto de SEO + UX de restaurante",
+        "Diagnóstico por sección con quick-wins",
+        "Guardado al Workshop para seguimiento"
       ],
       "offers": {
         "@type": "Offer",
@@ -5496,40 +5496,40 @@ main{padding-top:64px}
         "priceCurrency": "USD",
         "availability": "https://schema.org/InStock"
       },
-      "name": "Restaurant Website Audit",
-      "description": "Drop your URL. Get a real mobile audit in about thirty seconds — performance, SEO, accessibility, and ten restaurant-specific checks in plain English."
+      "name": "Diagnóstico de sitio de restaurante",
+      "description": "Pega la URL de tu restaurante y recibe un diagnóstico móvil real en unos treinta segundos — desempeño, SEO, accesibilidad, y diez chequeos específicos en español claro."
     },
     {
       "@type": "HowTo",
-      "@id": "https://muntin.digital/tools/audits/restaurant/#howto",
-      "name": "How to read your Restaurant Audit result",
+      "@id": "https://muntin.digital/es/tools/audits/restaurant/#howto",
+      "name": "Cómo leer tu auditoría de restaurante",
       "step": [
         {
           "@type": "HowToStep",
           "position": 1,
-          "name": "Drop your restaurant URL",
-          "text": "Homepage works best — the audit checks every reachable surface.",
-          "url": "https://muntin.digital/tools/audits/restaurant/#step-1"
+          "name": "Pega tu URL",
+          "text": "La página principal funciona mejor — la auditoría revisa todas las superficies.",
+          "url": "https://muntin.digital/es/tools/audits/restaurant/#step-1"
         },
         {
           "@type": "HowToStep",
           "position": 2,
-          "name": "Read the composite score",
-          "text": "Each section (speed, SEO, schema, GBP, photos) scores separately + rolls up.",
-          "url": "https://muntin.digital/tools/audits/restaurant/#step-2"
+          "name": "Lee el puntaje compuesto",
+          "text": "Cada sección (velocidad, SEO, schema, GBP, fotos) se califica por separado y se suma.",
+          "url": "https://muntin.digital/es/tools/audits/restaurant/#step-2"
         },
         {
           "@type": "HowToStep",
           "position": 3,
-          "name": "Save it + come back",
-          "text": "Save to your Workshop; rerun monthly to watch the score move.",
-          "url": "https://muntin.digital/tools/audits/restaurant/#step-3"
+          "name": "Guárdalo y vuelve",
+          "text": "Guárdalo en tu Workshop; vuelve a correrlo mensualmente.",
+          "url": "https://muntin.digital/es/tools/audits/restaurant/#step-3"
         }
       ],
       "about": {
-        "@id": "https://muntin.digital/tools/audits/restaurant/#tool"
+        "@id": "https://muntin.digital/es/tools/audits/restaurant/#tool"
       },
-      "inLanguage": "en-US"
+      "inLanguage": "es-US"
     }
   ]
 }
@@ -5718,14 +5718,14 @@ main{padding-top:64px}
             <p class="tool-verified">Last verified: <time datetime="2026-05-11">May 11, 2026</time></p>
             <!-- tool-verified:end -->
       <!-- data-promise:start -->
-            <aside class="tool-data-promise" aria-label="Data promise">
-              <p class="tool-data-promise__line">Runs in your browser. No accounts, no fetches, no tracking.</p>
-              <p class="tool-data-promise__line">Verify it: open DevTools → Network → run the tool. The Network tab stays empty.</p>
-              <p class="tool-data-promise__links"><a href="/security/">Read the full data promise &rarr;</a> &middot; <a href="/learn/checklists/audit-any-tool/">Audit any tool &rarr;</a></p>
+            <aside class="tool-data-promise" aria-label="Promesa de datos">
+              <p class="tool-data-promise__line">Corre en tu navegador. Sin cuentas, sin fetches, sin tracking.</p>
+              <p class="tool-data-promise__line">Verifícalo: abre DevTools → Network → usa la herramienta. La pestaña Network se mantiene vacía.</p>
+              <p class="tool-data-promise__links"><a href="/es/security/">Lee la promesa completa &rarr;</a> &middot; <a href="/es/learn/checklists/audit-any-tool/">Audita cualquier herramienta &rarr;</a></p>
             </aside>
             <!-- data-promise:end -->
       <!-- storefront-rail:start -->
-            <p class="tool-storefront-rail">Part of <a href="/tools/storefront-health/"><strong>Storefront Health</strong></a> — the composite score that pairs this signal with five others on one scorecard.</p>
+            <p class="tool-storefront-rail">Forma parte de <a href="/es/tools/storefront-health/"><strong>Salud del Escaparate</strong></a> — el puntaje compuesto que junta esta señal con cinco más en una sola tarjeta.</p>
             <!-- storefront-rail:end -->
       <p class="hero-sub" style="margin:24px auto 0; max-width:580px;" data-tr="hero.sub">
         Drop your URL below and I'll run a real mobile audit in about thirty seconds — performance, SEO, accessibility, and the specific checks that matter for a restaurant. The full report renders on this page — no sign-up, no email, no tracking. (An optional form at the bottom emails you a PDF copy if you want one.)
@@ -9094,6 +9094,50 @@ main{padding-top:64px}
     return { psi: { inflight: false, fallback: false, fallbackFromMobile: false } };
   }
 
+  // Wave-E3: applyDisplayMode — single source of truth for body-class
+  // display state. The audit used to scatter 9 direct
+  // classList.add/.remove/.toggle calls for {weekend-mode,
+  // priority-self-only, snapshot-view, snapshot-hydrating,
+  // snapshot-error}. Accidental composition risks (weekend-mode hiding
+  // the snapshot banner, snapshot-view leaking through a weekend-mode
+  // entry) all funneled through this one helper now.
+  //
+  // print-worksheet and report-revealed stay out: print-worksheet
+  // has a different lifecycle (print media), report-revealed is an
+  // animation marker with its own lifecycle.
+  //
+  // Shape:
+  //   focus:  'all' | 'weekend' | 'snapshot' | 'snapshot-hydrating' | 'snapshot-error'
+  //   filter: 'all' | 'self-only'
+  //
+  // Mapping (preserves pre-refactor behavior — including the
+  // deliberate decision NOT to set snapshot-view when in
+  // snapshot-error state, because that path surfaces the live form
+  // for the recipient):
+  //   focus === 'weekend'           → body.weekend-mode
+  //   focus === 'snapshot-hydrating'→ body.snapshot-hydrating
+  //   focus === 'snapshot'          → body.snapshot-view
+  //   focus === 'snapshot-error'    → body.snapshot-error
+  //   filter === 'self-only'        → body.priority-self-only
+  //
+  // applyDisplayMode(patch) takes a partial state object; missing
+  // keys preserve current value. Idempotent.
+  window.__auditDisplayMode = { focus: 'all', filter: 'all' };
+  function applyDisplayMode(patch) {
+    var m = window.__auditDisplayMode;
+    if (patch) {
+      if (patch.focus !== undefined)  m.focus  = patch.focus;
+      if (patch.filter !== undefined) m.filter = patch.filter;
+    }
+    var body = document.body;
+    if (!body) return;
+    body.classList.toggle('weekend-mode',        m.focus === 'weekend');
+    body.classList.toggle('snapshot-hydrating',  m.focus === 'snapshot-hydrating');
+    body.classList.toggle('snapshot-view',       m.focus === 'snapshot');
+    body.classList.toggle('snapshot-error',      m.focus === 'snapshot-error');
+    body.classList.toggle('priority-self-only',  m.filter === 'self-only');
+  }
+
   // Render one step's DOM from its current state object.
   function paintStep(n) {
     if (!stepsEl) return;
@@ -9253,6 +9297,12 @@ main{padding-top:64px}
   function finishProgress() {
     if (progressTimer) { clearInterval(progressTimer); progressTimer = null; }
     if (progressFill) progressFill.style.width = '100%';
+    // Wave-E3 follow-up (audit-2 finding): null the ctx slot after
+    // an audit completes so a future cycleLoading() / snapshot
+    // rehydrate / heartbeat-restart can't read stale psi.inflight
+    // and paint "Mobile timed out — trying desktop view" on a
+    // completed audit's UI.
+    currentAuditCtx = null;
   }
 
   function resetProgress() {
@@ -15816,13 +15866,14 @@ main{padding-top:64px}
       .then(function(data){
         if (!data) return; // handled-error short-circuit
         try {
-          // Wave-E2: stamp ctx with the fallback bit. window.__auditPsiFallback
-          // is kept as a public read-only mirror for back-compat — any
-          // external consumer (an analytics script, a future PDF builder,
-          // a snapshot rebuild path) that read the global pre-E2 still
-          // sees it. The CANONICAL source is now ctx.psi.fallbackFromMobile.
+          // Wave-E2/E3: ctx is the single source of truth for whether
+          // this audit fell back to desktop. The audit's earlier
+          // window.__auditPsiFallback mirror has been removed — no
+          // external readers exist anywhere in the codebase (verified
+          // by repo-wide grep). If a future external consumer needs
+          // this signal, expose it via a documented API rather than
+          // re-introducing a hidden global write.
           ctx.psi.fallbackFromMobile = !!(data && data.__fallbackFromMobile);
-          window.__auditPsiFallback = ctx.psi.fallbackFromMobile;
           renderReport(data, url);
           // Show the PSI desktop-fallback disclosure under the verdict
           // when the mobile run timed out and we transparently re-ran
@@ -16054,7 +16105,9 @@ main{padding-top:64px}
       return document.querySelectorAll('#topFixesList li[data-effort="self"]').length;
     }
     function applyMode(on) {
-      document.body.classList.toggle('weekend-mode', !!on);
+      // Wave-E3: route through applyDisplayMode for consistency with
+      // the snapshot + filter state machines.
+      applyDisplayMode({ focus: on ? 'weekend' : 'all' });
       closeCard.hidden = !on;
       if (on) showVariant('success');
       // Wave-B4: announce state via aria-pressed so screen readers
@@ -16219,7 +16272,8 @@ main{padding-top:64px}
       }
     }
     function apply() {
-      document.body.classList.toggle('priority-self-only', !!box.checked);
+      // Wave-E3: route through applyDisplayMode for consistency.
+      applyDisplayMode({ filter: box.checked ? 'self-only' : 'all' });
       updateCount();
     }
     // Wave-A3: explicit default-off. No localStorage read.
@@ -16264,7 +16318,8 @@ main{padding-top:64px}
     // consent, hiding the score and the long report. Clear the mode
     // (and its sessionStorage mirror) at submit time.
     if (document.body.classList.contains('weekend-mode')) {
-      document.body.classList.remove('weekend-mode');
+      // Wave-E3: applyDisplayMode for the form-submit cleanup path.
+      applyDisplayMode({ focus: 'all' });
       try { sessionStorage.removeItem('muntin-weekend-mode'); } catch (_) {}
       var closeCard = document.getElementById('weekendModeClose');
       if (closeCard) closeCard.hidden = true;
@@ -17880,7 +17935,8 @@ main{padding-top:64px}
     // Mark the body immediately so CSS can hide "not in snapshot"
     // UI (the autoRunFromParam 300ms delay means we need a signal
     // before the measuring-pill starts animating).
-    document.body.classList.add('snapshot-hydrating');
+    // Wave-E3: applyDisplayMode for the hydrate-start state.
+    applyDisplayMode({ focus: 'snapshot-hydrating' });
     fetch('/api/audit-snapshot?token=' + encodeURIComponent(token), {
       credentials: 'omit',
       headers: { 'accept': 'application/json' },
@@ -17904,8 +17960,9 @@ main{padding-top:64px}
   }
 
   function renderSnapshotView(snapshot) {
-    document.body.classList.remove('snapshot-hydrating');
-    document.body.classList.add('snapshot-view');
+    // Wave-E3: applyDisplayMode handles the hydrating→view transition
+    // atomically (removes 'snapshot-hydrating' and adds 'snapshot-view').
+    applyDisplayMode({ focus: 'snapshot' });
 
     // URL: show in the input so a "Re-run audit" click (D4) picks it up
     // without requiring the user to retype.
@@ -18020,8 +18077,8 @@ main{padding-top:64px}
   }
 
   function renderSnapshotError(kind) {
-    document.body.classList.remove('snapshot-hydrating');
-    document.body.classList.add('snapshot-error');
+    // Wave-E3: applyDisplayMode handles the hydrating→error transition.
+    applyDisplayMode({ focus: 'snapshot-error' });
     // Minimal error state for D3 — D4 adds the polished banner +
     // call-to-run-fresh-audit CTA. For now, surface the error in
     // the hero form area using the existing #progressBar / verdict
@@ -18150,8 +18207,12 @@ main{padding-top:64px}
         }
       } catch (_) {}
       // Un-do the snapshot-view state so the live-audit UI sections
-      // become eligible to render again.
-      document.body.classList.remove('snapshot-view', 'snapshot-error', 'report-revealed');
+      // become eligible to render again. Wave-E3: applyDisplayMode
+      // owns the two snapshot classes; `report-revealed` is a
+      // separate animation marker with its own lifecycle and is
+      // removed here directly.
+      applyDisplayMode({ focus: 'all' });
+      document.body.classList.remove('report-revealed');
       // Clear the read-only priority list; the live runner repopulates.
       try {
         var list = document.getElementById('priorityListWrap');

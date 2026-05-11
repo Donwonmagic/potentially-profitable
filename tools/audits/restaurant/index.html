@@ -9092,6 +9092,50 @@ main{padding-top:64px}
     return { psi: { inflight: false, fallback: false, fallbackFromMobile: false } };
   }
 
+  // Wave-E3: applyDisplayMode — single source of truth for body-class
+  // display state. The audit used to scatter 9 direct
+  // classList.add/.remove/.toggle calls for {weekend-mode,
+  // priority-self-only, snapshot-view, snapshot-hydrating,
+  // snapshot-error}. Accidental composition risks (weekend-mode hiding
+  // the snapshot banner, snapshot-view leaking through a weekend-mode
+  // entry) all funneled through this one helper now.
+  //
+  // print-worksheet and report-revealed stay out: print-worksheet
+  // has a different lifecycle (print media), report-revealed is an
+  // animation marker with its own lifecycle.
+  //
+  // Shape:
+  //   focus:  'all' | 'weekend' | 'snapshot' | 'snapshot-hydrating' | 'snapshot-error'
+  //   filter: 'all' | 'self-only'
+  //
+  // Mapping (preserves pre-refactor behavior — including the
+  // deliberate decision NOT to set snapshot-view when in
+  // snapshot-error state, because that path surfaces the live form
+  // for the recipient):
+  //   focus === 'weekend'           → body.weekend-mode
+  //   focus === 'snapshot-hydrating'→ body.snapshot-hydrating
+  //   focus === 'snapshot'          → body.snapshot-view
+  //   focus === 'snapshot-error'    → body.snapshot-error
+  //   filter === 'self-only'        → body.priority-self-only
+  //
+  // applyDisplayMode(patch) takes a partial state object; missing
+  // keys preserve current value. Idempotent.
+  window.__auditDisplayMode = { focus: 'all', filter: 'all' };
+  function applyDisplayMode(patch) {
+    var m = window.__auditDisplayMode;
+    if (patch) {
+      if (patch.focus !== undefined)  m.focus  = patch.focus;
+      if (patch.filter !== undefined) m.filter = patch.filter;
+    }
+    var body = document.body;
+    if (!body) return;
+    body.classList.toggle('weekend-mode',        m.focus === 'weekend');
+    body.classList.toggle('snapshot-hydrating',  m.focus === 'snapshot-hydrating');
+    body.classList.toggle('snapshot-view',       m.focus === 'snapshot');
+    body.classList.toggle('snapshot-error',      m.focus === 'snapshot-error');
+    body.classList.toggle('priority-self-only',  m.filter === 'self-only');
+  }
+
   // Render one step's DOM from its current state object.
   function paintStep(n) {
     if (!stepsEl) return;
@@ -9251,6 +9295,12 @@ main{padding-top:64px}
   function finishProgress() {
     if (progressTimer) { clearInterval(progressTimer); progressTimer = null; }
     if (progressFill) progressFill.style.width = '100%';
+    // Wave-E3 follow-up (audit-2 finding): null the ctx slot after
+    // an audit completes so a future cycleLoading() / snapshot
+    // rehydrate / heartbeat-restart can't read stale psi.inflight
+    // and paint "Mobile timed out — trying desktop view" on a
+    // completed audit's UI.
+    currentAuditCtx = null;
   }
 
   function resetProgress() {
@@ -15814,13 +15864,14 @@ main{padding-top:64px}
       .then(function(data){
         if (!data) return; // handled-error short-circuit
         try {
-          // Wave-E2: stamp ctx with the fallback bit. window.__auditPsiFallback
-          // is kept as a public read-only mirror for back-compat — any
-          // external consumer (an analytics script, a future PDF builder,
-          // a snapshot rebuild path) that read the global pre-E2 still
-          // sees it. The CANONICAL source is now ctx.psi.fallbackFromMobile.
+          // Wave-E2/E3: ctx is the single source of truth for whether
+          // this audit fell back to desktop. The audit's earlier
+          // window.__auditPsiFallback mirror has been removed — no
+          // external readers exist anywhere in the codebase (verified
+          // by repo-wide grep). If a future external consumer needs
+          // this signal, expose it via a documented API rather than
+          // re-introducing a hidden global write.
           ctx.psi.fallbackFromMobile = !!(data && data.__fallbackFromMobile);
-          window.__auditPsiFallback = ctx.psi.fallbackFromMobile;
           renderReport(data, url);
           // Show the PSI desktop-fallback disclosure under the verdict
           // when the mobile run timed out and we transparently re-ran
@@ -16052,7 +16103,9 @@ main{padding-top:64px}
       return document.querySelectorAll('#topFixesList li[data-effort="self"]').length;
     }
     function applyMode(on) {
-      document.body.classList.toggle('weekend-mode', !!on);
+      // Wave-E3: route through applyDisplayMode for consistency with
+      // the snapshot + filter state machines.
+      applyDisplayMode({ focus: on ? 'weekend' : 'all' });
       closeCard.hidden = !on;
       if (on) showVariant('success');
       // Wave-B4: announce state via aria-pressed so screen readers
@@ -16217,7 +16270,8 @@ main{padding-top:64px}
       }
     }
     function apply() {
-      document.body.classList.toggle('priority-self-only', !!box.checked);
+      // Wave-E3: route through applyDisplayMode for consistency.
+      applyDisplayMode({ filter: box.checked ? 'self-only' : 'all' });
       updateCount();
     }
     // Wave-A3: explicit default-off. No localStorage read.
@@ -16262,7 +16316,8 @@ main{padding-top:64px}
     // consent, hiding the score and the long report. Clear the mode
     // (and its sessionStorage mirror) at submit time.
     if (document.body.classList.contains('weekend-mode')) {
-      document.body.classList.remove('weekend-mode');
+      // Wave-E3: applyDisplayMode for the form-submit cleanup path.
+      applyDisplayMode({ focus: 'all' });
       try { sessionStorage.removeItem('muntin-weekend-mode'); } catch (_) {}
       var closeCard = document.getElementById('weekendModeClose');
       if (closeCard) closeCard.hidden = true;
@@ -17878,7 +17933,8 @@ main{padding-top:64px}
     // Mark the body immediately so CSS can hide "not in snapshot"
     // UI (the autoRunFromParam 300ms delay means we need a signal
     // before the measuring-pill starts animating).
-    document.body.classList.add('snapshot-hydrating');
+    // Wave-E3: applyDisplayMode for the hydrate-start state.
+    applyDisplayMode({ focus: 'snapshot-hydrating' });
     fetch('/api/audit-snapshot?token=' + encodeURIComponent(token), {
       credentials: 'omit',
       headers: { 'accept': 'application/json' },
@@ -17902,8 +17958,9 @@ main{padding-top:64px}
   }
 
   function renderSnapshotView(snapshot) {
-    document.body.classList.remove('snapshot-hydrating');
-    document.body.classList.add('snapshot-view');
+    // Wave-E3: applyDisplayMode handles the hydrating→view transition
+    // atomically (removes 'snapshot-hydrating' and adds 'snapshot-view').
+    applyDisplayMode({ focus: 'snapshot' });
 
     // URL: show in the input so a "Re-run audit" click (D4) picks it up
     // without requiring the user to retype.
@@ -18018,8 +18075,8 @@ main{padding-top:64px}
   }
 
   function renderSnapshotError(kind) {
-    document.body.classList.remove('snapshot-hydrating');
-    document.body.classList.add('snapshot-error');
+    // Wave-E3: applyDisplayMode handles the hydrating→error transition.
+    applyDisplayMode({ focus: 'snapshot-error' });
     // Minimal error state for D3 — D4 adds the polished banner +
     // call-to-run-fresh-audit CTA. For now, surface the error in
     // the hero form area using the existing #progressBar / verdict
@@ -18148,8 +18205,12 @@ main{padding-top:64px}
         }
       } catch (_) {}
       // Un-do the snapshot-view state so the live-audit UI sections
-      // become eligible to render again.
-      document.body.classList.remove('snapshot-view', 'snapshot-error', 'report-revealed');
+      // become eligible to render again. Wave-E3: applyDisplayMode
+      // owns the two snapshot classes; `report-revealed` is a
+      // separate animation marker with its own lifecycle and is
+      // removed here directly.
+      applyDisplayMode({ focus: 'all' });
+      document.body.classList.remove('report-revealed');
       // Clear the read-only priority list; the live runner repopulates.
       try {
         var list = document.getElementById('priorityListWrap');
