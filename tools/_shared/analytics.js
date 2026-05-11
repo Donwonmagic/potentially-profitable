@@ -86,6 +86,7 @@
       'Audit Started',
       'Audit Weekend Mode Enter',
       'Audit Weekend Mode Exit',
+      'Audit Weekend Mode No Self Items',
     ],
     // URL-fetching tool grades / scores.
     graders: [

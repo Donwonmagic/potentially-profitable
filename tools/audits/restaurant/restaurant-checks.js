@@ -2382,26 +2382,31 @@ var UI_I18N = {
     es: '{score}/100 · {count} verificaci{on} sin confirmar'
   },
   'verdict.90': {
-    en: "Your site is in great shape — most restaurants would be thrilled to hit this score. The items below are polish, not problems. Skim them, pick the one or two that catch your eye, and you're done.",
-    es: 'Tu sitio está en gran forma — la mayoría de restaurantes estaría encantada con esta puntuación. Lo de abajo es pulir, no arreglar. Échale un vistazo, escoge una o dos cosas y listo.'
+    en: "You're in the top tier for restaurant sites — most owners would be thrilled to hit this. The items below are polish, not problems. Only worth your weekend if you're already in a tweaking mood.",
+    es: 'Estás en el primer nivel para sitios de restaurante — la mayoría de operadores estaría encantada con esta puntuación. Lo de abajo es pulir, no arreglar. Solo vale tu fin de semana si ya tienes ganas de afinar detalles.'
   },
-  // Critique-fix (UX + QA): the verdict copy used to instruct
-  // "pick the two with the green 'Fix yourself' chip." When the
-  // Top-3 fixes ranked out as all dev/rebuild (perf-only regression
-  // on a small site, for example), no green chip existed and the
-  // verdict became a typo. Reworded to describe ACTION rather than
-  // CHIP COLOR — true in every state of the Top-3 list.
+  // Wave-C5/C6 (UX + Spanish-fluency reviewers): one-editor voice
+  // pass across all four bands. Voice cheat-sheet:
+  //   - Warm operator, leaning across the pass; not a corporate audit
+  //   - First-person occasionally ("I'll take it from here")
+  //   - Never apologetic; always actionable
+  //   - End with a concrete next step
+  // verdict.70 leads with the metaphor; verdict.50 leads with the
+  // scene; verdict.below leads with the reassurance — each band's
+  // entry beat is different but the close (action + next step) is
+  // consistent. ES strings drop "literalmente" (Twitter register)
+  // and "ejecuta" (technical) for warmer equivalents.
   'verdict.70': {
-    en: "Solid bones, two or three leaky pipes. Most restaurants at this score are running a template site that just needs a careful weekend — not a rebuild. Your Top 3 fixes are below, sorted by how much real money each one costs you per year. Start with the first one and work down.",
-    es: 'Buenos cimientos, con dos o tres goteras. La mayoría de restaurantes con esta puntuación tiene un sitio plantilla al que le falta un fin de semana cuidadoso — no una reconstrucción. Tus 3 arreglos prioritarios están abajo, ordenados por cuánto dinero te cuesta cada uno al año. Empieza por el primero y baja desde ahí.'
+    en: "Solid bones, two or three leaky pipes. Most restaurants at this score are on a template site that just needs a careful weekend — not a rebuild. Your Top 3 fixes are below, sorted by how much real money each one costs you per year. Start with the first one and work down; come back Sunday and re-run to see the score move.",
+    es: 'Buenos cimientos, con dos o tres goteras. La mayoría de restaurantes con esta puntuación están en un sitio plantilla al que le falta un fin de semana cuidadoso — no una reconstrucción. Tus 3 arreglos prioritarios están abajo, ordenados por cuánto dinero te cuesta cada uno al año. Empieza por el primero y baja desde ahí; vuelve el domingo y vuelve a pasar la auditoría para ver cómo se mueve la puntuación.'
   },
   'verdict.50': {
     en: "The site works, but it's quietly losing you customers — most likely on mobile, on a Saturday night, when the visitor can't find your hours or your phone tap fast enough. The good news: the biggest wins below are usually a few hours of work, not a redesign. Start at the top of the list, then come back and re-run this audit — you'll see exactly which numbers moved.",
-    es: 'El sitio funciona, pero está perdiendo clientes en silencio — casi siempre en el móvil, un sábado por la noche, cuando alguien no encuentra tus horarios o tu teléfono lo bastante rápido. La buena noticia: las mayores ganancias de abajo suelen ser unas pocas horas de trabajo, no un rediseño. Empieza por arriba de la lista, luego vuelve a pasar esta auditoría — verás exactamente qué números se movieron.'
+    es: 'El sitio funciona, pero está perdiendo clientes en silencio — casi siempre en el móvil, un sábado por la noche, cuando alguien no encuentra tus horarios o no puede tocar tu teléfono lo bastante rápido. La buena noticia: las mayores ganancias de abajo suelen ser unas pocas horas de trabajo, no un rediseño. Empieza por arriba de la lista, luego vuelve y vuelve a pasar esta auditoría — verás exactamente qué números se movieron.'
   },
   'verdict.below': {
     en: "There's real work to do here, and that's okay — most scores in this range come from a template site that's quietly aged out, not from anything you did wrong. The fastest path forward is the Top 3 list below: pick the first one, block out Saturday morning, fix it, and re-run the audit. If something needs a web person and you don't have one, email don@muntin.digital — that's what Muntin is here for.",
-    es: 'Hay trabajo real por hacer, y no pasa nada — la mayoría de las puntuaciones en este rango vienen de un sitio plantilla que envejeció en silencio, no de nada que hiciste mal. El camino más rápido es la lista de los 3 arreglos prioritarios abajo: empieza por el primero, reserva un sábado por la mañana, arréglalo y vuelve a pasar la auditoría. Si algo necesita una persona de la web y tú no tienes una, escribe a don@muntin.digital — para eso existe Muntin.'
+    es: 'Hay trabajo real por hacer aquí, y no pasa nada — la mayoría de las puntuaciones en este rango vienen de un sitio plantilla que envejeció en silencio, no de algo que hiciste mal. El camino más rápido es la lista de los 3 arreglos prioritarios abajo: escoge el primero, reserva un sábado por la mañana, arréglalo y vuelve a pasar la auditoría. Si algo necesita ayuda técnica y tú no la tienes a mano, escribe a don@muntin.digital — para eso existe Muntin.'
   },
   'verdict.unverifiedSuffix': {
     en: " {count} check{s} need your eyes — confirming them on the right takes about 90 seconds and sharpens your score either direction with no other work.",
@@ -2950,8 +2955,18 @@ var UI_I18N = {
   // owner feel like they're missing infrastructure they should have.
   // Same logic for "Rebuild needed" → "Bigger project": less ominous,
   // doesn't immediately imply "throw your site away."
-  'effort.self':    { en: 'Fix yourself',      es: 'Lo arreglas tú' },
-  'effort.dev':     { en: 'Needs a web person', es: 'Necesita una persona de la web' },
+  // Wave-C critique-fix (a11y/Spanish-fluency reviewer):
+  //   C3: "Lo arreglas tú" was grammatically fine but lacked a clear
+  //       antecedent on a stand-alone chip (the EN imperative form
+  //       doesn't carry over). Updated to "Lo puedes hacer tú" so it
+  //       scans as a complete thought without context.
+  //   C1: "Necesita una persona de la web" was a literal calque
+  //       no Spanish-speaking restaurant culture uses. Replaced with
+  //       "Necesita ayuda técnica" (universal, region-neutral, no
+  //       calque) — covers a freelancer, platform support, a
+  //       tech-savvy friend, or Muntin.
+  'effort.self':    { en: 'Fix yourself',      es: 'Lo puedes hacer tú' },
+  'effort.dev':     { en: 'Needs a web person', es: 'Necesita ayuda técnica' },
   'effort.rebuild': { en: 'Bigger project',     es: 'Proyecto más grande' },
   // Sprint AUDIT-EMPOWERMENT: priority-list self-fix filter copy.
   // Owner-aware: "no web person needed" instead of "self-effort" or
@@ -2979,9 +2994,13 @@ var UI_I18N = {
     en: "Sorted by estimated revenue at risk. Pick two — that's your weekend.",
     es: 'Ordenado por ingresos estimados en riesgo. Escoge dos — ese es tu fin de semana.'
   },
+  // Wave-C4 (a11y/Spanish-fluency reviewer): "cosas para arreglar"
+  // read childlike — chore-list register, not the warm-operator
+  // voice. "arreglos" is cleaner and reads like a complete object
+  // on a button.
   'weekendMode.enter': {
     en: 'Show me only the 2 things to fix this weekend →',
-    es: 'Muéstrame solo las 2 cosas para arreglar este fin de semana →'
+    es: 'Muéstrame solo los 2 arreglos para este fin de semana →'
   },
   'weekendMode.close.copy': {
     en: "Knock these two out this weekend. Your checkmarks are saved on this device — come back Sunday night, re-run the audit, and you'll see exactly which numbers moved.",
@@ -2995,6 +3014,17 @@ var UI_I18N = {
     en: 'Show me everything',
     es: 'Mostrarme todo'
   },
+  // Wave-A1: shown when the user clicks the Weekend Mode button but
+  // the top-3 fixes are ALL flagged dev/rebuild — nothing self-fixable
+  // to surface. Reuses the close card with swapped copy + a mailto:
+  // primary action so the owner has a one-tap path to "I don't have
+  // a developer; what now?"
+  'weekendMode.noSelf.copy': {
+    en: "Your top 3 fixes all need a web person — there isn't a self-fix in the list this weekend. If you don't have someone, email don@muntin.digital and I'll take it from here.",
+    es: 'Tus 3 arreglos prioritarios necesitan a una persona de la web — esta semana no hay nada que puedas resolver tú. Si no tienes a quien acudir, escribe a don@muntin.digital y yo me encargo.'
+  },
+  'weekendMode.noSelf.email': { en: 'Email Don',  es: 'Escribirle a Don' },
+  'weekendMode.noSelf.dismiss': { en: 'Close this', es: 'Cerrar' },
   // Sprint AUDIT-EMPOWERMENT: Core Web Vitals strip — plain-English
   // headline first, technical acronym second. The .label cell now
   // reads ".plain" and the .hint footnote reads ".tech".
@@ -3015,6 +3045,13 @@ var UI_I18N = {
   'cwv.tbt.tech':  { en: 'TBT · Total Blocking Time',      es: 'TBT · Total Blocking Time' },
   'cwv.fcp.plain': { en: 'Time to first pixel',           es: 'Tiempo al primer pixel' },
   'cwv.fcp.tech':  { en: 'FCP · First Contentful Paint',   es: 'FCP · First Contentful Paint' },
+  // Wave-B6: visible-threshold copy for each CWV card. Replaces the
+  // keyboard-inaccessible `title=` tooltip with a real footnote row.
+  'cwv.lcp.threshold': { en: 'Good under 2.5s · Slow over 4s',     es: 'Bien menos de 2.5s · Lento más de 4s' },
+  'cwv.cls.threshold': { en: 'Good under 0.10 · Slow over 0.25',   es: 'Bien menos de 0.10 · Lento más de 0.25' },
+  'cwv.inp.threshold': { en: 'Good under 200ms · Slow over 500ms', es: 'Bien menos de 200ms · Lento más de 500ms' },
+  'cwv.tbt.threshold': { en: 'Good under 200ms · Slow over 600ms', es: 'Bien menos de 200ms · Lento más de 600ms' },
+  'cwv.fcp.threshold': { en: 'Good under 1.8s · Slow over 3s',     es: 'Bien menos de 1.8s · Lento más de 3s' },
   // Critique-fix: a duplicate `'effort.rebuild'` key used to live here
   // and silently revert the new "Bigger project" copy back to "Rebuild
   // needed" — JS object-literal semantics let the later key win.

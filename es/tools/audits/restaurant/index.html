@@ -2270,7 +2270,13 @@ main{padding-top:64px}
   body.snapshot-view .email-report,
   body.snapshot-view #businessTypeOverride,
   body.snapshot-view #score-override-container,
-  body.snapshot-view .score-override-banner {
+  body.snapshot-view .score-override-banner,
+  /* Wave-A2: the snapshot rebuild path doesn't carry the source
+     snapshot's effort data, so the self-fix filter would silently
+     mismatch ("Showing 0 of N" because rows have no data-effort).
+     Hide the filter in snapshot view — the recipient can't act on
+     the checks anyway, so the filter has no UX value. */
+  body.snapshot-view #priorityFilter {
     display: none !important;
   }
   /* Error variant: score section stays visible (it's carrying the
@@ -3144,6 +3150,14 @@ main{padding-top:64px}
     cursor: pointer;
     text-decoration: underline;
   }
+  /* Wave-B5: focus-visible parity with the other 3 new buttons. The
+     exit button is small-text and easy to lose visually; without an
+     explicit ring, keyboard users land on it invisibly. */
+  .weekend-mode-exit:focus-visible {
+    outline: 2px solid var(--teal);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
   /* Hide the long report when weekend mode is on. The Top-3 card +
      the score header are the only things the owner sees, plus the
      closing CTA — exactly the "two things to fix this weekend, then
@@ -3855,6 +3869,17 @@ main{padding-top:64px}
     text-transform: uppercase;
     color: var(--stone-2);
     margin-top: 6px;
+  }
+  /* Wave-B6: visible threshold row. The old `title=` tooltip was
+     inaccessible to keyboard / touch / most screen readers. Now the
+     "Good under X · Slow over Y" thresholds are a real row below
+     the acronym hint, sized like fine print so they're available
+     to everyone but don't compete with the value. */
+  .vitals-strip .threshold {
+    font-size: 11px;
+    color: var(--stone);
+    margin-top: 4px;
+    line-height: 1.35;
   }
 
   /* Not-a-restaurant notice. Replaces the priority-list for sites
@@ -5989,8 +6014,13 @@ main{padding-top:64px}
                internal placeholder copy never leaks into the live
                DOM (e.g. when the user views the page before
                submitting a URL, or during a brief moment between
-               showOnly() phases). -->
-          <p class="verdict" id="verdictCopy"></p>
+               showOnly() phases).
+               Wave-B9: aria-live="polite" so screen-reader users
+               hear the verdict on audit completion. The score ring
+               above has its own aria-live; the verdict is the
+               accompanying answer to "what does this score mean?"
+               and needed announcement parity. -->
+          <p class="verdict" id="verdictCopy" aria-live="polite"></p>
           <!-- Phase 2 U7: subtype-benchmark chip. Populated by
                setScoreBenchmark() after setScoreRing() lands. Hidden
                when no benchmark is known for the resolved subtype. -->
@@ -6232,8 +6262,8 @@ main{padding-top:64px}
                button toggles `body.weekend-mode` which the CSS below
                uses to fold the rest of the report. -->
           <div class="top-fixes-actions">
-            <button type="button" id="weekendModeBtn" class="weekend-mode-btn" data-tr="weekendMode.enter">
-              Show me only the 2 things to fix this weekend →
+            <button type="button" id="weekendModeBtn" class="weekend-mode-btn" aria-pressed="false" data-tr="weekendMode.enter">
+              Show me only the 2 things to fix this weekend <span aria-hidden="true">→</span>
             </button>
           </div>
         </div>
@@ -6242,12 +6272,12 @@ main{padding-top:64px}
              Hidden in normal view. When weekend-mode is on it shows
              total minutes for the surfaced fixes + a "Re-audit
              Sunday night" CTA that scrolls back to the run form. -->
-        <div class="weekend-mode-close" id="weekendModeClose" hidden>
+        <div class="weekend-mode-close" id="weekendModeClose" role="status" aria-live="polite" tabindex="-1" hidden>
           <p class="weekend-mode-close-copy" data-tr="weekendMode.close.copy">
             Knock these two out this weekend. Your checkmarks are saved on this device — come back Sunday night, re-run the audit, and you'll see exactly which numbers moved.
           </p>
           <div class="weekend-mode-close-actions">
-            <button type="button" id="weekendReauditBtn" class="weekend-mode-cta" data-tr="weekendMode.close.reaudit">Re-audit my site →</button>
+            <button type="button" id="weekendReauditBtn" class="weekend-mode-cta" data-tr="weekendMode.close.reaudit">Re-audit my site <span aria-hidden="true">→</span></button>
             <button type="button" id="weekendModeExitBtn" class="weekend-mode-exit" data-tr="weekendMode.close.exit">Show me everything</button>
           </div>
         </div>
@@ -6348,36 +6378,36 @@ main{padding-top:64px}
 
       <!-- Expandable glossary: plain-English explanations of each metric -->
       <details class="metric-glossary">
-        <summary>What do these numbers actually mean?</summary>
+        <summary>¿Qué significan estos números, en realidad?</summary>
         <div class="glossary-body">
-          <h4>Performance (0–100)</h4>
-          <p>How fast your pages load and become usable on a phone. This is the metric that quietly costs restaurants the most money — Google's own research found that 53% of mobile visitors leave a page that takes longer than three seconds to load. A higher score means more people stick around long enough to see your menu.</p>
-          <p class="ranges"><strong>Good:</strong> 90+ &nbsp;·&nbsp; <strong>Needs work:</strong> 50–89 &nbsp;·&nbsp; <strong>Failing:</strong> &lt;50</p>
+          <h4>Rendimiento (0–100)</h4>
+          <p>Qué tan rápido tus páginas cargan y se vuelven usables en un teléfono. Esta es la métrica que más les cuesta dinero a los restaurantes en silencio — la propia investigación de Google encontró que el 53% de los visitantes móviles se van de una página que tarda más de tres segundos en cargar. Una puntuación más alta significa que más personas se quedan lo suficiente para ver tu menú.</p>
+          <p class="ranges"><strong>Bien:</strong> 90+ &nbsp;·&nbsp; <strong>Necesita trabajo:</strong> 50–89 &nbsp;·&nbsp; <strong>Reprobado:</strong> &lt;50</p>
           <p class="research-inline"><strong>Con base en:</strong> <a href="/es/learn/research/lighthouse-performance-scoring/" target="_blank" rel="noopener">Cómo califica Lighthouse el rendimiento <span aria-hidden="true">↗</span></a> · <a href="/es/learn/research/mobile-page-speed-3-second-rule/" target="_blank" rel="noopener">La regla de los 3 segundos en móvil <span aria-hidden="true">↗</span></a></p>
 
-          <h4>Accessibility (0–100)</h4>
-          <p>Whether people with vision impairments, motor differences, or screen readers can actually use your site. Half of this is legally required in many states. The other half is just good manners — about one in five of your customers benefits directly from an accessible site, and everyone benefits indirectly (better text contrast makes your site easier to read in sunlight too).</p>
-          <p class="ranges"><strong>Target:</strong> 100. Anything less means real people are being shut out.</p>
+          <h4>Accesibilidad (0–100)</h4>
+          <p>Si las personas con discapacidades visuales, diferencias motrices o lectores de pantalla pueden usar tu sitio de verdad. La mitad de esto es un requisito legal en muchos estados. La otra mitad es buena educación — alrededor de uno de cada cinco de tus clientes se beneficia directamente de un sitio accesible, y todos se benefician indirectamente (un mejor contraste de texto también hace que tu sitio sea más fácil de leer al sol).</p>
+          <p class="ranges"><strong>Meta:</strong> 100. Cualquier valor menor significa que personas reales están quedando fuera.</p>
 
-          <h4>Modern &amp; secure setup (0–100)</h4>
-          <p>Whether your site is built on a modern, secure foundation — HTTPS, no vulnerable libraries, no deprecated browser features. A well-built site should score 100 here by default. A score under 90 usually points at one specific thing worth fixing, like a missing security header or an old plugin.</p>
-          <p class="ranges"><strong>Target:</strong> 100.</p>
+          <h4>Bases modernas y seguras (0–100)</h4>
+          <p>Si tu sitio está construido sobre bases modernas y seguras — HTTPS, sin librerías vulnerables, sin funciones de navegador obsoletas. Un sitio bien hecho debería sacar 100 aquí por defecto. Una puntuación bajo 90 normalmente apunta a una cosa concreta que vale la pena arreglar, como un encabezado de seguridad faltante o un plugin antiguo.</p>
+          <p class="ranges"><strong>Meta:</strong> 100.</p>
 
           <h4>SEO (0–100)</h4>
-          <p>The technical SEO fundamentals — a working title tag, a meta description, a crawlable URL, a mobile-friendly viewport, structured data. This score measures whether Google <em>can</em> rank your site. It doesn't measure whether you <em>do</em> rank for specific keywords — that's a longer-term question about content and inbound links.</p>
-          <p class="ranges"><strong>Target:</strong> 100. Anything less is leaving ranking signals on the table.</p>
+          <p>Los fundamentos técnicos de SEO — una etiqueta de título funcional, una meta descripción, una URL rastreable, un viewport apto para móvil, datos estructurados. Esta puntuación mide si Google <em>puede</em> posicionar tu sitio. No mide si <em>sí</em> posicionas para palabras específicas — esa es una pregunta a más largo plazo sobre contenido y enlaces entrantes.</p>
+          <p class="ranges"><strong>Meta:</strong> 100. Cualquier valor menor deja señales de posicionamiento sobre la mesa.</p>
 
-          <h4>Restaurant Readiness (0–100)</h4>
-          <p>Our own rubric, specific to independent restaurant websites. Covers nine checks that matter for turning a mobile visitor into a booked table: a working mobile viewport, tap-target size, text contrast, legible font sizes, a tappable phone number, an embedded map or directions link, online ordering or reservations (either a known platform like Toast/OpenTable or a self-hosted equivalent), an HTML menu (not a PDF or image), and Restaurant schema.org markup for local search. Each check is weighted by its conversion impact — a pass earns full weight, a fail earns zero. Anything we honestly couldn't verify is excluded from both sides of the average, so "unknown" never penalizes you. Non-restaurant sites show "N/A" here and don't count this category toward their overall score.</p>
+          <h4>Listo para restaurantes (0–100)</h4>
+          <p>Nuestra propia rúbrica, específica para sitios de restaurantes independientes. Cubre nueve verificaciones que importan para convertir a un visitante móvil en una mesa reservada: un viewport móvil que funcione, tamaño de área tocable, contraste de texto, tamaños de fuente legibles, un teléfono tocable, un mapa embebido o enlace a direcciones, pedidos en línea o reservas (una plataforma conocida como Toast/OpenTable o un equivalente propio), un menú HTML (no un PDF o imagen) y marcado schema.org de Restaurant para la búsqueda local. Cada verificación pesa según su impacto en conversión — pasar gana peso completo, fallar gana cero. Lo que honestamente no pudimos confirmar queda fuera de ambos lados del promedio, así que "desconocido" nunca te penaliza. Los sitios que no son de restaurante muestran "N/D" aquí y esta categoría no cuenta para su puntuación general.</p>
 
           <h4>Métricas Web Esenciales</h4>
-          <p>Five specific timing and interactivity measurements. Three of them (LCP, CLS, INP) are the current Core Web Vitals Google uses for mobile search ranking. Each card shows either <em>real-user data</em> (the 28-day median of actual visitor experiences that Google collects from Chrome) or a <em>lab estimate</em> (a simulated mobile run) — real-user data is preferred when available, since it reflects the site your customers actually experience. New or low-traffic restaurant sites usually only have lab data until they accumulate enough visits.</p>
+          <p>Cinco mediciones específicas de tiempos e interactividad. Tres de ellas (LCP, CLS, INP) son las Core Web Vitals actuales que Google usa para el posicionamiento de búsqueda móvil. Cada tarjeta muestra o bien <em>datos de usuarios reales</em> (la mediana de 28 días de experiencias reales que Google recopila desde Chrome) o una <em>estimación de laboratorio</em> (una ejecución móvil simulada) — los datos reales se prefieren cuando están disponibles, ya que reflejan el sitio que tus clientes experimentan de verdad. Los sitios nuevos o de poco tráfico normalmente solo tienen datos de laboratorio hasta acumular suficientes visitas.</p>
           <ul>
-            <li><strong>LCP — Largest Contentful Paint.</strong> How long until the biggest visible thing on the page (usually a hero image or headline) shows up. <em>Good: under 2.5s · Poor: over 4s.</em></li>
-            <li><strong>CLS — Cumulative Layout Shift.</strong> How much the page jumps around while loading. Shifting layouts are the reason you sometimes tap "Reserve" and accidentally hit an ad because the ad loaded a second late and pushed everything down. <em>Good: under 0.1 · Poor: over 0.25.</em></li>
-            <li><strong>INP — Interaction to Next Paint.</strong> How long the page takes to respond to a tap or click — the third Core Web Vital, replacing FID in 2024. Field-only: requires enough real visits to report. <em>Good: under 200ms · Poor: over 500ms.</em></li>
-            <li><strong>TBT — Total Blocking Time.</strong> The lab-only proxy for INP. How long the page is frozen while JavaScript runs during the simulated load. Useful when CrUX hasn't collected INP yet. <em>Good: under 200ms · Poor: over 600ms.</em></li>
-            <li><strong>FCP — First Contentful Paint.</strong> How long until the very first pixel renders. Often earlier than LCP — this is "the page is doing something" versus "the page is usable." <em>Good: under 1.8s · Poor: over 3s.</em></li>
+            <li><strong>LCP — Largest Contentful Paint.</strong> Cuánto tarda en aparecer lo más grande visible de la página (normalmente una imagen principal o un encabezado). <em>Bien: menos de 2.5s · Lento: más de 4s.</em></li>
+            <li><strong>CLS — Cumulative Layout Shift.</strong> Cuánto se mueve la página mientras carga. Los diseños que se mueven son la razón por la que a veces tocas "Reservar" y das sin querer en un anuncio porque el anuncio cargó un segundo tarde y empujó todo hacia abajo. <em>Bien: menos de 0.1 · Lento: más de 0.25.</em></li>
+            <li><strong>INP — Interaction to Next Paint.</strong> Cuánto tarda la página en responder a un toque o clic — la tercera Core Web Vital, que sustituye a FID en 2024. Solo de campo: requiere suficientes visitas reales para reportarse. <em>Bien: menos de 200ms · Lento: más de 500ms.</em></li>
+            <li><strong>TBT — Total Blocking Time.</strong> La aproximación de laboratorio para INP. Cuánto tiempo la página queda congelada mientras JavaScript se ejecuta durante la carga simulada. Útil cuando CrUX aún no ha recogido INP. <em>Bien: menos de 200ms · Lento: más de 600ms.</em></li>
+            <li><strong>FCP — First Contentful Paint.</strong> Cuánto tarda en renderizarse el primerísimo pixel. Frecuentemente antes que LCP — esto es "la página está haciendo algo" en lugar de "la página es usable." <em>Bien: menos de 1.8s · Lento: más de 3s.</em></li>
           </ul>
           <p class="research-inline"><strong>Con base en:</strong> <a href="/es/learn/research/lighthouse-performance-scoring/" target="_blank" rel="noopener">Cómo califica Lighthouse el rendimiento <span aria-hidden="true">↗</span></a></p>
         </div>
@@ -6397,36 +6427,48 @@ main{padding-top:64px}
            card in 3 seconds, with the technical acronym demoted to
            a small caption. Each card also carries a `title` tooltip
            with the "good vs. poor" threshold for quick reference. -->
+      <!-- Wave-B6: thresholds moved from inaccessible `title=` to a
+           visible `.threshold` row under the hint. `title` is not
+           keyboard-reachable and inconsistently announced by AT, so
+           the threshold context (the whole reason for plain-English
+           labels) was invisible to non-mouse users. Visible threshold
+           rows also help sighted owners decide whether their number
+           is a problem without hovering. -->
       <div class="vitals-strip">
-        <div data-vital-card="lcp" title="Good: under 2.5s · Poor: over 4s">
+        <div data-vital-card="lcp">
           <div class="label" data-tr="cwv.lcp.plain">Time to see the page</div>
           <div class="v" data-vital="lcp">—</div>
           <div class="v-source"></div>
           <div class="hint" data-tr="cwv.lcp.tech">LCP · Largest Contentful Paint</div>
+          <div class="threshold" data-tr="cwv.lcp.threshold">Good under 2.5s · Slow over 4s</div>
         </div>
-        <div data-vital-card="cls" title="Good: under 0.10 · Poor: over 0.25">
+        <div data-vital-card="cls">
           <div class="label" data-tr="cwv.cls.plain">How much the page jumps</div>
           <div class="v" data-vital="cls">—</div>
           <div class="v-source"></div>
           <div class="hint" data-tr="cwv.cls.tech">CLS · Cumulative Layout Shift</div>
+          <div class="threshold" data-tr="cwv.cls.threshold">Good under 0.10 · Slow over 0.25</div>
         </div>
-        <div data-vital-card="inp" title="Good: under 200ms · Poor: over 500ms">
+        <div data-vital-card="inp">
           <div class="label" data-tr="cwv.inp.plain">How fast it reacts to taps</div>
           <div class="v" data-vital="inp">—</div>
           <div class="v-source"></div>
           <div class="hint" data-tr="cwv.inp.tech">INP · Interaction to Next Paint</div>
+          <div class="threshold" data-tr="cwv.inp.threshold">Good under 200ms · Slow over 500ms</div>
         </div>
-        <div data-vital-card="tbt" title="Good: under 200ms · Poor: over 600ms">
+        <div data-vital-card="tbt">
           <div class="label" data-tr="cwv.tbt.plain">How long it’s frozen at start</div>
           <div class="v" data-vital="tbt">—</div>
           <div class="v-source"></div>
           <div class="hint" data-tr="cwv.tbt.tech">TBT · Total Blocking Time</div>
+          <div class="threshold" data-tr="cwv.tbt.threshold">Good under 200ms · Slow over 600ms</div>
         </div>
-        <div data-vital-card="fcp" title="Good: under 1.8s · Poor: over 3s">
+        <div data-vital-card="fcp">
           <div class="label" data-tr="cwv.fcp.plain">Time to first pixel</div>
           <div class="v" data-vital="fcp">—</div>
           <div class="v-source"></div>
           <div class="hint" data-tr="cwv.fcp.tech">FCP · First Contentful Paint</div>
+          <div class="threshold" data-tr="cwv.fcp.threshold">Good under 1.8s · Slow over 3s</div>
         </div>
       </div>
 
@@ -7820,7 +7862,7 @@ main{padding-top:64px}
           'cover.tagline':    'La estructura aporta claridad.',
           'pillar.mobile':    'Rendimiento m\u00f3vil',
           'pillar.a11y':      'Accesibilidad',
-          'pillar.bp':        'Configuraci\u00f3n moderna y segura',
+          'pillar.bp':        'Bases modernas y seguras',
           'pillar.seo':       'SEO',
           'pillar.rest':      'Preparaci\u00f3n del restaurante',
           'exec.eyebrow':     'Resumen ejecutivo',
@@ -7866,7 +7908,7 @@ main{padding-top:64px}
           'method.pillar.mobile.desc':  'Velocidad m\u00f3vil seg\u00fan Lighthouse. Core Web Vitals: qu\u00e9 tan r\u00e1pido pinta la p\u00e1gina, qu\u00e9 tan estable es el dise\u00f1o y qu\u00e9 tan r\u00e1pido responde.',
           'method.pillar.a11y.label':   'ACCESIBILIDAD',
           'method.pillar.a11y.desc':    'Si el sitio puede ser usado por todos, incluidas personas con tecnolog\u00edas de asistencia. Contraste, etiquetas, puntos de referencia, rutas de teclado.',
-          'method.pillar.bp.label':     'CONFIGURACI\u00d3N MODERNA Y SEGURA',
+          'method.pillar.bp.label':     'BASES MODERNAS Y SEGURAS',
           'method.pillar.bp.desc':      'Seguridad e higiene web moderna \u2014 HTTPS, sin errores de consola, manejo seguro de APIs antiguas y tama\u00f1o correcto de im\u00e1genes. Un sitio bien hecho saca 100 por defecto.',
           'method.pillar.seo.label':    'SEO',
           'method.pillar.seo.desc':     'Qu\u00e9 tan detectable eres en b\u00fasquedas. Metaetiquetas, enlaces, datos estructurados y rastreabilidad de p\u00e1ginas clave.',
@@ -15946,15 +15988,46 @@ main{padding-top:64px}
   // handle, and auto-expands the platform-recipe disclosure on the
   // #1 fix so the Wix/Squarespace steps are immediately visible.
   // The exit button + a "Re-audit my site" CTA close the loop.
+  // Wave-B8: smoothScrollInto — single helper that respects
+  // prefers-reduced-motion. Three call sites now reach for the same
+  // behavior (TOC link handler, Weekend Mode enter/exit, Re-audit
+  // button), and skipping the reduced-motion gate breaks the contract
+  // for vestibular-disorder users.
+  function smoothScrollInto(el) {
+    if (!el || typeof el.scrollIntoView !== 'function') return;
+    var prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    try {
+      el.scrollIntoView({ behavior: prefersReduced ? 'auto' : 'smooth', block: 'start' });
+    } catch (_) { el.scrollIntoView(); }
+  }
+
   (function wireWeekendMode(){
     var enter = document.getElementById('weekendModeBtn');
     var exit  = document.getElementById('weekendModeExitBtn');
     var reaudit = document.getElementById('weekendReauditBtn');
     var closeCard = document.getElementById('weekendModeClose');
     if (!enter || !exit || !closeCard) return;
+    // Wave-A4: remember where the user was before entering so exit
+    // restores that scroll position. Otherwise the long report
+    // unfolds back in and the user is dropped wherever it lands.
+    var preEnterScrollY = null;
+    // Wave-A1: count self-items in #topFixesList. When the top-3 are
+    // all flagged dev / rebuild (rare but real — happens on small
+    // sites whose top three are server-side fixes only), Weekend
+    // Mode would otherwise enter an empty focused state with a
+    // triumphant closing CTA. countSelf reads the renderer's
+    // data-effort stamps; renderTopFixes is the source of truth.
+    function countSelf() {
+      return document.querySelectorAll('#topFixesList li[data-effort="self"]').length;
+    }
     function applyMode(on) {
       document.body.classList.toggle('weekend-mode', !!on);
       closeCard.hidden = !on;
+      // Wave-B4: announce state via aria-pressed so screen readers
+      // hear the toggle's new value. CSS still hides the visual
+      // button in weekend mode, but the close card has its own
+      // "Show me everything" exit so SR users still have an out.
+      enter.setAttribute('aria-pressed', on ? 'true' : 'false');
       // Auto-expand the first recipe in weekend mode so platform
       // steps for the #1 fix are visible without an extra click.
       var firstRecipe = document.querySelector('#topFixesList .top-fixes-recipe');
@@ -15967,13 +16040,35 @@ main{padding-top:64px}
         // Scroll the Top-3 section to the top of the viewport so the
         // user's focus lands on the two surviving items, not on the
         // score header that's now scrolled away.
-        var topFixes = document.getElementById('topFixes');
-        if (topFixes && typeof topFixes.scrollIntoView === 'function') {
-          topFixes.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        smoothScrollInto(document.getElementById('topFixes'));
+        // Wave-B1 + B3: move keyboard/AT focus to the close card so
+        // screen readers announce it and tab order picks up there.
+        // Without this, focus on a previously-clicked item that's
+        // now display:none collapses to <body> and the SR goes
+        // silent mid-flow.
+        setTimeout(function(){ try { closeCard.focus(); } catch (_) {} }, 60);
+      } else {
+        // Wave-A4: restore prior scroll position rather than dumping
+        // user at the top of the page when the long report unfolds.
+        if (preEnterScrollY !== null && typeof window.scrollTo === 'function') {
+          try { window.scrollTo({ top: preEnterScrollY, behavior: 'auto' }); } catch (_) { window.scrollTo(0, preEnterScrollY); }
         }
+        // Wave-B1: send focus back to the enter button on exit so a
+        // keyboard user is positioned to re-toggle if they want.
+        try { enter.focus(); } catch (_) {}
       }
     }
     enter.addEventListener('click', function(){
+      // Wave-A1: refuse to enter if there's nothing self-fixable in
+      // the top-3. Surface an explanatory card instead of an empty
+      // focused view. The card lives in #topFixes head so the user
+      // sees WHY their click didn't produce the expected result.
+      if (countSelf() < 1) {
+        showWeekendModeNoSelfMessage();
+        if (window.plausible) window.plausible('Audit Weekend Mode No Self Items');
+        return;
+      }
+      preEnterScrollY = window.scrollY || window.pageYOffset || 0;
       applyMode(true);
       try { sessionStorage.setItem('muntin-weekend-mode', '1'); } catch (_) {}
       if (window.plausible) window.plausible('Audit Weekend Mode Enter');
@@ -15995,16 +16090,59 @@ main{padding-top:64px}
       } catch (_) {}
       applyMode(false);
       try { sessionStorage.removeItem('muntin-weekend-mode'); } catch (_) {}
-      var form = document.querySelector('form#auditForm') || document.querySelector('form');
-      if (form && typeof form.scrollIntoView === 'function') {
-        form.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
+      smoothScrollInto(document.querySelector('form#auditForm') || document.querySelector('form'));
       if (window.plausible) window.plausible('Audit Reaudit Click');
     });
-    // Restore from sessionStorage so a soft reload keeps focus mode.
+    // Restore from sessionStorage so a soft reload keeps focus mode —
+    // but only if there are self-fixable items to surface. Stale
+    // sessionStorage from a different audit's top-3 shouldn't drag
+    // the new audit into an empty focused state.
     try {
-      if (sessionStorage.getItem('muntin-weekend-mode') === '1') applyMode(true);
+      if (sessionStorage.getItem('muntin-weekend-mode') === '1' && countSelf() >= 1) {
+        applyMode(true);
+      } else {
+        sessionStorage.removeItem('muntin-weekend-mode');
+      }
     } catch (_) {}
+
+    // Wave-A1: explanatory card shown when the user clicks the
+    // Weekend Mode button but there's nothing self-fixable to
+    // surface. Reuses the #weekendModeClose container — same teal
+    // surface, same role=status announcement — but swaps the copy
+    // to a context-appropriate message and routes the primary
+    // action to the email contact path. Self-resetting: clicking
+    // exit re-hides the card and clears the empty state.
+    function showWeekendModeNoSelfMessage() {
+      var copyEl = closeCard.querySelector('.weekend-mode-close-copy');
+      if (copyEl) {
+        copyEl.textContent = tr(
+          'weekendMode.noSelf.copy',
+          "Your top 3 fixes all need a web person — there isn't a self-fix in the list this weekend. If you don't have someone, email don@muntin.digital and I'll take it from here."
+        );
+      }
+      // Swap the primary CTA to a mailto: anchor for one-tap contact;
+      // keep the exit button to dismiss without commitment. Renders
+      // once per click; resets on dismiss.
+      var actions = closeCard.querySelector('.weekend-mode-close-actions');
+      if (actions) {
+        actions.innerHTML = '';
+        var mailto = document.createElement('a');
+        mailto.className = 'weekend-mode-cta';
+        mailto.href = 'mailto:don@muntin.digital?subject=' + encodeURIComponent('Audit follow-up: weekend fixes for ' + ((window.__auditLastResult && window.__auditLastResult.url) || 'my site'));
+        mailto.textContent = tr('weekendMode.noSelf.email', 'Email Don');
+        var dismiss = document.createElement('button');
+        dismiss.type = 'button';
+        dismiss.className = 'weekend-mode-exit';
+        dismiss.textContent = tr('weekendMode.noSelf.dismiss', 'Close this');
+        dismiss.addEventListener('click', function(){
+          closeCard.hidden = true;
+        });
+        actions.appendChild(mailto);
+        actions.appendChild(dismiss);
+      }
+      closeCard.hidden = false;
+      setTimeout(function(){ try { closeCard.focus(); } catch (_) {} }, 60);
+    }
   })();
 
   // Sprint AUDIT-EMPOWERMENT: self-fix filter. Hides every priority
@@ -16017,7 +16155,14 @@ main{padding-top:64px}
     var box = document.getElementById('priorityFilterSelf');
     var countEl = document.getElementById('priorityFilterCount');
     if (!box) return;
-    var STORAGE_KEY = 'muntin-priority-self-only';
+    // Wave-A3: the filter used to persist globally via localStorage,
+    // bleeding the choice across every audit the user ran on this
+    // device. That made sense if "I only ever look at self-fixable"
+    // was a stable preference, but in practice it's a per-audit
+    // choice. Defaulting to OFF on every fresh audit keeps the
+    // initial paint owner-neutral; the per-session toggle still
+    // works for the duration of the visit (the change handler below
+    // doesn't reach for storage anymore).
     // Critique-fix (functional QA): the count chip lives INSIDE
     // #priorityListWrap, and the MutationObserver below watches that
     // wrap with subtree:true. Without a re-entrancy guard, writing
@@ -16055,12 +16200,10 @@ main{padding-top:64px}
       document.body.classList.toggle('priority-self-only', !!box.checked);
       updateCount();
     }
-    try {
-      box.checked = localStorage.getItem(STORAGE_KEY) === '1';
-    } catch (_) {}
+    // Wave-A3: explicit default-off. No localStorage read.
+    box.checked = false;
     apply();
     box.addEventListener('change', function(){
-      try { localStorage.setItem(STORAGE_KEY, box.checked ? '1' : '0'); } catch (_) {}
       apply();
       if (window.plausible) window.plausible('Audit Self-Fix Filter', { props: { on: box.checked } });
     });
@@ -16093,6 +16236,11 @@ main{padding-top:64px}
       try { sessionStorage.removeItem('muntin-weekend-mode'); } catch (_) {}
       var closeCard = document.getElementById('weekendModeClose');
       if (closeCard) closeCard.hidden = true;
+      // Wave-B4 (paired with wireWeekendMode): keep aria-pressed in
+      // sync with the visual state when the form clears weekend mode
+      // without going through applyMode.
+      var weekendBtn = document.getElementById('weekendModeBtn');
+      if (weekendBtn) weekendBtn.setAttribute('aria-pressed', 'false');
     }
     var remain = cooldownRemaining();
     if (remain > 0) {
