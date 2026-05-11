@@ -1,0 +1,435 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-11T02:52:16.317Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "pm_alex",
+  "language": "pt",
+  "total": 833.57,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "Em resumo",
+      "start": 0,
+      "end": 0.81
+    },
+    {
+      "id": 1,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "O Google’s AI Overview respondeu 13,14% das buscas de desktop nos EUA em março de vinte e cinco e está se aproximando de um em cada cinco em vinte e seis; as consultas de restaurantes acionam isso com mais frequência.",
+      "start": 1.16,
+      "end": 14.95
+    },
+    {
+      "id": 2,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Cinco movimentos no nível do parágrafo fazem com que um restaurante seja citado: parágrafos \"resposta primeiro\" com ≤45 palavras abaixo de cada H2, números na frase de abertura, frases em forma de \"X é Y\" sem palavras de hedge, combinações de entidades ancoradas em schema entre prosa e JSON-LD e URLs estáveis uma vez citados.",
+      "start": 15.27,
+      "end": 35.59
+    },
+    {
+      "id": 3,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "A citação é um eixo de classificação diferente do S E O de link azul — a página com o maior número de backlinks não é sempre citada; a página com a resposta extraível mais limpa é que é citada.",
+      "start": 35.91,
+      "end": 47.02
+    },
+    {
+      "id": 4,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Artigo de opinião &middot; 10 de maio de vinte e seis &middot; 8 min de leitura &middot; Por Don Goldstein",
+      "start": 47.54,
+      "end": 54.15
+    },
+    {
+      "id": 5,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "O Google’s AI Overview respondeu 13,14% das buscas de desktop nos EUA em março de vinte e cinco. No início de vinte e seis, está mais perto de um em cada cinco, e para consultas de restaurantes é ainda maior. A pergunta que seu convidado costumava digitar — \"o takeout está aberto em Silver Spring\" — agora é respondida acima do map pack, em um parágrafo que o Google escreveu e citou. Três fontes são nomeadas. Se você não é uma delas, não está na conversa. Aqui está como a citação é decidida.",
+      "start": 54.5,
+      "end": 82.09
+    },
+    {
+      "id": 6,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "Eu tenho acompanhado quais parágrafos são citados em consultas adjacentes aos dois restaurantes DMV que gerencio. Mesma consulta, mesma hora, mesmo navegador — apenas digitado no Google duas vezes por semana durante noventa dias, as citações foram registradas. O padrão é consistente o suficiente para criar regras a partir dele. Nenhuma das regras é sobre backlinks, autoridade de domínio ou qualquer um dos controles que a escrita de S E O em vinte e três era sobre. Elas são sobre a forma do parágrafo.",
+      "start": 82.61,
+      "end": 111.25
+    },
+    {
+      "id": 7,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Classificação e citação não são o mesmo trabalho.",
+      "start": 112.35,
+      "end": 115.21
+    },
+    {
+      "id": 8,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "A indústria de S E O passou vinte anos otimizando páginas para aparecer nos três primeiros links azuis. Esse trabalho ainda existe. O novo trabalho — o que paga mais agora — é fazer com que seu melhor parágrafo seja levantado para o AI Overview como uma das duas ou três fontes nomeadas. A página abaixo da caixa ainda recebe cliques, mas não do jeito que costumava. Os AI Overviews não substituem o tráfego orgânico; eles substituem o clique que costumava ler sua resposta. A citação é sua superfície restante.",
+      "start": 115.91,
+      "end": 143.98
+    },
+    {
+      "id": 9,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "Esses dois trabalhos não lutam ativamente um contra o outro. Eles recompensam parágrafos diferentes. A página com o maior número de backlinks não é sempre citada — a página com a resposta extraível mais limpa é que é citada. A maior parte do conteúdo de restaurantes é escrita para classificar. Quase nenhum é escrito para ser citado. O primeiro operador independente em um mercado que inverte essa ordem é o dono da caixa de respostas por os próximos doze meses.",
+      "start": 144.5,
+      "end": 170.57
+    },
+    {
+      "id": 10,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Os cinco movimentos que são citados.",
+      "start": 171.67,
+      "end": 173.84
+    },
+    {
+      "id": 11,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "Esses são escritos na ordem em que um extrator caminha por uma página. A mesma ordem em que eles pagam.",
+      "start": 174.54,
+      "end": 180.32
+    },
+    {
+      "id": 12,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "Cinco movimentos de nível de parágrafo que fazem um restaurante ser citado por Google's AI Overview, em ordem de prioridade. Movimento um: responder primeiro, depois explicar. O primeiro parágrafo abaixo de um H2 deve ser uma resposta completa em 45 palavras ou menos; os extratores de IA pegam esse parágrafo, tudo depois é contexto. Movimento dois: entidades ancoradas em schema. O nome do seu restaurante, horários, endereço, itens do menu, todos repetidos em JSON-LD; o modelo de linguagem cruz-referencia o parágrafo de prosa contra o seu schema e as entidades coincidentes aumentam as chances de citação. Movimento três: números na frase de abertura. 'A maioria dos restaurantes fecha por volta das 22h' não é citável; 'Silver Spring restaurantes param de atender às 21h30 nos dias de semana, 22h15 nos fins de semana' é. Movimento quatro: frases com forma de predicado. Estrutura X é Y, sem ressalvas como 'aproximadamente' ou 'usualmente' que o extrator elimina. Movimento cinco: URLs estáveis e respostas estáveis. Uma vez que o Google o cite, não mude a página, não reordene o parágrafo; o crawler revisita URLs citados com mais frequência, e uma resposta alterada o remove da rotação.",
+      "start": 181.12,
+      "end": 251.08
+    },
+    {
+      "id": 13,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Movimento 1: Responder primeiro, depois explicar.",
+      "start": 252.18,
+      "end": 255.04
+    },
+    {
+      "id": 14,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "O primeiro parágrafo abaixo de um H2 é o único que a maioria dos extratores lê. Tudo depois disso é contexto de apoio que pode ou não ser incluído. Se o seu primeiro parágrafo responder completamente à pergunta implícita do H2, você tem uma citação. Se ele configurar a resposta em vez disso, a resposta nunca é citada, porque o parágrafo em que ela vive é muito longe na página.",
+      "start": 255.74,
+      "end": 276.4
+    },
+    {
+      "id": 15,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "Quarenta e cinco palavras é o limite. Eu vi a caixa de citação incluir parágrafos mais longos, mas o ponto de corte é geralmente 35-55 palavras, e mais curto é mais frequentemente citado verbatim do que parafraseado. Verbatim é o que você quer — a parafrase perde a correspondência entre entidade e schema que o modelo acabou de fazer.",
+      "start": 276.92,
+      "end": 297.04
+    },
+    {
+      "id": 16,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "Movimento 2: Ancorar todas as entidades em schema.",
+      "start": 298.14,
+      "end": 301.31
+    },
+    {
+      "id": 17,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "O modelo lê sua prosa, então lê seu JSON-LD, então pergunta a si mesmo: são esses consistentes? Quando a resposta é sim, a página recebe uma flag de aumento de citação. Quando a resposta é não — preços do menu na prosa não coincidem com o schema do Menu, horários na prosa não coincidem com o schema de Horário de Abertura — a página recebe uma flag de redução. Não há sinal público para isso. É visível apenas nas páginas que são citadas e nas que não são.",
+      "start": 302.01,
+      "end": 326.73
+    },
+    {
+      "id": 18,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "Se você já tem os seis tipos de schema que o Google usa configurados, você tem o movimento 2 feito. O trabalho que geralmente está faltando: a prosa tem que realmente coincidir com o schema. Se o seu schema diz que você está aberto até 22h e a sua prosa diz \"tarde\", você tem uma lacuna de consistência. Ambos devem dizer 22h.",
+      "start": 327.25,
+      "end": 346.87
+    },
+    {
+      "id": 19,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "Movimento 3: Números na frase de abertura.",
+      "start": 347.97,
+      "end": 350.56
+    },
+    {
+      "id": 20,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "A primeira frase do seu parágrafo de resposta deve conter pelo menos um número. Um preço, um tempo, uma contagem, uma porcentagem, um ano — não importa qual. Números são o que é extraído; frases sem números competem com todas as outras frases vagas na internet, e o extrator escolhe a que é mais específica.",
+      "start": 351.26,
+      "end": 368.61
+    },
+    {
+      "id": 21,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "Este é o movimento que a maioria do conteúdo de restaurante faz errado. O instinto é liderar com linguagem de boas-vindas — \"Estamos ansiosos para compartilhar nosso menu\", \"Venha experimentar o calor do nosso pátio\". A linguagem de boas-vindas tem zero entidades e zero números. É a primeira coisa que o extrator ignora. Substitua-a por uma frase que nomeia uma coisa e a quantifica.",
+      "start": 369.13,
+      "end": 389.49
+    },
+    {
+      "id": 22,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(6)",
+      "text": "Movimento 4: Frases com forma de predicado. Sem ressalvas.",
+      "start": 390.59,
+      "end": 394.58
+    },
+    {
+      "id": 23,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "O extrator analisa cada frase em uma forma sujeito-predicado-objeto. &ldquo;DoorDash é uma plataforma de entrega&rdquo; é analisado de forma limpa. &ldquo;Muitas pessoas consideram o DoorDash como uma plataforma de entrega de algum tipo&rdquo; não é. A primeira frase tem um fato. A segunda tem tokens de hesitação que o modelo trata como ruído, e o fato subjacente some sob a hesitação.",
+      "start": 395.28,
+      "end": 416.6
+    },
+    {
+      "id": 24,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "As palavras a serem eliminadas em uma reescrita de citação: aproximadamente, usualmente, em alguns casos, maioria, frequentemente, tipicamente, por volta, tendem a, podem, podem. Cada uma delas diminui as chances de citação. Elas são palavras de advogado defensivo de um contexto de escrita diferente. No contexto do AI Overview, elas estão custando a você a citação.",
+      "start": 417.12,
+      "end": 437.72
+    },
+    {
+      "id": 25,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(7)",
+      "text": "O antes e o depois.",
+      "start": 438.82,
+      "end": 440.16
+    },
+    {
+      "id": 26,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "Pegue um parágrafo típico de Perguntas Frequentes de um restaurante e faça-o passar pelas etapas 1–4. Este é o tipo de parágrafo que vejo em 90% dos sites independentes; é também o tipo de parágrafo que nunca é citado.",
+      "start": 440.86,
+      "end": 454.71
+    },
+    {
+      "id": 27,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(2)",
+      "text": "A mesma resposta para a mesma pergunta, antes e após a reescrita da citação. Antes: 'Normalmente estamos abertos para jantar, embora nossos horários possam variar de acordo com a estação. É uma boa ideia ligar com antecedência para confirmar. Servimos uma variedade de pratos, com a maioria das entradas no preço moderado.' Aquele parágrafo tem zero entidades, zero números, três palavras de hesitação (normalmente, possam, maioria), e o preço é indefinido. Chances de citação, efetivamente zero. Depois: 'Roma Cucina está aberto para jantar de terça a domingo, das 17h às 22h. As entradas são preço entre $18 e $32. Reservas são recomendadas nas sextas e sábados.' Aquele parágrafo nomeia o restaurante, os dias, os horários, o preço e a recomendação, em 30 palavras. Cada entidade corresponde ao esquema. Cada afirmação é um predicado. Chances de citação, altas.",
+      "start": 455.51,
+      "end": 506.34
+    },
+    {
+      "id": 28,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "Leia ambos em voz alta. O primeiro parece humano. O segundo parece quase mecânico. Essa é a troca. A superfície do AI Overview não recompensa a escrita conversacional — a superfície acima dela sim. A conversa é o que sua página de menu, sua página Sobre, seus canais sociais são para. O parágrafo de citação é seu próprio registro. Ele existe para ser citado.",
+      "start": 507.09,
+      "end": 526.54
+    },
+    {
+      "id": 29,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(8)",
+      "text": "Etapa 5: URLs estáveis. Respostas estáveis.",
+      "start": 527.64,
+      "end": 530.58
+    },
+    {
+      "id": 30,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "Essa é a etapa que protege o que as etapas 1–4 lhe rendem. O rastreador revisita URLs citados mais rápido do que os não citados — o modelo marcou a página como uma boa fonte conhecida. Se a URL ainda é resolvida e o parágrafo ainda responde à pergunta, você permanece citado. Se a URL 301 é redirecionada para um novo caminho, ou o parágrafo foi parafraseado em algo com um conjunto de fatos ligeiramente diferente, você sai da rotação. Às vezes a queda é permanente; às vezes você tem que reobter a citação do zero nos próximos 60 dias.",
+      "start": 531.28,
+      "end": 563.55
+    },
+    {
+      "id": 31,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(19)",
+      "text": "A regra operacional: quando você publica um parágrafo com formato de citação e ele é citado, deixe-o em paz. Não adicione uma vírgula. Não mude os horários de &ldquo;17h&rdquo; para &ldquo;17:00h&rdquo;. Não mude a página de /blog/ para /info/. Se o fato subjacente mudar — você realmente está aberto até 23h agora, não 22h — mude o número e apenas o número. Toque em um fato, mantenha o resto. O rastreador re-fingerprintará a página, verá a mudança direcionada e atualizará sua extração citada.",
+      "start": 564.07,
+      "end": 594.7
+    },
+    {
+      "id": 32,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(9)",
+      "text": "Como testar se você está citado.",
+      "start": 595.8,
+      "end": 597.8
+    },
+    {
+      "id": 33,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(20)",
+      "text": "Abra o Google em uma sessão de navegador limpa. Digite a pergunta que seu convidado provavelmente está fazendo — não a palavra-chave do SEO, a pergunta em linguagem natural. “O Roma Cucina está aberto no domingo”. “Onde posso encontrar omakase em Silver Spring”. “O Maketto aceita ingressos sem reserva”. Se a caixa AI Overview aparecer no topo, role até o final. Há chips de citação — pequenos ícones com rótulos de fonte. O seu deve ser um deles.",
+      "start": 598.5,
+      "end": 622.7
+    },
+    {
+      "id": 34,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(21)",
+      "text": "Se não estiver, você tem um problema de citação, não de classificação. Sua página pode ser classificada como número 1 nos links azuis abaixo da caixa e ainda não ser citada. A caixa é julgada em um eixo separado. Acompanhe-a semanalmente por dez ou vinte de suas perguntas mais prováveis; a tendência ao longo de um trimestre diz se as reescritas de citação estão funcionando.",
+      "start": 623.22,
+      "end": 643.75
+    },
+    {
+      "id": 35,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(10)",
+      "text": "A reestruturação.",
+      "start": 644.85,
+      "end": 646.1
+    },
+    {
+      "id": 36,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(22)",
+      "text": "Você não está escrevendo para o leitor humano da maneira como costumava. O leitor humano vê o parágrafo do AI Overview, decide se a resposta é suficiente e either age em conformidade ou clica em uma das fontes citadas. O parágrafo que o leitor humano lê primeiro não é o parágrafo que você escreveu — é o parágrafo que o extrator escreveu, montado a partir do seu e de um ou dois outros. Seu público agora é o extrator que decide qual parágrafo o leitor humano vê. Escreva o parágrafo que o extrator quer levantar.",
+      "start": 646.8,
+      "end": 674.47
+    },
+    {
+      "id": 37,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(23)",
+      "text": "Isso é desconfortável. Parece que está escrevendo para o algoritmo. É. O negócio é que suas páginas de informação mais importantes — horas, menu, reservas, dieta — podem ser a fonte nomeada na resposta que seu convidado vê. Isso vale a pena a mudança de registro.",
+      "start": 674.99,
+      "end": 689.99
+    },
+    {
+      "id": 38,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(11)",
+      "text": "Onde começar.",
+      "start": 691.09,
+      "end": 692.15
+    },
+    {
+      "id": 39,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(24)",
+      "text": "Escolha três páginas. Sua página de horas/contato, sua página de menu e seu post de blog mais acessado. Faça cada uma passar pelas movimentações 1–4 no primeiro parágrafo abaixo de cada H2. Não toque no restante da página ainda. Publique, espere duas semanas e então execute o loop de verificação de citação acima nas perguntas que essas páginas devem estar respondendo.",
+      "start": 692.85,
+      "end": 714.22
+    },
+    {
+      "id": 40,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(25)",
+      "text": "Se você estiver aparecendo na caixa em pelo menos metade delas na quarta semana, as movimentações estão funcionando — faça o restante do site. Se não estiver, o culpado mais comum é o schema. A prosa está boa; o JSON-LD não coincide com ela. Execute os seis tipos de schema que o Google usa em seu site uma vez e então verifique novamente.",
+      "start": 714.74,
+      "end": 734.15
+    },
+    {
+      "id": 41,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(26)",
+      "text": "O Don Goldstein gerencia dois restaurantes DMV e executa o Muntin Digital. O conjunto de dados de rastreamento de citação por trás deste artigo vem de 90 dias de consultas emparelhadas contra AI Overviews, executadas entre fevereiro e maio de vinte e seis.",
+      "start": 734.67,
+      "end": 750.67
+    },
+    {
+      "id": 42,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(27)",
+      "text": "Continue",
+      "start": 751.19,
+      "end": 751.86
+    },
+    {
+      "id": 43,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Restaurante schema markup: os 6 tipos que o Google usa — o JSON-LD que ancora sua prosa",
+      "start": 752.21,
+      "end": 757.92
+    },
+    {
+      "id": 44,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Como ler o Google Search Console do seu restaurante — as consultas que devem estar no seu rastreador de citação",
+      "start": 758.24,
+      "end": 764.44
+    },
+    {
+      "id": 45,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "A auditoria de margem de 1% — o estudo subjacente em que a maioria das notas de pesquisa deste site é construída",
+      "start": 764.76,
+      "end": 772.13
+    },
+    {
+      "id": 46,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "499 dólares de auditoria — o diagnóstico escrito se você preferir ver as reescritas no papel",
+      "start": 772.45,
+      "end": 779.41
+    },
+    {
+      "id": 47,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(28)",
+      "text": "Pontos principais",
+      "start": 779.76,
+      "end": 780.89
+    },
+    {
+      "id": 48,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "Remova esses tokens de hedge nas reescritas de citação: aproximadamente, geralmente, em alguns casos, maioria, frequentemente, tipicamente, por volta, tende a, pode, pode.",
+      "start": 781.24,
+      "end": 791.59
+    },
+    {
+      "id": 49,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "O primeiro parágrafo abaixo de cada H2 é o único que a maioria dos extratores de IA lê — enterre a resposta no parágrafo três e a página é invisível para a caixa.",
+      "start": 791.91,
+      "end": 801.52
+    },
+    {
+      "id": 50,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "O modelo cruza-referencia sua prosa contra seu JSON-LD; discrepâncias entre o schema e a prosa diminuem as chances de citação, enquanto as correspondências as aumentam.",
+      "start": 801.84,
+      "end": 812.37
+    },
+    {
+      "id": 51,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
+      "text": "Uma vez citado, não mude a página ou reescreva o parágrafo — o crawler revisita URLs citados mais rápido e uma resposta alterada o remove da rotação.",
+      "start": 812.69,
+      "end": 821.61
+    },
+    {
+      "id": 52,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(5)",
+      "text": "Se seu tráfego é composto principalmente por consultas informativas (horários, cardápio, reservas, dietas), escolha a citação; se for rico em intenção (melhor italiano perto de mim), mantenha o ranking.",
+      "start": 821.93,
+      "end": 833.57
+    }
+  ]
+}
