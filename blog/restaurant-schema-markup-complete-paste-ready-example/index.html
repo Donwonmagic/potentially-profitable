@@ -103,7 +103,12 @@ header.nav{min-height:64px}
   "@type": "Article",
   "@id": "https://muntin.digital/blog/restaurant-schema-markup-complete-paste-ready-example/#article",
   "abstract": "Sixty lines of JSON-LD that cover the six schema types Google reads first on a restaurant page — Restaurant, Menu, OpeningHoursSpecification, AggregateRating, Reservation, and FAQ. Seven fields marked // EDIT (name, address parts, phone, hours, rating, menu items) are everything you have to change to make the example yours. Three pre-publish checks: validator.schema.org for unknown properties, view-source for CMS-escaping bugs, and Google’s Rich Results test to confirm which surfaces your schema is eligible for.",
-  "mentions": []
+  "mentions": [
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/glossary/schema/"
+    }
+  ]
 }
 </script>
 <!-- article-abstract-mentions:end -->
@@ -319,7 +324,7 @@ header.nav{min-height:64px}
 
     <h2>The complete example</h2>
 
-    <p>Below is the schema I ran on a 60-seat DMV Italian restaurant. The structure nests six types: Restaurant (root), Menu, OpeningHoursSpecification, AggregateRating, Reservation, and FAQ. Each one unlocks a different Google surface (per the six-types article). Save it as a starting point; tighten as needed.</p>
+    <p>Below is the <a href="/glossary/schema/" style="color:var(--teal)">schema</a> I ran on a 60-seat DMV Italian restaurant. The structure nests six types: Restaurant (root), Menu, OpeningHoursSpecification, AggregateRating, Reservation, and FAQ. Each one unlocks a different Google surface (per the six-types article). Save it as a starting point; tighten as needed.</p>
 
     <pre style="background:var(--cream-2);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:8px;padding:18px 20px;overflow-x:auto;font-size:13px;line-height:1.5;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--ink);margin:20px 0">&lt;script type="application/ld+json"&gt;
 {
