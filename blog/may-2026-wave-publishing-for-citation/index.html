@@ -74,6 +74,33 @@
 .snippet-label{display:block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--stone);margin-bottom:6px;font-weight:600}
 .snippet-box[data-tone="bad"] .snippet-label{color:var(--rust)}
 .snippet-box[data-tone="good"] .snippet-label{color:var(--teal)}
+
+/* Wave table of contents — the centerpiece of this hub. Numbered tiles
+   with role tag and one-line description, banded by theme so the
+   through-line (Search citation → Social → Ops/economics) reads at a
+   glance. Mobile: single column. Tablet+: two columns. */
+.wave-toc{margin:48px 0 0;padding:32px 0 0;border-top:1px solid var(--line)}
+.wave-toc__eyebrow{margin-bottom:6px}
+.wave-toc__head{font-family:var(--font-display);font-size:clamp(24px,3vw,32px);font-weight:500;line-height:1.15;letter-spacing:-0.2px;color:var(--ink);margin:0 0 24px}
+.wave-toc__list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr;gap:14px}
+@media (min-width:720px){.wave-toc__list{grid-template-columns:repeat(2,1fr);gap:16px}}
+.wave-toc__item{position:relative;display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:start;padding:18px 20px;background:var(--cream-2);border:1px solid var(--line);border-left:3px solid var(--stone);border-radius:10px;transition:border-color var(--t-fast) var(--ease),transform var(--t-fast) var(--ease),box-shadow var(--t-fast) var(--ease)}
+.wave-toc__item[data-band="search"]{border-left-color:var(--teal)}
+.wave-toc__item[data-band="social"]{border-left-color:#B8704A}
+.wave-toc__item[data-band="ops"]{border-left-color:var(--ink-soft)}
+.wave-toc__item:hover{border-color:var(--teal);transform:translateY(-1px);box-shadow:0 6px 18px -10px rgba(20,54,64,0.25)}
+.wave-toc__num{font-family:var(--font-display);font-size:34px;font-weight:500;letter-spacing:-0.04em;color:var(--stone);line-height:0.95;min-width:46px;text-align:left}
+.wave-toc__body{min-width:0}
+.wave-toc__role{margin:0 0 4px;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--stone);font-weight:600}
+.wave-toc__title{display:inline-block;font-family:var(--font-display);font-size:17px;font-weight:500;line-height:1.25;letter-spacing:-0.2px;color:var(--ink);text-decoration:none;border-bottom:1px solid transparent;transition:color var(--t-fast) var(--ease),border-color var(--t-fast) var(--ease)}
+.wave-toc__title:hover{color:var(--teal);border-bottom-color:currentColor}
+.wave-toc__desc{margin:6px 0 0;font-size:14.5px;line-height:1.55;color:var(--ink-soft)}
+.wave-toc__legend{margin:18px 0 0;font-size:12px;letter-spacing:0.04em;color:var(--stone);text-align:right}
+.wave-toc__legend span{display:inline-flex;align-items:center;gap:6px}
+.wave-toc__legend span::before{content:"";display:inline-block;width:8px;height:8px;border-radius:2px;background:var(--stone)}
+.wave-toc__legend span[data-band="search"]::before{background:var(--teal)}
+.wave-toc__legend span[data-band="social"]::before{background:#B8704A}
+.wave-toc__legend span[data-band="ops"]::before{background:var(--ink-soft)}
 </style>
 <style>
 :root{--cream:#FAF7F2;--cream-2:#F3EEE3;--ink:#14161A;--ink-soft:#2A2D33;--teal:#1F4E5B;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
@@ -321,7 +348,7 @@ main{padding-top:64px}
           <span class="listen-label i18n">Listen to this article</span>
         </button>
       </div>
-      <p style="font-size:18px;line-height:1.55;color:var(--ink-soft);margin:0">Nine new pieces shipped this weekend, all in English and Spanish, all backed by first-party operating data. They share one operating thesis: search results aren&rsquo;t ten blue links anymore. They&rsquo;re a paragraph Google wrote, citing two or three sources. For restaurant queries, that paragraph now appears above the map pack. If you&rsquo;re not one of the cited sources, you&rsquo;re not in the conversation. Here&rsquo;s the wave, in the order I&rsquo;d read it.</p>
+      <p style="font-size:18px;line-height:1.55;color:var(--ink-soft);margin:0">Search results aren&rsquo;t ten blue links anymore. They&rsquo;re a paragraph Google wrote, citing two or three sources &mdash; and for restaurant queries that paragraph now appears above the map pack. The nine pieces below are the operator&rsquo;s response to that shift, in the order to read them.</p>
     </header>
 
       <!-- article-tldr:start -->
@@ -341,36 +368,28 @@ main{padding-top:64px}
 
     <p>Two things are happening at the same time, and they compound. One: Google&rsquo;s search-result page is a paragraph the model wrote, citing two or three sources. As of March 2025 it triggered on 13.14% of US desktop searches; by spring 2026 it&rsquo;s approaching one in five, and restaurant queries trigger it more often than the average. Two: the <a href="/glossary/map-pack/" style="color:var(--teal)">map pack</a> still sits beneath that paragraph, and it&rsquo;s still where most local-intent traffic clicks. So you&rsquo;re competing on two surfaces at once &mdash; one new and shaped by paragraph quality, one old and shaped by Google Business Profile health.</p>
 
-    <figure class="viz-figure article-figure" data-audio-alt="AI Overview share of US desktop searches, by quarter, from early 2024 to spring 2026. Q1 2024, about six percent &mdash; the launch quarter. Q1 2025, thirteen point one four percent &mdash; the data point most widely cited. Q3 2025, sixteen percent. Q1 2026, eighteen percent. Q2 2026, approximately twenty percent, the present-day figure. Restaurant queries trigger the AI Overview at a higher rate than the all-categories average. The pattern is a steady doubling roughly every twelve months; the curve has not flattened. This wave is being shipped now because the writing moves are still relatively unknown among independent restaurants &mdash; the gap between operators who have figured out citation-shaped writing and those who haven&rsquo;t is the widest it will be."><div class="viz-bars">
-        <p class="viz-bars__title">AI Overview share of US desktop searches, 2024&ndash;2026</p>
+    <figure class="viz-figure article-figure" data-audio-alt="The most-cited measurement of AI Overview share in US desktop search is from March twenty twenty-five. Thirteen point one four percent of US desktop queries resolved with an AI Overview at the top of the page. The trend since has been up, not flat. Restaurant queries trigger above the all-categories average. The wave ships now because the writing moves are still relatively unknown among independent restaurants &mdash; the gap between operators who have figured out citation-shaped writing and those who haven&rsquo;t is the widest it will be.">
+      <div class="viz-bars">
+        <p class="viz-bars__title">AI Overview share of US desktop search</p>
         <div class="viz-bars__row">
-          <p class="viz-bars__label">Q1 2024 (launch)</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:0.30"></span></div>
-          <p class="viz-bars__num">~6%</p>
-        </div>
-        <div class="viz-bars__row">
-          <p class="viz-bars__label">Q1 2025</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:0.66"></span></div>
+          <p class="viz-bars__label">Mar 2025 (measured)</p>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.658"></span></div>
           <p class="viz-bars__num">13.14%</p>
         </div>
         <div class="viz-bars__row">
-          <p class="viz-bars__label">Q3 2025</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.80"></span></div>
-          <p class="viz-bars__num">~16%</p>
-        </div>
-        <div class="viz-bars__row">
-          <p class="viz-bars__label">Q1 2026</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.90"></span></div>
-          <p class="viz-bars__num">~18%</p>
-        </div>
-        <div class="viz-bars__row">
-          <p class="viz-bars__label">Q2 2026 (this batch ships)</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:1.0"></span></div>
-          <p class="viz-bars__num">~20%</p>
+          <p class="viz-bars__label">Since (direction)</p>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:1.0"></span></div>
+          <p class="viz-bars__num">rising, not flat</p>
         </div>
       </div>
-      <figcaption>The curve has been roughly a doubling every 12 months since launch and hasn&rsquo;t flattened. Restaurant queries trigger above the all-categories average.</figcaption>
+      <figcaption>The 13.14% figure is the most-cited measured share; subsequent quarters have trended up rather than plateauing. Restaurant queries trigger above the all-categories average.</figcaption>
     </figure>
+    <details class="cite">
+      <summary>Source: Search Engine Land, March 2025 AI Overview share</summary>
+      <div class="cite-body">
+        <p><span class="cite-source">Search Engine Land</span> &mdash; &ldquo;Google AI Overviews are now showing for 13.14% of US queries, up from 6.49% in January&rdquo; (March 31, 2025). Analysis of US desktop search results across a broad query basket. Most-cited measurement of AI Overview prevalence; the post-March-2025 trajectory is reported qualitatively across industry coverage rather than from a single consolidated follow-up measurement.</p>
+      </div>
+    </details>
 
     <p>Five of the nine pieces address those two surfaces directly. The remaining four address the operating-economics decisions that determine what your restaurant actually has to say on those surfaces &mdash; what your menu costs to put in front of a guest, who handles the discovery, what compensation model your kitchen runs on.</p>
 
@@ -471,22 +490,87 @@ main{padding-top:64px}
     <hr style="margin:48px 0 32px;border:0;border-top:1px solid var(--line)">
 
     <p style="font-style:italic;font-size:15px;color:var(--ink-soft);text-align:center;margin:0">
-      Don Goldstein is a restaurant operator and runs <a href="/" style="color:var(--teal)">Muntin Digital</a>. He is a member of RAMW and writes the weekly batches that ship on this page.
+      Don Goldstein is a restaurant operator and runs <a href="/" style="color:var(--teal)">Muntin Digital</a>. He writes the weekly batches that ship on this page.
     </p>
 
-    <section style="margin-top:48px;padding-top:32px;border-top:1px solid var(--line)">
-      <p class="eyebrow" style="margin-bottom:10px">Read the wave</p>
-      <ul style="font-size:15.5px;line-height:1.7;color:var(--teal);margin:0;padding-left:22px">
-        <li><a href="/blog/how-to-get-cited-in-google-ai-overviews-restaurant/">1. AI Overview citation</a> &mdash; the thesis piece</li>
-        <li><a href="/blog/restaurant-schema-markup-complete-paste-ready-example/">2. Schema markup, paste-ready</a> &mdash; the technical companion</li>
-        <li><a href="/blog/my-restaurant-isnt-on-google-maps-10-minute-diagnostic/">3. GMaps invisibility, 10-min diagnostic</a></li>
-        <li><a href="/blog/how-to-respond-to-google-reviews-restaurant-playbook-2026/">4. Review response playbook</a></li>
-        <li><a href="/blog/instagram-as-restaurant-seo-strategy-2026/">5. Instagram as search engine</a></li>
-        <li><a href="/blog/uber-eats-vs-doordash-vs-grubhub-restaurant-math-2026/">6. Three-platform delivery math</a></li>
-        <li><a href="/blog/30-days-after-leaving-doordash-restaurant-case-study/">7. 30 days after DoorDash, case study</a></li>
-        <li><a href="/blog/loyalty-programs-for-independent-restaurants-what-works-2026/">8. Loyalty programs that pay</a></li>
-        <li><a href="/blog/service-charges-vs-tipping-restaurant-operator-math-2026/">9. Service charges vs tipping</a></li>
-      </ul>
+    <section class="wave-toc" aria-labelledby="wave-toc-h">
+      <p class="eyebrow wave-toc__eyebrow">Read the wave</p>
+      <h2 id="wave-toc-h" class="wave-toc__head">In order, with role.</h2>
+      <ol class="wave-toc__list">
+        <li class="wave-toc__item" data-band="search">
+          <span class="wave-toc__num">01</span>
+          <div class="wave-toc__body">
+            <p class="wave-toc__role">Thesis</p>
+            <a class="wave-toc__title" href="/blog/how-to-get-cited-in-google-ai-overviews-restaurant/">How to get cited in Google&rsquo;s AI Overview</a>
+            <p class="wave-toc__desc">The paragraph-shape rules that turn a page into a cited source. Read first &mdash; every other piece ladders from this one.</p>
+          </div>
+        </li>
+        <li class="wave-toc__item" data-band="search">
+          <span class="wave-toc__num">02</span>
+          <div class="wave-toc__body">
+            <p class="wave-toc__role">Technical companion</p>
+            <a class="wave-toc__title" href="/blog/restaurant-schema-markup-complete-paste-ready-example/">Restaurant schema markup, paste-ready</a>
+            <p class="wave-toc__desc">The JSON-LD block that gives #01 the entity scaffolding to cite. Six types, seven editable fields, validation step at the end.</p>
+          </div>
+        </li>
+        <li class="wave-toc__item" data-band="search">
+          <span class="wave-toc__num">03</span>
+          <div class="wave-toc__body">
+            <p class="wave-toc__role">Diagnostic</p>
+            <a class="wave-toc__title" href="/blog/my-restaurant-isnt-on-google-maps-10-minute-diagnostic/">My restaurant isn&rsquo;t on Google Maps</a>
+            <p class="wave-toc__desc">The 10-minute walk for restaurants that don&rsquo;t appear in the map pack. Four root causes; three are operator-fixable same day.</p>
+          </div>
+        </li>
+        <li class="wave-toc__item" data-band="search">
+          <span class="wave-toc__num">04</span>
+          <div class="wave-toc__body">
+            <p class="wave-toc__role">Review playbook</p>
+            <a class="wave-toc__title" href="/blog/how-to-respond-to-google-reviews-restaurant-playbook-2026/">How to respond to Google reviews</a>
+            <p class="wave-toc__desc">Four review archetypes, four response shapes. The 3-star is the most-read &mdash; that&rsquo;s where undecided guests calibrate.</p>
+          </div>
+        </li>
+        <li class="wave-toc__item" data-band="social">
+          <span class="wave-toc__num">05</span>
+          <div class="wave-toc__body">
+            <p class="wave-toc__role">Social discovery</p>
+            <a class="wave-toc__title" href="/blog/instagram-as-restaurant-seo-strategy-2026/">Instagram as restaurant SEO</a>
+            <p class="wave-toc__desc">Google indexes captions; the in-app search bar is a discovery surface most independents still write at like it&rsquo;s 2019.</p>
+          </div>
+        </li>
+        <li class="wave-toc__item" data-band="ops">
+          <span class="wave-toc__num">06</span>
+          <div class="wave-toc__body">
+            <p class="wave-toc__role">Channel math</p>
+            <a class="wave-toc__title" href="/blog/uber-eats-vs-doordash-vs-grubhub-restaurant-math-2026/">Uber Eats vs DoorDash vs Grubhub</a>
+            <p class="wave-toc__desc">Same $42 ticket, three side-by-side margin walks. The headline 30% commission is identical; the second-layer fee stack opens a real spread.</p>
+          </div>
+        </li>
+        <li class="wave-toc__item" data-band="ops">
+          <span class="wave-toc__num">07</span>
+          <div class="wave-toc__body">
+            <p class="wave-toc__role">Delisting playbook</p>
+            <a class="wave-toc__title" href="/blog/30-days-after-leaving-doordash-restaurant-case-study/">30 days after leaving DoorDash</a>
+            <p class="wave-toc__desc">The week-by-week shape of a delisting: which costs flex, which complaints arrive, where the channel mix lands. Pairs with #06.</p>
+          </div>
+        </li>
+        <li class="wave-toc__item" data-band="ops">
+          <span class="wave-toc__num">08</span>
+          <div class="wave-toc__body">
+            <p class="wave-toc__role">Retention math</p>
+            <a class="wave-toc__title" href="/blog/loyalty-programs-for-independent-restaurants-what-works-2026/">Loyalty programs that pay</a>
+            <p class="wave-toc__desc">Four models, vendor-published prices, where each one wins. The loyalty conversation is downstream of the channel conversation.</p>
+          </div>
+        </li>
+        <li class="wave-toc__item" data-band="ops">
+          <span class="wave-toc__num">09</span>
+          <div class="wave-toc__body">
+            <p class="wave-toc__role">Compensation math</p>
+            <a class="wave-toc__title" href="/blog/service-charges-vs-tipping-restaurant-operator-math-2026/">Service charges vs tipping</a>
+            <p class="wave-toc__desc">Three models, one $200 check. Server take-home varies; operator net varies; the customer pays about the same and feels differently about each.</p>
+          </div>
+        </li>
+      </ol>
+      <p class="wave-toc__legend"><span data-band="search">Search citation</span> &middot; <span data-band="social">Social discovery</span> &middot; <span data-band="ops">Operations &amp; economics</span></p>
     </section>
 
   <!-- article-takeaways:start -->
@@ -533,6 +617,10 @@ main{padding-top:64px}
 <!-- smart-next:end -->
 
 </main>
+
+<!-- listen-script:start -->
+<script src="/assets/js/listen.js?v=20260503-modsplit" defer></script>
+<!-- listen-script:end -->
 
 <footer><!-- sync-includes.mjs replaces this --></footer>
 

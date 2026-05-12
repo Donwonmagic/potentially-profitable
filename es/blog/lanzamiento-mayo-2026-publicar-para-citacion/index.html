@@ -72,6 +72,34 @@
 .snippet-label{display:block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--stone);margin-bottom:6px;font-weight:600}
 .snippet-box[data-tone="bad"] .snippet-label{color:var(--rust)}
 .snippet-box[data-tone="good"] .snippet-label{color:var(--teal)}
+
+/* Tabla de contenido de la ola — el centro de este hub. Tarjetas
+   numeradas con etiqueta de rol y descripción de una línea, agrupadas
+   por tema para que el hilo conductor (citación en búsqueda → social
+   → operaciones/economía) se lea a la primera. Móvil: una columna.
+   Tablet+: dos columnas. */
+.wave-toc{margin:48px 0 0;padding:32px 0 0;border-top:1px solid var(--line)}
+.wave-toc__eyebrow{margin-bottom:6px}
+.wave-toc__head{font-family:var(--font-display);font-size:clamp(24px,3vw,32px);font-weight:500;line-height:1.15;letter-spacing:-0.2px;color:var(--ink);margin:0 0 24px}
+.wave-toc__list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr;gap:14px}
+@media (min-width:720px){.wave-toc__list{grid-template-columns:repeat(2,1fr);gap:16px}}
+.wave-toc__item{position:relative;display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:start;padding:18px 20px;background:var(--cream-2);border:1px solid var(--line);border-left:3px solid var(--stone);border-radius:10px;transition:border-color var(--t-fast) var(--ease),transform var(--t-fast) var(--ease),box-shadow var(--t-fast) var(--ease)}
+.wave-toc__item[data-band="search"]{border-left-color:var(--teal)}
+.wave-toc__item[data-band="social"]{border-left-color:#B8704A}
+.wave-toc__item[data-band="ops"]{border-left-color:var(--ink-soft)}
+.wave-toc__item:hover{border-color:var(--teal);transform:translateY(-1px);box-shadow:0 6px 18px -10px rgba(20,54,64,0.25)}
+.wave-toc__num{font-family:var(--font-display);font-size:34px;font-weight:500;letter-spacing:-0.04em;color:var(--stone);line-height:0.95;min-width:46px;text-align:left}
+.wave-toc__body{min-width:0}
+.wave-toc__role{margin:0 0 4px;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--stone);font-weight:600}
+.wave-toc__title{display:inline-block;font-family:var(--font-display);font-size:17px;font-weight:500;line-height:1.25;letter-spacing:-0.2px;color:var(--ink);text-decoration:none;border-bottom:1px solid transparent;transition:color var(--t-fast) var(--ease),border-color var(--t-fast) var(--ease)}
+.wave-toc__title:hover{color:var(--teal);border-bottom-color:currentColor}
+.wave-toc__desc{margin:6px 0 0;font-size:14.5px;line-height:1.55;color:var(--ink-soft)}
+.wave-toc__legend{margin:18px 0 0;font-size:12px;letter-spacing:0.04em;color:var(--stone);text-align:right}
+.wave-toc__legend span{display:inline-flex;align-items:center;gap:6px}
+.wave-toc__legend span::before{content:"";display:inline-block;width:8px;height:8px;border-radius:2px;background:var(--stone)}
+.wave-toc__legend span[data-band="search"]::before{background:var(--teal)}
+.wave-toc__legend span[data-band="social"]::before{background:#B8704A}
+.wave-toc__legend span[data-band="ops"]::before{background:var(--ink-soft)}
 </style>
 <style>
 :root{--cream:#FAF7F2;--cream-2:#F3EEE3;--ink:#14161A;--ink-soft:#2A2D33;--teal:#1F4E5B;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
@@ -112,7 +140,7 @@ main{padding-top:64px}
   "@context": "https://schema.org",
   "@type": "Article",
   "@id": "https://muntin.digital/es/blog/lanzamiento-mayo-2026-publicar-para-citacion/#article",
-  "abstract": "Semana 1 de una nueva cadencia editorial — nueve piezas salieron juntas como un lote de domingo-en-la-noche-a-lunes-en-la-mañana, en inglés y español, todas respaldadas por datos operativos de primera mano. Hilo conductor: los resultados de búsqueda ya no son diez enlaces azules — son un párrafo que escribió Google, citando dos o tres fuentes. Para consultas de restaurante ese párrafo ahora aparece arriba del map pack, y si no eres una de las fuentes citadas, no estás en la conversación. Lee primero la pieza sobre citas en AI Overview; las otras ocho escalonan desde ella en este orden: schema ejemplo, invisibilidad en GMaps, playbook de reseñas, Instagram-como-SEO, cuentas de tres plataformas de delivery, caso de estudio de 30 días, programas de lealtad, cargos por servicio vs propina.",
+  "abstract": "Semana 1 de una nueva cadencia editorial — nueve piezas salieron juntas como un lote de domingo-en-la-noche-a-lunes-en-la-mañana, en inglés y español, ancladas a documentación pública de plataformas, precios de vendors, y análisis de la industria de búsqueda. Hilo conductor: los resultados de búsqueda ya no son diez enlaces azules — son un párrafo que escribió Google, citando dos o tres fuentes. Para consultas de restaurante ese párrafo ahora aparece arriba del map pack, y si no eres una de las fuentes citadas, no estás en la conversación. Lee primero la pieza sobre citas en AI Overview; las otras ocho escalonan desde ella en este orden: schema ejemplo, invisibilidad en GMaps, playbook de reseñas, Instagram-como-SEO, cuentas de tres plataformas de delivery, caso de estudio de 30 días, programas de lealtad, cargos por servicio vs propina.",
   "mentions": [
     {
       "@type": "DefinedTerm",
@@ -286,14 +314,14 @@ main{padding-top:64px}
           <span class="listen-label i18n">Escuchar este artículo</span>
         </button>
       </div>
-      <p style="font-size:18px;line-height:1.55;color:var(--ink-soft);margin:0">Nueve piezas nuevas salieron este fin de semana, todas en inglés y español, todas respaldadas por datos operativos de primera mano. Comparten una tesis operativa: los resultados de búsqueda ya no son diez enlaces azules. Son un párrafo que escribió Google, citando dos o tres fuentes. Para consultas de restaurante, ese párrafo ahora aparece arriba del map pack. Si no eres una de las fuentes citadas, no estás en la conversación. Aquí está el lote, en el orden en que lo leería.</p>
+      <p style="font-size:18px;line-height:1.55;color:var(--ink-soft);margin:0">Los resultados de búsqueda ya no son diez enlaces azules. Son un párrafo que escribió Google, citando dos o tres fuentes &mdash; y para consultas de restaurante ese párrafo ahora aparece arriba del map pack. Las nueve piezas abajo son la respuesta del operador a ese cambio, en el orden en que leerlas.</p>
     </header>
 
       <!-- article-tldr:start -->
             <aside class="tldr" data-llm="tldr" aria-label="En resumen">
               <p class="tldr__eyebrow">En resumen</p>
               <ul class="tldr__list">
-              <li>Semana 1 de una nueva cadencia editorial — nueve piezas salieron juntas como un lote de domingo-en-la-noche-a-lunes-en-la-mañana, en inglés y español, todas respaldadas por datos operativos de primera mano.</li>
+              <li>Semana 1 de una nueva cadencia editorial — nueve piezas salieron juntas como un lote de domingo-en-la-noche-a-lunes-en-la-mañana, en inglés y español, ancladas a documentación pública de plataformas, precios de vendors, y análisis de la industria de búsqueda.</li>
         <li>Hilo conductor: los resultados de búsqueda ya no son diez enlaces azules — son un párrafo que escribió Google, citando dos o tres fuentes. Para consultas de restaurante ese párrafo ahora aparece arriba del map pack, y si no eres una de las fuentes citadas, no estás en la conversación.</li>
         <li>Lee primero la pieza sobre citas en AI Overview; las otras ocho escalonan desde ella en este orden: schema ejemplo, invisibilidad en GMaps, playbook de reseñas, Instagram-como-SEO, cuentas de tres plataformas de delivery, caso de estudio de 30 días, programas de lealtad, cargos por servicio vs propina.</li>
               </ul>
@@ -306,36 +334,28 @@ main{padding-top:64px}
 
     <p>Dos cosas están pasando al mismo tiempo, y se componen. Una: la página de resultados de Google es un párrafo que escribió el modelo, citando dos o tres fuentes. A marzo de 2025 activó en el 13.14% de las búsquedas de escritorio en EE.UU.; para primavera de 2026 se acerca a una de cada cinco, y las consultas de restaurante lo activan con más frecuencia que el promedio. Dos: el <a href="/es/glossary/map-pack/" style="color:var(--teal)">map pack</a> sigue debajo de ese párrafo, y sigue siendo donde la mayoría del tráfico con intención local hace clic. Así que estás compitiendo en dos superficies a la vez &mdash; una nueva moldeada por la calidad del párrafo, otra vieja moldeada por la salud del Google Business Profile.</p>
 
-    <figure class="viz-figure article-figure" data-audio-alt="Participación del AI Overview en búsquedas de escritorio en EE.UU., por trimestre, desde inicios de 2024 hasta primavera de 2026. Primer trimestre de 2024, alrededor de seis por ciento &mdash; el trimestre de lanzamiento. Primer trimestre de 2025, trece coma uno cuatro por ciento &mdash; el dato más citado. Tercer trimestre de 2025, dieciséis por ciento. Primer trimestre de 2026, dieciocho por ciento. Segundo trimestre de 2026, aproximadamente veinte por ciento, la cifra actual. Las consultas de restaurante activan el AI Overview a una tasa más alta que el promedio de todas las categorías. El patrón es una duplicación constante cada doce meses; la curva no se ha aplanado. Este lote se publica ahora porque las jugadas de escritura todavía son relativamente desconocidas entre restaurantes independientes &mdash; la brecha entre operadores que han descubierto la escritura con forma de cita y los que no, está en su punto más amplio."><div class="viz-bars">
-        <p class="viz-bars__title">Participación del AI Overview en búsquedas de escritorio en EE.UU., 2024&ndash;2026</p>
+    <figure class="viz-figure article-figure" data-audio-alt="La medición más citada de la participación del AI Overview en búsquedas de escritorio en EE.UU. es de marzo de dos mil veinticinco. Trece coma uno cuatro por ciento de las consultas de escritorio en EE.UU. resolvieron con un AI Overview en la parte superior de la página. La tendencia desde entonces ha sido al alza, no plana. Las consultas de restaurante activan por encima del promedio de todas las categorías. Este lote sale ahora porque las jugadas de escritura todavía son relativamente desconocidas entre restaurantes independientes &mdash; la brecha entre operadores que han descubierto la escritura con forma de cita y los que no, está en su punto más amplio.">
+      <div class="viz-bars">
+        <p class="viz-bars__title">Participación del AI Overview en búsquedas de escritorio en EE.UU.</p>
         <div class="viz-bars__row">
-          <p class="viz-bars__label">T1 2024 (lanzamiento)</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:0.30"></span></div>
-          <p class="viz-bars__num">~6%</p>
-        </div>
-        <div class="viz-bars__row">
-          <p class="viz-bars__label">T1 2025</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:0.66"></span></div>
+          <p class="viz-bars__label">Mar 2025 (medido)</p>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.658"></span></div>
           <p class="viz-bars__num">13.14%</p>
         </div>
         <div class="viz-bars__row">
-          <p class="viz-bars__label">T3 2025</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.80"></span></div>
-          <p class="viz-bars__num">~16%</p>
-        </div>
-        <div class="viz-bars__row">
-          <p class="viz-bars__label">T1 2026</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.90"></span></div>
-          <p class="viz-bars__num">~18%</p>
-        </div>
-        <div class="viz-bars__row">
-          <p class="viz-bars__label">T2 2026 (sale este lote)</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:1.0"></span></div>
-          <p class="viz-bars__num">~20%</p>
+          <p class="viz-bars__label">Desde entonces (dirección)</p>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:1.0"></span></div>
+          <p class="viz-bars__num">al alza, no plana</p>
         </div>
       </div>
-      <figcaption>La curva ha sido aproximadamente una duplicación cada 12 meses desde el lanzamiento y no se ha aplanado. Las consultas de restaurante activan por encima del promedio de todas las categorías.</figcaption>
+      <figcaption>La cifra del 13.14% es la participación medida más citada; los trimestres posteriores han tendido al alza, no a aplanarse. Las consultas de restaurante activan por encima del promedio de todas las categorías.</figcaption>
     </figure>
+    <details class="cite">
+      <summary>Fuente: Search Engine Land, participación del AI Overview en marzo de 2025</summary>
+      <div class="cite-body">
+        <p><span class="cite-source">Search Engine Land</span> &mdash; &ldquo;Google AI Overviews ya aparecen en el 13.14% de las consultas en EE.UU., desde el 6.49% en enero&rdquo; (31 de marzo de 2025). Análisis de resultados de búsqueda de escritorio en EE.UU. sobre una canasta amplia de consultas. Medición más citada de la prevalencia del AI Overview; la trayectoria posterior a marzo de 2025 se reporta cualitativamente en la cobertura de la industria más que desde una medición de seguimiento consolidada.</p>
+      </div>
+    </details>
 
     <p>Cinco de las nueve piezas atienden esas dos superficies directamente. Las otras cuatro atienden las decisiones de economía operativa que determinan qué tiene tu restaurante para decir en esas superficies &mdash; cuánto cuesta poner tu menú frente a un comensal, quién maneja el descubrimiento, en qué modelo de compensación corre tu cocina.</p>
 
@@ -436,22 +456,87 @@ main{padding-top:64px}
     <hr style="margin:48px 0 32px;border:0;border-top:1px solid var(--line)">
 
     <p style="font-style:italic;font-size:15px;color:var(--ink-soft);text-align:center;margin:0">
-      Don Goldstein es operador de restaurante y dirige <a href="/es/" style="color:var(--teal)">Muntin Digital</a>. Es miembro de RAMW y escribe los lotes semanales que salen en esta página.
+      Don Goldstein es operador de restaurante y dirige <a href="/es/" style="color:var(--teal)">Muntin Digital</a>. Escribe los lotes semanales que salen en esta página.
     </p>
 
-    <section style="margin-top:48px;padding-top:32px;border-top:1px solid var(--line)">
-      <p class="eyebrow" style="margin-bottom:10px">Lee el lanzamiento</p>
-      <ul style="font-size:15.5px;line-height:1.7;color:var(--teal);margin:0;padding-left:22px">
-        <li><a href="/es/blog/como-lograr-que-google-cite-tu-restaurante-en-ai-overview/">1. Cita en AI Overview</a> &mdash; la pieza tesis</li>
-        <li><a href="/es/blog/schema-markup-para-restaurante-ejemplo/">2. Schema markup listo para pegar</a> &mdash; la compañera técnica</li>
-        <li><a href="/es/blog/mi-restaurante-no-aparece-en-google-maps/">3. Invisibilidad en GMaps, diagnóstico de 10 min</a></li>
-        <li><a href="/es/blog/como-responder-resenas-google-restaurante-playbook-2026/">4. Playbook de respuesta a reseñas</a></li>
-        <li><a href="/es/blog/instagram-como-seo-para-restaurante-2026/">5. Instagram como buscador</a></li>
-        <li><a href="/es/blog/uber-eats-vs-doordash-vs-grubhub-cuentas-para-restaurante-2026/">6. Cuentas de tres plataformas de delivery</a></li>
-        <li><a href="/es/blog/30-dias-despues-de-dejar-doordash-caso-restaurante/">7. 30 días después de DoorDash, caso de estudio</a></li>
-        <li><a href="/es/blog/programas-de-lealtad-para-restaurantes-independientes-2026/">8. Programas de lealtad que pagan</a></li>
-        <li><a href="/es/blog/cargos-por-servicio-vs-propina-cuentas-para-operador-restaurante-2026/">9. Cargos por servicio vs propina</a></li>
-      </ul>
+    <section class="wave-toc" aria-labelledby="wave-toc-h">
+      <p class="eyebrow wave-toc__eyebrow">Lee el lanzamiento</p>
+      <h2 id="wave-toc-h" class="wave-toc__head">En orden, con rol.</h2>
+      <ol class="wave-toc__list">
+        <li class="wave-toc__item" data-band="search">
+          <span class="wave-toc__num">01</span>
+          <div class="wave-toc__body">
+            <p class="wave-toc__role">Tesis</p>
+            <a class="wave-toc__title" href="/es/blog/como-lograr-que-google-cite-tu-restaurante-en-ai-overview/">Cómo lograr que Google cite a tu restaurante en el AI Overview</a>
+            <p class="wave-toc__desc">Las reglas de forma de párrafo que convierten una página en fuente citada. Lee primero &mdash; cada otra pieza escalona desde esta.</p>
+          </div>
+        </li>
+        <li class="wave-toc__item" data-band="search">
+          <span class="wave-toc__num">02</span>
+          <div class="wave-toc__body">
+            <p class="wave-toc__role">Compañera técnica</p>
+            <a class="wave-toc__title" href="/es/blog/schema-markup-para-restaurante-ejemplo/">Schema markup para restaurante, listo para pegar</a>
+            <p class="wave-toc__desc">El bloque JSON-LD que le da a la #01 el andamiaje de entidad para citar. Seis tipos, siete campos editables, paso de validación al final.</p>
+          </div>
+        </li>
+        <li class="wave-toc__item" data-band="search">
+          <span class="wave-toc__num">03</span>
+          <div class="wave-toc__body">
+            <p class="wave-toc__role">Diagnóstico</p>
+            <a class="wave-toc__title" href="/es/blog/mi-restaurante-no-aparece-en-google-maps/">Mi restaurante no aparece en Google Maps</a>
+            <p class="wave-toc__desc">La caminata de 10 minutos para restaurantes que no aparecen en el map pack. Cuatro causas raíz; tres son corregibles por el operador el mismo día.</p>
+          </div>
+        </li>
+        <li class="wave-toc__item" data-band="search">
+          <span class="wave-toc__num">04</span>
+          <div class="wave-toc__body">
+            <p class="wave-toc__role">Playbook de reseñas</p>
+            <a class="wave-toc__title" href="/es/blog/como-responder-resenas-google-restaurante-playbook-2026/">Cómo responder a reseñas de Google</a>
+            <p class="wave-toc__desc">Cuatro arquetipos de reseña, cuatro formas de respuesta. La de 3 estrellas es la más leída &mdash; ahí los comensales indecisos calibran.</p>
+          </div>
+        </li>
+        <li class="wave-toc__item" data-band="social">
+          <span class="wave-toc__num">05</span>
+          <div class="wave-toc__body">
+            <p class="wave-toc__role">Descubrimiento social</p>
+            <a class="wave-toc__title" href="/es/blog/instagram-como-seo-para-restaurante-2026/">Instagram como SEO para restaurante</a>
+            <p class="wave-toc__desc">Google indexa los captions; la barra de búsqueda dentro de la app es una superficie de descubrimiento que la mayoría de los independientes sigue escribiendo como si fuera 2019.</p>
+          </div>
+        </li>
+        <li class="wave-toc__item" data-band="ops">
+          <span class="wave-toc__num">06</span>
+          <div class="wave-toc__body">
+            <p class="wave-toc__role">Cuentas de canal</p>
+            <a class="wave-toc__title" href="/es/blog/uber-eats-vs-doordash-vs-grubhub-cuentas-para-restaurante-2026/">Uber Eats vs DoorDash vs Grubhub</a>
+            <p class="wave-toc__desc">Mismo ticket de $42, tres caminatas de margen lado a lado. La comisión titular del 30% es idéntica; la estructura de fees de segunda capa abre un spread real.</p>
+          </div>
+        </li>
+        <li class="wave-toc__item" data-band="ops">
+          <span class="wave-toc__num">07</span>
+          <div class="wave-toc__body">
+            <p class="wave-toc__role">Playbook de deslistar</p>
+            <a class="wave-toc__title" href="/es/blog/30-dias-despues-de-dejar-doordash-caso-restaurante/">30 días después de dejar DoorDash</a>
+            <p class="wave-toc__desc">La forma semana a semana de un deslistar: qué costos flexionan, qué quejas llegan, dónde aterriza la mezcla de canales. Pareja con la #06.</p>
+          </div>
+        </li>
+        <li class="wave-toc__item" data-band="ops">
+          <span class="wave-toc__num">08</span>
+          <div class="wave-toc__body">
+            <p class="wave-toc__role">Cuentas de retención</p>
+            <a class="wave-toc__title" href="/es/blog/programas-de-lealtad-para-restaurantes-independientes-2026/">Programas de lealtad que pagan</a>
+            <p class="wave-toc__desc">Cuatro modelos, precios publicados por los vendors, dónde gana cada uno. La conversación de lealtad está río abajo de la conversación de canal.</p>
+          </div>
+        </li>
+        <li class="wave-toc__item" data-band="ops">
+          <span class="wave-toc__num">09</span>
+          <div class="wave-toc__body">
+            <p class="wave-toc__role">Cuentas de compensación</p>
+            <a class="wave-toc__title" href="/es/blog/cargos-por-servicio-vs-propina-cuentas-para-operador-restaurante-2026/">Cargos por servicio vs propina</a>
+            <p class="wave-toc__desc">Tres modelos, una cuenta de $200. El take-home del mesero varía; el neto del operador varía; el cliente paga aproximadamente lo mismo y siente distinto cada uno.</p>
+          </div>
+        </li>
+      </ol>
+      <p class="wave-toc__legend"><span data-band="search">Citación en búsqueda</span> &middot; <span data-band="social">Descubrimiento social</span> &middot; <span data-band="ops">Operaciones y economía</span></p>
     </section>
 
   <!-- article-takeaways:start -->
@@ -498,6 +583,10 @@ main{padding-top:64px}
 <!-- smart-next:end -->
 
 </main>
+
+<!-- listen-script:start -->
+<script src="/assets/js/listen.js?v=20260503-modsplit" defer></script>
+<!-- listen-script:end -->
 
 <footer><!-- sync-includes.mjs replaces this --></footer>
 
