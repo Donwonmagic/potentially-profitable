@@ -25,6 +25,17 @@ const TARGETS = [
   'es/tools/audits/restaurant/index.html',
 ];
 
+// Endpoints that are part of the shared nav-bar auth-state lookup, NOT the
+// audit pipeline. They live in _includes/nav.html (canonical) and get
+// re-injected by sync-includes.mjs on every build, so any signal we paste
+// in here gets overwritten. The audit-watchdog already covers the audit
+// pipeline; these fire-and-forget UI affordance fetches don't need the
+// same belt-and-suspenders cap.
+const SKIP_PATHS = new Set([
+  '/api/auth/me',
+  '/api/workbench/count',
+]);
+
 const FETCH_RE = /fetch\(\s*(['"`])(\/api\/[^'"`]+)\1/g;
 
 function findOptionsObject(src, fetchEnd) {
@@ -96,11 +107,15 @@ for (const rel of TARGETS) {
   FETCH_RE.lastIndex = 0;
   let m;
   while ((m = FETCH_RE.exec(src))) {
+    const path_ = m[2];
+    // Strip query string before matching against SKIP_PATHS so e.g.
+    // /api/audit-snapshot?token=… counts as /api/audit-snapshot.
+    const pathOnly = path_.split('?')[0];
+    if (SKIP_PATHS.has(pathOnly)) continue;
     scanned++;
     // m.index points to "fetch("; the URL closing quote ends the match
     const afterUrl = FETCH_RE.lastIndex; // just past the closing quote
     const opts = findOptionsObject(src, afterUrl);
-    const path_ = m[2];
     const ln = lineNumber(src, m.index);
     if (!opts) {
       failures.push(`${rel}:${ln}: fetch('${path_}') has no options object — add { signal: MuntinFetchError.safeAbortSignal(MS) }`);
