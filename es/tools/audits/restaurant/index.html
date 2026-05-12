@@ -7094,7 +7094,17 @@ main{padding-top:64px}
   function callPageCrawl(targetUrl) {
     var params = new URLSearchParams();
     params.append('url', targetUrl);
-    return fetch('/api/page-crawl?' + params.toString())
+    // Audit-9 fix (Tacombi hang): client-side 25s cap. The worker
+    // can stall when an origin is slow to first-byte (Wix templates,
+    // some CDN failure modes), and without a client cap the audit
+    // could hang indefinitely on Step 3 — exactly the failure mode
+    // a real user reported on tacombi.com. On timeout we resolve
+    // with the empty-bundle shape so the orchestrator's
+    // Promise.allSettled progresses and the audit gracefully
+    // degrades to "couldn't read your site" rather than spinning.
+    return fetch('/api/page-crawl?' + params.toString(), {
+        signal: MuntinFetchError.safeAbortSignal(25000)
+      })
       .then(function(res){ return res.ok ? res.json() : null; })
       .then(function(data){
         if (!data || !data.ok) return { ok: false, homepage: null, pages: [], candidates: [] };
@@ -7111,7 +7121,14 @@ main{padding-top:64px}
   function callSchemaCheck(targetUrl) {
     var params = new URLSearchParams();
     params.append('url', targetUrl);
-    return fetch('/api/schema-check?' + params.toString())
+    // Audit-9 fix: matching 15s client cap. Schema fetch is typically
+    // fast (~1-3s on healthy origins) but a slow origin can hang
+    // the audit indefinitely without a cap. The lower 15s ceiling
+    // here (vs 25s on page-crawl) reflects that the schema endpoint
+    // makes one fetch vs page-crawl's multi-page traversal.
+    return fetch('/api/schema-check?' + params.toString(), {
+        signal: MuntinFetchError.safeAbortSignal(15000)
+      })
       .then(function(res){ return res.json().catch(function(){ return null; }); })
       .then(function(data){
         if (!data || !data.ok) return { ok: false, validation: null, objects: [] };
@@ -9307,9 +9324,22 @@ main{padding-top:64px}
       // The legacy sub-line under the title used to say "Google is
       // taking longer than usual…" after 33s; keep that affordance
       // since some users see it as global progress reassurance.
+      //
+      // Audit-9 fix (Tacombi hang): once step 2 transitions out of
+      // 'active' (either done or warn — e.g. PSI failed and we're
+      // continuing without it), the slow-warning message becomes
+      // stale and misleading. Reset to the neutral baseline so the
+      // user sees the audit is still moving, not "still waiting
+      // on Google" after Google's part is already over.
       var totalElapsed = (Date.now() - progressStartTime) / 1000;
-      if (loadingSubEl && totalElapsed > PROGRESS_TARGET_SECONDS + 5 && stepStates[2] && stepStates[2].state === 'active') {
-        loadingSubEl.textContent = tr('load.subSlow', "Google is taking longer than usual on this one — still running…");
+      var s2Active = stepStates[2] && stepStates[2].state === 'active';
+      if (loadingSubEl) {
+        if (totalElapsed > PROGRESS_TARGET_SECONDS + 5 && s2Active) {
+          loadingSubEl.textContent = tr('load.subSlow', "Google is taking longer than usual on this one — still running…");
+        } else if (!s2Active && loadingSubEl.textContent === tr('load.subSlow', "Google is taking longer than usual on this one — still running…")) {
+          // Step 2 finished (done or warn) — clear the stale message.
+          loadingSubEl.textContent = tr('load.sub', 'Normalmente tarda de 15 a 40 segundos.');
+        }
       }
       if (!anyActive) {
         clearInterval(progressTimer);
