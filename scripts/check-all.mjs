@@ -135,6 +135,12 @@ const CHECKS = [
   // default link blue — which inline SVGs that use stroke=currentColor
   // (envelope, search, hamburger) inherit, producing a blue-icon flash.
   ['Critical-CSS link color (idem)','inject-critical-link-color.mjs','--check'],
+  // Phase 3C-perf — fonts + above-the-fold skeleton inlined in every
+  // page's critical-CSS <style> block. Mirrors the @font-face rules
+  // and minimal hero/section/footer layout from assets/site.css so
+  // first paint matches the post-CSS-arrival paint and nothing
+  // visibly reflows. Fail-CI from day 1 (drift breaks the lag fix).
+  ['Critical-CSS fonts+skeleton (idem)','inject-critical-fonts.mjs','--check'],
   // Pricing consistency — warn-only during initial rollout. Promotes to
   // --strict once the ~11 inline service-link backlog is worked off
   // (mostly /learn/research/, /learn/topics/, /studio/<city>/ pages

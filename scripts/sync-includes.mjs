@@ -106,7 +106,17 @@ const NAV_RE = /(?:<script>\s*\/\* Platform-aware kbd hint[\s\S]*?<\/script>\s*)
 //
 // Discriminator (foot-grid) keeps us from touching <footer> inside an
 // article body (e.g. a blog byline footer), if one ever shows up.
-const FOOTER_RE = /<footer>[\s\S]*?<div class="foot-grid">[\s\S]*?<\/footer>(?:\s*<script\s+src="\/assets\/js\/(?:first-touch|save-next-time|share-hydrate)\.js"\s+defer><\/script>)*(?:\s*(?:<!--[\s\S]*?(?:Turnstile|challenges\.cloudflare)[\s\S]*?-->|<script\b[^>]*>[\s\S]*?(?:Turnstile|challenges\.cloudflare)[\s\S]*?<\/script>|<script\s+src="https:\/\/challenges\.cloudflare\.com\/turnstile\/v0\/api\.js"[^>]*><\/script>))*/;
+// Anchor the opening `<footer>` to start-of-line. A previous regression
+// (PR #330 added audit JS containing `// the <footer> element` in a
+// comment) made the unanchored pattern match the in-comment `<footer>`
+// and swallow ~7250 lines up to the real footer's `</footer>` —
+// because the non-greedy `[\s\S]*?` will commit to the FIRST `<footer>`
+// it sees. The canonical footer template starts at column 0; the stub
+// `<footer><!-- sync-includes.mjs replaces this --></footer>` form
+// also starts at column 0; any in-prose mention inside scripts or
+// comments has whitespace before it. (?<=\n) covers both cases
+// without needing the more brittle `^` + `m`-flag combination.
+const FOOTER_RE = /(?<=\n)<footer>[\s\S]*?<div class="foot-grid">[\s\S]*?<\/footer>(?:\s*<script\s+src="\/assets\/js\/(?:first-touch|save-next-time|share-hydrate)\.js"\s+defer><\/script>)*(?:\s*(?:<!--[\s\S]*?(?:Turnstile|challenges\.cloudflare)[\s\S]*?-->|<script\b[^>]*>[\s\S]*?(?:Turnstile|challenges\.cloudflare)[\s\S]*?<\/script>|<script\s+src="https:\/\/challenges\.cloudflare\.com\/turnstile\/v0\/api\.js"[^>]*><\/script>))*/;
 
 // Trailing-tail cleanup. The footer template ends with a Cloudflare
 // Turnstile loader (Phase 3B). Until this fix, the loader was outside
