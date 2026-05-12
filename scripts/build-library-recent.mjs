@@ -53,6 +53,13 @@ for (const [slug, t] of Object.entries(tools.tools || {})) {
 
 for (const [slug, post] of Object.entries(tags.blog_posts || {})) {
   if (!post.date) continue;
+  // Wave-collapse: when a weekly batch ships ~10 deep-dives plus an
+  // overview hub, the recents list otherwise reads like a story dump.
+  // Articles flagged hide_from_recents stay in the library/topic
+  // shelves but skip this surface — leaving only the wave's overview
+  // (or whatever single piece is the canonical entry point) to
+  // represent the batch on the homepage strip.
+  if (post.hide_from_recents) continue;
   const url = `/blog/${slug}/`;
   // Prefer the friendly label from tool-knit.json.articles{} so the
   // Recently Added card uses the same short text as the rest of the
