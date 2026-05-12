@@ -320,9 +320,199 @@ header.nav{min-height:64px}
 
     <p>I&rsquo;m using a $42 ticket because that&rsquo;s the rolling-12-month average across both restaurants I manage in the DMV. Your ticket will be different. The percentage spread is what carries the argument, not the dollar amount.</p>
 
-    <figure class="viz-figure article-figure" data-audio-alt="Three platforms, same forty-two dollar ticket, the side-by-side margin walk. DoorDash Marketplace Plus tier at thirty percent commission takes twelve dollars sixty, payment processing takes another dollar forty-three, sponsored-listing promo fee averages a dollar twenty, packaging is a dollar forty, food cost is twenty-eight percent or eleven dollars seventy-six, variable labor is fourteen percent or five dollars eighty-eight, and what stays in the restaurant is seven dollars seventy-three or eighteen point four percent. Uber Eats at the standard thirty percent commission takes twelve dollars sixty, payment processing takes a dollar forty-three through Uber's own gateway, the Uber Eats Pro membership fee adds another dollar five if opted in, packaging is the same dollar forty, food cost is the same eleven dollars seventy-six, variable labor the same five dollars eighty-eight, what stays is six dollars sixty-eight or fifteen point nine percent. Grubhub Premium tier at thirty percent commission takes twelve dollars sixty, processing is a dollar fifty-eight because Grubhub passes the higher rate, the order-relay 'communication fee' adds another seventy-five cents, packaging the same dollar forty, food cost and labor the same, what stays is seven dollars forty or seventeen point six percent. The kept percentage ranges from fifteen point nine percent on Uber Eats Pro to eighteen point four percent on DoorDash Marketplace Plus, a difference of about a dollar five per ticket once you compound the second-tier fees.">
+    <figure class="viz-figure article-figure" data-audio-alt="The DoorDash margin walk on a forty-two dollar Marketplace Plus ticket. Commission at thirty percent takes twelve dollars sixty. Payment processing at three point four percent takes another dollar forty-three. The sponsored-listing promo fee averages a dollar twenty, two point nine percent. Packaging is a dollar forty, three point three percent. Food cost at twenty-eight percent is eleven dollars seventy-six. Variable labor at fourteen percent is five dollars eighty-eight. What stays in the restaurant is seven dollars seventy-three, eighteen point four percent. Drag the slider to swap the commission tier between fifteen and thirty-five percent and watch the kept wedge recompute live.">
+      <div class="viz-waterfall" data-viz-waterfall data-vw-config='{"ticket":42,"variableSeg":"commission","baseRate":0.30,"baseKeep":0.184}'>
+        <p class="viz-waterfall__title">DoorDash &mdash; where a $42 Marketplace Plus ticket goes</p>
+        <div class="viz-waterfall__bar" role="img" aria-label="Stacked breakdown: 30% DoorDash commission, 3.4% payment processing, 2.9% sponsored-listing fee, 3.3% packaging, 28% food cost, 14% labor, 18.4% kept by the restaurant.">
+          <span class="viz-waterfall__seg" data-tone="rust" data-vw-seg="commission" style="--w:0.300">30%</span>
+          <span class="viz-waterfall__seg" data-tone="stone" style="--w:0.034">3%</span>
+          <span class="viz-waterfall__seg" data-tone="stone" style="--w:0.029">3%</span>
+          <span class="viz-waterfall__seg" data-tone="stone" style="--w:0.033">3%</span>
+          <span class="viz-waterfall__seg" data-tone="ink" style="--w:0.280">28%</span>
+          <span class="viz-waterfall__seg" data-tone="ink" style="--w:0.140">14%</span>
+          <span class="viz-waterfall__seg viz-waterfall__seg--keep" data-vw-seg="keep" style="--w:0.184">18.4%</span>
+        </div>
+        <div class="viz-waterfall__legend">
+          <div class="viz-waterfall__row" data-vw-row="commission">
+            <span class="viz-waterfall__swatch" data-tone="rust"></span>
+            <span>DoorDash commission (Marketplace Plus, <span data-vw-display>30</span>%)</span>
+            <span class="viz-waterfall__num">&minus;$<span data-vw-amount>12.60</span></span>
+            <span class="viz-waterfall__pct"><span data-vw-pct>30.0</span>%</span>
+          </div>
+          <div class="viz-waterfall__row">
+            <span class="viz-waterfall__swatch"></span>
+            <span>Payment processing (~3.4%)</span>
+            <span class="viz-waterfall__num">&minus;$1.43</span>
+            <span class="viz-waterfall__pct">3.4%</span>
+          </div>
+          <div class="viz-waterfall__row">
+            <span class="viz-waterfall__swatch"></span>
+            <span>Sponsored-listing / promo fee (avg when opted in)</span>
+            <span class="viz-waterfall__num">&minus;$1.20</span>
+            <span class="viz-waterfall__pct">2.9%</span>
+          </div>
+          <div class="viz-waterfall__row">
+            <span class="viz-waterfall__swatch"></span>
+            <span>Packaging (clamshell, lid, bag, sticker, plasticware)</span>
+            <span class="viz-waterfall__num">&minus;$1.40</span>
+            <span class="viz-waterfall__pct">3.3%</span>
+          </div>
+          <div class="viz-waterfall__row">
+            <span class="viz-waterfall__swatch" data-tone="ink"></span>
+            <span>Food cost (28% of menu price)</span>
+            <span class="viz-waterfall__num">&minus;$11.76</span>
+            <span class="viz-waterfall__pct">28.0%</span>
+          </div>
+          <div class="viz-waterfall__row">
+            <span class="viz-waterfall__swatch" data-tone="ink"></span>
+            <span>Variable labor (line cook, runner, ~14%)</span>
+            <span class="viz-waterfall__num">&minus;$5.88</span>
+            <span class="viz-waterfall__pct">14.0%</span>
+          </div>
+          <div class="viz-waterfall__row" data-keep="true" data-vw-row="keep">
+            <span class="viz-waterfall__swatch" data-tone="teal"></span>
+            <span>What stays in the restaurant</span>
+            <span class="viz-waterfall__num">$<span data-vw-amount>7.73</span></span>
+            <span class="viz-waterfall__pct"><span data-vw-pct>18.4</span>%</span>
+          </div>
+        </div>
+        <div class="viz-slider">
+          <div class="viz-slider__label">
+            <span class="viz-slider__title">DoorDash commission rate</span>
+            <span class="viz-slider__readout"><span data-vw-display>30</span>%</span>
+          </div>
+          <input type="range" min="15" max="35" step="1" value="30" data-vw-slider aria-label="DoorDash commission rate, percent">
+          <p class="viz-slider__hint">Marketplace tiers: <b>Basic 15%</b>, <b>Plus 25%</b>, <b>Premier 30%</b>. Most independents pay 30%; volume negotiates a point or two off, no more.</p>
+        </div>
+      </div>
+      <figcaption>Drag the slider to swap the commission tier. The teal wedge is your keep &mdash; everything else is somebody else&rsquo;s revenue.</figcaption>
+    </figure>
+
+    <figure class="viz-figure article-figure" data-audio-alt="The Uber Eats Pro margin walk on the same forty-two dollar ticket. Commission at thirty percent takes twelve dollars sixty. Payment processing through Uber's own gateway takes a dollar forty-three, three point four percent. The Uber Eats Pro membership fee on opted-in orders takes two dollars twenty-five, five point four percent. Packaging is a dollar forty, three point three percent. Food cost at twenty-eight percent is eleven dollars seventy-six. Variable labor at fourteen percent is five dollars eighty-eight. What stays in the restaurant is six dollars sixty-eight, fifteen point nine percent. The Pro membership is the line item that swings Uber Eats below DoorDash on the same ticket.">
+      <div class="viz-waterfall">
+        <p class="viz-waterfall__title">Uber Eats Pro &mdash; the same $42 ticket</p>
+        <div class="viz-waterfall__bar" role="img" aria-label="Stacked breakdown: 30% Uber Eats commission, 3.4% processing, 5.4% Pro membership fee, 3.3% packaging, 28% food cost, 14% labor, 15.9% kept.">
+          <span class="viz-waterfall__seg" data-tone="rust" style="--w:0.300">30%</span>
+          <span class="viz-waterfall__seg" data-tone="stone" style="--w:0.034">3%</span>
+          <span class="viz-waterfall__seg" data-tone="stone" style="--w:0.054">5%</span>
+          <span class="viz-waterfall__seg" data-tone="stone" style="--w:0.033">3%</span>
+          <span class="viz-waterfall__seg" data-tone="ink" style="--w:0.280">28%</span>
+          <span class="viz-waterfall__seg" data-tone="ink" style="--w:0.140">14%</span>
+          <span class="viz-waterfall__seg viz-waterfall__seg--keep" style="--w:0.159">15.9%</span>
+        </div>
+        <div class="viz-waterfall__legend">
+          <div class="viz-waterfall__row">
+            <span class="viz-waterfall__swatch" data-tone="rust"></span>
+            <span>Uber Eats commission (standard, 30%)</span>
+            <span class="viz-waterfall__num">&minus;$12.60</span>
+            <span class="viz-waterfall__pct">30.0%</span>
+          </div>
+          <div class="viz-waterfall__row">
+            <span class="viz-waterfall__swatch"></span>
+            <span>Payment processing (Uber gateway, ~3.4%)</span>
+            <span class="viz-waterfall__num">&minus;$1.43</span>
+            <span class="viz-waterfall__pct">3.4%</span>
+          </div>
+          <div class="viz-waterfall__row">
+            <span class="viz-waterfall__swatch"></span>
+            <span>Uber Eats Pro membership (per opted-in order)</span>
+            <span class="viz-waterfall__num">&minus;$2.25</span>
+            <span class="viz-waterfall__pct">5.4%</span>
+          </div>
+          <div class="viz-waterfall__row">
+            <span class="viz-waterfall__swatch"></span>
+            <span>Packaging</span>
+            <span class="viz-waterfall__num">&minus;$1.40</span>
+            <span class="viz-waterfall__pct">3.3%</span>
+          </div>
+          <div class="viz-waterfall__row">
+            <span class="viz-waterfall__swatch" data-tone="ink"></span>
+            <span>Food cost (28%)</span>
+            <span class="viz-waterfall__num">&minus;$11.76</span>
+            <span class="viz-waterfall__pct">28.0%</span>
+          </div>
+          <div class="viz-waterfall__row">
+            <span class="viz-waterfall__swatch" data-tone="ink"></span>
+            <span>Variable labor (~14%)</span>
+            <span class="viz-waterfall__num">&minus;$5.88</span>
+            <span class="viz-waterfall__pct">14.0%</span>
+          </div>
+          <div class="viz-waterfall__row" data-keep="true">
+            <span class="viz-waterfall__swatch" data-tone="teal"></span>
+            <span>What stays in the restaurant</span>
+            <span class="viz-waterfall__num">$6.68</span>
+            <span class="viz-waterfall__pct">15.9%</span>
+          </div>
+        </div>
+      </div>
+      <figcaption>The Pro membership is opt-in on paper and required in practice &mdash; turn it off and the in-app placement vanishes.</figcaption>
+    </figure>
+
+    <figure class="viz-figure article-figure" data-audio-alt="The Grubhub Premium margin walk on the same forty-two dollar ticket. Commission at thirty percent takes twelve dollars sixty. Payment processing takes a dollar fifty-eight, three point eight percent, because Grubhub passes the higher card-not-present rate. The order-relay communication fee is non-opt-in and adds a dollar thirty-eight, three point three percent. Packaging is a dollar forty. Food cost at twenty-eight percent is eleven dollars seventy-six. Variable labor at fourteen percent is five dollars eighty-eight. What stays in the restaurant is seven dollars forty, seventeen point six percent. The communication fee is the line you cannot decline.">
+      <div class="viz-waterfall">
+        <p class="viz-waterfall__title">Grubhub Premium &mdash; the same $42 ticket</p>
+        <div class="viz-waterfall__bar" role="img" aria-label="Stacked breakdown: 30% Grubhub commission, 3.8% processing, 3.3% communication fee, 3.3% packaging, 28% food cost, 14% labor, 17.6% kept.">
+          <span class="viz-waterfall__seg" data-tone="rust" style="--w:0.300">30%</span>
+          <span class="viz-waterfall__seg" data-tone="stone" style="--w:0.038">4%</span>
+          <span class="viz-waterfall__seg" data-tone="stone" style="--w:0.033">3%</span>
+          <span class="viz-waterfall__seg" data-tone="stone" style="--w:0.033">3%</span>
+          <span class="viz-waterfall__seg" data-tone="ink" style="--w:0.280">28%</span>
+          <span class="viz-waterfall__seg" data-tone="ink" style="--w:0.140">14%</span>
+          <span class="viz-waterfall__seg viz-waterfall__seg--keep" style="--w:0.176">17.6%</span>
+        </div>
+        <div class="viz-waterfall__legend">
+          <div class="viz-waterfall__row">
+            <span class="viz-waterfall__swatch" data-tone="rust"></span>
+            <span>Grubhub commission (Premium, 30%)</span>
+            <span class="viz-waterfall__num">&minus;$12.60</span>
+            <span class="viz-waterfall__pct">30.0%</span>
+          </div>
+          <div class="viz-waterfall__row">
+            <span class="viz-waterfall__swatch"></span>
+            <span>Payment processing (~3.8%, higher pass-through)</span>
+            <span class="viz-waterfall__num">&minus;$1.58</span>
+            <span class="viz-waterfall__pct">3.8%</span>
+          </div>
+          <div class="viz-waterfall__row">
+            <span class="viz-waterfall__swatch"></span>
+            <span>Order-relay &ldquo;communication fee&rdquo; (non-opt-in)</span>
+            <span class="viz-waterfall__num">&minus;$1.38</span>
+            <span class="viz-waterfall__pct">3.3%</span>
+          </div>
+          <div class="viz-waterfall__row">
+            <span class="viz-waterfall__swatch"></span>
+            <span>Packaging</span>
+            <span class="viz-waterfall__num">&minus;$1.40</span>
+            <span class="viz-waterfall__pct">3.3%</span>
+          </div>
+          <div class="viz-waterfall__row">
+            <span class="viz-waterfall__swatch" data-tone="ink"></span>
+            <span>Food cost (28%)</span>
+            <span class="viz-waterfall__num">&minus;$11.76</span>
+            <span class="viz-waterfall__pct">28.0%</span>
+          </div>
+          <div class="viz-waterfall__row">
+            <span class="viz-waterfall__swatch" data-tone="ink"></span>
+            <span>Variable labor (~14%)</span>
+            <span class="viz-waterfall__num">&minus;$5.88</span>
+            <span class="viz-waterfall__pct">14.0%</span>
+          </div>
+          <div class="viz-waterfall__row" data-keep="true">
+            <span class="viz-waterfall__swatch" data-tone="teal"></span>
+            <span>What stays in the restaurant</span>
+            <span class="viz-waterfall__num">$7.40</span>
+            <span class="viz-waterfall__pct">17.6%</span>
+          </div>
+        </div>
+      </div>
+      <figcaption>Grubhub&rsquo;s communication fee is the one nobody negotiated &mdash; it lands on every order, every time.</figcaption>
+    </figure>
+
+    <p>The DoorDash row is repeated from my earlier <a href="/blog/an-honest-doordash-math-for-independent-restaurants-2026/" style="color:var(--teal)">DoorDash margin walk</a>. The headline numbers are about the same across the three platforms. The story is in the spread &mdash; eighteen point four to fifteen point nine percent &mdash; and where that spread comes from.</p>
+
+    <figure class="viz-figure article-figure" data-audio-alt="The summary view, side by side: on a forty-two dollar ticket DoorDash Marketplace Plus keeps seven dollars seventy-three or eighteen point four percent. Grubhub Premium keeps seven dollars forty or seventeen point six percent. Uber Eats Pro keeps six dollars sixty-eight or fifteen point nine percent. Direct, on your own website with your own checkout, keeps twelve dollars fifteen or twenty-eight point nine percent. Direct keeps more than four dollars per ticket above the best third-party tier.">
       <div class="viz-bars">
-        <p class="viz-bars__title">What stays in the restaurant on a $42 third-party ticket, by platform</p>
+        <p class="viz-bars__title">What stays in the restaurant on a $42 ticket &mdash; summary</p>
         <div class="viz-bars__row">
           <p class="viz-bars__label">DoorDash Marketplace Plus (30%)</p>
           <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.184"></span></div>
@@ -346,8 +536,6 @@ header.nav{min-height:64px}
       </div>
       <figcaption>Same $42 ticket, same kitchen, same labor &mdash; what changes is the platform&rsquo;s incidental-fee stack. Direct keeps an order more than $4 better than the best third-party tier.</figcaption>
     </figure>
-
-    <p>The DoorDash row is repeated from my earlier <a href="/blog/an-honest-doordash-math-for-independent-restaurants-2026/" style="color:var(--teal)">DoorDash margin walk</a>. The headline numbers are about the same across the three platforms. The story is in the spread &mdash; eighteen point four to fifteen point nine percent &mdash; and where that spread comes from.</p>
 
     <h2>Where the spread actually comes from</h2>
 
@@ -380,6 +568,33 @@ header.nav{min-height:64px}
     <p>If you&rsquo;re on all three: pull a Grubhub partner statement for the last 90 days. Calculate the contribution margin (revenue minus the full third-party fee stack minus your variable cost per order). Compare to the direct-channel contribution on the same restaurant. If Grubhub is contributing less than 8% of total third-party volume and your direct channel has any pulse at all, the move is straightforward. Pause, watch the channel mix for a quarter, then delist if the pause held.</p>
 
     <p>If you&rsquo;re on two: the question is whether to drop to one. The math says yes most of the time, but the political cost of phantom listings (Grubhub especially) and the operator time needed to police your menu across two platforms vs one are real, just less measurable. I keep DoorDash on both restaurants because the kept-percent is the highest. I drop the second platform restaurant-by-restaurant based on the local discovery surface.</p>
+
+    <div class="snippet-box" data-tone="bad">
+      <span class="snippet-label">The line the spreadsheet won&rsquo;t print</span>
+      <p>The 30% commission is on the menu price, not the take-home. Every $42 third-party ticket walks out of the kitchen owing $12.60 to the platform before you&rsquo;ve paid for the chicken.</p>
+    </div>
+
+    <figure class="viz-figure article-figure" data-audio-alt="The twelve-month headline commission-rate trend across the three platforms. DoorDash Marketplace Plus is flat at thirty percent. Uber Eats standard is flat at thirty percent. Grubhub Premium is flat at thirty percent. The headline rate has not moved since 2023. Tier discounts in either direction move the effective rate by five points; the platforms negotiate on the second-layer fees, not the headline.">
+      <div class="viz-bars">
+        <p class="viz-bars__title">Headline commission rate, rolling 12 months</p>
+        <div class="viz-bars__row">
+          <p class="viz-bars__label">DoorDash Marketplace Plus</p>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.30"></span></div>
+          <p class="viz-bars__num">30% &middot; flat</p>
+        </div>
+        <div class="viz-bars__row">
+          <p class="viz-bars__label">Uber Eats standard</p>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.30"></span></div>
+          <p class="viz-bars__num">30% &middot; flat</p>
+        </div>
+        <div class="viz-bars__row">
+          <p class="viz-bars__label">Grubhub Premium</p>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.30"></span></div>
+          <p class="viz-bars__num">30% &middot; flat</p>
+        </div>
+      </div>
+      <figcaption>Tier discounts move the effective rate &plusmn;5%; the headline rate has been flat since 2023. The platforms negotiate the second-layer fees, not the headline.</figcaption>
+    </figure>
 
     <div class="callout">
       <p><strong>The platforms aren&rsquo;t marketing.</strong> They&rsquo;re a 30%-margin tax for ~20% incremental revenue. Treat them like the discovery-tax they are, run one (or at most two), and put the saved discipline into converting third-party guests to direct on their second order.</p>
@@ -476,6 +691,11 @@ header.nav{min-height:64px}
 </main>
 
 <footer><!-- sync-includes.mjs replaces this --></footer>
+
+<!-- Article viz module — drives the interactive cost-waterfall +
+     commission slider above. Defer-loaded; bails cleanly if the
+     widget markup is absent. -->
+<script src="/assets/article-viz.js" defer></script>
 
 </body>
 </html>

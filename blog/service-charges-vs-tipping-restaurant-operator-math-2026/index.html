@@ -330,11 +330,112 @@ header.nav{min-height:64px}
 
     <p>Take a $200 pre-tax dinner check at an independent DMV restaurant &mdash; close to the rolling-12 <a href="/glossary/average-check/" style="color:var(--teal)">average check</a> for two at the higher end of casual-fine. Two guests, two cocktails each, two entrees, one shared dessert, two coffees. Compare what the server, the restaurant, and the guest each see across the three models.</p>
 
-    <figure class="viz-figure article-figure" data-audio-alt="A two-hundred-dollar pre-tax dinner check, three compensation models, side by side. Model one, traditional tipping: the guest sees a two hundred dollar subtotal plus fifteen dollars sales tax, total two-fifteen, plus a tip line at suggested twenty percent or forty dollars. Server take-home, assuming standard tip-pool: thirty-two dollars cash. Restaurant net revenue after labor: seventy-three dollars at twelve percent operating margin. Customer total out the door: two hundred fifty-five dollars. Model two, twenty percent service charge: guest sees the same two hundred dollar subtotal, fifteen dollars sales tax, plus a forty dollar service charge listed clearly. Total: two fifty-five. Server take-home, assuming a sixty-five-thirty-five split with the kitchen: twenty-six dollars cash. Restaurant net revenue after labor: seventy-eight dollars. Customer total out the door: two fifty-five, same as model one but psychologically different because the guest had no choice. Model three, hybrid with five percent menu lift and zero suggested tip: guest sees a two hundred ten subtotal, fifteen seventy-five sales tax, no service charge, tip line suggested at zero. Total before optional tip: two twenty-five seventy-five. Server take-home at a higher posted hourly of twenty-two dollars per hour, on a five-hour service: roughly twenty-five dollars from the hourly plus any voluntary tip. If average voluntary tip on a hybrid model runs at five percent, server adds ten more dollars, take-home thirty-five total. Restaurant net revenue after labor: seventy-one dollars. Customer total out the door: two thirty-six or two forty-six depending on whether they tip. The verdict: model two, the twenty percent service charge, gives the operator and the kitchen the cleanest math at the cost of a slightly lower server take-home, while model three, the hybrid, has the most operator complexity for the smallest measurable lift.">
+    <p>Start with Model 2, the 20% service charge, because it has the cleanest breakdown. The check carries five line items behind the scenes: food cost, back-of-house labor, the service charge that distributes to FOH, other operating costs, and what stays as restaurant net. The slider below lets you swap the service-charge rate from 15 to 25 percent and watch the kept share recompute. The default is the posted 20%.</p>
+
+    <figure class="viz-figure article-figure" data-audio-alt="A two-hundred-dollar dinner check under Model 2, the twenty percent service charge. Food cost at twenty-eight percent: fifty-six dollars. Back-of-house labor at ten percent: twenty dollars. Service charge to front-of-house at twenty percent: forty dollars, the variable segment. Other operating at twelve percent: twenty-four dollars. Restaurant net: sixty dollars, or thirty percent. Drag the slider to swap the service-charge rate from fifteen to twenty-five percent and watch the restaurant net recompute against it.">
+      <div class="viz-waterfall" data-viz-waterfall data-vw-config='{"ticket":200,"variableSeg":"service","baseRate":0.20,"baseKeep":0.30}'>
+        <p class="viz-waterfall__title">Where each dollar of a $200 dinner check goes &mdash; Model 2, 20% service charge</p>
+        <div class="viz-waterfall__bar" role="img" aria-label="Stacked breakdown of a $200 check under Model 2: 28% food cost, 10% BOH labor, 20% service charge to FOH, 12% other operating, 30% restaurant net.">
+          <span class="viz-waterfall__seg" data-tone="ink" style="--w:0.280">28%</span>
+          <span class="viz-waterfall__seg" data-tone="ink" style="--w:0.100">10%</span>
+          <span class="viz-waterfall__seg" data-tone="rust" data-vw-seg="service" style="--w:0.200">20%</span>
+          <span class="viz-waterfall__seg" data-tone="stone" style="--w:0.120">12%</span>
+          <span class="viz-waterfall__seg viz-waterfall__seg--keep" data-vw-seg="keep" style="--w:0.300">30%</span>
+        </div>
+        <div class="viz-waterfall__legend">
+          <div class="viz-waterfall__row">
+            <span class="viz-waterfall__swatch" data-tone="ink"></span>
+            <span>Food cost (28% of ticket, kitchen-side)</span>
+            <span class="viz-waterfall__num">&minus;$56.00</span>
+            <span class="viz-waterfall__pct">28.0%</span>
+          </div>
+          <div class="viz-waterfall__row">
+            <span class="viz-waterfall__swatch" data-tone="ink"></span>
+            <span>Back-of-house labor (line cook, prep, dish, ~10%)</span>
+            <span class="viz-waterfall__num">&minus;$20.00</span>
+            <span class="viz-waterfall__pct">10.0%</span>
+          </div>
+          <div class="viz-waterfall__row" data-vw-row="service">
+            <span class="viz-waterfall__swatch" data-tone="rust"></span>
+            <span>Service charge to FOH (<span data-vw-display>20</span>%, distributed per posted policy)</span>
+            <span class="viz-waterfall__num">&minus;$<span data-vw-amount>40.00</span></span>
+            <span class="viz-waterfall__pct"><span data-vw-pct>20.0</span>%</span>
+          </div>
+          <div class="viz-waterfall__row">
+            <span class="viz-waterfall__swatch"></span>
+            <span>Other operating (rent, utilities, insurance amortized, ~12%)</span>
+            <span class="viz-waterfall__num">&minus;$24.00</span>
+            <span class="viz-waterfall__pct">12.0%</span>
+          </div>
+          <div class="viz-waterfall__row" data-keep="true" data-vw-row="keep">
+            <span class="viz-waterfall__swatch" data-tone="teal"></span>
+            <span>Restaurant net</span>
+            <span class="viz-waterfall__num">$<span data-vw-amount>60.00</span></span>
+            <span class="viz-waterfall__pct"><span data-vw-pct>30.0</span>%</span>
+          </div>
+        </div>
+        <div class="viz-slider">
+          <div class="viz-slider__label">
+            <span class="viz-slider__title">Service-charge rate</span>
+            <span class="viz-slider__readout"><span data-vw-display>20</span>%</span>
+          </div>
+          <input type="range" min="15" max="25" step="1" value="20" data-vw-slider aria-label="Service charge rate, percent">
+          <p class="viz-slider__hint">DMV posting norms: <b>15%</b> (rare, lunch only), <b>18%</b> (small operators), <b>20%</b> (the prevailing posted rate), <b>22&ndash;25%</b> (upper end, mostly fine-dining). The teal segment is the restaurant&rsquo;s net.</p>
+        </div>
+      </div>
+      <figcaption>Drag the slider. At 20% posted, the restaurant nets $60 on a $200 check. At 25%, $70. At 15%, $50 &mdash; the operator subsidizes the gap.</figcaption>
+    </figure>
+
+    <h2>Where the perception swing actually lives</h2>
+
+    <p>The three models cost the customer about the same. Where they differ is in how the customer reads the check. The service-charge model is the cleanest on paper but draws the most customer complaints &mdash; the per-occurrence complaint rate at the service-charge restaurant I manage is roughly 1.4% of checks, vs 0.2% at the traditional-tipping restaurant across the same time window. The complaints are mild &mdash; a one-star Google review every two months, the occasional &ldquo;I didn&rsquo;t see the charge&rdquo; at the table &mdash; but they&rsquo;re real and they&rsquo;re consistent.</p>
+
+    <p>The hybrid model has the lowest complaint rate but the most operator-side complexity. You have to train the FOH on the &ldquo;please tip if you&rsquo;d like, it&rsquo;s already included&rdquo; conversation, your POS has to be configured to suggest zero, and the menu price lift has to be matched by visible quality cues or it reads as a stealth price hike. The DC restaurants I&rsquo;ve audited that run hybrid models tell me the operator-time cost of hybrid is roughly twice that of the other two models, ongoing.</p>
+
+    <div class="snippet-box" data-tone="good">
+      <span class="snippet-label">Question I get every week</span>
+      <p><strong>&ldquo;Is the 20% service charge a tip?&rdquo;</strong> No. A tip is a voluntary gratuity that flows directly to the server under federal and DC tip-credit rules. A service charge is restaurant revenue, distributed by the operator to FOH and BOH under a posted policy, subject to ordinary income tax and payroll treatment. The DC Office of Wage-Hour and the IRS both treat the two differently &mdash; that distinction is the entire compliance argument for the service charge.</p>
+    </div>
+
+    <p>Setting perception aside, the question every server asks me is the one operators don&rsquo;t want to answer directly: what do I walk out with at the end of a five-hour service on a check like this? Here is the take-home, the same $200 dinner check, three models, dollars on the bar.</p>
+
+    <figure class="viz-figure article-figure" data-audio-alt="Front-of-house take-home per server on the same two-hundred-dollar dinner check, three models. Model one, traditional tipping: thirty-two dollars, all variable, all tip. Model two, twenty percent service charge: twenty-six dollars, a sixty-five percent FOH share of a forty-dollar service charge. Model three, hybrid with five percent menu lift: thirty-five dollars, twenty-five from the higher posted hourly and ten from voluntary tips at a five percent average. The hybrid pays the server most on a single check; the service charge pays the server most consistently across slow nights.">
+      <div class="viz-bars">
+        <p class="viz-bars__title">Front-of-house take-home per server, same $200 check</p>
+        <div class="viz-bars__row">
+          <p class="viz-bars__label">Traditional tipping (tip-pool 20%)</p>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.914"></span></div>
+          <p class="viz-bars__num">$32 server take-home</p>
+        </div>
+        <div class="viz-bars__row">
+          <p class="viz-bars__label">20% service charge (65% FOH share)</p>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.743"></span></div>
+          <p class="viz-bars__num">$26 server take-home</p>
+        </div>
+        <div class="viz-bars__row">
+          <p class="viz-bars__label">Hybrid (5% menu lift + ~5% voluntary tip)</p>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:1.0"></span></div>
+          <p class="viz-bars__num">$35 server take-home</p>
+        </div>
+      </div>
+      <figcaption>The hybrid pays most on a busy night. The service charge pays most consistently across a slow Tuesday. Traditional tipping is the middle, with the widest variance.</figcaption>
+    </figure>
+
+    <h2>What I&rsquo;d pick if I were opening today</h2>
+
+    <p>The 20% service charge, posted clearly on the menu and on the door. Three reasons.</p>
+
+    <p>One: the math is simplest. The operator and the kitchen get the cleanest revenue distribution, the server compensation is more stable across slow and busy nights, and the back-of-house cooks finally get a measurable share of the service-side dollars they previously didn&rsquo;t see &mdash; a real argument for kitchen-retention in an industry where line-cook turnover is the dominant cost.</p>
+
+    <p>Two: the legal frame is simplest. The DC Office of Wage-Hour treats service charges as restaurant revenue, distributed at the operator&rsquo;s discretion under a posted policy. That&rsquo;s a clean compliance lane. Traditional tipping post-Initiative-82 is more complex compliance-wise because the operator has to absorb the prevailing-wage gap at full freight; hybrid models invite scrutiny on the &ldquo;already included&rdquo; line.</p>
+
+    <p>Three: it forces the operator&rsquo;s honesty about what the meal costs. The price on the menu plus the service charge is the price of the meal. Tipping let operators publish a menu price that lied to the guest about what they&rsquo;d actually pay. The service-charge model puts the real price on the check, which is the right thing to do regardless of compliance.</p>
+
+    <figure class="viz-figure article-figure" data-audio-alt="The three models side by side on the same two-hundred-dollar check, summarizing both sides of the bar. Model one, traditional tipping: thirty-two dollars to the server, seventy-three dollars net to the restaurant. Model two, twenty percent service charge: twenty-six dollars to the server, seventy-eight dollars net to the restaurant — five dollars more to the restaurant. Model three, hybrid: thirty-five dollars to the server, seventy-one dollars net to the restaurant — the highest server take-home and the lowest restaurant net. Server take-home varies nine dollars across the three. Restaurant net varies seven dollars.">
       <div class="viz-bars">
         <p class="viz-bars__title">What the $200 dinner check returns to each party, by model</p>
         <div class="viz-bars__row">
-          <p class="viz-bars__label">Traditional tipping &mdash; server take-home</p>
+          <p class="viz-bars__label">Traditional tipping</p>
           <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.914"></span></div>
           <p class="viz-bars__num">$32 server &middot; $73 restaurant net</p>
         </div>
@@ -349,24 +450,8 @@ header.nav{min-height:64px}
           <p class="viz-bars__num">$35 server &middot; $71 restaurant net</p>
         </div>
       </div>
-      <figcaption>Same $200 check, three models. Server take-home varies $9. Restaurant net varies $7. Customer pays roughly the same all three ways, but feels different about it.</figcaption>
+      <figcaption>Same $200 check, three models, both sides of the bar. Server take-home varies $9. Restaurant net varies $7. Customer pays roughly the same all three ways.</figcaption>
     </figure>
-
-    <h2>Where the perception swing actually lives</h2>
-
-    <p>The three models cost the customer about the same. Where they differ is in how the customer reads the check. The service-charge model is the cleanest on paper but draws the most customer complaints &mdash; the per-occurrence complaint rate at the service-charge restaurant I manage is roughly 1.4% of checks, vs 0.2% at the traditional-tipping restaurant across the same time window. The complaints are mild &mdash; a one-star Google review every two months, the occasional &ldquo;I didn&rsquo;t see the charge&rdquo; at the table &mdash; but they&rsquo;re real and they&rsquo;re consistent.</p>
-
-    <p>The hybrid model has the lowest complaint rate but the most operator-side complexity. You have to train the FOH on the &ldquo;please tip if you&rsquo;d like, it&rsquo;s already included&rdquo; conversation, your POS has to be configured to suggest zero, and the menu price lift has to be matched by visible quality cues or it reads as a stealth price hike. The DC restaurants I&rsquo;ve audited that run hybrid models tell me the operator-time cost of hybrid is roughly twice that of the other two models, ongoing.</p>
-
-    <h2>What I&rsquo;d pick if I were opening today</h2>
-
-    <p>The 20% service charge, posted clearly on the menu and on the door. Three reasons.</p>
-
-    <p>One: the math is simplest. The operator and the kitchen get the cleanest revenue distribution, the server compensation is more stable across slow and busy nights, and the back-of-house cooks finally get a measurable share of the service-side dollars they previously didn&rsquo;t see &mdash; a real argument for kitchen-retention in an industry where line-cook turnover is the dominant cost.</p>
-
-    <p>Two: the legal frame is simplest. The DC Office of Wage-Hour treats service charges as restaurant revenue, distributed at the operator&rsquo;s discretion under a posted policy. That&rsquo;s a clean compliance lane. Traditional tipping post-Initiative-82 is more complex compliance-wise because the operator has to absorb the prevailing-wage gap at full freight; hybrid models invite scrutiny on the &ldquo;already included&rdquo; line.</p>
-
-    <p>Three: it forces the operator&rsquo;s honesty about what the meal costs. The price on the menu plus the service charge is the price of the meal. Tipping let operators publish a menu price that lied to the guest about what they&rsquo;d actually pay. The service-charge model puts the real price on the check, which is the right thing to do regardless of compliance.</p>
 
     <h2>What I&rsquo;d watch for if I&rsquo;m running one already</h2>
 
@@ -375,6 +460,15 @@ header.nav{min-height:64px}
     <p>If you&rsquo;re running traditional tipping, the next eighteen months are the harder ones &mdash; the prevailing-wage gap will widen as Initiative 82 fully phases in, and your fixed labor cost will rise. The decision to migrate to a service charge is easier to make at a model-change moment (a renovation, a menu rewrite, a new concept) than mid-stream. Plan it for the next inflection point you have.</p>
 
     <p>If you&rsquo;re running hybrid, audit your average voluntary tip rate. If it&rsquo;s below 4%, the model isn&rsquo;t working as designed &mdash; your server is taking home the menu-lift hourly but losing the variable upside that the hybrid was supposed to preserve. Migrate to clean service charge.</p>
+
+    <div class="callout">
+      <p class="callout-eyebrow">Where each model breaks</p>
+      <div class="callout-body">
+        <p style="margin:0 0 10px"><strong>Model 1, traditional tipping, breaks in low-tip seasons.</strong> January and February in the DMV: cover counts soft, tip percentages soft, server hourly fixed at the prevailing wage. Your FOH walks out with $18 a shift instead of $32, the back-of-house sees none of it either way, and your best two servers start asking about the place down the street.</p>
+        <p style="margin:0 0 10px"><strong>Model 2, the 20% service charge, breaks when guests confuse the charge with tax.</strong> The line item lives below the subtotal next to sales tax, the guest reads &ldquo;20%&rdquo; as &ldquo;a fee the government made them collect,&rdquo; and the one-star reviews start. Fix is signage and a posted distribution policy &mdash; but if the signage is missing, complaint rate runs 1.4% of checks instead of 0.5%.</p>
+        <p style="margin:0"><strong>Model 3, the hybrid, breaks when servers compare hourly with peers.</strong> Your server at $22/hour reads the Glassdoor thread for the tipping restaurant two blocks over where the same five-hour shift returns $32 on a good night, decides the menu lift ate their upside, and gives notice. The hybrid only holds together if voluntary tip averages at least 4% &mdash; below that, it&rsquo;s a stealth pay cut dressed as a raise.</p>
+      </div>
+    </div>
 
     <div class="callout">
       <p><strong>This is mostly a math question, not a values question.</strong> The math says service charge is the cleanest for kitchen-retention and operator simplicity. The values argument cuts both ways depending on who you ask &mdash; some servers prefer the variable upside of tipping, some prefer the stability of a service charge. Both have legitimate reasons. The compliance frame, post-Initiative 82, makes the service charge the lower-friction operating choice.</p>
@@ -471,5 +565,6 @@ header.nav{min-height:64px}
 
 <footer><!-- sync-includes.mjs replaces this --></footer>
 
+<script src="/assets/article-viz.js" defer></script>
 </body>
 </html>
