@@ -49,7 +49,10 @@ const SKIP_DIRS = new Set(['node_modules', '.git', '.github', 'dist', '.wrangler
 const ALLOW_FILES = new Set([
   path.join(repoRoot, 'scripts/check-newsletter-copy.mjs'),
   path.join(repoRoot, 'tools/audits/restaurant/restaurant-checks.js'),
-  path.join(repoRoot, 'es/tools/audits/restaurant/restaurant-checks.js'),
+  // The ES mirror at es/tools/audits/restaurant/restaurant-checks.js
+  // was deleted in commit c1f6c9d0 (the ES page loads the canonical
+  // /tools/audits/restaurant/restaurant-checks.js directly). Stale
+  // allowlist entry removed.
 ]);
 
 function* walk(dir) {

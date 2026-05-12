@@ -37,6 +37,28 @@ function shellHash(name) {
 }
 const SHELL_HASH = { core: shellHash('site-core.css'), article: shellHash('site-article.css') };
 
+
+// Strip injector-stamped blocks before comparison so they don't trip
+// the generator's check-mode drift detector. The generator emits the
+// raw template; downstream injectors (batch-banner, perf-critical
+// CSS+@font-face) modify the page later. Both must be normalised
+// away for the diff to compare apples-to-apples.
+function normalizeBatchBanner(html) {
+  return html
+    .replace(/<!-- batch-banner:start -->[\s\S]*?<!-- batch-banner:end -->/, '<!-- batch-banner:start --><!-- batch-banner:end -->')
+    // Strip the perf-critical block (added by inject-critical-fonts.mjs).
+    // Anchor on the sentinel and consume through the closing </style>.
+    .replace(/\/\* perf-critical \*\/[\s\S]*?(?=<\/style>)/, '')
+    // Normalize both the eager `<script src=... defer>` form and the
+    // idle-loader form (added by inject-lazy-script-loader.mjs) to
+    // a placeholder so the generator's template-emitted script tag
+    // and the on-disk lazy-loader compare equal.
+    .replace(/<!-- lazy-load:p -->[\s\S]*?<!-- \/lazy-load:p -->/g, '<!--script:p-->')
+    .replace(/<script\s+src="\/assets\/p\.js(?:\?v=[^"]*)?"\s+defer><\/script>/g, '<!--script:p-->')
+    .replace(/<!-- lazy-load:site -->[\s\S]*?<!-- \/lazy-load:site -->/g, '<!--script:site-->')
+    .replace(/<script\s+src="\/assets\/site\.js(?:\?v=[^"]*)?"\s+defer><\/script>/g, '<!--script:site-->');
+}
+
 const checkMode  = process.argv.includes('--check');
 
 // ---- Load themes + credits via a tiny vm-like sandbox --------------
@@ -306,6 +328,18 @@ a{color:inherit}
 .btn-primary{background:var(--ink);color:var(--cream)}
 .btn-ghost{background:transparent;color:var(--ink);border:1px solid #D9D5CB}
 header.nav{min-height:64px}
+/* nav-critical */
+.nav{position:fixed;top:0;left:0;right:0;background:var(--cream);z-index:50;border-bottom:1px solid #E8E2D6}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:64px;padding:12px 0}
+.logo{display:flex;align-items:center;gap:10px;font-family:Georgia,serif;font-size:22px;font-weight:600;letter-spacing:-0.02em;flex-shrink:0;white-space:nowrap;color:inherit;text-decoration:none}
+.logo-mark{width:28px;height:28px;flex:0 0 28px}
+.tm{font-size:0.5em;vertical-align:super;margin-left:1px}
+.nav-links{display:flex;gap:36px;font-size:15px}
+.nav-links a{text-decoration:none;color:inherit}
+.nav-toggle{display:none}
+.nav-search-btn,.lang-switch{display:none}
+@media (max-width:1100px){.nav-links{display:none}.nav-toggle{display:flex;width:44px;height:44px;flex-direction:column;justify-content:center;align-items:center;gap:5px;background:transparent;border:0;padding:0}.nav-toggle span{display:block;width:22px;height:2px;background:var(--ink)}.nav-inner .btn-primary{display:none}}
+main{padding-top:64px}
 </style>
 <!-- Async-load the main stylesheet. Pattern: preload + onload-swap
      (with a <noscript> fallback for the JS-disabled path). The
@@ -352,6 +386,7 @@ header.nav{min-height:64px}
 </head>
 <body>
 <a class="skip-link" href="#main">${locale === 'es' ? 'Saltar al contenido' : 'Skip to content'}</a>
+<!-- batch-banner:start --><!-- batch-banner:end -->
 <header class="nav" id="nav">
   <div class="container nav-inner">
     <a href="${escHtml(locale === 'es' ? '/es/' : '/')}" class="logo" aria-label="Muntin Digital">
@@ -400,7 +435,7 @@ for (const tgt of targets) {
   const dirPath  = path.dirname(fullPath);
   if (checkMode) {
     const existing = fs.existsSync(fullPath) ? fs.readFileSync(fullPath, 'utf8') : null;
-    if (existing !== out) {
+    if (normalizeBatchBanner(existing || "") !== normalizeBatchBanner(out)) {
       drift++;
       console.log(`would update ${tgt.path}`);
     }

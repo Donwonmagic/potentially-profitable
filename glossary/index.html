@@ -66,7 +66,7 @@
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
 
-<script src="/assets/p.js?v=20260503" defer></script>
+<!-- lazy-load:p --><script>(window.requestIdleCallback||function(c){return setTimeout(c,500);})(function(){var s=document.createElement("script");s.src="/assets/p.js?v=20260503";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:p -->
 <script>
   window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
   plausible.init({ endpoint: '/api/event', logging: false })
@@ -94,14 +94,75 @@ a{color:inherit}
 .btn-primary{background:var(--ink);color:var(--cream)}
 .btn-ghost{background:transparent;color:var(--ink);border:1px solid #D9D5CB}
 header.nav{min-height:64px}
+/* nav-critical */
+.nav{position:fixed;top:0;left:0;right:0;background:var(--cream);z-index:50;border-bottom:1px solid #E8E2D6}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:64px;padding:12px 0}
+.logo{display:flex;align-items:center;gap:10px;font-family:Georgia,serif;font-size:22px;font-weight:600;letter-spacing:-0.02em;flex-shrink:0;white-space:nowrap;color:inherit;text-decoration:none}
+.logo-mark{width:28px;height:28px;flex:0 0 28px}
+.tm{font-size:0.5em;vertical-align:super;margin-left:1px}
+.nav-links{display:flex;gap:36px;font-size:15px}
+.nav-links a{text-decoration:none;color:inherit}
+.nav-toggle{display:none}
+.nav-search-btn,.lang-switch{display:none}
+@media (max-width:1100px){.nav-links{display:none}.nav-toggle{display:flex;width:44px;height:44px;flex-direction:column;justify-content:center;align-items:center;gap:5px;background:transparent;border:0;padding:0}.nav-toggle span{display:block;width:22px;height:2px;background:var(--ink)}.nav-inner .btn-primary{display:none}}
+main{padding-top:64px}
+/* perf-critical */
+:root{--font-display:'Fraunces','Fraunces Fallback',Georgia,'Times New Roman',serif;--font-body:'Inter','Inter Fallback',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;--ink-soft:#2A2D33;--teal:#1F4E5B;--teal-dark:#143640;--stone:#6B6B6B;--line:#E8E2D6;--line-dark:#D4CCBC}
+body{font-family:var(--font-body)}
+h1,h2,h3,h4,h5,.serif-italic{font-family:var(--font-display)}
+@font-face{font-family:'Fraunces';font-style:normal;font-weight:100 900;font-display:swap;src:url('/assets/fonts/fraunces-variable-latin-wght-normal.woff2') format('woff2-variations');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Fraunces';font-style:italic;font-weight:100 900;font-display:swap;src:url('/assets/fonts/fraunces-variable-latin-wght-italic.woff2') format('woff2-variations');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Inter';font-style:normal;font-weight:100 900;font-display:swap;src:url('/assets/fonts/inter-variable-latin-wght-normal.woff2') format('woff2-variations');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Inter';font-style:italic;font-weight:100 900;font-display:swap;src:url('/assets/fonts/inter-variable-latin-wght-italic.woff2') format('woff2-variations');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Fraunces Fallback';src:local('Times New Roman');size-adjust:100%;ascent-override:97.8%;descent-override:25.5%;line-gap-override:0%}
+@font-face{font-family:'Inter Fallback';src:local('Arial');size-adjust:100%;ascent-override:96.875%;descent-override:24.121%;line-gap-override:0%}
+.hero{padding:160px 0 100px;position:relative;overflow:hidden}
+.hero-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:60px;align-items:center}
+@media (max-width:960px){.hero{padding:130px 0 60px}.hero-grid{grid-template-columns:1fr;gap:48px}}
+.hero h1{margin-top:24px;text-wrap:balance;max-width:18ch}
+.hero h1 .serif-italic{font-style:italic;font-weight:400;color:var(--teal)}
+.hero-sub{margin-top:28px;max-width:520px;font-size:clamp(17px,1.35vw,20px);line-height:1.55;color:var(--ink-soft)}
+.hero-ctas{margin-top:40px;display:flex;gap:14px;flex-wrap:wrap}
+.hero-counts{display:flex;flex-wrap:wrap;gap:10px 14px;list-style:none;padding:0;margin:18px 0 22px;font-size:13.5px;font-weight:600;letter-spacing:0.02em;color:var(--ink-soft)}
+.hero-counts__chip{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:var(--cream-2)}
+.hero-counts__chip strong{color:var(--teal)}
+section.block{padding:clamp(80px,10vw,140px) 0}
+.bg-cream2{background:var(--cream-2)}
+.section-header{max-width:760px;margin-bottom:64px}
+.section-header h2{margin-top:16px}
+.section-header p{margin-top:20px;font-size:19px;line-height:1.55;color:var(--ink-soft);max-width:640px}
+.section-center{text-align:center;margin-left:auto;margin-right:auto}
+.compare,.services,.care,.steps{display:grid;grid-template-columns:1fr;gap:20px}
+.work{display:grid;grid-template-columns:repeat(12,1fr);gap:24px}
+.work-item{grid-column:span 12}
+.about-grid{display:grid;grid-template-columns:1fr;gap:48px;align-items:center}
+.contact-grid{display:grid;grid-template-columns:1fr;gap:clamp(40px,6vw,80px);align-items:start}
+.form-row{display:grid;grid-template-columns:1fr;gap:16px}
+@media (min-width:961px){.compare,.services,.care{grid-template-columns:repeat(3,1fr)}.steps{grid-template-columns:repeat(4,1fr)}.work-item:nth-child(1){grid-column:span 7}.work-item:nth-child(2){grid-column:span 5}.work-item:nth-child(3){grid-column:span 5}.work-item:nth-child(4){grid-column:span 7}.about-grid{grid-template-columns:0.9fr 1.1fr;gap:80px}.contact-grid{grid-template-columns:1fr 1.2fr}}
+@media (min-width:641px){.form-row{grid-template-columns:1fr 1fr}}
+@media (max-width:960px){.window,.window-caption{display:none}}
+.mobile-cta-bar{display:none}
+.trust-strip{padding:18px 0;background:var(--cream-2);border-block:1px solid var(--line)}
+.trust-strip__list{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 18px;list-style:none;padding:0;margin:0;font-size:13.5px;color:var(--ink-soft);line-height:1.5}
+footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;border-top:1px solid rgba(250,247,242,0.08);font-size:14px}
+.foot-cta{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;padding-bottom:40px;margin-bottom:48px;border-bottom:1px solid rgba(250,247,242,0.08)}
+.foot-cta-text{color:var(--cream);font-family:var(--font-display);font-size:clamp(22px,2.6vw,30px);line-height:1.2;letter-spacing:-0.01em;max-width:460px}
+.foot-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr 1.1fr;gap:clamp(24px,3vw,44px);padding-bottom:48px;margin-bottom:32px;border-bottom:1px solid rgba(250,247,242,0.08)}
+@media (max-width:1100px){.foot-grid{grid-template-columns:1fr 1fr 1fr 1fr;gap:36px}}
+@media (max-width:960px){.foot-grid{grid-template-columns:1fr 1fr 1fr;gap:40px}}
+@media (max-width:640px){.foot-grid{grid-template-columns:1fr 1fr}.foot-cta{flex-direction:column;align-items:flex-start;gap:20px}}
+@media (max-width:420px){.foot-grid{grid-template-columns:1fr}}
+.foot-bottom{display:flex;justify-content:space-between;gap:24px;align-items:center;flex-wrap:wrap}
+.below-fold-island{content-visibility:auto;contain-intrinsic-size:auto 1200px}
+@media print{.below-fold-island{content-visibility:visible}}
 </style>
 <!-- Async-load the main stylesheet. Pattern: preload + onload-swap
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=a3cc95eb7ac7" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-core.css?v=ca265f67308b" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=47810dd9477a" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a3cc95eb7ac7"><link rel="stylesheet" href="/assets/site-article.css?v=47810dd9477a"></noscript>
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ca265f67308b"><link rel="stylesheet" href="/assets/site-article.css?v=47810dd9477a"></noscript>
 
 <style>
   /* Glossary-specific layout. Inline so the page ships self-contained
@@ -393,7 +454,7 @@ header.nav{min-height:64px}
     {
       "@type": "ItemList",
       "@id": "https://muntin.digital/glossary/#items",
-      "numberOfItems": 142,
+      "numberOfItems": 149,
       "itemListElement": [
         {
           "@type": "ListItem",
@@ -650,50 +711,50 @@ header.nav{min-height:64px}
         {
           "@type": "ListItem",
           "position": 43,
+          "url": "https://muntin.digital/glossary/delivery-presence/",
+          "name": "Delivery presence"
+        },
+        {
+          "@type": "ListItem",
+          "position": 44,
           "url": "https://muntin.digital/glossary/design-token/",
           "name": "Design token"
         },
         {
           "@type": "ListItem",
-          "position": 44,
+          "position": 45,
           "url": "https://muntin.digital/glossary/dietary-markers/",
           "name": "Dietary &amp; allergen markers"
         },
         {
           "@type": "ListItem",
-          "position": 45,
+          "position": 46,
           "url": "https://muntin.digital/glossary/direct-ordering/",
           "name": "Direct ordering"
         },
         {
           "@type": "ListItem",
-          "position": 46,
+          "position": 47,
           "url": "https://muntin.digital/glossary/domain-name/",
           "name": "Domain name"
         },
         {
           "@type": "ListItem",
-          "position": 47,
+          "position": 48,
           "url": "https://muntin.digital/glossary/edible-portion/",
           "name": "Edible portion (EP)"
         },
         {
           "@type": "ListItem",
-          "position": 48,
+          "position": 49,
           "url": "https://muntin.digital/glossary/elasticity/",
           "name": "Price elasticity"
         },
         {
           "@type": "ListItem",
-          "position": 49,
+          "position": 50,
           "url": "https://muntin.digital/glossary/favicon/",
           "name": "Favicon"
-        },
-        {
-          "@type": "ListItem",
-          "position": 50,
-          "url": "https://muntin.digital/glossary/fcp/",
-          "name": "First Contentful Paint"
         }
       ]
     }
@@ -769,9 +830,9 @@ header.nav{min-height:64px}
     <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">
       <!-- Phase 5+ — site-wide pulse propagation. Hidden by default;
            window-state.js reveals when lastSeen <4h. Decorative; the
-           label "Email Don" remains the accessible affordance. -->
+           label "Reach Don" remains the accessible affordance. -->
       <span class="nav-window-pulse" id="navWindowPulse" hidden aria-hidden="true" title="Don is around"></span>
-      Email Don
+      Reach Don
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
     </a>
     <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
@@ -779,7 +840,7 @@ header.nav{min-height:64px}
     </button>
   </div>
   <!-- Mobile menu mirrors the 5-item desktop nav, plus search, lang
-       switcher, and the Email Don CTA. The auth-state JS below
+       switcher, and the Reach Don CTA. The auth-state JS below
        toggles js-nav-signin vs js-nav-workshop in both surfaces. -->
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
     <a href="/library/">Library</a>
@@ -792,7 +853,7 @@ header.nav{min-height:64px}
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
       <span>Search the library</span>
     </button>
-    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Email Don</a>
+    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Reach Don</a>
     <a href="/es/glossary/" hreflang="es" lang="es" class="mobile-lang js-lang-switch" data-set-locale="es">Ver en español</a>
   </nav>
 
@@ -826,7 +887,11 @@ header.nav{min-height:64px}
        affordance is acceptable). The script runs once, fire-and-
        forget; no observable side effects on a 401. -->
   <script>
-    (function () {
+    /* Phase 3C-perf — deferred via requestIdleCallback so the
+       /api/auth/me round-trip stays off the critical path. Both
+       .js-nav-signin / .js-nav-workshop ship hidden, so a one-frame
+       delay before the correct affordance reveals is invisible. */
+    (window.requestIdleCallback || function (cb) { return setTimeout(cb, 200); })(function () {
       var signin   = document.querySelectorAll('.js-nav-signin');
       var workshop = document.querySelectorAll('.js-nav-workshop');
       if (!signin.length && !workshop.length) return;
@@ -854,7 +919,7 @@ header.nav{min-height:64px}
           show(signin);
         })
         .catch(function () { show(signin); });
-    })();
+    });
   </script>
 </header>
 
@@ -1534,6 +1599,39 @@ header.nav{min-height:64px}
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
+      <!-- Wave-D glossary anchors batch C — added so the audit's
+           anchor: '#<slug>' deep-links land on a real article in the
+           hub instead of scrolling to the top. Per-term pages
+           (/glossary/<slug>/) can ship in a future content sprint;
+           hub anchors are enough for the audit's purpose. -->
+
+      <article class="gloss-term" id="gbp-photo-count" data-industries="restaurants all" data-topics="conversions">
+        <div class="gloss-term-head">
+          <h3>GBP photo count<span class="gloss-aka">Google profile photos, carousel coverage</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
+        </div>
+        <p class="gloss-term-def">How many photos are attached to your Google Business Profile — visible in the photo carousel at the top of your Google search panel and Maps listing.</p>
+        <p class="gloss-term-why"><strong>Why it matters</strong>Diners scrolling the carousel decide in 4–6 photos. Under ten and the carousel runs out before they've seen a dish, the room, and the patio — they swipe over to a competitor whose 80 photos let them eat with their eyes first. Adding 15–20 strong photos (food, room, exterior, smiling staff) takes one focused hour with your phone and pays back for years.</p>
+      </article>
+
+      <article class="gloss-term" id="delivery-presence" data-industries="restaurants all" data-topics="conversions">
+        <div class="gloss-term-head">
+          <h3>Delivery presence<span class="gloss-aka">aggregator coverage, DoorDash / Uber Eats / Grubhub</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
+        </div>
+        <p class="gloss-term-def">Whether your site links out to at least one major third-party delivery aggregator (DoorDash, Uber Eats, Grubhub, Slice, ChowNow). Detected by following the order-online link from your homepage.</p>
+        <p class="gloss-term-why"><strong>Why it matters</strong>A hungry-at-9pm customer who can't find a delivery option opens DoorDash and orders from whoever IS on the platform. Aggregator fees hurt — but losing the customer entirely hurts more. Fast-casual restaurants in particular live or die on aggregator presence; fine-dining can skip it by design.</p>
+      </article>
+
+      <article class="gloss-term" id="og-share-preview" data-industries="restaurants all" data-topics="conversions">
+        <div class="gloss-term-head">
+          <h3>OG share preview<span class="gloss-aka">Open Graph card, link preview, og:image</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">All sites</span></div>
+        </div>
+        <p class="gloss-term-def">The preview card iMessage / WhatsApp / Messenger / Facebook show when someone shares your URL — a title, a short description, and a photo, pulled from <code>&lt;meta property="og:image"&gt;</code> and friends in your page <code>&lt;head&gt;</code>.</p>
+        <p class="gloss-term-why"><strong>Why it matters</strong>When someone texts your URL to four friends to plan dinner, that preview is half the click decision. Missing — blank box, just the domain — and half those friends never tap through. One image + one title in your platform's SEO settings; the upside is dozens of lost meal plans per year that suddenly become bookings.</p>
+      </article>
+
     </div>
   </section>
 
@@ -1688,6 +1786,35 @@ header.nav{min-height:64px}
         <!-- LIBRARY:gloss-perma:start -->
         <p class="gloss-term-permalink"><a href="/glossary/terms-of-service/">Open the term page <span aria-hidden="true">&rarr;</span></a></p>
         <!-- LIBRARY:gloss-perma:end -->
+      </article>
+
+      <!-- Wave-D glossary anchors batch C — trust group. -->
+
+      <article class="gloss-term" id="review-responsiveness" data-industries="restaurants all" data-topics="trust-reviews">
+        <div class="gloss-term-head">
+          <h3>Review responsiveness<span class="gloss-aka">owner reply rate, Google review replies</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
+        </div>
+        <p class="gloss-term-def">The percentage of your recent Google reviews to which the business owner has posted a reply — visible right under each review on your Google Business Profile.</p>
+        <p class="gloss-term-why"><strong>Why it matters</strong>Diners read the most recent 2–3 reviews before deciding. Zero replies signals an absentee operator and shifts borderline picks to a competitor who answers every one. Replying to even half — "thanks for coming in" on the 5-stars, "I'm sorry, please email me" on the 1-stars — measurably moves first-time visits.</p>
+      </article>
+
+      <article class="gloss-term" id="transport-security" data-industries="all" data-topics="trust-reviews">
+        <div class="gloss-term-head">
+          <h3>Transport security<span class="gloss-aka">HTTPS, HSTS, security headers, Mozilla Observatory grade</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">All sites</span></div>
+        </div>
+        <p class="gloss-term-def">The bundle of HTTP headers a modern site sends to tell browsers it should always load over HTTPS and how to handle script / frame loading safely. Graded A through F by Mozilla Observatory.</p>
+        <p class="gloss-term-why"><strong>Why it matters</strong>If a diner hits your site and sees Chrome's "Not secure" warning at the top, the party-of-12 holiday booking dies before the booker has scrolled to your menu. The fix is usually one-line additions in your CDN / hosting settings — on Cloudflare, Vercel, or Netlify it's a checkbox.</p>
+      </article>
+
+      <article class="gloss-term" id="stale-copyright" data-industries="restaurants all" data-topics="trust-reviews">
+        <div class="gloss-term-head">
+          <h3>Stale copyright<span class="gloss-aka">outdated footer year, freshness signal</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">All sites</span></div>
+        </div>
+        <p class="gloss-term-def">The copyright year shown in your site footer (e.g. "© 2024 Joe's Pizza"). Diners use it as a subconscious freshness signal — particularly when planning a special meal or visiting from out of town.</p>
+        <p class="gloss-term-why"><strong>Why it matters</strong>A "© 2019" footer reads to an anxious diner as "are they still open after COVID?" It costs nothing to update and removes a silent doubt signal. Two-minute fix: change the year, or better, set it to auto-render from the current year so it never goes stale again.</p>
       </article>
 
     </div>
@@ -1946,6 +2073,17 @@ header.nav{min-height:64px}
         <!-- LIBRARY:gloss-perma:start -->
         <p class="gloss-term-permalink"><a href="/glossary/mobile-first-indexing/">Open the term page <span aria-hidden="true">&rarr;</span></a></p>
         <!-- LIBRARY:gloss-perma:end -->
+      </article>
+
+      <!-- Wave-D glossary anchors batch C — findability group. -->
+
+      <article class="gloss-term" id="gbp-hours-mismatch" data-industries="restaurants all" data-topics="local-seo">
+        <div class="gloss-term-head">
+          <h3>Hours mismatch<span class="gloss-aka">GBP vs schema, "open now" search</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
+        </div>
+        <p class="gloss-term-def">When the weekly hours your website declares (via <a href="/glossary/opening-hours-specification/">OpeningHoursSpecification</a> schema markup) don't match the hours Google shows on your Business Profile.</p>
+        <p class="gloss-term-why"><strong>Why it matters</strong>When your site says one set of hours and Google says another, Google's the one a Friday-night party of six trusts — they search "open now", see your name with the wrong hours, and either bounce or show up to a closed door. Among the most invisible reservation killers in independent dining. A 10-minute fix in Google Business Profile or your site's hours block prevents it permanently.</p>
       </article>
 
     </div>
@@ -2668,7 +2806,7 @@ header.nav{min-height:64px}
         <span class="foot-cta-pulse" id="footCtaPulse" hidden aria-hidden="true" title="Don is around"></span>
         Got a question? The Window is open.
       </div>
-      <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Email Don
+      <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Reach Don
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
       </a>
     </div>
@@ -2726,7 +2864,7 @@ header.nav{min-height:64px}
         <p class="foot-heading" id="foot-contact">Contact</p>
         <ul class="foot-links">
           <li><a href="mailto:don@muntin.digital">don@muntin.digital</a></li>
-          <li><a href="/window/">Email Don</a></li>
+          <li><a href="/window/">Reach Don</a></li>
           <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (opens in new tab)</span></a></li>
         </ul>
         <p class="foot-trust"><strong>Reply:</strong> Mondays through Fridays, within 4 hours. Weekends, by Monday morning.</p>
@@ -2781,7 +2919,7 @@ header.nav{min-height:64px}
     <a class="mobile-cta-bar__btn mobile-cta-bar__btn--ghost js-window" href="/window/" data-event="sticky-cta-window">
       <span class="mobile-cta-bar__pulse" id="mobileCtaBarPulse" hidden aria-hidden="true" title="Don is around"></span>
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
-      Email Don
+      Reach Don
     </a>
   </aside>
   <script>
@@ -2796,26 +2934,83 @@ header.nav{min-height:64px}
     })();
   </script>
 </footer>
-<script src="/assets/js/first-touch.js" defer></script>
-<script src="/assets/js/save-next-time.js" defer></script>
-<script src="/assets/js/share-hydrate.js" defer></script>
-<script src="/assets/js/window-state.js" defer></script>
-<!-- Cloudflare Turnstile (Phase 3B). Loaded site-wide because the
-     newsletter form lives in this footer, which renders on every page.
-     Async + defer so it never blocks render. ~28 KB; one outbound
-     request to challenges.cloudflare.com per cold load. Worker-side
-     verification lives in src/lib/turnstile.js and runs only when
-     env.TURNSTILE_SECRET_KEY is bound. -->
-<!-- Skip Turnstile on localhost / 127.0.0.1 / dev hosts. The widget
-     calls back to challenges.cloudflare.com to validate the host
-     against the Turnstile site's allowlist; localhost isn't in the
-     allowlist (and adding it would weaken the prod gate), so the
-     widget logs a console error on every dev/CI page load. We
-     gate the script load instead — Turnstile only matters on real
-     production traffic where forms actually submit. -->
-<script>(function(){var h=location.hostname;if(h==='localhost'||h==='127.0.0.1'||h==='0.0.0.0'||/^\[?::1?\]?$/.test(h))return;var s=document.createElement('script');s.src='https://challenges.cloudflare.com/turnstile/v0/api.js';s.async=true;s.defer=true;document.head.appendChild(s);})();</script>
+<!-- Phase 3D-perf — lazy-load non-critical JS after `load` + idle.
+     Previously, the 4 footer scripts (first-touch, save-next-time,
+     share-hydrate, window-state) parsed and executed serially as
+     `defer` scripts, blocking the main thread for 1-3s on
+     mid-range mobile CPUs. The page was visually rendered but
+     could not handle text selection, taps, or keyboard input.
+     The fix: schedule the script downloads on requestIdleCallback
+     after the `load` event so the main thread is free for user
+     input immediately after first paint. Page-functional features
+     come online ~100-500ms after paint instead of after several
+     seconds of script parse + execute.
 
-<script src="/assets/site.js?v=20260422-cohesion" defer></script>
+     Turnstile is gated separately by an IntersectionObserver on
+     the newsletter form — most page views never reach the footer
+     form, so the 28KB Turnstile bundle never downloads on those
+     visits. Localhost continues to skip Turnstile entirely (its
+     host allowlist would log a console error on every dev page
+     load). -->
+<script>
+(function () {
+  var FOOTER_ASSETS = [
+    '/assets/js/first-touch.js?v=20260422-cohesion',
+    '/assets/js/save-next-time.js?v=20260422-cohesion',
+    '/assets/js/share-hydrate.js?v=20260422-cohesion',
+    '/assets/js/window-state.js?v=20260422-cohesion'
+  ];
+  function loadAll() {
+    for (var i = 0; i < FOOTER_ASSETS.length; i++) {
+      var s = document.createElement('script');
+      s.src = FOOTER_ASSETS[i];
+      // async=false on a dynamically-created script preserves the
+      // insertion-order execution that `defer` used to give us.
+      // first-touch must wrap window.plausible before save-next-time
+      // tries to wrap it, etc.
+      s.async = false;
+      document.head.appendChild(s);
+    }
+  }
+  function scheduleIdle() {
+    (window.requestIdleCallback || function (cb) { return setTimeout(cb, 200); })(loadAll);
+  }
+  if (document.readyState === 'complete') scheduleIdle();
+  else window.addEventListener('load', scheduleIdle);
+
+  // Turnstile: skip on dev hosts, gate behind an IO observer in prod.
+  var h = location.hostname;
+  if (h === 'localhost' || h === '127.0.0.1' || h === '0.0.0.0' || /^\[?::1?\]?$/.test(h)) return;
+  var form = document.querySelector('.foot-newsletter-form, .cf-turnstile, [data-turnstile]');
+  if (!form) return;
+  var loaded = false;
+  function loadTurnstile() {
+    if (loaded) return; loaded = true;
+    var t = document.createElement('script');
+    t.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+    t.async = true;
+    t.defer = true;
+    document.head.appendChild(t);
+  }
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      for (var i = 0; i < entries.length; i++) {
+        if (entries[i].isIntersecting) { io.disconnect(); loadTurnstile(); return; }
+      }
+    }, { rootMargin: '400px 0px' });
+    io.observe(form);
+    // Also load on first focus into any form field — covers users who
+    // tab through the form before scrolling triggers the observer.
+    form.addEventListener('focusin', loadTurnstile, { once: true });
+  } else {
+    // No IO support → load opportunistically on first idle after load.
+    if (document.readyState === 'complete') setTimeout(loadTurnstile, 1500);
+    else window.addEventListener('load', function () { setTimeout(loadTurnstile, 1500); });
+  }
+})();
+</script>
+
+<!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260422-cohesion";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
 
 <script>
   // Glossary filter — toggles data-active-filter on <main>, which

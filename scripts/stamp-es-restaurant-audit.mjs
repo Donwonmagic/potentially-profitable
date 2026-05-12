@@ -206,6 +206,61 @@ const STATIC = [
   [ 'How Lighthouse scores performance ',                  'Cómo califica Lighthouse el rendimiento ' ],
   [ 'The 3-second mobile load rule ',                      'La regla de los 3 segundos en móvil ' ],
   [ ' (opens in new tab)',                                 ' (se abre en una pestaña nueva)' ],
+
+  // Wave-B2 (a11y reviewer): the Methodology body inside the
+  // "What do these numbers actually mean?" disclosure was hard-coded
+  // English in the EN master, so a Spanish-speaking owner expanding
+  // it saw a wall of English. Translations land here so the
+  // ES mirror picks them up at build time without needing to
+  // wrap every paragraph in data-tr keys.
+  [ 'What do these numbers actually mean?',                '¿Qué significan estos números, en realidad?' ],
+
+  // Performance pillar
+  [ 'Performance (0–100)',                                 'Rendimiento (0–100)' ],
+  [ "How fast your pages load and become usable on a phone. This is the metric that quietly costs restaurants the most money — Google's own research found that 53% of mobile visitors leave a page that takes longer than three seconds to load. A higher score means more people stick around long enough to see your menu.",
+    'Qué tan rápido tus páginas cargan y se vuelven usables en un teléfono. Esta es la métrica que más les cuesta dinero a los restaurantes en silencio — la propia investigación de Google encontró que el 53% de los visitantes móviles se van de una página que tarda más de tres segundos en cargar. Una puntuación más alta significa que más personas se quedan lo suficiente para ver tu menú.' ],
+  [ '<strong>Good:</strong> 90+ &nbsp;·&nbsp; <strong>Needs work:</strong> 50–89 &nbsp;·&nbsp; <strong>Failing:</strong> &lt;50',
+    '<strong>Bien:</strong> 90+ &nbsp;·&nbsp; <strong>Necesita trabajo:</strong> 50–89 &nbsp;·&nbsp; <strong>Reprobado:</strong> &lt;50' ],
+
+  // Accessibility pillar
+  [ 'Accessibility (0–100)',                               'Accesibilidad (0–100)' ],
+  [ 'Whether people with vision impairments, motor differences, or screen readers can actually use your site. Half of this is legally required in many states. The other half is just good manners — about one in five of your customers benefits directly from an accessible site, and everyone benefits indirectly (better text contrast makes your site easier to read in sunlight too).',
+    'Si las personas con discapacidades visuales, diferencias motrices o lectores de pantalla pueden usar tu sitio de verdad. La mitad de esto es un requisito legal en muchos estados. La otra mitad es buena educación — alrededor de uno de cada cinco de tus clientes se beneficia directamente de un sitio accesible, y todos se benefician indirectamente (un mejor contraste de texto también hace que tu sitio sea más fácil de leer al sol).' ],
+  [ '<strong>Target:</strong> 100. Anything less means real people are being shut out.',
+    '<strong>Meta:</strong> 100. Cualquier valor menor significa que personas reales están quedando fuera.' ],
+
+  // Modern & secure setup pillar
+  [ 'Modern &amp; secure setup (0–100)',                   'Bases modernas y seguras (0–100)' ],
+  [ 'Whether your site is built on a modern, secure foundation — HTTPS, no vulnerable libraries, no deprecated browser features. A well-built site should score 100 here by default. A score under 90 usually points at one specific thing worth fixing, like a missing security header or an old plugin.',
+    'Si tu sitio está construido sobre bases modernas y seguras — HTTPS, sin librerías vulnerables, sin funciones de navegador obsoletas. Un sitio bien hecho debería sacar 100 aquí por defecto. Una puntuación bajo 90 normalmente apunta a una cosa concreta que vale la pena arreglar, como un encabezado de seguridad faltante o un plugin antiguo.' ],
+  [ '<strong>Target:</strong> 100.',                       '<strong>Meta:</strong> 100.' ],
+
+  // SEO pillar
+  [ 'SEO (0–100)',                                         'SEO (0–100)' ],
+  [ "The technical SEO fundamentals — a working title tag, a meta description, a crawlable URL, a mobile-friendly viewport, structured data. This score measures whether Google <em>can</em> rank your site. It doesn't measure whether you <em>do</em> rank for specific keywords — that's a longer-term question about content and inbound links.",
+    'Los fundamentos técnicos de SEO — una etiqueta de título funcional, una meta descripción, una URL rastreable, un viewport apto para móvil, datos estructurados. Esta puntuación mide si Google <em>puede</em> posicionar tu sitio. No mide si <em>sí</em> posicionas para palabras específicas — esa es una pregunta a más largo plazo sobre contenido y enlaces entrantes.' ],
+  [ '<strong>Target:</strong> 100. Anything less is leaving ranking signals on the table.',
+    '<strong>Meta:</strong> 100. Cualquier valor menor deja señales de posicionamiento sobre la mesa.' ],
+
+  // Restaurant Readiness pillar
+  [ 'Restaurant Readiness (0–100)',                        'Listo para restaurantes (0–100)' ],
+  [ 'Our own rubric, specific to independent restaurant websites. Covers nine checks that matter for turning a mobile visitor into a booked table: a working mobile viewport, tap-target size, text contrast, legible font sizes, a tappable phone number, an embedded map or directions link, online ordering or reservations (either a known platform like Toast/OpenTable or a self-hosted equivalent), an HTML menu (not a PDF or image), and Restaurant schema.org markup for local search. Each check is weighted by its conversion impact — a pass earns full weight, a fail earns zero. Anything we honestly couldn\'t verify is excluded from both sides of the average, so "unknown" never penalizes you. Non-restaurant sites show "N/A" here and don\'t count this category toward their overall score.',
+    'Nuestra propia rúbrica, específica para sitios de restaurantes independientes. Cubre nueve verificaciones que importan para convertir a un visitante móvil en una mesa reservada: un viewport móvil que funcione, tamaño de área tocable, contraste de texto, tamaños de fuente legibles, un teléfono tocable, un mapa embebido o enlace a direcciones, pedidos en línea o reservas (una plataforma conocida como Toast/OpenTable o un equivalente propio), un menú HTML (no un PDF o imagen) y marcado schema.org de Restaurant para la búsqueda local. Cada verificación pesa según su impacto en conversión — pasar gana peso completo, fallar gana cero. Lo que honestamente no pudimos confirmar queda fuera de ambos lados del promedio, así que "desconocido" nunca te penaliza. Los sitios que no son de restaurante muestran "N/D" aquí y esta categoría no cuenta para su puntuación general.' ],
+
+  // Core Web Vitals body
+  [ 'Core Web Vitals',                                     'Core Web Vitals' ],
+  [ 'Five specific timing and interactivity measurements. Three of them (LCP, CLS, INP) are the current Core Web Vitals Google uses for mobile search ranking. Each card shows either <em>real-user data</em> (the 28-day median of actual visitor experiences that Google collects from Chrome) or a <em>lab estimate</em> (a simulated mobile run) — real-user data is preferred when available, since it reflects the site your customers actually experience. New or low-traffic restaurant sites usually only have lab data until they accumulate enough visits.',
+    'Cinco mediciones específicas de tiempos e interactividad. Tres de ellas (LCP, CLS, INP) son las Core Web Vitals actuales que Google usa para el posicionamiento de búsqueda móvil. Cada tarjeta muestra o bien <em>datos de usuarios reales</em> (la mediana de 28 días de experiencias reales que Google recopila desde Chrome) o una <em>estimación de laboratorio</em> (una ejecución móvil simulada) — los datos reales se prefieren cuando están disponibles, ya que reflejan el sitio que tus clientes experimentan de verdad. Los sitios nuevos o de poco tráfico normalmente solo tienen datos de laboratorio hasta acumular suficientes visitas.' ],
+  [ '<strong>LCP — Largest Contentful Paint.</strong> How long until the biggest visible thing on the page (usually a hero image or headline) shows up. <em>Good: under 2.5s · Poor: over 4s.</em>',
+    '<strong>LCP — Largest Contentful Paint.</strong> Cuánto tarda en aparecer lo más grande visible de la página (normalmente una imagen principal o un encabezado). <em>Bien: menos de 2.5s · Lento: más de 4s.</em>' ],
+  [ '<strong>CLS — Cumulative Layout Shift.</strong> How much the page jumps around while loading. Shifting layouts are the reason you sometimes tap "Reserve" and accidentally hit an ad because the ad loaded a second late and pushed everything down. <em>Good: under 0.1 · Poor: over 0.25.</em>',
+    '<strong>CLS — Cumulative Layout Shift.</strong> Cuánto se mueve la página mientras carga. Los diseños que se mueven son la razón por la que a veces tocas "Reservar" y das sin querer en un anuncio porque el anuncio cargó un segundo tarde y empujó todo hacia abajo. <em>Bien: menos de 0.1 · Lento: más de 0.25.</em>' ],
+  [ '<strong>INP — Interaction to Next Paint.</strong> How long the page takes to respond to a tap or click — the third Core Web Vital, replacing FID in 2024. Field-only: requires enough real visits to report. <em>Good: under 200ms · Poor: over 500ms.</em>',
+    '<strong>INP — Interaction to Next Paint.</strong> Cuánto tarda la página en responder a un toque o clic — la tercera Core Web Vital, que sustituye a FID en 2024. Solo de campo: requiere suficientes visitas reales para reportarse. <em>Bien: menos de 200ms · Lento: más de 500ms.</em>' ],
+  [ '<strong>TBT — Total Blocking Time.</strong> The lab-only proxy for INP. How long the page is frozen while JavaScript runs during the simulated load. Useful when CrUX hasn\'t collected INP yet. <em>Good: under 200ms · Poor: over 600ms.</em>',
+    '<strong>TBT — Total Blocking Time.</strong> La aproximación de laboratorio para INP. Cuánto tiempo la página queda congelada mientras JavaScript se ejecuta durante la carga simulada. Útil cuando CrUX aún no ha recogido INP. <em>Bien: menos de 200ms · Lento: más de 600ms.</em>' ],
+  [ '<strong>FCP — First Contentful Paint.</strong> How long until the very first pixel renders. Often earlier than LCP — this is "the page is doing something" versus "the page is usable." <em>Good: under 1.8s · Poor: over 3s.</em>',
+    '<strong>FCP — First Contentful Paint.</strong> Cuánto tarda en renderizarse el primerísimo pixel. Frecuentemente antes que LCP — esto es "la página está haciendo algo" en lugar de "la página es usable." <em>Bien: menos de 1.8s · Lento: más de 3s.</em>' ],
 ];
 
 function applyTranslations(src) {

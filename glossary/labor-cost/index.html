@@ -39,9 +39,9 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=a3cc95eb7ac7" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-core.css?v=ca265f67308b" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=47810dd9477a" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a3cc95eb7ac7"><link rel="stylesheet" href="/assets/site-article.css?v=47810dd9477a"></noscript>
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ca265f67308b"><link rel="stylesheet" href="/assets/site-article.css?v=47810dd9477a"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -199,9 +199,9 @@
     <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">
       <!-- Phase 5+ — site-wide pulse propagation. Hidden by default;
            window-state.js reveals when lastSeen <4h. Decorative; the
-           label "Email Don" remains the accessible affordance. -->
+           label "Reach Don" remains the accessible affordance. -->
       <span class="nav-window-pulse" id="navWindowPulse" hidden aria-hidden="true" title="Don is around"></span>
-      Email Don
+      Reach Don
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
     </a>
     <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
@@ -209,7 +209,7 @@
     </button>
   </div>
   <!-- Mobile menu mirrors the 5-item desktop nav, plus search, lang
-       switcher, and the Email Don CTA. The auth-state JS below
+       switcher, and the Reach Don CTA. The auth-state JS below
        toggles js-nav-signin vs js-nav-workshop in both surfaces. -->
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
     <a href="/library/">Library</a>
@@ -222,7 +222,7 @@
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
       <span>Search the library</span>
     </button>
-    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Email Don</a>
+    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Reach Don</a>
     <a href="/es/glossary/labor-cost/" hreflang="es" lang="es" class="mobile-lang js-lang-switch" data-set-locale="es">Ver en español</a>
   </nav>
 
@@ -256,7 +256,11 @@
        affordance is acceptable). The script runs once, fire-and-
        forget; no observable side effects on a 401. -->
   <script>
-    (function () {
+    /* Phase 3C-perf — deferred via requestIdleCallback so the
+       /api/auth/me round-trip stays off the critical path. Both
+       .js-nav-signin / .js-nav-workshop ship hidden, so a one-frame
+       delay before the correct affordance reveals is invisible. */
+    (window.requestIdleCallback || function (cb) { return setTimeout(cb, 200); })(function () {
       var signin   = document.querySelectorAll('.js-nav-signin');
       var workshop = document.querySelectorAll('.js-nav-workshop');
       if (!signin.length && !workshop.length) return;
@@ -284,7 +288,7 @@
           show(signin);
         })
         .catch(function () { show(signin); });
-    })();
+    });
   </script>
 </header>
 
@@ -435,7 +439,7 @@
         <span class="foot-cta-pulse" id="footCtaPulse" hidden aria-hidden="true" title="Don is around"></span>
         Got a question? The Window is open.
       </div>
-      <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Email Don
+      <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Reach Don
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
       </a>
     </div>
@@ -493,7 +497,7 @@
         <p class="foot-heading" id="foot-contact">Contact</p>
         <ul class="foot-links">
           <li><a href="mailto:don@muntin.digital">don@muntin.digital</a></li>
-          <li><a href="/window/">Email Don</a></li>
+          <li><a href="/window/">Reach Don</a></li>
           <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (opens in new tab)</span></a></li>
         </ul>
         <p class="foot-trust"><strong>Reply:</strong> Mondays through Fridays, within 4 hours. Weekends, by Monday morning.</p>
@@ -548,7 +552,7 @@
     <a class="mobile-cta-bar__btn mobile-cta-bar__btn--ghost js-window" href="/window/" data-event="sticky-cta-window">
       <span class="mobile-cta-bar__pulse" id="mobileCtaBarPulse" hidden aria-hidden="true" title="Don is around"></span>
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
-      Email Don
+      Reach Don
     </a>
   </aside>
   <script>
@@ -563,25 +567,82 @@
     })();
   </script>
 </footer>
-<script src="/assets/js/first-touch.js" defer></script>
-<script src="/assets/js/save-next-time.js" defer></script>
-<script src="/assets/js/share-hydrate.js" defer></script>
-<script src="/assets/js/window-state.js" defer></script>
-<!-- Cloudflare Turnstile (Phase 3B). Loaded site-wide because the
-     newsletter form lives in this footer, which renders on every page.
-     Async + defer so it never blocks render. ~28 KB; one outbound
-     request to challenges.cloudflare.com per cold load. Worker-side
-     verification lives in src/lib/turnstile.js and runs only when
-     env.TURNSTILE_SECRET_KEY is bound. -->
-<!-- Skip Turnstile on localhost / 127.0.0.1 / dev hosts. The widget
-     calls back to challenges.cloudflare.com to validate the host
-     against the Turnstile site's allowlist; localhost isn't in the
-     allowlist (and adding it would weaken the prod gate), so the
-     widget logs a console error on every dev/CI page load. We
-     gate the script load instead — Turnstile only matters on real
-     production traffic where forms actually submit. -->
-<script>(function(){var h=location.hostname;if(h==='localhost'||h==='127.0.0.1'||h==='0.0.0.0'||/^\[?::1?\]?$/.test(h))return;var s=document.createElement('script');s.src='https://challenges.cloudflare.com/turnstile/v0/api.js';s.async=true;s.defer=true;document.head.appendChild(s);})();</script>
+<!-- Phase 3D-perf — lazy-load non-critical JS after `load` + idle.
+     Previously, the 4 footer scripts (first-touch, save-next-time,
+     share-hydrate, window-state) parsed and executed serially as
+     `defer` scripts, blocking the main thread for 1-3s on
+     mid-range mobile CPUs. The page was visually rendered but
+     could not handle text selection, taps, or keyboard input.
+     The fix: schedule the script downloads on requestIdleCallback
+     after the `load` event so the main thread is free for user
+     input immediately after first paint. Page-functional features
+     come online ~100-500ms after paint instead of after several
+     seconds of script parse + execute.
 
-<script src="/assets/site.js?v=20260422-cohesion" defer></script>
+     Turnstile is gated separately by an IntersectionObserver on
+     the newsletter form — most page views never reach the footer
+     form, so the 28KB Turnstile bundle never downloads on those
+     visits. Localhost continues to skip Turnstile entirely (its
+     host allowlist would log a console error on every dev page
+     load). -->
+<script>
+(function () {
+  var FOOTER_ASSETS = [
+    '/assets/js/first-touch.js?v=20260422-cohesion',
+    '/assets/js/save-next-time.js?v=20260422-cohesion',
+    '/assets/js/share-hydrate.js?v=20260422-cohesion',
+    '/assets/js/window-state.js?v=20260422-cohesion'
+  ];
+  function loadAll() {
+    for (var i = 0; i < FOOTER_ASSETS.length; i++) {
+      var s = document.createElement('script');
+      s.src = FOOTER_ASSETS[i];
+      // async=false on a dynamically-created script preserves the
+      // insertion-order execution that `defer` used to give us.
+      // first-touch must wrap window.plausible before save-next-time
+      // tries to wrap it, etc.
+      s.async = false;
+      document.head.appendChild(s);
+    }
+  }
+  function scheduleIdle() {
+    (window.requestIdleCallback || function (cb) { return setTimeout(cb, 200); })(loadAll);
+  }
+  if (document.readyState === 'complete') scheduleIdle();
+  else window.addEventListener('load', scheduleIdle);
+
+  // Turnstile: skip on dev hosts, gate behind an IO observer in prod.
+  var h = location.hostname;
+  if (h === 'localhost' || h === '127.0.0.1' || h === '0.0.0.0' || /^\[?::1?\]?$/.test(h)) return;
+  var form = document.querySelector('.foot-newsletter-form, .cf-turnstile, [data-turnstile]');
+  if (!form) return;
+  var loaded = false;
+  function loadTurnstile() {
+    if (loaded) return; loaded = true;
+    var t = document.createElement('script');
+    t.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+    t.async = true;
+    t.defer = true;
+    document.head.appendChild(t);
+  }
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      for (var i = 0; i < entries.length; i++) {
+        if (entries[i].isIntersecting) { io.disconnect(); loadTurnstile(); return; }
+      }
+    }, { rootMargin: '400px 0px' });
+    io.observe(form);
+    // Also load on first focus into any form field — covers users who
+    // tab through the form before scrolling triggers the observer.
+    form.addEventListener('focusin', loadTurnstile, { once: true });
+  } else {
+    // No IO support → load opportunistically on first idle after load.
+    if (document.readyState === 'complete') setTimeout(loadTurnstile, 1500);
+    else window.addEventListener('load', function () { setTimeout(loadTurnstile, 1500); });
+  }
+})();
+</script>
+
+<!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260422-cohesion";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
 </body>
 </html>

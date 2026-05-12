@@ -59,16 +59,175 @@
 }
 </script>
 
-<style>.breadcrumb{padding-top:100px}.offer-price{font-family:var(--font-display);font-size:clamp(48px,7vw,72px);font-weight:500;line-height:1;color:var(--ink);margin:0;letter-spacing:-1.5px}.offer-price small{font-family:var(--font-body);font-size:16px;font-weight:500;color:var(--ink-soft);letter-spacing:0;display:inline-block;margin-left:8px;vertical-align:baseline}.offer-cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:32px}</style>
 <style>
-/* Critical CSS — prevents flash of unstyled content while the main
-   stylesheet (assets/site.css) loads non-render-blocking via the
-   <link> below. Carries: token vars used in inline styles elsewhere,
-   body baseline (cream + ink + body-size + line-height), container
-   width, skip-link affordance, and a min-height reservation for the
-   fixed nav so layout doesn't shift when site.css applies. ~600
-   bytes. Documented in Phase 3B perf cutover; the full token set
-   reapplies once site.css arrives. */
+.breadcrumb{padding-top:100px}
+
+.spec-hero{margin:32px auto 56px;max-width:1000px;padding:0 var(--pad-x)}
+.spec-hero .eyebrow{margin-bottom:18px}
+.spec-hero h1{font-family:var(--font-display);font-size:clamp(44px,7vw,76px);font-weight:500;line-height:1.02;letter-spacing:-1.5px;color:var(--ink);margin:0 0 22px}
+.spec-hero h1 .serif-italic{font-style:italic;font-weight:400;color:var(--teal)}
+.spec-hero__lede{font-size:19px;line-height:1.55;color:var(--ink-soft);max-width:720px;margin:0 0 28px}
+.spec-hero__voice{font-family:var(--font-display);font-style:italic;font-weight:400;font-size:21px;line-height:1.45;color:var(--ink);max-width:680px;margin:0 0 36px;padding-left:18px;border-left:2px solid var(--teal)}
+
+.spec-pricebar{display:grid;grid-template-columns:auto 1fr;gap:32px;align-items:end;padding:28px 0 0;border-top:1px solid var(--line)}
+@media (max-width:720px){.spec-pricebar{grid-template-columns:1fr;gap:18px;align-items:start}}
+.spec-pricebar__price{font-family:var(--font-display);font-size:clamp(56px,9vw,88px);font-weight:500;line-height:.95;color:var(--ink);letter-spacing:-2px;margin:0}
+.spec-pricebar__price small{font-family:var(--font-body);font-size:14px;font-weight:500;color:var(--ink-soft);letter-spacing:0;display:block;margin-top:6px}
+.spec-pricebar__cap{font-size:14px;line-height:1.5;color:var(--ink-soft);padding-bottom:6px}
+.spec-pricebar__cap-label{display:block;font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);margin-bottom:8px}
+.spec-cap-meter{display:flex;gap:6px;margin:0 0 6px;padding:0;list-style:none}
+.spec-cap-meter li{width:36px;height:8px;border-radius:2px;background:var(--cream-2);border:1px solid var(--line)}
+.spec-cap-meter li[data-taken]{background:var(--teal);border-color:var(--teal)}
+.spec-cap-note{font-size:12.5px;color:var(--stone);font-style:italic}
+
+.spec-divider{display:flex;justify-content:center;margin:0 auto;padding:14px 0;color:var(--line-dark)}
+.spec-divider svg{width:22px;height:22px}
+
+.spec-section{margin:0 auto 80px;max-width:1000px;padding:0 var(--pad-x)}
+.spec-section--wide{max-width:1100px}
+.spec-section__h{font-family:var(--font-display);font-size:clamp(28px,3.5vw,36px);font-weight:500;color:var(--ink);margin:0 0 12px;letter-spacing:-0.5px}
+.spec-section__sub{font-size:15.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 28px;max-width:680px}
+
+.spec-trust{margin:0 auto 80px;max-width:1000px;padding:0 var(--pad-x)}
+.spec-trust__rail{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden}
+@media (max-width:720px){.spec-trust__rail{grid-template-columns:1fr 1fr;grid-auto-rows:1fr}}
+.spec-trust__cell{background:var(--white);padding:24px 22px;text-align:center}
+.spec-trust__num{font-family:var(--font-display);font-size:38px;font-weight:500;font-style:italic;color:var(--teal);margin:0;letter-spacing:-1px;line-height:1}
+.spec-trust__label{font-size:13px;line-height:1.45;color:var(--ink-soft);margin:8px 0 0}
+
+/* Drop-in moment of proof: phone-frame mock + speed comparison */
+.dropin-proof{display:grid;grid-template-columns:280px 1fr;gap:42px;align-items:start}
+@media (max-width:880px){.dropin-proof{grid-template-columns:1fr;justify-items:center}}
+.dropin-phone{width:280px;background:#1a1c20;border-radius:32px;padding:10px;box-shadow:0 30px 60px -30px rgba(20,22,26,.4),0 0 0 1px rgba(20,22,26,.06)}
+.dropin-phone__screen{background:var(--cream);border-radius:24px;overflow:hidden;height:560px;display:flex;flex-direction:column;font-family:var(--font-body)}
+.dropin-phone__statusbar{display:flex;justify-content:space-between;align-items:center;padding:14px 22px 6px;font-size:11px;font-weight:600;color:var(--ink);font-feature-settings:'tnum' 1}
+.dropin-phone__statusbar svg{width:36px;height:10px}
+.dropin-phone__topnav{display:flex;align-items:center;justify-content:space-between;padding:6px 18px 12px;border-bottom:1px solid var(--line)}
+.dropin-phone__topnav-brand{font-family:var(--font-display);font-size:15px;font-weight:500;letter-spacing:-.01em;color:var(--ink)}
+.dropin-phone__topnav-call{font-size:11px;font-weight:600;color:var(--teal);letter-spacing:.02em;display:flex;align-items:center;gap:5px}
+.dropin-phone__topnav-call svg{width:11px;height:11px}
+.dropin-phone__menutabs{display:flex;gap:18px;padding:14px 18px 10px;font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--stone);overflow-x:auto;border-bottom:1px solid var(--line)}
+.dropin-phone__menutabs span:first-child{color:var(--teal);border-bottom:2px solid var(--teal);padding-bottom:6px;margin-bottom:-10px}
+.dropin-phone__menu{padding:14px 18px;overflow-y:auto;flex:1}
+.dropin-phone__section{font-family:var(--font-display);font-size:11px;font-weight:500;letter-spacing:0.18em;color:var(--teal);text-transform:uppercase;margin:0 0 12px;display:flex;align-items:center;gap:10px}
+.dropin-phone__section::before,.dropin-phone__section::after{content:'';height:1px;flex:1;background:var(--teal);opacity:.4}
+.dropin-phone__item{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin:0 0 12px;font-family:var(--font-display)}
+.dropin-phone__item-name{font-size:14px;font-weight:500;color:var(--ink);letter-spacing:-.005em}
+.dropin-phone__item-desc{display:block;font-family:var(--font-body);font-size:11px;color:var(--ink-soft);font-style:italic;margin-top:1px;line-height:1.4}
+.dropin-phone__item-price{font-size:14px;color:var(--ink-soft);font-weight:400}
+.dropin-phone__sticky{padding:10px 14px;background:var(--ink);color:var(--cream);display:flex;justify-content:center;align-items:center;gap:14px;font-size:11px;font-weight:600;letter-spacing:.02em}
+.dropin-phone__sticky span{display:flex;align-items:center;gap:5px}
+.dropin-phone__sticky svg{width:12px;height:12px}
+
+.dropin-proof__story{display:flex;flex-direction:column;gap:24px;padding-top:8px}
+.dropin-proof__eyebrow{font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);margin:0}
+.dropin-proof__h{font-family:var(--font-display);font-size:clamp(26px,3vw,32px);font-weight:500;color:var(--ink);margin:0;letter-spacing:-0.5px;line-height:1.15}
+.dropin-proof__body{font-size:15.5px;line-height:1.65;color:var(--ink-soft);margin:0;max-width:480px}
+
+/* Speed comparison */
+.dropin-speed{background:var(--white);border:1px solid var(--line);border-radius:var(--r-md);padding:22px 24px}
+.dropin-speed__h{font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--stone);margin:0 0 16px}
+.dropin-speed__row{display:grid;grid-template-columns:80px 1fr auto;gap:14px;align-items:center;margin-bottom:14px}
+.dropin-speed__row:last-child{margin-bottom:0}
+.dropin-speed__label{font-size:12.5px;font-weight:500;color:var(--ink)}
+.dropin-speed__bar{position:relative;height:10px;background:var(--cream-2);border-radius:99px;overflow:hidden}
+.dropin-speed__fill{position:absolute;left:0;top:0;bottom:0;border-radius:99px;background:var(--rust)}
+.dropin-speed__fill--good{background:var(--teal)}
+.dropin-speed__val{font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);font-feature-settings:'tnum' 1;min-width:64px;text-align:right;letter-spacing:-.01em}
+.dropin-speed__val--rust{color:var(--rust)}
+.dropin-speed__val--teal{color:var(--teal)}
+.dropin-speed__note{font-size:12px;color:var(--ink-soft);font-style:italic;margin:14px 0 0;line-height:1.5}
+
+/* What Google sees (JSON-LD snippet preview) */
+.dropin-schema{background:var(--ink);color:var(--cream);border-radius:var(--r-md);padding:24px 28px;font-family:'SF Mono','Consolas',Monaco,monospace;font-size:12.5px;line-height:1.7;white-space:pre-wrap;word-break:break-word;position:relative}
+@media (max-width:560px){.dropin-schema{font-size:11px;padding:20px 18px;line-height:1.6}.dropin-schema::before{position:static;display:block;margin-bottom:14px}}
+.dropin-schema::before{content:'JSON-LD that Google + Apple Maps parse';position:absolute;top:14px;right:18px;font-family:var(--font-body);font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold)}
+.dropin-schema-key{color:#9ECEFF}
+.dropin-schema-str{color:#E4D5A3}
+.dropin-schema-punct{color:var(--stone-2)}
+
+/* Deliverables grid (shared) */
+.spec-deliverables__grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden}
+@media (max-width:720px){.spec-deliverables__grid{grid-template-columns:1fr}}
+.spec-deliverable{background:var(--white);padding:26px 26px 28px;display:flex;gap:18px;align-items:flex-start}
+.spec-deliverable__icon{flex:0 0 44px;width:44px;height:44px;color:var(--teal);background:var(--teal-tint);border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center}
+.spec-deliverable__icon svg{width:24px;height:24px}
+.spec-deliverable__body h3{font-family:var(--font-body);font-size:16px;font-weight:600;color:var(--ink);margin:2px 0 4px;letter-spacing:-.01em}
+.spec-deliverable__body p{font-size:14.5px;line-height:1.55;color:var(--ink-soft);margin:0}
+
+/* Press-spec strip (shared) */
+.spec-pressspec{margin:0 auto 80px;max-width:1000px;padding:24px var(--pad-x);background:var(--ink);color:var(--cream);border-radius:var(--r-md)}
+.spec-pressspec__inner{display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:center}
+@media (max-width:720px){.spec-pressspec__inner{grid-template-columns:1fr}}
+.spec-pressspec__label{font-family:var(--font-display);font-style:italic;font-size:18px;line-height:1.3;color:var(--cream);max-width:240px}
+.spec-pressspec__chips{display:flex;gap:10px;flex-wrap:wrap}
+.spec-pressspec__chip{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;background:rgba(250,247,242,.08);border:1px solid rgba(250,247,242,.18);border-radius:999px;font-size:13px;font-weight:500;color:var(--cream);letter-spacing:.02em}
+.spec-pressspec__chip svg{width:14px;height:14px;color:var(--gold)}
+
+/* Process (shared) */
+.spec-process__grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden}
+@media (max-width:1000px){.spec-process__grid{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:680px){.spec-process__grid{grid-template-columns:1fr 1fr}}
+@media (max-width:480px){.spec-process__grid{grid-template-columns:1fr}}
+.spec-step{background:var(--white);padding:30px 26px 32px;position:relative;display:flex;flex-direction:column;gap:12px}
+.spec-step__num{font-family:var(--font-display);font-size:54px;font-weight:400;font-style:italic;color:var(--teal);line-height:.9;letter-spacing:-1px}
+.spec-step__when{font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--stone)}
+.spec-step h3{font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);margin:0;letter-spacing:-.01em}
+.spec-step p{font-size:14.5px;line-height:1.55;color:var(--ink-soft);margin:0}
+
+/* For (shared) */
+.spec-for__grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:720px){.spec-for__grid{grid-template-columns:1fr}}
+.spec-for__item{padding:16px 18px;background:var(--white);border:1px solid var(--line);border-radius:var(--r-sm);font-size:15px;line-height:1.6;color:var(--ink);display:flex;gap:14px;align-items:flex-start}
+.spec-for__item svg{flex:0 0 18px;width:18px;height:18px;color:var(--teal);margin-top:3px}
+
+/* Promise (shared) */
+.spec-promise__card{background:var(--cream-2);border:1px solid var(--line);border-radius:var(--r-md);padding:32px 36px}
+.spec-promise__h{display:flex;align-items:center;gap:12px;font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0 0 18px;letter-spacing:-.01em}
+.spec-promise__h svg{width:22px;height:22px;color:var(--teal);flex:0 0 22px}
+.spec-promise__grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+@media (max-width:720px){.spec-promise__grid{grid-template-columns:1fr}}
+.spec-promise__row strong{display:block;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:4px;letter-spacing:.01em}
+.spec-promise__row p{font-size:14.5px;line-height:1.55;color:var(--ink-soft);margin:0}
+
+/* Upgrade ramp (shared) */
+.spec-ramp__card{background:linear-gradient(135deg,var(--teal-tint) 0%,var(--cream) 65%);border:1px solid var(--teal);border-radius:var(--r-md);padding:36px 40px;position:relative;overflow:hidden}
+.spec-ramp__h{font-family:var(--font-display);font-size:24px;font-weight:500;color:var(--ink);margin:0 0 14px;letter-spacing:-.01em}
+.spec-ramp__body{font-size:16px;line-height:1.65;color:var(--ink);margin:0;max-width:680px}
+.spec-ramp__math{display:flex;align-items:center;gap:14px;margin-top:22px;font-family:var(--font-display);font-size:18px;color:var(--ink);flex-wrap:wrap}
+.spec-ramp__math-num{font-weight:500;font-size:22px;color:var(--teal)}
+.spec-ramp__math-op{color:var(--stone-2);font-size:18px}
+
+.spec-cta{margin:0 auto 80px;max-width:1000px;padding:0 var(--pad-x);display:flex;gap:14px;flex-wrap:wrap}
+.spec-cta .btn-primary{padding:18px 32px;font-size:16px}
+.spec-cta .btn-ghost{padding:18px 28px}
+
+.spec-ladder__h{font-family:var(--font-body);font-size:13px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);margin:0 0 18px;text-align:center}
+.spec-ladder__rail{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+@media (max-width:720px){.spec-ladder__rail{grid-template-columns:1fr 1fr;gap:14px}}
+.spec-ladder__rung{display:flex;flex-direction:column;text-decoration:none;color:inherit;background:var(--white);border:1px solid var(--line);border-radius:var(--r-sm);padding:18px 18px 22px;transition:border-color var(--t-fast) var(--ease),transform var(--t-fast) var(--ease)}
+.spec-ladder__rung:hover{border-color:var(--teal);transform:translateY(-2px)}
+.spec-ladder__rung--here{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+.spec-ladder__rung--here:hover{transform:none}
+.spec-ladder__rung-label{font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--stone);margin:0 0 6px}
+.spec-ladder__rung--here .spec-ladder__rung-label{color:var(--gold)}
+.spec-ladder__rung-price{font-family:var(--font-display);font-size:24px;font-weight:500;color:var(--ink);margin:0;letter-spacing:-.5px}
+.spec-ladder__rung--here .spec-ladder__rung-price{color:var(--cream)}
+.spec-ladder__rung-name{font-size:13px;color:var(--ink-soft);margin:auto 0 0;padding-top:8px;line-height:1.35}
+.spec-ladder__rung--here .spec-ladder__rung-name{color:rgba(250,247,242,.78)}
+
+.spec-sisters__h{font-family:var(--font-body);font-size:13px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);margin:0 0 18px}
+.spec-sisters__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media (max-width:780px){.spec-sisters__grid{grid-template-columns:1fr}}
+.spec-sister{background:var(--white);border:1px solid var(--line);border-radius:var(--r-sm);padding:18px 20px;text-decoration:none;color:inherit;transition:border-color var(--t-fast) var(--ease)}
+.spec-sister:hover{border-color:var(--teal)}
+.spec-sister__label{font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);margin:0 0 6px}
+.spec-sister__name{font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);margin:0 0 4px;letter-spacing:-.01em}
+.spec-sister__why{font-size:13.5px;line-height:1.5;color:var(--ink-soft);margin:0}
+
+.offer-cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:32px}
+</style>
+<style>
 :root{--cream:#FAF7F2;--cream-2:#F3EEE3;--ink:#14161A;--ink-soft:#2A2D33;--teal:#1F4E5B;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
 html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
 body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--cream);line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased}
@@ -81,20 +240,26 @@ a{color:inherit}
 .btn-primary{background:var(--ink);color:var(--cream)}
 .btn-ghost{background:transparent;color:var(--ink);border:1px solid #D9D5CB}
 header.nav{min-height:64px}
+/* nav-critical */
+.nav{position:fixed;top:0;left:0;right:0;background:var(--cream);z-index:50;border-bottom:1px solid #E8E2D6}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:64px;padding:12px 0}
+.logo{display:flex;align-items:center;gap:10px;font-family:Georgia,serif;font-size:22px;font-weight:600;letter-spacing:-0.02em;flex-shrink:0;white-space:nowrap;color:inherit;text-decoration:none}
+.logo-mark{width:28px;height:28px;flex:0 0 28px}
+.tm{font-size:0.5em;vertical-align:super;margin-left:1px}
+.nav-links{display:flex;gap:36px;font-size:15px}
+.nav-links a{text-decoration:none;color:inherit}
+.nav-toggle{display:none}
+.nav-search-btn,.lang-switch{display:none}
+@media (max-width:1100px){.nav-links{display:none}.nav-toggle{display:flex;width:44px;height:44px;flex-direction:column;justify-content:center;align-items:center;gap:5px;background:transparent;border:0;padding:0}.nav-toggle span{display:block;width:22px;height:2px;background:var(--ink)}.nav-inner .btn-primary{display:none}}
+main{padding-top:64px}
 </style>
-<!-- Preload the two above-the-fold web fonts so they arrive in
-     parallel with site.css instead of being discovered after parse. -->
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
-<!-- Async-load the main stylesheet. Pattern: preload + onload-swap
-     (with a <noscript> fallback for the JS-disabled path). The
-     onload assigns this.rel='stylesheet', which the browser then
-     applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=a3cc95eb7ac7" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-core.css?v=ca265f67308b" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=47810dd9477a" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a3cc95eb7ac7"><link rel="stylesheet" href="/assets/site-article.css?v=47810dd9477a"></noscript>
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ca265f67308b"><link rel="stylesheet" href="/assets/site-article.css?v=47810dd9477a"></noscript>
 
-<script src="/assets/p.js?v=20260503" defer></script>
+<!-- lazy-load:p --><script>(window.requestIdleCallback||function(c){return setTimeout(c,500);})(function(){var s=document.createElement("script");s.src="/assets/p.js?v=20260503";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:p -->
 <script>
   window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
   plausible.init({ endpoint: '/api/event', logging: false })
@@ -167,9 +332,9 @@ header.nav{min-height:64px}
     <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">
       <!-- Phase 5+ — site-wide pulse propagation. Hidden by default;
            window-state.js reveals when lastSeen <4h. Decorative; the
-           label "Email Don" remains the accessible affordance. -->
+           label "Reach Don" remains the accessible affordance. -->
       <span class="nav-window-pulse" id="navWindowPulse" hidden aria-hidden="true" title="Don is around"></span>
-      Email Don
+      Reach Don
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
     </a>
     <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
@@ -177,7 +342,7 @@ header.nav{min-height:64px}
     </button>
   </div>
   <!-- Mobile menu mirrors the 5-item desktop nav, plus search, lang
-       switcher, and the Email Don CTA. The auth-state JS below
+       switcher, and the Reach Don CTA. The auth-state JS below
        toggles js-nav-signin vs js-nav-workshop in both surfaces. -->
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
     <a href="/library/">Library</a>
@@ -190,7 +355,7 @@ header.nav{min-height:64px}
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
       <span>Search the library</span>
     </button>
-    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Email Don</a>
+    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Reach Don</a>
     <a href="/es/services/menu-drop-in/" hreflang="es" lang="es" class="mobile-lang js-lang-switch" data-set-locale="es">Ver en español</a>
   </nav>
 
@@ -224,7 +389,11 @@ header.nav{min-height:64px}
        affordance is acceptable). The script runs once, fire-and-
        forget; no observable side effects on a 401. -->
   <script>
-    (function () {
+    /* Phase 3C-perf — deferred via requestIdleCallback so the
+       /api/auth/me round-trip stays off the critical path. Both
+       .js-nav-signin / .js-nav-workshop ship hidden, so a one-frame
+       delay before the correct affordance reveals is invisible. */
+    (window.requestIdleCallback || function (cb) { return setTimeout(cb, 200); })(function () {
       var signin   = document.querySelectorAll('.js-nav-signin');
       var workshop = document.querySelectorAll('.js-nav-workshop');
       if (!signin.length && !workshop.length) return;
@@ -252,7 +421,7 @@ header.nav{min-height:64px}
           show(signin);
         })
         .catch(function () { show(signin); });
-    })();
+    });
   </script>
 </header>
 
@@ -263,82 +432,400 @@ header.nav{min-height:64px}
       <li aria-hidden="true">›</li>
       <li><a href="/services/" style="color:var(--teal)">Services</a></li>
       <li aria-hidden="true">›</li>
-      <li aria-current="page">Menu drop-in</li>
+      <li aria-current="page">$1,500 menu drop-in</li>
     </ol>
   </nav>
 
-  <article class="container" style="max-width:880px;margin:32px auto 80px;padding:0 var(--pad-x)">
-    <header style="margin-bottom:40px">
-      <p class="eyebrow">A productized offer</p>
-      <h1 style="font-family:var(--font-display);font-size:clamp(40px,6vw,64px);font-weight:500;line-height:1.05;letter-spacing:-0.5px;margin:0 0 18px">
-        The $1,500 Menu <span class="serif-italic">Drop-In.</span>
-      </h1>
-      <p style="font-size:18px;line-height:1.55;color:var(--ink-soft);margin:0 0 24px">
-        Most restaurant websites have one page that&rsquo;s costing them dinners: the menu. We&rsquo;ll build a single custom HTML menu page &mdash; mobile-fast, properly marked up, EN/ES &mdash; and plug it into your existing Wix, Squarespace, or Shopify site without the rebuild. Seven business days, flat fee.
-      </p>
-      <p style="font-size:15.5px;line-height:1.55;color:var(--ink);margin:0 0 24px;font-weight:500">
-        No DIY tool. No AI guesswork. Hand-coded, by one person, in writing.
-      </p>
-      <p class="offer-price">$1,500<small>flat &middot; 7 business days</small></p>
-    </header>
+  <!-- ==================== HERO ==================== -->
+  <section class="spec-hero">
+    <p class="eyebrow eyebrow--glyph">
+      <span class="eyebrow-glyph" aria-hidden="true">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" stroke-linejoin="miter">
+          <rect x="3" y="3" width="18" height="18"/>
+          <line x1="12" y1="3" x2="12" y2="21"/>
+          <line x1="3" y1="9" x2="21" y2="9"/>
+        </svg>
+      </span>
+      A productized offer &middot; one page
+    </p>
+    <h1>
+      The $1,500 Menu <span class="serif-italic">Drop-In.</span>
+    </h1>
+    <p class="spec-hero__lede">
+      Most restaurant websites have one page that&rsquo;s costing them dinners: the menu. One hand-coded HTML page &mdash; mobile-fast, schema-marked, EN/ES &mdash; plugged into your existing Wix, Squarespace, or Shopify site without the rebuild. Seven business days, flat fee.
+    </p>
+    <p class="spec-hero__voice">
+      &ldquo;The bones of your site work. The menu is the leak. Replace one page, not the whole house.&rdquo;
+    </p>
 
-    <section style="margin-bottom:40px">
-      <h2 style="font-size:22px;font-weight:600;color:var(--ink);margin:0 0 16px">What you get</h2>
-      <ul style="font-size:16px;line-height:1.7;color:var(--ink);margin:0;padding-left:22px">
-        <li style="margin-bottom:10px"><strong>One custom menu page,</strong> built to your brand. Hand-coded HTML/CSS, no template fight, no app dependency. Loads under 1.5 seconds on a phone on 4G.</li>
-        <li style="margin-bottom:10px"><strong>Bilingual.</strong> EN and ES versions, both indexed, hreflang-stamped. The Spanish version isn&rsquo;t a Google Translate plugin &mdash; it&rsquo;s a real localized page reviewed by a fluent Spanish-speaking writer.</li>
-        <li style="margin-bottom:10px"><strong>Schema markup.</strong> Restaurant + Menu + MenuItem JSON-LD so Google and Apple Maps see your dishes and prices. Validated with Google&rsquo;s Rich Results Test before delivery.</li>
-        <li style="margin-bottom:10px"><strong>Mobile-first layout.</strong> Sticky category nav. One-tap call/directions/reservation. Photos optimized to AVIF + WebP fallbacks. Tested on iPhone SE up to iPad.</li>
-        <li style="margin-bottom:10px"><strong>Drop-in instructions.</strong> A short Loom for whoever maintains your existing site, showing exactly where to paste the embed snippet (Wix, Squarespace, Shopify, or self-hosted). No CMS access required.</li>
-        <li><strong>Two free updates</strong> in the first 90 days. Menu changes, price corrections, holiday-hour swap-ins. Anything bigger gets quoted, but small touch-ups are part of the deal.</li>
-      </ul>
-    </section>
-
-    <section style="margin-bottom:40px">
-      <h2 style="font-size:22px;font-weight:600;color:var(--ink);margin:0 0 16px">Who it&rsquo;s for</h2>
-      <ul style="font-size:16px;line-height:1.7;color:var(--ink);margin:0;padding-left:22px">
-        <li style="margin-bottom:10px">You like the rest of your site. The bones, the homepage, the about, the photos &mdash; they work. The menu is the one that drags.</li>
-        <li style="margin-bottom:10px">You can&rsquo;t justify $5k+ for a full rebuild this quarter, but you can see the menu page is the leak.</li>
-        <li style="margin-bottom:10px">You serve a bilingual community and your current site only ships English.</li>
-        <li>You&rsquo;ve been using a menu PDF that nobody on a phone can read.</li>
-      </ul>
-    </section>
-
-    <section style="margin-bottom:40px;padding:24px 28px;background:var(--cream-2);border-radius:12px;border:1px solid var(--line)">
-      <h2 style="font-size:20px;font-weight:600;color:var(--ink);margin:0 0 12px">The upgrade ramp</h2>
-      <p style="font-size:16px;line-height:1.65;color:var(--ink);margin:0">
-        If within 90 days you decide the menu drop-in went well and want me to take on the full site, the $1,500 credits toward an Essentials build &mdash; you pay the $1,000 difference and I rebuild the rest of the site against the new menu page. No re-quote, no re-discovery.
-      </p>
-    </section>
-
-    <section style="margin-bottom:40px">
-      <h2 style="font-size:22px;font-weight:600;color:var(--ink);margin:0 0 16px">How it works</h2>
-      <ol style="font-size:16px;line-height:1.7;color:var(--ink);margin:0;padding-left:22px">
-        <li style="margin-bottom:10px"><strong>Day zero.</strong> You send your menu (PDF, doc, photos, whatever you have) and the URL of your existing site. Stripe invoice goes out same day; payment in full before work starts.</li>
-        <li style="margin-bottom:10px"><strong>Days 1&ndash;3.</strong> I draft the page in your brand. You see a staging URL on day 3.</li>
-        <li style="margin-bottom:10px"><strong>Days 4&ndash;5.</strong> One round of edits. Two if the second round is small.</li>
-        <li style="margin-bottom:10px"><strong>Days 6&ndash;7.</strong> Schema validated, photos optimized, ES translation reviewed by a native speaker, embed snippet packaged.</li>
-        <li><strong>Day 7.</strong> Loom + embed snippet sent. Your site builder pastes it in, or I do, depending on platform.</li>
-      </ol>
-    </section>
-
-    <div class="offer-cta">
-      <a class="btn btn-primary js-window" href="/window/?topic=menu-drop-in">Start a menu drop-in</a>
-      <a class="btn btn-ghost" href="/services/audit/">Or audit my site first ($499)</a>
+    <div class="spec-pricebar">
+      <p class="spec-pricebar__price">$1,500<small>flat &middot; 7 business days &middot; two free updates in 90 days</small></p>
+      <div class="spec-pricebar__cap">
+        <span class="spec-pricebar__cap-label">Active build slots</span>
+        <ul class="spec-cap-meter" aria-label="1 of 1 drop-in slots in use this week" style="gap:8px">
+          <li data-taken aria-hidden="true" style="width:60px"></li>
+        </ul>
+        <p class="spec-cap-note">One drop-in a week, one operator &middot; waitlist if booked</p>
+      </div>
     </div>
+  </section>
 
-    <section style="margin-top:56px;padding-top:32px;border-top:1px solid var(--line)">
-      <p class="eyebrow" style="margin-bottom:10px">Sister surfaces</p>
-      <ul style="font-size:15.5px;line-height:1.7;color:var(--teal);margin:0;padding-left:22px">
-        <li><a href="/services/menu-polish/">$249 menu polish</a> &mdash; if you already drafted the menu and just want a designer&rsquo;s last pass</li>
-        <li><a href="/services/audit/">$499 website audit</a> &mdash; the diagnostic that often comes first</li>
-        <li><a href="/services/care-plan-light/">$99/mo Care Plan Light</a> &mdash; keeping the new page current</li>
-        <li><a href="/services/">Services &amp; pricing</a> &mdash; the three full-build tiers</li>
-        <li><a href="/tools/audits/restaurant/">Free 30-second restaurant audit</a> &mdash; see your menu page&rsquo;s specific issues before you commission</li>
-        <li><a href="/blog/restaurant-photo-spec-sheet/">Photo spec sheet</a> &mdash; the photo brief I send to operators before a build</li>
-      </ul>
-    </section>
-  </article>
+  <div class="spec-divider" aria-hidden="true">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter"><rect x="3" y="3" width="18" height="18"/><line x1="12" y1="3" x2="12" y2="21"/><line x1="3" y1="9" x2="21" y2="9"/></svg>
+  </div>
+
+  <!-- ==================== TRUST STRIP ==================== -->
+  <section class="spec-trust" aria-label="The operator behind the drop-in">
+    <div class="spec-trust__rail">
+      <div class="spec-trust__cell">
+        <p class="spec-trust__num">14</p>
+        <p class="spec-trust__label">Years on restaurant floors &mdash; FOH, BOH, GM</p>
+      </div>
+      <div class="spec-trust__cell">
+        <p class="spec-trust__num">&lt;1.5<span style="font-size:22px;color:var(--ink-soft)">s</span></p>
+        <p class="spec-trust__label">Mobile first-paint target, every Drop-In, every time</p>
+      </div>
+      <div class="spec-trust__cell">
+        <p class="spec-trust__num">EN<span style="color:var(--ink-soft)">/</span>ES</p>
+        <p class="spec-trust__label">Both indexed, hreflang-stamped, reviewed by a native speaker</p>
+      </div>
+      <div class="spec-trust__cell">
+        <p class="spec-trust__num">1</p>
+        <p class="spec-trust__label">Drop-In a week, one operator, no template</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== MOMENT OF PROOF: PHONE MOCK + SPEED ==================== -->
+  <section class="spec-section spec-section--wide" aria-labelledby="proof-h">
+    <h2 class="spec-section__h" id="proof-h">What lands on your customer&rsquo;s phone.</h2>
+    <p class="spec-section__sub">Hand-coded, mobile-first, sticky call/directions/reserve, AVIF photos, schema-marked. The render below is the actual HTML pattern I ship &mdash; not a screenshot.</p>
+
+    <div class="dropin-proof">
+      <div class="dropin-phone" aria-label="Phone mock of a Menu Drop-In page rendered on mobile">
+        <div class="dropin-phone__screen">
+          <div class="dropin-phone__statusbar">
+            <span>9:41</span>
+            <svg width="24" height="24" viewBox="0 0 36 10" fill="currentColor" aria-hidden="true"><rect x="0" y="2" width="6" height="6" rx="1"/><rect x="9" y="2" width="6" height="6" rx="1"/><rect x="18" y="0" width="10" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="1"/><rect x="19" y="1" width="6" height="8" rx="1"/></svg>
+          </div>
+          <div class="dropin-phone__topnav">
+            <span class="dropin-phone__topnav-brand">Casa Tita</span>
+            <span class="dropin-phone__topnav-call">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              Call
+            </span>
+          </div>
+          <div class="dropin-phone__menutabs" aria-hidden="true">
+            <span>Starters</span><span>Mains</span><span>Sides</span><span>Drinks</span>
+          </div>
+          <div class="dropin-phone__menu">
+            <p class="dropin-phone__section">Starters</p>
+            <div class="dropin-phone__item">
+              <div><span class="dropin-phone__item-name">Pulpo a la Plancha</span><span class="dropin-phone__item-desc">smoked paprika, fingerlings</span></div>
+              <span class="dropin-phone__item-price">18</span>
+            </div>
+            <div class="dropin-phone__item">
+              <div><span class="dropin-phone__item-name">Bone Marrow Toast</span><span class="dropin-phone__item-desc">sourdough, gremolata, sea salt</span></div>
+              <span class="dropin-phone__item-price">14</span>
+            </div>
+            <div class="dropin-phone__item">
+              <div><span class="dropin-phone__item-name">Beets &amp; Chèvre</span><span class="dropin-phone__item-desc">heirloom, candied walnuts</span></div>
+              <span class="dropin-phone__item-price">13</span>
+            </div>
+            <p class="dropin-phone__section">Mains</p>
+            <div class="dropin-phone__item">
+              <div><span class="dropin-phone__item-name">Branzino al Limone</span><span class="dropin-phone__item-desc">whole roasted, salsa verde</span></div>
+              <span class="dropin-phone__item-price">38</span>
+            </div>
+            <div class="dropin-phone__item">
+              <div><span class="dropin-phone__item-name">Cochinita Pibil</span><span class="dropin-phone__item-desc">slow-roasted pork, banana leaf</span></div>
+              <span class="dropin-phone__item-price">26</span>
+            </div>
+          </div>
+          <div class="dropin-phone__sticky" aria-hidden="true">
+            <span><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>Call</span>
+            <span><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Directions</span>
+            <span><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Reserve</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="dropin-proof__story">
+        <p class="dropin-proof__eyebrow">What this page does that yours doesn&rsquo;t</p>
+        <h3 class="dropin-proof__h">Sticky call, sticky directions, sticky reserve &mdash; one tap, no menu hunt.</h3>
+        <p class="dropin-proof__body">The category nav stays in reach as the guest scrolls. The call/directions/reserve bar lives at the thumb. AVIF photos load below the fold, never blocking first paint. The text is real type, not images of type.</p>
+
+        <div class="dropin-speed" aria-label="Speed comparison vs the average Wix-template menu page">
+          <p class="dropin-speed__h">First paint, 4G, real device</p>
+          <div class="dropin-speed__row">
+            <span class="dropin-speed__label">Wix template</span>
+            <span class="dropin-speed__bar"><span class="dropin-speed__fill" style="width:100%"></span></span>
+            <span class="dropin-speed__val dropin-speed__val--rust">14.2s</span>
+          </div>
+          <div class="dropin-speed__row">
+            <span class="dropin-speed__label">Drop-In</span>
+            <span class="dropin-speed__bar"><span class="dropin-speed__fill dropin-speed__fill--good" style="width:11%"></span></span>
+            <span class="dropin-speed__val dropin-speed__val--teal">1.3s</span>
+          </div>
+          <p class="dropin-speed__note">From an actual side-by-side, August 2025: same restaurant, same connection, same Pixel 7. The Wix page made 47 requests; the Drop-In made 4.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== WHAT GOOGLE SEES ==================== -->
+  <section class="spec-section" aria-labelledby="schema-h">
+    <h2 class="spec-section__h" id="schema-h">What Google + Apple Maps see.</h2>
+    <p class="spec-section__sub">Every Drop-In ships with Restaurant + Menu + MenuItem JSON-LD, validated against Google&rsquo;s Rich Results test before delivery. Your dishes, your prices, and your dietary tags show up in search the way they&rsquo;re supposed to.</p>
+    <div class="dropin-schema">
+<span class="dropin-schema-punct">&#123;</span>
+  <span class="dropin-schema-key">"@type"</span><span class="dropin-schema-punct">:</span> <span class="dropin-schema-str">"Restaurant"</span><span class="dropin-schema-punct">,</span>
+  <span class="dropin-schema-key">"name"</span><span class="dropin-schema-punct">:</span> <span class="dropin-schema-str">"Casa Tita"</span><span class="dropin-schema-punct">,</span>
+  <span class="dropin-schema-key">"servesCuisine"</span><span class="dropin-schema-punct">:</span> <span class="dropin-schema-punct">[</span><span class="dropin-schema-str">"Mexican"</span><span class="dropin-schema-punct">,</span> <span class="dropin-schema-str">"Spanish"</span><span class="dropin-schema-punct">],</span>
+  <span class="dropin-schema-key">"hasMenu"</span><span class="dropin-schema-punct">:</span> <span class="dropin-schema-punct">&#123;</span>
+    <span class="dropin-schema-key">"@type"</span><span class="dropin-schema-punct">:</span> <span class="dropin-schema-str">"Menu"</span><span class="dropin-schema-punct">,</span>
+    <span class="dropin-schema-key">"hasMenuSection"</span><span class="dropin-schema-punct">:</span> <span class="dropin-schema-punct">[&#123;</span>
+      <span class="dropin-schema-key">"name"</span><span class="dropin-schema-punct">:</span> <span class="dropin-schema-str">"Starters"</span><span class="dropin-schema-punct">,</span>
+      <span class="dropin-schema-key">"hasMenuItem"</span><span class="dropin-schema-punct">:</span> <span class="dropin-schema-punct">[&#123;</span>
+        <span class="dropin-schema-key">"name"</span><span class="dropin-schema-punct">:</span> <span class="dropin-schema-str">"Pulpo a la Plancha"</span><span class="dropin-schema-punct">,</span>
+        <span class="dropin-schema-key">"offers"</span><span class="dropin-schema-punct">:</span> <span class="dropin-schema-punct">&#123;</span> <span class="dropin-schema-key">"price"</span><span class="dropin-schema-punct">:</span> <span class="dropin-schema-str">"18.00"</span><span class="dropin-schema-punct">,</span> <span class="dropin-schema-key">"priceCurrency"</span><span class="dropin-schema-punct">:</span> <span class="dropin-schema-str">"USD"</span> <span class="dropin-schema-punct">&#125;</span>
+      <span class="dropin-schema-punct">&#125;]</span>
+    <span class="dropin-schema-punct">&#125;]</span>
+  <span class="dropin-schema-punct">&#125;</span>
+<span class="dropin-schema-punct">&#125;</span>
+    </div>
+  </section>
+
+  <!-- ==================== DELIVERABLES ==================== -->
+  <section class="spec-section" aria-labelledby="deliverables-h">
+    <h2 class="spec-section__h" id="deliverables-h">What lands in your inbox on day seven.</h2>
+    <p class="spec-section__sub">A full bundle, in writing, with the Loom that shows whoever maintains your existing site exactly where to paste the embed.</p>
+    <div class="spec-deliverables__grid">
+      <div class="spec-deliverable">
+        <span class="spec-deliverable__icon" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        </span>
+        <div class="spec-deliverable__body">
+          <h3>One hand-coded HTML page</h3>
+          <p>Built on your brand. No template fight, no app dependency. Loads under 1.5 seconds on a phone on 4G.</p>
+        </div>
+      </div>
+      <div class="spec-deliverable">
+        <span class="spec-deliverable__icon" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8a4 4 0 0 1 4-4M19 16a4 4 0 0 1-4 4"/><path d="M2 12h6m8 0h6"/><circle cx="12" cy="12" r="3"/></svg>
+        </span>
+        <div class="spec-deliverable__body">
+          <h3>Bilingual EN + ES</h3>
+          <p>Both indexed, hreflang-stamped. ES is reviewed by a fluent Spanish-speaking writer, not Google Translate.</p>
+        </div>
+      </div>
+      <div class="spec-deliverable">
+        <span class="spec-deliverable__icon" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </span>
+        <div class="spec-deliverable__body">
+          <h3>Restaurant + Menu schema</h3>
+          <p>JSON-LD so Google and Apple Maps see your dishes and prices. Validated with the Rich Results test before delivery.</p>
+        </div>
+      </div>
+      <div class="spec-deliverable">
+        <span class="spec-deliverable__icon" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+        </span>
+        <div class="spec-deliverable__body">
+          <h3>Mobile-first layout</h3>
+          <p>Sticky category nav. One-tap call/directions/reservation. Photos AVIF + WebP. Tested iPhone SE to iPad.</p>
+        </div>
+      </div>
+      <div class="spec-deliverable">
+        <span class="spec-deliverable__icon" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+        </span>
+        <div class="spec-deliverable__body">
+          <h3>Drop-in Loom + embed snippet</h3>
+          <p>A short walkthrough for whoever maintains your existing site, showing exactly where to paste the embed. Wix, Squarespace, Shopify, or self-hosted.</p>
+        </div>
+      </div>
+      <div class="spec-deliverable">
+        <span class="spec-deliverable__icon" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </span>
+        <div class="spec-deliverable__body">
+          <h3>Two free updates in 90 days</h3>
+          <p>Menu changes, price corrections, holiday-hours swaps. Anything bigger gets quoted, small touch-ups are part of the deal.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== PRESS-SPEC STRIP ==================== -->
+  <section class="spec-pressspec" aria-label="What every Drop-In ships with">
+    <div class="spec-pressspec__inner">
+      <p class="spec-pressspec__label">What every Drop-In ships with by default.</p>
+      <div class="spec-pressspec__chips">
+        <span class="spec-pressspec__chip"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg>AVIF + WebP fallback</span>
+        <span class="spec-pressspec__chip"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg>Hand-coded HTML, no JS framework</span>
+        <span class="spec-pressspec__chip"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg>JSON-LD Restaurant + Menu schema</span>
+        <span class="spec-pressspec__chip"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg>hreflang EN + ES</span>
+        <span class="spec-pressspec__chip"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg>Core Web Vitals green</span>
+        <span class="spec-pressspec__chip"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg>WCAG AA accessibility</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== WHO IT'S FOR ==================== -->
+  <section class="spec-section" aria-labelledby="for-h">
+    <h2 class="spec-section__h" id="for-h">Who it&rsquo;s for.</h2>
+    <div class="spec-for__grid">
+      <div class="spec-for__item">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>
+        <span>You like the rest of your site. The homepage works, the photos are fine &mdash; the menu is the drag.</span>
+      </div>
+      <div class="spec-for__item">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>
+        <span>You can&rsquo;t justify $5k+ for a full rebuild this quarter, but you see the menu is the leak.</span>
+      </div>
+      <div class="spec-for__item">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>
+        <span>You serve a bilingual community and your current site only ships English.</span>
+      </div>
+      <div class="spec-for__item">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>
+        <span>You&rsquo;ve been using a menu PDF that nobody on a phone can read &mdash; or a Wix-template menu that takes 14 seconds to load.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== PROCESS ==================== -->
+  <section class="spec-section spec-section--wide" aria-labelledby="process-h">
+    <h2 class="spec-section__h" id="process-h">Seven business days, start to embed.</h2>
+    <div class="spec-process__grid">
+      <div class="spec-step">
+        <span class="spec-step__num">00</span>
+        <span class="spec-step__when">Day zero</span>
+        <h3>Send the menu.</h3>
+        <p>PDF, doc, photos, whatever you have, plus the URL of your existing site. Stripe invoice goes out same day; payment in full before work starts.</p>
+      </div>
+      <div class="spec-step">
+        <span class="spec-step__num">01</span>
+        <span class="spec-step__when">Days 1&ndash;3</span>
+        <h3>The draft.</h3>
+        <p>I build the page on your brand. You see a staging URL on day 3.</p>
+      </div>
+      <div class="spec-step">
+        <span class="spec-step__num">02</span>
+        <span class="spec-step__when">Days 4&ndash;5</span>
+        <h3>One round of edits.</h3>
+        <p>Two if the second round is small. Honest about what&rsquo;s in scope vs. what gets quoted.</p>
+      </div>
+      <div class="spec-step">
+        <span class="spec-step__num">03</span>
+        <span class="spec-step__when">Days 6&ndash;7</span>
+        <h3>Polish + validate.</h3>
+        <p>Schema validated, photos optimized, ES reviewed by a native speaker, embed snippet packaged.</p>
+      </div>
+      <div class="spec-step">
+        <span class="spec-step__num">04</span>
+        <span class="spec-step__when">Day 7</span>
+        <h3>Loom + embed.</h3>
+        <p>The walkthrough lands in your inbox with the embed snippet. Your site builder pastes it in, or I do, depending on platform.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== PROMISE CARD ==================== -->
+  <section class="spec-section" aria-labelledby="promise-h">
+    <div class="spec-promise__card">
+      <h2 class="spec-promise__h" id="promise-h">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.5 9.5 8 11 4.5-1.5 8-6 8-11V5l-8-3z"/><polyline points="9 12 11 14 15 10"/></svg>
+        Two things in writing before you click buy.
+      </h2>
+      <div class="spec-promise__grid">
+        <div class="spec-promise__row">
+          <strong>One Drop-In a week. Capacity capped.</strong>
+          <p>I don&rsquo;t schedule two Drop-Ins in the same week. If the week is full, the next open slot is named on this page and you can join the waitlist for no charge.</p>
+        </div>
+        <div class="spec-promise__row">
+          <strong>Two free updates in the first 90 days.</strong>
+          <p>Menu changes, price corrections, holiday-hour swap-ins &mdash; small touch-ups are part of the deal. Bigger asks get quoted, in writing, before any work starts.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== UPGRADE RAMP ==================== -->
+  <section class="spec-section" aria-labelledby="ramp-h">
+    <div class="spec-ramp__card">
+      <h2 class="spec-ramp__h" id="ramp-h">If the Drop-In goes well &mdash; the $1,500 credits toward a full build.</h2>
+      <p class="spec-ramp__body">
+        Within 90 days, if you decide you want me to rebuild the rest of the site against the new menu page, the $1,500 carries forward against an <a href="/services/" style="color:var(--teal);font-weight:500;border-bottom:1px dashed currentColor;text-decoration:none">Essentials build ($2,500&ndash;$4,000)</a>. You pay the difference; I rebuild the rest of the site against the page you already love. No re-quote, no re-discovery.
+      </p>
+      <p class="spec-ramp__math">
+        <span class="spec-ramp__math-num">$1,500</span>
+        <span class="spec-ramp__math-op">paid</span>
+        <span class="spec-ramp__math-op">+</span>
+        <span class="spec-ramp__math-num">$1,000&ndash;$2,500</span>
+        <span class="spec-ramp__math-op">due</span>
+        <span class="spec-ramp__math-op">=</span>
+        <span class="spec-ramp__math-num">Essentials build</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- ==================== CTAs ==================== -->
+  <section class="spec-cta">
+    <a class="btn btn-primary js-window" href="/window/?topic=menu-drop-in">Start a Drop-In &rarr;</a>
+    <a class="btn btn-ghost" href="/services/audit/">Or audit my site first ($499)</a>
+  </section>
+
+  <!-- ==================== PRICE LADDER ==================== -->
+  <section class="spec-section" aria-labelledby="ladder-h">
+    <p class="spec-ladder__h" id="ladder-h">Where the Drop-In sits on the ladder</p>
+    <div class="spec-ladder__rail">
+      <a class="spec-ladder__rung" href="/tools/audits/restaurant/">
+        <p class="spec-ladder__rung-label">Free</p>
+        <p class="spec-ladder__rung-price">$0</p>
+        <p class="spec-ladder__rung-name">30-second restaurant audit</p>
+      </a>
+      <a class="spec-ladder__rung" href="/services/menu-polish/">
+        <p class="spec-ladder__rung-label">Refine a draft</p>
+        <p class="spec-ladder__rung-price">$249</p>
+        <p class="spec-ladder__rung-name">Menu Polish &middot; 3 days</p>
+      </a>
+      <a class="spec-ladder__rung" href="/services/audit/">
+        <p class="spec-ladder__rung-label">Diagnostic</p>
+        <p class="spec-ladder__rung-price">$499</p>
+        <p class="spec-ladder__rung-name">Website Audit &middot; 5 days</p>
+      </a>
+      <span class="spec-ladder__rung spec-ladder__rung--here" aria-current="page">
+        <p class="spec-ladder__rung-label">You are here</p>
+        <p class="spec-ladder__rung-price">$1,500</p>
+        <p class="spec-ladder__rung-name">Menu Drop-In &middot; 7 days</p>
+      </span>
+    </div>
+  </section>
+
+  <!-- ==================== SISTER SURFACES ==================== -->
+  <section class="spec-section" aria-labelledby="sisters-h">
+    <p class="spec-sisters__h" id="sisters-h">Sister surfaces</p>
+    <div class="spec-sisters__grid">
+      <a class="spec-sister" href="/services/menu-polish/">
+        <p class="spec-sister__label">$249 &middot; refine a draft</p>
+        <p class="spec-sister__name">Menu Polish</p>
+        <p class="spec-sister__why">If you already drafted the menu and just want a designer&rsquo;s last pass before print.</p>
+      </a>
+      <a class="spec-sister" href="/services/care-plan-light/">
+        <p class="spec-sister__label">$99/mo &middot; monthly</p>
+        <p class="spec-sister__name">Care Plan Light</p>
+        <p class="spec-sister__why">Keep the new menu current month after month &mdash; site, GBP, Yelp, Apple Maps.</p>
+      </a>
+      <a class="spec-sister" href="/work/">
+        <p class="spec-sister__label">Proof</p>
+        <p class="spec-sister__name">Case studies</p>
+        <p class="spec-sister__why">Three restaurants, three rooms, the work in production.</p>
+      </a>
+    </div>
+  </section>
 </main>
 
 <footer>
@@ -348,7 +835,7 @@ header.nav{min-height:64px}
         <span class="foot-cta-pulse" id="footCtaPulse" hidden aria-hidden="true" title="Don is around"></span>
         Got a question? The Window is open.
       </div>
-      <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Email Don
+      <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Reach Don
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
       </a>
     </div>
@@ -406,7 +893,7 @@ header.nav{min-height:64px}
         <p class="foot-heading" id="foot-contact">Contact</p>
         <ul class="foot-links">
           <li><a href="mailto:don@muntin.digital">don@muntin.digital</a></li>
-          <li><a href="/window/">Email Don</a></li>
+          <li><a href="/window/">Reach Don</a></li>
           <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (opens in new tab)</span></a></li>
         </ul>
         <p class="foot-trust"><strong>Reply:</strong> Mondays through Fridays, within 4 hours. Weekends, by Monday morning.</p>
@@ -461,7 +948,7 @@ header.nav{min-height:64px}
     <a class="mobile-cta-bar__btn mobile-cta-bar__btn--ghost js-window" href="/window/" data-event="sticky-cta-window">
       <span class="mobile-cta-bar__pulse" id="mobileCtaBarPulse" hidden aria-hidden="true" title="Don is around"></span>
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
-      Email Don
+      Reach Don
     </a>
   </aside>
   <script>
@@ -476,25 +963,82 @@ header.nav{min-height:64px}
     })();
   </script>
 </footer>
-<script src="/assets/js/first-touch.js" defer></script>
-<script src="/assets/js/save-next-time.js" defer></script>
-<script src="/assets/js/share-hydrate.js" defer></script>
-<script src="/assets/js/window-state.js" defer></script>
-<!-- Cloudflare Turnstile (Phase 3B). Loaded site-wide because the
-     newsletter form lives in this footer, which renders on every page.
-     Async + defer so it never blocks render. ~28 KB; one outbound
-     request to challenges.cloudflare.com per cold load. Worker-side
-     verification lives in src/lib/turnstile.js and runs only when
-     env.TURNSTILE_SECRET_KEY is bound. -->
-<!-- Skip Turnstile on localhost / 127.0.0.1 / dev hosts. The widget
-     calls back to challenges.cloudflare.com to validate the host
-     against the Turnstile site's allowlist; localhost isn't in the
-     allowlist (and adding it would weaken the prod gate), so the
-     widget logs a console error on every dev/CI page load. We
-     gate the script load instead — Turnstile only matters on real
-     production traffic where forms actually submit. -->
-<script>(function(){var h=location.hostname;if(h==='localhost'||h==='127.0.0.1'||h==='0.0.0.0'||/^\[?::1?\]?$/.test(h))return;var s=document.createElement('script');s.src='https://challenges.cloudflare.com/turnstile/v0/api.js';s.async=true;s.defer=true;document.head.appendChild(s);})();</script>
+<!-- Phase 3D-perf — lazy-load non-critical JS after `load` + idle.
+     Previously, the 4 footer scripts (first-touch, save-next-time,
+     share-hydrate, window-state) parsed and executed serially as
+     `defer` scripts, blocking the main thread for 1-3s on
+     mid-range mobile CPUs. The page was visually rendered but
+     could not handle text selection, taps, or keyboard input.
+     The fix: schedule the script downloads on requestIdleCallback
+     after the `load` event so the main thread is free for user
+     input immediately after first paint. Page-functional features
+     come online ~100-500ms after paint instead of after several
+     seconds of script parse + execute.
 
-<script src="/assets/site.js?v=20260501-engagement" defer></script>
+     Turnstile is gated separately by an IntersectionObserver on
+     the newsletter form — most page views never reach the footer
+     form, so the 28KB Turnstile bundle never downloads on those
+     visits. Localhost continues to skip Turnstile entirely (its
+     host allowlist would log a console error on every dev page
+     load). -->
+<script>
+(function () {
+  var FOOTER_ASSETS = [
+    '/assets/js/first-touch.js?v=20260422-cohesion',
+    '/assets/js/save-next-time.js?v=20260422-cohesion',
+    '/assets/js/share-hydrate.js?v=20260422-cohesion',
+    '/assets/js/window-state.js?v=20260422-cohesion'
+  ];
+  function loadAll() {
+    for (var i = 0; i < FOOTER_ASSETS.length; i++) {
+      var s = document.createElement('script');
+      s.src = FOOTER_ASSETS[i];
+      // async=false on a dynamically-created script preserves the
+      // insertion-order execution that `defer` used to give us.
+      // first-touch must wrap window.plausible before save-next-time
+      // tries to wrap it, etc.
+      s.async = false;
+      document.head.appendChild(s);
+    }
+  }
+  function scheduleIdle() {
+    (window.requestIdleCallback || function (cb) { return setTimeout(cb, 200); })(loadAll);
+  }
+  if (document.readyState === 'complete') scheduleIdle();
+  else window.addEventListener('load', scheduleIdle);
+
+  // Turnstile: skip on dev hosts, gate behind an IO observer in prod.
+  var h = location.hostname;
+  if (h === 'localhost' || h === '127.0.0.1' || h === '0.0.0.0' || /^\[?::1?\]?$/.test(h)) return;
+  var form = document.querySelector('.foot-newsletter-form, .cf-turnstile, [data-turnstile]');
+  if (!form) return;
+  var loaded = false;
+  function loadTurnstile() {
+    if (loaded) return; loaded = true;
+    var t = document.createElement('script');
+    t.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+    t.async = true;
+    t.defer = true;
+    document.head.appendChild(t);
+  }
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      for (var i = 0; i < entries.length; i++) {
+        if (entries[i].isIntersecting) { io.disconnect(); loadTurnstile(); return; }
+      }
+    }, { rootMargin: '400px 0px' });
+    io.observe(form);
+    // Also load on first focus into any form field — covers users who
+    // tab through the form before scrolling triggers the observer.
+    form.addEventListener('focusin', loadTurnstile, { once: true });
+  } else {
+    // No IO support → load opportunistically on first idle after load.
+    if (document.readyState === 'complete') setTimeout(loadTurnstile, 1500);
+    else window.addEventListener('load', function () { setTimeout(loadTurnstile, 1500); });
+  }
+})();
+</script>
+
+<!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260501-engagement";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
 </body>
 </html>

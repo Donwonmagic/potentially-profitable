@@ -1,0 +1,25 @@
+{
+  "_doc": "Weekly publishing-batch manifest. Single source of truth for what the site currently surfaces as 'this week's batch' across the homepage hero, every page's site-wide banner, the library hub, the learn home, and the footer 'what's new' line. Each entry is a publishing event with an overview article (the hub URL the banner points at) plus the per-locale label, headline, and one-sentence blurb that renders into the banner.",
+  "_status": "v1 — 2026-05-11. Add a new batch on the Sunday-night-to-Monday-morning canonical publish slot. Set 'current_batch' to its key. Run scripts/inject-batch-banner.mjs to push the banner across all pages. Old batches stay in this file for reference but only the current_batch shows.",
+  "_consumed_by": "scripts/inject-batch-banner.mjs (renders the site-wide banner), homepage 'Latest batch' section (manual link to overview), and future scripts/build-library-recent.mjs may use the batch metadata to badge articles that belong to it.",
+  "_cadence": "One batch per week, Sun 8pm ET → Mon 9am ET publish window. expires = date + 14 days (banner shows for two weeks; after that, the next batch should already be in place and current_batch flipped). If a week is genuinely quiet, leave the prior batch's entry as current — the cadence is editorial, not robotic.",
+  "current_batch": "2026-w1",
+  "batches": {
+    "2026-w1": {
+      "key": "2026-w1",
+      "date": "2026-05-11",
+      "expires": "2026-05-25",
+      "label_en": "Week 1 · May 11, 2026",
+      "label_es": "Semana 1 · 11 de mayo de 2026",
+      "headline_en": "Nine pieces, one operating thesis.",
+      "headline_es": "Nueve piezas, una tesis operativa.",
+      "blurb_en": "Search results aren’t ten blue links anymore. Nine new pieces frame what changes — and what works.",
+      "blurb_es": "Los resultados ya no son diez enlaces azules. Nueve piezas nuevas enmarcan qué cambia — y qué funciona.",
+      "overview_en": "/blog/may-2026-wave-publishing-for-citation/",
+      "overview_es": "/es/blog/lanzamiento-mayo-2026-publicar-para-citacion/",
+      "cta_en": "Read the batch",
+      "cta_es": "Leer el lote",
+      "article_count": 9
+    }
+  }
+}

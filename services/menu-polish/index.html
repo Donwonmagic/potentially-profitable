@@ -59,16 +59,167 @@
 }
 </script>
 
-<style>.breadcrumb{padding-top:100px}.offer-price{font-family:var(--font-display);font-size:clamp(48px,7vw,72px);font-weight:500;line-height:1;color:var(--ink);margin:0;letter-spacing:-1.5px}.offer-price small{font-family:var(--font-body);font-size:16px;font-weight:500;color:var(--ink-soft);letter-spacing:0;display:inline-block;margin-left:8px;vertical-align:baseline}.offer-cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:32px}</style>
 <style>
-/* Critical CSS — prevents flash of unstyled content while the main
-   stylesheet (assets/site.css) loads non-render-blocking via the
-   <link> below. Carries: token vars used in inline styles elsewhere,
-   body baseline (cream + ink + body-size + line-height), container
-   width, skip-link affordance, and a min-height reservation for the
-   fixed nav so layout doesn't shift when site.css applies. ~600
-   bytes. Documented in Phase 3B perf cutover; the full token set
-   reapplies once site.css arrives. */
+/* Page-scoped under .polish-* — won't leak to the rest of the site. */
+.breadcrumb{padding-top:100px}
+
+/* Hero — eyebrow with muntin glyph, oversize headline, type sample */
+.polish-hero{margin:32px auto 56px;max-width:1000px;padding:0 var(--pad-x)}
+.polish-hero .eyebrow{margin-bottom:18px}
+.polish-hero h1{font-family:var(--font-display);font-size:clamp(44px,7vw,76px);font-weight:500;line-height:1.02;letter-spacing:-1.5px;color:var(--ink);margin:0 0 22px}
+.polish-hero h1 .serif-italic{font-style:italic;font-weight:400;color:var(--teal)}
+.polish-hero__lede{font-size:19px;line-height:1.55;color:var(--ink-soft);max-width:720px;margin:0 0 28px}
+.polish-hero__voice{font-family:var(--font-display);font-style:italic;font-weight:400;font-size:21px;line-height:1.45;color:var(--ink);max-width:680px;margin:0 0 36px;padding-left:18px;border-left:2px solid var(--teal)}
+
+/* Price + capacity block — primary signal, more visible than a bare price line */
+.polish-pricebar{display:grid;grid-template-columns:auto 1fr;gap:32px;align-items:end;padding:28px 0 0;border-top:1px solid var(--line)}
+@media (max-width:720px){.polish-pricebar{grid-template-columns:1fr;gap:18px;align-items:start}}
+.polish-pricebar__price{font-family:var(--font-display);font-size:clamp(56px,9vw,88px);font-weight:500;line-height:.95;color:var(--ink);letter-spacing:-2px;margin:0}
+.polish-pricebar__price small{font-family:var(--font-body);font-size:14px;font-weight:500;color:var(--ink-soft);letter-spacing:0;display:block;margin-top:6px}
+.polish-pricebar__cap{font-size:14px;line-height:1.5;color:var(--ink-soft);padding-bottom:6px}
+.polish-pricebar__cap-label{display:block;font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);margin-bottom:8px}
+.polish-cap-meter{display:flex;gap:6px;margin:0 0 6px;padding:0;list-style:none}
+.polish-cap-meter li{width:36px;height:8px;border-radius:2px;background:var(--cream-2);border:1px solid var(--line)}
+.polish-cap-meter li[data-taken]{background:var(--teal);border-color:var(--teal)}
+.polish-cap-note{font-size:12.5px;color:var(--stone);font-style:italic}
+
+/* Type sample — side-by-side BEFORE / AFTER as live type, not raster */
+.polish-typesample{margin:64px auto;max-width:1000px;padding:0 var(--pad-x)}
+.polish-typesample__head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:18px}
+.polish-typesample__h{font-family:var(--font-display);font-size:24px;font-weight:500;color:var(--ink);margin:0}
+.polish-typesample__sub{font-size:14px;color:var(--ink-soft)}
+.polish-typesample__grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden}
+@media (max-width:780px){.polish-typesample__grid{grid-template-columns:1fr}}
+.polish-typesample__panel{background:var(--white);padding:32px 32px 36px;position:relative}
+.polish-typesample__tag{position:absolute;top:14px;right:18px;font-size:10px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--stone)}
+.polish-typesample__panel--after .polish-typesample__tag{color:var(--teal)}
+.polish-typesample__panel--after{background:#fcfaf5}
+.polish-typesample__menu-title{font-family:Georgia,serif;font-size:14px;font-weight:600;letter-spacing:0.02em;color:var(--ink);margin:0 0 14px;text-transform:uppercase}
+.polish-typesample__panel--after .polish-typesample__menu-title{font-family:var(--font-display);font-weight:500;letter-spacing:0.18em;font-size:13px;color:var(--teal);margin-bottom:18px;display:flex;align-items:center;gap:12px}
+.polish-typesample__panel--after .polish-typesample__menu-title::before,
+.polish-typesample__panel--after .polish-typesample__menu-title::after{content:'';height:1px;flex:1;background:var(--teal);opacity:.4}
+.polish-typesample__row{display:flex;justify-content:space-between;align-items:baseline;margin:0 0 12px;gap:14px;font-family:Georgia,serif}
+.polish-typesample__panel--after .polish-typesample__row{font-family:var(--font-display);margin-bottom:14px}
+.polish-typesample__row-name{font-size:16px;color:var(--ink);font-weight:600}
+.polish-typesample__panel--after .polish-typesample__row-name{font-weight:500;font-size:17px;letter-spacing:.005em}
+.polish-typesample__row-dots{flex:1;border-bottom:1px dotted var(--stone-2);transform:translateY(-4px);min-width:24px;opacity:.5}
+.polish-typesample__panel--after .polish-typesample__row-dots{display:none}
+.polish-typesample__row-price{font-size:16px;color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+.polish-typesample__panel--after .polish-typesample__row-price{font-weight:400;color:var(--ink-soft);font-feature-settings:'tnum' 1, 'lnum' 1}
+.polish-typesample__row-desc{display:block;font-size:13px;color:var(--stone);font-weight:400;margin-top:2px;line-height:1.4}
+.polish-typesample__panel--after .polish-typesample__row-desc{font-style:italic;color:var(--ink-soft);font-size:13.5px;line-height:1.5;letter-spacing:.01em}
+.polish-typesample__caption{margin-top:14px;font-size:13px;color:var(--ink-soft);line-height:1.55;text-align:center;font-style:italic}
+
+/* Deliverables grid — six iconified cards, two-column on desktop */
+.polish-deliverables{margin:80px auto;max-width:1000px;padding:0 var(--pad-x)}
+.polish-deliverables__h{font-family:var(--font-display);font-size:clamp(28px,3.5vw,36px);font-weight:500;color:var(--ink);margin:0 0 28px;letter-spacing:-0.5px}
+.polish-deliverables__grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden}
+@media (max-width:720px){.polish-deliverables__grid{grid-template-columns:1fr}}
+.polish-deliverable{background:var(--white);padding:26px 26px 28px;display:flex;gap:18px;align-items:flex-start}
+.polish-deliverable__icon{flex:0 0 44px;width:44px;height:44px;color:var(--teal);background:var(--teal-tint);border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center}
+.polish-deliverable__icon svg{width:24px;height:24px}
+.polish-deliverable__body h3{font-family:var(--font-body);font-size:16px;font-weight:600;color:var(--ink);margin:2px 0 4px;letter-spacing:-.01em}
+.polish-deliverable__body p{font-size:14.5px;line-height:1.55;color:var(--ink-soft);margin:0}
+
+/* Press-spec strip — what's actually in a PDF/X-3 */
+.polish-pressspec{margin:0 auto 80px;max-width:1000px;padding:24px var(--pad-x);background:var(--ink);color:var(--cream);border-radius:var(--r-md)}
+.polish-pressspec__inner{display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:center}
+@media (max-width:720px){.polish-pressspec__inner{grid-template-columns:1fr}}
+.polish-pressspec__label{font-family:var(--font-display);font-style:italic;font-size:18px;line-height:1.3;color:var(--cream);max-width:200px}
+.polish-pressspec__chips{display:flex;gap:10px;flex-wrap:wrap}
+.polish-pressspec__chip{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;background:rgba(250,247,242,.08);border:1px solid rgba(250,247,242,.18);border-radius:999px;font-size:13px;font-weight:500;color:var(--cream);letter-spacing:.02em}
+.polish-pressspec__chip svg{width:14px;height:14px;color:var(--gold)}
+
+/* Process — repurpose .step pattern, but on cream not ink */
+.polish-process{margin:80px auto;max-width:1100px;padding:0 var(--pad-x)}
+.polish-process__h{font-family:var(--font-display);font-size:clamp(28px,3.5vw,36px);font-weight:500;color:var(--ink);margin:0 0 28px;letter-spacing:-0.5px}
+.polish-process__grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden}
+@media (max-width:880px){.polish-process__grid{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.polish-process__grid{grid-template-columns:1fr}}
+.polish-step{background:var(--white);padding:30px 26px 32px;position:relative;display:flex;flex-direction:column;gap:12px}
+.polish-step__num{font-family:var(--font-display);font-size:54px;font-weight:400;font-style:italic;color:var(--teal);line-height:.9;letter-spacing:-1px}
+.polish-step__when{font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--stone)}
+.polish-step h3{font-family:var(--font-display);font-size:21px;font-weight:500;color:var(--ink);margin:0;letter-spacing:-.01em}
+.polish-step p{font-size:14.5px;line-height:1.55;color:var(--ink-soft);margin:0}
+
+/* Promise card — refund + capacity, pulled out of the bullet list */
+.polish-promise{margin:0 auto 80px;max-width:1000px;padding:0 var(--pad-x)}
+.polish-promise__card{background:var(--cream-2);border:1px solid var(--line);border-radius:var(--r-md);padding:32px 36px}
+.polish-promise__h{display:flex;align-items:center;gap:12px;font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0 0 18px;letter-spacing:-.01em}
+.polish-promise__h svg{width:22px;height:22px;color:var(--teal);flex:0 0 22px}
+.polish-promise__grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+@media (max-width:720px){.polish-promise__grid{grid-template-columns:1fr}}
+.polish-promise__row strong{display:block;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:4px;letter-spacing:.01em}
+.polish-promise__row p{font-size:14.5px;line-height:1.55;color:var(--ink-soft);margin:0}
+
+/* Upgrade ramp — keep the cream-2 callout but enrich */
+.polish-ramp{margin:0 auto 80px;max-width:1000px;padding:0 var(--pad-x)}
+.polish-ramp__card{background:linear-gradient(135deg,var(--teal-tint) 0%,var(--cream) 65%);border:1px solid var(--teal);border-radius:var(--r-md);padding:36px 40px;position:relative;overflow:hidden}
+.polish-ramp__h{font-family:var(--font-display);font-size:24px;font-weight:500;color:var(--ink);margin:0 0 14px;letter-spacing:-.01em}
+.polish-ramp__body{font-size:16px;line-height:1.65;color:var(--ink);margin:0;max-width:680px}
+.polish-ramp__math{display:flex;align-items:center;gap:14px;margin-top:22px;font-family:var(--font-display);font-size:18px;color:var(--ink);flex-wrap:wrap}
+.polish-ramp__math-num{font-weight:500;font-size:22px;color:var(--teal)}
+.polish-ramp__math-op{color:var(--stone-2);font-size:18px}
+
+/* CTAs */
+.polish-cta{margin:0 auto 80px;max-width:1000px;padding:0 var(--pad-x);display:flex;gap:14px;flex-wrap:wrap}
+.polish-cta .btn-primary{padding:18px 32px;font-size:16px}
+.polish-cta .btn-ghost{padding:18px 28px}
+
+/* Price ladder — horizontal context */
+.polish-ladder{margin:0 auto 80px;max-width:1000px;padding:0 var(--pad-x)}
+.polish-ladder__h{font-family:var(--font-body);font-size:13px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);margin:0 0 18px;text-align:center}
+.polish-ladder__rail{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+@media (max-width:720px){.polish-ladder__rail{grid-template-columns:1fr 1fr;gap:14px}}
+.polish-ladder__rung{display:flex;flex-direction:column;text-decoration:none;color:inherit;background:var(--white);border:1px solid var(--line);border-radius:var(--r-sm);padding:18px 18px 22px;transition:border-color var(--t-fast) var(--ease),transform var(--t-fast) var(--ease)}
+.polish-ladder__rung:hover{border-color:var(--teal);transform:translateY(-2px)}
+.polish-ladder__rung--here{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+.polish-ladder__rung--here:hover{transform:none}
+.polish-ladder__rung-label{font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--stone);margin:0 0 6px}
+.polish-ladder__rung--here .polish-ladder__rung-label{color:var(--gold)}
+.polish-ladder__rung-price{font-family:var(--font-display);font-size:24px;font-weight:500;color:var(--ink);margin:0;letter-spacing:-.5px}
+.polish-ladder__rung--here .polish-ladder__rung-price{color:var(--cream)}
+.polish-ladder__rung-name{font-size:13px;color:var(--ink-soft);margin:auto 0 0;padding-top:8px;line-height:1.35}
+.polish-ladder__rung--here .polish-ladder__rung-name{color:rgba(250,247,242,.78)}
+
+/* Sister surfaces as mini-cards */
+.polish-sisters{margin:0 auto 80px;max-width:1000px;padding:0 var(--pad-x)}
+.polish-sisters__h{font-family:var(--font-body);font-size:13px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);margin:0 0 18px}
+.polish-sisters__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media (max-width:780px){.polish-sisters__grid{grid-template-columns:1fr}}
+.polish-sister{background:var(--white);border:1px solid var(--line);border-radius:var(--r-sm);padding:18px 20px;text-decoration:none;color:inherit;transition:border-color var(--t-fast) var(--ease)}
+.polish-sister:hover{border-color:var(--teal)}
+.polish-sister__label{font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);margin:0 0 6px}
+.polish-sister__name{font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);margin:0 0 4px;letter-spacing:-.01em}
+.polish-sister__why{font-size:13.5px;line-height:1.5;color:var(--ink-soft);margin:0}
+
+/* Muntin-grid section divider — the brand mark as a hairline cross */
+.polish-divider{display:flex;justify-content:center;margin:0 auto;padding:14px 0;color:var(--line-dark)}
+.polish-divider svg{width:22px;height:22px}
+
+/* Inputs accepted strip */
+.polish-inputs{margin:0 auto 80px;max-width:1000px;padding:0 var(--pad-x)}
+.polish-inputs__h{font-family:var(--font-display);font-size:clamp(24px,3vw,30px);font-weight:500;color:var(--ink);margin:0 0 8px;letter-spacing:-0.4px}
+.polish-inputs__intro{font-size:15.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 22px;max-width:680px}
+.polish-inputs__strip{display:flex;gap:10px;flex-wrap:wrap}
+.polish-input-chip{display:inline-flex;align-items:center;gap:9px;padding:10px 16px;background:var(--white);border:1px solid var(--line);border-radius:999px;font-size:13.5px;font-weight:500;color:var(--ink);letter-spacing:.01em}
+.polish-input-chip svg{width:16px;height:16px;color:var(--teal);flex:0 0 16px}
+.polish-inputs__fallback{margin:20px 0 0;font-size:14px;line-height:1.6;color:var(--ink-soft);max-width:720px;padding:14px 18px;background:var(--cream-2);border-left:3px solid var(--rust);border-radius:0 var(--r-sm) var(--r-sm) 0}
+.polish-inputs__fallback a{color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none}
+
+/* Who-it's-for as two-column list */
+.polish-for{margin:0 auto 80px;max-width:1000px;padding:0 var(--pad-x)}
+.polish-for__h{font-family:var(--font-display);font-size:clamp(24px,3vw,30px);font-weight:500;color:var(--ink);margin:0 0 22px;letter-spacing:-0.4px}
+.polish-for__grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:720px){.polish-for__grid{grid-template-columns:1fr}}
+.polish-for__item{padding:16px 18px;background:var(--white);border:1px solid var(--line);border-radius:var(--r-sm);font-size:15px;line-height:1.6;color:var(--ink);display:flex;gap:14px;align-items:flex-start}
+.polish-for__item svg{flex:0 0 18px;width:18px;height:18px;color:var(--teal);margin-top:3px}
+
+/* Hair-line refinement to the existing offer area */
+.offer-cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:32px}
+</style>
+<style>
+/* Critical CSS — prevents flash of unstyled content. ~600 bytes. */
 :root{--cream:#FAF7F2;--cream-2:#F3EEE3;--ink:#14161A;--ink-soft:#2A2D33;--teal:#1F4E5B;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
 html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
 body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--cream);line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased}
@@ -81,28 +232,79 @@ a{color:inherit}
 .btn-primary{background:var(--ink);color:var(--cream)}
 .btn-ghost{background:transparent;color:var(--ink);border:1px solid #D9D5CB}
 header.nav{min-height:64px}
+/* nav-critical */
+.nav{position:fixed;top:0;left:0;right:0;background:var(--cream);z-index:50;border-bottom:1px solid #E8E2D6}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:64px;padding:12px 0}
+.logo{display:flex;align-items:center;gap:10px;font-family:Georgia,serif;font-size:22px;font-weight:600;letter-spacing:-0.02em;flex-shrink:0;white-space:nowrap;color:inherit;text-decoration:none}
+.logo-mark{width:28px;height:28px;flex:0 0 28px}
+.tm{font-size:0.5em;vertical-align:super;margin-left:1px}
+.nav-links{display:flex;gap:36px;font-size:15px}
+.nav-links a{text-decoration:none;color:inherit}
+.nav-toggle{display:none}
+.nav-search-btn,.lang-switch{display:none}
+@media (max-width:1100px){.nav-links{display:none}.nav-toggle{display:flex;width:44px;height:44px;flex-direction:column;justify-content:center;align-items:center;gap:5px;background:transparent;border:0;padding:0}.nav-toggle span{display:block;width:22px;height:2px;background:var(--ink)}.nav-inner .btn-primary{display:none}}
+main{padding-top:64px}
+/* perf-critical */
+:root{--font-display:'Fraunces','Fraunces Fallback',Georgia,'Times New Roman',serif;--font-body:'Inter','Inter Fallback',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;--ink-soft:#2A2D33;--teal:#1F4E5B;--teal-dark:#143640;--stone:#6B6B6B;--line:#E8E2D6;--line-dark:#D4CCBC}
+body{font-family:var(--font-body)}
+h1,h2,h3,h4,h5,.serif-italic{font-family:var(--font-display)}
+@font-face{font-family:'Fraunces';font-style:normal;font-weight:100 900;font-display:swap;src:url('/assets/fonts/fraunces-variable-latin-wght-normal.woff2') format('woff2-variations');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Fraunces';font-style:italic;font-weight:100 900;font-display:swap;src:url('/assets/fonts/fraunces-variable-latin-wght-italic.woff2') format('woff2-variations');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Inter';font-style:normal;font-weight:100 900;font-display:swap;src:url('/assets/fonts/inter-variable-latin-wght-normal.woff2') format('woff2-variations');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Inter';font-style:italic;font-weight:100 900;font-display:swap;src:url('/assets/fonts/inter-variable-latin-wght-italic.woff2') format('woff2-variations');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Fraunces Fallback';src:local('Times New Roman');size-adjust:100%;ascent-override:97.8%;descent-override:25.5%;line-gap-override:0%}
+@font-face{font-family:'Inter Fallback';src:local('Arial');size-adjust:100%;ascent-override:96.875%;descent-override:24.121%;line-gap-override:0%}
+.hero{padding:160px 0 100px;position:relative;overflow:hidden}
+.hero-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:60px;align-items:center}
+@media (max-width:960px){.hero{padding:130px 0 60px}.hero-grid{grid-template-columns:1fr;gap:48px}}
+.hero h1{margin-top:24px;text-wrap:balance;max-width:18ch}
+.hero h1 .serif-italic{font-style:italic;font-weight:400;color:var(--teal)}
+.hero-sub{margin-top:28px;max-width:520px;font-size:clamp(17px,1.35vw,20px);line-height:1.55;color:var(--ink-soft)}
+.hero-ctas{margin-top:40px;display:flex;gap:14px;flex-wrap:wrap}
+.hero-counts{display:flex;flex-wrap:wrap;gap:10px 14px;list-style:none;padding:0;margin:18px 0 22px;font-size:13.5px;font-weight:600;letter-spacing:0.02em;color:var(--ink-soft)}
+.hero-counts__chip{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:var(--cream-2)}
+.hero-counts__chip strong{color:var(--teal)}
+section.block{padding:clamp(80px,10vw,140px) 0}
+.bg-cream2{background:var(--cream-2)}
+.section-header{max-width:760px;margin-bottom:64px}
+.section-header h2{margin-top:16px}
+.section-header p{margin-top:20px;font-size:19px;line-height:1.55;color:var(--ink-soft);max-width:640px}
+.section-center{text-align:center;margin-left:auto;margin-right:auto}
+.compare,.services,.care,.steps{display:grid;grid-template-columns:1fr;gap:20px}
+.work{display:grid;grid-template-columns:repeat(12,1fr);gap:24px}
+.work-item{grid-column:span 12}
+.about-grid{display:grid;grid-template-columns:1fr;gap:48px;align-items:center}
+.contact-grid{display:grid;grid-template-columns:1fr;gap:clamp(40px,6vw,80px);align-items:start}
+.form-row{display:grid;grid-template-columns:1fr;gap:16px}
+@media (min-width:961px){.compare,.services,.care{grid-template-columns:repeat(3,1fr)}.steps{grid-template-columns:repeat(4,1fr)}.work-item:nth-child(1){grid-column:span 7}.work-item:nth-child(2){grid-column:span 5}.work-item:nth-child(3){grid-column:span 5}.work-item:nth-child(4){grid-column:span 7}.about-grid{grid-template-columns:0.9fr 1.1fr;gap:80px}.contact-grid{grid-template-columns:1fr 1.2fr}}
+@media (min-width:641px){.form-row{grid-template-columns:1fr 1fr}}
+@media (max-width:960px){.window,.window-caption{display:none}}
+.mobile-cta-bar{display:none}
+.trust-strip{padding:18px 0;background:var(--cream-2);border-block:1px solid var(--line)}
+.trust-strip__list{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 18px;list-style:none;padding:0;margin:0;font-size:13.5px;color:var(--ink-soft);line-height:1.5}
+footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;border-top:1px solid rgba(250,247,242,0.08);font-size:14px}
+.foot-cta{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;padding-bottom:40px;margin-bottom:48px;border-bottom:1px solid rgba(250,247,242,0.08)}
+.foot-cta-text{color:var(--cream);font-family:var(--font-display);font-size:clamp(22px,2.6vw,30px);line-height:1.2;letter-spacing:-0.01em;max-width:460px}
+.foot-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr 1.1fr;gap:clamp(24px,3vw,44px);padding-bottom:48px;margin-bottom:32px;border-bottom:1px solid rgba(250,247,242,0.08)}
+@media (max-width:1100px){.foot-grid{grid-template-columns:1fr 1fr 1fr 1fr;gap:36px}}
+@media (max-width:960px){.foot-grid{grid-template-columns:1fr 1fr 1fr;gap:40px}}
+@media (max-width:640px){.foot-grid{grid-template-columns:1fr 1fr}.foot-cta{flex-direction:column;align-items:flex-start;gap:20px}}
+@media (max-width:420px){.foot-grid{grid-template-columns:1fr}}
+.foot-bottom{display:flex;justify-content:space-between;gap:24px;align-items:center;flex-wrap:wrap}
+.below-fold-island{content-visibility:auto;contain-intrinsic-size:auto 1200px}
+@media print{.below-fold-island{content-visibility:visible}}
 </style>
-<!-- Preload the two above-the-fold web fonts so they arrive in
-     parallel with site.css instead of being discovered after parse. -->
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
-<!-- Async-load the main stylesheet. Pattern: preload + onload-swap
-     (with a <noscript> fallback for the JS-disabled path). The
-     onload assigns this.rel='stylesheet', which the browser then
-     applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=a3cc95eb7ac7" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-core.css?v=ca265f67308b" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=47810dd9477a" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a3cc95eb7ac7"><link rel="stylesheet" href="/assets/site-article.css?v=47810dd9477a"></noscript>
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ca265f67308b"><link rel="stylesheet" href="/assets/site-article.css?v=47810dd9477a"></noscript>
 
-<script src="/assets/p.js?v=20260503" defer></script>
+<!-- lazy-load:p --><script>(window.requestIdleCallback||function(c){return setTimeout(c,500);})(function(){var s=document.createElement("script");s.src="/assets/p.js?v=20260503";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:p -->
 <script>
   window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
   plausible.init({ endpoint: '/api/event', logging: false })
 </script>
-<!-- Phase 0 micro-offer instrumentation. Single fire on load; props
-     stay low-cardinality (sku + locale). When a paid checkout flow
-     replaces the /window/?topic= CTA in Phase 1, add start_checkout
-     and complete_checkout events alongside this one. -->
 <script>
   window.addEventListener('DOMContentLoaded', function () {
     if (window.plausible) {
@@ -115,6 +317,22 @@ header.nav{min-height:64px}
 
 <a class="skip-link" href="#main">Skip to main content</a>
 
+<script>
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
+<!-- batch-banner:start -->
+<aside class="batch-banner" data-batch="2026-w1" role="complementary" aria-label="Week 1 · May 11, 2026" style="background:var(--ink,#14161A);color:var(--cream,#FAF7F2);font-size:14px;line-height:1.45;padding:10px 0;border-bottom:1px solid rgba(250,247,242,0.1);position:relative;z-index:60">
+  <div style="max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,64px);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
+    <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;min-width:0">
+      <span style="font-family:Georgia,serif;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;opacity:0.7;white-space:nowrap">Week 1 · May 11, 2026</span>
+      <span style="font-family:Georgia,serif;font-size:15px;font-style:italic">Nine pieces, one operating thesis.</span>
+    </div>
+    <a href="/blog/may-2026-wave-publishing-for-citation/" style="color:var(--cream,#FAF7F2);text-decoration:none;font-weight:500;border-bottom:1px solid currentColor;padding-bottom:1px;white-space:nowrap;flex-shrink:0">Read the batch &rarr;</a>
+  </div>
+</aside>
+<!-- batch-banner:end -->
 <script>
   /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
      Apple devices. Runs early in <body> so the swap is essentially
@@ -178,9 +396,9 @@ header.nav{min-height:64px}
     <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">
       <!-- Phase 5+ — site-wide pulse propagation. Hidden by default;
            window-state.js reveals when lastSeen <4h. Decorative; the
-           label "Email Don" remains the accessible affordance. -->
+           label "Reach Don" remains the accessible affordance. -->
       <span class="nav-window-pulse" id="navWindowPulse" hidden aria-hidden="true" title="Don is around"></span>
-      Email Don
+      Reach Don
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
     </a>
     <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
@@ -188,7 +406,7 @@ header.nav{min-height:64px}
     </button>
   </div>
   <!-- Mobile menu mirrors the 5-item desktop nav, plus search, lang
-       switcher, and the Email Don CTA. The auth-state JS below
+       switcher, and the Reach Don CTA. The auth-state JS below
        toggles js-nav-signin vs js-nav-workshop in both surfaces. -->
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
     <a href="/library/">Library</a>
@@ -201,7 +419,7 @@ header.nav{min-height:64px}
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
       <span>Search the library</span>
     </button>
-    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Email Don</a>
+    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Reach Don</a>
     <a href="/es/services/menu-polish/" hreflang="es" lang="es" class="mobile-lang js-lang-switch" data-set-locale="es">Ver en español</a>
   </nav>
 
@@ -235,7 +453,11 @@ header.nav{min-height:64px}
        affordance is acceptable). The script runs once, fire-and-
        forget; no observable side effects on a 401. -->
   <script>
-    (function () {
+    /* Phase 3C-perf — deferred via requestIdleCallback so the
+       /api/auth/me round-trip stays off the critical path. Both
+       .js-nav-signin / .js-nav-workshop ship hidden, so a one-frame
+       delay before the correct affordance reveals is invisible. */
+    (window.requestIdleCallback || function (cb) { return setTimeout(cb, 200); })(function () {
       var signin   = document.querySelectorAll('.js-nav-signin');
       var workshop = document.querySelectorAll('.js-nav-workshop');
       if (!signin.length && !workshop.length) return;
@@ -263,7 +485,7 @@ header.nav{min-height:64px}
           show(signin);
         })
         .catch(function () { show(signin); });
-    })();
+    });
   </script>
 </header>
 
@@ -278,101 +500,353 @@ header.nav{min-height:64px}
     </ol>
   </nav>
 
-  <article class="container" style="max-width:880px;margin:32px auto 80px;padding:0 var(--pad-x)">
-    <header style="margin-bottom:40px">
-      <p class="eyebrow">A productized offer</p>
-      <h1 style="font-family:var(--font-display);font-size:clamp(40px,6vw,64px);font-weight:500;line-height:1.05;letter-spacing:-0.5px;margin:0 0 18px">
-        The $249 Menu <span class="serif-italic">Polish.</span>
-      </h1>
-      <p style="font-size:18px;line-height:1.55;color:var(--ink-soft);margin:0 0 24px">
-        You drafted the menu yourself &mdash; in the free <a href="/studio/" style="color:var(--teal)">Menu Design Suite</a>, in InDesign, in Word, on a napkin you photographed in good light. It&rsquo;s 80% there. The last 20% is what a designer sees that you don&rsquo;t: a kerning that&rsquo;s a hair off, a hierarchy that fights itself, a section break that breaks the eye. Three business days. Press-ready PDF/X-3 back. $249 flat.
-      </p>
-      <p style="font-size:15.5px;line-height:1.55;color:var(--ink);margin:0 0 24px;font-weight:500">
-        Take what you built and refine it. No DIY tool. No AI guesswork. Hand-touched, by one person, in writing.
-      </p>
-      <p class="offer-price">$249<small>flat &middot; 3 business days</small></p>
-    </header>
+  <!-- ==================== HERO ==================== -->
+  <section class="polish-hero">
+    <p class="eyebrow eyebrow--glyph">
+      <span class="eyebrow-glyph" aria-hidden="true">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" stroke-linejoin="miter">
+          <rect x="3" y="3" width="18" height="18"/>
+          <line x1="12" y1="3" x2="12" y2="21"/>
+          <line x1="3" y1="9" x2="21" y2="9"/>
+        </svg>
+      </span>
+      A productized offer
+    </p>
+    <h1>
+      The $249 Menu <span class="serif-italic">Polish.</span>
+    </h1>
+    <p class="polish-hero__lede">
+      You drafted the menu yourself &mdash; in InDesign, in Word, in Canva, on a napkin you photographed in good light. It&rsquo;s 80% there. The last 20% is what a designer sees that you don&rsquo;t. Three business days. Press-ready PDF/X-3 back.
+    </p>
+    <p class="polish-hero__voice">
+      &ldquo;Polish is take what you built and refine it. No DIY tool. No AI guesswork. Hand-touched, by one person, in writing.&rdquo;
+    </p>
 
-    <section style="margin-bottom:40px">
-      <h2 style="font-size:22px;font-weight:600;color:var(--ink);margin:0 0 16px">What you get</h2>
-      <ul style="font-size:16px;line-height:1.7;color:var(--ink);margin:0;padding-left:22px">
-        <li style="margin-bottom:10px"><strong>A press-ready PDF/X-3</strong> of your menu, exported to ISO-coated CMYK with embedded fonts and bleed marks. Hand it to any commercial printer in the country and they&rsquo;ll know exactly what to do.</li>
-        <li style="margin-bottom:10px"><strong>A web-friendly JPG and PNG,</strong> color-managed and right-sized, for the website and the GBP photo slot.</li>
-        <li style="margin-bottom:10px"><strong>The InDesign source.</strong> Yours to keep. If your nephew takes the next round in-house, he has the same starting point I did.</li>
-        <li style="margin-bottom:10px"><strong>Typography refined.</strong> Type pair tightened, sizes balanced, leading set against a real grid. Section heads aligned to the eye, not just to the math.</li>
-        <li style="margin-bottom:10px"><strong>Layout balanced.</strong> Whitespace where the menu earns it; density where the menu can carry it. Item descriptions trimmed (with your sign-off) so the page doesn&rsquo;t fight itself.</li>
-        <li><strong>EN+ES typography pass.</strong> If your menu carries Spanish copy, both columns get the same care &mdash; widow control, accent kerning, and the tilde isn&rsquo;t orphaned at the end of a line.</li>
-      </ul>
-    </section>
-
-    <section style="margin-bottom:40px">
-      <h2 style="font-size:22px;font-weight:600;color:var(--ink);margin:0 0 16px">Who it&rsquo;s for</h2>
-      <ul style="font-size:16px;line-height:1.7;color:var(--ink);margin:0;padding-left:22px">
-        <li style="margin-bottom:10px">You drafted a menu and it&rsquo;s 80% there. You can feel the 20% but can&rsquo;t name it.</li>
-        <li style="margin-bottom:10px">You&rsquo;re printing this week and you don&rsquo;t want to walk into the printer&rsquo;s with a Word doc.</li>
-        <li style="margin-bottom:10px">You&rsquo;re bilingual and the Spanish column never quite sits right next to the English one.</li>
-        <li>You don&rsquo;t need a full <a href="/services/menu-drop-in/" style="color:var(--teal)">$1,500 Menu Drop-In</a> &mdash; the design is yours, you just want a designer to clean it up before it goes out.</li>
-      </ul>
-    </section>
-
-    <section style="margin-bottom:40px">
-      <h2 style="font-size:22px;font-weight:600;color:var(--ink);margin:0 0 16px">What I accept as input</h2>
-      <p style="font-size:16px;line-height:1.7;color:var(--ink);margin:0 0 12px">
-        The free <a href="/studio/" style="color:var(--teal)">Menu Design Suite</a> exports a clean draft and that&rsquo;s the smoothest path. But I&rsquo;ll work from whatever you have:
-      </p>
-      <ul style="font-size:16px;line-height:1.7;color:var(--ink);margin:0;padding-left:22px">
-        <li style="margin-bottom:6px">Menu Design Suite export (.indd, .pdf, or shareable link)</li>
-        <li style="margin-bottom:6px">Word document or Google Doc</li>
-        <li style="margin-bottom:6px">Existing PDF (even one made from a Word doc)</li>
-        <li style="margin-bottom:6px">A clear photo of a printed menu (good light, lay flat, no glare)</li>
-        <li>InDesign or Affinity Publisher source files</li>
-      </ul>
-      <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:14px 0 0">
-        If what you send is too far from a starting point &mdash; a pile of dish names with no structure, a scan I can&rsquo;t read &mdash; I&rsquo;ll refund the $249 the same day and tell you why a <a href="/services/menu-drop-in/" style="color:var(--teal)">Menu Drop-In</a> is the better fit.
-      </p>
-    </section>
-
-    <section style="margin-bottom:40px;padding:24px 28px;background:var(--cream-2);border-radius:12px;border:1px solid var(--line)">
-      <h2 style="font-size:20px;font-weight:600;color:var(--ink);margin:0 0 12px">The upgrade ramp</h2>
-      <p style="font-size:16px;line-height:1.65;color:var(--ink);margin:0">
-        If within 60 days you decide you want me to build the whole menu page on your live site, the $249 carries forward &mdash; you pay the $1,251 difference and I ship the full <a href="/services/menu-drop-in/" style="color:var(--teal)">$1,500 Menu Drop-In</a>. No re-quote, no re-discovery. Same operator, same week.
-      </p>
-    </section>
-
-    <section style="margin-bottom:40px">
-      <h2 style="font-size:22px;font-weight:600;color:var(--ink);margin:0 0 16px">How it works</h2>
-      <ol style="font-size:16px;line-height:1.7;color:var(--ink);margin:0;padding-left:22px">
-        <li style="margin-bottom:10px"><strong>Day zero.</strong> You send the draft (any of the formats above) and a one-paragraph note about your brand voice and what&rsquo;s bothering you about the menu. Stripe invoice goes out same day; payment in full before work starts.</li>
-        <li style="margin-bottom:10px"><strong>Day 1.</strong> I read the menu the way an operator reads it &mdash; on a phone, then on paper, then aloud. Notes back to you if anything trips me.</li>
-        <li style="margin-bottom:10px"><strong>Day 2.</strong> Typography pass, layout pass, color check. ES column reviewed by a fluent Spanish reader if your menu carries one.</li>
-        <li><strong>Day 3.</strong> Press-ready PDF/X-3 + web JPG/PNG + InDesign source delivered. One round of edits inside the same week if something looks off.</li>
-      </ol>
-    </section>
-
-    <section style="margin-bottom:40px">
-      <h2 style="font-size:22px;font-weight:600;color:var(--ink);margin:0 0 16px">Capacity &amp; refunds</h2>
-      <ul style="font-size:16px;line-height:1.7;color:var(--ink);margin:0;padding-left:22px">
-        <li style="margin-bottom:10px"><strong>Six polishes a week, one operator.</strong> The waitlist is real. If this week is booked, you&rsquo;ll see &ldquo;join the waitlist&rdquo; instead of &ldquo;buy &mdash; $249,&rdquo; and the next open week is named on the page.</li>
-        <li><strong>Refund policy.</strong> Full refund any time before you submit the intake. Once intake is in for 24 hours, we&rsquo;re at the press &mdash; the work is underway and the fee is final.</li>
-      </ul>
-    </section>
-
-    <div class="offer-cta">
-      <a class="btn btn-primary js-window" href="/window/?topic=menu-polish">Start a menu polish</a>
-      <a class="btn btn-ghost" href="/services/menu-drop-in/">Or build the whole menu page ($1,500)</a>
+    <div class="polish-pricebar">
+      <p class="polish-pricebar__price">$249<small>flat &middot; 3 business days &middot; one round of edits</small></p>
+      <div class="polish-pricebar__cap">
+        <span class="polish-pricebar__cap-label">This week &middot; capacity</span>
+        <ul class="polish-cap-meter" aria-label="3 of 6 polish slots taken this week">
+          <li data-taken aria-hidden="true"></li>
+          <li data-taken aria-hidden="true"></li>
+          <li data-taken aria-hidden="true"></li>
+          <li aria-hidden="true"></li>
+          <li aria-hidden="true"></li>
+          <li aria-hidden="true"></li>
+        </ul>
+        <p class="polish-cap-note">3 of 6 slots taken &middot; six polishes a week, one operator</p>
+      </div>
     </div>
+  </section>
 
-    <section style="margin-top:56px;padding-top:32px;border-top:1px solid var(--line)">
-      <p class="eyebrow" style="margin-bottom:10px">Sister surfaces</p>
-      <ul style="font-size:15.5px;line-height:1.7;color:var(--teal);margin:0;padding-left:22px">
-        <li><a href="/studio/">Free Menu Design Suite</a> &mdash; draft the menu yourself first; Polish then refines what you made</li>
-        <li><a href="/services/menu-drop-in/">$1,500 Menu Drop-In</a> &mdash; the full hand-coded menu page on your live site</li>
-        <li><a href="/services/audit/">$499 website audit</a> &mdash; if the menu&rsquo;s fine and the rest of the site is the leak</li>
-        <li><a href="/services/care-plan-light/">$99/mo Care Plan Light</a> &mdash; keep the new menu current month after month</li>
-        <li><a href="/services/">Services &amp; pricing</a> &mdash; the four productized offers and the three full-build tiers</li>
-      </ul>
-    </section>
-  </article>
+  <div class="polish-divider" aria-hidden="true">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter"><rect x="3" y="3" width="18" height="18"/><line x1="12" y1="3" x2="12" y2="21"/><line x1="3" y1="9" x2="21" y2="9"/></svg>
+  </div>
+
+  <!-- ==================== TYPE SAMPLE ==================== -->
+  <section class="polish-typesample" aria-labelledby="typesample-h">
+    <div class="polish-typesample__head">
+      <h2 class="polish-typesample__h" id="typesample-h">What the 20% looks like.</h2>
+      <span class="polish-typesample__sub">Same item. Same words. Different hand.</span>
+    </div>
+    <div class="polish-typesample__grid">
+      <div class="polish-typesample__panel" aria-label="Before — operator draft">
+        <span class="polish-typesample__tag">Before</span>
+        <p class="polish-typesample__menu-title">Starters</p>
+        <div class="polish-typesample__row">
+          <div>
+            <span class="polish-typesample__row-name">Pulpo a la Plancha</span>
+            <span class="polish-typesample__row-desc">grilled octopus, smoked paprika, fingerling potatoes, salsa verde</span>
+          </div>
+          <span class="polish-typesample__row-dots"></span>
+          <span class="polish-typesample__row-price">$18.00</span>
+        </div>
+        <div class="polish-typesample__row">
+          <div>
+            <span class="polish-typesample__row-name">Bone Marrow Toast</span>
+            <span class="polish-typesample__row-desc">roasted bone marrow, sourdough, gremolata, sea salt</span>
+          </div>
+          <span class="polish-typesample__row-dots"></span>
+          <span class="polish-typesample__row-price">$14.00</span>
+        </div>
+        <div class="polish-typesample__row">
+          <div>
+            <span class="polish-typesample__row-name">Beet &amp; Goat Cheese Salad</span>
+            <span class="polish-typesample__row-desc">roasted heirloom beets, whipped goat cheese, candied walnuts, frisee</span>
+          </div>
+          <span class="polish-typesample__row-dots"></span>
+          <span class="polish-typesample__row-price">$13.00</span>
+        </div>
+      </div>
+      <div class="polish-typesample__panel polish-typesample__panel--after" aria-label="After — polished version">
+        <span class="polish-typesample__tag">After</span>
+        <p class="polish-typesample__menu-title">Starters</p>
+        <div class="polish-typesample__row">
+          <div>
+            <span class="polish-typesample__row-name">Pulpo a la Plancha</span>
+            <span class="polish-typesample__row-desc">smoked paprika, fingerlings, salsa verde</span>
+          </div>
+          <span class="polish-typesample__row-price">18</span>
+        </div>
+        <div class="polish-typesample__row">
+          <div>
+            <span class="polish-typesample__row-name">Bone Marrow Toast</span>
+            <span class="polish-typesample__row-desc">sourdough, gremolata, sea salt</span>
+          </div>
+          <span class="polish-typesample__row-price">14</span>
+        </div>
+        <div class="polish-typesample__row">
+          <div>
+            <span class="polish-typesample__row-name">Beets &amp; Whipped Chèvre</span>
+            <span class="polish-typesample__row-desc">heirloom beets, candied walnuts, frisée</span>
+          </div>
+          <span class="polish-typesample__row-price">13</span>
+        </div>
+      </div>
+    </div>
+    <p class="polish-typesample__caption">Polish keeps the dishes. It tightens type, trims word count to what a guest reads in one glance, drops the trailing &ldquo;.00&rdquo;, and lets whitespace carry the page.</p>
+  </section>
+
+  <!-- ==================== DELIVERABLES ==================== -->
+  <section class="polish-deliverables" aria-labelledby="deliverables-h">
+    <h2 class="polish-deliverables__h" id="deliverables-h">What you get back.</h2>
+    <div class="polish-deliverables__grid">
+      <div class="polish-deliverable">
+        <span class="polish-deliverable__icon" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M9 13h6M9 17h4" stroke-width="1.5"/></svg>
+        </span>
+        <div class="polish-deliverable__body">
+          <h3>Press-ready PDF/X-3</h3>
+          <p>ISO-coated CMYK, fonts embedded, bleed marks set. Hand it to any commercial printer in the country.</p>
+        </div>
+      </div>
+      <div class="polish-deliverable">
+        <span class="polish-deliverable__icon" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        </span>
+        <div class="polish-deliverable__body">
+          <h3>Web JPG + PNG</h3>
+          <p>Color-managed and right-sized for the website, the GBP photo slot, and the email blast.</p>
+        </div>
+      </div>
+      <div class="polish-deliverable">
+        <span class="polish-deliverable__icon" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5z"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+        </span>
+        <div class="polish-deliverable__body">
+          <h3>InDesign source</h3>
+          <p>Yours to keep. If next round goes in-house, your nephew starts from the same place I did.</p>
+        </div>
+      </div>
+      <div class="polish-deliverable">
+        <span class="polish-deliverable__icon" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16M4 20h16M7 4v16M17 4v16"/><path d="M4 12h16" stroke-width="1.25" stroke-dasharray="2 2"/></svg>
+        </span>
+        <div class="polish-deliverable__body">
+          <h3>Typography refined</h3>
+          <p>Type pair tightened, sizes balanced, leading set against a real grid. Section heads aligned to the eye, not just the math.</p>
+        </div>
+      </div>
+      <div class="polish-deliverable">
+        <span class="polish-deliverable__icon" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
+        </span>
+        <div class="polish-deliverable__body">
+          <h3>Layout balanced</h3>
+          <p>Whitespace where the menu earns it; density where it can carry it. Descriptions trimmed (with your sign-off) so the page doesn&rsquo;t fight itself.</p>
+        </div>
+      </div>
+      <div class="polish-deliverable">
+        <span class="polish-deliverable__icon" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8a4 4 0 0 1 4-4M19 16a4 4 0 0 1-4 4"/><path d="M2 12h6m8 0h6"/><circle cx="12" cy="12" r="3"/></svg>
+        </span>
+        <div class="polish-deliverable__body">
+          <h3>EN + ES typography pass</h3>
+          <p>Both columns get the same care &mdash; widow control, accent kerning, no tilde orphaned at the end of a line.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== PRESS-SPEC STRIP ==================== -->
+  <section class="polish-pressspec" aria-label="What's inside the PDF/X-3">
+    <div class="polish-pressspec__inner">
+      <p class="polish-pressspec__label">What a press-ready PDF/X-3 actually means.</p>
+      <div class="polish-pressspec__chips">
+        <span class="polish-pressspec__chip"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg>ISO-coated CMYK</span>
+        <span class="polish-pressspec__chip"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg>Bleed marks set</span>
+        <span class="polish-pressspec__chip"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg>Fonts embedded</span>
+        <span class="polish-pressspec__chip"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg>300 dpi images</span>
+        <span class="polish-pressspec__chip"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg>Preflight clean</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== INPUTS ACCEPTED ==================== -->
+  <section class="polish-inputs" aria-labelledby="inputs-h">
+    <h2 class="polish-inputs__h" id="inputs-h">What I accept as input.</h2>
+    <p class="polish-inputs__intro">
+      Whatever shape your draft is in, I can work from it. Cleaner inputs mean fewer back-and-forth rounds &mdash; but I won&rsquo;t bounce you for sending a Word doc.
+    </p>
+    <div class="polish-inputs__strip">
+      <span class="polish-input-chip"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Word / Google Doc</span>
+      <span class="polish-input-chip"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><text x="8" y="17" font-size="6" fill="currentColor" stroke="none" font-family="monospace">PDF</text></svg>Existing PDF</span>
+      <span class="polish-input-chip"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>Clear photo of a printed menu</span>
+      <span class="polish-input-chip"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5z"/><polyline points="2 17 12 22 22 17"/></svg>InDesign / Affinity source</span>
+      <span class="polish-input-chip"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>Canva, Figma, anywhere else</span>
+    </div>
+    <p class="polish-inputs__fallback">
+      <strong>If what you send is too far from a starting point</strong> &mdash; a pile of dish names with no structure, a scan I can&rsquo;t read &mdash; I&rsquo;ll refund the $249 the same day and tell you why a <a href="/services/menu-drop-in/">$1,500 Menu Drop-In</a> is the better fit.
+    </p>
+  </section>
+
+  <!-- ==================== WHO IT'S FOR ==================== -->
+  <section class="polish-for" aria-labelledby="for-h">
+    <h2 class="polish-for__h" id="for-h">Who it&rsquo;s for.</h2>
+    <div class="polish-for__grid">
+      <div class="polish-for__item">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>
+        <span>You drafted a menu and it&rsquo;s 80% there. You can feel the 20% but can&rsquo;t name it.</span>
+      </div>
+      <div class="polish-for__item">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>
+        <span>You&rsquo;re printing this week and you don&rsquo;t want to walk into the printer&rsquo;s with a Word doc.</span>
+      </div>
+      <div class="polish-for__item">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>
+        <span>You&rsquo;re bilingual and the Spanish column never quite sits right next to the English one.</span>
+      </div>
+      <div class="polish-for__item">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>
+        <span>The design is yours &mdash; you just want a designer to clean it up before it goes out.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== PROCESS ==================== -->
+  <section class="polish-process" aria-labelledby="process-h">
+    <h2 class="polish-process__h" id="process-h">Four days, start to delivery.</h2>
+    <div class="polish-process__grid">
+      <div class="polish-step">
+        <span class="polish-step__num">00</span>
+        <span class="polish-step__when">Day zero</span>
+        <h3>You send the draft.</h3>
+        <p>Any of the formats above, plus a one-paragraph note on brand voice and what&rsquo;s bothering you. Stripe invoice goes out same day.</p>
+      </div>
+      <div class="polish-step">
+        <span class="polish-step__num">01</span>
+        <span class="polish-step__when">Day 1</span>
+        <h3>I read it like an operator.</h3>
+        <p>On a phone, then on paper, then aloud. Notes back to you if anything trips me.</p>
+      </div>
+      <div class="polish-step">
+        <span class="polish-step__num">02</span>
+        <span class="polish-step__when">Day 2</span>
+        <h3>Type, layout, color.</h3>
+        <p>Typography pass, layout pass, color check. ES column reviewed by a fluent Spanish reader if your menu carries one.</p>
+      </div>
+      <div class="polish-step">
+        <span class="polish-step__num">03</span>
+        <span class="polish-step__when">Day 3</span>
+        <h3>Delivered.</h3>
+        <p>PDF/X-3 + web JPG/PNG + InDesign source. One round of edits inside the same week if anything looks off.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== PROMISE CARD ==================== -->
+  <section class="polish-promise" aria-labelledby="promise-h">
+    <div class="polish-promise__card">
+      <h2 class="polish-promise__h" id="promise-h">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.5 9.5 8 11 4.5-1.5 8-6 8-11V5l-8-3z"/><polyline points="9 12 11 14 15 10"/></svg>
+        The two things you should know before you click buy.
+      </h2>
+      <div class="polish-promise__grid">
+        <div class="polish-promise__row">
+          <strong>Capacity is capped at 6 polishes a week.</strong>
+          <p>If this week is booked, the buy button flips to a waitlist link and the next open week is named on the page. Constrained-by-design capacity is the feature, not a bug.</p>
+        </div>
+        <div class="polish-promise__row">
+          <strong>Full refund any time before you submit the intake.</strong>
+          <p>Once intake is in for 24 hours, we&rsquo;re at the press &mdash; the work is underway and the fee is final. Stated here so you don&rsquo;t have to ask.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== UPGRADE RAMP ==================== -->
+  <section class="polish-ramp" aria-labelledby="ramp-h">
+    <div class="polish-ramp__card">
+      <h2 class="polish-ramp__h" id="ramp-h">If polish isn&rsquo;t enough &mdash; the $249 carries forward.</h2>
+      <p class="polish-ramp__body">
+        Inside 60 days, if you decide you want the whole menu page built on your live site, the $249 credits in full against the <a href="/services/menu-drop-in/" style="color:var(--teal);font-weight:500;border-bottom:1px dashed currentColor;text-decoration:none">$1,500 Menu Drop-In</a>. No re-quote. No re-discovery. Same operator, same week.
+      </p>
+      <p class="polish-ramp__math">
+        <span class="polish-ramp__math-num">$249</span>
+        <span class="polish-ramp__math-op">paid</span>
+        <span class="polish-ramp__math-op">+</span>
+        <span class="polish-ramp__math-num">$1,251</span>
+        <span class="polish-ramp__math-op">due</span>
+        <span class="polish-ramp__math-op">=</span>
+        <span class="polish-ramp__math-num">$1,500 Drop-In</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- ==================== CTAs ==================== -->
+  <section class="polish-cta">
+    <a class="btn btn-primary js-window" href="/window/?topic=menu-polish">Start a menu polish &rarr;</a>
+    <a class="btn btn-ghost js-window" href="/window/?topic=not-sure">Not sure if this fits? Ask Don</a>
+  </section>
+
+  <!-- ==================== PRICE LADDER ==================== -->
+  <section class="polish-ladder" aria-labelledby="ladder-h">
+    <p class="polish-ladder__h" id="ladder-h">Where polish sits on the ladder</p>
+    <div class="polish-ladder__rail">
+      <a class="polish-ladder__rung" href="/tools/audits/restaurant/">
+        <p class="polish-ladder__rung-label">Free</p>
+        <p class="polish-ladder__rung-price">$0</p>
+        <p class="polish-ladder__rung-name">30-second restaurant audit</p>
+      </a>
+      <span class="polish-ladder__rung polish-ladder__rung--here" aria-current="page">
+        <p class="polish-ladder__rung-label">You are here</p>
+        <p class="polish-ladder__rung-price">$249</p>
+        <p class="polish-ladder__rung-name">Menu Polish &middot; 3 days</p>
+      </span>
+      <a class="polish-ladder__rung" href="/services/audit/">
+        <p class="polish-ladder__rung-label">Diagnostic</p>
+        <p class="polish-ladder__rung-price">$499</p>
+        <p class="polish-ladder__rung-name">Website Audit &middot; 5 days</p>
+      </a>
+      <a class="polish-ladder__rung" href="/services/menu-drop-in/">
+        <p class="polish-ladder__rung-label">One page</p>
+        <p class="polish-ladder__rung-price">$1,500</p>
+        <p class="polish-ladder__rung-name">Menu Drop-In &middot; 7 days</p>
+      </a>
+    </div>
+  </section>
+
+  <!-- ==================== SISTER SURFACES ==================== -->
+  <section class="polish-sisters" aria-labelledby="sisters-h">
+    <p class="polish-sisters__h" id="sisters-h">Sister surfaces</p>
+    <div class="polish-sisters__grid">
+      <a class="polish-sister" href="/tools/audits/restaurant/">
+        <p class="polish-sister__label">Free tool</p>
+        <p class="polish-sister__name">30-second restaurant audit</p>
+        <p class="polish-sister__why">If you&rsquo;re not sure whether the menu is the leak, run the free audit on your site first.</p>
+      </a>
+      <a class="polish-sister" href="/services/care-plan-light/">
+        <p class="polish-sister__label">$99/mo &middot; monthly</p>
+        <p class="polish-sister__name">Care Plan Light</p>
+        <p class="polish-sister__why">Keep menu prices and hours current across site, GBP, Yelp, Apple Maps.</p>
+      </a>
+      <a class="polish-sister" href="/blog/restaurant-photo-spec-sheet/">
+        <p class="polish-sister__label">Free read</p>
+        <p class="polish-sister__name">Photo spec sheet</p>
+        <p class="polish-sister__why">The photo brief I send to operators before a build or a polish.</p>
+      </a>
+    </div>
+  </section>
 </main>
 
 <footer>
@@ -382,7 +856,7 @@ header.nav{min-height:64px}
         <span class="foot-cta-pulse" id="footCtaPulse" hidden aria-hidden="true" title="Don is around"></span>
         Got a question? The Window is open.
       </div>
-      <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Email Don
+      <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Reach Don
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
       </a>
     </div>
@@ -440,7 +914,7 @@ header.nav{min-height:64px}
         <p class="foot-heading" id="foot-contact">Contact</p>
         <ul class="foot-links">
           <li><a href="mailto:don@muntin.digital">don@muntin.digital</a></li>
-          <li><a href="/window/">Email Don</a></li>
+          <li><a href="/window/">Reach Don</a></li>
           <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (opens in new tab)</span></a></li>
         </ul>
         <p class="foot-trust"><strong>Reply:</strong> Mondays through Fridays, within 4 hours. Weekends, by Monday morning.</p>
@@ -495,7 +969,7 @@ header.nav{min-height:64px}
     <a class="mobile-cta-bar__btn mobile-cta-bar__btn--ghost js-window" href="/window/" data-event="sticky-cta-window">
       <span class="mobile-cta-bar__pulse" id="mobileCtaBarPulse" hidden aria-hidden="true" title="Don is around"></span>
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
-      Email Don
+      Reach Don
     </a>
   </aside>
   <script>
@@ -510,25 +984,82 @@ header.nav{min-height:64px}
     })();
   </script>
 </footer>
-<script src="/assets/js/first-touch.js" defer></script>
-<script src="/assets/js/save-next-time.js" defer></script>
-<script src="/assets/js/share-hydrate.js" defer></script>
-<script src="/assets/js/window-state.js" defer></script>
-<!-- Cloudflare Turnstile (Phase 3B). Loaded site-wide because the
-     newsletter form lives in this footer, which renders on every page.
-     Async + defer so it never blocks render. ~28 KB; one outbound
-     request to challenges.cloudflare.com per cold load. Worker-side
-     verification lives in src/lib/turnstile.js and runs only when
-     env.TURNSTILE_SECRET_KEY is bound. -->
-<!-- Skip Turnstile on localhost / 127.0.0.1 / dev hosts. The widget
-     calls back to challenges.cloudflare.com to validate the host
-     against the Turnstile site's allowlist; localhost isn't in the
-     allowlist (and adding it would weaken the prod gate), so the
-     widget logs a console error on every dev/CI page load. We
-     gate the script load instead — Turnstile only matters on real
-     production traffic where forms actually submit. -->
-<script>(function(){var h=location.hostname;if(h==='localhost'||h==='127.0.0.1'||h==='0.0.0.0'||/^\[?::1?\]?$/.test(h))return;var s=document.createElement('script');s.src='https://challenges.cloudflare.com/turnstile/v0/api.js';s.async=true;s.defer=true;document.head.appendChild(s);})();</script>
+<!-- Phase 3D-perf — lazy-load non-critical JS after `load` + idle.
+     Previously, the 4 footer scripts (first-touch, save-next-time,
+     share-hydrate, window-state) parsed and executed serially as
+     `defer` scripts, blocking the main thread for 1-3s on
+     mid-range mobile CPUs. The page was visually rendered but
+     could not handle text selection, taps, or keyboard input.
+     The fix: schedule the script downloads on requestIdleCallback
+     after the `load` event so the main thread is free for user
+     input immediately after first paint. Page-functional features
+     come online ~100-500ms after paint instead of after several
+     seconds of script parse + execute.
 
-<script src="/assets/site.js?v=20260501-engagement" defer></script>
+     Turnstile is gated separately by an IntersectionObserver on
+     the newsletter form — most page views never reach the footer
+     form, so the 28KB Turnstile bundle never downloads on those
+     visits. Localhost continues to skip Turnstile entirely (its
+     host allowlist would log a console error on every dev page
+     load). -->
+<script>
+(function () {
+  var FOOTER_ASSETS = [
+    '/assets/js/first-touch.js?v=20260422-cohesion',
+    '/assets/js/save-next-time.js?v=20260422-cohesion',
+    '/assets/js/share-hydrate.js?v=20260422-cohesion',
+    '/assets/js/window-state.js?v=20260422-cohesion'
+  ];
+  function loadAll() {
+    for (var i = 0; i < FOOTER_ASSETS.length; i++) {
+      var s = document.createElement('script');
+      s.src = FOOTER_ASSETS[i];
+      // async=false on a dynamically-created script preserves the
+      // insertion-order execution that `defer` used to give us.
+      // first-touch must wrap window.plausible before save-next-time
+      // tries to wrap it, etc.
+      s.async = false;
+      document.head.appendChild(s);
+    }
+  }
+  function scheduleIdle() {
+    (window.requestIdleCallback || function (cb) { return setTimeout(cb, 200); })(loadAll);
+  }
+  if (document.readyState === 'complete') scheduleIdle();
+  else window.addEventListener('load', scheduleIdle);
+
+  // Turnstile: skip on dev hosts, gate behind an IO observer in prod.
+  var h = location.hostname;
+  if (h === 'localhost' || h === '127.0.0.1' || h === '0.0.0.0' || /^\[?::1?\]?$/.test(h)) return;
+  var form = document.querySelector('.foot-newsletter-form, .cf-turnstile, [data-turnstile]');
+  if (!form) return;
+  var loaded = false;
+  function loadTurnstile() {
+    if (loaded) return; loaded = true;
+    var t = document.createElement('script');
+    t.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+    t.async = true;
+    t.defer = true;
+    document.head.appendChild(t);
+  }
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      for (var i = 0; i < entries.length; i++) {
+        if (entries[i].isIntersecting) { io.disconnect(); loadTurnstile(); return; }
+      }
+    }, { rootMargin: '400px 0px' });
+    io.observe(form);
+    // Also load on first focus into any form field — covers users who
+    // tab through the form before scrolling triggers the observer.
+    form.addEventListener('focusin', loadTurnstile, { once: true });
+  } else {
+    // No IO support → load opportunistically on first idle after load.
+    if (document.readyState === 'complete') setTimeout(loadTurnstile, 1500);
+    else window.addEventListener('load', function () { setTimeout(loadTurnstile, 1500); });
+  }
+})();
+</script>
+
+<!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260501-engagement";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
 </body>
 </html>
