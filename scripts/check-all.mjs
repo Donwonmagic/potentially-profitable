@@ -213,6 +213,7 @@ const CHECKS = [
   ['SVG dimensions',      'check-svg-dimensions.mjs'],
   ['Image formats (warn)','check-image-formats.mjs',         '--check'],
   ['Newsletter copy',     'check-newsletter-copy.mjs',      '--check'],
+  ['Audit fetch-signal',  'check-audit-fetch-timeouts.mjs', '--check'],
   ['Lifecycle locale parity','check-lifecycle-locale-parity.mjs','--check'],
   ['Share snapshot kinds','check-share-snapshot-kinds.mjs', '--check'],
   ['Storefront rail (idem)','inject-tool-storefront-rail.mjs','--check'],
