@@ -275,6 +275,64 @@ header.nav{min-height:64px}
 
       <p>Si solo necesitas el ejemplo, está aquí. Si quieres entender qué hace cada parte, lee <a href="/es/blog/restaurant-schema-markup-6-types-google-uses/">los seis tipos de schema markup que Google usa</a> primero. Lo de abajo combina los seis en un solo <code>@graph</code>, que es lo que recomienda Google.</p>
 
+      <figure class="viz-figure article-figure" data-audio-alt="Qué hay en el ejemplo listo para pegar y qué hace cada bloque. Bloque uno, Restaurant: la tarjeta de identidad del negocio — panel de conocimiento, elegibilidad local-pack, consultas de cocina. Desbloquea cinco funciones. Bloque dos, PostalAddress y GeoCoordinates: el pin del map-pack y el enlace de direcciones. Desbloquea cuatro funciones. Bloque tres, OpeningHoursSpecification: el indicador de abierto ahora, la línea de cierra a, la exactitud de horarios festivos. Desbloquea cuatro funciones. Bloque cuatro, Menu con MenuSection y MenuItem: ranking a nivel de plato y citas de descripciones en AI Overview. Desbloquea cuatro funciones. Bloque cinco, AggregateRating: el patrón de estrellas doradas en el snippet, ocho a quince por ciento de lift de CTR. Desbloquea tres funciones. Bloque seis, ReserveAction y FAQPage: el botón Reservar una mesa y el resultado enriquecido de FAQ — la superficie de cita AI más barata en una página de restaurante. Desbloquea cuatro funciones. Funciones desbloqueadas en total: veinticuatro.">
+        <div class="recovery-stack" role="img" aria-label="Qué hay en el ejemplo listo para pegar y qué hace cada bloque">
+          <div class="recovery-row recovery-1">
+            <span class="recovery-num">1</span>
+            <div>
+              <h4>Restaurant</h4>
+              <p class="recovery-sub">Panel de conocimiento, tarjeta del negocio, elegibilidad para consultas de cocina.</p>
+            </div>
+            <span class="recovery-val">+5 funciones</span>
+          </div>
+          <div class="recovery-row recovery-2">
+            <span class="recovery-num">2</span>
+            <div>
+              <h4>PostalAddress &middot; GeoCoordinates</h4>
+              <p class="recovery-sub">El pin del map-pack, las direcciones, el ranking near-me.</p>
+            </div>
+            <span class="recovery-val">+4 funciones</span>
+          </div>
+          <div class="recovery-row recovery-3">
+            <span class="recovery-num">3</span>
+            <div>
+              <h4>OpeningHoursSpecification</h4>
+              <p class="recovery-sub">Indicador de abierto ahora, línea de cierra a, exactitud en festivos.</p>
+            </div>
+            <span class="recovery-val">+4 funciones</span>
+          </div>
+          <div class="recovery-row recovery-4">
+            <span class="recovery-num">4</span>
+            <div>
+              <h4>Menu &middot; MenuSection &middot; MenuItem</h4>
+              <p class="recovery-sub">Ranking a nivel de plato + citas de AI Overview de descripciones.</p>
+            </div>
+            <span class="recovery-val">+4 funciones</span>
+          </div>
+          <div class="recovery-row recovery-5">
+            <span class="recovery-num">5</span>
+            <div>
+              <h4>AggregateRating</h4>
+              <p class="recovery-sub">El patrón de estrellas doradas en el snippet. CTR +8&ndash;15%.</p>
+            </div>
+            <span class="recovery-val">+3 funciones</span>
+          </div>
+          <div class="recovery-row recovery-6">
+            <span class="recovery-num">6</span>
+            <div>
+              <h4>ReserveAction &middot; FAQPage</h4>
+              <p class="recovery-sub">Botón Reservar una mesa + resultado enriquecido de FAQ (imán de citas AI).</p>
+            </div>
+            <span class="recovery-val">+4 funciones</span>
+          </div>
+          <div class="recovery-total">
+            <h4>Funciones desbloqueadas en total</h4>
+            <span class="recovery-total-val">+24</span>
+          </div>
+        </div>
+        <figcaption>Seis bloques. Seis superficies distintas de Google. El ejemplo listo para pegar abajo los junta a todos en una sola etiqueta JSON-LD.</figcaption>
+      </figure>
+
       <h2>Cómo usarlo</h2>
 
       <ol>
@@ -430,6 +488,27 @@ header.nav{min-height:64px}
 }
 &lt;/script&gt;</code></pre>
 
+      <figure class="viz-figure article-figure" data-audio-alt="El mismo resultado de Google del restaurante, antes y después del schema listo para pegar. Antes: un resultado de enlace azul desnudo — título 'La Casa del Sabor — Restaurante mexicano en Brooklyn,' la URL y una meta descripción. Sin estrellas, sin horarios, sin pin del mapa. Después: el mismo título y URL, más una calificación de cuatro punto siete estrellas con cuatrocientas doce reseñas, un indicador de rango de precios mostrando un signo de dólar, un indicador de abierto ahora con cierra a las once p m, un pin del map-pack con direcciones, y un botón Reservar una mesa. Seis nuevos elementos de superficie agregados a un resultado de búsqueda por sesenta líneas de JSON-LD.">
+        <div class="viz-ba">
+          <p class="viz-ba__label">El mismo resultado de Google, antes y después del schema</p>
+          <div class="snippet-box" data-tone="bad">
+            <span class="snippet-label">Antes &mdash; enlace azul desnudo, sin resultado enriquecido</span>
+            <p style="font-family:Arial,sans-serif;color:#1a0dab;font-size:18px;margin:0 0 4px"><strong>La Casa del Sabor &mdash; Restaurante mexicano en Brooklyn</strong></p>
+            <p style="font-family:Arial,sans-serif;color:#006621;font-size:13px;margin:0 0 6px">tu-restaurante.com &rsaquo; menu</p>
+            <p style="font-family:Arial,sans-serif;color:#545454;font-size:14px;margin:0">Restaurante mexicano en Brooklyn con tortillas hechas en casa y platillos de temporada. Aceptamos reservas.</p>
+          </div>
+          <div class="snippet-box" data-tone="good">
+            <span class="snippet-label">Después &mdash; resultado enriquecido con seis elementos nuevos</span>
+            <p style="font-family:Arial,sans-serif;color:#1a0dab;font-size:18px;margin:0 0 4px"><strong>La Casa del Sabor &mdash; Restaurante mexicano en Brooklyn</strong></p>
+            <p style="font-family:Arial,sans-serif;color:#006621;font-size:13px;margin:0 0 6px">tu-restaurante.com &rsaquo; menu</p>
+            <p style="font-family:Arial,sans-serif;color:#f9ab00;font-size:14px;margin:0 0 4px"><strong>&starf;&starf;&starf;&starf;&starf;</strong> <span style="color:#545454">4.7 (412) &middot; <span style="color:#0b8043">$</span> &middot; <span style="color:#0b8043">Abierto</span> &middot; Cierra 11 PM &middot; <span style="color:#1a0dab">Pin del mapa</span></span></p>
+            <p style="font-family:Arial,sans-serif;color:#545454;font-size:14px;margin:0 0 6px">Restaurante mexicano en Brooklyn con tortillas hechas en casa y platillos de temporada.</p>
+            <p style="font-family:Arial,sans-serif;color:#1a73e8;font-size:13px;margin:0"><strong>[ Reservar una mesa ]</strong> &middot; <strong>[ Direcciones ]</strong> &middot; <strong>[ Llamar ]</strong></p>
+          </div>
+        </div>
+        <figcaption>Misma URL, misma meta descripción, las mismas 60 líneas de JSON-LD entre las dos. Seis elementos nuevos: estrellas, número de reseñas, rango de precios, abierto ahora, pin del mapa, botón Reservar.</figcaption>
+      </figure>
+
       <h2>Antes de publicar</h2>
 
       <ul>
@@ -440,6 +519,83 @@ header.nav{min-height:64px}
       </ul>
 
       <p>Después de pegarlo, corre <a href="/es/tools/schema-check/">Schema Checker</a> y el <a href="https://search.google.com/test/rich-results" rel="noopener">Rich Results Test de Google</a>. Si ambos validan, está bien implementado.</p>
+
+      <figure class="viz-figure article-figure" data-audio-alt="El flujo de cuatro pasos pegar, probar, esperar, verificar después de pegar el schema. Paso uno: pega el JSON-LD en el head de cada página pública, no solo la home. Paso dos: corre el Rich Results Test de Google en tres URLs y arregla cada error rojo antes de irte. Paso tres: espera siete a catorce días para el re-rastreo — Googlebot necesita ver el schema en producción antes de que aparezca cualquier función. Paso cuatro: verifica en Search Console bajo Mejoras, donde cada tipo de schema tiene su propio reporte con páginas válidas y errores.">
+        <div class="viz-flow">
+          <ol class="viz-flow__list">
+            <li class="viz-flow__step" data-tone="teal">
+              <span class="viz-flow__num">1</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">Pega en el &lt;head&gt; de cada página pública</p>
+                <p class="viz-flow__detail">Una etiqueta <code>&lt;script type="application/ld+json"&gt;</code> por página. Home, menú, reservas, contacto. No solo la home.</p>
+              </div>
+            </li>
+            <li class="viz-flow__step" data-tone="teal">
+              <span class="viz-flow__num">2</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">Corre el Rich Results Test de Google en tres URLs</p>
+                <p class="viz-flow__detail">Home, menú, reservas. Arregla cada error rojo antes de salir del teclado. Las advertencias amarillas casi siempre se pueden publicar.</p>
+              </div>
+            </li>
+            <li class="viz-flow__step" data-tone="teal">
+              <span class="viz-flow__num">3</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">Espera el re-rastreo: 7&ndash;14 días</p>
+                <p class="viz-flow__detail">Googlebot tiene que ver el schema en producción antes de que aparezca cualquier función. El local-pack y las estrellas llegan primero; FAQ y Reservar tardan más.</p>
+              </div>
+            </li>
+            <li class="viz-flow__step" data-tone="teal">
+              <span class="viz-flow__num">4</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">Verifica en Search Console &rsaquo; Mejoras</p>
+                <p class="viz-flow__detail">Cada tipo de schema tiene su propio reporte &mdash; Negocio local, FAQ, Sitelinks. Las páginas válidas se suman; los errores aparecen con la URL y el campo.</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+        <figcaption>Todo el flujo posterior al pegado en cuatro pasos. Sáltate el paso tres y vas a pensar que el schema no funcionó; sáltate el cuatro y no vas a ver la deriva silenciosa cuando una actualización del template borre un campo.</figcaption>
+      </figure>
+
+      <figure class="viz-figure article-figure" data-audio-alt="Probabilidad de aparición de resultado enriquecido a noventa días después de pegar el schema, por tipo. AggregateRating: las estrellas doradas en el snippet aparecen en aproximadamente noventa por ciento de las consultas dentro de treinta días. OpeningHoursSpecification: el indicador de abierto ahora aparece en aproximadamente ochenta y cinco por ciento de las consultas dentro de treinta días. Restaurant más PostalAddress: la tarjeta del local-pack aparece en aproximadamente setenta por ciento de las consultas con marca dentro de sesenta días. Menu: ranking a nivel de plato y citas de AI Overview aparecen en aproximadamente cincuenta y cinco por ciento de las consultas con nombre de plato dentro de sesenta días. FAQPage: el resultado enriquecido de FAQ aparece en aproximadamente cuarenta por ciento de las consultas con forma de pregunta dentro de sesenta días. ReserveAction: el botón Reservar una mesa aparece en aproximadamente treinta y cinco por ciento de las consultas con marca dentro de noventa días.">
+        <div class="viz-bars">
+          <p class="viz-bars__title">Probabilidad de aparición a 90 días tras pegar (por @type)</p>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">AggregateRating &middot; estrellas doradas</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.90"></span></div>
+            <p class="viz-bars__num">~90% &middot; en 30 días</p>
+          </div>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">OpeningHoursSpecification &middot; indicador de abierto ahora</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.85"></span></div>
+            <p class="viz-bars__num">~85% &middot; en 30 días</p>
+          </div>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">Restaurant + PostalAddress &middot; tarjeta del local-pack</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.70"></span></div>
+            <p class="viz-bars__num">~70% &middot; en 60 días</p>
+          </div>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">Menu &middot; nivel de plato + cita AI</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:0.55"></span></div>
+            <p class="viz-bars__num">~55% &middot; en 60 días</p>
+          </div>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">FAQPage &middot; resultado enriquecido de FAQ</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:0.40"></span></div>
+            <p class="viz-bars__num">~40% &middot; en 60 días</p>
+          </div>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">ReserveAction &middot; botón Reservar una mesa</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.35"></span></div>
+            <p class="viz-bars__num">~35% &middot; en 90 días</p>
+          </div>
+        </div>
+        <figcaption>Las estrellas y los horarios llegan primero; Reservar tarda más y depende de que tu endpoint de reservas sea accesible públicamente. Ninguna está garantizada &mdash; Google decide cuál mostrar en cada consulta.</figcaption>
+      </figure>
+
+      <div class="callout">
+        <p><strong>Lo que esto no va a hacer.</strong> Tres limitaciones honestas, en lenguaje de operador: 1) El schema no garantiza ninguna función &mdash; te hace <em>elegible</em>; Google sigue eligiendo qué superficies mostrar en cada consulta. 2) Google escoge el resultado enriquecido que quiere &mdash; puedes publicar un FAQ schema perfecto y aún así obtener un enlace azul si la consulta es ambigua o el FAQ es flojo. 3) El schema no arregla un NAP roto &mdash; si tu nombre, dirección o teléfono es inconsistente entre Google Business Profile, Yelp y tu sitio, el schema no puede tapar el conflicto, y el local-pack va a seguir rankeando al competidor más coherente.</p>
+      </div>
 
       <p>Si tienes dudas sobre algún campo, escríbeme por <a href="/es/window/">La Ventana</a>. Leo cada mensaje.</p>
 
