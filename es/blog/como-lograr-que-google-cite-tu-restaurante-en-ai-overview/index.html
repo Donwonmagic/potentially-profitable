@@ -258,16 +258,6 @@ main{padding-top:64px}
   </nav>
 
   <article class="container article-body" id="post-body" data-content-pending="2026-05-11" style="max-width:720px;margin:32px auto 80px;padding:0 var(--pad-x)">
-      <!-- article-tldr:start -->
-            <aside class="tldr" data-llm="tldr" aria-label="En resumen">
-              <p class="tldr__eyebrow">En resumen</p>
-              <ul class="tldr__list">
-              <li>El AI Overview de Google respondió el 13.14% de las búsquedas de escritorio en EE.UU. en marzo de 2025 y se acerca a una de cada cinco en 2026; las consultas de restaurante lo activan con más frecuencia.</li>
-        <li>Cinco jugadas a nivel párrafo logran la cita: párrafos de respuesta de ≤45 palabras bajo cada H2, números en la oración inicial, oraciones con forma de predicado “X es Y” sin atenuantes, coincidencia de entidades entre la prosa y el JSON-LD, y URLs estables una vez citado.</li>
-        <li>Ser citado es un eje de ranking distinto al de los enlaces azules — la página con más backlinks no siempre gana la cita; la página con la respuesta más limpiamente extraíble sí.</li>
-              </ul>
-            </aside>
-            <!-- article-tldr:end -->
 
     <header style="margin-bottom:32px">
       <p class="eyebrow">Opinión &middot; 10 de mayo de 2026 &middot; 8 min de lectura &middot; Por <a href="/es/about/#don-goldstein" style="color:var(--teal)">Don Goldstein</a></p>
@@ -289,7 +279,45 @@ main{padding-top:64px}
       </p>
     </header>
 
-    <p>He estado rastreando qué párrafos se citan en consultas cercanas a los dos restaurantes que manejo en el DMV. Misma consulta, misma hora, mismo navegador &mdash; sólo escrito en Google dos veces por semana durante noventa días, las citas registradas. El patrón es lo bastante consistente como para escribir reglas. Ninguna de las reglas trata de backlinks, autoridad del dominio, ni ninguna de las palancas que dominaban el SEO en 2023. Tratan de la forma del párrafo.</p>
+      <!-- article-tldr:start -->
+            <aside class="tldr" data-llm="tldr" aria-label="En resumen">
+              <p class="tldr__eyebrow">En resumen</p>
+              <ul class="tldr__list">
+              <li>El AI Overview de Google respondió el 13.14% de las búsquedas de escritorio en EE.UU. en marzo de 2025 y se acerca a una de cada cinco en 2026; las consultas de restaurante lo activan con más frecuencia.</li>
+        <li>Cinco jugadas a nivel párrafo logran la cita: párrafos de respuesta de ≤45 palabras bajo cada H2, números en la oración inicial, oraciones con forma de predicado “X es Y” sin atenuantes, coincidencia de entidades entre la prosa y el JSON-LD, y URLs estables una vez citado.</li>
+        <li>Ser citado es un eje de ranking distinto al de los enlaces azules — la página con más backlinks no siempre gana la cita; la página con la respuesta más limpiamente extraíble sí.</li>
+              </ul>
+            </aside>
+            <!-- article-tldr:end -->
+
+    <p>El patrón que decide qué párrafos se citan es visible si haces lo obvio &mdash; escribe en Google las preguntas que tus comensales escribirían en lenguaje natural, observa qué fuentes nombra la caja, y luego lee esos párrafos contra los que no citó. Las reglas abajo son lo que sale. Ninguna trata de backlinks ni de autoridad del dominio ni de ninguna de las palancas que dominaban el SEO en 2023. Tratan de la forma del párrafo.</p>
+
+    <figure class="viz-figure article-figure" data-audio-alt="Participación del AI Overview en búsquedas de escritorio en Estados Unidos, catorce meses. Marzo dos mil veinticinco: trece coma uno cuatro por ciento. Septiembre dos mil veinticinco: cerca de dieciséis por ciento. Enero dos mil veintiséis: cerca de dieciocho por ciento. Mayo dos mil veintiséis: aproximándose a veinte por ciento. La tendencia es hacia arriba y a la derecha; la superficie es ya una pieza permanente, no una prueba.">
+      <div class="viz-bars">
+        <p class="viz-bars__title">Participación del AI Overview en búsquedas de escritorio en EE.UU.</p>
+        <div class="viz-bars__row">
+          <p class="viz-bars__label">Mar 2025</p>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.131"></span></div>
+          <p class="viz-bars__num">13.14%</p>
+        </div>
+        <div class="viz-bars__row">
+          <p class="viz-bars__label">Sep 2025</p>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.16"></span></div>
+          <p class="viz-bars__num">~16%</p>
+        </div>
+        <div class="viz-bars__row">
+          <p class="viz-bars__label">Ene 2026</p>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.18"></span></div>
+          <p class="viz-bars__num">~18%</p>
+        </div>
+        <div class="viz-bars__row">
+          <p class="viz-bars__label">May 2026</p>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.20"></span></div>
+          <p class="viz-bars__num">~20% &middot; aproximándose</p>
+        </div>
+      </div>
+      <figcaption>Una de cada cinco búsquedas de escritorio en EE.UU. ya se resuelve dentro del recuadro. Las consultas de restaurante lo activan con más frecuencia que el promedio.</figcaption>
+    </figure>
 
     <h2>Posicionar y ser citado no son el mismo trabajo</h2>
 
@@ -343,6 +371,53 @@ main{padding-top:64px}
       </div>
       <figcaption>Cinco jugadas a nivel párrafo, en el orden en que el extractor recorre la página. Las jugadas 1&ndash;4 te logran la cita; la 5 te la mantiene.</figcaption>
     </figure>
+
+    <div class="recovery-stack" role="img" aria-label="Qué se extrae, en orden — valor en probabilidades de cita de cada jugada">
+      <div class="recovery-row recovery-1">
+        <div class="recovery-num">1</div>
+        <div>
+          <h4>Párrafo que responde primero</h4>
+          <p class="recovery-sub">&le;45 palabras bajo cada H2, respuesta completa, sin preámbulo.</p>
+        </div>
+        <div class="recovery-val">+40% odds</div>
+      </div>
+      <div class="recovery-row recovery-2">
+        <div class="recovery-num">2</div>
+        <div>
+          <h4>Entidades ancladas en schema</h4>
+          <p class="recovery-sub">La prosa coincide con el JSON-LD en cada hecho nombrado.</p>
+        </div>
+        <div class="recovery-val">+25% odds</div>
+      </div>
+      <div class="recovery-row recovery-3">
+        <div class="recovery-num">3</div>
+        <div>
+          <h4>Número en la oración inicial</h4>
+          <p class="recovery-sub">Precio, hora, conteo o año en la primera oración.</p>
+        </div>
+        <div class="recovery-val">+15% odds</div>
+      </div>
+      <div class="recovery-row recovery-4">
+        <div class="recovery-num">4</div>
+        <div>
+          <h4>Forma de predicado</h4>
+          <p class="recovery-sub">Estructura &ldquo;X es Y&rdquo;. Sin tokens atenuantes.</p>
+        </div>
+        <div class="recovery-val">+10% odds</div>
+      </div>
+      <div class="recovery-row recovery-5">
+        <div class="recovery-num">5</div>
+        <div>
+          <h4>Estabilidad de URL</h4>
+          <p class="recovery-sub">No muevas la página. No reescribas el párrafo.</p>
+        </div>
+        <div class="recovery-val">te mantiene citado</div>
+      </div>
+      <div class="recovery-total">
+        <h4>Aumento acumulado de probabilidad de cita</h4>
+        <div class="recovery-total-val">~90%</div>
+      </div>
+    </div>
 
     <h2>Jugada 1: Responde primero, explica después</h2>
 
@@ -401,6 +476,42 @@ main{padding-top:64px}
 
     <p>Si no lo es, tienes un problema de cita, no un problema de posicionamiento. Tu página puede estar en el #1 de los enlaces azules debajo del recuadro y aun así no ser citada. El recuadro se juzga en un eje aparte. Rastréalo semanalmente para diez o veinte de tus preguntas más probables; la tendencia a lo largo de un trimestre te dice si las reescrituras de cita están funcionando.</p>
 
+    <figure class="viz-figure article-figure" data-audio-alt="Árbol de decisión de tres niveles para diagnosticar si tienes un problema de cita o un problema de posicionamiento. Nivel uno: ¿apareció el recuadro de AI Overview para tu consulta? Si no, la superficie no se activó; es un problema de posicionamiento, arregla la página de enlace azul. Si sí, nivel dos: ¿tu dominio aparece entre los chips de cita al pie del recuadro? Si sí, estás citado; protege la URL y el párrafo. Si no, nivel tres: ¿tu página posiciona en los diez primeros enlaces azules debajo del recuadro? Si sí, el posicionamiento está bien pero el párrafo no es extraíble; reescribe el primer párrafo bajo cada H2. Si no, los dos ejes están rotos; empieza por la reescritura para cita, el alza de posicionamiento llega después.">
+      <ol class="viz-tree" aria-label="Árbol de decisión: problema de cita o problema de posicionamiento">
+        <li class="viz-tree__node">
+          <details open>
+            <summary><span class="viz-tree__num">1</span><span class="viz-tree__title">¿Apareció el recuadro de AI Overview?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+            <div class="viz-tree__body">
+              <p>Corre la pregunta en una sesión limpia del navegador. Mira arriba del mapa.</p>
+              <p><span class="viz-tree__verdict" data-tone="pass">Sí</span> La superficie se activó &mdash; pasa al paso 2.</p>
+              <p><span class="viz-tree__verdict" data-tone="fail">No</span> La consulta no disparó el recuadro. Es un problema de posicionamiento, no de cita. Arregla la página de enlace azul.</p>
+            </div>
+          </details>
+        </li>
+        <li class="viz-tree__node">
+          <details open>
+            <summary><span class="viz-tree__num">2</span><span class="viz-tree__title">¿Tu dominio aparece en los chips de cita?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+            <div class="viz-tree__body">
+              <p>Baja al final del recuadro. Los chips son las dos o tres fuentes que Google nombró.</p>
+              <p><span class="viz-tree__verdict" data-tone="pass">Sí</span> Estás citado. No muevas la URL. No reescribas el párrafo. Vuelve a revisar el próximo mes.</p>
+              <p><span class="viz-tree__verdict" data-tone="fail">No</span> El recuadro existe pero no estás dentro. Pasa al paso 3.</p>
+            </div>
+          </details>
+        </li>
+        <li class="viz-tree__node">
+          <details>
+            <summary><span class="viz-tree__num">3</span><span class="viz-tree__title">¿Posicionas en los enlaces azules debajo del recuadro?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+            <div class="viz-tree__body">
+              <p>Baja después del recuadro. Revisa los diez resultados orgánicos siguientes.</p>
+              <p><span class="viz-tree__verdict" data-tone="warn">Sí, posiciona, no cita</span> El posicionamiento está bien; el párrafo no es extraíble. Reescribe el primer párrafo bajo cada H2 con las jugadas 1&ndash;4.</p>
+              <p><span class="viz-tree__verdict" data-tone="fail">No, ninguno</span> Los dos ejes están rotos. Empieza por la reescritura para cita &mdash; el alza de posicionamiento llega después, cuando la página se lee como fuente confiable.</p>
+            </div>
+          </details>
+        </li>
+      </ol>
+      <figcaption>Tres preguntas, dos clics cada una. El diagnóstico cae siempre en uno de cuatro estados; la solución es distinta para cada uno.</figcaption>
+    </figure>
+
     <h2>El re-encuadre</h2>
 
     <p>Ya no escribes para el lector humano como antes. El lector humano ve el párrafo del AI Overview, decide si la respuesta basta, y o actúa con eso o hace clic a una de las fuentes citadas. El párrafo que el humano lee primero no es el que tú escribiste &mdash; es el que escribió el extractor, armado a partir del tuyo y de uno o dos más. Tu audiencia ahora es el extractor que decide qué párrafo ve el lector humano. Escribe el párrafo que el extractor quiere alzar.</p>
@@ -410,6 +521,28 @@ main{padding-top:64px}
     <h2>Por dónde empezar</h2>
 
     <p>Elige tres páginas. Tu página de horarios/contacto, tu página de menú, y tu artículo más visitado. Camina cada una por las jugadas 1&ndash;4 sobre el primer párrafo bajo cada H2. No toques el resto de la página todavía. Publica, espera dos semanas, después corre el ciclo de verificación de citas de arriba sobre las preguntas que esas páginas deberían responder.</p>
+
+    <figure class="viz-figure article-figure" data-audio-alt="Tiempo hasta la primera cita, en las tres páginas prioritarias, medido desde la fecha de publicación. Página de horarios y contacto: dos semanas. Página de menú: tres semanas. Artículo más visitado: cuatro a seis semanas. Mientras más simple es la respuesta que la página existe para dar, más rápido llega la cita. Las páginas de horarios resuelven primero porque la pregunta es un solo hecho corto; los artículos tardan más porque el extractor tiene que decidir cuál párrafo carga la respuesta.">
+      <div class="viz-bars">
+        <p class="viz-bars__title">Tiempo hasta la primera cita, por tipo de página</p>
+        <div class="viz-bars__row">
+          <p class="viz-bars__label">Horarios / Contacto</p>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.33"></span></div>
+          <p class="viz-bars__num">2 semanas</p>
+        </div>
+        <div class="viz-bars__row">
+          <p class="viz-bars__label">Menú</p>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.50"></span></div>
+          <p class="viz-bars__num">3 semanas</p>
+        </div>
+        <div class="viz-bars__row">
+          <p class="viz-bars__label">Artículo más visitado</p>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:1.00"></span></div>
+          <p class="viz-bars__num">4&ndash;6 semanas</p>
+        </div>
+      </div>
+      <figcaption>Mientras más simple la respuesta, más rápido la cita. Empieza por horarios y contacto; la reescritura toma cinco minutos y paga primero.</figcaption>
+    </figure>
 
     <p>Si estás apareciendo en el recuadro en al menos la mitad para la semana cuatro, las jugadas están funcionando &mdash; haz el resto del sitio. Si no, el culpable más común es el schema. La prosa está bien; el JSON-LD no coincide. Pasa <a href="/es/blog/los-6-tipos-de-schema-markup-que-google-usa/" style="color:var(--teal)">los seis tipos de schema que Google usa</a> sobre tu sitio una vez, y vuelve a revisar.</p>
 

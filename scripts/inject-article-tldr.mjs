@@ -79,16 +79,25 @@ function buildTakeaways(bullets, locale) {
 
 function injectInto(src, tldrBlock, takeawaysBlock) {
   let next = src;
-  // 1. Replace or insert the TL;DR block right after the
-  //    <article id="post-body"> opener.
-  if (TLDR_RE.test(next)) {
-    next = next.replace(TLDR_RE, tldrBlock);
+  // 1. The TL;DR sits AFTER the article's <header> (title + author +
+  //    listen-btn + dek), so the reading order is: H1 → dek → "In
+  //    short" summary → body. Putting the summary above the title
+  //    felt awkward — the reader doesn't know what they're being
+  //    summarized about yet. Each run normalizes the location:
+  //    delete any existing block, then re-insert after </header>.
+  next = next.replace(TLDR_RE, '').replace(/\n\s*\n\s*\n/g, '\n\n');
+  const openMatch = next.match(POST_BODY_OPEN);
+  if (!openMatch) return null;
+  const openEnd = openMatch.index + openMatch[0].length;
+  const tail = next.slice(openEnd);
+  const headerCloseMatch = tail.match(/<\/header>/i);
+  let insertAt;
+  if (headerCloseMatch) {
+    insertAt = openEnd + headerCloseMatch.index + headerCloseMatch[0].length;
   } else {
-    const m = next.match(POST_BODY_OPEN);
-    if (!m) return null;
-    const insertAt = m.index + m[0].length;
-    next = next.slice(0, insertAt) + '\n      ' + tldrBlock + '\n' + next.slice(insertAt);
+    insertAt = openEnd;
   }
+  next = next.slice(0, insertAt) + '\n\n      ' + tldrBlock + next.slice(insertAt);
   // 2. Replace or insert the Key Takeaways block right before the
   //    closing </article> of #post-body.
   if (TAKEAWAYS_RE.test(next)) {

@@ -78,9 +78,13 @@ for (const file of files) {
     }
     continue;
   }
-  const window = src.slice(bodyM.index, bodyM.index + 800 + bodyM[0].length);
+  // 3000-char window — covers the typical <header> block (title +
+  // listen-btn + dek) so the TLDR can sit AFTER the header rather
+  // than awkwardly above it. AI extractors read the whole page; the
+  // window is just a hint that the TLDR has to land early-ish.
+  const window = src.slice(bodyM.index, bodyM.index + 3000 + bodyM[0].length);
   if (!TLDR_RE.test(window)) {
-    failures.push(`${rel}: TL;DR block (<aside class="tldr">) missing within first 800 chars of post-body`);
+    failures.push(`${rel}: TL;DR block (<aside class="tldr">) missing within first 3000 chars of post-body`);
   }
   if (!TAKEAWAYS_RE.test(src)) {
     failures.push(`${rel}: key-takeaways block (<aside class="key-takeaways">) missing`);

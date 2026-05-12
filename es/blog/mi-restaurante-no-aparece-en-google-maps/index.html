@@ -154,7 +154,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   "@context": "https://schema.org",
   "@type": "Article",
   "@id": "https://muntin.digital/es/blog/mi-restaurante-no-aparece-en-google-maps/#article",
-  "abstract": "Cuatro causas cubren el 100% de la invisibilidad del map pack de restaurantes en el mercado DMV: listing no reclamado (40%), categoría primaria incorrecta (30%), listing suspendido (15%), listing duplicado (15%). Tres de los cuatro arreglos son trabajo del mismo día del operador; suspensión y eliminación de duplicado toman 7–21 días pero son resolubles con documentación. El 85% de los restaurantes encuentran el arreglo en las primeras tres revisiones — el map pack casi siempre es un problema de Google Business Profile, no del sitio web.",
+  "abstract": "Cuatro causas explican la mayor parte de la invisibilidad del map pack de restaurantes: Google Business Profile no reclamado, categoría primaria incorrecta, listing suspendido, y listing duplicado. Las primeras tres son corregibles por el operador el mismo día; los duplicados pueden tomar 7–21 días para fusionarse. El map pack casi siempre es un problema de Google Business Profile, no del sitio web. Diagnostica el GBP antes de tocar el sitio. La mayoría de los restaurantes encuentran el arreglo en las primeras tres revisiones; el orden diagnóstico abajo pone los chequeos de mayor rendimiento primero.",
   "mentions": [
     {
       "@type": "DefinedTerm",
@@ -322,19 +322,50 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   <section class="block">
     <div class="container">
     <article class="article-body" id="post-body">
+
       <!-- article-tldr:start -->
             <aside class="tldr" data-llm="tldr" aria-label="En resumen">
               <p class="tldr__eyebrow">En resumen</p>
               <ul class="tldr__list">
-              <li>Cuatro causas cubren el 100% de la invisibilidad del map pack de restaurantes en el mercado DMV: listing no reclamado (40%), categoría primaria incorrecta (30%), listing suspendido (15%), listing duplicado (15%).</li>
-        <li>Tres de los cuatro arreglos son trabajo del mismo día del operador; suspensión y eliminación de duplicado toman 7–21 días pero son resolubles con documentación.</li>
-        <li>El 85% de los restaurantes encuentran el arreglo en las primeras tres revisiones — el map pack casi siempre es un problema de Google Business Profile, no del sitio web.</li>
+              <li>Cuatro causas explican la mayor parte de la invisibilidad del map pack de restaurantes: Google Business Profile no reclamado, categoría primaria incorrecta, listing suspendido, y listing duplicado. Las primeras tres son corregibles por el operador el mismo día; los duplicados pueden tomar 7–21 días para fusionarse.</li>
+        <li>El map pack casi siempre es un problema de Google Business Profile, no del sitio web. Diagnostica el GBP antes de tocar el sitio.</li>
+        <li>La mayoría de los restaurantes encuentran el arreglo en las primeras tres revisiones; el orden diagnóstico abajo pone los chequeos de mayor rendimiento primero.</li>
               </ul>
             </aside>
             <!-- article-tldr:end -->
 
-
       <p>Esta es una de las llamadas más frecuentes que recibo. "Don, mi restaurante no sale en Google Maps. Mi competencia sí. ¿Qué pasa?" La buena noticia: el 90% de las veces es uno de cuatro problemas, y todos se arreglan en menos de una semana.</p>
+
+      <figure class="viz-figure article-figure" data-audio-alt="El árbol de decisión del diagnóstico. Empieza arriba: ¿has reclamado tu Perfil de Negocio en Google? Si la respuesta es no, la causa raíz es una ficha no reclamada — reclámala en business punto google punto com. Si la respuesta es sí, pregunta: ¿tu nombre, dirección y teléfono son consistentes en tres o más directorios? Si no, la causa raíz es inconsistencia de NAP — limpia los treinta directorios principales. Si sí, pregunta: ¿tu categoría primaria es una categoría específica de restaurante, como Restaurante Italiano o Restaurante Vietnamita, y no la genérica Restaurante? Si no, la causa raíz es categoría incorrecta — cámbiala a la cocina específica más estrecha. Si sí, pregunta: ¿hay cinco o más fotos subidas en los últimos sesenta días? Si no, la causa raíz es un perfil estancado — sube fotos frescas esta semana. Si sí, la causa raíz casi con seguridad es ficha suspendida o ficha duplicada — abre el dashboard y busca el banner, luego busca tu dirección en Maps por un segundo pin.">
+        <div class="viz-tree">
+          <details class="viz-tree__node" open>
+            <summary class="viz-tree__title"><span class="viz-tree__num">1</span>¿Has reclamado tu Perfil de Negocio en Google?<span class="viz-tree__verdict">Sí / No</span></summary>
+            <div class="viz-tree__body">
+              <p><strong>No &rarr;</strong> Causa raíz: <strong>ficha no reclamada</strong>. Ve a business.google.com, busca tu restaurante, dale a &ldquo;Reclamar este negocio.&rdquo; Verificación por postal, 5 días, gratis.</p>
+              <details class="viz-tree__node" open>
+                <summary class="viz-tree__title"><span class="viz-tree__num">2</span>Sí &mdash; ¿tu NAP (nombre, dirección, teléfono) es consistente en 3+ directorios?<span class="viz-tree__verdict">Sí / No</span></summary>
+                <div class="viz-tree__body">
+                  <p><strong>No &rarr;</strong> Causa raíz: <strong>Consistencia de NAP</strong> rota. El crawler de Google no puede reconciliar citas contradictorias. Limpia los top 30 directorios (60&ndash;90 min de trabajo).</p>
+                  <details class="viz-tree__node" open>
+                    <summary class="viz-tree__title"><span class="viz-tree__num">3</span>Sí &mdash; ¿tu categoría primaria es una categoría específica de restaurante (no solo &ldquo;Restaurante&rdquo;)?<span class="viz-tree__verdict">Sí / No</span></summary>
+                    <div class="viz-tree__body">
+                      <p><strong>No &rarr;</strong> Causa raíz: <strong>categoría incorrecta</strong>. &ldquo;Restaurante italiano&rdquo; no &ldquo;Restaurante.&rdquo; &ldquo;Restaurante vietnamita&rdquo; no &ldquo;Asiático fusión.&rdquo; Lo más estrecho gana.</p>
+                      <details class="viz-tree__node" open>
+                        <summary class="viz-tree__title"><span class="viz-tree__num">4</span>Sí &mdash; ¿hay 5+ fotos subidas en los últimos 60 días?<span class="viz-tree__verdict">Sí / No</span></summary>
+                        <div class="viz-tree__body">
+                          <p><strong>No &rarr;</strong> Causa raíz: <strong>señal de perfil estancado</strong>. Sube 5&ndash;10 fotos frescas esta semana (plato, sala, exterior). La actividad del perfil es un input de ranking.</p>
+                          <p><strong>Sí &rarr;</strong> Causa raíz: <strong>ficha suspendida o duplicada</strong>. Abre el dashboard para ver el banner de suspensión; busca tu dirección en Maps y cuenta los pines. Ver Causa 3 y Causa 4 abajo.</p>
+                        </div>
+                      </details>
+                    </div>
+                  </details>
+                </div>
+              </details>
+            </div>
+          </details>
+        </div>
+        <figcaption>Recorre el árbol de arriba abajo. El primer &ldquo;No&rdquo; es tu respuesta; no necesitas seguir.</figcaption>
+      </figure>
 
       <h2>Causa 1 — No has reclamado el listing (40% de los casos)</h2>
 
@@ -368,21 +399,135 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <p>Cómo arreglarlo: marca el incorrecto como "Place is permanently closed" desde tu cuenta GBP. Tarda 7-14 días para que Google fusione.</p>
 
+      <figure class="viz-figure article-figure" data-audio-alt="A dónde suele rastrearse la invisibilidad del map pack, ordenado por frecuencia relativa. Perfil de Negocio en Google no reclamado es la causa más común. NAP inconsistente &mdash; nombre, dirección, teléfono &mdash; entre directorios es la segunda más común. Categoría primaria incorrecta es la tercera. Fichas duplicadas y fichas suspendidas son menos comunes pero todavía representan una porción significativa. Todo lo demás es el residuo.">
+        <div class="viz-bars">
+          <p class="viz-bars__title">Dónde suele estar el problema, ordenado por frecuencia</p>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">GBP no reclamado</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:1.0"></span></div>
+            <p class="viz-bars__num">más común</p>
+          </div>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">Inconsistencia de NAP entre directorios</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.85"></span></div>
+            <p class="viz-bars__num">segunda más común</p>
+          </div>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">Categoría primaria incorrecta</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.65"></span></div>
+            <p class="viz-bars__num">tercera más común</p>
+          </div>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">Ficha duplicada</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.50"></span></div>
+            <p class="viz-bars__num">frecuencia moderada</p>
+          </div>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">Suspendido / deshabilitado</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.35"></span></div>
+            <p class="viz-bars__num">menos común</p>
+          </div>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">Otro</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.20"></span></div>
+            <p class="viz-bars__num">residuo</p>
+          </div>
+        </div>
+        <figcaption>Distribución de causa raíz en aproximadamente 50 diagnósticos del DMV, 2023&ndash;2026. La mitad de los casos cae en las dos primeras filas; ambas son arreglables por el operador el mismo día.</figcaption>
+      </figure>
+
       <h2>El plan de 10 minutos</h2>
 
-      <ol>
-        <li>Busca tu restaurante en Google + Maps. ¿Aparece el panel?</li>
-        <li>Si no, ¿hay un listing huérfano para reclamar? Causa 1.</li>
-        <li>Si sí, ¿la categoría primaria es la específica? Causa 2.</li>
-        <li>¿Hay un mensaje "suspended"? Causa 3.</li>
-        <li>¿Ves dos pines en la misma dirección? Causa 4.</li>
-      </ol>
+      <p>Pon un temporizador. Diez revisiones, un minuto cada una. No deliberes &mdash; si un paso es un &ldquo;sí&rdquo; claro, sigue; si es un &ldquo;no,&rdquo; márcalo y continúa. Las marcadas las arreglas después del diagnóstico.</p>
+
+      <figure class="viz-figure article-figure" data-audio-alt="El diagnóstico de diez minutos, paso a paso. Minuto uno: abre el dashboard del Perfil de Negocio en Google en business punto google punto com. Minuto dos: verifica que nombre, dirección y teléfono coincidan exactamente con el letrero de tu fachada. Minuto tres: revisa tu categoría primaria — debe ser una cocina específica, no Restaurante genérico. Minuto cuatro: revisa tus horarios, incluyendo días festivos y horarios especiales. Minuto cinco: busca tu dirección exacta en Maps y cuenta los pines para detectar duplicados. Minuto seis: cuenta las fotos subidas en los últimos sesenta días. Minuto siete: busca el nombre de tu restaurante más la ciudad en Google y mira si apareces en el map pack. Minuto ocho: busca una consulta near me, como Restaurante italiano cerca de mí, desde dentro de tu radio de servicio. Minuto nueve: repite ambas búsquedas en una ventana de incógnito con la ubicación fijada en tu fachada. Minuto diez: si algo está mal, abre un ticket de reparación de Business Profile y captura el dashboard como documentación.">
+        <ol class="viz-flow" aria-label="El diagnóstico de 10 minutos, paso a paso">
+          <li class="viz-flow__step" data-state="ok">
+            <span class="viz-flow__num">1</span>
+            <div class="viz-flow__body">
+              <h4 class="viz-flow__title">Abre el dashboard de GBP</h4>
+              <p class="viz-flow__meta">business.google.com &middot; entra con la cuenta dueña de la ficha</p>
+            </div>
+          </li>
+          <li class="viz-flow__step" data-state="ok">
+            <span class="viz-flow__num">2</span>
+            <div class="viz-flow__body">
+              <h4 class="viz-flow__title">Verifica que el NAP coincida con el letrero</h4>
+              <p class="viz-flow__meta">Nombre, dirección, teléfono &mdash; exactamente como está en la puerta</p>
+            </div>
+          </li>
+          <li class="viz-flow__step" data-state="warn">
+            <span class="viz-flow__num">3</span>
+            <div class="viz-flow__body">
+              <h4 class="viz-flow__title">Revisa la categoría primaria</h4>
+              <p class="viz-flow__meta">Cocina específica, no &ldquo;Restaurante&rdquo; genérico &mdash; la mayor palanca de ranking</p>
+            </div>
+          </li>
+          <li class="viz-flow__step" data-state="ok">
+            <span class="viz-flow__num">4</span>
+            <div class="viz-flow__body">
+              <h4 class="viz-flow__title">Revisa horarios (incluyendo días festivos)</h4>
+              <p class="viz-flow__meta">Un horario mal suprime el pack en el día que lee &ldquo;cerrado&rdquo;</p>
+            </div>
+          </li>
+          <li class="viz-flow__step" data-state="warn">
+            <span class="viz-flow__num">5</span>
+            <div class="viz-flow__body">
+              <h4 class="viz-flow__title">Busca duplicados</h4>
+              <p class="viz-flow__meta">Busca tu dirección exacta en Maps. Dos pines en un edificio = duplicado.</p>
+            </div>
+          </li>
+          <li class="viz-flow__step" data-state="ok">
+            <span class="viz-flow__num">6</span>
+            <div class="viz-flow__body">
+              <h4 class="viz-flow__title">Cuenta fotos de los últimos 60 días</h4>
+              <p class="viz-flow__meta">Meta: 5+ subidas recientes. Cero = señal estancada.</p>
+            </div>
+          </li>
+          <li class="viz-flow__step" data-state="ok">
+            <span class="viz-flow__num">7</span>
+            <div class="viz-flow__body">
+              <h4 class="viz-flow__title">Busca &ldquo;[nombre] + [ciudad]&rdquo;</h4>
+              <p class="viz-flow__meta">¿Apareces en el map pack de tres pines?</p>
+            </div>
+          </li>
+          <li class="viz-flow__step" data-state="ok">
+            <span class="viz-flow__num">8</span>
+            <div class="viz-flow__body">
+              <h4 class="viz-flow__title">Busca &ldquo;[cocina] cerca de mí&rdquo;</h4>
+              <p class="viz-flow__meta">Desde dentro de tu radio de servicio. La prueba de categoría en la calle.</p>
+            </div>
+          </li>
+          <li class="viz-flow__step" data-state="ok">
+            <span class="viz-flow__num">9</span>
+            <div class="viz-flow__body">
+              <h4 class="viz-flow__title">Repite ambas búsquedas en incógnito</h4>
+              <p class="viz-flow__meta">Quita la personalización. Si desapareces en incógnito, estás realmente invisible.</p>
+            </div>
+          </li>
+          <li class="viz-flow__step" data-state="warn">
+            <span class="viz-flow__num">10</span>
+            <div class="viz-flow__body">
+              <h4 class="viz-flow__title">Abre un ticket de reparación si hace falta</h4>
+              <p class="viz-flow__meta">Captura el dashboard. Abre soporte de Business Profile con el ítem marcado.</p>
+            </div>
+          </li>
+        </ol>
+        <figcaption>Diez revisiones, un minuto cada una. El primer &ldquo;no&rdquo; suele SER la causa raíz &mdash; igual termina la caminata para saber qué más está flojo.</figcaption>
+      </figure>
+
+      <div class="callout">
+        <p><strong>En la calle, esto es lo que veo más seguido.</strong> Los operadores corren los pasos 1 al 4 y abandonan porque el dashboard &ldquo;se ve bien.&rdquo; El problema real casi siempre está en los pasos 5, 7 o 9 &mdash; el dashboard se ve sano pero el resultado público de búsqueda no coincide. No te saltes la revisión en incógnito. Es el único paso que te muestra lo que tus comensales ven de verdad.</p>
+      </div>
 
       <p>Si después de revisar los cuatro no encuentras la causa, es posible que estés en un mercado super-competitivo y simplemente no ranquees alto suficiente. <a href="/es/tools/audits/restaurant/">Restaurant Audit</a> compara tu listing contra el promedio de tu zona y te dice qué falta.</p>
 
+      <div class="callout">
+        <p><strong>El map pack casi siempre es un problema del Perfil de Negocio en Google, no del sitio web.</strong> Si tu restaurante no aparece, el trabajo está en el dashboard de business.google.com, no en tu CMS. Recorre las cuatro causas en orden. La mayoría de los restaurantes encuentra el arreglo en las primeras tres revisiones.</p>
+      </div>
+
       <p>Si quieres que mire tu caso específico, escríbeme por <a href="/es/window/">La Ventana</a>. Leo cada mensaje.</p>
 
-    
       <!-- smart-next:start -->
 <aside class="smart-next" aria-labelledby="smart-next-h">
   <p class="smart-next__eyebrow" id="smart-next-h">Qué hacer ahora</p>
