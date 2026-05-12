@@ -230,11 +230,11 @@ main{padding-top:64px}
 </style>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
-<link rel="preload" as="style" href="/assets/site-core.css?v=a3cc95eb7ac7" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-core.css?v=ca265f67308b" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=47810dd9477a" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a3cc95eb7ac7"><link rel="stylesheet" href="/assets/site-article.css?v=47810dd9477a"></noscript>
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ca265f67308b"><link rel="stylesheet" href="/assets/site-article.css?v=47810dd9477a"></noscript>
 
-<script src="/assets/p.js?v=20260503" defer></script>
+<!-- lazy-load:p --><script>(window.requestIdleCallback||function(c){return setTimeout(c,500);})(function(){var s=document.createElement("script");s.src="/assets/p.js?v=20260503";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:p -->
 <script>
   window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
   plausible.init({ endpoint: '/api/event', logging: false })
@@ -865,6 +865,6 @@ main{padding-top:64px}
 <!-- Skip Turnstile on localhost / 127.0.0.1 / dev hosts (ver footer EN para detalle). -->
 <script>(function(){var h=location.hostname;if(h==='localhost'||h==='127.0.0.1'||h==='0.0.0.0'||/^\[?::1?\]?$/.test(h))return;var s=document.createElement('script');s.src='https://challenges.cloudflare.com/turnstile/v0/api.js';s.async=true;s.defer=true;document.head.appendChild(s);})();</script>
 
-<script src="/assets/site.js?v=20260501-engagement" defer></script>
+<!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260501-engagement";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
 </body>
 </html>

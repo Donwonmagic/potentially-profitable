@@ -31,7 +31,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/brand/favicons/favicon-32x32.png" />
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
-<script src="/assets/p.js?v=20260503" defer></script>
+<!-- lazy-load:p --><script>(window.requestIdleCallback||function(c){return setTimeout(c,500);})(function(){var s=document.createElement("script");s.src="/assets/p.js?v=20260503";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:p -->
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
 <style>
 /* Critical CSS — prevents flash of unstyled content while the main
@@ -66,6 +66,55 @@ header.nav{min-height:64px}
 .nav-search-btn,.lang-switch{display:none}
 @media (max-width:1100px){.nav-links{display:none}.nav-toggle{display:flex;width:44px;height:44px;flex-direction:column;justify-content:center;align-items:center;gap:5px;background:transparent;border:0;padding:0}.nav-toggle span{display:block;width:22px;height:2px;background:var(--ink)}.nav-inner .btn-primary{display:none}}
 main{padding-top:64px}
+/* perf-critical */
+:root{--font-display:'Fraunces','Fraunces Fallback',Georgia,'Times New Roman',serif;--font-body:'Inter','Inter Fallback',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;--ink-soft:#2A2D33;--teal:#1F4E5B;--teal-dark:#143640;--stone:#6B6B6B;--line:#E8E2D6;--line-dark:#D4CCBC}
+body{font-family:var(--font-body)}
+h1,h2,h3,h4,h5,.serif-italic{font-family:var(--font-display)}
+@font-face{font-family:'Fraunces';font-style:normal;font-weight:100 900;font-display:swap;src:url('/assets/fonts/fraunces-variable-latin-wght-normal.woff2') format('woff2-variations');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Fraunces';font-style:italic;font-weight:100 900;font-display:swap;src:url('/assets/fonts/fraunces-variable-latin-wght-italic.woff2') format('woff2-variations');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Inter';font-style:normal;font-weight:100 900;font-display:swap;src:url('/assets/fonts/inter-variable-latin-wght-normal.woff2') format('woff2-variations');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Inter';font-style:italic;font-weight:100 900;font-display:swap;src:url('/assets/fonts/inter-variable-latin-wght-italic.woff2') format('woff2-variations');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Fraunces Fallback';src:local('Times New Roman');size-adjust:100%;ascent-override:97.8%;descent-override:25.5%;line-gap-override:0%}
+@font-face{font-family:'Inter Fallback';src:local('Arial');size-adjust:100%;ascent-override:96.875%;descent-override:24.121%;line-gap-override:0%}
+.hero{padding:160px 0 100px;position:relative;overflow:hidden}
+.hero-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:60px;align-items:center}
+@media (max-width:960px){.hero{padding:130px 0 60px}.hero-grid{grid-template-columns:1fr;gap:48px}}
+.hero h1{margin-top:24px;text-wrap:balance;max-width:18ch}
+.hero h1 .serif-italic{font-style:italic;font-weight:400;color:var(--teal)}
+.hero-sub{margin-top:28px;max-width:520px;font-size:clamp(17px,1.35vw,20px);line-height:1.55;color:var(--ink-soft)}
+.hero-ctas{margin-top:40px;display:flex;gap:14px;flex-wrap:wrap}
+.hero-counts{display:flex;flex-wrap:wrap;gap:10px 14px;list-style:none;padding:0;margin:18px 0 22px;font-size:13.5px;font-weight:600;letter-spacing:0.02em;color:var(--ink-soft)}
+.hero-counts__chip{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:var(--cream-2)}
+.hero-counts__chip strong{color:var(--teal)}
+section.block{padding:clamp(80px,10vw,140px) 0}
+.bg-cream2{background:var(--cream-2)}
+.section-header{max-width:760px;margin-bottom:64px}
+.section-header h2{margin-top:16px}
+.section-header p{margin-top:20px;font-size:19px;line-height:1.55;color:var(--ink-soft);max-width:640px}
+.section-center{text-align:center;margin-left:auto;margin-right:auto}
+.compare,.services,.care,.steps{display:grid;grid-template-columns:1fr;gap:20px}
+.work{display:grid;grid-template-columns:repeat(12,1fr);gap:24px}
+.work-item{grid-column:span 12}
+.about-grid{display:grid;grid-template-columns:1fr;gap:48px;align-items:center}
+.contact-grid{display:grid;grid-template-columns:1fr;gap:clamp(40px,6vw,80px);align-items:start}
+.form-row{display:grid;grid-template-columns:1fr;gap:16px}
+@media (min-width:961px){.compare,.services,.care{grid-template-columns:repeat(3,1fr)}.steps{grid-template-columns:repeat(4,1fr)}.work-item:nth-child(1){grid-column:span 7}.work-item:nth-child(2){grid-column:span 5}.work-item:nth-child(3){grid-column:span 5}.work-item:nth-child(4){grid-column:span 7}.about-grid{grid-template-columns:0.9fr 1.1fr;gap:80px}.contact-grid{grid-template-columns:1fr 1.2fr}}
+@media (min-width:641px){.form-row{grid-template-columns:1fr 1fr}}
+@media (max-width:960px){.window,.window-caption{display:none}}
+.mobile-cta-bar{display:none}
+.trust-strip{padding:18px 0;background:var(--cream-2);border-block:1px solid var(--line)}
+.trust-strip__list{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 18px;list-style:none;padding:0;margin:0;font-size:13.5px;color:var(--ink-soft);line-height:1.5}
+footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;border-top:1px solid rgba(250,247,242,0.08);font-size:14px}
+.foot-cta{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;padding-bottom:40px;margin-bottom:48px;border-bottom:1px solid rgba(250,247,242,0.08)}
+.foot-cta-text{color:var(--cream);font-family:var(--font-display);font-size:clamp(22px,2.6vw,30px);line-height:1.2;letter-spacing:-0.01em;max-width:460px}
+.foot-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr 1.1fr;gap:clamp(24px,3vw,44px);padding-bottom:48px;margin-bottom:32px;border-bottom:1px solid rgba(250,247,242,0.08)}
+@media (max-width:1100px){.foot-grid{grid-template-columns:1fr 1fr 1fr 1fr;gap:36px}}
+@media (max-width:960px){.foot-grid{grid-template-columns:1fr 1fr 1fr;gap:40px}}
+@media (max-width:640px){.foot-grid{grid-template-columns:1fr 1fr}.foot-cta{flex-direction:column;align-items:flex-start;gap:20px}}
+@media (max-width:420px){.foot-grid{grid-template-columns:1fr}}
+.foot-bottom{display:flex;justify-content:space-between;gap:24px;align-items:center;flex-wrap:wrap}
+.below-fold-island{content-visibility:auto;contain-intrinsic-size:auto 1200px}
+@media print{.below-fold-island{content-visibility:visible}}
 </style>
 <!-- Preload the two above-the-fold web fonts so they arrive in
      parallel with site.css instead of being discovered after parse. -->
@@ -75,9 +124,9 @@ main{padding-top:64px}
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=a3cc95eb7ac7" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-core.css?v=ca265f67308b" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-tool.css?v=5f214b425aa9" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a3cc95eb7ac7"><link rel="stylesheet" href="/assets/site-tool.css?v=5f214b425aa9"></noscript>
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ca265f67308b"><link rel="stylesheet" href="/assets/site-tool.css?v=5f214b425aa9"></noscript>
 <style>.breadcrumb{padding-top:100px}
 /* === Menu Copy Inspector tool-scoped styles. Page-prefix .mc-*. === */
 .mc-input{display:flex;flex-direction:column;gap:14px}
@@ -856,7 +905,7 @@ main{padding-top:64px}
   </div>
   <div class="foot-bottom"><p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; Maryland LLC &middot; Silver Spring, MD</p><nav class="foot-legal" aria-label="Legal"><a href="/es/terms.html">Términos</a><a href="/es/privacy.html">Privacidad</a><a href="/es/accessibility.html">Accesibilidad</a><a href="/es/cookies.html">Cookies</a></nav></div>
 </footer>
-<script src="/assets/site.js?v=20260422-cohesion" defer></script>
+<!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260422-cohesion";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
 <script src="/tools/menu-engineering/menu-engineering.js?v=20260425-me1"></script>
 <script src="/tools/menu-copy/menu-copy.js?v=20260428-mc2"></script>
 <script src="/tools/menu-copy/card-render.js?v=20260425-mc2"></script>

@@ -37,6 +37,28 @@ function shellHash(name) {
 }
 const SHELL_HASH = { core: shellHash('site-core.css'), article: shellHash('site-article.css') };
 
+
+// Strip injector-stamped blocks before comparison so they don't trip
+// the generator's check-mode drift detector. The generator emits the
+// raw template; downstream injectors (batch-banner, perf-critical
+// CSS+@font-face) modify the page later. Both must be normalised
+// away for the diff to compare apples-to-apples.
+function normalizeBatchBanner(html) {
+  return html
+    .replace(/<!-- batch-banner:start -->[\s\S]*?<!-- batch-banner:end -->/, '<!-- batch-banner:start --><!-- batch-banner:end -->')
+    // Strip the perf-critical block (added by inject-critical-fonts.mjs).
+    // Anchor on the sentinel and consume through the closing </style>.
+    .replace(/\/\* perf-critical \*\/[\s\S]*?(?=<\/style>)/, '')
+    // Normalize both the eager `<script src=... defer>` form and the
+    // idle-loader form (added by inject-lazy-script-loader.mjs) to
+    // a placeholder so the generator's template-emitted script tag
+    // and the on-disk lazy-loader compare equal.
+    .replace(/<!-- lazy-load:p -->[\s\S]*?<!-- \/lazy-load:p -->/g, '<!--script:p-->')
+    .replace(/<script\s+src="\/assets\/p\.js(?:\?v=[^"]*)?"\s+defer><\/script>/g, '<!--script:p-->')
+    .replace(/<!-- lazy-load:site -->[\s\S]*?<!-- \/lazy-load:site -->/g, '<!--script:site-->')
+    .replace(/<script\s+src="\/assets\/site\.js(?:\?v=[^"]*)?"\s+defer><\/script>/g, '<!--script:site-->');
+}
+
 const checkMode  = process.argv.includes('--check');
 
 // ---- Load themes + credits via a tiny vm-like sandbox --------------
@@ -364,6 +386,7 @@ main{padding-top:64px}
 </head>
 <body>
 <a class="skip-link" href="#main">${locale === 'es' ? 'Saltar al contenido' : 'Skip to content'}</a>
+<!-- batch-banner:start --><!-- batch-banner:end -->
 <header class="nav" id="nav">
   <div class="container nav-inner">
     <a href="${escHtml(locale === 'es' ? '/es/' : '/')}" class="logo" aria-label="Muntin Digital">
@@ -412,7 +435,7 @@ for (const tgt of targets) {
   const dirPath  = path.dirname(fullPath);
   if (checkMode) {
     const existing = fs.existsSync(fullPath) ? fs.readFileSync(fullPath, 'utf8') : null;
-    if (existing !== out) {
+    if (normalizeBatchBanner(existing || "") !== normalizeBatchBanner(out)) {
       drift++;
       console.log(`would update ${tgt.path}`);
     }

@@ -118,7 +118,11 @@
        affordance is acceptable). The script runs once, fire-and-
        forget; no observable side effects on a 401. -->
   <script>
-    (function () {
+    /* Phase 3C-perf — deferred via requestIdleCallback so the
+       /api/auth/me round-trip stays off the critical path. Both
+       .js-nav-signin / .js-nav-workshop ship hidden, so a one-frame
+       delay before the correct affordance reveals is invisible. */
+    (window.requestIdleCallback || function (cb) { return setTimeout(cb, 200); })(function () {
       var signin   = document.querySelectorAll('.js-nav-signin');
       var workshop = document.querySelectorAll('.js-nav-workshop');
       if (!signin.length && !workshop.length) return;
@@ -146,6 +150,6 @@
           show(signin);
         })
         .catch(function () { show(signin); });
-    })();
+    });
   </script>
 </header>

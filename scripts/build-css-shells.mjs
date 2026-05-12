@@ -176,6 +176,42 @@ if (SECTIONS[SECTIONS.length - 1].start > lines.length) {
   process.exit(2);
 }
 
+// === Adjust section starts that fall inside multi-line comments ===
+//
+// site.css uses multi-line /* ============ Section name ============
+//                             ...documentation prose...
+//                          */ blocks immediately above many sections.
+// The SECTIONS map's `start` line was historically pinned at the
+// section's first CSS rule, but a few entries land mid-comment-block.
+// If we cut the file there, the comment opener `/*` lands at the END
+// of the previous shell (unclosed) and the closing `*/` lands at the
+// START of this shell with all the prose orphaned outside any
+// comment — invalid CSS. Browsers tolerate this, but strict
+// minifiers (lightningcss) reject it.
+//
+// Fix: scan all bytes BEFORE the cut for unclosed `/*`. If we find
+// one, advance the cut forward to the line AFTER its matching `*/`.
+//
+// Note: this only nudges section starts forward. The round-trip
+// invariant in check-css-shells.mjs (rule-multiset equality between
+// shells and source) is unaffected because comments aren't rules.
+function adjustStartPastOpenComment(startLine) {
+  const before = lines.slice(0, startLine - 1).join('\n');
+  const lastOpen  = before.lastIndexOf('/*');
+  if (lastOpen < 0) return startLine;
+  const lastClose = before.lastIndexOf('*/');
+  if (lastClose > lastOpen) return startLine;  // comment was closed before the cut
+  // Walk forward from the cut looking for the closing */.
+  for (let ln = startLine; ln <= lines.length; ln++) {
+    if (lines[ln - 1].includes('*/')) return ln + 1;
+  }
+  return startLine;  // unreachable in a well-formed file
+}
+
+for (let i = 0; i < SECTIONS.length; i++) {
+  SECTIONS[i].start = adjustStartPastOpenComment(SECTIONS[i].start);
+}
+
 // === Extract ===
 const buckets = { core: [], tool: [], article: [] };
 
