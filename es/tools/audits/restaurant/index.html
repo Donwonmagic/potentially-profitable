@@ -5718,12 +5718,12 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       var workshop = document.querySelectorAll('.js-nav-workshop');
       if (!signin.length && !workshop.length) return;
       var show = function (nodes) { nodes.forEach(function (n) { n.hidden = false; }); };
-      fetch('/api/auth/me', { credentials: 'same-origin' })
+      fetch('/api/auth/me', { credentials: 'same-origin', signal: MuntinFetchError.safeAbortSignal(8000) })
         .then(function (r) {
           if (r.status === 200) {
             show(workshop);
             // Phase G.10 — append (N) badge with the user's save count.
-            fetch('/api/workbench/count', { credentials: 'same-origin' })
+            fetch('/api/workbench/count', { credentials: 'same-origin', signal: MuntinFetchError.safeAbortSignal(8000) })
               .then(function (r2) { return r2.ok ? r2.json() : null; })
               .then(function (j) {
                 if (!j || typeof j.count !== 'number' || j.count <= 0) return;
@@ -7009,6 +7009,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <script>window.__muntinLang = "es";</script>
 <script src="/tools/audits/restaurant/subtypes.js"></script>
 <script src="/tools/audits/restaurant/restaurant-checks.js"></script>
+<script src="/tools/_shared/fetch-error.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
 <script src="/tools/_shared/platform-fixes.js?v=20260430-wave0"></script>
 <script src="/assets/workbench-save.js?v=20260428-sprint0-tokens"></script>
@@ -16313,8 +16314,25 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       return { crawl: crawl, schema: schema, places: places };
     });
 
-    Promise.all([psiPromise, contentPromise])
+    // Audit-wide watchdog: belt-and-suspenders timeout on top of the
+    // per-fetch caps. If any single dependency hangs past 90s — PSI,
+    // crawl, schema, GBP — the user gets a graceful error instead of a
+    // forever-spinner. This sets an upper bound on the worst-case audit
+    // wall time independent of individual fetch behavior.
+    var AUDIT_WATCHDOG_MS = 90000;
+    var watchdogTimer = null;
+    var watchdogPromise = new Promise(function(_resolve, reject){
+      watchdogTimer = setTimeout(function(){
+        reject({ audit_watchdog: true });
+      }, AUDIT_WATCHDOG_MS);
+    });
+    var clearWatchdog = function(){
+      if (watchdogTimer) { clearTimeout(watchdogTimer); watchdogTimer = null; }
+    };
+    var pipelinePromise = Promise.all([psiPromise, contentPromise]);
+    Promise.race([pipelinePromise, watchdogPromise])
       .then(function(both){
+        clearWatchdog();
         var psiOutcome = both[0];
         var content   = both[1];
         window.__auditCrawl  = content.crawl;
@@ -16402,7 +16420,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
               fetch('/api/badge-snapshot', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ url: url, score: last.overall })
+                body: JSON.stringify({ url: url, score: last.overall }),
+                signal: MuntinFetchError.safeAbortSignal(5000)
               }).catch(function(){});
             }
           } catch (_) {}
@@ -16426,10 +16445,25 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         }
       })
       .catch(function(err){
+        clearWatchdog();
         // Sprint AUDIT-LOAD-FIX: `{ handled: true }` is the short-
         // circuit we throw from the inline PSI-failure branch — we
         // already painted an error, no need to repaint here.
         if (err && err.handled) return;
+        // 90s audit-wide watchdog tripped. Some upstream fetch hung
+        // past every per-fetch cap. Surface a clean error instead of
+        // letting the loader spin forever.
+        if (err && err.audit_watchdog) {
+          finishProgress();
+          cancelInFlightSteps();
+          showError(
+            tr('err.watchdog.h2', "We couldn't finish your audit in time."),
+            tr('err.watchdog.body', "Some parts of the test took longer than 90 seconds to respond. This is usually a temporary slowdown on Google or your hosting provider. Wait a minute and try again, or email don@muntin.digital for a manual audit."),
+            url
+          );
+          if (window.plausible) window.plausible('Audit Error: Watchdog Timeout');
+          return;
+        }
         finishProgress();
         cancelInFlightSteps();
         console.error('[audit] fetch failed', err);
@@ -17036,6 +17070,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           method: 'POST',
           headers: { 'content-type': 'application/json' },
           body: JSON.stringify(payload),
+          signal: MuntinFetchError.safeAbortSignal(15000)
         });
       }).then(function(r){
         return r.ok ? r.json() : r.json().then(function(j){ return Promise.reject(j); });
@@ -18052,7 +18087,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       if (reauditSuccess) reauditSuccess.hidden = true;
       fetch('/api/schedule-reaudit', {
         method: 'POST',
-        body: formData
+        body: formData,
+        signal: MuntinFetchError.safeAbortSignal(10000)
       }).then(function(res){ return res.json().then(function(j){ return { status: res.status, body: j }; }); })
         .then(function(r){
           if (r.body && r.body.ok) {
@@ -18465,6 +18501,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     fetch('/api/audit-snapshot?token=' + encodeURIComponent(token), {
       credentials: 'omit',
       headers: { 'accept': 'application/json' },
+      signal: MuntinFetchError.safeAbortSignal(10000)
     })
       .then(function(r){
         if (r.status === 404) return Promise.reject({ error: 'not-found', status: 404 });

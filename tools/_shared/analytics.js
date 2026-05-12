@@ -69,6 +69,7 @@
       'Audit Error: PSI Failed',
       'Audit Error: PSI Failed (Timeout)',
       'Audit Error: Referrer Blocked',
+      'Audit Error: Watchdog Timeout',
       'Audit Feedback',
       'Audit PDF Email Failed',
       'Audit PDF Emailed',
