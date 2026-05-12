@@ -281,32 +281,41 @@ header.nav{min-height:64px}
 
     <p>Cada programa de lealtad que un restaurante independiente estadounidense corre en 2026 cae en una de cuatro formas. Las implementaciones difieren; la economía subyacente no. Recórrelas en orden de costo de implementación.</p>
 
-    <figure class="viz-figure article-figure" data-audio-alt="Cuatro modelos de programa de lealtad para restaurantes independientes, comparados en costo mensual, retorno a doce meses, y umbral de punto de equilibrio. Modelo uno: tarjetas perforadas en papel. Costo mensual esencialmente cero, diez dólares en impresión. Retorno a doce meses sobre una base de quinientos clientes es cerca de setecientos cincuenta dólares en margen por visita repetida. Punto de equilibrio bajo un mes. La verdad incómoda: las tarjetas perforadas funcionan pero están inherentemente topadas a baja frecuencia y no tienen analítica del lado del operador. Modelo dos: lealtad integrada al POS como Toast Rewards o Square Loyalty. Costo mensual de cuarenta y cinco a setenta y cinco dólares dependiendo del conteo de terminales. Retorno a doce meses sobre la misma base es aproximadamente dos mil cuatrocientos dólares, tres punto dos veces la tarjeta perforada. Punto de equilibrio aproximadamente al mes cuatro. El truco: el POS controla los datos, así que cuando cambies de procesador, los datos de lealtad no se vienen contigo. Modelo tres: plataformas standalone de lealtad como Fivestars o Como Sense. Costo mensual ciento sesenta y cinco a doscientos cuarenta y nueve dólares. Retorno a doce meses es cerca de dos mil ochocientos dólares, ligeramente mejor que el POS integrado pero sólo porque las plataformas invierten más en reactivación por SMS. Punto de equilibrio cerca del mes siete. El truco: las campañas de reactivación por SMS pueden sentirse spammy y pierdes clientes a opt-outs más rápido de lo que el programa adquiere pasado el mes nueve. Modelo cuatro: un CRM cosido a tu propio checkout, corrido por Mailchimp o Klaviyo con una capa de segmento de cliente en el canal directo. Costo mensual de veinte dólares para Mailchimp básico, ochenta si vas a Klaviyo. Retorno a doce meses es aproximadamente cinco mil doscientos dólares en margen por visita repetida y tres mil cien dólares en ticket promedio elevado por segmentación sola. Punto de equilibrio al mes dos. El truco: sólo funciona si el canal directo ya está convirtiendo a una tasa razonable. Si tu canal directo está dormido, la capa de lealtad no tiene sobre qué montarse.">
+    <figure class="viz-figure article-figure" data-audio-alt="Cuatro modelos de programa de lealtad para restaurantes independientes, ordenados por costo mensual. Las tarjetas perforadas en papel son esencialmente gratis, diez dólares al año por impresión. La lealtad integrada al POS (Toast Rewards o Square Loyalty) corre aproximadamente cuarenta y cinco a setenta y cinco dólares al mes según las páginas de precios de los vendors. Las plataformas standalone de lealtad (Fivestars o Como) corren aproximadamente ciento sesenta y cinco a doscientos cuarenta y nueve dólares al mes. CRM-directo vía Mailchimp o Klaviyo más tu propio checkout corre veinte a ochenta dólares al mes según las páginas de precios de los vendors. El ranking de margen retenido, en práctica de operador, corre aproximadamente inverso al costo-por-porcentaje-de-retorno: las tarjetas perforadas tienen el retorno porcentual más alto sobre una base pequeña; CRM-directo tiene el retorno absoluto más alto sobre un canal directo que convierte; las plataformas standalone tienden a ser el peor retorno porcentual porque su estructura de costos es alta relativa al alza de comportamiento.">
       <div class="viz-bars">
-        <p class="viz-bars__title">Margen retenido a 12 meses por modelo de lealtad (base de 500 clientes)</p>
+        <p class="viz-bars__title">Cuatro modelos de lealtad, costo mensual (publicado por vendor)</p>
         <div class="viz-bars__row">
-          <p class="viz-bars__label">Tarjetas perforadas ($10/año)</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:0.144"></span></div>
-          <p class="viz-bars__num">$750 &middot; ~$10 costo</p>
+          <p class="viz-bars__label">Tarjetas perforadas en papel</p>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.05"></span></div>
+          <p class="viz-bars__num">~$10/año impresión</p>
         </div>
         <div class="viz-bars__row">
-          <p class="viz-bars__label">Toast/Square Loyalty ($60/mes)</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:0.462"></span></div>
-          <p class="viz-bars__num">$2,400 &middot; $720 costo</p>
+          <p class="viz-bars__label">CRM + directo (Mailchimp / Klaviyo + checkout propio)</p>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.40"></span></div>
+          <p class="viz-bars__num">$20&ndash;$80/mes</p>
         </div>
         <div class="viz-bars__row">
-          <p class="viz-bars__label">Fivestars/Como ($200/mes)</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.538"></span></div>
-          <p class="viz-bars__num">$2,800 &middot; $2,400 costo</p>
+          <p class="viz-bars__label">Lealtad POS (Toast Rewards / Square Loyalty)</p>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:0.55"></span></div>
+          <p class="viz-bars__num">$45&ndash;$75/mes</p>
         </div>
         <div class="viz-bars__row">
-          <p class="viz-bars__label">CRM + directo (Mailchimp/Klaviyo, $50/mes)</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:1.0"></span></div>
-          <p class="viz-bars__num">$5,200 &middot; $600 costo</p>
+          <p class="viz-bars__label">Plataformas standalone (Fivestars / Como)</p>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:1.0"></span></div>
+          <p class="viz-bars__num">$165&ndash;$249/mes</p>
         </div>
       </div>
-      <figcaption>Mismo restaurante, misma base de 500 clientes, cuatro modelos corridos por 12 meses. Los retornos son margen retenido (después de costos). La ruta CRM-directo retorna casi 7x la tarjeta perforada y 2x el siguiente mejor.</figcaption>
+      <figcaption>Costo mensual publicado por el vendor. Los retornos varían ampliamente por restaurante y dependen de si el canal directo ya está convirtiendo; los números en el cuerpo abajo son rangos ilustrativos, no resultados medidos.</figcaption>
     </figure>
+    <details class="cite">
+      <summary>Fuente: páginas de precios de los vendors</summary>
+      <div class="cite-body">
+        <p><span class="cite-source">Toast</span> &mdash; precios del add-on &ldquo;Toast Rewards&rdquo; en pos.toasttab.com (página de precios pública actual).</p>
+        <p><span class="cite-source">Square</span> &mdash; precios de &ldquo;Square Loyalty&rdquo; en squareup.com.</p>
+        <p><span class="cite-source">Fivestars</span> / <span class="cite-source">Como</span> &mdash; precios para comerciantes publicados en cada sitio respectivo.</p>
+        <p><span class="cite-source">Mailchimp</span> / <span class="cite-source">Klaviyo</span> &mdash; tiers de precios públicos actuales en mailchimp.com y klaviyo.com.</p>
+      </div>
+    </details>
 
     <h2>Por qué la ruta CRM-directo gana por 2x</h2>
 
@@ -316,7 +325,7 @@ header.nav{min-height:64px}
 
     <h2>Por qué la tarjeta perforada aún le gana a la plataforma standalone en ROI</h2>
 
-    <p>Esta es la que sorprende a la mayoría de los operadores. La tarjeta perforada retorna $750 contra $10 en costo &mdash; un retorno 75:1. El standalone Fivestars/Como retorna $2,800 contra $2,400 en costo &mdash; un retorno 1.17:1. El standalone retorna más dólares absolutos, pero el retorno porcentual es peor por un factor de 64. Si tienes $200/mes para gastar en marketing al cliente, casi nunca va a ser mejor gastado en la plataforma standalone de lealtad. Los mismos $200 rinden más casi en cualquier otro lado.</p>
+    <p>Esta es la que sorprende a la mayoría de los operadores. La tarjeta perforada cuesta esencialmente nada &mdash; diez dólares al año por impresión &mdash; y produce un alza de comportamiento real, aunque pequeño, en visitas repetidas. Hasta retornos absolutos modestos hacen que el retorno porcentual sea enorme. La plataforma standalone de lealtad produce algo más en retornos absolutos, pero su estructura de costos ($165&ndash;$249/mes, publicado por el vendor) es lo suficientemente alta relativa al alza de comportamiento que el retorno porcentual es sustancialmente peor que la tarjeta perforada o la lealtad POS. Si $200/mes está sobre la mesa para marketing al cliente, rara vez se gasta mejor en la plataforma standalone; los mismos $200 rinden más casi en cualquier otro lado.</p>
 
     <p>La tarjeta perforada funciona porque cuesta esencialmente nada y tiene un efecto conductual real (aunque pequeño) sobre las visitas repetidas. La plataforma standalone no funciona porque su estructura de costo es demasiado alta para el modesto alza conductual que produce. La lealtad POS integrada se queda en medio &mdash; el costo es lo suficientemente bajo para que el modesto alza aún se pague, pero apenas.</p>
 
