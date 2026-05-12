@@ -39,10 +39,15 @@ function shellHash(name) {
 const SHELL_HASH = { core: shellHash('site-core.css'), article: shellHash('site-article.css') };
 
 
-// Strip the batch-banner block before comparison so the injector-stamped
-// banner content doesn't trip the generator's check-mode drift detector.
+// Strip injector-stamped blocks before comparison so they don't trip
+// the generator's check-mode drift detector. The generator emits the
+// raw template; downstream injectors (batch-banner, perf-critical
+// CSS+@font-face) modify the page later. Both must be normalised
+// away for the diff to compare apples-to-apples.
 function normalizeBatchBanner(html) {
-  return html.replace(/<!-- batch-banner:start -->[\s\S]*?<!-- batch-banner:end -->/, '<!-- batch-banner:start --><!-- batch-banner:end -->');
+  return html
+    .replace(/<!-- batch-banner:start -->[\s\S]*?<!-- batch-banner:end -->/, '<!-- batch-banner:start --><!-- batch-banner:end -->')
+    .replace(/\/\* perf-critical \*\/[\s\S]*?(?=<\/style>)/, '');
 }
 
 const checkMode  = process.argv.includes('--check');
