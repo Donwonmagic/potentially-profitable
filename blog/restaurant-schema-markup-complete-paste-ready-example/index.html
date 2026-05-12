@@ -281,16 +281,6 @@ header.nav{min-height:64px}
   </nav>
 
   <article class="container article-body" id="post-body" data-content-pending="2026-05-11" style="max-width:720px;margin:32px auto 80px;padding:0 var(--pad-x)">
-      <!-- article-tldr:start -->
-            <aside class="tldr" data-llm="tldr" aria-label="In short">
-              <p class="tldr__eyebrow">In short</p>
-              <ul class="tldr__list">
-              <li>Sixty lines of JSON-LD that cover the six schema types Google reads first on a restaurant page — Restaurant, Menu, OpeningHoursSpecification, AggregateRating, Reservation, and FAQ.</li>
-        <li>Seven fields marked // EDIT (name, address parts, phone, hours, rating, menu items) are everything you have to change to make the example yours.</li>
-        <li>Three pre-publish checks: validator.schema.org for unknown properties, view-source for CMS-escaping bugs, and Google’s Rich Results test to confirm which surfaces your schema is eligible for.</li>
-              </ul>
-            </aside>
-            <!-- article-tldr:end -->
 
     <header style="margin-bottom:32px">
       <p class="eyebrow">How-to &middot; May 10, 2026 &middot; 5 min read &middot; By <a href="/about/#don-goldstein" style="color:var(--teal)">Don Goldstein</a></p>
@@ -309,6 +299,17 @@ header.nav{min-height:64px}
       </div>
       <p style="font-size:18px;line-height:1.55;color:var(--ink-soft);margin:0">The schema markup I run on the two restaurants I manage, in one paste-ready JSON-LD block. Six schema types nested correctly, the seven fields you have to change per restaurant clearly marked, and the validation step that catches the four typos that break everything. Worked example follows the same six-type pattern the <a href="/blog/restaurant-schema-markup-6-types-google-uses/" style="color:var(--teal)">earlier article</a> walks through &mdash; this one gives you the actual code.</p>
     </header>
+
+      <!-- article-tldr:start -->
+            <aside class="tldr" data-llm="tldr" aria-label="In short">
+              <p class="tldr__eyebrow">In short</p>
+              <ul class="tldr__list">
+              <li>Sixty lines of JSON-LD that cover the six schema types Google reads first on a restaurant page — Restaurant, Menu, OpeningHoursSpecification, AggregateRating, Reservation, and FAQ.</li>
+        <li>Seven fields marked // EDIT (name, address parts, phone, hours, rating, menu items) are everything you have to change to make the example yours.</li>
+        <li>Three pre-publish checks: validator.schema.org for unknown properties, view-source for CMS-escaping bugs, and Google’s Rich Results test to confirm which surfaces your schema is eligible for.</li>
+              </ul>
+            </aside>
+            <!-- article-tldr:end -->
 
     <p>If you&rsquo;ve read the <a href="/blog/restaurant-schema-markup-6-types-google-uses/" style="color:var(--teal)">six-types article</a>, you know what each schema type does. This piece is the tactical follow-up: the actual JSON-LD I paste into a restaurant&rsquo;s &lt;head&gt; the first time I&rsquo;m setting one up. You can copy it, change the seven fields marked in the comments, and run it through the Schema.org validator. If the validator returns green, you&rsquo;re shipping.</p>
 
@@ -589,7 +590,6 @@ header.nav{min-height:64px}
         <li><a href="/services/audit/">$499 audit</a> &mdash; the written diagnosis if your schema isn&rsquo;t firing</li>
       </ul>
     </section>
-
 
   <!-- article-takeaways:start -->
             <aside class="key-takeaways" data-llm="takeaways" aria-label="Key takeaways">
