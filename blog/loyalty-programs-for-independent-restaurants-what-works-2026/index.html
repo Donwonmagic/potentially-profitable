@@ -359,6 +359,51 @@ header.nav{min-height:64px}
 
     <p>The punch card works because it costs essentially nothing and has a real (if small) behavioral effect on repeat visits. The standalone loyalty platform doesn&rsquo;t work because its cost structure is too high for the modest behavioral lift it produces. The integrated POS loyalty sits in between &mdash; the cost is low enough that the modest lift still pays back, but only just.</p>
 
+    <figure class="viz-figure article-figure" data-audio-alt="A decision tree for picking a loyalty model. First question: do you have a direct online channel that already converts? If yes, run CRM plus direct — Klaviyo or Mailchimp wired to your own Stripe, Toast, or Square checkout, with a segmented automation that fires at day fifty-eight. Five thousand to eight thousand dollars in kept margin on a five-hundred-customer base, monthly cost fifty to one-twenty. If no direct channel: second question, are you already running POS loyalty like Toast Rewards or Square Loyalty? If yes, keep it, do not pay a standalone platform on top. Break-even at four months, twenty-four hundred in kept margin per year, the data is stranded when you switch processors but it is real data. If no POS loyalty either: third question, do you have a barista or a counter where every transaction is in-person? If yes, run paper punch cards. Ten dollars per year, seven hundred fifty in kept margin, break-even in three weeks, and the kitchen learns to track repeat behavior. If no in-person counter and no direct channel: stop. The loyalty conversation is downstream of the channel conversation. Fix the channel first.">
+      <ol class="viz-tree">
+        <li class="viz-tree__node">
+          <details open>
+            <summary>
+              <span class="viz-tree__num">1</span>
+              <span class="viz-tree__title">Do you already have a direct online channel that converts?</span>
+              <span class="viz-tree__icon" aria-hidden="true">+</span>
+            </summary>
+            <div class="viz-tree__body">
+              <p><span class="viz-tree__verdict" data-tone="pass">Yes</span>Run <strong>CRM + direct</strong>. Klaviyo or Mailchimp wired to your own Stripe/Toast/Square checkout. Automated re-engagement at day 58, manually-curated regulars list of your top 50. $50&ndash;$120/mo, $5,000&ndash;$8,000/yr kept margin.</p>
+              <p><span class="viz-tree__verdict" data-tone="fail">No</span>Go to question 2.</p>
+            </div>
+          </details>
+        </li>
+        <li class="viz-tree__node">
+          <details>
+            <summary>
+              <span class="viz-tree__num">2</span>
+              <span class="viz-tree__title">Are you already running POS loyalty (Toast Rewards, Square Loyalty)?</span>
+              <span class="viz-tree__icon" aria-hidden="true">+</span>
+            </summary>
+            <div class="viz-tree__body">
+              <p><span class="viz-tree__verdict" data-tone="pass">Yes</span><strong>Keep it.</strong> Break-even at month 4, $2,400/yr kept margin. Don&rsquo;t pay a standalone platform on top &mdash; the returns overlap and you double-spend.</p>
+              <p><span class="viz-tree__verdict" data-tone="fail">No</span>Go to question 3.</p>
+            </div>
+          </details>
+        </li>
+        <li class="viz-tree__node">
+          <details>
+            <summary>
+              <span class="viz-tree__num">3</span>
+              <span class="viz-tree__title">Is every transaction face-to-face at a counter or bar?</span>
+              <span class="viz-tree__icon" aria-hidden="true">+</span>
+            </summary>
+            <div class="viz-tree__body">
+              <p><span class="viz-tree__verdict" data-tone="pass">Yes</span>Run <strong>paper punch cards</strong> while you build the direct channel. $10/yr, $750/yr kept margin, break-even in 3 weeks. The kitchen learns to track repeat behavior.</p>
+              <p><span class="viz-tree__verdict" data-tone="fail">No</span>Stop. The loyalty conversation is downstream of the channel conversation. Fix the channel first; revisit this tree after.</p>
+            </div>
+          </details>
+        </li>
+      </ol>
+      <figcaption>Pick by what you already have, not by what the platform tier names promise. The same tree applies whether you do $400k or $4M in annual sales.</figcaption>
+    </figure>
+
     <h2>What this means for your setup</h2>
 
     <p>If you have a direct channel that&rsquo;s already converting: run the CRM-direct path. Klaviyo for the segmentation; your own Stripe/Toast/Square checkout for the order data; a manually-curated regulars list for the highest-value 50 customers; automated re-engagement at day 58. Total monthly cost: $50&ndash;$120 depending on email send volume. Total margin lift on a 500-customer base in year one: roughly $5,000&ndash;$8,000 in kept margin.</p>

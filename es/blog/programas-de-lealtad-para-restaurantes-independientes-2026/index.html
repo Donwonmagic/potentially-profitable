@@ -319,6 +319,51 @@ header.nav{min-height:64px}
 
     <p>La tarjeta perforada funciona porque cuesta esencialmente nada y tiene un efecto conductual real (aunque pequeño) sobre las visitas repetidas. La plataforma standalone no funciona porque su estructura de costo es demasiado alta para el modesto alza conductual que produce. La lealtad POS integrada se queda en medio &mdash; el costo es lo suficientemente bajo para que el modesto alza aún se pague, pero apenas.</p>
 
+    <figure class="viz-figure article-figure" data-audio-alt="Un árbol de decisión para elegir un modelo de lealtad. Primera pregunta: ¿ya tienes un canal directo online que convierte? Si sí, corre CRM más directo &mdash; Klaviyo o Mailchimp conectado a tu propio checkout de Stripe, Toast o Square, con una automatización segmentada que dispara al día cincuenta y ocho. Cinco mil a ocho mil dólares en margen retenido sobre una base de quinientos clientes, costo mensual cincuenta a ciento veinte. Si no tienes canal directo: segunda pregunta, ¿ya corres lealtad del POS como Toast Rewards o Square Loyalty? Si sí, mantenlo, no pagues una plataforma standalone encima. Punto de equilibrio a los cuatro meses, dos mil cuatrocientos en margen retenido al año; los datos quedan atrapados cuando cambias de procesador pero son datos reales. Si tampoco tienes lealtad de POS: tercera pregunta, ¿toda transacción es cara a cara en mostrador o barra? Si sí, corre tarjetas perforadas de papel. Diez dólares al año, setecientos cincuenta en margen retenido, equilibrio en tres semanas, y la cocina aprende a rastrear el comportamiento de regreso. Si no hay mostrador presencial y no hay canal directo: para. La conversación de lealtad está aguas abajo de la conversación de canal. Arregla el canal primero.">
+      <ol class="viz-tree">
+        <li class="viz-tree__node">
+          <details open>
+            <summary>
+              <span class="viz-tree__num">1</span>
+              <span class="viz-tree__title">¿Ya tienes un canal directo online que convierte?</span>
+              <span class="viz-tree__icon" aria-hidden="true">+</span>
+            </summary>
+            <div class="viz-tree__body">
+              <p><span class="viz-tree__verdict" data-tone="pass">Sí</span>Corre <strong>CRM + directo</strong>. Klaviyo o Mailchimp conectado a tu propio checkout de Stripe/Toast/Square. Re-engagement automatizado al día 58, lista de regulares curada manualmente de tus top 50. $50&ndash;$120/mes, $5,000&ndash;$8,000/año de margen retenido.</p>
+              <p><span class="viz-tree__verdict" data-tone="fail">No</span>Pasa a la pregunta 2.</p>
+            </div>
+          </details>
+        </li>
+        <li class="viz-tree__node">
+          <details>
+            <summary>
+              <span class="viz-tree__num">2</span>
+              <span class="viz-tree__title">¿Ya corres lealtad del POS (Toast Rewards, Square Loyalty)?</span>
+              <span class="viz-tree__icon" aria-hidden="true">+</span>
+            </summary>
+            <div class="viz-tree__body">
+              <p><span class="viz-tree__verdict" data-tone="pass">Sí</span><strong>Mantenlo.</strong> Equilibrio en el mes 4, $2,400/año en margen retenido. No pagues una plataforma standalone encima &mdash; los retornos se solapan y haces doble gasto.</p>
+              <p><span class="viz-tree__verdict" data-tone="fail">No</span>Pasa a la pregunta 3.</p>
+            </div>
+          </details>
+        </li>
+        <li class="viz-tree__node">
+          <details>
+            <summary>
+              <span class="viz-tree__num">3</span>
+              <span class="viz-tree__title">¿Toda transacción es cara a cara en mostrador o barra?</span>
+              <span class="viz-tree__icon" aria-hidden="true">+</span>
+            </summary>
+            <div class="viz-tree__body">
+              <p><span class="viz-tree__verdict" data-tone="pass">Sí</span>Corre <strong>tarjetas perforadas de papel</strong> mientras construyes el canal directo. $10/año, $750/año de margen retenido, equilibrio en 3 semanas. La cocina aprende a rastrear el comportamiento de regreso.</p>
+              <p><span class="viz-tree__verdict" data-tone="fail">No</span>Para. La conversación de lealtad está aguas abajo de la conversación de canal. Arregla el canal primero; vuelve a este árbol después.</p>
+            </div>
+          </details>
+        </li>
+      </ol>
+      <figcaption>Elige por lo que ya tienes, no por lo que prometen los nombres de tier de las plataformas. El mismo árbol aplica si haces $400k o $4M anuales.</figcaption>
+    </figure>
+
     <h2>Qué significa esto para tu setup</h2>
 
     <p>Si tienes un canal directo que ya está convirtiendo: corre la ruta CRM-directo. Klaviyo para la segmentación; tu propio checkout Stripe/Toast/Square para los datos de orden; una lista de regulares curada manualmente para los 50 clientes de mayor valor; re-engagement automatizado al día 58. Costo mensual total: $50&ndash;$120 dependiendo del volumen de envío. Alza de margen total sobre base de 500 clientes en año uno: aproximadamente $5,000&ndash;$8,000 en margen retenido.</p>
