@@ -176,7 +176,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <link rel="preload" as="style" href="/assets/site-article.css?v=47810dd9477a" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="/assets/site-core.css?v=ca265f67308b"><link rel="stylesheet" href="/assets/site-article.css?v=47810dd9477a"></noscript>
 
-<script src="/assets/p.js?v=20260503" defer></script>
+<!-- lazy-load:p --><script>(window.requestIdleCallback||function(c){return setTimeout(c,500);})(function(){var s=document.createElement("script");s.src="/assets/p.js?v=20260503";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:p -->
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
 </head>
 <body>
@@ -475,7 +475,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   </div>
 </footer>
 
-<script src="/assets/site.js?v=20260501-engagement" defer></script>
+<!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260501-engagement";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
 <!-- M&oacute;dulo de gr&aacute;ficos de art&iacute;culo &mdash; activa
      la tabla ordenable de fugas. Carga diferida; falla limpio si los
      hooks no est&aacute;n presentes. -->

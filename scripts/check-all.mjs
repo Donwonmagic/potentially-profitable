@@ -141,6 +141,14 @@ const CHECKS = [
   // first paint matches the post-CSS-arrival paint and nothing
   // visibly reflows. Fail-CI from day 1 (drift breaks the lag fix).
   ['Critical-CSS fonts+skeleton (idem)','inject-critical-fonts.mjs','--check'],
+  // Phase 3D-perf — rewrites p.js + site.js <script> tags into
+  // inline lazy loaders that defer JS download + execute until
+  // after `load` + requestIdleCallback. Eliminates the multi-second
+  // main-thread block on mid-range mobile CPUs where users could not
+  // select text, tap, or type for several seconds after the page
+  // visually finished rendering. Fail-CI if any page drifts back to
+  // the eager `defer` form.
+  ['Lazy script loader (idem)','inject-lazy-script-loader.mjs','--check'],
   // Pricing consistency — warn-only during initial rollout. Promotes to
   // --strict once the ~11 inline service-link backlog is worked off
   // (mostly /learn/research/, /learn/topics/, /studio/<city>/ pages

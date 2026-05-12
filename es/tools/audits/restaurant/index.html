@@ -124,7 +124,7 @@
      reliability on slow or censored networks. -->
 
 
-<script src="/assets/p.js?v=20260503" defer></script>
+<!-- lazy-load:p --><script>(window.requestIdleCallback||function(c){return setTimeout(c,500);})(function(){var s=document.createElement("script");s.src="/assets/p.js?v=20260503";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:p -->
 <script>
   window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
   plausible.init({ endpoint: '/api/event', logging: false })
@@ -5589,27 +5589,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
 <a class="skip-link" href="#main" data-tr="crumb.skip">Saltar al contenido principal</a>
 
-<script>
-  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
-     Apple devices. Runs early in <body> so the swap is essentially
-     invisible — script tags execute synchronously when the parser hits
-     them, before .nav-search-kbd renders below. CSS in site-core.css
-     conditions on <html data-platform="mac">. */
-  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
-    document.documentElement.dataset.platform = 'mac';
-  }
-</script>
-<!-- batch-banner:start -->
-<aside class="batch-banner" data-batch="2026-w1" role="complementary" aria-label="Semana 1 · 11 de mayo de 2026" style="background:var(--ink,#14161A);color:var(--cream,#FAF7F2);font-size:14px;line-height:1.45;padding:10px 0;border-bottom:1px solid rgba(250,247,242,0.1);position:relative;z-index:60">
-  <div style="max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,64px);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
-    <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;min-width:0">
-      <span style="font-family:Georgia,serif;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;opacity:0.7;white-space:nowrap">Semana 1 · 11 de mayo de 2026</span>
-      <span style="font-family:Georgia,serif;font-size:15px;font-style:italic">Nueve piezas, una tesis operativa.</span>
-    </div>
-    <a href="/es/blog/lanzamiento-mayo-2026-publicar-para-citacion/" style="color:var(--cream,#FAF7F2);text-decoration:none;font-weight:500;border-bottom:1px solid currentColor;padding-bottom:1px;white-space:nowrap;flex-shrink:0">Leer el lote &rarr;</a>
-  </div>
-</aside>
-<!-- batch-banner:end -->
 <script>
   /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
      Apple devices. Runs early in <body> so the swap is essentially
@@ -19072,6 +19051,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <!-- Skip Turnstile on localhost / 127.0.0.1 / dev hosts (ver footer EN para detalle). -->
 <script>(function(){var h=location.hostname;if(h==='localhost'||h==='127.0.0.1'||h==='0.0.0.0'||/^\[?::1?\]?$/.test(h))return;var s=document.createElement('script');s.src='https://challenges.cloudflare.com/turnstile/v0/api.js';s.async=true;s.defer=true;document.head.appendChild(s);})();</script>
 
-<script src="/assets/site.js?v=20260422-cohesion" defer></script>
+<!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260422-cohesion";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
 </body>
 </html>

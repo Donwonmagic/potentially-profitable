@@ -47,7 +47,11 @@ const SHELL_HASH = { core: shellHash('site-core.css'), article: shellHash('site-
 function normalizeBatchBanner(html) {
   return html
     .replace(/<!-- batch-banner:start -->[\s\S]*?<!-- batch-banner:end -->/, '<!-- batch-banner:start --><!-- batch-banner:end -->')
-    .replace(/\/\* perf-critical \*\/[\s\S]*?(?=<\/style>)/, '');
+    .replace(/\/\* perf-critical \*\/[\s\S]*?(?=<\/style>)/, '')
+    .replace(/<!-- lazy-load:p -->[\s\S]*?<!-- \/lazy-load:p -->/g, '<!--script:p-->')
+    .replace(/<script\s+src="\/assets\/p\.js(?:\?v=[^"]*)?"\s+defer><\/script>/g, '<!--script:p-->')
+    .replace(/<!-- lazy-load:site -->[\s\S]*?<!-- \/lazy-load:site -->/g, '<!--script:site-->')
+    .replace(/<script\s+src="\/assets\/site\.js(?:\?v=[^"]*)?"\s+defer><\/script>/g, '<!--script:site-->');
 }
 
 const checkMode  = process.argv.includes('--check');

@@ -48,7 +48,15 @@ function normalizeBatchBanner(html) {
     .replace(/<!-- batch-banner:start -->[\s\S]*?<!-- batch-banner:end -->/, '<!-- batch-banner:start --><!-- batch-banner:end -->')
     // Strip the perf-critical block (added by inject-critical-fonts.mjs).
     // Anchor on the sentinel and consume through the closing </style>.
-    .replace(/\/\* perf-critical \*\/[\s\S]*?(?=<\/style>)/, '');
+    .replace(/\/\* perf-critical \*\/[\s\S]*?(?=<\/style>)/, '')
+    // Normalize both the eager `<script src=... defer>` form and the
+    // idle-loader form (added by inject-lazy-script-loader.mjs) to
+    // a placeholder so the generator's template-emitted script tag
+    // and the on-disk lazy-loader compare equal.
+    .replace(/<!-- lazy-load:p -->[\s\S]*?<!-- \/lazy-load:p -->/g, '<!--script:p-->')
+    .replace(/<script\s+src="\/assets\/p\.js(?:\?v=[^"]*)?"\s+defer><\/script>/g, '<!--script:p-->')
+    .replace(/<!-- lazy-load:site -->[\s\S]*?<!-- \/lazy-load:site -->/g, '<!--script:site-->')
+    .replace(/<script\s+src="\/assets\/site\.js(?:\?v=[^"]*)?"\s+defer><\/script>/g, '<!--script:site-->');
 }
 
 const checkMode  = process.argv.includes('--check');
