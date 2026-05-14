@@ -41,10 +41,10 @@ The other eight ladder from there:
 - [Restaurant schema markup: a paste-ready example](https://muntin.digital/blog/restaurant-schema-markup-complete-paste-ready-example/) — sixty lines of JSON-LD, seven fields to edit, the technical companion to the AI Overview piece.
 - [My restaurant isn't on Google Maps](https://muntin.digital/blog/my-restaurant-isnt-on-google-maps-10-minute-diagnostic/) — the four causes that cover 100% of map-pack invisibility, plus the 10-minute diagnostic walk.
 - [How to respond to Google reviews](https://muntin.digital/blog/how-to-respond-to-google-reviews-restaurant-playbook-2026/) — four review archetypes, four response shapes, what AI Overviews now do with your responses.
-- [Instagram is a search engine now](https://muntin.digital/blog/instagram-as-restaurant-seo-strategy-2026/) — caption-level moves that delivered 4.3x save lift on a real DMV account.
+- [Instagram is a search engine now](https://muntin.digital/blog/instagram-as-restaurant-seo-strategy-2026/) — the caption-level moves that produce materially more saves and profile clicks (the only metrics that correlate with reservations).
 - [Uber Eats vs DoorDash vs Grubhub: the honest math](https://muntin.digital/blog/uber-eats-vs-doordash-vs-grubhub-restaurant-math-2026/) — side-by-side margin walks on the same $42 ticket.
-- [30 days after leaving DoorDash](https://muntin.digital/blog/30-days-after-leaving-doordash-restaurant-case-study/) — I delisted one of the two restaurants I manage on April 7. Kept margin climbed 56% by week four.
-- [Loyalty programs: what actually pays](https://muntin.digital/blog/loyalty-programs-for-independent-restaurants-what-works-2026/) — four models compared over twelve months; the punch card beats the standalone platform on ROI.
+- [30 days after leaving DoorDash](https://muntin.digital/blog/30-days-after-leaving-doordash-restaurant-case-study/) — the week-by-week playbook for the first month after delisting. Illustrative ranges anchored to the DoorDash margin walk.
+- [Loyalty programs: what actually pays](https://muntin.digital/blog/loyalty-programs-for-independent-restaurants-what-works-2026/) — four models with vendor-published pricing; the punch card beats the standalone platform on percentage return.
 - [Service charges vs tipping: the operator's math](https://muntin.digital/blog/service-charges-vs-tipping-restaurant-operator-math-2026/) — three compensation models on the same $200 check, post-Initiative-82.
 
 All nine ship with audio in six languages — English, Spanish, French, Italian, Portuguese, Mandarin. The listen button is at the top of each piece.
