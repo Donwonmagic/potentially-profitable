@@ -1,6 +1,5 @@
 {
   "_doc": "Per-tool 'Keep going' footer module — links each of the 9 live tools to its topic, related tools, articles, and glossary terms. Drives scripts/inject-tool-knit.mjs, which stamps a 4-column block between <!-- tool-knit -->...<!-- /tool-knit --> sentinels at the bottom of each tool page (EN + ES). Labels: tools come from data/tools.json (title_*), topics from data/topics.json (name + name_es), glossary terms are extracted at render time from <h1 class='term-h1'> in glossary/<slug>/index.html — only article labels live here because article <h1>s are too long to use as scannable link text.",
-
   "articles": {
     "/blog/how-to-tell-if-a-restaurant-tool-is-safe/": {
       "label_en": "How to tell if a tool is safe",
@@ -63,124 +62,201 @@
       "label_es": "Qué debe llevar un sitio de restaurante"
     }
   },
-
   "tools": {
     "restaurant-audit": {
       "topic": "local-seo",
-      "related_tools": ["gbp-grader", "open-hours"],
+      "related_tools": [
+        "gbp-grader",
+        "store-hours"
+      ],
       "articles": [
         "/blog/why-your-restaurant-loses-reservations-every-night/",
         "/blog/wix-vs-custom-for-restaurants/"
       ],
-      "glossary": ["lighthouse", "core-web-vitals", "lcp"]
+      "glossary": [
+        "lighthouse",
+        "core-web-vitals",
+        "lcp"
+      ]
     },
     "gbp-grader": {
       "topic": "local-seo",
-      "related_tools": ["restaurant-audit", "open-hours"],
+      "related_tools": [
+        "restaurant-audit",
+        "store-hours"
+      ],
       "articles": [
         "/blog/how-to-set-up-google-business-profile-for-your-restaurant/",
         "/blog/how-to-get-more-google-reviews-for-your-restaurant/"
       ],
-      "glossary": ["gbp", "nap-consistency", "hours-visibility"]
-    },
-    "open-hours": {
-      "topic": "local-seo",
-      "related_tools": ["gbp-grader", "restaurant-audit", "holiday-hours"],
-      "articles": [
-        "/blog/how-to-set-up-google-business-profile-for-your-restaurant/",
-        "/blog/how-to-recover-reservations-from-googles-find-a-table/"
-      ],
-      "glossary": ["hours-of-operation", "special-hours", "opening-hours-specification"]
-    },
-    "holiday-hours": {
-      "topic": "local-seo",
-      "related_tools": ["open-hours", "gbp-grader", "restaurant-audit"],
-      "articles": [
-        "/blog/how-to-set-up-google-business-profile-for-your-restaurant/",
-        "/blog/how-to-recover-reservations-from-googles-find-a-table/"
-      ],
-      "glossary": ["holiday-hours", "special-hours", "opening-hours-specification"]
+      "glossary": [
+        "gbp",
+        "nap-consistency",
+        "hours-visibility"
+      ]
     },
     "menu-converter": {
       "topic": "conversions",
-      "related_tools": ["menu-engineering", "menu-copy", "plate-cost"],
+      "related_tools": [
+        "menu-engineering",
+        "menu-copy",
+        "plate-cost"
+      ],
       "articles": [
         "/blog/what-should-be-on-a-restaurant-website/",
         "/blog/how-to-raise-restaurant-menu-prices-without-losing-reservations/"
       ],
-      "glossary": ["html-menu", "menu-engineering", "average-check"]
+      "glossary": [
+        "html-menu",
+        "menu-engineering",
+        "average-check"
+      ]
     },
     "margin-math": {
       "topic": "operations-margin",
-      "related_tools": ["plate-cost", "menu-engineering"],
+      "related_tools": [
+        "plate-cost",
+        "menu-engineering"
+      ],
       "articles": [
         "/blog/is-doordash-worth-it-for-restaurants-in-2026/",
         "/blog/how-to-raise-restaurant-menu-prices-without-losing-reservations/"
       ],
-      "glossary": ["prime-cost", "break-even", "contribution-margin"]
+      "glossary": [
+        "prime-cost",
+        "break-even",
+        "contribution-margin"
+      ]
     },
     "menu-engineering": {
       "topic": "operations-margin",
-      "related_tools": ["plate-cost", "margin-math", "menu-converter"],
+      "related_tools": [
+        "plate-cost",
+        "margin-math",
+        "menu-converter"
+      ],
       "articles": [
         "/blog/how-to-raise-restaurant-menu-prices-without-losing-reservations/",
         "/blog/five-restaurant-website-changes-recover-one-percent-margin/"
       ],
-      "glossary": ["menu-engineering", "menu-mix", "contribution-margin"]
+      "glossary": [
+        "menu-engineering",
+        "menu-mix",
+        "contribution-margin"
+      ]
     },
     "plate-cost": {
       "topic": "operations-margin",
-      "related_tools": ["margin-math", "menu-engineering"],
+      "related_tools": [
+        "margin-math",
+        "menu-engineering"
+      ],
       "articles": [
         "/blog/how-to-raise-restaurant-menu-prices-without-losing-reservations/",
         "/blog/is-doordash-worth-it-for-restaurants-in-2026/"
       ],
-      "glossary": ["food-cost", "edible-portion", "yield-percent"]
+      "glossary": [
+        "food-cost",
+        "edible-portion",
+        "yield-percent"
+      ]
     },
     "menu-copy": {
       "topic": "conversions",
-      "related_tools": ["menu-converter", "photo-brief", "menu-engineering"],
+      "related_tools": [
+        "menu-converter",
+        "photo-brief",
+        "menu-engineering"
+      ],
       "articles": [
         "/blog/why-your-restaurant-loses-reservations-every-night/",
         "/blog/five-restaurant-website-changes-recover-one-percent-margin/"
       ],
-      "glossary": ["menu-copy", "sensory-adjective", "charm-pricing"]
+      "glossary": [
+        "menu-copy",
+        "sensory-adjective",
+        "charm-pricing"
+      ]
     },
     "photo-brief": {
       "topic": "conversions",
-      "related_tools": ["menu-copy", "brand-suite"],
+      "related_tools": [
+        "menu-copy",
+        "brand-suite"
+      ],
       "articles": [
         "/blog/why-your-restaurant-loses-reservations-every-night/",
         "/blog/five-restaurant-website-changes-recover-one-percent-margin/"
       ],
-      "glossary": ["photo-brief", "real-photos", "hero-shot"]
+      "glossary": [
+        "photo-brief",
+        "real-photos",
+        "hero-shot"
+      ]
     },
     "brand-suite": {
       "topic": "brand-design",
-      "related_tools": ["photo-brief", "menu-copy"],
+      "related_tools": [
+        "photo-brief",
+        "menu-copy"
+      ],
       "articles": [
         "/blog/wix-vs-custom-for-restaurants/",
         "/blog/how-much-does-a-custom-restaurant-website-cost-in-2026/"
       ],
-      "glossary": ["brand-identity", "color-palette", "accessible-pair"]
+      "glossary": [
+        "brand-identity",
+        "color-palette",
+        "accessible-pair"
+      ]
     },
     "storefront-health": {
       "topic": "speed-mobile",
-      "related_tools": ["restaurant-audit", "gbp-grader"],
+      "related_tools": [
+        "restaurant-audit",
+        "gbp-grader"
+      ],
       "articles": [
         "/blog/what-should-be-on-a-restaurant-website/",
         "/blog/five-restaurant-website-changes-recover-one-percent-margin/"
       ],
-      "glossary": ["lighthouse", "gbp", "core-web-vitals"]
+      "glossary": [
+        "lighthouse",
+        "gbp",
+        "core-web-vitals"
+      ]
     },
     "cost-pulse": {
       "topic": "operations-margin",
-      "related_tools": ["plate-cost", "margin-math"],
+      "related_tools": [
+        "plate-cost",
+        "margin-math"
+      ],
       "articles": [
         "/blog/five-restaurant-website-changes-recover-one-percent-margin/",
         "/blog/how-to-raise-restaurant-menu-prices-without-losing-reservations/"
       ],
-      "glossary": ["contribution-margin", "labor-cost", "fixed-costs"]
+      "glossary": [
+        "contribution-margin",
+        "labor-cost",
+        "fixed-costs"
+      ]
+    },
+    "store-hours": {
+      "topic": "local-seo",
+      "related_tools": [
+        "gbp-grader",
+        "restaurant-audit"
+      ],
+      "articles": [
+        "/blog/how-to-set-up-google-business-profile-for-your-restaurant/",
+        "/blog/how-to-recover-reservations-from-googles-find-a-table/"
+      ],
+      "glossary": [
+        "hours-of-operation",
+        "special-hours",
+        "opening-hours-specification"
+      ]
     }
   }
 }

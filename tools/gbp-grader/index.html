@@ -762,7 +762,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <h3>Related tools</h3>
         <ul>
           <li><a href="/tools/audits/restaurant/">Restaurant Website Audit</a></li>
-          <li><a href="/tools/open-hours/">Open Hours</a></li>
+          <li><a href="/tools/store-hours/">Store Hours</a></li>
         </ul>
       </div>
       <div class="tool-knit__col">
@@ -887,8 +887,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       fail:{title:'Primary category missing',body:'Without a primary category, Google has no idea which searches to show you in. Set one in your Business Profile dashboard — pick the most specific match available.'}
     },
     hours:{
-      pass:{title:'Hours are set',body:'Your listing shows when you\'re open. Make sure they match your website and update them for holidays. <a href="/tools/open-hours/" style="color:var(--teal);font-weight:600;">Run them through Open Hours to keep all platforms synced →</a>'},
-      fail:{title:'Hours missing',body:'No hours on your listing means customers don\'t know when you\'re open. Add them immediately — this is one of the most common reasons people skip a business on Maps. <a href="/tools/open-hours/" style="color:var(--teal);font-weight:600;">Generate them once with Open Hours →</a>'}
+      pass:{title:'Hours are set',body:'Your listing shows when you\'re open. Make sure they match your website and update them for holidays. <a href="/tools/store-hours/" style="color:var(--teal);font-weight:600;">Run them through Open Hours to keep all platforms synced →</a>'},
+      fail:{title:'Hours missing',body:'No hours on your listing means customers don\'t know when you\'re open. Add them immediately — this is one of the most common reasons people skip a business on Maps. <a href="/tools/store-hours/" style="color:var(--teal);font-weight:600;">Generate them once with Open Hours →</a>'}
     },
     phone:{
       pass:{title:'Phone number listed',body:'Customers can tap-to-call from Maps. Make sure this number matches the one on your website.'},
@@ -924,8 +924,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     },
     hours_fresh:{
       pass:{title:'Weekly hours are complete',body:'Your listing shows a full weekly schedule. Keep it accurate — customers treat stale hours as a reason to skip the visit.'},
-      warn:{title:'Regular hours only',body:'You have regular hours but no human-readable weekly schedule exposed. Confirm each day shows open/close times in your Business Profile dashboard. <a href="/tools/open-hours/" style="color:var(--teal);font-weight:600;">Or rebuild your hours with Open Hours and re-paste →</a>'},
-      fail:{title:'Weekly hours incomplete',body:'Cover every day you\'re open in "Edit profile" → "Hours". A partial schedule reads as a stale listing to both users and Google. <a href="/tools/open-hours/" style="color:var(--teal);font-weight:600;">Generate them with Open Hours →</a>'}
+      warn:{title:'Regular hours only',body:'You have regular hours but no human-readable weekly schedule exposed. Confirm each day shows open/close times in your Business Profile dashboard. <a href="/tools/store-hours/" style="color:var(--teal);font-weight:600;">Or rebuild your hours with Open Hours and re-paste →</a>'},
+      fail:{title:'Weekly hours incomplete',body:'Cover every day you\'re open in "Edit profile" → "Hours". A partial schedule reads as a stale listing to both users and Google. <a href="/tools/store-hours/" style="color:var(--teal);font-weight:600;">Generate them with Open Hours →</a>'}
     },
     nap:{
       pass:{title:'NAP matches your website',body:'Phone and address on your Google listing match the LocalBusiness schema on your site. Google loves this kind of consistency — it\'s a trust multiplier.'},
@@ -943,14 +943,14 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   // always leads with the verb. CTA points at the generic GBP dashboard.
   var FIX_FIRST_COPY={
     primary_category:{title:'Set your primary category',body:'This is the single biggest on-page factor for local ranking. In your Business Profile dashboard, open "Edit profile" → "About" → "Category" and pick the most specific match available.'},
-    hours:{title:'Add your hours',body:'One of the top reasons people skip a listing on Maps. Open "Edit profile" → "Hours" and set regular hours for every day you\'re open. <a href="/tools/open-hours/" style="color:var(--teal);font-weight:600;">Generate them once with Open Hours →</a>'},
+    hours:{title:'Add your hours',body:'One of the top reasons people skip a listing on Maps. Open "Edit profile" → "Hours" and set regular hours for every day you\'re open. <a href="/tools/store-hours/" style="color:var(--teal);font-weight:600;">Generate them once with Open Hours →</a>'},
     phone:{title:'Add your phone number',body:'Tap-to-call is the #1 action on Maps. Add it under "Edit profile" → "Contact" so customers can reach you in one tap.'},
     rating:{title:'Your rating needs attention',body:'Below 4.0 is a red flag for most searchers. Read your 1-3 star reviews for patterns and address the root causes — then respond publicly. Even to negative reviews.'},
     review_volume:{title:'Build up your review count',body:'You\'re well under the peer median for your category. Start a systematic review program — a QR postcard at checkout is the simplest lever. Aim for the median within 90 days.'},
     photos:{title:'Add more photos',body:'Listings with 10+ photos get 42% more direction requests. Upload interior, exterior, team, and product/service shots in your Business Profile dashboard.'},
     website:{title:'Link a website',body:'Even a simple one-page site beats none — it\'s where Google sends people who want to learn more. Add the URL under "Edit profile" → "Contact" → "Website".'},
     service_attrs:{title:'Fill in your service attributes',body:'Dine-in, takeout, delivery, reservations, cuisine flags — each one opens you up to more search queries. Set them under "Edit profile" → "More".'},
-    hours_fresh:{title:'Complete your weekly hours',body:'Your listing doesn\'t show a full weekly schedule. Open "Edit profile" → "Hours" and cover every day you\'re open. <a href="/tools/open-hours/" style="color:var(--teal);font-weight:600;">Or use Open Hours to generate the full week →</a>'}
+    hours_fresh:{title:'Complete your weekly hours',body:'Your listing doesn\'t show a full weekly schedule. Open "Edit profile" → "Hours" and cover every day you\'re open. <a href="/tools/store-hours/" style="color:var(--teal);font-weight:600;">Or use Open Hours to generate the full week →</a>'}
   };
 
   // ----- Helpers ----------------------------------------------------

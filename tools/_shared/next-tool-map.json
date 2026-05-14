@@ -1,115 +1,147 @@
 {
   "_doc": "Owner-curated next-tool recommendations. Each entry says: when the named tool finishes with the given signal pattern, recommend the listed tool. The first matching entry wins; if no entry matches, the recommender returns null (the calling tool shows no card). Editing rule: keep this file small. If you find yourself adding more than ~3 entries per source tool, the source tool is probably too generic and should emit narrower signals. Locale strings are EN; the recommender helper localizes via the ES tool URL. Schema validated by scripts/check-next-tool-map.mjs (TODO: write).",
-
   "rules": [
     {
       "from": "audits/restaurant",
-      "match": { "score": "low" },
+      "match": {
+        "score": "low"
+      },
       "to": "plate-cost",
       "label_en": "Most failed audits start with menu pricing. Plate Cost is the calculator the audit recommends.",
       "label_es": "La mayoría de los diagnósticos bajos empiezan con los precios del menú. Costo del Plato es la calculadora que el diagnóstico recomienda."
     },
     {
       "from": "audits/restaurant",
-      "match": { "missingGbp": true },
+      "match": {
+        "missingGbp": true
+      },
       "to": "gbp-grader",
       "label_en": "Your Google Business Profile flagged. Grade it next.",
       "label_es": "Tu ficha de Google está señalada. Califícala a continuación."
     },
     {
       "from": "gbp-grader",
-      "match": { "missingPhotos": true },
+      "match": {
+        "missingPhotos": true
+      },
       "to": "photo-brief",
       "label_en": "Your listing needs photos. Build a one-page brief your photographer can shoot.",
       "label_es": "Tu ficha necesita fotos. Arma un brief de una página."
     },
     {
       "from": "gbp-grader",
-      "match": { "missingHours": true },
-      "to": "open-hours",
+      "match": {
+        "missingHours": true
+      },
+      "to": "store-hours",
       "label_en": "Your listing is missing hours. Generate the exact text Google wants.",
       "label_es": "A tu ficha le faltan horarios. Genera el texto exacto que Google quiere."
     },
     {
       "from": "speed-test",
-      "match": { "score": "low" },
+      "match": {
+        "score": "low"
+      },
       "to": "mobile-check",
       "label_en": "Speed score low. The Mobile Check looks at why on a real phone.",
       "label_es": "El puntaje de velocidad es bajo. El Revisor Móvil mira por qué en un teléfono real."
     },
     {
       "from": "mobile-check",
-      "match": { "failures": "any" },
+      "match": {
+        "failures": "any"
+      },
       "to": "audits/restaurant",
       "label_en": "Mobile flagged issues. The full audit goes deeper.",
       "label_es": "El revisor móvil encontró problemas. El diagnóstico completo va más a fondo."
     },
     {
       "from": "plate-cost",
-      "match": { "dishSaved": true },
+      "match": {
+        "dishSaved": true
+      },
       "to": "margin-math",
       "label_en": "Cost is set. Margin Math walks the four calculators that turn it into a defendable price.",
       "label_es": "El costo está fijado. Cálculo de Margen recorre las cuatro calculadoras que lo convierten en un precio defendible."
     },
     {
       "from": "plate-cost",
-      "match": { "dishSaved": true, "needsMenuMix": true },
+      "match": {
+        "dishSaved": true,
+        "needsMenuMix": true
+      },
       "to": "menu-engineering",
       "label_en": "Costs in place. Now run the menu-engineering matrix to see which dishes carry your margin.",
       "label_es": "Costos en su lugar. Ahora corre la matriz de ingeniería de menú para ver qué platos cargan tu margen."
     },
     {
       "from": "margin-math",
-      "match": { "priceRaiseRun": true },
+      "match": {
+        "priceRaiseRun": true
+      },
       "to": "menu-copy",
       "label_en": "Price raise modeled. Menu Copy Inspector tests whether your descriptions earn the new price.",
       "label_es": "Modelaste el alza. El Inspector de Copy prueba si tus descripciones se ganan el precio nuevo."
     },
     {
       "from": "menu-engineering",
-      "match": { "puzzlesFound": true },
+      "match": {
+        "puzzlesFound": true
+      },
       "to": "menu-copy",
       "label_en": "Puzzles need stronger copy. The Inspector scores six diagnostics per dish.",
       "label_es": "Los \"Acertijos\" necesitan mejor copy. El Inspector califica seis diagnósticos por plato."
     },
     {
       "from": "menu-engineering",
-      "match": { "dogsFound": true },
+      "match": {
+        "dogsFound": true
+      },
       "to": "menu-converter",
       "label_en": "Dogs to retire. Menu Converter makes the new menu page in two seconds.",
       "label_es": "Hay \"Perros\" que retirar. El Conversor de Menú arma la nueva página del menú en dos segundos."
     },
     {
       "from": "schema-check",
-      "match": { "missingSchema": true },
+      "match": {
+        "missingSchema": true
+      },
       "to": "audits/restaurant",
       "label_en": "Schema gaps detected. The full Restaurant Audit covers the rest of the indexable signals.",
       "label_es": "Detectamos huecos de schema. El Diagnóstico de Restaurante cubre el resto de las señales indexables."
     },
     {
       "from": "tech-stack",
-      "match": { "platformDetected": true },
+      "match": {
+        "platformDetected": true
+      },
       "to": "speed-test",
       "label_en": "Platform identified. Speed Test now shows platform-specific fix instructions.",
       "label_es": "Plataforma identificada. El Test de Velocidad ahora muestra arreglos específicos."
     },
     {
       "from": "brand-suite",
-      "match": { "paletteBuilt": true },
+      "match": {
+        "paletteBuilt": true
+      },
       "to": "photo-brief",
       "label_en": "Palette in hand. The Photo Brief uses it to direct the shoot.",
       "label_es": "Paleta lista. El Brief de Fotos la usa para dirigir la sesión."
     },
     {
       "from": "cost-pulse",
-      "match": { "driftFlagged": true },
+      "match": {
+        "driftFlagged": true
+      },
       "to": "margin-math",
       "label_en": "Costs drifted. Margin Math recomputes the price you need to hold the margin.",
       "label_es": "Los costos se movieron. Cálculo de Margen recalcula el precio que necesitas para mantener el margen."
     },
     {
       "from": "storefront-health",
-      "match": { "score": "low" },
+      "match": {
+        "score": "low"
+      },
       "to": "audits/restaurant",
       "label_en": "Storefront score below threshold. The Restaurant Audit lists every specific fix.",
       "label_es": "El puntaje del storefront está bajo. El Diagnóstico de Restaurante lista cada arreglo específico."
@@ -122,11 +154,11 @@
       "label_es": "Comparación lista. Corre el diagnóstico completo sobre tu propia URL para la lista de arreglos."
     },
     {
-      "from": "holiday-hours",
+      "from": "store-hours/holidays",
       "match": {},
-      "to": "open-hours",
-      "label_en": "Holiday hours generated. Lock down your regular hours next with Open Hours.",
-      "label_es": "Horarios festivos listos. Asegura tus horarios regulares con Horario Abierto."
+      "to": "store-hours",
+      "label_en": "Holiday hours generated. Lock down your regular weekly hours next.",
+      "label_es": "Horarios festivos listos. Asegura tus horarios regulares de la semana."
     },
     {
       "from": "menu-converter",
@@ -143,7 +175,7 @@
       "label_es": "Copy revisado. La matriz te dice qué platos empujar y cuáles retirar."
     },
     {
-      "from": "open-hours",
+      "from": "store-hours",
       "match": {},
       "to": "gbp-grader",
       "label_en": "Hours generated. Grade your Google listing to verify they're showing.",

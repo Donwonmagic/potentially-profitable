@@ -65,6 +65,21 @@
 # chained redirects don't waste a hop.
 /tools/audits/wellness/             /tools/audits/restaurant/    301
 /tools/audits/wellness/*            /tools/audits/restaurant/    301
+
+# Phase 6 hard tool-merge — holiday-hours + open-hours → store-hours.
+# Two old URLs redirect into the merged tool family:
+#   /tools/open-hours/      → /tools/store-hours/          (regular hours tab)
+#   /tools/holiday-hours/   → /tools/store-hours/holidays/ (holidays sub-page)
+# Mirror redirects for /es/. Wildcards catch any sub-asset deep-links
+# (PNGs, ICS exports linked from old emails).
+/tools/open-hours/                  /tools/store-hours/          301
+/tools/open-hours/*                 /tools/store-hours/:splat    301
+/tools/holiday-hours/               /tools/store-hours/holidays/ 301
+/tools/holiday-hours/*              /tools/store-hours/holidays/ 301
+/es/tools/open-hours/               /es/tools/store-hours/       301
+/es/tools/open-hours/*              /es/tools/store-hours/:splat 301
+/es/tools/holiday-hours/            /es/tools/store-hours/holidays/ 301
+/es/tools/holiday-hours/*           /es/tools/store-hours/holidays/ 301
 /resources/wellness-website-checklist/      /learn/checklists/restaurant-website-checklist/    301
 /resources/wellness-website-checklist/*     /learn/checklists/restaurant-website-checklist/    301
 

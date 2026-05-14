@@ -7,21 +7,21 @@
 <title>Generador de horarios festivos &mdash; horarios de restaurante para sitio, GBP, schema | Muntin Digital</title>
 <meta name="description" content="Genera los tres resultados de horarios festivos que tu restaurante necesita cada noviembre y diciembre: bloque de texto plano para el sitio, override JSON-LD OpeningHoursSpecification para schema, y un bloque listo para Google Business Profile. Gratis, en tu navegador, tus horarios nunca salen de la página." />
 <meta name="theme-color" content="#1F4E5B" />
-<link rel="canonical" href="https://muntin.digital/es/tools/holiday-hours/" />
-<link rel="alternate" hreflang="en" href="https://muntin.digital/tools/holiday-hours/" />
-<link rel="alternate" hreflang="es" href="https://muntin.digital/es/tools/holiday-hours/" />
-<link rel="alternate" hreflang="x-default" href="https://muntin.digital/tools/holiday-hours/" />
+<link rel="canonical" href="https://muntin.digital/es/tools/store-hours/holidays/" />
+<link rel="alternate" hreflang="en" href="https://muntin.digital/tools/store-hours/holidays/" />
+<link rel="alternate" hreflang="es" href="https://muntin.digital/es/tools/store-hours/holidays/" />
+<link rel="alternate" hreflang="x-default" href="https://muntin.digital/tools/store-hours/holidays/" />
 <meta property="og:locale" content="es_US" />
 <meta property="og:locale:alternate" content="en_US" />
 
 <meta property="og:type" content="website" />
 <meta property="og:title" content="Generador de horarios festivos &mdash; Muntin Digital" />
 <meta property="og:description" content="Texto plano para tu sitio, JSON-LD para schema, y un bloque para Google Business Profile. Gratis, en tu navegador." />
-<meta property="og:url" content="https://muntin.digital/es/tools/holiday-hours/" />
+<meta property="og:url" content="https://muntin.digital/es/tools/store-hours/holidays/" />
 <meta property="og:site_name" content="Muntin Digital" />
 
 
-<meta property="og:image" content="https://muntin.digital/brand/og/tool-holiday-hours-es.png" />
+<meta property="og:image" content="https://muntin.digital/brand/og/tool-store-hours-holidays-es.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
@@ -36,10 +36,10 @@
   "@graph": [
     {
       "@type": "WebApplication",
-      "@id": "https://muntin.digital/es/tools/holiday-hours/#tool",
+      "@id": "https://muntin.digital/es/tools/store-hours/holidays/#tool",
       "name": "Generador de horarios festivos",
       "description": "Genera resultados en texto plano, JSON-LD OpeningHoursSpecification y Google Business Profile para los horarios festivos de un restaurante independiente. Todo en el navegador; ningún dato sale de la página.",
-      "url": "https://muntin.digital/es/tools/holiday-hours/",
+      "url": "https://muntin.digital/es/tools/store-hours/holidays/",
       "applicationCategory": "BusinessApplication",
       "operatingSystem": "Any",
       "browserRequirements": "Requires JavaScript",
@@ -53,7 +53,7 @@
       "itemListElement": [
         { "@type": "ListItem", "position": 1, "name": "Muntin Digital", "item": "https://muntin.digital/es/" },
         { "@type": "ListItem", "position": 2, "name": "Herramientas", "item": "https://muntin.digital/es/tools/" },
-        { "@type": "ListItem", "position": 3, "name": "Generador de horarios festivos", "item": "https://muntin.digital/es/tools/holiday-hours/" }
+        { "@type": "ListItem", "position": 3, "name": "Generador de horarios festivos", "item": "https://muntin.digital/es/tools/store-hours/holidays/" }
       ]
     }
   ]
@@ -247,7 +247,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mac"><span class="nav-search-kbd-mod">⌘</span>K</span><span class="nav-search-kbd-pc">Ctrl+K</span></kbd>
     </button>
     <nav class="lang-switch" aria-label="Idioma">
-      <a href="/tools/holiday-hours/" hreflang="en" lang="en" class="js-lang-switch" data-set-locale="en">English</a>
+      <a href="/tools/store-hours/holidays/" hreflang="en" lang="en" class="js-lang-switch" data-set-locale="en">English</a>
       <span class="lang-switch-current" aria-current="true">ES</span>
     </nav>
     <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">
@@ -271,7 +271,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <span>Buscar en la biblioteca</span>
     </button>
     <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Contacta a Don</a>
-    <a href="/tools/holiday-hours/" hreflang="en" lang="en" class="mobile-lang js-lang-switch" data-set-locale="en">View in English</a>
+    <a href="/tools/store-hours/holidays/" hreflang="en" lang="en" class="mobile-lang js-lang-switch" data-set-locale="en">View in English</a>
   </nav>
 
   <!-- Mega-menu controller retired in Phase 7: Biblioteca is now a
@@ -324,8 +324,15 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <li aria-hidden="true">›</li>
       <li><a href="/es/tools/" style="color:var(--teal)">Herramientas</a></li>
       <li aria-hidden="true">›</li>
-      <li aria-current="page">Generador de horarios festivos</li>
+      <li><a href="/es/tools/store-hours/" style="color:var(--teal)">Horario de Tienda</a></li>
+      <li aria-hidden="true">›</li>
+      <li aria-current="page">Festivos</li>
     </ol>
+  </nav>
+
+  <nav class="store-hours-tabs container" aria-label="Páginas de Horario de Tienda" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;">
+    <a href="/es/tools/store-hours/" style="padding:8px 14px;border-radius:999px;background:var(--cream-2);color:var(--ink);border:1px solid var(--line);text-decoration:none;font-size:13.5px;font-weight:600;">Horarios regulares</a>
+    <a href="/es/tools/store-hours/holidays/" aria-current="page" style="padding:8px 14px;border-radius:999px;background:var(--ink);color:var(--cream);text-decoration:none;font-size:13.5px;font-weight:600;">Festivos</a>
   </nav>
 
   <article class="container" style="max-width:840px;margin:32px auto 80px;padding:0 var(--pad-x)">
@@ -411,7 +418,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <section class="hh-deeplinks">
       <p class="eyebrow" style="margin-bottom:10px">Sigue</p>
       <ul style="font-size:15.5px;line-height:1.7;color:var(--teal);margin:0;padding-left:22px">
-        <li><a href="/es/tools/open-hours/">Horario Abierto</a> &mdash; la versión de horarios regulares</li>
+        <li><a href="/es/tools/store-hours/">Horario de Tienda</a> &mdash; la versión de horarios regulares</li>
         <li><a href="/es/blog/how-to-set-up-google-business-profile-for-your-restaurant/">Cómo configurar Google Business Profile (el campo de horarios festivos es el más olvidado)</a></li>
         <li><a href="/services/care-plan-light/">Care Plan Light $99/mes</a> &mdash; higiene mensual de horarios en sitio + GBP + Yelp + Apple Maps</li>
       </ul>
@@ -419,9 +426,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   </article>
 
   <!-- tool-knit -->
-<aside class="tool-knit" aria-labelledby="tool-knit-heading-holiday-hours">
+<aside class="tool-knit" aria-labelledby="tool-knit-heading-store-hours-holidays">
     <div class="container">
-      <h2 id="tool-knit-heading-holiday-hours" class="tool-knit__h">Sigue.</h2>
+      <h2 id="tool-knit-heading-store-hours-holidays" class="tool-knit__h">Sigue.</h2>
       <div class="tool-knit__grid">
       <div class="tool-knit__col">
         <h3>Tema</h3>
@@ -430,7 +437,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <div class="tool-knit__col">
         <h3>Herramientas relacionadas</h3>
         <ul>
-          <li><a href="/es/tools/open-hours/">Horario Abierto</a></li>
+          <li><a href="/es/tools/store-hours/">Horario de Tienda</a></li>
           <li><a href="/es/tools/gbp-grader/">Calificador de Google Business Profile</a></li>
           <li><a href="/es/tools/audits/restaurant/">Diagnóstico de sitio de restaurante</a></li>
         </ul>
@@ -454,32 +461,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     </div>
   </aside>
 <!-- /tool-knit -->
-<!-- tool-sheet-rail:start -->
-<section class="topic-section tool-sheet-rail" aria-labelledby="tool-sheet-rail-h">
-  <div class="container">
-    <header class="topic-section-head">
-      <span class="eyebrow">Empareja con papeleo</span>
-      <h2 id="tool-sheet-rail-h">Hojas del operador que usan esta herramienta — imprimibles, llenables, exportan a CSV.</h2>
-    </header>
-    <ul class="topic-tool-list">
-        <li>
-          <a class="topic-tool-card" href="/es/sheets/gbp-monthly-audit/">
-            <h4>Chequeo mensual de Google Business Profile</h4>
-            <p>Recorrido de quince minutos por tu Google Business Profile. Horarios, categoría principal, conteo de fotos, posts, Q&amp;A, velocidad de reseñas, coincidencia NAP con tu sitio. Pasa o falla por fila, con lista de arreglos.</p>
-            <span class="topic-tool-cta">Abrir la hoja <span aria-hidden="true">→</span></span>
-          </a>
-        </li>
-        <li>
-          <a class="topic-tool-card" href="/es/sheets/holiday-hours-planner/">
-            <h4>Planificador de horarios festivos</h4>
-            <p>Un trimestre antes de cada feriado federal y local — horarios planeados, GBP actualizado, sitio actualizado, contestadora actualizada.</p>
-            <span class="topic-tool-cta">Abrir la hoja <span aria-hidden="true">→</span></span>
-          </a>
-        </li>
-    </ul>
-  </div>
-</section>
-<!-- tool-sheet-rail:end -->
+
 
 <!-- LIBRARY:tool-deep-links:start -->
 <section class="tool-deep-links" aria-labelledby="tool-deep-h">
@@ -659,7 +641,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <script>(function(){var h=location.hostname;if(h==='localhost'||h==='127.0.0.1'||h==='0.0.0.0'||/^\[?::1?\]?$/.test(h))return;var s=document.createElement('script');s.src='https://challenges.cloudflare.com/turnstile/v0/api.js';s.async=true;s.defer=true;document.head.appendChild(s);})();</script>
 
 <script>
-// Mismo motor que /tools/holiday-hours/. Inputs nunca salen de la página.
+// Mismo motor que /tools/store-hours/holidays/. Inputs nunca salen de la página.
 (function () {
   var HOLIDAYS = [
     { id: 'memorial-day',   name: "Día de los Caídos (Memorial Day)",   rule: { type: 'nthDow',  month: 5,  dow: 1, n: -1 } },
@@ -829,10 +811,10 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     showTab('hhOutText');
     var region = document.getElementById('hhResultRegion');
     region.focus();
-    if (window.plausible) window.plausible('Tool First Result', { props: { tool: 'holiday-hours-es' } });
+    if (window.plausible) window.plausible('Tool First Result', { props: { tool: 'store-hours/holidays-es' } });
 
     if (window.MuntinHandoff && window.MuntinHandoff.complete) {
-      window.MuntinHandoff.complete({ toolKey: 'holiday-hours', signals: {}, resultEl: region });
+      window.MuntinHandoff.complete({ toolKey: 'store-hours/holidays', signals: {}, resultEl: region });
     }
   }
   document.getElementById('hhGenerate').addEventListener('click', generate);

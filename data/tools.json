@@ -23,7 +23,7 @@
       "tools": [
         "restaurant-audit",
         "gbp-grader",
-        "open-hours"
+        "store-hours"
       ]
     },
     {
@@ -68,7 +68,7 @@
       "tools": [
         "gbp-grader",
         "restaurant-audit",
-        "open-hours"
+        "store-hours"
       ]
     },
     {
@@ -125,22 +125,6 @@
       "status": "live",
       "added": "2026-04-19",
       "tier": "deep"
-    },
-    "open-hours": {
-      "title_en": "Open Hours",
-      "title_es": "Horario Abierto",
-      "summary_en": "Fill your hours once. Walk away with the exact text for Google and a code block for your website builder. About 15 minutes.",
-      "summary_es": "Llena los horarios una vez. Llévate el texto exacto para Google y un bloque de código para tu sitio. Unos 15 minutos.",
-      "walkaway_en": "The exact hours text Google and your website both want.",
-      "walkaway_es": "El texto exacto que Google y tu sitio quieren para tus horarios.",
-      "cta_en": "Open Open Hours",
-      "cta_es": "Abrir Horario Abierto",
-      "url_en": "/tools/open-hours/",
-      "url_es": "/es/tools/open-hours/",
-      "cluster": "local-seo",
-      "status": "live",
-      "added": "2026-04-25",
-      "tier": "standard"
     },
     "menu-converter": {
       "title_en": "Menu Converter",
@@ -284,6 +268,22 @@
       "cluster": "operations-margin",
       "status": "live",
       "added": "2026-05-01",
+      "tier": "standard"
+    },
+    "store-hours": {
+      "title_en": "Store Hours",
+      "title_es": "Horario de Tienda",
+      "summary_en": "Set your weekly hours once. Walk away with text for Google, JSON-LD for your site, and a code block your developer can paste. Holiday hours live on a sister page.",
+      "summary_es": "Define tus horarios una vez. Llévate el texto exacto para Google, JSON-LD para tu sitio y un bloque de código. Los horarios festivos viven en una página hermana.",
+      "walkaway_en": "The exact hours text Google and your website both want, plus a holidays page for the eight US restaurant holidays.",
+      "walkaway_es": "El texto exacto que Google y tu sitio quieren, más una página de festivos para las ocho fiestas de restaurantes en EE.UU.",
+      "cta_en": "Open Store Hours",
+      "cta_es": "Abrir Horario de Tienda",
+      "url_en": "/tools/store-hours/",
+      "url_es": "/es/tools/store-hours/",
+      "cluster": "local-seo",
+      "status": "live",
+      "added": "2026-04-25",
       "tier": "standard"
     }
   },

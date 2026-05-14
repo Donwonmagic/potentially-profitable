@@ -472,7 +472,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <span>Or validate a JSON-LD snippet directly</span>
       <span style="font-size:18px;color:var(--stone);" class="sch-paste-toggle">+</span>
     </summary>
-    <p style="margin:10px 0 6px;font-size:12.5px;color:var(--stone);line-height:1.55;">Useful when you've generated a schema block (e.g. from <a href="/tools/open-hours/" style="color:var(--teal);">Open Hours</a>) and want to verify it before sending to your developer. We deep-link to Google's official validator — your snippet stays in your URL bar, never on a server.</p>
+    <p style="margin:10px 0 6px;font-size:12.5px;color:var(--stone);line-height:1.55;">Useful when you've generated a schema block (e.g. from <a href="/tools/store-hours/" style="color:var(--teal);">Open Hours</a>) and want to verify it before sending to your developer. We deep-link to Google's official validator — your snippet stays in your URL bar, never on a server.</p>
     <textarea id="schPaste" placeholder='{ "@context": "https://schema.org", "@type": "Restaurant", ... }' aria-label="Paste JSON-LD" style="width:100%;min-height:140px;padding:10px 12px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--white);font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12px;line-height:1.5;color:var(--ink);resize:vertical;"></textarea>
     <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:10px;">
       <button type="button" id="schValidateBtn" class="btn btn-primary" style="font-size:13px;padding:8px 16px;">Validate at Schema.org &rarr;</button>
@@ -878,10 +878,10 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
             try {
               var c = (typeof MuntinContext !== 'undefined') ? MuntinContext.read() : null;
               if (c && c.hours && Array.isArray(c.hours.openingHoursSpecification) && c.hours.openingHoursSpecification.length) {
-                return '<strong>Hours pulled in from <a href="/tools/open-hours/" style="color:var(--teal);">Open Hours</a></strong> — the snippet below already includes <code>openingHoursSpecification</code>. Update them in Open Hours and they\'ll refresh here next time you grade.';
+                return '<strong>Hours pulled in from <a href="/tools/store-hours/" style="color:var(--teal);">Open Hours</a></strong> — the snippet below already includes <code>openingHoursSpecification</code>. Update them in Open Hours and they\'ll refresh here next time you grade.';
               }
             } catch (_) {}
-            return 'Set your hours in <a href="/tools/open-hours/" style="color:var(--teal);">Open Hours</a> first and they\'ll pre-fill here as <code>openingHoursSpecification</code> — handier for split shifts or seasonal hours.';
+            return 'Set your hours in <a href="/tools/store-hours/" style="color:var(--teal);">Open Hours</a> first and they\'ll pre-fill here as <code>openingHoursSpecification</code> — handier for split shifts or seasonal hours.';
           })()
         ) + '</p>' +
         // Hire-guide disclosure — for owners whose platform requires
