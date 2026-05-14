@@ -71,5 +71,72 @@
     } catch (_) {}
   }
 
-  return { complete: complete, _detectLocale: detectLocale };
+  // prefill({ map, captureOnSubmit })
+  //   map: { fieldName: '#inputId' | HTMLElement }
+  //     fieldName must be a key in restaurantProfile (or 'websiteUrl').
+  //     If the input is empty AND the Profile has the value, fill it.
+  //   captureOnSubmit: form element OR array of inputs to capture
+  //     values back to the Profile on submit. Lets the operator's
+  //     first explicit entry seed the Profile for every subsequent tool.
+  //
+  // Both reads and writes are wrapped in try/catch. If MuntinContext
+  // isn't loaded the helper no-ops silently so the tool still works.
+  function prefill(spec) {
+    if (!spec || typeof spec !== 'object') return;
+    var profile = null;
+    try {
+      if (window.MuntinContext && typeof window.MuntinContext.readRestaurantProfile === 'function') {
+        profile = window.MuntinContext.readRestaurantProfile() || null;
+      }
+    } catch (_) {}
+    var entries = spec.map && typeof spec.map === 'object' ? spec.map : null;
+    if (entries && profile) {
+      Object.keys(entries).forEach(function (field) {
+        if (!profile[field]) return;
+        var el = entries[field];
+        if (typeof el === 'string') el = document.querySelector(el);
+        if (!el) return;
+        // Only fill empty inputs — never overwrite something the
+        // user already typed (e.g. on back-button revisit).
+        if ('value' in el && !el.value) {
+          el.value = String(profile[field]);
+          // Notify any input-listeners (counters, validators) the
+          // value changed programmatically. Same event the user's
+          // first keystroke would fire.
+          try { el.dispatchEvent(new Event('input', { bubbles: true })); } catch (_) {}
+          try { el.dispatchEvent(new Event('change', { bubbles: true })); } catch (_) {}
+        }
+      });
+    }
+    // Capture-on-submit: when a form submits, read the named fields
+    // and persist whatever the user typed. Wraps the form's submit
+    // handler additively so the existing submit logic still runs first.
+    if (spec.captureOnSubmit && entries) {
+      var form = spec.captureOnSubmit;
+      if (typeof form === 'string') form = document.querySelector(form);
+      if (form && form.addEventListener) {
+        form.addEventListener('submit', function () {
+          // Run AFTER the form's own submit logic by deferring.
+          setTimeout(function () {
+            var patch = {};
+            Object.keys(entries).forEach(function (field) {
+              var el = entries[field];
+              if (typeof el === 'string') el = document.querySelector(el);
+              if (!el || !('value' in el)) return;
+              var v = String(el.value || '').trim();
+              if (v) patch[field] = v;
+            });
+            if (Object.keys(patch).length === 0) return;
+            try {
+              if (window.MuntinContext && typeof window.MuntinContext.writeRestaurantProfile === 'function') {
+                window.MuntinContext.writeRestaurantProfile(patch);
+              }
+            } catch (_) {}
+          }, 0);
+        });
+      }
+    }
+  }
+
+  return { complete: complete, prefill: prefill, _detectLocale: detectLocale };
 }));
