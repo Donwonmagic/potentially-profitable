@@ -51,9 +51,9 @@ The patterns below have all returned to the library as invented data in earlier 
 
 ## Why this exists
 
-In May 2026, an editorial review caught widespread fabricated operator data across the May-2026 wave articles and the trust pages that backed them. The pattern was consistent: earlier waves drafted authoritative-sounding industry analysis, and to make the prose feel grounded, agents invented operating data and dressed it as first-party experience. The fabrications propagated to seven downstream surfaces (JSON-LD abstracts, OG descriptions, RSS, llms-full.txt, audio narration scripts, `/methods/`, `/about/`, the article-author-card bio injected across all 62 articles).
+In May 2026, an editorial review caught widespread fabricated operator data across the May-2026 wave articles and the trust pages that backed them. The pattern was consistent: drafts were structured to feel grounded by inventing operating data and dressing it as first-party experience. Those fabrications then propagated downstream — JSON-LD abstracts, OG descriptions, RSS, the LLM-friendly text feeds, narration scripts for audio, `/methods/`, `/about/`, and the author-card bio injected across every article.
 
-The production pipeline had no verification gate. This document, the sourced-claims registry, and the fabrication blocklist together are that gate.
+The publishing pipeline had no verification gate. This document, the sourced-claims registry, and the fabrication blocklist together are that gate.
 
 ## When in doubt
 

@@ -130,6 +130,37 @@ const BLOCKED = [
     label: 'AI Overview quarterly trajectory (only Q1 2025 13.14% is sourced)',
     fix: 'Cite only the registered March 2025 13.14% figure (data/sourced-claims.json#ai_overview_share_march_2025). Report subsequent direction qualitatively as "rising, not flat".',
   },
+  // External URL deep-link patterns previously caught as fabricated. Each
+  // of these was a specific URL path that did not resolve on the live
+  // source. The library now cites these sources by name with a TLD link.
+  // If you need to deep-link any of these hosts in a new article, paste
+  // the live URL from a browser visit, verify it 200s, and add the
+  // specific claim to data/sourced-claims.json with url_status: "deep-link".
+  {
+    pattern: /https?:\/\/(?:www\.)?nngroup\.com\/articles\/[a-z0-9\-]+\/?/gi,
+    label: 'NNG deep-link citation (slugs reported as 404)',
+    fix: 'Replace with TLD-only link (https://www.nngroup.com/) and credit Nielsen Norman Group by name. If you must deep-link, paste the live URL from a browser visit and add the article to data/sourced-claims.json.',
+  },
+  {
+    pattern: /https?:\/\/baymard\.com\/lists\/[a-z0-9\-]+/gi,
+    label: 'Baymard deep-link citation (slug unverified)',
+    fix: 'Replace with TLD-only link (https://baymard.com/) and credit Baymard Institute by name. If you must deep-link, paste the live URL from a browser visit and add the page to data/sourced-claims.json.',
+  },
+  {
+    pattern: /https?:\/\/(?:www\.)?thinkwithgoogle\.com\/marketing-strategies\/[a-z0-9\-\/]+/gi,
+    label: 'Think with Google deep-link citation (slug unverified)',
+    fix: 'Replace with TLD-only link (https://www.thinkwithgoogle.com/) and credit Think with Google by name.',
+  },
+  {
+    pattern: /https?:\/\/(?:www\.)?searchengineland\.com\/[a-z0-9\-]{6,}/gi,
+    label: 'Search Engine Land deep-link citation (slug unverified)',
+    fix: 'Replace with TLD-only link (https://searchengineland.com/) and credit Search Engine Land + the date and title of the article in the citation drawer.',
+  },
+  {
+    pattern: /https?:\/\/restaurant\.org\/research-and-media\/[a-z0-9\-\/]+/gi,
+    label: 'National Restaurant Association deep-link citation (slug unverified)',
+    fix: 'Replace with TLD-only link (https://restaurant.org/) and credit the National Restaurant Association by name.',
+  },
 ];
 
 // Files to skip — historical changelog (should be allowed to reference
