@@ -80,6 +80,18 @@
 /es/tools/open-hours/*              /es/tools/store-hours/:splat 301
 /es/tools/holiday-hours/            /es/tools/store-hours/holidays/ 301
 /es/tools/holiday-hours/*           /es/tools/store-hours/holidays/ 301
+
+# Phase 6 hard tool-merge — speed-test + mobile-check → page-health.
+# /tools/speed-test/      → /tools/page-health/           (speed tab)
+# /tools/mobile-check/    → /tools/page-health/mobile/    (mobile tab)
+/tools/speed-test/                  /tools/page-health/          301
+/tools/speed-test/*                 /tools/page-health/:splat    301
+/tools/mobile-check/                /tools/page-health/mobile/   301
+/tools/mobile-check/*               /tools/page-health/mobile/   301
+/es/tools/speed-test/               /es/tools/page-health/       301
+/es/tools/speed-test/*              /es/tools/page-health/:splat 301
+/es/tools/mobile-check/             /es/tools/page-health/mobile/ 301
+/es/tools/mobile-check/*            /es/tools/page-health/mobile/ 301
 /resources/wellness-website-checklist/      /learn/checklists/restaurant-website-checklist/    301
 /resources/wellness-website-checklist/*     /learn/checklists/restaurant-website-checklist/    301
 

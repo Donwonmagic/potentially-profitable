@@ -38,16 +38,16 @@
       "label_es": "A tu ficha le faltan horarios. Genera el texto exacto que Google quiere."
     },
     {
-      "from": "speed-test",
+      "from": "page-health",
       "match": {
         "score": "low"
       },
-      "to": "mobile-check",
+      "to": "page-health/mobile",
       "label_en": "Speed score low. The Mobile Check looks at why on a real phone.",
       "label_es": "El puntaje de velocidad es bajo. El Revisor Móvil mira por qué en un teléfono real."
     },
     {
-      "from": "mobile-check",
+      "from": "page-health/mobile",
       "match": {
         "failures": "any"
       },
@@ -115,7 +115,7 @@
       "match": {
         "platformDetected": true
       },
-      "to": "speed-test",
+      "to": "page-health",
       "label_en": "Platform identified. Speed Test now shows platform-specific fix instructions.",
       "label_es": "Plataforma identificada. El Test de Velocidad ahora muestra arreglos específicos."
     },

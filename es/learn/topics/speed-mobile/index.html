@@ -437,7 +437,7 @@
         <li><strong>INP &le; 200ms.</strong> Interaction to next paint (reemplaz&oacute; al FID en marzo de 2024) &mdash; cu&aacute;nto tarda la p&aacute;gina en responder a un tap. INP es el asesino para herramientas y widgets de reserva; si tu bot&oacute;n &laquo;Reservar&raquo; tarda 400ms en reaccionar, el visitante hace doble tap y arranca un flujo de reserva duplicado. Arreglo: defer en JS no cr&iacute;tico, code-splitting y evitar el bloqueo del main thread por widgets de terceros.</li>
       </ul>
 
-      <p>Puedes leer tus CWV en tres lugares: <a href="https://pagespeed.web.dev/" target="_blank" rel="noopener">PageSpeed Insights</a> (sint&eacute;tico m&aacute;s 28 d&iacute;as de field data de Chrome real), el reporte &laquo;Core Web Vitals&raquo; de Search Console (solo field data, pero reportada por grupo de URL) y Plausible si conectaste <a href="https://github.com/GoogleChrome/web-vitals" target="_blank" rel="noopener">web-vitals</a> del lado del cliente. La herramienta gratis <a href="/es/tools/speed-test/">Speed Test</a> corre la versi&oacute;n sint&eacute;tica sobre cualquier URL.</p>
+      <p>Puedes leer tus CWV en tres lugares: <a href="https://pagespeed.web.dev/" target="_blank" rel="noopener">PageSpeed Insights</a> (sint&eacute;tico m&aacute;s 28 d&iacute;as de field data de Chrome real), el reporte &laquo;Core Web Vitals&raquo; de Search Console (solo field data, pero reportada por grupo de URL) y Plausible si conectaste <a href="https://github.com/GoogleChrome/web-vitals" target="_blank" rel="noopener">web-vitals</a> del lado del cliente. La herramienta gratis <a href="/es/tools/page-health/">Speed Test</a> corre la versi&oacute;n sint&eacute;tica sobre cualquier URL.</p>
 
       <h3>Por qu&eacute; el m&oacute;vil es distinto</h3>
 
@@ -461,7 +461,7 @@
         <li><strong>Lazy-load a las im&aacute;genes debajo del fold (15 minutos).</strong> Atributo <code>loading="lazy"</code> en cada img debajo del hero. Ahorra entre 40 y 60% del total de bytes en una p&aacute;gina de men&uacute; t&iacute;pica donde el visitante nunca scrollea m&aacute;s all&aacute; del tercer plato.</li>
       </ol>
 
-      <p>Corre <a href="/es/tools/speed-test/">la Speed Test gratis</a> en tu URL antes y despu&eacute;s de cada arreglo. El puntaje se mueve de inmediato; la se&ntilde;al de field data en Search Console tarda 28 d&iacute;as en rolar.</p>
+      <p>Corre <a href="/es/tools/page-health/">la Speed Test gratis</a> en tu URL antes y despu&eacute;s de cada arreglo. El puntaje se mueve de inmediato; la se&ntilde;al de field data en Search Console tarda 28 d&iacute;as en rolar.</p>
 
       <h3>Lo que ralentiza un sitio de restaurante y nada m&aacute;s</h3>
 
@@ -479,7 +479,7 @@
 
       <ol>
         <li><strong>Corre <a href="https://pagespeed.web.dev/" target="_blank" rel="noopener">PageSpeed Insights</a> en tu home y en tu p&aacute;gina de men&uacute;.</strong> Lee la secci&oacute;n &laquo;Core Web Vitals&raquo;. Si LCP est&aacute; sobre 3 segundos o CLS sobre 0.1, tienes un problema accionable. Guarda el resultado.</li>
-        <li><strong>Corre la <a href="/es/tools/speed-test/">Speed Test</a> gratis sobre las mismas dos URLs.</strong> Los dos reportes se cross-validan; si difieren por m&aacute;s de 0.5s en LCP, suele ser porque tu hero image se est&aacute; sirviendo desde un cache que una herramienta golpea y la otra no. Trata el peor n&uacute;mero como verdad.</li>
+        <li><strong>Corre la <a href="/es/tools/page-health/">Speed Test</a> gratis sobre las mismas dos URLs.</strong> Los dos reportes se cross-validan; si difieren por m&aacute;s de 0.5s en LCP, suele ser porque tu hero image se est&aacute; sirviendo desde un cache que una herramienta golpea y la otra no. Trata el peor n&uacute;mero como verdad.</li>
         <li><strong>Elige la hero image m&aacute;s pesada que tengas. Reencod&iacute;ficala como AVIF.</strong> Baja el archivo bajo 200KB. Reemplaza el src del &lt;img&gt;. Vuelve a correr ambas herramientas. El puntaje se mueve; la experiencia del visitante cambia de inmediato.</li>
       </ol>
 
