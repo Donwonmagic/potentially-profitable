@@ -1086,9 +1086,14 @@ Tellicherry pepper, pecorino romano, finished tableside.</pre>
 
     document.getElementById('mcEmpty').hidden = true;
     showTab('mcOutPreview');
-    document.getElementById('mcResultRegion').focus();
+    var mcResultRegion = document.getElementById('mcResultRegion');
+    mcResultRegion.focus();
     if (window.plausible) window.plausible('Tool First Result', { props: { tool: 'menu-converter' } });
     paintMenuDesignHandoff(sections, totalItems, name, currency);
+
+    if (window.MuntinHandoff && window.MuntinHandoff.complete) {
+      window.MuntinHandoff.complete({ toolKey: 'menu-converter', signals: {}, resultEl: mcResultRegion });
+    }
   }
 
   // Wave studio-quality (C9) — Menu Design handoff. Stash the parsed
@@ -1197,5 +1202,8 @@ Tellicherry pepper, pecorino romano, finished tableside.</pre>
 </script>
 
 <!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260501-engagement";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
+<script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
+<script src="/tools/_shared/next-tool.js?v=phase4"></script>
+<script src="/tools/_shared/handoff.js?v=phase4"></script>
 </body>
 </html>

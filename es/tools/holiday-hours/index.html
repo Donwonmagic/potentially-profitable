@@ -827,8 +827,13 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     document.getElementById('hhOutGbpBody').textContent = buildGbp(items);
     document.getElementById('hhEmpty').hidden = true;
     showTab('hhOutText');
-    document.getElementById('hhResultRegion').focus();
+    var region = document.getElementById('hhResultRegion');
+    region.focus();
     if (window.plausible) window.plausible('Tool First Result', { props: { tool: 'holiday-hours-es' } });
+
+    if (window.MuntinHandoff && window.MuntinHandoff.complete) {
+      window.MuntinHandoff.complete({ toolKey: 'holiday-hours', signals: {}, resultEl: region });
+    }
   }
   document.getElementById('hhGenerate').addEventListener('click', generate);
   document.getElementById('hhReset').addEventListener('click', function () {
@@ -865,5 +870,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 </script>
 
 <!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260501-engagement";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
+<script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
+<script src="/tools/_shared/next-tool.js?v=phase4"></script>
+<script src="/tools/_shared/handoff.js?v=phase4"></script>
 </body>
 </html>

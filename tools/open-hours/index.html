@@ -1233,6 +1233,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
 <!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260422-cohesion";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
 <script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
+<script src="/tools/_shared/next-tool.js?v=phase4"></script>
+<script src="/tools/_shared/handoff.js?v=phase4"></script>
 <script src="./open-hours.js?v=20260428-oh12"></script>
 <script src="./sign-render.js?v=20260430-brand-palette"></script>
 <script src="/assets/workbench-save.js?v=20260428-sprint0-tokens"></script>
@@ -1965,14 +1967,23 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
   var firstFired = false;
   function firePlausibleOnce(v){
-    if (firstFired || !window.plausible) return;
+    if (firstFired) return;
     if (v.summary.openDaysCount === 0) return;
     firstFired = true;
-    window.plausible('Open Hours Render', { props: {
-      open_days:    window.OH.bucketWeeklyOpenDays(v.summary.openDaysCount),
-      service_tier: window.OH.bucketServiceTiers({ week: v.week }),
-      closures:     window.OH.bucketClosureCount(0) // Phase 2 wires closures
-    }});
+    if (window.plausible) {
+      window.plausible('Open Hours Render', { props: {
+        open_days:    window.OH.bucketWeeklyOpenDays(v.summary.openDaysCount),
+        service_tier: window.OH.bucketServiceTiers({ week: v.week }),
+        closures:     window.OH.bucketClosureCount(0) // Phase 2 wires closures
+      }});
+    }
+    if (window.MuntinHandoff && window.MuntinHandoff.complete) {
+      window.MuntinHandoff.complete({
+        toolKey: 'open-hours',
+        signals: {},
+        resultEl: document.getElementById('ohOutput') || document.body,
+      });
+    }
   }
 
   // ----- Wire UI -----

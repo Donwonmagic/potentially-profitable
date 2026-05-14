@@ -887,8 +887,13 @@ Pimienta Tellicherry, pecorino romano, terminado en mesa.</pre>
     document.getElementById('mcOutSchemaBody').textContent = renderSchema(sections, name, menuName, currency);
     document.getElementById('mcEmpty').hidden = true;
     showTab('mcOutPreview');
-    document.getElementById('mcResultRegion').focus();
+    var mcResultRegion = document.getElementById('mcResultRegion');
+    mcResultRegion.focus();
     if (window.plausible) window.plausible('Tool First Result', { props: { tool: 'menu-converter-es' } });
+
+    if (window.MuntinHandoff && window.MuntinHandoff.complete) {
+      window.MuntinHandoff.complete({ toolKey: 'menu-converter', signals: {}, resultEl: mcResultRegion });
+    }
   }
 
   function showTab(id) {
@@ -939,5 +944,8 @@ Pimienta Tellicherry, pecorino romano, terminado en mesa.</pre>
 </script>
 
 <!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260501-engagement";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
+<script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
+<script src="/tools/_shared/next-tool.js?v=phase4"></script>
+<script src="/tools/_shared/handoff.js?v=phase4"></script>
 </body>
 </html>

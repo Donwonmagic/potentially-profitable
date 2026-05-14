@@ -113,6 +113,62 @@
       "to": "audits/restaurant",
       "label_en": "Storefront score below threshold. The Restaurant Audit lists every specific fix.",
       "label_es": "El puntaje del storefront está bajo. El Diagnóstico de Restaurante lista cada arreglo específico."
+    },
+    {
+      "from": "compare",
+      "match": {},
+      "to": "audits/restaurant",
+      "label_en": "Side-by-side compared. Run the full audit on your own URL for the punch list.",
+      "label_es": "Comparación lista. Corre el diagnóstico completo sobre tu propia URL para la lista de arreglos."
+    },
+    {
+      "from": "holiday-hours",
+      "match": {},
+      "to": "open-hours",
+      "label_en": "Holiday hours generated. Lock down your regular hours next with Open Hours.",
+      "label_es": "Horarios festivos listos. Asegura tus horarios regulares con Horario Abierto."
+    },
+    {
+      "from": "menu-converter",
+      "match": {},
+      "to": "menu-copy",
+      "label_en": "Menu converted. The Inspector scores each description on six diagnostics.",
+      "label_es": "Menú convertido. El Inspector califica cada descripción en seis diagnósticos."
+    },
+    {
+      "from": "menu-copy",
+      "match": {},
+      "to": "menu-engineering",
+      "label_en": "Copy inspected. The matrix tells you which dishes to push, which to retire.",
+      "label_es": "Copy revisado. La matriz te dice qué platos empujar y cuáles retirar."
+    },
+    {
+      "from": "open-hours",
+      "match": {},
+      "to": "gbp-grader",
+      "label_en": "Hours generated. Grade your Google listing to verify they're showing.",
+      "label_es": "Horarios listos. Califica tu ficha de Google para verificar que se muestren."
+    },
+    {
+      "from": "photo-brief",
+      "match": {},
+      "to": "gbp-grader",
+      "label_en": "Brief ready. Grade your GBP — the photos that come back land there first.",
+      "label_es": "Brief listo. Califica tu GBP — las fotos llegan ahí primero."
+    },
+    {
+      "from": "search-ideas",
+      "match": {},
+      "to": "audits/restaurant",
+      "label_en": "Ideas captured. Audit your site to see which pages already rank for them.",
+      "label_es": "Ideas capturadas. Diagnostica tu sitio para ver qué páginas ya posicionan."
+    },
+    {
+      "from": "seo-grader",
+      "match": {},
+      "to": "schema-check",
+      "label_en": "Page graded. Schema Check looks at the JSON-LD layer Google reads next.",
+      "label_es": "Página calificada. Schema Check mira la capa JSON-LD que Google lee después."
     }
   ]
 }

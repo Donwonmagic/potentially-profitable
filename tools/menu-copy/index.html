@@ -997,6 +997,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <script src="/tools/menu-engineering/menu-engineering.js?v=20260425-me1"></script>
 <script src="./menu-copy.js?v=20260428-mc2"></script>
 <script src="./card-render.js?v=20260425-mc2"></script>
+<script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
+<script src="/tools/_shared/next-tool.js?v=phase4"></script>
+<script src="/tools/_shared/handoff.js?v=phase4"></script>
 <script src="/assets/workbench-save.js?v=20260428-sprint0-tokens"></script>
 <script>
 /* Menu Copy Inspector — input wiring + live render.
@@ -1387,6 +1390,10 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       paintActions(scored);
       firePlausibleOnce(scored);
       if (wb) wb.showAffordance({ input: input, savedAt: Date.now() });
+
+      if (window.MuntinHandoff && window.MuntinHandoff.complete) {
+        window.MuntinHandoff.complete({ toolKey: 'menu-copy', signals: {}, resultEl: output });
+      }
     });
   }
 

@@ -1327,6 +1327,14 @@ body[data-pb-mode="reshoot"] .pb-reshoot-banner{display:block}
     mathEl.style.display = '';
     emptyEl.style.display = 'none';
     fireBucketEvent();
+
+    if (window.MuntinHandoff && window.MuntinHandoff.complete) {
+      window.MuntinHandoff.complete({
+        toolKey: 'photo-brief',
+        signals: {},
+        resultEl: mathEl || document.body,
+      });
+    }
   }
 
   // -------------------- Event handlers --------------------
@@ -2066,5 +2074,8 @@ body[data-pb-mode="reshoot"] .pb-reshoot-banner{display:block}
   renderResults();
 })();
 </script>
+<script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
+<script src="/tools/_shared/next-tool.js?v=phase4"></script>
+<script src="/tools/_shared/handoff.js?v=phase4"></script>
 </body>
 </html>
