@@ -560,6 +560,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
 <script src="/tools/_shared/hire-guide.js?v=20260430-hire-guide"></script>
 <script src="/tools/_shared/platform-fixes.js?v=20260430-wave0"></script>
+<script src="/tools/_shared/safe-html.js?v=phase1"></script>
 <script src="/assets/workbench-save.js?v=20260501-engagement"></script>
 <script>
 // Phase D — honor ?intent=watch deeplinks (ES).
@@ -911,25 +912,72 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
   // Phase 2 (Workshop) — render compartido entre fresh check y rehidratar.
   function renderResult(p) {
+    // Phase 3 hardening — safe DOM construction throughout. See EN
+    // mirror for full rationale.
     var foundTypes = p.foundTypes || [];
     var hasSpecific = foundTypes.some(function(t){return classify(t)==='specific'});
     var hasAny = foundTypes.length > 0;
+
+    while (verdict.firstChild) verdict.removeChild(verdict.firstChild);
+    var verdictIcon = document.createElement('div');
+    var verdictHead = document.createElement('h2');
+    var verdictBody = document.createElement('p');
     if (hasSpecific) {
-      verdict.innerHTML = '<div class="icon found">&#10003;</div><h2>Sí — Google entiende tu negocio.</h2><p>Tu sitio tiene datos estructurados específicos que le dicen a Google qué tipo de negocio eres.</p>';
+      verdictIcon.className = 'icon found';
+      verdictIcon.textContent = '✓';
+      verdictHead.textContent = 'Sí — Google entiende tu negocio.';
+      verdictBody.textContent = 'Tu sitio tiene datos estructurados específicos que le dicen a Google qué tipo de negocio eres.';
     } else if (hasAny) {
-      verdict.innerHTML = '<div class="icon missing">~</div><h2>En parte — Google ve tu sitio, pero no lo que HACES.</h2><p>Tienes algunos datos estructurados, pero son demasiado genéricos. Google sabe que existes, pero no te puede emparejar con búsquedas específicas como "mejor italiano cerca de mí" o "tacos en Silver Spring".</p>';
+      verdictIcon.className = 'icon missing';
+      verdictIcon.textContent = '~';
+      verdictHead.textContent = 'En parte — Google ve tu sitio, pero no lo que HACES.';
+      verdictBody.textContent = 'Tienes algunos datos estructurados, pero son demasiado genéricos. Google sabe que existes, pero no te puede emparejar con búsquedas específicas como “mejor italiano cerca de mí” o “tacos en Silver Spring”.';
     } else {
-      verdict.innerHTML = '<div class="icon missing">&#10005;</div><h2>No — Google no sabe qué tipo de negocio eres.</h2><p>Tu sitio no tiene datos estructurados. Google no puede saber si eres un restaurante, un estudio de yoga, un salón o un despacho de abogados. Agregar marcado schema es un cambio de 10 líneas de código con impacto real en SEO.</p>';
+      verdictIcon.className = 'icon missing';
+      verdictIcon.textContent = '✕';
+      verdictHead.textContent = 'No — Google no sabe qué tipo de negocio eres.';
+      verdictBody.textContent = 'Tu sitio no tiene datos estructurados. Google no puede saber si eres un restaurante, un estudio de yoga, un salón o un despacho de abogados. Agregar marcado schema es un cambio de 10 líneas de código con impacto real en SEO.';
     }
-    typesList.innerHTML = '';
+    verdict.appendChild(verdictIcon);
+    verdict.appendChild(verdictHead);
+    verdict.appendChild(verdictBody);
+
+    while (typesList.firstChild) typesList.removeChild(typesList.firstChild);
     if (foundTypes.length === 0) {
-      typesList.innerHTML = '<li><span class="tag none">Falta</span><span class="detail"><strong>No se encontró schema.</strong> Usa el generador abajo para armar un bloque JSON-LD — no necesitas un desarrollador. Pegarlo en el &lt;head&gt; de tu sitio es un arreglo de 5 minutos con impacto real en la búsqueda local.</span></li>';
+      var li = document.createElement('li');
+      var miss = document.createElement('span');
+      miss.className = 'tag none';
+      miss.textContent = 'Falta';
+      var d1 = document.createElement('span');
+      d1.className = 'detail';
+      var s1 = document.createElement('strong');
+      s1.textContent = 'No se encontró schema.';
+      d1.appendChild(s1);
+      d1.appendChild(document.createTextNode(
+        ' Usa el generador abajo para armar un bloque JSON-LD — no necesitas un desarrollador. Pegarlo en el <head> de tu sitio es un arreglo de 5 minutos con impacto real en la búsqueda local.'
+      ));
+      li.appendChild(miss);
+      li.appendChild(d1);
+      typesList.appendChild(li);
     } else {
       foundTypes.forEach(function(t){
         var c = classify(t);
         var tagCls = c === 'specific' ? 'good' : (c === 'generic' ? 'generic' : 'good');
         var tagText = c === 'specific' ? 'Tipo de negocio' : (c === 'generic' ? 'Demasiado genérico' : 'Complementario');
-        typesList.innerHTML += '<li><span class="tag '+tagCls+'">'+tagText+'</span><span class="detail"><strong>@type: '+friendlyName(t)+'</strong><br>'+advice(t)+'</span></li>';
+        var li = document.createElement('li');
+        var tag = document.createElement('span');
+        tag.className = 'tag ' + tagCls;
+        tag.textContent = tagText;
+        var det = document.createElement('span');
+        det.className = 'detail';
+        var s = document.createElement('strong');
+        s.textContent = '@type: ' + friendlyName(t);
+        det.appendChild(s);
+        det.appendChild(document.createElement('br'));
+        det.appendChild(document.createTextNode(advice(t)));
+        li.appendChild(tag);
+        li.appendChild(det);
+        typesList.appendChild(li);
       });
     }
     var serpHtml = renderSerpPreview(p, hasSpecific);

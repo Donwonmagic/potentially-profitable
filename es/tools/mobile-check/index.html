@@ -573,6 +573,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <script src="/tools/_shared/states.js?v=20260429-states"></script>
 <script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
 <script src="/tools/_shared/hire-guide.js?v=20260430-hire-guide"></script>
+<script src="/tools/_shared/safe-html.js?v=phase1"></script>
 <script src="/assets/workbench-save.js?v=20260501-engagement"></script>
 <script>
 // Phase D — honor ?intent=watch deeplinks (ES).
@@ -632,6 +633,10 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     }
   ];
 
+  // Phase 3 hardening — escape every interpolated string + route the
+  // final assignment through MuntinSafeHtml.setHTML.
+  var esc = (window.MuntinSafeHtml && window.MuntinSafeHtml.escapeHtml) || function(s){ return String(s == null ? '' : s); };
+
   // Phase 2 (Workshop) — render compartido entre fresh check y rehidratar.
   function renderResult(p) {
     var passCount = p.passCount || 0;
@@ -653,23 +658,50 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       verdictDesc = unknownCount + ' de 3 revisiones dieron resultados poco claros. A veces pasa con sitios detrás de firewalls o con protección agresiva contra bots. Intenta correr la prueba de nuevo.';
       verdictIcon = 'fail'; verdictMark = '?';
     }
-    verdict.innerHTML = '<div class="icon ' + verdictIcon + '">' + verdictMark + '</div><h2>' + verdictTitle + '</h2><p>' + verdictDesc + '</p>';
+    while (verdict.firstChild) verdict.removeChild(verdict.firstChild);
+    var vi = document.createElement('div');
+    vi.className = 'icon ' + verdictIcon;
+    vi.innerHTML = verdictMark;
+    var vh = document.createElement('h2'); vh.textContent = verdictTitle;
+    var vp = document.createElement('p');  vp.textContent = verdictDesc;
+    verdict.appendChild(vi);
+    verdict.appendChild(vh);
+    verdict.appendChild(vp);
     var shotHost = document.getElementById('mobShotHost');
     if (shotHost) shotHost.parentNode.removeChild(shotHost);
     if (p.screenshot) {
       var wrap = document.createElement('div');
       wrap.id = 'mobShotHost';
       wrap.className = 'mob-shot';
-      wrap.innerHTML =
-        '<p class="mob-shot-eyebrow">Cómo se ve tu inicio en un teléfono</p>' +
-        '<div class="mob-shot-frame"><img src="' + p.screenshot + '" alt="Captura del sitio" loading="lazy"></div>';
+      var eyebrow = document.createElement('p');
+      eyebrow.className = 'mob-shot-eyebrow';
+      eyebrow.textContent = 'Cómo se ve tu inicio en un teléfono';
+      var frame = document.createElement('div');
+      frame.className = 'mob-shot-frame';
+      var img = document.createElement('img');
+      img.src = String(p.screenshot);
+      img.alt = 'Captura del sitio';
+      img.loading = 'lazy';
+      frame.appendChild(img);
+      wrap.appendChild(eyebrow);
+      wrap.appendChild(frame);
       verdict.parentNode.insertBefore(wrap, verdict.nextSibling);
     }
-    checksEl.innerHTML = '';
+    while (checksEl.firstChild) checksEl.removeChild(checksEl.firstChild);
     (p.results || []).forEach(function(r) {
       var cls = r.isNull ? 'unknown' : (r.passed ? 'pass' : 'fail');
-      var mark = r.isNull ? '?' : (r.passed ? '&#10003;' : '&#10005;');
-      checksEl.innerHTML += '<div class="mob-check"><div class="mark ' + cls + '">' + mark + '</div><div><h3>' + r.title + '</h3><p>' + r.text + '</p></div></div>';
+      var mark = r.isNull ? '?' : (r.passed ? '✓' : '✕');
+      var row = document.createElement('div');
+      row.className = 'mob-check';
+      var mk = document.createElement('div');
+      mk.className = 'mark ' + cls;
+      mk.textContent = mark;
+      var b = document.createElement('div');
+      var h = document.createElement('h3'); h.textContent = r.title;
+      var bp = document.createElement('p'); bp.textContent = r.text;
+      b.appendChild(h); b.appendChild(bp);
+      row.appendChild(mk); row.appendChild(b);
+      checksEl.appendChild(row);
     });
     var essHost = document.getElementById('mobEssentialsHost');
     if (essHost) essHost.parentNode.removeChild(essHost);
@@ -689,27 +721,57 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           good: 'Enlazas tu menú por nombre. Los visitantes del móvil deciden por el menú antes que por la dirección.',
           bad:  'No detectamos un enlace de "menú" en el escaneo. La mayoría de los clientes deciden por el menú primero — hazlo visible y titulado "Menú", no escondido como "Nuestra comida" o en un menú desplegable.' }
       ];
-      var html = '<div class="mob-essentials" id="mobEssentialsHost">';
-      html += '<p class="mob-essentials-eyebrow">Fundamentos para restaurantes en móvil</p>';
-      html += '<div class="mob-essentials-list">';
+      var essRoot = document.createElement('div');
+      essRoot.className = 'mob-essentials';
+      essRoot.id = 'mobEssentialsHost';
+      var ebrow = document.createElement('p');
+      ebrow.className = 'mob-essentials-eyebrow';
+      ebrow.textContent = 'Fundamentos para restaurantes en móvil';
+      essRoot.appendChild(ebrow);
+      var essList = document.createElement('div');
+      essList.className = 'mob-essentials-list';
       rows.forEach(function(r){
         var cls = r.ok ? 'pass' : 'fail';
-        var mark = r.ok ? '&#10003;' : '&#10005;';
-        html += '<div class="mob-check"><div class="mark ' + cls + '">' + mark + '</div><div><h3>' + r.label + '</h3><p>' + (r.ok ? r.good : r.bad) + '</p></div></div>';
+        var mark = r.ok ? '✓' : '✕';
+        var row = document.createElement('div');
+        row.className = 'mob-check';
+        var mk = document.createElement('div');
+        mk.className = 'mark ' + cls;
+        mk.textContent = mark;
+        var b = document.createElement('div');
+        var h = document.createElement('h3'); h.textContent = r.label;
+        var bp = document.createElement('p'); bp.textContent = r.ok ? r.good : r.bad;
+        b.appendChild(h); b.appendChild(bp);
+        row.appendChild(mk); row.appendChild(b);
+        essList.appendChild(row);
       });
-      html += '</div>';
-      html += '<p class="mob-essentials-foot"><em>La detección lee los enlaces y tap-targets que devuelve PSI desde la página renderizada. Algunos elementos cargados de forma diferida (chat, sticky CTA tras primer paint) no aparecen; si sabes que el enlace existe, el <a href="/es/tools/audits/restaurant/">Diagnóstico de Restaurante</a> lo cubre.</em></p>';
+      essRoot.appendChild(essList);
+      var foot = document.createElement('p');
+      foot.className = 'mob-essentials-foot';
+      var footE = document.createElement('em');
+      footE.appendChild(document.createTextNode('La detección lee los enlaces y tap-targets que devuelve PSI desde la página renderizada. Algunos elementos cargados de forma diferida (chat, sticky CTA tras primer paint) no aparecen; si sabes que el enlace existe, el '));
+      var auditLink = document.createElement('a');
+      auditLink.href = '/es/tools/audits/restaurant/';
+      auditLink.textContent = 'Diagnóstico de Restaurante';
+      footE.appendChild(auditLink);
+      footE.appendChild(document.createTextNode(' lo cubre.'));
+      foot.appendChild(footE);
+      essRoot.appendChild(foot);
       if (typeof MuntinHire !== 'undefined' && MuntinHire.renderDisclosure) {
-        html += MuntinHire.renderDisclosure({
+        var hg = document.createElement('div');
+        var hgHtml = MuntinHire.renderDisclosure({
           scope: 'dev',
           locale: 'es',
           summary: '¿Necesitas un dev para conectar alguno? Aquí cómo encontrarlo. →'
         });
+        if (window.MuntinSafeHtml && window.MuntinSafeHtml.setHTML) {
+          window.MuntinSafeHtml.setHTML(hg, hgHtml);
+        } else {
+          hg.innerHTML = hgHtml;
+        }
+        essRoot.appendChild(hg);
       }
-      html += '</div>';
-      var w = document.createElement('div');
-      w.innerHTML = html;
-      checksEl.parentNode.insertBefore(w.firstChild, checksEl.nextSibling);
+      checksEl.parentNode.insertBefore(essRoot, checksEl.nextSibling);
     }
     result.classList.add('visible');
     result.scrollIntoView({ behavior: 'smooth', block: 'start' });

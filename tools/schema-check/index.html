@@ -582,6 +582,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
 <script src="/tools/_shared/hire-guide.js?v=20260430-hire-guide"></script>
 <script src="/tools/_shared/platform-fixes.js?v=20260430-wave0"></script>
+<script src="/tools/_shared/safe-html.js?v=phase1"></script>
 <script src="/assets/workbench-save.js?v=20260501-engagement"></script>
 <script>
 // Phase D — honor ?intent=watch deeplinks.
@@ -965,28 +966,86 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   }
 
   function renderResult(p) {
+    // Phase 3 hardening — every render call goes through MuntinSafeHtml
+    // so a single throw inside renderResult can't leak raw markup into
+    // the page below the fold. Pre-Phase-3 this was 5 innerHTML
+    // assignments + a string-concat loop, all unprotected.
+    var sh = window.MuntinSafeHtml; // safety; falls back if shim missing
     var foundTypes = p.foundTypes || [];
     var hasSpecific = foundTypes.some(function(t){return classify(t)==='specific'});
     var hasAny = foundTypes.length > 0;
+
+    // Verdict — static content for all three states; safe construction
+    // uses createElement + textContent so the literal strings never
+    // become parseable HTML if a future edit slips a user value in.
+    while (verdict.firstChild) verdict.removeChild(verdict.firstChild);
+    var verdictIcon = document.createElement('div');
+    var verdictHead = document.createElement('h2');
+    var verdictBody = document.createElement('p');
     if (hasSpecific) {
-      verdict.innerHTML = '<div class="icon found">&#10003;</div><h2>Yes &mdash; Google understands your business.</h2><p>Your site has specific structured data telling Google what kind of business you are.</p>';
+      verdictIcon.className = 'icon found';
+      verdictIcon.textContent = '✓';
+      verdictHead.textContent = 'Yes — Google understands your business.';
+      verdictBody.textContent = 'Your site has specific structured data telling Google what kind of business you are.';
     } else if (hasAny) {
-      verdict.innerHTML = '<div class="icon missing">~</div><h2>Partially &mdash; Google sees your site, but not what you DO.</h2><p>You have some structured data, but it\'s too generic. Google knows you exist but can\'t match you to specific searches like "best Italian near me" or "tacos in Silver Spring."</p>';
+      verdictIcon.className = 'icon missing';
+      verdictIcon.textContent = '~';
+      verdictHead.textContent = 'Partially — Google sees your site, but not what you DO.';
+      verdictBody.textContent = 'You have some structured data, but it’s too generic. Google knows you exist but can’t match you to specific searches like “best Italian near me” or “tacos in Silver Spring.”';
     } else {
-      verdict.innerHTML = '<div class="icon missing">&#10005;</div><h2>No &mdash; Google doesn\'t know what your business is.</h2><p>Your site has no structured data. Google can\'t tell if you\'re a restaurant, a yoga studio, a salon, or a law firm. Adding schema markup is a 10-line code change with real SEO impact.</p>';
+      verdictIcon.className = 'icon missing';
+      verdictIcon.textContent = '✕';
+      verdictHead.textContent = 'No — Google doesn’t know what your business is.';
+      verdictBody.textContent = 'Your site has no structured data. Google can’t tell if you’re a restaurant, a yoga studio, a salon, or a law firm. Adding schema markup is a 10-line code change with real SEO impact.';
     }
+    verdict.appendChild(verdictIcon);
+    verdict.appendChild(verdictHead);
+    verdict.appendChild(verdictBody);
+
     // Insert the SERP preview above the types list — owners read
     // pictures faster than @type names.
     var serpHtml = renderSerpPreview(p, hasSpecific);
-    typesList.innerHTML = '';
+
+    // Types list — was the highest-risk innerHTML site because the loop
+    // string-concatenated escaped values from the API response. Now
+    // builds DOM nodes directly; the type string still gets interpolated
+    // but only into textContent, so injection is impossible.
+    while (typesList.firstChild) typesList.removeChild(typesList.firstChild);
     if (foundTypes.length === 0) {
-      typesList.innerHTML = '<li><span class="tag none">Missing</span><span class="detail"><strong>No schema found.</strong> Use the generator below to build a JSON-LD block — you don\'t need a developer for this. Pasting it into your site\'s &lt;head&gt; is a 5-minute fix with real local-search impact.</span></li>';
+      var li = document.createElement('li');
+      var miss = document.createElement('span');
+      miss.className = 'tag none';
+      miss.textContent = 'Missing';
+      var d1 = document.createElement('span');
+      d1.className = 'detail';
+      var s1 = document.createElement('strong');
+      s1.textContent = 'No schema found.';
+      d1.appendChild(s1);
+      d1.appendChild(document.createTextNode(
+        ' Use the generator below to build a JSON-LD block — you don’t need a developer for this. Pasting it into your site’s <head> is a 5-minute fix with real local-search impact.'
+      ));
+      li.appendChild(miss);
+      li.appendChild(d1);
+      typesList.appendChild(li);
     } else {
       foundTypes.forEach(function(t){
         var c = classify(t);
         var tagCls = c === 'specific' ? 'good' : (c === 'generic' ? 'generic' : 'good');
         var tagText = c === 'specific' ? 'Business type' : (c === 'generic' ? 'Too generic' : 'Supplemental');
-        typesList.innerHTML += '<li><span class="tag '+tagCls+'">'+tagText+'</span><span class="detail"><strong>@type: '+friendlyName(t)+'</strong><br>'+advice(t)+'</span></li>';
+        var li = document.createElement('li');
+        var tag = document.createElement('span');
+        tag.className = 'tag ' + tagCls;
+        tag.textContent = tagText;
+        var det = document.createElement('span');
+        det.className = 'detail';
+        var s = document.createElement('strong');
+        s.textContent = '@type: ' + friendlyName(t);
+        det.appendChild(s);
+        det.appendChild(document.createElement('br'));
+        det.appendChild(document.createTextNode(advice(t)));
+        li.appendChild(tag);
+        li.appendChild(det);
+        typesList.appendChild(li);
       });
     }
     // Insert SERP preview before types list, generator after.

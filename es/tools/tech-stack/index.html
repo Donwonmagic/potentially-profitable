@@ -474,6 +474,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <script src="/tools/_shared/analytics.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/states.js?v=20260429-states"></script>
 <script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
+<script src="/tools/_shared/safe-html.js?v=phase1"></script>
 <script src="/assets/workbench-save.js?v=20260428-sprint0-tokens"></script>
 <script>
 (function(){
@@ -625,6 +626,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     { both:['Stripe','Square Payments'],label:'Stripe + Square Payments',        why:'Dos procesadores de pago. Común durante una migración; si no, pagas comisiones dobles en rutas distintas.' }
   ];
 
+  var esc = (window.MuntinSafeHtml && window.MuntinSafeHtml.escapeHtml) || function(s){ return String(s == null ? '' : s); };
+
   function renderResult(payload){
     var groups=(payload&&payload.groups)||[];
     var html='';
@@ -635,12 +638,12 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       var info=PLATFORM_INFO[platformName];
       html+='<div class="ts-platform-card">';
       html+='<p class="ts-platform-eyebrow">Qué significa esto para ti</p>';
-      html+='<h3 class="ts-platform-name">Estás en '+platformName+'</h3>';
+      html+='<h3 class="ts-platform-name">Estás en '+esc(platformName)+'</h3>';
       html+='<dl class="ts-platform-grid">';
-      html+='<dt>Lo que hace bien</dt><dd>'+info.strength+'</dd>';
-      html+='<dt>Dónde encuentra un techo</dt><dd>'+info.ceiling+'</dd>';
-      html+='<dt>Ruta de arreglo principal (sin salir)</dt><dd>'+info.topFix+'</dd>';
-      html+='<dt>Cuándo considerar migrar</dt><dd>'+info.switchAt+'</dd>';
+      html+='<dt>Lo que hace bien</dt><dd>'+esc(info.strength)+'</dd>';
+      html+='<dt>Dónde encuentra un techo</dt><dd>'+esc(info.ceiling)+'</dd>';
+      html+='<dt>Ruta de arreglo principal (sin salir)</dt><dd>'+esc(info.topFix)+'</dd>';
+      html+='<dt>Cuándo considerar migrar</dt><dd>'+esc(info.switchAt)+'</dd>';
       html+='</dl></div>';
 
       var key=PLATFORM_KEY[platformName];
@@ -662,7 +665,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     if(redundancies.length){
       html+='<div class="ts-redundant"><p class="ts-redundant-eyebrow">Quizás estás pagando dos por lo mismo</p><ul class="ts-redundant-list">';
       redundancies.forEach(function(rv){
-        html+='<li><strong>'+rv.label+'</strong><span>'+rv.why+'</span></li>';
+        html+='<li><strong>'+esc(rv.label)+'</strong><span>'+esc(rv.why)+'</span></li>';
       });
       html+='</ul></div>';
     }
@@ -673,9 +676,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       var CAT_ES={'CMS / Platform':'CMS / Plataforma','Analytics':'Analítica','Booking / Scheduling':'Reservas / Agenda','Payments':'Pagos','Chat / Support':'Chat / Soporte','Maps':'Mapas'};
       groups.forEach(function(g){
         var cat=CAT_ES[g.cat]||g.cat;
-        html+='<div class="ts-group"><p class="ts-group-label">'+cat+'</p><div class="ts-items">';
+        html+='<div class="ts-group"><p class="ts-group-label">'+esc(cat)+'</p><div class="ts-items">';
         g.items.forEach(function(name){
-          html+='<div class="ts-item"><span class="name">'+name+'</span><span class="cat">'+cat+'</span></div>';
+          html+='<div class="ts-item"><span class="name">'+esc(name)+'</span><span class="cat">'+esc(cat)+'</span></div>';
         });
         html+='</div></div>';
       });
@@ -685,7 +688,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     }
     if(platformName){
       html+='<div class="ts-handoff"><p class="ts-handoff-eyebrow">Lo que esto desbloquea en la suite</p>';
-      html+='<p class="ts-handoff-body">Ahora que sabemos que estás en '+platformName+', el Test de Velocidad, el Calificador de SEO, el Chequeo de Schema y el Diagnóstico de Restaurante pueden mostrar instrucciones específicas para tu plataforma en lugar del genérico "consulta a tu desarrollador".</p>';
+      html+='<p class="ts-handoff-body">Ahora que sabemos que estás en '+esc(platformName)+', el Test de Velocidad, el Calificador de SEO, el Chequeo de Schema y el Diagnóstico de Restaurante pueden mostrar instrucciones específicas para tu plataforma en lugar del genérico "consulta a tu desarrollador".</p>';
       html+='<div class="ts-handoff-row">';
       html+='<a class="ts-handoff-link" href="/es/tools/speed-test/">Test de Velocidad &rarr;</a>';
       html+='<a class="ts-handoff-link" href="/es/tools/seo-grader/">Calificador de SEO &rarr;</a>';
@@ -695,7 +698,13 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     }
     html+='<aside class="learn-back" aria-label="Qué te dice este escaneo"><p class="learn-back-eyebrow">Qué te dice este escaneo</p><p class="learn-back-body">Tu configuración de <a href="/es/glossary/hosting/">hosting</a> decide lo que puedes y no puedes hacer — velocidad, integración de pedidos, schema, incluso cómo se renderiza el menú en una conexión lenta. La mayoría de los restaurantes están mejor mejorando la plataforma en la que ya están; migrar es un costo real. <a href="/es/blog/wix-vs-custom-for-restaurants/">Cuándo migrar tiene sentido</a>.</p></aside>';
     html+='<div class="ts-cta"><p>¿Quieres ver el panorama completo? Los diagnósticos por rubro van más a fondo.</p><div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;"><a class="btn btn-primary" href="/es/tools/audits/restaurant/">Diagnóstico de restaurante</a></div></div>';
-    result.innerHTML=html;
+    if (window.MuntinSafeHtml && window.MuntinSafeHtml.setHTML) {
+      window.MuntinSafeHtml.setHTML(result, html, {
+        fallbackMessage: 'No pudimos mostrar el resultado del escaneo de stack. Inténtalo de nuevo o recarga la página.'
+      });
+    } else {
+      result.innerHTML=html;
+    }
     result.classList.add('visible');
     result.scrollIntoView({behavior:'smooth',block:'start'});
   }

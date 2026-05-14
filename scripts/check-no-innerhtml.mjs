@@ -35,11 +35,15 @@ const repoRoot   = path.resolve(path.dirname(__filename), '..');
 // Baseline. Update this number ONLY when a Phase 3 track lands and the
 // count drops; never raise it. The CI check fails if the live count
 // exceeds the baseline.
-// Pinned to the Phase 1 baseline (556 usages across 45 files as of
-// the Phase 1 commit, after excluding tools/_shared/safe-html.js and
-// tools/_shared/states.js — both safe by construction). Each Phase 3
-// track lowers this number; the last track drives it to zero.
-const BASELINE_COUNT = 556;
+// Pinned to the latest baseline. Migrations history:
+//   Phase 1 commit:    556 (across 45 files; safe-html.js + states.js
+//                            exempted as safe-by-construction).
+//   Phase 3 batch 1:   529 (schema-check, mobile-check, tech-stack
+//                            EN+ES hardened: every interpolated value
+//                            now escaped; final renders routed through
+//                            MuntinSafeHtml.setHTML where present).
+// Each future Phase 3 track lowers this number; the last drives it to zero.
+const BASELINE_COUNT = 529;
 
 // File globs to scan. Tool suite + ES mirrors. Build artifacts excluded.
 const SCAN_GLOBS = [

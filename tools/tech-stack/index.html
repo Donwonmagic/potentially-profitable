@@ -496,6 +496,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <script src="/tools/_shared/analytics.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/states.js?v=20260429-states"></script>
 <script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
+<script src="/tools/_shared/safe-html.js?v=phase1"></script>
 <script src="/assets/workbench-save.js?v=20260428-sprint0-tokens"></script>
 <script>
 (function(){
@@ -666,6 +667,13 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     { both:['Stripe','Square Payments'],label:'Stripe + Square Payments',        why:'Two payment processors. Common during a migration; otherwise you\'re paying double processor fees on different routes.' }
   ];
 
+  // Phase 3 hardening — escape every interpolated value coming from
+  // the PageSpeed Insights response (vendor names, platform name).
+  // Static dictionary lookups (PLATFORM_INFO, REDUNDANT_VENDORS) are
+  // owner-curated and trusted; we still escape defensively in case a
+  // future edit slips a user-controlled value into a template.
+  var esc = (window.MuntinSafeHtml && window.MuntinSafeHtml.escapeHtml) || function(s){ return String(s == null ? '' : s); };
+
   function renderResult(payload){
     var groups=(payload&&payload.groups)||[];
     var html='';
@@ -679,12 +687,12 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       var info=PLATFORM_INFO[platformName];
       html+='<div class="ts-platform-card">';
       html+='<p class="ts-platform-eyebrow">What this means for you</p>';
-      html+='<h3 class="ts-platform-name">You\'re on '+platformName+'</h3>';
+      html+='<h3 class="ts-platform-name">You\'re on '+esc(platformName)+'</h3>';
       html+='<dl class="ts-platform-grid">';
-      html+='<dt>What it does well</dt><dd>'+info.strength+'</dd>';
-      html+='<dt>Where it hits a ceiling</dt><dd>'+info.ceiling+'</dd>';
-      html+='<dt>Top fix path (without leaving)</dt><dd>'+info.topFix+'</dd>';
-      html+='<dt>When to consider switching</dt><dd>'+info.switchAt+'</dd>';
+      html+='<dt>What it does well</dt><dd>'+esc(info.strength)+'</dd>';
+      html+='<dt>Where it hits a ceiling</dt><dd>'+esc(info.ceiling)+'</dd>';
+      html+='<dt>Top fix path (without leaving)</dt><dd>'+esc(info.topFix)+'</dd>';
+      html+='<dt>When to consider switching</dt><dd>'+esc(info.switchAt)+'</dd>';
       html+='</dl></div>';
 
       // Persist the canonical platform key for the rest of the suite.
@@ -715,7 +723,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     if(redundancies.length){
       html+='<div class="ts-redundant"><p class="ts-redundant-eyebrow">You may be paying for two of these</p><ul class="ts-redundant-list">';
       redundancies.forEach(function(rv){
-        html+='<li><strong>'+rv.label+'</strong><span>'+rv.why+'</span></li>';
+        html+='<li><strong>'+esc(rv.label)+'</strong><span>'+esc(rv.why)+'</span></li>';
       });
       html+='</ul></div>';
     }
@@ -724,9 +732,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       html+='<div class="ts-empty">We couldn\'t detect any known platforms. This often means your site is custom-built — which is a positive signal: you have full control of speed, schema, and integrations. Try the full <a href="/tools/audits/restaurant/" style="color:var(--teal)">industry audit</a> for a deeper look.</div>';
     } else {
       groups.forEach(function(g){
-        html+='<div class="ts-group"><p class="ts-group-label">'+g.cat+'</p><div class="ts-items">';
+        html+='<div class="ts-group"><p class="ts-group-label">'+esc(g.cat)+'</p><div class="ts-items">';
         g.items.forEach(function(name){
-          html+='<div class="ts-item"><span class="name">'+name+'</span><span class="cat">'+g.cat+'</span></div>';
+          html+='<div class="ts-item"><span class="name">'+esc(name)+'</span><span class="cat">'+esc(g.cat)+'</span></div>';
         });
         html+='</div></div>';
       });
@@ -738,7 +746,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     // get more accurate now that we know the platform.
     if(platformName){
       html+='<div class="ts-handoff"><p class="ts-handoff-eyebrow">What this enables across the suite</p>';
-      html+='<p class="ts-handoff-body">Now that we know you\'re on '+platformName+', the Speed Test, SEO Grader, Schema Check, and Restaurant Audit can show platform-specific fix instructions instead of generic "ask your developer" copy.</p>';
+      html+='<p class="ts-handoff-body">Now that we know you\'re on '+esc(platformName)+', the Speed Test, SEO Grader, Schema Check, and Restaurant Audit can show platform-specific fix instructions instead of generic "ask your developer" copy.</p>';
       html+='<div class="ts-handoff-row">';
       html+='<a class="ts-handoff-link" href="/tools/speed-test/">Speed Test &rarr;</a>';
       html+='<a class="ts-handoff-link" href="/tools/seo-grader/">SEO Grader &rarr;</a>';
@@ -749,7 +757,16 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     // Sprint 12b (cohesion) — Learn-back row, embedded in the rendered result.
     html+='<aside class="learn-back" aria-label="What this scan tells you"><p class="learn-back-eyebrow">What this scan tells you</p><p class="learn-back-body">Your <a href="/glossary/hosting/">hosting</a> setup decides what you can and can\'t do — speed, ordering integration, schema, even how the menu renders on a slow connection. Most restaurants are best served by improving the platform they\'re on; migration is a real cost. <a href="/blog/wix-vs-custom-for-restaurants/">When migration makes sense</a>.</p></aside>';
     html+='<div class="ts-cta"><p>Want the full picture? The industry audits go deeper.</p><div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;"><a class="btn btn-primary" href="/tools/audits/restaurant/">Restaurant audit</a></div></div>';
-    result.innerHTML=html;
+    // Phase 3 hardening — route assignment through MuntinSafeHtml so a
+    // render throw renders a graceful fallback instead of leaving the
+    // section blank below the fold.
+    if (window.MuntinSafeHtml && window.MuntinSafeHtml.setHTML) {
+      window.MuntinSafeHtml.setHTML(result, html, {
+        fallbackMessage: 'We couldn’t render the tech-stack result. Try again, or reload the page.'
+      });
+    } else {
+      result.innerHTML=html;
+    }
     result.classList.add('visible');
     result.scrollIntoView({behavior:'smooth',block:'start'});
   }

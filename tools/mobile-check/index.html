@@ -592,6 +592,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <script src="/tools/_shared/states.js?v=20260429-states"></script>
 <script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
 <script src="/tools/_shared/hire-guide.js?v=20260430-hire-guide"></script>
+<script src="/tools/_shared/safe-html.js?v=phase1"></script>
 <script src="/assets/workbench-save.js?v=20260501-engagement"></script>
 <script>
 // Phase D — honor ?intent=watch deeplinks.
@@ -653,6 +654,11 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
   // Phase 2 (Workshop) — render extracted so submit + rehydrate share it.
   // payload: { url, results: [{title, passed, isNull, text}], passCount, failCount, unknownCount, checkedAt }
+  // Phase 3 hardening — escape every interpolated string, route the
+  // final assignment through MuntinSafeHtml.setHTML so a render throw
+  // can't leave the section blank below the fold.
+  var esc = (window.MuntinSafeHtml && window.MuntinSafeHtml.escapeHtml) || function(s){ return String(s == null ? '' : s); };
+
   function renderResult(p) {
     var passCount = p.passCount || 0;
     var failCount = p.failCount || 0;
@@ -673,25 +679,60 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       verdictDesc = unknownCount + ' of 3 checks returned inconclusive results. This sometimes happens with sites behind firewalls or aggressive bot protection. Try re-running the test.';
       verdictIcon = 'fail'; verdictMark = '?';
     }
-    verdict.innerHTML = '<div class="icon ' + verdictIcon + '">' + verdictMark + '</div><h2>' + verdictTitle + '</h2><p>' + verdictDesc + '</p>';
+    // Verdict content is fully owner-controlled strings (no user data),
+    // but we still build it via safe DOM so the section can't break
+    // catastrophically if a future edit slips a user value in.
+    while (verdict.firstChild) verdict.removeChild(verdict.firstChild);
+    var vi = document.createElement('div');
+    vi.className = 'icon ' + verdictIcon;
+    vi.innerHTML = verdictMark; // static entity, not user input
+    var vh = document.createElement('h2'); vh.textContent = verdictTitle;
+    var vp = document.createElement('p');  vp.textContent = verdictDesc;
+    verdict.appendChild(vi);
+    verdict.appendChild(vh);
+    verdict.appendChild(vp);
     // Phone-frame screenshot under the verdict — owners viscerally
     // understand a picture more than three pass/fail badges.
     var shotHost = document.getElementById('mobShotHost');
     if (shotHost) shotHost.parentNode.removeChild(shotHost);
     if (p.screenshot) {
+      // Screenshot URL is a data: URL from PSI's screenshot audit.
+      // We still escape defensively (a malicious response could try
+      // to break out of the src attribute).
       var wrap = document.createElement('div');
       wrap.id = 'mobShotHost';
       wrap.className = 'mob-shot';
-      wrap.innerHTML =
-        '<p class="mob-shot-eyebrow">What your homepage looks like on a phone</p>' +
-        '<div class="mob-shot-frame"><img src="' + p.screenshot + '" alt="Phone screenshot of your site" loading="lazy"></div>';
+      var eyebrow = document.createElement('p');
+      eyebrow.className = 'mob-shot-eyebrow';
+      eyebrow.textContent = 'What your homepage looks like on a phone';
+      var frame = document.createElement('div');
+      frame.className = 'mob-shot-frame';
+      var img = document.createElement('img');
+      img.src = String(p.screenshot); // browser validates
+      img.alt = 'Phone screenshot of your site';
+      img.loading = 'lazy';
+      frame.appendChild(img);
+      wrap.appendChild(eyebrow);
+      wrap.appendChild(frame);
       verdict.parentNode.insertBefore(wrap, verdict.nextSibling);
     }
-    checksEl.innerHTML = '';
+    // Build checks as DOM nodes so r.title / r.text (PSI-returned
+    // strings) can't inject markup.
+    while (checksEl.firstChild) checksEl.removeChild(checksEl.firstChild);
     (p.results || []).forEach(function(r) {
       var cls = r.isNull ? 'unknown' : (r.passed ? 'pass' : 'fail');
-      var mark = r.isNull ? '?' : (r.passed ? '&#10003;' : '&#10005;');
-      checksEl.innerHTML += '<div class="mob-check"><div class="mark ' + cls + '">' + mark + '</div><div><h3>' + r.title + '</h3><p>' + r.text + '</p></div></div>';
+      var mark = r.isNull ? '?' : (r.passed ? '✓' : '✕');
+      var row = document.createElement('div');
+      row.className = 'mob-check';
+      var mk = document.createElement('div');
+      mk.className = 'mark ' + cls;
+      mk.textContent = mark;
+      var body = document.createElement('div');
+      var h = document.createElement('h3'); h.textContent = r.title;
+      var bp = document.createElement('p'); bp.textContent = r.text;
+      body.appendChild(h); body.appendChild(bp);
+      row.appendChild(mk); row.appendChild(body);
+      checksEl.appendChild(row);
     });
 
     // Restaurant-essentials block — surfaced under the three core
@@ -716,30 +757,63 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           good: 'You link to your menu by name. Phone-first visitors decide on the menu before the address.',
           bad:  'No "menu" link detected in the scan. Most diners decide based on the menu first — make it visible and titled "Menu", not buried as "Our Food" or hidden in a drop-down.' }
       ];
-      var html = '<div class="mob-essentials" id="mobEssentialsHost">';
-      html += '<p class="mob-essentials-eyebrow">Restaurant essentials on mobile</p>';
-      html += '<div class="mob-essentials-list">';
+      // Build the essentials block as DOM nodes; r.label / r.good /
+      // r.bad include strings interpolated from PSI's link-text
+      // detection (e.g. the CTA button label). textContent stops any
+      // injection vector.
+      var essRoot = document.createElement('div');
+      essRoot.className = 'mob-essentials';
+      essRoot.id = 'mobEssentialsHost';
+      var ebrow = document.createElement('p');
+      ebrow.className = 'mob-essentials-eyebrow';
+      ebrow.textContent = 'Restaurant essentials on mobile';
+      essRoot.appendChild(ebrow);
+      var essList = document.createElement('div');
+      essList.className = 'mob-essentials-list';
       rows.forEach(function(r){
         var cls = r.ok ? 'pass' : 'fail';
-        var mark = r.ok ? '&#10003;' : '&#10005;';
-        html += '<div class="mob-check"><div class="mark ' + cls + '">' + mark + '</div><div><h3>' + r.label + '</h3><p>' + (r.ok ? r.good : r.bad) + '</p></div></div>';
+        var mark = r.ok ? '✓' : '✕';
+        var row = document.createElement('div');
+        row.className = 'mob-check';
+        var mk = document.createElement('div');
+        mk.className = 'mark ' + cls;
+        mk.textContent = mark;
+        var b = document.createElement('div');
+        var h = document.createElement('h3'); h.textContent = r.label;
+        var bp = document.createElement('p'); bp.textContent = r.ok ? r.good : r.bad;
+        b.appendChild(h); b.appendChild(bp);
+        row.appendChild(mk); row.appendChild(b);
+        essList.appendChild(row);
       });
-      html += '</div>';
-      html += '<p class="mob-essentials-foot"><em>Detection scans the links and tap targets PSI returns from the rendered page. Some lazy-loaded affordances (chat widget, sticky CTA loaded after first paint) won\'t appear; if you know the link exists, the deeper <a href="/tools/audits/restaurant/">Restaurant Audit</a> covers it.</em></p>';
-      // Hire-guide for owners who can't add a tel: link, fix tap-
-      // target padding, or wire a sticky CTA themselves. The
-      // restaurant-essentials checks above are the dead-end —
-      // diagnostic without a fix path is half a tool.
+      essRoot.appendChild(essList);
+      var foot = document.createElement('p');
+      foot.className = 'mob-essentials-foot';
+      var footE = document.createElement('em');
+      footE.appendChild(document.createTextNode('Detection scans the links and tap targets PSI returns from the rendered page. Some lazy-loaded affordances (chat widget, sticky CTA loaded after first paint) won’t appear; if you know the link exists, the deeper '));
+      var auditLink = document.createElement('a');
+      auditLink.href = '/tools/audits/restaurant/';
+      auditLink.textContent = 'Restaurant Audit';
+      footE.appendChild(auditLink);
+      footE.appendChild(document.createTextNode(' covers it.'));
+      foot.appendChild(footE);
+      essRoot.appendChild(foot);
+      // The hire-guide module returns trusted HTML; if it ever
+      // becomes user-controlled we re-evaluate. setHTML wraps the
+      // assignment in try/catch.
       if (typeof MuntinHire !== 'undefined' && MuntinHire.renderDisclosure) {
-        html += MuntinHire.renderDisclosure({
+        var hg = document.createElement('div');
+        var hgHtml = MuntinHire.renderDisclosure({
           scope: 'dev',
           summary: "Need a developer to wire any of these? Here's who to find. →"
         });
+        if (window.MuntinSafeHtml && window.MuntinSafeHtml.setHTML) {
+          window.MuntinSafeHtml.setHTML(hg, hgHtml);
+        } else {
+          hg.innerHTML = hgHtml;
+        }
+        essRoot.appendChild(hg);
       }
-      html += '</div>';
-      var wrap = document.createElement('div');
-      wrap.innerHTML = html;
-      checksEl.parentNode.insertBefore(wrap.firstChild, checksEl.nextSibling);
+      checksEl.parentNode.insertBefore(essRoot, checksEl.nextSibling);
     }
     result.classList.add('visible');
     result.scrollIntoView({ behavior: 'smooth', block: 'start' });
