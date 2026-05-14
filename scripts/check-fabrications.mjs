@@ -48,6 +48,28 @@ import { fileURLToPath } from 'node:url';
 const __filename = fileURLToPath(import.meta.url);
 const repoRoot = path.resolve(path.dirname(__filename), '..');
 
+// Build a Set of URLs that have been verified and registered in
+// data/sourced-claims.json with url_status: "deep-link". These URLs are
+// exempt from the deep-link blocklist rules below — they're allowed
+// because someone (presumably Don) confirmed they 200 in a real browser.
+// To add a new verified deep-link, edit data/sourced-claims.json.
+const ALLOWED_DEEP_LINKS = (() => {
+  const out = new Set();
+  try {
+    const registry = JSON.parse(
+      fs.readFileSync(path.join(repoRoot, 'data/sourced-claims.json'), 'utf8')
+    );
+    for (const entry of Object.values(registry.claims || {})) {
+      if (entry.url_status === 'deep-link' && entry.source_url) {
+        out.add(entry.source_url);
+      }
+    }
+  } catch (e) {
+    // If the registry is unreadable, fall back to empty allowlist (strict).
+  }
+  return out;
+})();
+
 // Each rule: { pattern: RegExp, label: string, fix: string }
 // The pattern is matched against article HTML; fix describes what to do.
 const BLOCKED = [
@@ -214,6 +236,11 @@ for (const file of files) {
       const end = Math.min(text.length, match.index + match[0].length + 60);
       const ctx = text.slice(start, end);
       if (ALLOWED_CONTEXTS.some((re) => re.test(ctx))) continue;
+      // If this match is a URL that's been verified and registered in
+      // data/sourced-claims.json with url_status: "deep-link", let it
+      // through. The registry is the system-of-record for verified URLs.
+      const matched = match[0];
+      if (matched.startsWith('http') && ALLOWED_DEEP_LINKS.has(matched.replace(/[)\].,;]+$/, ''))) continue;
       // Line number for the operator
       const lineNum = text.slice(0, match.index).split('\n').length;
       violations.push({

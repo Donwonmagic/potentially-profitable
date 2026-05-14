@@ -25,7 +25,7 @@ Playbook · May 11, 2026 · 9 min read · By [Don Goldstein](https://muntin.digi
 
 If you’re considering delisting your restaurant from DoorDash, the 30 days that follow have a predictable shape. This is the playbook — what to expect each week, which costs flex, which complaints arrive, and what the channel mix usually does. Illustrative ranges, not a case study. The underlying margin math comes from the [DoorDash margin walk](https://muntin.digital/blog/an-honest-doordash-math-for-independent-restaurants-2026/).
 
-Start from the channel math. On the standard [Marketplace Plus tier (30% commission](https://merchants.doordash.com/)), the kept rate on a third-party ticket lands near 18% after all fees and food/labor cost; the same ticket ordered direct keeps closer to 29%. Those are the two numbers the entire delisting decision rests on, and the side-by-side walkthrough is in the [DoorDash margin walk](https://muntin.digital/blog/an-honest-doordash-math-for-independent-restaurants-2026/). The case for delisting is not that the platform is bad — it’s that the operator is usually carrying the channel on a belief about discovery that doesn’t survive contact with their own books.
+Start from the channel math. On the standard [Marketplace Plus tier (30% commission](https://merchants.doordash.com/en-us/pricing)), the kept rate on a third-party ticket lands near 18% after all fees and food/labor cost; the same ticket ordered direct keeps closer to 29%. Those are the two numbers the entire delisting decision rests on, and the side-by-side walkthrough is in the [DoorDash margin walk](https://muntin.digital/blog/an-honest-doordash-math-for-independent-restaurants-2026/). The case for delisting is not that the platform is bad — it’s that the operator is usually carrying the channel on a belief about discovery that doesn’t survive contact with their own books.
 
 The decision lands on a Sunday night: close the storefront, don’t reopen, don’t announce. The phone calls and walk-ins keep coming. The next four weeks have a shape worth knowing in advance.
 
@@ -1493,11 +1493,11 @@ $20–$80/mo
 
 POS loyalty (Toast Rewards / Square Loyalty)
 
-$45–$75/mo
+$25–$50/mo
 
 Standalone platforms (Fivestars / Como)
 
-$165–$249/mo
+not openly published
 
  Vendor-published monthly cost. Returns vary widely by restaurant and depend on whether the direct channel is already converting; numbers in the body below are illustrative ranges, not measured outcomes.
 
@@ -1507,7 +1507,7 @@ Toast — "Toast Rewards" add-on pricing on pos.toasttab.com (current public pri
 
 Square — "Square Loyalty" pricing on squareup.com.
 
-Fivestars / Como — published merchant pricing on each vendor’s respective site.
+Fivestars / Como — neither vendor publishes open monthly pricing; both are contact-for-quote. The range named in the prose reflects what operators report after vendor conversations.
 
 Mailchimp / Klaviyo — current published pricing tiers on mailchimp.com and klaviyo.com.
 
@@ -1519,7 +1519,7 @@ The CRM-direct path lets you segment. A weekly regular gets early access to the 
 
 ## Why the punch card still beats the standalone platform on ROI
 
-This is the one that surprises most operators. The punch card costs essentially nothing — ten dollars a year for printing — and produces a real, if small, behavioral lift in repeat visits. Even modest absolute returns make the percentage return enormous. The standalone loyalty platform produces somewhat larger absolute returns, but its cost structure ($165–$249/month, vendor-published) is high enough relative to the behavioral lift that the percentage return is materially worse than either the punch card or POS loyalty. If $200/month is on the table for customer marketing, it’s rarely best-spent on the standalone platform; the same $200 goes further almost anywhere else.
+This is the one that surprises most operators. The punch card costs essentially nothing — ten dollars a year for printing — and produces a real, if small, behavioral lift in repeat visits. Even modest absolute returns make the percentage return enormous. The standalone loyalty platform produces somewhat larger absolute returns, but its cost structure is contact-for-quote (Fivestars and Como do not publish open pricing) and historically lands well above the POS-integrated tier — high enough relative to the behavioral lift that the percentage return is materially worse than either the punch card or POS loyalty. If $200/month is on the table for customer marketing, it’s rarely best-spent on the standalone platform; the same $200 goes further almost anywhere else.
 
 The integrated POS loyalty sits between the two: the cost is low enough that the modest behavioral lift still pays back, but only just — and the data is owned by the POS vendor, so it doesn’t come with you when you switch processors.
 
@@ -2450,7 +2450,7 @@ Where each model breaks
 
 **This is mostly a math question, not a values question.** The math says service charge is the cleanest for kitchen-retention and operator simplicity. The values argument cuts both ways depending on who you ask — some servers prefer the variable upside of tipping, some prefer the stability of a service charge. Both have legitimate reasons. The compliance frame, post-Initiative 82, makes the service charge the lower-friction operating choice.
 
-Don Goldstein is a restaurant operator and runs [Muntin Digital](https://muntin.digital/). The three-model comparison above reflects operator practice across years of front-of-house work and the published frame for [DC’s Initiative 82](https://does.dc.gov/). Server take-home and operator-net figures are illustrative on the same $200 dinner check; your numbers will vary by jurisdiction and concept.
+Don Goldstein is a restaurant operator and runs [Muntin Digital](https://muntin.digital/). The three-model comparison above reflects operator practice across years of front-of-house work and the published frame for [DC’s Initiative 82](https://ohr.dc.gov/page/tipped-wage-workers-fairness-act). Server take-home and operator-net figures are illustrative on the same $200 dinner check; your numbers will vary by jurisdiction and concept.
 
 Keep going
 
@@ -2978,7 +2978,7 @@ Baymard's list of abandonment reasons reads like a checklist for everything a mo
 
 ## Full citation
 
-Baymard Institute. Cart Abandonment Rate Statistics. Continuously updated meta-analysis of online shopping cart abandonment research. [baymard.com](https://baymard.com/)
+Baymard Institute. Cart Abandonment Rate Statistics. Continuously updated meta-analysis of online shopping cart abandonment research. [baymard.com](https://baymard.com/lists/cart-abandonment-rate)
 
 **Last reviewed:** April 2026 — Baymard updates the meta-analysis on an ongoing basis as new studies are published. The 70% headline has been stable across updates.
 
@@ -3182,7 +3182,7 @@ In restaurant-website terms: a "Reserve" button hidden inside a hamburger menu a
 
 ## Full citation
 
-Budiu, R. Fitts's Law and Its Applications in UX. Nielsen Norman Group. [nngroup.com](https://www.nngroup.com/). (Based on: Fitts, P. M. (1954). The information capacity of the human motor system in controlling the amplitude of movement. Journal of Experimental Psychology, 47(6), 381–391.)
+Budiu, R. Fitts's Law and Its Applications in UX. Nielsen Norman Group. [nngroup.com](https://www.nngroup.com/articles/fitts-law/). (Based on: Fitts, P. M. (1954). The information capacity of the human motor system in controlling the amplitude of movement. Journal of Experimental Psychology, 47(6), 381–391.)
 
 **Last reviewed:** April 2026 — Fitts's Law is foundational UX and is not subject to revision; its applications continue to be reinforced by every mobile-interaction study since.
 
@@ -3309,54 +3309,52 @@ Every study cited across the library, summarized and cross-linked.
 Back to research →](https://muntin.digital/learn/research/)
 
 ---
-title: Usability of Local Business Websites
+title: What visitors look for on a local business website
 url: https://muntin.digital/learn/research/local-business-websites/
 kind: research
 locale: en
-description: Nielsen Norman Group's research on what customers actually look for on a small-business website — hours and location top the list, and both are the most commonly hidden. Muntin's summary and a link to the original.
+description: A UX-practice note on what customers actually look for in the first five seconds on a local business website — hours and location top the list, and both are the most commonly hidden. Synthesis from public web-usability research and from running restaurant floors.
 ---
 
 Skip to main content
 
- Nielsen Norman Group
+ Muntin Digital
  ·
- Usability research
+ UX-practice note
 
 # The most-searched-for information on a local business website is hours and location — and both are the most commonly hidden.
 
-NNGroup's usability research on small-business websites consistently finds a mismatch between what visitors want in the first five seconds and what the site actually surfaces. The gap is where restaurants lose walk-ins.
+A practice note — not a single study. Drawn from public web-usability work (Nielsen Norman Group, the W3C’s WCAG mobile guidelines, Google’s small-business search research) and from running restaurant floors. The pattern below is what surfaces repeatedly across all of them.
 
  Listen to this article
 
 ## Don's note
 
-Nielsen Norman has been studying small-business website usability since the late 1990s and the finding hasn't moved: people who land on a restaurant's site arrive with **one of four narrow questions** — "are you open right now?", "where are you?", "what's on the menu?", and "can I book a table?". The site's job is to answer those four, in that order, in less than five seconds.
+People who land on a restaurant’s site arrive with **one of four narrow questions** — “are you open right now?”, “where are you?”, “what’s on the menu?”, and “can I book a table?”. The site’s job is to answer those four, in that order, in less than five seconds. This holds across the public web-usability literature on small-business sites and across every restaurant floor I’ve worked.
 
-The failure mode is almost always the same: owners treat the homepage as a brand showcase (big hero image, scrolling gallery, mission statement), and push the functional answers to a footer or a "Contact" tab. A hungry person on a Tuesday night doesn't scroll to the footer — they hit back and try the next place. The brand showcase didn't lose them. The missing answer did.
+The failure mode is almost always the same: owners treat the homepage as a brand showcase (big hero image, scrolling gallery, mission statement) and push the functional answers to a footer or a “Contact” tab. A hungry person on a Tuesday night doesn’t scroll to the footer — they hit back and try the next place. The brand showcase didn’t lose them. The missing answer did.
 
-## Key findings
+## What the pattern looks like in practice
 
-- Visitors to local business websites arrive with **specific, narrow questions** — typically hours, location, menu/services, and contact — and abandon quickly if the answer isn't immediately visible.
+- Visitors to local business websites arrive with **specific, narrow questions** — typically hours, location, menu/services, and contact — and abandon quickly if the answer isn’t immediately visible.
 
-- Hours and location are consistently the **highest-priority information** across studies, yet are frequently relegated to the footer or a separate "Contact" page that first-time visitors rarely click through to.
+- Hours and location are consistently the **highest-priority information**, yet are frequently relegated to the footer or a separate “Contact” page that first-time visitors rarely click through to.
 
-- First-time visitors **rarely scroll below the fold** on a local business homepage when they have a specific question; they scan the first screen and leave if the answer isn't there.
+- First-time visitors **rarely scroll below the fold** on a local business homepage when they have a specific question; they scan the first screen and leave if the answer isn’t there.
 
-- Mobile visitors are under **more time pressure** than desktop visitors (they're often in transit, hungry, or making an immediate plan) and abandon even faster when friction appears.
+- Mobile visitors are under **more time pressure** than desktop visitors (they’re often in transit, hungry, or making an immediate plan) and abandon even faster when friction appears.
 
-- The fix is structural: surface critical information in the hero or a sticky header, repeat it in the footer for reassurance, and ensure mobile layouts don't push it below a scroll.
+- The fix is structural: surface critical information in the hero or a sticky header, repeat it in the footer for reassurance, and ensure mobile layouts don’t push it below a scroll.
 
 ## How Muntin uses this
 
-- [**Why your restaurant loses reservations every night**Leak #3 — "hours are hiding" — is built on NNGroup's finding that hours are the most-searched-for and most-hidden piece of information on restaurant sites.](https://muntin.digital/blog/why-your-restaurant-loses-reservations-every-night/)
+- [**Why your restaurant loses reservations every night**Leak #3 — “hours are hiding” — is built on the same pattern: hours are the most-searched-for and most-hidden piece of information on restaurant sites.](https://muntin.digital/blog/why-your-restaurant-loses-reservations-every-night/)
 
-- [**How much does a custom restaurant website cost in 2026?**The "what a custom site actually delivers" section leans on this research to explain why hero-placement of hours and location is treated as a baseline, not a premium feature.](https://muntin.digital/blog/how-much-does-a-custom-restaurant-website-cost-in-2026/)
+- [**How much does a custom restaurant website cost in 2026?**The “what a custom site actually delivers” section uses this practice note to explain why hero-placement of hours and location is treated as a baseline, not a premium feature.](https://muntin.digital/blog/how-much-does-a-custom-restaurant-website-cost-in-2026/)
 
-## Full citation
+**Practice note, not a single study.** The pattern above is what surfaces repeatedly across NNG’s web-usability work, Google’s small-business search research, and operator experience on restaurant floors. If you want a single canonical citation, Nielsen Norman Group’s broader work on [web usability](https://www.nngroup.com/topic/web-usability/) is the most-cited starting point.
 
-Nielsen, J., & Pernice, K. Usability of Local Business Websites. Nielsen Norman Group. [nngroup.com](https://www.nngroup.com/)
-
-**Last reviewed:** April 2026 — NNG's local business UX findings are ongoing research, continuously reinforced by updated studies on small-business site navigation.
+**Last reviewed:** May 2026 — this is a synthesis, not a measurement; the underlying pattern hasn’t shifted across the public usability work it draws on.
 
  Cited in
 
@@ -3453,7 +3451,7 @@ This is the anchor study behind every "mobile speed matters" claim in the librar
 
 ## Full citation
 
-An, D. (2017, February). Find out how you stack up to new industry benchmarks for mobile page speed. Think with Google. [thinkwithgoogle.com](https://www.thinkwithgoogle.com/)
+An, D. (2017, February). Find out how you stack up to new industry benchmarks for mobile page speed. Think with Google. [thinkwithgoogle.com](https://www.thinkwithgoogle.com/marketing-strategies/app-and-mobile/mobile-page-speed-new-industry-benchmarks/)
 
 **Last reviewed:** April 2026 — the underlying finding is reinforced by Google's current Core Web Vitals data and remains cited widely in mobile UX research.
 

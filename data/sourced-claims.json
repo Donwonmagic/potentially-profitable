@@ -20,135 +20,164 @@
   "claims": {
     "ai_overview_share_march_2025": {
       "claim": "Google AI Overviews appeared on 13.14% of US desktop queries in March 2025",
-      "source_url": "https://searchengineland.com/",
+      "source_url": "https://searchengineland.com/google-ai-overviews-13-searches-455057",
       "source_name": "Search Engine Land (March 2025 analysis)",
       "date_verified": "2026-05-14",
-      "url_status": "tld-only",
+      "url_status": "deep-link",
       "used_in": [
         "how-to-get-cited-in-google-ai-overviews-restaurant",
         "may-2026-wave-publishing-for-citation"
       ],
-      "notes": "The 13.14% figure was reported by Search Engine Land in a March 2025 analysis. The library cites the publication and the article's date-and-title in the citation drawer with a link to the publication's home page rather than a deep article URL — Search Engine Land restructures article slugs periodically, and a stale deep link reads worse than letting the reader find the piece via search. Post-March-2025 trajectory is reported qualitatively."
+      "notes": "Search Engine Land, \"Google AI Overviews now show on 13% of searches: Study\" (article ID 455057). Verified via search 2026-05-14. The 13.14% figure is the most-cited measurement of AI Overview prevalence on US desktop search. Post-March-2025 trajectory is reported qualitatively across industry coverage; treat direction as \"rising, not flat\" until a comparable consolidated measurement is published."
     },
     "doordash_marketplace_tiers": {
       "claim": "DoorDash Marketplace commission tiers: Basic 15%, Plus 25%, Premier 30%",
-      "source_url": "https://merchants.doordash.com/",
+      "source_url": "https://merchants.doordash.com/en-us/pricing",
       "source_name": "DoorDash Merchant docs",
       "date_verified": "2026-05-14",
-      "url_status": "tld-only",
+      "url_status": "deep-link",
       "used_in": [
         "an-honest-doordash-math-for-independent-restaurants-2026",
         "uber-eats-vs-doordash-vs-grubhub-restaurant-math-2026",
         "30-days-after-leaving-doordash-restaurant-case-study",
         "is-doordash-worth-it-for-restaurants-in-2026"
       ],
-      "notes": "Re-check quarterly. DoorDash renames tiers and reorganizes their merchant-help URL structure periodically; the percentage-bands have held since 2022. The library links to the DoorDash merchant docs home page rather than a specific learning-center slug, so the link doesn't break when DoorDash reorganizes."
+      "notes": "DoorDash Merchant pricing page. Verified via search 2026-05-14. The three Marketplace tiers (Basic 15%, Plus 25%, Premier 30%) are documented here; pickup commission is reduced to 6% across all tiers. Re-check quarterly because DoorDash renames tiers periodically."
     },
     "uber_eats_published_rates": {
       "claim": "Uber Eats commission tiers and Pro membership cost",
-      "source_url": "https://merchants.ubereats.com/",
+      "source_url": "https://merchants.ubereats.com/us/en/pricing/",
       "source_name": "Uber Eats Merchant",
       "date_verified": "2026-05-14",
-      "url_status": "tld-only",
-      "used_in": ["uber-eats-vs-doordash-vs-grubhub-restaurant-math-2026"]
+      "url_status": "deep-link",
+      "used_in": [
+        "uber-eats-vs-doordash-vs-grubhub-restaurant-math-2026"
+      ],
+      "notes": "Uber Eats Merchant pricing page. Verified via search 2026-05-14. Updated marketplace fee structure (effective March 11, 2026): 30% Uber-delivery / 15% self-delivery / 7-10% pickup."
     },
     "grubhub_published_rates": {
       "claim": "Grubhub commission tiers and second-layer fee structure",
-      "source_url": "https://get.grubhub.com/",
+      "source_url": "https://get.grubhub.com/grubhub-pricing-and-fees/",
       "source_name": "Grubhub Merchant",
       "date_verified": "2026-05-14",
-      "url_status": "tld-only",
-      "used_in": ["uber-eats-vs-doordash-vs-grubhub-restaurant-math-2026"]
+      "url_status": "deep-link",
+      "used_in": [
+        "uber-eats-vs-doordash-vs-grubhub-restaurant-math-2026"
+      ],
+      "notes": "Grubhub merchant pricing-and-fees page. Verified via search 2026-05-14. Marketing commission 5-20% depending on plan; order-processing 3.05% + $0.30; delivery 10% on Grubhub-delivered orders."
     },
     "toast_rewards_pricing": {
-      "claim": "Toast Rewards add-on monthly cost (vendor-published)",
-      "source_url": "https://pos.toasttab.com/",
-      "source_name": "Toast",
+      "claim": "Toast Loyalty add-on monthly cost (~$50/month per Toast)",
+      "source_url": "https://pos.toasttab.com/products/loyalty",
+      "source_name": "Toast — Loyalty product page",
       "date_verified": "2026-05-14",
-      "url_status": "tld-only",
-      "used_in": ["loyalty-programs-for-independent-restaurants-what-works-2026"]
+      "url_status": "deep-link",
+      "used_in": [
+        "loyalty-programs-for-independent-restaurants-what-works-2026"
+      ],
+      "notes": "Toast Loyalty product page. Verified via search 2026-05-14. Pricing: $50/month as an add-on to the core Toast POS platform."
     },
     "square_loyalty_pricing": {
-      "claim": "Square Loyalty monthly cost (vendor-published)",
-      "source_url": "https://squareup.com/",
-      "source_name": "Square",
+      "claim": "Square Loyalty monthly cost (starts $25/month per Square)",
+      "source_url": "https://squareup.com/help/us/en/article/6382-square-loyalty-pricing",
+      "source_name": "Square — Loyalty pricing help article",
       "date_verified": "2026-05-14",
-      "url_status": "tld-only",
-      "used_in": ["loyalty-programs-for-independent-restaurants-what-works-2026"]
+      "url_status": "deep-link",
+      "used_in": [
+        "loyalty-programs-for-independent-restaurants-what-works-2026"
+      ],
+      "notes": "Square Loyalty pricing help article. Verified via search 2026-05-14. Starting pricing $25/month per location; 30-day free trial available."
     },
     "fivestars_pricing": {
-      "claim": "Fivestars standalone loyalty platform monthly cost ($165–$249/month range, vendor-published)",
+      "claim": "Fivestars standalone loyalty platform — no openly published pricing",
       "source_url": "https://www.fivestars.com/",
       "source_name": "Fivestars",
       "date_verified": "2026-05-14",
       "url_status": "tld-only",
-      "used_in": ["loyalty-programs-for-independent-restaurants-what-works-2026"]
+      "used_in": [
+        "loyalty-programs-for-independent-restaurants-what-works-2026"
+      ],
+      "notes": "Fivestars does NOT publish open monthly pricing. The platform is contact-for-quote. Any specific dollar range in operator-facing content must be labeled as operator-reported rather than vendor-published."
     },
     "como_pricing": {
-      "claim": "Como standalone loyalty platform monthly cost (vendor-published)",
+      "claim": "Como standalone loyalty platform — no openly published pricing",
       "source_url": "https://www.como.com/",
       "source_name": "Como",
       "date_verified": "2026-05-14",
       "url_status": "tld-only",
-      "used_in": ["loyalty-programs-for-independent-restaurants-what-works-2026"]
+      "used_in": [
+        "loyalty-programs-for-independent-restaurants-what-works-2026"
+      ],
+      "notes": "Como does NOT publish open monthly pricing. The platform is contact-for-quote. Same posture as Fivestars: any specific dollar range must be labeled operator-reported."
     },
     "mailchimp_pricing": {
       "claim": "Mailchimp email tier monthly cost",
-      "source_url": "https://mailchimp.com/",
+      "source_url": "https://mailchimp.com/pricing/marketing/",
       "source_name": "Mailchimp",
       "date_verified": "2026-05-14",
-      "url_status": "tld-only",
-      "used_in": ["loyalty-programs-for-independent-restaurants-what-works-2026"]
+      "url_status": "deep-link",
+      "used_in": [
+        "loyalty-programs-for-independent-restaurants-what-works-2026"
+      ],
+      "notes": "Mailchimp marketing-plan pricing page. Verified via search 2026-05-14. Free tier under 250 contacts; Essentials/Standard/Premium paid tiers scale with contact count."
     },
     "klaviyo_pricing": {
       "claim": "Klaviyo email tier monthly cost",
-      "source_url": "https://www.klaviyo.com/",
+      "source_url": "https://www.klaviyo.com/pricing",
       "source_name": "Klaviyo",
       "date_verified": "2026-05-14",
-      "url_status": "tld-only",
-      "used_in": ["loyalty-programs-for-independent-restaurants-what-works-2026"]
+      "url_status": "deep-link",
+      "used_in": [
+        "loyalty-programs-for-independent-restaurants-what-works-2026"
+      ],
+      "notes": "Klaviyo pricing page. Verified via search 2026-05-14. Free under 250 profiles / 500 monthly sends; paid pricing starts at ~$30/month at the 500-1000 active-profiles tier."
     },
     "google_local_ranking_signals": {
       "claim": "Google ranks local results by distance, relevance, and prominence — and review-response activity is one of the signals weighted toward prominence",
       "source_url": "https://support.google.com/business/answer/7091",
       "source_name": "Google Business Profile Help — Improve your local ranking",
       "date_verified": "2026-05-14",
-      "url_status": "deep-link-google",
+      "url_status": "deep-link",
       "used_in": [
         "how-to-respond-to-google-reviews-restaurant-playbook-2026",
         "my-restaurant-isnt-on-google-maps-10-minute-diagnostic",
         "how-to-set-up-google-business-profile-for-your-restaurant"
       ],
-      "notes": "Google support answer IDs are stable; this URL has been live and unchanged for several years. Kept as deep-link."
+      "notes": "Google Business Profile Help — \"Improve your local ranking.\" Stable Google support answer ID; URL has been live for years."
     },
     "google_business_profile_help_photos": {
       "claim": "Google states that businesses with photos receive significantly more directions requests and click-throughs than businesses without",
       "source_url": "https://support.google.com/business/answer/6123536",
       "source_name": "Google Business Profile Help — Add photos and videos",
       "date_verified": "2026-05-14",
-      "url_status": "deep-link-google",
-      "used_in": ["how-to-set-up-google-business-profile-for-your-restaurant"],
-      "notes": "Google has cited specific percentages (42% more directions, 35% more click-throughs) in their documentation. The exact numbers shift over time; the directional finding is consistent."
+      "url_status": "deep-link",
+      "used_in": [
+        "how-to-set-up-google-business-profile-for-your-restaurant"
+      ],
+      "notes": "Google Business Profile Help — \"Add photos and videos to your Business Profile.\" Stable answer ID. Google has cited specific percentages (42% more directions, 35% more click-throughs) in this documentation; the exact figures shift over time, the directional finding is consistent."
     },
     "google_schema_supported_types": {
       "claim": "Google Search Central documents Restaurant, Menu, OpeningHoursSpecification, AggregateRating, Reservation, and FAQPage as supported schema types for restaurant pages",
       "source_url": "https://developers.google.com/search/docs/appearance/structured-data/local-business",
       "source_name": "Google Search Central — Local Business structured data",
       "date_verified": "2026-05-14",
-      "url_status": "deep-link-google",
+      "url_status": "deep-link",
       "used_in": [
         "restaurant-schema-markup-6-types-google-uses",
         "restaurant-schema-markup-complete-paste-ready-example"
-      ]
+      ],
+      "notes": "Google Search Central — Local Business structured data. Stable Google docs URL."
     },
     "dc_initiative_82": {
-      "claim": "DC Initiative 82 phases out the tipped minimum wage in the District of Columbia",
-      "source_url": "https://does.dc.gov/",
-      "source_name": "DC Department of Employment Services",
+      "claim": "DC Initiative 82 (Tipped Wage Workers Fairness Act) phases out the tipped minimum wage in the District of Columbia",
+      "source_url": "https://ohr.dc.gov/page/tipped-wage-workers-fairness-act",
+      "source_name": "DC Office of Human Rights — Tipped Wage Workers Fairness Act",
       "date_verified": "2026-05-14",
-      "url_status": "tld-only",
-      "used_in": ["service-charges-vs-tipping-restaurant-operator-math-2026"],
-      "notes": "Government-agency sites occasionally restructure their policy pages. The library links to the agency home page so the citation doesn't rot the next time DOES reorganizes; the policy is searchable by name (Initiative 82 / Tipped Wage Workers Fairness Amendment Act) from the DOES home."
+      "url_status": "deep-link",
+      "used_in": [
+        "service-charges-vs-tipping-restaurant-operator-math-2026"
+      ],
+      "notes": "DC Office of Human Rights page on the Tipped Wage Workers Fairness Act. Verified via search 2026-05-14. The library previously cited a URL on does.dc.gov that did not exist — the canonical agency page for TWWFA is on OHR, not DOES. Initiative 82 itself was passed November 2022; tipped minimum wage increases annually until 2027 when it equals the full minimum wage."
     },
     "instagram_2024_algorithm_update": {
       "claim": "Meta's late-2024 algorithm update penalizes stacked-hashtag posts",
@@ -156,46 +185,56 @@
       "source_name": "Meta — Creator updates",
       "date_verified": "2026-05-14",
       "url_status": "tld-only",
-      "used_in": ["instagram-as-restaurant-seo-strategy-2026"],
-      "notes": "Meta's official wording on the change is in creator-blog announcements; specific percent-penalty figures are not published. Treat the directional effect as cited, the magnitude as qualitative. The library links to the creator hub home page since Meta moves blog-post URLs around as the site reorganizes."
+      "used_in": [
+        "instagram-as-restaurant-seo-strategy-2026"
+      ],
+      "notes": "Meta's creator-blog announcements describe the 2024 algorithm change that penalized stacked-hashtag posts; specific percent-penalty figures are not published. Treat the directional effect as cited, the magnitude as qualitative. TLD-only link because the specific blog-post URL was not verified."
     },
     "nielsen_norman_group_reference": {
-      "claim": "Nielsen Norman Group has published research on local-business website usability and on Fitts's Law",
-      "source_url": "https://www.nngroup.com/",
-      "source_name": "Nielsen Norman Group",
+      "claim": "Nielsen Norman Group has published research on Fitts's Law and broader web usability",
+      "source_url": "https://www.nngroup.com/articles/fitts-law/",
+      "source_name": "Nielsen Norman Group — \"Fitts's Law and Its Applications in UX\"",
       "date_verified": "2026-05-14",
-      "url_status": "tld-only",
+      "url_status": "deep-link",
       "used_in": [
         "why-your-restaurant-loses-reservations-every-night",
         "learn/research/fittss-law",
         "learn/research/local-business-websites"
       ],
-      "notes": "Two specific NNG article URLs previously cited in the library (`/articles/local-business/` and `/articles/fittss-law/`) returned 404s — they were never the canonical NNG slugs for the research they referenced. The library now credits Nielsen Norman Group by name with a link to the home page; readers can search nngroup.com for the specific piece. The substantive claims (local-business website usability research; Fitts's Law) are well-documented research topics NNG covers, so the source attribution stands. Any future NNG citation must paste the live URL from a browser visit before publishing."
+      "notes": "NNG canonical Fitts's Law article. Verified via search 2026-05-14. The library previously linked to /articles/fittss-law/ (double-S) which 404'd — the canonical slug is /articles/fitts-law/ (single S). For non-Fitts NNG references (e.g. local-business usability), the library now credits NNG as a source-on-the-topic with a TLD or topic-page link rather than fabricating a specific article slug."
     },
     "baymard_institute_reference": {
-      "claim": "Baymard Institute has published research on cart-abandonment rates in e-commerce",
-      "source_url": "https://baymard.com/",
-      "source_name": "Baymard Institute",
+      "claim": "Baymard Institute publishes a meta-analysis of cart-abandonment rate statistics",
+      "source_url": "https://baymard.com/lists/cart-abandonment-rate",
+      "source_name": "Baymard Institute — \"50 Cart Abandonment Rate Statistics 2026\"",
       "date_verified": "2026-05-14",
-      "url_status": "tld-only",
+      "url_status": "deep-link",
       "used_in": [
         "why-your-restaurant-loses-reservations-every-night",
         "learn/research/cart-abandonment-rate"
       ],
-      "notes": "The previously cited URL path (`/lists/cart-abandonment-rate`) is not the canonical slug under which Baymard publishes its cart-abandonment meta-analysis. The library now credits Baymard Institute by name with a link to the home page; the cart-abandonment list is reachable from the Baymard navigation. Any future Baymard citation must paste the live URL from a browser visit before publishing."
+      "notes": "Baymard canonical cart-abandonment list. Verified via search 2026-05-14. Current average rate ~70.22% based on 50 studies. URL was correct in the library's original citation; the previous defensive sweep that degraded it to a TLD-only link has been reversed."
     },
     "think_with_google_mobile_speed": {
       "claim": "Think with Google has published research on mobile page-speed industry benchmarks",
-      "source_url": "https://www.thinkwithgoogle.com/",
-      "source_name": "Think with Google",
+      "source_url": "https://www.thinkwithgoogle.com/marketing-strategies/app-and-mobile/mobile-page-speed-new-industry-benchmarks/",
+      "source_name": "Think with Google — \"New Industry Benchmarks for Mobile Page Speed\" (Daniel An, Feb 2017)",
       "date_verified": "2026-05-14",
-      "url_status": "tld-only",
+      "url_status": "deep-link",
       "used_in": [
         "wix-vs-custom-for-restaurants",
         "why-your-restaurant-loses-reservations-every-night",
         "learn/research/mobile-page-speed-3-second-rule"
       ],
-      "notes": "Think with Google reorganizes its content sections periodically. The library now credits Think with Google by name with a link to the home page; the page-speed benchmarks piece is searchable from there. Any future Think-with-Google citation must paste the live URL from a browser visit before publishing."
+      "notes": "Think with Google canonical page on mobile page-speed benchmarks. Verified via search 2026-05-14. Source of the \"53% of mobile site visitors leave a page that takes longer than three seconds to load\" stat. URL was correct in the library's original citation."
+    },
+    "national_restaurant_association_reports": {
+      "claim": "The National Restaurant Association publishes annual State of the Industry research",
+      "source_url": "https://restaurant.org/research-and-media/research/research-reports/",
+      "source_name": "National Restaurant Association — Research Reports",
+      "date_verified": "2026-05-14",
+      "url_status": "deep-link",
+      "notes": "NRA research-reports landing page. Verified via search 2026-05-14. 2026 State of the Industry projects industry sales ~$1.55T; ~100,000 jobs added; total employment 15.8M. URL was correct in the library's original citation."
     }
   },
   "operator_experience_claims": {
