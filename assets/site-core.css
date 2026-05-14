@@ -3652,3 +3652,45 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 @media (max-width:1100px){
   .theme-toggle{display:none !important}
 }
+
+
+/* ===== [core] Phase 4 — next-tool recommendation card (.mtn-next-tool) (lines 7313-7352) ===== */
+/* ============ Phase 4 — next-tool recommendation card =============
+   Mounted at the end of a tool's result region by
+   MuntinNextTool.render(). Visually quiet so it doesn't compete
+   with the tool's own primary CTA — it's a *next step*, not a
+   replacement CTA. Card border-left matches the teal accent the
+   rest of the suite uses for "what's next" surfaces. */
+
+.mtn-next-tool{
+  display:flex;flex-direction:column;gap:var(--space-2);
+  margin:var(--space-6) 0 0;
+  padding:var(--space-4) var(--space-5);
+  background:var(--mtn-surface-inset);
+  border:1px solid var(--mtn-border);
+  border-left:3px solid var(--teal);
+  border-radius:var(--r-md);
+}
+.mtn-next-tool__eyebrow{
+  margin:0;
+  font-size:var(--fs-eyebrow);font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;
+  color:var(--teal);
+}
+.mtn-next-tool__body{
+  margin:0;
+  font-size:var(--fs-body);line-height:var(--leading-card);
+  color:var(--mtn-text);
+}
+.mtn-next-tool__link{
+  align-self:flex-start;
+  margin-top:var(--space-2);
+  padding:var(--space-2) var(--space-4);
+  background:var(--teal);color:var(--cream);
+  border:1px solid var(--teal);border-radius:var(--r-input);
+  font:inherit;font-size:14px;font-weight:600;
+  text-decoration:none;
+  transition:background var(--t-fast) var(--ease),border-color var(--t-fast) var(--ease);
+}
+.mtn-next-tool__link:hover{background:var(--teal-dark);border-color:var(--teal-dark)}
+.mtn-next-tool__link:focus-visible{outline:none;box-shadow:var(--ring-focus)}

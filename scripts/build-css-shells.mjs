@@ -178,6 +178,11 @@ const SECTIONS = [
   // (sun/moon icon swap based on [data-theme] / prefers-color-scheme).
   // Lives in core because the button is in the global nav partial.
   { start: 7273, shell: 'core',    label: 'Phase 7 — dark-mode toggle button (.theme-toggle)' },
+  // Phase 4 wiring (tool-suite upgrade) — next-tool recommendation
+  // card styles. The card is mounted by MuntinNextTool.render() at
+  // the end of each tool's result region. Lives in core because
+  // every page that loads next-tool.js renders the card.
+  { start: 7313, shell: 'core',    label: 'Phase 4 — next-tool recommendation card (.mtn-next-tool)' },
 ];
 
 // === Validation ===

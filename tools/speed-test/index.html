@@ -171,9 +171,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=528ef6ffb66d" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-core.css?v=dc42f0ad5007" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-tool.css?v=5f214b425aa9" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=528ef6ffb66d"><link rel="stylesheet" href="/assets/site-tool.css?v=5f214b425aa9"></noscript>
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=dc42f0ad5007"><link rel="stylesheet" href="/assets/site-tool.css?v=5f214b425aa9"></noscript>
 
 <style>
   /* Tool-specific result rendering. Form, hero, note, result container,
@@ -793,6 +793,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <script src="/tools/_shared/analytics.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/states.js?v=20260429-states"></script>
 <script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
+<script src="/tools/_shared/next-tool.js?v=phase4"></script>
+<script src="/tools/_shared/handoff.js?v=phase4"></script>
 <script src="/tools/_shared/platform-fixes.js?v=20260430-wave0"></script>
 <script src="/tools/_shared/hire-guide.js?v=20260430-hire-guide"></script>
 <script src="/assets/workbench-save.js?v=20260501-engagement"></script>
@@ -977,6 +979,17 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     renderSpeedSparkline(p.url);
     result.classList.add('visible');
     result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    // Phase 4 wiring — score < 60 routes to mobile-check for the
+    // viewport/touch lens. The 'low' helper in next-tool-map.json
+    // compares numerically; pass the raw score.
+    if (window.MuntinHandoff && window.MuntinHandoff.complete) {
+      window.MuntinHandoff.complete({
+        toolKey: 'speed-test',
+        signals: { score: (typeof score === 'number' ? score : null) },
+        resultEl: result,
+      });
+    }
   }
 
   // Recheck-over-time storage. Keyed per URL via the same djb2 hash

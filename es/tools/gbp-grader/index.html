@@ -138,9 +138,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=528ef6ffb66d" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-core.css?v=dc42f0ad5007" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-tool.css?v=5f214b425aa9" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=528ef6ffb66d"><link rel="stylesheet" href="/assets/site-tool.css?v=5f214b425aa9"></noscript>
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=dc42f0ad5007"><link rel="stylesheet" href="/assets/site-tool.css?v=5f214b425aa9"></noscript>
 <style>
   .gbp-hero{max-width:680px;margin:0 auto;text-align:center}
   .gbp-form{display:flex;gap:10px;max-width:560px;margin:32px auto 0}
@@ -728,6 +728,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 </div></footer>
 <!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260422-cohesion";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
 <script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
+<script src="/tools/_shared/next-tool.js?v=phase4"></script>
+<script src="/tools/_shared/handoff.js?v=phase4"></script>
 <script src="./gbp-grader.js?v=20260424-gbp1"></script>
 <script src="/assets/workbench-save.js?v=20260501-engagement"></script>
 <script>
@@ -1575,6 +1577,19 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       fix_first:      scored.fixFirst?scored.fixFirst.id:'none',
       deep_scan:      deepScanState.data?'yes':'no'
     }});
+
+    if (window.MuntinHandoff && window.MuntinHandoff.complete) {
+      var photoCount = (chosen && (chosen.photoCount || (chosen.photos && chosen.photos.length))) || 0;
+      window.MuntinHandoff.complete({
+        toolKey: 'gbp-grader',
+        signals: {
+          missingPhotos: photoCount < 10,
+          missingHours: !chosen || !chosen.hasHours,
+          score: (scored && typeof scored.scaled === 'number' && scored.scaled < 60) ? 'low' : 'ok'
+        },
+        resultEl: result,
+      });
+    }
   }
 
   function showPicker(candidates,query,peerMedians){

@@ -225,9 +225,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=528ef6ffb66d" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-core.css?v=dc42f0ad5007" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-tool.css?v=5f214b425aa9" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=528ef6ffb66d"><link rel="stylesheet" href="/assets/site-tool.css?v=5f214b425aa9"></noscript>
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=dc42f0ad5007"><link rel="stylesheet" href="/assets/site-tool.css?v=5f214b425aa9"></noscript>
 
 <style>
   /* ============ AUDIT TOOL STYLES ============ */
@@ -6978,6 +6978,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <script src="/tools/audits/restaurant/restaurant-checks.js"></script>
 <script src="/tools/_shared/fetch-error.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
+<script src="/tools/_shared/next-tool.js?v=phase4"></script>
+<script src="/tools/_shared/handoff.js?v=phase4"></script>
 <script src="/tools/_shared/platform-fixes.js?v=20260430-wave0"></script>
 <script src="/assets/workbench-save.js?v=20260428-sprint0-tokens"></script>
 <script>
@@ -16393,6 +16395,33 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
             }
           } catch (_) {}
           if (typeof renderBadgeOffer === 'function') renderBadgeOffer(url);
+
+          if (window.MuntinHandoff && window.MuntinHandoff.complete) {
+            try {
+              var lastResult = window.__auditLastResult || {};
+              var missingGbp = false;
+              try {
+                if (Array.isArray(lastResult.checks)) {
+                  missingGbp = lastResult.checks.some(function (c) {
+                    return c && /gbp|google.?business/i.test(String(c.id || c.label || '')) && c.status === 'fail';
+                  });
+                }
+              } catch (_) {}
+              var auditMount = document.getElementById('auditReport')
+                || document.getElementById('audit-report')
+                || document.querySelector('[data-audit-report]')
+                || document.body;
+              window.MuntinHandoff.complete({
+                toolKey: 'audits/restaurant',
+                signals: {
+                  score: (typeof lastResult.overall === 'number' ? lastResult.overall : null),
+                  missingGbp: missingGbp,
+                },
+                resultEl: auditMount,
+              });
+            } catch (_) {}
+          }
+
           // Sprint S2.5: Deep Scan is purely additive — after the
           // Fast report renders, kick off the four deeper signals in
           // parallel. Each resolves on its own budget (up to ~15s
