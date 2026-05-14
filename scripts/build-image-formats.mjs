@@ -62,6 +62,9 @@ if (!checkOnly) {
 const SKIP_DIRS = new Set([
   'node_modules', '.git', '.github', 'dist', '.wrangler',
   'docs', 'src', 'data', 'scripts', '_includes',
+  // Phase 8 — Playwright PNG baselines aren't user-facing images;
+  // they're regression-test fixtures. No need for AVIF/WebP siblings.
+  'tests', 'test-results', 'playwright-report',
 ]);
 // Subdirectories that have their own image pipeline (or shouldn't be
 // AVIF/WebP-encoded for compatibility reasons).
