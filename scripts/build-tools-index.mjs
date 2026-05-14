@@ -55,10 +55,12 @@ for (const g of data.goals) {
     if (!data.tools[slug]) err(`goal "${g.id}" references missing tool "${slug}"`);
   }
 }
+const VALID_TIERS = new Set(['quick', 'standard', 'deep']);
 for (const [slug, t] of Object.entries(data.tools)) {
-  for (const k of ['title_en', 'title_es', 'summary_en', 'summary_es', 'walkaway_en', 'walkaway_es', 'cta_en', 'cta_es', 'url_en', 'url_es', 'cluster', 'status']) {
+  for (const k of ['title_en', 'title_es', 'summary_en', 'summary_es', 'walkaway_en', 'walkaway_es', 'cta_en', 'cta_es', 'url_en', 'url_es', 'cluster', 'status', 'tier']) {
     if (!t[k]) err(`tool "${slug}" missing required field "${k}"`);
   }
+  if (t.tier && !VALID_TIERS.has(t.tier)) err(`tool "${slug}".tier "${t.tier}" must be one of: ${[...VALID_TIERS].join(', ')}`);
   if (t.summary_en && t.summary_en.length > SUMMARY_MAX) err(`tool "${slug}".summary_en is ${t.summary_en.length} chars, max ${SUMMARY_MAX}`);
   if (t.summary_es && t.summary_es.length > SUMMARY_MAX) err(`tool "${slug}".summary_es is ${t.summary_es.length} chars, max ${SUMMARY_MAX}`);
   if (t.walkaway_en && t.walkaway_en.includes('\n')) err(`tool "${slug}".walkaway_en must be a single line`);
@@ -133,6 +135,30 @@ ${chips}
     </nav>`;
 }
 
+// Phase 2 — tier filter strip. Sits between the chipnav and the
+// clusters. Pure progressive enhancement: with JS disabled the strip
+// is invisible (CSS hides it via [data-tier-filter]:not(.is-active));
+// with JS, the strip shows three pill buttons that hide non-matching
+// tool cards across every cluster. No URL state for now — Phase 4
+// will wire selection into the Restaurant Profile.
+function renderTierFilter(locale) {
+  const aria = locale === 'en' ? 'Filter tools by depth' : 'Filtrar herramientas por profundidad';
+  const allLabel  = locale === 'en' ? 'All tools' : 'Todas';
+  const quickLbl  = locale === 'en' ? 'Quick'    : 'Rápido';
+  const stdLbl    = locale === 'en' ? 'Standard' : 'Estándar';
+  const deepLbl   = locale === 'en' ? 'Deep'     : 'Profundo';
+  const help      = locale === 'en'
+    ? 'Quick: under 5 minutes. Standard: 5–15 minutes. Deep: 20+ minutes, deeper inputs.'
+    : 'Rápido: menos de 5 minutos. Estándar: 5–15 minutos. Profundo: 20+ minutos, con más insumos.';
+  return `<div class="tool-tier-filter" data-tier-filter role="group" aria-label="${escAttr(aria)}">
+      <button type="button" class="tool-tier-filter__btn is-active" data-tier-filter-btn="all" aria-pressed="true">${escText(allLabel)}</button>
+      <button type="button" class="tool-tier-filter__btn" data-tier-filter-btn="quick" aria-pressed="false">${escText(quickLbl)}</button>
+      <button type="button" class="tool-tier-filter__btn" data-tier-filter-btn="standard" aria-pressed="false">${escText(stdLbl)}</button>
+      <button type="button" class="tool-tier-filter__btn" data-tier-filter-btn="deep" aria-pressed="false">${escText(deepLbl)}</button>
+      <small class="tool-tier-filter__help">${escText(help)}</small>
+    </div>`;
+}
+
 function renderCluster(c, locale) {
   const label = pickI18n(c, 'label', locale);
   const blurb = pickI18n(c, 'blurb', locale);
@@ -140,6 +166,14 @@ function renderCluster(c, locale) {
   const topicHref  = locale === 'en' ? `/learn/topics/${c.id}/` : `/es/learn/topics/${c.id}/`;
   const walkawayLabel = locale === 'en' ? 'You leave with' : 'Te llevas';
 
+  // Phase 2 — tier vocabulary surfaced as a card-level badge AND as a
+  // data attribute so the JS filter strip can hide/show cards without
+  // needing to re-query each tool's definition.
+  const TIER_LABELS = {
+    quick:    locale === 'en' ? 'Quick'    : 'Rápido',
+    standard: locale === 'en' ? 'Standard' : 'Estándar',
+    deep:     locale === 'en' ? 'Deep'     : 'Profundo'
+  };
   const cards = c.tools.map((slug) => {
     const t        = data.tools[slug];
     const title    = pickI18n(t, 'title',    locale);
@@ -148,8 +182,11 @@ function renderCluster(c, locale) {
     const cta      = pickI18n(t, 'cta',      locale);
     const url      = pickI18n(t, 'url',      locale);
     const liveLabel = locale === 'en' ? 'Live' : 'En vivo';
-    return `      <a href="${escAttr(url)}" class="tool-card tool-card--compact live">
+    const tier     = t.tier || 'standard';
+    const tierLabel = TIER_LABELS[tier];
+    return `      <a href="${escAttr(url)}" class="tool-card tool-card--compact live" data-tier="${escAttr(tier)}" data-slug="${escAttr(slug)}">
         <span class="status">${liveLabel}</span>
+        <span class="tool-card__tier tool-card__tier--${escAttr(tier)}">${escText(tierLabel)}</span>
         <h3>${escText(title)}</h3>
         <p>${escText(summary)}</p>
         <p class="tool-card__walkaway"><span class="tool-card__walkaway-label">${escText(walkawayLabel)}:</span> ${escText(walkaway)}</p>
@@ -251,6 +288,8 @@ function renderBody(locale) {
     ${renderGoals(locale)}
 
     ${renderChipNav(locale)}
+
+    ${renderTierFilter(locale)}
 
   ${clusters}
 

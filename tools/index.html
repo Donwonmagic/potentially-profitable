@@ -174,9 +174,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=02c4948be192" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-core.css?v=f0dabe4bd3f1" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-tool.css?v=5f214b425aa9" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=02c4948be192"><link rel="stylesheet" href="/assets/site-tool.css?v=5f214b425aa9"></noscript>
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=f0dabe4bd3f1"><link rel="stylesheet" href="/assets/site-tool.css?v=5f214b425aa9"></noscript>
 <style>
   /* "We remember" pill — surfaced by MuntinContext on returning visits. */
   .ctx-pill { display: block; padding: 12px 0; background: var(--cream-2, #F2EEE5); border-bottom: 1px solid var(--line); }
@@ -539,10 +539,18 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <span class="serif-italic">your business.</span>
       </h1>
       <p class="hero-sub hero-sub-narrow">
-        Generic SEO tools give you a PDF full of abstractions. These are different: each one is purpose-built for a specific kind of small business, and each one translates its findings into the language the owner actually uses. Pick yours.
+        Generic SEO tools give you a PDF full of abstractions. These are different: each one is purpose-built for a specific kind of small business, and each one translates its findings into the language the owner actually uses.
       </p>
-      <p class="hero-sub hero-sub-narrow" style="margin-top:14px;font-size:14.5px;color:var(--ink-soft);">
-        Twenty-one tools is a lot for a first visit. <a href="/tools/start/" style="color:var(--teal);font-weight:600;border-bottom:1px solid color-mix(in srgb, var(--teal) 35%, transparent);text-decoration:none;">Answer five questions</a> and we&rsquo;ll point you at the two or three that match what&rsquo;s actually leaking.
+      <div class="hero-ctas" style="margin-top:32px;display:flex;flex-wrap:wrap;gap:14px;justify-content:center;">
+        <a href="/tools/start/" class="btn btn-primary hero-quiz-cta">
+          Start here &mdash; answer 5 questions
+        </a>
+        <a href="#operations-margin" class="btn btn-ghost">
+          Or browse all tools
+        </a>
+      </div>
+      <p class="hero-sub hero-sub-narrow" style="margin-top:18px;font-size:14.5px;color:var(--ink-soft);">
+        Twenty-one tools is a lot for a first visit. The quiz takes about 60 seconds and points you at the two or three that match what&rsquo;s actually leaking.
       </p>
     </div>
   </div>
@@ -572,6 +580,14 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <a href="#roadmap" class="tool-chipnav__roadmap">Roadmap</a>
     </nav>
 
+    <div class="tool-tier-filter" data-tier-filter role="group" aria-label="Filter tools by depth">
+      <button type="button" class="tool-tier-filter__btn is-active" data-tier-filter-btn="all" aria-pressed="true">All tools</button>
+      <button type="button" class="tool-tier-filter__btn" data-tier-filter-btn="quick" aria-pressed="false">Quick</button>
+      <button type="button" class="tool-tier-filter__btn" data-tier-filter-btn="standard" aria-pressed="false">Standard</button>
+      <button type="button" class="tool-tier-filter__btn" data-tier-filter-btn="deep" aria-pressed="false">Deep</button>
+      <small class="tool-tier-filter__help">Quick: under 5 minutes. Standard: 5–15 minutes. Deep: 20+ minutes, deeper inputs.</small>
+    </div>
+
     <section id="operations-margin" class="tool-cluster" aria-labelledby="cluster-operations-margin-heading">
     <header class="tool-cluster__head">
       <h2 id="cluster-operations-margin-heading">Operations &amp; Margin</h2>
@@ -579,29 +595,33 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <a class="tool-cluster__topic" href="/learn/topics/operations-margin/">See the full topic <span aria-hidden="true">&rarr;</span></a>
     </header>
     <div class="tool-grid">
-      <a href="/tools/cost-pulse/" class="tool-card tool-card--compact live">
+      <a href="/tools/cost-pulse/" class="tool-card tool-card--compact live" data-tier="standard" data-slug="cost-pulse">
         <span class="status">Live</span>
+        <span class="tool-card__tier tool-card__tier--standard">Standard</span>
         <h3>Cost Pulse</h3>
         <p>A dashboard across your saved invoices. Spot food-cost drift, category-share shifts, and rolling medians — no QuickBooks open.</p>
         <p class="tool-card__walkaway"><span class="tool-card__walkaway-label">You leave with:</span> A drift list, sparklines, and a most-recent-save card with a one-tap reload.</p>
         <span class="cta">Open Cost Pulse <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
       </a>
-      <a href="/tools/margin-math/" class="tool-card tool-card--compact live">
+      <a href="/tools/margin-math/" class="tool-card tool-card--compact live" data-tier="standard" data-slug="margin-math">
         <span class="status">Live</span>
+        <span class="tool-card__tier tool-card__tier--standard">Standard</span>
         <h3>Margin Math</h3>
         <p>Four restaurant calculators — delivery break-even, prime cost, covers needed, and a price-raise simulator. Stays in your browser.</p>
         <p class="tool-card__walkaway"><span class="tool-card__walkaway-label">You leave with:</span> Honest numbers for your hardest pricing decisions.</p>
-        <span class="cta">Run the math <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
+        <span class="cta">Open Margin Math <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
       </a>
-      <a href="/tools/menu-engineering/" class="tool-card tool-card--compact live">
+      <a href="/tools/menu-engineering/" class="tool-card tool-card--compact live" data-tier="deep" data-slug="menu-engineering">
         <span class="status">Live</span>
+        <span class="tool-card__tier tool-card__tier--deep">Deep</span>
         <h3>Menu Engineering Matrix</h3>
         <p>Paste your menu — items, prices, food cost, units sold. Get a 2×2 of Stars, Plowhorses, Puzzles, and Dogs with one action per dish.</p>
         <p class="tool-card__walkaway"><span class="tool-card__walkaway-label">You leave with:</span> An action per dish — keep, push, redesign, or drop.</p>
         <span class="cta">Open Menu Engineering <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
       </a>
-      <a href="/tools/plate-cost/" class="tool-card tool-card--compact live">
+      <a href="/tools/plate-cost/" class="tool-card tool-card--compact live" data-tier="deep" data-slug="plate-cost">
         <span class="status">Live</span>
+        <span class="tool-card__tier tool-card__tier--deep">Deep</span>
         <h3>Plate Cost Calculator</h3>
         <p>Type a recipe — what you bought, what you used, what it yields. The tool walks the math from invoice to plate cost and suggests three menu prices.</p>
         <p class="tool-card__walkaway"><span class="tool-card__walkaway-label">You leave with:</span> A defendable price for every dish on the menu.</p>
@@ -617,33 +637,37 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <a class="tool-cluster__topic" href="/learn/topics/local-seo/">See the full topic <span aria-hidden="true">&rarr;</span></a>
     </header>
     <div class="tool-grid">
-      <a href="/tools/audits/restaurant/" class="tool-card tool-card--compact live">
+      <a href="/tools/audits/restaurant/" class="tool-card tool-card--compact live" data-tier="deep" data-slug="restaurant-audit">
         <span class="status">Live</span>
+        <span class="tool-card__tier tool-card__tier--deep">Deep</span>
         <h3>Restaurant Website Audit</h3>
         <p>Drop your URL. Get a real mobile audit in about thirty seconds — performance, SEO, accessibility, and ten restaurant-specific checks in plain English.</p>
         <p class="tool-card__walkaway"><span class="tool-card__walkaway-label">You leave with:</span> A punch list of what's broken on your restaurant's website.</p>
-        <span class="cta">Run the audit <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
+        <span class="cta">Open Restaurant Audit <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
       </a>
-      <a href="/tools/gbp-grader/" class="tool-card tool-card--compact live">
+      <a href="/tools/gbp-grader/" class="tool-card tool-card--compact live" data-tier="deep" data-slug="gbp-grader">
         <span class="status">Live</span>
+        <span class="tool-card__tier tool-card__tier--deep">Deep</span>
         <h3>Google Business Profile Grader</h3>
         <p>Search your business name. See how your Google listing scores — rating, reviews, photos, categories, hours — with the specific fixes for what's missing.</p>
         <p class="tool-card__walkaway"><span class="tool-card__walkaway-label">You leave with:</span> Specific fixes for the gaps in your Google listing.</p>
-        <span class="cta">Grade your GBP <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
+        <span class="cta">Open GBP Grader <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
       </a>
-      <a href="/tools/open-hours/" class="tool-card tool-card--compact live">
+      <a href="/tools/open-hours/" class="tool-card tool-card--compact live" data-tier="standard" data-slug="open-hours">
         <span class="status">Live</span>
+        <span class="tool-card__tier tool-card__tier--standard">Standard</span>
         <h3>Open Hours</h3>
         <p>Fill your hours once. Walk away with the exact text for Google and a code block for your website builder. About 15 minutes.</p>
         <p class="tool-card__walkaway"><span class="tool-card__walkaway-label">You leave with:</span> The exact hours text Google and your website both want.</p>
         <span class="cta">Open Open Hours <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
       </a>
-      <a href="/tools/holiday-hours/" class="tool-card tool-card--compact live">
+      <a href="/tools/holiday-hours/" class="tool-card tool-card--compact live" data-tier="quick" data-slug="holiday-hours">
         <span class="status">Live</span>
+        <span class="tool-card__tier tool-card__tier--quick">Quick</span>
         <h3>Holiday Hours Generator</h3>
         <p>Set your hours for the next eight US restaurant holidays. Walk away with three outputs: plain text for your site, JSON-LD schema overrides, and a Google Business Profile-formatted block. About 5 minutes.</p>
         <p class="tool-card__walkaway"><span class="tool-card__walkaway-label">You leave with:</span> Three holiday-hours outputs ready to paste into site, schema, and GBP.</p>
-        <span class="cta">Generate holiday hours <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
+        <span class="cta">Open Holiday Hours <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
       </a>
     </div>
   </section>
@@ -655,33 +679,37 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <a class="tool-cluster__topic" href="/learn/topics/conversions/">See the full topic <span aria-hidden="true">&rarr;</span></a>
     </header>
     <div class="tool-grid">
-      <a href="/tools/storefront-health/" class="tool-card tool-card--compact live">
+      <a href="/tools/storefront-health/" class="tool-card tool-card--compact live" data-tier="standard" data-slug="storefront-health">
         <span class="status">Live</span>
+        <span class="tool-card__tier tool-card__tier--standard">Standard</span>
         <h3>Storefront Health</h3>
         <p>One URL, six checks, one score. The unified scorecard for your restaurant's full storefront — with the next fix linked to the tool that runs it.</p>
         <p class="tool-card__walkaway"><span class="tool-card__walkaway-label">You leave with:</span> One number for your storefront, plus the next fix in plain English.</p>
-        <span class="cta">Score my storefront <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
+        <span class="cta">Open Storefront Health <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
       </a>
-      <a href="/tools/menu-copy/" class="tool-card tool-card--compact live">
+      <a href="/tools/menu-copy/" class="tool-card tool-card--compact live" data-tier="standard" data-slug="menu-copy">
         <span class="status">Live</span>
+        <span class="tool-card__tier tool-card__tier--standard">Standard</span>
         <h3>Menu Copy Inspector</h3>
         <p>Paste a dish description. See six diagnostics — sensory words, provenance, technique, length, hedges, pricing — with the research behind each.</p>
         <p class="tool-card__walkaway"><span class="tool-card__walkaway-label">You leave with:</span> A trained eye for reading your own menu critically.</p>
         <span class="cta">Open Menu Copy <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
       </a>
-      <a href="/tools/photo-brief/" class="tool-card tool-card--compact live">
+      <a href="/tools/photo-brief/" class="tool-card tool-card--compact live" data-tier="standard" data-slug="photo-brief">
         <span class="status">Live</span>
+        <span class="tool-card__tier tool-card__tier--standard">Standard</span>
         <h3>Photo Brief Builder</h3>
         <p>List your dishes, tick where the photos go (Yelp, Google, Instagram, your menu). Walk away with a one-page brief that gets you the right photos in one shoot.</p>
         <p class="tool-card__walkaway"><span class="tool-card__walkaway-label">You leave with:</span> A one-page brief your photographer can shoot in one visit.</p>
         <span class="cta">Open Photo Brief <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
       </a>
-      <a href="/tools/menu-converter/" class="tool-card tool-card--compact live">
+      <a href="/tools/menu-converter/" class="tool-card tool-card--compact live" data-tier="quick" data-slug="menu-converter">
         <span class="status">Live</span>
+        <span class="tool-card__tier tool-card__tier--quick">Quick</span>
         <h3>Menu Converter</h3>
         <p>Paste your menu text. Walk away with a live preview, semantic HTML for your website, and a JSON-LD Menu schema block Google can index. Sections, items, prices, descriptions — parsed in your browser.</p>
         <p class="tool-card__walkaway"><span class="tool-card__walkaway-label">You leave with:</span> Clean HTML and Menu schema from your pasted menu, in two seconds.</p>
-        <span class="cta">Convert your menu <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
+        <span class="cta">Open Menu Converter <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
       </a>
     </div>
   </section>
@@ -693,8 +721,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <a class="tool-cluster__topic" href="/learn/topics/brand-design/">See the full topic <span aria-hidden="true">&rarr;</span></a>
     </header>
     <div class="tool-grid">
-      <a href="/tools/brand-suite/" class="tool-card tool-card--compact live">
+      <a href="/tools/brand-suite/" class="tool-card tool-card--compact live" data-tier="deep" data-slug="brand-suite">
         <span class="status">Live</span>
+        <span class="tool-card__tier tool-card__tier--deep">Deep</span>
         <h3>Brand Suite</h3>
         <p>Drop in your logo. Walk away with a palette, accessible color pairs, and CSS tokens — a starter kit for the system around your mark.</p>
         <p class="tool-card__walkaway"><span class="tool-card__walkaway-label">You leave with:</span> Tokens you can paste into any builder or hand to a developer.</p>
@@ -1022,6 +1051,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
 <!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260422-cohesion";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
 <script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
+<script src="/tools/_shared/tier-filter.js?v=phase2"></script>
 <script>
 // "We remember" pill renderer. Read MuntinContext on load; if any
 // owner-shaped fields are present, build a chip strip + "Forget"

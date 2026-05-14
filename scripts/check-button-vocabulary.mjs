@@ -89,6 +89,10 @@ const ALLOWED_EXCEPTIONS = new Map([
   ['mtn-btn--link',      'MuntinUI.button() colour variant — text-link styling.'],
   ['mtn-btn--danger',    'MuntinUI.button() colour variant — destructive actions.'],
   ['mtn-tabs__btn',      'MuntinUI.tabs() per-tab control (role=tab) — visually pill, not a button-family child.'],
+  // Phase 2 — hub tier filter strip. Pill toggle that doesn't follow
+  // the .btn family because it represents a filter-state choice, not
+  // a navigation/action CTA. Lives only on /tools/ and /es/tools/.
+  ['tool-tier-filter__btn', 'Phase 2 hub tier filter pill — toggle, not a CTA. Lives only on /tools/ hub.'],
 ]);
 
 // Locate every class definition that looks button-shaped:

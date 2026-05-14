@@ -297,6 +297,9 @@
     // Phase G (Growth) — diagnostics + broken-link surfacing.
     diagnostics: [
       '404 view',
+      // Phase 2 hub redesign — tracks which tier filter visitors pick.
+      // Props: { tier: 'all' | 'quick' | 'standard' | 'deep' }.
+      'Tools Hub Filter',
     ],
     // Phase G.9 (Growth) — first-touch attribution + AI-search referrer
     // detection + tool-funnel + article-scroll instrumentation. Bounded

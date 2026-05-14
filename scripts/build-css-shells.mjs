@@ -164,6 +164,12 @@ const SECTIONS = [
   // by /tools/ and Phase-2 hub redesign; the .codeblock wrapper is also
   // referenced by article callouts in later phases.
   { start: 6948, shell: 'core',    label: 'Phase 1 — design tokens + MuntinUI component shells (.mtn-*)' },
+  // Phase 2 (tool-suite upgrade) — hub-specific styles (tool-card
+  // tier badge + JS-enhanced filter strip). Lives in core because
+  // the hub is in /tools/index.html which loads core + tool shells;
+  // the tier badge classes also bleed into related-tool surfaces
+  // shipped by other build scripts.
+  { start: 7160, shell: 'core',    label: 'Phase 2 — hub tier badge + tool-tier-filter strip' },
 ];
 
 // === Validation ===

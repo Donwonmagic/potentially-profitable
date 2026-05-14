@@ -3493,3 +3493,58 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
     transition:none !important;animation:none !important;
   }
 }
+
+
+/* ===== [core] Phase 2 — hub tier badge + tool-tier-filter strip (lines 7160-7212) ===== */
+/* ============ Phase 2 hub styles (tool-suite upgrade) ============
+   Tier badge on each tool card + a JS-enhanced filter strip that
+   hides cards by tier across every cluster. Progressive enhancement:
+   without JS the strip is invisible and every card shows. */
+
+/* Tier badge — sits next to .status pill in the top-right of each
+   tool card. Uses --mtn-* surface aliases so dark mode (Phase 5)
+   swaps automatically. */
+.tool-card__tier{
+  display:inline-flex;align-items:center;
+  padding:var(--badge-sm-py) var(--badge-sm-px);
+  margin-left:var(--space-1);
+  font-size:var(--badge-sm-fs);font-weight:700;
+  letter-spacing:.06em;text-transform:uppercase;
+  border-radius:999px;border:1px solid var(--mtn-border);
+  background:var(--mtn-surface-inset);color:var(--mtn-text-soft);
+  white-space:nowrap;
+}
+.tool-card__tier--quick   { background:var(--status-good-tint);  color:var(--status-good);     border-color:var(--status-good); }
+.tool-card__tier--standard{ background:var(--status-info-tint);  color:var(--status-info-deep);border-color:var(--status-info); }
+.tool-card__tier--deep    { background:var(--status-warn-tint);  color:var(--status-warn-deep);border-color:var(--status-warn-deep); }
+
+/* Filter strip — hidden until the JS handler marks it [data-tier-filter-ready] */
+.tool-tier-filter{display:flex;flex-wrap:wrap;gap:var(--space-2);align-items:center;
+  margin:var(--space-4) 0 var(--space-5);padding:var(--space-3) var(--space-4);
+  background:var(--mtn-surface-inset);border-radius:var(--r-md);
+  border:1px solid var(--mtn-border);
+  /* Default hidden — JS will reveal once it attaches the event handler */
+  display:none;
+}
+.tool-tier-filter[data-tier-filter-ready]{display:flex}
+.tool-tier-filter__btn{
+  padding:var(--space-2) var(--space-4);
+  font:inherit;font-size:13px;font-weight:600;
+  background:transparent;color:var(--mtn-text-soft);
+  border:1px solid var(--mtn-border);border-radius:999px;
+  cursor:pointer;
+  transition:background var(--t-fast) var(--ease),color var(--t-fast) var(--ease),border-color var(--t-fast) var(--ease);
+}
+.tool-tier-filter__btn:hover{background:var(--mtn-surface);color:var(--mtn-text);border-color:var(--mtn-border-strong)}
+.tool-tier-filter__btn:focus-visible{outline:none;box-shadow:var(--ring-focus)}
+.tool-tier-filter__btn.is-active{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+.tool-tier-filter__help{margin-left:auto;font-size:12.5px;color:var(--mtn-text-soft);font-style:italic;flex-basis:100%}
+@media (min-width:640px){.tool-tier-filter__help{flex-basis:auto}}
+
+/* When a filter is active, hide cards that don't match. The data
+   attribute is set on the parent <section.block> by the JS handler. */
+[data-active-tier="quick"]    .tool-card[data-tier]:not([data-tier="quick"]),
+[data-active-tier="standard"] .tool-card[data-tier]:not([data-tier="standard"]),
+[data-active-tier="deep"]     .tool-card[data-tier]:not([data-tier="deep"]) {
+  display:none;
+}
