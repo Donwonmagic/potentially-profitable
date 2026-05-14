@@ -30,7 +30,7 @@ const TOOLS = [
   '/tools/compare/',
   '/tools/cost-pulse/',
   '/tools/gbp-grader/',
-  '/tools/store-hours/holidays/',
+  '/tools/store-hours/#holidays',
   '/tools/margin-math/',
   '/tools/menu-converter/',
   '/tools/menu-copy/',
