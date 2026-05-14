@@ -1,0 +1,261 @@
+#!/usr/bin/env bash
+# audio-fact-check-rerender.sh — May 2026 fact-check audio re-render
+#
+# Drives scripts/render-post-audio.mjs to refresh every audio narration
+# manifest that the fact-check round invalidated. Runs locally; needs the
+# Kokoro model files on disk. Resumable — kill it any time, re-run the
+# script, the orchestrator picks up where it stopped.
+#
+# Usage:
+#   ./scripts/audio-fact-check-rerender.sh                 # default: all
+#                                                            18 articles,
+#                                                            6 languages,
+#                                                            Kokoro engine
+#   ./scripts/audio-fact-check-rerender.sh --languages en  # narrow set
+#   ./scripts/audio-fact-check-rerender.sh --explicit      # per-article
+#                                                            mode: render
+#                                                            one article at
+#                                                            a time so a
+#                                                            mid-batch crash
+#                                                            commits prior
+#                                                            article's
+#                                                            output before
+#                                                            moving on
+#   ./scripts/audio-fact-check-rerender.sh --dry-run       # show what
+#                                                            would run; no
+#                                                            actual render
+#
+# Environment overrides:
+#   KOKORO_MODEL   path to kokoro-v1.0.onnx
+#                  (default: ~/kokoro-models/kokoro-v1.0.onnx)
+#   KOKORO_VOICES  path to voices-v1.0.bin
+#                  (default: ~/kokoro-models/voices-v1.0.bin)
+#   PYTHON         which python interpreter to shell out to
+#                  (default: python3)
+#
+# What it re-renders:
+#   The 18 articles whose HTML the May 2026 fact-check round rewrote.
+#   English source + ES/FR/IT/PT/ZH translations. The renderer's hash
+#   check would catch most of these on its own with --all, but this
+#   script names them explicitly so the operator can read the list
+#   before launching a 60+ hour run.
+#
+# What it costs:
+#   ~30-45 minutes per article per language. 18 articles × 6 languages
+#   × ~35 minutes ≈ 60+ hours of compute total. Run overnight + into
+#   the next day. The orchestrator is resumable.
+
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+cd "$REPO_ROOT"
+
+# ─────────────────────────────────────────────────────────────────────────
+# Defaults + arg parsing
+# ─────────────────────────────────────────────────────────────────────────
+KOKORO_MODEL="${KOKORO_MODEL:-$HOME/kokoro-models/kokoro-v1.0.onnx}"
+KOKORO_VOICES="${KOKORO_VOICES:-$HOME/kokoro-models/voices-v1.0.bin}"
+LANGUAGES="en,es,fr,it,pt,zh"
+MODE="batch"            # batch | explicit
+DRY_RUN=0
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --languages)   LANGUAGES="$2"; shift 2 ;;
+    --languages=*) LANGUAGES="${1#*=}"; shift ;;
+    --explicit)    MODE="explicit"; shift ;;
+    --dry-run)     DRY_RUN=1; shift ;;
+    --kokoro-model)   KOKORO_MODEL="$2"; shift 2 ;;
+    --kokoro-voices)  KOKORO_VOICES="$2"; shift 2 ;;
+    -h|--help)
+      sed -n '2,40p' "$0"; exit 0 ;;
+    *)
+      echo "unknown arg: $1" >&2
+      echo "use --help for usage." >&2
+      exit 2 ;;
+  esac
+done
+
+# ─────────────────────────────────────────────────────────────────────────
+# Article list — every directory the fact-check commits touched
+# ─────────────────────────────────────────────────────────────────────────
+ARTICLES=(
+  blog/30-days-after-leaving-doordash-restaurant-case-study
+  blog/an-honest-doordash-math-for-independent-restaurants-2026
+  blog/how-to-get-cited-in-google-ai-overviews-restaurant
+  blog/how-to-get-more-google-reviews-for-your-restaurant
+  blog/how-to-recover-reservations-from-googles-find-a-table
+  blog/how-to-respond-to-google-reviews-restaurant-playbook-2026
+  blog/how-to-set-up-google-business-profile-for-your-restaurant
+  blog/instagram-as-restaurant-seo-strategy-2026
+  blog/loyalty-programs-for-independent-restaurants-what-works-2026
+  blog/may-2026-wave-publishing-for-citation
+  blog/my-restaurant-isnt-on-google-maps-10-minute-diagnostic
+  blog/restaurant-schema-markup-complete-paste-ready-example
+  blog/service-charges-vs-tipping-restaurant-operator-math-2026
+  blog/toast-vs-square-vs-clover-for-restaurants
+  blog/uber-eats-vs-doordash-vs-grubhub-restaurant-math-2026
+  blog/why-your-restaurant-loses-reservations-every-night
+  blog/wix-vs-custom-for-restaurants
+  learn/research/local-business-websites
+)
+
+# ─────────────────────────────────────────────────────────────────────────
+# Pre-flight checks
+# ─────────────────────────────────────────────────────────────────────────
+fail() { echo "✗ $*" >&2; exit 1; }
+ok()   { echo "✓ $*"; }
+
+[[ -x "$(command -v node)" ]] || fail "node not found on PATH."
+[[ -f "$REPO_ROOT/scripts/render-post-audio.mjs" ]] || \
+  fail "scripts/render-post-audio.mjs not found at repo root."
+
+if [[ "$DRY_RUN" -eq 0 ]]; then
+  if [[ ! -f "$KOKORO_MODEL" ]]; then
+    fail "Kokoro model not found at: $KOKORO_MODEL
+       Set KOKORO_MODEL=/path/to/kokoro-v1.0.onnx or pass --kokoro-model."
+  fi
+  if [[ ! -f "$KOKORO_VOICES" ]]; then
+    fail "Kokoro voices not found at: $KOKORO_VOICES
+       Set KOKORO_VOICES=/path/to/voices-v1.0.bin or pass --kokoro-voices."
+  fi
+fi
+
+missing=()
+for d in "${ARTICLES[@]}"; do
+  [[ -f "$d/index.html" ]] || missing+=("$d")
+done
+if (( ${#missing[@]} )); then
+  printf "✗ missing article directories:\n"
+  printf "  %s\n" "${missing[@]}"
+  fail "fix the article list in this script or pull latest before re-rendering."
+fi
+
+ok "preflight: node + renderer + kokoro models + 18 article dirs all present."
+
+# ─────────────────────────────────────────────────────────────────────────
+# Plan summary
+# ─────────────────────────────────────────────────────────────────────────
+n_articles=${#ARTICLES[@]}
+IFS=',' read -ra lang_arr <<< "$LANGUAGES"
+n_langs=${#lang_arr[@]}
+total_renders=$(( n_articles * n_langs ))
+est_minutes=$(( total_renders * 35 ))
+est_hours=$(( est_minutes / 60 ))
+
+cat <<EOF
+
+  May 2026 fact-check audio re-render
+  ───────────────────────────────────
+  Mode:        $MODE
+  Articles:    $n_articles
+  Languages:   $LANGUAGES  (${n_langs})
+  Renders:     $total_renders  (article × language)
+  Est. time:   ~${est_hours} hours  (35 min × $total_renders, single-threaded)
+  Engine:      kokoro
+  Kokoro:      $KOKORO_MODEL
+               $KOKORO_VOICES
+  Translate:   --force-retranslate (cache invalidated)
+
+EOF
+
+if (( DRY_RUN )); then
+  echo "  --dry-run set; not invoking renderer. Articles that would render:"
+  printf "    %s\n" "${ARTICLES[@]}"
+  echo
+  exit 0
+fi
+
+read -rp "Proceed? [y/N] " ans
+case "$ans" in
+  y|Y|yes|YES) ;;
+  *) echo "aborted."; exit 0 ;;
+esac
+
+# ─────────────────────────────────────────────────────────────────────────
+# Render
+# ─────────────────────────────────────────────────────────────────────────
+RENDER_FLAGS=(
+  --languages "$LANGUAGES"
+  --force-retranslate
+  --kokoro-model "$KOKORO_MODEL"
+  --kokoro-voices "$KOKORO_VOICES"
+)
+
+if [[ "$MODE" == "explicit" ]]; then
+  # Per-article mode: one article at a time so a crash commits the prior
+  # article's manifest before moving on. Slightly slower (re-init cost
+  # per article) but safer for first-pass runs.
+  for d in "${ARTICLES[@]}"; do
+    echo
+    echo "─── render: $d ───"
+    if ! node scripts/render-post-audio.mjs "$d" "${RENDER_FLAGS[@]}"; then
+      echo "✗ render failed for $d. Re-run this script — already-done work is cached."
+      exit 1
+    fi
+  done
+else
+  # Batch mode: pass every article in one invocation. The renderer
+  # walks them sequentially and shares the translation pipeline state.
+  echo
+  echo "─── render: all 18 articles ───"
+  if ! node scripts/render-post-audio.mjs "${ARTICLES[@]}" "${RENDER_FLAGS[@]}"; then
+    echo "✗ render failed. Re-run this script — already-done work is cached."
+    exit 1
+  fi
+fi
+
+# ─────────────────────────────────────────────────────────────────────────
+# Verification — confirm no audio.json still carries cut patterns
+# ─────────────────────────────────────────────────────────────────────────
+echo
+echo "─── verification: scanning audio manifests for cut patterns ───"
+
+verify_paths=()
+for d in "${ARTICLES[@]}"; do
+  for f in "$d"/audio.json "$d"/audio.es.json "$d"/audio.fr.json \
+           "$d"/audio.it.json "$d"/audio.pt.json "$d"/audio.zh.json; do
+    [[ -f "$f" ]] && verify_paths+=("$f")
+  done
+done
+
+# The patterns the fact-check round cut. Any of these surfacing in an
+# audio.json after the re-render means that article's manifest didn't
+# pick up the cleaned HTML — re-render it explicitly with:
+#   ./scripts/audio-fact-check-rerender.sh --explicit
+PATTERNS='two restaurants I manage|los dos restaurantes que manejo|paired-restaurant|fittss-law|two DMV restaurants|100-restaurant DMV cohort|maneja dos|Llevo dos restaurantes|administra dos|paired-query|90 days of paired|Usability of Local Business Websites|Jakob Nielsen.*Kara Pernice|Tacombi locations I worked with|moved up roughly five positions|roughly doubled over the quarter|15-25% lift in pack-card|8-15% of search-driven|\$165[–-]\$249'
+
+stale=()
+for f in "${verify_paths[@]}"; do
+  if grep -E -l "$PATTERNS" "$f" >/dev/null 2>&1; then
+    stale+=("$f")
+  fi
+done
+
+if (( ${#stale[@]} )); then
+  echo "✗ ${#stale[@]} audio manifest(s) still carry cut patterns:"
+  printf "  %s\n" "${stale[@]}"
+  echo
+  echo "Re-render the affected articles in --explicit mode:"
+  echo "  ./scripts/audio-fact-check-rerender.sh --explicit"
+  exit 1
+fi
+
+ok "all ${#verify_paths[@]} audio manifest(s) clean of cut patterns."
+
+# ─────────────────────────────────────────────────────────────────────────
+# Final
+# ─────────────────────────────────────────────────────────────────────────
+echo
+echo "─── audio coverage audit ───"
+node scripts/check-audio-coverage.mjs || true
+
+echo
+ok "re-render complete. Commit the new audio.*.mp3 and audio.*.json files:"
+echo
+echo "    git add -A 'blog/**/audio.*' 'learn/research/**/audio.*'"
+echo "    git status --short"
+echo "    git commit -m \"audio: re-render after May 2026 fact-check\""
+echo "    git push"
+echo
