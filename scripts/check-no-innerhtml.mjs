@@ -42,8 +42,14 @@ const repoRoot   = path.resolve(path.dirname(__filename), '..');
 //                            EN+ES hardened: every interpolated value
 //                            now escaped; final renders routed through
 //                            MuntinSafeHtml.setHTML where present).
+//   Phase 3 batch 2:   523 (plate-cost/stale-banner.js: 4 empty-string
+//                            clears converted to removeChild loops;
+//                            2 dynamic assignments wrapped with
+//                            MuntinSafeHtml.setHTML + onError fallback;
+//                            1 dynamic assignment rewritten as DOM
+//                            construction with createElement).
 // Each future Phase 3 track lowers this number; the last drives it to zero.
-const BASELINE_COUNT = 529;
+const BASELINE_COUNT = 523;
 
 // File globs to scan. Tool suite + ES mirrors. Build artifacts excluded.
 const SCAN_GLOBS = [

@@ -71,7 +71,7 @@
       return;
     }
     var queue = root.MuntinContext.readRecipeStaleQueue();
-    if (!queue.length) { host.hidden = true; host.innerHTML = ''; return; }
+    if (!queue.length) { host.hidden = true; while (host.firstChild) host.removeChild(host.firstChild); return; }
     // Group by dish for the headline count.
     var dishes = {};
     queue.forEach(function (e) { if (e && e.dish) dishes[e.dish] = true; });
@@ -87,7 +87,10 @@
     var vendorLabel = biggestVendor
       ? (biggestVendor.replace(/-/g, ' ').replace(/\b\w/g, function (c) { return c.toUpperCase(); }))
       : 'last';
-    host.innerHTML =
+    // Phase 3 hardening — escHtml already applies; setHTML adds a
+    // try/catch around the assignment so a render throw renders an
+    // empty (hidden) host instead of leaving the section blank.
+    var bannerHtml =
       '<div class="pc-stale">' +
         '<p class="pc-stale-msg">' +
           '<strong>' + dishCount + ' recipe' + (dishCount === 1 ? '' : 's') + '</strong> ' +
@@ -100,6 +103,11 @@
           '<button type="button" class="pc-stale-dismiss" id="pcStaleDismiss">Dismiss</button>' +
         '</div>' +
       '</div>';
+    if (root.MuntinSafeHtml && root.MuntinSafeHtml.setHTML) {
+      root.MuntinSafeHtml.setHTML(host, bannerHtml, { onError: function () { host.hidden = true; } });
+    } else {
+      host.innerHTML = bannerHtml;
+    }
     host.hidden = false;
     var review = $('pcStaleReview');
     var acceptAll = $('pcStaleAcceptAll');
@@ -111,7 +119,7 @@
       _applyStaleEntries(queue);
       root.MuntinContext.clearRecipeStaleQueue();
       host.hidden = true;
-      host.innerHTML = '';
+      while (host.firstChild) host.removeChild(host.firstChild);
       if (root.plausible) {
         try { root.plausible('Plate Cost Stale Accept', { props: { mode: 'all', count_bucket: queue.length < 5 ? '<5' : queue.length < 12 ? '5-11' : '12+' } }); } catch (_) {}
       }
@@ -120,7 +128,7 @@
       _recordSkuMatchLearnings(queue, 'reject-all');
       root.MuntinContext.clearRecipeStaleQueue();
       host.hidden = true;
-      host.innerHTML = '';
+      while (host.firstChild) host.removeChild(host.firstChild);
     });
   }
 
@@ -141,7 +149,7 @@
         '<button type="button" class="pc-stale-row-skip" data-idx="' + i + '">Skip</button>' +
       '</li>';
     }).join('');
-    host.innerHTML =
+    var expandedHtml =
       '<div class="pc-stale pc-stale-expanded">' +
         '<p class="pc-stale-msg"><strong>Review ingredient updates</strong> from your last invoice. Apply each individually, or accept all.</p>' +
         '<ul class="pc-stale-list">' + list + '</ul>' +
@@ -150,6 +158,11 @@
           '<button type="button" class="pc-stale-dismiss" id="pcStaleDismiss">Dismiss the rest</button>' +
         '</div>' +
       '</div>';
+    if (root.MuntinSafeHtml && root.MuntinSafeHtml.setHTML) {
+      root.MuntinSafeHtml.setHTML(host, expandedHtml, { onError: function () { host.hidden = true; } });
+    } else {
+      host.innerHTML = expandedHtml;
+    }
     host.addEventListener('click', function _onClick(ev) {
       var t = ev.target;
       if (!t) return;
@@ -173,13 +186,13 @@
         _applyStaleEntries(remaining);
         root.MuntinContext.clearRecipeStaleQueue();
         host.hidden = true;
-        host.innerHTML = '';
+        while (host.firstChild) host.removeChild(host.firstChild);
       } else if (t.id === 'pcStaleDismiss') {
         var rest = root.MuntinContext.readRecipeStaleQueue();
         _recordSkuMatchLearnings(rest, 'reject-all');
         root.MuntinContext.clearRecipeStaleQueue();
         host.hidden = true;
-        host.innerHTML = '';
+        while (host.firstChild) host.removeChild(host.firstChild);
       }
     }, true);
   }
@@ -409,10 +422,26 @@
     });
     if (!total) { line.hidden = true; return; }
     var pct = Math.round((bound / total) * 100);
-    line.innerHTML = bound + ' of ' + total + ' ingredients bound to invoices (' + pct + '%).' +
-      (unbound.length
-        ? ' <button type="button" class="pc-match-rest" id="pcMatchRest">Match the rest</button>'
-        : ' <span class="pc-match-allgood">all linked ✓</span>');
+    // Phase 3 hardening — build as DOM nodes; bound/total/pct are
+    // numbers we control, but the pattern is now consistent with
+    // the rest of the suite (no innerHTML on dynamic content).
+    while (line.firstChild) line.removeChild(line.firstChild);
+    line.appendChild(document.createTextNode(bound + ' of ' + total + ' ingredients bound to invoices (' + pct + '%).'));
+    if (unbound.length) {
+      var matchBtn = document.createElement('button');
+      matchBtn.type = 'button';
+      matchBtn.className = 'pc-match-rest';
+      matchBtn.id = 'pcMatchRest';
+      matchBtn.textContent = 'Match the rest';
+      line.appendChild(document.createTextNode(' '));
+      line.appendChild(matchBtn);
+    } else {
+      var ok = document.createElement('span');
+      ok.className = 'pc-match-allgood';
+      ok.textContent = 'all linked ✓';
+      line.appendChild(document.createTextNode(' '));
+      line.appendChild(ok);
+    }
     line.hidden = false;
     var btn = $('pcMatchRest');
     if (btn) btn.addEventListener('click', function () {
