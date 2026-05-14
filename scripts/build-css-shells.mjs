@@ -170,6 +170,10 @@ const SECTIONS = [
   // the tier badge classes also bleed into related-tool surfaces
   // shipped by other build scripts.
   { start: 7160, shell: 'core',    label: 'Phase 2 — hub tier badge + tool-tier-filter strip' },
+  // Phase 5 (tool-suite upgrade) — dark-mode token override. Lives
+  // in core because every page (not just /tools/) inherits the
+  // --mtn-* tokens via inheritance through component shells.
+  { start: 7213, shell: 'core',    label: 'Phase 5 — dark-mode token override (prefers-color-scheme + [data-theme])' },
 ];
 
 // === Validation ===

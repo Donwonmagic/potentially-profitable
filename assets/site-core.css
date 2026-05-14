@@ -3548,3 +3548,65 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 [data-active-tier="deep"]     .tool-card[data-tier]:not([data-tier="deep"]) {
   display:none;
 }
+
+
+/* ===== [core] Phase 5 — dark-mode token override (prefers-color-scheme + [data-theme]) (lines 7213-7272) ===== */
+/* ============ Phase 5 dark-mode tokens (tool-suite upgrade) ============
+   The Phase 1 component primitives all reference --mtn-surface /
+   --mtn-surface-inset / --mtn-text / --mtn-text-soft / --mtn-border /
+   --mtn-border-strong. That deliberate indirection lets a dark
+   theme swap exactly those six tokens and recolor every primitive
+   without re-declaring component rules.
+
+   Two activation paths:
+     1. @media (prefers-color-scheme: dark) — respects the OS
+        preference automatically. Default behavior.
+     2. [data-theme="dark"] on <html> — explicit override. A future
+        toggle button (Phase 5 follow-up) sets this on click and
+        persists the choice in MuntinSafeStorage so it survives reloads.
+
+   The toggle is intentionally NOT shipped in this commit — placement
+   needs a design decision (header / footer / settings drawer) the
+   plan defers to the owner. Until the toggle ships, dark mode
+   activates only via OS preference.
+
+   Status tokens (--status-good / --status-warn-deep / etc.) keep
+   their values because contrast was tuned on cream; swapping them
+   for dark would require a parallel a11y audit. The component
+   shells use the deep variants for text on tint backgrounds so
+   most surfaces work as-is. */
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --mtn-surface:        #1a1d22;
+    --mtn-surface-inset:  #14161a;
+    --mtn-text:           #f1ede5;
+    --mtn-text-soft:      #b8b3a8;
+    --mtn-border:         #2c3038;
+    --mtn-border-strong:  #3a3f48;
+  }
+}
+
+:root[data-theme="dark"] {
+  --mtn-surface:        #1a1d22;
+  --mtn-surface-inset:  #14161a;
+  --mtn-text:           #f1ede5;
+  --mtn-text-soft:      #b8b3a8;
+  --mtn-border:         #2c3038;
+  --mtn-border-strong:  #3a3f48;
+}
+
+/* The shadow elevations cast against light surfaces by default;
+   they need slight intensification in dark to stay visible. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --elev-1: 0 1px 0 rgba(0,0,0,.30), 0 1px 2px rgba(0,0,0,.30);
+    --elev-2: 0 2px 4px rgba(0,0,0,.30), 0 12px 24px -8px rgba(0,0,0,.45);
+    --elev-3: 0 4px 8px rgba(0,0,0,.32), 0 24px 48px -12px rgba(0,0,0,.50);
+  }
+}
+:root[data-theme="dark"] {
+  --elev-1: 0 1px 0 rgba(0,0,0,.30), 0 1px 2px rgba(0,0,0,.30);
+  --elev-2: 0 2px 4px rgba(0,0,0,.30), 0 12px 24px -8px rgba(0,0,0,.45);
+  --elev-3: 0 4px 8px rgba(0,0,0,.32), 0 24px 48px -12px rgba(0,0,0,.50);
+}
