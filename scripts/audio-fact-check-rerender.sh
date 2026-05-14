@@ -109,6 +109,9 @@ ARTICLES=(
   blog/why-your-restaurant-loses-reservations-every-night
   blog/wix-vs-custom-for-restaurants
   learn/research/local-business-websites
+  learn/research/fittss-law
+  learn/research/cart-abandonment-rate
+  learn/research/mobile-page-speed-3-second-rule
 )
 
 # ─────────────────────────────────────────────────────────────────────────
