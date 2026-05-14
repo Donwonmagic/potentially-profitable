@@ -99,3 +99,47 @@ node scripts/check-locale-parity.mjs
 # Lighthouse CI (existing — currently runs but doesn't gate on budgets)
 npx lhci autorun
 ```
+
+## Measured payload baseline (May 2026 post-Phase-8)
+
+HTML payload only (raw + gzipped). External CSS/JS adds shared shells
+(`site-core.css` ~50 KB gzip, `site-tool.css` ~12 KB gzip) plus per-tool
+external scripts. Measured from a local static server snapshot of the
+deployed branch state.
+
+| Tool | HTML raw (KB) | HTML gz (KB) |
+|---|---:|---:|
+| `audits/restaurant` | 847 | 236 |
+| `brand-suite` | 244 | 65 |
+| `margin-math` | 172 | 44 |
+| `open-hours` | 156 | 39 |
+| `plate-cost` | 151 | 41 |
+| `photo-brief` | 139 | 38 |
+| `gbp-grader` | 129 | 37 |
+| `menu-engineering` | 127 | 34 |
+| `menu-copy` | 125 | 34 |
+| `speed-test` | 79 | 22 |
+| `seo-grader` | 78 | 22 |
+| `schema-check` | 76 | 22 |
+| `menu-converter` | 69 | 20 |
+| `storefront-health` | 67 | 19 |
+| `mobile-check` | 67 | 19 |
+| `compare` | 63 | 19 |
+| `tech-stack` | 62 | 19 |
+| `holiday-hours` | 62 | 18 |
+| `start` (quiz) | 57 | 16 |
+| `search-ideas` | 51 | 15 |
+| `cost-pulse` | 47 | 14 |
+| `audits` (index) | 41 | 12 |
+
+**Outliers requiring exemption from the per-tool perf budget:**
+- `audits/restaurant` — 236 KB gz HTML alone exceeds the 50 KB JS budget. Documented in `docs/tool-suite-perf-a11y.md` § Performance budget; remediation is the inline-script extraction in `docs/tool-merge-plan.md`-adjacent work (out of scope here).
+- `brand-suite` — 65 KB gz; the inline render queue + decoder dominate. Extraction is queued.
+
+**Within-budget but trending high:**
+- `margin-math`, `open-hours`, `plate-cost`, `photo-brief`, `gbp-grader`, `menu-engineering`, `menu-copy` — all in the 34–44 KB gz range. The MuntinUI primitives shipped in Phase 1 + the safe-html.js wrap shipped in Phase 3 will land an extractable JS bundle here once Phase 3 retrofit reaches all 19 tools.
+
+**Healthy:**
+- The remaining 13 tools sit at 12–22 KB gz HTML — comfortably inside the 50 KB JS budget even before any shared-bundle gains.
+
+These numbers are the pre-Lighthouse baseline. Once the branch is deployed to a stable preview URL, run `npx @lhci/cli@latest autorun --config=./lighthouserc.js` and write the actual Lighthouse scores + LCP / CLS / TTI numbers below this table.
