@@ -1067,10 +1067,39 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
   function escHtml(s){ return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
+  // Phase 4 — pretty tool slug for the "Last used" chip.
+  var TOOL_LABELS = {
+    'plate-cost': 'Plate Cost', 'margin-math': 'Margin Math',
+    'menu-engineering': 'Menu Engineering', 'cost-pulse': 'Cost Pulse',
+    'menu-converter': 'Menu Converter', 'menu-copy': 'Menu Copy',
+    'photo-brief': 'Photo Brief', 'brand-suite': 'Brand Suite',
+    'gbp-grader': 'GBP Grader', 'audits/restaurant': 'Restaurant Audit',
+    'open-hours': 'Open Hours', 'holiday-hours': 'Holiday Hours',
+    'storefront-health': 'Storefront Health', 'schema-check': 'Schema Check',
+    'tech-stack': 'Tech Stack', 'mobile-check': 'Mobile Check',
+    'speed-test': 'Speed Test', 'seo-grader': 'SEO Grader',
+    'search-ideas': 'Search Ideas', 'compare': 'Compare'
+  };
+  var FOURTEEN_DAYS_MS = 14 * 24 * 60 * 60 * 1000;
+
   function render() {
     var ctx;
     try { ctx = MuntinContext.read() || {}; } catch (_) { ctx = {}; }
     var parts = [];
+    // Phase 4 — "Continue where you left off" surface. Wins top spot
+    // when a recent tool visit exists (within 14 days). Resolves to
+    // the localized URL via the slug → label map above.
+    if (typeof MuntinContext.readLastTool === 'function') {
+      try {
+        var lastTool = MuntinContext.readLastTool();
+        var recent = MuntinContext.readRecentTools ? MuntinContext.readRecentTools() : [];
+        var lastEntry = recent && recent[0];
+        if (lastTool && lastEntry && lastEntry.at && (Date.now() - lastEntry.at < FOURTEEN_DAYS_MS)) {
+          var label = TOOL_LABELS[lastTool] || lastTool;
+          parts.push({ label: 'Continue', value: label, href: '/tools/' + lastTool + '/', priority: true });
+        }
+      } catch (_) {}
+    }
     if (ctx.businessName) parts.push({ label: 'Name',         value: ctx.businessName });
     if (ctx.cuisine)      parts.push({ label: 'Cuisine',      value: ctx.cuisine });
     if (ctx.neighborhood || ctx.city) parts.push({ label: 'Neighborhood', value: ctx.neighborhood || ctx.city });
@@ -1079,6 +1108,25 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     if (Array.isArray(ctx.palette) && ctx.palette.length) parts.push({ label: 'Palette', swatches: ctx.palette.slice(0, 5) });
     if (ctx.hours && Array.isArray(ctx.hours.openingHoursSpecification) && ctx.hours.openingHoursSpecification.length) {
       parts.push({ label: 'Hours', value: 'set in Open Hours' });
+    }
+    // Phase 4 — also surface Restaurant Profile fields (name/cuisine
+    // are duplicated when set both ways, but legacy + Profile coexist
+    // during the transition). Profile fields that aren't in legacy:
+    if (typeof MuntinContext.readRestaurantProfile === 'function') {
+      try {
+        var prof = MuntinContext.readRestaurantProfile();
+        if (prof) {
+          if (prof.address && !parts.some(function(p){return p.label === 'Address';})) {
+            parts.push({ label: 'Address', value: prof.address });
+          }
+          if (prof.priceTier && !parts.some(function(p){return p.label === 'Price tier';})) {
+            parts.push({ label: 'Price tier', value: prof.priceTier });
+          }
+          if (prof.menuUrl && !parts.some(function(p){return p.label === 'Menu URL';})) {
+            parts.push({ label: 'Menu URL', value: String(prof.menuUrl).replace(/^https?:\/\//, '') });
+          }
+        }
+      } catch (_) {}
     }
     if (!parts.length) {
       pill.hidden = true;
@@ -1093,6 +1141,15 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         }).join('');
         return '<li class="ctx-pill-chip"><span style="font-weight:600;color:var(--stone)">' + escHtml(p.label) + ':</span>' +
                '<span class="ctx-pill-chip-swatches">' + dots + '</span></li>';
+      }
+      // Phase 4 — the "Continue" chip is a real link, not just a label.
+      // Visually emphasized so it reads as the primary action.
+      if (p.href) {
+        return '<li class="ctx-pill-chip ctx-pill-chip--cta">' +
+               '<a href="' + escHtml(p.href) + '" style="text-decoration:none;color:inherit;font-weight:600;">' +
+               '<span style="font-weight:700;color:var(--teal);">' + escHtml(p.label) + ' →</span> ' +
+               escHtml(p.value) +
+               '</a></li>';
       }
       return '<li class="ctx-pill-chip"><span style="font-weight:600;color:var(--stone)">' + escHtml(p.label) + ':</span> ' + escHtml(p.value) + '</li>';
     }).join('');

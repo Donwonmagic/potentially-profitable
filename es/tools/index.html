@@ -952,13 +952,41 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     site:         'Sitio',
     palette:      'Paleta',
     hours:        'Horarios',
-    hoursValue:   'configurados en Horario de Atención'
+    hoursValue:   'configurados en Horario de Atención',
+    cont:         'Continuar',
+    addr:         'Dirección',
+    priceTier:    'Rango de precio',
+    menuUrl:      'URL del menú'
   };
+  var TOOL_LABELS = {
+    'plate-cost': 'Costo del Plato', 'margin-math': 'Cálculo de Margen',
+    'menu-engineering': 'Ingeniería de Menú', 'cost-pulse': 'Pulso de Costos',
+    'menu-converter': 'Conversor de Menú', 'menu-copy': 'Inspector de Copy',
+    'photo-brief': 'Brief de Fotos', 'brand-suite': 'Suite de Marca',
+    'gbp-grader': 'Calificador GBP', 'audits/restaurant': 'Diagnóstico de Restaurante',
+    'open-hours': 'Horario Abierto', 'holiday-hours': 'Horarios Festivos',
+    'storefront-health': 'Salud del Storefront', 'schema-check': 'Chequeo de Schema',
+    'tech-stack': 'Detector de Stack', 'mobile-check': 'Revisor Móvil',
+    'speed-test': 'Test de Velocidad', 'seo-grader': 'Calificador SEO',
+    'search-ideas': 'Ideas de Búsqueda', 'compare': 'Comparador'
+  };
+  var FOURTEEN_DAYS_MS = 14 * 24 * 60 * 60 * 1000;
 
   function render() {
     var ctx;
     try { ctx = MuntinContext.read() || {}; } catch (_) { ctx = {}; }
     var parts = [];
+    if (typeof MuntinContext.readLastTool === 'function') {
+      try {
+        var lastTool = MuntinContext.readLastTool();
+        var recent = MuntinContext.readRecentTools ? MuntinContext.readRecentTools() : [];
+        var lastEntry = recent && recent[0];
+        if (lastTool && lastEntry && lastEntry.at && (Date.now() - lastEntry.at < FOURTEEN_DAYS_MS)) {
+          var label = TOOL_LABELS[lastTool] || lastTool;
+          parts.push({ label: L.cont, value: label, href: '/es/tools/' + lastTool + '/', priority: true });
+        }
+      } catch (_) {}
+    }
     if (ctx.businessName) parts.push({ label: L.name,         value: ctx.businessName });
     if (ctx.cuisine)      parts.push({ label: L.cuisine,      value: ctx.cuisine });
     if (ctx.neighborhood || ctx.city) parts.push({ label: L.neighborhood, value: ctx.neighborhood || ctx.city });
@@ -967,6 +995,22 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     if (Array.isArray(ctx.palette) && ctx.palette.length) parts.push({ label: L.palette, swatches: ctx.palette.slice(0, 5) });
     if (ctx.hours && Array.isArray(ctx.hours.openingHoursSpecification) && ctx.hours.openingHoursSpecification.length) {
       parts.push({ label: L.hours, value: L.hoursValue });
+    }
+    if (typeof MuntinContext.readRestaurantProfile === 'function') {
+      try {
+        var prof = MuntinContext.readRestaurantProfile();
+        if (prof) {
+          if (prof.address && !parts.some(function(p){return p.label === L.addr;})) {
+            parts.push({ label: L.addr, value: prof.address });
+          }
+          if (prof.priceTier && !parts.some(function(p){return p.label === L.priceTier;})) {
+            parts.push({ label: L.priceTier, value: prof.priceTier });
+          }
+          if (prof.menuUrl && !parts.some(function(p){return p.label === L.menuUrl;})) {
+            parts.push({ label: L.menuUrl, value: String(prof.menuUrl).replace(/^https?:\/\//, '') });
+          }
+        }
+      } catch (_) {}
     }
     if (!parts.length) {
       pill.hidden = true;
@@ -981,6 +1025,13 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         }).join('');
         return '<li class="ctx-pill-chip"><span style="font-weight:600;color:var(--stone)">' + escHtml(p.label) + ':</span>' +
                '<span class="ctx-pill-chip-swatches">' + dots + '</span></li>';
+      }
+      if (p.href) {
+        return '<li class="ctx-pill-chip ctx-pill-chip--cta">' +
+               '<a href="' + escHtml(p.href) + '" style="text-decoration:none;color:inherit;font-weight:600;">' +
+               '<span style="font-weight:700;color:var(--teal);">' + escHtml(p.label) + ' →</span> ' +
+               escHtml(p.value) +
+               '</a></li>';
       }
       return '<li class="ctx-pill-chip"><span style="font-weight:600;color:var(--stone)">' + escHtml(p.label) + ':</span> ' + escHtml(p.value) + '</li>';
     }).join('');
