@@ -157,6 +157,13 @@ const SECTIONS = [
   // one block; lives in core because it spans /window/, /about/,
   // every-page nav/footer, and admin pages.
   { start: 6711, shell: 'core',    label: 'Window Phase 2/3.6/4/5+ additions (sash/sidelight, attach, now, pulses, admin)' },
+  // Phase 1 (tool-suite upgrade) — additive design tokens + MuntinUI
+  // component shells (.mtn-btn / .mtn-card / .mtn-form-group / .mtn-tabs
+  // / .mtn-modal / .mtn-toast / .mtn-breadcrumb / .mtn-error-card /
+  // .mtn-empty / .codeblock). Core because the primitives are consumed
+  // by /tools/ and Phase-2 hub redesign; the .codeblock wrapper is also
+  // referenced by article callouts in later phases.
+  { start: 6948, shell: 'core',    label: 'Phase 1 — design tokens + MuntinUI component shells (.mtn-*)' },
 ];
 
 // === Validation ===

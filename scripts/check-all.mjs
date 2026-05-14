@@ -75,6 +75,10 @@ const CHECKS = [
   ['Removed slugs',       'check-removed-slugs.mjs'],
   ['Knit coverage',       'check-knit-coverage.mjs',       '--check'],
   ['Button vocabulary',   'check-button-vocabulary.mjs',   '--check'],
+  // Phase 1 (tool-suite upgrade) — guard against NEW innerHTML usage
+  // while Phase 3 retrofits existing call sites. Strict mode: fails CI
+  // if total usage exceeds the BASELINE_COUNT pinned in the script.
+  ['No new innerHTML',    'check-no-innerhtml.mjs',        '--check'],
   ['Tool header',         'check-tool-header.mjs',         '--check'],
   ['Hidden attribute',    'check-hidden-attribute.mjs',    '--check'],
   ['OG image refs',       'check-og-images.mjs'],
