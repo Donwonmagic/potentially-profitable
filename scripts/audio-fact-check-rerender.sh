@@ -6,32 +6,40 @@
 # Kokoro model files on disk. Resumable — kill it any time, re-run the
 # script, the orchestrator picks up where it stopped.
 #
+# Defaults match the original wave-1 render workflow:
+#   --engine f5   F5-TTS for English narration, Kokoro for non-English.
+#   --commit-per-article   each article's audio.*.{mp3,json} get staged,
+#                          committed ("audio: <slug>"), and pushed to the
+#                          current branch's upstream the moment its full
+#                          language set finishes. A mid-batch crash never
+#                          costs more than the in-flight article.
+#   --force-retranslate    invalidates the translation cache so cleaned
+#                          prose actually reaches FR/IT/PT/ZH chunks.
+#   Translation backend is Cloudflare Workers AI (Llama 3.3 70B) when the
+#   CF env vars are set; falls back to Google Translate otherwise.
+#
 # Usage:
-#   ./scripts/audio-fact-check-rerender.sh                 # default: all
-#                                                            18 articles,
-#                                                            6 languages,
-#                                                            Kokoro engine
-#   ./scripts/audio-fact-check-rerender.sh --languages en  # narrow set
-#   ./scripts/audio-fact-check-rerender.sh --explicit      # per-article
-#                                                            mode: render
-#                                                            one article at
-#                                                            a time so a
-#                                                            mid-batch crash
-#                                                            commits prior
-#                                                            article's
-#                                                            output before
-#                                                            moving on
-#   ./scripts/audio-fact-check-rerender.sh --dry-run       # show what
-#                                                            would run; no
-#                                                            actual render
+#   export CF_ACCOUNT_ID="..."     # editorial-tone translations via
+#   export CF_AI_TOKEN="..."       # Cloudflare Workers AI (Llama 3.3 70B)
+#
+#   ./scripts/audio-fact-check-rerender.sh                  # default
+#   ./scripts/audio-fact-check-rerender.sh --languages en   # narrow set
+#   ./scripts/audio-fact-check-rerender.sh --engine kokoro  # all-Kokoro
+#   ./scripts/audio-fact-check-rerender.sh --no-commit      # bulk render,
+#                                                             commit later
+#   ./scripts/audio-fact-check-rerender.sh --dry-run        # show plan
 #
 # Environment overrides:
-#   KOKORO_MODEL   path to kokoro-v1.0.onnx
-#                  (default: ~/kokoro-models/kokoro-v1.0.onnx)
-#   KOKORO_VOICES  path to voices-v1.0.bin
-#                  (default: ~/kokoro-models/voices-v1.0.bin)
-#   PYTHON         which python interpreter to shell out to
-#                  (default: python3)
+#   CF_ACCOUNT_ID      Cloudflare account ID for Workers AI translations
+#   CF_AI_TOKEN        Cloudflare API token (Workers AI Read scope)
+#   CF_AI_MODEL        model override; default
+#                        @cf/meta/llama-3.3-70b-instruct-fp8-fast
+#   KOKORO_MODEL       path to kokoro-v1.0.onnx
+#                      (default: ~/kokoro-models/kokoro-v1.0.onnx)
+#   KOKORO_VOICES      path to voices-v1.0.bin
+#                      (default: ~/kokoro-models/voices-v1.0.bin)
+#   PYTHON             which python interpreter to shell out to
+#                      (default: python3)
 #
 # What it re-renders:
 #   The 18 articles whose HTML the May 2026 fact-check round rewrote.
@@ -57,17 +65,19 @@ cd "$REPO_ROOT"
 KOKORO_MODEL="${KOKORO_MODEL:-$HOME/kokoro-models/kokoro-v1.0.onnx}"
 KOKORO_VOICES="${KOKORO_VOICES:-$HOME/kokoro-models/voices-v1.0.bin}"
 LANGUAGES="en,es,fr,it,pt,zh"
-MODE="batch"            # batch | explicit
+ENGINE="f5"             # matches the original wave-1 render
+COMMIT_PER_ARTICLE=1    # incremental commit + push per article (default on)
 DRY_RUN=0
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    --languages)   LANGUAGES="$2"; shift 2 ;;
-    --languages=*) LANGUAGES="${1#*=}"; shift ;;
-    --explicit)    MODE="explicit"; shift ;;
-    --dry-run)     DRY_RUN=1; shift ;;
-    --kokoro-model)   KOKORO_MODEL="$2"; shift 2 ;;
-    --kokoro-voices)  KOKORO_VOICES="$2"; shift 2 ;;
+    --languages)         LANGUAGES="$2"; shift 2 ;;
+    --languages=*)       LANGUAGES="${1#*=}"; shift ;;
+    --engine)            ENGINE="$2"; shift 2 ;;
+    --no-commit)         COMMIT_PER_ARTICLE=0; shift ;;
+    --dry-run)           DRY_RUN=1; shift ;;
+    --kokoro-model)      KOKORO_MODEL="$2"; shift 2 ;;
+    --kokoro-voices)     KOKORO_VOICES="$2"; shift 2 ;;
     -h|--help)
       sed -n '2,40p' "$0"; exit 0 ;;
     *)
@@ -134,6 +144,24 @@ fi
 
 ok "preflight: node + renderer + kokoro models + 18 article dirs all present."
 
+# Cloudflare Workers AI gates the editorial-tone (Llama 3.3 70B) translation
+# path. If the env vars aren't set, scripts/lib/translate.py falls back to
+# Google Translate's unauthenticated public endpoint with the glossary still
+# applied — solid mechanical translation, but it loses the editorial
+# register that makes FR/IT/PT/ZH narrations feel native. Warn loudly so
+# the operator can decide to abort and `export CF_ACCOUNT_ID=… CF_AI_TOKEN=…`
+# before the long run.
+if [[ -z "${CF_ACCOUNT_ID:-}" || -z "${CF_AI_TOKEN:-}" ]]; then
+  echo
+  echo "  ⚠ CF_ACCOUNT_ID + CF_AI_TOKEN not set."
+  echo "    Translations will fall back to Google Translate (mechanical, no"
+  echo "    editorial register). Set both before re-running for native-feel"
+  echo "    FR/IT/PT/ZH narrations:"
+  echo "       export CF_ACCOUNT_ID=\"...\""
+  echo "       export CF_AI_TOKEN=\"...\""
+  echo
+fi
+
 # ─────────────────────────────────────────────────────────────────────────
 # Plan summary
 # ─────────────────────────────────────────────────────────────────────────
@@ -144,19 +172,31 @@ total_renders=$(( n_articles * n_langs ))
 est_minutes=$(( total_renders * 35 ))
 est_hours=$(( est_minutes / 60 ))
 
+if [[ -n "${CF_ACCOUNT_ID:-}" && -n "${CF_AI_TOKEN:-}" ]]; then
+  TRANSLATE_DESC="Cloudflare Workers AI (Llama 3.3 70B), --force-retranslate"
+else
+  TRANSLATE_DESC="Google Translate fallback (CF env vars unset), --force-retranslate"
+fi
+
+if (( COMMIT_PER_ARTICLE )); then
+  COMMIT_DESC="--commit-per-article (auto stage + commit + push per article)"
+else
+  COMMIT_DESC="(no auto-commit; bulk render only — risky for long runs)"
+fi
+
 cat <<EOF
 
   May 2026 fact-check audio re-render
   ───────────────────────────────────
-  Mode:        $MODE
   Articles:    $n_articles
   Languages:   $LANGUAGES  (${n_langs})
   Renders:     $total_renders  (article × language)
   Est. time:   ~${est_hours} hours  (35 min × $total_renders, single-threaded)
-  Engine:      kokoro
+  Engine:      $ENGINE   (F5 for English, Kokoro for non-English)
   Kokoro:      $KOKORO_MODEL
                $KOKORO_VOICES
-  Translate:   --force-retranslate (cache invalidated)
+  Translate:   $TRANSLATE_DESC
+  Commit:      $COMMIT_DESC
 
 EOF
 
@@ -177,33 +217,27 @@ esac
 # Render
 # ─────────────────────────────────────────────────────────────────────────
 RENDER_FLAGS=(
+  --engine "$ENGINE"
   --languages "$LANGUAGES"
   --force-retranslate
   --kokoro-model "$KOKORO_MODEL"
   --kokoro-voices "$KOKORO_VOICES"
 )
+if (( COMMIT_PER_ARTICLE )); then
+  RENDER_FLAGS+=(--commit-per-article)
+fi
 
-if [[ "$MODE" == "explicit" ]]; then
-  # Per-article mode: one article at a time so a crash commits the prior
-  # article's manifest before moving on. Slightly slower (re-init cost
-  # per article) but safer for first-pass runs.
-  for d in "${ARTICLES[@]}"; do
-    echo
-    echo "─── render: $d ───"
-    if ! node scripts/render-post-audio.mjs "$d" "${RENDER_FLAGS[@]}"; then
-      echo "✗ render failed for $d. Re-run this script — already-done work is cached."
-      exit 1
-    fi
-  done
-else
-  # Batch mode: pass every article in one invocation. The renderer
-  # walks them sequentially and shares the translation pipeline state.
-  echo
-  echo "─── render: all 18 articles ───"
-  if ! node scripts/render-post-audio.mjs "${ARTICLES[@]}" "${RENDER_FLAGS[@]}"; then
-    echo "✗ render failed. Re-run this script — already-done work is cached."
-    exit 1
-  fi
+# Single batch invocation. The renderer walks the article list
+# sequentially, shares translation pipeline state, and (with
+# --commit-per-article) auto-commits + pushes each article's audio
+# the moment its language set is on disk. A crash mid-batch never
+# costs more than the in-flight article's worth of work — the
+# renderer's hash check skips already-done articles on the next run.
+echo
+echo "─── render: all $n_articles articles ───"
+if ! node scripts/render-post-audio.mjs "${ARTICLES[@]}" "${RENDER_FLAGS[@]}"; then
+  echo "✗ render failed. Re-run this script — already-committed work won't redo."
+  exit 1
 fi
 
 # ─────────────────────────────────────────────────────────────────────────
@@ -252,10 +286,16 @@ echo "─── audio coverage audit ───"
 node scripts/check-audio-coverage.mjs || true
 
 echo
-ok "re-render complete. Commit the new audio.*.mp3 and audio.*.json files:"
-echo
-echo "    git add -A 'blog/**/audio.*' 'learn/research/**/audio.*'"
-echo "    git status --short"
-echo "    git commit -m \"audio: re-render after May 2026 fact-check\""
-echo "    git push"
+if (( COMMIT_PER_ARTICLE )); then
+  ok "re-render complete. Each article's audio has already been committed + pushed."
+  echo
+  echo "    git log --oneline | grep '^.\\{7\\} audio: ' | head"
+else
+  ok "re-render complete. Commit the new audio.*.mp3 and audio.*.json files:"
+  echo
+  echo "    git add -A 'blog/**/audio.*' 'learn/research/**/audio.*'"
+  echo "    git status --short"
+  echo "    git commit -m \"audio: re-render after May 2026 fact-check\""
+  echo "    git push"
+fi
 echo
