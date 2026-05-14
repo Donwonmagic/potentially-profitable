@@ -330,10 +330,32 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     return map[c] || c;
   }
 
+  function renderInitError(message) {
+    var statusEl = document.getElementById('cpStatus');
+    if (!statusEl) return;
+    var card = document.createElement('div');
+    card.className = 'cp-card';
+    card.setAttribute('role', 'alert');
+    card.style.borderColor = 'var(--status-warn-deep, #a05a00)';
+    var strong = document.createElement('strong');
+    strong.textContent = 'Esta página no cargó por completo.';
+    var p = document.createElement('p');
+    p.appendChild(strong);
+    p.appendChild(document.createTextNode(' ' + message));
+    card.appendChild(p);
+    statusEl.appendChild(card);
+  }
+
   function init() {
-    if (typeof MuntinContext === 'undefined' ||
-        typeof MuntinCostTrend === 'undefined' ||
-        typeof MuntinSparkline === 'undefined') return;
+    var missing = [];
+    if (typeof MuntinContext === 'undefined') missing.push('MuntinContext');
+    if (typeof MuntinCostTrend === 'undefined') missing.push('MuntinCostTrend');
+    if (typeof MuntinSparkline === 'undefined') missing.push('MuntinSparkline');
+    if (missing.length) {
+      renderInitError('Un módulo necesario no cargó: ' + missing.join(', ') + '.');
+      return;
+    }
+    try {
     var trend = MuntinContext.readTrend ? MuntinContext.readTrend() : [];
     var emptyEl = document.getElementById('cpEmpty');
     var driftCard = document.getElementById('cpDriftCard');
@@ -382,6 +404,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         sparkCard.hidden = false;
         document.getElementById('cpSparkMount').innerHTML = html;
       }
+    }
+    } catch (err) {
+      renderInitError('Algo falló al leer tus facturas guardadas. ' + (err && err.message ? String(err.message) : ''));
     }
   }
 

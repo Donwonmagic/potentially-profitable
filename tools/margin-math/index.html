@@ -145,6 +145,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   .mm-pledge{display:inline-flex;align-items:center;gap:8px;margin:22px auto 0;padding:8px 16px;border:1px solid var(--status-good);background:var(--status-good-tint);color:var(--status-good);border-radius:999px;font-size:13px;font-weight:600;letter-spacing:.02em}
   .mm-pledge::before{content:'\2713';font-weight:700}
   .mm-pledge a{color:inherit;text-decoration:underline;text-underline-offset:2px}
+  .mm-pledge-cta{text-decoration:underline;text-underline-offset:2px}
   .mm-grid{display:grid;grid-template-columns:1fr;gap:16px;max-width:760px;margin:0 auto}
   @media (min-width:640px){.mm-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
   .mm-card{display:flex;flex-direction:column;padding:22px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--white);gap:12px;position:relative}
@@ -788,7 +789,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
             </aside>
             <!-- data-promise:end -->
   <p class="hero-sub" style="margin:20px auto 0;max-width:580px;">Four calculators for the decisions owners actually wrestle with — delivery break-even, price-raise simulation, prime cost, covers needed per night. Type your numbers; we do the math in your browser. No sign-up, no uploading, no server ever sees what you type.</p>
-  <a href="#how-we-protect" class="mm-pledge">Stays in your browser. <a href="#how-we-protect">See how we verified it</a></a>
+  <a href="#how-we-protect" class="mm-pledge"><span>Stays in your browser.</span> <span class="mm-pledge-cta">See how we verified it &rarr;</span></a>
   <div class="mm-actions" role="group" aria-label="Monthly Margin Report actions">
     <button type="button" class="mm-action mm-action-primary" id="mm-print-report" data-default-label="Print this month's report">
       <span class="mm-action-icon" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M7 9V3h10v6"/><rect x="4" y="9" width="16" height="9" rx="1"/><path d="M7 15h10v6H7z"/></svg></span>
