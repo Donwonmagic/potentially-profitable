@@ -300,6 +300,9 @@
       // Phase 2 hub redesign — tracks which tier filter visitors pick.
       // Props: { tier: 'all' | 'quick' | 'standard' | 'deep' }.
       'Tools Hub Filter',
+      // Phase 7 dark-mode toggle — tracks user override of OS pref.
+      // Props: { theme: 'auto' | 'light' | 'dark' }.
+      'Theme Toggle',
     ],
     // Phase G.9 (Growth) — first-touch attribution + AI-search referrer
     // detection + tool-funnel + article-scroll instrumentation. Bounded

@@ -174,6 +174,10 @@ const SECTIONS = [
   // in core because every page (not just /tools/) inherits the
   // --mtn-* tokens via inheritance through component shells.
   { start: 7213, shell: 'core',    label: 'Phase 5 — dark-mode token override (prefers-color-scheme + [data-theme])' },
+  // Phase 7 (tool-suite upgrade) — dark-mode toggle button styles
+  // (sun/moon icon swap based on [data-theme] / prefers-color-scheme).
+  // Lives in core because the button is in the global nav partial.
+  { start: 7273, shell: 'core',    label: 'Phase 7 — dark-mode toggle button (.theme-toggle)' },
 ];
 
 // === Validation ===

@@ -3610,3 +3610,45 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
   --elev-2: 0 2px 4px rgba(0,0,0,.30), 0 12px 24px -8px rgba(0,0,0,.45);
   --elev-3: 0 4px 8px rgba(0,0,0,.32), 0 24px 48px -12px rgba(0,0,0,.50);
 }
+
+
+/* ===== [core] Phase 7 — dark-mode toggle button (.theme-toggle) (lines 7273-7312) ===== */
+/* ============ Phase 7 — dark-mode toggle button =============
+   Sits in the nav next to lang-switch. Two SVG icons (sun + moon)
+   stacked; CSS shows one based on the current [data-theme] state.
+   The button itself is hidden by default; theme-toggle.js un-hides
+   on init so no-JS visitors don't see a non-functional control.
+   The button isn't a primary CTA — keep it visually quiet (matches
+   the .nav-search-btn density). */
+
+.theme-toggle{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:36px;height:36px;
+  background:transparent;border:1px solid var(--line-dark);
+  border-radius:999px;
+  color:var(--ink-soft);cursor:pointer;
+  transition:background var(--t-fast) var(--ease),
+    border-color var(--t-fast) var(--ease),
+    color var(--t-fast) var(--ease);
+}
+.theme-toggle:hover{background:var(--cream-2);border-color:var(--teal);color:var(--ink)}
+.theme-toggle:focus-visible{outline:none;box-shadow:var(--ring-focus)}
+.theme-toggle[hidden]{display:none}
+
+.theme-toggle__icon{display:none}
+/* Light mode (explicit or default): show sun. */
+.theme-toggle__icon--sun{display:block}
+.theme-toggle__icon--moon{display:none}
+/* Dark mode (explicit override OR OS preference when no override set). */
+:root[data-theme="dark"] .theme-toggle__icon--sun  { display:none }
+:root[data-theme="dark"] .theme-toggle__icon--moon { display:block }
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]) .theme-toggle__icon--sun  { display:none }
+  :root:not([data-theme="light"]) .theme-toggle__icon--moon { display:block }
+}
+
+/* Hide on narrow screens where every pixel in the nav matters; the
+   OS preference still drives dark mode automatically. */
+@media (max-width:1100px){
+  .theme-toggle{display:none !important}
+}
