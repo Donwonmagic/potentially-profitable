@@ -429,7 +429,7 @@ main{padding-top:64px}
   "name": "Roma Cucina",            // EDIT
   "image": "https://romacucina.example/og.jpg",
   "telephone": "+1-301-555-0123",   // EDIT
-  "priceRange": "$$",
+  "priceRange": "$",
   "servesCuisine": ["Italian", "Pasta"],
   "address": {
     "@type": "PostalAddress",
@@ -506,7 +506,7 @@ main{padding-top:64px}
           <span class="snippet-label">After &mdash; rich result with six new surface elements</span>
           <p style="font-family:Arial,sans-serif;color:#1a0dab;font-size:18px;margin:0 0 4px"><strong>Roma Cucina &mdash; Italian Restaurant in Silver Spring</strong></p>
           <p style="font-family:Arial,sans-serif;color:#006621;font-size:13px;margin:0 0 6px">romacucina.example &rsaquo; menu</p>
-          <p style="font-family:Arial,sans-serif;color:#f9ab00;font-size:14px;margin:0 0 4px"><strong>&starf;&starf;&starf;&starf;&starf;</strong> <span style="color:#545454">4.6 (412) &middot; <span style="color:#0b8043">$$</span> &middot; <span style="color:#0b8043">Open</span> &middot; Closes 10 PM &middot; <span style="color:#1a0dab">Map pin</span></span></p>
+          <p style="font-family:Arial,sans-serif;color:#f9ab00;font-size:14px;margin:0 0 4px"><strong>&starf;&starf;&starf;&starf;&starf;</strong> <span style="color:#545454">4.6 (412) &middot; <span style="color:#0b8043">$</span> &middot; <span style="color:#0b8043">Open</span> &middot; Closes 10 PM &middot; <span style="color:#1a0dab">Map pin</span></span></p>
           <p style="font-family:Arial,sans-serif;color:#545454;font-size:14px;margin:0 0 6px">Italian restaurant in Silver Spring serving hand-rolled pasta and seasonal entrees. Reservations welcome.</p>
           <p style="font-family:Arial,sans-serif;color:#1a73e8;font-size:13px;margin:0"><strong>[ Reserve a table ]</strong> &middot; <strong>[ Directions ]</strong> &middot; <strong>[ Call ]</strong></p>
         </div>
@@ -614,7 +614,7 @@ main{padding-top:64px}
     <hr style="margin:48px 0 32px;border:0;border-top:1px solid var(--line)">
 
     <p style="font-style:italic;font-size:15px;color:var(--ink-soft);text-align:center;margin:0">
-      Don Goldstein manages two DMV restaurants and runs <a href="/" style="color:var(--teal)">Muntin Digital</a>. The example schema above is adapted from one of those two restaurants, May 2026 production.
+      Don Goldstein is a restaurant operator and runs <a href="/" style="color:var(--teal)">Muntin Digital</a>. The example schema above follows the six-type pattern Google Search Central documents for restaurant pages; every field maps to the same vocabulary the <a href="/blog/restaurant-schema-markup-6-types-google-uses/" style="color:var(--teal)">six-types walkthrough</a> covers.
     </p>
 
     <section style="margin-top:48px;padding-top:32px;border-top:1px solid var(--line)">
@@ -639,7 +639,22 @@ main{padding-top:64px}
               </ul>
             </aside>
             <!-- article-takeaways:end -->
-    </article>
+    <!-- article-author-card:start -->
+<aside class="article-author-card" aria-labelledby="article-author-h" style="margin:48px 0 0;padding:24px;border:1px solid var(--line);border-radius:12px;background:var(--cream-2);display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap">
+  <div class="article-author-card__avatar" aria-hidden="true" style="flex:0 0 auto;width:72px;height:72px;border-radius:50%;background:var(--teal);color:var(--cream);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:34px;font-weight:500;letter-spacing:-0.02em">D</div>
+  <div class="article-author-card__body" style="flex:1 1 280px;min-width:0">
+    <p class="article-author-card__eyebrow" style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--stone);margin:0 0 4px" id="article-author-h">About the author</p>
+    <p class="article-author-card__name" style="font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);margin:0 0 6px"><a href="/about/" style="color:var(--ink)">Don Goldstein</a></p>
+    <p class="article-author-card__bio" style="font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 10px">I&rsquo;m Don. I&rsquo;m front-of-house manager at Tacombi in Bethesda and run Muntin Digital, the one-person web studio behind this library. Every article here comes from a problem I saw on the floor or in a client audit.</p>
+    <p class="article-author-card__creds" style="font-size:12px;color:var(--stone);margin:0 0 12px;letter-spacing:0.01em">ServSafe Manager &middot; ServSafe Allergens &middot; RAM Alcohol Awareness &middot; Maryland LLC</p>
+    <p class="article-author-card__cta" style="font-size:14px;margin:0">
+      <a href="/about/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none;margin-right:14px">More about Don &rarr;</a>
+      <a href="/window/" class="js-window" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">Email Don &rarr;</a>
+    </p>
+  </div>
+</aside>
+<!-- article-author-card:end -->
+  </article>
 
   <aside class="post-end-mark" aria-hidden="true">
     <hr/>

@@ -54,8 +54,8 @@ function buildCard(locale) {
     ? 'ServSafe Manager &middot; ServSafe Allergens &middot; RAM Alcohol Awareness &middot; LLC de Maryland'
     : 'ServSafe Manager &middot; ServSafe Allergens &middot; RAM Alcohol Awareness &middot; Maryland LLC';
   const bio = locale === 'es'
-    ? 'Soy Don. Llevo dos restaurantes en el DMV &mdash; The Irish Inn at Glen Echo y Tacombi Bethesda &mdash; y construyo Muntin Digital, el estudio web de una sola persona detr&aacute;s de esta biblioteca. Cada art&iacute;culo aqu&iacute; sale de un problema que vi en piso o en una auditor&iacute;a de cliente.'
-    : 'I&rsquo;m Don. I manage two DMV restaurants &mdash; The Irish Inn at Glen Echo and Tacombi Bethesda &mdash; and I run Muntin Digital, the one-person web studio behind this library. Every article here comes from a problem I saw on the floor or in a client audit.';
+    ? 'Soy Don. Soy gerente de sal&oacute;n en Tacombi en Bethesda y construyo Muntin Digital, el estudio web de una sola persona detr&aacute;s de esta biblioteca. Cada art&iacute;culo aqu&iacute; sale de un problema que vi en piso o en una auditor&iacute;a de cliente.'
+    : 'I&rsquo;m Don. I&rsquo;m front-of-house manager at Tacombi in Bethesda and run Muntin Digital, the one-person web studio behind this library. Every article here comes from a problem I saw on the floor or in a client audit.';
   const moreLabel = locale === 'es' ? 'Conoce a Don &rarr;' : 'More about Don &rarr;';
   const writeLabel = locale === 'es' ? 'Escr&iacute;bele &rarr;' : 'Email Don &rarr;';
   return [

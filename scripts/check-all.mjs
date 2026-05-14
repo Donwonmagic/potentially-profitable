@@ -28,6 +28,13 @@ const repoRoot   = path.resolve(path.dirname(__filename), '..');
 const CHECKS = [
   ['Name coherence',      'check-name-coherence.mjs',      '--check'],
   ['Counts coherence',    'check-counts-coherence.mjs',    '--check'],
+  // Phase-fact-check — blocklist for the patterns that came back as
+  // fabricated operator data in May 2026. See data/sourced-claims.json
+  // for the registry of verified claims and docs/fact-check.md for the
+  // editorial rule. Fail-CI from day 1; new claims must either land in
+  // the registry with a real source URL, be cited inline via a
+  // <details class="cite"> drawer, or be labeled illustrative.
+  ['Fabrication blocklist','check-fabrications.mjs',       '--check'],
   // Phase-2 cohesion guards. Sentinel-escape is fail-CI from day 1
   // (the regression cost was 247 frozen pages); banned-words is
   // warn-only at first so existing usage can be flagged + fixed

@@ -31,11 +31,11 @@ intentionally updated.
 
 ## Reference script
 
-> Hi, I'm Don from Muntin Digital — I manage two restaurants and build
-> websites for operators across the DMV. Most restaurant sites quietly
-> leak about a third of their mobile traffic before a diner even tries
-> to book a table. This post breaks down the six places that leak
-> usually happens.
+> Hi, I'm Don from Muntin Digital — I'm front-of-house manager at a DMV
+> restaurant and I build websites for operators across the region. Most
+> restaurant sites quietly leak about a third of their mobile traffic
+> before a diner even tries to book a table. This post breaks down the
+> six places that leak usually happens.
 
 ## One-time install (on your Mac)
 

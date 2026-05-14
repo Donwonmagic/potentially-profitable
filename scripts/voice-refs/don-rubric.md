@@ -106,8 +106,9 @@ alone. It works because the previous sentence did the analysis.
 ## Grammar of "we" and "I"
 
 - **"I"** appears when Don is speaking from his own kitchen
-  experience or his own restaurants. Never from a generic studio
-  voice. "I manage two restaurants and build websites…" is "I."
+  experience or his current role on the floor at Tacombi. Never
+  from a generic studio voice. "I'm front-of-house manager at
+  Tacombi and build websites…" is "I."
 - **"We"** is Muntin Digital — the studio, the tools, the audit
   pipeline. "We do the math in your browser." "We don't store
   your numbers."
