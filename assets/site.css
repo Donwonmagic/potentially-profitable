@@ -6944,3 +6944,408 @@ table[data-viz-sortable] th[aria-sort="descending"]::after{content:"\2193";color
 .admin-callbacks__voice-label{font-size:12px;color:var(--ink-soft);font-style:italic;margin:8px 0 4px}
 .admin-callbacks__voice-label--deleted{color:var(--stone)}
 .admin-callbacks__meta{font-size:12px;color:var(--ink-soft);font-style:italic;margin:8px 0 0}
+
+/* ============ Phase 1 tokens (tool-suite upgrade) ============
+   Additive tokens that the MuntinUI primitives consume. Existing
+   surface / elevation / status / type / motion / radii tokens above
+   are reused as-is; this block only adds what was missing:
+
+     1. An 8-grid space scale (replaces arbitrary 18/20/22/28/36 px
+        values found across 21 tools).
+
+     2. A 4th status band for non-graded informational signals.
+
+     3. Badge size variants used by hub difficulty/category chips.
+
+     4. Component-internal surface aliases (--mtn-*) so Phase 5
+        dark-mode can swap two declarations instead of every rule. */
+:root{
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  --status-info:        #1F4E5B;
+  --status-info-tint:   #E8F1F3;
+  --status-info-deep:   #143640;
+
+  --badge-sm-py: 2px;  --badge-sm-px: 6px;  --badge-sm-fs: 10.5px;
+  --badge-md-py: 4px;  --badge-md-px: 10px; --badge-md-fs: 12px;
+  --badge-lg-py: 6px;  --badge-lg-px: 14px; --badge-lg-fs: 13.5px;
+
+  --mtn-surface:        var(--surface-1);
+  --mtn-surface-inset:  var(--surface-inset);
+  --mtn-text:           var(--ink);
+  --mtn-text-soft:      var(--ink-soft);
+  --mtn-border:         var(--line);
+  --mtn-border-strong:  var(--line-dark);
+}
+
+/* ============ MuntinUI component shells (Phase 1) ============
+   Visual contract for the headless DOM that tools/_shared/ui/ui.js
+   produces. JS owns construction + a11y; CSS owns appearance. */
+
+.mtn-btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  font:inherit;font-weight:600;letter-spacing:.01em;
+  border:1px solid transparent;border-radius:var(--r-input);
+  padding:var(--space-3) var(--space-5);min-height:44px;
+  cursor:pointer;transition:background var(--t-fast) var(--ease),
+    border-color var(--t-fast) var(--ease),
+    transform var(--t-micro) var(--ease-spring),
+    box-shadow var(--t-fast) var(--ease);
+}
+.mtn-btn:disabled{opacity:.55;cursor:not-allowed}
+.mtn-btn:focus-visible{outline:none;box-shadow:var(--ring-focus)}
+.mtn-btn--sm{padding:var(--space-2) var(--space-4);min-height:36px;font-size:13.5px}
+.mtn-btn--md{font-size:15px}
+.mtn-btn--lg{padding:var(--space-4) var(--space-6);min-height:52px;font-size:16px}
+.mtn-btn--primary{background:var(--teal);color:var(--cream);border-color:var(--teal)}
+.mtn-btn--primary:hover:not(:disabled){background:var(--teal-dark);border-color:var(--teal-dark)}
+.mtn-btn--ghost{background:transparent;color:var(--ink);border-color:var(--mtn-border-strong)}
+.mtn-btn--ghost:hover:not(:disabled){background:var(--mtn-surface-inset);border-color:var(--ink)}
+.mtn-btn--link{background:transparent;color:var(--teal);border-color:transparent;padding-left:0;padding-right:0;min-height:auto;text-decoration:underline;text-underline-offset:3px}
+.mtn-btn--link:hover:not(:disabled){color:var(--teal-dark)}
+.mtn-btn--danger{background:#A03A2A;color:var(--cream);border-color:#A03A2A}
+.mtn-btn--danger:hover:not(:disabled){background:#7E2D20;border-color:#7E2D20}
+
+.mtn-card{
+  background:var(--mtn-surface);border:1px solid var(--mtn-border);
+  border-radius:var(--r-md);padding:var(--space-5);
+  box-shadow:var(--elev-1);
+}
+.mtn-card__title{margin:0 0 var(--space-3)}
+.mtn-card__title :is(h2,h3,h4){font-family:var(--font-display);font-weight:500;margin:0;font-size:var(--fs-h4)}
+.mtn-card__body{font-size:var(--fs-body);line-height:var(--leading-card);color:var(--mtn-text)}
+.mtn-card__footer{margin-top:var(--space-4);padding-top:var(--space-3);border-top:1px solid var(--mtn-border);font-size:13.5px;color:var(--mtn-text-soft)}
+.mtn-card--info{background:var(--status-info-tint);border-color:var(--status-info)}
+.mtn-card--success{background:var(--status-good-tint);border-color:var(--status-good)}
+.mtn-card--warning{background:var(--status-warn-tint);border-color:var(--status-warn-deep)}
+.mtn-card--danger{background:#FBE8E3;border-color:#A03A2A}
+
+.mtn-form-group{display:flex;flex-direction:column;gap:var(--space-2);margin-bottom:var(--space-4)}
+.mtn-form-group--error .mtn-form-label{color:#A03A2A}
+.mtn-form-label{font-size:var(--fs-eyebrow);font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mtn-text-soft)}
+.mtn-form-required{color:#A03A2A}
+.mtn-form-hint{font-size:13px;color:var(--mtn-text-soft);line-height:1.4}
+.mtn-form-error{font-size:13px;color:#A03A2A;font-weight:500;padding:var(--space-2) var(--space-3);background:#FBE8E3;border-radius:var(--r-sm);margin-top:var(--space-1)}
+.mtn-form-group input[type="text"],
+.mtn-form-group input[type="email"],
+.mtn-form-group input[type="url"],
+.mtn-form-group input[type="number"],
+.mtn-form-group input[type="search"],
+.mtn-form-group input[type="tel"],
+.mtn-form-group input[type="time"],
+.mtn-form-group input[type="date"],
+.mtn-form-group textarea,
+.mtn-form-group select{
+  width:100%;
+  padding:var(--space-3) var(--space-4);
+  font:inherit;font-size:15px;
+  border:1px solid var(--mtn-border);
+  border-radius:var(--r-input);
+  background:var(--surface-2);
+  color:var(--mtn-text);
+  transition:border-color var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease);
+  min-height:44px;
+}
+.mtn-form-group :is(input,textarea,select):focus-visible{outline:none;border-color:var(--teal);box-shadow:var(--ring-focus)}
+.mtn-form-group :is(input,textarea,select)[aria-invalid="true"]{border-color:#A03A2A}
+.mtn-form-group textarea{min-height:96px;resize:vertical}
+
+.mtn-error-card{
+  display:flex;flex-direction:column;gap:var(--space-2);
+  padding:var(--space-4) var(--space-5);
+  border:1px solid #A03A2A;background:#FBE8E3;
+  border-radius:var(--r-sm);color:var(--mtn-text);
+}
+.mtn-error-card--warning{border-color:var(--status-warn-deep);background:var(--status-warn-tint)}
+.mtn-error-card--info{border-color:var(--status-info);background:var(--status-info-tint)}
+.mtn-error-card__title{font-weight:700;font-size:15px}
+.mtn-error-card__msg{margin:0;font-size:14px;line-height:1.5}
+
+.mtn-empty{
+  display:flex;flex-direction:column;align-items:center;gap:var(--space-3);
+  padding:var(--space-7) var(--space-5);text-align:center;
+  background:var(--mtn-surface-inset);border:1px dashed var(--mtn-border-strong);
+  border-radius:var(--r-md);
+}
+.mtn-empty__title{font-family:var(--font-display);font-size:var(--fs-h4);font-weight:500;margin:0;color:var(--mtn-text)}
+.mtn-empty__body{margin:0;font-size:var(--fs-body);color:var(--mtn-text-soft);max-width:48ch}
+
+.mtn-toast-container{
+  position:fixed;bottom:var(--space-5);left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;gap:var(--space-2);
+  z-index:9999;pointer-events:none;
+}
+.mtn-toast{
+  pointer-events:auto;
+  padding:var(--space-3) var(--space-4);
+  background:var(--ink);color:var(--cream);
+  border-radius:var(--r-sm);font-size:14px;font-weight:500;
+  box-shadow:var(--elev-2);
+  opacity:0;transform:translateY(8px);
+  transition:opacity var(--t-fast) var(--ease),transform var(--t-fast) var(--ease);
+  max-width:min(420px,calc(100vw - var(--space-5) * 2));
+}
+.mtn-toast--visible{opacity:1;transform:translateY(0)}
+.mtn-toast--success{background:var(--status-good)}
+.mtn-toast--warning{background:var(--status-warn-deep);color:#fff}
+.mtn-toast--danger{background:#A03A2A}
+
+.mtn-modal-backdrop{
+  position:fixed;inset:0;background:rgba(20,22,26,.55);
+  display:flex;align-items:center;justify-content:center;
+  z-index:9998;padding:var(--space-4);
+  animation:mtn-fade-in var(--t-fast) var(--ease) both;
+}
+@keyframes mtn-fade-in{from{opacity:0}to{opacity:1}}
+.mtn-modal{
+  background:var(--surface-2);border-radius:var(--r-md);
+  box-shadow:var(--elev-3);padding:var(--space-6);
+  max-width:min(560px,calc(100vw - var(--space-5) * 2));
+  max-height:calc(100vh - var(--space-7));
+  overflow:auto;outline:none;
+}
+.mtn-modal__title{font-family:var(--font-display);font-size:var(--fs-h3);font-weight:500;margin:0 0 var(--space-4)}
+.mtn-modal__body{font-size:var(--fs-body);line-height:var(--leading-card);margin:0 0 var(--space-5)}
+.mtn-modal__actions{display:flex;flex-wrap:wrap;gap:var(--space-3);justify-content:flex-end}
+
+.mtn-breadcrumb{font-size:13px;color:var(--mtn-text-soft)}
+.mtn-breadcrumb__list{display:flex;flex-wrap:wrap;gap:var(--space-2);align-items:center;list-style:none;margin:0;padding:0}
+.mtn-breadcrumb__item{display:inline-flex;align-items:center;gap:var(--space-2)}
+.mtn-breadcrumb__item a{color:var(--mtn-text-soft);text-decoration:none;border-bottom:1px solid transparent;transition:border-color var(--t-fast) var(--ease)}
+.mtn-breadcrumb__item a:hover{border-bottom-color:var(--teal);color:var(--teal)}
+.mtn-breadcrumb__current{color:var(--mtn-text);font-weight:500}
+.mtn-breadcrumb__sep{color:var(--stone-2)}
+
+.mtn-tabs{display:flex;flex-direction:column;gap:var(--space-4)}
+.mtn-tabs__list{display:flex;gap:var(--space-2);flex-wrap:wrap;border-bottom:1px solid var(--mtn-border);padding-bottom:var(--space-2)}
+.mtn-tabs__btn{
+  padding:var(--space-2) var(--space-4);
+  background:transparent;border:1px solid transparent;border-radius:var(--r-input);
+  font:inherit;font-size:14px;font-weight:600;color:var(--mtn-text-soft);
+  cursor:pointer;
+  transition:background var(--t-fast) var(--ease),color var(--t-fast) var(--ease);
+}
+.mtn-tabs__btn:hover{color:var(--mtn-text);background:var(--mtn-surface-inset)}
+.mtn-tabs__btn:focus-visible{outline:none;box-shadow:var(--ring-focus)}
+.mtn-tabs__btn[aria-selected="true"]{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+.mtn-tabs__panel{outline:none}
+.mtn-tabs__panel:focus-visible{box-shadow:var(--ring-focus)}
+
+.codeblock{
+  display:block;
+  padding:var(--space-3) var(--space-4);
+  background:var(--mtn-surface-inset);
+  border:1px solid var(--mtn-border);
+  border-radius:var(--r-sm);
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:12.5px;line-height:1.5;
+  color:var(--mtn-text);
+  white-space:pre-wrap;word-break:break-word;
+  overflow:auto;
+}
+
+@media (prefers-reduced-motion: reduce){
+  .mtn-btn,.mtn-form-group :is(input,textarea,select),.mtn-toast,.mtn-modal-backdrop{
+    transition:none !important;animation:none !important;
+  }
+}
+
+/* ============ Phase 2 hub styles (tool-suite upgrade) ============
+   Tier badge on each tool card + a JS-enhanced filter strip that
+   hides cards by tier across every cluster. Progressive enhancement:
+   without JS the strip is invisible and every card shows. */
+
+/* Tier badge — sits next to .status pill in the top-right of each
+   tool card. Uses --mtn-* surface aliases so dark mode (Phase 5)
+   swaps automatically. */
+.tool-card__tier{
+  display:inline-flex;align-items:center;
+  padding:var(--badge-sm-py) var(--badge-sm-px);
+  margin-left:var(--space-1);
+  font-size:var(--badge-sm-fs);font-weight:700;
+  letter-spacing:.06em;text-transform:uppercase;
+  border-radius:999px;border:1px solid var(--mtn-border);
+  background:var(--mtn-surface-inset);color:var(--mtn-text-soft);
+  white-space:nowrap;
+}
+.tool-card__tier--quick   { background:var(--status-good-tint);  color:var(--status-good);     border-color:var(--status-good); }
+.tool-card__tier--standard{ background:var(--status-info-tint);  color:var(--status-info-deep);border-color:var(--status-info); }
+.tool-card__tier--deep    { background:var(--status-warn-tint);  color:var(--status-warn-deep);border-color:var(--status-warn-deep); }
+
+/* Filter strip — hidden until the JS handler marks it [data-tier-filter-ready] */
+.tool-tier-filter{display:flex;flex-wrap:wrap;gap:var(--space-2);align-items:center;
+  margin:var(--space-4) 0 var(--space-5);padding:var(--space-3) var(--space-4);
+  background:var(--mtn-surface-inset);border-radius:var(--r-md);
+  border:1px solid var(--mtn-border);
+  /* Default hidden — JS will reveal once it attaches the event handler */
+  display:none;
+}
+.tool-tier-filter[data-tier-filter-ready]{display:flex}
+.tool-tier-filter__btn{
+  padding:var(--space-2) var(--space-4);
+  font:inherit;font-size:13px;font-weight:600;
+  background:transparent;color:var(--mtn-text-soft);
+  border:1px solid var(--mtn-border);border-radius:999px;
+  cursor:pointer;
+  transition:background var(--t-fast) var(--ease),color var(--t-fast) var(--ease),border-color var(--t-fast) var(--ease);
+}
+.tool-tier-filter__btn:hover{background:var(--mtn-surface);color:var(--mtn-text);border-color:var(--mtn-border-strong)}
+.tool-tier-filter__btn:focus-visible{outline:none;box-shadow:var(--ring-focus)}
+.tool-tier-filter__btn.is-active{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+.tool-tier-filter__help{margin-left:auto;font-size:12.5px;color:var(--mtn-text-soft);font-style:italic;flex-basis:100%}
+@media (min-width:640px){.tool-tier-filter__help{flex-basis:auto}}
+
+/* When a filter is active, hide cards that don't match. The data
+   attribute is set on the parent <section.block> by the JS handler. */
+[data-active-tier="quick"]    .tool-card[data-tier]:not([data-tier="quick"]),
+[data-active-tier="standard"] .tool-card[data-tier]:not([data-tier="standard"]),
+[data-active-tier="deep"]     .tool-card[data-tier]:not([data-tier="deep"]) {
+  display:none;
+}
+
+/* ============ Phase 5 dark-mode tokens (tool-suite upgrade) ============
+   The Phase 1 component primitives all reference --mtn-surface /
+   --mtn-surface-inset / --mtn-text / --mtn-text-soft / --mtn-border /
+   --mtn-border-strong. That deliberate indirection lets a dark
+   theme swap exactly those six tokens and recolor every primitive
+   without re-declaring component rules.
+
+   Two activation paths:
+     1. @media (prefers-color-scheme: dark) — respects the OS
+        preference automatically. Default behavior.
+     2. [data-theme="dark"] on <html> — explicit override. A future
+        toggle button (Phase 5 follow-up) sets this on click and
+        persists the choice in MuntinSafeStorage so it survives reloads.
+
+   The toggle is intentionally NOT shipped in this commit — placement
+   needs a design decision (header / footer / settings drawer) the
+   plan defers to the owner. Until the toggle ships, dark mode
+   activates only via OS preference.
+
+   Status tokens (--status-good / --status-warn-deep / etc.) keep
+   their values because contrast was tuned on cream; swapping them
+   for dark would require a parallel a11y audit. The component
+   shells use the deep variants for text on tint backgrounds so
+   most surfaces work as-is. */
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --mtn-surface:        #1a1d22;
+    --mtn-surface-inset:  #14161a;
+    --mtn-text:           #f1ede5;
+    --mtn-text-soft:      #b8b3a8;
+    --mtn-border:         #2c3038;
+    --mtn-border-strong:  #3a3f48;
+  }
+}
+
+:root[data-theme="dark"] {
+  --mtn-surface:        #1a1d22;
+  --mtn-surface-inset:  #14161a;
+  --mtn-text:           #f1ede5;
+  --mtn-text-soft:      #b8b3a8;
+  --mtn-border:         #2c3038;
+  --mtn-border-strong:  #3a3f48;
+}
+
+/* The shadow elevations cast against light surfaces by default;
+   they need slight intensification in dark to stay visible. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --elev-1: 0 1px 0 rgba(0,0,0,.30), 0 1px 2px rgba(0,0,0,.30);
+    --elev-2: 0 2px 4px rgba(0,0,0,.30), 0 12px 24px -8px rgba(0,0,0,.45);
+    --elev-3: 0 4px 8px rgba(0,0,0,.32), 0 24px 48px -12px rgba(0,0,0,.50);
+  }
+}
+:root[data-theme="dark"] {
+  --elev-1: 0 1px 0 rgba(0,0,0,.30), 0 1px 2px rgba(0,0,0,.30);
+  --elev-2: 0 2px 4px rgba(0,0,0,.30), 0 12px 24px -8px rgba(0,0,0,.45);
+  --elev-3: 0 4px 8px rgba(0,0,0,.32), 0 24px 48px -12px rgba(0,0,0,.50);
+}
+
+/* ============ Phase 7 — dark-mode toggle button =============
+   Sits in the nav next to lang-switch. Two SVG icons (sun + moon)
+   stacked; CSS shows one based on the current [data-theme] state.
+   The button itself is hidden by default; theme-toggle.js un-hides
+   on init so no-JS visitors don't see a non-functional control.
+   The button isn't a primary CTA — keep it visually quiet (matches
+   the .nav-search-btn density). */
+
+.theme-toggle{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:36px;height:36px;
+  background:transparent;border:1px solid var(--line-dark);
+  border-radius:999px;
+  color:var(--ink-soft);cursor:pointer;
+  transition:background var(--t-fast) var(--ease),
+    border-color var(--t-fast) var(--ease),
+    color var(--t-fast) var(--ease);
+}
+.theme-toggle:hover{background:var(--cream-2);border-color:var(--teal);color:var(--ink)}
+.theme-toggle:focus-visible{outline:none;box-shadow:var(--ring-focus)}
+.theme-toggle[hidden]{display:none}
+
+.theme-toggle__icon{display:none}
+/* Light mode (explicit or default): show sun. */
+.theme-toggle__icon--sun{display:block}
+.theme-toggle__icon--moon{display:none}
+/* Dark mode (explicit override OR OS preference when no override set). */
+:root[data-theme="dark"] .theme-toggle__icon--sun  { display:none }
+:root[data-theme="dark"] .theme-toggle__icon--moon { display:block }
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]) .theme-toggle__icon--sun  { display:none }
+  :root:not([data-theme="light"]) .theme-toggle__icon--moon { display:block }
+}
+
+/* Hide on narrow screens where every pixel in the nav matters; the
+   OS preference still drives dark mode automatically. */
+@media (max-width:1100px){
+  .theme-toggle{display:none !important}
+}
+
+/* ============ Phase 4 — next-tool recommendation card =============
+   Mounted at the end of a tool's result region by
+   MuntinNextTool.render(). Visually quiet so it doesn't compete
+   with the tool's own primary CTA — it's a *next step*, not a
+   replacement CTA. Card border-left matches the teal accent the
+   rest of the suite uses for "what's next" surfaces. */
+
+.mtn-next-tool{
+  display:flex;flex-direction:column;gap:var(--space-2);
+  margin:var(--space-6) 0 0;
+  padding:var(--space-4) var(--space-5);
+  background:var(--mtn-surface-inset);
+  border:1px solid var(--mtn-border);
+  border-left:3px solid var(--teal);
+  border-radius:var(--r-md);
+}
+.mtn-next-tool__eyebrow{
+  margin:0;
+  font-size:var(--fs-eyebrow);font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;
+  color:var(--teal);
+}
+.mtn-next-tool__body{
+  margin:0;
+  font-size:var(--fs-body);line-height:var(--leading-card);
+  color:var(--mtn-text);
+}
+.mtn-next-tool__link{
+  align-self:flex-start;
+  margin-top:var(--space-2);
+  padding:var(--space-2) var(--space-4);
+  background:var(--teal);color:var(--cream);
+  border:1px solid var(--teal);border-radius:var(--r-input);
+  font:inherit;font-size:14px;font-weight:600;
+  text-decoration:none;
+  transition:background var(--t-fast) var(--ease),border-color var(--t-fast) var(--ease);
+}
+.mtn-next-tool__link:hover{background:var(--teal-dark);border-color:var(--teal-dark)}
+.mtn-next-tool__link:focus-visible{outline:none;box-shadow:var(--ring-focus)}

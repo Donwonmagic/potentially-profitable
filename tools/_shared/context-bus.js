@@ -406,6 +406,127 @@
     return write(current);
   }
 
+  // -------------------------------------------------------------------
+  // Phase 4 — Restaurant Profile.
+  //
+  // The suite was 21 tools that each re-asked for the owner's
+  // restaurant name, address, cuisine, menu URL, etc. The audit
+  // showed this drove abandonment ("forms again"). The Profile is
+  // the suite-wide source of truth: tools READ from it to prefill
+  // their inputs, and tools WRITE to it when they discover a
+  // canonical value (e.g. tech-stack writes the detected platform).
+  //
+  // The shape is intentionally narrow — anything bigger lives in
+  // tool-specific keys (saved dishes, palette, invoice trend).
+  //
+  //   restaurantProfile: {
+  //     name, address, cuisine, priceTier,
+  //     menuUrl, gbpUrl, websiteUrl
+  //   }
+  //
+  // A separate `lastTool` + ring-buffered `recentTools` tracks the
+  // user's path so the hub can render "Continue where you left off"
+  // and the next-tool recommender can route from result signals.
+  //
+  // Privacy posture: localStorage only. No network sync. The hub's
+  // existing .ctx-pill component already documents this and shows a
+  // one-click Clear.
+  // -------------------------------------------------------------------
+
+  var PROFILE_KEY = 'restaurantProfile';
+  var LAST_TOOL_KEY = 'lastTool';
+  var LAST_RESULT_KEY = 'lastResult';
+  var RECENT_TOOLS_KEY = 'recentTools';
+  var RECENT_TOOLS_MAX = 5;
+  // Allowlist of fields. Anything else passed in by a caller is dropped
+  // — defensive against future code paths that try to stuff arbitrary
+  // values into the profile.
+  var PROFILE_FIELDS = [
+    'name', 'address', 'cuisine', 'priceTier',
+    'menuUrl', 'gbpUrl', 'websiteUrl', 'platform'
+  ];
+
+  function readRestaurantProfile() {
+    var ctx = read();
+    return (ctx && typeof ctx[PROFILE_KEY] === 'object' && ctx[PROFILE_KEY]) || null;
+  }
+
+  function writeRestaurantProfile(partial) {
+    if (!partial || typeof partial !== 'object') return false;
+    var clean = {};
+    PROFILE_FIELDS.forEach(function (k) {
+      if (partial[k] !== undefined && partial[k] !== null && partial[k] !== '') {
+        // Strings only; numbers/booleans become strings; never accept
+        // objects (defensive against nested-payload pollution).
+        clean[k] = typeof partial[k] === 'object' ? '' : String(partial[k]);
+      }
+    });
+    var current = readRestaurantProfile() || {};
+    var next = {};
+    Object.keys(current).forEach(function (k) { next[k] = current[k]; });
+    Object.keys(clean).forEach(function (k) { next[k] = clean[k]; });
+    next.updatedAt = Date.now();
+    var patch = {};
+    patch[PROFILE_KEY] = next;
+    return merge(patch);
+  }
+
+  function clearRestaurantProfile() {
+    var patch = {};
+    patch[PROFILE_KEY] = null;
+    patch[LAST_TOOL_KEY] = null;
+    patch[LAST_RESULT_KEY] = null;
+    patch[RECENT_TOOLS_KEY] = null;
+    return merge(patch);
+  }
+
+  function hasRestaurantProfile() {
+    var p = readRestaurantProfile();
+    if (!p) return false;
+    // Empty / no-meaningful-fields profile = false.
+    for (var i = 0; i < PROFILE_FIELDS.length; i++) {
+      if (p[PROFILE_FIELDS[i]]) return true;
+    }
+    return false;
+  }
+
+  // Record a tool visit + optional result signals for the next-tool
+  // recommender. signals is a small flat object the recommender map
+  // matches against (e.g. { score: 'fail', missingPhotos: true }).
+  function recordToolVisit(toolKey, signals) {
+    if (!toolKey) return false;
+    var ctx = read();
+    var recent = Array.isArray(ctx[RECENT_TOOLS_KEY]) ? ctx[RECENT_TOOLS_KEY].slice() : [];
+    // De-dupe: drop any earlier entry for the same tool, then unshift.
+    recent = recent.filter(function (e) { return e && e.tool !== toolKey; });
+    recent.unshift({
+      tool: toolKey,
+      at: Date.now(),
+      signals: (signals && typeof signals === 'object') ? signals : null
+    });
+    if (recent.length > RECENT_TOOLS_MAX) recent = recent.slice(0, RECENT_TOOLS_MAX);
+    var patch = {};
+    patch[LAST_TOOL_KEY] = toolKey;
+    if (signals && typeof signals === 'object') patch[LAST_RESULT_KEY] = signals;
+    patch[RECENT_TOOLS_KEY] = recent;
+    return merge(patch);
+  }
+
+  function readLastTool() {
+    var ctx = read();
+    return ctx[LAST_TOOL_KEY] || null;
+  }
+
+  function readRecentTools() {
+    var ctx = read();
+    return Array.isArray(ctx[RECENT_TOOLS_KEY]) ? ctx[RECENT_TOOLS_KEY] : [];
+  }
+
+  function readLastResultSignals() {
+    var ctx = read();
+    return (typeof ctx[LAST_RESULT_KEY] === 'object' && ctx[LAST_RESULT_KEY]) || null;
+  }
+
   var api = {
     STORAGE_KEY: STORAGE_KEY,
     SCHEMA_VERSION: SCHEMA_VERSION,
@@ -425,7 +546,16 @@
     latestSkuByStem:      latestSkuByStem,
     readRecipeStaleQueue: readRecipeStaleQueue,
     clearRecipeStaleQueue: clearRecipeStaleQueue,
-    ackRecipeStaleEntries: ackRecipeStaleEntries
+    ackRecipeStaleEntries: ackRecipeStaleEntries,
+    // Phase 4 Restaurant Profile + tool-visit telemetry.
+    readRestaurantProfile:  readRestaurantProfile,
+    writeRestaurantProfile: writeRestaurantProfile,
+    clearRestaurantProfile: clearRestaurantProfile,
+    hasRestaurantProfile:   hasRestaurantProfile,
+    recordToolVisit:        recordToolVisit,
+    readLastTool:           readLastTool,
+    readRecentTools:        readRecentTools,
+    readLastResultSignals:  readLastResultSignals
   };
 
   if (typeof module !== 'undefined' && module.exports) {

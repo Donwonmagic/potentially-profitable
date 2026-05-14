@@ -30,3 +30,9 @@ __pycache__/
 # from the committed JSON fixtures in __fixtures__/synth/; never
 # committed (regenerate locally / in CI as needed).
 tools/invoice-decoder/__fixtures__/images/
+
+# Playwright (Phase 8) — local test runs produce artifacts that
+# shouldn't ship. The baseline snapshots in tests/ DO ship.
+test-results/
+playwright-report/
+playwright/.cache/

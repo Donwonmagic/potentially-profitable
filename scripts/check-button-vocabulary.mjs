@@ -76,6 +76,23 @@ const ALLOWED_EXCEPTIONS = new Map([
   ['mobile-cta-bar__btn--ghost',  'Secondary variant of the mobile sticky-CTA twin (BEM modifier).'],
   ['window-composer__photo-btn', 'Window composer photo-attach trigger — pill chip inside the attach row, distinct from the .btn family for tighter density.'],
   ['admin-callbacks__phone-btn', 'Admin callback masked-phone reveal — full-width tap target inside the callback card; uses tap-to-reveal interaction model not in .btn vocabulary.'],
+  // Phase 1 (tool-suite upgrade) — MuntinUI primitive family. Lives
+  // beside the legacy .btn family during Phase 3 migration; tools
+  // adopting MuntinUI.button() get .mtn-btn instead of .btn. Both
+  // vocabularies coexist by design until Phase 5 retires .btn.
+  ['mtn-btn',            'MuntinUI.button() base — Phase 1 tool-suite primitive (sibling vocabulary to .btn during migration).'],
+  ['mtn-btn--sm',        'MuntinUI.button() size variant — compact, 36px min-height.'],
+  ['mtn-btn--md',        'MuntinUI.button() size variant — default, 44px min-height.'],
+  ['mtn-btn--lg',        'MuntinUI.button() size variant — emphasis, 52px min-height.'],
+  ['mtn-btn--primary',   'MuntinUI.button() colour variant — teal fill (primary CTA).'],
+  ['mtn-btn--ghost',     'MuntinUI.button() colour variant — outlined secondary.'],
+  ['mtn-btn--link',      'MuntinUI.button() colour variant — text-link styling.'],
+  ['mtn-btn--danger',    'MuntinUI.button() colour variant — destructive actions.'],
+  ['mtn-tabs__btn',      'MuntinUI.tabs() per-tab control (role=tab) — visually pill, not a button-family child.'],
+  // Phase 2 — hub tier filter strip. Pill toggle that doesn't follow
+  // the .btn family because it represents a filter-state choice, not
+  // a navigation/action CTA. Lives only on /tools/ and /es/tools/.
+  ['tool-tier-filter__btn', 'Phase 2 hub tier filter pill — toggle, not a CTA. Lives only on /tools/ hub.'],
 ]);
 
 // Locate every class definition that looks button-shaped:

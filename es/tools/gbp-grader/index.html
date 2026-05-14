@@ -138,9 +138,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=ca265f67308b" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-core.css?v=dc42f0ad5007" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-tool.css?v=5f214b425aa9" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ca265f67308b"><link rel="stylesheet" href="/assets/site-tool.css?v=5f214b425aa9"></noscript>
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=dc42f0ad5007"><link rel="stylesheet" href="/assets/site-tool.css?v=5f214b425aa9"></noscript>
 <style>
   .gbp-hero{max-width:680px;margin:0 auto;text-align:center}
   .gbp-form{display:flex;gap:10px;max-width:560px;margin:32px auto 0}
@@ -692,7 +692,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <h3>Herramientas relacionadas</h3>
         <ul>
           <li><a href="/es/tools/audits/restaurant/">Diagnóstico de sitio de restaurante</a></li>
-          <li><a href="/es/tools/open-hours/">Horario Abierto</a></li>
+          <li><a href="/es/tools/store-hours/">Horario de Tienda</a></li>
         </ul>
       </div>
       <div class="tool-knit__col">
@@ -721,13 +721,15 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   <div class="foot-grid">
     <div class="foot-col foot-brand"><a href="/es/" class="foot-lockup-wrap" aria-label="Muntin Digital — inicio"><img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53" loading="lazy" decoding="async"><sup class="tm" aria-hidden="true">&#8482;</sup></a><p class="foot-tagline">La estructura da claridad.</p><p class="foot-blurb">Estudio de una sola persona en Silver Spring, MD. Diseño sitios web, identidad de marca y redes sociales para restaurantes independientes del DMV y de todo el país. Se habla español.</p></div>
     <nav class="foot-col" aria-labelledby="foot-explore"><p class="foot-heading" id="foot-explore">Explorar</p><ul class="foot-links"><li><a href="/es/services/">Servicios</a></li><li><a href="/es/for/restaurants/">Para restaurantes</a></li><li><a href="/es/work/">Proyectos</a></li><li><a href="/es/blog/">Artículos</a></li><li><a href="/es/about/">Sobre Don</a></li></ul></nav>
-    <nav class="foot-col" aria-labelledby="foot-tools"><p class="foot-heading" id="foot-tools">Herramientas gratis</p><ul class="foot-links"><li><a href="/es/tools/">Todas las herramientas</a></li><li><a href="/es/tools/speed-test/">Prueba de velocidad</a></li><li><a href="/es/tools/seo-grader/">Calificador SEO</a></li><li><a href="/es/tools/mobile-check/">Revisión móvil</a></li><li><a href="/es/tools/schema-check/">Revisión de schema</a></li><li><a href="/es/tools/tech-stack/">Tecnologías del sitio</a></li><li><a href="/es/tools/compare/">Comparar</a></li></ul></nav>
+    <nav class="foot-col" aria-labelledby="foot-tools"><p class="foot-heading" id="foot-tools">Herramientas gratis</p><ul class="foot-links"><li><a href="/es/tools/">Todas las herramientas</a></li><li><a href="/es/tools/page-health/">Prueba de velocidad</a></li><li><a href="/es/tools/seo-grader/">Calificador SEO</a></li><li><a href="/es/tools/page-health/mobile/">Revisión móvil</a></li><li><a href="/es/tools/schema-check/">Revisión de schema</a></li><li><a href="/es/tools/tech-stack/">Tecnologías del sitio</a></li><li><a href="/es/tools/compare/">Comparar</a></li></ul></nav>
     <nav class="foot-col foot-contact" aria-labelledby="foot-contact"><p class="foot-heading" id="foot-contact">Contacto</p><ul class="foot-links"><li><a href="mailto:don@muntin.digital">don@muntin.digital</a></li><li><a href="/es/window/">Escríbele a Don</a></li><li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (opens in new tab)</span></a></li></ul><p class="foot-trust"><strong>Respuesta:</strong> de lunes a viernes, en menos de 4 horas. Los fines de semana, el lunes en la ma&ntilde;ana.</p></nav>
   </div>
   <div class="foot-bottom"><p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; LLC de Maryland &middot; Silver Spring, MD</p><nav class="foot-legal" aria-label="Legal"><a href="/es/terms.html">Términos</a><a href="/es/privacy.html">Privacidad</a><a href="/es/accessibility.html">Accesibilidad</a><a href="/es/cookies.html">Cookies</a></nav></div>
 </div></footer>
 <!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260422-cohesion";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
 <script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
+<script src="/tools/_shared/next-tool.js?v=phase4"></script>
+<script src="/tools/_shared/handoff.js?v=phase4"></script>
 <script src="./gbp-grader.js?v=20260424-gbp1"></script>
 <script src="/assets/workbench-save.js?v=20260501-engagement"></script>
 <script>
@@ -808,8 +810,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       fail:{title:'Falta la categoría principal',body:'Sin categoría principal, Google no sabe en qué búsquedas mostrarte. Define una en tu panel de Business Profile — elige la coincidencia más específica disponible.'}
     },
     hours:{
-      pass:{title:'Los horarios están puestos',body:'Tu ficha muestra cuándo estás abierto. Asegúrate de que coincidan con los de tu sitio y actualízalos para las fiestas. <a href="/es/tools/open-hours/" style="color:var(--teal);font-weight:600;">Pásalos por Open Hours para mantener todas las plataformas en sincronía →</a>'},
-      fail:{title:'Faltan los horarios',body:'Sin horarios en tu ficha, los clientes no saben cuándo estás abierto. Agrégalos ya — es una de las razones más comunes por las que la gente se salta un negocio en Maps. <a href="/es/tools/open-hours/" style="color:var(--teal);font-weight:600;">Genéralos una vez con Open Hours →</a>'}
+      pass:{title:'Los horarios están puestos',body:'Tu ficha muestra cuándo estás abierto. Asegúrate de que coincidan con los de tu sitio y actualízalos para las fiestas. <a href="/es/tools/store-hours/" style="color:var(--teal);font-weight:600;">Pásalos por Open Hours para mantener todas las plataformas en sincronía →</a>'},
+      fail:{title:'Faltan los horarios',body:'Sin horarios en tu ficha, los clientes no saben cuándo estás abierto. Agrégalos ya — es una de las razones más comunes por las que la gente se salta un negocio en Maps. <a href="/es/tools/store-hours/" style="color:var(--teal);font-weight:600;">Genéralos una vez con Open Hours →</a>'}
     },
     phone:{
       pass:{title:'Número de teléfono listado',body:'Los clientes pueden llamar con un toque desde Maps. Confirma que ese número coincida con el de tu sitio.'},
@@ -845,8 +847,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     },
     hours_fresh:{
       pass:{title:'Horario semanal completo',body:'Tu ficha muestra un horario semanal completo. Mantenlo preciso — los clientes tratan los horarios desactualizados como razón para saltarse la visita.'},
-      warn:{title:'Sólo horario regular',body:'Tienes horario regular pero no hay un horario semanal legible expuesto. Confirma que cada día muestre horas de apertura/cierre en tu panel de Business Profile. <a href="/es/tools/open-hours/" style="color:var(--teal);font-weight:600;">O reconstruye tus horarios con Open Hours y vuelve a pegarlos →</a>'},
-      fail:{title:'Horario semanal incompleto',body:'Cubre cada día que abras en "Editar perfil" → "Horario". Un horario parcial se lee como una ficha desactualizada tanto para los usuarios como para Google. <a href="/es/tools/open-hours/" style="color:var(--teal);font-weight:600;">Genéralos con Open Hours →</a>'}
+      warn:{title:'Sólo horario regular',body:'Tienes horario regular pero no hay un horario semanal legible expuesto. Confirma que cada día muestre horas de apertura/cierre en tu panel de Business Profile. <a href="/es/tools/store-hours/" style="color:var(--teal);font-weight:600;">O reconstruye tus horarios con Open Hours y vuelve a pegarlos →</a>'},
+      fail:{title:'Horario semanal incompleto',body:'Cubre cada día que abras en "Editar perfil" → "Horario". Un horario parcial se lee como una ficha desactualizada tanto para los usuarios como para Google. <a href="/es/tools/store-hours/" style="color:var(--teal);font-weight:600;">Genéralos con Open Hours →</a>'}
     },
     nap:{
       pass:{title:'NAP coincide con tu sitio',body:'El teléfono y la dirección en tu ficha de Google coinciden con el schema LocalBusiness de tu sitio. A Google le encanta este tipo de consistencia — es un multiplicador de confianza.'},
@@ -859,14 +861,14 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
   var FIX_FIRST_COPY={
     primary_category:{title:'Define tu categoría principal',body:'Es el factor on-page más importante para el ranking local. En tu panel de Business Profile, abre "Editar perfil" → "Acerca de" → "Categoría" y elige la coincidencia más específica disponible.'},
-    hours:{title:'Agrega tus horarios',body:'Es una de las razones más comunes por las que la gente se salta una ficha en Maps. Abre "Editar perfil" → "Horario" y define horarios regulares para cada día que abras. <a href="/es/tools/open-hours/" style="color:var(--teal);font-weight:600;">Genéralos una vez con Open Hours →</a>'},
+    hours:{title:'Agrega tus horarios',body:'Es una de las razones más comunes por las que la gente se salta una ficha en Maps. Abre "Editar perfil" → "Horario" y define horarios regulares para cada día que abras. <a href="/es/tools/store-hours/" style="color:var(--teal);font-weight:600;">Genéralos una vez con Open Hours →</a>'},
     phone:{title:'Agrega tu número de teléfono',body:'La llamada con un toque es la acción #1 en Maps. Agrégalo en "Editar perfil" → "Contacto" para que los clientes te alcancen en un toque.'},
     rating:{title:'Tu calificación necesita atención',body:'Por debajo de 4,0 es una bandera roja para la mayoría. Lee tus reseñas de 1 a 3 estrellas buscando patrones y aborda las causas raíz — después responde públicamente. Incluso a las negativas.'},
     review_volume:{title:'Sube tu número de reseñas',body:'Estás muy por debajo de la mediana de pares de tu categoría. Arranca un programa sistemático de reseñas — una tarjeta QR en la caja es la palanca más simple. Apunta a la mediana en 90 días.'},
     photos:{title:'Agrega más fotos',body:'Las fichas con 10+ fotos reciben 42 % más solicitudes de direcciones. Sube fotos del interior, exterior, equipo, y producto/servicio en tu panel de Business Profile.'},
     website:{title:'Enlaza un sitio web',body:'Hasta un sitio simple de una página vale más que ninguno — es adonde Google manda a quienes quieren saber más. Agrega la URL en "Editar perfil" → "Contacto" → "Sitio web".'},
     service_attrs:{title:'Completa tus atributos de servicio',body:'Servicio en mesa, para llevar, delivery, reservas, banderas de cocina — cada uno te abre a más búsquedas. Configúralos en "Editar perfil" → "Más".'},
-    hours_fresh:{title:'Completa tu horario semanal',body:'Tu ficha no muestra un horario semanal completo. Abre "Editar perfil" → "Horario" y cubre cada día que abras. <a href="/es/tools/open-hours/" style="color:var(--teal);font-weight:600;">O usa Open Hours para generar la semana completa →</a>'}
+    hours_fresh:{title:'Completa tu horario semanal',body:'Tu ficha no muestra un horario semanal completo. Abre "Editar perfil" → "Horario" y cubre cada día que abras. <a href="/es/tools/store-hours/" style="color:var(--teal);font-weight:600;">O usa Open Hours para generar la semana completa →</a>'}
   };
 
   function stars(rating){
@@ -1575,6 +1577,19 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       fix_first:      scored.fixFirst?scored.fixFirst.id:'none',
       deep_scan:      deepScanState.data?'yes':'no'
     }});
+
+    if (window.MuntinHandoff && window.MuntinHandoff.complete) {
+      var photoCount = (chosen && (chosen.photoCount || (chosen.photos && chosen.photos.length))) || 0;
+      window.MuntinHandoff.complete({
+        toolKey: 'gbp-grader',
+        signals: {
+          missingPhotos: photoCount < 10,
+          missingHours: !chosen || !chosen.hasHours,
+          score: (scored && typeof scored.scaled === 'number' && scored.scaled < 60) ? 'low' : 'ok'
+        },
+        resultEl: result,
+      });
+    }
   }
 
   function showPicker(candidates,query,peerMedians){

@@ -132,9 +132,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=ca265f67308b" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-core.css?v=dc42f0ad5007" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-tool.css?v=5f214b425aa9" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ca265f67308b"><link rel="stylesheet" href="/assets/site-tool.css?v=5f214b425aa9"></noscript>
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=dc42f0ad5007"><link rel="stylesheet" href="/assets/site-tool.css?v=5f214b425aa9"></noscript>
 <style>
   /* Cálculo de Margen — estilos page-scoped. Conservador en Fase 0.
      La paleta viene de site.css; no se introducen primitivos nuevos. */
@@ -142,6 +142,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   .mm-pledge{display:inline-flex;align-items:center;gap:8px;margin:22px auto 0;padding:8px 16px;border:1px solid var(--status-good);background:var(--status-good-tint);color:var(--status-good);border-radius:999px;font-size:13px;font-weight:600;letter-spacing:.02em}
   .mm-pledge::before{content:'\2713';font-weight:700}
   .mm-pledge a{color:inherit;text-decoration:underline;text-underline-offset:2px}
+  .mm-pledge-cta{text-decoration:underline;text-underline-offset:2px}
   .mm-grid{display:grid;grid-template-columns:1fr;gap:16px;max-width:760px;margin:0 auto}
   @media (min-width:640px){.mm-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
   .mm-card{display:flex;flex-direction:column;padding:22px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--white);gap:12px;position:relative}
@@ -735,7 +736,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
             </aside>
             <!-- data-promise:end -->
   <p class="hero-sub" style="margin:20px auto 0;max-width:580px;">Cuatro calculadoras para las decisiones que los dueños de verdad enfrentan — punto de equilibrio con delivery, simulación de alza de precios, prime cost, cubiertos necesarios por noche. Tú escribes tus números; la matemática corre en tu navegador. Sin registro, sin subir nada, ningún servidor ve lo que escribes.</p>
-  <a href="#how-we-protect" class="mm-pledge">Se queda en tu navegador. <a href="#how-we-protect">Mira cómo lo verificamos</a></a>
+  <a href="#how-we-protect" class="mm-pledge"><span>Se queda en tu navegador.</span> <span class="mm-pledge-cta">Mira cómo lo verificamos &rarr;</span></a>
   <div class="mm-actions" role="group" aria-label="Acciones del reporte mensual de margen">
     <button type="button" class="mm-action mm-action-primary" id="mm-print-report" data-default-label="Imprime el reporte de este mes">
       <span class="mm-action-icon" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M7 9V3h10v6"/><rect x="4" y="9" width="16" height="9" rx="1"/><path d="M7 15h10v6H7z"/></svg></span>
@@ -1250,13 +1251,16 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   <div class="foot-grid">
     <div class="foot-col foot-brand"><a href="/es/" class="foot-lockup-wrap" aria-label="Muntin Digital inicio"><img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53" loading="lazy" decoding="async"><sup class="tm" aria-hidden="true">&#8482;</sup></a><p class="foot-tagline">La estructura trae claridad.</p><p class="foot-blurb">Un estudio de una sola persona en Silver Spring, MD, que construye sitios web a medida, marcas y redes sociales para restaurantes independientes y marcas de estilo de vida en el DMV y más allá.</p></div>
     <nav class="foot-col" aria-labelledby="foot-explore"><p class="foot-heading" id="foot-explore">Explorar</p><ul class="foot-links"><li><a href="/es/services/">Servicios</a></li><li><a href="/es/for/restaurants/">Para restaurantes</a></li><li><a href="/es/work/">Trabajo</a></li><li><a href="/es/blog/">Artículos</a></li><li><a href="/es/about/">Acerca de Don</a></li></ul></nav>
-    <nav class="foot-col" aria-labelledby="foot-tools"><p class="foot-heading" id="foot-tools">Herramientas gratis</p><ul class="foot-links"><li><a href="/es/tools/">Todas las herramientas</a></li><li><a href="/es/tools/audits/restaurant/">Diagnóstico de restaurante</a></li><li><a href="/es/tools/gbp-grader/">Calificador de GBP</a></li><li><a href="/es/tools/speed-test/">Prueba de velocidad</a></li><li><a href="/es/tools/seo-grader/">Calificador de SEO</a></li><li><a href="/es/tools/mobile-check/">Revisor móvil</a></li><li><a href="/es/tools/schema-check/">Revisor de schema</a></li></ul></nav>
+    <nav class="foot-col" aria-labelledby="foot-tools"><p class="foot-heading" id="foot-tools">Herramientas gratis</p><ul class="foot-links"><li><a href="/es/tools/">Todas las herramientas</a></li><li><a href="/es/tools/audits/restaurant/">Diagnóstico de restaurante</a></li><li><a href="/es/tools/gbp-grader/">Calificador de GBP</a></li><li><a href="/es/tools/page-health/">Prueba de velocidad</a></li><li><a href="/es/tools/seo-grader/">Calificador de SEO</a></li><li><a href="/es/tools/page-health/mobile/">Revisor móvil</a></li><li><a href="/es/tools/schema-check/">Revisor de schema</a></li></ul></nav>
     <nav class="foot-col foot-contact" aria-labelledby="foot-contact"><p class="foot-heading" id="foot-contact">Contacto</p><ul class="foot-links"><li><a href="mailto:don@muntin.digital">don@muntin.digital</a></li><li><a href="/es/window/">Reserva una llamada de 20 min<span class="sr-only"> (abre en una pestaña nueva)</span></a></li><li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (abre en una pestaña nueva)</span></a></li></ul><p class="foot-trust"><strong>Respuesta:</strong> de lunes a viernes, en menos de 4 horas. Los fines de semana, el lunes en la ma&ntilde;ana.</p></nav>
   </div>
   <div class="foot-bottom"><p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; Maryland LLC &middot; Silver Spring, MD</p><nav class="foot-legal" aria-label="Legal"><a href="/es/terms.html">Términos</a><a href="/es/privacy.html">Privacidad</a><a href="/es/accessibility.html">Accesibilidad</a><a href="/es/cookies.html">Cookies</a></nav></div>
 </div></footer>
 <!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260422-cohesion";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
 <script src="/tools/_shared/parse-number.js?v=20260428-shared1"></script>
+<script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
+<script src="/tools/_shared/next-tool.js?v=phase4"></script>
+<script src="/tools/_shared/handoff.js?v=phase4"></script>
 <script src="./margin-math.js?v=20260428-mm5"></script>
 <script src="/assets/workbench-save.js?v=20260428-sprint0-tokens"></script>
 <script>
@@ -2147,13 +2151,26 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   }
 
   function maybeFireAnalytics(result){
-    if (firstInteractionFired || !window.plausible) return;
+    if (firstInteractionFired) return;
     firstInteractionFired = true;
-    window.plausible('Margin Math PriceRaise', { props: {
-      raise_tier:       currentTier,
-      cover_loss_bucket: window.MM.bucketCoverLoss(parseFloat(lossEl.value) / 100),
-      band:             result.band
-    }});
+    if (window.plausible) {
+      window.plausible('Margin Math PriceRaise', { props: {
+        raise_tier:       currentTier,
+        cover_loss_bucket: window.MM.bucketCoverLoss(parseFloat(lossEl.value) / 100),
+        band:             result.band
+      }});
+    }
+    if (window.MuntinHandoff && window.MuntinHandoff.complete) {
+      var resultRegion = document.getElementById('mmPriceRaiseResult')
+        || document.querySelector('.mm-price-raise')
+        || document.querySelector('[data-calc="priceraise"]')
+        || document.body;
+      window.MuntinHandoff.complete({
+        toolKey: 'margin-math',
+        signals: { priceRaiseRun: true },
+        resultEl: resultRegion,
+      });
+    }
   }
 
   function onInput(){

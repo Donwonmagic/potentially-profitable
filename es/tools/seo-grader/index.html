@@ -172,9 +172,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=ca265f67308b" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-core.css?v=dc42f0ad5007" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-tool.css?v=5f214b425aa9" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ca265f67308b"><link rel="stylesheet" href="/assets/site-tool.css?v=5f214b425aa9"></noscript>
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=dc42f0ad5007"><link rel="stylesheet" href="/assets/site-tool.css?v=5f214b425aa9"></noscript>
 
 <style>
   .seo-hero { max-width: 680px; margin: 0 auto; text-align: center; }
@@ -665,7 +665,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <ul class="foot-links"><li><a href="/es/services/">Servicios</a></li><li><a href="/es/for/restaurants/">Para restaurantes</a></li><li><a href="/es/work/">Proyectos</a></li><li><a href="/es/blog/">Artículos</a></li><li><a href="/es/about/">Sobre Don</a></li></ul>
       </nav>
       <nav class="foot-col" aria-labelledby="foot-tools"><p class="foot-heading" id="foot-tools">Herramientas gratis</p>
-        <ul class="foot-links"><li><a href="/es/tools/">Todas las herramientas</a></li><li><a href="/es/tools/audits/restaurant/">Diagnóstico de restaurante</a></li><li><a href="/es/tools/speed-test/">Prueba de velocidad</a></li><li><a href="/es/tools/seo-grader/">Calificador SEO</a></li></ul>
+        <ul class="foot-links"><li><a href="/es/tools/">Todas las herramientas</a></li><li><a href="/es/tools/audits/restaurant/">Diagnóstico de restaurante</a></li><li><a href="/es/tools/page-health/">Prueba de velocidad</a></li><li><a href="/es/tools/seo-grader/">Calificador SEO</a></li></ul>
       </nav>
       <nav class="foot-col foot-contact" aria-labelledby="foot-contact"><p class="foot-heading" id="foot-contact">Contacto</p>
         <ul class="foot-links"><li><a href="mailto:don@muntin.digital">don@muntin.digital</a></li><li><a href="/es/window/">Escríbele a Don</a></li><li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (opens in new tab)</span></a></li></ul>
@@ -684,6 +684,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <script src="/tools/_shared/analytics.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/states.js?v=20260429-states"></script>
 <script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
+<script src="/tools/_shared/next-tool.js?v=phase4"></script>
+<script src="/tools/_shared/handoff.js?v=phase4"></script>
 <script src="/tools/_shared/hire-guide.js?v=20260430-hire-guide"></script>
 <script src="/assets/workbench-save.js?v=20260501-engagement"></script>
 <script>
@@ -1098,6 +1100,10 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         try { result.focus({ preventScroll: true }); } catch (_) { result.focus(); }
         result.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
+        if (window.MuntinHandoff && window.MuntinHandoff.complete) {
+          window.MuntinHandoff.complete({ toolKey: 'seo-grader', signals: {}, resultEl: result });
+        }
+
         // Phase 2 (Workshop) — afordancia de guardado.
         showSaveAffordance({
           url: url,
@@ -1177,5 +1183,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   } catch (_) { /* navegador antiguo */ }
 })();
 </script>
+<script>// Phase 4 — Restaurant Profile autofill.
+if(window.MuntinHandoff&&window.MuntinHandoff.prefill){window.MuntinHandoff.prefill({map:{websiteUrl:'#seoUrl'},captureOnSubmit:'#seoForm'});}</script>
 </body>
 </html>

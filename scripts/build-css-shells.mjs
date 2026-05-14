@@ -157,6 +157,32 @@ const SECTIONS = [
   // one block; lives in core because it spans /window/, /about/,
   // every-page nav/footer, and admin pages.
   { start: 6711, shell: 'core',    label: 'Window Phase 2/3.6/4/5+ additions (sash/sidelight, attach, now, pulses, admin)' },
+  // Phase 1 (tool-suite upgrade) — additive design tokens + MuntinUI
+  // component shells (.mtn-btn / .mtn-card / .mtn-form-group / .mtn-tabs
+  // / .mtn-modal / .mtn-toast / .mtn-breadcrumb / .mtn-error-card /
+  // .mtn-empty / .codeblock). Core because the primitives are consumed
+  // by /tools/ and Phase-2 hub redesign; the .codeblock wrapper is also
+  // referenced by article callouts in later phases.
+  { start: 6948, shell: 'core',    label: 'Phase 1 — design tokens + MuntinUI component shells (.mtn-*)' },
+  // Phase 2 (tool-suite upgrade) — hub-specific styles (tool-card
+  // tier badge + JS-enhanced filter strip). Lives in core because
+  // the hub is in /tools/index.html which loads core + tool shells;
+  // the tier badge classes also bleed into related-tool surfaces
+  // shipped by other build scripts.
+  { start: 7160, shell: 'core',    label: 'Phase 2 — hub tier badge + tool-tier-filter strip' },
+  // Phase 5 (tool-suite upgrade) — dark-mode token override. Lives
+  // in core because every page (not just /tools/) inherits the
+  // --mtn-* tokens via inheritance through component shells.
+  { start: 7213, shell: 'core',    label: 'Phase 5 — dark-mode token override (prefers-color-scheme + [data-theme])' },
+  // Phase 7 (tool-suite upgrade) — dark-mode toggle button styles
+  // (sun/moon icon swap based on [data-theme] / prefers-color-scheme).
+  // Lives in core because the button is in the global nav partial.
+  { start: 7273, shell: 'core',    label: 'Phase 7 — dark-mode toggle button (.theme-toggle)' },
+  // Phase 4 wiring (tool-suite upgrade) — next-tool recommendation
+  // card styles. The card is mounted by MuntinNextTool.render() at
+  // the end of each tool's result region. Lives in core because
+  // every page that loads next-tool.js renders the card.
+  { start: 7313, shell: 'core',    label: 'Phase 4 — next-tool recommendation card (.mtn-next-tool)' },
 ];
 
 // === Validation ===

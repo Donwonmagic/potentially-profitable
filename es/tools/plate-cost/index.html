@@ -127,9 +127,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=ca265f67308b" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-core.css?v=dc42f0ad5007" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-tool.css?v=5f214b425aa9" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ca265f67308b"><link rel="stylesheet" href="/assets/site-tool.css?v=5f214b425aa9"></noscript>
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=dc42f0ad5007"><link rel="stylesheet" href="/assets/site-tool.css?v=5f214b425aa9"></noscript>
 <style>.breadcrumb{padding-top:100px}
 /* === Plate Cost Calculator tool-scoped styles. Page-prefix .pc-*. === */
 .pc-form{display:flex;flex-direction:column;gap:18px}
@@ -905,6 +905,8 @@ Margen de contribución por plato = precio menú &minus; costo del plato</pre>
 <!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260422-cohesion";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
 <script src="/tools/_shared/parse-number.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/context-bus.js?v=20260501-w4-7"></script>
+<script src="/tools/_shared/next-tool.js?v=phase4"></script>
+<script src="/tools/_shared/handoff.js?v=phase4"></script>
 <script src="/tools/_shared/device-key.js?v=20260501-w3-4"></script>
 <script src="/tools/plate-cost/plate-cost.js?v=20260428-pcF"></script>
 <script src="/tools/plate-cost/card-render.js?v=20260426-pc2"></script>
@@ -1201,6 +1203,15 @@ Margen de contribución por plato = precio menú &minus; costo del plato</pre>
     latestSummary = summary;
     latestRecipe  = recipe;
     renderDriftLayer(summary);
+
+    if (window.MuntinHandoff && window.MuntinHandoff.complete) {
+      var needsMenuMix = Array.isArray(recipe && recipe.rows) && recipe.rows.length >= 4;
+      window.MuntinHandoff.complete({
+        toolKey: 'plate-cost',
+        signals: { dishSaved: true, needsMenuMix: needsMenuMix },
+        resultEl: resultEl,
+      });
+    }
   }
 
   // Cost Drift Check-in render (ES copy).

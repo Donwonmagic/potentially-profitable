@@ -138,9 +138,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=ca265f67308b" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-core.css?v=dc42f0ad5007" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-tool.css?v=5f214b425aa9" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ca265f67308b"><link rel="stylesheet" href="/assets/site-tool.css?v=5f214b425aa9"></noscript>
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=dc42f0ad5007"><link rel="stylesheet" href="/assets/site-tool.css?v=5f214b425aa9"></noscript>
 <style>
   .ts-hero{max-width:680px;margin:0 auto;text-align:center}
   .ts-form{display:flex;gap:10px;max-width:560px;margin:32px auto 0}
@@ -464,7 +464,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   <div class="foot-grid">
     <div class="foot-col foot-brand"><a href="/es/" class="foot-lockup-wrap" aria-label="Muntin Digital — inicio"><img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53" loading="lazy" decoding="async"><sup class="tm" aria-hidden="true">&#8482;</sup></a><p class="foot-tagline">La estructura da claridad.</p><p class="foot-blurb">Estudio de una sola persona en Silver Spring, MD. Diseño sitios web, identidad de marca y redes sociales para restaurantes independientes del DMV y de todo el país. Se habla español.</p></div>
     <nav class="foot-col" aria-labelledby="foot-explore"><p class="foot-heading" id="foot-explore">Explorar</p><ul class="foot-links"><li><a href="/es/services/">Servicios</a></li><li><a href="/es/for/restaurants/">Para restaurantes</a></li><li><a href="/es/work/">Proyectos</a></li><li><a href="/es/blog/">Artículos</a></li><li><a href="/es/about/">Sobre Don</a></li></ul></nav>
-    <nav class="foot-col" aria-labelledby="foot-tools"><p class="foot-heading" id="foot-tools">Herramientas gratis</p><ul class="foot-links"><li><a href="/es/tools/">Todas las herramientas</a></li><li><a href="/es/tools/speed-test/">Prueba de velocidad</a></li><li><a href="/es/tools/seo-grader/">Calificador SEO</a></li><li><a href="/es/tools/mobile-check/">Revisión móvil</a></li><li><a href="/es/tools/schema-check/">Revisión de schema</a></li><li><a href="/es/tools/tech-stack/">Tecnologías del sitio</a></li></ul></nav>
+    <nav class="foot-col" aria-labelledby="foot-tools"><p class="foot-heading" id="foot-tools">Herramientas gratis</p><ul class="foot-links"><li><a href="/es/tools/">Todas las herramientas</a></li><li><a href="/es/tools/page-health/">Prueba de velocidad</a></li><li><a href="/es/tools/seo-grader/">Calificador SEO</a></li><li><a href="/es/tools/page-health/mobile/">Revisión móvil</a></li><li><a href="/es/tools/schema-check/">Revisión de schema</a></li><li><a href="/es/tools/tech-stack/">Tecnologías del sitio</a></li></ul></nav>
     <nav class="foot-col foot-contact" aria-labelledby="foot-contact"><p class="foot-heading" id="foot-contact">Contacto</p><ul class="foot-links"><li><a href="mailto:don@muntin.digital">don@muntin.digital</a></li><li><a href="/es/window/">Escríbele a Don</a></li><li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (opens in new tab)</span></a></li></ul><p class="foot-trust"><strong>Respuesta:</strong> de lunes a viernes, en menos de 4 horas. Los fines de semana, el lunes en la ma&ntilde;ana.</p></nav>
   </div>
   <div class="foot-bottom"><p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; LLC de Maryland &middot; Silver Spring, MD</p><nav class="foot-legal" aria-label="Legal"><a href="/es/terms.html">Términos</a><a href="/es/privacy.html">Privacidad</a><a href="/es/accessibility.html">Accesibilidad</a><a href="/es/cookies.html">Cookies</a></nav></div>
@@ -474,6 +474,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <script src="/tools/_shared/analytics.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/states.js?v=20260429-states"></script>
 <script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
+<script src="/tools/_shared/safe-html.js?v=phase1"></script>
+<script src="/tools/_shared/next-tool.js?v=phase4"></script>
+<script src="/tools/_shared/handoff.js?v=phase4"></script>
 <script src="/assets/workbench-save.js?v=20260428-sprint0-tokens"></script>
 <script>
 (function(){
@@ -625,6 +628,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     { both:['Stripe','Square Payments'],label:'Stripe + Square Payments',        why:'Dos procesadores de pago. Común durante una migración; si no, pagas comisiones dobles en rutas distintas.' }
   ];
 
+  var esc = (window.MuntinSafeHtml && window.MuntinSafeHtml.escapeHtml) || function(s){ return String(s == null ? '' : s); };
+
   function renderResult(payload){
     var groups=(payload&&payload.groups)||[];
     var html='';
@@ -635,12 +640,12 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       var info=PLATFORM_INFO[platformName];
       html+='<div class="ts-platform-card">';
       html+='<p class="ts-platform-eyebrow">Qué significa esto para ti</p>';
-      html+='<h3 class="ts-platform-name">Estás en '+platformName+'</h3>';
+      html+='<h3 class="ts-platform-name">Estás en '+esc(platformName)+'</h3>';
       html+='<dl class="ts-platform-grid">';
-      html+='<dt>Lo que hace bien</dt><dd>'+info.strength+'</dd>';
-      html+='<dt>Dónde encuentra un techo</dt><dd>'+info.ceiling+'</dd>';
-      html+='<dt>Ruta de arreglo principal (sin salir)</dt><dd>'+info.topFix+'</dd>';
-      html+='<dt>Cuándo considerar migrar</dt><dd>'+info.switchAt+'</dd>';
+      html+='<dt>Lo que hace bien</dt><dd>'+esc(info.strength)+'</dd>';
+      html+='<dt>Dónde encuentra un techo</dt><dd>'+esc(info.ceiling)+'</dd>';
+      html+='<dt>Ruta de arreglo principal (sin salir)</dt><dd>'+esc(info.topFix)+'</dd>';
+      html+='<dt>Cuándo considerar migrar</dt><dd>'+esc(info.switchAt)+'</dd>';
       html+='</dl></div>';
 
       var key=PLATFORM_KEY[platformName];
@@ -662,7 +667,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     if(redundancies.length){
       html+='<div class="ts-redundant"><p class="ts-redundant-eyebrow">Quizás estás pagando dos por lo mismo</p><ul class="ts-redundant-list">';
       redundancies.forEach(function(rv){
-        html+='<li><strong>'+rv.label+'</strong><span>'+rv.why+'</span></li>';
+        html+='<li><strong>'+esc(rv.label)+'</strong><span>'+esc(rv.why)+'</span></li>';
       });
       html+='</ul></div>';
     }
@@ -673,9 +678,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       var CAT_ES={'CMS / Platform':'CMS / Plataforma','Analytics':'Analítica','Booking / Scheduling':'Reservas / Agenda','Payments':'Pagos','Chat / Support':'Chat / Soporte','Maps':'Mapas'};
       groups.forEach(function(g){
         var cat=CAT_ES[g.cat]||g.cat;
-        html+='<div class="ts-group"><p class="ts-group-label">'+cat+'</p><div class="ts-items">';
+        html+='<div class="ts-group"><p class="ts-group-label">'+esc(cat)+'</p><div class="ts-items">';
         g.items.forEach(function(name){
-          html+='<div class="ts-item"><span class="name">'+name+'</span><span class="cat">'+cat+'</span></div>';
+          html+='<div class="ts-item"><span class="name">'+esc(name)+'</span><span class="cat">'+esc(cat)+'</span></div>';
         });
         html+='</div></div>';
       });
@@ -685,9 +690,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     }
     if(platformName){
       html+='<div class="ts-handoff"><p class="ts-handoff-eyebrow">Lo que esto desbloquea en la suite</p>';
-      html+='<p class="ts-handoff-body">Ahora que sabemos que estás en '+platformName+', el Test de Velocidad, el Calificador de SEO, el Chequeo de Schema y el Diagnóstico de Restaurante pueden mostrar instrucciones específicas para tu plataforma en lugar del genérico "consulta a tu desarrollador".</p>';
+      html+='<p class="ts-handoff-body">Ahora que sabemos que estás en '+esc(platformName)+', el Test de Velocidad, el Calificador de SEO, el Chequeo de Schema y el Diagnóstico de Restaurante pueden mostrar instrucciones específicas para tu plataforma en lugar del genérico "consulta a tu desarrollador".</p>';
       html+='<div class="ts-handoff-row">';
-      html+='<a class="ts-handoff-link" href="/es/tools/speed-test/">Test de Velocidad &rarr;</a>';
+      html+='<a class="ts-handoff-link" href="/es/tools/page-health/">Test de Velocidad &rarr;</a>';
       html+='<a class="ts-handoff-link" href="/es/tools/seo-grader/">Calificador de SEO &rarr;</a>';
       html+='<a class="ts-handoff-link" href="/es/tools/schema-check/">Chequeo de Schema &rarr;</a>';
       html+='<a class="ts-handoff-link" href="/es/tools/audits/restaurant/">Diagnóstico de Restaurante &rarr;</a>';
@@ -695,9 +700,23 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     }
     html+='<aside class="learn-back" aria-label="Qué te dice este escaneo"><p class="learn-back-eyebrow">Qué te dice este escaneo</p><p class="learn-back-body">Tu configuración de <a href="/es/glossary/hosting/">hosting</a> decide lo que puedes y no puedes hacer — velocidad, integración de pedidos, schema, incluso cómo se renderiza el menú en una conexión lenta. La mayoría de los restaurantes están mejor mejorando la plataforma en la que ya están; migrar es un costo real. <a href="/es/blog/wix-vs-custom-for-restaurants/">Cuándo migrar tiene sentido</a>.</p></aside>';
     html+='<div class="ts-cta"><p>¿Quieres ver el panorama completo? Los diagnósticos por rubro van más a fondo.</p><div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;"><a class="btn btn-primary" href="/es/tools/audits/restaurant/">Diagnóstico de restaurante</a></div></div>';
-    result.innerHTML=html;
+    if (window.MuntinSafeHtml && window.MuntinSafeHtml.setHTML) {
+      window.MuntinSafeHtml.setHTML(result, html, {
+        fallbackMessage: 'No pudimos mostrar el resultado del escaneo de stack. Inténtalo de nuevo o recarga la página.'
+      });
+    } else {
+      result.innerHTML=html;
+    }
     result.classList.add('visible');
     result.scrollIntoView({behavior:'smooth',block:'start'});
+
+    if (window.MuntinHandoff && window.MuntinHandoff.complete) {
+      window.MuntinHandoff.complete({
+        toolKey: 'tech-stack',
+        signals: { platformDetected: !!platformName },
+        resultEl: result,
+      });
+    }
   }
 
   // Phase 2 (Workshop) — Save-to-Workbench via the shared helper.
@@ -793,5 +812,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   });
 })();
 </script>
+<script>// Phase 4 — Restaurant Profile autofill.
+if(window.MuntinHandoff&&window.MuntinHandoff.prefill){window.MuntinHandoff.prefill({map:{websiteUrl:'#tsUrl'},captureOnSubmit:'#tsForm'});}</script>
 </body>
 </html>

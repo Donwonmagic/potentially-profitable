@@ -95,12 +95,12 @@
       'GBP Deep Scan',
       'GBP Grader',
       'GBP Share Saved',
-      'Mobile Check',
+      'Page Health Mobile',
       'SEO Grader',
       'Schema Check',
       'Schema Check Validate',
       'Search Ideas',
-      'Speed Test',
+      'Page Health',
       'Tech Stack',
     ],
     // Calculator tools — exports / runs / scenario pushes.
@@ -228,8 +228,8 @@
       'Menu Engineering Export',
       'Menu Engineering Handoff',
       'Menu Engineering Whatif',
-      'Open Hours Export',
-      'Open Hours Render',
+      'Store Hours Export',
+      'Store Hours Render',
       'Photo Brief Compute',
       'Photo Brief Export',
       'Photo Brief Push',
@@ -297,6 +297,12 @@
     // Phase G (Growth) — diagnostics + broken-link surfacing.
     diagnostics: [
       '404 view',
+      // Phase 2 hub redesign — tracks which tier filter visitors pick.
+      // Props: { tier: 'all' | 'quick' | 'standard' | 'deep' }.
+      'Tools Hub Filter',
+      // Phase 7 dark-mode toggle — tracks user override of OS pref.
+      // Props: { theme: 'auto' | 'light' | 'dark' }.
+      'Theme Toggle',
     ],
     // Phase G.9 (Growth) — first-touch attribution + AI-search referrer
     // detection + tool-funnel + article-scroll instrumentation. Bounded

@@ -61,8 +61,8 @@ main{padding-top:64px}
 </style>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
-<link rel="preload" as="style" href="/assets/site-core.css?v=ca265f67308b" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ca265f67308b"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=dc42f0ad5007" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=dc42f0ad5007"></noscript>
 <link rel="stylesheet" href="/assets/sheets.css?v=20260503">
 </head>
 <body data-page="sheet" data-sheet-slug="review-response-log" data-sheet-pack="trust-reviews" data-pagefind-meta="kind:sheet,pack:trust-reviews">
@@ -127,6 +127,23 @@ main{padding-top:64px}
       <a href="/es/sheets/review-response-log/" hreflang="es" lang="es" class="js-lang-switch" data-set-locale="es">Español</a>
       <span class="lang-switch-current" aria-current="true">EN</span>
     </nav>
+    <!-- Phase 7 — dark-mode toggle. The icon SVG flips between sun
+         and moon via CSS based on the [data-theme] state set by
+         theme-toggle.js. With JS off the button stays in its
+         default state (sun) and clicks do nothing; the OS
+         preference still drives dark-mode tokens via media query. -->
+    <button type="button" class="theme-toggle js-theme-toggle" aria-label="Toggle dark mode" aria-pressed="false" hidden>
+      <svg class="theme-toggle__icon theme-toggle__icon--sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="4"/>
+        <line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/>
+        <line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/>
+        <line x1="4.93" y1="4.93" x2="7.05" y2="7.05"/><line x1="16.95" y1="16.95" x2="19.07" y2="19.07"/>
+        <line x1="4.93" y1="19.07" x2="7.05" y2="16.95"/><line x1="16.95" y1="7.05" x2="19.07" y2="4.93"/>
+      </svg>
+      <svg class="theme-toggle__icon theme-toggle__icon--moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+    </button>
     <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">
       <!-- Phase 5+ — site-wide pulse propagation. Hidden by default;
            window-state.js reveals when lastSeen <4h. Decorative; the
@@ -221,6 +238,9 @@ main{padding-top:64px}
         .catch(function () { show(signin); });
     });
   </script>
+  <!-- Phase 7 — dark-mode toggle handler. Loaded after the nav
+       partial so the .js-theme-toggle button is in the DOM. -->
+  <script src="/assets/theme-toggle.js?v=phase7"></script>
 </header>
 
 <main id="main">

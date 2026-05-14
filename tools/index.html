@@ -174,9 +174,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=ca265f67308b" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-core.css?v=dc42f0ad5007" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-tool.css?v=5f214b425aa9" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ca265f67308b"><link rel="stylesheet" href="/assets/site-tool.css?v=5f214b425aa9"></noscript>
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=dc42f0ad5007"><link rel="stylesheet" href="/assets/site-tool.css?v=5f214b425aa9"></noscript>
 <style>
   /* "We remember" pill — surfaced by MuntinContext on returning visits. */
   .ctx-pill { display: block; padding: 12px 0; background: var(--cream-2, #F2EEE5); border-bottom: 1px solid var(--line); }
@@ -213,7 +213,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     {
       "@type": "ItemList",
       "@id": "https://muntin.digital/tools/#items",
-      "numberOfItems": 21,
+      "numberOfItems": 19,
       "itemListElement": [
         {
           "@type": "ListItem",
@@ -248,96 +248,84 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         {
           "@type": "ListItem",
           "position": 6,
-          "url": "https://muntin.digital/tools/holiday-hours/",
-          "name": "Holiday Hours Generator &mdash; restaurant holiday hours for site, GBP, schema"
-        },
-        {
-          "@type": "ListItem",
-          "position": 7,
           "url": "https://muntin.digital/tools/margin-math/",
           "name": "Margin Math"
         },
         {
           "@type": "ListItem",
-          "position": 8,
+          "position": 7,
           "url": "https://muntin.digital/tools/menu-converter/",
           "name": "Menu Converter &mdash; paste menu text, get HTML + JSON-LD schema"
         },
         {
           "@type": "ListItem",
-          "position": 9,
+          "position": 8,
           "url": "https://muntin.digital/tools/menu-copy/",
           "name": "Menu Copy Inspector"
         },
         {
           "@type": "ListItem",
-          "position": 10,
+          "position": 9,
           "url": "https://muntin.digital/tools/menu-engineering/",
           "name": "Menu Engineering Matrix"
         },
         {
           "@type": "ListItem",
+          "position": 10,
+          "url": "https://muntin.digital/tools/page-health/",
+          "name": "Page Health"
+        },
+        {
+          "@type": "ListItem",
           "position": 11,
-          "url": "https://muntin.digital/tools/mobile-check/",
-          "name": "Is My Website Mobile-Friendly? Free Check"
-        },
-        {
-          "@type": "ListItem",
-          "position": 12,
-          "url": "https://muntin.digital/tools/open-hours/",
-          "name": "Open Hours"
-        },
-        {
-          "@type": "ListItem",
-          "position": 13,
           "url": "https://muntin.digital/tools/photo-brief/",
           "name": "Photo Brief Builder"
         },
         {
           "@type": "ListItem",
-          "position": 14,
+          "position": 12,
           "url": "https://muntin.digital/tools/plate-cost/",
           "name": "Plate Cost Calculator"
         },
         {
           "@type": "ListItem",
-          "position": 15,
+          "position": 13,
           "url": "https://muntin.digital/tools/schema-check/",
           "name": "Does Google Understand My Business? Free Schema Check"
         },
         {
           "@type": "ListItem",
-          "position": 16,
+          "position": 14,
           "url": "https://muntin.digital/tools/search-ideas/",
           "name": "What Are People Searching For Near Me? Free Local Search Ideas"
         },
         {
           "@type": "ListItem",
-          "position": 17,
+          "position": 15,
           "url": "https://muntin.digital/tools/seo-grader/",
           "name": "SEO Title &amp; Description Grader"
         },
         {
           "@type": "ListItem",
-          "position": 18,
-          "url": "https://muntin.digital/tools/speed-test/",
-          "name": "How Fast Is My Website? Free Mobile Speed Test"
-        },
-        {
-          "@type": "ListItem",
-          "position": 19,
+          "position": 16,
           "url": "https://muntin.digital/tools/start/",
           "name": "Start Here"
         },
         {
           "@type": "ListItem",
-          "position": 20,
+          "position": 17,
+          "url": "https://muntin.digital/tools/store-hours/",
+          "name": "Store Hours"
+        },
+        {
+          "@type": "ListItem",
+          "position": 18,
           "url": "https://muntin.digital/tools/storefront-health/",
           "name": "Storefront Health"
         },
         {
           "@type": "ListItem",
-          "position": 21,
+          "position": 19,
           "url": "https://muntin.digital/tools/tech-stack/",
           "name": "What's My Website Built On? Free Tech Stack Check"
         }
@@ -412,6 +400,23 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <a href="/es/tools/" hreflang="es" lang="es" class="js-lang-switch" data-set-locale="es">Español</a>
       <span class="lang-switch-current" aria-current="true">EN</span>
     </nav>
+    <!-- Phase 7 — dark-mode toggle. The icon SVG flips between sun
+         and moon via CSS based on the [data-theme] state set by
+         theme-toggle.js. With JS off the button stays in its
+         default state (sun) and clicks do nothing; the OS
+         preference still drives dark-mode tokens via media query. -->
+    <button type="button" class="theme-toggle js-theme-toggle" aria-label="Toggle dark mode" aria-pressed="false" hidden>
+      <svg class="theme-toggle__icon theme-toggle__icon--sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="4"/>
+        <line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/>
+        <line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/>
+        <line x1="4.93" y1="4.93" x2="7.05" y2="7.05"/><line x1="16.95" y1="16.95" x2="19.07" y2="19.07"/>
+        <line x1="4.93" y1="19.07" x2="7.05" y2="16.95"/><line x1="16.95" y1="7.05" x2="19.07" y2="4.93"/>
+      </svg>
+      <svg class="theme-toggle__icon theme-toggle__icon--moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+    </button>
     <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">
       <!-- Phase 5+ — site-wide pulse propagation. Hidden by default;
            window-state.js reveals when lastSeen <4h. Decorative; the
@@ -506,6 +511,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         .catch(function () { show(signin); });
     });
   </script>
+  <!-- Phase 7 — dark-mode toggle handler. Loaded after the nav
+       partial so the .js-theme-toggle button is in the DOM. -->
+  <script src="/assets/theme-toggle.js?v=phase7"></script>
 </header>
 
 <main id="main">
@@ -539,10 +547,18 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <span class="serif-italic">your business.</span>
       </h1>
       <p class="hero-sub hero-sub-narrow">
-        Generic SEO tools give you a PDF full of abstractions. These are different: each one is purpose-built for a specific kind of small business, and each one translates its findings into the language the owner actually uses. Pick yours.
+        Generic SEO tools give you a PDF full of abstractions. These are different: each one is purpose-built for a specific kind of small business, and each one translates its findings into the language the owner actually uses.
       </p>
-      <p class="hero-sub hero-sub-narrow" style="margin-top:14px;font-size:14.5px;color:var(--ink-soft);">
-        Twenty-one tools is a lot for a first visit. <a href="/tools/start/" style="color:var(--teal);font-weight:600;border-bottom:1px solid color-mix(in srgb, var(--teal) 35%, transparent);text-decoration:none;">Answer five questions</a> and we&rsquo;ll point you at the two or three that match what&rsquo;s actually leaking.
+      <div class="hero-ctas" style="margin-top:32px;display:flex;flex-wrap:wrap;gap:14px;justify-content:center;">
+        <a href="/tools/start/" class="btn btn-primary hero-quiz-cta">
+          Start here &mdash; answer 5 questions
+        </a>
+        <a href="#operations-margin" class="btn btn-ghost">
+          Or browse all tools
+        </a>
+      </div>
+      <p class="hero-sub hero-sub-narrow" style="margin-top:18px;font-size:14.5px;color:var(--ink-soft);">
+        Twenty-one tools is a lot for a first visit. The quiz takes about 60 seconds and points you at the two or three that match what&rsquo;s actually leaking.
       </p>
     </div>
   </div>
@@ -558,7 +574,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   <h2 id="tool-goals-heading">Start with a goal.</h2>
   <ul>
       <li><strong>Raising prices</strong> <a href="/tools/plate-cost/">Plate Cost Calculator</a> &middot; <a href="/tools/menu-engineering/">Menu Engineering Matrix</a> &middot; <a href="/tools/margin-math/">Margin Math</a></li>
-      <li><strong>Fixing your Google listing</strong> <a href="/tools/gbp-grader/">Google Business Profile Grader</a> &middot; <a href="/tools/audits/restaurant/">Restaurant Website Audit</a> &middot; <a href="/tools/open-hours/">Open Hours</a></li>
+      <li><strong>Fixing your Google listing</strong> <a href="/tools/gbp-grader/">Google Business Profile Grader</a> &middot; <a href="/tools/audits/restaurant/">Restaurant Website Audit</a> &middot; <a href="/tools/store-hours/">Store Hours</a></li>
       <li><strong>Refreshing your brand</strong> <a href="/tools/brand-suite/">Brand Suite</a> &middot; <a href="/tools/photo-brief/">Photo Brief Builder</a> &middot; <a href="/tools/menu-copy/">Menu Copy Inspector</a> &middot; <a href="/tools/menu-converter/">Menu Converter</a></li>
       <li><strong>Track your costs without a spreadsheet</strong> <a href="/tools/plate-cost/">Plate Cost Calculator</a> &middot; <a href="/tools/margin-math/">Margin Math</a> &middot; <a href="/tools/cost-pulse/">Cost Pulse</a></li>
   </ul>
@@ -572,6 +588,14 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <a href="#roadmap" class="tool-chipnav__roadmap">Roadmap</a>
     </nav>
 
+    <div class="tool-tier-filter" data-tier-filter role="group" aria-label="Filter tools by depth">
+      <button type="button" class="tool-tier-filter__btn is-active" data-tier-filter-btn="all" aria-pressed="true">All tools</button>
+      <button type="button" class="tool-tier-filter__btn" data-tier-filter-btn="quick" aria-pressed="false">Quick</button>
+      <button type="button" class="tool-tier-filter__btn" data-tier-filter-btn="standard" aria-pressed="false">Standard</button>
+      <button type="button" class="tool-tier-filter__btn" data-tier-filter-btn="deep" aria-pressed="false">Deep</button>
+      <small class="tool-tier-filter__help">Quick: under 5 minutes. Standard: 5–15 minutes. Deep: 20+ minutes, deeper inputs.</small>
+    </div>
+
     <section id="operations-margin" class="tool-cluster" aria-labelledby="cluster-operations-margin-heading">
     <header class="tool-cluster__head">
       <h2 id="cluster-operations-margin-heading">Operations &amp; Margin</h2>
@@ -579,29 +603,33 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <a class="tool-cluster__topic" href="/learn/topics/operations-margin/">See the full topic <span aria-hidden="true">&rarr;</span></a>
     </header>
     <div class="tool-grid">
-      <a href="/tools/cost-pulse/" class="tool-card tool-card--compact live">
+      <a href="/tools/cost-pulse/" class="tool-card tool-card--compact live" data-tier="standard" data-slug="cost-pulse">
         <span class="status">Live</span>
+        <span class="tool-card__tier tool-card__tier--standard">Standard</span>
         <h3>Cost Pulse</h3>
         <p>A dashboard across your saved invoices. Spot food-cost drift, category-share shifts, and rolling medians — no QuickBooks open.</p>
         <p class="tool-card__walkaway"><span class="tool-card__walkaway-label">You leave with:</span> A drift list, sparklines, and a most-recent-save card with a one-tap reload.</p>
         <span class="cta">Open Cost Pulse <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
       </a>
-      <a href="/tools/margin-math/" class="tool-card tool-card--compact live">
+      <a href="/tools/margin-math/" class="tool-card tool-card--compact live" data-tier="standard" data-slug="margin-math">
         <span class="status">Live</span>
+        <span class="tool-card__tier tool-card__tier--standard">Standard</span>
         <h3>Margin Math</h3>
         <p>Four restaurant calculators — delivery break-even, prime cost, covers needed, and a price-raise simulator. Stays in your browser.</p>
         <p class="tool-card__walkaway"><span class="tool-card__walkaway-label">You leave with:</span> Honest numbers for your hardest pricing decisions.</p>
-        <span class="cta">Run the math <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
+        <span class="cta">Open Margin Math <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
       </a>
-      <a href="/tools/menu-engineering/" class="tool-card tool-card--compact live">
+      <a href="/tools/menu-engineering/" class="tool-card tool-card--compact live" data-tier="deep" data-slug="menu-engineering">
         <span class="status">Live</span>
+        <span class="tool-card__tier tool-card__tier--deep">Deep</span>
         <h3>Menu Engineering Matrix</h3>
         <p>Paste your menu — items, prices, food cost, units sold. Get a 2×2 of Stars, Plowhorses, Puzzles, and Dogs with one action per dish.</p>
         <p class="tool-card__walkaway"><span class="tool-card__walkaway-label">You leave with:</span> An action per dish — keep, push, redesign, or drop.</p>
         <span class="cta">Open Menu Engineering <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
       </a>
-      <a href="/tools/plate-cost/" class="tool-card tool-card--compact live">
+      <a href="/tools/plate-cost/" class="tool-card tool-card--compact live" data-tier="deep" data-slug="plate-cost">
         <span class="status">Live</span>
+        <span class="tool-card__tier tool-card__tier--deep">Deep</span>
         <h3>Plate Cost Calculator</h3>
         <p>Type a recipe — what you bought, what you used, what it yields. The tool walks the math from invoice to plate cost and suggests three menu prices.</p>
         <p class="tool-card__walkaway"><span class="tool-card__walkaway-label">You leave with:</span> A defendable price for every dish on the menu.</p>
@@ -617,33 +645,29 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <a class="tool-cluster__topic" href="/learn/topics/local-seo/">See the full topic <span aria-hidden="true">&rarr;</span></a>
     </header>
     <div class="tool-grid">
-      <a href="/tools/audits/restaurant/" class="tool-card tool-card--compact live">
+      <a href="/tools/audits/restaurant/" class="tool-card tool-card--compact live" data-tier="deep" data-slug="restaurant-audit">
         <span class="status">Live</span>
+        <span class="tool-card__tier tool-card__tier--deep">Deep</span>
         <h3>Restaurant Website Audit</h3>
         <p>Drop your URL. Get a real mobile audit in about thirty seconds — performance, SEO, accessibility, and ten restaurant-specific checks in plain English.</p>
         <p class="tool-card__walkaway"><span class="tool-card__walkaway-label">You leave with:</span> A punch list of what's broken on your restaurant's website.</p>
-        <span class="cta">Run the audit <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
+        <span class="cta">Open Restaurant Audit <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
       </a>
-      <a href="/tools/gbp-grader/" class="tool-card tool-card--compact live">
+      <a href="/tools/gbp-grader/" class="tool-card tool-card--compact live" data-tier="deep" data-slug="gbp-grader">
         <span class="status">Live</span>
+        <span class="tool-card__tier tool-card__tier--deep">Deep</span>
         <h3>Google Business Profile Grader</h3>
         <p>Search your business name. See how your Google listing scores — rating, reviews, photos, categories, hours — with the specific fixes for what's missing.</p>
         <p class="tool-card__walkaway"><span class="tool-card__walkaway-label">You leave with:</span> Specific fixes for the gaps in your Google listing.</p>
-        <span class="cta">Grade your GBP <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
+        <span class="cta">Open GBP Grader <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
       </a>
-      <a href="/tools/open-hours/" class="tool-card tool-card--compact live">
+      <a href="/tools/store-hours/" class="tool-card tool-card--compact live" data-tier="standard" data-slug="store-hours">
         <span class="status">Live</span>
-        <h3>Open Hours</h3>
-        <p>Fill your hours once. Walk away with the exact text for Google and a code block for your website builder. About 15 minutes.</p>
-        <p class="tool-card__walkaway"><span class="tool-card__walkaway-label">You leave with:</span> The exact hours text Google and your website both want.</p>
-        <span class="cta">Open Open Hours <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
-      </a>
-      <a href="/tools/holiday-hours/" class="tool-card tool-card--compact live">
-        <span class="status">Live</span>
-        <h3>Holiday Hours Generator</h3>
-        <p>Set your hours for the next eight US restaurant holidays. Walk away with three outputs: plain text for your site, JSON-LD schema overrides, and a Google Business Profile-formatted block. About 5 minutes.</p>
-        <p class="tool-card__walkaway"><span class="tool-card__walkaway-label">You leave with:</span> Three holiday-hours outputs ready to paste into site, schema, and GBP.</p>
-        <span class="cta">Generate holiday hours <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
+        <span class="tool-card__tier tool-card__tier--standard">Standard</span>
+        <h3>Store Hours</h3>
+        <p>Set your weekly hours once. Walk away with text for Google, JSON-LD for your site, and a code block your developer can paste. Holiday hours live on a sister page.</p>
+        <p class="tool-card__walkaway"><span class="tool-card__walkaway-label">You leave with:</span> The exact hours text Google and your website both want, plus a holidays page for the eight US restaurant holidays.</p>
+        <span class="cta">Open Store Hours <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
       </a>
     </div>
   </section>
@@ -655,33 +679,37 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <a class="tool-cluster__topic" href="/learn/topics/conversions/">See the full topic <span aria-hidden="true">&rarr;</span></a>
     </header>
     <div class="tool-grid">
-      <a href="/tools/storefront-health/" class="tool-card tool-card--compact live">
+      <a href="/tools/storefront-health/" class="tool-card tool-card--compact live" data-tier="standard" data-slug="storefront-health">
         <span class="status">Live</span>
+        <span class="tool-card__tier tool-card__tier--standard">Standard</span>
         <h3>Storefront Health</h3>
         <p>One URL, six checks, one score. The unified scorecard for your restaurant's full storefront — with the next fix linked to the tool that runs it.</p>
         <p class="tool-card__walkaway"><span class="tool-card__walkaway-label">You leave with:</span> One number for your storefront, plus the next fix in plain English.</p>
-        <span class="cta">Score my storefront <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
+        <span class="cta">Open Storefront Health <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
       </a>
-      <a href="/tools/menu-copy/" class="tool-card tool-card--compact live">
+      <a href="/tools/menu-copy/" class="tool-card tool-card--compact live" data-tier="standard" data-slug="menu-copy">
         <span class="status">Live</span>
+        <span class="tool-card__tier tool-card__tier--standard">Standard</span>
         <h3>Menu Copy Inspector</h3>
         <p>Paste a dish description. See six diagnostics — sensory words, provenance, technique, length, hedges, pricing — with the research behind each.</p>
         <p class="tool-card__walkaway"><span class="tool-card__walkaway-label">You leave with:</span> A trained eye for reading your own menu critically.</p>
         <span class="cta">Open Menu Copy <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
       </a>
-      <a href="/tools/photo-brief/" class="tool-card tool-card--compact live">
+      <a href="/tools/photo-brief/" class="tool-card tool-card--compact live" data-tier="standard" data-slug="photo-brief">
         <span class="status">Live</span>
+        <span class="tool-card__tier tool-card__tier--standard">Standard</span>
         <h3>Photo Brief Builder</h3>
         <p>List your dishes, tick where the photos go (Yelp, Google, Instagram, your menu). Walk away with a one-page brief that gets you the right photos in one shoot.</p>
         <p class="tool-card__walkaway"><span class="tool-card__walkaway-label">You leave with:</span> A one-page brief your photographer can shoot in one visit.</p>
         <span class="cta">Open Photo Brief <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
       </a>
-      <a href="/tools/menu-converter/" class="tool-card tool-card--compact live">
+      <a href="/tools/menu-converter/" class="tool-card tool-card--compact live" data-tier="quick" data-slug="menu-converter">
         <span class="status">Live</span>
+        <span class="tool-card__tier tool-card__tier--quick">Quick</span>
         <h3>Menu Converter</h3>
         <p>Paste your menu text. Walk away with a live preview, semantic HTML for your website, and a JSON-LD Menu schema block Google can index. Sections, items, prices, descriptions — parsed in your browser.</p>
         <p class="tool-card__walkaway"><span class="tool-card__walkaway-label">You leave with:</span> Clean HTML and Menu schema from your pasted menu, in two seconds.</p>
-        <span class="cta">Convert your menu <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
+        <span class="cta">Open Menu Converter <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
       </a>
     </div>
   </section>
@@ -693,8 +721,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <a class="tool-cluster__topic" href="/learn/topics/brand-design/">See the full topic <span aria-hidden="true">&rarr;</span></a>
     </header>
     <div class="tool-grid">
-      <a href="/tools/brand-suite/" class="tool-card tool-card--compact live">
+      <a href="/tools/brand-suite/" class="tool-card tool-card--compact live" data-tier="deep" data-slug="brand-suite">
         <span class="status">Live</span>
+        <span class="tool-card__tier tool-card__tier--deep">Deep</span>
         <h3>Brand Suite</h3>
         <p>Drop in your logo. Walk away with a palette, accessible color pairs, and CSS tokens — a starter kit for the system around your mark.</p>
         <p class="tool-card__walkaway"><span class="tool-card__walkaway-label">You leave with:</span> Tokens you can paste into any builder or hand to a developer.</p>
@@ -721,16 +750,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <div class="tool-roadmap__group" data-cluster="speed-mobile">
         <h3 class="tool-roadmap__cluster">Speed &amp; Mobile</h3>
         <ul class="tool-grid">
-        <li class="tool-card tool-card--roadmap soon" aria-disabled="true">
-          <span class="status">Coming</span>
-          <h3>Speed Test</h3>
-          <p>Drop a URL. Get a Lighthouse-backed speed score with the specific files slowing you down.</p>
-        </li>
-        <li class="tool-card tool-card--roadmap soon" aria-disabled="true">
-          <span class="status">Coming</span>
-          <h3>Mobile Checker</h3>
-          <p>How does your site actually look on the phones your guests use? Real-device snapshots with the issues called out.</p>
-        </li>
         <li class="tool-card tool-card--roadmap soon" aria-disabled="true">
           <span class="status">Coming</span>
           <h3>Tech Stack Detector</h3>
@@ -1022,6 +1041,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
 <!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260422-cohesion";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
 <script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
+<script src="/tools/_shared/tier-filter.js?v=phase2"></script>
 <script>
 // "We remember" pill renderer. Read MuntinContext on load; if any
 // owner-shaped fields are present, build a chip strip + "Forget"
@@ -1037,10 +1057,39 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
   function escHtml(s){ return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
+  // Phase 4 — pretty tool slug for the "Last used" chip.
+  var TOOL_LABELS = {
+    'plate-cost': 'Plate Cost', 'margin-math': 'Margin Math',
+    'menu-engineering': 'Menu Engineering', 'cost-pulse': 'Cost Pulse',
+    'menu-converter': 'Menu Converter', 'menu-copy': 'Menu Copy',
+    'photo-brief': 'Photo Brief', 'brand-suite': 'Brand Suite',
+    'gbp-grader': 'GBP Grader', 'audits/restaurant': 'Restaurant Audit',
+    'open-hours': 'Open Hours', 'holiday-hours': 'Holiday Hours',
+    'storefront-health': 'Storefront Health', 'schema-check': 'Schema Check',
+    'tech-stack': 'Tech Stack', 'mobile-check': 'Mobile Check',
+    'speed-test': 'Speed Test', 'seo-grader': 'SEO Grader',
+    'search-ideas': 'Search Ideas', 'compare': 'Compare'
+  };
+  var FOURTEEN_DAYS_MS = 14 * 24 * 60 * 60 * 1000;
+
   function render() {
     var ctx;
     try { ctx = MuntinContext.read() || {}; } catch (_) { ctx = {}; }
     var parts = [];
+    // Phase 4 — "Continue where you left off" surface. Wins top spot
+    // when a recent tool visit exists (within 14 days). Resolves to
+    // the localized URL via the slug → label map above.
+    if (typeof MuntinContext.readLastTool === 'function') {
+      try {
+        var lastTool = MuntinContext.readLastTool();
+        var recent = MuntinContext.readRecentTools ? MuntinContext.readRecentTools() : [];
+        var lastEntry = recent && recent[0];
+        if (lastTool && lastEntry && lastEntry.at && (Date.now() - lastEntry.at < FOURTEEN_DAYS_MS)) {
+          var label = TOOL_LABELS[lastTool] || lastTool;
+          parts.push({ label: 'Continue', value: label, href: '/tools/' + lastTool + '/', priority: true });
+        }
+      } catch (_) {}
+    }
     if (ctx.businessName) parts.push({ label: 'Name',         value: ctx.businessName });
     if (ctx.cuisine)      parts.push({ label: 'Cuisine',      value: ctx.cuisine });
     if (ctx.neighborhood || ctx.city) parts.push({ label: 'Neighborhood', value: ctx.neighborhood || ctx.city });
@@ -1049,6 +1098,25 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     if (Array.isArray(ctx.palette) && ctx.palette.length) parts.push({ label: 'Palette', swatches: ctx.palette.slice(0, 5) });
     if (ctx.hours && Array.isArray(ctx.hours.openingHoursSpecification) && ctx.hours.openingHoursSpecification.length) {
       parts.push({ label: 'Hours', value: 'set in Open Hours' });
+    }
+    // Phase 4 — also surface Restaurant Profile fields (name/cuisine
+    // are duplicated when set both ways, but legacy + Profile coexist
+    // during the transition). Profile fields that aren't in legacy:
+    if (typeof MuntinContext.readRestaurantProfile === 'function') {
+      try {
+        var prof = MuntinContext.readRestaurantProfile();
+        if (prof) {
+          if (prof.address && !parts.some(function(p){return p.label === 'Address';})) {
+            parts.push({ label: 'Address', value: prof.address });
+          }
+          if (prof.priceTier && !parts.some(function(p){return p.label === 'Price tier';})) {
+            parts.push({ label: 'Price tier', value: prof.priceTier });
+          }
+          if (prof.menuUrl && !parts.some(function(p){return p.label === 'Menu URL';})) {
+            parts.push({ label: 'Menu URL', value: String(prof.menuUrl).replace(/^https?:\/\//, '') });
+          }
+        }
+      } catch (_) {}
     }
     if (!parts.length) {
       pill.hidden = true;
@@ -1063,6 +1131,15 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         }).join('');
         return '<li class="ctx-pill-chip"><span style="font-weight:600;color:var(--stone)">' + escHtml(p.label) + ':</span>' +
                '<span class="ctx-pill-chip-swatches">' + dots + '</span></li>';
+      }
+      // Phase 4 — the "Continue" chip is a real link, not just a label.
+      // Visually emphasized so it reads as the primary action.
+      if (p.href) {
+        return '<li class="ctx-pill-chip ctx-pill-chip--cta">' +
+               '<a href="' + escHtml(p.href) + '" style="text-decoration:none;color:inherit;font-weight:600;">' +
+               '<span style="font-weight:700;color:var(--teal);">' + escHtml(p.label) + ' →</span> ' +
+               escHtml(p.value) +
+               '</a></li>';
       }
       return '<li class="ctx-pill-chip"><span style="font-weight:600;color:var(--stone)">' + escHtml(p.label) + ':</span> ' + escHtml(p.value) + '</li>';
     }).join('');

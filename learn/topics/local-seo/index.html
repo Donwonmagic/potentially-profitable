@@ -39,9 +39,9 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=ca265f67308b" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-core.css?v=dc42f0ad5007" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=47810dd9477a" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ca265f67308b"><link rel="stylesheet" href="/assets/site-article.css?v=47810dd9477a"></noscript>
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=dc42f0ad5007"><link rel="stylesheet" href="/assets/site-article.css?v=47810dd9477a"></noscript>
 
 <!-- topic-schema:start -->
 <script type="application/ld+json">
@@ -224,6 +224,23 @@
       <a href="/es/learn/topics/local-seo/" hreflang="es" lang="es" class="js-lang-switch" data-set-locale="es">Español</a>
       <span class="lang-switch-current" aria-current="true">EN</span>
     </nav>
+    <!-- Phase 7 — dark-mode toggle. The icon SVG flips between sun
+         and moon via CSS based on the [data-theme] state set by
+         theme-toggle.js. With JS off the button stays in its
+         default state (sun) and clicks do nothing; the OS
+         preference still drives dark-mode tokens via media query. -->
+    <button type="button" class="theme-toggle js-theme-toggle" aria-label="Toggle dark mode" aria-pressed="false" hidden>
+      <svg class="theme-toggle__icon theme-toggle__icon--sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="4"/>
+        <line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/>
+        <line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/>
+        <line x1="4.93" y1="4.93" x2="7.05" y2="7.05"/><line x1="16.95" y1="16.95" x2="19.07" y2="19.07"/>
+        <line x1="4.93" y1="19.07" x2="7.05" y2="16.95"/><line x1="16.95" y1="7.05" x2="19.07" y2="4.93"/>
+      </svg>
+      <svg class="theme-toggle__icon theme-toggle__icon--moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+    </button>
     <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">
       <!-- Phase 5+ — site-wide pulse propagation. Hidden by default;
            window-state.js reveals when lastSeen <4h. Decorative; the
@@ -318,6 +335,9 @@
         .catch(function () { show(signin); });
     });
   </script>
+  <!-- Phase 7 — dark-mode toggle handler. Loaded after the nav
+       partial so the .js-theme-toggle button is in the DOM. -->
+  <script src="/assets/theme-toggle.js?v=phase7"></script>
 </header>
 
 <main id="main">
@@ -591,7 +611,7 @@
 
       <p>Google&rsquo;s local algorithm reads your <em>website&rsquo;s</em> structured data alongside your GBP listing, then cross-references the two for consistency. Mismatches cost you. The five schema.org types that move the needle for an independent restaurant: <strong>Restaurant</strong> (the parent), <strong>LocalBusiness</strong> (the inheritance), <strong>OpeningHoursSpecification</strong> (regular and holiday hours), <strong>Menu</strong> (sections and items), and <strong>Reservation</strong> (deeplink to your venue page on OpenTable / Resy / Tock).</p>
 
-      <p>The plain-English version: every claim your GBP makes &mdash; cuisine, hours, address, menu link, reservation link &mdash; should appear inside the JSON-LD on your homepage too. When Google&rsquo;s parsers see the same data in both places, they trust the listing more and bump it on the relevance side. When they see a discrepancy &mdash; GBP says you close at 10pm, the website says 9pm &mdash; they trust neither and rank you below a competitor whose data is consistent. <a href="/blog/restaurant-schema-markup-6-types-google-uses/">The 6 schema types Google actually uses</a> walks through each one with copy-paste JSON-LD; the <a href="/tools/holiday-hours/">Holiday Hours Generator</a> emits the override block for special hours; <a href="/tools/menu-converter/">Menu Converter</a> emits the Menu schema from a pasted menu in two seconds.</p>
+      <p>The plain-English version: every claim your GBP makes &mdash; cuisine, hours, address, menu link, reservation link &mdash; should appear inside the JSON-LD on your homepage too. When Google&rsquo;s parsers see the same data in both places, they trust the listing more and bump it on the relevance side. When they see a discrepancy &mdash; GBP says you close at 10pm, the website says 9pm &mdash; they trust neither and rank you below a competitor whose data is consistent. <a href="/blog/restaurant-schema-markup-6-types-google-uses/">The 6 schema types Google actually uses</a> walks through each one with copy-paste JSON-LD; the <a href="/tools/store-hours/#holidays">Holiday Hours Generator</a> emits the override block for special hours; <a href="/tools/menu-converter/">Menu Converter</a> emits the Menu schema from a pasted menu in two seconds.</p>
 
       <h3>The DMV-specific edge</h3>
 
@@ -599,7 +619,7 @@
 
       <ul>
         <li><strong>EN-only listings concede the bilingual market.</strong> A real <code>/es/</code> mirror with hreflang, plus the menu and hours in Spanish on GBP, doubles addressable demand in roughly 35% of DMV neighborhoods. The <a href="/services/menu-drop-in/">$1,500 menu drop-in</a> ships the menu page version of this in seven days; the full-site version is in any of the <a href="/services/">three site tiers</a>.</li>
-        <li><strong>Holiday hours leak more in the DMV than the national average.</strong> 81% of DMV operators in our 100-restaurant audit had no holiday hours configured; the national average is closer to 65%. Memorial Day weekend, July 4, the four religious holidays in fall, Thanksgiving, and the Christmas/NYE block all drive 1.2&times; normal-volume search traffic in the DMV. Configure them once a year via the <a href="/tools/holiday-hours/">Holiday Hours Generator</a>.</li>
+        <li><strong>Holiday hours leak more in the DMV than the national average.</strong> 81% of DMV operators in our 100-restaurant audit had no holiday hours configured; the national average is closer to 65%. Memorial Day weekend, July 4, the four religious holidays in fall, Thanksgiving, and the Christmas/NYE block all drive 1.2&times; normal-volume search traffic in the DMV. Configure them once a year via the <a href="/tools/store-hours/#holidays">Holiday Hours Generator</a>.</li>
         <li><strong>Citation parity is harder here.</strong> Multi-jurisdictional operators (a DC location and a Bethesda location, or a Tysons and a Reston) accumulate citation drift faster because every one of the four major directories &mdash; Yelp, Apple Business Connect, Bing Places, Yellow Pages &mdash; treats them as separate pins. The monthly hygiene pass in <a href="/services/care-plan-light/">Care Plan Light</a> is built around fixing this.</li>
       </ul>
 

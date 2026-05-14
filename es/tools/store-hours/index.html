@@ -5,28 +5,28 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
 <meta name="referrer" content="no-referrer" />
-<title>Horario Abierto — Pon bien tu horario en todas partes | Muntin Digital</title>
-<meta name="description" content="Llena los horarios una vez. Llévate un letrero para la puerta, el texto exacto para pegar en Google y lo que necesitas mandar a quien hizo tu sitio. Unos 15 minutos. Se queda en tu navegador." />
+<title>Horario de Tienda — Horarios regulares + festivos, sincronizados en todas partes | Muntin Digital</title>
+<meta name="description" content="Llena los horarios una vez. Llévate un letrero para la puerta, el texto exacto para pegar en Google y lo que necesitas mandar a quien hizo tu sitio. Dos pestañas: horarios regulares de la semana y los ocho festivos de restaurantes en EE.UU. Se queda en tu navegador." />
 <meta name="theme-color" content="#1F4E5B" />
-<link rel="canonical" href="https://muntin.digital/es/tools/open-hours/" />
-<link rel="alternate" hreflang="en" href="https://muntin.digital/tools/open-hours/" />
-<link rel="alternate" hreflang="es" href="https://muntin.digital/es/tools/open-hours/" />
-<link rel="alternate" hreflang="x-default" href="https://muntin.digital/tools/open-hours/" />
+<link rel="canonical" href="https://muntin.digital/es/tools/store-hours/" />
+<link rel="alternate" hreflang="en" href="https://muntin.digital/tools/store-hours/" />
+<link rel="alternate" hreflang="es" href="https://muntin.digital/es/tools/store-hours/" />
+<link rel="alternate" hreflang="x-default" href="https://muntin.digital/tools/store-hours/" />
 <meta property="og:locale" content="es_US" />
 <meta property="og:locale:alternate" content="en_US" />
 <meta property="og:type" content="website" />
-<meta property="og:title" content="Open Hours — Get your restaurant hours right everywhere" />
+<meta property="og:title" content="Store Hours — Regular + holiday hours, synced everywhere" />
 <meta property="og:description" content="Fill out your hours once. Walk away with a sign for the door, the exact text to paste into Google, and what to send your website builder. Stays in your browser." />
-<meta property="og:url" content="https://muntin.digital/tools/open-hours/" />
+<meta property="og:url" content="https://muntin.digital/tools/store-hours/" />
 <meta property="og:site_name" content="Muntin Digital" />
-<meta property="og:image" content="https://muntin.digital/brand/og/tool-open-hours-es.png" />
+<meta property="og:image" content="https://muntin.digital/brand/og/tool-store-hours-es.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Open Hours — Get your restaurant hours right everywhere" />
+<meta name="twitter:title" content="Store Hours — Regular + holiday hours, synced everywhere" />
 <meta name="twitter:description" content="Fill out your hours once. Walk away with what you need for Google, your website, and your door. Stays in your browser." />
-<meta name="twitter:image" content="https://muntin.digital/brand/og/tool-open-hours-es.png" />
+<meta name="twitter:image" content="https://muntin.digital/brand/og/tool-store-hours-es.png" />
 <link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
 <link rel="icon" type="image/png" sizes="32x32" href="/brand/favicons/favicon-32x32.png" />
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
@@ -124,9 +124,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=ca265f67308b" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-core.css?v=dc42f0ad5007" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-tool.css?v=5f214b425aa9" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ca265f67308b"><link rel="stylesheet" href="/assets/site-tool.css?v=5f214b425aa9"></noscript>
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=dc42f0ad5007"><link rel="stylesheet" href="/assets/site-tool.css?v=5f214b425aa9"></noscript>
 <style>.breadcrumb{padding-top:100px}
 /* === Open Hours tool-scoped styles. Page-prefix .oh-*. === */
 .oh-form{display:flex;flex-direction:column;gap:18px}
@@ -285,7 +285,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     letter-spacing:0.01em;
   }
   body[data-print-date]::before{
-    content:attr(data-print-date) '  ·  muntin.digital/es/tools/open-hours/';
+    content:attr(data-print-date) '  ·  muntin.digital/es/tools/store-hours/';
     display:block;
     font-size:9pt;
     color:#555;
@@ -316,6 +316,34 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 .oh-save-link:hover{border-color:var(--ink)}
 .oh-save-msg{font-size:13px;color:var(--status-good);font-weight:500}
 .oh-save-msg.error{color:var(--rust)}
+/* === Pestaña Festivos — .hh-*. Antes /es/tools/store-hours/holidays/. === */
+.hh-form{display:grid;gap:14px;margin:24px 0}
+.hh-row{display:grid;grid-template-columns:1.4fr 0.6fr 1fr 1fr;gap:10px;align-items:center;padding:14px 16px;background:var(--cream-2);border:1px solid var(--line);border-radius:8px}
+@media (max-width:780px){.hh-row{grid-template-columns:1fr;gap:8px}}
+.hh-row__name{font-family:var(--font-display);font-weight:500;color:var(--ink);font-size:15px;display:flex;flex-direction:column;gap:2px}
+.hh-row__name small{font-size:12px;font-weight:400;color:var(--stone);font-family:var(--font-body)}
+.hh-row select,.hh-row input[type=time]{font:inherit;font-size:14.5px;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--white);color:var(--ink);min-height:36px;width:100%}
+.hh-row select:focus,.hh-row input:focus{outline:2px solid var(--teal);outline-offset:1px;border-color:var(--teal)}
+.hh-row[data-status="closed"] input[type=time]{opacity:0.4;pointer-events:none}
+.hh-row[data-status="normal"] input[type=time]{opacity:0.4;pointer-events:none}
+.hh-actions{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0 0}
+.hh-restaurant{padding:18px 20px;background:var(--cream-2);border:1px solid var(--line);border-radius:10px;margin:0 0 16px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:780px){.hh-restaurant{grid-template-columns:1fr}}
+.hh-restaurant label{display:flex;flex-direction:column;font-size:13px;color:var(--ink-soft);gap:4px}
+.hh-restaurant label small{color:var(--stone);font-size:12px}
+.hh-restaurant input{font:inherit;font-size:15px;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--white);color:var(--ink)}
+.hh-result{margin:32px 0 0;padding-top:24px;border-top:1px solid var(--line)}
+.hh-tabs{display:flex;gap:6px;margin:0 0 14px;flex-wrap:wrap}
+.hh-tab{padding:8px 14px;border-radius:999px;background:var(--cream-2);border:1px solid var(--line);font:inherit;font-size:13.5px;color:var(--ink);cursor:pointer;transition:background var(--t-fast) var(--ease)}
+.hh-tab[aria-selected=true]{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+.hh-tab:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.hh-output{position:relative;padding:18px 20px;background:var(--cream-2);border:1px solid var(--line);border-radius:8px;font-family:var(--font-mono,Menlo,Consolas,monospace);font-size:13.5px;line-height:1.5;color:var(--ink);white-space:pre;overflow-x:auto;overflow-y:auto}
+.hh-output[hidden]{display:none}
+.hh-copy{position:absolute;top:10px;right:10px;padding:6px 12px;font:inherit;font-size:12px;font-weight:600;background:var(--ink);color:var(--cream);border:0;border-radius:6px;cursor:pointer;transition:background var(--t-fast) var(--ease)}
+.hh-copy:hover{background:var(--ink-soft)}
+.hh-copy[data-copied=true]{background:var(--teal)}
+.hh-note{font-size:13.5px;color:var(--stone);margin:10px 0 0;font-style:italic}
+.hh-empty{padding:24px;background:var(--cream-2);border:1px dashed var(--line);border-radius:8px;font-size:14.5px;color:var(--ink-soft);text-align:center}
 </style>
 <!-- tool-schema:start -->
 <script type="application/ld+json">
@@ -324,12 +352,12 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   "@graph": [
     {
       "@type": "SoftwareApplication",
-      "@id": "https://muntin.digital/es/tools/open-hours/#tool",
+      "@id": "https://muntin.digital/es/tools/store-hours/#tool",
       "applicationCategory": "BusinessApplication",
       "applicationSubCategory": "RestaurantOps",
       "operatingSystem": "Web",
-      "screenshot": "https://muntin.digital/brand/og/tool-open-hours.png",
-      "url": "https://muntin.digital/es/tools/open-hours/",
+      "screenshot": "https://muntin.digital/brand/og/tool-store-hours.png",
+      "url": "https://muntin.digital/es/tools/store-hours/",
       "featureList": [
         "Generador de schema OpeningHoursSpecification",
         "Cobertura de feriados y horarios especiales",
@@ -341,12 +369,12 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         "priceCurrency": "USD",
         "availability": "https://schema.org/InStock"
       },
-      "name": "Horario Abierto",
+      "name": "Horario de Tienda",
       "description": "Llena los horarios una vez. Llévate el texto exacto para Google y un bloque de código para tu sitio. Unos 15 minutos."
     },
     {
       "@type": "HowTo",
-      "@id": "https://muntin.digital/es/tools/open-hours/#howto",
+      "@id": "https://muntin.digital/es/tools/store-hours/#howto",
       "name": "Cómo leer tu resultado de Horarios",
       "step": [
         {
@@ -354,25 +382,25 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           "position": 1,
           "name": "Ingresa tus horarios",
           "text": "Horarios regulares por día, más feriados o cierres especiales.",
-          "url": "https://muntin.digital/es/tools/open-hours/#step-1"
+          "url": "https://muntin.digital/es/tools/store-hours/#step-1"
         },
         {
           "@type": "HowToStep",
           "position": 2,
           "name": "Obtén tu schema",
           "text": "La herramienta genera JSON-LD OpeningHoursSpecification listo para pegar.",
-          "url": "https://muntin.digital/es/tools/open-hours/#step-2"
+          "url": "https://muntin.digital/es/tools/store-hours/#step-2"
         },
         {
           "@type": "HowToStep",
           "position": 3,
           "name": "Añádelo a tu sitio",
           "text": "Pégalo en <head> de la página principal; lo leen Google y Apple Maps.",
-          "url": "https://muntin.digital/es/tools/open-hours/#step-3"
+          "url": "https://muntin.digital/es/tools/store-hours/#step-3"
         }
       ],
       "about": {
-        "@id": "https://muntin.digital/es/tools/open-hours/#tool"
+        "@id": "https://muntin.digital/es/tools/store-hours/#tool"
       },
       "inLanguage": "es-US"
     }
@@ -436,7 +464,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mac"><span class="nav-search-kbd-mod">⌘</span>K</span><span class="nav-search-kbd-pc">Ctrl+K</span></kbd>
     </button>
     <nav class="lang-switch" aria-label="Idioma">
-      <a href="/tools/open-hours/" hreflang="en" lang="en" class="js-lang-switch" data-set-locale="en">English</a>
+      <a href="/tools/store-hours/" hreflang="en" lang="en" class="js-lang-switch" data-set-locale="en">English</a>
       <span class="lang-switch-current" aria-current="true">ES</span>
     </nav>
     <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">
@@ -460,7 +488,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <span>Buscar en la biblioteca</span>
     </button>
     <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Contacta a Don</a>
-    <a href="/tools/open-hours/" hreflang="en" lang="en" class="mobile-lang js-lang-switch" data-set-locale="en">View in English</a>
+    <a href="/tools/store-hours/" hreflang="en" lang="en" class="mobile-lang js-lang-switch" data-set-locale="en">View in English</a>
   </nav>
 
   <!-- Mega-menu controller retired in Phase 7: Biblioteca is now a
@@ -505,9 +533,26 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     })();
   </script>
 </header>
-<nav class="breadcrumb container" aria-label="Breadcrumb"><a href="/es/">Inicio</a><span class="breadcrumb-sep" aria-hidden="true">›</span><a href="/es/tools/">Herramientas</a><span class="breadcrumb-sep" aria-hidden="true">›</span><span aria-current="page">Horario Abierto</span></nav>
+<nav class="breadcrumb container" aria-label="Breadcrumb"><a href="/es/">Inicio</a><span class="breadcrumb-sep" aria-hidden="true">›</span><a href="/es/tools/">Herramientas</a><span class="breadcrumb-sep" aria-hidden="true">›</span><span aria-current="page">Horario de Tienda</span></nav>
+
+<!-- Pestañas internas. Dos paneles comparten esta URL:
+     #regular   — horarios regulares (por defecto)
+     #holidays  — ocho festivos de restaurante en EE.UU.
+                  (antes /es/tools/store-hours/holidays/)
+     Marcado refleja MuntinUI.tabs() (mtn-tabs / mtn-tabs__list /
+     mtn-tabs__btn / mtn-tabs__panel) para heredar el estilo del
+     design system. El handler de hash al final de <body> conecta
+     clic, teclado y hashchange. -->
+<div class="mtn-tabs container store-hours-tabs" style="margin-top:14px">
+  <div class="mtn-tabs__list" role="tablist" aria-label="Secciones de Horario de Tienda">
+    <button type="button" class="mtn-tabs__btn" role="tab" id="tab-regular" aria-controls="panel-regular" aria-selected="true" tabindex="0">Horarios regulares</button>
+    <button type="button" class="mtn-tabs__btn" role="tab" id="tab-holidays" aria-controls="panel-holidays" aria-selected="false" tabindex="-1">Festivos</button>
+  </div>
+</div>
 
 <main id="main">
+<div class="mtn-tabs__panels">
+<div class="mtn-tabs__panel" role="tabpanel" id="panel-regular" aria-labelledby="tab-regular" tabindex="0">
 
 <section class="block"><div class="container">
   <div style="max-width:760px;margin:0 auto;text-align:center;">
@@ -846,7 +891,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
         Guardar en mi Taller
       </button>
-      <a class="oh-save-link" id="ohSaveLink" href="/es/sign-in/?returnTo=%2Fes%2Ftools%2Fopen-hours%2F" hidden>Acceder para guardar</a>
+      <a class="oh-save-link" id="ohSaveLink" href="/es/sign-in/?returnTo=%2Fes%2Ftools%2Fstore-hours%2F" hidden>Acceder para guardar</a>
       <span class="oh-save-msg" id="ohSaveMsg" hidden role="status"></span>
     </div>
 
@@ -896,14 +941,14 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <div class="oh-step-head"><span class="oh-step-num" aria-hidden="true">2</span><div class="oh-step-body">
           <h3 class="oh-step-title">No hay servidor donde guardarlos.</h3>
           <p class="oh-step-claim">La herramienta se sirve como página estática. No hay endpoint que acepte horarios, ni base de datos que los reciba, ni cola que los procese.</p>
-          <details class="oh-step-inspect"><summary>Inspecciona</summary><div class="oh-step-verify">Prueba <code>curl -X POST https://muntin.digital/es/tools/open-hours/</code>. Recibes un 405 (Method Not Allowed). La página es HTML estático de sólo lectura.</div></details>
+          <details class="oh-step-inspect"><summary>Inspecciona</summary><div class="oh-step-verify">Prueba <code>curl -X POST https://muntin.digital/es/tools/store-hours/</code>. Recibes un 405 (Method Not Allowed). La página es HTML estático de sólo lectura.</div></details>
         </div></div>
       </article>
       <article class="oh-step">
         <div class="oh-step-head"><span class="oh-step-num" aria-hidden="true">3</span><div class="oh-step-body">
           <h3 class="oh-step-title">La analítica sólo ve categorías, nunca tus horarios.</h3>
           <p class="oh-step-claim">Plausible cuenta cuántas personas usan la herramienta pero recibe sólo valores enum-bloqueados como <code>4-5 días abierto</code> o <code>multi-service</code>. Tu nombre de restaurante, ciudad, horarios específicos y fechas de cierre nunca se envían.</p>
-          <details class="oh-step-inspect"><summary>Inspecciona</summary><div class="oh-step-verify">DevTools &rarr; Network &rarr; filtra <code>plausible</code>. Después de escribir, los únicos payloads cargan propiedades como <code>open_days: "4-5"</code>. Fuente: helpers de bucket en <code>/tools/open-hours/open-hours.js</code> líneas ~660&ndash;700.</div></details>
+          <details class="oh-step-inspect"><summary>Inspecciona</summary><div class="oh-step-verify">DevTools &rarr; Network &rarr; filtra <code>plausible</code>. Después de escribir, los únicos payloads cargan propiedades como <code>open_days: "4-5"</code>. Fuente: helpers de bucket en <code>/tools/store-hours/open-hours.js</code> líneas ~660&ndash;700.</div></details>
         </div></div>
       </article>
       <article class="oh-step">
@@ -930,7 +975,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <article class="oh-step">
         <div class="oh-step-head"><span class="oh-step-num" aria-hidden="true">7</span><div class="oh-step-body">
           <h3 class="oh-step-title">El código fuente se puede leer.</h3>
-          <p class="oh-step-claim">El motor completo es JavaScript plano &mdash; sin minificación, sin bundler. Lee la lógica en <a href="/tools/open-hours/open-hours.js" style="color:inherit;border-bottom:1px dashed var(--teal);"><code>/tools/open-hours/open-hours.js</code></a> y el renderer PNG en <a href="/tools/open-hours/sign-render.js" style="color:inherit;border-bottom:1px dashed var(--teal);"><code>/tools/open-hours/sign-render.js</code></a>.</p>
+          <p class="oh-step-claim">El motor completo es JavaScript plano &mdash; sin minificación, sin bundler. Lee la lógica en <a href="/tools/store-hours/open-hours.js" style="color:inherit;border-bottom:1px dashed var(--teal);"><code>/tools/store-hours/open-hours.js</code></a> y el renderer PNG en <a href="/tools/store-hours/sign-render.js" style="color:inherit;border-bottom:1px dashed var(--teal);"><code>/tools/store-hours/sign-render.js</code></a>.</p>
           <details class="oh-step-inspect"><summary>Inspecciona</summary><div class="oh-step-verify">Click derecho &rarr; <strong>Ver código fuente</strong> &rarr; abre cualquiera de los <code>.js</code>. Busca <code>fetch</code>, <code>XMLHttpRequest</code>, o <code>localStorage</code> en esos archivos &mdash; no encuentras nada.</div></details>
         </div></div>
       </article>
@@ -938,7 +983,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <div class="oh-step-head"><span class="oh-step-num" aria-hidden="true">8</span><div class="oh-step-body">
           <h3 class="oh-step-title">Nada persiste más allá de esta pestaña.</h3>
           <p class="oh-step-claim">Sin service worker, sin página en segundo plano, sin IndexedDB. Cierra la pestaña y el trabajo se va &mdash; a menos que hayas guardado el fragmento URL.</p>
-          <details class="oh-step-inspect"><summary>Inspecciona</summary><div class="oh-step-verify">Escribe en el formulario. Cierra la pestaña. Reabre <code>muntin.digital/es/tools/open-hours/</code> (sin el fragmento). El formulario está vacío.</div></details>
+          <details class="oh-step-inspect"><summary>Inspecciona</summary><div class="oh-step-verify">Escribe en el formulario. Cierra la pestaña. Reabre <code>muntin.digital/es/tools/store-hours/</code> (sin el fragmento). El formulario está vacío.</div></details>
         </div></div>
       </article>
       <article class="oh-step">
@@ -976,17 +1021,17 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   <div style="max-width:760px;margin:0 auto;">
     <span class="eyebrow">Marco honesto</span>
     <h2 style="font-family:var(--font-display);font-size:clamp(28px,3.2vw,36px);font-weight:500;color:var(--ink);margin:12px 0 10px;">Qué no es</h2>
-    <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:0;">Horario Abierto son los 15 minutos más limpios que puedes invertir en la parte más ingrata de un restaurante. Saber qué no hace mantiene las expectativas honestas.</p>
+    <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:0;">Horario de Tienda son los 15 minutos más limpios que puedes invertir en la parte más ingrata de un restaurante. Saber qué no hace mantiene las expectativas honestas.</p>
   </div>
 
   <div style="max-width:760px;margin:24px auto 0;display:flex;flex-direction:column;gap:14px;">
     <article style="border:1px solid var(--line);border-radius:var(--r-input);padding:16px 18px;background:var(--white);">
       <h3 style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);margin:0 0 6px;">No es un sincronizador automático.</h3>
-      <p style="margin:0;font-size:14px;line-height:1.6;color:var(--ink-soft);">Servicios como Yext hacen eso — empujan una sola fuente a cada plataforma según un calendario. Cuestan \$199+/mes y se autentican como tú. Horario Abierto es la alternativa sin cuenta, sin API: tú copias y pegas. Más lento, pero la postura de privacidad queda limpia y la matemática es auditable.</p>
+      <p style="margin:0;font-size:14px;line-height:1.6;color:var(--ink-soft);">Servicios como Yext hacen eso — empujan una sola fuente a cada plataforma según un calendario. Cuestan \$199+/mes y se autentican como tú. Horario de Tienda es la alternativa sin cuenta, sin API: tú copias y pegas. Más lento, pero la postura de privacidad queda limpia y la matemática es auditable.</p>
     </article>
     <article style="border:1px solid var(--line);border-radius:var(--r-input);padding:16px 18px;background:var(--white);">
       <h3 style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);margin:0 0 6px;">No predice tiempos de espera ni gestiona reservas.</h3>
-      <p style="margin:0;font-size:14px;line-height:1.6;color:var(--ink-soft);">Esas son herramientas operativas que necesitan datos en tiempo real. Horario Abierto define el horario fijo; tiempos de espera y disponibilidad de reserva son problemas distintos.</p>
+      <p style="margin:0;font-size:14px;line-height:1.6;color:var(--ink-soft);">Esas son herramientas operativas que necesitan datos en tiempo real. Horario de Tienda define el horario fijo; tiempos de espera y disponibilidad de reserva son problemas distintos.</p>
     </article>
     <article style="border:1px solid var(--line);border-radius:var(--r-input);padding:16px 18px;background:var(--white);">
       <h3 style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);margin:0 0 6px;">No es un panel multi-sucursal.</h3>
@@ -1011,6 +1056,92 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     </a>
   </div>
 </div></section>
+
+</div><!-- /panel-regular -->
+
+<!-- PANEL FESTIVOS — antes /es/tools/store-hours/holidays/. Marcado,
+     CSS .hh-* y el IIFE al final de <body> vienen sin cambios de la
+     página antigua; sólo se demovió el H1 → H2 (un solo H1 por URL)
+     y se eliminaron las secciones tool-knit / tool-deep-links
+     duplicadas (la versión del padre sirve para los dos paneles). -->
+<div class="mtn-tabs__panel" role="tabpanel" id="panel-holidays" aria-labelledby="tab-holidays" tabindex="0" hidden>
+
+<section class="block"><div class="container">
+  <article style="max-width:840px;margin:0 auto">
+    <header style="margin-bottom:24px">
+      <span class="eyebrow">Herramienta gratis &middot; se queda en tu navegador</span>
+      <h2 style="font-family:var(--font-display);font-size:clamp(34px,4.8vw,48px);font-weight:500;line-height:1.05;letter-spacing:-0.5px;margin:14px 0 16px">
+        Horarios festivos, <span class="serif-italic">de tres maneras.</span>
+      </h2>
+      <p style="font-size:17px;line-height:1.55;color:var(--ink-soft);margin:0">
+        Define tus horarios para los próximos ocho días festivos de restaurantes en EE.UU. La herramienta te entrega tres resultados: un bloque de texto plano para tu sitio, un override JSON-LD <code>OpeningHoursSpecification</code> para tu schema, y un bloque con formato Google Business Profile que pegas directo en el dashboard. Todo corre en tu navegador; nada sale de la página.
+      </p>
+    </header>
+
+    <form id="hhForm" class="hh-form" autocomplete="off">
+      <fieldset class="hh-restaurant" style="border:0;padding:18px 20px">
+        <label>Nombre del restaurante<small>Aparece dentro del JSON-LD y del bloque GBP.</small>
+          <input type="text" id="hhName" name="hhName" placeholder="The Irish Inn at Glen Echo" />
+        </label>
+        <label>Año<small>Pre-cargado con 2026. Cámbialo para recalcular.</small>
+          <input type="number" id="hhYear" name="hhYear" value="2026" min="2024" max="2030" />
+        </label>
+      </fieldset>
+
+      <p style="font-family:var(--font-display);font-size:14px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--teal);margin:8px 0 0">Ocho festivos. Elige el estado de cada uno.</p>
+
+      <div id="hhRows"></div>
+
+      <div class="hh-actions">
+        <button type="button" id="hhGenerate" class="btn btn-primary">Generar resultados</button>
+        <button type="button" id="hhReset" class="btn btn-ghost">Restablecer</button>
+      </div>
+    </form>
+
+    <section class="hh-result" aria-labelledby="hhResultH" id="hhResultRegion" tabindex="-1">
+      <h3 id="hhResultH" style="font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0 0 12px">Tus tres resultados.</h3>
+      <p class="hh-note">Elige una pestaña. Pulsa Copiar. Pega en la superficie que la pidió. Genera de nuevo cuando cambies una fila.</p>
+
+      <div class="hh-tabs" role="tablist" aria-label="Formato del resultado">
+        <button type="button" class="hh-tab" id="hhTabText" role="tab" aria-controls="hhOutText" aria-selected="true">Texto plano</button>
+        <button type="button" class="hh-tab" id="hhTabSchema" role="tab" aria-controls="hhOutSchema" aria-selected="false">JSON-LD schema</button>
+        <button type="button" class="hh-tab" id="hhTabGbp" role="tab" aria-controls="hhOutGbp" aria-selected="false">Google Business Profile</button>
+      </div>
+
+      <div id="hhEmpty" class="hh-empty">Pulsa <strong>Generar resultados</strong> para ver tus tres bloques.</div>
+
+      <div class="hh-output" id="hhOutText" role="tabpanel" aria-labelledby="hhTabText" hidden>
+        <button type="button" class="hh-copy" data-target="hhOutText">Copiar</button>
+        <div id="hhOutTextBody"></div>
+      </div>
+      <div class="hh-output" id="hhOutSchema" role="tabpanel" aria-labelledby="hhTabSchema" hidden>
+        <button type="button" class="hh-copy" data-target="hhOutSchema">Copiar</button>
+        <div id="hhOutSchemaBody"></div>
+      </div>
+      <div class="hh-output" id="hhOutGbp" role="tabpanel" aria-labelledby="hhTabGbp" hidden>
+        <button type="button" class="hh-copy" data-target="hhOutGbp">Copiar</button>
+        <div id="hhOutGbpBody"></div>
+      </div>
+
+      <p class="hh-note" style="margin-top:14px">
+        ¿Quieres que mantenga estos al día cada mes, además de la misma pasada de higiene en tus fichas de Yelp y Apple Maps? <a href="/services/care-plan-light/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">Care Plan Light $99/mes &rarr;</a>
+      </p>
+    </section>
+
+    <section style="margin-top:48px;padding-top:32px;border-top:1px solid var(--line)">
+      <h3 style="font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0 0 14px">Lo que esta pestaña NO hace.</h3>
+      <ul style="font-size:15.5px;line-height:1.7;color:var(--ink);margin:0;padding-left:22px">
+        <li style="margin-bottom:8px">No sube los horarios automáticamente a tu GBP. Google requiere que pegues en Business Profile Manager tú mismo; eso es una característica, no un bug — el dashboard es la pista de auditoría.</li>
+        <li style="margin-bottom:8px">No maneja festivos fuera de EE.UU. ni observancias religiosas. Los ocho festivos de restaurantes en EE.UU. son los que mueven cubiertos; escríbeme si tu concepto necesita más.</li>
+        <li>No verifica que de hecho actualizaste los horarios. Si quieres verificación mensual en sitio + GBP + Yelp + Apple Maps, eso lo cubre el <a href="/services/care-plan-light/" style="color:var(--teal)">Care Plan Light</a>.</li>
+      </ul>
+    </section>
+  </article>
+</div></section>
+
+</div><!-- /panel-holidays -->
+
+</div><!-- /mtn-tabs__panels -->
 
 <!-- NEXT_PLACEHOLDER -->
 <section class="block"><div class="container">
@@ -1052,6 +1183,13 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           <p class="tool-deep-snippet">Una entidad aparte del horario regular en el modelo de datos de Google: excepciones por fecha para feriados, eventos privados, cierres por c…</p>
           <span class="tool-deep-cta">Leer la definición <span aria-hidden="true">→</span></span>
         </a>
+      <a class="tool-deep-card tool-deep-card-term" href="/es/glossary/holiday-hours/">
+          <span class="tool-deep-kind">Glosario</span>
+          <h3>Horarios festivos</h3>
+          <p class="tool-deep-aka">las excepciones por fecha que todo restaurante debe definir cada año</p>
+          <p class="tool-deep-snippet">El subconjunto de horarios especiales que se repite por calendario — cerrado en Acción de Gracias y Navidad, cierre temprano en Nochebuena, …</p>
+          <span class="tool-deep-cta">Leer la definición <span aria-hidden="true">→</span></span>
+        </a>
       <a class="tool-deep-card tool-deep-card-term" href="/es/glossary/nap-consistency/">
           <span class="tool-deep-kind">Glosario</span>
           <h3>Consistencia de NAP</h3>
@@ -1085,9 +1223,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
 
 <!-- tool-knit -->
-<aside class="tool-knit" aria-labelledby="tool-knit-heading-open-hours">
+<aside class="tool-knit" aria-labelledby="tool-knit-heading-store-hours">
     <div class="container">
-      <h2 id="tool-knit-heading-open-hours" class="tool-knit__h">Sigue.</h2>
+      <h2 id="tool-knit-heading-store-hours" class="tool-knit__h">Sigue.</h2>
       <div class="tool-knit__grid">
       <div class="tool-knit__col">
         <h3>Tema</h3>
@@ -1098,7 +1236,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <ul>
           <li><a href="/es/tools/gbp-grader/">Calificador de Google Business Profile</a></li>
           <li><a href="/es/tools/audits/restaurant/">Diagnóstico de sitio de restaurante</a></li>
-          <li><a href="/es/tools/holiday-hours/">Generador de horarios festivos</a></li>
         </ul>
       </div>
       <div class="tool-knit__col">
@@ -1113,6 +1250,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <ul>
           <li><a href="/es/glossary/hours-of-operation/">Horario de operación</a></li>
           <li><a href="/es/glossary/special-hours/">Horarios especiales</a></li>
+          <li><a href="/es/glossary/holiday-hours/">Horarios festivos</a></li>
           <li><a href="/es/glossary/opening-hours-specification/">OpeningHoursSpecification</a></li>
         </ul>
       </div>
@@ -1120,32 +1258,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     </div>
   </aside>
 <!-- /tool-knit -->
-<!-- tool-sheet-rail:start -->
-<section class="topic-section tool-sheet-rail" aria-labelledby="tool-sheet-rail-h">
-  <div class="container">
-    <header class="topic-section-head">
-      <span class="eyebrow">Empareja con papeleo</span>
-      <h2 id="tool-sheet-rail-h">Hojas del operador que usan esta herramienta — imprimibles, llenables, exportan a CSV.</h2>
-    </header>
-    <ul class="topic-tool-list">
-        <li>
-          <a class="topic-tool-card" href="/es/sheets/gbp-monthly-audit/">
-            <h4>Chequeo mensual de Google Business Profile</h4>
-            <p>Recorrido de quince minutos por tu Google Business Profile. Horarios, categoría principal, conteo de fotos, posts, Q&amp;A, velocidad de reseñas, coincidencia NAP con tu sitio. Pasa o falla por fila, con lista de arreglos.</p>
-            <span class="topic-tool-cta">Abrir la hoja <span aria-hidden="true">→</span></span>
-          </a>
-        </li>
-        <li>
-          <a class="topic-tool-card" href="/es/sheets/holiday-hours-planner/">
-            <h4>Planificador de horarios festivos</h4>
-            <p>Un trimestre antes de cada feriado federal y local — horarios planeados, GBP actualizado, sitio actualizado, contestadora actualizada.</p>
-            <span class="topic-tool-cta">Abrir la hoja <span aria-hidden="true">→</span></span>
-          </a>
-        </li>
-    </ul>
-  </div>
-</section>
-<!-- tool-sheet-rail:end -->
+
 
 </main>
 
@@ -1157,9 +1270,11 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 </footer>
 
 <!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260422-cohesion";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
-<script src="/tools/open-hours/open-hours.js?v=20260428-oh12"></script>
+<script src="/tools/store-hours/open-hours.js?v=20260428-oh12"></script>
 <script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
-<script src="/tools/open-hours/sign-render.js?v=20260430-brand-palette"></script>
+<script src="/tools/_shared/next-tool.js?v=phase4"></script>
+<script src="/tools/_shared/handoff.js?v=phase4"></script>
+<script src="/tools/store-hours/sign-render.js?v=20260430-brand-palette"></script>
 <script src="/assets/workbench-save.js?v=20260428-sprint0-tokens"></script>
 <script>
 /* Open Hours — week-grid input + live output render.
@@ -1445,7 +1560,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       document.body.appendChild(a);
       a.click();
       setTimeout(function(){ document.body.removeChild(a); URL.revokeObjectURL(url); }, 0);
-      if (window.plausible) window.plausible('Open Hours Export', { props: { format: 'ics' } });
+      if (window.plausible) window.plausible('Store Hours Export', { props: { format: 'ics' } });
       var span = icsBtn.querySelector('[data-label]');
       if (span) {
         var orig = span.getAttribute('data-label');
@@ -1473,7 +1588,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       window.addEventListener('afterprint', cleanup);
       window.print();
       setTimeout(cleanup, 8000);
-      if (window.plausible) window.plausible('Open Hours Export', { props: { format: 'hygiene-print' } });
+      if (window.plausible) window.plausible('Store Hours Export', { props: { format: 'hygiene-print' } });
     });
   }
 
@@ -1502,7 +1617,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       a.href = url; a.download = 'horario-abierto-trimestral.ics';
       document.body.appendChild(a); a.click();
       setTimeout(function(){ document.body.removeChild(a); URL.revokeObjectURL(url); }, 0);
-      if (window.plausible) window.plausible('Open Hours Export', { props: { format: 'quarterly-ics' } });
+      if (window.plausible) window.plausible('Store Hours Export', { props: { format: 'quarterly-ics' } });
       var span = quarterlyBtn.querySelector('[data-label]');
       if (span) {
         var orig = span.getAttribute('data-label');
@@ -1821,14 +1936,23 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
   var firstFired = false;
   function firePlausibleOnce(v){
-    if (firstFired || !window.plausible) return;
+    if (firstFired) return;
     if (v.summary.openDaysCount === 0) return;
     firstFired = true;
-    window.plausible('Open Hours Render', { props: {
-      open_days:    window.OH.bucketWeeklyOpenDays(v.summary.openDaysCount),
-      service_tier: window.OH.bucketServiceTiers({ week: v.week }),
-      closures:     window.OH.bucketClosureCount(0) // Phase 2 wires closures
-    }});
+    if (window.plausible) {
+      window.plausible('Store Hours Render', { props: {
+        open_days:    window.OH.bucketWeeklyOpenDays(v.summary.openDaysCount),
+        service_tier: window.OH.bucketServiceTiers({ week: v.week }),
+        closures:     window.OH.bucketClosureCount(0) // Phase 2 wires closures
+      }});
+    }
+    if (window.MuntinHandoff && window.MuntinHandoff.complete) {
+      window.MuntinHandoff.complete({
+        toolKey: 'store-hours',
+        signals: {},
+        resultEl: document.getElementById('ohOutput') || document.body,
+      });
+    }
   }
 
   // ----- Wire UI -----
@@ -1892,7 +2016,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       var target = document.getElementById(btn.getAttribute('data-copy-target'));
       if (!target) return;
       doCopy(btn, target.textContent);
-      if (window.plausible) window.plausible('Open Hours Export', { props: { format: btn.getAttribute('data-copy-target') } });
+      if (window.plausible) window.plausible('Store Hours Export', { props: { format: btn.getAttribute('data-copy-target') } });
     }
     if (ev.target.closest('#ohValidateCode')) {
       var jlVal = jsonLdBlock.textContent || '';
@@ -1902,13 +2026,13 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       } else {
         window.open('/tools/schema-check/#paste=' + encodeURIComponent(jlVal), '_blank', 'noopener,noreferrer');
       }
-      if (window.plausible) window.plausible('Open Hours Export', { props: { format: 'validate' } });
+      if (window.plausible) window.plausible('Store Hours Export', { props: { format: 'validate' } });
     }
     if (ev.target.closest('#ohCopyEmail')) {
       var em = emailBlock.textContent || '';
       var jl = jsonLdBlock.textContent || '';
       doCopy(ev.target.closest('#ohCopyEmail'), em + '\n\n' + jl);
-      if (window.plausible) window.plausible('Open Hours Export', { props: { format: 'builder-email' } });
+      if (window.plausible) window.plausible('Store Hours Export', { props: { format: 'builder-email' } });
     }
   });
   function doCopy(btn, text){
@@ -1990,7 +2114,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         if (w) w.addEventListener('load', function(){ w.focus(); w.print(); });
         setTimeout(function(){ URL.revokeObjectURL(url); }, 30000);
       });
-      if (window.plausible) window.plausible('Open Hours Export', { props: { format: 'sign-print' } });
+      if (window.plausible) window.plausible('Store Hours Export', { props: { format: 'sign-print' } });
     });
   }
   if (downloadSignBtn) {
@@ -1999,7 +2123,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       withFonts(function(){
         return downloadCanvasAsPng(window.OHSign.renderStorefrontSign(buildRenderInput()), 'letrero-horario.png');
       });
-      if (window.plausible) window.plausible('Open Hours Export', { props: { format: 'sign-png' } });
+      if (window.plausible) window.plausible('Store Hours Export', { props: { format: 'sign-png' } });
     });
   }
   if (downloadCardBtn) {
@@ -2008,7 +2132,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       withFonts(function(){
         return downloadCanvasAsPng(window.OHSign.renderOpenHoursCard(buildRenderInput()), 'ficha-horario.png');
       });
-      if (window.plausible) window.plausible('Open Hours Export', { props: { format: 'card-png' } });
+      if (window.plausible) window.plausible('Store Hours Export', { props: { format: 'card-png' } });
     });
   }
 
@@ -2072,9 +2196,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   }
   function buildReadme(){
     var lines = [];
-    lines.push('# Horario Abierto — tu paquete');
+    lines.push('# Horario de Tienda — tu paquete');
     lines.push('');
-    lines.push('Generado por **Horario Abierto** el ' + new Date().toISOString().slice(0, 10) + '.');
+    lines.push('Generado por **Horario de Tienda** el ' + new Date().toISOString().slice(0, 10) + '.');
     lines.push('Compuesto en tu navegador. Tus datos nunca salieron de tu dispositivo.');
     lines.push('');
     lines.push('## Qué incluye');
@@ -2089,7 +2213,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     lines.push('## Hecho por Muntin Digital');
     lines.push('');
     lines.push('- Estudio: https://muntin.digital');
-    lines.push('- Herramienta: https://muntin.digital/es/tools/open-hours/');
+    lines.push('- Herramienta: https://muntin.digital/es/tools/store-hours/');
     lines.push('');
     lines.push('> La estructura aporta claridad.');
     return lines.join('\n') + '\n';
@@ -2151,7 +2275,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         document.body.appendChild(a); a.click();
         setTimeout(function(){ document.body.removeChild(a); URL.revokeObjectURL(url); }, 0);
       });
-      if (window.plausible) window.plausible('Open Hours Export', { props: { format: 'zip' } });
+      if (window.plausible) window.plausible('Store Hours Export', { props: { format: 'zip' } });
     });
   }
 
@@ -2252,7 +2376,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     rerender();
     var formEl = document.querySelector('.oh-form');
     if (formEl && formEl.scrollIntoView) formEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    if (window.plausible) window.plausible('Open Hours Render', { props: { source: 'archetype-' + id } });
+    if (window.plausible) window.plausible('Store Hours Render', { props: { source: 'archetype-' + id } });
   });
   renderArchetypes();
 
@@ -2283,7 +2407,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     ? MuntinWorkbench.attach({
         elements: { box:'#ohSave', btn:'#ohSaveBtn', link:'#ohSaveLink', text:'#ohSaveText', msg:'#ohSaveMsg' },
         locale: 'es',
-        kind:   'open-hours',
+        kind: 'store-hours',
         titleFor: function (p) { return 'Horarios — ' + (p && p.name ? p.name : 'sin título'); },
         onRehydrate: function (p) {
           if (!p) return;
@@ -2313,7 +2437,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           if (out) out.scrollIntoView({ behavior: 'smooth', block: 'start' });
         },
         workbenchUrl: '/es/workbench/',
-        signinUrl:    '/es/sign-in/?returnTo=%2Fes%2Ftools%2Fopen-hours%2F',
+        signinUrl:    '/es/sign-in/?returnTo=%2Fes%2Ftools%2Fstore-hours%2F',
       })
     : null;
 
@@ -2386,6 +2510,325 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     paintClosureCount();
   }
   rerender();
+})();
+</script>
+
+<script>
+// Pestaña Festivos — todo en el cliente. Las entradas nunca salen.
+// Lógica copiada sin cambios desde /es/tools/store-hours/holidays/.
+(function () {
+  var HOLIDAYS = [
+    { id: 'memorial-day',   name: "Memorial Day",                  rule: { type: 'nthDow',  month: 5,  dow: 1, n: -1 } },
+    { id: 'jul-4',          name: "Independence Day (July 4)",     rule: { type: 'fixed',   month: 7,  day: 4 } },
+    { id: 'labor-day',      name: "Labor Day",                     rule: { type: 'nthDow',  month: 9,  dow: 1, n: 1 } },
+    { id: 'thanksgiving',   name: "Thanksgiving Day",              rule: { type: 'nthDow',  month: 11, dow: 4, n: 4 } },
+    { id: 'black-friday',   name: "Black Friday (day after)",      rule: { type: 'thanksgivingPlus', days: 1 } },
+    { id: 'christmas-eve',  name: "Christmas Eve (Dec 24)",        rule: { type: 'fixed',   month: 12, day: 24 } },
+    { id: 'christmas-day',  name: "Christmas Day (Dec 25)",        rule: { type: 'fixed',   month: 12, day: 25 } },
+    { id: 'new-years-eve',  name: "New Year's Eve (Dec 31)",       rule: { type: 'fixed',   month: 12, day: 31 } }
+  ];
+  var DOW_LABEL = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+
+  function nthDow(year, month, dow, n) {
+    if (n === -1) {
+      var lastDay = new Date(year, month, 0).getDate();
+      for (var d = lastDay; d >= 1; d--) {
+        if (new Date(year, month - 1, d).getDay() === dow) return d;
+      }
+    }
+    var count = 0;
+    for (var i = 1; i <= 31; i++) {
+      var dt = new Date(year, month - 1, i);
+      if (dt.getMonth() !== month - 1) break;
+      if (dt.getDay() === dow) {
+        count++;
+        if (count === n) return i;
+      }
+    }
+    return null;
+  }
+  function dateForRule(rule, year) {
+    if (rule.type === 'fixed') {
+      return new Date(year, rule.month - 1, rule.day);
+    }
+    if (rule.type === 'nthDow') {
+      return new Date(year, rule.month - 1, nthDow(year, rule.month, rule.dow, rule.n));
+    }
+    if (rule.type === 'thanksgivingPlus') {
+      var thx = new Date(year, 10, nthDow(year, 11, 4, 4));
+      thx.setDate(thx.getDate() + rule.days);
+      return thx;
+    }
+    return null;
+  }
+  function fmtDate(d) {
+    var months = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+    return d.getDate() + ' de ' + months[d.getMonth()] + ' de ' + d.getFullYear();
+  }
+  function fmtIso(d) {
+    var m = String(d.getMonth() + 1).padStart(2, '0');
+    var day = String(d.getDate()).padStart(2, '0');
+    return d.getFullYear() + '-' + m + '-' + day;
+  }
+  function fmt12(t) {
+    if (!t) return '';
+    var p = t.split(':');
+    var h = parseInt(p[0], 10);
+    var mm = p[1];
+    var ap = h >= 12 ? 'pm' : 'am';
+    h = h % 12 || 12;
+    return h + (mm === '00' ? '' : ':' + mm) + ap;
+  }
+
+  var rowsEl = document.getElementById('hhRows');
+  var yearEl = document.getElementById('hhYear');
+
+  function renderRows() {
+    var year = parseInt(yearEl.value, 10) || new Date().getFullYear();
+    rowsEl.innerHTML = '';
+    HOLIDAYS.forEach(function (h) {
+      var d = dateForRule(h.rule, year);
+      var dateStr = fmtDate(d);
+      var dowStr = DOW_LABEL[d.getDay()];
+      var row = document.createElement('div');
+      row.className = 'hh-row';
+      row.dataset.id = h.id;
+      row.dataset.iso = fmtIso(d);
+      row.dataset.status = 'closed';
+      row.innerHTML = ''
+        + '<div class="hh-row__name">' + h.name + '<small>' + dowStr + ' &middot; ' + dateStr + '</small></div>'
+        + '<select aria-label="Estado para ' + h.name + '" data-field="status">'
+        + '  <option value="closed">Cerrado</option>'
+        + '  <option value="normal">Horario normal</option>'
+        + '  <option value="custom">Horario personalizado</option>'
+        + '</select>'
+        + '<input type="time" aria-label="Hora de apertura para ' + h.name + '" data-field="open"  value="11:00" />'
+        + '<input type="time" aria-label="Hora de cierre para ' + h.name + '" data-field="close" value="22:00" />';
+      var sel = row.querySelector('select');
+      sel.addEventListener('change', function (e) {
+        row.dataset.status = e.target.value;
+      });
+      rowsEl.appendChild(row);
+    });
+  }
+  renderRows();
+  yearEl.addEventListener('change', renderRows);
+
+  function getRowData() {
+    var rows = rowsEl.querySelectorAll('.hh-row');
+    var out = [];
+    rows.forEach(function (row) {
+      var id = row.dataset.id;
+      var iso = row.dataset.iso;
+      var status = row.dataset.status;
+      var open = row.querySelector('input[data-field=open]').value;
+      var close = row.querySelector('input[data-field=close]').value;
+      var holiday = HOLIDAYS.find(function (h) { return h.id === id; });
+      out.push({
+        id: id,
+        name: holiday ? holiday.name : id,
+        iso: iso,
+        status: status,
+        open: open,
+        close: close
+      });
+    });
+    return out;
+  }
+
+  function buildText(name, items) {
+    var lines = [];
+    if (name) lines.push(name + ' — Horarios festivos');
+    items.forEach(function (it) {
+      var d = new Date(it.iso + 'T12:00:00');
+      var label = fmtDate(d) + ' (' + it.name + ')';
+      if (it.status === 'closed')      lines.push(label + ': Cerrado');
+      else if (it.status === 'normal') lines.push(label + ': Horario regular');
+      else                              lines.push(label + ': ' + fmt12(it.open) + '–' + fmt12(it.close));
+    });
+    return lines.join('\n');
+  }
+
+  function buildSchema(name, items) {
+    var spec = items
+      .filter(function (it) { return it.status !== 'normal'; })
+      .map(function (it) {
+        var base = {
+          '@type': 'OpeningHoursSpecification',
+          'validFrom':    it.iso,
+          'validThrough': it.iso
+        };
+        if (it.status === 'closed') {
+          base.opens  = '00:00';
+          base.closes = '00:00';
+        } else {
+          base.opens  = it.open;
+          base.closes = it.close;
+        }
+        base.description = it.name;
+        return base;
+      });
+    var graph = {
+      '@context': 'https://schema.org',
+      '@type': 'Restaurant',
+      'name': name || 'Tu Restaurante',
+      'specialOpeningHoursSpecification': spec
+    };
+    return JSON.stringify(graph, null, 2);
+  }
+
+  function buildGbp(items) {
+    var lines = [];
+    items.forEach(function (it) {
+      var d = new Date(it.iso + 'T12:00:00');
+      var line = fmtDate(d) + ' — ';
+      if (it.status === 'closed')      line += 'Cerrado';
+      else if (it.status === 'normal') line += 'Horario regular';
+      else                              line += fmt12(it.open).toUpperCase().replace('AM', ' AM').replace('PM', ' PM').trim() + ' a ' + fmt12(it.close).toUpperCase().replace('AM', ' AM').replace('PM', ' PM').trim();
+      lines.push(line);
+    });
+    return lines.join('\n');
+  }
+
+  function generate() {
+    var name = (document.getElementById('hhName').value || '').trim();
+    var items = getRowData();
+    document.getElementById('hhOutTextBody').textContent = buildText(name, items);
+    document.getElementById('hhOutSchemaBody').textContent = buildSchema(name, items);
+    document.getElementById('hhOutGbpBody').textContent = buildGbp(items);
+    document.getElementById('hhEmpty').hidden = true;
+    showTab('hhOutText');
+    var region = document.getElementById('hhResultRegion');
+    region.focus();
+    if (window.plausible) window.plausible('Tool First Result', { props: { tool: 'store-hours/holidays', locale: 'es' } });
+
+    if (window.MuntinHandoff && window.MuntinHandoff.complete) {
+      window.MuntinHandoff.complete({ toolKey: 'store-hours/holidays', signals: {}, resultEl: region });
+    }
+  }
+
+  function showTab(id) {
+    var tabs = ['hhOutText','hhOutSchema','hhOutGbp'];
+    var triggers = { hhOutText: 'hhTabText', hhOutSchema: 'hhTabSchema', hhOutGbp: 'hhTabGbp' };
+    tabs.forEach(function (t) {
+      var panel = document.getElementById(t);
+      var trig  = document.getElementById(triggers[t]);
+      var on = (t === id);
+      panel.hidden = !on;
+      trig.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+  }
+
+  document.getElementById('hhGenerate').addEventListener('click', generate);
+  document.getElementById('hhReset').addEventListener('click', function () {
+    document.getElementById('hhName').value = '';
+    document.getElementById('hhYear').value = '2026';
+    renderRows();
+    document.getElementById('hhEmpty').hidden = false;
+    document.getElementById('hhOutText').hidden = true;
+    document.getElementById('hhOutSchema').hidden = true;
+    document.getElementById('hhOutGbp').hidden = true;
+  });
+  document.querySelectorAll('.hh-tab').forEach(function (t) {
+    t.addEventListener('click', function () {
+      var panel = t.getAttribute('aria-controls');
+      showTab(panel);
+    });
+  });
+  document.querySelectorAll('.hh-copy').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var target = document.getElementById(btn.dataset.target);
+      var body = target.querySelector('div');
+      var text = body ? body.textContent : '';
+      var done = function () {
+        btn.textContent = 'Copiado';
+        btn.dataset.copied = 'true';
+        setTimeout(function () {
+          btn.textContent = 'Copiar';
+          delete btn.dataset.copied;
+        }, 1500);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done).catch(done);
+      } else {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); } catch (_) {}
+        ta.remove();
+        done();
+      }
+    });
+  });
+
+  if (window.MuntinHandoff && window.MuntinHandoff.prefill) {
+    window.MuntinHandoff.prefill({ map: { name: '#hhName' }, captureOnSubmit: '#hhForm' });
+  }
+})();
+</script>
+
+<script>
+// Horario de Tienda — enrutado de pestañas. Empareja los dos
+// mtn-tabs__btn con sus paneles y sincroniza la selección con
+// location.hash para que /es/tools/store-hours/#holidays sea
+// bookmarkeable y sobreviva a un refresh.
+(function () {
+  var TABS = [
+    { btn: 'tab-regular',  panel: 'panel-regular',  hash: '#regular' },
+    { btn: 'tab-holidays', panel: 'panel-holidays', hash: '#holidays' }
+  ];
+  var btns = TABS.map(function (t) { return document.getElementById(t.btn); });
+  var panels = TABS.map(function (t) { return document.getElementById(t.panel); });
+  if (btns.some(function (b) { return !b; }) || panels.some(function (p) { return !p; })) return;
+
+  function indexForHash(h) {
+    for (var i = 0; i < TABS.length; i++) if (TABS[i].hash === h) return i;
+    return 0;
+  }
+
+  function select(i, opts) {
+    opts = opts || {};
+    TABS.forEach(function (t, j) {
+      var on = j === i;
+      btns[j].setAttribute('aria-selected', on ? 'true' : 'false');
+      btns[j].setAttribute('tabindex', on ? '0' : '-1');
+      if (on) panels[j].removeAttribute('hidden');
+      else panels[j].setAttribute('hidden', '');
+    });
+    if (opts.updateHash) {
+      if (typeof history !== 'undefined' && history.replaceState) {
+        history.replaceState(null, '', i === 0 ? location.pathname + location.search : TABS[i].hash);
+      } else {
+        location.hash = TABS[i].hash;
+      }
+    }
+    if (opts.focus) btns[i].focus();
+  }
+
+  btns.forEach(function (b, i) {
+    b.addEventListener('click', function () { select(i, { updateHash: true }); });
+  });
+
+  document.querySelector('.mtn-tabs__list').addEventListener('keydown', function (e) {
+    var current = btns.findIndex(function (b) { return b.getAttribute('aria-selected') === 'true'; });
+    if (current < 0) return;
+    var next = null;
+    if (e.key === 'ArrowRight') next = (current + 1) % TABS.length;
+    else if (e.key === 'ArrowLeft') next = (current - 1 + TABS.length) % TABS.length;
+    else if (e.key === 'Home') next = 0;
+    else if (e.key === 'End') next = TABS.length - 1;
+    if (next != null) {
+      e.preventDefault();
+      select(next, { updateHash: true, focus: true });
+    }
+  });
+
+  window.addEventListener('hashchange', function () {
+    select(indexForHash(location.hash));
+  });
+
+  select(indexForHash(location.hash));
 })();
 </script>
 </body>

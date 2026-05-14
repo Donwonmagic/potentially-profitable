@@ -138,9 +138,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=ca265f67308b" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-core.css?v=dc42f0ad5007" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-tool.css?v=5f214b425aa9" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ca265f67308b"><link rel="stylesheet" href="/assets/site-tool.css?v=5f214b425aa9"></noscript>
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=dc42f0ad5007"><link rel="stylesheet" href="/assets/site-tool.css?v=5f214b425aa9"></noscript>
 <!-- tool-schema:start -->
 <script type="application/ld+json">
 {
@@ -457,12 +457,15 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   <div class="foot-grid">
     <div class="foot-col foot-brand"><a href="/es/" class="foot-lockup-wrap" aria-label="Muntin Digital — inicio"><img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53" loading="lazy" decoding="async"><sup class="tm" aria-hidden="true">&#8482;</sup></a><p class="foot-tagline">La estructura da claridad.</p><p class="foot-blurb">Estudio de una sola persona en Silver Spring, MD. Diseño sitios web, identidad de marca y redes sociales para restaurantes independientes del DMV y de todo el país. Se habla español.</p></div>
     <nav class="foot-col" aria-labelledby="foot-explore"><p class="foot-heading" id="foot-explore">Explorar</p><ul class="foot-links"><li><a href="/es/services/">Servicios</a></li><li><a href="/es/for/restaurants/">Para restaurantes</a></li><li><a href="/es/work/">Proyectos</a></li><li><a href="/es/blog/">Artículos</a></li><li><a href="/es/about/">Sobre Don</a></li></ul></nav>
-    <nav class="foot-col" aria-labelledby="foot-tools"><p class="foot-heading" id="foot-tools">Herramientas gratis</p><ul class="foot-links"><li><a href="/es/tools/">Todas las herramientas</a></li><li><a href="/es/tools/speed-test/">Prueba de velocidad</a></li><li><a href="/es/tools/seo-grader/">Calificador SEO</a></li><li><a href="/es/tools/mobile-check/">Revisión móvil</a></li><li><a href="/es/tools/schema-check/">Revisión de schema</a></li><li><a href="/es/tools/tech-stack/">Tecnologías del sitio</a></li><li><a href="/es/tools/search-ideas/">Ideas de búsqueda</a></li></ul></nav>
+    <nav class="foot-col" aria-labelledby="foot-tools"><p class="foot-heading" id="foot-tools">Herramientas gratis</p><ul class="foot-links"><li><a href="/es/tools/">Todas las herramientas</a></li><li><a href="/es/tools/page-health/">Prueba de velocidad</a></li><li><a href="/es/tools/seo-grader/">Calificador SEO</a></li><li><a href="/es/tools/page-health/mobile/">Revisión móvil</a></li><li><a href="/es/tools/schema-check/">Revisión de schema</a></li><li><a href="/es/tools/tech-stack/">Tecnologías del sitio</a></li><li><a href="/es/tools/search-ideas/">Ideas de búsqueda</a></li></ul></nav>
     <nav class="foot-col foot-contact" aria-labelledby="foot-contact"><p class="foot-heading" id="foot-contact">Contacto</p><ul class="foot-links"><li><a href="mailto:don@muntin.digital">don@muntin.digital</a></li><li><a href="/es/window/">Escríbele a Don</a></li><li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (opens in new tab)</span></a></li></ul><p class="foot-trust"><strong>Respuesta:</strong> de lunes a viernes, en menos de 4 horas. Los fines de semana, el lunes en la ma&ntilde;ana.</p></nav>
   </div>
   <div class="foot-bottom"><p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; LLC de Maryland &middot; Silver Spring, MD</p><nav class="foot-legal" aria-label="Legal"><a href="/es/terms.html">Términos</a><a href="/es/privacy.html">Privacidad</a><a href="/es/accessibility.html">Accesibilidad</a><a href="/es/cookies.html">Cookies</a></nav></div>
 </div></footer>
 <!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260422-cohesion";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
+<script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
+<script src="/tools/_shared/next-tool.js?v=phase4"></script>
+<script src="/tools/_shared/handoff.js?v=phase4"></script>
 <script src="/assets/workbench-save.js?v=20260428-sprint0-tokens"></script>
 <script>
 (function(){
@@ -660,6 +663,14 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     result.scrollIntoView({behavior:'smooth',block:'start'});
     if (wb) wb.showAffordance({ type: type, city: city, competitor: competitor || undefined, generatedAt: Date.now() });
     if(window.plausible)window.plausible('Search Ideas',{props:{type:type,city:city,hasCompetitor:competitor?'yes':'no',locale:'es'}});
+
+    if (window.MuntinHandoff && window.MuntinHandoff.complete) {
+      window.MuntinHandoff.complete({
+        toolKey: 'search-ideas',
+        signals: {},
+        resultEl: result,
+      });
+    }
   });
 
   // Enter key triggers
@@ -667,4 +678,5 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   cityInput.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();btn.click()}});
 })();
 </script>
+</body>
 </html>
