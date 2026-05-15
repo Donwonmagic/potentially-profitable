@@ -1,81 +1,81 @@
 {
   "version": 1,
-  "generatedAt": "2026-05-10T09:50:54.519Z",
+  "generatedAt": "2026-05-15T16:08:37.268Z",
   "engine": "kokoro",
   "model": "kokoro-v1.0.onnx",
   "voice": "em_alex",
   "language": "es",
-  "total": 924.83,
+  "total": 924.9,
   "chunks": [
     {
       "id": 0,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(1)",
-      "text": "Leer este artículo en español",
+      "text": "En resumen",
       "start": 0,
-      "end": 1.65
+      "end": 0.72
     },
     {
       "id": 1,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(2)",
-      "text": "TL;DR",
-      "start": 2,
-      "end": 2.96
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "El embudo de reservas es la estadística de marketing más honesta en las operaciones de restaurantes — y la mayoría de los operadores nunca la han medido.",
+      "start": 1.07,
+      "end": 9.45
     },
     {
       "id": 2,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "El embudo de reservas es la estadística de marketing más honesta en las operaciones de restaurantes — y la mayoría de los operadores nunca la han medido.",
-      "start": 3.31,
-      "end": 11.69
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Seis fugas, en orden: horas poco claras, botón de reserva-C T A enterrado, móvil lento, menú desaparecido, fotos frías, schema ausente.",
+      "start": 9.77,
+      "end": 17.46
     },
     {
       "id": 3,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "Seis fugas, en orden: horas poco claras, reserva-C T A enterrada, móvil lento, menú desaparecido, fotos frías, schema ausente.",
-      "start": 12.01,
-      "end": 19.09
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Arreglar las primeras tres fugas suele recuperar entre 8-15% de las reservas perdidas.",
+      "start": 17.78,
+      "end": 23.44
     },
     {
       "id": 4,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "Arreglar las primeras tres fugas solas suele recuperar 8-15% de las reservas perdidas.",
-      "start": 19.41,
-      "end": 25.12
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Leer este artículo en español →",
+      "start": 23.96,
+      "end": 25.61
     },
     {
       "id": 5,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(3)",
-      "text": "Cada noche que tu restaurante está abierto, un cierto número de personas decide reservar una mesa en tu lugar. Tocan tu sitio web, algo sale mal en algún punto del camino, y reservan tranquilamente en otro lugar. Nunca los ves. Nunca se quejan. Simplemente se van — y te enteras de ello nunca.",
-      "start": 25.64,
-      "end": 42
+      "text": "Cada noche que tu restaurante está abierto, un cierto número de personas deciden reservar una mesa en tu lugar. Tocan tu sitio web, algo sale mal en algún punto del camino, y reservan tranquilamente en otro lugar. Nunca los ves. Nunca se quejan. Simplemente se van — y te enteras de ello nunca.",
+      "start": 25.96,
+      "end": 42.42
     },
     {
       "id": 6,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(4)",
-      "text": "Voy a llamar a esas reservas perdidas. En mi experiencia auditando sitios web de restaurantes independientes, la mayoría de los operadores están perdiendo entre un cuarto y la mitad de su tráfico móvil impulsado por la intención antes de que el flujo de reservas tenga siquiera la oportunidad de funcionar. Este artículo desglosa esa pérdida en sus seis causas específicas, te muestra cómo estimar lo que cada una te cuesta en dólares reales y te da la solución para cada una.",
-      "start": 42.52,
-      "end": 69.27
+      "text": "Voy a llamar a esas reservas perdidas. En mi experiencia auditando sitios web de restaurantes independientes, la mayoría de los operadores están perdiendo entre un cuarto y la mitad de su tráfico móvil con intención de reserva antes de que el flujo de reserva tenga siquiera la oportunidad de funcionar. Este artículo desglosa esa pérdida en sus seis causas específicas, te muestra cómo estimar lo que cada una te cuesta en dólares reales y te da la solución para cada una.",
+      "start": 42.94,
+      "end": 69.37
     },
     {
       "id": 7,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(1)",
-      "text": "El embudo de reservas — cómo suele parecer.",
-      "start": 70.37,
+      "text": "El embudo de reservas — cómo suele lucir.",
+      "start": 70.47,
       "end": 72.72
     },
     {
       "id": 8,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(5)",
-      "text": "A continuación se muestra la forma de un embudo de reservas para un sitio web de restaurante independiente típico — el tipo que veo cuando audito sitios web reales. Estoy dibujando esto a partir de patrones que observo repetidamente, no a partir de un conjunto de datos publicado, así que trata los números específicos como ilustrativos, no medidos. Tus propios números de restaurante variarán según tu menú, tu vecindario, tu clientela y si es un martes de enero o un sábado de junio.",
+      "text": "A continuación se muestra la forma de un embudo de reservas para un sitio web de restaurante independiente típico — el tipo que veo cuando audito sitios reales. Estoy dibujando esto a partir de patrones que observo repetidamente, no a partir de un conjunto de datos publicado, así que trata los números específicos como ilustrativos, no medidos. Los números de tu propio restaurante variarán según tu menú, tu vecindario, tu clientela y si es un martes de enero o un sábado de junio.",
       "start": 73.42,
       "end": 99.6
     },
@@ -83,401 +83,401 @@
       "id": 9,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(6)",
-      "text": "Lo que no varía es la forma de la fuga. Cada sitio web de restaurante que he auditado tiene caídas en lugares aproximadamente como estos, en aproximadamente este orden.",
+      "text": "Lo que no varía es la forma de la fuga. Cada sitio web de restaurante que he auditado tiene caídas en lugares más o menos así, en más o menos este orden.",
       "start": 100.12,
-      "end": 110.09
+      "end": 109.14
     },
     {
       "id": 10,
       "kind": "figure",
       "selector": "#post-body > figure:nth-of-type(1)",
-      "text": "Aquí está la forma de ese embudo. De cien visitantes móviles que llegan con intención, unos quince se pierden por una carga de página lenta. Ocho más se caen cuando el menú no se abre en su teléfono. Cuatro más se van porque no pueden saber si estás abierto en este momento. Diez pierden el rastro porque el botón de reserva está escondido. Trece reboten de un incrustado de reserva de terceros torpe. Tres más se caen en la ansiedad de confirmación — sin reafirmación de que la reserva realmente se realizó. Al final, cuarenta y siete de los cien visitantes originales completan una reserva. Aproximadamente la mitad. Tus números variarán, pero la forma de la fuga no.",
-      "start": 110.89,
-      "end": 147.24
+      "text": "Aquí está la forma de ese embudo. De cien visitantes móviles que llegan con intención, unos quince se pierden por una carga de página lenta. Ocho más se caen cuando el menú no se abre en su teléfono. Cuatro más se van porque no pueden saber si estás abierto en este momento. Diez pierden el rastro porque el botón de reserva está escondido. Trece rebotan por un incrustado de reserva de terceros torpe. Tres más se caen en la ansiedad de confirmación — sin reaseguración de que la reserva realmente se realizó. Al final, cuarenta y siete de los cien visitantes originales completan una reserva. Aproximadamente la mitad. Tus números variarán, pero la forma de la fuga no.",
+      "start": 109.94,
+      "end": 146.53
     },
     {
       "id": 11,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(7)",
-      "text": "Aproximadamente la mitad. Más de la mitad en un sitio web malo. Alrededor de un tercio de la caída sucede antes de que el visitante haya siquiera visto tu menú, lo que es la parte que duele — ese es el tráfico que pagaste con Google Business Profile de optimización y una publicación de Instagram del miércoles, y se va sin siquiera leer una descripción de plato.",
-      "start": 147.99,
-      "end": 167.45
+      "text": "Aproximadamente la mitad. Más de la mitad en un sitio malo. Un poco más de un tercio de la caída sucede antes de que el visitante haya siquiera visto tu menú, lo que es la parte que duele — ese es el tráfico que pagaste con Google Business Profile de optimización y una publicación de Instagram de miércoles, y se va sin siquiera leer una descripción de plato.",
+      "start": 147.28,
+      "end": 166.79
     },
     {
       "id": 12,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(2)",
       "text": "Por qué el embudo de reservas es la estadística de marketing más honesta que encontrarás.",
-      "start": 168.55,
-      "end": 173.19
+      "start": 167.89,
+      "end": 172.53
     },
     {
       "id": 13,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(8)",
-      "text": "La mayoría de las métricas del sitio web para restaurantes son vanidad. Vistas de página, visitantes únicos, tasa de rebote, duración promedio de la sesión — son números flotantes que no se conectan obviamente al negocio, por lo que la mayoría de los propietarios de restaurantes los miran una vez al trimestre y luego cierran la pestaña de análisis.",
-      "start": 173.89,
-      "end": 193.23
+      "text": "La mayoría de las métricas del sitio web para restaurantes son vanidad. Vistas de página, visitantes únicos, tasa de rebote, duración promedio de sesión — son números flotantes que no se conectan obviamente al negocio, por lo que la mayoría de los dueños de restaurantes los miran una vez al trimestre y luego cierran la pestaña de análisis.",
+      "start": 173.23,
+      "end": 192.14
     },
     {
       "id": 14,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(9)",
-      "text": "El embudo de reservas es la única métrica que se relaciona directamente y sin ambigüedad con los ingresos. Si pierdes 50 reservas al mes, y tu cobertura promedio es de $55, entonces puedes hacer el cálculo en tu cabeza — sin estimar, sin interpretar, sin preocuparte por si la \"tasa de rebote\" fue del 37% o del 42%. Sabes exactamente cuánto dinero dejaste sobre la mesa.",
-      "start": 193.75,
-      "end": 216.96
+      "text": "El embudo de reservas es la única métrica que se relaciona directamente y sin ambigüedad con los ingresos. Si pierdes 50 reservas al mes, y tu cobertura promedio es de $55, entonces puedes hacer la matemática en tu cabeza — sin estimar, sin interpretar, sin preocuparte por si la \"tasa de rebote\" fue del 37% o del 42%. Sabes exactamente cuánto dinero dejaste sobre la mesa.",
+      "start": 192.66,
+      "end": 216.04
     },
     {
       "id": 15,
       "kind": "figure",
       "selector": "#post-body > div:nth-of-type(1)",
       "text": "Aquí está el número honesto. Si dejas 50 reservas sobre la mesa cada mes, con una cobertura promedio de $55 durante doce meses, eso es $33,000 al año — ingresos que nunca entraron por la puerta.",
-      "start": 217.76,
-      "end": 231.95
+      "start": 216.84,
+      "end": 231.03
     },
     {
       "id": 16,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(10)",
-      "text": "Para la mayoría de los restaurantes independientes, ese número es mayor que el costo de una reconstrucción personalizada completa, un año de atención continua y un fotógrafo profesional combinados. Y la pérdida ocurre cada noche, silenciosamente, mientras estás en la cocina enfocado en el servicio — lo que significa que es el tipo de recuperación de ingresos más fácil, porque los clientes ya querían reservar. Solo no pudieron.",
-      "start": 232.7,
-      "end": 255.51
+      "text": "Para la mayoría de los restaurantes independientes, ese número es mayor que el costo de una reconstrucción personalizada completa, un año de atención continua y un fotógrafo profesional combinados. Y la pérdida ocurre cada noche, silenciosamente, mientras estás en la cocina centrado en el servicio — lo que significa que es el tipo más fácil de recuperación de ingresos, porque los clientes ya querían reservar. Solo no pudieron.",
+      "start": 231.78,
+      "end": 254.54
     },
     {
       "id": 17,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(3)",
       "text": "Las seis fugas, en orden.",
-      "start": 256.61,
-      "end": 258.11
+      "start": 255.64,
+      "end": 257.14
     },
     {
       "id": 18,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(11)",
       "text": "Aquí está lo que realmente está saliendo mal en cada punto de caída, y cómo solucionarlo.",
-      "start": 258.81,
-      "end": 263.76
+      "start": 257.84,
+      "end": 262.79
     },
     {
       "id": 19,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(1)",
       "text": "Fuga número 1 — Tu sitio es lento en un teléfono.",
-      "start": 264.86,
-      "end": 267.65
+      "start": 263.89,
+      "end": 266.68
     },
     {
       "id": 20,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(12)",
       "text": "Si tu página de inicio tarda más de tres segundos en cargar en un teléfono, probablemente ya has perdido a cerca de la mitad de las personas que hicieron clic en tu enlace. Ese no es mi número — es el de Google. Su investigación sobre la velocidad de las páginas móviles muestra consistentemente que la mayoría de los visitantes móviles abandonan las páginas que tardan más de tres segundos en cargar, y cada segundo adicional después de eso hace que la tasa de rebote aumente bruscamente.",
-      "start": 268.35,
-      "end": 295.38
+      "start": 267.38,
+      "end": 294.41
     },
     {
       "id": 21,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(13)",
-      "text": "La mayoría de los sitios de restaurantes que audito cargan en cuatro a siete segundos en una conexión real de 4G. A veces diez. El propietario casi nunca lo sabe, porque solo ha cargado su sitio desde su escritorio, en wifi de oficina, ya almacenado en su navegador.",
-      "start": 295.9,
-      "end": 311.06
+      "text": "La mayoría de los sitios de restaurantes que audito tardan de cuatro a siete segundos en cargar en una conexión 4G real. A veces diez. El propietario casi nunca lo sabe, porque solo ha cargado su sitio desde su escritorio, en wifi de oficina, ya almacenado en su navegador.",
+      "start": 294.93,
+      "end": 310.36
     },
     {
       "id": 22,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(14)",
-      "text": "Cómo probarlo en treinta segundos: abre tu sitio en tu teléfono. Usa datos celulares, no wifi. Comienza a cronometrar el momento en que haces clic en el enlace, detén el cronómetro el momento en que puedes ver y hacer clic en el botón \"Reservar\". Si es más de tres segundos, tienes la fuga número 1 — y puedes confirmar el número exacto en nuestra Auditoría de sitios web de restaurantes gratuita.",
-      "start": 311.58,
-      "end": 332.66
+      "text": "Cómo probarlo en treinta segundos: abre tu sitio en tu teléfono. Usa datos celulares, no wifi. Comienza a cronometrar el momento en que haces clic en el enlace, detén el cronómetro el momento en que puedes ver y hacer clic en el botón \"Reservar\". Si es más de tres segundos, tienes la fuga número 1 — y puedes confirmar el número exacto en nuestra Auditoría gratuita de sitios web de restaurantes.",
+      "start": 310.88,
+      "end": 331.87
     },
     {
       "id": 23,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(15)",
-      "text": "La solución: en una plantilla como Wix o Squarespace, puedes comprimir imágenes y deshabilitar widgets decorativos, pero eventualmente te estás encontrando con el techo de la plataforma. En un sitio personalizado, una carga móvil de menos de dos segundos no es una actualización — es el punto de partida.",
-      "start": 333.18,
-      "end": 350.39
+      "text": "La solución: en una plantilla como Wix o Squarespace, puedes comprimir imágenes y deshabilitar widgets decorativos, pero eventualmente te estás encontrando con el techo de la plataforma. En un sitio personalizado, una carga móvil de menos de dos segundos no es una mejora — es el punto de partida.",
+      "start": 332.39,
+      "end": 349.28
     },
     {
       "id": 24,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(2)",
       "text": "Fuga número 2 — Tu menú es un PDF.",
-      "start": 351.49,
-      "end": 353.88
+      "start": 350.38,
+      "end": 352.77
     },
     {
       "id": 25,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(16)",
       "text": "Aquí está la parte divertida sobre los PDF: técnicamente son documentos, no páginas web. Safari en iPhone tiene que descargarlos, pasárselos a un visor de PDF separado y luego renderizarlos al tamaño de escritorio — lo que significa que tu cliente ve una pared de texto ilegible y tiene que hacer zoom para leer un solo nombre de plato. Si están caminando en algún lugar con hambre en una noche de martes, no hacen ese trabajo. Simplemente cierran la pestaña y prueban el siguiente lugar en Google Maps.",
-      "start": 354.58,
-      "end": 381.38
+      "start": 353.47,
+      "end": 380.27
     },
     {
       "id": 26,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(17)",
       "text": "Los menús PDF existen porque son fáciles de producir para los restaurantes. Exportas el menú impreso desde Illustrator, lo subes, lo enlazas. Listo. Pero \"fácil para el restaurante\" y \"fácil para el cliente\" no son lo mismo — y el cliente es el que tiene la tarjeta de crédito.",
-      "start": 381.9,
-      "end": 397.58
+      "start": 380.79,
+      "end": 396.47
     },
     {
       "id": 27,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(18)",
-      "text": "Para probarlo en treinta segundos: abre el enlace de tu menú en tu teléfono. ¿Puedes leer el nombre y el precio del primer plato sin tener que hacer zoom? Si no — Fuga número 2.",
-      "start": 398.1,
-      "end": 407.87
+      "text": "Para probarlo en treinta segundos: abre el enlace de tu menú en tu teléfono. ¿Puedes leer el nombre y el precio del primer plato sin hacer zoom? Si no — Fuga número 2.",
+      "start": 396.99,
+      "end": 406.31
     },
     {
       "id": 28,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(19)",
       "text": "La solución: reemplaza el P D F con una página de menú H T M L real. Sí, significa que ahora tienes que mantener dos versiones (la tarjeta impresa y la página web), pero un sitio personalizado bien construido puede generar ambas desde una sola fuente de verdad — actualizas una Google Hoja o un C M S, y tanto el menú web como la exportación de impresión se actualizan juntos. Eso es medio día de configuración que se paga solo cada semana después.",
-      "start": 408.39,
-      "end": 433.42
+      "start": 406.83,
+      "end": 431.86
     },
     {
       "id": 29,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(3)",
       "text": "Fuga número 3 — Tus horas están escondidas.",
-      "start": 434.52,
-      "end": 437.09
+      "start": 432.96,
+      "end": 435.53
     },
     {
       "id": 30,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(20)",
-      "text": "La pregunta más común en un sitio web de restaurante es \"¿estás abierto ahora?\" — y la mayoría de los sitios responden enterrando las horas en el pie de página, escondiéndolas detrás de una pestaña \"Visita\" o mostrándolas solo en una página de contacto separada. El visitante rara vez hace clic. Simplemente vuelve a Google y reserva en otro lugar.",
-      "start": 437.79,
-      "end": 456.45
+      "text": "La pregunta más común en un sitio web de restaurante es \"¿estás abierto ahora?\" — y la mayoría de los sitios responden enterrando las horas en el pie de página, ocultándolas detrás de una pestaña \"Visitar\", o mostrándolas solo en una página de contacto separada. El visitante rara vez hace clic. Simplemente vuelve a Google y reserva en otro lugar.",
+      "start": 436.23,
+      "end": 454.94
     },
     {
       "id": 31,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(21)",
-      "text": "Esto no es una suposición mía. Lee el resumen de 2 minutos de Don ↗ El grupo de investigación Nielsen Norman ha encontrado repetidamente que las horas y la ubicación son la información más buscada en los sitios web de pequeñas empresas — y la más frecuentemente oculta. Los propietarios a menudo piensan que las horas \"viven en el pie de página, donde la gente las encontrará\", sin probar qué sucede cuando un visitante por primera vez, que nunca ha visto que el pie de página exista, intenta encontrarlas en cinco segundos.",
-      "start": 456.97,
-      "end": 487.16
+      "text": "Esto no es una corazonada mía. Lee el resumen de 2 minutos de Don ↗ La investigación de usabilidad pública en sitios web de pequeñas empresas encuentra consistentemente que las horas y la ubicación son la información más buscada en sitios web de pequeñas empresas — y la más frecuentemente ocultada. Los propietarios a menudo piensan que las horas \"viven en el pie de página, donde la gente las encontrará\", sin probar qué sucede cuando un visitante por primera vez, que nunca ha visto el pie de página, intenta encontrarlas en cinco segundos.",
+      "start": 455.46,
+      "end": 486.47
     },
     {
       "id": 32,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(22)",
-      "text": "Para probarlo en treinta segundos: abre tu sitio web de forma fría. Cronometra cuántos segundos pasan antes de que puedas ver las horas de hoy sin desplazarte o hacer clic en nada. Si es más de cinco, tienes la Fuga número 3.",
-      "start": 487.68,
-      "end": 500.59
+      "text": "Para probarlo en treinta segundos: abre tu sitio de forma fría. Cronometra cuántos segundos pasan antes de que puedas ver las horas de hoy sin desplazarte o hacer clic en nada. Si es más de cinco, tienes la Fuga número 3.",
+      "start": 486.99,
+      "end": 499.6
     },
     {
       "id": 33,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(23)",
-      "text": "La solución: coloca las horas en el héroe, o en un encabezado pegajoso, o en una pequeña insignia \"ABIERTO AHORA · hasta las 10 PM\" que se actualiza automáticamente en función de la hora actual. La insignia es mi favorita — requiere unos treinta líneas de JavaScript y tranquiliza al visitante en el momento exacto en que lo necesita.",
-      "start": 501.11,
-      "end": 520.02
+      "text": "La solución: coloca las horas en el héroe, o en un encabezado pegajoso, o en una pequeña insignia \"ABIERTO AHORA · hasta las 10 PM\" que se actualiza automáticamente en función de la hora actual. La insignia es mi favorita — requiere aproximadamente treinta líneas de JavaScript y tranquiliza al visitante en el momento exacto en que lo necesita.",
+      "start": 500.12,
+      "end": 519.7
     },
     {
       "id": 34,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(4)",
       "text": "Fuga número 4 — El botón de reserva está enterrado o falta.",
-      "start": 521.12,
-      "end": 524.79
+      "start": 520.8,
+      "end": 524.47
     },
     {
       "id": 35,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(24)",
       "text": "Algunos sitios web de restaurantes no tienen un botón de reserva en la página de inicio en absoluto. Otros lo tienen, pero está en un menú desplegable en la parte superior derecha, o es un enlace de texto pequeño al final de un héroe largo, o solo vive en la página \"Contacto\". Esta es la fuga que me frustra más, porque la solución es tan barata y el impacto es tan obvio.",
-      "start": 525.49,
-      "end": 545.2
+      "start": 525.17,
+      "end": 544.88
     },
     {
       "id": 36,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(25)",
-      "text": "Hay un principio de U X bien establecido aquí — Lee el resumen de 2 minutos de Don ↗ La ley de Fitts, que en inglés plano dice: cuanto más difícil es alcanzar un botón, menos frecuentemente la gente lo presiona. Un botón de reserva en la parte superior de una navegación que requiere un toque para abrir y luego un segundo toque para seleccionar es dos veces más difícil de alcanzar que un botón que es permanentemente visible en la parte inferior de la pantalla. Pierdes conversión en cada paso del camino del toque.",
-      "start": 545.72,
-      "end": 576.18
+      "text": "Hay un principio de U X bien establecido aquí — Lee el resumen de 2 minutos de Don ↗ La ley de Fitts, que en inglés plano dice: cuanto más difícil es alcanzar un botón, menos a menudo la gente lo presiona. Un botón de reserva en la parte superior de una navegación que requiere un toque para abrir y luego un segundo toque para seleccionar es dos veces más difícil de alcanzar que un botón que es permanentemente visible en la parte inferior de la pantalla. Pierdes conversión en cada paso del camino de toque.",
+      "start": 545.4,
+      "end": 575.44
     },
     {
       "id": 37,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(26)",
       "text": "Para probarlo en treinta segundos: abre tu página de inicio en tu teléfono. Sin desplazarte o abrir ningún menú, ¿puedes tocar \"Reservar\" en un solo gesto? Si no — Fuga número 4.",
-      "start": 576.7,
-      "end": 587.31
+      "start": 575.96,
+      "end": 586.57
     },
     {
       "id": 38,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(27)",
-      "text": "La solución: agrega un C T A de reserva pegajoso en la parte inferior de la pantalla en cada página móvil. Es quizás una hora de trabajo en un sitio personalizado. En la mayoría de los constructores de plantillas, puedes aproximararlo con un widget flotante. De cualquier manera, es el cambio con mayor R O I que puedes hacer para la conversión — y la mayoría de los restaurantes que he auditado nunca han considerado siquiera.",
-      "start": 587.83,
-      "end": 610.45
+      "text": "La solución: agrega un C T A de reserva pegajoso en la parte inferior de la pantalla en cada página móvil. Es tal vez una hora de trabajo en un sitio personalizado. En la mayoría de los constructores de plantillas, puedes aproximararlo con un widget flotante. De cualquier manera, es el cambio de mayor R O I que puedes hacer para la conversión — y la mayoría de los restaurantes que he auditado nunca han considerado siquiera.",
+      "start": 587.09,
+      "end": 609.61
     },
     {
       "id": 39,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(5)",
       "text": "Fuga número 5 — Fricción en el flujo de reserva.",
-      "start": 611.55,
-      "end": 614.54
+      "start": 610.71,
+      "end": 613.7
     },
     {
       "id": 40,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(28)",
-      "text": "Aquí es donde la mayoría de los embudos de reservas de restaurantes realmente se desmoronan. El visitante hizo clic en \"Reservar\", lo que significa que ya está dentro — la conversión está a uno o dos clics de distancia. Y la mayoría de los sitios web de restaurantes utilizan una plataforma de reservas que convierte esos uno o dos clics en siete.",
-      "start": 615.24,
-      "end": 634.52
+      "text": "Aquí es donde la mayoría de los embudos de reservas de restaurantes realmente se desmoronan. El visitante hizo clic en \"Reservar\", lo que significa que está dentro — la conversión está a uno o dos clics de distancia. Y la mayoría de los sitios web de restaurantes utilizan una plataforma de reservas que convierte esos uno o dos clics en siete.",
+      "start": 614.4,
+      "end": 633.53
     },
     {
       "id": 41,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(29)",
-      "text": "Aquí está lo que un widget de reserva típico solicita: tamaño de la fiesta, fecha, hora, hora alternativa, nombre, teléfono, correo electrónico, contraseña para la cuenta que se te asigna silenciosamente, código de verificación de teléfono, \"acepto los términos\", a veces una tarjeta de crédito como garantía, a veces un captcha para probar que eres humano. En el paso siete, el cliente ya ha olvidado por qué quería comida italiana.",
-      "start": 635.04,
-      "end": 657.69
+      "text": "Aquí está lo que un widget de reserva típico solicita: tamaño de la fiesta, fecha, hora, hora alternativa, nombre, teléfono, correo electrónico, contraseña para la cuenta que se te asigna silenciosamente, código de verificación de teléfono, \"acepto los términos\", sometimes una tarjeta de crédito como garantía, sometimes un captcha para probar que eres humano. En el paso siete, el cliente ya ha olvidado por qué quería comida italiana.",
+      "start": 634.05,
+      "end": 656.95
     },
     {
       "id": 42,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(30)",
       "text": "La investigación del Baymard Institute sobre el abandono de la compra en línea encuentra que la tasa de abandono promedio en el comercio minorista en línea es de alrededor del 70%, y una de las razones principales citadas por los compradores es \"el sitio web quería que creara una cuenta\". Los formularios de reserva son formularios de pago con un sombrero diferente, y sufren la misma dinámica: cada campo adicional, cada cuenta innecesaria, cada pantalla extra se correlaciona directamente con la gente que se rinde.",
-      "start": 658.21,
-      "end": 687.06
+      "start": 657.47,
+      "end": 686.32
     },
     {
       "id": 43,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(31)",
-      "text": "Cómo probarlo en treinta segundos: finge que eres un cliente por primera vez y realmente reserva una mesa en tu propio restaurante de principio a fin. Cuenta las pantallas y campos requeridos distintos. Si pasaste de seis, eso es la Fuga número 5 — y la mayoría de los restaurantes que audito caen entre ocho y doce.",
-      "start": 687.58,
-      "end": 705.59
+      "text": "Cómo probarlo en treinta segundos: finge que eres un cliente por primera vez y realmente reserva una mesa en tu propio restaurante de principio a fin. Cuenta las pantallas y campos requeridos distintos. Si pasaste de seis, esa es la Fuga número 5 — y la mayoría de los restaurantes que audito aterrizan entre ocho y doce.",
+      "start": 686.84,
+      "end": 705.08
     },
     {
       "id": 44,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(32)",
-      "text": "La solución: elige una plataforma de reservas cuyo flujo predeterminado tenga menos pasos (los principales actores varían mucho), o — si tu volumen es lo suficientemente bajo — usa un formulario incrustado simple que solicite nombre, fecha, hora, tamaño de la fiesta y correo electrónico, y envíe un correo electrónico a tu host stand. Cuando tu volumen crezca, revisitas la decisión de la plataforma. No pagues un sistema complejo para reservas simples.",
-      "start": 706.11,
-      "end": 731.09
+      "text": "La solución: elige una plataforma de reservas cuyo flujo predeterminado tenga menos pasos (los principales jugadores varían mucho), o — si tu volumen es lo suficientemente bajo — usa un formulario integrado simple que solicite nombre, fecha, hora, tamaño de la fiesta y correo electrónico, y envíe un correo electrónico a tu host stand. Cuando tu volumen crezca, revisitas la decisión de la plataforma. No pagues un sistema complejo para reservas simples.",
+      "start": 705.6,
+      "end": 730.6
     },
     {
       "id": 45,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(6)",
       "text": "Fuga número 6 — Ansiedad de confirmación.",
-      "start": 732.19,
-      "end": 734.66
+      "start": 731.7,
+      "end": 734.17
     },
     {
       "id": 46,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(33)",
-      "text": "Esta es pequeña en el embudo (alrededor de tres personas de cada cien) pero es fea porque es invisible para ti. Aquí es lo que sucede: el cliente completa la reserva, el widget de reserva muestra una pantalla de \"gracias\" y luego... nada. No hay correo electrónico. No hay mensaje de texto. No hay pista de papel. Esperan unas horas, comienzan a dudar de que la reserva se realizó y llaman silenciosamente a otro lugar \"por si acaso\". A veces se presentan esperando una mesa que no existe en el sistema. Cualquiera de los resultados es una experiencia peor que si nunca hubieran intentado reservar.",
-      "start": 735.36,
-      "end": 767.08
+      "text": "Esta es pequeña en el embudo (alrededor de tres personas de cada cien) pero es fea porque es invisible para ti. Aquí está lo que sucede: el cliente completa la reserva, el widget de reserva muestra una pantalla de \"gracias\" y luego... nada. No hay correo electrónico. No hay mensaje de texto. No hay pista de papel. Esperan unas horas, comienzan a dudar de que la reserva se haya realizado, y llaman silenciosamente a otro lugar \"por si acaso\". A veces se presentan esperando una mesa que no existe en el sistema. Cualquiera de los resultados es una experiencia peor que si nunca hubieran intentado reservar.",
+      "start": 734.87,
+      "end": 766.89
     },
     {
       "id": 47,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(34)",
       "text": "Cómo probarlo en treinta segundos: reserva una reserva real en tu propio restaurante ahora mismo. ¿Llega un correo electrónico de confirmación dentro de un minuto? ¿Es de tu nombre de restaurante, o una dirección genérica \"OpenTable Reservas\"? ¿Establece claramente la fecha, hora, tamaño de la fiesta y cómo modificar o cancelar? ¿Está firmado por el restaurante — o se siente como si un robot lo hubiera escrito?",
-      "start": 767.6,
-      "end": 789.76
+      "start": 767.41,
+      "end": 789.57
     },
     {
       "id": 48,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(35)",
       "text": "La solución: es pura operación. Asegúrate de que tu sistema de reservas envíe un correo electrónico de confirmación instantáneo y bien formateado. Personaliza el nombre del remitente para que sea el restaurante, no la plataforma. Agrega un correo electrónico de recordatorio el día de la reserva. Si tu plataforma actual no te permite personalizar la confirmación, pide a tu proveedor — la mayoría lo activará cuando se lo pidas. Si no lo hacen, esa es una razón para cambiar de plataforma.",
-      "start": 790.28,
-      "end": 816.54
+      "start": 790.09,
+      "end": 816.35
     },
     {
       "id": 49,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(4)",
       "text": "La solución matemática.",
-      "start": 817.64,
-      "end": 819.04
+      "start": 817.45,
+      "end": 818.85
     },
     {
       "id": 50,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(36)",
-      "text": "Lo que generalmente sorprende a los dueños de restaurantes es que arreglar las cuatro fugas principales — carga lenta, menú en P D F, horarios ocultos y botón de reserva ausente — suele tomar solo una tarde enfocada en un sitio web personalizado. Cuatro de las seis fugas, cerradas en una sola sesión, por el costo de una auditoría más unas pocas horas de trabajo. En un sitio web basado en plantillas como Wix o Squarespace, tres de las cuatro no se pueden arreglar sin una reconstrucción, lo que es el costo silencioso de la plataforma \"barata\" — no puedes cerrar las fugas incluso después de encontrarlas.",
-      "start": 819.74,
-      "end": 852.66
+      "text": "Lo que generalmente sorprende a los dueños de restaurantes es que arreglar las cuatro fugas principales — carga lenta, menú en P D F, horarios ocultos y botón de reserva ausente — suele tomar solo una tarde enfocada en un sitio personalizado. Cuatro de las seis fugas, cerradas en una sola sesión, por el costo de una auditoría más unas pocas horas de trabajo. En un sitio basado en plantillas como Wix o Squarespace, tres de las cuatro no se pueden arreglar sin una reconstrucción, lo que es el costo silencioso de la plataforma \"barata\" — no puedes cerrar las fugas incluso después de encontrarlas.",
+      "start": 819.55,
+      "end": 852.21
     },
     {
       "id": 51,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(37)",
-      "text": "Las dos fugas restantes (fricción en el flujo de reservas y ansiedad de confirmación) generalmente no son problemas de código en absoluto — son problemas de elección de plataforma u operativos. Toman más tiempo en abordarse, pero casi siempre vale la pena el esfuerzo.",
-      "start": 853.18,
-      "end": 868.09
+      "text": "Las dos fugas restantes (fricción en el flujo de reservas y ansiedad de confirmación) generalmente no son problemas de código en absoluto — son problemas de elección de plataforma u operativos. Toman más tiempo en abordarse, pero casi siempre valen la pena el esfuerzo.",
+      "start": 852.73,
+      "end": 867.64
     },
     {
       "id": 52,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(38)",
-      "text": "Si cierras las seis, probablemente recuperarás entre 30 y 50% del tráfico que estás perdiendo hoy. Tu recuperación real dependerá de tu menú, tu clientela y cuán mal estaba filtrando el sitio para empezar — pero la dirección es de un solo sentido, y el efecto compuesto es real. Cada mes que dejas las fugas en su lugar, estás quemando dinero que el cliente ya te estaba ofreciendo.",
-      "start": 868.61,
-      "end": 889.85
+      "text": "Si cierras las seis, probablemente recuperarás entre 30 y 50% del tráfico que estás perdiendo hoy. Tu recuperación real dependerá de tu menú, tu clientela y lo mal que estaba filtrando el sitio para empezar — pero la dirección es de una sola vía, y el efecto compuesto es real. Cada mes que dejas las fugas en su lugar, estás quemando dinero que el cliente ya te estaba ofreciendo.",
+      "start": 868.16,
+      "end": 889.32
     },
     {
       "id": 53,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(39)",
       "text": "Puntos clave",
-      "start": 890.37,
-      "end": 891.17
+      "start": 889.84,
+      "end": 890.64
     },
     {
       "id": 54,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
-      "text": "Los horarios visibles por encima del pliegue tienen el mayor impacto de una sola solución en las pruebas de campo.",
-      "start": 891.52,
-      "end": 897.68
+      "text": "Los horarios visibles por encima de la línea de plegado tienen el mayor impacto de una sola solución en las pruebas de campo.",
+      "start": 890.99,
+      "end": 897.75
     },
     {
       "id": 55,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
       "text": "Si las reservas requieren más de dos toques desde cualquier página, el embudo está filtrando.",
-      "start": 898,
-      "end": 903.02
+      "start": 898.07,
+      "end": 903.09
     },
     {
       "id": 56,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
       "text": "La carga móvil por encima de 3 segundos se correlaciona con un rebote del 30%+ en la página de reservas.",
-      "start": 903.34,
-      "end": 910.35
+      "start": 903.41,
+      "end": 910.42
     },
     {
       "id": 57,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
       "text": "El menú ausente o solo en P D F es la segunda fuga más grande — Google no puede ayudarte a clasificar sin él.",
-      "start": 910.67,
-      "end": 917.12
+      "start": 910.74,
+      "end": 917.19
     },
     {
       "id": 58,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(5)",
       "text": "Ejecuta la Auditoría de Restaurantes, guarda la puntuación, arregla las dos primeras banderas, vuelve a ejecutar en 30 días.",
-      "start": 917.44,
-      "end": 924.83
+      "start": 917.51,
+      "end": 924.9
     }
   ]
 }
