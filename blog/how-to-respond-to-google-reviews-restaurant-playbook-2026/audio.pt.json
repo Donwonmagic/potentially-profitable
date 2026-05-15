@@ -1,355 +1,483 @@
 {
   "version": 1,
-  "generatedAt": "2026-05-11T05:56:53.868Z",
+  "generatedAt": "2026-05-15T01:56:19.337Z",
   "engine": "kokoro",
   "model": "kokoro-v1.0.onnx",
   "voice": "pm_alex",
   "language": "pt",
-  "total": 533.26,
+  "total": 857.99,
   "chunks": [
     {
       "id": 0,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(1)",
-      "text": "Em resumo",
+      "text": "Opinião &middot; 10 de maio de 2026 &middot; 7 min de leitura &middot; Por Don Goldstein",
       "start": 0,
-      "end": 0.81
+      "end": 6.7
     },
     {
       "id": 1,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "Quatro arquétipos de avaliações precisam de quatro formas de resposta: a brilhante 5 estrelas (curta, quente, nomeie um detalhe), a desapontada 3 estrelas (reconheça o problema específico, nomeie a solução, convide de volta com um gesto), a irada 1 estrela (calma, factual, nunca iguale o tom), e a legítima reclamação 2 estrelas (assuma sem ornamentação).",
-      "start": 1.16,
-      "end": 20.34
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "A caixa de resposta abaixo de uma crítica do Google é o texto mais lido que um restaurante publica e que ninguém escreve para. Os futuros clientes lêem as respostas antes de lerem as críticas. O proprietário que responde de forma defensiva a uma crítica ruim parecerá defensivo em todos os prévios de resultados de busca nos próximos seis meses. Os quatro modelos abaixo são o que funciona.",
+      "start": 7.05,
+      "end": 28.61
     },
     {
       "id": 2,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "O leitor futuro, não o avaliador, é seu público — a resposta de 3 estrelas é a mais lida porque é onde os convidados indecisos se calibram.",
-      "start": 20.66,
-      "end": 28.99
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "Em resumo",
+      "start": 29.13,
+      "end": 29.94
     },
     {
       "id": 3,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "Nunca escreva “Obrigado por sua feedback”, “Nós nos esforçamos para fornecer”, “Nós levamos isso muito a sério”, ou “Sinto muito que você se sinta assim” — o jargão corporativo sinaliza que não é do dono.",
-      "start": 29.31,
-      "end": 40.47
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Quatro arquétipos de críticas precisam de quatro formas de resposta: a crítica de 5 estrelas brilhante (curta, quente, nomeie um detalhe), a crítica de 3 estrelas desapontada (reconheça a questão específica, nomeie a solução, convide de volta com um gesto), a crítica de 1 estrela irada (calma, factual, nunca iguale o tom), e a crítica de 2 estrelas com reclamação legítima (assuma a responsabilidade sem ornamentação).",
+      "start": 30.29,
+      "end": 53.96
     },
     {
       "id": 4,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(2)",
-      "text": "Opinião &middot; 10 de maio de vinte e seis &middot; 7 min de leitura &middot; Por Don Goldstein",
-      "start": 40.99,
-      "end": 47.12
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "O leitor futuro, não o crítico, é seu público — a resposta de 3 estrelas é a mais lida porque é onde os clientes indecisos se calibram.",
+      "start": 54.28,
+      "end": 62.43
     },
     {
       "id": 5,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(3)",
-      "text": "A caixa de resposta abaixo de uma avaliação Google é o texto mais lido que um restaurante publica e que ninguém escreve para. Os futuros convidados leem as respostas antes de lerem as avaliações. O dono que responde de forma defensiva a uma avaliação ruim parecerá defensivo em todos os prévios de resultados de busca nos próximos seis meses. Os quatro modelos abaixo são o que funciona.",
-      "start": 47.47,
-      "end": 68.86
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Nunca escreva “Obrigado por sua feedback”, “Nós nos esforçamos para fornecer”, “Nós levamos isso muito a sério”, ou “Sinto muito que você se sinta assim” — o jargão corporativo sinaliza que não é do proprietário.",
+      "start": 62.75,
+      "end": 74.36
     },
     {
       "id": 6,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(4)",
-      "text": "Eu escrevi ou co-escrevi mais de 600 respostas de avaliações em dois restaurantes desde vinte e dois. Algumas delas eu me orgulho. Algumas delas eu olho para trás e faz careta. O padrão nas que faz careta é consistente: eu respondi à avaliação, não ao leitor futuro. A opinião do avaliador está fixa; o que muda é como os próximos 1.000 pessoas que lerem essa thread percebem o restaurante. Escreva para esses 1.000.",
-      "start": 69.38,
-      "end": 93.9
+      "text": "Eu escrevi e co-escrevi muitas respostas a críticas ao longo dos anos de trabalho no chão do restaurante. Algumas delas me orgulham. Algumas delas me fazem estremecer. O padrão nas que me fazem estremecer é consistente: eu respondi à crítica, não ao leitor futuro. A opinião do crítico está fixa; o que muda é como os próximos 1.000 pessoas que lêem essa thread percebem o restaurante. Escreva para esses 1.000.",
+      "start": 74.88,
+      "end": 98.57
     },
     {
       "id": 7,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(1)",
-      "text": "As quatro avaliações que você vai receber.",
-      "start": 95,
-      "end": 97.51
+      "text": "Por que a taxa de resposta em si mesma importa.",
+      "start": 99.67,
+      "end": 102.38
     },
     {
       "id": 8,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(5)",
-      "text": "Avaliações de restaurantes no Google se encaixam em uma das quatro arquétipos. A forma de resposta é diferente para cada uma. Tentar usar o mesmo modelo em todas as quatro é o erro mais comum que os operadores cometem — a calor que funciona em uma avaliação de 5 estrelas soa como obsequiosa em uma de 3 estrelas, a direção que funciona em uma de 1 estrela soa como fria em uma de 5 estrelas. Escolha o registro certo primeiro.",
-      "start": 98.21,
-      "end": 121.41
+      "text": "Antes dos modelos, o número que puxa o resto da página: taxa de resposta. O Google em si nomeia a atividade de resposta a críticas como um dos sinais de classificação local que ele pondera, e os operadores que respondem consistentemente tendem a ficar mais alto no map pack do que os operadores que não o fazem. A direção é bem documentada; a magnitude varia por mercado.",
+      "start": 103.08,
+      "end": 123.48
     },
     {
       "id": 9,
       "kind": "figure",
       "selector": "#post-body > figure:nth-of-type(1)",
-      "text": "Quatro arquétipos de avaliações Google e a forma de resposta para cada. Arquétipo um: a brilhante avaliação de 5 estrelas, onde o convidado já gostou da refeição e está divulgando isso. Forma de resposta: curta, quente, nomeie um detalhe específico da avaliação de volta ao convidado, não faça pitch para nada. Comprimento abaixo de três linhas. Arquétipo dois: a desapontada avaliação de 3 estrelas, onde algo específico deu errado, mas o convidado foi razoável sobre isso. Forma de resposta: reconheça o problema específico pelo nome, explique a solução que você fez ou está fazendo, convide de volta com um gesto específico, não se desculpe em branco. Comprimento de cinco a sete linhas. Arquétipo três: a irada avaliação de 1 estrela, onde o convidado está desabafando mais do que relatando. Forma de resposta: calma, factual, nomeie o que você pode verificar, nomeie o que você não pode, ofereça um caminho de contato específico, não iguale o tom. Comprimento de três a cinco linhas, nunca mais. Arquétipo quatro: a legítima reclamação de 2 estrelas, onde o problema operacional nomeado é real e foi culpa do restaurante. Forma de resposta: assuma sem ornamentação, nomeie o que você fez sobre isso, ofereça uma compensação específica, termine com o caminho de contato. Comprimento de quatro a seis linhas, essa é a onde a resposta em si se torna a declaração de marca que os convidados futuros lêem.",
-      "start": 122.21,
-      "end": 197.61
+      "text": "Taxa de resposta versus resultados, direcionais. Restaurantes que respondem a quase todas as críticas tendem a ter as médias de estrelas mais altas e a posição de map-pack mais forte. Restaurantes que respondem à maioria, mas não a todas, ficam no meio. Restaurantes que raramente respondem ficam na parte inferior. Os números exatos de estrelas e posição de map-pack variam por mercado; a direção da relação não.",
+      "start": 124.28,
+      "end": 147.43
     },
     {
       "id": 10,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(2)",
-      "text": "A resposta de 5 estrelas.",
-      "start": 198.71,
-      "end": 200.58
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "A causalidade funciona nos dois sentidos — restaurantes melhor gerenciados tendem a responder mais — mas a direção da relação é consistente o suficiente entre os operadores para que a taxa de resposta seja tratada como uma alavanca, não como um efeito colateral.",
+      "start": 148.18,
+      "end": 163.65
     },
     {
       "id": 11,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(6)",
-      "text": "A tentação em uma crítica de cinco estrelas é agradecer extensivamente ao hóspede e acrescentar um pitch suave para a próxima visita. Resista a ambos. A crítica de cinco estrelas já está fazendo seu trabalho; o trabalho da sua resposta é apenas fazer com que a thread pareça um lugar onde o proprietário lê as críticas.",
-      "start": 201.28,
-      "end": 219.06
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "As quatro críticas que você vai receber.",
+      "start": 164.75,
+      "end": 167.21
     },
     {
       "id": 12,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(7)",
-      "text": "O modelo:",
-      "start": 219.58,
-      "end": 220.2
+      "text": "Críticas de restaurantes no Google se encaixam em um dos quatro arquétipos. A forma de resposta é diferente para cada um. Tentar usar o mesmo modelo em todos os quatro é o erro mais comum que os operadores cometem — a calor que funciona em uma crítica de 5 estrelas soa como obsequiosa em uma crítica de 3 estrelas, a direção que funciona em uma crítica de 1 estrela soa como fria em uma crítica de 5 estrelas. Escolha o registro certo primeiro.",
+      "start": 167.91,
+      "end": 193.67
     },
     {
       "id": 13,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(8)",
-      "text": "Três linhas. Nomeia os nomes. Nomeia o item. Nomeia o operador. A assinatura é importante — diz aos leitores futuros que um ser humano está do outro lado. Evite acrescentar \"Por favor, volte!\" ou o URL da sua página de reservas. O leitor de cinco estrelas já sabe onde encontrá-lo.",
-      "start": 220.55,
-      "end": 236.61
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(2)",
+      "text": "Quatro Google arquétipos de revisão e a forma de resposta para cada um. Arquétipo um: a revisão de cinco estrelas brilhantes, onde o convidado já gostou da refeição e está divulgando isso. Forma de resposta: curta, quente, nomeie um detalhe específico da sua revisão de volta a eles, não os apresente a nada. Comprimento abaixo de três linhas. Arquétipo dois: a revisão de três estrelas desapontada, onde algo específico deu errado, mas o convidado foi razoável sobre isso. Forma de resposta: reconheça o problema específico pelo nome, explique a solução que você fez ou está fazendo, convide-os a voltar com um gesto específico, não se desculpe em geral. Comprimento de cinco a sete linhas. Arquétipo três: a revisão de uma estrela zangada, onde o convidado está ventando mais do que relatando. Forma de resposta: calma, factual, nomeie o que você pode verificar, nomeie o que você não pode, ofereça um caminho de contato específico, não acompanhe o tom deles. Comprimento de três a cinco linhas, nunca mais. Arquétipo quatro: a revisão de duas estrelas com reclamação legítima, onde o problema operacional nomeado é real e foi culpa do restaurante. Forma de resposta: assuma a responsabilidade sem ornamentos, nomeie o que você fez sobre isso, ofereça uma compensação específica, termine com o caminho de contato. Comprimento de quatro a seis linhas, esta é a onde a resposta em si se torna a declaração da marca que os futuros convidados lêem.",
+      "start": 194.47,
+      "end": 272
     },
     {
       "id": 14,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(3)",
-      "text": "A resposta de três estrelas.",
-      "start": 237.71,
-      "end": 239.56
+      "text": "O processo de resposta de quatro etapas.",
+      "start": 273.1,
+      "end": 275.52
     },
     {
       "id": 15,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(9)",
-      "text": "A crítica de três estrelas é o tipo de crítica mais lida porque é onde os futuros hóspedes calibram. Um leitor de cinco estrelas já está convencido; um leitor de uma estrela já está cético. O leitor de três estrelas está genuinamente indeciso e lê sua resposta com atenção. Esta é a resposta que é o diferenciador.",
-      "start": 240.26,
-      "end": 258.24
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "A maior melhoria na qualidade de nossa resposta em todo o restaurante veio de reduzir a velocidade por noventa segundos por revisão. O fluxo abaixo é o que eu executo, em ordem, todas as vezes. O detalhe na etapa quatro é o que a maioria dos operadores ignora; é também o que converte uma resposta genérica em uma que um futuro convidado lê como escrita por uma pessoa.",
+      "start": 276.22,
+      "end": 295.98
     },
     {
       "id": 16,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(10)",
-      "text": "Cinco elementos: nomeie o problema específico (tempo de espera, massa fria), nomeie a solução operacional específica (terceiro garçom, começando no último fim de semana), assuma a parte que foi culpa do restaurante, ofereça uma compensação específica (peça por mim, compre o aperitivo), assine. A resposta em si se torna evidência de que a operação responde a feedback. Isso vale mais do que a crítica original de três estrelas está te prejudicando.",
-      "start": 258.76,
-      "end": 283.42
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(3)",
+      "text": "O processo de resposta de quatro etapas. Etapa um: leia a revisão duas vezes antes de fazer qualquer coisa, não reaja na primeira passagem. Etapa dois: categorize-a em um dos cinco baldes, elogio, reclamação, mista, difamação ou spam. Etapa três: escolha o modelo que combina com o balde. Etapa quatro: personalize pelo menos uma frase por resposta, mencione o que o revisor pediu ou a data da visita, a frase personalizada é o que diz ao leitor futuro que uma pessoa na equipe realmente leu isso.",
+      "start": 296.78,
+      "end": 324.23
     },
     {
       "id": 17,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(4)",
-      "text": "A resposta de uma estrela.",
-      "start": 284.52,
-      "end": 286.04
+      "text": "Qual modelo eu uso?",
+      "start": 325.33,
+      "end": 326.58
     },
     {
       "id": 18,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(11)",
-      "text": "A mais difícil. O instinto é se defender (pior) ou se desculpar em branco (quase tão ruim). Nenhum dos dois serve ao leitor futuro. O leitor futuro quer saber se a crítica de uma estrela é uma noite ruim ou uma experiência representativa. Sua resposta é o que responde a essa pergunta.",
-      "start": 286.74,
-      "end": 302.49
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "A etapa de categorização faz a maior parte do trabalho. A maioria dos operadores tropeça nas bordas cinzas — uma revisão que é principalmente elogio com uma reclamação, ou uma revisão de uma estrela que parece difamatória, mas pode ser apenas um regular furioso. A árvore de decisão abaixo é o que eu sigo quando estou incerto.",
+      "start": 327.28,
+      "end": 345.45
     },
     {
       "id": 19,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(12)",
-      "text": "Quatro elementos: breve reconhecimento sem desculpas em branco, confirmação factual do que é verificável, não confirmação factual do que não é, caminho de contato específico. Nunca corresponda ao tom irritado. Nunca escreva mais de 5 linhas — quanto mais longa a resposta, mais ela parece estar lutando contra a crítica em vez de deixá-la ser.",
-      "start": 303.01,
-      "end": 321.48
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(4)",
+      "text": "A árvore de decisão do modelo, três níveis. Pergunta do nível um: a revisão é positiva, quatro ou cinco estrelas? Se sim, use o modelo de elogio. Se não, mergulhe no próximo nível. Pergunta do nível dois: é uma reclamação legítima, nomeando um problema operacional real? Se sim, use o modelo de reclamação. Se não, mergulhe no próximo nível. Pergunta do nível três: é difamação ou spam, significando que cruza a linha para alegações fabricadas ou sabotagem de concorrentes? Se sim, sinalize para Google para remoção e não publique uma resposta pública. Se não, trate como uma revisão mista e use o modelo misto.",
+      "start": 346.25,
+      "end": 379.33
     },
     {
       "id": 20,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(13)",
-      "text": "Uma coisa que nunca se deve escrever: \"Eu adoraria discutir isso offline.\" Essa frase lê como PR boilerplate. Substitua-a pelo endereço de e-mail específico e um motivo específico — \"me envie um e-mail em X para que eu possa verificar a reserva\" — que parece um caminho real, não uma deflexão.",
-      "start": 322,
-      "end": 338.2
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "A resposta de cinco estrelas.",
+      "start": 380.43,
+      "end": 382.3
     },
     {
       "id": 21,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(5)",
-      "text": "A resposta de duas estrelas.",
-      "start": 339.3,
-      "end": 341.15
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "A tentação em uma revisão de cinco estrelas é agradecer ao convidado extensivamente e adicionar um pitch suave para a próxima visita. Resista a ambos. A revisão de cinco estrelas já está fazendo seu trabalho; o trabalho da sua resposta é apenas fazer a thread parecer um lugar onde o proprietário lê as revisões.",
+      "start": 383,
+      "end": 400.66
     },
     {
       "id": 22,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(14)",
-      "text": "Essa é a resposta que mais importa para a marca porque o problema operacional é real e você precisa assumi-lo visivelmente. O leitor futuro usa essa resposta para julgar se a operação tem integridade. Se você responder bem, a crítica de duas estrelas acaba servindo melhor do que cinco críticas de cinco estrelas adicionais.",
-      "start": 341.85,
-      "end": 360.39
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "O antes e depois — mesma crítica, mesmo restaurante, duas respostas que um convidado indeciso leria de maneira muito diferente:",
+      "start": 401.18,
+      "end": 408.88
     },
     {
       "id": 23,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(15)",
-      "text": "Cinco elementos: assuma explicitamente (\"você está certo e eu sinto muito\"), nomeie o problema operacional específico em suas próprias palavras, nomeie a solução específica, faça uma oferta concreta específica, forneça o caminho de contato. O leitor futuro vê uma operação que responde a problemas reais com soluções reais, não com teatro de desculpas.",
-      "start": 360.91,
-      "end": 380.22
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(5)",
+      "text": "Antes: muito obrigado por suas palavras gentis, nossa equipe trabalha incrivelmente duro todos os dias para fornecer a melhor experiência gastronômica possível e estamos tão felizes em saber que superamos suas expectativas, esperamos recebê-lo novamente em breve, a equipe do Lockwood. Depois: Maria, feliz que você veio. O cacio e pepe é um de nossos pratos especiais, o chef fez a massa naquela manhã. Até logo, Don.",
+      "start": 409.68,
+      "end": 432.12
     },
     {
       "id": 24,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(6)",
-      "text": "O que nunca se deve escrever, independentemente da contagem de estrelas.",
-      "start": 381.32,
-      "end": 385.76
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "O modelo reutilizável, com os colchetes para preencher:",
+      "start": 432.87,
+      "end": 436.13
     },
     {
       "id": 25,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
-      "text": "\"Agradecemos seu feedback\" — boilerplate corporativo, lê como não sendo do proprietário.",
-      "start": 386.46,
-      "end": 391.57
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "Três linhas. Nomeia as pessoas. Nomeia o item. Nomeia o operador. A assinatura é importante — ela diz aos leitores futuros que um ser humano está do outro lado. Evite adicionar \"Por favor, volte!\" ou o URL da página de reservas. O leitor de 5 estrelas já sabe onde encontrá-lo.",
+      "start": 436.48,
+      "end": 452.67
     },
     {
       "id": 26,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
-      "text": "\"Nos esforçamos para fornecer...\" — o mesmo.",
-      "start": 391.89,
-      "end": 394.33
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(6)",
+      "text": "A resposta de 3 estrelas.",
+      "start": 453.77,
+      "end": 455.62
     },
     {
       "id": 27,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
-      "text": "\"Levamos isso muito a sério\" — desvia em vez de agir.",
-      "start": 394.65,
-      "end": 397.69
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "A resposta de 3 estrelas é o tipo de crítica mais lida porque é onde os futuros convidados separam os joios do trigo. Um leitor de 5 estrelas já está convencido; um leitor de 1 estrela já está cético. O leitor de 3 estrelas está genuinamente indeciso e lê sua resposta com atenção. É aqui que a resposta é o diferenciador.",
+      "start": 456.32,
+      "end": 475.2
     },
     {
       "id": 28,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
-      "text": "&ldquo;Por favor, entre em contato para que possamos consertar isso&rdquo; — vago, substitua por um e-mail específico e motivo.",
-      "start": 398.01,
-      "end": 405.47
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "Aqui está uma reclamação real — longa espera no sábado, macarrão frio — respondida da maneira como a maioria dos operadores responde a ela, e da maneira como deveria ser respondida:",
+      "start": 475.72,
+      "end": 486.13
     },
     {
       "id": 29,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(5)",
-      "text": "&ldquo;Sinto muito que você se sinta assim&rdquo; — desculpa não apologética, sinaliza defensividade mesmo quando você não tem essa intenção.",
-      "start": 405.79,
-      "end": 414.37
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(6)",
+      "text": "Antes: lamentamos muito ouvir sobre sua experiência, nossa anfitriã daquela noite, Jessica, é uma de nossas funcionárias mais experientes e vamos conversar com ela sobre isso, sempre nos esforçamos para fornecer serviço e comida excelentes e na temperatura certa e esperamos que você nos dê outra chance, por favor, entre em contato para que possamos consertar isso, a gerência. Depois: Aaron, obrigado pela nota honesta. Você está certo que a espera no sábado às 20h tem sido maior do que gostaríamos, adicionamos um terceiro garçom ao salão para essas horas a partir do último fim de semana. O prato de macarrão que você mencionou não deveria ter chegado frio, isso é nossa culpa. Se você quiser voltar, por favor, peça por mim pelo nome e eu vou oferecer um aperitivo de cortesia, Don, proprietário.",
+      "start": 486.93,
+      "end": 530.02
     },
     {
       "id": 30,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(7)",
-      "text": "Por que isso importa mais do que costumava.",
-      "start": 415.47,
-      "end": 417.88
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "Cinco elementos na resposta após: nomear o problema específico (tempo de espera, macarrão frio), nomear a solução operacional específica (terceiro garçom, a partir do último fim de semana), assumir a responsabilidade pela parte que foi culpa do restaurante, oferecer uma compensação específica (peça por mim, aperitivo de cortesia), assinar. A resposta em si se torna evidência de que a operação responde aos feedbacks. Isso vale mais do que a crítica original de 3 estrelas está te prejudicando.",
+      "start": 530.77,
+      "end": 558.81
     },
     {
       "id": 31,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(16)",
-      "text": "As mudanças do Google em dois mil e vinte e quatro do AI Overview significam que as respostas às avaliações agora sometimes aparecem no parágrafo citado acima dos resultados de busca. O sistema lê suas respostas como parte da voz do restaurante, ao lado do menu e da cópia Sobre. Se suas respostas forem linguagem de caldeira corporativa, o AI Overview citará linguagem de caldeira corporativa. Se suas respostas forem específicas e humanas, o AI Overview citará linguagem específica e humana. A resposta à avaliação é uma superfície de busca agora, não apenas uma de atendimento ao cliente.",
-      "start": 418.58,
-      "end": 452.52
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(7)",
+      "text": "A resposta de 1 estrela.",
+      "start": 559.91,
+      "end": 561.48
     },
     {
       "id": 32,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(17)",
-      "text": "O Don Goldstein gerencia dois restaurantes DMV e executa o Muntin Digital. As 600+ respostas às avaliações por trás desta cartilha são de ambos os restaurantes entre dois mil e vinte e dois e dois mil e vinte e seis.",
-      "start": 453.04,
-      "end": 466.78
+      "text": "A mais difícil. O instinto é se defender (pior) ou se desculpar em branco (quase tão ruim). Nenhum dos dois serve ao leitor futuro. O leitor futuro quer saber se a crítica de 1 estrela é uma noite ruim ou uma experiência representativa. Sua resposta é o que responde a essa pergunta.",
+      "start": 562.18,
+      "end": 577.85
     },
     {
       "id": 33,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(18)",
-      "text": "Continue",
-      "start": 467.3,
-      "end": 467.97
+      "text": "A mesma crítica irritada — longa espera, alegação de serviço rude, alegação de talheres sujos — da maneira errada e da maneira certa:",
+      "start": 578.37,
+      "end": 586.21
     },
     {
       "id": 34,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
-      "text": "Como ser citado nos AI Overviews — a caixa de resposta faz parte dessa superfície agora",
-      "start": 468.32,
-      "end": 473.49
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(7)",
+      "text": "Antes: simplesmente não é o que aconteceu, temos vídeo e registros de P O S e a prataria é passada por um sanitizador comercial a cento e oitenta graus, nossa equipe é formada por profissionais treinados e levamos essas acusações muito a sério, por favor, entre em contato conosco se desejar discutir isso mais a fundo. Depois: Marcus, sinto muito que a visita não tenha sido satisfatória. Posso confirmar que estávamos com falta de pessoal na sexta-feira à noite devido a um surto de gripe na cozinha, o que explicaria o tempo de espera. Não posso verificar o detalhe da prataria de onde estou, se você quiser me enviar um e-mail para don@muntin.digital com o nome da reserva, eu verei o que posso fazer, Don, proprietário.",
+      "start": 587.01,
+      "end": 626.71
     },
     {
       "id": 35,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
-      "text": "Os 6 tipos de esquema que o Google usa — incluindo AggregateRating",
-      "start": 473.81,
-      "end": 477.68
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(19)",
+      "text": "Quatro elementos no depois: reconhecimento breve sem desculpas genéricas, confirmação factual do que é verificável, não confirmação factual do que não é, caminho de contato específico. Nunca corresponda ao tom irritado. Nunca escreva mais de 5 linhas — quanto mais longa a resposta, mais parece que está lutando contra a avaliação em vez de deixá-la ser.",
+      "start": 627.46,
+      "end": 646.51
     },
     {
       "id": 36,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
-      "text": "499 dólares de auditoria — o diagnóstico escrito com suas últimas 30 respostas reescritas",
-      "start": 478,
-      "end": 485.08
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(20)",
+      "text": "Uma coisa que nunca se deve escrever: \"Eu adoraria discutir isso offline.\" Essa frase soa como PR de modelo. Substitua-a pelo endereço de e-mail específico e um motivo específico — \"me envie um e-mail para X para que eu possa verificar a reserva\" — o que parece um caminho real, não uma deflexão.",
+      "start": 647.03,
+      "end": 663.13
     },
     {
       "id": 37,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(19)",
-      "text": "Pontos principais",
-      "start": 485.43,
-      "end": 486.56
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(8)",
+      "text": "A resposta de duas estrelas.",
+      "start": 664.23,
+      "end": 666.08
     },
     {
       "id": 38,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(1)",
-      "text": "Assine a resposta com seu nome e título — a assinatura informa aos leitores futuros que um ser humano está do outro lado.",
-      "start": 486.91,
-      "end": 493.64
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(21)",
+      "text": "Essa é a resposta que mais importa para a marca porque o problema operacional é real e você precisa assumi-lo visivelmente. O leitor futuro usa essa resposta para julgar se a operação tem integridade. Se você responder bem, a avaliação de 2 estrelas acaba servindo melhor do que cinco avaliações de 5 estrelas adicionais.",
+      "start": 666.78,
+      "end": 685.29
     },
     {
       "id": 39,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(2)",
-      "text": "Nomeie o problema específico, a solução específica e o conserto específico; a vaguidade é lida como deflexão.",
-      "start": 493.96,
-      "end": 500.6
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(22)",
+      "text": "Cinco elementos: assuma explicitamente (\"você está certo e sinto muito\"), nomeie o problema operacional específico com suas próprias palavras, nomeie a solução específica, faça uma oferta concreta específica, forneça o caminho de contato. O leitor futuro vê uma operação que responde a problemas reais com soluções reais, não com teatro de desculpas.",
+      "start": 685.81,
+      "end": 704.92
     },
     {
       "id": 40,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(3)",
-      "text": "Nunca corresponda ao tom do avaliador zangado — a calma na resposta sinaliza maturidade operacional para os próximos 1.000 leitores.",
-      "start": 500.92,
-      "end": 509.54
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(9)",
+      "text": "O que nunca se deve escrever, independentemente da contagem de estrelas.",
+      "start": 706.02,
+      "end": 710.46
     },
     {
       "id": 41,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(4)",
-      "text": "Os AI Overviews agora sometimes levantam respostas às avaliações para o parágrafo citado ao lado do menu e da cópia Sobre; a linguagem de caldeira corporativa faz com que você seja citável como linguagem de caldeira corporativa.",
-      "start": 509.86,
-      "end": 523.92
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "\"Obrigado por sua feedback\" — modelo corporativo, soa como não vindo de um proprietário.",
+      "start": 711.16,
+      "end": 716.22
     },
     {
       "id": 42,
       "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "\"Nós nos esforçamos para fornecer...\" — o mesmo.",
+      "start": 716.54,
+      "end": 719.31
+    },
+    {
+      "id": 43,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "\"Nós levamos isso muito a sério\" — desvia em vez de agir.",
+      "start": 719.63,
+      "end": 722.81
+    },
+    {
+      "id": 44,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "\"Por favor, entre em contato conosco para que possamos consertar isso\" — vago, substitua por um e-mail específico e um motivo.",
+      "start": 723.13,
+      "end": 730.15
+    },
+    {
+      "id": 45,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(5)",
+      "text": "\"Sinto muito que você se sinta assim\" — desculpa não-apologia, sinaliza defensividade mesmo quando você não tem essa intenção.",
+      "start": 730.47,
+      "end": 737.92
+    },
+    {
+      "id": 46,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(10)",
+      "text": "Por que isso importa mais do que costumava.",
+      "start": 739.02,
+      "end": 741.43
+    },
+    {
+      "id": 47,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(23)",
+      "text": "As mudanças do Google em 2024 do AI Overview significam que as respostas às avaliações agora às vezes aparecem no parágrafo citado acima dos resultados de busca. O sistema lê suas respostas como parte da voz do restaurante, ao lado do menu e da cópia Sobre. Se suas respostas forem modelos corporativos, o AI Overview citará modelos corporativos. Se suas respostas forem específicas e humanas, o AI Overview citará linguagem específica e humana. A resposta à avaliação é uma superfície de busca agora, não apenas uma de atendimento ao cliente.",
+      "start": 742.13,
+      "end": 773.89
+    },
+    {
+      "id": 48,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(24)",
+      "text": "O Don Goldstein é um operador de restaurante e executa o Muntin Digital. As respostas acima refletem a prática do operador ao longo de anos de trabalho no chão do restaurante e a orientação do próprio Google sobre o que a atividade de resposta à avaliação sinaliza para seu sistema de classificação local.",
+      "start": 774.41,
+      "end": 792.03
+    },
+    {
+      "id": 49,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(25)",
+      "text": "Continue",
+      "start": 792.55,
+      "end": 793.22
+    },
+    {
+      "id": 50,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "Como ser citado em AI Overviews — a caixa de resposta faz parte dessa superfície agora",
+      "start": 793.57,
+      "end": 798.62
+    },
+    {
+      "id": 51,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "Os 6 tipos de schema que o Google usa — incluindo AggregateRating (classificação agregada)",
+      "start": 798.94,
+      "end": 804.18
+    },
+    {
+      "id": 52,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "499 dólares de auditoria — o diagnóstico escrito com suas últimas 30 respostas reescritas",
+      "start": 804.5,
+      "end": 811.58
+    },
+    {
+      "id": 53,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(26)",
+      "text": "Pontos principais",
+      "start": 811.93,
+      "end": 813.06
+    },
+    {
+      "id": 54,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(1)",
+      "text": "Assine a resposta com seu nome e título — a assinatura informa aos leitores futuros que um ser humano está do outro lado.",
+      "start": 813.41,
+      "end": 820.14
+    },
+    {
+      "id": 55,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(2)",
+      "text": "Nomeie o problema específico, a solução específica e a ação específica para compensar; a vaguidade é lida como deflexão.",
+      "start": 820.46,
+      "end": 827.8
+    },
+    {
+      "id": 56,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(3)",
+      "text": "Nunca corresponda ao tom do revisor zangado — a calma na resposta sinaliza maturidade operacional para os próximos 1.000 leitores.",
+      "start": 828.12,
+      "end": 836.62
+    },
+    {
+      "id": 57,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(4)",
+      "text": "AI Overviews agora às vezes incorporam respostas de revisão no parágrafo citado ao lado do menu e da seção Sobre; o texto padrão corporativo faz com que você seja citável como texto padrão corporativo.",
+      "start": 836.94,
+      "end": 849.08
+    },
+    {
+      "id": 58,
+      "kind": "list",
       "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(5)",
-      "text": "A resposta de 1 estrela fica abaixo de cinco linhas — respostas mais longas são lidas como se estivessem lutando contra a avaliação em vez de deixá-la ser.",
-      "start": 524.24,
-      "end": 533.26
+      "text": "A resposta de 1 estrela permanece com menos de cinco linhas — respostas mais longas são lidas como uma luta contra a revisão, em vez de deixá-la ser.",
+      "start": 849.4,
+      "end": 857.99
     }
   ]
 }
