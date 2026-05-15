@@ -1,547 +1,547 @@
 {
   "version": 1,
-  "generatedAt": "2026-05-10T10:49:52.199Z",
+  "generatedAt": "2026-05-15T17:55:43.359Z",
   "engine": "kokoro",
   "model": "kokoro-v1.0.onnx",
   "voice": "pm_alex",
   "language": "pt",
-  "total": 835.12,
+  "total": 833.24,
   "chunks": [
     {
       "id": 0,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(1)",
-      "text": "Leia este artigo em português &rarr;",
+      "text": "Em resumo",
       "start": 0,
-      "end": 2.27
+      "end": 0.81
     },
     {
       "id": 1,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(2)",
-      "text": "TL;DR",
-      "start": 2.62,
-      "end": 3.63
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Wix é fine para sites de primeiro dia, placeholders, pop-ups — mas atinge limites rapidamente para qualquer restaurante que passe do primeiro ano.",
+      "start": 1.16,
+      "end": 9.88
     },
     {
       "id": 2,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "Wix é bom para sites de primeiro dia, placeholders, pop-ups — mas atinge limites rapidamente para qualquer restaurante que passe de seu primeiro ano.",
-      "start": 3.98,
-      "end": 12.87
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Seis lugares onde isso falha: menu de sistema fechado, mobile lento, reservas reféns, SEO de template, sem personalização real, custos de saída.",
+      "start": 10.2,
+      "end": 19.14
     },
     {
       "id": 3,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "Seis lugares onde isso falha: menu de sistema fechado, mobile lento, reservas reféns, S E O de modelo, sem personalização real, custos de saída.",
-      "start": 13.19,
-      "end": 21.93
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "A matemática: um site personalizado geralmente se paga em 12-18 meses para qualquer restaurante que faça $40K+/mês.",
+      "start": 19.46,
+      "end": 28.58
     },
     {
       "id": 4,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "A matemática: um site personalizado geralmente se paga em 12-18 meses para qualquer restaurante que faça $40K+/mês.",
-      "start": 22.25,
-      "end": 31.37
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Leer este artículo en español →",
+      "start": 29.1,
+      "end": 31.55
     },
     {
       "id": 5,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(3)",
-      "text": "Eu não odeio o Wix. Eu construí coisas no Wix. Para muitas pequenas empresas, é genuinamente a resposta certa — o primeiro dia é fácil, o custo mensal é pequeno, e o resultado é \"um site que existe\", o que é melhor do que \"nenhum site\". Mas os restaurantes são um tipo específico de pequena empresa, e eles atingem os limites do Wix mais rápido do que quase qualquer outra indústria com que trabalho. Este post é a versão honesta da comparação: seis lugares onde o Wix falha para restaurantes independentes, a matemática do R O I, e quando o Wix é realmente a chamada certa.",
-      "start": 31.89,
-      "end": 63.5
+      "text": "Eu não odeio o Wix. Eu construí coisas no Wix. Para muitos pequenos negócios, é genuinamente a resposta certa — o primeiro dia é fácil, o custo mensal é pequeno, e o resultado é \"um site que existe\", o que é melhor do que \"nenhum site\". Mas os restaurantes são um tipo específico de pequeno negócio, e eles atingem os limites do Wix mais rápido do que quase qualquer outra indústria com que eu trabalho. Este post é a versão honesta da comparação: seis lugares onde o Wix falha para restaurantes independentes, a matemática do ROI, e quando o Wix é realmente a chamada certa.",
+      "start": 31.9,
+      "end": 63.51
     },
     {
       "id": 6,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(1)",
       "text": "Onde o Wix realmente vence.",
-      "start": 64.6,
-      "end": 66.54
+      "start": 64.61,
+      "end": 66.55
     },
     {
       "id": 7,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(4)",
       "text": "Vamos ser justos sobre isso primeiro, porque o resto do post vai parecer desequilibrado se eu não fizer:",
-      "start": 67.24,
-      "end": 72.96
+      "start": 67.25,
+      "end": 72.97
     },
     {
       "id": 8,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
-      "text": "Você pode lançar em um fim de semana sem um desenvolvedor — um site real, vivo, mobile-friendly-ish, a partir do zero, em cerca de 40 horas do seu próprio tempo.",
-      "start": 73.31,
-      "end": 82.63
+      "text": "Você pode lançar em um fim de semana sem um desenvolvedor — um site real, vivo, mobile-friendly-ish, de zero, em cerca de 40 horas do seu próprio tempo.",
+      "start": 73.32,
+      "end": 82.18
     },
     {
       "id": 9,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
-      "text": "Os modelos são genuinamente melhores do que costumavam ser. Eles têm tipografia moderna, cores padrão razoáveis, e não o deixam imediatamente envergonhado.",
-      "start": 82.95,
-      "end": 92.37
+      "text": "Os templates são genuinamente melhores do que costumavam ser. Eles têm tipografia moderna, cores padrão razoáveis, e não o deixam imediatamente envergonhado.",
+      "start": 82.5,
+      "end": 92.13
     },
     {
       "id": 10,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
       "text": "Hospedagem e SSL estão incluídos na taxa mensal, então você nunca lida com eles.",
-      "start": 92.69,
-      "end": 97.84
+      "start": 92.45,
+      "end": 97.6
     },
     {
       "id": 11,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
-      "text": "Você é dono das atualizações. Em teoria, você pode mudar seu menu ou seus horários sem ligar para ninguém — e para muitos proprietários, essa é a proposta toda.",
-      "start": 98.16,
-      "end": 107.33
+      "text": "Você é dono das atualizações. Em teoria, você pode mudar o menu ou os horários sem ligar para ninguém — e para muitos proprietários, essa é a proposta toda.",
+      "start": 97.92,
+      "end": 106.84
     },
     {
       "id": 12,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(5)",
       "text": "É barato o suficiente para ser descartável. Se você abrir um pop-up e não souber se ainda estará lá na próxima primavera, $25 por mês é o orçamento certo.",
-      "start": 107.65,
-      "end": 117.34
+      "start": 107.16,
+      "end": 116.85
     },
     {
       "id": 13,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(5)",
-      "text": "Se você é novo, o dinheiro está apertado, e você pode genuinamente aceitar que o site é um placeholder — não um reflexo do ambiente — o Wix é bom. Este post não é para você. Tudo abaixo é para o restaurante que está aberto há um ano ou mais, tem regulares, tem um menu digno de ser fotografado, e está começando a notar que o site é um problema.",
-      "start": 117.86,
-      "end": 136.42
+      "text": "Se você é novo, o dinheiro está apertado, e você pode genuinamente aceitar que o site é um placeholder — não um reflexo do local — o Wix é fine. Este post não é para você. Tudo abaixo é para o restaurante que está aberto há um ano ou mais, tem regulares, tem um menu digno de ser fotografado, e está começando a notar que o site é um problema.",
+      "start": 117.37,
+      "end": 135.78
     },
     {
       "id": 14,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(2)",
       "text": "Quebra número 1 — Gerenciamento de menu é uma armadilha.",
-      "start": 137.52,
-      "end": 140.8
+      "start": 136.88,
+      "end": 140.16
     },
     {
       "id": 15,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(6)",
-      "text": "O Wix tem um \"widget\" de menu. Parece ótimo na pré-visualização do modelo. Você insere suas categorias, pratos, preços, e ele renderiza um layout de cartão limpo na página.",
-      "start": 141.5,
-      "end": 151.65
+      "text": "O Wix tem um \"widget\" de menu. Parece ótimo na pré-visualização do template. Você insere suas categorias, pratos, preços, e ele renderiza um layout de cartão limpo na página.",
+      "start": 140.86,
+      "end": 151.21
     },
     {
       "id": 16,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(7)",
-      "text": "Aqui está o que você não vê até ter vivido com isso: seu menu está dentro do sistema fechado do Wix, não dentro de H T M L real na sua página. Isso soa como uma questão técnica. Não é.",
-      "start": 152.17,
-      "end": 162.93
+      "text": "Aqui está o que você não vê até que tenha vivido com isso: seu menu está dentro do sistema fechado do Wix, não dentro de HTML real na sua página. Isso soa como uma questão técnica. Não é.",
+      "start": 151.73,
+      "end": 162.58
     },
     {
       "id": 17,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(8)",
-      "text": "O que isso significa na prática: o Google não pode crawl limparmente as descrições de pratos individuais, então você não ranqueia para \"frango parm perto de mim\" do jeito que poderia. Os comensais não podem tocar em um prato para compartilhá-lo com um amigo. Quando você atualiza o menu no Wix, você ainda tem que atualizá-lo novamente no Google Business Profile, no DoorDash, no Yelp, e em qualquer outro lugar onde seu menu viva — porque nada auto-sincroniza. A proposta de \"atualizações fáceis\" silenciosamente se torna \"quatro lugares separados para atualizar todas as vezes que você muda um preço.\"",
-      "start": 163.45,
-      "end": 196.81
+      "text": "O que isso significa na prática: o Google não pode percorrer individualmente as descrições dos pratos, então você não é ranqueado para \"frango parm perto de mim\" da maneira como poderia. Os comensais não podem tocar em um prato para compartilhá-lo com um amigo. Quando você atualiza o menu no Wix, você ainda tem que atualizá-lo novamente no Google Business Profile, no DoorDash, no Yelp, e em qualquer outro lugar onde o menu viva — porque nada é sincronizado automaticamente. A proposta de \"atualizações fáceis\" se torna silenciosamente \"quatro lugares separados para atualizar cada vez que você muda um preço.\"",
+      "start": 163.1,
+      "end": 197
     },
     {
       "id": 18,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(9)",
-      "text": "Um site personalizado com um menu C M S real atualiza uma vez e envia para todos os lugares que estão conectados. Um menu do Wix atualiza em um lugar e deixa os outros quatro desatualizados.",
-      "start": 197.16,
-      "end": 208.89
+      "text": "Um site personalizado com um menu CMS real atualiza uma vez e envia para todos os lugares que estão conectados. Um menu do Wix atualiza em um lugar e deixa os outros quatro desatualizados.",
+      "start": 197.35,
+      "end": 208.94
     },
     {
       "id": 19,
       "kind": "figure",
       "selector": "#post-body > figure:nth-of-type(1)",
       "text": "Comparação de como os dados do menu fluem em uma plataforma fechada versus um menu HTML real",
-      "start": 209.69,
-      "end": 215.38
+      "start": 209.74,
+      "end": 215.43
     },
     {
       "id": 20,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(3)",
-      "text": "Ponto de interrupção 2 — A velocidade de carregamento móvel é sempre mais lenta do que deveria ser.",
-      "start": 216.48,
-      "end": 222.43
+      "text": "Ponto de quebra 2 — A velocidade de carregamento móvel é sempre mais lenta do que deveria ser.",
+      "start": 216.53,
+      "end": 222.28
     },
     {
       "id": 21,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(10)",
-      "text": "Este é o que posso provar com uma U R L: execute qualquer site de restaurante Wix pelo auditor de sites de restaurantes gratuito e veja a pontuação de Desempenho. Você quase sempre verá algo na faixa de 40 ou 50 em 100. Isso não é culpa do restaurante — é da plataforma.",
-      "start": 223.13,
-      "end": 239.44
+      "text": "Este é o que eu posso provar com uma U R L: execute qualquer site de restaurante Wix pelo audit gratuito de sites de restaurantes e veja a pontuação de Desempenho. Você quase sempre verá algo na faixa de 40 ou 50 em 100. Isso não é culpa do restaurante — é da plataforma.",
+      "start": 222.98,
+      "end": 239.47
     },
     {
       "id": 22,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(11)",
-      "text": "Os modelos Wix enviam uma grande quantidade de JavaScript por padrão — o suficiente para que, na minha experiência com auditorias, as pontuações de desempenho Lighthouse em sites de restaurantes móveis Wix consistentemente sejam inferiores a 60. Em uma conexão 4G fora do seu restaurante, isso frequentemente se traduz em um first-contentful-paint que leva quatro segundos ou mais. As pesquisas sobre velocidade de página móvel da Google consistentemente mostram que a maioria dos visitantes móveis sai de páginas que levam mais de três segundos para carregar — o que significa que um site Wix lento está perdendo silenciosamente uma porção significativa do tráfego móvel faminto antes que alguém veja o menu.",
-      "start": 239.96,
-      "end": 280.79
+      "text": "Os modelos Wix vêm com muitos JavaScript por padrão — o suficiente para que, na minha experiência de auditoria, as pontuações de desempenho Lighthouse em sites de restaurantes móveis Wix consistentemente fiquem abaixo de 60. Em uma conexão 4G fora do seu restaurante, isso frequentemente se traduz em um primeiro-pintura-de-conteúdo que leva quatro segundos ou mais. As pesquisas de velocidade de página móvel da Google consistentemente mostram que a maioria dos visitantes móveis sai de páginas que levam mais de três segundos para carregar — o que significa que um site Wix lento está perdendo silenciosamente uma porção significativa do tráfego móvel faminto antes que alguém veja o menu.",
+      "start": 239.99,
+      "end": 279.95
     },
     {
       "id": 23,
       "kind": "figure",
       "selector": "#post-body > figure:nth-of-type(2)",
-      "text": "Pontuações móveis ilustrativas Lighthouse. Um modelo de restaurante Wix típico pontua cerca de 45 em 100 — solidamente na faixa Ruim. Um site personalizado bem-construído pontua cerca de 95 em 100 — na faixa Boa. O Lighthouse divide a escala em 49 e 89: 0 a 49 é Ruim (vermelho), 50 a 89 é Precisa de melhoria (dourado), 90 a 100 é Boa (verde).",
-      "start": 281.59,
-      "end": 304.69
+      "text": "Pontuações móveis ilustrativas Lighthouse. Um modelo de restaurante Wix típico pontua cerca de 45 em 100 — solidamente na faixa Ruim. Um site personalizado bem-construído pontua cerca de 95 em 100 — na faixa Boa. Lighthouse divide a escala em 49 e 89: 0 a 49 é Ruim (vermelho), 50 a 89 é Precisa de melhoria (dourado), 90 a 100 é Boa (verde).",
+      "start": 280.75,
+      "end": 303.7
     },
     {
       "id": 24,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(4)",
-      "text": "Ponto de interrupção 3 — A integração de reservas é refém dos acordos que a Wix tem.",
-      "start": 305.79,
-      "end": 310.77
+      "text": "Ponto de quebra 3 — A integração de reservas é refém dos acordos que a Wix tem.",
+      "start": 304.8,
+      "end": 309.49
     },
     {
       "id": 25,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(12)",
-      "text": "Os modelos de restaurante da Wix dependem fortemente da OpenTable — é a integração padrão na maioria deles, e a OpenTable funciona bem se a OpenTable também for a sua preferência. Mas se o seu restaurante estiver na Resy, Tock, SevenRooms ou Square Reservations, na minha experiência com auditorias, você geralmente encontrará que a \"integração\" é um iframe genérico ou um link para fora. Nada vive dentro da sua página, nada combina com a sua marca, nada é rastreado limpa e cleanmente para os analíticos, e quando o provedor de terceiros muda a U R L do embed dois anos a partir de agora, você descobre porque o botão de reserva silenciosamente quebrou em uma sexta-feira à noite.",
-      "start": 311.47,
-      "end": 349.19
+      "text": "Os modelos de restaurante Wix dependem fortemente da OpenTable — é a integração padrão na maioria deles, e a OpenTable funciona bem se a OpenTable também for a sua preferência. Mas se o seu restaurante estiver na Resy, Tock, SevenRooms ou Square Reservas, na minha experiência de auditoria, você geralmente encontrará que a \"integração\" é um iframe genérico ou um link para fora. Nada vive dentro da sua página, nada combina com a sua marca, nada rastreia de volta para as análises de forma limpa, e quando o provedor de terceiros muda a U R L do iframe dois anos depois, você descobre porque o botão de reserva silenciosamente quebrou em uma sexta-feira à noite.",
+      "start": 310.19,
+      "end": 347.02
     },
     {
       "id": 26,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(13)",
-      "text": "Um site personalizado permite que você escolha o sistema de reservas que realmente se adapta ao seu fluxo de trabalho e o conecte limpa e cleanmente — independentemente da plataforma que seja.",
-      "start": 349.71,
-      "end": 361.2
+      "text": "Um site personalizado permite que você escolha o sistema de reservas que realmente se adapta ao seu fluxo de trabalho e o conecte de forma limpa — independentemente da plataforma que seja.",
+      "start": 347.54,
+      "end": 358.76
     },
     {
       "id": 27,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(5)",
-      "text": "Ponto de interrupção 4 — O S E O é \"bom para o modelo\", não \"realmente bom\".",
-      "start": 362.3,
-      "end": 366.36
+      "text": "Ponto de quebra 4 — O S E O é \"bom para o modelo\", não \"realmente bom\".",
+      "start": 359.86,
+      "end": 363.68
     },
     {
       "id": 28,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(14)",
-      "text": "A Wix dirá que seu S E O é forte. Técnicamente, não está errada: tags de título existem, um sitemap é gerado, as páginas são indexáveis. Isso é o mínimo. Não é o máximo.",
-      "start": 367.06,
-      "end": 377.23
+      "text": "A Wix dirá que seu S E O é forte. Técnicamente, não está errada: as tags de título existem, um sitemap é gerado, as páginas são indexáveis. Isso é o mínimo. Não é o máximo.",
+      "start": 364.38,
+      "end": 374.8
     },
     {
       "id": 29,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(15)",
       "text": "Onde eu consistentemente vejo a Wix falhar em auditorias de restaurantes:",
-      "start": 377.75,
-      "end": 382.46
+      "start": 375.32,
+      "end": 380.03
     },
     {
       "id": 30,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
-      "text": "O schema markup do restaurante (o JSON-LD que diz à Google a sua cozinha, horas, faixa de preços, U R L do menu e avaliações) é, na maioria dos modelos de restaurante Wix que auditei, ou completamente ausente ou deixado com espaços reservados vazios que o proprietário não sabe procurar e preencher.",
-      "start": 382.81,
-      "end": 400.62
+      "text": "O schema markup do restaurante (o JSON-LD que informa à Google a sua cozinha, horários, faixa de preços, U R L do menu e avaliações) é, na maioria dos modelos de restaurante Wix que auditei, ou está completamente ausente ou foi deixado com espaços reservados vazios que o proprietário não sabe procurar e preencher.",
+      "start": 380.38,
+      "end": 398.69
     },
     {
       "id": 31,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
-      "text": "As descrições de meta tendem a ser geradas automaticamente a partir da cópia da página, a menos que você substitua manualmente cada página — e na prática, a maioria dos proprietários não o faz. O resultado são trechos de busca da Google que leem como \"Bem-vindo à nossa página inicial — Estamos ansiosos para compartilhar…\"",
-      "start": 400.94,
-      "end": 419.33
+      "text": "As descrições meta tendem a ser geradas automaticamente a partir da cópia da página, a menos que você substitua manualmente cada página — e na prática, a maioria dos proprietários não o faz. O resultado são trechos de busca da Google que leem como \"Bem-vindo à nossa página inicial — Estamos ansiosos para compartilhar…\"",
+      "start": 399.01,
+      "end": 417.3
     },
     {
       "id": 32,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
-      "text": "O texto alternativo de imagem geralmente é definido como o nome do arquivo se você não definir manualmente. Cada foto que você carrega vem como IMG_2041.jpg e permanece assim, invisível para a Pesquisa de Imagens da Google.",
-      "start": 419.65,
-      "end": 434.19
+      "text": "O texto alternativo de imagem geralmente é padrão para o nome do arquivo se você não definir manualmente. Cada foto que você carrega vem como IMG_2041.jpg e permanece assim, invisível para a Pesquisa de Imagens da Google.",
+      "start": 417.62,
+      "end": 431.96
     },
     {
       "id": 33,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
-      "text": "A velocidade do site — já abordada no Break número 2 — é, por si só, um fator de classificação, e as pontuações que vejo nos modelos de restaurante Wix são tipicamente baixas o suficiente para afetar as classificações mobile-first.",
-      "start": 434.51,
-      "end": 448.92
+      "text": "Velocidade do site — já abordada na Quebra número 2 — é, em si, um fator de classificação, e as pontuações que vejo em modelos de restaurantes Wix são tipicamente baixas o suficiente para afetar as classificações mobile-first.",
+      "start": 432.28,
+      "end": 446.32
     },
     {
       "id": 34,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(16)",
-      "text": "O efeito líquido: você é classificado para o nome do seu próprio restaurante (o que qualquer um pode fazer), e você não é classificado para \"[cozinha] perto de mim\" ou \"melhor [prato] em [cidade]\", que é onde os novos clientes vêm.",
-      "start": 449.44,
-      "end": 461.46
+      "text": "O efeito líquido: você é classificado pelo nome do seu próprio restaurante (o que qualquer um pode fazer), e você não é classificado para \"[tipo de cozinha] perto de mim\" ou \"melhor [prato] em [cidade]\", que é onde os novos clientes vêm.",
+      "start": 446.84,
+      "end": 459.31
     },
     {
       "id": 35,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(6)",
       "text": "Quebra número 5 — Você não pode fazer nada personalizado sem contratar um parceiro Wix.",
-      "start": 462.56,
-      "end": 468.05
+      "start": 460.41,
+      "end": 465.9
     },
     {
       "id": 36,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(17)",
-      "text": "Mais cedo ou mais tarde, todos os restaurantes querem algo que o modelo não faz. Um layout de menu que combina com um cartão impresso. Um fluxo de reserva que verifica contra um calendário de eventos privados. Uma consulta de catering que é encaminhada para uma caixa de entrada diferente. Um módulo de \"especiais desta semana\" que é atualizado a partir de uma planilha.",
-      "start": 468.75,
-      "end": 488.69
+      "text": "Mais cedo ou mais tarde, todo restaurante quer algo que o modelo não faz. Um layout de menu que combina com um cartão impresso. Um fluxo de reserva que verifica contra um calendário de eventos privados. Uma solicitação de catering que é encaminhada para uma caixa de entrada diferente. Um módulo de \"especiais desta semana\" que é atualizado a partir de uma planilha.",
+      "start": 466.6,
+      "end": 486.19
     },
     {
       "id": 37,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(18)",
-      "text": "No Wix, cada um desses requer ou o Wix Studio (o modo de desenvolvedor profissional) ou um parceiro Wix — um contratante certificado pelo Wix que cobra taxas de construção personalizadas para trabalhar dentro de uma plataforma ainda limitada pela arquitetura do Wix. Você acaba pagando preços de agência por um site que ainda tem os limites do Wix.",
-      "start": 489.21,
-      "end": 508.87
+      "text": "No Wix, cada um desses requer either Wix Studio (modo de desenvolvedor profissional) ou um parceiro Wix — um contratante que Wix certifica e cobra preços de construção personalizados para trabalhar dentro de uma plataforma ainda limitada pela arquitetura Wix. Você acaba pagando preços de agência por um site que ainda tem os limites do Wix.",
+      "start": 486.71,
+      "end": 506.05
     },
     {
       "id": 38,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(19)",
-      "text": "Em uma construção personalizada, \"queremos um módulo de especiais que é atualizado a partir de uma planilha\" é um trabalho de meio dia, não uma renegociação.",
-      "start": 509.39,
-      "end": 518.19
+      "text": "Em uma construção personalizada, \"queremos um módulo de especiais que é atualizado a partir de uma planilha\" é meio dia de trabalho, não uma renegociação.",
+      "start": 506.57,
+      "end": 515.29
     },
     {
       "id": 39,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(7)",
       "text": "Quebra número 6 — Os custos de saída são reais, e você não os vê até tentar sair.",
-      "start": 519.29,
-      "end": 524.26
+      "start": 516.39,
+      "end": 521.36
     },
     {
       "id": 40,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(20)",
-      "text": "Aqui está o que ninguém te conta quando você está se inscrevendo. Se você algum dia quiser deixar o Wix, você pode exportar quase nada de útil.",
-      "start": 524.96,
-      "end": 533.37
+      "text": "Aqui está a que ninguém te conta quando você está se inscrevendo. Se você algum dia quiser deixar o Wix, você pode exportar quase nada de útil.",
+      "start": 522.06,
+      "end": 530.42
     },
     {
       "id": 41,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(21)",
-      "text": "Seu conteúdo não está em arquivos HTML que você pode pegar e mover para outro lugar. Suas imagens vivem na biblioteca de mídia do Wix. Seu menu vive no widget deles. Tudo é um sistema fechado onde você é um inquilino, não um proprietário, e o dia em que você tenta se mudar é o dia em que você percebe que você ou fica para sempre ou paga alguém para reconstruir do zero.",
-      "start": 533.89,
-      "end": 554.28
+      "text": "Seu conteúdo não está em arquivos H T M L que você pode pegar e mover para outro lugar. Suas imagens vivem na biblioteca de mídia do Wix. Seu menu vive no widget deles. Tudo é um sistema fechado onde você é um inquilino, não um proprietário, e o dia em que você tenta se mudar é o dia em que você percebe que você either fica para sempre ou paga alguém para reconstruir do zero.",
+      "start": 530.94,
+      "end": 551.56
     },
     {
       "id": 42,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(22)",
-      "text": "A reconstrução quase sempre é a melhor opção — mas é uma reconstrução. Dois ou três anos de conteúdo que você pensava que possuía, efetivamente, começam de novo. Um site personalizado construído em HTML real pode ser pegado, hospedado em qualquer lugar, editado por qualquer pessoa com um editor de texto e movido entre provedores em um tarde. Essa propriedade é uma característica que a taxa mensal do Wix não compra para você.",
-      "start": 554.8,
-      "end": 579.47
+      "text": "A reconstrução quase sempre é a melhor opção — mas é uma reconstrução. Dois ou três anos de conteúdo que você pensou que era seu, efetivamente, começam do zero. Um site personalizado construído em H T M L real pode ser pegado, hospedado em qualquer lugar, editado por qualquer pessoa com um editor de texto, e movido entre provedores em uma tarde. Essa propriedade é uma característica que a taxa mensal do Wix não compra.",
+      "start": 552.08,
+      "end": 576.47
     },
     {
       "id": 43,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(8)",
       "text": "A matemática que quase sempre funciona.",
-      "start": 580.57,
-      "end": 582.92
+      "start": 577.57,
+      "end": 579.92
     },
     {
       "id": 44,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(23)",
       "text": "Aqui está a comparação que a maioria dos proprietários de restaurantes nunca realmente faz:",
-      "start": 583.62,
-      "end": 588.97
+      "start": 580.62,
+      "end": 585.97
     },
     {
       "id": 45,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(1)",
-      "text": "Wix por dois anos: ~25 dólares por mês × 24 meses = 600 dólares, mais cerca de 120 horas do seu próprio tempo mantendo-o atualizado (em uma taxa de oportunidade conservadora de 25 dólares/hora, isso é mais 3.000 dólares). Total real de dois anos: cerca de 3.600 dólares.",
-      "start": 589.32,
-      "end": 608.68
+      "text": "Wix em dois anos: ~25 dólares por mês × 24 meses = 600 dólares, mais cerca de 120 horas do seu próprio tempo mantendo-o atualizado (em uma taxa de oportunidade conservadora de 25 dólares/hora, isso é mais 3.000 dólares). Total real de dois anos: cerca de 3.600 dólares.",
+      "start": 586.32,
+      "end": 605.68
     },
     {
       "id": 46,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(2)",
-      "text": "Site personalizado por dois anos: 2.500 dólares à vista (nível Essentials da Muntin) + 125–350 dólares/mês plano de cuidado × 24 meses (3.000–8.400 dólares). Total de dois anos: 5.500–10.900 dólares.",
-      "start": 609,
-      "end": 626.16
+      "text": "Site personalizado em dois anos: 2.500 dólares à vista (nível Essentials da Muntin) + 125 dólares–350 dólares/mês plano de cuidado × 24 meses (3.000 dólares–8.400 dólares). Total de dois anos: 5.500 dólares–10.900 dólares.",
+      "start": 606,
+      "end": 624.29
     },
     {
       "id": 47,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(24)",
       "text": "A diferença bruta é de cerca de 1.900 dólares em dois anos. Isso é dinheiro real. Agora, adicione a coisa que a matemática do Wix convenientemente deixa de fora:",
-      "start": 626.68,
-      "end": 636.89
+      "start": 624.81,
+      "end": 635.02
     },
     {
       "id": 48,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(25)",
-      "text": "Um site Wix que carrega lentamente em dispositivos móveis, com um schema fino e um menu de difícil leitura, em minha experiência de auditoria, pode facilmente custar a um restaurante várias reservas por semana em comparação com o que um site bem-construído converteria — pessoas que clicaram no link, esperaram três segundos, não conseguiram ler o menu no telefone e fizeram a reserva em outro lugar. Com uma média de $55 por cover, mesmo três reservas perdidas por semana resultam em aproximadamente $8,500 por ano em receita bruta que nunca entrou pela porta. (Seus números reais dependerão do seu volume e menu, mas a direção é sempre a mesma.)",
-      "start": 637.24,
-      "end": 674.5
+      "text": "Um site Wix que carrega lentamente em dispositivos móveis, com esquema (schema) fino e um menu de difícil leitura, na minha experiência de auditoria, pode facilmente custar a um restaurante várias reservas por semana em comparação com o que um site bem-construído converteria — pessoas que clicaram no link, esperaram três segundos, não conseguiram ler o menu no telefone e fizeram a reserva em outro lugar. Com uma média de cobertura (cover) de $55, mesmo três reservas perdidas por semana resultam em aproximadamente $8,500 por ano em receita bruta que nunca entrou pela porta. (Seus números reais dependerão do seu volume e menu, mas a direção é sempre a mesma.)",
+      "start": 635.37,
+      "end": 672.89
     },
     {
       "id": 49,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(26)",
-      "text": "O site personalizado se paga sozinho em algum lugar nos primeiros quatro meses de reservas recuperadas. Tudo depois disso é puro lucro.",
-      "start": 674.85,
-      "end": 683.27
+      "text": "O site personalizado se paga sozinho em algum lugar nos primeiros quatro meses de reservas recuperadas. Tudo depois disso é puro ganho.",
+      "start": 673.24,
+      "end": 681.58
     },
     {
       "id": 50,
       "kind": "quote",
       "selector": "#post-body > p:nth-of-type(27)",
-      "text": "O site personalizado se paga nos primeiros quatro meses de reservas recuperadas. Tudo depois disso é puro lucro.",
-      "start": 684.02,
-      "end": 690.96
+      "text": "O site personalizado se paga nos primeiros quatro meses de reservas recuperadas. Tudo depois disso é puro ganho.",
+      "start": 682.33,
+      "end": 689.18
     },
     {
       "id": 51,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(9)",
       "text": "Então, quando Wix é realmente a chamada certa?",
-      "start": 692.06,
-      "end": 694.73
+      "start": 690.28,
+      "end": 692.95
     },
     {
       "id": 52,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(28)",
       "text": "Eu quis dizer o que disse na introdução — Wix não é ruim, e é a resposta certa em algumas situações específicas:",
-      "start": 695.43,
-      "end": 701.82
+      "start": 693.65,
+      "end": 700.04
     },
     {
       "id": 53,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(1)",
       "text": "Você acabou de abrir. O menu ainda está se estabilizando, você não sabe como são as terças-feiras ainda, e gastar $5,000 em um site antes de saber se o conceito funciona é a aposta errada. Um placeholder Wix está bom para os primeiros seis a doze meses.",
-      "start": 702.17,
-      "end": 717.73
+      "start": 700.39,
+      "end": 715.95
     },
     {
       "id": 54,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(2)",
-      "text": "Você é um conceito pop-up ou sazonal. O whole thing pode não existir na próxima primavera. Descartabilidade é uma característica.",
-      "start": 718.05,
-      "end": 725.67
+      "text": "Você é um pop-up ou conceito sazonal. Tudo pode não existir na próxima primavera. Descartabilidade é uma característica.",
+      "start": 716.27,
+      "end": 723.44
     },
     {
       "id": 55,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(3)",
-      "text": "Você realmente precisa apenas de um número de telefone e horários. Se seu menu inteiro é \"servimos o que o chef sente como\" e seu sistema de reservas é \"ligue para nós\", um site Wix de uma página faz o trabalho.",
-      "start": 725.99,
-      "end": 738
+      "text": "Você realmente só precisa de um número de telefone e horários. Se seu menu inteiro é \"servimos o que o chef sentir\" e seu sistema de reservas é \"ligue para nós\", um site Wix de uma página faz o trabalho.",
+      "start": 723.76,
+      "end": 735.49
     },
     {
       "id": 56,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(4)",
-      "text": "Você é um proprietário-operador único que faz tudo sozinho e o site é a trigésima coisa na sua lista. Um placeholder que existe é melhor do que um site personalizado que é atrasado por seis meses porque você não tem tempo de contratar um estúdio.",
-      "start": 738.32,
-      "end": 752.86
+      "text": "Você é um proprietário-operador único fazendo tudo sozinho e o site é a trigésima coisa na sua lista. Um placeholder que existe é melhor do que um site personalizado que é atrasado por seis meses porque você não tem tempo de contratar um estúdio.",
+      "start": 735.81,
+      "end": 750.54
     },
     {
       "id": 57,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(29)",
-      "text": "Todos os demais — o restaurante estabelecido com habitués, um menu fotografado e uma marca real — geralmente está além do teto do Wix e pagando mais do que pensa para ficar lá.",
-      "start": 753.38,
-      "end": 763.8
+      "text": "Todos os demais — o restaurante estabelecido com regulares, um menu fotografado e uma marca real — geralmente está além do teto do Wix e pagando mais do que pensam para ficar lá.",
+      "start": 751.06,
+      "end": 761.5
     },
     {
       "id": 58,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(10)",
       "text": "O verdadeiro teste.",
-      "start": 764.9,
-      "end": 766.19
+      "start": 762.6,
+      "end": 763.89
     },
     {
       "id": 59,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(30)",
-      "text": "Aqui está a pergunta que uso quando estou tentando descobrir se o site Wix de alguém está realmente funcionando ou apenas tecnicamente online: você estaria orgulhoso de entregar essa URL a um crítico de comida?",
-      "start": 766.89,
-      "end": 779.62
+      "text": "Aqui está a pergunta que uso quando estou tentando descobrir se o site Wix de alguém realmente está funcionando ou apenas está online tecnicamente: você estaria orgulhoso de entregar essa URL a um crítico de comida?",
+      "start": 764.59,
+      "end": 777.67
     },
     {
       "id": 60,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(31)",
-      "text": "Se a resposta é não, nenhuma atualização de modelo vai consertar isso. E as horas que você gastaria tentando fazer com que seja sim — aprendendo o widget de menu, lutando contra o layout, vendo sua pontuação Lighthouse se recusar a melhorar — são quase sempre mais do que o custo de simplesmente construir a coisa certa.",
-      "start": 780.14,
-      "end": 797.58
+      "text": "Se a resposta é não, nenhuma atualização de modelo vai consertar isso. E as horas que você gastaria tentando fazer com que seja sim — aprendendo o widget do menu, lutando contra o layout, vendo sua pontuação Lighthouse se recusar a melhorar — são quase sempre mais do que o custo de simplesmente construir a coisa certa.",
+      "start": 778.19,
+      "end": 795.73
     },
     {
       "id": 61,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(32)",
       "text": "Pontos principais",
-      "start": 798.1,
-      "end": 799.23
+      "start": 796.25,
+      "end": 797.38
     },
     {
       "id": 62,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(1)",
-      "text": "Seu menu dentro do Wix não é crawlável como schema de restaurante — Google não pode ranquear pratos individuais.",
-      "start": 799.58,
-      "end": 806.13
+      "text": "Seu menu dentro do Wix não é crawlável como esquema de Restaurante — Google não pode ranquear pratos individuais.",
+      "start": 797.73,
+      "end": 804.45
     },
     {
       "id": 63,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(2)",
-      "text": "As pontuações de velocidade móvel do Wix geralmente caem nos 40-50 em 100; isso é a plataforma, não suas configurações.",
-      "start": 806.45,
-      "end": 814.64
+      "text": "As pontuações de velocidade móvel do Wix geralmente ficam nos 40-50 em 100; isso é a plataforma, não suas configurações.",
+      "start": 804.77,
+      "end": 813.03
     },
     {
       "id": 64,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(3)",
-      "text": "Se seu sistema de reservas não está na lista de parceiros do Wix, você fica preso com o que eles oferecem.",
-      "start": 814.96,
-      "end": 821.14
+      "text": "Se seu sistema de reservas não está na lista de parceiros do Wix, você fica preso ao que eles oferecem.",
+      "start": 813.35,
+      "end": 819.35
     },
     {
       "id": 65,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(4)",
       "text": "Os custos de saída (exportação, redirecionamento, recriação) são reais e invisíveis até você tentar sair.",
-      "start": 821.46,
-      "end": 828.06
+      "start": 819.67,
+      "end": 826.27
     },
     {
       "id": 66,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(5)",
-      "text": "Wix é a chamada certa quando o site é genuinamente descartável — pop-ups, cozinhas fantasmas, testes de temporada.",
-      "start": 828.38,
-      "end": 835.12
+      "text": "Wix é a chamada certa quando o site é genuinamente descartável — pop-ups, cozinhas fantasmas, testes sazonais.",
+      "start": 826.59,
+      "end": 833.24
     }
   ]
 }
