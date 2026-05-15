@@ -1,291 +1,323 @@
 {
   "version": 1,
-  "generatedAt": "2026-05-11T07:08:11.893Z",
+  "generatedAt": "2026-05-15T06:09:43.739Z",
   "engine": "kokoro",
   "model": "kokoro-v1.0.onnx",
   "voice": "zm_yunxi",
   "language": "zh",
-  "total": 349.91,
+  "total": 508.64,
   "chunks": [
     {
       "id": 0,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(1)",
-      "text": "简而言之",
+      "text": "操作指南 &middot; 二〇二六年五月十日 &middot; 阅读时间 5 分钟 &middot; 作者 Don Goldstein",
       "start": 0,
-      "end": 1.19
+      "end": 9.15
     },
     {
       "id": 1,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "六十行的JSON-LD涵盖了六种schema类型，Google在餐厅页面上首先读取的类型——餐厅、菜单、营业时间规范、聚合评分、预订和FAQ。",
-      "start": 1.54,
-      "end": 12.67
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "一个完整的餐厅 schema markup 代码块，包含六种 schema 类型，正确嵌套，七个需要修改的字段明显标记，并且有一个验证步骤可以捕捉四个可能破坏一切的拼写错误。下面的工作示例遵循与前一篇文章相同的六种类型模式 —— 这个示例提供了实际的代码。",
+      "start": 9.5,
+      "end": 28.72
     },
     {
       "id": 2,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "七个字段标记为// EDIT（名称、地址部分、电话、营业时间、评分、菜单项），这些是您需要更改的所有内容，以使示例成为您自己的。",
-      "start": 12.99,
-      "end": 22.99
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "简而言之",
+      "start": 29.07,
+      "end": 30.26
     },
     {
       "id": 3,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "三个预发布检查：validator.schema.org用于未知属性，view-source用于CMS转义错误，Google的Rich Results测试用于确认您的schema有资格显示在哪些表面。",
-      "start": 23.31,
-      "end": 36.48
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "六十行 JSON-LD 代码，涵盖了 Google 在餐厅页面上首先读取的六种 schema 类型 —— 餐厅、菜单、营业时间、聚合评分、预订和常见问题。",
+      "start": 30.61,
+      "end": 41.27
     },
     {
       "id": 4,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(2)",
-      "text": "如何操作 &middot; 2026年5月10日 &middot; 5分钟阅读 &middot; 作者：Don Goldstein",
-      "start": 36.83,
-      "end": 45.57
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "七个字段被标记为 // EDIT（名称、地址部分、电话、营业时间、评分、菜单项），这些是您需要修改的所有内容，以使示例成为您自己的。",
+      "start": 41.59,
+      "end": 52.07
     },
     {
       "id": 5,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(3)",
-      "text": "我在管理的两家餐厅中运行的schema markup，采用一个可以粘贴的JSON-LD块。六种schema类型正确嵌套，需要更改的七个字段清晰标记，以及可以捕获四个打字错误的验证步骤。工作示例遵循与前一篇文章相同的六种类型模式——本文提供了实际代码。",
-      "start": 45.92,
-      "end": 64.96
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "三个预发布检查：validator.schema.org 用于检测未知属性、view-source 用于检测 CMS 转义错误，以及 Google 的 Rich Results 测试，以确认您的 schema 有资格出现在哪些表面。",
+      "start": 52.39,
+      "end": 66.26
     },
     {
       "id": 6,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(4)",
-      "text": "如果您已经读过六种类型的文章，您就知道每种schema类型的作用。本文是实际操作的后续：我第一次设置餐厅时粘贴到<head>中的实际JSON-LD代码。您可以复制它，更改注释中标记的七个字段，然后通过Schema.org验证器运行它。如果验证器返回绿色，则表示您已经成功。",
-      "start": 65.31,
-      "end": 86.41
+      "text": "如果您已经阅读了六种类型的文章，您就知道每种 schema 类型的作用。这篇文章是实际操作的后续：我第一次设置餐厅时实际粘贴到 <head> 中的 JSON-LD 代码。您可以复制它，修改七个字段，并通过 Schema.org 验证器运行。如果验证器返回绿色，您就可以发布了。",
+      "start": 66.61,
+      "end": 86.67
     },
     {
       "id": 7,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(1)",
-      "text": "如何使用它。",
-      "start": 87.51,
-      "end": 88.55
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "示例中包含什么以及每个块的作用。第一个块，餐厅：商业身份证 —— knowledge panel、本地包的资格、美食查询。解锁五个功能。第二个块，邮政地址和地理坐标：地图包的 pin 和驾驶方向链接。解锁四个功能。第三个块，营业时间：现在开放的徽章、关闭时间、假日营业时间的准确性。解锁四个功能。第四个块，菜单，包括菜单部分和菜单项：菜肴级别的排名和 AI Overview 引用的菜肴描述。解锁四个功能。第五个块，聚合评分：您的代码片段中的金星模式，CTR 提升 8% 至 15%。解锁三个功能。第六个块，预订操作和 FAQ 页面：预订桌子的按钮和常见问题的富代码片段 —— 餐厅页面上最便宜的 AI 引用表面。解锁四个功能。总共解锁功能：二十四个。",
+      "start": 87.47,
+      "end": 135.23
     },
     {
       "id": 8,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(5)",
-      "text": "三个步骤：",
-      "start": 89.25,
-      "end": 89.9
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "如何使用它。",
+      "start": 136.33,
+      "end": 137.37
     },
     {
       "id": 9,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "将下面的代码块复制到<head>中的一个<script type=\"application/ld+json\">标签中。一个标签，而不是六个。",
-      "start": 90.25,
-      "end": 100.49
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "三个步骤：",
+      "start": 138.07,
+      "end": 138.72
     },
     {
       "id": 10,
       "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "更改注释中标记的七个字段// EDIT：餐厅名称、地址部分（街道、城市、地区、邮政编码）、电话、营业时间和菜单项。",
-      "start": 100.81,
-      "end": 110.94
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "将下面的代码块复制到 <head> 中的一个 <script type=\"application/ld+json\"> 标签中。一个标签，而不是六个。",
+      "start": 139.07,
+      "end": 149.31
     },
     {
       "id": 11,
       "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "在validator.schema.org中通过粘贴页面URL进行验证。修复任何红色错误。最常见的错误是缺少逗号或引号。",
-      "start": 111.26,
-      "end": 122
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "修改七个字段，标记为 // EDIT：餐厅名称、地址部分（街道、城市、地区、邮政编码）、电话、营业时间和菜单项。",
+      "start": 149.63,
+      "end": 158.99
     },
     {
       "id": 12,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(2)",
-      "text": "完整示例。",
-      "start": 123.1,
-      "end": 123.97
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "在 validator.schema.org 中验证，方法是粘贴您的页面 URL。修复任何错误。大多数错误是缺少逗号或多余的引号。",
+      "start": 159.31,
+      "end": 169.12
     },
     {
       "id": 13,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(6)",
-      "text": "下面是运行在一家60座意大利餐厅上的schema。结构嵌套了六种类型：餐厅（根）、菜单、营业时间规范、聚合评分、预订和FAQ。每一种都可以解锁不同的Google表面（如六种类型文章所述）。将其保存为起点；根据需要进行调整。",
-      "start": 124.67,
-      "end": 143.34
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "完整的示例。",
+      "start": 170.22,
+      "end": 171.22
     },
     {
       "id": 14,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(7)",
-      "text": "这就是60行JSON-LD，涵盖了六种Google在餐厅页面上首先读取的类型。注释中标记的七个// EDIT字段是您需要更改的所有内容，以使其成为您自己的。",
-      "start": 143.69,
-      "end": 156.6
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "下面是运行在一家 60 座位的 DMV 意大利餐厅上的 schema 代码。结构嵌套了六种类型：餐厅（根）、菜单、营业时间、聚合评分、预订和常见问题。每一个都解锁了不同的 Google 表面（如六种类型的文章所述）。将其保存为起点；根据需要进行调整。",
+      "start": 171.92,
+      "end": 191.29
     },
     {
       "id": 15,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(3)",
-      "text": "在发布之前。",
-      "start": 157.7,
-      "end": 158.97
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "这是 60 行 JSON-LD 代码，涵盖了 Google 在餐厅页面上首先读取的六种类型。七个 // EDIT 字段是您需要修改的所有内容，以使其成为您自己的。",
+      "start": 191.64,
+      "end": 204.06
     },
     {
       "id": 16,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(8)",
-      "text": "三个检查。每一个都可以捕获到一种错误，这种错误在发布之前通常是不可见的，直到您想知道为什么本地包仍然没有显示。",
-      "start": 159.67,
-      "end": 170.15
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(2)",
+      "text": "同一家餐厅的 Google 结果，在粘贴好 schema 之前和之后的对比。之前：一个简单的蓝色链接结果 — 标题 'Roma Cucina — 意大利餐厅在 Silver Spring，' URL 和元描述。没有星级、没有营业时间、没有地图标签。之后：同样的标题和 URL，加上 4.6 星的评分和 412 条评论、显示两个美元符号的价格范围芯片、显示 10 点关闭的营业时间指示器、带有方向的地图包标签和预订桌子按钮。通过 60 行 JSON-LD 代码为一个搜索结果添加了六个新的表面元素。",
+      "start": 204.86,
+      "end": 240.51
     },
     {
       "id": 17,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(1)",
-      "text": "运行validator.schema.org。粘贴页面URL。验证器报告未知属性（打字错误）、缺少必需字段和不正确的嵌套。修复红色项。黄色通常可以安全发布。",
-      "start": 170.5,
-      "end": 182.64
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "在发布之前。",
+      "start": 241.61,
+      "end": 242.88
     },
     {
       "id": 18,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(2)",
-      "text": "确认渲染页面与预期相符。打开页面，在浏览器中查看源代码，搜索application/ld+json。确认脚本标签存在，JSON是预期的。CMS转义错误有时会删除引号；您必须查看渲染输出。",
-      "start": 182.96,
-      "end": 197.16
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "有三个检查。每一个都可以捕捉到其他情况下不可见的错误类别，直到你想知道为什么本地包仍然没有显示出来。",
+      "start": 243.58,
+      "end": 252.95
     },
     {
       "id": 19,
       "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(3)",
-      "text": "使用Google的Rich Results测试。这个是Google用来决定您的schema是否有资格显示在rich results上的官方工具。它告诉您您的schema有资格显示在哪些表面。验证器通过后运行。",
-      "start": 197.48,
-      "end": 211.99
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "通过 validator.schema.org 运行。粘贴你的页面 URL。验证器报告未知属性（拼写错误）、缺失的必需字段和不正确的嵌套。修复红色项目。黄色通常可以安全发布。",
+      "start": 253.3,
+      "end": 265.83
     },
     {
       "id": 20,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(4)",
-      "text": "交付后会发生什么。",
-      "start": 213.09,
-      "end": 214.65
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "确认渲染的页面与预期相符。打开你的页面在浏览器中，查看源代码，搜索 application/ld+json 。确认脚本标签存在，JSON 是你期望的。内容管理系统转义 bug 有时会去掉引号；你必须查看渲染输出。",
+      "start": 266.15,
+      "end": 281.07
     },
     {
       "id": 21,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(9)",
-      "text": "不要期待立即看到效果。Google 的爬虫可能需要 24–72 小时才能重新访问你的页面并获取新的 schema。有些表面（本地包，AggregateRating 星级）会在一周内更新，而其他的（通过 Find a Table 的预订深度链接，F A Q 富媒体片段）可能需要 30+ 天。最长尾的 ones 是 AI Overview 引用，它们可能需要 90 天才能开始生效。",
-      "start": 215.35,
-      "end": 242.01
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "使用 Google 的 Rich Results 测试工具。这个是 Google 用来决定你的 schema 是否有资格获得 rich results 的官方工具。它告诉你你的 schema 有资格显示在哪些表面上。在验证器通过后运行。",
+      "start": 281.39,
+      "end": 295.84
     },
     {
       "id": 22,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(10)",
-      "text": "一旦交付，就让 schema 保持原样。爬虫会更频繁地重新访问被引用的 URL，而稳定的 JSON-LD 块会随着时间的推移建立实体信任。只需在事实发生变化时（新营业时间，新菜单项，更新的评论数）修改一个字段，但要抵制重构的冲动。",
-      "start": 242.36,
-      "end": 261.86
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(3)",
+      "text": "粘贴 schema 后的四步工作流：粘贴、测试、等待、验证。步骤一：将 JSON-LD 粘贴到每个公共页面的头部，不仅仅是首页。步骤二：在三个 URL 上运行 Google 的 Rich Results 测试工具，并在离开之前修复每个红色错误。步骤三：等待 7 到 14 天重新爬取 — Googlebot 需要在生产中看到 schema 之前才会出现任何功能。步骤四：在 Search Console 中的增强功能下验证，每种 schema 类型都有自己的报告，显示有效页面和错误。",
+      "start": 296.64,
+      "end": 327.19
     },
     {
       "id": 23,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(11)",
-      "text": "Don Goldstein 管理两个 DMV 餐厅，并运行 Muntin Digital 。上面的示例 schema 来自这两个餐厅之一，五月二十六日生产。",
-      "start": 262.21,
-      "end": 272.45
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "你发布后会发生什么。",
+      "start": 328.29,
+      "end": 329.88
     },
     {
       "id": 24,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(12)",
-      "text": "继续前进",
-      "start": 272.8,
-      "end": 273.71
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "不要期待立即生效。Google 的爬虫可能需要 24-72 小时才能重新访问你的页面并获取新的 schema。一些表面（本地包、AggregateRating 星级）在一周内更新。其他的（通过 Find a Table 的预订深度链接、FAQ 富片段）可能需要 30+ 天。最长尾的那些是 AI Overview 引用，可以在 90 天后开始生效。",
+      "start": 330.58,
+      "end": 354.18
     },
     {
       "id": 25,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
-      "text": "Google 使用的 6 种 schema 类型 —— 每种都解锁了什么",
-      "start": 274.06,
-      "end": 278.92
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "一旦发布，离开 schema 不要动。爬虫更频繁地重新访问引用的 URL，随着时间的推移，稳定的 JSON-LD 块建立实体信心。事实改变时（新关闭时间、新菜单项、更新的评论数）只需修改一个字段，但要抵制重构的冲动。",
+      "start": 354.53,
+      "end": 371.82
     },
     {
       "id": 26,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
-      "text": "如何在 AI Overview 中被引用 —— schema 交叉引用的内容",
-      "start": 279.24,
-      "end": 284.1
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(4)",
+      "text": "富结果出现的几率，过去了90天后，按类型划分。 AggregateRating：金色星星在片段中出现，约90%的查询在30天内出现。 OpeningHoursSpecification：现在开放的徽章在约85%的查询中在30天内出现。 Restaurant plus PostalAddress：本地包卡在约70%的品牌查询中在60天内出现。 Menu：菜品级别排名和 AI Overview 引用在约55%的菜品名称查询中在60天内出现。 FAQPage：F A Q 富片段在约40%的类似问题的查询中在60天内出现。 ReserveAction：预订表按钮在约35%的品牌查询中在90天内出现。",
+      "start": 372.62,
+      "end": 419.97
     },
     {
       "id": 27,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
-      "text": "Schema 检查工具 —— 验证任何 U R L 上的 JSON-LD",
-      "start": 284.42,
-      "end": 289.53
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "Don Goldstein 是一家餐厅运营商，并运行 Muntin Digital 。 上面的示例 schema 遵循六种类型的 Google Search 中央文档用于餐厅页面； 每个字段映射到六种类型的步骤中相同的词汇。",
+      "start": 420.72,
+      "end": 434.27
     },
     {
       "id": 28,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
-      "text": "499 美元的审计 —— 如果你的 schema 不起作用，书面诊断",
-      "start": 289.85,
-      "end": 295.27
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "继续",
+      "start": 434.62,
+      "end": 434.96
     },
     {
       "id": 29,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(13)",
-      "text": "关键要点",
-      "start": 295.62,
-      "end": 296.53
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "6种 schema 类型 Google 使用 —— 每种解锁什么",
+      "start": 435.31,
+      "end": 439.76
     },
     {
       "id": 30,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
-      "text": "Schema 就像管道 —— 它本身不会带来变化，但它使你有资格获得以前没有资格的表面（本地包，AggregateRating 星级，预订深度链接，F A Q 富媒体片段，AI Overview 引用）。",
-      "start": 296.88,
-      "end": 309.55
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "如何在 AI Overview 中被引用 —— schema 交叉引用了什么",
+      "start": 440.08,
+      "end": 444.76
     },
     {
       "id": 31,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
-      "text": "一旦交付，就让 schema 保持原样 —— 爬虫会更频繁地重新访问稳定的 JSON-LD，并随着时间的推移建立实体信任。",
-      "start": 309.87,
-      "end": 320.11
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "Schema 检查工具 —— 验证任何 U R L 的 JSON-LD",
+      "start": 445.08,
+      "end": 450.07
     },
     {
       "id": 32,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
-      "text": "表面时间：本地包和评级星级在一周内更新；预订深度链接和 F A Q 片段需要 30+ 天；AI Overview 引用需要最多 90 天。",
-      "start": 320.43,
-      "end": 331.76
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "499 美元的审计 —— 如果您的 schema 不工作，书面诊断",
+      "start": 450.39,
+      "end": 455.48
     },
     {
       "id": 33,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
-      "text": "当事实发生变化时，只需修改一个字段 —— 新营业时间，新菜单项 —— 并抵制重构的冲动。",
-      "start": 332.08,
-      "end": 339.83
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "关键要点",
+      "start": 455.83,
+      "end": 456.74
     },
     {
       "id": 34,
       "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "Schema 是管道 —— 它本身不会带来变化，但它使您有资格获得以前没有资格的表面（本地包，AggregateRating 星级，预订深度链接，F A Q 富片段，AI Overview 引用）。",
+      "start": 457.09,
+      "end": 469.12
+    },
+    {
+      "id": 35,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "一旦发布，离开 schema 不要动 —— 爬虫更频繁地访问稳定的 JSON-LD，并随着时间的推移建立实体信任。",
+      "start": 469.44,
+      "end": 478.72
+    },
+    {
+      "id": 36,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "表面时间：本地包和评分星级在一周内更新； 预订深度链接和 F A Q 片段需要 30+ 天； AI Overview 引用需要最多 90 天。",
+      "start": 479.04,
+      "end": 490.6
+    },
+    {
+      "id": 37,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
+      "text": "当事实发生变化时，触摸一个字段 —— 新的关闭时间，新的菜品 —— 并抵制重构的冲动。",
+      "start": 490.92,
+      "end": 498.21
+    },
+    {
+      "id": 38,
+      "kind": "list",
       "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(5)",
-      "text": "将 schema 与 AI Overviews 文章中的引用形状写作结合起来，这将是二十六年餐厅网站可以交付的最高效单次编辑。",
-      "start": 340.15,
-      "end": 349.91
+      "text": "将 schema 与 AI Overviews 文章中的引用形状的写作结合起来，成为二十六年中餐厅网站可以发布的最高效的单个编辑。",
+      "start": 498.53,
+      "end": 508.64
     }
   ]
 }

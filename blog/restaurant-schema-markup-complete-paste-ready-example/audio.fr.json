@@ -1,291 +1,323 @@
 {
   "version": 1,
-  "generatedAt": "2026-05-11T06:59:29.445Z",
+  "generatedAt": "2026-05-15T05:54:56.382Z",
   "engine": "kokoro",
   "model": "kokoro-v1.0.onnx",
   "voice": "ff_siwis",
   "language": "fr",
-  "total": 354.49,
+  "total": 529.44,
   "chunks": [
     {
       "id": 0,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(1)",
-      "text": "En bref",
+      "text": "Tutoriel &middot; 10 mai 2026 &middot; 5 min de lecture &middot; Par Don Goldstein",
       "start": 0,
-      "end": 0.54
+      "end": 5.74
     },
     {
       "id": 1,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "Soixante lignes de JSON-LD qui couvrent les six types de schéma Google qui lit en premier sur une page de restaurant — Restaurant, Menu, OpeningHoursSpecification, AggregateRating, Reservation, et F A Q.",
-      "start": 0.89,
-      "end": 14.25
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Un code de restaurant schema markup complet en un seul bloc JSON-LD prêt à être copié. Six types de schémas imbriqués correctement, les sept champs que vous devez modifier par restaurant clairement indiqués, et l'étape de validation qui détecte les quatre erreurs de frappe qui tout cassent. Un exemple concret suit le même modèle de six types que l'article précédent a présenté — celui-ci vous donne le code réel.",
+      "start": 6.09,
+      "end": 25.82
     },
     {
       "id": 2,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "Sept champs marqués // EDIT (nom, parties de l'adresse, téléphone, heures, note, éléments du menu) sont tout ce que vous avez à changer pour rendre l'exemple vôtre.",
-      "start": 14.57,
-      "end": 23.52
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "En bref",
+      "start": 26.34,
+      "end": 26.88
     },
     {
       "id": 3,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "Trois vérifications préalables à la publication : validator.schema.org pour les propriétés inconnues, view-source pour les bogues d'échappement du C M S, et le test Rich Results de Google pour confirmer sur quelles surfaces votre schéma est éligible.",
-      "start": 23.84,
-      "end": 39.32
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Soixante lignes de JSON-LD qui couvrent les six types de schémas que Google lit en premier sur une page de restaurant — Restaurant, Menu, OpeningHoursSpecification, AggregateRating, Reservation, et F A Q.",
+      "start": 27.23,
+      "end": 40.4
     },
     {
       "id": 4,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(2)",
-      "text": "Mode d'emploi &middot; 10 mai 2026 &middot; 5 min de lecture &middot; Par Don Goldstein",
-      "start": 39.84,
-      "end": 45.88
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Sept champs marqués // EDIT (nom, parties de l'adresse, téléphone, heures, note, éléments du menu) sont tout ce que vous avez à changer pour personnaliser l'exemple.",
+      "start": 40.72,
+      "end": 49.8
     },
     {
       "id": 5,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(3)",
-      "text": "Le schema markup que j'exécute sur les deux restaurants que je gère, en un seul bloc JSON-LD prêt à être collé. Six types de schéma imbriqués correctement, les sept champs que vous devez changer par restaurant clairement marqués, et l'étape de validation qui attrape les quatre fautes de frappe qui cassent tout. L'exemple fonctionnel suit le même modèle à six types que l'article précédent — celui-ci vous donne le code réel.",
-      "start": 46.23,
-      "end": 65.89
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Trois vérifications préalables à la publication : validator.schema.org pour les propriétés inconnues, view-source pour les bogues de C M S-escaping, et le test Rich Results de Google pour confirmer sur quelles surfaces votre schéma est éligible.",
+      "start": 50.12,
+      "end": 65.87
     },
     {
       "id": 6,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(4)",
-      "text": "Si vous avez lu l'article sur les six types, vous savez ce que fait chaque type de schéma. Cet article est la suite tactique : le véritable JSON-LD que je colle dans le <head> d'un restaurant la première fois que je le configure. Vous pouvez le copier, changer les sept champs marqués dans les commentaires, et le faire valider par le validateur Schema.org. Si le validateur renvoie un résultat vert, vous êtes prêt.",
-      "start": 66.41,
-      "end": 85.93
+      "text": "Si vous avez lu l'article sur les six types, vous savez ce que chaque type de schéma fait. Cet article est la suite tactique : le code JSON-LD réel que je colle dans le <head> d'un restaurant la première fois que je le configure. Vous pouvez le copier, modifier les sept champs marqués dans les commentaires, et le faire valider par le validateur Schema.org. Si le validateur renvoie un résultat vert, vous êtes prêt.",
+      "start": 66.39,
+      "end": 86.07
     },
     {
       "id": 7,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(1)",
-      "text": "Comment l'utiliser.",
-      "start": 87.03,
-      "end": 87.99
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "Ce que contient l'exemple prêt à être copié et ce que chaque bloc fait. Le bloc un, Restaurant : la carte d'identité de l'entreprise — knowledge panel, éligibilité au local-pack, requêtes de cuisine. Débloque cinq fonctionnalités. Le bloc deux, PostalAddress et GeoCoordinates : l'épingle de map-pack et le lien de directions de conduite. Débloque quatre fonctionnalités. Le bloc trois, OpeningHoursSpecification : le badge « ouvert maintenant », la ligne « fermeture à », l'exactitude des heures de fermeture. Débloque quatre fonctionnalités. Le bloc quatre, Menu avec MenuSection et MenuItem : le classement au niveau du plat et la citation AI Overview des descriptions de plats. Débloque quatre fonctionnalités. Le bloc cinq, AggregateRating : le motif d'étoiles dorées dans votre snippet, augmentation de 8 à 15 % du CTR. Débloque trois fonctionnalités. Le bloc six, ReserveAction et FAQPage : le bouton « Réserver une table » et le snippet de F A Q rich — la surface de citation AI la moins chère sur une page de restaurant. Débloque quatre fonctionnalités. Fonctionnalités débloquées au total : vingt-quatre.",
+      "start": 86.87,
+      "end": 144.35
     },
     {
       "id": 8,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(5)",
-      "text": "Trois étapes :",
-      "start": 88.69,
-      "end": 89.53
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Comment l'utiliser.",
+      "start": 145.45,
+      "end": 146.41
     },
     {
       "id": 9,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "Copiez le bloc ci-dessous dans une balise <script type=\"application/ld+json\"> unique à l'intérieur de votre <head>. Une balise, pas six.",
-      "start": 89.88,
-      "end": 98.26
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "Trois étapes :",
+      "start": 147.11,
+      "end": 147.95
     },
     {
       "id": 10,
       "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "Changez les sept champs marqués // EDIT : le nom du restaurant, les parties de l'adresse (rue, ville, région, code postal), le téléphone, les heures d'ouverture, et les éléments du menu.",
-      "start": 98.58,
-      "end": 108.64
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Copiez le bloc ci-dessous dans une balise <script type=\"application/ld+json\"> unique à l'intérieur de votre <head>. Une balise, pas six.",
+      "start": 148.3,
+      "end": 156.68
     },
     {
       "id": 11,
       "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "Validez sur validator.schema.org en collant l'U R L de votre page. Corrigez tout ce qui est rouge. La plupart des erreurs sont des virgules manquantes ou des guillemets errants.",
-      "start": 108.96,
-      "end": 118.92
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Modifiez les sept champs marqués // EDIT : le nom du restaurant, les parties de l'adresse (rue, ville, région, code postal), le téléphone, les heures d'ouverture, et les éléments du menu.",
+      "start": 157,
+      "end": 167.29
     },
     {
       "id": 12,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(2)",
-      "text": "L'exemple complet.",
-      "start": 120.02,
-      "end": 121.12
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Validez sur validator.schema.org en collant l'U R L de votre page. Corrigez tout ce qui est rouge. La plupart des erreurs sont des virgules manquantes ou des guillemets errants.",
+      "start": 167.61,
+      "end": 177.57
     },
     {
       "id": 13,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(6)",
-      "text": "Ci-dessous se trouve le schéma que j'ai exécuté sur un restaurant italien de 60 places DMV. La structure imbrique six types : Restaurant (racine), Menu, OpeningHoursSpecification, AggregateRating, Reservation, et F A Q. Chacun débloque une surface Google différente (conformément à l'article sur les six types). Enregistrez-le comme point de départ ; ajustez-le au besoin.",
-      "start": 121.82,
-      "end": 142.09
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "L'exemple complet.",
+      "start": 178.67,
+      "end": 179.77
     },
     {
       "id": 14,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(7)",
-      "text": "C'est 60 lignes de JSON-LD qui couvrent les six types que Google lit en premier sur une page de restaurant. Les sept champs // EDIT sont tout ce que vous avez à changer pour en faire vôtre.",
-      "start": 142.61,
-      "end": 154.03
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "Ci-dessous se trouve le schéma que j'ai exécuté sur un restaurant italien de 60 places DMV. La structure imbrique six types : Restaurant (racine), Menu, OpeningHoursSpecification, AggregateRating, Reservation, et F A Q. Chacun débloque une surface Google différente (conformément à l'article sur les six types). Enregistrez-le comme point de départ ; affinez-le au besoin.",
+      "start": 180.47,
+      "end": 200.84
     },
     {
       "id": 15,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(3)",
-      "text": "Avant de publier.",
-      "start": 155.13,
-      "end": 156.01
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "Cela fait 60 lignes de JSON-LD qui couvrent les six types que Google lit en premier sur une page de restaurant. Les sept champs // EDIT sont tout ce que vous avez à changer pour le personnaliser.",
+      "start": 201.36,
+      "end": 213.15
     },
     {
       "id": 16,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(8)",
-      "text": "Trois vérifications. Chacune attrape une classe d'erreur qui est autrement invisible jusqu'à ce que vous vous demandiez pourquoi le local-pack ne vous montre toujours pas.",
-      "start": 156.71,
-      "end": 165.64
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(2)",
+      "text": "Le même restaurant affiche un résultat Google, avant et après le schéma prêt à coller. Avant : un résultat de lien bleu nu — titre 'Roma Cucina — Restaurant italien à Silver Spring,' l'U R L, et une description meta. Pas d'étoiles, pas d'heures, pas d'épingle de carte. Après : le même titre et U R L, plus une note de quatre virgule six étoiles avec quatre cent douze avis, un indicateur de plage de prix affichant deux signes dollar, un indicateur « ouvert maintenant » avec fermeture à 22 h, un épingle de carte avec directions, et un bouton « Réserver une table ». Six nouveaux éléments de surface ajoutés à un résultat de recherche par soixante lignes de JSON-LD.",
+      "start": 213.95,
+      "end": 246.39
     },
     {
       "id": 17,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(1)",
-      "text": "Faites-le valider sur validator.schema.org. Collez l'U R L de votre page. Le validateur signale les propriétés inconnues (fautes de frappe), les champs requis manquants, et l'imbriquage incorrect. Corrigez les éléments rouges. Le jaune est généralement bon pour être publié.",
-      "start": 166.16,
-      "end": 181.79
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Avant de publier.",
+      "start": 247.49,
+      "end": 248.37
     },
     {
       "id": 18,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(2)",
-      "text": "Confirmez que la page rendue correspond. Ouvrez votre page dans un navigateur, affichez la source, recherchez application/ld+json. Confirmez que la balise de script est là et que le JSON est ce que vous attendez. Les bogues d'échappement du C M S peuvent parfois supprimer les guillemets ; vous devez voir la sortie rendue.",
-      "start": 182.11,
-      "end": 199.34
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "Trois vérifications. Chacune détecte une classe d'erreur qui est autrement invisible jusqu'à ce que vous vous demandiez pourquoi le local-pack ne vous montre toujours pas.",
+      "start": 249.07,
+      "end": 258.08
     },
     {
       "id": 19,
       "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(3)",
-      "text": "Testez avec le test Rich Results de Google. C'est l'outil officiel que Google utilise pour décider si votre schéma est éligible aux rich results. Il vous indique sur quelles surfaces votre schéma est éligible. Exécutez-le après que le validateur ait passé.",
-      "start": 199.66,
-      "end": 216.06
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Faites-le passer par validator.schema.org . Collez l'U R L de votre page. Le validateur signale les propriétés inconnues (fautes de frappe), les champs requis manquants et le mauvais emboîtement. Corrigez les éléments rouges. Le jaune est généralement bon pour expédier.",
+      "start": 258.6,
+      "end": 273.77
     },
     {
       "id": 20,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(4)",
-      "text": "Ce qui se passe après l'expédition.",
-      "start": 217.16,
-      "end": 218.95
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Confirmez que la page rendue correspond à . Ouvrez votre page dans un navigateur, affichez la source, recherchez application/ld+json . Confirmez que la balise de script est là et que le JSON est ce que vous attendez. Les bogues d'échappement du C M S peuvent parfois supprimer les guillemets ; vous devez voir la sortie rendue.",
+      "start": 274.09,
+      "end": 291.29
     },
     {
       "id": 21,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(9)",
-      "text": "Ne vous attendez pas à un effet immédiat. Le crawler de Google peut prendre 24–72 heures pour revisiter votre page et récupérer le nouveau schéma. Certaines surfaces (le local-pack, les étoiles AggregateRating) se mettent à jour dans une semaine. D'autres (les liens de réservation profonds via Find a Table, les extraits de fiches de questions fréquentes) peuvent prendre 30 jours ou plus. Les citations AI Overview sont les plus longues, elles peuvent prendre 90 jours pour commencer à arriver.",
-      "start": 219.65,
-      "end": 243.66
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "Testez avec l'outil de test Rich Results de Google . C'est l'outil officiel que Google utilise pour décider si votre schéma est qualifié pour les rich results. Il vous indique pour quelles surfaces votre schéma est éligible. Exécutez-le après que le validateur passe.",
+      "start": 291.61,
+      "end": 308.28
     },
     {
       "id": 22,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(10)",
-      "text": "Une fois expédié, laissez le schéma seul. Le crawler revisite les URL cités plus souvent que les non cités, et un bloc JSON-LD stable construit la confiance de l'entité au fil du temps. Modifiez un champ si un fait change (nouvelle heure de fermeture, nouveau plat, mise à jour du comptage des avis), mais résistez à l'envie de refondre.",
-      "start": 244.18,
-      "end": 261.89
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(3)",
+      "text": "Le flux de travail de quatre étapes — coller, tester, attendre, vérifier — après avoir collé le schéma. Étape un : collez le JSON-LD dans l'en-tête de chaque page publique, et non seulement la page d'accueil. Étape deux : exécutez l'outil de test Rich Results de Google sur trois URLs et corrigez chaque erreur rouge avant de partir. Étape trois : attendez sept à quatorze jours pour la ré-indexation — Googlebot a besoin de voir le schéma en production avant que toute fonctionnalité n'apparaisse. Étape quatre : vérifiez dans Search Console sous Enhancements, où chaque type de schéma a son propre rapport montrant les pages valides et les erreurs.",
+      "start": 309.08,
+      "end": 340.47
     },
     {
       "id": 23,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(11)",
-      "text": "Don Goldstein gère deux restaurants DMV et dirige Muntin Digital. L'exemple de schéma ci-dessus est adapté de l'un de ces deux restaurants, en production depuis le 26 mai 2020.",
-      "start": 262.41,
-      "end": 273.66
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "Ce qui se passe après l'expédition.",
+      "start": 341.57,
+      "end": 343.36
     },
     {
       "id": 24,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(12)",
-      "text": "Continuez",
-      "start": 274.18,
-      "end": 274.81
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "N'attendez pas d'effet immédiat. Le crawl de Google peut prendre 24–72 heures pour revisiter votre page et récupérer le nouveau schéma. Certaines surfaces (le local-pack, les étoiles AggregateRating) se mettent à jour dans la semaine. D'autres (les liens de réservation profonds via Find a Table, les extraits de réponse à des questions fréquentes) peuvent prendre 30 jours ou plus. Les plus longues queues sont les citations AI Overview, qui peuvent prendre 90 jours pour commencer à atterrir.",
+      "start": 344.06,
+      "end": 368.28
     },
     {
       "id": 25,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
-      "text": "Les 6 types de schémas que Google utilise — ce que chaque schéma débloque",
-      "start": 275.16,
-      "end": 279.42
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "Une fois expédié, laissez le schéma seul. Le crawl revisite les URL cités plus souvent que les non cités, et un bloc JSON-LD stable construit la confiance de l'entité au fil du temps. Modifiez un champ si un fait change (nouvelle heure de fermeture, nouvel article de menu, comptage de révision mis à jour), mais résistez à l'envie de réorganiser.",
+      "start": 368.8,
+      "end": 387.06
     },
     {
       "id": 26,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
-      "text": "Comment être cité dans les AI Overview — ce que le schéma fait référence à",
-      "start": 279.74,
-      "end": 284.08
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(4)",
+      "text": "Les probabilités d'apparition des résultats enrichis, ninety jours après avoir collé le schéma, par type. AggregateRating : les étoiles d'or dans l'aperçu apparaissent dans environ quatre-vingt-dix pour cent des requêtes dans les trente jours. OpeningHoursSpecification : le badge « ouvert maintenant » apparaît dans environ quatre-vingt-cinq pour cent des requêtes dans les trente jours. Restaurant plus PostalAddress : la carte local-pack apparaît dans environ soixante-dix pour cent des requêtes de marque dans les soixante jours. Menu : le classement au niveau du plat et les citations AI Overview apparaissent dans environ cinquante-cinq pour cent des requêtes de nom de plat dans les soixante jours. FAQPage : l'aperçu de snippet de F A Q apparaît dans environ quarante pour cent des requêtes en forme de question dans les soixante jours. ReserveAction : le bouton « Réserver une table » apparaît dans environ trente-cinq pour cent des requêtes de marque dans les quatre-vingt-dix jours.",
+      "start": 387.86,
+      "end": 435.09
     },
     {
       "id": 27,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
-      "text": "Outil de vérification de schéma — valide le JSON-LD sur n'importe quelle URL",
-      "start": 284.4,
-      "end": 289.49
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "Don Goldstein est un exploitant de restaurant et dirige Muntin Digital . L'exemple de schéma ci-dessus suit le modèle à six types Google Search Central pour les pages de restaurant ; chaque champ correspond au même vocabulaire que la présentation des six types.",
+      "start": 435.84,
+      "end": 450.61
     },
     {
       "id": 28,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
-      "text": "Audit de 499 dollars — le diagnostic écrit si votre schéma ne fonctionne pas",
-      "start": 289.81,
-      "end": 295.36
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "Continuez",
+      "start": 451.13,
+      "end": 451.76
     },
     {
       "id": 29,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(13)",
-      "text": "Points clés",
-      "start": 295.71,
-      "end": 296.22
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Les 6 types de schéma Google utilisés — ce que chaque élément débloque",
+      "start": 452.11,
+      "end": 456.17
     },
     {
       "id": 30,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
-      "text": "Le schéma est une plomberie — il ne bouge pas l'aiguille à lui seul, mais il vous rend éligible pour des surfaces (local-pack, étoiles AggregateRating, liens de réservation profonds, extraits de fiches de questions fréquentes, citations AI Overview) pour lesquelles vous n'étiez pas éligible auparavant.",
-      "start": 296.57,
-      "end": 312.76
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Comment être cité dans les AI Overviews — ce contre quoi le schéma fait référence",
+      "start": 456.49,
+      "end": 461.35
     },
     {
       "id": 31,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
-      "text": "Une fois expédié, laissez le schéma seul — le crawler revisite les JSON-LD stables plus souvent et construit la confiance de l'entité au fil du temps.",
-      "start": 313.08,
-      "end": 322.24
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "Outil de vérification de schéma — valide le JSON-LD sur n'importe quel U R L",
+      "start": 461.67,
+      "end": 466.76
     },
     {
       "id": 32,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
-      "text": "Délai de mise à jour des surfaces : local-pack et étoiles de notation se mettent à jour en une semaine ; les liens de réservation profonds et les extraits de fiches de questions fréquentes prennent 30 jours ou plus ; les citations AI Overview prennent jusqu'à 90 jours.",
-      "start": 322.56,
-      "end": 337.28
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "499 dollars d'audit — le diagnostic écrit si votre schéma ne fonctionne pas",
+      "start": 467.08,
+      "end": 472.27
     },
     {
       "id": 33,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
-      "text": "Lorsqu'un fait change, modifiez un champ — nouvelle heure de fermeture, nouveau plat — et résistez à l'envie de refondre.",
-      "start": 337.6,
-      "end": 343.97
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "Points clés",
+      "start": 472.62,
+      "end": 473.13
     },
     {
       "id": 34,
       "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "Le schéma est une plomberie — il ne déplace pas l'aiguille à lui seul, mais il vous rend éligible pour des surfaces (local-pack, étoiles AggregateRating, liens de réservation profonds, extraits de F A Q, citations AI Overview) pour lesquelles vous n'étiez pas éligible auparavant.",
+      "start": 473.48,
+      "end": 489.01
+    },
+    {
+      "id": 35,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "Une fois expédié, laissez le schéma seul — le crawler revisite les JSON-LD stables plus souvent et construit la confiance d'entité au fil du temps.",
+      "start": 489.33,
+      "end": 498.34
+    },
+    {
+      "id": 36,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "Chronologie des surfaces : le local-pack et les étoiles de notation sont mis à jour en une semaine ; les liens de réservation profonds et les extraits de F A Q prennent 30+ jours ; les citations AI Overview prennent jusqu'à 90.",
+      "start": 498.66,
+      "end": 512.23
+    },
+    {
+      "id": 37,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
+      "text": "Lorsqu'un fait change, modifiez un seul champ — nouvelle heure de fermeture, nouveau plat — et résistez à l'envie de refondre.",
+      "start": 512.55,
+      "end": 519.22
+    },
+    {
+      "id": 38,
+      "kind": "list",
       "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(5)",
-      "text": "Associez le schéma à l'écriture en forme de citation des AI Overview pour la modification la plus efficace qu'un site de restaurant peut expédier en 2026.",
-      "start": 344.29,
-      "end": 354.49
+      "text": "Associez le schéma à l'écriture en forme de citation des AI Overviews pour la modification la plus rentable qu'un site de restaurant peut apporter en vingt vingt-six.",
+      "start": 519.54,
+      "end": 529.44
     }
   ]
 }
