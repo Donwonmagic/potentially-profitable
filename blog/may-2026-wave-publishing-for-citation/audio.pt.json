@@ -1,227 +1,339 @@
 {
   "version": 1,
-  "generatedAt": "2026-05-11T07:21:27.361Z",
+  "generatedAt": "2026-05-15T04:47:29.500Z",
   "engine": "kokoro",
   "model": "kokoro-v1.0.onnx",
   "voice": "pm_alex",
   "language": "pt",
-  "total": 352.77,
+  "total": 608.91,
   "chunks": [
     {
       "id": 0,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(1)",
-      "text": "Carta da Biblioteca · 10 de maio, vinte e seis · 5 min de leitura &middot; Por Don Goldstein",
+      "text": "Carta da Biblioteca · 10 de maio de vinte e seis · 5 min de leitura &middot; Por Don Goldstein",
       "start": 0,
-      "end": 7.14
+      "end": 7.19
     },
     {
       "id": 1,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(2)",
-      "text": "Nove novas peças foram enviadas neste fim de semana, todas em inglês e espanhol, e todas respaldadas por dados operacionais de primeira fonte. Elas compartilham uma tese operacional: os resultados de busca não são mais dez links azuis. São um parágrafo que o Google escreveu, citando duas ou três fontes. Para consultas de restaurantes, esse parágrafo agora aparece acima do map pack. Se você não é uma das fontes citadas, não está na conversa. Aqui está a onda, na ordem que eu leria.",
-      "start": 7.49,
-      "end": 34.38
+      "text": "Os resultados de busca não são mais dez links azuis. São um parágrafo que o Google escreveu, citando duas ou três fontes — e, para consultas de restaurantes, esse parágrafo agora aparece acima do map pack. Os nove artigos abaixo são a resposta do operador a essa mudança, na ordem em que devem ser lidos.",
+      "start": 7.54,
+      "end": 24.65
     },
     {
       "id": 2,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(3)",
-      "text": "Essa é a primeira remessa semanal sob um novo ritmo editorial. Cada remessa é enviada de domingo à noite até segunda-feira de manhã, com esta visão geral como ponto de entrada. As remessas futuras serão vinculadas ao que estiver acontecendo na indústria de restaurantes naquela semana — uma atualização de produto do Google, uma mudança de política de plataforma de entrega, uma fase de implementação de lei salarial. Esta semana, a remessa é maior do que o usual porque estabelece a base que as futuras remessas construirão: a citação do AI Overview é a nova superfície de descoberta, e quase nenhum restaurante independente escreve para ela ainda.",
-      "start": 34.9,
-      "end": 70.3
+      "text": "Em resumo",
+      "start": 25.17,
+      "end": 25.98
     },
     {
       "id": 3,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(1)",
-      "text": "A linha de raciocínio.",
-      "start": 71.4,
-      "end": 72.82
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Primeira semana de um novo ritmo editorial — nove artigos enviados juntos como um lote de domingo à noite a segunda-feira de manhã, em inglês e espanhol, ancorados em documentos de plataforma públicos, preços de fornecedores e análises da indústria de busca.",
+      "start": 26.33,
+      "end": 41.07
     },
     {
       "id": 4,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(4)",
-      "text": "Duas coisas estão acontecendo ao mesmo tempo, e elas se somam. Uma: a página de resultados de busca do Google é um parágrafo que o modelo escreveu, citando duas ou três fontes. A partir de março de vinte e cinco, ele foi acionado em 13,14% das buscas de desktop nos EUA; na primavera de vinte e seis, ele está se aproximando de um em cada cinco, e as consultas de restaurantes o acionam com mais frequência do que a média. Dois: o map pack ainda está abaixo daquele parágrafo, e é onde a maioria do tráfego de intenção local clica. Então, você está competindo em duas superfícies ao mesmo tempo — uma nova e moldada pela qualidade do parágrafo, uma antiga e moldada pela saúde do Google Business Profile.",
-      "start": 73.52,
-      "end": 112.94
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Linha de raciocínio: os resultados de busca não são mais dez links azuis — são um parágrafo que o Google escreveu, citando duas ou três fontes. Para consultas de restaurantes, esse parágrafo agora aparece acima do map pack, e se você não é uma das fontes citadas, não está na conversa.",
+      "start": 41.39,
+      "end": 57.3
     },
     {
       "id": 5,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(5)",
-      "text": "Cinco das nove peças abordam essas duas superfícies diretamente. As quatro restantes abordam as decisões de economia operacional que determinam o que o seu restaurante realmente tem a dizer nessas superfícies — o que o seu cardápio custa para ser apresentado a um convidado, quem lida com a descoberta, qual modelo de compensação a sua cozinha opera.",
-      "start": 113.46,
-      "end": 132.97
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Leia primeiro o artigo de citação do AI Overview; os outros oito se baseiam nele nesta ordem: exemplo de schema, invisibilidade no GMaps, playbook de avaliações, Instagram como SEO, matemática de entrega em três plataformas, estudo de caso de 30 dias, programas de fidelidade, taxas de serviço versus gorjetas.",
+      "start": 57.62,
+      "end": 75.92
     },
     {
       "id": 6,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(2)",
-      "text": "A ordem de leitura.",
-      "start": 134.07,
-      "end": 135.42
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "Este é o primeiro lote semanal sob um novo ritmo editorial. Cada lote é enviado de domingo à noite a segunda-feira de manhã, com esta visão geral como ponto de entrada. Os lotes futuros serão conectados ao que estiver acontecendo na indústria de restaurantes naquela semana — uma atualização de produto do Google, uma mudança de política de plataforma de entrega, uma fase de implementação de lei salarial. Esta semana, o lote é maior do que o usual porque estabelece a base sobre a qual os futuros lotes serão construídos: a citação do AI Overview é a nova superfície de descoberta, e quase nenhum restaurante independente escreve para ela ainda.",
+      "start": 76.44,
+      "end": 112.28
     },
     {
       "id": 7,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(6)",
-      "text": "Cada peça está sozinha, mas elas foram escritas para se apoiar mutuamente. A ordem abaixo é a ordem que elas recompensam mais.",
-      "start": 136.12,
-      "end": 143.79
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "A linha de raciocínio.",
+      "start": 113.38,
+      "end": 114.8
     },
     {
       "id": 8,
-      "kind": "figure",
-      "selector": "#post-body > figure:nth-of-type(1)",
-      "text": "A onda de maio de vinte e seis em um olhar. Nove peças agrupadas em três temas operacionais. Tema de citação de busca, quatro peças: Como obter a citação do seu restaurante nos AI Overview do Google; exemplo completo de schema markup de restaurante pronto para colar; meu restaurante não está no Google Maps, o diagnóstico de 10 minutos; como responder às avaliações do Google, o guia do operador. Tema de descoberta social, uma peça: o Instagram é um mecanismo de busca agora, publique como se fosse. Tema de economia e operações de entrega, quatro peças: Uber Eats vs DoorDash vs Grubhub, a matemática honesta de vinte e seis; 30 dias após deixar o DoorDash, um estudo de caso de um operador de restaurante; programas de fidelidade para restaurantes independentes, o que realmente paga; taxas de serviço vs gorjetas, a matemática do operador para vinte e seis. A seta de cada peça aponta para a próxima que se apoia nela na ordem de leitura.",
-      "start": 144.59,
-      "end": 196.73
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "Duas coisas estão acontecendo ao mesmo tempo, e elas se somam. Uma: a página de resultados de busca do Google é um parágrafo que o modelo escreveu, citando duas ou três fontes. A partir de março de vinte e cinco, ele foi acionado em 13,14% das buscas de desktop nos EUA; na primavera de vinte e seis, ele está se aproximando de um em cada cinco, e as consultas de restaurantes acionam mais frequentemente do que a média. Dois: o map pack ainda está abaixo daquele parágrafo, e é onde a maioria do tráfego de intenção local clica. Então, você está competindo em duas superfícies ao mesmo tempo — uma nova e moldada pela qualidade do parágrafo, uma antiga e moldada pela saúde do Google Business Profile.",
+      "start": 115.5,
+      "end": 154.89
     },
     {
       "id": 9,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(3)",
-      "text": "O que os dados por trás dessas peças são.",
-      "start": 197.83,
-      "end": 200.16
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "A medição mais citada da participação do AI Overview na busca de desktop nos EUA é de março de vinte e cinco. Treze ponto um quatro por cento das consultas de desktop nos EUA foram resolvidas com um AI Overview no topo da página. A tendência desde então tem sido para cima, não para baixo. As consultas de restaurantes acionam acima da média de todas as categorias. A onda é enviada agora porque as jogadas de escrita ainda são relativamente desconhecidas entre os restaurantes independentes — a lacuna entre os operadores que descobriram a escrita moldada por citações e aqueles que não descobriram é a mais ampla que será.",
+      "start": 155.69,
+      "end": 191.74
     },
     {
       "id": 10,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(7)",
-      "text": "Três conjuntos de dados de primeira fonte sustentam as alegações de operação em todo o chão nos nove artigos. Cada um é nomeado na página de metodologia com os artigos que ele alimenta.",
-      "start": 200.86,
-      "end": 212.13
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "Cinco dos nove artigos abordam diretamente essas duas superfícies. Os quatro restantes abordam as decisões de economia operacional que determinam o que seu restaurante realmente tem a dizer nessas superfícies — o que seu cardápio custa para ser colocado na frente de um convidado, quem lida com a descoberta, qual modelo de compensação sua cozinha executa.",
+      "start": 192.49,
+      "end": 212.53
     },
     {
       "id": 11,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "Ledger de operações de restaurantes emparelhados, vinte e quatro–presente. Doze meses de demonstrativo de lucros e prejuízos em rotação, receita diária, mix de canais e custo de mão de obra dos dois DMV restaurantes que gerencio. Alimenta a análise de margem DoorDash, a comparação de três plataformas, o estudo de caso de 30 dias, a matemática de cobrança de serviço e a comparação de programas de fidelidade.",
-      "start": 212.65,
-      "end": 237.06
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "A ordem de leitura.",
+      "start": 213.63,
+      "end": 214.98
     },
     {
       "id": 12,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "Rastreamento de citações AI Overview, fevereiro–maio vinte e seis. 90 dias de consultas emparelhadas Google, duas vezes por semana por consulta, com os chips de citação registrados por URL de restaurante gerenciado pela Muntin. Alimenta o artigo de citação AI Overview com o framework de cinco movimentos.",
-      "start": 237.38,
-      "end": 255.65
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "Cada peça está isolada, mas foram escritas para se conectarem. A ordem abaixo é a ordem que elas recompensam mais.",
+      "start": 215.68,
+      "end": 222.61
     },
     {
       "id": 13,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "Auditoria DMV Google Business Profile, vinte e três–vinte e seis. Diagnósticos em cerca de 50 restaurantes independentes DMV. Alimenta a distribuição de quatro causas por trás do artigo de invisibilidade no GMaps (40% não reclamados, 30% categoria primária errada, 15% suspensos, 15% duplicados).",
-      "start": 255.97,
-      "end": 276.79
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(2)",
+      "text": "A onda de maio de vinte e seis em um resumo. Nove peças agrupadas em três temas operacionais. Tema de citação em busca, quatro peças: Como fazer com que seu restaurante seja citado em Google's AI Overviews; exemplo completo de schema markup para restaurante, pronto para ser colado; meu restaurante não está no Google Maps - o diagnóstico de 10 minutos; como responder a Google avaliações - o guia do operador. Tema de descoberta social, uma peça: Instagram é um mecanismo de busca agora, poste como se fosse. Tema de economia e operações de entrega, quatro peças: Uber Eats vs DoorDash vs Grubhub - a matemática honesta de vinte e seis; 30 dias após deixar DoorDash - um estudo de caso de um operador de restaurante; programas de fidelidade para restaurantes independentes - o que realmente paga; taxas de serviço vs gorjetas - a matemática do operador para vinte e seis. A seta de cada peça aponta para a próxima que se conecta a ela na ordem de leitura.",
+      "start": 223.41,
+      "end": 276.6
     },
     {
       "id": 14,
       "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(4)",
-      "text": "O que vem a seguir.",
-      "start": 277.89,
-      "end": 279.11
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "O que as afirmações nestas peças são ancoradas.",
+      "start": 277.7,
+      "end": 280.49
     },
     {
       "id": 15,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(8)",
-      "text": "Os lotes semanais futuros serão principalmente menores que este — um ou dois artigos, uma visão geral e a questão que o lote está relacionado. O ritmo é aproximadamente de domingo à noite a segunda-feira de manhã, com lotes vinculados a uma atualização Google, uma mudança de política de plataforma de entrega, uma inflexão de lei salarial ou qualquer coisa que esteja realmente se movendo na indústria naquela semana. A onda de maio de vinte e seis é grande porque é a base. O lote de 7 de junho será pequeno porque, com sorte, 7 de junho parecerá um domingo normal.",
-      "start": 279.81,
-      "end": 312.01
+      "text": "Todos os números do chão de operações nos nove artigos são ancorados a uma fonte publicamente verificável — estruturas de comissão e taxa de plataforma publicadas, análises da indústria de busca, e a própria documentação de ajuda do Google — ou a uma faixa ilustrativa identificada como tal na própria peça. Âncoras específicas incluem:",
+      "start": 281.19,
+      "end": 300.42
     },
     {
       "id": 16,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(9)",
-      "text": "Don Goldstein gerencia dois restaurantes DMV e executa Muntin Digital. Ele é membro de RAMW, certificado ServSafe e escreve os lotes semanais que são enviados nesta página.",
-      "start": 312.53,
-      "end": 323.74
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Estruturas de comissão e taxa de plataforma. DoorDash Marketplace níveis (Básico 15% / Plus 25% / Premier 30%), Uber Eats e Grubhub taxas publicadas, taxas de processamento de pagamento — todas provenientes da documentação de comércio das próprias plataformas. Fornece a caminhada de margem do DoorDash, a comparação de três plataformas, o guia de 30 dias.",
+      "start": 300.77,
+      "end": 323.08
     },
     {
       "id": 17,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(10)",
-      "text": "Leia a onda",
-      "start": 324.26,
-      "end": 325.11
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Participação do AI Overview nas buscas dos EUA. A análise da Search Engine Land de março de vinte e cinco (13,14% das consultas de desktop nos EUA) é a medição mais citada; a direção subsequente é qualitativa. Fornece o enquadramento do artigo de citação do AI Overview.",
+      "start": 323.4,
+      "end": 339.67
     },
     {
       "id": 18,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
-      "text": "1. Citação AI Overview — o artigo de tese",
-      "start": 325.46,
-      "end": 327.91
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "Preços de vendedores de lealdade e e-mail. Toast Rewards, Square Loyalty, Fivestars/Como, Mailchimp, Klaviyo custos mensais são retirados da página de preços pública atual de cada vendedor. Fornece a comparação de lealdade.",
+      "start": 339.99,
+      "end": 353.35
     },
     {
       "id": 19,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
-      "text": "2. Marcação de esquema, pronta para colar — o companheiro técnico",
-      "start": 328.23,
-      "end": 331.9
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "Auditoria do DMV Google Business Profile, vinte e três a vinte e seis. Diagnósticos em uma amostra de restaurantes independentes do DMV — a auditoria que a Muntin usa para dimensionar o trabalho com os clientes. Informa a distribuição de quatro causas discutida no artigo de invisibilidade do Google Maps.",
+      "start": 353.67,
+      "end": 371.82
     },
     {
       "id": 20,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
-      "text": "3. Invisibilidade no GMaps, diagnóstico de 10 minutos",
-      "start": 332.22,
-      "end": 335.77
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "O que vem a seguir.",
+      "start": 372.92,
+      "end": 374.14
     },
     {
       "id": 21,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
-      "text": "4. Plano de resposta a avaliações",
-      "start": 336.09,
-      "end": 338.34
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "Lotes semanais futuros serão principalmente menores que este — uma ou duas peças, uma visão geral e a questão que o lote está vinculado. O ritmo é aproximadamente de domingo à noite a segunda-feira de manhã, com lotes vinculados a uma atualização do Google, uma mudança de política de plataforma de entrega, uma inflexão de lei salarial ou qualquer coisa que esteja realmente se movendo na indústria naquela semana. A onda de maio de vinte e seis é grande porque é a fundação. O lote de 7 de junho será pequeno porque, com sorte, 7 de junho parecerá um domingo normal.",
+      "start": 374.84,
+      "end": 406.95
     },
     {
       "id": 22,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(5)",
-      "text": "5. Instagram como mecanismo de busca",
-      "start": 338.66,
-      "end": 340.93
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "Don Goldstein é um operador de restaurante e dirige o Muntin Digital. Ele escreve os lotes semanais que são enviados nesta página.",
+      "start": 407.47,
+      "end": 415.21
     },
     {
       "id": 23,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(6)",
-      "text": "6. Matemática de entrega de três plataformas",
-      "start": 341.25,
-      "end": 344.14
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "Leia a onda",
+      "start": 415.73,
+      "end": 416.58
     },
     {
       "id": 24,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(7)",
-      "text": "7. 30 dias após DoorDash, estudo de caso",
-      "start": 344.46,
-      "end": 347.31
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "Em ordem, com papel.",
+      "start": 417.68,
+      "end": 419.1
     },
     {
       "id": 25,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(8)",
-      "text": "8. Programas de fidelidade que pagam",
-      "start": 347.63,
-      "end": 349.85
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "01 Tese Como fazer com que seu restaurante seja citado em Google&rsquo;s AI Overview As regras de forma de parágrafo que transformam uma página em uma fonte citada. Leia primeiro — todas as outras peças se conectam a partir desta.",
+      "start": 419.8,
+      "end": 433.59
     },
     {
       "id": 26,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(9)",
-      "text": "9. Cobranças de serviço versus gorjetas",
-      "start": 350.17,
-      "end": 352.77
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "02 Companheiro técnico de restaurante schema markup, pronto para colar O bloco JSON-LD que dá ao número 01 a estrutura da entidade para citar. Seis tipos, sete campos editáveis, etapa de validação no final.",
+      "start": 433.91,
+      "end": 447.29
+    },
+    {
+      "id": 27,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "03 Diagnóstico Meu restaurante não está no Google Maps A caminhada de 10 minutos para restaurantes que não aparecem no map pack. Quatro causas raiz; três são corrigíveis pelo operador no mesmo dia.",
+      "start": 447.61,
+      "end": 459.48
+    },
+    {
+      "id": 28,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "04 Plano de revisão Como responder a revisões Google Quatro arquétipos de revisão, quatro formas de resposta. A revisão de 3 estrelas é a mais lida — é onde os convidados indecisos se calibram.",
+      "start": 459.8,
+      "end": 471.68
+    },
+    {
+      "id": 29,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(5)",
+      "text": "05 Descoberta social Instagram como SEO de restaurante Google indexa legendas; a barra de pesquisa dentro do aplicativo é uma superfície de descoberta que a maioria dos independentes ainda escreve como se fosse 2019.",
+      "start": 472,
+      "end": 486.48
+    },
+    {
+      "id": 30,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(6)",
+      "text": "06 Matemática de canal Uber Eats vs DoorDash vs Grubhub Mesmo ticket de $42, três caminhadas de margem lado a lado. A comissão de 30% é idêntica; a pilha de taxas de segundo nível abre uma dispersão real.",
+      "start": 486.8,
+      "end": 501.3
+    },
+    {
+      "id": 31,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(7)",
+      "text": "07 Plano de deslistagem 30 dias após deixar o DoorDash A forma semanal de deslistagem: quais custos são flexíveis, quais reclamações chegam, onde a mistura de canais fica. Em pares com o número 06.",
+      "start": 501.62,
+      "end": 514.66
+    },
+    {
+      "id": 32,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(8)",
+      "text": "08 Matemática de retenção Programas de fidelidade que pagam Quatro modelos, preços publicados pelos fornecedores, onde cada um vence. A conversa sobre fidelidade é downstream da conversa sobre canais.",
+      "start": 514.98,
+      "end": 527.63
+    },
+    {
+      "id": 33,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(9)",
+      "text": "09 Matemática de compensação Taxas de serviço vs gorjetas Três modelos, um cheque de $200. O servidor recebe uma quantia variável; o operador recebe uma quantia variável; o cliente paga mais ou menos a mesma coisa e se sente diferente sobre cada.",
+      "start": 527.95,
+      "end": 543.86
+    },
+    {
+      "id": 34,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "Citação de busca &middot; Descoberta social &middot; Operações e economia",
+      "start": 544.38,
+      "end": 549.01
+    },
+    {
+      "id": 35,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "Pontos principais",
+      "start": 549.36,
+      "end": 550.49
+    },
+    {
+      "id": 36,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "Nove peças, três temas operacionais: citação de busca (4 peças), descoberta social (1), economia e operações de entrega (4).",
+      "start": 550.84,
+      "end": 558.65
+    },
+    {
+      "id": 37,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "As alegações do chão de operação em toda a onda são ancoradas em fontes publicamente verificáveis: níveis de comissão de plataforma dos documentos do merchant de cada plataforma, preços de fornecedores da página de preços de cada fornecedor, compartilhamento AI Overview da análise da Search Engine Land de março de 2025.",
+      "start": 558.97,
+      "end": 578.32
+    },
+    {
+      "id": 38,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "Os lotes futuros serão principalmente menores e se conectarão a eventos atuais (atualizações Google, mudanças de política de plataforma de entrega, inflexões de lei de salário) em vez de calendário.",
+      "start": 578.64,
+      "end": 590.23
+    },
+    {
+      "id": 39,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
+      "text": "Todas as dez peças enviam áudio em seis idiomas — inglês, espanhol, francês, italiano, português, mandarim.",
+      "start": 590.55,
+      "end": 596.8
+    },
+    {
+      "id": 40,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(5)",
+      "text": "Princípio operacional único: classificação e citação não são o mesmo trabalho — o primeiro restaurante em um mercado a escrever para a citação é dono da caixa de resposta pelos próximos doze meses.",
+      "start": 597.12,
+      "end": 608.91
     }
   ]
 }

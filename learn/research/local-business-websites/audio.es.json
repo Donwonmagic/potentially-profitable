@@ -1,107 +1,99 @@
 {
   "version": 1,
-  "generatedAt": "2026-05-09T21:16:06.019Z",
+  "generatedAt": "2026-05-15T18:11:47.623Z",
   "engine": "kokoro",
   "model": "kokoro-v1.0.onnx",
   "voice": "em_alex",
   "language": "es",
-  "total": 126.44,
+  "total": 135.07,
   "chunks": [
     {
       "id": 0,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(1)",
-      "text": "Hallazgos clave.",
+      "text": "",
       "start": 0,
-      "end": 0.97
+      "end": 0
     },
     {
       "id": 1,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "Los visitantes de sitios web de negocios locales llegan con preguntas específicas y estrechas —por lo general, horas, ubicación, menú/servicios y contacto— y abandonan rápidamente si la respuesta no es inmediatamente visible.",
-      "start": 1.67,
-      "end": 15.21
+      "text": "Los visitantes de los sitios web de negocios locales llegan con preguntas específicas y estrechas — típicamente sobre horarios, ubicación, menú/servicios y contacto — y abandonan rápidamente si la respuesta no es inmediatamente visible.",
+      "start": 0.7,
+      "end": 14.86
     },
     {
       "id": 2,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "Las horas y la ubicación son consistentemente la información de mayor prioridad en los estudios, sin embargo, a menudo se relegan al pie de página o a una página separada de \"Contacto\" que los visitantes por primera vez rara vez hacen clic para acceder.",
-      "start": 15.53,
-      "end": 29.79
+      "text": "Los horarios y la ubicación son consistentemente la información de mayor prioridad, sin embargo, a menudo se relegan al pie de página o a una página separada de \"Contacto\" que los visitantes por primera vez rara vez hacen clic para acceder.",
+      "start": 15.18,
+      "end": 28.77
     },
     {
       "id": 3,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "Los visitantes por primera vez rara vez desplazan la pantalla por debajo de la parte superior en la página de inicio de un negocio local cuando tienen una pregunta específica; escanean la primera pantalla y se van si la respuesta no está allí.",
-      "start": 30.11,
-      "end": 44.02
+      "text": "Los visitantes por primera vez rara vez desplazan la pantalla más abajo de la parte superior en la página de inicio de un negocio local cuando tienen una pregunta específica; escanean la primera pantalla y se van si la respuesta no está allí.",
+      "start": 29.09,
+      "end": 43.05
     },
     {
       "id": 4,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
-      "text": "Los visitantes móviles están bajo más presión de tiempo que los visitantes de escritorio (a menudo están en tránsito, tienen hambre o están haciendo un plan inmediato) y abandonan incluso más rápido cuando aparece la fricción.",
-      "start": 44.34,
-      "end": 56.93
+      "text": "Los visitantes móviles están bajo más presión de tiempo que los visitantes de escritorio (a menudo están en tránsito, tienen hambre o están haciendo un plan inmediato) y abandonan aún más rápido cuando aparece la fricción.",
+      "start": 43.37,
+      "end": 55.83
     },
     {
       "id": 5,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(5)",
-      "text": "La solución es estructural: mostrar la información crítica en el héroe o en un encabezado pegajoso, repetirla en el pie de página para tranquilidad, y asegurarse de que los diseños móviles no la empujen por debajo de una pantalla.",
-      "start": 57.25,
-      "end": 70.36
+      "text": "La solución es estructural: mostrar la información crítica en el héroe o en un encabezado pegajoso, repetirla en el pie de página para tranquilizar, y asegurarse de que los diseños móviles no la empujen más abajo de una pantalla.",
+      "start": 56.15,
+      "end": 69.21
     },
     {
       "id": 6,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(2)",
       "text": "Cómo Muntin utiliza esto.",
-      "start": 71.46,
-      "end": 73.13
+      "start": 70.31,
+      "end": 71.98
     },
     {
       "id": 7,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
-      "text": "Por qué tu restaurante pierde reservas cada noche La fuga número 3 —\"las horas están escondidas\"— se basa en el hallazgo de NNGroup de que las horas son la pieza de información más buscada y más oculta en los sitios web de restaurantes.",
-      "start": 73.83,
-      "end": 87.34
+      "text": "Por qué tu restaurante pierde reservas cada noche La fuga número 3 — \"los horarios están escondidos\" — se basa en el mismo patrón: los horarios son la pieza de información más buscada y más oculta en los sitios web de restaurantes.",
+      "start": 72.68,
+      "end": 85.86
     },
     {
       "id": 8,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
-      "text": "¿Cuánto cuesta un sitio web personalizado de restaurante en veintiséis? La sección \"qué entrega un sitio personalizado\" se basa en esta investigación para explicar por qué la colocación de horas y ubicación en el héroe se trata como una característica básica, no premium.",
-      "start": 87.66,
-      "end": 103.02
+      "text": "¿Cuánto cuesta un sitio web personalizado de restaurante en veintiséis? La sección \"qué entrega realmente un sitio personalizado\" utiliza esta nota de práctica para explicar por qué la colocación de los horarios y la ubicación en el héroe se trata como una característica básica, no premium.",
+      "start": 86.18,
+      "end": 102.69
     },
     {
       "id": 9,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(3)",
-      "text": "Cita completa.",
-      "start": 104.12,
-      "end": 105.06
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "Nota de práctica, no un solo estudio. El patrón anterior es lo que surge repetidamente en el trabajo de usabilidad web de NNG, la investigación de búsqueda de pequeñas empresas de Google y la experiencia del operador en los pisos de los restaurantes. Si quieres una sola cita canónica, el trabajo más amplio de Nielsen Norman Group sobre usabilidad web es el punto de partida más citado.",
+      "start": 103.21,
+      "end": 124.54
     },
     {
       "id": 10,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(1)",
-      "text": "Nielsen, J., & Pernice, K. Usabilidad de sitios web de negocios locales. Nielsen Norman Group. nngroup.com",
-      "start": 105.76,
-      "end": 112.88
-    },
-    {
-      "id": 11,
-      "kind": "body",
       "selector": "#post-body > p:nth-of-type(2)",
-      "text": "Última revisión: abril de veintiséis — los hallazgos de UX de negocios locales de NNG son investigaciones en curso, continuamente reforzadas por estudios actualizados sobre la navegación de sitios de pequeños negocios.",
-      "start": 113.23,
-      "end": 126.44
+      "text": "Última revisión: mayo de veintiséis — esto es una síntesis, no una medición; el patrón subyacente no ha cambiado a lo largo del trabajo de usabilidad pública en el que se basa.",
+      "start": 125.06,
+      "end": 135.07
     }
   ]
 }

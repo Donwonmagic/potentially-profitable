@@ -1,435 +1,459 @@
 {
   "version": 1,
-  "generatedAt": "2026-05-11T01:46:38.559Z",
+  "generatedAt": "2026-05-14T23:53:05.345Z",
   "engine": "kokoro",
   "model": "kokoro-v1.0.onnx",
   "voice": "ff_siwis",
   "language": "fr",
-  "total": 767.96,
+  "total": 852.85,
   "chunks": [
     {
       "id": 0,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(1)",
-      "text": "En bref",
+      "text": "Opinion &middot; 10 mai 2026 &middot; 8 min de lecture &middot; Par Don Goldstein",
       "start": 0,
-      "end": 0.54
+      "end": 5.47
     },
     {
       "id": 1,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "L'AI Overview de Google a répondu à 13,14 % des recherches de bureau aux États-Unis en mars vingt vingt-cinq et approche un sur cinq en vingt vingt-six ; les requêtes de restaurant déclenchent cela plus souvent.",
-      "start": 0.89,
-      "end": 13.97
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "La réponse de Google&rsquo;s AI Overview à 13,14 % des recherches de bureau aux États-Unis en mars 2025. Au début de 2026, c'est plutôt un sur cinq, et pour les requêtes de restaurant, c'est encore plus élevé. La question que votre invité utilisait pour taper — « est-ce que la livraison est ouverte à Silver Spring » — obtient maintenant une réponse au-dessus de la map pack, dans un paragraphe que Google a rédigé et cité. Trois sources sont nommées. Si vous n'êtes pas l'une d'elles, vous n'êtes pas dans la conversation. Voici comment la citation est décidée.",
+      "start": 5.82,
+      "end": 32.98
     },
     {
       "id": 2,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "Cinq mouvements au niveau du paragraphe font référence à un restaurant : des paragraphes « réponse en premier » de ≤45 mots sous chaque H2, des chiffres dans la phrase de tête, des phrases de prédicat sous forme de « X est Y » sans mots d'atténuation, des correspondances d'entité ancrées dans le schéma entre la prose et JSON-LD, et des URL stables une fois cités.",
-      "start": 14.29,
-      "end": 32.47
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "En bref",
+      "start": 33.5,
+      "end": 34.04
     },
     {
       "id": 3,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "La citation est un axe de classement différent de celui du S E O en lien bleu — la page avec le plus de liens retour ne reçoit pas toujours la citation ; la page avec la réponse extractable la plus propre reçoit la citation.",
-      "start": 32.79,
-      "end": 45.59
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "La réponse de Google’s AI Overview à 13,14 % des recherches de bureau aux États-Unis en mars 2025 et approche un sur cinq en 2026 ; les requêtes de restaurant déclenchent cela plus souvent.",
+      "start": 34.39,
+      "end": 47.81
     },
     {
       "id": 4,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(2)",
-      "text": "Opinion &middot; 10 mai vingt vingt-six &middot; 8 min de lecture &middot; Par Don Goldstein",
-      "start": 46.11,
-      "end": 51.48
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Cinq mouvements au niveau du paragraphe permettent à un restaurant d'être cité : des paragraphes « réponse en premier » de ≤45 mots sous chaque H2, des nombres dans la phrase d'introduction, des phrases de type « X est Y » avec des mots sans hedge, des correspondances d'entité ancrées dans le schéma entre la prose et JSON-LD, et des URL stables une fois cités.",
+      "start": 48.13,
+      "end": 66.52
     },
     {
       "id": 5,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(3)",
-      "text": "L'AI Overview de Google a répondu à 13,14 % des recherches de bureau aux États-Unis en mars vingt vingt-cinq. Au début de vingt vingt-six, cela approche un sur cinq, et pour les requêtes de restaurant, cela est plus élevé. La question que votre invité utilisait pour taper — « est-ce que la livraison est ouverte à Silver Spring » — obtient maintenant une réponse au-dessus du map pack, dans un paragraphe que Google a écrit et cité. Trois sources sont nommées. Si vous n'êtes pas l'une d'elles, vous n'êtes pas dans la conversation. Voici comment la citation est décidée.",
-      "start": 51.83,
-      "end": 77.46
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "La citation est un axe de classement différent de celui du S E O avec des liens bleus — la page avec le plus de liens retour ne reçoit pas toujours la citation ; la page avec la réponse extractable la plus propre reçoit la citation.",
+      "start": 66.84,
+      "end": 79.99
     },
     {
       "id": 6,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(4)",
-      "text": "J'ai suivi les paragraphes qui sont cités sur des requêtes adjacentes aux deux restaurants DMV que je gère. Même requête, même heure, même navigateur — juste tapé dans Google deux fois par semaine pendant quatre-vingt-dix jours, les citations enregistrées. Le modèle est suffisamment cohérent pour écrire des règles à partir de celui-ci. Aucune des règles ne concerne les liens retour, l'autorité de domaine ou l'un des leviers du S E O en vingt vingt-trois. Ils concernent la forme du paragraphe.",
-      "start": 77.98,
-      "end": 99.5
+      "text": "Le modèle qui décide quels paragraphes sont cités est visible si vous faites la chose évidente — tapez les questions en langage naturel que vos invités taperaient, regardez quelles sources la boîte nomme, puis lisez ces paragraphes contre ceux qui n'ont pas été cités. Les règles ci-dessous sont ce qui en résulte. Aucune d'elles ne concerne les liens retour ou l'autorité de domaine ou l'un des leviers de rédaction S E O en 2023. Elles concernent la forme du paragraphe.",
+      "start": 80.51,
+      "end": 101.26
     },
     {
       "id": 7,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(1)",
-      "text": "Le classement et la citation ne sont pas le même travail.",
-      "start": 100.6,
-      "end": 103.5
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "Part de marché de AI Overview dans les recherches de bureau aux États-Unis. Le chiffre le plus cité mesuré est de mars 2025 : treize virgule un quatre pour cent des recherches de bureau aux États-Unis se sont résolues avec un AI Overview en haut de page. La tendance depuis a été à la hausse ; la surface est une fonctionnalité permanente, et non un test, et les requêtes de restaurant déclenchent cela plus souvent que la moyenne de toutes les catégories.",
+      "start": 102.06,
+      "end": 122.69
     },
     {
       "id": 8,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(5)",
-      "text": "L'industrie du S E O a passé vingt ans à optimiser les pages pour apparaître dans les trois premiers liens bleus. Ce travail existe toujours. Le nouveau travail — celui qui paie plus gros maintenant — est d'obtenir votre meilleur paragraphe unique levé dans l'AI Overview comme l'une des deux ou trois sources nommées. La page en dessous de la boîte obtient toujours des clics, mais pas de la même manière qu'avant. Les AI Overviews ne remplacent pas le trafic organique ; ils remplacent le clic qui lisait votre réponse. La citation est votre surface restante.",
-      "start": 104.2,
-      "end": 128.35
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Le classement et la citation ne sont pas le même travail.",
+      "start": 123.79,
+      "end": 126.69
     },
     {
       "id": 9,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(6)",
-      "text": "Ces deux travaux ne se combattent pas activement. Ils récompensent différents paragraphes. La page avec le plus de liens retour ne reçoit pas toujours la citation — la page avec la réponse extractable la plus propre reçoit la citation. La plupart du contenu de restaurant est écrit pour classer. Presque aucun n'est écrit pour être cité. Le premier opérateur indépendant sur un marché qui inverse cet ordre possède la boîte de réponse pour les douze prochains mois.",
-      "start": 128.87,
-      "end": 150.21
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "L'industrie du S E O a passé vingt ans à optimiser les pages pour apparaître dans les trois premiers liens bleus. Ce travail existe toujours. Le nouveau travail — celui qui paie le plus actuellement — est d'obtenir votre meilleur paragraphe unique pour qu'il soit intégré dans le AI Overview comme l'une des deux ou trois sources nommées. La page en dessous de la boîte reçoit toujours des clics, mais pas de la même manière qu'avant. Les AI Overview ne remplacent pas le trafic organique ; ils remplacent le clic qui lisait votre réponse. La citation est votre surface restante.",
+      "start": 127.39,
+      "end": 153.42
     },
     {
       "id": 10,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(2)",
-      "text": "Les cinq mouvements qui obtiennent la citation.",
-      "start": 151.31,
-      "end": 153.46
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "Ces deux travaux ne se combattent pas activement. Ils récompensent différents paragraphes. La page avec le plus de liens retour ne reçoit pas toujours la citation — la page avec la réponse extractable la plus propre reçoit la citation. La plupart du contenu de restaurant est rédigé pour être classé. Presque aucun n'est rédigé pour être cité. Le premier opérateur indépendant sur un marché qui inverse cet ordre possède la boîte de réponse pour les douze prochains mois.",
+      "start": 153.94,
+      "end": 175.67
     },
     {
       "id": 11,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(7)",
-      "text": "Ceux-ci sont écrits dans l'ordre où un extracteur parcourt une page. Le même ordre où ils rapportent.",
-      "start": 154.16,
-      "end": 159.73
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Les cinq mouvements qui obtiennent la citation.",
+      "start": 176.77,
+      "end": 178.92
     },
     {
       "id": 12,
-      "kind": "figure",
-      "selector": "#post-body > figure:nth-of-type(1)",
-      "text": "Cinq mouvements au niveau du paragraphe qui font que votre restaurant est cité par la vue d'ensemble de l'IA de Google, par ordre de priorité. Mouvement un : répondez d'abord, puis expliquez. Le premier paragraphe en dessous d'un H2 doit être une réponse complète en 45 mots ou moins ; les extracteurs d'IA prennent ce paragraphe, tout le reste est du contexte. Mouvement deux : entités ancrées dans le schéma. Le nom de votre restaurant, les heures, l'adresse, les éléments du menu, tout est répété dans JSON-LD ; le modèle de langage fait correspondre le paragraphe de prose avec votre schéma et les entités correspondantes augmentent les chances de citation. Mouvement trois : nombres dans la phrase d'introduction. 'La plupart des restaurants ferment autour de 22h' n'est pas citable ; 'Les restaurants Silver Spring arrêtent de servir à 21h30 en semaine, 22h15 le week-end' est citable. Mouvement quatre : phrases à forme de prédicat. Encadrement X est Y, sans hésitations comme 'environ' ou 'généralement' que l'extracteur élimine. Mouvement cinq : URL stables et réponses stables. Une fois que Google vous cite, ne déplacez pas la page, ne réorganisez pas le paragraphe ; le crawler revient sur les URL cités plus souvent, et une réponse modifiée vous fait sortir de la rotation.",
-      "start": 160.53,
-      "end": 221.89
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "Ceux-ci sont rédigés dans l'ordre où un extracteur parcourt une page. Le même ordre dans lequel ils rapportent.",
+      "start": 179.62,
+      "end": 185.86
     },
     {
       "id": 13,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(3)",
-      "text": "Mouvement 1 : Répondez d'abord, puis expliquez.",
-      "start": 222.99,
-      "end": 225.32
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(2)",
+      "text": "Cinq mouvements au niveau du paragraphe qui font citer un restaurant par Google's AI Overview, par ordre de priorité. Mouvement un : répondre d'abord, puis expliquer. Le premier paragraphe ci-dessous un H2 doit être une réponse complète en 45 mots ou moins ; les extracteurs d'IA prennent ce paragraphe, tout le reste est du contexte. Mouvement deux : entités ancrées dans un schéma. Votre nom de restaurant, vos heures, votre adresse, vos éléments de menu, tous répétés dans JSON-LD ; le modèle de langage cross-référence le paragraphe de prose contre votre schéma et les entités correspondantes augmentent les chances de citation. Mouvement trois : nombres dans la phrase d'introduction. 'La plupart des restaurants ferment autour de 22h' n'est pas citable ; 'Silver Spring restaurants arrêtent de servir à 21h30 en semaine, 22h15 le week-end' est citable. Mouvement quatre : phrases à forme de prédicat. Cadre X est Y, sans hésitations comme 'approximativement' ou 'habituellement' que l'extracteur élimine. Mouvement cinq : URL stables et réponses stables. Une fois que Google vous cite, ne déplacez pas la page, ne réorganisez pas le paragraphe ; le crawlleur revisite les URL cités plus souvent, et une réponse modifiée vous fait sortir de la rotation.",
+      "start": 186.66,
+      "end": 248.52
     },
     {
       "id": 14,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(8)",
-      "text": "Le premier paragraphe en dessous d'un H2 est le seul que la plupart des extracteurs lisent. Tout ce qui suit est un contexte de soutien qui peut ou non être extrait. Si votre premier paragraphe répond complètement à la question implicite de l'H2, vous avez une citation. Si cela prépare la réponse au lieu de cela, la réponse n'est jamais citée, car le paragraphe dans lequel elle se trouve est trop bas sur la page.",
-      "start": 226.02,
-      "end": 245.91
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Mouvement 1 : Répondre d'abord, puis expliquer.",
+      "start": 249.62,
+      "end": 252.04
     },
     {
       "id": 15,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(9)",
-      "text": "45 mots est le plafond. J'ai vu la citation de paragraphes plus longs, mais le point de coupure est généralement de 35 à 55 mots, et plus court est plus souvent cité verbatim que paraphrasé. Verbatim est ce que vous voulez — la paraphrase perd la correspondance entre l'entité et le schéma que le modèle vient de faire.",
-      "start": 246.43,
-      "end": 263.82
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "Le premier paragraphe ci-dessous un H2 est le seul que la plupart des extracteurs lisent. Tout ce qui suit est un contexte de soutien qui peut ou non être inclus. Si votre premier paragraphe répond complètement à la question implicite de l'H2, vous avez une citation. Si cela prépare la réponse à la place, la réponse ne sera jamais citée, car le paragraphe dans lequel elle se trouve est trop loin dans la page.",
+      "start": 252.74,
+      "end": 272.56
     },
     {
       "id": 16,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(4)",
-      "text": "Mouvement 2 : Ancrez chaque entité dans le schéma.",
-      "start": 264.92,
-      "end": 267.36
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "45 mots est le plafond. J'ai vu la citation de paragraphes plus longs, mais le point de coupure est généralement de 35 à 55 mots, et plus court est plus souvent cité verbatim que paraphrasé. Verbatim est ce que vous voulez — le paraphrase perd le match entre l'entité et le schéma que le modèle vient de faire.",
+      "start": 273.08,
+      "end": 289.97
     },
     {
       "id": 17,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(10)",
-      "text": "Le modèle lit votre prose, puis lit votre JSON-LD, puis se demande : sont-ils cohérents ? Lorsque la réponse est oui, la page reçoit un drapeau de citation-boost. Lorsque la réponse est non — les prix du menu dans la prose ne correspondent pas au schéma Menu, les heures dans la prose ne correspondent pas aux heures d'ouverture — la page reçoit un drapeau de déboost. Il n'y a pas de signal public pour cela. C'est visible uniquement dans les pages qui sont citées et celles qui ne le sont pas.",
-      "start": 268.06,
-      "end": 289.44
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "Mouvement 2 : Ancrez chaque entité dans un schéma.",
+      "start": 291.07,
+      "end": 293.51
     },
     {
       "id": 18,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(11)",
-      "text": "Si vous avez déjà les six types de schéma que Google utilise configurés, vous avez réalisé le mouvement 2. Le travail qui manque généralement : la prose doit réellement correspondre au schéma. Si votre schéma indique que vous êtes ouvert jusqu'à 22h et que votre prose dit « tard », vous avez un écart de cohérence. Les deux devraient dire 22h.",
-      "start": 289.96,
-      "end": 308.59
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "Le modèle lit votre prose, puis lit votre JSON-LD, puis se demande : sont-ils cohérents ? Lorsque la réponse est oui, la page reçoit un drapeau de citation-boost. Lorsque la réponse est non — les prix du menu dans la prose ne correspondent pas au schéma Menu, les heures dans la prose ne correspondent pas aux heures d'ouverture — la page reçoit un drapeau de déboost. Il n'y a pas de signal public pour cela. C'est visible uniquement dans les pages qui sont citées et celles qui ne le sont pas.",
+      "start": 294.21,
+      "end": 315.59
     },
     {
       "id": 19,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(5)",
-      "text": "Mouvement 3 : Nombres dans la phrase d'introduction.",
-      "start": 309.69,
-      "end": 312.33
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "Si vous avez déjà les six types de schéma Google utilisés connectés, vous avez le mouvement 2 terminé. Le travail qui manque généralement : la prose doit réellement correspondre au schéma. Si votre schéma indique que vous êtes ouvert jusqu'à 22h et que votre prose dit « tard », vous avez un écart de cohérence. Les deux devraient dire 22h.",
+      "start": 316.11,
+      "end": 334.48
     },
     {
       "id": 20,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(12)",
-      "text": "La première phrase de votre paragraphe de réponse doit contenir au moins un nombre. Un prix, une heure, un comptage, un pourcentage, une année — cela n'a pas d'importance. Les nombres sont ce qui est extrait ; les phrases sans nombres concourent avec toutes les autres phrases vagues sur Internet, et l'extracteur choisit celle qui est la plus spécifique.",
-      "start": 313.03,
-      "end": 330.46
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "Mouvement 3 : Nombres dans la phrase d'introduction.",
+      "start": 335.58,
+      "end": 338.22
     },
     {
       "id": 21,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(13)",
-      "text": "C'est le mouvement que la plupart des contenus de restaurant réalisent incorrectement. L'instinct est de commencer par un langage d'accueil — « Nous sommes ravis de partager notre menu », « Venez découvrir la chaleur de notre patio ». Le langage d'accueil a zéro entité et zéro nombre. C'est la première chose que l'extracteur saute. Remplacez-le par une phrase qui nomme une chose et la quantifie.",
-      "start": 330.98,
-      "end": 350.01
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "La première phrase de votre paragraphe de réponse devrait contenir au moins un nombre. Un prix, une heure, un décompte, un pourcentage, une année — cela n'a pas d'importance. Les nombres sont ce qui est extrait ; les phrases sans nombres concourent avec toutes les autres phrases vagues sur Internet, et l'extracteur choisit celle qui est la plus spécifique.",
+      "start": 338.92,
+      "end": 356.43
     },
     {
       "id": 22,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(6)",
-      "text": "Mouvement 4 : Phrases à forme de prédicat. Pas d'hésitations.",
-      "start": 351.11,
-      "end": 354.26
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "C'est le mouvement que la plupart du contenu de restaurant obtient incorrect. L'instinct est de commencer par un langage d'accueil — « Nous sommes ravis de partager notre menu », « Venez découvrir la chaleur de notre patio ». Le langage d'accueil n'a zéro entité et zéro nombre. C'est la première chose que l'extracteur saute. Remplacez-le par une phrase qui nomme une chose et la quantifie.",
+      "start": 356.95,
+      "end": 375.64
     },
     {
       "id": 23,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(14)",
-      "text": "L'extracteur analyse chaque phrase en un modèle sujet-prédicat-objet. « DoorDash est une plateforme de livraison » se parse de manière propre. « Beaucoup de gens considèrent DoorDash comme une plateforme de livraison de quelque sorte » ne se parse pas. La première phrase contient un fait. La deuxième contient des tokens d'hésitation que le modèle traite comme du bruit, et le fait sous-jacent disparaît sous les hésitations.",
-      "start": 354.96,
-      "end": 375
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(6)",
+      "text": "Mouvement 4 : Phrases à forme de prédicat. Pas d'hésitations.",
+      "start": 376.74,
+      "end": 379.89
     },
     {
       "id": 24,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(15)",
-      "text": "Les mots à supprimer lors d'une réécriture de citation : approximativement, généralement, dans certains cas, la plupart, souvent, typiquement, autour, tendent à, peuvent, peuvent. Chacun d'eux diminue les chances de citation. Ce sont des mots de défense d'avocat provenant d'un contexte d'écriture différent. Dans le contexte de la vue d'ensemble de l'IA, ils vous coûtent la case.",
-      "start": 375.52,
-      "end": 393.94
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "L'extracteur analyse chaque phrase en une forme sujet-prédicat-objet. « DoorDash est une plateforme de livraison » se parse de manière propre. « Beaucoup de gens considèrent DoorDash comme une plateforme de livraison de quelque sorte » ne se parse pas. La première phrase contient un fait. La deuxième contient des jetons de hedge que le modèle traite comme du bruit, et le fait sous-jacent disparaît sous les hedges.",
+      "start": 380.59,
+      "end": 400.11
     },
     {
       "id": 25,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(7)",
-      "text": "L'avant/après.",
-      "start": 395.04,
-      "end": 395.8
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "Les mots à supprimer lors d'une réécriture de citation : approximativement, généralement, dans certains cas, la plupart, souvent, typiquement, autour, tendent à, peuvent, peuvent. Chacun d'eux diminue les chances de citation. Ce sont des mots de défense d'avocat provenant d'un contexte d'écriture différent. Dans le contexte de AI Overview, ils vous coûtent la case.",
+      "start": 400.63,
+      "end": 419
     },
     {
       "id": 26,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(16)",
-      "text": "Prenez un paragraphe F A Q typique d'un restaurant et suivez-le à travers les étapes 1-4. C'est le type de paragraphe que je vois sur 90 % des sites indépendants ; c'est aussi le type de paragraphe qui n'est jamais cité.",
-      "start": 396.5,
-      "end": 409.51
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(7)",
+      "text": "L'avant/après.",
+      "start": 420.1,
+      "end": 420.86
     },
     {
       "id": 27,
-      "kind": "figure",
-      "selector": "#post-body > figure:nth-of-type(2)",
-      "text": "La même réponse à la même question, avant et après la réécriture de citation. Avant : « Nous sommes généralement ouverts pour le dîner, bien que nos heures puissent varier en fonction de la saison. Il est recommandé de téléphoner à l'avance pour confirmer. Nous servons une variété de plats, avec la plupart des plats principaux dans la gamme de prix modérée ». Ce paragraphe contient zéro entité, zéro nombre, trois mots d'hésitation (généralement, puissent, la plupart), et la gamme de prix est indéfinie. Les chances de citation sont effectivement nulles. Après : « Roma Cucina est ouvert pour le dîner du mardi au dimanche, de 17 h à 22 h. Les plats principaux sont tarifés entre 18 dollars et 32 dollars. Les réservations sont recommandées les vendredis et samedis ». Ce paragraphe nomme le restaurant, les jours, les heures, la gamme de prix et la recommandation, en 30 mots. Chaque entité correspond au schéma. Chaque affirmation est un prédicat. Les chances de citation sont élevées.",
-      "start": 410.31,
-      "end": 453.54
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "Prenez un paragraphe F A Q typique d'un restaurant et faites-le passer par les étapes 1-4. C'est le type de paragraphe que je vois sur 90 % des sites indépendants ; c'est également le type de paragraphe qui n'est jamais cité.",
+      "start": 421.56,
+      "end": 434.77
     },
     {
       "id": 28,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(17)",
-      "text": "Lisez les deux à haute voix. Le premier semble humain. Le deuxième semble presque mécanique. C'est l'échange. La surface de la vue d'ensemble de l'IA ne récompense pas l'écriture conversationnelle — la surface au-dessus le fait. La conversation est ce que vos pages de menu, vos pages À propos, vos canaux sociaux sont pour. Le paragraphe de citation est son propre registre. Il existe pour être cité.",
-      "start": 454.29,
-      "end": 474.37
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(3)",
+      "text": "La même réponse à la même question, avant et après la réécriture de citation. Avant : « Nous sommes généralement ouverts pour le dîner, bien que nos heures puissent varier en fonction de la saison. Il est recommandé de téléphoner à l'avance pour confirmer. Nous servons une variété de plats, avec la plupart des plats principaux dans la gamme de prix modérée ». Ce paragraphe contient zéro entité, zéro nombre, trois mots de hedge (généralement, puissent, plupart), et la gamme de prix est indéfinie. Chances de citation, effectivement zéro. Après : « Roma Cucina est ouvert pour le dîner du mardi au dimanche, de 17 h à 22 h. Les plats principaux sont prix entre 18 dollars et 32 dollars. Les réservations sont recommandées les vendredis et samedis ». Ce paragraphe nomme le restaurant, les jours, les heures, la gamme de prix et la recommandation, en 30 mots. Chaque entité correspond au schéma. Chaque affirmation est un prédicat. Chances de citation, élevées.",
+      "start": 435.57,
+      "end": 478.3
     },
     {
       "id": 29,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(8)",
-      "text": "Étape 5 : URL stables. Réponses stables.",
-      "start": 475.47,
-      "end": 478.15
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "Lisez les deux à haute voix. Le premier semble humain. Le deuxième semble presque mécanique. C'est l'échange. La surface AI Overview ne récompense pas l'écriture conversationnelle — la surface au-dessus le fait. La conversation est ce que vos pages de menu, vos pages À propos, vos canaux sociaux sont pour. Le paragraphe de citation est son propre registre. Il existe pour être cité.",
+      "start": 479.05,
+      "end": 498.96
     },
     {
       "id": 30,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(18)",
-      "text": "C'est l'étape qui protège ce que les étapes 1-4 vous ont valu. Le crawlleur revisite les URL cités plus rapidement que les non cités — le modèle a marqué la page comme une bonne source connue. Si l'U R L est toujours résolu et que le paragraphe répond toujours à la question, vous restez cité. Si l'U R L 301 vers un nouveau chemin, ou que le paragraphe a été paraphrasé en quelque chose avec un ensemble de faits légèrement différent, vous sortez de la rotation. Parfois, la chute est permanente ; parfois, vous devez revalider la citation à partir de zéro au cours des 60 prochains jours.",
-      "start": 478.85,
-      "end": 505.76
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(8)",
+      "text": "Étape 5 : URL stables. Réponses stables.",
+      "start": 500.06,
+      "end": 502.74
     },
     {
       "id": 31,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(19)",
-      "text": "La règle opérationnelle : lorsque vous publiez un paragraphe de forme de citation et qu'il est cité, laissez-le tel quel. N'ajoutez pas une virgule. N'changez pas les heures de « 17 h » à « 17:00 ». N'changez pas la page de /blog/ à /info/. Si le fait sous-jacent change — vous êtes vraiment ouvert jusqu'à 23 h maintenant, et non 22 h — changez le nombre et uniquement le nombre. Touchez un fait, gardez le reste. Le crawlleur re-fingerprintera la page, verra le changement ciblé et mettra à jour son extrait cité.",
-      "start": 506.28,
-      "end": 532.47
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "C'est l'étape qui protège ce que les étapes 1-4 vous rapportent. Le crawler revisite les URL cités plus rapidement que les non cités — le modèle a marqué la page comme une bonne source connue. Si l'U R L est toujours résolu et que le paragraphe répond toujours à la question, vous restez cité. Si l'U R L 301 vers un nouveau chemin ou que le paragraphe a été paraphrasé en quelque chose avec un ensemble de faits légèrement différent, vous sortez de la rotation. Parfois, la chute est permanente ; parfois, vous devez re-gagner la citation à partir de zéro au cours des 60 prochains jours.",
+      "start": 503.44,
+      "end": 530.06
     },
     {
       "id": 32,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(9)",
-      "text": "Comment tester si vous êtes cité.",
-      "start": 533.57,
-      "end": 535.08
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(19)",
+      "text": "La règle opérationnelle : lorsque vous publiez un paragraphe de forme de citation et qu'il est cité, laissez-le tel quel. N'ajoutez pas une virgule. N'changez pas les heures de « 17 h » à « 17 h 00 ». N'changez pas la page de /blog/ à /info/. Si le fait sous-jacent change — vous êtes vraiment ouvert jusqu'à 23 h maintenant, et non 22 h — changez le nombre et uniquement le nombre. Touchez un fait, gardez le reste. Le crawler re-fingerprintera la page, verra le changement ciblé et mettra à jour son extrait cité.",
+      "start": 530.58,
+      "end": 556.94
     },
     {
       "id": 33,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(20)",
-      "text": "Ouvrez Google dans une session de navigateur propre. Tapez la question que votre invité est le plus susceptible de poser — pas le mot-clé SEO, la question en langage naturel. « Est-ce que Roma Cucina est ouvert le dimanche ». « Où puis-je obtenir de l'omakase à Silver Spring ». « Maketto accepte-t-il les entrées sans réservation ». Si la boîte de vue d'ensemble de l'IA apparaît en haut, faites défiler jusqu'en bas. Il y a des puces de citation — de petites icônes avec des étiquettes de source. La vôtre devrait être l'une d'elles.",
-      "start": 535.78,
-      "end": 559.74
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(9)",
+      "text": "Comment tester si vous êtes cité.",
+      "start": 558.04,
+      "end": 559.55
     },
     {
       "id": 34,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(21)",
-      "text": "Si ce n'est pas le cas, vous avez un problème de citation, pas de classement. Votre page peut être classée numéro 1 dans les liens bleus en dessous de la boîte et ne pas être citée. La boîte est jugée sur un axe séparé. Suivez-la hebdomadairement pour dix ou vingt de vos questions les plus susceptibles ; la tendance sur un trimestre vous indique si les réécritures de citation fonctionnent.",
-      "start": 560.26,
-      "end": 579.08
+      "selector": "#post-body > p:nth-of-type(20)",
+      "text": "Ouvrez Google dans une session de navigateur propre. Tapez la question que votre invité pose probablement — pas le mot-clé S E O, la question en langage naturel. « Est-ce que Roma Cucina est ouvert le dimanche ». « Où puis-je obtenir de l'omakase à Silver Spring ». « Maketto accepte-t-il les entrées sans réservation ». Si la boîte AI Overview apparaît en haut, faites défiler jusqu'en bas. Il y a des puces de citation — de petites icônes avec des étiquettes de source. La vôtre devrait être l'une d'elles.",
+      "start": 560.25,
+      "end": 582.61
     },
     {
       "id": 35,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(10)",
-      "text": "La reformulation.",
-      "start": 580.18,
-      "end": 581.21
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(21)",
+      "text": "Si ce n'est pas le cas, vous avez un problème de citation, pas de classement. Votre page peut être classée numéro 1 dans les liens bleus en dessous de la boîte et ne pas être citée. La boîte est jugée sur un axe séparé. Suivez-la hebdomadairement pour dix ou vingt de vos questions les plus probables ; la tendance sur un trimestre vous indique si les réécritures de citation fonctionnent.",
+      "start": 583.13,
+      "end": 601.81
     },
     {
       "id": 36,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(22)",
-      "text": "Vous n'écrivez plus pour le lecteur humain comme vous le faisiez auparavant. Le lecteur humain voit le paragraphe de la vue d'ensemble de l'IA, décide si la réponse est suffisante, et agit en conséquence ou clique sur l'une des sources citées. Le paragraphe que le lecteur humain lit en premier n'est pas le paragraphe que vous avez écrit — c'est le paragraphe que l'extracteur a écrit, assemblé à partir du vôtre et d'un ou deux autres. Votre audience est maintenant l'extracteur qui décide quel paragraphe le lecteur humain voit. Écrivez le paragraphe que l'extracteur veut extraire.",
-      "start": 581.91,
-      "end": 607.11
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(4)",
+      "text": "Un arbre de décision à trois niveaux pour diagnostiquer si vous avez un problème de citation ou de classement. Niveau un : la boîte AI Overview est-elle apparue pour votre requête ? Si non, la surface n'a pas déclenché ; c'est un problème de classement, corrigez la page de liens bleus. Si oui, niveau deux : votre domaine est-il l'une des puces de citation en bas de la boîte ? Si oui, vous êtes cité ; protégez l'U R L et le paragraphe. Si non, niveau trois : votre page est-elle classée dans les dix premiers liens bleus en dessous de la boîte ? Si oui, le classement est bon, mais le paragraphe n'est pas extractible ; réécrivez le premier paragraphe sous chaque H2. Si non, les deux axes sont cassés ; commencez par la réécriture de citation, le classement suivra.",
+      "start": 602.61,
+      "end": 638.19
     },
     {
       "id": 37,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(23)",
-      "text": "C'est inconfortable. Cela ressemble à écrire pour l'algorithme. C'est le cas. Le compromis est que vos pages d'information les plus importantes — heures, menu, réservations, régime alimentaire — peuvent être la source nommée dans la réponse que votre invité voit. Cela vaut la peine de changer d'enregistrement.",
-      "start": 607.63,
-      "end": 623.9
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(10)",
+      "text": "La réorientation.",
+      "start": 639.29,
+      "end": 640.36
     },
     {
       "id": 38,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(11)",
-      "text": "Par où commencer.",
-      "start": 625,
-      "end": 625.91
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(22)",
+      "text": "Vous n'écrivez plus pour le lecteur humain comme vous le faisiez auparavant. Le lecteur humain voit le paragraphe de AI Overview, décide si la réponse est suffisante, et agit en conséquence ou clique sur l'une des sources citées. Le paragraphe que le lecteur humain lit en premier n'est pas le paragraphe que vous avez écrit — c'est le paragraphe que l'extracteur a écrit, assemblé à partir du vôtre et d'un ou deux autres. Votre public est maintenant l'extracteur qui décide quel paragraphe le lecteur humain voit. Écrivez le paragraphe que l'extracteur veut extraire.",
+      "start": 641.06,
+      "end": 665.76
     },
     {
       "id": 39,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(24)",
-      "text": "Choisissez trois pages. Votre page d'heures/contact, votre page de menu, et votre billet de blog le plus consulté. Faites passer chaque page par les mouvements 1-4 sur le premier paragraphe en dessous de chaque H2. Ne touchez pas au reste de la page pour le moment. Publiez, attendez deux semaines, puis exécutez la boucle de vérification de citation ci-dessus sur les questions que ces pages devraient répondre.",
-      "start": 626.61,
-      "end": 646.39
+      "selector": "#post-body > p:nth-of-type(23)",
+      "text": "C'est inconfortable. Ça ressemble à écrire pour l'algorithme. C'est le cas. L'échange est que vos pages d'information les plus importantes — heures, menu, réservations, régime alimentaire — peuvent être la source nommée dans la réponse que votre invité voit. Cela vaut la peine de changer d'enregistrement.",
+      "start": 666.28,
+      "end": 682.17
     },
     {
       "id": 40,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(25)",
-      "text": "Si vous apparaissez dans la boîte pour au moins la moitié d'entre elles à la quatrième semaine, les mouvements fonctionnent — faites le reste du site. Si ce n'est pas le cas, le coupable le plus courant est le schéma. La prose est correcte ; le JSON-LD ne correspond pas. Exécutez les six types de schéma que Google utilise sur votre site une fois, puis re-vérifiez.",
-      "start": 646.91,
-      "end": 665.16
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(11)",
+      "text": "Où commencer.",
+      "start": 683.27,
+      "end": 684
     },
     {
       "id": 41,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(26)",
-      "text": "Don Goldstein gère deux restaurants DMV et dirige Muntin Digital . L'ensemble de données de suivi de citation derrière cet article provient de 90 jours de requêtes appariées contre les vues d'ensemble de l'IA, exécutées entre février et mai vingt-six.",
-      "start": 665.68,
-      "end": 680.77
+      "selector": "#post-body > p:nth-of-type(24)",
+      "text": "Choisissez trois pages. Votre page d'heures/contact, votre page de menu, et votre billet de blog le plus consulté. Faites passer chacune d'elles par les mouvements 1-4 sur le premier paragraphe sous chaque H2. Ne touchez pas au reste de la page pour le moment. Publiez, attendez deux semaines, puis exécutez la boucle de vérification de citation ci-dessus sur les questions que ces pages devraient répondre.",
+      "start": 684.7,
+      "end": 704.39
     },
     {
       "id": 42,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(27)",
-      "text": "Continuez",
-      "start": 681.29,
-      "end": 681.92
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(5)",
+      "text": "Temps jusqu'à la première citation sur les trois pages prioritaires, mesuré à partir de la date de publication. Page d'heures et de contact : deux semaines. Page de menu : trois semaines. Billet de blog le plus consulté : quatre à six semaines. Plus la réponse que la page est censée donner est simple, plus la citation arrive rapidement. Les pages d'heures sont les premières à être citées parce que la question est un seul fait court ; les billets de blog prennent plus de temps parce que l'extracteur doit décider quel paragraphe porte la réponse.",
+      "start": 705.19,
+      "end": 727.93
     },
     {
       "id": 43,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
-      "text": "Restaurant schema markup : les 6 types que Google utilise — le JSON-LD qui ancre votre prose",
-      "start": 682.27,
-      "end": 689.22
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(25)",
+      "text": "Si vous apparaissez dans la boîte pour au moins la moitié d'entre eux à la quatrième semaine, les mouvements fonctionnent — faites le reste du site. Si ce n'est pas le cas, le coupable le plus courant est le schéma. La prose est bonne ; le JSON-LD ne correspond pas. Exécutez les six types de schéma que Google utilise sur votre site une fois, puis vérifiez à nouveau.",
+      "start": 728.68,
+      "end": 747.04
     },
     {
       "id": 44,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
-      "text": "Comment lire la console Google Search de votre restaurant — les requêtes qui devraient être dans votre suivi de citation",
-      "start": 689.54,
-      "end": 696.43
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(26)",
+      "text": "Don Goldstein est un exploitant de restaurant et dirige Muntin Digital . Les règles de forme de paragraphe ci-dessus sont dérivées des modèles de sortie publics de AI Overview et des conseils de Google sur ce qui rend un passage extractible. Le chiffre de 13,14 % pour mars vingt vingt-cinq provient d'une analyse de mars vingt vingt-cinq par Search Engine Land des recherches de bureau américaines.",
+      "start": 747.56,
+      "end": 768.3
     },
     {
       "id": 45,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
-      "text": "L'audit de marge de 1 % — l'étude sous-jacente sur laquelle la plupart des notes de recherche de ce site sont construites",
-      "start": 696.75,
-      "end": 703.48
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(27)",
+      "text": "Continuez",
+      "start": 768.82,
+      "end": 769.45
     },
     {
       "id": 46,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
-      "text": "Audit de 499 dollars — le diagnostic écrit si vous préférez voir les réécritures sur papier",
-      "start": 703.8,
-      "end": 710.13
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Restaurant schema markup : les 6 types que Google utilise — le JSON-LD qui ancre votre prose",
+      "start": 769.8,
+      "end": 776.75
     },
     {
       "id": 47,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(28)",
-      "text": "Points clés",
-      "start": 710.48,
-      "end": 710.99
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Comment lire les Google Search Console de votre restaurant — les requêtes qui devraient figurer dans votre suivi de citations",
+      "start": 777.07,
+      "end": 784.17
     },
     {
       "id": 48,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
-      "text": "Supprimez ces jetons de hedge sur la réécriture de citation : approximativement, généralement, dans certains cas, la plupart, souvent, typiquement, autour, tendent à, peuvent, peuvent.",
-      "start": 711.34,
-      "end": 721.33
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "L'audit de marge de 1 % — l'étude sous-jacente sur laquelle sont basées la plupart des notes de recherche de ce site",
+      "start": 784.49,
+      "end": 791.13
     },
     {
       "id": 49,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
-      "text": "Le premier paragraphe en dessous de chaque H2 est le seul que la plupart des extracteurs d'IA lisent — enterrez la réponse dans le paragraphe trois et la page est invisible pour la boîte.",
-      "start": 721.65,
-      "end": 732.2
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "Audit de 499 dollars — le diagnostic écrit si vous préférez voir les réécritures sur papier",
+      "start": 791.45,
+      "end": 797.78
     },
     {
       "id": 50,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
-      "text": "Le modèle croise vos proses avec votre JSON-LD ; les discordances entre le schéma et la prose font chuter les probabilités de citation, tandis que les correspondances les augmentent.",
-      "start": 732.52,
-      "end": 743.04
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(28)",
+      "text": "Points clés",
+      "start": 798.13,
+      "end": 798.64
     },
     {
       "id": 51,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
-      "text": "Une fois cité, ne déplacez pas la page ou ne paraphrasez pas le paragraphe — le crawler révise les URL cités plus rapidement et une réponse modifiée vous fait sortir de la rotation.",
-      "start": 743.36,
-      "end": 754.19
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "Supprimez ces jetons de hedge sur la réécriture de citation : approximativement, généralement, dans certains cas, la plupart, souvent, typiquement, autour, tendent à, peuvent, peuvent.",
+      "start": 798.99,
+      "end": 808.98
     },
     {
       "id": 52,
       "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "Le premier paragraphe sous chaque H2 est le seul que la plupart des extracteurs d'IA lisent — enterrez la réponse dans le paragraphe trois et la page est invisible pour la boîte.",
+      "start": 809.3,
+      "end": 819.24
+    },
+    {
+      "id": 53,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "Le modèle croise vos proses contre votre JSON-LD ; les discordances entre le schéma et la prose diminuent les chances de citation, les correspondances les augmentent.",
+      "start": 819.56,
+      "end": 829.05
+    },
+    {
+      "id": 54,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
+      "text": "Une fois cité, ne déplacez pas la page ou ne paraphrasez pas le paragraphe — le crawlleur révise les URL cités plus rapidement et une réponse modifiée vous fait sortir de la rotation.",
+      "start": 829.37,
+      "end": 840.21
+    },
+    {
+      "id": 55,
+      "kind": "list",
       "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(5)",
-      "text": "Si votre trafic est principalement composé de requêtes informationnelles (heures d'ouverture, menu, réservations, régime alimentaire), optez pour la citation ; si les intentions sont riches (meilleur italien près de moi), conservez le classement.",
-      "start": 754.51,
-      "end": 767.96
+      "text": "Si votre trafic est principalement constitué de requêtes informationnelles (heures, menu, réservations, régime alimentaire), choisissez la citation ; riche en intention (meilleur italien près de moi), conservez le classement.",
+      "start": 840.53,
+      "end": 852.85
     }
   ]
 }

@@ -1,323 +1,355 @@
 {
   "version": 1,
-  "generatedAt": "2026-05-11T04:23:54.447Z",
+  "generatedAt": "2026-05-15T15:36:22.544Z",
   "engine": "kokoro",
   "model": "kokoro-v1.0.onnx",
   "voice": "pm_alex",
   "language": "pt",
-  "total": 626.29,
+  "total": 712.38,
   "chunks": [
     {
       "id": 0,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(1)",
-      "text": "Em resumo",
+      "text": "Opinião &middot; 11 de maio de vinte e seis &middot; 8 min de leitura &middot; Por Don Goldstein",
       "start": 0,
-      "end": 0.81
+      "end": 6.06
     },
     {
       "id": 1,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "A comissão de 30% é roughmente idêntica em DoorDash, Uber Eats e Grubhub; a segunda camada de taxas abre uma diferença de 2,5 pontos.",
-      "start": 1.16,
-      "end": 10.22
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "As taxas de comissão de headline nos três grandes plataformas de entrega parecem idênticas: DoorDash 30%, Uber Eats 30%, Grubhub 30% na camada padrão que a maioria dos independentes paga. A margem real — uma vez que você adiciona a taxa de marketing, o processamento de pagamento, a cobrança de \"promo\" que ninguém negociou — conta uma história diferente por plataforma. As estruturas de taxas abaixo vêm da documentação pública de comerciantes de cada plataforma; a matemática por ticket é a mesma, com um ticket médio de $42, que a margem de DoorDash usa.",
+      "start": 6.41,
+      "end": 40.47
     },
     {
       "id": 2,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "No mesmo ticket de $42, DoorDash Marketplace Plus mantém 18,4%, Grubhub Premium mantém 17,6%, Uber Eats Pro mantém 15,9%; a venda direta mantém 28,9%.",
-      "start": 10.54,
-      "end": 24.33
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "Em resumo",
+      "start": 40.99,
+      "end": 41.8
     },
     {
       "id": 3,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "Dê baixa em Grubhub primeiro, se você for dar baixa em um — menor volume, porcentagem mantida na média, maior taxa de reclamações de listagens fantasmas no mercado DMV.",
-      "start": 24.65,
-      "end": 34.92
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "A comissão de headline de 30% é roughmente idêntica em DoorDash, Uber Eats e Grubhub; a pilha de taxas de segundo nível abre uma diferença de 2,5 pontos.",
+      "start": 42.15,
+      "end": 52.19
     },
     {
       "id": 4,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(2)",
-      "text": "Opinião &middot; 11 de maio de 2026 &middot; 8 min de leitura &middot; Por Don Goldstein",
-      "start": 35.44,
-      "end": 42.12
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "No mesmo ticket de $42, DoorDash Marketplace Plus mantém 18,4%, Grubhub Premium mantém 17,6%, Uber Eats Pro mantém 15,9%; a venda direta mantém 28,9%.",
+      "start": 52.51,
+      "end": 66.3
     },
     {
       "id": 5,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(3)",
-      "text": "Eu já calculei as contas dos parceiros contra as três plataformas nos dois restaurantes que gerencio. Os percentuais de manchete parecem idênticos: DoorDash 30%, Uber Eats 30%, Grubhub 30% na camada padrão que a maioria dos independentes paga. A margem real — uma vez que você adiciona a taxa de marketing, o processamento de pagamento, a cobrança de \"promo\" que ninguém negociou — conta uma história diferente por plataforma. Aqui está.",
-      "start": 42.47,
-      "end": 69.09
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Drop Grubhub primeiro, se você for dropar um — volume mais baixo na maioria das declarações de independentes e a estrutura de taxas de segundo nível que fecha a menor diferença em relação à venda direta.",
+      "start": 66.62,
+      "end": 78.63
     },
     {
       "id": 6,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(4)",
-      "text": "A taxa de manchete — a comissão — é roughmente a mesma em todas as três. O que difere é a camada de taxas incidentais empilhadas em cima, o limite de pedidos que você pode realmente optar por sair e o que a plataforma faz para a conversão do seu canal direto. Este artigo é o lado a lado que eu gostaria que alguém me tivesse dado em 2022, quando eu primeiro comecei a manter planilhas.",
-      "start": 69.61,
-      "end": 90.98
+      "text": "A taxa de headline — a comissão — é roughmente a mesma em todos os três. O que difere é a camada de taxas incidentais empilhadas em cima, o limite de pedidos que você pode realmente optar por sair, e o que a plataforma faz com a conversão do seu canal direto. Este artigo é o lado a lado que eu gostaria que alguém me tivesse dado em vinte e dois, quando eu primeiro comecei a manter planilhas.",
+      "start": 79.15,
+      "end": 99.95
     },
     {
       "id": 7,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(1)",
       "text": "O mesmo ticket de $42, três plataformas.",
-      "start": 92.08,
-      "end": 95.73
+      "start": 101.05,
+      "end": 104.7
     },
     {
       "id": 8,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(5)",
-      "text": "Estou usando um ticket de $42 porque esse é o valor médio dos últimos 12 meses nos dois restaurantes que gerencio na DMV. O seu ticket será diferente. A diferença percentual é o que sustenta o argumento, não o valor em dólares.",
-      "start": 96.43,
-      "end": 110.69
+      "text": "O exemplo usa um ticket de $42 — um pedido representativo de restaurante independente em uma plataforma de terceiros, o mesmo âncora usado na margem de DoorDash . Seu ticket será diferente. A diferença percentual é o que sustenta o argumento, não o valor em dólares.",
+      "start": 105.4,
+      "end": 121.71
     },
     {
       "id": 9,
       "kind": "figure",
       "selector": "#post-body > figure:nth-of-type(1)",
-      "text": "Três plataformas, mesmo ticket de $42, a margem lado a lado. A camada DoorDash Marketplace Plus com comissão de 30% tira $12,60, o processamento de pagamento tira mais $1,43, a taxa de promoção de listagem patrocinada é de $1,20 em média, a embalagem é de $1,40, o custo de alimentos é de 28% ou $11,76, o trabalho variável é de 14% ou $5,88 e o que fica no restaurante é $7,73 ou 18,4%. A Uber Eats na comissão padrão de 30% tira $12,60, o processamento de pagamento tira $1,43 através do gateway próprio da Uber, a taxa de associação da Uber Eats Pro adiciona mais $1,05 se optado, a embalagem é a mesma $1,40, o custo de alimentos é o mesmo $11,76, o trabalho variável é o mesmo $5,88, o que fica é $6,68 ou 15,9%. A camada Grubhub Premium com comissão de 30% tira $12,60, o processamento é de $1,58 porque a Grubhub passa a taxa mais alta, a taxa de comunicação de relé de pedidos adiciona mais $0,75, a embalagem é a mesma $1,40, o custo de alimentos e o trabalho são os mesmos, o que fica é $7,40 ou 17,6%. A porcentagem mantida varia de 15,9% na Uber Eats Pro para 18,4% na DoorDash Marketplace Plus, uma diferença de cerca de $1,05 por ticket, uma vez que você compõe as taxas de segunda camada.",
-      "start": 111.49,
-      "end": 203.21
+      "text": "A margem de DoorDash em um ticket de $42 Marketplace Plus. A comissão de 30% tira $12,60. O processamento de pagamento de 3,4% tira mais $1,43. A taxa de promoção de lista patrocinada média é de $1,20, 2,9%. A embalagem é de $1,40, 3,3%. O custo de alimentos de 28% é de $11,76. O trabalho variável de 14% é de $5,88. O que fica no restaurante é $7,73, 18,4%. Arraste o controle deslizante para alterar a camada de comissão entre 15% e 35% e veja a fatia mantida recalcular ao vivo.",
+      "start": 122.51,
+      "end": 163.54
     },
     {
       "id": 10,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(6)",
-      "text": "A linha DoorDash é repetida da minha caminhada de margem anterior DoorDash. Os números de manchete são mais ou menos os mesmos nas três plataformas. A história está na spread — dezoito ponto quatro a quinze ponto nove por cento — e de onde vem essa spread.",
-      "start": 203.96,
-      "end": 218.68
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(2)",
+      "text": "A margem de Uber Eats Pro no mesmo ticket de $42. A comissão de 30% tira $12,60. O processamento de pagamento através do gateway próprio da Uber tira $1,43, 3,4%. A taxa de associação da Uber Eats Pro em pedidos optados tira $2,25, 5,4%. A embalagem é de $1,40, 3,3%. O custo de alimentos de 28% é de $11,76. O trabalho variável de 14% é de $5,88. O que fica no restaurante é $6,68, 15,9%. A associação Pro é o item que faz com que a Uber Eats fique abaixo da DoorDash no mesmo ticket.",
+      "start": 164.34,
+      "end": 204.04
     },
     {
       "id": 11,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(2)",
-      "text": "De onde vem a spread, na verdade.",
-      "start": 219.78,
-      "end": 221.84
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(3)",
+      "text": "A margem da Grubhub Premium caminha na mesma linha de um ticket de $42. A comissão de 30% tira $12,60. O processamento de pagamento tira $1,58, 3,8%, porque a Grubhub passa a taxa mais alta de cartão não presente. A taxa de comunicação de ordens é não opt-in e adiciona $1,38, 3,3%. A embalagem é $1,40. O custo de alimentos a 28% é $11,76. O trabalho variável a 14% é $5,88. O que fica no restaurante é $7,40, 17,6%. A taxa de comunicação é a linha que você não pode recusar.",
+      "start": 204.84,
+      "end": 243.33
     },
     {
       "id": 12,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(7)",
-      "text": "A comissão base não é a variável em que se deve focar. Cada plataforma oferece uma estrutura em camadas de 15%/25%/30% (com nomes e inclusões ligeiramente diferentes). A maioria dos restaurantes independentes cai na camada de 30% porque as camadas de 15% e 25% não incluem colocação nas superfícies de descoberta do aplicativo — você existe, mas ninguém o encontra. O 30% é o preço de ser encontrado. Essa parte não difere muito entre as plataformas.",
-      "start": 222.54,
-      "end": 253.77
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "A linha DoorDash é repetida da minha análise de margem anterior da DoorDash. Os números principais são mais ou menos os mesmos nas três plataformas. A história está na diferença — 18,4% a 15,9% — e de onde vem essa diferença.",
+      "start": 244.08,
+      "end": 259.04
     },
     {
       "id": 13,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(8)",
-      "text": "O que difere é a segunda camada:",
-      "start": 254.29,
-      "end": 256.39
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(4)",
+      "text": "A visão geral, lado a lado: em um ticket de $42, a DoorDash Marketplace Plus mantém $7,73 ou 18,4%. A Grubhub Premium mantém $7,40 ou 17,6%. A Uber Eats Pro mantém $6,68 ou 15,9%. Direto, no seu próprio site com seu próprio checkout, mantém $12,15 ou 28,9%. Direto mantém mais de $4 por ticket acima do melhor nível de terceiros.",
+      "start": 259.84,
+      "end": 287.65
     },
     {
       "id": 14,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "DoorDash adiciona uma taxa de lista patrocinada quando você opta pelo sistema de promoção do aplicativo. Aproximadamente 3% adicional, aplicado por pedido em pedidos atribuídos à promoção. Você pode optar por não participar — mas o throughput de descoberta cai abruptamente se você fizer isso.",
-      "start": 256.74,
-      "end": 275.02
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "De onde vem a diferença de fato.",
+      "start": 288.75,
+      "end": 291.04
     },
     {
       "id": 15,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "Uber Eats tem a taxa de associação Pro — cerca de 2,50 dólares por pedido em pedidos optados — que lhe dá colocação na camada \"Pro\" do aplicativo. Como as listas patrocinadas do DoorDash, é opt-in, mas funcionalmente necessário para que a superfície de descoberta funcione.",
-      "start": 275.34,
-      "end": 291.42
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "A comissão base não é a variável em que se deve focar. Cada plataforma oferece uma estrutura em níveis de 15%/25%/30% (com nomes e inclusões ligeiramente diferentes). A maioria dos restaurantes independentes cai no nível de 30% porque os níveis de 15% e 25% não incluem colocação nas superfícies de descoberta do aplicativo — você existe, mas ninguém o encontra. O nível de 30% é o preço de ser encontrado. Essa parte não difere muito entre as plataformas.",
+      "start": 291.74,
+      "end": 323.03
     },
     {
       "id": 16,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "Grubhub tem uma taxa de \"comunicação\" (linguagem deles) por pedido de aproximadamente 1,8% que não é opt-in. Ela financia o sistema de relé de pedidos. Parece uma sobretaxa menor, mas se aplica a todos os pedidos, o que é por que a linha Grubhub acaba perto da DoorDash no geral, apesar do custo de promoção mais baixo.",
-      "start": 291.74,
-      "end": 309.98
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "O que difere é a segunda camada:",
+      "start": 323.55,
+      "end": 325.65
     },
     {
       "id": 17,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(3)",
-      "text": "A armadilha de taxa de marketing que ninguém fala.",
-      "start": 311.08,
-      "end": 314.09
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "A DoorDash adiciona uma taxa de lista patrocinada quando você opta pelo sistema de promoção do aplicativo. Aproximadamente 3% adicionais, aplicados por ordem em ordens atribuídas à promoção. Opt-in — você pode recusar —, mas o throughput de descoberta cai abruptamente se você fizer isso.",
+      "start": 326,
+      "end": 343.87
     },
     {
       "id": 18,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(9)",
-      "text": "Essa é a parte que os operadores mais perdem de vista. A comissão de 30% é sobre o preço do menu, não sobre o valor líquido. Você não pode deduzir o custo de alimentos ou mão de obra antes de a porcentagem ser aplicada — é 30% sobre o total. A maioria dos operadores trata isso como um custo de marketing, o que está errado; orçamentos de marketing competem contra o lucro, não contra a receita. As três plataformas são agregadoras no sentido clássico: superfície de descoberta para um lado, imposto sobre a margem para o outro.",
-      "start": 314.79,
-      "end": 344.18
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "A Uber Eats tem a taxa de associação Pro — cerca de $2,50 por ordem em ordens opt-in —, que lhe dá colocação no nível \"Pro\" do aplicativo. Como as listas patrocinadas da DoorDash, é opt-in, mas funcionalmente necessário para a superfície de descoberta funcionar.",
+      "start": 344.19,
+      "end": 359.53
     },
     {
       "id": 19,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(10)",
-      "text": "A matemática: com uma margem operacional típica de 12% e uma comissão de plataforma de 30%, cada pedido de terceiros precisa gerar 250% de receita incremental em comparação com o mesmo pedido na porta para que o gasto com a plataforma seja compensado em termos de marketing. Isso quase nunca acontece. O cliente viria de qualquer forma 80% das vezes. A plataforma é, estruturalmente, um imposto sobre a margem de 30% para ~20% de receita incremental. Essa é a armadilha.",
-      "start": 344.7,
-      "end": 376.8
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "A Grubhub tem uma taxa de \"comunicação\" (linguagem deles) de aproximadamente 1,8% por ordem, que não é opt-in. Ela financia o sistema de retransmissão de ordens. Parece uma sobretaxa menor, mas se aplica a cada ordem, o que é por que a linha da Grubhub acaba perto da DoorDash no geral, apesar do custo de promoção mais baixo.",
+      "start": 359.85,
+      "end": 377.94
     },
     {
       "id": 20,
       "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(4)",
-      "text": "Qual plataforma dropar, se você vai dropar uma.",
-      "start": 377.9,
-      "end": 380.62
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "A armadilha de taxa de marketing que ninguém fala.",
+      "start": 379.04,
+      "end": 382.05
     },
     {
       "id": 21,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(11)",
-      "text": "Para a maioria dos independentes, a resposta é Grubhub. Três razões. Uma: o volume de pedidos por canal Grubhub é o mais baixo dos três em quase todos os mercados DMV que eu medi, por um fator de três a cinco. Dois: a porcentagem mantida em 17,6% está no meio do pacote, então dropar isso custa a menor margem mantida por pedido perdido. Três: Grubhub tem a maior taxa de reclamações de lista fantasma neste mercado — restaurantes que aparecem na plataforma sem o consentimento ou com cardápios desatualizados — o que é um problema de controle de marca além do problema de margem.",
-      "start": 381.32,
-      "end": 415.79
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "Essa é a parte que os operadores mais perdem. A comissão de 30% é sobre o preço do menu, não sobre o que se leva para casa. Você não pode deduzir o custo de alimentos ou mão de obra antes de a porcentagem ser aplicada — é 30% de cima. A maioria dos operadores trata isso como um custo de marketing, o que está errado; orçamentos de marketing competem contra o lucro, não contra a receita. As três plataformas são agregadoras no sentido clássico: superfície de descoberta para um lado, imposto de margem para o outro.",
+      "start": 382.75,
+      "end": 412.23
     },
     {
       "id": 22,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(12)",
-      "text": "A decisão mais difícil é abandonar o Uber Eats. A porcentagem mantida é a pior das três. No entanto, o Uber Eats tem a maior conversão de primeira ordem em um cliente retornado neste mercado, e a cross-polinização dentro do aplicativo com as corridas do Uber significa que a plataforma traz volume de descoberta que as outras duas não têm. Se seu restaurante estiver em um nó urbano de alto tráfego de pedestres onde as corridas do Uber são uma fonte significativa de fluxo de clientes, o Uber Eats provavelmente é o que você deve manter.",
-      "start": 416.31,
-      "end": 447.85
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "A matemática: com uma margem operacional típica de 12% e uma comissão de plataforma de 30%, cada pedido de terceiros precisa gerar 250% de receita incremental em comparação com o mesmo pedido na porta para que o gasto com a plataforma seja equilibrado em bases de marketing. Isso quase nunca acontece. O cliente viria de qualquer forma 80% do tempo. A plataforma é, estruturalmente, um \"imposto\" de 30% de margem para ~20% de receita incremental. É essa a armadilha.",
+      "start": 412.75,
+      "end": 443.21
     },
     {
       "id": 23,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(13)",
-      "text": "Estou no DoorDash e no Uber Eats em um restaurante e apenas no DoorDash no outro. Abandonei o Grubhub há dois anos e não me arrependi. O volume abandonado do Grubhub voltou aos restaurantes por meio de outros canais dentro de um trimestre — quase entirely para o canal direto — sugerindo que os pedidos do Grubhub foram deslocados, não novos.",
-      "start": 448.37,
-      "end": 466.86
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "Qual um para dropar, se você vai dropar um.",
+      "start": 444.31,
+      "end": 446.66
     },
     {
       "id": 24,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(5)",
-      "text": "O que isso muda sobre a sua mistura de canais.",
-      "start": 467.96,
-      "end": 470.42
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "Para a maioria dos independentes, a resposta é Grubhub. Três razões. Uma: o volume de pedidos por canal Grubhub é o mais baixo dos três em quase todos os mercados DMV que eu medi, por um fator de três a cinco. Dois: o percentual mantido em 17,6% está no meio do pacote, então dropar isso custa a menor margem mantida por pedido perdido. Três: Grubhub tem a maior taxa de reclamações de listagens fantasmas neste mercado — restaurantes que aparecem na plataforma sem o seu consentimento ou com cardápios desatualizados —, o que é um problema de controle de marca além do problema de margem.",
+      "start": 447.36,
+      "end": 481.97
     },
     {
       "id": 25,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(14)",
-      "text": "Se você estiver nos três: extraia um extrato de parceiro do Grubhub nos últimos 90 dias. Calcule a margem de contribuição (receita menos a pilha completa de taxas de terceiros menos o custo variável por pedido). Compare com a margem de contribuição do canal direto no mesmo restaurante. Se o Grubhub estiver contribuindo com menos de 8% do volume de terceiros e o seu canal direto tiver algum pulso, a decisão é direta. Pause, observe a mistura de canais por um trimestre, então cancele a lista se a pausa for mantida.",
-      "start": 471.12,
-      "end": 502.19
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "A decisão mais difícil é dropar Uber Eats. O percentual mantido é o pior dos três. Mas Uber Eats tem a maior conversão de primeiro pedido em cliente retornado neste mercado, e a cross-polinização dentro do aplicativo com Uber significa que a plataforma traz volume de descoberta que os outros dois não trazem. Se o seu restaurante estiver em um nó urbano de alto tráfego de pedestres onde as corridas Uber são uma fonte significativa de fluxo de clientes, Uber Eats provavelmente é o que você deve manter.",
+      "start": 482.49,
+      "end": 512.55
     },
     {
       "id": 26,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(15)",
-      "text": "Se você estiver em dois: a pergunta é se deve abandonar um deles. A matemática diz que sim na maioria das vezes, mas o custo político de listagens fantasma (especialmente o Grubhub) e o tempo de operador necessário para policiar o menu em duas plataformas versus uma são reais, apenas menos mensuráveis. Mantenho o DoorDash em ambos os restaurantes porque a porcentagem mantida é a mais alta. Abandono a segunda plataforma restaurante por restaurante com base na superfície de descoberta local.",
-      "start": 502.71,
-      "end": 530.58
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "Estou em DoorDash e Uber Eats em um restaurante e apenas DoorDash no outro. Grubhub eu droppei há dois anos e não me arrependi. O volume dropado de Grubhub voltou aos restaurantes por meio de outros canais dentro de um trimestre — quase inteiramente para o canal direto —, sugerindo que os pedidos Grubhub foram deslocados, não novos.",
+      "start": 513.07,
+      "end": 531.46
     },
     {
       "id": 27,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(16)",
-      "text": "O Don Goldstein gerencia dois restaurantes do DMV e executa o Muntin Digital. A comparação de três plataformas acima é executada contra extratos de parceiros datados de abril de vinte e seis.",
-      "start": 531.1,
-      "end": 543.3
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "O que isso muda sobre a sua mistura de canais.",
+      "start": 532.56,
+      "end": 535.02
     },
     {
       "id": 28,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(17)",
-      "text": "Continue",
-      "start": 543.82,
-      "end": 544.49
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "Se você está nos três: puxe um extrato de parceiro Grubhub dos últimos 90 dias. Calcule a margem de contribuição (receita menos a pilha completa de taxas de terceiros menos o custo variável por pedido). Compare com a margem de contribuição do canal direto no mesmo restaurante. Se Grubhub estiver contribuindo com menos de 8% do volume total de terceiros e o seu canal direto tiver algum pulso, a mudança é direta. Pause, observe a mistura de canais por um trimestre, então cancele a lista se a pausa se mantiver.",
+      "start": 535.72,
+      "end": 565.47
     },
     {
       "id": 29,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
-      "text": "A caminhada da margem do DoorDash — o mergulho mais profundo em uma plataforma",
-      "start": 544.84,
-      "end": 549.2
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "Se você está em dois: a pergunta é se deve dropar para um. A matemática diz que sim na maioria das vezes, mas o custo político de listagens fantasmas (Grubhub especialmente) e o tempo do operador necessário para policiar o cardápio em duas plataformas versus uma são reais, apenas menos mensuráveis. Eu mantenho DoorDash no restaurante porque o percentual mantido é o mais alto. Eu dropo a segunda plataforma restaurante por restaurante com base na superfície de descoberta local.",
+      "start": 565.99,
+      "end": 593.27
     },
     {
       "id": 30,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
-      "text": "Ferramenta do Margin Math — execute o cálculo com os seus números",
-      "start": 549.52,
-      "end": 553.07
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(5)",
+      "text": "A tendência de comissão de cabeçalho de doze meses nas três plataformas. DoorDash Marketplace Plus é plano em trinta por cento. Uber Eats padrão é plano em trinta por cento. Grubhub Premium é plano em trinta por cento. A taxa de cabeçalho não se moveu desde 2023. Descontos de nível em qualquer direção movem a taxa eficaz em cinco pontos; as plataformas negociam as taxas de segundo nível, não a de cabeçalho.",
+      "start": 594.07,
+      "end": 617.95
     },
     {
       "id": 31,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
-      "text": "O DoorDash vale a pena para os restaurantes em vinte e seis? — o quadro estratégico",
-      "start": 553.39,
-      "end": 557.95
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "Don Goldstein é um operador de restaurante e executa Muntin Digital. A comparação de três plataformas acima é executada contra extratos de parceiros datados de abril de 2026.",
+      "start": 618.7,
+      "end": 630.64
     },
     {
       "id": 32,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
-      "text": "499 dólares de auditoria — o diagnóstico escrito se você preferir ver a sua mistura de canais no papel",
-      "start": 558.27,
-      "end": 565.72
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "",
+      "start": 631.16,
+      "end": 631.16
     },
     {
       "id": 33,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(18)",
-      "text": "Pontos principais",
-      "start": 566.07,
-      "end": 567.2
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "A caminhada de margem do DoorDash — a análise mais aprofundada de uma plataforma",
+      "start": 631.51,
+      "end": 636.2
     },
     {
       "id": 34,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
-      "text": "As plataformas não são marketing — elas são um imposto de margem de 30% para ~20% de receita incremental.",
-      "start": 567.55,
-      "end": 575.17
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Ferramenta Margin Math — execute o cálculo com seus números",
+      "start": 636.52,
+      "end": 639.9
     },
     {
       "id": 35,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
-      "text": "O DoorDash adiciona taxas de listagens patrocinadas (~3% por pedido de promoção), o Uber Eats adiciona a assinatura Pro (2,50 dólares por pedido), o Grubhub cobra uma taxa de comunicação de 1,8% por pedido, sem opt-in.",
-      "start": 575.49,
-      "end": 590.44
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "O DoorDash vale a pena para os restaurantes em vinte e seis? — o quadro estratégico",
+      "start": 640.22,
+      "end": 644.78
     },
     {
       "id": 36,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
-      "text": "Com uma margem operacional de 12%, cada pedido de terceiros precisa gerar 250% de receita incremental para pagar a despesa da plataforma como marketing — quase nunca acontece.",
-      "start": 590.76,
-      "end": 603.48
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "Auditoria de $499 — o diagnóstico escrito se você preferir ver sua mistura de canais em papel",
+      "start": 645.1,
+      "end": 652.43
     },
     {
       "id": 37,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
-      "text": "A maioria dos operadores está executando ≥80% de pedidos de relacionamento deslocados na plataforma, não a descoberta nova; a plataforma é uma camada de hábito, não uma camada de descoberta.",
-      "start": 603.8,
-      "end": 615.81
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "Pontos principais",
+      "start": 652.78,
+      "end": 653.91
     },
     {
       "id": 38,
       "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "As plataformas não são marketing — são um imposto de margem de 30% para ~20% de receita incremental.",
+      "start": 654.26,
+      "end": 661.66
+    },
+    {
+      "id": 39,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "O DoorDash adiciona taxas de listas patrocinadas (~3% por pedido promocional), o Uber Eats adiciona membros Pro ($2,50/pedido), o Grubhub cobra uma taxa de comunicação de 1,8% por pedido, sem opt-in.",
+      "start": 661.98,
+      "end": 676.31
+    },
+    {
+      "id": 40,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "Com uma margem operacional de 12%, cada pedido de terceiros precisa gerar 250% de receita incremental para compensar o gasto com a plataforma como marketing — quase nunca acontece.",
+      "start": 676.63,
+      "end": 689.68
+    },
+    {
+      "id": 41,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
+      "text": "A maioria dos operadores está executando ≥80% de pedidos de relacionamento deslocados na plataforma, não novas descobertas; a plataforma é uma camada de hábito, não uma camada de descoberta.",
+      "start": 690,
+      "end": 702.04
+    },
+    {
+      "id": 42,
+      "kind": "list",
       "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(5)",
-      "text": "Converte os clientes de terceiros para o canal direto no segundo pedido por meio de recibos e inserções de embalagem — é onde a comissão de 30% realmente paga.",
-      "start": 616.13,
-      "end": 626.29
+      "text": "Converta os clientes de terceiros para diretos no segundo pedido por meio de recibos e inserções de embalagem — é aí que a comissão de 30% realmente compensa.",
+      "start": 702.36,
+      "end": 712.38
     }
   ]
 }

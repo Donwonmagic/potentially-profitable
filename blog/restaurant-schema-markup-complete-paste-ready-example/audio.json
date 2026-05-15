@@ -1,291 +1,323 @@
 {
   "version": 1,
-  "generatedAt": "2026-05-11T06:53:42.978Z",
+  "generatedAt": "2026-05-15T05:45:02.885Z",
   "engine": "kokoro",
   "model": "kokoro-v1.0.onnx",
   "voice": "am_michael",
   "language": "en",
-  "total": 392.25,
+  "total": 588.77,
   "chunks": [
     {
       "id": 0,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(1)",
-      "text": "In short",
+      "text": "How-to &middot; May 10, twenty twenty-six &middot; 5 min read &middot; By Don Goldstein",
       "start": 0,
-      "end": 0.63
+      "end": 6.79
     },
     {
       "id": 1,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "Sixty lines of JSON-LD that cover the six schema types Google reads first on a restaurant page — Restaurant, Menu, OpeningHoursSpecification, AggregateRating, Reservation, and F A Q.",
-      "start": 0.98,
-      "end": 15.14
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "A complete restaurant schema markup in one paste-ready JSON-LD block. Six schema types nested correctly, the seven fields you change per restaurant clearly marked, and the validation step that catches the four typos that break everything. Worked example follows the same six-type pattern the earlier article walks through — this one gives you the actual code.",
+      "start": 7.14,
+      "end": 30.92
     },
     {
       "id": 2,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "Seven fields marked // EDIT (name, address parts, phone, hours, rating, menu items) are everything you have to change to make the example yours.",
-      "start": 15.46,
-      "end": 26.21
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "In short",
+      "start": 31.44,
+      "end": 32.07
     },
     {
       "id": 3,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "Three pre-publish checks: validator.schema.org for unknown properties, view-source for C M S-escaping bugs, and Google’s Rich Results test to confirm which surfaces your schema is eligible for.",
-      "start": 26.53,
-      "end": 40.65
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Sixty lines of JSON-LD that cover the six schema types Google reads first on a restaurant page — Restaurant, Menu, OpeningHoursSpecification, AggregateRating, Reservation, and F A Q.",
+      "start": 32.42,
+      "end": 46.58
     },
     {
       "id": 4,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(2)",
-      "text": "How-to &middot; May 10, twenty twenty-six &middot; 5 min read &middot; By Don Goldstein",
-      "start": 41.17,
-      "end": 47.96
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Seven fields marked // EDIT (name, address parts, phone, hours, rating, menu items) are everything you have to change to make the example yours.",
+      "start": 46.9,
+      "end": 57.65
     },
     {
       "id": 5,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(3)",
-      "text": "The schema markup I run on the two restaurants I manage, in one paste-ready JSON-LD block. Six schema types nested correctly, the seven fields you have to change per restaurant clearly marked, and the validation step that catches the four typos that break everything. Worked example follows the same six-type pattern the earlier article walks through — this one gives you the actual code.",
-      "start": 48.31,
-      "end": 73.71
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Three pre-publish checks: validator.schema.org for unknown properties, view-source for C M S-escaping bugs, and Google’s Rich Results test to confirm which surfaces your schema is eligible for.",
+      "start": 57.97,
+      "end": 72.09
     },
     {
       "id": 6,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(4)",
       "text": "If you&rsquo;ve read the six-types article , you know what each schema type does. This piece is the tactical follow-up: the actual JSON-LD I paste into a restaurant&rsquo;s <head> the first time I&rsquo;m setting one up. You can copy it, change the seven fields marked in the comments, and run it through the Schema.org validator. If the validator returns green, you&rsquo;re shipping.",
-      "start": 74.23,
-      "end": 100.26
+      "start": 72.61,
+      "end": 98.64
     },
     {
       "id": 7,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(1)",
-      "text": "How to use it.",
-      "start": 101.36,
-      "end": 102.27
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "What is in the paste-ready example and what each block does. Block one, Restaurant: the business identity card — knowledge panel, local-pack eligibility, cuisine queries. Unlocks five features. Block two, PostalAddress and GeoCoordinates: the map-pack pin and driving-directions link. Unlocks four features. Block three, OpeningHoursSpecification: the open-now badge, the closes-at line, holiday-hours accuracy. Unlocks four features. Block four, Menu with MenuSection and MenuItem: dish-level ranking and the AI Overview citation of dish descriptions. Unlocks four features. Block five, AggregateRating: the gold-star pattern in your snippet, eight to fifteen percent CTR lift. Unlocks three features. Block six, ReserveAction and FAQPage: the Reserve a table button and the F A Q rich snippet — the cheapest AI-citation surface on a restaurant page. Unlocks four features. Features unlocked total: twenty-four.",
+      "start": 99.44,
+      "end": 160.09
     },
     {
       "id": 8,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(5)",
-      "text": "Three steps:",
-      "start": 102.97,
-      "end": 103.79
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "How to use it.",
+      "start": 161.19,
+      "end": 162.1
     },
     {
       "id": 9,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "Copy the block below into a single <script type=\"application/ld+json\"> tag inside your <head>. One tag, not six.",
-      "start": 104.14,
-      "end": 113.71
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "Three steps:",
+      "start": 162.8,
+      "end": 163.62
     },
     {
       "id": 10,
       "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "Change the seven fields marked // EDIT : the restaurant name, address parts (street, city, region, zip), phone, opening hours, and the menu items.",
-      "start": 114.03,
-      "end": 124.69
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Copy the block below into a single <script type=\"application/ld+json\"> tag inside your <head>. One tag, not six.",
+      "start": 163.97,
+      "end": 173.54
     },
     {
       "id": 11,
       "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "Validate at validator.schema.org by pasting the U R L of your page. Fix anything red. Most errors are missing commas or stray quotes.",
-      "start": 125.01,
-      "end": 135.31
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Change the seven fields marked // EDIT : the restaurant name, address parts (street, city, region, zip), phone, opening hours, and the menu items.",
+      "start": 173.86,
+      "end": 184.52
     },
     {
       "id": 12,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(2)",
-      "text": "The complete example.",
-      "start": 136.41,
-      "end": 137.53
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Validate at validator.schema.org by pasting the U R L of your page. Fix anything red. Most errors are missing commas or stray quotes.",
+      "start": 184.84,
+      "end": 195.14
     },
     {
       "id": 13,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(6)",
-      "text": "Below is the schema I ran on a 60-seat DMV Italian restaurant. The structure nests six types: Restaurant (root), Menu, OpeningHoursSpecification, AggregateRating, Reservation, and F A Q. Each one unlocks a different Google surface (per the six-types article). Save it as a starting point; tighten as needed.",
-      "start": 138.23,
-      "end": 160.16
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "The complete example.",
+      "start": 196.24,
+      "end": 197.36
     },
     {
       "id": 14,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(7)",
-      "text": "That&rsquo;s 60 lines of JSON-LD covering the six types Google reads first on a restaurant page. The seven // EDIT fields are everything you have to change to make it yours.",
-      "start": 160.68,
-      "end": 174.51
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "Below is the schema I ran on a 60-seat DMV Italian restaurant. The structure nests six types: Restaurant (root), Menu, OpeningHoursSpecification, AggregateRating, Reservation, and F A Q. Each one unlocks a different Google surface (per the six-types article). Save it as a starting point; tighten as needed.",
+      "start": 198.06,
+      "end": 219.99
     },
     {
       "id": 15,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(3)",
-      "text": "Before you publish.",
-      "start": 175.61,
-      "end": 176.73
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "That&rsquo;s 60 lines of JSON-LD covering the six types Google reads first on a restaurant page. The seven // EDIT fields are everything you have to change to make it yours.",
+      "start": 220.51,
+      "end": 234.34
     },
     {
       "id": 16,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(8)",
-      "text": "Three checks. Each one catches a class of error that&rsquo;s otherwise invisible until you&rsquo;re wondering why the local-pack still hasn&rsquo;t shown you.",
-      "start": 177.43,
-      "end": 190.28
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(2)",
+      "text": "The same restaurant's Google result, before and after the paste-ready schema. Before: a bare blue-link result — title 'Roma Cucina — Italian Restaurant in Silver Spring,' the U R L, and a meta description. No stars, no hours, no map pin. After: the same title and U R L, plus a four point six star rating with four hundred twelve reviews, a price-range chip showing two dollar signs, an open-now indicator with closes at ten p m, a map-pack pin with directions, and a Reserve a table button. Six new surface elements added to one search result by sixty lines of JSON-LD.",
+      "start": 235.14,
+      "end": 275.37
     },
     {
       "id": 17,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(1)",
-      "text": "Run it through validator.schema.org . Paste your page U R L. The validator reports unknown properties (typos), missing required fields, and incorrect nesting. Fix the red items. Yellow is usually fine to ship.",
-      "start": 190.8,
-      "end": 206.28
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Before you publish.",
+      "start": 276.47,
+      "end": 277.59
     },
     {
       "id": 18,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(2)",
-      "text": "Confirm the rendered page matches . Open your page in a browser, view-source, search for application/ld+json . Confirm the script tag is there and the JSON is what you expect. C M S escaping bugs sometimes strip quotes; you have to see the rendered output.",
-      "start": 206.6,
-      "end": 226.03
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "Three checks. Each one catches a class of error that&rsquo;s otherwise invisible until you&rsquo;re wondering why the local-pack still hasn&rsquo;t shown you.",
+      "start": 278.29,
+      "end": 291.14
     },
     {
       "id": 19,
       "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(3)",
-      "text": "Test with Google&rsquo;s Rich Results test . This is the official tool Google uses to decide whether your schema qualifies for rich results. It tells you which surfaces your schema is eligible for. Run it after the validator passes.",
-      "start": 226.35,
-      "end": 243.36
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Run it through validator.schema.org . Paste your page U R L. The validator reports unknown properties (typos), missing required fields, and incorrect nesting. Fix the red items. Yellow is usually fine to ship.",
+      "start": 291.66,
+      "end": 307.14
     },
     {
       "id": 20,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(4)",
-      "text": "What happens after you ship.",
-      "start": 244.46,
-      "end": 245.94
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Confirm the rendered page matches . Open your page in a browser, view-source, search for application/ld+json . Confirm the script tag is there and the JSON is what you expect. C M S escaping bugs sometimes strip quotes; you have to see the rendered output.",
+      "start": 307.46,
+      "end": 326.89
     },
     {
       "id": 21,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(9)",
-      "text": "Don&rsquo;t expect immediate effect. Google&rsquo;s crawler may take 24–72 hours to revisit your page and pick up the new schema. Some surfaces (the local-pack, AggregateRating stars) update within a week. Others (Reservation deep links via Find a Table, F A Q rich snippets) can take 30+ days. The longest-tail ones are the AI Overview citations, which can take 90 days to start landing.",
-      "start": 246.64,
-      "end": 274.83
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "Test with Google&rsquo;s Rich Results test . This is the official tool Google uses to decide whether your schema qualifies for rich results. It tells you which surfaces your schema is eligible for. Run it after the validator passes.",
+      "start": 327.21,
+      "end": 344.22
     },
     {
       "id": 22,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(10)",
-      "text": "Once it&rsquo;s shipped, leave the schema alone. The crawler revisits cited URLs more often than uncited ones, and a stable JSON-LD block builds entity confidence over time. Touch one field if a fact changes (new closing time, new menu item, updated review count), but resist the urge to refactor.",
-      "start": 275.35,
-      "end": 298.53
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(3)",
+      "text": "The four-step paste, test, wait, verify workflow after pasting the schema. Step one: paste the JSON-LD into the head of every public page, not just the homepage. Step two: run Google's Rich Results Test on three URLs and fix every red error before walking away. Step three: wait seven to fourteen days for the re-crawl — Googlebot needs to see the schema in production before any feature appears. Step four: verify in Search Console under Enhancements, where each schema type gets its own report showing valid pages and errors.",
+      "start": 345.02,
+      "end": 381.37
     },
     {
       "id": 23,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(11)",
-      "text": "Don Goldstein manages two DMV restaurants and runs Muntin Digital . The example schema above is adapted from one of those two restaurants, May twenty twenty-six production.",
-      "start": 299.05,
-      "end": 311.58
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "What happens after you ship.",
+      "start": 382.47,
+      "end": 383.95
     },
     {
       "id": 24,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(12)",
-      "text": "Keep going",
-      "start": 312.1,
-      "end": 312.82
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "Don&rsquo;t expect immediate effect. Google&rsquo;s crawler may take 24–72 hours to revisit your page and pick up the new schema. Some surfaces (the local-pack, AggregateRating stars) update within a week. Others (Reservation deep links via Find a Table, F A Q rich snippets) can take 30+ days. The longest-tail ones are the AI Overview citations, which can take 90 days to start landing.",
+      "start": 384.65,
+      "end": 412.84
     },
     {
       "id": 25,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
-      "text": "The 6 schema types Google uses — what each unlocks",
-      "start": 313.17,
-      "end": 316.62
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "Once it&rsquo;s shipped, leave the schema alone. The crawler revisits cited URLs more often than uncited ones, and a stable JSON-LD block builds entity confidence over time. Touch one field if a fact changes (new closing time, new menu item, updated review count), but resist the urge to refactor.",
+      "start": 413.36,
+      "end": 436.54
     },
     {
       "id": 26,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
-      "text": "How to get cited in AI Overviews — what the schema cross-references against",
-      "start": 316.94,
-      "end": 321.7
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(4)",
+      "text": "Rich-result appearance odds, ninety days after pasting the schema, by type. AggregateRating: gold stars in the snippet appear on roughly ninety percent of queries within thirty days. OpeningHoursSpecification: the open-now badge appears on roughly eighty-five percent of queries within thirty days. Restaurant plus PostalAddress: the local-pack card appears on roughly seventy percent of branded queries within sixty days. Menu: dish-level ranking and AI Overview citations appear on roughly fifty-five percent of dish-name queries within sixty days. FAQPage: the F A Q rich snippet appears on roughly forty percent of question-shaped queries within sixty days. ReserveAction: the Reserve a table button appears on roughly thirty-five percent of branded queries within ninety days.",
+      "start": 437.34,
+      "end": 490.57
     },
     {
       "id": 27,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
-      "text": "Schema check tool — validates the JSON-LD on any U R L",
-      "start": 322.02,
-      "end": 326.51
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "Don Goldstein is a restaurant operator and runs Muntin Digital . The example schema above follows the six-type pattern Google Search Central documents for restaurant pages; every field maps to the same vocabulary the six-types walkthrough covers.",
+      "start": 491.32,
+      "end": 508.1
     },
     {
       "id": 28,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
-      "text": "499 dollars audit — the written diagnosis if your schema isn&rsquo;t firing",
-      "start": 326.83,
-      "end": 333.99
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "Keep going",
+      "start": 508.62,
+      "end": 509.34
     },
     {
       "id": 29,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(13)",
-      "text": "Key takeaways",
-      "start": 334.34,
-      "end": 335.28
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "The 6 schema types Google uses — what each unlocks",
+      "start": 509.69,
+      "end": 513.14
     },
     {
       "id": 30,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
-      "text": "Schema is plumbing — it doesn’t move the needle on its own but it makes you eligible for surfaces (local-pack, AggregateRating stars, Reservation deep links, F A Q rich snippets, AI Overview citations) you weren’t eligible for before.",
-      "start": 335.63,
-      "end": 351.92
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "How to get cited in AI Overviews — what the schema cross-references against",
+      "start": 513.46,
+      "end": 518.22
     },
     {
       "id": 31,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
-      "text": "Once shipped, leave the schema alone — the crawler revisits stable JSON-LD more often and builds entity confidence over time.",
-      "start": 352.24,
-      "end": 361.16
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "Schema check tool — validates the JSON-LD on any U R L",
+      "start": 518.54,
+      "end": 523.03
     },
     {
       "id": 32,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
-      "text": "Surface timing: local-pack and rating stars update in a week; Reservation deep links and F A Q snippets take 30+ days; AI Overview citations take up to 90.",
-      "start": 361.48,
-      "end": 374.03
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "499 dollars audit — the written diagnosis if your schema isn&rsquo;t firing",
+      "start": 523.35,
+      "end": 530.51
     },
     {
       "id": 33,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
-      "text": "When a fact changes, touch one field — new closing time, new menu item — and resist the urge to refactor.",
-      "start": 374.35,
-      "end": 381.57
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "Key takeaways",
+      "start": 530.86,
+      "end": 531.8
     },
     {
       "id": 34,
       "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "Schema is plumbing — it doesn’t move the needle on its own but it makes you eligible for surfaces (local-pack, AggregateRating stars, Reservation deep links, F A Q rich snippets, AI Overview citations) you weren’t eligible for before.",
+      "start": 532.15,
+      "end": 548.44
+    },
+    {
+      "id": 35,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "Once shipped, leave the schema alone — the crawler revisits stable JSON-LD more often and builds entity confidence over time.",
+      "start": 548.76,
+      "end": 557.68
+    },
+    {
+      "id": 36,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "Surface timing: local-pack and rating stars update in a week; Reservation deep links and F A Q snippets take 30+ days; AI Overview citations take up to 90.",
+      "start": 558,
+      "end": 570.55
+    },
+    {
+      "id": 37,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
+      "text": "When a fact changes, touch one field — new closing time, new menu item — and resist the urge to refactor.",
+      "start": 570.87,
+      "end": 578.09
+    },
+    {
+      "id": 38,
+      "kind": "list",
       "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(5)",
       "text": "Pair the schema with the citation-shaped writing from the AI Overviews piece for the highest-leverage single edit a restaurant site can ship in twenty twenty-six.",
-      "start": 381.89,
-      "end": 392.25
+      "start": 578.41,
+      "end": 588.77
     }
   ]
 }

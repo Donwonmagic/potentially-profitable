@@ -1,315 +1,347 @@
 {
   "version": 1,
-  "generatedAt": "2026-05-11T04:46:01.668Z",
+  "generatedAt": "2026-05-14T22:39:34.123Z",
   "engine": "kokoro",
   "model": "kokoro-v1.0.onnx",
   "voice": "em_alex",
   "language": "es",
-  "total": 680.19,
+  "total": 813.55,
   "chunks": [
     {
       "id": 0,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(1)",
-      "text": "En resumen",
+      "text": "Playbook &middot; 11 de mayo de 2026 &middot; 9 min de lectura &middot; Por Don Goldstein",
       "start": 0,
-      "end": 0.72
+      "end": 8.02
     },
     {
       "id": 1,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "Deslisté uno de los dos restaurantes DMV de DoorDash el 7 de abril de 2026; la renta diaria disminuyó un 11% en la primera semana y se recuperó hasta quedar dentro del 2,6% de la línea base para la cuarta semana.",
-      "start": 1.07,
-      "end": 15.55
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Si estás considerando eliminar tu restaurante de DoorDash, los 30 días siguientes tienen una forma predecible. Este es el libro de jugadas — lo que puedes esperar cada semana, qué costos se flexibilizan, qué quejas llegan y qué hace la mezcla de canales por lo general. Rangos ilustrativos, no un estudio de caso. Las matemáticas subyacentes de margen provienen de la DoorDash margin walk .",
+      "start": 8.37,
+      "end": 29.45
     },
     {
       "id": 2,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "La ganancia mantenida en dólares por día aumentó un 56% con respecto a la línea base para la cuarta semana porque cada pedido recapturado se desplazó del canal DoorDash (18,4%) al canal directo (28,9%).",
-      "start": 15.87,
-      "end": 31.13
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "En resumen",
+      "start": 29.97,
+      "end": 30.69
     },
     {
       "id": 3,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "Ganancia mantenida total: ~4.000 dólares a lo largo del mes en un restaurante con una facturación bruta de 58.000 dólares. La plataforma estaba compuesta por un 90% de pedidos de relación desplazados y un 10% de pedidos nuevos — no era lo que me había dicho a mí mismo.",
-      "start": 31.45,
-      "end": 50.67
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Si eliminas tu restaurante de DoorDash sin un reemplazo de descubrimiento, espera una caída de un dígito en la semana uno en los ingresos, ya que el tráfico de mercado de la plataforma se detiene; la mayoría de los operadores recuperan la mayor parte de ello en la semana cuatro, ya que los pedidos recapturados se desplazan al canal directo.",
+      "start": 31.04,
+      "end": 49.97
     },
     {
       "id": 4,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(2)",
-      "text": "Notas de campo &middot; 11 de mayo de 2026 &middot; 9 min de lectura &middot; Por Don Goldstein",
-      "start": 51.19,
-      "end": 59.46
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "La margen mantenida por ticket aumenta porque cada pedido recapturado se mueve del canal de terceros con una tasa de retención de ~18% al canal directo con una tasa de retención de ~29% (números del <a href=\"/blog/an-honest-doordash-math-for-independent-restaurants-twenty twenty-six/\">DoorDash margin walk</a>).",
+      "start": 50.29,
+      "end": 72.1
     },
     {
       "id": 5,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(3)",
-      "text": "Deslisté uno de mis dos restaurantes DMV de DoorDash el 7 de abril de 2026 — el más pequeño, aquel donde las matemáticas del canal eran las peores. Este es el informe de campo de 30 días: qué cambió en realidad, qué no, dónde tenía razón, dónde me equivoqué y los montos en dólares asociados con cada punto. No es una recomendación. Solo los números, contados con honestidad.",
-      "start": 59.81,
-      "end": 81.4
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "La plataforma es principalmente una superficie de desplazamiento de relaciones para independientes establecidos — el descubrimiento neto nuevo es más pequeño de lo que el operador cree por lo general. Esta pieza es un libro de jugadas, no un estudio de caso; los números son rangos ilustrativos de la DoorDash margin walk.",
+      "start": 72.42,
+      "end": 90.2
     },
     {
       "id": 6,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(4)",
-      "text": "Antes del 7 de abril, el restaurante estaba haciendo aproximadamente 1.800 pedidos de aplicaciones de terceros por trimestre a través de DoorDash solo, con un ticket promedio de 12 meses de 39,60 dólares. Nivel Marketplace Plus, comisión del 30%, la tarifa estándar — la misma que expliqué en la explicación de la ganancia de DoorDash tres semanas antes de tomar la decisión. El porcentaje mantenido de esos pedidos, después de todas las tarifas y los costos de comida y mano de obra, era del 18,4%. Había estado manteniendo el canal durante dos años con la suposición de que la superficie de descubrimiento valía el impuesto a la ganancia. Las matemáticas, finalmente por escrito, decían que no era así.",
-      "start": 81.92,
-      "end": 124.05
+      "text": "Comienza con las matemáticas del canal. En el nivel estándar de Marketplace Plus (comisión del 30% ) , la tasa de retención en un ticket de terceros se acerca al 18% después de todos los gastos y costos de comida y mano de obra; el mismo ticket ordenado de forma directa mantiene cerca del 29%. Esos son los dos números en los que se basa toda la decisión de eliminar, y el paseo lado a lado está en la DoorDash margin walk . El caso para eliminar no es que la plataforma sea mala — es que el operador suele llevar el canal con una creencia sobre el descubrimiento que no sobrevive al contacto con sus propios libros.",
+      "start": 90.72,
+      "end": 126.7
     },
     {
       "id": 7,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(5)",
-      "text": "Deslisté un domingo por la noche. Cerré la tienda en línea de DoorDash, no la volví a abrir, no hice un anuncio público, no la mencioné en Instagram. Las llamadas telefónicas y los paseos continuaron como de costumbre. Aquí está lo que cada una de las cuatro semanas siguientes se parecía.",
-      "start": 124.57,
-      "end": 140.5
+      "text": "La decisión se toma en una noche de domingo: cerrar la tienda, no volver a abrir, no anunciar. Las llamadas telefónicas y los paseos siguen llegando. Los próximos cuatro semanas tienen una forma que vale la pena conocer de antemano.",
+      "start": 127.22,
+      "end": 140.12
     },
     {
       "id": 8,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(1)",
-      "text": "Semana 1: pánico que no llegó.",
-      "start": 141.6,
-      "end": 143.47
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "Seis métricas destacadas, la dirección en la que cada una se mueve durante los primeros treinta días después de eliminar. Ingresos brutos semanales: una caída de un dígito en la semana uno, recupera la mayor parte de la brecha en la semana cuatro, ya que el canal directo rellena. Ingresos fuera de las instalaciones, entrega y recogida: caen bruscamente porque el volumen de terceros sale del canal y el directo solo rellena parcialmente. Tamaño del ticket promedio: aumenta porque los pedidos recapturados son más grandes que los pedidos de terceros. Tasa de clientes repetidos: aumenta, porque los pedidos que fluyen a través de su canal directo son en su mayoría pedidos de relación que ya iban a volver. Dólares netos mantenidos por ticket: esta es la noticia principal. Aumenta bruscamente porque cada pedido recapturado se desplaza del canal de terceros con una tasa de retención del 18% al canal directo con una tasa de retención del 29%. Gasto de marketing semanal: cae a cerca de cero porque la tarifa de lista patrocinada en la aplicación de terceros ya no se ejecuta.",
+      "start": 140.92,
+      "end": 202.44
     },
     {
       "id": 9,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(6)",
-      "text": "Me había preparado para una disminución de la renta del 20-30%. El canal DoorDash estaba haciendo aproximadamente 580 dólares/día en pedidos brutos antes de la comisión. Neto para el restaurante, después de las tarifas, la comida y la mano de obra: aproximadamente 107 dólares/día. La expectativa al principio era que vería evaporarse 400-500 dólares/día de esa renta bruta y que tal vez el 60% de ella regresaría a través de otros canales dentro de un trimestre.",
-      "start": 144.17,
-      "end": 175.81
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Semana 1: pánico que no llegó.",
+      "start": 203.54,
+      "end": 205.41
     },
     {
       "id": 10,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(7)",
-      "text": "Lo que en realidad sucedió en la primera semana: la renta en todos los canales disminuyó 215 dólares/día, no 580 dólares. Aproximadamente el 63% de lo que esperaba perder, lo perdí. Los pedidos DoorDash que desaparecieron se redistribuyeron parcialmente dentro de la misma semana — algunos a paseos, algunos a pedidos telefónicos directos, algunos al sitio web propio del restaurante. Nada migró a Uber Eats o Grubhub porque el restaurante no está en ninguno de ellos.",
-      "start": 176.33,
-      "end": 204.35
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "La mayoría de los operadores se preparan para una caída del 20-30% en los ingresos en la semana uno. La caída real es usualmente más pequeña porque el volumen de pedidos de terceros de la plataforma se redistribuye parcialmente dentro de la misma semana — algunos a paseos, algunos a pedidos telefónicos, algunos a su propio sitio web. La caída es real, pero la mayor sorpresa es cuánto de ella no se va para siempre.",
+      "start": 206.11,
+      "end": 229.26
     },
     {
       "id": 11,
-      "kind": "figure",
-      "selector": "#post-body > figure:nth-of-type(1)",
-      "text": "Ingresos diarios en todos los canales durante las cuatro semanas después de dejar de estar en DoorDash. La semana base, justo antes de dejar de estar en la lista, fue un promedio de $1,940 por día en ingresos brutos totales en todos los canales. La semana uno después de dejar de estar en la lista, el promedio diario cayó a $1,725, una caída del 11,1%. La semana dos se recuperó a $1,780, una brecha del 8,2% con la base. La semana tres se recuperó aún más a $1,820, una brecha del 6,2%. La semana cuatro terminó en $1,890, solo una brecha del 2,6% con la base antes de dejar de estar en la lista. Mientras tanto, la *margen mantenida* en dólares reales por día pasó de aproximadamente $230 en la base a $360 en la semana cuatro, un aumento del 56%. Menos ingresos, más margen retenida.",
-      "start": 205.15,
-      "end": 262.12
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "La recuperación de la primera semana no es pasiva. El libro de jugadas de siete días a continuación es lo que se debe ejecutar a partir del lunes por la mañana, el día después de la desvinculación. Nada de esto requiere una nueva herramienta, un nuevo proveedor o un nuevo ítem en el estado de pérdidas y ganancias. El orden es importante: los movimientos con mayor conversión van primero mientras la atención del cliente aún está en el cambio.",
+      "start": 229.78,
+      "end": 252.73
     },
     {
       "id": 12,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(2)",
-      "text": "Semana 2: las llamadas de \"¿DoorDash está cerrado\".",
-      "start": 263.22,
-      "end": 266.27
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(2)",
+      "text": "El libro de jugadas de siete días para la primera semana sin DoorDash. Día uno, lunes: enviar un mensaje de texto a los invitados que repiten de la exportación del P O S con una nota personal y un código de pedido directo con un 10% de descuento. Día dos, martes: reescribir la página del menú del restaurante para que el botón de pedido directo esté por encima de los enlaces de terceros, más grande, en el color de la marca. Día tres, miércoles: publicar una actualización de Google Business Profile con el nuevo enlace de pedido directo fijado. Día cuatro, jueves: fijar una publicación de Instagram y una historia de Instagram que explique el cambio. Día cinco, viernes: imprimir tarjetas de relleno de bolsa que lean \"la próxima vez, ahorre la tarifa de la plataforma ordenando directamente\". Día seis, sábado: capacitar al anfitrión y a la línea sobre el nuevo guión de canal directo para cuando llegue una pregunta de terceros. Día siete, domingo: extraer los números de la primera semana y compararlos con la proyección.",
+      "start": 253.53,
+      "end": 309
     },
     {
       "id": 13,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(8)",
-      "text": "El volumen de quejas alcanzó su punto máximo en el día 11. Los clientes que habían ordenado regularmente a través de DoorDash comenzaron a llamar al restaurante para preguntar si estábamos cerrados, si DoorDash estaba roto o si su historial de pedidos había sido eliminado. La aplicación DoorDash, de manera predecible, ya no nos mostraba — para un cliente acostumbrado a ordenar a través de DoorDash, la ausencia se lee como que el restaurante ha desaparecido, no como una elección deliberada para dejar la plataforma.",
-      "start": 266.97,
-      "end": 296.23
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Semana 2: las llamadas de \"¿DoorDash está cerrado?\".",
+      "start": 310.1,
+      "end": 313.11
     },
     {
       "id": 14,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(9)",
-      "text": "Quejas totales del lado del cliente en la semana 2: 23 llamadas telefónicas, 4 Instagram DMs, 1 reseña negativa en Google (que se eliminó más tarde cuando expliqué la situación). Respondí a cada una de ellas de la misma manera: dejamos DoorDash, puedes ordenar directamente desde nuestro sitio web a un precio 10% más bajo, aquí te dejo el enlace. De esas 28 conversaciones, 19 se convirtieron en un pedido directo dentro de las dos semanas siguientes. 6 eligieron dejar de ordenar por completo. 3 todavía \"están pensando en ello\" según su última respuesta.",
-      "start": 296.75,
-      "end": 329.69
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "El volumen de quejas suele alcanzar su máximo en la segunda semana. Los clientes que habían ordenado a través de la plataforma comienzan a llamar al restaurante para preguntar si está cerrado, si la aplicación está rota o si su historial de pedidos ha sido eliminado. La aplicación de la plataforma, predeciblemente, ya no muestra el restaurante — para un cliente acostumbrado a ordenar de esa manera, la ausencia se lee como que el restaurante ha desaparecido, no como una elección deliberada para dejar la plataforma.",
+      "start": 313.81,
+      "end": 342
     },
     {
       "id": 15,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(3)",
-      "text": "Semana 3: la línea de costo que se rompió.",
-      "start": 330.79,
-      "end": 333.35
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "La mayoría de estas conversaciones son recuperables. El guión: dejamos la plataforma, puede ordenar directamente desde el sitio web a un precio más bajo, aquí está el enlace. Algunos se convierten de inmediato. Algunos dejan de ordenar. Un puñado se queda en el \"estoy pensando en ello\" bucket. Presupuestar un pequeño crédito de canal directo (10-20 dólares) para las quejas más altas — la mayoría de las reseñas negativas desaparecen una vez que el cliente acepta el crédito y realiza un pedido directo.",
+      "start": 342.52,
+      "end": 370.79
     },
     {
       "id": 16,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(10)",
-      "text": "Esta es la que no vi venir. El artículo de embalaje aumentó un 18% en la semana 3, a pesar de que los pedidos totales se habían recuperado hasta estar dentro del 6% de la base. Causa: los pedidos que migraron a directos eran más grandes en promedio ($46,30 por ticket vs los $39,60 de la base), y pedían más artículos, lo que significaba más embalaje por pedido, especialmente para los pedidos de entrega que ahora estábamos cumpliendo a través de la tarifa plana de DoorDash Drive. El costo de embalaje por pedido de $1,40 aumentó a $1,65 por pedido. Un pequeño dolor de cabeza operativo; no material en términos de margen.",
-      "start": 334.05,
-      "end": 373.22
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Semana 3: la línea de costos que se flexiona.",
+      "start": 371.89,
+      "end": 374.63
     },
     {
       "id": 17,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(11)",
-      "text": "La cosa que esperaba que se rompiera — la mano de obra — no se rompió en absoluto. El horario de los cocineros ya cubría el volumen de pedidos; solo cambiamos algunas horas de la preparación de DoorDash de la tarde tardía a la preparación para los comensales de la tarde temprana. No hubo cambios en la cantidad de empleados. Same presupuesto laboral. La línea de costo laboral disminuyó ligeramente porque la cocina no estaba ejecutando la segunda ola de embalaje y empacado que los pedidos de DoorDash habían estado generando entre las 8 PM y el cierre.",
-      "start": 373.74,
-      "end": 404.72
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "La línea inesperada suele ser el embalaje. Los pedidos recuperados son más grandes que los pedidos de terceros — boletos más grandes, más artículos por pedido, más contenedores de entrega por pedido si se está cumpliendo a través de un servicio de última milla como DoorDash Drive con tarifa plana. El costo de embalaje por pedido aumenta incluso cuando el volumen total de pedidos es plano. Es un dolor de cabeza operativo, no un problema de margen.",
+      "start": 375.33,
+      "end": 399.65
     },
     {
       "id": 18,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(4)",
-      "text": "Semana 4: donde aterrizó.",
-      "start": 405.82,
-      "end": 407.57
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "La línea que usualmente no se rompe es la mano de obra. Los horarios de los cocineros de línea absorben el cambio de canal al mover horas de la preparación de terceros de fin de tarde a la preparación de comensales de mediados de tarde. No hay cambios en la cantidad de empleados, presupuesto de mano de obra similar. La cocina deja de ejecutar la segunda ola de embalaje y empacado que los pedidos de la plataforma generaban entre las 8 PM y el cierre.",
+      "start": 400.17,
+      "end": 425.36
     },
     {
       "id": 19,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(12)",
-      "text": "A finales de abril, los ingresos diarios se habían recuperado a dentro del 2.6% de la línea base. Dentro del ruido de fondo para este restaurante, que tiene una variación semanal de ingresos del 8-10% solo por el clima y el calendario de eventos. Sin embargo, la margen mantenida en dólares por día era un 56% mayor que la línea base, porque cada orden recapturada ahora tenía una margen de canal directo del 28.9% en lugar de la margen DoorDash del 18.4%. A lo largo del mes, la ganancia de margen mantenida fue de aproximadamente 4,000 dólares en dólares absolutos — en un restaurante que hace aproximadamente 58,000 dólares al mes en brutos.",
-      "start": 408.27,
-      "end": 450.95
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "Semana 4: donde aterriza.",
+      "start": 426.46,
+      "end": 428.23
     },
     {
       "id": 20,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(13)",
-      "text": "Las quejas cesaron alrededor del día 18. La reseña Google que había sido negativa se eliminó el día 21 cuando el cliente aceptó un crédito de 20 dólares hacia una orden directa y nos pidió que elimináramos la reseña ellos mismos. El volumen Instagram DM se normalizó a su línea base previa a la desvinculación el día 24.",
-      "start": 451.47,
-      "end": 470.94
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "Al final del mes, los ingresos suelen estar de nuevo dentro de un porcentaje de un solo dígito con respecto a la línea base — dentro del ruido que la mayoría de los independientes ya ven semana a semana debido al clima, los eventos y la estacionalidad. La margen mantenida en dólares por día, sin embargo, es materialmente mayor que la línea base, porque cada pedido recapturado ahora tiene una tasa de margen directa de ~29% en lugar de la tasa de margen de ~18% en el canal de terceros. El cambio es lo que hace que funcione la matemática; la renta total es menor, pero los dólares retenidos por ticket son mayores.",
+      "start": 428.93,
+      "end": 465.61
     },
     {
       "id": 21,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(5)",
-      "text": "Lo que me equivoqué.",
-      "start": 472.04,
-      "end": 473.13
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "La forma más clara de ver por qué es poner los dos tickets lado a lado — el mismo pedido promedio de $42, procesado a través de la pila de tarifas de terceros y la pila de tarifas directas:",
+      "start": 466.13,
+      "end": 477.37
     },
     {
       "id": 22,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(14)",
-      "text": "Subestimé cuánto del canal DoorDash ya estaba \"desplazado\" en lugar de \"nuevo\". La recuperación fue más rápida de lo que había planeado porque la mayoría de esas órdenes eran clientes que ya nos conocían; la plataforma era solo un hábito, no una superficie de descubrimiento. Había asumido que la plataforma me traía alrededor del 40% de clientes nuevos y el 60% de clientes existentes que utilizaban una interfaz más conveniente. La descomposición real fue más cercana al 10/90. La superficie de descubrimiento era en gran parte una capa de vanidad; la relación ya era mía.",
-      "start": 473.83,
-      "end": 507.77
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(3)",
+      "text": "Dos desgloses de tickets lado a lado, ambos en un pedido de $42. Día cero, en DoorDash: una comisión del 30% toma $12,60, el procesamiento de pagos toma $1,43, la tarifa de lista patrocinada toma $1,20, el embalaje toma $1,40, el costo de alimentos es del 28% o $11,76, el trabajo variable es del 14% o $5,88. Lo que queda en el restaurante: $7,73, o 18,4% del ticket. Día 30, fuera de DoorDash, pedido directo: Stripe el procesamiento toma $1,51, la amortización de marketing de canal directo toma $0,80 por pedido, el embalaje toma $1,40, el costo de alimentos es el mismo $11,76, el trabajo variable es el mismo $5,88, la tarifa plana de última milla DoorDash Drive, donde corresponde, toma $8,50. Lo que queda en el restaurante: $12,15, o 28,9% del ticket. La tasa de margen por ticket aumentó del 18,4% al 28,9%, un cambio de $4,42 por pedido hacia el restaurante.",
+      "start": 478.17,
+      "end": 545.55
     },
     {
       "id": 23,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(15)",
-      "text": "También sobreestimé el impulso de conversión en el sitio web directo. El descuento del 10% que ofrecí a los clientes recapturados funcionó, pero funcionó con una tasa de conversión más baja de lo que había proyectado — el 68% de los clientes quejosos se convirtieron a directo, no el 80% que había esperado. El 32% simplemente dejó de ordenar con esa frecuencia, lo que está bien pero no es lo mismo que la historia de \"todos se convertirán\" que me había vendido antes de la desvinculación.",
-      "start": 508.29,
-      "end": 537.3
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(4)",
+      "text": "El mismo ticket de $42 en el día 30, pedido directo. Stripe el procesamiento de pagos toma $1,51. La amortización de marketing de canal directo, en su mayoría el costo de las tarjetas de relleno de bolsas y el tiempo del operador, toma $0,80 por pedido. El embalaje se mantiene en $1,40. El costo de alimentos se mantiene en $11,76, 28%. El trabajo variable se mantiene en $5,88, 14%. La tarifa plana de última milla DoorDash Drive, donde corresponde, toma $8,50. Lo que queda en el restaurante: $12,15, o 28,9% del ticket. La tasa de margen por ticket aumentó del 18,4% en el día cero al 28,9% en el día 30, un cambio de $4,42 por pedido hacia el restaurante.",
+      "start": 546.35,
+      "end": 595.13
     },
     {
       "id": 24,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(6)",
-      "text": "Lo que me equivoqué.",
-      "start": 538.4,
-      "end": 539.49
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "El volumen de quejas suele disminuir alrededor de la tercera semana. La reseña más fuerte o DM normalmente se calma una vez que el cliente acepta un pequeño crédito de canal directo y realiza un pedido a través del sitio web. En la semana cuatro, los canales de mensaje vuelven a su línea base previa a la deslista.",
+      "start": 595.88,
+      "end": 613.69
     },
     {
       "id": 25,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(16)",
-      "text": "La premisa básica — que el canal DoorDash era un impuesto a la margen del 30% para una renta incremental del 20% — se mantuvo. El aumento del 56% en la margen mantenida en la semana cuatro es la evidencia más clara que podré obtener para esa tesis. No voy a regresar. También acerté al decir que el segundo restaurante, que está en un barrio diferente con dinámicas de tráfico peatonal diferentes, debería permanecer en la plataforma — la densidad urbana y el flujo Uber allí significan que el canal DoorDash es genuinamente impulsado por el descubrimiento, no solo por el desplazamiento de relaciones.",
-      "start": 540.19,
-      "end": 575.42
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "Lo que los operadores suelen hacer mal.",
+      "start": 614.79,
+      "end": 617.01
     },
     {
       "id": 26,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(17)",
-      "text": "Don Goldstein gestiona dos restaurantes DMV y ejecuta Muntin Digital. El estudio de caso anterior se basa en datos operativos reales de uno de esos dos restaurantes, del 7 de abril al 5 de mayo de veintiséis. La identidad del restaurante se mantiene en anonimato por preferencia del operador.",
-      "start": 575.94,
-      "end": 593
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "El error de interpretación más común es cuánto del volumen de la relación en el canal de terceros ya estaba \"desplazado\" en lugar de ser una nueva descubierta. El operador cree que la plataforma atrae a ~40% de clientes nuevos y 60% de clientes existentes que utilizan una interfaz más conveniente. Después de dejar de listar, la mayoría de los operadores descubren que la proporción es más cercana a 10/90 — la superficie de descubrimiento era en gran medida una capa de vanidad; la relación ya era suya. La recuperación es más rápida de lo esperado porque la mayoría de esos pedidos iban a regresar de todos modos.",
+      "start": 617.71,
+      "end": 654.59
     },
     {
       "id": 27,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(18)",
-      "text": "Continuar",
-      "start": 593.52,
-      "end": 594.18
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "El otro error de interpretación común es la tasa de conversión de una oferta de recaptura. Un descuento del 10% en el canal directo funciona, pero se convierte a una tasa más baja de lo que los operadores suelen proyectar. Algunos clientes dejan de pedir con la frecuencia anterior — no es catastrófico, pero no es la historia de \"todos se convertirán\" que la mayoría de los operadores se venden a sí mismos antes de dejar de listar.",
+      "start": 655.11,
+      "end": 677.74
     },
     {
       "id": 28,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
-      "text": "Una matemática DoorDash honesta — el paseo de margen subyacente",
-      "start": 594.53,
-      "end": 598.41
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(6)",
+      "text": "Lo que la matemática hace bien.",
+      "start": 678.84,
+      "end": 680.62
     },
     {
       "id": 29,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
-      "text": "Uber vs DoorDash vs Grubhub — la comparación de tres plataformas",
-      "start": 598.73,
-      "end": 603.25
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "La premisa básica — que el canal de terceros es aproximadamente un impuesto a la margen del 30% sobre lo que puede ser una superficie de ingresos incrementales más pequeña de lo que el operador cree — se mantiene en la mayoría de los restaurantes independientes. El aumento de la margen en los pedidos directos es la evidencia más clara disponible para la tesis. La decisión funciona para los restaurantes donde el canal es principalmente un desplazamiento de la relación; no funciona para los restaurantes en contextos verdaderamente impulsados por el descubrimiento (densidad urbana, flujo de tránsito, barrios turísticos) donde la plataforma en realidad atrae a nuevos clientes.",
+      "start": 681.32,
+      "end": 719.28
     },
     {
       "id": 30,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
-      "text": "Herramienta Margin Math — ejecuta la proyección con tus propios números antes de decidir",
-      "start": 603.57,
-      "end": 608.42
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "Don Goldstein es un operador de restaurantes y dirige Muntin Digital. Esta guía describe la forma típica de los primeros 30 días después de una cancelación de lista, anclada en la explicación de la economía del canal en Una matemática honesta de DoorDash para restaurantes independientes. Los números en este artículo son rangos ilustrativos, no resultados medidos de un restaurante específico.",
+      "start": 719.8,
+      "end": 741.58
     },
     {
       "id": 31,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
-      "text": "Auditoría de 499 dólares — el diagnóstico escrito para tu mezcla de canales",
-      "start": 608.74,
-      "end": 614.24
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(19)",
+      "text": "Continúa",
+      "start": 742.1,
+      "end": 742.77
     },
     {
       "id": 32,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(19)",
-      "text": "Puntos clave",
-      "start": 614.59,
-      "end": 615.39
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Una matemática honesta — el paseo de la margen subyacente",
+      "start": 743.12,
+      "end": 746.39
     },
     {
       "id": 33,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
-      "text": "Las quejas de los clientes alcanzaron su punto máximo en el día 11 con 28 eventos de contacto; el 68% de los quejosos se convirtieron a directo dentro de dos semanas con un descuento del 10%, el 32% dejó de ordenar.",
-      "start": 615.74,
-      "end": 630.98
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Uber vs DoorDash vs Grubhub — la comparación de tres plataformas",
+      "start": 746.71,
+      "end": 751.23
     },
     {
       "id": 34,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
-      "text": "El costo de empaque aumentó un 18% en la semana tres porque las órdenes recapturadas tenían un ticket promedio más grande (46 dólares vs 39 dólares) y más artículos por orden.",
-      "start": 631.3,
-      "end": 643.49
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "Herramienta Margin Math — ejecuta la proyección con tus propios números antes de decidir",
+      "start": 751.55,
+      "end": 756.4
     },
     {
       "id": 35,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
-      "text": "La mano de obra no se resintió — el horario de los cocineros de línea absorbió el cambio de canal al trasladar horas de la preparación de tarde-noche DoorDash a la preparación para clientes que llegan sin reserva de media tarde.",
-      "start": 643.81,
-      "end": 656.47
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "Audit de $499 — el diagnóstico escrito para tu mezcla de canales",
+      "start": 756.72,
+      "end": 761.87
     },
     {
       "id": 36,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
-      "text": "La reseña Google que se volvió negativa se produjo al día 21 cuando el cliente aceptó un crédito directo de $20 en el canal — la mayoría de las quejas por eliminación de listado se pueden resolver.",
-      "start": 656.79,
-      "end": 668.68
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(20)",
+      "text": "Puntos clave",
+      "start": 762.22,
+      "end": 763.02
     },
     {
       "id": 37,
       "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "Planifica eventos de contacto de quejas de clientes en las primeras dos semanas; ofrecer un pequeño crédito en el canal directo convierte a la mayoría de los quejosos en pedidos directos.",
+      "start": 763.37,
+      "end": 773.83
+    },
+    {
+      "id": 38,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "El costo de embalaje aumenta en consonancia con el tamaño del ticket promedio porque los pedidos recapturados son más grandes que los pedidos de terceros.",
+      "start": 774.15,
+      "end": 782.94
+    },
+    {
+      "id": 39,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "La mano de obra a menudo absorbe el cambio de canal al mover horas de la preparación de terceros de fin de tarde a la preparación de caminata de mediados de tarde.",
+      "start": 783.26,
+      "end": 792.2
+    },
+    {
+      "id": 40,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
+      "text": "La mayoría de las quejas de cancelación de lista son resolubles con un crédito en el canal directo; presupuesta un puñado de ofertas pequeñas en el primer mes.",
+      "start": 792.52,
+      "end": 801.27
+    },
+    {
+      "id": 41,
+      "kind": "list",
       "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(5)",
-      "text": "Este es un restaurante en un mercado; el segundo restaurante que gestiono sigue en la plataforma porque la dinámica de densidad urbana y flujo Uber allí es genuinamente orientada a la descubierta.",
-      "start": 669,
-      "end": 680.19
+      "text": "Los mercados impulsados por el descubrimiento (densidad urbana, flujo de tránsito) pueden mantener que la plataforma valga la pena ejecutar; la matemática de la margen del canal por canal, no una regla en blanco.",
+      "start": 801.59,
+      "end": 813.55
     }
   ]
 }

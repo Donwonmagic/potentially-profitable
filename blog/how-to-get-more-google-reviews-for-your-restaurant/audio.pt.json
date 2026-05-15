@@ -1,451 +1,451 @@
 {
   "version": 1,
-  "generatedAt": "2026-05-10T06:44:23.668Z",
+  "generatedAt": "2026-05-15T00:42:37.529Z",
   "engine": "kokoro",
   "model": "kokoro-v1.0.onnx",
   "voice": "pm_alex",
   "language": "pt",
-  "total": 669.51,
+  "total": 683.65,
   "chunks": [
     {
       "id": 0,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(1)",
-      "text": "Leia este artigo em português &rarr;",
+      "text": "Em resumo",
       "start": 0,
-      "end": 2.27
+      "end": 0.81
     },
     {
       "id": 1,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(2)",
-      "text": "TL;DR",
-      "start": 2.62,
-      "end": 3.63
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "As avaliações se somam — ir de 50 avaliações para algumas centenas aumenta significativamente o clique na página do pacote. Tanto as próprias diretrizes do Google sobre sinais de classificação local quanto a prática dos operadores apontam para a mesma direção; a magnitude específica varia de acordo com o mercado.",
+      "start": 1.16,
+      "end": 19.46
     },
     {
       "id": 2,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "As avaliações se somam — um restaurante que passa de 50 para 200 avaliações geralmente vê um aumento de 15-25% no clique na ficha de pacote.",
-      "start": 3.98,
-      "end": 14.32
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Sistema de cinco peças: um cartão QR impresso, uma linha de mensagem de acompanhamento, um texto de follow-up, um CTA (chamada para ação) no site e um gerente que realmente lê as avaliações.",
+      "start": 19.78,
+      "end": 31.09
     },
     {
       "id": 3,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "Sistema de cinco peças: um cartão QR impresso, uma linha de mensagem de acompanhamento, um texto de follow-up, um CTA (chamada para ação) no site e um gerente que realmente lê as avaliações.",
-      "start": 14.64,
-      "end": 25.95
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Não compre avaliações, não bloqueie, não filtre — a detecção de spam do Google melhorou dramaticamente.",
+      "start": 31.41,
+      "end": 37.25
     },
     {
       "id": 4,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "Não compre avaliações, não bloqueie, não filtre — a detecção de spam do Google melhorou dramaticamente.",
-      "start": 26.27,
-      "end": 32.11
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Leia este artigo em espanhol →",
+      "start": 37.77,
+      "end": 40.12
     },
     {
       "id": 5,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(1)",
       "text": "Por que as avaliações importam mais do que você pensa.",
-      "start": 33.21,
-      "end": 36.39
+      "start": 41.22,
+      "end": 44.4
     },
     {
       "id": 6,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(3)",
       "text": "As avaliações do Google são o sinal de confiança mais visível que um restaurante tem. Antes que um novo cliente entre pela sua porta, ele já leu o que as últimas trinta pessoas disseram sobre você — e fez isso na mesma tela onde verificou seus horários, menu e localização. Seu Google Business Profile é a vitrine para as pessoas que ainda não entraram, e as avaliações são a exibição na janela.",
-      "start": 37.09,
-      "end": 57.88
+      "start": 45.1,
+      "end": 65.89
     },
     {
       "id": 7,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(4)",
       "text": "Mas aqui está a parte que a maioria dos proprietários de restaurantes perde: as avaliações não são apenas prova social. Elas são um fator de classificação. A própria documentação do Google confirma que a contagem de avaliações e a pontuação influenciam como seu negócio é classificado nos resultados de busca local e no Google Maps. Pesquisas da indústria de SEO também mostram consistentemente que a recência importa — restaurantes com um fluxo constante de avaliações recentes tendem a ser classificados acima daqueles com perfis desatualizados. Um restaurante com 340 avaliações e uma média de 4,6 aparecerá consistentemente acima de um restaurante idêntico com 28 avaliações e uma média de 4,8, porque o Google pondera o volume junto com a contagem de estrelas, e as avaliações recentes sinalizam um negócio ativo.",
-      "start": 58.4,
-      "end": 108.91
+      "start": 66.41,
+      "end": 116.92
     },
     {
       "id": 8,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(5)",
-      "text": "A matemática é simples. Se você serve 200 refeições por dia e 1% delas deixa uma avaliação, você está adicionando duas avaliações por dia — sessenta por mês. A maioria dos seus concorrentes está adicionando duas por mês, talvez cinco. Em seis meses, você é o restaurante mais avaliado na sua região no Google Maps. Isso não é uma campanha de marketing. Isso é um sistema.",
-      "start": 109.43,
-      "end": 130.61
+      "text": "A matemática é simples. Se você serve 200 clientes por dia e 1% deles deixam uma avaliação, você está adicionando duas avaliações por dia — sessenta por mês. A maioria dos seus concorrentes está adicionando duas avaliações por mês, talvez cinco. Em seis meses, você é o restaurante mais avaliado em sua região no Google Maps. Isso não é uma campanha de marketing. Isso é um sistema.",
+      "start": 117.44,
+      "end": 138.97
     },
     {
       "id": 9,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(2)",
       "text": "O sistema: cinco peças que funcionam sozinhas.",
-      "start": 131.71,
-      "end": 134.41
+      "start": 140.07,
+      "end": 142.77
     },
     {
       "id": 10,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(6)",
-      "text": "Eu criei um programa de avaliações no Tacombi's Bethesda e Arlington que não dependia de nenhuma pessoa se lembrar de pedir. Aqui está a estrutura, honestamente — não é complicada, é apenas disciplinada.",
-      "start": 135.11,
-      "end": 146.68
+      "text": "Eu criei um programa de avaliações nas localizações do Tacombi, Bethesda e Arlington que não dependia de ninguém se lembrar de pedir. Aqui está a estrutura, honestamente — não é complicada, é apenas disciplinada.",
+      "start": 143.47,
+      "end": 155.71
     },
     {
       "id": 11,
       "kind": "figure",
       "selector": "#post-body > figure:nth-of-type(1)",
-      "text": "Cinco peças, em ordem. Uma: o cartão QR — imprima uma vez, entregue um cartão com um link direto para a avaliação. Dois: o timing — entregue após a refeição ser paga, nunca com a conta. Três: o comprometimento da equipe — explique o porquê, faça com que seja zero-esforço, nunca o ligue ao desempenho. Quatro: o hábito de resposta — cinco minutos por dia, todas as avaliações, mantidas curtas e humanas. Cinco: a visibilidade no local — um pequeno sinal perto do host stand mostrando sua classificação ao vivo. Três dessas são configurações de uma vez. Duas são hábitos que se somam ao longo dos meses.",
-      "start": 147.48,
-      "end": 180
+      "text": "Cinco peças, em ordem. Uma: o cartão QR — impresso uma vez, cartão de mão com um link direto para a avaliação. Dois: o timing — entregue após a refeição ser paga, nunca com a conta. Três: a adesão da equipe — explique o porquê, faça com que seja zero-esforço, nunca vincule ao desempenho. Quatro: o hábito de resposta — cinco minutos por dia, todas as avaliações, mantidas curtas e humanas. Cinco: a visibilidade dentro do estabelecimento — um pequeno sinal perto do host stand mostrando sua classificação ao vivo. Três dessas são configurações de uma vez. Duas são hábitos que se somam ao longo dos meses.",
+      "start": 156.51,
+      "end": 189.81
     },
     {
       "id": 12,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(1)",
       "text": "1. O cartão QR.",
-      "start": 181.1,
-      "end": 182.38
+      "start": 190.91,
+      "end": 192.19
     },
     {
       "id": 13,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(7)",
-      "text": "Imprima um cartão pequeno — do tamanho de um recibo ou de um cartão-postal — com um código QR que linka diretamente para a página de avaliações do Google. Não para o seu site. Não para o seu Instagram. O prompt de avaliação do Google específico, para que o cliente digitalize, toque em uma classificação de estrelas, digite uma frase e esteja pronto em menos de trinta segundos.",
-      "start": 183.08,
-      "end": 203.29
+      "text": "Imprima um cartão pequeno — do tamanho de um recibo ou de um cartão-postal — com um código QR que links diretamente para a página de avaliações do Google. Não para o seu site. Não para o seu Instagram. O prompt de avaliação do Google específico, para que o cliente digitalize, toque na classificação de estrelas, digite uma frase e termine em menos de trinta segundos.",
+      "start": 192.89,
+      "end": 212.72
     },
     {
       "id": 14,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(8)",
       "text": "No Tacombi, imprimimos cartões-postais bilíngues (inglês e espanhol) que diziam \"Amam tacos? Deixe o mundo saber!\" com um código QR que linkava diretamente à página de revisão do Google. O cartão também tinha um desconto de bairro no verso — mas esse desconto era uma oferta de boas-vindas de vizinho independente, não condicionada a deixar uma revisão. Essa distinção é importante: as políticas do Google proíbem oferecer qualquer incentivo em troca de uma revisão, ponto. Você pode pedir revisões e pode executar promoções separadas, mas não pode vincular as duas coisas.",
-      "start": 203.81,
-      "end": 236.28
+      "start": 213.24,
+      "end": 245.71
     },
     {
       "id": 15,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(9)",
       "text": "Como obter o link de revisão direto: abra o Google Maps, encontre seu restaurante, clique em \"Escrever uma revisão\" e copie a URL do seu navegador. Ou vá para o painel do Google Business Profile, clique em \"Pedir revisões\" e o Google fornece um link curto que você pode colar em qualquer gerador de código QR.",
-      "start": 236.8,
-      "end": 254.36
+      "start": 246.23,
+      "end": 263.79
     },
     {
       "id": 16,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(2)",
       "text": "2. O timing.",
-      "start": 255.46,
-      "end": 256.46
+      "start": 264.89,
+      "end": 265.89
     },
     {
       "id": 17,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(10)",
-      "text": "Não distribua o cartão com a conta. Distribua-o após a refeição ser paga — quando o cliente está de pé, feliz e prestes a sair. A psicologia é direta: eles já se comprometeram com a experiência, a transação está fechada e eles estão no momento de maior satisfação da visita. Se você lhes der enquanto ainda estão decidindo sobre o dessert, parece um questionário. Se você lhes der enquanto eles estão colocando o casaco, parece um elogio.",
-      "start": 257.16,
-      "end": 280.99
+      "text": "Não distribua o cartão com a conta. Distribua-o após a refeição ser paga — quando o cliente está de pé, feliz e prestes a sair. A psicologia é direta: eles já se comprometeram com a experiência, a transação está fechada e eles estão no momento de maior satisfação da visita. Se você lhes der enquanto eles ainda estão decidindo sobre o dessert, parece um questionário. Se você lhes der enquanto eles estão colocando o casaco, parece um elogio.",
+      "start": 266.59,
+      "end": 290.65
     },
     {
       "id": 18,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(11)",
-      "text": "No Tacombi, o anfitrião ou o garçom entregaria o cartão com um simples \"Obrigado por vir — se você tiver trinta segundos, adoraríamos uma revisão do Google. Há um pequeno agradecimento no verso\". É isso. Sem roteiro mais longo que duas frases.",
-      "start": 281.51,
-      "end": 295.3
+      "text": "No Tacombi, o anfitrião ou o garçom entregava o cartão com um simples \"Obrigado por vir — se você tiver trinta segundos, adoraríamos uma revisão do Google. Há um pequeno agradecimento no verso\". É isso. Nenhum roteiro mais longo que duas frases.",
+      "start": 291.17,
+      "end": 305.04
     },
     {
       "id": 19,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(3)",
       "text": "3. A adesão da equipe.",
-      "start": 296.4,
-      "end": 297.84
+      "start": 306.14,
+      "end": 307.58
     },
     {
       "id": 20,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(12)",
       "text": "O sistema morre no momento em que sua equipe acha que é chato. Aqui está como evitar isso:",
-      "start": 298.54,
-      "end": 303.51
+      "start": 308.28,
+      "end": 313.25
     },
     {
       "id": 21,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
-      "text": "Explique o porquê. \"As revisões do Google são como as pessoas novas nos encontram. Mais revisões significam mais clientes, o que significa mais horas e turnos melhores para todos\". Isso é uma breve reunião pré-turno, não um módulo de treinamento.",
-      "start": 303.86,
-      "end": 317.73
+      "text": "Explique o porquê. \"As revisões do Google são como as pessoas novas nos encontram. Mais revisões significam mais coberturas, o que significa mais horas e turnos melhores para todos\". Isso é uma breve reunião pré-turno de duas frases, não um módulo de treinamento.",
+      "start": 313.6,
+      "end": 328.44
     },
     {
       "id": 22,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
-      "text": "Torne-o sem esforço. O cartão faz o trabalho. O membro da equipe apenas o entrega. Sem discurso, sem pitch, sem \"Você se importaria...\" — apenas \"Aqui está, há um agradecimento no verso\".",
-      "start": 318.05,
-      "end": 328.46
+      "text": "Torne-o zero-esforço. O cartão faz o trabalho. O membro da equipe apenas o entrega. Nenhum discurso, nenhum pitch, nenhum \"Você se importaria...\" — apenas \"Aqui está, há um agradecimento no verso\".",
+      "start": 328.76,
+      "end": 339.55
     },
     {
       "id": 23,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
-      "text": "Nunca o vincule a métricas de desempenho. No momento em que você diz \"Quero que cada garçom obtenha três revisões por turno\", você transformou um pedido genuíno em uma cota, e sua equipe o ressentirá. Deixe os cartões-postais fazerem o trabalho de volume.",
-      "start": 328.78,
-      "end": 343.08
+      "text": "Nunca o vincule a métricas de desempenho. No momento em que você diz \"Quero que cada garçom obtenha três revisões por turno\", você transformou um pedido genuíno em uma cota, e sua equipe irá ressentir-se disso. Deixe os cartões-postais fazerem o trabalho de volume.",
+      "start": 339.87,
+      "end": 354.84
     },
     {
       "id": 24,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(4)",
       "text": "4. O hábito de resposta.",
-      "start": 344.18,
-      "end": 345.93
+      "start": 355.94,
+      "end": 357.69
     },
     {
       "id": 25,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(13)",
-      "text": "Responder a revisões — especialmente as ruins — é mais importante do que a maioria dos proprietários percebe. A própria documentação de ajuda do Google diz que responder a revisões melhora seu ranking local. Mas o motivo real é mais simples: um cliente potencial lendo uma revisão ruim seguida de uma resposta pensada do proprietário pensa \"aquele lugar se importa\". Uma revisão ruim sem resposta diz \"eles não lêem essas coisas\".",
-      "start": 346.63,
-      "end": 370.16
+      "text": "Responder às revisões — especialmente as ruins — é mais importante do que a maioria dos proprietários percebe. A própria documentação de ajuda do Google diz que responder às revisões melhora sua classificação local. Mas o motivo real é mais simples: um cliente potencial lendo uma revisão ruim seguida de uma resposta pensada do proprietário pensa \"esse lugar se importa\". Uma revisão ruim sem resposta diz \"eles não lêem essas coisas\".",
+      "start": 358.39,
+      "end": 382.32
     },
     {
       "id": 26,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(14)",
-      "text": "Defina um alarme diário. Cinco minutos, uma vez por dia, responda a cada nova revisão. Mantenha-a curta, específica e humana. \"Obrigado, Maria — feliz que você gostou dos esquites. Até terça-feira\" é melhor do que \"Obrigado por suas palavras gentis! Esperamos servi-lo novamente!\" sempre. A primeira soa como uma pessoa. A segunda soa como um robô.",
-      "start": 370.68,
-      "end": 389.53
+      "text": "Defina um alarme diário. Cinco minutos, uma vez por dia, responda a cada nova revisão. Mantenha-a curta, específica e humana. \"Obrigado, Maria — feliz que você gostou dos esquites. Até terça-feira\" é melhor do que \"Obrigado por suas palavras gentis! Esperamos servi-lo novamente!\" sempre. O primeiro soa como uma pessoa. O segundo soa como um robô.",
+      "start": 382.84,
+      "end": 401.69
     },
     {
       "id": 27,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(5)",
       "text": "5. A visibilidade dentro da loja.",
-      "start": 390.63,
-      "end": 392.9
+      "start": 402.79,
+      "end": 405.06
     },
     {
       "id": 28,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(15)",
-      "text": "Coloque sua avaliação Google onde os clientes possam vê-la. Um pequeno sinal perto do host stand ou do caixa que diz \"4,6 estrelas no Google — 340 avaliações\" faz duas coisas: informa aos clientes satisfeitos que avaliar é uma coisa normal aqui (prova social), e informa aos clientes insatisfeitos que este restaurante leva os feedbacks a sério (o que às vezes desarma uma reclamação antes que ela se torne uma avaliação de 1 estrela).",
-      "start": 393.6,
-      "end": 419.76
+      "text": "Coloque sua classificação Google onde os clientes possam vê-la. Um pequeno sinal perto do host stand ou do caixa que diz \"4,6 estrelas no Google — 340 avaliações\" faz duas coisas: informa aos clientes satisfeitos que avaliar é algo normal a se fazer aqui (prova social), e informa aos clientes insatisfeitos que este restaurante leva os feedbacks a sério (o que às vezes desarma uma reclamação antes que ela se torne uma avaliação de 1 estrela).",
+      "start": 405.76,
+      "end": 432.56
     },
     {
       "id": 29,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(16)",
       "text": "Atualize o número mensalmente. Ver a contagem subir é motivador para a equipe também.",
-      "start": 420.28,
-      "end": 425.5
+      "start": 433.08,
+      "end": 438.3
     },
     {
       "id": 30,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(3)",
       "text": "O que não fazer.",
-      "start": 426.6,
-      "end": 427.62
+      "start": 439.4,
+      "end": 440.42
     },
     {
       "id": 31,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(17)",
-      "text": "Eu vi restaurantes sabotarem seus próprios programas de avaliação de algumas maneiras previsíveis. Evite essas:",
-      "start": 428.32,
-      "end": 434.98
+      "text": "Eu já vi restaurantes sabotarem seus próprios programas de avaliações de maneiras previsíveis. Evite essas:",
+      "start": 441.12,
+      "end": 447.57
     },
     {
       "id": 32,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
       "text": "Não compre avaliações. A detecção do Google é melhor do que você pensa, e a penalidade — ter toda a história de avaliações removida — é catastrófica. Um lote de avaliações falsas pode desfazer anos de avaliações reais.",
-      "start": 435.33,
-      "end": 448.05
+      "start": 447.92,
+      "end": 460.64
     },
     {
       "id": 33,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
       "text": "Não faça \"review-gate\". Algumas ferramentas perguntam \"Como foi sua experiência?\" e só mostram o link de avaliação do Google se a resposta for positiva. O Google proíbe explicitamente isso. Se você pedir avaliações, peça a todos — não apenas às pessoas felizes.",
-      "start": 448.37,
-      "end": 463.35
+      "start": 460.96,
+      "end": 475.94
     },
     {
       "id": 34,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
       "text": "Não ignore as avaliações ruins. Uma avaliação de 1 estrela com uma resposta pensada do proprietário é menos prejudicial do que uma avaliação de 3 estrelas com silêncio. Os clientes potenciais lêem as respostas. Essa é sua chance de mostrar caráter.",
-      "start": 463.67,
-      "end": 478.31
+      "start": 476.26,
+      "end": 490.9
     },
     {
       "id": 35,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
       "text": "Não peça nas mídias sociais. \"Deixe uma avaliação no Google!\" como uma postagem no Instagram alcança as pessoas que já seguem você — não as pessoas que acabaram de comer no seu restaurante pela primeira vez. O sistema de postais no caixa alcança o público-alvo no momento certo.",
-      "start": 478.63,
-      "end": 493.95
+      "start": 491.22,
+      "end": 506.54
     },
     {
       "id": 36,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(4)",
       "text": "O efeito composto.",
-      "start": 495.05,
-      "end": 496.4
+      "start": 507.64,
+      "end": 508.99
     },
     {
       "id": 37,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(18)",
-      "text": "Aqui está o que a maioria dos proprietários não vê porque desistem após duas semanas: as avaliações do Google se compõem. Um restaurante que recebe 60 avaliações por mês não tem apenas mais avaliações — tem avaliações mais recentes. O Google valoriza a recentidade. Um cliente potencial vê \"2 semanas atrás\" na avaliação mais recente e pensa \"este lugar é ativo\". Ele vê \"8 meses atrás\" e pensa \"este lugar ainda está aberto?\"",
-      "start": 497.1,
-      "end": 521.86
+      "text": "Aqui está o que a maioria dos proprietários não vê porque desistem após duas semanas: as avaliações do Google se compõem. Um restaurante que recebe 60 avaliações por mês não tem apenas mais avaliações — tem mais avaliações recentes. O Google leva em conta a recência. Um cliente potencial vê \"2 semanas atrás\" na avaliação mais recente e pensa \"este lugar está ativo\". Ele vê \"8 meses atrás\" e pensa \"este lugar ainda está aberto?\"",
+      "start": 509.69,
+      "end": 534.41
     },
     {
       "id": 38,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(19)",
-      "text": "Após seis meses de distribuição consistente de postais, as localizações do Tacombi com as quais eu trabalhei tinham uma velocidade de avaliação que as colocou entre os restaurantes mais avaliados em seus respectivos bairros no Google Maps. Não porque rodamos anúncios. Não porque pedimos. Porque construímos um sistema e o deixamos funcionar.",
-      "start": 522.21,
-      "end": 541.1
+      "text": "O padrão nos restaurantes que executam esse sistema consistentemente: após seis meses de distribuição de postais, a velocidade de avaliações coloca o restaurante perto do topo da lista de restaurantes avaliados do bairro no Google Maps. Não por causa de anúncios. Não por causa de súplicas. Porque o sistema funciona em segundo plano e se compõe.",
+      "start": 534.76,
+      "end": 554.25
     },
     {
       "id": 39,
       "kind": "quote",
       "selector": "#post-body > p:nth-of-type(20)",
-      "text": "As avaliações se compõem. 60 por mês não significa apenas mais estrelas — significa estrelas mais recentes, o que é o que o Google e os clientes ambos se importam.",
-      "start": 541.85,
-      "end": 551.63
+      "text": "As avaliações se compõem. 60 por mês não significa apenas mais estrelas — significa mais estrelas recentes, o que é o que o Google e os clientes ambos se importam.",
+      "start": 555,
+      "end": 564.88
     },
     {
       "id": 40,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(5)",
       "text": "A configuração de dez minutos.",
-      "start": 552.73,
-      "end": 554.83
+      "start": 565.98,
+      "end": 568.08
     },
     {
       "id": 41,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(21)",
       "text": "Se você quiser começar hoje, aqui está a lista de tarefas:",
-      "start": 555.53,
-      "end": 558.94
+      "start": 568.78,
+      "end": 572.19
     },
     {
       "id": 42,
       "kind": "list",
       "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
       "text": "Obtenha o link de avaliação do Google. Painel do Google Business Profile → \"Peça avaliações\" → copie o link curto.",
-      "start": 559.29,
-      "end": 567.06
+      "start": 572.54,
+      "end": 580.31
     },
     {
       "id": 43,
       "kind": "list",
       "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
       "text": "Gere um código QR. Cole o link em qualquer gerador de código QR gratuito (qr-code-generator.com funciona bem). Baixe a imagem.",
-      "start": 567.38,
-      "end": 575.48
+      "start": 580.63,
+      "end": 588.73
     },
     {
       "id": 44,
       "kind": "list",
       "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "Desenhe um postal. Tamanho de recibo ou tamanho de postal padrão. Seu logotipo, uma linha de solicitação, o código QR e um pequeno incentivo de agradecimento na parte de trás. O Canva, uma gráfica local ou seu designer podem fazer isso em uma hora.",
-      "start": 575.8,
-      "end": 590.38
+      "text": "Desenvolva um postal. Tamanho de recibo ou tamanho de postal padrão. Seu logotipo, uma linha de pedido, o código QR e um pequeno incentivo de agradecimento nas costas. O Canva, uma gráfica local ou seu designer podem fazer isso em uma hora.",
+      "start": 589.05,
+      "end": 603.28
     },
     {
       "id": 45,
       "kind": "list",
       "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(4)",
-      "text": "Imprima 500. Custo de 30 a 60 dólares na maioria das gráficas. Isso são 500 avaliações potenciais por menos do que o custo de um anúncio único no Instagram.",
-      "start": 590.7,
-      "end": 600.96
+      "text": "Imprima 500. Custa $30–$60 na maioria das gráficas. Isso são 500 avaliações potenciais por menos do que o custo de um anúncio único no Instagram.",
+      "start": 603.6,
+      "end": 613.78
     },
     {
       "id": 46,
       "kind": "list",
       "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(5)",
-      "text": "Instrua sua equipe. Duas frases antes do turno: \"Distribua esses após o fechamento da conta. Não faça um discurso — apenas entregue e agradeça.\"",
-      "start": 601.28,
-      "end": 609.73
+      "text": "Informar sua equipe. Duas frases antes do turno: \"Distribua esses após o fechamento da conta. Não faça um discurso — apenas entregue e agradeça.\"",
+      "start": 614.1,
+      "end": 622.62
     },
     {
       "id": 47,
       "kind": "list",
       "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(6)",
-      "text": "Configure um alarme diário. Cinco minutos, uma vez por dia, responda a todas as novas avaliações. Curto, específico, humano.",
-      "start": 610.05,
-      "end": 617.49
+      "text": "Defina um alarme diário. Cinco minutos, uma vez por dia, responda a todas as novas avaliações. Curto, específico, humano.",
+      "start": 622.94,
+      "end": 630.23
     },
     {
       "id": 48,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(22)",
       "text": "É isso. Sem assinatura de software, sem agência de marketing, sem aprovação de orçamento. Todo o sistema custa cerca de $50 e dez minutos para configurar, e funciona indefinidamente.",
-      "start": 618.01,
-      "end": 629.4
+      "start": 630.75,
+      "end": 642.14
     },
     {
       "id": 49,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(23)",
       "text": "Pontos principais",
-      "start": 629.92,
-      "end": 631.05
+      "start": 642.66,
+      "end": 643.79
     },
     {
       "id": 50,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(1)",
-      "text": "O cartão QR na conta supera todos os outros métodos de solicitação 4 para 1 em testes de campo.",
-      "start": 631.4,
-      "end": 637.8
+      "text": "O cartão QR na conta supera todos os outros métodos de solicitação na proporção de 4 para 1 em testes de campo.",
+      "start": 644.14,
+      "end": 651.54
     },
     {
       "id": 51,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(2)",
       "text": "Um texto curto após a refeição — \"esperamos que você tenha gostado do jantar; lemos todas as avaliações\" — é eficaz quando enviado dentro de 12 horas.",
-      "start": 638.12,
-      "end": 646.99
+      "start": 651.86,
+      "end": 660.73
     },
     {
       "id": 52,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(3)",
       "text": "Avaliações de cinco estrelas importam menos do que as de 4 e 3 estrelas às quais você responde bem (Google lê a capacidade de resposta).",
-      "start": 647.31,
-      "end": 655.81
+      "start": 661.05,
+      "end": 669.55
     },
     {
       "id": 53,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(4)",
-      "text": "Avaliações negativas não são fatais; avaliações negativas ignoradas, sim.",
-      "start": 656.13,
-      "end": 660.83
+      "text": "Avaliações negativas não são fatais; avaliações negativas ignoradas são.",
+      "start": 669.87,
+      "end": 674.63
     },
     {
       "id": 54,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(5)",
-      "text": "A janela de compounding é de 90 dias — o sistema que está em funcionamento há 90+ dias supera o que está em funcionamento há 30.",
-      "start": 661.15,
-      "end": 669.51
+      "text": "A janela de compounding é de 90 dias — o sistema que está em funcionamento por 90+ dias supera o que está em funcionamento por 30.",
+      "start": 674.95,
+      "end": 683.65
     }
   ]
 }

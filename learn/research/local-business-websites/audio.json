@@ -1,107 +1,99 @@
 {
   "version": 1,
-  "generatedAt": "2026-05-09T21:15:03.373Z",
+  "generatedAt": "2026-05-15T18:09:37.990Z",
   "engine": "kokoro",
   "model": "kokoro-v1.0.onnx",
   "voice": "am_michael",
   "language": "en",
-  "total": 123.69,
+  "total": 150.55,
   "chunks": [
     {
       "id": 0,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(1)",
-      "text": "Key findings.",
+      "text": "What the pattern looks like in practice.",
       "start": 0,
-      "end": 0.89
+      "end": 1.85
     },
     {
       "id": 1,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "Visitors to local business websites arrive with specific, narrow questions — typically hours, location, menu/services, and contact — and abandon quickly if the answer is not immediately visible.",
-      "start": 1.59,
-      "end": 16.05
+      "text": "Visitors to local business websites arrive with specific, narrow questions — typically hours, location, menu/services, and contact — and abandon quickly if the answer isn&rsquo;t immediately visible.",
+      "start": 2.55,
+      "end": 18.31
     },
     {
       "id": 2,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "Hours and location are consistently the highest-priority information across studies, yet are frequently relegated to the footer or a separate \"Contact\" page that first-time visitors rarely click through to.",
-      "start": 16.37,
-      "end": 30.5
+      "text": "Hours and location are consistently the highest-priority information , yet are frequently relegated to the footer or a separate &ldquo;Contact&rdquo; page that first-time visitors rarely click through to.",
+      "start": 18.63,
+      "end": 33.91
     },
     {
       "id": 3,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "First-time visitors rarely scroll below the fold on a local business homepage when they have a specific question; they scan the first screen and leave if the answer is not there.",
-      "start": 30.82,
-      "end": 42.11
+      "text": "First-time visitors rarely scroll below the fold on a local business homepage when they have a specific question; they scan the first screen and leave if the answer isn&rsquo;t there.",
+      "start": 34.23,
+      "end": 46.83
     },
     {
       "id": 4,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
-      "text": "Mobile visitors are under more time pressure than desktop visitors (they are often in transit, hungry, or making an immediate plan) and abandon even faster when friction appears.",
-      "start": 42.43,
-      "end": 54.49
+      "text": "Mobile visitors are under more time pressure than desktop visitors (they&rsquo;re often in transit, hungry, or making an immediate plan) and abandon even faster when friction appears.",
+      "start": 47.15,
+      "end": 60.43
     },
     {
       "id": 5,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(5)",
-      "text": "The fix is structural: surface critical information in the hero or a sticky header, repeat it in the footer for reassurance, and ensure mobile layouts do not push it below a scroll.",
-      "start": 54.81,
-      "end": 66.73
+      "text": "The fix is structural: surface critical information in the hero or a sticky header, repeat it in the footer for reassurance, and ensure mobile layouts don&rsquo;t push it below a scroll.",
+      "start": 60.75,
+      "end": 73.97
     },
     {
       "id": 6,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(2)",
       "text": "How Muntin uses this.",
-      "start": 67.83,
-      "end": 69.31
+      "start": 75.07,
+      "end": 76.55
     },
     {
       "id": 7,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
-      "text": "Why your restaurant loses reservations every night Leak number 3 — \"hours are hiding\" — is built on NNGroup's finding that hours are the most-searched-for and most-hidden piece of information on restaurant sites.",
-      "start": 70.01,
-      "end": 83.75
+      "text": "Why your restaurant loses reservations every night Leak number 3 — &ldquo;hours are hiding&rdquo; — is built on the same pattern: hours are the most-searched-for and most-hidden piece of information on restaurant sites.",
+      "start": 77.25,
+      "end": 92.78
     },
     {
       "id": 8,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
-      "text": "How much does a custom restaurant website cost in twenty twenty-six? The \"what a custom site actually delivers\" section leans on this research to explain why hero-placement of hours and location is treated as a baseline, not a premium feature.",
-      "start": 84.07,
-      "end": 100.08
+      "text": "How much does a custom restaurant website cost in twenty twenty-six? The &ldquo;what a custom site actually delivers&rdquo; section uses this practice note to explain why hero-placement of hours and location is treated as a baseline, not a premium feature.",
+      "start": 93.1,
+      "end": 111.54
     },
     {
       "id": 9,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(3)",
-      "text": "Full citation.",
-      "start": 101.18,
-      "end": 102.2
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "Practice note, not a single study. The pattern above is what surfaces repeatedly across NNG&rsquo;s web-usability work, Google&rsquo;s small-business search research, and operator experience on restaurant floors. If you want a single canonical citation, Nielsen Norman Group&rsquo;s broader work on web usability is the most-cited starting point.",
+      "start": 112.06,
+      "end": 137.25
     },
     {
       "id": 10,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(1)",
-      "text": "Nielsen, J., & Pernice, K. Usability of Local Business Websites . Nielsen Norman Group. nngroup.com",
-      "start": 102.9,
-      "end": 110.22
-    },
-    {
-      "id": 11,
-      "kind": "body",
       "selector": "#post-body > p:nth-of-type(2)",
-      "text": "Last reviewed: April twenty twenty-six — NNG's local business U X findings are ongoing research, continuously reinforced by updated studies on small-business site navigation.",
-      "start": 110.57,
-      "end": 123.69
+      "text": "Last reviewed: May twenty twenty-six — this is a synthesis, not a measurement; the underlying pattern hasn&rsquo;t shifted across the public usability work it draws on.",
+      "start": 137.77,
+      "end": 150.55
     }
   ]
 }
