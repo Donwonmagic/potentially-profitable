@@ -1,371 +1,371 @@
 {
   "version": 1,
-  "generatedAt": "2026-05-10T07:52:14.567Z",
+  "generatedAt": "2026-05-15T01:11:28.844Z",
   "engine": "kokoro",
   "model": "kokoro-v1.0.onnx",
   "voice": "im_nicola",
   "language": "it",
-  "total": 828.24,
+  "total": 844.73,
   "chunks": [
     {
       "id": 0,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(1)",
-      "text": "Leggi questo articolo in italiano",
+      "text": "In breve",
       "start": 0,
-      "end": 2.13
+      "end": 0.65
     },
     {
       "id": 1,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(2)",
-      "text": "TL;DR",
-      "start": 2.48,
-      "end": 3.59
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Find a Table ha cambiato il modo in cui Google gestisce le richieste di ristoranti — la prenotazione avviene in Google prima che il visitatore raggiunga il tuo sito.",
+      "start": 1,
+      "end": 12.47
     },
     {
       "id": 2,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "Find a Table ha cambiato il modo in cui Google gestisce le richieste di ristoranti — la prenotazione avviene in Google prima che il visitatore raggiunga il tuo sito.",
-      "start": 3.94,
-      "end": 15.41
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Se il tuo sistema di prenotazione non è su Find a Table, stai perdendo una quota significativa di prenotazioni generate da ricerca a favore dei concorrenti che lo sono. La quota esatta varia a seconda del mercato e della penetrazione del sistema di prenotazione; le pratiche degli operatori la collocano nel basso doppio cifra.",
+      "start": 12.79,
+      "end": 33.19
     },
     {
       "id": 3,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "Se il tuo sistema di prenotazione non è su Find a Table, stai perdendo l'8-15% delle prenotazioni generate dalla ricerca a favore dei concorrenti che lo sono.",
-      "start": 15.73,
-      "end": 27.63
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Tre mosse concrete recuperano la maggior parte del flusso perduto senza rinunciare alla tua superficie di prenotazione posseduta.",
+      "start": 33.51,
+      "end": 42.26
     },
     {
       "id": 4,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "Tre mosse concrete recuperano la maggior parte del flusso perduto senza rinunciare alla tua superficie di prenotazione proprietaria.",
-      "start": 27.95,
-      "end": 36.85
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Leggi questo articolo in spagnolo →",
+      "start": 42.78,
+      "end": 45.8
     },
     {
       "id": 5,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(3)",
-      "text": "Se hai guardato le tue analisi Google nell'ultimo anno e hai avuto la sensazione vaga che qualcosa non andasse — le stesse impressioni Google Business Profile, ma notevolmente meno clic sul tuo sito web — non stavi immaginando nulla. Qualcosa è cambiato. Google ha iniziato a fare qualcosa alle liste dei ristoranti che gli operatori di ristoranti hanno per lo più ignorato, perché è stato implementato in modo silenzioso, e perché sembra una funzione invece di un prendere.",
-      "start": 37.37,
-      "end": 64.52
+      "text": "Se hai guardato le tue analisi di Google nell'ultimo anno e hai avuto vagamente la sensazione che qualcosa non andasse — le stesse impressioni di Google Business Profile, ma notevolmente meno clic sul tuo sito web — non stavi immaginando nulla. Qualcosa è cambiato. Google ha iniziato a fare qualcosa alle liste dei ristoranti che gli operatori di ristoranti hanno per lo più perso, perché è stato introdotto in modo silenzioso, e perché sembra una funzionalità invece di un prendere.",
+      "start": 46.15,
+      "end": 73.35
     },
     {
       "id": 6,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(4)",
-      "text": "Nell'ultimo anno o giù di lì, Google Maps ha iniziato a mostrare widget di prenotazione direttamente all'interno della lista per la maggior parte dei ristoranti che utilizzano OpenTable, Resy, SevenRooms o Tock. Un ospite può ora cercare \"italiano vicino a me\", tap sul tuo ristorante, scegliere la dimensione del party e l'orario, e completare la prenotazione senza mai lasciare Google. Il tuo sito web non viene visitato. Il tuo eroe homepage, le tue descrizioni del menu, la tua storia del marchio — tutto ciò viene bypassato. L'ospite prenota, la prenotazione cade nel tuo sistema di prenotazione, e Google mantiene silenziosamente la sessione.",
-      "start": 65.04,
-      "end": 103.42
+      "text": "Nell'ultimo anno o giù di lì, Google Maps ha iniziato a mostrare widget di prenotazione direttamente all'interno della lista per la maggior parte dei ristoranti che utilizzano OpenTable, Resy, SevenRooms o Tock. Un ospite può ora cercare \"italiano vicino a me\", toccare il tuo ristorante, selezionare la dimensione del party e l'orario, e completare la prenotazione senza mai lasciare Google. Il tuo sito web non viene visitato. Il tuo eroe dell'homepage, le tue descrizioni del menu, la tua storia del marchio — tutto bypassato. L'ospite prenota, la prenotazione cade nel tuo sistema di prenotazione, e Google mantiene silenziosamente la sessione.",
+      "start": 73.87,
+      "end": 112.21
     },
     {
       "id": 7,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(5)",
-      "text": "Se stai pensando \"beh, almeno ho ottenuto la prenotazione\" — sì, l'hai ottenuta, questa volta. Ma qualcosa di importante è anche successo: Google ha addestrato quell'ospite che il tuo ristorante è una riga in un risultato di ricerca, non una destinazione. La prossima volta che vorranno mangiare fuori, torneranno su Google per prima, tap sulle carte della mappa, e prenoteranno di nuovo senza mai imparare una sola cosa sul tuo posto. Nel tempo, questo è un rapporto molto diverso con il tuo ristorante rispetto a quello che il tuo sito web avrebbe dovuto costruire.",
-      "start": 103.94,
-      "end": 135.74
+      "text": "Se stai pensando \"beh, almeno ho ottenuto la prenotazione\" — sì, l'hai fatto, questa volta. Ma qualcosa di importante è anche successo: Google ha addestrato quell'ospite che il tuo ristorante è una riga in un risultato di ricerca, non una destinazione. La prossima volta che vorranno mangiare fuori, torneranno a Google per primi, toccheranno la carta delle mappe e prenoteranno di nuovo senza mai imparare una sola cosa sul tuo posto. Nel tempo è una relazione molto diversa con il tuo ristorante rispetto a quella che il tuo sito web avrebbe dovuto costruire.",
+      "start": 112.73,
+      "end": 144.88
     },
     {
       "id": 8,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(6)",
       "text": "Ecco come appare effettivamente il flusso, e cosa costa silenziosamente.",
-      "start": 136.26,
-      "end": 141.02
+      "start": 145.4,
+      "end": 150.16
     },
     {
       "id": 9,
       "kind": "figure",
       "selector": "#post-body > figure:nth-of-type(1)",
-      "text": "Ecco il bypass, affiancato. A sinistra, il flusso che Google spinge oggi. Un ospite cerca il tuo ristorante su Google, atterra sulla carta della mappa, tap sul pulsante 'Trova un tavolo', sceglie la dimensione del party e l'orario all'interno del widget OpenTable o Resy incorporato direttamente in Google Maps, e completa la prenotazione. Il tuo sito web non viene visitato. L'ospite non ha idea di come appaia il tuo posto, cosa renda il tuo menu diverso, o che tu abbia una storia degna di essere conosciuta. Ha prenotato un tavolo generico con un nome generico. A destra, il flusso che vuoi. L'ospite cerca, atterra sulla carta della mappa, tap sul link del tuo sito web, vede la tua immagine eroe e la tua voce e il tuo menu, e poi prenota attraverso un widget di prenotazione sul tuo sito — che ancora instrada a OpenTable o Resy sotto il cofano. Stessa prenotazione, stesso back-end, stesso risultato finale per il ristorante. Ma adesso l'ospite ha visto il marchio reale del tuo ristorante, il che aumenta notevolmente la probabilità che si ricordi di te la prossima volta, che lo dica a un amico, o che ordini direttamente dal tuo sito invece di passare da DoorDash la prossima settimana. La prenotazione non è l'intera vittoria. L'impressione del marchio è. Il shortcut di Google ruba l'impressione del marchio, non la prenotazione.",
-      "start": 141.82,
-      "end": 213.95
+      "text": "Ecco il bypass, affiancato. A sinistra, il flusso che Google spinge oggi. Un ospite cerca il tuo ristorante su Google, atterra sulla carta delle mappe, tocca il pulsante \"Trova un tavolo\", seleziona la dimensione del party e l'orario all'interno del widget OpenTable o Resy incorporato direttamente in Google Maps, e completa la prenotazione. Il tuo sito web non viene visitato. L'ospite non ha idea di come appaia il tuo posto, cosa renda il tuo menu diverso, o che tu abbia una storia degna di essere conosciuta. Ha prenotato un tavolo generico con un nome generico. A destra, il flusso che vuoi. L'ospite cerca, atterra sulla carta delle mappe, tocca il link del tuo sito web, vede la tua immagine eroe e la tua voce e il tuo menu, e poi prenota attraverso un widget di prenotazione sul tuo sito — che ancora instrada a OpenTable o Resy sotto il cofano. Stessa prenotazione, stesso back-end, stesso risultato finale per il ristorante. Ma adesso l'ospite ha visto il marchio reale del tuo ristorante, il che aumenta notevolmente la probabilità che si ricordi di te la prossima volta, che lo dica a un amico, o che ordini direttamente dal tuo sito invece di attraverso DoorDash la prossima settimana. La prenotazione non è l'intera vittoria. L'impressione del marchio è. Il shortcut di Google ruba l'impressione del marchio, non la prenotazione.",
+      "start": 150.96,
+      "end": 223.26
     },
     {
       "id": 10,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(7)",
-      "text": "Entrambe le opzioni portano a una prenotazione sul tuo libro. Ma solo una di esse porta a un ospite che ha effettivamente incontrato il tuo ristorante.",
-      "start": 214.7,
-      "end": 224.21
+      "text": "Entrambe le opzioni portano a una prenotazione sul tuo libro. Ma solo una di loro porta a un ospite che ha effettivamente incontrato il tuo ristorante.",
+      "start": 224.01,
+      "end": 233.52
     },
     {
       "id": 11,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(1)",
       "text": "Perché è importante — in dollari, non in vibrazioni.",
-      "start": 225.31,
-      "end": 228.42
+      "start": 234.62,
+      "end": 237.73
     },
     {
       "id": 12,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(8)",
-      "text": "Se l'argomentazione finora sembra un po' astratta — \"impressione del marchio\" non è un elemento che si discute in una riunione degli operatori — mettiamo alcuni numeri.",
-      "start": 229.12,
-      "end": 239.34
+      "text": "Se l'argomentazione finora sembra un po' astratta — \"impressione del marchio\" non è un elemento che qualcuno discute in una riunione di operatori — mettiamo alcuni numeri.",
+      "start": 238.43,
+      "end": 248.9
     },
     {
       "id": 13,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(9)",
-      "text": "Un ospite che prenota attraverso il tuo sito web e atterra effettivamente sulla tua homepage ha circa 3 volte più probabilità di tornare entro 90 giorni, in base ai modelli di cohorte che vedo nei ristoranti con analisi adeguate. È più probabile che ordini consegna diretta da te in seguito (perché conosce l'U R L). È più probabile che si iscriva alla tua lista SMS (perché ha visto l'opzione di iscrizione sulla pagina di prenotazione). È più probabile che dica a un amico le parole esatte che hai usato sulla tua homepage, perché la tua homepage gli ha dato le parole.",
-      "start": 239.86,
-      "end": 271.66
+      "text": "Un ospite che prenota attraverso il tuo sito web e atterra effettivamente sulla tua homepage ha circa 3 volte più probabilità di tornare entro 90 giorni, in base ai modelli di cohorte che vedo nei ristoranti con analisi adeguate. È più probabile che ordini consegna diretta da te in seguito (perché conosce l'U R L). È più probabile che si iscriva alla tua SMS lista (perché ha visto l'opzione di iscrizione sulla pagina di prenotazione). È più probabile che dica a un amico le parole esatte che hai usato sulla tua homepage, perché la tua homepage gli ha dato le parole.",
+      "start": 249.42,
+      "end": 281.11
     },
     {
       "id": 14,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(10)",
-      "text": "Un ospite che prenota in linea attraverso Google ricorda che ha mangiato in \"quel posto italiano in 4ª strada\", forse. Quell'ospite vale il coperto, ma quasi nulla altro. Nel corso di un anno di servizio cena, la differenza composta tra questi due comportamenti degli ospiti è reale, soprattutto quando i dollari delle visite ricorrenti sono il margine esatto che la maggior parte dei ristoranti sta cercando di costruire in questo momento.",
-      "start": 272.18,
-      "end": 295.12
+      "text": "Un ospite che prenota in linea attraverso Google ricorda di aver mangiato in \"quel posto italiano in 4th\", forse. Quell'ospite vale la copertura ma quasi nulla altro. Nel corso di un anno di servizio cena, la differenza composta tra quei due comportamenti degli ospiti è reale, soprattutto quando quei dollari di visita ricorrente sono il margine di guadagno che la maggior parte dei ristoranti sta cercando di costruire proprio adesso.",
+      "start": 281.63,
+      "end": 303.99
     },
     {
       "id": 15,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(11)",
-      "text": "C'è un secondo costo che è più difficile da vedere fino a quando non è troppo tardi: la dipendenza dalla piattaforma. Il piano di Google negli ultimi dieci anni — nel settore dei viaggi, dei servizi locali, delle recensioni, degli acquisti — è stato quello di inserirsi come intermediario, dimostrare che puoi vivere senza il click-through sul tuo sito, e poi iniziare a fare pagare per il traffico che ti dava gratuitamente. Se il flusso di prenotazione non tocca il tuo sito web, sei a un solo cambiamento di algoritmo di distanza dall'essere completamente disintermediato. Non possiedi nulla. Google possiede l'ospite.",
-      "start": 295.64,
-      "end": 332.07
+      "text": "C'è un secondo costo che è più difficile da vedere fino a quando non è troppo tardi: la dipendenza dalla piattaforma. Il piano di gioco di Google negli ultimi dieci anni — nel settore dei viaggi, dei servizi locali, delle recensioni, degli acquisti — è stato quello di inserirsi come intermediario, dimostrare che puoi vivere senza il click-through sul tuo sito, e poi iniziare a fare pagare per il traffico che ti dava gratuitamente. Se il tuo flusso di prenotazione non tocca il tuo sito web, sei a un solo cambiamento di algoritmo di distanza dall'essere completamente disintermediato. Non possiedi nulla. Google possiede l'ospite.",
+      "start": 304.51,
+      "end": 341.27
     },
     {
       "id": 16,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(2)",
       "text": "Tre mosse per recuperare il flusso.",
-      "start": 333.17,
-      "end": 335.63
+      "start": 342.37,
+      "end": 344.83
     },
     {
       "id": 17,
       "kind": "figure",
       "selector": "#post-body > figure:nth-of-type(2)",
-      "text": "Tre mosse, in ordine. Una: rendi il link del tuo sito web Google Business Profile impossibile da perdere — questo è il territorio gratuito che Google ti dà, puntalo su un U R L progettato per battere il widget in linea. Due: supera il design del widget in linea sul tuo sito — se l'esperienza di prenotazione sulla tua pagina è peggiore di quella all'interno di Google Maps, l'ospite sceglierà razionalmente quella in linea. Tre: cattura l'email prima che Google possa farlo — la prenotazione è la mezza vittoria; l'email è la vittoria completa perché ti consente di riportare l'ospite senza pagare a Google o OpenTable una seconda volta. La mossa tre è quella che la maggior parte degli operatori salta.",
-      "start": 336.43,
-      "end": 378.1
+      "text": "Tre mosse, in ordine. Uno: rendi il link del tuo sito web Google Business Profile impossibile da perdere — questo è il territorio gratuito che Google ti dà, puntalo su un U R L progettato per battere il widget in linea. Due: supera il design del widget in linea sul tuo sito — se la tua esperienza di prenotazione sulla tua pagina è peggiore di quella all'interno di Google Maps, l'ospite sceglierà razionalmente quella in linea. Tre: cattura l'email prima che Google possa farlo — la prenotazione è la mezza vittoria; l'email è la vittoria completa perché ti consente di portare l'ospite indietro senza pagare a Google o OpenTable una seconda volta. La mossa tre è quella che la maggior parte degli operatori salta.",
+      "start": 345.63,
+      "end": 388.5
     },
     {
       "id": 18,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(1)",
       "text": "1. Rendi il link del tuo sito web Google Business Profile impossibile da perdere.",
-      "start": 379.2,
-      "end": 385
+      "start": 389.6,
+      "end": 395.4
     },
     {
       "id": 19,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(12)",
-      "text": "Su Google Maps, il pulsante \"Sito web\" si trova proprio accanto al widget di prenotazione. La maggior parte degli operatori accetta qualsiasi U R L che Google abbia inserito automaticamente dal loro dominio e non ci pensa più. Questo è un errore. Il pulsante del tuo sito web in G B P è il pezzo di territorio più prezioso che Google ti dà gratuitamente — e dovrebbe puntare a un U R L il cui scopo è battere il widget in linea.",
-      "start": 385.7,
-      "end": 415.43
+      "text": "Su Google Maps, il pulsante \"Sito web\" si trova proprio accanto al widget di prenotazione. La maggior parte degli operatori accetta qualsiasi U R L che Google ha inserito automaticamente dal loro dominio e non ci pensa più. Quello è un errore. Il tuo pulsante \"Sito web\" in G B P è il pezzo di territorio più prezioso che Google ti dà gratuitamente — e dovrebbe puntare a un U R L il cui scopo è battere il widget in linea.",
+      "start": 396.1,
+      "end": 425.41
     },
     {
       "id": 20,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(13)",
-      "text": "Punta il tuo URL del sito web G B P a una pagina di destinazione progettata come pagina di prenotazione, non alla tua homepage. Immagine hero della tua sala. Una frase di voce. Un widget \"Prenota un tavolo\" prominente che si collega allo stesso back-end OpenTable/Resy a cui si collega il Google. Forse un piccolo link \"o vedi il menu completo\". È tutto. La pagina esiste per dare all'ospite che ha cliccato su \"Sito web\" invece di \"Trova un tavolo\" una ragione per sentirsi di aver fatto la scelta giusta, e un percorso senza attriti per la stessa prenotazione.",
-      "start": 415.95,
-      "end": 451.06
+      "text": "Punta il tuo URL del sito web G B P a una pagina di destinazione progettata come pagina di prenotazione, non alla tua homepage. Immagine hero della tua sala. Una frase di voce. Un widget \"Prenota un tavolo\" prominente che indirizza allo stesso back-end OpenTable/Resy a cui sta indirizzando Google. Forse un piccolo link \"o vedi il menu completo\". È tutto. La pagina esiste per dare all'ospite che ha cliccato su \"Sito web\" invece di \"Trova un tavolo\" una ragione per sentirsi di aver fatto la scelta giusta, e un percorso senza frizioni per la stessa prenotazione.",
+      "start": 425.93,
+      "end": 461.35
     },
     {
       "id": 21,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(14)",
       "text": "La mossa: crea una pagina /reserve sul tuo sito web, imposta il tuo URL \"Sito web\" Google Business Profile su quella pagina. Ci vuole un'ora.",
-      "start": 451.58,
-      "end": 462.21
+      "start": 461.87,
+      "end": 472.5
     },
     {
       "id": 22,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(2)",
-      "text": "2. Superare il design del widget inline sul tuo sito.",
-      "start": 463.31,
-      "end": 466.85
+      "text": "2. Supera il design del widget inline sul tuo sito.",
+      "start": 473.6,
+      "end": 476.99
     },
     {
       "id": 23,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(15)",
-      "text": "Il motivo per cui il widget inline vince attualmente è che è senza attriti. L'ospite tocca, sceglie un orario, fatto. Se il flusso di prenotazione del tuo sito web richiede un clic per passare a una pagina OpenTable, poi un caricamento, poi un captcha, poi un'iscrizione — perdi la gara di velocità.",
-      "start": 467.55,
-      "end": 485.72
+      "text": "Il motivo per cui il widget inline vince attualmente è che è senza frizioni. L'ospite tocca, sceglie un orario, fatto. Se il flusso di prenotazione del tuo sito web richiede un clic per accedere a una pagina OpenTable, poi un caricamento, poi un captcha, poi un'iscrizione — perdi la gara di velocità.",
+      "start": 477.69,
+      "end": 496.03
     },
     {
       "id": 24,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(16)",
-      "text": "Incorpora il widget direttamente nella tua pagina invece di collegarti a esso. OpenTable, Resy, SevenRooms e Tock forniscono tutti un widget iframe che puoi inserire nella tua homepage o pagina di prenotazione che completa la prenotazione nella stessa sessione. Fai il lavoro per rendere quell'incorporazione bella — caratteri appropriati, tua palette di colori, selettore di dimensioni del party sopra la piega. L'obiettivo è che l'ospite che è arrivato da Google si senta di aver avuto un'esperienza di prenotazione migliore, non peggiore, per essere passato attraverso di te.",
-      "start": 486.24,
-      "end": 520.37
+      "text": "Incorpora il widget direttamente nella tua pagina invece di collegarti ad esso. OpenTable, Resy, SevenRooms e Tock forniscono tutti un widget iframe che puoi inserire nella tua homepage o pagina di prenotazione, che completa la prenotazione nella stessa sessione. Fai il lavoro per rendere quell'incorporazione bella — caratteri appropriati, palette di colori, selettore di dimensioni del party sopra la piega. L'obiettivo è che l'ospite che è arrivato da Google si senta di aver avuto un'esperienza di prenotazione migliore, non peggiore, per essere passato attraverso di te.",
+      "start": 496.55,
+      "end": 530.98
     },
     {
       "id": 25,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(17)",
-      "text": "La mossa: contatta il supporto della tua piattaforma di prenotazione, chiedi il codice di incorporamento del widget, fai inserire il codice dal tuo sviluppatore (o tu, su molti siti moderni) in 2-4 ore totali.",
-      "start": 520.89,
-      "end": 534.81
+      "text": "La mossa: contatta il supporto della tua piattaforma di prenotazione, chiedi il codice di incorporamento del widget, fai inserire il codice dal tuo sviluppatore (o da te, su molti siti moderni). Ci vogliono in totale 2-4 ore.",
+      "start": 531.5,
+      "end": 546.6
     },
     {
       "id": 26,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(3)",
       "text": "3. Cattura l'email prima che Google possa farlo.",
-      "start": 535.91,
-      "end": 539.19
+      "start": 547.7,
+      "end": 550.98
     },
     {
       "id": 27,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(18)",
-      "text": "Il widget inline Google prende l'email dell'ospite e la dà alla piattaforma di prenotazione, non a te. Molti operatori non si rendono conto che OpenTable e Resy non condividono direttamente quelle email — ricevi solo i record dei commensali che hanno effettivamente mangiato nel tuo ristorante, e solo se sei su specifici piani di abbonamento. L'ospite che ha prenotato ma ha cancellato? Non lo hai.",
-      "start": 539.89,
-      "end": 562.92
+      "text": "Il widget inline Google prende l'email dell'ospite e la dà alla piattaforma di prenotazione, non a te. Molti operatori non si rendono conto che OpenTable e Resy non condividono direttamente quelle email — ottieni solo i record dei commensali che hanno effettivamente mangiato nel tuo ristorante, e solo se sei su piani di livello specifico. L'ospite che ha prenotato ma cancellato? Non lo hai.",
+      "start": 551.68,
+      "end": 574.52
     },
     {
       "id": 28,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(19)",
       "text": "Nella tua pagina di prenotazione, aggiungi una sola casella di controllo: \"Inviami anche email occasionali da [nome del ristorante] — cambi di menu, eventi e le nostre offerte settimanali\". Quella casella di controllo, selezionata per default se la tua giurisdizione lo consente, costruisce un elenco di email di prima parte che nessuno può portare via da te. Ogni ospite che passa attraverso il tuo sito diventa una riattivazione futura, un ordine diretto futuro, un riferimento futuro. Ogni ospite che prenota inline su Google diventa una riga nel database di OpenTable.",
-      "start": 563.44,
-      "end": 596.79
+      "start": 575.04,
+      "end": 608.39
     },
     {
       "id": 29,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(20)",
-      "text": "La mossa: aggiungi la casella di controllo al tuo widget di prenotazione, invia le email alla tua lista Klaviyo / Mailchimp / Attentive, coltiva. Novanta minuti di lavoro. Compone per sempre.",
-      "start": 597.31,
-      "end": 610.48
+      "text": "La mossa: aggiungi la casella di controllo al tuo widget di prenotazione, invia le email alla tua lista Klaviyo / Mailchimp / Attentive, coltiva. Novanta minuti di lavoro. Si accumula per sempre.",
+      "start": 608.91,
+      "end": 622.24
     },
     {
       "id": 30,
       "kind": "quote",
       "selector": "#post-body > p:nth-of-type(21)",
       "text": "Google non ti sta rubando le prenotazioni. Sta rubando la relazione con l'ospite intorno alle tue prenotazioni — che vale molto di più nel tempo di qualsiasi singola prenotazione.",
-      "start": 611.23,
-      "end": 623.28
+      "start": 622.99,
+      "end": 635.04
     },
     {
       "id": 31,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(3)",
       "text": "Cosa non fare: disabilitare le prenotazioni in G B P.",
-      "start": 624.38,
-      "end": 628.11
+      "start": 636.14,
+      "end": 639.87
     },
     {
       "id": 32,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(22)",
-      "text": "Ho visto operatori, frustrati dal bypass, disattivare l'integrazione delle prenotazioni nel loro Google Business Profile interamente. Il pensiero è: se Google non può mostrare il widget inline, l'ospite è costretto a cliccare sul mio sito web. Non farlo.",
-      "start": 628.81,
-      "end": 645.83
+      "text": "Ho visto operatori, frustrati dal bypass, disabilitare l'integrazione delle prenotazioni nel loro Google Business Profile interamente. Il pensiero è: se Google non può mostrare il widget inline, l'ospite è costretto a cliccare sul mio sito web. Non farlo.",
+      "start": 640.57,
+      "end": 657.59
     },
     {
       "id": 33,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(23)",
-      "text": "Ciò che accade in realtà è che l'ospite guarda la tua lista Google, non vede l'opzione di prenotazione, presume che tu sia difficile da prenotare e clicca sul prossimo ristorante nella lista. Perdi così l'ospite completamente, invece di mantenerlo con un'impressione parziale del marchio. Il widget inline non è il nemico — il widget inline come unico percorso è il nemico. Lascia il widget inline acceso. Rendi anche il percorso del tuo sito web ovvio, veloce e meglio progettato di quanto offra Google.",
-      "start": 646.35,
-      "end": 673.75
+      "text": "Ciò che accade in realtà è che l'ospite guarda la tua lista Google, non vede l'opzione di prenotazione, presume che tu sia difficile da prenotare e seleziona il prossimo ristorante nella lista. Perdi così l'ospite completamente, invece di mantenerlo con un'impressione parziale del marchio. Il widget inline non è il nemico — il nemico è che il widget inline sia l'unico percorso. Lascia attivo il widget inline. Rendi anche il percorso del tuo sito web ovvio, veloce e meglio progettato di quanto offra Google.",
+      "start": 658.11,
+      "end": 688.3
     },
     {
       "id": 34,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(24)",
-      "text": "Pensaci come opzionalità, non opposizione. Alcuni ospiti sono sotto pressione di tempo e cliccheranno sempre sul widget inline. Va bene — hai comunque ottenuto una prenotazione. Altri ospiti, specialmente i clienti abituali e quelli che si preoccupano di abbinare il vibe del ristorante all'occasione, cliccheranno volentieri sul tuo sito se rendi quel percorso invitante. Nel corso di un anno di prenotazioni, anche spostare il 20–30% del flusso di nuovo sul tuo sito web è una ripresa significativa della proprietà del marchio.",
-      "start": 674.27,
-      "end": 705.75
+      "text": "Pensaci come opzionalità, non opposizione. Alcuni ospiti sono sotto pressione di tempo e selezioneranno sempre il widget inline. Va bene — hai comunque ottenuto una prenotazione. Altri ospiti, specialmente i clienti abituali e quelli che si preoccupano di far corrispondere il vibe del ristorante all'occasione, saranno felici di cliccare sul tuo sito se rendi quel percorso invitante. Nel corso di un anno di prenotazioni, anche spostare il 20–30% del flusso di nuovo sul tuo sito web è un recupero significativo della proprietà del marchio.",
+      "start": 688.82,
+      "end": 720.79
     },
     {
       "id": 35,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(4)",
       "text": "Il modello più ampio.",
-      "start": 706.85,
-      "end": 708.5
+      "start": 721.89,
+      "end": 723.54
     },
     {
       "id": 36,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(25)",
-      "text": "Il \"trova un tavolo\" di Google non è unico. È una versione iniziale, mild, di un modello che Google applica ogni pochi anni: prende un comportamento che un tempo canalizzava il traffico verso i siti web delle piccole imprese, lo porta all'interno dell'ecosistema Google, lo chiama una funzionalità e guarda calare i tassi di clic. Le recensioni sono state le prime. Le ore sono state le seconde. I menu sono stati parzialmente coinvolti. Le prenotazioni stanno accadendo ora. L'ordine online è il prossimo.",
-      "start": 709.2,
-      "end": 739.29
+      "text": "Il \"trova un tavolo\" di Google non è unico. È una versione precoce e mild di un modello che Google applica ogni pochi anni: prende un comportamento che un tempo canalizzava il traffico verso i siti web delle piccole imprese, lo porta all'interno dell'ecosistema Google, lo chiama una funzionalità e guarda calare i tassi di clic-through. Le recensioni sono state le prime. Le ore sono state le seconde. I menu sono stati parzialmente coinvolti. Le prenotazioni stanno accadendo ora. L'ordinazione online è la prossima.",
+      "start": 724.24,
+      "end": 755.13
     },
     {
       "id": 37,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(26)",
       "text": "La mossa difensiva non è combattere Google — nessuno vince quella battaglia. La mossa è assicurarsi che quando l'ospite sceglie di cliccare sul tuo sito, sia ricompensato con qualcosa di meglio della scorciatoia. Buon design, caricamento veloce, un percorso di prenotazione chiaro, un piccolo momento di brand che lo fa ricordare il tuo nome. Google mantiene il flusso commodizzato. Tu mantieni i clienti che si preoccupano della differenza — e quelli sono i clienti che sostengono realmente un ristorante nel tempo.",
-      "start": 739.81,
-      "end": 770.51
+      "start": 755.65,
+      "end": 786.35
     },
     {
       "id": 38,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(27)",
       "text": "Crea la pagina /reserve. Incorpora il widget. Cattura l'email. Tre mosse, in meno di un giorno di lavoro totale. Manterrai la relazione con il marchio che Google altrimenti avrebbe silenziosamente portato via.",
-      "start": 771.03,
-      "end": 785.82
+      "start": 786.87,
+      "end": 801.66
     },
     {
       "id": 39,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(28)",
       "text": "Punti chiave",
-      "start": 786.34,
-      "end": 787.25
+      "start": 802.18,
+      "end": 803.09
     },
     {
       "id": 40,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
-      "text": "OpenTable, Resy, Tock e SevenRooms sono tutti attualmente collegati a Find a Table — scegliene uno se non sei su nessuno.",
-      "start": 787.6,
-      "end": 795.5
+      "text": "OpenTable, Resy, Tock e SevenRooms sono tutti attualmente collegati a Find a Table — scegli uno se non sei su nessuno.",
+      "start": 803.44,
+      "end": 811.19
     },
     {
       "id": 41,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
-      "text": "Non disabilitare le prenotazioni in G B P — ciò ti costa anche le query di chiamata e di camminata.",
-      "start": 795.82,
-      "end": 802.13
+      "text": "Non disabilitare le prenotazioni in GBP — ciò ti costa anche le query di chiamata e di camminata.",
+      "start": 811.51,
+      "end": 817.82
     },
     {
       "id": 42,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
       "text": "Aggiungi lo schema di prenotazione al tuo sito in modo che Google possa verificare che l'integrazione sia reale.",
-      "start": 802.45,
-      "end": 810.05
+      "start": 818.14,
+      "end": 825.74
     },
     {
       "id": 43,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
-      "text": "La sezione G B P di Restaurant Audit segnala l'idoneità di Find a Table come punteggio separato.",
-      "start": 810.37,
-      "end": 817.12
+      "text": "La sezione GBP di Restaurant Audit segnala l'idoneità di Find a Table come punteggio separato.",
+      "start": 826.06,
+      "end": 832.81
     },
     {
       "id": 44,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(5)",
-      "text": "Il modello più ampio: ogni superficie Google che prende la prenotazione prima del tuo sito ti costa la relazione — prendi la prenotazione, poi prendi l'email.",
-      "start": 817.44,
-      "end": 828.24
+      "text": "Il modello più ampio: ogni superficie Google che prende la prenotazione prima che il tuo sito lo faccia ti costa la relazione — prendi la prenotazione, poi prendi l'email.",
+      "start": 833.13,
+      "end": 844.73
     }
   ]
 }
