@@ -1,539 +1,659 @@
 {
   "version": 1,
-  "generatedAt": "2026-04-24T20:02:56.894Z",
+  "generatedAt": "2026-05-15T07:44:45.341Z",
   "engine": "kokoro",
   "model": "kokoro-v1.0.onnx",
   "voice": "zm_yunxi",
   "language": "zh",
-  "total": 884.18,
+  "total": 1040.12,
   "chunks": [
     {
       "id": 0,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(1)",
-      "text": "Every restaurant has a P O S. And sooner or later — usually a few months after the hardware's already paid for — every restaurant owner realizes that their P O S choice affects their website in ways nobody told them about during the sales pitch. Menu sync, online ordering, reservation handoff, loyalty programs, receipt links — all of it runs through the P O S. If you picked the P O S based on the cashier hardware and the transaction fee alone, you probably discovered the website-side limitations the hard way.",
+      "text": "简而言之",
       "start": 0,
-      "end": 28.16
+      "end": 1.19
     },
     {
       "id": 1,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(2)",
-      "text": "This post compares the three P O S systems I see most often in independent restaurant audits: Toast , Square for Restaurants , and Clover . I will walk through what each one does well for website integration, where each one quietly limits you, and — in the closing — which one I would pick for which restaurant type. If you are about to sign a P O S contract, this is the post I would want you to read first.",
-      "start": 28.68,
-      "end": 50.09
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "餐厅网站与点餐系统（P O S）的集成要么是真正的，要么是虚有其表的：Toast和Square提供真正的版本，而Clover提供虚有其表的版本。",
+      "start": 1.54,
+      "end": 13.01
     },
     {
       "id": 2,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(3)",
-      "text": "A quick note upfront: all three are legitimate products run by real companies, and all three have customers who love them and customers who regret the choice. I am not here to crown a winner or dunk on a loser — the question is which one fits your restaurant.",
-      "start": 50.61,
-      "end": 64.82
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Toast和Square在集成功能方面都获得了7分的肯定评价，满分10分；Clover只获得1分。",
+      "start": 13.33,
+      "end": 21.39
     },
     {
       "id": 3,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(1)",
-      "text": "What \"P O S integration with your website\" actually means.",
-      "start": 65.92,
-      "end": 70.24
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Clover在硬件种类方面占优势，但在其他所有与网站集成相关的功能方面都处于劣势。",
+      "start": 21.71,
+      "end": 29.85
     },
     {
       "id": 4,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(4)",
-      "text": "Before we get into the comparison, it is worth being specific about what we are comparing. \"P O S integration\" is really three different things stacked on top of each other, and every P O S handles each layer at a different quality level.",
-      "start": 70.94,
-      "end": 83.78
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "每家餐厅都有一个P O S系统。迟早——通常是在硬件已经付款几个月后——每个餐厅老板都会意识到他们的P O S选择会以他们在销售推销中没有被告知的方式影响他们的网站。菜单同步、在线订购、预订交接、忠诚度计划、收据链接——所有这些都通过P O S系统运行。如果你仅仅根据收银台硬件和交易费用选择了P O S系统，你可能已经通过艰难的方式发现了网站端的限制。正确的配对可以让你的直接订购保持在自己的渠道上，远离30%的佣金市场。",
+      "start": 30.2,
+      "end": 65.99
     },
     {
       "id": 5,
-      "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(1)",
-      "text": "1. Menu sync.",
-      "start": 84.88,
-      "end": 85.94
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "这篇文章比较了我在独立餐厅审计中最常见的三个P O S系统：Toast、Square for Restaurants和Clover。我将逐一介绍每个系统在网站集成方面的优缺点，并在结尾部分介绍我会为哪种类型的餐厅选择哪个系统。如果你即将签署P O S合同，这是我希望你首先阅读的文章。",
+      "start": 66.34,
+      "end": 86.98
     },
     {
       "id": 6,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(5)",
-      "text": "Your P O S knows what is on the menu. Your website also needs to know. Can the P O S push its menu data to your website so you only maintain it in one place? Does the push include dish descriptions, images, modifiers, allergens, and prices? What happens when you 86 a dish mid-service — does your site update in real time, or is someone eating two-hour-old availability data?",
-      "start": 86.64,
-      "end": 108.57
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "在开始之前，我要说明一点：所有三个系统都是合法的产品，都是由真正的公司运营的，并且都有喜欢它们和后悔选择它们的客户。我在这里不是为了宣布一个赢家或批评一个输家——问题是哪一个系统适合你的餐厅。",
+      "start": 87.33,
+      "end": 102.6
     },
     {
       "id": 7,
       "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(2)",
-      "text": "2. Order-taking.",
-      "start": 109.67,
-      "end": 111.04
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "“P O S系统与你的网站集成”实际上是什么意思。",
+      "start": 103.7,
+      "end": 108.26
     },
     {
       "id": 8,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(6)",
-      "text": "The website takes online orders and those orders have to land in your kitchen somehow. Does the order flow directly into the P O S ticket queue, or does it land in a separate tablet the host has to check? Does it respect your real-time inventory? Can customers order items you have just run out of?",
-      "start": 111.74,
-      "end": 127.07
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "在我们开始比较之前，值得具体说明我们正在比较什么。“P O S集成”实际上是三个不同的层次叠加在一起的，每个P O S系统都以不同的质量水平处理每个层次。",
+      "start": 108.96,
+      "end": 121.58
     },
     {
       "id": 9,
       "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(3)",
-      "text": "3. Reservation and guest data flow.",
-      "start": 128.17,
-      "end": 130.53
+      "selector": "#post-body > h3:nth-of-type(1)",
+      "text": "1. 菜单同步。",
+      "start": 122.68,
+      "end": 123.79
     },
     {
       "id": 10,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(7)",
-      "text": "When a guest books a table, does the reservation show up on your P O S's floor map? Does the guest history — visit count, allergies, birthday, favorite table — flow between the reservation platform and the P O S so a returning customer gets recognized and greeted by name?",
-      "start": 131.23,
-      "end": 146.55
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "你的P O S系统知道菜单上有什么。你的网站也需要知道。P O S系统能否将其菜单数据推送到你的网站上，以便你只需在一个地方维护它？推送是否包括菜品描述、图片、修改项、过敏原和价格？当你在服务中途删除一个菜品时，你的网站是否会实时更新，还是有人正在使用两小时前的可用性数据？",
+      "start": 124.49,
+      "end": 148.78
     },
     {
       "id": 11,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(8)",
-      "text": "Most P O S marketing pages talk about \"website integration\" as if it is one switch you flip. In practice, the three layers above are built at different times, by different teams, and each has its own quality ceiling. The right P O S for your restaurant depends on which of the three layers matters most for how you actually operate.",
-      "start": 147.07,
-      "end": 164.19
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(2)",
+      "text": "2. 订单接收。",
+      "start": 149.88,
+      "end": 151.02
     },
     {
       "id": 12,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(2)",
-      "text": "Toast.",
-      "start": 165.29,
-      "end": 166.09
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "你的网站接收在线订单，这些订单需要以某种方式进入你的厨房。订单是否直接流入P O S系统的票队，还是进入一个单独的平板电脑，需要主持人检查？它是否尊重你的实时库存？顾客是否可以订购你已经售罄的商品？",
+      "start": 151.72,
+      "end": 167.51
     },
     {
       "id": 13,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(9)",
-      "text": "Toast is the biggest restaurant-specific P O S in the US market and the one I see most often on independent full-service restaurants. According to Toast's own product documentation , the platform is purpose-built for full-service, quick-service, and counter-service restaurants, and includes native online ordering, menu management, and a third-party developer A P I.",
-      "start": 166.79,
-      "end": 185.84
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(3)",
+      "text": "3. 预订和客人数据流动。",
+      "start": 168.61,
+      "end": 170.48
     },
     {
       "id": 14,
-      "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(4)",
-      "text": "What Toast does well for website integration.",
-      "start": 186.94,
-      "end": 190.13
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "当客人预订一张桌子时，预订是否会出现在你的P O S系统的楼层地图上？客人历史——访问次数、过敏、生日、最喜欢的桌子——是否会在预订平台和P O S系统之间流动，以便重复顾客被识别和以名字问候？",
+      "start": 171.18,
+      "end": 185.86
     },
     {
       "id": 15,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "Native online ordering with a direct pipeline from website checkout to kitchen ticket — no separate tablet handoff required.",
-      "start": 190.83,
-      "end": 198.11
-    },
-    {
-      "id": 16,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "Automatic menu sync from Toast's menu editor to their website widgets, including images, modifiers, and allergen tags.",
-      "start": 198.43,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "大多数POS营销页面都把“网站集成”说得像是一件轻而易举的事——只要翻一个开关就行了。但实际上，上面三个层次是由不同的团队在不同的时间建造的，每个层次都有自己的质量天花板。适合你餐厅的POS系统取决于哪个层次对你的实际运营最重要。",
+      "start": 186.21,
       "end": 206.65
     },
     {
+      "id": 16,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Toast。",
+      "start": 207.75,
+      "end": 208.52
+    },
+    {
       "id": 17,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "Real-time 86ing — when you mark a dish out of stock on the P O S, the change propagates to the online menu immediately.",
-      "start": 206.97,
-      "end": 215.31
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "Toast是美国市场上最大的餐厅特定POS系统，也是我在独立全服务餐厅中看到最常见的系统。根据Toast自己的产品文档，该平台专门为全服务、快服务和柜台服务餐厅设计，包括原生在线订购、菜单管理和第三方开发者API（应用程序接口）。",
+      "start": 209.22,
+      "end": 229.28
     },
     {
       "id": 18,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
-      "text": "A mature developer A P I that lets a custom-built website (not Toast's own templates) tap into the same order, menu, and guest data Toast's native surfaces use. This is the part I care most about in my audits — it means you can have a custom site on a modern stack and still use Toast as the engine.",
-      "start": 215.63,
-      "end": 231.32
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(4)",
+      "text": "Toast在网站集成方面做得好的地方。",
+      "start": 230.38,
+      "end": 234.06
     },
     {
       "id": 19,
-      "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(5)",
-      "text": "Where Toast's website story gets complicated.",
-      "start": 232.42,
-      "end": 235.54
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "原生在线订购，直接从网站结账到厨房票——无需单独的平板电脑交接。",
+      "start": 234.76,
+      "end": 241.18
     },
     {
       "id": 20,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
-      "text": "Toast's own hosted restaurant sites are functional but template-bound. In my audit experience, sites built on Toast's native website templates share a recognizable layout and typography system — they \"look like a Toast restaurant site\" even when the colors are different.",
-      "start": 236.24,
-      "end": 251.38
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "自动菜单同步，从Toast的菜单编辑器到他们的网站小部件，包括图片、修饰符和过敏原标签。",
+      "start": 241.5,
+      "end": 250.34
     },
     {
       "id": 21,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
-      "text": "Transaction fees on delivery and pickup orders routed through Toast's integrated ordering can stack up compared to a custom checkout running on your own payment processor. The exact numbers depend on your Toast contract tier, so check Toast's current pricing page for your situation.",
-      "start": 251.7,
-      "end": 265.87
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "实时“86”处理——当你在POS系统上标记一道菜品脱销时，变化会立即传播到在线菜单。",
+      "start": 250.66,
+      "end": 259.2
     },
     {
       "id": 22,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
-      "text": "\"Powered by Toast\" branding in the checkout flow is difficult to fully remove without moving to a higher contract tier.",
-      "start": 266.19,
-      "end": 272.62
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "一个成熟的开发者API，让自定义网站（而不是Toast自己的模板）可以访问与Toast原生界面相同的订单、菜单和客人数据。这是我在审计中最关心的部分——这意味着你可以拥有一个自定义的网站，使用现代技术栈，同时仍然使用Toast作为引擎。",
+      "start": 259.52,
+      "end": 277.58
     },
     {
       "id": 23,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
-      "text": "Contract commitments tend to run multi-year, which matters if you are not sure which P O S will still fit your operation three years from now.",
-      "start": 272.94,
-      "end": 281.59
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(5)",
+      "text": "Toast的网站故事变得复杂的地方。",
+      "start": 278.68,
+      "end": 281.93
     },
     {
       "id": 24,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(10)",
-      "text": "In my audit experience: Toast is the strongest choice if you want \"it all just works\" from day one and you accept the tradeoffs of a walled garden. And if you have a custom-built website and want Toast to be the kitchen-side engine, their A P I is mature enough to support that — just expect to pay a developer to wire it up cleanly.",
-      "start": 282.11,
-      "end": 298.47
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "Toast自己的托管餐厅网站是功能性的，但受限于模板。在我的审计经验中，使用Toast原生网站模板构建的网站共享一个可识别的布局和排版系统——即使颜色不同，它们也“看起来像Toast餐厅网站”。",
+      "start": 282.63,
+      "end": 297.89
     },
     {
       "id": 25,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(3)",
-      "text": "Square for Restaurants.",
-      "start": 299.57,
-      "end": 300.93
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "通过Toast集成订购的送货和取货订单的交易费用可能会累积，尤其是与自定义结账流程相比，后者使用自己的支付处理器。确切的数字取决于你的Toast合同级别，因此请查看Toast的当前定价页面以了解你的情况。",
+      "start": 298.21,
+      "end": 314.78
     },
     {
       "id": 26,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(11)",
-      "text": "Square's approach is almost the opposite of Toast's. Where Toast is restaurant-specific from the ground up, Square started as a general retail and payments platform and added restaurant-specific features on top of its broader product. That shows up as both a strength and a limitation. According to Square's own product documentation , Square for Restaurants includes menu management, online ordering, table management, and loyalty — all with the same public, flat-rate pricing structure Square is known for in retail.",
-      "start": 301.63,
-      "end": 328.28
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "在结账流程中，“由Toast提供”品牌标识难以完全去除，除非你升级到更高的合同级别。",
+      "start": 315.1,
+      "end": 323.26
     },
     {
       "id": 27,
-      "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(6)",
-      "text": "What Square does well for website integration.",
-      "start": 329.38,
-      "end": 332.51
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
+      "text": "合同承诺往往是多年的，这对你来说很重要，如果你不确定三年后哪个POS系统仍然适合你的运营。",
+      "start": 323.58,
+      "end": 331.99
     },
     {
       "id": 28,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
-      "text": "A clean, well-documented public A P I. For a custom-built website that wants to pull catalog data, send orders, or look up customer history, Square's developer docs are among the best in the P O S space — clear, current, and actively supported.",
-      "start": 333.21,
-      "end": 347.65
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "在我的审计经验中：Toast是最强的选择，如果你想要“一切从第一天就正常工作”，并且你接受封闭花园的权衡。并且，如果你有一个自定义网站，并且想要Toast成为厨房侧的引擎，他们的API足够成熟以支持这一点——只是要预计你需要支付开发人员来清晰地连接它们。",
+      "start": 332.34,
+      "end": 352.84
     },
     {
       "id": 29,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
-      "text": "Public, flat-rate pricing. Square's processing fees and monthly costs are published openly on their site. No contract-tier dance, no \"call us for a quote,\" no negotiated surprises.",
-      "start": 347.97,
-      "end": 360.03
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Square用于餐厅。",
+      "start": 353.94,
+      "end": 355.48
     },
     {
       "id": 30,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
-      "text": "Square Online can spin up a functional restaurant site in an afternoon, with menu data automatically synced from the P O S. Not a replacement for a custom site, but genuinely useful for operators who are not ready for one yet.",
-      "start": 360.35,
-      "end": 373.33
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "Square的方法几乎与Toast的相反。Toast从头开始就是为餐厅设计的，而Square则从一个通用的零售和支付平台开始，并在其产品的基础上添加了餐厅特定的功能。这既是优势也是局限性。根据Square自己的产品文档，Square用于餐厅包括菜单管理、在线订购、桌位管理和忠诚度计划——所有这些都具有与Square在零售中知名的相同的公开、平率定价结构。",
+      "start": 356.18,
+      "end": 384.36
     },
     {
       "id": 31,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
-      "text": "Lower vendor lock-in than Toast — hardware costs are lower, contracts are shorter, data export is more straightforward. Switching cost is lower if you outgrow the fit.",
-      "start": 373.65,
-      "end": 383.73
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(6)",
+      "text": "Square在网站集成方面做得好的地方。",
+      "start": 385.46,
+      "end": 388.96
     },
     {
       "id": 32,
-      "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(7)",
-      "text": "Where Square's website story gets complicated.",
-      "start": 384.83,
-      "end": 387.95
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(1)",
+      "text": "一个干净、文档齐全的公共API。对于想要拉取目录数据、发送订单或查询客户历史的自定义网站来说，Square的开发者文档是P O S领域中最好的之一——清晰、最新、并且得到积极的支持。",
+      "start": 389.66,
+      "end": 404.26
     },
     {
       "id": 33,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(1)",
-      "text": "Square for Restaurants is younger and less restaurant-dedicated than Toast. In my audit experience, some features a full-service restaurant wants — server-by-server sales reports for a fine-dining room, deep modifier chains, complex coursing — are thinner or absent compared to Toast's restaurant-native implementation.",
-      "start": 388.65,
-      "end": 405.73
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(2)",
+      "text": "公开、固定费率的价格。Square的处理费和月费都公开发布在他们的网站上。没有合同层级的舞蹈，没有“请致电我们获取报价”，也没有谈判的惊喜。",
+      "start": 404.58,
+      "end": 416.16
     },
     {
       "id": 34,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(2)",
-      "text": "Square Online's ordering flow feels retail-first. It works, but the visual and interaction rhythm does not quite match the vibe of a tablecloth room — Square Online looks like Square Online.",
-      "start": 406.05,
-      "end": 417.28
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(3)",
+      "text": "Square Online可以在一个下午内创建一个功能齐全的餐厅网站，菜单数据会自动从P O S同步过来。这不是一个自定义网站的替代品，但对于还没有准备好使用自定义网站的运营商来说，它确实很有用。",
+      "start": 416.48,
+      "end": 431.47
     },
     {
       "id": 35,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(3)",
-      "text": "Menu sync from Square to a custom external website requires you to write the A P I bridge. Square provides the pipe; you build what runs through it. This is fine if you have a developer; it is a blocker if you do not.",
-      "start": 417.6,
-      "end": 429.63
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(4)",
+      "text": "与Toast相比，Square的供应商锁定度较低——硬件成本较低，合同期限较短，数据导出更直接。如果你超出了当前的适用范围，切换成本会更低。",
+      "start": 431.79,
+      "end": 443.36
     },
     {
       "id": 36,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(12)",
-      "text": "In my audit experience: Square is the strongest pick for a single-location independent restaurant that wants a clean A P I, fair public fees, and the flexibility to switch tools later without regret. The developer-friendliness makes it the easiest P O S in this trio to pair with a fully custom site.",
-      "start": 430.15,
-      "end": 445.8
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(7)",
+      "text": "Square的网站故事变得复杂起来。",
+      "start": 444.46,
+      "end": 447.55
     },
     {
       "id": 37,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(4)",
-      "text": "Clover.",
-      "start": 446.9,
-      "end": 447.77
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(1)",
+      "text": "Square for Restaurants比Toast更年轻，也不那么专注于餐厅。在我的审计经验中，一些全服务餐厅想要的功能——例如，针对高档餐厅的服务器销售报告、深度修饰链、复杂的课程——在Square中较为薄弱或缺失，相比之下Toast的餐厅原生实现更为全面。",
+      "start": 448.25,
+      "end": 465.96
     },
     {
       "id": 38,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(13)",
-      "text": "Clover is the widest-distributed P O S system of the three, because it is sold through merchant services providers — banks, payment processors, and local ISOs — in addition to direct from Clover itself. That distribution model is Clover's biggest strength and its biggest source of confusion, simultaneously. According to Clover's own restaurant product page , the restaurant offering includes menu management, online ordering, table management, and third-party delivery integrations — though the specific feature set you see depends on which distribution channel you bought through.",
-      "start": 448.47,
-      "end": 480.39
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(2)",
+      "text": "Square Online的订购流程感觉更像零售第一。它可以工作，但视觉和交互节奏并不完全符合高档餐厅的氛围——Square Online看起来像Square Online。",
+      "start": 466.28,
+      "end": 477.27
     },
     {
       "id": 39,
-      "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(8)",
-      "text": "What Clover does well.",
-      "start": 481.49,
-      "end": 483.2
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(3)",
+      "text": "从Square到自定义外部网站的菜单同步需要你编写API桥接。Square提供了管道，你需要构建通过它的内容。如果你有开发人员，这是可以的；如果没有，这将是一个障碍。",
+      "start": 477.59,
+      "end": 490.4
     },
     {
       "id": 40,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(1)",
-      "text": "Widest hardware selection. Clover Station, Mini, Flex (handheld), and Kiosk cover nearly every physical configuration a restaurant might need — including a couple (like the kiosk and integrated-scale accessories) the other two do not directly offer. The hardware itself is well-built.",
-      "start": 483.9,
-      "end": 500.26
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "在我的审计经验中：Square是单一地点独立餐厅的最佳选择，这些餐厅想要一个干净的API、公平的公开费用，并且可以在以后无需后悔地切换工具。开发人员友好的特性使其成为这三种P O S中最容易与全自定义网站配对的。",
+      "start": 490.75,
+      "end": 507.58
     },
     {
       "id": 41,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(2)",
-      "text": "Flexible — sometimes too flexible. Because Clover distributes through multiple merchant services providers, the exact feature set, fee structure, and contract terms you get depend on which bank or ISO sold you the system. This can be a strength (your local bank may have negotiated a better rate than the public one) or a source of frustration (your neighbor's Clover might have features yours does not).",
-      "start": 500.58,
-      "end": 523.9
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "Clover。",
+      "start": 508.68,
+      "end": 509.55
     },
     {
       "id": 42,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(3)",
-      "text": "The largest app marketplace in the P O S space, which means niche restaurant features — specific loyalty programs, specific delivery integrations, specific back-office tools — tend to be available as add-ons when you cannot find them native.",
-      "start": 524.22,
-      "end": 538.2
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "Clover是这三种P O S系统中分布最广泛的，因为它不仅可以直接从Clover购买，还可以通过商家服务提供商（银行、支付处理器和本地ISO）购买。这种分销模式既是Clover的最大优势，也是其最大混乱的来源。根据Clover自己的餐厅产品页面，餐厅产品包括菜单管理、在线订购、桌面管理和第三方配送集成——尽管你看到的具体功能集取决于你通过哪个分销渠道购买。",
+      "start": 510.25,
+      "end": 538.96
     },
     {
       "id": 43,
       "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(9)",
-      "text": "Where Clover's website story gets complicated.",
-      "start": 539.3,
-      "end": 542.41
+      "selector": "#post-body > h3:nth-of-type(8)",
+      "text": "Clover做得好的地方。",
+      "start": 540.06,
+      "end": 541.93
     },
     {
       "id": 44,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(1)",
-      "text": "Fragmented ecosystem. Clover Station, Mini, Flex, Go, and Kiosk on the hardware side, plus plan tiers like Dining and Register on the software side — each combination has a slightly different feature set, and understanding which package your merchant provider sold you is a small research project on its own. In my audits, I have lost hours to \"does this Clover have native online ordering enabled?\" and the answer was \"depends on your plan tier.\"",
-      "start": 543.11,
-      "end": 569.32
+      "text": "最广泛的硬件选择。Clover Station、Mini、Flex（手持式）和Kiosk几乎涵盖了餐厅可能需要的所有物理配置——包括其他两种不直接提供的几种（例如，自助服务终端和集成秤配件）。硬件本身是非常坚固的。",
+      "start": 542.63,
+      "end": 557.44
     },
     {
       "id": 45,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(2)",
-      "text": "The developer A P I exists but is less mature than Square's or Toast's. Integrating Clover into a custom website often requires more plumbing work than either alternative, in my experience.",
-      "start": 569.64,
-      "end": 581.48
+      "text": "灵活——有时太灵活了。因为Clover通过多个商家服务提供商分销，具体的功能集、费率结构和合同条款取决于哪个银行或ISO卖给你这个系统。这既可以是一个优势（你的本地银行可能已经谈判了一个比公开的更好的费率），也可以是一个令人沮丧的来源（你的邻居的Clover可能有你没有的功能）。",
+      "start": 557.76,
+      "end": 578.87
     },
     {
       "id": 46,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(3)",
-      "text": "Pricing lives in your contract, not on a page. Transaction fees and monthly costs depend heavily on the specific merchant services contract you signed, not on a public pricing page. Before you commit, read the fee schedule in your actual contract — I have seen identical Clover setups running 30% apart in monthly cost at different restaurants.",
-      "start": 581.8,
-      "end": 600.1
+      "text": "在P O S领域最大的应用市场中——这意味着针对特定餐厅的功能，如特定的忠诚度计划、特定的送货集成、特定的后台工具——往往在无法找到本地功能时作为附加组件提供。",
+      "start": 579.19,
+      "end": 591.71
     },
     {
       "id": 47,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(14)",
-      "text": "In my audit experience: Clover is the right call when you need specific hardware Clover makes and the others do not — handheld tableside for a high-volume bar, an integrated scale for a butcher counter, a kiosk for a fast-casual line — or when the merchant services provider relationship itself is valuable (for example, when your local bank bundled the P O S with a business loan or line of credit). For pure website-integration quality, it is my third pick of the three. But \"third pick\" here still means \"legitimately usable\" — just that Toast and Square are usually easier starting points if you have a free choice.",
-      "start": 600.62,
-      "end": 634.07
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(9)",
+      "text": "Clover的网站故事变得复杂的地方。",
+      "start": 592.81,
+      "end": 596.08
     },
     {
       "id": 48,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(5)",
-      "text": "Side by side.",
-      "start": 635.17,
-      "end": 636.66
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(7) > li:nth-of-type(1)",
+      "text": "碎片化的生态系统——Clover Station、Mini、Flex、Go和Kiosk在硬件方面，加上像Dining和Register这样的软件计划层——每种组合都有略微不同的功能集，了解你的商家提供商卖给你的哪个包是一个小型研究项目。 在我的审计中，我花了几个小时研究“这个Clover是否具有本地在线订购功能？”这个问题，答案是“取决于你的计划层”。",
+      "start": 596.78,
+      "end": 622.73
     },
     {
       "id": 49,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(15)",
-      "text": "Here is the same question answered across ten features, in one glance. Green is a confident yes. Amber is a partial or \"depends on your plan.\" Rust is a meaningful gap worth knowing about before you sign a contract.",
-      "start": 637.36,
-      "end": 650.09
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(7) > li:nth-of-type(2)",
+      "text": "开发者A P I存在，但比Square或Toast的成熟度低。在我的经验中，将Clover集成到自定义网站中通常需要比其他替代方案更多的管道工作。",
+      "start": 623.05,
+      "end": 634.74
     },
     {
       "id": 50,
-      "kind": "figure",
-      "selector": "#post-body > figure:nth-of-type(1)",
-      "text": "Comparison based on each provider's public documentation as of early twenty twenty-six · features and pricing change — verify with your provider before signing",
-      "start": 650.89,
-      "end": 661.2
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(7) > li:nth-of-type(3)",
+      "text": "价格存在于你的合同中，而不是在一个页面上。 交易费用和每月成本严重依赖于你签署的具体商家服务合同，而不是公共定价页面。 在你承诺之前，阅读你实际合同中的费用安排——我已经看到相同的Clover设置在不同的餐厅中，每月成本相差30%。",
+      "start": 635.06,
+      "end": 656.03
     },
     {
       "id": 51,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(6)",
-      "text": "Which one I would pick, by restaurant type.",
-      "start": 662.3,
-      "end": 664.83
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "根据我的审计经验：Clover是正确的选择，当你需要特定的硬件Clover制造，而其他公司不生产——例如，高容量酒吧的便携式桌面、肉铺柜台的集成秤、快餐线的自助服务终端——或者当商家服务提供商关系本身是有价值的（例如，当你的当地银行将P O S与商业贷款或信用额度捆绑在一起时）。对于纯粹的网站集成质量，它是我的第三选择。但是“第三选择”这里仍然意味着“合理可用”——只是Toast和Square通常是更容易的起点，如果你有自由选择。",
+      "start": 656.38,
+      "end": 689.35
     },
     {
       "id": 52,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(16)",
-      "text": "Here is how I would match each P O S to a restaurant type, based on what I see in audits. These are opinions, not rules — your actual best fit depends on variables I cannot see from a blog post, so treat this as a starting point for your own evaluation, not a verdict.",
-      "start": 665.53,
-      "end": 679.75
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "并排比较。",
+      "start": 690.45,
+      "end": 691.28
     },
     {
       "id": 53,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(7)",
-      "text": "What to ask your P O S provider before you build a website.",
-      "start": 680.85,
-      "end": 684.52
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "这是同一个问题在十个功能中回答的，并且一目了然。 绿色表示有信心的“是”。 黄色表示部分或“取决于你的计划”。 红色表示值得在签署合同之前了解的有意义的差距。",
+      "start": 691.98,
+      "end": 705.21
     },
     {
       "id": 54,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(17)",
-      "text": "Whichever P O S you are evaluating, there are six questions I would ask the sales rep before you sign anything. Write these down, email them to your rep, and save the reply — the answers will tell you more about the integration quality you are signing up for than any glossy product page will.",
-      "start": 685.22,
-      "end": 700.23
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "十个功能的比较总结为每个平台的一个数字：Toast和Square都获得了10个功能中的7个自信的“是”标记。 Clover获得了10个功能中的1个自信的“是”标记，其七个行项落在部分或取决于计划中。 领先者和Clover之间的60分差距是标题；Toast和Square之间的差异在于它们各自留下了哪两个功能。",
+      "start": 706.01,
+      "end": 729.19
     },
     {
       "id": 55,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "\"Can I run a custom website on a modern stack and still use your P O S as the engine?\" This is the developer-ecosystem test. If the answer is \"well, we have our own templates\" — that is a no. You want a confident yes with a specific reference to their A P I documentation, and ideally an example of a custom site already doing it.",
-      "start": 700.75,
-      "end": 717.59
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(2)",
+      "text": "比较基于每个提供商截至2026年初的公共文档——功能和定价会发生变化——在签署之前请与您的提供商验证",
+      "start": 729.99,
+      "end": 740.38
     },
     {
       "id": 56,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "\"What exactly is in the monthly fee, and what is billed per transaction?\" P O S pricing is a hall of mirrors. Get the answer in writing, annotated, with examples calculated against your typical weekly volume. If the rep hesitates or falls back on \"it depends,\" ask for a sample invoice from a restaurant similar to yours.",
-      "start": 717.91,
-      "end": 735.29
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(6)",
+      "text": "我会根据餐厅类型选择哪一个。",
+      "start": 741.48,
+      "end": 744.07
     },
     {
       "id": 57,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "\"When I mark a dish 86'd on the P O S, how long until the online menu reflects it?\" The answer you want is \"seconds\" or \"within one minute.\" If it is \"next day\" or \"after a sync job runs overnight,\" your customers will keep ordering things you do not have — and your host stand will be the one apologizing for it.",
-      "start": 735.61,
-      "end": 752.33
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "这是我如何将每个P O S与餐厅类型匹配的，基于我在审计中看到的内容。 这些是意见，而不是规则——你的实际最佳匹配取决于我无法从博客文章中看到的变量，所以请将其视为你自己的评估的起点，而不是判决。",
+      "start": 744.77,
+      "end": 760.45
     },
     {
       "id": 58,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(4)",
-      "text": "\"What happens to my data if I leave in three years?\" Every P O S rep will promise you will never want to leave. That is not the answer. The real question is: can I export menu, order history, customer profiles, and reservation data in a standard format (CSV, JSON), and does that export include everything I would need to rebuild elsewhere without starting from zero?",
-      "start": 752.65,
-      "end": 774.29
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(7)",
+      "text": "在你构建网站之前需要问你的P O S提供商的问题。",
+      "start": 761.55,
+      "end": 766.46
     },
     {
       "id": 59,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(5)",
-      "text": "\"Is there a cancellation fee or early termination clause — and can I see it in writing before I sign?\" Read the small print. The three P O S providers in this post have very different answers, and the answer matters a lot two years in, if the fit stops working.",
-      "start": 774.61,
-      "end": 788.9
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "无论您评估哪种 P O S（点餐系统），在签署任何协议之前，我都会问销售代表六个问题。请将这些问题写下来，通过电子邮件发送给您的代表，并保存他们的回复——他们的答案将告诉您更多关于您即将签署的集成质量的信息，而不是任何花哨的产品页面。（或者，您可以运行 Tech Stack 来查看您的当前设置中哪些集成功能已经由现有的工具提供。）",
+      "start": 767.16,
+      "end": 794.13
     },
     {
       "id": 60,
       "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(6)",
-      "text": "\"If I wanted to integrate a custom website with your P O S, what is the typical setup time?\" This is my favorite question, because the answer tells you how often the rep has actually done it. Toast reps typically answer in weeks with a project outline. Square reps usually answer in days and point at the A P I docs. Clover reps sometimes have to ask a developer-relations person and get back to you — which is itself useful information.",
-      "start": 789.22,
-      "end": 813.46
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "\"我可以在现代技术栈上运行自定义网站，并将您的 P O S 作为引擎吗？\" 这是开发者生态系统的测试。如果答案是 \"好吧，我们有自己的模板\" —— 那就是一个否定。您想要一个自信的 \"是\"，并且有具体的参考文档，理想情况下，还有一个已经这样做的自定义网站的例子。",
+      "start": 794.48,
+      "end": 813.11
     },
     {
       "id": 61,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(18)",
-      "text": "Take notes on the shape of each answer, not just the content. A confident, specific answer with documentation is a good sign. A confident answer with no documentation is a warning sign. A vague answer with a promise to follow up is a red flag — and the follow-up almost never comes.",
-      "start": 813.98,
-      "end": 828.95
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "\"月费中到底包括什么，哪些费用是按交易收取的？\" P O S 定价就像一个镜子迷宫。请在书面形式中获得答案，并附上注释和例子，计算您的典型每周交易量。如果代表犹豫或退回到 \"这取决于...\"，请要求提供一个类似餐厅的样本发票。",
+      "start": 813.43,
+      "end": 831.26
     },
     {
       "id": 62,
-      "kind": "quote",
-      "selector": "#post-body > p:nth-of-type(19)",
-      "text": "Take notes on the shape of each answer, not just the content.",
-      "start": 829.7,
-      "end": 833.79
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "\"当我在 P O S 上标记一道菜为 86'd 时，多长时间内在线菜单会反映出这一变化？\" 您想要的答案是 \"几秒钟\" 或 \"一分钟内\"。如果答案是 \"第二天\" 或 \"在同步作业运行后\"，您的顾客将继续订购您没有的东西 —— 而您的 host stand 将是为此道歉的人。",
+      "start": 831.58,
+      "end": 852.23
     },
     {
       "id": 63,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(8)",
-      "text": "The P O S and the website are one system.",
-      "start": 834.89,
-      "end": 838
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "\"如果我三年后离开，您会如何处理我的数据？\" 每个 P O S 代表都会承诺您永远不会想要离开。这不是您想要的答案。真正的问题是：我可以以标准格式（CSV，JSON）导出菜单、订单历史、客户资料和预订数据吗？而且，这个导出是否包括我需要的所有数据，以便在其他地方重新开始，而不需要从零开始？",
+      "start": 852.55,
+      "end": 875.51
     },
     {
       "id": 64,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(20)",
-      "text": "The mistake I see most often in restaurant audits is not picking the wrong P O S. It is picking the P O S without involving the person who is going to build the website — and then discovering the integration limits on launch week, when the options are all expensive. By the time you are wiring up the reservation flow, you are already locked into whatever the P O S supports, and \"we will make it work\" becomes a lot more expensive than a five-minute conversation at the P O S evaluation stage would have been.",
-      "start": 838.7,
-      "end": 865.84
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(5)",
+      "text": "\"是否有取消费或提前终止条款 —— 并且我可以在签署之前看到书面协议？\" 仔细阅读小字。这个帖子中的三个 P O S 提供商有非常不同的答案，这个答案在两年后，如果合作关系不再适合，您将非常关心。",
+      "start": 875.83,
+      "end": 890.89
     },
     {
       "id": 65,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(6)",
+      "text": "\"如果我想将自定义网站与您的 P O S 集成，典型的设置时间是多长？\" 这是我最喜欢的问题，因为答案会告诉您代表实际上做过多少次这样的工作。Toast 代表通常会在几周内回答，并提供项目大纲。Square 代表通常会在几天内回答，并指向 A P I 文档。Clover 代表有时需要询问开发人员关系人员，然后再回复您 —— 这本身就是有用的信息。",
+      "start": 891.21,
+      "end": 917.27
+    },
+    {
+      "id": 66,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(19)",
+      "text": "记录每个答案的形状，而不仅仅是内容。一个自信、具体的答案，附有文档，是一个好的迹象。一个自信的答案，没有文档，是一个警告信号。一个模糊的答案，附有跟进的承诺，是一个红旗 —— 而且跟进几乎永远不会来。",
+      "start": 917.62,
+      "end": 931.59
+    },
+    {
+      "id": 67,
+      "kind": "quote",
+      "selector": "#post-body > p:nth-of-type(20)",
+      "text": "记录每个答案的形状，而不仅仅是内容。",
+      "start": 932.34,
+      "end": 935.6
+    },
+    {
+      "id": 68,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(8)",
+      "text": "P O S 和网站是一个系统。",
+      "start": 936.7,
+      "end": 939.2
+    },
+    {
+      "id": 69,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(21)",
-      "text": "If you are mid-P O S evaluation right now, bring your website strategy to the same meeting. If you are mid-website project with the P O S already chosen, bring the P O S's developer docs to the kickoff. The integration quality between these two systems matters more than either system alone — and the only way to get it right is to design them as one thing, up front.",
-      "start": 866.36,
-      "end": 884.18
+      "text": "我看到的餐厅审计中最常见的错误不是选择了错误的点餐系统（P O S），而是没有让将要建网站的人参与到点餐系统的选择中——然后在上线周发现了集成限制，而所有的选择都很昂贵。当你开始连接预订流程时，你已经被锁定在点餐系统支持的范围内，而“我们会让它工作”的解决方案比在点餐系统评估阶段进行五分钟的对话要贵得多。",
+      "start": 939.9,
+      "end": 966.28
+    },
+    {
+      "id": 70,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(22)",
+      "text": "如果你现在正在进行点餐系统评估，请把你的网站策略带到同一个会议中。如果你已经在进行网站项目，并且点餐系统已经被选定，请在启动时带上点餐系统的开发文档。点餐系统和网站之间的集成质量比两个系统本身更重要——而且唯一能做对的方法是从一开始就把它们设计成一个整体。",
+      "start": 966.63,
+      "end": 989.67
+    },
+    {
+      "id": 71,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(23)",
+      "text": "下一步该做什么",
+      "start": 990.02,
+      "end": 991.4
+    },
+    {
+      "id": 72,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "阅读：相关词汇条目 →",
+      "start": 991.75,
+      "end": 993.28
+    },
+    {
+      "id": 73,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "尝试：与本文配套的工具 →",
+      "start": 993.6,
+      "end": 995.91
+    },
+    {
+      "id": 74,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "或者给 Don 发送一条消息：The Window →",
+      "start": 996.23,
+      "end": 999.39
+    },
+    {
+      "id": 75,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(24)",
+      "text": "关键要点",
+      "start": 999.74,
+      "end": 1000.65
+    },
+    {
+      "id": 76,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(8) > li:nth-of-type(1)",
+      "text": "原生在线订餐消除了 Clover 仍然依赖的平板电脑中间人。",
+      "start": 1001,
+      "end": 1006.21
+    },
+    {
+      "id": 77,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(8) > li:nth-of-type(2)",
+      "text": "Square 是唯一一个在自己的网站上有公开、透明定价的点餐系统——这对于小型餐厅的信任至关重要。",
+      "start": 1006.53,
+      "end": 1015.08
+    },
+    {
+      "id": 78,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(8) > li:nth-of-type(3)",
+      "text": "Toast 从第一天开始就是为餐厅设计的；Square 是从零售业转型过来的；Clover 则是针对一般的小型企业。",
+      "start": 1015.4,
+      "end": 1025.18
+    },
+    {
+      "id": 79,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(8) > li:nth-of-type(4)",
+      "text": "合同灵活性（月对月，低切换成本）是 Square 在这个规模上唯一的优势。",
+      "start": 1025.5,
+      "end": 1031.52
+    },
+    {
+      "id": 80,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(8) > li:nth-of-type(5)",
+      "text": "将点餐系统与你的运营模式相匹配，而不是销售代表的推销——厨房票流程比品牌适配更重要。",
+      "start": 1031.84,
+      "end": 1040.12
     }
   ]
 }
