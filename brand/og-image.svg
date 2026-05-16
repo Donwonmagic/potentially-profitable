@@ -2,25 +2,25 @@
   <defs>
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;1,500&amp;family=Inter:wght@400;500&amp;display=swap');
-      .eyebrow  { font-family: 'Inter', -apple-system, 'Helvetica Neue', sans-serif; font-weight: 500; font-size: 22px; fill: #1F4E5B; letter-spacing: 3px; }
-      .headline { font-family: 'Fraunces', Georgia, 'Times New Roman', serif; font-weight: 500; font-size: 64px; fill: #14161A; letter-spacing: -1.5px; }
-      .italic   { font-family: 'Fraunces', Georgia, 'Times New Roman', serif; font-weight: 500; font-style: italic; fill: #B8541A; letter-spacing: -1.5px; }
-      .sub      { font-family: 'Inter', -apple-system, 'Helvetica Neue', sans-serif; font-weight: 400; font-size: 22px; fill: #2A2D33; letter-spacing: 0.2px; }
-      .wordmark { font-family: 'Fraunces', Georgia, 'Times New Roman', serif; font-weight: 600; font-size: 30px; fill: #14161A; letter-spacing: -0.5px; }
-      .tagline  { font-family: 'Inter', -apple-system, 'Helvetica Neue', sans-serif; font-weight: 500; font-size: 16px; fill: #6B6B6B; letter-spacing: 1.4px; }
-      .url      { font-family: 'Inter', -apple-system, 'Helvetica Neue', sans-serif; font-weight: 500; font-size: 18px; fill: #1F4E5B; }
+      .eyebrow  { font-family: 'Inter', -apple-system, 'Helvetica Neue', sans-serif; font-weight: 500; font-size: 22px; fill: #2A50C8; letter-spacing: 3px; }
+      .headline { font-family: 'Fraunces', Georgia, 'Times New Roman', serif; font-weight: 500; font-size: 64px; fill: #16181D; letter-spacing: -1.5px; }
+      .italic   { font-family: 'Fraunces', Georgia, 'Times New Roman', serif; font-weight: 500; font-style: italic; fill: #C42E2E; letter-spacing: -1.5px; }
+      .sub      { font-family: 'Inter', -apple-system, 'Helvetica Neue', sans-serif; font-weight: 400; font-size: 22px; fill: #4A4F59; letter-spacing: 0.2px; }
+      .wordmark { font-family: 'Fraunces', Georgia, 'Times New Roman', serif; font-weight: 600; font-size: 30px; fill: #16181D; letter-spacing: -0.5px; }
+      .tagline  { font-family: 'Inter', -apple-system, 'Helvetica Neue', sans-serif; font-weight: 500; font-size: 16px; fill: #6B7280; letter-spacing: 1.4px; }
+      .url      { font-family: 'Inter', -apple-system, 'Helvetica Neue', sans-serif; font-weight: 500; font-size: 18px; fill: #2A50C8; }
     </style>
     <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#FAF7F2"/>
-      <stop offset="100%" stop-color="#F3EEE3"/>
+      <stop offset="0%" stop-color="#F6F7F8"/>
+      <stop offset="100%" stop-color="#EDEEF1"/>
     </linearGradient>
     <linearGradient id="tealGlow" x1="1" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#1F4E5B" stop-opacity="0.10"/>
-      <stop offset="100%" stop-color="#1F4E5B" stop-opacity="0"/>
+      <stop offset="0%" stop-color="#2A50C8" stop-opacity="0.10"/>
+      <stop offset="100%" stop-color="#2A50C8" stop-opacity="0"/>
     </linearGradient>
     <linearGradient id="rustGlow" x1="0" y1="1" x2="1" y2="0">
-      <stop offset="0%" stop-color="#B8541A" stop-opacity="0.07"/>
-      <stop offset="100%" stop-color="#B8541A" stop-opacity="0"/>
+      <stop offset="0%" stop-color="#C42E2E" stop-opacity="0.07"/>
+      <stop offset="100%" stop-color="#C42E2E" stop-opacity="0"/>
     </linearGradient>
   </defs>
 
@@ -30,18 +30,18 @@
   <rect width="1200" height="630" fill="url(#rustGlow)"/>
 
   <!-- Subtle inner border -->
-  <rect x="24" y="24" width="1152" height="582" rx="18" ry="18" fill="none" stroke="#E8E2D6" stroke-width="2"/>
+  <rect x="24" y="24" width="1152" height="582" rx="18" ry="18" fill="none" stroke="#E3E5E9" stroke-width="2"/>
 
   <!-- Decorative brand mark in top-right corner (sits above the headline, fully inside the border) -->
-  <g transform="translate(980 70) scale(1.7)" fill="none" stroke="#1F4E5B" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter" opacity="0.22">
+  <g transform="translate(980 70) scale(1.7)" fill="none" stroke="#2A50C8" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter" opacity="0.22">
     <rect x="18" y="18" width="92" height="92"/>
     <line x1="64" y1="18" x2="64" y2="110"/>
-    <line x1="18" y1="49" x2="110" y2="49"/>
+    <line x1="18" y1="53" x2="110" y2="53"/>
   </g>
 
   <!-- Eyebrow -->
   <g transform="translate(80 140)">
-    <line x1="0" y1="-6" x2="52" y2="-6" stroke="#1F4E5B" stroke-width="2"/>
+    <line x1="0" y1="-6" x2="52" y2="-6" stroke="#2A50C8" stroke-width="2"/>
     <text x="68" y="0" class="eyebrow">A DIGITAL STUDIO OF ONE</text>
   </g>
 
@@ -54,10 +54,10 @@
 
   <!-- Bottom bar: mark + wordmark on the left, URL right-aligned -->
   <!-- Small mark, baseline-aligned with wordmark -->
-  <g transform="translate(80 528)" fill="none" stroke="#14161A" stroke-width="4" stroke-linecap="square" stroke-linejoin="miter">
+  <g transform="translate(80 528)" fill="none" stroke="#16181D" stroke-width="4" stroke-linecap="square" stroke-linejoin="miter">
     <rect x="0" y="0" width="42" height="42"/>
     <line x1="21" y1="0" x2="21" y2="42"/>
-    <line x1="0" y1="13" x2="42" y2="13"/>
+    <line x1="0" y1="16" x2="42" y2="16"/>
   </g>
   <text x="140" y="560" class="wordmark">Muntin Digital</text>
 

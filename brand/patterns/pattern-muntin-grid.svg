@@ -3,14 +3,14 @@
   <defs>
     <pattern id="grid" x="0" y="0" width="120" height="120" patternUnits="userSpaceOnUse">
       <!-- Outer frame (window) -->
-      <rect x="8" y="8" width="104" height="104" fill="none" stroke="#1F4E5B" stroke-width="1.5" opacity="0.55"/>
+      <rect x="8" y="8" width="104" height="104" fill="none" stroke="#2A50C8" stroke-width="1.5" opacity="0.55"/>
       <!-- Asymmetric muntin bars -->
-      <line x1="60" y1="8" x2="60" y2="112" stroke="#1F4E5B" stroke-width="1" opacity="0.35"/>
-      <line x1="8" y1="48" x2="112" y2="48" stroke="#1F4E5B" stroke-width="1" opacity="0.35"/>
+      <line x1="60" y1="8" x2="60" y2="112" stroke="#2A50C8" stroke-width="1" opacity="0.35"/>
+      <line x1="8" y1="48" x2="112" y2="48" stroke="#2A50C8" stroke-width="1" opacity="0.35"/>
       <!-- Subtle corner accents -->
-      <circle cx="60" cy="48" r="1.4" fill="#1F4E5B" opacity="0.4"/>
+      <circle cx="60" cy="48" r="1.4" fill="#2A50C8" opacity="0.4"/>
     </pattern>
   </defs>
-  <rect width="240" height="240" fill="#FAF7F2"/>
+  <rect width="240" height="240" fill="#F6F7F8"/>
   <rect width="240" height="240" fill="url(#grid)"/>
 </svg>

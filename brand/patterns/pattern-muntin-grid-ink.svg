@@ -2,12 +2,12 @@
   <title id="title">Muntin grid pattern (ink)</title>
   <defs>
     <pattern id="grid" x="0" y="0" width="120" height="120" patternUnits="userSpaceOnUse">
-      <rect x="8" y="8" width="104" height="104" fill="none" stroke="#FAF7F2" stroke-width="1.5" opacity="0.22"/>
-      <line x1="60" y1="8" x2="60" y2="112" stroke="#FAF7F2" stroke-width="1" opacity="0.14"/>
-      <line x1="8" y1="48" x2="112" y2="48" stroke="#FAF7F2" stroke-width="1" opacity="0.14"/>
-      <circle cx="60" cy="48" r="1.4" fill="#FAF7F2" opacity="0.2"/>
+      <rect x="8" y="8" width="104" height="104" fill="none" stroke="#F6F7F8" stroke-width="1.5" opacity="0.22"/>
+      <line x1="60" y1="8" x2="60" y2="112" stroke="#F6F7F8" stroke-width="1" opacity="0.14"/>
+      <line x1="8" y1="48" x2="112" y2="48" stroke="#F6F7F8" stroke-width="1" opacity="0.14"/>
+      <circle cx="60" cy="48" r="1.4" fill="#F6F7F8" opacity="0.2"/>
     </pattern>
   </defs>
-  <rect width="240" height="240" fill="#14161A"/>
+  <rect width="240" height="240" fill="#16181D"/>
   <rect width="240" height="240" fill="url(#grid)"/>
 </svg>
