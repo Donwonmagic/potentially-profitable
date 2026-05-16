@@ -1,10 +1,3 @@
-/* Brand-cohesion (Wave 8b): the apex site adopts the product app's
-   financial-grade DNA. Token NAMES preserved so the hand-built site
-   re-pigments with ZERO markup change, one-revert reversible.
-   --teal is dual-use here (fills AND text: color:var(--teal) links),
-   so it takes the product's text-safe accent (#2A50C8, AAA on
-   light), NOT the brighter fill blue, or every link fails AA.
-   Fraunces stays the editorial display face; only pigment changed. */
 :root{--cream:#F6F7F8;--cream-2:#EDEEF1;--ink:#16181D;--ink-soft:#4A4F59;--teal:#2A50C8;--teal-dark:#1F3A93;--teal-tint:#EAF0FE;--rust:#C42E2E;--stone:#6B7280;--stone-2:#9AA0AB;--line:#E3E5E9;--line-dark:#D7DAE0;--line-input:#868D9A;--white:#FFFFFF;--font-display:'Fraunces','Fraunces Fallback',Georgia,'Times New Roman',serif;--font-body:'Inter','Inter Fallback',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;--max:1200px;--pad-x:clamp(20px,4vw,64px);--ease:cubic-bezier(.22,.61,.36,1);--ease-out:cubic-bezier(.16,1,.3,1);--t-fast:180ms;--t-med:420ms;--t-slow:900ms;--r-sm:8px;--r-md:14px;--r-lg:22px;--gold:#B7791F}
 
 /* ============ Modernization tokens (Sprint 1) ============
