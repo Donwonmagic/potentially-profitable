@@ -5,11 +5,18 @@
  * the SECTIONS map in scripts/build-css-shells.mjs.
  */
 
-/* ===== [core] Pre-token boilerplate (lines 1-2) ===== */
-:root{--cream:#FAF7F2;--cream-2:#F3EEE3;--ink:#14161A;--ink-soft:#2A2D33;--teal:#1F4E5B;--teal-dark:#143640;--teal-tint:#E8F1F3;--rust:#B8541A;--stone:#6B6B6B;--stone-2:#9A958B;--line:#E8E2D6;--line-dark:#D4CCBC;--line-input:#8A8378;--white:#FFFFFF;--font-display:'Fraunces','Fraunces Fallback',Georgia,'Times New Roman',serif;--font-body:'Inter','Inter Fallback',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;--max:1200px;--pad-x:clamp(20px,4vw,64px);--ease:cubic-bezier(.22,.61,.36,1);--ease-out:cubic-bezier(.16,1,.3,1);--t-fast:180ms;--t-med:420ms;--t-slow:900ms;--r-sm:8px;--r-md:14px;--r-lg:22px;--gold:#C5A059}
+/* ===== [core] Pre-token boilerplate (lines 1-7) ===== */
+/* Brand-cohesion (Wave 8b): the apex site adopts the product app's
+   financial-grade DNA. Token NAMES preserved so the hand-built site
+   re-pigments with ZERO markup change, one-revert reversible.
+   --teal is dual-use here (fills AND text: color:var(--teal) links),
+   so it takes the product's text-safe accent (#2A50C8, AAA on
+   light), NOT the brighter fill blue, or every link fails AA.
+   Fraunces stays the editorial display face; only pigment changed. */
 
+/* ===== [core] Modernization tokens (Sprint 1) (lines 8-93) ===== */
+:root{--cream:#F6F7F8;--cream-2:#EDEEF1;--ink:#16181D;--ink-soft:#4A4F59;--teal:#2A50C8;--teal-dark:#1F3A93;--teal-tint:#EAF0FE;--rust:#C42E2E;--stone:#6B7280;--stone-2:#9AA0AB;--line:#E3E5E9;--line-dark:#D7DAE0;--line-input:#868D9A;--white:#FFFFFF;--font-display:'Fraunces','Fraunces Fallback',Georgia,'Times New Roman',serif;--font-body:'Inter','Inter Fallback',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;--max:1200px;--pad-x:clamp(20px,4vw,64px);--ease:cubic-bezier(.22,.61,.36,1);--ease-out:cubic-bezier(.16,1,.3,1);--t-fast:180ms;--t-med:420ms;--t-slow:900ms;--r-sm:8px;--r-md:14px;--r-lg:22px;--gold:#B7791F}
 
-/* ===== [core] Modernization tokens (Sprint 1) (lines 3-93) ===== */
 /* ============ Modernization tokens (Sprint 1) ============
    Additive vocabulary that later modernization sprints consume. No
    visual change lands with this commit alone — declaring the tokens
@@ -27,10 +34,10 @@
    stiff feel. */
 :root{
   /* Surface depth — progressively lighter as you float up */
-  --surface-0: #FAF7F2;          /* body / baseline (matches --cream) */
-  --surface-1: #FFFDF8;          /* raised card */
+  --surface-0: #F6F7F8;          /* body / baseline (matches --cream) */
+  --surface-1: #FFFFFF;          /* raised card */
   --surface-2: #FFFFFF;          /* floating / modal */
-  --surface-inset: #F3EEE3;      /* recessed tray (matches --cream-2) */
+  --surface-inset: #EDEEF1;      /* recessed tray (matches --cream-2) */
 
   /* Elevation — paired subtle+spread shadows rather than single blur */
   --elev-1: 0 1px 0 rgba(20,22,26,.04), 0 1px 2px rgba(20,22,26,.04);
@@ -38,7 +45,7 @@
   --elev-3: 0 4px 8px rgba(20,22,26,.05), 0 24px 48px -12px rgba(20,22,26,.10);
 
   /* Focus affordance — consistent across every interactive element */
-  --ring-focus: 0 0 0 3px rgba(31,78,91,.22);
+  --ring-focus: 0 0 0 3px rgba(59, 104, 245, 0.3);
 
   /* --gradient-hero retired in Phase 4 (launch-plan audit #2).
      The plan's visual-identity edit calls for restraint above the
@@ -94,6 +101,8 @@
      touching tool surfaces. Apply via `.prose` wrapper class on
      article bodies (/blog/, /learn/, /glossary/<term>/, About).
      DO NOT apply to /tools/ result surfaces — utility stays utilitarian. */
+
+/* ===== [core] Line-height convention (lines 94-114) ===== */
   --prose-measure:      64ch;             /* upgrades to 66ch on lg breakpoints */
   --leading-prose:      1.6;             /* editorial body (.prose, .article-body) */
   --leading-tool:       1.5;             /* tool internals: tables, helpers, badges */
@@ -101,8 +110,6 @@
   --rule:               1px solid var(--surface-2);  /* hairline rules vs cards on index pages */
 }
 
-
-/* ===== [core] Line-height convention (lines 94-108) ===== */
 /* ============ Line-height convention ============
    Three tokens, three contexts. Use the token, not the literal:
 
@@ -118,8 +125,8 @@
    tokens and are not being mass-rewritten — adopt as you touch a
    surface. */
 
+/* ===== [core] Token usage notes (lines 115-127) ===== */
 
-/* ===== [core] Token usage notes (lines 109-121) ===== */
 /* ============ Token usage notes ============
    --stone-2 (#9A958B) — DECORATIVE ONLY. Used for icons, dividers,
    idle band fills, and progress-ring tracks. Never apply to body text
@@ -133,8 +140,8 @@
    --status-warn-fill (#C28B2E) — fill only (chart bars, star icons).
    Never use as text color on light surfaces. */
 
+/* ===== [core] Status components (.status-chip, .progress-ring) (lines 128-252) ===== */
 
-/* ===== [core] Status components (.status-chip, .progress-ring) (lines 122-252) ===== */
 /* ============ Status components (Sprint 0) ============
    Three reusable components — `.status-chip`, `.progress-ring`,
    `.score-card` — plus the promoted `.score-pill` (lifted from
@@ -259,6 +266,8 @@
 .progress-ring[data-band="solid"]    .progress-ring-fill{stroke:var(--teal)}
 .progress-ring[data-band="complete"] .progress-ring-fill{stroke:var(--teal)}
 .progress-ring[data-band="good"]     .progress-ring-fill{stroke:var(--teal)}
+
+/* ===== [core] Field Guide editorial surfaces (.score-card, .score-pill — used by tools + audits) (lines 253-532) ===== */
 .progress-ring[data-band="ok"]       .progress-ring-fill{stroke:var(--status-warn-fill)}
 .progress-ring[data-band="bad"]      .progress-ring-fill{stroke:var(--rust)}
 
@@ -266,8 +275,6 @@
   .progress-ring-fill{transition:none}
 }
 
-
-/* ===== [core] Field Guide editorial surfaces (.score-card, .score-pill — used by tools + audits) (lines 253-532) ===== */
 /* ============ Phase 5 — Field Guide editorial surfaces ============
    The .prose wrapper turns any container into a reading surface: a
    64ch measure (66ch from md), generous leading, tabular figures by
@@ -541,6 +548,8 @@
   .score-pill,
   .score-pill-btn,
   .score-ring-fill,
+
+/* ===== [core] Global focus-visible (lines 533-542) ===== */
   .score-pill-count strong,
   .score-pill-label{transition:none}
   .score-pill-count strong.bumping{animation:none}
@@ -548,18 +557,16 @@
 
 @media print{.score-pill{display:none !important}}
 
-
-/* ===== [core] Global focus-visible (lines 533-540) ===== */
 /* ----- Global focus-visible — :where() keeps specificity at 0 so
    per-tool overrides still win. Component focus rings (e.g.
    .score-pill-btn:focus-visible's teal border) compose with this. ----- */
+
+/* ===== [core] Self-hosted web fonts (@font-face) (lines 543-610) ===== */
 :where(button, input, select, textarea, a):focus-visible{
   box-shadow:var(--ring-focus);
   outline:none;
 }
 
-
-/* ===== [core] Self-hosted web fonts (@font-face) (lines 541-606) ===== */
 /* ============ SELF-HOSTED WEB FONTS ============
    Fraunces (display) and Inter (body) are served from /assets/fonts/
    as VARIABLE font files: one woff2 per font/style covers every weight
@@ -623,11 +630,11 @@
    in the layout. The fallback names are inserted into the --font-display
    and --font-body chains above so the cascade picks them up before
    falling through to system fonts. */
+
+/* ===== [core] Breakpoint scale (lines 611-712) ===== */
 @font-face{font-family:'Fraunces Fallback';src:local('Times New Roman');size-adjust:100%;ascent-override:97.8%;descent-override:25.5%;line-gap-override:0%}
 @font-face{font-family:'Inter Fallback';src:local('Arial');size-adjust:100%;ascent-override:96.875%;descent-override:24.121%;line-gap-override:0%}
 
-
-/* ===== [core] Breakpoint scale (lines 607-750) ===== */
 /* ============ BREAKPOINT SCALE ============
    The site transitions at exactly these widths, everywhere:
 
@@ -727,6 +734,8 @@ pre code{overflow-wrap:normal;word-break:normal;white-space:pre}
 .tool-hero-glyph{width:48px;height:48px;color:var(--teal);opacity:.78;margin:0 auto 18px}
 .tool-hero-glyph svg{width:100%;height:100%;display:block}
 /* Post-end mark: muntin pane signature + italic line that closes a blog post before the related-posts module. */
+
+/* ===== [core] Button vocabulary (.btn family) (lines 713-1281) ===== */
 .post-end-mark{display:flex;flex-direction:column;align-items:center;gap:18px;margin:80px auto 64px;color:var(--stone)}
 .post-end-mark hr{border:none;border-top:1px solid var(--line);width:80px;margin:0}
 .post-end-mark .post-end-glyph{width:24px;height:24px;color:var(--teal);opacity:.65}
@@ -772,8 +781,6 @@ pre code{overflow-wrap:normal;word-break:normal;white-space:pre}
    New button-shaped class? Add it to the allowlist OR refactor to
    compose primitives. scripts/check-button-vocabulary.mjs catches
    ad-hoc *-btn additions in CI. */
-
-/* ===== [core] Button vocabulary (.btn family) (lines 751-1281) ===== */
 
 .btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:500;font-size:15px;letter-spacing:-0.005em;transition:transform var(--t-fast) var(--ease),background var(--t-fast) var(--ease),color var(--t-fast) var(--ease),box-shadow var(--t-fast) var(--ease);white-space:nowrap;cursor:pointer}
 .btn svg{width:16px;height:16px;transition:transform var(--t-med) var(--ease-out)}
@@ -1298,6 +1305,8 @@ section.block{padding:clamp(80px,10vw,140px) 0}
 .final .eyebrow{color:var(--cream)}
 .final .eyebrow::before{background:var(--cream)}
 .final h2{color:var(--cream);margin-top:16px;font-size:clamp(38px,5vw,72px);max-width:900px}
+
+/* ===== [core] Footer (lines 1282-1378) ===== */
 .final h2 em{font-style:italic;color:#E8A87C;font-weight:400}
 .final .final-sub{margin:28px auto 0;max-width:580px;font-size:18px;color:rgba(250,247,242,0.78)}
 .final .hero-ctas{margin-top:44px}
@@ -1305,8 +1314,6 @@ section.block{padding:clamp(80px,10vw,140px) 0}
 .final .btn-primary:hover{background:var(--white)}
 .final .btn-ghost{color:var(--cream);border-color:rgba(250,247,242,0.3)}
 .final .btn-ghost:hover{background:rgba(250,247,242,0.08);border-color:var(--cream)}
-
-/* ===== [core] Footer (lines 1282-1378) ===== */
 /* ============ FOOTER ============
    Three-section footer: a top CTA row, a 3-column discovery grid,
    and a thin bottom row with copyright + legal. Unified across all
@@ -1397,15 +1404,12 @@ body:has(.block.final) .foot-cta{display:none}
 .foot-bottom{display:flex;justify-content:space-between;gap:24px;align-items:center;flex-wrap:wrap}
 .foot-copy{font-size:12.5px;color:rgba(250,247,242,0.78);letter-spacing:0.01em;margin:0}
 .foot-legal{display:flex;gap:12px;flex-wrap:wrap;margin:0}
-/* Inline padding + negative margin gives legal links a ≥24×24 hit area
-   (WCAG 2.5.8 Target Size, Minimum) without changing the visible rhythm
-   of the row. */
-.foot-legal a{font-size:12.5px;color:rgba(250,247,242,0.85);transition:color var(--t-fast) var(--ease);padding:8px 6px;margin:-8px -6px;border-radius:4px}
-.foot-legal a:hover{color:var(--cream)}
-@media (max-width:640px){.foot-bottom{flex-direction:column;align-items:flex-start;gap:14px}}
 
-
-/* ===== [core] Global focus-visible + skip-link + sr-only + nav-toggle + mobile-menu (every-page chrome) (lines 1408-1475) ===== */
+/* ===== [core] Global focus-visible + skip-link + sr-only + nav-toggle + mobile-menu (every-page chrome) (lines 1411-1475) ===== */
+.reveal{opacity:1;transform:none}
+.reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+/* (kept for line-count parity with the previous .reveal block) */
 :focus{outline:none}
 /* Sprint 3: global focus affordance. The 2px solid outline reads as
    a browser-default; the layered halo from --ring-focus reads as
@@ -1467,6 +1471,8 @@ br.br-lg{display:none}
 }
 .mobile-menu a{padding:14px 2px;font-size:18px;font-family:var(--font-display);font-weight:500;color:var(--ink);border-bottom:1px solid var(--line)}
 .mobile-menu a.btn-primary{margin-top:14px;border-bottom:0;justify-content:center;padding:15px 26px;font-family:var(--font-body);font-size:15px;background:var(--teal);color:var(--cream);border-radius:999px}
+
+/* ===== [core] Nav refinements + share widget (was inside CITATION DRAWER section) (lines 1476-1496) ===== */
 .mobile-menu a.btn-primary:hover,.mobile-menu a.btn-primary:focus{background:var(--teal-dark);color:var(--cream)}
 .mobile-menu[hidden]{display:none}
 /* Keep the nav CTA pill at its intrinsic width on desktop. Without
@@ -1474,8 +1480,6 @@ br.br-lg{display:none}
    Spanish "Agenda una llamada de 20 min") pushes the nav over the
    container width — the compression shoves the text against one side
    of the pill, which reads as "the text isn't centered". */
-
-/* ===== [core] Nav refinements + share widget (was inside CITATION DRAWER section) (lines 1476-1496) ===== */
 .nav-inner .btn-primary{flex-shrink:0}
 @media (max-width:1100px){.nav-inner .btn-primary{display:none}
 .nav-toggle{display:flex}
@@ -1490,15 +1494,15 @@ br.br-lg{display:none}
    so the native OS share sheet opens on any device that supports it. */
 .share-dropdown{position:relative;display:inline-block}
 .share-btn{display:inline-flex;align-items:center;gap:10px;padding:10px 18px;border:1px solid var(--line-dark);border-radius:999px;font:inherit;font-size:13px;font-weight:600;color:var(--ink);background:var(--white);cursor:pointer;transition:all var(--t-fast) var(--ease)}
-.share-btn:hover{border-color:var(--teal);background:var(--cream-2);color:var(--teal)}
-.share-btn svg{width:16px;height:16px;flex:none}
-.share-menu{position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%);min-width:220px;z-index:50;background:var(--white);border:1px solid var(--line);border-radius:12px;padding:6px;box-shadow:0 20px 40px -12px rgba(20,22,26,0.18);display:flex;flex-direction:column}
-.share-menu[hidden]{display:none}
-.share-item{display:block;width:100%;text-align:left;padding:10px 14px;font-family:var(--font-body);font-size:14px;color:var(--ink);background:transparent;border:0;border-radius:8px;cursor:pointer;transition:background-color var(--t-fast) var(--ease)}
-.share-item:hover,.share-item:focus-visible{background-color:var(--cream-2);outline:none}
-.share-item.copied{color:var(--teal);font-weight:600}
 
-/* ===== [core] Breadcrumbs (lines 2026-2051) ===== */
+/* ===== [core] Breadcrumbs (lines 2026-2055) ===== */
+.listen-card[data-dimmed="true"]{transform:none;filter:none}
+/* Sprint A12: show the finished-state end-result without the retract
+   animation — fill shrinks to 0 immediately, checkmark appears. */
+.listen-card[data-state="finished"] .listen-card-progress-fill{transform:scaleX(0);opacity:0}
+.listen-card[data-state="finished"] .listen-card-play .icon-finished{opacity:1;transform:none}
+}
+
 /* ============ BREADCRUMBS ============
    Visual counterpart to the BreadcrumbList schema already present in
    JSON-LD on secondary pages. Sits between the nav and the page hero,
@@ -1522,11 +1526,11 @@ br.br-lg{display:none}
    hero's default 160px top padding becomes ~260px of empty space
    before content. Reset the hero top padding to a comfortable
    residual (40px) when preceded by a breadcrumb. */
+
+/* ===== [core] Homepage utility classes (lines 2056-2103) ===== */
 .breadcrumb + .hero{padding-top:40px}
 @media (max-width:640px){.breadcrumb{font-size:12px;padding:88px 0 12px}.breadcrumb + .hero{padding-top:24px}}
 
-
-/* ===== [core] Homepage utility classes (lines 2052-2103) ===== */
 /* ============ HOMEPAGE UTILITY CLASSES ============
    Extracted from inline style= attributes during the Sprint 1 cleanup.
    Keep these tightly scoped — prefer new semantic classes over atomic
@@ -1572,6 +1576,8 @@ br.br-lg{display:none}
 .theme-social{--accent:var(--rust)}
 .theme-brand{--accent:#7A5C3E}
 .theme-social .eyebrow,.theme-social .label,.theme-brand .eyebrow,.theme-brand .label{color:var(--accent)}
+
+/* ===== [core] Legal pages (lines 2104-2129) ===== */
 .price-alt{font-size:clamp(24px,3vw,34px)}
 .muntin-title{margin-top:16px}
 .service-card-link{text-decoration:none;color:inherit;display:flex;flex-direction:column}
@@ -1579,8 +1585,6 @@ br.br-lg{display:none}
 .work-grid-cta{text-align:center;margin-top:40px}
 .honeypot{display:none}
 
-
-/* ===== [core] Legal pages (lines 2104-2129) ===== */
 /* ===== Legal pages (accessibility, privacy, cookies, terms) ===== */
 .legal{max-width:760px;margin:0 auto;padding:calc(80px + 64px) var(--pad-x) 96px}
 .legal h1{font-family:var(--font-display);font-weight:500;font-size:clamp(34px,5vw,48px);line-height:1.1;letter-spacing:-0.02em;margin:0 0 8px;color:var(--ink)}
@@ -1600,6 +1604,8 @@ br.br-lg{display:none}
 .legal .cookie-table{width:100%;border-collapse:collapse;margin:28px 0;font-size:14px}
 .legal .cookie-table thead{background:var(--white);border-bottom:2px solid var(--line-dark)}
 .legal .cookie-table th{padding:12px 16px;text-align:left;font-weight:600;color:var(--ink)}
+
+/* ===== [core] Homepage primary tool CTA (restaurant audit) (lines 2130-2419) ===== */
 .legal .cookie-table td{padding:12px 16px;border-bottom:1px solid var(--line);color:var(--ink-soft);vertical-align:top}
 .legal .cookie-table tr:last-child td{border-bottom:0}
 @media (max-width:960px){
@@ -1607,8 +1613,6 @@ br.br-lg{display:none}
   .legal .cookie-table{display:block;overflow-x:auto}
 }
 
-
-/* ===== [core] Homepage primary tool CTA (restaurant audit) (lines 2130-2419) ===== */
 /* ============================================================
    Homepage primary tool CTA (restaurant audit)
    ============================================================
@@ -1892,15 +1896,15 @@ br.br-lg{display:none}
     padding: 8px;
   }
   .tool-cta-form input[type="url"],
-  .tool-cta-form input[type="text"]{ padding: 12px 16px; }
-  .tool-cta-form button{ border-radius: 14px; width: 100%; padding: 14px 24px; }
-  .tool-cta-chips{ font-size: 12px; }
-  .tool-cta-preview{ font-size: 13.5px; }
-  .tool-cta-preview li{ padding: 8px 0; }
-}
-
 
 /* ===== [core] Library nav-mega regroup (nav is everywhere) (lines 3150-3468) ===== */
+  font-size:13px;
+  font-variant-numeric:tabular-nums;
+  color:var(--stone);
+}
+@media (max-width:900px){ .recently-added__grid{ grid-template-columns:repeat(2,1fr); } }
+@media (max-width:560px){ .recently-added__grid{ grid-template-columns:1fr; } }
+
 /* ---------- Library nav-mega regroup (Phase 5) ---------------------
    The Library dropdown was an 8-item linear list. Now grouped into
    three labeled columns (Read / Do / Learn) with a "Library home →"
@@ -2213,15 +2217,15 @@ br.br-lg{display:none}
 .mob-cta p,
 .seo-cta p,
 .sch-cta p,
-.si-cta p,
-.ts-cta p{
-  font-size:15px;
-  color:var(--stone);
-  margin:0 0 16px;
-}
-
 
 /* ===== [core] /system/ colophon page (small, kept in core) (lines 3572-3648) ===== */
+.start-step-why strong{color:var(--teal-dark)}
+@media (max-width:720px){
+  .start-step{grid-template-columns:1fr;padding:28px 24px;gap:12px}
+  .start-step-num{text-align:left;font-size:64px;line-height:1}
+  .start-step + .start-step::before{left:38px}
+}
+
 /* ============================================================
    /system/ COLOPHON PAGE
    Shows the stack, design tokens, i18n pipeline, URL restructure
@@ -2292,6 +2296,8 @@ br.br-lg{display:none}
 .sys-audio ul > li{padding:16px 20px;background:var(--white);border:1px solid var(--line);border-radius:var(--r-sm);font-size:15px;line-height:1.6;color:var(--ink-soft)}
 
 /* Accessibility: 6-card grid */
+
+/* ===== [core] Search modal (Pagefind-backed; on every page) (lines 3649-3823) ===== */
 .sys-a11y{list-style:none;margin:48px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
 @media (max-width:960px){.sys-a11y{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:640px){.sys-a11y{grid-template-columns:1fr}}
@@ -2299,8 +2305,6 @@ br.br-lg{display:none}
 .sys-a11y h3{font-family:var(--font-display);font-size:19px;font-weight:500;letter-spacing:-0.01em;margin:0 0 10px;color:var(--ink)}
 .sys-a11y p{font-size:14.5px;line-height:1.6;color:var(--stone);margin:0}
 
-
-/* ===== [core] Search modal (Pagefind-backed; on every page) (lines 3649-3823) ===== */
 /* ============================================================
    SEARCH MODAL (Pagefind-backed)
    Keyboard opens via Cmd/Ctrl+K or the nav search button. Modal
@@ -2470,14 +2474,14 @@ br.br-lg{display:none}
   .search-footer{display:none}
 }
 
-/* Respect reduced motion */
-@media (prefers-reduced-motion:reduce){
-  .search-loading::before{animation:none}
-  .search-modal,.search-modal-inner,.nav-search-btn{transition:none}
+/* ===== [core] Cloudflare Turnstile widget (reservation min-height) (lines 5293-5306) ===== */
+    display:block;
+    font-size:7.5pt;
+    color:#777;
+    margin-top:2pt;
+  }
 }
 
-
-/* ===== [core] Cloudflare Turnstile widget (reservation min-height) (lines 5293-5304) ===== */
 /* ============ Cloudflare Turnstile widget (Phase 3B) ============
    Reserve the widget's render height so layout doesn't shift when
    the script finishes loading + the iframe paints. The "managed"
@@ -2485,13 +2489,13 @@ br.br-lg{display:none}
    height, full container width. Reserving here keeps CLS at 0
    from this widget alone. data-size="compact" callers (none today)
    would need a separate min-height: 140px tier — add as needed. */
+
+/* ===== [core] Workshop save banner (multi-context, kept in core) (lines 5307-5356) ===== */
 .cf-turnstile {
   display: block;
   min-height: 65px;
 }
 
-
-/* ===== [core] Workshop save banner (multi-context, kept in core) (lines 5305-5356) ===== */
 /* ============ Workshop (Sprint 3 — cohesion) ============
    /workbench/ + /es/workbench/ saved-items page. Shares the
    global frame (.nav + <footer>) with every other page so the
@@ -2537,15 +2541,15 @@ br.br-lg{display:none}
 .wsh-watch-pill{display:inline-flex;align-items:center;gap:8px;padding:8px 6px 8px 14px;border-radius:999px;background:var(--teal-tint);color:var(--teal);font:inherit;font-size:13px;font-weight:600}
 .wsh-watch-pill button{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border:0;border-radius:50%;background:transparent;color:var(--teal);font:inherit;font-size:16px;line-height:1;cursor:pointer;padding:0;transition:background var(--t-fast) var(--ease)}
 .wsh-watch-pill button:hover{background:rgba(31,78,91,0.12)}
-.wsh-watch-pill button[disabled]{opacity:0.6;cursor:wait}
-
-@media (max-width:640px){
-  .wsh-item{grid-template-columns:1fr}
-  .wsh-item-actions{justify-content:flex-end}
-}
-
 
 /* ===== [core] Workshop rationale (lines 5520-5535) ===== */
+
+.post-end-cta{max-width:680px;margin:48px auto 64px;padding:32px 36px;background:var(--teal-tint);border:1px solid transparent;border-radius:var(--r-md);text-align:center}
+.post-end-cta-headline{font-family:var(--font-display);font-size:clamp(22px,2.4vw,26px);font-weight:500;color:var(--ink);margin:0 0 12px;line-height:1.25;letter-spacing:-0.005em}
+.post-end-cta-body{font-size:15px;line-height:1.55;color:var(--ink-soft);margin:0 0 22px;max-width:560px;margin-left:auto;margin-right:auto}
+.post-end-cta .btn-primary{background:var(--teal);color:var(--cream)}
+.post-end-cta .btn-primary:hover{background:var(--teal-dark)}
+
 /* ============ Workshop rationale (Sprint 14 — cohesion) ============
    A small editorial block on /tools/, /glossary/, and a few other
    pages that explains the Workshop to anonymous visitors. The two
@@ -2555,6 +2559,8 @@ br.br-lg{display:none}
    /api/auth/me. */
 
 .workshop-rationale{max-width:760px;margin:64px auto;padding:28px 32px;background:var(--surface-1);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:var(--r-md)}
+
+/* ===== [core] The Window (/window/ — kept in core to avoid a 4th shell) (lines 5536-5652) ===== */
 .workshop-rationale-eyebrow{font-family:var(--font-body);font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);margin:0 0 8px}
 .workshop-rationale-headline{font-family:var(--font-display);font-size:clamp(22px,2.4vw,26px);font-weight:500;color:var(--ink);margin:0 0 10px;line-height:1.25;letter-spacing:-0.005em}
 .workshop-rationale-body{font-size:15px;line-height:1.6;color:var(--ink-soft);margin:0 0 18px}
@@ -2562,8 +2568,6 @@ br.br-lg{display:none}
 .workshop-rationale-cta .js-nav-signin,.workshop-rationale-cta .js-nav-workshop{color:var(--teal);font-weight:600;text-decoration:none;border-bottom:1px solid currentColor;transition:color var(--t-fast) var(--ease)}
 .workshop-rationale-cta .js-nav-signin:hover,.workshop-rationale-cta .js-nav-workshop:hover{color:var(--teal-dark)}
 
-
-/* ===== [core] The Window (/window/ — kept in core to avoid a 4th shell) (lines 5536-5652) ===== */
 /* ============ THE WINDOW (Phase W.3) ============
    Full-page editorial canvas at /window/ and /es/window/. Suppresses
    the standard nav via body.window-canvas. The muntin hairline at
@@ -2674,6 +2678,8 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .window-onramp:hover{border-color:var(--teal);color:var(--teal)}
 .window-composer__reassurance{font-size:13px;color:var(--stone);margin:14px 0 0;text-align:center;font-style:italic}
 .window-composer__alt{font-size:13px;color:var(--stone);margin:8px 0 0;text-align:center}
+
+/* ===== [core] Window composer (Phase-2 redesign) (lines 5653-5685) ===== */
 .window-composer__alt a{color:var(--teal);font-weight:500;border-bottom:1px dashed currentColor;text-decoration:none}
 .window-composer__alt a:hover,.window-composer__alt a:focus-visible{border-bottom-style:solid}
 
@@ -2681,8 +2687,6 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .window-signin a{color:var(--teal);font-weight:500;text-decoration:none;border-bottom:1px solid currentColor}
 .window-signin strong{color:var(--ink)}
 
-
-/* ===== [core] Window composer (Phase-2 redesign) (lines 5653-5685) ===== */
 /* ============ WINDOW COMPOSER — Phase-2 redesign ============
    On-ramp chips moved above the form, surface productized offers
    with prices. Optional context grid (Name / Restaurant / Site)
@@ -2709,6 +2713,8 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .window-composer__alt-row a{color:var(--teal);font-weight:500;border-bottom:1px dashed currentColor;text-decoration:none;transition:border-bottom-style var(--t-fast) var(--ease)}
 .window-composer__alt-row a:hover,.window-composer__alt-row a:focus-visible{border-bottom-style:solid}
 .window-composer__alt-row .serif-italic{font-family:var(--font-display);font-style:italic;font-weight:500}
+
+/* ===== [core] ADMIN /admin/window/ (kept in core; admin is auth-gated noindex) (lines 5686-5772) ===== */
 @media (max-width:640px){
   .window-composer__context{grid-template-columns:1fr}
   .window-composer__onramps .window-onramp{width:100%;justify-content:space-between}
@@ -2716,8 +2722,6 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
   .window-composer__alt-row li + li::before{display:none}
 }
 
-
-/* ===== [core] ADMIN /admin/window/ (kept in core; admin is auth-gated noindex) (lines 5686-5772) ===== */
 /* ============ ADMIN /admin/window/ (Phase W.3) ============ */
 .admin-window{max-width:760px;margin:0 auto;padding:32px 16px}
 .admin-window__head{margin-bottom:24px}
@@ -2798,15 +2802,15 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 
 /* Phase H (Information Security) — Data Promise rail at the top
    of every tool page. Three lines: claim, verification, links. */
-.tool-data-promise{margin:8px 0 18px;padding:10px 14px;background:var(--cream-2);border-left:3px solid var(--teal);border-radius:6px;max-width:680px;font-size:13px;line-height:1.55}
-.tool-data-promise__line{margin:0 0 4px;color:var(--ink)}
-.tool-data-promise__line:nth-child(2){color:var(--ink-soft)}
-.tool-data-promise__links{margin:6px 0 0;font-size:12.5px}
-.tool-data-promise__links a{color:var(--teal);text-decoration:none;font-weight:600;border-bottom:1px solid color-mix(in srgb, var(--teal) 35%, transparent)}
-.tool-data-promise__links a:hover{border-bottom-color:var(--teal)}
-
 
 /* ===== [core] Newsletter capture (in global footer; on every page) (lines 6012-6032) ===== */
+
+/* Phase G.8 (Growth) — sub-tool rail back to Storefront Health.
+   Quiet single line; the bold tool name carries the click weight. */
+.tool-storefront-rail{font-size:13.5px;color:var(--ink-soft);line-height:1.55;margin:6px 0 0;max-width:680px}
+.tool-storefront-rail a{color:var(--teal);text-decoration:none;border-bottom:1px solid color-mix(in srgb, var(--teal) 35%, transparent)}
+.tool-storefront-rail a:hover{border-bottom-color:var(--teal)}
+
 /* Phase G.10 (Growth) — quiet newsletter capture in the global footer.
    Two short lines, one input, one button — no badges, no pop-ups, no
    "join our community" CTA. Mirrors the Window's "I read every one"
@@ -2821,15 +2825,15 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 @media (min-width:480px){.foot-newsletter-form{flex-direction:row;flex-wrap:wrap;align-items:center;gap:8px}}
 .foot-newsletter-form input[type="email"]{flex:1 1 auto;min-width:0;padding:11px 14px;min-height:44px;border:1px solid color-mix(in srgb, currentColor 24%, transparent);border-radius:8px;background:rgba(255,255,255,0.04);color:inherit;font:inherit}
 .foot-newsletter-form input[type="email"]::placeholder{color:inherit;opacity:0.5}
-.foot-newsletter-form input[type="email"]:focus-visible{outline:2px solid var(--teal);outline-offset:1px;background:rgba(255,255,255,0.08)}
-.foot-newsletter-form button{flex:0 0 auto;padding:11px 18px;min-height:44px;border:0;border-radius:8px;background:var(--teal);color:#fff;font:inherit;font-weight:600;cursor:pointer;letter-spacing:0.02em}
-.foot-newsletter-form button:hover{filter:brightness(1.08)}
-.foot-newsletter-form[data-state="ok"] input,.foot-newsletter-form[data-state="ok"] button{display:none}
-.foot-newsletter-form[data-state="ok"] .foot-newsletter-pitch::after{content:" — got it. Check your inbox.";opacity:1;font-style:italic}
-
-
 
 /* ===== [core] Touch-device hover hygiene (lines 6094-6132) ===== */
+.report-decider__item summary::before,.photo-aspect-decoder__item summary::before{content:'+ ';color:var(--teal);font-weight:600;display:inline-block;width:1.2em}
+.report-decider__item[open] summary::before,.photo-aspect-decoder__item[open] summary::before{content:'– '}
+.report-decider__item p,.photo-aspect-decoder__item p{margin:12px 0 16px;font-size:15px;line-height:1.6;color:var(--ink-soft)}
+.report-decider__item:last-child summary,.photo-aspect-decoder__item:last-child summary{border-bottom:0}
+.report-decider__item[open]:last-child summary,.photo-aspect-decoder__item[open]:last-child summary{border-bottom:1px solid var(--line)}
+@media(max-width:640px){.report-decider,.photo-aspect-decoder{padding:18px 20px}.report-decider__item summary,.photo-aspect-decoder__item summary{font-size:15.5px}}
+
 /* ============================================================
    Touch-device hover hygiene — neutralize sticky :hover effects
    on devices that don't have a hover capability. CSS :hover on
@@ -2862,6 +2866,8 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
   .nav-library-trigger:hover,
   .topics-hub-card:hover {
     transform: none !important;
+
+/* ===== [core] Hero mobile reorder (homepage) (lines 6133-6155) ===== */
     box-shadow: none !important;
   }
   /* Generic safety net: any small movement effect inside hover
@@ -2869,8 +2875,6 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
   *:hover { transition-duration: 0ms !important; }
 }
 
-
-/* ===== [core] Hero mobile reorder (homepage) (lines 6133-6155) ===== */
 /* ============================================================
    Hero mobile reorder — phones first, primary CTA above the fold.
    The accessibility audit flagged that on a 667-tall phone, the
@@ -2887,15 +2891,15 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
   .hero-grid > div:first-child > .eyebrow      { order: 1; }
   .hero-grid > div:first-child > h1            { order: 2; }
   .hero-grid > div:first-child > .hero-tagline { order: 3; }
-  .hero-grid > div:first-child > .hero-sub     { order: 4; }
-  .hero-grid > div:first-child > .hero-ctas    { order: 5; margin-top: 24px; }
-  .hero-grid > div:first-child > .hero-counts  { order: 6; margin-top: 22px; }
-  .hero-grid > div:first-child > .hero-note    { order: 7; }
-  .hero-grid > div:first-child > .hero-meta-note { order: 8; }
-}
-
 
 /* ===== [core] Hero count chips (homepage) (lines 6231-6261) ===== */
+@media (max-width: 420px) {
+  .knit-rail__cols {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+}
+
 /* ============================================================
    Hero count chips — small pill row showing library counts
    under the homepage subhead. Mobile-first; the per-chip
@@ -2920,6 +2924,8 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
   gap: 6px;
   padding: 6px 12px;
   border: 1px solid var(--line);
+
+/* ===== [core] Trust strip (homepage) (lines 6262-6287) ===== */
   border-radius: 999px;
   background: var(--surface-1, var(--cream-2));
 }
@@ -2927,8 +2933,6 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
   color: var(--teal);
 }
 
-
-/* ===== [core] Trust strip (homepage) (lines 6262-6287) ===== */
 /* ============================================================
    Trust strip — single thin band immediately under flagship
    tools, before the library section. Operator-language facts
@@ -2948,6 +2952,8 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
   padding: 0;
   margin: 0;
   font-size: 13.5px;
+
+/* ===== [core] Compare cards (homepage) (lines 6288-6371) ===== */
   color: var(--ink-soft);
   line-height: 1.5;
 }
@@ -2955,8 +2961,6 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
   color: var(--stone);
 }
 
-
-/* ===== [core] Compare cards (homepage) (lines 6288-6371) ===== */
 /* ============================================================
    Compare cards — three-column Patchwork / Agency / Muntin
    positioning block. The Muntin card is teal-bordered with a
@@ -3034,15 +3038,15 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 }
 @media (max-width: 780px) {
   .compare-grid {
-    grid-template-columns: 1fr;
-  }
-  .compare-card--featured {
-    order: -1;
-  }
-}
-
 
 /* ===== [core] Window Phase 2/3.6/4/5+ additions (sash/sidelight, attach, now, pulses, admin) (lines 6711-6947) ===== */
+@media (prefers-reduced-motion:no-preference){
+  /* Sweeping dashoffset from full circumference to target on .reveal
+     entry. Per-ring stagger via inline --delay on the wrapper. */
+  .reveal .viz-ring__fill{stroke-dashoffset:326.726;transition:stroke-dashoffset 1100ms cubic-bezier(0.2,0.85,0.3,1.05);transition-delay:var(--delay,0ms)}
+  .reveal.in .viz-ring__fill{stroke-dashoffset:calc(326.726 * (1 - var(--score,50) / 100))}
+}
+
 /* ============ THE WINDOW — Phase 2/3.6/4/5+ additions ============
    Sash/sidelight named-pane composer (Phase 2.1), photo+voice attach
    row (Phase 3.2-3.6), now-line widget (Phase 4), site-wide pulse
@@ -3273,6 +3277,8 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .admin-callbacks__heading{font-size:13px;font-weight:600;color:var(--ink);margin:0 0 8px;letter-spacing:0.02em;text-transform:uppercase}
 .admin-callbacks__phone{margin:0 0 8px}
 .admin-callbacks__phone-btn{font-family:var(--font-mono,Menlo,monospace);font-size:15px;color:var(--ink);background:var(--white);border:1px solid var(--line-dark);border-radius:var(--r-input);padding:8px 14px;cursor:pointer;width:100%;text-align:left}
+
+/* ===== [core] Phase 1 — design tokens + MuntinUI component shells (.mtn-*) (lines 6948-7159) ===== */
 .admin-callbacks__phone-btn:hover{border-color:var(--teal)}
 .admin-callbacks__phone-link{color:var(--teal);text-decoration:none;font-family:var(--font-mono,Menlo,monospace)}
 .admin-callbacks__phone-link:hover{text-decoration:underline}
@@ -3280,8 +3286,6 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .admin-callbacks__voice-label--deleted{color:var(--stone)}
 .admin-callbacks__meta{font-size:12px;color:var(--ink-soft);font-style:italic;margin:8px 0 0}
 
-
-/* ===== [core] Phase 1 — design tokens + MuntinUI component shells (.mtn-*) (lines 6948-7159) ===== */
 /* ============ Phase 1 tokens (tool-suite upgrade) ============
    Additive tokens that the MuntinUI primitives consume. Existing
    surface / elevation / status / type / motion / radii tokens above
@@ -3488,14 +3492,14 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
   overflow:auto;
 }
 
+/* ===== [core] Phase 2 — hub tier badge + tool-tier-filter strip (lines 7160-7213) ===== */
+
 @media (prefers-reduced-motion: reduce){
   .mtn-btn,.mtn-form-group :is(input,textarea,select),.mtn-toast,.mtn-modal-backdrop{
     transition:none !important;animation:none !important;
   }
 }
 
-
-/* ===== [core] Phase 2 — hub tier badge + tool-tier-filter strip (lines 7160-7212) ===== */
 /* ============ Phase 2 hub styles (tool-suite upgrade) ============
    Tier badge on each tool card + a JS-enhanced filter strip that
    hides cards by tier across every cluster. Progressive enhancement:
@@ -3543,14 +3547,14 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 
 /* When a filter is active, hide cards that don't match. The data
    attribute is set on the parent <section.block> by the JS handler. */
+
+/* ===== [core] Phase 5 — dark-mode token override (prefers-color-scheme + [data-theme]) (lines 7214-7272) ===== */
 [data-active-tier="quick"]    .tool-card[data-tier]:not([data-tier="quick"]),
 [data-active-tier="standard"] .tool-card[data-tier]:not([data-tier="standard"]),
 [data-active-tier="deep"]     .tool-card[data-tier]:not([data-tier="deep"]) {
   display:none;
 }
 
-
-/* ===== [core] Phase 5 — dark-mode token override (prefers-color-scheme + [data-theme]) (lines 7213-7272) ===== */
 /* ============ Phase 5 dark-mode tokens (tool-suite upgrade) ============
    The Phase 1 component primitives all reference --mtn-surface /
    --mtn-surface-inset / --mtn-text / --mtn-text-soft / --mtn-border /
@@ -3604,6 +3608,8 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
     --elev-2: 0 2px 4px rgba(0,0,0,.30), 0 12px 24px -8px rgba(0,0,0,.45);
     --elev-3: 0 4px 8px rgba(0,0,0,.32), 0 24px 48px -12px rgba(0,0,0,.50);
   }
+
+/* ===== [core] Phase 7 — dark-mode toggle button (.theme-toggle) (lines 7273-7312) ===== */
 }
 :root[data-theme="dark"] {
   --elev-1: 0 1px 0 rgba(0,0,0,.30), 0 1px 2px rgba(0,0,0,.30);
@@ -3611,8 +3617,6 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
   --elev-3: 0 4px 8px rgba(0,0,0,.32), 0 24px 48px -12px rgba(0,0,0,.50);
 }
 
-
-/* ===== [core] Phase 7 — dark-mode toggle button (.theme-toggle) (lines 7273-7312) ===== */
 /* ============ Phase 7 — dark-mode toggle button =============
    Sits in the nav next to lang-switch. Two SVG icons (sun + moon)
    stacked; CSS shows one based on the current [data-theme] state.
@@ -3647,14 +3651,14 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
   :root:not([data-theme="light"]) .theme-toggle__icon--moon { display:block }
 }
 
+/* ===== [core] Phase 4 — next-tool recommendation card (.mtn-next-tool) (lines 7313-7359) ===== */
+
 /* Hide on narrow screens where every pixel in the nav matters; the
    OS preference still drives dark mode automatically. */
 @media (max-width:1100px){
   .theme-toggle{display:none !important}
 }
 
-
-/* ===== [core] Phase 4 — next-tool recommendation card (.mtn-next-tool) (lines 7313-7352) ===== */
 /* ============ Phase 4 — next-tool recommendation card =============
    Mounted at the end of a tool's result region by
    MuntinNextTool.render(). Visually quiet so it doesn't compete
