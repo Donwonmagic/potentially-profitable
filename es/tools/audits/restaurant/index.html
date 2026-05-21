@@ -2584,27 +2584,27 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     .audit-summary::before { filter: blur(14px); opacity: 0.4; }
   }
 
-  .score-ring {
+  .audit-score-ring {
     width: 200px;
     height: 200px;
     position: relative;
     margin: 0 auto;
   }
-  .score-ring svg {
+  .audit-score-ring svg {
     width: 100%;
     height: 100%;
     transform: rotate(-90deg);
   }
-  .score-ring circle {
+  .audit-score-ring circle {
     fill: none;
     stroke-width: 12;
   }
-  .score-ring .bg { stroke: var(--line); }
+  .audit-score-ring .bg { stroke: var(--line); }
   /* Sprint 5: tick-mark ring at r=60 with stroke-dashaarray draws
      60 tiny marks around the outside of the fill stroke. Uses
      currentColor so it inherits the ring's text color for
      consistency; 18% opacity keeps them subtle. */
-  .score-ring .ticks {
+  .audit-score-ring .ticks {
     color: var(--stone);
     opacity: 0.18;
   }
@@ -2613,15 +2613,15 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      than a second data series. Paint matches the main fg stroke so
      there's visual continuity between the owner's score and their
      subtype median; only opacity + stroke-width differ. */
-  .score-ring .halo {
+  .audit-score-ring .halo {
     stroke: var(--teal);
     stroke-width: 6;
     stroke-linecap: round;
     opacity: 0.35;
     transition: stroke-dashoffset 1.2s var(--ease-out);
   }
-  .score-ring .halo[hidden] { display: none; }
-  .score-ring .fg {
+  .audit-score-ring .halo[hidden] { display: none; }
+  .audit-score-ring .fg {
     stroke: var(--teal);
     stroke-linecap: round;
     transition: stroke-dashoffset 1.2s var(--ease-out);
@@ -2633,10 +2633,10 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      grade. Visual outcome: the ring feels warmer at its origin and
      transitions through the grade color as it fills — an implied
      progression rather than a single flat value. */
-  .score-ring.grade-good .fg { stroke: url(#scoreGradGood); }
-  .score-ring.grade-ok   .fg { stroke: url(#scoreGradOk); }
-  .score-ring.grade-bad  .fg { stroke: url(#scoreGradBad); }
-  .score-ring .text {
+  .audit-score-ring.grade-good .fg { stroke: url(#scoreGradGood); }
+  .audit-score-ring.grade-ok   .fg { stroke: url(#scoreGradOk); }
+  .audit-score-ring.grade-bad  .fg { stroke: url(#scoreGradBad); }
+  .audit-score-ring .text {
     position: absolute;
     inset: 0;
     display: flex;
@@ -2646,13 +2646,13 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     font-family: var(--font-display);
     font-weight: 500;
   }
-  .score-ring .value {
+  .audit-score-ring .value {
     font-size: 72px;
     line-height: 1;
     color: var(--ink);
     letter-spacing: -0.03em;
   }
-  .score-ring .max {
+  .audit-score-ring .max {
     font-size: 14px;
     color: var(--stone);
     margin-top: 4px;
@@ -4635,9 +4635,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      on narrow viewports so it doesn't dominate the single-column
      stacked layout. Numeric value + label scale proportionally. */
   @media (max-width: 640px) {
-    .score-ring { width: 160px; height: 160px; }
-    .score-ring .value { font-size: 56px; }
-    .score-ring .max { font-size: 12px; }
+    .audit-score-ring { width: 160px; height: 160px; }
+    .audit-score-ring .value { font-size: 56px; }
+    .audit-score-ring .max { font-size: 12px; }
   }
 
   /* Share link button */
@@ -5509,8 +5509,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     .priority-item { break-inside: avoid; page-break-inside: avoid; }
     /* The score ring is an SVG that prints fine; just force
        its colors to stay on white. */
-    .score-ring svg .bg { stroke: #ddd !important; }
-    .score-ring svg .fg { stroke: #000 !important; }
+    .audit-score-ring svg .bg { stroke: #ddd !important; }
+    .audit-score-ring svg .fg { stroke: #000 !important; }
     /* Links: print the URL inline so the PDF is still useful
        once it's on paper. Limit to nav links + learn-more links
        so menu-link URLs embedded inside copy don't explode. */
@@ -5965,7 +5965,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <!-- Summary with overall score ring -->
       <div class="audit-summary" id="overallScoreSection">
-        <div class="score-ring" id="scoreRing">
+        <div class="audit-score-ring" id="scoreRing">
           <svg width="120" height="120" viewBox="0 0 120 120" aria-hidden="true">
             <!-- Sprint 4: gradient stroke defs. Three variants, one
                  per grade band. The ring's class (.grade-good /
