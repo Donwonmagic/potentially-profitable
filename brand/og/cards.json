@@ -3,6 +3,42 @@
   "_comment": "OG card manifest. Each entry produces <slug>.svg + <slug>.png in brand/og/. kind selects the template (page|article|research|tool). accent keys into PALETTE in scripts/build-og-cards.mjs (per accent rule: speed/mobile=teal, conversions/reservations=rust, local-seo=teal, margin/operations=gold, trust=ink, brand=cream-on-ink/teal-on-cream, research=rust, tools=gold, hubs=ink). glyph keys into the GLYPHS registry in build-og-cards.mjs and renders left of the eyebrow as a subject cue. focus is an optional module { type: 'type'|'funnel'|'stat'|'score-ring'|'list'|'quote'|'checks', ...data }. locale is for hreflang pairing; ES cards use slug '-es' suffix.",
   "cards": [
     {
+      "slug": "blog-ai-search-visibility",
+      "kind": "article",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "local-seo",
+      "eyebrow": "AI SEARCH · LOCAL SEO",
+      "title_1": "Visible in",
+      "title_italic": "AI search?",
+      "title_2": "Four numbers.",
+      "dek": "83% of restaurants are invisible to AI. The four-number check.",
+      "focus": {
+        "type": "stat",
+        "value": "83%",
+        "caption": "of restaurants invisible in AI search",
+        "source": "Uberall 2026"
+      }
+    },
+    {
+      "slug": "blog-ai-search-visibility-es",
+      "kind": "article",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "local-seo",
+      "eyebrow": "BÚSQUEDA IA · SEO LOCAL",
+      "title_1": "¿Visible en",
+      "title_italic": "búsqueda IA?",
+      "title_2": "Cuatro números.",
+      "dek": "El 83% de los restaurantes son invisibles para la IA. La prueba de cuatro números.",
+      "focus": {
+        "type": "stat",
+        "value": "83%",
+        "caption": "de restaurantes invisibles en búsqueda IA",
+        "source": "Uberall 2026"
+      }
+    },
+    {
       "slug": "system",
       "kind": "page",
       "locale": "en",

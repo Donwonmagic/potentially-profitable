@@ -1,6 +1,21 @@
 {
   "_doc": "Phase G.5 (Growth) — TL;DR + Key Takeaways content per blog post (ES). Mirror of article-content.json. inject-article-tldr.mjs --es reads this and stamps the EN-counterpart sentinels into es/blog/<slug>/index.html.",
   "articles": {
+    "como-aparecer-en-busqueda-ai-restaurante-2026": {
+      "tldr": [
+        "Los asistentes de IA nombran solo de tres a cinco restaurantes por consulta — un estudio de Uberall de 2026 encontró que el 83% nunca entra a esa lista, aunque el 86% tiene perfil de Google.",
+        "Cuatro números lo deciden: tu calificación contra los pisos de cada asistente, la frescura de las reseñas, qué tan completo está el perfil, y si tu sitio tiene una respuesta que la IA pueda citar.",
+        "Los pisos rondan 4.3 para ChatGPT, 4.1 para Perplexity y 3.9 para Gemini — por debajo del piso, ni el ranking ni el perfil completo te salvan.",
+        "Lee los cuatro esta semana en unos diez minutos, y cierra primero el hueco más cercano."
+      ],
+      "key_takeaways": [
+        "Presencia no es inclusión — tener ficha de Google no significa que un asistente de IA te nombre.",
+        "Un restaurante por debajo del piso de calificación queda filtrado antes de que el ranking aplique.",
+        "La frescura de las reseñas se lee como señal de vida; una respuesta fechada es algo que el modelo puede ver.",
+        "Los campos estructurados del Perfil de Negocio de Google son lo que el asistente cita — los campos vacíos se leen como silencio.",
+        "La respuesta que pide un comensal tiene que vivir en texto en tu propio sitio, o se cita el texto de un competidor."
+      ]
+    },
     "wix-vs-custom-for-restaurants": {
       "tldr": [
         "Wix funciona para sitios de primer día, ‘placeholder’ o pop-ups — pero choca con paredes rápido en cualquier restaurante que pase su primer año.",
