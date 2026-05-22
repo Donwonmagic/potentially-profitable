@@ -3,6 +3,78 @@
   "_comment": "OG card manifest. Each entry produces <slug>.svg + <slug>.png in brand/og/. kind selects the template (page|article|research|tool). accent keys into PALETTE in scripts/build-og-cards.mjs (per accent rule: speed/mobile=teal, conversions/reservations=rust, local-seo=teal, margin/operations=gold, trust=ink, brand=cream-on-ink/teal-on-cream, research=rust, tools=gold, hubs=ink). glyph keys into the GLYPHS registry in build-og-cards.mjs and renders left of the eyebrow as a subject cue. focus is an optional module { type: 'type'|'funnel'|'stat'|'score-ring'|'list'|'quote'|'checks', ...data }. locale is for hreflang pairing; ES cards use slug '-es' suffix.",
   "cards": [
     {
+      "slug": "blog-dc-wage-2026",
+      "kind": "article",
+      "locale": "en",
+      "accent": "gold",
+      "glyph": "margin",
+      "eyebrow": "OPERATIONS · OP-ED",
+      "title_1": "DC's $18.40",
+      "title_italic": "wage floor",
+      "title_2": "lands July 1.",
+      "dek": "The menu math — and the Initiative 82 correction most coverage gets wrong.",
+      "focus": {
+        "type": "stat",
+        "value": "$18.40",
+        "caption": "DC minimum wage, July 1",
+        "source": "DC DOES 2026"
+      }
+    },
+    {
+      "slug": "blog-dc-wage-2026-es",
+      "kind": "article",
+      "locale": "es",
+      "accent": "gold",
+      "glyph": "margin",
+      "eyebrow": "OPERACIONES · OP-ED",
+      "title_1": "El piso de $18.40",
+      "title_italic": "en DC",
+      "title_2": "llega el 1 de julio.",
+      "dek": "Las cuentas del menú — y la corrección sobre la Iniciativa 82 que casi todos erran.",
+      "focus": {
+        "type": "stat",
+        "value": "$18.40",
+        "caption": "salario mínimo DC, 1 de julio",
+        "source": "DC DOES 2026"
+      }
+    },
+    {
+      "slug": "blog-dc-streatery",
+      "kind": "article",
+      "locale": "en",
+      "accent": "rust",
+      "glyph": "reservations",
+      "eyebrow": "LOCAL SEO · OP-ED",
+      "title_1": "The streateries",
+      "title_italic": "are gone.",
+      "title_2": "Win the covers back.",
+      "dek": "$20/sq-ft road rent ended the curb-lane era. Three moves to recover the summer covers.",
+      "focus": {
+        "type": "stat",
+        "value": "$20",
+        "caption": "per sq-ft road rent, new DC program",
+        "source": "DDOT 2026"
+      }
+    },
+    {
+      "slug": "blog-dc-streatery-es",
+      "kind": "article",
+      "locale": "es",
+      "accent": "rust",
+      "glyph": "reservations",
+      "eyebrow": "SEO LOCAL · OP-ED",
+      "title_1": "Los streateries",
+      "title_italic": "se fueron.",
+      "title_2": "Recupera los cubiertos.",
+      "dek": "$20/pie² de renta de calle terminó la era del carril. Tres jugadas para recuperar los cubiertos del verano.",
+      "focus": {
+        "type": "stat",
+        "value": "$20",
+        "caption": "por pie² de renta de calle, nuevo programa DC",
+        "source": "DDOT 2026"
+      }
+    },
+    {
       "slug": "blog-discovery-wave",
       "kind": "article",
       "locale": "en",

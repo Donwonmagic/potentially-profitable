@@ -18,6 +18,50 @@
     "  notes:       what to watch for if the source changes"
   ],
   "claims": {
+    "dc_min_wage_july_2026": {
+      "claim": "On July 1, 2026, DC's standard minimum wage rises to $18.40/hr and the tipped minimum base to $10.30/hr (56% of the full minimum).",
+      "source_url": "https://does.dc.gov/page/dc-minimum-wage",
+      "source_name": "DC Dept. of Employment Services — 2026 minimum wage notice",
+      "date_verified": "2026-05-22",
+      "url_status": "tld-only",
+      "used_in": [
+        "dc-minimum-wage-restaurants-july-2026"
+      ],
+      "notes": "DOES 2026 wage notice (snippet-verified; full PDF fetch blocked). $18.40 standard / $10.30 tipped, effective 2026-07-01. The earlier-circulating '$18.45' figure is incorrect."
+    },
+    "dc_initiative_82_cap_2025": {
+      "claim": "In July 2025 the DC Council amended Initiative 82 to cap the tipped wage at 75% of the full minimum by 2034 rather than eliminating the tip credit.",
+      "source_url": "https://news.ballotpedia.org/2025/07/30/washington-d-c-council-amends-initiative-82-to-cap-tipped-wage-at-75-of-full-minimum-wage-by-2034/",
+      "source_name": "Ballotpedia News (July 30, 2025)",
+      "date_verified": "2026-05-22",
+      "url_status": "deep-link",
+      "used_in": [
+        "dc-minimum-wage-restaurants-july-2026"
+      ],
+      "notes": "FY2026 budget amendment (7-5 Council vote) replaced the full tip-credit phase-out with a cap. Do NOT describe Initiative 82 as eliminating the tip credit."
+    },
+    "dc_25_ballot_2026": {
+      "claim": "A One Fair Wage-led coalition filed a DC ballot measure (Dec 2025) to raise the minimum wage to $25 and eliminate the tip credit; as of spring 2026 it is collecting signatures and is not yet ballot-qualified.",
+      "source_url": "https://www.washingtonpost.com/food/2025/12/08/dc-25-minumum-wage-tipped-workers/",
+      "source_name": "The Washington Post (Dec 8, 2025)",
+      "date_verified": "2026-05-22",
+      "url_status": "deep-link",
+      "used_in": [
+        "dc-minimum-wage-restaurants-july-2026"
+      ],
+      "notes": "Filed Dec 8, 2025; cleared subject review ~March 2026; in 180-day signature collection. Frame as proposed/collecting signatures, NOT on the ballot or law."
+    },
+    "dc_streatery_program_2026": {
+      "claim": "DC's temporary streatery program ended and a permanent DDOT program (from Dec 1, 2025) charges roughly $20 per square foot in 'road rent' plus permit and design requirements; of ~140 streateries, roughly half did not survive.",
+      "source_url": "https://www.axios.com/local/washington-dc/2026/05/01/dc-streatery-era-ending-whats-next",
+      "source_name": "Axios DC (May 1, 2026); DDOT Public Space Activation",
+      "date_verified": "2026-05-22",
+      "url_status": "deep-link",
+      "used_in": [
+        "dc-streatery-removal-restaurant-covers-2026"
+      ],
+      "notes": "$20/sq-ft road rent is the firm figure (DDOT). Survival/removal counts are a moving target (Axios: dozens applied, ~52 removed by spring; DDOT ~45% 'success'); 'roughly half' is directional only, not a fixed number."
+    },
     "google_core_update_may_2026": {
       "claim": "Google's May 2026 core update began rolling out on May 21, 2026 and may take up to two weeks to complete; it is the second core update of the year.",
       "source_url": "https://status.search.google.com/",
