@@ -3,6 +3,36 @@
   "_comment": "OG card manifest. Each entry produces <slug>.svg + <slug>.png in brand/og/. kind selects the template (page|article|research|tool). accent keys into PALETTE in scripts/build-og-cards.mjs (per accent rule: speed/mobile=teal, conversions/reservations=rust, local-seo=teal, margin/operations=gold, trust=ink, brand=cream-on-ink/teal-on-cream, research=rust, tools=gold, hubs=ink). glyph keys into the GLYPHS registry in build-og-cards.mjs and renders left of the eyebrow as a subject cue. focus is an optional module { type: 'type'|'funnel'|'stat'|'score-ring'|'list'|'quote'|'checks', ...data }. locale is for hreflang pairing; ES cards use slug '-es' suffix.",
   "cards": [
     {
+      "slug": "blog-discovery-wave",
+      "kind": "article",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "local-seo",
+      "eyebrow": "THE BATCH · MAY 2026",
+      "title_1": "Discovery",
+      "title_italic": "changed",
+      "title_2": "this spring.",
+      "dek": "Five pieces on staying in the answer when the search box gets rebuilt.",
+      "focus": {
+        "type": "type"
+      }
+    },
+    {
+      "slug": "blog-discovery-wave-es",
+      "kind": "article",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "local-seo",
+      "eyebrow": "EL LOTE · MAYO 2026",
+      "title_1": "La búsqueda",
+      "title_italic": "cambió",
+      "title_2": "esta primavera.",
+      "dek": "Cinco piezas para quedarte en la respuesta cuando se reconstruye la búsqueda.",
+      "focus": {
+        "type": "type"
+      }
+    },
+    {
       "slug": "blog-ai-local-pack",
       "kind": "article",
       "locale": "en",
