@@ -1,6 +1,32 @@
 {
   "_doc": "Phase G.5 (Growth) — TL;DR + Key Takeaways content per blog post (ES). Mirror of article-content.json. inject-article-tldr.mjs --es reads this and stamps the EN-counterpart sentinels into es/blog/<slug>/index.html.",
   "articles": {
+    "google-ai-mode-resultados-locales-restaurante-2026": {
+      "tldr": [
+        "El 19 de mayo, en I/O, Google reconstruyó AI Mode sobre un nuevo modelo y le dio la capacidad de reservar mesa directamente por OpenTable, Resy y Tock.",
+        "El resultado local ahora se genera, no se lista — Google compone una respuesta corta nombrando unos pocos lugares y puede actuar, en vez de devolver diez enlaces.",
+        "Tres jugadas te mantienen ahí: un Perfil de Negocio de Google completo, un proveedor de reservas conectado, y la respuesta escrita en texto plano más schema."
+      ],
+      "key_takeaways": [
+        "Una respuesta generada premia la legibilidad, no solo la cercanía y la calificación — el modelo tiene que poder afirmar qué eres.",
+        "AI Mode puede completar la reserva por OpenTable, Resy o Tock; un restaurante solo de teléfono es saltado.",
+        "El trabajo pasó de rankear en una lista a ser uno de los pocos lugares que el modelo nombra y puede reservar.",
+        "Ninguna de las tres jugadas cuesta presupuesto de anuncios — cuestan una tarde de ser legible y reservable."
+      ]
+    },
+    "reserva-en-google-ai-mode-restaurante-2026": {
+      "tldr": [
+        "El AI Mode de Google puede completar una reserva dentro de la respuesta por OpenTable, Resy o Tock — sin visitar un sitio, sin llamar.",
+        "Si tus mesas no se pueden reservar por un proveedor compatible, el asistente reserva en un restaurante cuyas mesas sí.",
+        "El 65% de los comensales prefiere reservar directamente en el sitio del restaurante, así que quédate con la reserva repetida después de que el agente haga la primera."
+      ],
+      "key_takeaways": [
+        "El agente solo puede reservar una mesa que puede ver — los cuadernos y las líneas solo-teléfono le son invisibles.",
+        "Estar en OpenTable, Resy o Tock es el boleto a la lista corta del agente, con costos y todo.",
+        "Un enlace de reserva lento o escondido en el móvil le devuelve la reserva repetida a la plataforma.",
+        "La reserva agente es un flujo en el que estar, no una amenaza que pelear."
+      ]
+    },
     "como-aparecer-en-busqueda-ai-restaurante-2026": {
       "tldr": [
         "Los asistentes de IA nombran solo de tres a cinco restaurantes por consulta — un estudio de Uberall de 2026 encontró que el 83% nunca entra a esa lista, aunque el 86% tiene perfil de Google.",

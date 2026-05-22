@@ -18,6 +18,29 @@
     "  notes:       what to watch for if the source changes"
   ],
   "claims": {
+    "google_ai_mode_io_2026": {
+      "claim": "At Google I/O on May 19, 2026, Google rebuilt AI Mode on a new model with a redesigned search box and agentic capabilities, including booking restaurant tables through OpenTable, Resy, and Tock; AI Mode reaches 1B+ monthly users with US rollout over summer 2026.",
+      "source_url": "https://blog.google/products-and-platforms/products/search/search-io-2026/",
+      "source_name": "Google — The Keyword, I/O 2026 Search updates",
+      "date_verified": "2026-05-22",
+      "url_status": "deep-link",
+      "used_in": [
+        "google-ai-mode-restaurant-local-results-2026",
+        "google-ai-mode-reservation-booking-restaurant-2026"
+      ],
+      "notes": "Primary source is Google's own I/O recap (free host). Capabilities named by Google; specific per-query SERP layouts intentionally not asserted (a 'three categorized sections' layout circulating in recaps is NOT in the primary and was not used)."
+    },
+    "opentable_direct_booking_pref_2026": {
+      "claim": "65% of diners prefer to book directly on a restaurant's own website rather than through a third party (OpenTable, 2026).",
+      "source_url": "https://www.opentable.com/restaurant-solutions/2026-diner-trends/",
+      "source_name": "OpenTable — 2026 diner trends",
+      "date_verified": "2026-05-22",
+      "url_status": "deep-link",
+      "used_in": [
+        "google-ai-mode-reservation-booking-restaurant-2026"
+      ],
+      "notes": "OpenTable 2026 diner-trends figure (snippet-verified; full fetch blocked). Earlier-circulating 86%/45%/20->29% stats were NOT supported by this report and were dropped."
+    },
     "uberall_ai_invisibility_2026": {
       "claim": "A 2026 Uberall study found 83% of restaurants do not appear in AI search results, despite 86% having a Google Business Profile; AI assistants name only 3-5 brands per query.",
       "source_url": "https://uberall.com/en-us/geo-playbook",

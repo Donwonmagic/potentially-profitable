@@ -3,6 +3,84 @@
   "_comment": "OG card manifest. Each entry produces <slug>.svg + <slug>.png in brand/og/. kind selects the template (page|article|research|tool). accent keys into PALETTE in scripts/build-og-cards.mjs (per accent rule: speed/mobile=teal, conversions/reservations=rust, local-seo=teal, margin/operations=gold, trust=ink, brand=cream-on-ink/teal-on-cream, research=rust, tools=gold, hubs=ink). glyph keys into the GLYPHS registry in build-og-cards.mjs and renders left of the eyebrow as a subject cue. focus is an optional module { type: 'type'|'funnel'|'stat'|'score-ring'|'list'|'quote'|'checks', ...data }. locale is for hreflang pairing; ES cards use slug '-es' suffix.",
   "cards": [
     {
+      "slug": "blog-ai-mode-rebuild",
+      "kind": "article",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "local-seo",
+      "eyebrow": "AI SEARCH · OP-ED",
+      "title_1": "Google rebuilt",
+      "title_italic": "AI Mode.",
+      "title_2": "What changed.",
+      "dek": "The local result is generated and agentic now — the moves that keep you named.",
+      "focus": {
+        "type": "list",
+        "label": "WHAT CHANGED",
+        "items": [
+          "Generated, not listed",
+          "It books the table",
+          "Fewer get named"
+        ]
+      }
+    },
+    {
+      "slug": "blog-ai-mode-rebuild-es",
+      "kind": "article",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "local-seo",
+      "eyebrow": "BÚSQUEDA IA · OP-ED",
+      "title_1": "Google reconstruyó",
+      "title_italic": "AI Mode.",
+      "title_2": "Qué cambió.",
+      "dek": "El resultado local ahora es generativo y agente — las jugadas que te mantienen nombrado.",
+      "focus": {
+        "type": "list",
+        "label": "QUÉ CAMBIÓ",
+        "items": [
+          "Generado, no listado",
+          "Reserva la mesa",
+          "Menos nombrados"
+        ]
+      }
+    },
+    {
+      "slug": "blog-agentic-booking",
+      "kind": "article",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "reservations",
+      "eyebrow": "RESERVATIONS · HOW-TO",
+      "title_1": "Booking happens",
+      "title_italic": "inside the answer.",
+      "title_2": "Be the table.",
+      "dek": "Google's AI Mode books via OpenTable, Resy, Tock. Be in the flow — and own the repeat.",
+      "focus": {
+        "type": "stat",
+        "value": "65%",
+        "caption": "of diners prefer to book on your own site",
+        "source": "OpenTable 2026"
+      }
+    },
+    {
+      "slug": "blog-agentic-booking-es",
+      "kind": "article",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "reservations",
+      "eyebrow": "RESERVAS · GUÍA",
+      "title_1": "La reserva pasa",
+      "title_italic": "dentro de la respuesta.",
+      "title_2": "Sé la mesa.",
+      "dek": "El AI Mode reserva por OpenTable, Resy, Tock. Entra al flujo — y quédate con la repetida.",
+      "focus": {
+        "type": "stat",
+        "value": "65%",
+        "caption": "prefiere reservar en tu propio sitio",
+        "source": "OpenTable 2026"
+      }
+    },
+    {
       "slug": "blog-ai-search-visibility",
       "kind": "article",
       "locale": "en",

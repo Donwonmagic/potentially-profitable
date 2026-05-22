@@ -2,6 +2,8 @@
   "_doc": "ES translated-slug ↔ EN canonical-slug map for the blog. Used by scripts/stamp-hreflang.mjs so EN blog posts emit the right hreflang=\"es\" pointing at the actual ES URL (not /es/<same-EN-slug>/, which 404s for translated slugs). Direction is en→es; an EN slug present here has an ES counterpart at the mapped path. ES-only posts that are ES-original (no EN counterpart yet) live in esOriginal[]. Adding a new translated post: add the mapping AND drop the .html into both /blog/<en>/ and /es/blog/<es>/ in the same commit, then run scripts/stamp-hreflang.mjs.",
   "_lastReviewed": "2026-05-03",
   "blog": {
+    "google-ai-mode-restaurant-local-results-2026": "google-ai-mode-resultados-locales-restaurante-2026",
+    "google-ai-mode-reservation-booking-restaurant-2026": "reserva-en-google-ai-mode-restaurante-2026",
     "how-to-appear-in-ai-search-restaurant-2026": "como-aparecer-en-busqueda-ai-restaurante-2026",
     "how-much-does-a-custom-restaurant-website-cost-in-2026": "cuanto-cuesta-una-pagina-web-para-restaurante-2026",
     "does-my-restaurant-need-a-website": "como-hacer-sitio-web-para-mi-restaurante",

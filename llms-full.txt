@@ -537,6 +537,150 @@ Apr 26, 2026 · 8 min read · By [**Don**](https://muntin.digital/about/#don-gol
  Copy link
 
 ---
+title: Diners can book inside Google's AI answer now
+url: https://muntin.digital/blog/google-ai-mode-reservation-booking-restaurant-2026/
+kind: article
+locale: en
+date: 2026-05-25T10:00:00-04:00
+description: Google's AI Mode can complete a reservation through OpenTable, Resy, or Tock without leaving the answer. If your restaurant isn't connected, the booking routes around you. How to get into the agentic flow — and why 65% of diners still prefer to book on your own site.
+---
+
+Skip to main content
+
+How-to · May 25, 2026 · 6 min read · By [Don Goldstein](https://muntin.digital/about/#don-goldstein)
+
+# Diners can book inside the AI answer now. Make sure it's your table.
+
+ Listen to this article
+
+Agentic booking went live in Google's AI Mode this spring: the assistant reserves the table through OpenTable, Resy, or Tock. If you're not connected to a supported provider, the assistant books someone else.
+
+Ask Google for “a table for six near Dupont with a patio, Friday at 7,” and the new AI Mode does not just list options — it can book one. Through OpenTable, Resy, and Tock, the assistant completes the reservation inside the answer. The diner never opens a website and never calls. That is convenient for them and decisive for you: if your tables aren’t bookable through a provider the assistant talks to, it books a restaurant whose tables are.
+
+ Source: Google, I/O 2026 (agentic booking)
+
+Google (The Keyword) — “Google Search’s I/O 2026 updates” (blog.google, May 19, 2026).
+
+Google describes agentic booking in AI Mode completing reservations through partners including OpenTable, Resy, and Tock. The diner confirms on the provider’s flow; the assistant initiates and carries it.
+
+This is the same shift we covered in [the AI Mode rebuild](https://muntin.digital/blog/google-ai-mode-restaurant-local-results-2026/) — the answer can now *act*, not just describe. For reservations, “act” means complete the booking. There are two jobs here, and most restaurants are set up for neither.
+
+## Job one: be bookable where the agent can reach you
+
+The agent can only finish a reservation it can see. A table that exists in a paper book by the host stand, or behind a “call us” line, is not a table the assistant can offer. Getting your inventory into OpenTable, Resy, or Tock is what makes you eligible for the agentic flow at all — it’s the difference between being a candidate and being skipped. Those platforms take a cut, and that math is real; but the cost of being un-bookable by the assistant is the whole reservation, every time it asks.
+
+## Job two: own the booking once the diner is yours
+
+65% of diners say they would rather book directly on a restaurant’s own website than through a third party. That is the leverage. The agent may make the first booking through a platform, but a diner who had a clean experience comes back through your own [reservation link](https://muntin.digital/glossary/reservation-link/) next time — no commission, and the guest relationship is yours to keep. A reservation link that is buried, slow, or broken on a phone hands that repeat booking right back to the platform you pay.
+
+ Source: OpenTable 2026 diner trends
+
+OpenTable — “2026 diner trends” (opentable.com, restaurant solutions).
+
+The preference for booking directly on a restaurant’s own website (reported at 65%) is from OpenTable’s 2026 diner-trends research. Treat it as their reported figure; the takeaway — diners prefer your site when it works — holds regardless of the exact share.
+
+- 1
+
+The diner asks the assistant for a table
+
+“Somewhere for six on Friday with a patio” — spoken or typed into the [AI answer](https://muntin.digital/glossary/ai-overview/).
+
+- 2
+
+It shortlists tables it can book
+
+Only restaurants connected to a supported provider — surfaced from your [Google Business Profile](https://muntin.digital/glossary/gbp/) and the [map](https://muntin.digital/glossary/map-pack/).
+
+- 3
+
+It completes the reservation
+
+Through OpenTable, Resy, or Tock, inside the answer — the diner confirms without leaving.
+
+- 4
+
+Phone-only restaurants are skipped
+
+The agent can’t dial a phone. No bookable inventory means no booking — the table goes to whoever is connected.
+
+ Where the booking goes — and where a phone-only restaurant drops out of the flow entirely.
+
+## What to check this week
+
+Two things, both quick. First, confirm your reservations are live on a supported provider, not just a phone line — that’s your ticket into the agent’s shortlist. Second, open your own site on a phone and book a table yourself: if the [reservation link](https://muntin.digital/glossary/reservation-link/) is slow, hidden below the fold, or dumps you into a clunky third-party frame, the repeat booking you should own goes back to the platform. The reservation-recovery playbook in [recovering reservations from Find a Table](https://muntin.digital/blog/how-to-recover-reservations-from-googles-find-a-table/) covers the fixes; the [storefront health](https://muntin.digital/tools/storefront-health/) check and the [GBP grader](https://muntin.digital/tools/gbp-grader/) flag the broken paths before a diner finds them.
+
+Agentic booking isn’t a threat to fight; it’s a flow to be in. Be bookable so the agent can hand you the first reservation, and own your own booking so you keep the second one.
+
+---
+title: Google rebuilt AI Mode at I/O 2026
+url: https://muntin.digital/blog/google-ai-mode-restaurant-local-results-2026/
+kind: article
+locale: en
+date: 2026-05-25T09:30:00-04:00
+description: At I/O 2026, Google rebuilt AI Mode on a new model and let it book restaurant tables directly through OpenTable, Resy, and Tock. What the generative, agentic local result means for independents — and the three moves that keep you in the answer.
+---
+
+Skip to main content
+
+Op-ed · May 25, 2026 · 7 min read · By [Don Goldstein](https://muntin.digital/about/#don-goldstein)
+
+# Google rebuilt how it answers "restaurants near me." Here's what changed.
+
+ Listen to this article
+
+At I/O on May 19, Google rebuilt AI Mode and gave it the ability to book a table without leaving the answer. The local result is now generated, not listed — and that changes which restaurants get named.
+
+On May 19 at its I/O conference, Google rebuilt AI Mode — the conversational layer that increasingly sits where the ten blue links used to be. A new underlying model, a redesigned search box (the first real change to that box in more than two decades), background agents that go research on their own, and one feature that matters more to a restaurant than all the rest: the answer can now *book the table*. AI Mode already reaches more than a billion people a month, and the rebuild rolls out across the US over the summer.
+
+ Source: Google, I/O 2026
+
+Google (The Keyword) — “Google Search’s I/O 2026 updates” (blog.google, May 19, 2026).
+
+The AI Mode rebuild, the redesigned search box, agentic “background” tasks, and the extension of agentic booking to restaurants and local services are described in Google’s own I/O recap. Specific on-page layouts vary by query and rollout; this piece sticks to the capabilities Google named.
+
+For an operator, the headline is not the model. It is that the local result stopped being a list and became a *composition*. Google no longer hands the diner ten links and a map and lets them sort it out. It reads the question, picks a few places, writes a short answer about them, and offers to act. The job changed from “rank in the list” to “be one of the few the model decides to name — and can act on.”
+
+## What “generative” changes about a restaurant result
+
+A generated answer — the same surface as a Google [AI Overview](https://muntin.digital/glossary/ai-overview/) — is assembled from whatever the model can read and trust about you: your [Google Business Profile](https://muntin.digital/glossary/gbp/), your reviews, the text on your own pages. It is not a ranked feed. The old [map pack](https://muntin.digital/glossary/map-pack/) rewarded proximity and rating; the generated answer rewards *legibility* — can the model state, in a sentence it’s willing to put its name on, what you serve, when you’re open, and whether you fit the diner’s ask. If that sentence isn’t readable somewhere, you’re not in the paragraph. We walked the four signals that decide it in [the four-number check](https://muntin.digital/blog/how-to-appear-in-ai-search-restaurant-2026/).
+
+## The agentic part is the bigger shift
+
+Generated answers have been creeping in for a year. The new thing at I/O is that the assistant can *complete a task* — and for restaurants, the task is the reservation. Through OpenTable, Resy, and Tock, AI Mode can book a table inside the answer, without sending the diner to your site at all. That is a gift if you’re connected to one of those providers and a quiet leak if you’re not: the diner asks for “a quiet spot for four on Friday,” the assistant finds one that *can* be booked, and books it. A restaurant that takes reservations by phone only — with no [reservation link](https://muntin.digital/glossary/reservation-link/) the agent can complete — is invisible to that flow no matter how good it is.
+
+- 1
+
+The answer is generated, not listed
+
+Google composes a short answer naming a few places, instead of returning ten links and a map to sort through.
+
+- 2
+
+The assistant can book the table
+
+Through OpenTable, Resy, or Tock, the reservation completes inside the answer — the diner never reaches your site.
+
+- 3
+
+Fewer restaurants get named
+
+A composed answer mentions a handful of places. Everyone else is absent from the paragraph, not ranked lower in a list.
+
+ What the I/O 2026 rebuild changed about a local restaurant result — from a list you ranked in to an answer you have to be named in.
+
+## Three moves that keep you in the answer
+
+None of this rewards a bigger ad budget. It rewards being readable and bookable — both of which you control.
+
+**Complete the profile.** Hours by day, cuisine, attributes, the menu link — the fields the model quotes. Run the [GBP grader](https://muntin.digital/tools/gbp-grader/) to find the blanks.
+
+**Connect a booking provider.** If you take reservations, get them into OpenTable, Resy, or Tock so the agent can finish the job. The how-to is in [booking inside the AI answer](https://muntin.digital/blog/google-ai-mode-reservation-booking-restaurant-2026/).
+
+**Write the answer in text.** Put the facts a diner asks for in plain text, backed by [restaurant schema](https://muntin.digital/tools/schema-check/) so the model can lift them, then check the whole front door with [storefront health](https://muntin.digital/tools/storefront-health/).
+
+The rebuild is not a reason to panic. It is a reason to be legible. The restaurants that lose are the ones the model can’t read and can’t book — and both of those are fixable this week, without a contract or an ad spend.
+
+---
 title: How Much Does a Custom Restaurant Website Cost in 2026?
 url: https://muntin.digital/blog/how-much-does-a-custom-restaurant-website-cost-in-2026/
 kind: article
