@@ -18,6 +18,95 @@
     "  notes:       what to watch for if the source changes"
   ],
   "claims": {
+    "google_core_update_may_2026": {
+      "claim": "Google's May 2026 core update began rolling out on May 21, 2026 and may take up to two weeks to complete; it is the second core update of the year.",
+      "source_url": "https://status.search.google.com/",
+      "source_name": "Google Search Status Dashboard",
+      "date_verified": "2026-05-22",
+      "url_status": "tld-only",
+      "used_in": [
+        "may-2026-discovery-changed-under-you"
+      ],
+      "notes": "Google Search Status Dashboard (status page; tld-only). 'Up to two weeks' is Google's estimate, not a confirmed end date."
+    },
+    "rio_seo_restaurant_decline_2026": {
+      "claim": "A 2026 local-search analysis found restaurant Google Maps views down 40.1% and food orders from those listings down 25.7% over two years, even as rankings held.",
+      "source_url": "https://www.rioseo.com/blog/2026-local-search-report/",
+      "source_name": "Rio SEO — 2026 Local Search Report",
+      "date_verified": "2026-05-22",
+      "url_status": "deep-link",
+      "used_in": [
+        "ai-local-pack-restaurant-phone-calls-2026"
+      ],
+      "notes": "Rio SEO 2026 report (snippet-verified; full fetch blocked). Restaurant-specific engagement declines; treat as their measured figures."
+    },
+    "sterling_sky_ai_local_pack_2026": {
+      "claim": "AI local packs appeared on roughly 7% of tracked local keywords in 2026 and dropped the click-to-call button when shown.",
+      "source_url": "https://www.sterlingsky.ca/the-state-of-local-seo-in-2026/",
+      "source_name": "Sterling Sky — The State of Local SEO in 2026",
+      "date_verified": "2026-05-22",
+      "url_status": "deep-link",
+      "used_in": [
+        "ai-local-pack-restaurant-phone-calls-2026"
+      ],
+      "notes": "Sterling Sky 2026 (snippet-verified). ~7% of tracked keywords; AI local packs drop click-to-call. The circulated '68% of local queries' figure is a service-industry stat and was NOT used for restaurants. Zero-click stated directionally ('the majority'), not as a hard percentage."
+    },
+    "brightedge_gemini_referral_2026": {
+      "claim": "Gemini became the #2 AI referral source in 2026, rising from 4.3% to 11.6% of AI referrals in Q1 and 13.2% by April, while ChatGPT fell from 89.2% to 81.4%.",
+      "source_url": "https://www.brightedge.com/about/press-releases",
+      "source_name": "BrightEdge — AI referral data (May 2026)",
+      "date_verified": "2026-05-22",
+      "url_status": "tld-only",
+      "used_in": [
+        "gemini-ai-referral-traffic-restaurants-2026"
+      ],
+      "notes": "BrightEdge release May 20, 2026 (snippet-verified; exact press-release slug not confirmed, so registered at the press hub as tld-only). '~13%' is the April figure; Q1 share is 11.6%. Both stated to avoid conflation."
+    },
+    "google_ai_mode_io_2026": {
+      "claim": "At Google I/O on May 19, 2026, Google rebuilt AI Mode on a new model with a redesigned search box and agentic capabilities, including booking restaurant tables through OpenTable, Resy, and Tock; AI Mode reaches 1B+ monthly users with US rollout over summer 2026.",
+      "source_url": "https://blog.google/products-and-platforms/products/search/search-io-2026/",
+      "source_name": "Google — The Keyword, I/O 2026 Search updates",
+      "date_verified": "2026-05-22",
+      "url_status": "deep-link",
+      "used_in": [
+        "google-ai-mode-restaurant-local-results-2026",
+        "google-ai-mode-reservation-booking-restaurant-2026"
+      ],
+      "notes": "Primary source is Google's own I/O recap (free host). Capabilities named by Google; specific per-query SERP layouts intentionally not asserted (a 'three categorized sections' layout circulating in recaps is NOT in the primary and was not used)."
+    },
+    "opentable_direct_booking_pref_2026": {
+      "claim": "65% of diners prefer to book directly on a restaurant's own website rather than through a third party (OpenTable, 2026).",
+      "source_url": "https://www.opentable.com/restaurant-solutions/2026-diner-trends/",
+      "source_name": "OpenTable — 2026 diner trends",
+      "date_verified": "2026-05-22",
+      "url_status": "deep-link",
+      "used_in": [
+        "google-ai-mode-reservation-booking-restaurant-2026"
+      ],
+      "notes": "OpenTable 2026 diner-trends figure (snippet-verified; full fetch blocked). Earlier-circulating 86%/45%/20->29% stats were NOT supported by this report and were dropped."
+    },
+    "uberall_ai_invisibility_2026": {
+      "claim": "A 2026 Uberall study found 83% of restaurants do not appear in AI search results, despite 86% having a Google Business Profile; AI assistants name only 3-5 brands per query.",
+      "source_url": "https://uberall.com/en-us/geo-playbook",
+      "source_name": "Uberall — Fast Food, Faster Discovery: The 2026 GEO Playbook for Multi-Location QSRs",
+      "date_verified": "2026-05-22",
+      "url_status": "deep-link",
+      "used_in": [
+        "how-to-appear-in-ai-search-restaurant-2026"
+      ],
+      "notes": "QSR/multi-location study. Figures cross-checked across search snippets (BusinessWire, CityAM); full-page fetch was blocked, so treat exact percentages as Uberall's reported figures. Framed as QSR data generalized to independents, not an independents-only measurement."
+    },
+    "uberall_ai_rating_floors_2026": {
+      "claim": "AI assistants apply minimum star-rating thresholds before recommending a restaurant: roughly 4.3 for ChatGPT, 4.1 for Perplexity, and 3.9 for Gemini (Uberall, 2026).",
+      "source_url": "https://uberall.com/en-us/geo-playbook",
+      "source_name": "Uberall — 2026 GEO Playbook",
+      "date_verified": "2026-05-22",
+      "url_status": "deep-link",
+      "used_in": [
+        "how-to-appear-in-ai-search-restaurant-2026"
+      ],
+      "notes": "Per-assistant rating floors are Uberall's reported figures, snippet-verified (WebFetch blocked). State as published ranges, not guaranteed cutoffs; assistants reweight often."
+    },
     "ai_overview_share_march_2025": {
       "claim": "Google AI Overviews appeared on 13.14% of US desktop queries in March 2025",
       "source_url": "https://searchengineland.com/google-ai-overviews-13-searches-455057",

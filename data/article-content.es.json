@@ -1,6 +1,86 @@
 {
   "_doc": "Phase G.5 (Growth) — TL;DR + Key Takeaways content per blog post (ES). Mirror of article-content.json. inject-article-tldr.mjs --es reads this and stamps the EN-counterpart sentinels into es/blog/<slug>/index.html.",
   "articles": {
+    "la-busqueda-cambio-bajo-tus-pies-mayo-2026": {
+      "tldr": [
+        "En una semana de mayo de 2026, Google reconstruyó AI Mode en I/O, empezó una actualización central, y Gemini se volvió la fuente #2 de referidos por IA.",
+        "Las tres premian las mismas dos cosas: ser legible para una máquina y reservable sin una llamada.",
+        "Este lote son cinco piezas, en orden: la nueva superficie, tu visibilidad, el costo, la nueva fuente de tráfico, y la reserva."
+      ],
+      "key_takeaways": [
+        "La superficie que manda comensales a tu puerta se reescribió en una sola semana — primero la respuesta, y agente.",
+        "Tu Perfil de Negocio de Google ahora carga peso para el paquete de mapa, el AI Overview, Gemini y la reserva agente a la vez.",
+        "Lee las cinco piezas en orden; cada una retoma donde quedó la anterior.",
+        "El trabajo que gana la nueva superficie es el mismo de perfil y sitio de antes, apuntado a una máquina."
+      ]
+    },
+    "paquete-local-ai-llamadas-restaurante-2026": {
+      "tldr": [
+        "Puedes estar en el #1 del mapa y aun así perder llamadas — la IA resuelve horario, dirección y si eres bueno antes de que el comensal toque llamar o cómo llegar.",
+        "Un análisis de 2026 puso las vistas de Maps de restaurantes 40.1% abajo y los pedidos 25.7% abajo en dos años, con los rankings firmes; los paquetes locales con IA quitan el botón de llamar en cerca del 7% de las búsquedas.",
+        "Mueve la conversión fuera de la llamada: un enlace de reserva o pedido que controlas, una respuesta lo bastante buena para ser elegida, y un cliente capturado."
+      ],
+      "key_takeaways": [
+        "Un botón que falta no es un problema de ranking — no puedes superar a un resultado que ya no muestra llamar ni cómo llegar.",
+        "La mayoría de las búsquedas de Google ahora terminan sin clic, así que el toque que seguía a tu mención está desapareciendo.",
+        "El arreglo es mover las conversiones a caminos que la IA no pueda quitar: tu propia reserva, pedido y captura de correo.",
+        "Vigila tu propio panel, no los promedios de la industria — la caída aparece ahí primero."
+      ]
+    },
+    "trafico-referido-gemini-restaurantes-2026": {
+      "tldr": [
+        "ChatGPT todavía manda el mayor tráfico referido por IA pero su parte baja (89.2% a 81.4%); Gemini subió de 4.3% a 11.6% en el Q1 de 2026 y 13.2% para abril.",
+        "Gemini es la fuente de IA más ganable para un restaurante porque lee el propio ecosistema de Google — tu perfil, Maps y reseñas.",
+        "Mantén el Perfil de Negocio de Google completo y al día y alimenta tres superficies a la vez: el paquete de mapa, el AI Overview y Gemini."
+      ],
+      "key_takeaways": [
+        "Gemini es la clara #2 fuente de referidos por IA, más grande que todos los demás asistentes que no son ChatGPT juntos.",
+        "El mismo trabajo en el Perfil de Negocio de Google paga doble — para el AI Overview de Google y para Gemini.",
+        "Los asistentes de IA aparecen en la analítica como referidos de hosts como gemini.google.com; empieza a vigilar ese número.",
+        "Optimizar para Gemini es, sobre todo, optimizar el perfil de Google que ya administras."
+      ]
+    },
+    "google-ai-mode-resultados-locales-restaurante-2026": {
+      "tldr": [
+        "El 19 de mayo, en I/O, Google reconstruyó AI Mode sobre un nuevo modelo y le dio la capacidad de reservar mesa directamente por OpenTable, Resy y Tock.",
+        "El resultado local ahora se genera, no se lista — Google compone una respuesta corta nombrando unos pocos lugares y puede actuar, en vez de devolver diez enlaces.",
+        "Tres jugadas te mantienen ahí: un Perfil de Negocio de Google completo, un proveedor de reservas conectado, y la respuesta escrita en texto plano más schema."
+      ],
+      "key_takeaways": [
+        "Una respuesta generada premia la legibilidad, no solo la cercanía y la calificación — el modelo tiene que poder afirmar qué eres.",
+        "AI Mode puede completar la reserva por OpenTable, Resy o Tock; un restaurante solo de teléfono es saltado.",
+        "El trabajo pasó de rankear en una lista a ser uno de los pocos lugares que el modelo nombra y puede reservar.",
+        "Ninguna de las tres jugadas cuesta presupuesto de anuncios — cuestan una tarde de ser legible y reservable."
+      ]
+    },
+    "reserva-en-google-ai-mode-restaurante-2026": {
+      "tldr": [
+        "El AI Mode de Google puede completar una reserva dentro de la respuesta por OpenTable, Resy o Tock — sin visitar un sitio, sin llamar.",
+        "Si tus mesas no se pueden reservar por un proveedor compatible, el asistente reserva en un restaurante cuyas mesas sí.",
+        "El 65% de los comensales prefiere reservar directamente en el sitio del restaurante, así que quédate con la reserva repetida después de que el agente haga la primera."
+      ],
+      "key_takeaways": [
+        "El agente solo puede reservar una mesa que puede ver — los cuadernos y las líneas solo-teléfono le son invisibles.",
+        "Estar en OpenTable, Resy o Tock es el boleto a la lista corta del agente, con costos y todo.",
+        "Un enlace de reserva lento o escondido en el móvil le devuelve la reserva repetida a la plataforma.",
+        "La reserva agente es un flujo en el que estar, no una amenaza que pelear."
+      ]
+    },
+    "como-aparecer-en-busqueda-ai-restaurante-2026": {
+      "tldr": [
+        "Los asistentes de IA nombran solo de tres a cinco restaurantes por consulta — un estudio de Uberall de 2026 encontró que el 83% nunca entra a esa lista, aunque el 86% tiene perfil de Google.",
+        "Cuatro números lo deciden: tu calificación contra los pisos de cada asistente, la frescura de las reseñas, qué tan completo está el perfil, y si tu sitio tiene una respuesta que la IA pueda citar.",
+        "Los pisos rondan 4.3 para ChatGPT, 4.1 para Perplexity y 3.9 para Gemini — por debajo del piso, ni el ranking ni el perfil completo te salvan.",
+        "Lee los cuatro esta semana en unos diez minutos, y cierra primero el hueco más cercano."
+      ],
+      "key_takeaways": [
+        "Presencia no es inclusión — tener ficha de Google no significa que un asistente de IA te nombre.",
+        "Un restaurante por debajo del piso de calificación queda filtrado antes de que el ranking aplique.",
+        "La frescura de las reseñas se lee como señal de vida; una respuesta fechada es algo que el modelo puede ver.",
+        "Los campos estructurados del Perfil de Negocio de Google son lo que el asistente cita — los campos vacíos se leen como silencio.",
+        "La respuesta que pide un comensal tiene que vivir en texto en tu propio sitio, o se cita el texto de un competidor."
+      ]
+    },
     "wix-vs-custom-for-restaurants": {
       "tldr": [
         "Wix funciona para sitios de primer día, ‘placeholder’ o pop-ups — pero choca con paredes rápido en cualquier restaurante que pase su primer año.",

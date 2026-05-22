@@ -3,6 +3,222 @@
   "_comment": "OG card manifest. Each entry produces <slug>.svg + <slug>.png in brand/og/. kind selects the template (page|article|research|tool). accent keys into PALETTE in scripts/build-og-cards.mjs (per accent rule: speed/mobile=teal, conversions/reservations=rust, local-seo=teal, margin/operations=gold, trust=ink, brand=cream-on-ink/teal-on-cream, research=rust, tools=gold, hubs=ink). glyph keys into the GLYPHS registry in build-og-cards.mjs and renders left of the eyebrow as a subject cue. focus is an optional module { type: 'type'|'funnel'|'stat'|'score-ring'|'list'|'quote'|'checks', ...data }. locale is for hreflang pairing; ES cards use slug '-es' suffix.",
   "cards": [
     {
+      "slug": "blog-discovery-wave",
+      "kind": "article",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "local-seo",
+      "eyebrow": "THE BATCH · MAY 2026",
+      "title_1": "Discovery",
+      "title_italic": "changed",
+      "title_2": "this spring.",
+      "dek": "Five pieces on staying in the answer when the search box gets rebuilt.",
+      "focus": {
+        "type": "type"
+      }
+    },
+    {
+      "slug": "blog-discovery-wave-es",
+      "kind": "article",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "local-seo",
+      "eyebrow": "EL LOTE · MAYO 2026",
+      "title_1": "La búsqueda",
+      "title_italic": "cambió",
+      "title_2": "esta primavera.",
+      "dek": "Cinco piezas para quedarte en la respuesta cuando se reconstruye la búsqueda.",
+      "focus": {
+        "type": "type"
+      }
+    },
+    {
+      "slug": "blog-ai-local-pack",
+      "kind": "article",
+      "locale": "en",
+      "accent": "rust",
+      "glyph": "local-seo",
+      "eyebrow": "LOCAL SEO · OP-ED",
+      "title_1": "Your calls are",
+      "title_italic": "down.",
+      "title_2": "The button's gone.",
+      "dek": "AI answers intercept the tap before it reaches you. The three paths that replace it.",
+      "focus": {
+        "type": "stat",
+        "value": "−40%",
+        "caption": "restaurant Maps views, 2-yr",
+        "source": "Rio SEO 2026"
+      }
+    },
+    {
+      "slug": "blog-ai-local-pack-es",
+      "kind": "article",
+      "locale": "es",
+      "accent": "rust",
+      "glyph": "local-seo",
+      "eyebrow": "SEO LOCAL · OP-ED",
+      "title_1": "Tus llamadas",
+      "title_italic": "bajan.",
+      "title_2": "El botón ya no está.",
+      "dek": "La IA intercepta el toque antes de que llegue a ti. Los tres caminos que lo reemplazan.",
+      "focus": {
+        "type": "stat",
+        "value": "−40%",
+        "caption": "vistas de Maps, 2 años",
+        "source": "Rio SEO 2026"
+      }
+    },
+    {
+      "slug": "blog-gemini-referral",
+      "kind": "article",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "local-seo",
+      "eyebrow": "AI SEARCH · EXPLAINER",
+      "title_1": "Gemini is your",
+      "title_italic": "#2 AI source",
+      "title_2": "now.",
+      "dek": "Its share tripled in a quarter — and it reads the Google profile you already manage.",
+      "focus": {
+        "type": "stat",
+        "value": "13.2%",
+        "caption": "of AI referrals, and climbing",
+        "source": "BrightEdge 2026"
+      }
+    },
+    {
+      "slug": "blog-gemini-referral-es",
+      "kind": "article",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "local-seo",
+      "eyebrow": "BÚSQUEDA IA · EXPLICACIÓN",
+      "title_1": "Gemini es tu",
+      "title_italic": "fuente #2 de IA",
+      "title_2": "ahora.",
+      "dek": "Su parte se triplicó en un trimestre — y lee el perfil de Google que ya administras.",
+      "focus": {
+        "type": "stat",
+        "value": "13.2%",
+        "caption": "de los referidos por IA, y subiendo",
+        "source": "BrightEdge 2026"
+      }
+    },
+    {
+      "slug": "blog-ai-mode-rebuild",
+      "kind": "article",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "local-seo",
+      "eyebrow": "AI SEARCH · OP-ED",
+      "title_1": "Google rebuilt",
+      "title_italic": "AI Mode.",
+      "title_2": "What changed.",
+      "dek": "The local result is generated and agentic now — the moves that keep you named.",
+      "focus": {
+        "type": "list",
+        "label": "WHAT CHANGED",
+        "items": [
+          "Generated, not listed",
+          "It books the table",
+          "Fewer get named"
+        ]
+      }
+    },
+    {
+      "slug": "blog-ai-mode-rebuild-es",
+      "kind": "article",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "local-seo",
+      "eyebrow": "BÚSQUEDA IA · OP-ED",
+      "title_1": "Google reconstruyó",
+      "title_italic": "AI Mode.",
+      "title_2": "Qué cambió.",
+      "dek": "El resultado local ahora es generativo y agente — las jugadas que te mantienen nombrado.",
+      "focus": {
+        "type": "list",
+        "label": "QUÉ CAMBIÓ",
+        "items": [
+          "Generado, no listado",
+          "Reserva la mesa",
+          "Menos nombrados"
+        ]
+      }
+    },
+    {
+      "slug": "blog-agentic-booking",
+      "kind": "article",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "reservations",
+      "eyebrow": "RESERVATIONS · HOW-TO",
+      "title_1": "Booking happens",
+      "title_italic": "inside the answer.",
+      "title_2": "Be the table.",
+      "dek": "Google's AI Mode books via OpenTable, Resy, Tock. Be in the flow — and own the repeat.",
+      "focus": {
+        "type": "stat",
+        "value": "65%",
+        "caption": "of diners prefer to book on your own site",
+        "source": "OpenTable 2026"
+      }
+    },
+    {
+      "slug": "blog-agentic-booking-es",
+      "kind": "article",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "reservations",
+      "eyebrow": "RESERVAS · GUÍA",
+      "title_1": "La reserva pasa",
+      "title_italic": "dentro de la respuesta.",
+      "title_2": "Sé la mesa.",
+      "dek": "El AI Mode reserva por OpenTable, Resy, Tock. Entra al flujo — y quédate con la repetida.",
+      "focus": {
+        "type": "stat",
+        "value": "65%",
+        "caption": "prefiere reservar en tu propio sitio",
+        "source": "OpenTable 2026"
+      }
+    },
+    {
+      "slug": "blog-ai-search-visibility",
+      "kind": "article",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "local-seo",
+      "eyebrow": "AI SEARCH · LOCAL SEO",
+      "title_1": "Visible in",
+      "title_italic": "AI search?",
+      "title_2": "Four numbers.",
+      "dek": "83% of restaurants are invisible to AI. The four-number check.",
+      "focus": {
+        "type": "stat",
+        "value": "83%",
+        "caption": "of restaurants invisible in AI search",
+        "source": "Uberall 2026"
+      }
+    },
+    {
+      "slug": "blog-ai-search-visibility-es",
+      "kind": "article",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "local-seo",
+      "eyebrow": "BÚSQUEDA IA · SEO LOCAL",
+      "title_1": "¿Visible en",
+      "title_italic": "búsqueda IA?",
+      "title_2": "Cuatro números.",
+      "dek": "El 83% de los restaurantes son invisibles para la IA. La prueba de cuatro números.",
+      "focus": {
+        "type": "stat",
+        "value": "83%",
+        "caption": "de restaurantes invisibles en búsqueda IA",
+        "source": "Uberall 2026"
+      }
+    },
+    {
       "slug": "system",
       "kind": "page",
       "locale": "en",

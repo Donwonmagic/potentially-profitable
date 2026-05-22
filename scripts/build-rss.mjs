@@ -63,6 +63,20 @@ function gitMtime(file) {
   return new Date().toISOString();
 }
 
+// Accepts either a bare 'YYYY-MM-DD' (data-file dates) or a full ISO datetime
+// (article:published_time / git %cI). Bare dates are anchored at noon UTC so the
+// calendar day is stable regardless of reader timezone; full datetimes parse as-is.
+// Returns the RFC-822 string for <pubDate> and a 'YYYY-MM-DD' key for sorting.
+function normalizeDate(raw) {
+  const str = String(raw || '');
+  const d = new Date(str.includes('T') ? str : `${str}T12:00:00Z`);
+  if (Number.isNaN(d.getTime())) {
+    const now = new Date();
+    return { rfc: now.toUTCString(), iso: now.toISOString().slice(0, 10) };
+  }
+  return { rfc: d.toUTCString(), iso: d.toISOString().slice(0, 10) };
+}
+
 function blogItems(locale) {
   const root = path.join(repoRoot, locale === 'es' ? 'es/blog' : 'blog');
   const out = [];
@@ -73,14 +87,14 @@ function blogItems(locale) {
     const meta = readMeta(file);
     if (!meta.title) continue;
     const url = `${SITE}${locale === 'es' ? '/es' : ''}/blog/${slug}/`;
-    const date = meta.pubDate || gitMtime(file).slice(0, 10);
+    const { rfc, iso } = normalizeDate(meta.pubDate || gitMtime(file));
     out.push({
       kind: 'article',
       title: meta.title,
       description: meta.description,
       url,
-      pubDate: new Date(date + 'T12:00:00Z').toUTCString(),
-      pubDateIso: date,
+      pubDate: rfc,
+      pubDateIso: iso,
       image: meta.ogImage,
       category: locale === 'es' ? 'Artículo' : 'Article',
     });
@@ -104,8 +118,8 @@ function glossaryItems(locale) {
       title: meta.title,
       description: meta.description || entry.note || '',
       url,
-      pubDate: new Date(entry.date + 'T12:00:00Z').toUTCString(),
-      pubDateIso: entry.date,
+      pubDate: normalizeDate(entry.date).rfc,
+      pubDateIso: normalizeDate(entry.date).iso,
       image: meta.ogImage,
       category: locale === 'es' ? 'Glosario' : 'Glossary',
     });
@@ -131,8 +145,8 @@ function toolItems(locale) {
       title: meta.title,
       description: blurb,
       url,
-      pubDate: new Date(entry.date + 'T12:00:00Z').toUTCString(),
-      pubDateIso: entry.date,
+      pubDate: normalizeDate(entry.date).rfc,
+      pubDateIso: normalizeDate(entry.date).iso,
       image: meta.ogImage,
       category: locale === 'es' ? 'Herramienta' : 'Tool',
     });
@@ -160,8 +174,8 @@ function sheetItems(locale) {
       title: meta.title,
       description: blurb,
       url,
-      pubDate: new Date(entry.date + 'T12:00:00Z').toUTCString(),
-      pubDateIso: entry.date,
+      pubDate: normalizeDate(entry.date).rfc,
+      pubDateIso: normalizeDate(entry.date).iso,
       image: meta.ogImage,
       category: locale === 'es' ? 'Hoja del Operador' : 'Operator Sheet',
     });
