@@ -18,6 +18,50 @@
     "  notes:       what to watch for if the source changes"
   ],
   "claims": {
+    "bls_beef_price_2026": {
+      "claim": "Average price of ground beef reached about $6.90/lb in April 2026, at or near a record.",
+      "source_url": "https://fred.stlouisfed.org/series/APU0000703112",
+      "source_name": "U.S. Bureau of Labor Statistics (avg price, ground beef; FRED APU0000703112)",
+      "date_verified": "2026-05-22",
+      "url_status": "deep-link",
+      "used_in": [
+        "restaurant-food-cost-increases-2026"
+      ],
+      "notes": "BLS series APU0000703112 shows ~$6.899/lb for April 2026. Coffee +18.5% YoY was NOT supported in primary BLS data and was dropped; coffee/oils/eggs are named directionally only."
+    },
+    "usda_fafh_2026": {
+      "claim": "USDA forecasts food-away-from-home prices to rise 3.6% in 2026.",
+      "source_url": "https://www.ers.usda.gov/data-products/food-price-outlook/summary-findings",
+      "source_name": "USDA Economic Research Service — Food Price Outlook",
+      "date_verified": "2026-05-22",
+      "url_status": "deep-link",
+      "used_in": [
+        "restaurant-food-cost-increases-2026"
+      ],
+      "notes": "Latest ERS update forecasts FAFH +3.6% for 2026 (was 3.7% in February)."
+    },
+    "nra_2026_consumer_caution": {
+      "claim": "The NRA's 2026 State of the Industry found ~85% of consumers pulling back on spending and ~61% saying dining out is essential; industry sales ~$1.55 trillion.",
+      "source_url": "https://restaurant.org/research-and-media/research/research-reports/state-of-the-industry/",
+      "source_name": "National Restaurant Association — 2026 State of the Restaurant Industry",
+      "date_verified": "2026-05-22",
+      "url_status": "deep-link",
+      "used_in": [
+        "restaurant-food-cost-increases-2026"
+      ],
+      "notes": "Released Feb 2026. $1.55T, 85%, 61% are solid; frame sentiment as 'cautious,' not an all-time record."
+    },
+    "fathers_day_dining_pattern": {
+      "claim": "Father's Day historically books later and lighter than Mother's Day, with a lunch/late-afternoon skew (prior-year Toast/TouchBistro data).",
+      "source_url": "https://pos.toasttab.com/blog/on-the-line/fathers-day-in-restaurants",
+      "source_name": "Toast; TouchBistro — Father's Day reports (prior years)",
+      "date_verified": "2026-05-22",
+      "url_status": "deep-link",
+      "used_in": [
+        "independent-restaurant-june-2026-calendar"
+      ],
+      "notes": "Directional pattern from prior-year data; June 21, 2026 has not occurred, so the specific +12%/+22% figures circulating are NOT used as 2026 numbers."
+    },
     "dc_min_wage_july_2026": {
       "claim": "On July 1, 2026, DC's standard minimum wage rises to $18.40/hr and the tipped minimum base to $10.30/hr (56% of the full minimum).",
       "source_url": "https://does.dc.gov/page/dc-minimum-wage",

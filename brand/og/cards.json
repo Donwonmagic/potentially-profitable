@@ -3,6 +3,72 @@
   "_comment": "OG card manifest. Each entry produces <slug>.svg + <slug>.png in brand/og/. kind selects the template (page|article|research|tool). accent keys into PALETTE in scripts/build-og-cards.mjs (per accent rule: speed/mobile=teal, conversions/reservations=rust, local-seo=teal, margin/operations=gold, trust=ink, brand=cream-on-ink/teal-on-cream, research=rust, tools=gold, hubs=ink). glyph keys into the GLYPHS registry in build-og-cards.mjs and renders left of the eyebrow as a subject cue. focus is an optional module { type: 'type'|'funnel'|'stat'|'score-ring'|'list'|'quote'|'checks', ...data }. locale is for hreflang pairing; ES cards use slug '-es' suffix.",
   "cards": [
     {
+      "slug": "blog-food-costs-2026",
+      "kind": "article",
+      "locale": "en",
+      "accent": "gold",
+      "glyph": "margin",
+      "eyebrow": "OPERATIONS · HOW-TO",
+      "title_1": "Beef hit",
+      "title_italic": "$6.90 a pound.",
+      "title_2": "Re-cost five plates.",
+      "dek": "Don't raise the whole menu — re-cost the few plates that actually moved.",
+      "focus": {
+        "type": "stat",
+        "value": "$6.90",
+        "caption": "ground beef per lb, April 2026",
+        "source": "BLS"
+      }
+    },
+    {
+      "slug": "blog-food-costs-2026-es",
+      "kind": "article",
+      "locale": "es",
+      "accent": "gold",
+      "glyph": "margin",
+      "eyebrow": "OPERACIONES · GUÍA",
+      "title_1": "La res llegó a",
+      "title_italic": "$6.90 la libra.",
+      "title_2": "Re-costea cinco platos.",
+      "dek": "No subas todo el menú — re-costea los pocos platos que de verdad se movieron.",
+      "focus": {
+        "type": "stat",
+        "value": "$6.90",
+        "caption": "res molida por libra, abril 2026",
+        "source": "BLS"
+      }
+    },
+    {
+      "slug": "blog-june-calendar",
+      "kind": "article",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "reservations",
+      "eyebrow": "LOCAL SEO · HOW-TO",
+      "title_1": "Father's Day,",
+      "title_italic": "summer hiring,",
+      "title_2": "patio season.",
+      "dek": "The June calendar that isn't a discount — win local search, not the price war.",
+      "focus": {
+        "type": "type"
+      }
+    },
+    {
+      "slug": "blog-june-calendar-es",
+      "kind": "article",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "reservations",
+      "eyebrow": "SEO LOCAL · GUÍA",
+      "title_1": "Día del Padre,",
+      "title_italic": "contrataciones,",
+      "title_2": "temporada de patio.",
+      "dek": "El calendario de junio que no es un descuento — gana la búsqueda local, no la guerra de precios.",
+      "focus": {
+        "type": "type"
+      }
+    },
+    {
       "slug": "blog-dc-wage-2026",
       "kind": "article",
       "locale": "en",
