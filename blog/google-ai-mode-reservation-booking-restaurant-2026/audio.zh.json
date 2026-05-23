@@ -1,0 +1,179 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-22T23:49:35.437Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "zm_yunxi",
+  "language": "zh",
+  "total": 250.45,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "教程 · 2026年5月25日 · 阅读时间6分钟 &middot; 作者：Don Goldstein",
+      "start": 0,
+      "end": 8.28
+    },
+    {
+      "id": 1,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Agentic 预订（预订）功能已在Google的AI模式中上线：助手通过OpenTable、Resy或Tock预订桌子。如果您没有连接到支持的提供商，助手将预订其他人。",
+      "start": 8.63,
+      "end": 21.56
+    },
+    {
+      "id": 2,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "简而言之",
+      "start": 21.91,
+      "end": 23.1
+    },
+    {
+      "id": 3,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Google的AI模式可以通过OpenTable、Resy或Tock在答案中完成预订——无需访问网站，无需打电话。",
+      "start": 23.45,
+      "end": 32.72
+    },
+    {
+      "id": 4,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "如果您的桌子不能通过支持的提供商预订，助手将预订其他餐厅的桌子。",
+      "start": 33.04,
+      "end": 39.89
+    },
+    {
+      "id": 5,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "65%的用餐者更喜欢直接在餐厅自己的网站上预订，因此在代理人完成第一次预订后，应拥有重复预订。",
+      "start": 40.21,
+      "end": 49.52
+    },
+    {
+      "id": 6,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "要求Google“在杜邦附近的6人桌，星期五7点，有户外座位”，新的AI模式不仅列出选项，还可以预订。通过OpenTable、Resy和Tock，助手在答案中完成预订。用餐者无需打开网站，也无需打电话。这对他们来说很方便，对您来说很有决定性：如果您的桌子不能通过提供商预订，助手将预订其他餐厅的桌子。",
+      "start": 49.87,
+      "end": 72.73
+    },
+    {
+      "id": 7,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "这是我们之前介绍的AI模式重建中的同一转变——答案现在可以执行操作，而不仅仅是描述。对于预订来说，“执行操作”意味着完成预订。这里有两项工作，大多数餐厅都没有做好准备。",
+      "start": 73.08,
+      "end": 87.7
+    },
+    {
+      "id": 8,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "第一项工作：确保代理人可以访问您的预订。",
+      "start": 88.8,
+      "end": 92.06
+    },
+    {
+      "id": 9,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "代理人只能完成它可以看到的预订。在主机台（host stand）旁边的纸质预订书中，或在“请拨打电话”线路后面的桌子，是代理人无法提供的桌子。将您的库存加入OpenTable、Resy或Tock中，这使您有资格参与代理流程——这就是成为候选人和被跳过的区别。这些平台会收取费用，这些费用是真实的；但是，如果代理人无法预订您的桌子，每次询问时，您将失去整个预订。",
+      "start": 92.76,
+      "end": 119.66
+    },
+    {
+      "id": 10,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "第二项工作：一旦用餐者成为您的客户，您就需要拥有预订。",
+      "start": 120.76,
+      "end": 125.87
+    },
+    {
+      "id": 11,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "65%的用餐者表示他们更愿意直接在餐厅自己的网站上预订，而不是通过第三方。这种方式可以带来优势。代理人可能通过平台完成第一次预订，但如果用餐者有良好的体验，他们下次会直接通过您的预订链接预订——无需支付佣金，您也可以保持与客人的关系。如果您的预订链接在手机上被埋没、速度慢或无法使用，您将把重复预订的机会拱手让给平台。",
+      "start": 126.57,
+      "end": 153.28
+    },
+    {
+      "id": 12,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "Google的AI模式中的代理预订路径。步骤一：用餐者要求代理人预订桌子。步骤二：代理人找到它可以实际预订的桌子——只有连接到支持提供商的餐厅。步骤三：它通过OpenTable、Resy或Tock在答案中完成预订。步骤四：只有电话的餐厅将被跳过，因为代理人无法拨打电话。",
+      "start": 154.08,
+      "end": 174.12
+    },
+    {
+      "id": 13,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "本周需要检查的内容。",
+      "start": 175.22,
+      "end": 177.15
+    },
+    {
+      "id": 14,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "两件事，很快。首先，确认你的预订是通过支持的提供商（不是仅仅是一个电话号码）——这就是你进入代理商短名单的门票。其次，在手机上打开自己的网站并自己预订一张桌子：如果预订链接很慢，隐藏在页面下方，或者跳转到一个笨拙的第三方框架，那么你应该拥有的重复预订就会回到平台。从Find a Table恢复预订的方法中可以找到解决方案；商店健康检查和GBP评分器会在用餐者找到它们之前标记出破损的路径。",
+      "start": 177.85,
+      "end": 209.85
+    },
+    {
+      "id": 15,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "代理预订不是一个需要对抗的威胁；它是一个需要融入的流程。让自己可以被预订，这样代理商就可以给你带来第一笔预订，并且自己拥有预订流程，这样你就可以保留第二笔预订。",
+      "start": 210.2,
+      "end": 222.36
+    },
+    {
+      "id": 16,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "关键要点",
+      "start": 222.71,
+      "end": 223.62
+    },
+    {
+      "id": 17,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "代理商只能预订它可以看到的桌子——纸质预订书和仅有的电话线路对它来说是不可见的。",
+      "start": 223.97,
+      "end": 231.16
+    },
+    {
+      "id": 18,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "出现在OpenTable、Resy或Tock上就是进入代理商短名单的门票，包括所有的费用。",
+      "start": 231.48,
+      "end": 239.18
+    },
+    {
+      "id": 19,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "移动端预订链接如果很慢或被埋藏，会把重复预订交回给平台。",
+      "start": 239.5,
+      "end": 245.23
+    },
+    {
+      "id": 20,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "代理预订是一个需要融入的流程，而不是一个需要对抗的威胁。",
+      "start": 245.55,
+      "end": 250.45
+    }
+  ]
+}

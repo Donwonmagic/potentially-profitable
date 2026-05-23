@@ -36,3 +36,9 @@ tools/invoice-decoder/__fixtures__/images/
 test-results/
 playwright-report/
 playwright/.cache/
+
+# audio-render pipeline virtualenv — local only
+.venv/
+
+# accidental nested clone — keep on disk if useful, never track
+potentially-profitable/
