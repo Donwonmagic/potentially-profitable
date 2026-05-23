@@ -1,0 +1,315 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-22T22:17:55.054Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "am_michael",
+  "language": "en",
+  "total": 526.79,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "How-to · May 25, twenty twenty-six · 8 min read &middot; By Don Goldstein",
+      "start": 0,
+      "end": 5.63
+    },
+    {
+      "id": 1,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "A twenty twenty-six Uberall study found 83% of restaurants never surface when a diner asks an AI assistant for a recommendation — even though 86% have a Google listing. The gap comes down to four numbers you can check this week.",
+      "start": 5.98,
+      "end": 22.59
+    },
+    {
+      "id": 2,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "In short",
+      "start": 23.11,
+      "end": 23.74
+    },
+    {
+      "id": 3,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "AI assistants name only three to five restaurants per query — a twenty twenty-six Uberall study found 83% of restaurants never make that list, despite 86% having a Google profile.",
+      "start": 24.09,
+      "end": 37.77
+    },
+    {
+      "id": 4,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Four numbers decide it: your star rating against the assistant floors, review recency, profile completeness, and whether your site holds an answer the AI can quote.",
+      "start": 38.09,
+      "end": 49.11
+    },
+    {
+      "id": 5,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "The rating floors run about 4.3 for ChatGPT, 4.1 for Perplexity, and 3.9 for Gemini — below the floor, rank and completeness do not save you.",
+      "start": 49.43,
+      "end": 61.1
+    },
+    {
+      "id": 6,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "Read all four this week in about ten minutes, then close the nearest gap first.",
+      "start": 61.42,
+      "end": 66.19
+    },
+    {
+      "id": 7,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "Ask your phone, out loud, for a good taco place near you. You will hear three names. Maybe five. Not ten blue links, not a map with twenty pins — three names, summarized at the top of the answer. If your restaurant is not one of them, the diner never learns you exist, and your position on the old Google map never gets read.",
+      "start": 66.71,
+      "end": 87.92
+    },
+    {
+      "id": 8,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "This is the part operators miss. A twenty twenty-six Uberall study of multi-location restaurants found that 83% never appear in AI search results — even though 86% of them keep a Google Business Profile . Having the listing is not the same as being named. The assistant has already decided who makes the shortlist before ranking ever enters the picture.",
+      "start": 88.44,
+      "end": 112.93
+    },
+    {
+      "id": 9,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "You do not need a consultant to find out which side of that 83% you are on. Four numbers decide it, and you can read all four this week.",
+      "start": 113.45,
+      "end": 122.75
+    },
+    {
+      "id": 10,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Why presence stopped being enough.",
+      "start": 123.85,
+      "end": 125.51
+    },
+    {
+      "id": 11,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "When a diner asks ChatGPT, Gemini, or Google&rsquo;s AI Overview for a recommendation, the assistant does not return a ranked list of everyone nearby. It returns a written answer that names three to five places. Uberall measured the shortlist at three to five brands per query. Everyone else is not on page two — they are simply not in the sentence.",
+      "start": 126.21,
+      "end": 150.71
+    },
+    {
+      "id": 12,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "So the goal moved. Ranking first in the map pack still matters, but it no longer guarantees the assistant repeats your name. The assistant filters on a handful of signals first, then writes. Four of those signals are numbers you control.",
+      "start": 151.23,
+      "end": 166.85
+    },
+    {
+      "id": 13,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Number one — your rating against the floor.",
+      "start": 167.95,
+      "end": 170.29
+    },
+    {
+      "id": 14,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "Each assistant appears to apply a minimum star rating before it will name a place at all. Uberall&rsquo;s twenty twenty-six figures put the floors at roughly 4.3 for ChatGPT, 4.1 for Perplexity, and 3.9 for Gemini . Below the floor, completeness and rank do not save you — you are filtered out before the assistant starts choosing.",
+      "start": 170.99,
+      "end": 194.28
+    },
+    {
+      "id": 15,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "The move is not &ldquo;get more stars.&rdquo; It is to know your current number and the gap to the nearest floor. A restaurant sitting at 4.0 is invisible to ChatGPT&rsquo;s shortlist no matter how good the food is; the same restaurant clears Gemini&rsquo;s 3.9 today. Pull your number, write down the gap, and you know exactly which assistant you are losing. The G B P grader reads it for you if you would rather not do the arithmetic by hand.",
+      "start": 194.8,
+      "end": 225.99
+    },
+    {
+      "id": 16,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "Minimum star rating to be named by each AI assistant. ChatGPT will not name a restaurant under about four point three stars. Perplexity's floor is about four point one. Gemini's is about three point nine. A restaurant sitting at four point zero clears Gemini but falls below both Perplexity and ChatGPT, so it gets named by only one assistant of the three. Floors are Uberall's twenty twenty-six reported figures.",
+      "start": 226.79,
+      "end": 254.87
+    },
+    {
+      "id": 17,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Number two — review recency, not just the count.",
+      "start": 255.97,
+      "end": 258.8
+    },
+    {
+      "id": 18,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "A 4.6 built on twelve reviews, the newest from eighteen months ago, reads as a closed restaurant to a model trained to weight freshness. A 4.4 with a handful of reviews this month reads as open, busy, and current. Count earns the attention; recency keeps it.",
+      "start": 259.5,
+      "end": 278.13
+    },
+    {
+      "id": 19,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "The lever here is review responsiveness — fresh reviews arrive faster when you are visibly answering the ones you already have. The full playbook is in how to respond to Google reviews ; the short version is that a reply is a dated signal of life, and the assistant can read the date.",
+      "start": 278.65,
+      "end": 296.81
+    },
+    {
+      "id": 20,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "Number three — how complete the profile actually is.",
+      "start": 297.91,
+      "end": 300.95
+    },
+    {
+      "id": 21,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "86% have a profile. Far fewer have a profile the assistant can actually read. A listing with no hours-by-day, no cuisine set, no service attributes, and no menu link is a thin signal — the model has nothing to quote when the diner asks &ldquo;are they open Sunday&rdquo; or &ldquo;do they do gluten-free.&rdquo; Presence, again, is not the same as legibility.",
+      "start": 301.65,
+      "end": 328.43
+    },
+    {
+      "id": 22,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "Fill the structured fields on your Google Business Profile the way you fill out a permit: every field, no blanks, current. Hours by day, cuisine, dietary attributes, outdoor seating, the link to your real menu. The G B P grader flags the empty fields; the S E O grader checks whether your own site backs them up.",
+      "start": 328.95,
+      "end": 350.41
+    },
+    {
+      "id": 23,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "Number four — do you own an answer the AI can lift?",
+      "start": 351.51,
+      "end": 354.46
+    },
+    {
+      "id": 24,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "The assistant needs a sentence to quote. If the answer to &ldquo;is it good for a group of eight,&rdquo; &ldquo;is there a vegan entr&eacute;e,&rdquo; or &ldquo;can you book a patio table&rdquo; lives only inside a photographed menu or a P D F, the model cannot lift it — it quotes a competitor who wrote the answer in plain text. The restaurants that get named are the ones that put the answer where a machine can read it.",
+      "start": 355.16,
+      "end": 385.71
+    },
+    {
+      "id": 25,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "That means text on your own pages plus restaurant schema markup so the structured facts are unambiguous. Run schema check to confirm the markup parses. This is the one number that lives on your site rather than your Google listing, and it is the one most operators have never looked at.",
+      "start": 386.23,
+      "end": 404.54
+    },
+    {
+      "id": 26,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(6)",
+      "text": "The fixes that backfire.",
+      "start": 405.64,
+      "end": 407.13
+    },
+    {
+      "id": 27,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "Two reflexes make the numbers worse. Buying reviews spikes the count and then tanks recency the moment the batch ages, and Google&rsquo;s filters increasingly strip them — so the average drops and the dates go stale at once. Stuffing keywords into your business name is a suspension risk that can pull the whole listing, taking all four numbers to zero in a day. The signals that move AI search are the slow, real ones: good food showing up as fresh reviews, a complete profile, and answers written in plain text.",
+      "start": 407.83,
+      "end": 440.25
+    },
+    {
+      "id": 28,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(7)",
+      "text": "The ten-minute version.",
+      "start": 441.35,
+      "end": 442.56
+    },
+    {
+      "id": 29,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "You do not have to fix all four today. You have to read all four today, so you know which one is costing you.",
+      "start": 443.26,
+      "end": 449.83
+    },
+    {
+      "id": 30,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(2)",
+      "text": "The four-number check, in about ten minutes. One, rating: your star average against the floors of four point three, four point one, and three point nine. Two, recency: the date of your newest review; older than this month is the leak. Three, completeness: the count of blank fields on your Google Business Profile. Four, answerable content: pick three questions a diner would ask, and check whether the answer exists in text on your own site.",
+      "start": 450.63,
+      "end": 477.46
+    },
+    {
+      "id": 31,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(19)",
+      "text": "Four numbers, ten minutes, no agency. The 83% are not invisible because AI search is unfair to small restaurants. They are invisible because no one has read these four numbers and closed the nearest gap.",
+      "start": 478.21,
+      "end": 492.91
+    },
+    {
+      "id": 32,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(20)",
+      "text": "Key takeaways",
+      "start": 493.43,
+      "end": 494.37
+    },
+    {
+      "id": 33,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Presence is not inclusion — a Google listing does not mean an AI assistant will name you.",
+      "start": 494.72,
+      "end": 500.37
+    },
+    {
+      "id": 34,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "A restaurant below an assistant's rating floor is filtered out before ranking ever applies.",
+      "start": 500.69,
+      "end": 506.36
+    },
+    {
+      "id": 35,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "Review recency reads as proof of life; a dated reply is a signal the model can see.",
+      "start": 506.68,
+      "end": 512.61
+    },
+    {
+      "id": 36,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "Structured Google Business Profile fields are what the assistant quotes — blank fields read as silence.",
+      "start": 512.93,
+      "end": 519.27
+    },
+    {
+      "id": 37,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(5)",
+      "text": "The answer a diner asks for has to live in text on your own site, or a competitor's text gets quoted instead.",
+      "start": 519.59,
+      "end": 526.79
+    }
+  ]
+}

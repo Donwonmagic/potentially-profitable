@@ -1,0 +1,203 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-22T23:17:04.397Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "em_alex",
+  "language": "es",
+  "total": 322.24,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "Opinión · 25 de mayo, veintiséis · 7 min de lectura &middot; Por Don Goldstein",
+      "start": 0,
+      "end": 6.85
+    },
+    {
+      "id": 1,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "En I/O el 19 de mayo, Google reconstruyó el Modo AI y le dio la capacidad de reservar una mesa sin salir de la respuesta. El resultado local ahora se genera, no se lista — y eso cambia qué restaurantes se nombran.",
+      "start": 7.2,
+      "end": 20.26
+    },
+    {
+      "id": 2,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "En resumen",
+      "start": 20.78,
+      "end": 21.5
+    },
+    {
+      "id": 3,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "En I/O el 19 de mayo, Google reconstruyó el Modo AI en un nuevo modelo y le dio la capacidad de reservar una mesa de restaurante directamente a través de OpenTable, Resy y Tock.",
+      "start": 21.85,
+      "end": 32.97
+    },
+    {
+      "id": 4,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "El resultado local ahora se genera, no se lista — Google compone una respuesta breve que nombra unos pocos lugares y puede actuar sobre ella, en lugar de devolver diez enlaces.",
+      "start": 33.29,
+      "end": 43.33
+    },
+    {
+      "id": 5,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Tres movimientos te mantienen en el juego: un Google Business Profile completo, un proveedor de reservas conectado y la respuesta escrita en texto plano más esquema.",
+      "start": 43.65,
+      "end": 53.02
+    },
+    {
+      "id": 6,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "El 19 de mayo, en su conferencia I/O, Google reconstruyó el Modo AI — la capa conversacional que cada vez más se sitúa donde solían estar los diez enlaces azules. Un nuevo modelo subyacente, un cuadro de búsqueda rediseñado (el primer cambio real en ese cuadro en más de dos décadas), agentes en segundo plano que investigan por su cuenta y una característica que importa más a un restaurante que todas las demás: la respuesta puede ahora reservar la mesa. El Modo AI ya alcanza a más de mil millones de personas al mes, y la reconstrucción se implementará en todo EE. UU. durante el verano.",
+      "start": 53.54,
+      "end": 87.55
+    },
+    {
+      "id": 7,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "Para un operador, el titular no es el modelo. Es que el resultado local dejó de ser una lista y se convirtió en una composición. Google ya no le da al comensal diez enlaces y un mapa y lo deja que lo resuelva. Lee la pregunta, elige unos pocos lugares, escribe una respuesta breve sobre ellos y ofrece actuar. El trabajo cambió de \"clasificar en la lista\" a \"ser uno de los pocos que el modelo decide nombrar — y puede actuar sobre\".",
+      "start": 88.07,
+      "end": 110.51
+    },
+    {
+      "id": 8,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Qué cambia \"generativo\" sobre un resultado de restaurante.",
+      "start": 111.61,
+      "end": 114.83
+    },
+    {
+      "id": 9,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "Una respuesta generada — con la misma superficie que una Google AI Overview — se ensambla a partir de lo que el modelo puede leer y confiar sobre ti: tu Google Business Profile, tus reseñas, el texto en tus propias páginas. No es una fuente clasificada. La antigua map pack recompensaba la proximidad y la calificación; la respuesta generada recompensa la legibilidad — ¿puede el modelo declarar, en una oración que está dispuesto a poner su nombre, qué sirves, cuándo estás abierto y si encajas en la petición del comensal? Si esa oración no es legible en algún lugar, no estás en el párrafo. Analizamos los cuatro señales que lo deciden en la comprobación de cuatro números.",
+      "start": 115.53,
+      "end": 151.19
+    },
+    {
+      "id": 10,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "La parte agente es el cambio más grande.",
+      "start": 152.29,
+      "end": 154.86
+    },
+    {
+      "id": 11,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "Las respuestas generadas han estado creciendo durante un año. La novedad en I/O es que el asistente puede completar una tarea — y para los restaurantes, la tarea es la reserva. A través de OpenTable, Resy y Tock, el Modo AI puede reservar una mesa dentro de la respuesta, sin enviar al comensal a tu sitio en absoluto. Eso es un regalo si estás conectado a uno de esos proveedores y una fuga silenciosa si no lo estás: el comensal pide \"un lugar tranquilo para cuatro el viernes\", el asistente encuentra uno que se puede reservar y lo reserva. Un restaurante que solo acepta reservas por teléfono — sin enlace de reserva que el agente pueda completar — es invisible en ese flujo, no importa cuán bueno sea.",
+      "start": 155.56,
+      "end": 194.78
+    },
+    {
+      "id": 12,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "Tres cosas que el rebuild de I/O veintiséis cambió sobre un resultado de restaurante local. Uno: la respuesta es generada, no enumerada — Google compone una respuesta breve que nombra unos pocos lugares en lugar de devolver diez enlaces y un mapa. Dos: el asistente puede reservar la mesa, a través de OpenTable, Resy o Tock, dentro de la respuesta. Tres: menos restaurantes son nombrados — una respuesta compuesta menciona un puñado de lugares, y todos los demás están ausentes en lugar de estar clasificados en un puesto inferior.",
+      "start": 195.58,
+      "end": 225.68
+    },
+    {
+      "id": 13,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Tres movimientos que te mantienen en la respuesta.",
+      "start": 226.78,
+      "end": 229.5
+    },
+    {
+      "id": 14,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "Ninguno de esto recompensa un presupuesto publicitario más grande. Recompensa ser legible y reservable — ambos son aspectos que controlas.",
+      "start": 230.2,
+      "end": 238.29
+    },
+    {
+      "id": 15,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "Completa el perfil. Horarios por día, cocina, atributos, enlace al menú — los campos que el modelo cita. Ejecuta el calificador G B P para encontrar los espacios en blanco.",
+      "start": 238.81,
+      "end": 249
+    },
+    {
+      "id": 16,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "Conecta a un proveedor de reservas. Si aceptas reservas, asegúrate de que estén en OpenTable, Resy o Tock para que el agente pueda finalizar el trabajo. Las instrucciones están en la sección de reservas dentro de la respuesta de la IA .",
+      "start": 249.52,
+      "end": 262.75
+    },
+    {
+      "id": 17,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "Escribe la respuesta en texto. Coloca los hechos que un comensal pregunta en texto plano, respaldados por esquema de restaurante para que el modelo pueda extraerlos, y luego verifica la puerta principal con la salud de la tienda .",
+      "start": 263.27,
+      "end": 276.16
+    },
+    {
+      "id": 18,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "El rebuild no es una razón para paniquear. Es una razón para ser legible. Los restaurantes que pierden son aquellos que el modelo no puede leer y no puede reservar — y ambos son solucionables esta semana, sin un contrato ni un gasto publicitario.",
+      "start": 276.68,
+      "end": 290.54
+    },
+    {
+      "id": 19,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "Puntos clave",
+      "start": 291.06,
+      "end": 291.86
+    },
+    {
+      "id": 20,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Una respuesta generada recompensa la legibilidad, no solo la proximidad y la calificación — el modelo tiene que poder expresar qué eres.",
+      "start": 292.21,
+      "end": 300.03
+    },
+    {
+      "id": 21,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "El modo IA puede completar la reserva a través de OpenTable, Resy o Tock; un restaurante que solo acepta llamadas telefónicas es omitido.",
+      "start": 300.35,
+      "end": 308.59
+    },
+    {
+      "id": 22,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "El trabajo pasó de ser clasificado en una lista a ser uno de los pocos lugares que el modelo nombra y puede reservar.",
+      "start": 308.91,
+      "end": 315.58
+    },
+    {
+      "id": 23,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "Ninguno de los tres movimientos cuesta un presupuesto publicitario — cuestan una tarde de ser legible y reservable.",
+      "start": 315.9,
+      "end": 322.24
+    }
+  ]
+}

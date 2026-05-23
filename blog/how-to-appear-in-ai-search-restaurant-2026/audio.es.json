@@ -1,0 +1,315 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-22T22:27:47.792Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "em_alex",
+  "language": "es",
+  "total": 520.66,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "Cómo hacer · 25 de mayo de 2026 · 8 min de lectura &middot; Por Don Goldstein",
+      "start": 0,
+      "end": 7.19
+    },
+    {
+      "id": 1,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Un estudio de Uberall de 2026 encontró que el 83% de los restaurantes nunca aparecen cuando un comensal pide una recomendación a un asistente de inteligencia artificial — a pesar de que el 86% tiene un listado en Google. La brecha se reduce a cuatro números que puedes verificar esta semana.",
+      "start": 7.54,
+      "end": 25.92
+    },
+    {
+      "id": 2,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "En resumen",
+      "start": 26.44,
+      "end": 27.16
+    },
+    {
+      "id": 3,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Los asistentes de inteligencia artificial solo nombran de tres a cinco restaurantes por consulta — un estudio de Uberall de 2026 encontró que el 83% de los restaurantes nunca aparecen en esa lista, a pesar de que el 86% tiene un perfil en Google.",
+      "start": 27.51,
+      "end": 44.3
+    },
+    {
+      "id": 4,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Cuatro números deciden esto: tu calificación de estrellas en comparación con los umbrales del asistente, la recencia de las reseñas, la completitud del perfil y si tu sitio web tiene una respuesta que el asistente de inteligencia artificial puede citar.",
+      "start": 44.62,
+      "end": 59.14
+    },
+    {
+      "id": 5,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Los umbrales de calificación son aproximadamente 4,3 para ChatGPT, 4,1 para Perplexity y 3,9 para Gemini — por debajo del umbral, el rango y la completitud no te salvan.",
+      "start": 59.46,
+      "end": 70.57
+    },
+    {
+      "id": 6,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "Lee estos cuatro números esta semana en unos 10 minutos y luego cierra la brecha más cercana primero.",
+      "start": 70.89,
+      "end": 76.96
+    },
+    {
+      "id": 7,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "Pide a tu teléfono, en voz alta, que te recomiende un buen lugar de tacos cerca de ti. Escucharás tres nombres. Tal vez cinco. No diez enlaces azules, no un mapa con veinte marcadores — tres nombres, resumidos al principio de la respuesta. Si tu restaurante no es uno de ellos, el comensal nunca sabrá que existes, y tu posición en el antiguo mapa de Google nunca se leerá.",
+      "start": 77.48,
+      "end": 97.6
+    },
+    {
+      "id": 8,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "Esta es la parte que los operadores pasan por alto. Un estudio de Uberall de 2026 sobre restaurantes con múltiples ubicaciones encontró que el 83% nunca aparecen en los resultados de búsqueda de inteligencia artificial — a pesar de que el 86% de ellos mantiene un listado en Google Business Profile. Tener el listado no es lo mismo que ser nombrado. El asistente ya ha decidido quién está en la lista corta antes de que la clasificación entre en juego.",
+      "start": 98.12,
+      "end": 125.18
+    },
+    {
+      "id": 9,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "No necesitas un consultor para descubrir de qué lado del 83% estás. Cuatro números deciden esto, y puedes leerlos todos esta semana.",
+      "start": 125.7,
+      "end": 134.26
+    },
+    {
+      "id": 10,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Por qué la presencia dejó de ser suficiente.",
+      "start": 135.36,
+      "end": 137.95
+    },
+    {
+      "id": 11,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "Cuando un comensal pide una recomendación a ChatGPT, Gemini o al AI Overview de Google, el asistente no devuelve una lista clasificada de todos los que están cerca. Devuelve una respuesta escrita que nombra de tres a cinco lugares. Uberall midió la lista corta en tres a cinco marcas por consulta. Todos los demás no están en la página dos — simplemente no están en la oración.",
+      "start": 138.65,
+      "end": 159.36
+    },
+    {
+      "id": 12,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "Así que el objetivo cambió. Clasificarse en primer lugar en el map pack todavía importa, pero ya no garantiza que el asistente repita tu nombre. El asistente filtra primero en función de una serie de señales, y luego escribe. Cuatro de esas señales son números que controlas.",
+      "start": 159.88,
+      "end": 175.32
+    },
+    {
+      "id": 13,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Número uno — tu calificación en comparación con el umbral.",
+      "start": 176.42,
+      "end": 179.64
+    },
+    {
+      "id": 14,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "Cada asistente parece aplicar una calificación mínima de estrellas antes de nombrar un lugar. Las cifras de Uberall de 2026 sitúan los umbrales en aproximadamente 4,3 para ChatGPT, 4,1 para Perplexity y 3,9 para Gemini. Por debajo del umbral, la completitud y la clasificación no te salvan — se te filtra antes de que el asistente comience a elegir.",
+      "start": 180.34,
+      "end": 201.3
+    },
+    {
+      "id": 15,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "El movimiento no es \"obtener más estrellas\". Es conocer tu número actual y la brecha hasta el umbral más cercano. Un restaurante que tiene una calificación de 4,0 es invisible para la lista corta de ChatGPT, no importa lo bueno que sea la comida; el mismo restaurante supera el umbral de 3,9 de Gemini hoy. Saca tu número, anota la brecha y sabrás exactamente a qué asistente estás perdiendo. El calificador GBP lo lee por ti si prefieres no hacer la aritmética a mano.",
+      "start": 201.82,
+      "end": 228.07
+    },
+    {
+      "id": 16,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "Calificación mínima de estrellas para ser nombrado por cada asistente de IA. ChatGPT no nombrará un restaurante con menos de cuatro punto tres estrellas. El límite de Perplexity es de aproximadamente cuatro punto uno. El de Gemini es de aproximadamente tres punto nueve. Un restaurante con cuatro punto cero estrellas supera a Gemini, pero no a Perplexity ni a ChatGPT, por lo que solo es nombrado por uno de los tres asistentes. Los límites son Uber todos los informes reportados de dos mil veintiséis.",
+      "start": 228.87,
+      "end": 255.98
+    },
+    {
+      "id": 17,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Número dos — la recencia de las reseñas, no solo la cantidad.",
+      "start": 257.08,
+      "end": 260.49
+    },
+    {
+      "id": 18,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "Un 4,6 construido con doce reseñas, la más reciente de hace dieciocho meses, se lee como un restaurante cerrado para un modelo entrenado para dar peso a la frescura. Un 4,4 con un puñado de reseñas de este mes se lee como un restaurante abierto, ocupado y actual. La cantidad atrae la atención; la recencia la mantiene.",
+      "start": 261.19,
+      "end": 279.39
+    },
+    {
+      "id": 19,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "La palanca aquí es la respuesta a las reseñas — las reseñas frescas llegan más rápido cuando estás visiblemente respondiendo a las que ya tienes. El libro de jugadas completo está en cómo responder a las reseñas Google; la versión corta es que una respuesta es una señal de vida fechada, y el asistente puede leer la fecha.",
+      "start": 279.91,
+      "end": 298.12
+    },
+    {
+      "id": 20,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "Número tres — cuán completa es el perfil en realidad.",
+      "start": 299.22,
+      "end": 302.24
+    },
+    {
+      "id": 21,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "El 86% tiene un perfil. Muchos menos tienen un perfil que el asistente pueda leer en realidad. Una lista con no horas por día, no tipo de cocina establecido, no atributos de servicio y no enlace al menú es una señal de baja intensidad — el modelo no tiene nada que citar cuando el comensal pregunta \"¿están abiertos el domingo\" o \"¿tienen opciones sin gluten\". La presencia, de nuevo, no es lo mismo que la legibilidad.",
+      "start": 302.94,
+      "end": 325.06
+    },
+    {
+      "id": 22,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "Rellena los campos estructurados en tu Google Business Profile de la misma manera que rellenas un permiso: cada campo, sin espacios en blanco, actualizado. Horas por día, tipo de cocina, atributos dietéticos, asientos al aire libre, el enlace a tu menú real. El calificador G B P marca los campos vacíos; el calificador S E O verifica si tu propio sitio los respalda.",
+      "start": 325.58,
+      "end": 346.53
+    },
+    {
+      "id": 23,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "Número cuatro — ¿tienes una respuesta que la IA pueda levantar?",
+      "start": 347.63,
+      "end": 350.98
+    },
+    {
+      "id": 24,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "El asistente necesita una oración para citar. Si la respuesta a \"¿es bueno para un grupo de ocho\", \"¿hay un plato principal vegano\" o \"¿puedo reservar una mesa en el patio\" solo vive dentro de un menú fotografiado o un P D F, el modelo no puede levantarla — cita a un competidor que escribió la respuesta en texto plano. Los restaurantes que son nombrados son aquellos que ponen la respuesta donde una máquina pueda leerla.",
+      "start": 351.68,
+      "end": 372.93
+    },
+    {
+      "id": 25,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "Eso significa texto en tus propias páginas más hechos estructurados del restaurante schema markup para que los hechos estructurados sean inequívocos. Ejecuta la comprobación de esquema para confirmar que la marca de esquema se analiza. Este es el número que vive en tu sitio en lugar de tu lista Google, y es el que la mayoría de los operadores nunca han visto.",
+      "start": 373.45,
+      "end": 392.41
+    },
+    {
+      "id": 26,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(6)",
+      "text": "Los arreglos que fallan.",
+      "start": 393.51,
+      "end": 394.8
+    },
+    {
+      "id": 27,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "Dos reflejos empeoran los números. Comprar reseñas aumenta la cantidad y luego reduce la recencia en el momento en que el lote envejece, y los filtros de Google los eliminan cada vez más — así que el promedio disminuye y las fechas se vuelven obsoletas al mismo tiempo. Rellenar palabras clave en el nombre de tu negocio es un riesgo de suspensión que puede eliminar toda la lista, llevando los cuatro números a cero en un día. Las señales que mueven la búsqueda de IA son las lentas y reales: buena comida que aparece como reseñas frescas, un perfil completo y respuestas escritas en texto plano.",
+      "start": 395.5,
+      "end": 428.16
+    },
+    {
+      "id": 28,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(7)",
+      "text": "La versión de diez minutos.",
+      "start": 429.26,
+      "end": 430.86
+    },
+    {
+      "id": 29,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "No tienes que arreglar los cuatro hoy. Tienes que leer los cuatro hoy, para que sepas cuál es el que te está costando.",
+      "start": 431.56,
+      "end": 437.63
+    },
+    {
+      "id": 30,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(2)",
+      "text": "La verificación de cuatro números, en unos diez minutos. Uno, calificación: tu promedio de estrellas en comparación con los umbrales de 4.3, 4.1 y 3.9. Dos, actualidad: la fecha de tu última reseña; si es anterior a este mes, es un problema. Tres, completitud: el número de campos en blanco en tu Google Business Profile. Cuatro, contenido respondible: elige tres preguntas que un comensal podría hacer y verifica si la respuesta existe en texto en tu propio sitio.",
+      "start": 438.43,
+      "end": 465.97
+    },
+    {
+      "id": 31,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(19)",
+      "text": "Cuatro números, diez minutos, sin intermediarios. El 83% no es invisible porque la búsqueda de inteligencia artificial es injusta con los restaurantes pequeños. Son invisibles porque nadie ha leído estos cuatro números y cerrado la brecha más cercana.",
+      "start": 466.72,
+      "end": 482.11
+    },
+    {
+      "id": 32,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(20)",
+      "text": "Puntos clave",
+      "start": 482.63,
+      "end": 483.43
+    },
+    {
+      "id": 33,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "La presencia no es lo mismo que la inclusión — una lista Google no significa que un asistente de inteligencia artificial te mencionará.",
+      "start": 483.78,
+      "end": 491.12
+    },
+    {
+      "id": 34,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Un restaurante por debajo del umbral de calificación de un asistente es filtrado antes de que se aplique el ranking.",
+      "start": 491.44,
+      "end": 497.68
+    },
+    {
+      "id": 35,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "La actualidad de las reseñas se lee como prueba de vida; una respuesta desactualizada es una señal que el modelo puede ver.",
+      "start": 498,
+      "end": 504.89
+    },
+    {
+      "id": 36,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "Los campos estructurados Google Business Profile son lo que el asistente cita — los campos en blanco se leen como silencio.",
+      "start": 505.21,
+      "end": 512.25
+    },
+    {
+      "id": 37,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(5)",
+      "text": "La respuesta que un comensal busca tiene que estar en texto en tu propio sitio, o de lo contrario se citará el texto de un competidor en su lugar.",
+      "start": 512.57,
+      "end": 520.66
+    }
+  ]
+}
