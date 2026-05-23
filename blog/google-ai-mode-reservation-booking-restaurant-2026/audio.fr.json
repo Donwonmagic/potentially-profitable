@@ -1,0 +1,179 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-22T23:40:59.405Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "ff_siwis",
+  "language": "fr",
+  "total": 263.09,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "Conseils · 25 mai, vingt vingt-six · 6 min de lecture &middot; Par Don Goldstein",
+      "start": 0,
+      "end": 4.96
+    },
+    {
+      "id": 1,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "La réservation agentic est désormais disponible dans le mode IA de Google ce printemps : l'assistant réserve la table via OpenTable, Resy, ou Tock. Si vous n'êtes pas connecté à un fournisseur pris en charge, l'assistant réserve une autre table.",
+      "start": 5.31,
+      "end": 20.78
+    },
+    {
+      "id": 2,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "En bref",
+      "start": 21.3,
+      "end": 21.84
+    },
+    {
+      "id": 3,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Le mode IA de Google peut compléter une réservation à l'intérieur de la réponse via OpenTable, Resy, ou Tock — pas de visite de site web, pas d'appel téléphonique.",
+      "start": 22.19,
+      "end": 33.83
+    },
+    {
+      "id": 4,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Si vos tables ne sont pas réservables via un fournisseur pris en charge, l'assistant réserve un restaurant dont les tables le sont.",
+      "start": 34.15,
+      "end": 41.3
+    },
+    {
+      "id": 5,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "65% des dîneurs préfèrent réserver directement sur le site web d'un restaurant, donc assurez-vous de conserver la réservation répétée une fois que l'agent a effectué la première.",
+      "start": 41.62,
+      "end": 52.88
+    },
+    {
+      "id": 6,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "Demandez à Google « une table pour six près de Dupont avec une terrasse, vendredi à 19h », et le nouveau mode IA ne liste pas seulement les options — il peut réserver une table. Via OpenTable, Resy, et Tock, l'assistant complète la réservation à l'intérieur de la réponse. Le dîneur n'a pas besoin d'ouvrir un site web et n'a pas besoin d'appeler. C'est pratique pour eux et décisif pour vous : si vos tables ne sont pas réservables via un fournisseur que l'assistant peut joindre, il réserve un restaurant dont les tables le sont.",
+      "start": 53.4,
+      "end": 78.49
+    },
+    {
+      "id": 7,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "C'est le même changement que nous avons couvert lors de la refonte du mode IA — la réponse peut maintenant agir, et non simplement décrire. Pour les réservations, « agir » signifie compléter la réservation. Il y a deux tâches ici, et la plupart des restaurants ne sont pas préparés pour aucune d'elles.",
+      "start": 79.01,
+      "end": 94.57
+    },
+    {
+      "id": 8,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Tâche numéro un : être réservable là où l'agent peut vous joindre.",
+      "start": 95.67,
+      "end": 98.97
+    },
+    {
+      "id": 9,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "L'agent ne peut terminer une réservation qu'il peut voir. Une table qui existe dans un livre papier près du host stand, ou derrière une ligne « appelez-nous », n'est pas une table que l'assistant peut offrir. Mettre votre inventaire dans OpenTable, Resy, ou Tock est ce qui vous rend éligible au flux agentic — c'est la différence entre être un candidat et être ignoré. Ces plateformes prennent une commission, et cette mathématique est réelle ; mais le coût de ne pas être réservable par l'assistant est la réservation entière, chaque fois qu'il demande.",
+      "start": 99.67,
+      "end": 124.07
+    },
+    {
+      "id": 10,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Tâche numéro deux : conserver la réservation une fois que le dîneur est à vous.",
+      "start": 125.17,
+      "end": 129.21
+    },
+    {
+      "id": 11,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "65% des dîneurs disent qu'ils préfèrent réserver directement sur le site web d'un restaurant plutôt que via un tiers. C'est le levier. L'agent peut effectuer la première réservation via une plateforme, mais un dîneur qui a eu une expérience propre revient via votre propre lien de réservation la prochaine fois — pas de commission, et la relation avec le client est vôtre à conserver. Un lien de réservation qui est enfoui, lent ou cassé sur un téléphone vous fait perdre cette réservation répétée et la redonne à la plateforme que vous payez.",
+      "start": 129.91,
+      "end": 156.3
+    },
+    {
+      "id": 12,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "Le chemin de réservation agentic dans le mode IA de Google. Étape numéro un : le dîneur demande à l'assistant une table. Étape numéro deux : l'assistant trouve des tables qu'il peut réellement réserver — seuls les restaurants connectés à un fournisseur pris en charge. Étape numéro trois : il complète la réservation via OpenTable, Resy, ou Tock, à l'intérieur de la réponse. Étape numéro quatre : les restaurants qui ne sont accessibles que par téléphone sont ignorés, car l'agent ne peut pas appeler un téléphone.",
+      "start": 157.1,
+      "end": 182.08
+    },
+    {
+      "id": 13,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Ce que vous devez vérifier cette semaine.",
+      "start": 183.18,
+      "end": 185.14
+    },
+    {
+      "id": 14,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "Deux choses, toutes deux rapides. Premièrement, confirmez que vos réservations sont en ligne sur un fournisseur pris en charge, et non juste sur une ligne téléphonique — c'est votre billet pour figurer sur la shortlist de l'agent. Deuxièmement, ouvrez votre propre site sur un téléphone et réservez une table vous-même : si le lien de réservation est lent, caché en bas de page, ou vous renvoie dans un cadre tiers peu pratique, la réservation répétitive que vous devriez posséder retourne à la plateforme. Le playbook de récupération de réservations dans Find a Table couvre les correctifs ; le contrôle de santé de la vitrine et le classeur G B P signalent les chemins défectueux avant qu'un diner ne les trouve.",
+      "start": 185.84,
+      "end": 221.47
+    },
+    {
+      "id": 15,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "La réservation agencique n'est pas une menace à combattre ; c'est un flux dans lequel il faut être. Soyez réservable pour que l'agent puisse vous attribuer la première réservation, et possédez vos propres réservations pour conserver la seconde.",
+      "start": 221.99,
+      "end": 235.79
+    },
+    {
+      "id": 16,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "Points clés",
+      "start": 236.31,
+      "end": 236.82
+    },
+    {
+      "id": 17,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "L'agent ne peut réserver qu'une table qu'il peut voir — les carnets papier et les lignes téléphoniques uniquement sont invisibles pour lui.",
+      "start": 237.17,
+      "end": 244.35
+    },
+    {
+      "id": 18,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Être sur OpenTable, Resy, ou Tock est le billet pour figurer sur la shortlist de l'agent, coûts compris.",
+      "start": 244.67,
+      "end": 251.36
+    },
+    {
+      "id": 19,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "Un lien de réservation lent ou enterré sur mobile renvoie la réservation répétitive à la plateforme.",
+      "start": 251.68,
+      "end": 257.57
+    },
+    {
+      "id": 20,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "La réservation agencique est un flux dans lequel il faut être, et non une menace à combattre.",
+      "start": 257.89,
+      "end": 263.09
+    }
+  ]
+}

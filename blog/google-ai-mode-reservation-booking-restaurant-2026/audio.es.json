@@ -1,0 +1,179 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-22T23:38:10.796Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "em_alex",
+  "language": "es",
+  "total": 270.05,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "Cómo hacer · 25 de mayo, veinte veintiséis · 6 min de lectura &middot; Por Don Goldstein",
+      "start": 0,
+      "end": 7.4
+    },
+    {
+      "id": 1,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "La reserva agente de Agentic se puso en vivo en el Modo IA de Google esta primavera: el asistente reserva la mesa a través de OpenTable, Resy o Tock. Si no estás conectado a un proveedor compatible, el asistente reserva a alguien más.",
+      "start": 7.75,
+      "end": 21.52
+    },
+    {
+      "id": 2,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "En resumen",
+      "start": 22.04,
+      "end": 22.76
+    },
+    {
+      "id": 3,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "El Modo IA de Google puede completar una reserva dentro de la respuesta a través de OpenTable, Resy o Tock — sin visita al sitio web, sin llamada telefónica.",
+      "start": 23.11,
+      "end": 32
+    },
+    {
+      "id": 4,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Si tus mesas no se pueden reservar a través de un proveedor compatible, el asistente reserva un restaurante cuyas mesas sí se pueden.",
+      "start": 32.32,
+      "end": 40.26
+    },
+    {
+      "id": 5,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "65% de los comensales prefieren reservar directamente en el sitio web del restaurante, así que asegúrate de tener la reserva de repetición una vez que el agente hace la primera.",
+      "start": 40.58,
+      "end": 51.88
+    },
+    {
+      "id": 6,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "Pide a Google \"una mesa para seis cerca de Dupont con patio, el viernes a las 7\", y el nuevo Modo IA no solo lista opciones — también puede reservar una. A través de OpenTable, Resy y Tock, el asistente completa la reserva dentro de la respuesta. El comensal nunca abre un sitio web y nunca llama. Eso es conveniente para ellos y decisivo para ti: si tus mesas no se pueden reservar a través de un proveedor con el que el asistente puede comunicarse, reserva un restaurante cuyas mesas sí se pueden.",
+      "start": 52.4,
+      "end": 81.01
+    },
+    {
+      "id": 7,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "Este es el mismo cambio que cubrimos en la reconstrucción del Modo IA — la respuesta puede actuar, no solo describir. Para las reservas, \"actuar\" significa completar la reserva. Hay dos trabajos aquí, y la mayoría de los restaurantes no están preparados para ninguno.",
+      "start": 81.53,
+      "end": 96.27
+    },
+    {
+      "id": 8,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Trabajo uno: ser reservable donde el agente pueda alcanzarte.",
+      "start": 97.37,
+      "end": 100.89
+    },
+    {
+      "id": 9,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "El agente solo puede finalizar una reserva que pueda ver. Una mesa que existe en un libro de papel junto al host stand, o detrás de una línea \"llámanos\", no es una mesa que el asistente pueda ofrecer. Obtener tu inventario en OpenTable, Resy o Tock es lo que te hace elegible para el flujo agente en absoluto — es la diferencia entre ser un candidato y ser saltado. Esas plataformas cobran una comisión, y esa matemática es real; pero el costo de no ser reservable por el asistente es la reserva completa, cada vez que pregunta.",
+      "start": 101.59,
+      "end": 129.57
+    },
+    {
+      "id": 10,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Trabajo dos: asegurarte de la reserva una vez que el comensal es tuyo.",
+      "start": 130.67,
+      "end": 134.58
+    },
+    {
+      "id": 11,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "65% de los comensales dicen que prefieren reservar directamente en el sitio web del restaurante en lugar de a través de un tercero. Esa es la palanca. El agente puede hacer la primera reserva a través de una plataforma, pero un comensal que tuvo una experiencia limpia vuelve a través de tu propio enlace de reserva la próxima vez — sin comisión, y la relación con el invitado es tuya para mantener. Un enlace de reserva que está enterrado, lento o roto en un teléfono entrega esa reserva de repetición de vuelta a la plataforma que pagas.",
+      "start": 135.28,
+      "end": 165.4
+    },
+    {
+      "id": 12,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "La ruta de reserva agente en el Modo IA de Google. Paso uno: el comensal pide al asistente una mesa. Paso dos: el asistente encuentra mesas que realmente puede reservar — solo restaurantes conectados a un proveedor compatible. Paso tres: completa la reserva a través de OpenTable, Resy o Tock, dentro de la respuesta. Paso cuatro: los restaurantes solo por teléfono son saltados, porque el agente no puede marcar un teléfono.",
+      "start": 166.2,
+      "end": 189.02
+    },
+    {
+      "id": 13,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Qué verificar esta semana.",
+      "start": 190.12,
+      "end": 191.72
+    },
+    {
+      "id": 14,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "Dos cosas, ambas rápidas. Primero, confirma que tus reservas estén activas en un proveedor compatible, no solo en una línea telefónica — eso es tu entrada en la lista corta del agente. Segundo, abre tu propio sitio en un teléfono y reserva una mesa tú mismo: si el enlace de reserva es lento, está escondido debajo de la pantalla, o te redirige a un marco de terceros incómodo, la reserva de repetición que deberías poseer vuelve a la plataforma. El libro de jugadas de recuperación de reservas en recuperación de reservas de Find a Table cubre las soluciones; la revisión de la salud de la tienda y el calificador G B P marcan los caminos rotos antes de que un comensal los encuentre.",
+      "start": 192.42,
+      "end": 229.82
+    },
+    {
+      "id": 15,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "La reserva a través de agente no es una amenaza que debas combatir; es un flujo en el que debes estar. Sé reservable para que el agente pueda hacerte el primer reserva, y posee tu propia reserva para que mantengas la segunda.",
+      "start": 230.34,
+      "end": 243.15
+    },
+    {
+      "id": 16,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "Puntos clave",
+      "start": 243.67,
+      "end": 244.47
+    },
+    {
+      "id": 17,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "El agente solo puede reservar una mesa que pueda ver — los libros de papel y las líneas solo telefónicas son invisibles para él.",
+      "start": 244.82,
+      "end": 251.91
+    },
+    {
+      "id": 18,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Estar en OpenTable, Resy, o Tock es la entrada en la lista corta del agente, con todos los costos.",
+      "start": 252.23,
+      "end": 257.57
+    },
+    {
+      "id": 19,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "Un enlace de reserva que es lento o está enterrado en móvil le devuelve la reserva de repetición a la plataforma.",
+      "start": 257.89,
+      "end": 264.19
+    },
+    {
+      "id": 20,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "La reserva a través de agente es un flujo en el que debes estar, no una amenaza que debas combatir.",
+      "start": 264.51,
+      "end": 270.05
+    }
+  ]
+}
