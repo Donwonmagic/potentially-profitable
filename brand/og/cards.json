@@ -3,6 +3,36 @@
   "_comment": "OG card manifest. Each entry produces <slug>.svg + <slug>.png in brand/og/. kind selects the template (page|article|research|tool). accent keys into PALETTE in scripts/build-og-cards.mjs (per accent rule: speed/mobile=teal, conversions/reservations=rust, local-seo=teal, margin/operations=gold, trust=ink, brand=cream-on-ink/teal-on-cream, research=rust, tools=gold, hubs=ink). glyph keys into the GLYPHS registry in build-og-cards.mjs and renders left of the eyebrow as a subject cue. focus is an optional module { type: 'type'|'funnel'|'stat'|'score-ring'|'list'|'quote'|'checks', ...data }. locale is for hreflang pairing; ES cards use slug '-es' suffix.",
   "cards": [
     {
+      "slug": "blog-dmv-math-wave",
+      "kind": "article",
+      "locale": "en",
+      "accent": "gold",
+      "glyph": "margin",
+      "eyebrow": "THE BATCH · JUNE 2026",
+      "title_1": "The DMV math",
+      "title_italic": "moved.",
+      "title_2": "Three deadlines.",
+      "dek": "Wage step, streatery loss, food spike — four pieces on the operator response.",
+      "focus": {
+        "type": "type"
+      }
+    },
+    {
+      "slug": "blog-dmv-math-wave-es",
+      "kind": "article",
+      "locale": "es",
+      "accent": "gold",
+      "glyph": "margin",
+      "eyebrow": "EL LOTE · JUNIO 2026",
+      "title_1": "Las cuentas del DMV",
+      "title_italic": "cambiaron.",
+      "title_2": "Tres fechas límite.",
+      "dek": "Escalón salarial, pérdida de streatery, salto de alimentos — cuatro piezas sobre la respuesta del operador.",
+      "focus": {
+        "type": "type"
+      }
+    },
+    {
       "slug": "blog-food-costs-2026",
       "kind": "article",
       "locale": "en",
