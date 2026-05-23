@@ -18,12 +18,12 @@
     "_doc": "Each entry: { path, title, languages, status, owner }. Path is repo-root-relative without /index.html. Languages declare which audio editions this piece SHOULD ship; the audit complains when an entry is missing on disk. Status: 'rendered' (audio exists for every declared lang), 'partial' (some langs missing or stale), 'pending' (no audio yet). Owner is who narrated (kokoro, f5)."
   },
   "blog": {
-    "may-2026-discovery-changed-under-you":                               { "languages": ["en","es","fr","it","pt","zh"], "status": "pending"  },
-    "how-to-appear-in-ai-search-restaurant-2026":                         { "languages": ["en","es","fr","it","pt","zh"], "status": "pending"  },
-    "google-ai-mode-restaurant-local-results-2026":                       { "languages": ["en","es","fr","it","pt","zh"], "status": "pending"  },
-    "google-ai-mode-reservation-booking-restaurant-2026":                 { "languages": ["en","es","fr","it","pt","zh"], "status": "pending"  },
-    "ai-local-pack-restaurant-phone-calls-2026":                          { "languages": ["en","es","fr","it","pt","zh"], "status": "pending"  },
-    "gemini-ai-referral-traffic-restaurants-2026":                        { "languages": ["en","es","fr","it","pt","zh"], "status": "pending"  },
+    "may-2026-discovery-changed-under-you":                               { "languages": ["en","es","fr","it","pt","zh"], "status": "rendered", "owner": "f5+kokoro" },
+    "how-to-appear-in-ai-search-restaurant-2026":                         { "languages": ["en","es","fr","it","pt","zh"], "status": "rendered", "owner": "f5+kokoro" },
+    "google-ai-mode-restaurant-local-results-2026":                       { "languages": ["en","es","fr","it","pt","zh"], "status": "rendered", "owner": "f5+kokoro" },
+    "google-ai-mode-reservation-booking-restaurant-2026":                 { "languages": ["en","es","fr","it","pt","zh"], "status": "rendered", "owner": "f5+kokoro" },
+    "ai-local-pack-restaurant-phone-calls-2026":                          { "languages": ["en","es","fr","it","pt","zh"], "status": "rendered", "owner": "f5+kokoro" },
+    "gemini-ai-referral-traffic-restaurants-2026":                        { "languages": ["en","es","fr","it","pt","zh"], "status": "rendered", "owner": "f5+kokoro" },
     "an-honest-doordash-math-for-independent-restaurants-2026":           { "languages": ["en","es","fr","it","pt","zh"], "status": "pending"  },
     "can-chatgpt-write-your-restaurant-website":                          { "languages": ["en","es","fr","it","pt","zh"], "status": "partial"  },
     "does-my-restaurant-need-a-website":                                  { "languages": ["en","es","fr","it","pt","zh"], "status": "partial"  },
