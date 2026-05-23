@@ -1,0 +1,195 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-23T18:58:59.040Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "pm_alex",
+  "language": "pt",
+  "total": 337.81,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "Opinião · 7 de junho, vinte e seis · 7 min de leitura &middot; Por Don Goldstein",
+      "start": 0,
+      "end": 6.66
+    },
+    {
+      "id": 1,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Em 1 de julho, o salário mínimo de DC passa a $18,40 e a base para funcionários que recebem gorjetas (tipped base) para $10,30. O número no cartaz é pequeno; o número no seu balanço patrimonial (P&L) depende do que você fizer nas semanas antes de isso acontecer.",
+      "start": 7.01,
+      "end": 23.64
+    },
+    {
+      "id": 2,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "Em resumo",
+      "start": 24.16,
+      "end": 24.97
+    },
+    {
+      "id": 3,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Em 1 de julho de vinte e seis, o salário mínimo de DC aumenta para $18,40 e a base para funcionários que recebem gorjetas para $10,30 (56% do salário mínimo completo).",
+      "start": 25.32,
+      "end": 38.19
+    },
+    {
+      "id": 4,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Initiative 82 não elimina mais o crédito por gorjeta — DC o limitou em vinte e cinco a 75% do mínimo até vinte e trinta e quatro, então o crédito permanece.",
+      "start": 38.51,
+      "end": 49.95
+    },
+    {
+      "id": 5,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Absorva o aumento com uma taxa de serviço divulgada, um aumento de 3-5% no menu ou reengenharia do menu; não fazer nada significa uma redução da margem em agosto.",
+      "start": 50.27,
+      "end": 60.95
+    },
+    {
+      "id": 6,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "Em 1 de julho de vinte e seis, o piso salarial de todos os restaurantes de DC muda. O salário mínimo padrão aumenta para $18,40 por hora, e a base para funcionários que recebem gorjetas aumenta de $10,00 para $10,30 — agora fixada em 56% do salário mínimo completo. O número no cartaz é pequeno. O número no seu prime cost depende inteiramente do que você fizer nas semanas antes de isso acontecer.",
+      "start": 61.47,
+      "end": 87.64
+    },
+    {
+      "id": 7,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "Antes de fazer as contas, uma correção — porque metade dos operadores com quem falo entendeu ao contrário.",
+      "start": 88.16,
+      "end": 94.38
+    },
+    {
+      "id": 8,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Initiative 82 não está mais eliminando o crédito por gorjeta.",
+      "start": 95.48,
+      "end": 99.71
+    },
+    {
+      "id": 9,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "Esse era o plano original quando os eleitores o aprovaram. Ele mudou. Em julho de vinte e cinco, o Conselho de DC emendou Initiative 82: em vez de eliminar o crédito por gorjeta, o salário mínimo para funcionários que recebem gorjetas agora é limitado — ele aumenta em direção a 75% do salário mínimo completo até vinte e trinta e quatro, e então se mantém. O crédito por gorjeta permanece, permanentemente. Para 1 de julho, isso significa que sua base para funcionários que recebem gorjetas vai para $10,30 e você ainda complementa para $18,40 em qualquer semana em que as gorjetas sejam insuficientes. É um aumento, não o precipício que a iniciativa original apontava.",
+      "start": 100.41,
+      "end": 139.72
+    },
+    {
+      "id": 10,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "O que muda na sua folha de pagamento de DC em 1 de julho. Um: o salário mínimo padrão aumenta de $17,95 para $18,40, para todos os empregadores. Dois: a base para funcionários que recebem gorjetas aumenta de $10,00 para $10,30, agora 56% do salário mínimo completo. Três: o crédito por gorjeta permanece — DC limitou Initiative 82 em vinte e cinco, então o crédito se mantém e aumenta em direção a 75% do mínimo até vinte e trinta e quatro, em vez de ser eliminado.",
+      "start": 140.52,
+      "end": 174.59
+    },
+    {
+      "id": 11,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "A matemática que você realmente precisa fazer.",
+      "start": 175.69,
+      "end": 178.69
+    },
+    {
+      "id": 12,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "A diferença é menor do que os headlines e maior do que você pensa, dependendo da sua mistura. Para funcionários que recebem gorjetas, a base aumenta $0,30 por hora — multiplique por suas horas semanais de funcionários que recebem gorjetas e essa é a base disso. A exposição real é a mão de obra não remunerada por gorjetas — lavador de pratos, preparo, linha — qualquer um que ganhe menos de $18,40 aumenta para esse valor, e todos os que estão logo acima são comprimidos. Faça as contas com seus próprios números em matemática de margem, em vez de adivinhar; o ponto é saber o valor semanal antes de julho, não encontrá-lo na linha de labor em agosto.",
+      "start": 179.39,
+      "end": 215.73
+    },
+    {
+      "id": 13,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Três maneiras de absorver isso — e a que dá errado.",
+      "start": 216.83,
+      "end": 219.63
+    },
+    {
+      "id": 14,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(2)",
+      "text": "Três maneiras de absorver o aumento salarial de 1º de julho, e uma que não funciona. Uma: uma taxa de serviço claramente divulgada converte o aumento em uma linha que o hóspede vê, não em uma margem que você absorve. Dois: um pequeno aumento no menu, de três a cinco por cento nos itens certos, geralmente resolve o problema sem afetar as vendas. Três: reengenharia a mistura — empurre os itens de alta margem que o menu já tem. A que não funciona: absorver o aumento silenciosamente, o que parece uma queda de um a dois pontos na margem até agosto, depois que você perdeu a janela para precificar.",
+      "start": 220.43,
+      "end": 253.78
+    },
+    {
+      "id": 15,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "A pergunta de $25 no horizonte.",
+      "start": 254.88,
+      "end": 257.45
+    },
+    {
+      "id": 16,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "Há um segundo relógio. Uma coalizão liderada por One Fair Wage apresentou uma medida de votação em dezembro de vinte e cinco para aumentar o salário mínimo de DC para $25 e eliminar entirely o crédito por gorjeta; ela passou pela revisão do assunto e agora está coletando as assinaturas necessárias para chegar à cédula de novembro. Não é lei, e pode não se qualificar — mas os operadores que constroem a musculatura de precificação para o aumento de $18,40 são os que não serão pegos de surpresa se o número maior chegar. Seu valor médio da conta, sua contagem de coberturas e um modelo de serviço divulgado são as alavancas de qualquer forma.",
+      "start": 258.15,
+      "end": 296.04
+    },
+    {
+      "id": 17,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "1º de julho é o pequeno. Trate-o como um ensaio.",
+      "start": 296.56,
+      "end": 299.67
+    },
+    {
+      "id": 18,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "Pontos principais",
+      "start": 300.19,
+      "end": 301.32
+    },
+    {
+      "id": 19,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "O salário mínimo padrão é de $18,40 e o salário base para funcionários que recebem gorjetas é de $10,30 em 1º de julho de vinte e seis — funcionários não cobertos com salário abaixo de $18,40 impulsionam a maior parte da exposição.",
+      "start": 301.67,
+      "end": 317.47
+    },
+    {
+      "id": 20,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "O crédito por gorjeta é limitado, não eliminado; a emenda de vinte e cinco reverteu a fase-out original de Initiative 82.",
+      "start": 317.79,
+      "end": 325.59
+    },
+    {
+      "id": 21,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "Uma medida de votação proposta de $25 está coletando assinaturas — não é lei e pode não se qualificar.",
+      "start": 325.91,
+      "end": 332.82
+    },
+    {
+      "id": 22,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "Precifique o aumento antes de julho; a janela se fecha no dia em que ele chega.",
+      "start": 333.14,
+      "end": 337.81
+    }
+  ]
+}
