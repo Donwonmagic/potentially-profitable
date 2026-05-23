@@ -183,6 +183,11 @@ const SECTIONS = [
   // the end of each tool's result region. Lives in core because
   // every page that loads next-tool.js renders the card.
   { start: 7313, shell: 'core',    label: 'Phase 4 — next-tool recommendation card (.mtn-next-tool)' },
+  // Phase G — About portrait frame. Real-photo overlay layered on top
+  // of the existing .portrait lettermark tile. Originally lived as a
+  // scoped <style> block in /about/index.html; promoted site-wide so
+  // the homepage About teaser can reuse the same frame.
+  { start: 7353, shell: 'core',    label: 'Phase G — About portrait frame (real photo overlay)' },
 ];
 
 // === Validation ===
