@@ -103,13 +103,21 @@ export function pageOpen(title, opts) {
   const profile = (opts && opts.state && opts.state.restaurantProfile) || {};
   const restaurantName = profile.name || (opts && opts.locale === 'es' ? 'Restaurante' : 'Restaurant');
 
+  // Home page convention: <title>Restaurant Name</title>. Sub-pages:
+  // <title>Section · Restaurant Name</title>. Caller indicates home
+  // with opts.activePage === 'home' (or passes title === name).
+  const isHome = (opts && opts.activePage === 'home') || title === restaurantName;
+  const titleStr = isHome
+    ? escHtml(restaurantName)
+    : escHtml(title) + ' · ' + escHtml(restaurantName);
+
   return [
     '<!doctype html>',
     '<html lang="', escAttr(t.htmlLang), '">',
     '<head>',
     '<meta charset="utf-8"/>',
     '<meta name="viewport" content="width=device-width,initial-scale=1"/>',
-    '<title>', escHtml(title), ' · ', escHtml(restaurantName), '</title>',
+    '<title>', titleStr, '</title>',
     '<meta name="robots" content="index,follow"/>',
     '<style>',
     '*,*:before,*:after{box-sizing:border-box}',
@@ -140,6 +148,23 @@ export function pageOpen(title, opts) {
   ].join('');
 }
 
+// Collapse runs of whitespace (including newlines) to single spaces.
+// Used in the footer where the address renders as one inline line and
+// in the Maps href where %0A would technically work but reads awkwardly.
+function inlineWhitespace(s) {
+  return String(s == null ? '' : s).replace(/\s+/g, ' ').trim();
+}
+
+// Strip everything except digits and a leading +. tel: URIs accept
+// formatting characters in some clients but reject them in others;
+// the canonical form per RFC 3966 is digits + optional + prefix.
+// Display text keeps the operator's formatting; only the href value
+// gets stripped.
+export function telHref(phone) {
+  const cleaned = String(phone == null ? '' : phone).replace(/[^\d+]/g, '');
+  return 'tel:' + cleaned;
+}
+
 export function pageClose(opts) {
   const profile = (opts && opts.state && opts.state.restaurantProfile) || {};
   const name = profile.name || '';
@@ -148,8 +173,10 @@ export function pageClose(opts) {
   const address = profile.address || '';
   const footerBits = [];
   if (name) footerBits.push(escHtml(name));
-  if (address) footerBits.push(escHtml(address));
-  if (phone) footerBits.push('<a href="tel:' + escAttr(phone) + '">' + escHtml(phone) + '</a>');
+  // Footer is a single inline line — flatten any newlines from the
+  // multi-line address into one space-separated string.
+  if (address) footerBits.push(escHtml(inlineWhitespace(address)));
+  if (phone) footerBits.push('<a href="' + escAttr(telHref(phone)) + '">' + escHtml(phone) + '</a>');
   footerBits.push('&copy; ' + year);
   return [
     '</main>',
@@ -160,3 +187,5 @@ export function pageClose(opts) {
     '</html>'
   ].join('');
 }
+
+export { inlineWhitespace };

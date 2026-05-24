@@ -7,7 +7,7 @@
  * `hours: { monday: { open, close, closed }, ... }`.
  */
 
-import { escHtml, escAttr, pageOpen, pageClose, pickStrings } from './shared.js';
+import { escHtml, escAttr, pageOpen, pageClose, pickStrings, telHref, inlineWhitespace } from './shared.js';
 
 const DAYS = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
 
@@ -46,12 +46,15 @@ export function renderContact(state, opts) {
         '<address style="font-style:normal;font-size:18px;line-height:1.5;margin:0 0 14px">',
         escHtml(address).replace(/\r?\n/g, '<br/>'),
         '</address>',
-        '<p><a href="https://www.google.com/maps?q=', escAttr(encodeURIComponent(address)), '" target="_blank" rel="noopener">', escHtml(mapsLabel), ' →</a></p>'
+        // Maps href: collapse newlines to spaces before URL-encoding so the
+        // query string looks like "8245 Georgia Ave Silver Spring MD" instead
+        // of "8245%20Georgia%20Ave%0ASilver...". Both work; one looks human.
+        '<p><a href="https://www.google.com/maps?q=', escAttr(encodeURIComponent(inlineWhitespace(address))), '" target="_blank" rel="noopener">', escHtml(mapsLabel), ' →</a></p>'
       ].join('')
     : '<p><em>' + escHtml(addressEmpty) + '</em></p>';
 
   const phoneBlock = phone
-    ? '<p style="font-size:20px;font-weight:600;margin:0"><a href="tel:' + escAttr(phone) + '">' + escHtml(phone) + '</a></p>'
+    ? '<p style="font-size:20px;font-weight:600;margin:0"><a href="' + escAttr(telHref(phone)) + '">' + escHtml(phone) + '</a></p>'
     : '<p><em>' + escHtml(phoneEmpty) + '</em></p>';
 
   const hoursBlock = (hours && Object.keys(hours).length)
