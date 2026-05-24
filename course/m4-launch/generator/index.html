@@ -163,7 +163,8 @@ main{padding-top:64px}
   data-course-module="m4-launch"
   data-course-lesson="generator"
   data-course-position="14"
-  data-course-total="16">
+  data-course-total="16"
+  data-locale="en">
 
 <a class="skip-link" href="#main">Skip to main content</a>
 
@@ -206,7 +207,7 @@ main{padding-top:64px}
         <li><strong>The download button</strong> packages everything into a ZIP. Four HTML pages, one stylesheet, a sitemap, a robots.txt, a favicon, and a README that tells you how to host it.</li>
       </ul>
 
-      <p>None of this calls a server. The ZIP is built in your browser using a small library (<a class="term-link" href="https://stuk.github.io/jszip/" rel="noopener" target="_blank">JSZip</a>) that the page loads only when you click download. Everything you saved across the bootcamp lives in <a class="term-link" href="/glossary/localstorage/">localStorage</a>; this page reads it, templates the pages, packs the ZIP, hands you the file. We never see your restaurant data.</p>
+      <p>None of this calls a server. The ZIP will be built in your browser using a small library (<a class="term-link" href="https://stuk.github.io/jszip/" rel="noopener" target="_blank">JSZip</a>) that the page lazy-loads only when you click download — wiring lands in the next release. Everything you saved across the bootcamp lives in <a class="term-link" href="/glossary/localstorage/">localStorage</a>; this page reads it, templates the pages, packs the ZIP, hands you the file. We never see your restaurant data.</p>
 
       <h2>Your readiness checklist</h2>
 
@@ -217,9 +218,9 @@ main{padding-top:64px}
           <h3 class="h" id="readiness-h">Readiness</h3>
           <span class="count" id="readinessCount" role="status" aria-live="polite">Checking…</span>
         </header>
-        <ul id="readinessList">
-          <li class="checklist--noscript">Enable JavaScript to see your readiness checklist. The list reads your saved bootcamp answers from this browser and tells you which lessons are still open.</li>
-        </ul>
+        <div id="readinessGroups">
+          <p class="checklist--noscript">Enable JavaScript to see your readiness checklist. The list reads your saved bootcamp answers from this browser and tells you which lessons are still open.</p>
+        </div>
       </section>
 
       <h2>What's in the ZIP</h2>
@@ -228,7 +229,7 @@ main{padding-top:64px}
 
       <ul class="bundle-list">
         <li><code>index.html</code><span class="desc">Home page — name, one-promise, palette, address, phone, hours, "what people say" placeholder until L13 reviews populate.</span></li>
-        <li><code>menu.html</code><span class="desc">Menu page — dishes from L8 with descriptions, prices, allergen tags.</span></li>
+        <li><code>menu.html</code><span class="desc">Menu page — dishes from L8 with names and prices.</span></li>
         <li><code>about.html</code><span class="desc">About page — customer paragraph from L4, your one-promise from L3, the human story.</span></li>
         <li><code>contact.html</code><span class="desc">Contact page — address, phone, hours, an embedded map.</span></li>
         <li><code>styles.css</code><span class="desc">One stylesheet keyed to your palette and voice. No CDN fonts, no third-party requests.</span></li>
@@ -268,7 +269,7 @@ main{padding-top:64px}
       <nav class="course-pager" aria-label="Lesson navigation">
         <a rel="prev" href="/course/m4-launch/reviews/">← Lesson 13: Reviews + first-week trust</a>
         <span class="spacer"></span>
-        <a rel="next" href="/course/m4-launch/">Next: Lesson 15 — Deploy (Module 4 overview) →</a>
+        <a rel="next" href="/course/m4-launch/">Module 4 overview (Lesson 15 ships next release) →</a>
       </nav>
       <p style="margin-top:14px;font-size:13.5px;color:var(--stone);text-align:right;max-width:680px">Lesson 15 (deploy stepper) and Lesson 16 (30-day rhythm) follow in upcoming releases.</p>
     </article>
@@ -417,20 +418,27 @@ main{padding-top:64px}
   }
 
   function render() {
-    var listEl = document.getElementById('readinessList');
+    var groupsEl = document.getElementById('readinessGroups');
     var countEl = document.getElementById('readinessCount');
-    if (!listEl || !countEl) return;
+    if (!groupsEl || !countEl) return;
 
     var okCount = 0;
     var requiredCount = REQUIRED.length;
     REQUIRED.forEach(function (k) { if (checkField(k)) okCount++; });
 
-    var html = '<li aria-hidden="true" style="padding:6px 14px 2px;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--stone);font-weight:600">' + escapeHTML(L.requiredHeading) + '</li>';
-    REQUIRED.forEach(function (k) { html += renderRow(k, false); });
-    html += '<li aria-hidden="true" style="padding:14px 14px 2px;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--stone);font-weight:600;border-top:1px dashed var(--line);margin-top:6px">' + escapeHTML(L.optionalHeading) + '</li>';
-    OPTIONAL.forEach(function (k) { html += renderRow(k, true); });
+    var requiredRows = REQUIRED.map(function (k) { return renderRow(k, false); }).join('');
+    var optionalRows = OPTIONAL.map(function (k) { return renderRow(k, true); }).join('');
 
-    listEl.innerHTML = html;
+    groupsEl.innerHTML = [
+      '<h4 id="reqHead" style="margin:6px 14px 2px;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--stone);font-weight:600;font-family:var(--font-body)">',
+        escapeHTML(L.requiredHeading),
+      '</h4>',
+      '<ul aria-labelledby="reqHead">', requiredRows, '</ul>',
+      '<h4 id="optHead" style="margin:14px 14px 2px;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--stone);font-weight:600;font-family:var(--font-body);border-top:1px dashed var(--line);padding-top:14px">',
+        escapeHTML(L.optionalHeading),
+      '</h4>',
+      '<ul aria-labelledby="optHead">', optionalRows, '</ul>'
+    ].join('');
 
     var summary = (okCount === requiredCount ? L.summaryAll : L.summaryReady)
       .replace('{ok}', String(okCount))

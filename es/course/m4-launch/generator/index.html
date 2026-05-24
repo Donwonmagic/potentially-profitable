@@ -195,7 +195,7 @@ main{padding-top:64px}
 
   <div class="course-layout">
     <article class="course-body">
-      <p class="lead">Un generador es una función. Toma <em>tus datos</em> de un lado y produce <em>un sitio web funcional</em> del otro. La barra de vista previa a la derecha ha estado corriendo esa función en cada página del curso — re-renderizando tu página de inicio mientras llenabas cada lección. Esta página es donde la misma función te deja descargar el resultado.</p>
+      <p class="lead">Un generador es una función. Toma <em>tus datos</em> de un lado y produce <em>un sitio web funcional</em> del otro. La barra lateral derecha ha estado corriendo esa función en cada página del curso — re-renderizando tu página de inicio mientras llenabas cada lección. Esta página es donde la misma función te deja descargar el resultado.</p>
 
       <h2>Lo que esta lección hace que las otras no</h2>
 
@@ -203,11 +203,11 @@ main{padding-top:64px}
 
       <ul style="padding-left:22px;font-size:17px;line-height:1.55;margin:0 0 18px">
         <li><strong>La lista de revisión</strong> abajo te dice exactamente qué está lleno y qué falta. Una fila roja significa que el generador va a usar un marcador de posición — clic para saltar a la lección que captura ese dato.</li>
-        <li><strong>La vista previa</strong> en la barra derecha muestra la página de inicio como va a salir publicada. Es el mismo render que contiene el ZIP — cambia la paleta en la L7 y esta vista previa se vuelve a pintar en tiempo real.</li>
+        <li><strong>La vista previa</strong> en la barra lateral derecha muestra la página de inicio como va a salir publicada. Es el mismo render que contiene el ZIP — cambia la paleta en la L7 y esta vista previa se vuelve a pintar en tiempo real.</li>
         <li><strong>El botón de descarga</strong> empaqueta todo en un ZIP. Cuatro páginas HTML, una hoja de estilos, un sitemap, un robots.txt, un favicon, y un README que te dice cómo alojarlo.</li>
       </ul>
 
-      <p>Nada de esto llama a un servidor. El ZIP se construye en tu navegador usando una librería pequeña (<a class="term-link" href="https://stuk.github.io/jszip/" rel="noopener" target="_blank">JSZip</a>) que la página carga solo cuando haces clic en descargar. Todo lo que guardaste durante el curso vive en <a class="term-link" href="/es/glossary/localstorage/">localStorage</a>; esta página lo lee, arma las plantillas, empaca el ZIP, te entrega el archivo. Nunca vemos los datos de tu restaurante.</p>
+      <p>Nada de esto llama a un servidor. El ZIP se construirá en tu navegador usando una librería pequeña (<a class="term-link" href="https://stuk.github.io/jszip/" rel="noopener" target="_blank">JSZip</a>) que la página carga de forma diferida solo cuando haces clic en descargar — esa conexión llega en la próxima entrega. Todo lo que guardaste durante el curso vive en <a class="term-link" href="/es/glossary/localstorage/">localStorage</a>; esta página lo lee, arma las plantillas, empaca el ZIP, te entrega el archivo. Nunca vemos los datos de tu restaurante.</p>
 
       <h2>Tu lista de revisión</h2>
 
@@ -218,9 +218,9 @@ main{padding-top:64px}
           <h3 class="h" id="readiness-h">Revisión</h3>
           <span class="count" id="readinessCount" role="status" aria-live="polite">Revisando…</span>
         </header>
-        <ul id="readinessList">
-          <li class="checklist--noscript">Activa JavaScript para ver tu lista de revisión. La lista lee tus respuestas guardadas del curso en este navegador y te dice qué lecciones siguen abiertas.</li>
-        </ul>
+        <div id="readinessGroups">
+          <p class="checklist--noscript">Activa JavaScript para ver tu lista de revisión. La lista lee tus respuestas guardadas del curso en este navegador y te dice qué lecciones siguen abiertas.</p>
+        </div>
       </section>
 
       <h2>Qué contiene el ZIP</h2>
@@ -229,7 +229,7 @@ main{padding-top:64px}
 
       <ul class="bundle-list">
         <li><code>index.html</code><span class="desc">Página de inicio — nombre, promesa de una frase, paleta, dirección, teléfono, horarios, marcador de posición de "Lo que dice la gente" hasta que las reseñas de la L13 lo llenen.</span></li>
-        <li><code>menu.html</code><span class="desc">Página del menú — platos de la L8 con descripciones, precios, etiquetas de alérgenos.</span></li>
+        <li><code>menu.html</code><span class="desc">Página del menú — platos de la L8 con nombres y precios.</span></li>
         <li><code>about.html</code><span class="desc">Página "Acerca de" — párrafo del cliente de la L4, tu promesa de una frase de la L3, la historia humana.</span></li>
         <li><code>contact.html</code><span class="desc">Página de contacto — dirección, teléfono, horarios, un mapa embebido.</span></li>
         <li><code>styles.css</code><span class="desc">Una hoja de estilos anclada a tu paleta y tu voz. Sin fuentes desde CDN, sin peticiones a terceros.</span></li>
@@ -238,7 +238,7 @@ main{padding-top:64px}
         <li><code>README.md</code><span class="desc">Instrucciones de despliegue de tres párrafos, ancladas al host que elijas en la L15.</span></li>
       </ul>
 
-      <p>Fíjate en lo que <em>no</em> está en el ZIP: nada de JavaScript. Sin fuentes cargadas desde Google. Sin scripts de analítica. Sin banderines de cookies. El sitio generado es la cosa más simple posible que resuelve el problema del operador — un sitio plano de HTML rápido, accesible, que carga en menos de 200 ms en un teléfono con dos rayitas de cobertura.</p>
+      <p>Fíjate en lo que <em>no</em> está en el ZIP: nada de JavaScript. Sin fuentes cargadas desde Google. Sin scripts de analítica. Sin banners de cookies. El sitio generado es la cosa más simple posible que resuelve el problema del operador — un sitio plano de HTML rápido, accesible, que carga en menos de 200 ms en un teléfono con dos rayitas de cobertura.</p>
 
       <div class="course-callout">
         <p><strong>¿Por qué nada de JavaScript?</strong> Porque tu trabajo de cara al cliente — los comensales quieren horarios, dirección, menú, teléfono — no lo necesita. Cada kilobyte de JS es un kilobyte que un comensal descarga en una conexión mala, que un lector de pantalla tiene que esperar, que una revisión de seguridad tiene que auditar. El HTML plano carga más rápido, se mantiene accesible y nunca se rompe porque un CDN se cayó.</p>
@@ -248,7 +248,7 @@ main{padding-top:64px}
 
       <section class="download" aria-labelledby="download-h">
         <h3 id="download-h">Genera el ZIP</h3>
-        <p class="why">El botón de abajo empaqueta tus respuestas actuales en <code>tu-restaurante.zip</code>. Vuelve a ejecutarlo cuando cambies algo — vuelve a ejecutarse en cerca de un segundo.</p>
+        <p class="why">El botón de abajo empaqueta tus respuestas actuales en <code>tu-restaurante.zip</code>. Vuelve a ejecutarlo cuando cambies algo — tarda cerca de un segundo.</p>
         <button class="download-btn" id="downloadBtn" type="button" disabled aria-describedby="downloadPending">
           <span aria-hidden="true">↓</span>
           <span>Descarga tu sitio (ZIP)</span>
@@ -258,7 +258,7 @@ main{padding-top:64px}
 
       <h2>Qué cambia esto más adelante</h2>
 
-      <p>La Lección 15 (despliegue) toma el ZIP que descargas aquí y te lleva por tres hosts gratuitos — Cloudflare Pages, Netlify o Vercel — para tener un URL real apuntando a tu dominio real en menos de treinta minutos. La Lección 16 (el ritmo de 30 días) te da las cuatro tareas recurrentes que evitan que el sitio desplegado se ponga viejo — incluyendo "vuelve a generar cuando agregues un plato" para que la descarga de la L14 se mantenga al día.</p>
+      <p>La Lección 15 (despliegue) toma el ZIP que descargas aquí y te lleva por tres hosts gratuitos — Cloudflare Pages, Netlify o Vercel — para tener una URL real apuntando a tu dominio real en menos de treinta minutos. La Lección 16 (el ritmo de 30 días) te da las cuatro tareas recurrentes que evitan que el sitio desplegado se ponga viejo — incluyendo "vuelve a generar cuando agregues un plato" para que la descarga de la L14 se mantenga al día.</p>
 
       <section class="course-takeaways" aria-labelledby="takeaways-h">
         <h2 id="takeaways-h">Tienes un sitio desplegable, ahora mismo, en este navegador.</h2>
@@ -269,7 +269,7 @@ main{padding-top:64px}
       <nav class="course-pager" aria-label="Navegación de lecciones">
         <a rel="prev" href="/es/course/m4-launch/reviews/">← Lección 13: Reseñas y confianza de la primera semana</a>
         <span class="spacer"></span>
-        <a rel="next" href="/es/course/m4-launch/">Siguiente: Lección 15 — Despliegue (vista general del Módulo 4) →</a>
+        <a rel="next" href="/es/course/m4-launch/">Vista general del Módulo 4 (la Lección 15 llega en la próxima entrega) →</a>
       </nav>
       <p style="margin-top:14px;font-size:13.5px;color:var(--stone);text-align:right;max-width:680px">La Lección 15 (paso a paso de despliegue) y la Lección 16 (ritmo de 30 días) llegan en próximas entregas.</p>
     </article>
@@ -414,20 +414,27 @@ main{padding-top:64px}
   }
 
   function render() {
-    var listEl = document.getElementById('readinessList');
+    var groupsEl = document.getElementById('readinessGroups');
     var countEl = document.getElementById('readinessCount');
-    if (!listEl || !countEl) return;
+    if (!groupsEl || !countEl) return;
 
     var okCount = 0;
     var requiredCount = REQUIRED.length;
     REQUIRED.forEach(function (k) { if (checkField(k)) okCount++; });
 
-    var html = '<li aria-hidden="true" style="padding:6px 14px 2px;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--stone);font-weight:600">' + escapeHTML(L.requiredHeading) + '</li>';
-    REQUIRED.forEach(function (k) { html += renderRow(k, false); });
-    html += '<li aria-hidden="true" style="padding:14px 14px 2px;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--stone);font-weight:600;border-top:1px dashed var(--line);margin-top:6px">' + escapeHTML(L.optionalHeading) + '</li>';
-    OPTIONAL.forEach(function (k) { html += renderRow(k, true); });
+    var requiredRows = REQUIRED.map(function (k) { return renderRow(k, false); }).join('');
+    var optionalRows = OPTIONAL.map(function (k) { return renderRow(k, true); }).join('');
 
-    listEl.innerHTML = html;
+    groupsEl.innerHTML = [
+      '<h4 id="reqHead" style="margin:6px 14px 2px;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--stone);font-weight:600;font-family:var(--font-body)">',
+        escapeHTML(L.requiredHeading),
+      '</h4>',
+      '<ul aria-labelledby="reqHead">', requiredRows, '</ul>',
+      '<h4 id="optHead" style="margin:14px 14px 2px;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--stone);font-weight:600;font-family:var(--font-body);border-top:1px dashed var(--line);padding-top:14px">',
+        escapeHTML(L.optionalHeading),
+      '</h4>',
+      '<ul aria-labelledby="optHead">', optionalRows, '</ul>'
+    ].join('');
 
     var summary = (okCount === requiredCount ? L.summaryAll : L.summaryReady)
       .replace('{ok}', String(okCount))
