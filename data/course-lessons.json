@@ -220,13 +220,14 @@
       "module": "m3-assemble",
       "track": "fresh",
       "position": 11,
-      "estimatedMinutes": 30,
+      "estimatedMinutes": 25,
       "path": "/course/m3-assemble/fresh/gbp/",
       "title": {
         "en": "Google Business Profile from zero",
         "es": "Perfil de Google Business desde cero"
       },
-      "widgets": ["gbp-card-preview"]
+      "widgets": ["text-input", "live-preview-frame"],
+      "futureWidgets": ["gbp-card-preview"]
     },
     {
       "id": "gbp-rebuild",
@@ -237,9 +238,10 @@
       "path": "/course/m3-assemble/rebuild/gbp/",
       "title": {
         "en": "Google Business Profile repair",
-        "es": "Reparación del perfil de Google Business"
+        "es": "Reparación del Perfil de Google Business"
       },
-      "widgets": ["drag-rank", "gbp-card-preview"]
+      "widgets": ["drag-rank", "text-input", "live-preview-frame"],
+      "futureWidgets": ["gbp-card-preview"]
     },
     {
       "id": "local-seo",
