@@ -78,6 +78,8 @@ const SECTIONS = [
   { key: 'es-blog',     root: path.join(repoRoot, 'es', 'blog') },
   { key: 'research',    root: path.join(repoRoot, 'learn', 'research') },
   { key: 'checklists',  root: path.join(repoRoot, 'learn', 'checklists') },
+  { key: 'course',      root: path.join(repoRoot, 'course') },
+  { key: 'es-course',   root: path.join(repoRoot, 'es', 'course') },
 ];
 
 /**
