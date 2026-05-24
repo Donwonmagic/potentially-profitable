@@ -1,0 +1,40 @@
+    <form id="sheet-fields" class="sheet-form" autocomplete="off" novalidate>
+      <fieldset>
+        <legend>Header</legend>
+        <label><span><span>Restaurant name</span></span><input type="text" name="name" data-context-key="restaurantProfile.name" /></label>
+        <label><span><span>Written by</span></span><input type="text" name="author" /></label>
+        <label><span><span>Date</span></span><input type="date" name="written_on" /></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Your customer in one paragraph</legend>
+        <label>
+          <span><span>Name them, place them, name what they want — one paragraph</span></span>
+          <textarea name="paragraph" data-context-key="customerParagraph" rows="6" placeholder="e.g., Maria comes in Thursday nights with her two kids. She lives within a mile, walks on weekends. She cares about real eggs, real coffee, a place where the kids are welcome without being indulged. She has the Yelp app open on the walk over."></textarea>
+        </label>
+        <span class="field-help">One person, not 'everyone.' First name + neighborhood + what they're looking for + when they walk in. The point is operational clarity for every staff decision that follows.</span>
+      </fieldset>
+
+      <fieldset>
+        <legend>The five-question vet</legend>
+        <span class="field-help">Read the paragraph back and answer each question. If any answer is vague, rewrite.</span>
+        <label><span><span>Q: What time of day do they walk in?</span></span><input type="text" name="q_time" /></label>
+        <label><span><span>Q: What's the price ceiling they expect?</span></span><input type="text" name="q_price" /></label>
+        <label><span><span>Q: What's the one thing they'd be disappointed to not find?</span></span><input type="text" name="q_must_have" /></label>
+        <label><span><span>Q: Where did they hear about you (best guess)?</span></span><input type="text" name="q_discovery" /></label>
+        <label><span><span>Q: What would make them not come back?</span></span><input type="text" name="q_break" /></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Distribution</legend>
+        <label><input type="checkbox" name="dist_host" /><span><span>Posted above the host stand</span></span></label>
+        <label><input type="checkbox" name="dist_manager" /><span><span>In the manager's binder</span></span></label>
+        <label><input type="checkbox" name="dist_orientation" /><span><span>Read aloud at new-hire orientation</span></span></label>
+      </fieldset>
+    </form>
+
+    <script>
+      (function () {
+        if (window.SheetPage) window.SheetPage.register({ slug: 'course-customer' });
+      })();
+    </script>
