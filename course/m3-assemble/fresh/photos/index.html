@@ -164,6 +164,35 @@ main{padding-top:64px}
 
 .workshop-error{padding:14px;color:var(--rust);font-size:14.5px;background:var(--cream-2);border-radius:6px}
 
+/* shot-list-grid widget styles */
+.slg{display:block}
+.slg-label{font-family:var(--font-body);font-size:13px;letter-spacing:.06em;text-transform:uppercase;font-weight:700;color:var(--stone);margin:0 0 12px}
+.slg-section-head{font-family:var(--font-body);font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--stone);font-weight:600;margin:18px 0 8px}
+.slg-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin:0}
+.slg-card{display:flex;flex-direction:column;align-items:stretch;padding:0;background:var(--cream);border:2px solid var(--line);border-radius:8px;overflow:hidden;cursor:pointer;font-family:inherit;text-align:left;color:inherit;transition:border-color .12s ease,background .12s ease}
+.slg-card:hover{border-color:var(--teal)}
+.slg-card:focus-visible{outline:2px solid var(--teal);outline-offset:2px;border-color:var(--teal)}
+.slg-card--selected{border-color:var(--teal);background:var(--cream-2)}
+.slg-frame{display:block;width:100%;height:auto;aspect-ratio:100/70;background:transparent;border-bottom:1px solid var(--line)}
+.slg-card-body{padding:8px 10px 10px;display:flex;flex-direction:column;gap:4px;flex:1}
+.slg-card-label{font-size:13px;font-weight:600;line-height:1.25;color:var(--ink)}
+.slg-card-desc{font-size:12px;color:var(--ink-soft);line-height:1.35;flex:1}
+.slg-card-state{font-size:11px;letter-spacing:.04em;text-transform:uppercase;font-weight:600;color:var(--teal-dark);margin-top:4px}
+.slg-card-state--idle{color:var(--stone)}
+.slg-badge{display:inline-block;padding:2px 8px;background:var(--teal);color:var(--cream);border-radius:99px;font-size:10px;letter-spacing:.04em}
+.slg-badge--home{background:var(--status-good)}
+.slg-selected{margin-top:18px;padding:14px;border:1px dashed var(--line);background:var(--cream-2);border-radius:8px}
+.slg-sel-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:5px}
+.slg-sel-row{display:flex;align-items:center;gap:10px;padding:6px 10px;background:var(--cream);border:1px solid var(--line);border-radius:6px;font-size:14px}
+.slg-sel-rank{font-family:var(--font-display);font-size:18px;color:var(--teal);width:22px;text-align:center;font-weight:300}
+.slg-sel-label{flex:1;color:var(--ink)}
+.slg-sel-badge{font-size:10px;padding:2px 6px;background:var(--status-good);color:var(--cream);border-radius:99px;letter-spacing:.04em;text-transform:uppercase;font-weight:600}
+.slg-sel-remove{width:24px;height:24px;padding:0;border:1px solid var(--line);background:var(--cream);color:var(--ink-soft);border-radius:50%;cursor:pointer;line-height:1;font-size:14px}
+.slg-sel-remove:hover{border-color:var(--rust);color:var(--rust)}
+.slg-sel-remove:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+.slg-sel-empty{padding:10px 12px;font-size:13.5px;color:var(--stone);font-style:italic;list-style:none;border:1px dashed var(--line);background:var(--cream);border-radius:6px}
+.slg-help{margin:8px 0 0;font-size:12px;color:var(--stone)}
+
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -384,27 +413,9 @@ main{padding-top:64px}
 
       <p>Restaurant photos cluster into five families — food, room, people, exterior, ingredient. Within those families, eight specific shots cover what a home page needs. Below is the order most operators rank them in; rerank them for <em>your</em> restaurant. A counter-service spot leads with food, a wine bar leads with the room, a family spot leads with people. Your top three become the home-page set; the other five live deeper on the site or wait for a second shoot.</p>
 
-      <section class="course-widget"
-               data-widget="drag-rank"
-               data-context-key="shotPriority"
-               data-instruction="Rank in order of importance for your restaurant. Top three go on the home page; the rest live deeper or wait."
-               data-instruction-es="Ordena por importancia para tu restaurante. Los tres primeros van en la página de inicio; el resto va más adentro o espera."
-               data-severity="false">
-        <script type="application/json" class="drag-rank-items">
-[
-  {"id":"hero-dish","label":"The hero dish, lit from above","label-es":"El plato emblemático, iluminado desde arriba","desc":"Your top menu shortlist dish, on the plate, in the light it actually has at dinner.","desc-es":"El plato principal de tu lista corta del menú, en el plato, con la luz que de verdad tienes en la cena."},
-  {"id":"room-wide","label":"The room, wide and warm","label-es":"El lugar, abierto y cálido","desc":"Front of house at dinner service — chairs full or not, the feel comes through.","desc-es":"El comedor en servicio de cena — sillas llenas o no, la sensación se transmite."},
-  {"id":"hands-cooking","label":"Hands at work in the kitchen","label-es":"Manos trabajando en la cocina","desc":"Hands shaping pasta or tortillas, slicing, plating. Process shots beat staged chef portraits.","desc-es":"Manos haciendo pasta o tortillas, cortando, emplatando. Las fotos de proceso le ganan a las fotos posadas del chef."},
-  {"id":"exterior-evening","label":"The exterior at evening","label-es":"El exterior al anochecer","desc":"How your facade looks from the street when the lights are on. Helps diners find you.","desc-es":"Cómo se ve tu fachada desde la calle con las luces prendidas. Ayuda a los comensales a encontrarte."},
-  {"id":"close-up-texture","label":"A close-up of a single texture","label-es":"Un acercamiento a una sola textura","desc":"Tortillas blistering on a comal; cheese pulling from a wood-fired slice; broth steaming. Sensory.","desc-es":"Tortillas levantándose en un comal; queso jalándose de una rebanada al horno; el caldo humeando. Sensorial."},
-  {"id":"two-people","label":"Two diners sharing a moment","label-es":"Dos comensales compartiendo un momento","desc":"The right kind of staged — real customers if possible, real moments. Avoids the model-shot vibe.","desc-es":"El tipo correcto de posado — clientes reales si es posible, momentos reales. Evita la onda de fotos con modelos."},
-  {"id":"signature-ingredient","label":"A signature ingredient, raw","label-es":"Un ingrediente emblemático, crudo","desc":"The bag of beans, the fish on ice, the morning produce delivery. Provenance shot.","desc-es":"El saco de frijoles, el pescado sobre hielo, la entrega de productos de la mañana. Foto de procedencia."},
-  {"id":"chef-portrait","label":"The chef, looking at the camera","label-es":"El chef, mirando a la cámara","desc":"Less essential than most people think; only matters if the chef is the brand. Skip if you're not.","desc-es":"Menos esencial de lo que la mayoría piensa; solo importa si el chef es la marca. Sáltalo si no lo es."}
-]
-        </script>
-      </section>
+      <section class="course-widget" data-widget="shot-list-grid"></section>
 
-      <p>Your top three become the home-page set. Glance at your ranking — if you put "chef portrait" in the top three and you're a counter spot, that's a signal to rethink. The chef portrait works when the chef <em>is</em> the brand; it's filler for everyone else.</p>
+      <p>Click cards to add them to your shot list. The first three you pick become the home-page set — pay attention to selection order. If you picked a cuisine in Lesson 4, you'll see two extra cards specific to that cuisine below the universal eight. If you put "chef portrait" in the top three and you're a counter spot, that's a signal to rethink. The chef portrait works when the chef <em>is</em> the brand; it's filler for everyone else.</p>
 
       <h2>What "good" looks like vs what "stock-photo bad" looks like</h2>
 
