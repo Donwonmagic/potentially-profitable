@@ -44,7 +44,7 @@ export function renderContact(state, opts) {
   const addressBlock = address
     ? [
         '<address style="font-style:normal;font-size:18px;line-height:1.5;margin:0 0 14px">',
-        escHtml(address),
+        escHtml(address).replace(/\r?\n/g, '<br/>'),
         '</address>',
         '<p><a href="https://www.google.com/maps?q=', escAttr(encodeURIComponent(address)), '" target="_blank" rel="noopener">', escHtml(mapsLabel), ' →</a></p>'
       ].join('')

@@ -11,10 +11,13 @@
 
 import { escHtml, pageOpen, pageClose, pickStrings } from './shared.js';
 
-const PRICE_RE = /^\$?\s*\d{1,4}(?:\.\d{1,2})?$/;
+const PRICE_RE = /^\$?\d{1,4}(?:\.\d{1,2})?$/;
 
 function safePrice(raw) {
-  const s = String(raw == null ? '' : raw).trim();
+  // Strip every whitespace before testing so "$ 12" and "12 .50" don't
+  // squeak through with cosmetic whitespace; only digits + optional
+  // leading $ + optional .NN remain.
+  const s = String(raw == null ? '' : raw).replace(/\s+/g, '');
   if (!s) return '';
   if (PRICE_RE.test(s)) return s.startsWith('$') ? s : '$' + s;
   return '';

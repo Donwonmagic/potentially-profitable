@@ -8,6 +8,16 @@
 
 import { pickStrings } from './shared.js';
 
+// Strip the small set of markdown-active characters that would break
+// the README when interpolated into headers or inline contexts:
+// backticks (code spans), brackets (links/images), pipes (tables),
+// asterisks/underscores (emphasis), and angle brackets (autolinks +
+// HTML passthrough). Operators won't type these in their restaurant
+// name, but a stray copy/paste shouldn't corrupt the README.
+function mdSafe(s) {
+  return String(s == null ? '' : s).replace(/[`*_\[\]<>|#]/g, '');
+}
+
 const HOSTS = {
   cloudflare: {
     en: {
@@ -89,7 +99,7 @@ function renderHostBlock(key, locale) {
 export function renderReadme(state, opts) {
   const { locale } = pickStrings(opts);
   const profile = (state && state.restaurantProfile) || {};
-  const name = profile.name || (locale === 'es' ? 'tu restaurante' : 'your restaurant');
+  const name = mdSafe(profile.name) || (locale === 'es' ? 'tu restaurante' : 'your restaurant');
   const deployTarget = (state && state.deployTarget) || '';
 
   const hostsToShow = (deployTarget && HOSTS[deployTarget]) ? [deployTarget] : ['cloudflare', 'netlify', 'vercel'];

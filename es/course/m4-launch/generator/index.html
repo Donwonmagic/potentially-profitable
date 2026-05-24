@@ -325,7 +325,7 @@ main{padding-top:64px}
       <ul style="padding-left:22px;font-size:17px;line-height:1.55;margin:0 0 18px">
         <li><strong>La lista de revisión</strong> abajo te dice exactamente qué está lleno y qué falta. Una fila roja significa que el generador va a usar un marcador de posición — clic para saltar a la lección que captura ese dato.</li>
         <li><strong>La vista previa</strong> en la barra lateral derecha muestra la página de inicio como va a salir publicada. Es el mismo render que contiene el ZIP — cambia la paleta en la L7 y esta vista previa se vuelve a pintar en tiempo real.</li>
-        <li><strong>El botón de descarga</strong> empaqueta todo en un ZIP. Cuatro páginas HTML, una hoja de estilos, un sitemap, un robots.txt, un favicon, y un README que te dice cómo alojarlo.</li>
+        <li><strong>El botón de descarga</strong> empaqueta todo en un ZIP. Cuatro páginas HTML (cada una con CSS en línea), un sitemap, un robots.txt, y un README que te dice cómo alojarlo.</li>
       </ul>
 
       <p>Nada de esto llama a un servidor. El ZIP se construirá en tu navegador usando una librería pequeña (<a class="term-link" href="https://stuk.github.io/jszip/" rel="noopener" target="_blank">JSZip</a>) que la página carga de forma diferida solo cuando haces clic en descargar — esa conexión llega en la próxima entrega. Todo lo que guardaste durante el curso vive en <a class="term-link" href="/es/glossary/localstorage/">localStorage</a>; esta página lo lee, arma las plantillas, empaca el ZIP, te entrega el archivo. Nunca vemos los datos de tu restaurante.</p>

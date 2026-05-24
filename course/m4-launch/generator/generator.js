@@ -20,7 +20,6 @@
  * orchestrator is loaded on click, not on page load.
  */
 
-import { renderHome as renderHomeRail } from './templates/page-home.template.js';
 import { renderHomeForBundle } from './templates/page-home-generator.template.js';
 import { renderMenu } from './templates/page-menu.template.js';
 import { renderAbout } from './templates/page-about.template.js';
@@ -140,11 +139,18 @@ export async function downloadBundle(opts) {
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  // Some Android/iOS WebViews and download managers fetch the blob URL
+  // asynchronously up to a few seconds after the click. 5s buys plenty
+  // of margin without holding memory meaningfully longer.
+  setTimeout(() => URL.revokeObjectURL(url), 5000);
 
   if (typeof window !== 'undefined' && typeof window.plausible === 'function') {
     try {
-      window.plausible('Course Generator Download', { props: { locale: o.locale, slug: slugify(name) } });
+      // Locale only — never operator-identifying data. The slug derives
+      // from the restaurant name and would create one Plausible row per
+      // restaurant (high-cardinality + identifying), which would
+      // contradict the page's no-data-leaves-your-browser promise.
+      window.plausible('Course Generator Download', { props: { locale: o.locale } });
     } catch (e) { /* analytics is fire-and-forget */ }
   }
 

@@ -10,6 +10,17 @@
 
 import { escHtml, pageOpen, pageClose, pickStrings } from './shared.js';
 
+// Split on blank-line boundaries (one or more empty lines) and emit
+// one <p> per chunk. Operators who paste multi-paragraph copy get
+// real paragraphs instead of a single run-on block.
+function renderParagraphs(text) {
+  const chunks = String(text || '').split(/\r?\n\s*\r?\n/).map((c) => c.trim()).filter(Boolean);
+  if (!chunks.length) return '';
+  return chunks
+    .map((c) => '<p>' + escHtml(c).replace(/\r?\n/g, '<br/>') + '</p>')
+    .join('');
+}
+
 export function renderAbout(state, opts) {
   const { locale, t } = pickStrings(opts);
   const profile = (state && state.restaurantProfile) || {};
@@ -28,15 +39,18 @@ export function renderAbout(state, opts) {
     ? (locale === 'es' ? 'Acerca de ' + escHtml(name) : 'About ' + escHtml(name))
     : escHtml(t.aboutHeading);
 
+  const promiseHtml = promise
+    ? '<p style="font-size:19px;line-height:1.5">' + escHtml(promise) + '</p>'
+    : '<p style="font-size:19px;line-height:1.5"><em>' + escHtml(promiseEmpty) + '</em></p>';
+  const customerHtml = customer
+    ? renderParagraphs(customer)
+    : '<p><em>' + escHtml(customerEmpty) + '</em></p>';
+
   return [
     pageOpen(t.aboutHeading, { ...opts, state, activePage: 'about' }),
     '<h1>', aboutLead, '</h1>',
-    '<p style="font-size:19px;line-height:1.5">',
-      promise ? escHtml(promise) : '<em>' + escHtml(promiseEmpty) + '</em>',
-    '</p>',
-    '<p>',
-      customer ? escHtml(customer) : '<em>' + escHtml(customerEmpty) + '</em>',
-    '</p>',
+    promiseHtml,
+    customerHtml,
     pageClose({ ...opts, state })
   ].join('');
 }
