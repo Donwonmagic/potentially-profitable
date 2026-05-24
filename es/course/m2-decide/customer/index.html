@@ -146,6 +146,42 @@ main{padding-top:64px}
 
 .workshop-error{padding:14px;color:var(--rust);font-size:14.5px;background:var(--cream-2);border-radius:6px}
 
+/* persona-card-builder widget styles */
+.pcb{display:block}
+.pcb-grid{display:grid;gap:18px}
+@media (min-width:720px){.pcb-grid{grid-template-columns:1fr 240px;align-items:start}}
+.pcb-section-label{font-family:var(--font-body);font-size:13px;letter-spacing:.06em;text-transform:uppercase;font-weight:700;color:var(--stone);margin:0 0 12px}
+.pcb-form{display:grid;gap:14px}
+.pcb-row{display:grid;gap:12px;grid-template-columns:2fr 1fr}
+.pcb-field{display:flex;flex-direction:column;gap:5px}
+.pcb-lbl{font-size:13px;color:var(--ink-soft);font-weight:600}
+.pcb-input,.pcb-textarea{padding:9px 11px;font-size:15px;font-family:inherit;border:1px solid var(--line);border-radius:6px;background:var(--cream);color:var(--ink);width:100%}
+.pcb-input:focus,.pcb-textarea:focus{outline:2px solid var(--teal);outline-offset:1px;border-color:var(--teal);background:#fff}
+.pcb-textarea{resize:vertical;min-height:120px;line-height:1.5}
+.pcb-help{margin:4px 0 0;font-size:12.5px;color:var(--stone);line-height:1.4}
+.pcb-counter{font-variant-numeric:tabular-nums}
+.pcb-traits{display:flex;flex-wrap:wrap;gap:6px;min-height:14px;margin:0 0 6px}
+.pcb-chip{display:inline-flex;align-items:center;gap:6px;padding:6px 10px 6px 12px;background:var(--cream);border:1px solid var(--line);border-radius:99px;font-size:13px;color:var(--ink);cursor:pointer;font-family:inherit;line-height:1.2;transition:border-color .12s ease,color .12s ease}
+.pcb-chip:hover{border-color:var(--rust);color:var(--rust)}
+.pcb-chip:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+.pcb-chip-x{font-size:15px;line-height:1;opacity:.7}
+.pcb-trait-add{display:flex;gap:6px}
+.pcb-trait-add .pcb-input{flex:1}
+.pcb-add-btn{padding:0 14px;font-family:inherit;font-size:13px;font-weight:600;border:1px dashed var(--line);background:var(--cream);color:var(--ink);border-radius:6px;cursor:pointer;white-space:nowrap}
+.pcb-add-btn:hover{border-color:var(--teal);color:var(--teal-dark)}
+.pcb-add-btn:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+.pcb-card{background:var(--cream);border:1px solid var(--line);border-radius:10px;padding:18px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;position:sticky;top:20px}
+.pcb-avatar{width:64px;height:64px;border-radius:50%;background:var(--teal);color:var(--cream);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:24px;font-weight:500;letter-spacing:.02em}
+.pcb-card[data-accent] .pcb-avatar{background:attr(data-accent)}
+.pcb-card-body{width:100%}
+.pcb-card-eyebrow{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);margin:0 0 6px;font-weight:600}
+.pcb-card-name{font-family:var(--font-display);font-size:20px;line-height:1.1;color:var(--ink);margin:0 0 4px;min-height:1.1em}
+.pcb-card-empty{color:var(--stone);font-style:italic;font-size:14px;font-weight:400}
+.pcb-card-meta{margin:0 0 10px;font-size:13px;color:var(--ink-soft);min-height:1em}
+.pcb-card-meta:empty{display:none}
+.pcb-card-traits{list-style:none;padding:0;margin:8px 0 0;display:flex;flex-wrap:wrap;gap:5px;justify-content:center}
+.pcb-card-trait{font-size:11.5px;padding:3px 8px;background:var(--cream-2);border:1px solid var(--line);border-radius:99px;color:var(--ink-soft);line-height:1.3}
+
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -319,17 +355,7 @@ main{padding-top:64px}
 
       <p>Si no la puedes ver, no estás listo para diseñar para ella. Si sí, vas a ver la respuesta a la mayoría de tus preguntas de diseño en su cara.</p>
 
-      <section class="course-widget"
-               data-widget="text-input"
-               data-context-key="customerParagraph"
-               data-label="El cliente en un párrafo"
-               data-label-es="El cliente en un párrafo"
-               data-placeholder="Ana, 34, maestra de primaria, vive a diez cuadras, dos hijos en la escuela, viene los viernes cuando su esposo está con los niños, siempre pide lo mismo, comparte una botella con su hermana."
-               data-placeholder-es="Ana, 34, maestra de primaria, vive a diez cuadras, dos hijos en la escuela, viene los viernes cuando su esposo está con los niños, siempre pide lo mismo, comparte una botella con su hermana."
-               data-help="3 a 6 oraciones. Lo específico le gana a lo abstracto. Usa un nombre real (puedes cambiarlo después) — te obliga a pensar en una persona, no en un mercado."
-               data-help-es="3 a 6 oraciones. Lo específico le gana a lo abstracto. Usa un nombre real (puedes cambiarlo después) — te obliga a pensar en una persona, no en un mercado."
-               data-max="600"
-               data-multiline="true"></section>
+      <section class="course-widget" data-widget="persona-card-builder"></section>
 
       <p>Ahora lee lo que escribiste. ¿Hay oraciones que podrías escribir sobre cualquier restaurante? Bórralas. ¿Hay oraciones que solo describen al cliente habitual de tu restaurante? Quédatelas. El párrafo debería hacerte asentir con la cabeza al leerlo; si se siente genérico, escribe a una persona distinta que de verdad conozcas.</p>
 

@@ -48,6 +48,7 @@
     'fontPair',
     'onePromise',
     'customerParagraph',
+    'customerCard',
     'dishes',
     'hours',
     'localKeywords',

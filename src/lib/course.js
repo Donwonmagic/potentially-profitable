@@ -198,6 +198,7 @@ const CONFIG_ALLOWED_KEYS = new Set([
   'fontPair',           // { id, heading, body } from font-pair-picker
   'onePromise',
   'customerParagraph',
+  'customerCard',       // { name, age, role, traits[] } from persona-card-builder
   'dishes',             // [{ name, price }]
   'hours',              // { monday: {...}, ..., sunday: {...} }
   'localKeywords',
