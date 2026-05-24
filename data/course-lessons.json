@@ -295,7 +295,8 @@
         "en": "Deploy to Cloudflare, Netlify, or Vercel",
         "es": "Despliega en Cloudflare, Netlify o Vercel"
       },
-      "widgets": ["deploy-stepper"]
+      "widgets": ["tab-flip", "live-preview-frame"],
+      "futureWidgets": ["deploy-stepper"]
     },
     {
       "id": "rhythm",
@@ -308,7 +309,8 @@
         "en": "The 30-day rhythm",
         "es": "El ritmo de 30 días"
       },
-      "widgets": ["rhythm-calendar"]
+      "widgets": ["text-input", "live-preview-frame"],
+      "futureWidgets": ["rhythm-calendar"]
     }
   ],
   "widgets": [
