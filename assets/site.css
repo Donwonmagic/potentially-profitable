@@ -7283,7 +7283,7 @@ table[data-viz-sortable] th[aria-sort="descending"]::after{content:"\2193";color
   width:36px;height:36px;
   background:transparent;border:1px solid var(--line-dark);
   border-radius:999px;
-  color:var(--ink-soft);cursor:pointer;
+  color:var(--ink);cursor:pointer;
   transition:background var(--t-fast) var(--ease),
     border-color var(--t-fast) var(--ease),
     color var(--t-fast) var(--ease);
