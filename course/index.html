@@ -798,11 +798,31 @@ main{padding-top:64px}
     var local = readLocalProgress();
     if (local) renderFromProgress(local);
 
-    // Then race the server. If server.updatedAt > local.updatedAt the
-    // server record overlays (operator synced from another device).
-    // Anonymous callers get 401; skip silently.
+    // Then race the server. Reconcile both directions:
+    //   - server newer → overlay server onto local (operator synced
+    //     from another device since this session started).
+    //   - local newer → push local up to server (freshly-signed-in
+    //     operator who built progress anonymously needs that progress
+    //     to land on the server record). 401 = anonymous; silent skip.
+    function pushLocalToServer(localState) {
+      if (!localState || !Array.isArray(localState.completed)) return;
+      try {
+        fetch('/api/course/progress', {
+          method: 'POST',
+          credentials: 'same-origin',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({
+            track: localState.track || null,
+            completed: localState.completed,
+            startedAt: localState.startedAt || null
+          })
+        }).catch(function () { /* fire-and-forget */ });
+      } catch (_) {}
+    }
+
     try {
       fetch('/api/course/progress', { credentials: 'same-origin' }).then(function (r) {
+        if (r.status === 401) return null;  // anonymous — skip reconcile
         if (!r.ok) return null;
         return r.json();
       }).then(function (data) {
@@ -811,9 +831,10 @@ main{padding-top:64px}
         var serverUpdatedAt = data.progress.updatedAt || 0;
         if (serverUpdatedAt > localUpdatedAt) {
           renderFromProgress(data.progress);
-          // Also mirror server back to localStorage so subsequent
-          // anonymous tabs (or the rest of this page session) see it.
           try { localStorage.setItem('mtn:course:progress', JSON.stringify(data.progress)); } catch (_) {}
+        } else if (local && localUpdatedAt > serverUpdatedAt) {
+          // Local-wins case: push to server (post-sign-in handoff).
+          pushLocalToServer(local);
         }
       }).catch(function () { /* offline — local render stands */ });
     } catch (_) { /* fetch unavailable — local render stands */ }

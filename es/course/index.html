@@ -641,8 +641,25 @@ main{padding-top:64px}
     var local = readLocalProgress();
     if (local) renderFromProgress(local);
 
+    function pushLocalToServer(localState) {
+      if (!localState || !Array.isArray(localState.completed)) return;
+      try {
+        fetch('/api/course/progress', {
+          method: 'POST',
+          credentials: 'same-origin',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({
+            track: localState.track || null,
+            completed: localState.completed,
+            startedAt: localState.startedAt || null
+          })
+        }).catch(function () {});
+      } catch (_) {}
+    }
+
     try {
       fetch('/api/course/progress', { credentials: 'same-origin' }).then(function (r) {
+        if (r.status === 401) return null;
         if (!r.ok) return null;
         return r.json();
       }).then(function (data) {
@@ -652,6 +669,8 @@ main{padding-top:64px}
         if (serverUpdatedAt > localUpdatedAt) {
           renderFromProgress(data.progress);
           try { localStorage.setItem('mtn:course:progress', JSON.stringify(data.progress)); } catch (_) {}
+        } else if (local && localUpdatedAt > serverUpdatedAt) {
+          pushLocalToServer(local);
         }
       }).catch(function () {});
     } catch (_) {}
