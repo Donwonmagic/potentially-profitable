@@ -7304,9 +7304,11 @@ table[data-viz-sortable] th[aria-sort="descending"]::after{content:"\2193";color
   :root:not([data-theme="light"]) .theme-toggle__icon--moon { display:block }
 }
 
-/* Hide on narrow screens where every pixel in the nav matters; the
-   OS preference still drives dark mode automatically. */
-@media (max-width:1100px){
+/* Hide on phones only. The 1100px threshold (prior version) hid the
+   toggle on most laptops + zoomed desktops, which read as "the icon
+   appeared and then disappeared." Phone widths (≤640px) genuinely
+   don't have room; everything above does. */
+@media (max-width:640px){
   .theme-toggle{display:none !important}
 }
 

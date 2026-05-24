@@ -3647,14 +3647,16 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
   :root:not([data-theme="light"]) .theme-toggle__icon--moon { display:block }
 }
 
-/* Hide on narrow screens where every pixel in the nav matters; the
-   OS preference still drives dark mode automatically. */
-@media (max-width:1100px){
+/* Hide on phones only. The 1100px threshold (prior version) hid the
+   toggle on most laptops + zoomed desktops, which read as "the icon
+   appeared and then disappeared." Phone widths (≤640px) genuinely
+   don't have room; everything above does. */
+@media (max-width:640px){
   .theme-toggle{display:none !important}
-}
-
 
 /* ===== [core] Phase 4 — next-tool recommendation card (.mtn-next-tool) (lines 7313-7352) ===== */
+}
+
 /* ============ Phase 4 — next-tool recommendation card =============
    Mounted at the end of a tool's result region by
    MuntinNextTool.render(). Visually quiet so it doesn't compete
@@ -3693,10 +3695,10 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
   transition:background var(--t-fast) var(--ease),border-color var(--t-fast) var(--ease);
 }
 .mtn-next-tool__link:hover{background:var(--teal-dark);border-color:var(--teal-dark)}
+
+/* ===== [core] Phase G — About portrait frame (real photo overlay) (lines 7353-7359) ===== */
 .mtn-next-tool__link:focus-visible{outline:none;box-shadow:var(--ring-focus)}
 
-
-/* ===== [core] Phase G — About portrait frame (real photo overlay) (lines 7353-7357) ===== */
 /* ===== Phase G — About portrait frame (real photo overlay; reused on homepage About teaser + /about/) ===== */
 .about-portrait-frame{position:relative;width:100%;aspect-ratio:4/5;border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--line-dark);background:var(--cream-2)}
 .about-portrait-frame .portrait{position:absolute;inset:0;border:0;border-radius:0;aspect-ratio:auto;width:100%;height:100%}
