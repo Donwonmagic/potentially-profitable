@@ -45,17 +45,55 @@
       "inLanguage": "es-ES",
       "datePublished": "2026-05-11T07:30:00-04:00",
       "dateModified": "2026-05-11",
-      "author": { "@id": "https://muntin.digital/#don-goldstein", "@type": "Person", "name": "Don Goldstein", "url": "https://muntin.digital/about/" },
-      "publisher": { "@id": "https://muntin.digital/#business" },
-      "image": "https://muntin.digital/brand/og/blog-three-platform-math-es.png",
-      "mainEntityOfPage": { "@id": "https://muntin.digital/es/blog/uber-eats-vs-doordash-vs-grubhub-cuentas-para-restaurante-2026/" }
+      "author": {
+        "@id": "https://muntin.digital/#don-goldstein",
+        "@type": "Person",
+        "name": "Don Goldstein",
+        "url": "https://muntin.digital/about/"
+      },
+      "publisher": {
+        "@id": "https://muntin.digital/#business"
+      },
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://muntin.digital/brand/og/blog-three-platform-math-es.png",
+        "width": 1200,
+        "height": 630,
+        "caption": "Uber Eats vs DoorDash vs Grubhub: las cuentas honestas para restaurantes independientes, 2026"
+      },
+      "mainEntityOfPage": {
+        "@id": "https://muntin.digital/es/blog/uber-eats-vs-doordash-vs-grubhub-cuentas-para-restaurante-2026/"
+      },
+      "speakable": {
+        "@type": "SpeakableSpecification",
+        "cssSelector": [
+          "article#post-body",
+          "h1",
+          ".post-dek"
+        ]
+      }
     },
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Muntin Digital", "item": "https://muntin.digital/" },
-        { "@type": "ListItem", "position": 2, "name": "Artículos", "item": "https://muntin.digital/es/blog/" },
-        { "@type": "ListItem", "position": 3, "name": "Uber Eats vs DoorDash vs Grubhub: las cuentas honestas para restaurantes independientes, 2026", "item": "https://muntin.digital/es/blog/uber-eats-vs-doordash-vs-grubhub-cuentas-para-restaurante-2026/" }
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Muntin Digital",
+          "item": "https://muntin.digital/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Artículos",
+          "item": "https://muntin.digital/es/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Uber Eats vs DoorDash vs Grubhub: las cuentas honestas para restaurantes independientes, 2026",
+          "item": "https://muntin.digital/es/blog/uber-eats-vs-doordash-vs-grubhub-cuentas-para-restaurante-2026/"
+        }
       ]
     }
   ]
@@ -310,7 +348,7 @@ main{padding-top:64px}
 
     <p>La tasa del titular &mdash;la comisión&mdash; es más o menos la misma en las tres. Lo que difiere es la capa de tarifas incidentales apiladas encima, el tope de qué órdenes puedes opt-out, y lo que la plataforma le hace a la conversión de tu canal directo. Este artículo es el lado-a-lado que me hubiera gustado que alguien me entregara en 2022 cuando empecé a llevar hojas de cálculo.</p>
 
-    <h2>El mismo ticket de $42, tres plataformas</h2>
+    <h2 id="el-mismo-ticket-de-42-tres-plataformas">El mismo ticket de $42, tres plataformas</h2>
 
     <p>El ejemplo usa un ticket de $42 &mdash; una orden representativa de restaurante independiente en una plataforma de terceros, el mismo ancla que usa el <a href="/es/blog/cuentas-honestas-de-doordash-para-restaurantes-independientes-2026/" style="color:var(--teal)">walk de margen de DoorDash</a>. Tu ticket será distinto. El spread porcentual es lo que carga el argumento, no el monto en dólares.</p>
 
@@ -531,7 +569,7 @@ main{padding-top:64px}
       <figcaption>El mismo ticket de $42, la misma cocina, la misma mano de obra &mdash; lo que cambia es la pila de tarifas incidentales de la plataforma. Directo retiene más de $4 mejor que el mejor tier de tercero.</figcaption>
     </figure>
 
-    <h2>De dónde sale el spread</h2>
+    <h2 id="de-donde-sale-el-spread">De dónde sale el spread</h2>
 
     <p>La comisión base no es la variable a vigilar. Cada plataforma ofrece una estructura de tiers 15%/25%/30% (con nombres e inclusiones algo distintas). La mayoría de los restaurantes independientes caen en el tier de 30% porque los de 15% y 25% no incluyen ubicación en las superficies de descubrimiento en la app &mdash; existes pero nadie te encuentra. El 30% es el precio de ser encontrable. Esa parte no difiere mucho entre plataformas.</p>
 
@@ -543,13 +581,13 @@ main{padding-top:64px}
       <li><strong>Grubhub</strong> tiene una &ldquo;tarifa de comunicación&rdquo; (su lenguaje) por orden de aproximadamente 1.8% que no es opt-in. Financia el sistema de relay de orden. Parece un recargo menor pero aplica a cada orden, por eso la fila de Grubhub termina cerca de DoorDash en general a pesar del menor costo de promo.</li>
     </ol>
 
-    <h2>La trampa de la tarifa de marketing de la que nadie habla</h2>
+    <h2 id="la-trampa-de-la-tarifa-de-marketing-de-la-que-nadie-habla">La trampa de la tarifa de marketing de la que nadie habla</h2>
 
     <p>Esta es la parte que más se les escapa a los operadores. La comisión del 30% es sobre el precio del menú, no sobre lo que llevas. No puedes descontar food cost o mano de obra antes de que aplique el porcentaje &mdash; es 30% off the top. El modelo mental de la mayoría lo trata como un costo de marketing, lo cual es incorrecto; los presupuestos de marketing compiten contra ganancia, no contra ingreso.</p>
 
     <p>Las cuentas: con un margen operativo típico de 12% y una comisión de plataforma de 30%, cada orden de tercero tiene que generar 250% de ingreso incremental comparado contra la misma orden en la puerta para que el gasto de plataforma quede a la par como marketing. Casi nunca lo hace. El cliente habría venido igual el 80% del tiempo. La plataforma es, estructuralmente, un impuesto del 30% al margen por ~20% de ingreso incremental. Esa es la trampa.</p>
 
-    <h2>Cuál soltar, si vas a soltar una</h2>
+    <h2 id="cual-soltar-si-vas-a-soltar-una">Cuál soltar, si vas a soltar una</h2>
 
     <p>Para la mayoría de los independientes la respuesta es Grubhub. Tres razones. Una: el volumen de orden por canal Grubhub es el más bajo de los tres en casi todo el mercado del DMV que he medido, por un factor de tres a cinco. Dos: el porcentaje retenido al 17.6% está en medio del paquete, así que soltarlo cuesta el menor margen retenido por orden perdida. Tres: Grubhub tiene la tasa más alta de quejas de listings fantasma en este mercado &mdash; restaurantes apareciendo en la plataforma sin su consentimiento o con menús viejos &mdash; lo cual es un problema de control de marca encima del problema de margen.</p>
 
@@ -557,7 +595,7 @@ main{padding-top:64px}
 
     <p>Estoy en DoorDash y Uber Eats en un restaurante y sólo en DoorDash en el otro. Grubhub lo solté hace dos años y no me he arrepentido. El volumen soltado de Grubhub regresó a los restaurantes por otros canales en un trimestre &mdash;casi todo a directo&mdash; sugiriendo que las órdenes de Grubhub estaban desplazadas, no eran netamente nuevas.</p>
 
-    <h2>Qué cambia en tu mix de canales</h2>
+    <h2 id="que-cambia-en-tu-mix-de-canales">Qué cambia en tu mix de canales</h2>
 
     <p>Si estás en las tres: jala un estado de cuenta partner de Grubhub de los últimos 90 días. Calcula el margen de contribución (ingreso menos la pila completa de tarifas de tercero menos tu costo variable por orden). Compara contra la contribución del canal directo en el mismo restaurante. Si Grubhub está contribuyendo menos del 8% del volumen total de tercero y tu canal directo tiene cualquier pulso, la jugada es clara. Pausa, observa el mix por un trimestre, luego deslista si la pausa aguantó.</p>
 

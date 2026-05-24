@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
 <title>How to Tell If a Restaurant Tool Is Safe (Before You Type a Real Number) | Muntin Digital</title>
 <meta name="description" content="A 5-test framework you can run on any free restaurant tool — in your browser, in under a minute — before you type a single real number into it. Plus the 4-tier data model that tells you what to share, where, and the worked example of what 'safe' looks like in practice." />
 <meta name="theme-color" content="#1F4E5B" />
@@ -59,8 +60,22 @@
       "publisher": {
         "@id": "https://muntin.digital/#business"
       },
-      "image": "https://muntin.digital/brand/og/blog-tool-safe.png",
-      "mainEntityOfPage": "https://muntin.digital/blog/how-to-tell-if-a-restaurant-tool-is-safe/",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://muntin.digital/brand/og/blog-tool-safe.png",
+        "width": 1200,
+        "height": 630,
+        "caption": "How to Tell If a Restaurant Tool Is Safe (Before You Type a Real Number)"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://muntin.digital/blog/how-to-tell-if-a-restaurant-tool-is-safe/#webpage",
+        "url": "https://muntin.digital/blog/how-to-tell-if-a-restaurant-tool-is-safe/",
+        "name": "How to Tell If a Restaurant Tool Is Safe (Before You Type a Real Number)",
+        "isPartOf": {
+          "@id": "https://muntin.digital/#website"
+        }
+      },
       "inLanguage": "en-US",
       "speakable": {
         "@type": "SpeakableSpecification",
@@ -69,6 +84,21 @@
           "h1",
           ".post-dek"
         ]
+      },
+      "audio": {
+        "@id": "https://muntin.digital/blog/how-to-tell-if-a-restaurant-tool-is-safe/#audio"
+      }
+    },
+    {
+      "@type": "AudioObject",
+      "@id": "https://muntin.digital/blog/how-to-tell-if-a-restaurant-tool-is-safe/#audio",
+      "contentUrl": "https://muntin.digital/blog/how-to-tell-if-a-restaurant-tool-is-safe/audio.mp3",
+      "encodingFormat": "audio/mpeg",
+      "inLanguage": "en-US",
+      "name": "How to Tell If a Restaurant Tool Is Safe (Before You Type a Real Number) — audio narration",
+      "description": "Full article read aloud by Don. Also available in Spanish, French, Italian, Portuguese, and Chinese.",
+      "associatedArticle": {
+        "@id": "https://muntin.digital/blog/how-to-tell-if-a-restaurant-tool-is-safe/#article"
       }
     }
   ]
@@ -474,7 +504,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <p>The tools that pass these tests will tell you so, plainly. The tools that fail are about to explain why the tests don't apply to them. That's the tell.</p>
 
-      <h2>1. The five tests — run before you type</h2>
+      <h2 id="1-the-five-tests-run-before-you-type">1. The five tests — run before you type</h2>
 
       <p>Open <a href="/glossary/" target="_blank" rel="noopener">DevTools ↗</a> on whatever tool you're evaluating (<kbd>Cmd+Opt+I</kbd> on Mac, <kbd>Ctrl+Shift+I</kbd> on Windows). Five questions:</p>
 
@@ -526,7 +556,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <figcaption class="i18n">4-tier data model · what flows where</figcaption>
       </figure>
 
-      <h2>2. The four-tier model — what to share, where</h2>
+      <h2 id="2-the-four-tier-model-what-to-share-where">2. The four-tier model — what to share, where</h2>
 
       <p>Most small-business owners carry all their data in the same mental bucket — which means the supplier list and the tax ID get the same protection (often the same low level of it). Four tiers, each with a different audience and a different level of caution:</p>
 
@@ -585,7 +615,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <figcaption class="i18n">5-test diagnostic · run before you type</figcaption>
       </figure>
 
-      <h2>3. What &ldquo;safe&rdquo; looks like — the worked example</h2>
+      <h2 id="3-what-safe-looks-like-the-worked-example">3. What &ldquo;safe&rdquo; looks like — the worked example</h2>
 
       <p>Here's the standard every tool on this site is held to. Nine claims about how every Muntin tool handles your inputs, each one verifiable in your own browser. Tap any claim to see the DevTools step that confirms it.</p>
 
@@ -635,7 +665,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <p>"Verifiable" should be a build flag, not a marketing claim. If the only proof is the brochure, treat it as the brochure.</p>
       </blockquote>
 
-      <h2>4. Run the audit</h2>
+      <h2 id="4-run-the-audit">4. Run the audit</h2>
 
       <p>The 5-test framework is also an interactive checklist at <a href="/learn/checklists/audit-any-tool/">/learn/checklists/audit-any-tool/</a> — walk through it with DevTools open on any tool you're evaluating. Save the result to your <a href="/tools/audits/restaurant/">Workshop</a> as a baseline; re-run it whenever a vendor pushes a &ldquo;new feature.&rdquo;</p>
 

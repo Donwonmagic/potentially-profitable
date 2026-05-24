@@ -47,17 +47,77 @@
       "inLanguage": "en-US",
       "datePublished": "2026-05-23T09:00:00-04:00",
       "dateModified": "2026-05-23",
-      "author": { "@id": "https://muntin.digital/#don-goldstein", "@type": "Person", "name": "Don Goldstein", "url": "https://muntin.digital/about/" },
-      "publisher": { "@id": "https://muntin.digital/#business" },
-      "image": "https://muntin.digital/brand/og/blog-ai-search-visibility.png",
-      "mainEntityOfPage": { "@id": "https://muntin.digital/blog/how-to-appear-in-ai-search-restaurant-2026/" }
+      "author": {
+        "@id": "https://muntin.digital/#don-goldstein",
+        "@type": "Person",
+        "name": "Don Goldstein",
+        "url": "https://muntin.digital/about/"
+      },
+      "publisher": {
+        "@id": "https://muntin.digital/#business"
+      },
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://muntin.digital/brand/og/blog-ai-search-visibility.png",
+        "width": 1200,
+        "height": 630,
+        "caption": "Is your restaurant visible in AI search? The four-number check"
+      },
+      "mainEntityOfPage": {
+        "@id": "https://muntin.digital/blog/how-to-appear-in-ai-search-restaurant-2026/"
+      },
+      "keywords": [
+        "how to appear in ai search restaurant",
+        "chatgpt restaurant visibility check",
+        "gemini perplexity restaurant rating floor",
+        "ai assistant rating floor restaurant",
+        "restaurant visibility ai overview"
+      ],
+      "speakable": {
+        "@type": "SpeakableSpecification",
+        "cssSelector": [
+          "article#post-body",
+          "h1",
+          ".post-dek"
+        ]
+      },
+      "audio": {
+        "@id": "https://muntin.digital/blog/how-to-appear-in-ai-search-restaurant-2026/#audio"
+      }
+    },
+    {
+      "@type": "AudioObject",
+      "@id": "https://muntin.digital/blog/how-to-appear-in-ai-search-restaurant-2026/#audio",
+      "contentUrl": "https://muntin.digital/blog/how-to-appear-in-ai-search-restaurant-2026/audio.mp3",
+      "encodingFormat": "audio/mpeg",
+      "inLanguage": "en-US",
+      "name": "Is your restaurant visible in AI search? The four-number check — audio narration",
+      "description": "Full article read aloud by Don. Also available in Spanish, French, Italian, Portuguese, and Chinese.",
+      "associatedArticle": {
+        "@id": "https://muntin.digital/blog/how-to-appear-in-ai-search-restaurant-2026/#article"
+      }
     },
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Muntin Digital", "item": "https://muntin.digital/" },
-        { "@type": "ListItem", "position": 2, "name": "Articles", "item": "https://muntin.digital/blog/" },
-        { "@type": "ListItem", "position": 3, "name": "Is your restaurant visible in AI search? The four-number check", "item": "https://muntin.digital/blog/how-to-appear-in-ai-search-restaurant-2026/" }
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Muntin Digital",
+          "item": "https://muntin.digital/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Articles",
+          "item": "https://muntin.digital/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Is your restaurant visible in AI search? The four-number check",
+          "item": "https://muntin.digital/blog/how-to-appear-in-ai-search-restaurant-2026/"
+        }
       ]
     }
   ]
@@ -382,11 +442,11 @@ header.nav{min-height:64px}
 
       <p>You do not need a consultant to find out which side of that 83% you are on. Four numbers decide it, and you can read all four this week.</p>
 
-      <h2>Why presence stopped being enough</h2>
+      <h2 id="why-presence-stopped-being-enough">Why presence stopped being enough</h2>
       <p>When a diner asks ChatGPT, Gemini, or Google&rsquo;s <a href="/glossary/ai-overview/">AI Overview</a> for a recommendation, the assistant does not return a ranked list of everyone nearby. It returns a written answer that names three to five places. Uberall measured the shortlist at three to five brands per query. Everyone else is not on page two &mdash; they are simply not in the sentence.</p>
       <p>So the goal moved. Ranking first in the <a href="/glossary/map-pack/">map pack</a> still matters, but it no longer guarantees the assistant repeats your name. The assistant filters on a handful of signals first, then writes. Four of those signals are numbers you control.</p>
 
-      <h2>Number one &mdash; your rating against the floor</h2>
+      <h2 id="number-one-your-rating-against-the-floor">Number one &mdash; your rating against the floor</h2>
       <p>Each assistant appears to apply a minimum star rating before it will name a place at all. Uberall&rsquo;s 2026 figures put the floors at roughly <strong>4.3 for ChatGPT, 4.1 for Perplexity, and 3.9 for Gemini</strong>. Below the floor, completeness and rank do not save you &mdash; you are filtered out before the assistant starts choosing.</p>
       <p>The move is not &ldquo;get more stars.&rdquo; It is to know your current number and the gap to the nearest floor. A restaurant sitting at 4.0 is invisible to ChatGPT&rsquo;s shortlist no matter how good the food is; the same restaurant clears Gemini&rsquo;s 3.9 today. Pull your number, write down the gap, and you know exactly which assistant you are losing. The <a href="/tools/gbp-grader/">GBP grader</a> reads it for you if you would rather not do the arithmetic by hand.</p>
 
@@ -425,22 +485,22 @@ header.nav{min-height:64px}
         </div>
       </details>
 
-      <h2>Number two &mdash; review recency, not just the count</h2>
+      <h2 id="number-two-review-recency-not-just-the-count">Number two &mdash; review recency, not just the count</h2>
       <p>A 4.6 built on twelve reviews, the newest from eighteen months ago, reads as a closed restaurant to a model trained to weight freshness. A 4.4 with a handful of reviews this month reads as open, busy, and current. Count earns the attention; recency keeps it.</p>
       <p>The lever here is <a href="/glossary/review-responsiveness/">review responsiveness</a> &mdash; fresh reviews arrive faster when you are visibly answering the ones you already have. The full playbook is in <a href="/blog/how-to-respond-to-google-reviews-restaurant-playbook-2026/">how to respond to Google reviews</a>; the short version is that a reply is a dated signal of life, and the assistant can read the date.</p>
 
-      <h2>Number three &mdash; how complete the profile actually is</h2>
+      <h2 id="number-three-how-complete-the-profile-actually-is">Number three &mdash; how complete the profile actually is</h2>
       <p>86% have a profile. Far fewer have a profile the assistant can actually read. A listing with no hours-by-day, no cuisine set, no service attributes, and no menu link is a thin signal &mdash; the model has nothing to quote when the diner asks &ldquo;are they open Sunday&rdquo; or &ldquo;do they do gluten-free.&rdquo; Presence, again, is not the same as legibility.</p>
       <p>Fill the structured fields on your <a href="/glossary/gbp/">Google Business Profile</a> the way you fill out a permit: every field, no blanks, current. Hours by day, cuisine, dietary attributes, outdoor seating, the link to your real menu. The <a href="/tools/gbp-grader/">GBP grader</a> flags the empty fields; the <a href="/tools/seo-grader/">SEO grader</a> checks whether your own site backs them up.</p>
 
-      <h2>Number four &mdash; do you own an answer the AI can lift?</h2>
+      <h2 id="number-four-do-you-own-an-answer-the-ai-can-lift">Number four &mdash; do you own an answer the AI can lift?</h2>
       <p>The assistant needs a sentence to quote. If the answer to &ldquo;is it good for a group of eight,&rdquo; &ldquo;is there a vegan entr&eacute;e,&rdquo; or &ldquo;can you book a patio table&rdquo; lives only inside a photographed menu or a PDF, the model cannot lift it &mdash; it quotes a competitor who wrote the answer in plain text. The restaurants that get named are the ones that put the answer where a machine can read it.</p>
       <p>That means text on your own pages plus <a href="/blog/restaurant-schema-markup-complete-paste-ready-example/">restaurant schema markup</a> so the structured facts are unambiguous. Run <a href="/tools/schema-check/">schema check</a> to confirm the markup parses. This is the one number that lives on your site rather than your Google listing, and it is the one most operators have never looked at.</p>
 
-      <h2>The fixes that backfire</h2>
+      <h2 id="the-fixes-that-backfire">The fixes that backfire</h2>
       <p>Two reflexes make the numbers worse. Buying reviews spikes the count and then tanks recency the moment the batch ages, and Google&rsquo;s filters increasingly strip them &mdash; so the average drops and the dates go stale at once. Stuffing keywords into your business name is a suspension risk that can pull the whole listing, taking all four numbers to zero in a day. The signals that move AI search are the slow, real ones: good food showing up as fresh reviews, a complete profile, and answers written in plain text.</p>
 
-      <h2>The ten-minute version</h2>
+      <h2 id="the-ten-minute-version">The ten-minute version</h2>
       <p>You do not have to fix all four today. You have to read all four today, so you know which one is costing you.</p>
       <figure class="viz-figure article-figure" data-audio-alt="The four-number check, in about ten minutes. One, rating: your star average against the floors of four point three, four point one, and three point nine. Two, recency: the date of your newest review; older than this month is the leak. Three, completeness: the count of blank fields on your Google Business Profile. Four, answerable content: pick three questions a diner would ask, and check whether the answer exists in text on your own site.">
         <div class="viz-flow">

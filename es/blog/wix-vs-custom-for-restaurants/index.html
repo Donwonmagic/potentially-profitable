@@ -817,7 +817,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <p>No odio a Wix. He construido cosas en Wix. Para muchos pequeños negocios es genuinamente la respuesta correcta — el primer día es fácil, el costo mensual es chico, y el resultado es "un sitio que existe", lo que es mejor que "ningún sitio". Pero los restaurantes son un tipo específico de pequeño negocio, y se chocan con las paredes de Wix más rápido que casi cualquier otra industria con la que trabajo. Este artículo es la versión honesta de la comparación: <strong>seis lugares donde Wix se rompe para restaurantes independientes, la cuenta de ROI, y cuándo Wix sí es la respuesta correcta</strong>.</p>
 
-      <h2>Donde Wix sí gana</h2>
+      <h2 id="donde-wix-si-gana">Donde Wix sí gana</h2>
       <p>Déjame ser justo con esto primero, porque el resto del artículo va a sentirse desbalanceado si no lo soy:</p>
       <ul>
         <li><strong>Lo puedes lanzar en un fin de semana</strong> sin desarrollador — un sitio real, en vivo, más o menos apto para móvil, desde cero en unas cuarenta horas de tu propio tiempo.</li>
@@ -828,7 +828,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       </ul>
       <p>Si recién arrancas, el efectivo está justo, y genuinamente puedes aceptar que el sitio es un marcador — no un reflejo del salón — Wix está bien. Este artículo no es para ti. Todo lo de abajo es para el restaurante que lleva un año o más abierto, tiene clientes habituales, tiene un menú que vale la pena fotografiar, y está empezando a notar que el sitio es un problema.</p>
 
-      <h2>Falla n.º 1 — Manejar el menú es una trampa</h2>
+      <h2 id="falla-n-º-1-manejar-el-menu-es-una-trampa">Falla n.º 1 — Manejar el menú es una trampa</h2>
       <p>Wix tiene un widget de "menú". Se ve genial en la vista previa de la plantilla. Metes tus categorías, tus platos, tus precios, y renderiza una tarjeta limpia en la página.</p>
       <p>Esto es lo que no ves hasta que llevas un tiempo con él: <strong>tu menú vive dentro del sistema cerrado de Wix, no dentro de HTML real en tu página.</strong> Eso suena a tecnicismo. No lo es.</p>
       <p>Lo que significa en la práctica: Google no puede rastrear limpiamente las descripciones de cada plato, así que no posicionas para "chicken parm cerca de mí" como podrías. Los comensales no pueden tocar un plato para compartirlo con un amigo. Cuando actualizas el menú en Wix, todavía lo tienes que actualizar también en Google Business Profile, en DoorDash, en Yelp y en cualquier otro lado donde viva tu menú — porque nada se sincroniza solo. El argumento de "actualizaciones fáciles" silenciosamente se convierte en "cuatro lugares distintos para actualizar cada vez que cambias un precio".</p>
@@ -862,7 +862,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <figcaption class="i18n">Cómo fluyen los datos del menú — plataforma cerrada vs. HTML real</figcaption>
       </figure>
 
-      <h2>Falla n.º 2 — La velocidad de carga en móvil siempre es más lenta de lo que debería</h2>
+      <h2 id="falla-n-º-2-la-velocidad-de-carga-en-movil-siempre-es-mas-le">Falla n.º 2 — La velocidad de carga en móvil siempre es más lenta de lo que debería</h2>
       <p>Esta es la que puedo probar con una URL: pasa cualquier sitio de restaurante en Wix por <a href="/es/tools/audits/restaurant/">el Diagnóstico gratis de sitios de restaurante</a> y mira el puntaje de Rendimiento. Casi siempre vas a ver algo en los 40 o 50 sobre 100. Eso no es culpa del restaurante — es de la plataforma.</p>
       <p>Las plantillas de Wix traen mucho JavaScript por defecto — lo suficiente como para que, por lo que veo en mis diagnósticos, los puntajes de <!-- LIBRARY:autolink:start --><a href="/es/glossary/lighthouse/" data-glossary-head="Lighthouse" data-glossary-aka="el motor de auditoría de Google" data-glossary-blurb="La herramienta de auditoría de código abierto que Google trae dentro de Chrome y dentro de PageSpeed Insights.">Lighthouse</a><!-- LIBRARY:autolink:end --> en móvil para sitios de restaurante en Wix suelen caer por debajo de 60. En una conexión 4G afuera de tu restaurante, eso normalmente se traduce en un first-contentful-paint que corre cuatro segundos o más. La investigación de velocidad móvil de Google muestra consistentemente que <strong>la mayoría de los visitantes móviles abandona las páginas que tardan más de tres segundos en cargar</strong> — lo que significa que un sitio Wix lento está silenciosamente perdiendo una porción significativa de su tráfico móvil con hambre antes de que alguien vea el menú.</p>
 
@@ -909,11 +909,11 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         </div>
       </details>
 
-      <h2>Falla n.º 3 — La integración de reservas depende de los acuerdos que tenga Wix</h2>
+      <h2 id="falla-n-º-3-la-integracion-de-reservas-depende-de-los-acuerd">Falla n.º 3 — La integración de reservas depende de los acuerdos que tenga Wix</h2>
       <p>Las plantillas de restaurante de Wix dependen bastante de OpenTable — es la integración por defecto en la mayoría de ellas, y OpenTable funciona bien si OpenTable también es tu preferencia. Pero si tu restaurante está en <strong>Resy, Tock, SevenRooms o Square Reservations</strong>, normalmente lo que te encuentras es que la "integración" es un iframe genérico o un enlace externo. Nada vive dentro de tu página, nada combina con tu marca, nada se rastrea limpio en analítica, y cuando el proveedor cambie la URL del embed dentro de dos años, te enteras porque el botón de reserva se rompe en silencio un viernes por la noche.</p>
       <p>Un sitio a medida te deja elegir el sistema de reservas que de verdad cuadra con tu flujo de trabajo y conectarlo limpio — sea cual sea la plataforma.</p>
 
-      <h2>Falla n.º 4 — El SEO es "bueno-de-plantilla", no "bueno-de-verdad"</h2>
+      <h2 id="falla-n-º-4-el-seo-es-bueno-de-plantilla-no-bueno-de-verdad">Falla n.º 4 — El SEO es "bueno-de-plantilla", no "bueno-de-verdad"</h2>
       <p>Wix te va a decir que su SEO es fuerte. Técnicamente no se equivoca: las etiquetas de título existen, se genera un sitemap, las páginas se pueden indexar. Eso es el piso. No es el techo.</p>
       <p>Donde consistentemente veo a Wix quedarse corto en los diagnósticos de restaurantes:</p>
       <ul>
@@ -924,16 +924,16 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       </ul>
       <p>El efecto neto: posicionas para el nombre propio de tu restaurante (lo que cualquiera puede hacer), y no posicionas para "[cocina] cerca de mí" ni "mejor [plato] en [ciudad]", que es de donde vienen los clientes nuevos.</p>
 
-      <h2>Falla n.º 5 — No puedes hacer nada a medida sin contratar a un Wix Partner</h2>
+      <h2 id="falla-n-º-5-no-puedes-hacer-nada-a-medida-sin-contratar-a-un">Falla n.º 5 — No puedes hacer nada a medida sin contratar a un Wix Partner</h2>
       <p>Tarde o temprano, todo restaurante quiere algo que la plantilla no hace. Un layout de menú que combine con la carta impresa. Un flujo de reserva que cruce con un calendario de eventos privados. Una consulta de catering que rute a un buzón distinto. Un módulo de "especiales de esta semana" que se actualice desde una hoja de cálculo.</p>
       <p>En Wix, cada uno de esos requiere o Wix Studio (su modo pro de desarrollador) o un Wix Partner — un contratista certificado por Wix que cobra tarifas de construcción a medida para trabajar dentro de una plataforma que sigue limitada por la arquitectura de Wix. Terminas pagando precios de agencia por un sitio que igual tiene los techos de Wix.</p>
       <p>En una construcción a medida, "queremos un módulo de especiales que se actualice desde una hoja de cálculo" es medio día de trabajo, no una renegociación.</p>
 
-      <h2>Falla n.º 6 — Los costos de salida son reales, y no los ves hasta que tratas de irte</h2>
+      <h2 id="falla-n-º-6-los-costos-de-salida-son-reales-y-no-los-ves-has">Falla n.º 6 — Los costos de salida son reales, y no los ves hasta que tratas de irte</h2>
       <p>Esta es la que nadie te cuenta cuando te suscribes. <strong>Si algún día te quieres ir de Wix, casi nada útil se puede exportar.</strong></p>
       <p>Tu contenido no está en archivos HTML que puedas tomar y mover a otro lado. Tus imágenes viven en la biblioteca de medios de Wix. Tu menú vive en su widget. Toda la cosa es un sistema cerrado donde tú eres inquilino, no dueño, y el día que tratas de mudarte es el día en que te das cuenta de que o te quedas para siempre o le pagas a alguien para reconstruir desde cero.</p>
       <p>La reconstrucción casi siempre es la jugada correcta — pero es una reconstrucción. Dos o tres años de contenido que pensabas que era tuyo, en efecto vuelven a empezar. Un sitio a medida hecho en HTML real lo puedes tomar, alojarlo en cualquier lado, editarlo con cualquier editor de texto, y mover entre proveedores en una tarde. Esa propiedad es una característica que la cuota mensual de Wix no te compra.</p>
-      <h2>La cuenta que casi siempre cierra</h2>
+      <h2 id="la-cuenta-que-casi-siempre-cierra">La cuenta que casi siempre cierra</h2>
       <p>Esta es la comparación que la mayoría de los dueños de restaurante nunca hace:</p>
       <ul>
         <li><strong>Wix en dos años:</strong> ~USD 25 al mes × 24 meses = <strong>USD 600</strong>, más unas 120 horas de tu propio tiempo manteniéndolo (a un costo de oportunidad conservador de USD 25/hora, eso son otros USD 3,000). Total real a dos años: alrededor de <strong>USD 3,600</strong>.</li>
@@ -955,7 +955,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <p class="pull-quote">El sitio a medida se paga solo en los primeros cuatro meses de reservas recuperadas. Todo lo que sigue después es delta puro.</p>
 
-      <h2>Entonces, ¿cuándo Wix sí es la respuesta correcta?</h2>
+      <h2 id="entonces-cuando-wix-si-es-la-respuesta-correcta">Entonces, ¿cuándo Wix sí es la respuesta correcta?</h2>
       <p>Lo que dije en la intro va en serio — Wix no es maligno, y es la respuesta correcta en algunas situaciones específicas:</p>
       <ul>
         <li><strong>Acabas de abrir.</strong> El menú todavía se está asentando, todavía no sabes cómo se ven los martes, y gastar USD 5,000 en un sitio web antes de saber si el concepto funciona es la apuesta equivocada. Un Wix de marcador está bien para los primeros seis a doce meses.</li>
@@ -965,7 +965,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       </ul>
       <p>Todos los demás — el restaurante establecido con clientes habituales, un menú fotografiado y una marca de verdad — normalmente ya pasó el techo de Wix y está pagando más de lo que cree por quedarse ahí.</p>
 
-      <h2>La prueba real</h2>
+      <h2 id="la-prueba-real">La prueba real</h2>
       <p>Esta es la pregunta que uso cuando estoy tratando de determinar si el sitio Wix de alguien de verdad está funcionando o solo está técnicamente en línea: <em>¿estarías orgulloso de mandarle esta URL a un crítico gastronómico?</em></p>
       <p>Si la respuesta es no, ninguna actualización de plantilla la va a arreglar. Y las horas que vas a gastar tratando de hacerla sí — aprendiendo el widget de menú, peleando con el layout, mirando cómo tu puntaje de Lighthouse se niega a mejorar — casi siempre son más que el costo de simplemente construir lo correcto.</p>
 

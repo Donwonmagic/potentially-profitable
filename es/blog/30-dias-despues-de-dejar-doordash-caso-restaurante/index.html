@@ -45,17 +45,55 @@
       "inLanguage": "es-ES",
       "datePublished": "2026-05-11T08:00:00-04:00",
       "dateModified": "2026-05-11",
-      "author": { "@id": "https://muntin.digital/#don-goldstein", "@type": "Person", "name": "Don Goldstein", "url": "https://muntin.digital/about/" },
-      "publisher": { "@id": "https://muntin.digital/#business" },
-      "image": "https://muntin.digital/brand/og/blog-30-days-after-doordash-es.png",
-      "mainEntityOfPage": { "@id": "https://muntin.digital/es/blog/30-dias-despues-de-dejar-doordash-caso-restaurante/" }
+      "author": {
+        "@id": "https://muntin.digital/#don-goldstein",
+        "@type": "Person",
+        "name": "Don Goldstein",
+        "url": "https://muntin.digital/about/"
+      },
+      "publisher": {
+        "@id": "https://muntin.digital/#business"
+      },
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://muntin.digital/brand/og/blog-30-days-after-doordash-es.png",
+        "width": 1200,
+        "height": 630,
+        "caption": "30 días después de dejar DoorDash: caso de estudio de un operador de restaurante"
+      },
+      "mainEntityOfPage": {
+        "@id": "https://muntin.digital/es/blog/30-dias-despues-de-dejar-doordash-caso-restaurante/"
+      },
+      "speakable": {
+        "@type": "SpeakableSpecification",
+        "cssSelector": [
+          "article#post-body",
+          "h1",
+          ".post-dek"
+        ]
+      }
     },
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Muntin Digital", "item": "https://muntin.digital/" },
-        { "@type": "ListItem", "position": 2, "name": "Artículos", "item": "https://muntin.digital/es/blog/" },
-        { "@type": "ListItem", "position": 3, "name": "30 días después de dejar DoorDash: caso de estudio de un operador de restaurante", "item": "https://muntin.digital/es/blog/30-dias-despues-de-dejar-doordash-caso-restaurante/" }
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Muntin Digital",
+          "item": "https://muntin.digital/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Artículos",
+          "item": "https://muntin.digital/es/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "30 días después de dejar DoorDash: caso de estudio de un operador de restaurante",
+          "item": "https://muntin.digital/es/blog/30-dias-despues-de-dejar-doordash-caso-restaurante/"
+        }
       ]
     }
   ]
@@ -379,7 +417,7 @@ main{padding-top:64px}
       <figcaption>Tono piedra = Día 0 (última semana completa en DoorDash). Tono teal = Día 30 (semana terminando 5 de mayo). El gasto de mercadeo era casi todo tarifas de listados patrocinados de DoorDash en el Día 0.</figcaption>
     </figure>
 
-    <h2>Semana 1: pánico que no llegó</h2>
+    <h2 id="semana-1-panico-que-no-llego">Semana 1: pánico que no llegó</h2>
 
     <p>Me había mentalizado para una caída de ingreso de 20-30%. El canal DoorDash hacía aproximadamente $580/día en órdenes brutas antes de comisión. Neto al restaurante, después de tarifas, comida, labor: cerca de $107/día. La expectativa era que iba a ver $400&ndash;$500/día de ese ingreso bruto evaporarse y quizá 60% volver por otros canales en un trimestre.</p>
 
@@ -476,19 +514,19 @@ main{padding-top:64px}
       <figcaption>Promedios diarios entre todos los canales &mdash; walk-in, teléfono, sitio propio, anteriormente DoorDash. El ingreso recuperó al 97.4% del base para la semana cuatro. El margen retenido subió 56% sobre el base.</figcaption>
     </figure>
 
-    <h2>Semana 2: las llamadas de &ldquo;¿DoorDash está caído?&rdquo;</h2>
+    <h2 id="semana-2-las-llamadas-de-doordash-esta-caido">Semana 2: las llamadas de &ldquo;¿DoorDash está caído?&rdquo;</h2>
 
     <p>El volumen de quejas alcanzó pico el día 11. Clientes que pedían regularmente por DoorDash empezaron a llamar al restaurante para preguntar si estábamos cerrados, si DoorDash estaba roto, o si su historial de órdenes había sido borrado. La app de DoorDash, predeciblemente, ya no nos mostraba &mdash; para un cliente acostumbrado a pedir por DoorDash, la ausencia se lee como que el restaurante se fue, no como una elección deliberada de dejar la plataforma.</p>
 
     <p>Total de quejas del lado del cliente en semana 2: 23 llamadas telefónicas, 4 DMs de Instagram, 1 reseña negativa de Google (eliminada después cuando expliqué la situación). Le respondí a cada uno igual: nos salimos de DoorDash, puedes pedir directo desde nuestro sitio a un 10% menos, aquí está el link. De esas 28 conversaciones, 19 convirtieron a una orden directa en las dos semanas siguientes. 6 eligieron dejar de pedir. 3 siguen &ldquo;pensándolo&rdquo; según su última respuesta.</p>
 
-    <h2>Semana 3: la línea de costo que se rompió</h2>
+    <h2 id="semana-3-la-linea-de-costo-que-se-rompio">Semana 3: la línea de costo que se rompió</h2>
 
     <p>Esta es la que no vi venir. La línea de empaque subió *18%* en la semana 3, aunque las órdenes totales se habían recuperado a dentro del 6% del base. Causa: las órdenes que migraron a directo eran más grandes en promedio (ticket de $46.30 vs base de $39.60), y pedían más ítems, lo que significaba más empaque por orden, especialmente para las órdenes de delivery que ahora cumplíamos por DoorDash Drive con tarifa plana. El costo de empaque de $1.40 por orden subió a $1.65 por orden. Un pequeño dolor de cabeza operativo; no material en términos de margen.</p>
 
     <p>Lo que esperaba que se rompiera &mdash; la mano de obra &mdash; no se rompió nada. El horario del line cook ya cubría el volumen de órdenes; sólo cambiamos algunas horas de prep nocturno para DoorDash a prep de media tarde para walk-in. Sin cambios de headcount. Mismo presupuesto de labor. La línea de costo de labor bajó ligeramente porque la cocina ya no corría la segunda ola de empacar-y-embolsar que las órdenes de DoorDash jalaban entre las 8pm y el cierre.</p>
 
-    <h2>Semana 4: dónde aterrizó</h2>
+    <h2 id="semana-4-donde-aterrizo">Semana 4: dónde aterrizó</h2>
 
     <p>Para fin de abril el ingreso diario había recuperado a dentro del 2.6% del base. Dentro del piso de ruido para este restaurante, que tiene 8-10% de variación semana a semana sólo por clima y calendario de eventos. El margen retenido en dólares por día, sin embargo, era 56% más alto que el base, porque cada orden recapturada ahora estaba al margen de canal directo de 28.9% en vez del margen de DoorDash de 18.4%. A lo largo del mes, la ganancia de margen retenido fue aproximadamente $4,000 en dólares absolutos &mdash; en un restaurante haciendo aproximadamente $58,000/mes en bruto.</p>
 
@@ -616,13 +654,13 @@ main{padding-top:64px}
 
     <p>Las quejas pararon cerca del día 18. La reseña de Google que se había puesto negativa bajó el día 21 cuando el cliente aceptó un crédito de $20 hacia una orden directa y nos pidió bajar la reseña él mismo. El volumen de DMs de Instagram se normalizó a su base pre-deslistar para el día 24.</p>
 
-    <h2>En qué me equivoqué</h2>
+    <h2 id="en-que-me-equivoque">En qué me equivoqué</h2>
 
     <p>Subestimé cuánto del canal DoorDash ya estaba &ldquo;desplazado&rdquo; en vez de &ldquo;netamente nuevo.&rdquo; La recuperación fue más rápida de lo que había planeado porque la mayoría de esas órdenes eran clientes que ya nos conocían; la plataforma era sólo un hábito, no una superficie de descubrimiento. Había asumido que la plataforma me traía ~40% clientes netamente nuevos y 60% clientes existentes usando una interfaz más conveniente. El desglose real estuvo más cerca de 10/90. La superficie de descubrimiento era mayormente una capa de vanidad; la relación ya era mía.</p>
 
     <p>También sobreestimé la conversión en el sitio directo. El descuento de 10% que le ofrecí a clientes recapturados funcionó, pero funcionó a menor conversión de la que había proyectado &mdash; 68% de clientes quejosos convirtieron a directo, no el 80% que esperaba. 32% sólo dejaron de pedir con esa frecuencia, lo cual está bien pero no es lo mismo que el cuento de &ldquo;todos van a convertir&rdquo; que me había vendido antes de deslistar.</p>
 
-    <h2>En qué acerté</h2>
+    <h2 id="en-que-acerte">En qué acerté</h2>
 
     <p>La premisa básica &mdash; que el canal DoorDash era un impuesto del 30% al margen por ~20% de ingreso incremental &mdash; aguantó. El alza del 56% en margen retenido para la semana cuatro es la evidencia más limpia que voy a tener para esa tesis. No voy a regresar. También acerté en que el segundo restaurante, que está en un barrio distinto con dinámicas distintas de tráfico peatonal, debería quedarse en la plataforma &mdash; la densidad urbana y el flujo de viajes Uber ahí significan que el canal DoorDash sí es de descubrimiento, no sólo desplazamiento de relación.</p>
 
