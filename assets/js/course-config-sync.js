@@ -45,6 +45,7 @@
     'restaurantProfile',
     'palette',
     'voice',
+    'fontPair',
     'onePromise',
     'customerParagraph',
     'dishes',

@@ -62,6 +62,47 @@ const STRINGS = {
 const DEFAULT_PALETTE = ['#1F4E5B', '#FAF7F2', '#14161A'];
 const HEX_RE = /^#[0-9A-Fa-f]{6}$/;
 
+// Local copy of the font-pair-picker widget's id → stack mapping.
+// Kept duplicated (rather than imported) so an attacker who somehow
+// rewrites MuntinContext.fontPair.heading to a CSS-injection string
+// cannot escape — the template only reads `state.fontPair.id` and
+// always re-derives heading/body from this allowlist.
+const FONT_PAIRS = {
+  'editorial-modern': {
+    heading: "'Fraunces','Playfair Display',Georgia,serif",
+    body:    "'Inter','Helvetica Neue',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
+  },
+  'diner-classic': {
+    heading: "'Bebas Neue','Oswald','Impact','Arial Narrow',sans-serif",
+    body:    "Georgia,'Times New Roman',serif"
+  },
+  'trattoria': {
+    heading: "'Playfair Display','Cormorant Garamond',Garamond,Georgia,serif",
+    body:    "'Lora','EB Garamond',Georgia,serif"
+  },
+  'taqueria': {
+    heading: "'Anton','Bebas Neue','Impact',sans-serif",
+    body:    "'Inter','Helvetica Neue',-apple-system,sans-serif"
+  },
+  'minimal-tasting': {
+    heading: "'Inter','Helvetica Neue','Arial',sans-serif",
+    body:    "'Inter','Helvetica Neue','Arial',sans-serif"
+  },
+  'corner-store': {
+    heading: "'Caveat','Kalam','Comic Sans MS',cursive",
+    body:    "'Inter','Helvetica Neue',-apple-system,sans-serif"
+  }
+};
+const DEFAULT_FONT_PAIR = {
+  heading: 'Georgia,serif',
+  body:    '-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif'
+};
+
+function readFontPair(state) {
+  const id = state && state.fontPair && state.fontPair.id;
+  return (id && FONT_PAIRS[id]) || DEFAULT_FONT_PAIR;
+}
+
 function escHtml(s) {
   return String(s == null ? '' : s)
     .replace(/&/g, '&amp;')
@@ -138,6 +179,10 @@ export function renderHome(state, opts) {
   const cream  = safeColor(palette[1], DEFAULT_PALETTE[1]);
   const ink    = safeColor(palette[2], DEFAULT_PALETTE[2]);
 
+  const fontPair = readFontPair(state);
+  const headingFamily = fontPair.heading;
+  const bodyFamily    = fontPair.body;
+
   const nameMissing    = !name;
   const promiseMissing = !promise;
   const paletteMissing = !(Array.isArray(state && state.palette) && state.palette.length);
@@ -165,7 +210,8 @@ export function renderHome(state, opts) {
     '<style>',
     '*,*:before,*:after{box-sizing:border-box}',
     'html,body{margin:0;padding:0}',
-    'body{font-family:Georgia,serif;background:', cream, ';color:', ink, ';line-height:1.45;font-size:14px;-webkit-font-smoothing:antialiased}',
+    'body{font-family:', bodyFamily, ';background:', cream, ';color:', ink, ';line-height:1.45;font-size:14px;-webkit-font-smoothing:antialiased}',
+    'h1,h2{font-family:', headingFamily, '}',
     '.bar{background:', ink, ';color:', cream, ';padding:10px 16px;font-size:11px;display:flex;justify-content:space-between;align-items:center;font-family:-apple-system,BlinkMacSystemFont,sans-serif}',
     '.bar .nav{display:flex;gap:14px}',
     '.bar a{color:inherit;text-decoration:none;opacity:.8}',
@@ -265,6 +311,12 @@ export function summarizeChange(prevState, nextState, opts) {
 
   if (!changes.length && JSON.stringify(prev.palette) !== JSON.stringify(next.palette) && next.palette) {
     changes.push(locale === 'es' ? 'Paleta actualizada' : 'Palette updated');
+  }
+
+  const prevPairId = prev.fontPair && prev.fontPair.id;
+  const nextPairId = next.fontPair && next.fontPair.id;
+  if (!changes.length && prevPairId !== nextPairId && nextPairId) {
+    changes.push(locale === 'es' ? 'Par tipográfico actualizado' : 'Font pair updated');
   }
 
   return changes.join(' · ');
