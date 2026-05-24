@@ -46,17 +46,55 @@
       "inLanguage": "es-ES",
       "datePublished": "2026-05-10T20:00:00-04:00",
       "dateModified": "2026-05-10",
-      "author": { "@id": "https://muntin.digital/#don-goldstein", "@type": "Person", "name": "Don Goldstein", "url": "https://muntin.digital/about/" },
-      "publisher": { "@id": "https://muntin.digital/#business" },
-      "image": "https://muntin.digital/brand/og/blog-ai-overviews-citation-es.png",
-      "mainEntityOfPage": { "@id": "https://muntin.digital/es/blog/como-lograr-que-google-cite-tu-restaurante-en-ai-overview/" }
+      "author": {
+        "@id": "https://muntin.digital/#don-goldstein",
+        "@type": "Person",
+        "name": "Don Goldstein",
+        "url": "https://muntin.digital/about/"
+      },
+      "publisher": {
+        "@id": "https://muntin.digital/#business"
+      },
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://muntin.digital/brand/og/blog-ai-overviews-citation-es.png",
+        "width": 1200,
+        "height": 630,
+        "caption": "Cómo lograr que Google cite tu restaurante en AI Overviews"
+      },
+      "mainEntityOfPage": {
+        "@id": "https://muntin.digital/es/blog/como-lograr-que-google-cite-tu-restaurante-en-ai-overview/"
+      },
+      "speakable": {
+        "@type": "SpeakableSpecification",
+        "cssSelector": [
+          "article#post-body",
+          "h1",
+          ".post-dek"
+        ]
+      }
     },
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Muntin Digital", "item": "https://muntin.digital/" },
-        { "@type": "ListItem", "position": 2, "name": "Artículos", "item": "https://muntin.digital/es/blog/" },
-        { "@type": "ListItem", "position": 3, "name": "Cómo lograr que Google cite tu restaurante en AI Overviews", "item": "https://muntin.digital/es/blog/como-lograr-que-google-cite-tu-restaurante-en-ai-overview/" }
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Muntin Digital",
+          "item": "https://muntin.digital/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Artículos",
+          "item": "https://muntin.digital/es/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Cómo lograr que Google cite tu restaurante en AI Overviews",
+          "item": "https://muntin.digital/es/blog/como-lograr-que-google-cite-tu-restaurante-en-ai-overview/"
+        }
       ]
     }
   ]
@@ -340,13 +378,13 @@ main{padding-top:64px}
       <figcaption>Una de cada cinco búsquedas de escritorio en EE.UU. ya se resuelve dentro del recuadro. Las consultas de restaurante lo activan con más frecuencia que el promedio.</figcaption>
     </figure>
 
-    <h2>Posicionar y ser citado no son el mismo trabajo</h2>
+    <h2 id="posicionar-y-ser-citado-no-son-el-mismo-trabajo">Posicionar y ser citado no son el mismo trabajo</h2>
 
     <p>La industria del SEO pasó veinte años optimizando páginas para aparecer en los tres primeros enlaces azules. Ese trabajo sigue existiendo. El nuevo trabajo &mdash;el que paga más ahora mismo&mdash; es lograr que tu mejor párrafo suba al AI Overview como una de las dos o tres fuentes nombradas. La página debajo del recuadro sigue recibiendo clics, pero no de la forma que antes. Los AI Overviews no reemplazan al tráfico orgánico; reemplazan al clic que antes leía tu respuesta. La cita es tu superficie restante.</p>
 
     <p>Los dos trabajos no se pelean activamente. Premian párrafos distintos. La página con más backlinks no siempre es la citada &mdash; la página con la respuesta más limpiamente extraíble sí. La mayoría del contenido de restaurante está escrito para posicionar. Casi nada está escrito para ser citado. El primer operador independiente de un mercado que invierte ese orden se queda con el recuadro de respuesta por los próximos doce meses.</p>
 
-    <h2>Las cinco jugadas que logran la cita</h2>
+    <h2 id="las-cinco-jugadas-que-logran-la-cita">Las cinco jugadas que logran la cita</h2>
 
     <p>Están escritas en el orden en que un extractor recorre una página. El mismo orden en que pagan.</p>
 
@@ -440,31 +478,31 @@ main{padding-top:64px}
       </div>
     </div>
 
-    <h2>Jugada 1: Responde primero, explica después</h2>
+    <h2 id="jugada-1-responde-primero-explica-despues">Jugada 1: Responde primero, explica después</h2>
 
     <p>El primer párrafo bajo un H2 es el único que la mayoría de los extractores lee. Todo lo que viene después es contexto de apoyo que puede o no entrar. Si tu primer párrafo responde completa la pregunta implícita del H2, tienes una cita. Si arma la respuesta en vez de darla, la respuesta nunca se cita, porque el párrafo donde vive está demasiado abajo en la página.</p>
 
     <p>Cuarenta y cinco palabras es el techo. He visto al recuadro citar párrafos más largos, pero el corte suele estar entre 35 y 55 palabras, y los más cortos se citan textualmente con más frecuencia que se parafrasean. Textual es lo que quieres &mdash; parafrasear pierde el cotejo entidad&ndash;schema que el modelo acaba de hacer.</p>
 
-    <h2>Jugada 2: Ancla cada entidad en schema</h2>
+    <h2 id="jugada-2-ancla-cada-entidad-en-schema">Jugada 2: Ancla cada entidad en schema</h2>
 
     <p>El modelo lee tu prosa, después lee tu JSON-LD, y se pregunta: ¿son consistentes? Cuando la respuesta es sí, la página recibe una bandera de impulso para citación. Cuando la respuesta es no &mdash;los precios del menú en la prosa no coinciden con el schema Menu, los horarios en la prosa no coinciden con OpeningHours&mdash; recibe una bandera de penalización. No hay una señal pública de esto. Sólo es visible en qué páginas se citan y cuáles no.</p>
 
     <p>Si ya tienes <a href="/es/blog/los-6-tipos-de-schema-markup-que-google-usa/" style="color:var(--teal)">los seis tipos de schema que Google usa</a> bien puestos, ya tienes la jugada 2 hecha. Lo que suele faltar: la prosa realmente tiene que coincidir con el schema. Si el schema dice que cierras a las 10pm y la prosa dice &ldquo;tarde&rdquo;, tienes un hueco de consistencia. Ambos deben decir 10pm.</p>
 
-    <h2>Jugada 3: Números en la oración inicial</h2>
+    <h2 id="jugada-3-numeros-en-la-oracion-inicial">Jugada 3: Números en la oración inicial</h2>
 
     <p>La primera oración de tu párrafo de respuesta debe contener al menos un número. Un precio, una hora, un conteo, un porcentaje, un año &mdash; no importa cuál. Los números son lo que se extrae; las oraciones sin números compiten con cada otra oración vaga en internet, y el extractor elige la que es más específica.</p>
 
     <p>Esta es la jugada que más contenido de restaurante hace mal. El instinto es abrir con lenguaje de bienvenida &mdash; &ldquo;Nos da mucho gusto compartir nuestro menú&rdquo;, &ldquo;Ven a vivir la calidez de nuestra terraza&rdquo;. El lenguaje de bienvenida tiene cero entidades y cero números. Es lo primero que el extractor salta. Reemplázalo con una oración que nombre algo y lo cuantifique.</p>
 
-    <h2>Jugada 4: Oraciones con forma de predicado. Sin atenuantes.</h2>
+    <h2 id="jugada-4-oraciones-con-forma-de-predicado-sin-atenuantes">Jugada 4: Oraciones con forma de predicado. Sin atenuantes.</h2>
 
     <p>El extractor parsea cada oración en una forma sujeto-predicado-objeto. &ldquo;DoorDash es una plataforma de delivery&rdquo; parsea limpio. &ldquo;Mucha gente considera que DoorDash es una especie de plataforma de delivery&rdquo; no. La primera oración tiene un hecho. La segunda tiene tokens de atenuante que el modelo trata como ruido, y el hecho subyacente desaparece bajo la atenuación.</p>
 
     <p>Las palabras a tachar en una reescritura para cita: <em>aproximadamente</em>, <em>usualmente</em>, <em>en algunos casos</em>, <em>la mayoría</em>, <em>seguido</em>, <em>típicamente</em>, <em>alrededor de</em>, <em>tiende a</em>, <em>puede</em>. Cada una baja las probabilidades de cita. Son palabras-abogado defensivas de otro contexto de escritura. En el contexto del AI Overview, te cuestan el recuadro.</p>
 
-    <h2>El antes y el después</h2>
+    <h2 id="el-antes-y-el-despues">El antes y el después</h2>
 
     <p>Toma un párrafo típico de FAQ de restaurante y camínalo por las jugadas 1&ndash;4. Es el tipo de párrafo que veo en el 90% de los sitios independientes; también es el tipo de párrafo que nunca se cita.</p>
 
@@ -485,13 +523,13 @@ main{padding-top:64px}
 
     <p>Léelos en voz alta. El primero suena humano. El segundo suena casi mecánico. Esa es la negociación. La superficie del AI Overview no premia la escritura conversacional &mdash; la superficie encima de ella sí. La conversación es para lo que sirven tu página de menú, tu Sobre nosotros, tus redes sociales. El párrafo de cita es su propio registro. Existe para ser citado.</p>
 
-    <h2>Jugada 5: URLs estables. Respuestas estables.</h2>
+    <h2 id="jugada-5-urls-estables-respuestas-estables">Jugada 5: URLs estables. Respuestas estables.</h2>
 
     <p>Esta es la jugada que protege lo que las jugadas 1&ndash;4 te ganaron. El crawler vuelve a las URLs citadas más rápido que a las no citadas &mdash; el modelo marcó la página como una fuente conocida buena. Si la URL sigue resolviendo y el párrafo sigue respondiendo la pregunta, te quedas citado. Si la URL se redirige a una nueva ruta, o el párrafo se parafraseó a algo con un conjunto de hechos ligeramente distinto, sales de la rotación. A veces la salida es permanente; a veces tienes que volver a ganarte la cita desde cero los próximos 60 días.</p>
 
     <p>La regla operacional: cuando publicas un párrafo con forma de cita y se cita, déjalo en paz. No agregues una coma. No cambies los horarios de &ldquo;5pm&rdquo; a &ldquo;5:00 PM&rdquo;. No muevas la página de /blog/ a /info/. Si el hecho de base cambia &mdash;ahora cierras de verdad a las 11pm, no a las 10pm&mdash; cambia el número y sólo el número. Toca un hecho, deja el resto. El crawler vuelve a marcar la página, ve el cambio puntual, y actualiza su extracto citado.</p>
 
-    <h2>Cómo saber si te citaron</h2>
+    <h2 id="como-saber-si-te-citaron">Cómo saber si te citaron</h2>
 
     <p>Abre Google en una sesión limpia del navegador. Escribe la pregunta que tu comensal está más probable de hacer &mdash;no la keyword de SEO, la pregunta en lenguaje natural. &ldquo;¿Roma Cucina abre los domingos?&rdquo;. &ldquo;¿Dónde como omakase en Silver Spring?&rdquo;. &ldquo;¿Maketto acepta sin reserva?&rdquo;. Si aparece el recuadro de AI Overview arriba, baja hasta el final. Hay chips de cita &mdash;iconos pequeños con etiquetas de fuente. El tuyo debería ser uno de ellos.</p>
 
@@ -533,13 +571,13 @@ main{padding-top:64px}
       <figcaption>Tres preguntas, dos clics cada una. El diagnóstico cae siempre en uno de cuatro estados; la solución es distinta para cada uno.</figcaption>
     </figure>
 
-    <h2>El re-encuadre</h2>
+    <h2 id="el-re-encuadre">El re-encuadre</h2>
 
     <p>Ya no escribes para el lector humano como antes. El lector humano ve el párrafo del AI Overview, decide si la respuesta basta, y o actúa con eso o hace clic a una de las fuentes citadas. El párrafo que el humano lee primero no es el que tú escribiste &mdash; es el que escribió el extractor, armado a partir del tuyo y de uno o dos más. Tu audiencia ahora es el extractor que decide qué párrafo ve el lector humano. Escribe el párrafo que el extractor quiere alzar.</p>
 
     <p>Esto es incómodo. Se siente como escribir para el algoritmo. Es así. La negociación es que tus páginas informacionales más importantes &mdash;horarios, menú, reservas, dieta&mdash; pasan a ser la fuente nombrada en la respuesta que ve tu comensal. Eso vale el cambio de registro.</p>
 
-    <h2>Por dónde empezar</h2>
+    <h2 id="por-donde-empezar">Por dónde empezar</h2>
 
     <p>Elige tres páginas. Tu página de horarios/contacto, tu página de menú, y tu artículo más visitado. Camina cada una por las jugadas 1&ndash;4 sobre el primer párrafo bajo cada H2. No toques el resto de la página todavía. Publica, espera dos semanas, después corre el ciclo de verificación de citas de arriba sobre las preguntas que esas páginas deberían responder.</p>
 

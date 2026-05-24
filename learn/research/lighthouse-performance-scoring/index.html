@@ -408,7 +408,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <article class="research-body" id="post-body">
 
       <div class="research-note">
-        <h2>Don's note</h2>
+        <h2 id="don-s-note">Don's note</h2>
         <p>Every restaurant owner who has ever run their site through PageSpeed Insights has seen a number — 34, 61, 88 — and wondered what it means. The honest answer: it's Google's weighted roll-up of how quickly the page's main content paints, how stable the layout is while it loads, and how responsive the page feels while the browser is still working. Each of those has a definition and a weight, and once you know them, the score stops feeling like a black box.</p>
         <p>For a restaurant site, the practical implication is that <strong>two metrics account for roughly 55% of the score</strong> — Largest Contentful Paint and Total Blocking Time. Fix those two and everything else follows. The audit tool on this site returns the per-metric breakdown so you can see exactly which bucket is dragging your score down.</p>
       </div>
@@ -446,7 +446,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <figcaption>The three Lighthouse bands &mdash; the colored dial in any PageSpeed Insights report uses these same thresholds.</figcaption>
       </figure>
 
-      <h2>Key findings</h2>
+      <h2 id="key-findings">Key findings</h2>
       <ul class="research-findings">
         <li>The Lighthouse performance score is a <strong>weighted average of five metrics</strong> (as of the current major version): First Contentful Paint, Speed Index, Largest Contentful Paint, Total Blocking Time, and Cumulative Layout Shift.</li>
         <li>Current weights: <strong>FCP 10%, SI 10%, LCP 25%, TBT 30%, CLS 25%</strong>. TBT and LCP together account for over half the final number; optimizing them moves the score the most.</li>
@@ -455,7 +455,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <li>Lighthouse simulates a <strong>mid-tier mobile device on a throttled network</strong> by default, which is intentionally conservative — faster than average real-world conditions would be misleading for a restaurant audience.</li>
       </ul>
 
-      <h2>How Muntin uses this</h2>
+      <h2 id="how-muntin-uses-this">How Muntin uses this</h2>
       <ul class="research-uses">
         <li><a href="/blog/wix-vs-custom-for-restaurants/"><strong>Wix vs. custom for restaurants: what breaks first</strong><span>Break #2 references the Lighthouse performance methodology when comparing platform-builder sites to custom ones. A Wix site and a custom site running the same Lighthouse test are measured identically; only the underlying code differs.</span></a></li>
         <li><a href="/tools/audits/restaurant/"><strong>Restaurant Website Audit (interactive tool)</strong><span>Muntin's audit runs against real PageSpeed Insights data for your URL and reports the component metrics that make up the Lighthouse score, not just the final number.</span></a></li>
@@ -470,7 +470,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <a class="btn btn-primary" href="https://developer.chrome.com/docs/lighthouse/performance/performance-scoring/" target="_blank" rel="noopener noreferrer">Read the official docs<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" width="18" height="18"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
       </aside>
 
-      <h2>Full citation</h2>
+      <h2 id="full-citation">Full citation</h2>
       <p class="research-citation">Chrome DevTools. <cite>Lighthouse performance scoring</cite>. Chrome for Developers documentation. <a href="https://developer.chrome.com/docs/lighthouse/performance/performance-scoring/" target="_blank" rel="noopener noreferrer">developer.chrome.com</a></p>
 
       <p class="research-reviewed"><strong>Last reviewed:</strong> April 2026 — Lighthouse metric weights have shifted slightly across major versions; Muntin reviews this page whenever a new Lighthouse major is released.</p>
@@ -494,7 +494,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
 <section class="block bg-cream2">
   <div class="container">
-    <div class="section-header reveal section-center"><span class="eyebrow">More research</span><h2>Next in the<br><span class="serif-italic">research library.</span></h2></div>
+    <div class="section-header reveal section-center"><span class="eyebrow">More research</span><h2 id="next-in-theresearch-library">Next in the<br><span class="serif-italic">research library.</span></h2></div>
     <div class="learn-tools">
       <a class="learn-tool" href="/learn/research/mobile-page-speed-3-second-rule/"><span class="learn-tool-kicker">Think with Google</span><h3>The 3-second mobile load rule.</h3><p>Why the performance score matters: the majority of mobile visitors leave pages that take longer than three seconds to load.</p><span class="learn-tool-cta">Read the note →</span></a>
       <a class="learn-tool" href="/learn/research/cart-abandonment-rate/"><span class="learn-tool-kicker">Baymard Institute</span><h3>The 70% cart abandonment rate.</h3><p>How checkout-form friction translates directly to reservation widget abandonment.</p><span class="learn-tool-cta">Read the note →</span></a>

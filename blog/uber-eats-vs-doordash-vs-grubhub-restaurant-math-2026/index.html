@@ -47,17 +47,77 @@
       "inLanguage": "en-US",
       "datePublished": "2026-05-11T07:30:00-04:00",
       "dateModified": "2026-05-11",
-      "author": { "@id": "https://muntin.digital/#don-goldstein", "@type": "Person", "name": "Don Goldstein", "url": "https://muntin.digital/about/" },
-      "publisher": { "@id": "https://muntin.digital/#business" },
-      "image": "https://muntin.digital/brand/og/blog-three-platform-math.png",
-      "mainEntityOfPage": { "@id": "https://muntin.digital/blog/uber-eats-vs-doordash-vs-grubhub-restaurant-math-2026/" }
+      "author": {
+        "@id": "https://muntin.digital/#don-goldstein",
+        "@type": "Person",
+        "name": "Don Goldstein",
+        "url": "https://muntin.digital/about/"
+      },
+      "publisher": {
+        "@id": "https://muntin.digital/#business"
+      },
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://muntin.digital/brand/og/blog-three-platform-math.png",
+        "width": 1200,
+        "height": 630,
+        "caption": "Uber Eats vs DoorDash vs Grubhub: the honest math for independent restaurants, 2026"
+      },
+      "mainEntityOfPage": {
+        "@id": "https://muntin.digital/blog/uber-eats-vs-doordash-vs-grubhub-restaurant-math-2026/"
+      },
+      "keywords": [
+        "uber eats vs doordash vs grubhub commission",
+        "restaurant third party delivery math 2026",
+        "doordash commission breakdown restaurant",
+        "best delivery platform for restaurants",
+        "restaurant delivery margin comparison"
+      ],
+      "speakable": {
+        "@type": "SpeakableSpecification",
+        "cssSelector": [
+          "article#post-body",
+          "h1",
+          ".post-dek"
+        ]
+      },
+      "audio": {
+        "@id": "https://muntin.digital/blog/uber-eats-vs-doordash-vs-grubhub-restaurant-math-2026/#audio"
+      }
+    },
+    {
+      "@type": "AudioObject",
+      "@id": "https://muntin.digital/blog/uber-eats-vs-doordash-vs-grubhub-restaurant-math-2026/#audio",
+      "contentUrl": "https://muntin.digital/blog/uber-eats-vs-doordash-vs-grubhub-restaurant-math-2026/audio.mp3",
+      "encodingFormat": "audio/mpeg",
+      "inLanguage": "en-US",
+      "name": "Uber Eats vs DoorDash vs Grubhub: the honest math for independent restaurants, 2026 — audio narration",
+      "description": "Full article read aloud by Don. Also available in Spanish, French, Italian, Portuguese, and Chinese.",
+      "associatedArticle": {
+        "@id": "https://muntin.digital/blog/uber-eats-vs-doordash-vs-grubhub-restaurant-math-2026/#article"
+      }
     },
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Muntin Digital", "item": "https://muntin.digital/" },
-        { "@type": "ListItem", "position": 2, "name": "Articles", "item": "https://muntin.digital/blog/" },
-        { "@type": "ListItem", "position": 3, "name": "Uber Eats vs DoorDash vs Grubhub: the honest math for independent restaurants, 2026", "item": "https://muntin.digital/blog/uber-eats-vs-doordash-vs-grubhub-restaurant-math-2026/" }
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Muntin Digital",
+          "item": "https://muntin.digital/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Articles",
+          "item": "https://muntin.digital/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Uber Eats vs DoorDash vs Grubhub: the honest math for independent restaurants, 2026",
+          "item": "https://muntin.digital/blog/uber-eats-vs-doordash-vs-grubhub-restaurant-math-2026/"
+        }
       ]
     }
   ]
@@ -374,7 +434,7 @@ main{padding-top:64px}
 
     <p>The headline rate &mdash; the commission &mdash; is roughly the same across all three. What differs is the layer of incidental fees stacked on top, the cap on which orders you can actually opt out of, and what the platform does to your direct-channel conversion. This article is the side-by-side I wish someone had handed me in 2022 when I first started keeping spreadsheets.</p>
 
-    <h2>The same $42 ticket, three platforms</h2>
+    <h2 id="the-same-42-ticket-three-platforms">The same $42 ticket, three platforms</h2>
 
     <p>The example uses a $42 ticket &mdash; a representative independent-restaurant order on a third-party platform, the same anchor used in the <a href="/blog/an-honest-doordash-math-for-independent-restaurants-2026/" style="color:var(--teal)">DoorDash margin walk</a>. Your ticket will be different. The percentage spread is what carries the argument, not the dollar amount.</p>
 
@@ -595,7 +655,7 @@ main{padding-top:64px}
       <figcaption>Same $42 ticket, same kitchen, same labor &mdash; what changes is the platform&rsquo;s incidental-fee stack. Direct keeps an order more than $4 better than the best third-party tier.</figcaption>
     </figure>
 
-    <h2>Where the spread actually comes from</h2>
+    <h2 id="where-the-spread-actually-comes-from">Where the spread actually comes from</h2>
 
     <p>The base commission isn&rsquo;t the variable to focus on. Each platform offers a 15%/25%/30% tiered structure (with slightly different names and inclusions). Most independent restaurants land on the 30% tier because the 15% and 25% tiers don&rsquo;t include placement in the in-app discovery surfaces &mdash; you exist but nobody finds you. The 30% is the price of being findable. That part doesn&rsquo;t differ much across platforms.</p>
 
@@ -607,13 +667,13 @@ main{padding-top:64px}
       <li><strong>Grubhub</strong> has a per-order &ldquo;communication fee&rdquo; (their language) of roughly 1.8% that&rsquo;s not opt-in. It funds the order-relay system. It looks like a smaller surcharge but applies to every order, which is why the Grubhub row ends up close to DoorDash overall despite the lower promo cost.</li>
     </ol>
 
-    <h2>The marketing-fee trap nobody talks about</h2>
+    <h2 id="the-marketing-fee-trap-nobody-talks-about">The marketing-fee trap nobody talks about</h2>
 
     <p>This is the part operators miss most. The 30% <a href="/glossary/commission/" style="color:var(--teal)">commission</a> is on the menu price, not the take-home. You can&rsquo;t deduct food cost or labor from it before the percentage applies &mdash; it&rsquo;s 30% off the top. Most operators&rsquo; mental model treats it as a marketing cost, which is wrong; marketing budgets compete against profit, not against revenue. The three platforms are <a href="/glossary/aggregator/" style="color:var(--teal)">aggregators</a> in the classic sense: discovery surface for one side, margin tax on the other.</p>
 
     <p>The math: at a typical 12% operating margin and a 30% platform commission, every third-party order has to drive 250% incremental revenue compared to the same order at the door for the platform spend to break even on a marketing basis. It almost never does. The customer would have come anyway 80% of the time. The platform is, structurally, a 30% margin tax for ~20% incremental revenue. That&rsquo;s the trap.</p>
 
-    <h2>Which one to drop, if you&rsquo;re going to drop one</h2>
+    <h2 id="which-one-to-drop-if-you-re-going-to-drop-one">Which one to drop, if you&rsquo;re going to drop one</h2>
 
     <p>For most independents the answer is Grubhub. Three reasons. One: the order volume per Grubhub channel is the lowest of the three in nearly every DMV market I&rsquo;ve measured, by a factor of three to five. Two: the kept-percent at 17.6% is in the middle of the pack, so dropping it costs the least kept margin per lost order. Three: Grubhub has the highest rate of phantom-listing complaints in this market &mdash; restaurants showing up on the platform without their consent or with stale menus &mdash; which is a brand-control problem on top of the margin problem.</p>
 
@@ -621,7 +681,7 @@ main{padding-top:64px}
 
     <p>I&rsquo;m on DoorDash and Uber Eats at one restaurant and DoorDash only at the other. Grubhub I dropped two years ago and have not regretted. The dropped Grubhub volume came back to the restaurants through other channels within a quarter &mdash; almost entirely to direct &mdash; suggesting the Grubhub orders were displaced, not net-new.</p>
 
-    <h2>What this changes about your channel mix</h2>
+    <h2 id="what-this-changes-about-your-channel-mix">What this changes about your channel mix</h2>
 
     <p>If you&rsquo;re on all three: pull a Grubhub partner statement for the last 90 days. Calculate the contribution margin (revenue minus the full third-party fee stack minus your variable cost per order). Compare to the direct-channel contribution on the same restaurant. If Grubhub is contributing less than 8% of total third-party volume and your direct channel has any pulse at all, the move is straightforward. Pause, watch the channel mix for a quarter, then delist if the pause held.</p>
 

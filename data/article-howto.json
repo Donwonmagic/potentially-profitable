@@ -64,6 +64,52 @@
         { "name": "Actualiza Menu schema + CTA de reservas","text": "Asegúrate de que Menu schema refleje los precios nuevos. CTA de reserva sobre la línea de pliegue esa semana." },
         { "name": "Vigila el embudo de reservas 30 días","text": "Menos del 2% de bajada es normal. Más del 5% significa que subiste los platos equivocados — revierte y re-elige." }
       ]
+    },
+    "may-2026-discovery-changed-under-you": {
+      "name_en": "How to read the May 2026 discovery wave (5-piece operator path)",
+      "name_es": "Cómo leer el lote de descubrimiento de mayo de 2026 (camino del operador en cinco piezas)",
+      "totalTime": "PT45M",
+      "steps_en": [
+        { "name": "Start with the new surface", "text": "Read the AI Mode rebuild piece first — it tells you what changed at Google I/O 2026 and why the local result is now generated and agentic, not a list." },
+        { "name": "Check whether you're in it", "text": "Run the four-number visibility check: rating against assistant floors (4.3 ChatGPT, 4.1 Perplexity, 3.9 Gemini), review recency, GBP completeness, on-site answer text." },
+        { "name": "Count what it's costing", "text": "Restaurant Maps views are down 40.1% and food orders down 25.7%; the call button is being pulled on ~7% of local searches. Measure on your own dashboard, not industry averages." },
+        { "name": "Plug into the new traffic source", "text": "Gemini hit 13.2% of AI referral traffic by April 2026 and reads Google's own ecosystem — your GBP, Maps, reviews. The same profile work that wins AI Overview wins Gemini." },
+        { "name": "Capture the booking", "text": "Wire OpenTable, Resy, or Tock so Google's AI Mode can complete the reservation inside the answer. A phone-only restaurant is skipped by the agent." }
+      ],
+      "steps_es": [
+        { "name": "Empieza por la nueva superficie", "text": "Lee primero la pieza de la reconstrucción de AI Mode — te dice qué cambió en Google I/O 2026 y por qué el resultado local ahora se genera y es agente, no una lista." },
+        { "name": "Comprueba si estás en él", "text": "Pasa el chequeo de cuatro números: calificación contra los pisos de cada asistente (4.3 ChatGPT, 4.1 Perplexity, 3.9 Gemini), frescura de reseñas, qué tan completo está el Perfil de Negocio, y si tu sitio tiene la respuesta en texto." },
+        { "name": "Cuenta el costo", "text": "Las vistas de Maps cayeron 40.1% y los pedidos 25.7%; el botón de llamada se retira en ~7% de búsquedas locales. Mide en tu propio panel, no en promedios de industria." },
+        { "name": "Conéctate a la nueva fuente de tráfico", "text": "Gemini llegó al 13.2% del tráfico referido por IA para abril de 2026 y lee el ecosistema de Google — tu Perfil de Negocio, Maps, reseñas. El mismo trabajo de perfil que gana el AI Overview gana Gemini." },
+        { "name": "Captura la reserva", "text": "Conecta OpenTable, Resy o Tock para que el AI Mode de Google complete la reserva dentro de la respuesta. Un restaurante solo de teléfono queda fuera del agente." }
+      ]
+    },
+    "may-2026-wave-publishing-for-citation": {
+      "name_en": "How to set up your restaurant for AI Overview citation (9-piece reading order)",
+      "name_es": "Cómo preparar tu restaurante para que el AI Overview lo cite (orden de lectura en nueve piezas)",
+      "totalTime": "PT2H",
+      "steps_en": [
+        { "name": "Learn the citation rules", "text": "Read the AI Overview citation piece first — it walks the paragraph-shape rules that turn a page into a cited source." },
+        { "name": "Add the technical scaffolding", "text": "Drop in the paste-ready Restaurant schema markup so AI assistants have the entity scaffolding to cite." },
+        { "name": "Diagnose Google Maps invisibility", "text": "Walk the 10-minute diagnostic for restaurants that don't appear in the map pack. Four root causes; three are operator-fixable same day." },
+        { "name": "Get the review responses right", "text": "Run the four review archetypes / four response shapes playbook. The 3-star is where undecided guests calibrate — that's the most-read response." },
+        { "name": "Turn Instagram into a search engine", "text": "Treat captions as SEO copy. Google indexes Instagram captions; the in-app search bar is a discovery surface most independents still write at like 2019." },
+        { "name": "Run the three-platform delivery math", "text": "Compare Uber Eats vs DoorDash vs Grubhub on a $42 ticket. The headline 30% commission is identical; the second-layer fees open the real spread." },
+        { "name": "Read the delisting case study", "text": "Walk through the 30-day shape of leaving DoorDash: which costs flex, which complaints arrive, where the channel mix lands." },
+        { "name": "Pick a loyalty program that pays", "text": "Four models, vendor-published prices, where each one wins. Loyalty is downstream of the channel conversation." },
+        { "name": "Decide service charge vs tipping", "text": "Three models on a $200 check. Server take-home, operator net, and how the customer feels about each." }
+      ],
+      "steps_es": [
+        { "name": "Aprende las reglas de citación", "text": "Lee primero la pieza sobre la citación en AI Overview — explica las reglas de forma de párrafo que convierten una página en fuente citable." },
+        { "name": "Pon el andamiaje técnico", "text": "Pega el Restaurant schema markup listo para usar, para que los asistentes de IA tengan el andamiaje de entidad para citar." },
+        { "name": "Diagnostica la invisibilidad en Google Maps", "text": "Pasa el diagnóstico de 10 minutos para restaurantes que no aparecen en el paquete de mapa. Cuatro causas raíz; tres se arreglan el mismo día." },
+        { "name": "Responde bien las reseñas", "text": "Sigue el playbook de cuatro arquetipos / cuatro formas de respuesta. La de 3 estrellas es donde los comensales indecisos calibran — esa es la más leída." },
+        { "name": "Convierte Instagram en buscador", "text": "Trata los captions como SEO. Google indexa los captions de Instagram; la barra de búsqueda interna es una superficie de descubrimiento que la mayoría de independientes sigue escribiendo como en 2019." },
+        { "name": "Corre las cuentas de tres plataformas de delivery", "text": "Compara Uber Eats vs DoorDash vs Grubhub sobre un ticket de $42. El 30% de comisión de titular es idéntico; las tarifas de segundo nivel abren la diferencia real." },
+        { "name": "Lee el caso de estudio de salir de DoorDash", "text": "Camina la forma de 30 días de dejar DoorDash: qué costos se flexibilizan, qué quejas llegan, dónde aterriza el mix de canales." },
+        { "name": "Elige un programa de lealtad que pague", "text": "Cuatro modelos, precios publicados por el vendor, dónde gana cada uno. La lealtad está río abajo de la conversación de canales." },
+        { "name": "Decide cargo por servicio vs propina", "text": "Tres modelos sobre un ticket de $200. El take-home del mesero, el neto del operador, y cómo se siente el cliente con cada uno." }
+      ]
     }
   }
 }

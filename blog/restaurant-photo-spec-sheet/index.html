@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
 <title>The Restaurant Photo Spec Sheet: Every Image Size for Every Surface | Muntin Digital</title>
 <meta name="description" content="Every image size, aspect ratio, and resolution your restaurant actually needs — from the GBP cover to the Yelp hero to the OG card to the menu thumbnail. One spec sheet you can hand to a photographer or shoot yourself with a phone." />
 <meta name="theme-color" content="#1F4E5B" />
@@ -64,8 +65,22 @@
       "publisher": {
         "@id": "https://muntin.digital/#business"
       },
-      "image": "https://muntin.digital/brand/og/blog-photo-spec-sheet.png",
-      "mainEntityOfPage": "https://muntin.digital/blog/restaurant-photo-spec-sheet/",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://muntin.digital/brand/og/blog-photo-spec-sheet.png",
+        "width": 1200,
+        "height": 630,
+        "caption": "The Restaurant Photo Spec Sheet: Every Image Size for Every Surface"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://muntin.digital/blog/restaurant-photo-spec-sheet/#webpage",
+        "url": "https://muntin.digital/blog/restaurant-photo-spec-sheet/",
+        "name": "The Restaurant Photo Spec Sheet: Every Image Size for Every Surface",
+        "isPartOf": {
+          "@id": "https://muntin.digital/#website"
+        }
+      },
       "inLanguage": "en-US",
       "speakable": {
         "@type": "SpeakableSpecification",
@@ -74,6 +89,21 @@
           "h1",
           ".post-dek"
         ]
+      },
+      "audio": {
+        "@id": "https://muntin.digital/blog/restaurant-photo-spec-sheet/#audio"
+      }
+    },
+    {
+      "@type": "AudioObject",
+      "@id": "https://muntin.digital/blog/restaurant-photo-spec-sheet/#audio",
+      "contentUrl": "https://muntin.digital/blog/restaurant-photo-spec-sheet/audio.mp3",
+      "encodingFormat": "audio/mpeg",
+      "inLanguage": "en-US",
+      "name": "The Restaurant Photo Spec Sheet: Every Image Size for Every Surface — audio narration",
+      "description": "Full article read aloud by Don. Also available in Spanish, French, Italian, Portuguese, and Chinese.",
+      "associatedArticle": {
+        "@id": "https://muntin.digital/blog/restaurant-photo-spec-sheet/#article"
       }
     },
     {
@@ -516,7 +546,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <p>This is the spec sheet I send every studio client and every photographer I work with. One shoot, the right specs in advance, and the result drops cleanly into every surface.</p>
 
-      <h2>The 10 image sizes you actually need</h2>
+      <h2 id="the-10-image-sizes-you-actually-need">The 10 image sizes you actually need</h2>
 
       <figure class="article-figure" data-audio-alt="One shoot, ten outputs · the resolution rule. Shoot once, at 30% above max: You can always crop down. You can never crop up. (source). Site surfaces: Hero, interior banners, menu thumbnails, OG/Twitter card. (derivatives). GBP surfaces: Cover photo, profile, gallery — three different aspects. (derivatives). Social + Yelp: Yelp cover, Instagram square, Instagram portrait. (derivatives). One shoot, ten outputs · the resolution rule.">
         <div class="recovery-stack reveal" role="img" aria-label="One shoot, ten outputs · the resolution rule">
@@ -599,13 +629,13 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         </details>
       </aside>
 
-      <h2>Resolution rules</h2>
+      <h2 id="resolution-rules">Resolution rules</h2>
 
       <p>Always shoot at the resolution recommended above PLUS roughly 30% extra. You can always crop down; you can never crop up. A <a href="/glossary/hero-shot/" data-glossary-head="Hero shot" data-glossary-blurb="For a given destination surface (web hero, Yelp featured, Instagram profile-grid lead, Google Business cover), the single photograph that carries the visua…" target="_blank" rel="noopener">hero shot</a> at 2400×1024 lets you also produce the 1200×630 OG card from the same file; a <!-- LIBRARY:autolink:start --><a href="/glossary/hero-shot/" data-glossary-head="Hero shot" data-glossary-aka="the one photo per surface that does the load-bearing visual work" data-glossary-blurb="For a given destination surface (web hero, Yelp featured, Instagram profile-grid lead, Google Business cover), the single photograph that carries the visual identity of the…">hero shot</a><!-- LIBRARY:autolink:end --> at 1200×630 leaves you stuck.</p>
 
       <p>For images that ship to your site, export as <a href="/glossary/cdn/">CDN</a>-friendly WebP at 80% quality — it's typically 60-70% smaller than JPG without visible loss.</p>
 
-      <h2>Alt text — the most-skipped part of the spec sheet</h2>
+      <h2 id="alt-text-the-most-skipped-part-of-the-spec-sheet">Alt text — the most-skipped part of the spec sheet</h2>
 
       <p>Every image needs <a href="/glossary/alt-text/" data-glossary-head="Alt text" data-glossary-blurb="A short written description of every image, set via the alt=&quot;…&quot; attribute in the HTML." target="_blank" rel="noopener">alt text</a>. Not "IMG_4521.jpg," not the menu name, not "delicious food." A specific descriptive sentence: "Plate of carnitas with cilantro, white onion, and lime on a wood board." Costs 5 seconds per photo and earns you SEO + accessibility + AI-search citation.</p>
 
@@ -645,13 +675,13 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <p>Alt text is the part of the spec sheet nobody reads. It's also the part Google reads first.</p>
       </blockquote>
 
-      <h2>The shot list to hand a photographer</h2>
+      <h2 id="the-shot-list-to-hand-a-photographer">The shot list to hand a photographer</h2>
 
       <p>Run <a href="/tools/photo-brief/">Photo Brief</a>. It generates a per-surface shot list with the spec sheet attached — exactly the document you'd hand a photographer the morning of the shoot. Save the brief to your <a href="/tools/audits/restaurant/">Workshop</a> so you can re-run it for the next seasonal shoot.</p>
 
       <p>The shoot itself is usually 2-3 hours for a 30-photo deliverable: the hero, 10-15 dishes, 4-6 room shots, 2-3 detail shots (a hand pouring wine, smoke off a grill, the chef plating). Done in one go, you have material for every surface for the next 12 months.</p>
 
-      <h2>The 6-second pre-publish gut check</h2>
+      <h2 id="the-6-second-pre-publish-gut-check">The 6-second pre-publish gut check</h2>
 
       <p>Before any photo lands on the site, run it through this check. Six questions, one click each, takes about as long as it sounds. If you can't answer "yes" to all six, the photo isn't ready &mdash; not because the photo is bad, but because something around the photo is.</p>
 
@@ -721,7 +751,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <figcaption>Six questions, one click each. Click a row to expand the pass/fail rule.</figcaption>
       </figure>
 
-      <h2>The "shoot it yourself with a phone" version</h2>
+      <h2 id="the-shoot-it-yourself-with-a-phone-version">The "shoot it yourself with a phone" version</h2>
 
       <p>If hiring a photographer isn't in budget, the phone version still works. Modern phones in good light routinely beat low-effort DSLR work — the variable that matters most isn't the sensor, it's the time of day and the angle to the window. Three rules:</p>
 
@@ -761,7 +791,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <figcaption class="i18n">Shoot cadence · twice a year + menu changes</figcaption>
       </figure>
 
-      <h2>How often to re-shoot</h2>
+      <h2 id="how-often-to-re-shoot">How often to re-shoot</h2>
 
       <p>Twice a year. Once before peak season (Memorial Day for summer, mid-October for the holidays); once when the menu changes substantially. If you re-shoot less than once a year, the photos start looking dated to regulars even if they're still technically accurate.</p>
 

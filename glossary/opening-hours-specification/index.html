@@ -373,7 +373,7 @@
 
     <div class="term-body">
       <p class="term-def">A specific Schema.org structured-data type for representing when a place is open. Lives inside a <a href="/glossary/schema/"><code>Restaurant</code></a> JSON-LD block as one or more entries with <code>dayOfWeek</code>, <code>opens</code>, and <code>closes</code> fields. Holiday overrides use the same type via the parallel <code>specialOpeningHoursSpecification</code> property. The format Google's Rich Results parser actually consumes — the difference between "hours vary" and a full weekly grid in your search snippet.</p>
-      <h2 class="term-why-h">Why it matters</h2>
+      <h2 class="term-why-h" id="why-it-matters">Why it matters</h2>
       <p class="term-why">The customer searching "is [restaurant] open right now?" doesn't open your website — they glance at the rich snippet and decide. Without an <code>OpeningHoursSpecification</code> block on every page, Google falls back to "hours vary" or to whatever your Google Business Profile says, and when those two sources disagree your listing inherits the lower confidence. <a href="/tools/open-hours/#result">Open Hours</a> generates a complete block (with the cross-midnight defensive pattern handled correctly) for any week + closure schedule you enter.</p>
       <aside class="term-research">
       <p class="term-research-label">See the research</p>
@@ -408,7 +408,7 @@
   <div class="container">
     <div class="section-header reveal section-center">
       <span class="eyebrow">Glossary</span>
-      <h2>Browse all<br><span class="serif-italic"><!-- count:glossary.terms -->149<!-- /count --> terms.</span></h2>
+      <h2 id="browse-all149-terms">Browse all<br><span class="serif-italic"><!-- count:glossary.terms -->149<!-- /count --> terms.</span></h2>
       <p class="final-sub">Plain-English definitions for every term in your audit, organized by category.</p>
     </div>
     <div class="hero-ctas reveal hero-ctas-center">
