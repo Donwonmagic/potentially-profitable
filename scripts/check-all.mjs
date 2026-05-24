@@ -185,6 +185,7 @@ const CHECKS = [
   ['Course locale parity','check-course-locale-parity.mjs','--check'],
   ['Course term-links',   'check-course-term-links.mjs',   '--check'],
   ['L14 generator output','check-l14-generator-output.mjs'],
+  ['Course listen (idem)','inject-course-listen.mjs','--check'],
   ['Article TL;DR',       'check-article-tldr.mjs',        '--check'],
   ['Article TL;DR retrofit (idem)','inject-article-tldr.mjs','--check'],
   ['Article HowTo schema (idem)','inject-article-howto-schema.mjs','--check'],
