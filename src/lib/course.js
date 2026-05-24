@@ -194,6 +194,7 @@ export async function resetProgress(env, sub) {
 const CONFIG_ALLOWED_KEYS = new Set([
   'restaurantProfile',  // { name, cuisine, address, phone, ... }
   'palette',            // [hex, hex, hex]
+  'voice',              // { formality, era, warmth } as 0..100 integers
   'onePromise',
   'customerParagraph',
   'dishes',             // [{ name, price }]

@@ -44,6 +44,7 @@
   var ALLOWED = [
     'restaurantProfile',
     'palette',
+    'voice',
     'onePromise',
     'customerParagraph',
     'dishes',
