@@ -189,6 +189,7 @@ const CHECKS = [
   ['Course listen (idem)','inject-course-listen.mjs','--check'],
   ['Course mark-complete (idem)','inject-course-mark-complete.mjs','--check'],
   ['Course config-sync (idem)','inject-course-config-sync.mjs','--check'],
+  ['Course sheet-link (idem)','inject-course-sheet-link.mjs','--check'],
   ['Article TL;DR',       'check-article-tldr.mjs',        '--check'],
   ['Article TL;DR retrofit (idem)','inject-article-tldr.mjs','--check'],
   ['Article HowTo schema (idem)','inject-article-howto-schema.mjs','--check'],
