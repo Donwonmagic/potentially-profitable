@@ -6,21 +6,23 @@
  *
  * Why this script exists: per the Method plan, each bootcamp lesson
  * can ship an optional ~5–8 min audio narration in the operator's
- * voice (Don). The audio files live at
+ * voice (Don). Audio files live RIGHT NEXT to the lesson HTML, matching
+ * the same convention scripts/render-post-audio.mjs writes for blog/
+ * research/checklists posts:
  *
- *   audio/course/<slug>.mp3      — EN
- *   audio/course/<slug>.es.mp3   — ES
+ *   course/m1-orient/welcome/audio.mp3       — EN
+ *   es/course/m1-orient/welcome/audio.mp3    — ES
  *
- * The lesson HTML pages are hand-authored and don't know about the
- * audio. This script bridges the two: it walks data/course-lessons.json,
- * checks for the existence of each lesson's audio file, and stamps
- * (or removes) the listen-btn accordingly. The runtime player at
- * /assets/js/listen.js upgrades the simple <button> into the rich
- * .listen-card UI used by the rest of the site.
+ * The same studio renderer (F5-TTS voice-cloned to Don for English,
+ * Kokoro-onnx for ES + other languages) can target lesson directories
+ * unchanged. The runtime player at /assets/js/listen.js upgrades the
+ * simple <button> into the rich .listen-card UI used by the rest of
+ * the site.
  *
- * The script silently no-ops on missing audio files — until Don records
- * one and drops it into place, the lesson stays text-only. ES lessons
- * get their own narration or skip independently of EN.
+ * The script silently no-ops on missing audio files — until Don
+ * renders a lesson and the MP3 lands on disk, the lesson stays
+ * text-only. ES lessons get their own narration or skip independently
+ * of EN.
  *
  * Usage:
  *   node scripts/inject-course-listen.mjs            # rewrite in place
@@ -52,12 +54,22 @@ if (!fs.existsSync(MANIFEST_PATH)) {
 }
 const manifest = JSON.parse(fs.readFileSync(MANIFEST_PATH, 'utf8'));
 
-const AUDIO_DIR = path.join(repoRoot, 'audio', 'course');
-
 const LABEL = {
   en: 'Listen to this lesson',
   es: 'Escuchar esta lección'
 };
+
+// Audio is co-located with the lesson HTML at <lesson-dir>/audio.mp3,
+// matching the convention scripts/render-post-audio.mjs writes for
+// blog / research / checklists posts. The renderer needs no path-
+// awareness changes to target a lesson directory.
+function lessonDir(lesson, locale) {
+  const rel = lesson.path.replace(/^\//, '').replace(/\/$/, '');
+  return locale === 'es' ? path.join(repoRoot, 'es', rel) : path.join(repoRoot, rel);
+}
+function audioPathFor(lesson, locale) {
+  return path.join(lessonDir(lesson, locale), 'audio.mp3');
+}
 
 const SENTINEL_START = '<!-- course-listen:start -->';
 const SENTINEL_END   = '<!-- course-listen:end -->';
@@ -80,30 +92,21 @@ const LISTEN_SCRIPT_TAG = '<script src="/assets/js/listen.js" defer></script>';
 const ANCHOR_BUTTON_RE = /(<article\s+class="course-body">\s*)/;
 const ANCHOR_BODY_END_RE = /(\s*<\/body>)/;
 
-function audioPathFor(lessonId, locale) {
-  const fname = locale === 'es' ? `${lessonId}.es.mp3` : `${lessonId}.mp3`;
-  return path.join(AUDIO_DIR, fname);
-}
-
-function audioHrefFor(lessonId, locale) {
-  // Absolute URL path for the rendered <button data-audio-src="…">.
-  // The renderer ships from /audio/course/, mirroring the source layout.
-  return locale === 'es'
-    ? `/audio/course/${lessonId}.es.mp3`
-    : `/audio/course/${lessonId}.mp3`;
-}
-
-function buildListenButton(lessonId, locale) {
+function buildListenButton(locale) {
   const label = LABEL[locale] || LABEL.en;
-  const audioHref = audioHrefFor(lessonId, locale);
   // Layout: same shape as the article listen-btn pattern (a single
   // button that listen.js upgrades to a full .listen-card on hydration).
   // Wrapping <div class="row-center"> matches the article-side
   // convention so any future shared CSS picks up both surfaces.
+  // data-audio-src is RELATIVE ("audio.mp3") so the same markup works
+  // whether the page is served from /course/.../ or /es/course/.../.
+  // data-audio-languages declares the full set of locales the listener
+  // can switch through — listen.js fetches lazily so missing language
+  // variants degrade gracefully.
   return [
     SENTINEL_START,
     '      <div class="row-center" style="margin:0 0 22px">',
-    `        <button type="button" id="listen-btn" class="listen-btn" aria-pressed="false" data-state="idle" data-audio-src="${audioHref}" data-audio-languages="en,es">`,
+    `        <button type="button" id="listen-btn" class="listen-btn" aria-pressed="false" data-state="idle" data-audio-src="audio.mp3" data-audio-languages="en,es,fr,it,pt,zh">`,
     '          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">',
     '            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor"/>',
     '            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>',
@@ -117,15 +120,11 @@ function buildListenButton(lessonId, locale) {
 }
 
 function lessonHtmlPath(lesson, locale) {
-  // Convert the manifest's /course/m1-orient/welcome/ path to an
-  // absolute file path, optionally under /es/.
-  const rel = lesson.path.replace(/^\//, '').replace(/\/$/, '');
-  const base = locale === 'es' ? path.join(repoRoot, 'es', rel) : path.join(repoRoot, rel);
-  return path.join(base, 'index.html');
+  return path.join(lessonDir(lesson, locale), 'index.html');
 }
 
 function transform(src, lesson, locale) {
-  const hasAudio = fs.existsSync(audioPathFor(lesson.id, locale));
+  const hasAudio = fs.existsSync(audioPathFor(lesson, locale));
   const hasButtonSentinel = SENTINEL_RE.test(src);
   const hasScriptSentinel = SCRIPT_RE.test(src);
 
@@ -143,7 +142,7 @@ function transform(src, lesson, locale) {
   }
 
   // Audio present — insert (or refresh) both sentinel blocks.
-  const button = buildListenButton(lesson.id, locale);
+  const button = buildListenButton(locale);
   const scriptBlock = [
     SCRIPT_START,
     LISTEN_SCRIPT_TAG,
@@ -191,7 +190,7 @@ for (const lesson of manifest.lessons) {
       continue;
     }
 
-    const hasAudio = fs.existsSync(audioPathFor(lesson.id, locale));
+    const hasAudio = fs.existsSync(audioPathFor(lesson, locale));
     if (hasAudio) stamped++;
     else removed++;
 
@@ -207,11 +206,16 @@ if (noAnchor.length) {
   if (noAnchor.length > 5) console.warn(`  …and ${noAnchor.length - 5} more`);
 }
 
-const audioFilesPresent = fs.existsSync(AUDIO_DIR)
-  ? fs.readdirSync(AUDIO_DIR).filter((f) => f.endsWith('.mp3')).length
-  : 0;
+// Count audio files by walking the manifest — audio.mp3 next to each
+// lesson page, EN and ES locales independent.
+let audioFilesPresent = 0;
+for (const lesson of manifest.lessons) {
+  for (const locale of ['en', 'es']) {
+    if (fs.existsSync(audioPathFor(lesson, locale))) audioFilesPresent++;
+  }
+}
 
-console.log(`inject-course-listen: ${audioFilesPresent} audio file(s) present at audio/course/. ` +
+console.log(`inject-course-listen: ${audioFilesPresent} audio file(s) present at lesson directories. ` +
   `${stamped} stamped, ${removed} removed (stale sentinel cleared), ${unchanged} unchanged, ${skipped} skipped (lesson page missing).`);
 
 if (checkOnly && totalChanged > 0) {
