@@ -99,6 +99,12 @@ main{padding-top:64px}
 .c-hero .lede{font-size:clamp(19px,2vw,22px);line-height:1.5;color:var(--ink-soft);max-width:680px;margin:0 0 14px}
 .c-hero .meta{margin-top:18px;font-size:15px;color:var(--stone)}
 .c-hero .meta strong{color:var(--ink);font-weight:600}
+.c-resume{margin:0 0 24px;padding:16px 22px;background:var(--cream-2);border:1px solid var(--line);border-left:3px solid var(--status-good);border-radius:8px;font-size:15px;color:var(--ink-soft);display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.c-resume-num{font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);white-space:nowrap}
+.c-resume-text{flex:1;min-width:0}
+.c-resume-text a{color:var(--teal);font-weight:600;text-decoration:underline;text-decoration-color:rgba(31,78,91,.4);text-underline-offset:3px}
+.c-resume-text a:hover{text-decoration-color:var(--teal)}
+.c-resume[hidden]{display:none}
 
 .c-track-section{padding:48px 0 16px}
 .c-track-h2{font-size:clamp(22px,2.6vw,28px);font-weight:500;margin:0 0 8px;line-height:1.2}
@@ -278,6 +284,15 @@ main{padding-top:64px}
       </ol>
     </nav>
     <p class="eyebrow">Open the Doors · Un bootcamp del Método Muntin</p>
+
+    <!-- course-resume:start (populated client-side; hidden by default
+         + revealed when localStorage or /api/course/progress reports
+         a non-zero completed count) -->
+    <aside class="c-resume" id="courseResume" hidden>
+      <span class="c-resume-num"><span id="courseResumeCount">0</span> / 16</span>
+      <span class="c-resume-text">lecciones completadas. <span id="courseResumeContinue">Continúa en <a id="courseResumeLink" href="/es/course/m1-orient/welcome/"><span id="courseResumeTitle">tu siguiente lección</span></a>.</span></span>
+    </aside>
+
     <h1>Construye tu primer sitio web de restaurante tú mismo — <span class="serif-italic">en tres o cuatro semanas, una noche a la vez.</span></h1>
     <p class="lede">Sin tarjeta de crédito. Sin registro. Sin propuesta de agencia. Escribes, eliges, ves tu sitio tomar forma en tiempo real. Al terminar la última lección, descargas un sitio web real, funcional, y lo pones en el internet abierto.</p>
     <p class="meta"><strong>Unas 12 horas de trabajo</strong>, repartidas en tres o cuatro semanas. La mayoría de los operadores hacen una lección por noche, tres noches a la semana. Cada lección se guarda automáticamente en este navegador. <strong>Iniciar sesión es opcional</strong> — solo lo necesitas si quieres tu trabajo en un segundo dispositivo.</p>
@@ -549,6 +564,98 @@ main{padding-top:64px}
 
     setTimeout(hydrate, 0);
   });
+</script>
+
+<script>
+  /*
+   * Hub progress indicator (ES). Reads localStorage["mtn:course:progress"]
+   * and surfaces "<n> / 16 lecciones completadas · continúa en <next>"
+   * above the hero h1. Hidden by default; only appears when there's
+   * actual completed progress to report. Server fetch race mirrors the
+   * EN side — whichever record has a later updatedAt wins.
+   */
+  (function () {
+    var aside     = document.getElementById('courseResume');
+    var countEl   = document.getElementById('courseResumeCount');
+    var linkEl    = document.getElementById('courseResumeLink');
+    var titleEl   = document.getElementById('courseResumeTitle');
+    var continueEl = document.getElementById('courseResumeContinue');
+    if (!aside || !countEl) return;
+
+    var LESSONS = [
+      { lesson: 'welcome',           path: '/es/course/m1-orient/welcome/',            title: 'Bienvenida',                            track: 'shared' },
+      { lesson: 'what-a-site-does',  path: '/es/course/m1-orient/what-a-site-does/',   title: 'Qué hace un sitio que reserva mesas',   track: 'shared' },
+      { lesson: 'one-promise',       path: '/es/course/m1-orient/one-promise/',        title: 'Tu única promesa',                      track: 'shared' },
+      { lesson: 'customer',          path: '/es/course/m2-decide/customer/',           title: 'Tu cliente en un párrafo',              track: 'shared' },
+      { lesson: 'naming',            path: '/es/course/m2-decide/fresh/naming/',       title: 'Nombre y dominio',                      track: 'fresh' },
+      { lesson: 'audit',             path: '/es/course/m2-decide/rebuild/audit/',      title: 'Audita tu sitio actual',                track: 'rebuild' },
+      { lesson: 'positioning',       path: '/es/course/m2-decide/fresh/positioning/',  title: 'Cocina y posicionamiento',              track: 'fresh' },
+      { lesson: 'leaks',             path: '/es/course/m2-decide/rebuild/leaks/',      title: 'Diagnostica qué está perdiendo',        track: 'rebuild' },
+      { lesson: 'palette-voice',     path: '/es/course/m2-decide/palette-voice/',      title: 'Paleta y voz',                          track: 'shared' },
+      { lesson: 'menu',              path: '/es/course/m3-assemble/menu/',             title: 'Tu lista corta de menú',                track: 'shared' },
+      { lesson: 'photos-fresh',      path: '/es/course/m3-assemble/fresh/photos/',     title: 'Brief de fotos desde cero',             track: 'fresh' },
+      { lesson: 'photos-rebuild',    path: '/es/course/m3-assemble/rebuild/photos/',   title: 'Triaje de fotos actuales',              track: 'rebuild' },
+      { lesson: 'hours-contact',     path: '/es/course/m3-assemble/hours-contact/',    title: 'Horarios, festivos, contacto',          track: 'shared' },
+      { lesson: 'gbp-fresh',         path: '/es/course/m3-assemble/fresh/gbp/',        title: 'Perfil de Google Business desde cero',  track: 'fresh' },
+      { lesson: 'gbp-rebuild',       path: '/es/course/m3-assemble/rebuild/gbp/',      title: 'Reparación del Perfil de Google Business', track: 'rebuild' },
+      { lesson: 'local-seo',         path: '/es/course/m4-launch/local-seo/',          title: 'Anclas de SEO local',                   track: 'shared' },
+      { lesson: 'reviews',           path: '/es/course/m4-launch/reviews/',            title: 'Reseñas y confianza de la primera semana', track: 'shared' },
+      { lesson: 'generator',         path: '/es/course/m4-launch/generator/',          title: 'El generador',                          track: 'shared' },
+      { lesson: 'deploy',            path: '/es/course/m4-launch/deploy/',             title: 'Despliegue',                            track: 'shared' },
+      { lesson: 'rhythm',            path: '/es/course/m4-launch/rhythm/',             title: 'El ritmo de 30 días',                   track: 'shared' }
+    ];
+    var TOTAL = 16;
+
+    function readLocalProgress() {
+      try { return JSON.parse(localStorage.getItem('mtn:course:progress') || 'null') || null; }
+      catch (_) { return null; }
+    }
+
+    function renderFromProgress(progress) {
+      if (!progress || !Array.isArray(progress.completed)) return;
+      var done = new Set();
+      for (var i = 0; i < progress.completed.length; i++) {
+        var e = progress.completed[i];
+        if (e && typeof e.lesson === 'string') done.add(e.lesson);
+      }
+      if (!done.size) return;
+      var track = progress.track && (progress.track === 'fresh' || progress.track === 'rebuild') ? progress.track : null;
+
+      var next = null;
+      for (var k = 0; k < LESSONS.length; k++) {
+        var l = LESSONS[k];
+        if (track && l.track !== 'shared' && l.track !== track) continue;
+        if (!done.has(l.lesson)) { next = l; break; }
+      }
+
+      countEl.textContent = String(Math.min(done.size, TOTAL));
+      if (next) {
+        linkEl.href = next.path;
+        titleEl.textContent = 'Lección ' + (LESSONS.indexOf(next) + 1) + ': ' + next.title;
+      } else {
+        if (continueEl) continueEl.textContent = 'Has completado todas las lecciones. ';
+      }
+      aside.hidden = false;
+    }
+
+    var local = readLocalProgress();
+    if (local) renderFromProgress(local);
+
+    try {
+      fetch('/api/course/progress', { credentials: 'same-origin' }).then(function (r) {
+        if (!r.ok) return null;
+        return r.json();
+      }).then(function (data) {
+        if (!data || !data.progress) return;
+        var localUpdatedAt = (local && local.updatedAt) || 0;
+        var serverUpdatedAt = data.progress.updatedAt || 0;
+        if (serverUpdatedAt > localUpdatedAt) {
+          renderFromProgress(data.progress);
+          try { localStorage.setItem('mtn:course:progress', JSON.stringify(data.progress)); } catch (_) {}
+        }
+      }).catch(function () {});
+    } catch (_) {}
+  })();
 </script>
 
 </body>

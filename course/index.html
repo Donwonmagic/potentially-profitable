@@ -99,6 +99,12 @@ main{padding-top:64px}
 .c-hero .lede{font-size:clamp(19px,2vw,22px);line-height:1.5;color:var(--ink-soft);max-width:680px;margin:0 0 14px}
 .c-hero .meta{margin-top:18px;font-size:15px;color:var(--stone)}
 .c-hero .meta strong{color:var(--ink);font-weight:600}
+.c-resume{margin:0 0 24px;padding:16px 22px;background:var(--cream-2);border:1px solid var(--line);border-left:3px solid var(--status-good);border-radius:8px;font-size:15px;color:var(--ink-soft);display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.c-resume-num{font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);white-space:nowrap}
+.c-resume-text{flex:1;min-width:0}
+.c-resume-text a{color:var(--teal);font-weight:600;text-decoration:underline;text-decoration-color:rgba(31,78,91,.4);text-underline-offset:3px}
+.c-resume-text a:hover{text-decoration-color:var(--teal)}
+.c-resume[hidden]{display:none}
 
 .c-track-section{padding:48px 0 16px}
 .c-track-h2{font-size:clamp(22px,2.6vw,28px);font-weight:500;margin:0 0 8px;line-height:1.2}
@@ -331,6 +337,15 @@ main{padding-top:64px}
       </ol>
     </nav>
     <p class="eyebrow">Open the Doors · A Muntin Method bootcamp</p>
+
+    <!-- course-resume:start (populated client-side by the script at the
+         bottom of this hub; hidden by default + revealed when localStorage
+         or /api/course/progress reports a non-zero completed count) -->
+    <aside class="c-resume" id="courseResume" hidden>
+      <span class="c-resume-num"><span id="courseResumeCount">0</span> / 16</span>
+      <span class="c-resume-text">lessons complete. <span id="courseResumeContinue">Pick up at <a id="courseResumeLink" href="/course/m1-orient/welcome/"><span id="courseResumeTitle">your next lesson</span></a>.</span></span>
+    </aside>
+
     <h1>Build your first restaurant website yourself — <span class="serif-italic">in three or four weeks, one evening at a time.</span></h1>
     <p class="lede">No credit card. No sign-up. No agency proposal. You type, you choose, you watch your site take shape in real time. By the last lesson you download a real, working website and put it on the open internet.</p>
     <p class="meta"><strong>About 12 hours of work</strong>, spread across three to four weeks. Most operators do one lesson per evening, three nights a week. Each lesson saves automatically in this browser. <strong>Sign-in is optional</strong> — only needed if you want your work on a second device.</p>
@@ -691,6 +706,118 @@ main{padding-top:64px}
     // Wait a tick so context-bus.js has loaded.
     setTimeout(hydrate, 0);
   });
+</script>
+
+<script>
+  /*
+   * Hub progress indicator. Reads localStorage["mtn:course:progress"]
+   * (the same key the mark-complete button on every lesson writes to)
+   * and, on every page load, surfaces "<n> / 16 complete · pick up at
+   * <next lesson>" right above the hero h1. Hidden by default; only
+   * appears when there's actual completed progress to report.
+   *
+   * For signed-in operators we ALSO fetch /api/course/progress in
+   * parallel; whichever record has a later updatedAt wins. The local
+   * record is the source of truth for anonymous walkers; the server
+   * record syncs in for operators on a fresh device or new browser.
+   */
+  (function () {
+    var aside     = document.getElementById('courseResume');
+    var countEl   = document.getElementById('courseResumeCount');
+    var linkEl    = document.getElementById('courseResumeLink');
+    var titleEl   = document.getElementById('courseResumeTitle');
+    var continueEl = document.getElementById('courseResumeContinue');
+    if (!aside || !countEl) return;
+
+    // Inline lesson order. 16 entries — matches data/course-lessons.json
+    // totalLessons. Fork lessons (m2-decide/fresh/* + m2-decide/rebuild/*,
+    // m3-assemble/fresh/* + m3-assemble/rebuild/*) appear as parallel
+    // pairs; "next incomplete" prefers the operator's saved track when
+    // available, falls back to the fresh-track lesson.
+    var LESSONS = [
+      { lesson: 'welcome',           path: '/course/m1-orient/welcome/',            title: 'Welcome',                 track: 'shared' },
+      { lesson: 'what-a-site-does',  path: '/course/m1-orient/what-a-site-does/',   title: 'What a site that books tables does', track: 'shared' },
+      { lesson: 'one-promise',       path: '/course/m1-orient/one-promise/',        title: 'Your one promise',        track: 'shared' },
+      { lesson: 'customer',          path: '/course/m2-decide/customer/',           title: 'Your customer in one paragraph', track: 'shared' },
+      { lesson: 'naming',            path: '/course/m2-decide/fresh/naming/',       title: 'Naming + domain',         track: 'fresh' },
+      { lesson: 'audit',             path: '/course/m2-decide/rebuild/audit/',      title: 'Audit your current site', track: 'rebuild' },
+      { lesson: 'positioning',       path: '/course/m2-decide/fresh/positioning/',  title: 'Cuisine + positioning',   track: 'fresh' },
+      { lesson: 'leaks',             path: '/course/m2-decide/rebuild/leaks/',      title: "Diagnose what's leaking", track: 'rebuild' },
+      { lesson: 'palette-voice',     path: '/course/m2-decide/palette-voice/',      title: 'Palette + voice',         track: 'shared' },
+      { lesson: 'menu',              path: '/course/m3-assemble/menu/',             title: 'Your menu shortlist',     track: 'shared' },
+      { lesson: 'photos-fresh',      path: '/course/m3-assemble/fresh/photos/',     title: 'Photo brief from scratch', track: 'fresh' },
+      { lesson: 'photos-rebuild',    path: '/course/m3-assemble/rebuild/photos/',   title: 'Photo refresh triage',    track: 'rebuild' },
+      { lesson: 'hours-contact',     path: '/course/m3-assemble/hours-contact/',    title: 'Hours, holidays, contact', track: 'shared' },
+      { lesson: 'gbp-fresh',         path: '/course/m3-assemble/fresh/gbp/',        title: 'Google Business Profile from zero', track: 'fresh' },
+      { lesson: 'gbp-rebuild',       path: '/course/m3-assemble/rebuild/gbp/',      title: 'Google Business Profile repair', track: 'rebuild' },
+      { lesson: 'local-seo',         path: '/course/m4-launch/local-seo/',          title: 'Local SEO anchors',       track: 'shared' },
+      { lesson: 'reviews',           path: '/course/m4-launch/reviews/',            title: 'Reviews + first-week trust', track: 'shared' },
+      { lesson: 'generator',         path: '/course/m4-launch/generator/',          title: 'The Generator',           track: 'shared' },
+      { lesson: 'deploy',            path: '/course/m4-launch/deploy/',             title: 'Deploy',                  track: 'shared' },
+      { lesson: 'rhythm',            path: '/course/m4-launch/rhythm/',             title: 'The 30-day rhythm',       track: 'shared' }
+    ];
+    var TOTAL = 16;
+
+    function readLocalProgress() {
+      try { return JSON.parse(localStorage.getItem('mtn:course:progress') || 'null') || null; }
+      catch (_) { return null; }
+    }
+
+    function renderFromProgress(progress) {
+      if (!progress || !Array.isArray(progress.completed)) return;
+      var done = new Set();
+      for (var i = 0; i < progress.completed.length; i++) {
+        var e = progress.completed[i];
+        if (e && typeof e.lesson === 'string') done.add(e.lesson);
+      }
+      if (!done.size) return;  // stay hidden — first-time visitors don't need the resume strip
+      var track = progress.track && (progress.track === 'fresh' || progress.track === 'rebuild') ? progress.track : null;
+
+      // Find the first lesson NOT in done. Skip fork lessons that
+      // belong to the OTHER track (if track is set).
+      var next = null;
+      for (var k = 0; k < LESSONS.length; k++) {
+        var l = LESSONS[k];
+        if (track && l.track !== 'shared' && l.track !== track) continue;
+        if (!done.has(l.lesson)) { next = l; break; }
+      }
+
+      countEl.textContent = String(Math.min(done.size, TOTAL));
+      if (next) {
+        linkEl.href = next.path;
+        titleEl.textContent = 'Lesson ' + (LESSONS.indexOf(next) + 1) + ': ' + next.title;
+      } else {
+        // All lessons done — replace the continue line with congrats.
+        if (continueEl) continueEl.textContent = "You've completed every lesson. ";
+      }
+      aside.hidden = false;
+    }
+
+    // Render from localStorage immediately so a returning operator
+    // sees the strip without waiting for a network round-trip.
+    var local = readLocalProgress();
+    if (local) renderFromProgress(local);
+
+    // Then race the server. If server.updatedAt > local.updatedAt the
+    // server record overlays (operator synced from another device).
+    // Anonymous callers get 401; skip silently.
+    try {
+      fetch('/api/course/progress', { credentials: 'same-origin' }).then(function (r) {
+        if (!r.ok) return null;
+        return r.json();
+      }).then(function (data) {
+        if (!data || !data.progress) return;
+        var localUpdatedAt = (local && local.updatedAt) || 0;
+        var serverUpdatedAt = data.progress.updatedAt || 0;
+        if (serverUpdatedAt > localUpdatedAt) {
+          renderFromProgress(data.progress);
+          // Also mirror server back to localStorage so subsequent
+          // anonymous tabs (or the rest of this page session) see it.
+          try { localStorage.setItem('mtn:course:progress', JSON.stringify(data.progress)); } catch (_) {}
+        }
+      }).catch(function () { /* offline — local render stands */ });
+    } catch (_) { /* fetch unavailable — local render stands */ }
+  })();
 </script>
 
 </body>
