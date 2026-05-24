@@ -65,15 +65,25 @@ function buildBanner(locale) {
   const cta = locale === 'es' ? (batch.cta_es || 'Leer el lote') : (batch.cta_en || 'Read the batch');
   const href = locale === 'es' ? batch.overview_es : batch.overview_en;
   const arrow = '&rarr;';
+  // Banner is the first thing visible above the nav, so it has to read
+  // as "something new shipped" within a second of first paint. Earlier
+  // iteration (10px padding, 14/15px text, single-line underline CTA)
+  // ran too thin to register on mobile — operators reported scrolling
+  // straight past it. This version: dark ink background (matches the
+  // brand register, no flashy color noise), an "NEW THIS WEEK" pill
+  // eyebrow in cream-on-teal (the brand accent), 17px italic headline,
+  // and a pill-button CTA in cream-on-ink so the action is unmistakable.
+  const newLabel = locale === 'es' ? 'Nuevo esta semana' : 'New this week';
   return [
     '<!-- batch-banner:start -->',
-    `<aside class="batch-banner" data-batch="${escAttr(batch.key)}" role="complementary" aria-label="${escAttr(label)}" style="background:var(--ink,#14161A);color:var(--cream,#FAF7F2);font-size:14px;line-height:1.45;padding:10px 0;border-bottom:1px solid rgba(250,247,242,0.1);position:relative;z-index:60">`,
-    `  <div style="max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,64px);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">`,
-    `    <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;min-width:0">`,
-    `      <span style="font-family:Georgia,serif;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;opacity:0.7;white-space:nowrap">${escHtml(label)}</span>`,
-    `      <span style="font-family:Georgia,serif;font-size:15px;font-style:italic">${escHtml(headline)}</span>`,
+    `<aside class="batch-banner" data-batch="${escAttr(batch.key)}" role="complementary" aria-label="${escAttr(label)}" style="background:var(--ink,#14161A);color:var(--cream,#FAF7F2);font-size:15px;line-height:1.5;padding:16px 0;border-bottom:1px solid rgba(250,247,242,0.12);position:relative;z-index:60">`,
+    `  <div style="max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,64px);display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap">`,
+    `    <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;min-width:0">`,
+    `      <span style="display:inline-block;font-family:Inter,system-ui,sans-serif;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;background:var(--teal,#2A50C8);color:var(--cream,#FAF7F2);padding:4px 10px;border-radius:3px;white-space:nowrap;flex-shrink:0">${escHtml(newLabel)}</span>`,
+    `      <span style="font-family:Georgia,serif;font-size:11px;letter-spacing:0.10em;text-transform:uppercase;opacity:0.75;white-space:nowrap">${escHtml(label)}</span>`,
+    `      <span style="font-family:Georgia,serif;font-size:17px;font-style:italic;line-height:1.35;min-width:0">${escHtml(headline)}</span>`,
     `    </div>`,
-    `    <a href="${escAttr(href)}" style="color:var(--cream,#FAF7F2);text-decoration:none;font-weight:500;border-bottom:1px solid currentColor;padding-bottom:1px;white-space:nowrap;flex-shrink:0">${escHtml(cta)} ${arrow}</a>`,
+    `    <a href="${escAttr(href)}" style="display:inline-flex;align-items:center;gap:6px;color:var(--ink,#14161A);background:var(--cream,#FAF7F2);text-decoration:none;font-family:Inter,system-ui,sans-serif;font-weight:600;font-size:14px;padding:9px 18px;border-radius:999px;white-space:nowrap;flex-shrink:0;transition:transform .15s ease">${escHtml(cta)} <span aria-hidden="true">${arrow}</span></a>`,
     `  </div>`,
     `</aside>`,
     '<!-- batch-banner:end -->',

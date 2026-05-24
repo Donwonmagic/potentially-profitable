@@ -234,6 +234,28 @@
     document.documentElement.dataset.platform = 'mac';
   }
 </script>
+<!-- batch-banner:start -->
+<aside class="batch-banner" data-batch="2026-w2" role="complementary" aria-label="Semana 2 · 23 de mayo de 2026" style="background:var(--ink,#14161A);color:var(--cream,#FAF7F2);font-size:15px;line-height:1.5;padding:16px 0;border-bottom:1px solid rgba(250,247,242,0.12);position:relative;z-index:60">
+  <div style="max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,64px);display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap">
+    <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;min-width:0">
+      <span style="display:inline-block;font-family:Inter,system-ui,sans-serif;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;background:var(--teal,#2A50C8);color:var(--cream,#FAF7F2);padding:4px 10px;border-radius:3px;white-space:nowrap;flex-shrink:0">Nuevo esta semana</span>
+      <span style="font-family:Georgia,serif;font-size:11px;letter-spacing:0.10em;text-transform:uppercase;opacity:0.75;white-space:nowrap">Semana 2 · 23 de mayo de 2026</span>
+      <span style="font-family:Georgia,serif;font-size:17px;font-style:italic;line-height:1.35;min-width:0">La búsqueda cambió el 19 de mayo. Esta es la jugada del operador.</span>
+    </div>
+    <a href="/es/blog/la-busqueda-cambio-bajo-tus-pies-mayo-2026/" style="display:inline-flex;align-items:center;gap:6px;color:var(--ink,#14161A);background:var(--cream,#FAF7F2);text-decoration:none;font-family:Inter,system-ui,sans-serif;font-weight:600;font-size:14px;padding:9px 18px;border-radius:999px;white-space:nowrap;flex-shrink:0;transition:transform .15s ease">Leer el lote <span aria-hidden="true">&rarr;</span></a>
+  </div>
+</aside>
+<!-- batch-banner:end -->
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
 <header class="nav" id="nav">
   <script>/* i18n runtime dictionary — read by assets/site.js via window.__i18n.
              Placed inside <header> so sync-includes replaces it atomically

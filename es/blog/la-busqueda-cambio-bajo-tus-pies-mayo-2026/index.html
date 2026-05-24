@@ -137,6 +137,28 @@ header.nav{min-height:64px}
     document.documentElement.dataset.platform = 'mac';
   }
 </script>
+<!-- batch-banner:start -->
+<aside class="batch-banner" data-batch="2026-w2" role="complementary" aria-label="Semana 2 · 23 de mayo de 2026" style="background:var(--ink,#14161A);color:var(--cream,#FAF7F2);font-size:15px;line-height:1.5;padding:16px 0;border-bottom:1px solid rgba(250,247,242,0.12);position:relative;z-index:60">
+  <div style="max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,64px);display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap">
+    <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;min-width:0">
+      <span style="display:inline-block;font-family:Inter,system-ui,sans-serif;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;background:var(--teal,#2A50C8);color:var(--cream,#FAF7F2);padding:4px 10px;border-radius:3px;white-space:nowrap;flex-shrink:0">Nuevo esta semana</span>
+      <span style="font-family:Georgia,serif;font-size:11px;letter-spacing:0.10em;text-transform:uppercase;opacity:0.75;white-space:nowrap">Semana 2 · 23 de mayo de 2026</span>
+      <span style="font-family:Georgia,serif;font-size:17px;font-style:italic;line-height:1.35;min-width:0">La búsqueda cambió el 19 de mayo. Esta es la jugada del operador.</span>
+    </div>
+    <a href="/es/blog/la-busqueda-cambio-bajo-tus-pies-mayo-2026/" style="display:inline-flex;align-items:center;gap:6px;color:var(--ink,#14161A);background:var(--cream,#FAF7F2);text-decoration:none;font-family:Inter,system-ui,sans-serif;font-weight:600;font-size:14px;padding:9px 18px;border-radius:999px;white-space:nowrap;flex-shrink:0;transition:transform .15s ease">Leer el lote <span aria-hidden="true">&rarr;</span></a>
+  </div>
+</aside>
+<!-- batch-banner:end -->
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
 <header class="nav" id="nav">
   <script>/* i18n runtime dictionary — read by assets/site.js via window.__i18n.
              Placed inside <header> so sync-includes replaces it atomically
@@ -470,6 +492,53 @@ header.nav{min-height:64px}
     </article>
 
   <!-- knit-rail:start --><!-- knit-rail:end -->
+
+  <section class="wave-toc" aria-labelledby="wave-toc-h">
+    <p class="eyebrow wave-toc__eyebrow">Lee el lote</p>
+    <h2 id="wave-toc-h" class="wave-toc__head">Cinco piezas, en orden.</h2>
+    <ol class="wave-toc__list">
+      <li class="wave-toc__item" data-band="search">
+        <span class="wave-toc__num">01</span>
+        <div class="wave-toc__body">
+          <p class="wave-toc__role">La nueva superficie</p>
+          <a class="wave-toc__title" href="/es/blog/google-ai-mode-resultados-locales-restaurante-2026/">Google reconstruy&oacute; AI Mode en I/O 2026</a>
+          <p class="wave-toc__desc">El resultado local ahora se genera y reserva la mesa. Qu&eacute; cambia para el restaurante dentro de la respuesta.</p>
+        </div>
+      </li>
+      <li class="wave-toc__item" data-band="search">
+        <span class="wave-toc__num">02</span>
+        <div class="wave-toc__body">
+          <p class="wave-toc__role">El chequeo de visibilidad</p>
+          <a class="wave-toc__title" href="/es/blog/como-aparecer-en-busqueda-ai-restaurante-2026/">&iquest;Tu restaurante es visible en b&uacute;squeda IA?</a>
+          <p class="wave-toc__desc">Cuatro n&uacute;meros lo deciden: calificaci&oacute;n, frescura, perfil completo y una respuesta real en tu sitio. Diez minutos para leer los cuatro.</p>
+        </div>
+      </li>
+      <li class="wave-toc__item" data-band="search">
+        <span class="wave-toc__num">03</span>
+        <div class="wave-toc__body">
+          <p class="wave-toc__role">El costo</p>
+          <a class="wave-toc__title" href="/es/blog/paquete-local-ai-llamadas-restaurante-2026/">Por qu&eacute; tus llamadas de Google bajan aun en el #1</a>
+          <p class="wave-toc__desc">Vistas de Maps &minus;40%, pedidos &minus;26%, botones de llamada retirados sin aviso. Los tres caminos de conversi&oacute;n que reemplazan el toque.</p>
+        </div>
+      </li>
+      <li class="wave-toc__item" data-band="search">
+        <span class="wave-toc__num">04</span>
+        <div class="wave-toc__body">
+          <p class="wave-toc__role">La nueva fuente de tr&aacute;fico</p>
+          <a class="wave-toc__title" href="/es/blog/trafico-referido-gemini-restaurantes-2026/">Gemini se volvi&oacute; tu fuente #2 de tr&aacute;fico IA</a>
+          <p class="wave-toc__desc">Gemini lee tu Perfil de Negocio de Google para componer respuestas. La misma hora de trabajo en el perfil paga dos veces.</p>
+        </div>
+      </li>
+      <li class="wave-toc__item" data-band="search">
+        <span class="wave-toc__num">05</span>
+        <div class="wave-toc__body">
+          <p class="wave-toc__role">La reserva</p>
+          <a class="wave-toc__title" href="/es/blog/reserva-en-google-ai-mode-restaurante-2026/">Los comensales reservan dentro de la respuesta de IA</a>
+          <p class="wave-toc__desc">OpenTable / Resy / Tock cierran el ciclo. Aseg&uacute;rate de que es tu mesa la que el agente alcanza.</p>
+        </div>
+      </li>
+    </ol>
+  </section>
 
   <aside class="post-end-mark" aria-hidden="true">
     <hr/>
