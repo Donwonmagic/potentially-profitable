@@ -166,13 +166,13 @@
       "module": "m3-assemble",
       "track": "shared",
       "position": 8,
-      "estimatedMinutes": 35,
+      "estimatedMinutes": 30,
       "path": "/course/m3-assemble/menu/",
       "title": {
-        "en": "Menu + plate-cost loop",
-        "es": "Menú y ciclo de costo por plato"
+        "en": "Your menu shortlist",
+        "es": "Tu lista corta de menú"
       },
-      "widgets": ["menu-builder", "drag-rank", "live-preview-frame"]
+      "widgets": ["menu-builder", "live-preview-frame"]
     },
     {
       "id": "photos-fresh",
@@ -211,7 +211,7 @@
         "en": "Hours, holidays, contact",
         "es": "Horarios, festivos, contacto"
       },
-      "widgets": ["weekly-hours-grid", "live-preview-frame"]
+      "widgets": ["weekly-hours-grid", "text-input", "live-preview-frame"]
     },
     {
       "id": "gbp-fresh",
@@ -318,9 +318,9 @@
     { "tag": "positioning-plotter",  "status": "shipped",    "path": "/tools/_shared/workshop/positioning-plotter.js" },
     { "tag": "voice-slider",         "status": "planned" },
     { "tag": "font-pair-picker",     "status": "planned" },
-    { "tag": "menu-builder",         "status": "planned" },
+    { "tag": "menu-builder",         "status": "shipped",    "path": "/tools/_shared/workshop/menu-builder.js" },
     { "tag": "shot-list-grid",       "status": "planned" },
-    { "tag": "weekly-hours-grid",    "status": "planned" },
+    { "tag": "weekly-hours-grid",    "status": "shipped",    "path": "/tools/_shared/workshop/weekly-hours-grid.js" },
     { "tag": "gbp-card-preview",     "status": "planned" },
     { "tag": "keyword-builder",      "status": "planned" },
     { "tag": "deploy-stepper",       "status": "planned" },
