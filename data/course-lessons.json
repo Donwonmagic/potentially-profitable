@@ -1,0 +1,325 @@
+{
+  "$comment": "Single source of truth for the Open the Doors bootcamp. Consumed by scripts/new-course-lesson.mjs (scaffolder), scripts/check-course-locale-parity.mjs (drift), the rail + generator (page order), and the course hub page. See /root/.claude/plans/i-want-to-design-piped-diffie.md for the design.",
+  "version": 1,
+  "totalLessons": 16,
+  "modules": [
+    {
+      "id": "m1-orient",
+      "position": 1,
+      "title": { "en": "Orient", "es": "Orientar" },
+      "summary": {
+        "en": "What you're actually building, and who you're building it for.",
+        "es": "Qué estás construyendo realmente, y para quién."
+      }
+    },
+    {
+      "id": "m2-decide",
+      "position": 2,
+      "title": { "en": "Decide", "es": "Decidir" },
+      "summary": {
+        "en": "The eight decisions that shape every restaurant website.",
+        "es": "Las ocho decisiones que dan forma a todo sitio web de restaurante."
+      }
+    },
+    {
+      "id": "m3-assemble",
+      "position": 3,
+      "title": { "en": "Assemble", "es": "Ensamblar" },
+      "summary": {
+        "en": "The operator paperwork: menu, photos, hours, GBP.",
+        "es": "El papeleo del operador: menú, fotos, horarios, GBP."
+      }
+    },
+    {
+      "id": "m4-launch",
+      "position": 4,
+      "title": { "en": "Launch", "es": "Lanzar" },
+      "summary": {
+        "en": "Generate, deploy, and the rhythm that keeps it alive.",
+        "es": "Generar, desplegar y el ritmo que lo mantiene vivo."
+      }
+    }
+  ],
+  "lessons": [
+    {
+      "id": "welcome",
+      "module": "m1-orient",
+      "track": "shared",
+      "position": 1,
+      "estimatedMinutes": 10,
+      "path": "/course/m1-orient/welcome/",
+      "title": {
+        "en": "Welcome — pick your starting line",
+        "es": "Bienvenida — elige tu punto de partida"
+      },
+      "widgets": ["track-picker"]
+    },
+    {
+      "id": "what-a-site-does",
+      "module": "m1-orient",
+      "track": "shared",
+      "position": 2,
+      "estimatedMinutes": 20,
+      "path": "/course/m1-orient/what-a-site-does/",
+      "title": {
+        "en": "What a site that books tables actually does",
+        "es": "Qué hace realmente un sitio que reserva mesas"
+      },
+      "widgets": ["drag-rank", "live-preview-frame"]
+    },
+    {
+      "id": "one-promise",
+      "module": "m1-orient",
+      "track": "shared",
+      "position": 3,
+      "estimatedMinutes": 25,
+      "path": "/course/m1-orient/one-promise/",
+      "title": {
+        "en": "Your one promise",
+        "es": "Tu única promesa"
+      },
+      "widgets": ["tab-flip", "live-preview-frame"]
+    },
+    {
+      "id": "customer",
+      "module": "m2-decide",
+      "track": "shared",
+      "position": 4,
+      "estimatedMinutes": 25,
+      "path": "/course/m2-decide/customer/",
+      "title": {
+        "en": "Your customer in one paragraph",
+        "es": "Tu cliente en un párrafo"
+      },
+      "widgets": ["persona-card-builder", "map-radius", "live-preview-frame"]
+    },
+    {
+      "id": "naming",
+      "module": "m2-decide",
+      "track": "fresh",
+      "position": 5,
+      "estimatedMinutes": 30,
+      "path": "/course/m2-decide/fresh/naming/",
+      "title": {
+        "en": "Naming + domain",
+        "es": "Nombre y dominio"
+      },
+      "widgets": ["live-preview-frame"]
+    },
+    {
+      "id": "audit",
+      "module": "m2-decide",
+      "track": "rebuild",
+      "position": 5,
+      "estimatedMinutes": 30,
+      "path": "/course/m2-decide/rebuild/audit/",
+      "title": {
+        "en": "Audit your current site",
+        "es": "Audita tu sitio actual"
+      },
+      "widgets": ["before-after-slider", "live-preview-frame"]
+    },
+    {
+      "id": "positioning",
+      "module": "m2-decide",
+      "track": "fresh",
+      "position": 6,
+      "estimatedMinutes": 25,
+      "path": "/course/m2-decide/fresh/positioning/",
+      "title": {
+        "en": "Cuisine + positioning",
+        "es": "Cocina y posicionamiento"
+      },
+      "widgets": ["positioning-plotter", "live-preview-frame"]
+    },
+    {
+      "id": "leaks",
+      "module": "m2-decide",
+      "track": "rebuild",
+      "position": 6,
+      "estimatedMinutes": 25,
+      "path": "/course/m2-decide/rebuild/leaks/",
+      "title": {
+        "en": "Diagnose what's leaking",
+        "es": "Diagnostica qué está perdiendo"
+      },
+      "widgets": ["drag-rank", "live-preview-frame"]
+    },
+    {
+      "id": "palette-voice",
+      "module": "m2-decide",
+      "track": "shared",
+      "position": 7,
+      "estimatedMinutes": 30,
+      "path": "/course/m2-decide/palette-voice/",
+      "title": {
+        "en": "Palette + voice",
+        "es": "Paleta y voz"
+      },
+      "widgets": ["palette-picker", "voice-slider", "font-pair-picker", "live-preview-frame"]
+    },
+    {
+      "id": "menu",
+      "module": "m3-assemble",
+      "track": "shared",
+      "position": 8,
+      "estimatedMinutes": 35,
+      "path": "/course/m3-assemble/menu/",
+      "title": {
+        "en": "Menu + plate-cost loop",
+        "es": "Menú y ciclo de costo por plato"
+      },
+      "widgets": ["menu-builder", "drag-rank", "live-preview-frame"]
+    },
+    {
+      "id": "photos-fresh",
+      "module": "m3-assemble",
+      "track": "fresh",
+      "position": 9,
+      "estimatedMinutes": 25,
+      "path": "/course/m3-assemble/fresh/photos/",
+      "title": {
+        "en": "Photo brief from scratch",
+        "es": "Brief fotográfico desde cero"
+      },
+      "widgets": ["shot-list-grid", "live-preview-frame"]
+    },
+    {
+      "id": "photos-rebuild",
+      "module": "m3-assemble",
+      "track": "rebuild",
+      "position": 9,
+      "estimatedMinutes": 25,
+      "path": "/course/m3-assemble/rebuild/photos/",
+      "title": {
+        "en": "Photo refresh triage",
+        "es": "Triaje de actualización fotográfica"
+      },
+      "widgets": ["before-after-slider", "live-preview-frame"]
+    },
+    {
+      "id": "hours-contact",
+      "module": "m3-assemble",
+      "track": "shared",
+      "position": 10,
+      "estimatedMinutes": 20,
+      "path": "/course/m3-assemble/hours-contact/",
+      "title": {
+        "en": "Hours, holidays, contact",
+        "es": "Horarios, festivos, contacto"
+      },
+      "widgets": ["weekly-hours-grid", "live-preview-frame"]
+    },
+    {
+      "id": "gbp-fresh",
+      "module": "m3-assemble",
+      "track": "fresh",
+      "position": 11,
+      "estimatedMinutes": 30,
+      "path": "/course/m3-assemble/fresh/gbp/",
+      "title": {
+        "en": "Google Business Profile from zero",
+        "es": "Perfil de Google Business desde cero"
+      },
+      "widgets": ["gbp-card-preview"]
+    },
+    {
+      "id": "gbp-rebuild",
+      "module": "m3-assemble",
+      "track": "rebuild",
+      "position": 11,
+      "estimatedMinutes": 30,
+      "path": "/course/m3-assemble/rebuild/gbp/",
+      "title": {
+        "en": "Google Business Profile repair",
+        "es": "Reparación del perfil de Google Business"
+      },
+      "widgets": ["drag-rank", "gbp-card-preview"]
+    },
+    {
+      "id": "local-seo",
+      "module": "m4-launch",
+      "track": "shared",
+      "position": 12,
+      "estimatedMinutes": 25,
+      "path": "/course/m4-launch/local-seo/",
+      "title": {
+        "en": "Local SEO anchors",
+        "es": "Anclas de SEO local"
+      },
+      "widgets": ["keyword-builder", "map-radius", "live-preview-frame"]
+    },
+    {
+      "id": "reviews",
+      "module": "m4-launch",
+      "track": "shared",
+      "position": 13,
+      "estimatedMinutes": 20,
+      "path": "/course/m4-launch/reviews/",
+      "title": {
+        "en": "Reviews + first-week trust",
+        "es": "Reseñas y confianza de la primera semana"
+      },
+      "widgets": ["tab-flip", "before-after-slider"]
+    },
+    {
+      "id": "generator",
+      "module": "m4-launch",
+      "track": "shared",
+      "position": 14,
+      "estimatedMinutes": 20,
+      "path": "/course/m4-launch/generator/",
+      "title": {
+        "en": "The Generator — download your site",
+        "es": "El generador — descarga tu sitio"
+      },
+      "widgets": ["live-preview-frame"]
+    },
+    {
+      "id": "deploy",
+      "module": "m4-launch",
+      "track": "shared",
+      "position": 15,
+      "estimatedMinutes": 30,
+      "path": "/course/m4-launch/deploy/",
+      "title": {
+        "en": "Deploy to Cloudflare, Netlify, or Vercel",
+        "es": "Despliega en Cloudflare, Netlify o Vercel"
+      },
+      "widgets": ["deploy-stepper"]
+    },
+    {
+      "id": "rhythm",
+      "module": "m4-launch",
+      "track": "shared",
+      "position": 16,
+      "estimatedMinutes": 25,
+      "path": "/course/m4-launch/rhythm/",
+      "title": {
+        "en": "The 30-day rhythm",
+        "es": "El ritmo de 30 días"
+      },
+      "widgets": ["rhythm-calendar"]
+    }
+  ],
+  "widgets": [
+    { "tag": "track-picker",         "status": "planned" },
+    { "tag": "live-preview-frame",   "status": "shipped",  "path": "/tools/_shared/workshop/live-preview-frame.js" },
+    { "tag": "drag-rank",            "status": "planned" },
+    { "tag": "tab-flip",             "status": "planned" },
+    { "tag": "before-after-slider",  "status": "planned" },
+    { "tag": "persona-card-builder", "status": "planned" },
+    { "tag": "map-radius",           "status": "planned" },
+    { "tag": "positioning-plotter",  "status": "planned" },
+    { "tag": "palette-picker",       "status": "planned" },
+    { "tag": "voice-slider",         "status": "planned" },
+    { "tag": "font-pair-picker",     "status": "planned" },
+    { "tag": "menu-builder",         "status": "planned" },
+    { "tag": "shot-list-grid",       "status": "planned" },
+    { "tag": "weekly-hours-grid",    "status": "planned" },
+    { "tag": "gbp-card-preview",     "status": "planned" },
+    { "tag": "keyword-builder",      "status": "planned" },
+    { "tag": "deploy-stepper",       "status": "planned" },
+    { "tag": "rhythm-calendar",      "status": "planned" }
+  ]
+}
