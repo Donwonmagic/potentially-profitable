@@ -43,7 +43,11 @@ main{padding-top:64px}
 .m-hero .lede{font-size:clamp(18px,1.9vw,20px);line-height:1.55;color:var(--ink-soft);max-width:640px;margin:0 0 12px}
 .m-hero .meta{font-size:14.5px;color:var(--stone);margin:0}
 .m-lessons{display:grid;gap:18px;padding:48px 0 32px}
-.m-lesson{display:block;padding:24px 28px;background:var(--cream);border:1px solid var(--line);border-radius:10px;opacity:.6}
+.m-lesson{display:block;padding:24px 28px;background:var(--cream);border:1px solid var(--line);border-radius:10px;opacity:.6;text-decoration:none;color:inherit}
+.m-lesson--live{opacity:1;transition:border-color .12s ease,transform .12s ease}
+.m-lesson--live:hover{border-color:var(--teal);transform:translateY(-1px)}
+.m-lesson--live:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.m-lesson--live .status-tag{background:var(--status-good);color:#FAF7F2}
 .m-lesson-h{display:flex;align-items:baseline;justify-content:space-between;gap:14px;flex-wrap:wrap}
 .m-lesson .num{font-family:var(--font-display);font-size:36px;font-weight:300;color:var(--stone);letter-spacing:-.04em;line-height:1}
 .m-lesson h2{margin:0;font-size:22px;font-weight:500;line-height:1.2}
@@ -78,31 +82,31 @@ main{padding-top:64px}
     <p class="eyebrow">Módulo 4 de 4 · Lecciones 12–16 de 16 · Unas 2 horas</p>
     <h1>Lanzar — <span class="serif-italic">genera el sitio, despliégalo, mantenlo vivo.</span></h1>
     <p class="lede">El tramo final de cinco lecciones. Anclas de SEO local, reseñas y confianza de la primera semana, el generador de la L14 (el clic que convierte 13 lecciones de trabajo en un sitio descargable), despliegue en Cloudflare o Netlify o Vercel, y un ritmo de 30 días que evita que tu sitio nuevo se ponga viejo.</p>
-    <p class="meta">Las cinco lecciones del Módulo 4 llegan en próximas entregas — el resumen del módulo se entrega ahora como mapa de ruta.</p>
+    <p class="meta">Las Lecciones 12 y 13 ya están en vivo. El generador (L14), el despliegue (L15) y el ritmo (L16) llegan en próximas entregas.</p>
   </section>
 
   <section class="m-lessons" aria-labelledby="lessons-h">
     <h2 id="lessons-h" class="sr-only">Lecciones de este módulo</h2>
 
-    <article class="m-lesson">
+    <a class="m-lesson m-lesson--live" href="/es/course/m4-launch/local-seo/">
       <div class="m-lesson-h">
         <span class="num">12</span>
         <h2>Anclas de SEO local</h2>
         <div class="meta-row"><span class="time">~25 min</span><span class="track-pill">Compartida</span></div>
       </div>
-      <p class="summary">Ocho frases clave de barrio + cocina anclados a tu párrafo del cliente y tu dirección. Se meten en las etiquetas meta y schema del generador.</p>
-      <span class="status-tag">Próximamente</span>
-    </article>
+      <p class="summary">Ocho frases clave de barrio + cocina ancladas a tu párrafo del cliente y tu dirección. Se meten en las etiquetas meta y schema del generador.</p>
+      <span class="status-tag">En vivo</span>
+    </a>
 
-    <article class="m-lesson">
+    <a class="m-lesson m-lesson--live" href="/es/course/m4-launch/reviews/">
       <div class="m-lesson-h">
         <span class="num">13</span>
         <h2>Reseñas y confianza de la primera semana</h2>
         <div class="meta-row"><span class="time">~20 min</span><span class="track-pill">Compartida</span></div>
       </div>
       <p class="summary">Cómo pedir reseñas, cómo responder a las que te llegan, y qué señales de confianza van en la página de inicio en tu primera semana.</p>
-      <span class="status-tag">Próximamente</span>
-    </article>
+      <span class="status-tag">En vivo</span>
+    </a>
 
     <article class="m-lesson">
       <div class="m-lesson-h">
@@ -137,7 +141,7 @@ main{padding-top:64px}
 
   <aside class="m-takeaway" aria-labelledby="m-takeaway-h">
     <h2 id="m-takeaway-h">Dónde está este módulo en la construcción</h2>
-    <p>El Módulo 4 es el siguiente foco principal después de que aterricen las bifurcaciones de fotos y GBP del Módulo 3 (Lecciones 9, 11). El generador de la L14 es la pieza climática — es lo que convierte el bootcamp entero en un entregable real.</p>
+    <p>Las Lecciones 12 y 13 ya están en vivo — trabájalas ahora para redactar tus frases clave y tu plantilla de respuesta a la primera reseña mala. El generador de la L14 es la pieza climática (el clic que convierte 13 lecciones de trabajo en un ZIP descargable) y llega después, seguido del despliegue (L15) y el ritmo de 30 días (L16).</p>
   </aside>
 
   <nav class="m-nav" aria-label="Navegación de módulo">

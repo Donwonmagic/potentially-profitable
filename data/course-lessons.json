@@ -254,7 +254,8 @@
         "en": "Local SEO anchors",
         "es": "Anclas de SEO local"
       },
-      "widgets": ["keyword-builder", "map-radius", "live-preview-frame"]
+      "widgets": ["text-input", "live-preview-frame"],
+      "futureWidgets": ["keyword-builder", "map-radius"]
     },
     {
       "id": "reviews",
@@ -267,7 +268,8 @@
         "en": "Reviews + first-week trust",
         "es": "Reseñas y confianza de la primera semana"
       },
-      "widgets": ["tab-flip", "before-after-slider"]
+      "widgets": ["tab-flip", "text-input", "live-preview-frame"],
+      "futureWidgets": ["before-after-slider"]
     },
     {
       "id": "generator",
