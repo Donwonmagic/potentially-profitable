@@ -183,9 +183,10 @@
       "path": "/course/m3-assemble/fresh/photos/",
       "title": {
         "en": "Photo brief from scratch",
-        "es": "Brief fotográfico desde cero"
+        "es": "Brief de fotos desde cero"
       },
-      "widgets": ["shot-list-grid", "live-preview-frame"]
+      "widgets": ["drag-rank", "tab-flip", "text-input", "live-preview-frame"],
+      "futureWidgets": ["shot-list-grid"]
     },
     {
       "id": "photos-rebuild",
@@ -196,9 +197,10 @@
       "path": "/course/m3-assemble/rebuild/photos/",
       "title": {
         "en": "Photo refresh triage",
-        "es": "Triaje de actualización fotográfica"
+        "es": "Triaje de fotos actuales"
       },
-      "widgets": ["before-after-slider", "live-preview-frame"]
+      "widgets": ["tab-flip", "drag-rank", "text-input", "live-preview-frame"],
+      "futureWidgets": ["before-after-slider"]
     },
     {
       "id": "hours-contact",
