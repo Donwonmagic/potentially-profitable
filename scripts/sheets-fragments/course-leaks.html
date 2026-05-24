@@ -1,0 +1,46 @@
+    <form id="sheet-fields" class="sheet-form" autocomplete="off" novalidate>
+      <fieldset>
+        <legend>Header</legend>
+        <label><span><span>Restaurant name</span></span><input type="text" name="name" data-context-key="restaurantProfile.name" /></label>
+        <label><span><span>Current site URL</span></span><input type="url" name="url" placeholder="https://" /></label>
+        <label><span><span>Diagnosed by + date</span></span><input type="text" name="diagnosed_by" /></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>The leak inventory — ranked</legend>
+        <span class="field-help">From L6b drag-rank. Rank 1 = most urgent; 6+ = nice to have. Cost-to-fix in money OR hours.</span>
+        <table class="sheet-row-table">
+          <thead><tr><th>Rank</th><th>Leak</th><th>Severity (1-3)</th><th>Bookings cost / week (est.)</th><th>Cost-to-fix</th><th>Owner</th><th>Due date</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td><input type="text" name="r1_leak" /></td><td><select name="r1_sev"><option>—</option><option>1</option><option>2</option><option>3</option></select></td><td><input type="text" name="r1_cost" /></td><td><input type="text" name="r1_fix" /></td><td><input type="text" name="r1_owner" /></td><td><input type="date" name="r1_due" /></td></tr>
+            <tr><td>2</td><td><input type="text" name="r2_leak" /></td><td><select name="r2_sev"><option>—</option><option>1</option><option>2</option><option>3</option></select></td><td><input type="text" name="r2_cost" /></td><td><input type="text" name="r2_fix" /></td><td><input type="text" name="r2_owner" /></td><td><input type="date" name="r2_due" /></td></tr>
+            <tr><td>3</td><td><input type="text" name="r3_leak" /></td><td><select name="r3_sev"><option>—</option><option>1</option><option>2</option><option>3</option></select></td><td><input type="text" name="r3_cost" /></td><td><input type="text" name="r3_fix" /></td><td><input type="text" name="r3_owner" /></td><td><input type="date" name="r3_due" /></td></tr>
+            <tr><td>4</td><td><input type="text" name="r4_leak" /></td><td><select name="r4_sev"><option>—</option><option>1</option><option>2</option><option>3</option></select></td><td><input type="text" name="r4_cost" /></td><td><input type="text" name="r4_fix" /></td><td><input type="text" name="r4_owner" /></td><td><input type="date" name="r4_due" /></td></tr>
+            <tr><td>5</td><td><input type="text" name="r5_leak" /></td><td><select name="r5_sev"><option>—</option><option>1</option><option>2</option><option>3</option></select></td><td><input type="text" name="r5_cost" /></td><td><input type="text" name="r5_fix" /></td><td><input type="text" name="r5_owner" /></td><td><input type="date" name="r5_due" /></td></tr>
+            <tr><td>6</td><td><input type="text" name="r6_leak" /></td><td><select name="r6_sev"><option>—</option><option>1</option><option>2</option><option>3</option></select></td><td><input type="text" name="r6_cost" /></td><td><input type="text" name="r6_fix" /></td><td><input type="text" name="r6_owner" /></td><td><input type="date" name="r6_due" /></td></tr>
+          </tbody>
+        </table>
+      </fieldset>
+
+      <fieldset>
+        <legend>This-week action</legend>
+        <span class="field-help">Pull the top 3 leaks out of the inventory. Each one gets a specific day this week.</span>
+        <label><span><span>Top 1 — handled by Friday</span></span><input type="text" name="this_week_1" /></label>
+        <label><span><span>Top 2 — handled by Friday</span></span><input type="text" name="this_week_2" /></label>
+        <label><span><span>Top 3 — handled by Friday</span></span><input type="text" name="this_week_3" /></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Announce the fix</legend>
+        <span class="field-help">A diner who hit a leak once won't come back unless they hear it's fixed. Plan the announcement.</span>
+        <label><input type="checkbox" name="announce_gbp" /><span><span>GBP post: 'we updated X'</span></span></label>
+        <label><input type="checkbox" name="announce_email" /><span><span>Email to past-customer list</span></span></label>
+        <label><input type="checkbox" name="announce_social" /><span><span>Social post (Instagram / TikTok story)</span></span></label>
+      </fieldset>
+    </form>
+
+    <script>
+      (function () {
+        if (window.SheetPage) window.SheetPage.register({ slug: 'course-leaks' });
+      })();
+    </script>
