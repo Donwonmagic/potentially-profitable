@@ -1,31 +1,38 @@
 /*
- * Course config sync — debounced push of MuntinContext to
- * /api/course/config for signed-in operators.
+ * Course config sync — bidirectional MuntinContext ↔ /api/course/config.
  *
- * Listens to mtn:context-change events (broadcast by the workshop
- * widget engine on every commit) and on each event resets a 5-second
- * debounce timer. When the timer fires, the script reads the current
- * MuntinContext, picks only the keys the server-side allowlist
- * accepts (matches src/lib/course.js CONFIG_ALLOWED_KEYS), and POSTs
- * the snapshot.
+ * Two operations, sharing the same module:
  *
- * Anonymous operators get a 401 — silently skipped. Signed-in
- * operators get cross-device sync of their rich config (palette,
- * dishes, hours, onePromise, customerParagraph, the lot) so signing
- * in on a second device pulls a working snapshot via /api/course/config
- * GET (which the L14 readiness checklist or a future hydration step
- * can consume).
+ *   1. HYDRATE on page load (additive merge):
+ *      - If MuntinContext locally has none of the allowlisted keys
+ *        (fresh-device case), GET /api/course/config and merge any
+ *        present fields into MuntinContext via .merge() (which writes
+ *        localStorage and broadcasts mtn:context-change, so already-
+ *        mounted widgets re-render with the hydrated state).
+ *      - If local already has any allowlisted key, skip hydrate
+ *        entirely — local is the source of truth for an operator
+ *        who's already typed something here.
+ *      - 401 = anonymous → flips serverKnownEmpty so the push side
+ *        also short-circuits for the rest of the session.
  *
- * Loaded on every lesson page + the course hub by
- * scripts/inject-course-config-sync.mjs. The script is idempotent
- * (multiple imports share a single timer); a no-op if MuntinContext
- * isn't on the page (e.g., the script is included somewhere outside
- * the bootcamp by mistake).
+ *   2. PUSH on debounced context change:
+ *      - Listens to mtn:context-change (workshop widget commits) +
+ *        cross-tab storage events on mtn:context.
+ *      - Resets a 5-second debounce timer; timer fires → reads the
+ *        current MuntinContext, picks allowlisted keys, POSTs.
+ *      - Empty snapshot → skip (don't clobber server with empties).
+ *      - Suppressed for one timer cycle after a successful hydrate
+ *        so the freshly-merged state doesn't immediately POST back
+ *        the same data.
+ *
+ * Singleton (window.__mtnCourseConfigSync). No-op if MuntinContext
+ * isn't on the page. Loaded on every lesson page + the course hub
+ * via scripts/inject-course-config-sync.mjs.
  */
 (function () {
   'use strict';
   if (typeof window === 'undefined' || !document) return;
-  if (window.__mtnCourseConfigSync) return;  // singleton guard
+  if (window.__mtnCourseConfigSync) return;
   window.__mtnCourseConfigSync = true;
 
   var DEBOUNCE_MS = 5000;
@@ -48,7 +55,8 @@
   ];
 
   var timer = null;
-  var serverKnownEmpty = false;  // flipped to true on any 401 — never retry within session
+  var serverKnownEmpty = false;
+  var suppressNextPush = false;  // flipped true right after hydrate; cleared by next push or timer
 
   function readContextSnapshot() {
     if (!window.MuntinContext || typeof window.MuntinContext.read !== 'function') return null;
@@ -59,18 +67,42 @@
     if (profile) snapshot.restaurantProfile = profile;
     for (var i = 0; i < ALLOWED.length; i++) {
       var k = ALLOWED[i];
-      if (k === 'restaurantProfile') continue;  // already handled
+      if (k === 'restaurantProfile') continue;
       if (ctx[k] !== undefined && ctx[k] !== null) snapshot[k] = ctx[k];
     }
-    // Only push if there's at least one meaningful field. An entirely
-    // empty snapshot would push the server back to the empty state,
-    // which is the wrong thing for an operator who's just dropped
-    // their localStorage but hasn't re-typed anything yet.
     return Object.keys(snapshot).length ? snapshot : null;
   }
 
+  // True iff at least one allowlisted field has a non-empty value in
+  // local MuntinContext. Used to gate the hydrate decision: if the
+  // operator's local state has any real data, don't pull server data
+  // on top of it (would create a confusing flicker + risk clobbering
+  // in-progress work).
+  function localHasAnyAllowedField() {
+    if (!window.MuntinContext || typeof window.MuntinContext.read !== 'function') return false;
+    var ctx = window.MuntinContext.read() || {};
+    var profile = (typeof window.MuntinContext.readRestaurantProfile === 'function'
+                   ? window.MuntinContext.readRestaurantProfile() : null) || null;
+    if (profile) {
+      for (var p in profile) {
+        if (Object.prototype.hasOwnProperty.call(profile, p) && profile[p]) return true;
+      }
+    }
+    for (var i = 0; i < ALLOWED.length; i++) {
+      var k = ALLOWED[i];
+      if (k === 'restaurantProfile') continue;
+      var v = ctx[k];
+      if (v === undefined || v === null) continue;
+      if (Array.isArray(v) && v.length > 0) return true;
+      if (typeof v === 'object' && Object.keys(v).length > 0) return true;
+      if (typeof v === 'string' && v.trim()) return true;
+    }
+    return false;
+  }
+
   function push() {
-    if (serverKnownEmpty) return;  // anonymous user — don't keep firing 401s
+    if (suppressNextPush) { suppressNextPush = false; return; }
+    if (serverKnownEmpty) return;
     var snapshot = readContextSnapshot();
     if (!snapshot) return;
     try {
@@ -93,12 +125,49 @@
     }, DEBOUNCE_MS);
   }
 
+  // ---- Hydrate -------------------------------------------------------
+  // Runs once at script init. If local has any meaningful field, skip.
+  // Otherwise GET /api/course/config and merge non-null fields into
+  // MuntinContext via .merge() — which writes localStorage and broadcasts
+  // mtn:context-change, so any widgets already mounted re-render
+  // immediately with the hydrated state.
+  function hydrate() {
+    if (!window.MuntinContext || typeof window.MuntinContext.merge !== 'function') return;
+    if (localHasAnyAllowedField()) return;
+    try {
+      fetch(ENDPOINT, { credentials: 'same-origin' }).then(function (r) {
+        if (r.status === 401) { serverKnownEmpty = true; return null; }
+        if (!r.ok) return null;
+        return r.json();
+      }).then(function (data) {
+        if (!data || !data.config) return;
+        var cfg = data.config;
+        var patch = {};
+        // restaurantProfile lands via writeRestaurantProfile if available
+        // (it's a structurally separate KV slot in context-bus, distinct
+        // from the flat top-level merge). Fall back to flat merge if the
+        // dedicated writer isn't exposed.
+        if (cfg.restaurantProfile && typeof window.MuntinContext.writeRestaurantProfile === 'function') {
+          try { window.MuntinContext.writeRestaurantProfile(cfg.restaurantProfile); } catch (_) {}
+        }
+        for (var i = 0; i < ALLOWED.length; i++) {
+          var k = ALLOWED[i];
+          if (k === 'restaurantProfile') continue;
+          if (cfg[k] !== undefined && cfg[k] !== null) patch[k] = cfg[k];
+        }
+        if (Object.keys(patch).length) {
+          suppressNextPush = true;  // freshly-merged state shouldn't immediately POST back
+          try { window.MuntinContext.merge(patch); } catch (_) {}
+        }
+      }).catch(function () { /* offline — operator can still work locally */ });
+    } catch (_) {}
+  }
+
+  hydrate();
+
   var eventName = (window.WorkshopKit && window.WorkshopKit.CONTEXT_CHANGE_EVENT) || 'mtn:context-change';
   document.addEventListener(eventName, schedule);
 
-  // Cross-tab: when another tab writes mtn:context, the storage event
-  // fires here. Schedule a push so the server picks up changes the
-  // operator made in a different tab too.
   window.addEventListener('storage', function (e) {
     if (!e || !e.key || e.key === 'mtn:context') schedule();
   });
