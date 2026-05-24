@@ -118,6 +118,10 @@ const NAV_RE = /(?:<script>\s*\/\* Platform-aware kbd hint[\s\S]*?<\/script>\s*)
 // without needing the more brittle `^` + `m`-flag combination.
 const FOOTER_RE = /(?<=\n)<footer>[\s\S]*?<div class="foot-grid">[\s\S]*?<\/footer>(?:\s*<script\s+src="\/assets\/js\/(?:first-touch|save-next-time|share-hydrate)\.js"\s+defer><\/script>)*(?:\s*(?:<!--[\s\S]*?(?:Turnstile|challenges\.cloudflare)[\s\S]*?-->|<script\b[^>]*>[\s\S]*?(?:Turnstile|challenges\.cloudflare)[\s\S]*?<\/script>|<script\s+src="https:\/\/challenges\.cloudflare\.com\/turnstile\/v0\/api\.js"[^>]*><\/script>))*/;
 
+// Matches the new-article-skeleton.mjs stub placeholder exactly. Kept
+// separate from FOOTER_RE so the canonical sync path stays narrow.
+const STUB_FOOTER_RE = /(?<=\n)<footer><!-- sync-includes\.mjs replaces this --><\/footer>/;
+
 // Trailing-tail cleanup. The footer template ends with a Cloudflare
 // Turnstile loader (Phase 3B). Until this fix, the loader was outside
 // FOOTER_RE's reach, so every CF deploy build appended another copy of
@@ -299,16 +303,33 @@ for (const file of collectHtml(repoRoot)) {
   if (isGeneratedPage(rel)) { skipped++; continue; }
   const src     = fs.readFileSync(file, 'utf8');
 
-  const hasNav    = NAV_RE.test(src);
-  const hasFooter = FOOTER_RE.test(src);
+  // Stub-footer expansion. new-article-skeleton.mjs scaffolds new
+  // articles with `<footer><!-- sync-includes.mjs replaces this -->
+  // </footer>` as a placeholder; the canonical FOOTER_RE below
+  // requires `<div class="foot-grid">` and so never matched the
+  // stub. Articles scaffolded but never hand-expanded shipped
+  // without the footer scripts (site.js, listen.js, glossary.js,
+  // article-fieldnotes.js), breaking audio playback and inline
+  // glossary popovers on ~30 posts across waves 1+2. Expand the stub
+  // into a canonical footer here so the rest of this loop (and the
+  // downstream inject-* scripts) can stamp the page normally. The
+  // change rides through to disk via the standard `next !== src`
+  // write below, which is why we mutate `working` rather than `src`.
+  let working = src;
+  if (STUB_FOOTER_RE.test(working)) {
+    working = working.replace(STUB_FOOTER_RE, renderFooter(rel, locale));
+  }
+
+  const hasNav    = NAV_RE.test(working);
+  const hasFooter = FOOTER_RE.test(working);
   if (!hasNav && !hasFooter) { skipped++; continue; }
 
   // Only sync the footer if this page is using the canonical main-funnel
   // footer. Tool-utility pages carry a different "Free tools" column and
   // are detected by the absence of the canonical marker.
-  const footerIsCanonical = hasFooter && src.match(FOOTER_RE)[0].includes(FOOTER_MAIN_FUNNEL_MARKER);
+  const footerIsCanonical = hasFooter && working.match(FOOTER_RE)[0].includes(FOOTER_MAIN_FUNNEL_MARKER);
 
-  let next = src;
+  let next = working;
   if (hasNav)             next = next.replace(NAV_RE, renderNav(rel, locale));
   if (footerIsCanonical)  next = next.replace(FOOTER_RE, renderFooter(rel, locale));
   if (hasFooter && !footerIsCanonical) footerSkipped++;
