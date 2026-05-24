@@ -3612,7 +3612,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 }
 
 
-/* ===== [core] Phase 7 — dark-mode toggle button (.theme-toggle) (lines 7273-7312) ===== */
+/* ===== [core] Phase 7 — dark-mode toggle button (.theme-toggle) (lines 7273-7320) ===== */
 /* ============ Phase 7 — dark-mode toggle button =============
    Sits in the nav next to lang-switch. Two SVG icons (sun + moon)
    stacked; CSS shows one based on the current [data-theme] state.
@@ -3653,8 +3653,6 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
    don't have room; everything above does. */
 @media (max-width:640px){
   .theme-toggle{display:none !important}
-
-/* ===== [core] Phase 4 — next-tool recommendation card (.mtn-next-tool) (lines 7313-7352) ===== */
 }
 
 /* ============ Phase 4 — next-tool recommendation card =============
@@ -3663,6 +3661,8 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
    with the tool's own primary CTA — it's a *next step*, not a
    replacement CTA. Card border-left matches the teal accent the
    rest of the suite uses for "what's next" surfaces. */
+
+/* ===== [core] Phase 4 — next-tool recommendation card (.mtn-next-tool) (lines 7321-7356) ===== */
 
 .mtn-next-tool{
   display:flex;flex-direction:column;gap:var(--space-2);
@@ -3695,11 +3695,11 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
   transition:background var(--t-fast) var(--ease),border-color var(--t-fast) var(--ease);
 }
 .mtn-next-tool__link:hover{background:var(--teal-dark);border-color:var(--teal-dark)}
-
-/* ===== [core] Phase G — About portrait frame (real photo overlay) (lines 7353-7359) ===== */
 .mtn-next-tool__link:focus-visible{outline:none;box-shadow:var(--ring-focus)}
 
 /* ===== Phase G — About portrait frame (real photo overlay; reused on homepage About teaser + /about/) ===== */
 .about-portrait-frame{position:relative;width:100%;aspect-ratio:4/5;border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--line-dark);background:var(--cream-2)}
+
+/* ===== [core] Phase G — About portrait frame (real photo overlay) (lines 7357-7359) ===== */
 .about-portrait-frame .portrait{position:absolute;inset:0;border:0;border-radius:0;aspect-ratio:auto;width:100%;height:100%}
 .about-portrait-frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
