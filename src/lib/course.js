@@ -201,6 +201,8 @@ const CONFIG_ALLOWED_KEYS = new Set([
   'customerCard',       // { name, age, role, traits[] } from persona-card-builder
   'dishes',             // [{ name, price }]
   'shotList',           // [{ id, label, framing, source }] from shot-list-grid
+  'gbp',                // { primaryCategory } from gbp-card-preview
+  'gbpDescription',
   'hours',              // { monday: {...}, ..., sunday: {...} }
   'localKeywords',
   'reviewResponseTemplate',

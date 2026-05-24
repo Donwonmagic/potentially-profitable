@@ -161,6 +161,49 @@ main{padding-top:64px}
 
 .workshop-error{padding:14px;color:var(--rust);font-size:14.5px;background:var(--cream-2);border-radius:6px}
 
+/* gbp-card-preview widget styles */
+.gcp{display:block}
+.gcp-controls{margin:0 0 18px}
+.gcp-field{display:flex;flex-direction:column;gap:5px}
+.gcp-lbl{font-size:13px;color:var(--ink-soft);font-weight:600}
+.gcp-select,.gcp-input{padding:9px 11px;font-size:15px;font-family:inherit;border:1px solid var(--line);border-radius:6px;background:var(--cream);color:var(--ink);width:100%;max-width:480px}
+.gcp-select:focus,.gcp-input:focus{outline:2px solid var(--teal);outline-offset:1px;border-color:var(--teal);background:#fff}
+.gcp-help{margin:4px 0 6px;font-size:12.5px;color:var(--stone);line-height:1.4;max-width:480px}
+.gcp-other{margin-top:6px}
+.gcp-preview-eyebrow{font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);font-weight:600;margin:0 0 8px}
+.gcp-preview-wrap{margin:0 0 22px}
+.gcp-card{display:grid;grid-template-columns:140px 1fr;gap:14px;padding:14px;background:#fff;border:1px solid var(--line);border-radius:8px;box-shadow:0 1px 3px rgba(20,22,26,.06);max-width:560px}
+@media (max-width:540px){.gcp-card{grid-template-columns:1fr}}
+.gcp-card-photo{position:relative;aspect-ratio:1/1;border-radius:6px;overflow:hidden;display:flex;align-items:flex-end;justify-content:flex-end;padding:8px}
+.gcp-photo-stack{position:absolute;top:50%;left:50%;width:60%;height:60%;transform:translate(-50%,-50%) rotate(-4deg);border-radius:4px;border:2px solid #fff}
+.gcp-photo-count{position:relative;font-size:10.5px;color:#fff;background:rgba(20,22,26,.7);padding:2px 6px;border-radius:99px;font-weight:600}
+.gcp-card-body{display:flex;flex-direction:column;gap:3px;min-width:0}
+.gcp-card-name{font-family:var(--font-display);font-size:18px;line-height:1.2;margin:0 0 2px;color:var(--ink);font-weight:500}
+.gcp-card-line{margin:0;font-size:13px;color:var(--ink-soft);line-height:1.4}
+.gcp-card-cat{color:var(--ink-soft)}
+.gcp-card-hours{display:flex;align-items:center;gap:6px}
+.gcp-hours-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--stone)}
+.gcp-hours-dot--open{background:var(--status-good)}
+.gcp-hours-dot--closed{background:var(--rust)}
+.gcp-hours-dot--unknown{background:var(--stone)}
+.gcp-card-desc{margin:6px 0 6px;font-size:12.5px;color:var(--ink-soft);line-height:1.45;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical}
+.gcp-empty{color:var(--stone);font-style:italic;font-size:12.5px}
+.gcp-card-actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.gcp-card-action{font-size:11.5px;padding:5px 10px;border:1px solid var(--line);border-radius:99px;color:var(--ink-soft);background:var(--cream)}
+.gcp-card-action--cta{background:var(--teal);color:var(--cream);border-color:transparent;font-weight:600}
+.gcp-readiness{padding:14px;background:var(--cream-2);border:1px dashed var(--line);border-radius:8px;max-width:560px}
+.gcp-readiness-head{font-family:var(--font-body);font-size:13px;letter-spacing:.04em;text-transform:uppercase;font-weight:700;color:var(--stone);margin:0 0 10px}
+.gcp-readiness-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:5px}
+.gcp-ready-row{display:grid;grid-template-columns:14px 1fr auto;gap:10px;align-items:center;padding:7px 12px;background:var(--cream);border:1px solid var(--line);border-radius:6px;font-size:13.5px}
+.gcp-ready-dot{width:10px;height:10px;border-radius:50%}
+.gcp-ready-row--ready .gcp-ready-dot{background:var(--status-good)}
+.gcp-ready-row--missing .gcp-ready-dot{background:var(--rust)}
+.gcp-ready-row--partial .gcp-ready-dot{background:#F4BF4F}
+.gcp-ready-status{font-size:11px;letter-spacing:.04em;text-transform:uppercase;font-weight:700;color:var(--ink-soft)}
+.gcp-ready-row--ready .gcp-ready-status{color:var(--status-good)}
+.gcp-ready-row--missing .gcp-ready-status{color:var(--rust)}
+.gcp-ready-row--partial .gcp-ready-status{color:#8a7232}
+
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -383,6 +426,12 @@ main{padding-top:64px}
       <div class="course-callout">
         <p><strong>Si ordenaste "Reseñas sin respuesta" entre los tres primeros.</strong> Responde a las reseñas negativas primero — duelen más, y la ausencia de respuesta es la señal visible. Responde una vez, brevemente, con profesionalismo. La Lección 13 (Reseñas + confianza de la primera semana) profundiza en plantillas de respuesta; para la reparación, solo cierra las negativas abiertas esta semana.</p>
       </div>
+
+      <h2>Vista previa de cómo se ve bien, lado a lado</h2>
+
+      <p>Abajo está como se verá tu ficha de GBP <em>reparada</em> una vez que las tres reparaciones principales aterricen — construida en vivo desde todo lo que has puesto en el bootcamp hasta ahora. Elige tu categoría principal si todavía no lo hiciste; la lista de revisión debajo marca todo lo pendiente. El ejercicio es mirar esta vista previa y preguntar "¿es esto lo que un comensal esperaría de mi restaurante?" Si sí, sabes cómo se ve "terminado".</p>
+
+      <section class="course-widget" data-widget="gbp-card-preview"></section>
 
       <h2>La respuesta de proceso — para que esto no vuelva a deslizarse</h2>
 

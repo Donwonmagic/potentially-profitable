@@ -51,6 +51,8 @@
     'customerCard',
     'dishes',
     'shotList',
+    'gbp',
+    'gbpDescription',
     'hours',
     'localKeywords',
     'reviewResponseTemplate',
