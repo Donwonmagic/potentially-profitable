@@ -187,6 +187,7 @@ const CHECKS = [
   ['L14 generator output','check-l14-generator-output.mjs'],
   ['Course data layer',   'check-course-data-layer.mjs'],
   ['Course listen (idem)','inject-course-listen.mjs','--check'],
+  ['Course mark-complete (idem)','inject-course-mark-complete.mjs','--check'],
   ['Article TL;DR',       'check-article-tldr.mjs',        '--check'],
   ['Article TL;DR retrofit (idem)','inject-article-tldr.mjs','--check'],
   ['Article HowTo schema (idem)','inject-article-howto-schema.mjs','--check'],
