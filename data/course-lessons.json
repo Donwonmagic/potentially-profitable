@@ -132,7 +132,7 @@
         "en": "Cuisine + positioning",
         "es": "Cocina y posicionamiento"
       },
-      "widgets": ["positioning-plotter", "live-preview-frame"]
+      "widgets": ["positioning-plotter", "text-input", "live-preview-frame"]
     },
     {
       "id": "leaks",
@@ -145,7 +145,7 @@
         "en": "Diagnose what's leaking",
         "es": "Diagnostica qué está perdiendo"
       },
-      "widgets": ["drag-rank", "live-preview-frame"]
+      "widgets": ["tab-flip", "text-input", "live-preview-frame"]
     },
     {
       "id": "palette-voice",
@@ -315,7 +315,7 @@
     { "tag": "before-after-slider",  "status": "planned" },
     { "tag": "persona-card-builder", "status": "planned" },
     { "tag": "map-radius",           "status": "planned" },
-    { "tag": "positioning-plotter",  "status": "planned" },
+    { "tag": "positioning-plotter",  "status": "shipped",    "path": "/tools/_shared/workshop/positioning-plotter.js" },
     { "tag": "voice-slider",         "status": "planned" },
     { "tag": "font-pair-picker",     "status": "planned" },
     { "tag": "menu-builder",         "status": "planned" },
