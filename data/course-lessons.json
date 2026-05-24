@@ -91,7 +91,8 @@
         "en": "Your customer in one paragraph",
         "es": "Tu cliente en un párrafo"
       },
-      "widgets": ["persona-card-builder", "map-radius", "live-preview-frame"]
+      "widgets": ["text-input", "live-preview-frame"],
+      "futureWidgets": ["persona-card-builder", "map-radius"]
     },
     {
       "id": "naming",
@@ -104,7 +105,7 @@
         "en": "Naming + domain",
         "es": "Nombre y dominio"
       },
-      "widgets": ["live-preview-frame"]
+      "widgets": ["text-input", "live-preview-frame"]
     },
     {
       "id": "audit",
@@ -117,7 +118,8 @@
         "en": "Audit your current site",
         "es": "Audita tu sitio actual"
       },
-      "widgets": ["before-after-slider", "live-preview-frame"]
+      "widgets": ["drag-rank", "text-input", "live-preview-frame"],
+      "futureWidgets": ["before-after-slider"]
     },
     {
       "id": "positioning",

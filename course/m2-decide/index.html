@@ -85,6 +85,14 @@ main{padding-top:64px}
 .m-lesson .summary{margin:14px 0 0;font-size:15.5px;line-height:1.55;color:var(--ink-soft);max-width:680px}
 .m-lesson .status-tag{display:inline-block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;padding:3px 8px;border-radius:99px;background:var(--cream-2);color:var(--ink-soft);margin-top:6px}
 .m-lesson.shipped .status-tag{background:var(--status-good);color:var(--cream)}
+.m-lesson--fork-pair{padding-bottom:14px}
+.fork-pair{display:grid;gap:10px;margin-top:16px}
+@media (min-width:520px){.fork-pair{grid-template-columns:1fr 1fr}}
+.fork-card{display:block;padding:14px 16px;background:var(--cream-2);border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit;transition:border-color .12s ease}
+.fork-card:hover,.fork-card:focus-visible{border-color:var(--teal)}
+.fork-card-tag{display:block;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);margin-bottom:4px}
+.fork-card-label{display:block;font-size:14.5px;font-weight:600;color:var(--ink);line-height:1.3}
+.fork-card-desc{margin:4px 0 0;font-size:13px;color:var(--ink-soft);line-height:1.4}
 
 .m-takeaway{padding:32px;background:var(--cream-2);border-left:3px solid var(--teal);border-radius:8px;margin:32px 0}
 .m-takeaway h2{font-size:18px;font-weight:600;font-family:var(--font-body);color:var(--teal-dark);margin:0 0 10px}
@@ -117,30 +125,41 @@ main{padding-top:64px}
     <p class="eyebrow">Module 2 of 4 · About 3 hours total · 4 shared + 4 forked lessons</p>
     <h1>Decide — <span class="serif-italic">the eight decisions that shape every restaurant website.</span></h1>
     <p class="lede">Who your customer is, what to call the place, what's broken if you have a site, what colors and voice carry it all. Some lessons split for fresh-opening operators vs. rebuilders; some are shared.</p>
-    <p class="meta">Lesson 7 (Palette + voice) is shipped. The other six lessons in this module are next up — see the status tags below.</p>
+    <p class="meta">Lessons 4, 5a, 5b, and 7 are shipped. Lessons 6a and 6b are next up.</p>
   </section>
 
   <section class="m-lessons" aria-labelledby="lessons-h">
     <h2 id="lessons-h" class="sr-only">Lessons in this module</h2>
 
-    <div class="m-lesson coming">
+    <a class="m-lesson shipped" href="/course/m2-decide/customer/">
       <div class="m-lesson-h">
         <span class="num">4</span>
         <h2>Your customer in one paragraph</h2>
         <div class="meta-row"><span class="time">~25 min</span><span class="track-pill">Shared</span></div>
       </div>
       <p class="summary">Sketch the person you're cooking for in a single paragraph. The neighborhood, the occasion, the price they'll cheerfully pay, the rough age and life stage. This becomes the audience every later lesson aims at.</p>
-      <span class="status-tag">Coming next</span>
-    </div>
+      <span class="status-tag">Shipped</span>
+    </a>
 
-    <div class="m-lesson coming">
+    <div class="m-lesson m-lesson--fork-pair">
       <div class="m-lesson-h">
-        <span class="num">5a / 5b</span>
-        <h2>Naming + domain (fresh) · Audit your current site (rebuild)</h2>
+        <span class="num">5</span>
+        <h2>The first fork — pick your track</h2>
         <div class="meta-row"><span class="time">~30 min</span><span class="track-pill track-pill--fork">Forks</span></div>
       </div>
-      <p class="summary">Fresh-track operators work through naming, shortlist domains, and check availability. Rebuild-track operators run a structured audit on the site they have — what works, what's leaking.</p>
-      <span class="status-tag">Coming next</span>
+      <p class="summary">Lesson 5 splits for the two starting positions. Pick the one that matches you — you can change tracks any time.</p>
+      <div class="fork-pair">
+        <a class="fork-card" href="/course/m2-decide/fresh/naming/">
+          <span class="fork-card-tag">Fresh track</span>
+          <span class="fork-card-label">5a · Naming + domain</span>
+          <p class="fork-card-desc">Shortlist names, check availability, end with a chosen name.</p>
+        </a>
+        <a class="fork-card" href="/course/m2-decide/rebuild/audit/">
+          <span class="fork-card-tag">Rebuild track</span>
+          <span class="fork-card-label">5b · Audit your current site</span>
+          <p class="fork-card-desc">Rank ten common audit items by severity; punch list of fixes.</p>
+        </a>
+      </div>
     </div>
 
     <div class="m-lesson coming">

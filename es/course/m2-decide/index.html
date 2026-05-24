@@ -85,6 +85,14 @@ main{padding-top:64px}
 .m-lesson .summary{margin:14px 0 0;font-size:15.5px;line-height:1.55;color:var(--ink-soft);max-width:680px}
 .m-lesson .status-tag{display:inline-block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;padding:3px 8px;border-radius:99px;background:var(--cream-2);color:var(--ink-soft);margin-top:6px}
 .m-lesson.shipped .status-tag{background:var(--status-good);color:var(--cream)}
+.m-lesson--fork-pair{padding-bottom:14px}
+.fork-pair{display:grid;gap:10px;margin-top:16px}
+@media (min-width:520px){.fork-pair{grid-template-columns:1fr 1fr}}
+.fork-card{display:block;padding:14px 16px;background:var(--cream-2);border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit;transition:border-color .12s ease}
+.fork-card:hover,.fork-card:focus-visible{border-color:var(--teal)}
+.fork-card-tag{display:block;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);margin-bottom:4px}
+.fork-card-label{display:block;font-size:14.5px;font-weight:600;color:var(--ink);line-height:1.3}
+.fork-card-desc{margin:4px 0 0;font-size:13px;color:var(--ink-soft);line-height:1.4}
 
 .m-takeaway{padding:32px;background:var(--cream-2);border-left:3px solid var(--teal);border-radius:8px;margin:32px 0}
 .m-takeaway h2{font-size:18px;font-weight:600;font-family:var(--font-body);color:var(--teal-dark);margin:0 0 10px}
@@ -117,30 +125,41 @@ main{padding-top:64px}
     <p class="eyebrow">Módulo 2 de 4 · Unas 3 horas en total · 4 lecciones compartidas + 4 bifurcadas</p>
     <h1>Decidir — <span class="serif-italic">las ocho decisiones que dan forma a todo sitio web de restaurante.</span></h1>
     <p class="lede">Quién es tu cliente, cómo llamar al lugar, qué está roto si ya tienes sitio, qué colores y voz cargan todo. Algunas lecciones se bifurcan para operadores que están por abrir vs. operadores que rehacen; algunas son compartidas.</p>
-    <p class="meta">La Lección 7 (Paleta y voz) está entregada. Las otras seis lecciones del módulo están en desarrollo — mira las etiquetas de estado abajo.</p>
+    <p class="meta">Las Lecciones 4, 5a, 5b y 7 están entregadas. Las Lecciones 6a y 6b están en desarrollo.</p>
   </section>
 
   <section class="m-lessons" aria-labelledby="lessons-h">
     <h2 id="lessons-h" class="sr-only">Lecciones de este módulo</h2>
 
-    <div class="m-lesson coming">
+    <a class="m-lesson shipped" href="/es/course/m2-decide/customer/">
       <div class="m-lesson-h">
         <span class="num">4</span>
         <h2>Tu cliente en un párrafo</h2>
         <div class="meta-row"><span class="time">~25 min</span><span class="track-pill">Compartida</span></div>
       </div>
       <p class="summary">Dibuja a la persona para quien cocinas en un solo párrafo. El barrio, la ocasión, el precio que paga sin chistar, la edad y la etapa de vida más o menos. Esto se vuelve el público al que apunta cada lección siguiente.</p>
-      <span class="status-tag">Próximamente</span>
-    </div>
+      <span class="status-tag">Entregada</span>
+    </a>
 
-    <div class="m-lesson coming">
+    <div class="m-lesson m-lesson--fork-pair">
       <div class="m-lesson-h">
-        <span class="num">5a / 5b</span>
-        <h2>Nombre y dominio (nuevo) · Audita tu sitio actual (rehacer)</h2>
+        <span class="num">5</span>
+        <h2>La primera bifurcación — elige tu camino</h2>
         <div class="meta-row"><span class="time">~30 min</span><span class="track-pill track-pill--fork">Se bifurca</span></div>
       </div>
-      <p class="summary">Empezar de cero: nombre, lista corta de dominios, verificar disponibilidad. Rehacer: auditoría estructurada del sitio que tienes — qué funciona, qué está perdiendo.</p>
-      <span class="status-tag">Próximamente</span>
+      <p class="summary">La Lección 5 se divide para las dos posiciones de partida. Elige la que te corresponde — puedes cambiar de pista en cualquier momento.</p>
+      <div class="fork-pair">
+        <a class="fork-card" href="/es/course/m2-decide/fresh/naming/">
+          <span class="fork-card-tag">Empezar de cero</span>
+          <span class="fork-card-label">5a · Nombre y dominio</span>
+          <p class="fork-card-desc">Lista corta de nombres, verifica disponibilidad, termina con un nombre elegido.</p>
+        </a>
+        <a class="fork-card" href="/es/course/m2-decide/rebuild/audit/">
+          <span class="fork-card-tag">Arreglar lo que tengo</span>
+          <span class="fork-card-label">5b · Audita tu sitio actual</span>
+          <p class="fork-card-desc">Ordena diez puntos comunes por severidad; lista clara de qué arreglar.</p>
+        </a>
+      </div>
     </div>
 
     <div class="m-lesson coming">
@@ -149,7 +168,7 @@ main{padding-top:64px}
         <h2>Cocina y posicionamiento (nuevo) · Diagnostica qué está perdiendo (rehacer)</h2>
         <div class="meta-row"><span class="time">~25 min</span><span class="track-pill track-pill--fork">Se bifurca</span></div>
       </div>
-      <p class="summary">Empezar de cero: cómo posicionar tu cocina — moderna vs tradicional, casual vs formal, especialista vs generalista. Rehacer: ordena las tres cosas que más le están haciendo daño al sitio actual, con puntuación de severidad.</p>
+      <p class="summary">Empezar de cero: cómo posicionar tu cocina — moderna vs tradicional, casual vs formal, especialista vs generalista. Arreglar lo que tengo: ordena las tres cosas que más le están haciendo daño al sitio actual, con puntuación de severidad.</p>
       <span class="status-tag">Próximamente</span>
     </div>
 
