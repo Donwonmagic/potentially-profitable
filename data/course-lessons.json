@@ -46,13 +46,13 @@
       "module": "m1-orient",
       "track": "shared",
       "position": 1,
-      "estimatedMinutes": 10,
+      "estimatedMinutes": 5,
       "path": "/course/m1-orient/welcome/",
       "title": {
-        "en": "Welcome — pick your starting line",
-        "es": "Bienvenida — elige tu punto de partida"
+        "en": "Welcome — type and see",
+        "es": "Bienvenida — escribe y mira"
       },
-      "widgets": ["track-picker"]
+      "widgets": ["text-input", "live-preview-frame"]
     },
     {
       "id": "what-a-site-does",
@@ -156,7 +156,8 @@
         "en": "Palette + voice",
         "es": "Paleta y voz"
       },
-      "widgets": ["palette-picker", "voice-slider", "font-pair-picker", "live-preview-frame"]
+      "widgets": ["palette-picker", "text-input", "live-preview-frame"],
+      "futureWidgets": ["voice-slider", "font-pair-picker"]
     },
     {
       "id": "menu",
@@ -303,15 +304,16 @@
     }
   ],
   "widgets": [
-    { "tag": "track-picker",         "status": "planned" },
-    { "tag": "live-preview-frame",   "status": "shipped",  "path": "/tools/_shared/workshop/live-preview-frame.js" },
+    { "tag": "track-picker",         "status": "deprecated", "note": "Track choice moved to /course/ hub per audit; no widget needed." },
+    { "tag": "live-preview-frame",   "status": "shipped",    "path": "/tools/_shared/workshop/live-preview-frame.js" },
+    { "tag": "text-input",           "status": "shipped",    "path": "/tools/_shared/workshop/text-input.js" },
+    { "tag": "palette-picker",       "status": "shipped",    "path": "/tools/_shared/workshop/palette-picker.js" },
     { "tag": "drag-rank",            "status": "planned" },
     { "tag": "tab-flip",             "status": "planned" },
     { "tag": "before-after-slider",  "status": "planned" },
     { "tag": "persona-card-builder", "status": "planned" },
     { "tag": "map-radius",           "status": "planned" },
     { "tag": "positioning-plotter",  "status": "planned" },
-    { "tag": "palette-picker",       "status": "planned" },
     { "tag": "voice-slider",         "status": "planned" },
     { "tag": "font-pair-picker",     "status": "planned" },
     { "tag": "menu-builder",         "status": "planned" },
