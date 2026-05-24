@@ -1,0 +1,47 @@
+    <form id="sheet-fields" class="sheet-form" autocomplete="off" novalidate>
+      <fieldset>
+        <legend>Header</legend>
+        <label><span><span>Restaurant name</span></span><input type="text" name="name" data-context-key="restaurantProfile.name" placeholder="e.g., Jolene's Cafe" /></label>
+        <label><span><span>Date written</span></span><input type="date" name="written_on" /></label>
+        <label><span><span>Written by</span></span><input type="text" name="author" placeholder="e.g., Jolene Wright, owner" /></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>The one promise</legend>
+        <label>
+          <span><span>One sentence — the single thing future diners would recommend you for</span></span>
+          <textarea name="promise" data-context-key="onePromise" rows="3" placeholder="e.g., The Tuesday-night taqueria your block tells other blocks about."></textarea>
+        </label>
+        <span class="field-help">One sentence. Specific. About the diner, not you. Two sentences means two promises — pick one.</span>
+      </fieldset>
+
+      <fieldset>
+        <legend>The read-aloud test</legend>
+        <span class="field-help">Read the sentence aloud to the FOH lead or your spouse. If they shrug, rewrite. If they say "yeah, that's you," it's done. Use the lines below to capture the rewrites.</span>
+        <label><span><span>Draft 2 — after the first read-aloud</span></span><textarea name="draft2" rows="2"></textarea></label>
+        <label><span><span>Draft 3 — after the second read-aloud (if needed)</span></span><textarea name="draft3" rows="2"></textarea></label>
+        <label><span><span>Final — pin this where the team can read it</span></span><textarea name="final" rows="2"></textarea></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Distribution</legend>
+        <span class="field-help">Check each surface as the promise lands on it.</span>
+        <label><input type="checkbox" name="dist_host" /><span><span>Posted above the host stand</span></span></label>
+        <label><input type="checkbox" name="dist_kitchen" /><span><span>Posted in the kitchen pass</span></span></label>
+        <label><input type="checkbox" name="dist_website" /><span><span>On the website hero</span></span></label>
+        <label><input type="checkbox" name="dist_gbp" /><span><span>In the GBP business description</span></span></label>
+        <label><input type="checkbox" name="dist_brief" /><span><span>Read aloud at every all-hands brief</span></span></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Review date</legend>
+        <label><span><span>Next quarterly review</span></span><input type="date" name="review_date" /></label>
+        <span class="field-help">The L16 rhythm bundles this with the SEO sanity check — same quarter, same morning. Set the date when you finish the sheet.</span>
+      </fieldset>
+    </form>
+
+    <script>
+      (function () {
+        if (window.SheetPage) window.SheetPage.register({ slug: 'course-promise' });
+      })();
+    </script>

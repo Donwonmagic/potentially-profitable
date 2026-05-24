@@ -51,6 +51,31 @@
       "intro_en": "Reach for this pack the week before the inspection, the day a complaint repeats, or the moment something goes wrong on the floor. These four sheets carry a regional disclaimer because health code, allergen labeling, hire reporting, and incident protocol all vary by jurisdiction — verify with your local authority. The fifth and sixth (review-response and root-cause) are universal. Skip the regulatory ones if you have a compliance partner who runs them; pull the review and root-cause logs anyway, those are operator work.",
       "intro_es": "Saca este paquete la semana antes de la inspección, el día que una queja se repite, o el momento que algo sale mal en el piso. Estas cuatro hojas llevan un aviso de jurisdicción porque el código sanitario, el etiquetado de alérgenos, los reportes de contratación y el protocolo de incidentes varían por jurisdicción — verifica con tu autoridad local. La quinta y sexta (respuestas a reseñas y causa raíz) son universales. Sáltate las regulatorias si tienes un socio de cumplimiento que las corre; saca igual los registros de reseñas y causa raíz — esos son trabajo del operador.",
       "sheets": ["review-response-log", "complaint-root-cause-tracker", "health-inspection-prep", "staff-onboarding-checklist", "incident-report", "allergen-matrix"]
+    },
+    {
+      "id": "course-bootcamp",
+      "label_en": "Open the Doors course",
+      "label_es": "Curso Open the Doors",
+      "blurb_en": "The printable companion artifacts to the Open the Doors bootcamp — one tear-sheet per lesson, fillable in the browser or on paper.",
+      "blurb_es": "Los artefactos imprimibles que acompañan al bootcamp Open the Doors — una hoja por lección, llenable en el navegador o en papel.",
+      "intro_en": "Reach for this pack if you've walked the Open the Doors bootcamp at /course/ and you want a clipboard copy of the work — a promise paragraph on the host stand, the menu shortlist in the kitchen lead's binder, the 30-day rhythm pinned next to the printer. Every sheet matches a lesson and uses your saved answers from MuntinContext when present. Skip the pack if you'd rather keep the work in the browser; the bootcamp's L14 generator already pulls every field into the deployed site.",
+      "intro_es": "Saca este paquete si recorriste el bootcamp Open the Doors en /es/course/ y quieres una copia para la tabla con clip — un párrafo de promesa en la entrada, la lista corta del menú en la carpeta del jefe de cocina, el ritmo de 30 días pegado al lado de la impresora. Cada hoja corresponde a una lección y usa las respuestas guardadas en MuntinContext cuando están presentes. Sáltate el paquete si prefieres mantener el trabajo en el navegador; el generador de la L14 del bootcamp ya mete cada campo en el sitio desplegado.",
+      "sheets": [
+        "course-promise",
+        "course-customer",
+        "course-naming",
+        "course-audit",
+        "course-positioning",
+        "course-leaks",
+        "course-palette-voice",
+        "course-menu-shortlist",
+        "course-photo-brief",
+        "course-hours",
+        "course-gbp-checklist",
+        "course-local-seo",
+        "course-review-template",
+        "course-rhythm"
+      ]
     }
   ],
 
@@ -974,6 +999,430 @@
       ],
       "status": "live",
       "added": "2026-05-04"
+    },
+
+    "course-promise": {
+      "title_en": "Your one promise",
+      "title_es": "Tu única promesa",
+      "summary_en": "Write the single sentence that future diners would use to recommend you. Print it, pin it above the host stand, and read it aloud at every brief.",
+      "summary_es": "Escribe la única frase que tus futuros comensales usarán para recomendarte. Imprímela, pégala arriba de la entrada y léela en cada brief.",
+      "walkaway_en": "A printed promise paragraph the whole team can recite.",
+      "walkaway_es": "Un párrafo de promesa impreso que todo el equipo pueda recitar.",
+      "url_en": "/sheets/course-promise/",
+      "url_es": "/es/sheets/course-promise/",
+      "pack": "course-bootcamp",
+      "cadence_en": "Once at L3; revisited quarterly",
+      "cadence_es": "Una vez en la L3; revisado trimestralmente",
+      "format": "report",
+      "stay_paper": false,
+      "es_locale_hazard": false,
+      "pairsWith": {
+        "tools": ["brand-suite"],
+        "glossary": [],
+        "blog": []
+      },
+      "when_to_use_en": [
+        "Right after Lesson 3 — print the page so you can post it physically.",
+        "Quarterly, alongside the L16 rhythm SEO check — does the promise still hold?",
+        "Before any all-hands brief or new-hire orientation."
+      ],
+      "mistakes_en": [
+        "Writing the promise about you ('we serve farm-to-table seasonal cuisine') instead of about the diner ('the Tuesday-night taqueria your block tells other blocks about').",
+        "Letting the promise drift longer than one sentence. Two sentences is two promises.",
+        "Forgetting to update it when the menu pivots."
+      ],
+      "status": "live",
+      "added": "2026-05-24"
+    },
+
+    "course-customer": {
+      "title_en": "Your customer in one paragraph",
+      "title_es": "Tu cliente en un párrafo",
+      "summary_en": "A printable customer card — name, neighborhood, what they look for, what time of day they walk in. The reference document for every staff decision.",
+      "summary_es": "Una tarjeta imprimible del cliente — nombre, barrio, qué busca, qué momento del día entra. El documento de referencia para cada decisión del personal.",
+      "walkaway_en": "A printed customer paragraph pinned where the FOH lead can see it.",
+      "walkaway_es": "Un párrafo del cliente impreso, pegado donde el lead de FOH lo vea.",
+      "url_en": "/sheets/course-customer/",
+      "url_es": "/es/sheets/course-customer/",
+      "pack": "course-bootcamp",
+      "cadence_en": "Once at L4; revisited yearly",
+      "cadence_es": "Una vez en la L4; revisado anualmente",
+      "format": "report",
+      "stay_paper": false,
+      "es_locale_hazard": false,
+      "pairsWith": { "tools": [], "glossary": [], "blog": [] },
+      "when_to_use_en": [
+        "After Lesson 4 — print, post above the host stand.",
+        "When training a new FOH hire — read the customer paragraph aloud.",
+        "When making any photo, copy, or hours decision that feels ambiguous."
+      ],
+      "mistakes_en": [
+        "Writing about 'everyone' or 'the neighborhood' instead of one named persona.",
+        "Treating the persona as marketing fiction. The point is operational clarity.",
+        "Updating the persona when you wish the customer would change — they probably won't."
+      ],
+      "status": "queued",
+      "added": "2026-05-24"
+    },
+
+    "course-naming": {
+      "title_en": "Naming + domain check",
+      "title_es": "Verificación de nombre y dominio",
+      "summary_en": "A printable checklist for vetting a restaurant name and locking in the matching domain. Trademark, social handles, .com availability, neighborhood signal.",
+      "summary_es": "Una lista de verificación imprimible para validar el nombre de un restaurante y reservar el dominio correspondiente. Marca registrada, perfiles sociales, .com disponible, señal de barrio.",
+      "walkaway_en": "A vetted name + a registered .com before you order signage.",
+      "walkaway_es": "Un nombre validado + un .com registrado antes de pedir letreros.",
+      "url_en": "/sheets/course-naming/",
+      "url_es": "/es/sheets/course-naming/",
+      "pack": "course-bootcamp",
+      "cadence_en": "Once at L5a (fresh track)",
+      "cadence_es": "Una vez en la L5a (pista nueva)",
+      "format": "checklist",
+      "stay_paper": false,
+      "es_locale_hazard": false,
+      "pairsWith": { "tools": [], "glossary": [], "blog": [] },
+      "when_to_use_en": [
+        "Before signing the lease for a new concept.",
+        "Before announcing a rename of an existing concept.",
+        "Before ordering signage, menus, or any printed asset."
+      ],
+      "mistakes_en": [
+        "Buying the domain after the sign goes up. The .com is the cheapest part — first.",
+        "Skipping the USPTO + state trademark search — there's a brand operator on the other side.",
+        "Picking a name that requires a spelling to be heard aloud over a phone."
+      ],
+      "status": "queued",
+      "added": "2026-05-24"
+    },
+
+    "course-audit": {
+      "title_en": "Audit your current site",
+      "title_es": "Audita tu sitio actual",
+      "summary_en": "A printable scoresheet for the rebuild track — walk your current site as a diner would, with severity ratings on every page.",
+      "summary_es": "Una hoja de calificación imprimible para la pista de rehacer — recorre tu sitio actual como lo haría un comensal, con calificaciones de severidad en cada página.",
+      "walkaway_en": "A ranked list of what to fix first, second, third on your existing site.",
+      "walkaway_es": "Una lista ordenada de qué arreglar primero, segundo, tercero en tu sitio actual.",
+      "url_en": "/sheets/course-audit/",
+      "url_es": "/es/sheets/course-audit/",
+      "pack": "course-bootcamp",
+      "cadence_en": "Once at L5b (rebuild track); revisited annually",
+      "cadence_es": "Una vez en la L5b (pista de rehacer); revisado anualmente",
+      "format": "checklist",
+      "stay_paper": false,
+      "es_locale_hazard": false,
+      "pairsWith": { "tools": ["audits/restaurant"], "glossary": [], "blog": [] },
+      "when_to_use_en": [
+        "Before deciding whether to redesign or replace your current site.",
+        "Annually — sites drift; an audit catches what stopped working.",
+        "Before any RFP to an agency — the audit is the brief."
+      ],
+      "mistakes_en": [
+        "Skipping the phone test. Every audit must be done on a phone first.",
+        "Treating cosmetic issues as severity-1. Stale hours and broken phone numbers win.",
+        "Auditing as the owner, not as a diner. Look up your own restaurant in Google."
+      ],
+      "status": "queued",
+      "added": "2026-05-24"
+    },
+
+    "course-positioning": {
+      "title_en": "Cuisine + positioning plot",
+      "title_es": "Plot de cocina y posicionamiento",
+      "summary_en": "A printable 2D plot — cuisine breadth × price tier — with your restaurant placed on the grid. The reference for every menu and marketing decision.",
+      "summary_es": "Un plot 2D imprimible — amplitud de cocina × nivel de precio — con tu restaurante ubicado en la cuadrícula. La referencia para cada decisión de menú y marketing.",
+      "walkaway_en": "A printed positioning grid showing where you land vs the competition.",
+      "walkaway_es": "Una cuadrícula de posicionamiento impresa que muestra dónde caes vs la competencia.",
+      "url_en": "/sheets/course-positioning/",
+      "url_es": "/es/sheets/course-positioning/",
+      "pack": "course-bootcamp",
+      "cadence_en": "Once at L6a (fresh track); revisited yearly",
+      "cadence_es": "Una vez en la L6a (pista nueva); revisado anualmente",
+      "format": "report",
+      "stay_paper": false,
+      "es_locale_hazard": false,
+      "pairsWith": { "tools": [], "glossary": [], "blog": [] },
+      "when_to_use_en": [
+        "After Lesson 6a — print, compare to your three nearest competitors.",
+        "Before adding a new menu category that might shift your position.",
+        "Before any price increase that crosses a tier boundary."
+      ],
+      "mistakes_en": [
+        "Placing yourself where you wish you were instead of where the menu prices land you.",
+        "Skipping the competition mapping — your position is relative, not absolute.",
+        "Treating one bad night as a positioning problem. It's a Tuesday-night problem."
+      ],
+      "status": "queued",
+      "added": "2026-05-24"
+    },
+
+    "course-leaks": {
+      "title_en": "Diagnose what's leaking",
+      "title_es": "Diagnostica qué está perdiendo",
+      "summary_en": "A printable ranked diagnosis of the most-urgent leaks on your current restaurant site — hours, menu, phone, photos, reviews, speed.",
+      "summary_es": "Un diagnóstico imprimible y ordenado de las fugas más urgentes en tu sitio actual de restaurante — horarios, menú, teléfono, fotos, reseñas, velocidad.",
+      "walkaway_en": "Top-3 urgent leaks named, ready to hand to a developer or fix yourself.",
+      "walkaway_es": "Las 3 fugas urgentes nombradas, listas para pasarle a un desarrollador o arreglar tú.",
+      "url_en": "/sheets/course-leaks/",
+      "url_es": "/es/sheets/course-leaks/",
+      "pack": "course-bootcamp",
+      "cadence_en": "Once at L6b (rebuild track)",
+      "cadence_es": "Una vez en la L6b (pista de rehacer)",
+      "format": "checklist",
+      "stay_paper": false,
+      "es_locale_hazard": false,
+      "pairsWith": { "tools": ["seo-grader", "gbp-grader"], "glossary": [], "blog": [] },
+      "when_to_use_en": [
+        "After Lesson 6b — print, walk the list, fix or assign each row.",
+        "Before any redesign — the leaks tell you which redesign to do.",
+        "Quarterly with the L16 rhythm — re-rank to catch new leaks."
+      ],
+      "mistakes_en": [
+        "Triaging by what's easy to fix instead of by what's costing you bookings.",
+        "Calling the redesign a fix. A redesign on top of broken hours stays broken.",
+        "Fixing a leak then not announcing the fix. The diner who hit it once won't come back without a nudge."
+      ],
+      "status": "queued",
+      "added": "2026-05-24"
+    },
+
+    "course-palette-voice": {
+      "title_en": "Palette + voice",
+      "title_es": "Paleta y voz",
+      "summary_en": "A printable brand sheet — the three colors (accent / cream / ink), the three voice sliders, and a sample paragraph rendered in both. Hand to the designer.",
+      "summary_es": "Una hoja de marca imprimible — los tres colores (acento / crema / tinta), los tres controles de voz, y un párrafo de ejemplo renderizado en los dos. Pásala al diseñador.",
+      "walkaway_en": "A one-page brand reference the designer / printer can color-match against.",
+      "walkaway_es": "Una referencia de marca de una página que el diseñador / impresor puede usar para igualar colores.",
+      "url_en": "/sheets/course-palette-voice/",
+      "url_es": "/es/sheets/course-palette-voice/",
+      "pack": "course-bootcamp",
+      "cadence_en": "Once at L7; revisited yearly",
+      "cadence_es": "Una vez en la L7; revisado anualmente",
+      "format": "report",
+      "stay_paper": false,
+      "es_locale_hazard": false,
+      "pairsWith": { "tools": ["brand-suite"], "glossary": [], "blog": [] },
+      "when_to_use_en": [
+        "Before any signage, menu print, or social asset.",
+        "When briefing a designer or photographer.",
+        "Before ordering branded printed napkins, cups, or to-go boxes."
+      ],
+      "mistakes_en": [
+        "Five colors instead of three. The discipline is the point.",
+        "Picking a coral-on-cream that looks pretty in the picker but fails contrast at body text.",
+        "Updating the palette without updating the brand sheet. The sheet IS the brand record."
+      ],
+      "status": "live",
+      "added": "2026-05-24"
+    },
+
+    "course-menu-shortlist": {
+      "title_en": "Your menu shortlist",
+      "title_es": "Tu lista corta de menú",
+      "summary_en": "A printable menu shortlist — the 8-to-12 dishes that demonstrate the kitchen's range. Names, prices, allergen notes, plate-cost ready for the kitchen lead.",
+      "summary_es": "Una lista corta de menú imprimible — los 8 a 12 platos que demuestran el rango de la cocina. Nombres, precios, notas de alérgenos, costo del plato listo para el jefe de cocina.",
+      "walkaway_en": "A printed menu shortlist the kitchen lead can quote prices off.",
+      "walkaway_es": "Una lista corta de menú impresa de la cual el jefe de cocina pueda cotizar precios.",
+      "url_en": "/sheets/course-menu-shortlist/",
+      "url_es": "/es/sheets/course-menu-shortlist/",
+      "pack": "course-bootcamp",
+      "cadence_en": "Once at L8; revisited quarterly",
+      "cadence_es": "Una vez en la L8; revisado trimestralmente",
+      "format": "table",
+      "stay_paper": false,
+      "es_locale_hazard": false,
+      "pairsWith": { "tools": ["plate-cost", "menu-engineering"], "glossary": [], "blog": [] },
+      "when_to_use_en": [
+        "After Lesson 8 — print, pin in the kitchen, hand to the host stand.",
+        "Quarterly as part of the L16 rhythm — re-curate which dishes earn the spot.",
+        "Before any menu redesign — the shortlist anchors the layout."
+      ],
+      "mistakes_en": [
+        "Listing every dish on the printed menu. The shortlist is the website's showcase, not the full menu.",
+        "Forgetting to note allergens. The host stand will be asked, and a wrong answer costs reviews.",
+        "Not running plate-cost on the shortlist. The dishes you feature should be the dishes that pay."
+      ],
+      "status": "live",
+      "added": "2026-05-24"
+    },
+
+    "course-photo-brief": {
+      "title_en": "Photo brief",
+      "title_es": "Brief de fotos",
+      "summary_en": "A printable shot list for a photographer or the operator with a phone — exact dishes, exact angles, exact light, in order so the shoot doesn't drift.",
+      "summary_es": "Una lista de tomas imprimible para un fotógrafo o el operador con un teléfono — platos exactos, ángulos exactos, luz exacta, en orden para que la sesión no se desvíe.",
+      "walkaway_en": "A photographer-ready shot list with priorities and lighting notes.",
+      "walkaway_es": "Una lista de tomas lista para fotógrafo con prioridades y notas de iluminación.",
+      "url_en": "/sheets/course-photo-brief/",
+      "url_es": "/es/sheets/course-photo-brief/",
+      "pack": "course-bootcamp",
+      "cadence_en": "Once at L9; revisited per shoot",
+      "cadence_es": "Una vez en la L9; revisado por sesión",
+      "format": "checklist",
+      "stay_paper": false,
+      "es_locale_hazard": false,
+      "pairsWith": { "tools": ["photo-brief"], "glossary": [], "blog": [] },
+      "when_to_use_en": [
+        "Before booking a photographer — the brief is what you send with the booking email.",
+        "Before any in-house phone shoot — print, work down the list, don't improvise.",
+        "After a menu pivot that changed which dishes are the showcase."
+      ],
+      "mistakes_en": [
+        "Booking a photographer without a shot list. You'll get pretty photos of the wrong dishes.",
+        "Shooting in window light at the wrong time of day. Note the time on the brief.",
+        "Forgetting to shoot the dining room interior. Diners want to see where they'll sit."
+      ],
+      "status": "queued",
+      "added": "2026-05-24"
+    },
+
+    "course-hours": {
+      "title_en": "Hours, holidays, contact",
+      "title_es": "Horarios, festivos, contacto",
+      "summary_en": "A printable weekly hours grid + holiday closure planner + the canonical phone number. The single source of truth your GBP, site, and voicemail all cite.",
+      "summary_es": "Una cuadrícula imprimible de horarios semanales + planificador de cierres festivos + el teléfono canónico. La única fuente de verdad que tu GBP, sitio y buzón de voz citan.",
+      "walkaway_en": "A printed hours sheet pinned where the manager + voicemail recordist can read it.",
+      "walkaway_es": "Una hoja de horarios impresa, pegada donde el manager + quien graba el buzón puedan leerla.",
+      "url_en": "/sheets/course-hours/",
+      "url_es": "/es/sheets/course-hours/",
+      "pack": "course-bootcamp",
+      "cadence_en": "Once at L10; updated whenever hours change",
+      "cadence_es": "Una vez en la L10; actualizado cuando los horarios cambien",
+      "format": "table",
+      "stay_paper": false,
+      "es_locale_hazard": false,
+      "pairsWith": { "tools": ["store-hours"], "glossary": [], "blog": [] },
+      "when_to_use_en": [
+        "After Lesson 10 — print, walk to the front of house, check it matches the door sign.",
+        "Whenever hours change for any reason. The sheet drives the GBP update, the site update, the voicemail update.",
+        "Before any holiday weekend — plan two weeks ahead so GBP indexes the special hours."
+      ],
+      "mistakes_en": [
+        "Updating the door sign without updating the GBP. Diners drive on the wrong-hours assumption.",
+        "Forgetting to re-record voicemail. The least-edited surface is also the most-trusted.",
+        "Leaving the holiday hours blank instead of marking 'Closed' or actual hours."
+      ],
+      "status": "queued",
+      "added": "2026-05-24"
+    },
+
+    "course-gbp-checklist": {
+      "title_en": "Google Business Profile checklist",
+      "title_es": "Lista de verificación del Perfil de Google Business",
+      "summary_en": "A printable 22-point checklist for a fully-correct GBP — name, address, phone, hours, photos, categories, attributes, services, the lot.",
+      "summary_es": "Una lista de verificación imprimible de 22 puntos para un GBP completamente correcto — nombre, dirección, teléfono, horarios, fotos, categorías, atributos, servicios, todo.",
+      "walkaway_en": "A 22-point checklist with every GBP field accounted for.",
+      "walkaway_es": "Una lista de 22 puntos con cada campo del GBP contemplado.",
+      "url_en": "/sheets/course-gbp-checklist/",
+      "url_es": "/es/sheets/course-gbp-checklist/",
+      "pack": "course-bootcamp",
+      "cadence_en": "Once at L11; revisited monthly per the L16 rhythm",
+      "cadence_es": "Una vez en la L11; revisado mensualmente según el ritmo de la L16",
+      "format": "checklist",
+      "stay_paper": false,
+      "es_locale_hazard": false,
+      "pairsWith": { "tools": ["gbp-grader"], "glossary": [], "blog": ["how-to-set-up-google-business-profile-for-your-restaurant"] },
+      "when_to_use_en": [
+        "Right after claiming a new GBP — work the full list before going live.",
+        "Monthly per the L16 hours-check rhythm — re-verify name/address/phone/hours.",
+        "After any operations change that affects what's true on the GBP."
+      ],
+      "mistakes_en": [
+        "Claiming the GBP and then leaving the categories at the default 'Restaurant.' Pick the most specific category Google offers.",
+        "Skipping the attributes section ('outdoor seating,' 'wheelchair accessible,' 'serves vegetarian'). These drive filtered searches.",
+        "Letting Google's auto-suggested edits go unmoderated. They show up in your dashboard; review weekly."
+      ],
+      "status": "queued",
+      "added": "2026-05-24"
+    },
+
+    "course-local-seo": {
+      "title_en": "Local SEO — 8 keyword phrases",
+      "title_es": "SEO local — 8 frases clave",
+      "summary_en": "A printable record of the 8 neighborhood + cuisine keyword phrases your site anchors to. Useful when handing off to an agency or running your own quarterly review.",
+      "summary_es": "Un registro imprimible de las 8 frases clave de barrio + cocina a las que tu sitio se ancla. Útil cuando entregas a una agencia o haces tu propia revisión trimestral.",
+      "walkaway_en": "Eight keyword phrases printed, ready to verify in Google incognito.",
+      "walkaway_es": "Ocho frases clave impresas, listas para verificar en Google de incógnito.",
+      "url_en": "/sheets/course-local-seo/",
+      "url_es": "/es/sheets/course-local-seo/",
+      "pack": "course-bootcamp",
+      "cadence_en": "Once at L12; revisited quarterly per the L16 rhythm",
+      "cadence_es": "Una vez en la L12; revisado trimestralmente según el ritmo de la L16",
+      "format": "report",
+      "stay_paper": false,
+      "es_locale_hazard": false,
+      "pairsWith": { "tools": ["seo-grader"], "glossary": [], "blog": [] },
+      "when_to_use_en": [
+        "After Lesson 12 — print, run each phrase through Google incognito, mark which ones surface you.",
+        "Quarterly per the L16 SEO rhythm — neighborhoods drift, cuisines trend.",
+        "Before any SEO consultant engagement — the sheet is the brief."
+      ],
+      "mistakes_en": [
+        "Picking phrases that have your restaurant name in them. Diners who know your name already type it.",
+        "Skipping the neighborhood specificity. 'Silver Spring' is too broad; 'Silver Spring centro' is the win.",
+        "Treating SEO as a one-time setup. The L16 rhythm catches the drift."
+      ],
+      "status": "queued",
+      "added": "2026-05-24"
+    },
+
+    "course-review-template": {
+      "title_en": "Bad-review response template",
+      "title_es": "Plantilla de respuesta a reseñas malas",
+      "summary_en": "A printable name-own-repair template — your pre-drafted response to the first bad review, ready to adapt in 5 minutes instead of stewing for a week.",
+      "summary_es": "Una plantilla imprimible nombrar-asumir-reparar — tu respuesta pre-redactada a la primera reseña mala, lista para adaptar en 5 minutos en vez de cocinarla una semana.",
+      "walkaway_en": "A printed template the manager can grab when the bad review lands.",
+      "walkaway_es": "Una plantilla impresa que el manager puede agarrar cuando llegue la reseña mala.",
+      "url_en": "/sheets/course-review-template/",
+      "url_es": "/es/sheets/course-review-template/",
+      "pack": "course-bootcamp",
+      "cadence_en": "Once at L13; used on demand",
+      "cadence_es": "Una vez en la L13; usado a demanda",
+      "format": "report",
+      "stay_paper": false,
+      "es_locale_hazard": false,
+      "pairsWith": { "tools": [], "glossary": [], "blog": ["how-to-respond-to-google-reviews-restaurant-playbook-2026"] },
+      "when_to_use_en": [
+        "Once at Lesson 13 — print, pin near the manager's station.",
+        "Within 24 hours of any bad review. Speed signals care.",
+        "Quarterly per the L16 review rhythm — refresh the template's specifics."
+      ],
+      "mistakes_en": [
+        "Responding from defensiveness. The template is name-own-repair, not explain-deflect-promote.",
+        "Cutting and pasting the same response across reviews. Diners read the responses too.",
+        "Letting bad reviews sit longer than 24 hours. A week-late response reads as panic, not care."
+      ],
+      "status": "queued",
+      "added": "2026-05-24"
+    },
+
+    "course-rhythm": {
+      "title_en": "The 30-day rhythm",
+      "title_es": "El ritmo de 30 días",
+      "summary_en": "A printable month-view calendar with the four recurring tasks placed on real days — hours check, reviews triage, regenerate + redeploy, SEO sanity.",
+      "summary_es": "Un calendario de vista mensual imprimible con las cuatro tareas recurrentes en días reales — revisión de horarios, triaje de reseñas, regenerar + redesplegar, sanidad de SEO.",
+      "walkaway_en": "A printed calendar pinned next to the printer with the four tasks on real days.",
+      "walkaway_es": "Un calendario impreso pegado al lado de la impresora con las cuatro tareas en días reales.",
+      "url_en": "/sheets/course-rhythm/",
+      "url_es": "/es/sheets/course-rhythm/",
+      "pack": "course-bootcamp",
+      "cadence_en": "Once at L16; refreshed each month",
+      "cadence_es": "Una vez en la L16; refrescado cada mes",
+      "format": "log",
+      "stay_paper": false,
+      "es_locale_hazard": false,
+      "pairsWith": { "tools": [], "glossary": [], "blog": [] },
+      "when_to_use_en": [
+        "After Lesson 16 — print, post next to the printer, set the calendar alerts.",
+        "First Monday of each month — print the new month, refresh the cadence.",
+        "When onboarding a manager who didn't walk the bootcamp — the calendar IS the operating manual."
+      ],
+      "mistakes_en": [
+        "Setting the rhythm without specific days + times. 'Sometime in April' is a wish.",
+        "Skipping a month and then trying to catch up by doubling. The rule is: when you remember, do the missed task before the new one.",
+        "Treating the rhythm as personal — it should be visible to the team, so anyone can do it when the operator is out."
+      ],
+      "status": "live",
+      "added": "2026-05-24"
     }
   },
 

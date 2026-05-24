@@ -1,0 +1,50 @@
+    <form id="sheet-fields" class="sheet-form" autocomplete="off" novalidate>
+      <fieldset>
+        <legend>Header</legend>
+        <label><span><span>Restaurant name</span></span><input type="text" name="name" data-context-key="restaurantProfile.name" /></label>
+        <label><span><span>Quarter</span></span><input type="text" name="quarter" placeholder="e.g., Q3 2026" /></label>
+        <label><span><span>Curated by</span></span><input type="text" name="curator" placeholder="e.g., Marco (kitchen lead) + Jolene (owner)" /></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>The shortlist — 8 to 12 dishes</legend>
+        <span class="field-help">The dishes the website features, not the full menu. Mark allergen flags so the host stand can quote them. Plate cost from the L8 plate-cost tool; sale price is what's currently on the menu.</span>
+        <table class="sheet-row-table">
+          <thead><tr><th>#</th><th>Dish name</th><th>Section</th><th>Allergens</th><th>Plate cost</th><th>Sale price</th><th>Food-cost %</th><th>Showcase?</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td><input type="text" name="d1_name" /></td><td><select name="d1_section"><option>—</option><option>Starter</option><option>Main</option><option>Side</option><option>Dessert</option><option>Drink</option></select></td><td><input type="text" name="d1_allergens" placeholder="GF, V, contains nuts…" /></td><td><input type="text" name="d1_cost" placeholder="$" /></td><td><input type="text" name="d1_price" placeholder="$" /></td><td><input type="text" name="d1_pct" placeholder="%" /></td><td><input type="checkbox" name="d1_show" /></td></tr>
+            <tr><td>2</td><td><input type="text" name="d2_name" /></td><td><select name="d2_section"><option>—</option><option>Starter</option><option>Main</option><option>Side</option><option>Dessert</option><option>Drink</option></select></td><td><input type="text" name="d2_allergens" /></td><td><input type="text" name="d2_cost" /></td><td><input type="text" name="d2_price" /></td><td><input type="text" name="d2_pct" /></td><td><input type="checkbox" name="d2_show" /></td></tr>
+            <tr><td>3</td><td><input type="text" name="d3_name" /></td><td><select name="d3_section"><option>—</option><option>Starter</option><option>Main</option><option>Side</option><option>Dessert</option><option>Drink</option></select></td><td><input type="text" name="d3_allergens" /></td><td><input type="text" name="d3_cost" /></td><td><input type="text" name="d3_price" /></td><td><input type="text" name="d3_pct" /></td><td><input type="checkbox" name="d3_show" /></td></tr>
+            <tr><td>4</td><td><input type="text" name="d4_name" /></td><td><select name="d4_section"><option>—</option><option>Starter</option><option>Main</option><option>Side</option><option>Dessert</option><option>Drink</option></select></td><td><input type="text" name="d4_allergens" /></td><td><input type="text" name="d4_cost" /></td><td><input type="text" name="d4_price" /></td><td><input type="text" name="d4_pct" /></td><td><input type="checkbox" name="d4_show" /></td></tr>
+            <tr><td>5</td><td><input type="text" name="d5_name" /></td><td><select name="d5_section"><option>—</option><option>Starter</option><option>Main</option><option>Side</option><option>Dessert</option><option>Drink</option></select></td><td><input type="text" name="d5_allergens" /></td><td><input type="text" name="d5_cost" /></td><td><input type="text" name="d5_price" /></td><td><input type="text" name="d5_pct" /></td><td><input type="checkbox" name="d5_show" /></td></tr>
+            <tr><td>6</td><td><input type="text" name="d6_name" /></td><td><select name="d6_section"><option>—</option><option>Starter</option><option>Main</option><option>Side</option><option>Dessert</option><option>Drink</option></select></td><td><input type="text" name="d6_allergens" /></td><td><input type="text" name="d6_cost" /></td><td><input type="text" name="d6_price" /></td><td><input type="text" name="d6_pct" /></td><td><input type="checkbox" name="d6_show" /></td></tr>
+            <tr><td>7</td><td><input type="text" name="d7_name" /></td><td><select name="d7_section"><option>—</option><option>Starter</option><option>Main</option><option>Side</option><option>Dessert</option><option>Drink</option></select></td><td><input type="text" name="d7_allergens" /></td><td><input type="text" name="d7_cost" /></td><td><input type="text" name="d7_price" /></td><td><input type="text" name="d7_pct" /></td><td><input type="checkbox" name="d7_show" /></td></tr>
+            <tr><td>8</td><td><input type="text" name="d8_name" /></td><td><select name="d8_section"><option>—</option><option>Starter</option><option>Main</option><option>Side</option><option>Dessert</option><option>Drink</option></select></td><td><input type="text" name="d8_allergens" /></td><td><input type="text" name="d8_cost" /></td><td><input type="text" name="d8_price" /></td><td><input type="text" name="d8_pct" /></td><td><input type="checkbox" name="d8_show" /></td></tr>
+            <tr><td>9</td><td><input type="text" name="d9_name" /></td><td><select name="d9_section"><option>—</option><option>Starter</option><option>Main</option><option>Side</option><option>Dessert</option><option>Drink</option></select></td><td><input type="text" name="d9_allergens" /></td><td><input type="text" name="d9_cost" /></td><td><input type="text" name="d9_price" /></td><td><input type="text" name="d9_pct" /></td><td><input type="checkbox" name="d9_show" /></td></tr>
+            <tr><td>10</td><td><input type="text" name="d10_name" /></td><td><select name="d10_section"><option>—</option><option>Starter</option><option>Main</option><option>Side</option><option>Dessert</option><option>Drink</option></select></td><td><input type="text" name="d10_allergens" /></td><td><input type="text" name="d10_cost" /></td><td><input type="text" name="d10_price" /></td><td><input type="text" name="d10_pct" /></td><td><input type="checkbox" name="d10_show" /></td></tr>
+            <tr><td>11</td><td><input type="text" name="d11_name" /></td><td><select name="d11_section"><option>—</option><option>Starter</option><option>Main</option><option>Side</option><option>Dessert</option><option>Drink</option></select></td><td><input type="text" name="d11_allergens" /></td><td><input type="text" name="d11_cost" /></td><td><input type="text" name="d11_price" /></td><td><input type="text" name="d11_pct" /></td><td><input type="checkbox" name="d11_show" /></td></tr>
+            <tr><td>12</td><td><input type="text" name="d12_name" /></td><td><select name="d12_section"><option>—</option><option>Starter</option><option>Main</option><option>Side</option><option>Dessert</option><option>Drink</option></select></td><td><input type="text" name="d12_allergens" /></td><td><input type="text" name="d12_cost" /></td><td><input type="text" name="d12_price" /></td><td><input type="text" name="d12_pct" /></td><td><input type="checkbox" name="d12_show" /></td></tr>
+          </tbody>
+        </table>
+        <span class="field-help">Showcase = appears on the website / GBP photos / social. Limit to the top 6–8; the rest are kitchen-only.</span>
+      </fieldset>
+
+      <fieldset>
+        <legend>What to retire this quarter</legend>
+        <label><span><span>Dishes coming off (with date)</span></span><textarea name="retire" rows="3" placeholder="e.g., Sea bass crudo — supply unreliable, off the menu effective July 1."></textarea></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Distribution</legend>
+        <label><input type="checkbox" name="dist_kitchen" /><span><span>Posted in the kitchen pass</span></span></label>
+        <label><input type="checkbox" name="dist_host" /><span><span>Copy at the host stand (for allergen questions)</span></span></label>
+        <label><input type="checkbox" name="dist_website" /><span><span>Updated on the website menu page</span></span></label>
+        <label><input type="checkbox" name="dist_gbp" /><span><span>Updated in the GBP menu link</span></span></label>
+      </fieldset>
+    </form>
+
+    <script>
+      (function () {
+        if (window.SheetPage) window.SheetPage.register({ slug: 'course-menu-shortlist' });
+      })();
+    </script>
