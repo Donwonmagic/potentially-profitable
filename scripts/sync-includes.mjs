@@ -82,7 +82,16 @@ const FOOTER_MAIN_FUNNEL_MARKER = 'id="foot-learn"';
 // which spanned multiple <script> boundaries and on pages with inline
 // JSON-LD before the nav (every blog post) ATE the JSON-LD too. Don't
 // loosen this anchor without re-checking blog/an-honest-doordash-math-…
-const NAV_RE = /(?:<script>\s*\/\* Platform-aware kbd hint[\s\S]*?<\/script>\s*)*<header class="nav" id="nav">[\s\S]*?<\/header>/;
+// The inner `(?:(?!<\/script>)[\s\S])*?` is a tempered-greedy token: it
+// matches anything that ISN'T the start of a `</script>` closer. That
+// keeps `[\s\S]*?</script>` from backtracking across a `</script>`
+// boundary when the overall pattern can't otherwise match. Without it,
+// the regex engine would expand `[\s\S]*?` through the first `</script>`
+// and on to a LATER `</script>` (e.g. a duplicate Platform-aware script)
+// — eating any intervening content (the batch-banner aside, in May 2026)
+// and replacing it with the sync's canonical nav. That bug shipped the
+// homepage twice without the batch-banner before this fix.
+const NAV_RE = /(?:<script>\s*\/\* Platform-aware kbd hint(?:(?!<\/script>)[\s\S])*?<\/script>\s*)*<header class="nav" id="nav">[\s\S]*?<\/header>/;
 
 // The site footer: <footer> that contains <div class="foot-grid">,
 // plus any trailing canonical script tags (first-touch, save-next-time,
