@@ -399,17 +399,16 @@ main{padding-top:64px}
 
       <h2>What's in the ZIP</h2>
 
-      <p>Eight files. Together they are the entire site. You can open <code>index.html</code> in your browser locally to see what your hosted site will look like before you deploy.</p>
+      <p>Seven files. Together they are the entire site. You can open <code>index.html</code> in your browser locally to see what your hosted site will look like before you deploy.</p>
 
       <ul class="bundle-list">
-        <li><code>index.html</code><span class="desc">Home page — name, one-promise, palette, address, phone, hours, "what people say" placeholder until L13 reviews populate.</span></li>
+        <li><code>index.html</code><span class="desc">Home page — your name, one-promise, palette-keyed colors, cuisine chip, "reserve" CTA linking to the contact page.</span></li>
         <li><code>menu.html</code><span class="desc">Menu page — dishes from L8 with names and prices.</span></li>
-        <li><code>about.html</code><span class="desc">About page — customer paragraph from L4, your one-promise from L3, the human story.</span></li>
-        <li><code>contact.html</code><span class="desc">Contact page — address, phone, hours, an embedded map.</span></li>
-        <li><code>styles.css</code><span class="desc">One stylesheet keyed to your palette and voice. No CDN fonts, no third-party requests.</span></li>
+        <li><code>about.html</code><span class="desc">About page — your one-promise from L3 as the lead, customer paragraph from L4 as supporting copy.</span></li>
+        <li><code>contact.html</code><span class="desc">Contact page — address with Google Maps link, tappable phone, weekly hours table.</span></li>
         <li><code>sitemap.xml</code><span class="desc">Tells Google your four pages exist and when they were generated.</span></li>
         <li><code>robots.txt</code><span class="desc">Allows all crawlers. Standard, dull, correct.</span></li>
-        <li><code>README.md</code><span class="desc">Three-paragraph deploy instructions keyed to the host you pick in L15.</span></li>
+        <li><code>README.md</code><span class="desc">Deploy instructions for Cloudflare Pages, Netlify, and Vercel — keyed to the host preference you save in L15.</span></li>
       </ul>
 
       <p>Note what's <em>not</em> in the ZIP: no JavaScript. No fonts loaded from Google. No analytics scripts. No cookie banners. The generated site is the simplest possible thing that solves the operator's problem — a fast, accessible, plain-HTML restaurant site that loads in under 200 ms on a phone with two bars of cellular.</p>
@@ -422,12 +421,12 @@ main{padding-top:64px}
 
       <section class="download" aria-labelledby="download-h">
         <h3 id="download-h">Generate the ZIP</h3>
-        <p class="why">The button below packages your current answers into <code>your-restaurant.zip</code>. Re-run it whenever you change something — re-running takes about a second.</p>
-        <button class="download-btn" id="downloadBtn" type="button" disabled aria-describedby="downloadPending">
+        <p class="why">The button below packages your current answers into a ZIP named after your restaurant. Re-run it whenever you change something — re-running takes about a second.</p>
+        <button class="download-btn" id="downloadBtn" type="button" disabled aria-describedby="downloadHint">
           <span aria-hidden="true">↓</span>
           <span>Download your site (ZIP)</span>
         </button>
-        <p class="pending" id="downloadPending">The ZIP packager is wired in the next release — the JSZip lazy-load and bundle assembly arrive with the rest of Module 4. The readiness checklist and live preview work now so you can shape the site this lesson reads.</p>
+        <p class="pending" id="downloadHint">The button enables once all eight required fields above are green. JSZip lazy-loads on click (one small static asset, ~95 KB); nothing leaves your browser.</p>
       </section>
 
       <h2>What this changes downstream</h2>
@@ -436,7 +435,7 @@ main{padding-top:64px}
 
       <section class="course-takeaways" aria-labelledby="takeaways-h">
         <h2 id="takeaways-h">You have a deployable site, right now, in this browser.</h2>
-        <p>The readiness checklist tells you what's ready and what's still open. The rail shows you what will ship. The ZIP download (arriving in the next release) packages it all into a file you can hand to any host. Thirteen lessons of decisions just became a website.</p>
+        <p>The readiness checklist tells you what's ready and what's still open. The rail shows you what will ship. The ZIP download packages it all into a file you can hand to any host. Thirteen lessons of decisions just became a website.</p>
         <p><em>The generator is the proof that no fetch, no storage, no account was the right posture from the start.</em></p>
       </section>
 
@@ -445,7 +444,7 @@ main{padding-top:64px}
         <span class="spacer"></span>
         <a rel="next" href="/course/m4-launch/deploy/">Next: Lesson 15 — Deploy →</a>
       </nav>
-      <p style="margin-top:14px;font-size:13.5px;color:var(--stone);text-align:right;max-width:680px">The ZIP packager (lazy-loaded JSZip + bundle assembly) is the only piece of L14 still pending; the rest of the lesson works now. Lessons 15 and 16 are live.</p>
+      <p style="margin-top:14px;font-size:13.5px;color:var(--stone);text-align:right;max-width:680px">Lessons 15 and 16 are live — deploy and the 30-day rhythm.</p>
     </article>
 
     <aside class="course-rail" aria-labelledby="rail-h">
@@ -828,6 +827,25 @@ main{padding-top:64px}
       .replace('{ok}', String(okCount))
       .replace('{req}', String(requiredCount));
     countEl.textContent = summary;
+
+    // Toggle download button enabled state when readiness changes.
+    var btn = document.getElementById('downloadBtn');
+    if (btn) {
+      var ready = (okCount === requiredCount);
+      btn.disabled = !ready;
+      btn.setAttribute('aria-disabled', String(!ready));
+    }
+  }
+
+  function wireDownload() {
+    var btn = document.getElementById('downloadBtn');
+    if (!btn || btn.dataset.wired === '1') return;
+    btn.dataset.wired = '1';
+    import('/course/m4-launch/generator/generator.js').then(function (mod) {
+      mod.mount(btn, { locale: locale });
+    }).catch(function (err) {
+      if (console && console.error) console.error('[L14] generator import failed', err);
+    });
   }
 
   function init() {
@@ -841,6 +859,7 @@ main{padding-top:64px}
       }
     }
     render();
+    wireDownload();
     var eventName = (window.WorkshopKit && window.WorkshopKit.CONTEXT_CHANGE_EVENT) || 'mtn:context-change';
     document.addEventListener(eventName, render);
     window.addEventListener('storage', function (e) {

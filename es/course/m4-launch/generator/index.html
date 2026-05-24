@@ -346,17 +346,16 @@ main{padding-top:64px}
 
       <h2>Qué contiene el ZIP</h2>
 
-      <p>Ocho archivos. Juntos son todo el sitio. Puedes abrir <code>index.html</code> en tu navegador localmente para ver cómo se verá tu sitio alojado antes de desplegarlo.</p>
+      <p>Siete archivos. Juntos son todo el sitio. Puedes abrir <code>index.html</code> en tu navegador localmente para ver cómo se verá tu sitio alojado antes de desplegarlo.</p>
 
       <ul class="bundle-list">
-        <li><code>index.html</code><span class="desc">Página de inicio — nombre, promesa de una frase, paleta, dirección, teléfono, horarios, marcador de posición de "Lo que dice la gente" hasta que las reseñas de la L13 lo llenen.</span></li>
+        <li><code>index.html</code><span class="desc">Página de inicio — tu nombre, promesa de una frase, colores anclados a tu paleta, chip de cocina, botón "reservar" que enlaza a la página de contacto.</span></li>
         <li><code>menu.html</code><span class="desc">Página del menú — platos de la L8 con nombres y precios.</span></li>
-        <li><code>about.html</code><span class="desc">Página "Acerca de" — párrafo del cliente de la L4, tu promesa de una frase de la L3, la historia humana.</span></li>
-        <li><code>contact.html</code><span class="desc">Página de contacto — dirección, teléfono, horarios, un mapa embebido.</span></li>
-        <li><code>styles.css</code><span class="desc">Una hoja de estilos anclada a tu paleta y tu voz. Sin fuentes desde CDN, sin peticiones a terceros.</span></li>
+        <li><code>about.html</code><span class="desc">Página "Acerca de" — tu promesa de una frase de la L3 como entrada, párrafo del cliente de la L4 como apoyo.</span></li>
+        <li><code>contact.html</code><span class="desc">Página de contacto — dirección con enlace a Google Maps, teléfono tocable, tabla de horarios semanales.</span></li>
         <li><code>sitemap.xml</code><span class="desc">Le dice a Google que tus cuatro páginas existen y cuándo se generaron.</span></li>
         <li><code>robots.txt</code><span class="desc">Permite todos los rastreadores. Estándar, aburrido, correcto.</span></li>
-        <li><code>README.md</code><span class="desc">Instrucciones de despliegue de tres párrafos, ancladas al host que elijas en la L15.</span></li>
+        <li><code>README.md</code><span class="desc">Instrucciones de despliegue para Cloudflare Pages, Netlify y Vercel — ancladas al host que guardes como preferencia en la L15.</span></li>
       </ul>
 
       <p>Fíjate en lo que <em>no</em> está en el ZIP: nada de JavaScript. Sin fuentes cargadas desde Google. Sin scripts de analítica. Sin banners de cookies. El sitio generado es la cosa más simple posible que resuelve el problema del operador — un sitio plano de HTML rápido, accesible, que carga en menos de 200 ms en un teléfono con dos rayitas de cobertura.</p>
@@ -369,12 +368,12 @@ main{padding-top:64px}
 
       <section class="download" aria-labelledby="download-h">
         <h3 id="download-h">Genera el ZIP</h3>
-        <p class="why">El botón de abajo empaqueta tus respuestas actuales en <code>tu-restaurante.zip</code>. Vuelve a ejecutarlo cuando cambies algo — tarda cerca de un segundo.</p>
-        <button class="download-btn" id="downloadBtn" type="button" disabled aria-describedby="downloadPending">
+        <p class="why">El botón de abajo empaqueta tus respuestas actuales en un ZIP nombrado por tu restaurante. Vuelve a ejecutarlo cuando cambies algo — tarda cerca de un segundo.</p>
+        <button class="download-btn" id="downloadBtn" type="button" disabled aria-describedby="downloadHint">
           <span aria-hidden="true">↓</span>
           <span>Descarga tu sitio (ZIP)</span>
         </button>
-        <p class="pending" id="downloadPending">El empaquetador del ZIP se conecta en la próxima entrega — la carga diferida de JSZip y el ensamblado del bundle llegan junto con el resto del Módulo 4. La lista de revisión y la vista previa ya funcionan para que des forma al sitio que esta lección lee.</p>
+        <p class="pending" id="downloadHint">El botón se habilita cuando los ocho campos requeridos de arriba están en verde. JSZip se carga de forma diferida al hacer clic (un pequeño archivo estático, ~95 KB); nada sale de tu navegador.</p>
       </section>
 
       <h2>Qué cambia esto más adelante</h2>
@@ -383,7 +382,7 @@ main{padding-top:64px}
 
       <section class="course-takeaways" aria-labelledby="takeaways-h">
         <h2 id="takeaways-h">Tienes un sitio desplegable, ahora mismo, en este navegador.</h2>
-        <p>La lista de revisión te dice qué está listo y qué sigue abierto. La barra derecha te muestra lo que va a salir publicado. La descarga del ZIP (llega en la próxima entrega) empaqueta todo en un archivo que le puedes pasar a cualquier host. Trece lecciones de decisiones acaban de volverse un sitio web.</p>
+        <p>La lista de revisión te dice qué está listo y qué sigue abierto. La barra lateral derecha te muestra lo que va a salir publicado. La descarga del ZIP empaqueta todo en un archivo que le puedes pasar a cualquier host. Trece lecciones de decisiones acaban de volverse un sitio web.</p>
         <p><em>El generador es la prueba de que "no fetch, no storage, no account" era la postura correcta desde el principio.</em></p>
       </section>
 
@@ -392,7 +391,7 @@ main{padding-top:64px}
         <span class="spacer"></span>
         <a rel="next" href="/es/course/m4-launch/deploy/">Siguiente: Lección 15 — Despliegue →</a>
       </nav>
-      <p style="margin-top:14px;font-size:13.5px;color:var(--stone);text-align:right;max-width:680px">El empaquetador del ZIP (JSZip cargado de forma diferida + ensamblado del bundle) es la única pieza de la L14 que sigue pendiente; el resto de la lección ya funciona. Las Lecciones 15 y 16 están en vivo.</p>
+      <p style="margin-top:14px;font-size:13.5px;color:var(--stone);text-align:right;max-width:680px">Las Lecciones 15 y 16 están en vivo — despliegue y el ritmo de 30 días.</p>
     </article>
 
     <aside class="course-rail" aria-labelledby="rail-h">
@@ -686,6 +685,24 @@ main{padding-top:64px}
       .replace('{ok}', String(okCount))
       .replace('{req}', String(requiredCount));
     countEl.textContent = summary;
+
+    var btn = document.getElementById('downloadBtn');
+    if (btn) {
+      var ready = (okCount === requiredCount);
+      btn.disabled = !ready;
+      btn.setAttribute('aria-disabled', String(!ready));
+    }
+  }
+
+  function wireDownload() {
+    var btn = document.getElementById('downloadBtn');
+    if (!btn || btn.dataset.wired === '1') return;
+    btn.dataset.wired = '1';
+    import('/course/m4-launch/generator/generator.js').then(function (mod) {
+      mod.mount(btn, { locale: locale });
+    }).catch(function (err) {
+      if (console && console.error) console.error('[L14] generator import failed', err);
+    });
   }
 
   function init() {
@@ -696,6 +713,7 @@ main{padding-top:64px}
       }
     }
     render();
+    wireDownload();
     var eventName = (window.WorkshopKit && window.WorkshopKit.CONTEXT_CHANGE_EVENT) || 'mtn:context-change';
     document.addEventListener(eventName, render);
     window.addEventListener('storage', function (e) {
