@@ -93,6 +93,156 @@ KEYWORDS = {
         "why restaurants lose bookings",
         "restaurant website optimization checklist",
     ],
+    # ---- Wave-1 (2026-05-11) ----
+    "may-2026-wave-publishing-for-citation": [
+        "restaurant ai search citation",
+        "restaurant google ai overview ranking",
+        "ai overview citation rules",
+        "restaurant seo 2026 batch",
+        "operator playbook ai search restaurant",
+    ],
+    "how-to-get-cited-in-google-ai-overviews-restaurant": [
+        "google ai overview restaurant citation",
+        "how to get cited ai overview",
+        "ai overview citation paragraph structure",
+        "restaurant content for ai search",
+        "google sge citation restaurant",
+    ],
+    "instagram-as-restaurant-seo-strategy-2026": [
+        "instagram restaurant seo 2026",
+        "instagram caption seo restaurant",
+        "restaurant instagram search optimization",
+        "google indexes instagram captions",
+        "restaurant social seo instagram",
+    ],
+    "uber-eats-vs-doordash-vs-grubhub-restaurant-math-2026": [
+        "uber eats vs doordash vs grubhub commission",
+        "restaurant third party delivery math 2026",
+        "doordash commission breakdown restaurant",
+        "best delivery platform for restaurants",
+        "restaurant delivery margin comparison",
+    ],
+    "30-days-after-leaving-doordash-restaurant-case-study": [
+        "leaving doordash restaurant case study",
+        "30 days after leaving doordash",
+        "delisting from doordash results",
+        "restaurant direct ordering after doordash",
+        "doordash exit case study",
+    ],
+    "loyalty-programs-for-independent-restaurants-what-works-2026": [
+        "loyalty programs for independent restaurants",
+        "restaurant loyalty 2026 what works",
+        "restaurant punch card vs app loyalty",
+        "small restaurant loyalty program roi",
+        "restaurant customer retention program",
+    ],
+    "how-to-respond-to-google-reviews-restaurant-playbook-2026": [
+        "how to respond to google reviews restaurant",
+        "restaurant review response playbook",
+        "respond to 3 star reviews restaurant",
+        "negative review response restaurant",
+        "google review reply best practice 2026",
+    ],
+    "service-charges-vs-tipping-restaurant-operator-math-2026": [
+        "service charges vs tipping restaurant",
+        "restaurant tip pool vs service charge math",
+        "restaurant service charge legal",
+        "tipped vs no tip restaurant comparison",
+        "service charge model operator math",
+    ],
+    "my-restaurant-isnt-on-google-maps-10-minute-diagnostic": [
+        "my restaurant not on google maps",
+        "restaurant missing google maps",
+        "google business profile not showing",
+        "restaurant gbp diagnostic 10 minute",
+        "fix restaurant invisible google maps",
+    ],
+    "restaurant-schema-markup-complete-paste-ready-example": [
+        "restaurant schema markup example",
+        "restaurant json ld paste ready",
+        "restaurant menu schema markup",
+        "restaurant.org schema example",
+        "google rich result restaurant schema",
+    ],
+    # ---- Wave-2 (2026-05-23) ----
+    "may-2026-discovery-changed-under-you": [
+        "ai mode restaurant search 2026",
+        "google ai mode restaurant",
+        "google business profile ai search 2026",
+        "restaurant discovery may 2026 change",
+        "gemini restaurant referral",
+    ],
+    "google-ai-mode-restaurant-local-results-2026": [
+        "google ai mode local result restaurant",
+        "google io 2026 ai mode restaurants",
+        "ai mode reservation opentable resy tock",
+        "agentic restaurant booking google",
+        "google ai mode local pack rebuild",
+    ],
+    "how-to-appear-in-ai-search-restaurant-2026": [
+        "how to appear in ai search restaurant",
+        "chatgpt restaurant visibility check",
+        "gemini perplexity restaurant rating floor",
+        "ai assistant rating floor restaurant",
+        "restaurant visibility ai overview",
+    ],
+    "ai-local-pack-restaurant-phone-calls-2026": [
+        "google call button missing restaurant",
+        "ai local pack restaurant calls down",
+        "restaurant maps views declining 2026",
+        "google business profile call decline",
+        "restaurant directions clicks falling",
+    ],
+    "gemini-ai-referral-traffic-restaurants-2026": [
+        "gemini referral traffic restaurant",
+        "gemini ai search restaurant 2026",
+        "gemini.google.com restaurant referral",
+        "gemini vs chatgpt referral share restaurant",
+        "google business profile gemini citation",
+    ],
+    "google-ai-mode-reservation-booking-restaurant-2026": [
+        "ai mode reservation booking restaurant",
+        "google ai mode opentable resy tock booking",
+        "agentic booking restaurant 2026",
+        "restaurant direct booking vs agent",
+        "ai assistant reservation restaurant",
+    ],
+    # ---- Wave-3 (2026-06-01) ----
+    "dmv-math-moved-june-2026": [
+        "dc restaurant wage 18.40 july 2026",
+        "dmv restaurant cost pressures june 2026",
+        "streatery removal dc restaurant",
+        "beef price restaurant 2026",
+        "june 2026 restaurant operator playbook",
+    ],
+    "dc-minimum-wage-restaurants-july-2026": [
+        "dc minimum wage 18.40 july 2026",
+        "dc tipped wage 10.30 july 2026",
+        "dc initiative 82 restaurant wage",
+        "dc restaurant wage step price",
+        "dc restaurant wage july 1 deadline",
+    ],
+    "dc-streatery-removal-restaurant-covers-2026": [
+        "dc streatery removal restaurant covers",
+        "dc ddot road rent streatery",
+        "dc restaurant patio loss 2026",
+        "dc curb seating end restaurant",
+        "rebuild covers after streatery removal",
+    ],
+    "restaurant-food-cost-increases-2026": [
+        "restaurant food cost increases 2026",
+        "beef price 6.90 per pound 2026",
+        "fafh price forecast 3.6 percent 2026",
+        "restaurant re-cost five plates",
+        "selective menu re-pricing restaurant",
+    ],
+    "independent-restaurant-june-2026-calendar": [
+        "june 2026 restaurant operator calendar",
+        "father's day restaurant 2026",
+        "summer hiring restaurant 2026",
+        "june restaurant marketing calendar",
+        "independent restaurant june playbook",
+    ],
 }
 
 
@@ -147,7 +297,14 @@ def _patch_jsonld(html: str, slug: str, is_es: bool) -> tuple[str, bool]:
     for node in graph:
         if not isinstance(node, dict):
             continue
-        if node.get("@type") != "BlogPosting":
+        # Older posts use BlogPosting; newer ones (the May-2026 publication
+        # wave and onward, scaffolded by new-article-skeleton.mjs) use
+        # Article. Both are valid Schema.org types for the same role and
+        # both get the same speakable + keywords treatment. Without this,
+        # every Article-typed post silently skipped this enrichment and
+        # shipped without SpeakableSpecification (May 2026 audit found
+        # 18 such posts).
+        if node.get("@type") not in ("BlogPosting", "Article"):
             continue
         # keywords
         if "keywords" not in node and slug in KEYWORDS:

@@ -324,7 +324,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <article class="research-body">
 
       <div class="research-note">
-        <h2>La nota de Don</h2>
+        <h2 id="la-nota-de-don">La nota de Don</h2>
         <p>Cada restaurantero que ha pasado su sitio por PageSpeed Insights ha visto un número — 34, 61, 88 — y se ha preguntado qué significa. La respuesta honesta: es el resumen ponderado de Google sobre qué tan rápido pinta el contenido principal, qué tan estable es el layout mientras carga, y qué tan responsiva se siente la página mientras el navegador sigue trabajando. Cada uno de esos tiene una definición y un peso, y una vez que los conoces, la calificación deja de sentirse como una caja negra.</p>
         <p>Para un sitio de restaurante, la implicación práctica es que <strong>dos métricas representan cerca del 55% de la calificación</strong> — Largest Contentful Paint y Total Blocking Time. Arregla esas dos y todo lo demás sigue. La herramienta de diagnóstico de este sitio devuelve el desglose por métrica para que veas exactamente qué rubro está arrastrando tu calificación.</p>
       </div>
@@ -362,7 +362,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <figcaption>Las tres bandas de Lighthouse &mdash; el diagrama de colores en cualquier reporte de PageSpeed Insights usa exactamente estos umbrales.</figcaption>
       </figure>
 
-      <h2>Hallazgos clave</h2>
+      <h2 id="hallazgos-clave">Hallazgos clave</h2>
       <ul class="research-findings">
         <li>La calificación de rendimiento de Lighthouse es un <strong>promedio ponderado de cinco métricas</strong> (a partir de la versión mayor actual): First Contentful Paint, Speed Index, Largest Contentful Paint, Total Blocking Time y Cumulative Layout Shift.</li>
         <li>Pesos actuales: <strong>FCP 10%, SI 10%, LCP 25%, TBT 30%, CLS 25%</strong>. TBT y LCP juntos representan más de la mitad del número final; optimizarlas mueve la calificación más que cualquier otra cosa.</li>
@@ -371,7 +371,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <li>Lighthouse simula por defecto un <strong>dispositivo móvil de gama media en una red con throttle</strong>, lo cual es intencionalmente conservador — condiciones más rápidas que el promedio real del mundo serían engañosas para una audiencia de restaurante.</li>
       </ul>
 
-      <h2>Cómo lo usa Muntin</h2>
+      <h2 id="como-lo-usa-muntin">Cómo lo usa Muntin</h2>
       <ul class="research-uses">
         <li><a href="/es/blog/wix-vs-custom-for-restaurants/"><strong>Wix vs. a medida para restaurantes: qué se rompe primero</strong><span>La ruptura #2 referencia la metodología de rendimiento de Lighthouse al comparar sitios de constructores de plantilla con sitios a medida. Un sitio Wix y un sitio a medida corriendo la misma prueba de Lighthouse se miden de forma idéntica; solo el código subyacente difiere.</span></a></li>
         <li><a href="/es/tools/audits/restaurant/"><strong>Diagnóstico de sitio para restaurante (herramienta interactiva)</strong><span>El diagnóstico de Muntin corre contra datos reales de PageSpeed Insights para tu URL y reporta las métricas componentes que hacen la calificación de Lighthouse, no solo el número final.</span></a></li>
@@ -386,7 +386,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <a class="btn btn-primary" href="https://developer.chrome.com/docs/lighthouse/performance/performance-scoring/" target="_blank" rel="noopener noreferrer">Leer la documentación oficial<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" width="18" height="18"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
       </aside>
 
-      <h2>Cita completa</h2>
+      <h2 id="cita-completa">Cita completa</h2>
       <p class="research-citation">Chrome DevTools. <cite>Lighthouse performance scoring</cite>. Documentación de Chrome for Developers. <a href="https://developer.chrome.com/docs/lighthouse/performance/performance-scoring/" target="_blank" rel="noopener noreferrer">developer.chrome.com</a></p>
 
       <p class="research-reviewed"><strong>Última revisión:</strong> abril 2026 — los pesos de las métricas de Lighthouse han cambiado ligeramente entre versiones mayores; Muntin revisa esta página cada vez que sale un nuevo major de Lighthouse.</p>
@@ -410,7 +410,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
 <section class="block bg-cream2">
   <div class="container">
-    <div class="section-header reveal section-center"><span class="eyebrow">Más investigación</span><h2>Lo siguiente en la<br><span class="serif-italic">biblioteca de investigación.</span></h2></div>
+    <div class="section-header reveal section-center"><span class="eyebrow">Más investigación</span><h2 id="lo-siguiente-en-labiblioteca-de-investigacion">Lo siguiente en la<br><span class="serif-italic">biblioteca de investigación.</span></h2></div>
     <div class="learn-tools">
       <a class="learn-tool" href="/es/learn/research/mobile-page-speed-3-second-rule/"><span class="learn-tool-kicker">Think with Google</span><h3>La regla de los 3 segundos en móvil.</h3><p>Por qué importa la calificación de rendimiento: la mayoría de los visitantes móviles abandona las páginas que tardan más de tres segundos en cargar.</p><span class="learn-tool-cta">Leer la nota →</span></a>
       <a class="learn-tool" href="/es/learn/research/cart-abandonment-rate/"><span class="learn-tool-kicker">Baymard Institute</span><h3>La tasa del 70% de abandono de carrito.</h3><p>Cómo la fricción de los formularios de checkout se traduce directamente en abandono del widget de reservas.</p><span class="learn-tool-cta">Leer la nota →</span></a>

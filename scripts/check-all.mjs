@@ -81,6 +81,19 @@ const CHECKS = [
   // citation snapshots, this script).
   ['Removed slugs',       'check-removed-slugs.mjs'],
   ['Knit coverage',       'check-knit-coverage.mjs',       '--check'],
+  // Phase H.1 — batch-overview quality gate. Every article that's
+  // declared as a batch overview in data/library-batches.json gets
+  // checked against the synthesis floor (>= 5 H2, >= 3 viz figures
+  // with >= 1 viz-bars, every deep-dive linked >= 2x, navigational
+  // capstone present, audio not pending, read time >= 5 min). See
+  // scripts/check-overview-quality.mjs for the rule rationale.
+  ['Overview quality',    'check-overview-quality.mjs'],
+  // Phase SEO — H2 anchor IDs let AI search engines (Google AI Overview,
+  // Perplexity, ChatGPT) deep-link to a specific section instead of the
+  // article root. See scripts/inject-h2-anchor-ids.mjs for the slug
+  // rules. Catches the regression where a newly-published article
+  // shipped with bare <h2> tags.
+  ['H2 anchor IDs (idem)', 'inject-h2-anchor-ids.mjs',      '--check'],
   ['Button vocabulary',   'check-button-vocabulary.mjs',   '--check'],
   // Phase 1 (tool-suite upgrade) — guard against NEW innerHTML usage
   // while Phase 3 retrofits existing call sites. Strict mode: fails CI

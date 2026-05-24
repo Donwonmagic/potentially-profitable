@@ -47,17 +47,77 @@
       "inLanguage": "en-US",
       "datePublished": "2026-05-10T20:00:00-04:00",
       "dateModified": "2026-05-10",
-      "author": { "@id": "https://muntin.digital/#don-goldstein", "@type": "Person", "name": "Don Goldstein", "url": "https://muntin.digital/about/" },
-      "publisher": { "@id": "https://muntin.digital/#business" },
-      "image": "https://muntin.digital/brand/og/blog-ai-overviews-citation.png",
-      "mainEntityOfPage": { "@id": "https://muntin.digital/blog/how-to-get-cited-in-google-ai-overviews-restaurant/" }
+      "author": {
+        "@id": "https://muntin.digital/#don-goldstein",
+        "@type": "Person",
+        "name": "Don Goldstein",
+        "url": "https://muntin.digital/about/"
+      },
+      "publisher": {
+        "@id": "https://muntin.digital/#business"
+      },
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://muntin.digital/brand/og/blog-ai-overviews-citation.png",
+        "width": 1200,
+        "height": 630,
+        "caption": "How to get your restaurant cited in Google's AI Overviews"
+      },
+      "mainEntityOfPage": {
+        "@id": "https://muntin.digital/blog/how-to-get-cited-in-google-ai-overviews-restaurant/"
+      },
+      "keywords": [
+        "google ai overview restaurant citation",
+        "how to get cited ai overview",
+        "ai overview citation paragraph structure",
+        "restaurant content for ai search",
+        "google sge citation restaurant"
+      ],
+      "speakable": {
+        "@type": "SpeakableSpecification",
+        "cssSelector": [
+          "article#post-body",
+          "h1",
+          ".post-dek"
+        ]
+      },
+      "audio": {
+        "@id": "https://muntin.digital/blog/how-to-get-cited-in-google-ai-overviews-restaurant/#audio"
+      }
+    },
+    {
+      "@type": "AudioObject",
+      "@id": "https://muntin.digital/blog/how-to-get-cited-in-google-ai-overviews-restaurant/#audio",
+      "contentUrl": "https://muntin.digital/blog/how-to-get-cited-in-google-ai-overviews-restaurant/audio.mp3",
+      "encodingFormat": "audio/mpeg",
+      "inLanguage": "en-US",
+      "name": "How to get your restaurant cited in Google's AI Overviews — audio narration",
+      "description": "Full article read aloud by Don. Also available in Spanish, French, Italian, Portuguese, and Chinese.",
+      "associatedArticle": {
+        "@id": "https://muntin.digital/blog/how-to-get-cited-in-google-ai-overviews-restaurant/#article"
+      }
     },
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Muntin Digital", "item": "https://muntin.digital/" },
-        { "@type": "ListItem", "position": 2, "name": "Articles", "item": "https://muntin.digital/blog/" },
-        { "@type": "ListItem", "position": 3, "name": "How to get your restaurant cited in Google's AI Overviews", "item": "https://muntin.digital/blog/how-to-get-cited-in-google-ai-overviews-restaurant/" }
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Muntin Digital",
+          "item": "https://muntin.digital/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Articles",
+          "item": "https://muntin.digital/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "How to get your restaurant cited in Google's AI Overviews",
+          "item": "https://muntin.digital/blog/how-to-get-cited-in-google-ai-overviews-restaurant/"
+        }
       ]
     }
   ]
@@ -378,13 +438,13 @@ main{padding-top:64px}
       </div>
     </details>
 
-    <h2>Ranking and being cited are not the same job</h2>
+    <h2 id="ranking-and-being-cited-are-not-the-same-job">Ranking and being cited are not the same job</h2>
 
     <p>The SEO industry has spent twenty years optimizing pages to appear in the top three blue links. That job still exists. The new job &mdash; the one that pays bigger right now &mdash; is getting your single best paragraph lifted into the AI Overview as one of two or three named sources. The page below the box still gets clicks, but not the way it used to. AI Overviews don&rsquo;t replace organic traffic; they replace the click that used to read your answer. The citation is your remaining surface.</p>
 
     <p>These two jobs don&rsquo;t actively fight each other. They reward different paragraphs. The page with the most backlinks doesn&rsquo;t always get cited &mdash; the page with the cleanest extractable answer does. Most restaurant content is written to rank. Almost none is written to be cited. The first independent operator in a market who flips that order owns the answer box for the next twelve months.</p>
 
-    <h2>The five moves that get cited</h2>
+    <h2 id="the-five-moves-that-get-cited">The five moves that get cited</h2>
 
     <p>These are written in the order an extractor walks a page. The same order they pay off in.</p>
 
@@ -478,31 +538,31 @@ main{padding-top:64px}
       </div>
     </div>
 
-    <h2>Move 1: Answer first, then explain</h2>
+    <h2 id="move-1-answer-first-then-explain">Move 1: Answer first, then explain</h2>
 
     <p>The first paragraph below an H2 is the only one most extractors read. Everything after it is supporting context that may or may not get pulled in. If your first paragraph answers the H2&rsquo;s implied question completely, you have a citation. If it sets up the answer instead, the answer never gets quoted, because the paragraph it lives in is too far down the page.</p>
 
     <p>Forty-five words is the ceiling. I&rsquo;ve seen the box quote longer paragraphs, but the cut-point is usually 35&ndash;55 words, and shorter is more often quoted verbatim than paraphrased. Verbatim is what you want &mdash; paraphrase loses the entity-to-schema match the model just made.</p>
 
-    <h2>Move 2: Anchor every entity in schema</h2>
+    <h2 id="move-2-anchor-every-entity-in-schema">Move 2: Anchor every entity in schema</h2>
 
     <p>The model reads your prose, then reads your JSON-LD, then asks itself: are these consistent? When the answer is yes, the page gets a citation-boost flag. When the answer is no &mdash; menu prices in prose don&rsquo;t match the Menu schema, hours in prose don&rsquo;t match OpeningHours &mdash; the page gets a deboost flag. There&rsquo;s no public signal for this. It&rsquo;s visible only in which pages get cited and which don&rsquo;t.</p>
 
     <p>If you already have <a href="/blog/restaurant-schema-markup-6-types-google-uses/" style="color:var(--teal)">the six schema types Google uses</a> wired up, you have move 2 done. The work that&rsquo;s usually missing: the prose has to actually match the schema. If your schema says you&rsquo;re open until 10pm and your prose says &ldquo;late&rdquo;, you have a consistency gap. Both should say 10pm.</p>
 
-    <h2>Move 3: Numbers in the lede sentence</h2>
+    <h2 id="move-3-numbers-in-the-lede-sentence">Move 3: Numbers in the lede sentence</h2>
 
     <p>The first sentence of your answering paragraph should contain at least one number. A price, a time, a count, a percentage, a year &mdash; doesn&rsquo;t matter which. Numbers are what get extracted; sentences without numbers compete with every other vague sentence on the internet, and the extractor picks the one that&rsquo;s the most specific.</p>
 
     <p>This is the move that most restaurant content gets wrong. The instinct is to lead with welcome language &mdash; &ldquo;We&rsquo;re thrilled to share our menu&rdquo;, &ldquo;Come experience the warmth of our patio&rdquo;. Welcome language has zero entities and zero numbers. It&rsquo;s the first thing the extractor skips. Replace it with a sentence that names a thing and quantifies it.</p>
 
-    <h2>Move 4: Predicate-shaped sentences. No hedges.</h2>
+    <h2 id="move-4-predicate-shaped-sentences-no-hedges">Move 4: Predicate-shaped sentences. No hedges.</h2>
 
     <p>The extractor parses every sentence into a subject-predicate-object shape. &ldquo;DoorDash is a delivery platform&rdquo; parses cleanly. &ldquo;Many people consider DoorDash to be a delivery platform of some kind&rdquo; does not. The first sentence has one fact. The second has hedge tokens that the model treats as noise, and the underlying fact disappears under the hedging.</p>
 
     <p>The words to strike on a citation rewrite: <em>approximately</em>, <em>usually</em>, <em>in some cases</em>, <em>most</em>, <em>often</em>, <em>typically</em>, <em>around</em>, <em>tend to</em>, <em>may</em>, <em>can</em>. Each one drops the citation odds. They&rsquo;re defensive lawyer-words from a different writing context. In the AI Overview context, they&rsquo;re costing you the box.</p>
 
-    <h2>The before/after</h2>
+    <h2 id="the-before-after">The before/after</h2>
 
     <p>Take a typical restaurant FAQ paragraph and walk it through moves 1&ndash;4. This is the kind of paragraph I see on 90% of independent sites; it&rsquo;s also the kind of paragraph that never gets cited.</p>
 
@@ -523,13 +583,13 @@ main{padding-top:64px}
 
     <p>Read both out loud. The first one feels human. The second one feels almost mechanical. That&rsquo;s the trade. The AI Overview surface doesn&rsquo;t reward conversational writing &mdash; the surface above it does. The conversation is what your menu page, your About page, your social channels are for. The citation paragraph is its own register. It exists to be quoted.</p>
 
-    <h2>Move 5: Stable URLs. Stable answers.</h2>
+    <h2 id="move-5-stable-urls-stable-answers">Move 5: Stable URLs. Stable answers.</h2>
 
     <p>This is the move that protects what moves 1&ndash;4 earn you. The crawler revisits cited URLs faster than uncited ones &mdash; the model has marked the page as a known good source. If the URL still resolves and the paragraph still answers the question, you stay cited. If the URL 301s to a new path, or the paragraph has been paraphrased into something with a slightly different fact-set, you drop out of the rotation. Sometimes the drop is permanent; sometimes you have to re-earn the citation from scratch over the next 60 days.</p>
 
     <p>The operational rule: when you publish a citation-shaped paragraph and it gets cited, leave it alone. Don&rsquo;t add a comma. Don&rsquo;t change the hours from &ldquo;5pm&rdquo; to &ldquo;5:00 PM&rdquo;. Don&rsquo;t move the page from /blog/ to /info/. If the underlying fact changes &mdash; you&rsquo;re really open until 11pm now, not 10pm &mdash; change the number and only the number. Touch one fact, keep the rest. The crawler will re-fingerprint the page, see the targeted change, and update its cited extract.</p>
 
-    <h2>How to test if you&rsquo;re cited</h2>
+    <h2 id="how-to-test-if-you-re-cited">How to test if you&rsquo;re cited</h2>
 
     <p>Open Google in a clean browser session. Type the question your guest is most likely asking &mdash; not the SEO keyword, the natural-language question. &ldquo;Is Roma Cucina open on Sunday&rdquo;. &ldquo;Where can I get omakase in Silver Spring&rdquo;. &ldquo;Does Maketto take walk-ins&rdquo;. If the AI Overview box appears at the top, scroll to its bottom. There are citation chips &mdash; small icons with source labels. Yours should be one of them.</p>
 
@@ -571,13 +631,13 @@ main{padding-top:64px}
       <figcaption>Three questions, two clicks each. The diagnosis is always one of four states; the fix is different for each.</figcaption>
     </figure>
 
-    <h2>The reframe</h2>
+    <h2 id="the-reframe">The reframe</h2>
 
     <p>You&rsquo;re not writing for the human reader the way you used to. The human reader sees the AI Overview&rsquo;s paragraph, decides whether the answer is enough, and either acts on it or clicks through to one of the cited sources. The paragraph the human reads first is not the paragraph you wrote &mdash; it&rsquo;s the paragraph the extractor wrote, pieced together from yours and one or two others. Your audience is now the extractor that decides which paragraph the human reader sees. Write the paragraph the extractor wants to lift.</p>
 
     <p>This is uncomfortable. It feels like writing to the algorithm. It is. The trade is that your most important informational pages &mdash; hours, menu, reservations, dietary &mdash; get to be the named source on the answer your guest sees. That&rsquo;s worth the register shift.</p>
 
-    <h2>Where to start</h2>
+    <h2 id="where-to-start">Where to start</h2>
 
     <p>Pick three pages. Your hours/contact page, your menu page, and your most-trafficked blog post. Walk each through moves 1&ndash;4 on the first paragraph below every H2. Don&rsquo;t touch the rest of the page yet. Publish, wait two weeks, then run the citation-check loop above on the questions those pages should be answering.</p>
 

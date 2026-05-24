@@ -47,17 +47,77 @@
       "inLanguage": "en-US",
       "datePublished": "2026-05-10T20:30:00-04:00",
       "dateModified": "2026-05-10",
-      "author": { "@id": "https://muntin.digital/#don-goldstein", "@type": "Person", "name": "Don Goldstein", "url": "https://muntin.digital/about/" },
-      "publisher": { "@id": "https://muntin.digital/#business" },
-      "image": "https://muntin.digital/brand/og/blog-schema-example.png",
-      "mainEntityOfPage": { "@id": "https://muntin.digital/blog/restaurant-schema-markup-complete-paste-ready-example/" }
+      "author": {
+        "@id": "https://muntin.digital/#don-goldstein",
+        "@type": "Person",
+        "name": "Don Goldstein",
+        "url": "https://muntin.digital/about/"
+      },
+      "publisher": {
+        "@id": "https://muntin.digital/#business"
+      },
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://muntin.digital/brand/og/blog-schema-example.png",
+        "width": 1200,
+        "height": 630,
+        "caption": "Restaurant schema markup: a complete, paste-ready example"
+      },
+      "mainEntityOfPage": {
+        "@id": "https://muntin.digital/blog/restaurant-schema-markup-complete-paste-ready-example/"
+      },
+      "keywords": [
+        "restaurant schema markup example",
+        "restaurant json ld paste ready",
+        "restaurant menu schema markup",
+        "restaurant.org schema example",
+        "google rich result restaurant schema"
+      ],
+      "speakable": {
+        "@type": "SpeakableSpecification",
+        "cssSelector": [
+          "article#post-body",
+          "h1",
+          ".post-dek"
+        ]
+      },
+      "audio": {
+        "@id": "https://muntin.digital/blog/restaurant-schema-markup-complete-paste-ready-example/#audio"
+      }
+    },
+    {
+      "@type": "AudioObject",
+      "@id": "https://muntin.digital/blog/restaurant-schema-markup-complete-paste-ready-example/#audio",
+      "contentUrl": "https://muntin.digital/blog/restaurant-schema-markup-complete-paste-ready-example/audio.mp3",
+      "encodingFormat": "audio/mpeg",
+      "inLanguage": "en-US",
+      "name": "Restaurant schema markup: a complete, paste-ready example — audio narration",
+      "description": "Full article read aloud by Don. Also available in Spanish, French, Italian, Portuguese, and Chinese.",
+      "associatedArticle": {
+        "@id": "https://muntin.digital/blog/restaurant-schema-markup-complete-paste-ready-example/#article"
+      }
     },
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Muntin Digital", "item": "https://muntin.digital/" },
-        { "@type": "ListItem", "position": 2, "name": "Articles", "item": "https://muntin.digital/blog/" },
-        { "@type": "ListItem", "position": 3, "name": "Restaurant schema markup: a complete, paste-ready example", "item": "https://muntin.digital/blog/restaurant-schema-markup-complete-paste-ready-example/" }
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Muntin Digital",
+          "item": "https://muntin.digital/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Articles",
+          "item": "https://muntin.digital/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Restaurant schema markup: a complete, paste-ready example",
+          "item": "https://muntin.digital/blog/restaurant-schema-markup-complete-paste-ready-example/"
+        }
       ]
     }
   ]
@@ -407,7 +467,7 @@ main{padding-top:64px}
       <figcaption>Six blocks. Six different Google surfaces. The paste-ready example below puts them all in one JSON-LD tag.</figcaption>
     </figure>
 
-    <h2>How to use it</h2>
+    <h2 id="how-to-use-it">How to use it</h2>
 
     <p>Three steps:</p>
 
@@ -417,7 +477,7 @@ main{padding-top:64px}
       <li><strong>Validate</strong> at <a href="https://validator.schema.org" style="color:var(--teal)" target="_blank" rel="noopener">validator.schema.org</a> by pasting the URL of your page. Fix anything red. Most errors are missing commas or stray quotes.</li>
     </ol>
 
-    <h2>The complete example</h2>
+    <h2 id="the-complete-example">The complete example</h2>
 
     <p>Below is the <a href="/glossary/schema/" style="color:var(--teal)">schema</a> I ran on a 60-seat DMV Italian restaurant. The structure nests six types: Restaurant (root), Menu, OpeningHoursSpecification, AggregateRating, Reservation, and FAQ. Each one unlocks a different Google surface (per the six-types article). Save it as a starting point; tighten as needed.</p>
 
@@ -514,7 +574,7 @@ main{padding-top:64px}
       <figcaption>Same URL, same meta description, same 60 lines of JSON-LD between them. Six new surface elements: stars, review count, price range, open-now, map pin, Reserve button.</figcaption>
     </figure>
 
-    <h2>Before you publish</h2>
+    <h2 id="before-you-publish">Before you publish</h2>
 
     <p>Three checks. Each one catches a class of error that&rsquo;s otherwise invisible until you&rsquo;re wondering why the local-pack still hasn&rsquo;t shown you.</p>
 
@@ -560,7 +620,7 @@ main{padding-top:64px}
       <figcaption>The whole post-paste workflow in four steps. Skip step three and you&rsquo;ll think the schema didn&rsquo;t work; skip step four and you&rsquo;ll miss the silent drift when a template update strips a field.</figcaption>
     </figure>
 
-    <h2>What happens after you ship</h2>
+    <h2 id="what-happens-after-you-ship">What happens after you ship</h2>
 
     <p>Don&rsquo;t expect immediate effect. Google&rsquo;s crawler may take 24&ndash;72 hours to revisit your page and pick up the new schema. Some surfaces (the local-pack, AggregateRating stars) update within a week. Others (Reservation deep links via Find a Table, FAQ rich snippets) can take 30+ days. The longest-tail ones are the AI Overview citations, which can take 90 days to start landing.</p>
 

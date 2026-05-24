@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
 <title>Cómo Saber Si una Herramienta de Restaurante Es Segura | Muntin Digital</title>
 <meta name="description" content="Un framework de 5 pruebas que puedes correr en cualquier herramienta gratis — en tu navegador, en menos de un minuto — antes de teclear un solo número real. Más el modelo de 4 niveles de datos que te dice qué compartir, dónde." />
 <meta name="theme-color" content="#1F4E5B" />
@@ -52,8 +53,22 @@
       "publisher": {
         "@id": "https://muntin.digital/#business"
       },
-      "image": "https://muntin.digital/brand/og/blog-tool-safe-es.png",
-      "mainEntityOfPage": "https://muntin.digital/es/blog/como-saber-si-una-herramienta-de-restaurante-es-segura/",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://muntin.digital/brand/og/blog-tool-safe-es.png",
+        "width": 1200,
+        "height": 630,
+        "caption": "Cómo Saber Si una Herramienta de Restaurante Es Segura"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://muntin.digital/es/blog/como-saber-si-una-herramienta-de-restaurante-es-segura/#webpage",
+        "url": "https://muntin.digital/es/blog/como-saber-si-una-herramienta-de-restaurante-es-segura/",
+        "name": "Cómo Saber Si una Herramienta de Restaurante Es Segura",
+        "isPartOf": {
+          "@id": "https://muntin.digital/#website"
+        }
+      },
       "inLanguage": "es-US",
       "speakable": {
         "@type": "SpeakableSpecification",
@@ -62,6 +77,21 @@
           "h1",
           ".post-dek"
         ]
+      },
+      "audio": {
+        "@id": "https://muntin.digital/es/blog/como-saber-si-una-herramienta-de-restaurante-es-segura/#audio"
+      }
+    },
+    {
+      "@type": "AudioObject",
+      "@id": "https://muntin.digital/es/blog/como-saber-si-una-herramienta-de-restaurante-es-segura/#audio",
+      "contentUrl": "https://muntin.digital/es/blog/como-saber-si-una-herramienta-de-restaurante-es-segura/audio.mp3",
+      "encodingFormat": "audio/mpeg",
+      "inLanguage": "es",
+      "name": "Cómo Saber Si una Herramienta de Restaurante Es Segura — audio narration",
+      "description": "Full article read aloud by Don. Also available in Spanish, French, Italian, Portuguese, and Chinese.",
+      "associatedArticle": {
+        "@id": "https://muntin.digital/es/blog/como-saber-si-una-herramienta-de-restaurante-es-segura/#article"
       }
     }
   ]
@@ -381,7 +411,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <p>Las herramientas que pasan estas pruebas te lo dicen claramente. Las que las fallan están a punto de explicarte por qué las pruebas no aplican a su caso. Esa es la pista.</p>
 
-      <h2>1. Las cinco pruebas — corre antes de teclear</h2>
+      <h2 id="1-las-cinco-pruebas-corre-antes-de-teclear">1. Las cinco pruebas — corre antes de teclear</h2>
 
       <p>Abre DevTools en cualquier herramienta que estés evaluando (<kbd>Cmd+Opt+I</kbd> en Mac, <kbd>Ctrl+Shift+I</kbd> en Windows). Cinco preguntas:</p>
 
@@ -421,7 +451,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <figcaption class="i18n">Modelo de 4 niveles de datos · qué fluye dónde</figcaption>
       </figure>
 
-      <h2>2. El modelo de cuatro niveles — qué compartir, dónde</h2>
+      <h2 id="2-el-modelo-de-cuatro-niveles-que-compartir-donde">2. El modelo de cuatro niveles — qué compartir, dónde</h2>
 
       <p>La mayoría de los dueños cargan todos sus datos en la misma cubeta mental — lo cual significa que la lista de proveedores y el tax ID reciben la misma protección (frecuentemente, el mismo bajo nivel). Cuatro niveles, cada uno con audiencia distinta y nivel de cautela distinto:</p>
 
@@ -445,7 +475,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <figcaption class="i18n">Diagnóstico de 5 pruebas · corre antes de teclear</figcaption>
       </figure>
 
-      <h2>3. Cómo se ve &ldquo;seguro&rdquo; — el ejemplo trabajado</h2>
+      <h2 id="3-como-se-ve-seguro-el-ejemplo-trabajado">3. Cómo se ve &ldquo;seguro&rdquo; — el ejemplo trabajado</h2>
 
       <p>Este es el estándar al que se sostiene cada herramienta en este sitio. Nueve afirmaciones sobre cómo cada herramienta de Muntin maneja tus inputs, cada una verificable en tu propio navegador. Toca una afirmación para ver el paso de DevTools que la confirma.</p>
 
@@ -495,7 +525,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <p>"Verificable" debería ser un flag del build, no una promesa de marketing. Si la única prueba es el folleto, trátalo como el folleto.</p>
       </blockquote>
 
-      <h2>4. Corre la auditoría</h2>
+      <h2 id="4-corre-la-auditoria">4. Corre la auditoría</h2>
 
       <p>El framework de 5 pruebas también es una checklist interactiva en <a href="/es/learn/checklists/audit-any-tool/">/es/learn/checklists/audit-any-tool/</a> — recórrela con DevTools abierto sobre cualquier herramienta que estés evaluando. Guarda el resultado en tu <a href="/es/tools/audits/restaurant/">Taller</a> como base; vuelve a correrla cuando un vendor empuje un &ldquo;feature nuevo.&rdquo;</p>
 

@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
 <title>When to Rebuild Your Restaurant Website: A Decision Framework | Muntin Digital</title>
 <meta name="description" content="Most operators rebuild their restaurant website 18 months too late. This is the seven-question decision framework I run through with every studio client — and the three case threads that show what each answer actually changes." />
 <meta name="theme-color" content="#1F4E5B" />
@@ -64,8 +65,22 @@
       "publisher": {
         "@id": "https://muntin.digital/#business"
       },
-      "image": "https://muntin.digital/brand/og/blog-when-to-rebuild.png",
-      "mainEntityOfPage": "https://muntin.digital/blog/when-to-rebuild-your-restaurant-website/",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://muntin.digital/brand/og/blog-when-to-rebuild.png",
+        "width": 1200,
+        "height": 630,
+        "caption": "When to Rebuild Your Restaurant Website: A Decision Framework"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://muntin.digital/blog/when-to-rebuild-your-restaurant-website/#webpage",
+        "url": "https://muntin.digital/blog/when-to-rebuild-your-restaurant-website/",
+        "name": "When to Rebuild Your Restaurant Website: A Decision Framework",
+        "isPartOf": {
+          "@id": "https://muntin.digital/#website"
+        }
+      },
       "inLanguage": "en-US",
       "speakable": {
         "@type": "SpeakableSpecification",
@@ -74,6 +89,21 @@
           "h1",
           ".post-dek"
         ]
+      },
+      "audio": {
+        "@id": "https://muntin.digital/blog/when-to-rebuild-your-restaurant-website/#audio"
+      }
+    },
+    {
+      "@type": "AudioObject",
+      "@id": "https://muntin.digital/blog/when-to-rebuild-your-restaurant-website/#audio",
+      "contentUrl": "https://muntin.digital/blog/when-to-rebuild-your-restaurant-website/audio.mp3",
+      "encodingFormat": "audio/mpeg",
+      "inLanguage": "en-US",
+      "name": "When to Rebuild Your Restaurant Website: A Decision Framework — audio narration",
+      "description": "Full article read aloud by Don. Also available in Spanish, French, Italian, Portuguese, and Chinese.",
+      "associatedArticle": {
+        "@id": "https://muntin.digital/blog/when-to-rebuild-your-restaurant-website/#article"
       }
     },
     {
@@ -520,33 +550,33 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <figcaption class="i18n">Storefront Health score · what it tells you about rebuild readiness</figcaption>
       </figure>
 
-      <h2>Question 1: How does it score on Storefront Health?</h2>
+      <h2 id="question-1-how-does-it-score-on-storefront-health">Question 1: How does it score on Storefront Health?</h2>
 
       <p>Run <a href="/tools/storefront-health/">Storefront Health</a> on your site. The composite scorecard rolls speed, SEO, mobile, schema, GBP, and the Restaurant Audit into one number, 0-100. The chart above maps the bands. The cheap path: a sub-score below the rest is usually one targeted fix away from pulling the composite back into the green.</p>
 
-      <h2>Question 2: Can your CMS update without breaking the site?</h2>
+      <h2 id="question-2-can-your-cms-update-without-breaking-the-site">Question 2: Can your CMS update without breaking the site?</h2>
 
       <p>Old <strong>CMS</strong> installs accumulate <em>technical debt</em> the way ductwork accumulates dust. The test: when's the last time someone tried to update the platform? If the answer is "we don't, because it broke last time," that's a rebuild signal.</p>
 
-      <h2>Question 3: Does the menu live in HTML?</h2>
+      <h2 id="question-3-does-the-menu-live-in-html">Question 3: Does the menu live in HTML?</h2>
 
       <p>If your menu is a PDF, an image, or "managed by Wix's menu widget," you're invisible to Google's dish-level queries and to AI search. Switching to a real <a href="/glossary/html-menu/" data-glossary-head="HTML menu" data-glossary-blurb="A menu built as real text on a web page, instead of as a PDF file or a photograph of a printed card." target="_blank" rel="noopener">HTML menu</a> alone is sometimes enough to defer a rebuild — sometimes it requires one.</p>
 
-      <h2>Question 4: How does the site score on Core Web Vitals?</h2>
+      <h2 id="question-4-how-does-the-site-score-on-core-web-vitals">Question 4: How does the site score on Core Web Vitals?</h2>
 
       <p>If <a href="/glossary/lcp/" data-glossary-head="Largest Contentful Paint" data-glossary-blurb="How long it takes for the biggest visible chunk of your homepage — usually the hero image or the headline — to finish drawing on a phone." target="_blank" rel="noopener">LCP</a> is above 4 seconds on mobile, or <a href="/glossary/cls/" data-glossary-head="Cumulative Layout Shift" data-glossary-blurb="A score that measures how much your page jumps around as it loads — when a banner slides in, an image arrives late, or a late-loading font nudges text down…" target="_blank" rel="noopener">CLS</a> is above 0.25, you're being penalized in search AND bouncing visitors before the menu loads. Sometimes a CDN + image compression fixes it; sometimes the platform is the problem and only a rebuild will do.</p>
 
       <p>Run <a href="/tools/speed-test/">Speed Test</a> on the homepage and the busiest interior page. If the homepage is fast but the menu page is slow, the platform isn't the issue — the page is. If both are slow, the platform usually is.</p>
 
-      <h2>Question 5: Can you ship a small change in under an hour?</h2>
+      <h2 id="question-5-can-you-ship-a-small-change-in-under-an-hour">Question 5: Can you ship a small change in under an hour?</h2>
 
       <p>Test: try to update the <!-- LIBRARY:autolink:start --><a href="/glossary/holiday-hours/" data-glossary-head="Holiday hours" data-glossary-aka="the recurring per-date overrides every restaurant has to make every year" data-glossary-blurb="The subset of special hours that recur on a calendar — closed on Thanksgiving and Christmas Day, early-close on Christmas Eve, brunch-only on Mother's Day, extended hours for St.">holiday hours</a><!-- LIBRARY:autolink:end --> on your homepage in the next 60 minutes. If you can't (no access, complex CMS, requires a developer), that's a rebuild signal — not because the technical limitation is fatal, but because the operational burden compounds quietly. Every change you delay is a small leak.</p>
 
-      <h2>Question 6: Does the brand match the room?</h2>
+      <h2 id="question-6-does-the-brand-match-the-room">Question 6: Does the brand match the room?</h2>
 
       <p>Open your homepage on the phone you carry. Then walk into your dining room. Do they feel like the same place? If not — if the room is warm, considered, intentional, and the site is templated, generic, "we picked the cleanest Squarespace template" — that's a brand-design rebuild signal, separate from the technical ones.</p>
 
-      <h2>Question 7: What happens to bookings if you do nothing for 18 months?</h2>
+      <h2 id="question-7-what-happens-to-bookings-if-you-do-nothing-for-18">Question 7: What happens to bookings if you do nothing for 18 months?</h2>
 
       <p>Look at your monthly booking trend. If it's flat or declining and your site has been the same for 24+ months, doing nothing isn't actually neutral — the gap to your local competitors is widening even when your numbers look stable. The 18-month "do nothing" projection is almost always negative for a stale restaurant site.</p>
 
@@ -580,7 +610,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <figcaption class="i18n">Three rebuild patterns · score band, scope, typical payback</figcaption>
       </figure>
 
-      <h2>Three case threads</h2>
+      <h2 id="three-case-threads">Three case threads</h2>
 
       <figure class="article-figure">
         <div class="recovery-stack reveal" role="img" aria-label="Three rebuild verdicts · score band → action → typical payback">
@@ -626,7 +656,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <p>Most operators don't rebuild because they can't picture what the rebuilt thing looks like. The framework is a forcing function. Run the questions. The answer almost always already exists.</p>
       </blockquote>
 
-      <h2>How to use this framework</h2>
+      <h2 id="how-to-use-this-framework">How to use this framework</h2>
 
       <p>Run Storefront Health first. Save the score to your <a href="/tools/audits/restaurant/">Workshop</a>. Walk through the seven questions, write down the honest answer to each, and look at the pattern. If three or more are pointing at "rebuild," you're past due. If one or two are, you're in fix-the-leak territory — read <a href="/blog/five-restaurant-website-changes-recover-one-percent-margin/">Five Website Changes That Recover 1% Margin</a> for the targeted-fix approach.</p>
 

@@ -807,7 +807,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <p>I don't hate Wix. I've built things on Wix. For a lot of small businesses it's genuinely the right answer — the first day is easy, the monthly cost is small, and the result is "a site that exists," which is better than "no site at all." But restaurants are a specific kind of small business, and they hit Wix's walls faster than almost any other industry I work with. This post is the honest version of the comparison: <strong>six places Wix breaks for independent restaurants, the ROI math, and when Wix is actually the right call</strong>.</p>
 
-      <h2>Where Wix actually wins</h2>
+      <h2 id="where-wix-actually-wins">Where Wix actually wins</h2>
       <p>Let me be fair about this first, because the rest of the post is going to feel lopsided if I don't:</p>
       <ul>
         <li><strong>You can launch in a weekend</strong> with no developer — a real, live, mobile-friendly-ish site from zero in about forty hours of your own time.</li>
@@ -818,7 +818,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       </ul>
       <p>If you're brand new, cash is tight, and you can genuinely accept that the site is a placeholder — not a reflection of the room — Wix is fine. This post is not for you. Everything below is for the restaurant that's been open a year or more, has regulars, has a menu worth photographing, and is starting to notice that the site is a problem.</p>
 
-      <h2>Break #1 — Menu management is a trap</h2>
+      <h2 id="break-1-menu-management-is-a-trap">Break #1 — Menu management is a trap</h2>
       <p>Wix has a "menu" widget. It looks great in the template preview. You drop in your categories, your dishes, your prices, and it renders a clean card layout on the page.</p>
       <p>Here's what you don't see until you've lived with it: <strong>your menu is inside Wix's closed system, not inside real HTML on your page.</strong> That sounds like a technicality. It isn't.</p>
       <p>What it means in practice: Google can't cleanly crawl individual dish descriptions, so you don't rank for "chicken parm near me" the way you could. Diners can't tap a dish to share it with a friend. When you update the menu on Wix, you still have to update it again on <!-- LIBRARY:autolink:start --><a href="/glossary/gbp/" data-glossary-head="Google Business Profile" data-glossary-aka="GBP, formerly Google My Business" data-glossary-blurb="Your business's free listing on Google Maps and Google Search — the panel on the right of a search that shows your name, hours, photos, reviews, and a link to your menu or booking.">Google Business Profile</a><!-- LIBRARY:autolink:end -->, on DoorDash, on Yelp, and anywhere else your menu lives — because nothing auto-syncs. The "easy updates" pitch quietly becomes "four separate places to update every time you change a price."</p>
@@ -852,7 +852,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <figcaption class="i18n">How menu data flows — closed platform vs. real HTML</figcaption>
       </figure>
 
-      <h2>Break #2 — Mobile load speed is always slower than it should be</h2>
+      <h2 id="break-2-mobile-load-speed-is-always-slower-than-it-should-be">Break #2 — Mobile load speed is always slower than it should be</h2>
       <p>This is the one I can prove with a URL: run any Wix restaurant site through <a href="/tools/audits/restaurant/">the free Restaurant Website Audit</a> and look at the Performance score. You'll almost always see something in the 40s or 50s out of 100. That's not the restaurant's fault — it's the platform.</p>
       <p>Wix templates ship a lot of JavaScript by default — enough that, in my audit experience, <!-- LIBRARY:autolink:start --><a href="/glossary/lighthouse/" data-glossary-head="Lighthouse" data-glossary-aka="Google's audit engine" data-glossary-blurb="The open-source auditing tool Google ships inside Chrome and inside PageSpeed Insights.">Lighthouse</a><!-- LIBRARY:autolink:end --> performance scores on mobile Wix restaurant sites consistently land below 60. On a 4G connection outside your restaurant, that often translates into a first-contentful-paint that runs four seconds or longer. Google's mobile page-speed research consistently shows that <strong>the majority of mobile visitors bounce from pages that take longer than three seconds to load</strong> — which means a slow Wix site is quietly losing a meaningful portion of its hungry mobile traffic before anyone ever sees the menu.</p>
 
@@ -934,11 +934,11 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         </div>
       </details>
 
-      <h2>Break #3 — Reservations integration is hostage to whatever Wix has deals with</h2>
+      <h2 id="break-3-reservations-integration-is-hostage-to-whatever-wix">Break #3 — Reservations integration is hostage to whatever Wix has deals with</h2>
       <p>Wix's restaurant templates lean heavily on OpenTable — it's the default integration in most of them, and OpenTable works fine if OpenTable is also your preference. But if your restaurant is on <strong>Resy, Tock, SevenRooms, or Square Reservations</strong>, in my audit experience you'll usually find that the "integration" is a generic iframe embed or a link-out. Nothing lives inside your page, nothing matches your brand, nothing tracks back into analytics cleanly, and when the third-party provider changes their embed URL two years from now you find out because your reservation button silently broke on a Friday night.</p>
       <p>A custom site lets you pick the reservation system that actually fits your workflow and wire it in cleanly — whichever platform that happens to be.</p>
 
-      <h2>Break #4 — SEO is "template-good," not "actually good"</h2>
+      <h2 id="break-4-seo-is-template-good-not-actually-good">Break #4 — SEO is "template-good," not "actually good"</h2>
       <p>Wix will tell you its SEO is strong. Technically it's not wrong: title tags exist, a <!-- LIBRARY:autolink:start --><a href="/glossary/sitemap/" data-glossary-head="Sitemap" data-glossary-aka="sitemap.xml" data-glossary-blurb="A file at /sitemap.xml on your domain that lists every public page on your site.">sitemap</a><!-- LIBRARY:autolink:end --> gets generated, pages are indexable. That's the floor. It's not the ceiling.</p>
       <p>Where I consistently see Wix fall short in restaurant audits:</p>
       <ul>
@@ -949,16 +949,16 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       </ul>
       <p>The net effect: you rank for your own restaurant name (which anyone can do), and you don't rank for "[cuisine] near me" or "best [dish] in [city]," which is where the new customers come from.</p>
 
-      <h2>Break #5 — You can't do anything custom without hiring a Wix Partner</h2>
+      <h2 id="break-5-you-can-t-do-anything-custom-without-hiring-a-wix-pa">Break #5 — You can't do anything custom without hiring a Wix Partner</h2>
       <p>Sooner or later, every restaurant wants something the template doesn't do. A menu layout that matches a printed card. A reservation flow that checks against a private event calendar. A catering inquiry that routes to a different inbox. A "specials this week" module that updates from a spreadsheet.</p>
       <p>On Wix, every one of those requires either Wix Studio (their pro-tier developer mode) or a Wix Partner — a contractor Wix certifies who charges custom-build rates to work inside a platform still constrained by Wix's architecture. You end up paying agency prices for a site that still has Wix's ceilings.</p>
       <p>On a custom build, "we want a specials module that updates from a spreadsheet" is a half-day of work, not a renegotiation.</p>
 
-      <h2>Break #6 — Exit costs are real, and you don't see them until you try to leave</h2>
+      <h2 id="break-6-exit-costs-are-real-and-you-don-t-see-them-until-you">Break #6 — Exit costs are real, and you don't see them until you try to leave</h2>
       <p>Here is the one that nobody tells you about when you're signing up. <strong>If you ever want to leave Wix, you can export almost nothing useful.</strong></p>
       <p>Your content isn't in HTML files you can pick up and move somewhere else. Your images live in Wix's media library. Your menu lives in their widget. The whole thing is a closed system where you are a tenant, not an owner, and the day you try to move is the day you realize you either stay forever or you pay someone to rebuild from scratch.</p>
       <p>The rebuild is almost always the right move — but it's a rebuild. Two or three years of content you thought you owned, effectively starts over. A custom site built on real HTML can be picked up, hosted anywhere, edited by anyone with a text editor, and moved between providers in an afternoon. That ownership is a feature the monthly Wix fee doesn't buy you.</p>
-      <h2>The math that almost always works</h2>
+      <h2 id="the-math-that-almost-always-works">The math that almost always works</h2>
       <p>Here is the comparison most restaurant owners never actually do:</p>
       <div class="table-scroll"><table class="comparison-table">
         <caption>Two-year total cost: Wix vs. custom site for an independent restaurant</caption>
@@ -995,7 +995,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <p class="pull-quote">The custom site pays for itself in the first four months of recovered reservations. Everything after that is pure delta.</p>
 
-      <h2>So when is Wix actually the right call?</h2>
+      <h2 id="so-when-is-wix-actually-the-right-call">So when is Wix actually the right call?</h2>
       <p>I meant what I said in the intro — Wix isn't evil, and it's the right answer in a few specific situations:</p>
       <ul>
         <li><strong>You just opened.</strong> The menu is still settling, you don't know what Tuesdays look like yet, and spending $5,000 on a website before you know whether the concept works is the wrong bet. A Wix placeholder is fine for the first six to twelve months.</li>
@@ -1005,7 +1005,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       </ul>
       <p>Everyone else — the established restaurant with regulars, a photographed menu, and an actual brand — is usually past Wix's ceiling and paying more than they think to stay there.</p>
 
-      <h2>The real test</h2>
+      <h2 id="the-real-test">The real test</h2>
       <p>Here's the question I use when I'm trying to figure out whether someone's Wix site is actually working or just technically online: <em>would you be proud to hand this URL to a food critic?</em></p>
       <p>If the answer is no, no template upgrade is going to fix that. And the hours you'd spend trying to make it yes — learning the menu widget, fighting the layout, watching your Lighthouse score refuse to improve — are almost always more than the cost of just building the right thing.</p>
 

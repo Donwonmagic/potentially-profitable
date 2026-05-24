@@ -45,17 +45,70 @@
       "inLanguage": "en-US",
       "datePublished": "2026-05-02T10:30:00-04:00",
       "dateModified": "2026-05-02",
-      "author": { "@id": "https://muntin.digital/#don-goldstein", "@type": "Person", "name": "Don Goldstein", "url": "https://muntin.digital/about/" },
-      "publisher": { "@id": "https://muntin.digital/#business" },
-      "image": "https://muntin.digital/brand/og/blog-doordash-math-2026.png",
-      "mainEntityOfPage": { "@id": "https://muntin.digital/blog/an-honest-doordash-math-for-independent-restaurants-2026/" }
+      "author": {
+        "@id": "https://muntin.digital/#don-goldstein",
+        "@type": "Person",
+        "name": "Don Goldstein",
+        "url": "https://muntin.digital/about/"
+      },
+      "publisher": {
+        "@id": "https://muntin.digital/#business"
+      },
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://muntin.digital/brand/og/blog-doordash-math-2026.png",
+        "width": 1200,
+        "height": 630,
+        "caption": "An honest DoorDash math for independent restaurants, 2026"
+      },
+      "mainEntityOfPage": {
+        "@id": "https://muntin.digital/blog/an-honest-doordash-math-for-independent-restaurants-2026/"
+      },
+      "speakable": {
+        "@type": "SpeakableSpecification",
+        "cssSelector": [
+          "article#post-body",
+          "h1",
+          ".post-dek"
+        ]
+      },
+      "audio": {
+        "@id": "https://muntin.digital/blog/an-honest-doordash-math-for-independent-restaurants-2026/#audio"
+      }
+    },
+    {
+      "@type": "AudioObject",
+      "@id": "https://muntin.digital/blog/an-honest-doordash-math-for-independent-restaurants-2026/#audio",
+      "contentUrl": "https://muntin.digital/blog/an-honest-doordash-math-for-independent-restaurants-2026/audio.mp3",
+      "encodingFormat": "audio/mpeg",
+      "inLanguage": "en-US",
+      "name": "An honest DoorDash math for independent restaurants, 2026 — audio narration",
+      "description": "Full article read aloud by Don. Also available in Spanish, French, Italian, Portuguese, and Chinese.",
+      "associatedArticle": {
+        "@id": "https://muntin.digital/blog/an-honest-doordash-math-for-independent-restaurants-2026/#article"
+      }
     },
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Muntin Digital", "item": "https://muntin.digital/" },
-        { "@type": "ListItem", "position": 2, "name": "Articles", "item": "https://muntin.digital/blog/" },
-        { "@type": "ListItem", "position": 3, "name": "An honest DoorDash math for independent restaurants, 2026", "item": "https://muntin.digital/blog/an-honest-doordash-math-for-independent-restaurants-2026/" }
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Muntin Digital",
+          "item": "https://muntin.digital/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Articles",
+          "item": "https://muntin.digital/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "An honest DoorDash math for independent restaurants, 2026",
+          "item": "https://muntin.digital/blog/an-honest-doordash-math-for-independent-restaurants-2026/"
+        }
       ]
     }
   ]
@@ -394,7 +447,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
     <p>I&rsquo;m going to do this with a real average ticket and real numbers I can defend. The ticket is $42 &mdash; that&rsquo;s our 2025 average DoorDash check at one of the restaurants I manage. Your ticket may be higher or lower; the percentages are what carry the argument.</p>
 
-    <h2>One $42 DoorDash ticket, broken down</h2>
+    <h2 id="one-42-doordash-ticket-broken-down">One $42 DoorDash ticket, broken down</h2>
 
     <p>Below is the full margin walk. The line items are familiar to anyone who&rsquo;s read a partner statement, but it&rsquo;s rare to see them stacked in one column with the actual percentages applied. I&rsquo;m using DoorDash Marketplace Plus (30% commission tier, the most common one for independents under three locations) and the standard payment-processing rate they pass through.</p>
 
@@ -532,7 +585,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
     <p>Twenty-nine percent kept on the same ticket. The marginal lift &mdash; the answer to &ldquo;what does it pay to move an order from DoorDash&rsquo;s app to your own website?&rsquo;&rsquo; &mdash; is <strong>$4.42 per order</strong>. Even if you eat the entire DoorDash Drive last-mile fee yourself, you&rsquo;re ten points better. If your customer picks up, twenty-eight points better.</p>
 
-    <h2>What that means for your year</h2>
+    <h2 id="what-that-means-for-your-year">What that means for your year</h2>
 
     <p>Take the average DMV independent doing 2,400 third-party-app orders per year &mdash; about seven per day, on the lower end of what I see for casual operators. Move 40% of those orders to direct over twelve months and the math:</p>
 
@@ -542,7 +595,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
     <p>If you operate at the higher end &mdash; say a busy lunch spot doing 6,000 third-party orders per year &mdash; and pull off a 40% switch, the same math returns $10,608 a year. Year two compounds, because the customers you converted to direct have learned the flow.</p>
 
-    <h2>The website fix that does it</h2>
+    <h2 id="the-website-fix-that-does-it">The website fix that does it</h2>
 
     <p>You don&rsquo;t need an app. You don&rsquo;t need a CRM. The switch happens through one button on your existing menu page, and the way you signal which button matters most. Three changes, in this order:</p>
 
@@ -554,7 +607,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
     <p>Run those three changes on your existing site and the average independent recovers the $4,243 first-year lift inside two months. The website itself probably costs less than that to build properly, even at studio pricing.</p>
 
-    <h2>The argument for not delisting (yet)</h2>
+    <h2 id="the-argument-for-not-delisting-yet">The argument for not delisting (yet)</h2>
 
     <p>I am not telling you to delist. DoorDash is, structurally, a customer-acquisition tool that costs you 30%. For an independent restaurant with a kitchen capable of 60% incremental volume, that 30% is the price you pay for the marginal cover &mdash; and it&rsquo;s a fair price <em>if you treat the platform as a discovery channel, not a relationship channel</em>.</p>
 
@@ -562,7 +615,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
     <p>An order-confirmation receipt with a 5%-off coupon to your direct site, mailed through DoorDash&rsquo;s own customer-receipt flow, is a free conversion lever. So is the QR code on the takeout bag. So is a card in the bag that says, in plain English, &ldquo;next time, save $3 by ordering direct.&rdquo;</p>
 
-    <h2>Run your own version</h2>
+    <h2 id="run-your-own-version">Run your own version</h2>
 
     <p>The numbers above are mine. Yours will be different &mdash; different commission tier, different ticket, different kitchen labor pattern. The free Margin Math tool runs the calculation against your inputs in your browser, and the result is yours alone &mdash; nothing leaves the page:</p>
 

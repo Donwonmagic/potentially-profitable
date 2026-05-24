@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
 <title>Cómo Leer Google Search Console de Tu Restaurante (en Español Plano) | Muntin Digital</title>
 <meta name="description" content="Google Search Console es la herramienta gratis más útil para SEO de restaurantes — y la más ignorada. Aquí está la versión en español plano: los cuatro reportes que importan, qué significa cada número, y los tres hábitos semanales que mueven reservas." />
 <meta name="theme-color" content="#1F4E5B" />
@@ -52,8 +53,22 @@
       "publisher": {
         "@id": "https://muntin.digital/#business"
       },
-      "image": "https://muntin.digital/brand/og/blog-tool-safe-es.png",
-      "mainEntityOfPage": "https://muntin.digital/es/blog/como-leer-google-search-console-de-tu-restaurante/",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://muntin.digital/brand/og/blog-tool-safe-es.png",
+        "width": 1200,
+        "height": 630,
+        "caption": "Cómo Leer Google Search Console de Tu Restaurante (en Español Plano)"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://muntin.digital/es/blog/como-leer-google-search-console-de-tu-restaurante/#webpage",
+        "url": "https://muntin.digital/es/blog/como-leer-google-search-console-de-tu-restaurante/",
+        "name": "Cómo Leer Google Search Console de Tu Restaurante (en Español Plano)",
+        "isPartOf": {
+          "@id": "https://muntin.digital/#website"
+        }
+      },
       "inLanguage": "es-US",
       "speakable": {
         "@type": "SpeakableSpecification",
@@ -62,6 +77,21 @@
           "h1",
           ".post-dek"
         ]
+      },
+      "audio": {
+        "@id": "https://muntin.digital/es/blog/como-leer-google-search-console-de-tu-restaurante/#audio"
+      }
+    },
+    {
+      "@type": "AudioObject",
+      "@id": "https://muntin.digital/es/blog/como-leer-google-search-console-de-tu-restaurante/#audio",
+      "contentUrl": "https://muntin.digital/es/blog/como-leer-google-search-console-de-tu-restaurante/audio.mp3",
+      "encodingFormat": "audio/mpeg",
+      "inLanguage": "es",
+      "name": "Cómo Leer Google Search Console de Tu Restaurante (en Español Plano) — audio narration",
+      "description": "Full article read aloud by Don. Also available in Spanish, French, Italian, Portuguese, and Chinese.",
+      "associatedArticle": {
+        "@id": "https://muntin.digital/es/blog/como-leer-google-search-console-de-tu-restaurante/#article"
       }
     }
   ]
@@ -380,7 +410,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <p>Esta es la versión en español plano. Cuatro reportes hacen el trabajo. Salta el resto.</p>
 
-      <h2>Configúralo primero (10 minutos, una vez)</h2>
+      <h2 id="configuralo-primero-10-minutos-una-vez">Configúralo primero (10 minutos, una vez)</h2>
 
       <p>Ve a <a href="https://search.google.com/search-console" rel="noopener">search.google.com/search-console</a>, inicia sesión, agrega tu dominio. Verifica propiedad por DNS o por una meta etiqueta. Espera 24-48 horas para que los datos se poblen.</p>
 
@@ -394,7 +424,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <figcaption class="i18n">Los 4 reportes que mueven reservas · tu sweep semanal</figcaption>
       </figure>
 
-      <h2>Reporte 1: Performance — los números de cabecera</h2>
+      <h2 id="reporte-1-performance-los-numeros-de-cabecera">Reporte 1: Performance — los números de cabecera</h2>
 
       <p>Esta es la única pantalla que la mayoría de los operadores necesita. Cuatro números arriba:</p>
       <ul>
@@ -406,7 +436,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <p>El leverage casi siempre está en CTR, no en posición. Un restaurante en #4 con un título + meta description fuertes supera a uno en #2 con uno genérico. Si tu CTR para queries de marca está bajo 40%, el snippet está roto — casi siempre la meta description.</p>
 
-      <h2>Reporte 2: Queries — lo que la gente tecleó</h2>
+      <h2 id="reporte-2-queries-lo-que-la-gente-tecleo">Reporte 2: Queries — lo que la gente tecleó</h2>
 
       <p>Bajo los números de cabecera, haz clic en &ldquo;Queries.&rdquo; Esto es oro. Ordena por impresiones descendente. Las primeras 20-30 filas te dicen exactamente para qué cree Google que es tu restaurante.</p>
 
@@ -420,7 +450,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <p>El reporte de Queries es el único lugar donde las palabras reales del cliente aterrizan en tu dashboard. Léelo como el mesero lee un comentario en una tarjeta.</p>
       </blockquote>
 
-      <h2>Reporte 3: Pages — qué páginas hacen el trabajo</h2>
+      <h2 id="reporte-3-pages-que-paginas-hacen-el-trabajo">Reporte 3: Pages — qué páginas hacen el trabajo</h2>
 
       <p>Cambia la pestaña a &ldquo;Pages.&rdquo; Ordena por clics descendente. El patrón típico:</p>
       <ul>
@@ -431,7 +461,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <p>Si tu página de menú está bajo 10% del total de clics, tienes un problema de página de menú — usualmente PDF (invisible para Google) o escondida en un subdirectorio que rankea mal.</p>
 
-      <h2>Reporte 4: Coverage / Pages indexed — el asesino silencioso</h2>
+      <h2 id="reporte-4-coverage-pages-indexed-el-asesino-silencioso">Reporte 4: Coverage / Pages indexed — el asesino silencioso</h2>
 
       <p>En la barra lateral izquierda, bajo &ldquo;Indexing,&rdquo; haz clic en &ldquo;Pages.&rdquo; Esto te dice cuántas de tus páginas Google ha agregado realmente a su índice. Si 50% de tus páginas están &ldquo;Excluded&rdquo; o &ldquo;Discovered — not indexed,&rdquo; tienes un problema fundacional — usualmente carga lenta, canonical roto, o contenido pobre.</p>
 
@@ -465,7 +495,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <figcaption class="i18n">Tres banderas rojas en Coverage · qué significa cada una antes de salir a arreglarla</figcaption>
       </figure>
 
-      <h2>Los tres hábitos semanales</h2>
+      <h2 id="los-tres-habitos-semanales">Los tres hábitos semanales</h2>
 
       <aside class="report-decider" aria-labelledby="report-decider-h">
         <p class="report-decider__eyebrow" id="report-decider-h">¿Qué reporte deberías abrir hoy?</p>
@@ -500,7 +530,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <p>Carga semanal total: bajo 20 minutos al mes. Resultado: señal accionable que no consigues de ninguna agencia que &ldquo;maneja tu SEO.&rdquo;</p>
 
-      <h2>Lo que Search Console no te dice</h2>
+      <h2 id="lo-que-search-console-no-te-dice">Lo que Search Console no te dice</h2>
 
       <p>Search Console solo cubre clics de búsqueda de Google. No te dice de clics de Google Maps, reservas de Find a Table, ni citas de IA-search de ChatGPT y Perplexity. Para el lado de IA-search, configura el FAQ schema y mira tu first-touch attribution en Plausible.</p>
 

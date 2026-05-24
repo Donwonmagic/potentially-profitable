@@ -390,12 +390,12 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <article class="research-body" id="post-body">
 
       <div class="research-note">
-        <h2>Don's note</h2>
+        <h2 id="don-s-note">Don's note</h2>
         <p>Fitts's Law sounds academic; it isn't. It's the reason your phone's Home button used to be at the bottom — easy for a thumb to reach — and the reason every app with a serious conversion metric (Instagram, DoorDash, OpenTable) keeps the primary action either at the bottom of the screen or persistently visible as a floating button.</p>
         <p>In restaurant-website terms: a "Reserve" button hidden inside a hamburger menu at the top-right of the viewport is <strong>twice as hard</strong> to press as one fixed to the bottom of the screen. Not twice as bad stylistically — twice as hard to press, measured in thumb travel. Every conversion drops proportionally. This is the cheapest UX fix a restaurant site can make, and it's the one most template builders don't do by default.</p>
       </div>
 
-      <h2>Key findings</h2>
+      <h2 id="key-findings">Key findings</h2>
       <ul class="research-findings">
         <li>Formalized by <strong>Paul Fitts in 1954</strong> based on rapid target-acquisition experiments. The finding: time-to-target is a predictable function of the distance to it and its size.</li>
         <li>The classic formula: <em>T = a + b · log₂(1 + D/W)</em> where D is distance to the target, W is its width, and a/b are constants for the user + device. Bigger targets are faster to acquire; closer targets are faster to acquire.</li>
@@ -404,7 +404,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <li><strong>Every extra tap compounds the loss.</strong> A reservation flow that opens a nav → selects "Reserve" → opens an embed is three Fitts's Law penalties stacked. Compression always wins.</li>
       </ul>
 
-      <h2>How Muntin uses this</h2>
+      <h2 id="how-muntin-uses-this">How Muntin uses this</h2>
       <ul class="research-uses">
         <li><a href="/blog/why-your-restaurant-loses-reservations-every-night/"><strong>Why your restaurant loses reservations every night</strong><span>Leak #4 — "the reservation button is buried or missing" — is where Fitts's Law does the most work in the library. The sticky-bottom-CTA recommendation is Fitts's Law in practice.</span></a></li>
         <li><a href="/blog/wix-vs-custom-for-restaurants/"><strong>Wix vs. custom for restaurants: what breaks first</strong><span>Break #4 ("reservation-flow friction") leans on Fitts to explain why Wix's default nav patterns measurably cost conversions relative to a custom sticky-CTA layout.</span></a></li>
@@ -419,7 +419,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <a class="btn btn-primary" href="https://www.nngroup.com/articles/fitts-law/" target="_blank" rel="noopener noreferrer">Read the original article<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" width="18" height="18"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
       </aside>
 
-      <h2>Full citation</h2>
+      <h2 id="full-citation">Full citation</h2>
       <p class="research-citation">Budiu, R. <cite>Fitts's Law and Its Applications in UX</cite>. Nielsen Norman Group. <a href="https://www.nngroup.com/articles/fitts-law/" target="_blank" rel="noopener noreferrer">nngroup.com</a>. (Based on: Fitts, P. M. (1954). The information capacity of the human motor system in controlling the amplitude of movement. <cite>Journal of Experimental Psychology, 47</cite>(6), 381–391.)</p>
 
       <p class="research-reviewed"><strong>Last reviewed:</strong> April 2026 — Fitts's Law is foundational UX and is not subject to revision; its applications continue to be reinforced by every mobile-interaction study since.</p>
@@ -443,7 +443,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
 <section class="block bg-cream2">
   <div class="container">
-    <div class="section-header reveal section-center"><span class="eyebrow">More research</span><h2>Next in the<br><span class="serif-italic">research library.</span></h2></div>
+    <div class="section-header reveal section-center"><span class="eyebrow">More research</span><h2 id="next-in-theresearch-library">Next in the<br><span class="serif-italic">research library.</span></h2></div>
     <div class="learn-tools">
       <a class="learn-tool" href="/learn/research/cart-abandonment-rate/"><span class="learn-tool-kicker">Baymard Institute</span><h3>The 70% cart abandonment rate.</h3><p>Online checkout forms lose ~70% of shoppers before completion. Reservation widgets are checkout forms in disguise.</p><span class="learn-tool-cta">Read the note →</span></a>
       <a class="learn-tool" href="/learn/research/local-business-websites/"><span class="learn-tool-kicker">Nielsen Norman Group</span><h3>What people actually look for.</h3><p>Hours and location top the list of what people search for on local business sites — and both are the most commonly hidden.</p><span class="learn-tool-cta">Read the note →</span></a>

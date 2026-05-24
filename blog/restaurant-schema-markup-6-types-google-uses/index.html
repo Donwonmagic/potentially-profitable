@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
 <title>Restaurant Schema Markup: The 6 Types Google Actually Uses | Muntin Digital</title>
 <meta name="description" content="The six schema.org types that move the needle for restaurant search results in 2026 — Restaurant, Menu, OpeningHoursSpecification, AggregateRating, Reservation, and FAQ — with copy-paste JSON-LD examples for each." />
 <meta name="theme-color" content="#1F4E5B" />
@@ -64,8 +65,22 @@
       "publisher": {
         "@id": "https://muntin.digital/#business"
       },
-      "image": "https://muntin.digital/brand/og/blog-restaurant-schema-markup.png",
-      "mainEntityOfPage": "https://muntin.digital/blog/restaurant-schema-markup-6-types-google-uses/",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://muntin.digital/brand/og/blog-restaurant-schema-markup.png",
+        "width": 1200,
+        "height": 630,
+        "caption": "Restaurant Schema Markup: The 6 Types Google Actually Uses"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://muntin.digital/blog/restaurant-schema-markup-6-types-google-uses/#webpage",
+        "url": "https://muntin.digital/blog/restaurant-schema-markup-6-types-google-uses/",
+        "name": "Restaurant Schema Markup: The 6 Types Google Actually Uses",
+        "isPartOf": {
+          "@id": "https://muntin.digital/#website"
+        }
+      },
       "inLanguage": "en-US",
       "speakable": {
         "@type": "SpeakableSpecification",
@@ -74,6 +89,21 @@
           "h1",
           ".post-dek"
         ]
+      },
+      "audio": {
+        "@id": "https://muntin.digital/blog/restaurant-schema-markup-6-types-google-uses/#audio"
+      }
+    },
+    {
+      "@type": "AudioObject",
+      "@id": "https://muntin.digital/blog/restaurant-schema-markup-6-types-google-uses/#audio",
+      "contentUrl": "https://muntin.digital/blog/restaurant-schema-markup-6-types-google-uses/audio.mp3",
+      "encodingFormat": "audio/mpeg",
+      "inLanguage": "en-US",
+      "name": "Restaurant Schema Markup: The 6 Types Google Actually Uses — audio narration",
+      "description": "Full article read aloud by Don. Also available in Spanish, French, Italian, Portuguese, and Chinese.",
+      "associatedArticle": {
+        "@id": "https://muntin.digital/blog/restaurant-schema-markup-6-types-google-uses/#article"
       }
     },
     {
@@ -528,7 +558,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <figcaption class="i18n">The 6 schema types Google reads first · what each unlocks</figcaption>
       </figure>
 
-      <h2>1. Restaurant — the foundational type</h2>
+      <h2 id="1-restaurant-the-foundational-type">1. Restaurant — the foundational type</h2>
 
       <p>This is the one you cannot skip. <a href="/glossary/schema/">Restaurant schema</a> tells Google what business type you are, your address, your phone, your <a href="/glossary/rich-results/">price range</a>, and a handful of other facts that determine whether you appear in queries like "Italian restaurants near me" at all.</p>
 
@@ -555,7 +585,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <p>The <code>servesCuisine</code> array is doing more work than people realize — it's how Google knows to show you for cuisine-specific queries. Don't put more than two cuisines unless you actually serve them; ambiguity demotes you in queries you should win.</p>
 
-      <h2>2. Menu — the type most restaurants fake</h2>
+      <h2 id="2-menu-the-type-most-restaurants-fake">2. Menu — the type most restaurants fake</h2>
 
       <p>Almost every restaurant site I audit has either no <a href="/glossary/schema/">Menu schema</a> at all, or the platform stamped it as a single string blob. Either way, Google can't parse individual dishes and you don't rank for "tacos al pastor near me" at the dish level.</p>
 
@@ -599,7 +629,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <figcaption class="i18n">Menu schema · which field actually feeds the AI citation</figcaption>
       </figure>
 
-      <h2>3. OpeningHoursSpecification — the one that costs you walk-ins</h2>
+      <h2 id="3-openinghoursspecification-the-one-that-costs-you-walk-ins">3. OpeningHoursSpecification — the one that costs you walk-ins</h2>
 
       <p>If your hours are wrong on Google, your hours are wrong everywhere. <a href="/glossary/opening-hours-specification/" data-glossary-head="OpeningHoursSpecification" data-glossary-blurb="A specific Schema.org structured-data type for representing when a place is open." target="_blank" rel="noopener">OpeningHoursSpecification</a> is the schema that powers the "Open now" / "Closes at 10 PM" badge on your search panel — and the one that gets stale when you change Sunday hours and forget to update the site.</p>
 
@@ -622,7 +652,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <p>Run <a href="/tools/schema-check/">Schema Checker</a> on your homepage to see whether your current hours schema is valid; <a href="/tools/open-hours/">Open Hours</a> generates the JSON-LD if you need a fresh start.</p>
 
-      <h2>4. AggregateRating — the one that boosts CTR by double digits</h2>
+      <h2 id="4-aggregaterating-the-one-that-boosts-ctr-by-double-digits">4. AggregateRating — the one that boosts CTR by double digits</h2>
 
       <p>If you have reviews on your own site, <a href="/glossary/rich-results/">AggregateRating</a> shows up as the gold-star pattern in your search snippet. The CTR lift is real — typically 8-15% for restaurant queries.</p>
 
@@ -634,7 +664,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <p>The constraint: the reviews <em>have to be on your site</em>. You can't aggregate Google's reviews into your own AggregateRating — that violates Google's structured-data policies and can earn a manual action that takes weeks to lift.</p>
 
-      <h2>5. Reservation — the one that unlocks Find a Table</h2>
+      <h2 id="5-reservation-the-one-that-unlocks-find-a-table">5. Reservation — the one that unlocks Find a Table</h2>
 
       <p>If you're on OpenTable, Resy, Tock, or SevenRooms, your reservation system already publishes the right schema. But if your booking is a custom form on your own site, you need to publish Reservation schema yourself — otherwise Google can't show the "Reserve a table" button in your panel.</p>
 
@@ -644,7 +674,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <p>FAQ schema is the cheapest AI-citation surface a restaurant has. The fact that almost nobody ships it is the opportunity.</p>
       </blockquote>
 
-      <h2>6. FAQ — the AI-citation magnet</h2>
+      <h2 id="6-faq-the-ai-citation-magnet">6. FAQ — the AI-citation magnet</h2>
 
       <p>FAQ schema isn't restaurant-specific, but it's the highest-leverage AI-citation surface for restaurant pages in 2026. ChatGPT, Perplexity, and Google's AI Overviews read FAQ blocks first when answering operational questions.</p>
 
@@ -692,7 +722,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <figcaption class="i18n">Schema coverage on a typical SEO-sweep restaurant site · 6 types Google looks for</figcaption>
       </figure>
 
-      <h2>How to check what you have today</h2>
+      <h2 id="how-to-check-what-you-have-today">How to check what you have today</h2>
 
       <p>Run your homepage through <a href="/tools/schema-check/">Schema Checker</a>. It returns a present/valid/missing verdict for each of these six types and points at the broken pieces. Save the result to your <a href="/tools/audits/restaurant/">Restaurant Audit</a> and re-run monthly — schema rots when CMS updates touch templates.</p>
 

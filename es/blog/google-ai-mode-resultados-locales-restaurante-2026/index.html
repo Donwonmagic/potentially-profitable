@@ -45,17 +45,55 @@
       "inLanguage": "es-ES",
       "datePublished": "2026-05-23T09:30:00-04:00",
       "dateModified": "2026-05-23",
-      "author": { "@id": "https://muntin.digital/#don-goldstein", "@type": "Person", "name": "Don Goldstein", "url": "https://muntin.digital/about/" },
-      "publisher": { "@id": "https://muntin.digital/#business" },
-      "image": "https://muntin.digital/brand/og/blog-ai-mode-rebuild-es.png",
-      "mainEntityOfPage": { "@id": "https://muntin.digital/es/blog/google-ai-mode-resultados-locales-restaurante-2026/" }
+      "author": {
+        "@id": "https://muntin.digital/#don-goldstein",
+        "@type": "Person",
+        "name": "Don Goldstein",
+        "url": "https://muntin.digital/about/"
+      },
+      "publisher": {
+        "@id": "https://muntin.digital/#business"
+      },
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://muntin.digital/brand/og/blog-ai-mode-rebuild-es.png",
+        "width": 1200,
+        "height": 630,
+        "caption": "Google reconstruyó AI Mode en I/O 2026 — qué cambia para tu restaurante"
+      },
+      "mainEntityOfPage": {
+        "@id": "https://muntin.digital/es/blog/google-ai-mode-resultados-locales-restaurante-2026/"
+      },
+      "speakable": {
+        "@type": "SpeakableSpecification",
+        "cssSelector": [
+          "article#post-body",
+          "h1",
+          ".post-dek"
+        ]
+      }
     },
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Muntin Digital", "item": "https://muntin.digital/" },
-        { "@type": "ListItem", "position": 2, "name": "Artículos", "item": "https://muntin.digital/es/blog/" },
-        { "@type": "ListItem", "position": 3, "name": "Google reconstruyó AI Mode en I/O 2026 — qué cambia para tu restaurante", "item": "https://muntin.digital/es/blog/google-ai-mode-resultados-locales-restaurante-2026/" }
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Muntin Digital",
+          "item": "https://muntin.digital/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Artículos",
+          "item": "https://muntin.digital/es/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Google reconstruyó AI Mode en I/O 2026 — qué cambia para tu restaurante",
+          "item": "https://muntin.digital/es/blog/google-ai-mode-resultados-locales-restaurante-2026/"
+        }
       ]
     }
   ]
@@ -303,10 +341,10 @@ header.nav{min-height:64px}
 
       <p>Para un operador, el titular no es el modelo. Es que el resultado local dej&oacute; de ser una lista y se volvi&oacute; una <em>composici&oacute;n</em>. Google ya no le entrega al comensal diez enlaces y un mapa para que se las arregle. Lee la pregunta, elige unos pocos lugares, escribe una respuesta corta sobre ellos, y ofrece actuar. El trabajo cambi&oacute; de &ldquo;salir en la lista&rdquo; a &ldquo;ser uno de los pocos que el modelo decide nombrar &mdash; y sobre los que puede actuar.&rdquo;</p>
 
-      <h2>Qu&eacute; cambia &ldquo;generativo&rdquo; en un resultado de restaurante</h2>
+      <h2 id="qu-cambia-generativo-en-un-resultado-de-restaurante">Qu&eacute; cambia &ldquo;generativo&rdquo; en un resultado de restaurante</h2>
       <p>Una respuesta generada &mdash; la misma superficie que un <a href="/es/glossary/ai-overview/">AI Overview</a> de Google &mdash; se arma con todo lo que el modelo puede leer y en lo que conf&iacute;a sobre ti: tu <a href="/es/glossary/gbp/">Perfil de Negocio de Google</a>, tus rese&ntilde;as, el texto de tus propias p&aacute;ginas. No es un feed ordenado. El viejo <a href="/es/glossary/map-pack/">paquete de mapa</a> premiaba la cercan&iacute;a y la calificaci&oacute;n; la respuesta generada premia la <em>legibilidad</em> &mdash; si el modelo puede afirmar, en una frase que est&aacute; dispuesto a firmar, qu&eacute; sirves, cu&aacute;ndo abres y si encajas con lo que pide el comensal. Si esa frase no se puede leer en alg&uacute;n lado, no est&aacute;s en el p&aacute;rrafo. Recorrimos las cuatro se&ntilde;ales que lo deciden en <a href="/es/blog/como-aparecer-en-busqueda-ai-restaurante-2026/">la prueba de cuatro n&uacute;meros</a>.</p>
 
-      <h2>La parte agente es el cambio m&aacute;s grande</h2>
+      <h2 id="la-parte-agente-es-el-cambio-m-s-grande">La parte agente es el cambio m&aacute;s grande</h2>
       <p>Las respuestas generadas vienen entrando desde hace un a&ntilde;o. Lo nuevo en I/O es que el asistente puede <em>completar una tarea</em> &mdash; y para los restaurantes, la tarea es la reserva. Por OpenTable, Resy y Tock, AI Mode puede reservar una mesa dentro de la respuesta, sin mandar al comensal a tu sitio. Es un regalo si est&aacute;s conectado a uno de esos proveedores y una fuga silenciosa si no: el comensal pide &ldquo;un lugar tranquilo para cuatro el viernes,&rdquo; el asistente encuentra uno que <em>se puede</em> reservar, y lo reserva. Un restaurante que solo toma reservas por tel&eacute;fono &mdash; sin un <a href="/es/glossary/reservation-link/">enlace de reserva</a> que el agente pueda completar &mdash; es invisible para ese flujo por bueno que sea.</p>
 
       <figure class="viz-figure article-figure" data-audio-alt="Tres cosas que cambi&oacute; la reconstrucci&oacute;n de I/O dos mil veintis&eacute;is en un resultado local de restaurante. Uno: la respuesta se genera, no se lista; Google compone una respuesta corta nombrando unos pocos lugares en vez de devolver diez enlaces y un mapa. Dos: el asistente puede reservar la mesa, por OpenTable, Resy o Tock, dentro de la respuesta. Tres: menos restaurantes son nombrados; una respuesta compuesta menciona un pu&ntilde;ado de lugares, y los dem&aacute;s quedan ausentes en vez de m&aacute;s abajo en una lista.">
@@ -338,7 +376,7 @@ header.nav{min-height:64px}
         <figcaption>Lo que cambi&oacute; la reconstrucci&oacute;n de I/O 2026 en un resultado local &mdash; de una lista en la que rankeabas a una respuesta en la que tienes que ser nombrado.</figcaption>
       </figure>
 
-      <h2>Tres jugadas que te mantienen en la respuesta</h2>
+      <h2 id="tres-jugadas-que-te-mantienen-en-la-respuesta">Tres jugadas que te mantienen en la respuesta</h2>
       <p>Nada de esto premia un presupuesto de anuncios m&aacute;s grande. Premia ser legible y reservable &mdash; ambas cosas las controlas t&uacute;.</p>
       <p><strong>Completa el perfil.</strong> Horario por d&iacute;a, cocina, atributos, el enlace al men&uacute; &mdash; los campos que el modelo cita. Usa el <a href="/es/tools/gbp-grader/">calificador de GBP</a> para encontrar los blancos.</p>
       <p><strong>Conecta un proveedor de reservas.</strong> Si tomas reservas, ponlas en OpenTable, Resy o Tock para que el agente pueda terminar el trabajo. El c&oacute;mo est&aacute; en <a href="/es/blog/reserva-en-google-ai-mode-restaurante-2026/">reservar dentro de la respuesta de IA</a>.</p>

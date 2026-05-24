@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
 <title>Cuándo Rehacer el Sitio Web de Tu Restaurante: Un Framework de Decisión | Muntin Digital</title>
 <meta name="description" content="La mayoría de los operadores rehace su sitio web 18 meses tarde. Este es el framework de siete preguntas para tomar la decisión — y los tres patrones de caso que muestran qué cambia cada respuesta." />
 <meta name="theme-color" content="#1F4E5B" />
@@ -52,8 +53,22 @@
       "publisher": {
         "@id": "https://muntin.digital/#business"
       },
-      "image": "https://muntin.digital/brand/og/blog-tool-safe-es.png",
-      "mainEntityOfPage": "https://muntin.digital/es/blog/cuando-rehacer-tu-sitio-web-de-restaurante/",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://muntin.digital/brand/og/blog-tool-safe-es.png",
+        "width": 1200,
+        "height": 630,
+        "caption": "Cuándo Rehacer el Sitio Web de Tu Restaurante: Un Framework de Decisión"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://muntin.digital/es/blog/cuando-rehacer-tu-sitio-web-de-restaurante/#webpage",
+        "url": "https://muntin.digital/es/blog/cuando-rehacer-tu-sitio-web-de-restaurante/",
+        "name": "Cuándo Rehacer el Sitio Web de Tu Restaurante: Un Framework de Decisión",
+        "isPartOf": {
+          "@id": "https://muntin.digital/#website"
+        }
+      },
       "inLanguage": "es-US",
       "speakable": {
         "@type": "SpeakableSpecification",
@@ -62,6 +77,21 @@
           "h1",
           ".post-dek"
         ]
+      },
+      "audio": {
+        "@id": "https://muntin.digital/es/blog/cuando-rehacer-tu-sitio-web-de-restaurante/#audio"
+      }
+    },
+    {
+      "@type": "AudioObject",
+      "@id": "https://muntin.digital/es/blog/cuando-rehacer-tu-sitio-web-de-restaurante/#audio",
+      "contentUrl": "https://muntin.digital/es/blog/cuando-rehacer-tu-sitio-web-de-restaurante/audio.mp3",
+      "encodingFormat": "audio/mpeg",
+      "inLanguage": "es",
+      "name": "Cuándo Rehacer el Sitio Web de Tu Restaurante: Un Framework de Decisión — audio narration",
+      "description": "Full article read aloud by Don. Also available in Spanish, French, Italian, Portuguese, and Chinese.",
+      "associatedArticle": {
+        "@id": "https://muntin.digital/es/blog/cuando-rehacer-tu-sitio-web-de-restaurante/#article"
       }
     }
   ]
@@ -397,37 +427,37 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <figcaption class="i18n">Puntuación de Storefront Health · qué te dice sobre estar listo para rehacer</figcaption>
       </figure>
 
-      <h2>Pregunta 1: ¿Cómo puntúa en Storefront Health?</h2>
+      <h2 id="pregunta-1-como-puntua-en-storefront-health">Pregunta 1: ¿Cómo puntúa en Storefront Health?</h2>
 
       <p>Corre <a href="/es/tools/storefront-health/">Storefront Health</a> sobre tu sitio. La calificación compuesta enrolla velocidad, SEO, mobile, schema, GBP, y la Restaurant Audit en un solo número, 0–100. El gráfico de arriba mapea las bandas. El camino barato: una sub-puntuación por debajo del resto suele estar a un arreglo puntual de devolver el compuesto al verde.</p>
 
-      <h2>Pregunta 2: ¿Tu CMS puede actualizarse sin romper el sitio?</h2>
+      <h2 id="pregunta-2-tu-cms-puede-actualizarse-sin-romper-el-sitio">Pregunta 2: ¿Tu CMS puede actualizarse sin romper el sitio?</h2>
 
       <p>Las instalaciones viejas de <strong>CMS</strong> acumulan <em>deuda técnica</em> como los ductos acumulan polvo. La prueba: ¿cuándo fue la última vez que alguien intentó actualizar la plataforma? Si la respuesta es &ldquo;no lo hacemos, porque la última vez se rompió,&rdquo; eso es señal de rehacer.</p>
 
-      <h2>Pregunta 3: ¿El menú vive en HTML?</h2>
+      <h2 id="pregunta-3-el-menu-vive-en-html">Pregunta 3: ¿El menú vive en HTML?</h2>
 
       <p>Si tu menú es un PDF, una imagen, o &ldquo;manejado por el widget de menú de Wix,&rdquo; eres invisible para las queries a nivel de plato de Google y para la búsqueda con IA. Cambiar a un <a href="/es/glossary/html-menu/" data-glossary-head="Menú en HTML" data-glossary-blurb="Un menú construido como texto real en una página web, en vez de como un archivo PDF o una foto de una carta impresa." target="_blank" rel="noopener">menú HTML</a> real a veces basta para postergar un rebuild — a veces requiere uno.</p>
 
-      <h2>Pregunta 4: ¿Cómo puntúa el sitio en Core Web Vitals?</h2>
+      <h2 id="pregunta-4-como-puntua-el-sitio-en-core-web-vitals">Pregunta 4: ¿Cómo puntúa el sitio en Core Web Vitals?</h2>
 
       <p>Si <a href="/es/glossary/lcp/" data-glossary-head="Largest Contentful Paint" data-glossary-blurb="Cuánto tarda en terminarse de dibujar la pieza visible más grande de tu portada — normalmente la foto del hero o el titular — en un celular." target="_blank" rel="noopener">LCP</a> está arriba de 4 segundos en mobile, o <a href="/es/glossary/cls/" data-glossary-head="Cumulative Layout Shift" data-glossary-blurb="Una calificación que mide cuánto salta tu página mientras carga — cuando entra un banner, llega tarde una imagen, o una fuente que carga tarde empuja el te…" target="_blank" rel="noopener">CLS</a> está arriba de 0.25, te están penalizando en búsqueda Y rebotando visitantes antes de que cargue el menú. A veces un CDN + compresión de imágenes lo arregla; a veces la plataforma es el problema y solo un rebuild lo resuelve.</p>
 
       <p>Corre <a href="/es/tools/speed-test/">Speed Test</a> sobre la home y la página interior más visitada. Si la home es rápida pero la página de menú es lenta, la plataforma no es el problema — la página sí. Si ambas son lentas, la plataforma usualmente sí.</p>
 
-      <h2>Pregunta 5: ¿Puedes enviar un cambio chico en menos de una hora?</h2>
+      <h2 id="pregunta-5-puedes-enviar-un-cambio-chico-en-menos-de-una-hor">Pregunta 5: ¿Puedes enviar un cambio chico en menos de una hora?</h2>
 
       <p>Prueba: intenta actualizar el horario de feriado en tu home en los próximos 60 minutos. Si no puedes (sin acceso, CMS complejo, requiere developer), eso es señal de rehacer — no porque la limitación técnica sea fatal, sino porque la carga operativa compone silenciosamente. Cada cambio que postergas es una pequeña fuga.</p>
 
-      <h2>Pregunta 6: ¿La marca coincide con el salón?</h2>
+      <h2 id="pregunta-6-la-marca-coincide-con-el-salon">Pregunta 6: ¿La marca coincide con el salón?</h2>
 
       <p>Abre tu home en el teléfono que cargas. Luego entra a tu comedor. ¿Se sienten como el mismo lugar? Si no — si el salón es cálido, considerado, intencional, y el sitio es plantillado, genérico, &ldquo;elegimos la plantilla más limpia de Squarespace&rdquo; — eso es señal de rehacer por marca, separado de las técnicas.</p>
 
-      <h2>Pregunta 7: ¿Qué pasa con las reservas si no haces nada por 18 meses?</h2>
+      <h2 id="pregunta-7-que-pasa-con-las-reservas-si-no-haces-nada-por-18">Pregunta 7: ¿Qué pasa con las reservas si no haces nada por 18 meses?</h2>
 
       <p>Mira tu tendencia mensual de reservas. Si está plana o cayendo y tu sitio ha sido el mismo por 24+ meses, no hacer nada no es realmente neutral — la brecha con tus competidores locales se está abriendo aunque tus números se vean estables. La proyección de &ldquo;no hacer nada&rdquo; a 18 meses casi siempre es negativa para un sitio de restaurante estancado.</p>
 
-      <h2>Tres patrones de caso</h2>
+      <h2 id="tres-patrones-de-caso">Tres patrones de caso</h2>
 
       <figure class="article-figure" data-audio-alt="Tres patrones de rehacer · banda de puntuación, alcance, payback típico.">
         <div class="recovery-stack reveal" role="img" aria-label="Tres patrones de rehacer · banda de puntuación, alcance, payback típico">
@@ -448,7 +478,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <p>La mayoría de los operadores no rehace porque no se imagina cómo se ve la cosa rehecha. El framework es una herramienta forzosa. Recorre las preguntas. La respuesta casi siempre ya existe.</p>
       </blockquote>
 
-      <h2>Cómo usar este framework</h2>
+      <h2 id="como-usar-este-framework">Cómo usar este framework</h2>
 
       <p>Corre Storefront Health primero. Guarda la puntuación en tu <a href="/es/tools/audits/restaurant/">Taller</a>. Recorre las siete preguntas, escribe la respuesta honesta a cada una, y mira el patrón. Si tres o más apuntan a &ldquo;rehacer,&rdquo; estás atrasado. Si una o dos lo hacen, estás en territorio de arreglar-las-fugas.</p>
 

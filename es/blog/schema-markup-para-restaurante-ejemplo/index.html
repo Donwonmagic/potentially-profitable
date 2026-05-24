@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
 <title>Schema Markup para Restaurante: Ejemplo Completo Listo para Pegar | Muntin Digital</title>
 <meta name="description" content="Un ejemplo completo de schema markup para restaurante — los seis tipos en un solo bloque JSON-LD listo para copiar y pegar en tu sitio. Restaurant + Menu + OpeningHoursSpecification + AggregateRating + Reservation + FAQ con datos realistas." />
 <meta name="theme-color" content="#1F4E5B" />
@@ -33,20 +34,65 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@graph": [{
-    "@type": "BlogPosting",
-    "@id": "https://muntin.digital/es/blog/schema-markup-para-restaurante-ejemplo/#article",
-    "headline": "Schema Markup para Restaurante: Ejemplo Completo Listo para Pegar",
-    "description": "Un ejemplo completo: los seis tipos de schema en un solo bloque JSON-LD listo para copiar y pegar en tu sitio.",
-    "url": "https://muntin.digital/es/blog/schema-markup-para-restaurante-ejemplo/",
-    "datePublished": "2026-05-10T20:30:00-04:00",
-    "dateModified": "2026-05-10",
-    "author": { "@id": "https://muntin.digital/#don-goldstein", "@type": "Person", "name": "Don Goldstein" },
-    "publisher": { "@id": "https://muntin.digital/#business" },
-    "image": "https://muntin.digital/brand/og/blog-schema-ejemplo-es.png",
-    "mainEntityOfPage": "https://muntin.digital/es/blog/schema-markup-para-restaurante-ejemplo/",
-    "inLanguage": "es-US"
-  }]
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "@id": "https://muntin.digital/es/blog/schema-markup-para-restaurante-ejemplo/#article",
+      "headline": "Schema Markup para Restaurante: Ejemplo Completo Listo para Pegar",
+      "description": "Un ejemplo completo: los seis tipos de schema en un solo bloque JSON-LD listo para copiar y pegar en tu sitio.",
+      "url": "https://muntin.digital/es/blog/schema-markup-para-restaurante-ejemplo/",
+      "datePublished": "2026-05-10T20:30:00-04:00",
+      "dateModified": "2026-05-10",
+      "author": {
+        "@id": "https://muntin.digital/#don-goldstein",
+        "@type": "Person",
+        "name": "Don Goldstein"
+      },
+      "publisher": {
+        "@id": "https://muntin.digital/#business"
+      },
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://muntin.digital/brand/og/blog-schema-ejemplo-es.png",
+        "width": 1200,
+        "height": 630,
+        "caption": "Schema Markup para Restaurante: Ejemplo Completo Listo para Pegar"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://muntin.digital/es/blog/schema-markup-para-restaurante-ejemplo/#webpage",
+        "url": "https://muntin.digital/es/blog/schema-markup-para-restaurante-ejemplo/",
+        "name": "Schema Markup para Restaurante: Ejemplo Completo Listo para Pegar",
+        "isPartOf": {
+          "@id": "https://muntin.digital/#website"
+        }
+      },
+      "inLanguage": "es-US",
+      "audio": {
+        "@id": "https://muntin.digital/es/blog/schema-markup-para-restaurante-ejemplo/#audio"
+      },
+      "speakable": {
+        "@type": "SpeakableSpecification",
+        "cssSelector": [
+          "article#post-body",
+          "h1",
+          ".post-dek"
+        ]
+      }
+    },
+    {
+      "@type": "AudioObject",
+      "@id": "https://muntin.digital/es/blog/schema-markup-para-restaurante-ejemplo/#audio",
+      "contentUrl": "https://muntin.digital/es/blog/schema-markup-para-restaurante-ejemplo/audio.mp3",
+      "encodingFormat": "audio/mpeg",
+      "inLanguage": "es",
+      "name": "Schema Markup para Restaurante: Ejemplo Completo Listo para Pegar — audio narration",
+      "description": "Full article read aloud by Don. Also available in Spanish, French, Italian, Portuguese, and Chinese.",
+      "associatedArticle": {
+        "@id": "https://muntin.digital/es/blog/schema-markup-para-restaurante-ejemplo/#article"
+      }
+    }
+  ]
 }
 </script>
 
@@ -394,7 +440,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <figcaption>Seis bloques. Seis superficies distintas de Google. El ejemplo listo para pegar abajo los junta a todos en una sola etiqueta JSON-LD.</figcaption>
       </figure>
 
-      <h2>Cómo usarlo</h2>
+      <h2 id="como-usarlo">Cómo usarlo</h2>
 
       <ol>
         <li>Copia el JSON de abajo.</li>
@@ -403,7 +449,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <li>Valida con <a href="/es/tools/schema-check/">Schema Checker</a> antes de publicar.</li>
       </ol>
 
-      <h2>Ejemplo completo</h2>
+      <h2 id="ejemplo-completo">Ejemplo completo</h2>
 
       <pre><code>&lt;script type="application/ld+json"&gt;
 {
@@ -570,7 +616,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <figcaption>Misma URL, misma meta descripción, las mismas 60 líneas de JSON-LD entre las dos. Seis elementos nuevos: estrellas, número de reseñas, rango de precios, abierto ahora, pin del mapa, botón Reservar.</figcaption>
       </figure>
 
-      <h2>Antes de publicar</h2>
+      <h2 id="antes-de-publicar">Antes de publicar</h2>
 
       <ul>
         <li>Reemplaza <code>tu-restaurante.com</code> con tu dominio real en cada URL.</li>

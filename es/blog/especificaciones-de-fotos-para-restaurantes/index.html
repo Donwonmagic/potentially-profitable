@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
 <title>La Hoja de Especificaciones de Fotos para Restaurantes | Muntin Digital</title>
 <meta name="description" content="Cada tamaño de imagen, aspect ratio y resolución que tu restaurante realmente necesita — desde la portada de GBP hasta el hero de Yelp y la card de OG. Una hoja que puedes pasarle a un fotógrafo o usar tú con un teléfono." />
 <meta name="theme-color" content="#1F4E5B" />
@@ -52,8 +53,22 @@
       "publisher": {
         "@id": "https://muntin.digital/#business"
       },
-      "image": "https://muntin.digital/brand/og/blog-photo-spec-sheet-es.png",
-      "mainEntityOfPage": "https://muntin.digital/es/blog/especificaciones-de-fotos-para-restaurantes/",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://muntin.digital/brand/og/blog-photo-spec-sheet-es.png",
+        "width": 1200,
+        "height": 630,
+        "caption": "La Hoja de Especificaciones de Fotos para Restaurantes"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://muntin.digital/es/blog/especificaciones-de-fotos-para-restaurantes/#webpage",
+        "url": "https://muntin.digital/es/blog/especificaciones-de-fotos-para-restaurantes/",
+        "name": "La Hoja de Especificaciones de Fotos para Restaurantes",
+        "isPartOf": {
+          "@id": "https://muntin.digital/#website"
+        }
+      },
       "inLanguage": "es-US",
       "speakable": {
         "@type": "SpeakableSpecification",
@@ -62,6 +77,21 @@
           "h1",
           ".post-dek"
         ]
+      },
+      "audio": {
+        "@id": "https://muntin.digital/es/blog/especificaciones-de-fotos-para-restaurantes/#audio"
+      }
+    },
+    {
+      "@type": "AudioObject",
+      "@id": "https://muntin.digital/es/blog/especificaciones-de-fotos-para-restaurantes/#audio",
+      "contentUrl": "https://muntin.digital/es/blog/especificaciones-de-fotos-para-restaurantes/audio.mp3",
+      "encodingFormat": "audio/mpeg",
+      "inLanguage": "es",
+      "name": "La Hoja de Especificaciones de Fotos para Restaurantes — audio narration",
+      "description": "Full article read aloud by Don. Also available in Spanish, French, Italian, Portuguese, and Chinese.",
+      "associatedArticle": {
+        "@id": "https://muntin.digital/es/blog/especificaciones-de-fotos-para-restaurantes/#article"
       }
     }
   ]
@@ -392,7 +422,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <p>Cada restaurante termina necesitando los mismos doce tamaños de imagen, pero casi nadie los toma a la vez. El resultado: una portada de Google Business Profile con el aspect ratio incorrecto y mal cropeada, una foto de Yelp en vertical cuando Yelp pide horizontal, una página de menú donde cada plato tiene una forma distinta y el layout se rompe.</p>
 
-      <h2>Los 10 tamaños que realmente necesitas</h2>
+      <h2 id="los-10-tamanos-que-realmente-necesitas">Los 10 tamaños que realmente necesitas</h2>
 
       <div class="table-scroll"><table class="spec-table">
         <thead>
@@ -443,13 +473,13 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         </details>
       </aside>
 
-      <h2>Reglas de resolución</h2>
+      <h2 id="reglas-de-resolucion">Reglas de resolución</h2>
 
       <p>Siempre dispara a la resolución recomendada arriba MÁS un 30% extra. Siempre puedes recortar hacia abajo; nunca puedes ampliar. Un <a href="/es/glossary/hero-shot/" data-glossary-head="Toma hero" data-glossary-blurb="Para una superficie de destino (web hero, destacada de Yelp, lead del perfil de Instagram, portada de Google Business), la única fotografía que carga la id…" target="_blank" rel="noopener">hero shot</a> a 2400×1024 te permite también producir la card OG de 1200×630 desde el mismo archivo.</p>
 
       <p>Para imágenes que van a tu sitio, exporta como WebP al 80% de calidad — típicamente 60-70% más pequeño que JPG sin pérdida visible.</p>
 
-      <h2>Alt text — la parte más saltada</h2>
+      <h2 id="alt-text-la-parte-mas-saltada">Alt text — la parte más saltada</h2>
 
       <p>Cada imagen necesita <a href="/es/glossary/alt-text/" data-glossary-head="Texto alternativo" data-glossary-blurb="Una descripción escrita breve de cada imagen, puesta mediante el atributo alt=&quot;…&quot; en el HTML." target="_blank" rel="noopener">alt text</a>. No "IMG_4521.jpg," ni el nombre del menú, ni "comida deliciosa." Una oración descriptiva específica: "Plato de carnitas con cilantro, cebolla blanca y limón sobre tabla de madera." Cuesta 5 segundos por foto y te gana SEO + accesibilidad + cita en búsqueda con IA.</p>
 
@@ -487,11 +517,11 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <p>El alt text es la parte de la hoja de especificaciones que nadie lee. También es la primera parte que lee Google.</p>
       </blockquote>
 
-      <h2>El shot list para entregar a un fotógrafo</h2>
+      <h2 id="el-shot-list-para-entregar-a-un-fotografo">El shot list para entregar a un fotógrafo</h2>
 
       <p>Corre <a href="/es/tools/photo-brief/">Photo Brief</a>. Genera un shot list por superficie con la hoja de specs adjunta — exactamente el documento que le entregarías a un fotógrafo la mañana del shoot. Guarda el brief en tu <a href="/es/tools/audits/restaurant/">Workshop</a> para volver a correrlo en el siguiente shoot estacional.</p>
 
-      <h2>La versión "tómalas tú con el teléfono"</h2>
+      <h2 id="la-version-tomalas-tu-con-el-telefono">La versión "tómalas tú con el teléfono"</h2>
 
       <p>Si contratar fotógrafo no está en presupuesto, la versión de teléfono funciona. Los teléfonos modernos en buena luz superan rutinariamente al trabajo DSLR de bajo esfuerzo — la variable que más importa no es el sensor, es la hora del día y el ángulo respecto a la ventana. Tres reglas:</p>
 
@@ -510,7 +540,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <figcaption class="i18n">Cadencia de fotos · dos veces al año + cambios de menú</figcaption>
       </figure>
 
-      <h2>Cada cuándo re-fotografiar</h2>
+      <h2 id="cada-cuando-re-fotografiar">Cada cuándo re-fotografiar</h2>
 
       <p>Dos veces al año. Una antes de temporada alta, otra cuando el menú cambia sustancialmente. Guarda las fechas en tu Workshop junto a tus escenarios de Margin Math y Restaurant Audit. El argumento de composición: la cadencia de fotos es uno de los pocos loops de mantenimiento que afecta visiblemente el promedio de reseñas, porque la portada del GBP y las miniaturas del menú fijan la expectativa con la que el comensal cruza la puerta — y las reseñas se escriben contra esa expectativa, no contra la comida sola.</p>
 

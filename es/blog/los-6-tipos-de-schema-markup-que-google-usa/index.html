@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
 <title>Schema Markup para Restaurantes: Los 6 Tipos que Google Usa | Muntin Digital</title>
 <meta name="description" content="Los seis tipos de schema.org que mueven la aguja para los resultados de búsqueda de restaurantes en 2026 — Restaurant, Menu, OpeningHoursSpecification, AggregateRating, Reservation y FAQ — con JSON-LD listo para copiar y pegar." />
 <meta name="theme-color" content="#1F4E5B" />
@@ -52,8 +53,22 @@
       "publisher": {
         "@id": "https://muntin.digital/#business"
       },
-      "image": "https://muntin.digital/brand/og/blog-restaurant-schema-markup-es.png",
-      "mainEntityOfPage": "https://muntin.digital/es/blog/los-6-tipos-de-schema-markup-que-google-usa/",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://muntin.digital/brand/og/blog-restaurant-schema-markup-es.png",
+        "width": 1200,
+        "height": 630,
+        "caption": "Schema Markup para Restaurantes: Los 6 Tipos que Google Usa"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://muntin.digital/es/blog/los-6-tipos-de-schema-markup-que-google-usa/#webpage",
+        "url": "https://muntin.digital/es/blog/los-6-tipos-de-schema-markup-que-google-usa/",
+        "name": "Schema Markup para Restaurantes: Los 6 Tipos que Google Usa",
+        "isPartOf": {
+          "@id": "https://muntin.digital/#website"
+        }
+      },
       "inLanguage": "es-US",
       "speakable": {
         "@type": "SpeakableSpecification",
@@ -62,6 +77,21 @@
           "h1",
           ".post-dek"
         ]
+      },
+      "audio": {
+        "@id": "https://muntin.digital/es/blog/los-6-tipos-de-schema-markup-que-google-usa/#audio"
+      }
+    },
+    {
+      "@type": "AudioObject",
+      "@id": "https://muntin.digital/es/blog/los-6-tipos-de-schema-markup-que-google-usa/#audio",
+      "contentUrl": "https://muntin.digital/es/blog/los-6-tipos-de-schema-markup-que-google-usa/audio.mp3",
+      "encodingFormat": "audio/mpeg",
+      "inLanguage": "es",
+      "name": "Schema Markup para Restaurantes: Los 6 Tipos que Google Usa — audio narration",
+      "description": "Full article read aloud by Don. Also available in Spanish, French, Italian, Portuguese, and Chinese.",
+      "associatedArticle": {
+        "@id": "https://muntin.digital/es/blog/los-6-tipos-de-schema-markup-que-google-usa/#article"
       }
     }
   ]
@@ -395,7 +425,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <figcaption class="i18n">Los 6 tipos de schema que Google lee primero · qué desbloquea cada uno</figcaption>
       </figure>
 
-      <h2>1. Restaurant — el tipo fundacional</h2>
+      <h2 id="1-restaurant-el-tipo-fundacional">1. Restaurant — el tipo fundacional</h2>
 
       <p>Este no se puede saltar. <a href="/es/glossary/schema/">Restaurant schema</a> le dice a Google qué tipo de negocio eres, tu dirección, teléfono, rango de precios, y un puñado de hechos que determinan si apareces para búsquedas como "restaurantes italianos cerca de mí".</p>
 
@@ -416,7 +446,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   "acceptsReservations": "True"
 }</code></pre>
 
-      <h2>2. Menu — el tipo que la mayoría falsifica</h2>
+      <h2 id="2-menu-el-tipo-que-la-mayoria-falsifica">2. Menu — el tipo que la mayoría falsifica</h2>
 
       <p>Casi cada sitio de restaurante que audito tiene Menu schema ausente, o el platform lo estampó como un blob de string. Sin la estructura correcta, Google no puede rankear platos individuales. Usa <code>Menu</code> + <code>MenuSection</code> + <code>MenuItem</code> con descripciones reales — la descripción es lo que las AI Overviews citan textualmente.</p>
 
@@ -440,17 +470,17 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <figcaption class="i18n">Schema Menu · qué campo realmente alimenta la cita de IA</figcaption>
       </figure>
 
-      <h2>3. OpeningHoursSpecification — la que te cuesta walk-ins</h2>
+      <h2 id="3-openinghoursspecification-la-que-te-cuesta-walk-ins">3. OpeningHoursSpecification — la que te cuesta walk-ins</h2>
 
       <p>Si tus horarios están mal en Google, están mal en todas partes. <a href="/es/glossary/opening-hours-specification/" data-glossary-head="OpeningHoursSpecification" data-glossary-blurb="Un tipo específico de datos estructurados de Schema.org para representar cuándo un lugar está abierto." target="_blank" rel="noopener">OpeningHoursSpecification</a> alimenta el badge "Abierto ahora" / "Cierra a las 10 PM" en tu panel — y el que se vuelve obsoleto cuando cambias horarios de domingo y olvidas actualizar el sitio. Los overrides de feriados van en <code>specialOpeningHoursSpecification</code> aparte. La falla que vale nombrar: las actualizaciones de CMS o plantillas pueden borrar JSON-LD de la noche a la mañana. Si no tienes un schema check mensual en el calendario, la primera vez que te enteras de que se perdió tu bloque de horarios es cuando empiezan a llegar reseñas de una estrella.</p>
 
       <p>Corre <a href="/es/tools/schema-check/">Schema Checker</a> en tu home para validar; <a href="/es/tools/open-hours/">Open Hours</a> genera el JSON-LD si arrancas de cero.</p>
 
-      <h2>4. AggregateRating — la que sube CTR doble dígito</h2>
+      <h2 id="4-aggregaterating-la-que-sube-ctr-doble-digito">4. AggregateRating — la que sube CTR doble dígito</h2>
 
       <p>Si tienes reseñas en tu propio sitio, AggregateRating muestra el patrón de estrellas en tu snippet de búsqueda. El aumento de CTR es real — típicamente 8-15% para queries de restaurante. La restricción: las reseñas tienen que estar en tu sitio. No puedes agregar las reseñas de Google a tu propio AggregateRating — viola las políticas de structured data y puede ganar una acción manual.</p>
 
-      <h2>5. Reservation — la que desbloquea Find a Table</h2>
+      <h2 id="5-reservation-la-que-desbloquea-find-a-table">5. Reservation — la que desbloquea Find a Table</h2>
 
       <p>Si estás en OpenTable, Resy, Tock, o SevenRooms, tu sistema de reservas ya publica el schema correcto. Pero si tu booking es un formulario custom en tu sitio, necesitas publicar Reservation schema tú — si no, Google no muestra el botón "Reservar mesa" en tu panel. Ver <a href="/es/blog/how-to-recover-reservations-from-googles-find-a-table/">Recuperar reservas de Find a Table</a> para más.</p>
 
@@ -458,7 +488,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <p>El FAQ schema es la superficie de cita por IA más barata que tiene un restaurante. Que casi nadie lo envíe es la oportunidad.</p>
       </blockquote>
 
-      <h2>6. FAQ — el imán de citas de IA</h2>
+      <h2 id="6-faq-el-iman-de-citas-de-ia">6. FAQ — el imán de citas de IA</h2>
 
       <p>FAQ schema no es específico de restaurantes, pero es la mayor superficie de cita por IA para páginas de restaurante en 2026. ChatGPT, Perplexity, y las AI Overviews de Google leen los bloques FAQ primero cuando responden preguntas operativas. Seis entradas FAQ bien escritas suben típicamente el tráfico de búsqueda con IA un 20-40% en 60 días.</p>
 
@@ -474,7 +504,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <figcaption class="i18n">Cobertura típica de schema en un sitio SEO-sweep · 6 tipos que Google busca</figcaption>
       </figure>
 
-      <h2>Cómo verificar lo que tienes hoy</h2>
+      <h2 id="como-verificar-lo-que-tienes-hoy">Cómo verificar lo que tienes hoy</h2>
 
       <p>Corre tu home a través de <a href="/es/tools/schema-check/">Schema Checker</a>. Devuelve un veredicto presente/válido/faltante para cada uno de los seis tipos y apunta a las piezas rotas. Guárdalo en tu <a href="/es/tools/audits/restaurant/">Restaurant Audit</a> y vuelve a correrlo mensualmente — el schema se pudre cuando los updates de CMS tocan templates.</p>
 
