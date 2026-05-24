@@ -139,7 +139,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   .ac-field-value { font-size: 15px; color: var(--ink); word-break: break-all; }
   .ac-field-value.num { font-variant-numeric: tabular-nums; }
 
-  .ac-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 0 0 36px; }
+  .ac-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 0 0 36px; }
   .ac-stat { padding: 18px 22px; background: var(--surface-1); border: 1px solid var(--line); border-radius: var(--r-md); }
   .ac-stat-num { font-family: var(--font-display); font-size: 28px; font-weight: 500; color: var(--ink); margin: 0; line-height: 1; font-variant-numeric: tabular-nums; }
   .ac-stat-label { font-size: 13px; color: var(--stone); margin: 8px 0 0; }
@@ -219,6 +219,10 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           <p class="ac-stat-num" id="acWatchCount">&mdash;</p>
           <p class="ac-stat-label">Items vigilados</p>
         </div>
+        <a class="ac-stat" id="acCourseTile" href="/es/course/" style="text-decoration:none;color:inherit">
+          <p class="ac-stat-num" id="acCourseCount">&mdash;</p>
+          <p class="ac-stat-label">Open the Doors</p>
+        </a>
       </div>
 
       <section class="ac-danger" aria-labelledby="acDangerH">
@@ -253,6 +257,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   var lastSeenEl  = document.getElementById('acLastSeenAt');
   var savedEl     = document.getElementById('acSavedCount');
   var watchEl     = document.getElementById('acWatchCount');
+  var courseEl    = document.getElementById('acCourseCount');
+  var courseTile  = document.getElementById('acCourseTile');
 
   var openBtn     = document.getElementById('acDangerOpenBtn');
   var confirmWrap = document.getElementById('acConfirm');
@@ -276,6 +282,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     fetch('/api/auth/me',                { credentials: 'same-origin' }),
     fetch('/api/workbench/list',         { credentials: 'same-origin' }),
     fetch('/api/workbench/watch-list',   { credentials: 'same-origin' }),
+    fetch('/api/course/progress',        { credentials: 'same-origin' }),
   ]).then(function (rs) {
     if (rs[0].status === 401) {
       window.location.href = '/es/sign-in/?returnTo=' + encodeURIComponent('/es/account/');
@@ -285,6 +292,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       rs[0].ok ? rs[0].json() : null,
       rs[1].ok ? rs[1].json() : null,
       rs[2].ok ? rs[2].json() : null,
+      rs[3].ok ? rs[3].json() : null,
     ]);
   }).then(function (data) {
     var me = data[0] || {};
@@ -298,6 +306,13 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     var watches    = (data[2] && Array.isArray(data[2].items)) ? data[2].items.length : null;
     if (savedEl) savedEl.textContent = (savedItems == null) ? '—' : String(savedItems);
     if (watchEl) watchEl.textContent = (watches    == null) ? '—' : String(watches);
+    // /api/course/progress devuelve { ok, progress: { track, completed:[...], ... } }.
+    // El total — 16 — es la longitud canónica del bootcamp (coincide
+    // con data/course-lessons.json totalLessons).
+    var courseProgress = (data[3] && data[3].progress) || null;
+    var completedCount = (courseProgress && Array.isArray(courseProgress.completed))
+      ? courseProgress.completed.length : null;
+    if (courseEl) courseEl.textContent = (completedCount == null) ? '—' : (completedCount + ' / 16');
   }).catch(function (err) {
     if (err && err.message === 'redirect') return;
   });
