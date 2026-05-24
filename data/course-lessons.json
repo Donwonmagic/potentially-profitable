@@ -78,7 +78,7 @@
         "en": "Your one promise",
         "es": "Tu única promesa"
       },
-      "widgets": ["tab-flip", "live-preview-frame"]
+      "widgets": ["tab-flip", "text-input", "live-preview-frame"]
     },
     {
       "id": "customer",
@@ -308,8 +308,8 @@
     { "tag": "live-preview-frame",   "status": "shipped",    "path": "/tools/_shared/workshop/live-preview-frame.js" },
     { "tag": "text-input",           "status": "shipped",    "path": "/tools/_shared/workshop/text-input.js" },
     { "tag": "palette-picker",       "status": "shipped",    "path": "/tools/_shared/workshop/palette-picker.js" },
-    { "tag": "drag-rank",            "status": "planned" },
-    { "tag": "tab-flip",             "status": "planned" },
+    { "tag": "drag-rank",            "status": "shipped",    "path": "/tools/_shared/workshop/drag-rank.js" },
+    { "tag": "tab-flip",             "status": "shipped",    "path": "/tools/_shared/workshop/tab-flip.js" },
     { "tag": "before-after-slider",  "status": "planned" },
     { "tag": "persona-card-builder", "status": "planned" },
     { "tag": "map-radius",           "status": "planned" },
