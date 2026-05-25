@@ -106,6 +106,33 @@ main{padding-top:64px}
 .c-resume-text a:hover{text-decoration-color:var(--teal)}
 .c-resume[hidden]{display:none}
 
+/* Pre-assessment (optional) — sits above the track picker */
+.c-pre{padding:32px 0 0}
+.c-pre-wrap{max-width:760px;margin:0 auto;background:var(--cream-2);border:1px solid var(--line);border-radius:10px;padding:0;overflow:hidden}
+.c-pre-summary{padding:16px 22px;cursor:pointer;list-style:none;position:relative;padding-right:48px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.c-pre-summary::-webkit-details-marker{display:none}
+.c-pre-summary::after{content:"+";position:absolute;right:22px;top:50%;transform:translateY(-50%);font-size:22px;line-height:1;color:var(--stone);font-weight:300}
+.c-pre-wrap[open] .c-pre-summary::after{content:"−"}
+.c-pre-summary:focus-visible{outline:2px solid var(--teal);outline-offset:-2px;border-radius:10px}
+.c-pre-eyebrow{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--stone);padding:3px 10px;background:var(--cream);border:1px solid var(--line);border-radius:99px;flex-shrink:0}
+.c-pre-summary-text{font-family:var(--font-display);font-size:17px;color:var(--ink);font-weight:500;line-height:1.3}
+.c-pre-wrap[open]{padding-bottom:18px}
+.c-pre-h2{padding:0 22px;font-family:var(--font-display);font-size:21px;font-weight:500;margin:8px 0 6px;color:var(--ink)}
+.c-pre-help{padding:0 22px;margin:0 0 18px;font-size:14.5px;color:var(--ink-soft);line-height:1.5}
+.c-pre-form{padding:0 22px;display:grid;gap:18px}
+.c-pre-form fieldset{border:0;padding:0;margin:0;display:grid;gap:6px}
+.c-pre-form legend{font-family:var(--font-body);font-size:13.5px;font-weight:700;color:var(--ink);margin-bottom:6px;padding:0}
+.c-pre-form label{display:flex;align-items:center;gap:10px;padding:6px 10px;font-size:14.5px;color:var(--ink);cursor:pointer;border-radius:5px}
+.c-pre-form label:hover{background:var(--cream)}
+.c-pre-form input[type="radio"]{accent-color:var(--teal)}
+.c-pre-form input[type="radio"]:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.c-pre-result{margin:18px 22px 0;padding:16px 18px;background:var(--cream);border:1px dashed var(--teal);border-radius:8px}
+.c-pre-result-head{font-family:var(--font-body);font-size:12.5px;letter-spacing:.04em;text-transform:uppercase;font-weight:700;color:var(--teal-dark);margin:0 0 10px}
+.c-pre-result-list{margin:0 0 12px;padding:0 0 0 22px;font-size:14.5px;line-height:1.55;color:var(--ink-soft)}
+.c-pre-result-list li{margin-bottom:5px}
+.c-pre-result-note{margin:0;font-size:13px;color:var(--stone);font-style:italic;line-height:1.5}
+@media (prefers-contrast:more){.c-pre-result-list{color:var(--ink)}.c-pre-help{color:var(--ink)}}
+
 .c-track-section{padding:48px 0 16px}
 .c-track-h2{font-size:clamp(22px,2.6vw,28px);font-weight:500;margin:0 0 8px;line-height:1.2}
 .c-track-help{font-size:15.5px;color:var(--ink-soft);margin:0 0 24px;max-width:640px}
@@ -349,6 +376,45 @@ main{padding-top:64px}
     <h1>Build your first restaurant website yourself — <span class="serif-italic">in three or four weeks, one evening at a time.</span></h1>
     <p class="lede">No credit card. No sign-up. No agency proposal. You type, you choose, you watch your site take shape in real time. By the last lesson you download a real, working website and put it on the open internet.</p>
     <p class="meta"><strong>About 12 hours of work</strong>, spread across three to four weeks. Most operators do one lesson per evening, three nights a week. Each lesson saves automatically in this browser. <strong>Sign-in is optional</strong> — only needed if you want your work on a second device.</p>
+  </section>
+
+  <section class="c-pre container" aria-labelledby="pre-h">
+    <details class="c-pre-wrap">
+      <summary class="c-pre-summary">
+        <span class="c-pre-eyebrow">Optional</span>
+        <span class="c-pre-summary-text">Tell us where you're starting from — we'll tailor the pacing</span>
+      </summary>
+      <h2 class="c-pre-h2" id="pre-h">Three quick questions. We don't save the answers.</h2>
+      <p class="c-pre-help">All these do is shape the pacing notes you see on the lesson pages — "you can skim this" vs "spend extra time here." Skip if you'd rather walk every lesson at the default pace.</p>
+
+      <form class="c-pre-form" id="cPreForm">
+        <fieldset>
+          <legend>1. Have you built a website before?</legend>
+          <label><input type="radio" name="q1" value="never" /> <span>Never</span></label>
+          <label><input type="radio" name="q1" value="long-ago" /> <span>Yes, but a long time ago</span></label>
+          <label><input type="radio" name="q1" value="recently" /> <span>Yes, recently</span></label>
+          <label><input type="radio" name="q1" value="pro" /> <span>Yes, professionally / for clients</span></label>
+        </fieldset>
+        <fieldset>
+          <legend>2. Have you worked with Google Business Profile (GBP)?</legend>
+          <label><input type="radio" name="q2" value="never" /> <span>Never — what's GBP?</span></label>
+          <label><input type="radio" name="q2" value="claimed" /> <span>I've claimed it but rarely touch it</span></label>
+          <label><input type="radio" name="q2" value="active" /> <span>I update it monthly or more</span></label>
+        </fieldset>
+        <fieldset>
+          <legend>3. Comfort level with a terminal / command line?</legend>
+          <label><input type="radio" name="q3" value="never" /> <span>Never opened one</span></label>
+          <label><input type="radio" name="q3" value="some" /> <span>Some — I can copy-paste commands</span></label>
+          <label><input type="radio" name="q3" value="comfortable" /> <span>Comfortable — I use it weekly</span></label>
+        </fieldset>
+      </form>
+
+      <div class="c-pre-result" id="cPreResult" hidden role="status" aria-live="polite">
+        <h3 class="c-pre-result-head">Suggested pacing for you</h3>
+        <ul class="c-pre-result-list"></ul>
+        <p class="c-pre-result-note">These are suggestions, not skips. Every lesson is still listed below; the pacing is just a hint about where to invest extra attention.</p>
+      </div>
+    </details>
   </section>
 
   <section class="c-track-section container" aria-labelledby="track-h">
@@ -706,6 +772,60 @@ main{padding-top:64px}
     // Wait a tick so context-bus.js has loaded.
     setTimeout(hydrate, 0);
   });
+</script>
+
+<script>
+  /*
+   * Pre-assessment widget — purely client-side, no storage.
+   * 3 radio-group questions; renders a personalized pacing list when
+   * all three are answered. Suggestions only — never gates lessons.
+   */
+  (function () {
+    var form = document.getElementById('cPreForm');
+    var result = document.getElementById('cPreResult');
+    if (!form || !result) return;
+    var list = result.querySelector('.c-pre-result-list');
+
+    function paceFor() {
+      var q1 = (form.querySelector('input[name="q1"]:checked') || {}).value;
+      var q2 = (form.querySelector('input[name="q2"]:checked') || {}).value;
+      var q3 = (form.querySelector('input[name="q3"]:checked') || {}).value;
+      if (!q1 || !q2 || !q3) return null;
+      var bits = [];
+      // Q1 — web-building experience
+      if (q1 === 'never' || q1 === 'long-ago') {
+        bits.push('Walk every lesson in order. <strong>L1 + L2</strong> set up the framing for everything later — read them slowly.');
+      } else if (q1 === 'recently') {
+        bits.push('Skim <strong>L1-L3</strong> for the bootcamp’s framing, then settle in around L4 where the operator decisions start.');
+      } else {
+        bits.push('You can skim <strong>L1-L3</strong> (orient) and <strong>L14-L15</strong> (generator + deploy) — both are operator-friendly walkthroughs of things you already know. Use the time saved on <strong>L7 palette+voice</strong> and <strong>L12 SEO</strong>.');
+      }
+      // Q2 — GBP experience
+      if (q2 === 'never') {
+        bits.push('Spend extra time on <strong>L11</strong> (GBP). It’s the highest-leverage off-site surface and the bootcamp’s most-skipped lesson when operators don’t already know what GBP is.');
+      } else if (q2 === 'claimed') {
+        bits.push('<strong>L11</strong> will move fast for you — focus on the description writing exercise and the readiness checklist.');
+      } else {
+        bits.push('You can skim the GBP-claim sections of <strong>L11</strong>. Spend time on <strong>L13</strong> (reviews) where your monthly GBP rhythm intersects with review-response patterns.');
+      }
+      // Q3 — terminal comfort
+      if (q3 === 'never') {
+        bits.push('In <strong>L15</strong> (deploy), use the drag-and-drop path. The host options (Cloudflare Pages, Netlify, Vercel) all support upload without a terminal.');
+      } else if (q3 === 'some') {
+        bits.push('In <strong>L15</strong>, either path works — pick drag-and-drop the first time, then try the CLI for re-deploys if you want faster.');
+      } else {
+        bits.push('In <strong>L15</strong>, the CLI path (Vercel’s <code>vercel</code>, Netlify’s <code>netlify deploy</code>) is faster than drag-and-drop for re-deploys.');
+      }
+      return bits;
+    }
+
+    form.addEventListener('change', function () {
+      var bits = paceFor();
+      if (!bits) return;
+      list.innerHTML = bits.map(function (b) { return '<li>' + b + '</li>'; }).join('');
+      result.removeAttribute('hidden');
+    });
+  })();
 </script>
 
 <script>
