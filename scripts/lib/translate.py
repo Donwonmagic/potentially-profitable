@@ -103,6 +103,46 @@ GLOSSARY = [
     # Brand + proper nouns
     "Muntin Digital",
     "Don Goldstein",
+    # Open the Doors bootcamp — the course is brand-defining; its
+    # named artifacts must be preserved verbatim across every
+    # localization or the listener loses the connection between
+    # what we say and what they see on screen.
+    "Open the Doors",
+    "Muntin Method",
+    "Workshop Kit",
+    "The Generator",
+    "the rail",
+    "the Generator",
+    "the Workshop Kit",
+    "the Muntin Method",
+    # Bootcamp lesson + module identifiers — preserved so a listener
+    # who hears \"Lesson 14\" can locate it in the UI. (The number is
+    # the universal way an operator references a step.)
+    "Lesson 1",  "Lesson 2",  "Lesson 3",  "Lesson 4",
+    "Lesson 5",  "Lesson 6",  "Lesson 7",  "Lesson 8",
+    "Lesson 9",  "Lesson 10", "Lesson 11", "Lesson 12",
+    "Lesson 13", "Lesson 14", "Lesson 15", "Lesson 16",
+    "Module 1", "Module 2", "Module 3", "Module 4",
+    # Bootcamp widget names — these match data-widget attributes
+    # operators see in the UI, so preserving them keeps audio
+    # synced with what the screen labels.
+    "live-preview-frame",
+    "palette-picker",
+    "voice-slider",
+    "drag-rank",
+    "before-after-slider",
+    "tab-flip",
+    "persona-card-builder",
+    "positioning-plotter",
+    "font-pair-picker",
+    "menu-builder",
+    "shot-list-grid",
+    "weekly-hours-grid",
+    "gbp-card-preview",
+    "map-radius",
+    "keyword-builder",
+    "deploy-stepper",
+    "rhythm-calendar",
     # Tools / services (keep English — restaurant owners know the
     # product name in English regardless of the UI language they use)
     "Google Business Profile",
