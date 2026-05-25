@@ -425,7 +425,7 @@ header.nav{min-height:64px}
 
       <figure class="viz-figure article-figure" data-audio-alt="What fell on restaurant Maps listings over two years, per a 2026 local-search analysis. Google Maps views for restaurants fell about forty percent. Food orders from those listings fell about twenty-six percent. Rankings held over the same period — the decline is in engagement, not position.">
         <div class="viz-bars">
-          <p class="viz-bars__title">What fell on restaurant Maps listings (2-year change)</p>
+          <p class="viz-bars__title">What fell on restaurant Maps listings, 2-year change (bars scaled to a &minus;50% max)</p>
           <div class="viz-bars__row">
             <p class="viz-bars__label">Maps views</p>
             <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.80"></span></div>
@@ -450,7 +450,63 @@ header.nav{min-height:64px}
       <h2 id="what-s-actually-intercepting-the-call">What&rsquo;s actually intercepting the call</h2>
       <p>Three things, stacked. First, the majority of Google searches now end without a click at all &mdash; the answer is on the results page, so there&rsquo;s nothing to tap. Second, when the diner does get an <a href="/glossary/ai-overview/">AI answer</a>, it often states your hours and address inline, which is exactly what the call used to be for. Third, on the queries that trigger an AI local pack, the call and directions buttons that anchored the old <a href="/glossary/map-pack/">map pack</a> simply aren&rsquo;t rendered. None of that is a ranking problem. You cannot out-rank a missing button.</p>
 
+      <figure class="viz-figure article-figure" data-audio-alt="Where the missed call went — the four steps that used to end at a tap and now end inside the answer. Step one: the diner searches and sees an AI local pack at the top of the result. Step two: the AI answer resolves hours, address, and whether you are any good, all inline. Step three: with the question already answered, no tap on call or directions happens. Step four: the visit may still happen or it may not, but the operator never knows the diner considered them.">
+        <div class="viz-flow">
+          <ol class="viz-flow__list">
+            <li class="viz-flow__step" data-tone="teal">
+              <span class="viz-flow__num">1</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">The diner sees the AI answer first</p>
+                <p class="viz-flow__detail">A generated block at the top of the result &mdash; sometimes an AI local pack, sometimes an AI Overview &mdash; lands above the map.</p>
+              </div>
+            </li>
+            <li class="viz-flow__step" data-tone="teal">
+              <span class="viz-flow__num">2</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">The answer resolves the question</p>
+                <p class="viz-flow__detail">Hours, address, whether you&rsquo;re any good &mdash; the exact things the call used to ask &mdash; are stated inline. Nothing left to confirm by phone.</p>
+              </div>
+            </li>
+            <li class="viz-flow__step" data-tone="rust">
+              <span class="viz-flow__num">3</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">No tap happens</p>
+                <p class="viz-flow__detail">Often there&rsquo;s nothing to tap &mdash; the call and directions buttons aren&rsquo;t rendered inside the AI block. The conversion doesn&rsquo;t fire.</p>
+              </div>
+            </li>
+            <li class="viz-flow__step" data-tone="rust">
+              <span class="viz-flow__num">4</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">You never learn the diner considered you</p>
+                <p class="viz-flow__detail">The visit may still happen. The dashboard shows no event, so the decline reads as a ranking drop &mdash; even though you still rank.</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+        <figcaption>Where the missed call went. The teal-to-rust break is the moment the conversion you used to count stops registering.</figcaption>
+      </figure>
+
       <p>This is the same surface we covered in <a href="/blog/how-to-appear-in-ai-search-restaurant-2026/">the four-number check</a>: the answer decides, and the answer is built from your profile and your reviews. The difference here is the <em>conversion</em> &mdash; even when you win the mention, the tap that used to follow it is disappearing.</p>
+
+      <h2 id="how-often-the-button-is-missing">How often the button is actually missing</h2>
+      <p>The share is small in headline terms and large in practice. On roughly 7% of tracked local searches, the AI local pack replaces the classic three-pack and quietly drops the click-to-call button along with it. Seven percent across all local queries is a sliver; on the high-intent &ldquo;restaurants near me&rdquo; and &ldquo;[cuisine] open now&rdquo; queries that used to drive your phone, the rate is meaningfully higher &mdash; and growing.</p>
+
+      <figure class="viz-figure article-figure" data-audio-alt="On about seven percent of tracked local searches, the AI local pack appears and the click-to-call button is dropped. On the remaining ninety-three percent, the classic map pack still renders with its call button. The seven-percent slice is small in headline terms but disproportionately concentrated on high-intent restaurant queries, where the call used to come from.">
+        <div class="viz-bars">
+          <p class="viz-bars__title">Where the click-to-call button is rendered</p>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">Classic map pack (call shown)</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.93"></span></div>
+            <p class="viz-bars__num">93%</p>
+          </div>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">AI local pack (call dropped)</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.07"></span></div>
+            <p class="viz-bars__num">~7%</p>
+          </div>
+        </div>
+        <figcaption>Share of tracked local searches by which result type renders, per a 2026 local-search analysis. The 7% slice is concentrated on the high-intent restaurant queries where the call used to originate.</figcaption>
+      </figure>
 
       <h2 id="three-paths-that-replace-the-button">Three paths that replace the button</h2>
       <p>If the call is being intercepted, stop depending on it. Move the conversion onto paths the AI answer can&rsquo;t quietly remove.</p>
