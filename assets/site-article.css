@@ -178,7 +178,9 @@
 .listen-card-title{font-family:var(--font-display);font-weight:500;font-size:20px;line-height:1.2;color:var(--ink);margin:0 0 2px}
 .listen-card-sub{font-family:var(--font-body);font-size:13.5px;line-height:1.45;color:var(--stone);margin:0}
 
-.listen-card-meta{grid-area:meta;display:flex;flex-direction:column;align-items:flex-end;gap:4px;font-family:var(--font-body);font-size:12px;color:var(--stone);white-space:nowrap}
+.listen-card-meta{grid-area:meta;display:flex;flex-direction:column;align-items:flex-end;gap:6px;font-family:var(--font-body);font-size:12px;color:var(--stone);white-space:nowrap}
+.listen-language-select--header{margin-top:2px}
+.listen-language-select--header select{padding:4px 24px 4px 10px;font-size:11px;letter-spacing:0.04em}
 .listen-card-meta strong{font-weight:600;color:var(--ink)}
 
 /* Outer wrapper that acts as the real hit surface — 24 px tall so
@@ -564,10 +566,10 @@
    animation — fill shrinks to 0 immediately, checkmark appears. */
 .listen-card[data-state="finished"] .listen-card-progress-fill{transform:scaleX(0);opacity:0}
 .listen-card[data-state="finished"] .listen-card-play .icon-finished{opacity:1;transform:none}
-}
-
 
 /* ===== [article] Glossary scannability (lines 2920-3074) ===== */
+  .tool-knit__grid{ grid-template-columns:1fr; }
+}
 
 /* ---------- Glossary scannability (Phase 4 cohesion pass) ----------
    Adds two new chip rows to the existing .gloss-filterbar:
@@ -721,10 +723,10 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   .glossary-knit__grid{ grid-template-columns:repeat(2,1fr); }
 }
 @media (max-width:520px){
-  .glossary-knit__grid{ grid-template-columns:1fr; }
-}
 
 /* ===== [article] "Recently added" strip on /learn/ (lines 3075-3149) ===== */
+  .glossary-knit__grid{ grid-template-columns:1fr; }
+}
 
 /* ---------- "Recently added" strip on /learn/ (Phase 5) -----------
    Three-card row of the newest items across tools + articles, sorted
@@ -798,10 +800,10 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   font-variant-numeric:tabular-nums;
   color:var(--stone);
 }
-@media (max-width:900px){ .recently-added__grid{ grid-template-columns:repeat(2,1fr); } }
-@media (max-width:560px){ .recently-added__grid{ grid-template-columns:1fr; } }
 
 /* ===== [article] Learn hub + Start here pages (lines 3469-3571) ===== */
+  margin:0 0 16px;
+}
 
 /* ============================================================
    LEARN HUB + START HERE PAGES
@@ -903,10 +905,10 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 @media (max-width:720px){
   .start-step{grid-template-columns:1fr;padding:28px 24px;gap:12px}
   .start-step-num{text-align:left;font-size:64px;line-height:1}
-  .start-step + .start-step::before{left:38px}
-}
 
 /* ===== [article] Research notes (/learn/research/) (lines 3824-3840) ===== */
+  .search-modal,.search-modal-inner,.nav-search-btn{transition:none}
+}
 
 /* ============================================================
    RESEARCH NOTES (/learn/research/)
@@ -922,10 +924,10 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 .research-index-source{font-family:var(--font-body);font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);display:inline-block;margin-bottom:14px}
 .research-index-card h3{font-family:var(--font-display);font-size:clamp(22px,2.6vw,28px);font-weight:500;letter-spacing:-0.01em;margin:0 0 10px;color:var(--ink);line-height:1.2}
 .research-index-card p{font-size:15.5px;line-height:1.6;color:var(--stone);margin:0 0 16px}
-.research-index-uses{font-family:var(--font-body);font-size:12px;color:var(--stone-2);letter-spacing:0.04em}
-.research-index-uses strong{color:var(--teal);font-weight:600}
 
 /* ===== [article] Library topics (/learn/topics/) (lines 3841-4022) ===== */
+.research-index-uses{font-family:var(--font-body);font-size:12px;color:var(--stone-2);letter-spacing:0.04em}
+.research-index-uses strong{color:var(--teal);font-weight:600}
 
 /* ============================================================
    LIBRARY TOPICS — /learn/topics/ + /learn/topics/<slug>/
@@ -1106,10 +1108,10 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 .topic-other-list a:hover{
   border-color:var(--teal);
   background:var(--teal-tint);
-  color:var(--teal);
-}
 
 /* ===== [article] Glossary term pages (/glossary/<slug>/) (lines 4023-4136) ===== */
+  color:var(--teal);
+}
 
 /* ============================================================
    GLOSSARY TERM PAGES — /glossary/<slug>/
@@ -1222,10 +1224,10 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 }
 .term-siblings-list span{
   font-family:var(--font-display);font-style:italic;
-  color:var(--stone);font-size:13.5px;
-}
 
 /* ===== [article] Resume article — services-aside-cta + see-also + research notes (lines 4221-4617) ===== */
+  color:var(--teal);
+}
 
 /* /services/ inline secondary CTA — sits between Web Builds and
    Process, breaking the run of "Book a 20-min call" buttons with
@@ -1621,10 +1623,10 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
    without disrupting the reading flow. Used to link from .cite summary
    lines back to the research note. */
 .cite-chip{display:inline-flex;align-items:center;gap:5px;padding:1px 8px;margin-left:4px;font-family:var(--font-body);font-size:12px;font-weight:600;letter-spacing:0.04em;color:var(--teal);background:var(--teal-tint);border:1px solid transparent;border-radius:999px;text-decoration:none;vertical-align:1px;transition:background var(--t-fast) var(--ease),border-color var(--t-fast) var(--ease)}
-.cite-chip:hover{background:var(--white);border-color:var(--teal)}
-.cite-chip svg{width:11px;height:11px}
 
 /* ===== [article] Research-note CTA inside cite drawer (lines 4618-4638) ===== */
+.cite-chip:hover{background:var(--white);border-color:var(--teal)}
+.cite-chip svg{width:11px;height:11px}
 
 /* ===== Research-note CTA inside a .cite details block =====
    The .cite-body now leads with an internal "Read Don's summary"
@@ -1644,10 +1646,10 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 .cite-note-link:hover,.cite-note-link:focus-visible{
   background:var(--teal);color:var(--cream);border-color:var(--teal);
 }
-.cite-note-link span{font-size:12px;opacity:0.8}
-.cite-note-link:hover span{opacity:1}
 
 /* ===== [article] Research drawer (inline preview) (lines 4639-4778) ===== */
+.cite-note-link span{font-size:12px;opacity:0.8}
+.cite-note-link:hover span{opacity:1}
 
 /* ============================================================
    RESEARCH DRAWER (inline research-note preview)
@@ -1786,10 +1788,10 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 /* Respect reduced motion */
 @media (prefers-reduced-motion:reduce){
   .research-drawer,.research-drawer-inner{transition:none}
-  .research-drawer-loading::before{animation:none}
-}
 
 /* ===== [article] Glossary term → research note cross-link (lines 4779-4823) ===== */
+  .research-drawer-loading::before{animation:none}
+}
 
 /* ===== Glossary term → research note cross-link =====
    Compact "See the research" line added by scripts/
@@ -1833,10 +1835,10 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 }
 .gloss-term-permalink a:hover,
 .gloss-term-permalink a:focus-visible{
-  color:var(--teal);border-bottom-color:var(--teal);
-}
 
 /* ===== [article] "Recently added" rail (under glossary hero) (lines 4824-4881) ===== */
+  color:var(--teal);border-bottom-color:var(--teal);
+}
 
 /* ===== "Recently added" rail (under glossary hero) =====
  * Surfaces newest terms to returning readers; populated by
@@ -1893,10 +1895,10 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   color:var(--ink);line-height:1.25;
 }
 .gloss-recent__note{
-  font-size:13px;line-height:1.45;color:var(--ink-soft);
-}
 
 /* ===== [article] Glossary index "▶ 90s explainer" chip (lines 4882-4902) ===== */
+  font-size:13px;line-height:1.45;color:var(--ink-soft);
+}
 
 /* ===== Glossary index "▶ 90s explainer" chip =====
  * Variant of .gloss-tag (defined inline on glossary/index.html) used
@@ -1916,10 +1918,10 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 }
 .gloss-tag--explainer svg{
   flex:none;
-  margin-right:1px;
-}
 
 /* ===== [article] Glossary explainer (90-second narrated diagram) (lines 4903-5168) ===== */
+  margin-right:1px;
+}
 
 /* ===== Glossary explainer (90-second narrated diagram) =====
  * Inline-SVG explainer for the five flagship glossary terms (menu
@@ -2184,10 +2186,10 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   .term-explainer__chrome{display:none}
   .term-explainer__captions{max-height:none}
   .term-explainer__captions li{color:#222 !important;font-size:11pt;line-height:1.45}
-  .term-explainer__captions li.is-active{font-size:12pt}
-}
 
 /* ===== [article] Inline glossary popover (lines 5169-5235) ===== */
+  .term-explainer__captions li.is-active{font-size:12pt}
+}
 
 /* ===== Inline glossary popover =====
  * Hover/focus tooltip rendered by site.js when a reader interacts with
@@ -2253,10 +2255,10 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   .glossary-popover{transition:none}
 }
 @media print{
-  .glossary-popover{display:none !important}
-}
 
 /* ===== [article] Print view for glossary section landing pages (lines 5236-5292) ===== */
+  .glossary-popover{display:none !important}
+}
 
 /* ===== Print view for glossary section landing pages =====
  * Activates only on /glossary/<section>/ pages. Strips site chrome
@@ -2312,10 +2314,10 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
     font-size:7.5pt;
     color:#777;
     margin-top:2pt;
-  }
-}
 
 /* ===== [article] Editorial callouts (lines 5402-5485) ===== */
+.tool-error-body{font-size:14.5px;line-height:1.55;color:var(--ink-soft);margin:0}
+.tool-error-meta{margin-top:12px;font-size:12.5px;color:var(--stone);font-variant-numeric:tabular-nums}
 
 /* ============ Editorial callouts (Sprint 10 — cohesion) ============
    .callout--field is the "Field note from the kitchen" — a per-
@@ -2398,10 +2400,10 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 .field-notes-rail__excerpt{font-family:var(--font-display);font-size:16px;line-height:1.55;color:var(--ink-soft);margin:0;font-style:italic}
 .field-notes-rail__article{font-size:13px;color:var(--ink);text-decoration:none;margin-top:auto;font-weight:500;border-bottom:1px solid var(--line-dark);padding-bottom:2px;align-self:flex-start}
 .field-notes-rail__article:hover{border-bottom-color:var(--teal);color:var(--teal)}
-.field-notes-rail__more{text-align:center;margin:28px 0 0}
-.field-notes-rail__more a{color:var(--teal);font-weight:500;text-decoration:none;border-bottom:1px solid currentColor}
 
 /* ===== [article] Post-end Workshop CTA (lines 5504-5519) ===== */
+.learn-back-body a{color:var(--teal);font-weight:500;border-bottom:1px solid currentColor;text-decoration:none;transition:color var(--t-fast) var(--ease)}
+.learn-back-body a:hover,.learn-back-body a:focus-visible{color:var(--teal-dark)}
 
 /* ============ Post-end Workshop CTA (Sprint 13 — cohesion) ============
    The "Workshop next step" card at the close of every blog post.
@@ -2416,10 +2418,10 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 .post-end-cta{max-width:680px;margin:48px auto 64px;padding:32px 36px;background:var(--teal-tint);border:1px solid transparent;border-radius:var(--r-md);text-align:center}
 .post-end-cta-headline{font-family:var(--font-display);font-size:clamp(22px,2.4vw,26px);font-weight:500;color:var(--ink);margin:0 0 12px;line-height:1.25;letter-spacing:-0.005em}
 .post-end-cta-body{font-size:15px;line-height:1.55;color:var(--ink-soft);margin:0 0 22px;max-width:560px;margin-left:auto;margin-right:auto}
-.post-end-cta .btn-primary{background:var(--teal);color:var(--cream)}
-.post-end-cta .btn-primary:hover{background:var(--teal-dark)}
 
 /* ===== [article] Inline graphics — globalized from gold articles (lines 6033-6093) ===== */
+.foot-newsletter-form[data-state="ok"] .foot-newsletter-pitch::after{content:" — got it. Check your inbox.";opacity:1;font-style:italic}
+
 
 /* ============ INLINE GRAPHICS — globalized from gold articles ============ */
 /* .recovery-stack: vertical stacked rows with row tints + dark total cap.
@@ -2479,10 +2481,10 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 .report-decider__item[open] summary::before,.photo-aspect-decoder__item[open] summary::before{content:'– '}
 .report-decider__item p,.photo-aspect-decoder__item p{margin:12px 0 16px;font-size:15px;line-height:1.6;color:var(--ink-soft)}
 .report-decider__item:last-child summary,.photo-aspect-decoder__item:last-child summary{border-bottom:0}
-.report-decider__item[open]:last-child summary,.photo-aspect-decoder__item[open]:last-child summary{border-bottom:1px solid var(--line)}
-@media(max-width:640px){.report-decider,.photo-aspect-decoder{padding:18px 20px}.report-decider__item summary,.photo-aspect-decoder__item summary{font-size:15.5px}}
 
 /* ===== [article] KnitRail — "what’s next" component for articles (lines 6156-6230) ===== */
+  .hero-grid > div:first-child > .hero-meta-note { order: 8; }
+}
 
 /* ============================================================
    KnitRail — unified four-lane "what's next" component for
@@ -2556,10 +2558,10 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   .knit-rail__cols {
     grid-template-columns: 1fr;
     gap: 14px;
-  }
-}
 
 /* ===== [article] Article viz components (.viz-* family) (lines 6372-6710) ===== */
+  }
+}
 
 /* ============ ARTICLE VIZ COMPONENTS ============
    Namespaced .viz-* family for inline article graphics. Tokens-only
@@ -2897,5 +2899,3 @@ table[data-viz-sortable] th[aria-sort="descending"]::after{content:"\2193";color
   /* Sweeping dashoffset from full circumference to target on .reveal
      entry. Per-ring stagger via inline --delay on the wrapper. */
   .reveal .viz-ring__fill{stroke-dashoffset:326.726;transition:stroke-dashoffset 1100ms cubic-bezier(0.2,0.85,0.3,1.05);transition-delay:var(--delay,0ms)}
-  .reveal.in .viz-ring__fill{stroke-dashoffset:calc(326.726 * (1 - var(--score,50) / 100))}
-}

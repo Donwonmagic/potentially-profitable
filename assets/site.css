@@ -1635,7 +1635,9 @@ br.br-lg{display:none}
 .listen-card-title{font-family:var(--font-display);font-weight:500;font-size:20px;line-height:1.2;color:var(--ink);margin:0 0 2px}
 .listen-card-sub{font-family:var(--font-body);font-size:13.5px;line-height:1.45;color:var(--stone);margin:0}
 
-.listen-card-meta{grid-area:meta;display:flex;flex-direction:column;align-items:flex-end;gap:4px;font-family:var(--font-body);font-size:12px;color:var(--stone);white-space:nowrap}
+.listen-card-meta{grid-area:meta;display:flex;flex-direction:column;align-items:flex-end;gap:6px;font-family:var(--font-body);font-size:12px;color:var(--stone);white-space:nowrap}
+.listen-language-select--header{margin-top:2px}
+.listen-language-select--header select{padding:4px 24px 4px 10px;font-size:11px;letter-spacing:0.04em}
 .listen-card-meta strong{font-weight:600;color:var(--ink)}
 
 /* Outer wrapper that acts as the real hit surface — 24 px tall so

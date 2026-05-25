@@ -1124,10 +1124,58 @@
       // manifest entry has a `selector` (stable CSS path) we use to
       // find the element to highlight. Missing anchors are OK — we
       // simply won't highlight for that chunk.
+      //
+      // Selector caveat: render-post-audio.mjs's extractor builds
+      // selectors like `#post-body > p:nth-of-type(N)` by counting
+      // ALL <p> matches in the body, including ones nested inside
+      // <aside>/<figure>. CSS :nth-of-type only counts DIRECT
+      // children, so the two counts diverge as soon as a TL;DR aside
+      // or figure with nested paragraphs lands above. The selector
+      // resolves to the WRONG element and the highlight tracks
+      // somewhere other than the audio. Pre-built audio.json files
+      // can't be re-extracted without a re-render, so we add a
+      // text-matching fallback: walk every speakable element in the
+      // current DOM, map them by their first 60 normalized chars,
+      // and prefer the text-match over the broken selector when
+      // both resolve.
+      const normalizeForMatch = (s) => (s || '')
+        .replace(/[‘’“”]/g, "'")     // smart quotes → straight
+        .replace(/&[a-z]+;/gi, ' ')                       // strip leftover entities
+        .replace(/\s+/g, ' ')
+        .trim()
+        .toLowerCase()
+        .slice(0, 60);
+      const speakableSel = 'h2, h3, p, li, blockquote, figcaption, [data-audio-alt]';
+      const speakableEls = Array.from(postBody.querySelectorAll(speakableSel))
+        .filter((el) => !el.closest('.inline-cta, .further-reading, .sources, .knit-rail, .wave-toc, .smart-next, .post-end-cta, .post-end-mark'))
+        // Inside <figure>, only consider the figure itself (so the
+        // figcaption / data-audio-alt match resolves to the whole figure).
+        .map((el) => el.matches('figcaption, [role="img"], [data-audio-alt]')
+          ? (el.closest('figure') || el)
+          : el);
+      const elsByText = new Map();
+      for (const el of speakableEls) {
+        const key = normalizeForMatch(el.textContent);
+        if (key && !elsByText.has(key)) elsByText.set(key, el);
+      }
+      const resolveChunkElement = (c) => {
+        // Prefer text match: it survives DOM restructure (TL;DR
+        // injection, knit-rail moves, etc.) AND fixes the nested-p
+        // nth-of-type miscount described above.
+        const key = normalizeForMatch(c.text);
+        if (key) {
+          const hit = elsByText.get(key);
+          if (hit) return hit;
+        }
+        // Fall back to selector — for legacy chunks whose text was
+        // normalized differently or that don't survive entity decode.
+        if (c.selector) return postBody.querySelector(c.selector);
+        return null;
+      };
       if (Array.isArray(manifest.chunks)) {
         chunks = manifest.chunks.map((c) => ({
           text: c.text || '',
-          element: c.selector ? postBody.querySelector(c.selector) : null,
+          element: resolveChunkElement(c),
           kind: c.kind || 'body',
           start: c.start || 0,
           end:   c.end   || 0,
@@ -1714,7 +1762,12 @@
           <h2 class="listen-card-title">Prefer to listen?</h2>
           <p class="listen-card-sub">Press play and we'll read the whole post aloud — charts and all.</p>
         </div>
-        <div class="listen-card-meta"><strong>${minutes} min</strong><span>hands-free</span></div>
+        <div class="listen-card-meta">
+          <strong>${minutes} min</strong><span>hands-free</span>
+          <label class="listen-select listen-language-select listen-language-select--header" title="Language" hidden><span class="sr-only">Language</span>
+            <select class="listen-language listen-language--header" aria-label="Language"></select>
+          </label>
+        </div>
         <div class="listen-card-progress" hidden role="progressbar" aria-label="Audio progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><canvas class="listen-card-waveform" aria-hidden="true"></canvas><div class="listen-card-progress-fill"></div><div class="listen-card-progress-ticks"></div></div>
         <p class="listen-card-chapter"><span class="listen-card-chapter-label">Now reading</span><em></em></p>
         <div class="listen-card-extras" hidden>
@@ -1735,9 +1788,6 @@
             </button>
           </div>
           <div class="listen-card-selects">
-            <label class="listen-select listen-language-select" title="Language" hidden><span class="sr-only">Language</span>
-              <select class="listen-language" aria-label="Language"></select>
-            </label>
             <label class="listen-select" title="Playback speed"><span class="sr-only">Playback speed</span>
               <select class="listen-rate" aria-label="Playback speed">
                 <option value="0.9">0.9×</option>
