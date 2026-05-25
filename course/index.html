@@ -34,7 +34,10 @@
 <link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
 <link rel="icon" type="image/png" sizes="192x192" href="/brand/favicons/android-chrome-192x192.png" />
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
-<link rel="manifest" href="/brand/favicons/site.webmanifest" />
+<link rel="manifest" href="/course/manifest.webmanifest" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-title" content="Open the Doors" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
 
 <script type="application/ld+json">
 {
@@ -966,6 +969,29 @@ main{padding-top:64px}
 <!-- course-config-sync:start -->
 <script src="/assets/js/course-config-sync.js" defer></script>
 <!-- course-config-sync:end -->
+
+<!-- course-pwa:start -->
+<script>
+/*
+ * PWA installability — registers /course/sw.js (a no-op service
+ * worker scoped to /course/) so iOS Safari and Chrome surface the
+ * "Add to Home Screen" affordance. Documented as a no-op in
+ * data/security-claims.json. Does NOT cache lessons, NOT serve
+ * offline, NOT intercept fetches.
+ */
+(function () {
+  if (typeof window === 'undefined') return;
+  if (!('serviceWorker' in navigator)) return;
+  // Only register from a page that is itself inside the SW's scope.
+  if (!location.pathname.startsWith('/course/')) return;
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('/course/sw.js', { scope: '/course/' }).catch(function (err) {
+      if (console && console.warn) console.warn('[course] SW registration failed', err);
+    });
+  });
+})();
+</script>
+<!-- course-pwa:end -->
 
 </body>
 </html>
