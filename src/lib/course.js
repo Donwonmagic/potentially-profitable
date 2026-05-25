@@ -208,7 +208,8 @@ const CONFIG_ALLOWED_KEYS = new Set([
   'localKeywords',
   'reviewResponseTemplate',
   'rhythmCadence',
-  'deployTarget'
+  'deployTarget',
+  'deployProgress'      // { [stepId]: bool } from deploy-stepper
 ]);
 
 function normalizeConfig(input) {

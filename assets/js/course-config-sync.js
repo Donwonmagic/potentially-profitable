@@ -58,7 +58,8 @@
     'localKeywords',
     'reviewResponseTemplate',
     'rhythmCadence',
-    'deployTarget'
+    'deployTarget',
+    'deployProgress'
   ];
 
   var timer = null;
