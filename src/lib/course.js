@@ -51,12 +51,26 @@ const COMPLETED_MAX = 50;
 const CONFIG_MAX_BYTES = 16 * 1024;
 const SCHEMA_VERSION = 1;
 
+// Closed-enum of celebration identifiers the bootcamp ever fires.
+// 'm4-launch' is INTENTIONALLY ABSENT: the M4 module-complete moment
+// is by construction the same click as the bootcamp-complete moment
+// (M4 is the last module; completing it = completing the bootcamp),
+// and showing two stacked celebrations on one click violates
+// "earned and brief." The bootcamp celebration subsumes M4.
+const CELEBRATION_KEYS = new Set([
+  'm1-orient',
+  'm2-decide',
+  'm3-assemble',
+  'bootcamp'
+]);
+
 function emptyProgress() {
   return {
     track: null,
     completed: [],
     startedAt: null,
     updatedAt: null,
+    celebrations: {},
     v: SCHEMA_VERSION
   };
 }
@@ -104,6 +118,19 @@ function normalizeProgress(input) {
   if (Number.isFinite(input.startedAt)) safe.startedAt = Math.floor(input.startedAt);
   if (Number.isFinite(input.updatedAt)) safe.updatedAt = Math.floor(input.updatedAt);
 
+  // Celebrations: object keyed by celebration-id, value is the
+  // timestamp of the first fire. Allowlist filters bogus keys; only
+  // positive finite numbers survive. Unknown keys (e.g. 'm4-launch'
+  // which we intentionally don't fire) are stripped.
+  if (input.celebrations && typeof input.celebrations === 'object' && !Array.isArray(input.celebrations)) {
+    for (const key of CELEBRATION_KEYS) {
+      const val = Number(input.celebrations[key]);
+      if (Number.isFinite(val) && val > 0) {
+        safe.celebrations[key] = Math.floor(val);
+      }
+    }
+  }
+
   return safe;
 }
 
@@ -133,11 +160,26 @@ export async function mergeProgress(env, sub, patch) {
     completed: current.completed.slice(),
     startedAt: current.startedAt,
     updatedAt: now,
+    celebrations: Object.assign({}, current.celebrations || {}),
     v: SCHEMA_VERSION
   };
 
   if (typeof patch.track === 'string' && TRACK_VALUES.has(patch.track)) {
     next.track = patch.track;
+  }
+
+  // Celebrations merge: FIRST-WRITE-WINS. Once a device has recorded
+  // a celebration timestamp for a key, no later POST can overwrite it
+  // — even if a second device "celebrates" the same milestone slightly
+  // later (because cross-device sync brought down the already-done
+  // state). The earliest timestamp is the canonical record. New keys
+  // not yet present land at the patch's timestamp.
+  if (patch.celebrations && typeof patch.celebrations === 'object' && !Array.isArray(patch.celebrations)) {
+    for (const key of CELEBRATION_KEYS) {
+      const val = Number(patch.celebrations[key]);
+      if (!Number.isFinite(val) || val <= 0) continue;
+      if (!next.celebrations[key]) next.celebrations[key] = Math.floor(val);
+    }
   }
 
   if (Array.isArray(patch.completed)) {

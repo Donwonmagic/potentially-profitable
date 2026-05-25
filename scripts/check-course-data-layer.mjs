@@ -258,6 +258,88 @@ const SUB = 'user-sub-abc-123';
   eq(p.extraField, undefined, 'normalize.extraField stripped');
 }
 
+// ---- fixture: celebrations field — schema-additive, first-write-wins
+{
+  const env = makeMockEnv();
+
+  // First fire: M1 celebration records at t=1000.
+  const r1 = await mergeProgress(env, SUB, {
+    celebrations: { 'm1-orient': 1000 }
+  });
+  truthy(r1.ok, 'cele.first-write.ok');
+  eq(r1.progress.celebrations['m1-orient'], 1000, 'cele.first-write.timestamp recorded');
+
+  // Second fire: same key with LATER timestamp — first-write-wins, stale rejected.
+  const r2 = await mergeProgress(env, SUB, {
+    celebrations: { 'm1-orient': 2000 }
+  });
+  eq(r2.progress.celebrations['m1-orient'], 1000, 'cele.first-write-wins (later timestamp ignored)');
+
+  // Different key adds independently.
+  const r3 = await mergeProgress(env, SUB, {
+    celebrations: { 'm2-decide': 3000, 'bootcamp': 4000 }
+  });
+  eq(r3.progress.celebrations['m1-orient'], 1000, 'cele.previous-key preserved');
+  eq(r3.progress.celebrations['m2-decide'], 3000, 'cele.new-key recorded');
+  eq(r3.progress.celebrations['bootcamp'],   4000, 'cele.bootcamp-key recorded');
+
+  // Unknown keys (e.g. 'm4-launch' which we intentionally never fire) get dropped.
+  const r4 = await mergeProgress(env, SUB, {
+    celebrations: { 'm4-launch': 5000, 'something-else': 6000 }
+  });
+  eq(r4.progress.celebrations['m4-launch'], undefined, 'cele.m4-launch key dropped (off-allowlist)');
+  eq(r4.progress.celebrations['something-else'], undefined, 'cele.unknown-key dropped');
+
+  // Bogus values (negative, zero, NaN, strings) get rejected silently.
+  const r5 = await mergeProgress(env, SUB, {
+    celebrations: { 'm3-assemble': -100 }
+  });
+  eq(r5.progress.celebrations['m3-assemble'], undefined, 'cele.negative-timestamp rejected');
+
+  const r6 = await mergeProgress(env, SUB, {
+    celebrations: { 'm3-assemble': 'soon' }
+  });
+  eq(r6.progress.celebrations['m3-assemble'], undefined, 'cele.string-timestamp rejected');
+
+  // Read back — round-trip preserves the 3 valid keys.
+  const reread = await readProgress(env, SUB);
+  eq(reread.celebrations['m1-orient'], 1000, 'cele.reread.m1');
+  eq(reread.celebrations['m2-decide'], 3000, 'cele.reread.m2');
+  eq(reread.celebrations['bootcamp'],   4000, 'cele.reread.bootcamp');
+}
+
+// ---- fixture: legacy v1 record without celebrations field reads cleanly
+{
+  const env = makeMockEnv();
+  // Simulate an older client that wrote progress before celebrations
+  // shipped — record has completed[] but no celebrations field.
+  await env.AUTH_SESSIONS.put('course:' + SUB, JSON.stringify({
+    track: 'fresh',
+    completed: [{ lesson: 'welcome', at: 100 }],
+    startedAt: 100,
+    updatedAt: 100,
+    v: 1
+  }));
+
+  const p = await readProgress(env, SUB);
+  eq(typeof p.celebrations, 'object', 'legacy-read.celebrations is object');
+  eq(Object.keys(p.celebrations).length, 0, 'legacy-read.celebrations defaults to empty');
+  eq(p.completed.length, 1, 'legacy-read.completed preserved');
+}
+
+// ---- fixture: reset clears celebrations along with progress -----
+{
+  const env = makeMockEnv();
+  await mergeProgress(env, SUB, {
+    completed: [{ lesson: 'welcome', at: 100 }],
+    celebrations: { 'm1-orient': 100 }
+  });
+  await resetProgress(env, SUB);
+  const after = await readProgress(env, SUB);
+  eq(after.completed.length, 0, 'reset.completed cleared');
+  eq(Object.keys(after.celebrations).length, 0, 'reset.celebrations cleared');
+}
+
 // ---- report -----------------------------------------------------
 console.log(`\n[course-data-layer] Ran ${assertions} assertion(s).`);
 
