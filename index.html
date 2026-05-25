@@ -154,9 +154,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=efc10dd17f0f" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=47810dd9477a" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=efc10dd17f0f"><link rel="stylesheet" href="/assets/site-article.css?v=47810dd9477a"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=068d8e2af206" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=c640a5cff41c" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=068d8e2af206"><link rel="stylesheet" href="/assets/site-article.css?v=c640a5cff41c"></noscript>
 </head>
 <body>
 
@@ -171,16 +171,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 </noscript>
 
 <!-- ============ NAV ============ -->
-<script>
-  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
-     Apple devices. Runs early in <body> so the swap is essentially
-     invisible — script tags execute synchronously when the parser hits
-     them, before .nav-search-kbd renders below. CSS in site-core.css
-     conditions on <html data-platform="mac">. */
-  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
-    document.documentElement.dataset.platform = 'mac';
-  }
-</script>
 <!-- batch-banner:start -->
 <aside class="batch-marquee" data-batch="2026-w2" role="complementary" aria-label="Week 2 · May 23, 2026" style="background:var(--ink,#14161A);color:var(--cream,#FAF7F2);font-size:14px;line-height:1.4;padding:8px 0;border-bottom:1px solid rgba(250,247,242,0.12);position:relative;z-index:1">
   <div style="max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,64px);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
@@ -492,15 +482,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <span class="eyebrow">Free flagship tools &middot; on your device &middot; no signup</span>
       <h2 id="tool-cta-heading" class="tool-cta-flagships__heading">Find the leak before you fix it.</h2>
     </div>
-    <div class="tool-cta-flagships__grid">
-      <a class="tool-card-flagship" href="/tools/storefront-health/">
-        <span class="tool-card-flagship__chip">One URL &middot; six checks</span>
-        <h3 class="tool-card-flagship__title">Storefront Health</h3>
-        <p class="tool-card-flagship__headline">The unified scorecard for your full restaurant storefront &mdash; speed, mobile, schema, GBP, copy, photos. The next fix links to the tool that runs it.</p>
-        <span class="tool-card-flagship__cta">Run the check
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
-        </span>
-      </a>
+    <div class="tool-cta-flagships__grid tool-cta-flagships__grid--single">
       <a class="tool-card-flagship" href="/tools/audits/restaurant/">
         <span class="tool-card-flagship__chip">About 30 seconds &middot; no signup</span>
         <h3 class="tool-card-flagship__title">Restaurant Website Audit</h3>
