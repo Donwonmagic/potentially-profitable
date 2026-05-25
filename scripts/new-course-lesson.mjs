@@ -278,7 +278,7 @@ main{padding-top:64px}
   </section>
 
   <div class="course-layout">
-    <article class="course-body">
+    <article class="course-body" id="post-body">
       <p>${todoLabel}</p>
       ${widgetBlocks(lesson.widgets)}
       <section class="course-template">
