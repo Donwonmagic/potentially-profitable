@@ -151,6 +151,76 @@ main{padding-top:64px;padding-bottom:96px}
     </ul>
   </section>
 
+  <section class="a11y-section" aria-labelledby="keyboard-h">
+    <h2 id="keyboard-h">Keyboard navigation reference</h2>
+    <p>Every bootcamp interaction is keyboard-reachable. Here's what to expect from each widget. If a widget you encounter doesn't match this list, report it — that's a bug.</p>
+
+    <table class="a11y-status-table">
+      <thead>
+        <tr><th>Action</th><th>Keys</th><th>Where it works</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Skip past the nav to lesson content</td>
+          <td><kbd>Tab</kbd> on page load</td>
+          <td>Every page — the skip-link is first in tab order</td>
+        </tr>
+        <tr>
+          <td>Move forward / backward between interactive elements</td>
+          <td><kbd>Tab</kbd> / <kbd>Shift+Tab</kbd></td>
+          <td>Every page</td>
+        </tr>
+        <tr>
+          <td>Move between radio-group options (palette-picker, voice-slider, font-pair-picker, course-checkpoint, drag-rank ranking, persona-card-builder traits)</td>
+          <td><kbd>↑</kbd> <kbd>↓</kbd> <kbd>←</kbd> <kbd>→</kbd></td>
+          <td>Inside any widget with <code>role="radiogroup"</code></td>
+        </tr>
+        <tr>
+          <td>Jump to first / last item in a radio group</td>
+          <td><kbd>Home</kbd> / <kbd>End</kbd></td>
+          <td>font-pair-picker, palette-picker, positioning-plotter</td>
+        </tr>
+        <tr>
+          <td>Confirm a selection</td>
+          <td><kbd>Enter</kbd> or <kbd>Space</kbd></td>
+          <td>Every button, every radio option</td>
+        </tr>
+        <tr>
+          <td>Adjust a slider in small steps</td>
+          <td><kbd>←</kbd> <kbd>→</kbd></td>
+          <td>voice-slider, map-radius</td>
+        </tr>
+        <tr>
+          <td>Adjust a slider in larger jumps</td>
+          <td><kbd>PgUp</kbd> / <kbd>PgDn</kbd></td>
+          <td>voice-slider, map-radius, positioning-plotter</td>
+        </tr>
+        <tr>
+          <td>Reorder a drag-rank item up or down</td>
+          <td>Focus the ▲ or ▼ button, then <kbd>Enter</kbd></td>
+          <td>drag-rank (L2, L5b, L8, L9b, L11b)</td>
+        </tr>
+        <tr>
+          <td>Dismiss a celebration card</td>
+          <td><kbd>Esc</kbd> while focus is in the card, or <kbd>Tab</kbd> to the × and <kbd>Enter</kbd></td>
+          <td>M1 / M2 / M3 / bootcamp celebrations on lesson pages</td>
+        </tr>
+        <tr>
+          <td>Open the Plain Language or Objectives summary</td>
+          <td><kbd>Enter</kbd> or <kbd>Space</kbd> on the summary</td>
+          <td>Top of every lesson page</td>
+        </tr>
+        <tr>
+          <td>Mark a lesson complete</td>
+          <td><kbd>Tab</kbd> to the button, then <kbd>Enter</kbd></td>
+          <td>End of every lesson page</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p style="font-size:14.5px;color:var(--stone);font-style:italic">No bootcamp-specific keyboard shortcuts (no <kbd>Cmd+S</kbd> or similar). The reasoning: shortcuts that override browser defaults (autosave, save-as) confuse screen readers and conflict with assistive technology. The standard <kbd>Tab</kbd> + <kbd>Enter</kbd> + arrow keys cover every interaction in the bootcamp.</p>
+  </section>
+
   <section class="a11y-section" aria-labelledby="working-on-h">
     <h2 id="working-on-h">What we are still working on</h2>
     <p>These are the accommodations the bootcamp's instructional-design audit identified as not-yet-shipped. They are tracked in <code>docs/course-instructional-audit.md</code>.</p>

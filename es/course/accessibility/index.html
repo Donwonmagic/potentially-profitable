@@ -147,6 +147,76 @@ main{padding-top:64px;padding-bottom:96px}
     </ul>
   </section>
 
+  <section class="a11y-section" aria-labelledby="keyboard-h">
+    <h2 id="keyboard-h">Referencia de navegación por teclado</h2>
+    <p>Cada interacción del bootcamp es alcanzable por teclado. Esto es lo que esperar de cada widget. Si un widget que encuentras no coincide con esta lista, repórtalo — eso es un bug.</p>
+
+    <table class="a11y-status-table">
+      <thead>
+        <tr><th>Acción</th><th>Teclas</th><th>Dónde funciona</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Saltar el nav al contenido de la lección</td>
+          <td><kbd>Tab</kbd> al cargar la página</td>
+          <td>Cada página — el skip-link es el primero en orden de Tab</td>
+        </tr>
+        <tr>
+          <td>Moverte adelante / atrás entre elementos interactivos</td>
+          <td><kbd>Tab</kbd> / <kbd>Shift+Tab</kbd></td>
+          <td>Cada página</td>
+        </tr>
+        <tr>
+          <td>Moverte entre opciones de un radio-group (palette-picker, voice-slider, font-pair-picker, course-checkpoint, ranking de drag-rank, traits de persona-card-builder)</td>
+          <td><kbd>↑</kbd> <kbd>↓</kbd> <kbd>←</kbd> <kbd>→</kbd></td>
+          <td>Dentro de cualquier widget con <code>role="radiogroup"</code></td>
+        </tr>
+        <tr>
+          <td>Saltar al primer / último ítem de un radio group</td>
+          <td><kbd>Home</kbd> / <kbd>End</kbd></td>
+          <td>font-pair-picker, palette-picker, positioning-plotter</td>
+        </tr>
+        <tr>
+          <td>Confirmar una selección</td>
+          <td><kbd>Enter</kbd> o <kbd>Espacio</kbd></td>
+          <td>Cada botón, cada opción de radio</td>
+        </tr>
+        <tr>
+          <td>Ajustar un slider en pasos pequeños</td>
+          <td><kbd>←</kbd> <kbd>→</kbd></td>
+          <td>voice-slider, map-radius</td>
+        </tr>
+        <tr>
+          <td>Ajustar un slider en saltos más grandes</td>
+          <td><kbd>RePág</kbd> / <kbd>AvPág</kbd></td>
+          <td>voice-slider, map-radius, positioning-plotter</td>
+        </tr>
+        <tr>
+          <td>Reordenar un ítem de drag-rank arriba o abajo</td>
+          <td>Foco en el botón ▲ o ▼, luego <kbd>Enter</kbd></td>
+          <td>drag-rank (L2, L5b, L8, L9b, L11b)</td>
+        </tr>
+        <tr>
+          <td>Cerrar una tarjeta de celebración</td>
+          <td><kbd>Esc</kbd> mientras el foco está en la tarjeta, o <kbd>Tab</kbd> al × y <kbd>Enter</kbd></td>
+          <td>Celebraciones M1 / M2 / M3 / bootcamp en páginas de lecciones</td>
+        </tr>
+        <tr>
+          <td>Abrir el resumen de Lenguaje sencillo u Objetivos</td>
+          <td><kbd>Enter</kbd> o <kbd>Espacio</kbd> en el summary</td>
+          <td>Arriba de cada página de lección</td>
+        </tr>
+        <tr>
+          <td>Marcar una lección como completa</td>
+          <td><kbd>Tab</kbd> al botón, luego <kbd>Enter</kbd></td>
+          <td>Final de cada página de lección</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p style="font-size:14.5px;color:var(--stone);font-style:italic">Sin atajos de teclado específicos del bootcamp (sin <kbd>Cmd+S</kbd> o similares). La razón: atajos que sobrescriben defaults del navegador (autoguardar, guardar-como) confunden a los lectores de pantalla y entran en conflicto con tecnología asistiva. Los <kbd>Tab</kbd> + <kbd>Enter</kbd> + flechas estándar cubren cada interacción en el bootcamp.</p>
+  </section>
+
   <section class="a11y-section" aria-labelledby="working-on-h">
     <h2 id="working-on-h">En qué estamos trabajando</h2>
     <p>Estos son los ajustes que el audit de diseño instruccional del bootcamp identificó como aún-no-publicados. Se rastrean en <code>docs/course-instructional-audit.md</code>.</p>
