@@ -135,6 +135,19 @@
           detail: { tag: tag, patch: patch }
         }));
       } catch (_) { /* swallow event-construction failures */ }
+      // Briefly pulse the widget that originated the commit. The
+      // §COURSE-MOBILE write-pulse keyframe runs on data-pulse="true"
+      // and the rule honors prefers-reduced-motion via @media.
+      try {
+        var nodes = doc.querySelectorAll('.course-widget[data-widget="' + tag + '"]');
+        for (var i = 0; i < nodes.length; i++) {
+          (function (el) {
+            el.setAttribute('data-pulse', 'true');
+            // ~750 ms is the animation duration in §COURSE-MOBILE.
+            setTimeout(function () { el.removeAttribute('data-pulse'); }, 750);
+          })(nodes[i]);
+        }
+      } catch (_) { /* DOM may have unmounted */ }
     }, COMMIT_DEBOUNCE_MS);
     return function commit(patch) { write(patch); };
   }
