@@ -943,6 +943,12 @@ main{padding-top:64px}
         btn.addEventListener("click", function () {
           if (btn.disabled) return;
           setState("saving", L.saving);
+          // Haptic confirmation on coarse pointers (feature-detected,
+          // silent no-op everywhere else). 10 ms is the gentlest
+          // perceivable buzz on Android.
+          try {
+            if (navigator.vibrate && window.matchMedia("(pointer: coarse)").matches) navigator.vibrate(10);
+          } catch (_) { /* vibrate may be blocked by user-agent policy */ }
       
           var now = Date.now();
           var next = local || { track: null, completed: [], startedAt: now, updatedAt: now, celebrations: {}, v: 1 };
@@ -1002,6 +1008,28 @@ main{padding-top:64px}
           // Hard fallback: if neither resolve nor catch fires in 4s, still finish.
           setTimeout(function () { finish(true); }, 4000);
         });
+      
+        // ---- View Transitions on next/prev pager (progressive enhancement) ----
+        // Wrap pager link navigation in document.startViewTransition() when
+        // available. Browsers without the API silently fall through to a
+        // normal navigation. prefers-reduced-motion short-circuits to instant.
+        function wirePagerTransitions() {
+          if (!document.startViewTransition) return;
+          if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+          var links = document.querySelectorAll(".course-pager a[href]");
+          for (var i = 0; i < links.length; i++) {
+            links[i].addEventListener("click", function (e) {
+              if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+              var href = this.getAttribute("href");
+              if (!href || href.startsWith("http") || href.startsWith("//") || href.startsWith("#") || href.startsWith("mailto:")) return;
+              e.preventDefault();
+              try {
+                document.startViewTransition(function () { location.assign(href); });
+              } catch (_) { location.assign(href); }
+            });
+          }
+        }
+        wirePagerTransitions();
       })();
       </script>
       <!-- course-mark-complete:end -->
