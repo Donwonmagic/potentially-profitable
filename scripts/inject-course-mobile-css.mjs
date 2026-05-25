@@ -93,6 +93,21 @@ function buildBlock() {
     '.course-rail [data-pulse="true"],.course-widget[data-pulse="true"]{animation:mtn-write-pulse 700ms ease-out}',
     '@media (prefers-reduced-motion:reduce){.course-rail [data-pulse="true"],.course-widget[data-pulse="true"]{animation:none}}',
 
+    // ---- Live-preview controls (rail + L14 generator) ----
+    // .lpf-controls is the row that holds the expand + fullscreen
+    // buttons. Always rendered, always styled — sizes adapt per
+    // viewport via rules below.
+    '.lpf-controls{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;align-items:center}',
+    '.rail-expand,.rail-fullscreen{display:inline-flex;align-items:center;gap:6px;font:600 13px/1 var(--font-body);padding:8px 14px;border-radius:99px;background:var(--cream-2);color:var(--teal-dark);border:1px solid var(--line);cursor:pointer;min-height:36px;transition:background 120ms ease,border-color 120ms ease}',
+    '.rail-expand:hover,.rail-fullscreen:hover{background:var(--cream);border-color:var(--teal)}',
+    '.rail-expand:focus-visible,.rail-fullscreen:focus-visible{outline:2px solid var(--teal);outline-offset:2px}',
+    '.rail-fullscreen{background:var(--teal);color:var(--cream);border-color:var(--teal)}',
+    '.rail-fullscreen:hover{background:var(--teal-dark);color:var(--cream);border-color:var(--teal-dark)}',
+    // Fullscreen pseudoclass: when the .lpf enters fullscreen via the
+    // Fullscreen API, fill the viewport with the preview.
+    '.lpf:fullscreen{background:var(--cream);padding:16px;display:flex;flex-direction:column}',
+    '.lpf:fullscreen .lpf-frame{flex:1;height:auto}',
+
     // ---- Rail collapse below 1024px (live-preview moves below the fold) ----
     '@media (max-width:1024px){',
     '.course-layout{grid-template-columns:minmax(0,1fr)!important;gap:24px}',
@@ -100,7 +115,7 @@ function buildBlock() {
     '.course-body{order:1}',
     '.course-rail .lpf-frame{height:220px;transition:height 220ms ease}',
     '.course-rail [data-expanded="true"] .lpf-frame{height:70vh}',
-    '.course-rail .rail-expand{display:inline-flex;align-items:center;gap:6px;margin-top:8px;font:600 13px/1 var(--font-body);padding:10px 14px;border-radius:99px;background:var(--cream-2);color:var(--teal-dark);border:1px solid var(--line);cursor:pointer;min-height:44px}',
+    '.course-rail .rail-expand{min-height:44px}',
     '.course-rail .rail-expand:focus-visible{outline:2px solid var(--teal);outline-offset:2px}',
     '}',
 
