@@ -6,8 +6,6 @@
  */
 
 /* ===== [tool] TOOL SHELL — shared primitives for /tools/* pages (lines 2420-2517) ===== */
-  .tool-cta-preview li{ padding: 8px 0; }
-}
 
 /* ============================================================
    TOOL SHELL — shared primitives for /tools/* pages
@@ -104,10 +102,10 @@
   align-items:center;
   gap:8px;
 }
-
-/* ===== [tool] Tools-landing cluster layout (lines 2518-2808) ===== */
 .tool-card.soon .cta{ color:var(--stone); }
 .tool-card .cta svg{ width:16px; height:16px; }
+
+/* ===== [tool] Tools-landing cluster layout (lines 2518-2808) ===== */
 
 /* ---------- Tools-landing cluster layout (Phase 2 cohesion pass) -----
    The /tools/ page is now grouped by the same 6-topic taxonomy used at
@@ -397,10 +395,10 @@
   gap:16px;
   margin-top:0;
 }
-
-/* ===== [tool] Per-tool "Keep going" knit-in (lines 2809-2919) ===== */
 @media (max-width:960px){ .tool-roadmap .tool-grid{ grid-template-columns:repeat(2,1fr); } }
 @media (max-width:560px){ .tool-roadmap .tool-grid{ grid-template-columns:1fr; } }
+
+/* ===== [tool] Per-tool "Keep going" knit-in (lines 2809-2919) ===== */
 
 /* ---------- Per-tool "Keep going" knit-in (Phase 3 cohesion pass) ----
    Renders at the bottom of every live tool page (between
@@ -510,10 +508,10 @@
   .tool-knit__grid{ grid-template-columns:repeat(2,1fr); }
 }
 @media (max-width:520px){
+  .tool-knit__grid{ grid-template-columns:1fr; }
+}
 
 /* ===== [tool] Tool deep-links (.tool-deep-* — bottom of every /tools/* page) (lines 4137-4220) ===== */
-  color:var(--stone);font-size:13.5px;
-}
 
 /* Tool deep-links — the Phase-3.5 block at the bottom of every
    /tools/* page. Closes the loop from a tool's result back into
@@ -596,10 +594,10 @@
 }
 .tool-deep-cta{
   font-family:var(--font-body);font-size:13.5px;font-weight:600;
+  color:var(--teal);
+}
 
 /* ===== [tool] Tool states (loading / error / empty) (lines 5357-5401) ===== */
-  .wsh-item-actions{justify-content:flex-end}
-}
 
 /* ============ Tool states (Sprint 5 — cohesion) ============
    Shared loading + error patterns for tool result regions. Every
@@ -643,10 +641,10 @@
    headline + plain-language body + (optional) retry hint. */
 .tool-error{padding:24px;background:var(--surface-1);border:1px solid var(--status-bad-tint);border-left:3px solid var(--rust);border-radius:var(--r-md);margin-bottom:20px;box-shadow:var(--elev-1)}
 .tool-error-headline{font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);margin:0 0 8px;line-height:1.35}
+.tool-error-body{font-size:14.5px;line-height:1.55;color:var(--ink-soft);margin:0}
+.tool-error-meta{margin-top:12px;font-size:12.5px;color:var(--stone);font-variant-numeric:tabular-nums}
 
 /* ===== [tool] Learn-back (in tool result region) (lines 5486-5503) ===== */
-.field-notes-rail__more{text-align:center;margin:28px 0 0}
-.field-notes-rail__more a{color:var(--teal);font-weight:500;text-decoration:none;border-bottom:1px solid currentColor}
 
 /* ============ Learn-back (Sprint 12 — cohesion) ============
    A thin, prose-shaped row that sits inside a tool's result region
@@ -663,10 +661,10 @@
 .learn-back{margin:24px auto 0;max-width:640px;padding:18px 24px;background:var(--surface-1);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:var(--r-md)}
 .learn-back-eyebrow{font-family:var(--font-body);font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);margin:0 0 6px}
 .learn-back-body{font-size:15px;line-height:1.55;color:var(--ink-soft);margin:0}
+.learn-back-body a{color:var(--teal);font-weight:500;border-bottom:1px solid currentColor;text-decoration:none;transition:color var(--t-fast) var(--ease)}
+.learn-back-body a:hover,.learn-back-body a:focus-visible{color:var(--teal-dark)}
 
 /* ===== [tool] .edu-result — interpretation card under tool output (lines 5773-5811) ===== */
-.tool-data-promise__links a{color:var(--teal);text-decoration:none;font-weight:600;border-bottom:1px solid color-mix(in srgb, var(--teal) 35%, transparent)}
-.tool-data-promise__links a:hover{border-bottom-color:var(--teal)}
 
 /* ============ .edu-result — interpretation card under tool output ============
    Every calculator emits a number; this block lives directly under
@@ -704,10 +702,10 @@
 @media (max-width:640px){
   .edu-result{padding:16px 18px}
   .edu-result__lede{font-size:16.5px}
-
-/* ===== [tool] Statistical disclosure components (lines 5812-5854) ===== */
 }
 @media print{.edu-result{display:none}}
+
+/* ===== [tool] Statistical disclosure components (lines 5812-5854) ===== */
 
 /* ============ Statistical disclosure components ============
    Phase 3 — building on .edu-result so calculators can disclose
@@ -750,9 +748,9 @@
 .edu-caveat{margin:12px 0 0;padding:10px 14px;background:var(--status-warn-tint);border-left:3px solid var(--status-warn-fill);border-radius:var(--r-sm);font-size:13px;line-height:1.55;color:var(--ink);font-style:italic}
 .edu-caveat strong{font-weight:700;font-style:normal;color:var(--status-warn-deep)}
 
-/* ===== [tool] Tool-internal type minimums (lines 5855-6011) ===== */
-
 @media print{.edu-range,.edu-source,.edu-formula,.edu-caveat{display:none}}
+
+/* ===== [tool] Tool-internal type minimums (lines 5855-6011) ===== */
 
 /* ============ Tool-internal type minimums ============
    Utility floor for text inside tool result panels, tables, and
@@ -908,3 +906,5 @@
 /* Phase G.8 (Growth) — sub-tool rail back to Storefront Health.
    Quiet single line; the bold tool name carries the click weight. */
 .tool-storefront-rail{font-size:13.5px;color:var(--ink-soft);line-height:1.55;margin:6px 0 0;max-width:680px}
+.tool-storefront-rail a{color:var(--teal);text-decoration:none;border-bottom:1px solid color-mix(in srgb, var(--teal) 35%, transparent)}
+.tool-storefront-rail a:hover{border-bottom-color:var(--teal)}

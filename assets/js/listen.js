@@ -1764,8 +1764,8 @@
         </div>
         <div class="listen-card-meta">
           <strong>${minutes} min</strong><span>hands-free</span>
-          <label class="listen-select listen-language-select listen-language-select--header" title="Language" hidden><span class="sr-only">Language</span>
-            <select class="listen-language listen-language--header" aria-label="Language"></select>
+          <label class="listen-select listen-language-select" title="Language" style="margin-top:2px" hidden><span class="sr-only">Language</span>
+            <select class="listen-language" aria-label="Language" style="padding:4px 24px 4px 10px;font-size:11px;letter-spacing:0.04em"></select>
           </label>
         </div>
         <div class="listen-card-progress" hidden role="progressbar" aria-label="Audio progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><canvas class="listen-card-waveform" aria-hidden="true"></canvas><div class="listen-card-progress-fill"></div><div class="listen-card-progress-ticks"></div></div>
