@@ -405,51 +405,68 @@ main{padding-top:64px}
 
       <p>None of this calls a server. The ZIP is built in your browser using a small library (<a class="term-link" href="https://stuk.github.io/jszip/" rel="noopener" target="_blank">JSZip</a>) that the page lazy-loads only when you click download. Everything you saved across the bootcamp lives in your browser's <em>localStorage</em> (a small key-value store browsers expose to pages on the same domain); this page reads it, templates the pages, packs the ZIP, hands you the file. We never see your restaurant data.</p>
 
-      <h2>Your readiness checklist</h2>
+      <!-- gen-stepper-map: mobile-only mini-map indicator. Hidden on
+           desktop via §COURSE-MOBILE. -->
+      <ol class="gen-stepper-map" aria-label="Generator steps">
+        <li class="dot" data-step-dot="checklist" data-active="true" aria-current="step">1</li>
+        <li class="dot" data-step-dot="inventory">2</li>
+        <li class="dot" data-step-dot="download">3</li>
+      </ol>
 
-      <p>Eight fields are required for a deployable site. Two are optional but recommended. If you see red rows, follow the link to the lesson that captures the field — your work in this browser is preserved, the lesson page will reflect it when you arrive.</p>
+      <details class="gen-step" data-step="checklist" open>
+        <summary><span class="gen-step-num">1.</span> What you've assembled so far</summary>
+        <h2>Your readiness checklist</h2>
 
-      <section class="checklist" aria-labelledby="readiness-h" id="readinessChecklist">
-        <header class="checklist-summary">
-          <h3 class="h" id="readiness-h">Readiness</h3>
-          <span class="count" id="readinessCount" role="status" aria-live="polite">Checking…</span>
-        </header>
-        <div id="readinessGroups">
-          <p class="checklist--noscript">Enable JavaScript to see your readiness checklist. The list reads your saved bootcamp answers from this browser and tells you which lessons are still open.</p>
+        <p>Eight fields are required for a deployable site. Two are optional but recommended. If you see red rows, follow the link to the lesson that captures the field — your work in this browser is preserved, the lesson page will reflect it when you arrive.</p>
+
+        <section class="checklist" aria-labelledby="readiness-h" id="readinessChecklist">
+          <header class="checklist-summary">
+            <h3 class="h" id="readiness-h">Readiness</h3>
+            <span class="count" id="readinessCount" role="status" aria-live="polite">Checking…</span>
+          </header>
+          <div id="readinessGroups">
+            <p class="checklist--noscript">Enable JavaScript to see your readiness checklist. The list reads your saved bootcamp answers from this browser and tells you which lessons are still open.</p>
+          </div>
+        </section>
+      </details>
+
+      <details class="gen-step" data-step="inventory">
+        <summary><span class="gen-step-num">2.</span> See what's in the ZIP</summary>
+        <h2>What's in the ZIP</h2>
+
+        <p>Seven files. Together they are the entire site. You can open <code>index.html</code> in your browser locally to see what your hosted site will look like before you deploy.</p>
+
+        <ul class="bundle-list">
+          <li><code>index.html</code><span class="desc">Home page — your name, one-promise, palette-keyed colors, cuisine chip, "reserve" CTA linking to the contact page.</span></li>
+          <li><code>menu.html</code><span class="desc">Menu page — dishes from L8 with names and prices.</span></li>
+          <li><code>about.html</code><span class="desc">About page — your one-promise from L3 as the lead, customer paragraph from L4 as supporting copy.</span></li>
+          <li><code>contact.html</code><span class="desc">Contact page — address with Google Maps link, tappable phone, weekly hours table.</span></li>
+          <li><code>sitemap.xml</code><span class="desc">Tells Google your four pages exist and when they were generated.</span></li>
+          <li><code>robots.txt</code><span class="desc">Allows all crawlers. Standard, dull, correct.</span></li>
+          <li><code>README.md</code><span class="desc">Deploy instructions for Cloudflare Pages, Netlify, and Vercel — keyed to the host preference you save in L15.</span></li>
+        </ul>
+
+        <p>Note what's <em>not</em> in the ZIP: no JavaScript. No fonts loaded from Google. No analytics scripts. No cookie banners. The generated site is the simplest possible thing that solves the operator's problem — a fast, accessible, plain-HTML restaurant site that loads in under 200 ms on a phone with two bars of cellular.</p>
+
+        <div class="course-callout">
+          <p><strong>Why no JavaScript?</strong> Because your operator-facing job — diners want hours, address, menu, phone — does not require it. Every kilobyte of JS is a kilobyte that a diner downloads on a bad connection, that a screen reader has to wait for, that a security review has to audit. Plain HTML loads faster, stays accessible, and never breaks because a CDN went down.</p>
         </div>
-      </section>
+      </details>
 
-      <h2>What's in the ZIP</h2>
+      <details class="gen-step" data-step="download">
+        <summary><span class="gen-step-num">3.</span> Download your site</summary>
+        <h2>Download your site</h2>
 
-      <p>Seven files. Together they are the entire site. You can open <code>index.html</code> in your browser locally to see what your hosted site will look like before you deploy.</p>
-
-      <ul class="bundle-list">
-        <li><code>index.html</code><span class="desc">Home page — your name, one-promise, palette-keyed colors, cuisine chip, "reserve" CTA linking to the contact page.</span></li>
-        <li><code>menu.html</code><span class="desc">Menu page — dishes from L8 with names and prices.</span></li>
-        <li><code>about.html</code><span class="desc">About page — your one-promise from L3 as the lead, customer paragraph from L4 as supporting copy.</span></li>
-        <li><code>contact.html</code><span class="desc">Contact page — address with Google Maps link, tappable phone, weekly hours table.</span></li>
-        <li><code>sitemap.xml</code><span class="desc">Tells Google your four pages exist and when they were generated.</span></li>
-        <li><code>robots.txt</code><span class="desc">Allows all crawlers. Standard, dull, correct.</span></li>
-        <li><code>README.md</code><span class="desc">Deploy instructions for Cloudflare Pages, Netlify, and Vercel — keyed to the host preference you save in L15.</span></li>
-      </ul>
-
-      <p>Note what's <em>not</em> in the ZIP: no JavaScript. No fonts loaded from Google. No analytics scripts. No cookie banners. The generated site is the simplest possible thing that solves the operator's problem — a fast, accessible, plain-HTML restaurant site that loads in under 200 ms on a phone with two bars of cellular.</p>
-
-      <div class="course-callout">
-        <p><strong>Why no JavaScript?</strong> Because your operator-facing job — diners want hours, address, menu, phone — does not require it. Every kilobyte of JS is a kilobyte that a diner downloads on a bad connection, that a screen reader has to wait for, that a security review has to audit. Plain HTML loads faster, stays accessible, and never breaks because a CDN went down.</p>
-      </div>
-
-      <h2>Download your site</h2>
-
-      <section class="download" aria-labelledby="download-h">
-        <h3 id="download-h">Generate the ZIP</h3>
-        <p class="why">The button below packages your current answers into a ZIP named after your restaurant. Re-run it whenever you change something — re-running takes about a second.</p>
-        <button class="download-btn" id="downloadBtn" type="button" disabled aria-describedby="downloadHint">
-          <span aria-hidden="true">↓</span>
-          <span>Download your site (ZIP)</span>
-        </button>
-        <p class="pending" id="downloadHint">The button enables once all eight required fields above are green. JSZip lazy-loads on click (one small static asset, ~95 KB); nothing leaves your browser.</p>
-      </section>
+        <section class="download" aria-labelledby="download-h">
+          <h3 id="download-h">Generate the ZIP</h3>
+          <p class="why">The button below packages your current answers into a ZIP named after your restaurant. Re-run it whenever you change something — re-running takes about a second.</p>
+          <button class="download-btn" id="downloadBtn" type="button" disabled aria-describedby="downloadHint">
+            <span aria-hidden="true">↓</span>
+            <span>Download your site (ZIP)</span>
+          </button>
+          <p class="pending" id="downloadHint">The button enables once all eight required fields above are green. JSZip lazy-loads on click (one small static asset, ~95 KB); nothing leaves your browser.</p>
+        </section>
+      </details>
 
       <h2>What this changes downstream</h2>
 
@@ -1367,6 +1384,7 @@ main{padding-top:64px}
 <!-- course-config-sync:start -->
 <script src="/assets/js/course-config-sync.js" defer></script>
 <!-- course-config-sync:end -->
+<script src="/course/m4-launch/generator/accordion.js" defer></script>
 
 </body>
 </html>
