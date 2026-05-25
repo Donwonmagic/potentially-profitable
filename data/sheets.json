@@ -74,7 +74,8 @@
         "course-gbp-checklist",
         "course-local-seo",
         "course-review-template",
-        "course-rhythm"
+        "course-rhythm",
+        "course-launch-week"
       ]
     }
   ],
@@ -1423,6 +1424,35 @@
       ],
       "status": "live",
       "added": "2026-05-24"
+    },
+    "course-launch-week": {
+      "title_en": "Launch week checklist",
+      "title_es": "Lista de revisión de la semana de lanzamiento",
+      "summary_en": "Ten one-time tasks for the seven days after your site goes live — Search Console submission, third-party listing updates, redirect setup, URL distribution. The things that compound for the next year and only get done if you do them in the first week.",
+      "summary_es": "Diez tareas únicas para los siete días después de que tu sitio salga en vivo — envío a Search Console, actualizaciones de listas de terceros, configuración de redirecciones, distribución de la URL. Las cosas que se acumulan durante el próximo año y solo se hacen si las haces en la primera semana.",
+      "walkaway_en": "Ten one-time launch tasks crossed off in the seven days after deploy.",
+      "walkaway_es": "Diez tareas únicas de lanzamiento tachadas en los siete días después del deploy.",
+      "url_en": "/sheets/course-launch-week/",
+      "url_es": "/es/sheets/course-launch-week/",
+      "pack": "course-bootcamp",
+      "cadence_en": "Once, the week after L15 deploy",
+      "cadence_es": "Una vez, la semana después del deploy de la L15",
+      "format": "checklist",
+      "stay_paper": false,
+      "es_locale_hazard": false,
+      "pairsWith": { "tools": ["seo-grader", "gbp-grader"], "glossary": ["gbp", "schema", "sitemap"], "blog": [] },
+      "when_to_use_en": [
+        "The day after you finish L15 deploy — your site is on a real domain and the launch-week clock starts now.",
+        "Migrating from an old domain to a new one — items 5 and 6 (301 redirects, GBP URL update) are the difference between keeping your rankings and starting over.",
+        "Soft-launching to a small audience before a wider announcement — items 1-4 set up measurement so you can see whether the soft launch is working."
+      ],
+      "mistakes_en": [
+        "Skipping the Search Console submission. Google will find the site eventually, but you'll be flying blind on which pages are indexed and which queries you rank for until you submit the sitemap.",
+        "Updating Yelp + TripAdvisor + delivery platforms LATER. Operators tell themselves they will get to it; six months later the old URL is still on three platforms and diners click into a dead page.",
+        "Not redirecting the old domain. If you had a previous site at a different URL, every backlink, every printed business card, every Google citation still points at the old address. 301 redirects forward the traffic AND the ranking signal."
+      ],
+      "status": "live",
+      "added": "2026-05-25"
     }
   },
 

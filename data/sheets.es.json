@@ -427,6 +427,19 @@
       ]
     },
 
+    "course-launch-week": {
+      "when_to_use": [
+        "El día después de terminar el deploy de la L15 — tu sitio está en un dominio real y el reloj de la semana de lanzamiento empieza ahora.",
+        "Migrando de un dominio viejo a uno nuevo — los items 5 y 6 (redirecciones 301, actualizar URL en GBP) son la diferencia entre conservar tus rankings y empezar de cero.",
+        "Lanzando suavemente a una audiencia chica antes de un anuncio más amplio — los items 1-4 configuran la medición para que puedas ver si el soft launch está funcionando."
+      ],
+      "mistakes": [
+        "Saltarse el envío a Search Console. Google va a encontrar el sitio eventualmente, pero vas a estar volando a ciegas sobre qué páginas están indexadas y qué consultas estás rankeando hasta que envíes el sitemap.",
+        "Actualizar Yelp + TripAdvisor + plataformas de delivery DESPUÉS. Los operadores se dicen a sí mismos que ya van a llegar; seis meses después la URL vieja todavía está en tres plataformas y los comensales hacen clic a una página muerta.",
+        "No redirigir el dominio viejo. Si tenías un sitio anterior en una URL distinta, cada backlink, cada tarjeta de presentación impresa, cada cita de Google todavía apunta a la dirección vieja. Las redirecciones 301 reenvían el tráfico Y la señal de ranking."
+      ]
+    },
+
     "course-customer": {
       "when_to_use": [
         "Después de la Lección 4 — imprime, pega arriba de la entrada.",

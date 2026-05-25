@@ -41,7 +41,7 @@ const MANIFEST_PATH = path.join(repoRoot, 'data', 'course-lessons.json');
 const manifest = JSON.parse(fs.readFileSync(MANIFEST_PATH, 'utf8'));
 
 // Lesson id → sheet slug. Lessons not in this map don't get a sheet
-// link (welcome, what-a-site-does, generator, deploy by design).
+// link (welcome, what-a-site-does, generator by design).
 const LESSON_TO_SHEET = {
   'one-promise':    'course-promise',
   'customer':       'course-customer',
@@ -58,6 +58,9 @@ const LESSON_TO_SHEET = {
   'gbp-rebuild':    'course-gbp-checklist',
   'local-seo':      'course-local-seo',
   'reviews':        'course-review-template',
+  // Deploy gets the launch-week checklist — 10 one-time tasks for the
+  // seven days after the site goes live. Closes the audit's G-C3 gap.
+  'deploy':         'course-launch-week',
   'rhythm':         'course-rhythm'
 };
 
