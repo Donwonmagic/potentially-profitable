@@ -166,6 +166,42 @@ main{padding-top:64px}
 
 .workshop-error{padding:14px;color:var(--rust);font-size:14.5px;background:var(--cream-2);border-radius:6px}
 
+/* rhythm-calendar widget styles */
+.rcw{display:block;background:var(--cream-2);padding:18px;border-radius:10px;border:1px solid var(--line)}
+.rcw-label{font-family:var(--font-body);font-size:13px;letter-spacing:.06em;text-transform:uppercase;font-weight:700;color:var(--stone);margin:0 0 14px}
+.rcw-section-head{font-family:var(--font-body);font-size:12px;letter-spacing:.04em;text-transform:uppercase;font-weight:600;color:var(--stone);margin:0 0 8px}
+.rcw-cadences{margin:0 0 18px}
+.rcw-cadence-grid{display:grid;gap:8px}
+@media (min-width:560px){.rcw-cadence-grid{grid-template-columns:1fr 1fr}}
+.rcw-cad{display:grid;grid-template-columns:14px 1fr 130px;gap:10px;align-items:center;padding:8px 12px;background:var(--cream);border:1px solid var(--line);border-radius:6px;font-size:13.5px}
+.rcw-cad-swatch{width:12px;height:12px;border-radius:3px;display:inline-block}
+.rcw-cad-swatch[data-task="hours"]{background:var(--status-good)}
+.rcw-cad-swatch[data-task="reviews"]{background:var(--teal-dark)}
+.rcw-cad-swatch[data-task="regen"]{background:var(--teal)}
+.rcw-cad-swatch[data-task="seo"]{background:var(--rust)}
+.rcw-cad-name{color:var(--ink-soft);font-weight:600}
+.rcw-cad-sel{padding:5px 8px;font-size:13px;font-family:inherit;border:1px solid var(--line);border-radius:5px;background:var(--cream);color:var(--ink)}
+.rcw-cad-sel:focus{outline:2px solid var(--teal);outline-offset:1px;border-color:var(--teal)}
+.rcw-month{margin:0 0 18px}
+.rcw-month-head{font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);margin:0 0 10px}
+.rcw-month-table{width:100%;border-collapse:separate;border-spacing:3px;table-layout:fixed}
+.rcw-month-table th{font-family:var(--font-body);font-size:11px;letter-spacing:.04em;text-transform:uppercase;font-weight:600;color:var(--stone);padding:6px 4px;text-align:center}
+.rcw-day{vertical-align:top;height:70px;padding:6px 5px;background:var(--cream);border:1px solid var(--line);border-radius:5px;font-size:12px;line-height:1.3;position:relative}
+.rcw-day--blank{background:transparent;border-color:transparent}
+.rcw-day--today{outline:2px solid var(--teal)}
+.rcw-day--pinned{background:#FFF}
+.rcw-day-n{display:block;font-weight:700;color:var(--ink-soft);font-size:13px}
+.rcw-day .rcw-pin{display:inline-block;margin-top:4px;padding:1px 5px;font-size:9.5px;letter-spacing:.02em;font-weight:700;color:#fff;border-radius:3px;line-height:1.4}
+.rcw-pin--hours{background:var(--status-good)}
+.rcw-pin--reviews{background:var(--teal-dark)}
+.rcw-pin--regen{background:var(--teal)}
+.rcw-pin--seo{background:var(--rust)}
+.rcw-export{padding-top:12px;border-top:1px dashed var(--line)}
+.rcw-download{padding:10px 22px;font-family:inherit;font-size:14px;font-weight:600;border-radius:99px;border:1.5px solid var(--teal);background:var(--teal);color:var(--cream);cursor:pointer;transition:transform .08s ease}
+.rcw-download:hover{transform:translateY(-1px)}
+.rcw-download:focus-visible{outline:2px solid var(--teal-dark);outline-offset:2px}
+.rcw-export-help{margin:8px 0 0;font-size:12.5px;color:var(--stone);line-height:1.45;max-width:520px}
+
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -428,19 +464,11 @@ main{padding-top:64px}
 
       <h2>Móntalo en un calendario</h2>
 
-      <p>Escribe tu cadencia elegida abajo — el ejercicio de teclearla hace que el compromiso sea real. La exportación a calendario .ics (un clic → los cuatro eventos recurrentes caen en Google/Apple/Outlook) llega con una actualización futura del Workshop Kit; hasta entonces, teclea la cadencia aquí y copia los cuatro eventos a tu calendario a mano. Es un trabajo de cinco minutos que se hace una vez.</p>
+      <p>El widget abajo construye tu ritmo mensual a partir de las cuatro tareas de arriba. Elige una frecuencia para cada una (apagado / semanal / quincenal / mensual / trimestral); el calendario muestra dónde aterriza cada una este mes. Cuando las cadencias se sientan bien, haz clic en <strong>Descargar archivo de calendario</strong> — un archivo <code>.ics</code> real cae en tus Descargas. Impórtalo a Google Calendar, Apple Calendar, o Outlook (la mayoría de las apps abren archivos .ics directamente) y los eventos recurrentes se vuelven activos en tu teléfono antes de que cierres esta pestaña.</p>
 
-      <section class="course-widget"
-               data-widget="text-input"
-               data-context-key="rhythmCadence"
-               data-label="Tu ritmo mensual — cadencia comprometida"
-               data-label-es="Tu ritmo mensual — cadencia comprometida"
-               data-placeholder="Revisión de horarios: día 1 del mes, 9:30 AM&#10;Triaje de reseñas: cada dos martes, 10:00 AM&#10;Regenerar + redesplegar: día 15 del mes, 9:30 AM&#10;Sanidad de SEO: día 30 de ene/abr/jul/oct, 10:00 AM"
-               data-placeholder-es="Revisión de horarios: día 1 del mes, 9:30 AM&#10;Triaje de reseñas: cada dos martes, 10:00 AM&#10;Regenerar + redesplegar: día 15 del mes, 9:30 AM&#10;Sanidad de SEO: día 30 de ene/abr/jul/oct, 10:00 AM"
-               data-help="Días específicos, horas específicas. Agrega las mismas líneas al calendario de tu teléfono con recordatorios. El ritmo no funciona hasta que está en un calendario que te despierte."
-               data-help-es="Días específicos, horas específicas. Agrega las mismas líneas al calendario de tu teléfono con recordatorios. El ritmo no funciona hasta que está en un calendario que te despierte."
-               data-max="500"
-               data-multiline="true"></section>
+      <section class="course-widget" data-widget="rhythm-calendar"></section>
+
+      <p>El ritmo no funciona hasta que está en un calendario que te despierte. Pon recordatorios en tu teléfono para cada uno — 10 minutos antes del horario, no 5, así puedes terminar lo que estés haciendo primero.</p>
 
       <h2>Cuando el ritmo se rompe (y se va a romper)</h2>
 
