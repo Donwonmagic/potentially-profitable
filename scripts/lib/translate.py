@@ -374,7 +374,10 @@ Hard rules:
 3. Match Don's pacing — short declarative sentences, em-dashes, parentheticals.
 4. Restaurant terms with an established {target_lang_name} equivalent: use it. Without one: keep the English term and add a brief parenthetical the first time it appears.
 5. Currency: keep "$" for USD. "$15,000" stays "$15,000" — do not convert to local currency.
-6. Output ONLY the translation. No preamble like "Here is the translation:". No commentary. No notes about choices made. Just the translated text, in the same paragraph structure as the input."""
+6. Output ONLY the translation. No preamble like "Here is the translation:". No commentary. No notes about choices made. Just the translated text, in the same paragraph structure as the input.
+
+Locale-specific register notes:
+{locale_register}"""
 
 # Display names per locale for the editorial prompt.
 LANG_NAMES = {
@@ -386,6 +389,64 @@ LANG_NAMES = {
     "hi": "Hindi",
     "ja": "Japanese",
 }
+
+# Per-locale register and pacing notes. These ride into the system
+# prompt so the LLM picks the right pronoun, the right contraction
+# style, and the right idioms for restaurant-industry audiences in
+# each market. The notes are tight on purpose — three lines of
+# guidance carry better than a paragraph of theory.
+LOCALE_REGISTER = {
+    "es": (
+        "- Use the second-person 'tú' (informal). Restaurant operators talking shop default to tú, not usted.\n"
+        "- US-neutral Spanish (lean toward Mexican/Central American norms — that's the dominant US restaurant-industry register). 'computadora' not 'ordenador'. 'celular' not 'móvil'. 'aplicación' not 'app' unless quoting a product name.\n"
+        "- Use 'cliente' / 'comensal' for diners, 'cubierto' for cover, 'turno' for shift, 'pase' for the pass. 'reservación' for reservation (US norm), not 'reserva' (Spain norm).\n"
+        "- Contractions: Spanish doesn't contract the way English does; the em-dash and parenthetical pacing carry Don's voice. Keep the dashes."
+    ),
+    "fr": (
+        "- Use 'tu' (familiar second person) — this is one operator talking to another, not a corporate broadcast.\n"
+        "- Continental French. 'restaurateur' for restaurant owner; 'tenir un restaurant' for running one. 'site' (m.) for website; 'menu' for menu; 'fiche Google' for the GBP card.\n"
+        "- Anglicisms that have entered the trade: keep 'menu', 'cover' (transposed as 'couvert'), 'délivroo' references stay verbatim, 'click and collect' kept as-is.\n"
+        "- French em-dash usage: respect the cadrat (—) not the trait d'union (-). Avoid « guillemets » for emphasis; rely on italics in editorial register."
+    ),
+    "it": (
+        "- Use 'tu' (familiar). Italian restaurant operators speaking to each other use tu — voi is regional and feels stiff in editorial.\n"
+        "- Standard Italian, Roman/Florentine register (the editorial default). 'ristoratore' for operator; 'gestire un ristorante' for running one; 'coperto' for cover; 'turno' for shift.\n"
+        "- Italian dishes already in the glossary: never translate them. 'cacio e pepe' stays 'cacio e pepe' in every language; that's why it's in GLOSSARY.\n"
+        "- Italian pacing is naturally longer-sentenced than English; resist the urge to fragment Don's parentheticals into separate sentences. Keep the em-dashes."
+    ),
+    "pt": (
+        "- Brazilian Portuguese, São Paulo cosmopolitan register. Not European Portuguese — the spelling reforms and word choices are different.\n"
+        "- Use 'você' (not 'tu') — Brazilian default for direct address in editorial. 'restaurante' for restaurant; 'cardápio' for menu; 'comanda' for ticket; 'mesa' for table; 'cliente' for customer.\n"
+        "- Brazilian Portuguese accepts more English loanwords than European Portuguese — 'delivery' is fine, 'iFood' stays verbatim, 'Google Maps' stays English.\n"
+        "- Use the standard travessão (—) for em-dashes. Brazilian editorial uses parentheticals freely; preserve Don's."
+    ),
+    "zh": (
+        "- Simplified Chinese (mainland China conventions). Operator-to-operator register — informal, direct, no honorifics beyond the standard 您 only when the source text is explicitly formal.\n"
+        "- Restaurant-industry vocabulary: 餐厅 for restaurant; 老板 for owner; 菜单 for menu; 桌号 for table number; 翻台率 for table turn; 客流 for foot traffic; 评价 for reviews.\n"
+        "- Numbers: keep digits as digits ($42, 30%, 4 hours). Mandarin reads $42 natively; do not convert to 元 or 人民币.\n"
+        "- Pacing: Mandarin sentences naturally compact more meaning per character. Don's em-dashes can be rendered as 破折号 (——) or as commas where the rhythm calls for it — pick whichever sounds natural aloud. Avoid 即 and 之 (too formal); prefer 这 / 那 / 就 (conversational)."
+    ),
+    "hi": (
+        "- Conversational Hindi (खड़ी बोली), Devanagari script. Avoid Sanskrit-heavy register; this is one restaurant person talking to another, not a literary essay.\n"
+        "- English loanwords for technical terms are normal and expected: रेस्तरां / restaurant, मेन्यू, वेबसाइट, टेबल, कस्टमर — preserve loanwords where Hindi readers naturally code-switch.\n"
+        "- Use आप (formal-you) for direct address — Indian editorial defaults to आप even in informal pieces. तू would feel rude; तुम would feel casual-friend, not professional-peer.\n"
+        "- Numbers: keep digits ($42, 30%). Hindi reads these natively. Em-dashes work; parentheticals work. Preserve Don's pacing."
+    ),
+    "ja": (
+        "- Modern conversational Japanese, です/ます form. Restaurant industry register — direct but polite, the way operators address each other in trade publications.\n"
+        "- Restaurant vocabulary: レストラン / 飲食店 for restaurant; メニュー for menu; お客様 for customer; 卓 or テーブル for table; 客単価 for ticket; 回転率 for table turn.\n"
+        "- Loanwords in katakana are correct for tech and Western brand terms. Native words for cooking and service vocabulary.\n"
+        "- Japanese cadence is different — em-dashes become — (em-dash) or 、 (Japanese comma) where the rhythm calls for it. Parentheticals use 「」 sparingly or （） for asides."
+    ),
+}
+
+
+def _locale_register_for(target_lang):
+    """Return the locale-specific register notes block, or an empty
+    string if the target language has no specific guidance (the
+    generic editorial rules still apply).
+    """
+    return LOCALE_REGISTER.get(target_lang, "")
 
 
 def _cf_ai_endpoint():
@@ -417,7 +478,10 @@ def _translate_raw_cf(text, target_lang, retries=3):
     url, token = endpoint
 
     target_name = LANG_NAMES.get(target_lang, target_lang)
-    system = EDITORIAL_PROMPT.format(target_lang_name=target_name)
+    system = EDITORIAL_PROMPT.format(
+        target_lang_name=target_name,
+        locale_register=_locale_register_for(target_lang) or "(generic editorial rules above already cover this locale)"
+    )
     body = {
         "messages": [
             {"role": "system", "content": system},
