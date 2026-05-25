@@ -51,6 +51,7 @@
     'customerCard',
     'dishes',
     'shotList',
+    'deliveryRadius',
     'gbp',
     'gbpDescription',
     'hours',

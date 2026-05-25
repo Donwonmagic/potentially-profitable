@@ -146,6 +146,26 @@ main{padding-top:64px}
 
 .workshop-error{padding:14px;color:var(--rust);font-size:14.5px;background:var(--cream-2);border-radius:6px}
 
+/* map-radius widget styles */
+.mrw{display:block}
+.mrw-label{font-family:var(--font-body);font-size:13px;letter-spacing:.06em;text-transform:uppercase;font-weight:700;color:var(--stone);margin:0 0 14px}
+.mrw-grid{display:grid;gap:18px}
+@media (min-width:680px){.mrw-grid{grid-template-columns:280px 1fr;align-items:start}}
+.mrw-map-wrap{display:flex;flex-direction:column;gap:8px}
+.mrw-map{display:block;width:100%;max-width:280px;height:auto;aspect-ratio:1/1;border:1px solid var(--line);border-radius:8px;background:#F3EEE3}
+.mrw-radius{transition:r .12s ease}
+.mrw-pin{filter:drop-shadow(0 1px 2px rgba(20,22,26,.3))}
+.mrw-addr{margin:0;padding:8px 10px;font-size:12.5px;color:var(--ink-soft);background:var(--cream);border:1px solid var(--line);border-radius:6px;line-height:1.35}
+.mrw-addr-lbl{font-weight:600;color:var(--stone);text-transform:uppercase;font-size:10.5px;letter-spacing:.04em}
+.mrw-addr-empty{color:var(--stone);font-style:italic}
+.mrw-controls{display:flex;flex-direction:column;gap:8px}
+.mrw-range-row{display:flex;justify-content:space-between;align-items:center;font-size:13.5px}
+.mrw-range-lbl{font-weight:600;color:var(--ink-soft)}
+.mrw-range-val{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:15px;color:var(--teal-dark);font-weight:700}
+.mrw-range{width:100%;accent-color:var(--teal)}
+.mrw-summary{margin:6px 0 0;font-size:14px;color:var(--ink);font-weight:600}
+.mrw-rationale{margin:8px 0 0;font-size:12.5px;color:var(--stone);line-height:1.45}
+
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -355,6 +375,14 @@ main{padding-top:64px}
       <div class="course-callout">
         <p><strong>La trampa de la frase de barrio.</strong> "Silver Spring" sola atrapa a quien busca todo el pueblo. "Silver Spring centro" o "Silver Spring metro" o "South Silver Spring" atrapa a los comensales que de verdad viven o se desplazan cerca de ti. Mientras más específico el barrio, menor el área de captación, pero mayor la conversión de búsqueda a visita.</p>
       </div>
+
+      <h2>¿Qué radio estás tratando de rankear?</h2>
+
+      <p>El SEO local no llega para siempre. Los rankings locales de Google pesan la proximidad — tu restaurante está compitiendo principalmente con otros restaurantes dentro del área donde los comensales típicamente buscan. Arrastra el slider para fijar el radio en el que estás tratando de ser visible. Esto enfoca tu estrategia de keywords: "restaurante italiano cerca de mí" importa dentro de ~1 milla; "el mejor italiano en <barrio>" importa en el área más amplia.</p>
+
+      <section class="course-widget" data-widget="map-radius"></section>
+
+      <p>El ajuste fluye al markup de schema del generador de la L14 — el radio más grande le señala a Google que sirves un área más amplia, lo cual importa para posicionamiento de entrega + takeout. El radio más chico señala que sirves un barrio caminable, lo cual importa para búsquedas de intención "cerca de mí".</p>
 
       <h2>Dónde viven estas ocho frases</h2>
 

@@ -201,6 +201,7 @@ const CONFIG_ALLOWED_KEYS = new Set([
   'customerCard',       // { name, age, role, traits[] } from persona-card-builder
   'dishes',             // [{ name, price }]
   'shotList',           // [{ id, label, framing, source }] from shot-list-grid
+  'deliveryRadius',     // number, miles, 0.5..5 — from map-radius
   'gbp',                // { primaryCategory } from gbp-card-preview
   'gbpDescription',
   'hours',              // { monday: {...}, ..., sunday: {...} }

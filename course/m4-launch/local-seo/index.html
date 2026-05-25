@@ -146,6 +146,26 @@ main{padding-top:64px}
 
 .workshop-error{padding:14px;color:var(--rust);font-size:14.5px;background:var(--cream-2);border-radius:6px}
 
+/* map-radius widget styles */
+.mrw{display:block}
+.mrw-label{font-family:var(--font-body);font-size:13px;letter-spacing:.06em;text-transform:uppercase;font-weight:700;color:var(--stone);margin:0 0 14px}
+.mrw-grid{display:grid;gap:18px}
+@media (min-width:680px){.mrw-grid{grid-template-columns:280px 1fr;align-items:start}}
+.mrw-map-wrap{display:flex;flex-direction:column;gap:8px}
+.mrw-map{display:block;width:100%;max-width:280px;height:auto;aspect-ratio:1/1;border:1px solid var(--line);border-radius:8px;background:#F3EEE3}
+.mrw-radius{transition:r .12s ease}
+.mrw-pin{filter:drop-shadow(0 1px 2px rgba(20,22,26,.3))}
+.mrw-addr{margin:0;padding:8px 10px;font-size:12.5px;color:var(--ink-soft);background:var(--cream);border:1px solid var(--line);border-radius:6px;line-height:1.35}
+.mrw-addr-lbl{font-weight:600;color:var(--stone);text-transform:uppercase;font-size:10.5px;letter-spacing:.04em}
+.mrw-addr-empty{color:var(--stone);font-style:italic}
+.mrw-controls{display:flex;flex-direction:column;gap:8px}
+.mrw-range-row{display:flex;justify-content:space-between;align-items:center;font-size:13.5px}
+.mrw-range-lbl{font-weight:600;color:var(--ink-soft)}
+.mrw-range-val{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:15px;color:var(--teal-dark);font-weight:700}
+.mrw-range{width:100%;accent-color:var(--teal)}
+.mrw-summary{margin:6px 0 0;font-size:14px;color:var(--ink);font-weight:600}
+.mrw-rationale{margin:8px 0 0;font-size:12.5px;color:var(--stone);line-height:1.45}
+
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -408,6 +428,14 @@ main{padding-top:64px}
       <div class="course-callout">
         <p><strong>The neighborhood phrase trap.</strong> "Silver Spring" alone catches people searching the whole town. "Silver Spring downtown" or "Silver Spring metro" or "South Silver Spring" catches the diners who actually live or commute near you. The more specific the neighborhood, the smaller the catchment, but the higher the match-to-walk-in conversion.</p>
       </div>
+
+      <h2>What radius are you trying to rank in?</h2>
+
+      <p>Local SEO doesn't reach forever. Google's local rankings weigh proximity — your restaurant is competing primarily with other restaurants within the area diners typically search for. Drag the slider to set the radius you're trying to be visible in. This narrows your keyword strategy: "italian restaurant near me" matters within ~1 mile; "best italian in <neighborhood>" matters across the wider area.</p>
+
+      <section class="course-widget" data-widget="map-radius"></section>
+
+      <p>The setting flows through to the L14 generator's schema markup — the larger radius signals to Google that you serve a wider area, which matters for delivery + takeout positioning. The smaller radius signals you serve a walkable neighborhood, which matters for "near me" intent searches.</p>
 
       <h2>Where these eight phrases live</h2>
 
