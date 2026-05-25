@@ -35,7 +35,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","@id":"https://muntin.digital/es/sheets/review-response-log/#sheet","name":"Registro de respuestas a reseñas","description":"Plataforma, autor, estrellas, etiqueta de tema, fecha de respuesta, quien respondió, seguimiento. Atrapa la queja recurrente escondida en las reseñas de 3 estrellas.","url":"https://muntin.digital/es/sheets/review-response-log/","applicationCategory":"BusinessApplication","operatingSystem":"Web","inLanguage":["es"],"isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"creator":{"@id":"https://muntin.digital/#business"}}]}</script>
-<script src="/assets/p.js?v=20260503" defer></script>
+<!-- lazy-load:p --><script>(window.requestIdleCallback||function(c){return setTimeout(c,500);})(function(){var s=document.createElement("script");s.src="/assets/p.js?v=20260503";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:p -->
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
 <style>.breadcrumb{padding-top:100px}</style>
 <style>
@@ -49,8 +49,8 @@ header.nav{min-height:64px}
 </style>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
-<link rel="preload" as="style" href="/assets/site.css?v=5203a74f71f3" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site.css?v=5203a74f71f3"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=4f505f60ca72" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=4f505f60ca72"></noscript>
 <link rel="stylesheet" href="/assets/sheets.css?v=20260503">
 </head>
 <body data-page="sheet" data-sheet-slug="review-response-log" data-sheet-pack="trust-reviews" data-pagefind-meta="kind:sheet,pack:trust-reviews">
@@ -88,6 +88,23 @@ header.nav{min-height:64px}
     </div>
     <p style="font-size:14px;line-height:1.55;color:var(--ink-soft);margin:0;">Mete tus números — la matemática corre en tu navegador. Imprime, exporta a CSV o guárdala en el Taller.</p>
 
+        <!-- sheet-worked-example:start -->
+    <details class="sheet-worked-example" data-sheet="review-response-log">
+      <summary>
+        <span class="swe-eyebrow">Ejemplo trabajado</span>
+        <span class="swe-subject">Bistró de barrio de 60 asientos, dos semanas de reseñas</span>
+        <span class="swe-cta">Ve cómo se ve un llenado de un martes en la mañana</span>
+      </summary>
+      <div class="swe-body">
+        <p class="swe-section-label">Lo que tipearon</p>
+        <table class="swe-rows"><tbody><tr><th scope="row">Reseñas registradas (Google, Yelp, OpenTable)</th><td>18</td></tr><tr><th scope="row">Negativas (≤3 estrellas)</th><td>3</td></tr><tr><th scope="row">Respuestas del operador</th><td>7</td></tr><tr><th scope="row">Respuestas a negativas</th><td>1</td></tr><tr><th scope="row">Tema repetido en negativas</th><td>Ruido del fregadero (3 de 3)</td></tr></tbody></table>
+        <p class="swe-section-label">Lo que la hoja les regresó</p>
+        <table class="swe-rows"><tbody><tr><th scope="row">Tasa de respuesta</th><td>38.9% · rojo</td></tr><tr><th scope="row">Tasa de respuesta a negativas</th><td>33.3% · rojo</td></tr><tr><th scope="row">Bandera de anomalía</th><td>Negativas sin responder (≥2)</td></tr></tbody></table>
+        <p class="swe-punchline">Las negativas sin responder son la primera tarea de este martes — tres clientes nombraron el mismo problema del ruido del fregadero sin respuesta pública. El patrón también es la lista de tareas: agenda el arreglo acústico del fregadero que está en el registro de mantenimiento desde febrero. La respuesta y el arreglo son la misma conversación, separadas por tres semanas.</p>
+        <p class="swe-note">Números compuestos típicos — no un local real. Usa el ritmo, no las cifras.</p>
+      </div>
+    </details>
+    <!-- sheet-worked-example:end -->
         <form id="sheet-fields" class="sheet-form" autocomplete="off" novalidate>
       <fieldset>
         <legend>Period</legend>
@@ -274,7 +291,7 @@ header.nav{min-height:64px}
       <span class="mm-card-eyebrow">Cuándo usarla</span>
     </div>
     <h2 id="when-to-use-h" style="font-family:var(--font-display);font-size:18px;font-weight:500;margin:0;">Saca esta hoja cuando —</h2>
-    <ul style="margin:0;padding-left:20px;font-size:14.5px;line-height:1.6;color:var(--ink-soft);"><li>Semanal — quince minutos, con los inboxes de GBP, Yelp y TripAdvisor abiertos.</li>
+    <ul style="margin:0;padding-left:20px;font-size:14.5px;line-height:1.6;color:var(--ink-soft);"><li>Semanal — quince minutos, con los inboxes de <a class="sheet-glossary-popover-link" href="/es/glossary/gbp/" data-glossary-head="Perfil de Google Business" data-glossary-aka="Ficha de Google" data-glossary-blurb="El producto gratuito de Google que impulsa la apariencia de tu restaurante en Búsqueda y Maps. Horarios, categoría principal, fotos, reseñas, posts y Q&amp;A viven aquí. El activo de marketing de mayor palanca para un restaurante independiente." data-sheet-popover="1">GBP</a>, Yelp y TripAdvisor abiertos.</li>
       <li>Después de cada reseña de 1 o 2 estrellas — esas necesitan respuesta en 48 horas, siempre.</li>
       <li>Cuando un tema de queja se repite — el registro saca el patrón que las reseñas sueltas esconden.</li></ul>
   </article>
@@ -323,6 +340,7 @@ header.nav{min-height:64px}
 </div></section>
 
 </main>
+<!-- sheet-glossary-popovers:applied -->
 
 <footer>
   <div class="container">

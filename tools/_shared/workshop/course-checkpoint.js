@@ -143,7 +143,7 @@ export function mount(rootEl, state, deps) {
     feedbackBody.textContent = fb;
     feedbackEl.removeAttribute('hidden');
     buttons[i].focus();
-    try { sessionStorage.setItem(storageKey, '1'); } catch (_) {}
+    try { sessionStorage.setItem(storageKey, '1'); } catch (_) {} // h8-exempt:per-session "answered-before" UI state; never leaves the browser, never crosses tabs
   }
 
   buttons.forEach((btn, i) => {

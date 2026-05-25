@@ -35,7 +35,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","@id":"https://muntin.digital/sheets/daily-sales-recap/#sheet","name":"Daily Sales & Cover Recap","description":"End-of-night close-out, one page per shift. Net sales, covers, voids, comps, cash over and short, weather note, manager initials.","url":"https://muntin.digital/sheets/daily-sales-recap/","applicationCategory":"BusinessApplication","operatingSystem":"Web","inLanguage":["en"],"isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"creator":{"@id":"https://muntin.digital/#business"}}]}</script>
-<script src="/assets/p.js?v=20260503" defer></script>
+<!-- lazy-load:p --><script>(window.requestIdleCallback||function(c){return setTimeout(c,500);})(function(){var s=document.createElement("script");s.src="/assets/p.js?v=20260503";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:p -->
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
 <style>.breadcrumb{padding-top:100px}</style>
 <style>
@@ -49,8 +49,8 @@ header.nav{min-height:64px}
 </style>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
-<link rel="preload" as="style" href="/assets/site.css?v=5203a74f71f3" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site.css?v=5203a74f71f3"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=4f505f60ca72" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=4f505f60ca72"></noscript>
 <link rel="stylesheet" href="/assets/sheets.css?v=20260503">
 </head>
 <body data-page="sheet" data-sheet-slug="daily-sales-recap" data-sheet-pack="operations-margin" data-pagefind-meta="kind:sheet,pack:operations-margin">
@@ -88,6 +88,23 @@ header.nav{min-height:64px}
     </div>
     <p style="font-size:14px;line-height:1.55;color:var(--ink-soft);margin:0;">Type your numbers — the math runs in your browser. Print it, save it as a CSV, or save it to your Workshop.</p>
 
+        <!-- sheet-worked-example:start -->
+    <details class="sheet-worked-example" data-sheet="daily-sales-recap">
+      <summary>
+        <span class="swe-eyebrow">Worked example</span>
+        <span class="swe-subject">32-seat neighborhood bistro, Tuesday close</span>
+        <span class="swe-cta">See what a Tuesday-morning fill-in looks like</span>
+      </summary>
+      <div class="swe-body">
+        <p class="swe-section-label">What they typed in</p>
+        <table class="swe-rows"><tbody><tr><th scope="row">Net sales (POS, after sales tax)</th><td>$3,840</td></tr><tr><th scope="row">Voids</th><td>$62</td></tr><tr><th scope="row">Comps</th><td>$48</td></tr><tr><th scope="row">Cash drawer over/short</th><td>−$11</td></tr></tbody></table>
+        <p class="swe-section-label">What the sheet returned</p>
+        <table class="swe-rows"><tbody><tr><th scope="row">Voids as a % of sales</th><td>1.6% · yellow</td></tr><tr><th scope="row">Comps as a % of sales</th><td>1.3% · green</td></tr><tr><th scope="row">Drawer flag</th><td>Within $5 — clear</td></tr></tbody></table>
+        <p class="swe-punchline">Voids ran a hair high — three of them came from one server who hadn't been re-trained on the comp-vs-void distinction since the spring menu change. The recap stack from the prior two weeks shows the same name on the void column three days running. Wednesday's pre-shift gets a 90-second refresher.</p>
+        <p class="swe-note">Composite-typical numbers — not a real shop. Use the rhythm, not the figures.</p>
+      </div>
+    </details>
+    <!-- sheet-worked-example:end -->
         <form id="sheet-fields" class="sheet-form" autocomplete="off" novalidate>
       <fieldset>
         <legend>Shift</legend>
@@ -277,6 +294,7 @@ header.nav{min-height:64px}
 </div></section>
 
 </main>
+<!-- sheet-glossary-popovers:applied -->
 
 <footer>
   <div class="container">

@@ -35,7 +35,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","@id":"https://muntin.digital/sheets/nap-consistency-tracker/#sheet","name":"NAP Consistency Tracker","description":"Same name, address, phone everywhere — Google Business Profile, Yelp, Apple, TripAdvisor, OpenTable, your own footer, your schema. One mismatch and Google starts doubting which one is you.","url":"https://muntin.digital/sheets/nap-consistency-tracker/","applicationCategory":"BusinessApplication","operatingSystem":"Web","inLanguage":["en"],"isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"creator":{"@id":"https://muntin.digital/#business"}}]}</script>
-<script src="/assets/p.js?v=20260503" defer></script>
+<!-- lazy-load:p --><script>(window.requestIdleCallback||function(c){return setTimeout(c,500);})(function(){var s=document.createElement("script");s.src="/assets/p.js?v=20260503";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:p -->
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
 <style>.breadcrumb{padding-top:100px}</style>
 <style>
@@ -49,8 +49,8 @@ header.nav{min-height:64px}
 </style>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
-<link rel="preload" as="style" href="/assets/site.css?v=5203a74f71f3" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site.css?v=5203a74f71f3"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=4f505f60ca72" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=4f505f60ca72"></noscript>
 <link rel="stylesheet" href="/assets/sheets.css?v=20260503">
 </head>
 <body data-page="sheet" data-sheet-slug="nap-consistency-tracker" data-sheet-pack="local-seo" data-pagefind-meta="kind:sheet,pack:local-seo">
@@ -147,7 +147,7 @@ header.nav{min-height:64px}
           <span class="sheet-output-value" data-output="fail_count" data-band="idle">0</span>
         </div>
         <p style="margin:6px 0 0;font-size:13px;line-height:1.5;color:var(--ink-soft,#2A2D33);" data-output="callout">
-          Mark each row. The fix order: GBP first (Google trusts itself), then your own website + schema (the source of truth Google crawls), then aggregators.
+          Mark each row. The fix order: <a class="sheet-glossary-popover-link" href="/glossary/gbp/" data-glossary-head="Google Business Profile" data-glossary-aka="Google listing" data-glossary-blurb="The free Google product that powers your restaurant's appearance in Search and Maps. Hours, primary category, photos, reviews, posts, and Q&amp;A all live here. The single highest-leverage marketing asset for an independent restaurant." data-sheet-popover="1">GBP</a> first (Google trusts itself), then your own website + schema (the source of truth Google crawls), then aggregators.
         </p>
       </div>
     </form>
@@ -302,6 +302,7 @@ header.nav{min-height:64px}
 </div></section>
 
 </main>
+<!-- sheet-glossary-popovers:applied -->
 
 <footer>
   <div class="container">

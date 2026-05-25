@@ -35,7 +35,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","@id":"https://muntin.digital/es/sheets/gbp-monthly-audit/#sheet","name":"Chequeo mensual de Google Business Profile","description":"Recorrido de quince minutos por tu Google Business Profile. Horarios, categoría principal, conteo de fotos, posts, Q&A, velocidad de reseñas, coincidencia NAP con tu sitio. Pasa o falla por fila, con lista de arreglos.","url":"https://muntin.digital/es/sheets/gbp-monthly-audit/","applicationCategory":"BusinessApplication","operatingSystem":"Web","inLanguage":["es"],"isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"creator":{"@id":"https://muntin.digital/#business"}}]}</script>
-<script src="/assets/p.js?v=20260503" defer></script>
+<!-- lazy-load:p --><script>(window.requestIdleCallback||function(c){return setTimeout(c,500);})(function(){var s=document.createElement("script");s.src="/assets/p.js?v=20260503";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:p -->
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
 <style>.breadcrumb{padding-top:100px}</style>
 <style>
@@ -49,8 +49,8 @@ header.nav{min-height:64px}
 </style>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
-<link rel="preload" as="style" href="/assets/site.css?v=5203a74f71f3" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site.css?v=5203a74f71f3"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=4f505f60ca72" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=4f505f60ca72"></noscript>
 <link rel="stylesheet" href="/assets/sheets.css?v=20260503">
 </head>
 <body data-page="sheet" data-sheet-slug="gbp-monthly-audit" data-sheet-pack="local-seo" data-pagefind-meta="kind:sheet,pack:local-seo">
@@ -90,6 +90,23 @@ header.nav{min-height:64px}
 
         <p class="sheet-paper-hint">Open your Google Business Profile in another tab. Walk these rows. Mark each one. About fifteen minutes.</p>
 
+    <!-- sheet-worked-example:start -->
+    <details class="sheet-worked-example" data-sheet="gbp-monthly-audit">
+      <summary>
+        <span class="swe-eyebrow">Ejemplo trabajado</span>
+        <span class="swe-subject">Bistró de barrio de 60 asientos, auditoría de mayo</span>
+        <span class="swe-cta">Ve cómo se ve un llenado de un martes en la mañana</span>
+      </summary>
+      <div class="swe-body">
+        <p class="swe-section-label">Lo que tipearon</p>
+        <table class="swe-rows"><tbody><tr><th scope="row">Horarios, horarios especiales, categorías primaria + secundaria</th><td>Todo Aprobado</td></tr><tr><th scope="row">Teléfono, dirección, sitio web, enlaces al menú</th><td>Aprobado · Aprobado · Aprobado · Falló (roto)</td></tr><tr><th scope="row">Fotos publicadas en últimos 30 días</th><td>2</td></tr><tr><th scope="row">Posts de GBP en últimos 30 días</th><td>0</td></tr><tr><th scope="row">Preguntas sin responder</th><td>3</td></tr></tbody></table>
+        <p class="swe-section-label">Lo que la hoja les regresó</p>
+        <table class="swe-rows"><tbody><tr><th scope="row">Fundamentos del listado</th><td>7 de 8 aprobados</td></tr><tr><th scope="row">Cadencia de contenido</th><td>Bajo el umbral (objetivo 4 fotos + 4 posts)</td></tr><tr><th scope="row">Lista de tareas de este mes</th><td>4 elementos</td></tr></tbody></table>
+        <p class="swe-punchline">El enlace roto del menú es la prioridad — ese es el enlace al que Google enviaba a la gente. Detrás de eso: las tres preguntas sin responder (probablemente sobre estacionamiento, opciones dietéticas y reservas — respóndelas una vez y se quedan ahí para siempre) y la cadencia de posts. La auditoría toma quince minutos; la lista de tareas toma el resto de la mañana si la haces en bloque. La auditoría del próximo mes camina sobre un listado más sano.</p>
+        <p class="swe-note">Números compuestos típicos — no un local real. Usa el ritmo, no las cifras.</p>
+      </div>
+    </details>
+    <!-- sheet-worked-example:end -->
     <form id="sheet-fields" class="sheet-form" autocomplete="off" novalidate>
       <fieldset>
         <legend>Audit context</legend>
@@ -360,7 +377,7 @@ header.nav{min-height:64px}
       <span class="mm-card-eyebrow">Cuándo usarla</span>
     </div>
     <h2 id="when-to-use-h" style="font-family:var(--font-display);font-size:18px;font-weight:500;margin:0;">Saca esta hoja cuando —</h2>
-    <ul style="margin:0;padding-left:20px;font-size:14.5px;line-height:1.6;color:var(--ink-soft);"><li>Primer lunes de cada mes — quince minutos, con tu GBP abierto en otra pestaña.</li>
+    <ul style="margin:0;padding-left:20px;font-size:14.5px;line-height:1.6;color:var(--ink-soft);"><li>Primer lunes de cada mes — quince minutos, con tu <a class="sheet-glossary-popover-link" href="/es/glossary/gbp/" data-glossary-head="Perfil de Google Business" data-glossary-aka="Ficha de Google" data-glossary-blurb="El producto gratuito de Google que impulsa la apariencia de tu restaurante en Búsqueda y Maps. Horarios, categoría principal, fotos, reseñas, posts y Q&amp;A viven aquí. El activo de marketing de mayor palanca para un restaurante independiente." data-sheet-popover="1">GBP</a> abierto en otra pestaña.</li>
       <li>Cuando bajan las reservas y no cambiaste nada en el sitio.</li>
       <li>Justo después de un cambio de menú, una semana de feriado o una actualización de horarios.</li></ul>
   </article>
@@ -415,6 +432,7 @@ header.nav{min-height:64px}
 </div></section>
 
 </main>
+<!-- sheet-glossary-popovers:applied -->
 
 <footer>
   <div class="container">

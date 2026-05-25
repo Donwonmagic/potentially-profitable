@@ -35,7 +35,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","@id":"https://muntin.digital/sheets/monthly-pnl-snapshot/#sheet","name":"Monthly P&L Snapshot","description":"A one-page P&L the operator can read in 90 seconds — not the accountant's version. Sales by daypart, COGS, labor, occupancy, marketing.","url":"https://muntin.digital/sheets/monthly-pnl-snapshot/","applicationCategory":"BusinessApplication","operatingSystem":"Web","inLanguage":["en"],"isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"creator":{"@id":"https://muntin.digital/#business"}}]}</script>
-<script src="/assets/p.js?v=20260503" defer></script>
+<!-- lazy-load:p --><script>(window.requestIdleCallback||function(c){return setTimeout(c,500);})(function(){var s=document.createElement("script");s.src="/assets/p.js?v=20260503";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:p -->
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
 <style>.breadcrumb{padding-top:100px}</style>
 <style>
@@ -49,8 +49,8 @@ header.nav{min-height:64px}
 </style>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
-<link rel="preload" as="style" href="/assets/site.css?v=5203a74f71f3" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site.css?v=5203a74f71f3"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=4f505f60ca72" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=4f505f60ca72"></noscript>
 <link rel="stylesheet" href="/assets/sheets.css?v=20260503">
 </head>
 <body data-page="sheet" data-sheet-slug="monthly-pnl-snapshot" data-sheet-pack="operations-margin" data-pagefind-meta="kind:sheet,pack:operations-margin">
@@ -88,6 +88,23 @@ header.nav{min-height:64px}
     </div>
     <p style="font-size:14px;line-height:1.55;color:var(--ink-soft);margin:0;">Type your numbers — the math runs in your browser. Print it, save it as a CSV, or save it to your Workshop.</p>
 
+        <!-- sheet-worked-example:start -->
+    <details class="sheet-worked-example" data-sheet="monthly-pnl-snapshot">
+      <summary>
+        <span class="swe-eyebrow">Worked example</span>
+        <span class="swe-subject">80-seat dinner-only restaurant, suburban DC</span>
+        <span class="swe-cta">See what a Tuesday-morning fill-in looks like</span>
+      </summary>
+      <div class="swe-body">
+        <p class="swe-section-label">What they typed in</p>
+        <table class="swe-rows"><tbody><tr><th scope="row">Total sales (April, 30 days)</th><td>$187,400</td></tr><tr><th scope="row">COGS — food + beverage</th><td>$58,300</td></tr><tr><th scope="row">Total labor (hourly + salary + taxes)</th><td>$61,500</td></tr><tr><th scope="row">Variable costs (cc fees + supplies)</th><td>$11,200</td></tr><tr><th scope="row">Fixed costs (rent + insurance + utilities)</th><td>$33,400</td></tr></tbody></table>
+        <p class="swe-section-label">What the sheet returned</p>
+        <table class="swe-rows"><tbody><tr><th scope="row">Prime cost</th><td>63.9% · green</td></tr><tr><th scope="row">Restaurant operating profit</th><td>$23,000</td></tr><tr><th scope="row">Operating margin</th><td>12.3%</td></tr></tbody></table>
+        <p class="swe-punchline">Green band on prime cost, double-digit operating margin — a healthy month. The watch-line is fixed costs at 17.8% of sales: their lease renews in October, and a single-digit rent bump tips next quarter into yellow. The conversation is rent before it's anything in the kitchen.</p>
+        <p class="swe-note">Composite-typical numbers — not a real shop. Use the rhythm, not the figures.</p>
+      </div>
+    </details>
+    <!-- sheet-worked-example:end -->
         <form id="sheet-fields" class="sheet-form" autocomplete="off" novalidate>
       <fieldset>
         <legend>Period</legend>
@@ -218,7 +235,7 @@ header.nav{min-height:64px}
           <span class="sheet-output-value" data-output="breakeven_per_day">$0.00</span>
         </div>
         <p style="margin:6px 0 0;font-size:13px;line-height:1.5;color:var(--ink-soft,#2A2D33);" data-output="callout">
-          Type the period numbers above. Independent full-service typically targets prime cost in the 55–65% band; profit lives in the gap below 65%.
+          Type the period numbers above. Independent full-service typically targets <a class="sheet-glossary-popover-link" href="/glossary/prime-cost/" data-glossary-head="Prime cost" data-glossary-aka="Cost of goods sold + labor" data-glossary-blurb="Total food + beverage cost plus fully-loaded labor, expressed as percent of net sales. Healthy band for full-service independents: 55–65%. Above 65% the model breaks once fixed costs are in." data-sheet-popover="1">prime cost</a> in the 55–65% band; profit lives in the gap below 65%.
         </p>
       </div>
     </form>
@@ -349,6 +366,7 @@ header.nav{min-height:64px}
 </div></section>
 
 </main>
+<!-- sheet-glossary-popovers:applied -->
 
 <footer>
   <div class="container">

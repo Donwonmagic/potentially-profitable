@@ -35,7 +35,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","@id":"https://muntin.digital/es/sheets/weekly-prime-cost-worksheet/#sheet","name":"Hoja semanal de costo primo","description":"El número más importante que un operador pequeño puede seguir. Mete costos de comida, bebida y mano de obra contra las ventas netas. Mira tu costo primo y dónde queda frente al techo del 60 por ciento.","url":"https://muntin.digital/es/sheets/weekly-prime-cost-worksheet/","applicationCategory":"BusinessApplication","operatingSystem":"Web","inLanguage":["es"],"isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"creator":{"@id":"https://muntin.digital/#business"}}]}</script>
-<script src="/assets/p.js?v=20260503" defer></script>
+<!-- lazy-load:p --><script>(window.requestIdleCallback||function(c){return setTimeout(c,500);})(function(){var s=document.createElement("script");s.src="/assets/p.js?v=20260503";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:p -->
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
 <style>.breadcrumb{padding-top:100px}</style>
 <style>
@@ -49,8 +49,8 @@ header.nav{min-height:64px}
 </style>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
-<link rel="preload" as="style" href="/assets/site.css?v=5203a74f71f3" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site.css?v=5203a74f71f3"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=4f505f60ca72" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=4f505f60ca72"></noscript>
 <link rel="stylesheet" href="/assets/sheets.css?v=20260503">
 </head>
 <body data-page="sheet" data-sheet-slug="weekly-prime-cost-worksheet" data-sheet-pack="operations-margin" data-pagefind-meta="kind:sheet,pack:operations-margin">
@@ -88,6 +88,23 @@ header.nav{min-height:64px}
     </div>
     <p style="font-size:14px;line-height:1.55;color:var(--ink-soft);margin:0;">Mete tus números — la matemática corre en tu navegador. Imprime, exporta a CSV o guárdala en el Taller.</p>
 
+        <!-- sheet-worked-example:start -->
+    <details class="sheet-worked-example" data-sheet="weekly-prime-cost-worksheet">
+      <summary>
+        <span class="swe-eyebrow">Ejemplo trabajado</span>
+        <span class="swe-subject">Café de 60 asientos, Brooklyn</span>
+        <span class="swe-cta">Ve cómo se ve un llenado de un martes en la mañana</span>
+      </summary>
+      <div class="swe-body">
+        <p class="swe-section-label">Lo que tipearon</p>
+        <table class="swe-rows"><tbody><tr><th scope="row">Ventas netas (todos los canales)</th><td>$48,200</td></tr><tr><th scope="row">Costo de mercancía — comida + bebida (con ajuste de inventario)</th><td>$15,580</td></tr><tr><th scope="row">Salarios de salón (FOH)</th><td>$7,900</td></tr><tr><th scope="row">Salarios de cocina (BOH)</th><td>$8,400</td></tr></tbody></table>
+        <p class="swe-section-label">Lo que la hoja les regresó</p>
+        <table class="swe-rows"><tbody><tr><th scope="row">Costo de mercancía como % de ventas</th><td>32.3%</td></tr><tr><th scope="row">Mano de obra como % de ventas</th><td>33.8%</td></tr><tr><th scope="row">Costo principal</th><td>66.1% · amarillo</td></tr></tbody></table>
+        <p class="swe-punchline">Su promedio rodante de 13 semanas es 64.0%, así que esta semana corrió un poco caliente. La línea de salarios de cocina es la palanca — el martes se cubrió para una noche más ocupada que la que llegó. El martes a las 10 pone a prueba un turno con un cocinero menos.</p>
+        <p class="swe-note">Números compuestos típicos — no un local real. Usa el ritmo, no las cifras.</p>
+      </div>
+    </details>
+    <!-- sheet-worked-example:end -->
         <form id="sheet-fields" class="sheet-form" autocomplete="off" novalidate>
       <fieldset>
         <legend>Week ending</legend>
@@ -250,7 +267,7 @@ header.nav{min-height:64px}
     </div>
     <h2 id="when-to-use-h" style="font-family:var(--font-display);font-size:18px;font-weight:500;margin:0;">Saca esta hoja cuando —</h2>
     <ul style="margin:0;padding-left:20px;font-size:14.5px;line-height:1.6;color:var(--ink-soft);"><li>Martes en la mañana, cerrando la semana anterior. Antes de la nómina. Antes del pedido de produce.</li>
-      <li>Un costo brincó — quieres ver si aterrizó en el costo primo o se absorbió en otro lado.</li>
+      <li>Un costo brincó — quieres ver si aterrizó en el <a class="sheet-glossary-popover-link" href="/es/glossary/prime-cost/" data-glossary-head="Costo primo" data-glossary-aka="Costo de mercancía + mano de obra" data-glossary-blurb="Costo total de comida + bebida más mano de obra cargada, expresado como porcentaje de ventas netas. Banda saludable para full-service independiente: 55–65%. Sobre 65% el modelo se rompe una vez entran los costos fijos." data-sheet-popover="1">costo primo</a> o se absorbió en otro lado.</li>
       <li>Hablas con un socio o prestamista y necesitas una respuesta de un solo número sobre la salud del restaurante.</li></ul>
   </article>
 
@@ -303,6 +320,7 @@ header.nav{min-height:64px}
 </div></section>
 
 </main>
+<!-- sheet-glossary-popovers:applied -->
 
 <footer>
   <div class="container">

@@ -35,7 +35,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","@id":"https://muntin.digital/sheets/third-party-channel-pnl/#sheet","name":"Third-Party Channel P&L","description":"Run the honest math on DoorDash, Uber Eats, or Grubhub. Gross sales minus commission, marketing fees, refunds, packaging, and the labor those orders cost. Settles the argument.","url":"https://muntin.digital/sheets/third-party-channel-pnl/","applicationCategory":"BusinessApplication","operatingSystem":"Web","inLanguage":["en"],"isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"creator":{"@id":"https://muntin.digital/#business"}}]}</script>
-<script src="/assets/p.js?v=20260503" defer></script>
+<!-- lazy-load:p --><script>(window.requestIdleCallback||function(c){return setTimeout(c,500);})(function(){var s=document.createElement("script");s.src="/assets/p.js?v=20260503";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:p -->
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
 <style>.breadcrumb{padding-top:100px}</style>
 <style>
@@ -49,8 +49,8 @@ header.nav{min-height:64px}
 </style>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
-<link rel="preload" as="style" href="/assets/site.css?v=5203a74f71f3" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site.css?v=5203a74f71f3"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=4f505f60ca72" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=4f505f60ca72"></noscript>
 <link rel="stylesheet" href="/assets/sheets.css?v=20260503">
 </head>
 <body data-page="sheet" data-sheet-slug="third-party-channel-pnl" data-sheet-pack="conversions" data-pagefind-meta="kind:sheet,pack:conversions">
@@ -88,6 +88,23 @@ header.nav{min-height:64px}
     </div>
     <p style="font-size:14px;line-height:1.55;color:var(--ink-soft);margin:0;">Type your numbers — the math runs in your browser. Print it, save it as a CSV, or save it to your Workshop.</p>
 
+        <!-- sheet-worked-example:start -->
+    <details class="sheet-worked-example" data-sheet="third-party-channel-pnl">
+      <summary>
+        <span class="swe-eyebrow">Worked example</span>
+        <span class="swe-subject">Single-unit operator running DoorDash + Uber Eats</span>
+        <span class="swe-cta">See what a Tuesday-morning fill-in looks like</span>
+      </summary>
+      <div class="swe-body">
+        <p class="swe-section-label">What they typed in</p>
+        <table class="swe-rows"><tbody><tr><th scope="row">Gross third-party sales (last 4 weeks)</th><td>$24,000</td></tr><tr><th scope="row">Commission + marketing fees (avg 28%)</th><td>−$6,720</td></tr><tr><th scope="row">Refunds + adjustments</th><td>−$480</td></tr><tr><th scope="row">Packaging cost</th><td>−$960</td></tr><tr><th scope="row">Incremental kitchen labor estimate</th><td>−$1,800</td></tr></tbody></table>
+        <p class="swe-section-label">What the sheet returned</p>
+        <table class="swe-rows"><tbody><tr><th scope="row">Net contribution after channel costs</th><td>$14,040</td></tr><tr><th scope="row">Channel contribution margin</th><td>58.5% · green</td></tr><tr><th scope="row">Per dollar of gross third-party revenue</th><td>$0.585 stays</td></tr></tbody></table>
+        <p class="swe-punchline">The channel pencils — but only because their incremental labor estimate is honest. If they were treating delivery orders as 'free' kitchen time, the margin would read closer to 70% and they'd quietly be subsidizing the platform. The next move is the recipe-cost-card on the three SKUs that move 60% of delivery volume — those decide whether the channel stays accretive.</p>
+        <p class="swe-note">Composite-typical numbers — not a real shop. Use the rhythm, not the figures.</p>
+      </div>
+    </details>
+    <!-- sheet-worked-example:end -->
         <form id="sheet-fields" class="sheet-form" autocomplete="off" novalidate>
       <fieldset>
         <legend>Channel &amp; period</legend>
@@ -296,6 +313,7 @@ header.nav{min-height:64px}
 </div></section>
 
 </main>
+<!-- sheet-glossary-popovers:applied -->
 
 <footer>
   <div class="container">

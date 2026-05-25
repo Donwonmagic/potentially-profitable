@@ -35,7 +35,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","@id":"https://muntin.digital/es/sheets/reservation-no-show-log/#sheet","name":"Registro de reservas y no-shows","description":"Fuente de reserva, tamaño del grupo, depósito sí o no, llegó o no-show o cancelación tardía, ingreso perdido. Nombra lo que cada silla vacía costó.","url":"https://muntin.digital/es/sheets/reservation-no-show-log/","applicationCategory":"BusinessApplication","operatingSystem":"Web","inLanguage":["es"],"isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"creator":{"@id":"https://muntin.digital/#business"}}]}</script>
-<script src="/assets/p.js?v=20260503" defer></script>
+<!-- lazy-load:p --><script>(window.requestIdleCallback||function(c){return setTimeout(c,500);})(function(){var s=document.createElement("script");s.src="/assets/p.js?v=20260503";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:p -->
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
 <style>.breadcrumb{padding-top:100px}</style>
 <style>
@@ -49,8 +49,8 @@ header.nav{min-height:64px}
 </style>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
-<link rel="preload" as="style" href="/assets/site.css?v=5203a74f71f3" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site.css?v=5203a74f71f3"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=4f505f60ca72" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=4f505f60ca72"></noscript>
 <link rel="stylesheet" href="/assets/sheets.css?v=20260503">
 </head>
 <body data-page="sheet" data-sheet-slug="reservation-no-show-log" data-sheet-pack="conversions" data-pagefind-meta="kind:sheet,pack:conversions">
@@ -88,6 +88,23 @@ header.nav{min-height:64px}
     </div>
     <p style="font-size:14px;line-height:1.55;color:var(--ink-soft);margin:0;">Mete tus números — la matemática corre en tu navegador. Imprime, exporta a CSV o guárdala en el Taller.</p>
 
+        <!-- sheet-worked-example:start -->
+    <details class="sheet-worked-example" data-sheet="reservation-no-show-log">
+      <summary>
+        <span class="swe-eyebrow">Ejemplo trabajado</span>
+        <span class="swe-subject">Lugar de menú de degustación de 32 asientos, solo vie+sáb</span>
+        <span class="swe-cta">Ve cómo se ve un llenado de un martes en la mañana</span>
+      </summary>
+      <div class="swe-body">
+        <p class="swe-section-label">Lo que tipearon</p>
+        <table class="swe-rows"><tbody><tr><th scope="row">Reservas registradas (período de dos semanas)</th><td>48</td></tr><tr><th scope="row">Cancelaciones tardías (≤24h)</th><td>3</td></tr><tr><th scope="row">No-shows</th><td>5</td></tr><tr><th scope="row">Cuenta promedio</th><td>$145</td></tr><tr><th scope="row">De los 5 no-shows, con depósito</th><td>0</td></tr></tbody></table>
+        <p class="swe-section-label">Lo que la hoja les regresó</p>
+        <table class="swe-rows"><tbody><tr><th scope="row">Tasa de no-show</th><td>10.4% · rojo</td></tr><tr><th scope="row">Ingreso perdido estimado</th><td>$725</td></tr><tr><th scope="row">Tasa de no-show entre quienes pusieron depósito</th><td>0%</td></tr></tbody></table>
+        <p class="swe-punchline">Cada uno de los no-shows vino de una reserva sin depósito. El patrón decide el siguiente paso: una prueba de dos semanas con depósito requerido para mesas de 4+ los vie/sáb. La mesa de la ventana a las 8pm es la que duele — es la que nadie pide al último momento.</p>
+        <p class="swe-note">Números compuestos típicos — no un local real. Usa el ritmo, no las cifras.</p>
+      </div>
+    </details>
+    <!-- sheet-worked-example:end -->
         <form id="sheet-fields" class="sheet-form" autocomplete="off" novalidate>
       <fieldset>
         <legend>Period</legend>
@@ -240,6 +257,7 @@ header.nav{min-height:64px}
 </div></section>
 
 </main>
+<!-- sheet-glossary-popovers:applied -->
 
 <footer>
   <div class="container">

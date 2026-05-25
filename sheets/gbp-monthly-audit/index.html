@@ -35,7 +35,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","@id":"https://muntin.digital/sheets/gbp-monthly-audit/#sheet","name":"GBP Monthly Health Check","description":"Fifteen-minute walk of your Google Business Profile. Hours, primary category, photo count, posts, Q&A, review velocity, NAP match versus your website. Pass or fail per row, with a fix list.","url":"https://muntin.digital/sheets/gbp-monthly-audit/","applicationCategory":"BusinessApplication","operatingSystem":"Web","inLanguage":["en"],"isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"creator":{"@id":"https://muntin.digital/#business"}}]}</script>
-<script src="/assets/p.js?v=20260503" defer></script>
+<!-- lazy-load:p --><script>(window.requestIdleCallback||function(c){return setTimeout(c,500);})(function(){var s=document.createElement("script");s.src="/assets/p.js?v=20260503";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:p -->
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
 <style>.breadcrumb{padding-top:100px}</style>
 <style>
@@ -49,8 +49,8 @@ header.nav{min-height:64px}
 </style>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
-<link rel="preload" as="style" href="/assets/site.css?v=5203a74f71f3" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site.css?v=5203a74f71f3"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=4f505f60ca72" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=4f505f60ca72"></noscript>
 <link rel="stylesheet" href="/assets/sheets.css?v=20260503">
 </head>
 <body data-page="sheet" data-sheet-slug="gbp-monthly-audit" data-sheet-pack="local-seo" data-pagefind-meta="kind:sheet,pack:local-seo">
@@ -90,6 +90,23 @@ header.nav{min-height:64px}
 
         <p class="sheet-paper-hint">Open your Google Business Profile in another tab. Walk these rows. Mark each one. About fifteen minutes.</p>
 
+    <!-- sheet-worked-example:start -->
+    <details class="sheet-worked-example" data-sheet="gbp-monthly-audit">
+      <summary>
+        <span class="swe-eyebrow">Worked example</span>
+        <span class="swe-subject">60-seat neighborhood bistro, May audit</span>
+        <span class="swe-cta">See what a Tuesday-morning fill-in looks like</span>
+      </summary>
+      <div class="swe-body">
+        <p class="swe-section-label">What they typed in</p>
+        <table class="swe-rows"><tbody><tr><th scope="row">Hours of operation, special-day hours, primary + secondary categories</th><td>All Pass</td></tr><tr><th scope="row">Phone, address, website link, links to menu</th><td>Pass · Pass · Pass · Fail (broken)</td></tr><tr><th scope="row">Photos posted in last 30 days</th><td>2</td></tr><tr><th scope="row">GBP posts in last 30 days</th><td>0</td></tr><tr><th scope="row">Q&amp;A unanswered</th><td>3</td></tr></tbody></table>
+        <p class="swe-section-label">What the sheet returned</p>
+        <table class="swe-rows"><tbody><tr><th scope="row">Listing fundamentals</th><td>7 of 8 pass</td></tr><tr><th scope="row">Content cadence</th><td>Below threshold (4 photos + 4 posts target)</td></tr><tr><th scope="row">This month's punch list</th><td>4 items</td></tr></tbody></table>
+        <p class="swe-punchline">The broken menu link is the priority — that's the link Google was sending people to. Behind it: the three Q&amp;As (probably about parking, dietary options, and reservations — answer them once and they sit there forever) and the post cadence. The audit takes fifteen minutes; the punch list takes the rest of the morning if you batch it. The next month's audit walks a healthier listing.</p>
+        <p class="swe-note">Composite-typical numbers — not a real shop. Use the rhythm, not the figures.</p>
+      </div>
+    </details>
+    <!-- sheet-worked-example:end -->
     <form id="sheet-fields" class="sheet-form" autocomplete="off" novalidate>
       <fieldset>
         <legend>Audit context</legend>
@@ -360,7 +377,7 @@ header.nav{min-height:64px}
       <span class="mm-card-eyebrow">When to use it</span>
     </div>
     <h2 id="when-to-use-h" style="font-family:var(--font-display);font-size:18px;font-weight:500;margin:0;">Pull this sheet out when —</h2>
-    <ul style="margin:0;padding-left:20px;font-size:14.5px;line-height:1.6;color:var(--ink-soft);"><li>First Monday of every month — fifteen minutes, with the GBP open in another tab.</li>
+    <ul style="margin:0;padding-left:20px;font-size:14.5px;line-height:1.6;color:var(--ink-soft);"><li>First Monday of every month — fifteen minutes, with the <a class="sheet-glossary-popover-link" href="/glossary/gbp/" data-glossary-head="Google Business Profile" data-glossary-aka="Google listing" data-glossary-blurb="The free Google product that powers your restaurant's appearance in Search and Maps. Hours, primary category, photos, reviews, posts, and Q&amp;A all live here. The single highest-leverage marketing asset for an independent restaurant." data-sheet-popover="1">GBP</a> open in another tab.</li>
       <li>Any time bookings dip and you have not changed anything on the website.</li>
       <li>Right after a menu change, holiday week, or hours update.</li></ul>
   </article>
@@ -415,6 +432,7 @@ header.nav{min-height:64px}
 </div></section>
 
 </main>
+<!-- sheet-glossary-popovers:applied -->
 
 <footer>
   <div class="container">

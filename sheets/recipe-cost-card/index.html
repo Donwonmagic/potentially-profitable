@@ -35,7 +35,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","@id":"https://muntin.digital/sheets/recipe-cost-card/#sheet","name":"Recipe Cost Card","description":"Drop in ingredients, AP prices, and yields. Walk away with plate cost, target price at your food-cost goal, and a printable card for the binder.","url":"https://muntin.digital/sheets/recipe-cost-card/","applicationCategory":"BusinessApplication","operatingSystem":"Web","inLanguage":["en"],"isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"creator":{"@id":"https://muntin.digital/#business"}}]}</script>
-<script src="/assets/p.js?v=20260503" defer></script>
+<!-- lazy-load:p --><script>(window.requestIdleCallback||function(c){return setTimeout(c,500);})(function(){var s=document.createElement("script");s.src="/assets/p.js?v=20260503";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:p -->
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
 <style>.breadcrumb{padding-top:100px}</style>
 <style>
@@ -49,8 +49,8 @@ header.nav{min-height:64px}
 </style>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
-<link rel="preload" as="style" href="/assets/site.css?v=5203a74f71f3" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site.css?v=5203a74f71f3"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=4f505f60ca72" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=4f505f60ca72"></noscript>
 <link rel="stylesheet" href="/assets/sheets.css?v=20260503">
 </head>
 <body data-page="sheet" data-sheet-slug="recipe-cost-card" data-sheet-pack="operations-margin" data-pagefind-meta="kind:sheet,pack:operations-margin">
@@ -88,6 +88,23 @@ header.nav{min-height:64px}
     </div>
     <p style="font-size:14px;line-height:1.55;color:var(--ink-soft);margin:0;">Type your numbers — the math runs in your browser. Print it, save it as a CSV, or save it to your Workshop.</p>
 
+        <!-- sheet-worked-example:start -->
+    <details class="sheet-worked-example" data-sheet="recipe-cost-card">
+      <summary>
+        <span class="swe-eyebrow">Worked example</span>
+        <span class="swe-subject">Roasted half-chicken, 4-plate batch</span>
+        <span class="swe-cta">See what a Tuesday-morning fill-in looks like</span>
+      </summary>
+      <div class="swe-body">
+        <p class="swe-section-label">What they typed in</p>
+        <table class="swe-rows"><tbody><tr><th scope="row">Whole chicken — 1.5 lb each, $3.20/lb, 72% yield</th><td>$4.80 AP / plate</td></tr><tr><th scope="row">Olive oil — 0.5 floz, $0.18/floz, 100% yield</th><td>$0.09</td></tr><tr><th scope="row">Herb sachet (rosemary, thyme) — 0.25 oz, $1.40/oz, 90% yield</th><td>$0.39</td></tr><tr><th scope="row">Pan-roasted potatoes — 6 oz, $0.12/oz, 88% yield</th><td>$0.82</td></tr><tr><th scope="row">Lemon-shallot pan jus — 1.5 floz, $0.28/floz, 100% yield</th><td>$0.42</td></tr></tbody></table>
+        <p class="swe-section-label">What the sheet returned</p>
+        <table class="swe-rows"><tbody><tr><th scope="row">Plate cost (yield-adjusted)</th><td>$6.52</td></tr><tr><th scope="row">At 30% target food cost, target price</th><td>$21.73</td></tr><tr><th scope="row">Charm price (rounded up to .95)</th><td>$21.95</td></tr></tbody></table>
+        <p class="swe-punchline">The yield slider is the lever — winter chickens come in heavier-boned and the 72% drops to 68%. At 68% the plate cost lands at $6.91, and the same target moves to $23.95. The decision isn't whether to raise the menu price — the decision is when. Try the yield slider now and see what the price would need to be.</p>
+        <p class="swe-note">Composite-typical numbers — not a real shop. Use the rhythm, not the figures.</p>
+      </div>
+    </details>
+    <!-- sheet-worked-example:end -->
         <form id="sheet-fields" class="sheet-form" autocomplete="off" novalidate>
       <fieldset>
         <legend>Recipe</legend>
@@ -363,6 +380,7 @@ header.nav{min-height:64px}
 </div></section>
 
 </main>
+<!-- sheet-glossary-popovers:applied -->
 
 <footer>
   <div class="container">

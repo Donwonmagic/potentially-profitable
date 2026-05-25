@@ -35,7 +35,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","@id":"https://muntin.digital/es/sheets/recipe-cost-card/#sheet","name":"Tarjeta de costo de receta","description":"Mete ingredientes, precios AP y rendimientos. Llévate el costo del plato, el precio objetivo a tu meta de costo de comida y una tarjeta imprimible para la carpeta.","url":"https://muntin.digital/es/sheets/recipe-cost-card/","applicationCategory":"BusinessApplication","operatingSystem":"Web","inLanguage":["es"],"isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"creator":{"@id":"https://muntin.digital/#business"}}]}</script>
-<script src="/assets/p.js?v=20260503" defer></script>
+<!-- lazy-load:p --><script>(window.requestIdleCallback||function(c){return setTimeout(c,500);})(function(){var s=document.createElement("script");s.src="/assets/p.js?v=20260503";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:p -->
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
 <style>.breadcrumb{padding-top:100px}</style>
 <style>
@@ -49,8 +49,8 @@ header.nav{min-height:64px}
 </style>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
-<link rel="preload" as="style" href="/assets/site.css?v=5203a74f71f3" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site.css?v=5203a74f71f3"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=4f505f60ca72" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=4f505f60ca72"></noscript>
 <link rel="stylesheet" href="/assets/sheets.css?v=20260503">
 </head>
 <body data-page="sheet" data-sheet-slug="recipe-cost-card" data-sheet-pack="operations-margin" data-pagefind-meta="kind:sheet,pack:operations-margin">
@@ -88,6 +88,23 @@ header.nav{min-height:64px}
     </div>
     <p style="font-size:14px;line-height:1.55;color:var(--ink-soft);margin:0;">Mete tus números — la matemática corre en tu navegador. Imprime, exporta a CSV o guárdala en el Taller.</p>
 
+        <!-- sheet-worked-example:start -->
+    <details class="sheet-worked-example" data-sheet="recipe-cost-card">
+      <summary>
+        <span class="swe-eyebrow">Ejemplo trabajado</span>
+        <span class="swe-subject">Medio pollo asado, lote de 4 platos</span>
+        <span class="swe-cta">Ve cómo se ve un llenado de un martes en la mañana</span>
+      </summary>
+      <div class="swe-body">
+        <p class="swe-section-label">Lo que tipearon</p>
+        <table class="swe-rows"><tbody><tr><th scope="row">Pollo entero — 1.5 lb c/u, $3.20/lb, rendimiento 72%</th><td>$4.80 AP / plato</td></tr><tr><th scope="row">Aceite de oliva — 0.5 floz, $0.18/floz, rendimiento 100%</th><td>$0.09</td></tr><tr><th scope="row">Sachet de hierbas (romero, tomillo) — 0.25 oz, $1.40/oz, rendimiento 90%</th><td>$0.39</td></tr><tr><th scope="row">Papas asadas en sartén — 6 oz, $0.12/oz, rendimiento 88%</th><td>$0.82</td></tr><tr><th scope="row">Jugo de limón-chalote — 1.5 floz, $0.28/floz, rendimiento 100%</th><td>$0.42</td></tr></tbody></table>
+        <p class="swe-section-label">Lo que la hoja les regresó</p>
+        <table class="swe-rows"><tbody><tr><th scope="row">Costo del plato (ajustado por rendimiento)</th><td>$6.52</td></tr><tr><th scope="row">Al 30% de costo de comida objetivo, precio objetivo</th><td>$21.73</td></tr><tr><th scope="row">Precio charm (redondeado a .95)</th><td>$21.95</td></tr></tbody></table>
+        <p class="swe-punchline">El control deslizante de rendimiento es la palanca — los pollos de invierno vienen con más hueso y el 72% baja a 68%. A 68%, el costo del plato llega a $6.91, y el mismo objetivo mueve el precio a $23.95. La decisión no es si subir el precio del menú — es cuándo. Mueve el control deslizante de rendimiento ahora y ve a cuánto debería subir el precio.</p>
+        <p class="swe-note">Números compuestos típicos — no un local real. Usa el ritmo, no las cifras.</p>
+      </div>
+    </details>
+    <!-- sheet-worked-example:end -->
         <form id="sheet-fields" class="sheet-form" autocomplete="off" novalidate>
       <fieldset>
         <legend>Recipe</legend>
@@ -310,7 +327,7 @@ header.nav{min-height:64px}
       <span class="mm-card-eyebrow">Cuándo usarla</span>
     </div>
     <h2 id="when-to-use-h" style="font-family:var(--font-display);font-size:18px;font-weight:500;margin:0;">Saca esta hoja cuando —</h2>
-    <ul style="margin:0;padding-left:20px;font-size:14.5px;line-height:1.6;color:var(--ink-soft);"><li>Vas a meter un plato nuevo y necesitas un precio que respete tu objetivo de costo de comida.</li>
+    <ul style="margin:0;padding-left:20px;font-size:14.5px;line-height:1.6;color:var(--ink-soft);"><li>Vas a meter un plato nuevo y necesitas un precio que respete tu objetivo de <a class="sheet-glossary-popover-link" href="/es/glossary/food-cost/" data-glossary-head="Costo de comida" data-glossary-aka="COGS de comida" data-glossary-blurb="Costo de comida vendida como porcentaje de ventas de comida, base costo usado (compras menos ajuste de inventario). Full-service independiente típicamente apunta a 28–32%; pizza y formatos de alto margen corren más bajo." data-sheet-popover="1">costo de comida</a>.</li>
       <li>Subió el precio de una proteína al recibir y quieres saber si el plato sigue rindiendo.</li>
       <li>Tu jefe de cocina pregunta por qué la porción de cordero tiene que bajar un cuarto de onza.</li></ul>
   </article>
@@ -363,6 +380,7 @@ header.nav{min-height:64px}
 </div></section>
 
 </main>
+<!-- sheet-glossary-popovers:applied -->
 
 <footer>
   <div class="container">
