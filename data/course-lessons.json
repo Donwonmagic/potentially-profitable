@@ -6,7 +6,10 @@
     {
       "id": "m1-orient",
       "position": 1,
-      "title": { "en": "Orient", "es": "Orientar" },
+      "title": {
+        "en": "Orient",
+        "es": "Orientar"
+      },
       "summary": {
         "en": "What you're actually building, and who you're building it for.",
         "es": "Qué estás construyendo realmente, y para quién."
@@ -15,7 +18,10 @@
     {
       "id": "m2-decide",
       "position": 2,
-      "title": { "en": "Decide", "es": "Decidir" },
+      "title": {
+        "en": "Decide",
+        "es": "Decidir"
+      },
       "summary": {
         "en": "The eight decisions that shape every restaurant website.",
         "es": "Las ocho decisiones que dan forma a todo sitio web de restaurante."
@@ -24,7 +30,10 @@
     {
       "id": "m3-assemble",
       "position": 3,
-      "title": { "en": "Assemble", "es": "Ensamblar" },
+      "title": {
+        "en": "Assemble",
+        "es": "Ensamblar"
+      },
       "summary": {
         "en": "The operator paperwork: menu, photos, hours, GBP.",
         "es": "El papeleo del operador: menú, fotos, horarios, GBP."
@@ -33,7 +42,10 @@
     {
       "id": "m4-launch",
       "position": 4,
-      "title": { "en": "Launch", "es": "Lanzar" },
+      "title": {
+        "en": "Launch",
+        "es": "Lanzar"
+      },
       "summary": {
         "en": "Generate, deploy, and the rhythm that keeps it alive.",
         "es": "Generar, desplegar y el ritmo que lo mantiene vivo."
@@ -52,7 +64,22 @@
         "en": "Welcome — type and see",
         "es": "Bienvenida — escribe y mira"
       },
-      "widgets": ["text-input", "live-preview-frame"]
+      "widgets": [
+        "text-input",
+        "live-preview-frame"
+      ],
+      "objectives": {
+        "en": [
+          "Enter your restaurant's name, cuisine, and address into MuntinContext.",
+          "See your inputs render in the live-preview rail to the right.",
+          "Recognize that every later lesson uses these three values as its working example."
+        ],
+        "es": [
+          "Ingresar el nombre, cocina y dirección de tu restaurante en MuntinContext.",
+          "Ver tus entradas renderizarse en el riel de vista previa a la derecha.",
+          "Reconocer que cada lección posterior usa estos tres valores como su ejemplo de trabajo."
+        ]
+      }
     },
     {
       "id": "what-a-site-does",
@@ -65,7 +92,22 @@
         "en": "What a site that books tables actually does",
         "es": "Qué hace realmente un sitio que reserva mesas"
       },
-      "widgets": ["drag-rank", "live-preview-frame"]
+      "widgets": [
+        "drag-rank",
+        "live-preview-frame"
+      ],
+      "objectives": {
+        "en": [
+          "Identify which of six common diner-intent questions your restaurant's site must answer first.",
+          "Rank the six intents by importance for your specific restaurant.",
+          "Recognize that this single ranking shapes every page-design decision later in the bootcamp."
+        ],
+        "es": [
+          "Identificar cuál de seis preguntas comunes de intención del comensal tu sitio debe contestar primero.",
+          "Ordenar las seis intenciones por importancia para tu restaurante específico.",
+          "Reconocer que este único orden moldea cada decisión de diseño de página más adelante en el bootcamp."
+        ]
+      }
     },
     {
       "id": "one-promise",
@@ -78,7 +120,23 @@
         "en": "Your one promise",
         "es": "Tu única promesa"
       },
-      "widgets": ["tab-flip", "text-input", "live-preview-frame"]
+      "widgets": [
+        "tab-flip",
+        "text-input",
+        "live-preview-frame"
+      ],
+      "objectives": {
+        "en": [
+          "Write one sentence that describes your restaurant to a stranger in 8-20 words.",
+          "Apply the 'concrete beats abstract' test to your draft and rewrite once.",
+          "Recognize that this sentence anchors your home page, About page, and GBP description."
+        ],
+        "es": [
+          "Escribir una frase que describa tu restaurante a un desconocido en 8-20 palabras.",
+          "Aplicar la prueba 'lo concreto le gana a lo abstracto' a tu borrador y reescribirlo una vez.",
+          "Reconocer que esa frase ancla tu portada, página About, y descripción de GBP."
+        ]
+      }
     },
     {
       "id": "customer",
@@ -91,8 +149,26 @@
         "en": "Your customer in one paragraph",
         "es": "Tu cliente en un párrafo"
       },
-      "widgets": ["text-input", "live-preview-frame"],
-      "futureWidgets": ["persona-card-builder", "map-radius"]
+      "widgets": [
+        "text-input",
+        "live-preview-frame"
+      ],
+      "futureWidgets": [
+        "persona-card-builder",
+        "map-radius"
+      ],
+      "objectives": {
+        "en": [
+          "Write a 3-6 sentence paragraph describing one specific archetypal customer.",
+          "Anchor that customer to a specific neighborhood and a price expectation.",
+          "Pick a delivery radius (0.5-5 miles) that matches who comes on a weeknight."
+        ],
+        "es": [
+          "Escribir un párrafo de 3-6 oraciones describiendo un cliente arquetípico específico.",
+          "Anclar ese cliente a un barrio específico y una expectativa de precio.",
+          "Elegir un radio de entrega (0.5-5 millas) que coincida con quién viene un día de semana."
+        ]
+      }
     },
     {
       "id": "naming",
@@ -105,7 +181,22 @@
         "en": "Naming + domain",
         "es": "Nombre y dominio"
       },
-      "widgets": ["text-input", "live-preview-frame"]
+      "widgets": [
+        "text-input",
+        "live-preview-frame"
+      ],
+      "objectives": {
+        "en": [
+          "Generate 3-5 candidate restaurant names and check .com availability for each.",
+          "Apply the 'spell it on the phone' test to your shortlist.",
+          "Commit to one name + one domain you can purchase today."
+        ],
+        "es": [
+          "Generar 3-5 nombres candidatos de restaurante y verificar disponibilidad de .com para cada uno.",
+          "Aplicar la prueba 'deletrearlo por teléfono' a tu lista corta.",
+          "Comprometerte a un nombre + un dominio que puedas comprar hoy."
+        ]
+      }
     },
     {
       "id": "audit",
@@ -118,8 +209,26 @@
         "en": "Audit your current site",
         "es": "Audita tu sitio actual"
       },
-      "widgets": ["drag-rank", "text-input", "live-preview-frame"],
-      "futureWidgets": ["before-after-slider"]
+      "widgets": [
+        "drag-rank",
+        "text-input",
+        "live-preview-frame"
+      ],
+      "futureWidgets": [
+        "before-after-slider"
+      ],
+      "objectives": {
+        "en": [
+          "Walk through 10 common audit items against your current restaurant site.",
+          "Rank the 10 items by severity for YOUR site (top 3 become rebuild priorities).",
+          "Write one-sentence notes on the top 3 issues that justify the ranking."
+        ],
+        "es": [
+          "Recorrer 10 ítems comunes de auditoría contra tu sitio actual de restaurante.",
+          "Ordenar los 10 ítems por severidad para TU sitio (los 3 primeros son prioridades de rehacer).",
+          "Escribir notas de una oración sobre los 3 problemas principales que justifican el orden."
+        ]
+      }
     },
     {
       "id": "positioning",
@@ -132,7 +241,23 @@
         "en": "Cuisine + positioning",
         "es": "Cocina y posicionamiento"
       },
-      "widgets": ["positioning-plotter", "text-input", "live-preview-frame"]
+      "widgets": [
+        "positioning-plotter",
+        "text-input",
+        "live-preview-frame"
+      ],
+      "objectives": {
+        "en": [
+          "Plot your concept on a 2×2 grid (cuisine breadth × price tier).",
+          "Recognize where the dot lands and what that tells you about your competitive set.",
+          "Connect the positioning to the brand decisions you'll make in L7."
+        ],
+        "es": [
+          "Plotear tu concepto en una grilla 2×2 (amplitud de cocina × nivel de precio).",
+          "Reconocer dónde aterriza el punto y qué te dice eso sobre tu set competitivo.",
+          "Conectar el posicionamiento con las decisiones de marca que tomarás en la L7."
+        ]
+      }
     },
     {
       "id": "leaks",
@@ -145,7 +270,23 @@
         "en": "Diagnose what's leaking",
         "es": "Diagnostica qué está perdiendo"
       },
-      "widgets": ["tab-flip", "text-input", "live-preview-frame"]
+      "widgets": [
+        "tab-flip",
+        "text-input",
+        "live-preview-frame"
+      ],
+      "objectives": {
+        "en": [
+          "Diagnose the root cause behind each of your top 3 audit issues.",
+          "Distinguish symptoms (slow page) from causes (uncompressed hero image).",
+          "Produce a 3-item rebuild punch list with the cause named for each."
+        ],
+        "es": [
+          "Diagnosticar la causa raíz detrás de cada uno de tus 3 problemas principales de auditoría.",
+          "Distinguir síntomas (página lenta) de causas (imagen hero sin comprimir).",
+          "Producir una lista de 3 ítems para rehacer con la causa nombrada para cada uno."
+        ]
+      }
     },
     {
       "id": "palette-voice",
@@ -158,8 +299,27 @@
         "en": "Palette + voice",
         "es": "Paleta y voz"
       },
-      "widgets": ["palette-picker", "text-input", "live-preview-frame"],
-      "futureWidgets": ["voice-slider", "font-pair-picker"]
+      "widgets": [
+        "palette-picker",
+        "text-input",
+        "live-preview-frame"
+      ],
+      "futureWidgets": [
+        "voice-slider",
+        "font-pair-picker"
+      ],
+      "objectives": {
+        "en": [
+          "Pick a 3-color brand palette that passes WCAG AA contrast on phones.",
+          "Dial in voice on three axes: formal↔casual, classic↔modern, terse↔warm.",
+          "Pick a heading + body type pairing from 6 curated options."
+        ],
+        "es": [
+          "Elegir una paleta de marca de 3 colores que pase contraste WCAG AA en teléfonos.",
+          "Afinar la voz en tres ejes: formal↔casual, clásico↔moderno, conciso↔cálido.",
+          "Elegir un par tipográfico de título + cuerpo de 6 opciones curadas."
+        ]
+      }
     },
     {
       "id": "menu",
@@ -172,7 +332,22 @@
         "en": "Your menu shortlist",
         "es": "Tu lista corta de menú"
       },
-      "widgets": ["menu-builder", "live-preview-frame"]
+      "widgets": [
+        "menu-builder",
+        "live-preview-frame"
+      ],
+      "objectives": {
+        "en": [
+          "Pick 3-12 dishes that represent your menu's center of gravity.",
+          "Order them by what you'd want a first-time diner to read first.",
+          "Type a price for each (or write 'MP' for market price)."
+        ],
+        "es": [
+          "Elegir 3-12 platos que representen el centro de gravedad de tu menú.",
+          "Ordenarlos por lo que querrías que un comensal primerizo lea primero.",
+          "Escribir un precio para cada uno (o escribir 'MP' por precio de mercado)."
+        ]
+      }
     },
     {
       "id": "photos-fresh",
@@ -185,8 +360,27 @@
         "en": "Photo brief from scratch",
         "es": "Brief de fotos desde cero"
       },
-      "widgets": ["drag-rank", "tab-flip", "text-input", "live-preview-frame"],
-      "futureWidgets": ["shot-list-grid"]
+      "widgets": [
+        "drag-rank",
+        "tab-flip",
+        "text-input",
+        "live-preview-frame"
+      ],
+      "futureWidgets": [
+        "shot-list-grid"
+      ],
+      "objectives": {
+        "en": [
+          "Pick 8 shot types from a curated visual reference grid (3 of which become the home-page set).",
+          "Write a 1-2 sentence brief for each shot — dish, light, angle, who's in frame.",
+          "Decide whether to hire ($400-800) or DIY based on time + budget + portfolio fit."
+        ],
+        "es": [
+          "Elegir 8 tipos de toma de una grilla curada de referencia visual (3 de las cuales son el set de inicio).",
+          "Escribir un brief de 1-2 oraciones por toma — plato, luz, ángulo, quién está en cuadro.",
+          "Decidir si contratar ($400-800) o hacerlo tú según tiempo + presupuesto + portafolio."
+        ]
+      }
     },
     {
       "id": "photos-rebuild",
@@ -199,8 +393,27 @@
         "en": "Photo refresh triage",
         "es": "Triaje de fotos actuales"
       },
-      "widgets": ["tab-flip", "drag-rank", "text-input", "live-preview-frame"],
-      "futureWidgets": ["before-after-slider"]
+      "widgets": [
+        "tab-flip",
+        "drag-rank",
+        "text-input",
+        "live-preview-frame"
+      ],
+      "futureWidgets": [
+        "before-after-slider"
+      ],
+      "objectives": {
+        "en": [
+          "Audit your current restaurant photos against 4 honesty criteria.",
+          "Categorize each existing photo as keep / replace / retire.",
+          "Produce a short shot list for the replacements (3-5 new photos max)."
+        ],
+        "es": [
+          "Auditar tus fotos actuales de restaurante contra 4 criterios de honestidad.",
+          "Categorizar cada foto existente como mantener / reemplazar / retirar.",
+          "Producir una lista corta de tomas para los reemplazos (3-5 fotos nuevas máximo)."
+        ]
+      }
     },
     {
       "id": "hours-contact",
@@ -213,7 +426,23 @@
         "en": "Hours, holidays, contact",
         "es": "Horarios, festivos, contacto"
       },
-      "widgets": ["weekly-hours-grid", "text-input", "live-preview-frame"]
+      "widgets": [
+        "weekly-hours-grid",
+        "text-input",
+        "live-preview-frame"
+      ],
+      "objectives": {
+        "en": [
+          "Set per-day hours (open + close) for all 7 days of the week.",
+          "Mark up to 3 upcoming holiday closures with specific dates.",
+          "Confirm phone number format works as a click-to-call link on mobile."
+        ],
+        "es": [
+          "Establecer los horarios por día (apertura + cierre) para los 7 días de la semana.",
+          "Marcar hasta 3 cierres festivos próximos con fechas específicas.",
+          "Confirmar que el formato del teléfono funciona como enlace de llamar-con-clic en móvil."
+        ]
+      }
     },
     {
       "id": "gbp-fresh",
@@ -226,8 +455,25 @@
         "en": "Google Business Profile from zero",
         "es": "Perfil de Google Business desde cero"
       },
-      "widgets": ["text-input", "live-preview-frame"],
-      "futureWidgets": ["gbp-card-preview"]
+      "widgets": [
+        "text-input",
+        "live-preview-frame"
+      ],
+      "futureWidgets": [
+        "gbp-card-preview"
+      ],
+      "objectives": {
+        "en": [
+          "Claim a new Google Business Profile (or verify via video or postcard).",
+          "Pick exactly one primary category from 27 restaurant taxonomy options.",
+          "Write a 750-character description following the what-where + signature + practical structure."
+        ],
+        "es": [
+          "Reclamar un nuevo Google Business Profile (o verificar por video o postal).",
+          "Elegir exactamente una categoría principal de 27 opciones de taxonomía de restaurante.",
+          "Escribir una descripción de 750 caracteres siguiendo la estructura qué-dónde + emblemático + práctico."
+        ]
+      }
     },
     {
       "id": "gbp-rebuild",
@@ -240,8 +486,26 @@
         "en": "Google Business Profile repair",
         "es": "Reparación del Perfil de Google Business"
       },
-      "widgets": ["drag-rank", "text-input", "live-preview-frame"],
-      "futureWidgets": ["gbp-card-preview"]
+      "widgets": [
+        "drag-rank",
+        "text-input",
+        "live-preview-frame"
+      ],
+      "futureWidgets": [
+        "gbp-card-preview"
+      ],
+      "objectives": {
+        "en": [
+          "Diagnose the 3 highest-impact problems on your existing GBP (color-coded severity).",
+          "Recognize when the happy path doesn't work (postcard wait, ownership disputes, suspensions, duplicates) and pick the right workaround.",
+          "Commit to a recurring cadence (bi-weekly quick check + quarterly full review)."
+        ],
+        "es": [
+          "Diagnosticar los 3 problemas de más alto impacto en tu GBP existente (severidad coloreada).",
+          "Reconocer cuándo el camino feliz no funciona (espera de postal, disputas de propiedad, suspensiones, duplicados) y elegir el workaround correcto.",
+          "Comprometerse a una cadencia recurrente (chequeo rápido quincenal + revisión completa trimestral)."
+        ]
+      }
     },
     {
       "id": "local-seo",
@@ -254,8 +518,26 @@
         "en": "Local SEO anchors",
         "es": "Anclas de SEO local"
       },
-      "widgets": ["text-input", "live-preview-frame"],
-      "futureWidgets": ["keyword-builder", "map-radius"]
+      "widgets": [
+        "text-input",
+        "live-preview-frame"
+      ],
+      "futureWidgets": [
+        "keyword-builder",
+        "map-radius"
+      ],
+      "objectives": {
+        "en": [
+          "Generate 8 local-SEO keyword phrases using 4 formulas (cuisine+nbhd, dish+nbhd, occasion+nbhd, intent+cuisine+nbhd).",
+          "Pick the radius (0.5-5 mi) you're trying to rank within.",
+          "Recognize where the L14 generator will auto-place these phrases (page title, meta description, H1, schema, menu descriptions)."
+        ],
+        "es": [
+          "Generar 8 frases de SEO local usando 4 fórmulas (cocina+barrio, plato+barrio, ocasión+barrio, intención+cocina+barrio).",
+          "Elegir el radio (0.5-5 mi) en el que estás tratando de rankear.",
+          "Reconocer dónde el generador de la L14 va a colocar automáticamente estas frases (título, meta descripción, H1, schema, descripciones de menú)."
+        ]
+      }
     },
     {
       "id": "reviews",
@@ -268,8 +550,26 @@
         "en": "Reviews + first-week trust",
         "es": "Reseñas y confianza de la primera semana"
       },
-      "widgets": ["tab-flip", "text-input", "live-preview-frame"],
-      "futureWidgets": ["before-after-slider"]
+      "widgets": [
+        "tab-flip",
+        "text-input",
+        "live-preview-frame"
+      ],
+      "futureWidgets": [
+        "before-after-slider"
+      ],
+      "objectives": {
+        "en": [
+          "Write a 3-template review-response system (good / mixed / bad).",
+          "Identify 10 regulars you'll personally ask for first-week reviews.",
+          "Set up the L16 recurring 'reviews triage' cadence (bi-weekly, 10 min)."
+        ],
+        "es": [
+          "Escribir un sistema de 3 plantillas de respuesta a reseñas (buena / mixta / mala).",
+          "Identificar 10 clientes habituales a quienes les pedirás reseñas la primera semana.",
+          "Configurar la cadencia recurrente 'triaje de reseñas' de la L16 (quincenal, 10 min)."
+        ]
+      }
     },
     {
       "id": "generator",
@@ -282,7 +582,21 @@
         "en": "The Generator — download your site",
         "es": "El generador — descarga tu sitio"
       },
-      "widgets": ["live-preview-frame"]
+      "widgets": [
+        "live-preview-frame"
+      ],
+      "objectives": {
+        "en": [
+          "Verify your readiness checklist — every required field captured across L1-L13.",
+          "Preview the rendered home + menu + about + contact pages in the live iframe.",
+          "Download the ZIP — your full restaurant site as plain HTML + CSS, ready to deploy."
+        ],
+        "es": [
+          "Verificar tu lista de revisión — cada campo requerido capturado a lo largo de L1-L13.",
+          "Vista previa de las páginas inicio + menú + about + contacto renderizadas en el iframe en vivo.",
+          "Descargar el ZIP — tu sitio completo de restaurante como HTML + CSS plano, listo para desplegar."
+        ]
+      }
     },
     {
       "id": "deploy",
@@ -295,8 +609,25 @@
         "en": "Deploy to Cloudflare, Netlify, or Vercel",
         "es": "Despliega en Cloudflare, Netlify o Vercel"
       },
-      "widgets": ["tab-flip", "live-preview-frame"],
-      "futureWidgets": ["deploy-stepper"]
+      "widgets": [
+        "tab-flip",
+        "live-preview-frame"
+      ],
+      "futureWidgets": [
+        "deploy-stepper"
+      ],
+      "objectives": {
+        "en": [
+          "Pick a host (Cloudflare Pages, Netlify, or Vercel) — all free, all equivalent for this site.",
+          "Upload the ZIP via drag-and-drop or CLI; see the interim URL go live.",
+          "Connect your custom domain via DNS CNAME / A record; wait 10-60 min for propagation."
+        ],
+        "es": [
+          "Elegir un host (Cloudflare Pages, Netlify, o Vercel) — todos gratis, todos equivalentes para este sitio.",
+          "Subir el ZIP por drag-and-drop o CLI; ver la URL interina en vivo.",
+          "Conectar tu dominio personalizado vía DNS CNAME / A record; esperar 10-60 min para propagación."
+        ]
+      }
     },
     {
       "id": "rhythm",
@@ -309,29 +640,122 @@
         "en": "The 30-day rhythm",
         "es": "El ritmo de 30 días"
       },
-      "widgets": ["text-input", "live-preview-frame"],
-      "futureWidgets": ["rhythm-calendar"]
+      "widgets": [
+        "text-input",
+        "live-preview-frame"
+      ],
+      "futureWidgets": [
+        "rhythm-calendar"
+      ],
+      "objectives": {
+        "en": [
+          "Pick a cadence for each of the 4 recurring tasks (hours, reviews, regen, SEO).",
+          "Export the rhythm as a real .ics file and import into your calendar.",
+          "Set the calendar alerts — the rhythm doesn't work until it's on a calendar that wakes you up."
+        ],
+        "es": [
+          "Elegir una cadencia para cada una de las 4 tareas recurrentes (horarios, reseñas, regen, SEO).",
+          "Exportar el ritmo como un archivo .ics real e importarlo a tu calendario.",
+          "Poner las alertas del calendario — el ritmo no funciona hasta que esté en un calendario que te despierte."
+        ]
+      }
     }
   ],
   "widgets": [
-    { "tag": "track-picker",         "status": "deprecated", "note": "Track choice moved to /course/ hub per audit; no widget needed." },
-    { "tag": "live-preview-frame",   "status": "shipped",    "path": "/tools/_shared/workshop/live-preview-frame.js" },
-    { "tag": "text-input",           "status": "shipped",    "path": "/tools/_shared/workshop/text-input.js" },
-    { "tag": "palette-picker",       "status": "shipped",    "path": "/tools/_shared/workshop/palette-picker.js" },
-    { "tag": "drag-rank",            "status": "shipped",    "path": "/tools/_shared/workshop/drag-rank.js" },
-    { "tag": "tab-flip",             "status": "shipped",    "path": "/tools/_shared/workshop/tab-flip.js" },
-    { "tag": "before-after-slider",  "status": "shipped",    "path": "/tools/_shared/workshop/before-after-slider.js" },
-    { "tag": "persona-card-builder", "status": "shipped",    "path": "/tools/_shared/workshop/persona-card-builder.js" },
-    { "tag": "map-radius",           "status": "shipped",    "path": "/tools/_shared/workshop/map-radius.js" },
-    { "tag": "positioning-plotter",  "status": "shipped",    "path": "/tools/_shared/workshop/positioning-plotter.js" },
-    { "tag": "voice-slider",         "status": "shipped",    "path": "/tools/_shared/workshop/voice-slider.js" },
-    { "tag": "font-pair-picker",     "status": "shipped",    "path": "/tools/_shared/workshop/font-pair-picker.js" },
-    { "tag": "menu-builder",         "status": "shipped",    "path": "/tools/_shared/workshop/menu-builder.js" },
-    { "tag": "shot-list-grid",       "status": "shipped",    "path": "/tools/_shared/workshop/shot-list-grid.js" },
-    { "tag": "weekly-hours-grid",    "status": "shipped",    "path": "/tools/_shared/workshop/weekly-hours-grid.js" },
-    { "tag": "gbp-card-preview",     "status": "shipped",    "path": "/tools/_shared/workshop/gbp-card-preview.js" },
-    { "tag": "keyword-builder",      "status": "shipped",    "path": "/tools/_shared/workshop/keyword-builder.js" },
-    { "tag": "deploy-stepper",       "status": "shipped",    "path": "/tools/_shared/workshop/deploy-stepper.js" },
-    { "tag": "rhythm-calendar",      "status": "shipped",    "path": "/tools/_shared/workshop/rhythm-calendar.js" }
+    {
+      "tag": "track-picker",
+      "status": "deprecated",
+      "note": "Track choice moved to /course/ hub per audit; no widget needed."
+    },
+    {
+      "tag": "live-preview-frame",
+      "status": "shipped",
+      "path": "/tools/_shared/workshop/live-preview-frame.js"
+    },
+    {
+      "tag": "text-input",
+      "status": "shipped",
+      "path": "/tools/_shared/workshop/text-input.js"
+    },
+    {
+      "tag": "palette-picker",
+      "status": "shipped",
+      "path": "/tools/_shared/workshop/palette-picker.js"
+    },
+    {
+      "tag": "drag-rank",
+      "status": "shipped",
+      "path": "/tools/_shared/workshop/drag-rank.js"
+    },
+    {
+      "tag": "tab-flip",
+      "status": "shipped",
+      "path": "/tools/_shared/workshop/tab-flip.js"
+    },
+    {
+      "tag": "before-after-slider",
+      "status": "shipped",
+      "path": "/tools/_shared/workshop/before-after-slider.js"
+    },
+    {
+      "tag": "persona-card-builder",
+      "status": "shipped",
+      "path": "/tools/_shared/workshop/persona-card-builder.js"
+    },
+    {
+      "tag": "map-radius",
+      "status": "shipped",
+      "path": "/tools/_shared/workshop/map-radius.js"
+    },
+    {
+      "tag": "positioning-plotter",
+      "status": "shipped",
+      "path": "/tools/_shared/workshop/positioning-plotter.js"
+    },
+    {
+      "tag": "voice-slider",
+      "status": "shipped",
+      "path": "/tools/_shared/workshop/voice-slider.js"
+    },
+    {
+      "tag": "font-pair-picker",
+      "status": "shipped",
+      "path": "/tools/_shared/workshop/font-pair-picker.js"
+    },
+    {
+      "tag": "menu-builder",
+      "status": "shipped",
+      "path": "/tools/_shared/workshop/menu-builder.js"
+    },
+    {
+      "tag": "shot-list-grid",
+      "status": "shipped",
+      "path": "/tools/_shared/workshop/shot-list-grid.js"
+    },
+    {
+      "tag": "weekly-hours-grid",
+      "status": "shipped",
+      "path": "/tools/_shared/workshop/weekly-hours-grid.js"
+    },
+    {
+      "tag": "gbp-card-preview",
+      "status": "shipped",
+      "path": "/tools/_shared/workshop/gbp-card-preview.js"
+    },
+    {
+      "tag": "keyword-builder",
+      "status": "shipped",
+      "path": "/tools/_shared/workshop/keyword-builder.js"
+    },
+    {
+      "tag": "deploy-stepper",
+      "status": "shipped",
+      "path": "/tools/_shared/workshop/deploy-stepper.js"
+    },
+    {
+      "tag": "rhythm-calendar",
+      "status": "shipped",
+      "path": "/tools/_shared/workshop/rhythm-calendar.js"
+    }
   ]
 }
