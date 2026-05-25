@@ -329,6 +329,30 @@ for (const file of collectHtml(repoRoot)) {
     working = working.replace(STUB_FOOTER_RE, renderFooter(rel, locale));
   }
 
+  // Orphan Platform-aware kbd script cleanup. The previous NAV_RE bug
+  // (greedy backtracking through </script>) once ate the batch-banner
+  // aside and replaced it with a single nav block. Re-inserting the
+  // banner via inject-batch-banner.mjs put the banner ABOVE the nav's
+  // Platform-aware script — but the original orphan script that sat
+  // before the banner never got cleaned up. Every page now ships with
+  // TWO copies of the Platform-aware kbd hint script (one orphaned
+  // before the banner, one canonical from the partial right before
+  // <header class="nav">). Idempotent + cosmetic but the duplicate
+  // is noise on every paint. Strip the orphan: match a Platform-aware
+  // script that's followed by ANY content other than another script
+  // before the next <header class="nav"> — the second occurrence is
+  // the partial's canonical script and stays.
+  const KBD_SCRIPT_RE = /<script>\s*\/\* Platform-aware kbd hint(?:(?!<\/script>)[\s\S])*?<\/script>\s*/g;
+  const kbdMatches = [...working.matchAll(KBD_SCRIPT_RE)];
+  if (kbdMatches.length > 1) {
+    // Keep the LAST occurrence (the one adjacent to <header class="nav">).
+    // Remove every earlier occurrence by reverse-walking the matches.
+    for (let i = kbdMatches.length - 2; i >= 0; i--) {
+      const m = kbdMatches[i];
+      working = working.slice(0, m.index) + working.slice(m.index + m[0].length);
+    }
+  }
+
   const hasNav    = NAV_RE.test(working);
   const hasFooter = FOOTER_RE.test(working);
   if (!hasNav && !hasFooter) { skipped++; continue; }

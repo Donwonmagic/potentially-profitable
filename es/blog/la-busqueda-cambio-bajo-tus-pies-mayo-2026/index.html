@@ -219,16 +219,6 @@ header.nav{min-height:64px}
 
 <a class="skip-link" href="#main">Saltar al contenido principal</a>
 
-<script>
-  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
-     Apple devices. Runs early in <body> so the swap is essentially
-     invisible — script tags execute synchronously when the parser hits
-     them, before .nav-search-kbd renders below. CSS in site-core.css
-     conditions on <html data-platform="mac">. */
-  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
-    document.documentElement.dataset.platform = 'mac';
-  }
-</script>
 <!-- batch-banner:start -->
 <aside class="batch-marquee" data-batch="2026-w2" role="complementary" aria-label="Semana 2 · 23 de mayo de 2026" style="background:var(--ink,#14161A);color:var(--cream,#FAF7F2);font-size:14px;line-height:1.4;padding:8px 0;border-bottom:1px solid rgba(250,247,242,0.12);position:relative;z-index:1">
   <div style="max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,64px);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
@@ -408,31 +398,26 @@ header.nav{min-height:64px}
 <h2 id="los-tres-cambios-ocurrieron-a-la-vez-y-apuntan-al-mismo-lado">Los tres cambios ocurrieron a la vez (y apuntan al mismo lado)</h2>
       <p>La mayor&iacute;a de las semanas, la forma en que los comensales te encuentran cambia un poco. La semana del 19 de mayo de 2026 no fue una semana cualquiera. En cuatro d&iacute;as, Google reconstruy&oacute; AI Mode en el escenario de su conferencia I/O, empez&oacute; a desplegar el 21 de mayo la segunda actualizaci&oacute;n central del a&ntilde;o, y &mdash; seg&uacute;n una lectura de BrightEdge publicada el 20 de mayo &mdash; Gemini qued&oacute; confirmada como la fuente #2 de referidos por IA, subiendo del 4.3% del tr&aacute;fico referido por IA al inicio del Q1 al 13.2% para abril. Tres anuncios, una direcci&oacute;n: la superficie que manda gente a tu puerta se est&aacute; reescribiendo para responder y actuar antes de que el comensal llegue a ti.</p>
 
-      <figure class="viz-figure article-figure" data-audio-alt="La parte de Gemini del tr&aacute;fico referido por IA durante los primeros cuatro meses de dos mil veintis&eacute;is. En enero era cuatro punto tres por ciento del tr&aacute;fico referido por IA. Para el fin del primer trimestre hab&iacute;a subido a once punto seis por ciento. Para abril lleg&oacute; al trece punto dos por ciento. En el mismo lapso, la parte de ChatGPT baj&oacute; de ochenta y nueve punto dos por ciento a ochenta y uno punto cuatro por ciento. La historia es subida r&aacute;pida de un lado, cesi&oacute;n lenta del otro.">
+      <figure class="viz-figure article-figure" data-audio-alt="La parte de Gemini del tr&aacute;fico referido por IA durante los primeros cuatro meses de dos mil veintis&eacute;is. En enero era cuatro punto tres por ciento. Para el fin del primer trimestre hab&iacute;a subido a once punto seis por ciento. Para abril lleg&oacute; al trece punto dos por ciento &mdash; casi triplic&oacute; en un trimestre.">
         <div class="viz-bars">
-          <p class="viz-bars__title">Parte de Gemini del tr&aacute;fico referido por IA, del Q1 a abril de 2026</p>
+          <p class="viz-bars__title">Parte de Gemini del tr&aacute;fico referido por IA</p>
           <div class="viz-bars__row">
-            <p class="viz-bars__label">Gemini, enero</p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:0.04"></span></div>
+            <p class="viz-bars__label">Enero 2026</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:0.043"></span></div>
             <p class="viz-bars__num">4.3%</p>
           </div>
           <div class="viz-bars__row">
-            <p class="viz-bars__label">Gemini, fin de Q1</p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.12"></span></div>
+            <p class="viz-bars__label">Fin del Q1 2026</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.116"></span></div>
             <p class="viz-bars__num">11.6%</p>
           </div>
           <div class="viz-bars__row">
-            <p class="viz-bars__label">Gemini, abril</p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.13"></span></div>
+            <p class="viz-bars__label">Abril 2026</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.132"></span></div>
             <p class="viz-bars__num">13.2%</p>
           </div>
-          <div class="viz-bars__row">
-            <p class="viz-bars__label">ChatGPT, mismo lapso</p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:0.81"></span></div>
-            <p class="viz-bars__num">89.2% &rarr; 81.4%</p>
-          </div>
         </div>
-        <figcaption>Gemini triplic&oacute; su parte de referidos por IA en un trimestre y sigui&oacute; subiendo en abril; ChatGPT cedi&oacute; en el mismo lapso. Seg&uacute;n BrightEdge, 2026.</figcaption>
+        <figcaption>Gemini triplic&oacute; su parte de referidos por IA en un trimestre y sigui&oacute; subiendo en abril. En el mismo lapso, la parte de ChatGPT baj&oacute; de 89.2% a 81.4%. Seg&uacute;n BrightEdge, 2026.</figcaption>
       </figure>
 
       <details class="cite">
