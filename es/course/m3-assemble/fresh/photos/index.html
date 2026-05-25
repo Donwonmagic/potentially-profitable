@@ -194,6 +194,22 @@ main{padding-top:64px}
 .slg-help{margin:8px 0 0;font-size:12px;color:var(--stone)}
 
 @media (prefers-contrast:more){body{color:var(--ink)}.course-body p,.course-body li{color:var(--ink)}.course-hero .promise{color:var(--ink)}}
+
+/* course-checkpoint widget styles */
+.cqp{margin:18px 0 24px;padding:18px 20px;background:var(--cream-2);border-left:3px solid var(--teal);border-radius:8px;max-width:680px}
+.cqp-eyebrow{font-family:var(--font-body);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;font-weight:700;color:var(--stone);margin:0 0 8px}
+.cqp-question{font-family:var(--font-display);font-size:18px;font-weight:500;line-height:1.3;color:var(--ink);margin:0 0 6px}
+.cqp-instruction{font-size:13px;color:var(--stone);margin:0 0 14px;font-style:italic}
+.cqp-instruction--answered{color:var(--status-good)}
+.cqp-options{display:flex;flex-direction:column;gap:8px;margin:0 0 14px}
+.cqp-option{display:block;width:100%;padding:11px 14px;text-align:left;background:var(--cream);border:1.5px solid var(--line);border-radius:6px;font-family:var(--font-body);font-size:14.5px;line-height:1.4;color:var(--ink);cursor:pointer;transition:border-color .12s ease,background .12s ease}
+.cqp-option:hover{border-color:var(--teal)}
+.cqp-option:focus-visible{outline:2px solid var(--teal);outline-offset:2px;border-color:var(--teal)}
+.cqp-option--picked{background:var(--cream);border-color:var(--teal-dark);border-width:2px;padding:10px 13px}
+.cqp-feedback{padding:12px 14px;background:var(--cream);border:1px dashed var(--teal);border-radius:6px}
+.cqp-feedback-head{font-family:var(--font-body);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:700;color:var(--teal-dark);margin:0 0 6px}
+.cqp-feedback-body{margin:0;font-size:14.5px;color:var(--ink-soft);line-height:1.5}
+@media (prefers-contrast:more){.cqp-feedback-body{color:var(--ink)}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -367,6 +383,35 @@ main{padding-top:64px}
         </ul>
       </details>
       <!-- course-objectives:end -->
+
+      <section class="course-widget" data-widget="course-checkpoint">
+        <script type="application/json" class="course-checkpoint-config">
+{
+  "question": "Diners decide on the second photo, not the tenth. What does that imply for your shot priority?",
+  "question-es": "Los comensales deciden en la segunda foto, no en la décima. ¿Qué implica eso para tu prioridad de tomas?",
+  "options": [
+    {
+      "text": "Shoot more photos so I have lots to choose from",
+      "text-es": "Tomar más fotos para tener muchas de dónde elegir",
+      "feedback": "Photo count isn't the lever — placement is. The second photo is the one that matters most; the tenth is filler that diners rarely scroll to.",
+      "feedback-es": "El conteo de fotos no es la palanca — la colocación sí. La segunda foto es la que más importa; la décima es relleno al que los comensales rara vez bajan."
+    },
+    {
+      "text": "Spend more time on the first 3 shots, less on the rest",
+      "text-es": "Dedicar más tiempo a las primeras 3 tomas, menos al resto",
+      "feedback": "Yes. The first three shots carry ~80% of the diner's impression. Optimize those — the rest can be quick phone snaps that fill out the page without distracting.",
+      "feedback-es": "Sí. Las primeras tres tomas cargan ~80% de la impresión del comensal. Optimiza esas — el resto pueden ser tomas rápidas con teléfono que llenan la página sin distraer."
+    },
+    {
+      "text": "Skip photos entirely and rely on the menu page",
+      "text-es": "Saltarse las fotos por completo y depender de la página de menú",
+      "feedback": "Photos drive trust at a level menu copy can't. Diners want to see the food before they commit. They're not optional — just prioritize the top 3.",
+      "feedback-es": "Las fotos impulsan la confianza a un nivel que la copia del menú no puede. Los comensales quieren ver la comida antes de comprometerse. No son opcionales — solo prioriza las 3 principales."
+    }
+  ]
+}
+        </script>
+      </section>
 
       <h2>Los ocho tipos de toma</h2>
 
