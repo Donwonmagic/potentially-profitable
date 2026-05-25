@@ -209,3 +209,174 @@ test.describe('Course locale parity (delegated to build-time script)', () => {
     expect(result.stdout).toMatch(/OK — no drift detected/);
   });
 });
+
+test.describe('Module + bootcamp celebrations', () => {
+  // Helper: seed mtn:course:progress before page navigation so the
+  // mark-complete sentinel hydrates against the right starting state.
+  async function seedProgress(page, progress) {
+    await page.addInitScript((p) => {
+      try { localStorage.setItem('mtn:course:progress', JSON.stringify(p)); } catch (_) {}
+    }, progress);
+  }
+
+  test('M1 celebration: marking the third M1 lesson fires the m1 card', async ({ page }) => {
+    const now = Date.now();
+    await seedProgress(page, {
+      track: 'fresh',
+      completed: [
+        { lesson: 'welcome',          at: now - 2000 },
+        { lesson: 'what-a-site-does', at: now - 1000 }
+      ],
+      celebrations: {},
+      startedAt: now - 2000,
+      updatedAt: now - 1000,
+      v: 1
+    });
+    await page.goto('/course/m1-orient/one-promise/', { waitUntil: 'networkidle' });
+
+    const btn = page.locator('#courseMarkBtn');
+    await expect(btn).toHaveAttribute('data-state', 'idle');
+    await btn.click();
+
+    // Card appears after ~80ms setTimeout + requestAnimationFrame.
+    const card = page.locator('.course-cele[data-celebration="m1"]');
+    await expect(card).toBeVisible({ timeout: 3000 });
+    await expect(card.locator('.course-cele-head')).toContainText(/Module 1 done|Promise|promise/);
+
+    // Dedup ledger written to localStorage.
+    const cele = await page.evaluate(() => {
+      const p = JSON.parse(localStorage.getItem('mtn:course:progress') || '{}');
+      return p.celebrations || {};
+    });
+    expect(cele['m1-orient']).toBeTruthy();
+  });
+
+  test('M1 celebration does NOT re-show on reload (dedup ledger holds)', async ({ page }) => {
+    const now = Date.now();
+    await seedProgress(page, {
+      track: 'fresh',
+      completed: [
+        { lesson: 'welcome',          at: now - 3000 },
+        { lesson: 'what-a-site-does', at: now - 2000 },
+        { lesson: 'one-promise',      at: now - 1000 }
+      ],
+      celebrations: { 'm1-orient': now - 1000 },
+      startedAt: now - 3000,
+      updatedAt: now - 1000,
+      v: 1
+    });
+    await page.goto('/course/m1-orient/one-promise/', { waitUntil: 'networkidle' });
+
+    // Button starts in done state because completed[] contains this lesson.
+    await expect(page.locator('#courseMarkBtn')).toHaveAttribute('data-state', 'done');
+    // No celebration card visible — the celebration only fires from a click,
+    // not from hydration. The mount stays hidden.
+    await expect(page.locator('.course-cele')).toHaveCount(0);
+  });
+
+  test('Bootcamp celebration: marking the 16th lesson fires bootcamp (NOT m4-launch)', async ({ page }) => {
+    const now = Date.now();
+    // Seed 15 done; let the rhythm click be the 16th.
+    const fifteenSlugs = [
+      'welcome','what-a-site-does','one-promise',
+      'customer','naming','positioning','palette-voice',
+      'menu','photos','hours-contact','gbp',
+      'local-seo','reviews','generator','deploy'
+    ];
+    await seedProgress(page, {
+      track: 'fresh',
+      completed: fifteenSlugs.map((l) => ({ lesson: l, at: now - 1000 })),
+      celebrations: {
+        'm1-orient':   now - 5000,
+        'm2-decide':   now - 4000,
+        'm3-assemble': now - 2000
+      },
+      startedAt: now - 7000,
+      updatedAt: now - 1000,
+      v: 1
+    });
+    await page.goto('/course/m4-launch/rhythm/', { waitUntil: 'networkidle' });
+
+    await page.locator('#courseMarkBtn').click();
+
+    // Bootcamp card visible; M4 module card NOT rendered (subsumed).
+    await expect(page.locator('.course-cele[data-celebration="bootcamp"]')).toBeVisible({ timeout: 3000 });
+    await expect(page.locator('.course-cele[data-celebration="m4-launch"]')).toHaveCount(0);
+
+    const progress = await page.evaluate(() => JSON.parse(localStorage.getItem('mtn:course:progress') || '{}'));
+    expect(progress.celebrations.bootcamp).toBeTruthy();
+    // M4 is intentionally NOT recorded as a separate celebration — by design.
+    expect(progress.celebrations['m4-launch']).toBeUndefined();
+  });
+
+  test('Rebuild track: audit + leaks (positions 5+6) satisfy M2 completion', async ({ page }) => {
+    const now = Date.now();
+    await seedProgress(page, {
+      track: 'rebuild',
+      completed: [
+        { lesson: 'customer', at: now - 3000 },
+        { lesson: 'audit',    at: now - 2000 },
+        { lesson: 'leaks',    at: now - 1000 }
+      ],
+      celebrations: {},
+      startedAt: now - 3000,
+      updatedAt: now - 1000,
+      v: 1
+    });
+    await page.goto('/course/m2-decide/palette-voice/', { waitUntil: 'networkidle' });
+
+    await page.locator('#courseMarkBtn').click();
+    await expect(page.locator('.course-cele[data-celebration="m2"]')).toBeVisible({ timeout: 3000 });
+  });
+
+  test('Operator data echoed: onePromise renders as a quote in M1 card', async ({ page }) => {
+    const now = Date.now();
+    await seedProgress(page, {
+      track: 'fresh',
+      completed: [
+        { lesson: 'welcome',          at: now - 2000 },
+        { lesson: 'what-a-site-does', at: now - 1000 }
+      ],
+      celebrations: {},
+      startedAt: now - 2000,
+      updatedAt: now - 1000,
+      v: 1
+    });
+    // Also seed MuntinContext with a one-promise the card should echo.
+    await page.addInitScript(() => {
+      try {
+        localStorage.setItem('mtn:context', JSON.stringify({
+          onePromise: 'The Tuesday-night breakfast place your block tells other blocks about.',
+          v: 1
+        }));
+      } catch (_) {}
+    });
+    await page.goto('/course/m1-orient/one-promise/', { waitUntil: 'networkidle' });
+
+    await page.locator('#courseMarkBtn').click();
+    const quote = page.locator('.course-cele[data-celebration="m1"] .course-cele-quote');
+    await expect(quote).toBeVisible({ timeout: 3000 });
+    await expect(quote).toContainText('Tuesday-night breakfast place');
+  });
+
+  test('Dismiss button removes the card from view', async ({ page }) => {
+    const now = Date.now();
+    await seedProgress(page, {
+      track: 'fresh',
+      completed: [
+        { lesson: 'welcome',          at: now - 2000 },
+        { lesson: 'what-a-site-does', at: now - 1000 }
+      ],
+      celebrations: {},
+      startedAt: now - 2000,
+      updatedAt: now - 1000,
+      v: 1
+    });
+    await page.goto('/course/m1-orient/one-promise/', { waitUntil: 'networkidle' });
+    await page.locator('#courseMarkBtn').click();
+    const card = page.locator('.course-cele[data-celebration="m1"]');
+    await expect(card).toBeVisible({ timeout: 3000 });
+    await card.locator('.course-cele-close').click();
+    await expect(card).toHaveCount(0);
+  });
+});
