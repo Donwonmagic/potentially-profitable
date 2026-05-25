@@ -193,6 +193,7 @@ const CHECKS = [
   ['Course objectives (idem)','inject-course-objectives.mjs','--check'],
   ['Course plain-language (idem)','inject-course-plain-language.mjs','--check'],
   ['Course mobile-css (idem)','inject-course-mobile-css.mjs','--check'],
+  ['Course og-images (idem)','inject-course-og-images.mjs','--check'],
   ['Article TL;DR',       'check-article-tldr.mjs',        '--check'],
   ['Article TL;DR retrofit (idem)','inject-article-tldr.mjs','--check'],
   ['Article HowTo schema (idem)','inject-article-howto-schema.mjs','--check'],
