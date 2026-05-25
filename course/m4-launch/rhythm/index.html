@@ -196,6 +196,20 @@ main{padding-top:64px}
 .rcw-pin--reviews{background:var(--teal-dark)}
 .rcw-pin--regen{background:var(--teal)}
 .rcw-pin--seo{background:var(--rust)}
+.rcw-list{margin:0 0 18px;padding:14px 16px;background:var(--cream);border:1px solid var(--line);border-radius:8px}
+.rcw-list-head{margin:0 0 10px;font-size:12.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--stone)}
+.rcw-list-items{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.rcw-list-item{display:grid;grid-template-columns:8px 1fr auto;align-items:baseline;gap:10px;padding:6px 0;border-bottom:1px solid var(--line);font-size:13.5px;line-height:1.4}
+.rcw-list-item:last-child{border-bottom:0}
+.rcw-list-item--off{color:var(--stone);grid-template-columns:1fr auto}
+.rcw-list-pin{width:8px;height:8px;border-radius:50%;display:inline-block;align-self:center}
+.rcw-list-pin.rcw-pin--hours{background:var(--status-good)}
+.rcw-list-pin.rcw-pin--reviews{background:var(--teal-dark)}
+.rcw-list-pin.rcw-pin--regen{background:var(--teal)}
+.rcw-list-pin.rcw-pin--seo{background:var(--rust)}
+.rcw-list-task{font-weight:600;color:var(--ink)}
+.rcw-list-cadence{font-size:12px;color:var(--stone);font-style:italic}
+.rcw-list-dates{grid-column:1/-1;font-size:12.5px;color:var(--ink-soft);font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
 .rcw-export{padding-top:12px;border-top:1px dashed var(--line)}
 .rcw-download{padding:10px 22px;font-family:inherit;font-size:14px;font-weight:600;border-radius:99px;border:1.5px solid var(--teal);background:var(--teal);color:var(--cream);cursor:pointer;transition:transform .08s ease}
 .rcw-download:hover{transform:translateY(-1px)}

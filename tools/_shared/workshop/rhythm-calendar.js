@@ -154,6 +154,8 @@ export function mount(rootEl, state, deps) {
     cadenceOptions: {
       off: 'apagado', weekly: 'semanal', biweekly: 'quincenal', monthly: 'mensual', quarterly: 'trimestral'
     },
+    listHead: 'El mismo plan, como lista:',
+    listOff: 'apagado',
     taskNames: {
       hours: 'Revisión de horarios', reviews: 'Respuesta a reseñas', regen: 'Regenerar + redesplegar', seo: 'Revisión de SEO'
     },
@@ -175,6 +177,8 @@ export function mount(rootEl, state, deps) {
     cadenceOptions: {
       off: 'off', weekly: 'weekly', biweekly: 'biweekly', monthly: 'monthly', quarterly: 'quarterly'
     },
+    listHead: 'The same plan, as a list:',
+    listOff: 'off',
     taskNames: {
       hours: 'Hours check', reviews: 'Reviews triage', regen: 'Regenerate + redeploy', seo: 'SEO sanity'
     },
@@ -233,6 +237,16 @@ export function mount(rootEl, state, deps) {
         '</table>',
       '</div>',
 
+      // List restatement of the same plan — always emitted, never behind a
+      // toggle. Mobile viewers who can\'t manipulate the small calendar
+      // cells get the upcoming dates as plain text. The hard-coupling
+      // sentence ("The same plan, as a list:") tells the operator the
+      // two views are equivalent.
+      '<div class="rcw-list">',
+        '<p class="rcw-list-head">', escHtml(t.listHead), '</p>',
+        '<ul class="rcw-list-items"></ul>',
+      '</div>',
+
       '<div class="rcw-export">',
         '<button type="button" class="rcw-download">', escHtml(t.download), '</button>',
         '<p class="rcw-export-help">', escHtml(t.downloadHelp), '</p>',
@@ -244,6 +258,7 @@ export function mount(rootEl, state, deps) {
 
   const els = {
     body:     rootEl.querySelector('.rcw-month-body'),
+    listEls:  rootEl.querySelector('.rcw-list-items'),
     download: rootEl.querySelector('.rcw-download'),
     live:     rootEl.querySelector('.rcw-live')
   };
@@ -291,6 +306,30 @@ export function mount(rootEl, state, deps) {
       rows.push('<tr>' + cells.slice(i, i + 7).join('') + '</tr>');
     }
     els.body.innerHTML = rows.join('');
+
+    // List restatement — text equivalent of the calendar grid above.
+    // Always emitted (never behind a toggle).
+    if (els.listEls) {
+      const items = TASKS.map((tid) => {
+        const cad = initial[tid] || 'off';
+        const days = nthCadenceDays(cad, year, month);
+        const taskName = t.taskNames[tid];
+        const cadenceLabel = t.cadenceOptions[cad] || cad;
+        if (cad === 'off' || days.length === 0) {
+          return '<li class="rcw-list-item rcw-list-item--off"><span class="rcw-list-task">' + escHtml(taskName) + '</span><span class="rcw-list-cadence">' + escHtml(t.listOff) + '</span></li>';
+        }
+        const dateStr = days.map((d) => t.monthNames[month].slice(0, 3) + ' ' + d).join(', ');
+        return [
+          '<li class="rcw-list-item">',
+            '<span class="rcw-list-pin ' + PIN_CLASS[tid] + '" aria-hidden="true"></span>',
+            '<span class="rcw-list-task">', escHtml(taskName), '</span>',
+            '<span class="rcw-list-cadence">', escHtml(cadenceLabel), '</span>',
+            '<span class="rcw-list-dates">', escHtml(dateStr), '</span>',
+          '</li>'
+        ].join('');
+      }).join('');
+      els.listEls.innerHTML = items;
+    }
   }
 
   rootEl.querySelectorAll('.rcw-cad-sel').forEach((sel) => {
