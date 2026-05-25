@@ -77,14 +77,15 @@ function buildBlock() {
 
     // ---- Touch-target floor (44x44 minimum) — coarse pointer ----
     '@media (pointer:coarse){',
-    '.course-pager a,.course-pager button,.track-picker button,.track-picker label.track-tile,.course-mc-btn,.gen-step>summary,.download-btn{min-height:44px}',
+    '.course-pager a,.course-pager button,.track-picker button,.track-picker label.track-tile,.course-mc-btn,.gen-step>summary,.download-btn,.c-track-card,.c-pre-form label{min-height:44px}',
     '.course-pager a,.course-pager button{padding-block:max(10px,calc((44px - 1em)/2))}',
+    '.c-pre-form label{padding:10px 12px;gap:12px}',
     '}',
 
     // ---- Press-scale microinteraction (coarse pointer + motion OK) ----
     '@media (pointer:coarse) and (prefers-reduced-motion:no-preference){',
-    '.course-pager a,.course-pager button,.course-mc-btn,.track-picker button,.download-btn,.course-widget button{transition:transform 80ms ease}',
-    '.course-pager a:active,.course-pager button:active,.course-mc-btn:active,.track-picker button:active,.download-btn:active,.course-widget button:active{transform:scale(.97)}',
+    '.course-pager a,.course-pager button,.course-mc-btn,.track-picker button,.download-btn,.course-widget button,.c-track-card,.c-pre-form label{transition:transform 80ms ease}',
+    '.course-pager a:active,.course-pager button:active,.course-mc-btn:active,.track-picker button:active,.download-btn:active,.course-widget button:active,.c-track-card:active,.c-pre-form label:active{transform:scale(.98)}',
     '}',
 
     // ---- Write-pulse keyframe (rail fires this on mtn:context-change) ----
