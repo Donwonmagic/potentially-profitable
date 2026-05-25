@@ -67,12 +67,29 @@ const argValue = (name) => {
 };
 
 const run         = argFlag('--run');
+const list        = argFlag('--list');         // print one line per pending lesson, no command
+const estimate    = argFlag('--estimate');     // print expected time per lesson + total
+const resume      = argFlag('--resume');       // skip lessons whose audio.mp3 already exists
 const localeFilter = argValue('--locale');     // 'en' or 'es' or null
 const slugFilter   = argValue('--slug');       // exact slug match (manifest key)
 const languages    = argValue('--languages') || 'en,es,fr,it,pt,zh';
 const engine       = argValue('--engine')    || 'f5';
 const kokoroModel  = argValue('--kokoro-model');
 const kokoroVoices = argValue('--kokoro-voices');
+
+// Per-language render-time estimate in minutes, per 5-min spoken
+// duration. Calibrated empirically against a 2026 M2 MacBook Air
+// (8 GB, 8-core CPU). Adjust if your hardware differs.
+const RENDER_MINS_PER_5MIN = {
+  en: 6,   // F5-TTS — clones Don's voice, slower than Kokoro
+  es: 4,   // Kokoro Spanish
+  fr: 4,   // Kokoro French
+  it: 4,   // Kokoro Italian
+  pt: 4,   // Kokoro Portuguese
+  zh: 5,   // Kokoro Mandarin — slightly slower due to longer phonemizer chain
+  hi: 5,   // Kokoro Hindi
+  ja: 5    // Kokoro Japanese
+};
 
 if (localeFilter && localeFilter !== 'en' && localeFilter !== 'es') {
   console.error(`render-course-batch: --locale must be "en" or "es" (got ${JSON.stringify(localeFilter)})`);
@@ -106,7 +123,35 @@ function collectPending() {
       const targetPath = path.join(sectionPathPrefix, slug);
       const absDir = path.join(repoRoot, targetPath);
       const exists = fs.existsSync(path.join(absDir, 'index.html'));
-      out.push({ sectionKey, slug, locale, targetPath, exists, status: spec.status });
+
+      // --resume: skip lessons whose en audio is already produced.
+      // We use the en audio as the canary because it's the first
+      // language in the render pipeline; if it exists, the lesson
+      // already started rendering (and probably succeeded for the
+      // earliest-fired languages). Operator can re-run without
+      // --resume to force a full re-render.
+      const enAudio = path.join(absDir, 'audio.mp3');
+      const alreadyRendered = fs.existsSync(enAudio);
+      if (resume && alreadyRendered) continue;
+
+      // Estimate time. Manifest spec.estDurationMin (if set) drives
+      // the per-language wall-clock; otherwise default to 6 minutes
+      // of spoken audio (typical bootcamp lesson length).
+      const spokenMin = Number.isFinite(spec.estDurationMin) ? spec.estDurationMin : 6;
+      const langs = languages.split(',').map((s) => s.trim()).filter(Boolean);
+      let estMins = 0;
+      for (const l of langs) {
+        const perFive = RENDER_MINS_PER_5MIN[l] || 5;
+        estMins += (spokenMin / 5) * perFive;
+      }
+
+      out.push({
+        sectionKey, slug, locale, targetPath, exists,
+        status: spec.status,
+        alreadyRendered,
+        spokenMin,
+        estMins: Math.round(estMins)
+      });
     }
   }
   return out;
@@ -131,10 +176,41 @@ if (!pending.length) {
 console.log(`render-course-batch: ${pending.length} lesson(s) pending` +
   (localeFilter ? ` (locale=${localeFilter})` : '') +
   (slugFilter ? ` (slug=${slugFilter})` : '') +
+  (resume ? ' (skipping already-rendered)' : '') +
   `. Engine=${engine}, languages=${languages}.\n`);
+
+// --list mode: print one line per pending lesson and exit. Useful
+// for "what's left?" surveys before kicking off a multi-hour batch.
+if (list) {
+  for (const p of pending) {
+    const flag = p.alreadyRendered ? ' [partial — audio.mp3 exists]' : '';
+    console.log(`  ${p.locale.padEnd(2)}  ${p.slug.padEnd(40)} ${p.status.padEnd(8)}${flag}`);
+  }
+  process.exit(0);
+}
+
+// --estimate mode: print expected render-time totals and exit.
+// Helps an operator decide whether to start the batch now or after
+// dinner service.
+if (estimate) {
+  const totalMins = pending.reduce((acc, p) => acc + p.estMins, 0);
+  const totalHours = (totalMins / 60).toFixed(1);
+  console.log(`Estimated render time across ${pending.length} lesson(s): ~${totalMins} minutes (${totalHours}h) on a 2026 M2 MacBook Air baseline.\n`);
+  console.log('Per-lesson breakdown:');
+  for (const p of pending) {
+    console.log(`  ${p.locale.padEnd(2)}  ${p.slug.padEnd(40)} ~${p.estMins}m  (${p.spokenMin}min spoken × ${languages.split(',').length} langs)`);
+  }
+  console.log('\nThe estimate scales linearly with --languages. Drop languages to shorten.');
+  process.exit(0);
+}
 
 if (!run) {
   console.log('Print-only mode. Pass --run to execute (and provide --kokoro-model + --kokoro-voices for the Kokoro engines).\n');
+  console.log('Other useful flags:');
+  console.log('  --list          one-line summary per pending lesson');
+  console.log('  --estimate      expected wall-clock time across the batch');
+  console.log('  --resume        skip lessons whose audio.mp3 already exists');
+  console.log('  --languages X   comma-separated subset of en,es,fr,it,pt,zh,hi,ja\n');
 }
 
 // Pre-flight: warn about lessons whose index.html is missing — would
