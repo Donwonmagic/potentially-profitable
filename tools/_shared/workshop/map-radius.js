@@ -11,6 +11,7 @@
  * scale and the radius shape without violating the suite's "no fetch"
  * posture. When real tiles arrive, the SVG can be swapped for a static
  * background-image without changing the widget's external contract.
+ * The file contract for those tiles lives at brand/maps/README.md.
  *
  * Writes deliveryRadius: number (miles, 0.5–5 in 0.25 increments) to
  * MuntinContext. Reads restaurantProfile.address for display only —
