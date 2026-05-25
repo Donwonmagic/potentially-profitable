@@ -63,9 +63,18 @@ function detectLocale(rootEl) {
 export function mount(rootEl, state, deps) {
   const page = rootEl.getAttribute('data-preview-page') || 'home';
   const locale = (deps && deps.locale) || detectLocale(rootEl);
+  const expandPhrases = locale === 'es'
+    ? { expand: 'Expandir vista previa', collapse: 'Colapsar', fullscreen: 'Pantalla completa', exitFullscreen: 'Salir de pantalla completa' }
+    : { expand: 'Expand preview', collapse: 'Collapse', fullscreen: 'View fullscreen', exitFullscreen: 'Exit fullscreen' };
+
+  // The L14 generator preview gets the Fullscreen API button in
+  // addition to the expand toggle. Detect by body data-course-lesson.
+  const isGenerator = typeof document !== 'undefined'
+    && document.body
+    && document.body.getAttribute('data-course-lesson') === 'generator';
 
   rootEl.innerHTML = [
-    '<div class="lpf">',
+    '<div class="lpf" data-expanded="false">',
       '<div class="lpf-bar" aria-hidden="true">',
         '<span class="lpf-bar-dot"></span>',
         '<span class="lpf-bar-dot"></span>',
@@ -76,16 +85,63 @@ export function mount(rootEl, state, deps) {
       // the AT-exposed source of truth. Sandbox is empty (most
       // restrictive) since the srcdoc is fully self-contained.
       '<iframe class="lpf-frame" sandbox="" tabindex="-1" aria-hidden="true" title="Live preview (visual only)" loading="lazy"></iframe>',
+      '<div class="lpf-controls">',
+        '<button type="button" class="rail-expand" aria-expanded="false" aria-controls="" data-state="collapsed">',
+          '<span aria-hidden="true" class="rail-expand-icon">⇱</span> ',
+          '<span class="rail-expand-label">', expandPhrases.expand, '</span>',
+        '</button>',
+        isGenerator
+          ? '<button type="button" class="rail-fullscreen" aria-label="' + expandPhrases.fullscreen + '"><span aria-hidden="true">⛶</span> ' + expandPhrases.fullscreen + '</button>'
+          : '',
+      '</div>',
       '<div class="lpf-summary sr-only" aria-live="off"></div>',
       '<p class="lpf-caption" role="status" aria-live="polite"></p>',
       '<p class="lpf-contrast-warn" hidden></p>',
     '</div>'
   ].join('');
 
+  const wrap    = rootEl.querySelector('.lpf');
   const iframe  = rootEl.querySelector('.lpf-frame');
   const summary = rootEl.querySelector('.lpf-summary');
   const caption = rootEl.querySelector('.lpf-caption');
   const warn    = rootEl.querySelector('.lpf-contrast-warn');
+  const expandBtn = rootEl.querySelector('.rail-expand');
+  const fullscreenBtn = rootEl.querySelector('.rail-fullscreen');
+
+  if (expandBtn) {
+    expandBtn.addEventListener('click', function () {
+      const next = wrap.getAttribute('data-expanded') === 'true' ? 'false' : 'true';
+      wrap.setAttribute('data-expanded', next);
+      expandBtn.setAttribute('aria-expanded', next);
+      expandBtn.setAttribute('data-state', next === 'true' ? 'expanded' : 'collapsed');
+      const labelEl = expandBtn.querySelector('.rail-expand-label');
+      if (labelEl) labelEl.textContent = next === 'true' ? expandPhrases.collapse : expandPhrases.expand;
+    });
+  }
+
+  if (fullscreenBtn) {
+    fullscreenBtn.addEventListener('click', function () {
+      // Try the Fullscreen API on the wrapper. On iOS Safari the iframe
+      // cannot enter fullscreen — fall back to the in-page expand state.
+      const target = wrap;
+      const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const opts = reduceMotion ? {} : { navigationUI: 'hide' };
+      const req = target.requestFullscreen
+        || target.webkitRequestFullscreen
+        || target.mozRequestFullScreen
+        || target.msRequestFullscreen;
+      if (req) {
+        try {
+          const p = req.call(target, opts);
+          if (p && typeof p.catch === 'function') p.catch(function () { target.setAttribute('data-expanded', 'true'); });
+        } catch (_) {
+          target.setAttribute('data-expanded', 'true');
+        }
+      } else {
+        target.setAttribute('data-expanded', 'true');
+      }
+    });
+  }
 
   // Localized phrases used in the widget's own chrome (not in the
   // rendered preview document — those live in the shared template).
@@ -153,7 +209,20 @@ export function mount(rootEl, state, deps) {
 
   paint(state);
 
-  function onChange() { paint(readState()); }
+  // Briefly mark the rail with data-pulse so the §COURSE-MOBILE
+  // write-pulse keyframe fires. Respects prefers-reduced-motion via
+  // the CSS rule, not via JS — the attribute toggles regardless and
+  // the CSS keyframe is short-circuited when motion is reduced.
+  function pulse() {
+    if (!wrap) return;
+    wrap.setAttribute('data-pulse', 'true');
+    // One frame to allow the animation to start, then ~750ms to let it finish.
+    requestAnimationFrame(function () {
+      setTimeout(function () { wrap.removeAttribute('data-pulse'); }, 750);
+    });
+  }
+
+  function onChange() { paint(readState()); pulse(); }
   const eventName = (typeof window !== 'undefined' && window.WorkshopKit && window.WorkshopKit.CONTEXT_CHANGE_EVENT) || 'mtn:context-change';
   window.addEventListener(eventName, onChange);
   // Also catch cross-tab updates (storage events on the shared bus).
