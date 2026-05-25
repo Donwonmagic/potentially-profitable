@@ -1,5 +1,5 @@
 /**
- * Lighthouse CI config — the 7-URL gate set the launch plan calls out.
+ * Lighthouse CI config — the URL gate set the launch plan calls out.
  *
  * Mobile-first (config.preset = "lighthouse:default" with the mobile
  * form factor + Slow 4G + 4× CPU throttling). Block merge on any miss.
@@ -12,19 +12,21 @@
  *   - export LHCI_BUILD_BASE_URL="https://<preview>.pages.dev"
  *   - npx @lhci/cli@latest autorun --config=./lighthouserc.js
  *
- * The 9-URL set covers the load-bearing surfaces:
+ * The URL set covers the load-bearing surfaces:
  *   /                                  — homepage (hero + library teaser)
  *   /window/                           — contact, JS-heavy
  *   /tools/                            — tools index (cards, mostly static)
  *   /tools/seo-grader/                 — a fetch-light tool result
  *   /tools/storefront-health/          — flagship: storefront scorecard tool,
  *                                         gated as the largest live surface
- *   /es/tools/storefront-health/       — bilingual parity gate: ES-mirrored
- *                                         flagship must hit the same budget
- *   /library/                          — (post-IA migration) library hub; today /learn/
- *   /blog/why-your-restaurant-loses-reservations-every-night/
- *                                      — long-form article body shape
+ *   /es/tools/storefront-health/       — bilingual parity gate
+ *   /learn/                            — library hub (post-IA migration target)
+ *   /blog/<flagship article>           — long-form article body shape
  *   /glossary/conversion-rate/         — short-form glossary term shape
+ *   /sheets/ + pilot sheet + ES sheets — Operator Sheets gate
+ *   /course/ + L4 + generator + ES     — Open the Doors bootcamp gate
+ *   /method/ + Workshop Kit hub        — brand pages pointing operators
+ *                                         at the bootcamp
  */
 
 const BASE = process.env.LHCI_BUILD_BASE_URL || 'http://localhost:8788';
@@ -43,6 +45,20 @@ const PATHS = [
   '/sheets/',
   '/sheets/recipe-cost-card/',
   '/es/sheets/',
+  // Open the Doors bootcamp — hub + canonical vertical-slice lesson
+  // + the terminal L14 generator. The lesson page is dense (rail
+  // iframe + multiple widget mounts) and the generator runs JSZip
+  // lazily; both are load-bearing perf gates.
+  '/course/',
+  '/course/m2-decide/customer/',
+  '/course/m4-launch/generator/',
+  '/es/course/',
+  // Method manifesto + Workshop Kit hub — the brand-defining pages
+  // that point operators at the bootcamp. The Workshop Kit hub
+  // loads a 18-card grid; a regression there cascades into the
+  // bootcamp's perceived quality.
+  '/method/',
+  '/method/workshop/',
 ];
 
 const url = PATHS.map((p) => BASE.replace(/\/+$/, '') + p);
