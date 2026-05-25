@@ -117,9 +117,26 @@ export function mount(rootEl, state, deps) {
       const isFirst = i === 0;
       const isLast = i === ordered.length - 1;
       const sevAttr = safeColor(severity, i, ordered.length);
+      // Non-color tier signal: when severity is enabled, render a
+      // visible text label (★ critical / watch / later) next to the
+      // rank number. Color reinforces, doesn't replace, the label —
+      // so operators with color vision deficiency don't lose the
+      // ranking semantics.
+      let tierLabel = '';
+      if (severity) {
+        const tierMatch = sevAttr.match(/data-tier="(\w+)"/);
+        const tier = tierMatch ? tierMatch[1] : '';
+        const tierStrings = locale === 'es'
+          ? { high: '★ crítico', mid: 'revisar', low: 'luego' }
+          : { high: '★ critical', mid: 'watch',  low: 'later' };
+        if (tierStrings[tier]) {
+          tierLabel = '<span class="dr-tier-label" data-tier="' + escHtml(tier) + '">' + escHtml(tierStrings[tier]) + '</span>';
+        }
+      }
       return [
         '<li class="dr-item" data-id="', escHtml(it.id), '" data-index="', i, '" ', sevAttr, ' tabindex="0">',
           '<div class="dr-rank" aria-hidden="true">', (i + 1), '</div>',
+          tierLabel,
           '<div class="dr-content">',
             '<p class="dr-label">', escHtml(label), '</p>',
             desc ? '<p class="dr-desc">' + escHtml(desc) + '</p>' : '',
