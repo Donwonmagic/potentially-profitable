@@ -486,6 +486,12 @@ main{padding-top:64px}
 
       <p>Pick one person, name a frequency, write it down. The L16 (30-day rhythm) lesson will fold this into a recurring calendar you can export — but the decision belongs here, while you're already thinking about photos.</p>
 
+      <h2>While you're triaging — audit the alt text</h2>
+
+      <p>Every "keep" photo gets transferred to the new site. Take 30 seconds per photo to also audit its <a class="term-link" href="/glossary/alt-text/">alt text</a> — the text screen readers read aloud to blind diners. On most existing restaurant sites it's either missing entirely, set to the file name ("IMG_4527.jpg"), or generic ("food image"). All three are functionally invisible to about 1 in 25 US adults.</p>
+
+      <p>For each "keep" photo, write a one-sentence description of the food — not the photo. "Roasted chicken with crispy skin on a bed of fingerling potatoes" — yes. "A close-up of our chicken dish" — no. Under 125 characters. The L14 generator will stamp these as the <code>&lt;img alt=""&gt;</code> attribute on every photo slot. This is the rebuild's chance to fix alt text the original site never had — without it, diners with visual impairments get an empty experience of your food.</p>
+
       <h2>What this changes downstream</h2>
 
       <p>The L14 generator reserves photo slots on the home page and menu page. Your "keep" photos load into them; your "refresh first" slots show a tasteful "Photo refresh in progress" placeholder; your "kill" photos disappear without a trace. Diners who land on the new site see honesty, not gaps.</p>
