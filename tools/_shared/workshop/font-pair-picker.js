@@ -118,9 +118,15 @@ export function mount(rootEl, state, deps) {
           const name = locale === 'es' ? p.name_es : p.name_en;
           const blurb = locale === 'es' ? p.blurb_es : p.blurb_en;
           const checked = p.id === initial;
+          // Explicit aria-label so screen readers announce a clean
+          // "Editorial modern, font pair 1 of 6" on focus — without
+          // also reading every styled sample text in the card.
+          const positionLabel = locale === 'es' ? ('par tipográfico ' + (i + 1) + ' de ' + PAIRS.length) : ('font pair ' + (i + 1) + ' of ' + PAIRS.length);
+          const cardLabel = name + ', ' + positionLabel + '. ' + blurb;
           return [
             '<div class="fpp-card" role="radio" tabindex="', (checked || (!initial && i === 0)) ? '0' : '-1', '"',
               ' aria-checked="', checked ? 'true' : 'false', '"',
+              ' aria-label="', escAttr(cardLabel), '"',
               ' data-id="', escAttr(p.id), '"',
               ' data-i="', i, '">',
               '<div class="fpp-preview">',

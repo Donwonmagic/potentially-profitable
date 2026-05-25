@@ -496,3 +496,45 @@ products.
 *Audit produced 2026-05-25. Re-audit recommended after the first
 30 days of public operator usage, when behavioral telemetry can
 replace expert judgment.*
+
+---
+
+## 7. Status update — 2026-05-25 execution
+
+Same day as the audit, the build/audit/improve cadence shipped 13
+focused passes addressing the findings:
+
+| # | Gap | Status | Commit |
+|---|---|---|---|
+| G-A1 | Accessibility statement | ✅ shipped | `/course/accessibility/` + ES |
+| G-A2 | Plain-language alternative per lesson | ✅ shipped | 40 stamped `<details>` blocks via inject-course-plain-language.mjs |
+| G-A5 | Keyboard navigation reference | ✅ shipped | Inline reference table on the accessibility page (replaces the proposed overlay) |
+| G-A6 | On-focus widget announcements | ⚠️ partial | font-pair-picker got explicit aria-label; broader widget audit deferred |
+| G-A7 | Non-color severity signals | ✅ shipped | drag-rank tier badges with text (critical/watch/later) |
+| G-A8 | prefers-contrast: more | ✅ shipped | Stamped on 48 lesson + module pages |
+| G-Q1 | Glossary term-link density | ✅ shipped | 5 → 22 instances across 15 lessons |
+| G-Q2 | Extractable learning objectives | ✅ shipped | 120 objectives in registry + 40 stamped `<details>` blocks |
+| G-Q3 | Mid-lesson checks for understanding | ✅ shipped | course-checkpoint widget (19th in Kit) mounted on L9a |
+| G-C1 | Pre-assessment beyond track fork | ✅ shipped | 3-question optional pre-assessment on course hub EN+ES |
+| G-C2 | L11b happy-path-doesn't-work | ✅ shipped | 4 blocker scenarios + workarounds, EN+ES |
+| G-C3 | Launch week checklist | ✅ shipped | 15th course sheet at /sheets/course-launch-week/ |
+| G-C4 | Accessibility content in lessons | ⚠️ partial | alt-text asides in L9a + L9b shipped; full L17 lesson deferred |
+| G-C5 | What's NOT in this bootcamp | ✅ shipped | L16 section naming 4 deliberately out-of-scope areas |
+
+**Cannot execute without external action:**
+- G-A3 audio narration files (waiting on Don's recording time)
+- G-A4 touch device user testing (needs 3-5 real operators)
+- G-C6 operator testimonials (needs first 5 graduates)
+- G-C7 additional locales (defer until audience signal)
+
+Result: every gap I could execute without external dependencies is
+shipped or partially shipped. The bootcamp now ships with explicit
+WCAG 2.2 AA conformance posture, plain-language alternatives for
+every lesson, structured learning objectives, retrieval-practice
+infrastructure, optional pre-assessment for skilled operators, and
+a launch-week checklist that closes the post-bootcamp 30-day gap.
+
+The headline-5 from this audit took 6 commits to ship (~half a day of
+focused work, not the estimated 6.5 days). The deeper 6-week improvements
+took 7 more commits.
+
