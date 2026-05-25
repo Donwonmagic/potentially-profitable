@@ -224,10 +224,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     {
       "@type": "DefinedTerm",
       "url": "https://muntin.digital/glossary/funnel/"
-    },
-    {
-      "@type": "DefinedTerm",
-      "url": "https://muntin.digital/glossary/commission/"
     }
   ]
 }
@@ -510,42 +506,47 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <p>Pass all five and the tool is at least honest about its data flow. Fail any of them and the tool either doesn't know or doesn't want you to know — both are reasons to leave.</p>
 
-            <figure class="article-figure" data-audio-alt="4-tier data model · what flows where. Public: Menu, hours, photos, address. Optimize aggressively. (open). Competitive-sensitive: Costs, suppliers, real commission tier. NDA only. (NDA). Operational-confidential: P&L, food cost, schedules. Inside the business. (contract). Regulated: SSN, EIN, card data, I-9s. Encrypted only. (locked). 4-tier data model · what flows where.">
-        <div class="recovery-stack reveal" role="img" aria-label="4-tier data model · what flows where">
-          <div class="recovery-row recovery-1">
-            <div class="recovery-num">1</div>
-            <div>
-              <h4 class="i18n">Public</h4>
-              <p class="recovery-sub i18n">Menu, hours, photos, address. Optimize aggressively.</p>
-            </div>
-            <div class="recovery-val">open</div>
-          </div>
-          <div class="recovery-row recovery-2">
-            <div class="recovery-num">2</div>
-            <div>
-              <h4 class="i18n">Competitive-sensitive</h4>
-              <p class="recovery-sub i18n">Costs, suppliers, real <!-- LIBRARY:autolink:start --><a href="/glossary/commission/" data-glossary-head="Commission" data-glossary-aka="the % a platform takes per order" data-glossary-blurb="The percentage an aggregator or payment platform keeps per transaction.">commission</a><!-- LIBRARY:autolink:end --> tier. NDA only.</p>
-            </div>
-            <div class="recovery-val">NDA</div>
-          </div>
-          <div class="recovery-row recovery-3">
-            <div class="recovery-num">3</div>
-            <div>
-              <h4 class="i18n">Operational-confidential</h4>
-              <p class="recovery-sub i18n">P&L, food cost, schedules. Inside the business.</p>
-            </div>
-            <div class="recovery-val">contract</div>
-          </div>
-          <div class="recovery-row recovery-4">
-            <div class="recovery-num">4</div>
-            <div>
-              <h4 class="i18n">Regulated</h4>
-              <p class="recovery-sub i18n">SSN, EIN, card data, I-9s. Encrypted only.</p>
-            </div>
-            <div class="recovery-val">locked</div>
-          </div>
+      <figure class="viz-figure article-figure" data-audio-alt="The five-test browser audit, in the order you run them. Test one: open the Network tab and type a number. If a request fires on every keystroke, the tool is shipping your inputs to a server before you submit — walk away. Test two: look for the privacy claim at the point of input, not three clicks deep in a footer. Test three: check for an account, newsletter, or cookie gate — &quot;enter your email to see your results&quot; means your numbers are the price of admission. Test four: filter Network by JS and look for Google Analytics, Meta Pixel, HubSpot, FullStory, Hotjar — third-party surveillance vendors recording inputs you did not agree to share. Test five: right-click and View Source. A small, readable, unminified script is auditable; a four-megabyte minified bundle is not. Any single failure ends the audit.">
+        <div class="viz-flow reveal">
+          <ol class="viz-flow__list">
+            <li class="viz-flow__step" data-state="bad" data-tone="teal">
+              <span class="viz-flow__num">1</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">Network on keystroke</p>
+                <p class="viz-flow__meta">Open Network tab, type a number. If the request list grows per keystroke, the tool is silently shipping inputs to a server. <strong>Fail = walk away.</strong></p>
+              </div>
+            </li>
+            <li class="viz-flow__step" data-state="bad" data-tone="teal">
+              <span class="viz-flow__num">2</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">Privacy at the point of input</p>
+                <p class="viz-flow__meta">A trustworthy tool tells you what it does with your data <em>where you are typing</em> — not in a footer link three clicks deep. <strong>Fail = walk away.</strong></p>
+              </div>
+            </li>
+            <li class="viz-flow__step" data-state="bad" data-tone="teal">
+              <span class="viz-flow__num">3</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">Account / email / cookie gate</p>
+                <p class="viz-flow__meta">&ldquo;Enter your email to see your results&rdquo; means your numbers are the price of admission. The tool is not free. <strong>Fail = walk away.</strong></p>
+              </div>
+            </li>
+            <li class="viz-flow__step" data-state="bad" data-tone="teal">
+              <span class="viz-flow__num">4</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">Third-party scripts</p>
+                <p class="viz-flow__meta">Filter Network by JS. GA, Meta Pixel, HubSpot, FullStory, Hotjar — surveillance vendors who were never part of the deal. <strong>Fail = walk away.</strong></p>
+              </div>
+            </li>
+            <li class="viz-flow__step" data-state="bad" data-tone="teal">
+              <span class="viz-flow__num">5</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">Readable source</p>
+                <p class="viz-flow__meta">Right-click &rarr; View Source. Small, unminified, every function named = auditable. 4MB minified SaaS bundle = you cannot. <strong>Fail = walk away.</strong></p>
+              </div>
+            </li>
+          </ol>
         </div>
-        <figcaption class="i18n">4-tier data model · what flows where</figcaption>
+        <figcaption>The five tests in run-order. Any one failure ends the audit; pass all five and the tool is at least honest about its data flow.</figcaption>
       </figure>
 
       <h2 id="2-the-four-tier-model-what-to-share-where">2. The four-tier model — what to share, where</h2>
@@ -561,50 +562,46 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <p>The principle: <strong>data never flows up a tier.</strong> A Tier 3 vendor doesn't get Tier 4 access just because they asked. A Tier 1 audience (a platform, a listing site) doesn't get Tier 2. The easiest way to reduce your attack surface is to stop volunteering data that wasn't actually required.</p>
 
-            <figure class="article-figure" data-audio-alt="5-test diagnostic · run before you type. Network on keystroke: Open Network tab. If requests fire as you type — walk away. (fail = leave). Privacy at point of input: Trust requires transparency where you're typing. (fail = leave). Account / email gate: &quot;Enter your email to see results&quot; = your numbers are the price. (fail = leave). Third-party scripts: GA, Pixel, FullStory, Hotjar — surveillance you didn't agree to. (fail = leave). Source code readable: 4MB minified bundle = you can't audit. Walk away. (fail = leave). 5-test diagnostic · run before you type.">
-        <div class="recovery-stack reveal" role="img" aria-label="5-test diagnostic · run before you type">
-          <div class="recovery-row recovery-1">
-            <div class="recovery-num">1</div>
-            <div>
-              <h4 class="i18n">Network on keystroke</h4>
-              <p class="recovery-sub i18n">Open Network tab. If requests fire as you type — walk away.</p>
-            </div>
-            <div class="recovery-val">fail = leave</div>
+      <figure class="viz-figure article-figure" data-audio-alt="The four-tier data model, drawn as four rings sized by how widely each tier is allowed to travel. Tier one — public data like menu, hours, photos, and address — is fully open: optimize aggressively because this is how customers find you. Tier two — competitive-sensitive data like supplier list, real cost of goods, and the actual commission tier — flows only under NDA, shown as roughly three-quarters of the open circle. Tier three — operational-confidential data like the monthly P and L, food cost percentage, and customer pipeline — sits at about half: inside the business, only under written contract. Tier four — regulated data like SSN, EIN, card data, and I-9s — is the smallest ring, encrypted-only, never email, never shared spreadsheets. The principle: data never flows up a tier.">
+        <div class="viz-rings reveal">
+          <div class="viz-ring" data-band="good" style="--score:100;">
+            <svg class="viz-ring__svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-labelledby="tier-1-title" focusable="false">
+              <title id="tier-1-title">Tier 1: Public data flows fully open</title>
+              <circle class="viz-ring__track" cx="60" cy="60" r="52" fill="none" stroke-width="8"/>
+              <circle class="viz-ring__fill" cx="60" cy="60" r="52" fill="none" stroke-width="8" transform="rotate(-90 60 60)"/>
+              <text class="viz-ring__num" x="60" y="60" text-anchor="middle">T1</text>
+            </svg>
+            <p class="viz-ring__label"><strong>Public</strong>Menu, hours, photos, address. Optimize aggressively.</p>
           </div>
-          <div class="recovery-row recovery-2">
-            <div class="recovery-num">2</div>
-            <div>
-              <h4 class="i18n">Privacy at point of input</h4>
-              <p class="recovery-sub i18n">Trust requires transparency where you're typing.</p>
-            </div>
-            <div class="recovery-val">fail = leave</div>
+          <div class="viz-ring" data-band="warn" style="--score:75;--delay:120ms;">
+            <svg class="viz-ring__svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-labelledby="tier-2-title" focusable="false">
+              <title id="tier-2-title">Tier 2: Competitive-sensitive data flows under NDA only</title>
+              <circle class="viz-ring__track" cx="60" cy="60" r="52" fill="none" stroke-width="8"/>
+              <circle class="viz-ring__fill" cx="60" cy="60" r="52" fill="none" stroke-width="8" transform="rotate(-90 60 60)"/>
+              <text class="viz-ring__num" x="60" y="60" text-anchor="middle">T2</text>
+            </svg>
+            <p class="viz-ring__label"><strong>Competitive-sensitive</strong>Suppliers, costs, real commission tier. NDA only.</p>
           </div>
-          <div class="recovery-row recovery-3">
-            <div class="recovery-num">3</div>
-            <div>
-              <h4 class="i18n">Account / email gate</h4>
-              <p class="recovery-sub i18n">"Enter your email to see results" = your numbers are the price.</p>
-            </div>
-            <div class="recovery-val">fail = leave</div>
+          <div class="viz-ring" data-band="warn" style="--score:50;--delay:240ms;">
+            <svg class="viz-ring__svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-labelledby="tier-3-title" focusable="false">
+              <title id="tier-3-title">Tier 3: Operational-confidential data stays inside the business under written contract</title>
+              <circle class="viz-ring__track" cx="60" cy="60" r="52" fill="none" stroke-width="8"/>
+              <circle class="viz-ring__fill" cx="60" cy="60" r="52" fill="none" stroke-width="8" transform="rotate(-90 60 60)"/>
+              <text class="viz-ring__num" x="60" y="60" text-anchor="middle">T3</text>
+            </svg>
+            <p class="viz-ring__label"><strong>Operational-confidential</strong>P&amp;L, food cost, pipeline, schedules. Contract only.</p>
           </div>
-          <div class="recovery-row recovery-4">
-            <div class="recovery-num">4</div>
-            <div>
-              <h4 class="i18n">Third-party scripts</h4>
-              <p class="recovery-sub i18n">GA, Pixel, FullStory, Hotjar — surveillance you didn't agree to.</p>
-            </div>
-            <div class="recovery-val">fail = leave</div>
-          </div>
-          <div class="recovery-row recovery-5">
-            <div class="recovery-num">5</div>
-            <div>
-              <h4 class="i18n">Source code readable</h4>
-              <p class="recovery-sub i18n">4MB minified bundle = you can't audit. Walk away.</p>
-            </div>
-            <div class="recovery-val">fail = leave</div>
+          <div class="viz-ring" data-band="bad" style="--score:20;--delay:360ms;">
+            <svg class="viz-ring__svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-labelledby="tier-4-title" focusable="false">
+              <title id="tier-4-title">Tier 4: Regulated data is encrypted only, never email, never shared spreadsheets</title>
+              <circle class="viz-ring__track" cx="60" cy="60" r="52" fill="none" stroke-width="8"/>
+              <circle class="viz-ring__fill" cx="60" cy="60" r="52" fill="none" stroke-width="8" transform="rotate(-90 60 60)"/>
+              <text class="viz-ring__num" x="60" y="60" text-anchor="middle">T4</text>
+            </svg>
+            <p class="viz-ring__label"><strong>Regulated</strong>SSN, EIN, card data, I-9s. Encrypted only. Never email.</p>
           </div>
         </div>
-        <figcaption class="i18n">5-test diagnostic · run before you type</figcaption>
+        <figcaption>Four tiers, four allowable audiences. The ring shrinks as the data tightens. The single rule: <strong>data never flows up a tier.</strong></figcaption>
       </figure>
 
       <h2 id="3-what-safe-looks-like-the-worked-example">3. What &ldquo;safe&rdquo; looks like — the worked example</h2>
@@ -652,6 +649,49 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       </aside>
 
       <p>The full version with each claim's specific DevTools verification step lives at <a href="/security/">/security/</a>. Four of them (1, 2, 4, 5) are <strong>build invariants</strong> — the cohesion-check pass that runs on every deploy fails CI if a future tool ships a forbidden pattern. So &ldquo;verifiable&rdquo; isn't marketing copy; it's a contract enforced by the build, with a public hash of the production bundle published at <a href="/security/integrity.txt"><code>/security/integrity.txt</code></a>.</p>
+
+      <figure class="viz-figure article-figure" data-audio-alt="The five tests walked against a Muntin tool, in order, with the DevTools result at each station. Test one — Network on keystroke: zero new requests fire as you type, because every calculation runs in your browser. Pass. Test two — privacy claim at the point of input: the privacy line sits next to the input itself, not in a footer link. Pass. Test three — account or email gate: no sign-in, no email capture, no cookie wall sits between you and the result. Pass. Test four — third-party scripts: only Plausible analytics is loaded, and it only sees bucketed event names, never raw inputs. Pass. Test five — readable source: right-click and View Source returns a small, unminified script with every math function named, auditable in the browser. Pass. All five tests pass, four of them enforced as build invariants in continuous integration.">
+        <div class="viz-flow reveal">
+          <ol class="viz-flow__list">
+            <li class="viz-flow__step" data-state="done" data-tone="teal">
+              <span class="viz-flow__num">1</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">Network on keystroke &mdash; pass</p>
+                <p class="viz-flow__meta">No <code>fetch()</code>, no <code>XMLHttpRequest</code>, no form POST fires when you type a number. Every calc runs in the browser. <strong>Build invariant.</strong></p>
+              </div>
+            </li>
+            <li class="viz-flow__step" data-state="done" data-tone="teal">
+              <span class="viz-flow__num">2</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">Privacy at the point of input &mdash; pass</p>
+                <p class="viz-flow__meta">The privacy line sits next to the input. No server to store inputs on, only <code>GET /tools/&lt;slug&gt;/</code> for the page itself. <strong>Build invariant.</strong></p>
+              </div>
+            </li>
+            <li class="viz-flow__step" data-state="done" data-tone="teal">
+              <span class="viz-flow__num">3</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">Account / email / cookie gate &mdash; pass</p>
+                <p class="viz-flow__meta">No sign-in. No email capture. No cookie wall. No localStorage or sessionStorage holding your inputs &mdash; close the tab, the form is empty.</p>
+              </div>
+            </li>
+            <li class="viz-flow__step" data-state="done" data-tone="teal">
+              <span class="viz-flow__num">4</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">Third-party scripts &mdash; pass</p>
+                <p class="viz-flow__meta">Only Plausible analytics loads, and it sees only bucketed event names &mdash; a $25 ticket becomes <code>25-39</code>. <strong>Build invariant.</strong></p>
+              </div>
+            </li>
+            <li class="viz-flow__step" data-state="done" data-tone="teal">
+              <span class="viz-flow__num">5</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">Readable source &mdash; pass</p>
+                <p class="viz-flow__meta">No build step, no minification, every math function named. View Source returns a script you can read in five minutes. <strong>Build invariant.</strong></p>
+              </div>
+            </li>
+          </ol>
+        </div>
+        <figcaption>The five tests run against a Muntin tool. Four of the five passes are enforced as build invariants &mdash; the cohesion check fails CI if a future tool ships a forbidden pattern.</figcaption>
+      </figure>
 
       <blockquote class="pullquote">
         <p>"Verifiable" should be a build flag, not a marketing claim. If the only proof is the brochure, treat it as the brochure.</p>

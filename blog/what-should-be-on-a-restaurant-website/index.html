@@ -287,6 +287,12 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   .further-reading a:last-child { border-bottom: 0; }
   .further-reading h4 { font-family: var(--font-display); font-size: 20px; font-weight: 500; margin: 0 0 4px; color: var(--ink); }
   .further-reading p { font-size: 14px; color: var(--stone); margin: 0; }
+  .snippet-box{padding:16px 20px;background:var(--cream-2);border:1px solid var(--line);border-radius:8px;margin:12px 0;font-size:15.5px;line-height:1.6;color:var(--ink)}
+  .snippet-box[data-tone="bad"]{border-left:3px solid var(--rust)}
+  .snippet-box[data-tone="good"]{border-left:3px solid var(--teal)}
+  .snippet-label{display:block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--stone);margin-bottom:6px;font-weight:600}
+  .snippet-box[data-tone="bad"] .snippet-label{color:var(--rust)}
+  .snippet-box[data-tone="good"] .snippet-label{color:var(--teal)}
 </style>
 <!-- article-abstract-mentions:start -->
 <script type="application/ld+json">
@@ -568,6 +574,63 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <p>Most restaurant websites have too many pages. A "Careers" page nobody updates. An "Awards" page with a list from three years ago. A "Gallery" page with forty photos and no captions. Every dead page dilutes the pages that actually convert — and confuses Google about what the site is really about.</p>
       <p>Here are the seven pages that earn their keep on nearly every independent restaurant site. Each one has a job. If a page doesn't have a job, it doesn't earn its place on the nav bar.</p>
 
+      <figure class="viz-figure article-figure" data-audio-alt="The seven pages every independent restaurant website needs, in order, each with the single job it has to do. One — homepage — answer what kind of food, where, and how to book in under five seconds. Two — menu — let someone decide what to eat before they arrive. Three — about or our story — give a first-time customer a reason to choose you over the place next door. Four — reservations or order online — convert intent into action with the fewest possible clicks. Five — private events or catering — capture high-value inquiries that have nowhere else to live on Google. Six — location and hours — remove every friction point between I want to go and I am walking in the door. Seven — contact — give people a way to reach a human without calling during dinner rush.">
+        <div class="viz-flow">
+          <ol class="viz-flow__list">
+            <li class="viz-flow__step" data-tone="teal">
+              <span class="viz-flow__num">1</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">Homepage</p>
+                <p class="viz-flow__meta">Answer what kind of food, where, and how to book &mdash; in under five seconds.</p>
+              </div>
+            </li>
+            <li class="viz-flow__step" data-tone="teal">
+              <span class="viz-flow__num">2</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">Menu</p>
+                <p class="viz-flow__meta">Let someone decide what to eat before they arrive &mdash; in real HTML text, not a PDF.</p>
+              </div>
+            </li>
+            <li class="viz-flow__step" data-tone="teal">
+              <span class="viz-flow__num">3</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">About / Our Story</p>
+                <p class="viz-flow__meta">Give a first-time customer a reason to choose you over the identical-looking restaurant next door.</p>
+              </div>
+            </li>
+            <li class="viz-flow__step" data-tone="teal">
+              <span class="viz-flow__num">4</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">Reservations / Order Online</p>
+                <p class="viz-flow__meta">Convert intent into action with the fewest possible clicks. Embed; don&rsquo;t link out.</p>
+              </div>
+            </li>
+            <li class="viz-flow__step" data-tone="teal">
+              <span class="viz-flow__num">5</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">Private Events / Catering</p>
+                <p class="viz-flow__meta">Capture high-value inquiries that have nowhere to live on a Google Business Profile.</p>
+              </div>
+            </li>
+            <li class="viz-flow__step" data-tone="teal">
+              <span class="viz-flow__num">6</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">Location &amp; Hours</p>
+                <p class="viz-flow__meta">Remove every friction point between &ldquo;I want to go&rdquo; and &ldquo;I&rsquo;m walking in the door.&rdquo;</p>
+              </div>
+            </li>
+            <li class="viz-flow__step" data-tone="teal">
+              <span class="viz-flow__num">7</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">Contact</p>
+                <p class="viz-flow__meta">Give people a way to reach a human without calling during dinner rush.</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+        <figcaption>Seven pages, each with one job. Read the section below for the details of what belongs on each.</figcaption>
+      </figure>
+
       <h3>1. Homepage</h3>
       <p><strong>Job:</strong> answer three questions in under five seconds — <em>what kind of food, where, and how to book.</em></p>
       <p>Your homepage is not your autobiography. It's a decision tool. A first-time visitor is standing on the sidewalk, phone in hand, deciding between you and the place next door. They need: cuisine type, neighborhood, vibe, hours, and a reservation button. Everything else is below the fold.</p>
@@ -590,6 +653,18 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       </ul>
 
       <p class="pull-quote">If your menu is a PDF, you've already lost the customer who's reading it on a phone in direct sunlight.</p>
+
+      <figure class="viz-figure article-figure" data-audio-alt="Two versions of the same menu, side by side. The first, marked as what is there now, is a PDF link — diners pinch and zoom on a phone, Google cannot crawl the dish names, screen readers cannot read it, and updating the prix fixe means re-exporting and re-uploading the file. The second, marked as what should be there, is real HTML — dish names, descriptions, and prices in plain text, organized by course with dietary markers and a last-updated date. Google indexes every dish, the page renders at readable sizes on every phone, screen readers can read it, and a price change takes thirty seconds.">
+        <div class="snippet-box" data-tone="bad">
+          <span class="snippet-label">What&rsquo;s there now</span>
+          A <strong>PDF menu</strong> linked from the nav. The diner taps it, waits for a download, pinches and zooms on a 4&times;6-inch page, and gives up. Google can&rsquo;t crawl the dish names. Screen readers can&rsquo;t read it. Every menu change means re-exporting and re-uploading the file.
+        </div>
+        <div class="snippet-box" data-tone="good">
+          <span class="snippet-label">What should be there</span>
+          <strong>Real HTML menu</strong> &mdash; dish names, descriptions, and prices in plain text, organized by course with clear headings, dietary markers (V, VG, GF) where they apply, and a &ldquo;last updated&rdquo; date. Google indexes every dish. The page renders at readable sizes on every phone. A price change takes thirty seconds.
+        </div>
+        <figcaption>The single biggest fix on most restaurant menus: stop linking the printed PDF and put the words on the page.</figcaption>
+      </figure>
 
       <h3>3. About / Our Story</h3>
       <p><strong>Job:</strong> give a first-time customer a reason to choose you over the identical-looking restaurant next door.</p>
@@ -634,6 +709,42 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <li><strong>Awards / Press.</strong> Fold a short press mention into the homepage or About page. A full page dedicated to awards reads as self-congratulatory unless you're updating it regularly.</li>
         <li><strong>Careers.</strong> Use your Google Business Profile or a jobs platform instead. A "Careers" page with no listings looks like you're either not hiring or not maintaining your site.</li>
       </ul>
+
+      <figure class="viz-figure article-figure" data-audio-alt="Four pages most independent restaurants should drop from the nav, each with the reason. Gallery — a page of forty unlabeled photos is a bounce factory; put the best three on the homepage and the menu instead. Blog — an empty blog with one post from two years ago tells Google and customers the site is neglected; only keep one if you will publish at least once a month. Awards or press — a full page reads as self-congratulatory unless updated; fold a short mention into the homepage or About. Careers — a page with no listings looks like you are not hiring or not maintaining the site; use the Google Business Profile or a jobs platform instead.">
+        <div class="viz-flow">
+          <ol class="viz-flow__list">
+            <li class="viz-flow__step" data-state="bad">
+              <span class="viz-flow__num">&times;</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">Gallery</p>
+                <p class="viz-flow__meta">Forty unlabeled photos is a bounce factory. Put your best three on the homepage and menu instead.</p>
+              </div>
+            </li>
+            <li class="viz-flow__step" data-state="bad">
+              <span class="viz-flow__num">&times;</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">Blog</p>
+                <p class="viz-flow__meta">An empty blog with one post from two years ago tells Google &mdash; and customers &mdash; the site is neglected.</p>
+              </div>
+            </li>
+            <li class="viz-flow__step" data-state="bad">
+              <span class="viz-flow__num">&times;</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">Awards / Press</p>
+                <p class="viz-flow__meta">Reads as self-congratulatory unless updated regularly. Fold a short mention into the homepage or About page.</p>
+              </div>
+            </li>
+            <li class="viz-flow__step" data-state="bad">
+              <span class="viz-flow__num">&times;</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">Careers</p>
+                <p class="viz-flow__meta">A page with no listings reads as &ldquo;not hiring or not maintained.&rdquo; Use the Google Business Profile or a jobs platform.</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+        <figcaption>Four pages most restaurants keep out of habit. Cut them and the seven that remain carry more weight on every surface.</figcaption>
+      </figure>
 
       <h2 id="the-structure-that-earns-its-keep">The structure that earns its keep</h2>
       <p>Here's the sitemap I start with for most independent restaurant builds:</p>

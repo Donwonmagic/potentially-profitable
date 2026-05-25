@@ -937,6 +937,56 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <h2 id="the-six-leaks-in-order">The six leaks, in order</h2>
       <p>Here's what's actually going wrong at each drop point, and how to plug it.</p>
 
+      <figure class="viz-figure article-figure" data-audio-alt="The six leaks in the order they hit a visitor on a restaurant website. One — your site is slow on a phone, the largest single drop at fifteen visitors per hundred. Two — your menu is a PDF that won't render on iPhone, costing eight more. Three — your hours are hiding in the footer, costing four. Four — the reservation button is buried or missing, costing ten. Five — the booking flow has too many fields and asks for an account, the second largest leak at thirteen. Six — confirmation anxiety after the booking, the smallest at three. The first four are code or copy fixes. The last two are platform and operations.">
+        <div class="viz-flow">
+          <ol class="viz-flow__list">
+            <li class="viz-flow__step" data-tone="rust">
+              <span class="viz-flow__num">1</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">Site slow on a phone</p>
+                <p class="viz-flow__detail">The largest single drop &mdash; about 15 visitors per 100 leave before the site finishes loading. Google's mobile benchmark threshold is 3 seconds; most restaurant sites land at 4-7.</p>
+              </div>
+            </li>
+            <li class="viz-flow__step" data-tone="rust">
+              <span class="viz-flow__num">2</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">Menu is a PDF</p>
+                <p class="viz-flow__detail">Costs another 8 visitors. Safari hands the PDF to a separate viewer, rendered at desktop size &mdash; a wall of pinch-zoom text on a phone.</p>
+              </div>
+            </li>
+            <li class="viz-flow__step" data-tone="rust">
+              <span class="viz-flow__num">3</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">Hours are hiding</p>
+                <p class="viz-flow__detail">Costs 4 more. The single most-asked question on a restaurant site is "are you open right now?" &mdash; and the answer is usually buried in the footer.</p>
+              </div>
+            </li>
+            <li class="viz-flow__step" data-tone="rust">
+              <span class="viz-flow__num">4</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">Reservation button buried or missing</p>
+                <p class="viz-flow__detail">Costs 10 visitors. Fitts's Law: the harder a button is to reach, the less often people press it. A sticky bottom CTA is roughly an hour of work.</p>
+              </div>
+            </li>
+            <li class="viz-flow__step" data-tone="rust">
+              <span class="viz-flow__num">5</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">Reservation flow friction</p>
+                <p class="viz-flow__detail">The second-largest leak at 13. Most third-party widgets demand 8-12 fields and a forced account; every extra screen correlates with dropoff.</p>
+              </div>
+            </li>
+            <li class="viz-flow__step" data-tone="rust">
+              <span class="viz-flow__num">6</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">Confirmation anxiety</p>
+                <p class="viz-flow__detail">Small on the funnel (3) but invisible to you. No email, no text, no paper trail &mdash; the customer doubts the booking and quietly calls somewhere else.</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+        <figcaption>The six leaks in order. Severity numbers are the illustrative per-100-visitor drops from the funnel above; the order is the order they hit the visitor.</figcaption>
+      </figure>
+
       <h3>Leak #1 — Your site is slow on a phone</h3>
       <p>If your homepage takes longer than three seconds to load on a phone, you've probably already lost about half of the people who tapped your link. That's not my number — it's Google's. Their mobile page-speed research consistently shows that <strong>the majority of mobile visitors bounce from pages that take longer than three seconds to load</strong>, and every additional second after that makes the bounce rate climb sharply.</p>
 
@@ -990,6 +1040,29 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       </details>
 
       <p><strong>How to test it in thirty seconds:</strong> pretend you're a first-time customer and actually book a table at your own restaurant end-to-end. Count the distinct screens and required fields. If you got past six, that's Leak #5 — and most restaurants I audit land between eight and twelve.</p>
+
+      <figure class="viz-figure article-figure" data-audio-alt="A rough field-count comparison across three reservation flows. A clean embedded form needs five fields — name, date, time, party size, email. The typical third-party booking widget asks for eight to twelve, including a forced account and a phone-verification step. The worst flows audit at thirteen or more, with a credit card hold and a captcha. Every additional field correlates with dropoff. Counts are from restaurant audits; not a single published dataset.">
+        <div class="viz-bars">
+          <p class="viz-bars__title">Fields required to complete a reservation</p>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">Clean embedded form</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.385"></span></div>
+            <p class="viz-bars__num">5 fields</p>
+          </div>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">Typical 3rd-party widget</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:0.769"></span></div>
+            <p class="viz-bars__num">8&ndash;12</p>
+          </div>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">Worst flows audited</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:1"></span></div>
+            <p class="viz-bars__num">13+</p>
+          </div>
+        </div>
+        <figcaption>Field counts observed across independent restaurant audits. Baymard's checkout research finds account-creation requirements are a top-three cited reason for abandonment; reservation forms inherit the same dynamic.</figcaption>
+      </figure>
+
       <p><strong>The fix:</strong> pick a reservation platform whose default flow has fewer steps (the major players vary a lot), or — if your volume is low enough — use a simple embedded form that asks for name, date, time, party size, and email, and emails your host stand. When your volume grows, you revisit the platform decision. Don't pay a complex system for simple bookings.</p>
 
       <h3>Leak #6 — Confirmation anxiety</h3>
@@ -999,6 +1072,29 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <h2 id="the-fix-math">The fix math</h2>
       <p>Here's the thing that usually surprises restaurant owners most: <strong>fixing the top four leaks — slow load, PDF menu, hidden hours, and missing reservation button — typically takes a single focused afternoon</strong> on a custom-built site. Four of the six leaks, closed in one session, for the cost of an audit plus a few hours of work. On a template site like Wix or Squarespace, three of the four aren't really fixable without a rebuild, which is the quiet cost of the "cheap" platform — you can't close the leaks even after you find them.</p>
+
+      <figure class="viz-figure article-figure" data-audio-alt="Roughly how much of the lost traffic each tier of fixes recovers. Closing just the first three leaks — slow load, PDF menu, hidden hours — typically recovers eight to fifteen percent of lost bookings. Closing the top four, which adds a sticky reservation button, takes a single focused afternoon on a custom site. Closing all six, which adds reservation-flow simplification and a real confirmation email, recovers somewhere between thirty and fifty percent. The compounding is real because each fix unlocks the steps below it.">
+        <div class="viz-bars">
+          <p class="viz-bars__title">Bookings recovered by tier of fix</p>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">Fix first 3 leaks</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:0.3"></span></div>
+            <p class="viz-bars__num">8&ndash;15%</p>
+          </div>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">Fix top 4 (one afternoon)</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.5"></span></div>
+            <p class="viz-bars__num">15&ndash;25%</p>
+          </div>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">Close all 6 leaks</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:1"></span></div>
+            <p class="viz-bars__num">30&ndash;50%</p>
+          </div>
+        </div>
+        <figcaption>Illustrative recovery ranges based on patterns from restaurant website audits. The 8&ndash;15% and 30&ndash;50% endpoints are the ones called out in the post; your numbers depend on how badly the site leaks today.</figcaption>
+      </figure>
+
       <p>The remaining two leaks (reservation flow friction and confirmation anxiety) usually aren't code problems at all — they're platform-choice or operational problems. They take longer to address, but they're almost always worth the effort.</p>
       <p>If you close all six, you'll probably recover somewhere between 30 and 50% of the traffic you're losing today. Your actual recovery will depend on your menu, your clientele, and how badly the site was leaking to start with — but the direction is one-way, and the compounding is real. Every month you leave the leaks in place, you're lighting money on fire that the customer was already holding out to you.</p>
 

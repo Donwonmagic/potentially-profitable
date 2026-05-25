@@ -661,6 +661,28 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <p><strong>Case 3 — Site at 65-70, partial rebuild:</strong> Platform fine, brand tired. Keep the CMS, replace the front-end and the photos at roughly 40% of a full-rebuild cost. Score moves into the low-mid 80s. Bookings tick up — but not as steeply as Case 2. The honest tradeoff worth flagging: a partial rebuild caps your ceiling at whatever the underlying platform allows for schema, speed, and indexing. Sometimes the right call; sometimes worth revisiting in 18 months when the platform's ceiling becomes the next constraint.</p>
 
+      <figure class="viz-figure article-figure" data-audio-alt="Storefront Health scores after each case's recommended action. Case A, the bistro that fixed leaks instead of rebuilding, moved from a starting score of seventy-five to eighty-eight. Case B, the sub-sixty site that committed to a full custom rebuild, lands in the high eighties or nineties — roughly ninety. Case C, the mid-range site that took the partial rebuild, moves from sixty-five to seventy into the low-mid eighties — roughly eighty-two. Three different starting scores, three different scopes of work, three landing spots in the same green band.">
+        <div class="viz-bars">
+          <p class="viz-bars__title">Storefront Health score after each case's action</p>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">Case A · fix the leaks</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.88"></span></div>
+            <p class="viz-bars__num">75 &rarr; 88</p>
+          </div>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">Case B · full rebuild</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.90"></span></div>
+            <p class="viz-bars__num">&lt;60 &rarr; ~90</p>
+          </div>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">Case C · partial rebuild</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:0.82"></span></div>
+            <p class="viz-bars__num">65&ndash;70 &rarr; ~82</p>
+          </div>
+        </div>
+        <figcaption>Three starting scores, three scopes of work, three landings in the green band &mdash; but Case C's ceiling sits below the other two, which is the partial-rebuild tradeoff in one chart.</figcaption>
+      </figure>
+
       <blockquote class="pullquote">
         <p>Doing nothing isn't neutral. The gap to your local competitors widens every quarter your site doesn't.</p>
       </blockquote>
@@ -668,6 +690,63 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <blockquote class="pullquote">
         <p>Most operators don't rebuild because they can't picture what the rebuilt thing looks like. The framework is a forcing function. Run the questions. The answer almost always already exists.</p>
       </blockquote>
+
+      <figure class="viz-figure article-figure" data-audio-alt="The seven-question rebuild diagnostic as a checklist. One: how does the site score on Storefront Health — sub-sixty is a rebuild signal, sixty to seventy-nine is diagnose, eighty plus is fix the leaks. Two: can the CMS update without breaking — if last time it broke, that is a rebuild signal. Three: does the menu live in HTML — PDFs, images, and Wix widgets are invisible to dish-level search. Four: how does the site score on Core Web Vitals — LCP above four seconds on mobile, or CLS above zero point two five, both push toward rebuild. Five: can you ship a small change in under an hour — a holiday-hours update is the test. Six: does the brand match the room — homepage on the phone next to the dining room. Seven: what happens to bookings if you do nothing for eighteen months — flat-or-declining with a twenty-four-month-old site is rarely actually neutral. Three or more yes answers means the rebuild is past due.">
+        <div class="viz-flow">
+          <ol class="viz-flow__list">
+            <li class="viz-flow__step" data-tone="teal">
+              <span class="viz-flow__num">1</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">Storefront Health score</p>
+                <p class="viz-flow__detail">Sub-60 = rebuild now. 60&ndash;79 = walk the rest of the questions. 80+ = fix the lowest sub-score and defer.</p>
+              </div>
+            </li>
+            <li class="viz-flow__step" data-tone="teal">
+              <span class="viz-flow__num">2</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">CMS updates without breaking</p>
+                <p class="viz-flow__detail">If the answer is &ldquo;we don&rsquo;t, because it broke last time,&rdquo; that&rsquo;s a rebuild signal &mdash; technical debt compounds quietly.</p>
+              </div>
+            </li>
+            <li class="viz-flow__step" data-tone="teal">
+              <span class="viz-flow__num">3</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">Menu lives in HTML</p>
+                <p class="viz-flow__detail">PDF, image, or Wix widget = invisible to dish-level Google queries and AI search. Real HTML menu alone sometimes defers a rebuild.</p>
+              </div>
+            </li>
+            <li class="viz-flow__step" data-tone="teal">
+              <span class="viz-flow__num">4</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">Core Web Vitals pass</p>
+                <p class="viz-flow__detail">LCP above 4s on mobile, or CLS above 0.25, means you&rsquo;re both ranked-down and bouncing visitors before the menu loads.</p>
+              </div>
+            </li>
+            <li class="viz-flow__step" data-tone="teal">
+              <span class="viz-flow__num">5</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">Small change ships in under an hour</p>
+                <p class="viz-flow__detail">Try updating holiday hours right now. If you can&rsquo;t &mdash; no access, complex CMS, requires a developer &mdash; that operational burden is already a leak.</p>
+              </div>
+            </li>
+            <li class="viz-flow__step" data-tone="rust">
+              <span class="viz-flow__num">6</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">Brand matches the room</p>
+                <p class="viz-flow__detail">Open the homepage on your phone, then walk into the dining room. If the room is considered and the site is templated, that&rsquo;s a separate brand-design signal.</p>
+              </div>
+            </li>
+            <li class="viz-flow__step" data-tone="rust">
+              <span class="viz-flow__num">7</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">18-month do-nothing projection</p>
+                <p class="viz-flow__detail">Flat-or-declining bookings on a 24-month-old site isn&rsquo;t neutral &mdash; the gap to local competitors widens even when your numbers look stable.</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+        <figcaption>Seven questions, two phases. Steps 1&ndash;5 are technical signals; 6&ndash;7 are the brand and trend signals. Three or more &ldquo;yes&rdquo; answers means the rebuild is past due.</figcaption>
+      </figure>
 
       <h2 id="how-to-use-this-framework">How to use this framework</h2>
 

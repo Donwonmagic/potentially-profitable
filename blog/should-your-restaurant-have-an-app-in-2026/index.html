@@ -695,6 +695,33 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <p>Agencies pitching restaurant apps never want to discuss the install rate. Here&rsquo;s the uncomfortable truth: the average independent restaurant that launches a native app sees <strong>under 2% of its guests install it</strong>, and of those who install, fewer than a third are still using it six months later. I&rsquo;ve seen the dashboards. You get a flurry of downloads in the first two weeks from regulars who want to be supportive, then the curve flattens.</p>
 
+      <figure class="viz-figure article-figure" data-audio-alt="The reach funnel for an independent-restaurant native app, starting from one hundred percent of guests. Roughly two percent of guests install the app — that is the install ceiling. Of those installers, fewer than thirty percent are still active six months later, which works out to under zero point six percent of the original guest base still using the app at the six-month mark. For comparison, a mobile website reaches one hundred percent of guests with zero install friction. The bars show the same one-hundred-percent denominator: website at one hundred percent, app install at two percent, and six-month app retention at zero point six percent.">
+        <div class="viz-bars">
+          <p class="viz-bars__title">Reach of each channel as a share of your guest base</p>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">Mobile website (any visit)</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:1.0"></span></div>
+            <p class="viz-bars__num">100%</p>
+          </div>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">SMS opt-in (at host stand)</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.20"></span></div>
+            <p class="viz-bars__num">~20%</p>
+          </div>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">Native app &mdash; installed</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:0.02"></span></div>
+            <p class="viz-bars__num">&lt;2%</p>
+          </div>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">Native app &mdash; still active at 6 mo</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:0.006"></span></div>
+            <p class="viz-bars__num">&lt;0.6%</p>
+          </div>
+        </div>
+        <figcaption>An independent-restaurant app reaches under 2% of guests at the install stage and under 0.6% at the six-month mark. Per industry benchmarks from Toast, Bluedot, and Restaurant Dive.</figcaption>
+      </figure>
+
       <p>This isn&rsquo;t because your restaurant isn&rsquo;t beloved. It&rsquo;s because your guests already have too many apps on their phone, and yours is the 187th notification competing for their attention. They love you. They also love the dry cleaner across the street and the gym around the corner, and none of those places have convinced them to install an app either. The friction-to-benefit ratio just isn&rsquo;t there.</p>
 
       <p>A website, by contrast, works on install rate 100%. Every single person who types your URL or taps your <a href="/glossary/gbp/">Google Business Profile</a> is inside your "app" with zero friction. An SMS opt-in works on <em>behavior</em> &mdash; the guest texts a short code at the table and is signed up, no download required. A PWA (progressive web app) saved to the home screen looks exactly like a native app, launches with a tap, and installs in three seconds from a button on your website. Either path keeps the relationship in an <a href="/glossary/owned-channel/">owned channel</a> &mdash; you don&rsquo;t pay a platform every time a guest finds their way back.</p>
@@ -717,6 +744,42 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <p>If your concept is "sit-down independent restaurant where people walk in, eat, and leave," that isn&rsquo;t app-shaped. The app is marketing overhead. If your concept is "subscription tasting club that ships a box every Tuesday," the app might be the entire distribution mechanism. Different animals.</p>
 
+      <figure class="viz-figure article-figure" data-audio-alt="A four-question decision tree for whether your restaurant should build a native app. Question one: do you have at least five thousand app-relevant transactions per week — pre-orders, mobile orders, and reservations combined. If no, stop and don't build an app. If yes, go to question two. Question two: is the app the product itself — a subscription dining club, a meal-prep service, a ghost-kitchen aggregator. If yes, build the app, because the app is the product. If no, go to question three. Question three: are you already running five or more locations with mature loyalty velocity. If no, the math doesn't pencil out and you should not build. If yes, go to question four. Question four: has an honest profit-margin model shown payback inside eighteen months — not download counts, not engagement, actual recovered dollars. If yes, build. If no, don't. Steps one through three are in teal as gating questions; step four, the actual go-no-go gate, is in rust.">
+        <div class="viz-flow">
+          <ol class="viz-flow__list">
+            <li class="viz-flow__step" data-tone="teal">
+              <span class="viz-flow__num">1</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">5,000+ app-relevant transactions per week?</p>
+                <p class="viz-flow__detail">Pre-orders, mobile orders, and reservations combined. Below that volume, the build cost can&rsquo;t amortize. <strong>No &rarr; stop here.</strong> Yes &rarr; next question.</p>
+              </div>
+            </li>
+            <li class="viz-flow__step" data-tone="teal">
+              <span class="viz-flow__num">2</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">Is the app the product itself?</p>
+                <p class="viz-flow__detail">Subscription dining club, meal-prep, ghost-kitchen aggregator. <strong>Yes &rarr; build &mdash; the app IS the business.</strong> No &rarr; next question.</p>
+              </div>
+            </li>
+            <li class="viz-flow__step" data-tone="teal">
+              <span class="viz-flow__num">3</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">5+ locations with mature loyalty velocity?</p>
+                <p class="viz-flow__detail">Two locations isn&rsquo;t enough; the order-frequency math still doesn&rsquo;t work. <strong>No &rarr; don&rsquo;t build.</strong> Yes &rarr; final gate.</p>
+              </div>
+            </li>
+            <li class="viz-flow__step" data-tone="rust">
+              <span class="viz-flow__num">4</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">Honest payback model under 18 months?</p>
+                <p class="viz-flow__detail">Recovered profit margin in real dollars &mdash; not downloads, not &ldquo;engagement.&rdquo; If your agency can&rsquo;t show this on a comparable client, the answer is no.</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+        <figcaption>Four gates. Almost every independent restaurant stops at the first one. The two that survive all four are the only places the app math works.</figcaption>
+      </figure>
+
       <p class="pull-quote">The reasons you want an app are real. The app is just a much more expensive and much less-used way to get them than the tools that already live on your guest&rsquo;s phone.</p>
 
       <div class="inline-cta">
@@ -726,6 +789,34 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
         </a>
       </div>
+
+      <h2 id="the-five-year-cost-of-each-path">The five-year cost of each path</h2>
+
+      <p>Sticker shock is the wrong frame. The agency quotes you a build number; the real comparison is what each path costs over the life of the relationship. Below, the alternative stack from the map above versus a mid-range native-app build, totaled across five years. Both numbers assume the app actually ships and stays live.</p>
+
+      <figure class="viz-figure article-figure" data-audio-alt="A five-year total-cost-of-ownership comparison across three paths. The alternative stack — POS-native loyalty included with your point of sale, an SMS list at roughly thirty dollars a month, a PWA built from your existing ordering page, and a Google Business Profile audit — comes out to about three thousand six hundred dollars over five years, almost entirely in the SMS-list subscription. A progressive web app added on top, with a developer hour or two for the install prompt and a custom icon, runs to about five thousand dollars over five years. A native app, by contrast, runs about sixty thousand dollars over five years: twenty-five thousand to build, then roughly six hundred dollars a month in maintenance, hosting, and the Apple and Google developer accounts. The native app is roughly sixteen times the cost of the alternative stack to deliver the same underlying outcomes.">
+        <div class="viz-bars">
+          <p class="viz-bars__title">Total cost over 5 years (build + ongoing)</p>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">Alternative stack (POS + SMS + GBP)</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.06"></span></div>
+            <p class="viz-bars__num">~$3.6K</p>
+          </div>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">Stack + PWA from ordering page</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.083"></span></div>
+            <p class="viz-bars__num">~$5K</p>
+          </div>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">Native app (mid-range build)</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:1.0"></span></div>
+            <p class="viz-bars__num">~$60K</p>
+          </div>
+        </div>
+        <figcaption>$25K build plus ~$600/mo over 60 months runs the native-app path to roughly $60K. The same underlying outcomes &mdash; loyalty, messaging, own-pocket ordering, brand &mdash; cost roughly 16&times; less through the alternative stack.</figcaption>
+      </figure>
+
+      <p>Two columns of the same spreadsheet. The native app delivers nothing the alternative stack doesn&rsquo;t already deliver &mdash; loyalty, messaging, an app-like icon on the home screen, brand presence &mdash; for sixteen times the money. The only thing the app delivers <em>uniquely</em> is the agency&rsquo;s ongoing retainer.</p>
 
       <h2 id="what-to-do-instead-in-order">What to do instead, in order</h2>
 

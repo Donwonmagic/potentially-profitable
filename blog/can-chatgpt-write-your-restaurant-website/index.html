@@ -317,6 +317,16 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   .prompt-card.stage-3 blockquote { color: var(--cream); }
   .prompt-card .prompt-note { font-family: var(--font-body); font-size: 13px; color: var(--stone-2); margin: 12px 0 0; font-style: normal; }
   .prompt-card.stage-3 .prompt-note { color: rgba(250,247,242,0.55); }
+
+  /* ============ SNIPPET-BOX (bad / good comparison) ============ */
+  /* Standard snippet-box pattern used across the library; rust border
+     for the AI-default, teal border for the operator-edited version. */
+  .snippet-box{padding:16px 20px;background:var(--cream-2);border:1px solid var(--line);border-radius:8px;margin:12px 0;font-size:15.5px;line-height:1.6;color:var(--ink)}
+  .snippet-box[data-tone="bad"]{border-left:3px solid var(--rust)}
+  .snippet-box[data-tone="good"]{border-left:3px solid var(--teal)}
+  .snippet-label{display:block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--stone);margin-bottom:6px;font-weight:600}
+  .snippet-box[data-tone="bad"] .snippet-label{color:var(--rust)}
+  .snippet-box[data-tone="good"] .snippet-label{color:var(--teal)}
 </style>
 <!-- article-abstract-mentions:start -->
 <script type="application/ld+json">
@@ -639,6 +649,18 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <p>The key is the prompt has to include your voice samples. Give ChatGPT three menu items that are already written the way you want, then ask it to match that register for the rest. Without the voice samples, you get the stage-1 output above, applied fifty times.</p>
 
+      <figure class="viz-figure article-figure" data-audio-alt="Same prep note for the same dish, two outputs. The prep note: brick chicken, lemon, rosemary, served over potato. The AI default, no voice samples in the prompt: 'Our succulent brick chicken is expertly prepared with fresh lemon and aromatic rosemary, served over a bed of perfectly seasoned potato.' Generic, sensory-by-numbers, reads like a hundred other menus. The same prompt with three of the restaurant's own menu items pasted in as voice samples: 'Half a chicken, pressed flat under a brick so the skin crisps the way it should, lemon, rosemary, on the potatoes.' Same dish, half the words, the operator's register intact.">
+        <div class="snippet-box" data-tone="bad">
+          <span class="snippet-label">AI default &mdash; no voice samples in the prompt</span>
+          <p>&ldquo;Our succulent brick chicken is expertly prepared with fresh lemon and aromatic rosemary, served over a bed of perfectly seasoned potato.&rdquo;</p>
+        </div>
+        <div class="snippet-box" data-tone="good">
+          <span class="snippet-label">Same prompt + three real menu items pasted in as voice samples</span>
+          <p>&ldquo;Half a chicken, pressed flat under a brick so the skin crisps the way it should. Lemon, rosemary, on the potatoes.&rdquo;</p>
+        </div>
+        <figcaption>Prep note in: &ldquo;brick chicken, lemon, rosemary, served over potato.&rdquo; The voice samples are what turn the AI from a brochure-writer into a passable line cook.</figcaption>
+      </figure>
+
       <h3>2. Draft copy for pages the guest won&rsquo;t actually read carefully</h3>
 
       <p>Not every page on your website is load-bearing. Your Privacy Policy is not closing reservations. Your Allergen Information page is not changing a guest's mind. For compliance-flavored pages that just need to <em>exist</em> and be competent, AI is fine. Ship it, move on.</p>
@@ -679,6 +701,49 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <p>If you&rsquo;re going to use AI for your restaurant copy &mdash; and you should &mdash; you need to give it something other than "write my About page." Here&rsquo;s the briefing template I use when I&rsquo;m working with operators who want to handle their own content. Write this once, save it in a Google Doc, paste it as the first prompt every time you open a new ChatGPT conversation.</p>
 
+      <figure class="viz-figure article-figure" data-audio-alt="The one-page briefing in five blocks. One: the restaurant in one sentence — neighborhood, cuisine, years open, one distinctive detail. Two: three real specifics — the farm you source from, the chef's background, the dish guests ask about most. Three: three voice samples — the best Instagram caption, the best existing menu description, the best email to your regulars. Four: three banned words — authentic, passionate, elevated, and anything else every restaurant defaults to. Five: the task, narrow — not 'write my About page' but a 150-word intro paragraph that mentions the Sunday red sauce and ends with a line that books this weekend. With those five blocks in place the model jumps from stage one output to roughly stage two.">
+        <div class="viz-flow">
+          <ol class="viz-flow__list">
+            <li class="viz-flow__step" data-tone="teal">
+              <span class="viz-flow__num">1</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">The restaurant, in one sentence</p>
+                <p class="viz-flow__meta">Neighborhood, cuisine, years open, one distinctive detail. &ldquo;A twelve-year-old Italian place in Takoma Park known for its Sunday red sauce.&rdquo;</p>
+              </div>
+            </li>
+            <li class="viz-flow__step" data-tone="teal">
+              <span class="viz-flow__num">2</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">Three real specifics</p>
+                <p class="viz-flow__meta">The farm you source from, the chef&rsquo;s background, the dish guests ask about most. AI won&rsquo;t invent these &mdash; you have to feed them in.</p>
+              </div>
+            </li>
+            <li class="viz-flow__step" data-tone="teal">
+              <span class="viz-flow__num">3</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">Three voice samples</p>
+                <p class="viz-flow__meta">Best Instagram caption, best existing menu description, best email to regulars. AI is a mimic; give it something real to mimic.</p>
+              </div>
+            </li>
+            <li class="viz-flow__step" data-tone="teal">
+              <span class="viz-flow__num">4</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">Three words it must never say</p>
+                <p class="viz-flow__meta">&ldquo;Authentic,&rdquo; &ldquo;passionate,&rdquo; &ldquo;elevated&rdquo; &mdash; the default vocabulary of every restaurant page on the internet. Ban them explicitly.</p>
+              </div>
+            </li>
+            <li class="viz-flow__step" data-tone="teal">
+              <span class="viz-flow__num">5</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">The task, narrow</p>
+                <p class="viz-flow__meta">Not &ldquo;write my About page.&rdquo; A 150-word intro that names the Sunday red sauce and ends with a line that books this weekend.</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+        <figcaption>The five blocks of the briefing. With all five in place, the model jumps from stage&#8209;1 output to roughly stage&#8209;2 &mdash; about 70% of the way there. The last 30% is still yours.</figcaption>
+      </figure>
+
       <ol>
         <li><strong>The restaurant, in one sentence.</strong> Neighborhood, cuisine, years open, one distinctive detail. &ldquo;A twelve-year-old Italian place in Takoma Park known for its Sunday red sauce.&rdquo; One sentence.</li>
         <li><strong>Three real specifics.</strong> The farm you source from, the chef&rsquo;s background, the one dish guests ask about most. Specific nouns, specific people, specific places. These are what AI otherwise refuses to invent (rightly).</li>
@@ -688,6 +753,23 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       </ol>
 
       <p>With that briefing in place, AI goes from giving you stage-1 output to giving you something closer to stage-2. It won&rsquo;t reach stage-3 &mdash; the native voice, the part that feels like only your restaurant could have written this &mdash; but it&rsquo;ll get you 70% of the way there. Your job is the last 30%: adding the one specific detail the AI didn&rsquo;t know, cutting the sentence that reads a little too brochure-y, swapping a generic adjective for a concrete noun.</p>
+
+      <figure class="viz-figure article-figure" data-audio-alt="How a well-briefed AI draft splits, by share of the finished page. With the five-block briefing in place, the model delivers roughly seventy percent of the page — passable structure, decent first-draft sentences, the general shape of the argument. The remaining thirty percent — the specific detail the model didn't know, the sentence that reads a little too brochure-y, the generic adjective that needs to be swapped for a concrete noun — is the operator's job. Seventy versus thirty isn't a small remainder. Thirty percent is where the voice lives, and the voice is what books the table.">
+        <div class="viz-bars">
+          <p class="viz-bars__title">What a well-briefed AI draft actually delivers</p>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">AI, well-briefed</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:0.70"></span></div>
+            <p class="viz-bars__num">70%</p>
+          </div>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">The operator&rsquo;s last pass</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.30"></span></div>
+            <p class="viz-bars__num">30%</p>
+          </div>
+        </div>
+        <figcaption>Seventy percent is real time saved. The remaining thirty percent &mdash; the specific detail, the cut, the swap of adjective for concrete noun &mdash; is where the voice lives, and the voice is what books the table.</figcaption>
+      </figure>
 
       <h2 id="so-should-it">So&hellip; should it?</h2>
 

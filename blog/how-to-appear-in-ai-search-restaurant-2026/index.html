@@ -424,6 +424,23 @@ header.nav{min-height:64px}
 
       <p>This is the part operators miss. A 2026 Uberall study of multi-location restaurants found that <strong>83% never appear in AI search results</strong> &mdash; even though <strong>86% of them keep a Google Business Profile</strong>. Having the listing is not the same as being named. The assistant has already decided who makes the shortlist before ranking ever enters the picture.</p>
 
+      <figure class="viz-figure article-figure" data-audio-alt="The invisibility gap. Eighty-six percent of multi-location restaurants keep an active Google Business Profile. Eighty-three percent of those same restaurants are invisible in AI search — never named when a diner asks an assistant for a recommendation. The two columns sit nearly side by side, almost the same height, showing how presence and inclusion have come apart: keeping the listing no longer gets you into the answer.">
+        <div class="viz-bars">
+          <p class="viz-bars__title">Presence vs. inclusion in AI search</p>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">Have a Google profile</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.86"></span></div>
+            <p class="viz-bars__num">86%</p>
+          </div>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">Invisible in AI search</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.83"></span></div>
+            <p class="viz-bars__num">83%</p>
+          </div>
+        </div>
+        <figcaption>Almost everyone has the listing. Almost everyone is still missing from the answer. Per Uberall&rsquo;s 2026 multi-location study.</figcaption>
+      </figure>
+
       <details class="cite">
         <summary>Source: Uberall 2026 GEO Playbook</summary>
         <div class="cite-body">
@@ -436,37 +453,66 @@ header.nav{min-height:64px}
 
       <h2 id="why-presence-stopped-being-enough">Why presence stopped being enough</h2>
       <p>When a diner asks ChatGPT, Gemini, or Google&rsquo;s <a href="/glossary/ai-overview/">AI Overview</a> for a recommendation, the assistant does not return a ranked list of everyone nearby. It returns a written answer that names three to five places. Uberall measured the shortlist at three to five brands per query. Everyone else is not on page two &mdash; they are simply not in the sentence.</p>
+
+      <figure class="viz-figure article-figure" data-audio-alt="What each discovery surface returns, side by side. The first ring shows three to five names — the size of the shortlist an AI assistant reads out per query. The middle ring shows about ten — the map pack snapshot a diner skims before scrolling. The third ring shows twenty or more — the number of restaurants in a single neighborhood that might have surfaced on an old pinned map. The named set shrinks dramatically the closer the surface gets to the diner's ear.">
+        <div class="viz-rings">
+          <div class="viz-ring" data-band="bad" style="--score:17;">
+            <svg class="viz-ring__svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-labelledby="ring-ai" focusable="false">
+              <title id="ring-ai">AI assistant: three to five restaurants named per query</title>
+              <circle class="viz-ring__track" cx="60" cy="60" r="52" fill="none" stroke-width="8"/>
+              <circle class="viz-ring__fill" cx="60" cy="60" r="52" fill="none" stroke-width="8" transform="rotate(-90 60 60)"/>
+              <text class="viz-ring__num" x="60" y="60" text-anchor="middle">3&ndash;5</text>
+            </svg>
+            <p class="viz-ring__label"><strong>AI assistant</strong>named in the answer</p>
+          </div>
+          <div class="viz-ring" data-band="warn" style="--score:50;--delay:120ms;">
+            <svg class="viz-ring__svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-labelledby="ring-pack" focusable="false">
+              <title id="ring-pack">Map pack: about ten visible without scrolling</title>
+              <circle class="viz-ring__track" cx="60" cy="60" r="52" fill="none" stroke-width="8"/>
+              <circle class="viz-ring__fill" cx="60" cy="60" r="52" fill="none" stroke-width="8" transform="rotate(-90 60 60)"/>
+              <text class="viz-ring__num" x="60" y="60" text-anchor="middle">~10</text>
+            </svg>
+            <p class="viz-ring__label"><strong>Map pack</strong>visible before scroll</p>
+          </div>
+          <div class="viz-ring" data-band="good" style="--score:100;--delay:240ms;">
+            <svg class="viz-ring__svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-labelledby="ring-old" focusable="false">
+              <title id="ring-old">Old map with pins: twenty or more nearby</title>
+              <circle class="viz-ring__track" cx="60" cy="60" r="52" fill="none" stroke-width="8"/>
+              <circle class="viz-ring__fill" cx="60" cy="60" r="52" fill="none" stroke-width="8" transform="rotate(-90 60 60)"/>
+              <text class="viz-ring__num" x="60" y="60" text-anchor="middle">20+</text>
+            </svg>
+            <p class="viz-ring__label"><strong>Pinned map</strong>nearby in a neighborhood</p>
+          </div>
+        </div>
+        <figcaption>The surface keeps narrowing. The map used to show everyone nearby; the pack showed about ten; the AI answer names three to five. Per Uberall&rsquo;s 2026 shortlist measurement.</figcaption>
+      </figure>
+
       <p>So the goal moved. Ranking first in the <a href="/glossary/map-pack/">map pack</a> still matters, but it no longer guarantees the assistant repeats your name. The assistant filters on a handful of signals first, then writes. Four of those signals are numbers you control.</p>
 
       <h2 id="number-one-your-rating-against-the-floor">Number one &mdash; your rating against the floor</h2>
       <p>Each assistant appears to apply a minimum star rating before it will name a place at all. Uberall&rsquo;s 2026 figures put the floors at roughly <strong>4.3 for ChatGPT, 4.1 for Perplexity, and 3.9 for Gemini</strong>. Below the floor, completeness and rank do not save you &mdash; you are filtered out before the assistant starts choosing.</p>
       <p>The move is not &ldquo;get more stars.&rdquo; It is to know your current number and the gap to the nearest floor. A restaurant sitting at 4.0 is invisible to ChatGPT&rsquo;s shortlist no matter how good the food is; the same restaurant clears Gemini&rsquo;s 3.9 today. Pull your number, write down the gap, and you know exactly which assistant you are losing. The <a href="/tools/gbp-grader/">GBP grader</a> reads it for you if you would rather not do the arithmetic by hand.</p>
 
-      <figure class="viz-figure article-figure" data-audio-alt="Minimum star rating to be named by each AI assistant. ChatGPT will not name a restaurant under about four point three stars. Perplexity's floor is about four point one. Gemini's is about three point nine. A restaurant sitting at four point zero clears Gemini but falls below both Perplexity and ChatGPT, so it gets named by only one assistant of the three. Floors are Uberall's twenty twenty-six reported figures.">
+      <figure class="viz-figure article-figure" data-audio-alt="Minimum star rating to be named by each AI assistant, on a scale from three point five stars to four point five stars. ChatGPT will not name a restaurant under about four point three stars. Perplexity's floor is about four point one. Gemini's is about three point nine. Floors are Uberall's twenty twenty-six reported figures. A restaurant sitting at four point zero clears Gemini's floor but falls below both Perplexity and ChatGPT.">
         <div class="viz-bars">
-          <p class="viz-bars__title">Minimum star rating to be named, by assistant</p>
+          <p class="viz-bars__title">Minimum star rating to be named, by assistant (scale: 3.5&ndash;4.5★)</p>
           <div class="viz-bars__row">
             <p class="viz-bars__label">ChatGPT floor</p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.53"></span></div>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.80"></span></div>
             <p class="viz-bars__num">4.3★</p>
           </div>
           <div class="viz-bars__row">
             <p class="viz-bars__label">Perplexity floor</p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.40"></span></div>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.60"></span></div>
             <p class="viz-bars__num">4.1★</p>
           </div>
           <div class="viz-bars__row">
             <p class="viz-bars__label">Gemini floor</p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.27"></span></div>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.40"></span></div>
             <p class="viz-bars__num">3.9★</p>
           </div>
-          <div class="viz-bars__row">
-            <p class="viz-bars__label">A 4.0★ restaurant</p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.33"></span></div>
-            <p class="viz-bars__num">Gemini only</p>
-          </div>
         </div>
-        <figcaption>Bars scaled from 3.5★. A 4.0★ restaurant clears Gemini (3.9) but sits below Perplexity (4.1) and ChatGPT (4.3) &mdash; named by one assistant of three. Floors are Uberall&rsquo;s 2026 reported figures.</figcaption>
+        <figcaption>Bars proportional to the 3.5&ndash;4.5★ window. A restaurant at 4.0★ clears Gemini (3.9) but sits below Perplexity (4.1) and ChatGPT (4.3) &mdash; named by one assistant of three. Floors are Uberall&rsquo;s 2026 reported figures.</figcaption>
       </figure>
 
       <details class="cite">
