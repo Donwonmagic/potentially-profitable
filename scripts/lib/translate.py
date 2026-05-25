@@ -326,6 +326,61 @@ GLOSSARY = [
     "schema markup",
     "menu drop-in",
     "Care Plan Light",
+    # Operator-trade shorthand — words you'd hear in the kitchen
+    # during service. Preserved verbatim so listeners hear the
+    # actual vocabulary their staff would use (translating "86"
+    # to "ochenta y seis" produces literal nonsense).
+    "86'd",
+    "86 the",
+    "in the weeds",
+    "running the pass",
+    "expediting",
+    "the expo",
+    "the pass",
+    "comp",
+    "comped",
+    "table turn",
+    "covers",
+    "deuce",
+    "deuces",
+    "VIP'd",
+    "soft launch",
+    "soft-launch",
+    "soft opening",
+    "grand opening",
+    "ghost kitchen",
+    "ghost restaurant",
+    "Yelp Elite",
+    "first-party",
+    "third-party",
+    # Bootcamp-specific operator language — the named decisions
+    # and artifacts that recur across lessons. Preserved so a
+    # listener following along on the screen never has to
+    # translate the audio in their head.
+    "the readiness checklist",
+    "the live preview",
+    "the live-preview rail",
+    "the artifact rail",
+    "the deploy stepper",
+    "the rhythm calendar",
+    "the menu builder",
+    "the palette picker",
+    "the voice slider",
+    "the customer card",
+    "the persona card",
+    "the GBP card",
+    "the GBP card preview",
+    "the cover image",
+    "the hero image",
+    "your one promise",
+    "one-promise",
+    "the one promise",
+    "fresh track",
+    "rebuild track",
+    "the fresh track",
+    "the rebuild track",
+    "Mark this lesson complete",
+    "your site so far",
 ]
 
 
