@@ -153,8 +153,8 @@
     // list doesn't apply — the reader is already chosen at render time.
     // Hide the voice picker up-front so users aren't presented with a
     // "choose a name" dropdown that looks like it's demanding a
-    // selection. (We still swap the source-of-truth note to "Narrated
-    // in-house" once the manifest actually loads.)
+    // selection. (We still swap the source-of-truth note to "Voiced
+    // for The Muntin Desk" once the manifest actually loads.)
     if (audioSrc && voiceSelect) {
       const voiceLabel = voiceSelect.closest('.listen-select');
       if (voiceLabel) voiceLabel.hidden = true;

@@ -85,50 +85,50 @@ const SECTIONS = [
   // shell; nav refinements affect every page).
   { start: 1476, shell: 'core',    label: 'Nav refinements + share widget (was inside CITATION DRAWER section)' },
   { start: 1497, shell: 'article', label: 'Listen / audio player' },
-  { start: 2031, shell: 'core',    label: 'Breadcrumbs' },
-  { start: 2057, shell: 'core',    label: 'Homepage utility classes' },
-  { start: 2109, shell: 'core',    label: 'Legal pages' },
-  { start: 2135, shell: 'core',    label: 'Homepage primary tool CTA (restaurant audit)' },
-  { start: 2425, shell: 'tool',    label: 'TOOL SHELL — shared primitives for /tools/* pages' },
-  { start: 2523, shell: 'tool',    label: 'Tools-landing cluster layout' },
-  { start: 2814, shell: 'tool',    label: 'Per-tool "Keep going" knit-in' },
-  { start: 2925, shell: 'article', label: 'Glossary scannability' },
-  { start: 3080, shell: 'article', label: '"Recently added" strip on /learn/' },
-  { start: 3155, shell: 'core',    label: 'Library nav-mega regroup (nav is everywhere)' },
-  { start: 3474, shell: 'article', label: 'Learn hub + Start here pages' },
-  { start: 3577, shell: 'core',    label: '/system/ colophon page (small, kept in core)' },
-  { start: 3654, shell: 'core',    label: 'Search modal (Pagefind-backed; on every page)' },
-  { start: 3829, shell: 'article', label: 'Research notes (/learn/research/)' },
-  { start: 3846, shell: 'article', label: 'Library topics (/learn/topics/)' },
-  { start: 4028, shell: 'article', label: 'Glossary term pages (/glossary/<slug>/)' },
+  { start: 2036, shell: 'core',    label: 'Breadcrumbs' },
+  { start: 2062, shell: 'core',    label: 'Homepage utility classes' },
+  { start: 2114, shell: 'core',    label: 'Legal pages' },
+  { start: 2140, shell: 'core',    label: 'Homepage primary tool CTA (restaurant audit)' },
+  { start: 2430, shell: 'tool',    label: 'TOOL SHELL — shared primitives for /tools/* pages' },
+  { start: 2528, shell: 'tool',    label: 'Tools-landing cluster layout' },
+  { start: 2819, shell: 'tool',    label: 'Per-tool "Keep going" knit-in' },
+  { start: 2930, shell: 'article', label: 'Glossary scannability' },
+  { start: 3085, shell: 'article', label: '"Recently added" strip on /learn/' },
+  { start: 3160, shell: 'core',    label: 'Library nav-mega regroup (nav is everywhere)' },
+  { start: 3479, shell: 'article', label: 'Learn hub + Start here pages' },
+  { start: 3582, shell: 'core',    label: '/system/ colophon page (small, kept in core)' },
+  { start: 3659, shell: 'core',    label: 'Search modal (Pagefind-backed; on every page)' },
+  { start: 3834, shell: 'article', label: 'Research notes (/learn/research/)' },
+  { start: 3851, shell: 'article', label: 'Library topics (/learn/topics/)' },
+  { start: 4033, shell: 'article', label: 'Glossary term pages (/glossary/<slug>/)' },
   // .tool-deep-links is the "Why this tool exists" block at the bottom of
   // every /tools/* page. Lives in this region historically because it was
   // built alongside glossary cross-linking, but it ships on tool pages —
   // which only load core+tool. Without this split it lands in article and
   // the audit page's deep-links section renders unstyled (reported May 2026).
-  { start: 4142, shell: 'tool',    label: 'Tool deep-links (.tool-deep-* — bottom of every /tools/* page)' },
-  { start: 4226, shell: 'article', label: 'Resume article — services-aside-cta + see-also + research notes' },
-  { start: 4623, shell: 'article', label: 'Research-note CTA inside cite drawer' },
-  { start: 4644, shell: 'article', label: 'Research drawer (inline preview)' },
-  { start: 4784, shell: 'article', label: 'Glossary term → research note cross-link' },
-  { start: 4829, shell: 'article', label: '"Recently added" rail (under glossary hero)' },
-  { start: 4887, shell: 'article', label: 'Glossary index "▶ 90s explainer" chip' },
-  { start: 4908, shell: 'article', label: 'Glossary explainer (90-second narrated diagram)' },
-  { start: 5174, shell: 'article', label: 'Inline glossary popover' },
-  { start: 5241, shell: 'article', label: 'Print view for glossary section landing pages' },
-  { start: 5298, shell: 'core',    label: 'Cloudflare Turnstile widget (reservation min-height)' },
-  { start: 5310, shell: 'core',    label: 'Workshop save banner (multi-context, kept in core)' },
-  { start: 5362, shell: 'tool',    label: 'Tool states (loading / error / empty)' },
-  { start: 5407, shell: 'article', label: 'Editorial callouts' },
-  { start: 5491, shell: 'tool',    label: 'Learn-back (in tool result region)' },
-  { start: 5509, shell: 'article', label: 'Post-end Workshop CTA' },
-  { start: 5525, shell: 'core',    label: 'Workshop rationale' },
-  { start: 5541, shell: 'core',    label: 'The Window (/window/ — kept in core to avoid a 4th shell)' },
-  { start: 5658, shell: 'core',    label: 'Window composer (Phase-2 redesign)' },
-  { start: 5691, shell: 'core',    label: 'ADMIN /admin/window/ (kept in core; admin is auth-gated noindex)' },
-  { start: 5778, shell: 'tool',    label: '.edu-result — interpretation card under tool output' },
-  { start: 5817, shell: 'tool',    label: 'Statistical disclosure components' },
-  { start: 5860, shell: 'tool',    label: 'Tool-internal type minimums' },
+  { start: 4147, shell: 'tool',    label: 'Tool deep-links (.tool-deep-* — bottom of every /tools/* page)' },
+  { start: 4231, shell: 'article', label: 'Resume article — services-aside-cta + see-also + research notes' },
+  { start: 4628, shell: 'article', label: 'Research-note CTA inside cite drawer' },
+  { start: 4649, shell: 'article', label: 'Research drawer (inline preview)' },
+  { start: 4789, shell: 'article', label: 'Glossary term → research note cross-link' },
+  { start: 4834, shell: 'article', label: '"Recently added" rail (under glossary hero)' },
+  { start: 4892, shell: 'article', label: 'Glossary index "▶ 90s explainer" chip' },
+  { start: 4913, shell: 'article', label: 'Glossary explainer (90-second narrated diagram)' },
+  { start: 5179, shell: 'article', label: 'Inline glossary popover' },
+  { start: 5246, shell: 'article', label: 'Print view for glossary section landing pages' },
+  { start: 5303, shell: 'core',    label: 'Cloudflare Turnstile widget (reservation min-height)' },
+  { start: 5315, shell: 'core',    label: 'Workshop save banner (multi-context, kept in core)' },
+  { start: 5367, shell: 'tool',    label: 'Tool states (loading / error / empty)' },
+  { start: 5412, shell: 'article', label: 'Editorial callouts' },
+  { start: 5496, shell: 'tool',    label: 'Learn-back (in tool result region)' },
+  { start: 5514, shell: 'article', label: 'Post-end Workshop CTA' },
+  { start: 5530, shell: 'core',    label: 'Workshop rationale' },
+  { start: 5546, shell: 'core',    label: 'The Window (/window/ — kept in core to avoid a 4th shell)' },
+  { start: 5663, shell: 'core',    label: 'Window composer (Phase-2 redesign)' },
+  { start: 5696, shell: 'core',    label: 'ADMIN /admin/window/ (kept in core; admin is auth-gated noindex)' },
+  { start: 5783, shell: 'tool',    label: '.edu-result — interpretation card under tool output' },
+  { start: 5822, shell: 'tool',    label: 'Statistical disclosure components' },
+  { start: 5865, shell: 'tool',    label: 'Tool-internal type minimums' },
   // foot-newsletter lives in the global footer partial, so it needs to
   // be in core — every page renders the form, not just /tools/*. The
   // historical bucket (Tool-internal type minimums) extended past the
@@ -136,58 +136,58 @@ const SECTIONS = [
   // out of site-tool.css where they were inert on /blog/, /glossary/,
   // /sheets/, and other non-tool pages. (Line 5986 = 5983 in the
   // pre-#284 site.css + the 3-line .reveal block #284 added at line 1382.)
-  { start: 6017, shell: 'core',    label: 'Newsletter capture (in global footer; on every page)' },
-  { start: 6038, shell: 'article', label: 'Inline graphics — globalized from gold articles' },
-  { start: 6099, shell: 'core',    label: 'Touch-device hover hygiene' },
-  { start: 6138, shell: 'core',    label: 'Hero mobile reorder (homepage)' },
-  { start: 6161, shell: 'article', label: 'KnitRail — "what’s next" component for articles' },
-  { start: 6236, shell: 'core',    label: 'Hero count chips (homepage)' },
-  { start: 6267, shell: 'core',    label: 'Trust strip (homepage)' },
-  { start: 6293, shell: 'core',    label: 'Compare cards (homepage)' },
+  { start: 6022, shell: 'core',    label: 'Newsletter capture (in global footer; on every page)' },
+  { start: 6043, shell: 'article', label: 'Inline graphics — globalized from gold articles' },
+  { start: 6104, shell: 'core',    label: 'Touch-device hover hygiene' },
+  { start: 6143, shell: 'core',    label: 'Hero mobile reorder (homepage)' },
+  { start: 6166, shell: 'article', label: 'KnitRail — "what’s next" component for articles' },
+  { start: 6241, shell: 'core',    label: 'Hero count chips (homepage)' },
+  { start: 6272, shell: 'core',    label: 'Trust strip (homepage)' },
+  { start: 6298, shell: 'core',    label: 'Compare cards (homepage)' },
   // Article viz components — Phase-1 foundation for the graphics
   // refresh. Namespaced .viz-* family for inline article charts
   // (.viz-figure, .viz-bars today; .viz-ring/.viz-spark/.viz-ba/
   // .viz-flow/.viz-tree/.viz-waterfall/.viz-gauge/.viz-hero/.viz-scroll
   // land in subsequent phases). Article shell — only loaded on
   // /blog/, /learn/, /glossary/.
-  { start: 6377, shell: 'article', label: 'Article viz components (.viz-* family)' },
+  { start: 6382, shell: 'article', label: 'Article viz components (.viz-* family)' },
   // Window redesign — sash/sidelight composer, photo/voice attach,
   // now-line widget, site-wide pulse propagation, admin attachment
   // + callback display, /now/ editor. Appended at site.css EOF as
   // one block; lives in core because it spans /window/, /about/,
   // every-page nav/footer, and admin pages.
-  { start: 6716, shell: 'core',    label: 'Window Phase 2/3.6/4/5+ additions (sash/sidelight, attach, now, pulses, admin)' },
+  { start: 6721, shell: 'core',    label: 'Window Phase 2/3.6/4/5+ additions (sash/sidelight, attach, now, pulses, admin)' },
   // Phase 1 (tool-suite upgrade) — additive design tokens + MuntinUI
   // component shells (.mtn-btn / .mtn-card / .mtn-form-group / .mtn-tabs
   // / .mtn-modal / .mtn-toast / .mtn-breadcrumb / .mtn-error-card /
   // .mtn-empty / .codeblock). Core because the primitives are consumed
   // by /tools/ and Phase-2 hub redesign; the .codeblock wrapper is also
   // referenced by article callouts in later phases.
-  { start: 6953, shell: 'core',    label: 'Phase 1 — design tokens + MuntinUI component shells (.mtn-*)' },
+  { start: 6958, shell: 'core',    label: 'Phase 1 — design tokens + MuntinUI component shells (.mtn-*)' },
   // Phase 2 (tool-suite upgrade) — hub-specific styles (tool-card
   // tier badge + JS-enhanced filter strip). Lives in core because
   // the hub is in /tools/index.html which loads core + tool shells;
   // the tier badge classes also bleed into related-tool surfaces
   // shipped by other build scripts.
-  { start: 7165, shell: 'core',    label: 'Phase 2 — hub tier badge + tool-tier-filter strip' },
+  { start: 7170, shell: 'core',    label: 'Phase 2 — hub tier badge + tool-tier-filter strip' },
   // Phase 5 (tool-suite upgrade) — dark-mode token override. Lives
   // in core because every page (not just /tools/) inherits the
   // --mtn-* tokens via inheritance through component shells.
-  { start: 7218, shell: 'core',    label: 'Phase 5 — dark-mode token override (prefers-color-scheme + [data-theme])' },
+  { start: 7223, shell: 'core',    label: 'Phase 5 — dark-mode token override (prefers-color-scheme + [data-theme])' },
   // Phase 7 (tool-suite upgrade) — dark-mode toggle button styles
   // (sun/moon icon swap based on [data-theme] / prefers-color-scheme).
   // Lives in core because the button is in the global nav partial.
-  { start: 7278, shell: 'core',    label: 'Phase 7 — dark-mode toggle button (.theme-toggle)' },
+  { start: 7283, shell: 'core',    label: 'Phase 7 — dark-mode toggle button (.theme-toggle)' },
   // Phase 4 wiring (tool-suite upgrade) — next-tool recommendation
   // card styles. The card is mounted by MuntinNextTool.render() at
   // the end of each tool's result region. Lives in core because
   // every page that loads next-tool.js renders the card.
-  { start: 7322, shell: 'core',    label: 'Phase 4 — next-tool recommendation card (.mtn-next-tool)' },
+  { start: 7327, shell: 'core',    label: 'Phase 4 — next-tool recommendation card (.mtn-next-tool)' },
   // Phase G — About portrait frame. Real-photo overlay layered on top
   // of the existing .portrait lettermark tile. Originally lived as a
   // scoped <style> block in /about/index.html; promoted site-wide so
   // the homepage About teaser can reuse the same frame.
-  { start: 7362, shell: 'core',    label: 'Phase G — About portrait frame (real photo overlay)' },
+  { start: 7367, shell: 'core',    label: 'Phase G — About portrait frame (real photo overlay)' },
 ];
 
 // === Validation ===

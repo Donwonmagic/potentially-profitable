@@ -1630,7 +1630,7 @@ br.br-lg{display:none}
    motif — a single window-pane sash rather than a card-edge border,
    so it doesn't collide with .compare-card--featured's 2px teal frame
    on hub pages that show both. */
-.listen-card-kicker{font-family:var(--font-body);font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--stone);display:inline-flex;align-items:center;gap:8px;margin:0 0 8px;padding-bottom:6px;border-bottom:3px solid var(--teal);align-self:flex-start}
+.listen-card-kicker{font-family:var(--font-body);font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--stone);display:inline-flex;align-items:center;gap:8px;margin:0 0 8px;padding-bottom:6px;border-bottom:3px solid var(--teal)}
 .listen-card-kicker::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--lc-accent);box-shadow:0 0 0 4px rgba(42,80,200,0.12)}
 /* Sprint A14: soft breathe replaces the hard blink. The dot no
    longer reads like a blinking cursor — opacity drifts to 0.55 and
@@ -1777,7 +1777,12 @@ br.br-lg{display:none}
 .listen-source-note[data-source="studio"]{color:var(--lc-accent)}
 .listen-source-note[data-source="studio"]::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
 
-@media (max-width:640px){
+/* Breakpoint raised from 640px → 720px so the 3-column desktop grid
+   doesn't try to fit a play button + body + meta-with-language-pill
+   on small tablets / large phones in landscape. Below 720 the meta
+   row wraps under the body, which is the only layout that breathes
+   once the language pill is in its full-size in-meta variant. */
+@media (max-width:720px){
   .listen-card{grid-template-columns:auto 1fr;grid-template-areas:"play body" "meta meta" "progress progress" "chapter chapter" "extras extras";padding:18px;gap:10px 16px}
   .listen-card-meta{grid-area:meta;align-items:flex-start;flex-direction:row;gap:8px;font-size:11.5px;padding-top:6px;margin-top:2px;border-top:1px dashed var(--line)}
   .listen-card-meta strong{margin-right:0}
