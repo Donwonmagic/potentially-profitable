@@ -3657,7 +3657,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 /* Nav search button (desktop): compact pill with icon, label, kbd hint */
 .nav-search-btn{
   display:inline-flex;align-items:center;gap:8px;
-  margin:0 8px 0 0;padding:7px 10px 7px 12px;
+  margin:0 8px 0 0;padding:7px 14px 7px 12px;
   background:transparent;border:1px solid var(--line);border-radius:999px;
   font-family:var(--font-body);font-size:13px;font-weight:500;color:var(--stone);
   cursor:pointer;
@@ -7357,3 +7357,8 @@ table[data-viz-sortable] th[aria-sort="descending"]::after{content:"\2193";color
 .about-portrait-frame{position:relative;width:100%;aspect-ratio:4/5;border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--line-dark);background:var(--cream-2)}
 .about-portrait-frame .portrait{position:absolute;inset:0;border:0;border-radius:0;aspect-ratio:auto;width:100%;height:100%}
 .about-portrait-frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+/* ===== Batch marquee — fixed strip above the nav (.batch-marquee is on every page when a batch is active) ===== */
+.batch-marquee{position:fixed;top:0;left:0;right:0;z-index:60}
+body:has(.batch-marquee) header.nav{top:var(--banner-h,40px)}
+body:has(.batch-marquee) main{padding-top:calc(64px + var(--banner-h,40px))}
+@media (max-width:640px){:root{--banner-h:72px}}
