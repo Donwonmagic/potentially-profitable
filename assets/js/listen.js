@@ -1791,6 +1791,45 @@
     const shareBtn = card.root.querySelector('.listen-share');
     if (shareBtn) shareBtn.addEventListener('click', shareAtCurrentTime);
 
+    // Phase 3 — settings dialog. Native <dialog>.showModal() handles
+    // the focus trap, ESC-to-close, and inert-everything-else for us.
+    // The dialog contains: keyboard-shortcut documentation (the most
+    // common reason it'd be opened — those shortcuts are otherwise
+    // undiscoverable) and a short editorial note about the synthetic
+    // narration that scratches "what AM I listening to?" curiosity
+    // without putting a defensive disclosure on the card surface itself.
+    const settingsBtn   = card.root.querySelector('.listen-settings');
+    const settingsDialog = card.root.querySelector('.listen-settings-dialog');
+    const settingsClose  = card.root.querySelector('.listen-settings-close');
+    function openSettings() {
+      if (!settingsDialog) return;
+      try { settingsDialog.showModal(); }
+      catch (_) {
+        // Fallback for older browsers without <dialog> — show as a
+        // modeless block. Loses focus trap; still readable.
+        settingsDialog.setAttribute('open', '');
+      }
+      if (window.plausible) {
+        try { window.plausible('Audio: Settings Opened'); } catch (_) {}
+      }
+    }
+    function closeSettings() {
+      if (!settingsDialog) return;
+      try { settingsDialog.close(); }
+      catch (_) { settingsDialog.removeAttribute('open'); }
+    }
+    if (settingsBtn) settingsBtn.addEventListener('click', openSettings);
+    if (settingsClose) settingsClose.addEventListener('click', closeSettings);
+    // Click outside the inner content closes the dialog (native <dialog>
+    // doesn't do this automatically). We detect "outside" by checking
+    // whether the click landed directly on the dialog element rather
+    // than on a descendant.
+    if (settingsDialog) {
+      settingsDialog.addEventListener('click', (e) => {
+        if (e.target === settingsDialog) closeSettings();
+      });
+    }
+
     // Phase 4 — click-paragraph-to-seek. Default OFF, opt-in via ?seek=1.
     // We delegate from #post-body so we don't have to attach a listener
     // per paragraph. Order of preference: sentence span (finest seek) →
@@ -1935,6 +1974,11 @@
       if (state === 'idle') return;
       if (isTypingTarget(e.target)) return;
       if (e.ctrlKey || e.metaKey || e.altKey) return;
+      // Phase 3 — when the settings dialog is open, the user is reading
+      // shortcut docs or tabbing through dialog controls; firing global
+      // play/pause on Space here would be hostile. Let the dialog's own
+      // ESC-to-close handle keyboard exit.
+      if (document.querySelector('.listen-settings-dialog[open]')) return;
       switch (e.key) {
         case ' ':
         case 'Spacebar':
@@ -2326,9 +2370,33 @@
             <button type="button" class="listen-iconbtn listen-share" aria-label="${i18n('audio.share_aria', 'Copy share link at current moment')}">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.72-1.71"/></svg>
             </button>
+            <button type="button" class="listen-iconbtn listen-settings" aria-label="${i18n('audio.settings_aria', 'Show keyboard shortcuts and details')}">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 4.6 1.35c-.6.78-1.6 1.05-1.6 2.15"/><circle cx="12" cy="17" r="0.5" fill="currentColor"/></svg>
+            </button>
           </div>
           <span class="listen-source-note" data-source="browser">${i18n('audio.byline_browser', 'Read by your browser')}</span>
         </div>
+        <dialog class="listen-settings-dialog" aria-labelledby="listen-settings-title">
+          <button type="button" class="listen-settings-close" aria-label="${i18n('audio.dismiss', 'Dismiss')}">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+          <h3 id="listen-settings-title" class="listen-settings-title">${i18n('audio.settings_title', 'Listening tips')}</h3>
+          <section class="listen-settings-section">
+            <p class="listen-settings-eyebrow">${i18n('audio.settings_kbd_eyebrow', 'Keyboard')}</p>
+            <dl class="listen-settings-kbd">
+              <dt><kbd>${i18n('audio.kbd_space', 'Space')}</kbd></dt>
+              <dd>${i18n('audio.kbd_space_help', 'Play or pause')}</dd>
+              <dt><kbd>J</kbd> / <kbd>K</kbd></dt>
+              <dd>${i18n('audio.kbd_jk_help', 'Skip backward 15 seconds / forward 15 seconds')}</dd>
+              <dt><kbd>←</kbd> / <kbd>→</kbd></dt>
+              <dd>${i18n('audio.kbd_arrows_help', 'Previous paragraph / next paragraph')}</dd>
+            </dl>
+          </section>
+          <section class="listen-settings-section">
+            <p class="listen-settings-eyebrow">${i18n('audio.settings_about_eyebrow', 'About the voice')}</p>
+            <p class="listen-settings-body">${i18n('audio.settings_about_body', 'The Muntin Desk uses synthetic narration tuned for editorial reading — the same voice across every article so the listener forms a relationship with it. Audio is produced once, mastered to broadcast loudness, and shipped as a downloadable MP3.')}</p>
+          </section>
+        </dialog>
       `;
 
       return { root };
