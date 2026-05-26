@@ -139,9 +139,38 @@
   // MuntinContext via .merge() — which writes localStorage and broadcasts
   // mtn:context-change, so any widgets already mounted re-render
   // immediately with the hydrated state.
+  // True iff THIS specific key is empty/missing in local MuntinContext.
+  // Used by the per-field hydrate: a tool user who saved a palette in
+  // brand-suite has local.palette but no local.dishes — the course
+  // can still pull dishes from server without clobbering the palette.
+  function localKeyEmpty(k) {
+    if (!window.MuntinContext || typeof window.MuntinContext.read !== 'function') return true;
+    if (k === 'restaurantProfile') {
+      var profile = (typeof window.MuntinContext.readRestaurantProfile === 'function'
+                     ? window.MuntinContext.readRestaurantProfile() : null);
+      if (!profile) return true;
+      for (var p in profile) {
+        if (Object.prototype.hasOwnProperty.call(profile, p) && profile[p]) return false;
+      }
+      return true;
+    }
+    var ctx = window.MuntinContext.read() || {};
+    var v = ctx[k];
+    if (v === undefined || v === null) return true;
+    if (Array.isArray(v)) return v.length === 0;
+    if (typeof v === 'object') return Object.keys(v).length === 0;
+    if (typeof v === 'string') return !v.trim();
+    return false;
+  }
+
   function hydrate() {
     if (!window.MuntinContext || typeof window.MuntinContext.merge !== 'function') return;
-    if (localHasAnyAllowedField()) return;
+    // Per-field merge (not whole-snapshot gate): for each ALLOWED key,
+    // if local is empty AND server has a value, merge that one key.
+    // Preserves "client wins" semantics for non-empty local fields and
+    // closes the cross-tool prefill gap (brand-suite save in tab A →
+    // course palette widget pre-populates in tab B without sign-in
+    // forcing a wholesale wipe).
     try {
       fetch(ENDPOINT, { credentials: 'same-origin' }).then(function (r) {
         if (r.status === 401) { serverKnownEmpty = true; return null; }
@@ -151,17 +180,19 @@
         if (!data || !data.config) return;
         var cfg = data.config;
         var patch = {};
-        // restaurantProfile lands via writeRestaurantProfile if available
-        // (it's a structurally separate KV slot in context-bus, distinct
-        // from the flat top-level merge). Fall back to flat merge if the
-        // dedicated writer isn't exposed.
-        if (cfg.restaurantProfile && typeof window.MuntinContext.writeRestaurantProfile === 'function') {
-          try { window.MuntinContext.writeRestaurantProfile(cfg.restaurantProfile); } catch (_) {}
+        // restaurantProfile lands via writeRestaurantProfile when available
+        // — and only when local profile is empty for this field.
+        if (cfg.restaurantProfile && localKeyEmpty('restaurantProfile')) {
+          if (typeof window.MuntinContext.writeRestaurantProfile === 'function') {
+            try { window.MuntinContext.writeRestaurantProfile(cfg.restaurantProfile); } catch (_) {}
+          }
         }
         for (var i = 0; i < ALLOWED.length; i++) {
           var k = ALLOWED[i];
           if (k === 'restaurantProfile') continue;
-          if (cfg[k] !== undefined && cfg[k] !== null) patch[k] = cfg[k];
+          if (cfg[k] === undefined || cfg[k] === null) continue;
+          if (!localKeyEmpty(k)) continue;  // client wins — skip
+          patch[k] = cfg[k];
         }
         if (Object.keys(patch).length) {
           suppressNextPush = true;  // freshly-merged state shouldn't immediately POST back
