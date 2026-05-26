@@ -229,40 +229,32 @@ test.describe('Audio card — help dialog', () => {
   });
 
   test('Space inside the dialog does not toggle the player', async ({ page }) => {
-    await openHelpAndReady(page);
-    // The global keyboard handler bails on state === 'idle' before
-    // ever reaching the dialog-open guard. Without priming past idle,
-    // this test would pass whether the dialog guard exists or not —
-    // audit finding #1. Prime by forcing data-state to 'paused' so
-    // the handler executes the dialog-open check. Then press Space:
-    // if the bail-out works, no toggle fires (data-state stays
-    // 'paused'); if the bail-out is regressed, the handler calls
-    // toggle() which would transition paused → playing → loading.
-    await page.locator('.listen-card').evaluate((el) => {
-      el.setAttribute('data-state', 'paused');
-      // Mirror what listen.js's setState normally does — set the JS-
-      // module-level `state` variable indirectly by dispatching a
-      // synthetic toggle that the engine reads. Easiest path: directly
-      // patch the closure via window.MuntinReadAloud, which already
-      // exposes stop/toggle. Calling .toggle() once from idle would
-      // run startPlayback, but in headless that errors at audio fetch
-      // — we just need `state !== 'idle'` for the handler's first
-      // gate. The data-state attr is the engine's own mirror of
-      // `state`, so setting it via setAttribute doesn't flip the
-      // closure variable. We instead simulate-press the play button
-      // and let the engine handle the transition.
-    });
-    // Force a real state change via the play button. The audio fetch
-    // may fail in headless (no audio source); we don't care — we just
-    // need the engine to have crossed past 'idle' at least once.
+    // The global keyboard handler bails first on `state === 'idle'`,
+    // THEN on the dialog-open guard (listen.js:1987 then 1994). Both
+    // gates terminate the handler the same way, so a test where state
+    // never leaves idle can't distinguish whether the dialog gate
+    // works or not — audit finding #1. Prime past idle by clicking
+    // Play before opening the dialog. In headless the play() call
+    // rejects (no audio device), but setState('loading') runs
+    // SYNCHRONOUSLY before that rejection — state transitions to
+    // 'loading' and stays there until something else moves it.
+    await page.goto(ARTICLE);
+    await page.waitForSelector('.listen-card');
     await page.locator('.listen-card-play').click({ force: true }).catch(() => {});
-    await page.waitForTimeout(200);
-    const reachedNonIdle = await page.locator('.listen-card').evaluate((el) =>
-      el.getAttribute('data-state') !== 'idle'
-    );
-    test.skip(!reachedNonIdle, 'engine did not leave idle in headless; cannot exercise the dialog-open guard');
-    // With state !== idle, Space normally would toggle. But the dialog
-    // is open — the bail-out should prevent any state change here.
+    // Poll for the state transition rather than fixed-sleeping; the
+    // engine fires setState synchronously inside the click handler so
+    // this completes in milliseconds — but be tolerant of slow CI
+    // runners. If it never transitions, that's a real bug to
+    // investigate, not a test to skip silently.
+    await expect.poll(async () =>
+      await page.locator('.listen-card').getAttribute('data-state'),
+      { timeout: 2000, message: 'engine never transitioned past idle — Space-in-dialog test cannot verify the bail-out gate (audit finding #3)' }
+    ).not.toBe('idle');
+    // Open the dialog
+    await page.locator('.listen-help').click();
+    await expect(page.locator('.listen-help-dialog[open]')).toHaveCount(1);
+    // Now press Space inside the dialog. The bail-out should
+    // intercept before the handler reaches the play/pause case.
     const before = await page.locator('.listen-card').getAttribute('data-state');
     await page.keyboard.press('Space');
     await page.waitForTimeout(150);

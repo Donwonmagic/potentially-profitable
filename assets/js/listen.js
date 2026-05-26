@@ -1838,9 +1838,9 @@
     // (or descendants), so `e.target === helpDialog` truly only
     // fires on genuine backdrop clicks. If a future CSS edit
     // restores padding on .listen-help-dialog, this check
-    // misclassifies content edges as backdrop. The :has() rule
-    // below would be the more defensive form but lands as a
-    // follow-up if browser support warrants.
+    // misclassifies content edges as backdrop — switch to
+    // `if (helpInner && !helpInner.contains(e.target))` to make the
+    // distinction independent of dialog padding.
     if (helpDialog) {
       helpDialog.addEventListener('click', (e) => {
         if (e.target === helpDialog) closeHelp();

@@ -200,7 +200,11 @@ audio variant. Defining choices to preserve when touching the card:
   children paragraphs (links, em, strong) fall back to paragraph-
   level highlight gracefully.
 - **Help dialog (`.listen-help-dialog`).** Native `<dialog>` opened
-  by the small `?` icon in the extras row. Hosts keyboard-shortcut
+  by the small `?` icon in the always-visible meta column (next to
+  the language pill). The icon was originally inside `.listen-card-
+  extras` but that row is hidden until first play; the help docs
+  must be reachable BEFORE the user discovers Play, so the trigger
+  moved up. Hosts keyboard-shortcut
   documentation + a one-paragraph editorial note about the synthetic
   narration. Contracts to preserve:
   - **First focus on the title**, not the close button. listen.js's
