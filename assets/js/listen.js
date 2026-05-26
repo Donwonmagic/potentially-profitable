@@ -1032,8 +1032,12 @@
       const barW = w / bins;
       const halfH = h / 2;
       const playedBoundary = (playedPct / 100) * w;
-      const UNPLAYED = 'rgba(31,78,91,0.22)';
-      const PLAYED   = 'rgba(31,78,91,0.85)';
+      // Royal-blue palette to match the rest of the card. Previously
+      // used rgba(31,78,91,...) from the pre-modernization teal-green
+      // palette — the waveform was the last surviving holdout of the
+      // old colour family inside the Listen UI.
+      const UNPLAYED = 'rgba(42,80,200,0.22)';
+      const PLAYED   = 'rgba(42,80,200,0.85)';
       for (let i = 0; i < bins; i++) {
         const peak = waveformPeaks[i];
         const barH = Math.max(1, peak * (halfH - 1));
