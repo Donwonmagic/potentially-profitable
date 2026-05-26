@@ -36,7 +36,7 @@
 @media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
 /* (kept for line-count parity with the previous .reveal block) */
 
-/* ===== [article] Listen / audio player (lines 1497-2035) ===== */
+/* ===== [article] Listen / audio player (lines 1497-2049) ===== */
 /* ============ LISTEN / AUDIO PLAYER ============
    Two surfaces share one engine:
    1. .listen-card — the inline "Audio edition" card rendered under the
@@ -540,6 +540,20 @@
    shadows used by the plain-text highlight. */
 .article-body .is-reading.is-reading-callout{background:transparent;box-shadow:0 0 0 2px var(--teal),0 0 0 8px var(--teal-tint);animation:listen-callout-pulse 2.4s var(--ease-out) infinite}
 .article-body .is-reading.is-reading-callout::before{display:none}
+/* Phase 4: sentence-level reading sync. listen.js wraps each sentence
+   of an active body chunk in a .listen-sent span and toggles
+   .is-sent-reading on the one currently being voiced. The active
+   sentence sits inside the active paragraph (which already paints
+   var(--teal-tint)) — so the sentence accent has to be a STRONGER
+   teal than the paragraph wash, or it's invisible. We use a -teal
+   underline pulled tight to the baseline + a slightly deeper tint;
+   the underline reads as "the speaker's finger tracing the line"
+   without dropping a heavy color into the prose. */
+.article-body .listen-sent{transition:background-color var(--t-fast) var(--ease),box-shadow var(--t-fast) var(--ease)}
+.article-body .listen-sent.is-sent-reading{background:rgba(42,80,200,0.10);box-shadow:inset 0 -2px 0 var(--teal);border-radius:3px}
+@media (prefers-reduced-motion:reduce){
+  .article-body .listen-sent{transition:none}
+}
 .article-figure.is-reading{background:transparent;box-shadow:none}
 .article-figure.is-reading .funnel,.article-figure.is-reading figcaption{background:var(--teal-tint);border-radius:8px;padding:6px 10px;transition:background-color 0.25s var(--ease)}
 .article-figure.is-reading.is-reading-callout{background:transparent;box-shadow:0 0 0 2px var(--teal),0 0 0 8px var(--teal-tint)}
@@ -577,7 +591,7 @@
 }
 
 
-/* ===== [article] Glossary scannability (lines 2930-3084) ===== */
+/* ===== [article] Glossary scannability (lines 2944-3098) ===== */
 
 /* ---------- Glossary scannability (Phase 4 cohesion pass) ----------
    Adds two new chip rows to the existing .gloss-filterbar:
@@ -734,7 +748,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   .glossary-knit__grid{ grid-template-columns:1fr; }
 }
 
-/* ===== [article] "Recently added" strip on /learn/ (lines 3085-3159) ===== */
+/* ===== [article] "Recently added" strip on /learn/ (lines 3099-3173) ===== */
 
 /* ---------- "Recently added" strip on /learn/ (Phase 5) -----------
    Three-card row of the newest items across tools + articles, sorted
@@ -811,7 +825,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 @media (max-width:900px){ .recently-added__grid{ grid-template-columns:repeat(2,1fr); } }
 @media (max-width:560px){ .recently-added__grid{ grid-template-columns:1fr; } }
 
-/* ===== [article] Learn hub + Start here pages (lines 3479-3581) ===== */
+/* ===== [article] Learn hub + Start here pages (lines 3493-3595) ===== */
 
 /* ============================================================
    LEARN HUB + START HERE PAGES
@@ -916,7 +930,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   .start-step + .start-step::before{left:38px}
 }
 
-/* ===== [article] Research notes (/learn/research/) (lines 3834-3850) ===== */
+/* ===== [article] Research notes (/learn/research/) (lines 3848-3864) ===== */
 
 /* ============================================================
    RESEARCH NOTES (/learn/research/)
@@ -935,7 +949,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 .research-index-uses{font-family:var(--font-body);font-size:12px;color:var(--stone-2);letter-spacing:0.04em}
 .research-index-uses strong{color:var(--teal);font-weight:600}
 
-/* ===== [article] Library topics (/learn/topics/) (lines 3851-4032) ===== */
+/* ===== [article] Library topics (/learn/topics/) (lines 3865-4046) ===== */
 
 /* ============================================================
    LIBRARY TOPICS — /learn/topics/ + /learn/topics/<slug>/
@@ -1119,7 +1133,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   color:var(--teal);
 }
 
-/* ===== [article] Glossary term pages (/glossary/<slug>/) (lines 4033-4146) ===== */
+/* ===== [article] Glossary term pages (/glossary/<slug>/) (lines 4047-4160) ===== */
 
 /* ============================================================
    GLOSSARY TERM PAGES — /glossary/<slug>/
@@ -1235,7 +1249,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   color:var(--stone);font-size:13.5px;
 }
 
-/* ===== [article] Resume article — services-aside-cta + see-also + research notes (lines 4231-4627) ===== */
+/* ===== [article] Resume article — services-aside-cta + see-also + research notes (lines 4245-4641) ===== */
 
 /* /services/ inline secondary CTA — sits between Web Builds and
    Process, breaking the run of "Book a 20-min call" buttons with
@@ -1634,7 +1648,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 .cite-chip:hover{background:var(--white);border-color:var(--teal)}
 .cite-chip svg{width:11px;height:11px}
 
-/* ===== [article] Research-note CTA inside cite drawer (lines 4628-4648) ===== */
+/* ===== [article] Research-note CTA inside cite drawer (lines 4642-4662) ===== */
 
 /* ===== Research-note CTA inside a .cite details block =====
    The .cite-body now leads with an internal "Read Don's summary"
@@ -1657,7 +1671,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 .cite-note-link span{font-size:12px;opacity:0.8}
 .cite-note-link:hover span{opacity:1}
 
-/* ===== [article] Research drawer (inline preview) (lines 4649-4788) ===== */
+/* ===== [article] Research drawer (inline preview) (lines 4663-4802) ===== */
 
 /* ============================================================
    RESEARCH DRAWER (inline research-note preview)
@@ -1799,7 +1813,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   .research-drawer-loading::before{animation:none}
 }
 
-/* ===== [article] Glossary term → research note cross-link (lines 4789-4833) ===== */
+/* ===== [article] Glossary term → research note cross-link (lines 4803-4847) ===== */
 
 /* ===== Glossary term → research note cross-link =====
    Compact "See the research" line added by scripts/
@@ -1846,7 +1860,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   color:var(--teal);border-bottom-color:var(--teal);
 }
 
-/* ===== [article] "Recently added" rail (under glossary hero) (lines 4834-4891) ===== */
+/* ===== [article] "Recently added" rail (under glossary hero) (lines 4848-4905) ===== */
 
 /* ===== "Recently added" rail (under glossary hero) =====
  * Surfaces newest terms to returning readers; populated by
@@ -1906,7 +1920,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   font-size:13px;line-height:1.45;color:var(--ink-soft);
 }
 
-/* ===== [article] Glossary index "▶ 90s explainer" chip (lines 4892-4912) ===== */
+/* ===== [article] Glossary index "▶ 90s explainer" chip (lines 4906-4926) ===== */
 
 /* ===== Glossary index "▶ 90s explainer" chip =====
  * Variant of .gloss-tag (defined inline on glossary/index.html) used
@@ -1929,7 +1943,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   margin-right:1px;
 }
 
-/* ===== [article] Glossary explainer (90-second narrated diagram) (lines 4913-5178) ===== */
+/* ===== [article] Glossary explainer (90-second narrated diagram) (lines 4927-5192) ===== */
 
 /* ===== Glossary explainer (90-second narrated diagram) =====
  * Inline-SVG explainer for the five flagship glossary terms (menu
@@ -2197,7 +2211,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   .term-explainer__captions li.is-active{font-size:12pt}
 }
 
-/* ===== [article] Inline glossary popover (lines 5179-5245) ===== */
+/* ===== [article] Inline glossary popover (lines 5193-5259) ===== */
 
 /* ===== Inline glossary popover =====
  * Hover/focus tooltip rendered by site.js when a reader interacts with
@@ -2266,7 +2280,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   .glossary-popover{display:none !important}
 }
 
-/* ===== [article] Print view for glossary section landing pages (lines 5246-5302) ===== */
+/* ===== [article] Print view for glossary section landing pages (lines 5260-5316) ===== */
 
 /* ===== Print view for glossary section landing pages =====
  * Activates only on /glossary/<section>/ pages. Strips site chrome
@@ -2325,7 +2339,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   }
 }
 
-/* ===== [article] Editorial callouts (lines 5412-5495) ===== */
+/* ===== [article] Editorial callouts (lines 5426-5509) ===== */
 
 /* ============ Editorial callouts (Sprint 10 — cohesion) ============
    .callout--field is the "Field note from the kitchen" — a per-
@@ -2411,7 +2425,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 .field-notes-rail__more{text-align:center;margin:28px 0 0}
 .field-notes-rail__more a{color:var(--teal);font-weight:500;text-decoration:none;border-bottom:1px solid currentColor}
 
-/* ===== [article] Post-end Workshop CTA (lines 5514-5529) ===== */
+/* ===== [article] Post-end Workshop CTA (lines 5528-5543) ===== */
 
 /* ============ Post-end Workshop CTA (Sprint 13 — cohesion) ============
    The "Workshop next step" card at the close of every blog post.
@@ -2429,7 +2443,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 .post-end-cta .btn-primary{background:var(--teal);color:var(--cream)}
 .post-end-cta .btn-primary:hover{background:var(--teal-dark)}
 
-/* ===== [article] Inline graphics — globalized from gold articles (lines 6043-6103) ===== */
+/* ===== [article] Inline graphics — globalized from gold articles (lines 6057-6117) ===== */
 
 /* ============ INLINE GRAPHICS — globalized from gold articles ============ */
 /* .recovery-stack: vertical stacked rows with row tints + dark total cap.
@@ -2492,7 +2506,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 .report-decider__item[open]:last-child summary,.photo-aspect-decoder__item[open]:last-child summary{border-bottom:1px solid var(--line)}
 @media(max-width:640px){.report-decider,.photo-aspect-decoder{padding:18px 20px}.report-decider__item summary,.photo-aspect-decoder__item summary{font-size:15.5px}}
 
-/* ===== [article] KnitRail — "what’s next" component for articles (lines 6166-6240) ===== */
+/* ===== [article] KnitRail — "what’s next" component for articles (lines 6180-6254) ===== */
 
 /* ============================================================
    KnitRail — unified four-lane "what's next" component for
@@ -2569,7 +2583,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   }
 }
 
-/* ===== [article] Article viz components (.viz-* family) (lines 6382-6720) ===== */
+/* ===== [article] Article viz components (.viz-* family) (lines 6396-6734) ===== */
 
 /* ============ ARTICLE VIZ COMPONENTS ============
    Namespaced .viz-* family for inline article graphics. Tokens-only

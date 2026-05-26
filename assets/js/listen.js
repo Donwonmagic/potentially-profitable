@@ -257,6 +257,11 @@
       audioSrc = audioSrcFor(lang);
       manifestSrc = manifestSrcFor(lang);
       engine = audioSrc ? 'audio' : 'speech';
+      // Phase 4: re-segment sentences under the new locale on the next
+      // chunk activation. The language-swap reapply-translations path
+      // (below) replaces the wrapped spans by rewriting prose, so the
+      // next mountSentenceSpans pass starts fresh.
+      resetSentenceSegmenter();
       // Tear down cached audio + manifest so the next play fetches
       // the new language's assets.
       if (audioEl) {
@@ -611,6 +616,11 @@
         currentElement.classList.remove('is-reading');
         currentElement.classList.remove('is-reading-callout');
       }
+      // Drop any stale sentence highlight from the previous chunk.
+      if (currentSentSpan) {
+        currentSentSpan.classList.remove('is-sent-reading');
+        currentSentSpan = null;
+      }
       currentElement = el;
       if (el) {
         el.classList.add('is-reading');
@@ -622,6 +632,9 @@
         if (chunk && chunk.kind === 'figure') {
           el.classList.add('is-reading-callout');
         }
+        // Phase 4: wrap sentences on first activation of a body chunk.
+        // No-op for figure/list/quote/heading chunks.
+        mountSentenceSpans(el, chunk);
         // Update "now reading" label on the card
         if (chapterEl) setChapterText(chapterEl, chapterLabel(chunk));
         const rect = el.getBoundingClientRect();
@@ -677,6 +690,110 @@
         cur = cur.parentElement;
       }
       return '';
+    }
+
+    /* ---- Sentence-level reading sync (Phase 4) -----------------------
+       Lazily wraps the text of an active body chunk in <span.listen-sent>
+       elements with proportional [data-sent-start, data-sent-end] time
+       windows derived from the chunk's own [start, end). Only body
+       chunks — figure/quote/list/heading chunks have non-linear text
+       (multiple sentences in a caption, fragmentary list items) where
+       proportional splitting would drift visibly.
+       Wraps once per element, cached in sentencedEls. The mutation only
+       runs the first time a chunk becomes active during this session,
+       so it costs at most N writes per article — not per tick.
+       Selector resolution at lines ~1141-1174 uses el.textContent which
+       is transparent to child spans, so the chunk-to-element map stays
+       valid after wrapping.
+       Per-sentence duration is capped at 4.5s so a runaway estimate
+       (a 200-char sentence in a chunk with only 1s of audio left)
+       doesn't park the highlight on a single sentence visibly. */
+    let sentenceSegmenter = null;
+    let segmenterLang = null;
+    function getSentenceSegmenter() {
+      if (typeof Intl === 'undefined' || typeof Intl.Segmenter !== 'function') return null;
+      const lang = currentLanguage || 'en';
+      if (sentenceSegmenter && segmenterLang === lang) return sentenceSegmenter;
+      try {
+        sentenceSegmenter = new Intl.Segmenter(lang, { granularity: 'sentence' });
+        segmenterLang = lang;
+        return sentenceSegmenter;
+      } catch (_) {
+        return null;
+      }
+    }
+    // Re-segment under the active locale on next chunk activation.
+    function resetSentenceSegmenter() {
+      sentenceSegmenter = null;
+      segmenterLang = null;
+    }
+    // We probe the DOM itself rather than maintain a WeakSet: the
+    // language-swap path destroys the wrapped spans by replacing prose
+    // wholesale, and a Set would carry stale truth across that swap.
+    function isAlreadySentenced(el) {
+      const first = el.firstElementChild;
+      return !!(first && first.classList && first.classList.contains('listen-sent'));
+    }
+    function mountSentenceSpans(el, chunk) {
+      if (!el || !chunk) return;
+      if (chunk.kind !== 'body') return;
+      if (isAlreadySentenced(el)) return;
+      // Skip elements with mixed children (links, code, em, strong).
+      // Wrapping those would lose the inline formatting.
+      for (const child of el.childNodes) {
+        if (child.nodeType !== Node.TEXT_NODE) return;
+      }
+      const seg = getSentenceSegmenter();
+      if (!seg) return;
+      const text = el.textContent || '';
+      const segs = Array.from(seg.segment(text));
+      if (segs.length < 2) return;  // single sentence — no benefit to wrap
+      const totalChars = text.length;
+      const dur = (chunk.end || 0) - (chunk.start || 0);
+      if (totalChars <= 0 || dur <= 0) return;
+      const frag = document.createDocumentFragment();
+      let acc = chunk.start || 0;
+      for (let i = 0; i < segs.length; i++) {
+        const piece = segs[i].segment;
+        const span = document.createElement('span');
+        span.className = 'listen-sent';
+        const sentDur = Math.min(dur * (piece.length / totalChars), 4.5);
+        span.dataset.sentStart = acc.toFixed(3);
+        // The last sentence absorbs any remainder so the final highlight
+        // doesn't drop out a few ms before the chunk boundary.
+        const sentEnd = i === segs.length - 1 ? (chunk.end || acc + sentDur) : (acc + sentDur);
+        span.dataset.sentEnd = sentEnd.toFixed(3);
+        span.textContent = piece;
+        frag.appendChild(span);
+        acc = sentEnd;
+      }
+      el.textContent = '';
+      el.appendChild(frag);
+    }
+    let currentSentSpan = null;
+    function tickSentence(t) {
+      // Cheap exit: the current chunk isn't a body chunk (or hasn't been
+      // wrapped). Drop any stale highlight from a previous chunk.
+      if (!currentElement || !isAlreadySentenced(currentElement)) {
+        if (currentSentSpan) {
+          currentSentSpan.classList.remove('is-sent-reading');
+          currentSentSpan = null;
+        }
+        return;
+      }
+      // Linear scan — typical chunk has 1-6 sentences. A binary search
+      // would be overkill and obscure the intent.
+      const spans = currentElement.querySelectorAll('.listen-sent');
+      let next = null;
+      for (const s of spans) {
+        const start = parseFloat(s.dataset.sentStart);
+        const end = parseFloat(s.dataset.sentEnd);
+        if (t >= start && t < end) { next = s; break; }
+      }
+      if (next === currentSentSpan) return;
+      if (currentSentSpan) currentSentSpan.classList.remove('is-sent-reading');
+      if (next) next.classList.add('is-sent-reading');
+      currentSentSpan = next;
     }
 
     /* ---- Voice selection ---- */
@@ -1393,6 +1510,10 @@
       updateDockProgress(pct, t, audioEl.duration || 0);
       updateDockChapter(chunks[currentIndex]);
       markCurrentTickSegment(currentIndex);
+      // Phase 4: sentence highlight piggybacks the same tick. Single
+      // event loop, no new rAF or audio event listener — the audit
+      // explicitly mandated a single-tick architecture.
+      tickSentence(t);
       if (prevBtn) prevBtn.disabled = currentIndex <= 0;
       if (nextBtn) nextBtn.disabled = currentIndex >= chunks.length - 1;
       updateSkipButtons();

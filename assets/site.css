@@ -1997,6 +1997,20 @@ br.br-lg{display:none}
    shadows used by the plain-text highlight. */
 .article-body .is-reading.is-reading-callout{background:transparent;box-shadow:0 0 0 2px var(--teal),0 0 0 8px var(--teal-tint);animation:listen-callout-pulse 2.4s var(--ease-out) infinite}
 .article-body .is-reading.is-reading-callout::before{display:none}
+/* Phase 4: sentence-level reading sync. listen.js wraps each sentence
+   of an active body chunk in a .listen-sent span and toggles
+   .is-sent-reading on the one currently being voiced. The active
+   sentence sits inside the active paragraph (which already paints
+   var(--teal-tint)) — so the sentence accent has to be a STRONGER
+   teal than the paragraph wash, or it's invisible. We use a -teal
+   underline pulled tight to the baseline + a slightly deeper tint;
+   the underline reads as "the speaker's finger tracing the line"
+   without dropping a heavy color into the prose. */
+.article-body .listen-sent{transition:background-color var(--t-fast) var(--ease),box-shadow var(--t-fast) var(--ease)}
+.article-body .listen-sent.is-sent-reading{background:rgba(42,80,200,0.10);box-shadow:inset 0 -2px 0 var(--teal);border-radius:3px}
+@media (prefers-reduced-motion:reduce){
+  .article-body .listen-sent{transition:none}
+}
 .article-figure.is-reading{background:transparent;box-shadow:none}
 .article-figure.is-reading .funnel,.article-figure.is-reading figcaption{background:var(--teal-tint);border-radius:8px;padding:6px 10px;transition:background-color 0.25s var(--ease)}
 .article-figure.is-reading.is-reading-callout{background:transparent;box-shadow:0 0 0 2px var(--teal),0 0 0 8px var(--teal-tint)}
