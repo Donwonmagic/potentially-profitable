@@ -106,7 +106,7 @@
         {
           "@type": "ListItem",
           "position": 2,
-          "url": "https://muntin.digital/blog/when-to-rebuild-your-restaurant-website/"
+          "url": "https://muntin.digital/library/when-to-rebuild-your-restaurant-website/"
         },
         {
           "@type": "ListItem",
@@ -116,7 +116,7 @@
         {
           "@type": "ListItem",
           "position": 4,
-          "url": "https://muntin.digital/blog/restaurant-photo-spec-sheet/"
+          "url": "https://muntin.digital/library/restaurant-photo-spec-sheet/"
         },
         {
           "@type": "ListItem",
@@ -352,7 +352,7 @@
     </header>
     <ul class="topic-article-list">
       <li>
-        <a class="topic-article-card" href="/blog/when-to-rebuild-your-restaurant-website/">
+        <a class="topic-article-card" href="/library/when-to-rebuild-your-restaurant-website/">
           <span class="topic-article-date">Apr 30, 2026</span>
           <h3>When to Rebuild Your Restaurant Website: A Decision Framework</h3>
           <p>A seven-question decision framework for the rebuild question, with three case threads showing what each answer actually changes.</p>
@@ -516,7 +516,7 @@
 
       <ul>
         <li><strong>Network speed is the constraint.</strong> Lighthouse&rsquo;s mobile preset simulates Slow 4G &mdash; ~1.6 Mbps with 150ms RTT and 4&times; CPU throttle. That&rsquo;s the ceiling, not the floor. The DMV&rsquo;s mobile reality (across the four major carriers) is roughly Slow 4G during commute hours, near-LTE on weekends. Build for the worse case.</li>
-        <li><strong>Hero images are the leak.</strong> The 4MB plate-of-pasta photo that loads in 200ms on your office wifi takes 6 seconds on Slow 4G. Switching to AVIF + WebP fallbacks drops that to 200KB without losing visible quality. The <a href="/blog/restaurant-photo-spec-sheet/">photo spec sheet</a> covers the file-size targets.</li>
+        <li><strong>Hero images are the leak.</strong> The 4MB plate-of-pasta photo that loads in 200ms on your office wifi takes 6 seconds on Slow 4G. Switching to AVIF + WebP fallbacks drops that to 200KB without losing visible quality. The <a href="/library/restaurant-photo-spec-sheet/">photo spec sheet</a> covers the file-size targets.</li>
         <li><strong>Mobile UX is one column.</strong> Two-column hero layouts that look elegant on a 14&rdquo; laptop become unreadable stacking on a 360px phone. Build the mobile layout first, expand to desktop. Hours block above the hero. Reservation button as a primary-color band. Menu sections collapsible.</li>
       </ul>
 
@@ -526,7 +526,7 @@
 
       <ol>
         <li><strong>Compress and re-encode the hero image (15 minutes).</strong> AVIF first, WebP fallback, JPEG as the last resort. Target: under 200KB at 1600&times;1067. Tools: Squoosh, ImageOptim, or the AVIF support built into modern image-CDNs (Cloudinary, ImageKit). Single biggest LCP improvement on most independent restaurant sites.</li>
-        <li><strong>Set width/height on every image (30 minutes).</strong> Eliminates CLS jumps. Use the natural aspect ratio of the source image; CSS <code>aspect-ratio</code> on the parent if the image is responsive. <a href="/blog/restaurant-photo-spec-sheet/">The photo spec sheet</a> lists every image surface and its aspect ratio.</li>
+        <li><strong>Set width/height on every image (30 minutes).</strong> Eliminates CLS jumps. Use the natural aspect ratio of the source image; CSS <code>aspect-ratio</code> on the parent if the image is responsive. <a href="/library/restaurant-photo-spec-sheet/">The photo spec sheet</a> lists every image surface and its aspect ratio.</li>
         <li><strong>Defer non-critical JavaScript (1 hour).</strong> Add <code>defer</code> to script tags that aren&rsquo;t needed for first paint. Reservation widgets (OpenTable, Resy, Tock), analytics, chat embeds. Plausible is already async &middot; cookieless &middot; tiny; most third-party tags are not.</li>
         <li><strong>Self-host fonts with font-display: swap (1 hour).</strong> Web fonts blocking the first paint is the second-most-common LCP failure. Self-host the woff2 files, use <code>font-display: swap</code>, preload the two critical above-the-fold weights.</li>
         <li><strong>Lazy-load below-the-fold images (15 minutes).</strong> <code>loading="lazy"</code> attribute on every img below the hero. Saves 40&ndash;60% of total bytes on a typical menu page where the visitor never scrolls past the third dish.</li>

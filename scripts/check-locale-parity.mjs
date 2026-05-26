@@ -61,8 +61,17 @@ const SKIP_PATH_PREFIXES = ['blog/', 'library/'];
 //   3. Slug matches an EN file 1:1                  — same-slug pair, fall
 //                                                     through to default lookup
 const slugMapPath = path.join(repoRoot, 'data', 'i18n-slug-map.json');
-const slugMap     = fs.existsSync(slugMapPath) ? JSON.parse(fs.readFileSync(slugMapPath, 'utf8')) : { blog: {}, esOriginal: [] };
-const esToEnSlug  = Object.fromEntries(Object.entries(slugMap.blog || {}).map(([en, es]) => [es, en]));
+const slugMap     = fs.existsSync(slugMapPath) ? JSON.parse(fs.readFileSync(slugMapPath, 'utf8')) : { blog: {}, library: {}, esOriginal: [] };
+// Phase 7: namespace-aware ES→EN slug lookup. An ES slug might map to
+// an EN slug under /blog/ (timely) OR /library/ (evergreen) depending
+// on whether the EN counterpart moved during the split. The lookup
+// table also stores which namespace each ES slug resolves to.
+const esToEn = (() => {
+  const map = {};
+  for (const [en, es] of Object.entries(slugMap.blog || {}))    map[es] = { en, namespace: 'blog' };
+  for (const [en, es] of Object.entries(slugMap.library || {})) map[es] = { en, namespace: 'library' };
+  return map;
+})();
 const esOriginal  = new Set(slugMap.esOriginal || []);
 
 // Locales whose absence from an EN counterpart should be reported.
@@ -104,16 +113,25 @@ function counterpartFor(posix, locale) {
   if (!m) return null;
   const stripped = m[1] === 'index.html' ? 'index.html' : m[1];
 
-  // Slug-map awareness for blog. An ES blog post under a translated
-  // slug needs to point at /blog/<mapped-en-slug>/ on the EN side.
-  // Posts in esOriginal[] return null — legitimately no EN counterpart,
-  // signalled by a sentinel value the caller treats as "skip".
-  const blogMatch = stripped.match(/^blog\/([^/]+)\/index\.html$/);
-  if (blogMatch) {
-    const slug = blogMatch[1];
-    if (esOriginal.has(slug)) return '__ES_ORIGINAL__'; // intentional, no EN
-    if (esToEnSlug[slug])     return `blog/${esToEnSlug[slug]}/index.html`;
-    // else fall through to same-slug pair (e.g. an EN+ES post that share a slug)
+  // Slug-map awareness for blog/library. An ES post under a translated
+  // slug needs to point at /<namespace>/<mapped-en-slug>/ on the EN side
+  // where <namespace> is /blog/ (timely) or /library/ (evergreen) per
+  // the i18n-slug-map. Posts in esOriginal[] return a sentinel.
+  //
+  // For same-slug ES↔EN posts (no entry in slug-map), try /library/
+  // first, then /blog/ — the EN counterpart might have moved to library
+  // during the Phase 7 split.
+  const nsMatch = stripped.match(/^(blog|library)\/([^/]+)\/index\.html$/);
+  if (nsMatch) {
+    const slug = nsMatch[2];
+    if (esOriginal.has(slug)) return '__ES_ORIGINAL__';
+    if (esToEn[slug])         return `${esToEn[slug].namespace}/${esToEn[slug].en}/index.html`;
+    // Same-slug fallback: prefer /library/<slug>/ if it exists.
+    const libCandidate  = `library/${slug}/index.html`;
+    const blogCandidate = `blog/${slug}/index.html`;
+    if (fs.existsSync(path.join(repoRoot, libCandidate)))  return libCandidate;
+    if (fs.existsSync(path.join(repoRoot, blogCandidate))) return blogCandidate;
+    // Neither exists — fall through (will be flagged correctly).
   }
   return stripped;
 }
