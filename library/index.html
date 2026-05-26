@@ -398,16 +398,16 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     </header>
 
     <section class="lib-three" aria-label="Three entry doors">
-      <a class="lib-door" href="/blog/">
+      <a class="lib-door" href="#articles">
         <p class="lib-door__verb">Read</p>
-        <h2>Articles &amp; research.</h2>
-        <p class="lead">Long-form pieces and dated research notes &mdash; the way I write up an answer once, so it doesn&rsquo;t need to be re-asked.</p>
+        <h2>The library.</h2>
+        <p class="lead">Evergreen reference &mdash; the answer to a question, written once, organized by topic, no expiration date. The op-eds and weekly commentary live in <a href="/blog/" style="color:inherit;border-bottom:1px dashed currentColor;text-decoration:none">the blog</a>.</p>
         <ul class="lib-door__list">
-          <li><strong>Articles</strong><small><!-- count:articles -->36<!-- /count --> &middot; weekly</small></li>
+          <li><strong>Library articles</strong><small>Reference, by topic</small></li>
           <li><strong>Research notes</strong><small>4 &middot; quarterly</small></li>
           <li><strong>Topics</strong><small><!-- count:topics -->8<!-- /count --> pillars</small></li>
         </ul>
-        <span class="lib-door__cta">Browse articles &rarr;</span>
+        <span class="lib-door__cta">Browse the library &rarr;</span>
       </a>
 
       <a class="lib-door" href="/glossary/">
@@ -458,9 +458,17 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       </ul>
     </section>
 
+    <section class="lib-section" id="articles" aria-labelledby="articles-h">
+      <p class="eyebrow">Every library article</p>
+      <h2 id="articles-h" style="font-family:var(--font-display);font-size:clamp(28px,3.6vw,40px);font-weight:500;line-height:1.15;letter-spacing:-0.3px;color:var(--ink);margin:0 0 18px">Browse the library.</h2>
+      <p style="font-size:17px;line-height:1.6;color:var(--ink-soft);margin:0 0 18px;max-width:720px">Evergreen reference, organized by topic. Each piece answers a real operator question and is updated when the answer changes &mdash; not when the calendar flips.</p>
+      <!-- LIBRARY-ARTICLE-LIST: populated in Wave 4 once /library/<slug>/ pages land. Until then, browse via topic pillars above. -->
+      <p style="margin:18px 0 0;font-size:14px;color:var(--stone);font-style:italic">Article list is populated as posts migrate from <a href="/blog/" style="color:var(--teal)">the blog</a> into the library &mdash; in progress through the May&nbsp;2026 split.</p>
+    </section>
+
     <section class="lib-section" aria-labelledby="recent-h">
       <p class="eyebrow">What&rsquo;s newest</p>
-      <h2 id="recent-h" style="font-family:var(--font-display);font-size:clamp(28px,3.6vw,40px);font-weight:500;line-height:1.15;letter-spacing:-0.3px;color:var(--ink);margin:0 0 18px">Recently added.</h2>
+      <h2 id="recent-h" style="font-family:var(--font-display);font-size:clamp(28px,3.6vw,40px);font-weight:500;line-height:1.15;letter-spacing:-0.3px;color:var(--ink);margin:0 0 18px">Recent commentary.</h2>
       <ul style="list-style:none;padding:0;margin:0">
         <li style="padding:18px 0;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:18px;align-items:baseline">
           <div>
@@ -487,7 +495,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           <small style="color:var(--stone);font-size:13px;white-space:nowrap">9 min</small>
         </li>
       </ul>
-      <p style="margin:24px 0 0"><a href="/blog/" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none">All articles &rarr;</a></p>
+      <p style="margin:24px 0 0"><a href="/blog/" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none">All commentary &rarr;</a> &middot; <a href="#articles" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none">All library articles &rarr;</a></p>
     </section>
 
     <section class="lib-section" aria-labelledby="trust-h">
