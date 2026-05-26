@@ -5,7 +5,7 @@
  * the SECTIONS map in scripts/build-css-shells.mjs.
  */
 
-/* ===== [tool] TOOL SHELL — shared primitives for /tools/* pages (lines 2444-2541) ===== */
+/* ===== [tool] TOOL SHELL — shared primitives for /tools/* pages (lines 2453-2550) ===== */
 
 /* ============================================================
    TOOL SHELL — shared primitives for /tools/* pages
@@ -105,7 +105,7 @@
 .tool-card.soon .cta{ color:var(--stone); }
 .tool-card .cta svg{ width:16px; height:16px; }
 
-/* ===== [tool] Tools-landing cluster layout (lines 2542-2832) ===== */
+/* ===== [tool] Tools-landing cluster layout (lines 2551-2841) ===== */
 
 /* ---------- Tools-landing cluster layout (Phase 2 cohesion pass) -----
    The /tools/ page is now grouped by the same 6-topic taxonomy used at
@@ -398,7 +398,7 @@
 @media (max-width:960px){ .tool-roadmap .tool-grid{ grid-template-columns:repeat(2,1fr); } }
 @media (max-width:560px){ .tool-roadmap .tool-grid{ grid-template-columns:1fr; } }
 
-/* ===== [tool] Per-tool "Keep going" knit-in (lines 2833-2943) ===== */
+/* ===== [tool] Per-tool "Keep going" knit-in (lines 2842-2952) ===== */
 
 /* ---------- Per-tool "Keep going" knit-in (Phase 3 cohesion pass) ----
    Renders at the bottom of every live tool page (between
@@ -511,7 +511,7 @@
   .tool-knit__grid{ grid-template-columns:1fr; }
 }
 
-/* ===== [tool] Tool deep-links (.tool-deep-* — bottom of every /tools/* page) (lines 4161-4244) ===== */
+/* ===== [tool] Tool deep-links (.tool-deep-* — bottom of every /tools/* page) (lines 4170-4253) ===== */
 
 /* Tool deep-links — the Phase-3.5 block at the bottom of every
    /tools/* page. Closes the loop from a tool's result back into
@@ -597,7 +597,7 @@
   color:var(--teal);
 }
 
-/* ===== [tool] Tool states (loading / error / empty) (lines 5381-5425) ===== */
+/* ===== [tool] Tool states (loading / error / empty) (lines 5390-5434) ===== */
 
 /* ============ Tool states (Sprint 5 — cohesion) ============
    Shared loading + error patterns for tool result regions. Every
@@ -644,7 +644,7 @@
 .tool-error-body{font-size:14.5px;line-height:1.55;color:var(--ink-soft);margin:0}
 .tool-error-meta{margin-top:12px;font-size:12.5px;color:var(--stone);font-variant-numeric:tabular-nums}
 
-/* ===== [tool] Learn-back (in tool result region) (lines 5510-5527) ===== */
+/* ===== [tool] Learn-back (in tool result region) (lines 5519-5536) ===== */
 
 /* ============ Learn-back (Sprint 12 — cohesion) ============
    A thin, prose-shaped row that sits inside a tool's result region
@@ -664,7 +664,7 @@
 .learn-back-body a{color:var(--teal);font-weight:500;border-bottom:1px solid currentColor;text-decoration:none;transition:color var(--t-fast) var(--ease)}
 .learn-back-body a:hover,.learn-back-body a:focus-visible{color:var(--teal-dark)}
 
-/* ===== [tool] .edu-result — interpretation card under tool output (lines 5797-5835) ===== */
+/* ===== [tool] .edu-result — interpretation card under tool output (lines 5806-5844) ===== */
 
 /* ============ .edu-result — interpretation card under tool output ============
    Every calculator emits a number; this block lives directly under
@@ -705,7 +705,7 @@
 }
 @media print{.edu-result{display:none}}
 
-/* ===== [tool] Statistical disclosure components (lines 5836-5878) ===== */
+/* ===== [tool] Statistical disclosure components (lines 5845-5887) ===== */
 
 /* ============ Statistical disclosure components ============
    Phase 3 — building on .edu-result so calculators can disclose
@@ -750,7 +750,7 @@
 
 @media print{.edu-range,.edu-source,.edu-formula,.edu-caveat{display:none}}
 
-/* ===== [tool] Tool-internal type minimums (lines 5879-6035) ===== */
+/* ===== [tool] Tool-internal type minimums (lines 5888-6044) ===== */
 
 /* ============ Tool-internal type minimums ============
    Utility floor for text inside tool result panels, tables, and

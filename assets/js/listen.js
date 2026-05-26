@@ -749,23 +749,42 @@
       const segs = Array.from(seg.segment(text));
       if (segs.length < 2) return;  // single sentence — no benefit to wrap
       const totalChars = text.length;
-      const dur = (chunk.end || 0) - (chunk.start || 0);
+      const start = chunk.start || 0;
+      const end = chunk.end || 0;
+      const dur = end - start;
       if (totalChars <= 0 || dur <= 0) return;
+      // Proportional sentEnd computed from CUMULATIVE character offset
+      // so the windows naturally sum to chunk.end. The earlier per-
+      // sentence Math.min(...,4.5) cap caused downstream drift in
+      // studio mode (any capped sentence shifted later windows early
+      // and made the last sentence absorb the slack — its highlight
+      // activated too soon). For studio audio chunk.end already
+      // matches real audio; no cap needed.
       const frag = document.createDocumentFragment();
-      let acc = chunk.start || 0;
+      let charsSoFar = 0;
+      let prevEnd = start;
       for (let i = 0; i < segs.length; i++) {
         const piece = segs[i].segment;
+        charsSoFar += piece.length;
+        // Cumulative proportional end — the last sentence lands exactly on chunk.end
+        // by construction since charsSoFar === totalChars on the final iteration.
+        const sentEnd = i === segs.length - 1 ? end : (start + dur * (charsSoFar / totalChars));
+        // Intl.Segmenter includes trailing whitespace in each piece.
+        // Painting `.is-sent-reading` background + the bottom border
+        // under that trailing space leaves a small highlight tail
+        // before the next sentence. Strip the trailing whitespace
+        // from the span and emit it as a sibling text node so the
+        // paragraph still reads correctly and selection still works.
+        const trailing = piece.match(/\s+$/);
+        const core = trailing ? piece.slice(0, -trailing[0].length) : piece;
         const span = document.createElement('span');
         span.className = 'listen-sent';
-        const sentDur = Math.min(dur * (piece.length / totalChars), 4.5);
-        span.dataset.sentStart = acc.toFixed(3);
-        // The last sentence absorbs any remainder so the final highlight
-        // doesn't drop out a few ms before the chunk boundary.
-        const sentEnd = i === segs.length - 1 ? (chunk.end || acc + sentDur) : (acc + sentDur);
+        span.dataset.sentStart = prevEnd.toFixed(3);
         span.dataset.sentEnd = sentEnd.toFixed(3);
-        span.textContent = piece;
+        span.textContent = core;
         frag.appendChild(span);
-        acc = sentEnd;
+        if (trailing) frag.appendChild(document.createTextNode(trailing[0]));
+        prevEnd = sentEnd;
       }
       el.textContent = '';
       el.appendChild(frag);
@@ -1336,6 +1355,23 @@
       drawTicks();
       revealPlayerChrome();
       audioEl.playbackRate = currentRate();
+      // Phase 5 — share-with-timestamp deep link. `?t=4m12s` (or
+      // `4:12` or `252s` or bare `252`) seeks the audio to that
+      // position on first play. Consumed once per page load so a
+      // pause/resume doesn't keep snapping back. Wins over the
+      // preview cap (deep link is explicit user intent, preview is
+      // tentative); we clear previewLimit to honor that precedence.
+      if (!deepLinkConsumed) {
+        deepLinkConsumed = true;
+        const t = parseTimestampParam();
+        if (t !== null && t > 0) {
+          previewLimit = null;
+          try { audioEl.currentTime = t; } catch (_) {}
+          if (window.plausible) {
+            try { window.plausible('Audio: Deep Link'); } catch (_) {}
+          }
+        }
+      }
       // Create the AudioContext inside the user-gesture chain, before
       // the first await — Safari otherwise leaves it permanently
       // suspended. If analyser setup fails, playback continues without
@@ -1492,6 +1528,16 @@
     function tickStudio() {
       if (!audioEl) return;
       const t = audioEl.currentTime;
+      // Phase 5: preview cap. If a 30s preview is in flight and the
+      // playhead reached the limit, pause the audio and clear the cap.
+      // Doesn't touch state until after the pause completes so the
+      // existing finishStudioPlayback path stays in charge of UI state.
+      if (previewLimit !== null && t >= previewLimit) {
+        previewLimit = null;
+        try { audioEl.pause(); } catch (_) {}
+        setState('paused');
+        return;
+      }
       // Find the chunk whose [start, end) contains t. Chunks are sorted
       // so a short linear scan from the current position is adequate.
       let idx = currentIndex;
@@ -1569,13 +1615,109 @@
     }
 
     /* ---- Click handling ---- */
+    // Phase 5 affordance: 30-second preview. Sample the voice without
+    // committing to the full 11-minute reading. Clicking the main play
+    // button at any point clears the preview cap and lets playback run
+    // to completion — the preview button is the low-commitment door,
+    // the play button is the commitment.
+    let previewLimit = null;  // audio time (seconds) at which to auto-pause; null = no cap
+    // Phase 5 — `?t=4m12s` deep-link consumption flag. Honored once on
+    // the first studio play; pause/resume after that does not re-seek.
+    let deepLinkConsumed = false;
+    function parseTimestampParam() {
+      try {
+        if (typeof window === 'undefined' || !window.location) return null;
+        const params = new URLSearchParams(window.location.search);
+        const raw = params.get('t');
+        if (!raw) return null;
+        // Accept "1h2m3s", "4m12s", "252s", "252" (seconds), "4:12" (mm:ss).
+        const colon = raw.match(/^(\d+):(\d+)$/);
+        if (colon) return parseInt(colon[1], 10) * 60 + parseInt(colon[2], 10);
+        const m = raw.match(/^(?:(\d+)h)?(?:(\d+)m)?(?:(\d+(?:\.\d+)?)s?)?$/i);
+        if (!m || (!m[1] && !m[2] && !m[3])) return null;
+        return (parseInt(m[1] || '0', 10) * 3600)
+             + (parseInt(m[2] || '0', 10) * 60)
+             + parseFloat(m[3] || '0');
+      } catch (_) {
+        return null;
+      }
+    }
     function toggle() {
-      if      (state === 'idle')    startPlayback();
+      if      (state === 'idle')    { previewLimit = null; startPlayback(); }
       else if (state === 'playing') pausePlayback();
-      else if (state === 'paused')  startPlayback();
+      else if (state === 'paused')  { previewLimit = null; startPlayback(); }
+    }
+    function startPreview() {
+      previewLimit = 30;
+      if (audioEl) {
+        try { audioEl.currentTime = 0; } catch (_) {}
+      }
+      if (state === 'playing') pausePlayback();
+      startPlayback();
+      if (window.plausible) {
+        try { window.plausible('Audio: Preview'); } catch (_) {}
+      }
     }
     playBtn.addEventListener('click', toggle);
     listenBtn.addEventListener('click', toggle);
+    const previewBtn = card.root.querySelector('.listen-preview');
+    // Speech-fallback mode has no scrubable timeline; hide the preview
+    // affordance there so the button doesn't suggest a feature we
+    // can't deliver cleanly.
+    if (previewBtn) {
+      if (!audioSrc) {
+        previewBtn.hidden = true;
+      } else {
+        previewBtn.addEventListener('click', startPreview);
+      }
+    }
+
+    // Phase 5 — keyboard shortcuts. Only active once the user has
+    // engaged the player at least once (state !== 'idle'); otherwise
+    // Space would hijack page scroll for every visitor whether or not
+    // they care about audio. Form inputs and contenteditable surfaces
+    // are skipped so the user's typing flow is never interrupted.
+    function isTypingTarget(t) {
+      if (!t) return false;
+      if (t.matches && t.matches('input, textarea, select, [contenteditable], [contenteditable=""], [contenteditable="true"]')) return true;
+      if (t.closest && t.closest('input, textarea, select, [contenteditable=""], [contenteditable="true"]')) return true;
+      return false;
+    }
+    document.addEventListener('keydown', (e) => {
+      if (state === 'idle') return;
+      if (isTypingTarget(e.target)) return;
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
+      switch (e.key) {
+        case ' ':
+        case 'Spacebar':
+          e.preventDefault();
+          toggle();
+          break;
+        case 'j':
+        case 'J':
+          e.preventDefault();
+          seekBy(-15);
+          break;
+        case 'k':
+        case 'K':
+          e.preventDefault();
+          seekBy(+15);
+          break;
+        case 'ArrowLeft':
+          e.preventDefault();
+          skipTo(currentIndex - 1);
+          break;
+        case 'ArrowRight':
+          e.preventDefault();
+          skipTo(currentIndex + 1);
+          break;
+        default:
+          return;
+      }
+      if (window.plausible) {
+        try { window.plausible('Audio: Keyboard Shortcut'); } catch (_) {}
+      }
+    });
 
     window.addEventListener('beforeunload', () => {
       if (state !== 'idle') window.speechSynthesis.cancel();
@@ -1885,6 +2027,7 @@
           <p class="listen-card-kicker"><span>Audio edition</span></p>
           <h2 class="listen-card-title">Prefer to listen?</h2>
           <p class="listen-card-sub">Press play and we'll read the whole post aloud — charts and all.</p>
+          <button type="button" class="listen-preview" aria-label="Play a 30-second preview">Hear a 30-second preview →</button>
         </div>
         <div class="listen-card-meta">
           <strong>${minutes} min</strong><span>hands-free</span>
