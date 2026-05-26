@@ -318,13 +318,21 @@ function discover(target) {
   return [];
 }
 
-let processed = 0, skipped = 0;
+let processed = 0, skipped = 0, would = 0;
 for (const t of targets) {
   const mp3s = discover(t);
   for (const mp3 of mp3s) {
     const ok = processOne(mp3);
-    if (ok && !dryRun) processed++;
-    else if (!ok) skipped++;
+    if (ok) {
+      if (dryRun) would++;
+      else processed++;
+    } else {
+      skipped++;
+    }
   }
 }
-console.log(`\ndone: ${processed} processed, ${skipped} skipped${dryRun ? ' (dry run)' : ''}`);
+if (dryRun) {
+  console.log(`\ndone (dry run): ${would} would be processed, ${skipped} would be skipped`);
+} else {
+  console.log(`\ndone: ${processed} processed, ${skipped} skipped`);
+}
