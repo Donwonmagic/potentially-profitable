@@ -698,6 +698,12 @@
         // Phase 4: wrap sentences on first activation of a body chunk.
         // No-op for figure/list/quote/heading chunks.
         mountSentenceSpans(el, chunk);
+        // Mirror the current chapter onto the dialog's chapter list so
+        // a listener who opens the dialog mid-play sees their position
+        // in the article structure. Walks backward from the current
+        // chunk to the nearest preceding heading; finds the chapter
+        // button by data-chapter-id == headingElement.id.
+        updateActiveChapterButton();
         // Update "now reading" label on the card
         if (chapterEl) setChapterText(chapterEl, chapterLabel(chunk));
         const rect = el.getBoundingClientRect();
@@ -1900,6 +1906,36 @@
           try { window.plausible('Audio: Chapter Jump'); } catch (_) {}
         }
         jumpToChapter(id);
+      });
+    }
+    // Active-chapter highlight inside the dialog's chapter list. Fired
+    // from setCurrent on every chunk transition (which already fires
+    // on every chapter boundary). Walks backward from the current
+    // chunk index until it finds a heading chunk, then looks up the
+    // chapter button by data-chapter-id. Falls back to no-active if
+    // the current chunk precedes the article's first heading.
+    function updateActiveChapterButton() {
+      if (!helpChaptersList) return;
+      if (!chunks.length) return;
+      // Walk backward from current index to the most recent heading.
+      let headingEl = null;
+      for (let i = currentIndex; i >= 0; i--) {
+        if (chunks[i] && chunks[i].kind === 'heading') {
+          headingEl = chunks[i].element;
+          break;
+        }
+      }
+      const headingId = headingEl && headingEl.id ? headingEl.id : null;
+      // Toggle .is-current on the matching button; clear others.
+      const buttons = helpChaptersList.querySelectorAll('.listen-chapter-jump');
+      buttons.forEach((btn) => {
+        if (headingId && btn.dataset.chapterId === headingId) {
+          btn.classList.add('is-current');
+          btn.setAttribute('aria-current', 'true');
+        } else {
+          btn.classList.remove('is-current');
+          btn.removeAttribute('aria-current');
+        }
       });
     }
     // Drop the gear/help button entirely on browsers that don't ship

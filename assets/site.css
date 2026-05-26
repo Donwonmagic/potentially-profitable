@@ -1740,6 +1740,12 @@ br.br-lg{display:none}
 .listen-chapter-jump:hover{ background:var(--teal-tint); color:var(--teal-dark); padding-left:14px; }
 .listen-chapter-jump:hover::before{ background:var(--teal); }
 .listen-chapter-jump:focus-visible{ outline:2px solid var(--teal); outline-offset:2px; }
+/* Active-chapter row when audio is playing. The .is-current class is
+   set by listen.js inside setCurrent (one chapter at a time, walks
+   back to the nearest heading). The rail on the left becomes a solid
+   teal bar to mark "you are here" even when the cursor isn't on it. */
+.listen-chapter-jump.is-current{ background:var(--teal-tint); color:var(--teal-dark); padding-left:14px; font-weight:600; }
+.listen-chapter-jump.is-current::before{ background:var(--teal); }
 @media (prefers-reduced-motion:reduce){
   .listen-help-dialog[open]{ animation:none; }
 }
