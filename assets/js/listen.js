@@ -680,11 +680,16 @@
         currentElement.classList.remove('is-reading-callout');
         // Read-trail: mark the previous chunk as "was read" so the
         // article visibly leads the reader through the piece as audio
-        // plays. Persists for the session (only resets on full
-        // playback restart). Excluded for figure callouts because the
-        // chunk's own callout box already carries strong visual weight
-        // and a trail rail next to it competes.
-        if (!currentElement.classList.contains('article-figure')) {
+        // plays. Only on prose paragraphs and list items — figure
+        // callouts have their own pulsing ring, chart labels sit
+        // inside layouts where the left:-14px rail would land in
+        // graph territory, headings already mark their own start
+        // with size/weight, and figcaptions sit inside figures whose
+        // ring already implies "read". So tagOk filters by element
+        // type, not just the chunk kind from the manifest.
+        const tag = currentElement.tagName;
+        const tagOk = tag === 'P' || tag === 'LI';
+        if (tagOk && !currentElement.closest('.viz-figure, .article-figure, figure, .listen-card')) {
           currentElement.classList.add('was-read');
         }
       }
@@ -1574,6 +1579,14 @@
           if (dockChapter) setChapterText(dockChapter, '');
           setState('idle');
           syncMediaSessionPosition();
+          // Fresh-listen reset: clear the persistent read-trail rails
+          // on full completion so a replay starts from a clean slate
+          // (matches the user's mental model — finishing the piece is
+          // a natural breakpoint, the next listen shouldn't carry
+          // ghost marks from the previous).
+          if (postBody) {
+            postBody.querySelectorAll('.was-read').forEach((el) => el.classList.remove('was-read'));
+          }
           // Surface the "what's next" prompt AFTER the 2.8s warm-glow
           // finale collapses. The prompt persists until the user
           // dismisses it or 90s pass (auto-hide). It's an editorial
@@ -1744,9 +1757,13 @@
     }
     function toggle() {
       // Any tap on the main play button is a commitment signal —
-      // clear the preview cap and dismiss the resume chip so we
-      // play through normally from t=0 (or wherever paused).
-      if (state === 'idle')    { previewLimit = null; hideResumeChip(); startPlayback(); }
+      // clear the preview cap, the resume chip, AND any finished
+      // prompt so the player can transition cleanly into the new
+      // playback. The finished prompt's 90s auto-hide timer would
+      // otherwise tick during the replay and dismiss the prompt
+      // mid-listen on a delay; cleaner to clear immediately on a
+      // commitment action.
+      if (state === 'idle')    { previewLimit = null; hideResumeChip(); hideFinishedPrompt(); startPlayback(); }
       else if (state === 'playing') pausePlayback();
       else if (state === 'paused')  { previewLimit = null; startPlayback(); }
     }
