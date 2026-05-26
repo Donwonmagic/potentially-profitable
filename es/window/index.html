@@ -177,6 +177,11 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <form class="window-composer__form" id="windowForm" autocomplete="off">
 
+        <!-- Campo oculto de contexto-curso — poblado por el script al
+             final del body cuando el visitante llega desde una página
+             /es/course/. -->
+        <input type="hidden" id="windowFromLesson" name="from_lesson" value="" />
+
         <details class="window-composer__context-details" id="windowContextDetails">
           <summary class="window-composer__context-summary">Cu&eacute;ntame qui&eacute;n eres <span class="window-composer__opt">(opcional)</span></summary>
           <div class="window-composer__context">
@@ -291,5 +296,40 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <script src="/assets/js/window-photos.js?v=20260501-engagement" defer></script>
 <script src="/assets/js/window-voice.js?v=20260501-engagement" defer></script>
 <script src="/assets/js/window-callback.js?v=20260501-engagement" defer></script>
+
+<!-- Course-context seeding (ES). Mismo comportamiento que /window/ EN. -->
+<script>
+(function () {
+  if (typeof document === 'undefined') return;
+  var hidden = document.getElementById('windowFromLesson');
+  var body   = document.getElementById('windowBody');
+  if (!hidden && !body) return;
+
+  var ref = (typeof document.referrer === 'string') ? document.referrer : '';
+  var fromQuery = '';
+  try {
+    var sp = new URLSearchParams(window.location.search);
+    fromQuery = sp.get('from_lesson') || sp.get('lesson') || '';
+  } catch (_) {}
+
+  var match = null;
+  if (fromQuery) {
+    match = { module: '', lesson: fromQuery.trim(), position: '' };
+  } else if (ref) {
+    var m = ref.match(/\/(es\/)?course\/(m[1-4]-[a-z-]+)\/(?:fresh\/|rebuild\/)?([a-z0-9-]+)\/?(?:[?#]|$)/);
+    if (m) match = { module: m[2], lesson: m[3], position: '' };
+  }
+  if (!match || !match.lesson) return;
+
+  if (hidden) hidden.value = match.lesson;
+
+  if (body && !body.value) {
+    var pretty = match.lesson.replace(/-/g, ' ');
+    var seed = 'Estoy en la lección "' + pretty + '" del bootcamp y ';
+    body.value = seed;
+    try { body.setSelectionRange(seed.length, seed.length); } catch (_) {}
+  }
+})();
+</script>
 </body>
 </html>
