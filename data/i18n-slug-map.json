@@ -1,5 +1,5 @@
 {
-  "_doc": "ES translated-slug ↔ EN canonical-slug map for the blog. Used by scripts/stamp-hreflang.mjs so EN blog posts emit the right hreflang=\"es\" pointing at the actual ES URL (not /es/<same-EN-slug>/, which 404s for translated slugs). Direction is en→es; an EN slug present here has an ES counterpart at the mapped path. ES-only posts that are ES-original (no EN counterpart yet) live in esOriginal[]. Adding a new translated post: add the mapping AND drop the .html into both /blog/<en>/ and /es/blog/<es>/ in the same commit, then run scripts/stamp-hreflang.mjs.",
+  "_doc": "ES translated-slug \u2194 EN canonical-slug map for the blog. Used by scripts/stamp-hreflang.mjs so EN blog posts emit the right hreflang=\"es\" pointing at the actual ES URL (not /es/<same-EN-slug>/, which 404s for translated slugs). Direction is en\u2192es; an EN slug present here has an ES counterpart at the mapped path. ES-only posts that are ES-original (no EN counterpart yet) live in esOriginal[]. Adding a new translated post: add the mapping AND drop the .html into both /blog/<en>/ and /es/blog/<es>/ in the same commit, then run scripts/stamp-hreflang.mjs.",
   "_lastReviewed": "2026-05-03",
   "blog": {
     "may-2026-discovery-changed-under-you": "la-busqueda-cambio-bajo-tus-pies-mayo-2026",
@@ -28,6 +28,7 @@
     "google-review-response-playbook": "como-responder-resenas-google-restaurante-playbook-2026",
     "loyalty-program-roi": "programas-de-lealtad-para-restaurantes-independientes-2026",
     "ai-mode-reservation-strategy": "reserva-en-google-ai-mode-restaurante-2026",
-    "restaurant-schema-markup-guide": "los-6-tipos-de-schema-markup-que-google-usa"
+    "restaurant-schema-markup-guide": "los-6-tipos-de-schema-markup-que-google-usa",
+    "third-party-delivery-economics": "como-salir-de-doordash-mi-restaurante"
   }
 }

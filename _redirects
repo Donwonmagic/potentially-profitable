@@ -262,16 +262,27 @@
 /blog/is-doordash-worth-it-for-restaurants-in-2026/*                   /library/third-party-delivery-economics/:splat                       301
 
 # Wave 5 cross-language merge cleanup: /es/blog/<en-secondary-slug>/
-# (legacy EN-slug-under-ES paths from early bilingual publishing)
-# 301 to the EN merged target since no ES merge target exists.
-/es/blog/restaurant-schema-markup-complete-paste-ready-example/    /library/restaurant-schema-markup-guide/    301
-/es/blog/restaurant-schema-markup-complete-paste-ready-example/*   /library/restaurant-schema-markup-guide/    301
+# (legacy EN-slug-under-ES paths from early bilingual publishing).
+# Cluster 9 (Wave 5b) update: where a native ES merge target exists,
+# 301s now point at the ES target instead of the EN library article.
+/es/blog/restaurant-schema-markup-complete-paste-ready-example/    /es/library/los-6-tipos-de-schema-markup-que-google-usa/    301
+/es/blog/restaurant-schema-markup-complete-paste-ready-example/*   /es/library/los-6-tipos-de-schema-markup-que-google-usa/    301
 /es/blog/five-restaurant-website-changes-recover-one-percent-margin/   /library/reservation-conversion-guide/  301
 /es/blog/five-restaurant-website-changes-recover-one-percent-margin/*  /library/reservation-conversion-guide/  301
 /es/blog/how-to-recover-reservations-from-googles-find-a-table/    /library/reservation-conversion-guide/      301
 /es/blog/how-to-recover-reservations-from-googles-find-a-table/*   /library/reservation-conversion-guide/      301
-/es/blog/is-doordash-worth-it-for-restaurants-in-2026/             /library/third-party-delivery-economics/    301
-/es/blog/is-doordash-worth-it-for-restaurants-in-2026/*            /library/third-party-delivery-economics/    301
+/es/blog/is-doordash-worth-it-for-restaurants-in-2026/             /es/library/como-salir-de-doordash-mi-restaurante/  301
+/es/blog/is-doordash-worth-it-for-restaurants-in-2026/*            /es/library/como-salir-de-doordash-mi-restaurante/  301
+# Cluster 9: ES merge secondaries + orphan ES-at-EN-slug files just deleted.
+/es/blog/schema-markup-para-restaurante-ejemplo/                   /es/library/los-6-tipos-de-schema-markup-que-google-usa/    301
+/es/blog/schema-markup-para-restaurante-ejemplo/*                  /es/library/los-6-tipos-de-schema-markup-que-google-usa/    301
+/es/blog/why-your-restaurant-loses-reservations-every-night/       /library/reservation-conversion-guide/      301
+/es/blog/why-your-restaurant-loses-reservations-every-night/*      /library/reservation-conversion-guide/      301
+# Cluster 9: ES merge primaries just moved into /es/library/.
+/es/blog/los-6-tipos-de-schema-markup-que-google-usa/              /es/library/los-6-tipos-de-schema-markup-que-google-usa/    301
+/es/blog/los-6-tipos-de-schema-markup-que-google-usa/*             /es/library/los-6-tipos-de-schema-markup-que-google-usa/:splat 301
+/es/blog/como-salir-de-doordash-mi-restaurante/                    /es/library/como-salir-de-doordash-mi-restaurante/          301
+/es/blog/como-salir-de-doordash-mi-restaurante/*                   /es/library/como-salir-de-doordash-mi-restaurante/:splat    301
 
 # --- ES: kept-slug moves only (rename + merge ES targets deferred to Wave 4b) ---
 /es/blog/como-hacer-sitio-web-para-mi-restaurante/                     /es/library/como-hacer-sitio-web-para-mi-restaurante/                301
