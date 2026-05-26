@@ -1660,6 +1660,61 @@
     }
     playBtn.addEventListener('click', toggle);
     listenBtn.addEventListener('click', toggle);
+
+    // Phase 5 — share with timestamp. Mirror of the ?t= deep link
+    // parser: takes the current playhead, formats it the same way the
+    // parser accepts, copies the URL to clipboard, and surfaces a
+    // toast. The share button lives in the extras row (post-play
+    // visible) because before play `currentTime` is meaningless.
+    function formatTimestampParam(seconds) {
+      const t = Math.max(0, Math.floor(seconds || 0));
+      if (t < 60) return `${t}s`;
+      const m = Math.floor(t / 60);
+      const s = t % 60;
+      return s === 0 ? `${m}m` : `${m}m${s}s`;
+    }
+    function showShareToast(msg) {
+      let container = document.querySelector('.mtn-toast-container');
+      if (!container) {
+        container = document.createElement('div');
+        container.className = 'mtn-toast-container';
+        document.body.appendChild(container);
+      }
+      const node = document.createElement('div');
+      node.className = 'mtn-toast mtn-toast--success';
+      node.setAttribute('role', 'status');
+      node.textContent = msg;
+      container.appendChild(node);
+      requestAnimationFrame(() => node.classList.add('mtn-toast--visible'));
+      setTimeout(() => {
+        node.classList.remove('mtn-toast--visible');
+        setTimeout(() => node.remove(), 240);
+      }, 2400);
+    }
+    async function shareAtCurrentTime() {
+      const t = audioEl ? audioEl.currentTime : 0;
+      const tParam = formatTimestampParam(t);
+      const url = `${location.origin}${location.pathname}?t=${tParam}`;
+      let copied = false;
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(url);
+          copied = true;
+        }
+      } catch (_) {}
+      // Display the moment as mm:ss to match what audio players show,
+      // not the URL-param syntax — operators see "Link copied at 4:12",
+      // not "Link copied at 4m12s".
+      const mm = Math.floor(t / 60);
+      const ss = Math.floor(t % 60).toString().padStart(2, '0');
+      showShareToast(copied ? `Link copied at ${mm}:${ss}` : 'Copy failed — clipboard blocked');
+      if (window.plausible) {
+        try { window.plausible('Audio: Shared with Timestamp'); } catch (_) {}
+      }
+    }
+    const shareBtn = card.root.querySelector('.listen-share');
+    if (shareBtn) shareBtn.addEventListener('click', shareAtCurrentTime);
+
     const previewBtn = card.root.querySelector('.listen-preview');
     // Speech-fallback mode has no scrubable timeline; hide the preview
     // affordance there so the button doesn't suggest a feature we
@@ -2066,6 +2121,9 @@
             <label class="listen-select" title="Reader voice"><span class="sr-only">Reader voice</span>
               <select class="listen-voice" aria-label="Reader voice"></select>
             </label>
+            <button type="button" class="listen-iconbtn listen-share" aria-label="Copy share link at current moment">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.72-1.71"/></svg>
+            </button>
           </div>
           <span class="listen-source-note" data-source="browser">Read by your browser</span>
         </div>
