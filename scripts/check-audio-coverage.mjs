@@ -76,6 +76,8 @@ const manifest = JSON.parse(fs.readFileSync(MANIFEST_PATH, 'utf8'));
 const SECTIONS = [
   { key: 'blog',        root: path.join(repoRoot, 'blog') },
   { key: 'es-blog',     root: path.join(repoRoot, 'es', 'blog') },
+  { key: 'library',     root: path.join(repoRoot, 'library') },
+  { key: 'es-library',  root: path.join(repoRoot, 'es', 'library') },
   { key: 'research',    root: path.join(repoRoot, 'learn', 'research') },
   { key: 'checklists',  root: path.join(repoRoot, 'learn', 'checklists') },
 ];

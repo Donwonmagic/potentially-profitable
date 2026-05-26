@@ -33,7 +33,7 @@ const POST_BODY_END_RE = /(<\/article>\s*<!--[^>]*end of #post-body[^>]*-->)|(<a
 
 function articleFiles() {
   const out = [];
-  for (const dir of ['blog', 'es/blog']) {
+  for (const dir of ['blog', 'es/blog', 'library', 'es/library']) {
     const root = path.join(repoRoot, dir);
     if (!fs.existsSync(root)) continue;
     const locale = dir.startsWith('es') ? 'es' : 'en';

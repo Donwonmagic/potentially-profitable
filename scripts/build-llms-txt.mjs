@@ -45,12 +45,18 @@ function readMeta(file) {
   };
 }
 
+// /library/menu-design-cuisines/ and /library/menu-design-themes/ are
+// collection-landing pages, not articles; excluded from index outputs.
+const NON_ARTICLE_LIBRARY_SLUGS = new Set(['menu-design-cuisines', 'menu-design-themes']);
+
 function listIndexPages(dir, baseUrl) {
   const root = path.join(repoRoot, dir);
   if (!fs.existsSync(root)) return [];
+  const isLibrary = dir === 'library' || dir === 'es/library';
   const out = [];
   for (const slug of fs.readdirSync(root)) {
     if (slug === 'drafts') continue;
+    if (isLibrary && NON_ARTICLE_LIBRARY_SLUGS.has(slug)) continue;
     const file = path.join(root, slug, 'index.html');
     if (!fs.existsSync(file)) continue;
     const meta = readMeta(file);
@@ -107,7 +113,12 @@ function renderToolLine(p) {
 function buildContent(locale) {
   const isEs = locale === 'es';
   const baseUrl = 'https://muntin.digital' + (isEs ? '/es' : '');
-  const articles = listIndexPages(isEs ? 'es/blog' : 'blog', `${baseUrl}/blog/`);
+  // Phase 7: articles span both /blog/ (timely commentary) and /library/
+  // (evergreen reference). Both feed the same llms.txt index so search
+  // engines see the full corpus regardless of bucket.
+  const blogArticles    = listIndexPages(isEs ? 'es/blog' : 'blog', `${baseUrl}/blog/`);
+  const libraryArticles = listIndexPages(isEs ? 'es/library' : 'library', `${baseUrl}/library/`);
+  const articles = [...blogArticles, ...libraryArticles];
   const glossary = listIndexPages(isEs ? 'es/glossary' : 'glossary', `${baseUrl}/glossary/`);
   const tools    = listToolPages(isEs ? 'es/tools' : 'tools', `${baseUrl}/tools/`);
   const sheets   = listIndexPages(isEs ? 'es/sheets' : 'sheets', `${baseUrl}/sheets/`);

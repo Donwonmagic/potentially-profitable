@@ -63,6 +63,12 @@
     "mi-restaurante-no-aparece-en-google-maps":                           { "languages": ["en","es","fr","it","pt","zh"], "status": "pending", "source_lang": "es" },
     "schema-markup-para-restaurante-ejemplo":                             { "languages": ["en","es","fr","it","pt","zh"], "status": "pending", "source_lang": "es" }
   },
+  "library": {
+    "_doc": "Phase 7: evergreen library articles. Same render + audit pipeline as /blog/; entries are added here as posts migrate from /blog/ into /library/ (Wave 4). Files live at /library/<slug>/audio.mp3 and audio.<lang>.json. Each entry's GUID for RSS purposes is stable across the blog→library move (see scripts/build-rss.mjs)."
+  },
+  "es-library": {
+    "_doc": "Phase 7: ES counterparts to /library/ articles. Populated as ES files migrate in Wave 4b. ES rename and merge target slugs are decided alongside translation review and not back-filled mechanically."
+  },
   "research": {
     "the-1-percent-margin-audit-50-restaurant-websites-2026":             { "languages": ["en","es","fr","it","pt","zh"], "status": "pending" },
     "lighthouse-performance-scoring":                                     { "languages": ["en","es","fr","it","pt","zh"], "status": "pending" },

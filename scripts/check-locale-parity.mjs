@@ -46,7 +46,7 @@ const SKIP_DIRS = new Set([
 // different ES slug, so a naive "es/<same-en-slug>/" lookup would
 // always 404 for them. The reverse direction (ES→EN orphan check)
 // IS slug-map-aware below.
-const SKIP_PATH_PREFIXES = ['blog/'];
+const SKIP_PATH_PREFIXES = ['blog/', 'library/'];
 
 // EN↔ES blog slug map. Used by the reverse-direction check so that
 // an ES blog post under a translated slug isn't flagged as orphan

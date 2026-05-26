@@ -35,7 +35,7 @@ const PENDING_RE    = /data-content-pending="(\d{4}-\d{2}-\d{2})"/;
 
 function articleFiles() {
   const out = [];
-  for (const dir of ['blog', 'es/blog']) {
+  for (const dir of ['blog', 'es/blog', 'library', 'es/library']) {
     const root = path.join(repoRoot, dir);
     if (!fs.existsSync(root)) continue;
     for (const slug of fs.readdirSync(root)) {

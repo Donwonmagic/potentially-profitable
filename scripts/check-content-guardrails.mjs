@@ -37,7 +37,7 @@ const now = Date.now();
 
 function articleFiles() {
   const out = [];
-  for (const dir of ['blog', 'es/blog']) {
+  for (const dir of ['blog', 'es/blog', 'library', 'es/library']) {
     const root = path.join(repoRoot, dir);
     if (!fs.existsSync(root)) continue;
     for (const slug of fs.readdirSync(root)) {
