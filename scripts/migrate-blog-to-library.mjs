@@ -63,9 +63,19 @@ const EN_MIGRATIONS = [
   { from: 'google-ai-mode-reservation-booking-restaurant-2026',              to: 'ai-mode-reservation-strategy',                               type: 'rename' },
 ];
 
-// Wave 4b — ES kept-slug only. ES rename de-timing and merges are
-// content decisions deferred until translation review.
+// Wave 4b — ES native-slug moves. Both groups preserve the ES slug
+// in the move; ES slug de-timing (stripping -2026 suffixes) is a
+// content/translation decision deferred until review.
+// Group A: kept-slug ES posts where the EN counterpart was also a
+//          kept-slug move (e.g. EN how-to-tell-... ↔ ES como-saber-...).
+// Group B: ES posts where the EN counterpart was a de-timed rename,
+//          but the ES slug remains as-is. Pairing: EN library/<new-en>
+//          ↔ ES library/<es-slug-with-2026>. Visual inconsistency
+//          accepted; ES URLs preserve SEO identity.
+// Merges are not included; ES merge targets are content decisions
+// deferred to Wave 5.
 const ES_MIGRATIONS = [
+  // Group A
   { from: 'como-hacer-sitio-web-para-mi-restaurante',                  to: 'como-hacer-sitio-web-para-mi-restaurante',                  type: 'kept' },
   { from: 'como-lograr-que-google-cite-tu-restaurante-en-ai-overview', to: 'como-lograr-que-google-cite-tu-restaurante-en-ai-overview', type: 'kept' },
   { from: 'como-leer-google-search-console-de-tu-restaurante',         to: 'como-leer-google-search-console-de-tu-restaurante',         type: 'kept' },
@@ -73,6 +83,13 @@ const ES_MIGRATIONS = [
   { from: 'cuando-rehacer-tu-sitio-web-de-restaurante',                to: 'cuando-rehacer-tu-sitio-web-de-restaurante',                type: 'kept' },
   { from: 'especificaciones-de-fotos-para-restaurantes',               to: 'especificaciones-de-fotos-para-restaurantes',               type: 'kept' },
   { from: 'mi-restaurante-no-aparece-en-google-maps',                  to: 'mi-restaurante-no-aparece-en-google-maps',                  type: 'kept' },
+  // Group B (ES of EN-renamed posts; ES slug preserved as-is)
+  { from: 'cuanto-cuesta-una-pagina-web-para-restaurante-2026',                        to: 'cuanto-cuesta-una-pagina-web-para-restaurante-2026',                        type: 'kept' },
+  { from: 'uber-eats-vs-doordash-vs-grubhub-cuentas-para-restaurante-2026',            to: 'uber-eats-vs-doordash-vs-grubhub-cuentas-para-restaurante-2026',            type: 'kept' },
+  { from: 'cargos-por-servicio-vs-propina-cuentas-para-operador-restaurante-2026',     to: 'cargos-por-servicio-vs-propina-cuentas-para-operador-restaurante-2026',     type: 'kept' },
+  { from: 'como-responder-resenas-google-restaurante-playbook-2026',                   to: 'como-responder-resenas-google-restaurante-playbook-2026',                   type: 'kept' },
+  { from: 'programas-de-lealtad-para-restaurantes-independientes-2026',                to: 'programas-de-lealtad-para-restaurantes-independientes-2026',                type: 'kept' },
+  { from: 'reserva-en-google-ai-mode-restaurante-2026',                                to: 'reserva-en-google-ai-mode-restaurante-2026',                                type: 'kept' },
 ];
 
 const MIGRATIONS = localeArg === 'es' ? ES_MIGRATIONS : EN_MIGRATIONS;
@@ -247,16 +264,29 @@ function rewriteCrossReferences(migrations) {
   // After per-post moves, scan the whole repo for /blog/<old>/ → /library/<new>/
   // to eliminate 301-hops on internal links. Touches .html / .json / .xml / .txt
   // outside scripts/, .git/, node_modules/, dist/.
+  //
+  // For EN runs: path patterns use a negative lookbehind so the literal
+  // "/blog/foo/" inside "/es/blog/foo/" does NOT match — ES paths have
+  // their own (different) slug mapping and must not be rewritten by the
+  // EN pass. Absolute URLs already namespace-themselves via the protocol
+  // prefix so they can use plain substring replacement.
   const SKIP_DIRS = new Set(['.git', 'node_modules', 'dist', '.wrangler', '.venv', '__pycache__']);
-  // Build replacement table once.
-  const pairs = [];
+  // Build replacement table once. Path replacements are regex with
+  // anchor; absolute-URL replacements are plain string.
+  const pathReplacements = [];
+  const stringReplacements = [];
   for (const m of migrations) {
-    const oldPath = `${pathPrefixOld}${m.from}/`;
-    const newPath = `${pathPrefixNew}${m.to}/`;
-    const oldAbs  = `${urlPrefixOld}${m.from}/`;
-    const newAbs  = `${urlPrefixNew}${m.to}/`;
-    pairs.push([oldPath, newPath]);
-    pairs.push([oldAbs,  newAbs]);
+    if (localeArg === 'es') {
+      // ES: path pattern is /es/blog/<old>/ — already specific enough,
+      // plain substring is fine.
+      stringReplacements.push([`${pathPrefixOld}${m.from}/`, `${pathPrefixNew}${m.to}/`]);
+    } else {
+      // EN: anchor /blog/ so it doesn't match within /es/blog/.
+      const re = new RegExp(`(?<!\\/es)\\/blog\\/${escapeRegex(m.from)}\\/`, 'g');
+      const repl = `/library/${m.to}/`;
+      pathReplacements.push([re, repl]);
+    }
+    stringReplacements.push([`${urlPrefixOld}${m.from}/`, `${urlPrefixNew}${m.to}/`]);
   }
   let filesTouched = 0;
   let refsRewritten = 0;
@@ -267,17 +297,21 @@ function rewriteCrossReferences(migrations) {
       const full = path.join(dir, entry.name);
       if (entry.isDirectory()) { walk(full); continue; }
       if (!/\.(html|json|xml|txt|jsonc)$/.test(entry.name)) continue;
-      // Skip the redirects file itself — it intentionally lists the OLD paths.
       if (path.relative(repoRoot, full) === '_redirects') continue;
-      // Skip llms files / feeds — they regenerate from the moved content.
-      const rel = path.relative(repoRoot, full);
       let txt = fs.readFileSync(full, 'utf8');
       const before = txt;
-      for (const [oldS, newS] of pairs) {
+      for (const [oldS, newS] of stringReplacements) {
         if (txt.includes(oldS)) {
           const n = txt.split(oldS).length - 1;
           refsRewritten += n;
           txt = txt.split(oldS).join(newS);
+        }
+      }
+      for (const [re, repl] of pathReplacements) {
+        const matches = txt.match(re);
+        if (matches) {
+          refsRewritten += matches.length;
+          txt = txt.replace(re, repl);
         }
       }
       if (txt !== before) {

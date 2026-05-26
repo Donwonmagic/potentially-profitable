@@ -117,11 +117,18 @@
 # Native-slug ES blog migrations (April 2026 batch).
 # Old EN-named ES paths held the structural pass during initial publish;
 # canonical now lives at the native Spanish slug. Old paths 301 to native.
-/es/blog/how-to-tell-if-a-restaurant-tool-is-safe/        /es/blog/como-saber-si-una-herramienta-de-restaurante-es-segura/        301
+# Phase 7 update: native targets now under /es/library/ for the posts
+# that moved into the library.
+/es/blog/how-to-tell-if-a-restaurant-tool-is-safe/        /es/library/como-saber-si-una-herramienta-de-restaurante-es-segura/     301
 /es/blog/restaurant-schema-markup-6-types-google-uses/    /es/blog/los-6-tipos-de-schema-markup-que-google-usa/                   301
-/es/blog/restaurant-photo-spec-sheet/                     /es/blog/especificaciones-de-fotos-para-restaurantes/                   301
-/es/blog/when-to-rebuild-your-restaurant-website/         /es/blog/cuando-rehacer-tu-sitio-web-de-restaurante/                    301
-/es/blog/how-to-read-restaurant-google-search-console/    /es/blog/como-leer-google-search-console-de-tu-restaurante/             301
+/es/blog/restaurant-photo-spec-sheet/                     /es/library/especificaciones-de-fotos-para-restaurantes/                301
+/es/blog/when-to-rebuild-your-restaurant-website/         /es/library/cuando-rehacer-tu-sitio-web-de-restaurante/                 301
+/es/blog/how-to-read-restaurant-google-search-console/    /es/library/como-leer-google-search-console-de-tu-restaurante/          301
+# Phase 7 cleanup — two more legacy ES posts at old-EN-slug paths,
+# previously orphaned by the EN-side rename. Send to native ES (where
+# available) or cross-language to the EN library article.
+/es/blog/how-much-does-a-custom-restaurant-website-cost-in-2026/  /es/library/cuanto-cuesta-una-pagina-web-para-restaurante-2026/  301
+/es/blog/should-your-restaurant-have-an-app-in-2026/              /library/restaurant-app-decision/                                301
 
 # Phase 5 (May 2026): /studio/contact/ alias.
 #
@@ -269,4 +276,20 @@
 /es/blog/especificaciones-de-fotos-para-restaurantes/*                 /es/library/especificaciones-de-fotos-para-restaurantes/:splat       301
 /es/blog/mi-restaurante-no-aparece-en-google-maps/                     /es/library/mi-restaurante-no-aparece-en-google-maps/                301
 /es/blog/mi-restaurante-no-aparece-en-google-maps/*                    /es/library/mi-restaurante-no-aparece-en-google-maps/:splat          301
+
+# --- ES: Group B — ES counterparts of EN-renamed posts. ES slug preserved
+# (with original -2026 suffix); ES de-timing is a content decision pending
+# translation review. Each pair: ES slug stays put, just changes namespace.
+/es/blog/cuanto-cuesta-una-pagina-web-para-restaurante-2026/                        /es/library/cuanto-cuesta-una-pagina-web-para-restaurante-2026/                        301
+/es/blog/cuanto-cuesta-una-pagina-web-para-restaurante-2026/*                       /es/library/cuanto-cuesta-una-pagina-web-para-restaurante-2026/:splat                  301
+/es/blog/uber-eats-vs-doordash-vs-grubhub-cuentas-para-restaurante-2026/            /es/library/uber-eats-vs-doordash-vs-grubhub-cuentas-para-restaurante-2026/            301
+/es/blog/uber-eats-vs-doordash-vs-grubhub-cuentas-para-restaurante-2026/*           /es/library/uber-eats-vs-doordash-vs-grubhub-cuentas-para-restaurante-2026/:splat      301
+/es/blog/cargos-por-servicio-vs-propina-cuentas-para-operador-restaurante-2026/     /es/library/cargos-por-servicio-vs-propina-cuentas-para-operador-restaurante-2026/     301
+/es/blog/cargos-por-servicio-vs-propina-cuentas-para-operador-restaurante-2026/*    /es/library/cargos-por-servicio-vs-propina-cuentas-para-operador-restaurante-2026/:splat 301
+/es/blog/como-responder-resenas-google-restaurante-playbook-2026/                   /es/library/como-responder-resenas-google-restaurante-playbook-2026/                   301
+/es/blog/como-responder-resenas-google-restaurante-playbook-2026/*                  /es/library/como-responder-resenas-google-restaurante-playbook-2026/:splat             301
+/es/blog/programas-de-lealtad-para-restaurantes-independientes-2026/                /es/library/programas-de-lealtad-para-restaurantes-independientes-2026/                301
+/es/blog/programas-de-lealtad-para-restaurantes-independientes-2026/*               /es/library/programas-de-lealtad-para-restaurantes-independientes-2026/:splat          301
+/es/blog/reserva-en-google-ai-mode-restaurante-2026/                                /es/library/reserva-en-google-ai-mode-restaurante-2026/                                301
+/es/blog/reserva-en-google-ai-mode-restaurante-2026/*                               /es/library/reserva-en-google-ai-mode-restaurante-2026/:splat                          301
 
