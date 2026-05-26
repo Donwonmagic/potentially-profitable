@@ -222,6 +222,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <a class="ac-stat" id="acCourseTile" href="/es/course/" style="text-decoration:none;color:inherit">
           <p class="ac-stat-num" id="acCourseCount">&mdash;</p>
           <p class="ac-stat-label">Open the Doors</p>
+          <p class="ac-stat-detail" id="acCourseDetail" style="font-size:12.5px;color:var(--stone);margin:4px 0 0;line-height:1.35;display:none"></p>
         </a>
       </div>
 
@@ -313,6 +314,31 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     var completedCount = (courseProgress && Array.isArray(courseProgress.completed))
       ? courseProgress.completed.length : null;
     if (courseEl) courseEl.textContent = (completedCount == null) ? '—' : (completedCount + ' / 16');
+
+    // Render contextual "Lección N — título — continuar" copy + route
+    // the tile link to the most-recently-completed lesson. Reads
+    // /assets/data/course-titles.json (~5KB bilingual bundle).
+    var detailEl = document.getElementById('acCourseDetail');
+    var courseTile2 = document.getElementById('acCourseTile');
+    if (courseTile2 && courseProgress && Array.isArray(courseProgress.completed) && courseProgress.completed.length) {
+      fetch('/assets/data/course-titles.json', { credentials: 'omit' }).then(function (r) {
+        if (!r.ok) return null;
+        return r.json();
+      }).then(function (bundle) {
+        if (!bundle || !bundle.lessons) return;
+        var sorted = courseProgress.completed.slice().sort(function (a, b) { return (b.at || 0) - (a.at || 0); });
+        var latest = sorted[0] && sorted[0].lesson;
+        var info = latest && bundle.lessons[latest];
+        if (!info) return;
+        if (completedCount && completedCount < bundle.totalLessons) {
+          courseTile2.href = info.path_es;
+          if (detailEl) {
+            detailEl.textContent = 'Lección ' + info.position + ' — ' + info.title_es + ' — continuar';
+            detailEl.style.display = '';
+          }
+        }
+      }).catch(function () { /* offline — mantén el "N / 16" simple */ });
+    }
   }).catch(function (err) {
     if (err && err.message === 'redirect') return;
   });
