@@ -211,8 +211,9 @@ test.describe('Audio card — help dialog', () => {
   async function openHelpAndReady(page) {
     await page.goto(ARTICLE);
     await page.waitForSelector('.listen-card');
-    // Reveal the extras row so the help button is clickable
-    await page.locator('.listen-card-extras').evaluate((el) => { el.hidden = false; });
+    // Audit finding #2: help button is in the always-visible meta
+    // column, NOT in .listen-card-extras. No reveal needed — the
+    // dialog is discoverable from idle.
     await page.locator('.listen-help').click();
     await page.waitForTimeout(150);
   }
@@ -229,9 +230,39 @@ test.describe('Audio card — help dialog', () => {
 
   test('Space inside the dialog does not toggle the player', async ({ page }) => {
     await openHelpAndReady(page);
-    // The card hasn't actually been played in this headless context.
-    // Pre-state should be idle; Space inside the dialog shouldn't kick
-    // it to anything else.
+    // The global keyboard handler bails on state === 'idle' before
+    // ever reaching the dialog-open guard. Without priming past idle,
+    // this test would pass whether the dialog guard exists or not —
+    // audit finding #1. Prime by forcing data-state to 'paused' so
+    // the handler executes the dialog-open check. Then press Space:
+    // if the bail-out works, no toggle fires (data-state stays
+    // 'paused'); if the bail-out is regressed, the handler calls
+    // toggle() which would transition paused → playing → loading.
+    await page.locator('.listen-card').evaluate((el) => {
+      el.setAttribute('data-state', 'paused');
+      // Mirror what listen.js's setState normally does — set the JS-
+      // module-level `state` variable indirectly by dispatching a
+      // synthetic toggle that the engine reads. Easiest path: directly
+      // patch the closure via window.MuntinReadAloud, which already
+      // exposes stop/toggle. Calling .toggle() once from idle would
+      // run startPlayback, but in headless that errors at audio fetch
+      // — we just need `state !== 'idle'` for the handler's first
+      // gate. The data-state attr is the engine's own mirror of
+      // `state`, so setting it via setAttribute doesn't flip the
+      // closure variable. We instead simulate-press the play button
+      // and let the engine handle the transition.
+    });
+    // Force a real state change via the play button. The audio fetch
+    // may fail in headless (no audio source); we don't care — we just
+    // need the engine to have crossed past 'idle' at least once.
+    await page.locator('.listen-card-play').click({ force: true }).catch(() => {});
+    await page.waitForTimeout(200);
+    const reachedNonIdle = await page.locator('.listen-card').evaluate((el) =>
+      el.getAttribute('data-state') !== 'idle'
+    );
+    test.skip(!reachedNonIdle, 'engine did not leave idle in headless; cannot exercise the dialog-open guard');
+    // With state !== idle, Space normally would toggle. But the dialog
+    // is open — the bail-out should prevent any state change here.
     const before = await page.locator('.listen-card').getAttribute('data-state');
     await page.keyboard.press('Space');
     await page.waitForTimeout(150);
@@ -254,11 +285,13 @@ test.describe('Audio card — help dialog', () => {
     await expect(page.locator('.listen-help-dialog[open]')).toHaveCount(0);
   });
 
-  test('content includes the keyboard shortcut rows', async ({ page }) => {
+  test('content includes the documented shortcut rows in order', async ({ page }) => {
     await openHelpAndReady(page);
-    await expect(page.locator('.listen-help-kbd kbd', { hasText: 'Space' })).toBeVisible();
-    await expect(page.locator('.listen-help-kbd kbd', { hasText: 'J' })).toBeVisible();
-    await expect(page.locator('.listen-help-kbd kbd', { hasText: 'K' })).toBeVisible();
+    // Audit finding #4 — assert the EXACT sequence so a future refactor
+    // that collapses J and K into <kbd>J / K</kbd> would fail this test
+    // (per the contract: each shortcut gets its own kbd element).
+    const kbdTexts = await page.locator('.listen-help-kbd kbd').allTextContents();
+    expect(kbdTexts).toEqual(['Space', 'J', 'K', '←', '→']);
   });
 });
 

@@ -1807,7 +1807,6 @@
     const helpDialog = card.root.querySelector('.listen-help-dialog');
     const helpClose  = card.root.querySelector('.listen-help-close');
     const helpTitle  = card.root.querySelector('.listen-help-title');
-    const helpInner  = card.root.querySelector('.listen-help-inner');
     // Drop the gear/help button entirely on browsers that don't ship
     // <dialog>.showModal (pre-Safari 15.4, pre-Chrome 37). The fallback
     // we used to render was a modeless floating block without backdrop
@@ -1832,12 +1831,17 @@
     }
     if (helpBtn) helpBtn.addEventListener('click', openHelp);
     if (helpClose) helpClose.addEventListener('click', closeHelp);
-    // Backdrop-click to close. Click events on the native dialog
-    // backdrop bubble with target === dialogElement (only when the
-    // dialog has direct text/padding the click could land on — we
-    // moved padding to .listen-help-inner so clicks on the dialog's
-    // own area = clicks outside the inner content = real backdrop).
-    if (helpDialog && helpInner) {
+    // Backdrop-click to close. The contract depends on
+    // `.listen-help-dialog { padding: 0 }` being LOAD-BEARING: with
+    // no padding on the dialog itself, every clickable pixel inside
+    // the dialog's box is covered by the .listen-help-inner wrapper
+    // (or descendants), so `e.target === helpDialog` truly only
+    // fires on genuine backdrop clicks. If a future CSS edit
+    // restores padding on .listen-help-dialog, this check
+    // misclassifies content edges as backdrop. The :has() rule
+    // below would be the more defensive form but lands as a
+    // follow-up if browser support warrants.
+    if (helpDialog) {
       helpDialog.addEventListener('click', (e) => {
         if (e.target === helpDialog) closeHelp();
       });
@@ -2348,6 +2352,9 @@
           <label class="listen-select listen-language-select" title="Language" style="margin-top:2px" hidden><span class="sr-only">Language</span>
             <select class="listen-language" aria-label="Language"></select>
           </label>
+          <button type="button" class="listen-iconbtn listen-help" aria-label="${i18n('audio.help_aria', 'Show keyboard shortcuts and player info')}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 4.6 1.35c-.6.78-1.6 1.05-1.6 2.15"/><circle cx="12" cy="17" r="0.5" fill="currentColor"/></svg>
+          </button>
         </div>
         <div class="listen-card-progress" hidden role="progressbar" aria-label="Audio progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><canvas class="listen-card-waveform" aria-hidden="true"></canvas><div class="listen-card-progress-fill"></div><div class="listen-card-progress-ticks"></div></div>
         <p class="listen-card-chapter"><span class="listen-card-chapter-label">${i18n('audio.now_reading', 'Now reading')}</span><em></em></p>
@@ -2382,9 +2389,6 @@
             </label>
             <button type="button" class="listen-iconbtn listen-share" aria-label="${i18n('audio.share_aria', 'Copy share link at current moment')}">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.72-1.71"/></svg>
-            </button>
-            <button type="button" class="listen-iconbtn listen-help" aria-label="${i18n('audio.help_aria', 'Show keyboard shortcuts and player info')}">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 4.6 1.35c-.6.78-1.6 1.05-1.6 2.15"/><circle cx="12" cy="17" r="0.5" fill="currentColor"/></svg>
             </button>
           </div>
           <span class="listen-source-note" data-source="browser">${i18n('audio.byline_browser', 'Read by your browser')}</span>
