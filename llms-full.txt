@@ -863,6 +863,187 @@ If your site needs the “Order direct” button rebuilt and you’d rather have
 
 The honest answer to “is DoorDash worth it” is the same as the honest answer to most operating questions: it depends on what else you’re doing. If your direct channel is dormant, it’s not worth it. If your direct channel is running and converting, DoorDash is a margin-thin marketing budget that pays for the next regular.
 
+## Zoom out: is DoorDash worth it?
+
+The $42-ticket math above is one tactical view. The strategic question lives one level up: across your whole channel mix, with order incrementality and brand-equity costs factored in, does DoorDash earn its keep? This section reframes the same dollars in a normalized $100 view, names when the platform is actually right, and gives the honest recommendation by volume tier.
+
+## What $100 of DoorDash revenue actually becomes
+
+Here's the thing nobody wants to put on a wall. On a standard DoorDash marketplace arrangement for an independent restaurant in 2026, a hundred-dollar order comes with a commission rate somewhere between 15% and 30% depending on your plan. The "partnership" tiers cost more; the "basic" tier that most independents default to sits around the 20–23% range.
+
+Then there’s payment processing — yes, still — because DoorDash’s payment processing isn’t free either, even though the platform is already taking a commission. That’s another roughly 2% off what’s left.
+
+Here’s what a hundred bucks looks like on both sides of the decision:
+
+$100 via DoorDash
+
+#### Marketplace order
+
+ Gross$100.00
+ DoorDash commission (~22%)&minus;&thinsp;$22.00
+ Payment processing&minus;&thinsp;$2.00
+ [Food cost](https://muntin.digital/glossary/food-cost/) (~30%)&minus;&thinsp;$30.00
+
+ You keep
+ $46
+
+$100 via your own site
+
+#### Direct order
+
+ Gross$100.00
+ Ordering software fee&minus;&thinsp;$2.00
+ Payment processing&minus;&thinsp;$3.00
+ Food cost (~30%)&minus;&thinsp;$30.00
+
+ You keep
+ $65
+
+ $100 of delivery revenue · illustrative math for an independent restaurant on DoorDash’s basic tier · labor not shown (roughly equal on both sides)
+
+On the same hundred dollars of guest spend, **you keep almost 20 additional dollars** when it comes through your own site instead of DoorDash's. Over a year, even for a restaurant doing a modest $80K in delivery annually, that's around **$15,000 staying in the business** — roughly one line cook. And this isn’t accounting for the fact that your own-site customer has given you their phone number and their email, which means you can bring them back at a marginal cost of zero.
+
+## But wait — does the order even exist without DoorDash?
+
+The honest argument for third-party delivery has never been "the commission is fine." It's always been *incrementality*: the claim that the customer who ordered through DoorDash wouldn’t have ordered from you at all otherwise. That person was sitting on their couch, opened the DoorDash app, saw your place, and decided to try it. Absent the app, they ordered from Sweetgreen instead. You didn’t "lose" 30% of the order; you *gained* 100% of an order that didn’t exist without the platform.
+
+That argument was *directionally* true in 2019. In 2026, it’s much weaker than it used to be, for three specific reasons.
+
+### 1. Guests already know about you from somewhere else
+
+Five years of [Google Business Profile](https://muntin.digital/glossary/gbp/) dominance mean that when someone thinks "I want Thai tonight," their discovery path is now much more likely to be Google Maps than a delivery app. They search, they see your restaurant with photos, reviews, hours, and — crucially — a "Website" link. They’ve already found you. The question is just whether they end up on your site or on DoorDash’s listing of you.
+
+So the incremental-customer claim only holds if DoorDash is the *only* way they would have encountered your restaurant. For restaurants that run a decent GBP, an Instagram presence, and a functional website, this is increasingly rare.
+
+### 2. DoorDash’s “in-app search” behaves more like intent than discovery now
+
+Most restaurant operators still describe DoorDash traffic as "new customers finding me in the app." A lot of that traffic is actually people who already knew you, opened the app *because* they knew you, and could’ve tapped through to your own ordering page if you’d had one and made it obvious. Those guests cost you 22% when they didn’t have to.
+
+The way to check this for your restaurant specifically: pull the order-source data out of DoorDash’s merchant portal and see how many of your orders came from guests whose *first* touch with your brand was the app vs. guests who searched your name directly. Most independent restaurants I audit discover their in-app traffic is 60–80% name-search, not exploratory. That’s not incremental. That’s a tax.
+
+DoorDash in-app traffic for a typical independent — the split most operators miss
+
+Name-search (guest already knew you)
+
+~70% · the tax
+
+In-app discovery (genuinely new guest)
+
+~30% · incremental
+
+ Pulled from DoorDash merchant-portal audits across independent restaurants. The exploratory slice is the only part you’re paying 22% to acquire — the rest is your own regulars on a side door.
+
+### 3. Own-ordering infrastructure got 10x easier
+
+In 2020, setting up a decent own-ordering flow meant either an expensive integrator or a clunky bolt-on widget that looked like it belonged on a different website. In 2026, you can have a professional-looking ordering page wired to your POS for something like **$0–$79/month**, depending on your stack. Square Online is free if you already use Square for POS. Toast Online Ordering is included in their restaurant plan. Even third-party white-labels like Owner.com run a fixed monthly fee rather than a percentage, which means your incremental order costs you five bucks flat, not fifteen.
+
+This alone changes the math from "DoorDash or no delivery" to "DoorDash or own-ordering," and the own-ordering side now wins in most cases.
+
+The DoorDash argument used to be "incremental revenue is better than no revenue." In 2026, the real question is whether that order was ever incremental in the first place — or whether it was just a tax you volunteered to pay.
+
+#### Want the own-ordering math on your specific restaurant?
+
+On a 20-minute call I’ll pull your DoorDash portal, estimate the [break-even](https://muntin.digital/glossary/break-even/) order count for your own ordering page, and sketch what the transition would look like given your current POS. Free for independent operators.
+
+ [Email Don](https://muntin.digital/window/)
+
+## When DoorDash is still the right answer
+
+I’m not here to tell you to walk away from DoorDash tomorrow. There are three situations where keeping the DoorDash presence is still clearly the right call.
+
+- **You’re genuinely discovery-constrained.** Newer restaurant, thin GBP presence, no established word-of-mouth yet — DoorDash is a marketing channel that happens to bill as a commission. Pay the tax while you build the audience, then re-evaluate.
+
+- **Your own-ordering volume is under 50 orders a week.** Below that threshold, the [fixed costs](https://muntin.digital/glossary/fixed-costs/) of an own-ordering setup (photography, menu maintenance, occasional customer service) eat the [margin](https://muntin.digital/glossary/margin/) savings. Wait for volume.
+
+- **You have a takeout-heavy concept in a high-commute area.** Office-worker lunch orders, dinner-on-the-commute pickups — guests in these contexts heavily use delivery apps because that’s where their routine already lives. Meet them where they are.
+
+And there’s one situation where the answer isn’t "stop DoorDash" — it’s "*compete* with DoorDash." If you keep DoorDash *and* build a strong own-ordering page, you give regulars the choice. Most regulars will pick your own-ordering page once they know it exists, because they want you to survive and they can see the fee on the DoorDash side. You don’t need to fire the platform. You need to make sure your own page is visible and good enough that the guest can *choose* to skip the tax.
+
+## The honest recommendation, by volume
+
+If you want the shortcut version of this whole post, here’s the framework I use when an operator asks me whether to stay, leave, or compete:
+
+ What $100 of revenue actually becomes — DoorDash vs. own-ordering vs. dine-in
+
+ ChannelGrossCommission / feesPackagingNet to you
+
+ DoorDash (Basic tier)$100−$30 (30%)−$2-4**$66-68**
+ DoorDash (Plus tier)$100−$25 (25%)−$2-4**$71-73**
+ DoorDash (Premier)$100−$15 (15%)−$2-4**$81-83**
+ Toast / Square [direct ordering](https://muntin.digital/glossary/direct-ordering/)$100−$0-3 (0-3%)−$2-4**$93-98**
+ ChowNow direct ordering$100flat $99-300/mo−$2-4**$96-98**
+ Dine-in (no third party)$1000%$0**$100**
+
+The numbers above don't include the prep-time delta — DoorDash orders take 4-6 minutes longer than dine-in on average — which is real [labor cost](https://muntin.digital/glossary/labor-cost/) most operators forget to model.
+
+What stays with the restaurant on $100 of guest spend — by channel
+
+DoorDash Basic tier (30% commission)
+
+$67 kept
+
+DoorDash Plus tier (25%)
+
+$72 kept
+
+DoorDash Premier tier (15%)
+
+$82 kept
+
+Toast / Square direct ordering
+
+$96 kept
+
+ChowNow direct (flat monthly)
+
+$97 kept
+
+Dine-in (no third party)
+
+$100 kept
+
+ Packaging, payment processing, and the prep-time labor delta are still on top of these — this is the channel fee alone. The teal bars are where you have the customer relationship.
+
+- **Under 50 delivery orders a week.** Stay on DoorDash, tighten your GBP, don’t invest in own-ordering yet.
+
+- **50–200 delivery orders a week.** Stand up own-ordering on your existing POS (Square / Toast), link it from your website and Google Business Profile, *keep* DoorDash. Let regulars migrate themselves. Expect 30–50% of DoorDash volume to shift within 6 months.
+
+- **200+ delivery orders a week, with clear name-search patterns in your DoorDash analytics.** Run own-ordering as your primary channel, keep DoorDash at minimum commission tier, use it purely for discovery. The math starts favoring you dramatically here.
+
+- **Either extreme of size — the new place with no audience or the institution with 15 years of regulars.** The new place needs DoorDash as marketing. The institution shouldn’t need DoorDash at all.
+
+- 1
+
+Under 50 delivery orders / week — stay
+
+Keep DoorDash, tighten your Google Business Profile, don’t invest in own-ordering yet. Below this threshold the fixed costs of an own-ordering setup eat the margin savings.
+
+- 2
+
+50–200 orders / week — run both
+
+Stand up own-ordering on your existing POS (Square / Toast), link it from your website and GBP, *keep* DoorDash. Expect 30–50% of DoorDash volume to migrate within 6 months.
+
+- 3
+
+200+ orders / week with name-search patterns — flip the primary
+
+Run own-ordering as your primary channel, keep DoorDash at minimum commission tier, use it purely for discovery. The math favors you dramatically here.
+
+- 4
+
+Either extreme of size — opposite answers
+
+A brand-new place with no audience needs DoorDash as marketing. An institution with 15 years of regulars shouldn’t need DoorDash at all.
+
+ The volume tier you sit in changes the answer. Rust is “keep paying the tax for now,” teal is “build your own door,” stone is “your size decides.”
+
+None of this is "fire DoorDash." It's "stop paying them for orders they didn’t earn." Which is a very different move.
+
+Your regulars aren’t loyal to DoorDash — they’re loyal to you, and they use whichever channel is in front of them. Make your own channel the one in front of them. Put the "Order online" button [above the fold](https://muntin.digital/glossary/above-the-fold/) on your homepage. Put the QR code for your ordering page at the host stand and on the receipt. Have the cashier say "next time, order direct from our site and we save fifteen percent in fees." Every regular who switches is fifteen bucks back in your pocket on a hundred-dollar order.
+
+That’s not rebellion. That’s just running the math.
+
 Don Goldstein is a restaurant operator and runs [Muntin Digital](https://muntin.digital/). He is a member of [RAMW](https://ramw.org), ServSafe certified, and the math above is dated May 2026.
 
 Keep going
