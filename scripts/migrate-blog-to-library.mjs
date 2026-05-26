@@ -37,6 +37,37 @@ const localeArg = process.argv.find(a => a.startsWith('--locale='))?.slice(9)
   || (args.has('--locale') ? process.argv[process.argv.indexOf('--locale') + 1] : 'en');
 
 // Migration roster — Wave 4. Merges are excluded (deferred to Wave 5).
+// Wave 5 merge bundles (run as a separate locale=en pass after 4a).
+// Each entry promotes ONE primary source to the merged target slug; the
+// `secondaries` are git-rm'd in the same wave. The Wave-1 _redirects
+// already 301 every source slug to the merged target, so deleted
+// secondaries continue to serve via redirect.
+//
+// Primary selection is editorial: the most comprehensive / structurally
+// strongest source becomes the merged article's spine. A follow-up
+// authoring pass (NOT in this script's scope) can fold in distinctive
+// paragraphs from the secondaries.
+const EN_MERGES = [
+  {
+    from: 'restaurant-schema-markup-6-types-google-uses',
+    to: 'restaurant-schema-markup-guide',
+    type: 'merge-primary',
+    secondaries: ['restaurant-schema-markup-complete-paste-ready-example'],
+  },
+  {
+    from: 'why-your-restaurant-loses-reservations-every-night',
+    to: 'reservation-conversion-guide',
+    type: 'merge-primary',
+    secondaries: ['five-restaurant-website-changes-recover-one-percent-margin', 'how-to-recover-reservations-from-googles-find-a-table'],
+  },
+  {
+    from: 'an-honest-doordash-math-for-independent-restaurants-2026',
+    to: 'third-party-delivery-economics',
+    type: 'merge-primary',
+    secondaries: ['is-doordash-worth-it-for-restaurants-in-2026'],
+  },
+];
+
 const EN_MIGRATIONS = [
   // Kept-slug moves
   { from: 'can-chatgpt-write-your-restaurant-website',                       to: 'can-chatgpt-write-your-restaurant-website',                  type: 'kept' },
@@ -92,7 +123,11 @@ const ES_MIGRATIONS = [
   { from: 'reserva-en-google-ai-mode-restaurante-2026',                                to: 'reserva-en-google-ai-mode-restaurante-2026',                                type: 'kept' },
 ];
 
-const MIGRATIONS = localeArg === 'es' ? ES_MIGRATIONS : EN_MIGRATIONS;
+// --locale en --merges-only switches to the merge bundle pass.
+const mergesOnly = args.has('--merges-only');
+const MIGRATIONS = mergesOnly
+  ? EN_MERGES
+  : (localeArg === 'es' ? ES_MIGRATIONS : EN_MIGRATIONS);
 const sourceDir  = localeArg === 'es' ? 'es/blog' : 'blog';
 const targetDir  = localeArg === 'es' ? 'es/library' : 'library';
 const urlPrefixOld = `${SITE}${localeArg === 'es' ? '/es' : ''}/blog/`;
@@ -260,6 +295,21 @@ function updateI18nSlugMap(migrations) {
   return { moved };
 }
 
+function expandWithSecondaries(migrations) {
+  // For merge entries, derive (secondary, target) pseudo-migrations so
+  // the cross-ref rewriter also redirects references to deleted secondaries.
+  const out = [];
+  for (const m of migrations) {
+    out.push(m);
+    if (m.type === 'merge-primary' && Array.isArray(m.secondaries)) {
+      for (const sec of m.secondaries) {
+        out.push({ from: sec, to: m.to, type: 'merge-secondary' });
+      }
+    }
+  }
+  return out;
+}
+
 function rewriteCrossReferences(migrations) {
   // After per-post moves, scan the whole repo for /blog/<old>/ → /library/<new>/
   // to eliminate 301-hops on internal links. Touches .html / .json / .xml / .txt
@@ -382,8 +432,70 @@ console.log(`  post-end-cta.json:   ${ctaRes.renamed} slug keys renamed (kept-sl
 const slugMap  = updateI18nSlugMap(MIGRATIONS);
 console.log(`  i18n-slug-map.json:  moved ${slugMap.moved} entries`);
 
+// Merge-only: delete secondary source directories AFTER primary moves.
+if (mergesOnly) {
+  console.log(`\ndeleting merge secondaries…`);
+  for (const m of EN_MERGES) {
+    for (const sec of m.secondaries || []) {
+      const secPath = path.join(repoRoot, sourceDir, sec);
+      if (!fs.existsSync(secPath)) {
+        console.log(`  skip ${sourceDir}/${sec} (already gone)`);
+        continue;
+      }
+      if (dryRun) {
+        console.log(`  [dry] git rm -rf ${sourceDir}/${sec}`);
+      } else {
+        try {
+          execSync(`git rm -rf "${secPath}"`, { cwd: repoRoot, stdio: 'pipe' });
+          console.log(`  rm ${sourceDir}/${sec}  → redirected to ${targetDir}/${m.to}`);
+        } catch (e) {
+          console.error(`  ERROR removing ${sourceDir}/${sec}: ${e.message}`);
+          summary.errors++;
+        }
+      }
+    }
+  }
+  // Also clean up audio-manifest entries for the deleted secondaries.
+  if (!dryRun) {
+    const file = path.join(repoRoot, 'data/article-audio.json');
+    const json = JSON.parse(fs.readFileSync(file, 'utf8'));
+    let removed = 0;
+    for (const m of EN_MERGES) {
+      for (const sec of m.secondaries || []) {
+        if (json.blog && json.blog[sec]) { delete json.blog[sec]; removed++; }
+      }
+    }
+    if (removed > 0) {
+      fs.writeFileSync(file, JSON.stringify(json, null, 2) + '\n');
+      console.log(`  article-audio.json: removed ${removed} secondary entries`);
+    }
+  }
+  // Same for library-tags.json.
+  if (!dryRun) {
+    const file = path.join(repoRoot, 'data/library-tags.json');
+    if (fs.existsSync(file)) {
+      const json = JSON.parse(fs.readFileSync(file, 'utf8'));
+      let removed = 0;
+      for (const m of EN_MERGES) {
+        for (const sec of m.secondaries || []) {
+          if (json.blog_posts && json.blog_posts[sec]) {
+            delete json.blog_posts[sec];
+            removed++;
+          }
+        }
+      }
+      if (removed > 0) {
+        fs.writeFileSync(file, JSON.stringify(json, null, 2) + '\n');
+        console.log(`  library-tags.json: removed ${removed} secondary entries`);
+      }
+    }
+  }
+}
+
 console.log(`\nrewriting cross-references across .html/.json/.xml/.txt …`);
-const crossRefs = rewriteCrossReferences(MIGRATIONS);
+// For merges, also rewrite any /blog/<secondary>/ references → /library/<target>/.
+const refSrc = mergesOnly ? expandWithSecondaries(MIGRATIONS) : MIGRATIONS;
+const crossRefs = rewriteCrossReferences(refSrc);
 console.log(`  ${crossRefs.refsRewritten} link refs rewritten across ${crossRefs.filesTouched} files`);
 
 console.log(`\nsummary: ${summary.moved} moved, ${summary.skipped} skipped, ${summary.errors} errors`);

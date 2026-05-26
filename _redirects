@@ -261,6 +261,18 @@
 /blog/is-doordash-worth-it-for-restaurants-in-2026/                    /library/third-party-delivery-economics/                             301
 /blog/is-doordash-worth-it-for-restaurants-in-2026/*                   /library/third-party-delivery-economics/:splat                       301
 
+# Wave 5 cross-language merge cleanup: /es/blog/<en-secondary-slug>/
+# (legacy EN-slug-under-ES paths from early bilingual publishing)
+# 301 to the EN merged target since no ES merge target exists.
+/es/blog/restaurant-schema-markup-complete-paste-ready-example/    /library/restaurant-schema-markup-guide/    301
+/es/blog/restaurant-schema-markup-complete-paste-ready-example/*   /library/restaurant-schema-markup-guide/    301
+/es/blog/five-restaurant-website-changes-recover-one-percent-margin/   /library/reservation-conversion-guide/  301
+/es/blog/five-restaurant-website-changes-recover-one-percent-margin/*  /library/reservation-conversion-guide/  301
+/es/blog/how-to-recover-reservations-from-googles-find-a-table/    /library/reservation-conversion-guide/      301
+/es/blog/how-to-recover-reservations-from-googles-find-a-table/*   /library/reservation-conversion-guide/      301
+/es/blog/is-doordash-worth-it-for-restaurants-in-2026/             /library/third-party-delivery-economics/    301
+/es/blog/is-doordash-worth-it-for-restaurants-in-2026/*            /library/third-party-delivery-economics/    301
+
 # --- ES: kept-slug moves only (rename + merge ES targets deferred to Wave 4b) ---
 /es/blog/como-hacer-sitio-web-para-mi-restaurante/                     /es/library/como-hacer-sitio-web-para-mi-restaurante/                301
 /es/blog/como-hacer-sitio-web-para-mi-restaurante/*                    /es/library/como-hacer-sitio-web-para-mi-restaurante/:splat          301

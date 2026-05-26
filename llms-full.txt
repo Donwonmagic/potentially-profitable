@@ -23,7 +23,7 @@ Playbook · May 11, 2026 · 9 min read · By [Don Goldstein](https://muntin.digi
 
  Listen to this article
 
-If you’re considering delisting your restaurant from DoorDash, the 30 days that follow have a predictable shape. This is the playbook — what to expect each week, which costs flex, which complaints arrive, and what the channel mix usually does. Illustrative ranges, not a case study. The underlying margin math comes from the [DoorDash margin walk](https://muntin.digital/blog/an-honest-doordash-math-for-independent-restaurants-2026/).
+If you’re considering delisting your restaurant from DoorDash, the 30 days that follow have a predictable shape. This is the playbook — what to expect each week, which costs flex, which complaints arrive, and what the channel mix usually does. Illustrative ranges, not a case study. The underlying margin math comes from the [DoorDash margin walk](https://muntin.digital/library/third-party-delivery-economics/).
 
 ---
 title: Why your Google calls are down even though you still rank #1
@@ -43,213 +43,6 @@ Op-ed · May 23, 2026 · 6 min read · By [Don Goldstein](https://muntin.digital
  Listen to this article
 
 You can rank #1 on the map and still watch the phone go quiet. AI answers increasingly resolve the question — hours, address, whether you're busy — before the diner ever taps call or directions.
-
----
-title: An honest DoorDash math for independent restaurants, 2026
-url: https://muntin.digital/blog/an-honest-doordash-math-for-independent-restaurants-2026/
-kind: article
-locale: en
-date: 2026-05-02T10:30:00-04:00
-description: The actual math behind a DoorDash order at an independent DMV restaurant in 2026 — commission, payment processing, packaging, food cost, labor, the marketing fee — with the breakeven for switching channels and a reservation flow that pays itself back in two months.
----
-
-**
-
-Skip to main content
-
-Op-ed · May 2, 2026 · 7 min read · By [Don Goldstein](https://muntin.digital/about/#don-goldstein)
-
-# An honest DoorDash math for independent restaurants, 2026.
-
- Listen to this article
-
-I’m front-of-house manager at a DMV restaurant. Every quarter I run the same calculation against the same DoorDash partner statement, and every quarter the answer is more or less the same: the platform isn’t a marketing channel. It’s a margin tax with delivery as a side benefit. Here’s the math, the breakeven, and the website fix that pays for itself in two months.
-
-I’m going to do this with a real average ticket and real numbers I can defend. The ticket is $42 — that’s our 2025 average DoorDash check at one of the restaurants I manage. Your ticket may be higher or lower; the percentages are what carry the argument.
-
-## One $42 DoorDash ticket, broken down
-
-Below is the full margin walk. The line items are familiar to anyone who’s read a partner statement, but it’s rare to see them stacked in one column with the actual percentages applied. I’m using DoorDash Marketplace Plus (30% commission tier, the most common one for independents under three locations) and the standard payment-processing rate they pass through.
-
-Where each dollar of a $42 DoorDash ticket goes
-
- 30%
- 3%
- 3%
- 3%
- 28%
- 14%
- 18.4%
-
- DoorDash commission (Marketplace Plus, 30%)
- &minus;$12.60
- 30.0%
-
- Payment processing (~3.4%)
- &minus;$1.43
- 3.4%
-
- DoorDash “promotion” / sponsored listing fee (avg, when used)
- &minus;$1.20
- 2.9%
-
- Packaging (clamshell, lid, bag, sticker, plasticware)
- &minus;$1.40
- 3.3%
-
- Food cost (28% of menu price, kitchen-side)
- &minus;$11.76
- 28.0%
-
- Variable labor (line cook, runner, ~14% of revenue)
- &minus;$5.88
- 14.0%
-
- What stays in the restaurant
- $7.73
- 18.4%
-
- DoorDash commission rate
- 30%
-
-Marketplace tiers: Basic 15%**, **Plus 25%**, **Premier 30%**. Most independents pay 30%; some negotiate down with volume.
-
- Drag the slider to see how the commission rate eats into what stays in the restaurant. The teal segment is your keep.
-
-Eighteen percent. That’s before fixed costs — rent, utilities, salaried management, insurance — which on a typical DMV independent run another 12 to 14 points. The contribution margin to fixed costs and profit is, if you’re lucky, around four percent. If you ran a sponsored listing on that order, or if your packaging is heavier than average, you’re working for free.
-
-Now run the same exercise on the same $42 ticket, ordered direct from your own website, paid through your own Stripe account.
-
-The same $42 ticket, ordered direct (with your own last-mile)
-
- 4%
- 2%
- 3%
- 28%
- 14%
- 20%
- 28.9%
-
- Stripe / Square payment processing
- &minus;$1.51
- 3.6%
-
- Direct-channel marketing amortization (your time, ~$0.80/order)
- &minus;$0.80
- 1.9%
-
- Packaging
- &minus;$1.40
- 3.3%
-
- Food cost
- &minus;$11.76
- 28.0%
-
- Variable labor
- &minus;$5.88
- 14.0%
-
- Last-mile (DoorDash Drive flat fee, optional)
- &minus;$8.50
- 20.2%
-
- What stays in the restaurant (with own delivery)
- $12.15
- 28.9%
-
- Same ticket, direct channel. The teal segment grows from 18.4% to 28.9% — a $4.42 swing per order.
-
-Twenty-nine percent kept on the same ticket. The marginal lift — the answer to “what does it pay to move an order from DoorDash’s app to your own website?’’ — is **$4.42 per order**. Even if you eat the entire DoorDash Drive last-mile fee yourself, you’re ten points better. If your customer picks up, twenty-eight points better.
-
-## What that means for your year
-
-Take the average DMV independent doing 2,400 third-party-app orders per year — about seven per day, on the lower end of what I see for casual operators. Move 40% of those orders to direct over twelve months and the math:
-
-**2,400 orders/yr × 40% switch × $4.42 marginal lift = $4,243.20 added to the bottom line, year one.** Not revenue. Margin. The kind of dollars that pay rent.
-
-If you operate at the higher end — say a busy lunch spot doing 6,000 third-party orders per year — and pull off a 40% switch, the same math returns $10,608 a year. Year two compounds, because the customers you converted to direct have learned the flow.
-
-## The website fix that does it
-
-You don’t need an app. You don’t need a CRM. The switch happens through one button on your existing menu page, and the way you signal which button matters most. Three changes, in this order:
-
-- **Add a primary “Order direct” button** above the third-party links on your menu page, mobile and desktop. Larger button. Brand color. Immediately above the fold. The third-party app links go below it, smaller, as “Other ways to order.”
-
-- **Wire your direct order flow through your POS** — Toast Online Ordering, Square Online, ChowNow, or a Stripe-backed custom flow if you’ve got a developer. Not a Wix forms page that emails you the order.
-
-- **Match or beat the third-party price.** Independent operators are afraid to undercut DoorDash. They shouldn’t be. The 30% commission means you can run a direct-channel discount of $2–$4 on the same item and still keep more margin than the platform left you. The customer notices — they’re paying the “DoorDash service fee” on top of your menu price; you’re showing them what their meal actually costs.
-
-Run those three changes on your existing site and the average independent recovers the $4,243 first-year lift inside two months. The website itself probably costs less than that to build properly, even at studio pricing.
-
-## The argument for not delisting (yet)
-
-I am not telling you to delist. DoorDash is, structurally, a customer-acquisition tool that costs you 30%. For an independent restaurant with a kitchen capable of 60% incremental volume, that 30% is the price you pay for the marginal cover — and it’s a fair price *if you treat the platform as a discovery channel, not a relationship channel*.
-
-The problem isn’t that you’re on DoorDash. The problem is that you’re on DoorDash *and* not actively converting those customers to direct. The first-time DoorDash order is a $4.42 loss versus direct. The second-time order, also through DoorDash, is the same. The customer’s third order is the one where margin compounds — and the third order is the one most independents never recapture, because there’s no website call-to-action that asks them to.
-
-An order-confirmation receipt with a 5%-off coupon to your direct site, mailed through DoorDash’s own customer-receipt flow, is a free conversion lever. So is the QR code on the takeout bag. So is a card in the bag that says, in plain English, “next time, save $3 by ordering direct.”
-
-## Run your own version
-
-The numbers above are mine. Yours will be different — different commission tier, different ticket, different kitchen labor pattern. The free Margin Math tool runs the calculation against your inputs in your browser, and the result is yours alone — nothing leaves the page:
-
-[Run Margin Math →](https://muntin.digital/tools/margin-math/)
-
-If your site needs the “Order direct” button rebuilt and you’d rather have someone else handle it, the [$1,500 menu drop-in](https://muntin.digital/services/menu-drop-in/) is the smaller commitment. The $499 audit gets you a written diagnosis first if you’d rather see it on paper before you spend.
-
-The honest answer to “is DoorDash worth it” is the same as the honest answer to most operating questions: it depends on what else you’re doing. If your direct channel is dormant, it’s not worth it. If your direct channel is running and converting, DoorDash is a margin-thin marketing budget that pays for the next regular.
-
-Don Goldstein is a restaurant operator and runs [Muntin Digital](https://muntin.digital/). He is a member of [RAMW](https://ramw.org), ServSafe certified, and the math above is dated May 2026.
-
-Keep going
-
-- [Uber Eats vs DoorDash vs Grubhub](https://muntin.digital/library/third-party-delivery-comparison/) — side-by-side math on the same $42 ticket
-
-- [30 days after leaving DoorDash](https://muntin.digital/blog/30-days-after-leaving-doordash-restaurant-case-study/) — the field-notes case study
-
-- [Loyalty programs that work](https://muntin.digital/library/loyalty-program-roi/) — what to layer on the direct channel
-
-- [Margin Math tool](https://muntin.digital/tools/margin-math/) — run the calculation on your numbers
-
-- [Is DoorDash worth it for restaurants in 2026?](https://muntin.digital/blog/is-doordash-worth-it-for-restaurants-in-2026/) — the strategic frame
-
-- [$499 audit](https://muntin.digital/services/audit/) — the written diagnosis
-
----
-title: The Five Website Changes That Recover 1% of Profit Margin
-url: https://muntin.digital/blog/five-restaurant-website-changes-recover-one-percent-margin/
-kind: article
-locale: en
-date: 2026-04-26
-description: An honest inventory of five small, specific website changes — each under an hour of work — that together return about one point of profit margin to an independent restaurant. Worth roughly $8,000–$15,000 a year on a typical single-location restaurant.
----
-
-Library · [Conversions & Reservations](https://muntin.digital/learn/topics/conversions/)
-
-# The five website changes
- that recover 1%
- of profit margin
-
-Each move is under an hour of work. Stacked, they return roughly one point of profit margin — worth $8,000–$15,000 a year on a typical single-location independent restaurant.
-
-Apr 26, 2026 · 8 min read · By [**Don**](https://muntin.digital/about/#don-goldstein)
-
- Listen to this article
-
- Share
-
- Share on X
- Share on Bluesky
- Share on Threads
- Share on Mastodon
- Share on LinkedIn
- Share on Facebook
- Share on Reddit
- Share on WhatsApp
- Share on Telegram
- Share via email
- Copy link
 
 ---
 title: Gemini quietly became your #2 AI referral source
@@ -309,41 +102,6 @@ How-to · May 23, 2026 · 8 min read · By [Don Goldstein](https://muntin.digita
 A 2026 Uberall study found 83% of restaurants never surface when a diner asks an AI assistant for a recommendation — even though 86% have a Google listing. The gap comes down to four numbers you can check this week.
 
 ---
-title: How to Stop Losing Reservations to Google’s “Find a Table” Feature
-url: https://muntin.digital/blog/how-to-recover-reservations-from-googles-find-a-table/
-kind: article
-locale: en
-date: 2026-04-25
-description: Google now surfaces OpenTable and Resy booking widgets directly in Maps — so guests book without ever visiting your website. Here's what's happening, why you should care, and the three specific moves that recover the booking flow back to your own site.
----
-
-Library · [Conversions & Reservations](https://muntin.digital/learn/topics/conversions/)
-
-# How to stop losing reservations
- to Google’s
- “find a table” feature
-
-Google quietly turned its Maps listings into a reservation engine that never sends the guest to your site. Here's what that costs — and the three specific moves that recover the booking flow.
-
-Apr 25, 2026 · 9 min read · By [**Don**](https://muntin.digital/about/#don-goldstein)
-
- Listen to this article
-
- Share
-
- Share on X
- Share on Bluesky
- Share on Threads
- Share on Mastodon
- Share on LinkedIn
- Share on Facebook
- Share on Reddit
- Share on WhatsApp
- Share on Telegram
- Share via email
- Copy link
-
----
 title: Instagram as restaurant SEO: stop posting, start indexing
 url: https://muntin.digital/blog/instagram-as-restaurant-seo-strategy-2026/
 kind: article
@@ -361,41 +119,6 @@ Op-ed · May 11, 2026 · 7 min read · By [Don Goldstein](https://muntin.digital
  Listen to this article
 
 Google has indexed Instagram captions since 2024. The in-app search bar handles a meaningful share of restaurant discovery for younger guests, and TikTok’s “search” tab is now the second-most-used surface on the platform. None of this is news. What’s strange is how few independent restaurants have stopped posting like it’s 2019 and started writing for the search bar. The five moves below are what change.
-
----
-title: Is DoorDash Worth It Anymore? The Honest Math for 2026
-url: https://muntin.digital/blog/is-doordash-worth-it-for-restaurants-in-2026/
-kind: article
-locale: en
-date: 2026-04-22
-description: The honest math of DoorDash and third-party delivery for independent restaurants in 2026 — what $100 of delivery revenue actually becomes, when it still makes sense, when it doesn't, and how to build your own-ordering flow so you have a choice.
----
-
-Library · [Operations & Margin](https://muntin.digital/learn/topics/operations-margin/)
-
-# Is DoorDash worth it
- anymore?
- The honest math for 2026
-
-What a hundred dollars of DoorDash revenue actually becomes — and the break-even threshold at which your own ordering page starts printing money instead.
-
-Apr 22, 2026 · 10 min read · By [**Don**](https://muntin.digital/about/#don-goldstein)
-
- Listen to this article
-
- Share
-
- Share on X
- Share on Bluesky
- Share on Threads
- Share on Mastodon
- Share on LinkedIn
- Share on Facebook
- Share on Reddit
- Share on WhatsApp
- Share on Telegram
- Share via email
- Copy link
 
 ---
 title: Discovery changed under you this spring
@@ -434,95 +157,6 @@ Library Letter · May 10, 2026 · 5 min read · By [Don Goldstein](https://munti
  Listen to this article
 
 Search results aren’t ten blue links anymore. They’re a paragraph Google wrote, citing two or three sources — and for restaurant queries that paragraph now appears above the map pack. The nine pieces below are the operator’s response to that shift, in the order to read them.
-
----
-title: Restaurant Schema Markup: The 6 Types Google Actually Uses
-url: https://muntin.digital/blog/restaurant-schema-markup-6-types-google-uses/
-kind: article
-locale: en
-date: 2026-04-30
-description: The six schema.org types that move the needle for restaurant search results in 2026 — Restaurant, Menu, OpeningHoursSpecification, AggregateRating, Reservation, and FAQ — with copy-paste JSON-LD examples for each.
----
-
-Skip to main content
-
-# Restaurant Schema Markup: The 6 Types Google Actually Uses
-
-The six schema.org types that actually move the needle for restaurant search results in 2026 — Restaurant, Menu, OpeningHoursSpecification, AggregateRating, Reservation, and FAQ — with copy-paste JSON-LD for each.
-
-April 30, 2026 · 9 min read · By [**Don**](https://muntin.digital/about/#don-goldstein)
-
- Listen to this article
-
- Share
-
- Share on X
- Share on Bluesky
- Share on Threads
- Share on Mastodon
- Share on LinkedIn
- Share on Facebook
- Share on Reddit
- Share on WhatsApp
- Share on Telegram
- Share via email
- Copy link
-
----
-title: Restaurant schema markup: a complete, paste-ready example
-url: https://muntin.digital/blog/restaurant-schema-markup-complete-paste-ready-example/
-kind: article
-locale: en
-date: 2026-05-10T20:30:00-04:00
-description: The full JSON-LD block I use on real restaurant sites — Restaurant, Menu, OpeningHoursSpecification, AggregateRating, Reservation, and FAQ in one file. Drop it into your <head>, fill in seven fields, validate, ship. Worked example from a live DMV restaurant.
----
-
-Skip to main content
-
-How-to · May 10, 2026 · 5 min read · By [Don Goldstein](https://muntin.digital/about/#don-goldstein)
-
-# Restaurant schema markup: a paste-ready example.
-
- Listen to this article
-
-A complete restaurant schema markup in one paste-ready JSON-LD block. Six schema types nested correctly, the seven fields you change per restaurant clearly marked, and the validation step that catches the four typos that break everything. Worked example follows the same six-type pattern the [earlier article](https://muntin.digital/blog/restaurant-schema-markup-6-types-google-uses/) walks through — this one gives you the actual code.
-
----
-title: Why Your Restaurant Loses Reservations Every Night (And How to Fix It)
-url: https://muntin.digital/blog/why-your-restaurant-loses-reservations-every-night/
-kind: article
-locale: en
-date: 2026-04-17
-description: A real reservation-loss funnel — the six places where your restaurant's website is quietly leaking intent-driven diners, what each leak costs you in dollars, and the fix for every one of them.
----
-
-Skip to main content
-
- Library · [Conversions & Reservations](https://muntin.digital/learn/topics/conversions/)
-
-# Why your restaurant loses
- reservations every night
- (and how to fix it)
-
-A real reservation-loss funnel — the six places where your restaurant website is quietly leaking intent-driven diners, what each leak actually costs you in dollars, and the fix for every one.
-
-Apr 17, 2026 · 10 min read · By [**Don**](https://muntin.digital/about/#don-goldstein)
-
- Listen to this article
-
- Share
-
- Share on X
- Share on Bluesky
- Share on Threads
- Share on Mastodon
- Share on LinkedIn
- Share on Facebook
- Share on Reddit
- Share on WhatsApp
- Share on Telegram
- Share via email
- Copy link
 
 ---
 title: Diners can book inside Google's AI answer now
@@ -899,6 +533,43 @@ Op-ed · May 10, 2026 · 6 min read · By [Don Goldstein](https://muntin.digital
 Operators who have done the work — new website, good photos, schema markup, real reviews — sometimes still don’t show in the local-pack on Google Maps. The bulk of those cases trace back to one of four root causes on the Google Business Profile. The diagnostic below takes ten minutes. Three of the four fixes are same-day operator work.
 
 ---
+title: Why Your Restaurant Loses Reservations Every Night (And How to Fix It)
+url: https://muntin.digital/library/reservation-conversion-guide/
+kind: article
+locale: en
+date: 2026-04-17
+description: A real reservation-loss funnel — the six places where your restaurant's website is quietly leaking intent-driven diners, what each leak costs you in dollars, and the fix for every one of them.
+---
+
+Skip to main content
+
+ Library · [Conversions & Reservations](https://muntin.digital/learn/topics/conversions/)
+
+# Why your restaurant loses
+ reservations every night
+ (and how to fix it)
+
+A real reservation-loss funnel — the six places where your restaurant website is quietly leaking intent-driven diners, what each leak actually costs you in dollars, and the fix for every one.
+
+Apr 17, 2026 · 10 min read · By [**Don**](https://muntin.digital/about/#don-goldstein)
+
+ Listen to this article
+
+ Share
+
+ Share on X
+ Share on Bluesky
+ Share on Threads
+ Share on Mastodon
+ Share on LinkedIn
+ Share on Facebook
+ Share on Reddit
+ Share on WhatsApp
+ Share on Telegram
+ Share via email
+ Copy link
+
+---
 title: Should Your Restaurant Actually Make an App in 2026?
 url: https://muntin.digital/library/restaurant-app-decision/
 kind: article
@@ -967,6 +638,39 @@ April 30, 2026 · 6 min read · By [**Don**](https://muntin.digital/about/#don-g
  Copy link
 
 ---
+title: Restaurant Schema Markup: The 6 Types Google Actually Uses
+url: https://muntin.digital/library/restaurant-schema-markup-guide/
+kind: article
+locale: en
+date: 2026-04-30
+description: The six schema.org types that move the needle for restaurant search results in 2026 — Restaurant, Menu, OpeningHoursSpecification, AggregateRating, Reservation, and FAQ — with copy-paste JSON-LD examples for each.
+---
+
+Skip to main content
+
+# Restaurant Schema Markup: The 6 Types Google Actually Uses
+
+The six schema.org types that actually move the needle for restaurant search results in 2026 — Restaurant, Menu, OpeningHoursSpecification, AggregateRating, Reservation, and FAQ — with copy-paste JSON-LD for each.
+
+April 30, 2026 · 9 min read · By [**Don**](https://muntin.digital/about/#don-goldstein)
+
+ Listen to this article
+
+ Share
+
+ Share on X
+ Share on Bluesky
+ Share on Threads
+ Share on Mastodon
+ Share on LinkedIn
+ Share on Facebook
+ Share on Reddit
+ Share on WhatsApp
+ Share on Telegram
+ Share via email
+ Copy link
+
+---
 title: Service charges vs tipping: the operator's math for 2026
 url: https://muntin.digital/library/service-charge-vs-tipping-model/
 kind: article
@@ -1002,7 +706,179 @@ Op-ed · May 11, 2026 · 8 min read · By [Don Goldstein](https://muntin.digital
 
  Listen to this article
 
-The headline commission rates on the three big delivery platforms look identical: DoorDash 30%, Uber Eats 30%, Grubhub 30% on the standard tier most independents pay. The actual margin walk — once you add the marketing fee, the payment-processing pass-through, the “promo” charge that nobody negotiated — tells a different story per platform. The fee structures below come from each platform’s public merchant documentation; the per-ticket math is the same $42 average ticket the [DoorDash margin walk](https://muntin.digital/blog/an-honest-doordash-math-for-independent-restaurants-2026/) uses.
+The headline commission rates on the three big delivery platforms look identical: DoorDash 30%, Uber Eats 30%, Grubhub 30% on the standard tier most independents pay. The actual margin walk — once you add the marketing fee, the payment-processing pass-through, the “promo” charge that nobody negotiated — tells a different story per platform. The fee structures below come from each platform’s public merchant documentation; the per-ticket math is the same $42 average ticket the [DoorDash margin walk](https://muntin.digital/library/third-party-delivery-economics/) uses.
+
+---
+title: An honest DoorDash math for independent restaurants, 2026
+url: https://muntin.digital/library/third-party-delivery-economics/
+kind: article
+locale: en
+date: 2026-05-02T10:30:00-04:00
+description: The actual math behind a DoorDash order at an independent DMV restaurant in 2026 — commission, payment processing, packaging, food cost, labor, the marketing fee — with the breakeven for switching channels and a reservation flow that pays itself back in two months.
+---
+
+**
+
+Skip to main content
+
+Op-ed · May 2, 2026 · 7 min read · By [Don Goldstein](https://muntin.digital/about/#don-goldstein)
+
+# An honest DoorDash math for independent restaurants, 2026.
+
+ Listen to this article
+
+I’m front-of-house manager at a DMV restaurant. Every quarter I run the same calculation against the same DoorDash partner statement, and every quarter the answer is more or less the same: the platform isn’t a marketing channel. It’s a margin tax with delivery as a side benefit. Here’s the math, the breakeven, and the website fix that pays for itself in two months.
+
+I’m going to do this with a real average ticket and real numbers I can defend. The ticket is $42 — that’s our 2025 average DoorDash check at one of the restaurants I manage. Your ticket may be higher or lower; the percentages are what carry the argument.
+
+## One $42 DoorDash ticket, broken down
+
+Below is the full margin walk. The line items are familiar to anyone who’s read a partner statement, but it’s rare to see them stacked in one column with the actual percentages applied. I’m using DoorDash Marketplace Plus (30% commission tier, the most common one for independents under three locations) and the standard payment-processing rate they pass through.
+
+Where each dollar of a $42 DoorDash ticket goes
+
+ 30%
+ 3%
+ 3%
+ 3%
+ 28%
+ 14%
+ 18.4%
+
+ DoorDash commission (Marketplace Plus, 30%)
+ &minus;$12.60
+ 30.0%
+
+ Payment processing (~3.4%)
+ &minus;$1.43
+ 3.4%
+
+ DoorDash “promotion” / sponsored listing fee (avg, when used)
+ &minus;$1.20
+ 2.9%
+
+ Packaging (clamshell, lid, bag, sticker, plasticware)
+ &minus;$1.40
+ 3.3%
+
+ Food cost (28% of menu price, kitchen-side)
+ &minus;$11.76
+ 28.0%
+
+ Variable labor (line cook, runner, ~14% of revenue)
+ &minus;$5.88
+ 14.0%
+
+ What stays in the restaurant
+ $7.73
+ 18.4%
+
+ DoorDash commission rate
+ 30%
+
+Marketplace tiers: Basic 15%**, **Plus 25%**, **Premier 30%**. Most independents pay 30%; some negotiate down with volume.
+
+ Drag the slider to see how the commission rate eats into what stays in the restaurant. The teal segment is your keep.
+
+Eighteen percent. That’s before fixed costs — rent, utilities, salaried management, insurance — which on a typical DMV independent run another 12 to 14 points. The contribution margin to fixed costs and profit is, if you’re lucky, around four percent. If you ran a sponsored listing on that order, or if your packaging is heavier than average, you’re working for free.
+
+Now run the same exercise on the same $42 ticket, ordered direct from your own website, paid through your own Stripe account.
+
+The same $42 ticket, ordered direct (with your own last-mile)
+
+ 4%
+ 2%
+ 3%
+ 28%
+ 14%
+ 20%
+ 28.9%
+
+ Stripe / Square payment processing
+ &minus;$1.51
+ 3.6%
+
+ Direct-channel marketing amortization (your time, ~$0.80/order)
+ &minus;$0.80
+ 1.9%
+
+ Packaging
+ &minus;$1.40
+ 3.3%
+
+ Food cost
+ &minus;$11.76
+ 28.0%
+
+ Variable labor
+ &minus;$5.88
+ 14.0%
+
+ Last-mile (DoorDash Drive flat fee, optional)
+ &minus;$8.50
+ 20.2%
+
+ What stays in the restaurant (with own delivery)
+ $12.15
+ 28.9%
+
+ Same ticket, direct channel. The teal segment grows from 18.4% to 28.9% — a $4.42 swing per order.
+
+Twenty-nine percent kept on the same ticket. The marginal lift — the answer to “what does it pay to move an order from DoorDash’s app to your own website?’’ — is **$4.42 per order**. Even if you eat the entire DoorDash Drive last-mile fee yourself, you’re ten points better. If your customer picks up, twenty-eight points better.
+
+## What that means for your year
+
+Take the average DMV independent doing 2,400 third-party-app orders per year — about seven per day, on the lower end of what I see for casual operators. Move 40% of those orders to direct over twelve months and the math:
+
+**2,400 orders/yr × 40% switch × $4.42 marginal lift = $4,243.20 added to the bottom line, year one.** Not revenue. Margin. The kind of dollars that pay rent.
+
+If you operate at the higher end — say a busy lunch spot doing 6,000 third-party orders per year — and pull off a 40% switch, the same math returns $10,608 a year. Year two compounds, because the customers you converted to direct have learned the flow.
+
+## The website fix that does it
+
+You don’t need an app. You don’t need a CRM. The switch happens through one button on your existing menu page, and the way you signal which button matters most. Three changes, in this order:
+
+- **Add a primary “Order direct” button** above the third-party links on your menu page, mobile and desktop. Larger button. Brand color. Immediately above the fold. The third-party app links go below it, smaller, as “Other ways to order.”
+
+- **Wire your direct order flow through your POS** — Toast Online Ordering, Square Online, ChowNow, or a Stripe-backed custom flow if you’ve got a developer. Not a Wix forms page that emails you the order.
+
+- **Match or beat the third-party price.** Independent operators are afraid to undercut DoorDash. They shouldn’t be. The 30% commission means you can run a direct-channel discount of $2–$4 on the same item and still keep more margin than the platform left you. The customer notices — they’re paying the “DoorDash service fee” on top of your menu price; you’re showing them what their meal actually costs.
+
+Run those three changes on your existing site and the average independent recovers the $4,243 first-year lift inside two months. The website itself probably costs less than that to build properly, even at studio pricing.
+
+## The argument for not delisting (yet)
+
+I am not telling you to delist. DoorDash is, structurally, a customer-acquisition tool that costs you 30%. For an independent restaurant with a kitchen capable of 60% incremental volume, that 30% is the price you pay for the marginal cover — and it’s a fair price *if you treat the platform as a discovery channel, not a relationship channel*.
+
+The problem isn’t that you’re on DoorDash. The problem is that you’re on DoorDash *and* not actively converting those customers to direct. The first-time DoorDash order is a $4.42 loss versus direct. The second-time order, also through DoorDash, is the same. The customer’s third order is the one where margin compounds — and the third order is the one most independents never recapture, because there’s no website call-to-action that asks them to.
+
+An order-confirmation receipt with a 5%-off coupon to your direct site, mailed through DoorDash’s own customer-receipt flow, is a free conversion lever. So is the QR code on the takeout bag. So is a card in the bag that says, in plain English, “next time, save $3 by ordering direct.”
+
+## Run your own version
+
+The numbers above are mine. Yours will be different — different commission tier, different ticket, different kitchen labor pattern. The free Margin Math tool runs the calculation against your inputs in your browser, and the result is yours alone — nothing leaves the page:
+
+[Run Margin Math →](https://muntin.digital/tools/margin-math/)
+
+If your site needs the “Order direct” button rebuilt and you’d rather have someone else handle it, the [$1,500 menu drop-in](https://muntin.digital/services/menu-drop-in/) is the smaller commitment. The $499 audit gets you a written diagnosis first if you’d rather see it on paper before you spend.
+
+The honest answer to “is DoorDash worth it” is the same as the honest answer to most operating questions: it depends on what else you’re doing. If your direct channel is dormant, it’s not worth it. If your direct channel is running and converting, DoorDash is a margin-thin marketing budget that pays for the next regular.
+
+Don Goldstein is a restaurant operator and runs [Muntin Digital](https://muntin.digital/). He is a member of [RAMW](https://ramw.org), ServSafe certified, and the math above is dated May 2026.
+
+Keep going
+
+- [Uber Eats vs DoorDash vs Grubhub](https://muntin.digital/library/third-party-delivery-comparison/) — side-by-side math on the same $42 ticket
+
+- [30 days after leaving DoorDash](https://muntin.digital/blog/30-days-after-leaving-doordash-restaurant-case-study/) — the field-notes case study
+
+- [Loyalty programs that work](https://muntin.digital/library/loyalty-program-roi/) — what to layer on the direct channel
+
+- [Margin Math tool](https://muntin.digital/tools/margin-math/) — run the calculation on your numbers
+
+- [Is DoorDash worth it for restaurants in 2026?](https://muntin.digital/library/third-party-delivery-economics/) — the strategic frame
+
+- [$499 audit](https://muntin.digital/services/audit/) — the written diagnosis
 
 ---
 title: Toast vs. Square vs. Clover: Which POS Integrates Best With a Restaurant Website?
@@ -1176,7 +1052,7 @@ Baymard's list of abandonment reasons reads like a checklist for everything a mo
 
 ## How Muntin uses this
 
-- [**Why your restaurant loses reservations every night**Leak #5 ("reservation-flow friction") is built entirely on this study. Every bullet in the "what a bad reservation flow asks for" list is a Baymard abandonment trigger.](https://muntin.digital/blog/why-your-restaurant-loses-reservations-every-night/)
+- [**Why your restaurant loses reservations every night**Leak #5 ("reservation-flow friction") is built entirely on this study. Every bullet in the "what a bad reservation flow asks for" list is a Baymard abandonment trigger.](https://muntin.digital/library/reservation-conversion-guide/)
 
 - [**Wix vs. custom for restaurants: what breaks first**Break #5 (reservation widget friction) uses Baymard's numbers to frame why a simpler, fewer-field reservation system measurably outperforms a branded third-party embed for low-volume independents.](https://muntin.digital/library/wix-vs-custom-for-restaurants/)
 
@@ -1190,7 +1066,7 @@ Baymard Institute. Cart Abandonment Rate Statistics. Continuously updated meta-a
 
 ## 1 article uses this research.
 
-- [Why Your Restaurant Loses Reservations Every Night](https://muntin.digital/blog/why-your-restaurant-loses-reservations-every-night/)
+- [Why Your Restaurant Loses Reservations Every Night](https://muntin.digital/library/reservation-conversion-guide/)
 
  More research
 
@@ -1336,7 +1212,7 @@ Keep going
 
 - [Care Plan Light ($99/mo)](https://muntin.digital/services/care-plan-light/) — monthly GBP hygiene
 
-- [An honest DoorDash math, 2026](https://muntin.digital/blog/an-honest-doordash-math-for-independent-restaurants-2026/) — the companion margin walk
+- [An honest DoorDash math, 2026](https://muntin.digital/library/third-party-delivery-economics/) — the companion margin walk
 
 ---
 title: Fitts's Law
@@ -1380,7 +1256,7 @@ In restaurant-website terms: a "Reserve" button hidden inside a hamburger menu a
 
 ## How Muntin uses this
 
-- [**Why your restaurant loses reservations every night**Leak #4 — "the reservation button is buried or missing" — is where Fitts's Law does the most work in the library. The sticky-bottom-CTA recommendation is Fitts's Law in practice.](https://muntin.digital/blog/why-your-restaurant-loses-reservations-every-night/)
+- [**Why your restaurant loses reservations every night**Leak #4 — "the reservation button is buried or missing" — is where Fitts's Law does the most work in the library. The sticky-bottom-CTA recommendation is Fitts's Law in practice.](https://muntin.digital/library/reservation-conversion-guide/)
 
 - [**Wix vs. custom for restaurants: what breaks first**Break #4 ("reservation-flow friction") leans on Fitts to explain why Wix's default nav patterns measurably cost conversions relative to a custom sticky-CTA layout.](https://muntin.digital/library/wix-vs-custom-for-restaurants/)
 
@@ -1394,7 +1270,7 @@ Budiu, R. Fitts's Law and Its Applications in UX. Nielsen Norman Group. [nngroup
 
 ## 1 article uses this research.
 
-- [Why Your Restaurant Loses Reservations Every Night](https://muntin.digital/blog/why-your-restaurant-loses-reservations-every-night/)
+- [Why Your Restaurant Loses Reservations Every Night](https://muntin.digital/library/reservation-conversion-guide/)
 
  More research
 
@@ -1552,7 +1428,7 @@ The failure mode is almost always the same: owners treat the homepage as a brand
 
 ## How Muntin uses this
 
-- [**Why your restaurant loses reservations every night**Leak #3 — “hours are hiding” — is built on the same pattern: hours are the most-searched-for and most-hidden piece of information on restaurant sites.](https://muntin.digital/blog/why-your-restaurant-loses-reservations-every-night/)
+- [**Why your restaurant loses reservations every night**Leak #3 — “hours are hiding” — is built on the same pattern: hours are the most-searched-for and most-hidden piece of information on restaurant sites.](https://muntin.digital/library/reservation-conversion-guide/)
 
 - [**How much does a custom restaurant website cost in 2026?**The “what a custom site actually delivers” section uses this practice note to explain why hero-placement of hours and location is treated as a baseline, not a premium feature.](https://muntin.digital/library/custom-restaurant-website-pricing/)
 
@@ -1564,7 +1440,7 @@ The failure mode is almost always the same: owners treat the homepage as a brand
 
 ## 1 article uses this research.
 
-- [Why Your Restaurant Loses Reservations Every Night](https://muntin.digital/blog/why-your-restaurant-loses-reservations-every-night/)
+- [Why Your Restaurant Loses Reservations Every Night](https://muntin.digital/library/reservation-conversion-guide/)
 
  More research
 
@@ -1645,7 +1521,7 @@ The number is worth knowing, but the *shape* of the finding matters more. Bounce
 This is the anchor study behind every "mobile speed matters" claim in the library. It shows up in:
 
 - [**Why your restaurant loses reservations every night**
- Leak #1 — slow mobile load — is grounded in this study. The 53% bounce rate is what makes the "lose half your traffic before the menu" framing real rather than rhetorical.](https://muntin.digital/blog/why-your-restaurant-loses-reservations-every-night/)
+ Leak #1 — slow mobile load — is grounded in this study. The 53% bounce rate is what makes the "lose half your traffic before the menu" framing real rather than rhetorical.](https://muntin.digital/library/reservation-conversion-guide/)
 
 - [**How much does a custom restaurant website cost in 2026?**
  The performance-budget section of the pricing article points at this study to explain why a sub-two-second mobile load is treated as a baseline deliverable, not an upgrade.](https://muntin.digital/library/custom-restaurant-website-pricing/)
@@ -1663,7 +1539,7 @@ An, D. (2017, February). Find out how you stack up to new industry benchmarks fo
 
 ## 2 articles use this research.
 
-- [Why Your Restaurant Loses Reservations Every Night](https://muntin.digital/blog/why-your-restaurant-loses-reservations-every-night/)
+- [Why Your Restaurant Loses Reservations Every Night](https://muntin.digital/library/reservation-conversion-guide/)
 
 - [Wix vs Custom for Restaurants](https://muntin.digital/library/wix-vs-custom-for-restaurants/)
 
@@ -1805,13 +1681,13 @@ Don Goldstein is a restaurant operator and runs [Muntin Digital](https://muntin.
 
 Companion pieces
 
-- [An honest DoorDash math, 2026](https://muntin.digital/blog/an-honest-doordash-math-for-independent-restaurants-2026/) — the per-order math behind leak #6
+- [An honest DoorDash math, 2026](https://muntin.digital/library/third-party-delivery-economics/) — the per-order math behind leak #6
 
 - [DMV restaurant GBP audit, 2026](https://muntin.digital/learn/research/dmv-restaurant-gbp-audit-2026/) — the discovery side of the same problem
 
-- [Why your restaurant loses reservations every night](https://muntin.digital/blog/why-your-restaurant-loses-reservations-every-night/) — the long-form companion
+- [Why your restaurant loses reservations every night](https://muntin.digital/library/reservation-conversion-guide/) — the long-form companion
 
-- [Five website changes that recover 1% margin](https://muntin.digital/blog/five-restaurant-website-changes-recover-one-percent-margin/) — the fix list, ranked
+- [Five website changes that recover 1% margin](https://muntin.digital/library/reservation-conversion-guide/) — the fix list, ranked
 
 - [Run the free 30-second audit](https://muntin.digital/tools/audits/restaurant/) on your own site
 
@@ -1939,7 +1815,7 @@ A third-party marketplace that takes orders on your behalf (DoorDash, Uber Eats,
 
 ## Why it matters
 
-The single biggest margin pressure most independent restaurants face since 2020. Whether an aggregator is profitable for you depends on cover incrementality (does it bring new customers?) and commission tier. The [DoorDash math post](https://muntin.digital/blog/is-doordash-worth-it-for-restaurants-in-2026/) walks through the numbers; the [Delivery Break-Even calculator](https://muntin.digital/tools/margin-math/) runs them on yours.
+The single biggest margin pressure most independent restaurants face since 2020. Whether an aggregator is profitable for you depends on cover incrementality (does it bring new customers?) and commission tier. The [DoorDash math post](https://muntin.digital/library/third-party-delivery-economics/) walks through the numbers; the [Delivery Break-Even calculator](https://muntin.digital/tools/margin-math/) runs them on yours.
 
  More in Restaurant numbers
 
