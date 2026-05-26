@@ -43,6 +43,15 @@ const SKIP_SLUGS = new Set(['menu-design-cuisines', 'menu-design-themes']);
 // All variants are stripped along with surrounding whitespace.
 const BYLINE_DATE_RE = /<time datetime="\d{4}-\d{2}-\d{2}">[^<]+<\/time>\s*(?:[·•]|&middot;|&bull;)\s*/;
 
+// Some articles use an "eyebrow" pattern instead of post-meta:
+//   <p class="eyebrow">Op-ed · May 2, 2026 · 7 min read · By Don</p>
+//   <p class="eyebrow">Opinión · 11 de mayo de 2026 · 8 min de lectura · By Don</p>
+// Strip the date segment ("· MONTH DD, YYYY ·" or "· DD de MES de YYYY ·")
+// keeping the eyebrow kind ("Op-ed"/"Opinión") and the read-time + author.
+// Two captures: SEP1 + DATE + SEP2 — replace with a single separator.
+const EYEBROW_DATE_RE_EN = /(\s*(?:[·•]|&middot;|&bull;)\s*)(?:January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2},\s*\d{4}(\s*(?:[·•]|&middot;|&bull;)\s*)/;
+const EYEBROW_DATE_RE_ES = /(\s*(?:[·•]|&middot;|&bull;)\s*)\d{1,2}\s+de\s+(?:enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|octubre|noviembre|diciembre)\s+de\s+\d{4}(\s*(?:[·•]|&middot;|&bull;)\s*)/;
+
 let touched = 0;
 let scanned = 0;
 let already = 0;
@@ -55,14 +64,16 @@ for (const root of ROOTS) {
     const file = path.join(rootAbs, slug, 'index.html');
     if (!fs.existsSync(file)) continue;
     scanned++;
-    const src = fs.readFileSync(file, 'utf8');
-    if (!BYLINE_DATE_RE.test(src)) {
+    let src = fs.readFileSync(file, 'utf8');
+    const before = src;
+    src = src.replace(BYLINE_DATE_RE, '');
+    src = src.replace(EYEBROW_DATE_RE_EN, '$2');  // keep the second separator
+    src = src.replace(EYEBROW_DATE_RE_ES, '$2');
+    if (src === before) {
       already++;
       continue;
     }
-    const next = src.replace(BYLINE_DATE_RE, '');
-    if (next === src) { already++; continue; }
-    if (apply) fs.writeFileSync(file, next);
+    if (apply) fs.writeFileSync(file, src);
     console.log(`${apply ? 'STRIPPED' : 'would strip'}  ${root}/${slug}/index.html`);
     touched++;
   }
