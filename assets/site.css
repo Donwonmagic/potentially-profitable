@@ -1,5 +1,6 @@
 :root{--cream:#F6F7F8;--cream-2:#EDEEF1;--ink:#16181D;--ink-soft:#4A4F59;--teal:#2A50C8;--teal-dark:#1F3A93;--teal-tint:#EAF0FE;--rust:#C42E2E;--stone:#6B7280;--stone-2:#9AA0AB;--line:#E3E5E9;--line-dark:#D7DAE0;--line-input:#868D9A;--white:#FFFFFF;--font-display:'Fraunces','Fraunces Fallback',Georgia,'Times New Roman',serif;--font-body:'Inter','Inter Fallback',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;--max:1200px;--pad-x:clamp(20px,4vw,64px);--ease:cubic-bezier(.22,.61,.36,1);--ease-out:cubic-bezier(.16,1,.3,1);--t-fast:180ms;--t-med:420ms;--t-slow:900ms;--r-sm:8px;--r-md:14px;--r-lg:22px;--gold:#B7791F}
 
+/* @shell:core === Modernization tokens (Sprint 1) === */
 /* ============ Modernization tokens (Sprint 1) ============
    Additive vocabulary that later modernization sprints consume. No
    visual change lands with this commit alone — declaring the tokens
@@ -91,6 +92,7 @@
   --rule:               1px solid var(--surface-2);  /* hairline rules vs cards on index pages */
 }
 
+/* @shell:core === Line-height convention === */
 /* ============ Line-height convention ============
    Three tokens, three contexts. Use the token, not the literal:
 
@@ -106,6 +108,7 @@
    tokens and are not being mass-rewritten — adopt as you touch a
    surface. */
 
+/* @shell:core === Token usage notes === */
 /* ============ Token usage notes ============
    --stone-2 (#9A958B) — DECORATIVE ONLY. Used for icons, dividers,
    idle band fills, and progress-ring tracks. Never apply to body text
@@ -119,6 +122,7 @@
    --status-warn-fill (#C28B2E) — fill only (chart bars, star icons).
    Never use as text color on light surfaces. */
 
+/* @shell:core === Status components (.status-chip, .progress-ring) === */
 /* ============ Status components (Sprint 0) ============
    Three reusable components — `.status-chip`, `.progress-ring`,
    `.score-card` — plus the promoted `.score-pill` (lifted from
@@ -250,6 +254,7 @@
   .progress-ring-fill{transition:none}
 }
 
+/* @shell:core === Field Guide editorial surfaces (.score-card, .score-pill — used by tools + audits) === */
 /* ============ Phase 5 — Field Guide editorial surfaces ============
    The .prose wrapper turns any container into a reading surface: a
    64ch measure (66ch from md), generous leading, tabular figures by
@@ -530,6 +535,7 @@
 
 @media print{.score-pill{display:none !important}}
 
+/* @shell:core === Global focus-visible === */
 /* ----- Global focus-visible — :where() keeps specificity at 0 so
    per-tool overrides still win. Component focus rings (e.g.
    .score-pill-btn:focus-visible's teal border) compose with this. ----- */
@@ -538,6 +544,7 @@
   outline:none;
 }
 
+/* @shell:core === Self-hosted web fonts (@font-face) === */
 /* ============ SELF-HOSTED WEB FONTS ============
    Fraunces (display) and Inter (body) are served from /assets/fonts/
    as VARIABLE font files: one woff2 per font/style covers every weight
@@ -604,6 +611,7 @@
 @font-face{font-family:'Fraunces Fallback';src:local('Times New Roman');size-adjust:100%;ascent-override:97.8%;descent-override:25.5%;line-gap-override:0%}
 @font-face{font-family:'Inter Fallback';src:local('Arial');size-adjust:100%;ascent-override:96.875%;descent-override:24.121%;line-gap-override:0%}
 
+/* @shell:core === Breakpoint scale === */
 /* ============ BREAKPOINT SCALE ============
    The site transitions at exactly these widths, everywhere:
 
@@ -709,6 +717,7 @@ pre code{overflow-wrap:normal;word-break:normal;white-space:pre}
 .post-end-mark .post-end-glyph svg{width:100%;height:100%;display:block}
 .post-end-mark p{font-family:var(--font-display);font-style:italic;font-size:18px;color:var(--stone);margin:0}
 .container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
+/* @shell:core === Button vocabulary (.btn family) === */
 /* ============ Button vocabulary (Sprint 4 — locked) ============
    The site has ONE button family. Every interactive control should
    compose from these primitives unless it is a registered exception
@@ -1279,6 +1288,7 @@ section.block{padding:clamp(80px,10vw,140px) 0}
 .final .btn-primary:hover{background:var(--white)}
 .final .btn-ghost{color:var(--cream);border-color:rgba(250,247,242,0.3)}
 .final .btn-ghost:hover{background:rgba(250,247,242,0.08);border-color:var(--cream)}
+/* @shell:core === Footer === */
 /* ============ FOOTER ============
    Three-section footer: a top CTA row, a 3-column discovery grid,
    and a thin bottom row with copyright + legal. Unified across all
@@ -1376,6 +1386,7 @@ body:has(.block.final) .foot-cta{display:none}
 .foot-legal a:hover{color:var(--cream)}
 @media (max-width:640px){.foot-bottom{flex-direction:column;align-items:flex-start;gap:14px}}
 
+/* @shell:article === Citation drawer (.cite, .cite-body) === */
 /* ============ CITATION DRAWER ============
    <details class="cite"> with a <summary> trigger and a body
    containing: source name, brief overview, and a link. Uses the
@@ -1405,6 +1416,7 @@ body:has(.block.final) .foot-cta{display:none}
 .reveal.in{opacity:1;transform:none}
 @media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
 /* (kept for line-count parity with the previous .reveal block) */
+/* @shell:core === Global focus-visible + skip-link + sr-only + nav-toggle + mobile-menu (every-page chrome) === */
 :focus{outline:none}
 /* Sprint 3: global focus affordance. The 2px solid outline reads as
    a browser-default; the layered halo from --ring-focus reads as
@@ -1473,6 +1485,7 @@ br.br-lg{display:none}
    Spanish "Agenda una llamada de 20 min") pushes the nav over the
    container width — the compression shoves the text against one side
    of the pill, which reads as "the text isn't centered". */
+/* @shell:core === Nav refinements + share widget (was inside CITATION DRAWER section) === */
 .nav-inner .btn-primary{flex-shrink:0}
 @media (max-width:1100px){.nav-inner .btn-primary{display:none}
 .nav-toggle{display:flex}
@@ -1494,6 +1507,7 @@ br.br-lg{display:none}
 .share-item{display:block;width:100%;text-align:left;padding:10px 14px;font-family:var(--font-body);font-size:14px;color:var(--ink);background:transparent;border:0;border-radius:8px;cursor:pointer;transition:background-color var(--t-fast) var(--ease)}
 .share-item:hover,.share-item:focus-visible{background-color:var(--cream-2);outline:none}
 .share-item.copied{color:var(--teal);font-weight:600}
+/* @shell:article === Listen / audio player === */
 /* ============ LISTEN / AUDIO PLAYER ============
    Two surfaces share one engine:
    1. .listen-card — the inline "Audio edition" card rendered under the
@@ -2269,6 +2283,7 @@ body[data-audio-seek] .article-body .listen-sent:hover{background:rgba(42,80,200
 .listen-card[data-state="finished"] .listen-card-play .icon-finished{opacity:1;transform:none}
 }
 
+/* @shell:core === Breadcrumbs === */
 /* ============ BREADCRUMBS ============
    Visual counterpart to the BreadcrumbList schema already present in
    JSON-LD on secondary pages. Sits between the nav and the page hero,
@@ -2295,6 +2310,7 @@ body[data-audio-seek] .article-body .listen-sent:hover{background:rgba(42,80,200
 .breadcrumb + .hero{padding-top:40px}
 @media (max-width:640px){.breadcrumb{font-size:12px;padding:88px 0 12px}.breadcrumb + .hero{padding-top:24px}}
 
+/* @shell:core === Homepage utility classes === */
 /* ============ HOMEPAGE UTILITY CLASSES ============
    Extracted from inline style= attributes during the Sprint 1 cleanup.
    Keep these tightly scoped — prefer new semantic classes over atomic
@@ -2347,6 +2363,7 @@ body[data-audio-seek] .article-body .listen-sent:hover{background:rgba(42,80,200
 .work-grid-cta{text-align:center;margin-top:40px}
 .honeypot{display:none}
 
+/* @shell:core === Legal pages === */
 /* ===== Legal pages (accessibility, privacy, cookies, terms) ===== */
 .legal{max-width:760px;margin:0 auto;padding:calc(80px + 64px) var(--pad-x) 96px}
 .legal h1{font-family:var(--font-display);font-weight:500;font-size:clamp(34px,5vw,48px);line-height:1.1;letter-spacing:-0.02em;margin:0 0 8px;color:var(--ink)}
@@ -2373,6 +2390,7 @@ body[data-audio-seek] .article-body .listen-sent:hover{background:rgba(42,80,200
   .legal .cookie-table{display:block;overflow-x:auto}
 }
 
+/* @shell:core === Homepage primary tool CTA (restaurant audit) === */
 /* ============================================================
    Homepage primary tool CTA (restaurant audit)
    ============================================================
@@ -2664,6 +2682,7 @@ body[data-audio-seek] .article-body .listen-sent:hover{background:rgba(42,80,200
   .tool-cta-preview li{ padding: 8px 0; }
 }
 
+/* @shell:tool === TOOL SHELL — shared primitives for /tools/* pages === */
 /* ============================================================
    TOOL SHELL — shared primitives for /tools/* pages
    Promoted from seven near-identical inline <style> blocks
@@ -2761,6 +2780,7 @@ body[data-audio-seek] .article-body .listen-sent:hover{background:rgba(42,80,200
 }
 .tool-card.soon .cta{ color:var(--stone); }
 .tool-card .cta svg{ width:16px; height:16px; }
+/* @shell:tool === Tools-landing cluster layout === */
 
 /* ---------- Tools-landing cluster layout (Phase 2 cohesion pass) -----
    The /tools/ page is now grouped by the same 6-topic taxonomy used at
@@ -3052,6 +3072,7 @@ body[data-audio-seek] .article-body .listen-sent:hover{background:rgba(42,80,200
 }
 @media (max-width:960px){ .tool-roadmap .tool-grid{ grid-template-columns:repeat(2,1fr); } }
 @media (max-width:560px){ .tool-roadmap .tool-grid{ grid-template-columns:1fr; } }
+/* @shell:tool === Per-tool "Keep going" knit-in === */
 
 /* ---------- Per-tool "Keep going" knit-in (Phase 3 cohesion pass) ----
    Renders at the bottom of every live tool page (between
@@ -3163,6 +3184,7 @@ body[data-audio-seek] .article-body .listen-sent:hover{background:rgba(42,80,200
 @media (max-width:520px){
   .tool-knit__grid{ grid-template-columns:1fr; }
 }
+/* @shell:article === Glossary scannability === */
 
 /* ---------- Glossary scannability (Phase 4 cohesion pass) ----------
    Adds two new chip rows to the existing .gloss-filterbar:
@@ -3318,6 +3340,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 @media (max-width:520px){
   .glossary-knit__grid{ grid-template-columns:1fr; }
 }
+/* @shell:article === "Recently added" strip on /learn/ === */
 
 /* ---------- "Recently added" strip on /learn/ (Phase 5) -----------
    Three-card row of the newest items across tools + articles, sorted
@@ -3393,6 +3416,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 }
 @media (max-width:900px){ .recently-added__grid{ grid-template-columns:repeat(2,1fr); } }
 @media (max-width:560px){ .recently-added__grid{ grid-template-columns:1fr; } }
+/* @shell:core === Library nav-mega regroup (nav is everywhere) === */
 
 /* ---------- Library nav-mega regroup (Phase 5) ---------------------
    The Library dropdown was an 8-item linear list. Now grouped into
@@ -3713,6 +3737,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   margin:0 0 16px;
 }
 
+/* @shell:article === Learn hub + Start here pages === */
 /* ============================================================
    LEARN HUB + START HERE PAGES
    Component styles for /learn/ and /learn/start-here/ (and ES
@@ -3816,6 +3841,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   .start-step + .start-step::before{left:38px}
 }
 
+/* @shell:core === /system/ colophon page (small, kept in core) === */
 /* ============================================================
    /system/ COLOPHON PAGE
    Shows the stack, design tokens, i18n pipeline, URL restructure
@@ -3893,6 +3919,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 .sys-a11y h3{font-family:var(--font-display);font-size:19px;font-weight:500;letter-spacing:-0.01em;margin:0 0 10px;color:var(--ink)}
 .sys-a11y p{font-size:14.5px;line-height:1.6;color:var(--stone);margin:0}
 
+/* @shell:core === Search modal (Pagefind-backed; on every page) === */
 /* ============================================================
    SEARCH MODAL (Pagefind-backed)
    Keyboard opens via Cmd/Ctrl+K or the nav search button. Modal
@@ -4068,6 +4095,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   .search-modal,.search-modal-inner,.nav-search-btn{transition:none}
 }
 
+/* @shell:article === Research notes (/learn/research/) === */
 /* ============================================================
    RESEARCH NOTES (/learn/research/)
    The internal-summary-of-external-studies layer. Keeps readers
@@ -4085,6 +4113,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 .research-index-uses{font-family:var(--font-body);font-size:12px;color:var(--stone-2);letter-spacing:0.04em}
 .research-index-uses strong{color:var(--teal);font-weight:600}
 
+/* @shell:article === Library topics (/learn/topics/) === */
 /* ============================================================
    LIBRARY TOPICS — /learn/topics/ + /learn/topics/<slug>/
    The Phase 2 aggregation layer. Topics hub is a 6-card grid;
@@ -4267,6 +4296,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   color:var(--teal);
 }
 
+/* @shell:article === Glossary term pages (/glossary/<slug>/) === */
 /* ============================================================
    GLOSSARY TERM PAGES — /glossary/<slug>/
    Generated by scripts/build-library.mjs from the single source
@@ -4380,6 +4410,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   font-family:var(--font-display);font-style:italic;
   color:var(--stone);font-size:13.5px;
 }
+/* @shell:tool === Tool deep-links (.tool-deep-* — bottom of every /tools/* page) === */
 
 /* Tool deep-links — the Phase-3.5 block at the bottom of every
    /tools/* page. Closes the loop from a tool's result back into
@@ -4464,6 +4495,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   font-family:var(--font-body);font-size:13.5px;font-weight:600;
   color:var(--teal);
 }
+/* @shell:article === Resume article — services-aside-cta + see-also + research notes === */
 
 /* /services/ inline secondary CTA — sits between Web Builds and
    Process, breaking the run of "Book a 20-min call" buttons with
@@ -4862,6 +4894,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 .cite-chip:hover{background:var(--white);border-color:var(--teal)}
 .cite-chip svg{width:11px;height:11px}
 
+/* @shell:article === Research-note CTA inside cite drawer === */
 /* ===== Research-note CTA inside a .cite details block =====
    The .cite-body now leads with an internal "Read Don's summary"
    link (new tab) and keeps the external source link below it.
@@ -4883,6 +4916,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 .cite-note-link span{font-size:12px;opacity:0.8}
 .cite-note-link:hover span{opacity:1}
 
+/* @shell:article === Research drawer (inline preview) === */
 /* ============================================================
    RESEARCH DRAWER (inline research-note preview)
    Opened when a reader clicks a .cite-note-link or .link-research
@@ -5023,6 +5057,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   .research-drawer-loading::before{animation:none}
 }
 
+/* @shell:article === Glossary term → research note cross-link === */
 /* ===== Glossary term → research note cross-link =====
    Compact "See the research" line added by scripts/
    wire-glossary-research.mjs after .gloss-term-why on selected
@@ -5068,6 +5103,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   color:var(--teal);border-bottom-color:var(--teal);
 }
 
+/* @shell:article === "Recently added" rail (under glossary hero) === */
 /* ===== "Recently added" rail (under glossary hero) =====
  * Surfaces newest terms to returning readers; populated by
  * scripts/inject-glossary-recent.mjs from data/glossary-added.json.
@@ -5126,6 +5162,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   font-size:13px;line-height:1.45;color:var(--ink-soft);
 }
 
+/* @shell:article === Glossary index "▶ 90s explainer" chip === */
 /* ===== Glossary index "▶ 90s explainer" chip =====
  * Variant of .gloss-tag (defined inline on glossary/index.html) used
  * on the five flagship-term cards. Sits inside .gloss-tags next to
@@ -5147,6 +5184,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   margin-right:1px;
 }
 
+/* @shell:article === Glossary explainer (90-second narrated diagram) === */
 /* ===== Glossary explainer (90-second narrated diagram) =====
  * Inline-SVG explainer for the five flagship glossary terms (menu
  * engineering, prime cost, plate cost, contribution margin, aspect
@@ -5413,6 +5451,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   .term-explainer__captions li.is-active{font-size:12pt}
 }
 
+/* @shell:article === Inline glossary popover === */
 /* ===== Inline glossary popover =====
  * Hover/focus tooltip rendered by site.js when a reader interacts with
  * an in-article autolink (a[data-glossary-blurb]). Single shared popover
@@ -5480,6 +5519,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   .glossary-popover{display:none !important}
 }
 
+/* @shell:article === Print view for glossary section landing pages === */
 /* ===== Print view for glossary section landing pages =====
  * Activates only on /glossary/<section>/ pages. Strips site chrome
  * (nav, footer, CTAs, the print button itself) and reflows the
@@ -5536,6 +5576,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
     margin-top:2pt;
   }
 }
+/* @shell:core === Cloudflare Turnstile widget (reservation min-height) === */
 
 /* ============ Cloudflare Turnstile widget (Phase 3B) ============
    Reserve the widget's render height so layout doesn't shift when
@@ -5549,6 +5590,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   min-height: 65px;
 }
 
+/* @shell:core === Workshop save banner (multi-context, kept in core) === */
 /* ============ Workshop (Sprint 3 — cohesion) ============
    /workbench/ + /es/workbench/ saved-items page. Shares the
    global frame (.nav + <footer>) with every other page so the
@@ -5600,6 +5642,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   .wsh-item{grid-template-columns:1fr}
   .wsh-item-actions{justify-content:flex-end}
 }
+/* @shell:tool === Tool states (loading / error / empty) === */
 
 /* ============ Tool states (Sprint 5 — cohesion) ============
    Shared loading + error patterns for tool result regions. Every
@@ -5646,6 +5689,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 .tool-error-body{font-size:14.5px;line-height:1.55;color:var(--ink-soft);margin:0}
 .tool-error-meta{margin-top:12px;font-size:12.5px;color:var(--stone);font-variant-numeric:tabular-nums}
 
+/* @shell:article === Editorial callouts === */
 /* ============ Editorial callouts (Sprint 10 — cohesion) ============
    .callout--field is the "Field note from the kitchen" — a per-
    glossary-term italic aside that adds Don's operator anecdote
@@ -5729,6 +5773,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 .field-notes-rail__article:hover{border-bottom-color:var(--teal);color:var(--teal)}
 .field-notes-rail__more{text-align:center;margin:28px 0 0}
 .field-notes-rail__more a{color:var(--teal);font-weight:500;text-decoration:none;border-bottom:1px solid currentColor}
+/* @shell:tool === Learn-back (in tool result region) === */
 
 /* ============ Learn-back (Sprint 12 — cohesion) ============
    A thin, prose-shaped row that sits inside a tool's result region
@@ -5748,6 +5793,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 .learn-back-body a{color:var(--teal);font-weight:500;border-bottom:1px solid currentColor;text-decoration:none;transition:color var(--t-fast) var(--ease)}
 .learn-back-body a:hover,.learn-back-body a:focus-visible{color:var(--teal-dark)}
 
+/* @shell:article === Post-end Workshop CTA === */
 /* ============ Post-end Workshop CTA (Sprint 13 — cohesion) ============
    The "Workshop next step" card at the close of every blog post.
    Sits between .post-end-mark and the see-also block — the moment
@@ -5764,6 +5810,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 .post-end-cta .btn-primary{background:var(--teal);color:var(--cream)}
 .post-end-cta .btn-primary:hover{background:var(--teal-dark)}
 
+/* @shell:core === Workshop rationale === */
 /* ============ Workshop rationale (Sprint 14 — cohesion) ============
    A small editorial block on /tools/, /glossary/, and a few other
    pages that explains the Workshop to anonymous visitors. The two
@@ -5780,6 +5827,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 .workshop-rationale-cta .js-nav-signin,.workshop-rationale-cta .js-nav-workshop{color:var(--teal);font-weight:600;text-decoration:none;border-bottom:1px solid currentColor;transition:color var(--t-fast) var(--ease)}
 .workshop-rationale-cta .js-nav-signin:hover,.workshop-rationale-cta .js-nav-workshop:hover{color:var(--teal-dark)}
 
+/* @shell:core === The Window (/window/ — kept in core to avoid a 4th shell) === */
 /* ============ THE WINDOW (Phase W.3) ============
    Full-page editorial canvas at /window/ and /es/window/. Suppresses
    the standard nav via body.window-canvas. The muntin hairline at
@@ -5897,6 +5945,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .window-signin a{color:var(--teal);font-weight:500;text-decoration:none;border-bottom:1px solid currentColor}
 .window-signin strong{color:var(--ink)}
 
+/* @shell:core === Window composer (Phase-2 redesign) === */
 /* ============ WINDOW COMPOSER — Phase-2 redesign ============
    On-ramp chips moved above the form, surface productized offers
    with prices. Optional context grid (Name / Restaurant / Site)
@@ -5929,6 +5978,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
   .window-composer__alt-row{gap:6px;flex-direction:column;align-items:center}
   .window-composer__alt-row li + li::before{display:none}
 }
+/* @shell:core === ADMIN /admin/window/ (kept in core; admin is auth-gated noindex) === */
 
 /* ============ ADMIN /admin/window/ (Phase W.3) ============ */
 .admin-window{max-width:760px;margin:0 auto;padding:32px 16px}
@@ -6017,6 +6067,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .tool-data-promise__links a{color:var(--teal);text-decoration:none;font-weight:600;border-bottom:1px solid color-mix(in srgb, var(--teal) 35%, transparent)}
 .tool-data-promise__links a:hover{border-bottom-color:var(--teal)}
 
+/* @shell:tool === .edu-result — interpretation card under tool output === */
 /* ============ .edu-result — interpretation card under tool output ============
    Every calculator emits a number; this block lives directly under
    the result panel and answers the two questions a small-business
@@ -6056,6 +6107,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 }
 @media print{.edu-result{display:none}}
 
+/* @shell:tool === Statistical disclosure components === */
 /* ============ Statistical disclosure components ============
    Phase 3 — building on .edu-result so calculators can disclose
    uncertainty bands, hard-coded assumptions, and the formula behind
@@ -6099,6 +6151,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 
 @media print{.edu-range,.edu-source,.edu-formula,.edu-caveat{display:none}}
 
+/* @shell:tool === Tool-internal type minimums === */
 /* ============ Tool-internal type minimums ============
    Utility floor for text inside tool result panels, tables, and
    helpers. Tools previously drifted to 10.5–12px in tight grids; the
@@ -6255,6 +6308,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .tool-storefront-rail{font-size:13.5px;color:var(--ink-soft);line-height:1.55;margin:6px 0 0;max-width:680px}
 .tool-storefront-rail a{color:var(--teal);text-decoration:none;border-bottom:1px solid color-mix(in srgb, var(--teal) 35%, transparent)}
 .tool-storefront-rail a:hover{border-bottom-color:var(--teal)}
+/* @shell:core === Newsletter capture (in global footer; on every page) === */
 
 /* Phase G.10 (Growth) — quiet newsletter capture in the global footer.
    Two short lines, one input, one button — no badges, no pop-ups, no
@@ -6277,6 +6331,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .foot-newsletter-form[data-state="ok"] .foot-newsletter-pitch::after{content:" — got it. Check your inbox.";opacity:1;font-style:italic}
 
 
+/* @shell:article === Inline graphics — globalized from gold articles === */
 /* ============ INLINE GRAPHICS — globalized from gold articles ============ */
 /* .recovery-stack: vertical stacked rows with row tints + dark total cap.
    Pattern from blog/five-restaurant-website-changes-recover-one-percent-margin/.
@@ -6338,6 +6393,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .report-decider__item[open]:last-child summary,.photo-aspect-decoder__item[open]:last-child summary{border-bottom:1px solid var(--line)}
 @media(max-width:640px){.report-decider,.photo-aspect-decoder{padding:18px 20px}.report-decider__item summary,.photo-aspect-decoder__item summary{font-size:15.5px}}
 
+/* @shell:core === Touch-device hover hygiene === */
 /* ============================================================
    Touch-device hover hygiene — neutralize sticky :hover effects
    on devices that don't have a hover capability. CSS :hover on
@@ -6376,6 +6432,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
      should not stick on touch. Color/border changes are fine. */
   *:hover { transition-duration: 0ms !important; }
 }
+/* @shell:core === Hero mobile reorder (homepage) === */
 
 /* ============================================================
    Hero mobile reorder — phones first, primary CTA above the fold.
@@ -6400,6 +6457,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
   .hero-grid > div:first-child > .hero-meta-note { order: 8; }
 }
 
+/* @shell:article === KnitRail — "what’s next" component for articles === */
 /* ============================================================
    KnitRail — unified four-lane "what's next" component for
    articles. Replaces the smart-next 3-line CTA with a 4-column
@@ -6474,6 +6532,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
     gap: 14px;
   }
 }
+/* @shell:core === Hero count chips (homepage) === */
 
 /* ============================================================
    Hero count chips — small pill row showing library counts
@@ -6505,6 +6564,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .hero-counts__chip strong {
   color: var(--teal);
 }
+/* @shell:core === Trust strip (homepage) === */
 
 /* ============================================================
    Trust strip — single thin band immediately under flagship
@@ -6531,6 +6591,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .trust-strip__sep {
   color: var(--stone);
 }
+/* @shell:core === Compare cards (homepage) === */
 
 /* ============================================================
    Compare cards — three-column Patchwork / Agency / Muntin
@@ -6616,6 +6677,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
   }
 }
 
+/* @shell:article === Article viz components (.viz-* family) === */
 /* ============ ARTICLE VIZ COMPONENTS ============
    Namespaced .viz-* family for inline article graphics. Tokens-only
    (--cream, --ink, --teal, --rust, --stone, --status-*, --t-*),
@@ -6955,6 +7017,7 @@ table[data-viz-sortable] th[aria-sort="descending"]::after{content:"\2193";color
   .reveal.in .viz-ring__fill{stroke-dashoffset:calc(326.726 * (1 - var(--score,50) / 100))}
 }
 
+/* @shell:core === Window Phase 2/3.6/4/5+ additions (sash/sidelight, attach, now, pulses, admin) === */
 /* ============ THE WINDOW — Phase 2/3.6/4/5+ additions ============
    Sash/sidelight named-pane composer (Phase 2.1), photo+voice attach
    row (Phase 3.2-3.6), now-line widget (Phase 4), site-wide pulse
@@ -7191,6 +7254,7 @@ table[data-viz-sortable] th[aria-sort="descending"]::after{content:"\2193";color
 .admin-callbacks__voice-label{font-size:12px;color:var(--ink-soft);font-style:italic;margin:8px 0 4px}
 .admin-callbacks__voice-label--deleted{color:var(--stone)}
 .admin-callbacks__meta{font-size:12px;color:var(--ink-soft);font-style:italic;margin:8px 0 0}
+/* @shell:core === Phase 1 — design tokens + MuntinUI component shells (.mtn-*) === */
 
 /* ============ Phase 1 tokens (tool-suite upgrade) ============
    Additive tokens that the MuntinUI primitives consume. Existing
@@ -7403,6 +7467,7 @@ table[data-viz-sortable] th[aria-sort="descending"]::after{content:"\2193";color
     transition:none !important;animation:none !important;
   }
 }
+/* @shell:core === Phase 2 — hub tier badge + tool-tier-filter strip === */
 
 /* ============ Phase 2 hub styles (tool-suite upgrade) ============
    Tier badge on each tool card + a JS-enhanced filter strip that
@@ -7456,6 +7521,7 @@ table[data-viz-sortable] th[aria-sort="descending"]::after{content:"\2193";color
 [data-active-tier="deep"]     .tool-card[data-tier]:not([data-tier="deep"]) {
   display:none;
 }
+/* @shell:core === Phase 5 — dark-mode token override (prefers-color-scheme + [data-theme]) === */
 
 /* ============ Phase 5 dark-mode tokens (tool-suite upgrade) ============
    The Phase 1 component primitives all reference --mtn-surface /
@@ -7517,6 +7583,7 @@ table[data-viz-sortable] th[aria-sort="descending"]::after{content:"\2193";color
   --elev-3: 0 4px 8px rgba(0,0,0,.32), 0 24px 48px -12px rgba(0,0,0,.50);
 }
 
+/* @shell:core === Phase 7 — dark-mode toggle button (.theme-toggle) === */
 /* ============ Phase 7 — dark-mode toggle button =============
    Sits in the nav next to lang-switch. Two SVG icons (sun + moon)
    stacked; CSS shows one based on the current [data-theme] state.
@@ -7559,6 +7626,7 @@ table[data-viz-sortable] th[aria-sort="descending"]::after{content:"\2193";color
   .theme-toggle{display:none !important}
 }
 
+/* @shell:core === Phase 4 — next-tool recommendation card (.mtn-next-tool) === */
 /* ============ Phase 4 — next-tool recommendation card =============
    Mounted at the end of a tool's result region by
    MuntinNextTool.render(). Visually quiet so it doesn't compete
@@ -7599,6 +7667,7 @@ table[data-viz-sortable] th[aria-sort="descending"]::after{content:"\2193";color
 .mtn-next-tool__link:hover{background:var(--teal-dark);border-color:var(--teal-dark)}
 .mtn-next-tool__link:focus-visible{outline:none;box-shadow:var(--ring-focus)}
 
+/* @shell:core === Phase G — About portrait frame (real photo overlay) === */
 /* ===== Phase G — About portrait frame (real photo overlay; reused on homepage About teaser + /about/) ===== */
 .about-portrait-frame{position:relative;width:100%;aspect-ratio:4/5;border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--line-dark);background:var(--cream-2)}
 .about-portrait-frame .portrait{position:absolute;inset:0;border:0;border-radius:0;aspect-ratio:auto;width:100%;height:100%}
