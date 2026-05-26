@@ -224,7 +224,7 @@
       const srcNote = card.root.querySelector('.listen-source-note');
       if (srcNote) {
         srcNote.setAttribute('data-source', 'studio');
-        srcNote.textContent = 'Voiced for The Muntin Desk';
+        srcNote.textContent = i18n('audio.byline_studio', 'Voiced for The Muntin Desk');
       }
     }
     function loadPrefs() {
@@ -1387,7 +1387,7 @@
       const note = card.root.querySelector('.listen-source-note');
       if (note) {
         note.setAttribute('data-source', 'studio');
-        note.textContent = 'Voiced for The Muntin Desk';
+        note.textContent = i18n('audio.byline_studio', 'Voiced for The Muntin Desk');
       }
       // Studio mode uses Audio's native rate; remove the voice picker
       const voiceLabel = voiceSelect ? voiceSelect.closest('.listen-select') : null;
@@ -2272,28 +2272,28 @@
           <span class="listen-card-play-dots" aria-hidden="true"><i></i><i></i><i></i></span>
         </button>
         <div class="listen-card-body">
-          <p class="listen-card-kicker"><span>Audio edition</span></p>
-          <h2 class="listen-card-title">Prefer to listen?</h2>
-          <p class="listen-card-sub">Press play and we'll read the whole post aloud — charts and all.</p>
+          <p class="listen-card-kicker"><span>${i18n('audio.kicker', 'Audio edition')}</span></p>
+          <h2 class="listen-card-title">${i18n('audio.headline', 'Prefer to listen?')}</h2>
+          <p class="listen-card-sub">${i18n('audio.sub', "Press play and we'll read the whole post aloud — charts and all.")}</p>
           <div class="listen-resume" hidden>
-            <button type="button" class="listen-resume-chip" aria-label="Resume from saved position">
-              <span>Continue from <strong class="listen-resume-time">0:00</strong></span>
+            <button type="button" class="listen-resume-chip" aria-label="${i18n('audio.resume_chip_aria', 'Resume from saved position')}">
+              <span>${i18n('audio.resume_continue', 'Continue from')} <strong class="listen-resume-time">0:00</strong></span>
               <svg class="listen-resume-arrow" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
             </button>
-            <button type="button" class="listen-resume-dismiss" aria-label="Dismiss">
+            <button type="button" class="listen-resume-dismiss" aria-label="${i18n('audio.dismiss', 'Dismiss')}">
               <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
             </button>
           </div>
-          <button type="button" class="listen-preview" aria-label="Play a 30-second preview">Hear a 30-second preview →</button>
+          <button type="button" class="listen-preview" aria-label="${i18n('audio.preview', 'Play a 30-second preview')}">${i18n('audio.preview', 'Hear a 30-second preview →')}</button>
         </div>
         <div class="listen-card-meta">
-          <strong>${minutes} min</strong><span>hands-free</span>
+          <strong>${minutes} ${i18n('audio.meta_min', 'min')}</strong><span>${i18n('audio.meta_handsfree', 'hands-free')}</span>
           <label class="listen-select listen-language-select" title="Language" style="margin-top:2px" hidden><span class="sr-only">Language</span>
             <select class="listen-language" aria-label="Language"></select>
           </label>
         </div>
         <div class="listen-card-progress" hidden role="progressbar" aria-label="Audio progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><canvas class="listen-card-waveform" aria-hidden="true"></canvas><div class="listen-card-progress-fill"></div><div class="listen-card-progress-ticks"></div></div>
-        <p class="listen-card-chapter"><span class="listen-card-chapter-label">Now reading</span><em></em></p>
+        <p class="listen-card-chapter"><span class="listen-card-chapter-label">${i18n('audio.now_reading', 'Now reading')}</span><em></em></p>
         <div class="listen-card-extras" hidden>
           <div class="listen-card-skips">
             <button type="button" class="listen-iconbtn listen-prev" aria-label="Previous paragraph" disabled>
@@ -2323,11 +2323,11 @@
             <label class="listen-select" title="Reader voice"><span class="sr-only">Reader voice</span>
               <select class="listen-voice" aria-label="Reader voice"></select>
             </label>
-            <button type="button" class="listen-iconbtn listen-share" aria-label="Copy share link at current moment">
+            <button type="button" class="listen-iconbtn listen-share" aria-label="${i18n('audio.share_aria', 'Copy share link at current moment')}">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.72-1.71"/></svg>
             </button>
           </div>
-          <span class="listen-source-note" data-source="browser">Read by your browser</span>
+          <span class="listen-source-note" data-source="browser">${i18n('audio.byline_browser', 'Read by your browser')}</span>
         </div>
       `;
 
