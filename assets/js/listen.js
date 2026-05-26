@@ -161,7 +161,7 @@
       const srcNote = card.root.querySelector('.listen-source-note');
       if (srcNote) {
         srcNote.setAttribute('data-source', 'studio');
-        srcNote.textContent = 'Narrated in-house';
+        srcNote.textContent = 'Voiced for The Muntin Desk';
       }
     }
     function loadPrefs() {
@@ -1181,11 +1181,14 @@
           end:   c.end   || 0,
         }));
       }
-      // Point the source-of-truth note at the branded reader
+      // Point the source-of-truth note at the branded reader. Reads as
+      // a publication byline ("Voiced for The Muntin Desk"), not as a
+      // technical disclosure — the curiosity-driven listener can dig
+      // into how-we-make-these from the settings dialog.
       const note = card.root.querySelector('.listen-source-note');
       if (note) {
         note.setAttribute('data-source', 'studio');
-        note.textContent = 'Narrated in-house';
+        note.textContent = 'Voiced for The Muntin Desk';
       }
       // Studio mode uses Audio's native rate; remove the voice picker
       const voiceLabel = voiceSelect ? voiceSelect.closest('.listen-select') : null;
@@ -1765,7 +1768,7 @@
         <div class="listen-card-meta">
           <strong>${minutes} min</strong><span>hands-free</span>
           <label class="listen-select listen-language-select" title="Language" style="margin-top:2px" hidden><span class="sr-only">Language</span>
-            <select class="listen-language" aria-label="Language" style="padding:4px 24px 4px 10px;font-size:11px;letter-spacing:0.04em"></select>
+            <select class="listen-language" aria-label="Language"></select>
           </label>
         </div>
         <div class="listen-card-progress" hidden role="progressbar" aria-label="Audio progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><canvas class="listen-card-waveform" aria-hidden="true"></canvas><div class="listen-card-progress-fill"></div><div class="listen-card-progress-ticks"></div></div>

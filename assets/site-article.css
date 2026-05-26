@@ -36,7 +36,7 @@
 @media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
 /* (kept for line-count parity with the previous .reveal block) */
 
-/* ===== [article] Listen / audio player (lines 1497-2025) ===== */
+/* ===== [article] Listen / audio player (lines 1497-2030) ===== */
 /* ============ LISTEN / AUDIO PLAYER ============
    Two surfaces share one engine:
    1. .listen-card — the inline "Audio edition" card rendered under the
@@ -49,8 +49,8 @@
    still clickable.
 */
 
-.listen-card{--lc-accent:var(--teal);--lc-accent-dark:var(--teal-dark);--lc-tint:var(--teal-tint);position:relative;display:grid;grid-template-columns:auto 1fr auto;grid-template-areas:"play body meta" "play progress progress" "play chapter chapter" "extras extras extras";align-items:center;gap:14px 20px;width:100%;max-width:640px;margin:28px auto 0;padding:22px 24px;background:linear-gradient(180deg,var(--white) 0%,var(--cream) 100%);border:1px solid var(--line-dark);border-radius:20px;box-shadow:0 1px 0 rgba(255,255,255,0.6) inset,0 18px 40px -24px rgba(20,54,64,0.22);text-align:left}
-.listen-card::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:linear-gradient(160deg,rgba(31,78,91,0.18),rgba(31,78,91,0) 55%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+.listen-card{--lc-accent:var(--teal);--lc-accent-dark:var(--teal-dark);--lc-tint:var(--teal-tint);position:relative;display:grid;grid-template-columns:auto 1fr auto;grid-template-areas:"play body meta" "play progress progress" "play chapter chapter" "extras extras extras";align-items:center;gap:14px 20px;width:100%;max-width:640px;margin:28px auto 0;padding:22px 24px;background:linear-gradient(180deg,var(--white) 0%,var(--cream) 100%);border:1px solid var(--line-dark);border-radius:20px;box-shadow:0 1px 0 rgba(255,255,255,0.6) inset,0 18px 40px -24px rgba(20,22,26,0.22);text-align:left}
+.listen-card::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:linear-gradient(160deg,rgba(42,80,200,0.18),rgba(42,80,200,0) 55%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
 /* Sprint A1: ambient playback tint. ::after sits inside the card's
    own stacking context, below content (z-index:0) but above the
    base white→cream background. Opacity transitions from 0 → 1 as
@@ -66,7 +66,7 @@
   inset:0;
   border-radius:inherit;
   background:
-    radial-gradient(120% 180% at 15% 0%, rgba(31,78,91,0.06), rgba(31,78,91,0.02) 45%, transparent 70%),
+    radial-gradient(120% 180% at 15% 0%, rgba(42,80,200,0.06), rgba(42,80,200,0.02) 45%, transparent 70%),
     radial-gradient(80% 140% at 85% 100%, rgba(184,84,26,0.035), transparent 65%);
   opacity:0;
   transition:opacity 1.2s cubic-bezier(.22,.61,.36,1);
@@ -88,7 +88,7 @@
 }
 .listen-card[hidden]{display:none}
 
-.listen-card-play{grid-area:play;position:relative;width:64px;height:64px;border-radius:50%;border:0;background:var(--lc-accent);color:var(--white);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 10px 24px -10px rgba(31,78,91,0.55),0 2px 0 rgba(255,255,255,0.4) inset;transition:transform var(--t-fast) var(--ease),background-color var(--t-fast) var(--ease),box-shadow var(--t-fast) var(--ease)}
+.listen-card-play{grid-area:play;position:relative;width:64px;height:64px;border-radius:50%;border:0;background:var(--lc-accent);color:var(--white);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 10px 24px -10px rgba(42,80,200,0.55),0 2px 0 rgba(255,255,255,0.4) inset;transition:transform var(--t-fast) var(--ease),background-color var(--t-fast) var(--ease),box-shadow var(--t-fast) var(--ease)}
 .listen-card-play:hover{background:var(--lc-accent-dark);transform:translateY(-1px)}
 .listen-card-play:active{transform:translateY(0)}
 .listen-card-play:focus-visible{outline:2px solid var(--lc-accent);outline-offset:3px}
@@ -168,14 +168,19 @@
 }
 
 .listen-card-body{grid-area:body;min-width:0}
-.listen-card-kicker{font-family:var(--font-body);font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--lc-accent);display:inline-flex;align-items:center;gap:8px;margin:0 0 4px}
-.listen-card-kicker::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--lc-accent);box-shadow:0 0 0 4px rgba(31,78,91,0.12)}
+/* Eyebrow restored to the canonical site-wide contract (--stone, not
+   accent). The 3px teal underline below is the audio surface's muntin
+   motif — a single window-pane sash rather than a card-edge border,
+   so it doesn't collide with .compare-card--featured's 2px teal frame
+   on hub pages that show both. */
+.listen-card-kicker{font-family:var(--font-body);font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--stone);display:inline-flex;align-items:center;gap:8px;margin:0 0 8px;padding-bottom:6px;border-bottom:3px solid var(--teal);align-self:flex-start}
+.listen-card-kicker::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--lc-accent);box-shadow:0 0 0 4px rgba(42,80,200,0.12)}
 /* Sprint A14: soft breathe replaces the hard blink. The dot no
    longer reads like a blinking cursor — opacity drifts to 0.55 and
    the box-shadow aura expands + thins, giving a slow-breath feel
    over 2.2s rather than 1.4s on/off. */
 .listen-card[data-state="playing"] .listen-card-kicker::before{animation:listen-breathe 2.2s var(--ease) infinite}
-.listen-card-title{font-family:var(--font-display);font-weight:500;font-size:20px;line-height:1.2;color:var(--ink);margin:0 0 2px}
+.listen-card-title{font-family:var(--font-display);font-weight:500;font-size:clamp(22px, 1.4vw + 14px, 26px);line-height:1.2;color:var(--ink);margin:0 0 2px}
 .listen-card-sub{font-family:var(--font-body);font-size:13.5px;line-height:1.45;color:var(--stone);margin:0}
 
 .listen-card-meta{grid-area:meta;display:flex;flex-direction:column;align-items:flex-end;gap:6px;font-family:var(--font-body);font-size:12px;color:var(--stone);white-space:nowrap}
@@ -249,7 +254,7 @@
   100% { transform:scaleX(0);   opacity:0;   }
 }
 .listen-card-progress.is-scrubbing .listen-card-progress-fill,.listen-card-progress:hover .listen-card-progress-fill{height:8px}
-.listen-card-progress-fill::after{content:"";position:absolute;right:-6px;top:50%;width:12px;height:12px;border-radius:50%;background:var(--lc-accent);transform:translateY(-50%) scale(0);transition:transform var(--t-fast) var(--ease);box-shadow:0 2px 8px -2px rgba(31,78,91,0.5)}
+.listen-card-progress-fill::after{content:"";position:absolute;right:-6px;top:50%;width:12px;height:12px;border-radius:50%;background:var(--lc-accent);transform:translateY(-50%) scale(0);transition:transform var(--t-fast) var(--ease);box-shadow:0 2px 8px -2px rgba(42,80,200,0.5)}
 .listen-card-progress:hover .listen-card-progress-fill::after,.listen-card-progress.is-scrubbing .listen-card-progress-fill::after{transform:translateY(-50%) scale(1)}
 .listen-card-progress-ticks{position:absolute;left:0;right:0;height:6px;display:flex;pointer-events:none}
 .listen-card-progress.is-scrubbing .listen-card-progress-ticks,.listen-card-progress:hover .listen-card-progress-ticks{height:8px}
@@ -267,8 +272,8 @@
    static and honest. */
 .listen-card[data-state="playing"] .listen-card-progress-ticks span[data-current="true"]{
   transform:scaleY(1.25);
-  background:rgba(31,78,91,0.10);
-  box-shadow:inset 0 0 0 1px rgba(31,78,91,0.16);
+  background:rgba(42,80,200,0.10);
+  box-shadow:inset 0 0 0 1px rgba(42,80,200,0.16);
   border-radius:2px;
 }
 
@@ -286,7 +291,7 @@
    pill selects beside them. Hover-lift (translateY + box-shadow) is
    the same motion the audit tool's chips use. */
 .listen-iconbtn{position:relative;width:36px;height:36px;display:inline-flex;align-items:center;justify-content:center;background:transparent;border:1px solid var(--line-dark);border-radius:12px;color:var(--ink-soft);cursor:pointer;transition:border-color var(--t-fast) var(--ease),color var(--t-fast) var(--ease),background-color var(--t-fast) var(--ease),transform var(--t-fast) var(--ease),box-shadow var(--t-fast) var(--ease)}
-.listen-iconbtn:hover:not(:disabled){border-color:var(--lc-accent);color:var(--lc-accent);background:var(--lc-tint);transform:translateY(-1px);box-shadow:0 4px 10px -4px rgba(31,78,91,0.22)}
+.listen-iconbtn:hover:not(:disabled){border-color:var(--lc-accent);color:var(--lc-accent);background:var(--lc-tint);transform:translateY(-1px);box-shadow:0 4px 10px -4px rgba(42,80,200,0.22)}
 .listen-iconbtn:active:not(:disabled){transform:translateY(0)}
 .listen-iconbtn:disabled{opacity:0.4;cursor:not-allowed}
 .listen-iconbtn svg{width:16px;height:16px}
@@ -309,9 +314,9 @@
 .listen-language-select::before{content:"";position:absolute;left:12px;top:50%;width:14px;height:14px;transform:translateY(-50%);background:currentColor;color:var(--lc-accent);-webkit-mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='10'/><line x1='2' y1='12' x2='22' y2='12'/><path d='M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z'/></svg>") no-repeat center/contain;mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='10'/><line x1='2' y1='12' x2='22' y2='12'/><path d='M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z'/></svg>") no-repeat center/contain;pointer-events:none}
 .listen-select{position:relative}
 .listen-select select{appearance:none;-webkit-appearance:none;background:transparent;border:1px solid var(--line-dark);border-radius:999px;padding:6px 28px 6px 12px;font-family:var(--font-body);font-size:12px;font-weight:600;color:var(--ink-soft);cursor:pointer;transition:border-color var(--t-fast) var(--ease),color var(--t-fast) var(--ease),transform var(--t-fast) var(--ease),box-shadow var(--t-fast) var(--ease)}
-.listen-select select:hover,.listen-select select:focus-visible{border-color:var(--lc-accent);color:var(--lc-accent);outline:none;transform:translateY(-1px);box-shadow:0 4px 10px -4px rgba(31,78,91,0.22)}
+.listen-select select:hover,.listen-select select:focus-visible{border-color:var(--lc-accent);color:var(--lc-accent);outline:none;transform:translateY(-1px);box-shadow:0 4px 10px -4px rgba(42,80,200,0.22)}
 .listen-select::after{content:"";position:absolute;right:10px;top:50%;width:7px;height:7px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:translateY(-70%) rotate(45deg);color:var(--stone);pointer-events:none}
-.listen-source-note{font-family:var(--font-body);font-size:11px;color:var(--stone-2);letter-spacing:0.02em;display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;background:rgba(31,78,91,0.03);border:1px solid rgba(31,78,91,0.08)}
+.listen-source-note{font-family:var(--font-body);font-size:11px;color:var(--stone-2);letter-spacing:0.02em;display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;background:rgba(42,80,200,0.03);border:1px solid rgba(42,80,200,0.08)}
 .listen-source-note[data-source="studio"]{color:var(--lc-accent)}
 .listen-source-note[data-source="studio"]::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
 
@@ -320,7 +325,7 @@
   .listen-card-meta{grid-area:meta;align-items:flex-start;flex-direction:row;gap:8px;font-size:11.5px;padding-top:6px;margin-top:2px;border-top:1px dashed var(--line)}
   .listen-card-meta strong{margin-right:0}
   .listen-card-play{width:56px;height:56px}
-  .listen-card-title{font-size:18px}
+  .listen-card-title{font-size:20px}
   .listen-card-extras{justify-content:flex-start}
 }
 
@@ -351,8 +356,8 @@
 .listen-dock::before{
   content:"";position:absolute;inset:0;
   border-radius:inherit;
-  background:radial-gradient(120% 100% at 30% 0%, rgba(31,78,91,0.32) 0%, rgba(31,78,91,0.14) 48%, rgba(31,78,91,0) 72%),
-             linear-gradient(180deg, rgba(31,78,91,0.20) 0%, rgba(14,16,20,0.0) 100%);
+  background:radial-gradient(120% 100% at 30% 0%, rgba(42,80,200,0.32) 0%, rgba(42,80,200,0.14) 48%, rgba(42,80,200,0) 72%),
+             linear-gradient(180deg, rgba(42,80,200,0.20) 0%, rgba(14,16,20,0.0) 100%);
   opacity:0;
   transition:opacity 800ms var(--ease-out);
   pointer-events:none;
@@ -363,8 +368,8 @@
 .listen-dock[data-state="playing"]{
   box-shadow:0 28px 56px -18px rgba(0,0,0,0.6),
              0 1px 0 rgba(255,255,255,0.06) inset,
-             0 0 0 1px rgba(31,78,91,0.25),
-             0 0 28px -6px rgba(31,78,91,0.5);
+             0 0 0 1px rgba(42,80,200,0.25),
+             0 0 28px -6px rgba(42,80,200,0.5);
 }
 
 .listen-dock-play{grid-area:play;width:44px;height:44px;border-radius:50%;border:0;background:var(--white);color:var(--ink);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;flex:none;transition:transform var(--t-fast) var(--ease),background-color var(--t-fast) var(--ease);box-shadow:0 2px 0 rgba(0,0,0,0.12) inset}
@@ -378,7 +383,7 @@
 .listen-dock-meta{grid-area:meta;min-width:0;display:flex;flex-direction:column;gap:2px;line-height:1.25}
 .listen-dock-title{font-weight:600;font-size:13px;color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
 .listen-dock-chapter{font-size:11.5px;color:rgba(255,255,255,0.65);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:6px}
-.listen-dock-chapter::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--teal);flex:none;box-shadow:0 0 0 3px rgba(31,78,91,0.25)}
+.listen-dock-chapter::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--teal);flex:none;box-shadow:0 0 0 3px rgba(42,80,200,0.25)}
 /* Dock dot sits on a near-black glass, so the card's teal-tint aura
    doesn't carry. Keeps the opacity-only breath rhythm at the softer
    2.2s cadence. */
@@ -502,8 +507,8 @@
    thinning, so the "now reading" dot reads as breathing rather than
    flashing. */
 @keyframes listen-breathe{
-  0%,100% { opacity:1;    box-shadow:0 0 0 4px rgba(31,78,91,0.12); }
-  50%     { opacity:0.55; box-shadow:0 0 0 8px rgba(31,78,91,0.05); }
+  0%,100% { opacity:1;    box-shadow:0 0 0 4px rgba(42,80,200,0.12); }
+  50%     { opacity:0.55; box-shadow:0 0 0 8px rgba(42,80,200,0.05); }
 }
 /* Sprint A4: chapter-label fade-slide. Runs for 360ms on every chunk
    boundary (triggered from JS by removing + re-adding the class after
@@ -535,7 +540,7 @@
 .article-figure.is-reading.is-reading-callout{background:transparent;box-shadow:0 0 0 2px var(--teal),0 0 0 8px var(--teal-tint)}
 .article-figure.is-reading.is-reading-callout .funnel,.article-figure.is-reading.is-reading-callout figcaption{background:transparent;padding:0}
 @keyframes listen-callout-pulse{0%,100%{box-shadow:0 0 0 2px var(--teal),0 0 0 8px var(--teal-tint)}
-50%{box-shadow:0 0 0 2px var(--teal),0 0 0 14px rgba(31,78,91,0.08)}
+50%{box-shadow:0 0 0 2px var(--teal),0 0 0 14px rgba(42,80,200,0.08)}
 }
 @media (prefers-reduced-motion:reduce){.listen-btn[data-state="playing"] svg path,.listen-card-play::after,.listen-card-play::before,.listen-card-play-aura,.listen-card[data-state="playing"] .listen-card-kicker::before,.listen-card[data-state="playing"] .listen-card-progress-fill,.listen-dock[data-state="playing"] .listen-dock-progress-fill,.listen-card-chapter em.lc-chapter-in,.listen-dock-chapter.lc-chapter-in,.listen-card[data-state="finished"] .listen-card-play .icon-finished,.listen-card[data-state="finished"] .listen-card-progress-fill{animation:none}
 /* Sprint A11: keep the dots visible (so the loading affordance stays
@@ -567,7 +572,7 @@
 }
 
 
-/* ===== [article] Glossary scannability (lines 2920-3074) ===== */
+/* ===== [article] Glossary scannability (lines 2925-3079) ===== */
 
 /* ---------- Glossary scannability (Phase 4 cohesion pass) ----------
    Adds two new chip rows to the existing .gloss-filterbar:
@@ -724,7 +729,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   .glossary-knit__grid{ grid-template-columns:1fr; }
 }
 
-/* ===== [article] "Recently added" strip on /learn/ (lines 3075-3149) ===== */
+/* ===== [article] "Recently added" strip on /learn/ (lines 3080-3154) ===== */
 
 /* ---------- "Recently added" strip on /learn/ (Phase 5) -----------
    Three-card row of the newest items across tools + articles, sorted
@@ -801,7 +806,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 @media (max-width:900px){ .recently-added__grid{ grid-template-columns:repeat(2,1fr); } }
 @media (max-width:560px){ .recently-added__grid{ grid-template-columns:1fr; } }
 
-/* ===== [article] Learn hub + Start here pages (lines 3469-3571) ===== */
+/* ===== [article] Learn hub + Start here pages (lines 3474-3576) ===== */
 
 /* ============================================================
    LEARN HUB + START HERE PAGES
@@ -906,7 +911,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   .start-step + .start-step::before{left:38px}
 }
 
-/* ===== [article] Research notes (/learn/research/) (lines 3824-3840) ===== */
+/* ===== [article] Research notes (/learn/research/) (lines 3829-3845) ===== */
 
 /* ============================================================
    RESEARCH NOTES (/learn/research/)
@@ -925,7 +930,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 .research-index-uses{font-family:var(--font-body);font-size:12px;color:var(--stone-2);letter-spacing:0.04em}
 .research-index-uses strong{color:var(--teal);font-weight:600}
 
-/* ===== [article] Library topics (/learn/topics/) (lines 3841-4022) ===== */
+/* ===== [article] Library topics (/learn/topics/) (lines 3846-4027) ===== */
 
 /* ============================================================
    LIBRARY TOPICS — /learn/topics/ + /learn/topics/<slug>/
@@ -1109,7 +1114,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   color:var(--teal);
 }
 
-/* ===== [article] Glossary term pages (/glossary/<slug>/) (lines 4023-4136) ===== */
+/* ===== [article] Glossary term pages (/glossary/<slug>/) (lines 4028-4141) ===== */
 
 /* ============================================================
    GLOSSARY TERM PAGES — /glossary/<slug>/
@@ -1225,7 +1230,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   color:var(--stone);font-size:13.5px;
 }
 
-/* ===== [article] Resume article — services-aside-cta + see-also + research notes (lines 4221-4617) ===== */
+/* ===== [article] Resume article — services-aside-cta + see-also + research notes (lines 4226-4622) ===== */
 
 /* /services/ inline secondary CTA — sits between Web Builds and
    Process, breaking the run of "Book a 20-min call" buttons with
@@ -1624,7 +1629,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 .cite-chip:hover{background:var(--white);border-color:var(--teal)}
 .cite-chip svg{width:11px;height:11px}
 
-/* ===== [article] Research-note CTA inside cite drawer (lines 4618-4638) ===== */
+/* ===== [article] Research-note CTA inside cite drawer (lines 4623-4643) ===== */
 
 /* ===== Research-note CTA inside a .cite details block =====
    The .cite-body now leads with an internal "Read Don's summary"
@@ -1647,7 +1652,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 .cite-note-link span{font-size:12px;opacity:0.8}
 .cite-note-link:hover span{opacity:1}
 
-/* ===== [article] Research drawer (inline preview) (lines 4639-4778) ===== */
+/* ===== [article] Research drawer (inline preview) (lines 4644-4783) ===== */
 
 /* ============================================================
    RESEARCH DRAWER (inline research-note preview)
@@ -1789,7 +1794,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   .research-drawer-loading::before{animation:none}
 }
 
-/* ===== [article] Glossary term → research note cross-link (lines 4779-4823) ===== */
+/* ===== [article] Glossary term → research note cross-link (lines 4784-4828) ===== */
 
 /* ===== Glossary term → research note cross-link =====
    Compact "See the research" line added by scripts/
@@ -1836,7 +1841,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   color:var(--teal);border-bottom-color:var(--teal);
 }
 
-/* ===== [article] "Recently added" rail (under glossary hero) (lines 4824-4881) ===== */
+/* ===== [article] "Recently added" rail (under glossary hero) (lines 4829-4886) ===== */
 
 /* ===== "Recently added" rail (under glossary hero) =====
  * Surfaces newest terms to returning readers; populated by
@@ -1896,7 +1901,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   font-size:13px;line-height:1.45;color:var(--ink-soft);
 }
 
-/* ===== [article] Glossary index "▶ 90s explainer" chip (lines 4882-4902) ===== */
+/* ===== [article] Glossary index "▶ 90s explainer" chip (lines 4887-4907) ===== */
 
 /* ===== Glossary index "▶ 90s explainer" chip =====
  * Variant of .gloss-tag (defined inline on glossary/index.html) used
@@ -1919,7 +1924,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   margin-right:1px;
 }
 
-/* ===== [article] Glossary explainer (90-second narrated diagram) (lines 4903-5168) ===== */
+/* ===== [article] Glossary explainer (90-second narrated diagram) (lines 4908-5173) ===== */
 
 /* ===== Glossary explainer (90-second narrated diagram) =====
  * Inline-SVG explainer for the five flagship glossary terms (menu
@@ -2187,7 +2192,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   .term-explainer__captions li.is-active{font-size:12pt}
 }
 
-/* ===== [article] Inline glossary popover (lines 5169-5235) ===== */
+/* ===== [article] Inline glossary popover (lines 5174-5240) ===== */
 
 /* ===== Inline glossary popover =====
  * Hover/focus tooltip rendered by site.js when a reader interacts with
@@ -2256,7 +2261,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   .glossary-popover{display:none !important}
 }
 
-/* ===== [article] Print view for glossary section landing pages (lines 5236-5292) ===== */
+/* ===== [article] Print view for glossary section landing pages (lines 5241-5297) ===== */
 
 /* ===== Print view for glossary section landing pages =====
  * Activates only on /glossary/<section>/ pages. Strips site chrome
@@ -2315,7 +2320,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   }
 }
 
-/* ===== [article] Editorial callouts (lines 5402-5485) ===== */
+/* ===== [article] Editorial callouts (lines 5407-5490) ===== */
 
 /* ============ Editorial callouts (Sprint 10 — cohesion) ============
    .callout--field is the "Field note from the kitchen" — a per-
@@ -2401,7 +2406,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 .field-notes-rail__more{text-align:center;margin:28px 0 0}
 .field-notes-rail__more a{color:var(--teal);font-weight:500;text-decoration:none;border-bottom:1px solid currentColor}
 
-/* ===== [article] Post-end Workshop CTA (lines 5504-5519) ===== */
+/* ===== [article] Post-end Workshop CTA (lines 5509-5524) ===== */
 
 /* ============ Post-end Workshop CTA (Sprint 13 — cohesion) ============
    The "Workshop next step" card at the close of every blog post.
@@ -2419,7 +2424,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 .post-end-cta .btn-primary{background:var(--teal);color:var(--cream)}
 .post-end-cta .btn-primary:hover{background:var(--teal-dark)}
 
-/* ===== [article] Inline graphics — globalized from gold articles (lines 6033-6093) ===== */
+/* ===== [article] Inline graphics — globalized from gold articles (lines 6038-6098) ===== */
 
 /* ============ INLINE GRAPHICS — globalized from gold articles ============ */
 /* .recovery-stack: vertical stacked rows with row tints + dark total cap.
@@ -2482,7 +2487,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 .report-decider__item[open]:last-child summary,.photo-aspect-decoder__item[open]:last-child summary{border-bottom:1px solid var(--line)}
 @media(max-width:640px){.report-decider,.photo-aspect-decoder{padding:18px 20px}.report-decider__item summary,.photo-aspect-decoder__item summary{font-size:15.5px}}
 
-/* ===== [article] KnitRail — "what’s next" component for articles (lines 6156-6230) ===== */
+/* ===== [article] KnitRail — "what’s next" component for articles (lines 6161-6235) ===== */
 
 /* ============================================================
    KnitRail — unified four-lane "what's next" component for
@@ -2559,7 +2564,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   }
 }
 
-/* ===== [article] Article viz components (.viz-* family) (lines 6372-6710) ===== */
+/* ===== [article] Article viz components (.viz-* family) (lines 6377-6715) ===== */
 
 /* ============ ARTICLE VIZ COMPONENTS ============
    Namespaced .viz-* family for inline article graphics. Tokens-only

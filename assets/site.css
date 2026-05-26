@@ -1506,8 +1506,8 @@ br.br-lg{display:none}
    still clickable.
 */
 
-.listen-card{--lc-accent:var(--teal);--lc-accent-dark:var(--teal-dark);--lc-tint:var(--teal-tint);position:relative;display:grid;grid-template-columns:auto 1fr auto;grid-template-areas:"play body meta" "play progress progress" "play chapter chapter" "extras extras extras";align-items:center;gap:14px 20px;width:100%;max-width:640px;margin:28px auto 0;padding:22px 24px;background:linear-gradient(180deg,var(--white) 0%,var(--cream) 100%);border:1px solid var(--line-dark);border-radius:20px;box-shadow:0 1px 0 rgba(255,255,255,0.6) inset,0 18px 40px -24px rgba(20,54,64,0.22);text-align:left}
-.listen-card::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:linear-gradient(160deg,rgba(31,78,91,0.18),rgba(31,78,91,0) 55%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+.listen-card{--lc-accent:var(--teal);--lc-accent-dark:var(--teal-dark);--lc-tint:var(--teal-tint);position:relative;display:grid;grid-template-columns:auto 1fr auto;grid-template-areas:"play body meta" "play progress progress" "play chapter chapter" "extras extras extras";align-items:center;gap:14px 20px;width:100%;max-width:640px;margin:28px auto 0;padding:22px 24px;background:linear-gradient(180deg,var(--white) 0%,var(--cream) 100%);border:1px solid var(--line-dark);border-radius:20px;box-shadow:0 1px 0 rgba(255,255,255,0.6) inset,0 18px 40px -24px rgba(20,22,26,0.22);text-align:left}
+.listen-card::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:linear-gradient(160deg,rgba(42,80,200,0.18),rgba(42,80,200,0) 55%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
 /* Sprint A1: ambient playback tint. ::after sits inside the card's
    own stacking context, below content (z-index:0) but above the
    base white→cream background. Opacity transitions from 0 → 1 as
@@ -1523,7 +1523,7 @@ br.br-lg{display:none}
   inset:0;
   border-radius:inherit;
   background:
-    radial-gradient(120% 180% at 15% 0%, rgba(31,78,91,0.06), rgba(31,78,91,0.02) 45%, transparent 70%),
+    radial-gradient(120% 180% at 15% 0%, rgba(42,80,200,0.06), rgba(42,80,200,0.02) 45%, transparent 70%),
     radial-gradient(80% 140% at 85% 100%, rgba(184,84,26,0.035), transparent 65%);
   opacity:0;
   transition:opacity 1.2s cubic-bezier(.22,.61,.36,1);
@@ -1545,7 +1545,7 @@ br.br-lg{display:none}
 }
 .listen-card[hidden]{display:none}
 
-.listen-card-play{grid-area:play;position:relative;width:64px;height:64px;border-radius:50%;border:0;background:var(--lc-accent);color:var(--white);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 10px 24px -10px rgba(31,78,91,0.55),0 2px 0 rgba(255,255,255,0.4) inset;transition:transform var(--t-fast) var(--ease),background-color var(--t-fast) var(--ease),box-shadow var(--t-fast) var(--ease)}
+.listen-card-play{grid-area:play;position:relative;width:64px;height:64px;border-radius:50%;border:0;background:var(--lc-accent);color:var(--white);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 10px 24px -10px rgba(42,80,200,0.55),0 2px 0 rgba(255,255,255,0.4) inset;transition:transform var(--t-fast) var(--ease),background-color var(--t-fast) var(--ease),box-shadow var(--t-fast) var(--ease)}
 .listen-card-play:hover{background:var(--lc-accent-dark);transform:translateY(-1px)}
 .listen-card-play:active{transform:translateY(0)}
 .listen-card-play:focus-visible{outline:2px solid var(--lc-accent);outline-offset:3px}
@@ -1625,14 +1625,19 @@ br.br-lg{display:none}
 }
 
 .listen-card-body{grid-area:body;min-width:0}
-.listen-card-kicker{font-family:var(--font-body);font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--lc-accent);display:inline-flex;align-items:center;gap:8px;margin:0 0 4px}
-.listen-card-kicker::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--lc-accent);box-shadow:0 0 0 4px rgba(31,78,91,0.12)}
+/* Eyebrow restored to the canonical site-wide contract (--stone, not
+   accent). The 3px teal underline below is the audio surface's muntin
+   motif — a single window-pane sash rather than a card-edge border,
+   so it doesn't collide with .compare-card--featured's 2px teal frame
+   on hub pages that show both. */
+.listen-card-kicker{font-family:var(--font-body);font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--stone);display:inline-flex;align-items:center;gap:8px;margin:0 0 8px;padding-bottom:6px;border-bottom:3px solid var(--teal);align-self:flex-start}
+.listen-card-kicker::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--lc-accent);box-shadow:0 0 0 4px rgba(42,80,200,0.12)}
 /* Sprint A14: soft breathe replaces the hard blink. The dot no
    longer reads like a blinking cursor — opacity drifts to 0.55 and
    the box-shadow aura expands + thins, giving a slow-breath feel
    over 2.2s rather than 1.4s on/off. */
 .listen-card[data-state="playing"] .listen-card-kicker::before{animation:listen-breathe 2.2s var(--ease) infinite}
-.listen-card-title{font-family:var(--font-display);font-weight:500;font-size:20px;line-height:1.2;color:var(--ink);margin:0 0 2px}
+.listen-card-title{font-family:var(--font-display);font-weight:500;font-size:clamp(22px, 1.4vw + 14px, 26px);line-height:1.2;color:var(--ink);margin:0 0 2px}
 .listen-card-sub{font-family:var(--font-body);font-size:13.5px;line-height:1.45;color:var(--stone);margin:0}
 
 .listen-card-meta{grid-area:meta;display:flex;flex-direction:column;align-items:flex-end;gap:6px;font-family:var(--font-body);font-size:12px;color:var(--stone);white-space:nowrap}
@@ -1706,7 +1711,7 @@ br.br-lg{display:none}
   100% { transform:scaleX(0);   opacity:0;   }
 }
 .listen-card-progress.is-scrubbing .listen-card-progress-fill,.listen-card-progress:hover .listen-card-progress-fill{height:8px}
-.listen-card-progress-fill::after{content:"";position:absolute;right:-6px;top:50%;width:12px;height:12px;border-radius:50%;background:var(--lc-accent);transform:translateY(-50%) scale(0);transition:transform var(--t-fast) var(--ease);box-shadow:0 2px 8px -2px rgba(31,78,91,0.5)}
+.listen-card-progress-fill::after{content:"";position:absolute;right:-6px;top:50%;width:12px;height:12px;border-radius:50%;background:var(--lc-accent);transform:translateY(-50%) scale(0);transition:transform var(--t-fast) var(--ease);box-shadow:0 2px 8px -2px rgba(42,80,200,0.5)}
 .listen-card-progress:hover .listen-card-progress-fill::after,.listen-card-progress.is-scrubbing .listen-card-progress-fill::after{transform:translateY(-50%) scale(1)}
 .listen-card-progress-ticks{position:absolute;left:0;right:0;height:6px;display:flex;pointer-events:none}
 .listen-card-progress.is-scrubbing .listen-card-progress-ticks,.listen-card-progress:hover .listen-card-progress-ticks{height:8px}
@@ -1724,8 +1729,8 @@ br.br-lg{display:none}
    static and honest. */
 .listen-card[data-state="playing"] .listen-card-progress-ticks span[data-current="true"]{
   transform:scaleY(1.25);
-  background:rgba(31,78,91,0.10);
-  box-shadow:inset 0 0 0 1px rgba(31,78,91,0.16);
+  background:rgba(42,80,200,0.10);
+  box-shadow:inset 0 0 0 1px rgba(42,80,200,0.16);
   border-radius:2px;
 }
 
@@ -1743,7 +1748,7 @@ br.br-lg{display:none}
    pill selects beside them. Hover-lift (translateY + box-shadow) is
    the same motion the audit tool's chips use. */
 .listen-iconbtn{position:relative;width:36px;height:36px;display:inline-flex;align-items:center;justify-content:center;background:transparent;border:1px solid var(--line-dark);border-radius:12px;color:var(--ink-soft);cursor:pointer;transition:border-color var(--t-fast) var(--ease),color var(--t-fast) var(--ease),background-color var(--t-fast) var(--ease),transform var(--t-fast) var(--ease),box-shadow var(--t-fast) var(--ease)}
-.listen-iconbtn:hover:not(:disabled){border-color:var(--lc-accent);color:var(--lc-accent);background:var(--lc-tint);transform:translateY(-1px);box-shadow:0 4px 10px -4px rgba(31,78,91,0.22)}
+.listen-iconbtn:hover:not(:disabled){border-color:var(--lc-accent);color:var(--lc-accent);background:var(--lc-tint);transform:translateY(-1px);box-shadow:0 4px 10px -4px rgba(42,80,200,0.22)}
 .listen-iconbtn:active:not(:disabled){transform:translateY(0)}
 .listen-iconbtn:disabled{opacity:0.4;cursor:not-allowed}
 .listen-iconbtn svg{width:16px;height:16px}
@@ -1766,9 +1771,9 @@ br.br-lg{display:none}
 .listen-language-select::before{content:"";position:absolute;left:12px;top:50%;width:14px;height:14px;transform:translateY(-50%);background:currentColor;color:var(--lc-accent);-webkit-mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='10'/><line x1='2' y1='12' x2='22' y2='12'/><path d='M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z'/></svg>") no-repeat center/contain;mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='10'/><line x1='2' y1='12' x2='22' y2='12'/><path d='M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z'/></svg>") no-repeat center/contain;pointer-events:none}
 .listen-select{position:relative}
 .listen-select select{appearance:none;-webkit-appearance:none;background:transparent;border:1px solid var(--line-dark);border-radius:999px;padding:6px 28px 6px 12px;font-family:var(--font-body);font-size:12px;font-weight:600;color:var(--ink-soft);cursor:pointer;transition:border-color var(--t-fast) var(--ease),color var(--t-fast) var(--ease),transform var(--t-fast) var(--ease),box-shadow var(--t-fast) var(--ease)}
-.listen-select select:hover,.listen-select select:focus-visible{border-color:var(--lc-accent);color:var(--lc-accent);outline:none;transform:translateY(-1px);box-shadow:0 4px 10px -4px rgba(31,78,91,0.22)}
+.listen-select select:hover,.listen-select select:focus-visible{border-color:var(--lc-accent);color:var(--lc-accent);outline:none;transform:translateY(-1px);box-shadow:0 4px 10px -4px rgba(42,80,200,0.22)}
 .listen-select::after{content:"";position:absolute;right:10px;top:50%;width:7px;height:7px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:translateY(-70%) rotate(45deg);color:var(--stone);pointer-events:none}
-.listen-source-note{font-family:var(--font-body);font-size:11px;color:var(--stone-2);letter-spacing:0.02em;display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;background:rgba(31,78,91,0.03);border:1px solid rgba(31,78,91,0.08)}
+.listen-source-note{font-family:var(--font-body);font-size:11px;color:var(--stone-2);letter-spacing:0.02em;display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;background:rgba(42,80,200,0.03);border:1px solid rgba(42,80,200,0.08)}
 .listen-source-note[data-source="studio"]{color:var(--lc-accent)}
 .listen-source-note[data-source="studio"]::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
 
@@ -1777,7 +1782,7 @@ br.br-lg{display:none}
   .listen-card-meta{grid-area:meta;align-items:flex-start;flex-direction:row;gap:8px;font-size:11.5px;padding-top:6px;margin-top:2px;border-top:1px dashed var(--line)}
   .listen-card-meta strong{margin-right:0}
   .listen-card-play{width:56px;height:56px}
-  .listen-card-title{font-size:18px}
+  .listen-card-title{font-size:20px}
   .listen-card-extras{justify-content:flex-start}
 }
 
@@ -1808,8 +1813,8 @@ br.br-lg{display:none}
 .listen-dock::before{
   content:"";position:absolute;inset:0;
   border-radius:inherit;
-  background:radial-gradient(120% 100% at 30% 0%, rgba(31,78,91,0.32) 0%, rgba(31,78,91,0.14) 48%, rgba(31,78,91,0) 72%),
-             linear-gradient(180deg, rgba(31,78,91,0.20) 0%, rgba(14,16,20,0.0) 100%);
+  background:radial-gradient(120% 100% at 30% 0%, rgba(42,80,200,0.32) 0%, rgba(42,80,200,0.14) 48%, rgba(42,80,200,0) 72%),
+             linear-gradient(180deg, rgba(42,80,200,0.20) 0%, rgba(14,16,20,0.0) 100%);
   opacity:0;
   transition:opacity 800ms var(--ease-out);
   pointer-events:none;
@@ -1820,8 +1825,8 @@ br.br-lg{display:none}
 .listen-dock[data-state="playing"]{
   box-shadow:0 28px 56px -18px rgba(0,0,0,0.6),
              0 1px 0 rgba(255,255,255,0.06) inset,
-             0 0 0 1px rgba(31,78,91,0.25),
-             0 0 28px -6px rgba(31,78,91,0.5);
+             0 0 0 1px rgba(42,80,200,0.25),
+             0 0 28px -6px rgba(42,80,200,0.5);
 }
 
 .listen-dock-play{grid-area:play;width:44px;height:44px;border-radius:50%;border:0;background:var(--white);color:var(--ink);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;flex:none;transition:transform var(--t-fast) var(--ease),background-color var(--t-fast) var(--ease);box-shadow:0 2px 0 rgba(0,0,0,0.12) inset}
@@ -1835,7 +1840,7 @@ br.br-lg{display:none}
 .listen-dock-meta{grid-area:meta;min-width:0;display:flex;flex-direction:column;gap:2px;line-height:1.25}
 .listen-dock-title{font-weight:600;font-size:13px;color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
 .listen-dock-chapter{font-size:11.5px;color:rgba(255,255,255,0.65);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:6px}
-.listen-dock-chapter::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--teal);flex:none;box-shadow:0 0 0 3px rgba(31,78,91,0.25)}
+.listen-dock-chapter::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--teal);flex:none;box-shadow:0 0 0 3px rgba(42,80,200,0.25)}
 /* Dock dot sits on a near-black glass, so the card's teal-tint aura
    doesn't carry. Keeps the opacity-only breath rhythm at the softer
    2.2s cadence. */
@@ -1959,8 +1964,8 @@ br.br-lg{display:none}
    thinning, so the "now reading" dot reads as breathing rather than
    flashing. */
 @keyframes listen-breathe{
-  0%,100% { opacity:1;    box-shadow:0 0 0 4px rgba(31,78,91,0.12); }
-  50%     { opacity:0.55; box-shadow:0 0 0 8px rgba(31,78,91,0.05); }
+  0%,100% { opacity:1;    box-shadow:0 0 0 4px rgba(42,80,200,0.12); }
+  50%     { opacity:0.55; box-shadow:0 0 0 8px rgba(42,80,200,0.05); }
 }
 /* Sprint A4: chapter-label fade-slide. Runs for 360ms on every chunk
    boundary (triggered from JS by removing + re-adding the class after
@@ -1992,7 +1997,7 @@ br.br-lg{display:none}
 .article-figure.is-reading.is-reading-callout{background:transparent;box-shadow:0 0 0 2px var(--teal),0 0 0 8px var(--teal-tint)}
 .article-figure.is-reading.is-reading-callout .funnel,.article-figure.is-reading.is-reading-callout figcaption{background:transparent;padding:0}
 @keyframes listen-callout-pulse{0%,100%{box-shadow:0 0 0 2px var(--teal),0 0 0 8px var(--teal-tint)}
-50%{box-shadow:0 0 0 2px var(--teal),0 0 0 14px rgba(31,78,91,0.08)}
+50%{box-shadow:0 0 0 2px var(--teal),0 0 0 14px rgba(42,80,200,0.08)}
 }
 @media (prefers-reduced-motion:reduce){.listen-btn[data-state="playing"] svg path,.listen-card-play::after,.listen-card-play::before,.listen-card-play-aura,.listen-card[data-state="playing"] .listen-card-kicker::before,.listen-card[data-state="playing"] .listen-card-progress-fill,.listen-dock[data-state="playing"] .listen-dock-progress-fill,.listen-card-chapter em.lc-chapter-in,.listen-dock-chapter.lc-chapter-in,.listen-card[data-state="finished"] .listen-card-play .icon-finished,.listen-card[data-state="finished"] .listen-card-progress-fill{animation:none}
 /* Sprint A11: keep the dots visible (so the loading affordance stays
