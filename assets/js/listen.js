@@ -1824,10 +1824,15 @@
       } catch (_) {}
       // Display the moment as mm:ss to match what audio players show,
       // not the URL-param syntax — operators see "Link copied at 4:12",
-      // not "Link copied at 4m12s".
+      // not "Link copied at 4m12s". The English template includes the
+      // mm:ss inline; the i18n key uses {time} as a placeholder so
+      // translations can reorder around it naturally.
       const mm = Math.floor(t / 60);
       const ss = Math.floor(t % 60).toString().padStart(2, '0');
-      showShareToast(copied ? `Link copied at ${mm}:${ss}` : 'Copy failed — clipboard blocked');
+      const timestamp = `${mm}:${ss}`;
+      const okTemplate = i18n('audio.share_toast_ok', 'Link copied at {time}');
+      const failMsg    = i18n('audio.share_toast_fail', 'Copy failed — clipboard blocked');
+      showShareToast(copied ? okTemplate.replace('{time}', timestamp) : failMsg);
       if (window.plausible) {
         try { window.plausible('Audio: Shared with Timestamp'); } catch (_) {}
       }
@@ -2581,7 +2586,7 @@
         <div class="listen-card-meta">
           <strong>${minutes} ${i18n('audio.meta_min', 'min')}</strong><span>${i18n('audio.meta_handsfree', 'hands-free')}</span>
           <label class="listen-select listen-language-select" title="Language" style="margin-top:2px" hidden><span class="sr-only">Language</span>
-            <select class="listen-language" aria-label="Language"></select>
+            <select class="listen-language" aria-label="${i18n('audio.language_label', 'Language')}"></select>
           </label>
           <button type="button" class="listen-iconbtn listen-help" aria-label="${i18n('audio.help_aria', 'Show keyboard shortcuts and player info')}">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 4.6 1.35c-.6.78-1.6 1.05-1.6 2.15"/><circle cx="12" cy="17" r="0.5" fill="currentColor"/></svg>
