@@ -149,6 +149,58 @@
     const prefs = loadPrefs();
     if (rateSelect && prefs.rate) rateSelect.value = String(prefs.rate);
 
+    // Phase 5 — "Continue where you left off". Debounced playhead save
+    // into prefs.lastPosition[slug] with a savedAt timestamp. The chip
+    // is offered on next visit if the position is more than 30s in,
+    // less than 95% of duration, and saved within 14 days. Cache is
+    // trimmed to the most recent 50 articles so it doesn't bloat
+    // localStorage on a heavy listener.
+    const RESUME_TTL_MS = 14 * 24 * 60 * 60 * 1000;  // 14 days
+    const RESUME_MIN_SECS = 30;
+    const RESUME_MAX_PCT = 0.95;
+    const RESUME_MAX_ENTRIES = 50;
+    const articleSlug = (() => {
+      try {
+        const m = location.pathname.match(/\/(?:blog|learn|glossary)\/([^/]+)\//);
+        return m ? m[1] : location.pathname;
+      } catch (_) { return null; }
+    })();
+    let lastResumeSaveAt = 0;
+    function getResumeRecord() {
+      if (!articleSlug) return null;
+      const map = (prefs && prefs.lastPosition) || null;
+      const rec = map && map[articleSlug];
+      if (!rec || typeof rec.t !== 'number') return null;
+      if (Date.now() - rec.savedAt > RESUME_TTL_MS) return null;
+      return rec;
+    }
+    function saveResume(t, duration) {
+      if (!articleSlug || !t || !duration) return;
+      // Don't save during a preview run — the user isn't committed
+      // and a 25s preview position is noise, not intent.
+      if (previewLimit !== null) return;
+      if (t < RESUME_MIN_SECS) return;
+      if (t > duration * RESUME_MAX_PCT) return;
+      const now = Date.now();
+      if (now - lastResumeSaveAt < 3000) return;  // debounce to ~3s
+      lastResumeSaveAt = now;
+      if (!prefs.lastPosition) prefs.lastPosition = {};
+      prefs.lastPosition[articleSlug] = { t: Math.floor(t), savedAt: now };
+      // Trim oldest entries (sorted by savedAt) if we're over budget.
+      const entries = Object.entries(prefs.lastPosition);
+      if (entries.length > RESUME_MAX_ENTRIES) {
+        entries.sort((a, b) => a[1].savedAt - b[1].savedAt);
+        const remove = entries.slice(0, entries.length - RESUME_MAX_ENTRIES);
+        for (const [k] of remove) delete prefs.lastPosition[k];
+      }
+      savePrefs();
+    }
+    function clearResume() {
+      if (!articleSlug || !prefs.lastPosition) return;
+      delete prefs.lastPosition[articleSlug];
+      savePrefs();
+    }
+
     // If this post will use a pre-rendered MP3, the browser's voice
     // list doesn't apply — the reader is already chosen at render time.
     // Hide the voice picker up-front so users aren't presented with a
@@ -1560,6 +1612,9 @@
       // event loop, no new rAF or audio event listener — the audit
       // explicitly mandated a single-tick architecture.
       tickSentence(t);
+      // Phase 5: persist the playhead for the resume chip on next visit.
+      // Internally debounced to ~3s so we don't pound localStorage.
+      saveResume(t, audioEl.duration || 0);
       if (prevBtn) prevBtn.disabled = currentIndex <= 0;
       if (nextBtn) nextBtn.disabled = currentIndex >= chunks.length - 1;
       updateSkipButtons();
@@ -1643,7 +1698,10 @@
       }
     }
     function toggle() {
-      if      (state === 'idle')    { previewLimit = null; startPlayback(); }
+      // Any tap on the main play button is a commitment signal —
+      // clear the preview cap and dismiss the resume chip so we
+      // play through normally from t=0 (or wherever paused).
+      if (state === 'idle')    { previewLimit = null; hideResumeChip(); startPlayback(); }
       else if (state === 'playing') pausePlayback();
       else if (state === 'paused')  { previewLimit = null; startPlayback(); }
     }
@@ -1714,6 +1772,80 @@
     }
     const shareBtn = card.root.querySelector('.listen-share');
     if (shareBtn) shareBtn.addEventListener('click', shareAtCurrentTime);
+
+    // Phase 5 — resume chip. Render after card is in DOM. The chip
+    // suppresses itself when `?t=` is present in the URL because the
+    // deep link is explicit user intent and wins precedence (audit
+    // finding #5). The chip also auto-dismisses 8 seconds after
+    // mount, or on the first user-initiated play, whichever first.
+    const resumeWrap     = card.root.querySelector('.listen-resume');
+    const resumeChip     = card.root.querySelector('.listen-resume-chip');
+    const resumeTimeEl   = card.root.querySelector('.listen-resume-time');
+    const resumeDismiss  = card.root.querySelector('.listen-resume-dismiss');
+    let resumeAutoDismissTimer = null;
+    let resumeWillSeekTo = null;
+    function fmtMmSs(s) {
+      const m = Math.floor(s / 60);
+      const ss = Math.floor(s % 60).toString().padStart(2, '0');
+      return `${m}:${ss}`;
+    }
+    function hideResumeChip() {
+      if (resumeWrap) resumeWrap.hidden = true;
+      if (resumeAutoDismissTimer) {
+        clearTimeout(resumeAutoDismissTimer);
+        resumeAutoDismissTimer = null;
+      }
+    }
+    function maybeShowResumeChip() {
+      if (!resumeWrap) return;
+      // Deep link suppresses the chip (deep link wins precedence).
+      if (parseTimestampParam() !== null) return;
+      const rec = getResumeRecord();
+      if (!rec) return;
+      // We don't know duration yet (audio not loaded). Optimistically
+      // show the chip; on actual play, if the saved position turns
+      // out to be invalid (>= duration), we silently skip seeking.
+      resumeWillSeekTo = rec.t;
+      if (resumeTimeEl) resumeTimeEl.textContent = fmtMmSs(rec.t);
+      resumeWrap.hidden = false;
+      if (window.plausible) {
+        try { window.plausible('Audio: Resume Chip Shown'); } catch (_) {}
+      }
+      resumeAutoDismissTimer = setTimeout(hideResumeChip, 8000);
+    }
+    if (resumeChip) {
+      resumeChip.addEventListener('click', async () => {
+        const target = resumeWillSeekTo;
+        hideResumeChip();
+        if (target == null) return;
+        if (window.plausible) {
+          try { window.plausible('Audio: Resume Chip Tapped'); } catch (_) {}
+        }
+        // Mark deepLink consumed so startStudioPlayback doesn't try to
+        // also parse ?t= (which we already suppressed). Seeking happens
+        // after audio is ready; the engine's ensureStudioReady waits
+        // for canplay before setting currentTime.
+        deepLinkConsumed = true;
+        previewLimit = null;
+        // Defer the seek to after startPlayback initializes audioEl.
+        const seekWhenReady = () => {
+          if (audioEl) {
+            try { audioEl.currentTime = target; } catch (_) {}
+          }
+        };
+        await startPlayback();
+        seekWhenReady();
+      });
+    }
+    if (resumeDismiss) {
+      resumeDismiss.addEventListener('click', () => {
+        hideResumeChip();
+        // Clear the saved record so the chip doesn't reappear on the
+        // next reload; the user actively rejected resume.
+        clearResume();
+      });
+    }
+    maybeShowResumeChip();
 
     const previewBtn = card.root.querySelector('.listen-preview');
     // Speech-fallback mode has no scrubable timeline; hide the preview
@@ -2082,6 +2214,15 @@
           <p class="listen-card-kicker"><span>Audio edition</span></p>
           <h2 class="listen-card-title">Prefer to listen?</h2>
           <p class="listen-card-sub">Press play and we'll read the whole post aloud — charts and all.</p>
+          <div class="listen-resume" hidden>
+            <button type="button" class="listen-resume-chip" aria-label="Resume from saved position">
+              <span>Continue from <strong class="listen-resume-time">0:00</strong></span>
+              <svg class="listen-resume-arrow" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </button>
+            <button type="button" class="listen-resume-dismiss" aria-label="Dismiss">
+              <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
           <button type="button" class="listen-preview" aria-label="Play a 30-second preview">Hear a 30-second preview →</button>
         </div>
         <div class="listen-card-meta">
