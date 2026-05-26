@@ -1791,42 +1791,55 @@
     const shareBtn = card.root.querySelector('.listen-share');
     if (shareBtn) shareBtn.addEventListener('click', shareAtCurrentTime);
 
-    // Phase 3 — settings dialog. Native <dialog>.showModal() handles
-    // the focus trap, ESC-to-close, and inert-everything-else for us.
-    // The dialog contains: keyboard-shortcut documentation (the most
-    // common reason it'd be opened — those shortcuts are otherwise
-    // undiscoverable) and a short editorial note about the synthetic
-    // narration that scratches "what AM I listening to?" curiosity
-    // without putting a defensive disclosure on the card surface itself.
-    const settingsBtn   = card.root.querySelector('.listen-settings');
-    const settingsDialog = card.root.querySelector('.listen-settings-dialog');
-    const settingsClose  = card.root.querySelector('.listen-settings-close');
-    function openSettings() {
-      if (!settingsDialog) return;
-      try { settingsDialog.showModal(); }
-      catch (_) {
-        // Fallback for older browsers without <dialog> — show as a
-        // modeless block. Loses focus trap; still readable.
-        settingsDialog.setAttribute('open', '');
-      }
+    // Phase 3 — help dialog. Native <dialog>.showModal() handles the
+    // focus trap, ESC-to-close, and inert-everything-else for us.
+    // Contents: keyboard-shortcut documentation (those shortcuts are
+    // undiscoverable without a home) and a short editorial note about
+    // the synthetic narration that scratches "what AM I listening
+    // to?" curiosity without putting a defensive disclosure on the
+    // card surface itself.
+    //
+    // We renamed from "settings" → "help" because (a) the dialog hosts
+    // only docs + an editorial note today, not preferences, and (b)
+    // the trigger icon is a question mark, not a gear. Class, aria-
+    // label, and Plausible event all align around "help" now.
+    const helpBtn    = card.root.querySelector('.listen-help');
+    const helpDialog = card.root.querySelector('.listen-help-dialog');
+    const helpClose  = card.root.querySelector('.listen-help-close');
+    const helpTitle  = card.root.querySelector('.listen-help-title');
+    const helpInner  = card.root.querySelector('.listen-help-inner');
+    // Drop the gear/help button entirely on browsers that don't ship
+    // <dialog>.showModal (pre-Safari 15.4, pre-Chrome 37). The fallback
+    // we used to render was a modeless floating block without backdrop
+    // or focus trap — strictly worse than no affordance.
+    const dialogSupported = helpDialog && typeof helpDialog.showModal === 'function';
+    if (!dialogSupported && helpBtn) helpBtn.hidden = true;
+    function openHelp() {
+      if (!dialogSupported) return;
+      helpDialog.showModal();
+      // showModal auto-focuses the first sequentially focusable
+      // descendant — which would otherwise be the close button at
+      // position absolute. Force focus onto the title (tabindex="-1"
+      // makes it programmatically focusable) so a reflex Space/Enter
+      // doesn't dismiss the dialog before the user reads anything.
+      if (helpTitle) helpTitle.focus();
       if (window.plausible) {
-        try { window.plausible('Audio: Settings Opened'); } catch (_) {}
+        try { window.plausible('Audio: Help Opened'); } catch (_) {}
       }
     }
-    function closeSettings() {
-      if (!settingsDialog) return;
-      try { settingsDialog.close(); }
-      catch (_) { settingsDialog.removeAttribute('open'); }
+    function closeHelp() {
+      if (dialogSupported) helpDialog.close();
     }
-    if (settingsBtn) settingsBtn.addEventListener('click', openSettings);
-    if (settingsClose) settingsClose.addEventListener('click', closeSettings);
-    // Click outside the inner content closes the dialog (native <dialog>
-    // doesn't do this automatically). We detect "outside" by checking
-    // whether the click landed directly on the dialog element rather
-    // than on a descendant.
-    if (settingsDialog) {
-      settingsDialog.addEventListener('click', (e) => {
-        if (e.target === settingsDialog) closeSettings();
+    if (helpBtn) helpBtn.addEventListener('click', openHelp);
+    if (helpClose) helpClose.addEventListener('click', closeHelp);
+    // Backdrop-click to close. Click events on the native dialog
+    // backdrop bubble with target === dialogElement (only when the
+    // dialog has direct text/padding the click could land on — we
+    // moved padding to .listen-help-inner so clicks on the dialog's
+    // own area = clicks outside the inner content = real backdrop).
+    if (helpDialog && helpInner) {
+      helpDialog.addEventListener('click', (e) => {
+        if (e.target === helpDialog) closeHelp();
       });
     }
 
@@ -1974,11 +1987,11 @@
       if (state === 'idle') return;
       if (isTypingTarget(e.target)) return;
       if (e.ctrlKey || e.metaKey || e.altKey) return;
-      // Phase 3 — when the settings dialog is open, the user is reading
+      // Phase 3 — when the help dialog is open, the user is reading
       // shortcut docs or tabbing through dialog controls; firing global
       // play/pause on Space here would be hostile. Let the dialog's own
       // ESC-to-close handle keyboard exit.
-      if (document.querySelector('.listen-settings-dialog[open]')) return;
+      if (document.querySelector('.listen-help-dialog[open]')) return;
       switch (e.key) {
         case ' ':
         case 'Spacebar':
@@ -2370,32 +2383,34 @@
             <button type="button" class="listen-iconbtn listen-share" aria-label="${i18n('audio.share_aria', 'Copy share link at current moment')}">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.72-1.71"/></svg>
             </button>
-            <button type="button" class="listen-iconbtn listen-settings" aria-label="${i18n('audio.settings_aria', 'Show keyboard shortcuts and details')}">
+            <button type="button" class="listen-iconbtn listen-help" aria-label="${i18n('audio.help_aria', 'Show keyboard shortcuts and player info')}">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 4.6 1.35c-.6.78-1.6 1.05-1.6 2.15"/><circle cx="12" cy="17" r="0.5" fill="currentColor"/></svg>
             </button>
           </div>
           <span class="listen-source-note" data-source="browser">${i18n('audio.byline_browser', 'Read by your browser')}</span>
         </div>
-        <dialog class="listen-settings-dialog" aria-labelledby="listen-settings-title">
-          <button type="button" class="listen-settings-close" aria-label="${i18n('audio.dismiss', 'Dismiss')}">
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-          </button>
-          <h3 id="listen-settings-title" class="listen-settings-title">${i18n('audio.settings_title', 'Listening tips')}</h3>
-          <section class="listen-settings-section">
-            <p class="listen-settings-eyebrow">${i18n('audio.settings_kbd_eyebrow', 'Keyboard')}</p>
-            <dl class="listen-settings-kbd">
-              <dt><kbd>${i18n('audio.kbd_space', 'Space')}</kbd></dt>
-              <dd>${i18n('audio.kbd_space_help', 'Play or pause')}</dd>
-              <dt><kbd>J</kbd> / <kbd>K</kbd></dt>
-              <dd>${i18n('audio.kbd_jk_help', 'Skip backward 15 seconds / forward 15 seconds')}</dd>
-              <dt><kbd>←</kbd> / <kbd>→</kbd></dt>
-              <dd>${i18n('audio.kbd_arrows_help', 'Previous paragraph / next paragraph')}</dd>
-            </dl>
-          </section>
-          <section class="listen-settings-section">
-            <p class="listen-settings-eyebrow">${i18n('audio.settings_about_eyebrow', 'About the voice')}</p>
-            <p class="listen-settings-body">${i18n('audio.settings_about_body', 'The Muntin Desk uses synthetic narration tuned for editorial reading — the same voice across every article so the listener forms a relationship with it. Audio is produced once, mastered to broadcast loudness, and shipped as a downloadable MP3.')}</p>
-          </section>
+        <dialog class="listen-help-dialog" aria-labelledby="listen-help-title">
+          <div class="listen-help-inner">
+            <h3 id="listen-help-title" class="listen-help-title" tabindex="-1">${i18n('audio.help_title', 'Listening tips')}</h3>
+            <button type="button" class="listen-help-close" aria-label="${i18n('audio.dismiss', 'Dismiss')}">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+            <section class="listen-help-section">
+              <p class="listen-help-eyebrow">${i18n('audio.help_kbd_eyebrow', 'Keyboard')}</p>
+              <dl class="listen-help-kbd">
+                <dt><kbd>${i18n('audio.kbd_space', 'Space')}</kbd></dt>
+                <dd>${i18n('audio.kbd_space_help', 'Play or pause')}</dd>
+                <dt><kbd>J</kbd> / <kbd>K</kbd></dt>
+                <dd>${i18n('audio.kbd_jk_help', 'Skip backward 15 seconds / forward 15 seconds')}</dd>
+                <dt><kbd>←</kbd> / <kbd>→</kbd></dt>
+                <dd>${i18n('audio.kbd_arrows_help', 'Previous paragraph / next paragraph')}</dd>
+              </dl>
+            </section>
+            <section class="listen-help-section">
+              <p class="listen-help-eyebrow">${i18n('audio.help_about_eyebrow', 'About the voice')}</p>
+              <p class="listen-help-body">${i18n('audio.help_about_body', 'The Muntin Desk uses an AI voice tuned for clear reading. We use the same voice across every article so it becomes familiar. Each recording is produced once and saved as an audio file you can download.')}</p>
+            </section>
+          </div>
         </dialog>
       `;
 

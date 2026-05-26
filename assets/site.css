@@ -1639,14 +1639,13 @@ br.br-lg{display:none}
 .listen-card[data-state="playing"] .listen-card-kicker::before{animation:listen-breathe 2.2s var(--ease) infinite}
 .listen-card-title{font-family:var(--font-display);font-weight:500;font-size:clamp(22px, 1.4vw + 14px, 26px);line-height:1.2;color:var(--ink);margin:0 0 2px}
 .listen-card-sub{font-family:var(--font-body);font-size:13.5px;line-height:1.45;color:var(--stone);margin:0}
-/* Phase 3 — settings dialog. Native <dialog> for the focus trap +
-   ESC handling + inert-other-content behavior. Visually: centered
-   sheet on mobile (the only practical layout on a 375-wide phone),
-   anchored popover-feel on desktop (still centered, just narrower
-   so it doesn't read as a heavyweight modal). The keyboard
-   shortcuts list is the load-bearing content — those shortcuts are
-   the single hardest-to-discover feature on the player. */
-.listen-settings-dialog{
+/* Phase 3 — help dialog. Native <dialog> for the focus trap + ESC
+   handling + inert-other-content behavior. Padding lives on the
+   inner wrapper (NOT the dialog element) so backdrop-click detection
+   only fires for clicks genuinely outside the content — a 24px
+   ring-of-padding on the dialog itself would otherwise count as
+   "backdrop" and dismiss on a fat-finger tap right next to text. */
+.listen-help-dialog{
   position:fixed; inset:0; margin:auto;
   border:0; padding:0;
   width:min(420px, calc(100vw - 24px));
@@ -1656,21 +1655,24 @@ br.br-lg{display:none}
   color:var(--ink);
   font-family:var(--font-body);
 }
-.listen-settings-dialog::backdrop{
+.listen-help-dialog::backdrop{
   background:rgba(20,22,26,0.35);
   backdrop-filter:saturate(140%) blur(2px);
   -webkit-backdrop-filter:saturate(140%) blur(2px);
 }
-.listen-settings-dialog[open]{
+.listen-help-dialog[open]{
+  animation:listen-help-in 220ms var(--ease-out) both;
+}
+.listen-help-inner{
+  position:relative;
   display:flex; flex-direction:column; gap:18px;
   padding:24px 24px 22px;
-  animation:listen-settings-in 220ms var(--ease-out) both;
 }
-@keyframes listen-settings-in{
+@keyframes listen-help-in{
   from { opacity:0; transform:translateY(6px); }
   to   { opacity:1; transform:translateY(0); }
 }
-.listen-settings-close{
+.listen-help-close{
   position:absolute; top:14px; right:14px;
   width:28px; height:28px; border-radius:50%;
   background:transparent; border:0; cursor:pointer;
@@ -1678,30 +1680,31 @@ br.br-lg{display:none}
   display:inline-flex; align-items:center; justify-content:center;
   transition:background-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
 }
-.listen-settings-close:hover{ background:rgba(20,22,26,0.05); color:var(--ink); }
-.listen-settings-close:focus-visible{ outline:2px solid var(--teal); outline-offset:2px; }
-.listen-settings-title{
+.listen-help-close:hover{ background:rgba(20,22,26,0.05); color:var(--ink); }
+.listen-help-close:focus-visible{ outline:2px solid var(--teal); outline-offset:2px; }
+.listen-help-title{
   font-family:var(--font-display); font-weight:500;
   font-size:22px; line-height:1.2; color:var(--ink);
-  margin:0; padding-right:32px; /* clear the close button */
+  margin:0; padding-right:32px; /* clear the absolutely-positioned close */
+  outline:none;  /* tabindex="-1" focus would otherwise paint a default ring */
 }
-.listen-settings-section{ display:flex; flex-direction:column; gap:8px; }
-.listen-settings-eyebrow{
+.listen-help-section{ display:flex; flex-direction:column; gap:8px; }
+.listen-help-eyebrow{
   font-family:var(--font-body); font-size:11px; font-weight:700;
   letter-spacing:0.14em; text-transform:uppercase; color:var(--stone);
   margin:0;
 }
-.listen-settings-body{
+.listen-help-body{
   font-family:var(--font-body); font-size:14px; line-height:1.55;
   color:var(--ink-soft); margin:0;
 }
-.listen-settings-kbd{
+.listen-help-kbd{
   margin:0; display:grid; grid-template-columns:auto 1fr; gap:8px 14px;
   align-items:baseline;
 }
-.listen-settings-kbd dt{ font-size:13px; color:var(--ink); }
-.listen-settings-kbd dd{ margin:0; font-size:13px; color:var(--ink-soft); line-height:1.4; }
-.listen-settings-kbd kbd{
+.listen-help-kbd dt{ font-size:13px; color:var(--ink); }
+.listen-help-kbd dd{ margin:0; font-size:13px; color:var(--ink-soft); line-height:1.4; }
+.listen-help-kbd kbd{
   display:inline-block;
   font-family:var(--font-body); font-size:11px; font-weight:600;
   background:var(--cream); color:var(--ink);
@@ -1710,7 +1713,7 @@ br.br-lg{display:none}
   padding:2px 6px; min-width:18px; text-align:center;
 }
 @media (prefers-reduced-motion:reduce){
-  .listen-settings-dialog[open]{ animation:none; }
+  .listen-help-dialog[open]{ animation:none; }
 }
 
 /* Phase 5 — 30-second preview affordance. Reads as a small editorial
