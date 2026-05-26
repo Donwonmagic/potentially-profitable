@@ -195,6 +195,7 @@ const CHECKS = [
   ['Course mobile-css (idem)','inject-course-mobile-css.mjs','--check'],
   ['Course og-images (idem)','inject-course-og-images.mjs','--check'],
   ['Tool course-crosslink (idem)','inject-tool-course-crosslink.mjs','--check'],
+  ['Glossary lesson-sidecar (idem)','inject-glossary-lesson-sidecar.mjs','--check'],
   ['Article TL;DR',       'check-article-tldr.mjs',        '--check'],
   ['Article TL;DR retrofit (idem)','inject-article-tldr.mjs','--check'],
   ['Article HowTo schema (idem)','inject-article-howto-schema.mjs','--check'],
