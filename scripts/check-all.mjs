@@ -197,6 +197,7 @@ const CHECKS = [
   ['Tool course-crosslink (idem)','inject-tool-course-crosslink.mjs','--check'],
   ['Glossary lesson-sidecar (idem)','inject-glossary-lesson-sidecar.mjs','--check'],
   ['Topic course-rail (idem)','inject-topic-course-rail.mjs','--check'],
+  ['Article course-rail (idem)','inject-article-course-rail.mjs','--check'],
   ['Article TL;DR',       'check-article-tldr.mjs',        '--check'],
   ['Article TL;DR retrofit (idem)','inject-article-tldr.mjs','--check'],
   ['Article HowTo schema (idem)','inject-article-howto-schema.mjs','--check'],
