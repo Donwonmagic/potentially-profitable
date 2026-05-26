@@ -678,6 +678,15 @@
       if (currentElement) {
         currentElement.classList.remove('is-reading');
         currentElement.classList.remove('is-reading-callout');
+        // Read-trail: mark the previous chunk as "was read" so the
+        // article visibly leads the reader through the piece as audio
+        // plays. Persists for the session (only resets on full
+        // playback restart). Excluded for figure callouts because the
+        // chunk's own callout box already carries strong visual weight
+        // and a trail rail next to it competes.
+        if (!currentElement.classList.contains('article-figure')) {
+          currentElement.classList.add('was-read');
+        }
       }
       // Drop any stale sentence highlight from the previous chunk.
       if (currentSentSpan) {
@@ -1565,6 +1574,14 @@
           if (dockChapter) setChapterText(dockChapter, '');
           setState('idle');
           syncMediaSessionPosition();
+          // Surface the "what's next" prompt AFTER the 2.8s warm-glow
+          // finale collapses. The prompt persists until the user
+          // dismisses it or 90s pass (auto-hide). It's an editorial
+          // nudge, not a hard CTA — the link is muted, the dismiss
+          // is one tap. Listeners who finished and went straight to
+          // browsing get a friction-free path; listeners who finished
+          // and tabbed away never see it.
+          showFinishedPrompt();
         }, 2800);
         return;
       }
@@ -2095,6 +2112,48 @@
     }
     maybeShowResumeChip();
 
+    // Phase 5 — "What's next" prompt on natural-finish. The finale
+    // 2.8s warm glow is the emotional payoff; the prompt is the soft
+    // hand-off afterward. Auto-dismisses at 90s so an abandoned tab
+    // doesn't carry a stale prompt indefinitely.
+    const finishedPrompt   = card.root.querySelector('.listen-finished-prompt');
+    const finishedDismiss  = card.root.querySelector('.listen-finished-dismiss');
+    const finishedLink     = card.root.querySelector('.listen-finished-link');
+    let finishedAutoTimer = null;
+    function hideFinishedPrompt() {
+      if (finishedPrompt) finishedPrompt.hidden = true;
+      if (finishedAutoTimer) { clearTimeout(finishedAutoTimer); finishedAutoTimer = null; }
+    }
+    function showFinishedPrompt() {
+      if (!finishedPrompt) return;
+      // Clear the resume chip (it's stale — the user just finished
+      // a listen, the "saved position" from this session is the end
+      // which doesn't satisfy resume eligibility anyway, but be
+      // explicit so nothing fights for the same body-cell slot).
+      hideResumeChip();
+      // Also clear the saved-resume record for this article since
+      // it's been listened to in full. The chip won't show on next
+      // visit, which matches user intent (they completed it once,
+      // they don't need "continue from").
+      clearResume();
+      finishedPrompt.hidden = false;
+      if (window.plausible) {
+        try { window.plausible('Audio: Finished Prompt Shown'); } catch (_) {}
+      }
+      finishedAutoTimer = setTimeout(hideFinishedPrompt, 90 * 1000);
+    }
+    if (finishedDismiss) {
+      finishedDismiss.addEventListener('click', hideFinishedPrompt);
+    }
+    if (finishedLink) {
+      finishedLink.addEventListener('click', () => {
+        if (window.plausible) {
+          try { window.plausible('Audio: Finished Prompt Clicked'); } catch (_) {}
+        }
+        // Don't prevent default — let the navigation happen.
+      });
+    }
+
     const previewBtn = card.root.querySelector('.listen-preview');
     // Speech-fallback mode has no scrubable timeline; hide the preview
     // affordance there so the button doesn't suggest a feature we
@@ -2477,6 +2536,13 @@
             </button>
           </div>
           <button type="button" class="listen-preview" aria-label="${i18n('audio.preview', 'Play a 30-second preview')}">${i18n('audio.preview', 'Hear a 30-second preview →')}</button>
+          <div class="listen-finished-prompt" hidden>
+            <span class="listen-finished-text">${i18n('audio.finished_done', 'Done listening.')}</span>
+            <a class="listen-finished-link" href="/library/">${i18n('audio.finished_browse', 'Browse the library →')}</a>
+            <button type="button" class="listen-finished-dismiss" aria-label="${i18n('audio.dismiss', 'Dismiss')}">
+              <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
         </div>
         <div class="listen-card-meta">
           <strong>${minutes} ${i18n('audio.meta_min', 'min')}</strong><span>${i18n('audio.meta_handsfree', 'hands-free')}</span>

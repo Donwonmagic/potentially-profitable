@@ -1775,6 +1775,46 @@ br.br-lg{display:none}
 .listen-resume-dismiss{background:none;border:0;border-left:1px solid rgba(42,80,200,0.25);padding:6px 10px;color:var(--teal-dark);cursor:pointer;opacity:0.65;transition:opacity var(--t-fast) var(--ease),background-color var(--t-fast) var(--ease)}
 .listen-resume-dismiss:hover{opacity:1;background:rgba(42,80,200,0.08)}
 .listen-resume-chip:focus-visible,.listen-resume-dismiss:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+/* Phase 5 — "What's next" prompt after a natural finish. Same visual
+   family as the resume chip (royal-blue tint inside a rounded pill)
+   so the body cell reads as a coherent set of "states the card can
+   be in". Appears after the 2.8s warm-glow finale; auto-dismisses
+   at 90s; user can dismiss instantly via the ×. */
+.listen-finished-prompt{
+  display:inline-flex;align-items:center;gap:0;margin:10px 0 0;
+  background:rgba(217,178,99,0.10);  /* warm cream-gold to echo the finale glow */
+  border:1px solid rgba(199,156,85,0.30);
+  border-radius:999px;overflow:hidden;
+  animation:listen-finished-in 360ms var(--ease-out) both;
+}
+.listen-finished-prompt[hidden]{display:none}
+.listen-finished-text{
+  font-family:var(--font-body);font-size:13px;font-weight:600;
+  color:#7C5A1F;  /* darker gold for legibility on the warm tint */
+  padding:6px 0 6px 12px;letter-spacing:0.01em;
+}
+.listen-finished-link{
+  font-family:var(--font-body);font-size:13px;font-weight:500;
+  color:var(--teal-dark);text-decoration:underline;
+  text-underline-offset:3px;text-decoration-color:rgba(42,80,200,0.4);
+  padding:6px 8px;
+  transition:color var(--t-fast) var(--ease),text-decoration-color var(--t-fast) var(--ease);
+}
+.listen-finished-link:hover{color:var(--teal);text-decoration-color:var(--teal)}
+.listen-finished-dismiss{
+  background:none;border:0;border-left:1px solid rgba(199,156,85,0.30);
+  padding:6px 10px;color:#7C5A1F;cursor:pointer;opacity:0.65;
+  transition:opacity var(--t-fast) var(--ease),background-color var(--t-fast) var(--ease);
+}
+.listen-finished-dismiss:hover{opacity:1;background:rgba(217,178,99,0.18)}
+.listen-finished-link:focus-visible,.listen-finished-dismiss:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+@keyframes listen-finished-in{
+  0%   { opacity:0; transform:translateY(-4px); }
+  100% { opacity:1; transform:translateY(0); }
+}
+@media (prefers-reduced-motion:reduce){
+  .listen-finished-prompt{animation:none}
+}
 @keyframes listen-resume-in{
   0%   { opacity:0; transform:translateY(-4px); }
   100% { opacity:1; transform:translateY(0); }
@@ -2145,6 +2185,24 @@ br.br-lg{display:none}
    shadows used by the plain-text highlight. */
 .article-body .is-reading.is-reading-callout{background:transparent;box-shadow:0 0 0 2px var(--teal),0 0 0 8px var(--teal-tint);animation:listen-callout-pulse 2.4s var(--ease-out) infinite}
 .article-body .is-reading.is-reading-callout::before{display:none}
+/* Read-trail: paragraphs the audio has already voiced get a thin
+   teal rail along the left edge so the reader can see, at a glance,
+   how far the voice has carried them through the article. Persists
+   across the session — only resets when the engine resets
+   currentIndex to 0 (e.g., on a full restart). Subtle enough that
+   the unread paragraphs don't feel "less" — just hinting at progress
+   the listener has actually made. */
+.article-body .was-read{position:relative}
+.article-body .was-read::before{
+  content:"";position:absolute;left:-14px;top:0.4em;bottom:0.4em;
+  width:2px;background:rgba(42,80,200,0.18);
+  border-radius:2px;
+  transition:background-color var(--t-fast) var(--ease);
+}
+/* Don't double-rail the active paragraph — its own ::before is the
+   active mark. The persistent trail rail is only for read-but-no-
+   longer-current. */
+.article-body .was-read.is-reading::before{ display:none; }
 /* Phase 4: sentence-level reading sync. listen.js wraps each sentence
    of an active body chunk in a .listen-sent span and toggles
    .is-sent-reading on the one currently being voiced. The active
