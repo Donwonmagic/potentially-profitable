@@ -1797,9 +1797,14 @@ function firstSentence(text, cap = 180) {
   return (lastSpace > 0 ? cut.slice(0, lastSpace) : cut) + '…';
 }
 
-function autoLinkGlossary(locale, blogSlug, terms) {
-  const root = locale === 'es' ? join(REPO, 'es/blog') : join(REPO, 'blog');
-  const file = join(root, blogSlug, 'index.html');
+function autoLinkGlossary(locale, blogSlug, terms, namespace = 'blog') {
+  // Phase 7: articles may live in /blog/ (timely) or /library/ (evergreen).
+  // The library-tags.json entry carries `namespace`; default is 'blog' for
+  // entries that pre-date the split.
+  const baseDir = namespace === 'library'
+    ? (locale === 'es' ? 'es/library' : 'library')
+    : (locale === 'es' ? 'es/blog'    : 'blog');
+  const file = join(REPO, baseDir, blogSlug, 'index.html');
   let html;
   try { html = readFileSync(file, 'utf8'); } catch { return 0; }
 
@@ -1811,8 +1816,12 @@ function autoLinkGlossary(locale, blogSlug, terms) {
     (_m, inner) => inner,
   );
 
-  const articleStart = html.indexOf('<article class="article-body"');
-  if (articleStart < 0) return 0;
+  // Find the post-body article tag — class list may include other
+  // utility classes (e.g., "container") in any order, so match by id
+  // rather than by class prefix.
+  const articleMatch = html.match(/<article[^>]*\bid="post-body"[^>]*>/);
+  if (!articleMatch) return 0;
+  const articleStart = articleMatch.index;
   const articleEnd = html.indexOf('</article>', articleStart);
   if (articleEnd < 0) return 0;
 
@@ -2032,9 +2041,29 @@ for (const locale of LOCALES) {
   {
     const { terms } = parseGlossary(locale);
     console.log(`\nGlossary auto-link (${locale}):`);
-    for (const blogSlug of Object.keys(tagsDoc.blog_posts)) {
-      const linked = autoLinkGlossary(locale, blogSlug, terms);
-      console.log(`  ${blogSlug.padEnd(56)} ${linked} link(s) stamped`);
+    // Phase 7: ES articles live at native Spanish slugs (per
+    // data/i18n-slug-map.json), not the EN slug. For the ES pass,
+    // resolve each EN slug to its ES counterpart via the per-namespace
+    // section of the slug map. EN-only posts (no ES mapping) are
+    // skipped for locale=es; the report logs them as "no ES mirror".
+    let slugMap = { blog: {}, library: {} };
+    try {
+      slugMap = JSON.parse(readFileSync(join(DATA, 'i18n-slug-map.json'), 'utf8'));
+    } catch {}
+    for (const [blogSlug, post] of Object.entries(tagsDoc.blog_posts)) {
+      const namespace = (post && typeof post === 'object' && post.namespace) || 'blog';
+      let resolvedSlug = blogSlug;
+      if (locale === 'es') {
+        const map = (namespace === 'library' ? slugMap.library : slugMap.blog) || {};
+        if (!map[blogSlug]) {
+          console.log(`  ${(namespace + '/' + blogSlug).padEnd(56)} (no ES mirror)`);
+          continue;
+        }
+        resolvedSlug = map[blogSlug];
+      }
+      const linked = autoLinkGlossary(locale, resolvedSlug, terms, namespace);
+      const label = locale === 'es' ? `es/${namespace}/${resolvedSlug}` : `${namespace}/${resolvedSlug}`;
+      console.log(`  ${label.padEnd(56)} ${linked} link(s) stamped`);
     }
   }
 

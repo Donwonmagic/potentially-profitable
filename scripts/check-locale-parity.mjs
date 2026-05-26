@@ -166,6 +166,11 @@ for (const file of files) {
   const rel   = path.relative(repoRoot, file);
   const posix = toPosix(rel);
   if (SKIP_PATH_PREFIXES.some((p) => posix.startsWith(p))) continue;
+  // Pages explicitly marked noindex+nofollow are internal admin
+  // surfaces, not public bilingual content. Don't require an ES
+  // counterpart for them.
+  const earlyHead = fs.readFileSync(file, 'utf8').slice(0, 2000);
+  if (/<meta\s+name="robots"\s+content="[^"]*\bnoindex\b[^"]*\bnofollow\b/i.test(earlyHead)) continue;
 
   const locale = localeForPath(posix);
   if (locale === 'en') {

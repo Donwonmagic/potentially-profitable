@@ -233,7 +233,35 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   "mentions": [
     {
       "@type": "DefinedTerm",
+      "url": "https://muntin.digital/glossary/margin/"
+    },
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/glossary/commission/"
+    },
+    {
+      "@type": "DefinedTerm",
       "url": "https://muntin.digital/glossary/food-cost/"
+    },
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/glossary/fixed-costs/"
+    },
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/glossary/contribution-margin/"
+    },
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/glossary/above-the-fold/"
+    },
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/glossary/cover/"
+    },
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/glossary/margin-math/"
     },
     {
       "@type": "DefinedTerm",
@@ -245,23 +273,11 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     },
     {
       "@type": "DefinedTerm",
-      "url": "https://muntin.digital/glossary/fixed-costs/"
-    },
-    {
-      "@type": "DefinedTerm",
-      "url": "https://muntin.digital/glossary/margin/"
-    },
-    {
-      "@type": "DefinedTerm",
       "url": "https://muntin.digital/glossary/direct-ordering/"
     },
     {
       "@type": "DefinedTerm",
       "url": "https://muntin.digital/glossary/labor-cost/"
-    },
-    {
-      "@type": "DefinedTerm",
-      "url": "https://muntin.digital/glossary/above-the-fold/"
     }
   ]
 }
@@ -340,7 +356,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mac"><span class="nav-search-kbd-mod">⌘</span>K</span><span class="nav-search-kbd-pc">Ctrl+K</span></kbd>
     </button>
     <nav class="lang-switch" aria-label="Language">
-      <a href="/es/blog/" hreflang="es" lang="es" class="js-lang-switch" data-set-locale="es">Español</a>
+      <a href="/es/library/third-party-delivery-economics/" hreflang="es" lang="es" class="js-lang-switch" data-set-locale="es">Español</a>
       <span class="lang-switch-current" aria-current="true">EN</span>
     </nav>
     <!-- Phase 7 — dark-mode toggle. The icon SVG flips between sun
@@ -387,7 +403,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <span>Search the library</span>
     </button>
     <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Reach Don</a>
-    <a href="/es/blog/" hreflang="es" lang="es" class="mobile-lang js-lang-switch" data-set-locale="es">Ver en español</a>
+    <a href="/es/library/third-party-delivery-economics/" hreflang="es" lang="es" class="mobile-lang js-lang-switch" data-set-locale="es">Ver en español</a>
   </nav>
 
   <!-- Opt-in Spanish banner. Rendered hidden by default; site.js
@@ -400,7 +416,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   <aside class="lang-hint" id="langHint" role="complementary" aria-label="Sugerencia de idioma" lang="es" hidden>
     <div class="container lang-hint-inner">
       <span class="lang-hint-text"><strong>¿Prefieres este sitio en español?</strong> Tenemos una versión completa.</span>
-      <a href="/es/blog/" class="lang-hint-accept js-lang-switch" data-set-locale="es" hreflang="es" lang="es">Ver en español &rarr;</a>
+      <a href="/es/library/third-party-delivery-economics/" class="lang-hint-accept js-lang-switch" data-set-locale="es" hreflang="es" lang="es">Ver en español &rarr;</a>
       <button type="button" class="lang-hint-dismiss" id="langHintDismiss" aria-label="Cerrar">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
       </button>
@@ -470,11 +486,11 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     </ol>
   </nav>
 
-  <article class="container article-body" id="post-body" data-content-pending="2026-05-03" style="max-width:720px;margin:32px auto 80px;padding:0 var(--pad-x)">
+  <article class="container article-body" id="post-body" style="max-width:720px;margin:32px auto 80px;padding:0 var(--pad-x)">
     <header style="margin-bottom:32px">
-      <p class="eyebrow">Op-ed &middot; 7 min read &middot; By <a href="/about/#don-goldstein" style="color:var(--teal)">Don Goldstein</a></p>
+      <p class="eyebrow">7 min read &middot; By <a href="/about/#don-goldstein" style="color:var(--teal)">Don Goldstein</a></p>
       <h1 style="font-family:var(--font-display);font-size:clamp(36px,5.5vw,56px);font-weight:500;line-height:1.05;letter-spacing:-0.5px;margin:0 0 18px">
-        An honest DoorDash math for independent restaurants, <span class="serif-italic">2026.</span>
+        An honest <span class="serif-italic">DoorDash math</span> for independent restaurants.
       </h1>
       <div class="row-center">
         <button type="button" id="listen-btn" class="listen-btn" aria-pressed="false" data-state="idle" data-audio-src="audio.mp3" data-audio-languages="en,es,fr,it,pt,zh">
@@ -487,15 +503,28 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         </button>
       </div>
       <p style="font-size:18px;line-height:1.55;color:var(--ink-soft);margin:0">
-        I&rsquo;m front-of-house manager at a DMV restaurant. Every quarter I run the same calculation against the same DoorDash partner statement, and every quarter the answer is more or less the same: the platform isn&rsquo;t a marketing channel. It&rsquo;s a margin tax with delivery as a side benefit. Here&rsquo;s the math, the breakeven, and the website fix that pays for itself in two months.
+        I&rsquo;m front-of-house manager at a DMV restaurant. Every quarter I run the same calculation against the same DoorDash partner statement, and every quarter the answer is more or less the same: the platform isn&rsquo;t a marketing channel. It&rsquo;s a <!-- LIBRARY:autolink:start --><a href="/glossary/margin/" data-glossary-head="Margin" data-glossary-aka="sales minus costs; several kinds" data-glossary-blurb="Sales minus costs.">margin</a><!-- LIBRARY:autolink:end --> tax with delivery as a side benefit. Here&rsquo;s the math, the breakeven, and the website fix that pays for itself in two months.
       </p>
     </header>
+
+      <!-- article-tldr:start -->
+            <aside class="tldr" data-llm="tldr" aria-label="In short">
+              <p class="tldr__eyebrow">In short</p>
+              <ul class="tldr__list">
+              <li>$100 of DoorDash revenue becomes roughly $52-$58 after commission, packaging, food cost, labor, and the marketing-fee uptick &mdash; closer to $40-$45 if you&rsquo;re paying sponsored-listing fees.</li>
+              <li>A worked $42-ticket margin walk on the Marketplace Plus tier shows where each dollar actually goes; the kept share is 18.4% on the headline scenario.</li>
+              <li>Marginal profitability only works if the kitchen has idle capacity. A full kitchen running DoorDash orders cannibalizes higher-margin direct work.</li>
+              <li>When DoorDash is still the right answer: dormant direct channel, underused kitchen, or acquiring a neighborhood that doesn&rsquo;t know your name yet. Otherwise the math points elsewhere.</li>
+              <li>The honest recommendation, by daily volume: under 200 orders/week the math doesn&rsquo;t work; 200-800 run it lean; 800+ you&rsquo;ve earned the right to negotiate commission down.</li>
+              </ul>
+            </aside>
+            <!-- article-tldr:end -->
 
     <p>I&rsquo;m going to do this with a real average ticket and real numbers I can defend. The ticket is $42 &mdash; that&rsquo;s our 2025 average DoorDash check at one of the restaurants I manage. Your ticket may be higher or lower; the percentages are what carry the argument.</p>
 
     <h2 id="one-42-doordash-ticket-broken-down">One $42 DoorDash ticket, broken down</h2>
 
-    <p>Below is the full margin walk. The line items are familiar to anyone who&rsquo;s read a partner statement, but it&rsquo;s rare to see them stacked in one column with the actual percentages applied. I&rsquo;m using DoorDash Marketplace Plus (30% commission tier, the most common one for independents under three locations) and the standard payment-processing rate they pass through.</p>
+    <p>Below is the full margin walk. The line items are familiar to anyone who&rsquo;s read a partner statement, but it&rsquo;s rare to see them stacked in one column with the actual percentages applied. I&rsquo;m using DoorDash Marketplace Plus (30% <!-- LIBRARY:autolink:start --><a href="/glossary/commission/" data-glossary-head="Commission" data-glossary-aka="the % a platform takes per order" data-glossary-blurb="The percentage an aggregator or payment platform keeps per transaction.">commission</a><!-- LIBRARY:autolink:end --> tier, the most common one for independents under three locations) and the standard payment-processing rate they pass through.</p>
 
     <figure class="viz-figure article-figure" data-audio-alt="Where each dollar of a 42-dollar DoorDash ticket goes. DoorDash commission, at the Marketplace Plus tier of 30 percent, takes 12 dollars 60. Payment processing takes another dollar 43. The promotion or sponsored-listing fee takes a dollar 20 on average. Packaging takes another dollar 40. Food cost is 28 percent, or 11 dollars 76. Variable labor is 14 percent, or 5 dollars 88. What stays in the restaurant: 7 dollars 73, or 18.4 percent of the ticket. The slider below lets you swap the commission rate from 15 to 35 percent and watch the kept share recompute.">
       <div class="viz-waterfall" data-viz-waterfall data-vw-config='{"ticket":42,"variableSeg":"commission","baseRate":0.30,"baseKeep":0.184}'>
@@ -536,7 +565,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           </div>
           <div class="viz-waterfall__row">
             <span class="viz-waterfall__swatch" data-tone="ink"></span>
-            <span>Food cost (28% of menu price, kitchen-side)</span>
+            <span><!-- LIBRARY:autolink:start --><a href="/glossary/food-cost/" data-glossary-head="Food cost" data-glossary-aka="cost of goods sold, as a % of sales" data-glossary-blurb="The cost of ingredients, alcohol, and consumables (paper goods, to-go packaging) expressed as a percentage of sales.">Food cost</a><!-- LIBRARY:autolink:end --> (28% of menu price, kitchen-side)</span>
             <span class="viz-waterfall__num">&minus;$11.76</span>
             <span class="viz-waterfall__pct">28.0%</span>
           </div>
@@ -565,7 +594,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <figcaption>Drag the slider to see how the commission rate eats into what stays in the restaurant. The teal segment is your keep.</figcaption>
     </figure>
 
-    <p>Eighteen percent. That&rsquo;s before fixed costs &mdash; rent, utilities, salaried management, insurance &mdash; which on a typical DMV independent run another 12 to 14 points. The contribution margin to fixed costs and profit is, if you&rsquo;re lucky, around four percent. If you ran a sponsored listing on that order, or if your packaging is heavier than average, you&rsquo;re working for free.</p>
+    <p>Eighteen percent. That&rsquo;s before <!-- LIBRARY:autolink:start --><a href="/glossary/fixed-costs/" data-glossary-head="Fixed costs" data-glossary-aka="costs that don't scale with sales" data-glossary-blurb="Costs that don't change with sales volume: rent, insurance, loan payments, base utilities, SaaS subscriptions (POS, reservations, payroll, marketing tools), salaried management,…">fixed costs</a><!-- LIBRARY:autolink:end --> &mdash; rent, utilities, salaried management, insurance &mdash; which on a typical DMV independent run another 12 to 14 points. The <!-- LIBRARY:autolink:start --><a href="/glossary/contribution-margin/" data-glossary-head="Contribution margin" data-glossary-aka="what one sale of an item adds to covering fixed costs and profit" data-glossary-blurb="For a single menu item: sale price minus the variable cost of producing one unit (plated food cost).">contribution margin</a><!-- LIBRARY:autolink:end --> to fixed costs and profit is, if you&rsquo;re lucky, around four percent. If you ran a sponsored listing on that order, or if your packaging is heavier than average, you&rsquo;re working for free.</p>
 
     <p>Now run the same exercise on the same $42 ticket, ordered direct from your own website, paid through your own Stripe account.</p>
 
@@ -646,7 +675,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <p>You don&rsquo;t need an app. You don&rsquo;t need a CRM. The switch happens through one button on your existing menu page, and the way you signal which button matters most. Three changes, in this order:</p>
 
     <ol>
-      <li style="margin-bottom:12px"><strong>Add a primary &ldquo;Order direct&rdquo; button</strong> above the third-party links on your menu page, mobile and desktop. Larger button. Brand color. Immediately above the fold. The third-party app links go below it, smaller, as &ldquo;Other ways to order.&rdquo;</li>
+      <li style="margin-bottom:12px"><strong>Add a primary &ldquo;Order direct&rdquo; button</strong> above the third-party links on your menu page, mobile and desktop. Larger button. Brand color. Immediately <!-- LIBRARY:autolink:start --><a href="/glossary/above-the-fold/" data-glossary-head="Above the fold" data-glossary-aka="the first screen, &quot;what loads first&quot;" data-glossary-blurb="The part of your homepage a visitor sees without scrolling.">above the fold</a><!-- LIBRARY:autolink:end -->. The third-party app links go below it, smaller, as &ldquo;Other ways to order.&rdquo;</li>
       <li style="margin-bottom:12px"><strong>Wire your direct order flow through your POS</strong> &mdash; Toast Online Ordering, Square Online, ChowNow, or a Stripe-backed custom flow if you&rsquo;ve got a developer. Not a Wix forms page that emails you the order.</li>
       <li><strong>Match or beat the third-party price.</strong> Independent operators are afraid to undercut DoorDash. They shouldn&rsquo;t be. The 30% commission means you can run a direct-channel discount of $2&ndash;$4 on the same item and still keep more margin than the platform left you. The customer notices &mdash; they&rsquo;re paying the &ldquo;DoorDash service fee&rdquo; on top of your menu price; you&rsquo;re showing them what their meal actually costs.</li>
     </ol>
@@ -655,7 +684,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
     <h2 id="the-argument-for-not-delisting-yet">The argument for not delisting (yet)</h2>
 
-    <p>I am not telling you to delist. DoorDash is, structurally, a customer-acquisition tool that costs you 30%. For an independent restaurant with a kitchen capable of 60% incremental volume, that 30% is the price you pay for the marginal cover &mdash; and it&rsquo;s a fair price <em>if you treat the platform as a discovery channel, not a relationship channel</em>.</p>
+    <p>I am not telling you to delist. DoorDash is, structurally, a customer-acquisition tool that costs you 30%. For an independent restaurant with a kitchen capable of 60% incremental volume, that 30% is the price you pay for the marginal <!-- LIBRARY:autolink:start --><a href="/glossary/cover/" data-glossary-head="Cover" data-glossary-aka="one customer served" data-glossary-blurb="One customer seated and served.">cover</a><!-- LIBRARY:autolink:end --> &mdash; and it&rsquo;s a fair price <em>if you treat the platform as a discovery channel, not a relationship channel</em>.</p>
 
     <p>The problem isn&rsquo;t that you&rsquo;re on DoorDash. The problem is that you&rsquo;re on DoorDash <em>and</em> not actively converting those customers to direct. The first-time DoorDash order is a $4.42 loss versus direct. The second-time order, also through DoorDash, is the same. The customer&rsquo;s third order is the one where margin compounds &mdash; and the third order is the one most independents never recapture, because there&rsquo;s no website call-to-action that asks them to.</p>
 
@@ -663,7 +692,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
     <h2 id="run-your-own-version">Run your own version</h2>
 
-    <p>The numbers above are mine. Yours will be different &mdash; different commission tier, different ticket, different kitchen labor pattern. The free Margin Math tool runs the calculation against your inputs in your browser, and the result is yours alone &mdash; nothing leaves the page:</p>
+    <p>The numbers above are mine. Yours will be different &mdash; different commission tier, different ticket, different kitchen labor pattern. The free <!-- LIBRARY:autolink:start --><a href="/glossary/margin-math/" data-glossary-head="Margin Math" data-glossary-aka="client-side restaurant finance calculators" data-glossary-blurb="Four browser-side calculators — Delivery Break-Even, Prime Cost Check, Break-Even Covers, Price-Raise Simulator — plus a printable Monthly Margin Report, shareable URL-fragment…">Margin Math</a><!-- LIBRARY:autolink:end --> tool runs the calculation against your inputs in your browser, and the result is yours alone &mdash; nothing leaves the page:</p>
 
     <p><a href="/tools/margin-math/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">Run Margin Math &rarr;</a></p>
 
@@ -700,7 +729,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
             <div class="dd-line"><span class="i18n">Gross</span><span class="dd-val">$100.00</span></div>
             <div class="dd-line"><span class="i18n">DoorDash commission (~22%)</span><span class="dd-val">&minus;&thinsp;$22.00</span></div>
             <div class="dd-line"><span class="i18n">Payment processing</span><span class="dd-val">&minus;&thinsp;$2.00</span></div>
-            <div class="dd-line"><span class="i18n"><!-- LIBRARY:autolink:start --><a href="/glossary/food-cost/" data-glossary-head="Food cost" data-glossary-aka="cost of goods sold, as a % of sales" data-glossary-blurb="The cost of ingredients, alcohol, and consumables (paper goods, to-go packaging) expressed as a percentage of sales.">Food cost</a><!-- LIBRARY:autolink:end --> (~30%)</span><span class="dd-val">&minus;&thinsp;$30.00</span></div>
+            <div class="dd-line"><span class="i18n">Food cost (~30%)</span><span class="dd-val">&minus;&thinsp;$30.00</span></div>
             <div class="dd-total">
               <span class="dd-total-label i18n">You keep</span>
               <span class="dd-total-val">$46</span>
@@ -781,7 +810,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <ul>
         <li><strong>You&rsquo;re genuinely discovery-constrained.</strong> Newer restaurant, thin GBP presence, no established word-of-mouth yet &mdash; DoorDash is a marketing channel that happens to bill as a commission. Pay the tax while you build the audience, then re-evaluate.</li>
-        <li><strong>Your own-ordering volume is under 50 orders a week.</strong> Below that threshold, the <!-- LIBRARY:autolink:start --><a href="/glossary/fixed-costs/" data-glossary-head="Fixed costs" data-glossary-aka="costs that don't scale with sales" data-glossary-blurb="Costs that don't change with sales volume: rent, insurance, loan payments, base utilities, SaaS subscriptions (POS, reservations, payroll, marketing tools), salaried management,…">fixed costs</a><!-- LIBRARY:autolink:end --> of an own-ordering setup (photography, menu maintenance, occasional customer service) eat the <!-- LIBRARY:autolink:start --><a href="/glossary/margin/" data-glossary-head="Margin" data-glossary-aka="sales minus costs; several kinds" data-glossary-blurb="Sales minus costs.">margin</a><!-- LIBRARY:autolink:end --> savings. Wait for volume.</li>
+        <li><strong>Your own-ordering volume is under 50 orders a week.</strong> Below that threshold, the fixed costs of an own-ordering setup (photography, menu maintenance, occasional customer service) eat the margin savings. Wait for volume.</li>
         <li><strong>You have a takeout-heavy concept in a high-commute area.</strong> Office-worker lunch orders, dinner-on-the-commute pickups &mdash; guests in these contexts heavily use delivery apps because that&rsquo;s where their routine already lives. Meet them where they are.</li>
       </ul>
 
@@ -889,7 +918,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <p>None of this is "fire DoorDash." It's "stop paying them for orders they didn&rsquo;t earn." Which is a very different move.</p>
 
-      <p>Your regulars aren&rsquo;t loyal to DoorDash &mdash; they&rsquo;re loyal to you, and they use whichever channel is in front of them. Make your own channel the one in front of them. Put the "Order online" button <!-- LIBRARY:autolink:start --><a href="/glossary/above-the-fold/" data-glossary-head="Above the fold" data-glossary-aka="the first screen, &quot;what loads first&quot;" data-glossary-blurb="The part of your homepage a visitor sees without scrolling.">above the fold</a><!-- LIBRARY:autolink:end --> on your homepage. Put the QR code for your ordering page at the host stand and on the receipt. Have the cashier say "next time, order direct from our site and we save fifteen percent in fees." Every regular who switches is fifteen bucks back in your pocket on a hundred-dollar order.</p>
+      <p>Your regulars aren&rsquo;t loyal to DoorDash &mdash; they&rsquo;re loyal to you, and they use whichever channel is in front of them. Make your own channel the one in front of them. Put the "Order online" button above the fold on your homepage. Put the QR code for your ordering page at the host stand and on the receipt. Have the cashier say "next time, order direct from our site and we save fifteen percent in fees." Every regular who switches is fifteen bucks back in your pocket on a hundred-dollar order.</p>
 
       <p>That&rsquo;s not rebellion. That&rsquo;s just running the math.</p>
 
@@ -910,6 +939,18 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <li><a href="/services/audit/">$499 audit</a> &mdash; the written diagnosis</li>
       </ul>
     </section>
+      <!-- article-takeaways:start -->
+            <aside class="key-takeaways" data-llm="takeaways" aria-label="Key takeaways">
+              <p class="key-takeaways__eyebrow">Key takeaways</p>
+              <ul class="key-takeaways__list">
+              <li>$100 of DoorDash revenue becomes roughly $52-$58 after commission, packaging, food cost, labor allocation, and the marketing-fee uptick — closer to $40-$45 if you're paying sponsored-listing fees.</li>
+        <li>Marginal profitability — the dollar question — only works if the kitchen has idle capacity. A full kitchen running DoorDash orders cannibalizes higher-margin direct work.</li>
+        <li>DoorDash is still the right answer when your direct channel is dormant, your kitchen is underused, or you're acquiring a new neighborhood that doesn't know your name yet.</li>
+        <li>Honest recommendation by volume: under 200 orders/week, the math doesn't work — drop it. 200-800, run it lean. 800+, you've earned the right to negotiate commission down.</li>
+        <li>The website fix that pays for itself in two months: a fast, mobile-clean "Order direct" button visible above the fold on your menu page.</li>
+              </ul>
+            </aside>
+            <!-- article-takeaways:end -->
   <!-- article-author-card:start -->
 <aside class="article-author-card" aria-labelledby="article-author-h" style="margin:48px 0 0;padding:24px;border:1px solid var(--line);border-radius:12px;background:var(--cream-2);display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap">
   <div class="article-author-card__avatar" aria-hidden="true" style="flex:0 0 auto;width:72px;height:72px;border-radius:50%;background:var(--teal);color:var(--cream);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:34px;font-weight:500;letter-spacing:-0.02em">D</div>
@@ -949,7 +990,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <aside class="smart-next" aria-labelledby="smart-next-h">
   <p class="smart-next__eyebrow" id="smart-next-h">What to do next</p>
   <ol class="smart-next__list">
-        <li class="smart-next__item smart-next__read"><span class="smart-next__verb">Read:</span> <a href="/glossary/food-cost/">the related glossary term →</a></li>
+        <li class="smart-next__item smart-next__read"><span class="smart-next__verb">Read:</span> <a href="/glossary/margin/">the related glossary term →</a></li>
         <li class="smart-next__item smart-next__try"><span class="smart-next__verb">Try:</span> <a href="/sheets/third-party-channel-pnl/?from=blog/third-party-delivery-economics&intent=watch">the tool that pairs with this article →</a></li>
         <li class="smart-next__item smart-next__note"><span class="smart-next__verb">Or send Don a note:</span> <a href="/window/?topic=third-party-delivery-economics">The Window →</a></li>
   </ol>
