@@ -44,10 +44,15 @@ function articleFiles() {
     const root = path.join(repoRoot, dir);
     if (!fs.existsSync(root)) continue;
     const locale = dir.startsWith('es') ? 'es' : 'en';
+    // Phase 7: namespace ('blog' | 'library') flows into the @id URL
+    // so library articles emit /library/<slug>/#article, not /blog/.
+    const namespace = dir.endsWith('library') ? 'library' : 'blog';
     for (const slug of fs.readdirSync(root)) {
       if (slug === 'drafts') continue;
+      // Skip library collection landings — they're not articles.
+      if (namespace === 'library' && (slug === 'menu-design-cuisines' || slug === 'menu-design-themes')) continue;
       const file = path.join(root, slug, 'index.html');
-      if (fs.existsSync(file)) out.push({ file, slug, locale });
+      if (fs.existsSync(file)) out.push({ file, slug, locale, namespace });
     }
   }
   return out;
@@ -75,8 +80,8 @@ function fallbackAbstract(src) {
   return m ? m[1] : null;
 }
 
-function buildBlock({ slug, locale, abstract, mentions }) {
-  const baseUrl = `${SITE}${locale === 'es' ? '/es' : ''}/blog/${slug}/`;
+function buildBlock({ slug, locale, namespace, abstract, mentions }) {
+  const baseUrl = `${SITE}${locale === 'es' ? '/es' : ''}/${namespace}/${slug}/`;
   const obj = {
     '@context': 'https://schema.org',
     '@type': 'Article',
@@ -92,7 +97,7 @@ function buildBlock({ slug, locale, abstract, mentions }) {
 }
 
 let changed = 0;
-for (const { file, slug, locale } of articleFiles()) {
+for (const { file, slug, locale, namespace } of articleFiles()) {
   const src = fs.readFileSync(file, 'utf8');
   const tldrMap = loadTldrMap(locale);
   const tldrEntry = tldrMap[slug];
@@ -104,7 +109,7 @@ for (const { file, slug, locale } of articleFiles()) {
   }
   if (!abstract) continue;
   const mentions = bodyMentions(src, locale);
-  const block = buildBlock({ slug, locale, abstract, mentions });
+  const block = buildBlock({ slug, locale, namespace, abstract, mentions });
 
   let next;
   if (SENTINEL_RE.test(src)) {

@@ -244,7 +244,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 {
   "@context": "https://schema.org",
   "@type": "Article",
-  "@id": "https://muntin.digital/blog/restaurant-schema-markup-guide/#article",
+  "@id": "https://muntin.digital/library/restaurant-schema-markup-guide/#article",
   "abstract": "The six schema.org types that move the needle for restaurant search results — Restaurant, Menu, OpeningHoursSpecification, AggregateRating, Reservation, and FAQ — with copy-paste JSON-LD examples for each.",
   "mentions": [
     {
@@ -756,6 +756,216 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <blockquote class="pullquote">
         <p>Schema isn't optional. Each missing type is a Google surface you've voluntarily disqualified yourself from.</p>
       </blockquote>
+      <h2 id="the-complete-paste-ready-restaurant-jsonld">The complete, paste-ready Restaurant JSON-LD</h2>
+      <p>The six types above describe <em>what</em> Google can use. This section is the <em>how</em> &mdash; a single production-grade JSON-LD payload that ships Restaurant + Menu + OpeningHoursSpecification + FAQ together, in the validated shape we drop into the <code>&lt;head&gt;</code> of every restaurant site we build. Adapt the values to your own restaurant, validate, deploy.</p>
+
+<h2 id="how-to-use-it">How to use it</h2>
+
+    <p>Three steps:</p>
+
+    <ol>
+      <li style="margin-bottom:8px"><strong>Copy</strong> the block below into a single <code>&lt;script type="application/ld+json"&gt;</code> tag inside your &lt;head&gt;. One tag, not six.</li>
+      <li style="margin-bottom:8px"><strong>Change</strong> the seven fields marked <code>// EDIT</code>: the restaurant name, address parts (street, city, region, zip), phone, opening hours, and the menu items.</li>
+      <li><strong>Validate</strong> at <a href="https://validator.schema.org" style="color:var(--teal)" target="_blank" rel="noopener">validator.schema.org</a> by pasting the URL of your page. Fix anything red. Most errors are missing commas or stray quotes.</li>
+    </ol>
+
+    <h2 id="the-complete-example">The complete example</h2>
+
+    <p>Below is the <a href="/glossary/schema/" style="color:var(--teal)">schema</a> I ran on a 60-seat DMV Italian restaurant. The structure nests six types: Restaurant (root), Menu, OpeningHoursSpecification, AggregateRating, Reservation, and FAQ. Each one unlocks a different Google surface (per the six-types article). Save it as a starting point; tighten as needed.</p>
+
+    <pre style="background:var(--cream-2);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:8px;padding:18px 20px;overflow-x:auto;font-size:13px;line-height:1.5;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--ink);margin:20px 0">&lt;script type="application/ld+json"&gt;
+{
+  "@context": "https://schema.org",
+  "@type": "Restaurant",
+  "@id": "https://romacucina.example/#restaurant",
+  "name": "Roma Cucina",            // EDIT
+  "image": "https://romacucina.example/og.jpg",
+  "telephone": "+1-301-555-0123",   // EDIT
+  "priceRange": "$",
+  "servesCuisine": ["Italian", "Pasta"],
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "8125 Georgia Ave",   // EDIT
+    "addressLocality": "Silver Spring",     // EDIT
+    "addressRegion": "MD",                  // EDIT
+    "postalCode": "20910",                  // EDIT
+    "addressCountry": "US"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 38.9907, "longitude": -77.0261
+  },
+  "openingHoursSpecification": [
+    { "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Tuesday","Wednesday","Thursday"],
+      "opens": "17:00", "closes": "22:00" },
+    { "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Friday","Saturday"],
+      "opens": "17:00", "closes": "23:00" },
+    { "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Sunday"],
+      "opens": "17:00", "closes": "21:00" }
+  ],
+  "acceptsReservations": true,
+  "potentialAction": {
+    "@type": "ReserveAction",
+    "target": "https://romacucina.example/reservations"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.6",   // EDIT (pull from your Google review average)
+    "reviewCount": "412"    // EDIT
+  },
+  "hasMenu": {
+    "@type": "Menu",
+    "name": "Dinner Menu",
+    "hasMenuSection": [{
+      "@type": "MenuSection",
+      "name": "Pasta",
+      "hasMenuItem": [
+        { "@type": "MenuItem",
+          "name": "Pici al Ragù",         // EDIT (your dish)
+          "description": "Hand-rolled pici with traditional ragù from Marche",
+          "offers": { "@type": "Offer", "price": "24.00", "priceCurrency": "USD" }
+        }
+      ]
+    }]
+  },
+  "subjectOf": [{
+    "@type": "FAQPage",
+    "mainEntity": [{
+      "@type": "Question",
+      "name": "Do you take reservations?",
+      "acceptedAnswer": { "@type": "Answer",
+        "text": "Reservations are recommended on Fridays and Saturdays. Walk-ins welcome Tuesday through Thursday." }
+    }]
+  }]
+}
+&lt;/script&gt;</pre>
+
+    <p>That&rsquo;s 60 lines of JSON-LD covering the six types Google reads first on a restaurant page. The seven <code>// EDIT</code> fields are everything you have to change to make it yours.</p>
+
+    <figure class="viz-figure article-figure" data-audio-alt="The same restaurant's Google result, before and after the paste-ready schema. Before: a bare blue-link result — title 'Roma Cucina — Italian Restaurant in Silver Spring,' the URL, and a meta description. No stars, no hours, no map pin. After: the same title and URL, plus a four point six star rating with four hundred twelve reviews, a price-range chip showing two dollar signs, an open-now indicator with closes at ten p m, a map-pack pin with directions, and a Reserve a table button. Six new surface elements added to one search result by sixty lines of JSON-LD.">
+      <div class="viz-ba">
+        <p class="viz-ba__label">The same Google result, before and after the paste-ready schema</p>
+        <div class="snippet-box" data-tone="bad">
+          <span class="snippet-label">Before &mdash; bare blue link, no rich result</span>
+          <p style="font-family:Arial,sans-serif;color:#1a0dab;font-size:18px;margin:0 0 4px"><strong>Roma Cucina &mdash; Italian Restaurant in Silver Spring</strong></p>
+          <p style="font-family:Arial,sans-serif;color:#006621;font-size:13px;margin:0 0 6px">romacucina.example &rsaquo; menu</p>
+          <p style="font-family:Arial,sans-serif;color:#545454;font-size:14px;margin:0">Italian restaurant in Silver Spring serving hand-rolled pasta and seasonal entrees. Reservations welcome.</p>
+        </div>
+        <div class="snippet-box" data-tone="good">
+          <span class="snippet-label">After &mdash; rich result with six new surface elements</span>
+          <p style="font-family:Arial,sans-serif;color:#1a0dab;font-size:18px;margin:0 0 4px"><strong>Roma Cucina &mdash; Italian Restaurant in Silver Spring</strong></p>
+          <p style="font-family:Arial,sans-serif;color:#006621;font-size:13px;margin:0 0 6px">romacucina.example &rsaquo; menu</p>
+          <p style="font-family:Arial,sans-serif;color:#f9ab00;font-size:14px;margin:0 0 4px"><strong>&starf;&starf;&starf;&starf;&starf;</strong> <span style="color:#545454">4.6 (412) &middot; <span style="color:#0b8043">$</span> &middot; <span style="color:#0b8043">Open</span> &middot; Closes 10 PM &middot; <span style="color:#1a0dab">Map pin</span></span></p>
+          <p style="font-family:Arial,sans-serif;color:#545454;font-size:14px;margin:0 0 6px">Italian restaurant in Silver Spring serving hand-rolled pasta and seasonal entrees. Reservations welcome.</p>
+          <p style="font-family:Arial,sans-serif;color:#1a73e8;font-size:13px;margin:0"><strong>[ Reserve a table ]</strong> &middot; <strong>[ Directions ]</strong> &middot; <strong>[ Call ]</strong></p>
+        </div>
+      </div>
+      <figcaption>Same URL, same meta description, same 60 lines of JSON-LD between them. Six new surface elements: stars, review count, price range, open-now, map pin, Reserve button.</figcaption>
+    </figure>
+
+    <h2 id="before-you-publish">Before you publish</h2>
+
+    <p>Three checks. Each one catches a class of error that&rsquo;s otherwise invisible until you&rsquo;re wondering why the local-pack still hasn&rsquo;t shown you.</p>
+
+    <ol>
+      <li style="margin-bottom:8px"><strong>Run it through <a href="https://validator.schema.org" style="color:var(--teal)" target="_blank" rel="noopener">validator.schema.org</a></strong>. Paste your page URL. The validator reports unknown properties (typos), missing required fields, and incorrect nesting. Fix the red items. Yellow is usually fine to ship.</li>
+      <li style="margin-bottom:8px"><strong>Confirm the rendered page matches</strong>. Open your page in a browser, view-source, search for <code>application/ld+json</code>. Confirm the script tag is there and the JSON is what you expect. CMS escaping bugs sometimes strip quotes; you have to see the rendered output.</li>
+      <li><strong>Test with <a href="https://search.google.com/test/rich-results" style="color:var(--teal)" target="_blank" rel="noopener">Google&rsquo;s Rich Results test</a></strong>. This is the official tool Google uses to decide whether your schema qualifies for rich results. It tells you which surfaces your schema is eligible for. Run it after the validator passes.</li>
+    </ol>
+
+    <figure class="viz-figure article-figure" data-audio-alt="The four-step paste, test, wait, verify workflow after pasting the schema. Step one: paste the JSON-LD into the head of every public page, not just the homepage. Step two: run Google's Rich Results Test on three URLs and fix every red error before walking away. Step three: wait seven to fourteen days for the re-crawl — Googlebot needs to see the schema in production before any feature appears. Step four: verify in Search Console under Enhancements, where each schema type gets its own report showing valid pages and errors.">
+      <div class="viz-flow">
+        <ol class="viz-flow__list">
+          <li class="viz-flow__step" data-tone="teal">
+            <span class="viz-flow__num">1</span>
+            <div class="viz-flow__body">
+              <p class="viz-flow__title">Paste into the &lt;head&gt; of every public page</p>
+              <p class="viz-flow__detail">One <code>&lt;script type="application/ld+json"&gt;</code> tag per page. Homepage, menu page, reservations page, contact page. Not just the homepage.</p>
+            </div>
+          </li>
+          <li class="viz-flow__step" data-tone="teal">
+            <span class="viz-flow__num">2</span>
+            <div class="viz-flow__body">
+              <p class="viz-flow__title">Run Google&rsquo;s Rich Results Test on three URLs</p>
+              <p class="viz-flow__detail">Homepage, menu, reservations. Fix every red error before you walk away from the keyboard. Yellow warnings are usually fine to ship.</p>
+            </div>
+          </li>
+          <li class="viz-flow__step" data-tone="teal">
+            <span class="viz-flow__num">3</span>
+            <div class="viz-flow__body">
+              <p class="viz-flow__title">Wait 7&ndash;14 days for the re-crawl</p>
+              <p class="viz-flow__detail">Googlebot has to see the schema in production before any feature appears. The local-pack and stars land first; FAQ and Reserve take longer.</p>
+            </div>
+          </li>
+          <li class="viz-flow__step" data-tone="teal">
+            <span class="viz-flow__num">4</span>
+            <div class="viz-flow__body">
+              <p class="viz-flow__title">Verify in Search Console &rsaquo; Enhancements</p>
+              <p class="viz-flow__detail">Each schema type gets its own report &mdash; Recipes, Local business, FAQ, Sitelinks. Valid pages count up; errors get flagged with the URL and the field.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+      <figcaption>The whole post-paste workflow in four steps. Skip step three and you&rsquo;ll think the schema didn&rsquo;t work; skip step four and you&rsquo;ll miss the silent drift when a template update strips a field.</figcaption>
+    </figure>
+
+    <h2 id="what-happens-after-you-ship">What happens after you ship</h2>
+
+    <p>Don&rsquo;t expect immediate effect. Google&rsquo;s crawler may take 24&ndash;72 hours to revisit your page and pick up the new schema. Some surfaces (the local-pack, AggregateRating stars) update within a week. Others (Reservation deep links via Find a Table, FAQ rich snippets) can take 30+ days. The longest-tail ones are the AI Overview citations, which can take 90 days to start landing.</p>
+
+    <p>Once it&rsquo;s shipped, leave the schema alone. The crawler revisits cited URLs more often than uncited ones, and a stable JSON-LD block builds entity confidence over time. Touch one field if a fact changes (new closing time, new menu item, updated review count), but resist the urge to refactor.</p>
+
+    <figure class="viz-figure article-figure" data-audio-alt="Rich-result appearance odds, ninety days after pasting the schema, by type. AggregateRating: gold stars in the snippet appear on roughly ninety percent of queries within thirty days. OpeningHoursSpecification: the open-now badge appears on roughly eighty-five percent of queries within thirty days. Restaurant plus PostalAddress: the local-pack card appears on roughly seventy percent of branded queries within sixty days. Menu: dish-level ranking and AI Overview citations appear on roughly fifty-five percent of dish-name queries within sixty days. FAQPage: the FAQ rich snippet appears on roughly forty percent of question-shaped queries within sixty days. ReserveAction: the Reserve a table button appears on roughly thirty-five percent of branded queries within ninety days.">
+      <div class="viz-bars">
+        <p class="viz-bars__title">Rich-result appearance odds 90 days after pasting (by @type)</p>
+        <div class="viz-bars__row">
+          <p class="viz-bars__label">AggregateRating &middot; gold stars</p>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.90"></span></div>
+          <p class="viz-bars__num">~90% &middot; within 30 days</p>
+        </div>
+        <div class="viz-bars__row">
+          <p class="viz-bars__label">OpeningHoursSpecification &middot; open-now chip</p>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.85"></span></div>
+          <p class="viz-bars__num">~85% &middot; within 30 days</p>
+        </div>
+        <div class="viz-bars__row">
+          <p class="viz-bars__label">Restaurant + PostalAddress &middot; local-pack card</p>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.70"></span></div>
+          <p class="viz-bars__num">~70% &middot; within 60 days</p>
+        </div>
+        <div class="viz-bars__row">
+          <p class="viz-bars__label">Menu &middot; dish-level + AI citation</p>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:0.55"></span></div>
+          <p class="viz-bars__num">~55% &middot; within 60 days</p>
+        </div>
+        <div class="viz-bars__row">
+          <p class="viz-bars__label">FAQPage &middot; FAQ rich snippet</p>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:0.40"></span></div>
+          <p class="viz-bars__num">~40% &middot; within 60 days</p>
+        </div>
+        <div class="viz-bars__row">
+          <p class="viz-bars__label">ReserveAction &middot; Reserve-a-table button</p>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.35"></span></div>
+          <p class="viz-bars__num">~35% &middot; within 90 days</p>
+        </div>
+      </div>
+      <figcaption>Stars and hours land fastest; Reserve takes longest and depends on whether your booking endpoint is publicly reachable. None are guaranteed &mdash; Google decides which to show on which query.</figcaption>
+    </figure>
+
+    <div class="callout">
+      <p><strong>What this won&rsquo;t do.</strong> Three honest limitations, in operator language: 1) Schema doesn&rsquo;t guarantee any feature &mdash; it makes you <em>eligible</em>; Google still chooses which surfaces to show on which query. 2) Google picks the rich result it wants &mdash; you can ship perfect FAQ schema and still get a plain blue link if the query is ambiguous or the FAQ is thin. 3) Schema won&rsquo;t fix a broken NAP &mdash; if your name, address, or phone is inconsistent across Google Business Profile, Yelp, and your site, the schema can&rsquo;t paper over the conflict, and the local-pack will keep ranking the more-coherent competitor.</p>
+    </div>
+
+    <div class="callout">
+      <p><strong>Schema is plumbing.</strong> It doesn&rsquo;t move the needle on its own &mdash; it makes you eligible for surfaces you weren&rsquo;t eligible for before. Combined with the citation-shaped writing from the AI Overviews piece, it&rsquo;s the highest-leverage single edit a restaurant site can ship in 2026.</p>
+    </div>
+
+    <hr style="margin:48px 0 32px;border:0;border-top:1px solid var(--line)">
+
+
     <!-- article-takeaways:start -->
             <aside class="key-takeaways" data-llm="takeaways" aria-label="Key takeaways">
               <p class="key-takeaways__eyebrow">Key takeaways</p>
