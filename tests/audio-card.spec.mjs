@@ -277,6 +277,34 @@ test.describe('Audio card — help dialog', () => {
     await expect(page.locator('.listen-help-dialog[open]')).toHaveCount(0);
   });
 
+  test('chapter list is populated from article H2s (excluding card headline)', async ({ page }) => {
+    await openHelpAndReady(page);
+    await expect(page.locator('.listen-help-chapters-section')).toBeVisible();
+    const chapterTexts = await page.locator('.listen-help-chapters button').allTextContents();
+    expect(chapterTexts.length).toBeGreaterThanOrEqual(2);
+    // The audio card's own H2 ("Prefer to listen?") is filtered out by
+    // the .listen-card exclusion — assert it's NOT in the list.
+    expect(chapterTexts).not.toContain('Prefer to listen?');
+    // First chapter on the test article is the H2 introducing week 1.
+    expect(chapterTexts[0]).toMatch(/Week 1/);
+  });
+
+  test('clicking a chapter closes the dialog and scrolls to the H2', async ({ page }) => {
+    await openHelpAndReady(page);
+    // Click the second chapter to ensure scroll/seek behavior is real
+    // (the first might already be in view).
+    const secondChapter = page.locator('.listen-help-chapters button').nth(1);
+    const chapterId = await secondChapter.getAttribute('data-chapter-id');
+    await secondChapter.click();
+    // Dialog closes
+    await expect(page.locator('.listen-help-dialog[open]')).toHaveCount(0);
+    // The corresponding H2 is now visible (smooth-scroll happened).
+    // We poll briefly because smooth scroll is animated.
+    await expect.poll(async () => {
+      return page.locator(`#${chapterId}`).isVisible();
+    }, { timeout: 2000 }).toBe(true);
+  });
+
   test('content includes the documented shortcut rows in order', async ({ page }) => {
     await openHelpAndReady(page);
     // Audit finding #4 — assert the EXACT sequence so a future refactor

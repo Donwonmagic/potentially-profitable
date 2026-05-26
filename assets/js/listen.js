@@ -1793,20 +1793,111 @@
 
     // Phase 3 — help dialog. Native <dialog>.showModal() handles the
     // focus trap, ESC-to-close, and inert-everything-else for us.
-    // Contents: keyboard-shortcut documentation (those shortcuts are
-    // undiscoverable without a home) and a short editorial note about
-    // the synthetic narration that scratches "what AM I listening
-    // to?" curiosity without putting a defensive disclosure on the
-    // card surface itself.
-    //
-    // We renamed from "settings" → "help" because (a) the dialog hosts
-    // only docs + an editorial note today, not preferences, and (b)
-    // the trigger icon is a question mark, not a gear. Class, aria-
-    // label, and Plausible event all align around "help" now.
+    // Contents: chapter navigation (the listener's primary skim tool;
+    // audio can't be visually scanned), keyboard-shortcut docs (those
+    // shortcuts are undiscoverable without a home), and a short
+    // editorial note about the synthetic narration.
     const helpBtn    = card.root.querySelector('.listen-help');
     const helpDialog = card.root.querySelector('.listen-help-dialog');
     const helpClose  = card.root.querySelector('.listen-help-close');
     const helpTitle  = card.root.querySelector('.listen-help-title');
+    const helpChaptersSection = card.root.querySelector('.listen-help-chapters-section');
+    const helpChaptersList    = card.root.querySelector('.listen-help-chapters');
+
+    // Populate the chapter list from the article's H2 elements. Read
+    // from #post-body directly (not from the chunks array) so the
+    // list is available BEFORE the user has played anything — the
+    // whole point of putting chapters in the help dialog is to let
+    // a listener skim the article and decide where to start, like
+    // a table of contents in a print article.
+    function populateChapters() {
+      if (!helpChaptersList) return;
+      const h2s = postBody ? Array.from(postBody.querySelectorAll('h2')) : [];
+      // Filter out h2s in non-prose contexts (further-reading section,
+      // sources, etc.) so the chapter list only carries the article's
+      // real section structure.
+      const chapters = h2s.filter((h) => {
+        // .listen-card excluded so the card's own "Prefer to listen?"
+        // headline doesn't get treated as a chapter — it's the
+        // entrypoint TO the chapters, not one of them.
+        if (h.closest('.listen-card, .further-reading, .sources, .inline-cta, .knit-rail, .smart-next, .post-end-cta, .post-end-mark')) return false;
+        const t = (h.textContent || '').trim();
+        return t.length > 0;
+      });
+      if (chapters.length < 2) return;  // Single H2 doesn't earn a chapter list
+      helpChaptersList.replaceChildren();
+      chapters.forEach((h, i) => {
+        const li = document.createElement('li');
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'listen-chapter-jump';
+        btn.dataset.chapterIndex = String(i);
+        btn.dataset.chapterId = h.id || '';
+        btn.textContent = (h.textContent || '').trim();
+        li.appendChild(btn);
+        helpChaptersList.appendChild(li);
+      });
+      if (helpChaptersSection) helpChaptersSection.hidden = false;
+    }
+    populateChapters();
+
+    // Find the chunk whose `element` is the given h2 (chunks are
+    // populated lazily from the manifest, so this returns -1 if the
+    // user hasn't started playback yet).
+    function findChunkIndexForElement(targetEl) {
+      if (!targetEl || !chunks.length) return -1;
+      for (let i = 0; i < chunks.length; i++) {
+        if (chunks[i].element === targetEl) return i;
+      }
+      return -1;
+    }
+    async function jumpToChapter(chapterId) {
+      const h2 = chapterId ? document.getElementById(chapterId) : null;
+      if (!h2) return;
+      // Scroll the chapter into view so the listener also sees where
+      // they're going visually — audio nav + visual nav stay paired.
+      h2.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      previewLimit = null;  // a deliberate chapter jump overrides preview cap
+      if (engine === 'audio' && chunks.length && audioEl) {
+        // Chunks loaded — direct seek.
+        const idx = findChunkIndexForElement(h2);
+        if (idx >= 0) {
+          studioSkipTo(idx);
+          if (state !== 'playing') startPlayback();
+          return;
+        }
+      }
+      // Chunks not loaded yet (audio never started) — start playback,
+      // then seek once the manifest is loaded.
+      const targetId = chapterId;
+      const onReady = () => {
+        const idx = findChunkIndexForElement(document.getElementById(targetId));
+        if (idx >= 0) studioSkipTo(idx);
+      };
+      await startPlayback();
+      // Poll briefly for the chunks array to populate. ensureStudioReady
+      // fetches the manifest async; on a fast network this is sub-second.
+      const start = Date.now();
+      const wait = () => {
+        if (chunks.length) { onReady(); return; }
+        if (Date.now() - start > 4000) return;  // give up after 4s
+        setTimeout(wait, 80);
+      };
+      wait();
+    }
+    // Click delegation for chapter buttons inside the dialog
+    if (helpChaptersList) {
+      helpChaptersList.addEventListener('click', (e) => {
+        const btn = e.target.closest('.listen-chapter-jump');
+        if (!btn) return;
+        const id = btn.dataset.chapterId;
+        closeHelp();
+        if (window.plausible) {
+          try { window.plausible('Audio: Chapter Jump'); } catch (_) {}
+        }
+        jumpToChapter(id);
+      });
+    }
     // Drop the gear/help button entirely on browsers that don't ship
     // <dialog>.showModal (pre-Safari 15.4, pre-Chrome 37). The fallback
     // we used to render was a modeless floating block without backdrop
@@ -2399,6 +2490,10 @@
             <button type="button" class="listen-help-close" aria-label="${i18n('audio.dismiss', 'Dismiss')}">
               <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
             </button>
+            <section class="listen-help-section listen-help-chapters-section" hidden>
+              <p class="listen-help-eyebrow">${i18n('audio.help_chapters_eyebrow', 'Chapters')}</p>
+              <ol class="listen-help-chapters"></ol>
+            </section>
             <section class="listen-help-section">
               <p class="listen-help-eyebrow">${i18n('audio.help_kbd_eyebrow', 'Keyboard')}</p>
               <dl class="listen-help-kbd">

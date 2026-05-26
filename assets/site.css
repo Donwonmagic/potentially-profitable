@@ -1712,6 +1712,34 @@ br.br-lg{display:none}
   border-radius:5px;
   padding:2px 6px; min-width:18px; text-align:center;
 }
+/* Chapter navigation in the help dialog. Listeners use this as a
+   table-of-contents — click a chapter to jump the audio there. */
+.listen-help-chapters{
+  list-style:none; margin:0; padding:0;
+  display:flex; flex-direction:column; gap:2px;
+  max-height:220px; overflow-y:auto;
+}
+.listen-help-chapters li{ margin:0; padding:0; }
+.listen-chapter-jump{
+  width:100%; text-align:left;
+  font-family:var(--font-body); font-size:13.5px; line-height:1.45;
+  color:var(--ink); background:transparent;
+  border:0; padding:6px 10px; border-radius:6px;
+  cursor:pointer;
+  position:relative;
+  transition:background-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease), padding-left var(--t-fast) var(--ease);
+}
+.listen-chapter-jump::before{
+  content:"";
+  position:absolute; left:0; top:50%; transform:translateY(-50%);
+  width:3px; height:60%;
+  background:transparent;
+  border-radius:2px;
+  transition:background-color var(--t-fast) var(--ease);
+}
+.listen-chapter-jump:hover{ background:var(--teal-tint); color:var(--teal-dark); padding-left:14px; }
+.listen-chapter-jump:hover::before{ background:var(--teal); }
+.listen-chapter-jump:focus-visible{ outline:2px solid var(--teal); outline-offset:2px; }
 @media (prefers-reduced-motion:reduce){
   .listen-help-dialog[open]{ animation:none; }
 }
