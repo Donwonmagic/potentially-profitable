@@ -358,7 +358,8 @@
         "pt",
         "zh"
       ],
-      "status": "partial"
+      "status": "partial",
+      "needs_rerender": "Wave 5 fold from restaurant-schema-markup-complete-paste-ready-example added 209 lines; audio chunk map is stale for the appended sections."
     },
     "reservation-conversion-guide": {
       "languages": [
@@ -369,7 +370,8 @@
         "pt",
         "zh"
       ],
-      "status": "partial"
+      "status": "partial",
+      "needs_rerender": "Wave 5 fold from five-restaurant-website-changes-recover-one-percent-margin + how-to-recover-reservations-from-googles-find-a-table added 308 lines; audio chunk map is stale for the appended sections."
     },
     "third-party-delivery-economics": {
       "languages": [
@@ -380,7 +382,8 @@
         "pt",
         "zh"
       ],
-      "status": "pending"
+      "status": "partial",
+      "needs_rerender": "Wave 5 fold from is-doordash-worth-it-for-restaurants-in-2026 added 222 lines; audio chunk map is stale for the appended sections."
     }
   },
   "es-library": {
@@ -431,7 +434,21 @@
         "zh"
       ],
       "status": "pending",
-      "source_lang": "es"
+      "source_lang": "es",
+      "note": "ES counterpart of third-party-delivery-economics; standalone ES merge primary (no native ES counterpart of the EN primary \"an-honest-doordash-math\" exists in the slug map)."
+    },
+    "los-6-tipos-de-schema-markup-que-google-usa": {
+      "languages": [
+        "en",
+        "es",
+        "fr",
+        "it",
+        "pt",
+        "zh"
+      ],
+      "status": "partial",
+      "source_lang": "es",
+      "note": "ES counterpart of restaurant-schema-markup-guide. ES does NOT have a folded equivalent of the EN secondary (no ES translation of restaurant-schema-markup-complete-paste-ready-example exists); audio reflects just the primary content."
     }
   },
   "research": {
