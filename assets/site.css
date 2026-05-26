@@ -2041,6 +2041,13 @@ br.br-lg{display:none}
    without dropping a heavy color into the prose. */
 .article-body .listen-sent{transition:background-color var(--t-fast) var(--ease),box-shadow var(--t-fast) var(--ease)}
 .article-body .listen-sent.is-sent-reading{background:rgba(42,80,200,0.10);box-shadow:inset 0 -2px 0 var(--teal);border-radius:3px}
+/* Phase 4 — click-to-seek affordance. The body[data-audio-seek] attr
+   is set by listen.js when the ?seek=1 feature flag is on and audio
+   has been engaged. Paragraphs and sentence spans show a pointer
+   cursor in that mode only; otherwise the article reads normally. */
+body[data-audio-seek] .article-body p,
+body[data-audio-seek] .article-body .listen-sent{cursor:pointer}
+body[data-audio-seek] .article-body .listen-sent:hover{background:rgba(42,80,200,0.06)}
 @media (prefers-reduced-motion:reduce){
   .article-body .listen-sent{transition:none}
 }

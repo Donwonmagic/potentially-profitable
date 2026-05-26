@@ -149,6 +149,17 @@
     const prefs = loadPrefs();
     if (rateSelect && prefs.rate) rateSelect.value = String(prefs.rate);
 
+    // Phase 4 — click-paragraph-to-seek feature flag. Default OFF
+    // (audit finding #12: shipping it on by default would surprise
+    // users mid-text-selection or mid-tap-hold and produce silent
+    // bounces). Active when URL has `?seek=1`. A future settings
+    // popover can flip this from a stored pref.
+    const seekFlagOn = (() => {
+      try {
+        return new URLSearchParams(location.search).get('seek') === '1';
+      } catch (_) { return false; }
+    })();
+
     // Phase 5 — "Continue where you left off". Debounced playhead save
     // into prefs.lastPosition[slug] with a savedAt timestamp. The chip
     // is offered on next visit if the position is more than 30s in,
@@ -1649,6 +1660,13 @@
       state = next;
       syncMediaSessionState();
       card.root.setAttribute('data-state', next);
+      // Phase 4 — body-level data attr that gates the click-to-seek
+      // feature's CSS hover affordances. Set when audio is engaged
+      // AND the ?seek=1 flag is on. CSS uses this so paragraphs show
+      // a "this is clickable" cursor only in that specific mode,
+      // not while a casual reader is just trying to highlight text.
+      const seekActive = next !== 'idle' && seekFlagOn;
+      document.body.toggleAttribute('data-audio-seek', seekActive);
       const pressed = next === 'playing' ? 'true' : 'false';
       playBtn.setAttribute('aria-pressed', pressed);
       playBtn.setAttribute('aria-label',
@@ -1772,6 +1790,49 @@
     }
     const shareBtn = card.root.querySelector('.listen-share');
     if (shareBtn) shareBtn.addEventListener('click', shareAtCurrentTime);
+
+    // Phase 4 — click-paragraph-to-seek. Default OFF, opt-in via ?seek=1.
+    // We delegate from #post-body so we don't have to attach a listener
+    // per paragraph. Order of preference: sentence span (finest seek) →
+    // chunk element (paragraph-level). Skipped silently while the user
+    // is selecting text, hovering a link/button, or before any audio
+    // has been started.
+    function handleBodySeekClick(e) {
+      if (!seekFlagOn) return;
+      if (state === 'idle') return;
+      if (engine !== 'audio' || !audioEl) return;
+      // Don't hijack interactive elements within the article body.
+      if (e.target.closest('a, button, input, textarea, select, [contenteditable]')) return;
+      // Don't hijack while the user is selecting text — they're reading,
+      // not navigating.
+      try { if (window.getSelection && window.getSelection().toString()) return; } catch (_) {}
+      const sentSpan = e.target.closest('.listen-sent');
+      if (sentSpan && sentSpan.dataset.sentStart) {
+        const t = parseFloat(sentSpan.dataset.sentStart);
+        if (isFinite(t)) {
+          try { audioEl.currentTime = t; } catch (_) {}
+          if (state !== 'playing') startPlayback();
+          if (window.plausible) {
+            try { window.plausible('Audio: Sentence Click Seek'); } catch (_) {}
+          }
+        }
+        return;
+      }
+      // Fall back: walk the chunks for the first whose element contains target.
+      for (let i = 0; i < chunks.length; i++) {
+        const c = chunks[i];
+        if (c.element && c.element.contains(e.target)) {
+          try { audioEl.currentTime = c.start || 0; } catch (_) {}
+          if (state !== 'playing') startPlayback();
+          currentIndex = i;
+          if (window.plausible) {
+            try { window.plausible('Audio: Sentence Click Seek'); } catch (_) {}
+          }
+          return;
+        }
+      }
+    }
+    if (postBody) postBody.addEventListener('click', handleBodySeekClick);
 
     // Phase 5 — resume chip. Render after card is in DOM. The chip
     // suppresses itself when `?t=` is present in the URL because the
