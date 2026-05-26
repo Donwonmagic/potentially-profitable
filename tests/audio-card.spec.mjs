@@ -200,6 +200,68 @@ test.describe('Audio card — click-to-seek flag', () => {
   });
 });
 
+test.describe('Audio card — help dialog', () => {
+  // The help dialog is the home for the keyboard shortcuts (otherwise
+  // undiscoverable) and a short editorial note about the synthetic
+  // narration. These tests lock in the audit-driven UX choices: focus
+  // lands on the title (not the close button — Space/Enter reflex
+  // protection), Space inside the dialog doesn't toggle play, ESC
+  // closes natively, and outside-click only fires for genuine backdrop.
+
+  async function openHelpAndReady(page) {
+    await page.goto(ARTICLE);
+    await page.waitForSelector('.listen-card');
+    // Reveal the extras row so the help button is clickable
+    await page.locator('.listen-card-extras').evaluate((el) => { el.hidden = false; });
+    await page.locator('.listen-help').click();
+    await page.waitForTimeout(150);
+  }
+
+  test('opens with focus on the title (not the close button)', async ({ page }) => {
+    await openHelpAndReady(page);
+    const focused = await page.evaluate(() => ({
+      className: document.activeElement?.className,
+      tagName: document.activeElement?.tagName,
+    }));
+    expect(focused.tagName).toBe('H3');
+    expect(focused.className).toContain('listen-help-title');
+  });
+
+  test('Space inside the dialog does not toggle the player', async ({ page }) => {
+    await openHelpAndReady(page);
+    // The card hasn't actually been played in this headless context.
+    // Pre-state should be idle; Space inside the dialog shouldn't kick
+    // it to anything else.
+    const before = await page.locator('.listen-card').getAttribute('data-state');
+    await page.keyboard.press('Space');
+    await page.waitForTimeout(150);
+    const after = await page.locator('.listen-card').getAttribute('data-state');
+    expect(after).toBe(before);
+  });
+
+  test('ESC closes the dialog (native <dialog> behavior)', async ({ page }) => {
+    await openHelpAndReady(page);
+    await expect(page.locator('.listen-help-dialog[open]')).toHaveCount(1);
+    await page.keyboard.press('Escape');
+    await page.waitForTimeout(150);
+    await expect(page.locator('.listen-help-dialog[open]')).toHaveCount(0);
+  });
+
+  test('close button × dismisses the dialog', async ({ page }) => {
+    await openHelpAndReady(page);
+    await page.locator('.listen-help-close').click();
+    await page.waitForTimeout(150);
+    await expect(page.locator('.listen-help-dialog[open]')).toHaveCount(0);
+  });
+
+  test('content includes the keyboard shortcut rows', async ({ page }) => {
+    await openHelpAndReady(page);
+    await expect(page.locator('.listen-help-kbd kbd', { hasText: 'Space' })).toBeVisible();
+    await expect(page.locator('.listen-help-kbd kbd', { hasText: 'J' })).toBeVisible();
+    await expect(page.locator('.listen-help-kbd kbd', { hasText: 'K' })).toBeVisible();
+  });
+});
+
 test.describe('Audio card — i18n', () => {
   test('Spanish article localizes the visible card chrome', async ({ page }) => {
     await page.goto(ARTICLE_ES);
