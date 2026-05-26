@@ -85,15 +85,25 @@ const MARKER_RE = /^\/\*\s*@shell:(\w+)\s*===\s*(.+?)\s*===\s*\*\/\s*$/;
 const src   = fs.readFileSync(SRC, 'utf8');
 const lines = src.split('\n');
 
-// Populate SECTIONS from the marker scan. Line 1 is implicit.
-SECTIONS.push({ start: 1, shell: 'core', label: 'Pre-token boilerplate' });
+// Populate SECTIONS from the marker scan. Line 1 is implicit — the
+// file's pre-marker prologue (currently the :root design-token block
+// at line 1, blank line 2) is shell:core. The next real section
+// begins at the first marker line.
+SECTIONS.push({ start: 1, shell: 'core', label: 'Root tokens (:root)' });
 for (let i = 0; i < lines.length; i++) {
   const m = lines[i].match(MARKER_RE);
   if (!m) continue;
   SECTIONS.push({ start: i + 1, shell: m[1], label: m[2] });
 }
 if (SECTIONS.length < 2) {
-  console.error(`No @shell markers found in ${SRC} — markers are the source of truth for the section/shell map.`);
+  console.error(
+    `No @shell markers found in ${SRC} — markers are the source of\n` +
+    `truth for the section/shell map. Recover by reverting site.css\n` +
+    `to a commit that has markers (e.g.,\n` +
+    `  git log -p assets/site.css | grep -m1 '@shell:'\n` +
+    `to find the last good revision), or restore them manually from\n` +
+    `the docstring at top of this script.`
+  );
   process.exit(2);
 }
 
@@ -153,7 +163,13 @@ for (let i = 0; i < SECTIONS.length; i++) {
   const cur  = SECTIONS[i];
   const next = SECTIONS[i + 1];
   const endLine = next ? next.start - 1 : lines.length;
-  const slice = lines.slice(cur.start - 1, endLine).join('\n');
+  // Strip the @shell marker from the emitted slice — it's build
+  // metadata the browser doesn't need, and 69 of them across the
+  // shells adds ~2 KB gzip of pure noise to every page load.
+  const slice = lines
+    .slice(cur.start - 1, endLine)
+    .filter((l) => !MARKER_RE.test(l))
+    .join('\n');
   const header = `\n/* ===== [${cur.shell}] ${cur.label} (lines ${cur.start}-${endLine}) ===== */`;
   buckets[cur.shell].push(header + '\n' + slice);
 }
