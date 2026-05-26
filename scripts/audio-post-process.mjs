@@ -41,6 +41,15 @@
  *      those back as measured_* values with linear=true so the gain
  *      is constant across the file, not dynamically pumping a signal
  *      whose history might fool the streaming algorithm.
+ *   6. Pink-noise bed — added as a SECOND input stream and mixed
+ *      under the voice via -filter_complex. amplitude=0.012 at the
+ *      lavfi source, further attenuated by volume=-6dB on the bed
+ *      side of amix. Net level ~-44 dBFS RMS — well below the
+ *      voice's perceived loudness, audible only as ambient warmth
+ *      rather than discrete noise. Fills the unnatural digital
+ *      silences between TTS phonemes with the kind of low-level
+ *      ambience that signals "produced editorial radio" rather
+ *      than "raw AI demo". Disable per-run with `--no-bed`.
  *
  * Skipped: arnndn (RNNoise). Useful for recorded audio with ambient
  * noise; Kokoro output has no ambient noise to remove — running it
@@ -95,13 +104,17 @@ import { spawnSync } from 'node:child_process';
 // .2 — fixed aecho parameter misread (out_gain was attenuating the
 //      entire signal by 22 dB) and converted loudnorm to true two-
 //      pass with linear=true. Audit findings #1 and #2.
-const PIPELINE_VERSION = '20260526.2';
+// .3 — added pink-noise bed at ~-44 dBFS RMS under the voice. Fills
+//      the digital silences between phonemes with a thin warmth
+//      that listeners can't consciously hear but registers as
+//      "produced" rather than "AI demo". Disable via `--no-bed`
+//      if it turns out to be objectionable at scale.
+const PIPELINE_VERSION = '20260526.3';
 
-// Filter chain WITHOUT the terminal loudnorm. We re-use this list
-// for both passes — the first one appends `loudnorm=...:print_format=
-// json` for measurement, the second appends `loudnorm=...:measured_*
-// :linear=true` for application.
-const FILTER_CHAIN_PRE_LOUDNORM = [
+// VOICE chain WITHOUT loudnorm. The bed is added as a second input
+// stream and mixed in via -filter_complex; the chain below shapes the
+// voice signal before that mix.
+const VOICE_CHAIN = [
   // Gentle low-mid warmth + glassiness tame
   'equalizer=f=200:width_type=h:width=80:g=1.5',
   'equalizer=f=3500:width_type=h:width=1500:g=-2',
@@ -117,6 +130,12 @@ const FILTER_CHAIN_PRE_LOUDNORM = [
   'aecho=in_gain=1:out_gain=1:delays=80:decays=0.08',
 ].join(',');
 
+// BED layer. Pink noise at amplitude 0.012, attenuated 6dB further,
+// then mixed under the voice. Net level ~-44 dBFS RMS — below the
+// voice's -23 LUFS by ~21 dB. Audible only as ambient warmth, not
+// as discrete noise. The bed continues across the entire duration
+// (amix's `duration=first` clips it to the voice).
+const BED_FILTER = 'volume=-6dB';
 const LOUDNORM_TARGETS = 'I=-16:TP=-1.5:LRA=11';
 
 /* -------------------- args -------------------- */
@@ -127,9 +146,10 @@ const dryRun  = flags.has('--dry-run');
 const force   = flags.has('--force');
 const measure = flags.has('--measure');
 const noBackup = flags.has('--no-backup');
+const noBed    = flags.has('--no-bed');
 
 if (targets.length === 0) {
-  console.error('usage: audio-post-process.mjs <mp3 or post dir> [...] [--dry-run|--force|--measure|--no-backup]');
+  console.error('usage: audio-post-process.mjs <mp3 or post dir> [...] [--dry-run|--force|--measure|--no-backup|--no-bed]');
   process.exit(2);
 }
 
@@ -152,17 +172,43 @@ function readPipelineVersion(mp3Path) {
   return r.stdout.trim() || null;
 }
 
-// First-pass measurement — run the chain + loudnorm in JSON print
-// mode and parse the trailing JSON block from stderr. The chain
-// matters here: loudnorm measures whatever signal hits it, so we
-// must shape the audio identically to pass 2 first.
+// Build the full filter graph used by both passes. The graph mixes
+// the voice (input 0, processed through VOICE_CHAIN) with the bed
+// (input 1, pink noise from lavfi, attenuated). The terminal
+// loudnorm node is appended by the caller (with different args for
+// measure-vs-apply).
+function buildFilterComplex(loudnormArgs) {
+  if (noBed) {
+    // Bed disabled — single-input chain, no amix.
+    return `[0:a] ${VOICE_CHAIN},loudnorm=${loudnormArgs} [out]`;
+  }
+  return [
+    `[0:a] ${VOICE_CHAIN} [voice]`,
+    `[1:a] ${BED_FILTER} [bed]`,
+    `[voice][bed] amix=inputs=2:duration=first:dropout_transition=0,loudnorm=${loudnormArgs} [out]`,
+  ].join(';');
+}
+
+// Pink-noise lavfi source. amplitude tunes the per-sample peak; the
+// VOICE_CHAIN-side BED_FILTER (volume=-6dB) provides the final mix
+// attenuation. Duration is large so it always outlasts the voice;
+// amix's duration=first clips the output to the voice's length.
+const BED_INPUT_ARGS = ['-f', 'lavfi', '-i', 'anoisesrc=color=pink:amplitude=0.012:duration=9999'];
+
+// First-pass measurement — run the WHOLE graph (voice chain + bed
+// mix + loudnorm in measure mode) so the measurement reflects what
+// pass 2 will actually normalize. Single-pass loudnorm-with-bed
+// would otherwise underestimate the integrated loudness because it
+// only sees the voice chain.
 function measureThroughChain(inputPath) {
-  const r = spawnSync('ffmpeg', [
-    '-hide_banner', '-nostats',
-    '-i', inputPath,
-    '-af', `${FILTER_CHAIN_PRE_LOUDNORM},loudnorm=${LOUDNORM_TARGETS}:print_format=json`,
+  const cmd = ['-hide_banner', '-nostats', '-i', inputPath];
+  if (!noBed) cmd.push(...BED_INPUT_ARGS);
+  cmd.push(
+    '-filter_complex', buildFilterComplex(`${LOUDNORM_TARGETS}:print_format=json`),
+    '-map', '[out]',
     '-f', 'null', '-',
-  ], { encoding: 'utf8' });
+  );
+  const r = spawnSync('ffmpeg', cmd, { encoding: 'utf8' });
   return parseLoudnormJson(r.stderr);
 }
 
@@ -192,9 +238,9 @@ function parseLoudnormJson(stderr) {
   }
 }
 
-function buildAppliedChain(m) {
-  const lp = [
-    `loudnorm=${LOUDNORM_TARGETS}`,
+function buildAppliedLoudnormArgs(m) {
+  return [
+    LOUDNORM_TARGETS,
     `measured_I=${m.input_i}`,
     `measured_LRA=${m.input_lra}`,
     `measured_TP=${m.input_tp}`,
@@ -202,7 +248,6 @@ function buildAppliedChain(m) {
     `offset=${m.target_offset}`,
     'linear=true',
   ].join(':');
-  return `${FILTER_CHAIN_PRE_LOUDNORM},${lp}`;
 }
 
 function processOne(mp3Path) {
@@ -247,21 +292,23 @@ function processOne(mp3Path) {
     console.log(`  before: I=${measured.input_i} LUFS · LRA=${measured.input_lra} LU · TP=${measured.input_tp} dBTP · target_offset=${measured.target_offset}`);
   }
 
-  const chain = buildAppliedChain(measured);
+  const loudnormArgs = buildAppliedLoudnormArgs(measured);
 
-  // Pass 2 — apply.
-  const r = spawnSync('ffmpeg', [
-    '-hide_banner', '-loglevel', 'error',
-    '-y',
-    '-i', inputPath,
-    '-af', chain,
+  // Pass 2 — apply. Same filter graph as the measurement pass, just
+  // with measured loudnorm args instead of print_format=json.
+  const applyCmd = ['-hide_banner', '-loglevel', 'error', '-y', '-i', inputPath];
+  if (!noBed) applyCmd.push(...BED_INPUT_ARGS);
+  applyCmd.push(
+    '-filter_complex', buildFilterComplex(loudnormArgs),
+    '-map', '[out]',
     '-codec:a', 'libmp3lame',
     '-b:a', '96k',
     '-ar', '24000',
     '-ac', '1',
     '-metadata', `pipeline_version=${PIPELINE_VERSION}`,
     tmp,
-  ], { encoding: 'utf8', stdio: ['ignore', 'inherit', 'inherit'] });
+  );
+  const r = spawnSync('ffmpeg', applyCmd, { encoding: 'utf8', stdio: ['ignore', 'inherit', 'inherit'] });
   if (r.status !== 0) {
     console.error(`ffmpeg failed on ${mp3Path}`);
     try { fs.unlinkSync(tmp); } catch (_) {}
