@@ -43,20 +43,29 @@ test.describe('Audio card — visual chrome', () => {
     expect(border).toMatch(/3px solid rgb\(42, 80, 200\)/);
   });
 
-  test('headline scales responsively with clamp()', async ({ page, viewport }) => {
+  // Desktop / tablet branch — runs in projects with viewport >= 720.
+  test('headline clamp() lands between 22 and 26 px above 720', async ({ page, viewport }) => {
+    test.skip(viewport.width < 720, 'desktop/tablet only');
     await page.goto(ARTICLE);
     await page.waitForSelector('.listen-card');
     const size = await page.locator('.listen-card-title').evaluate((el) =>
       parseFloat(getComputedStyle(el).fontSize)
     );
-    // Mobile (375 wide) lands at 20px via the @media override.
-    // Tablet/desktop hit the clamp formula somewhere between 22 and 26.
-    if (viewport.width < 720) {
-      expect(size).toBeCloseTo(20, 0);
-    } else {
-      expect(size).toBeGreaterThanOrEqual(22);
-      expect(size).toBeLessThanOrEqual(26);
-    }
+    expect(size).toBeGreaterThanOrEqual(22);
+    expect(size).toBeLessThanOrEqual(26);
+  });
+  // Mobile branch — verifies the @media (max-width:720) override fires.
+  // Previously folded into the same test with a viewport-conditional
+  // branch, which made the mobile branch dead code under --project=desktop
+  // (audit finding #4).
+  test('headline drops to 20px under the 720 breakpoint', async ({ page, viewport }) => {
+    test.skip(viewport.width >= 720, 'mobile only');
+    await page.goto(ARTICLE);
+    await page.waitForSelector('.listen-card');
+    const size = await page.locator('.listen-card-title').evaluate((el) =>
+      parseFloat(getComputedStyle(el).fontSize)
+    );
+    expect(size).toBeCloseTo(20, 0);
   });
 
   test('language select reserves room for the globe glyph', async ({ page }) => {
@@ -148,44 +157,72 @@ test.describe('Audio card — affordances', () => {
 });
 
 test.describe('Audio card — click-to-seek flag', () => {
-  test('default OFF: body[data-audio-seek] absent and cursor stays auto', async ({ page }) => {
+  // We can't reliably play audio in headless Chromium (autoplay policy,
+  // AudioContext suspend, no output device). Instead we drive the engine
+  // by clicking the play button — listen.js's startPlayback calls
+  // setState('loading') which fires the data-audio-seek toggle inside
+  // the production code path. The audio fetch may fail in headless,
+  // but the setState side-effect runs synchronously before the await.
+  // Audit finding #3 — previously the test re-implemented the gate
+  // logic inline and passed without touching production code.
+
+  test('?seek=1 absent: body[data-audio-seek] never appears even after state transitions', async ({ page }) => {
     await page.goto(ARTICLE);
     await page.waitForSelector('.listen-card');
-    // Simulate engine engagement (we can't reliably play audio in headless,
-    // but the listen.js engine sets the attribute via setState — which we
-    // emulate here to test the CSS gate.)
-    await page.evaluate(() => {
-      // Manually fire what setState would do at idle: no attr.
-      document.body.removeAttribute('data-audio-seek');
-    });
+    // Click play to trigger setState. The engine's seekFlagOn const
+    // is captured at init time from the URL — without ?seek=1 it's
+    // false, and setState's `next !== 'idle' && seekFlagOn` evaluates
+    // false for every transition.
+    await page.locator('.listen-card-play').click().catch(() => {});
+    // Give setState a tick to fire and toggle the attr (if it would).
+    await page.waitForTimeout(200);
+    const hasAttr = await page.evaluate(() => document.body.hasAttribute('data-audio-seek'));
+    expect(hasAttr).toBe(false);
     const cursor = await page.locator('.article-body p').first().evaluate((el) => getComputedStyle(el).cursor);
     expect(cursor).toBe('auto');
   });
 
-  test('with ?seek=1 + audio engaged: body[data-audio-seek] is set and paragraphs become clickable', async ({ page }) => {
+  test('?seek=1 present: body[data-audio-seek] appears once state leaves idle', async ({ page }) => {
     await page.goto(ARTICLE + '?seek=1');
     await page.waitForSelector('.listen-card');
-    // The engine reads the flag at init; setState then toggles the attr
-    // when state !== 'idle'. In headless, we simulate that by toggling
-    // directly (the click handler reads the same flag).
-    await page.evaluate(() => {
-      // Emulate setState's effect.
-      if (new URLSearchParams(location.search).get('seek') === '1') {
-        document.body.toggleAttribute('data-audio-seek', true);
-      }
-    });
+    // Pre-state: idle. The attr should NOT yet exist.
+    const preAttr = await page.evaluate(() => document.body.hasAttribute('data-audio-seek'));
+    expect(preAttr).toBe(false);
+    // Click play. setState('loading') runs inside startStudioPlayback
+    // synchronously before its first await. data-audio-seek toggles
+    // because state !== 'idle' AND seekFlagOn is true.
+    await page.locator('.listen-card-play').click().catch(() => {});
+    await page.waitForTimeout(200);
+    const postAttr = await page.evaluate(() => document.body.hasAttribute('data-audio-seek'));
+    expect(postAttr).toBe(true);
     const cursor = await page.locator('.article-body p').first().evaluate((el) => getComputedStyle(el).cursor);
     expect(cursor).toBe('pointer');
   });
 });
 
 test.describe('Audio card — i18n', () => {
-  test('Spanish article shows localized eyebrow + headline + sub + byline', async ({ page }) => {
+  test('Spanish article localizes the visible card chrome', async ({ page }) => {
     await page.goto(ARTICLE_ES);
     await page.waitForSelector('.listen-card');
+    // These three are visible on initial render — verify visibility AND copy.
+    await expect(page.locator('.listen-card-kicker')).toBeVisible();
     await expect(page.locator('.listen-card-kicker')).toHaveText(/Edición en audio/i);
+    await expect(page.locator('.listen-card-title')).toBeVisible();
     await expect(page.locator('.listen-card-title')).toHaveText(/Prefieres escucharlo/);
+    await expect(page.locator('.listen-card-sub')).toBeVisible();
     await expect(page.locator('.listen-card-sub')).toContainText('Pulsa reproducir');
+  });
+
+  // The byline lives inside .listen-card-extras which is hidden until first
+  // play (`assets/js/listen.js:2297`). toHaveText reads textContent, which
+  // is populated at mount — so we assert the copy is right BUT also flip
+  // the extras row visible first so a `display:none` regression on
+  // .listen-source-note would surface (audit finding #5).
+  test('Spanish byline text is "Narrado para The Muntin Desk" and visible when revealed', async ({ page }) => {
+    await page.goto(ARTICLE_ES);
+    await page.waitForSelector('.listen-card');
+    await page.locator('.listen-card-extras').evaluate((el) => { el.hidden = false; });
+    await expect(page.locator('.listen-source-note')).toBeVisible();
     await expect(page.locator('.listen-source-note')).toHaveText(/Narrado para The Muntin Desk/);
   });
 });
