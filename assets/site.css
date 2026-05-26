@@ -1775,11 +1775,17 @@ br.br-lg{display:none}
 .listen-resume-dismiss{background:none;border:0;border-left:1px solid rgba(42,80,200,0.25);padding:6px 10px;color:var(--teal-dark);cursor:pointer;opacity:0.65;transition:opacity var(--t-fast) var(--ease),background-color var(--t-fast) var(--ease)}
 .listen-resume-dismiss:hover{opacity:1;background:rgba(42,80,200,0.08)}
 .listen-resume-chip:focus-visible,.listen-resume-dismiss:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
-/* Phase 5 — "What's next" prompt after a natural finish. Same visual
-   family as the resume chip (royal-blue tint inside a rounded pill)
-   so the body cell reads as a coherent set of "states the card can
-   be in". Appears after the 2.8s warm-glow finale; auto-dismisses
-   at 90s; user can dismiss instantly via the ×. */
+/* Phase 5 — "What's next" prompt after a natural finish. Visual
+   family echoes the existing finale glow (warm cream-gold), not
+   the royal-blue family used elsewhere — the prompt is part of
+   the same emotional moment as the finale, not a separate ask.
+   Color trio (#7C5A1F text, rgba(199,156,85,...) border,
+   rgba(217,178,99,...) fill) is hand-tuned around `--gold:#B7791F`
+   and is intentionally NOT derived from the token — the trio is
+   tuned for legibility on the card's white→cream gradient at the
+   specific 13px / 6px-padding scale. If --gold ever shifts, all
+   three values should be retuned together, not refactored to
+   reference it. */
 .listen-finished-prompt{
   display:inline-flex;align-items:center;gap:0;margin:10px 0 0;
   background:rgba(217,178,99,0.10);  /* warm cream-gold to echo the finale glow */
@@ -2187,11 +2193,14 @@ br.br-lg{display:none}
 .article-body .is-reading.is-reading-callout::before{display:none}
 /* Read-trail: paragraphs the audio has already voiced get a thin
    teal rail along the left edge so the reader can see, at a glance,
-   how far the voice has carried them through the article. Persists
-   across the session — only resets when the engine resets
-   currentIndex to 0 (e.g., on a full restart). Subtle enough that
-   the unread paragraphs don't feel "less" — just hinting at progress
-   the listener has actually made. */
+   how far the voice has carried them through the article. Subtle
+   enough that the unread paragraphs don't feel "less" — just
+   hinting at progress the listener has actually made.
+   Lifecycle: rails accumulate as audio plays. A NATURAL completion
+   (finishStudioPlayback's withFinale path) clears them as part of
+   the post-finale reset, so a replay starts fresh. A user-aborted
+   stop (stop/close/navigation) does NOT clear — the trail persists
+   into the next session and reads as "you've been here before". */
 .article-body .was-read{position:relative}
 .article-body .was-read::before{
   content:"";position:absolute;left:-14px;top:0.4em;bottom:0.4em;

@@ -2140,6 +2140,10 @@
     function hideFinishedPrompt() {
       if (finishedPrompt) finishedPrompt.hidden = true;
       if (finishedAutoTimer) { clearTimeout(finishedAutoTimer); finishedAutoTimer = null; }
+      // Restore the preview button so a future fresh visitor still
+      // sees the entry-point. (Speech-fallback mode keeps it hidden
+      // via the audioSrc guard.)
+      if (previewBtn && audioSrc) previewBtn.hidden = false;
     }
     function showFinishedPrompt() {
       if (!finishedPrompt) return;
@@ -2153,6 +2157,19 @@
       // visit, which matches user intent (they completed it once,
       // they don't need "continue from").
       clearResume();
+      // Hide the 30-second preview affordance — offering a sample
+      // to someone who just listened to the whole thing is cognitive
+      // dissonance and undercuts the editorial nudge of the finished
+      // prompt. Restored when the prompt is dismissed.
+      if (previewBtn) previewBtn.hidden = true;
+      // Locale-aware library link. The text translates via i18n but
+      // the href has to point at the right localized library hub —
+      // /es/library/ for Spanish, /library/ for English (and as the
+      // default for other languages until their library hubs land).
+      if (finishedLink) {
+        const libHref = currentLanguage === 'es' ? '/es/library/' : '/library/';
+        finishedLink.setAttribute('href', libHref);
+      }
       finishedPrompt.hidden = false;
       if (window.plausible) {
         try { window.plausible('Audio: Finished Prompt Shown'); } catch (_) {}
