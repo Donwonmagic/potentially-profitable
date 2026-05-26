@@ -199,6 +199,30 @@ audio variant. Defining choices to preserve when touching the card:
   `.is-sent-reading` (deeper teal tint + 2px teal underline). Mixed-
   children paragraphs (links, em, strong) fall back to paragraph-
   level highlight gracefully.
+- **Help dialog (`.listen-help-dialog`).** Native `<dialog>` opened
+  by the small `?` icon in the extras row. Hosts keyboard-shortcut
+  documentation + a one-paragraph editorial note about the synthetic
+  narration. Contracts to preserve:
+  - **First focus on the title**, not the close button. listen.js's
+    openHelp() explicitly calls `helpTitle.focus()` after
+    `showModal()` so a reflex Space/Enter doesn't dismiss before
+    anything is read. The h3 has `tabindex="-1"` to make it
+    programmatically focusable; CSS suppresses the default outline.
+  - **Padding lives on `.listen-help-inner`**, NOT on the dialog
+    itself. The outside-click handler checks `e.target ===
+    helpDialog` — true only for genuine backdrop clicks. Moving
+    padding outside this check stops fat-finger taps on the
+    content edge from dismissing the dialog.
+  - **No fallback path.** Browsers without `<dialog>.showModal`
+    (effectively none in support as of May 2026) hide the help
+    button entirely. The previous "render as a modeless block"
+    fallback was strictly worse than no affordance.
+  - **Global keyboard shortcuts bail when the dialog is open** via
+    a check on `.listen-help-dialog[open]`. Space inside the dialog
+    must not toggle play.
+  - **Copy register: plain operator English.** No "broadcast
+    loudness", no "MP3", no "synthetic narration". The body reads
+    as a publication note, not a Pro Tools session.
 
 ### Conversation shell
 
