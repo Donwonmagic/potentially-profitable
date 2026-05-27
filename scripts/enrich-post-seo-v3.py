@@ -249,11 +249,13 @@ def patch_article_meta(html: str) -> str:
     if ARTICLE_META_BLOCK_RE.search(html):
         return ARTICLE_META_BLOCK_RE.sub(new_block, html, count=1)
 
-    # Anchor: right before the JSON-LD <script>, or right before </head>.
-    script_anchor_re = re.compile(r'(\n<script type="application/ld\+json">)')
-    m = script_anchor_re.search(html)
-    if m:
-        return html[: m.start()] + new_block.rstrip("\n") + html[m.start():]
+    # Anchor: right before </head>. We deliberately do NOT anchor before
+    # the first JSON-LD <script> because some pages (notably
+    # /learn/topics/<slug>/) wrap their JSON-LD with builder sentinels
+    # like <!-- topic-schema:start -->…<!-- topic-schema:end -->, and
+    # the injector that owns those sentinels rewrites the whole region
+    # on each run — clobbering anything we inject inside it. </head>
+    # is the safe terminal anchor across every page type.
     head_close_re = re.compile(r'(</head>)', re.IGNORECASE)
     m = head_close_re.search(html)
     if m:
