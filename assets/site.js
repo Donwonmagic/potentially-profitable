@@ -806,28 +806,34 @@
       recognition.continuous = false;
       recognition.interimResults = true;
       recognition.maxAlternatives = 1;
+      const activeRecognition = recognition;
+      const recognitionLang = activeRecognition.lang;
       voiceBtn.setAttribute('aria-pressed', 'true');
       voiceBtn.setAttribute('aria-label', strings.voiceStop);
       voiceBtn.setAttribute('title', strings.voiceStop);
       input.setAttribute('placeholder', strings.voiceHint);
-      recognition.onresult = (e) => {
+      activeRecognition.onresult = (e) => {
         let txt = '';
         for (let i = e.resultIndex; i < e.results.length; i++) txt += e.results[i][0].transcript;
         if (!txt) return;
         input.value = txt;
         input.dispatchEvent(new Event('input', { bubbles: true }));
       };
-      recognition.onerror = () => { stopVoice(); };
-      recognition.onend = () => { stopVoice(); };
-      try { recognition.start(); }
-      catch (_) { stopVoice(); }
+      activeRecognition.onerror = () => { stopVoice(activeRecognition); };
+      activeRecognition.onend = () => { stopVoice(activeRecognition); };
+      try { activeRecognition.start(); }
+      catch (_) { stopVoice(activeRecognition); }
       if (window.plausible) {
-        try { window.plausible('Voice Search', { props: { locale: recognition.lang } }); } catch (_) {}
+        try { window.plausible('Voice Search', { props: { locale: recognitionLang } }); } catch (_) {}
       }
     }
-    function stopVoice() {
+    function stopVoice(targetRecognition) {
+      if (targetRecognition && targetRecognition !== recognition) return;
       if (recognition) {
-        try { recognition.stop(); } catch (_) {}
+        const activeRecognition = recognition;
+        activeRecognition.onerror = null;
+        activeRecognition.onend = null;
+        try { activeRecognition.stop(); } catch (_) {}
         recognition = null;
       }
       if (voiceBtn) {
