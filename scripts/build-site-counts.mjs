@@ -10,11 +10,14 @@
 //   node scripts/build-site-counts.mjs --check   # exits non-zero if the JSON would change
 //
 // Counting rules (kept here so they're greppable):
-//   tools.live      — entries in data/tools.json with status=live
-//   tools.coming    — entries in data/tools.json roadmap[]
-//   glossary.terms  — directories under glossary/ that contain index.html
-//   topics          — directories under learn/topics/ that contain index.html
-//   articles        — directories under blog/ (excluding /drafts/) with index.html
+//   tools.live       — entries in data/tools.json with status=live
+//   tools.coming     — entries in data/tools.json roadmap[]
+//   glossary.terms   — directories under glossary/ that contain index.html
+//   topics           — directories under learn/topics/ that contain index.html
+//   articles.blog    — directories under blog/ (excluding /drafts/) with index.html
+//   articles.library — article-shaped directories under library/ with index.html
+//                      (excludes /menu-design-*/ collection landings)
+//   articles.total   — articles.blog + articles.library
 //
 // data/tools.json is the source of truth for tool counts (added in
 // Phase 2). Falls back to scanning tools/index.html if the JSON is
@@ -68,6 +71,14 @@ function countToolsFromHtmlFallback() {
 
 const toolsJson = readToolsJson();
 const toolCounts = toolsJson ? countToolsFromJson(toolsJson) : countToolsFromHtmlFallback();
+
+// Phase 7 split: blog (timely) and library (evergreen) are now separate
+// surfaces and counted independently. articles.total stays available for
+// portfolio-wide stats (home hero, /receipts/); library and blog hubs
+// surface their own slice.
+const blogArticles    = countDirs('blog',    { skip: new Set(['drafts']) });
+const libraryArticles = countDirs('library', { skip: new Set(['menu-design-cuisines', 'menu-design-themes']) });
+
 const counts = {
   _doc: 'Single source of truth for the counts that appear in nav, footer, and library copy. Built by scripts/build-site-counts.mjs from the filesystem; injected into HTML by scripts/inject-site-counts.mjs via <!-- count:KEY -->VALUE<!-- /count --> sentinels.',
   tools: {
@@ -78,12 +89,11 @@ const counts = {
     terms: countDirs('glossary'),
   },
   topics:   countDirs('learn/topics'),
-  // Phase 7 split: total articles = /blog/ (timely) + /library/ (evergreen).
-  // The library-only count subtracts /library/menu-design-*/ (collection
-  // landings, not articles) — only article-shaped /library/<slug>/ folders
-  // count toward articles.library.
-  articles: countDirs('blog', { skip: new Set(['drafts']) })
-          + countDirs('library', { skip: new Set(['menu-design-cuisines', 'menu-design-themes']) }),
+  articles: {
+    total:   blogArticles + libraryArticles,
+    library: libraryArticles,
+    blog:    blogArticles,
+  },
   updated:  new Date().toISOString().slice(0, 10),
 };
 
