@@ -1,11 +1,9 @@
 {
   "_doc": "Per-post 'Workshop next step' CTA (Sprint 13). For every published blog post, names ONE tool the post drives operator to, framed as 'Save your starting numbers and watch them weekly.' Stamped via scripts/inject-post-end-cta.mjs between the post-end-mark and the see-also block. EN+ES per post. The tool URL is taken verbatim — the inject script appends ?from=blog/<slug>&intent=watch so the tool can rehydrate baseline numbers from the originating article.",
-
   "_status": {
     "review_required": "All Sprint 13 CTA copy is drafted against the rubric (scripts/voice-refs/don-rubric.md). Review and adjust per-post copy before promoting to fail-CI.",
     "skipped": "(none — every published article carries a paired CTA)"
   },
-
   "posts": {
     "how-to-read-restaurant-google-search-console": {
       "tool_url_en": "/sheets/local-keyword-map/",
@@ -37,16 +35,6 @@
       "body_en": "The Website Conversion Checklist runs 12 mobile checkpoints on your live site with priority ratings. If you score 11 or 12, the rebuild may be the wrong project — fix the one or two leaks instead. Print it, save it as CSV, or save it to your Workshop and re-run after each fix.",
       "body_es": "La Lista de Conversión del Sitio corre 12 chequeos móviles en tu sitio en vivo con prioridad. Si sacas 11 o 12, el rehacer puede ser el proyecto equivocado — arregla las una o dos fugas en su lugar. Imprime, guarda como CSV o guarda en tu Taller y vuelve a correrlo tras cada arreglo."
     },
-    "an-honest-doordash-math-for-independent-restaurants-2026": {
-      "tool_url_en": "/sheets/third-party-channel-pnl/",
-      "tool_url_es": "/es/sheets/third-party-channel-pnl/",
-      "tool_label_en": "Run your channel P&L",
-      "tool_label_es": "Corre tu P&G por canal",
-      "headline_en": "Settle the math for your own channel.",
-      "headline_es": "Cierra la cuenta para tu propio canal.",
-      "body_en": "The Third-Party Channel P&L sheet runs the honest numbers — gross sales minus commission, marketing, refunds, packaging, and the labor those orders cost. Print it, save it as CSV, or save it to your Workshop and pull it up next month when the platform tier shifts.",
-      "body_es": "La hoja de P&G por Canal corre las cuentas honestas — ventas brutas menos comisión, marketing, reembolsos, empaques y la mano de obra que cuestan esos pedidos. Imprime, guarda como CSV o guarda en tu Taller para abrirla el próximo mes cuando cambie el nivel de la plataforma."
-    },
     "how-to-raise-restaurant-menu-prices-without-losing-reservations": {
       "tool_url_en": "/tools/margin-math/",
       "tool_url_es": "/es/tools/margin-math/",
@@ -66,26 +54,6 @@
       "headline_es": "Mete tus números reales de DoorDash.",
       "body_en": "The delivery break-even calculator takes your ticket, commission, and food cost. Save the scenario to the Workshop and re-run it whenever DoorDash adjusts your tier — the comparison stays in one place.",
       "body_es": "La calculadora de punto de equilibrio con delivery toma tu ticket, comisión y costo de comida. Guarda el escenario en el Taller y vuélvelo a correr cuando DoorDash ajuste tu nivel — la comparación se queda en un solo lugar."
-    },
-    "how-much-does-a-custom-restaurant-website-cost-in-2026": {
-      "tool_url_en": "/tools/tech-stack/",
-      "tool_url_es": "/es/tools/tech-stack/",
-      "tool_label_en": "Scan your stack",
-      "tool_label_es": "Escanea tu stack",
-      "headline_en": "Know what you're starting with.",
-      "headline_es": "Sabe con qué estás empezando.",
-      "body_en": "Tech Stack Detector reads your current site's CMS, ordering, and analytics. Save the scan to the Workshop — the baseline you'd compare any rebuild against, captured in 30 seconds.",
-      "body_es": "Detector de Tech Stack lee el CMS, sistema de pedidos y analítica de tu sitio actual. Guarda el escaneo en el Taller — la base con la que compararías cualquier rehecho, capturada en 30 segundos."
-    },
-    "why-your-restaurant-loses-reservations-every-night": {
-      "tool_url_en": "/tools/audits/restaurant/",
-      "tool_url_es": "/es/tools/audits/restaurant/",
-      "tool_label_en": "Run the audit",
-      "tool_label_es": "Corre el diagnóstico",
-      "headline_en": "Find your six leaks.",
-      "headline_es": "Encuentra tus seis fugas.",
-      "body_en": "The Restaurant Website Audit checks all six leak points named in the post — performance, mobile, SEO, schema, reservation widget, menu — in about thirty seconds. Save the audit to the Workshop and watch which fixes hold over the next month.",
-      "body_es": "El Diagnóstico de sitio de restaurante revisa los seis puntos de fuga del post — desempeño, móvil, SEO, schema, widget de reservas, menú — en unos treinta segundos. Guarda el diagnóstico en el Taller y observa qué arreglos aguantan durante el próximo mes."
     },
     "how-to-recover-reservations-from-googles-find-a-table": {
       "tool_url_en": "/tools/gbp-grader/",
@@ -156,6 +124,36 @@
       "headline_es": "Aun si la respuesta es \"todavía no,\" tu ficha de Google sí importa.",
       "body_en": "If the article convinced you that you don't need a custom site this year, the next-best move is making sure your Google Business Profile is doing the work a website would. The GBP Grader scores your listing on the same checks Google's algorithms use — about thirty seconds, no signup.",
       "body_es": "Si el artículo te convenció de que no necesitas un sitio a medida este año, el siguiente paso es asegurar que tu Google Business Profile esté haciendo el trabajo que haría un sitio web. El Calificador de GBP califica tu ficha con los mismos criterios que usan los algoritmos de Google — unos treinta segundos, sin registro."
+    },
+    "custom-restaurant-website-pricing": {
+      "tool_url_en": "/tools/tech-stack/",
+      "tool_url_es": "/es/tools/tech-stack/",
+      "tool_label_en": "Scan your stack",
+      "tool_label_es": "Escanea tu stack",
+      "headline_en": "Know what you're starting with.",
+      "headline_es": "Sabe con qué estás empezando.",
+      "body_en": "Tech Stack Detector reads your current site's CMS, ordering, and analytics. Save the scan to the Workshop — the baseline you'd compare any rebuild against, captured in 30 seconds.",
+      "body_es": "Detector de Tech Stack lee el CMS, sistema de pedidos y analítica de tu sitio actual. Guarda el escaneo en el Taller — la base con la que compararías cualquier rehecho, capturada en 30 segundos."
+    },
+    "reservation-conversion-guide": {
+      "tool_url_en": "/tools/audits/restaurant/",
+      "tool_url_es": "/es/tools/audits/restaurant/",
+      "tool_label_en": "Run the audit",
+      "tool_label_es": "Corre el diagnóstico",
+      "headline_en": "Find your six leaks.",
+      "headline_es": "Encuentra tus seis fugas.",
+      "body_en": "The Restaurant Website Audit checks all six leak points named in the post — performance, mobile, SEO, schema, reservation widget, menu — in about thirty seconds. Save the audit to the Workshop and watch which fixes hold over the next month.",
+      "body_es": "El Diagnóstico de sitio de restaurante revisa los seis puntos de fuga del post — desempeño, móvil, SEO, schema, widget de reservas, menú — en unos treinta segundos. Guarda el diagnóstico en el Taller y observa qué arreglos aguantan durante el próximo mes."
+    },
+    "third-party-delivery-economics": {
+      "tool_url_en": "/sheets/third-party-channel-pnl/",
+      "tool_url_es": "/es/sheets/third-party-channel-pnl/",
+      "tool_label_en": "Run your channel P&L",
+      "tool_label_es": "Corre tu P&G por canal",
+      "headline_en": "Settle the math for your own channel.",
+      "headline_es": "Cierra la cuenta para tu propio canal.",
+      "body_en": "The Third-Party Channel P&L sheet runs the honest numbers — gross sales minus commission, marketing, refunds, packaging, and the labor those orders cost. Print it, save it as CSV, or save it to your Workshop and pull it up next month when the platform tier shifts.",
+      "body_es": "La hoja de P&G por Canal corre las cuentas honestas — ventas brutas menos comisión, marketing, reembolsos, empaques y la mano de obra que cuestan esos pedidos. Imprime, guarda como CSV o guarda en tu Taller para abrirla el próximo mes cuando cambie el nivel de la plataforma."
     }
   }
 }

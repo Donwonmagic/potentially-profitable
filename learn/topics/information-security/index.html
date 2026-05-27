@@ -96,7 +96,7 @@
     {
       "@type": "ItemList",
       "@id": "https://muntin.digital/learn/topics/information-security/#articles",
-      "numberOfItems": 3,
+      "numberOfItems": 2,
       "itemListElement": [
         {
           "@type": "ListItem",
@@ -107,11 +107,6 @@
           "@type": "ListItem",
           "position": 2,
           "url": "https://muntin.digital/blog/how-to-tell-if-a-restaurant-tool-is-safe/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 3,
-          "url": "https://muntin.digital/blog/an-honest-doordash-math-for-independent-restaurants-2026/"
         }
       ]
     }
@@ -338,7 +333,7 @@
   <div class="container">
     <header class="topic-section-head">
       <span class="eyebrow">Articles</span>
-      <h2 id="read-the-playbooks">Read the playbooks.</h2>
+      <h2>Read the playbooks.</h2>
     </header>
     <ul class="topic-article-list">
       <li>
@@ -378,7 +373,7 @@
 
       <h3>The five-test audit you can run on any free tool</h3>
 
-      <p>The full walkthrough is in <a href="/blog/how-to-tell-if-a-restaurant-tool-is-safe/">How to tell if a restaurant tool is safe</a>; the five tests, in order of how quickly they catch a bad actor:</p>
+      <p>The full walkthrough is in <a href="/library/how-to-tell-if-a-restaurant-tool-is-safe/">How to tell if a restaurant tool is safe</a>; the five tests, in order of how quickly they catch a bad actor:</p>
 
       <ol>
         <li><strong>The Network test (15 seconds).</strong> Open DevTools, Network tab. Type a real number into the tool. Watch the request log. If a single keystroke POSTs your input, walk away. The Muntin tools (<a href="/security/">/security/</a>) ship a verifiable promise: zero outbound requests when you type a number.</li>
@@ -395,7 +390,7 @@
       <ul>
         <li><strong>POS (Toast, Square, Clover).</strong> Tier 3 data lives here. The contract is what matters; read the data-export clause and the data-deletion clause before you sign.</li>
         <li><strong>Reservations platform (OpenTable, Resy, Tock).</strong> Tier 3 data lives here. Most platforms aggregate your data into trend reports they sell back to the industry &mdash; legally fine, but ask about it before you commit.</li>
-        <li><strong>Aggregators (DoorDash, Uber Eats, Grubhub).</strong> Tier 3 data lives here, with explicit non-portability. The aggregator owns the customer relationship; you own the kitchen relationship. The DoorDash math op-ed (<a href="/blog/an-honest-doordash-math-for-independent-restaurants-2026/">/blog/an-honest-doordash-math-for-independent-restaurants-2026/</a>) makes the case for direct-channel ownership for this reason.</li>
+        <li><strong>Aggregators (DoorDash, Uber Eats, Grubhub).</strong> Tier 3 data lives here, with explicit non-portability. The aggregator owns the customer relationship; you own the kitchen relationship. The DoorDash math op-ed (<a href="/library/third-party-delivery-economics/">/library/third-party-delivery-economics/</a>) makes the case for direct-channel ownership for this reason.</li>
         <li><strong>Free tools that ask for your numbers.</strong> The five-test audit applies. If they fail, type fictional numbers; if you can&rsquo;t test the tool with fake numbers, that&rsquo;s the answer.</li>
       </ul>
 
@@ -438,7 +433,7 @@
   <div class="container">
     <div class="section-header reveal section-center">
       <span class="eyebrow">Other topics</span>
-      <h2 id="or-browse-adifferent-angle">Or browse a<br><span class="serif-italic">different angle.</span></h2>
+      <h2>Or browse a<br><span class="serif-italic">different angle.</span></h2>
     </div>
     <ul class="topic-other-list">
       <li><a href="/learn/topics/speed-mobile/">Speed &amp; Mobile</a></li>

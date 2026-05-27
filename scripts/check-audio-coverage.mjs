@@ -53,6 +53,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
+import { NON_ARTICLE_LIBRARY_SLUGS } from './lib/library-skips.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const repoRoot   = path.resolve(path.dirname(__filename), '..');
@@ -76,6 +77,8 @@ const manifest = JSON.parse(fs.readFileSync(MANIFEST_PATH, 'utf8'));
 const SECTIONS = [
   { key: 'blog',        root: path.join(repoRoot, 'blog') },
   { key: 'es-blog',     root: path.join(repoRoot, 'es', 'blog') },
+  { key: 'library',     root: path.join(repoRoot, 'library') },
+  { key: 'es-library',  root: path.join(repoRoot, 'es', 'library') },
   { key: 'research',    root: path.join(repoRoot, 'learn', 'research') },
   { key: 'checklists',  root: path.join(repoRoot, 'learn', 'checklists') },
 ];

@@ -96,7 +96,7 @@
     {
       "@type": "ItemList",
       "@id": "https://muntin.digital/learn/topics/speed-mobile/#articles",
-      "numberOfItems": 5,
+      "numberOfItems": 3,
       "itemListElement": [
         {
           "@type": "ListItem",
@@ -111,17 +111,7 @@
         {
           "@type": "ListItem",
           "position": 3,
-          "url": "https://muntin.digital/blog/why-your-restaurant-loses-reservations-every-night/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 4,
-          "url": "https://muntin.digital/blog/restaurant-photo-spec-sheet/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 5,
-          "url": "https://muntin.digital/blog/how-to-recover-reservations-from-googles-find-a-table/"
+          "url": "https://muntin.digital/blog/reservation-conversion-guide/"
         }
       ]
     }
@@ -348,7 +338,7 @@
   <div class="container">
     <header class="topic-section-head">
       <span class="eyebrow">Articles</span>
-      <h2 id="read-the-playbooks">Read the playbooks.</h2>
+      <h2>Read the playbooks.</h2>
     </header>
     <ul class="topic-article-list">
       <li>
@@ -359,7 +349,7 @@
         </a>
       </li>
 <li>
-        <a class="topic-article-card" href="/blog/why-your-restaurant-loses-reservations-every-night/">
+        <a class="topic-article-card" href="/blog/reservation-conversion-guide/">
           <span class="topic-article-date">Apr 17, 2026</span>
           <h3>Why Your Restaurant Loses Reservations Every Night</h3>
           <p>A real reservation-loss funnel — the six places your site is quietly leaking intent-driven diners, what each leak costs in dollars, and the fix for every one.</p>
@@ -373,7 +363,7 @@
   <div class="container">
     <header class="topic-section-head">
       <span class="eyebrow">Research</span>
-      <h2 id="the-evidence-behind-the-playbooks">The evidence behind the playbooks.</h2>
+      <h2>The evidence behind the playbooks.</h2>
     </header>
     <ul class="topic-research-list">
       <li>
@@ -398,7 +388,7 @@
   <div class="container">
     <header class="topic-section-head">
       <span class="eyebrow">Vocabulary</span>
-      <h2 id="the-words-for-this-topic">The words for this topic.</h2>
+      <h2>The words for this topic.</h2>
     </header>
     <ul class="term-siblings-list">
       <li><a href="/glossary/body-text-size/"><strong>Body text size</strong><span> — minimum readable font size on phones</span></a></li>
@@ -422,27 +412,13 @@
   <div class="container">
     <header class="topic-section-head">
       <span class="eyebrow">Free tools</span>
-      <h2 id="run-a-check-on-your-own-site">Run a check on your own site.</h2>
+      <h2>Run a check on your own site.</h2>
     </header>
     <ul class="topic-tool-list">
       <li>
         <a class="topic-tool-card" href="/tools/audits/restaurant/">
           <h4>Restaurant Website Audit</h4>
           <p>Full-stack mobile audit: performance, SEO, accessibility, and 9 restaurant-specific checks. Side-by-side competitor mode.</p>
-          <span class="topic-tool-cta">Open the tool <span aria-hidden="true">→</span></span>
-        </a>
-      </li>
-<li>
-        <a class="topic-tool-card" href="/tools/speed-test/">
-          <h4>Speed Test</h4>
-          <p>PageSpeed Insights, restated for owners. Score, the four metrics that matter, and what to fix first.</p>
-          <span class="topic-tool-cta">Open the tool <span aria-hidden="true">→</span></span>
-        </a>
-      </li>
-<li>
-        <a class="topic-tool-card" href="/tools/mobile-check/">
-          <h4>Mobile Check</h4>
-          <p>A three-question read on whether your site behaves like a real phone-first restaurant site.</p>
           <span class="topic-tool-cta">Open the tool <span aria-hidden="true">→</span></span>
         </a>
       </li>
@@ -467,6 +443,13 @@
           <span class="topic-tool-cta">Open the tool <span aria-hidden="true">→</span></span>
         </a>
       </li>
+<li>
+        <a class="topic-tool-card" href="/tools/page-health/">
+          <h4>Speed Test</h4>
+          <p>PageSpeed Insights, restated for owners. Score, the four metrics that matter, and what to fix first.</p>
+          <span class="topic-tool-cta">Open the tool <span aria-hidden="true">→</span></span>
+        </a>
+      </li>
     </ul>
   </div>
 </section>
@@ -475,7 +458,7 @@
   <div class="container">
     <header class="topic-section-head">
       <span class="eyebrow">Checklists</span>
-      <h2 id="workbooks-for-this-topic">Workbooks for this topic.</h2>
+      <h2>Workbooks for this topic.</h2>
     </header>
     <ul class="topic-tool-list">
       <li>
@@ -516,7 +499,7 @@
 
       <ul>
         <li><strong>Network speed is the constraint.</strong> Lighthouse&rsquo;s mobile preset simulates Slow 4G &mdash; ~1.6 Mbps with 150ms RTT and 4&times; CPU throttle. That&rsquo;s the ceiling, not the floor. The DMV&rsquo;s mobile reality (across the four major carriers) is roughly Slow 4G during commute hours, near-LTE on weekends. Build for the worse case.</li>
-        <li><strong>Hero images are the leak.</strong> The 4MB plate-of-pasta photo that loads in 200ms on your office wifi takes 6 seconds on Slow 4G. Switching to AVIF + WebP fallbacks drops that to 200KB without losing visible quality. The <a href="/blog/restaurant-photo-spec-sheet/">photo spec sheet</a> covers the file-size targets.</li>
+        <li><strong>Hero images are the leak.</strong> The 4MB plate-of-pasta photo that loads in 200ms on your office wifi takes 6 seconds on Slow 4G. Switching to AVIF + WebP fallbacks drops that to 200KB without losing visible quality. The <a href="/library/restaurant-photo-spec-sheet/">photo spec sheet</a> covers the file-size targets.</li>
         <li><strong>Mobile UX is one column.</strong> Two-column hero layouts that look elegant on a 14&rdquo; laptop become unreadable stacking on a 360px phone. Build the mobile layout first, expand to desktop. Hours block above the hero. Reservation button as a primary-color band. Menu sections collapsible.</li>
       </ul>
 
@@ -526,7 +509,7 @@
 
       <ol>
         <li><strong>Compress and re-encode the hero image (15 minutes).</strong> AVIF first, WebP fallback, JPEG as the last resort. Target: under 200KB at 1600&times;1067. Tools: Squoosh, ImageOptim, or the AVIF support built into modern image-CDNs (Cloudinary, ImageKit). Single biggest LCP improvement on most independent restaurant sites.</li>
-        <li><strong>Set width/height on every image (30 minutes).</strong> Eliminates CLS jumps. Use the natural aspect ratio of the source image; CSS <code>aspect-ratio</code> on the parent if the image is responsive. <a href="/blog/restaurant-photo-spec-sheet/">The photo spec sheet</a> lists every image surface and its aspect ratio.</li>
+        <li><strong>Set width/height on every image (30 minutes).</strong> Eliminates CLS jumps. Use the natural aspect ratio of the source image; CSS <code>aspect-ratio</code> on the parent if the image is responsive. <a href="/library/restaurant-photo-spec-sheet/">The photo spec sheet</a> lists every image surface and its aspect ratio.</li>
         <li><strong>Defer non-critical JavaScript (1 hour).</strong> Add <code>defer</code> to script tags that aren&rsquo;t needed for first paint. Reservation widgets (OpenTable, Resy, Tock), analytics, chat embeds. Plausible is already async &middot; cookieless &middot; tiny; most third-party tags are not.</li>
         <li><strong>Self-host fonts with font-display: swap (1 hour).</strong> Web fonts blocking the first paint is the second-most-common LCP failure. Self-host the woff2 files, use <code>font-display: swap</code>, preload the two critical above-the-fold weights.</li>
         <li><strong>Lazy-load below-the-fold images (15 minutes).</strong> <code>loading="lazy"</code> attribute on every img below the hero. Saves 40&ndash;60% of total bytes on a typical menu page where the visitor never scrolls past the third dish.</li>
@@ -539,7 +522,7 @@
       <p>Three patterns specific to independent restaurants that don&rsquo;t apply to most other small-business sites:</p>
 
       <ul>
-        <li><strong>Reservation widgets.</strong> OpenTable, Resy, Tock, and the lesser platforms all ship hefty third-party JS bundles that load before the visitor can book. The newer &ldquo;direct&rdquo; or &ldquo;widgets v2&rdquo; APIs from each platform are smaller and faster than the legacy iframe embed; switching from iframe to direct typically saves 200&ndash;500ms of LCP. <a href="/blog/how-to-recover-reservations-from-googles-find-a-table/">How to recover reservations</a> covers the tradeoffs.</li>
+        <li><strong>Reservation widgets.</strong> OpenTable, Resy, Tock, and the lesser platforms all ship hefty third-party JS bundles that load before the visitor can book. The newer &ldquo;direct&rdquo; or &ldquo;widgets v2&rdquo; APIs from each platform are smaller and faster than the legacy iframe embed; switching from iframe to direct typically saves 200&ndash;500ms of LCP. <a href="/library/reservation-conversion-guide/">How to recover reservations</a> covers the tradeoffs.</li>
         <li><strong>Menu PDFs.</strong> Linking a 4MB PDF as the menu &ldquo;page&rdquo; means every visitor who clicks waits for the whole PDF to download before seeing anything. The fix is real HTML &mdash; use <a href="/tools/menu-converter/">Menu Converter</a> to turn pasted menu text into semantic HTML in two seconds. The <a href="/services/menu-drop-in/">$1,500 menu drop-in</a> ships the studio-built styled version.</li>
         <li><strong>Background videos.</strong> The autoplaying hero-video pattern that became fashionable circa 2018 carries 8&ndash;15MB of JS-decoded video. On mobile, that&rsquo;s a multi-second LCP killer for a piece of decoration the visitor never asked for. Replace with a single AVIF still and call it done.</li>
       </ul>
@@ -572,7 +555,7 @@
   <div class="container">
     <div class="section-header reveal section-center">
       <span class="eyebrow">Other topics</span>
-      <h2 id="or-browse-adifferent-angle">Or browse a<br><span class="serif-italic">different angle.</span></h2>
+      <h2>Or browse a<br><span class="serif-italic">different angle.</span></h2>
     </div>
     <ul class="topic-other-list">
       <li><a href="/learn/topics/conversions/">Conversions &amp; Reservations</a></li>

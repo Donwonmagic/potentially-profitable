@@ -78,7 +78,12 @@ const counts = {
     terms: countDirs('glossary'),
   },
   topics:   countDirs('learn/topics'),
-  articles: countDirs('blog', { skip: new Set(['drafts']) }),
+  // Phase 7 split: total articles = /blog/ (timely) + /library/ (evergreen).
+  // The library-only count subtracts /library/menu-design-*/ (collection
+  // landings, not articles) — only article-shaped /library/<slug>/ folders
+  // count toward articles.library.
+  articles: countDirs('blog', { skip: new Set(['drafts']) })
+          + countDirs('library', { skip: new Set(['menu-design-cuisines', 'menu-design-themes']) }),
   updated:  new Date().toISOString().slice(0, 10),
 };
 

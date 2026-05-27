@@ -40,6 +40,12 @@ const checkOnly  = process.argv.includes('--check');
 const knit   = JSON.parse(fs.readFileSync(path.join(REPO, 'data', 'tool-knit.json'), 'utf8'));
 const tools  = JSON.parse(fs.readFileSync(path.join(REPO, 'data', 'tools.json'),     'utf8'));
 const topics = JSON.parse(fs.readFileSync(path.join(REPO, 'data', 'topics.json'),    'utf8'));
+// Phase 7: ES articles live at native Spanish slugs in /es/library/
+// and /es/blog/. Resolve EN → ES via i18n-slug-map's namespace sections.
+const slugMap = (() => {
+  try { return JSON.parse(fs.readFileSync(path.join(REPO, 'data', 'i18n-slug-map.json'), 'utf8')); }
+  catch { return { blog: {}, library: {} }; }
+})();
 
 const SENTINEL_OPEN  = '<!-- tool-knit -->';
 const SENTINEL_CLOSE = '<!-- /tool-knit -->';
@@ -128,9 +134,26 @@ for (const [slug, entry] of Object.entries(knit.tools)) {
   for (const url of entry.articles || []) {
     if (!knit.articles[url]) err(`tool "${slug}".articles references "${url}" which is not in tool-knit.articles{}`);
     const enFile = path.join(REPO, url.replace(/^\/+/, '').replace(/\/$/, ''), 'index.html');
-    const esFile = path.join(REPO, 'es', url.replace(/^\/+/, '').replace(/\/$/, ''), 'index.html');
     if (!fs.existsSync(enFile)) err(`article "${url}" missing on disk: ${path.relative(REPO, enFile)}`);
-    if (!fs.existsSync(esFile)) err(`article "${url}" missing ES counterpart: ${path.relative(REPO, esFile)}`);
+    // Phase 7: ES counterparts live at native Spanish slugs per
+    // data/i18n-slug-map.json (split by namespace: blog / library).
+    // Resolve the ES slug from the map before checking the file path.
+    // If no ES mapping exists for this slug, the article is EN-only
+    // by design — don't error.
+    const m = url.match(/^\/(blog|library)\/([^/]+)\/$/);
+    if (m) {
+      const [, ns, enSlug] = m;
+      const map = (slugMap && slugMap[ns]) || {};
+      const esSlug = map[enSlug];
+      if (esSlug) {
+        const esFile = path.join(REPO, 'es', ns, esSlug, 'index.html');
+        if (!fs.existsSync(esFile)) err(`article "${url}" missing ES counterpart: ${path.relative(REPO, esFile)} (ES slug "${esSlug}" from i18n-slug-map.${ns})`);
+      }
+    } else {
+      // Non-blog/library URL — fall back to the naive same-slug check.
+      const esFile = path.join(REPO, 'es', url.replace(/^\/+/, '').replace(/\/$/, ''), 'index.html');
+      if (!fs.existsSync(esFile)) err(`article "${url}" missing ES counterpart: ${path.relative(REPO, esFile)}`);
+    }
   }
   for (const g of entry.glossary || []) {
     if (!fs.existsSync(path.join(REPO, 'glossary', g, 'index.html'))) err(`glossary "${g}" missing EN entry`);

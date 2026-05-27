@@ -41,6 +41,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { NON_ARTICLE_LIBRARY_SLUGS } from './lib/library-skips.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const repoRoot   = path.resolve(path.dirname(__filename), '..');
@@ -59,6 +60,8 @@ const manifest = JSON.parse(fs.readFileSync(MANIFEST, 'utf8'));
 const SECTIONS = [
   { key: 'blog',        root: path.join(repoRoot, 'blog'),                  insertAfter: postHeaderInjector,    locale: 'en' },
   { key: 'es-blog',     root: path.join(repoRoot, 'es', 'blog'),            insertAfter: postHeaderInjector,    locale: 'es' },
+  { key: 'library',     root: path.join(repoRoot, 'library'),               insertAfter: postHeaderInjector,    locale: 'en' },
+  { key: 'es-library',  root: path.join(repoRoot, 'es', 'library'),         insertAfter: postHeaderInjector,    locale: 'es' },
   { key: 'research',    root: path.join(repoRoot, 'learn', 'research'),     insertAfter: researchHeaderInjector, locale: 'en' },
   { key: 'checklists',  root: path.join(repoRoot, 'learn', 'checklists'),   insertAfter: researchHeaderInjector, locale: 'en' },
 ];
