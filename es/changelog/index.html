@@ -203,18 +203,22 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       </svg>
       Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
     </a>
-    <!-- Phase 7: nav de 5 elementos, según el plan de lanzamiento Parte II.
-         Biblioteca / Herramientas / Proyectos / Estudio / Acceder.
+    <!-- Phase 7: nav de 4 elementos, según el plan de lanzamiento Parte II.
+         Biblioteca / Herramientas / Estudio / Acceder.
          Biblioteca apunta al hub canónico /es/library/. Herramientas
          se promueve del antiguo mega-menú a un elemento de primer
          nivel. Estudio reemplaza Servicios + Restaurantes + Sobre
          Don &mdash; todo vive bajo /es/studio/ ahora. El mega-menú
          se retira (el hub ES el menú); el controlador del script
-         también desaparece. -->
+         también desaparece.
+
+         /es/work/ se retiró en la pasada de portfolio-sunset de la
+         Fase 8 (el encuadre de la empresa-como-CV hizo redundante
+         el portafolio personal). Las URLs /es/work/* hacen 301 a
+         /es/studio/ vía _redirects. -->
     <nav class="nav-links" aria-label="Principal">
       <a href="/es/library/">Biblioteca</a>
       <a href="/es/tools/">Herramientas</a>
-      <a href="/es/work/">Proyectos</a>
       <a href="/es/studio/">Estudio</a>
       <a class="js-nav-signin nav-link-auth" href="/es/sign-in/" hidden>Acceder</a>
       <a class="js-nav-workshop nav-link-auth" href="/es/workbench/" hidden>El Taller</a>
@@ -243,7 +247,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   <nav class="mobile-menu" id="mobileMenu" aria-label="Navegación móvil" hidden>
     <a href="/es/library/">Biblioteca</a>
     <a href="/es/tools/">Herramientas</a>
-    <a href="/es/work/">Proyectos</a>
     <a href="/es/studio/">Estudio</a>
     <a class="js-nav-signin mobile-auth" href="/es/sign-in/" hidden>Acceder</a>
     <a class="js-nav-workshop mobile-auth" href="/es/workbench/" hidden>El Taller</a>
@@ -429,7 +432,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <p style="font-size:13.5px;color:var(--stone);margin:0 0 6px">2026-05-01</p>
         <h3 style="font-size:20px;font-weight:600;color:var(--ink);margin:0 0 8px">Fase 0: pasada de honestidad</h3>
         <p style="font-size:15.5px;line-height:1.65;color:var(--ink);margin:0">
-          El arreglo de rendimiento más grande que el sitio ha publicado: se quitó el preload de prioridad alta del MP3 de audio que estaba estancando el LCP por 15&ndash;30 segundos en Android de gama media sobre 4G. Se eliminaron las referencias a Calendly + Formspree en privacidad y cookies (no usamos ninguno). <a href="/security/integrity.txt">/security/integrity.txt</a> ahora existe con SHA-256 reales del bundle público (antes era un enlace a 404). <a href="/.well-known/security.txt">/.well-known/security.txt</a> se publicó según el RFC 9116. Los casos de estudio (<a href="/work/tacombi/">Tacombi</a>, <a href="/work/irish-inn-glen-echo/">Irish Inn</a>, <a href="/work/off-day-collective/">Off Day</a>) llevan ahora un chip explícito de &ldquo;Vínculo&rdquo; que distingue el trabajo interno en planilla W-2 del trabajo de estudio por encargo y de los estudios de estrategia.
+          El arreglo de rendimiento más grande que el sitio ha publicado: se quitó el preload de prioridad alta del MP3 de audio que estaba estancando el LCP por 15&ndash;30 segundos en Android de gama media sobre 4G. Se eliminaron las referencias a Calendly + Formspree en privacidad y cookies (no usamos ninguno). <a href="/security/integrity.txt">/security/integrity.txt</a> ahora existe con SHA-256 reales del bundle público (antes era un enlace a 404). <a href="/.well-known/security.txt">/.well-known/security.txt</a> se publicó según el RFC 9116. Los casos de estudio (Tacombi, Irish Inn, Off Day) llevan ahora un chip explícito de &ldquo;Vínculo&rdquo; que distingue el trabajo interno en planilla W-2 del trabajo de estudio por encargo y de los estudios de estrategia. <em>(La sección /work/ se retiró en la Fase 8, mayo de 2026 — los enlaces se quitaron aquí.)</em>
         </p>
       </div>
 

@@ -256,8 +256,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
     </a>
     <!-- Phase 7: 5-item nav, per launch plan Part II.
-         Library / Tools / Work / Studio / Sign in.
-         Library now points at the canonical /library/ hub (the
+         Library / Tools / Studio / Sign in.
+         Library points at the canonical /library/ hub (the
          three-doors page). Tools is promoted from the old Library
          mega-menu to a top-level item. Studio replaces Services +
          Restaurants + About — they all live under /studio/ now,
@@ -267,11 +267,15 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
          Restaurants pages remain reachable via /studio/ and the
          _redirects table; /about/ is unchanged. The mega-menu is
          retired (the hub IS the menu now); the controller script
-         is gone too. -->
+         is gone too.
+
+         /work/ was retired with the Phase 8 portfolio-sunset pass:
+         the company-as-resume framing made the personal-portfolio
+         showcase redundant. Legacy /work/* URLs 301 to /studio/
+         via _redirects so old backlinks land softly. -->
     <nav class="nav-links" aria-label="Primary">
       <a href="/library/">Library</a>
       <a href="/tools/">Tools</a>
-      <a href="/work/">Work</a>
       <a href="/studio/">Studio</a>
       <!-- Both sign-in / workshop ship hidden by default; the
            auth-state JS at the bottom of this file calls
@@ -328,7 +332,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
     <a href="/library/">Library</a>
     <a href="/tools/">Tools</a>
-    <a href="/work/">Work</a>
     <a href="/studio/">Studio</a>
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
@@ -857,39 +860,10 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   </div>
 </section>
 
-<!-- ============ SEE IT IN THE WILD ============ -->
-<section class="block bg-cream2" aria-labelledby="proof-heading">
-  <div class="container">
-    <div class="section-header reveal section-center">
-      <span class="eyebrow">Proof, not promises</span>
-      <h2 id="proof-heading">See it<br><span class="serif-italic">in the wild.</span></h2>
-      <p class="final-sub">Three working examples of what the services above actually look like once they're live and earning their keep.</p>
-    </div>
-    <div class="learn-tools" style="margin-top:48px;">
-      <a class="learn-tool" href="/work/irish-inn-glen-echo/">
-        <span class="learn-tool-kicker">Heritage rebuild</span>
-        <h3>The Irish Inn at Glen Echo.</h3>
-        <p>A 1900s-era landmark with a website that hadn't kept up. New brand system, custom site, reservation flow tightened end-to-end.</p>
-        <span class="learn-tool-cta">See the case study →</span>
-      </a>
-      <a class="learn-tool" href="/work/tacombi/">
-        <span class="learn-tool-kicker">In-house partnership</span>
-        <h3>Tacombi.</h3>
-        <p>Multi-location taquería brand. Embedded as in-house marketing — community engagement, social, and content kept in one consistent voice.</p>
-        <span class="learn-tool-cta">See the case study →</span>
-      </a>
-      <a class="learn-tool" href="/work/off-day-collective/">
-        <span class="learn-tool-kicker">Brand &amp; site launch</span>
-        <h3>Off Day Collective.</h3>
-        <p>A quiet, considered hospitality brand. Identity, web, and social built as one coherent system — silence, curated.</p>
-        <span class="learn-tool-cta">See the case study →</span>
-      </a>
-    </div>
-    <div class="hero-ctas hero-ctas-center" style="margin-top:32px;">
-      <a class="btn btn-ghost" href="/work/">All work</a>
-    </div>
-  </div>
-</section>
+<!-- ============ SEE IT IN THE WILD ============
+     Retired Phase 8 (portfolio sunset): the three-card proof rail
+     used to link to /work/<slug>/ case studies. Removed when the
+     company became the resume. -->
 
 <!-- ============ FINAL CTA ============ -->
 <section class="block final" aria-labelledby="services-cta-heading">
@@ -936,16 +910,20 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->24<!-- /count --> articles, <!-- count:tools.live -->12<!-- /count --> tools, <!-- count:glossary.terms -->149<!-- /count --> glossary terms &mdash; with a one-person web studio behind it in Silver Spring, MD.</p>
       </div>
 
-      <!-- Column order mirrors the 5-item primary nav
-           (Library, Tools-rolled-into-Library, Work-rolled-into-Studio,
-           Studio) so the footer reinforces the same IA. The Library
-           column leads with /library/ (the post-Phase-7 three-doors
-           hub); the older /learn/ landing still resolves but no
-           longer needs its own footer slot. id="foot-learn" is the
-           canonical-footer marker that scripts/sync-includes.mjs
-           keys on (FOOTER_MAIN_FUNNEL_MARKER), so the id stays
-           even though the visible label is the more familiar
-           "Library". -->
+      <!-- Column order mirrors the 4-item primary nav
+           (Library, Tools-rolled-into-Library, Studio) so the
+           footer reinforces the same IA. The Library column leads
+           with /library/ (the post-Phase-7 three-doors hub); the
+           older /learn/ landing still resolves but no longer needs
+           its own footer slot. id="foot-learn" is the canonical-
+           footer marker that scripts/sync-includes.mjs keys on
+           (FOOTER_MAIN_FUNNEL_MARKER), so the id stays even though
+           the visible label is the more familiar "Library".
+
+           Phase 8 (portfolio sunset): the Studio column's "Case
+           studies" row used to link to /work/, the personal-portfolio
+           hub. That hub was retired when the company became the
+           resume; the row is now gone and /work/* 301s to /studio/. -->
       <nav class="foot-col" aria-labelledby="foot-learn">
         <p class="foot-heading" id="foot-learn">Library</p>
         <ul class="foot-links">
@@ -962,7 +940,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <ul class="foot-links">
           <li><a href="/studio/#pricing">Pricing</a></li>
           <li><a href="/studio/compare/">Compare options</a></li>
-          <li><a href="/work/">Case studies</a></li>
+          <li><a href="/studio/#process">Process</a></li>
           <li><a href="/about/">About Don</a></li>
         </ul>
       </nav>

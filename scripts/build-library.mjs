@@ -527,7 +527,6 @@ function navHeader(altUrl, bodyClass) {
       <a href="/services/">Services</a>
       <a href="/for/restaurants/">Restaurants</a>
       <a href="/learn/">Learn</a>
-      <a href="/work/">Work</a>
       <a href="/about/">About</a>
     </nav>
     <button type="button" class="nav-search-btn js-open-search" aria-label="Open search (Cmd+K)" title="Search — Cmd K">
@@ -553,7 +552,6 @@ function navHeader(altUrl, bodyClass) {
     <a href="/services/">Services</a>
     <a href="/for/restaurants/">Restaurants</a>
     <a href="/learn/">Learn</a>
-    <a href="/work/">Work</a>
     <a href="/about/">About</a>
     <button type="button" class="mobile-search js-open-search">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
@@ -604,7 +602,6 @@ function siteFooter() {
         <ul class="foot-links">
           <li><a href="/services/">Services</a></li>
           <li><a href="/for/restaurants/">For restaurants</a></li>
-          <li><a href="/work/">Work</a></li>
           <li><a href="/about/">About Don</a></li>
           <li><a href="/system/">The system</a></li>
         </ul>

@@ -210,18 +210,22 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       </svg>
       Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
     </a>
-    <!-- Phase 7: nav de 5 elementos, según el plan de lanzamiento Parte II.
-         Biblioteca / Herramientas / Proyectos / Estudio / Acceder.
+    <!-- Phase 7: nav de 4 elementos, según el plan de lanzamiento Parte II.
+         Biblioteca / Herramientas / Estudio / Acceder.
          Biblioteca apunta al hub canónico /es/library/. Herramientas
          se promueve del antiguo mega-menú a un elemento de primer
          nivel. Estudio reemplaza Servicios + Restaurantes + Sobre
          Don &mdash; todo vive bajo /es/studio/ ahora. El mega-menú
          se retira (el hub ES el menú); el controlador del script
-         también desaparece. -->
+         también desaparece.
+
+         /es/work/ se retiró en la pasada de portfolio-sunset de la
+         Fase 8 (el encuadre de la empresa-como-CV hizo redundante
+         el portafolio personal). Las URLs /es/work/* hacen 301 a
+         /es/studio/ vía _redirects. -->
     <nav class="nav-links" aria-label="Principal">
       <a href="/es/library/">Biblioteca</a>
       <a href="/es/tools/">Herramientas</a>
-      <a href="/es/work/">Proyectos</a>
       <a href="/es/studio/">Estudio</a>
       <a class="js-nav-signin nav-link-auth" href="/es/sign-in/" hidden>Acceder</a>
       <a class="js-nav-workshop nav-link-auth" href="/es/workbench/" hidden>El Taller</a>
@@ -250,7 +254,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   <nav class="mobile-menu" id="mobileMenu" aria-label="Navegación móvil" hidden>
     <a href="/es/library/">Biblioteca</a>
     <a href="/es/tools/">Herramientas</a>
-    <a href="/es/work/">Proyectos</a>
     <a href="/es/studio/">Estudio</a>
     <a class="js-nav-signin mobile-auth" href="/es/sign-in/" hidden>Acceder</a>
     <a class="js-nav-workshop mobile-auth" href="/es/workbench/" hidden>El Taller</a>
@@ -725,12 +728,16 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         </ul>
       </nav>
 
+      <!-- Fase 8 (portfolio sunset): la fila "Proyectos" enlazaba a
+           /es/work/, el portafolio personal. Ese hub se retiró cuando
+           la empresa pasó a ser el currículum; la fila ya no está y
+           /es/work/* hace 301 a /es/studio/. -->
       <nav class="foot-col" aria-labelledby="foot-studio">
         <p class="foot-heading" id="foot-studio">Estudio</p>
         <ul class="foot-links">
           <li><a href="/es/studio/#pricing">Precios</a></li>
           <li><a href="/es/studio/compare/">Comparar opciones</a></li>
-          <li><a href="/es/work/">Proyectos</a></li>
+          <li><a href="/es/studio/#process">Proceso</a></li>
           <li><a href="/es/about/">Sobre Don</a></li>
         </ul>
       </nav>
