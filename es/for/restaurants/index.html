@@ -317,18 +317,22 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       </svg>
       Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
     </a>
-    <!-- Phase 7: nav de 5 elementos, según el plan de lanzamiento Parte II.
-         Biblioteca / Herramientas / Proyectos / Estudio / Acceder.
+    <!-- Phase 7: nav de 4 elementos, según el plan de lanzamiento Parte II.
+         Biblioteca / Herramientas / Estudio / Acceder.
          Biblioteca apunta al hub canónico /es/library/. Herramientas
          se promueve del antiguo mega-menú a un elemento de primer
          nivel. Estudio reemplaza Servicios + Restaurantes + Sobre
          Don &mdash; todo vive bajo /es/studio/ ahora. El mega-menú
          se retira (el hub ES el menú); el controlador del script
-         también desaparece. -->
+         también desaparece.
+
+         /es/work/ se retiró en la pasada de portfolio-sunset de la
+         Fase 8 (el encuadre de la empresa-como-CV hizo redundante
+         el portafolio personal). Las URLs /es/work/* hacen 301 a
+         /es/studio/ vía _redirects. -->
     <nav class="nav-links" aria-label="Principal">
       <a href="/es/library/">Biblioteca</a>
       <a href="/es/tools/">Herramientas</a>
-      <a href="/es/work/">Proyectos</a>
       <a href="/es/studio/">Estudio</a>
       <a class="js-nav-signin nav-link-auth" href="/es/sign-in/" hidden>Acceder</a>
       <a class="js-nav-workshop nav-link-auth" href="/es/workbench/" hidden>El Taller</a>
@@ -357,7 +361,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   <nav class="mobile-menu" id="mobileMenu" aria-label="Navegación móvil" hidden>
     <a href="/es/library/">Biblioteca</a>
     <a href="/es/tools/">Herramientas</a>
-    <a href="/es/work/">Proyectos</a>
     <a href="/es/studio/">Estudio</a>
     <a class="js-nav-signin mobile-auth" href="/es/sign-in/" hidden>Acceder</a>
     <a class="js-nav-workshop mobile-auth" href="/es/workbench/" hidden>El Taller</a>
@@ -1000,44 +1003,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 </section>
 
 <!-- ============ CASE STUDIES ============
-     Dos restaurantes desde adentro de la cocina — un clásico de
-     Glen Echo abierto desde 1931 y tres años de trabajo in-house
-     en una taquería con cinco ubicaciones en el DMV. -->
-<section class="block" id="work">
-  <div class="container">
-    <div class="section-header reveal">
-      <span class="eyebrow">Casos de restaurante</span>
-      <h2>Dos restaurantes,<br><span class="serif-italic">desde adentro de la cocina.</span></h2>
-      <p>Los dos proyectos corrieron por años, no semanas. Los dos se construyeron alrededor del flujo de trabajo real del operador. Los dos casos cuentan qué cambió y por qué.</p>
-    </div>
-
-    <div class="restaurant-cases reveal">
-      <a href="/es/work/irish-inn-glen-echo/" class="restaurant-case">
-        <span class="restaurant-case-kicker">In-house · Clásico de 1931</span>
-        <h3>The Irish Inn at Glen Echo</h3>
-        <p>Un año y medio dentro de una institución gastronómica del área de Washington a la que Bethesda Magazine, el Washington Post y Washingtonian vuelven. Diseño de menú, desarrollo de logo, campañas de temporada, y un estudio completo de rediseño del sitio — hero dividido para el Pub y el Comedor, citas reales de la prensa, y transparencia de origen para productores de Maryland y pesca sostenible.</p>
-        <div class="restaurant-case-tags">
-          <span class="gallery-tag">Restaurante</span>
-          <span class="gallery-tag">Glen Echo, MD</span>
-          <span class="gallery-tag">Marca + web</span>
-        </div>
-        <span class="restaurant-case-cta">Leer el caso completo <span aria-hidden="true">→</span></span>
-      </a>
-
-      <a href="/es/work/tacombi/" class="restaurant-case">
-        <span class="restaurant-case-kicker">In-house · Taquería de 5 sedes</span>
-        <h3>Tacombi</h3>
-        <p>Tres años de marketing in-house e involucramiento comunitario en las ubicaciones DMV de Tacombi. Campañas de barrio, promociones cruzadas con Landmark Theaters, el programa de lealtad Taco Taco Club, y materiales impresos — todo diseñado desde detrás del mostrador, no detrás de un deck.</p>
-        <div class="restaurant-case-tags">
-          <span class="gallery-tag">Restaurante</span>
-          <span class="gallery-tag">Bethesda &middot; Arlington</span>
-          <span class="gallery-tag">Marketing + marca</span>
-        </div>
-        <span class="restaurant-case-cta">Ver el trabajo <span aria-hidden="true">→</span></span>
-      </a>
-    </div>
-  </div>
-</section>
+     Retirado en Fase 8 (portfolio sunset): el riel de dos casos
+     enlazaba a /es/work/irish-inn-glen-echo/ y /es/work/tacombi/.
+     Eliminado cuando la empresa pasó a ser el currículum. -->
 
 <!-- ============ PRICING ============ -->
 <section class="block bg-cream2" id="pricing">
@@ -1316,12 +1284,16 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         </ul>
       </nav>
 
+      <!-- Fase 8 (portfolio sunset): la fila "Proyectos" enlazaba a
+           /es/work/, el portafolio personal. Ese hub se retiró cuando
+           la empresa pasó a ser el currículum; la fila ya no está y
+           /es/work/* hace 301 a /es/studio/. -->
       <nav class="foot-col" aria-labelledby="foot-studio">
         <p class="foot-heading" id="foot-studio">Estudio</p>
         <ul class="foot-links">
           <li><a href="/es/studio/#pricing">Precios</a></li>
           <li><a href="/es/studio/compare/">Comparar opciones</a></li>
-          <li><a href="/es/work/">Proyectos</a></li>
+          <li><a href="/es/studio/#process">Proceso</a></li>
           <li><a href="/es/about/">Sobre Don</a></li>
         </ul>
       </nav>

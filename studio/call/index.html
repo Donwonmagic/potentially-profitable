@@ -222,8 +222,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
     </a>
     <!-- Phase 7: 5-item nav, per launch plan Part II.
-         Library / Tools / Work / Studio / Sign in.
-         Library now points at the canonical /library/ hub (the
+         Library / Tools / Studio / Sign in.
+         Library points at the canonical /library/ hub (the
          three-doors page). Tools is promoted from the old Library
          mega-menu to a top-level item. Studio replaces Services +
          Restaurants + About — they all live under /studio/ now,
@@ -233,11 +233,15 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
          Restaurants pages remain reachable via /studio/ and the
          _redirects table; /about/ is unchanged. The mega-menu is
          retired (the hub IS the menu now); the controller script
-         is gone too. -->
+         is gone too.
+
+         /work/ was retired with the Phase 8 portfolio-sunset pass:
+         the company-as-resume framing made the personal-portfolio
+         showcase redundant. Legacy /work/* URLs 301 to /studio/
+         via _redirects so old backlinks land softly. -->
     <nav class="nav-links" aria-label="Primary">
       <a href="/library/">Library</a>
       <a href="/tools/">Tools</a>
-      <a href="/work/">Work</a>
       <a href="/studio/">Studio</a>
       <!-- Both sign-in / workshop ship hidden by default; the
            auth-state JS at the bottom of this file calls
@@ -294,7 +298,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
     <a href="/library/">Library</a>
     <a href="/tools/">Tools</a>
-    <a href="/work/">Work</a>
     <a href="/studio/">Studio</a>
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>

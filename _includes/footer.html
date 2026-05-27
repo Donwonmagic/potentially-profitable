@@ -23,16 +23,20 @@
         <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->24<!-- /count --> articles, <!-- count:tools.live -->12<!-- /count --> tools, <!-- count:glossary.terms -->149<!-- /count --> glossary terms &mdash; with a one-person web studio behind it in Silver Spring, MD.</p>
       </div>
 
-      <!-- Column order mirrors the 5-item primary nav
-           (Library, Tools-rolled-into-Library, Work-rolled-into-Studio,
-           Studio) so the footer reinforces the same IA. The Library
-           column leads with /library/ (the post-Phase-7 three-doors
-           hub); the older /learn/ landing still resolves but no
-           longer needs its own footer slot. id="foot-learn" is the
-           canonical-footer marker that scripts/sync-includes.mjs
-           keys on (FOOTER_MAIN_FUNNEL_MARKER), so the id stays
-           even though the visible label is the more familiar
-           "Library". -->
+      <!-- Column order mirrors the 4-item primary nav
+           (Library, Tools-rolled-into-Library, Studio) so the
+           footer reinforces the same IA. The Library column leads
+           with /library/ (the post-Phase-7 three-doors hub); the
+           older /learn/ landing still resolves but no longer needs
+           its own footer slot. id="foot-learn" is the canonical-
+           footer marker that scripts/sync-includes.mjs keys on
+           (FOOTER_MAIN_FUNNEL_MARKER), so the id stays even though
+           the visible label is the more familiar "Library".
+
+           Phase 8 (portfolio sunset): the Studio column's "Case
+           studies" row used to link to /work/, the personal-portfolio
+           hub. That hub was retired when the company became the
+           resume; the row is now gone and /work/* 301s to /studio/. -->
       <nav class="foot-col" aria-labelledby="foot-learn">
         <p class="foot-heading" id="foot-learn">Library</p>
         <ul class="foot-links">
@@ -49,7 +53,7 @@
         <ul class="foot-links">
           <li><a href="/studio/#pricing">Pricing</a></li>
           <li><a href="/studio/compare/">Compare options</a></li>
-          <li><a href="/work/">Case studies</a></li>
+          <li><a href="/studio/#process">Process</a></li>
           <li><a href="/about/">About Don</a></li>
         </ul>
       </nav>

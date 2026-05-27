@@ -165,6 +165,19 @@
 /es/library/start/                /es/learn/start-here/     302
 /es/library/checklists/           /es/learn/checklists/     302
 
+# Phase 8 (May 2026): portfolio sunset — /work/ retired.
+#
+# The personal case-study showcase at /work/ (Irish Inn, Tacombi,
+# Off Day Collective) was removed when the company became the
+# resume. The four EN paths + four ES paths 301 to the studio
+# hub so legacy backlinks (search-engine index, social shares,
+# email signatures) land on the canonical commercial surface
+# rather than 404'ing. Specific paths first, then wildcards.
+/work/                           /studio/                       301
+/work/*                          /studio/                       301
+/es/work/                        /es/studio/                    301
+/es/work/*                       /es/studio/                    301
+
 # Phase 7 (May 2026): blog ↔ library content split.
 #
 # The 53 /blog/<slug>/ → /library/<slug>/ and /es/blog/<slug>/ →
