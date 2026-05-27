@@ -156,27 +156,17 @@
 # /library/topics/, /library/start/, /library/checklists/) still 302
 # to their canonical homes under /glossary/ and /learn/.
 /library/articles/                /library/                 301
-/library/articles/*               /library/:splat           301
 /library/glossary/                /glossary/                302
-/library/glossary/*               /glossary/:splat          302
 /library/research/                /learn/research/          302
-/library/research/*               /learn/research/:splat    302
 /library/topics/                  /learn/topics/            302
-/library/topics/*                 /learn/topics/:splat      302
 /library/start/                   /learn/start-here/        302
 /library/checklists/              /learn/checklists/        302
-/library/checklists/*             /learn/checklists/:splat  302
 /es/library/articles/             /es/library/              301
-/es/library/articles/*            /es/library/:splat        301
 /es/library/glossary/             /es/glossary/             302
-/es/library/glossary/*            /es/glossary/:splat       302
 /es/library/research/             /es/learn/research/       302
-/es/library/research/*            /es/learn/research/:splat 302
 /es/library/topics/               /es/learn/topics/         302
-/es/library/topics/*              /es/learn/topics/:splat   302
 /es/library/start/                /es/learn/start-here/     302
 /es/library/checklists/           /es/learn/checklists/     302
-/es/library/checklists/*          /es/learn/checklists/:splat 302
 
 # Phase 7 (May 2026): blog ↔ library content split.
 #
@@ -198,121 +188,72 @@
 
 # --- EN: kept-slug moves ---
 /blog/can-chatgpt-write-your-restaurant-website/                       /library/can-chatgpt-write-your-restaurant-website/                  301
-/blog/can-chatgpt-write-your-restaurant-website/*                      /library/can-chatgpt-write-your-restaurant-website/:splat            301
 /blog/does-my-restaurant-need-a-website/                               /library/does-my-restaurant-need-a-website/                          301
-/blog/does-my-restaurant-need-a-website/*                              /library/does-my-restaurant-need-a-website/:splat                    301
 /blog/how-to-get-cited-in-google-ai-overviews-restaurant/              /library/how-to-get-cited-in-google-ai-overviews-restaurant/         301
-/blog/how-to-get-cited-in-google-ai-overviews-restaurant/*             /library/how-to-get-cited-in-google-ai-overviews-restaurant/:splat   301
 /blog/how-to-get-more-google-reviews-for-your-restaurant/              /library/how-to-get-more-google-reviews-for-your-restaurant/         301
-/blog/how-to-get-more-google-reviews-for-your-restaurant/*             /library/how-to-get-more-google-reviews-for-your-restaurant/:splat   301
 /blog/how-to-raise-restaurant-menu-prices-without-losing-reservations/  /library/how-to-raise-restaurant-menu-prices-without-losing-reservations/         301
-/blog/how-to-raise-restaurant-menu-prices-without-losing-reservations/* /library/how-to-raise-restaurant-menu-prices-without-losing-reservations/:splat   301
 /blog/how-to-read-restaurant-google-search-console/                    /library/how-to-read-restaurant-google-search-console/               301
-/blog/how-to-read-restaurant-google-search-console/*                   /library/how-to-read-restaurant-google-search-console/:splat         301
 /blog/how-to-set-up-google-business-profile-for-your-restaurant/       /library/how-to-set-up-google-business-profile-for-your-restaurant/  301
-/blog/how-to-set-up-google-business-profile-for-your-restaurant/*      /library/how-to-set-up-google-business-profile-for-your-restaurant/:splat  301
 /blog/how-to-tell-if-a-restaurant-tool-is-safe/                        /library/how-to-tell-if-a-restaurant-tool-is-safe/                   301
-/blog/how-to-tell-if-a-restaurant-tool-is-safe/*                       /library/how-to-tell-if-a-restaurant-tool-is-safe/:splat             301
 /blog/my-restaurant-isnt-on-google-maps-10-minute-diagnostic/          /library/my-restaurant-isnt-on-google-maps-10-minute-diagnostic/     301
-/blog/my-restaurant-isnt-on-google-maps-10-minute-diagnostic/*         /library/my-restaurant-isnt-on-google-maps-10-minute-diagnostic/:splat 301
 /blog/restaurant-photo-spec-sheet/                                     /library/restaurant-photo-spec-sheet/                                301
-/blog/restaurant-photo-spec-sheet/*                                    /library/restaurant-photo-spec-sheet/:splat                          301
 /blog/toast-vs-square-vs-clover-for-restaurants/                       /library/toast-vs-square-vs-clover-for-restaurants/                  301
-/blog/toast-vs-square-vs-clover-for-restaurants/*                      /library/toast-vs-square-vs-clover-for-restaurants/:splat            301
 /blog/what-should-be-on-a-restaurant-website/                          /library/what-should-be-on-a-restaurant-website/                     301
-/blog/what-should-be-on-a-restaurant-website/*                         /library/what-should-be-on-a-restaurant-website/:splat               301
 /blog/when-to-rebuild-your-restaurant-website/                         /library/when-to-rebuild-your-restaurant-website/                    301
-/blog/when-to-rebuild-your-restaurant-website/*                        /library/when-to-rebuild-your-restaurant-website/:splat              301
 /blog/wix-vs-custom-for-restaurants/                                   /library/wix-vs-custom-for-restaurants/                              301
-/blog/wix-vs-custom-for-restaurants/*                                  /library/wix-vs-custom-for-restaurants/:splat                        301
 
 # --- EN: rename moves (de-timed) ---
 /blog/how-much-does-a-custom-restaurant-website-cost-in-2026/          /library/custom-restaurant-website-pricing/                          301
-/blog/how-much-does-a-custom-restaurant-website-cost-in-2026/*         /library/custom-restaurant-website-pricing/:splat                    301
 /blog/uber-eats-vs-doordash-vs-grubhub-restaurant-math-2026/           /library/third-party-delivery-comparison/                            301
-/blog/uber-eats-vs-doordash-vs-grubhub-restaurant-math-2026/*          /library/third-party-delivery-comparison/:splat                      301
 /blog/service-charges-vs-tipping-restaurant-operator-math-2026/        /library/service-charge-vs-tipping-model/                            301
-/blog/service-charges-vs-tipping-restaurant-operator-math-2026/*       /library/service-charge-vs-tipping-model/:splat                      301
 /blog/how-to-respond-to-google-reviews-restaurant-playbook-2026/       /library/google-review-response-playbook/                            301
-/blog/how-to-respond-to-google-reviews-restaurant-playbook-2026/*      /library/google-review-response-playbook/:splat                      301
 /blog/loyalty-programs-for-independent-restaurants-what-works-2026/    /library/loyalty-program-roi/                                        301
-/blog/loyalty-programs-for-independent-restaurants-what-works-2026/*   /library/loyalty-program-roi/:splat                                  301
 /blog/should-your-restaurant-have-an-app-in-2026/                      /library/restaurant-app-decision/                                    301
-/blog/should-your-restaurant-have-an-app-in-2026/*                     /library/restaurant-app-decision/:splat                              301
 /blog/google-ai-mode-reservation-booking-restaurant-2026/              /library/ai-mode-reservation-strategy/                               301
-/blog/google-ai-mode-reservation-booking-restaurant-2026/*             /library/ai-mode-reservation-strategy/:splat                         301
 
 # --- EN: merge bundles (multiple sources → one target) ---
 # Schema markup guide (2 sources)
 /blog/restaurant-schema-markup-6-types-google-uses/                    /library/restaurant-schema-markup-guide/                             301
-/blog/restaurant-schema-markup-6-types-google-uses/*                   /library/restaurant-schema-markup-guide/:splat                       301
 /blog/restaurant-schema-markup-complete-paste-ready-example/           /library/restaurant-schema-markup-guide/                             301
-/blog/restaurant-schema-markup-complete-paste-ready-example/*          /library/restaurant-schema-markup-guide/:splat                       301
 # Reservation conversion guide (3 sources — funnel + checklist + find-a-table)
 /blog/why-your-restaurant-loses-reservations-every-night/              /library/reservation-conversion-guide/                               301
-/blog/why-your-restaurant-loses-reservations-every-night/*             /library/reservation-conversion-guide/:splat                         301
 /blog/five-restaurant-website-changes-recover-one-percent-margin/      /library/reservation-conversion-guide/                               301
-/blog/five-restaurant-website-changes-recover-one-percent-margin/*     /library/reservation-conversion-guide/:splat                         301
 /blog/how-to-recover-reservations-from-googles-find-a-table/           /library/reservation-conversion-guide/                               301
-/blog/how-to-recover-reservations-from-googles-find-a-table/*          /library/reservation-conversion-guide/:splat                         301
 # Third-party delivery economics (2 sources)
 /blog/an-honest-doordash-math-for-independent-restaurants-2026/        /library/third-party-delivery-economics/                             301
-/blog/an-honest-doordash-math-for-independent-restaurants-2026/*       /library/third-party-delivery-economics/:splat                       301
 /blog/is-doordash-worth-it-for-restaurants-in-2026/                    /library/third-party-delivery-economics/                             301
-/blog/is-doordash-worth-it-for-restaurants-in-2026/*                   /library/third-party-delivery-economics/:splat                       301
 
 # Wave 5 cross-language merge cleanup: /es/blog/<en-secondary-slug>/
 # (legacy EN-slug-under-ES paths from early bilingual publishing).
 # Cluster 9 (Wave 5b) update: where a native ES merge target exists,
 # 301s now point at the ES target instead of the EN library article.
 /es/blog/restaurant-schema-markup-complete-paste-ready-example/    /es/library/los-6-tipos-de-schema-markup-que-google-usa/    301
-/es/blog/restaurant-schema-markup-complete-paste-ready-example/*   /es/library/los-6-tipos-de-schema-markup-que-google-usa/    301
 /es/blog/five-restaurant-website-changes-recover-one-percent-margin/   /library/reservation-conversion-guide/  301
-/es/blog/five-restaurant-website-changes-recover-one-percent-margin/*  /library/reservation-conversion-guide/  301
 /es/blog/how-to-recover-reservations-from-googles-find-a-table/    /library/reservation-conversion-guide/      301
-/es/blog/how-to-recover-reservations-from-googles-find-a-table/*   /library/reservation-conversion-guide/      301
 /es/blog/is-doordash-worth-it-for-restaurants-in-2026/             /es/library/como-salir-de-doordash-mi-restaurante/  301
-/es/blog/is-doordash-worth-it-for-restaurants-in-2026/*            /es/library/como-salir-de-doordash-mi-restaurante/  301
 # Cluster 9: ES merge secondaries + orphan ES-at-EN-slug files just deleted.
 /es/blog/schema-markup-para-restaurante-ejemplo/                   /es/library/los-6-tipos-de-schema-markup-que-google-usa/    301
-/es/blog/schema-markup-para-restaurante-ejemplo/*                  /es/library/los-6-tipos-de-schema-markup-que-google-usa/    301
 /es/blog/why-your-restaurant-loses-reservations-every-night/       /library/reservation-conversion-guide/      301
-/es/blog/why-your-restaurant-loses-reservations-every-night/*      /library/reservation-conversion-guide/      301
 # Cluster 9: ES merge primaries just moved into /es/library/.
 /es/blog/los-6-tipos-de-schema-markup-que-google-usa/              /es/library/los-6-tipos-de-schema-markup-que-google-usa/    301
-/es/blog/los-6-tipos-de-schema-markup-que-google-usa/*             /es/library/los-6-tipos-de-schema-markup-que-google-usa/:splat 301
 /es/blog/como-salir-de-doordash-mi-restaurante/                    /es/library/como-salir-de-doordash-mi-restaurante/          301
-/es/blog/como-salir-de-doordash-mi-restaurante/*                   /es/library/como-salir-de-doordash-mi-restaurante/:splat    301
 
 # --- ES: kept-slug moves only (rename + merge ES targets deferred to Wave 4b) ---
 /es/blog/como-hacer-sitio-web-para-mi-restaurante/                     /es/library/como-hacer-sitio-web-para-mi-restaurante/                301
-/es/blog/como-hacer-sitio-web-para-mi-restaurante/*                    /es/library/como-hacer-sitio-web-para-mi-restaurante/:splat          301
 /es/blog/como-lograr-que-google-cite-tu-restaurante-en-ai-overview/    /es/library/como-lograr-que-google-cite-tu-restaurante-en-ai-overview/  301
-/es/blog/como-lograr-que-google-cite-tu-restaurante-en-ai-overview/*   /es/library/como-lograr-que-google-cite-tu-restaurante-en-ai-overview/:splat 301
 /es/blog/como-leer-google-search-console-de-tu-restaurante/            /es/library/como-leer-google-search-console-de-tu-restaurante/       301
-/es/blog/como-leer-google-search-console-de-tu-restaurante/*           /es/library/como-leer-google-search-console-de-tu-restaurante/:splat 301
 /es/blog/como-saber-si-una-herramienta-de-restaurante-es-segura/       /es/library/como-saber-si-una-herramienta-de-restaurante-es-segura/  301
-/es/blog/como-saber-si-una-herramienta-de-restaurante-es-segura/*      /es/library/como-saber-si-una-herramienta-de-restaurante-es-segura/:splat 301
 /es/blog/cuando-rehacer-tu-sitio-web-de-restaurante/                   /es/library/cuando-rehacer-tu-sitio-web-de-restaurante/              301
-/es/blog/cuando-rehacer-tu-sitio-web-de-restaurante/*                  /es/library/cuando-rehacer-tu-sitio-web-de-restaurante/:splat        301
 /es/blog/especificaciones-de-fotos-para-restaurantes/                  /es/library/especificaciones-de-fotos-para-restaurantes/             301
-/es/blog/especificaciones-de-fotos-para-restaurantes/*                 /es/library/especificaciones-de-fotos-para-restaurantes/:splat       301
 /es/blog/mi-restaurante-no-aparece-en-google-maps/                     /es/library/mi-restaurante-no-aparece-en-google-maps/                301
-/es/blog/mi-restaurante-no-aparece-en-google-maps/*                    /es/library/mi-restaurante-no-aparece-en-google-maps/:splat          301
 
 # --- ES: Group B — ES counterparts of EN-renamed posts. ES slug preserved
 # (with original -2026 suffix); ES de-timing is a content decision pending
 # translation review. Each pair: ES slug stays put, just changes namespace.
 /es/blog/cuanto-cuesta-una-pagina-web-para-restaurante-2026/                        /es/library/cuanto-cuesta-una-pagina-web-para-restaurante-2026/                        301
-/es/blog/cuanto-cuesta-una-pagina-web-para-restaurante-2026/*                       /es/library/cuanto-cuesta-una-pagina-web-para-restaurante-2026/:splat                  301
 /es/blog/uber-eats-vs-doordash-vs-grubhub-cuentas-para-restaurante-2026/            /es/library/uber-eats-vs-doordash-vs-grubhub-cuentas-para-restaurante-2026/            301
-/es/blog/uber-eats-vs-doordash-vs-grubhub-cuentas-para-restaurante-2026/*           /es/library/uber-eats-vs-doordash-vs-grubhub-cuentas-para-restaurante-2026/:splat      301
 /es/blog/cargos-por-servicio-vs-propina-cuentas-para-operador-restaurante-2026/     /es/library/cargos-por-servicio-vs-propina-cuentas-para-operador-restaurante-2026/     301
-/es/blog/cargos-por-servicio-vs-propina-cuentas-para-operador-restaurante-2026/*    /es/library/cargos-por-servicio-vs-propina-cuentas-para-operador-restaurante-2026/:splat 301
 /es/blog/como-responder-resenas-google-restaurante-playbook-2026/                   /es/library/como-responder-resenas-google-restaurante-playbook-2026/                   301
-/es/blog/como-responder-resenas-google-restaurante-playbook-2026/*                  /es/library/como-responder-resenas-google-restaurante-playbook-2026/:splat             301
 /es/blog/programas-de-lealtad-para-restaurantes-independientes-2026/                /es/library/programas-de-lealtad-para-restaurantes-independientes-2026/                301
-/es/blog/programas-de-lealtad-para-restaurantes-independientes-2026/*               /es/library/programas-de-lealtad-para-restaurantes-independientes-2026/:splat          301
 /es/blog/reserva-en-google-ai-mode-restaurante-2026/                                /es/library/reserva-en-google-ai-mode-restaurante-2026/                                301
-/es/blog/reserva-en-google-ai-mode-restaurante-2026/*                               /es/library/reserva-en-google-ai-mode-restaurante-2026/:splat                          301
 
