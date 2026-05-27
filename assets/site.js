@@ -964,6 +964,34 @@
       el.addEventListener('click', (e) => { e.preventDefault(); open(el); });
     });
 
+    // SearchAction handler. The WebSite JSON-LD on the homepage
+    // advertises `https://muntin.digital/?q={search_term_string}` as
+    // the sitelinks-searchbox entry point. When a visitor lands with
+    // ?q=… in the URL (whether from Google's searchbox or a deep
+    // link), pre-fill the modal and run the query, then strip the
+    // param from the URL so refresh + bookmarks stay clean.
+    (() => {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        const q = (params.get('q') || '').trim();
+        if (!q) return;
+        // Defer to next tick so the modal mounts after the page is
+        // interactive (pagefind is lazy and a brief delay smooths LCP).
+        setTimeout(() => {
+          open(null);
+          if (input) {
+            input.value = q.slice(0, 256);
+            onInput();
+          }
+        }, 0);
+        // Clean the URL without a reload (no entry in history).
+        params.delete('q');
+        const next = params.toString();
+        const clean = window.location.pathname + (next ? '?' + next : '') + window.location.hash;
+        window.history.replaceState(null, '', clean);
+      } catch (_) { /* no-op */ }
+    })();
+
     // Small HTML-escape helpers (Pagefind already escapes titles/urls,
     // but we re-escape when interpolating into the template to stay
     // defense-in-depth. Excerpts intentionally skipped: Pagefind emits
