@@ -665,39 +665,54 @@ header.nav{min-height:64px}
     <div class="foot-grid">
       <div class="foot-col foot-brand">
         <a href="/es/" class="foot-lockup-wrap" aria-label="Muntin Digital — inicio">
-          <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53" loading="lazy" decoding="async">
+          <!-- alt="" porque el <a> que envuelve ya está etiquetado.
+               Sin esto, los lectores de pantalla anuncian dos veces
+               "Muntin Digital" en el enlace del logotipo. -->
+          <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="" width="240" height="53" loading="lazy" decoding="async">
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">La ventana.</p>
-        <p class="foot-blurb">Una biblioteca web y estudio de dise&ntilde;o para restaurantes, con base en Silver Spring, MD &mdash; art&iacute;culos, herramientas gratis, investigaci&oacute;n y un glosario de <!-- count:glossary.terms -->149<!-- /count --> t&eacute;rminos, con el estudio detr&aacute;s cuando quieras contratar. Se habla espa&ntilde;ol.</p>
+        <p class="foot-blurb">Una biblioteca gratuita para restaurantes &mdash; <!-- count:articles.library -->24<!-- /count --> art&iacute;culos, <!-- count:tools.live -->12<!-- /count --> herramientas y un glosario de <!-- count:glossary.terms -->149<!-- /count --> t&eacute;rminos &mdash; con un estudio web de una persona detr&aacute;s, en Silver Spring, MD. Se habla espa&ntilde;ol.</p>
       </div>
 
-      <nav class="foot-col" aria-labelledby="foot-explore">
-        <p class="foot-heading" id="foot-explore">Explorar</p>
-        <ul class="foot-links">
-          <li><a href="/es/services/">Servicios</a></li>
-          <li><a href="/es/for/restaurants/">Para restaurantes</a></li>
-          <li><a href="/es/work/">Proyectos</a></li>
-          <li><a href="/es/about/">Sobre Don</a></li>
-          <li><a href="/es/system/">El sistema</a></li>
-          <li><a href="/receipts/" hreflang="en" lang="en">Receipts</a></li>
-          <li><a href="/methods/" hreflang="en" lang="en">Methods</a></li>
-          <li><a href="/changelog/" hreflang="en" lang="en">Changelog</a></li>
-        </ul>
-      </nav>
-
+      <!-- El orden de columnas refleja la navegación principal de 5
+           ítems (Biblioteca, Estudio, Confianza, Contacto). La
+           Biblioteca apunta primero al hub /es/library/ (las tres
+           puertas: Lee, Busca, Haz); el antiguo /es/learn/ sigue
+           resolviendo pero ya no necesita su propio enlace de pie.
+           id="foot-learn" es el marcador canónico que usa
+           scripts/sync-includes.mjs (FOOTER_MAIN_FUNNEL_MARKER), así
+           que el id se mantiene aunque la etiqueta visible sea
+           "Biblioteca". -->
       <nav class="foot-col" aria-labelledby="foot-learn">
         <p class="foot-heading" id="foot-learn">Biblioteca</p>
         <ul class="foot-links">
-          <li><a href="/es/learn/">Inicio de la biblioteca</a></li>
-          <li><a href="/es/learn/start-here/">Empieza aquí</a></li>
-          <li><a href="/es/learn/topics/">Temas</a></li>
-          <li><a href="/es/blog/">Artículos</a></li>
-          <li><a href="/es/tools/">Herramientas gratis</a></li>
+          <li><a href="/es/library/">Explora la biblioteca</a></li>
           <li><a href="/es/glossary/">Glosario</a></li>
-          <li><a href="/es/learn/research/">Investigación</a></li>
-          <li><a href="/es/learn/checklists/">Listas y recursos</a></li>
+          <li><a href="/es/tools/">Herramientas gratis</a></li>
           <li><a href="/es/sheets/">Hojas del operador</a></li>
+          <li><a href="/es/blog/">Comentarios</a></li>
+        </ul>
+      </nav>
+
+      <nav class="foot-col" aria-labelledby="foot-studio">
+        <p class="foot-heading" id="foot-studio">Estudio</p>
+        <ul class="foot-links">
+          <li><a href="/es/studio/#pricing">Precios</a></li>
+          <li><a href="/es/studio/compare/">Comparar opciones</a></li>
+          <li><a href="/es/work/">Proyectos</a></li>
+          <li><a href="/es/about/">Sobre Don</a></li>
+        </ul>
+      </nav>
+
+      <nav class="foot-col" aria-labelledby="foot-trust">
+        <p class="foot-heading" id="foot-trust">Confianza</p>
+        <ul class="foot-links">
+          <li><a href="/es/never/">Lo que nunca hacemos</a></li>
+          <li><a href="/es/ai/">Pol&iacute;tica de IA</a></li>
+          <li><a href="/es/methods/">M&eacute;todos y fuentes</a></li>
+          <li><a href="/es/changelog/">Registro de cambios</a></li>
+          <li><a href="/es/receipts/">Recibos</a></li>
         </ul>
       </nav>
 
@@ -708,7 +723,7 @@ header.nav{min-height:64px}
           <li><a href="/es/window/">Contacta a Don</a></li>
           <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (se abre en una pestaña nueva)</span></a></li>
         </ul>
-        <p class="foot-trust"><strong>Respuesta:</strong> de lunes a viernes, en menos de 4 horas. Los fines de semana, el lunes en la mañana.</p>
+        <p class="foot-trust"><strong>Respuesta:</strong> en menos de 4 horas de lunes a viernes; fines de semana, el lunes.</p>
       </nav>
     </div>
 
