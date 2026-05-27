@@ -315,6 +315,28 @@ function esc(s) {
     .replace(/'/g, '&#39;');
 }
 
+// Phase 7: HTML-escape a string but pass through `<!-- count:KEY -->VALUE<!-- /count -->`
+// sentinels intact. Without this, count sentinels embedded in
+// template literals (e.g., term_final_h2_l2 = "<!-- count:glossary.terms -->135<!-- /count --> términos")
+// get escaped to "&lt;!-- count:..." on every build run, which both breaks
+// inject-site-counts (which can't find escaped sentinels to replace)
+// and trips check-count-sentinel-escape.
+function escKeepSentinels(s) {
+  const SENTINEL = /<!-- count:[\w.]+ -->[^<]*<!-- \/count -->/g;
+  const str = String(s);
+  const out = [];
+  let i = 0;
+  let m;
+  SENTINEL.lastIndex = 0;
+  while ((m = SENTINEL.exec(str))) {
+    out.push(esc(str.slice(i, m.index)));
+    out.push(m[0]); // raw sentinel, no escaping
+    i = m.index + m[0].length;
+  }
+  out.push(esc(str.slice(i)));
+  return out.join('');
+}
+
 // Index every piece of content by topic slug, in the order it should
 // appear on the topic page (newest articles first; tools and research
 // in the order declared in the tag file). Locale-aware: ES pulls
@@ -1217,7 +1239,7 @@ ${siblingsBlock}
   <div class="container">
     <div class="section-header reveal section-center">
       <span class="eyebrow">${esc(t(locale, 'term_final_eyebrow'))}</span>
-      <h2>${esc(t(locale, 'term_final_h2_l1'))}<br><span class="serif-italic">${esc(t(locale, 'term_final_h2_l2'))}</span></h2>
+      <h2>${esc(t(locale, 'term_final_h2_l1'))}<br><span class="serif-italic">${escKeepSentinels(t(locale, 'term_final_h2_l2'))}</span></h2>
       <p class="final-sub">${esc(t(locale, 'term_final_sub'))}</p>
     </div>
     <div class="hero-ctas reveal hero-ctas-center">
