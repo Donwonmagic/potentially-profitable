@@ -627,6 +627,9 @@
       navHint:     i18n('search.nav_hint',    'to navigate'),
       openHint:    i18n('search.open_hint',   'to open'),
       closeHint:   i18n('search.close_hint',  'to close'),
+      voiceStart:  i18n('search.voice_start', 'Search by voice'),
+      voiceStop:   i18n('search.voice_stop',  'Stop listening'),
+      voiceHint:   i18n('search.voice_hint',  'Listening… speak now'),
     };
 
     // Curated fallback for queries Pagefind drops as too-common.
@@ -740,9 +743,99 @@
       dialog.addEventListener('close', () => {
         if (lastOpener && typeof lastOpener.focus === 'function') lastOpener.focus();
         lastOpener = null;
+        stopVoice();
       });
       input.addEventListener('input', onInput);
       input.addEventListener('keydown', onInputKeydown);
+      mountVoice();
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    // Voice search (Phase 9 — Light refresh).
+    //
+    // Progressive enhancement: only mount the mic button when the
+    // browser exposes the Web Speech API (window.SpeechRecognition
+    // on Chromium / Edge, window.webkitSpeechRecognition on Safari).
+    // Firefox doesn't ship it as of 2026 — the button never appears,
+    // the modal is unchanged for those readers.
+    //
+    // Behavior: click the mic → recognition starts, button enters
+    // [aria-pressed="true"] state (CSS in site.css gives it a teal
+    // pulse), recognized text streams into the search input via
+    // dispatchEvent('input') so the existing debounce + Pagefind
+    // pipeline runs unchanged. Recognition.continuous = false so the
+    // first natural pause ends the capture. The button is interim
+    // results-aware: as the user speaks, the input updates live.
+    //
+    // Locale: lang is set from the document's <html lang>, so the
+    // English homepage uses 'en-US' and /es/ uses 'es-ES'. Both are
+    // shipped by every browser that exposes the API.
+    // ─────────────────────────────────────────────────────────────
+    let voiceBtn = null;
+    let recognition = null;
+    function speechCtor() {
+      return window.SpeechRecognition || window.webkitSpeechRecognition || null;
+    }
+    function mountVoice() {
+      const Ctor = speechCtor();
+      if (!Ctor) return; // unsupported — never inject the button
+      voiceBtn = document.createElement('button');
+      voiceBtn.type = 'button';
+      voiceBtn.className = 'search-voice';
+      voiceBtn.setAttribute('aria-label', strings.voiceStart);
+      voiceBtn.setAttribute('aria-pressed', 'false');
+      voiceBtn.setAttribute('title', strings.voiceStart);
+      voiceBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="8.5" y1="22" x2="15.5" y2="22"/></svg>';
+      // Insert between input and close so the visual order is:
+      //   search-icon · input · mic · close
+      const close = dialog.querySelector('.search-close');
+      close.parentNode.insertBefore(voiceBtn, close);
+      voiceBtn.addEventListener('click', toggleVoice);
+    }
+    function toggleVoice() {
+      if (recognition) { stopVoice(); return; }
+      startVoice();
+    }
+    function startVoice() {
+      const Ctor = speechCtor();
+      if (!Ctor || !voiceBtn) return;
+      try { recognition = new Ctor(); }
+      catch (_) { recognition = null; return; }
+      const lang = (document.documentElement.lang || 'en').toLowerCase();
+      recognition.lang = lang.startsWith('es') ? 'es-ES' : 'en-US';
+      recognition.continuous = false;
+      recognition.interimResults = true;
+      recognition.maxAlternatives = 1;
+      voiceBtn.setAttribute('aria-pressed', 'true');
+      voiceBtn.setAttribute('aria-label', strings.voiceStop);
+      voiceBtn.setAttribute('title', strings.voiceStop);
+      input.setAttribute('placeholder', strings.voiceHint);
+      recognition.onresult = (e) => {
+        let txt = '';
+        for (let i = e.resultIndex; i < e.results.length; i++) txt += e.results[i][0].transcript;
+        if (!txt) return;
+        input.value = txt;
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+      };
+      recognition.onerror = () => { stopVoice(); };
+      recognition.onend = () => { stopVoice(); };
+      try { recognition.start(); }
+      catch (_) { stopVoice(); }
+      if (window.plausible) {
+        try { window.plausible('Voice Search', { props: { locale: recognition.lang } }); } catch (_) {}
+      }
+    }
+    function stopVoice() {
+      if (recognition) {
+        try { recognition.stop(); } catch (_) {}
+        recognition = null;
+      }
+      if (voiceBtn) {
+        voiceBtn.setAttribute('aria-pressed', 'false');
+        voiceBtn.setAttribute('aria-label', strings.voiceStart);
+        voiceBtn.setAttribute('title', strings.voiceStart);
+      }
+      if (input) input.setAttribute('placeholder', strings.placeholder);
     }
 
     // Lazy-load Pagefind from the static index directory. Returns a
