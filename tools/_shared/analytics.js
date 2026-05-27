@@ -261,6 +261,21 @@
       'Glossary Topic',
       'Post Listened',
       'Post Listened: Completed',
+      // Audio experience redesign — events fired from assets/js/listen.js.
+      // Naming convention: "Audio: <Verb>" — namespaced so they sort
+      // together in Plausible and don't collide with the older bare
+      // "Post Listened" events that pre-date the redesign.
+      'Audio: Preview',
+      'Audio: Keyboard Shortcut',
+      'Audio: Deep Link',
+      'Audio: Shared with Timestamp',
+      'Audio: Resume Chip Shown',
+      'Audio: Resume Chip Tapped',
+      'Audio: Sentence Click Seek',
+      'Audio: Chapter Jump',
+      'Audio: Help Opened',
+      'Audio: Finished Prompt Shown',
+      'Audio: Finished Prompt Clicked',
       'Share',
       // Phase 3A (launch) — Cal.com booking surface (/studio/call/).
       // Fires once per page view, ~800ms after load (after the embed

@@ -149,19 +149,82 @@
     const prefs = loadPrefs();
     if (rateSelect && prefs.rate) rateSelect.value = String(prefs.rate);
 
+    // Phase 4 — click-paragraph-to-seek feature flag. Default OFF
+    // (audit finding #12: shipping it on by default would surprise
+    // users mid-text-selection or mid-tap-hold and produce silent
+    // bounces). Active when URL has `?seek=1`. A future settings
+    // popover can flip this from a stored pref.
+    const seekFlagOn = (() => {
+      try {
+        return new URLSearchParams(location.search).get('seek') === '1';
+      } catch (_) { return false; }
+    })();
+
+    // Phase 5 — "Continue where you left off". Debounced playhead save
+    // into prefs.lastPosition[slug] with a savedAt timestamp. The chip
+    // is offered on next visit if the position is more than 30s in,
+    // less than 95% of duration, and saved within 14 days. Cache is
+    // trimmed to the most recent 50 articles so it doesn't bloat
+    // localStorage on a heavy listener.
+    const RESUME_TTL_MS = 14 * 24 * 60 * 60 * 1000;  // 14 days
+    const RESUME_MIN_SECS = 30;
+    const RESUME_MAX_PCT = 0.95;
+    const RESUME_MAX_ENTRIES = 50;
+    const articleSlug = (() => {
+      try {
+        const m = location.pathname.match(/\/(?:blog|learn|glossary)\/([^/]+)\//);
+        return m ? m[1] : location.pathname;
+      } catch (_) { return null; }
+    })();
+    let lastResumeSaveAt = 0;
+    function getResumeRecord() {
+      if (!articleSlug) return null;
+      const map = (prefs && prefs.lastPosition) || null;
+      const rec = map && map[articleSlug];
+      if (!rec || typeof rec.t !== 'number') return null;
+      if (Date.now() - rec.savedAt > RESUME_TTL_MS) return null;
+      return rec;
+    }
+    function saveResume(t, duration) {
+      if (!articleSlug || !t || !duration) return;
+      // Don't save during a preview run — the user isn't committed
+      // and a 25s preview position is noise, not intent.
+      if (previewLimit !== null) return;
+      if (t < RESUME_MIN_SECS) return;
+      if (t > duration * RESUME_MAX_PCT) return;
+      const now = Date.now();
+      if (now - lastResumeSaveAt < 3000) return;  // debounce to ~3s
+      lastResumeSaveAt = now;
+      if (!prefs.lastPosition) prefs.lastPosition = {};
+      prefs.lastPosition[articleSlug] = { t: Math.floor(t), savedAt: now };
+      // Trim oldest entries (sorted by savedAt) if we're over budget.
+      const entries = Object.entries(prefs.lastPosition);
+      if (entries.length > RESUME_MAX_ENTRIES) {
+        entries.sort((a, b) => a[1].savedAt - b[1].savedAt);
+        const remove = entries.slice(0, entries.length - RESUME_MAX_ENTRIES);
+        for (const [k] of remove) delete prefs.lastPosition[k];
+      }
+      savePrefs();
+    }
+    function clearResume() {
+      if (!articleSlug || !prefs.lastPosition) return;
+      delete prefs.lastPosition[articleSlug];
+      savePrefs();
+    }
+
     // If this post will use a pre-rendered MP3, the browser's voice
     // list doesn't apply — the reader is already chosen at render time.
     // Hide the voice picker up-front so users aren't presented with a
     // "choose a name" dropdown that looks like it's demanding a
-    // selection. (We still swap the source-of-truth note to "Narrated
-    // in-house" once the manifest actually loads.)
+    // selection. (We still swap the source-of-truth note to "Voiced
+    // for The Muntin Desk" once the manifest actually loads.)
     if (audioSrc && voiceSelect) {
       const voiceLabel = voiceSelect.closest('.listen-select');
       if (voiceLabel) voiceLabel.hidden = true;
       const srcNote = card.root.querySelector('.listen-source-note');
       if (srcNote) {
         srcNote.setAttribute('data-source', 'studio');
-        srcNote.textContent = 'Narrated in-house';
+        srcNote.textContent = i18n('audio.byline_studio', 'Voiced for The Muntin Desk');
       }
     }
     function loadPrefs() {
@@ -257,6 +320,11 @@
       audioSrc = audioSrcFor(lang);
       manifestSrc = manifestSrcFor(lang);
       engine = audioSrc ? 'audio' : 'speech';
+      // Phase 4: re-segment sentences under the new locale on the next
+      // chunk activation. The language-swap reapply-translations path
+      // (below) replaces the wrapped spans by rewriting prose, so the
+      // next mountSentenceSpans pass starts fresh.
+      resetSentenceSegmenter();
       // Tear down cached audio + manifest so the next play fetches
       // the new language's assets.
       if (audioEl) {
@@ -610,6 +678,25 @@
       if (currentElement) {
         currentElement.classList.remove('is-reading');
         currentElement.classList.remove('is-reading-callout');
+        // Read-trail: mark the previous chunk as "was read" so the
+        // article visibly leads the reader through the piece as audio
+        // plays. Only on prose paragraphs and list items — figure
+        // callouts have their own pulsing ring, chart labels sit
+        // inside layouts where the left:-14px rail would land in
+        // graph territory, headings already mark their own start
+        // with size/weight, and figcaptions sit inside figures whose
+        // ring already implies "read". So tagOk filters by element
+        // type, not just the chunk kind from the manifest.
+        const tag = currentElement.tagName;
+        const tagOk = tag === 'P' || tag === 'LI';
+        if (tagOk && !currentElement.closest('.viz-figure, .article-figure, figure, .listen-card')) {
+          currentElement.classList.add('was-read');
+        }
+      }
+      // Drop any stale sentence highlight from the previous chunk.
+      if (currentSentSpan) {
+        currentSentSpan.classList.remove('is-sent-reading');
+        currentSentSpan = null;
       }
       currentElement = el;
       if (el) {
@@ -622,6 +709,15 @@
         if (chunk && chunk.kind === 'figure') {
           el.classList.add('is-reading-callout');
         }
+        // Phase 4: wrap sentences on first activation of a body chunk.
+        // No-op for figure/list/quote/heading chunks.
+        mountSentenceSpans(el, chunk);
+        // Mirror the current chapter onto the dialog's chapter list so
+        // a listener who opens the dialog mid-play sees their position
+        // in the article structure. Walks backward from the current
+        // chunk to the nearest preceding heading; finds the chapter
+        // button by data-chapter-id == headingElement.id.
+        updateActiveChapterButton();
         // Update "now reading" label on the card
         if (chapterEl) setChapterText(chapterEl, chapterLabel(chunk));
         const rect = el.getBoundingClientRect();
@@ -677,6 +773,129 @@
         cur = cur.parentElement;
       }
       return '';
+    }
+
+    /* ---- Sentence-level reading sync (Phase 4) -----------------------
+       Lazily wraps the text of an active body chunk in <span.listen-sent>
+       elements with proportional [data-sent-start, data-sent-end] time
+       windows derived from the chunk's own [start, end). Only body
+       chunks — figure/quote/list/heading chunks have non-linear text
+       (multiple sentences in a caption, fragmentary list items) where
+       proportional splitting would drift visibly.
+       Wraps once per element, cached in sentencedEls. The mutation only
+       runs the first time a chunk becomes active during this session,
+       so it costs at most N writes per article — not per tick.
+       Selector resolution at lines ~1141-1174 uses el.textContent which
+       is transparent to child spans, so the chunk-to-element map stays
+       valid after wrapping.
+       Per-sentence duration is capped at 4.5s so a runaway estimate
+       (a 200-char sentence in a chunk with only 1s of audio left)
+       doesn't park the highlight on a single sentence visibly. */
+    let sentenceSegmenter = null;
+    let segmenterLang = null;
+    function getSentenceSegmenter() {
+      if (typeof Intl === 'undefined' || typeof Intl.Segmenter !== 'function') return null;
+      const lang = currentLanguage || 'en';
+      if (sentenceSegmenter && segmenterLang === lang) return sentenceSegmenter;
+      try {
+        sentenceSegmenter = new Intl.Segmenter(lang, { granularity: 'sentence' });
+        segmenterLang = lang;
+        return sentenceSegmenter;
+      } catch (_) {
+        return null;
+      }
+    }
+    // Re-segment under the active locale on next chunk activation.
+    function resetSentenceSegmenter() {
+      sentenceSegmenter = null;
+      segmenterLang = null;
+    }
+    // We probe the DOM itself rather than maintain a WeakSet: the
+    // language-swap path destroys the wrapped spans by replacing prose
+    // wholesale, and a Set would carry stale truth across that swap.
+    function isAlreadySentenced(el) {
+      const first = el.firstElementChild;
+      return !!(first && first.classList && first.classList.contains('listen-sent'));
+    }
+    function mountSentenceSpans(el, chunk) {
+      if (!el || !chunk) return;
+      if (chunk.kind !== 'body') return;
+      if (isAlreadySentenced(el)) return;
+      // Skip elements with mixed children (links, code, em, strong).
+      // Wrapping those would lose the inline formatting.
+      for (const child of el.childNodes) {
+        if (child.nodeType !== Node.TEXT_NODE) return;
+      }
+      const seg = getSentenceSegmenter();
+      if (!seg) return;
+      const text = el.textContent || '';
+      const segs = Array.from(seg.segment(text));
+      if (segs.length < 2) return;  // single sentence — no benefit to wrap
+      const totalChars = text.length;
+      const start = chunk.start || 0;
+      const end = chunk.end || 0;
+      const dur = end - start;
+      if (totalChars <= 0 || dur <= 0) return;
+      // Proportional sentEnd computed from CUMULATIVE character offset
+      // so the windows naturally sum to chunk.end. The earlier per-
+      // sentence Math.min(...,4.5) cap caused downstream drift in
+      // studio mode (any capped sentence shifted later windows early
+      // and made the last sentence absorb the slack — its highlight
+      // activated too soon). For studio audio chunk.end already
+      // matches real audio; no cap needed.
+      const frag = document.createDocumentFragment();
+      let charsSoFar = 0;
+      let prevEnd = start;
+      for (let i = 0; i < segs.length; i++) {
+        const piece = segs[i].segment;
+        charsSoFar += piece.length;
+        // Cumulative proportional end — the last sentence lands exactly on chunk.end
+        // by construction since charsSoFar === totalChars on the final iteration.
+        const sentEnd = i === segs.length - 1 ? end : (start + dur * (charsSoFar / totalChars));
+        // Intl.Segmenter includes trailing whitespace in each piece.
+        // Painting `.is-sent-reading` background + the bottom border
+        // under that trailing space leaves a small highlight tail
+        // before the next sentence. Strip the trailing whitespace
+        // from the span and emit it as a sibling text node so the
+        // paragraph still reads correctly and selection still works.
+        const trailing = piece.match(/\s+$/);
+        const core = trailing ? piece.slice(0, -trailing[0].length) : piece;
+        const span = document.createElement('span');
+        span.className = 'listen-sent';
+        span.dataset.sentStart = prevEnd.toFixed(3);
+        span.dataset.sentEnd = sentEnd.toFixed(3);
+        span.textContent = core;
+        frag.appendChild(span);
+        if (trailing) frag.appendChild(document.createTextNode(trailing[0]));
+        prevEnd = sentEnd;
+      }
+      el.textContent = '';
+      el.appendChild(frag);
+    }
+    let currentSentSpan = null;
+    function tickSentence(t) {
+      // Cheap exit: the current chunk isn't a body chunk (or hasn't been
+      // wrapped). Drop any stale highlight from a previous chunk.
+      if (!currentElement || !isAlreadySentenced(currentElement)) {
+        if (currentSentSpan) {
+          currentSentSpan.classList.remove('is-sent-reading');
+          currentSentSpan = null;
+        }
+        return;
+      }
+      // Linear scan — typical chunk has 1-6 sentences. A binary search
+      // would be overkill and obscure the intent.
+      const spans = currentElement.querySelectorAll('.listen-sent');
+      let next = null;
+      for (const s of spans) {
+        const start = parseFloat(s.dataset.sentStart);
+        const end = parseFloat(s.dataset.sentEnd);
+        if (t >= start && t < end) { next = s; break; }
+      }
+      if (next === currentSentSpan) return;
+      if (currentSentSpan) currentSentSpan.classList.remove('is-sent-reading');
+      if (next) next.classList.add('is-sent-reading');
+      currentSentSpan = next;
     }
 
     /* ---- Voice selection ---- */
@@ -833,8 +1052,12 @@
       const barW = w / bins;
       const halfH = h / 2;
       const playedBoundary = (playedPct / 100) * w;
-      const UNPLAYED = 'rgba(31,78,91,0.22)';
-      const PLAYED   = 'rgba(31,78,91,0.85)';
+      // Royal-blue palette to match the rest of the card. Previously
+      // used rgba(31,78,91,...) from the pre-modernization teal-green
+      // palette — the waveform was the last surviving holdout of the
+      // old colour family inside the Listen UI.
+      const UNPLAYED = 'rgba(42,80,200,0.22)';
+      const PLAYED   = 'rgba(42,80,200,0.85)';
       for (let i = 0; i < bins; i++) {
         const peak = waveformPeaks[i];
         const barH = Math.max(1, peak * (halfH - 1));
@@ -1181,11 +1404,14 @@
           end:   c.end   || 0,
         }));
       }
-      // Point the source-of-truth note at the branded reader
+      // Point the source-of-truth note at the branded reader. Reads as
+      // a publication byline ("Voiced for The Muntin Desk"), not as a
+      // technical disclosure — the curiosity-driven listener can dig
+      // into how-we-make-these from the settings dialog.
       const note = card.root.querySelector('.listen-source-note');
       if (note) {
         note.setAttribute('data-source', 'studio');
-        note.textContent = 'Narrated in-house';
+        note.textContent = i18n('audio.byline_studio', 'Voiced for The Muntin Desk');
       }
       // Studio mode uses Audio's native rate; remove the voice picker
       const voiceLabel = voiceSelect ? voiceSelect.closest('.listen-select') : null;
@@ -1216,6 +1442,23 @@
       drawTicks();
       revealPlayerChrome();
       audioEl.playbackRate = currentRate();
+      // Phase 5 — share-with-timestamp deep link. `?t=4m12s` (or
+      // `4:12` or `252s` or bare `252`) seeks the audio to that
+      // position on first play. Consumed once per page load so a
+      // pause/resume doesn't keep snapping back. Wins over the
+      // preview cap (deep link is explicit user intent, preview is
+      // tentative); we clear previewLimit to honor that precedence.
+      if (!deepLinkConsumed) {
+        deepLinkConsumed = true;
+        const t = parseTimestampParam();
+        if (t !== null && t > 0) {
+          previewLimit = null;
+          try { audioEl.currentTime = t; } catch (_) {}
+          if (window.plausible) {
+            try { window.plausible('Audio: Deep Link'); } catch (_) {}
+          }
+        }
+      }
       // Create the AudioContext inside the user-gesture chain, before
       // the first await — Safari otherwise leaves it permanently
       // suspended. If analyser setup fails, playback continues without
@@ -1336,6 +1579,22 @@
           if (dockChapter) setChapterText(dockChapter, '');
           setState('idle');
           syncMediaSessionPosition();
+          // Fresh-listen reset: clear the persistent read-trail rails
+          // on full completion so a replay starts from a clean slate
+          // (matches the user's mental model — finishing the piece is
+          // a natural breakpoint, the next listen shouldn't carry
+          // ghost marks from the previous).
+          if (postBody) {
+            postBody.querySelectorAll('.was-read').forEach((el) => el.classList.remove('was-read'));
+          }
+          // Surface the "what's next" prompt AFTER the 2.8s warm-glow
+          // finale collapses. The prompt persists until the user
+          // dismisses it or 90s pass (auto-hide). It's an editorial
+          // nudge, not a hard CTA — the link is muted, the dismiss
+          // is one tap. Listeners who finished and went straight to
+          // browsing get a friction-free path; listeners who finished
+          // and tabbed away never see it.
+          showFinishedPrompt();
         }, 2800);
         return;
       }
@@ -1372,6 +1631,16 @@
     function tickStudio() {
       if (!audioEl) return;
       const t = audioEl.currentTime;
+      // Phase 5: preview cap. If a 30s preview is in flight and the
+      // playhead reached the limit, pause the audio and clear the cap.
+      // Doesn't touch state until after the pause completes so the
+      // existing finishStudioPlayback path stays in charge of UI state.
+      if (previewLimit !== null && t >= previewLimit) {
+        previewLimit = null;
+        try { audioEl.pause(); } catch (_) {}
+        setState('paused');
+        return;
+      }
       // Find the chunk whose [start, end) contains t. Chunks are sorted
       // so a short linear scan from the current position is adequate.
       let idx = currentIndex;
@@ -1390,6 +1659,13 @@
       updateDockProgress(pct, t, audioEl.duration || 0);
       updateDockChapter(chunks[currentIndex]);
       markCurrentTickSegment(currentIndex);
+      // Phase 4: sentence highlight piggybacks the same tick. Single
+      // event loop, no new rAF or audio event listener — the audit
+      // explicitly mandated a single-tick architecture.
+      tickSentence(t);
+      // Phase 5: persist the playhead for the resume chip on next visit.
+      // Internally debounced to ~3s so we don't pound localStorage.
+      saveResume(t, audioEl.duration || 0);
       if (prevBtn) prevBtn.disabled = currentIndex <= 0;
       if (nextBtn) nextBtn.disabled = currentIndex >= chunks.length - 1;
       updateSkipButtons();
@@ -1424,6 +1700,13 @@
       state = next;
       syncMediaSessionState();
       card.root.setAttribute('data-state', next);
+      // Phase 4 — body-level data attr that gates the click-to-seek
+      // feature's CSS hover affordances. Set when audio is engaged
+      // AND the ?seek=1 flag is on. CSS uses this so paragraphs show
+      // a "this is clickable" cursor only in that specific mode,
+      // not while a casual reader is just trying to highlight text.
+      const seekActive = next !== 'idle' && seekFlagOn;
+      document.body.toggleAttribute('data-audio-seek', seekActive);
       const pressed = next === 'playing' ? 'true' : 'false';
       playBtn.setAttribute('aria-pressed', pressed);
       playBtn.setAttribute('aria-label',
@@ -1445,13 +1728,534 @@
     }
 
     /* ---- Click handling ---- */
+    // Phase 5 affordance: 30-second preview. Sample the voice without
+    // committing to the full 11-minute reading. Clicking the main play
+    // button at any point clears the preview cap and lets playback run
+    // to completion — the preview button is the low-commitment door,
+    // the play button is the commitment.
+    let previewLimit = null;  // audio time (seconds) at which to auto-pause; null = no cap
+    // Phase 5 — `?t=4m12s` deep-link consumption flag. Honored once on
+    // the first studio play; pause/resume after that does not re-seek.
+    let deepLinkConsumed = false;
+    function parseTimestampParam() {
+      try {
+        if (typeof window === 'undefined' || !window.location) return null;
+        const params = new URLSearchParams(window.location.search);
+        const raw = params.get('t');
+        if (!raw) return null;
+        // Accept "1h2m3s", "4m12s", "252s", "252" (seconds), "4:12" (mm:ss).
+        const colon = raw.match(/^(\d+):(\d+)$/);
+        if (colon) return parseInt(colon[1], 10) * 60 + parseInt(colon[2], 10);
+        const m = raw.match(/^(?:(\d+)h)?(?:(\d+)m)?(?:(\d+(?:\.\d+)?)s?)?$/i);
+        if (!m || (!m[1] && !m[2] && !m[3])) return null;
+        return (parseInt(m[1] || '0', 10) * 3600)
+             + (parseInt(m[2] || '0', 10) * 60)
+             + parseFloat(m[3] || '0');
+      } catch (_) {
+        return null;
+      }
+    }
     function toggle() {
-      if      (state === 'idle')    startPlayback();
+      // Any tap on the main play button is a commitment signal —
+      // clear the preview cap, the resume chip, AND any finished
+      // prompt so the player can transition cleanly into the new
+      // playback. The finished prompt's 90s auto-hide timer would
+      // otherwise tick during the replay and dismiss the prompt
+      // mid-listen on a delay; cleaner to clear immediately on a
+      // commitment action.
+      if (state === 'idle')    { previewLimit = null; hideResumeChip(); hideFinishedPrompt(); startPlayback(); }
       else if (state === 'playing') pausePlayback();
-      else if (state === 'paused')  startPlayback();
+      else if (state === 'paused')  { previewLimit = null; startPlayback(); }
+    }
+    function startPreview() {
+      previewLimit = 30;
+      if (audioEl) {
+        try { audioEl.currentTime = 0; } catch (_) {}
+      }
+      if (state === 'playing') pausePlayback();
+      startPlayback();
+      if (window.plausible) {
+        try { window.plausible('Audio: Preview'); } catch (_) {}
+      }
     }
     playBtn.addEventListener('click', toggle);
     listenBtn.addEventListener('click', toggle);
+
+    // Phase 5 — share with timestamp. Mirror of the ?t= deep link
+    // parser: takes the current playhead, formats it the same way the
+    // parser accepts, copies the URL to clipboard, and surfaces a
+    // toast. The share button lives in the extras row (post-play
+    // visible) because before play `currentTime` is meaningless.
+    function formatTimestampParam(seconds) {
+      const t = Math.max(0, Math.floor(seconds || 0));
+      if (t < 60) return `${t}s`;
+      const m = Math.floor(t / 60);
+      const s = t % 60;
+      return s === 0 ? `${m}m` : `${m}m${s}s`;
+    }
+    function showShareToast(msg) {
+      let container = document.querySelector('.mtn-toast-container');
+      if (!container) {
+        container = document.createElement('div');
+        container.className = 'mtn-toast-container';
+        document.body.appendChild(container);
+      }
+      const node = document.createElement('div');
+      node.className = 'mtn-toast mtn-toast--success';
+      node.setAttribute('role', 'status');
+      node.textContent = msg;
+      container.appendChild(node);
+      requestAnimationFrame(() => node.classList.add('mtn-toast--visible'));
+      setTimeout(() => {
+        node.classList.remove('mtn-toast--visible');
+        setTimeout(() => node.remove(), 240);
+      }, 2400);
+    }
+    async function shareAtCurrentTime() {
+      const t = audioEl ? audioEl.currentTime : 0;
+      const tParam = formatTimestampParam(t);
+      const url = `${location.origin}${location.pathname}?t=${tParam}`;
+      let copied = false;
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(url);
+          copied = true;
+        }
+      } catch (_) {}
+      // Display the moment as mm:ss to match what audio players show,
+      // not the URL-param syntax — operators see "Link copied at 4:12",
+      // not "Link copied at 4m12s". The English template includes the
+      // mm:ss inline; the i18n key uses {time} as a placeholder so
+      // translations can reorder around it naturally.
+      const mm = Math.floor(t / 60);
+      const ss = Math.floor(t % 60).toString().padStart(2, '0');
+      const timestamp = `${mm}:${ss}`;
+      const okTemplate = i18n('audio.share_toast_ok', 'Link copied at {time}');
+      const failMsg    = i18n('audio.share_toast_fail', 'Copy failed — clipboard blocked');
+      showShareToast(copied ? okTemplate.replace('{time}', timestamp) : failMsg);
+      if (window.plausible) {
+        try { window.plausible('Audio: Shared with Timestamp'); } catch (_) {}
+      }
+    }
+    const shareBtn = card.root.querySelector('.listen-share');
+    if (shareBtn) shareBtn.addEventListener('click', shareAtCurrentTime);
+
+    // Phase 3 — help dialog. Native <dialog>.showModal() handles the
+    // focus trap, ESC-to-close, and inert-everything-else for us.
+    // Contents: chapter navigation (the listener's primary skim tool;
+    // audio can't be visually scanned), keyboard-shortcut docs (those
+    // shortcuts are undiscoverable without a home), and a short
+    // editorial note about the synthetic narration.
+    const helpBtn    = card.root.querySelector('.listen-help');
+    const helpDialog = card.root.querySelector('.listen-help-dialog');
+    const helpClose  = card.root.querySelector('.listen-help-close');
+    const helpTitle  = card.root.querySelector('.listen-help-title');
+    const helpChaptersSection = card.root.querySelector('.listen-help-chapters-section');
+    const helpChaptersList    = card.root.querySelector('.listen-help-chapters');
+
+    // Populate the chapter list from the article's H2 elements. Read
+    // from #post-body directly (not from the chunks array) so the
+    // list is available BEFORE the user has played anything — the
+    // whole point of putting chapters in the help dialog is to let
+    // a listener skim the article and decide where to start, like
+    // a table of contents in a print article.
+    function populateChapters() {
+      if (!helpChaptersList) return;
+      const h2s = postBody ? Array.from(postBody.querySelectorAll('h2')) : [];
+      // Filter out h2s in non-prose contexts (further-reading section,
+      // sources, etc.) so the chapter list only carries the article's
+      // real section structure.
+      const chapters = h2s.filter((h) => {
+        // .listen-card excluded so the card's own "Prefer to listen?"
+        // headline doesn't get treated as a chapter — it's the
+        // entrypoint TO the chapters, not one of them.
+        if (h.closest('.listen-card, .further-reading, .sources, .inline-cta, .knit-rail, .smart-next, .post-end-cta, .post-end-mark')) return false;
+        const t = (h.textContent || '').trim();
+        return t.length > 0;
+      });
+      if (chapters.length < 2) return;  // Single H2 doesn't earn a chapter list
+      helpChaptersList.replaceChildren();
+      chapters.forEach((h, i) => {
+        const li = document.createElement('li');
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'listen-chapter-jump';
+        btn.dataset.chapterIndex = String(i);
+        btn.dataset.chapterId = h.id || '';
+        btn.textContent = (h.textContent || '').trim();
+        li.appendChild(btn);
+        helpChaptersList.appendChild(li);
+      });
+      if (helpChaptersSection) helpChaptersSection.hidden = false;
+    }
+    populateChapters();
+
+    // Find the chunk whose `element` is the given h2 (chunks are
+    // populated lazily from the manifest, so this returns -1 if the
+    // user hasn't started playback yet).
+    function findChunkIndexForElement(targetEl) {
+      if (!targetEl || !chunks.length) return -1;
+      for (let i = 0; i < chunks.length; i++) {
+        if (chunks[i].element === targetEl) return i;
+      }
+      return -1;
+    }
+    async function jumpToChapter(chapterId) {
+      const h2 = chapterId ? document.getElementById(chapterId) : null;
+      if (!h2) return;
+      // Scroll the chapter into view so the listener also sees where
+      // they're going visually — audio nav + visual nav stay paired.
+      h2.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      previewLimit = null;  // a deliberate chapter jump overrides preview cap
+      if (engine === 'audio' && chunks.length && audioEl) {
+        // Chunks loaded — direct seek.
+        const idx = findChunkIndexForElement(h2);
+        if (idx >= 0) {
+          studioSkipTo(idx);
+          if (state !== 'playing') startPlayback();
+          return;
+        }
+      }
+      // Chunks not loaded yet (audio never started) — start playback,
+      // then seek once the manifest is loaded.
+      const targetId = chapterId;
+      const onReady = () => {
+        const idx = findChunkIndexForElement(document.getElementById(targetId));
+        if (idx >= 0) studioSkipTo(idx);
+      };
+      await startPlayback();
+      // Poll briefly for the chunks array to populate. ensureStudioReady
+      // fetches the manifest async; on a fast network this is sub-second.
+      const start = Date.now();
+      const wait = () => {
+        if (chunks.length) { onReady(); return; }
+        if (Date.now() - start > 4000) return;  // give up after 4s
+        setTimeout(wait, 80);
+      };
+      wait();
+    }
+    // Click delegation for chapter buttons inside the dialog
+    if (helpChaptersList) {
+      helpChaptersList.addEventListener('click', (e) => {
+        const btn = e.target.closest('.listen-chapter-jump');
+        if (!btn) return;
+        const id = btn.dataset.chapterId;
+        closeHelp();
+        if (window.plausible) {
+          try { window.plausible('Audio: Chapter Jump'); } catch (_) {}
+        }
+        jumpToChapter(id);
+      });
+    }
+    // Active-chapter highlight inside the dialog's chapter list. Fired
+    // from setCurrent on every chunk transition (which already fires
+    // on every chapter boundary). Walks backward from the current
+    // chunk index until it finds a heading chunk, then looks up the
+    // chapter button by data-chapter-id. Falls back to no-active if
+    // the current chunk precedes the article's first heading.
+    function updateActiveChapterButton() {
+      if (!helpChaptersList) return;
+      if (!chunks.length) return;
+      // Walk backward from current index to the most recent heading.
+      let headingEl = null;
+      for (let i = currentIndex; i >= 0; i--) {
+        if (chunks[i] && chunks[i].kind === 'heading') {
+          headingEl = chunks[i].element;
+          break;
+        }
+      }
+      const headingId = headingEl && headingEl.id ? headingEl.id : null;
+      // Toggle .is-current on the matching button; clear others.
+      const buttons = helpChaptersList.querySelectorAll('.listen-chapter-jump');
+      buttons.forEach((btn) => {
+        if (headingId && btn.dataset.chapterId === headingId) {
+          btn.classList.add('is-current');
+          btn.setAttribute('aria-current', 'true');
+        } else {
+          btn.classList.remove('is-current');
+          btn.removeAttribute('aria-current');
+        }
+      });
+    }
+    // Drop the gear/help button entirely on browsers that don't ship
+    // <dialog>.showModal (pre-Safari 15.4, pre-Chrome 37). The fallback
+    // we used to render was a modeless floating block without backdrop
+    // or focus trap — strictly worse than no affordance.
+    const dialogSupported = helpDialog && typeof helpDialog.showModal === 'function';
+    if (!dialogSupported && helpBtn) helpBtn.hidden = true;
+    function openHelp() {
+      if (!dialogSupported) return;
+      helpDialog.showModal();
+      // showModal auto-focuses the first sequentially focusable
+      // descendant — which would otherwise be the close button at
+      // position absolute. Force focus onto the title (tabindex="-1"
+      // makes it programmatically focusable) so a reflex Space/Enter
+      // doesn't dismiss the dialog before the user reads anything.
+      if (helpTitle) helpTitle.focus();
+      if (window.plausible) {
+        try { window.plausible('Audio: Help Opened'); } catch (_) {}
+      }
+    }
+    function closeHelp() {
+      if (dialogSupported) helpDialog.close();
+    }
+    if (helpBtn) helpBtn.addEventListener('click', openHelp);
+    if (helpClose) helpClose.addEventListener('click', closeHelp);
+    // Backdrop-click to close. The contract depends on
+    // `.listen-help-dialog { padding: 0 }` being LOAD-BEARING: with
+    // no padding on the dialog itself, every clickable pixel inside
+    // the dialog's box is covered by the .listen-help-inner wrapper
+    // (or descendants), so `e.target === helpDialog` truly only
+    // fires on genuine backdrop clicks. If a future CSS edit
+    // restores padding on .listen-help-dialog, this check
+    // misclassifies content edges as backdrop — switch to
+    // `if (helpInner && !helpInner.contains(e.target))` to make the
+    // distinction independent of dialog padding.
+    if (helpDialog) {
+      helpDialog.addEventListener('click', (e) => {
+        if (e.target === helpDialog) closeHelp();
+      });
+    }
+
+    // Phase 4 — click-paragraph-to-seek. Default OFF, opt-in via ?seek=1.
+    // We delegate from #post-body so we don't have to attach a listener
+    // per paragraph. Order of preference: sentence span (finest seek) →
+    // chunk element (paragraph-level). Skipped silently while the user
+    // is selecting text, hovering a link/button, or before any audio
+    // has been started.
+    function handleBodySeekClick(e) {
+      if (!seekFlagOn) return;
+      if (state === 'idle') return;
+      if (engine !== 'audio' || !audioEl) return;
+      // Don't hijack interactive elements within the article body.
+      if (e.target.closest('a, button, input, textarea, select, [contenteditable]')) return;
+      // Don't hijack while the user is selecting text — they're reading,
+      // not navigating.
+      try { if (window.getSelection && window.getSelection().toString()) return; } catch (_) {}
+      const sentSpan = e.target.closest('.listen-sent');
+      if (sentSpan && sentSpan.dataset.sentStart) {
+        const t = parseFloat(sentSpan.dataset.sentStart);
+        if (isFinite(t)) {
+          try { audioEl.currentTime = t; } catch (_) {}
+          if (state !== 'playing') startPlayback();
+          if (window.plausible) {
+            try { window.plausible('Audio: Sentence Click Seek'); } catch (_) {}
+          }
+        }
+        return;
+      }
+      // Fall back: walk the chunks for the first whose element contains target.
+      for (let i = 0; i < chunks.length; i++) {
+        const c = chunks[i];
+        if (c.element && c.element.contains(e.target)) {
+          try { audioEl.currentTime = c.start || 0; } catch (_) {}
+          if (state !== 'playing') startPlayback();
+          currentIndex = i;
+          if (window.plausible) {
+            try { window.plausible('Audio: Sentence Click Seek'); } catch (_) {}
+          }
+          return;
+        }
+      }
+    }
+    if (postBody) postBody.addEventListener('click', handleBodySeekClick);
+
+    // Phase 5 — resume chip. Render after card is in DOM. The chip
+    // suppresses itself when `?t=` is present in the URL because the
+    // deep link is explicit user intent and wins precedence (audit
+    // finding #5). The chip also auto-dismisses 8 seconds after
+    // mount, or on the first user-initiated play, whichever first.
+    const resumeWrap     = card.root.querySelector('.listen-resume');
+    const resumeChip     = card.root.querySelector('.listen-resume-chip');
+    const resumeTimeEl   = card.root.querySelector('.listen-resume-time');
+    const resumeDismiss  = card.root.querySelector('.listen-resume-dismiss');
+    let resumeAutoDismissTimer = null;
+    let resumeWillSeekTo = null;
+    function fmtMmSs(s) {
+      const m = Math.floor(s / 60);
+      const ss = Math.floor(s % 60).toString().padStart(2, '0');
+      return `${m}:${ss}`;
+    }
+    function hideResumeChip() {
+      if (resumeWrap) resumeWrap.hidden = true;
+      if (resumeAutoDismissTimer) {
+        clearTimeout(resumeAutoDismissTimer);
+        resumeAutoDismissTimer = null;
+      }
+    }
+    function maybeShowResumeChip() {
+      if (!resumeWrap) return;
+      // Deep link suppresses the chip (deep link wins precedence).
+      if (parseTimestampParam() !== null) return;
+      const rec = getResumeRecord();
+      if (!rec) return;
+      // We don't know duration yet (audio not loaded). Optimistically
+      // show the chip; on actual play, if the saved position turns
+      // out to be invalid (>= duration), we silently skip seeking.
+      resumeWillSeekTo = rec.t;
+      if (resumeTimeEl) resumeTimeEl.textContent = fmtMmSs(rec.t);
+      resumeWrap.hidden = false;
+      if (window.plausible) {
+        try { window.plausible('Audio: Resume Chip Shown'); } catch (_) {}
+      }
+      resumeAutoDismissTimer = setTimeout(hideResumeChip, 8000);
+    }
+    if (resumeChip) {
+      resumeChip.addEventListener('click', async () => {
+        const target = resumeWillSeekTo;
+        hideResumeChip();
+        if (target == null) return;
+        if (window.plausible) {
+          try { window.plausible('Audio: Resume Chip Tapped'); } catch (_) {}
+        }
+        // Mark deepLink consumed so startStudioPlayback doesn't try to
+        // also parse ?t= (which we already suppressed). Seeking happens
+        // after audio is ready; the engine's ensureStudioReady waits
+        // for canplay before setting currentTime.
+        deepLinkConsumed = true;
+        previewLimit = null;
+        // Defer the seek to after startPlayback initializes audioEl.
+        const seekWhenReady = () => {
+          if (audioEl) {
+            try { audioEl.currentTime = target; } catch (_) {}
+          }
+        };
+        await startPlayback();
+        seekWhenReady();
+      });
+    }
+    if (resumeDismiss) {
+      resumeDismiss.addEventListener('click', () => {
+        hideResumeChip();
+        // Clear the saved record so the chip doesn't reappear on the
+        // next reload; the user actively rejected resume.
+        clearResume();
+      });
+    }
+    maybeShowResumeChip();
+
+    // Phase 5 — "What's next" prompt on natural-finish. The finale
+    // 2.8s warm glow is the emotional payoff; the prompt is the soft
+    // hand-off afterward. Auto-dismisses at 90s so an abandoned tab
+    // doesn't carry a stale prompt indefinitely.
+    const finishedPrompt   = card.root.querySelector('.listen-finished-prompt');
+    const finishedDismiss  = card.root.querySelector('.listen-finished-dismiss');
+    const finishedLink     = card.root.querySelector('.listen-finished-link');
+    let finishedAutoTimer = null;
+    function hideFinishedPrompt() {
+      if (finishedPrompt) finishedPrompt.hidden = true;
+      if (finishedAutoTimer) { clearTimeout(finishedAutoTimer); finishedAutoTimer = null; }
+      // Restore the preview button so a future fresh visitor still
+      // sees the entry-point. (Speech-fallback mode keeps it hidden
+      // via the audioSrc guard.)
+      if (previewBtn && audioSrc) previewBtn.hidden = false;
+    }
+    function showFinishedPrompt() {
+      if (!finishedPrompt) return;
+      // Clear the resume chip (it's stale — the user just finished
+      // a listen, the "saved position" from this session is the end
+      // which doesn't satisfy resume eligibility anyway, but be
+      // explicit so nothing fights for the same body-cell slot).
+      hideResumeChip();
+      // Also clear the saved-resume record for this article since
+      // it's been listened to in full. The chip won't show on next
+      // visit, which matches user intent (they completed it once,
+      // they don't need "continue from").
+      clearResume();
+      // Hide the 30-second preview affordance — offering a sample
+      // to someone who just listened to the whole thing is cognitive
+      // dissonance and undercuts the editorial nudge of the finished
+      // prompt. Restored when the prompt is dismissed.
+      if (previewBtn) previewBtn.hidden = true;
+      // Locale-aware library link. The text translates via i18n but
+      // the href has to point at the right localized library hub —
+      // /es/library/ for Spanish, /library/ for English (and as the
+      // default for other languages until their library hubs land).
+      if (finishedLink) {
+        const libHref = currentLanguage === 'es' ? '/es/library/' : '/library/';
+        finishedLink.setAttribute('href', libHref);
+      }
+      finishedPrompt.hidden = false;
+      if (window.plausible) {
+        try { window.plausible('Audio: Finished Prompt Shown'); } catch (_) {}
+      }
+      finishedAutoTimer = setTimeout(hideFinishedPrompt, 90 * 1000);
+    }
+    if (finishedDismiss) {
+      finishedDismiss.addEventListener('click', hideFinishedPrompt);
+    }
+    if (finishedLink) {
+      finishedLink.addEventListener('click', () => {
+        if (window.plausible) {
+          try { window.plausible('Audio: Finished Prompt Clicked'); } catch (_) {}
+        }
+        // Don't prevent default — let the navigation happen.
+      });
+    }
+
+    const previewBtn = card.root.querySelector('.listen-preview');
+    // Speech-fallback mode has no scrubable timeline; hide the preview
+    // affordance there so the button doesn't suggest a feature we
+    // can't deliver cleanly.
+    if (previewBtn) {
+      if (!audioSrc) {
+        previewBtn.hidden = true;
+      } else {
+        previewBtn.addEventListener('click', startPreview);
+      }
+    }
+
+    // Phase 5 — keyboard shortcuts. Only active once the user has
+    // engaged the player at least once (state !== 'idle'); otherwise
+    // Space would hijack page scroll for every visitor whether or not
+    // they care about audio. Form inputs and contenteditable surfaces
+    // are skipped so the user's typing flow is never interrupted.
+    function isTypingTarget(t) {
+      if (!t) return false;
+      if (t.matches && t.matches('input, textarea, select, [contenteditable], [contenteditable=""], [contenteditable="true"]')) return true;
+      if (t.closest && t.closest('input, textarea, select, [contenteditable=""], [contenteditable="true"]')) return true;
+      return false;
+    }
+    document.addEventListener('keydown', (e) => {
+      if (state === 'idle') return;
+      if (isTypingTarget(e.target)) return;
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
+      // Phase 3 — when the help dialog is open, the user is reading
+      // shortcut docs or tabbing through dialog controls; firing global
+      // play/pause on Space here would be hostile. Let the dialog's own
+      // ESC-to-close handle keyboard exit.
+      if (document.querySelector('.listen-help-dialog[open]')) return;
+      switch (e.key) {
+        case ' ':
+        case 'Spacebar':
+          e.preventDefault();
+          toggle();
+          break;
+        case 'j':
+        case 'J':
+          e.preventDefault();
+          seekBy(-15);
+          break;
+        case 'k':
+        case 'K':
+          e.preventDefault();
+          seekBy(+15);
+          break;
+        case 'ArrowLeft':
+          e.preventDefault();
+          skipTo(currentIndex - 1);
+          break;
+        case 'ArrowRight':
+          e.preventDefault();
+          skipTo(currentIndex + 1);
+          break;
+        default:
+          return;
+      }
+      if (window.plausible) {
+        try { window.plausible('Audio: Keyboard Shortcut'); } catch (_) {}
+      }
+    });
 
     window.addEventListener('beforeunload', () => {
       if (state !== 'idle') window.speechSynthesis.cancel();
@@ -1758,18 +2562,38 @@
           <span class="listen-card-play-dots" aria-hidden="true"><i></i><i></i><i></i></span>
         </button>
         <div class="listen-card-body">
-          <p class="listen-card-kicker"><span>Audio edition</span></p>
-          <h2 class="listen-card-title">Prefer to listen?</h2>
-          <p class="listen-card-sub">Press play and we'll read the whole post aloud — charts and all.</p>
+          <p class="listen-card-kicker"><span>${i18n('audio.kicker', 'Audio edition')}</span></p>
+          <h2 class="listen-card-title">${i18n('audio.headline', 'Prefer to listen?')}</h2>
+          <p class="listen-card-sub">${i18n('audio.sub', "Press play and we'll read the whole post aloud — charts and all.")}</p>
+          <div class="listen-resume" hidden>
+            <button type="button" class="listen-resume-chip" aria-label="${i18n('audio.resume_chip_aria', 'Resume from saved position')}">
+              <span>${i18n('audio.resume_continue', 'Continue from')} <strong class="listen-resume-time">0:00</strong></span>
+              <svg class="listen-resume-arrow" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </button>
+            <button type="button" class="listen-resume-dismiss" aria-label="${i18n('audio.dismiss', 'Dismiss')}">
+              <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
+          <button type="button" class="listen-preview" aria-label="${i18n('audio.preview', 'Play a 30-second preview')}">${i18n('audio.preview', 'Hear a 30-second preview →')}</button>
+          <div class="listen-finished-prompt" hidden>
+            <span class="listen-finished-text">${i18n('audio.finished_done', 'Done listening.')}</span>
+            <a class="listen-finished-link" href="/library/">${i18n('audio.finished_browse', 'Browse the library →')}</a>
+            <button type="button" class="listen-finished-dismiss" aria-label="${i18n('audio.dismiss', 'Dismiss')}">
+              <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
         </div>
         <div class="listen-card-meta">
-          <strong>${minutes} min</strong><span>hands-free</span>
+          <strong>${minutes} ${i18n('audio.meta_min', 'min')}</strong><span>${i18n('audio.meta_handsfree', 'hands-free')}</span>
           <label class="listen-select listen-language-select" title="Language" style="margin-top:2px" hidden><span class="sr-only">Language</span>
-            <select class="listen-language" aria-label="Language" style="padding:4px 24px 4px 10px;font-size:11px;letter-spacing:0.04em"></select>
+            <select class="listen-language" aria-label="${i18n('audio.language_label', 'Language')}"></select>
           </label>
+          <button type="button" class="listen-iconbtn listen-help" aria-label="${i18n('audio.help_aria', 'Show keyboard shortcuts and player info')}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 4.6 1.35c-.6.78-1.6 1.05-1.6 2.15"/><circle cx="12" cy="17" r="0.5" fill="currentColor"/></svg>
+          </button>
         </div>
         <div class="listen-card-progress" hidden role="progressbar" aria-label="Audio progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><canvas class="listen-card-waveform" aria-hidden="true"></canvas><div class="listen-card-progress-fill"></div><div class="listen-card-progress-ticks"></div></div>
-        <p class="listen-card-chapter"><span class="listen-card-chapter-label">Now reading</span><em></em></p>
+        <p class="listen-card-chapter"><span class="listen-card-chapter-label">${i18n('audio.now_reading', 'Now reading')}</span><em></em></p>
         <div class="listen-card-extras" hidden>
           <div class="listen-card-skips">
             <button type="button" class="listen-iconbtn listen-prev" aria-label="Previous paragraph" disabled>
@@ -1799,9 +2623,39 @@
             <label class="listen-select" title="Reader voice"><span class="sr-only">Reader voice</span>
               <select class="listen-voice" aria-label="Reader voice"></select>
             </label>
+            <button type="button" class="listen-iconbtn listen-share" aria-label="${i18n('audio.share_aria', 'Copy share link at current moment')}">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.72-1.71"/></svg>
+            </button>
           </div>
-          <span class="listen-source-note" data-source="browser">Read by your browser</span>
+          <span class="listen-source-note" data-source="browser">${i18n('audio.byline_browser', 'Read by your browser')}</span>
         </div>
+        <dialog class="listen-help-dialog" aria-labelledby="listen-help-title">
+          <div class="listen-help-inner">
+            <h3 id="listen-help-title" class="listen-help-title" tabindex="-1">${i18n('audio.help_title', 'Listening tips')}</h3>
+            <button type="button" class="listen-help-close" aria-label="${i18n('audio.dismiss', 'Dismiss')}">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+            <section class="listen-help-section listen-help-chapters-section" hidden>
+              <p class="listen-help-eyebrow">${i18n('audio.help_chapters_eyebrow', 'Chapters')}</p>
+              <ol class="listen-help-chapters"></ol>
+            </section>
+            <section class="listen-help-section">
+              <p class="listen-help-eyebrow">${i18n('audio.help_kbd_eyebrow', 'Keyboard')}</p>
+              <dl class="listen-help-kbd">
+                <dt><kbd>${i18n('audio.kbd_space', 'Space')}</kbd></dt>
+                <dd>${i18n('audio.kbd_space_help', 'Play or pause')}</dd>
+                <dt><kbd>J</kbd> / <kbd>K</kbd></dt>
+                <dd>${i18n('audio.kbd_jk_help', 'Skip backward 15 seconds / forward 15 seconds')}</dd>
+                <dt><kbd>←</kbd> / <kbd>→</kbd></dt>
+                <dd>${i18n('audio.kbd_arrows_help', 'Previous paragraph / next paragraph')}</dd>
+              </dl>
+            </section>
+            <section class="listen-help-section">
+              <p class="listen-help-eyebrow">${i18n('audio.help_about_eyebrow', 'About the voice')}</p>
+              <p class="listen-help-body">${i18n('audio.help_about_body', 'The Muntin Desk uses an AI voice tuned for clear reading. We use the same voice across every article so it becomes familiar. Each recording is produced once and saved as an audio file you can download.')}</p>
+            </section>
+          </div>
+        </dialog>
       `;
 
       return { root };
