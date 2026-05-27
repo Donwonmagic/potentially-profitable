@@ -5,7 +5,7 @@
  * the SECTIONS map in scripts/build-css-shells.mjs.
  */
 
-/* ===== [article] Citation drawer (.cite, .cite-body) (lines 1379-1407) ===== */
+/* ===== [article] Citation drawer (.cite, .cite-body) (lines 1389-1418) ===== */
 /* ============ CITATION DRAWER ============
    <details class="cite"> with a <summary> trigger and a body
    containing: source name, brief overview, and a link. Uses the
@@ -36,7 +36,7 @@
 @media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
 /* (kept for line-count parity with the previous .reveal block) */
 
-/* ===== [article] Listen / audio player (lines 1497-2025) ===== */
+/* ===== [article] Listen / audio player (lines 1510-2285) ===== */
 /* ============ LISTEN / AUDIO PLAYER ============
    Two surfaces share one engine:
    1. .listen-card — the inline "Audio edition" card rendered under the
@@ -49,8 +49,8 @@
    still clickable.
 */
 
-.listen-card{--lc-accent:var(--teal);--lc-accent-dark:var(--teal-dark);--lc-tint:var(--teal-tint);position:relative;display:grid;grid-template-columns:auto 1fr auto;grid-template-areas:"play body meta" "play progress progress" "play chapter chapter" "extras extras extras";align-items:center;gap:14px 20px;width:100%;max-width:640px;margin:28px auto 0;padding:22px 24px;background:linear-gradient(180deg,var(--white) 0%,var(--cream) 100%);border:1px solid var(--line-dark);border-radius:20px;box-shadow:0 1px 0 rgba(255,255,255,0.6) inset,0 18px 40px -24px rgba(20,54,64,0.22);text-align:left}
-.listen-card::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:linear-gradient(160deg,rgba(31,78,91,0.18),rgba(31,78,91,0) 55%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+.listen-card{--lc-accent:var(--teal);--lc-accent-dark:var(--teal-dark);--lc-tint:var(--teal-tint);position:relative;display:grid;grid-template-columns:auto 1fr auto;grid-template-areas:"play body meta" "play progress progress" "play chapter chapter" "extras extras extras";align-items:center;gap:14px 20px;width:100%;max-width:640px;margin:28px auto 0;padding:22px 24px;background:linear-gradient(180deg,var(--white) 0%,var(--cream) 100%);border:1px solid var(--line-dark);border-radius:20px;box-shadow:0 1px 0 rgba(255,255,255,0.6) inset,0 18px 40px -24px rgba(20,22,26,0.22);text-align:left}
+.listen-card::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:linear-gradient(160deg,rgba(42,80,200,0.18),rgba(42,80,200,0) 55%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
 /* Sprint A1: ambient playback tint. ::after sits inside the card's
    own stacking context, below content (z-index:0) but above the
    base white→cream background. Opacity transitions from 0 → 1 as
@@ -66,7 +66,7 @@
   inset:0;
   border-radius:inherit;
   background:
-    radial-gradient(120% 180% at 15% 0%, rgba(31,78,91,0.06), rgba(31,78,91,0.02) 45%, transparent 70%),
+    radial-gradient(120% 180% at 15% 0%, rgba(42,80,200,0.06), rgba(42,80,200,0.02) 45%, transparent 70%),
     radial-gradient(80% 140% at 85% 100%, rgba(184,84,26,0.035), transparent 65%);
   opacity:0;
   transition:opacity 1.2s cubic-bezier(.22,.61,.36,1);
@@ -88,7 +88,7 @@
 }
 .listen-card[hidden]{display:none}
 
-.listen-card-play{grid-area:play;position:relative;width:64px;height:64px;border-radius:50%;border:0;background:var(--lc-accent);color:var(--white);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 10px 24px -10px rgba(31,78,91,0.55),0 2px 0 rgba(255,255,255,0.4) inset;transition:transform var(--t-fast) var(--ease),background-color var(--t-fast) var(--ease),box-shadow var(--t-fast) var(--ease)}
+.listen-card-play{grid-area:play;position:relative;width:64px;height:64px;border-radius:50%;border:0;background:var(--lc-accent);color:var(--white);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 10px 24px -10px rgba(42,80,200,0.55),0 2px 0 rgba(255,255,255,0.4) inset;transition:transform var(--t-fast) var(--ease),background-color var(--t-fast) var(--ease),box-shadow var(--t-fast) var(--ease)}
 .listen-card-play:hover{background:var(--lc-accent-dark);transform:translateY(-1px)}
 .listen-card-play:active{transform:translateY(0)}
 .listen-card-play:focus-visible{outline:2px solid var(--lc-accent);outline-offset:3px}
@@ -168,15 +168,210 @@
 }
 
 .listen-card-body{grid-area:body;min-width:0}
-.listen-card-kicker{font-family:var(--font-body);font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--lc-accent);display:inline-flex;align-items:center;gap:8px;margin:0 0 4px}
-.listen-card-kicker::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--lc-accent);box-shadow:0 0 0 4px rgba(31,78,91,0.12)}
+/* Eyebrow restored to the canonical site-wide contract (--stone, not
+   accent). The 3px teal underline below is the audio surface's muntin
+   motif — a single window-pane sash rather than a card-edge border,
+   so it doesn't collide with .compare-card--featured's 2px teal frame
+   on hub pages that show both. */
+.listen-card-kicker{font-family:var(--font-body);font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--stone);display:inline-flex;align-items:center;gap:8px;margin:0 0 8px;padding-bottom:6px;border-bottom:3px solid var(--teal)}
+.listen-card-kicker::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--lc-accent);box-shadow:0 0 0 4px rgba(42,80,200,0.12)}
 /* Sprint A14: soft breathe replaces the hard blink. The dot no
    longer reads like a blinking cursor — opacity drifts to 0.55 and
    the box-shadow aura expands + thins, giving a slow-breath feel
    over 2.2s rather than 1.4s on/off. */
 .listen-card[data-state="playing"] .listen-card-kicker::before{animation:listen-breathe 2.2s var(--ease) infinite}
-.listen-card-title{font-family:var(--font-display);font-weight:500;font-size:20px;line-height:1.2;color:var(--ink);margin:0 0 2px}
+.listen-card-title{font-family:var(--font-display);font-weight:500;font-size:clamp(22px, 1.4vw + 14px, 26px);line-height:1.2;color:var(--ink);margin:0 0 2px}
 .listen-card-sub{font-family:var(--font-body);font-size:13.5px;line-height:1.45;color:var(--stone);margin:0}
+/* Phase 3 — help dialog. Native <dialog> for the focus trap + ESC
+   handling + inert-other-content behavior. Padding lives on the
+   inner wrapper (NOT the dialog element) so backdrop-click detection
+   only fires for clicks genuinely outside the content — a 24px
+   ring-of-padding on the dialog itself would otherwise count as
+   "backdrop" and dismiss on a fat-finger tap right next to text. */
+.listen-help-dialog{
+  position:fixed; inset:0; margin:auto;
+  border:0; padding:0;
+  width:min(420px, calc(100vw - 24px));
+  background:var(--white);
+  border-radius:var(--r-lg);
+  box-shadow:var(--elev-3);
+  color:var(--ink);
+  font-family:var(--font-body);
+}
+.listen-help-dialog::backdrop{
+  background:rgba(20,22,26,0.35);
+  backdrop-filter:saturate(140%) blur(2px);
+  -webkit-backdrop-filter:saturate(140%) blur(2px);
+}
+.listen-help-dialog[open]{
+  animation:listen-help-in 220ms var(--ease-out) both;
+}
+.listen-help-inner{
+  position:relative;
+  display:flex; flex-direction:column; gap:18px;
+  padding:24px 24px 22px;
+}
+@keyframes listen-help-in{
+  from { opacity:0; transform:translateY(6px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+.listen-help-close{
+  position:absolute; top:14px; right:14px;
+  width:28px; height:28px; border-radius:50%;
+  background:transparent; border:0; cursor:pointer;
+  color:var(--stone);
+  display:inline-flex; align-items:center; justify-content:center;
+  transition:background-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
+}
+.listen-help-close:hover{ background:rgba(20,22,26,0.05); color:var(--ink); }
+.listen-help-close:focus-visible{ outline:2px solid var(--teal); outline-offset:2px; }
+.listen-help-title{
+  font-family:var(--font-display); font-weight:500;
+  font-size:22px; line-height:1.2; color:var(--ink);
+  margin:0; padding-right:32px; /* clear the absolutely-positioned close */
+  outline:none;  /* tabindex="-1" focus would otherwise paint a default ring */
+}
+.listen-help-section{ display:flex; flex-direction:column; gap:8px; }
+.listen-help-eyebrow{
+  font-family:var(--font-body); font-size:11px; font-weight:700;
+  letter-spacing:0.14em; text-transform:uppercase; color:var(--stone);
+  margin:0;
+}
+.listen-help-body{
+  font-family:var(--font-body); font-size:14px; line-height:1.55;
+  color:var(--ink-soft); margin:0;
+}
+.listen-help-kbd{
+  margin:0; display:grid; grid-template-columns:auto 1fr; gap:8px 14px;
+  align-items:baseline;
+}
+.listen-help-kbd dt{ font-size:13px; color:var(--ink); }
+.listen-help-kbd dd{ margin:0; font-size:13px; color:var(--ink-soft); line-height:1.4; }
+.listen-help-kbd kbd{
+  display:inline-block;
+  font-family:var(--font-body); font-size:11px; font-weight:600;
+  background:var(--cream); color:var(--ink);
+  border:1px solid var(--line-dark); border-bottom-width:2px;
+  border-radius:5px;
+  padding:2px 6px; min-width:18px; text-align:center;
+}
+/* Chapter navigation in the help dialog. Listeners use this as a
+   table-of-contents — click a chapter to jump the audio there. */
+.listen-help-chapters{
+  list-style:none; margin:0; padding:0;
+  display:flex; flex-direction:column; gap:2px;
+  max-height:220px; overflow-y:auto;
+}
+.listen-help-chapters li{ margin:0; padding:0; }
+.listen-chapter-jump{
+  width:100%; text-align:left;
+  font-family:var(--font-body); font-size:13.5px; line-height:1.45;
+  color:var(--ink); background:transparent;
+  border:0; padding:6px 10px; border-radius:6px;
+  cursor:pointer;
+  position:relative;
+  transition:background-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease), padding-left var(--t-fast) var(--ease);
+}
+.listen-chapter-jump::before{
+  content:"";
+  position:absolute; left:0; top:50%; transform:translateY(-50%);
+  width:3px; height:60%;
+  background:transparent;
+  border-radius:2px;
+  transition:background-color var(--t-fast) var(--ease);
+}
+.listen-chapter-jump:hover{ background:var(--teal-tint); color:var(--teal-dark); padding-left:14px; }
+.listen-chapter-jump:hover::before{ background:var(--teal); }
+.listen-chapter-jump:focus-visible{ outline:2px solid var(--teal); outline-offset:2px; }
+/* Active-chapter row when audio is playing. The .is-current class is
+   set by listen.js inside setCurrent (one chapter at a time, walks
+   back to the nearest heading). The rail on the left becomes a solid
+   teal bar to mark "you are here" even when the cursor isn't on it. */
+.listen-chapter-jump.is-current{ background:var(--teal-tint); color:var(--teal-dark); padding-left:14px; font-weight:600; }
+.listen-chapter-jump.is-current::before{ background:var(--teal); }
+@media (prefers-reduced-motion:reduce){
+  .listen-help-dialog[open]{ animation:none; }
+}
+
+/* Phase 5 — 30-second preview affordance. Reads as a small editorial
+   link under the sub-copy, not a CTA button competing with the play
+   disc. The arrow signals "take me forward" without claiming
+   importance. Hidden in speech-fallback mode where there's no clean
+   audio-time cap. */
+.listen-preview{display:inline-flex;align-items:center;gap:4px;background:none;border:0;padding:0;margin:8px 0 0;font-family:var(--font-body);font-size:13px;font-weight:500;color:var(--teal);cursor:pointer;text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px;text-decoration-color:rgba(42,80,200,0.4);transition:color var(--t-fast) var(--ease),text-decoration-color var(--t-fast) var(--ease)}
+.listen-preview:hover{color:var(--teal-dark);text-decoration-color:var(--teal)}
+.listen-preview:focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-radius:2px}
+.listen-preview[hidden]{display:none}
+/* Phase 5 — "Continue where you left off" chip. Surfaces on revisit
+   when a saved playhead position is mid-article and recent. Two
+   buttons in one chip: the main one (resumes), the small × (dismiss
+   + forget). Auto-dismisses after 8s. Uses the same royal-blue
+   visual family as the preview link so the body cell reads as a
+   coherent unit. */
+.listen-resume{display:inline-flex;align-items:center;gap:0;margin:10px 0 0;background:var(--teal-tint);border:1px solid rgba(42,80,200,0.25);border-radius:999px;overflow:hidden;animation:listen-resume-in 320ms var(--ease-out) both}
+.listen-resume[hidden]{display:none}
+.listen-resume-chip{display:inline-flex;align-items:center;gap:6px;background:none;border:0;padding:6px 12px;font-family:var(--font-body);font-size:13px;font-weight:500;color:var(--teal-dark);cursor:pointer;transition:background-color var(--t-fast) var(--ease)}
+.listen-resume-chip strong{font-weight:700;font-variant-numeric:tabular-nums;color:var(--teal-dark)}
+.listen-resume-chip:hover{background:rgba(42,80,200,0.08)}
+.listen-resume-arrow{transition:transform var(--t-fast) var(--ease)}
+.listen-resume-chip:hover .listen-resume-arrow{transform:translateX(2px)}
+.listen-resume-dismiss{background:none;border:0;border-left:1px solid rgba(42,80,200,0.25);padding:6px 10px;color:var(--teal-dark);cursor:pointer;opacity:0.65;transition:opacity var(--t-fast) var(--ease),background-color var(--t-fast) var(--ease)}
+.listen-resume-dismiss:hover{opacity:1;background:rgba(42,80,200,0.08)}
+.listen-resume-chip:focus-visible,.listen-resume-dismiss:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+/* Phase 5 — "What's next" prompt after a natural finish. Visual
+   family echoes the existing finale glow (warm cream-gold), not
+   the royal-blue family used elsewhere — the prompt is part of
+   the same emotional moment as the finale, not a separate ask.
+   Color trio (#7C5A1F text, rgba(199,156,85,...) border,
+   rgba(217,178,99,...) fill) is hand-tuned around `--gold:#B7791F`
+   and is intentionally NOT derived from the token — the trio is
+   tuned for legibility on the card's white→cream gradient at the
+   specific 13px / 6px-padding scale. If --gold ever shifts, all
+   three values should be retuned together, not refactored to
+   reference it. */
+.listen-finished-prompt{
+  display:inline-flex;align-items:center;gap:0;margin:10px 0 0;
+  background:rgba(217,178,99,0.10);  /* warm cream-gold to echo the finale glow */
+  border:1px solid rgba(199,156,85,0.30);
+  border-radius:999px;overflow:hidden;
+  animation:listen-finished-in 360ms var(--ease-out) both;
+}
+.listen-finished-prompt[hidden]{display:none}
+.listen-finished-text{
+  font-family:var(--font-body);font-size:13px;font-weight:600;
+  color:#7C5A1F;  /* darker gold for legibility on the warm tint */
+  padding:6px 0 6px 12px;letter-spacing:0.01em;
+}
+.listen-finished-link{
+  font-family:var(--font-body);font-size:13px;font-weight:500;
+  color:var(--teal-dark);text-decoration:underline;
+  text-underline-offset:3px;text-decoration-color:rgba(42,80,200,0.4);
+  padding:6px 8px;
+  transition:color var(--t-fast) var(--ease),text-decoration-color var(--t-fast) var(--ease);
+}
+.listen-finished-link:hover{color:var(--teal);text-decoration-color:var(--teal)}
+.listen-finished-dismiss{
+  background:none;border:0;border-left:1px solid rgba(199,156,85,0.30);
+  padding:6px 10px;color:#7C5A1F;cursor:pointer;opacity:0.65;
+  transition:opacity var(--t-fast) var(--ease),background-color var(--t-fast) var(--ease);
+}
+.listen-finished-dismiss:hover{opacity:1;background:rgba(217,178,99,0.18)}
+.listen-finished-link:focus-visible,.listen-finished-dismiss:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+@keyframes listen-finished-in{
+  0%   { opacity:0; transform:translateY(-4px); }
+  100% { opacity:1; transform:translateY(0); }
+}
+@media (prefers-reduced-motion:reduce){
+  .listen-finished-prompt{animation:none}
+}
+@keyframes listen-resume-in{
+  0%   { opacity:0; transform:translateY(-4px); }
+  100% { opacity:1; transform:translateY(0); }
+}
+@media (prefers-reduced-motion: reduce){
+  .listen-resume{animation:none}
+  .listen-resume-arrow{transition:none}
+}
 
 .listen-card-meta{grid-area:meta;display:flex;flex-direction:column;align-items:flex-end;gap:6px;font-family:var(--font-body);font-size:12px;color:var(--stone);white-space:nowrap}
 .listen-card-meta strong{font-weight:600;color:var(--ink)}
@@ -249,7 +444,7 @@
   100% { transform:scaleX(0);   opacity:0;   }
 }
 .listen-card-progress.is-scrubbing .listen-card-progress-fill,.listen-card-progress:hover .listen-card-progress-fill{height:8px}
-.listen-card-progress-fill::after{content:"";position:absolute;right:-6px;top:50%;width:12px;height:12px;border-radius:50%;background:var(--lc-accent);transform:translateY(-50%) scale(0);transition:transform var(--t-fast) var(--ease);box-shadow:0 2px 8px -2px rgba(31,78,91,0.5)}
+.listen-card-progress-fill::after{content:"";position:absolute;right:-6px;top:50%;width:12px;height:12px;border-radius:50%;background:var(--lc-accent);transform:translateY(-50%) scale(0);transition:transform var(--t-fast) var(--ease);box-shadow:0 2px 8px -2px rgba(42,80,200,0.5)}
 .listen-card-progress:hover .listen-card-progress-fill::after,.listen-card-progress.is-scrubbing .listen-card-progress-fill::after{transform:translateY(-50%) scale(1)}
 .listen-card-progress-ticks{position:absolute;left:0;right:0;height:6px;display:flex;pointer-events:none}
 .listen-card-progress.is-scrubbing .listen-card-progress-ticks,.listen-card-progress:hover .listen-card-progress-ticks{height:8px}
@@ -267,8 +462,8 @@
    static and honest. */
 .listen-card[data-state="playing"] .listen-card-progress-ticks span[data-current="true"]{
   transform:scaleY(1.25);
-  background:rgba(31,78,91,0.10);
-  box-shadow:inset 0 0 0 1px rgba(31,78,91,0.16);
+  background:rgba(42,80,200,0.10);
+  box-shadow:inset 0 0 0 1px rgba(42,80,200,0.16);
   border-radius:2px;
 }
 
@@ -286,7 +481,7 @@
    pill selects beside them. Hover-lift (translateY + box-shadow) is
    the same motion the audit tool's chips use. */
 .listen-iconbtn{position:relative;width:36px;height:36px;display:inline-flex;align-items:center;justify-content:center;background:transparent;border:1px solid var(--line-dark);border-radius:12px;color:var(--ink-soft);cursor:pointer;transition:border-color var(--t-fast) var(--ease),color var(--t-fast) var(--ease),background-color var(--t-fast) var(--ease),transform var(--t-fast) var(--ease),box-shadow var(--t-fast) var(--ease)}
-.listen-iconbtn:hover:not(:disabled){border-color:var(--lc-accent);color:var(--lc-accent);background:var(--lc-tint);transform:translateY(-1px);box-shadow:0 4px 10px -4px rgba(31,78,91,0.22)}
+.listen-iconbtn:hover:not(:disabled){border-color:var(--lc-accent);color:var(--lc-accent);background:var(--lc-tint);transform:translateY(-1px);box-shadow:0 4px 10px -4px rgba(42,80,200,0.22)}
 .listen-iconbtn:active:not(:disabled){transform:translateY(0)}
 .listen-iconbtn:disabled{opacity:0.4;cursor:not-allowed}
 .listen-iconbtn svg{width:16px;height:16px}
@@ -309,18 +504,27 @@
 .listen-language-select::before{content:"";position:absolute;left:12px;top:50%;width:14px;height:14px;transform:translateY(-50%);background:currentColor;color:var(--lc-accent);-webkit-mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='10'/><line x1='2' y1='12' x2='22' y2='12'/><path d='M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z'/></svg>") no-repeat center/contain;mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='10'/><line x1='2' y1='12' x2='22' y2='12'/><path d='M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z'/></svg>") no-repeat center/contain;pointer-events:none}
 .listen-select{position:relative}
 .listen-select select{appearance:none;-webkit-appearance:none;background:transparent;border:1px solid var(--line-dark);border-radius:999px;padding:6px 28px 6px 12px;font-family:var(--font-body);font-size:12px;font-weight:600;color:var(--ink-soft);cursor:pointer;transition:border-color var(--t-fast) var(--ease),color var(--t-fast) var(--ease),transform var(--t-fast) var(--ease),box-shadow var(--t-fast) var(--ease)}
-.listen-select select:hover,.listen-select select:focus-visible{border-color:var(--lc-accent);color:var(--lc-accent);outline:none;transform:translateY(-1px);box-shadow:0 4px 10px -4px rgba(31,78,91,0.22)}
+.listen-select select:hover,.listen-select select:focus-visible{border-color:var(--lc-accent);color:var(--lc-accent);outline:none;transform:translateY(-1px);box-shadow:0 4px 10px -4px rgba(42,80,200,0.22)}
 .listen-select::after{content:"";position:absolute;right:10px;top:50%;width:7px;height:7px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:translateY(-70%) rotate(45deg);color:var(--stone);pointer-events:none}
-.listen-source-note{font-family:var(--font-body);font-size:11px;color:var(--stone-2);letter-spacing:0.02em;display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;background:rgba(31,78,91,0.03);border:1px solid rgba(31,78,91,0.08)}
+.listen-source-note{font-family:var(--font-body);font-size:11px;color:var(--stone-2);letter-spacing:0.02em;display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;background:rgba(42,80,200,0.03);border:1px solid rgba(42,80,200,0.08)}
 .listen-source-note[data-source="studio"]{color:var(--lc-accent)}
 .listen-source-note[data-source="studio"]::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
 
-@media (max-width:640px){
+/* Breakpoint raised from 640px → 720px so the 3-column desktop grid
+   doesn't try to fit a play button + body + meta-with-language-pill
+   on small tablets / large phones in landscape. Below 720 the meta
+   row wraps under the body, which is the only layout that breathes
+   once the language pill is in its full-size in-meta variant. */
+@media (max-width:720px){
   .listen-card{grid-template-columns:auto 1fr;grid-template-areas:"play body" "meta meta" "progress progress" "chapter chapter" "extras extras";padding:18px;gap:10px 16px}
-  .listen-card-meta{grid-area:meta;align-items:flex-start;flex-direction:row;gap:8px;font-size:11.5px;padding-top:6px;margin-top:2px;border-top:1px dashed var(--line)}
+  /* align-items:center so the new help iconbtn (36px tall) aligns
+     with the 11.5px text siblings on its midline — earlier
+     align-items:flex-start hugged the text to the top while the
+     button towered below it. */
+  .listen-card-meta{grid-area:meta;align-items:center;flex-direction:row;gap:8px;font-size:11.5px;padding-top:6px;margin-top:2px;border-top:1px dashed var(--line)}
   .listen-card-meta strong{margin-right:0}
   .listen-card-play{width:56px;height:56px}
-  .listen-card-title{font-size:18px}
+  .listen-card-title{font-size:20px}
   .listen-card-extras{justify-content:flex-start}
 }
 
@@ -351,8 +555,8 @@
 .listen-dock::before{
   content:"";position:absolute;inset:0;
   border-radius:inherit;
-  background:radial-gradient(120% 100% at 30% 0%, rgba(31,78,91,0.32) 0%, rgba(31,78,91,0.14) 48%, rgba(31,78,91,0) 72%),
-             linear-gradient(180deg, rgba(31,78,91,0.20) 0%, rgba(14,16,20,0.0) 100%);
+  background:radial-gradient(120% 100% at 30% 0%, rgba(42,80,200,0.32) 0%, rgba(42,80,200,0.14) 48%, rgba(42,80,200,0) 72%),
+             linear-gradient(180deg, rgba(42,80,200,0.20) 0%, rgba(14,16,20,0.0) 100%);
   opacity:0;
   transition:opacity 800ms var(--ease-out);
   pointer-events:none;
@@ -363,8 +567,8 @@
 .listen-dock[data-state="playing"]{
   box-shadow:0 28px 56px -18px rgba(0,0,0,0.6),
              0 1px 0 rgba(255,255,255,0.06) inset,
-             0 0 0 1px rgba(31,78,91,0.25),
-             0 0 28px -6px rgba(31,78,91,0.5);
+             0 0 0 1px rgba(42,80,200,0.25),
+             0 0 28px -6px rgba(42,80,200,0.5);
 }
 
 .listen-dock-play{grid-area:play;width:44px;height:44px;border-radius:50%;border:0;background:var(--white);color:var(--ink);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;flex:none;transition:transform var(--t-fast) var(--ease),background-color var(--t-fast) var(--ease);box-shadow:0 2px 0 rgba(0,0,0,0.12) inset}
@@ -378,7 +582,7 @@
 .listen-dock-meta{grid-area:meta;min-width:0;display:flex;flex-direction:column;gap:2px;line-height:1.25}
 .listen-dock-title{font-weight:600;font-size:13px;color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
 .listen-dock-chapter{font-size:11.5px;color:rgba(255,255,255,0.65);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:6px}
-.listen-dock-chapter::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--teal);flex:none;box-shadow:0 0 0 3px rgba(31,78,91,0.25)}
+.listen-dock-chapter::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--teal);flex:none;box-shadow:0 0 0 3px rgba(42,80,200,0.25)}
 /* Dock dot sits on a near-black glass, so the card's teal-tint aura
    doesn't carry. Keeps the opacity-only breath rhythm at the softer
    2.2s cadence. */
@@ -502,8 +706,8 @@
    thinning, so the "now reading" dot reads as breathing rather than
    flashing. */
 @keyframes listen-breathe{
-  0%,100% { opacity:1;    box-shadow:0 0 0 4px rgba(31,78,91,0.12); }
-  50%     { opacity:0.55; box-shadow:0 0 0 8px rgba(31,78,91,0.05); }
+  0%,100% { opacity:1;    box-shadow:0 0 0 4px rgba(42,80,200,0.12); }
+  50%     { opacity:0.55; box-shadow:0 0 0 8px rgba(42,80,200,0.05); }
 }
 /* Sprint A4: chapter-label fade-slide. Runs for 360ms on every chunk
    boundary (triggered from JS by removing + re-adding the class after
@@ -530,12 +734,54 @@
    shadows used by the plain-text highlight. */
 .article-body .is-reading.is-reading-callout{background:transparent;box-shadow:0 0 0 2px var(--teal),0 0 0 8px var(--teal-tint);animation:listen-callout-pulse 2.4s var(--ease-out) infinite}
 .article-body .is-reading.is-reading-callout::before{display:none}
+/* Read-trail: paragraphs the audio has already voiced get a thin
+   teal rail along the left edge so the reader can see, at a glance,
+   how far the voice has carried them through the article. Subtle
+   enough that the unread paragraphs don't feel "less" — just
+   hinting at progress the listener has actually made.
+   Lifecycle: rails accumulate as audio plays. A NATURAL completion
+   (finishStudioPlayback's withFinale path) clears them as part of
+   the post-finale reset, so a replay starts fresh. A user-aborted
+   stop (stop/close/navigation) does NOT clear — the trail persists
+   into the next session and reads as "you've been here before". */
+.article-body .was-read{position:relative}
+.article-body .was-read::before{
+  content:"";position:absolute;left:-14px;top:0.4em;bottom:0.4em;
+  width:2px;background:rgba(42,80,200,0.18);
+  border-radius:2px;
+  transition:background-color var(--t-fast) var(--ease);
+}
+/* Don't double-rail the active paragraph — its own ::before is the
+   active mark. The persistent trail rail is only for read-but-no-
+   longer-current. */
+.article-body .was-read.is-reading::before{ display:none; }
+/* Phase 4: sentence-level reading sync. listen.js wraps each sentence
+   of an active body chunk in a .listen-sent span and toggles
+   .is-sent-reading on the one currently being voiced. The active
+   sentence sits inside the active paragraph (which already paints
+   var(--teal-tint)) — so the sentence accent has to be a STRONGER
+   teal than the paragraph wash, or it's invisible. We use a -teal
+   underline pulled tight to the baseline + a slightly deeper tint;
+   the underline reads as "the speaker's finger tracing the line"
+   without dropping a heavy color into the prose. */
+.article-body .listen-sent{transition:background-color var(--t-fast) var(--ease),box-shadow var(--t-fast) var(--ease)}
+.article-body .listen-sent.is-sent-reading{background:rgba(42,80,200,0.10);box-shadow:inset 0 -2px 0 var(--teal);border-radius:3px}
+/* Phase 4 — click-to-seek affordance. The body[data-audio-seek] attr
+   is set by listen.js when the ?seek=1 feature flag is on and audio
+   has been engaged. Paragraphs and sentence spans show a pointer
+   cursor in that mode only; otherwise the article reads normally. */
+body[data-audio-seek] .article-body p,
+body[data-audio-seek] .article-body .listen-sent{cursor:pointer}
+body[data-audio-seek] .article-body .listen-sent:hover{background:rgba(42,80,200,0.06)}
+@media (prefers-reduced-motion:reduce){
+  .article-body .listen-sent{transition:none}
+}
 .article-figure.is-reading{background:transparent;box-shadow:none}
 .article-figure.is-reading .funnel,.article-figure.is-reading figcaption{background:var(--teal-tint);border-radius:8px;padding:6px 10px;transition:background-color 0.25s var(--ease)}
 .article-figure.is-reading.is-reading-callout{background:transparent;box-shadow:0 0 0 2px var(--teal),0 0 0 8px var(--teal-tint)}
 .article-figure.is-reading.is-reading-callout .funnel,.article-figure.is-reading.is-reading-callout figcaption{background:transparent;padding:0}
 @keyframes listen-callout-pulse{0%,100%{box-shadow:0 0 0 2px var(--teal),0 0 0 8px var(--teal-tint)}
-50%{box-shadow:0 0 0 2px var(--teal),0 0 0 14px rgba(31,78,91,0.08)}
+50%{box-shadow:0 0 0 2px var(--teal),0 0 0 14px rgba(42,80,200,0.08)}
 }
 @media (prefers-reduced-motion:reduce){.listen-btn[data-state="playing"] svg path,.listen-card-play::after,.listen-card-play::before,.listen-card-play-aura,.listen-card[data-state="playing"] .listen-card-kicker::before,.listen-card[data-state="playing"] .listen-card-progress-fill,.listen-dock[data-state="playing"] .listen-dock-progress-fill,.listen-card-chapter em.lc-chapter-in,.listen-dock-chapter.lc-chapter-in,.listen-card[data-state="finished"] .listen-card-play .icon-finished,.listen-card[data-state="finished"] .listen-card-progress-fill{animation:none}
 /* Sprint A11: keep the dots visible (so the loading affordance stays
@@ -567,7 +813,7 @@
 }
 
 
-/* ===== [article] Glossary scannability (lines 2920-3074) ===== */
+/* ===== [article] Glossary scannability (lines 3187-3342) ===== */
 
 /* ---------- Glossary scannability (Phase 4 cohesion pass) ----------
    Adds two new chip rows to the existing .gloss-filterbar:
@@ -724,7 +970,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   .glossary-knit__grid{ grid-template-columns:1fr; }
 }
 
-/* ===== [article] "Recently added" strip on /learn/ (lines 3075-3149) ===== */
+/* ===== [article] "Recently added" strip on /learn/ (lines 3343-3418) ===== */
 
 /* ---------- "Recently added" strip on /learn/ (Phase 5) -----------
    Three-card row of the newest items across tools + articles, sorted
@@ -801,8 +1047,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 @media (max-width:900px){ .recently-added__grid{ grid-template-columns:repeat(2,1fr); } }
 @media (max-width:560px){ .recently-added__grid{ grid-template-columns:1fr; } }
 
-/* ===== [article] Learn hub + Start here pages (lines 3469-3571) ===== */
-
+/* ===== [article] Learn hub + Start here pages (lines 3740-3843) ===== */
 /* ============================================================
    LEARN HUB + START HERE PAGES
    Component styles for /learn/ and /learn/start-here/ (and ES
@@ -906,8 +1151,8 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   .start-step + .start-step::before{left:38px}
 }
 
-/* ===== [article] Research notes (/learn/research/) (lines 3824-3840) ===== */
 
+/* ===== [article] Research notes (/learn/research/) (lines 4098-4115) ===== */
 /* ============================================================
    RESEARCH NOTES (/learn/research/)
    The internal-summary-of-external-studies layer. Keeps readers
@@ -925,8 +1170,8 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 .research-index-uses{font-family:var(--font-body);font-size:12px;color:var(--stone-2);letter-spacing:0.04em}
 .research-index-uses strong{color:var(--teal);font-weight:600}
 
-/* ===== [article] Library topics (/learn/topics/) (lines 3841-4022) ===== */
 
+/* ===== [article] Library topics (/learn/topics/) (lines 4116-4298) ===== */
 /* ============================================================
    LIBRARY TOPICS — /learn/topics/ + /learn/topics/<slug>/
    The Phase 2 aggregation layer. Topics hub is a 6-card grid;
@@ -1109,8 +1354,8 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   color:var(--teal);
 }
 
-/* ===== [article] Glossary term pages (/glossary/<slug>/) (lines 4023-4136) ===== */
 
+/* ===== [article] Glossary term pages (/glossary/<slug>/) (lines 4299-4412) ===== */
 /* ============================================================
    GLOSSARY TERM PAGES — /glossary/<slug>/
    Generated by scripts/build-library.mjs from the single source
@@ -1225,7 +1470,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   color:var(--stone);font-size:13.5px;
 }
 
-/* ===== [article] Resume article — services-aside-cta + see-also + research notes (lines 4221-4617) ===== */
+/* ===== [article] Resume article — services-aside-cta + see-also + research notes (lines 4498-4896) ===== */
 
 /* /services/ inline secondary CTA — sits between Web Builds and
    Process, breaking the run of "Book a 20-min call" buttons with
@@ -1624,8 +1869,8 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 .cite-chip:hover{background:var(--white);border-color:var(--teal)}
 .cite-chip svg{width:11px;height:11px}
 
-/* ===== [article] Research-note CTA inside cite drawer (lines 4618-4638) ===== */
 
+/* ===== [article] Research-note CTA inside cite drawer (lines 4897-4918) ===== */
 /* ===== Research-note CTA inside a .cite details block =====
    The .cite-body now leads with an internal "Read Don's summary"
    link (new tab) and keeps the external source link below it.
@@ -1647,8 +1892,8 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 .cite-note-link span{font-size:12px;opacity:0.8}
 .cite-note-link:hover span{opacity:1}
 
-/* ===== [article] Research drawer (inline preview) (lines 4639-4778) ===== */
 
+/* ===== [article] Research drawer (inline preview) (lines 4919-5059) ===== */
 /* ============================================================
    RESEARCH DRAWER (inline research-note preview)
    Opened when a reader clicks a .cite-note-link or .link-research
@@ -1789,8 +2034,8 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   .research-drawer-loading::before{animation:none}
 }
 
-/* ===== [article] Glossary term → research note cross-link (lines 4779-4823) ===== */
 
+/* ===== [article] Glossary term → research note cross-link (lines 5060-5105) ===== */
 /* ===== Glossary term → research note cross-link =====
    Compact "See the research" line added by scripts/
    wire-glossary-research.mjs after .gloss-term-why on selected
@@ -1836,8 +2081,8 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   color:var(--teal);border-bottom-color:var(--teal);
 }
 
-/* ===== [article] "Recently added" rail (under glossary hero) (lines 4824-4881) ===== */
 
+/* ===== [article] "Recently added" rail (under glossary hero) (lines 5106-5164) ===== */
 /* ===== "Recently added" rail (under glossary hero) =====
  * Surfaces newest terms to returning readers; populated by
  * scripts/inject-glossary-recent.mjs from data/glossary-added.json.
@@ -1896,8 +2141,8 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   font-size:13px;line-height:1.45;color:var(--ink-soft);
 }
 
-/* ===== [article] Glossary index "▶ 90s explainer" chip (lines 4882-4902) ===== */
 
+/* ===== [article] Glossary index "▶ 90s explainer" chip (lines 5165-5186) ===== */
 /* ===== Glossary index "▶ 90s explainer" chip =====
  * Variant of .gloss-tag (defined inline on glossary/index.html) used
  * on the five flagship-term cards. Sits inside .gloss-tags next to
@@ -1919,8 +2164,8 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   margin-right:1px;
 }
 
-/* ===== [article] Glossary explainer (90-second narrated diagram) (lines 4903-5168) ===== */
 
+/* ===== [article] Glossary explainer (90-second narrated diagram) (lines 5187-5453) ===== */
 /* ===== Glossary explainer (90-second narrated diagram) =====
  * Inline-SVG explainer for the five flagship glossary terms (menu
  * engineering, prime cost, plate cost, contribution margin, aspect
@@ -2187,8 +2432,8 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   .term-explainer__captions li.is-active{font-size:12pt}
 }
 
-/* ===== [article] Inline glossary popover (lines 5169-5235) ===== */
 
+/* ===== [article] Inline glossary popover (lines 5454-5521) ===== */
 /* ===== Inline glossary popover =====
  * Hover/focus tooltip rendered by site.js when a reader interacts with
  * an in-article autolink (a[data-glossary-blurb]). Single shared popover
@@ -2256,8 +2501,8 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   .glossary-popover{display:none !important}
 }
 
-/* ===== [article] Print view for glossary section landing pages (lines 5236-5292) ===== */
 
+/* ===== [article] Print view for glossary section landing pages (lines 5522-5578) ===== */
 /* ===== Print view for glossary section landing pages =====
  * Activates only on /glossary/<section>/ pages. Strips site chrome
  * (nav, footer, CTAs, the print button itself) and reflows the
@@ -2315,8 +2560,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   }
 }
 
-/* ===== [article] Editorial callouts (lines 5402-5485) ===== */
-
+/* ===== [article] Editorial callouts (lines 5692-5775) ===== */
 /* ============ Editorial callouts (Sprint 10 — cohesion) ============
    .callout--field is the "Field note from the kitchen" — a per-
    glossary-term italic aside that adds Don's operator anecdote
@@ -2401,8 +2645,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 .field-notes-rail__more{text-align:center;margin:28px 0 0}
 .field-notes-rail__more a{color:var(--teal);font-weight:500;text-decoration:none;border-bottom:1px solid currentColor}
 
-/* ===== [article] Post-end Workshop CTA (lines 5504-5519) ===== */
-
+/* ===== [article] Post-end Workshop CTA (lines 5796-5812) ===== */
 /* ============ Post-end Workshop CTA (Sprint 13 — cohesion) ============
    The "Workshop next step" card at the close of every blog post.
    Sits between .post-end-mark and the see-also block — the moment
@@ -2419,8 +2662,8 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 .post-end-cta .btn-primary{background:var(--teal);color:var(--cream)}
 .post-end-cta .btn-primary:hover{background:var(--teal-dark)}
 
-/* ===== [article] Inline graphics — globalized from gold articles (lines 6033-6093) ===== */
 
+/* ===== [article] Inline graphics — globalized from gold articles (lines 6334-6395) ===== */
 /* ============ INLINE GRAPHICS — globalized from gold articles ============ */
 /* .recovery-stack: vertical stacked rows with row tints + dark total cap.
    Pattern from blog/five-restaurant-website-changes-recover-one-percent-margin/.
@@ -2482,8 +2725,8 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 .report-decider__item[open]:last-child summary,.photo-aspect-decoder__item[open]:last-child summary{border-bottom:1px solid var(--line)}
 @media(max-width:640px){.report-decider,.photo-aspect-decoder{padding:18px 20px}.report-decider__item summary,.photo-aspect-decoder__item summary{font-size:15.5px}}
 
-/* ===== [article] KnitRail — "what’s next" component for articles (lines 6156-6230) ===== */
 
+/* ===== [article] KnitRail — "what’s next" component for articles (lines 6460-6534) ===== */
 /* ============================================================
    KnitRail — unified four-lane "what's next" component for
    articles. Replaces the smart-next 3-line CTA with a 4-column
@@ -2559,8 +2802,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   }
 }
 
-/* ===== [article] Article viz components (.viz-* family) (lines 6372-6710) ===== */
-
+/* ===== [article] Article viz components (.viz-* family) (lines 6680-7019) ===== */
 /* ============ ARTICLE VIZ COMPONENTS ============
    Namespaced .viz-* family for inline article graphics. Tokens-only
    (--cream, --ink, --teal, --rust, --stone, --status-*, --t-*),
