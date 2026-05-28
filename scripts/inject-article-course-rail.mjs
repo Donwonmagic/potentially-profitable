@@ -34,7 +34,13 @@ function escAttr(s) { return String(s).replace(/&/g, '&amp;').replace(/"/g, '&qu
 // the article describes. Articles without a clean lesson mapping
 // are silently skipped — the KnitRail's existing four lanes
 // already cover the article's other "next steps."
+// Keys are article slugs. After main's Phase-7 library/blog separation,
+// evergreen articles moved from blog/ → library/ (some renamed via
+// consolidation). The injector walks BOTH blog/ and library/ namespaces
+// and matches whichever slug it finds — so a slug only needs to appear
+// once here.
 const ARTICLE_LESSONS = {
+  // —— Moved blog→library (kept slug) ——
   'how-to-set-up-google-business-profile-for-your-restaurant': {
     module: 'm3-assemble', slug: 'gbp', position: 11, track: 'fresh',
     title_en: 'Google Business Profile', title_es: 'Perfil de Negocio de Google',
@@ -53,7 +59,9 @@ const ARTICLE_LESSONS = {
     pitch_en: 'The article is the playbook. The lesson is where you build the QR postcard, the host-stand script, and the response template inside your own brand voice.',
     pitch_es: 'El artículo es el manual. La lección es donde construyes la tarjeta QR, el guión del anfitrión y la plantilla de respuesta en tu propia voz de marca.'
   },
-  'how-to-respond-to-google-reviews-restaurant-playbook-2026': {
+  // —— Consolidated (renamed): how-to-respond-to-google-reviews-restaurant-playbook-2026 →
+  //                            library/google-review-response-playbook ——
+  'google-review-response-playbook': {
     module: 'm4-launch', slug: 'reviews', position: 13,
     title_en: 'Reviews + first-week trust', title_es: 'Reseñas + confianza la primera semana',
     pitch_en: 'Practice the four review-response archetypes against your own restaurant\'s voice — and ship the response templates as a saved artifact.',
@@ -71,17 +79,14 @@ const ARTICLE_LESSONS = {
     pitch_en: 'The citation pattern from the article shipped as schema markup in this lesson — your own restaurant, your own facts, citable by AI engines.',
     pitch_es: 'El patrón de cita del artículo se entrega como marcado schema en esta lección — tu propio restaurante, tus propios datos, citables por motores de IA.'
   },
-  'restaurant-schema-markup-6-types-google-uses': {
+  // —— Consolidated: restaurant-schema-markup-6-types-google-uses +
+  //                  restaurant-schema-markup-complete-paste-ready-example →
+  //                  library/restaurant-schema-markup-guide ——
+  'restaurant-schema-markup-guide': {
     module: 'm4-launch', slug: 'local-seo', position: 12,
     title_en: 'Local SEO anchors', title_es: 'Anclas de SEO local',
     pitch_en: 'The six schema types ship as part of the generator output in this lesson — pre-filled with your hours, menu, address, and reviews.',
     pitch_es: 'Los seis tipos de schema se entregan como parte del generador en esta lección — pre-llenados con tus horarios, menú, dirección y reseñas.'
-  },
-  'restaurant-schema-markup-complete-paste-ready-example': {
-    module: 'm4-launch', slug: 'local-seo', position: 12,
-    title_en: 'Local SEO anchors', title_es: 'Anclas de SEO local',
-    pitch_en: 'You can paste the article\'s example, or you can run the lesson and have the schema generated for you, populated with your real fields.',
-    pitch_es: 'Puedes pegar el ejemplo del artículo, o correr la lección y tener el schema generado para ti, lleno con tus campos reales.'
   },
   'restaurant-photo-spec-sheet': {
     module: 'm3-assemble', slug: 'photos', position: 9, track: 'fresh',
@@ -95,7 +100,9 @@ const ARTICLE_LESSONS = {
     pitch_en: 'The article lists what should be there. The lesson decides — with your restaurant — which of those things lead the home page, which go below the fold, which never appear at all.',
     pitch_es: 'El artículo lista qué debe estar. La lección decide — con tu restaurante — cuál encabeza la página, cuál va abajo del pliegue, cuál no aparece.'
   },
-  'how-much-does-a-custom-restaurant-website-cost-in-2026': {
+  // —— Consolidated (renamed): how-much-does-a-custom-restaurant-website-cost-in-2026 →
+  //                            library/custom-restaurant-website-pricing ——
+  'custom-restaurant-website-pricing': {
     module: 'm1-orient', slug: 'welcome', position: 1,
     title_en: 'Welcome + track picker', title_es: 'Bienvenida + selector de pista',
     pitch_en: 'The article frames the budget shape. The bootcamp is the free option that lands you with a real site at the end — no contract, no monthly fee.',
@@ -119,7 +126,9 @@ const ARTICLE_LESSONS = {
     pitch_en: 'The article tells you when. The lesson is the audit — six leak points, your own URL, decided in 30 minutes.',
     pitch_es: 'El artículo te dice cuándo. La lección es la auditoría — seis puntos de fuga, tu propia URL, decidido en 30 minutos.'
   },
-  'why-your-restaurant-loses-reservations-every-night': {
+  // —— Consolidated (renamed): why-your-restaurant-loses-reservations-every-night →
+  //                            library/reservation-conversion-guide ——
+  'reservation-conversion-guide': {
     module: 'm3-assemble', slug: 'hours-contact', position: 10,
     title_en: 'Hours + holidays + contact', title_es: 'Horarios + feriados + contacto',
     pitch_en: 'The article maps the six leaks. The lesson ships the fixes — tap-to-call, tap-to-directions, weekly hours, holiday hours — all wired into your site.',
@@ -190,13 +199,17 @@ let changed = 0;
 let skipped = 0;
 
 const TARGETS = [];
-for (const root of [['en', 'blog'], ['es', 'es/blog']]) {
+// Phase 7 (library/blog separation): evergreen articles moved from
+// blog/ → library/ on main. Walk both namespaces so rails stamp into
+// the article wherever it actually lives.
+for (const root of [['en', 'blog'], ['es', 'es/blog'], ['en', 'library'], ['es', 'es/library']]) {
   const [locale, dir] = root;
   const full = path.join(repoRoot, dir);
   if (!fs.existsSync(full)) continue;
   for (const entry of fs.readdirSync(full, { withFileTypes: true })) {
     if (!entry.isDirectory()) continue;
     if (entry.name === 'drafts') continue;
+    if (entry.name === 'menu-design-cuisines' || entry.name === 'menu-design-themes') continue;
     const file = path.join(full, entry.name, 'index.html');
     if (fs.existsSync(file)) TARGETS.push({ file, locale, slug: entry.name });
   }

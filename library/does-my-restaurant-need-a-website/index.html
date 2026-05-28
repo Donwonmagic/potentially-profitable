@@ -492,6 +492,27 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
                 });
               })
               .catch(function () { /* silent */ });
+            // Course progress dot — appended after the workshop link
+            // when the operator is mid-bootcamp (> 0 but < 16 lessons
+            // done). Decorative + aria-hidden; the operator can still
+            // click the workshop link to see the canonical count.
+            fetch('/api/course/progress', { credentials: 'same-origin' })
+              .then(function (r3) { return r3.ok ? r3.json() : null; })
+              .then(function (j) {
+                if (!j || !j.progress || !Array.isArray(j.progress.completed)) return;
+                var n = j.progress.completed.length;
+                if (n <= 0 || n >= 16) return;
+                workshop.forEach(function (w) {
+                  if (w.querySelector('.nav-course-dot')) return;
+                  var dot = document.createElement('span');
+                  dot.className = 'nav-course-dot';
+                  dot.setAttribute('aria-hidden', 'true');
+                  dot.title = 'Open the Doors — lesson ' + n + ' / 16';
+                  dot.style.cssText = 'display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--teal);margin-left:6px;vertical-align:middle';
+                  w.appendChild(dot);
+                });
+              })
+              .catch(function () { /* silent — course endpoint optional */ });
             return;
           }
           show(signin);
@@ -816,8 +837,25 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     </aside>
     <!-- post-end-cta:end -->
 <!-- knit-rail:start --><!-- knit-rail:end -->
-
-    <aside class="further-reading">
+<!-- article-course-rail:start -->
+<aside class="article-course-rail" aria-labelledby="acr-h">
+  <p class="acr-eyebrow">Build it · Lesson 2</p>
+  <h2 class="acr-h" id="acr-h"><a href="/course/m1-orient/what-a-site-does/">What a restaurant site actually does</a></h2>
+  <p class="acr-pitch">If the answer is yes, the lesson is where you start.</p>
+  <p class="acr-cta"><a href="/course/m1-orient/what-a-site-does/">Open the lesson →</a></p>
+</aside>
+<style>
+.article-course-rail{max-width:680px;margin:36px auto 24px;padding:24px 28px;border:1px solid var(--line);border-radius:14px;background:var(--cream)}
+.article-course-rail .acr-eyebrow{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);font-weight:600;margin:0 0 10px}
+.article-course-rail .acr-h{font-family:var(--font-display);font-weight:500;font-size:22px;line-height:1.25;margin:0 0 12px;color:var(--ink)}
+.article-course-rail .acr-h a{color:var(--ink);text-decoration:none;background:linear-gradient(to right,var(--teal),var(--teal)) no-repeat 0 100%/100% 1px}
+.article-course-rail .acr-h a:hover{color:var(--teal-dark)}
+.article-course-rail .acr-pitch{font-size:15.5px;color:var(--ink-soft);line-height:1.55;margin:0 0 14px}
+.article-course-rail .acr-cta{margin:0;font-size:14.5px;font-weight:600}
+.article-course-rail .acr-cta a{color:var(--teal-dark);text-decoration:none}
+.article-course-rail .acr-cta a:hover{text-decoration:underline}
+</style>
+<!-- article-course-rail:end -->    <aside class="further-reading">
       <p class="label">Keep reading</p>
       <a href="/library/what-should-be-on-a-restaurant-website/">
         <h4>What should be on a restaurant website? The 7 pages that matter.</h4>

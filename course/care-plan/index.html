@@ -63,7 +63,9 @@
 </script>
 
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-italic.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-italic.woff2" crossorigin>
 <link rel="preload" as="style" href="/assets/site-core.css" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="/assets/site-core.css"><link rel="stylesheet" href="/assets/site-article.css"></noscript>
@@ -155,8 +157,8 @@ main{padding-top:80px;padding-bottom:64px}
       Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
     </a>
     <!-- Phase 7: 5-item nav, per launch plan Part II.
-         Library / Tools / Work / Studio / Sign in.
-         Library now points at the canonical /library/ hub (the
+         Library / Tools / Studio / Sign in.
+         Library points at the canonical /library/ hub (the
          three-doors page). Tools is promoted from the old Library
          mega-menu to a top-level item. Studio replaces Services +
          Restaurants + About — they all live under /studio/ now,
@@ -166,11 +168,15 @@ main{padding-top:80px;padding-bottom:64px}
          Restaurants pages remain reachable via /studio/ and the
          _redirects table; /about/ is unchanged. The mega-menu is
          retired (the hub IS the menu now); the controller script
-         is gone too. -->
+         is gone too.
+
+         /work/ was retired with the Phase 8 portfolio-sunset pass:
+         the company-as-resume framing made the personal-portfolio
+         showcase redundant. Legacy /work/* URLs 301 to /studio/
+         via _redirects so old backlinks land softly. -->
     <nav class="nav-links" aria-label="Primary">
       <a href="/library/">Library</a>
       <a href="/tools/">Tools</a>
-      <a href="/work/">Work</a>
       <a href="/studio/">Studio</a>
       <!-- Both sign-in / workshop ship hidden by default; the
            auth-state JS at the bottom of this file calls
@@ -198,14 +204,14 @@ main{padding-top:80px;padding-bottom:64px}
          default state (sun) and clicks do nothing; the OS
          preference still drives dark-mode tokens via media query. -->
     <button type="button" class="theme-toggle js-theme-toggle" aria-label="Toggle dark mode" aria-pressed="false" hidden>
-      <svg class="theme-toggle__icon theme-toggle__icon--sun" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <svg class="theme-toggle__icon theme-toggle__icon--sun" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <circle cx="12" cy="12" r="4"/>
         <line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/>
         <line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/>
         <line x1="4.93" y1="4.93" x2="7.05" y2="7.05"/><line x1="16.95" y1="16.95" x2="19.07" y2="19.07"/>
         <line x1="4.93" y1="19.07" x2="7.05" y2="16.95"/><line x1="16.95" y1="7.05" x2="19.07" y2="4.93"/>
       </svg>
-      <svg class="theme-toggle__icon theme-toggle__icon--moon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <svg class="theme-toggle__icon theme-toggle__icon--moon" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
       </svg>
     </button>
@@ -227,7 +233,6 @@ main{padding-top:80px;padding-bottom:64px}
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
     <a href="/library/">Library</a>
     <a href="/tools/">Tools</a>
-    <a href="/work/">Work</a>
     <a href="/studio/">Studio</a>
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
@@ -375,7 +380,7 @@ main{padding-top:80px;padding-bottom:64px}
       <li class="cp-task">
         <div class="cp-task-h"><h3>Week 4 — read Google Search Console.</h3><span class="freq">Day 30</span></div>
         <p>Open <code>search.google.com/search-console</code> and skim the four reports that matter: Coverage (any pages excluded?), Performance (which queries hit you?), Core Web Vitals (any reds?), Sitemaps (submitted? indexed?). Most operators discover one fix-it-now issue in their first read.</p>
-        <a class="cp-task-tool" href="/blog/how-to-read-restaurant-google-search-console/">Plain-English GSC guide →</a>
+        <a class="cp-task-tool" href="/library/how-to-read-restaurant-google-search-console/">Plain-English GSC guide →</a>
       </li>
     </ul>
   </section>
@@ -389,7 +394,7 @@ main{padding-top:80px;padding-bottom:64px}
       <li class="cp-task">
         <div class="cp-task-h"><h3>Respond to every review within 48 hours.</h3><span class="freq">Every review</span></div>
         <p>Four archetypes — the glowing 5-star, the disappointed 3-star, the angry 1-star, the legitimate-complaint 2-star. Each has a template; each takes under 90 seconds. Reviews you don't respond to look like a restaurant that doesn't read its own reviews.</p>
-        <a class="cp-task-tool" href="/blog/how-to-respond-to-google-reviews-restaurant-playbook-2026/">Open the response playbook →</a>
+        <a class="cp-task-tool" href="/library/google-review-response-playbook/">Open the response playbook →</a>
       </li>
       <li class="cp-task">
         <div class="cp-task-h"><h3>Update the menu page when the menu actually changes.</h3><span class="freq">When triggered</span></div>
