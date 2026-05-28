@@ -959,6 +959,56 @@ main{padding-top:64px}
           if (!mount) return;
           mount.setAttribute("hidden", "");
           mount.innerHTML = "";
+          // Lesson Mode (Phase 3.3) — stop any celebration audio that was
+          // playing alongside the card so the listener does not hear it
+          // continue after dismissal.
+          if (celebrationAudio) { try { celebrationAudio.pause(); } catch (_) {} celebrationAudio = null; }
+        }
+      
+        // Lesson Mode (Phase 3.3) — celebration audio hook.
+        // Optional pre-recorded audio plays alongside the celebration card.
+        // The audio assets live under /audio/assets/course/<tier>.<lang>.mp3
+        // and are detected at play time: if the file 404s, no audio plays
+        // and the visual celebration carries the moment alone. Tiers:
+        //   per-lesson:        lesson-complete.<lang>.mp3 (any non-boundary)
+        //   module boundary:   m1-complete / m2-complete / m3-complete.<lang>.mp3
+        //   bootcamp finish:   bootcamp-complete.<lang>.mp3
+        // Recording specs live in /audio/assets/README.md.
+        var celebrationAudio = null;
+        function playCelebrationAudio(tier) {
+          if (!tier) return;
+          if (celebrationAudio) { try { celebrationAudio.pause(); } catch (_) {} }
+          // Signal the listen-card to pause so its body narration does not
+          // overlap with the celebration. The listen-card resumes only if
+          // the operator clicks play; on its own it stays where it landed.
+          try {
+            document.dispatchEvent(new CustomEvent("mtn:lesson-celebration-start", {
+              detail: { tier: tier, locale: locale }
+            }));
+          } catch (_) {}
+          var src = "/audio/assets/course/" + tier + "." + locale + ".mp3";
+          var a = new Audio();
+          a.preload = "auto";
+          a.src = src;
+          var fired = false;
+          var firePlausible = function () {
+            if (fired) return; fired = true;
+            try {
+              if (typeof window.plausible === "function") {
+                window.plausible("Course Celebration Audio", { props: { tier: tier, locale: locale } });
+              }
+            } catch (_) {}
+          };
+          a.addEventListener("playing", firePlausible);
+          a.addEventListener("error", function () {
+            // Asset not recorded yet — silent fallback. The visual
+            // celebration ships either way. No Plausible event in this
+            // case so the funnel only counts audio that actually played.
+            celebrationAudio = null;
+          });
+          a.addEventListener("ended", function () { celebrationAudio = null; });
+          celebrationAudio = a;
+          try { a.play().catch(function () { celebrationAudio = null; }); } catch (_) { celebrationAudio = null; }
         }
       
         btn.addEventListener("click", function () {
@@ -996,6 +1046,23 @@ main{padding-top:64px}
             // then the card slides in. The eye flow is: button confirms,
             // then card appears below.
             setTimeout(function () { runCelebration(fired, next); }, 80);
+            // Lesson Mode (Phase 3.3) — celebration audio tier. Plays
+            // alongside the card; no-ops if the asset is not on disk.
+            // Module-boundary tier names match the recording-asset names
+            // documented in /audio/assets/README.md.
+            var celebrationTier = "";
+            if      (fired.id === "m1-orient")   celebrationTier = "m1-complete";
+            else if (fired.id === "m2-decide")   celebrationTier = "m2-complete";
+            else if (fired.id === "m3-assemble") celebrationTier = "m3-complete";
+            else if (fired.id === "bootcamp")    celebrationTier = "bootcamp-complete";
+            if (celebrationTier) {
+              setTimeout(function () { playCelebrationAudio(celebrationTier); }, 320);
+            }
+          } else if (!fired) {
+            // Per-lesson complete with no module-boundary celebration card.
+            // The audio cue is even smaller — a brief "locked in" tag (~3 s)
+            // that confirms the operator wrote progress to the browser.
+            setTimeout(function () { playCelebrationAudio("lesson-complete"); }, 160);
           }
       
           // POST to /api/course/progress — fire-and-forget for anonymous

@@ -2414,6 +2414,23 @@
       if (state !== 'idle') window.speechSynthesis.cancel();
     });
 
+    // Lesson Mode (Phase 3.3) — gracefully cede the audio channel when
+    // a course celebration sound is about to play. Prevents the body
+    // narration and the celebration cue from talking over each other
+    // when the operator marks a lesson complete mid-listen. The card
+    // doesn't auto-resume; the operator picks back up by clicking play.
+    document.addEventListener('mtn:lesson-celebration-start', () => {
+      if (state === 'playing') {
+        if (audioEl) {
+          try { audioEl.pause(); } catch (_) {}
+          setState('paused');
+        } else if (window.speechSynthesis && window.speechSynthesis.speaking) {
+          window.speechSynthesis.pause();
+          setState('paused');
+        }
+      }
+    });
+
     if ('onvoiceschanged' in window.speechSynthesis) {
       window.speechSynthesis.addEventListener('voiceschanged', populateVoices);
     }
