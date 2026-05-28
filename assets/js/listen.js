@@ -1804,14 +1804,18 @@
       updateDockWidgetWait(chunk, true);
       // Bind a single listener for both event types — checkpoint widgets
       // dispatch mtn:checkpoint-answered, every other widget dispatches
-      // mtn:context-change with a matching contextKey.
+      // mtn:context-change with a matching contextKey in its patch.
       widgetWaitHandler = (e) => {
         if (!awaitingWidget) return;
         const wantsCheckpoint = awaitingWidget.widget === 'course-checkpoint';
+        const contextKey = awaitingWidget.contextKey;
+        const contextRoot = contextKey && contextKey.split('.')[0];
+        const patch = (e.detail && e.detail.patch) || {};
         const matched = e.type === 'mtn:checkpoint-answered'
           ? wantsCheckpoint
-          : (e.detail && awaitingWidget.contextKey
-              && e.detail.key === awaitingWidget.contextKey);
+          : (contextKey && patch
+              && (Object.prototype.hasOwnProperty.call(patch, contextKey)
+                || Object.prototype.hasOwnProperty.call(patch, contextRoot)));
         if (!matched) return;
         exitWidgetWait({ autoResume: true });
       };
@@ -1871,13 +1875,19 @@
         wasWaiting.element.classList.remove('is-listen-waiting');
       }
       updateDockWidgetWait(null, false);
-      if (opts.autoResume && audioEl && state === 'awaiting-widget') {
-        // Bump cursor past the widget-pause so tickStudio doesn't
-        // immediately re-enter widget-wait on the same chunk.
-        const next = chunks[currentIndex + 1];
+      if (wasWaiting) {
+        const pauseIdx = chunks.indexOf(wasWaiting);
+        const nextIdx = (pauseIdx >= 0 ? pauseIdx : currentIndex) + 1;
+        const next = chunks[nextIdx];
         if (next) {
-          try { audioEl.currentTime = next.start; } catch (_) {}
+          currentIndex = nextIdx;
+          setCurrent(next.element, next);
+          if (audioEl) {
+            try { audioEl.currentTime = next.start; } catch (_) {}
+          }
         }
+      }
+      if (opts.autoResume && audioEl && state === 'awaiting-widget') {
         setState('paused');
         widgetWaitTimeout = setTimeout(async () => {
           widgetWaitTimeout = null;
