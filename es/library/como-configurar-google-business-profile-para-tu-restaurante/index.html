@@ -769,6 +769,42 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <p>Si no haces nada más de esta lista, abre tu perfil y mira tu primaria. Si dice &ldquo;Restaurante&rdquo; y eres cualquier tipo de cocina específica, son treinta segundos de arreglo y ranking real de vuelta.</p>
       </aside>
 
+      <figure class="viz-figure article-figure" data-audio-alt="Un árbol de decisión de tres preguntas para elegir la categoría primaria correcta del Perfil de Negocio de Google. Pregunta uno — ¿tienes una cocina específica? Sí — elige la categoría específica de cocina — Italian Restaurant, Korean Restaurant, Sushi Restaurant, Mexican Restaurant. La categoría específica de cocina le gana a la genérica 'Restaurant' siempre para consultas de cocina-cerca-de-mí. No — tu concepto es más amplio, como New American o un café — pasa a la pregunta dos. Pregunta dos — ¿tu jalón principal es una franja del día? ¿Brunch, desayuno, late-night? Sí — elige la categoría de la franja — Brunch Restaurant, Breakfast Restaurant, Late-Night Restaurant. La categoría de franja le gana a la genérica para consultas de franja-cerca-de-mí. No — pasa a la pregunta tres. Pregunta tres — ¿tu jalón principal es un formato? Café, gastropub, brewpub, bar? Sí — elige la categoría de formato — Cafe, Gastropub, Brewpub, Bar. No a las tres — solo entonces tiene sentido la categoría genérica Restaurant. Agrega siempre dos a cinco categorías adicionales que describan con precisión el negocio; nunca agregues categorías que en realidad no sirves. Google suspende fichas por categorías engañosas y la reverificación toma semanas.">
+        <ol class="viz-tree" aria-label="Árbol de decisión de tres preguntas para elegir la categoría primaria del Perfil de Negocio de Google">
+          <li class="viz-tree__node">
+            <details open>
+              <summary><span class="viz-tree__num">1</span><span class="viz-tree__title">¿Tienes una cocina específica?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+              <div class="viz-tree__body">
+                <p>Italian, Korean, Sushi, Mexican, Vietnamese, Ethiopian &mdash; las categorías por platillo que Google trae listas.</p>
+                <p><span class="viz-tree__verdict" data-tone="pass">Elige esta</span> La categoría específica de cocina le gana a &ldquo;Restaurant&rdquo; siempre para consultas de cocina-cerca-de-mí.</p>
+                <p><span class="viz-tree__verdict" data-tone="warn">Salta a P2</span> Tu concepto es más amplio (New American, café, gastropub) &mdash; el campo de cocina no encaja.</p>
+              </div>
+            </details>
+          </li>
+          <li class="viz-tree__node">
+            <details>
+              <summary><span class="viz-tree__num">2</span><span class="viz-tree__title">¿Tu jalón principal es una franja del día?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+              <div class="viz-tree__body">
+                <p>Lugar de brunch, spot de desayuno, cocina de late-night &mdash; las categorías específicas por franja del día.</p>
+                <p><span class="viz-tree__verdict" data-tone="pass">Elige esta</span> &ldquo;Brunch Restaurant&rdquo; le gana a &ldquo;Restaurant&rdquo; para brunch-cerca-de-mí. Igual para desayuno y late-night.</p>
+                <p><span class="viz-tree__verdict" data-tone="warn">Salta a P3</span> Tu franja no es el titular &mdash; haces cena y comida junto con todos.</p>
+              </div>
+            </details>
+          </li>
+          <li class="viz-tree__node">
+            <details>
+              <summary><span class="viz-tree__num">3</span><span class="viz-tree__title">¿Tu jalón principal es un formato?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+              <div class="viz-tree__body">
+                <p>Café, gastropub, brewpub, bar &mdash; las categorías específicas de formato donde el formato es por lo que los comensales vienen.</p>
+                <p><span class="viz-tree__verdict" data-tone="pass">Elige esta</span> La categoría de formato le gana a &ldquo;Restaurant&rdquo; para formato-cerca-de-mí.</p>
+                <p><span class="viz-tree__verdict" data-tone="fail">Solo ahora</span> Si ninguna de las tres preguntas se gana un sí, la primaria genérica &ldquo;Restaurant&rdquo; es la correcta. La mayoría de los independientes tiene respuesta a por lo menos una de las tres.</p>
+              </div>
+            </details>
+          </li>
+        </ol>
+        <figcaption>Tres preguntas, en orden &mdash; el primer &ldquo;sí&rdquo; elige tu primaria. Agrega siempre 2&ndash;5 categorías adicionales que encajen con precisión.</figcaption>
+      </figure>
+
       <details class="cite">
         <summary>Fuente: Selección de categoría en Google</summary>
         <div class="cite-body">

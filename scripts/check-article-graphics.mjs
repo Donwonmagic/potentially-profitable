@@ -107,8 +107,6 @@ const SCAN_ROOTS = ['library', 'blog', 'es/library', 'es/blog'];
 // reason. Removing an entry forces the next CI run to re-audit it.
 const HISTORICAL_WAIVERS = [
   // ES translation sweep — mirror EN figures with translated metadata.
-  { path: 'es/library/como-configurar-google-business-profile-para-tu-restaurante', rule: 2, why: '2026-05-28 — ES translation sweep pending; mirror EN variety addition' },
-  { path: 'es/library/como-conseguir-mas-resenas-google-para-tu-restaurante',       rule: 1, why: '2026-05-28 — ES translation sweep pending; mirror EN second figure' },
   { path: 'es/library/como-hacer-sitio-web-para-mi-restaurante',                    rule: 1, why: '2026-05-28 — ES translation sweep pending; figures stripped in translation' },
   { path: 'es/library/como-leer-google-search-console-de-tu-restaurante',           rule: 2, why: '2026-05-28 — ES translation sweep pending; viz-* class missing on figures' },
   { path: 'es/library/como-leer-google-search-console-de-tu-restaurante',           rule: 3, why: '2026-05-28 — ES translation sweep pending; narration length below floor' },
@@ -123,7 +121,6 @@ const HISTORICAL_WAIVERS = [
   { path: 'es/library/los-6-tipos-de-schema-markup-que-google-usa',                 rule: 2, why: '2026-05-28 — ES translation sweep pending; viz-* class missing on figures' },
   { path: 'es/library/los-6-tipos-de-schema-markup-que-google-usa',                 rule: 3, why: '2026-05-28 — ES translation sweep pending; narration length below floor' },
   { path: 'es/library/reserva-en-google-ai-mode-restaurante-2026',                  rule: 1, why: '2026-05-28 — ES translation sweep pending; mirror EN second figure' },
-  { path: 'es/library/toast-vs-square-vs-clover-para-restaurantes',                 rule: 1, why: '2026-05-28 — ES translation sweep pending; mirror EN second figure (viz-tree decision diagnostic)' },
   // ES /blog/ posts whose canonical EN counterpart now lives at /library/ — legacy from the blog→library split.
   { path: 'es/blog/can-chatgpt-write-your-restaurant-website',                       rule: 1, why: '2026-05-28 — ES translation sweep pending; legacy /es/blog/ slug, EN counterpart at /library/' },
   { path: 'es/blog/does-my-restaurant-need-a-website',                               rule: 1, why: '2026-05-28 — ES translation sweep pending; legacy /es/blog/ slug, EN counterpart at /library/' },
