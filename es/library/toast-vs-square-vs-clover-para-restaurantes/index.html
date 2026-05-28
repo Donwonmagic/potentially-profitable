@@ -26,7 +26,7 @@
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta property="article:published_time" content="2026-05-07" />
-<meta property="article:author" content="Don Goldstein" />
+<meta property="article:author" content="The Muntin Desk" />
 <meta property="article:section" content="Comparison" />
 <meta property="article:tag" content="Restaurant POS" />
 <meta property="article:tag" content="Toast" />
@@ -67,7 +67,10 @@
       "inLanguage": "es-US",
       "wordCount": 2800,
       "author": {
-        "@id": "https://muntin.digital/about/#don-goldstein"
+        "@id": "https://muntin.digital/#muntin-desk",
+        "@type": "Organization",
+        "name": "The Muntin Desk",
+        "url": "https://muntin.digital/about/"
       },
       "publisher": {
         "@id": "https://muntin.digital/#business"
@@ -929,23 +932,38 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <h2 id="which-one-i-d-pick-by-restaurant-type">Cuál elegiría, por tipo de restaurante</h2>
       <p>Así emparejaría cada POS con un tipo de restaurante, con base en lo que veo en las auditorías. Son opiniones, no reglas &mdash; tu mejor encaje real depende de variables que no puedo ver desde un blog post, así que toma esto como punto de partida para tu propia evaluación, no como veredicto.</p>
 
-      <div class="recommend-grid">
-        <div class="recommend-card">
-          <span class="badge">Independiente de un solo local</span>
-          <h4>Square for Restaurants</h4>
-          <p>API limpia, precios planos públicos, contratos cortos, y menor costo de cambio si te queda corto el encaje. Obtienes la calidad de integración que necesitas para una primera reconstrucción a medida sin comprometerte con un jardín amurallado antes de estar seguro de que te quieres quedar.</p>
-        </div>
-        <div class="recommend-card">
-          <span class="badge">Grupo creciendo de 2 a 5 locales</span>
-          <h4>Toast</h4>
-          <p>Pipeline de ordering nativo, sincronización de menú madura, bajada en tiempo real, y una API para desarrolladores que escala junto con el grupo. El factor &ldquo;simplemente funciona&rdquo; es genuino cuando hay operaciones multi-local en juego y necesitas que cada integración sobreviva un rush de sábado.</p>
-        </div>
-        <div class="recommend-card">
-          <span class="badge">Pesado en hardware o híbrido</span>
-          <h4>Clover</h4>
-          <p>La selección de hardware más amplia, de mano para servir en mesa, variantes de kiosk, básculas integradas, profundidad del marketplace de apps. Si una configuración física específica o una relación de servicios de comercio importa más que la ergonomía pura para desarrolladores, Clover gana su lugar.</p>
-        </div>
-      </div>
+      <figure class="article-figure" data-audio-alt="Tres elecciones de POS mapeadas a la forma del restaurante, en forma de árbol de decisión. Rama uno — independiente de un solo local — Square for Restaurants es el mejor encaje, por la API limpia, los precios planos públicos, los contratos cortos y el menor costo de cambio si te queda corto el encaje. Rama dos — grupo creciendo de dos a cinco locales — Toast es el mejor encaje, por el pipeline de ordering nativo, la sincronización de menú madura, la bajada en tiempo real y la API para desarrolladores que escala con el grupo; el factor 'simplemente funciona' es genuino cuando cada integración tiene que sobrevivir un rush de sábado. Rama tres — concepto pesado en hardware o híbrido — Clover es el mejor encaje, por la selección de hardware más amplia, las variantes de kiosk, las básculas integradas y la profundidad del marketplace de apps. Tres realidades operativas distintas, tres encajes distintos.">
+        <ol class="viz-tree" aria-label="Tres elecciones de POS mapeadas a la forma del restaurante">
+          <li class="viz-tree__node">
+            <details open>
+              <summary><span class="viz-tree__num">1</span><span class="viz-tree__title">Independiente de un solo local &rarr; Square for Restaurants</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+              <div class="viz-tree__body">
+                <p>API limpia, precios planos públicos, contratos cortos, y menor costo de cambio si te queda corto el encaje. Obtienes la calidad de integración que necesitas para una primera reconstrucción a medida sin comprometerte con un jardín amurallado antes de estar seguro de que te quieres quedar.</p>
+                <p><span class="viz-tree__verdict" data-tone="pass">Mejor encaje</span> Operadores de un solo local que quieren una reconstrucción limpia sin amarrarse a largo plazo.</p>
+              </div>
+            </details>
+          </li>
+          <li class="viz-tree__node">
+            <details>
+              <summary><span class="viz-tree__num">2</span><span class="viz-tree__title">Grupo creciendo de 2&ndash;5 locales &rarr; Toast</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+              <div class="viz-tree__body">
+                <p>Pipeline de ordering nativo, sincronización de menú madura, bajada en tiempo real, y una API para desarrolladores que escala junto con el grupo. El factor &ldquo;simplemente funciona&rdquo; es genuino cuando hay operaciones multi-local en juego y necesitas que cada integración sobreviva un rush de sábado.</p>
+                <p><span class="viz-tree__verdict" data-tone="pass">Mejor encaje</span> Operadores escalando más allá de un local que no pueden permitirse que una integración se caiga bajo carga.</p>
+              </div>
+            </details>
+          </li>
+          <li class="viz-tree__node">
+            <details>
+              <summary><span class="viz-tree__num">3</span><span class="viz-tree__title">Pesado en hardware o híbrido &rarr; Clover</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+              <div class="viz-tree__body">
+                <p>La selección de hardware más amplia, de mano para servir en mesa, variantes de kiosk, básculas integradas, profundidad del marketplace de apps. Si una configuración física específica o una relación de servicios de comercio importa más que la ergonomía pura para desarrolladores, Clover gana su lugar.</p>
+                <p><span class="viz-tree__verdict" data-tone="pass">Mejor encaje</span> Operadores cuyas necesidades de hardware o relación bancaria pesan más que la ergonomía de integración.</p>
+              </div>
+            </details>
+          </li>
+        </ol>
+        <figcaption>Tres elecciones, por forma del restaurante &mdash; opiniones ancladas en experiencia de auditoría, no reglas.</figcaption>
+      </figure>
 
       <h2 id="what-to-ask-your-pos-provider-before-you-build-a-website">Qué preguntarle a tu proveedor de POS antes de construir un sitio</h2>
       <p>Sea cual sea el POS que estés evaluando, hay seis preguntas que le haría al representante de ventas antes de firmar lo que sea. Anótalas, mándaselas por correo a tu rep, y guarda la respuesta &mdash; las respuestas te van a contar más sobre la calidad de integración a la que te estás suscribiendo que cualquier página brillante de producto. (O corre <a href="/es/tools/tech-stack/">Tech Stack</a> sobre tu setup actual para ver qué funciones de integración ya entregan tus herramientas existentes.)</p>
