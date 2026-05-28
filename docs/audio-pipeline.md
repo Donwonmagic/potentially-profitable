@@ -200,6 +200,30 @@ make it a hard gate.
 `--pending` mode lists every slug that needs a render — useful as
 input to a batched render command.
 
+## Production-layer assets (`audio/assets/`)
+
+Four optional one-time recordings that lift Kokoro renders from
+"AI demo" to "produced editorial." Auto-detected: when the file exists
+at `audio/assets/<name>.wav`, the pipeline uses it; when absent, the
+chain runs unchanged.
+
+| Asset                | Used by                       | Effect                                       |
+| -------------------- | ----------------------------- | -------------------------------------------- |
+| `intro.wav`          | `audio-post-process.mjs`      | Prepended ahead of voice on every MP3        |
+| `chapter-sting.wav`  | `render-post-audio.mjs`       | Plays at every H2 transition (in place of silence) |
+| `breath.wav`         | `render-post-audio.mjs`       | Plays in the middle of every paragraph-end gap |
+| `bed.wav` (optional) | (not currently wired)         | Would replace synthetic pink-noise bed        |
+
+`audio/assets/README.md` has the full per-asset recording spec.
+
+Disable per-run flags:
+- `audio-post-process.mjs --no-intro` skips the intro splice.
+- `render-post-audio.mjs` has no per-asset disable — to skip the sting
+  or breath, remove the file under `audio/assets/` and re-render.
+
+When any asset is added, removed, or replaced, bump `PIPELINE_VERSION`
+in the consuming script so cached output re-renders.
+
 ## Voices (current canon)
 
 | lang | voice id    | gender | timbre                              |

@@ -670,6 +670,18 @@
       let pre = s;
       for (const [re, rep] of CONTRACTIONS) pre = pre.replace(re, rep);
       return pre
+        // Em-dash / en-dash / ellipsis → comma / period so the Web
+        // Speech voice (and any future TTS) honors the writer's
+        // intended pause instead of crashing two clauses together.
+        // Twin of the same expansion in scripts/render-post-audio.mjs.
+        .replace(/\s*[—–]\s*/g, ', ')
+        .replace(/\s*\.\.\.\s*/g, '. ')
+        .replace(/\s*…\s*/g, '. ')
+        // ALL-CAPS (≥3 chars) that isn't a known acronym → title-case
+        // so the synth says the word, not the letters.
+        .replace(/\b([A-Z]{3,})\b/g, (m) => {
+          return ACRONYMS.includes(m) ? m : m[0] + m.slice(1).toLowerCase();
+        })
         .replace(/#\s*(\d+)/g, 'number $1')
         .replace(/\$(\d{1,3}(?:,\d{3})+(?:\.\d+)?|\d+(?:\.\d+)?)/g, '$1 dollars')
         .replace(/(\d)\s*×\s*(\d|\$)/g, '$1 times $2')

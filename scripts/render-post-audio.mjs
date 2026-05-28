@@ -557,6 +557,51 @@ function renderLanguage(postDir, chunks, lang) {
     GAP_CACHE.set(key, p);
     return p;
   }
+
+  // Production-layer assets (Track 1C). Resolved once per render. The
+  // chapter-sting plays at section-break boundaries; the breath sample
+  // plays at sentence-end paragraph breaks. Both are optional — if the
+  // file is absent, the gap stays as pure silence and the pipeline keeps
+  // running unchanged. See audio/assets/README.md for the recording spec.
+  const STING_PATH  = path.join(repoRoot, 'audio', 'assets', 'chapter-sting.wav');
+  const BREATH_PATH = path.join(repoRoot, 'audio', 'assets', 'breath.wav');
+  const useSting  = fs.existsSync(STING_PATH);
+  const useBreath = fs.existsSync(BREATH_PATH);
+  const BOUNDARY_CACHE = new Map();
+
+  // Produce the WAV for the gap between `prev` and `chunk`. When an
+  // asset applies, the cache key includes the boundary kind so the
+  // sting-padded clip and the breath-padded clip don't collide with
+  // the pure-silence clip of the same duration.
+  function boundaryWav(chunk, prev, seconds) {
+    if (seconds <= 0) return null;
+    const isHeadingBoundary = chunk.kind === 'heading' && useSting;
+    const isParaBreak = !isHeadingBoundary && useBreath
+      && prev && /[.!?]$/.test(prev.text)
+      && chunk.kind !== 'list' && (!prev || prev.kind !== 'list');
+    if (!isHeadingBoundary && !isParaBreak) {
+      return gapWav(seconds);
+    }
+    const kind = isHeadingBoundary ? 'sting' : 'breath';
+    const key = `${kind}_${seconds.toFixed(3)}`;
+    if (BOUNDARY_CACHE.has(key)) return BOUNDARY_CACHE.get(key);
+    const out = path.join(tmpDir, `_${key}.wav`);
+    if (isHeadingBoundary) {
+      // Sting-leading: [sting][silence_filler]. Filler covers whatever
+      // duration remains; if the sting itself is longer than the gap,
+      // amix/concat caps it to the boundary duration.
+      renderStingGap(out, STING_PATH, seconds);
+    } else {
+      // Breath-centered: [silence_pre][breath][silence_post]. The breath
+      // sits ~40 % into the gap so the listener hears the previous
+      // sentence settle, then the inhale, then the leading edge of
+      // the next sentence.
+      renderBreathGap(out, BREATH_PATH, seconds);
+    }
+    BOUNDARY_CACHE.set(key, out);
+    return out;
+  }
+
   // Gap values tuned for natural "breath" spots. Each pause is long
   // enough the listener hears a beat between thoughts, short enough
   // that the piece doesn't drag. Tuned by ear on Don's cloned voice.
@@ -675,7 +720,15 @@ function renderLanguage(postDir, chunks, lang) {
     const wav = path.join(tmpDir, `t${String(i).padStart(4, '0')}.wav`);
     trimSilence(rawWav, wav);
     const dur = wavDuration(wav);
-    if (gap > 0) segments.push(gapWav(gap));
+    if (gap > 0) {
+      // Lesson Mode + Track 1C — pick the right buffer for the gap:
+      // pure silence by default, but chapter-sting at heading
+      // transitions and breath-sample at paragraph breaks when those
+      // assets are on disk. Asset-absent path returns the same silence
+      // gapWav() would.
+      const boundary = boundaryWav(chunk, chunks[i - 1], gap);
+      if (boundary) segments.push(boundary);
+    }
     segments.push(wav);
 
     const start = cursor + gap;
@@ -970,6 +1023,58 @@ function findRecordedAsset(postDir, role, lang) {
     try { script = fs.readFileSync(txtPath, 'utf8').trim(); } catch (_) {}
   }
   return { wav: tmp, script };
+}
+
+// Render the heading-boundary gap: chapter sting on the leading edge,
+// silence filler to total `seconds`. The sting is resampled to 22050 mono
+// to match the silence buffers' format; `apad` extends a short sting to
+// the target duration, `atrim` caps a long sting at the target.
+function renderStingGap(outWav, stingPath, seconds) {
+  const total = seconds.toFixed(3);
+  const filter = [
+    `[0:a] aresample=22050,aformat=channel_layouts=mono,apad=whole_dur=${total},atrim=end=${total},asetpts=PTS-STARTPTS [out]`,
+  ].join(';');
+  run('ffmpeg', [
+    '-y', '-loglevel', 'error',
+    '-i', stingPath,
+    '-filter_complex', filter,
+    '-map', '[out]',
+    '-c:a', 'pcm_s16le',
+    outWav,
+  ]);
+}
+
+// Render the paragraph-break gap: silence_pre + breath + silence_post,
+// totaling `seconds`. The breath sits ~40 % through the gap so the
+// previous sentence has time to settle before the inhale. If the breath
+// is longer than the gap, it's trimmed to fit (rare — breath samples
+// should be ≤0.35 s per the asset README).
+function renderBreathGap(outWav, breathPath, seconds) {
+  const total = seconds;
+  const preFrac = 0.40;
+  const breathProbe = spawnSync('ffprobe', [
+    '-v', 'error',
+    '-show_entries', 'format=duration',
+    '-of', 'default=noprint_wrappers=1:nokey=1',
+    breathPath,
+  ], { encoding: 'utf8' });
+  const breathDur = Math.min(parseFloat(breathProbe.stdout) || 0.30, total * 0.85);
+  const preSec  = Math.max(0, (total - breathDur) * preFrac).toFixed(3);
+  const postSec = Math.max(0, total - parseFloat(preSec) - breathDur).toFixed(3);
+  const filter = [
+    `[0:a] aresample=22050,aformat=channel_layouts=mono,atrim=end=${breathDur.toFixed(3)},asetpts=PTS-STARTPTS [breath]`,
+    `aevalsrc=0:d=${preSec}:s=22050:c=mono [pre]`,
+    `aevalsrc=0:d=${postSec}:s=22050:c=mono [post]`,
+    `[pre][breath][post] concat=n=3:v=0:a=1 [out]`,
+  ].join(';');
+  run('ffmpeg', [
+    '-y', '-loglevel', 'error',
+    '-i', breathPath,
+    '-filter_complex', filter,
+    '-map', '[out]',
+    '-c:a', 'pcm_s16le',
+    outWav,
+  ]);
 }
 
 // Strip leading + trailing silence from a WAV. Done in two passes
@@ -1438,6 +1543,27 @@ function normalizeForSpeech(str) {
   for (const [re, rep] of CONTRACTIONS) pre = pre.replace(re, rep);
 
   return pre
+    // Em-dash and ellipsis → comma / period. Kokoro and Piper render
+    // these characters as nothing (no pause) by default, so the listener
+    // hears two clauses crash together. Substituting a comma for the
+    // em-dash, and a period for the ellipsis, makes the synth honor the
+    // pause the writer intended. Cost: a tiny prosody simplification.
+    // Benefit: prose with em-dashes and ellipses stops sounding
+    // breathless. The runtime twin lives in assets/js/listen.js.
+    .replace(/\s*[—–]\s*/g, ', ')   // em-dash, en-dash → comma
+    .replace(/\s*\.\.\.\s*/g, '. ')           // three-period ellipsis → period
+    .replace(/\s*…\s*/g, '. ')           // U+2026 ellipsis → period
+    // ALL-CAPS standalone words ≥ 3 chars get title-cased so the synth
+    // doesn't spell them letter-by-letter (the ACRONYMS list above
+    // handles the deliberately-spelled ones). Skips single letters,
+    // two-letter words ("OK", "NO"), and rows that look like Roman
+    // numerals (allows "I" as the pronoun).
+    .replace(/\b([A-Z]{3,})\b/g, (m) => {
+      if (m.length >= 3 && /^[A-Z]+$/.test(m) && !ACRONYMS.includes(m)) {
+        return m[0] + m.slice(1).toLowerCase();
+      }
+      return m;
+    })
     // "#1" / "# 1" / "#10" → "number 1" (numeric only; leaves hashtags alone)
     .replace(/#\s*(\d+)/g, 'number $1')
     // "$33,000" / "$55" → "33,000 dollars" / "55 dollars"
