@@ -410,7 +410,22 @@ function checkVizBarsConsistency(figs) {
 //  above are available without triggering the filesystem audit.
 // --------------------------------------------------------------------
 
-const isMain = process.argv[1] && process.argv[1].endsWith('check-article-graphics.mjs');
+// Robust ESM main-module detection: compare the file URL of this module
+// against pathToFileURL of process.argv[1]. Handles absolute and relative
+// invocations and survives symlinks via fs.realpathSync.native fallback.
+// When invoked as `node scripts/check-article-graphics.mjs`, both sides
+// resolve to the same file:// URL; when imported by a test, argv[1] is
+// the test file and the comparison is false.
+import { pathToFileURL } from 'node:url';
+let isMain = false;
+try {
+  if (process.argv[1]) {
+    isMain = import.meta.url === pathToFileURL(process.argv[1]).href
+          || process.argv[1].endsWith('check-article-graphics.mjs');
+  }
+} catch {
+  isMain = process.argv[1] && process.argv[1].endsWith('check-article-graphics.mjs');
+}
 if (!isMain) {
   // Module mode — skip the audit; helpers are already exported.
 } else {
