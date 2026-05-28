@@ -72,7 +72,6 @@
         out[key] = ctx[key];
       }
     }
-    if (profile) out.restaurantProfile = profile;
     return out;
   }
 
@@ -131,7 +130,8 @@
         root.MuntinContext.merge(filtered);
       }
       try {
-        root.dispatchEvent(new CustomEvent(CONTEXT_CHANGE_EVENT, {
+        doc.dispatchEvent(new CustomEvent(CONTEXT_CHANGE_EVENT, {
+          bubbles: true,
           detail: { tag: tag, patch: patch }
         }));
       } catch (_) { /* swallow event-construction failures */ }
