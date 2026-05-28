@@ -39,9 +39,9 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=da841dee88d3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-core.css?v=a497939fe0a3" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=4c628560c207" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=da841dee88d3"><link rel="stylesheet" href="/assets/site-article.css?v=4c628560c207"></noscript>
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a497939fe0a3"><link rel="stylesheet" href="/assets/site-article.css?v=4c628560c207"></noscript>
 
 <!-- topic-schema:start -->
 <script type="application/ld+json">
@@ -96,7 +96,7 @@
     {
       "@type": "ItemList",
       "@id": "https://muntin.digital/learn/topics/speed-mobile/#articles",
-      "numberOfItems": 5,
+      "numberOfItems": 3,
       "itemListElement": [
         {
           "@type": "ListItem",
@@ -111,17 +111,7 @@
         {
           "@type": "ListItem",
           "position": 3,
-          "url": "https://muntin.digital/blog/why-your-restaurant-loses-reservations-every-night/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 4,
-          "url": "https://muntin.digital/blog/restaurant-photo-spec-sheet/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 5,
-          "url": "https://muntin.digital/blog/how-to-recover-reservations-from-googles-find-a-table/"
+          "url": "https://muntin.digital/blog/reservation-conversion-guide/"
         }
       ]
     }
@@ -168,8 +158,8 @@
       Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
     </a>
     <!-- Phase 7: 5-item nav, per launch plan Part II.
-         Library / Tools / Work / Studio / Sign in.
-         Library now points at the canonical /library/ hub (the
+         Library / Tools / Studio / Sign in.
+         Library points at the canonical /library/ hub (the
          three-doors page). Tools is promoted from the old Library
          mega-menu to a top-level item. Studio replaces Services +
          Restaurants + About — they all live under /studio/ now,
@@ -179,11 +169,15 @@
          Restaurants pages remain reachable via /studio/ and the
          _redirects table; /about/ is unchanged. The mega-menu is
          retired (the hub IS the menu now); the controller script
-         is gone too. -->
+         is gone too.
+
+         /work/ was retired with the Phase 8 portfolio-sunset pass:
+         the company-as-resume framing made the personal-portfolio
+         showcase redundant. Legacy /work/* URLs 301 to /studio/
+         via _redirects so old backlinks land softly. -->
     <nav class="nav-links" aria-label="Primary">
       <a href="/library/">Library</a>
       <a href="/tools/">Tools</a>
-      <a href="/work/">Work</a>
       <a href="/studio/">Studio</a>
       <!-- Both sign-in / workshop ship hidden by default; the
            auth-state JS at the bottom of this file calls
@@ -240,7 +234,6 @@
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
     <a href="/library/">Library</a>
     <a href="/tools/">Tools</a>
-    <a href="/work/">Work</a>
     <a href="/studio/">Studio</a>
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
@@ -348,7 +341,7 @@
   <div class="container">
     <header class="topic-section-head">
       <span class="eyebrow">Articles</span>
-      <h2 id="read-the-playbooks">Read the playbooks.</h2>
+      <h2>Read the playbooks.</h2>
     </header>
     <ul class="topic-article-list">
       <li>
@@ -359,7 +352,7 @@
         </a>
       </li>
 <li>
-        <a class="topic-article-card" href="/blog/why-your-restaurant-loses-reservations-every-night/">
+        <a class="topic-article-card" href="/blog/reservation-conversion-guide/">
           <span class="topic-article-date">Apr 17, 2026</span>
           <h3>Why Your Restaurant Loses Reservations Every Night</h3>
           <p>A real reservation-loss funnel — the six places your site is quietly leaking intent-driven diners, what each leak costs in dollars, and the fix for every one.</p>
@@ -373,7 +366,7 @@
   <div class="container">
     <header class="topic-section-head">
       <span class="eyebrow">Research</span>
-      <h2 id="the-evidence-behind-the-playbooks">The evidence behind the playbooks.</h2>
+      <h2>The evidence behind the playbooks.</h2>
     </header>
     <ul class="topic-research-list">
       <li>
@@ -398,7 +391,7 @@
   <div class="container">
     <header class="topic-section-head">
       <span class="eyebrow">Vocabulary</span>
-      <h2 id="the-words-for-this-topic">The words for this topic.</h2>
+      <h2>The words for this topic.</h2>
     </header>
     <ul class="term-siblings-list">
       <li><a href="/glossary/body-text-size/"><strong>Body text size</strong><span> — minimum readable font size on phones</span></a></li>
@@ -422,27 +415,13 @@
   <div class="container">
     <header class="topic-section-head">
       <span class="eyebrow">Free tools</span>
-      <h2 id="run-a-check-on-your-own-site">Run a check on your own site.</h2>
+      <h2>Run a check on your own site.</h2>
     </header>
     <ul class="topic-tool-list">
       <li>
         <a class="topic-tool-card" href="/tools/audits/restaurant/">
           <h4>Restaurant Website Audit</h4>
           <p>Full-stack mobile audit: performance, SEO, accessibility, and 9 restaurant-specific checks. Side-by-side competitor mode.</p>
-          <span class="topic-tool-cta">Open the tool <span aria-hidden="true">→</span></span>
-        </a>
-      </li>
-<li>
-        <a class="topic-tool-card" href="/tools/speed-test/">
-          <h4>Speed Test</h4>
-          <p>PageSpeed Insights, restated for owners. Score, the four metrics that matter, and what to fix first.</p>
-          <span class="topic-tool-cta">Open the tool <span aria-hidden="true">→</span></span>
-        </a>
-      </li>
-<li>
-        <a class="topic-tool-card" href="/tools/mobile-check/">
-          <h4>Mobile Check</h4>
-          <p>A three-question read on whether your site behaves like a real phone-first restaurant site.</p>
           <span class="topic-tool-cta">Open the tool <span aria-hidden="true">→</span></span>
         </a>
       </li>
@@ -467,6 +446,13 @@
           <span class="topic-tool-cta">Open the tool <span aria-hidden="true">→</span></span>
         </a>
       </li>
+<li>
+        <a class="topic-tool-card" href="/tools/page-health/">
+          <h4>Speed Test</h4>
+          <p>PageSpeed Insights, restated for owners. Score, the four metrics that matter, and what to fix first.</p>
+          <span class="topic-tool-cta">Open the tool <span aria-hidden="true">→</span></span>
+        </a>
+      </li>
     </ul>
   </div>
 </section>
@@ -475,7 +461,7 @@
   <div class="container">
     <header class="topic-section-head">
       <span class="eyebrow">Checklists</span>
-      <h2 id="workbooks-for-this-topic">Workbooks for this topic.</h2>
+      <h2>Workbooks for this topic.</h2>
     </header>
     <ul class="topic-tool-list">
       <li>
@@ -516,7 +502,7 @@
 
       <ul>
         <li><strong>Network speed is the constraint.</strong> Lighthouse&rsquo;s mobile preset simulates Slow 4G &mdash; ~1.6 Mbps with 150ms RTT and 4&times; CPU throttle. That&rsquo;s the ceiling, not the floor. The DMV&rsquo;s mobile reality (across the four major carriers) is roughly Slow 4G during commute hours, near-LTE on weekends. Build for the worse case.</li>
-        <li><strong>Hero images are the leak.</strong> The 4MB plate-of-pasta photo that loads in 200ms on your office wifi takes 6 seconds on Slow 4G. Switching to AVIF + WebP fallbacks drops that to 200KB without losing visible quality. The <a href="/blog/restaurant-photo-spec-sheet/">photo spec sheet</a> covers the file-size targets.</li>
+        <li><strong>Hero images are the leak.</strong> The 4MB plate-of-pasta photo that loads in 200ms on your office wifi takes 6 seconds on Slow 4G. Switching to AVIF + WebP fallbacks drops that to 200KB without losing visible quality. The <a href="/library/restaurant-photo-spec-sheet/">photo spec sheet</a> covers the file-size targets.</li>
         <li><strong>Mobile UX is one column.</strong> Two-column hero layouts that look elegant on a 14&rdquo; laptop become unreadable stacking on a 360px phone. Build the mobile layout first, expand to desktop. Hours block above the hero. Reservation button as a primary-color band. Menu sections collapsible.</li>
       </ul>
 
@@ -526,7 +512,7 @@
 
       <ol>
         <li><strong>Compress and re-encode the hero image (15 minutes).</strong> AVIF first, WebP fallback, JPEG as the last resort. Target: under 200KB at 1600&times;1067. Tools: Squoosh, ImageOptim, or the AVIF support built into modern image-CDNs (Cloudinary, ImageKit). Single biggest LCP improvement on most independent restaurant sites.</li>
-        <li><strong>Set width/height on every image (30 minutes).</strong> Eliminates CLS jumps. Use the natural aspect ratio of the source image; CSS <code>aspect-ratio</code> on the parent if the image is responsive. <a href="/blog/restaurant-photo-spec-sheet/">The photo spec sheet</a> lists every image surface and its aspect ratio.</li>
+        <li><strong>Set width/height on every image (30 minutes).</strong> Eliminates CLS jumps. Use the natural aspect ratio of the source image; CSS <code>aspect-ratio</code> on the parent if the image is responsive. <a href="/library/restaurant-photo-spec-sheet/">The photo spec sheet</a> lists every image surface and its aspect ratio.</li>
         <li><strong>Defer non-critical JavaScript (1 hour).</strong> Add <code>defer</code> to script tags that aren&rsquo;t needed for first paint. Reservation widgets (OpenTable, Resy, Tock), analytics, chat embeds. Plausible is already async &middot; cookieless &middot; tiny; most third-party tags are not.</li>
         <li><strong>Self-host fonts with font-display: swap (1 hour).</strong> Web fonts blocking the first paint is the second-most-common LCP failure. Self-host the woff2 files, use <code>font-display: swap</code>, preload the two critical above-the-fold weights.</li>
         <li><strong>Lazy-load below-the-fold images (15 minutes).</strong> <code>loading="lazy"</code> attribute on every img below the hero. Saves 40&ndash;60% of total bytes on a typical menu page where the visitor never scrolls past the third dish.</li>
@@ -539,7 +525,7 @@
       <p>Three patterns specific to independent restaurants that don&rsquo;t apply to most other small-business sites:</p>
 
       <ul>
-        <li><strong>Reservation widgets.</strong> OpenTable, Resy, Tock, and the lesser platforms all ship hefty third-party JS bundles that load before the visitor can book. The newer &ldquo;direct&rdquo; or &ldquo;widgets v2&rdquo; APIs from each platform are smaller and faster than the legacy iframe embed; switching from iframe to direct typically saves 200&ndash;500ms of LCP. <a href="/blog/how-to-recover-reservations-from-googles-find-a-table/">How to recover reservations</a> covers the tradeoffs.</li>
+        <li><strong>Reservation widgets.</strong> OpenTable, Resy, Tock, and the lesser platforms all ship hefty third-party JS bundles that load before the visitor can book. The newer &ldquo;direct&rdquo; or &ldquo;widgets v2&rdquo; APIs from each platform are smaller and faster than the legacy iframe embed; switching from iframe to direct typically saves 200&ndash;500ms of LCP. <a href="/library/reservation-conversion-guide/">How to recover reservations</a> covers the tradeoffs.</li>
         <li><strong>Menu PDFs.</strong> Linking a 4MB PDF as the menu &ldquo;page&rdquo; means every visitor who clicks waits for the whole PDF to download before seeing anything. The fix is real HTML &mdash; use <a href="/tools/menu-converter/">Menu Converter</a> to turn pasted menu text into semantic HTML in two seconds. The <a href="/services/menu-drop-in/">$1,500 menu drop-in</a> ships the studio-built styled version.</li>
         <li><strong>Background videos.</strong> The autoplaying hero-video pattern that became fashionable circa 2018 carries 8&ndash;15MB of JS-decoded video. On mobile, that&rsquo;s a multi-second LCP killer for a piece of decoration the visitor never asked for. Replace with a single AVIF still and call it done.</li>
       </ul>
@@ -572,7 +558,7 @@
   <div class="container">
     <div class="section-header reveal section-center">
       <span class="eyebrow">Other topics</span>
-      <h2 id="or-browse-adifferent-angle">Or browse a<br><span class="serif-italic">different angle.</span></h2>
+      <h2>Or browse a<br><span class="serif-italic">different angle.</span></h2>
     </div>
     <ul class="topic-other-list">
       <li><a href="/learn/topics/conversions/">Conversions &amp; Reservations</a></li>
@@ -607,20 +593,47 @@
     <div class="foot-grid">
       <div class="foot-col foot-brand">
         <a href="/" class="foot-lockup-wrap" aria-label="Muntin Digital home">
-          <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53" loading="lazy" decoding="async">
+          <!-- alt="" because the surrounding <a> is already labeled.
+               Without it, screen readers announce "Muntin Digital,
+               Muntin Digital home" on the lockup link. -->
+          <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="" width="240" height="53" loading="lazy" decoding="async">
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a <!-- count:glossary.terms -->149<!-- /count -->-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->24<!-- /count --> articles, <!-- count:tools.live -->12<!-- /count --> tools, <!-- count:glossary.terms -->149<!-- /count --> glossary terms &mdash; with a one-person web studio behind it in Silver Spring, MD.</p>
       </div>
 
-      <nav class="foot-col" aria-labelledby="foot-explore">
-        <p class="foot-heading" id="foot-explore">Studio</p>
+      <!-- Column order mirrors the 4-item primary nav
+           (Library, Tools-rolled-into-Library, Studio) so the
+           footer reinforces the same IA. The Library column leads
+           with /library/ (the post-Phase-7 three-doors hub); the
+           older /learn/ landing still resolves but no longer needs
+           its own footer slot. id="foot-learn" is the canonical-
+           footer marker that scripts/sync-includes.mjs keys on
+           (FOOTER_MAIN_FUNNEL_MARKER), so the id stays even though
+           the visible label is the more familiar "Library".
+
+           Phase 8 (portfolio sunset): the Studio column's "Case
+           studies" row used to link to /work/, the personal-portfolio
+           hub. That hub was retired when the company became the
+           resume; the row is now gone and /work/* 301s to /studio/. -->
+      <nav class="foot-col" aria-labelledby="foot-learn">
+        <p class="foot-heading" id="foot-learn">Library</p>
         <ul class="foot-links">
-          <li><a href="/services/">Services &amp; pricing</a></li>
-          <li><a href="/for/restaurants/">For restaurants</a></li>
+          <li><a href="/library/">Browse the library</a></li>
+          <li><a href="/glossary/">Glossary</a></li>
+          <li><a href="/tools/">Free tools</a></li>
+          <li><a href="/sheets/">Operator sheets</a></li>
+          <li><a href="/blog/">Commentary</a></li>
+        </ul>
+      </nav>
+
+      <nav class="foot-col" aria-labelledby="foot-studio">
+        <p class="foot-heading" id="foot-studio">Studio</p>
+        <ul class="foot-links">
+          <li><a href="/studio/#pricing">Pricing</a></li>
           <li><a href="/studio/compare/">Compare options</a></li>
-          <li><a href="/work/">Case studies</a></li>
+          <li><a href="/studio/#process">Process</a></li>
           <li><a href="/about/">About Don</a></li>
         </ul>
       </nav>
@@ -628,28 +641,11 @@
       <nav class="foot-col" aria-labelledby="foot-trust">
         <p class="foot-heading" id="foot-trust">Trust</p>
         <ul class="foot-links">
-          <li><a href="/never/">Never</a></li>
+          <li><a href="/never/">What we never do</a></li>
           <li><a href="/ai/">AI policy</a></li>
-          <li><a href="/security/">Data &amp; security</a></li>
-          <li><a href="/methods/">Methods</a></li>
-          <li><a href="/receipts/">Receipts</a></li>
+          <li><a href="/methods/">Methods &amp; sources</a></li>
           <li><a href="/changelog/">Changelog</a></li>
-          <li><a href="/system/">The system</a></li>
-        </ul>
-      </nav>
-
-      <nav class="foot-col" aria-labelledby="foot-learn">
-        <p class="foot-heading" id="foot-learn">Library</p>
-        <ul class="foot-links">
-          <li><a href="/learn/">Library home</a></li>
-          <li><a href="/learn/start-here/">Start here</a></li>
-          <li><a href="/learn/topics/">Topics</a></li>
-          <li><a href="/blog/">Articles</a></li>
-          <li><a href="/tools/">Free tools</a></li>
-          <li><a href="/glossary/">Glossary</a></li>
-          <li><a href="/learn/research/">Research</a></li>
-          <li><a href="/learn/checklists/">Checklists &amp; guides</a></li>
-          <li><a href="/sheets/">Operator sheets</a></li>
+          <li><a href="/receipts/">Receipts</a></li>
         </ul>
       </nav>
 
@@ -660,7 +656,7 @@
           <li><a href="/window/">Reach Don</a></li>
           <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (opens in new tab)</span></a></li>
         </ul>
-        <p class="foot-trust"><strong>Reply:</strong> Mondays through Fridays, within 4 hours. Weekends, by Monday morning.</p>
+        <p class="foot-trust"><strong>Reply:</strong> within 4 hours Mon&ndash;Fri; weekends by Monday.</p>
       </nav>
     </div>
 

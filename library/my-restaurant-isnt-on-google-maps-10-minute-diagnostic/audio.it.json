@@ -1,0 +1,307 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-15T05:31:03.155Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "im_nicola",
+  "language": "it",
+  "total": 646.11,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "Opinione &middot; 10 maggio, venti ventisei &middot; 6 min di lettura &middot; Di The Muntin Desk",
+      "start": 0,
+      "end": 6.71
+    },
+    {
+      "id": 1,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Gli operatori che hanno fatto il lavoro — nuovo sito web, buone foto, schema markup, recensioni reali — a volte non appaiono ancora nel local-pack su Google Maps. La maggior parte di questi casi si risolve in una delle quattro cause radice su Google Business Profile. La diagnosi qui sotto richiede dieci minuti. Tre delle quattro soluzioni possono essere eseguite lo stesso giorno dall'operatore.",
+      "start": 7.06,
+      "end": 29.15
+    },
+    {
+      "id": 2,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "In breve",
+      "start": 29.67,
+      "end": 30.32
+    },
+    {
+      "id": 3,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Quattro cause sono responsabili della maggior parte dell'invisibilità dei ristoranti nella mappa: elenco non reclamato, categoria principale errata, elenco sospeso e elenco duplicato. Le prime tre possono essere risolte lo stesso giorno dall'operatore; i duplicati possono richiedere 7-21 giorni per essere uniti.",
+      "start": 30.67,
+      "end": 51.13
+    },
+    {
+      "id": 4,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Il map pack è quasi sempre un problema di Google Business Profile, non un problema del sito web. Diagnostica il GBP prima di toccare il sito.",
+      "start": 51.45,
+      "end": 60.76
+    },
+    {
+      "id": 5,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "La maggior parte dei ristoranti trova la soluzione nelle prime tre verifiche di diagnosi; l'ordine diagnostico qui sotto mette per primo le verifiche con il maggior rendimento.",
+      "start": 61.08,
+      "end": 72.26
+    },
+    {
+      "id": 6,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "Se stai leggendo questo, probabilmente hai già eseguito una ricerca Google per il nome del tuo ristorante + città e hai visto che non appare nel map pack — la casella a tre pin in alto nel risultato di ricerca. Quella casella è una superficie di classificazione separata dai risultati organici. Un ristorante che si classifica bene nei link blu può essere completamente assente dal map pack. La causa è quasi mai il sito web. È quasi sempre una delle quattro cose sul lato Google Business Profile.",
+      "start": 72.78,
+      "end": 101.58
+    },
+    {
+      "id": 7,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "L'albero decisionale diagnostico. Inizia dall'alto: hai reclamato il tuo Google Business Profile? Se no, la causa radice è un elenco non reclamato — vai a reclamarlo su business.google.com. Se sì, chiedi: il tuo indirizzo, nome e telefono sono coerenti in tre o più directory? Se no, la causa radice è l'incoerenza NAP — pulisci le prime trenta citazioni. Se sì, chiedi: la tua categoria principale è impostata su una categoria di ristorante specifica come Ristorante Italiano o Ristorante Vietnamita, e non sulla generica categoria Ristorante? Se no, la causa radice è una categoria principale errata — passa alla corrispondenza di cucina più stretta. Se sì, chiedi: ci sono cinque o più foto caricate negli ultimi sessanta giorni? Se no, la causa radice è un profilo obsoleto — carica foto fresche questa settimana. Se sì, la causa radice è quasi certamente un elenco sospeso o duplicato — apri il cruscotto e cerca il banner, poi esegui una ricerca nella mappa con il tuo indirizzo per un secondo pin.",
+      "start": 102.38,
+      "end": 164.38
+    },
+    {
+      "id": 8,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Causa 1 — L'elenco non è reclamato (40% dei casi).",
+      "start": 165.48,
+      "end": 169.62
+    },
+    {
+      "id": 9,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "Questa è la più comune. Google ha creato un elenco non gestito per la tua attività dai dati pubblici (il tuo indirizzo, il tuo telefono, le tue ore prese da qualche parte) e tu non l'hai mai reclamato. Gli elenchi non reclamati si classificano più in basso degli elenchi reclamati per default e non appaiono nel map pack in molti mercati dopo l'aggiornamento di classificazione del Q1 venti ventiquattro.",
+      "start": 170.32,
+      "end": 192.66
+    },
+    {
+      "id": 10,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "La diagnosi: vai su google.com/business, cerca il tuo ristorante per nome e indirizzo. Se il risultato mostra \"Reclama questo business\", quello è il tuo problema. La soluzione: reclamalo. Google ti invierà una cartolina con un codice di verifica al tuo indirizzo. L'intero processo richiede 5 giorni e è gratuito.",
+      "start": 193.18,
+      "end": 214.08
+    },
+    {
+      "id": 11,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Causa 2 — La categoria principale è errata (30% dei casi).",
+      "start": 215.18,
+      "end": 219.98
+    },
+    {
+      "id": 12,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "Questo è l'ostacolo che quasi ogni operatore che ha impostato il proprio profilo durante la pandemia non riesce a superare. La categoria principale è il segnale di ranking più importante per il map pack — più importante delle recensioni, più importante delle foto, più importante dello schema. E il menu ha 4.000 categorie principali possibili. Quasi tutti scelgono \"Ristorante\", che è la scelta peggiore possibile perché ti mette in competizione con ogni altro ristorante nel tuo codice postale.",
+      "start": 220.68,
+      "end": 250.69
+    },
+    {
+      "id": 13,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "La diagnosi: nel tuo dashboard del profilo aziendale, controlla il campo \"Categoria principale\". Se dice \"Ristorante\" — o, peggio, è vuoto — è lì che sta il problema. La soluzione: scegli la categoria più specifica che descrive la tua cucina. \"Ristorante italiano\" e non \"Ristorante\". \"Ristorante vietnamita\" e non \"Ristorante di fusione asiatica\". Più la categoria è stretta, più query riuscirai a classificare all'interno.",
+      "start": 251.21,
+      "end": 274.62
+    },
+    {
+      "id": 14,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Causa 3 — L'elenco è sospeso (15% dei casi).",
+      "start": 275.72,
+      "end": 279.58
+    },
+    {
+      "id": 15,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "Meno comune, ma più frustrante. Il Google ha segnalato il tuo elenco per una delle diverse violazioni (più comune in questo mercato: incongruenza nel formato dell'indirizzo tra il profilo aziendale e il tuo sito web, trasloco recente senza aggiornare l'indirizzo, o foto che hanno attivato il filtro antispam del Google). Un elenco sospeso non compare nel map pack e spesso non compare nemmeno nell'autocompletamento.",
+      "start": 280.28,
+      "end": 303.66
+    },
+    {
+      "id": 16,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "La diagnosi: accedi al tuo dashboard del profilo aziendale e cerca una banner gialla o rossa in alto. Se vedi \"Il tuo profilo aziendale è stato sospeso\" o \"Il tuo profilo aziendale è in attesa di revisione\", è lì che sta la risposta. La soluzione è più complessa — devi inviare una richiesta di reintegrazione attraverso il dashboard con la documentazione (contratto di locazione, licenza commerciale, bolletta dell'utility che corrisponde all'indirizzo). La reintegrazione richiede 7-30 giorni. Il team di supporto del profilo aziendale è lento, ma risponde se fornisci la documentazione completa.",
+      "start": 304.18,
+      "end": 338.87
+    },
+    {
+      "id": 17,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "Causa 4 — C'è un elenco duplicato (15% dei casi).",
+      "start": 339.97,
+      "end": 344.38
+    },
+    {
+      "id": 18,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "Hai un elenco per il ristorante che gestisci effettivamente, e il Google ha un secondo elenco per lo stesso indirizzo con informazioni leggermente diverse — forse il vecchio numero di telefono, forse i dati di un precedente proprietario, forse un elenco di cucina fantasma per la consegna a domicilio che qualcuno ha impostato. Il Google non può capire quale sia l'elenco canonico, quindi non mostra nessuno dei due nel map pack.",
+      "start": 345.08,
+      "end": 368.79
+    },
+    {
+      "id": 19,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "La diagnosi: esegui una ricerca Google Maps per il tuo indirizzo esatto. Se due pin cadono sullo stesso edificio, hai un elenco duplicato. La soluzione: nel tuo dashboard del profilo aziendale, richiedi la rimozione dell'elenco duplicato. Dovrai dimostrare che l'elenco canonico è il tuo e che l'elenco duplicato è obsoleto. Ci vogliono tipicamente 14-21 giorni.",
+      "start": 369.31,
+      "end": 391.72
+    },
+    {
+      "id": 20,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(2)",
+      "text": "Dove l'invisibilità del map-pack di solito risale, classificata per frequenza relativa. Il Google Business Profile non rivendicato è la causa più comune. L'incoerenza dei dati N A P — nome, indirizzo, telefono — attraverso i directory è la seconda causa più comune. La categoria principale errata è la terza. Gli elenchi duplicati e gli elenchi sospesi sono meno comuni, ma rappresentano comunque una quota significativa. Tutto il resto è il residuo.",
+      "start": 392.52,
+      "end": 417.2
+    },
+    {
+      "id": 21,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "Il piano da 10 minuti.",
+      "start": 418.3,
+      "end": 420.26
+    },
+    {
+      "id": 22,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "Imposta un timer. Dieci controlli, uno per minuto. Non esitare — se un passaggio è un chiaro \"sì\", passa al successivo; se è un \"no\", segnalalo e continua. Puoi risolvere i problemi segnalati dopo la diagnosi.",
+      "start": 420.96,
+      "end": 434.14
+    },
+    {
+      "id": 23,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(3)",
+      "text": "La diagnostica da dieci minuti, passo dopo passo. Minuto uno: apri il Google Business Profile dashboard su business.google.com. Minuto due: verifica che il tuo nome, indirizzo e numero di telefono corrispondano esattamente al cartello della tua attività. Minuto tre: controlla la tua categoria principale — dovrebbe essere una cucina specifica, non il generico \"Ristorante\". Minuto quattro: controlla i tuoi orari, compresi quelli di festa e orari speciali. Minuto cinque: esegui una ricerca su maps con il tuo indirizzo esatto e conta i pin per rilevare eventuali duplicati. Minuto sei: conta le foto caricate negli ultimi 60 giorni. Minuto sette: cerca il nome del tuo ristorante più la città su Google e verifica se appari nel map pack. Minuto otto: esegui una ricerca \"near-me\" come \"ristorante italiano vicino a me\" all'interno del tuo raggio di servizio. Minuto nove: ripeti entrambe le ricerche in una finestra in incognito o privata con la posizione impostata sul tuo indirizzo di attività. Minuto dieci: se qualcosa non va, invia un ticket di assistenza per il profilo aziendale e screenshot del dashboard per la documentazione.",
+      "start": 434.94,
+      "end": 502.16
+    },
+    {
+      "id": 24,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "Se dopo i 10 minuti sei ancora nel buio, probabilmente sei nel ~5% residuale di casi che richiedono un lavoro diagnostico più approfondito — di solito un'incoerenza N A P (Nome/Indirizzo/Telefono) across le citazioni di terze parti che il crawler di Google non può risolvere. Quello non è un fix da 10 minuti; è un lavoro di crawl e pulizia da 60-90 minuti attraverso i primi 30 directory.",
+      "start": 502.91,
+      "end": 526.6
+    },
+    {
+      "id": 25,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "Don Goldstein è un operatore di ristoranti e gestisce Muntin Digital. Le quattro cause radice sopra menzionate riflettono la diagnostica G B P che Muntin esegue come parte delle attività con i clienti, e la documentazione di aiuto di Google sui segnali di classificazione locale e sulla salute dell'elenco.",
+      "start": 527.12,
+      "end": 547.25
+    },
+    {
+      "id": 26,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "Continua",
+      "start": 547.77,
+      "end": 548.5
+    },
+    {
+      "id": 27,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "I 6 tipi di schema che Google utilizza — la prossima superficie da controllare una volta risolto il map pack",
+      "start": 548.85,
+      "end": 556.36
+    },
+    {
+      "id": 28,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Come leggere il tuo Google Search Console — il dashboard che la maggior parte degli operatori non ha mai aperto",
+      "start": 556.68,
+      "end": 563.78
+    },
+    {
+      "id": 29,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "Strumento di valutazione G B P — esegue il controllo a quattro cause sul tuo elenco in modo automatico",
+      "start": 564.1,
+      "end": 570.69
+    },
+    {
+      "id": 30,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "Audit da $499 — la diagnosi scritta se la passeggiata da 10 minuti non risolve il problema",
+      "start": 571.01,
+      "end": 578.93
+    },
+    {
+      "id": 31,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "Punti chiave",
+      "start": 579.28,
+      "end": 580.19
+    },
+    {
+      "id": 32,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "La categoria principale \"Ristorante\" è la scelta peggiore possibile — ti mette in competizione con ogni altro ristorante nel tuo codice postale; scegli invece la categoria più specifica possibile in base alla cucina.",
+      "start": 580.54,
+      "end": 594.84
+    },
+    {
+      "id": 33,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "Gli elenchi non reclamati si classificano più in basso di quelli reclamati per impostazione predefinita e non vengono visualizzati nel map pack dopo il Q1-2024.",
+      "start": 595.16,
+      "end": 606.94
+    },
+    {
+      "id": 34,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "Un elenco sospeso si legge come \"Il tuo profilo aziendale è stato sospeso\" nel dashboard; la riattivazione richiede la documentazione di locazione, licenza commerciale o bolletta dell'utility.",
+      "start": 607.26,
+      "end": 620.34
+    },
+    {
+      "id": 35,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
+      "text": "Gli elenchi duplicati fanno cadere entrambi i pin dal map pack perché Google non può stabilire quale sia canonico — invia la rimozione del duplicato con la prova.",
+      "start": 620.66,
+      "end": 631.29
+    },
+    {
+      "id": 36,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(5)",
+      "text": "Se la passeggiata da 10 minuti non risolve il problema, il ~5% residuale di casi richiede la pulizia della coerenza N A P attraverso i primi 30 directory (60-90 minuti di lavoro).",
+      "start": 631.61,
+      "end": 646.11
+    }
+  ]
+}

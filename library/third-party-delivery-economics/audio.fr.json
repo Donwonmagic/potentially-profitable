@@ -1,0 +1,299 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-14T23:18:16.712Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "ff_siwis",
+  "language": "fr",
+  "total": 497.02,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "Opinion &middot; 2 mai 2026 &middot; 7 min de lecture &middot; Par The Muntin Desk",
+      "start": 0,
+      "end": 5.66
+    },
+    {
+      "id": 1,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Je suis responsable du service en salle dans un restaurant DMV. Chaque trimestre, je fais le même calcul sur le même relevé de compte de mon partenaire DoorDash, et chaque trimestre, la réponse est plus ou moins la même : la plateforme n'est pas un canal de marketing. C'est une taxe sur la marge avec la livraison comme avantage secondaire. Voici les chiffres, le point d'équilibre et la solution pour le site web qui se paie en deux mois.",
+      "start": 6.01,
+      "end": 26.96
+    },
+    {
+      "id": 2,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "Je vais le faire avec un ticket moyen réel et des chiffres que je peux défendre. Le ticket est de 42 dollars — c'est notre ticket moyen DoorDash de 2025 dans l'un des restaurants que je gère. Votre ticket peut être plus élevé ou plus bas ; ce sont les pourcentages qui font la différence.",
+      "start": 27.48,
+      "end": 43.43
+    },
+    {
+      "id": 3,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Un ticket DoorDash de 42 dollars, décomposé.",
+      "start": 44.53,
+      "end": 47.31
+    },
+    {
+      "id": 4,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "Ci-dessous, vous trouverez la ventilation complète de la marge. Les postes sont familiers à quiconque a lu un relevé de compte de partenaire, mais il est rare de les voir empilés dans une colonne avec les pourcentages réels appliqués. J'utilise DoorDash Marketplace Plus (tarif de commission de 30 %, le plus courant pour les indépendants ayant moins de trois emplacements) et le taux de traitement de paiement standard qu'ils passent.",
+      "start": 48.01,
+      "end": 67.74
+    },
+    {
+      "id": 5,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "Où chaque dollar d'un ticket DoorDash de 42 dollars va. La commission DoorDash, au tarif Marketplace Plus de 30 pour cent, prend 12 dollars 60. Le traitement de paiement prend un dollar 43 de plus. La promotion ou la taxe de listing sponsorisé prend en moyenne un dollar 20. L'emballage prend un dollar 40 de plus. Le coût de la nourriture est de 28 pour cent, soit 11 dollars 76. La main-d'œuvre variable est de 14 pour cent, soit 5 dollars 88. Ce qui reste dans le restaurant : 7 dollars 73, soit 18,4 pour cent du ticket. Le curseur ci-dessous vous permet de modifier le taux de commission de 15 à 35 pour cent et de voir la part conservée se recompter.",
+      "start": 68.54,
+      "end": 105.15
+    },
+    {
+      "id": 6,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "Dix-huit pour cent. C'est avant les coûts fixes — loyer, services publics, gestion salariée, assurance — qui, dans un restaurant DMV indépendant typique, représentent encore 12 à 14 points. La marge contributive aux coûts fixes et au profit est, si vous êtes chanceux, d'environ quatre pour cent. Si vous avez exécuté un listing sponsorisé sur cette commande, ou si votre emballage est plus lourd que la moyenne, vous travaillez pour rien.",
+      "start": 105.9,
+      "end": 125.98
+    },
+    {
+      "id": 7,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "Maintenant, exécutez le même exercice sur le même ticket de 42 dollars, commandé directement sur votre propre site web, payé via votre propre compte Stripe.",
+      "start": 126.5,
+      "end": 136.23
+    },
+    {
+      "id": 8,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(2)",
+      "text": "Le même ticket de 42 dollars, commandé directement sur votre propre site web avec votre propre livraison à domicile. Le traitement Stripe ou Square prend un dollar 51. L'amortissement du marketing de canal direct prend 80 centimes par commande. L'emballage reste à un dollar 40. Le coût de la nourriture reste à 11 dollars 76. La main-d'œuvre variable reste à 5 dollars 88. La taxe forfaitaire de livraison à domicile DoorDash Drive, facultative, est de 8 dollars 50. Ce qui reste dans le restaurant avec votre propre livraison : 12 dollars 15, soit 28,9 pour cent. Par rapport au canal DoorDash, c'est un gain de 4 dollars 42 par commande en faveur du restaurant.",
+      "start": 137.03,
+      "end": 174.8
+    },
+    {
+      "id": 9,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "Vingt-neuf pour cent conservés sur le même ticket. L'effet marginal — la réponse à « qu'est-ce que ça paie de déplacer une commande de l'application DoorDash à votre propre site web ? » — est de 4,42 dollars par commande. Même si vous payez vous-même la totalité de la taxe forfaitaire de livraison à domicile DoorDash Drive, vous êtes dix points mieux. Si votre client prend sa commande, vous êtes vingt-huit points mieux.",
+      "start": 175.55,
+      "end": 195.11
+    },
+    {
+      "id": 10,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Ce que cela signifie pour votre année.",
+      "start": 196.21,
+      "end": 198.13
+    },
+    {
+      "id": 11,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "Prenez l'average DMV indépendant réalisant 2 400 commandes via des applications tierces par an — environ sept par jour, ce qui est dans la partie basse de ce que je vois pour les opérateurs de restauration rapide. Déplacez 40 % de ces commandes vers des commandes directes sur douze mois et les mathématiques :",
+      "start": 198.83,
+      "end": 216.44
+    },
+    {
+      "id": 12,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "Si vous opérez dans la partie haute — disons un endroit animé pour le déjeuner faisant 6 000 commandes tierces par an — et que vous réussissez à basculer 40 %, les mêmes mathématiques vous rapportent 10 608 dollars par an. La deuxième année est cumulative, car les clients que vous avez convertis en commandes directes ont appris le processus.",
+      "start": 216.79,
+      "end": 234.68
+    },
+    {
+      "id": 13,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "La solution pour le site web qui fait cela.",
+      "start": 235.78,
+      "end": 238.42
+    },
+    {
+      "id": 14,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "Vous n'avez pas besoin d'une application. Vous n'avez pas besoin d'un CRM. Le basculement se fait via un seul bouton sur votre page de menu existante, et la façon dont vous signalez quel bouton est le plus important compte. Trois changements, dans cet ordre :",
+      "start": 239.12,
+      "end": 253.2
+    },
+    {
+      "id": 15,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Ajoutez un bouton principal « Commander direct » au-dessus des liens d'applications tierces sur votre page de menu, sur mobile et ordinateur de bureau. Bouton plus grand. Couleur de marque. Immédiatement au-dessus de la limite de défilement. Les liens d'applications tierces vont en dessous, plus petits, en tant que « Autres façons de commander ».",
+      "start": 253.55,
+      "end": 270.6
+    },
+    {
+      "id": 16,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Connectez votre flux de commande direct à votre système de point de vente — Toast Online Ordering, Square Online, ChowNow, ou un flux personnalisé basé sur Stripe si vous avez un développeur. Pas une page de formulaire Wix qui vous envoie le commande par courriel.",
+      "start": 270.92,
+      "end": 287.48
+    },
+    {
+      "id": 17,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Égalisez ou battez le prix des applications tierces. Les opérateurs indépendants ont peur de sous-estimer DoorDash. Ils ne devraient pas. Les 30 % de commission signifient que vous pouvez exécuter une remise de 2 à 4 dollars sur le même article via le canal direct et garder encore plus de marge que ce que la plateforme vous a laissé. Le client remarque — il paie les « frais de service DoorDash » en plus de votre prix de menu ; vous lui montrez ce que son repas coûte réellement.",
+      "start": 287.8,
+      "end": 309.08
+    },
+    {
+      "id": 18,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "Exécutez ces trois changements sur votre site existant et l'opérateur indépendant moyen récupère la hausse de 4 243 dollars de la première année en deux mois. Le site web lui-même coûte probablement moins cher à construire correctement, même aux tarifs d'un studio.",
+      "start": 309.6,
+      "end": 325.37
+    },
+    {
+      "id": 19,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "L'argument pour ne pas désinscrire (encore).",
+      "start": 326.47,
+      "end": 328.63
+    },
+    {
+      "id": 20,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "Je ne vous dis pas de désinscrire. DoorDash est, structurellement, un outil d'acquisition de clients qui coûte 30 %. Pour un restaurant indépendant avec une cuisine capable de 60 % de volume incrémental, ces 30 % sont le prix que vous payez pour la couverture marginale — et c'est un prix équitable si vous traitez la plateforme comme un canal de découverte, et non comme un canal de relation .",
+      "start": 329.33,
+      "end": 349.01
+    },
+    {
+      "id": 21,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "Le problème n'est pas que vous êtes sur DoorDash. Le problème est que vous êtes sur DoorDash et que vous ne convertissez pas activement ces clients en commandes directes. La première commande DoorDash est une perte de 4,42 dollars par rapport à une commande directe. La deuxième commande, également via DoorDash, est la même. La troisième commande du client est celle où la marge se cumule — et la troisième commande est celle que la plupart des indépendants ne récupèrent jamais, car il n'y a pas d'appel à l'action sur le site web qui leur demande de le faire.",
+      "start": 349.53,
+      "end": 375.39
+    },
+    {
+      "id": 22,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "Un reçu de confirmation de commande avec un coupon de 5 % de réduction sur votre site direct, envoyé via le flux de reçu de client de DoorDash, est un levier de conversion gratuit. Le code QR sur le sac à emporter est également un levier de conversion gratuit. Une carte dans le sac qui dit, en anglais clair, « la prochaine fois, économisez 3 dollars en commandant direct » est également un levier de conversion gratuit.",
+      "start": 375.91,
+      "end": 396.04
+    },
+    {
+      "id": 23,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "Exécutez votre propre version.",
+      "start": 397.14,
+      "end": 398.9
+    },
+    {
+      "id": 24,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "Les chiffres ci-dessus sont les miens — différente commission, différente commande, différent schéma de main-d'œuvre de cuisine. L'outil gratuit Margin Math exécute le calcul contre vos entrées dans votre navigateur, et le résultat est vôtre seul — rien ne quitte la page :",
+      "start": 399.6,
+      "end": 414.64
+    },
+    {
+      "id": 25,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "Exécutez Margin Math &rarr;",
+      "start": 414.99,
+      "end": 417.13
+    },
+    {
+      "id": 26,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "Si votre site a besoin que le bouton « Commander direct » soit reconstruit et que vous préféreriez que quelqu'un d'autre s'en charge, les 1 500 dollars menu drop-in sont l'engagement le plus faible. L'audit de 499 dollars vous donne un diagnostic écrit avant que vous ne dépensiez, si vous préférez voir les choses sur papier.",
+      "start": 417.48,
+      "end": 435.64
+    },
+    {
+      "id": 27,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "La réponse honnête à « DoorDash est-il rentable » est la même que la réponse honnête à la plupart des questions d'exploitation : cela dépend de ce que vous faites d'autre. Si votre canal direct est dormant, ce n'est pas rentable. Si votre canal direct est en cours d'exécution et convertit, DoorDash est un budget marketing à marge mince qui paie pour le prochain régulier.",
+      "start": 436.16,
+      "end": 455.03
+    },
+    {
+      "id": 28,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(19)",
+      "text": "Don Goldstein est un exploitant de restaurant et dirige Muntin Digital . Il est membre de RAMW , certifié ServSafe, et les mathématiques ci-dessus sont datées de mai vingt vingt-six.",
+      "start": 455.55,
+      "end": 466.74
+    },
+    {
+      "id": 29,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(20)",
+      "text": "Continuez",
+      "start": 467.26,
+      "end": 467.89
+    },
+    {
+      "id": 30,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Uber Eats vs DoorDash vs Grubhub — mathématiques côte à côte sur le même ticket de 42 dollars",
+      "start": 468.24,
+      "end": 474.83
+    },
+    {
+      "id": 31,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "30 jours après avoir quitté DoorDash — l'étude de cas sur le terrain",
+      "start": 475.15,
+      "end": 479.1
+    },
+    {
+      "id": 32,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Programmes de fidélité qui fonctionnent — ce que vous pouvez superposer sur le canal direct",
+      "start": 479.42,
+      "end": 484.36
+    },
+    {
+      "id": 33,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "Outil Margin Math — exécutez le calcul sur vos chiffres",
+      "start": 484.68,
+      "end": 488.33
+    },
+    {
+      "id": 34,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(5)",
+      "text": "DoorDash est-il rentable pour les restaurants en vingt vingt-six ? — le cadre stratégique",
+      "start": 488.65,
+      "end": 493.27
+    },
+    {
+      "id": 35,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(6)",
+      "text": "Audit de 499 dollars — le diagnostic écrit",
+      "start": 493.59,
+      "end": 497.02
+    }
+  ]
+}

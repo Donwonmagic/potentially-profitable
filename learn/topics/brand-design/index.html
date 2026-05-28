@@ -39,9 +39,9 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=da841dee88d3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-core.css?v=a497939fe0a3" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=4c628560c207" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=da841dee88d3"><link rel="stylesheet" href="/assets/site-article.css?v=4c628560c207"></noscript>
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a497939fe0a3"><link rel="stylesheet" href="/assets/site-article.css?v=4c628560c207"></noscript>
 
 <!-- topic-schema:start -->
 <script type="application/ld+json">
@@ -121,7 +121,7 @@
         {
           "@type": "ListItem",
           "position": 5,
-          "url": "https://muntin.digital/blog/how-much-does-a-custom-restaurant-website-cost-in-2026/"
+          "url": "https://muntin.digital/blog/custom-restaurant-website-pricing/"
         }
       ]
     }
@@ -168,8 +168,8 @@
       Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
     </a>
     <!-- Phase 7: 5-item nav, per launch plan Part II.
-         Library / Tools / Work / Studio / Sign in.
-         Library now points at the canonical /library/ hub (the
+         Library / Tools / Studio / Sign in.
+         Library points at the canonical /library/ hub (the
          three-doors page). Tools is promoted from the old Library
          mega-menu to a top-level item. Studio replaces Services +
          Restaurants + About — they all live under /studio/ now,
@@ -179,11 +179,15 @@
          Restaurants pages remain reachable via /studio/ and the
          _redirects table; /about/ is unchanged. The mega-menu is
          retired (the hub IS the menu now); the controller script
-         is gone too. -->
+         is gone too.
+
+         /work/ was retired with the Phase 8 portfolio-sunset pass:
+         the company-as-resume framing made the personal-portfolio
+         showcase redundant. Legacy /work/* URLs 301 to /studio/
+         via _redirects so old backlinks land softly. -->
     <nav class="nav-links" aria-label="Primary">
       <a href="/library/">Library</a>
       <a href="/tools/">Tools</a>
-      <a href="/work/">Work</a>
       <a href="/studio/">Studio</a>
       <!-- Both sign-in / workshop ship hidden by default; the
            auth-state JS at the bottom of this file calls
@@ -240,7 +244,6 @@
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
     <a href="/library/">Library</a>
     <a href="/tools/">Tools</a>
-    <a href="/work/">Work</a>
     <a href="/studio/">Studio</a>
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
@@ -348,7 +351,7 @@
   <div class="container">
     <header class="topic-section-head">
       <span class="eyebrow">Articles</span>
-      <h2 id="read-the-playbooks">Read the playbooks.</h2>
+      <h2>Read the playbooks.</h2>
     </header>
     <ul class="topic-article-list">
       <li>
@@ -373,9 +376,9 @@
         </a>
       </li>
 <li>
-        <a class="topic-article-card" href="/blog/how-much-does-a-custom-restaurant-website-cost-in-2026/">
+        <a class="topic-article-card" href="/blog/custom-restaurant-website-pricing/">
           <span class="topic-article-date">Apr 13, 2026</span>
-          <h3>How Much Does a Custom Restaurant Website Cost in 2026?</h3>
+          <h3>How Much Does a Custom Restaurant Website Cost?</h3>
           <p>Custom restaurant website costs in 2026, itemized line by line — from $2,500 to $15,000+. Real numbers, real tradeoffs, and what nobody else is saying.</p>
         </a>
       </li>
@@ -387,7 +390,7 @@
   <div class="container">
     <header class="topic-section-head">
       <span class="eyebrow">Vocabulary</span>
-      <h2 id="the-words-for-this-topic">The words for this topic.</h2>
+      <h2>The words for this topic.</h2>
     </header>
     <ul class="term-siblings-list">
       <li><a href="/glossary/accessible-pair/"><strong>Accessible pair</strong><span> — a brand color, nudged until text on it clears WCAG AA</span></a></li>
@@ -411,7 +414,7 @@
   <div class="container">
     <header class="topic-section-head">
       <span class="eyebrow">Free tools</span>
-      <h2 id="run-a-check-on-your-own-site">Run a check on your own site.</h2>
+      <h2>Run a check on your own site.</h2>
     </header>
     <ul class="topic-tool-list">
       <li>
@@ -454,7 +457,7 @@
 
       <ul>
         <li><strong>Color palette.</strong> Three to five colors maximum: a primary (your &ldquo;brand color&rdquo;), a secondary or accent, ink (near-black for body text), cream or paper (for backgrounds), and one alert color if you ship a tool or form. The hard part is the <em>accessible pair</em> &mdash; a color combination whose contrast meets WCAG 2.2 AA at body-text size. The free <a href="/tools/brand-suite/">Brand Suite</a> tool generates accessible pairs from any starting hue.</li>
-        <li><strong>Typography.</strong> Two faces, almost always: a display font for headlines (the personality), a text font for body (the readability). For independent restaurants the proven combinations are a serif display (Fraunces, Cormorant Garamond, EB Garamond) paired with a humanist sans (Inter, Source Sans, Public Sans). Avoid pairing two display faces; avoid pairing two sans faces. The <a href="/blog/restaurant-photo-spec-sheet/">photo spec sheet</a> includes the type pairings used on real restaurant builds.</li>
+        <li><strong>Typography.</strong> Two faces, almost always: a display font for headlines (the personality), a text font for body (the readability). For independent restaurants the proven combinations are a serif display (Fraunces, Cormorant Garamond, EB Garamond) paired with a humanist sans (Inter, Source Sans, Public Sans). Avoid pairing two display faces; avoid pairing two sans faces. The <a href="/library/restaurant-photo-spec-sheet/">photo spec sheet</a> includes the type pairings used on real restaurant builds.</li>
         <li><strong>Photo treatment.</strong> Are your photos warm or cool? High-contrast or muted? Plate-tight or table-wide? Pick a treatment and stay within it across the site, GBP, social, and print. Inconsistency is what reads as &ldquo;they hired three different vendors&rdquo; &mdash; and that&rsquo;s the brand.</li>
         <li><strong>Voice.</strong> The way the website talks. First-person from the chef? Third-person editorial? Casual playful? Formal restrained? The voice contract on this site (<a href="/methods/#voice-contract">/methods/#voice-contract</a>) is one model: short declaratives, no marketing-speak, no exclamation marks. Pick a register and stay there.</li>
         <li><strong>Iconography.</strong> If you use icons (in nav, on tools, on the menu page), they need a single stroke-width, a single corner-radius, and a single visual weight. Mixing line and filled icons reads as inconsistent. Use a single icon set; if your site needs a custom icon, brief a designer and add it to the system.</li>
@@ -475,7 +478,7 @@
       <h3>Three brand failure modes specific to restaurant websites</h3>
 
       <ol>
-        <li><strong>The Wix-template tell.</strong> Stock fonts, stock hero photo, stock testimonials block, mid-2010s &ldquo;parallax&rdquo; scroll. The visitor&rsquo;s read is &ldquo;this restaurant didn&rsquo;t care enough to do this themselves.&rdquo; The fix isn&rsquo;t custom-from-scratch; the fix is removing the tells. Self-host the type, replace the stock photo with one operator-shot image, kill the parallax. <a href="/blog/wix-vs-custom-for-restaurants/">Wix vs. custom</a> walks through the six places Wix runs out of room for an independent.</li>
+        <li><strong>The Wix-template tell.</strong> Stock fonts, stock hero photo, stock testimonials block, mid-2010s &ldquo;parallax&rdquo; scroll. The visitor&rsquo;s read is &ldquo;this restaurant didn&rsquo;t care enough to do this themselves.&rdquo; The fix isn&rsquo;t custom-from-scratch; the fix is removing the tells. Self-host the type, replace the stock photo with one operator-shot image, kill the parallax. <a href="/library/wix-vs-custom-for-restaurants/">Wix vs. custom</a> walks through the six places Wix runs out of room for an independent.</li>
         <li><strong>The agency-rebrand tell.</strong> Excessive whitespace, abstract shapes, &ldquo;authentic&rdquo; in the about copy, a font that&rsquo;s too refined for the food. The visitor&rsquo;s read is &ldquo;this restaurant hired the wrong agency.&rdquo; The food doesn&rsquo;t need design at this level; the design is competing with the menu. Match the visual register to the operating reality.</li>
         <li><strong>The mismatch.</strong> The room is warm, hand-made, family-owned. The website looks like a tech startup. Or the room is precise, plated, fine-dining. The website looks like a Wordpress blog. The mismatch costs reservations because the visitor&rsquo;s expectation set on the website doesn&rsquo;t match what they walk into. The two have to agree.</li>
       </ol>
@@ -485,7 +488,7 @@
       <p>Photography correlates with consideration but not with conversion (per the 1% margin audit findings). What that means: phenomenal photography doesn&rsquo;t fix a leaky funnel, but bad photography puts a ceiling on perceived value. Three rules:</p>
 
       <ul>
-        <li><strong>Light is everything.</strong> Daylight at the window, mid-morning, with a white reflector to fill shadows. The most expensive iPhone photo with bad light beats the cheapest DSLR photo with good light, every time. The <a href="/blog/restaurant-photo-spec-sheet/">photo spec sheet</a> covers the lighting setup.</li>
+        <li><strong>Light is everything.</strong> Daylight at the window, mid-morning, with a white reflector to fill shadows. The most expensive iPhone photo with bad light beats the cheapest DSLR photo with good light, every time. The <a href="/library/restaurant-photo-spec-sheet/">photo spec sheet</a> covers the lighting setup.</li>
         <li><strong>Spec sheets to photographers.</strong> Hand a photographer the <a href="/tools/photo-brief/">Photo Brief</a> output before the shoot. Aspect ratios, file sizes, surface targets. Avoid the &ldquo;four hours of photos that look great but don&rsquo;t fit anywhere&rdquo; outcome.</li>
         <li><strong>Don&rsquo;t use AI-generated food.</strong> The <a href="/ai/">/ai/</a> page commits to this; operators should too. The room can tell. The reviewer can tell. The visitor can tell. Real plates by a real photographer.</li>
       </ul>
@@ -506,7 +509,7 @@
   <div class="container">
     <div class="section-header reveal section-center">
       <span class="eyebrow">Other topics</span>
-      <h2 id="or-browse-adifferent-angle">Or browse a<br><span class="serif-italic">different angle.</span></h2>
+      <h2>Or browse a<br><span class="serif-italic">different angle.</span></h2>
     </div>
     <ul class="topic-other-list">
       <li><a href="/learn/topics/speed-mobile/">Speed &amp; Mobile</a></li>
@@ -596,20 +599,47 @@
     <div class="foot-grid">
       <div class="foot-col foot-brand">
         <a href="/" class="foot-lockup-wrap" aria-label="Muntin Digital home">
-          <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53" loading="lazy" decoding="async">
+          <!-- alt="" because the surrounding <a> is already labeled.
+               Without it, screen readers announce "Muntin Digital,
+               Muntin Digital home" on the lockup link. -->
+          <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="" width="240" height="53" loading="lazy" decoding="async">
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a <!-- count:glossary.terms -->149<!-- /count -->-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->24<!-- /count --> articles, <!-- count:tools.live -->12<!-- /count --> tools, <!-- count:glossary.terms -->149<!-- /count --> glossary terms &mdash; with a one-person web studio behind it in Silver Spring, MD.</p>
       </div>
 
-      <nav class="foot-col" aria-labelledby="foot-explore">
-        <p class="foot-heading" id="foot-explore">Studio</p>
+      <!-- Column order mirrors the 4-item primary nav
+           (Library, Tools-rolled-into-Library, Studio) so the
+           footer reinforces the same IA. The Library column leads
+           with /library/ (the post-Phase-7 three-doors hub); the
+           older /learn/ landing still resolves but no longer needs
+           its own footer slot. id="foot-learn" is the canonical-
+           footer marker that scripts/sync-includes.mjs keys on
+           (FOOTER_MAIN_FUNNEL_MARKER), so the id stays even though
+           the visible label is the more familiar "Library".
+
+           Phase 8 (portfolio sunset): the Studio column's "Case
+           studies" row used to link to /work/, the personal-portfolio
+           hub. That hub was retired when the company became the
+           resume; the row is now gone and /work/* 301s to /studio/. -->
+      <nav class="foot-col" aria-labelledby="foot-learn">
+        <p class="foot-heading" id="foot-learn">Library</p>
         <ul class="foot-links">
-          <li><a href="/services/">Services &amp; pricing</a></li>
-          <li><a href="/for/restaurants/">For restaurants</a></li>
+          <li><a href="/library/">Browse the library</a></li>
+          <li><a href="/glossary/">Glossary</a></li>
+          <li><a href="/tools/">Free tools</a></li>
+          <li><a href="/sheets/">Operator sheets</a></li>
+          <li><a href="/blog/">Commentary</a></li>
+        </ul>
+      </nav>
+
+      <nav class="foot-col" aria-labelledby="foot-studio">
+        <p class="foot-heading" id="foot-studio">Studio</p>
+        <ul class="foot-links">
+          <li><a href="/studio/#pricing">Pricing</a></li>
           <li><a href="/studio/compare/">Compare options</a></li>
-          <li><a href="/work/">Case studies</a></li>
+          <li><a href="/studio/#process">Process</a></li>
           <li><a href="/about/">About Don</a></li>
         </ul>
       </nav>
@@ -617,28 +647,11 @@
       <nav class="foot-col" aria-labelledby="foot-trust">
         <p class="foot-heading" id="foot-trust">Trust</p>
         <ul class="foot-links">
-          <li><a href="/never/">Never</a></li>
+          <li><a href="/never/">What we never do</a></li>
           <li><a href="/ai/">AI policy</a></li>
-          <li><a href="/security/">Data &amp; security</a></li>
-          <li><a href="/methods/">Methods</a></li>
-          <li><a href="/receipts/">Receipts</a></li>
+          <li><a href="/methods/">Methods &amp; sources</a></li>
           <li><a href="/changelog/">Changelog</a></li>
-          <li><a href="/system/">The system</a></li>
-        </ul>
-      </nav>
-
-      <nav class="foot-col" aria-labelledby="foot-learn">
-        <p class="foot-heading" id="foot-learn">Library</p>
-        <ul class="foot-links">
-          <li><a href="/learn/">Library home</a></li>
-          <li><a href="/learn/start-here/">Start here</a></li>
-          <li><a href="/learn/topics/">Topics</a></li>
-          <li><a href="/blog/">Articles</a></li>
-          <li><a href="/tools/">Free tools</a></li>
-          <li><a href="/glossary/">Glossary</a></li>
-          <li><a href="/learn/research/">Research</a></li>
-          <li><a href="/learn/checklists/">Checklists &amp; guides</a></li>
-          <li><a href="/sheets/">Operator sheets</a></li>
+          <li><a href="/receipts/">Receipts</a></li>
         </ul>
       </nav>
 
@@ -649,7 +662,7 @@
           <li><a href="/window/">Reach Don</a></li>
           <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (opens in new tab)</span></a></li>
         </ul>
-        <p class="foot-trust"><strong>Reply:</strong> Mondays through Fridays, within 4 hours. Weekends, by Monday morning.</p>
+        <p class="foot-trust"><strong>Reply:</strong> within 4 hours Mon&ndash;Fri; weekends by Monday.</p>
       </nav>
     </div>
 

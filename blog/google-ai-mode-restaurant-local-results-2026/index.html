@@ -225,8 +225,8 @@ header.nav{min-height:64px}
       Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
     </a>
     <!-- Phase 7: 5-item nav, per launch plan Part II.
-         Library / Tools / Work / Studio / Sign in.
-         Library now points at the canonical /library/ hub (the
+         Library / Tools / Studio / Sign in.
+         Library points at the canonical /library/ hub (the
          three-doors page). Tools is promoted from the old Library
          mega-menu to a top-level item. Studio replaces Services +
          Restaurants + About — they all live under /studio/ now,
@@ -236,11 +236,15 @@ header.nav{min-height:64px}
          Restaurants pages remain reachable via /studio/ and the
          _redirects table; /about/ is unchanged. The mega-menu is
          retired (the hub IS the menu now); the controller script
-         is gone too. -->
+         is gone too.
+
+         /work/ was retired with the Phase 8 portfolio-sunset pass:
+         the company-as-resume framing made the personal-portfolio
+         showcase redundant. Legacy /work/* URLs 301 to /studio/
+         via _redirects so old backlinks land softly. -->
     <nav class="nav-links" aria-label="Primary">
       <a href="/library/">Library</a>
       <a href="/tools/">Tools</a>
-      <a href="/work/">Work</a>
       <a href="/studio/">Studio</a>
       <!-- Both sign-in / workshop ship hidden by default; the
            auth-state JS at the bottom of this file calls
@@ -297,7 +301,6 @@ header.nav{min-height:64px}
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
     <a href="/library/">Library</a>
     <a href="/tools/">Tools</a>
-    <a href="/work/">Work</a>
     <a href="/studio/">Studio</a>
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
@@ -434,24 +437,17 @@ header.nav{min-height:64px}
       <h2 id="what-generative-changes-about-a-restaurant-result">What &ldquo;generative&rdquo; changes about a restaurant result</h2>
       <p>A generated answer &mdash; the same surface as a Google <a href="/glossary/ai-overview/">AI Overview</a> &mdash; is assembled from whatever the model can read and trust about you: your <a href="/glossary/gbp/">Google Business Profile</a>, your reviews, the text on your own pages. It is not a ranked feed. The old <a href="/glossary/map-pack/">map pack</a> rewarded proximity and rating; the generated answer rewards <em>legibility</em> &mdash; can the model state, in a sentence it&rsquo;s willing to put its name on, what you serve, when you&rsquo;re open, and whether you fit the diner&rsquo;s ask. If that sentence isn&rsquo;t readable somewhere, you&rsquo;re not in the paragraph. We walked the four signals that decide it in <a href="/blog/how-to-appear-in-ai-search-restaurant-2026/">the four-number check</a>.</p>
 
-      <figure class="viz-figure article-figure" data-audio-alt="The same diner query, run on the two surfaces. On the old surface — a search before the I/O rebuild — the result is a map plus a ranked list of about ten restaurants, and the diner taps, scrolls, calls, and decides on their own. On the new surface — AI Mode after the rebuild — the result is a generated paragraph that names roughly three places by name, with booking buttons attached, and the assistant can complete the reservation through OpenTable, Resy, or Tock inside the answer.">
-        <div class="viz-flow">
-          <ol class="viz-flow__list">
-            <li class="viz-flow__step" data-tone="rust">
-              <span class="viz-flow__num">A</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">Old surface &mdash; the diner sorts the list</p>
-                <p class="viz-flow__detail">Query &ldquo;quiet spot for four on Friday&rdquo; &rarr; a map plus roughly ten ranked restaurants. The diner taps, scrolls, calls, and decides on their own. You compete by ranking in the list.</p>
-              </div>
-            </li>
-            <li class="viz-flow__step" data-tone="teal">
-              <span class="viz-flow__num">B</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">New surface &mdash; the model writes the answer</p>
-                <p class="viz-flow__detail">Same query &rarr; a generated paragraph naming about three places, with booking buttons inline. The agent can finish the reservation through OpenTable, Resy, or Tock without sending the diner anywhere. You compete by being one of the few the model names.</p>
-              </div>
-            </li>
-          </ol>
+      <figure class="viz-figure article-figure" data-audio-alt="The same diner query, run on the two surfaces. Before the I/O rebuild, the result is a map plus a ranked list of about ten restaurants — the diner taps, scrolls, calls, and decides on their own. You compete by ranking in the list. After the rebuild, the result is a generated paragraph that names roughly three places by name with booking buttons inline; the assistant can complete the reservation through OpenTable, Resy, or Tock without sending the diner anywhere. You compete by being one of the few the model names.">
+        <div class="viz-ba">
+          <p class="viz-ba__label">&ldquo;Quiet spot for four on Friday&rdquo; &mdash; before and after the I/O rebuild</p>
+          <div class="snippet-box" data-tone="bad">
+            <span class="snippet-label">Before &mdash; old surface, the diner sorts the list</span>
+            <p>A map plus roughly ten ranked restaurants. The diner taps, scrolls, calls, and decides on their own. You compete by ranking in the list &mdash; proximity, rating, and review count carry most of the weight.</p>
+          </div>
+          <div class="snippet-box" data-tone="good">
+            <span class="snippet-label">After &mdash; new surface, the model writes the answer</span>
+            <p>A generated paragraph naming about three places, with booking buttons inline. The agent can finish the reservation through OpenTable, Resy, or Tock without sending the diner anywhere. You compete by being one of the few the model names &mdash; legibility and bookability decide it.</p>
+          </div>
         </div>
         <figcaption>The same diner question, asked of two different surfaces. The shift is from ten links the diner sorts to a short answer the model writes &mdash; with the booking attached.</figcaption>
       </figure>
@@ -491,7 +487,7 @@ header.nav{min-height:64px}
       <h2 id="three-moves-that-keep-you-in-the-answer">Three moves that keep you in the answer</h2>
       <p>None of this rewards a bigger ad budget. It rewards being readable and bookable &mdash; both of which you control.</p>
       <p><strong>Complete the profile.</strong> Hours by day, cuisine, attributes, the menu link &mdash; the fields the model quotes. Run the <a href="/tools/gbp-grader/">GBP grader</a> to find the blanks.</p>
-      <p><strong>Connect a booking provider.</strong> If you take reservations, get them into OpenTable, Resy, or Tock so the agent can finish the job. The how-to is in <a href="/blog/google-ai-mode-reservation-booking-restaurant-2026/">booking inside the AI answer</a>.</p>
+      <p><strong>Connect a booking provider.</strong> If you take reservations, get them into OpenTable, Resy, or Tock so the agent can finish the job. The how-to is in <a href="/library/ai-mode-reservation-strategy/">booking inside the AI answer</a>.</p>
       <p><strong>Write the answer in text.</strong> Put the facts a diner asks for in plain text, backed by <a href="/tools/schema-check/">restaurant schema</a> so the model can lift them, then check the whole front door with <a href="/tools/storefront-health/">storefront health</a>.</p>
 
       <figure class="viz-figure article-figure" data-audio-alt="The three operator moves that keep a restaurant inside the generated AI Mode answer. One: complete the Google Business Profile — hours by day, cuisine, attributes, the menu link, no blanks — so the model has the facts it needs to name you. Two: connect a booking provider — OpenTable, Resy, or Tock — so the agent has a table it can actually book. Three: write the answer in plain text on your own site, backed by restaurant schema, so the model can lift what you serve, your hours, and whether you fit the ask.">
@@ -500,7 +496,7 @@ header.nav{min-height:64px}
             <li class="viz-flow__step" data-tone="teal">
               <span class="viz-flow__num">1</span>
               <div class="viz-flow__body">
-                <p class="viz-flow__title">Complete the Google Business Profile</p>
+                <p class="viz-flow__title">Complete the <!-- LIBRARY:autolink:start --><a href="/glossary/gbp/" data-glossary-head="Google Business Profile" data-glossary-aka="GBP, formerly Google My Business" data-glossary-blurb="Your business's free listing on Google Maps and Google Search — the panel on the right of a search that shows your name, hours, photos, reviews, and a link to your menu or booking.">Google Business Profile</a><!-- LIBRARY:autolink:end --></p>
                 <p class="viz-flow__detail">Hours by day, cuisine, attributes, the menu link &mdash; the fields the model quotes. No blanks. This is the file the answer is built from.</p>
               </div>
             </li>
@@ -584,20 +580,47 @@ header.nav{min-height:64px}
     <div class="foot-grid">
       <div class="foot-col foot-brand">
         <a href="/" class="foot-lockup-wrap" aria-label="Muntin Digital home">
-          <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53" loading="lazy" decoding="async">
+          <!-- alt="" because the surrounding <a> is already labeled.
+               Without it, screen readers announce "Muntin Digital,
+               Muntin Digital home" on the lockup link. -->
+          <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="" width="240" height="53" loading="lazy" decoding="async">
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a <!-- count:glossary.terms -->149<!-- /count -->-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->24<!-- /count --> articles, <!-- count:tools.live -->12<!-- /count --> tools, <!-- count:glossary.terms -->149<!-- /count --> glossary terms &mdash; with a one-person web studio behind it in Silver Spring, MD.</p>
       </div>
 
-      <nav class="foot-col" aria-labelledby="foot-explore">
-        <p class="foot-heading" id="foot-explore">Studio</p>
+      <!-- Column order mirrors the 4-item primary nav
+           (Library, Tools-rolled-into-Library, Studio) so the
+           footer reinforces the same IA. The Library column leads
+           with /library/ (the post-Phase-7 three-doors hub); the
+           older /learn/ landing still resolves but no longer needs
+           its own footer slot. id="foot-learn" is the canonical-
+           footer marker that scripts/sync-includes.mjs keys on
+           (FOOTER_MAIN_FUNNEL_MARKER), so the id stays even though
+           the visible label is the more familiar "Library".
+
+           Phase 8 (portfolio sunset): the Studio column's "Case
+           studies" row used to link to /work/, the personal-portfolio
+           hub. That hub was retired when the company became the
+           resume; the row is now gone and /work/* 301s to /studio/. -->
+      <nav class="foot-col" aria-labelledby="foot-learn">
+        <p class="foot-heading" id="foot-learn">Library</p>
         <ul class="foot-links">
-          <li><a href="/services/">Services &amp; pricing</a></li>
-          <li><a href="/for/restaurants/">For restaurants</a></li>
+          <li><a href="/library/">Browse the library</a></li>
+          <li><a href="/glossary/">Glossary</a></li>
+          <li><a href="/tools/">Free tools</a></li>
+          <li><a href="/sheets/">Operator sheets</a></li>
+          <li><a href="/blog/">Commentary</a></li>
+        </ul>
+      </nav>
+
+      <nav class="foot-col" aria-labelledby="foot-studio">
+        <p class="foot-heading" id="foot-studio">Studio</p>
+        <ul class="foot-links">
+          <li><a href="/studio/#pricing">Pricing</a></li>
           <li><a href="/studio/compare/">Compare options</a></li>
-          <li><a href="/work/">Case studies</a></li>
+          <li><a href="/studio/#process">Process</a></li>
           <li><a href="/about/">About Don</a></li>
         </ul>
       </nav>
@@ -605,28 +628,11 @@ header.nav{min-height:64px}
       <nav class="foot-col" aria-labelledby="foot-trust">
         <p class="foot-heading" id="foot-trust">Trust</p>
         <ul class="foot-links">
-          <li><a href="/never/">Never</a></li>
+          <li><a href="/never/">What we never do</a></li>
           <li><a href="/ai/">AI policy</a></li>
-          <li><a href="/security/">Data &amp; security</a></li>
-          <li><a href="/methods/">Methods</a></li>
-          <li><a href="/receipts/">Receipts</a></li>
+          <li><a href="/methods/">Methods &amp; sources</a></li>
           <li><a href="/changelog/">Changelog</a></li>
-          <li><a href="/system/">The system</a></li>
-        </ul>
-      </nav>
-
-      <nav class="foot-col" aria-labelledby="foot-learn">
-        <p class="foot-heading" id="foot-learn">Library</p>
-        <ul class="foot-links">
-          <li><a href="/learn/">Library home</a></li>
-          <li><a href="/learn/start-here/">Start here</a></li>
-          <li><a href="/learn/topics/">Topics</a></li>
-          <li><a href="/blog/">Articles</a></li>
-          <li><a href="/tools/">Free tools</a></li>
-          <li><a href="/glossary/">Glossary</a></li>
-          <li><a href="/learn/research/">Research</a></li>
-          <li><a href="/learn/checklists/">Checklists &amp; guides</a></li>
-          <li><a href="/sheets/">Operator sheets</a></li>
+          <li><a href="/receipts/">Receipts</a></li>
         </ul>
       </nav>
 
@@ -637,7 +643,7 @@ header.nav{min-height:64px}
           <li><a href="/window/">Reach Don</a></li>
           <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (opens in new tab)</span></a></li>
         </ul>
-        <p class="foot-trust"><strong>Reply:</strong> Mondays through Fridays, within 4 hours. Weekends, by Monday morning.</p>
+        <p class="foot-trust"><strong>Reply:</strong> within 4 hours Mon&ndash;Fri; weekends by Monday.</p>
       </nav>
     </div>
 

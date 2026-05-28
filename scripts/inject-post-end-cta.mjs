@@ -30,6 +30,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { NON_ARTICLE_LIBRARY_SLUGS } from './lib/library-skips.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const repoRoot   = path.resolve(path.dirname(__filename), '..');
@@ -42,9 +43,13 @@ const SENTINEL_RE = /<!-- post-end-cta:start -->[\s\S]*?<!-- post-end-cta:end --
 const SEE_ALSO_RE = /<!-- LIBRARY:see-also:start -->/;
 const POST_END_RE = /<aside class="post-end-mark"[^>]*>[\s\S]*?<\/aside>/;
 
+// Each locale lists the namespaces a post may live in. Phase 7 split:
+// evergreen posts moved into /library/; timely posts stayed in /blog/.
+// First-found-wins so a slug present in both (shouldn't happen, but if
+// a migration leaves both) prefers /library/ as the new canonical.
 const LOCALES = [
-  { code: 'en', dir: 'blog' },
-  { code: 'es', dir: 'es/blog' },
+  { code: 'en', dirs: ['library', 'blog'] },
+  { code: 'es', dirs: ['es/library', 'es/blog'] },
 ];
 
 function escapeAttr(s) {
@@ -54,7 +59,7 @@ function escapeText(s) {
   return String(s == null ? '' : s).replace(/[&<>]/g, (c) => ({ '&':'&amp;','<':'&lt;','>':'&gt;' })[c]);
 }
 
-function buildBlock(slug, entry, locale) {
+function buildBlock(slug, entry, locale, foundIn) {
   const url   = entry[`tool_url_${locale}`];
   const label = entry[`tool_label_${locale}`];
   const head  = entry[`headline_${locale}`];
@@ -66,7 +71,10 @@ function buildBlock(slug, entry, locale) {
   // article-originated. Tools keep intent=watch (existing behavior).
   const isSheet = /^\/(?:es\/)?sheets\//.test(url);
   const intent = isSheet ? 'save' : 'watch';
-  const href = `${url}?from=blog%2F${encodeURIComponent(slug)}&intent=${intent}`;
+  // from=<namespace>/<slug> — namespace reflects where the post actually
+  // lives so analytics attribute correctly post the Phase-7 split.
+  const namespace = foundIn.replace(/^es\//, '');
+  const href = `${url}?from=${namespace}%2F${encodeURIComponent(slug)}&intent=${intent}`;
   return [
     '<!-- post-end-cta:start -->',
     '    <aside class="post-end-cta" aria-label="Workshop next step">',
@@ -83,13 +91,24 @@ let skipped = 0;
 const missing = [];
 
 for (const [slug, entry] of Object.entries(entries)) {
-  for (const { code, dir } of LOCALES) {
-    const file = path.join(repoRoot, dir, slug, 'index.html');
-    if (!fs.existsSync(file)) {
-      missing.push(`${dir}/${slug}/index.html`);
+  for (const { code, dirs } of LOCALES) {
+    // Find the first namespace the slug exists in (library wins; falls
+    // back to blog). Track which namespace so the from= param is right.
+    let file = null;
+    let foundIn = null;
+    for (const dir of dirs) {
+      const candidate = path.join(repoRoot, dir, slug, 'index.html');
+      if (fs.existsSync(candidate)) {
+        file = candidate;
+        foundIn = dir;
+        break;
+      }
+    }
+    if (!file) {
+      missing.push(`${dirs[0]}/${slug}/index.html`);
       continue;
     }
-    const block = buildBlock(slug, entry, code);
+    const block = buildBlock(slug, entry, code, foundIn);
     if (!block) continue; // entry has no copy for this locale
     const src = fs.readFileSync(file, 'utf8');
 

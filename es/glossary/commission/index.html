@@ -37,9 +37,9 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=da841dee88d3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-core.css?v=a497939fe0a3" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=4c628560c207" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=da841dee88d3"><link rel="stylesheet" href="/assets/site-article.css?v=4c628560c207"></noscript>
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a497939fe0a3"><link rel="stylesheet" href="/assets/site-article.css?v=4c628560c207"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -173,18 +173,22 @@
       </svg>
       Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
     </a>
-    <!-- Phase 7: nav de 5 elementos, según el plan de lanzamiento Parte II.
-         Biblioteca / Herramientas / Proyectos / Estudio / Acceder.
+    <!-- Phase 7: nav de 4 elementos, según el plan de lanzamiento Parte II.
+         Biblioteca / Herramientas / Estudio / Acceder.
          Biblioteca apunta al hub canónico /es/library/. Herramientas
          se promueve del antiguo mega-menú a un elemento de primer
          nivel. Estudio reemplaza Servicios + Restaurantes + Sobre
          Don &mdash; todo vive bajo /es/studio/ ahora. El mega-menú
          se retira (el hub ES el menú); el controlador del script
-         también desaparece. -->
+         también desaparece.
+
+         /es/work/ se retiró en la pasada de portfolio-sunset de la
+         Fase 8 (el encuadre de la empresa-como-CV hizo redundante
+         el portafolio personal). Las URLs /es/work/* hacen 301 a
+         /es/studio/ vía _redirects. -->
     <nav class="nav-links" aria-label="Principal">
       <a href="/es/library/">Biblioteca</a>
       <a href="/es/tools/">Herramientas</a>
-      <a href="/es/work/">Proyectos</a>
       <a href="/es/studio/">Estudio</a>
       <a class="js-nav-signin nav-link-auth" href="/es/sign-in/" hidden>Acceder</a>
       <a class="js-nav-workshop nav-link-auth" href="/es/workbench/" hidden>El Taller</a>
@@ -213,7 +217,6 @@
   <nav class="mobile-menu" id="mobileMenu" aria-label="Navegación móvil" hidden>
     <a href="/es/library/">Biblioteca</a>
     <a href="/es/tools/">Herramientas</a>
-    <a href="/es/work/">Proyectos</a>
     <a href="/es/studio/">Estudio</a>
     <a class="js-nav-signin mobile-auth" href="/es/sign-in/" hidden>Acceder</a>
     <a class="js-nav-workshop mobile-auth" href="/es/workbench/" hidden>El Taller</a>
@@ -302,10 +305,17 @@
         <p class="see-also-label" id="glossary-backlinks-h">Dónde aparece este término</p>
         <ul class="see-also-list">
         <li>
-          <a class="see-also-card" href="/es/blog/is-doordash-worth-it-for-restaurants-in-2026/">
+          <a class="see-also-card" href="/es/blog/30-dias-despues-de-dejar-doordash-caso-restaurante/">
             <span class="see-also-kind">Artículo</span>
-            <h3>&amp;iquest;Vale la pena DoorDash? Las matem&amp;aacute;ticas honestas para 2026</h3>
-            <p>Las matem&amp;aacute;ticas honestas de DoorDash y la entrega de terceros para restaurantes independientes en 2026: en qu&amp;eacute; se convertir&amp;aacute;n realmente $100 de ingresos por entrega, cu&amp;aacute;ndo todav&amp;iacute;a tiene sentido, cu&amp;aacute;ndo no, y c&amp;oacute;mo construir su propio flujo de pedidos para que pueda elegir.</p>
+            <h3>30 días después de dejar DoorDash: caso de estudio de un operador de restaurante</h3>
+            <p>Los primeros 30 días después de deslistar un restaurante de DoorDash tienen una forma predecible. El playbook: qué esperar cada semana, qué costos flexionan, qué quejas llegan, y dónde aterriza usualmente la mezcla de canales. Rangos ilustrativos anclados al walk de margen de DoorDash.</p>
+          </a>
+        </li>
+        <li>
+          <a class="see-also-card" href="/es/blog/lanzamiento-mayo-2026-publicar-para-citacion/">
+            <span class="see-also-kind">Artículo</span>
+            <h3>El lanzamiento de mayo de 2026: nueve piezas, una tesis operativa</h3>
+            <p>Los resultados ya no son diez enlaces azules. Nueve piezas sobre cómo lograr que el AI Overview de Google cite tu restaurante — y el trabajo de perfil que lo sostiene.</p>
           </a>
         </li>
         </ul>
@@ -381,10 +391,10 @@
         <h3>Lee</h3>
         <ul>
           <li><a href="/es/blog/30-days-after-leaving-doordash-restaurant-case-study/">30 Days After Leaving DoorDash: A Restaurant Operator’s Case Study</a></li>
-          <li><a href="/es/blog/five-restaurant-website-changes-recover-one-percent-margin/">Cinco cambios de sitio que recuperan 1% de margen</a></li>
-          <li><a href="/es/blog/is-doordash-worth-it-for-restaurants-in-2026/">¿Vale la pena DoorDash en 2026?</a></li>
-          <li><a href="/es/blog/uber-eats-vs-doordash-vs-grubhub-restaurant-math-2026/">Uber Eats vs DoorDash vs Grubhub: The Honest Math, 2026</a></li>
-          <li><a href="/es/blog/how-to-tell-if-a-restaurant-tool-is-safe/">Cómo saber si una herramienta es segura</a></li>
+          <li><a href="/es/blog/may-2026-wave-publishing-for-citation/">The May 2026 Wave: Nine Pieces, One Operating Thesis</a></li>
+          <li><a href="/es/blog/how-to-tell-if-a-restaurant-tool-is-safe/">How to Tell If a Restaurant Tool Is Safe</a></li>
+          <li><a href="/es/blog/when-to-rebuild-your-restaurant-website/">When to Rebuild Your Restaurant Website: A Decision Framework</a></li>
+          <li><a href="/es/blog/how-to-raise-restaurant-menu-prices-without-losing-reservations/">How to Raise Restaurant Menu Prices Without Losing Reservations</a></li>
         </ul>
       </div>
       <div class="glossary-knit__col">
@@ -420,39 +430,58 @@
     <div class="foot-grid">
       <div class="foot-col foot-brand">
         <a href="/es/" class="foot-lockup-wrap" aria-label="Muntin Digital — inicio">
-          <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53" loading="lazy" decoding="async">
+          <!-- alt="" porque el <a> que envuelve ya está etiquetado.
+               Sin esto, los lectores de pantalla anuncian dos veces
+               "Muntin Digital" en el enlace del logotipo. -->
+          <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="" width="240" height="53" loading="lazy" decoding="async">
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">La ventana.</p>
-        <p class="foot-blurb">Una biblioteca web y estudio de dise&ntilde;o para restaurantes, con base en Silver Spring, MD &mdash; art&iacute;culos, herramientas gratis, investigaci&oacute;n y un glosario de <!-- count:glossary.terms -->149<!-- /count --> t&eacute;rminos, con el estudio detr&aacute;s cuando quieras contratar. Se habla espa&ntilde;ol.</p>
+        <p class="foot-blurb">Una biblioteca gratuita para restaurantes &mdash; <!-- count:articles.library -->24<!-- /count --> art&iacute;culos, <!-- count:tools.live -->12<!-- /count --> herramientas y un glosario de <!-- count:glossary.terms -->149<!-- /count --> t&eacute;rminos &mdash; con un estudio web de una persona detr&aacute;s, en Silver Spring, MD. Se habla espa&ntilde;ol.</p>
       </div>
 
-      <nav class="foot-col" aria-labelledby="foot-explore">
-        <p class="foot-heading" id="foot-explore">Explorar</p>
-        <ul class="foot-links">
-          <li><a href="/es/services/">Servicios</a></li>
-          <li><a href="/es/for/restaurants/">Para restaurantes</a></li>
-          <li><a href="/es/work/">Proyectos</a></li>
-          <li><a href="/es/about/">Sobre Don</a></li>
-          <li><a href="/es/system/">El sistema</a></li>
-          <li><a href="/receipts/" hreflang="en" lang="en">Receipts</a></li>
-          <li><a href="/methods/" hreflang="en" lang="en">Methods</a></li>
-          <li><a href="/changelog/" hreflang="en" lang="en">Changelog</a></li>
-        </ul>
-      </nav>
-
+      <!-- El orden de columnas refleja la navegación principal de 5
+           ítems (Biblioteca, Estudio, Confianza, Contacto). La
+           Biblioteca apunta primero al hub /es/library/ (las tres
+           puertas: Lee, Busca, Haz); el antiguo /es/learn/ sigue
+           resolviendo pero ya no necesita su propio enlace de pie.
+           id="foot-learn" es el marcador canónico que usa
+           scripts/sync-includes.mjs (FOOTER_MAIN_FUNNEL_MARKER), así
+           que el id se mantiene aunque la etiqueta visible sea
+           "Biblioteca". -->
       <nav class="foot-col" aria-labelledby="foot-learn">
         <p class="foot-heading" id="foot-learn">Biblioteca</p>
         <ul class="foot-links">
-          <li><a href="/es/learn/">Inicio de la biblioteca</a></li>
-          <li><a href="/es/learn/start-here/">Empieza aquí</a></li>
-          <li><a href="/es/learn/topics/">Temas</a></li>
-          <li><a href="/es/blog/">Artículos</a></li>
-          <li><a href="/es/tools/">Herramientas gratis</a></li>
+          <li><a href="/es/library/">Explora la biblioteca</a></li>
           <li><a href="/es/glossary/">Glosario</a></li>
-          <li><a href="/es/learn/research/">Investigación</a></li>
-          <li><a href="/es/learn/checklists/">Listas y recursos</a></li>
+          <li><a href="/es/tools/">Herramientas gratis</a></li>
           <li><a href="/es/sheets/">Hojas del operador</a></li>
+          <li><a href="/es/blog/">Comentarios</a></li>
+        </ul>
+      </nav>
+
+      <!-- Fase 8 (portfolio sunset): la fila "Proyectos" enlazaba a
+           /es/work/, el portafolio personal. Ese hub se retiró cuando
+           la empresa pasó a ser el currículum; la fila ya no está y
+           /es/work/* hace 301 a /es/studio/. -->
+      <nav class="foot-col" aria-labelledby="foot-studio">
+        <p class="foot-heading" id="foot-studio">Estudio</p>
+        <ul class="foot-links">
+          <li><a href="/es/studio/#pricing">Precios</a></li>
+          <li><a href="/es/studio/compare/">Comparar opciones</a></li>
+          <li><a href="/es/studio/#process">Proceso</a></li>
+          <li><a href="/es/about/">Sobre Don</a></li>
+        </ul>
+      </nav>
+
+      <nav class="foot-col" aria-labelledby="foot-trust">
+        <p class="foot-heading" id="foot-trust">Confianza</p>
+        <ul class="foot-links">
+          <li><a href="/es/never/">Lo que nunca hacemos</a></li>
+          <li><a href="/es/ai/">Pol&iacute;tica de IA</a></li>
+          <li><a href="/es/methods/">M&eacute;todos y fuentes</a></li>
+          <li><a href="/es/changelog/">Registro de cambios</a></li>
+          <li><a href="/es/receipts/">Recibos</a></li>
         </ul>
       </nav>
 
@@ -463,7 +492,7 @@
           <li><a href="/es/window/">Contacta a Don</a></li>
           <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (se abre en una pestaña nueva)</span></a></li>
         </ul>
-        <p class="foot-trust"><strong>Respuesta:</strong> de lunes a viernes, en menos de 4 horas. Los fines de semana, el lunes en la mañana.</p>
+        <p class="foot-trust"><strong>Respuesta:</strong> en menos de 4 horas de lunes a viernes; fines de semana, el lunes.</p>
       </nav>
     </div>
 

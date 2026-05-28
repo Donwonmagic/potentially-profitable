@@ -157,6 +157,10 @@ header.nav{min-height:64px}
     {
       "@type": "DefinedTerm",
       "url": "https://muntin.digital/es/glossary/gbp/"
+    },
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/es/glossary/structured-data/"
     }
   ]
 }
@@ -206,18 +210,22 @@ header.nav{min-height:64px}
       </svg>
       Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
     </a>
-    <!-- Phase 7: nav de 5 elementos, según el plan de lanzamiento Parte II.
-         Biblioteca / Herramientas / Proyectos / Estudio / Acceder.
+    <!-- Phase 7: nav de 4 elementos, según el plan de lanzamiento Parte II.
+         Biblioteca / Herramientas / Estudio / Acceder.
          Biblioteca apunta al hub canónico /es/library/. Herramientas
          se promueve del antiguo mega-menú a un elemento de primer
          nivel. Estudio reemplaza Servicios + Restaurantes + Sobre
          Don &mdash; todo vive bajo /es/studio/ ahora. El mega-menú
          se retira (el hub ES el menú); el controlador del script
-         también desaparece. -->
+         también desaparece.
+
+         /es/work/ se retiró en la pasada de portfolio-sunset de la
+         Fase 8 (el encuadre de la empresa-como-CV hizo redundante
+         el portafolio personal). Las URLs /es/work/* hacen 301 a
+         /es/studio/ vía _redirects. -->
     <nav class="nav-links" aria-label="Principal">
       <a href="/es/library/">Biblioteca</a>
       <a href="/es/tools/">Herramientas</a>
-      <a href="/es/work/">Proyectos</a>
       <a href="/es/studio/">Estudio</a>
       <a class="js-nav-signin nav-link-auth" href="/es/sign-in/" hidden>Acceder</a>
       <a class="js-nav-workshop nav-link-auth" href="/es/workbench/" hidden>El Taller</a>
@@ -246,7 +254,6 @@ header.nav{min-height:64px}
   <nav class="mobile-menu" id="mobileMenu" aria-label="Navegación móvil" hidden>
     <a href="/es/library/">Biblioteca</a>
     <a href="/es/tools/">Herramientas</a>
-    <a href="/es/work/">Proyectos</a>
     <a href="/es/studio/">Estudio</a>
     <a class="js-nav-signin mobile-auth" href="/es/sign-in/" hidden>Acceder</a>
     <a class="js-nav-workshop mobile-auth" href="/es/workbench/" hidden>El Taller</a>
@@ -402,7 +409,7 @@ header.nav{min-height:64px}
 
       <h2 id="n-mero-dos-frescura-de-las-rese-as-no-solo-la-cantidad">N&uacute;mero dos &mdash; frescura de las rese&ntilde;as, no solo la cantidad</h2>
       <p>Un 4.6 hecho de doce rese&ntilde;as, la m&aacute;s nueva de hace dieciocho meses, se lee como un restaurante cerrado para un modelo entrenado a pesar la frescura. Un 4.4 con unas cuantas rese&ntilde;as de este mes se lee como abierto, lleno y al d&iacute;a. La cantidad gana la atenci&oacute;n; la frescura la mantiene.</p>
-      <p>La palanca aqu&iacute; es la <a href="/es/glossary/review-responsiveness/">capacidad de respuesta a rese&ntilde;as</a> &mdash; las rese&ntilde;as frescas llegan m&aacute;s r&aacute;pido cuando se te ve respondiendo las que ya tienes. El playbook completo est&aacute; en <a href="/es/blog/como-responder-resenas-google-restaurante-playbook-2026/">c&oacute;mo responder rese&ntilde;as de Google</a>; en corto, una respuesta es una se&ntilde;al fechada de vida, y el asistente puede leer la fecha.</p>
+      <p>La palanca aqu&iacute; es la <a href="/es/glossary/review-responsiveness/">capacidad de respuesta a rese&ntilde;as</a> &mdash; las rese&ntilde;as frescas llegan m&aacute;s r&aacute;pido cuando se te ve respondiendo las que ya tienes. El playbook completo est&aacute; en <a href="/es/library/como-responder-resenas-google-restaurante-playbook-2026/">c&oacute;mo responder rese&ntilde;as de Google</a>; en corto, una respuesta es una se&ntilde;al fechada de vida, y el asistente puede leer la fecha.</p>
 
       <h2 id="n-mero-tres-qu-tan-completo-est-el-perfil">N&uacute;mero tres &mdash; qu&eacute; tan completo est&aacute; el perfil</h2>
       <p>El 86% tiene un perfil. Muchos menos tienen un perfil que el asistente pueda leer de verdad. Una ficha sin horario por d&iacute;a, sin tipo de cocina, sin atributos de servicio y sin enlace al men&uacute; es una se&ntilde;al d&eacute;bil &mdash; el modelo no tiene nada que citar cuando el comensal pregunta &ldquo;&iquest;abren domingo?&rdquo; o &ldquo;&iquest;tienen sin gluten?&rdquo;. Presencia, de nuevo, no es lo mismo que legibilidad.</p>
@@ -410,7 +417,7 @@ header.nav{min-height:64px}
 
       <h2 id="n-mero-cuatro-tienes-una-respuesta-que-la-ia-pueda-citar">N&uacute;mero cuatro &mdash; &iquest;tienes una respuesta que la IA pueda citar?</h2>
       <p>El asistente necesita una frase que citar. Si la respuesta a &ldquo;&iquest;es bueno para un grupo de ocho?&rdquo;, &ldquo;&iquest;hay un platillo vegano?&rdquo; o &ldquo;&iquest;se puede reservar una mesa en el patio?&rdquo; vive solo dentro de un men&uacute; fotografiado o un PDF, el modelo no puede citarla &mdash; cita a un competidor que escribi&oacute; la respuesta en texto plano. Los restaurantes que s&iacute; son nombrados son los que ponen la respuesta donde una m&aacute;quina la puede leer.</p>
-      <p>Eso significa texto en tus propias p&aacute;ginas m&aacute;s <a href="/es/blog/schema-markup-para-restaurante-ejemplo/">schema markup de restaurante</a> para que los datos estructurados no tengan ambig&uuml;edad. Usa <a href="/es/tools/schema-check/">schema check</a> para confirmar que el marcado se procesa. Este es el &uacute;nico n&uacute;mero que vive en tu sitio y no en tu ficha de Google, y es el que la mayor&iacute;a de los operadores nunca ha mirado.</p>
+      <p>Eso significa texto en tus propias p&aacute;ginas m&aacute;s <a href="/es/library/los-6-tipos-de-schema-markup-que-google-usa/">schema markup de restaurante</a> para que los <!-- LIBRARY:autolink:start --><a href="/es/glossary/structured-data/" data-glossary-head="Datos estructurados" data-glossary-aka="la copia legible por máquina de tu sitio que Google sí lee" data-glossary-blurb="Un pequeño bloque JSON embebido en el &lt;head&gt; de tu sitio que refleja el contenido visible (horarios, dirección, platos del menú, reseñas, precios) en un formato que los buscadores…">datos estructurados</a><!-- LIBRARY:autolink:end --> no tengan ambig&uuml;edad. Usa <a href="/es/tools/schema-check/">schema check</a> para confirmar que el marcado se procesa. Este es el &uacute;nico n&uacute;mero que vive en tu sitio y no en tu ficha de Google, y es el que la mayor&iacute;a de los operadores nunca ha mirado.</p>
 
       <h2 id="los-arreglos-que-salen-mal">Los arreglos que salen mal</h2>
       <p>Dos reflejos empeoran los n&uacute;meros. Comprar rese&ntilde;as dispara la cantidad y luego hunde la frescura en cuanto el lote envejece, y los filtros de Google cada vez m&aacute;s las eliminan &mdash; as&iacute; que el promedio baja y las fechas se vuelven viejas a la vez. Meter palabras clave en el nombre del negocio es un riesgo de suspensi&oacute;n que puede tumbar toda la ficha, llevando los cuatro n&uacute;meros a cero en un d&iacute;a. Las se&ntilde;ales que mueven la b&uacute;squeda con IA son las lentas y reales: buena comida que aparece como rese&ntilde;as frescas, un perfil completo, y respuestas escritas en texto plano.</p>
@@ -517,39 +524,58 @@ header.nav{min-height:64px}
     <div class="foot-grid">
       <div class="foot-col foot-brand">
         <a href="/es/" class="foot-lockup-wrap" aria-label="Muntin Digital — inicio">
-          <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53" loading="lazy" decoding="async">
+          <!-- alt="" porque el <a> que envuelve ya está etiquetado.
+               Sin esto, los lectores de pantalla anuncian dos veces
+               "Muntin Digital" en el enlace del logotipo. -->
+          <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="" width="240" height="53" loading="lazy" decoding="async">
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">La ventana.</p>
-        <p class="foot-blurb">Una biblioteca web y estudio de dise&ntilde;o para restaurantes, con base en Silver Spring, MD &mdash; art&iacute;culos, herramientas gratis, investigaci&oacute;n y un glosario de <!-- count:glossary.terms -->149<!-- /count --> t&eacute;rminos, con el estudio detr&aacute;s cuando quieras contratar. Se habla espa&ntilde;ol.</p>
+        <p class="foot-blurb">Una biblioteca gratuita para restaurantes &mdash; <!-- count:articles.library -->24<!-- /count --> art&iacute;culos, <!-- count:tools.live -->12<!-- /count --> herramientas y un glosario de <!-- count:glossary.terms -->149<!-- /count --> t&eacute;rminos &mdash; con un estudio web de una persona detr&aacute;s, en Silver Spring, MD. Se habla espa&ntilde;ol.</p>
       </div>
 
-      <nav class="foot-col" aria-labelledby="foot-explore">
-        <p class="foot-heading" id="foot-explore">Explorar</p>
-        <ul class="foot-links">
-          <li><a href="/es/services/">Servicios</a></li>
-          <li><a href="/es/for/restaurants/">Para restaurantes</a></li>
-          <li><a href="/es/work/">Proyectos</a></li>
-          <li><a href="/es/about/">Sobre Don</a></li>
-          <li><a href="/es/system/">El sistema</a></li>
-          <li><a href="/receipts/" hreflang="en" lang="en">Receipts</a></li>
-          <li><a href="/methods/" hreflang="en" lang="en">Methods</a></li>
-          <li><a href="/changelog/" hreflang="en" lang="en">Changelog</a></li>
-        </ul>
-      </nav>
-
+      <!-- El orden de columnas refleja la navegación principal de 5
+           ítems (Biblioteca, Estudio, Confianza, Contacto). La
+           Biblioteca apunta primero al hub /es/library/ (las tres
+           puertas: Lee, Busca, Haz); el antiguo /es/learn/ sigue
+           resolviendo pero ya no necesita su propio enlace de pie.
+           id="foot-learn" es el marcador canónico que usa
+           scripts/sync-includes.mjs (FOOTER_MAIN_FUNNEL_MARKER), así
+           que el id se mantiene aunque la etiqueta visible sea
+           "Biblioteca". -->
       <nav class="foot-col" aria-labelledby="foot-learn">
         <p class="foot-heading" id="foot-learn">Biblioteca</p>
         <ul class="foot-links">
-          <li><a href="/es/learn/">Inicio de la biblioteca</a></li>
-          <li><a href="/es/learn/start-here/">Empieza aquí</a></li>
-          <li><a href="/es/learn/topics/">Temas</a></li>
-          <li><a href="/es/blog/">Artículos</a></li>
-          <li><a href="/es/tools/">Herramientas gratis</a></li>
+          <li><a href="/es/library/">Explora la biblioteca</a></li>
           <li><a href="/es/glossary/">Glosario</a></li>
-          <li><a href="/es/learn/research/">Investigación</a></li>
-          <li><a href="/es/learn/checklists/">Listas y recursos</a></li>
+          <li><a href="/es/tools/">Herramientas gratis</a></li>
           <li><a href="/es/sheets/">Hojas del operador</a></li>
+          <li><a href="/es/blog/">Comentarios</a></li>
+        </ul>
+      </nav>
+
+      <!-- Fase 8 (portfolio sunset): la fila "Proyectos" enlazaba a
+           /es/work/, el portafolio personal. Ese hub se retiró cuando
+           la empresa pasó a ser el currículum; la fila ya no está y
+           /es/work/* hace 301 a /es/studio/. -->
+      <nav class="foot-col" aria-labelledby="foot-studio">
+        <p class="foot-heading" id="foot-studio">Estudio</p>
+        <ul class="foot-links">
+          <li><a href="/es/studio/#pricing">Precios</a></li>
+          <li><a href="/es/studio/compare/">Comparar opciones</a></li>
+          <li><a href="/es/studio/#process">Proceso</a></li>
+          <li><a href="/es/about/">Sobre Don</a></li>
+        </ul>
+      </nav>
+
+      <nav class="foot-col" aria-labelledby="foot-trust">
+        <p class="foot-heading" id="foot-trust">Confianza</p>
+        <ul class="foot-links">
+          <li><a href="/es/never/">Lo que nunca hacemos</a></li>
+          <li><a href="/es/ai/">Pol&iacute;tica de IA</a></li>
+          <li><a href="/es/methods/">M&eacute;todos y fuentes</a></li>
+          <li><a href="/es/changelog/">Registro de cambios</a></li>
+          <li><a href="/es/receipts/">Recibos</a></li>
         </ul>
       </nav>
 
@@ -560,7 +586,7 @@ header.nav{min-height:64px}
           <li><a href="/es/window/">Contacta a Don</a></li>
           <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (se abre en una pestaña nueva)</span></a></li>
         </ul>
-        <p class="foot-trust"><strong>Respuesta:</strong> de lunes a viernes, en menos de 4 horas. Los fines de semana, el lunes en la mañana.</p>
+        <p class="foot-trust"><strong>Respuesta:</strong> en menos de 4 horas de lunes a viernes; fines de semana, el lunes.</p>
       </nav>
     </div>
 
@@ -628,7 +654,6 @@ header.nav{min-height:64px}
   <!-- listen-script:start -->
   <script src="/assets/js/listen.js?v=20260503-modsplit" defer></script>
   <!-- listen-script:end -->
-
 
 </body>
 </html>

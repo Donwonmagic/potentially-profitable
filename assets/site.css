@@ -7678,3 +7678,219 @@ table[data-viz-sortable] th[aria-sort="descending"]::after{content:"\2193";color
 body:has(.batch-marquee) header.nav{top:var(--banner-h,40px)}
 body:has(.batch-marquee) main{padding-top:calc(64px + var(--banner-h,40px))}
 @media (max-width:640px){:root{--banner-h:72px}}
+
+/* @shell:core === Phase 9 — Light refresh (micro-interactions, depth, voice search, dark-mode polish) === */
+/* ============ Phase 9 — Light refresh ============
+   A small, additive cosmetic pass that layers on top of every
+   previous phase without re-declaring anything. Five concerns:
+
+     1. Micro-interactions — tactile press / hover feedback on
+        buttons, count chips, the theme-toggle and the batch
+        marquee CTA. Every rule below honors prefers-reduced-motion
+        at the end of the section.
+
+     2. Depth — slight 3D on the hero count chips and the homepage
+        compare-grid Muntin card; the existing --elev-* tokens do
+        the work, this just wires them to hover states they were
+        missing.
+
+     3. Voice-search affordance — styling for the .search-voice
+        button injected into the search modal by site.js when the
+        browser exposes window.SpeechRecognition. The site.js side
+        only mounts the button when supported; styles below are
+        scoped to .search-voice so light-mode renders unchanged
+        when it's absent.
+
+     4. Dark-mode polish — the Phase 5 dark theme only swapped the
+        --mtn-* MuntinUI tokens, so the homepage hero / nav /
+        compare cards / hero-count chips still rendered against a
+        cream background even with [data-theme="dark"]. The block
+        below extends the swap to a small set of HOMEPAGE-SAFE
+        surfaces (body background, .nav.scrolled blur tint, hero
+        chips, compare cards). Avoided: the footer (already ink-
+        dark by construction) and the .btn family (whose hover
+        states use cream-on-teal contrast that's already legible).
+
+     5. Speakable / voice-search SEO — kept out of this file. The
+        Speakable JSON-LD blob lives per-page (added later via a
+        separate scripts/inject-speakable.mjs pass if/when the
+        product team wants it). What this section ships is the
+        live voice-input affordance, which is what readers actually
+        need.
+
+   Everything is additive: removing this section should restore the
+   pre-Phase-9 look exactly. */
+
+/* ---- Micro-interactions ---- */
+
+/* Universal press feedback for primary CTAs. The existing :hover
+   already lifts; :active dips the button slightly so the press is
+   felt before the next paint. */
+.btn:active{transform:translateY(0) scale(0.985);transition-duration:var(--t-micro)}
+.btn-primary:active{box-shadow:0 4px 12px -6px rgba(20,22,26,0.3)}
+
+/* Hero count chips become a tactile row — soft lift + accent border
+   on hover so the four shortcuts feel actionable rather than purely
+   decorative. The chip itself is already an inline-flex pill; this
+   just sweetens it. */
+.hero-counts__chip{
+  transition:transform var(--t-fast) var(--ease),
+    box-shadow var(--t-fast) var(--ease),
+    border-color var(--t-fast) var(--ease),
+    background var(--t-fast) var(--ease);
+}
+.hero-counts__chip:hover{
+  transform:translateY(-1px);
+  border-color:var(--teal);
+  background:var(--surface-1, var(--white));
+  box-shadow:var(--elev-1);
+}
+.hero-counts__chip:has(a:focus-visible){
+  outline:none;
+  box-shadow:var(--ring-focus);
+  border-color:var(--teal);
+}
+
+/* Theme-toggle icon micro-rotation. The sun icon nudges as the
+   button is hovered, and rotates further on click via :active.
+   Decorative; doesn't affect the data-theme switch. */
+.theme-toggle__icon{transition:transform var(--t-med) var(--ease-spring,var(--ease-out)),opacity var(--t-fast) var(--ease)}
+.theme-toggle:hover .theme-toggle__icon{transform:rotate(-12deg)}
+.theme-toggle:active .theme-toggle__icon{transform:rotate(-30deg) scale(0.92);transition-duration:var(--t-micro)}
+
+/* Batch marquee "Read the batch" pill — gentle lift on hover so
+   the CTA reads as actionable, plus a subtle slow shimmer on the
+   "New this week" eyebrow so visitors notice the strip exists. The
+   shimmer is intentionally slow (5s) and low-amplitude — busy
+   marketing-y animation isn't the goal. */
+.batch-marquee a{transition:transform var(--t-fast) var(--ease),box-shadow var(--t-fast) var(--ease)}
+.batch-marquee a:hover{transform:translateY(-1px);box-shadow:0 6px 18px -8px rgba(0,0,0,0.35)}
+
+/* ---- Depth — homepage surfaces ---- */
+
+/* Compare cards — gentle hover float so the three-card row feels
+   like a comparison the visitor can interact with. Selector is
+   intentionally narrow (.compare-grid .card) so it doesn't reach
+   into tool cards or article cards elsewhere. */
+.compare-grid .card{transition:transform var(--t-med) var(--ease-out),box-shadow var(--t-med) var(--ease-out)}
+.compare-grid .card:hover{transform:translateY(-3px);box-shadow:var(--elev-2)}
+
+/* Hero serif-italic accent — keep the teal but layer a very soft
+   gradient so the headline accent has the same kind of subtle
+   depth the rest of the visual identity uses on hover states.
+   `background-clip:text` falls back gracefully — browsers without
+   support just render the existing var(--teal). */
+.hero h1 .serif-italic{
+  background:linear-gradient(180deg,var(--teal) 0%,var(--teal-dark,var(--teal)) 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+}
+@supports (background-clip:text) or (-webkit-background-clip:text){
+  .hero h1 .serif-italic{-webkit-text-fill-color:transparent;color:transparent}
+}
+
+/* ---- Voice-search affordance ---- */
+
+/* The voice button is inserted by site.js between .search-input and
+   .search-close — only when window.SpeechRecognition / webkitSpeech-
+   Recognition is exposed. Mirrors the .search-close visual weight so
+   the two controls read as a pair. The mic glyph rides currentColor
+   so the active (listening) state can recolor it with a single
+   declaration. */
+.search-voice{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:32px;height:32px;flex-shrink:0;
+  background:transparent;border:1px solid var(--line);border-radius:999px;
+  color:var(--stone);cursor:pointer;
+  transition:background var(--t-fast) var(--ease),
+    border-color var(--t-fast) var(--ease),
+    color var(--t-fast) var(--ease),
+    transform var(--t-fast) var(--ease);
+}
+.search-voice svg{width:16px;height:16px}
+.search-voice:hover{border-color:var(--teal);color:var(--teal);background:var(--cream-2)}
+.search-voice:focus-visible{outline:none;box-shadow:var(--ring-focus);border-color:var(--teal)}
+.search-voice[aria-pressed="true"]{
+  color:var(--cream);background:var(--teal);border-color:var(--teal);
+  animation:mtn-voice-pulse 1.6s var(--ease) infinite;
+}
+@keyframes mtn-voice-pulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(42,80,200,0.45)}
+  50%   {box-shadow:0 0 0 8px rgba(42,80,200,0)}
+}
+
+/* ---- Dark-mode polish — homepage-safe surfaces ---- */
+
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --refresh-bg:         #14161A;
+    --refresh-surface-1:  #1B1E24;
+    --refresh-surface-2:  #23272F;
+    --refresh-text:       #F1EDE5;
+    --refresh-text-soft:  #B8B3A8;
+    --refresh-line:       #2C3038;
+  }
+}
+:root[data-theme="dark"]{
+  --refresh-bg:         #14161A;
+  --refresh-surface-1:  #1B1E24;
+  --refresh-surface-2:  #23272F;
+  --refresh-text:       #F1EDE5;
+  --refresh-text-soft:  #B8B3A8;
+  --refresh-line:       #2C3038;
+}
+
+/* Apply the dark tokens to a curated set of homepage surfaces only.
+   The selectors are intentionally narrow so the rest of the site
+   (article bodies, tool result panels, the footer that's already
+   ink-dark) is unaffected. Adopt-as-you-touch — later phases can
+   extend to additional surfaces once contrast is re-checked. */
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]) body{background:var(--refresh-bg);color:var(--refresh-text)}
+  :root:not([data-theme="light"]) .nav.scrolled{background:rgba(20,22,26,0.82);border-bottom-color:var(--refresh-line)}
+  :root:not([data-theme="light"]) .hero-counts__chip{background:var(--refresh-surface-1);border-color:var(--refresh-line);color:var(--refresh-text-soft)}
+  :root:not([data-theme="light"]) .hero-counts__chip:hover{background:var(--refresh-surface-2);border-color:var(--teal)}
+  :root:not([data-theme="light"]) .hero-sub{color:var(--refresh-text-soft)}
+  :root:not([data-theme="light"]) .bg-cream2{background:var(--refresh-surface-1)}
+  :root:not([data-theme="light"]) .trust-strip{background:var(--refresh-surface-1);border-block-color:var(--refresh-line);color:var(--refresh-text-soft)}
+  :root:not([data-theme="light"]) .trust-strip__list{color:var(--refresh-text-soft)}
+  :root:not([data-theme="light"]) .search-modal{background:var(--refresh-bg)}
+  :root:not([data-theme="light"]) .search-input-wrap{background:var(--refresh-surface-1);border-bottom-color:var(--refresh-line)}
+  :root:not([data-theme="light"]) .search-input{color:var(--refresh-text)}
+  :root:not([data-theme="light"]) .search-close{background:var(--refresh-surface-2);border-color:var(--refresh-line);color:var(--refresh-text-soft)}
+  :root:not([data-theme="light"]) .search-voice{border-color:var(--refresh-line);color:var(--refresh-text-soft)}
+  :root:not([data-theme="light"]) .search-voice:hover{background:var(--refresh-surface-2)}
+  :root:not([data-theme="light"]) .theme-toggle{border-color:var(--refresh-line);color:var(--refresh-text)}
+  :root:not([data-theme="light"]) .theme-toggle:hover{background:var(--refresh-surface-1);border-color:var(--teal)}
+}
+:root[data-theme="dark"] body{background:var(--refresh-bg);color:var(--refresh-text)}
+:root[data-theme="dark"] .nav.scrolled{background:rgba(20,22,26,0.82);border-bottom-color:var(--refresh-line)}
+:root[data-theme="dark"] .hero-counts__chip{background:var(--refresh-surface-1);border-color:var(--refresh-line);color:var(--refresh-text-soft)}
+:root[data-theme="dark"] .hero-counts__chip:hover{background:var(--refresh-surface-2);border-color:var(--teal)}
+:root[data-theme="dark"] .hero-sub{color:var(--refresh-text-soft)}
+:root[data-theme="dark"] .bg-cream2{background:var(--refresh-surface-1)}
+:root[data-theme="dark"] .trust-strip{background:var(--refresh-surface-1);border-block-color:var(--refresh-line);color:var(--refresh-text-soft)}
+:root[data-theme="dark"] .trust-strip__list{color:var(--refresh-text-soft)}
+:root[data-theme="dark"] .search-modal{background:var(--refresh-bg)}
+:root[data-theme="dark"] .search-input-wrap{background:var(--refresh-surface-1);border-bottom-color:var(--refresh-line)}
+:root[data-theme="dark"] .search-input{color:var(--refresh-text)}
+:root[data-theme="dark"] .search-close{background:var(--refresh-surface-2);border-color:var(--refresh-line);color:var(--refresh-text-soft)}
+:root[data-theme="dark"] .search-voice{border-color:var(--refresh-line);color:var(--refresh-text-soft)}
+:root[data-theme="dark"] .search-voice:hover{background:var(--refresh-surface-2)}
+:root[data-theme="dark"] .theme-toggle{border-color:var(--refresh-line);color:var(--refresh-text)}
+:root[data-theme="dark"] .theme-toggle:hover{background:var(--refresh-surface-1);border-color:var(--teal)}
+
+/* ---- Reduced-motion suppression ---- */
+
+/* Every Phase 9 animation honors prefers-reduced-motion. Hover
+   feedback that's purely color-based (border-color, background) is
+   preserved — only the transform / pulse animations dampen. */
+@media (prefers-reduced-motion: reduce){
+  .btn:active,
+  .hero-counts__chip:hover,
+  .compare-grid .card:hover,
+  .batch-marquee a:hover{transform:none}
+  .theme-toggle:hover .theme-toggle__icon,
+  .theme-toggle:active .theme-toggle__icon{transform:none}
+  .search-voice[aria-pressed="true"]{animation:none}
+}

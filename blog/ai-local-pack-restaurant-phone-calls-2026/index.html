@@ -181,6 +181,10 @@ header.nav{min-height:64px}
     {
       "@type": "DefinedTerm",
       "url": "https://muntin.digital/glossary/map-pack/"
+    },
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/glossary/funnel/"
     }
   ]
 }
@@ -225,8 +229,8 @@ header.nav{min-height:64px}
       Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
     </a>
     <!-- Phase 7: 5-item nav, per launch plan Part II.
-         Library / Tools / Work / Studio / Sign in.
-         Library now points at the canonical /library/ hub (the
+         Library / Tools / Studio / Sign in.
+         Library points at the canonical /library/ hub (the
          three-doors page). Tools is promoted from the old Library
          mega-menu to a top-level item. Studio replaces Services +
          Restaurants + About — they all live under /studio/ now,
@@ -236,11 +240,15 @@ header.nav{min-height:64px}
          Restaurants pages remain reachable via /studio/ and the
          _redirects table; /about/ is unchanged. The mega-menu is
          retired (the hub IS the menu now); the controller script
-         is gone too. -->
+         is gone too.
+
+         /work/ was retired with the Phase 8 portfolio-sunset pass:
+         the company-as-resume framing made the personal-portfolio
+         showcase redundant. Legacy /work/* URLs 301 to /studio/
+         via _redirects so old backlinks land softly. -->
     <nav class="nav-links" aria-label="Primary">
       <a href="/library/">Library</a>
       <a href="/tools/">Tools</a>
-      <a href="/work/">Work</a>
       <a href="/studio/">Studio</a>
       <!-- Both sign-in / workshop ship hidden by default; the
            auth-state JS at the bottom of this file calls
@@ -297,7 +305,6 @@ header.nav{min-height:64px}
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
     <a href="/library/">Library</a>
     <a href="/tools/">Tools</a>
-    <a href="/work/">Work</a>
     <a href="/studio/">Studio</a>
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
@@ -421,7 +428,7 @@ header.nav{min-height:64px}
 
 <p>You can rank first on the map and still watch the phone go quiet. The ranking didn&rsquo;t break; the path to the call did. More and more, the AI answer at the top of the result resolves the diner&rsquo;s question &mdash; are you open, where are you, are you any good &mdash; before they ever tap <a href="/glossary/click-to-call/">call</a> or <a href="/glossary/click-to-directions/">directions</a>. The visit still happens. The <em>tap</em> doesn&rsquo;t &mdash; so your dashboard shows a drop you can&rsquo;t explain from your rank.</p>
 
-      <p>The numbers are real. A 2026 local-search analysis found restaurant Google Maps views down 40.1% and food orders from those listings down 25.7% over two years, even as rankings held. A separate 2026 survey found AI local packs &mdash; the AI-written block that sometimes replaces the classic three-pack &mdash; appearing on roughly 7% of tracked local searches, and dropping the click-to-call button when they do.</p>
+      <p>The numbers are real. A 2026 local-search analysis found restaurant Google Maps views down 40.1% and food orders from those listings down 25.7% over two years, even as rankings held. A separate 2026 survey found AI local packs &mdash; the AI-written block that sometimes replaces the classic three-pack &mdash; appearing on roughly 7% of tracked local searches, and dropping the <!-- LIBRARY:autolink:start --><a href="/glossary/click-to-call/" data-glossary-head="Click-to-call" data-glossary-aka="tap-to-call, tel: link" data-glossary-blurb="A phone number on your site that, when tapped on a phone, opens the dialer with your number pre-filled — instead of being plain text the visitor has to copy.">click-to-call</a><!-- LIBRARY:autolink:end --> button when they do.</p>
 
       <figure class="viz-figure article-figure" data-audio-alt="What fell on restaurant Maps listings over two years, per a 2026 local-search analysis. Google Maps views for restaurants fell about forty percent. Food orders from those listings fell about twenty-six percent. Rankings held over the same period — the decline is in engagement, not position.">
         <div class="viz-bars">
@@ -540,7 +547,7 @@ header.nav{min-height:64px}
         <figcaption>When the button disappears, the conversion has to move somewhere the answer can&rsquo;t intercept.</figcaption>
       </figure>
 
-      <p>Start by seeing your own funnel: the <a href="/tools/storefront-health/">storefront health</a> check shows whether your booking and order paths actually work on a phone, and the <a href="/tools/gbp-grader/">GBP grader</a> shows whether the profile is complete enough to be chosen. The reservation side is covered in <a href="/blog/why-your-restaurant-loses-reservations-every-night/">why your restaurant loses reservations every night</a>. The phone may stay quiet. The covers don&rsquo;t have to.</p>
+      <p>Start by seeing your own <!-- LIBRARY:autolink:start --><a href="/glossary/funnel/" data-glossary-head="Funnel" data-glossary-aka="the path from visitor to customer" data-glossary-blurb="The sequence of steps a visitor goes through before becoming a customer — landing page → menu page → reserve button → reservation form → confirmation.">funnel</a><!-- LIBRARY:autolink:end -->: the <a href="/tools/storefront-health/">storefront health</a> check shows whether your booking and order paths actually work on a phone, and the <a href="/tools/gbp-grader/">GBP grader</a> shows whether the profile is complete enough to be chosen. The reservation side is covered in <a href="/library/reservation-conversion-guide/">why your restaurant loses reservations every night</a>. The phone may stay quiet. The covers don&rsquo;t have to.</p>
 
   <!-- article-takeaways:start -->
             <aside class="key-takeaways" data-llm="takeaways" aria-label="Key takeaways">
@@ -601,20 +608,47 @@ header.nav{min-height:64px}
     <div class="foot-grid">
       <div class="foot-col foot-brand">
         <a href="/" class="foot-lockup-wrap" aria-label="Muntin Digital home">
-          <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53" loading="lazy" decoding="async">
+          <!-- alt="" because the surrounding <a> is already labeled.
+               Without it, screen readers announce "Muntin Digital,
+               Muntin Digital home" on the lockup link. -->
+          <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="" width="240" height="53" loading="lazy" decoding="async">
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a <!-- count:glossary.terms -->149<!-- /count -->-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->24<!-- /count --> articles, <!-- count:tools.live -->12<!-- /count --> tools, <!-- count:glossary.terms -->149<!-- /count --> glossary terms &mdash; with a one-person web studio behind it in Silver Spring, MD.</p>
       </div>
 
-      <nav class="foot-col" aria-labelledby="foot-explore">
-        <p class="foot-heading" id="foot-explore">Studio</p>
+      <!-- Column order mirrors the 4-item primary nav
+           (Library, Tools-rolled-into-Library, Studio) so the
+           footer reinforces the same IA. The Library column leads
+           with /library/ (the post-Phase-7 three-doors hub); the
+           older /learn/ landing still resolves but no longer needs
+           its own footer slot. id="foot-learn" is the canonical-
+           footer marker that scripts/sync-includes.mjs keys on
+           (FOOTER_MAIN_FUNNEL_MARKER), so the id stays even though
+           the visible label is the more familiar "Library".
+
+           Phase 8 (portfolio sunset): the Studio column's "Case
+           studies" row used to link to /work/, the personal-portfolio
+           hub. That hub was retired when the company became the
+           resume; the row is now gone and /work/* 301s to /studio/. -->
+      <nav class="foot-col" aria-labelledby="foot-learn">
+        <p class="foot-heading" id="foot-learn">Library</p>
         <ul class="foot-links">
-          <li><a href="/services/">Services &amp; pricing</a></li>
-          <li><a href="/for/restaurants/">For restaurants</a></li>
+          <li><a href="/library/">Browse the library</a></li>
+          <li><a href="/glossary/">Glossary</a></li>
+          <li><a href="/tools/">Free tools</a></li>
+          <li><a href="/sheets/">Operator sheets</a></li>
+          <li><a href="/blog/">Commentary</a></li>
+        </ul>
+      </nav>
+
+      <nav class="foot-col" aria-labelledby="foot-studio">
+        <p class="foot-heading" id="foot-studio">Studio</p>
+        <ul class="foot-links">
+          <li><a href="/studio/#pricing">Pricing</a></li>
           <li><a href="/studio/compare/">Compare options</a></li>
-          <li><a href="/work/">Case studies</a></li>
+          <li><a href="/studio/#process">Process</a></li>
           <li><a href="/about/">About Don</a></li>
         </ul>
       </nav>
@@ -622,28 +656,11 @@ header.nav{min-height:64px}
       <nav class="foot-col" aria-labelledby="foot-trust">
         <p class="foot-heading" id="foot-trust">Trust</p>
         <ul class="foot-links">
-          <li><a href="/never/">Never</a></li>
+          <li><a href="/never/">What we never do</a></li>
           <li><a href="/ai/">AI policy</a></li>
-          <li><a href="/security/">Data &amp; security</a></li>
-          <li><a href="/methods/">Methods</a></li>
-          <li><a href="/receipts/">Receipts</a></li>
+          <li><a href="/methods/">Methods &amp; sources</a></li>
           <li><a href="/changelog/">Changelog</a></li>
-          <li><a href="/system/">The system</a></li>
-        </ul>
-      </nav>
-
-      <nav class="foot-col" aria-labelledby="foot-learn">
-        <p class="foot-heading" id="foot-learn">Library</p>
-        <ul class="foot-links">
-          <li><a href="/learn/">Library home</a></li>
-          <li><a href="/learn/start-here/">Start here</a></li>
-          <li><a href="/learn/topics/">Topics</a></li>
-          <li><a href="/blog/">Articles</a></li>
-          <li><a href="/tools/">Free tools</a></li>
-          <li><a href="/glossary/">Glossary</a></li>
-          <li><a href="/learn/research/">Research</a></li>
-          <li><a href="/learn/checklists/">Checklists &amp; guides</a></li>
-          <li><a href="/sheets/">Operator sheets</a></li>
+          <li><a href="/receipts/">Receipts</a></li>
         </ul>
       </nav>
 
@@ -654,7 +671,7 @@ header.nav{min-height:64px}
           <li><a href="/window/">Reach Don</a></li>
           <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (opens in new tab)</span></a></li>
         </ul>
-        <p class="foot-trust"><strong>Reply:</strong> Mondays through Fridays, within 4 hours. Weekends, by Monday morning.</p>
+        <p class="foot-trust"><strong>Reply:</strong> within 4 hours Mon&ndash;Fri; weekends by Monday.</p>
       </nav>
     </div>
 

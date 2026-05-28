@@ -318,6 +318,12 @@
       // Phase 7 dark-mode toggle — tracks user override of OS pref.
       // Props: { theme: 'auto' | 'light' | 'dark' }.
       'Theme Toggle',
+      // Phase 9 light-refresh — voice search inside the Pagefind modal.
+      // Fired when the user activates speech-to-text input. Mounted only
+      // when window.SpeechRecognition (Chromium/Safari) is available, so
+      // event volume is naturally capped by browser support.
+      // Props: { locale: 'en-US' | 'es-ES' } — bounded cardinality.
+      'Voice Search',
     ],
     // Phase G.9 (Growth) — first-touch attribution + AI-search referrer
     // detection + tool-funnel + article-scroll instrumentation. Bounded

@@ -126,9 +126,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=da841dee88d3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-core.css?v=a497939fe0a3" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-tool.css?v=9aab013deef2" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=da841dee88d3"><link rel="stylesheet" href="/assets/site-tool.css?v=9aab013deef2"></noscript>
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a497939fe0a3"><link rel="stylesheet" href="/assets/site-tool.css?v=9aab013deef2"></noscript>
 <style>.breadcrumb{padding-top:100px}
 /* === Open Hours tool-scoped styles. Page-prefix .oh-*. === */
 .oh-form{display:flex;flex-direction:column;gap:18px}
@@ -452,18 +452,22 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       </svg>
       Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
     </a>
-    <!-- Phase 7: nav de 5 elementos, según el plan de lanzamiento Parte II.
-         Biblioteca / Herramientas / Proyectos / Estudio / Acceder.
+    <!-- Phase 7: nav de 4 elementos, según el plan de lanzamiento Parte II.
+         Biblioteca / Herramientas / Estudio / Acceder.
          Biblioteca apunta al hub canónico /es/library/. Herramientas
          se promueve del antiguo mega-menú a un elemento de primer
          nivel. Estudio reemplaza Servicios + Restaurantes + Sobre
          Don &mdash; todo vive bajo /es/studio/ ahora. El mega-menú
          se retira (el hub ES el menú); el controlador del script
-         también desaparece. -->
+         también desaparece.
+
+         /es/work/ se retiró en la pasada de portfolio-sunset de la
+         Fase 8 (el encuadre de la empresa-como-CV hizo redundante
+         el portafolio personal). Las URLs /es/work/* hacen 301 a
+         /es/studio/ vía _redirects. -->
     <nav class="nav-links" aria-label="Principal">
       <a href="/es/library/">Biblioteca</a>
       <a href="/es/tools/">Herramientas</a>
-      <a href="/es/work/">Proyectos</a>
       <a href="/es/studio/">Estudio</a>
       <a class="js-nav-signin nav-link-auth" href="/es/sign-in/" hidden>Acceder</a>
       <a class="js-nav-workshop nav-link-auth" href="/es/workbench/" hidden>El Taller</a>
@@ -492,7 +496,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   <nav class="mobile-menu" id="mobileMenu" aria-label="Navegación móvil" hidden>
     <a href="/es/library/">Biblioteca</a>
     <a href="/es/tools/">Herramientas</a>
-    <a href="/es/work/">Proyectos</a>
     <a href="/es/studio/">Estudio</a>
     <a class="js-nav-signin mobile-auth" href="/es/sign-in/" hidden>Acceder</a>
     <a class="js-nav-workshop mobile-auth" href="/es/workbench/" hidden>El Taller</a>
@@ -572,7 +575,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <span class="eyebrow">Herramienta gratis · se queda en tu navegador</span>
     <h1 style="font-family:var(--font-display);font-size:clamp(34px,4.5vw,52px);font-weight:500;color:var(--ink);margin:14px 0 14px;line-height:1.1;">Pon bien tu horario en todas partes.</h1>
       <!-- tool-verified:start -->
-            <p class="tool-verified">Última revisión: <time datetime="2026-05-23">23 de mayo de 2026</time></p>
+            <p class="tool-verified">Última revisión: <time datetime="2026-05-27">27 de mayo de 2026</time></p>
             <!-- tool-verified:end -->
       <!-- data-promise:start -->
             <aside class="tool-data-promise" aria-label="Promesa de datos">
@@ -1196,13 +1199,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           <p class="tool-deep-snippet">Una entidad aparte del horario regular en el modelo de datos de Google: excepciones por fecha para feriados, eventos privados, cierres por c…</p>
           <span class="tool-deep-cta">Leer la definición <span aria-hidden="true">→</span></span>
         </a>
-      <a class="tool-deep-card tool-deep-card-term" href="/es/glossary/holiday-hours/">
-          <span class="tool-deep-kind">Glosario</span>
-          <h3>Horarios festivos</h3>
-          <p class="tool-deep-aka">las excepciones por fecha que todo restaurante debe definir cada año</p>
-          <p class="tool-deep-snippet">El subconjunto de horarios especiales que se repite por calendario — cerrado en Acción de Gracias y Navidad, cierre temprano en Nochebuena, …</p>
-          <span class="tool-deep-cta">Leer la definición <span aria-hidden="true">→</span></span>
-        </a>
       <a class="tool-deep-card tool-deep-card-term" href="/es/glossary/nap-consistency/">
           <span class="tool-deep-kind">Glosario</span>
           <h3>Consistencia de NAP</h3>
@@ -1225,8 +1221,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         </a>
       <a class="tool-deep-card tool-deep-card-article" href="/es/blog/how-to-recover-reservations-from-googles-find-a-table/">
           <span class="tool-deep-kind">Artículo</span>
-          <h3>Cómo dejar de perder reservas con la función &quot;Buscar una mesa&quot; de Google</h3>
-          <p class="tool-deep-snippet">Google ahora muestra los widgets de reserva OpenTable y Resy directamente en Maps, para que los clientes reserven sin tener que visitar tu sitio web. Esto es lo que está sucediendo, por qué debería importarte y los tres movimientos específicos que recuperan el flujo de reservas de regreso a tu propio sitio.</p>
+          <h3>how-to-recover-reservations-from-googles-find-a-table</h3>
+          <p class="tool-deep-snippet"></p>
           <span class="tool-deep-cta">Leer la guía <span aria-hidden="true">→</span></span>
         </a>
     </div>
@@ -1254,8 +1250,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <div class="tool-knit__col">
         <h3>Lee</h3>
         <ul>
-          <li><a href="/es/blog/how-to-set-up-google-business-profile-for-your-restaurant/">Configurar Google Business Profile</a></li>
-          <li><a href="/es/blog/how-to-recover-reservations-from-googles-find-a-table/">Recuperar reservas de Find a Table de Google</a></li>
+          <li><a href="/es/library/how-to-set-up-google-business-profile-for-your-restaurant/">Configurar Google Business Profile</a></li>
+          <li><a href="/es/library/reservation-conversion-guide/">Recuperar reservas de Find a Table de Google</a></li>
         </ul>
       </div>
       <div class="tool-knit__col">

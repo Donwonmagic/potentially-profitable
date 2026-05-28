@@ -196,6 +196,7 @@ const SKIP_PATHS = [
   /scripts\/sweep-two-restaurants/, // the cleanup script itself
   /data\/sourced-claims\.json$/, // the registry itself
   /docs\/fact-check\.md$/, // the rule doc documents the blocked patterns
+  /docs\/voice-canon-blog\.md$/, // blog canon documents the same blocked patterns
   /docs\/release-notes\/.*audio-retranslate\.md$/, // re-render runbook documents which patterns were cut
   /\.git\//,
   /node_modules\//,

@@ -315,6 +315,28 @@ function esc(s) {
     .replace(/'/g, '&#39;');
 }
 
+// Phase 7: HTML-escape a string but pass through `<!-- count:KEY -->VALUE<!-- /count -->`
+// sentinels intact. Without this, count sentinels embedded in
+// template literals (e.g., term_final_h2_l2 = "<!-- count:glossary.terms -->135<!-- /count --> términos")
+// get escaped to "&lt;!-- count:..." on every build run, which both breaks
+// inject-site-counts (which can't find escaped sentinels to replace)
+// and trips check-count-sentinel-escape.
+function escKeepSentinels(s) {
+  const SENTINEL = /<!-- count:[\w.]+ -->[^<]*<!-- \/count -->/g;
+  const str = String(s);
+  const out = [];
+  let i = 0;
+  let m;
+  SENTINEL.lastIndex = 0;
+  while ((m = SENTINEL.exec(str))) {
+    out.push(esc(str.slice(i, m.index)));
+    out.push(m[0]); // raw sentinel, no escaping
+    i = m.index + m[0].length;
+  }
+  out.push(esc(str.slice(i)));
+  return out.join('');
+}
+
 // Index every piece of content by topic slug, in the order it should
 // appear on the topic page (newest articles first; tools and research
 // in the order declared in the tag file). Locale-aware: ES pulls
@@ -505,7 +527,6 @@ function navHeader(altUrl, bodyClass) {
       <a href="/services/">Services</a>
       <a href="/for/restaurants/">Restaurants</a>
       <a href="/learn/">Learn</a>
-      <a href="/work/">Work</a>
       <a href="/about/">About</a>
     </nav>
     <button type="button" class="nav-search-btn js-open-search" aria-label="Open search (Cmd+K)" title="Search — Cmd K">
@@ -531,7 +552,6 @@ function navHeader(altUrl, bodyClass) {
     <a href="/services/">Services</a>
     <a href="/for/restaurants/">Restaurants</a>
     <a href="/learn/">Learn</a>
-    <a href="/work/">Work</a>
     <a href="/about/">About</a>
     <button type="button" class="mobile-search js-open-search">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
@@ -582,7 +602,6 @@ function siteFooter() {
         <ul class="foot-links">
           <li><a href="/services/">Services</a></li>
           <li><a href="/for/restaurants/">For restaurants</a></li>
-          <li><a href="/work/">Work</a></li>
           <li><a href="/about/">About Don</a></li>
           <li><a href="/system/">The system</a></li>
         </ul>
@@ -1217,7 +1236,7 @@ ${siblingsBlock}
   <div class="container">
     <div class="section-header reveal section-center">
       <span class="eyebrow">${esc(t(locale, 'term_final_eyebrow'))}</span>
-      <h2>${esc(t(locale, 'term_final_h2_l1'))}<br><span class="serif-italic">${esc(t(locale, 'term_final_h2_l2'))}</span></h2>
+      <h2>${esc(t(locale, 'term_final_h2_l1'))}<br><span class="serif-italic">${escKeepSentinels(t(locale, 'term_final_h2_l2'))}</span></h2>
       <p class="final-sub">${esc(t(locale, 'term_final_sub'))}</p>
     </div>
     <div class="hero-ctas reveal hero-ctas-center">
@@ -1797,9 +1816,14 @@ function firstSentence(text, cap = 180) {
   return (lastSpace > 0 ? cut.slice(0, lastSpace) : cut) + '…';
 }
 
-function autoLinkGlossary(locale, blogSlug, terms) {
-  const root = locale === 'es' ? join(REPO, 'es/blog') : join(REPO, 'blog');
-  const file = join(root, blogSlug, 'index.html');
+function autoLinkGlossary(locale, blogSlug, terms, namespace = 'blog') {
+  // Phase 7: articles may live in /blog/ (timely) or /library/ (evergreen).
+  // The library-tags.json entry carries `namespace`; default is 'blog' for
+  // entries that pre-date the split.
+  const baseDir = namespace === 'library'
+    ? (locale === 'es' ? 'es/library' : 'library')
+    : (locale === 'es' ? 'es/blog'    : 'blog');
+  const file = join(REPO, baseDir, blogSlug, 'index.html');
   let html;
   try { html = readFileSync(file, 'utf8'); } catch { return 0; }
 
@@ -1811,8 +1835,12 @@ function autoLinkGlossary(locale, blogSlug, terms) {
     (_m, inner) => inner,
   );
 
-  const articleStart = html.indexOf('<article class="article-body"');
-  if (articleStart < 0) return 0;
+  // Find the post-body article tag — class list may include other
+  // utility classes (e.g., "container") in any order, so match by id
+  // rather than by class prefix.
+  const articleMatch = html.match(/<article[^>]*\bid="post-body"[^>]*>/);
+  if (!articleMatch) return 0;
+  const articleStart = articleMatch.index;
   const articleEnd = html.indexOf('</article>', articleStart);
   if (articleEnd < 0) return 0;
 
@@ -2032,9 +2060,29 @@ for (const locale of LOCALES) {
   {
     const { terms } = parseGlossary(locale);
     console.log(`\nGlossary auto-link (${locale}):`);
-    for (const blogSlug of Object.keys(tagsDoc.blog_posts)) {
-      const linked = autoLinkGlossary(locale, blogSlug, terms);
-      console.log(`  ${blogSlug.padEnd(56)} ${linked} link(s) stamped`);
+    // Phase 7: ES articles live at native Spanish slugs (per
+    // data/i18n-slug-map.json), not the EN slug. For the ES pass,
+    // resolve each EN slug to its ES counterpart via the per-namespace
+    // section of the slug map. EN-only posts (no ES mapping) are
+    // skipped for locale=es; the report logs them as "no ES mirror".
+    let slugMap = { blog: {}, library: {} };
+    try {
+      slugMap = JSON.parse(readFileSync(join(DATA, 'i18n-slug-map.json'), 'utf8'));
+    } catch {}
+    for (const [blogSlug, post] of Object.entries(tagsDoc.blog_posts)) {
+      const namespace = (post && typeof post === 'object' && post.namespace) || 'blog';
+      let resolvedSlug = blogSlug;
+      if (locale === 'es') {
+        const map = (namespace === 'library' ? slugMap.library : slugMap.blog) || {};
+        if (!map[blogSlug]) {
+          console.log(`  ${(namespace + '/' + blogSlug).padEnd(56)} (no ES mirror)`);
+          continue;
+        }
+        resolvedSlug = map[blogSlug];
+      }
+      const linked = autoLinkGlossary(locale, resolvedSlug, terms, namespace);
+      const label = locale === 'es' ? `es/${namespace}/${resolvedSlug}` : `${namespace}/${resolvedSlug}`;
+      console.log(`  ${label.padEnd(56)} ${linked} link(s) stamped`);
     }
   }
 

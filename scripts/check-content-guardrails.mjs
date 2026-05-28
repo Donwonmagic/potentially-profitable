@@ -27,6 +27,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { NON_ARTICLE_LIBRARY_SLUGS } from './lib/library-skips.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const repoRoot   = path.resolve(path.dirname(__filename), '..');
@@ -37,11 +38,13 @@ const now = Date.now();
 
 function articleFiles() {
   const out = [];
-  for (const dir of ['blog', 'es/blog']) {
+  for (const dir of ['blog', 'es/blog', 'library', 'es/library']) {
     const root = path.join(repoRoot, dir);
     if (!fs.existsSync(root)) continue;
     for (const slug of fs.readdirSync(root)) {
       if (slug === 'drafts') continue;
+      // Phase 7: /library/menu-design-*/ are collection landings, not articles.
+      if ((dir === 'library' || dir === 'es/library') && NON_ARTICLE_LIBRARY_SLUGS.has(slug)) continue;
       const file = path.join(root, slug, 'index.html');
       if (fs.existsSync(file)) out.push({ file, slug, locale: dir.startsWith('es') ? 'es' : 'en' });
     }
@@ -53,7 +56,13 @@ function checkRubric(file, slug, locale) {
   const src = fs.readFileSync(file, 'utf8');
   const issues = [];
 
-  // 1. Article JSON-LD with author.@id #don-goldstein.
+  // 1. Article JSON-LD with author.@id #don-goldstein OR #muntin-desk.
+  // The Muntin Desk became the canonical library byline in May 2026
+  // (see docs/voice-canon-library.md §3). Library articles ship under
+  // The Muntin Desk (Organization #muntin-desk); blog dispatches stay
+  // under Don Goldstein (Person #don-goldstein). The rubric accepts
+  // either — the byline is editorial, the rubric just asserts that an
+  // Article schema exists with one of the two registered authors.
   const ldBlocks = [...src.matchAll(/<script type="application\/ld\+json">\s*([\s\S]*?)<\/script>/g)];
   let hasArticleSchema = false;
   for (const m of ldBlocks) {
@@ -65,10 +74,10 @@ function checkRubric(file, slug, locale) {
       if (!types.some((t) => t === 'Article' || t === 'BlogPosting' || t === 'NewsArticle')) continue;
       const author = node.author;
       const authorId = author && (author['@id'] || (Array.isArray(author) && author[0]?.['@id']));
-      if (authorId && /#don-goldstein$/.test(authorId)) hasArticleSchema = true;
+      if (authorId && /#(?:don-goldstein|muntin-desk)$/.test(authorId)) hasArticleSchema = true;
     }
   }
-  if (!hasArticleSchema) issues.push('missing Article JSON-LD with author.@id == #don-goldstein');
+  if (!hasArticleSchema) issues.push('missing Article JSON-LD with author.@id == #don-goldstein or #muntin-desk');
 
   // 4. ≥3 internal links to /glossary/<slug>/.
   const glossaryLinks = (src.match(/href="\/(?:es\/)?glossary\/[a-z0-9-]+\//g) || []).length;

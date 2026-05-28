@@ -39,9 +39,9 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=da841dee88d3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-core.css?v=a497939fe0a3" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=4c628560c207" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=da841dee88d3"><link rel="stylesheet" href="/assets/site-article.css?v=4c628560c207"></noscript>
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a497939fe0a3"><link rel="stylesheet" href="/assets/site-article.css?v=4c628560c207"></noscript>
 
 <!-- topic-schema:start -->
 <script type="application/ld+json">
@@ -96,7 +96,7 @@
     {
       "@type": "ItemList",
       "@id": "https://muntin.digital/learn/topics/trust-reviews/#articles",
-      "numberOfItems": 4,
+      "numberOfItems": 5,
       "itemListElement": [
         {
           "@type": "ListItem",
@@ -106,16 +106,21 @@
         {
           "@type": "ListItem",
           "position": 2,
-          "url": "https://muntin.digital/blog/service-charges-vs-tipping-restaurant-operator-math-2026/"
+          "url": "https://muntin.digital/blog/how-to-appear-in-ai-search-restaurant-2026/"
         },
         {
           "@type": "ListItem",
           "position": 3,
-          "url": "https://muntin.digital/blog/how-to-respond-to-google-reviews-restaurant-playbook-2026/"
+          "url": "https://muntin.digital/blog/service-charge-vs-tipping-model/"
         },
         {
           "@type": "ListItem",
           "position": 4,
+          "url": "https://muntin.digital/blog/google-review-response-playbook/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 5,
           "url": "https://muntin.digital/blog/how-to-get-more-google-reviews-for-your-restaurant/"
         }
       ]
@@ -163,8 +168,8 @@
       Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
     </a>
     <!-- Phase 7: 5-item nav, per launch plan Part II.
-         Library / Tools / Work / Studio / Sign in.
-         Library now points at the canonical /library/ hub (the
+         Library / Tools / Studio / Sign in.
+         Library points at the canonical /library/ hub (the
          three-doors page). Tools is promoted from the old Library
          mega-menu to a top-level item. Studio replaces Services +
          Restaurants + About — they all live under /studio/ now,
@@ -174,11 +179,15 @@
          Restaurants pages remain reachable via /studio/ and the
          _redirects table; /about/ is unchanged. The mega-menu is
          retired (the hub IS the menu now); the controller script
-         is gone too. -->
+         is gone too.
+
+         /work/ was retired with the Phase 8 portfolio-sunset pass:
+         the company-as-resume framing made the personal-portfolio
+         showcase redundant. Legacy /work/* URLs 301 to /studio/
+         via _redirects so old backlinks land softly. -->
     <nav class="nav-links" aria-label="Primary">
       <a href="/library/">Library</a>
       <a href="/tools/">Tools</a>
-      <a href="/work/">Work</a>
       <a href="/studio/">Studio</a>
       <!-- Both sign-in / workshop ship hidden by default; the
            auth-state JS at the bottom of this file calls
@@ -235,7 +244,6 @@
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
     <a href="/library/">Library</a>
     <a href="/tools/">Tools</a>
-    <a href="/work/">Work</a>
     <a href="/studio/">Studio</a>
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
@@ -343,18 +351,25 @@
   <div class="container">
     <header class="topic-section-head">
       <span class="eyebrow">Articles</span>
-      <h2 id="read-the-playbooks">Read the playbooks.</h2>
+      <h2>Read the playbooks.</h2>
     </header>
     <ul class="topic-article-list">
       <li>
-        <a class="topic-article-card" href="/blog/service-charges-vs-tipping-restaurant-operator-math-2026/">
+        <a class="topic-article-card" href="/blog/how-to-appear-in-ai-search-restaurant-2026/">
+          <span class="topic-article-date">May 23, 2026</span>
+          <h3>Is your restaurant visible in AI search? The four-number check</h3>
+          <p>A 2026 Uberall study found 83% of restaurants are invisible in AI search even though 86% keep a Google listing. The four numbers that decide whether ChatGPT, Gemini, and Google name your restaurant.</p>
+        </a>
+      </li>
+<li>
+        <a class="topic-article-card" href="/blog/service-charge-vs-tipping-model/">
           <span class="topic-article-date">May 11, 2026</span>
-          <h3>Service Charges vs Tipping: The Operator’s Math for 2026</h3>
+          <h3>Service charges vs tipping: the operator&#39;s math</h3>
           <p>Three compensation models compared on the same $200 dinner check. Server take-home varies $9, operator net varies $7. The customer pays roughly the same all three ways but reads each differently. The model I’d pick if I were opening today, with the DC Initiative 82 compliance frame.</p>
         </a>
       </li>
 <li>
-        <a class="topic-article-card" href="/blog/how-to-respond-to-google-reviews-restaurant-playbook-2026/">
+        <a class="topic-article-card" href="/blog/google-review-response-playbook/">
           <span class="topic-article-date">May 10, 2026</span>
           <h3>How to Respond to Google Reviews: A Restaurant Operator’s Playbook</h3>
           <p>Four review archetypes, four response shapes. What to write, what to never write, and how AI Overviews now lift review responses into the cited paragraph. Templates for the glowing 5-star, the disappointed 3-star, the angry 1-star, and the legitimate-complaint 2-star.</p>
@@ -375,7 +390,7 @@
   <div class="container">
     <header class="topic-section-head">
       <span class="eyebrow">Vocabulary</span>
-      <h2 id="the-words-for-this-topic">The words for this topic.</h2>
+      <h2>The words for this topic.</h2>
     </header>
     <ul class="term-siblings-list">
       <li><a href="/glossary/aspect-ratio/"><strong>Aspect ratio</strong><span> — the proportion between width and height, locked by the destination</span></a></li>
@@ -387,11 +402,11 @@
       <li><a href="/glossary/photo-brief/"><strong>Photo brief</strong><span> — the one-page sheet you walk into a photoshoot with</span></a></li>
       <li><a href="/glossary/privacy-policy/"><strong>Privacy policy</strong></a></li>
       <li><a href="/glossary/real-photos/"><strong>Real photos</strong><span> — not stock photography</span></a></li>
+      <li><a href="/glossary/review-responsiveness/"><strong>Review responsiveness</strong><span> — owner reply rate, Google review replies</span></a></li>
       <li><a href="/glossary/ssl-certificate/"><strong>SSL certificate</strong><span> — TLS certificate, the thing behind the padlock</span></a></li>
-      <li><a href="/glossary/terms-of-service/"><strong>Terms of Service</strong><span> — terms and conditions, ToS</span></a></li>
-      <li><a href="/glossary/wcag-contrast/"><strong>WCAG AA contrast</strong><span> — accessible color contrast</span></a></li>
+      <li><a href="/glossary/stale-copyright/"><strong>Stale copyright</strong><span> — outdated footer year, freshness signal</span></a></li>
     </ul>
-    <p style="text-align:center;margin-top:24px"><a class="link" href="/glossary/?topic=trust-reviews">See all in the glossary (13) <span aria-hidden="true">→</span></a></p>
+    <p style="text-align:center;margin-top:24px"><a class="link" href="/glossary/?topic=trust-reviews">See all in the glossary (16) <span aria-hidden="true">→</span></a></p>
   </div>
 </section>
 
@@ -399,7 +414,7 @@
   <div class="container">
     <header class="topic-section-head">
       <span class="eyebrow">Free tools</span>
-      <h2 id="run-a-check-on-your-own-site">Run a check on your own site.</h2>
+      <h2>Run a check on your own site.</h2>
     </header>
     <ul class="topic-tool-list">
       <li>
@@ -417,13 +432,6 @@
         </a>
       </li>
 <li>
-        <a class="topic-tool-card" href="/tools/open-hours/">
-          <h4>Open Hours</h4>
-          <p>Get your hours right everywhere — Google, Yelp, Apple, your website, your door. About 15 minutes.</p>
-          <span class="topic-tool-cta">Open the tool <span aria-hidden="true">→</span></span>
-        </a>
-      </li>
-<li>
         <a class="topic-tool-card" href="/tools/photo-brief/">
           <h4>Photo Brief Builder</h4>
           <p>Walk into your photographer&#39;s session with a one-page brief that gets you the right photos in one shoot. About 10 minutes.</p>
@@ -431,9 +439,9 @@
         </a>
       </li>
 <li>
-        <a class="topic-tool-card" href="/tools/holiday-hours/">
-          <h4>Holiday Hours Generator</h4>
-          <p>Generate JSON-LD specialOpeningHoursSpecification + a Google Business Profile-ready holiday hours block. Stays current with the next four restaurant holidays.</p>
+        <a class="topic-tool-card" href="/tools/store-hours/">
+          <h4>Open Hours</h4>
+          <p>Get your hours right everywhere — Google, Yelp, Apple, your website, your door. About 15 minutes.</p>
           <span class="topic-tool-cta">Open the tool <span aria-hidden="true">→</span></span>
         </a>
       </li>
@@ -445,7 +453,7 @@
   <div class="container">
     <header class="topic-section-head">
       <span class="eyebrow">Checklists</span>
-      <h2 id="workbooks-for-this-topic">Workbooks for this topic.</h2>
+      <h2>Workbooks for this topic.</h2>
     </header>
     <ul class="topic-tool-list">
       <li>
@@ -482,7 +490,7 @@
 
       <h3>The five-piece review system</h3>
 
-      <p>The <a href="/blog/how-to-get-more-google-reviews-for-your-restaurant/">How to Get More Google Reviews</a> playbook walks through the full system; the five pieces, in order of leverage:</p>
+      <p>The <a href="/library/how-to-get-more-google-reviews-for-your-restaurant/">How to Get More Google Reviews</a> playbook walks through the full system; the five pieces, in order of leverage:</p>
 
       <ol>
         <li><strong>QR-code review postcard at every table.</strong> Printed card, 2.5&Prime; &times; 4&Prime;, with a QR code that opens the GBP review form pre-filled. The single biggest review-volume lever; turns the 8% of guests who&rsquo;d leave a review if asked into a 22% rate that does. Cost: ~$60 for 200 cards from Moo.</li>
@@ -546,7 +554,7 @@
   <div class="container">
     <div class="section-header reveal section-center">
       <span class="eyebrow">Other topics</span>
-      <h2 id="or-browse-adifferent-angle">Or browse a<br><span class="serif-italic">different angle.</span></h2>
+      <h2>Or browse a<br><span class="serif-italic">different angle.</span></h2>
     </div>
     <ul class="topic-other-list">
       <li><a href="/learn/topics/speed-mobile/">Speed &amp; Mobile</a></li>
@@ -636,20 +644,47 @@
     <div class="foot-grid">
       <div class="foot-col foot-brand">
         <a href="/" class="foot-lockup-wrap" aria-label="Muntin Digital home">
-          <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53" loading="lazy" decoding="async">
+          <!-- alt="" because the surrounding <a> is already labeled.
+               Without it, screen readers announce "Muntin Digital,
+               Muntin Digital home" on the lockup link. -->
+          <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="" width="240" height="53" loading="lazy" decoding="async">
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a <!-- count:glossary.terms -->149<!-- /count -->-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->24<!-- /count --> articles, <!-- count:tools.live -->12<!-- /count --> tools, <!-- count:glossary.terms -->149<!-- /count --> glossary terms &mdash; with a one-person web studio behind it in Silver Spring, MD.</p>
       </div>
 
-      <nav class="foot-col" aria-labelledby="foot-explore">
-        <p class="foot-heading" id="foot-explore">Studio</p>
+      <!-- Column order mirrors the 4-item primary nav
+           (Library, Tools-rolled-into-Library, Studio) so the
+           footer reinforces the same IA. The Library column leads
+           with /library/ (the post-Phase-7 three-doors hub); the
+           older /learn/ landing still resolves but no longer needs
+           its own footer slot. id="foot-learn" is the canonical-
+           footer marker that scripts/sync-includes.mjs keys on
+           (FOOTER_MAIN_FUNNEL_MARKER), so the id stays even though
+           the visible label is the more familiar "Library".
+
+           Phase 8 (portfolio sunset): the Studio column's "Case
+           studies" row used to link to /work/, the personal-portfolio
+           hub. That hub was retired when the company became the
+           resume; the row is now gone and /work/* 301s to /studio/. -->
+      <nav class="foot-col" aria-labelledby="foot-learn">
+        <p class="foot-heading" id="foot-learn">Library</p>
         <ul class="foot-links">
-          <li><a href="/services/">Services &amp; pricing</a></li>
-          <li><a href="/for/restaurants/">For restaurants</a></li>
+          <li><a href="/library/">Browse the library</a></li>
+          <li><a href="/glossary/">Glossary</a></li>
+          <li><a href="/tools/">Free tools</a></li>
+          <li><a href="/sheets/">Operator sheets</a></li>
+          <li><a href="/blog/">Commentary</a></li>
+        </ul>
+      </nav>
+
+      <nav class="foot-col" aria-labelledby="foot-studio">
+        <p class="foot-heading" id="foot-studio">Studio</p>
+        <ul class="foot-links">
+          <li><a href="/studio/#pricing">Pricing</a></li>
           <li><a href="/studio/compare/">Compare options</a></li>
-          <li><a href="/work/">Case studies</a></li>
+          <li><a href="/studio/#process">Process</a></li>
           <li><a href="/about/">About Don</a></li>
         </ul>
       </nav>
@@ -657,28 +692,11 @@
       <nav class="foot-col" aria-labelledby="foot-trust">
         <p class="foot-heading" id="foot-trust">Trust</p>
         <ul class="foot-links">
-          <li><a href="/never/">Never</a></li>
+          <li><a href="/never/">What we never do</a></li>
           <li><a href="/ai/">AI policy</a></li>
-          <li><a href="/security/">Data &amp; security</a></li>
-          <li><a href="/methods/">Methods</a></li>
-          <li><a href="/receipts/">Receipts</a></li>
+          <li><a href="/methods/">Methods &amp; sources</a></li>
           <li><a href="/changelog/">Changelog</a></li>
-          <li><a href="/system/">The system</a></li>
-        </ul>
-      </nav>
-
-      <nav class="foot-col" aria-labelledby="foot-learn">
-        <p class="foot-heading" id="foot-learn">Library</p>
-        <ul class="foot-links">
-          <li><a href="/learn/">Library home</a></li>
-          <li><a href="/learn/start-here/">Start here</a></li>
-          <li><a href="/learn/topics/">Topics</a></li>
-          <li><a href="/blog/">Articles</a></li>
-          <li><a href="/tools/">Free tools</a></li>
-          <li><a href="/glossary/">Glossary</a></li>
-          <li><a href="/learn/research/">Research</a></li>
-          <li><a href="/learn/checklists/">Checklists &amp; guides</a></li>
-          <li><a href="/sheets/">Operator sheets</a></li>
+          <li><a href="/receipts/">Receipts</a></li>
         </ul>
       </nav>
 
@@ -689,7 +707,7 @@
           <li><a href="/window/">Reach Don</a></li>
           <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (opens in new tab)</span></a></li>
         </ul>
-        <p class="foot-trust"><strong>Reply:</strong> Mondays through Fridays, within 4 hours. Weekends, by Monday morning.</p>
+        <p class="foot-trust"><strong>Reply:</strong> within 4 hours Mon&ndash;Fri; weekends by Monday.</p>
       </nav>
     </div>
 

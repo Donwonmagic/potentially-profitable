@@ -212,6 +212,18 @@ main{padding-top:64px}
     {
       "@type": "DefinedTerm",
       "url": "https://muntin.digital/glossary/map-pack/"
+    },
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/glossary/gbp/"
+    },
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/glossary/margin/"
+    },
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/glossary/commission/"
     }
   ]
 }
@@ -336,8 +348,8 @@ main{padding-top:64px}
       Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
     </a>
     <!-- Phase 7: 5-item nav, per launch plan Part II.
-         Library / Tools / Work / Studio / Sign in.
-         Library now points at the canonical /library/ hub (the
+         Library / Tools / Studio / Sign in.
+         Library points at the canonical /library/ hub (the
          three-doors page). Tools is promoted from the old Library
          mega-menu to a top-level item. Studio replaces Services +
          Restaurants + About — they all live under /studio/ now,
@@ -347,11 +359,15 @@ main{padding-top:64px}
          Restaurants pages remain reachable via /studio/ and the
          _redirects table; /about/ is unchanged. The mega-menu is
          retired (the hub IS the menu now); the controller script
-         is gone too. -->
+         is gone too.
+
+         /work/ was retired with the Phase 8 portfolio-sunset pass:
+         the company-as-resume framing made the personal-portfolio
+         showcase redundant. Legacy /work/* URLs 301 to /studio/
+         via _redirects so old backlinks land softly. -->
     <nav class="nav-links" aria-label="Primary">
       <a href="/library/">Library</a>
       <a href="/tools/">Tools</a>
-      <a href="/work/">Work</a>
       <a href="/studio/">Studio</a>
       <!-- Both sign-in / workshop ship hidden by default; the
            auth-state JS at the bottom of this file calls
@@ -408,7 +424,6 @@ main{padding-top:64px}
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
     <a href="/library/">Library</a>
     <a href="/tools/">Tools</a>
-    <a href="/work/">Work</a>
     <a href="/studio/">Studio</a>
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
@@ -535,7 +550,7 @@ main{padding-top:64px}
 
     <h2 id="the-through-line">The through-line</h2>
 
-    <p>Two things are happening at the same time, and they compound. One: Google&rsquo;s search-result page is a paragraph the model wrote, citing two or three sources. As of March 2025 it triggered on 13.14% of US desktop searches; by spring 2026 it&rsquo;s approaching one in five, and restaurant queries trigger it more often than the average. Two: the <a href="/glossary/map-pack/" style="color:var(--teal)">map pack</a> still sits beneath that paragraph, and it&rsquo;s still where most local-intent traffic clicks. So you&rsquo;re competing on two surfaces at once &mdash; one new and shaped by paragraph quality, one old and shaped by Google Business Profile health.</p>
+    <p>Two things are happening at the same time, and they compound. One: Google&rsquo;s search-result page is a paragraph the model wrote, citing two or three sources. As of March 2025 it triggered on 13.14% of US desktop searches; by spring 2026 it&rsquo;s approaching one in five, and restaurant queries trigger it more often than the average. Two: the <a href="/glossary/map-pack/" style="color:var(--teal)">map pack</a> still sits beneath that paragraph, and it&rsquo;s still where most local-intent traffic clicks. So you&rsquo;re competing on two surfaces at once &mdash; one new and shaped by paragraph quality, one old and shaped by <!-- LIBRARY:autolink:start --><a href="/glossary/gbp/" data-glossary-head="Google Business Profile" data-glossary-aka="GBP, formerly Google My Business" data-glossary-blurb="Your business's free listing on Google Maps and Google Search — the panel on the right of a search that shows your name, hours, photos, reviews, and a link to your menu or booking.">Google Business Profile</a><!-- LIBRARY:autolink:end --> health.</p>
 
     <figure class="viz-figure article-figure" data-audio-alt="The most-cited measurement of AI Overview share in US desktop search is from March twenty twenty-five. Thirteen point one four percent of US desktop queries resolved with an AI Overview at the top of the page. By spring twenty twenty-six the share is approaching one in five queries; restaurant queries trigger above the all-categories average. The wave ships now because the writing moves are still relatively unknown among independent restaurants — the gap between operators who have figured out citation-shaped writing and those who haven't is the widest it will be.">
       <div class="viz-bars">
@@ -547,7 +562,7 @@ main{padding-top:64px}
         </div>
         <div class="viz-bars__row">
           <p class="viz-bars__label">Spring 2026 (est.)</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.20"></span></div>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.20"></span></div>
           <p class="viz-bars__num">~20%</p>
         </div>
       </div>
@@ -566,6 +581,35 @@ main{padding-top:64px}
 
     <p>Each piece stands alone, but they ladder. Read them in order &mdash; the role tag on each tile tells you why the piece sits where it does. Search citation first (one through four), then social discovery (five), then operations and economics (six through nine).</p>
 
+    <figure class="viz-figure article-figure" data-audio-alt="The wave reads in three bands. Band one is search citation — pieces one through four. Start with the thesis on paragraph-shape rules for AI Overview citation; then the technical companion on restaurant schema markup; then the diagnostic on Google Maps invisibility; then the operator playbook on Google review responses. Band two is social discovery — piece five is the Instagram-as-SEO operator strategy. Band three is operations and economics — pieces six through nine: the three-platform delivery math, the thirty-day post-delisting playbook, the loyalty-program ROI walk, and the service-charge versus tipping model. Each band hands the operator a different lever; reading in order is what shows how the levers compound.">
+      <div class="viz-flow">
+        <ol class="viz-flow__list">
+          <li class="viz-flow__step" data-tone="teal">
+            <span class="viz-flow__num">1&ndash;4</span>
+            <div class="viz-flow__body">
+              <p class="viz-flow__title">Search citation</p>
+              <p class="viz-flow__detail">AI Overview paragraph rules &middot; schema markup &middot; Google Maps diagnostic &middot; review-response playbook. The new front door, in priority order.</p>
+            </div>
+          </li>
+          <li class="viz-flow__step" data-tone="stone">
+            <span class="viz-flow__num">5</span>
+            <div class="viz-flow__body">
+              <p class="viz-flow__title">Social discovery</p>
+              <p class="viz-flow__detail">Instagram-as-SEO operator strategy. One piece, one channel &mdash; because Instagram is now where the second-largest stream of restaurant-discovery traffic originates.</p>
+            </div>
+          </li>
+          <li class="viz-flow__step" data-tone="rust">
+            <span class="viz-flow__num">6&ndash;9</span>
+            <div class="viz-flow__body">
+              <p class="viz-flow__title">Operations and economics</p>
+              <p class="viz-flow__detail">Delivery math &middot; thirty-day delisting playbook &middot; loyalty ROI &middot; service-charge vs. tipping. The downstream economics that decide whether the discovery work above actually compounds margin.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+      <figcaption>The wave reads in three bands &mdash; search citation, social discovery, operations and economics &mdash; in that order.</figcaption>
+    </figure>
+
     <section class="wave-toc" aria-labelledby="wave-toc-h">
       <p class="eyebrow wave-toc__eyebrow">Read the wave</p>
       <h2 id="wave-toc-h" class="wave-toc__head">In order, with role.</h2>
@@ -574,7 +618,7 @@ main{padding-top:64px}
           <span class="wave-toc__num">01</span>
           <div class="wave-toc__body">
             <p class="wave-toc__role">Thesis</p>
-            <a class="wave-toc__title" href="/blog/how-to-get-cited-in-google-ai-overviews-restaurant/">How to get cited in Google&rsquo;s AI Overview</a>
+            <a class="wave-toc__title" href="/library/how-to-get-cited-in-google-ai-overviews-restaurant/">How to get cited in Google&rsquo;s AI Overview</a>
             <p class="wave-toc__desc">The paragraph-shape rules that turn a page into a cited source. Read first &mdash; every other piece ladders from this one.</p>
           </div>
         </li>
@@ -582,7 +626,7 @@ main{padding-top:64px}
           <span class="wave-toc__num">02</span>
           <div class="wave-toc__body">
             <p class="wave-toc__role">Technical companion</p>
-            <a class="wave-toc__title" href="/blog/restaurant-schema-markup-complete-paste-ready-example/">Restaurant schema markup, paste-ready</a>
+            <a class="wave-toc__title" href="/library/restaurant-schema-markup-guide/">Restaurant schema markup, paste-ready</a>
             <p class="wave-toc__desc">The JSON-LD block that gives #01 the entity scaffolding to cite. Six types, seven editable fields, validation step at the end.</p>
           </div>
         </li>
@@ -590,7 +634,7 @@ main{padding-top:64px}
           <span class="wave-toc__num">03</span>
           <div class="wave-toc__body">
             <p class="wave-toc__role">Diagnostic</p>
-            <a class="wave-toc__title" href="/blog/my-restaurant-isnt-on-google-maps-10-minute-diagnostic/">My restaurant isn&rsquo;t on Google Maps</a>
+            <a class="wave-toc__title" href="/library/my-restaurant-isnt-on-google-maps-10-minute-diagnostic/">My restaurant isn&rsquo;t on Google Maps</a>
             <p class="wave-toc__desc">The 10-minute walk for restaurants that don&rsquo;t appear in the map pack. Four root causes; three are operator-fixable same day.</p>
           </div>
         </li>
@@ -598,7 +642,7 @@ main{padding-top:64px}
           <span class="wave-toc__num">04</span>
           <div class="wave-toc__body">
             <p class="wave-toc__role">Review playbook</p>
-            <a class="wave-toc__title" href="/blog/how-to-respond-to-google-reviews-restaurant-playbook-2026/">How to respond to Google reviews</a>
+            <a class="wave-toc__title" href="/library/google-review-response-playbook/">How to respond to Google reviews</a>
             <p class="wave-toc__desc">Four review archetypes, four response shapes. The 3-star is the most-read &mdash; that&rsquo;s where undecided guests calibrate.</p>
           </div>
         </li>
@@ -614,8 +658,8 @@ main{padding-top:64px}
           <span class="wave-toc__num">06</span>
           <div class="wave-toc__body">
             <p class="wave-toc__role">Channel math</p>
-            <a class="wave-toc__title" href="/blog/uber-eats-vs-doordash-vs-grubhub-restaurant-math-2026/">Uber Eats vs DoorDash vs Grubhub</a>
-            <p class="wave-toc__desc">Same $42 ticket, three side-by-side margin walks. The headline 30% commission is identical; the second-layer fee stack opens a real spread.</p>
+            <a class="wave-toc__title" href="/library/third-party-delivery-comparison/">Uber Eats vs DoorDash vs Grubhub</a>
+            <p class="wave-toc__desc">Same $42 ticket, three side-by-side <!-- LIBRARY:autolink:start --><a href="/glossary/margin/" data-glossary-head="Margin" data-glossary-aka="sales minus costs; several kinds" data-glossary-blurb="Sales minus costs.">margin</a><!-- LIBRARY:autolink:end --> walks. The headline 30% <!-- LIBRARY:autolink:start --><a href="/glossary/commission/" data-glossary-head="Commission" data-glossary-aka="the % a platform takes per order" data-glossary-blurb="The percentage an aggregator or payment platform keeps per transaction.">commission</a><!-- LIBRARY:autolink:end --> is identical; the second-layer fee stack opens a real spread.</p>
           </div>
         </li>
         <li class="wave-toc__item" data-band="ops">
@@ -630,7 +674,7 @@ main{padding-top:64px}
           <span class="wave-toc__num">08</span>
           <div class="wave-toc__body">
             <p class="wave-toc__role">Retention math</p>
-            <a class="wave-toc__title" href="/blog/loyalty-programs-for-independent-restaurants-what-works-2026/">Loyalty programs that pay</a>
+            <a class="wave-toc__title" href="/library/loyalty-program-roi/">Loyalty programs that pay</a>
             <p class="wave-toc__desc">Four models, vendor-published prices, where each one wins. The loyalty conversation is downstream of the channel conversation.</p>
           </div>
         </li>
@@ -638,7 +682,7 @@ main{padding-top:64px}
           <span class="wave-toc__num">09</span>
           <div class="wave-toc__body">
             <p class="wave-toc__role">Compensation math</p>
-            <a class="wave-toc__title" href="/blog/service-charges-vs-tipping-restaurant-operator-math-2026/">Service charges vs tipping</a>
+            <a class="wave-toc__title" href="/library/service-charge-vs-tipping-model/">Service charges vs tipping</a>
             <p class="wave-toc__desc">Three models, one $200 check. Server take-home varies; operator net varies; the customer pays about the same and feels differently about each.</p>
           </div>
         </li>
@@ -746,20 +790,47 @@ main{padding-top:64px}
     <div class="foot-grid">
       <div class="foot-col foot-brand">
         <a href="/" class="foot-lockup-wrap" aria-label="Muntin Digital home">
-          <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53" loading="lazy" decoding="async">
+          <!-- alt="" because the surrounding <a> is already labeled.
+               Without it, screen readers announce "Muntin Digital,
+               Muntin Digital home" on the lockup link. -->
+          <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="" width="240" height="53" loading="lazy" decoding="async">
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a <!-- count:glossary.terms -->149<!-- /count -->-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->24<!-- /count --> articles, <!-- count:tools.live -->12<!-- /count --> tools, <!-- count:glossary.terms -->149<!-- /count --> glossary terms &mdash; with a one-person web studio behind it in Silver Spring, MD.</p>
       </div>
 
-      <nav class="foot-col" aria-labelledby="foot-explore">
-        <p class="foot-heading" id="foot-explore">Studio</p>
+      <!-- Column order mirrors the 4-item primary nav
+           (Library, Tools-rolled-into-Library, Studio) so the
+           footer reinforces the same IA. The Library column leads
+           with /library/ (the post-Phase-7 three-doors hub); the
+           older /learn/ landing still resolves but no longer needs
+           its own footer slot. id="foot-learn" is the canonical-
+           footer marker that scripts/sync-includes.mjs keys on
+           (FOOTER_MAIN_FUNNEL_MARKER), so the id stays even though
+           the visible label is the more familiar "Library".
+
+           Phase 8 (portfolio sunset): the Studio column's "Case
+           studies" row used to link to /work/, the personal-portfolio
+           hub. That hub was retired when the company became the
+           resume; the row is now gone and /work/* 301s to /studio/. -->
+      <nav class="foot-col" aria-labelledby="foot-learn">
+        <p class="foot-heading" id="foot-learn">Library</p>
         <ul class="foot-links">
-          <li><a href="/services/">Services &amp; pricing</a></li>
-          <li><a href="/for/restaurants/">For restaurants</a></li>
+          <li><a href="/library/">Browse the library</a></li>
+          <li><a href="/glossary/">Glossary</a></li>
+          <li><a href="/tools/">Free tools</a></li>
+          <li><a href="/sheets/">Operator sheets</a></li>
+          <li><a href="/blog/">Commentary</a></li>
+        </ul>
+      </nav>
+
+      <nav class="foot-col" aria-labelledby="foot-studio">
+        <p class="foot-heading" id="foot-studio">Studio</p>
+        <ul class="foot-links">
+          <li><a href="/studio/#pricing">Pricing</a></li>
           <li><a href="/studio/compare/">Compare options</a></li>
-          <li><a href="/work/">Case studies</a></li>
+          <li><a href="/studio/#process">Process</a></li>
           <li><a href="/about/">About Don</a></li>
         </ul>
       </nav>
@@ -767,28 +838,11 @@ main{padding-top:64px}
       <nav class="foot-col" aria-labelledby="foot-trust">
         <p class="foot-heading" id="foot-trust">Trust</p>
         <ul class="foot-links">
-          <li><a href="/never/">Never</a></li>
+          <li><a href="/never/">What we never do</a></li>
           <li><a href="/ai/">AI policy</a></li>
-          <li><a href="/security/">Data &amp; security</a></li>
-          <li><a href="/methods/">Methods</a></li>
-          <li><a href="/receipts/">Receipts</a></li>
+          <li><a href="/methods/">Methods &amp; sources</a></li>
           <li><a href="/changelog/">Changelog</a></li>
-          <li><a href="/system/">The system</a></li>
-        </ul>
-      </nav>
-
-      <nav class="foot-col" aria-labelledby="foot-learn">
-        <p class="foot-heading" id="foot-learn">Library</p>
-        <ul class="foot-links">
-          <li><a href="/learn/">Library home</a></li>
-          <li><a href="/learn/start-here/">Start here</a></li>
-          <li><a href="/learn/topics/">Topics</a></li>
-          <li><a href="/blog/">Articles</a></li>
-          <li><a href="/tools/">Free tools</a></li>
-          <li><a href="/glossary/">Glossary</a></li>
-          <li><a href="/learn/research/">Research</a></li>
-          <li><a href="/learn/checklists/">Checklists &amp; guides</a></li>
-          <li><a href="/sheets/">Operator sheets</a></li>
+          <li><a href="/receipts/">Receipts</a></li>
         </ul>
       </nav>
 
@@ -799,7 +853,7 @@ main{padding-top:64px}
           <li><a href="/window/">Reach Don</a></li>
           <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (opens in new tab)</span></a></li>
         </ul>
-        <p class="foot-trust"><strong>Reply:</strong> Mondays through Fridays, within 4 hours. Weekends, by Monday morning.</p>
+        <p class="foot-trust"><strong>Reply:</strong> within 4 hours Mon&ndash;Fri; weekends by Monday.</p>
       </nav>
     </div>
 

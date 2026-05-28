@@ -65,8 +65,10 @@ function processFile({ filePath, locale }) {
 
 const stats = {};
 for (const [base, locale] of [
-  [path.join(REPO, "blog"),         "en"],
-  [path.join(REPO, "es", "blog"),   "es"],
+  [path.join(REPO, "blog"),           "en"],
+  [path.join(REPO, "es", "blog"),     "es"],
+  [path.join(REPO, "library"),        "en"],
+  [path.join(REPO, "es", "library"),  "es"],
 ]) {
   if (!fs.existsSync(base)) continue;
   for (const entry of fs.readdirSync(base, { withFileTypes: true })) {

@@ -202,18 +202,22 @@ header.nav{min-height:64px}
       </svg>
       Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
     </a>
-    <!-- Phase 7: nav de 5 elementos, según el plan de lanzamiento Parte II.
-         Biblioteca / Herramientas / Proyectos / Estudio / Acceder.
+    <!-- Phase 7: nav de 4 elementos, según el plan de lanzamiento Parte II.
+         Biblioteca / Herramientas / Estudio / Acceder.
          Biblioteca apunta al hub canónico /es/library/. Herramientas
          se promueve del antiguo mega-menú a un elemento de primer
          nivel. Estudio reemplaza Servicios + Restaurantes + Sobre
          Don &mdash; todo vive bajo /es/studio/ ahora. El mega-menú
          se retira (el hub ES el menú); el controlador del script
-         también desaparece. -->
+         también desaparece.
+
+         /es/work/ se retiró en la pasada de portfolio-sunset de la
+         Fase 8 (el encuadre de la empresa-como-CV hizo redundante
+         el portafolio personal). Las URLs /es/work/* hacen 301 a
+         /es/studio/ vía _redirects. -->
     <nav class="nav-links" aria-label="Principal">
       <a href="/es/library/">Biblioteca</a>
       <a href="/es/tools/">Herramientas</a>
-      <a href="/es/work/">Proyectos</a>
       <a href="/es/studio/">Estudio</a>
       <a class="js-nav-signin nav-link-auth" href="/es/sign-in/" hidden>Acceder</a>
       <a class="js-nav-workshop nav-link-auth" href="/es/workbench/" hidden>El Taller</a>
@@ -242,7 +246,6 @@ header.nav{min-height:64px}
   <nav class="mobile-menu" id="mobileMenu" aria-label="Navegación móvil" hidden>
     <a href="/es/library/">Biblioteca</a>
     <a href="/es/tools/">Herramientas</a>
-    <a href="/es/work/">Proyectos</a>
     <a href="/es/studio/">Estudio</a>
     <a class="js-nav-signin mobile-auth" href="/es/sign-in/" hidden>Acceder</a>
     <a class="js-nav-workshop mobile-auth" href="/es/workbench/" hidden>El Taller</a>
@@ -370,11 +373,48 @@ header.nav{min-height:64px}
       </details>
 
       <h2 id="por-qu-gemini-es-la-que-se-puede-ganar">Por qu&eacute; Gemini es la que se puede ganar</h2>
+
+      <figure class="viz-figure article-figure" data-audio-alt="Cómo Gemini compone una respuesta sobre un restaurante, en cuatro pasos. Paso uno: un comensal escribe una pregunta como &lsquo;buen ramen cerca de mí&rsquo; en Gemini. Paso dos: Gemini busca el Perfil de Negocio de Google, la ficha de Maps y las reseñas recientes de los restaurantes cercanos. Paso tres: Gemini compone una respuesta corta nombrando a los lugares cuyos perfiles pudo leer. Paso cuatro: tu restaurante es nombrado, o lo es un competidor &mdash; dependiendo de qué perfil estaba lo suficientemente completo para que Gemini levantara una respuesta de él. El trabajo aguas arriba que mueve el ranking no está en el sitio; está en el perfil.">
+        <div class="viz-flow">
+          <ol class="viz-flow__list">
+            <li class="viz-flow__step" data-tone="stone">
+              <span class="viz-flow__num">1</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">Comensal escribe la pregunta</p>
+                <p class="viz-flow__detail">&ldquo;Buen ramen cerca de mí.&rdquo; &ldquo;Italiano para cumpleaños.&rdquo; &ldquo;Lugar tranquilo para cuatro.&rdquo; Lo que un comensal teclearía en Gemini, no en Google.</p>
+              </div>
+            </li>
+            <li class="viz-flow__step" data-tone="teal">
+              <span class="viz-flow__num">2</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">Gemini lee el ecosistema de Google</p>
+                <p class="viz-flow__detail">El Perfil de Negocio, la ficha de Maps, las reseñas recientes. La superficie de ranking es la misma que para el AI Overview &mdash; un perfil completo paga dos veces.</p>
+              </div>
+            </li>
+            <li class="viz-flow__step" data-tone="teal">
+              <span class="viz-flow__num">3</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">Gemini compone la respuesta</p>
+                <p class="viz-flow__detail">Una respuesta corta nombrando los lugares cuyos perfiles pudo leer con confianza. No es una lista clasificada; es un párrafo con nombres.</p>
+              </div>
+            </li>
+            <li class="viz-flow__step" data-tone="rust">
+              <span class="viz-flow__num">4</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">Tu restaurante es nombrado &mdash; o no lo es</p>
+                <p class="viz-flow__detail">Depende de qué perfil estaba lo suficientemente completo para que Gemini levantara una respuesta. Los perfiles con campos en blanco son invisibles a este flujo.</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+        <figcaption>Cuatro pasos &mdash; el trabajo que decide el resultado vive en el perfil, no en el sitio.</figcaption>
+      </figure>
+
       <p>Esto es lo que importa para un restaurante: Gemini lee el propio ecosistema de Google. Cuando responde &ldquo;buen ramen cerca de m&iacute;,&rdquo; se apoya en tu <a href="/es/glossary/gbp/">Perfil de Negocio de Google</a>, tu presencia en <a href="/es/glossary/map-pack/">Maps</a> y tus rese&ntilde;as &mdash; justo los activos que ya administras. ChatGPT y Perplexity sacan de una web m&aacute;s amplia y desordenada que controlas mucho menos. As&iacute; que el mismo trabajo de perfil que te ayuda a salir en un <a href="/es/glossary/ai-overview/">AI Overview</a> de Google tambi&eacute;n alimenta a Gemini. No est&aacute;s optimizando para una plataforma nueva; te est&aacute;n pagando doble por la que ya trabajas.</p>
 
       <h2 id="c-mo-verlo-y-ganar-m-s">C&oacute;mo verlo &mdash; y ganar m&aacute;s</h2>
-      <p>Primero, mira. En tu anal&iacute;tica, los asistentes de IA aparecen como referidos de hosts como <code>gemini.google.com</code> y <code>chatgpt.com</code>; si nunca lo has revisado, ese es el n&uacute;mero para empezar a vigilar. El recorrido de <a href="/es/blog/como-leer-google-search-console-de-tu-restaurante/">Search Console</a> muestra d&oacute;nde encontrar el lado de b&uacute;squeda.</p>
-      <p>Luego g&aacute;nalo barato: mant&eacute;n el perfil de Google completo y al d&iacute;a, porque para Gemini ese perfil <em>es</em> la superficie de ranking. Usa el <a href="/es/tools/gbp-grader/">calificador de GBP</a> para los huecos, el <a href="/es/tools/seo-grader/">calificador de SEO</a> para las se&ntilde;ales en tu sitio que respaldan el perfil, e <a href="/es/tools/search-ideas/">ideas de b&uacute;squeda</a> para las preguntas que vale la pena responder en texto. Lo b&aacute;sico de configuraci&oacute;n, si el perfil es nuevo, est&aacute; en <a href="/es/blog/how-to-set-up-google-business-profile-for-your-restaurant/">configurar tu Perfil de Negocio de Google</a>.</p>
+      <p>Primero, mira. En tu anal&iacute;tica, los asistentes de IA aparecen como referidos de hosts como <code>gemini.google.com</code> y <code>chatgpt.com</code>; si nunca lo has revisado, ese es el n&uacute;mero para empezar a vigilar. El recorrido de <a href="/es/library/como-leer-google-search-console-de-tu-restaurante/">Search Console</a> muestra d&oacute;nde encontrar el lado de b&uacute;squeda.</p>
+      <p>Luego g&aacute;nalo barato: mant&eacute;n el perfil de Google completo y al d&iacute;a, porque para Gemini ese perfil <em>es</em> la superficie de ranking. Usa el <a href="/es/tools/gbp-grader/">calificador de GBP</a> para los huecos, el <a href="/es/tools/seo-grader/">calificador de SEO</a> para las se&ntilde;ales en tu sitio que respaldan el perfil, e <a href="/es/tools/search-ideas/">ideas de b&uacute;squeda</a> para las preguntas que vale la pena responder en texto. Lo b&aacute;sico de configuraci&oacute;n, si el perfil es nuevo, est&aacute; en <a href="/es/library/how-to-set-up-google-business-profile-for-your-restaurant/">configurar tu Perfil de Negocio de Google</a>.</p>
 
       <p>La jugada pr&aacute;ctica no es &ldquo;aprende Gemini.&rdquo; Es mantener el perfil de Google completo y al d&iacute;a &mdash; porque ese &uacute;nico perfil ahora alimenta tres superficies a la vez: el paquete de mapa, el AI Overview, y la fuente de referidos por IA que m&aacute;s r&aacute;pido crece.</p>
 
@@ -440,39 +480,58 @@ header.nav{min-height:64px}
     <div class="foot-grid">
       <div class="foot-col foot-brand">
         <a href="/es/" class="foot-lockup-wrap" aria-label="Muntin Digital — inicio">
-          <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53" loading="lazy" decoding="async">
+          <!-- alt="" porque el <a> que envuelve ya está etiquetado.
+               Sin esto, los lectores de pantalla anuncian dos veces
+               "Muntin Digital" en el enlace del logotipo. -->
+          <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="" width="240" height="53" loading="lazy" decoding="async">
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">La ventana.</p>
-        <p class="foot-blurb">Una biblioteca web y estudio de dise&ntilde;o para restaurantes, con base en Silver Spring, MD &mdash; art&iacute;culos, herramientas gratis, investigaci&oacute;n y un glosario de <!-- count:glossary.terms -->149<!-- /count --> t&eacute;rminos, con el estudio detr&aacute;s cuando quieras contratar. Se habla espa&ntilde;ol.</p>
+        <p class="foot-blurb">Una biblioteca gratuita para restaurantes &mdash; <!-- count:articles.library -->24<!-- /count --> art&iacute;culos, <!-- count:tools.live -->12<!-- /count --> herramientas y un glosario de <!-- count:glossary.terms -->149<!-- /count --> t&eacute;rminos &mdash; con un estudio web de una persona detr&aacute;s, en Silver Spring, MD. Se habla espa&ntilde;ol.</p>
       </div>
 
-      <nav class="foot-col" aria-labelledby="foot-explore">
-        <p class="foot-heading" id="foot-explore">Explorar</p>
-        <ul class="foot-links">
-          <li><a href="/es/services/">Servicios</a></li>
-          <li><a href="/es/for/restaurants/">Para restaurantes</a></li>
-          <li><a href="/es/work/">Proyectos</a></li>
-          <li><a href="/es/about/">Sobre Don</a></li>
-          <li><a href="/es/system/">El sistema</a></li>
-          <li><a href="/receipts/" hreflang="en" lang="en">Receipts</a></li>
-          <li><a href="/methods/" hreflang="en" lang="en">Methods</a></li>
-          <li><a href="/changelog/" hreflang="en" lang="en">Changelog</a></li>
-        </ul>
-      </nav>
-
+      <!-- El orden de columnas refleja la navegación principal de 5
+           ítems (Biblioteca, Estudio, Confianza, Contacto). La
+           Biblioteca apunta primero al hub /es/library/ (las tres
+           puertas: Lee, Busca, Haz); el antiguo /es/learn/ sigue
+           resolviendo pero ya no necesita su propio enlace de pie.
+           id="foot-learn" es el marcador canónico que usa
+           scripts/sync-includes.mjs (FOOTER_MAIN_FUNNEL_MARKER), así
+           que el id se mantiene aunque la etiqueta visible sea
+           "Biblioteca". -->
       <nav class="foot-col" aria-labelledby="foot-learn">
         <p class="foot-heading" id="foot-learn">Biblioteca</p>
         <ul class="foot-links">
-          <li><a href="/es/learn/">Inicio de la biblioteca</a></li>
-          <li><a href="/es/learn/start-here/">Empieza aquí</a></li>
-          <li><a href="/es/learn/topics/">Temas</a></li>
-          <li><a href="/es/blog/">Artículos</a></li>
-          <li><a href="/es/tools/">Herramientas gratis</a></li>
+          <li><a href="/es/library/">Explora la biblioteca</a></li>
           <li><a href="/es/glossary/">Glosario</a></li>
-          <li><a href="/es/learn/research/">Investigación</a></li>
-          <li><a href="/es/learn/checklists/">Listas y recursos</a></li>
+          <li><a href="/es/tools/">Herramientas gratis</a></li>
           <li><a href="/es/sheets/">Hojas del operador</a></li>
+          <li><a href="/es/blog/">Comentarios</a></li>
+        </ul>
+      </nav>
+
+      <!-- Fase 8 (portfolio sunset): la fila "Proyectos" enlazaba a
+           /es/work/, el portafolio personal. Ese hub se retiró cuando
+           la empresa pasó a ser el currículum; la fila ya no está y
+           /es/work/* hace 301 a /es/studio/. -->
+      <nav class="foot-col" aria-labelledby="foot-studio">
+        <p class="foot-heading" id="foot-studio">Estudio</p>
+        <ul class="foot-links">
+          <li><a href="/es/studio/#pricing">Precios</a></li>
+          <li><a href="/es/studio/compare/">Comparar opciones</a></li>
+          <li><a href="/es/studio/#process">Proceso</a></li>
+          <li><a href="/es/about/">Sobre Don</a></li>
+        </ul>
+      </nav>
+
+      <nav class="foot-col" aria-labelledby="foot-trust">
+        <p class="foot-heading" id="foot-trust">Confianza</p>
+        <ul class="foot-links">
+          <li><a href="/es/never/">Lo que nunca hacemos</a></li>
+          <li><a href="/es/ai/">Pol&iacute;tica de IA</a></li>
+          <li><a href="/es/methods/">M&eacute;todos y fuentes</a></li>
+          <li><a href="/es/changelog/">Registro de cambios</a></li>
+          <li><a href="/es/receipts/">Recibos</a></li>
         </ul>
       </nav>
 
@@ -483,7 +542,7 @@ header.nav{min-height:64px}
           <li><a href="/es/window/">Contacta a Don</a></li>
           <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (se abre en una pestaña nueva)</span></a></li>
         </ul>
-        <p class="foot-trust"><strong>Respuesta:</strong> de lunes a viernes, en menos de 4 horas. Los fines de semana, el lunes en la mañana.</p>
+        <p class="foot-trust"><strong>Respuesta:</strong> en menos de 4 horas de lunes a viernes; fines de semana, el lunes.</p>
       </nav>
     </div>
 
@@ -551,7 +610,6 @@ header.nav{min-height:64px}
   <!-- listen-script:start -->
   <script src="/assets/js/listen.js?v=20260503-modsplit" defer></script>
   <!-- listen-script:end -->
-
 
 </body>
 </html>

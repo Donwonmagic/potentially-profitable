@@ -141,9 +141,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=da841dee88d3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-core.css?v=a497939fe0a3" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-tool.css?v=9aab013deef2" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=da841dee88d3"><link rel="stylesheet" href="/assets/site-tool.css?v=9aab013deef2"></noscript>
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a497939fe0a3"><link rel="stylesheet" href="/assets/site-tool.css?v=9aab013deef2"></noscript>
 <style>
   .sch-hero{max-width:680px;margin:0 auto;text-align:center}
   .sch-form{display:flex;gap:10px;max-width:560px;margin:32px auto 0}
@@ -290,18 +290,22 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       </svg>
       Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
     </a>
-    <!-- Phase 7: nav de 5 elementos, según el plan de lanzamiento Parte II.
-         Biblioteca / Herramientas / Proyectos / Estudio / Acceder.
+    <!-- Phase 7: nav de 4 elementos, según el plan de lanzamiento Parte II.
+         Biblioteca / Herramientas / Estudio / Acceder.
          Biblioteca apunta al hub canónico /es/library/. Herramientas
          se promueve del antiguo mega-menú a un elemento de primer
          nivel. Estudio reemplaza Servicios + Restaurantes + Sobre
          Don &mdash; todo vive bajo /es/studio/ ahora. El mega-menú
          se retira (el hub ES el menú); el controlador del script
-         también desaparece. -->
+         también desaparece.
+
+         /es/work/ se retiró en la pasada de portfolio-sunset de la
+         Fase 8 (el encuadre de la empresa-como-CV hizo redundante
+         el portafolio personal). Las URLs /es/work/* hacen 301 a
+         /es/studio/ vía _redirects. -->
     <nav class="nav-links" aria-label="Principal">
       <a href="/es/library/">Biblioteca</a>
       <a href="/es/tools/">Herramientas</a>
-      <a href="/es/work/">Proyectos</a>
       <a href="/es/studio/">Estudio</a>
       <a class="js-nav-signin nav-link-auth" href="/es/sign-in/" hidden>Acceder</a>
       <a class="js-nav-workshop nav-link-auth" href="/es/workbench/" hidden>El Taller</a>
@@ -330,7 +334,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   <nav class="mobile-menu" id="mobileMenu" aria-label="Navegación móvil" hidden>
     <a href="/es/library/">Biblioteca</a>
     <a href="/es/tools/">Herramientas</a>
-    <a href="/es/work/">Proyectos</a>
     <a href="/es/studio/">Estudio</a>
     <a class="js-nav-signin mobile-auth" href="/es/sign-in/" hidden>Acceder</a>
     <a class="js-nav-workshop mobile-auth" href="/es/workbench/" hidden>El Taller</a>
@@ -393,7 +396,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <span class="eyebrow">Herramienta gratis &middot; 10 segundos</span>
   <h1>¿Google entiende<br><span class="serif-italic">tu negocio?</span></h1>
       <!-- tool-verified:start -->
-            <p class="tool-verified">Última revisión: <time datetime="2026-05-23">23 de mayo de 2026</time></p>
+            <p class="tool-verified">Última revisión: <time datetime="2026-05-26">26 de mayo de 2026</time></p>
             <!-- tool-verified:end -->
       <!-- data-promise:start -->
             <aside class="tool-data-promise" aria-label="Promesa de datos">
@@ -501,7 +504,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <!-- Sprint 12b (cohesión) — Fila Learn-back. -->
     <aside class="learn-back" aria-label="Qué significa este puntaje">
       <p class="learn-back-eyebrow">Qué significa este puntaje</p>
-      <p class="learn-back-body">El <a href="/es/glossary/schema/">schema</a> son datos estructurados — la forma en que tus horarios, menú y tipo de negocio se le cuentan a Google en formato legible por máquina. La <a href="/es/blog/how-to-set-up-google-business-profile-for-your-restaurant/">guía de Perfil de Empresa de Google</a> recorre el resto de lo que Google lee de ti.</p>
+      <p class="learn-back-body">El <a href="/es/glossary/schema/">schema</a> son datos estructurados — la forma en que tus horarios, menú y tipo de negocio se le cuentan a Google en formato legible por máquina. La <a href="/es/library/how-to-set-up-google-business-profile-for-your-restaurant/">guía de Perfil de Empresa de Google</a> recorre el resto de lo que Google lee de ti.</p>
     </aside>
 
     <div class="sch-cta">
@@ -546,8 +549,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         </a>
       <a class="tool-deep-card tool-deep-card-article" href="/es/blog/restaurant-schema-markup-6-types-google-uses/">
           <span class="tool-deep-kind">Artículo</span>
-          <h3>Restaurant Schema Markup: The 6 Types Google Actually Uses</h3>
-          <p class="tool-deep-snippet">The six schema.org types that move the needle for restaurant search results in 2026, with copy-paste JSON-LD examples for each.</p>
+          <h3>restaurant-schema-markup-6-types-google-uses</h3>
+          <p class="tool-deep-snippet"></p>
           <span class="tool-deep-cta">Leer la guía <span aria-hidden="true">→</span></span>
         </a>
     </div>
@@ -560,7 +563,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   <div class="foot-cta"><div class="foot-cta-text">¿Tienes una pregunta? La Ventana está abierta.</div><a class="btn btn-primary js-window" href="/es/window/">Escríbele a Don<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></a></div>
   <div class="foot-grid">
     <div class="foot-col foot-brand"><a href="/es/" class="foot-lockup-wrap" aria-label="Muntin Digital — inicio"><img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53" loading="lazy" decoding="async"><sup class="tm" aria-hidden="true">&#8482;</sup></a><p class="foot-tagline">La estructura da claridad.</p><p class="foot-blurb">Estudio de una sola persona en Silver Spring, MD. Diseño sitios web, identidad de marca y redes sociales para restaurantes independientes del DMV y de todo el país. Se habla español.</p></div>
-    <nav class="foot-col" aria-labelledby="foot-explore"><p class="foot-heading" id="foot-explore">Explorar</p><ul class="foot-links"><li><a href="/es/services/">Servicios</a></li><li><a href="/es/for/restaurants/">Para restaurantes</a></li><li><a href="/es/work/">Proyectos</a></li><li><a href="/es/blog/">Artículos</a></li><li><a href="/es/about/">Sobre Don</a></li></ul></nav>
+    <nav class="foot-col" aria-labelledby="foot-explore"><p class="foot-heading" id="foot-explore">Explorar</p><ul class="foot-links"><li><a href="/es/services/">Servicios</a></li><li><a href="/es/for/restaurants/">Para restaurantes</a></li><li><a href="/es/blog/">Artículos</a></li><li><a href="/es/about/">Sobre Don</a></li></ul></nav>
     <nav class="foot-col" aria-labelledby="foot-tools"><p class="foot-heading" id="foot-tools">Herramientas gratis</p><ul class="foot-links"><li><a href="/es/tools/">Todas las herramientas</a></li><li><a href="/es/tools/audits/restaurant/">Diagnóstico de restaurante</a></li><li><a href="/es/tools/page-health/">Prueba de velocidad</a></li><li><a href="/es/tools/seo-grader/">Calificador SEO</a></li><li><a href="/es/tools/page-health/mobile/">Revisión móvil</a></li><li><a href="/es/tools/schema-check/">Revisión de schema</a></li></ul></nav>
     <nav class="foot-col foot-contact" aria-labelledby="foot-contact"><p class="foot-heading" id="foot-contact">Contacto</p><ul class="foot-links"><li><a href="mailto:don@muntin.digital">don@muntin.digital</a></li><li><a href="/es/window/">Escríbele a Don</a></li><li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (opens in new tab)</span></a></li></ul><p class="foot-trust"><strong>Respuesta:</strong> de lunes a viernes, en menos de 4 horas. Los fines de semana, el lunes en la ma&ntilde;ana.</p></nav>
   </div>

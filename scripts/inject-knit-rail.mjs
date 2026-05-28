@@ -24,6 +24,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { NON_ARTICLE_LIBRARY_SLUGS } from './lib/library-skips.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const repoRoot   = path.resolve(path.dirname(__filename), '..');
@@ -121,12 +122,14 @@ function decodeEntities(s) {
 
 function articleFiles() {
   const out = [];
-  for (const dir of ['blog', 'es/blog']) {
+  for (const dir of ['blog', 'es/blog', 'library', 'es/library']) {
     const root = path.join(repoRoot, dir);
     if (!fs.existsSync(root)) continue;
     const locale = dir.startsWith('es') ? 'es' : 'en';
     for (const slug of fs.readdirSync(root)) {
       if (slug === 'drafts' || slug === 'index.html') continue;
+      // Phase 7: /library/menu-design-*/ are collection landings.
+      if ((dir === 'library' || dir === 'es/library') && NON_ARTICLE_LIBRARY_SLUGS.has(slug)) continue;
       const file = path.join(root, slug, 'index.html');
       if (fs.existsSync(file)) out.push({ file, slug, locale });
     }

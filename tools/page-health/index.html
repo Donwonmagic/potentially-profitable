@@ -173,9 +173,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=da841dee88d3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-core.css?v=a497939fe0a3" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-tool.css?v=9aab013deef2" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=da841dee88d3"><link rel="stylesheet" href="/assets/site-tool.css?v=9aab013deef2"></noscript>
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a497939fe0a3"><link rel="stylesheet" href="/assets/site-tool.css?v=9aab013deef2"></noscript>
 
 <style>
   /* Tool-specific result rendering. Form, hero, note, result container,
@@ -390,8 +390,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
     </a>
     <!-- Phase 7: 5-item nav, per launch plan Part II.
-         Library / Tools / Work / Studio / Sign in.
-         Library now points at the canonical /library/ hub (the
+         Library / Tools / Studio / Sign in.
+         Library points at the canonical /library/ hub (the
          three-doors page). Tools is promoted from the old Library
          mega-menu to a top-level item. Studio replaces Services +
          Restaurants + About — they all live under /studio/ now,
@@ -401,11 +401,15 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
          Restaurants pages remain reachable via /studio/ and the
          _redirects table; /about/ is unchanged. The mega-menu is
          retired (the hub IS the menu now); the controller script
-         is gone too. -->
+         is gone too.
+
+         /work/ was retired with the Phase 8 portfolio-sunset pass:
+         the company-as-resume framing made the personal-portfolio
+         showcase redundant. Legacy /work/* URLs 301 to /studio/
+         via _redirects so old backlinks land softly. -->
     <nav class="nav-links" aria-label="Primary">
       <a href="/library/">Library</a>
       <a href="/tools/">Tools</a>
-      <a href="/work/">Work</a>
       <a href="/studio/">Studio</a>
       <!-- Both sign-in / workshop ship hidden by default; the
            auth-state JS at the bottom of this file calls
@@ -462,7 +466,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
     <a href="/library/">Library</a>
     <a href="/tools/">Tools</a>
-    <a href="/work/">Work</a>
     <a href="/studio/">Studio</a>
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
@@ -568,7 +571,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <span class="eyebrow">Free tool &middot; 10 seconds</span>
       <h1>How fast is your <span class="serif-italic">website?</span></h1>
       <!-- tool-verified:start -->
-            <p class="tool-verified">Last verified: <time datetime="2026-05-23">May 23, 2026</time></p>
+            <p class="tool-verified">Last verified: <time datetime="2026-05-26">May 26, 2026</time></p>
             <!-- tool-verified:end -->
       <!-- data-promise:start -->
             <aside class="tool-data-promise" aria-label="Data promise">
@@ -652,7 +655,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <!-- Sprint 12b (cohesion) — Learn-back row. -->
         <aside class="learn-back" aria-label="What this score means">
           <p class="learn-back-eyebrow">What this score means</p>
-          <p class="learn-back-body">The four numbers behind the score — LCP, FCP, TBT, CLS — are <a href="/glossary/core-web-vitals/">Core Web Vitals</a>, the same signals Google uses to rank you on mobile. The <a href="/blog/why-your-restaurant-loses-reservations-every-night/">reservation-leak post</a> walks through how each second of slow maps to bookings that never happened.</p>
+          <p class="learn-back-body">The four numbers behind the score — LCP, FCP, TBT, CLS — are <a href="/glossary/core-web-vitals/">Core Web Vitals</a>, the same signals Google uses to rank you on mobile. The <a href="/library/reservation-conversion-guide/">reservation-leak post</a> walks through how each second of slow maps to bookings that never happened.</p>
         </aside>
 
         <div class="speed-cta">
@@ -714,12 +717,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           <p class="tool-deep-snippet">A global network of servers — Cloudflare, Fastly, AWS CloudFront — that keep cached copies of your site close to every visitor in the world,…</p>
           <span class="tool-deep-cta">Read the definition <span aria-hidden="true">→</span></span>
         </a>
-      <a class="tool-deep-card tool-deep-card-article" href="/blog/why-your-restaurant-loses-reservations-every-night/">
-          <span class="tool-deep-kind">Article</span>
-          <h3>Why Your Restaurant Loses Reservations Every Night</h3>
-          <p class="tool-deep-snippet">A real reservation-loss funnel — the six places your site is quietly leaking intent-driven diners, what each leak costs in dollars, and the fix for every one.</p>
-          <span class="tool-deep-cta">Read the playbook <span aria-hidden="true">→</span></span>
-        </a>
       <a class="tool-deep-card tool-deep-card-article" href="/blog/when-to-rebuild-your-restaurant-website/">
           <span class="tool-deep-kind">Article</span>
           <h3>When to Rebuild Your Restaurant Website: A Decision Framework</h3>
@@ -755,7 +752,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <ul class="foot-links">
           <li><a href="/services/">Services</a></li>
           <li><a href="/for/restaurants/">For restaurants</a></li>
-          <li><a href="/work/">Work</a></li>
+          
           <li><a href="/blog/">Articles</a></li>
           <li><a href="/about/">About Don</a></li>
         </ul>

@@ -18,10 +18,8 @@ const MAP = [
   ['es/services/index.html',                               'brand/og/services-es.svg'],
   ['es/glossary/index.html',                               'brand/og/glossary-es.svg'],
   ['es/for/restaurants/index.html',                        'brand/og/restaurants-es.svg'],
-  ['es/work/index.html',                                   'brand/og/work-es.svg'],
-  ['es/work/irish-inn-glen-echo/index.html',               'brand/og/work-irish-inn-es.svg'],
-  ['es/work/off-day-collective/index.html',                'brand/og/work-off-day-collective-es.svg'],
-  ['es/work/tacombi/index.html',                           'brand/og/work-tacombi-es.svg'],
+  // /es/work/* entries retired in Phase 8 (portfolio sunset) — the
+  // /work/ section was removed when the company became the resume.
   ['es/learn/checklists/restaurant-website-checklist/index.html', 'brand/og/checklist-es.svg'],
   ['es/tools/index.html',                                  'brand/og/audit-es.svg'],
   ['es/tools/audits/index.html',                           'brand/og/audit-es.svg'],

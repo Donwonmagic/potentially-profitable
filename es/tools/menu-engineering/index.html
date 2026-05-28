@@ -126,9 +126,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=da841dee88d3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-core.css?v=a497939fe0a3" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-tool.css?v=9aab013deef2" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=da841dee88d3"><link rel="stylesheet" href="/assets/site-tool.css?v=9aab013deef2"></noscript>
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a497939fe0a3"><link rel="stylesheet" href="/assets/site-tool.css?v=9aab013deef2"></noscript>
 <style>.breadcrumb{padding-top:100px}
 /* === Menu Engineering tool-scoped styles. Page-prefix .me-*. === */
 .me-input{display:flex;flex-direction:column;gap:14px}
@@ -384,18 +384,22 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       </svg>
       Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
     </a>
-    <!-- Phase 7: nav de 5 elementos, según el plan de lanzamiento Parte II.
-         Biblioteca / Herramientas / Proyectos / Estudio / Acceder.
+    <!-- Phase 7: nav de 4 elementos, según el plan de lanzamiento Parte II.
+         Biblioteca / Herramientas / Estudio / Acceder.
          Biblioteca apunta al hub canónico /es/library/. Herramientas
          se promueve del antiguo mega-menú a un elemento de primer
          nivel. Estudio reemplaza Servicios + Restaurantes + Sobre
          Don &mdash; todo vive bajo /es/studio/ ahora. El mega-menú
          se retira (el hub ES el menú); el controlador del script
-         también desaparece. -->
+         también desaparece.
+
+         /es/work/ se retiró en la pasada de portfolio-sunset de la
+         Fase 8 (el encuadre de la empresa-como-CV hizo redundante
+         el portafolio personal). Las URLs /es/work/* hacen 301 a
+         /es/studio/ vía _redirects. -->
     <nav class="nav-links" aria-label="Principal">
       <a href="/es/library/">Biblioteca</a>
       <a href="/es/tools/">Herramientas</a>
-      <a href="/es/work/">Proyectos</a>
       <a href="/es/studio/">Estudio</a>
       <a class="js-nav-signin nav-link-auth" href="/es/sign-in/" hidden>Acceder</a>
       <a class="js-nav-workshop nav-link-auth" href="/es/workbench/" hidden>El Taller</a>
@@ -424,7 +428,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   <nav class="mobile-menu" id="mobileMenu" aria-label="Navegación móvil" hidden>
     <a href="/es/library/">Biblioteca</a>
     <a href="/es/tools/">Herramientas</a>
-    <a href="/es/work/">Proyectos</a>
     <a href="/es/studio/">Estudio</a>
     <a class="js-nav-signin mobile-auth" href="/es/sign-in/" hidden>Acceder</a>
     <a class="js-nav-workshop mobile-auth" href="/es/workbench/" hidden>El Taller</a>
@@ -487,7 +490,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <span class="eyebrow">Herramienta gratis · se queda en tu navegador</span>
     <h1 style="font-family:var(--font-display);font-size:clamp(34px,4.5vw,52px);font-weight:500;color:var(--ink);margin:14px 0 14px;line-height:1.1;">Deja de adivinar qué platos están cargando su peso.</h1>
       <!-- tool-verified:start -->
-            <p class="tool-verified">Última revisión: <time datetime="2026-05-23">23 de mayo de 2026</time></p>
+            <p class="tool-verified">Última revisión: <time datetime="2026-05-27">27 de mayo de 2026</time></p>
             <!-- tool-verified:end -->
       <!-- data-promise:start -->
             <aside class="tool-data-promise" aria-label="Promesa de datos">
@@ -785,8 +788,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         </a>
       <a class="tool-deep-card tool-deep-card-article" href="/es/blog/is-doordash-worth-it-for-restaurants-in-2026/">
           <span class="tool-deep-kind">Artículo</span>
-          <h3>¿Vale la pena DoorDash? Las matemáticas honestas para 2026</h3>
-          <p class="tool-deep-snippet">Las matemáticas honestas de DoorDash y la entrega de terceros para restaurantes independientes en 2026: en qué se convertirán realmente $100 de ingresos por entrega, cuándo todavía tiene sentido, cuándo no, y cómo construir su propio flujo de pedidos para que pueda elegir.</p>
+          <h3>is-doordash-worth-it-for-restaurants-in-2026</h3>
+          <p class="tool-deep-snippet"></p>
           <span class="tool-deep-cta">Leer la guía <span aria-hidden="true">→</span></span>
         </a>
     </div>
@@ -815,8 +818,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <div class="tool-knit__col">
         <h3>Lee</h3>
         <ul>
-          <li><a href="/es/blog/how-to-raise-restaurant-menu-prices-without-losing-reservations/">Subir precios sin perder reservas</a></li>
-          <li><a href="/es/blog/five-restaurant-website-changes-recover-one-percent-margin/">Cinco cambios de sitio que recuperan 1% de margen</a></li>
+          <li><a href="/es/library/how-to-raise-restaurant-menu-prices-without-losing-reservations/">Subir precios sin perder reservas</a></li>
+          <li><a href="/es/library/reservation-conversion-guide/">Recuperar reservas de Find a Table de Google</a></li>
         </ul>
       </div>
       <div class="tool-knit__col">

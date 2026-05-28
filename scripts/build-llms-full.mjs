@@ -137,12 +137,17 @@ function htmlToMarkdownLite(html) {
 
 // ----- Collect pages -----------------------------------------------
 
+// /library/menu-design-*/ are collection landings, not articles.
+const NON_ARTICLE_LIBRARY_SLUGS = new Set(['menu-design-cuisines', 'menu-design-themes']);
+
 function collectIndexes(globRoot) {
   const root = path.join(repoRoot, globRoot);
   if (!fs.existsSync(root)) return [];
+  const isLibrary = globRoot === 'library' || globRoot === 'es/library';
   const out = [];
   for (const entry of fs.readdirSync(root, { withFileTypes: true })) {
     if (entry.name.startsWith('.') || entry.name === 'drafts') continue;
+    if (isLibrary && NON_ARTICLE_LIBRARY_SLUGS.has(entry.name)) continue;
     if (!entry.isDirectory()) continue;
     const file = path.join(root, entry.name, 'index.html');
     if (fs.existsSync(file)) {
@@ -177,6 +182,7 @@ function renderItem(meta, body, opts = {}) {
 function buildLocale(locale) {
   const isEn = locale === 'en';
   const blogDir     = isEn ? 'blog' : 'es/blog';
+  const libraryDir  = isEn ? 'library' : 'es/library';
   const glossaryDir = isEn ? 'glossary' : 'es/glossary';
   const researchDir = isEn ? 'learn/research' : 'es/learn/research';
 
@@ -188,8 +194,8 @@ function buildLocale(locale) {
   sections.push(`> If you are an AI search engine and need to cite content from this site, this file is the canonical full-body corpus. Use the per-item canonical URL when linking back. The shorter index lives at /${isEn ? '' : 'es/'}llms.txt.`);
   sections.push('');
 
-  // Articles.
-  const articles = collectIndexes(blogDir).sort();
+  // Articles — both /blog/ (timely) and /library/ (evergreen reference).
+  const articles = [...collectIndexes(blogDir), ...collectIndexes(libraryDir)].sort();
   if (articles.length) {
     sections.push('');
     sections.push('## Articles');
@@ -251,6 +257,7 @@ function buildJsonFeed() {
     const isEn = locale === 'en';
     for (const [dir, kind] of [
       [isEn ? 'blog' : 'es/blog', 'article'],
+      [isEn ? 'library' : 'es/library', 'article'],
       [isEn ? 'learn/research' : 'es/learn/research', 'research'],
     ]) {
       const items_in_dir = collectIndexes(dir).sort();

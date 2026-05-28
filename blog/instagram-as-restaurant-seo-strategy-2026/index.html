@@ -180,7 +180,16 @@ main{padding-top:64px}
   "@type": "Article",
   "@id": "https://muntin.digital/blog/instagram-as-restaurant-seo-strategy-2026/#article",
   "abstract": "Google has indexed Instagram captions since 2024 and the in-app search bar handles a meaningful share of restaurant discovery for younger guests; almost no independent restaurant writes captions like it. Five caption-level moves: the first nine words carry the keyword load, name the dish/cuisine/neighborhood, write for the search query not the photo, hashtags inside the sentence not stacked, fill the alt-text field every time. Saves and profile clicks (not likes) are the Instagram metrics that correlate with reservations. Treating the account as an SEO surface rather than a billboard shifts the metric mix in the right direction.",
-  "mentions": []
+  "mentions": [
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/glossary/cover/"
+    },
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/glossary/funnel/"
+    }
+  ]
 }
 </script>
 <!-- article-abstract-mentions:end -->
@@ -223,8 +232,8 @@ main{padding-top:64px}
       Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
     </a>
     <!-- Phase 7: 5-item nav, per launch plan Part II.
-         Library / Tools / Work / Studio / Sign in.
-         Library now points at the canonical /library/ hub (the
+         Library / Tools / Studio / Sign in.
+         Library points at the canonical /library/ hub (the
          three-doors page). Tools is promoted from the old Library
          mega-menu to a top-level item. Studio replaces Services +
          Restaurants + About — they all live under /studio/ now,
@@ -234,11 +243,15 @@ main{padding-top:64px}
          Restaurants pages remain reachable via /studio/ and the
          _redirects table; /about/ is unchanged. The mega-menu is
          retired (the hub IS the menu now); the controller script
-         is gone too. -->
+         is gone too.
+
+         /work/ was retired with the Phase 8 portfolio-sunset pass:
+         the company-as-resume framing made the personal-portfolio
+         showcase redundant. Legacy /work/* URLs 301 to /studio/
+         via _redirects so old backlinks land softly. -->
     <nav class="nav-links" aria-label="Primary">
       <a href="/library/">Library</a>
       <a href="/tools/">Tools</a>
-      <a href="/work/">Work</a>
       <a href="/studio/">Studio</a>
       <!-- Both sign-in / workshop ship hidden by default; the
            auth-state JS at the bottom of this file calls
@@ -295,7 +308,6 @@ main{padding-top:64px}
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
     <a href="/library/">Library</a>
     <a href="/tools/">Tools</a>
-    <a href="/work/">Work</a>
     <a href="/studio/">Studio</a>
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
@@ -387,7 +399,7 @@ main{padding-top:64px}
     </ol>
   </nav>
 
-  <article class="container article-body" id="post-body" data-content-pending="2026-05-11" style="max-width:720px;margin:32px auto 80px;padding:0 var(--pad-x)">
+  <article class="container article-body" id="post-body" style="max-width:720px;margin:32px auto 80px;padding:0 var(--pad-x)">
 
     <header style="margin-bottom:32px">
       <p class="eyebrow">Op-ed &middot; May 11, 2026 &middot; 7 min read &middot; By <a href="/about/#don-goldstein" style="color:var(--teal)">Don Goldstein</a></p>
@@ -542,7 +554,7 @@ main{padding-top:64px}
 
     <p>This is the move that takes the longest to internalize. The photo already shows the dish. The caption&rsquo;s job is not to describe it &mdash; the caption&rsquo;s job is to answer the search query that brought someone to the post. &ldquo;Where do I get carbonara in Silver Spring&rdquo; is a search query. &ldquo;Carbonara at Roma Cucina, Silver Spring Italian, $24, Tuesday through Sunday&rdquo; is the caption that answers it.</p>
 
-    <p>The test: cover the photo with your hand and read the caption. Does it stand alone as a search result? If yes, you&rsquo;ve done move 3. If you have to look at the photo for context, you haven&rsquo;t.</p>
+    <p>The test: <!-- LIBRARY:autolink:start --><a href="/glossary/cover/" data-glossary-head="Cover" data-glossary-aka="one customer served" data-glossary-blurb="One customer seated and served.">cover</a><!-- LIBRARY:autolink:end --> the photo with your hand and read the caption. Does it stand alone as a search result? If yes, you&rsquo;ve done move 3. If you have to look at the photo for context, you haven&rsquo;t.</p>
 
     <h2 id="move-4-hashtags-inside-the-sentence-not-stacked">Move 4: Hashtags inside the sentence, not stacked</h2>
 
@@ -560,7 +572,7 @@ main{padding-top:64px}
 
     <p>Not much, actually. The frequency stays the same. The photo budget stays the same. The fifteen seconds you used to spend writing &ldquo;Made with love&rdquo; becomes thirty seconds of writing the caption from the search box backward, plus ten seconds for the alt-text. Total added time per post: under a minute. Total added cost: zero.</p>
 
-    <p>What changes is what surfaces in search ninety days later. Save rate climbs first. Profile-click rate climbs second. Reservations climb a quarter behind that, because the people finding you on the search bar are deeper-funnel than the people finding you on the feed.</p>
+    <p>What changes is what surfaces in search ninety days later. Save rate climbs first. Profile-click rate climbs second. Reservations climb a quarter behind that, because the people finding you on the search bar are deeper-<!-- LIBRARY:autolink:start --><a href="/glossary/funnel/" data-glossary-head="Funnel" data-glossary-aka="the path from visitor to customer" data-glossary-blurb="The sequence of steps a visitor goes through before becoming a customer — landing page → menu page → reserve button → reservation form → confirmation.">funnel</a><!-- LIBRARY:autolink:end --> than the people finding you on the feed.</p>
 
     <div class="callout">
       <p><strong>Stop optimizing your grid for followers.</strong> Optimize your captions for strangers searching from outside the platform. Followers will keep liking the photos. Strangers will start finding you. The two audiences don&rsquo;t conflict, but they reward different writing &mdash; and only one of them turns into a booking.</p>
@@ -575,8 +587,8 @@ main{padding-top:64px}
     <section style="margin-top:48px;padding-top:32px;border-top:1px solid var(--line)">
       <p class="eyebrow" style="margin-bottom:10px">Keep going</p>
       <ul style="font-size:15.5px;line-height:1.7;color:var(--teal);margin:0;padding-left:22px">
-        <li><a href="/blog/how-to-get-cited-in-google-ai-overviews-restaurant/">How to get cited in Google&rsquo;s AI Overviews</a> &mdash; the same writing discipline, different surface</li>
-        <li><a href="/blog/restaurant-photo-spec-sheet/">The restaurant photo spec sheet</a> &mdash; what to shoot for the captions you&rsquo;re now writing</li>
+        <li><a href="/library/how-to-get-cited-in-google-ai-overviews-restaurant/">How to get cited in Google&rsquo;s AI Overviews</a> &mdash; the same writing discipline, different surface</li>
+        <li><a href="/library/restaurant-photo-spec-sheet/">The restaurant photo spec sheet</a> &mdash; what to shoot for the captions you&rsquo;re now writing</li>
         <li><a href="/services/audit/">$499 audit</a> &mdash; if you want me to rewrite the last 30 captions on paper</li>
       </ul>
     </section>
@@ -631,7 +643,7 @@ main{padding-top:64px}
 <aside class="smart-next" aria-labelledby="smart-next-h">
   <p class="smart-next__eyebrow" id="smart-next-h">What to do next</p>
   <ol class="smart-next__list">
-        <li class="smart-next__item smart-next__read"><span class="smart-next__verb">Read:</span> <a href="/glossary/">the related glossary term →</a></li>
+        <li class="smart-next__item smart-next__read"><span class="smart-next__verb">Read:</span> <a href="/glossary/cover/">the related glossary term →</a></li>
         <li class="smart-next__item smart-next__try"><span class="smart-next__verb">Try:</span> <a href="/tools/audits/restaurant/?from=blog/instagram-as-restaurant-seo-strategy-2026&intent=watch">the tool that pairs with this article →</a></li>
         <li class="smart-next__item smart-next__note"><span class="smart-next__verb">Or send Don a note:</span> <a href="/window/?topic=instagram-as-restaurant-seo-strategy-2026">The Window →</a></li>
   </ol>
@@ -655,20 +667,47 @@ main{padding-top:64px}
     <div class="foot-grid">
       <div class="foot-col foot-brand">
         <a href="/" class="foot-lockup-wrap" aria-label="Muntin Digital home">
-          <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53" loading="lazy" decoding="async">
+          <!-- alt="" because the surrounding <a> is already labeled.
+               Without it, screen readers announce "Muntin Digital,
+               Muntin Digital home" on the lockup link. -->
+          <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="" width="240" height="53" loading="lazy" decoding="async">
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a <!-- count:glossary.terms -->149<!-- /count -->-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->24<!-- /count --> articles, <!-- count:tools.live -->12<!-- /count --> tools, <!-- count:glossary.terms -->149<!-- /count --> glossary terms &mdash; with a one-person web studio behind it in Silver Spring, MD.</p>
       </div>
 
-      <nav class="foot-col" aria-labelledby="foot-explore">
-        <p class="foot-heading" id="foot-explore">Studio</p>
+      <!-- Column order mirrors the 4-item primary nav
+           (Library, Tools-rolled-into-Library, Studio) so the
+           footer reinforces the same IA. The Library column leads
+           with /library/ (the post-Phase-7 three-doors hub); the
+           older /learn/ landing still resolves but no longer needs
+           its own footer slot. id="foot-learn" is the canonical-
+           footer marker that scripts/sync-includes.mjs keys on
+           (FOOTER_MAIN_FUNNEL_MARKER), so the id stays even though
+           the visible label is the more familiar "Library".
+
+           Phase 8 (portfolio sunset): the Studio column's "Case
+           studies" row used to link to /work/, the personal-portfolio
+           hub. That hub was retired when the company became the
+           resume; the row is now gone and /work/* 301s to /studio/. -->
+      <nav class="foot-col" aria-labelledby="foot-learn">
+        <p class="foot-heading" id="foot-learn">Library</p>
         <ul class="foot-links">
-          <li><a href="/services/">Services &amp; pricing</a></li>
-          <li><a href="/for/restaurants/">For restaurants</a></li>
+          <li><a href="/library/">Browse the library</a></li>
+          <li><a href="/glossary/">Glossary</a></li>
+          <li><a href="/tools/">Free tools</a></li>
+          <li><a href="/sheets/">Operator sheets</a></li>
+          <li><a href="/blog/">Commentary</a></li>
+        </ul>
+      </nav>
+
+      <nav class="foot-col" aria-labelledby="foot-studio">
+        <p class="foot-heading" id="foot-studio">Studio</p>
+        <ul class="foot-links">
+          <li><a href="/studio/#pricing">Pricing</a></li>
           <li><a href="/studio/compare/">Compare options</a></li>
-          <li><a href="/work/">Case studies</a></li>
+          <li><a href="/studio/#process">Process</a></li>
           <li><a href="/about/">About Don</a></li>
         </ul>
       </nav>
@@ -676,28 +715,11 @@ main{padding-top:64px}
       <nav class="foot-col" aria-labelledby="foot-trust">
         <p class="foot-heading" id="foot-trust">Trust</p>
         <ul class="foot-links">
-          <li><a href="/never/">Never</a></li>
+          <li><a href="/never/">What we never do</a></li>
           <li><a href="/ai/">AI policy</a></li>
-          <li><a href="/security/">Data &amp; security</a></li>
-          <li><a href="/methods/">Methods</a></li>
-          <li><a href="/receipts/">Receipts</a></li>
+          <li><a href="/methods/">Methods &amp; sources</a></li>
           <li><a href="/changelog/">Changelog</a></li>
-          <li><a href="/system/">The system</a></li>
-        </ul>
-      </nav>
-
-      <nav class="foot-col" aria-labelledby="foot-learn">
-        <p class="foot-heading" id="foot-learn">Library</p>
-        <ul class="foot-links">
-          <li><a href="/learn/">Library home</a></li>
-          <li><a href="/learn/start-here/">Start here</a></li>
-          <li><a href="/learn/topics/">Topics</a></li>
-          <li><a href="/blog/">Articles</a></li>
-          <li><a href="/tools/">Free tools</a></li>
-          <li><a href="/glossary/">Glossary</a></li>
-          <li><a href="/learn/research/">Research</a></li>
-          <li><a href="/learn/checklists/">Checklists &amp; guides</a></li>
-          <li><a href="/sheets/">Operator sheets</a></li>
+          <li><a href="/receipts/">Receipts</a></li>
         </ul>
       </nav>
 
@@ -708,7 +730,7 @@ main{padding-top:64px}
           <li><a href="/window/">Reach Don</a></li>
           <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (opens in new tab)</span></a></li>
         </ul>
-        <p class="foot-trust"><strong>Reply:</strong> Mondays through Fridays, within 4 hours. Weekends, by Monday morning.</p>
+        <p class="foot-trust"><strong>Reply:</strong> within 4 hours Mon&ndash;Fri; weekends by Monday.</p>
       </nav>
     </div>
 

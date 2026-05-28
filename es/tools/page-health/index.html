@@ -174,9 +174,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=da841dee88d3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-core.css?v=a497939fe0a3" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-tool.css?v=9aab013deef2" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=da841dee88d3"><link rel="stylesheet" href="/assets/site-tool.css?v=9aab013deef2"></noscript>
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a497939fe0a3"><link rel="stylesheet" href="/assets/site-tool.css?v=9aab013deef2"></noscript>
 
 <style>
   .speed-hero { max-width: 680px; margin: 0 auto; text-align: center; }
@@ -417,18 +417,22 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       </svg>
       Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
     </a>
-    <!-- Phase 7: nav de 5 elementos, según el plan de lanzamiento Parte II.
-         Biblioteca / Herramientas / Proyectos / Estudio / Acceder.
+    <!-- Phase 7: nav de 4 elementos, según el plan de lanzamiento Parte II.
+         Biblioteca / Herramientas / Estudio / Acceder.
          Biblioteca apunta al hub canónico /es/library/. Herramientas
          se promueve del antiguo mega-menú a un elemento de primer
          nivel. Estudio reemplaza Servicios + Restaurantes + Sobre
          Don &mdash; todo vive bajo /es/studio/ ahora. El mega-menú
          se retira (el hub ES el menú); el controlador del script
-         también desaparece. -->
+         también desaparece.
+
+         /es/work/ se retiró en la pasada de portfolio-sunset de la
+         Fase 8 (el encuadre de la empresa-como-CV hizo redundante
+         el portafolio personal). Las URLs /es/work/* hacen 301 a
+         /es/studio/ vía _redirects. -->
     <nav class="nav-links" aria-label="Principal">
       <a href="/es/library/">Biblioteca</a>
       <a href="/es/tools/">Herramientas</a>
-      <a href="/es/work/">Proyectos</a>
       <a href="/es/studio/">Estudio</a>
       <a class="js-nav-signin nav-link-auth" href="/es/sign-in/" hidden>Acceder</a>
       <a class="js-nav-workshop nav-link-auth" href="/es/workbench/" hidden>El Taller</a>
@@ -457,7 +461,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   <nav class="mobile-menu" id="mobileMenu" aria-label="Navegación móvil" hidden>
     <a href="/es/library/">Biblioteca</a>
     <a href="/es/tools/">Herramientas</a>
-    <a href="/es/work/">Proyectos</a>
     <a href="/es/studio/">Estudio</a>
     <a class="js-nav-signin mobile-auth" href="/es/sign-in/" hidden>Acceder</a>
     <a class="js-nav-workshop mobile-auth" href="/es/workbench/" hidden>El Taller</a>
@@ -534,7 +537,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <span class="eyebrow">Herramienta gratis &middot; 10 segundos</span>
       <h1>¿Qué tan rápido es tu <span class="serif-italic">sitio?</span></h1>
       <!-- tool-verified:start -->
-            <p class="tool-verified">Última revisión: <time datetime="2026-05-23">23 de mayo de 2026</time></p>
+            <p class="tool-verified">Última revisión: <time datetime="2026-05-26">26 de mayo de 2026</time></p>
             <!-- tool-verified:end -->
       <!-- data-promise:start -->
             <aside class="tool-data-promise" aria-label="Promesa de datos">
@@ -615,7 +618,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <!-- Sprint 12b (cohesión) — Fila Learn-back. -->
         <aside class="learn-back" aria-label="Qué significa este puntaje">
           <p class="learn-back-eyebrow">Qué significa este puntaje</p>
-          <p class="learn-back-body">Los cuatro números detrás del puntaje — LCP, FCP, TBT, CLS — son los <a href="/es/glossary/core-web-vitals/">Core Web Vitals</a>, las mismas señales que Google usa para rankearte en móvil. La <a href="/es/blog/why-your-restaurant-loses-reservations-every-night/">guía sobre fugas de reservas</a> recorre cómo cada segundo de lentitud se traduce en reservas que nunca ocurrieron.</p>
+          <p class="learn-back-body">Los cuatro números detrás del puntaje — LCP, FCP, TBT, CLS — son los <a href="/es/glossary/core-web-vitals/">Core Web Vitals</a>, las mismas señales que Google usa para rankearte en móvil. La <a href="/library/reservation-conversion-guide/">guía sobre fugas de reservas</a> recorre cómo cada segundo de lentitud se traduce en reservas que nunca ocurrieron.</p>
         </aside>
 
         <div class="speed-cta">
@@ -679,8 +682,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         </a>
       <a class="tool-deep-card tool-deep-card-article" href="/es/blog/why-your-restaurant-loses-reservations-every-night/">
           <span class="tool-deep-kind">Artículo</span>
-          <h3>Por qué tu restaurante pierde reservas cada noche (y cómo arreglarlo)</h3>
-          <p class="tool-deep-snippet">Un embudo real de pérdida de reservas — los seis lugares donde el sitio web de tu restaurante está silenciosamente perdiendo a comensales con intención, lo que cada fuga te cuesta en dólares, y el arreglo para cada una.</p>
+          <h3>why-your-restaurant-loses-reservations-every-night</h3>
+          <p class="tool-deep-snippet"></p>
           <span class="tool-deep-cta">Leer la guía <span aria-hidden="true">→</span></span>
         </a>
       <a class="tool-deep-card tool-deep-card-article" href="/es/blog/when-to-rebuild-your-restaurant-website/">
@@ -718,7 +721,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <ul class="foot-links">
           <li><a href="/es/services/">Servicios</a></li>
           <li><a href="/es/for/restaurants/">Para restaurantes</a></li>
-          <li><a href="/es/work/">Proyectos</a></li>
+          
           <li><a href="/es/blog/">Artículos</a></li>
           <li><a href="/es/about/">Sobre Don</a></li>
         </ul>

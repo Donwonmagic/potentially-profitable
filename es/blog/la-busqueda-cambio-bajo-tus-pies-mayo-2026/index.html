@@ -258,18 +258,22 @@ header.nav{min-height:64px}
       </svg>
       Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
     </a>
-    <!-- Phase 7: nav de 5 elementos, según el plan de lanzamiento Parte II.
-         Biblioteca / Herramientas / Proyectos / Estudio / Acceder.
+    <!-- Phase 7: nav de 4 elementos, según el plan de lanzamiento Parte II.
+         Biblioteca / Herramientas / Estudio / Acceder.
          Biblioteca apunta al hub canónico /es/library/. Herramientas
          se promueve del antiguo mega-menú a un elemento de primer
          nivel. Estudio reemplaza Servicios + Restaurantes + Sobre
          Don &mdash; todo vive bajo /es/studio/ ahora. El mega-menú
          se retira (el hub ES el menú); el controlador del script
-         también desaparece. -->
+         también desaparece.
+
+         /es/work/ se retiró en la pasada de portfolio-sunset de la
+         Fase 8 (el encuadre de la empresa-como-CV hizo redundante
+         el portafolio personal). Las URLs /es/work/* hacen 301 a
+         /es/studio/ vía _redirects. -->
     <nav class="nav-links" aria-label="Principal">
       <a href="/es/library/">Biblioteca</a>
       <a href="/es/tools/">Herramientas</a>
-      <a href="/es/work/">Proyectos</a>
       <a href="/es/studio/">Estudio</a>
       <a class="js-nav-signin nav-link-auth" href="/es/sign-in/" hidden>Acceder</a>
       <a class="js-nav-workshop nav-link-auth" href="/es/workbench/" hidden>El Taller</a>
@@ -298,7 +302,6 @@ header.nav{min-height:64px}
   <nav class="mobile-menu" id="mobileMenu" aria-label="Navegación móvil" hidden>
     <a href="/es/library/">Biblioteca</a>
     <a href="/es/tools/">Herramientas</a>
-    <a href="/es/work/">Proyectos</a>
     <a href="/es/studio/">Estudio</a>
     <a class="js-nav-signin mobile-auth" href="/es/sign-in/" hidden>Acceder</a>
     <a class="js-nav-workshop mobile-auth" href="/es/workbench/" hidden>El Taller</a>
@@ -387,9 +390,9 @@ header.nav{min-height:64px}
             <aside class="tldr" data-llm="tldr" aria-label="En resumen">
               <p class="tldr__eyebrow">En resumen</p>
               <ul class="tldr__list">
-              <li>En una semana de mayo de 2026, Google unificó sus superficies de descubrimiento alrededor de un solo activo &mdash; el Perfil de Negocio de Google &mdash; con la reconstrucción de AI Mode en I/O, una actualización central, y la subida de Gemini al 13.2% del tráfico referido por IA.</li>
+              <li>En una semana de mayo de 2026, Google unificó sus superficies de descubrimiento alrededor de un solo activo — el Perfil de Negocio de Google — con la reconstrucción de AI Mode en I/O, una actualización central, y la subida de Gemini al 13.2% del tráfico referido por IA.</li>
         <li>Los tres cambios convergen en dos requisitos: legibilidad (el modelo puede sacar tu respuesta del texto y del schema) y reservabilidad (el agente puede completar una reserva por OpenTable, Resy o Tock).</li>
-        <li>Un solo perfil ahora alimenta cuatro superficies &mdash; el paquete local, el AI Overview, Gemini y el agente de reservas &mdash; así que una hora puesta en el perfil se cobra cuatro veces.</li>
+        <li>Un solo perfil ahora alimenta cuatro superficies — el paquete local, el AI Overview, Gemini y el agente de reservas — así que una hora puesta en el perfil se cobra cuatro veces.</li>
         <li>Las cinco piezas son capítulos de una sola historia: ver la nueva superficie, revisar si estás en ella, contar el costo, pivotar a la nueva fuente de tráfico, capturar la reserva.</li>
               </ul>
             </aside>
@@ -439,7 +442,7 @@ header.nav{min-height:64px}
       <p>Ninguno de los dos conceptos es nuevo. Los operadores los han o&iacute;do durante a&ntilde;os. Lo que cambi&oacute; en una semana es que pasaron a cargar peso de verdad: los mismos dos requisitos ahora deciden si el modelo te nombra, si el agente te elige y si eres visible en tres de las cuatro superficies que un comensal usa para encontrarte. Antes no ten&iacute;as que ganar en legibilidad y reservabilidad; la matem&aacute;tica de cercan&iacute;a m&aacute;s calificaci&oacute;n del paquete local perdonaba mucho. La nueva superficie no perdona casi nada.</p>
 
       <h2 id="el-activo-nico-que-alimenta-las-cuatro-superficies">El activo &uacute;nico que alimenta las cuatro superficies</h2>
-      <p>Sep&aacute;ralos y los tres cambios buscan el mismo archivo: tu Perfil de Negocio de Google. Alimenta el <a href="/es/glossary/map-pack/">paquete local</a> igual que siempre. Alimenta el AI Overview de Google, donde una respuesta generada se arma con lo que el modelo puede leer y confiar de ti &mdash; la reconstrucci&oacute;n que cubrimos en <a href="/es/blog/google-ai-mode-resultados-locales-restaurante-2026/">la nueva superficie</a>. Alimenta a Gemini, que se apoya en el propio ecosistema de Google (tu perfil, Maps y rese&ntilde;as) mucho m&aacute;s que ChatGPT o Perplexity &mdash; la din&aacute;mica en <a href="/es/blog/trafico-referido-gemini-restaurantes-2026/">la nueva fuente de tr&aacute;fico</a>. Y alimenta al agente de reservas, que arma su lista corta de mesas reservables con los perfiles que puede ver &mdash; la puerta en <a href="/es/blog/reserva-en-google-ai-mode-restaurante-2026/">capturar la reserva</a>.</p>
+      <p>Sep&aacute;ralos y los tres cambios buscan el mismo archivo: tu Perfil de Negocio de Google. Alimenta el <a href="/es/glossary/map-pack/">paquete local</a> igual que siempre. Alimenta el AI Overview de Google, donde una respuesta generada se arma con lo que el modelo puede leer y confiar de ti &mdash; la reconstrucci&oacute;n que cubrimos en <a href="/es/blog/google-ai-mode-resultados-locales-restaurante-2026/">la nueva superficie</a>. Alimenta a Gemini, que se apoya en el propio ecosistema de Google (tu perfil, Maps y rese&ntilde;as) mucho m&aacute;s que ChatGPT o Perplexity &mdash; la din&aacute;mica en <a href="/es/blog/trafico-referido-gemini-restaurantes-2026/">la nueva fuente de tr&aacute;fico</a>. Y alimenta al agente de reservas, que arma su lista corta de mesas reservables con los perfiles que puede ver &mdash; la puerta en <a href="/es/library/reserva-en-google-ai-mode-restaurante-2026/">capturar la reserva</a>.</p>
 
       <figure class="viz-figure article-figure" data-audio-alt="Un solo activo alimentando cuatro superficies de descubrimiento. El Perfil de Negocio de Google est&aacute; en el centro como el eje. De &eacute;l salen cuatro radios: al paquete local cl&aacute;sico, al AI Overview de Google, a las respuestas de Gemini sobre restaurantes, y al flujo de reserva por agente que completa una reserva por OpenTable, Resy o Tock. Manten un solo perfil completo y al d&iacute;a y est&aacute;s trabajando las cuatro superficies con el esfuerzo de una tarde.">
         <div class="viz-flow">
@@ -448,7 +451,7 @@ header.nav{min-height:64px}
               <span class="viz-flow__num">1</span>
               <div class="viz-flow__body">
                 <p class="viz-flow__title">Eje &mdash; tu Perfil de Negocio de Google</p>
-                <p class="viz-flow__detail">Horario por d&iacute;a, cocina, atributos, el enlace al men&uacute;, el enlace de reserva, las fotos, las rese&ntilde;as respondidas &mdash; un solo registro, al d&iacute;a.</p>
+                <p class="viz-flow__detail">Horario por d&iacute;a, cocina, atributos, el enlace al men&uacute;, el <!-- LIBRARY:autolink:start --><a href="/es/glossary/reservation-link/" data-glossary-head="Enlace de reserva" data-glossary-aka="OpenTable, Resy, Tock, formulario propio" data-glossary-blurb="Un enlace persistente — en la navegación, en el hero, y en el pie móvil — que arranca un flujo de reserva.">enlace de reserva</a><!-- LIBRARY:autolink:end -->, las fotos, las rese&ntilde;as respondidas &mdash; un solo registro, al d&iacute;a.</p>
               </div>
             </li>
             <li class="viz-flow__step" data-tone="teal">
@@ -524,7 +527,7 @@ header.nav{min-height:64px}
               <span class="viz-flow__num">5</span>
               <div class="viz-flow__body">
                 <p class="viz-flow__title">Captura la reserva</p>
-                <p class="viz-flow__detail">El 65% de los comensales prefiere reservar en el sitio del propio restaurante; el agente solo arma lista corta con restaurantes en OpenTable, Resy o Tock. Cierra con <a href="/es/blog/reserva-en-google-ai-mode-restaurante-2026/">capturar la reserva</a>.</p>
+                <p class="viz-flow__detail">El 65% de los comensales prefiere reservar en el sitio del propio restaurante; el agente solo arma lista corta con restaurantes en OpenTable, Resy o Tock. Cierra con <a href="/es/library/reserva-en-google-ai-mode-restaurante-2026/">capturar la reserva</a>.</p>
               </div>
             </li>
           </ol>
@@ -557,11 +560,11 @@ header.nav{min-height:64px}
             <aside class="key-takeaways" data-llm="takeaways" aria-label="Lo que importa">
               <p class="key-takeaways__eyebrow">Lo que importa</p>
               <ul class="key-takeaways__list">
-              <li>Los tres cambios de mayo de 2026 convergen en un solo cuello de botella &mdash; legibilidad m&aacute;s reservabilidad a trav&eacute;s del Perfil de Negocio de Google.</li>
+              <li>Los tres cambios de mayo de 2026 convergen en un solo cuello de botella — legibilidad más reservabilidad a través del Perfil de Negocio de Google.</li>
         <li>Un solo perfil alimenta cuatro superficies: el paquete local, el AI Overview, Gemini (13.2% de los referidos por IA) y el flujo de reserva por agente.</li>
-        <li>Legibilidad y reservabilidad no son conceptos nuevos &mdash; ahora cargan peso, porque cada superficie lee el mismo archivo.</li>
-        <li>Las cinco piezas forman una cadena de dependencias: ver la superficie, revisar visibilidad, contar el costo, pivotar a la nueva fuente de tr&aacute;fico, capturar la reserva.</li>
-        <li>El trabajo que gana es el de perfil y sitio que ya conoces &mdash; ahora visible para m&aacute;quinas que rutean tr&aacute;fico.</li>
+        <li>Legibilidad y reservabilidad no son conceptos nuevos — ahora cargan peso, porque cada superficie lee el mismo archivo.</li>
+        <li>Las cinco piezas forman una cadena de dependencias: ver la superficie, revisar visibilidad, contar el costo, pivotar a la nueva fuente de tráfico, capturar la reserva.</li>
+        <li>El trabajo que gana es el de perfil y sitio que ya conoces — ahora visible para máquinas que rutean tráfico.</li>
               </ul>
             </aside>
             <!-- article-takeaways:end -->
@@ -609,7 +612,7 @@ header.nav{min-height:64px}
         <span class="wave-toc__num">05</span>
         <div class="wave-toc__body">
           <p class="wave-toc__role">La reserva</p>
-          <a class="wave-toc__title" href="/es/blog/reserva-en-google-ai-mode-restaurante-2026/">Los comensales reservan dentro de la respuesta de IA</a>
+          <a class="wave-toc__title" href="/es/library/reserva-en-google-ai-mode-restaurante-2026/">Los comensales reservan dentro de la respuesta de IA</a>
           <p class="wave-toc__desc">OpenTable / Resy / Tock cierran el ciclo. Aseg&uacute;rate de que es tu mesa la que el agente alcanza.</p>
         </div>
       </li>
@@ -665,39 +668,58 @@ header.nav{min-height:64px}
     <div class="foot-grid">
       <div class="foot-col foot-brand">
         <a href="/es/" class="foot-lockup-wrap" aria-label="Muntin Digital — inicio">
-          <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53" loading="lazy" decoding="async">
+          <!-- alt="" porque el <a> que envuelve ya está etiquetado.
+               Sin esto, los lectores de pantalla anuncian dos veces
+               "Muntin Digital" en el enlace del logotipo. -->
+          <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="" width="240" height="53" loading="lazy" decoding="async">
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">La ventana.</p>
-        <p class="foot-blurb">Una biblioteca web y estudio de dise&ntilde;o para restaurantes, con base en Silver Spring, MD &mdash; art&iacute;culos, herramientas gratis, investigaci&oacute;n y un glosario de <!-- count:glossary.terms -->149<!-- /count --> t&eacute;rminos, con el estudio detr&aacute;s cuando quieras contratar. Se habla espa&ntilde;ol.</p>
+        <p class="foot-blurb">Una biblioteca gratuita para restaurantes &mdash; <!-- count:articles.library -->24<!-- /count --> art&iacute;culos, <!-- count:tools.live -->12<!-- /count --> herramientas y un glosario de <!-- count:glossary.terms -->149<!-- /count --> t&eacute;rminos &mdash; con un estudio web de una persona detr&aacute;s, en Silver Spring, MD. Se habla espa&ntilde;ol.</p>
       </div>
 
-      <nav class="foot-col" aria-labelledby="foot-explore">
-        <p class="foot-heading" id="foot-explore">Explorar</p>
-        <ul class="foot-links">
-          <li><a href="/es/services/">Servicios</a></li>
-          <li><a href="/es/for/restaurants/">Para restaurantes</a></li>
-          <li><a href="/es/work/">Proyectos</a></li>
-          <li><a href="/es/about/">Sobre Don</a></li>
-          <li><a href="/es/system/">El sistema</a></li>
-          <li><a href="/receipts/" hreflang="en" lang="en">Receipts</a></li>
-          <li><a href="/methods/" hreflang="en" lang="en">Methods</a></li>
-          <li><a href="/changelog/" hreflang="en" lang="en">Changelog</a></li>
-        </ul>
-      </nav>
-
+      <!-- El orden de columnas refleja la navegación principal de 5
+           ítems (Biblioteca, Estudio, Confianza, Contacto). La
+           Biblioteca apunta primero al hub /es/library/ (las tres
+           puertas: Lee, Busca, Haz); el antiguo /es/learn/ sigue
+           resolviendo pero ya no necesita su propio enlace de pie.
+           id="foot-learn" es el marcador canónico que usa
+           scripts/sync-includes.mjs (FOOTER_MAIN_FUNNEL_MARKER), así
+           que el id se mantiene aunque la etiqueta visible sea
+           "Biblioteca". -->
       <nav class="foot-col" aria-labelledby="foot-learn">
         <p class="foot-heading" id="foot-learn">Biblioteca</p>
         <ul class="foot-links">
-          <li><a href="/es/learn/">Inicio de la biblioteca</a></li>
-          <li><a href="/es/learn/start-here/">Empieza aquí</a></li>
-          <li><a href="/es/learn/topics/">Temas</a></li>
-          <li><a href="/es/blog/">Artículos</a></li>
-          <li><a href="/es/tools/">Herramientas gratis</a></li>
+          <li><a href="/es/library/">Explora la biblioteca</a></li>
           <li><a href="/es/glossary/">Glosario</a></li>
-          <li><a href="/es/learn/research/">Investigación</a></li>
-          <li><a href="/es/learn/checklists/">Listas y recursos</a></li>
+          <li><a href="/es/tools/">Herramientas gratis</a></li>
           <li><a href="/es/sheets/">Hojas del operador</a></li>
+          <li><a href="/es/blog/">Comentarios</a></li>
+        </ul>
+      </nav>
+
+      <!-- Fase 8 (portfolio sunset): la fila "Proyectos" enlazaba a
+           /es/work/, el portafolio personal. Ese hub se retiró cuando
+           la empresa pasó a ser el currículum; la fila ya no está y
+           /es/work/* hace 301 a /es/studio/. -->
+      <nav class="foot-col" aria-labelledby="foot-studio">
+        <p class="foot-heading" id="foot-studio">Estudio</p>
+        <ul class="foot-links">
+          <li><a href="/es/studio/#pricing">Precios</a></li>
+          <li><a href="/es/studio/compare/">Comparar opciones</a></li>
+          <li><a href="/es/studio/#process">Proceso</a></li>
+          <li><a href="/es/about/">Sobre Don</a></li>
+        </ul>
+      </nav>
+
+      <nav class="foot-col" aria-labelledby="foot-trust">
+        <p class="foot-heading" id="foot-trust">Confianza</p>
+        <ul class="foot-links">
+          <li><a href="/es/never/">Lo que nunca hacemos</a></li>
+          <li><a href="/es/ai/">Pol&iacute;tica de IA</a></li>
+          <li><a href="/es/methods/">M&eacute;todos y fuentes</a></li>
+          <li><a href="/es/changelog/">Registro de cambios</a></li>
+          <li><a href="/es/receipts/">Recibos</a></li>
         </ul>
       </nav>
 
@@ -708,7 +730,7 @@ header.nav{min-height:64px}
           <li><a href="/es/window/">Contacta a Don</a></li>
           <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (se abre en una pestaña nueva)</span></a></li>
         </ul>
-        <p class="foot-trust"><strong>Respuesta:</strong> de lunes a viernes, en menos de 4 horas. Los fines de semana, el lunes en la mañana.</p>
+        <p class="foot-trust"><strong>Respuesta:</strong> en menos de 4 horas de lunes a viernes; fines de semana, el lunes.</p>
       </nav>
     </div>
 
@@ -776,7 +798,6 @@ header.nav{min-height:64px}
   <!-- listen-script:start -->
   <script src="/assets/js/listen.js?v=20260503-modsplit" defer></script>
   <!-- listen-script:end -->
-
 
 </body>
 </html>

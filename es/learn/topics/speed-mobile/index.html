@@ -37,9 +37,9 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=da841dee88d3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-core.css?v=a497939fe0a3" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=4c628560c207" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=da841dee88d3"><link rel="stylesheet" href="/assets/site-article.css?v=4c628560c207"></noscript>
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a497939fe0a3"><link rel="stylesheet" href="/assets/site-article.css?v=4c628560c207"></noscript>
 
 <!-- topic-schema:start -->
 <script type="application/ld+json">
@@ -94,7 +94,7 @@
     {
       "@type": "ItemList",
       "@id": "https://muntin.digital/es/learn/topics/speed-mobile/#articles",
-      "numberOfItems": 5,
+      "numberOfItems": 3,
       "itemListElement": [
         {
           "@type": "ListItem",
@@ -109,17 +109,7 @@
         {
           "@type": "ListItem",
           "position": 3,
-          "url": "https://muntin.digital/es/blog/why-your-restaurant-loses-reservations-every-night/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 4,
-          "url": "https://muntin.digital/es/blog/restaurant-photo-spec-sheet/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 5,
-          "url": "https://muntin.digital/es/blog/how-to-recover-reservations-from-googles-find-a-table/"
+          "url": "https://muntin.digital/es/blog/reservation-conversion-guide/"
         }
       ]
     }
@@ -171,18 +161,22 @@
       </svg>
       Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
     </a>
-    <!-- Phase 7: nav de 5 elementos, según el plan de lanzamiento Parte II.
-         Biblioteca / Herramientas / Proyectos / Estudio / Acceder.
+    <!-- Phase 7: nav de 4 elementos, según el plan de lanzamiento Parte II.
+         Biblioteca / Herramientas / Estudio / Acceder.
          Biblioteca apunta al hub canónico /es/library/. Herramientas
          se promueve del antiguo mega-menú a un elemento de primer
          nivel. Estudio reemplaza Servicios + Restaurantes + Sobre
          Don &mdash; todo vive bajo /es/studio/ ahora. El mega-menú
          se retira (el hub ES el menú); el controlador del script
-         también desaparece. -->
+         también desaparece.
+
+         /es/work/ se retiró en la pasada de portfolio-sunset de la
+         Fase 8 (el encuadre de la empresa-como-CV hizo redundante
+         el portafolio personal). Las URLs /es/work/* hacen 301 a
+         /es/studio/ vía _redirects. -->
     <nav class="nav-links" aria-label="Principal">
       <a href="/es/library/">Biblioteca</a>
       <a href="/es/tools/">Herramientas</a>
-      <a href="/es/work/">Proyectos</a>
       <a href="/es/studio/">Estudio</a>
       <a class="js-nav-signin nav-link-auth" href="/es/sign-in/" hidden>Acceder</a>
       <a class="js-nav-workshop nav-link-auth" href="/es/workbench/" hidden>El Taller</a>
@@ -211,7 +205,6 @@
   <nav class="mobile-menu" id="mobileMenu" aria-label="Navegación móvil" hidden>
     <a href="/es/library/">Biblioteca</a>
     <a href="/es/tools/">Herramientas</a>
-    <a href="/es/work/">Proyectos</a>
     <a href="/es/studio/">Estudio</a>
     <a class="js-nav-signin mobile-auth" href="/es/sign-in/" hidden>Acceder</a>
     <a class="js-nav-workshop mobile-auth" href="/es/workbench/" hidden>El Taller</a>
@@ -293,7 +286,7 @@
   <div class="container">
     <header class="topic-section-head">
       <span class="eyebrow">Artículos</span>
-      <h2 id="lee-las-guias">Lee las guías.</h2>
+      <h2>Lee las guías.</h2>
     </header>
     <ul class="topic-article-list">
       <li>
@@ -304,10 +297,10 @@
         </a>
       </li>
 <li>
-        <a class="topic-article-card" href="/es/blog/why-your-restaurant-loses-reservations-every-night/">
+        <a class="topic-article-card" href="/es/blog/reservation-conversion-guide/">
           <span class="topic-article-date">17 abr 2026</span>
-          <h3>Por qué tu restaurante pierde reservas cada noche (y cómo arreglarlo)</h3>
-          <p>Un embudo real de pérdida de reservas — los seis lugares donde el sitio web de tu restaurante está silenciosamente perdiendo a comensales con intención, lo que cada fuga te cuesta en dólares, y el arreglo para cada una.</p>
+          <h3>Why Your Restaurant Loses Reservations Every Night</h3>
+          <p>A real reservation-loss funnel — the six places your site is quietly leaking intent-driven diners, what each leak costs in dollars, and the fix for every one.</p>
         </a>
       </li>
     </ul>
@@ -318,7 +311,7 @@
   <div class="container">
     <header class="topic-section-head">
       <span class="eyebrow">Investigación</span>
-      <h2 id="la-evidencia-detras-de-las-guias">La evidencia detrás de las guías.</h2>
+      <h2>La evidencia detrás de las guías.</h2>
     </header>
     <ul class="topic-research-list">
       <li>
@@ -343,7 +336,7 @@
   <div class="container">
     <header class="topic-section-head">
       <span class="eyebrow">Vocabulario</span>
-      <h2 id="las-palabras-de-este-tema">Las palabras de este tema.</h2>
+      <h2>Las palabras de este tema.</h2>
     </header>
     <ul class="term-siblings-list">
       <li><a href="/es/glossary/lazy-loading/"><strong>Carga diferida</strong><span> — lazy loading, carga debajo del pliegue</span></a></li>
@@ -367,27 +360,13 @@
   <div class="container">
     <header class="topic-section-head">
       <span class="eyebrow">Herramientas gratis</span>
-      <h2 id="revisa-tu-propio-sitio">Revisa tu propio sitio.</h2>
+      <h2>Revisa tu propio sitio.</h2>
     </header>
     <ul class="topic-tool-list">
       <li>
         <a class="topic-tool-card" href="/es/tools/audits/restaurant/">
           <h4>Auditoría gratuita para sitios de restaurante — Puntúa tu sitio en unos treinta segundos</h4>
           <p>Audita el sitio web de tu restaurante en unos treinta segundos. Velocidad móvil, legibilidad del menú, tocar para llamar, detección de pedidos en línea y reservas, Perfil de Empresa de Google — una auditoría real para restaurantes, no una puntuación genérica de Lighthouse. Gratis, sin registro.</p>
-          <span class="topic-tool-cta">Abrir la herramienta <span aria-hidden="true">→</span></span>
-        </a>
-      </li>
-<li>
-        <a class="topic-tool-card" href="/es/tools/speed-test/">
-          <h4>¿Qué tan rápido es mi sitio? Prueba gratis de velocidad móvil</h4>
-          <p>Prueba la velocidad móvil de tu sitio en 10 segundos. Un número, una calificación, una explicación en español claro de lo que significa para tus clientes. Gratis, sin registro.</p>
-          <span class="topic-tool-cta">Abrir la herramienta <span aria-hidden="true">→</span></span>
-        </a>
-      </li>
-<li>
-        <a class="topic-tool-card" href="/es/tools/mobile-check/">
-          <h4>¿Mi sitio es apto para móvil? Revisión gratis</h4>
-          <p>Revisa si tu sitio funciona en el teléfono en 10 segundos. Viewport, tamaño de los botones, tamaño del texto — tres revisiones, en español claro, con arreglos concretos. Gratis, sin registro.</p>
           <span class="topic-tool-cta">Abrir la herramienta <span aria-hidden="true">→</span></span>
         </a>
       </li>
@@ -412,6 +391,13 @@
           <span class="topic-tool-cta">Abrir la herramienta <span aria-hidden="true">→</span></span>
         </a>
       </li>
+<li>
+        <a class="topic-tool-card" href="/es/tools/page-health/">
+          <h4>¿Qué tan rápido es mi sitio? Prueba gratis de velocidad móvil</h4>
+          <p>Prueba la velocidad móvil de tu sitio en 10 segundos. Un número, una calificación, una explicación en español claro de lo que significa para tus clientes. Gratis, sin registro.</p>
+          <span class="topic-tool-cta">Abrir la herramienta <span aria-hidden="true">→</span></span>
+        </a>
+      </li>
     </ul>
   </div>
 </section>
@@ -420,7 +406,7 @@
   <div class="container">
     <header class="topic-section-head">
       <span class="eyebrow">Listas</span>
-      <h2 id="workbooks-para-este-tema">Workbooks para este tema.</h2>
+      <h2>Workbooks para este tema.</h2>
     </header>
     <ul class="topic-tool-list">
       <li>
@@ -461,7 +447,7 @@
 
       <ul>
         <li><strong>La velocidad de red es la restricci&oacute;n.</strong> El preset m&oacute;vil de Lighthouse simula Slow 4G &mdash; ~1.6 Mbps con 150ms de RTT y 4&times; de throttle de CPU. Eso es el techo, no el piso. La realidad m&oacute;vil del DMV (entre las cuatro carriers principales) es aproximadamente Slow 4G en horarios de commute, casi LTE los fines de semana. Construye para el peor caso.</li>
-        <li><strong>Las hero images son la fuga.</strong> La foto de pasta de 4MB que carga en 200ms en el wifi de tu oficina tarda 6 segundos en Slow 4G. Cambiar a AVIF con fallback WebP la baja a 200KB sin perder calidad visible. La <a href="/es/blog/restaurant-photo-spec-sheet/">hoja de especificaciones de fotos</a> cubre las metas de tama&ntilde;o de archivo.</li>
+        <li><strong>Las hero images son la fuga.</strong> La foto de pasta de 4MB que carga en 200ms en el wifi de tu oficina tarda 6 segundos en Slow 4G. Cambiar a AVIF con fallback WebP la baja a 200KB sin perder calidad visible. La <a href="/es/library/restaurant-photo-spec-sheet/">hoja de especificaciones de fotos</a> cubre las metas de tama&ntilde;o de archivo.</li>
         <li><strong>El UX m&oacute;vil es de una sola columna.</strong> Los layouts de hero a dos columnas que se ven elegantes en una laptop de 14 pulgadas se vuelven ilegibles apil&aacute;ndose en un tel&eacute;fono de 360px. Construye el layout m&oacute;vil primero, expande a escritorio. Bloque de horarios encima del hero. Bot&oacute;n de reserva como una banda en color primario. Secciones del men&uacute; colapsables.</li>
       </ul>
 
@@ -471,7 +457,7 @@
 
       <ol>
         <li><strong>Comprime y reencodifica la hero image (15 minutos).</strong> AVIF primero, WebP de fallback, JPEG como &uacute;ltimo recurso. Meta: bajo 200KB en 1600&times;1067. Herramientas: Squoosh, ImageOptim o el soporte AVIF integrado en CDN de im&aacute;genes modernos (Cloudinary, ImageKit). La mejora individual m&aacute;s grande de LCP en la mayor&iacute;a de sitios de restaurantes independientes.</li>
-        <li><strong>Configura width y height en cada imagen (30 minutos).</strong> Elimina los saltos de CLS. Usa la relaci&oacute;n de aspecto natural de la imagen fuente; CSS <code>aspect-ratio</code> en el padre si la imagen es responsiva. <a href="/es/blog/restaurant-photo-spec-sheet/">La hoja de especificaciones de fotos</a> lista cada superficie de imagen y su relaci&oacute;n de aspecto.</li>
+        <li><strong>Configura width y height en cada imagen (30 minutos).</strong> Elimina los saltos de CLS. Usa la relaci&oacute;n de aspecto natural de la imagen fuente; CSS <code>aspect-ratio</code> en el padre si la imagen es responsiva. <a href="/es/library/restaurant-photo-spec-sheet/">La hoja de especificaciones de fotos</a> lista cada superficie de imagen y su relaci&oacute;n de aspecto.</li>
         <li><strong>Defer al JavaScript no cr&iacute;tico (1 hora).</strong> Agrega <code>defer</code> a los script tags que no se necesitan para el primer paint. Widgets de reserva (OpenTable, Resy, Tock), anal&iacute;tica, embebidos de chat. Plausible ya es async, sin cookies y peque&ntilde;o; la mayor&iacute;a de tags de terceros no.</li>
         <li><strong>Self-host de fuentes con font-display: swap (1 hora).</strong> Las web fonts que bloquean el primer paint son la segunda causa m&aacute;s com&uacute;n de fallo de LCP. Hostea los archivos woff2 t&uacute; mismo, usa <code>font-display: swap</code>, precarga los dos pesos cr&iacute;ticos del above-the-fold.</li>
         <li><strong>Lazy-load a las im&aacute;genes debajo del fold (15 minutos).</strong> Atributo <code>loading="lazy"</code> en cada img debajo del hero. Ahorra entre 40 y 60% del total de bytes en una p&aacute;gina de men&uacute; t&iacute;pica donde el visitante nunca scrollea m&aacute;s all&aacute; del tercer plato.</li>
@@ -484,7 +470,7 @@
       <p>Tres patrones espec&iacute;ficos de restaurantes independientes que no aplican a la mayor&iacute;a de los sitios de peque&ntilde;a empresa:</p>
 
       <ul>
-        <li><strong>Widgets de reserva.</strong> OpenTable, Resy, Tock y las plataformas menores env&iacute;an bundles de JS de terceros pesados que cargan antes de que el visitante pueda reservar. Las APIs &laquo;direct&raquo; o &laquo;widgets v2&raquo; m&aacute;s nuevas de cada plataforma son m&aacute;s peque&ntilde;as y r&aacute;pidas que el embed iframe legacy; cambiar de iframe a direct t&iacute;picamente ahorra entre 200 y 500ms de LCP. <a href="/es/blog/how-to-recover-reservations-from-googles-find-a-table/">C&oacute;mo recuperar reservas</a> cubre los tradeoffs.</li>
+        <li><strong>Widgets de reserva.</strong> OpenTable, Resy, Tock y las plataformas menores env&iacute;an bundles de JS de terceros pesados que cargan antes de que el visitante pueda reservar. Las APIs &laquo;direct&raquo; o &laquo;widgets v2&raquo; m&aacute;s nuevas de cada plataforma son m&aacute;s peque&ntilde;as y r&aacute;pidas que el embed iframe legacy; cambiar de iframe a direct t&iacute;picamente ahorra entre 200 y 500ms de LCP. <a href="/library/reservation-conversion-guide/">C&oacute;mo recuperar reservas</a> cubre los tradeoffs.</li>
         <li><strong>PDFs de men&uacute;.</strong> Enlazar un PDF de 4MB como la &laquo;p&aacute;gina&raquo; del men&uacute; significa que cada visitante que clickea espera a que se descargue todo el PDF antes de ver nada. El arreglo es HTML real &mdash; usa <a href="/es/tools/menu-converter/">Menu Converter</a> para convertir texto pegado del men&uacute; en HTML sem&aacute;ntico en dos segundos. El <a href="/es/services/menu-drop-in/">menu drop-in de $1,500</a> entrega la versi&oacute;n estilizada armada por el estudio.</li>
         <li><strong>Videos de fondo.</strong> El patr&oacute;n del hero-video con autoplay que se puso de moda hacia 2018 carga entre 8 y 15MB de video decodificado por JS. En m&oacute;vil, eso es un asesino de LCP de varios segundos por una pieza de decoraci&oacute;n que el visitante nunca pidi&oacute;. Reempl&aacute;zalo con un solo AVIF est&aacute;tico y dalo por hecho.</li>
       </ul>
@@ -517,7 +503,7 @@
   <div class="container">
     <div class="section-header reveal section-center">
       <span class="eyebrow">Otros temas</span>
-      <h2 id="o-explora-desdeotro-angulo">O explora desde<br><span class="serif-italic">otro ángulo.</span></h2>
+      <h2>O explora desde<br><span class="serif-italic">otro ángulo.</span></h2>
     </div>
     <ul class="topic-other-list">
       <li><a href="/es/learn/topics/conversions/">Conversiones y reservas</a></li>
@@ -555,39 +541,58 @@
     <div class="foot-grid">
       <div class="foot-col foot-brand">
         <a href="/es/" class="foot-lockup-wrap" aria-label="Muntin Digital — inicio">
-          <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53" loading="lazy" decoding="async">
+          <!-- alt="" porque el <a> que envuelve ya está etiquetado.
+               Sin esto, los lectores de pantalla anuncian dos veces
+               "Muntin Digital" en el enlace del logotipo. -->
+          <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="" width="240" height="53" loading="lazy" decoding="async">
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">La ventana.</p>
-        <p class="foot-blurb">Una biblioteca web y estudio de dise&ntilde;o para restaurantes, con base en Silver Spring, MD &mdash; art&iacute;culos, herramientas gratis, investigaci&oacute;n y un glosario de <!-- count:glossary.terms -->149<!-- /count --> t&eacute;rminos, con el estudio detr&aacute;s cuando quieras contratar. Se habla espa&ntilde;ol.</p>
+        <p class="foot-blurb">Una biblioteca gratuita para restaurantes &mdash; <!-- count:articles.library -->24<!-- /count --> art&iacute;culos, <!-- count:tools.live -->12<!-- /count --> herramientas y un glosario de <!-- count:glossary.terms -->149<!-- /count --> t&eacute;rminos &mdash; con un estudio web de una persona detr&aacute;s, en Silver Spring, MD. Se habla espa&ntilde;ol.</p>
       </div>
 
-      <nav class="foot-col" aria-labelledby="foot-explore">
-        <p class="foot-heading" id="foot-explore">Explorar</p>
-        <ul class="foot-links">
-          <li><a href="/es/services/">Servicios</a></li>
-          <li><a href="/es/for/restaurants/">Para restaurantes</a></li>
-          <li><a href="/es/work/">Proyectos</a></li>
-          <li><a href="/es/about/">Sobre Don</a></li>
-          <li><a href="/es/system/">El sistema</a></li>
-          <li><a href="/receipts/" hreflang="en" lang="en">Receipts</a></li>
-          <li><a href="/methods/" hreflang="en" lang="en">Methods</a></li>
-          <li><a href="/changelog/" hreflang="en" lang="en">Changelog</a></li>
-        </ul>
-      </nav>
-
+      <!-- El orden de columnas refleja la navegación principal de 5
+           ítems (Biblioteca, Estudio, Confianza, Contacto). La
+           Biblioteca apunta primero al hub /es/library/ (las tres
+           puertas: Lee, Busca, Haz); el antiguo /es/learn/ sigue
+           resolviendo pero ya no necesita su propio enlace de pie.
+           id="foot-learn" es el marcador canónico que usa
+           scripts/sync-includes.mjs (FOOTER_MAIN_FUNNEL_MARKER), así
+           que el id se mantiene aunque la etiqueta visible sea
+           "Biblioteca". -->
       <nav class="foot-col" aria-labelledby="foot-learn">
         <p class="foot-heading" id="foot-learn">Biblioteca</p>
         <ul class="foot-links">
-          <li><a href="/es/learn/">Inicio de la biblioteca</a></li>
-          <li><a href="/es/learn/start-here/">Empieza aquí</a></li>
-          <li><a href="/es/learn/topics/">Temas</a></li>
-          <li><a href="/es/blog/">Artículos</a></li>
-          <li><a href="/es/tools/">Herramientas gratis</a></li>
+          <li><a href="/es/library/">Explora la biblioteca</a></li>
           <li><a href="/es/glossary/">Glosario</a></li>
-          <li><a href="/es/learn/research/">Investigación</a></li>
-          <li><a href="/es/learn/checklists/">Listas y recursos</a></li>
+          <li><a href="/es/tools/">Herramientas gratis</a></li>
           <li><a href="/es/sheets/">Hojas del operador</a></li>
+          <li><a href="/es/blog/">Comentarios</a></li>
+        </ul>
+      </nav>
+
+      <!-- Fase 8 (portfolio sunset): la fila "Proyectos" enlazaba a
+           /es/work/, el portafolio personal. Ese hub se retiró cuando
+           la empresa pasó a ser el currículum; la fila ya no está y
+           /es/work/* hace 301 a /es/studio/. -->
+      <nav class="foot-col" aria-labelledby="foot-studio">
+        <p class="foot-heading" id="foot-studio">Estudio</p>
+        <ul class="foot-links">
+          <li><a href="/es/studio/#pricing">Precios</a></li>
+          <li><a href="/es/studio/compare/">Comparar opciones</a></li>
+          <li><a href="/es/studio/#process">Proceso</a></li>
+          <li><a href="/es/about/">Sobre Don</a></li>
+        </ul>
+      </nav>
+
+      <nav class="foot-col" aria-labelledby="foot-trust">
+        <p class="foot-heading" id="foot-trust">Confianza</p>
+        <ul class="foot-links">
+          <li><a href="/es/never/">Lo que nunca hacemos</a></li>
+          <li><a href="/es/ai/">Pol&iacute;tica de IA</a></li>
+          <li><a href="/es/methods/">M&eacute;todos y fuentes</a></li>
+          <li><a href="/es/changelog/">Registro de cambios</a></li>
+          <li><a href="/es/receipts/">Recibos</a></li>
         </ul>
       </nav>
 
@@ -598,7 +603,7 @@
           <li><a href="/es/window/">Contacta a Don</a></li>
           <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (se abre en una pestaña nueva)</span></a></li>
         </ul>
-        <p class="foot-trust"><strong>Respuesta:</strong> de lunes a viernes, en menos de 4 horas. Los fines de semana, el lunes en la mañana.</p>
+        <p class="foot-trust"><strong>Respuesta:</strong> en menos de 4 horas de lunes a viernes; fines de semana, el lunes.</p>
       </nav>
     </div>
 
