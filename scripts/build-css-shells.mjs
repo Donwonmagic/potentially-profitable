@@ -50,149 +50,62 @@ const SRC = path.join(REPO, 'assets', 'site.css');
 
 // === Section → shell map ===
 //
-// Each entry: { start: <1-indexed line where the section begins>,
-//               shell: 'core' | 'tool' | 'article',
-//               label: <human description for the emitted header> }
+// site.css contains inline boundary markers of the form:
 //
-// Lines come from `grep -n '^/\* =\+' assets/site.css`. The build
-// script slices [start, nextStart-1] out of the file for each entry.
-// Line numbers MUST match the current site.css; re-run grep when
-// site.css changes and update.
-const SECTIONS = [
-  { start: 1,    shell: 'core',    label: 'Pre-token boilerplate' },
-  { start: 3,    shell: 'core',    label: 'Modernization tokens (Sprint 1)' },
-  { start: 94,   shell: 'core',    label: 'Line-height convention' },
-  { start: 109,  shell: 'core',    label: 'Token usage notes' },
-  { start: 122,  shell: 'core',    label: 'Status components (.status-chip, .progress-ring)' },
-  { start: 253,  shell: 'core',    label: 'Field Guide editorial surfaces (.score-card, .score-pill — used by tools + audits)' },
-  { start: 533,  shell: 'core',    label: 'Global focus-visible' },
-  { start: 541,  shell: 'core',    label: 'Self-hosted web fonts (@font-face)' },
-  { start: 607,  shell: 'core',    label: 'Breakpoint scale' },
-  { start: 713,  shell: 'core',    label: 'Button vocabulary (.btn family)' },
-  { start: 1282, shell: 'core',    label: 'Footer' },
-  { start: 1379, shell: 'article', label: 'Citation drawer (.cite, .cite-body)' },
-  // Lines 1394-1454 in the source are global chrome (focus-visible
-  // rules, .skip-link, .sr-only, nav-toggle, mobile-menu) that landed
-  // inside the visual proximity of the citation-drawer section but
-  // are used on EVERY page. Without this split, sheet pages and other
-  // core-only consumers shipped without `.skip-link` / `.sr-only` /
-  // mobile menu styles even though the markup is on every page.
-  { start: 1408, shell: 'core',    label: 'Global focus-visible + skip-link + sr-only + nav-toggle + mobile-menu (every-page chrome)' },
-  // The "CITATION DRAWER" section header at line 1361 actually carries
-  // about 95 lines of cite styles followed by ~20 lines of nav refinements
-  // + the share-widget UI before the next section header. Split here so
-  // the latter half lands in core where it belongs (share is on every
-  // shell; nav refinements affect every page).
-  { start: 1476, shell: 'core',    label: 'Nav refinements + share widget (was inside CITATION DRAWER section)' },
-  { start: 1497, shell: 'article', label: 'Listen / audio player' },
-  { start: 2026, shell: 'core',    label: 'Breadcrumbs' },
-  { start: 2052, shell: 'core',    label: 'Homepage utility classes' },
-  { start: 2104, shell: 'core',    label: 'Legal pages' },
-  { start: 2130, shell: 'core',    label: 'Homepage primary tool CTA (restaurant audit)' },
-  { start: 2420, shell: 'tool',    label: 'TOOL SHELL — shared primitives for /tools/* pages' },
-  { start: 2518, shell: 'tool',    label: 'Tools-landing cluster layout' },
-  { start: 2809, shell: 'tool',    label: 'Per-tool "Keep going" knit-in' },
-  { start: 2920, shell: 'article', label: 'Glossary scannability' },
-  { start: 3075, shell: 'article', label: '"Recently added" strip on /learn/' },
-  { start: 3150, shell: 'core',    label: 'Library nav-mega regroup (nav is everywhere)' },
-  { start: 3469, shell: 'article', label: 'Learn hub + Start here pages' },
-  { start: 3572, shell: 'core',    label: '/system/ colophon page (small, kept in core)' },
-  { start: 3649, shell: 'core',    label: 'Search modal (Pagefind-backed; on every page)' },
-  { start: 3824, shell: 'article', label: 'Research notes (/learn/research/)' },
-  { start: 3841, shell: 'article', label: 'Library topics (/learn/topics/)' },
-  { start: 4023, shell: 'article', label: 'Glossary term pages (/glossary/<slug>/)' },
-  // .tool-deep-links is the "Why this tool exists" block at the bottom of
-  // every /tools/* page. Lives in this region historically because it was
-  // built alongside glossary cross-linking, but it ships on tool pages —
-  // which only load core+tool. Without this split it lands in article and
-  // the audit page's deep-links section renders unstyled (reported May 2026).
-  { start: 4137, shell: 'tool',    label: 'Tool deep-links (.tool-deep-* — bottom of every /tools/* page)' },
-  { start: 4221, shell: 'article', label: 'Resume article — services-aside-cta + see-also + research notes' },
-  { start: 4618, shell: 'article', label: 'Research-note CTA inside cite drawer' },
-  { start: 4639, shell: 'article', label: 'Research drawer (inline preview)' },
-  { start: 4779, shell: 'article', label: 'Glossary term → research note cross-link' },
-  { start: 4824, shell: 'article', label: '"Recently added" rail (under glossary hero)' },
-  { start: 4882, shell: 'article', label: 'Glossary index "▶ 90s explainer" chip' },
-  { start: 4903, shell: 'article', label: 'Glossary explainer (90-second narrated diagram)' },
-  { start: 5169, shell: 'article', label: 'Inline glossary popover' },
-  { start: 5236, shell: 'article', label: 'Print view for glossary section landing pages' },
-  { start: 5293, shell: 'core',    label: 'Cloudflare Turnstile widget (reservation min-height)' },
-  { start: 5305, shell: 'core',    label: 'Workshop save banner (multi-context, kept in core)' },
-  { start: 5357, shell: 'tool',    label: 'Tool states (loading / error / empty)' },
-  { start: 5402, shell: 'article', label: 'Editorial callouts' },
-  { start: 5486, shell: 'tool',    label: 'Learn-back (in tool result region)' },
-  { start: 5504, shell: 'article', label: 'Post-end Workshop CTA' },
-  { start: 5520, shell: 'core',    label: 'Workshop rationale' },
-  { start: 5536, shell: 'core',    label: 'The Window (/window/ — kept in core to avoid a 4th shell)' },
-  { start: 5653, shell: 'core',    label: 'Window composer (Phase-2 redesign)' },
-  { start: 5686, shell: 'core',    label: 'ADMIN /admin/window/ (kept in core; admin is auth-gated noindex)' },
-  { start: 5773, shell: 'tool',    label: '.edu-result — interpretation card under tool output' },
-  { start: 5812, shell: 'tool',    label: 'Statistical disclosure components' },
-  { start: 5855, shell: 'tool',    label: 'Tool-internal type minimums' },
-  // foot-newsletter lives in the global footer partial, so it needs to
-  // be in core — every page renders the form, not just /tools/*. The
-  // historical bucket (Tool-internal type minimums) extended past the
-  // newsletter block; splitting here pulls the .foot-newsletter* rules
-  // out of site-tool.css where they were inert on /blog/, /glossary/,
-  // /sheets/, and other non-tool pages. (Line 5986 = 5983 in the
-  // pre-#284 site.css + the 3-line .reveal block #284 added at line 1382.)
-  { start: 6012, shell: 'core',    label: 'Newsletter capture (in global footer; on every page)' },
-  { start: 6033, shell: 'article', label: 'Inline graphics — globalized from gold articles' },
-  { start: 6094, shell: 'core',    label: 'Touch-device hover hygiene' },
-  { start: 6133, shell: 'core',    label: 'Hero mobile reorder (homepage)' },
-  { start: 6156, shell: 'article', label: 'KnitRail — "what’s next" component for articles' },
-  { start: 6231, shell: 'core',    label: 'Hero count chips (homepage)' },
-  { start: 6262, shell: 'core',    label: 'Trust strip (homepage)' },
-  { start: 6288, shell: 'core',    label: 'Compare cards (homepage)' },
-  // Article viz components — Phase-1 foundation for the graphics
-  // refresh. Namespaced .viz-* family for inline article charts
-  // (.viz-figure, .viz-bars today; .viz-ring/.viz-spark/.viz-ba/
-  // .viz-flow/.viz-tree/.viz-waterfall/.viz-gauge/.viz-hero/.viz-scroll
-  // land in subsequent phases). Article shell — only loaded on
-  // /blog/, /learn/, /glossary/.
-  { start: 6372, shell: 'article', label: 'Article viz components (.viz-* family)' },
-  // Window redesign — sash/sidelight composer, photo/voice attach,
-  // now-line widget, site-wide pulse propagation, admin attachment
-  // + callback display, /now/ editor. Appended at site.css EOF as
-  // one block; lives in core because it spans /window/, /about/,
-  // every-page nav/footer, and admin pages.
-  { start: 6711, shell: 'core',    label: 'Window Phase 2/3.6/4/5+ additions (sash/sidelight, attach, now, pulses, admin)' },
-  // Phase 1 (tool-suite upgrade) — additive design tokens + MuntinUI
-  // component shells (.mtn-btn / .mtn-card / .mtn-form-group / .mtn-tabs
-  // / .mtn-modal / .mtn-toast / .mtn-breadcrumb / .mtn-error-card /
-  // .mtn-empty / .codeblock). Core because the primitives are consumed
-  // by /tools/ and Phase-2 hub redesign; the .codeblock wrapper is also
-  // referenced by article callouts in later phases.
-  { start: 6948, shell: 'core',    label: 'Phase 1 — design tokens + MuntinUI component shells (.mtn-*)' },
-  // Phase 2 (tool-suite upgrade) — hub-specific styles (tool-card
-  // tier badge + JS-enhanced filter strip). Lives in core because
-  // the hub is in /tools/index.html which loads core + tool shells;
-  // the tier badge classes also bleed into related-tool surfaces
-  // shipped by other build scripts.
-  { start: 7160, shell: 'core',    label: 'Phase 2 — hub tier badge + tool-tier-filter strip' },
-  // Phase 5 (tool-suite upgrade) — dark-mode token override. Lives
-  // in core because every page (not just /tools/) inherits the
-  // --mtn-* tokens via inheritance through component shells.
-  { start: 7213, shell: 'core',    label: 'Phase 5 — dark-mode token override (prefers-color-scheme + [data-theme])' },
-  // Phase 7 (tool-suite upgrade) — dark-mode toggle button styles
-  // (sun/moon icon swap based on [data-theme] / prefers-color-scheme).
-  // Lives in core because the button is in the global nav partial.
-  { start: 7273, shell: 'core',    label: 'Phase 7 — dark-mode toggle button (.theme-toggle)' },
-  // Phase 4 wiring (tool-suite upgrade) — next-tool recommendation
-  // card styles. The card is mounted by MuntinNextTool.render() at
-  // the end of each tool's result region. Lives in core because
-  // every page that loads next-tool.js renders the card.
-  { start: 7313, shell: 'core',    label: 'Phase 4 — next-tool recommendation card (.mtn-next-tool)' },
-  // Phase G — About portrait frame. Real-photo overlay layered on top
-  // of the existing .portrait lettermark tile. Originally lived as a
-  // scoped <style> block in /about/index.html; promoted site-wide so
-  // the homepage About teaser can reuse the same frame.
-  { start: 7353, shell: 'core',    label: 'Phase G — About portrait frame (real photo overlay)' },
-];
+//     /* @shell:<name> === <Label> === */
+//
+// at the top of every section. The build script scans for these
+// markers and slices the source between consecutive markers.
+//
+// Why markers instead of a hardcoded line-number table:
+// every CSS edit that changes line counts in one section would
+// silently desync the table for every downstream section. The
+// pre-marker era had at least one rendered-CSS regression from
+// this (`.tool-deep-links` shipped unstyled in May 2026, see the
+// note further down) and ~10 manual-bump commits during the
+// 28-commit audio-experience redesign. Markers self-correct:
+// inserting CSS above a marker doesn't move the marker's
+// relative position within its own section.
+//
+// To add a new section: insert a marker at the top of its first
+// rule. The script discovers it on the next build. No edit here
+// needed.
+//
+// To MOVE a section between shells: change the shell name in
+// the marker, run the script.
+//
+// SECTIONS is populated by the scan below from site.css's
+// markers. Line 1 is implicitly section[0] ('core', 'Pre-token
+// boilerplate') — the file's start carries no marker because
+// there's nothing before it for a marker to follow.
+const SECTIONS = [];
+const MARKER_RE = /^\/\*\s*@shell:(\w+)\s*===\s*(.+?)\s*===\s*\*\/\s*$/;
 
 // === Validation ===
 const src   = fs.readFileSync(SRC, 'utf8');
 const lines = src.split('\n');
+
+// Populate SECTIONS from the marker scan. Line 1 is implicit — the
+// file's pre-marker prologue (currently the :root design-token block
+// at line 1, blank line 2) is shell:core. The next real section
+// begins at the first marker line.
+SECTIONS.push({ start: 1, shell: 'core', label: 'Root tokens (:root)' });
+for (let i = 0; i < lines.length; i++) {
+  const m = lines[i].match(MARKER_RE);
+  if (!m) continue;
+  SECTIONS.push({ start: i + 1, shell: m[1], label: m[2] });
+}
+if (SECTIONS.length < 2) {
+  console.error(
+    `No @shell markers found in ${SRC} — markers are the source of\n` +
+    `truth for the section/shell map. Recover by reverting site.css\n` +
+    `to a commit that has markers (e.g.,\n` +
+    `  git log -p assets/site.css | grep -m1 '@shell:'\n` +
+    `to find the last good revision), or restore them manually from\n` +
+    `the docstring at top of this script.`
+  );
+  process.exit(2);
+}
 
 // Section starts must be in ascending order.
 for (let i = 1; i < SECTIONS.length; i++) {
@@ -250,7 +163,13 @@ for (let i = 0; i < SECTIONS.length; i++) {
   const cur  = SECTIONS[i];
   const next = SECTIONS[i + 1];
   const endLine = next ? next.start - 1 : lines.length;
-  const slice = lines.slice(cur.start - 1, endLine).join('\n');
+  // Strip the @shell marker from the emitted slice — it's build
+  // metadata the browser doesn't need, and 69 of them across the
+  // shells adds ~2 KB gzip of pure noise to every page load.
+  const slice = lines
+    .slice(cur.start - 1, endLine)
+    .filter((l) => !MARKER_RE.test(l))
+    .join('\n');
   const header = `\n/* ===== [${cur.shell}] ${cur.label} (lines ${cur.start}-${endLine}) ===== */`;
   buckets[cur.shell].push(header + '\n' + slice);
 }

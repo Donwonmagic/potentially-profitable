@@ -627,6 +627,9 @@
       navHint:     i18n('search.nav_hint',    'to navigate'),
       openHint:    i18n('search.open_hint',   'to open'),
       closeHint:   i18n('search.close_hint',  'to close'),
+      voiceStart:  i18n('search.voice_start', 'Search by voice'),
+      voiceStop:   i18n('search.voice_stop',  'Stop listening'),
+      voiceHint:   i18n('search.voice_hint',  'Listening… speak now'),
     };
 
     // Curated fallback for queries Pagefind drops as too-common.
@@ -688,6 +691,70 @@
       return map[key] || null;
     }
 
+    // Brand-name "pin": a curated top result for queries that name the
+    // site itself. Pagefind's BM25-style ranking over-promotes short
+    // utility/legal pages whose <title> contains "Muntin Digital" — the
+    // contact form (/window/), the workshop (/workbench/), and the
+    // "Data & privacy" glossary entry — because term density on a
+    // five-section page beats density on the multi-hub homepage. For
+    // a brand search the right answer is unambiguous (the front door),
+    // so we pin the homepage to the top when the query matches a known
+    // brand alias. Every other query still flows through Pagefind
+    // untouched, and the pinned page is also de-duplicated from the
+    // Pagefind results below it so the user never sees the homepage
+    // listed twice.
+    //
+    // Adding an alias: lowercase, no punctuation, collapse to single
+    // spaces (see normalizeBrandQuery). Adding a locale: also point
+    // .url at that locale's homepage so the pin lands in-language.
+    const BRAND_QUERY_PINS = {
+      en: {
+        aliases: [
+          'muntin',
+          'muntindigital',
+          'muntin digital',
+          'muntin digital tm',
+          'muntin digital trademark',
+          'muntindigitalcom',
+          'muntin digital com',
+        ],
+        pin: {
+          url:     '/',
+          title:   'Muntin Digital — A restaurant web library & studio',
+          excerpt: 'The home page — free library, free tools, and the studio behind the work.',
+          kind:    'Home',
+        },
+      },
+      es: {
+        aliases: [
+          'muntin',
+          'muntindigital',
+          'muntin digital',
+        ],
+        pin: {
+          url:     '/es/',
+          title:   'Muntin Digital — Una biblioteca web y estudio para restaurantes',
+          excerpt: 'La página principal — biblioteca y herramientas gratis, y el estudio detrás del trabajo.',
+          kind:    'Inicio',
+        },
+      },
+    };
+
+    function normalizeBrandQuery(q) {
+      return String(q || '')
+        .toLowerCase()
+        .replace(/[™®©.,!?·\-_/\\]/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
+
+    function brandPinFor(q) {
+      const key = normalizeBrandQuery(q);
+      if (!key) return null;
+      const cfg = BRAND_QUERY_PINS[locale] || BRAND_QUERY_PINS.en;
+      return cfg.aliases.indexOf(key) !== -1 ? cfg.pin : null;
+    }
+
     // Classify a URL into a user-facing "kind" so the result meta row
     // can show something more useful than "/tools/seo-grader/" — e.g.
     // "TOOL · /tools/seo-grader/". Mapping lives here (JS side) rather
@@ -740,9 +807,99 @@
       dialog.addEventListener('close', () => {
         if (lastOpener && typeof lastOpener.focus === 'function') lastOpener.focus();
         lastOpener = null;
+        stopVoice();
       });
       input.addEventListener('input', onInput);
       input.addEventListener('keydown', onInputKeydown);
+      mountVoice();
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    // Voice search (Phase 9 — Light refresh).
+    //
+    // Progressive enhancement: only mount the mic button when the
+    // browser exposes the Web Speech API (window.SpeechRecognition
+    // on Chromium / Edge, window.webkitSpeechRecognition on Safari).
+    // Firefox doesn't ship it as of 2026 — the button never appears,
+    // the modal is unchanged for those readers.
+    //
+    // Behavior: click the mic → recognition starts, button enters
+    // [aria-pressed="true"] state (CSS in site.css gives it a teal
+    // pulse), recognized text streams into the search input via
+    // dispatchEvent('input') so the existing debounce + Pagefind
+    // pipeline runs unchanged. Recognition.continuous = false so the
+    // first natural pause ends the capture. The button is interim
+    // results-aware: as the user speaks, the input updates live.
+    //
+    // Locale: lang is set from the document's <html lang>, so the
+    // English homepage uses 'en-US' and /es/ uses 'es-ES'. Both are
+    // shipped by every browser that exposes the API.
+    // ─────────────────────────────────────────────────────────────
+    let voiceBtn = null;
+    let recognition = null;
+    function speechCtor() {
+      return window.SpeechRecognition || window.webkitSpeechRecognition || null;
+    }
+    function mountVoice() {
+      const Ctor = speechCtor();
+      if (!Ctor) return; // unsupported — never inject the button
+      voiceBtn = document.createElement('button');
+      voiceBtn.type = 'button';
+      voiceBtn.className = 'search-voice';
+      voiceBtn.setAttribute('aria-label', strings.voiceStart);
+      voiceBtn.setAttribute('aria-pressed', 'false');
+      voiceBtn.setAttribute('title', strings.voiceStart);
+      voiceBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="8.5" y1="22" x2="15.5" y2="22"/></svg>';
+      // Insert between input and close so the visual order is:
+      //   search-icon · input · mic · close
+      const close = dialog.querySelector('.search-close');
+      close.parentNode.insertBefore(voiceBtn, close);
+      voiceBtn.addEventListener('click', toggleVoice);
+    }
+    function toggleVoice() {
+      if (recognition) { stopVoice(); return; }
+      startVoice();
+    }
+    function startVoice() {
+      const Ctor = speechCtor();
+      if (!Ctor || !voiceBtn) return;
+      try { recognition = new Ctor(); }
+      catch (_) { recognition = null; return; }
+      const lang = (document.documentElement.lang || 'en').toLowerCase();
+      recognition.lang = lang.startsWith('es') ? 'es-ES' : 'en-US';
+      recognition.continuous = false;
+      recognition.interimResults = true;
+      recognition.maxAlternatives = 1;
+      voiceBtn.setAttribute('aria-pressed', 'true');
+      voiceBtn.setAttribute('aria-label', strings.voiceStop);
+      voiceBtn.setAttribute('title', strings.voiceStop);
+      input.setAttribute('placeholder', strings.voiceHint);
+      recognition.onresult = (e) => {
+        let txt = '';
+        for (let i = e.resultIndex; i < e.results.length; i++) txt += e.results[i][0].transcript;
+        if (!txt) return;
+        input.value = txt;
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+      };
+      recognition.onerror = () => { stopVoice(); };
+      recognition.onend = () => { stopVoice(); };
+      try { recognition.start(); }
+      catch (_) { stopVoice(); }
+      if (window.plausible) {
+        try { window.plausible('Voice Search', { props: { locale: recognition.lang } }); } catch (_) {}
+      }
+    }
+    function stopVoice() {
+      if (recognition) {
+        try { recognition.stop(); } catch (_) {}
+        recognition = null;
+      }
+      if (voiceBtn) {
+        voiceBtn.setAttribute('aria-pressed', 'false');
+        voiceBtn.setAttribute('aria-label', strings.voiceStart);
+        voiceBtn.setAttribute('title', strings.voiceStart);
+      }
+      if (input) input.setAttribute('placeholder', strings.placeholder);
     }
 
     // Lazy-load Pagefind from the static index directory. Returns a
@@ -800,6 +957,26 @@
     }
 
     function renderResults(q, data) {
+      // Brand-pin promotion. If the query names the site itself
+      // ("Muntin Digital", "muntin", etc.), prepend the curated
+      // homepage card as the top result and drop any duplicate
+      // homepage entry that may have come back from Pagefind. See
+      // BRAND_QUERY_PINS above for why this is necessary.
+      const pin = brandPinFor(q);
+      if (pin) {
+        const pinUrl = pin.url;
+        const deduped = data.filter((d) => {
+          const u = (d.url || '').replace(/^https?:\/\/[^/]+/, '');
+          return u !== pinUrl;
+        });
+        data = [{
+          url: pinUrl,
+          excerpt: escapeHtml(pin.excerpt),
+          meta: { title: pin.title },
+          __pinnedKind: pin.kind,
+        }].concat(deduped).slice(0, 8);
+      }
+
       if (!data.length) {
         // Try the curated common-query fallback first. If the query
         // is one Pagefind drops as too-common (web/website/menu/etc.),
@@ -821,7 +998,10 @@
         return;
       }
       const html = data.map((d, i) => {
-        const kind  = classify(d.url);
+        // Pinned results carry their own kind label (e.g. "Home" /
+        // "Inicio") because the URL — "/" — doesn't match any of the
+        // section prefixes classify() recognizes.
+        const kind  = d.__pinnedKind || classify(d.url);
         const title = (d.meta && d.meta.title) || d.url;
         const href  = d.url.replace(/^https?:\/\/[^/]+/, '');
         // Pagefind returns <mark> tags inside excerpts for highlight —

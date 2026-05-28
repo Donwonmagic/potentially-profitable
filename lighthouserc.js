@@ -39,7 +39,14 @@ const PATHS = [
   '/tools/storefront-health/',
   '/es/tools/storefront-health/',
   '/learn/',
-  '/blog/why-your-restaurant-loses-reservations-every-night/',
+  // Phase 7: the long-form article gate previously pointed at the EN
+  // /blog/why-your-restaurant-loses-reservations-every-night/ slug.
+  // Wave 5 merged that post (plus 2 secondaries) into the consolidated
+  // /library/reservation-conversion-guide/. The new URL is the right
+  // shape for the gate — same long-form body, now with the folded
+  // 5-moves + Find-a-Table sections.
+  '/library/reservation-conversion-guide/',
+  '/library/',
   '/glossary/conversion-rate/',
   // Operator Sheets — hub + pilot sheet end-to-end gate.
   '/sheets/',

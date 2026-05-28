@@ -11,8 +11,12 @@
  *   "Send to Don"                   → "Send the note"  (field-note form submit)
  *   "Enviar a Don"                  → "Enviar la nota" (ES field-note form submit)
  *   "Send & book your call"         → "Book a 20-min call"
- *   "View case study"               → "See the case study"
- *   "Read the case study"           → "See the case study"
+ *
+ * Phase 8 (portfolio sunset): the case-study CTA entries
+ * ("View case study", "Read the case study" → "See the case study")
+ * were dropped when /work/ was retired. No surface emits a case-
+ * study CTA anymore; if the section ever returns, restore the
+ * entries from git history.
  *
  * Both "Email Don" and "Write to Don" are CANONICAL per the voice
  * contract: "Email Don" is the nav primary contact (one tap from
@@ -63,13 +67,8 @@ const BANNED = [
   // Legacy intake-form submit; intake form now uses "Send the note"
   // and booking happens via /studio/call/.
   { phrase: 'Send & book your call',  replace: '"Send the note" or "Book a 20-min call"' },
-  // Work-card CTA mix — the locked canon is "See the case study →".
-  { phrase: 'View case study',        replace: 'See the case study' },
-  { phrase: 'Read the case study',    replace: 'See the case study' },
-  // "See the work" stays canonical as a section CTA (button → /work/
-  // index linking to the portfolio overall) — it's only banned
-  // INSIDE a per-card span class. Per-card scoping handled by the
-  // pattern-match below; the bare phrase isn't in the BANNED list.
+  // Phase 8 (portfolio sunset): the case-study CTA entries were
+  // dropped when /work/ was retired. See the header docstring.
 ];
 
 const ALLOWLIST_DIRS = new Set([

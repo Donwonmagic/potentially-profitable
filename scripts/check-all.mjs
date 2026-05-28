@@ -88,6 +88,16 @@ const CHECKS = [
   // capstone present, audio not pending, read time >= 5 min). See
   // scripts/check-overview-quality.mjs for the rule rationale.
   ['Overview quality',    'check-overview-quality.mjs'],
+  // Phase SEO — H2 anchor IDs let AI search engines (Google AI Overview,
+  // Perplexity, ChatGPT) deep-link to a specific section instead of the
+  // article root. See scripts/inject-h2-anchor-ids.mjs for the slug
+  // rules. Catches the regression where a newly-published article
+  // shipped with bare <h2> tags.
+  ['H2 anchor IDs (idem)', 'inject-h2-anchor-ids.mjs',      '--check'],
+  // Phase SEO/Perf — italic font preloads. Operator-reported FOUC where
+  // the hero italic line ("Built by one person…") re-paints when the
+  // italic woff2 arrives. Preloading the italic variants closes the gap.
+  ['Italic font preloads (idem)', 'inject-italic-font-preloads.mjs', '--check'],
   ['Button vocabulary',   'check-button-vocabulary.mjs',   '--check'],
   // Phase 1 (tool-suite upgrade) — guard against NEW innerHTML usage
   // while Phase 3 retrofits existing call sites. Strict mode: fails CI

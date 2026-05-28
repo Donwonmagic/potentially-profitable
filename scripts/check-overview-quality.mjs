@@ -145,10 +145,14 @@ for (const [key, batch] of Object.entries(batches)) {
   if (key.startsWith('_')) continue;
   if (!batch.overview_en && !batch.overview_es) continue;
   // Resolve deep-dives by matching the batch's date in library-tags.
-  const deepDiveSlugs = [];
+  // Each entry's `namespace` (blog | library) determines its current
+  // URL prefix post the Phase 7 split. Default to "blog" for entries
+  // that haven't been re-classified yet.
+  const deepDives = [];
   for (const [slug, post] of Object.entries(tags.blog_posts || {})) {
     if (post.date && post.date === batch.date && !batch.overview_en.includes(slug)) {
-      deepDiveSlugs.push(slug);
+      const namespace = (post && typeof post === 'object' && post.namespace) || 'blog';
+      deepDives.push({ slug, namespace });
     }
   }
   if (batch.overview_en) {
@@ -158,16 +162,23 @@ for (const [key, batch] of Object.entries(batches)) {
       url:    batch.overview_en,
       file:   urlToFile(batch.overview_en),
       audioKey: batch.overview_en.replace(/^\/+blog\/+|\/+$/g, ''),
-      deepDiveHrefs: deepDiveSlugs.map((s) => `/blog/${s}/`),
+      deepDiveHrefs: deepDives.map((d) => `/${d.namespace}/${d.slug}/`),
     });
   }
   if (batch.overview_es) {
-    // ES deep-dive hrefs are derived from the EN slug -> ES slug map.
-    const slugMap = readJSON('data/i18n-slug-map.json').blog || {};
-    const esDeepDiveHrefs = deepDiveSlugs
-      .map((en) => slugMap[en])
-      .filter(Boolean)
-      .map((es) => `/es/blog/${es}/`);
+    // ES deep-dive hrefs join the EN→ES mapping at the per-namespace
+    // section of i18n-slug-map (blog or library). Same namespace on
+    // both sides of the EN↔ES pair.
+    const slugMap = readJSON('data/i18n-slug-map.json');
+    const blogMap = slugMap.blog || {};
+    const libMap  = slugMap.library || {};
+    const esDeepDiveHrefs = deepDives
+      .map((d) => {
+        const src = d.namespace === 'library' ? libMap : blogMap;
+        const es = src[d.slug];
+        return es ? `/es/${d.namespace}/${es}/` : null;
+      })
+      .filter(Boolean);
     overviews.push({
       batchKey: key,
       locale: 'es',

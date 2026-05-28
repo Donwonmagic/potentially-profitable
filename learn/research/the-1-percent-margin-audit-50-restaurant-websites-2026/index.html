@@ -170,14 +170,16 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <!-- Preload the two above-the-fold web fonts so they arrive in
      parallel with site.css instead of being discovered after parse. -->
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-italic.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-italic.woff2" crossorigin>
 <!-- Async-load the main stylesheet. Pattern: preload + onload-swap
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=4f505f60ca72" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=47810dd9477a" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=4f505f60ca72"><link rel="stylesheet" href="/assets/site-article.css?v=47810dd9477a"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=a497939fe0a3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=4c628560c207" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a497939fe0a3"><link rel="stylesheet" href="/assets/site-article.css?v=4c628560c207"></noscript>
 
 <!-- lazy-load:p --><script>(window.requestIdleCallback||function(c){return setTimeout(c,500);})(function(){var s=document.createElement("script");s.src="/assets/p.js?v=20260503";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:p -->
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
@@ -186,25 +188,14 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
 <a class="skip-link" href="#main">Skip to main content</a>
 
-<script>
-  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
-     Apple devices. Runs early in <body> so the swap is essentially
-     invisible — script tags execute synchronously when the parser hits
-     them, before .nav-search-kbd renders below. CSS in site-core.css
-     conditions on <html data-platform="mac">. */
-  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
-    document.documentElement.dataset.platform = 'mac';
-  }
-</script>
 <!-- batch-banner:start -->
-<aside class="batch-banner" data-batch="2026-w2" role="complementary" aria-label="Week 2 · May 23, 2026" style="background:var(--ink,#14161A);color:var(--cream,#FAF7F2);font-size:15px;line-height:1.5;padding:16px 0;border-bottom:1px solid rgba(250,247,242,0.12);position:relative;z-index:60">
-  <div style="max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,64px);display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap">
-    <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;min-width:0">
-      <span style="display:inline-block;font-family:Inter,system-ui,sans-serif;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;background:var(--teal,#2A50C8);color:var(--cream,#FAF7F2);padding:4px 10px;border-radius:3px;white-space:nowrap;flex-shrink:0">New this week</span>
-      <span style="font-family:Georgia,serif;font-size:11px;letter-spacing:0.10em;text-transform:uppercase;opacity:0.75;white-space:nowrap">Week 2 · May 23, 2026</span>
-      <span style="font-family:Georgia,serif;font-size:17px;font-style:italic;line-height:1.35;min-width:0">Search changed on May 19. Here's the operator's move.</span>
+<aside class="batch-marquee" data-batch="2026-w2" role="complementary" aria-label="Week 2 · May 23, 2026" style="background:var(--ink,#14161A);color:var(--cream,#FAF7F2);font-size:14px;line-height:1.4;padding:8px 0;border-bottom:1px solid rgba(250,247,242,0.12)">
+  <div style="max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,64px);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;min-width:0;flex:1 1 auto">
+      <span style="display:inline-block;font-family:Inter,system-ui,sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;background:var(--teal,#2A50C8);color:var(--cream,#FAF7F2);padding:3px 8px;border-radius:3px;white-space:nowrap;flex-shrink:0">New this week</span>
+      <span style="font-family:Georgia,serif;font-size:14px;font-style:italic;line-height:1.35;min-width:0">Search changed on May 19. Here's the operator's move.</span>
     </div>
-    <a href="/blog/may-2026-discovery-changed-under-you/" style="display:inline-flex;align-items:center;gap:6px;color:var(--ink,#14161A);background:var(--cream,#FAF7F2);text-decoration:none;font-family:Inter,system-ui,sans-serif;font-weight:600;font-size:14px;padding:9px 18px;border-radius:999px;white-space:nowrap;flex-shrink:0;transition:transform .15s ease">Read the batch <span aria-hidden="true">&rarr;</span></a>
+    <a href="/blog/may-2026-discovery-changed-under-you/" style="display:inline-flex;align-items:center;gap:6px;color:var(--ink,#14161A);background:var(--cream,#FAF7F2);text-decoration:none;font-family:Inter,system-ui,sans-serif;font-weight:600;font-size:12px;padding:5px 12px;border-radius:999px;white-space:nowrap;flex-shrink:0;transition:transform .15s ease">Read the batch <span aria-hidden="true">&rarr;</span></a>
   </div>
 </aside>
 <!-- batch-banner:end -->
@@ -231,8 +222,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
     </a>
     <!-- Phase 7: 5-item nav, per launch plan Part II.
-         Library / Tools / Work / Studio / Sign in.
-         Library now points at the canonical /library/ hub (the
+         Library / Tools / Studio / Sign in.
+         Library points at the canonical /library/ hub (the
          three-doors page). Tools is promoted from the old Library
          mega-menu to a top-level item. Studio replaces Services +
          Restaurants + About — they all live under /studio/ now,
@@ -242,11 +233,15 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
          Restaurants pages remain reachable via /studio/ and the
          _redirects table; /about/ is unchanged. The mega-menu is
          retired (the hub IS the menu now); the controller script
-         is gone too. -->
+         is gone too.
+
+         /work/ was retired with the Phase 8 portfolio-sunset pass:
+         the company-as-resume framing made the personal-portfolio
+         showcase redundant. Legacy /work/* URLs 301 to /studio/
+         via _redirects so old backlinks land softly. -->
     <nav class="nav-links" aria-label="Primary">
       <a href="/library/">Library</a>
       <a href="/tools/">Tools</a>
-      <a href="/work/">Work</a>
       <a href="/studio/">Studio</a>
       <!-- Both sign-in / workshop ship hidden by default; the
            auth-state JS at the bottom of this file calls
@@ -274,14 +269,14 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
          default state (sun) and clicks do nothing; the OS
          preference still drives dark-mode tokens via media query. -->
     <button type="button" class="theme-toggle js-theme-toggle" aria-label="Toggle dark mode" aria-pressed="false" hidden>
-      <svg class="theme-toggle__icon theme-toggle__icon--sun" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <svg class="theme-toggle__icon theme-toggle__icon--sun" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <circle cx="12" cy="12" r="4"/>
         <line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/>
         <line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/>
         <line x1="4.93" y1="4.93" x2="7.05" y2="7.05"/><line x1="16.95" y1="16.95" x2="19.07" y2="19.07"/>
         <line x1="4.93" y1="19.07" x2="7.05" y2="16.95"/><line x1="16.95" y1="7.05" x2="19.07" y2="4.93"/>
       </svg>
-      <svg class="theme-toggle__icon theme-toggle__icon--moon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <svg class="theme-toggle__icon theme-toggle__icon--moon" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
       </svg>
     </button>
@@ -303,7 +298,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
     <a href="/library/">Library</a>
     <a href="/tools/">Tools</a>
-    <a href="/work/">Work</a>
     <a href="/studio/">Studio</a>
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
@@ -372,27 +366,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
                 });
               })
               .catch(function () { /* silent */ });
-            // Course progress dot — appended after the workshop link
-            // when the operator is mid-bootcamp (> 0 but < 16 lessons
-            // done). Decorative + aria-hidden; the operator can still
-            // click the workshop link to see the canonical count.
-            fetch('/api/course/progress', { credentials: 'same-origin' })
-              .then(function (r3) { return r3.ok ? r3.json() : null; })
-              .then(function (j) {
-                if (!j || !j.progress || !Array.isArray(j.progress.completed)) return;
-                var n = j.progress.completed.length;
-                if (n <= 0 || n >= 16) return;
-                workshop.forEach(function (w) {
-                  if (w.querySelector('.nav-course-dot')) return;
-                  var dot = document.createElement('span');
-                  dot.className = 'nav-course-dot';
-                  dot.setAttribute('aria-hidden', 'true');
-                  dot.title = 'Open the Doors — lesson ' + n + ' / 16';
-                  dot.style.cssText = 'display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--teal);margin-left:6px;vertical-align:middle';
-                  w.appendChild(dot);
-                });
-              })
-              .catch(function () { /* silent — course endpoint optional */ });
             return;
           }
           show(signin);
@@ -446,7 +419,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <li class="note-stat"><strong>43/50</strong><span>Have at least 3 of 6 leaks active right now</span></li>
     </ul>
 
-    <h2>Where the 1% comes from</h2>
+    <h2 id="where-the-1-comes-from">Where the 1% comes from</h2>
 
     <p>The 1% number isn&rsquo;t a hunch. It&rsquo;s a sum across six measured leaks, each with a published lift figure from primary research, applied to the operator&rsquo;s own reported revenue. The methodology is below; the headline result is in this table.</p>
 
@@ -469,7 +442,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
     <p>The single biggest leak is the one that affects the fewest operators: aggregator-only ordering with no direct path. When it&rsquo;s present, the impact is large &mdash; nearly half a point of revenue &mdash; because every order goes through a 30% commission instead of a 3.6% processor fee. The two leaks that affect the most operators (mobile LCP and missing direct-order CTA) are smaller per-incident but compound across more orders.</p>
 
-    <h2>Distribution of leakage</h2>
+    <h2 id="distribution-of-leakage">Distribution of leakage</h2>
 
     <p>The distribution isn&rsquo;t flat. It clusters: most operators are in the 0.5%&ndash;1.5% band, but a long tail of operators is leaking well over 2% &mdash; usually because they have all six leaks active at once.</p>
 
@@ -486,7 +459,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
     <p>The operators in the under-0.5% band shared three things: they were all on custom-coded or BentoBox-hosted sites (no Wix), they all had a real <code>/es/</code> mirror or were in non-bilingual neighborhoods, and they all had a direct-order button positioned above their third-party links. They were also overrepresented in the &ldquo;family-owned for 20+ years&rdquo; category &mdash; not because old operators are tech-forward, but because they&rsquo;ve been quietly fixing one leak per quarter for a long time.</p>
 
-    <h2>What 0.94% means in dollars</h2>
+    <h2 id="what-0-94-means-in-dollars">What 0.94% means in dollars</h2>
 
     <p>Applied to the median operator&rsquo;s reported revenue (~$1.6M annual, $133K monthly), 0.94% is <strong>$1,250 per month, or $15,012 per year</strong>. For a worst-quartile operator at the same revenue band but 2.3% leakage, that&rsquo;s <strong>$3,069 per month, or $36,830 per year</strong>. For comparison, a Full Service tier rebuild at this studio is $5,000&ndash;$9,000 &mdash; the rebuild pays for itself in 2&ndash;7 months at median leakage, and inside two months at worst-quartile.</p>
 
@@ -494,7 +467,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <p><strong>The headline.</strong> Independent restaurants are not, generally, marketing themselves badly. They are losing revenue through six small, fixable, well-understood leaks. The median operator could recover an annualized $15K by spending one weekend with a checklist. The worst-quartile could recover $36K&mdash;$50K.</p>
     </div>
 
-    <h2>Per-leak fix difficulty</h2>
+    <h2 id="per-leak-fix-difficulty">Per-leak fix difficulty</h2>
 
     <p>Not every leak takes the same effort to fix. Ranked by difficulty (easiest first):</p>
 
@@ -509,7 +482,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
     <p>The first three fixes &mdash; under an hour combined, no developer required &mdash; recover roughly half of the median leak. They&rsquo;re a Saturday afternoon, not a project.</p>
 
-    <h2>What I expected to find that wasn&rsquo;t there</h2>
+    <h2 id="what-i-expected-to-find-that-wasn-t-there">What I expected to find that wasn&rsquo;t there</h2>
 
     <ul>
       <li style="margin-bottom:10px"><strong>Photography quality didn&rsquo;t correlate with leakage.</strong> Restaurants with phenomenal photos and restaurants with operator-iPhone snapshots leaked at roughly the same rates. Photography drives consideration, not conversion. Reorder your priorities accordingly.</li>
@@ -518,7 +491,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <li><strong>Fine-dining didn&rsquo;t leak more than casual.</strong> The reservation-deeplink leak hits both equally; both lose roughly the same percent of revenue when they have it.</li>
     </ul>
 
-    <h2>Methodology</h2>
+    <h2 id="methodology">Methodology</h2>
 
     <p>Sample: 50 independently-owned restaurants, no national chains, no PE-owned brands. Geographic mix: 60% DMV (DC + MD + VA), 40% NY-NJ-CT tri-state. Revenue band: $800K&ndash;$3M annual (the median DMV independent). Cuisine mix roughly matches RAMW&rsquo;s 2025 corridor distribution.</p>
 
@@ -528,7 +501,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
     <p>What this study is not: a randomized sample (operators were recruited from RAMW + DMV restaurant slack groups), a controlled study (no before/after measurements were taken), or an exhaustive list of leaks (six were chosen because each is well-published). It&rsquo;s a directional snapshot, deliberately small, named, and dated.</p>
 
-    <h2>Run yours</h2>
+    <h2 id="run-yours">Run yours</h2>
 
     <p>The free <a href="/tools/audits/restaurant/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">restaurant audit tool</a> grades your site on the same six leaks, in 30 seconds, in your browser. Result tells you which leaks you have and what they&rsquo;re likely costing you per month.</p>
 
@@ -543,10 +516,10 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <section style="margin-top:48px;padding-top:32px;border-top:1px solid var(--line)">
       <p class="eyebrow" style="margin-bottom:10px">Companion pieces</p>
       <ul style="font-size:15.5px;line-height:1.7;color:var(--teal);margin:0;padding-left:22px">
-        <li><a href="/blog/an-honest-doordash-math-for-independent-restaurants-2026/">An honest DoorDash math, 2026</a> &mdash; the per-order math behind leak #6</li>
+        <li><a href="/library/third-party-delivery-economics/">An honest DoorDash math, 2026</a> &mdash; the per-order math behind leak #6</li>
         <li><a href="/learn/research/dmv-restaurant-gbp-audit-2026/">DMV restaurant GBP audit, 2026</a> &mdash; the discovery side of the same problem</li>
-        <li><a href="/blog/why-your-restaurant-loses-reservations-every-night/">Why your restaurant loses reservations every night</a> &mdash; the long-form companion</li>
-        <li><a href="/blog/five-restaurant-website-changes-recover-one-percent-margin/">Five website changes that recover 1% margin</a> &mdash; the fix list, ranked</li>
+        <li><a href="/library/reservation-conversion-guide/">Why your restaurant loses reservations every night</a> &mdash; the long-form companion</li>
+        <li><a href="/library/reservation-conversion-guide/">Five website changes that recover 1% margin</a> &mdash; the fix list, ranked</li>
         <li><a href="/tools/audits/restaurant/">Run the free 30-second audit</a> on your own site</li>
       </ul>
     </section>
@@ -568,20 +541,47 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <div class="foot-grid">
       <div class="foot-col foot-brand">
         <a href="/" class="foot-lockup-wrap" aria-label="Muntin Digital home">
-          <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53" loading="lazy" decoding="async">
+          <!-- alt="" because the surrounding <a> is already labeled.
+               Without it, screen readers announce "Muntin Digital,
+               Muntin Digital home" on the lockup link. -->
+          <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="" width="240" height="53" loading="lazy" decoding="async">
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a <!-- count:glossary.terms -->149<!-- /count -->-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->24<!-- /count --> articles, <!-- count:tools.live -->12<!-- /count --> tools, <!-- count:glossary.terms -->149<!-- /count --> glossary terms &mdash; with a one-person web studio behind it in Silver Spring, MD.</p>
       </div>
 
-      <nav class="foot-col" aria-labelledby="foot-explore">
-        <p class="foot-heading" id="foot-explore">Studio</p>
+      <!-- Column order mirrors the 4-item primary nav
+           (Library, Tools-rolled-into-Library, Studio) so the
+           footer reinforces the same IA. The Library column leads
+           with /library/ (the post-Phase-7 three-doors hub); the
+           older /learn/ landing still resolves but no longer needs
+           its own footer slot. id="foot-learn" is the canonical-
+           footer marker that scripts/sync-includes.mjs keys on
+           (FOOTER_MAIN_FUNNEL_MARKER), so the id stays even though
+           the visible label is the more familiar "Library".
+
+           Phase 8 (portfolio sunset): the Studio column's "Case
+           studies" row used to link to /work/, the personal-portfolio
+           hub. That hub was retired when the company became the
+           resume; the row is now gone and /work/* 301s to /studio/. -->
+      <nav class="foot-col" aria-labelledby="foot-learn">
+        <p class="foot-heading" id="foot-learn">Library</p>
         <ul class="foot-links">
-          <li><a href="/services/">Services &amp; pricing</a></li>
-          <li><a href="/for/restaurants/">For restaurants</a></li>
+          <li><a href="/library/">Browse the library</a></li>
+          <li><a href="/glossary/">Glossary</a></li>
+          <li><a href="/tools/">Free tools</a></li>
+          <li><a href="/sheets/">Operator sheets</a></li>
+          <li><a href="/blog/">Commentary</a></li>
+        </ul>
+      </nav>
+
+      <nav class="foot-col" aria-labelledby="foot-studio">
+        <p class="foot-heading" id="foot-studio">Studio</p>
+        <ul class="foot-links">
+          <li><a href="/studio/#pricing">Pricing</a></li>
           <li><a href="/studio/compare/">Compare options</a></li>
-          <li><a href="/work/">Case studies</a></li>
+          <li><a href="/studio/#process">Process</a></li>
           <li><a href="/about/">About Don</a></li>
         </ul>
       </nav>
@@ -589,29 +589,11 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <nav class="foot-col" aria-labelledby="foot-trust">
         <p class="foot-heading" id="foot-trust">Trust</p>
         <ul class="foot-links">
-          <li><a href="/never/">Never</a></li>
+          <li><a href="/never/">What we never do</a></li>
           <li><a href="/ai/">AI policy</a></li>
-          <li><a href="/security/">Data &amp; security</a></li>
-          <li><a href="/methods/">Methods</a></li>
-          <li><a href="/receipts/">Receipts</a></li>
+          <li><a href="/methods/">Methods &amp; sources</a></li>
           <li><a href="/changelog/">Changelog</a></li>
-          <li><a href="/system/">The system</a></li>
-        </ul>
-      </nav>
-
-      <nav class="foot-col" aria-labelledby="foot-learn">
-        <p class="foot-heading" id="foot-learn">Library</p>
-        <ul class="foot-links">
-          <li><a href="/learn/">Library home</a></li>
-          <li><a href="/learn/start-here/">Start here</a></li>
-          <li><a href="/course/">Open the Doors bootcamp</a></li>
-          <li><a href="/learn/topics/">Topics</a></li>
-          <li><a href="/blog/">Articles</a></li>
-          <li><a href="/tools/">Free tools</a></li>
-          <li><a href="/glossary/">Glossary</a></li>
-          <li><a href="/learn/research/">Research</a></li>
-          <li><a href="/learn/checklists/">Checklists &amp; guides</a></li>
-          <li><a href="/sheets/">Operator sheets</a></li>
+          <li><a href="/receipts/">Receipts</a></li>
         </ul>
       </nav>
 
@@ -622,7 +604,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           <li><a href="/window/">Reach Don</a></li>
           <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (opens in new tab)</span></a></li>
         </ul>
-        <p class="foot-trust"><strong>Reply:</strong> Mondays through Fridays, within 4 hours. Weekends, by Monday morning.</p>
+        <p class="foot-trust"><strong>Reply:</strong> within 4 hours Mon&ndash;Fri; weekends by Monday.</p>
       </nav>
     </div>
 

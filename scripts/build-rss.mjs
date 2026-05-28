@@ -78,26 +78,45 @@ function normalizeDate(raw) {
 }
 
 function blogItems(locale) {
-  const root = path.join(repoRoot, locale === 'es' ? 'es/blog' : 'blog');
   const out = [];
-  for (const slug of fs.readdirSync(root)) {
-    if (slug === 'drafts' || slug === 'index.html') continue;
-    const file = path.join(root, slug, 'index.html');
-    if (!fs.existsSync(file)) continue;
-    const meta = readMeta(file);
-    if (!meta.title) continue;
-    const url = `${SITE}${locale === 'es' ? '/es' : ''}/blog/${slug}/`;
-    const { rfc, iso } = normalizeDate(meta.pubDate || gitMtime(file));
-    out.push({
-      kind: 'article',
-      title: meta.title,
-      description: meta.description,
-      url,
-      pubDate: rfc,
-      pubDateIso: iso,
-      image: meta.ogImage,
-      category: locale === 'es' ? 'Artículo' : 'Article',
-    });
+  // Phase 7: walk both /blog/ (timely) and /library/ (evergreen).
+  // Library posts ride the same feed so subscribers don't lose history
+  // when a post is reclassified. GUIDs are slug-based (see below) so
+  // a blog→library move with an unchanged slug stays the same item.
+  // /library/menu-design-*/ are collection landings, not articles, and
+  // are excluded from the feed.
+  const namespaces = [
+    { dir: locale === 'es' ? 'es/blog' : 'blog',    urlPrefix: `${locale === 'es' ? '/es' : ''}/blog/`,    skip: new Set(['drafts']) },
+    { dir: locale === 'es' ? 'es/library' : 'library', urlPrefix: `${locale === 'es' ? '/es' : ''}/library/`, skip: new Set(['menu-design-cuisines', 'menu-design-themes']) },
+  ];
+  for (const { dir, urlPrefix, skip } of namespaces) {
+    const root = path.join(repoRoot, dir);
+    if (!fs.existsSync(root)) continue;
+    for (const slug of fs.readdirSync(root)) {
+      if (skip.has(slug) || slug === 'index.html') continue;
+      const file = path.join(root, slug, 'index.html');
+      if (!fs.existsSync(file)) continue;
+      const meta = readMeta(file);
+      if (!meta.title) continue;
+      const url = `${SITE}${urlPrefix}${slug}/`;
+      // Stable GUID: slug-only identifier (not the URL). A post moving
+      // /blog/<slug>/ → /library/<slug>/ keeps the same GUID, so RSS
+      // readers don't treat it as a brand-new item. Renames or merges
+      // (different slug) will produce a new GUID by design.
+      const guid = `urn:muntin:article:${locale}:${slug}`;
+      const { rfc, iso } = normalizeDate(meta.pubDate || gitMtime(file));
+      out.push({
+        kind: 'article',
+        title: meta.title,
+        description: meta.description,
+        url,
+        guid,
+        pubDate: rfc,
+        pubDateIso: iso,
+        image: meta.ogImage,
+        category: locale === 'es' ? 'Artículo' : 'Article',
+      });
+    }
   }
   return out;
 }
@@ -238,7 +257,11 @@ function buildFeed(locale) {
       '    <item>',
       `      <title>${escXml(i.title)}</title>`,
       `      <link>${escXml(i.url)}</link>`,
-      `      <guid isPermaLink="true">${escXml(i.url)}</guid>`,
+      // isPermaLink="true" when the GUID is a real URL (glossary, tools);
+      // "false" when it's a synthetic stable identifier (urn:muntin:article:…).
+      i.guid
+        ? `      <guid isPermaLink="false">${escXml(i.guid)}</guid>`
+        : `      <guid isPermaLink="true">${escXml(i.url)}</guid>`,
       `      <pubDate>${i.pubDate}</pubDate>`,
       `      <description>${escXml(i.description)}</description>`,
       `      <category>${escXml(i.category)}</category>`,

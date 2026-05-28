@@ -39,9 +39,9 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=4f505f60ca72" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=47810dd9477a" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=4f505f60ca72"><link rel="stylesheet" href="/assets/site-article.css?v=47810dd9477a"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=a497939fe0a3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=4c628560c207" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a497939fe0a3"><link rel="stylesheet" href="/assets/site-article.css?v=4c628560c207"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -111,7 +111,7 @@
         "@id": "https://muntin.digital/#business"
       },
       "image": "https://muntin.digital/brand/og/glossary-accessible-pair.png",
-      "datePublished": "2026-05-10T03:01:34+00:00",
+      "datePublished": "2026-05-10T04:12:16+00:00",
       "isPartOf": {
         "@id": "https://muntin.digital/glossary/#muntin-glossary"
       }
@@ -125,25 +125,14 @@
 
 <a class="skip-link" href="#main">Skip to main content</a>
 
-<script>
-  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
-     Apple devices. Runs early in <body> so the swap is essentially
-     invisible — script tags execute synchronously when the parser hits
-     them, before .nav-search-kbd renders below. CSS in site-core.css
-     conditions on <html data-platform="mac">. */
-  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
-    document.documentElement.dataset.platform = 'mac';
-  }
-</script>
 <!-- batch-banner:start -->
-<aside class="batch-banner" data-batch="2026-w2" role="complementary" aria-label="Week 2 · May 23, 2026" style="background:var(--ink,#14161A);color:var(--cream,#FAF7F2);font-size:15px;line-height:1.5;padding:16px 0;border-bottom:1px solid rgba(250,247,242,0.12);position:relative;z-index:60">
-  <div style="max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,64px);display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap">
-    <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;min-width:0">
-      <span style="display:inline-block;font-family:Inter,system-ui,sans-serif;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;background:var(--teal,#2A50C8);color:var(--cream,#FAF7F2);padding:4px 10px;border-radius:3px;white-space:nowrap;flex-shrink:0">New this week</span>
-      <span style="font-family:Georgia,serif;font-size:11px;letter-spacing:0.10em;text-transform:uppercase;opacity:0.75;white-space:nowrap">Week 2 · May 23, 2026</span>
-      <span style="font-family:Georgia,serif;font-size:17px;font-style:italic;line-height:1.35;min-width:0">Search changed on May 19. Here's the operator's move.</span>
+<aside class="batch-marquee" data-batch="2026-w2" role="complementary" aria-label="Week 2 · May 23, 2026" style="background:var(--ink,#14161A);color:var(--cream,#FAF7F2);font-size:14px;line-height:1.4;padding:8px 0;border-bottom:1px solid rgba(250,247,242,0.12)">
+  <div style="max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,64px);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;min-width:0;flex:1 1 auto">
+      <span style="display:inline-block;font-family:Inter,system-ui,sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;background:var(--teal,#2A50C8);color:var(--cream,#FAF7F2);padding:3px 8px;border-radius:3px;white-space:nowrap;flex-shrink:0">New this week</span>
+      <span style="font-family:Georgia,serif;font-size:14px;font-style:italic;line-height:1.35;min-width:0">Search changed on May 19. Here's the operator's move.</span>
     </div>
-    <a href="/blog/may-2026-discovery-changed-under-you/" style="display:inline-flex;align-items:center;gap:6px;color:var(--ink,#14161A);background:var(--cream,#FAF7F2);text-decoration:none;font-family:Inter,system-ui,sans-serif;font-weight:600;font-size:14px;padding:9px 18px;border-radius:999px;white-space:nowrap;flex-shrink:0;transition:transform .15s ease">Read the batch <span aria-hidden="true">&rarr;</span></a>
+    <a href="/blog/may-2026-discovery-changed-under-you/" style="display:inline-flex;align-items:center;gap:6px;color:var(--ink,#14161A);background:var(--cream,#FAF7F2);text-decoration:none;font-family:Inter,system-ui,sans-serif;font-weight:600;font-size:12px;padding:5px 12px;border-radius:999px;white-space:nowrap;flex-shrink:0;transition:transform .15s ease">Read the batch <span aria-hidden="true">&rarr;</span></a>
   </div>
 </aside>
 <!-- batch-banner:end -->
@@ -170,8 +159,8 @@
       Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
     </a>
     <!-- Phase 7: 5-item nav, per launch plan Part II.
-         Library / Tools / Work / Studio / Sign in.
-         Library now points at the canonical /library/ hub (the
+         Library / Tools / Studio / Sign in.
+         Library points at the canonical /library/ hub (the
          three-doors page). Tools is promoted from the old Library
          mega-menu to a top-level item. Studio replaces Services +
          Restaurants + About — they all live under /studio/ now,
@@ -181,11 +170,15 @@
          Restaurants pages remain reachable via /studio/ and the
          _redirects table; /about/ is unchanged. The mega-menu is
          retired (the hub IS the menu now); the controller script
-         is gone too. -->
+         is gone too.
+
+         /work/ was retired with the Phase 8 portfolio-sunset pass:
+         the company-as-resume framing made the personal-portfolio
+         showcase redundant. Legacy /work/* URLs 301 to /studio/
+         via _redirects so old backlinks land softly. -->
     <nav class="nav-links" aria-label="Primary">
       <a href="/library/">Library</a>
       <a href="/tools/">Tools</a>
-      <a href="/work/">Work</a>
       <a href="/studio/">Studio</a>
       <!-- Both sign-in / workshop ship hidden by default; the
            auth-state JS at the bottom of this file calls
@@ -213,14 +206,14 @@
          default state (sun) and clicks do nothing; the OS
          preference still drives dark-mode tokens via media query. -->
     <button type="button" class="theme-toggle js-theme-toggle" aria-label="Toggle dark mode" aria-pressed="false" hidden>
-      <svg class="theme-toggle__icon theme-toggle__icon--sun" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <svg class="theme-toggle__icon theme-toggle__icon--sun" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <circle cx="12" cy="12" r="4"/>
         <line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/>
         <line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/>
         <line x1="4.93" y1="4.93" x2="7.05" y2="7.05"/><line x1="16.95" y1="16.95" x2="19.07" y2="19.07"/>
         <line x1="4.93" y1="19.07" x2="7.05" y2="16.95"/><line x1="16.95" y1="7.05" x2="19.07" y2="4.93"/>
       </svg>
-      <svg class="theme-toggle__icon theme-toggle__icon--moon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <svg class="theme-toggle__icon theme-toggle__icon--moon" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
       </svg>
     </button>
@@ -242,7 +235,6 @@
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
     <a href="/library/">Library</a>
     <a href="/tools/">Tools</a>
-    <a href="/work/">Work</a>
     <a href="/studio/">Studio</a>
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
@@ -311,27 +303,6 @@
                 });
               })
               .catch(function () { /* silent */ });
-            // Course progress dot — appended after the workshop link
-            // when the operator is mid-bootcamp (> 0 but < 16 lessons
-            // done). Decorative + aria-hidden; the operator can still
-            // click the workshop link to see the canonical count.
-            fetch('/api/course/progress', { credentials: 'same-origin' })
-              .then(function (r3) { return r3.ok ? r3.json() : null; })
-              .then(function (j) {
-                if (!j || !j.progress || !Array.isArray(j.progress.completed)) return;
-                var n = j.progress.completed.length;
-                if (n <= 0 || n >= 16) return;
-                workshop.forEach(function (w) {
-                  if (w.querySelector('.nav-course-dot')) return;
-                  var dot = document.createElement('span');
-                  dot.className = 'nav-course-dot';
-                  dot.setAttribute('aria-hidden', 'true');
-                  dot.title = 'Open the Doors — lesson ' + n + ' / 16';
-                  dot.style.cssText = 'display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--teal);margin-left:6px;vertical-align:middle';
-                  w.appendChild(dot);
-                });
-              })
-              .catch(function () { /* silent — course endpoint optional */ });
             return;
           }
           show(signin);
@@ -369,7 +340,7 @@
 
     <div class="term-body">
       <p class="term-def">A version of a brand color whose lightness has been shifted just far enough — preserving hue and feel — that text rendered in it on a named background reaches the WCAG AA contrast threshold (4.5:1 for normal text). Two pairs are usually generated for each color: one on a light surface, one on a dark surface.</p>
-      <h2 class="term-why-h">Why it matters</h2>
+      <h2 class="term-why-h" id="why-it-matters">Why it matters</h2>
       <p class="term-why">Brand teal looks great in the logo and unreadable as 14px body text on cream. Designing a usable system means knowing both the brand color *and* its accessible neighbor — and using the right one in each context. <a href="/tools/brand-suite/">Brand Suite</a> derives them automatically and exports both variants as CSS tokens.</p>
       
       <!-- glossary-explainer-cue:start -->
@@ -401,7 +372,7 @@
   <div class="container">
     <div class="section-header reveal section-center">
       <span class="eyebrow">Glossary</span>
-      <h2>Browse all<br><span class="serif-italic"><!-- count:glossary.terms -->149<!-- /count --> terms.</span></h2>
+      <h2 id="browse-all149-terms">Browse all<br><span class="serif-italic"><!-- count:glossary.terms -->149<!-- /count --> terms.</span></h2>
       <p class="final-sub">Plain-English definitions for every term in your audit, organized by category.</p>
     </div>
     <div class="hero-ctas reveal hero-ctas-center">
@@ -429,10 +400,11 @@
       <div class="glossary-knit__col">
         <h3>Read</h3>
         <ul>
-          <li><a href="/blog/how-much-does-a-custom-restaurant-website-cost-in-2026/">What a custom restaurant site costs in 2026</a></li>
-          <li><a href="/blog/restaurant-photo-spec-sheet/">The photo spec sheet</a></li>
-          <li><a href="/blog/wix-vs-custom-for-restaurants/">Wix vs. custom for restaurants</a></li>
+          <li><a href="/blog/how-much-does-a-custom-restaurant-website-cost-in-2026/">how-much-does-a-custom-restaurant-website-cost-in-2026</a></li>
+          <li><a href="/blog/restaurant-photo-spec-sheet/">The Restaurant Photo Spec Sheet: Every Image Size for Every Surface</a></li>
+          <li><a href="/blog/wix-vs-custom-for-restaurants/">Wix vs Custom for Restaurants</a></li>
           <li><a href="/blog/instagram-as-restaurant-seo-strategy-2026/">Instagram Is a Search Engine Now. Post Like It.</a></li>
+          <li><a href="/blog/custom-restaurant-website-pricing/">How Much Does a Custom Restaurant Website Cost?</a></li>
         </ul>
       </div>
       <div class="glossary-knit__col">
@@ -448,25 +420,6 @@
     </div>
   </aside>
 <!-- /glossary-knit -->
-<!-- glossary-lesson-sidecar:start -->
-<aside class="gloss-lesson-sidecar" aria-labelledby="gls-h-accessible-pair">
-  <p class="gls-eyebrow">LESSON 7 · MODULE · M2 DECIDE</p>
-  <h2 class="gls-h" id="gls-h-accessible-pair"><a href="/course/m2-decide/palette-voice/">Palette + voice</a></h2>
-  <p class="gls-intro">This term shows up in practice in Lesson 7 of Open the Doors — where you use it to build your own site, not just define it.</p>
-  <p class="gls-cta"><a href="/course/m2-decide/palette-voice/">Open Lesson 7 →</a></p>
-</aside>
-<style>
-.gloss-lesson-sidecar{margin:32px 0 24px;padding:22px 26px;border:1px solid var(--line);border-radius:14px;background:var(--cream);max-width:680px}
-.gloss-lesson-sidecar .gls-eyebrow{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--stone);font-weight:600;margin:0 0 10px}
-.gloss-lesson-sidecar .gls-h{font-family:var(--font-display);font-weight:500;font-size:20px;line-height:1.25;margin:0 0 10px;color:var(--ink)}
-.gloss-lesson-sidecar .gls-h a{color:var(--ink);text-decoration:none;background:linear-gradient(to right,var(--teal),var(--teal)) no-repeat 0 100%/100% 1px}
-.gloss-lesson-sidecar .gls-h a:hover{color:var(--teal-dark)}
-.gloss-lesson-sidecar .gls-intro{font-size:15px;color:var(--ink-soft);line-height:1.55;margin:0 0 12px}
-.gloss-lesson-sidecar .gls-cta{margin:0;font-size:14.5px;font-weight:600}
-.gloss-lesson-sidecar .gls-cta a{color:var(--teal-dark);text-decoration:none}
-.gloss-lesson-sidecar .gls-cta a:hover{text-decoration:underline}
-</style>
-<!-- glossary-lesson-sidecar:end -->
 </main>
 
 <footer>
@@ -484,20 +437,47 @@
     <div class="foot-grid">
       <div class="foot-col foot-brand">
         <a href="/" class="foot-lockup-wrap" aria-label="Muntin Digital home">
-          <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53" loading="lazy" decoding="async">
+          <!-- alt="" because the surrounding <a> is already labeled.
+               Without it, screen readers announce "Muntin Digital,
+               Muntin Digital home" on the lockup link. -->
+          <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="" width="240" height="53" loading="lazy" decoding="async">
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a <!-- count:glossary.terms -->149<!-- /count -->-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->24<!-- /count --> articles, <!-- count:tools.live -->12<!-- /count --> tools, <!-- count:glossary.terms -->149<!-- /count --> glossary terms &mdash; with a one-person web studio behind it in Silver Spring, MD.</p>
       </div>
 
-      <nav class="foot-col" aria-labelledby="foot-explore">
-        <p class="foot-heading" id="foot-explore">Studio</p>
+      <!-- Column order mirrors the 4-item primary nav
+           (Library, Tools-rolled-into-Library, Studio) so the
+           footer reinforces the same IA. The Library column leads
+           with /library/ (the post-Phase-7 three-doors hub); the
+           older /learn/ landing still resolves but no longer needs
+           its own footer slot. id="foot-learn" is the canonical-
+           footer marker that scripts/sync-includes.mjs keys on
+           (FOOTER_MAIN_FUNNEL_MARKER), so the id stays even though
+           the visible label is the more familiar "Library".
+
+           Phase 8 (portfolio sunset): the Studio column's "Case
+           studies" row used to link to /work/, the personal-portfolio
+           hub. That hub was retired when the company became the
+           resume; the row is now gone and /work/* 301s to /studio/. -->
+      <nav class="foot-col" aria-labelledby="foot-learn">
+        <p class="foot-heading" id="foot-learn">Library</p>
         <ul class="foot-links">
-          <li><a href="/services/">Services &amp; pricing</a></li>
-          <li><a href="/for/restaurants/">For restaurants</a></li>
+          <li><a href="/library/">Browse the library</a></li>
+          <li><a href="/glossary/">Glossary</a></li>
+          <li><a href="/tools/">Free tools</a></li>
+          <li><a href="/sheets/">Operator sheets</a></li>
+          <li><a href="/blog/">Commentary</a></li>
+        </ul>
+      </nav>
+
+      <nav class="foot-col" aria-labelledby="foot-studio">
+        <p class="foot-heading" id="foot-studio">Studio</p>
+        <ul class="foot-links">
+          <li><a href="/studio/#pricing">Pricing</a></li>
           <li><a href="/studio/compare/">Compare options</a></li>
-          <li><a href="/work/">Case studies</a></li>
+          <li><a href="/studio/#process">Process</a></li>
           <li><a href="/about/">About Don</a></li>
         </ul>
       </nav>
@@ -505,29 +485,11 @@
       <nav class="foot-col" aria-labelledby="foot-trust">
         <p class="foot-heading" id="foot-trust">Trust</p>
         <ul class="foot-links">
-          <li><a href="/never/">Never</a></li>
+          <li><a href="/never/">What we never do</a></li>
           <li><a href="/ai/">AI policy</a></li>
-          <li><a href="/security/">Data &amp; security</a></li>
-          <li><a href="/methods/">Methods</a></li>
-          <li><a href="/receipts/">Receipts</a></li>
+          <li><a href="/methods/">Methods &amp; sources</a></li>
           <li><a href="/changelog/">Changelog</a></li>
-          <li><a href="/system/">The system</a></li>
-        </ul>
-      </nav>
-
-      <nav class="foot-col" aria-labelledby="foot-learn">
-        <p class="foot-heading" id="foot-learn">Library</p>
-        <ul class="foot-links">
-          <li><a href="/learn/">Library home</a></li>
-          <li><a href="/learn/start-here/">Start here</a></li>
-          <li><a href="/course/">Open the Doors bootcamp</a></li>
-          <li><a href="/learn/topics/">Topics</a></li>
-          <li><a href="/blog/">Articles</a></li>
-          <li><a href="/tools/">Free tools</a></li>
-          <li><a href="/glossary/">Glossary</a></li>
-          <li><a href="/learn/research/">Research</a></li>
-          <li><a href="/learn/checklists/">Checklists &amp; guides</a></li>
-          <li><a href="/sheets/">Operator sheets</a></li>
+          <li><a href="/receipts/">Receipts</a></li>
         </ul>
       </nav>
 
@@ -538,7 +500,7 @@
           <li><a href="/window/">Reach Don</a></li>
           <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (opens in new tab)</span></a></li>
         </ul>
-        <p class="foot-trust"><strong>Reply:</strong> Mondays through Fridays, within 4 hours. Weekends, by Monday morning.</p>
+        <p class="foot-trust"><strong>Reply:</strong> within 4 hours Mon&ndash;Fri; weekends by Monday.</p>
       </nav>
     </div>
 

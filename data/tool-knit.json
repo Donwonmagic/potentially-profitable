@@ -1,63 +1,63 @@
 {
   "_doc": "Per-tool 'Keep going' footer module — links each of the 9 live tools to its topic, related tools, articles, and glossary terms. Drives scripts/inject-tool-knit.mjs, which stamps a 4-column block between <!-- tool-knit -->...<!-- /tool-knit --> sentinels at the bottom of each tool page (EN + ES). Labels: tools come from data/tools.json (title_*), topics from data/topics.json (name + name_es), glossary terms are extracted at render time from <h1 class='term-h1'> in glossary/<slug>/index.html — only article labels live here because article <h1>s are too long to use as scannable link text.",
   "articles": {
-    "/blog/how-to-tell-if-a-restaurant-tool-is-safe/": {
+    "/library/how-to-tell-if-a-restaurant-tool-is-safe/": {
       "label_en": "How to tell if a tool is safe",
       "label_es": "Cómo saber si una herramienta es segura"
     },
-    "/blog/restaurant-schema-markup-6-types-google-uses/": {
+    "/library/restaurant-schema-markup-guide/": {
       "label_en": "The 6 schema types Google uses",
       "label_es": "Los 6 tipos de schema que Google usa"
     },
-    "/blog/when-to-rebuild-your-restaurant-website/": {
+    "/library/when-to-rebuild-your-restaurant-website/": {
       "label_en": "When to rebuild your site",
       "label_es": "Cuándo rehacer tu sitio"
     },
-    "/blog/restaurant-photo-spec-sheet/": {
+    "/library/restaurant-photo-spec-sheet/": {
       "label_en": "The photo spec sheet",
       "label_es": "Hoja de especificaciones de fotos"
     },
-    "/blog/how-to-read-restaurant-google-search-console/": {
+    "/library/how-to-read-restaurant-google-search-console/": {
       "label_en": "Reading Google Search Console",
       "label_es": "Cómo leer Google Search Console"
     },
-    "/blog/how-to-raise-restaurant-menu-prices-without-losing-reservations/": {
+    "/library/how-to-raise-restaurant-menu-prices-without-losing-reservations/": {
       "label_en": "Raising prices without losing reservations",
       "label_es": "Subir precios sin perder reservas"
     },
-    "/blog/five-restaurant-website-changes-recover-one-percent-margin/": {
+    "/library/reservation-conversion-guide/": {
       "label_en": "Five website changes that recover 1% margin",
       "label_es": "Cinco cambios de sitio que recuperan 1% de margen"
     },
-    "/blog/is-doordash-worth-it-for-restaurants-in-2026/": {
+    "/library/third-party-delivery-economics/": {
       "label_en": "Is DoorDash worth it in 2026?",
       "label_es": "¿Vale la pena DoorDash en 2026?"
     },
-    "/blog/why-your-restaurant-loses-reservations-every-night/": {
+    "/library/reservation-conversion-guide/": {
       "label_en": "Why your restaurant loses reservations every night",
       "label_es": "Por qué pierdes reservas cada noche"
     },
-    "/blog/how-to-recover-reservations-from-googles-find-a-table/": {
+    "/library/reservation-conversion-guide/": {
       "label_en": "Recovering reservations from Google's Find a Table",
       "label_es": "Recuperar reservas de Find a Table de Google"
     },
-    "/blog/how-to-set-up-google-business-profile-for-your-restaurant/": {
+    "/library/how-to-set-up-google-business-profile-for-your-restaurant/": {
       "label_en": "Setting up Google Business Profile",
       "label_es": "Configurar Google Business Profile"
     },
-    "/blog/how-to-get-more-google-reviews-for-your-restaurant/": {
+    "/library/how-to-get-more-google-reviews-for-your-restaurant/": {
       "label_en": "Getting more Google reviews",
       "label_es": "Conseguir más reseñas de Google"
     },
-    "/blog/wix-vs-custom-for-restaurants/": {
+    "/library/wix-vs-custom-for-restaurants/": {
       "label_en": "Wix vs. custom for restaurants",
       "label_es": "Wix vs. sitio a la medida"
     },
-    "/blog/how-much-does-a-custom-restaurant-website-cost-in-2026/": {
+    "/library/custom-restaurant-website-pricing/": {
       "label_en": "What a custom restaurant site costs in 2026",
       "label_es": "Cuánto cuesta un sitio a la medida en 2026"
     },
-    "/blog/what-should-be-on-a-restaurant-website/": {
+    "/library/what-should-be-on-a-restaurant-website/": {
       "label_en": "What should be on a restaurant website",
       "label_es": "Qué debe llevar un sitio de restaurante"
     }
@@ -70,8 +70,8 @@
         "store-hours"
       ],
       "articles": [
-        "/blog/why-your-restaurant-loses-reservations-every-night/",
-        "/blog/wix-vs-custom-for-restaurants/"
+        "/library/reservation-conversion-guide/",
+        "/library/wix-vs-custom-for-restaurants/"
       ],
       "glossary": [
         "lighthouse",
@@ -86,8 +86,8 @@
         "store-hours"
       ],
       "articles": [
-        "/blog/how-to-set-up-google-business-profile-for-your-restaurant/",
-        "/blog/how-to-get-more-google-reviews-for-your-restaurant/"
+        "/library/how-to-set-up-google-business-profile-for-your-restaurant/",
+        "/library/how-to-get-more-google-reviews-for-your-restaurant/"
       ],
       "glossary": [
         "gbp",
@@ -103,8 +103,8 @@
         "plate-cost"
       ],
       "articles": [
-        "/blog/what-should-be-on-a-restaurant-website/",
-        "/blog/how-to-raise-restaurant-menu-prices-without-losing-reservations/"
+        "/library/what-should-be-on-a-restaurant-website/",
+        "/library/how-to-raise-restaurant-menu-prices-without-losing-reservations/"
       ],
       "glossary": [
         "html-menu",
@@ -119,8 +119,8 @@
         "menu-engineering"
       ],
       "articles": [
-        "/blog/is-doordash-worth-it-for-restaurants-in-2026/",
-        "/blog/how-to-raise-restaurant-menu-prices-without-losing-reservations/"
+        "/library/third-party-delivery-economics/",
+        "/library/how-to-raise-restaurant-menu-prices-without-losing-reservations/"
       ],
       "glossary": [
         "prime-cost",
@@ -136,8 +136,8 @@
         "menu-converter"
       ],
       "articles": [
-        "/blog/how-to-raise-restaurant-menu-prices-without-losing-reservations/",
-        "/blog/five-restaurant-website-changes-recover-one-percent-margin/"
+        "/library/how-to-raise-restaurant-menu-prices-without-losing-reservations/",
+        "/library/reservation-conversion-guide/"
       ],
       "glossary": [
         "menu-engineering",
@@ -152,8 +152,8 @@
         "menu-engineering"
       ],
       "articles": [
-        "/blog/how-to-raise-restaurant-menu-prices-without-losing-reservations/",
-        "/blog/is-doordash-worth-it-for-restaurants-in-2026/"
+        "/library/how-to-raise-restaurant-menu-prices-without-losing-reservations/",
+        "/library/third-party-delivery-economics/"
       ],
       "glossary": [
         "food-cost",
@@ -169,8 +169,8 @@
         "menu-engineering"
       ],
       "articles": [
-        "/blog/why-your-restaurant-loses-reservations-every-night/",
-        "/blog/five-restaurant-website-changes-recover-one-percent-margin/"
+        "/library/reservation-conversion-guide/",
+        "/library/reservation-conversion-guide/"
       ],
       "glossary": [
         "menu-copy",
@@ -185,8 +185,8 @@
         "brand-suite"
       ],
       "articles": [
-        "/blog/why-your-restaurant-loses-reservations-every-night/",
-        "/blog/five-restaurant-website-changes-recover-one-percent-margin/"
+        "/library/reservation-conversion-guide/",
+        "/library/reservation-conversion-guide/"
       ],
       "glossary": [
         "photo-brief",
@@ -201,8 +201,8 @@
         "menu-copy"
       ],
       "articles": [
-        "/blog/wix-vs-custom-for-restaurants/",
-        "/blog/how-much-does-a-custom-restaurant-website-cost-in-2026/"
+        "/library/wix-vs-custom-for-restaurants/",
+        "/library/custom-restaurant-website-pricing/"
       ],
       "glossary": [
         "brand-identity",
@@ -217,8 +217,8 @@
         "gbp-grader"
       ],
       "articles": [
-        "/blog/what-should-be-on-a-restaurant-website/",
-        "/blog/five-restaurant-website-changes-recover-one-percent-margin/"
+        "/library/what-should-be-on-a-restaurant-website/",
+        "/library/reservation-conversion-guide/"
       ],
       "glossary": [
         "lighthouse",
@@ -233,8 +233,8 @@
         "margin-math"
       ],
       "articles": [
-        "/blog/five-restaurant-website-changes-recover-one-percent-margin/",
-        "/blog/how-to-raise-restaurant-menu-prices-without-losing-reservations/"
+        "/library/reservation-conversion-guide/",
+        "/library/how-to-raise-restaurant-menu-prices-without-losing-reservations/"
       ],
       "glossary": [
         "contribution-margin",
@@ -249,8 +249,8 @@
         "restaurant-audit"
       ],
       "articles": [
-        "/blog/how-to-set-up-google-business-profile-for-your-restaurant/",
-        "/blog/how-to-recover-reservations-from-googles-find-a-table/"
+        "/library/how-to-set-up-google-business-profile-for-your-restaurant/",
+        "/library/reservation-conversion-guide/"
       ],
       "glossary": [
         "hours-of-operation",

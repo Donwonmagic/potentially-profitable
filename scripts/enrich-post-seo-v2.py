@@ -179,7 +179,13 @@ def patch_jsonld(html: str, slug: str, is_draft: bool, is_es: bool) -> str:
     for node in graph:
         if not isinstance(node, dict):
             continue
-        if node.get("@type") != "BlogPosting":
+        # Older posts use BlogPosting; newer ones (May-2026 publication
+        # wave onward, scaffolded by new-article-skeleton.mjs) use
+        # Article. Both are valid Schema.org Post types and both get
+        # the same enrichments (AudioObject, ImageObject, mainEntityOfPage,
+        # author @id reference). Without this, every Article-typed post
+        # silently shipped without these schemas.
+        if node.get("@type") not in ("BlogPosting", "Article"):
             continue
         blog_posting = node
 

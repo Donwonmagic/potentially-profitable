@@ -47,17 +47,77 @@
       "inLanguage": "en-US",
       "datePublished": "2026-05-11T08:00:00-04:00",
       "dateModified": "2026-05-11",
-      "author": { "@id": "https://muntin.digital/#don-goldstein", "@type": "Person", "name": "Don Goldstein", "url": "https://muntin.digital/about/" },
-      "publisher": { "@id": "https://muntin.digital/#business" },
-      "image": "https://muntin.digital/brand/og/blog-30-days-after-doordash.png",
-      "mainEntityOfPage": { "@id": "https://muntin.digital/blog/30-days-after-leaving-doordash-restaurant-case-study/" }
+      "author": {
+        "@id": "https://muntin.digital/#don-goldstein",
+        "@type": "Person",
+        "name": "Don Goldstein",
+        "url": "https://muntin.digital/about/"
+      },
+      "publisher": {
+        "@id": "https://muntin.digital/#business"
+      },
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://muntin.digital/brand/og/blog-30-days-after-doordash.png",
+        "width": 1200,
+        "height": 630,
+        "caption": "30 days after leaving DoorDash: a restaurant operator's case study"
+      },
+      "mainEntityOfPage": {
+        "@id": "https://muntin.digital/blog/30-days-after-leaving-doordash-restaurant-case-study/"
+      },
+      "keywords": [
+        "leaving doordash restaurant case study",
+        "30 days after leaving doordash",
+        "delisting from doordash results",
+        "restaurant direct ordering after doordash",
+        "doordash exit case study"
+      ],
+      "speakable": {
+        "@type": "SpeakableSpecification",
+        "cssSelector": [
+          "article#post-body",
+          "h1",
+          ".post-dek"
+        ]
+      },
+      "audio": {
+        "@id": "https://muntin.digital/blog/30-days-after-leaving-doordash-restaurant-case-study/#audio"
+      }
+    },
+    {
+      "@type": "AudioObject",
+      "@id": "https://muntin.digital/blog/30-days-after-leaving-doordash-restaurant-case-study/#audio",
+      "contentUrl": "https://muntin.digital/blog/30-days-after-leaving-doordash-restaurant-case-study/audio.mp3",
+      "encodingFormat": "audio/mpeg",
+      "inLanguage": "en-US",
+      "name": "30 days after leaving DoorDash: a restaurant operator's case study — audio narration",
+      "description": "Full article read aloud by Don. Also available in Spanish, French, Italian, Portuguese, and Chinese.",
+      "associatedArticle": {
+        "@id": "https://muntin.digital/blog/30-days-after-leaving-doordash-restaurant-case-study/#article"
+      }
     },
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Muntin Digital", "item": "https://muntin.digital/" },
-        { "@type": "ListItem", "position": 2, "name": "Articles", "item": "https://muntin.digital/blog/" },
-        { "@type": "ListItem", "position": 3, "name": "30 days after leaving DoorDash: a restaurant operator's case study", "item": "https://muntin.digital/blog/30-days-after-leaving-doordash-restaurant-case-study/" }
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Muntin Digital",
+          "item": "https://muntin.digital/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Articles",
+          "item": "https://muntin.digital/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "30 days after leaving DoorDash: a restaurant operator's case study",
+          "item": "https://muntin.digital/blog/30-days-after-leaving-doordash-restaurant-case-study/"
+        }
       ]
     }
   ]
@@ -101,7 +161,9 @@ header.nav{min-height:64px}
 main{padding-top:64px}
 </style>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-italic.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-italic.woff2" crossorigin>
 <link rel="preload" as="style" href="/assets/site-core.css" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="/assets/site-core.css"><link rel="stylesheet" href="/assets/site-article.css"></noscript>
@@ -114,11 +176,39 @@ main{padding-top:64px}
   "@context": "https://schema.org",
   "@type": "Article",
   "@id": "https://muntin.digital/blog/30-days-after-leaving-doordash-restaurant-case-study/#article",
-  "abstract": "If you delist from DoorDash without a discovery replacement, expect a single-digit revenue dip in week one as the platform's marketplace traffic stops; most operators recover most of it by week four as recaptured orders shift to the direct channel. Kept margin per ticket rises because every recaptured order moves from the ~18% kept-rate third-party channel to the ~29% kept-rate direct channel (numbers from the <a href=\"/blog/an-honest-doordash-math-for-independent-restaurants-2026/\">DoorDash margin walk</a>). The platform is mostly a relationship-displacement surface for established independents — net-new discovery is smaller than the operator usually believes. This piece is a playbook, not a case study; numbers are illustrative ranges from the margin walk.",
+  "abstract": "If you delist from DoorDash without a discovery replacement, expect a single-digit revenue dip in week one as the platform's marketplace traffic stops; most operators recover most of it by week four as recaptured orders shift to the direct channel. Kept margin per ticket rises because every recaptured order moves from the ~18% kept-rate third-party channel to the ~29% kept-rate direct channel (numbers from the <a href=\"/library/third-party-delivery-economics/\">DoorDash margin walk</a>). The platform is mostly a relationship-displacement surface for established independents — net-new discovery is smaller than the operator usually believes. This piece is a playbook, not a case study; numbers are illustrative ranges from the margin walk.",
   "mentions": [
     {
       "@type": "DefinedTerm",
+      "url": "https://muntin.digital/glossary/margin-math/"
+    },
+    {
+      "@type": "DefinedTerm",
       "url": "https://muntin.digital/glossary/commission/"
+    },
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/glossary/labor-cost/"
+    },
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/glossary/above-the-fold/"
+    },
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/glossary/gbp/"
+    },
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/glossary/conversion-rate/"
+    },
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/glossary/margin/"
+    },
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/glossary/food-cost/"
     }
   ]
 }
@@ -129,25 +219,14 @@ main{padding-top:64px}
 
 <a class="skip-link" href="#main">Skip to main content</a>
 
-<script>
-  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
-     Apple devices. Runs early in <body> so the swap is essentially
-     invisible — script tags execute synchronously when the parser hits
-     them, before .nav-search-kbd renders below. CSS in site-core.css
-     conditions on <html data-platform="mac">. */
-  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
-    document.documentElement.dataset.platform = 'mac';
-  }
-</script>
 <!-- batch-banner:start -->
-<aside class="batch-banner" data-batch="2026-w2" role="complementary" aria-label="Week 2 · May 23, 2026" style="background:var(--ink,#14161A);color:var(--cream,#FAF7F2);font-size:15px;line-height:1.5;padding:16px 0;border-bottom:1px solid rgba(250,247,242,0.12);position:relative;z-index:60">
-  <div style="max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,64px);display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap">
-    <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;min-width:0">
-      <span style="display:inline-block;font-family:Inter,system-ui,sans-serif;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;background:var(--teal,#2A50C8);color:var(--cream,#FAF7F2);padding:4px 10px;border-radius:3px;white-space:nowrap;flex-shrink:0">New this week</span>
-      <span style="font-family:Georgia,serif;font-size:11px;letter-spacing:0.10em;text-transform:uppercase;opacity:0.75;white-space:nowrap">Week 2 · May 23, 2026</span>
-      <span style="font-family:Georgia,serif;font-size:17px;font-style:italic;line-height:1.35;min-width:0">Search changed on May 19. Here's the operator's move.</span>
+<aside class="batch-marquee" data-batch="2026-w2" role="complementary" aria-label="Week 2 · May 23, 2026" style="background:var(--ink,#14161A);color:var(--cream,#FAF7F2);font-size:14px;line-height:1.4;padding:8px 0;border-bottom:1px solid rgba(250,247,242,0.12)">
+  <div style="max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,64px);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;min-width:0;flex:1 1 auto">
+      <span style="display:inline-block;font-family:Inter,system-ui,sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;background:var(--teal,#2A50C8);color:var(--cream,#FAF7F2);padding:3px 8px;border-radius:3px;white-space:nowrap;flex-shrink:0">New this week</span>
+      <span style="font-family:Georgia,serif;font-size:14px;font-style:italic;line-height:1.35;min-width:0">Search changed on May 19. Here's the operator's move.</span>
     </div>
-    <a href="/blog/may-2026-discovery-changed-under-you/" style="display:inline-flex;align-items:center;gap:6px;color:var(--ink,#14161A);background:var(--cream,#FAF7F2);text-decoration:none;font-family:Inter,system-ui,sans-serif;font-weight:600;font-size:14px;padding:9px 18px;border-radius:999px;white-space:nowrap;flex-shrink:0;transition:transform .15s ease">Read the batch <span aria-hidden="true">&rarr;</span></a>
+    <a href="/blog/may-2026-discovery-changed-under-you/" style="display:inline-flex;align-items:center;gap:6px;color:var(--ink,#14161A);background:var(--cream,#FAF7F2);text-decoration:none;font-family:Inter,system-ui,sans-serif;font-weight:600;font-size:12px;padding:5px 12px;border-radius:999px;white-space:nowrap;flex-shrink:0;transition:transform .15s ease">Read the batch <span aria-hidden="true">&rarr;</span></a>
   </div>
 </aside>
 <!-- batch-banner:end -->
@@ -174,8 +253,8 @@ main{padding-top:64px}
       Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
     </a>
     <!-- Phase 7: 5-item nav, per launch plan Part II.
-         Library / Tools / Work / Studio / Sign in.
-         Library now points at the canonical /library/ hub (the
+         Library / Tools / Studio / Sign in.
+         Library points at the canonical /library/ hub (the
          three-doors page). Tools is promoted from the old Library
          mega-menu to a top-level item. Studio replaces Services +
          Restaurants + About — they all live under /studio/ now,
@@ -185,11 +264,15 @@ main{padding-top:64px}
          Restaurants pages remain reachable via /studio/ and the
          _redirects table; /about/ is unchanged. The mega-menu is
          retired (the hub IS the menu now); the controller script
-         is gone too. -->
+         is gone too.
+
+         /work/ was retired with the Phase 8 portfolio-sunset pass:
+         the company-as-resume framing made the personal-portfolio
+         showcase redundant. Legacy /work/* URLs 301 to /studio/
+         via _redirects so old backlinks land softly. -->
     <nav class="nav-links" aria-label="Primary">
       <a href="/library/">Library</a>
       <a href="/tools/">Tools</a>
-      <a href="/work/">Work</a>
       <a href="/studio/">Studio</a>
       <!-- Both sign-in / workshop ship hidden by default; the
            auth-state JS at the bottom of this file calls
@@ -217,14 +300,14 @@ main{padding-top:64px}
          default state (sun) and clicks do nothing; the OS
          preference still drives dark-mode tokens via media query. -->
     <button type="button" class="theme-toggle js-theme-toggle" aria-label="Toggle dark mode" aria-pressed="false" hidden>
-      <svg class="theme-toggle__icon theme-toggle__icon--sun" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <svg class="theme-toggle__icon theme-toggle__icon--sun" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <circle cx="12" cy="12" r="4"/>
         <line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/>
         <line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/>
         <line x1="4.93" y1="4.93" x2="7.05" y2="7.05"/><line x1="16.95" y1="16.95" x2="19.07" y2="19.07"/>
         <line x1="4.93" y1="19.07" x2="7.05" y2="16.95"/><line x1="16.95" y1="7.05" x2="19.07" y2="4.93"/>
       </svg>
-      <svg class="theme-toggle__icon theme-toggle__icon--moon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <svg class="theme-toggle__icon theme-toggle__icon--moon" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
       </svg>
     </button>
@@ -246,7 +329,6 @@ main{padding-top:64px}
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
     <a href="/library/">Library</a>
     <a href="/tools/">Tools</a>
-    <a href="/work/">Work</a>
     <a href="/studio/">Studio</a>
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
@@ -315,27 +397,6 @@ main{padding-top:64px}
                 });
               })
               .catch(function () { /* silent */ });
-            // Course progress dot — appended after the workshop link
-            // when the operator is mid-bootcamp (> 0 but < 16 lessons
-            // done). Decorative + aria-hidden; the operator can still
-            // click the workshop link to see the canonical count.
-            fetch('/api/course/progress', { credentials: 'same-origin' })
-              .then(function (r3) { return r3.ok ? r3.json() : null; })
-              .then(function (j) {
-                if (!j || !j.progress || !Array.isArray(j.progress.completed)) return;
-                var n = j.progress.completed.length;
-                if (n <= 0 || n >= 16) return;
-                workshop.forEach(function (w) {
-                  if (w.querySelector('.nav-course-dot')) return;
-                  var dot = document.createElement('span');
-                  dot.className = 'nav-course-dot';
-                  dot.setAttribute('aria-hidden', 'true');
-                  dot.title = 'Open the Doors — lesson ' + n + ' / 16';
-                  dot.style.cssText = 'display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--teal);margin-left:6px;vertical-align:middle';
-                  w.appendChild(dot);
-                });
-              })
-              .catch(function () { /* silent — course endpoint optional */ });
             return;
           }
           show(signin);
@@ -359,7 +420,7 @@ main{padding-top:64px}
     </ol>
   </nav>
 
-  <article class="container article-body" id="post-body" data-content-pending="2026-05-11" style="max-width:720px;margin:32px auto 80px;padding:0 var(--pad-x)">
+  <article class="container article-body" id="post-body" style="max-width:720px;margin:32px auto 80px;padding:0 var(--pad-x)">
 
     <header style="margin-bottom:32px">
       <p class="eyebrow">Playbook &middot; May 11, 2026 &middot; 9 min read &middot; By <a href="/about/#don-goldstein" style="color:var(--teal)">Don Goldstein</a></p>
@@ -376,7 +437,7 @@ main{padding-top:64px}
           <span class="listen-label i18n">Listen to this article</span>
         </button>
       </div>
-      <p style="font-size:18px;line-height:1.55;color:var(--ink-soft);margin:0">If you&rsquo;re considering delisting your restaurant from DoorDash, the 30 days that follow have a predictable shape. This is the playbook &mdash; what to expect each week, which costs flex, which complaints arrive, and what the channel mix usually does. Illustrative ranges, not a case study. The underlying margin math comes from the <a href="/blog/an-honest-doordash-math-for-independent-restaurants-2026/" style="color:var(--teal)">DoorDash margin walk</a>.</p>
+      <p style="font-size:18px;line-height:1.55;color:var(--ink-soft);margin:0">If you&rsquo;re considering delisting your restaurant from DoorDash, the 30 days that follow have a predictable shape. This is the playbook &mdash; what to expect each week, which costs flex, which complaints arrive, and what the channel mix usually does. Illustrative ranges, not a case study. The underlying <!-- LIBRARY:autolink:start --><a href="/glossary/margin-math/" data-glossary-head="Margin Math" data-glossary-aka="client-side restaurant finance calculators" data-glossary-blurb="Four browser-side calculators — Delivery Break-Even, Prime Cost Check, Break-Even Covers, Price-Raise Simulator — plus a printable Monthly Margin Report, shareable URL-fragment…">margin math</a><!-- LIBRARY:autolink:end --> comes from the <a href="/library/third-party-delivery-economics/" style="color:var(--teal)">DoorDash margin walk</a>.</p>
     </header>
 
       <!-- article-tldr:start -->
@@ -384,54 +445,54 @@ main{padding-top:64px}
               <p class="tldr__eyebrow">In short</p>
               <ul class="tldr__list">
               <li>If you delist from DoorDash without a discovery replacement, expect a single-digit revenue dip in week one as the platform&#39;s marketplace traffic stops; most operators recover most of it by week four as recaptured orders shift to the direct channel.</li>
-        <li>Kept margin per ticket rises because every recaptured order moves from the ~18% kept-rate third-party channel to the ~29% kept-rate direct channel (numbers from the &lt;a href=&quot;/blog/an-honest-doordash-math-for-independent-restaurants-2026/&quot;&gt;DoorDash margin walk&lt;/a&gt;).</li>
+        <li>Kept margin per ticket rises because every recaptured order moves from the ~18% kept-rate third-party channel to the ~29% kept-rate direct channel (numbers from the &lt;a href=&quot;/library/third-party-delivery-economics/&quot;&gt;DoorDash margin walk&lt;/a&gt;).</li>
         <li>The platform is mostly a relationship-displacement surface for established independents — net-new discovery is smaller than the operator usually believes. This piece is a playbook, not a case study; numbers are illustrative ranges from the margin walk.</li>
               </ul>
             </aside>
             <!-- article-tldr:end -->
 
-    <p>Start from the channel math. On the standard <a href="https://merchants.doordash.com/en-us/pricing" rel="noopener" style="color:var(--teal)">Marketplace Plus tier (30% <a href="/glossary/commission/" style="color:var(--teal)">commission</a>)</a>, the kept rate on a third-party ticket lands near 18% after all fees and food/labor cost; the same ticket ordered direct keeps closer to 29%. Those are the two numbers the entire delisting decision rests on, and the side-by-side walkthrough is in the <a href="/blog/an-honest-doordash-math-for-independent-restaurants-2026/" style="color:var(--teal)">DoorDash margin walk</a>. The case for delisting is not that the platform is bad &mdash; it&rsquo;s that the operator is usually carrying the channel on a belief about discovery that doesn&rsquo;t survive contact with their own books.</p>
+    <p>Start from the channel math. On the standard <a href="https://merchants.doordash.com/en-us/pricing" rel="noopener" style="color:var(--teal)">Marketplace Plus tier (30% <a href="/glossary/commission/" style="color:var(--teal)">commission</a>)</a>, the kept rate on a third-party ticket lands near 18% after all fees and food/<!-- LIBRARY:autolink:start --><a href="/glossary/labor-cost/" data-glossary-head="Labor cost" data-glossary-aka="wages + payroll taxes, as a % of sales" data-glossary-blurb="Wages, payroll taxes, and the tipped-employee contribution expressed as a percentage of sales.">labor cost</a><!-- LIBRARY:autolink:end -->; the same ticket ordered direct keeps closer to 29%. Those are the two numbers the entire delisting decision rests on, and the side-by-side walkthrough is in the <a href="/library/third-party-delivery-economics/" style="color:var(--teal)">DoorDash margin walk</a>. The case for delisting is not that the platform is bad &mdash; it&rsquo;s that the operator is usually carrying the channel on a belief about discovery that doesn&rsquo;t survive contact with their own books.</p>
 
     <p>The decision lands on a Sunday night: close the storefront, don&rsquo;t reopen, don&rsquo;t announce. The phone calls and walk-ins keep coming. The next four weeks have a shape worth knowing in advance.</p>
 
     <figure class="viz-figure article-figure" data-audio-alt="Six headline metrics, the direction each one moves over the first thirty days after delisting. Weekly gross revenue: a single-digit dip in week one, recovers most of the gap by week four as direct backfills. Off-premise revenue, delivery plus takeout: drops sharply because third-party volume leaves the channel and direct only partially backfills. Average ticket size: rises because recaptured orders run larger than third-party orders. Repeat-customer rate: rises, because the orders flowing through your direct channel are mostly relationship orders that were already going to come back. Net dollars kept per ticket: this is the headline. It rises sharply because every recaptured order shifts from the eighteen percent kept-rate third-party channel to the twenty-nine percent kept-rate direct channel. Weekly marketing spend: drops to near zero because the sponsored-listing fee on the third-party app is no longer running.">
       <div class="viz-bars">
-        <p class="viz-bars__title">Six metrics &mdash; typical direction over the first 30 days</p>
+        <p class="viz-bars__title">Six metrics, ranked by magnitude of change over 30 days (bars scaled to the largest move)</p>
         <div class="viz-bars__row">
-          <p class="viz-bars__label">Weekly gross revenue</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.95">Single-digit dip, mostly recovered</span></div>
-          <p class="viz-bars__num">&minus;2 to &minus;5%</p>
+          <p class="viz-bars__label">Weekly marketing spend</p>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:1.0">↓ Sponsored-listing fees stop entirely</span></div>
+          <p class="viz-bars__num">~ &minus;100%</p>
         </div>
         <div class="viz-bars__row">
-          <p class="viz-bars__label">Off-premise revenue (delivery + takeout)</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.70">Sharp drop, partial direct backfill</span></div>
-          <p class="viz-bars__num">&minus;20 to &minus;35%</p>
-        </div>
-        <div class="viz-bars__row">
-          <p class="viz-bars__label">Average ticket size</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.85">Rises &mdash; direct orders run larger</span></div>
-          <p class="viz-bars__num">+10 to +15%</p>
-        </div>
-        <div class="viz-bars__row">
-          <p class="viz-bars__label">Repeat-customer rate</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.90">Rises &mdash; relationship orders concentrate</span></div>
-          <p class="viz-bars__num">+10 to +20 pts</p>
-        </div>
-        <div class="viz-bars__row">
-          <p class="viz-bars__label">Net dollars kept per ticket</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:1.0">The headline &mdash; 18% &rarr; 29% kept rate</span></div>
+          <p class="viz-bars__label">Net dollars kept per ticket <strong>(headline)</strong></p>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.83">↑ 18% &rarr; 29% kept rate</span></div>
           <p class="viz-bars__num">+50 to +75%</p>
         </div>
         <div class="viz-bars__row">
-          <p class="viz-bars__label">Weekly marketing spend</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.20">Sponsored-listing fees stop</span></div>
-          <p class="viz-bars__num">near zero</p>
+          <p class="viz-bars__label">Off-premise revenue (delivery + takeout)</p>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.37">↓ Sharp drop, partial direct backfill</span></div>
+          <p class="viz-bars__num">&minus;20 to &minus;35%</p>
+        </div>
+        <div class="viz-bars__row">
+          <p class="viz-bars__label">Repeat-customer rate</p>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.20">↑ Relationship orders concentrate</span></div>
+          <p class="viz-bars__num">+10 to +20 pts</p>
+        </div>
+        <div class="viz-bars__row">
+          <p class="viz-bars__label">Average ticket size</p>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.17">↑ Direct orders run larger</span></div>
+          <p class="viz-bars__num">+10 to +15%</p>
+        </div>
+        <div class="viz-bars__row">
+          <p class="viz-bars__label">Weekly gross revenue</p>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:0.05">→ Single-digit dip, mostly recovered</span></div>
+          <p class="viz-bars__num">&minus;2 to &minus;5%</p>
         </div>
       </div>
-      <figcaption>Illustrative ranges, anchored to the <a href="/blog/an-honest-doordash-math-for-independent-restaurants-2026/">DoorDash margin walk</a>&rsquo;s 18.4% (Marketplace Plus) vs 28.9% (direct) kept-rate figures. Your dip in week one and recovery in week four depend on how relationship-displaced your platform volume already was.</figcaption>
+      <figcaption>Bars are absolute-magnitude proportional, ranked largest to smallest. The headline is the net-dollars-per-ticket gain — the kept-rate jump from 18% to 29% per the <a href="/library/third-party-delivery-economics/">DoorDash margin walk</a>. Marketing spend dropping to near-zero is the biggest single move; gross revenue barely budges.</figcaption>
     </figure>
 
-    <h2>Week 1: panic that didn&rsquo;t arrive</h2>
+    <h2 id="week-1-panic-that-didn-t-arrive">Week 1: panic that didn&rsquo;t arrive</h2>
 
     <p>Most operators brace for a 20&ndash;30% revenue drop in week one. The actual drop is usually smaller because the platform&rsquo;s third-party order volume partially redistributes inside the same week &mdash; some to walk-in, some to phone orders, some to your own website. The drop is real, but the bigger surprise is how much of it doesn&rsquo;t leave for good.</p>
 
@@ -451,13 +512,13 @@ main{padding-top:64px}
             <span class="viz-flow__num">2</span>
             <div class="viz-flow__body">
               <p class="viz-flow__title">Day 2 (Tue) &mdash; Rewrite the menu page</p>
-              <p class="viz-flow__detail">Push the &ldquo;Order direct&rdquo; button above any third-party links. Brand color, larger, above the fold on mobile. If the restaurant&rsquo;s only on DoorDash, leave the button greyed out with a one-line note explaining the channel is retired; if there are other third-party links, leave them but make direct the most prominent affordance.</p>
+              <p class="viz-flow__detail">Push the &ldquo;Order direct&rdquo; button above any third-party links. Brand color, larger, <!-- LIBRARY:autolink:start --><a href="/glossary/above-the-fold/" data-glossary-head="Above the fold" data-glossary-aka="the first screen, &quot;what loads first&quot;" data-glossary-blurb="The part of your homepage a visitor sees without scrolling.">above the fold</a><!-- LIBRARY:autolink:end --> on mobile. If the restaurant&rsquo;s only on DoorDash, leave the button greyed out with a one-line note explaining the channel is retired; if there are other third-party links, leave them but make direct the most prominent affordance.</p>
             </div>
           </li>
           <li class="viz-flow__step" data-tone="teal">
             <span class="viz-flow__num">3</span>
             <div class="viz-flow__body">
-              <p class="viz-flow__title">Day 3 (Wed) &mdash; Google Business Profile post</p>
+              <p class="viz-flow__title">Day 3 (Wed) &mdash; <!-- LIBRARY:autolink:start --><a href="/glossary/gbp/" data-glossary-head="Google Business Profile" data-glossary-aka="GBP, formerly Google My Business" data-glossary-blurb="Your business's free listing on Google Maps and Google Search — the panel on the right of a search that shows your name, hours, photos, reviews, and a link to your menu or booking.">Google Business Profile</a><!-- LIBRARY:autolink:end --> post</p>
               <p class="viz-flow__detail">One short update on the GBP: &ldquo;Now taking direct orders here&rdquo; with the link to the menu page. Pinned. GBP posts surface to people looking up the restaurant from the map pack &mdash; a free, durable surface most operators don&rsquo;t use.</p>
             </div>
           </li>
@@ -465,7 +526,7 @@ main{padding-top:64px}
             <span class="viz-flow__num">4</span>
             <div class="viz-flow__body">
               <p class="viz-flow__title">Day 4 (Thu) &mdash; Instagram pin + story</p>
-              <p class="viz-flow__detail">One feed post and one story slot. Plain language, no fanfare: &ldquo;We&rsquo;re off DoorDash. Order direct, save 10%, same kitchen.&rdquo; Pinned to the top of the grid. Expect a wave of DMs in the first two days, mostly &ldquo;wait, what?&rdquo; &mdash; the conversion rate on those is high if you answer fast.</p>
+              <p class="viz-flow__detail">One feed post and one story slot. Plain language, no fanfare: &ldquo;We&rsquo;re off DoorDash. Order direct, save 10%, same kitchen.&rdquo; Pinned to the top of the grid. Expect a wave of DMs in the first two days, mostly &ldquo;wait, what?&rdquo; &mdash; the <!-- LIBRARY:autolink:start --><a href="/glossary/conversion-rate/" data-glossary-head="Conversion rate" data-glossary-blurb="The percentage of visitors who do the specific thing you wanted them to do — book a reservation, place an order, fill out a contact form.">conversion rate</a><!-- LIBRARY:autolink:end --> on those is high if you answer fast.</p>
             </div>
           </li>
           <li class="viz-flow__step" data-tone="teal">
@@ -494,19 +555,19 @@ main{padding-top:64px}
       <figcaption>Seven moves in seven days. No new tools, no new vendors. Cash spend is the print shop run; operator time runs roughly a half-day spread across the week.</figcaption>
     </figure>
 
-    <h2>Week 2: the &ldquo;is DoorDash down&rdquo; calls</h2>
+    <h2 id="week-2-the-is-doordash-down-calls">Week 2: the &ldquo;is DoorDash down&rdquo; calls</h2>
 
     <p>Complaint volume usually peaks in the second week. Customers who&rsquo;d ordered through the platform start calling the restaurant to ask if you&rsquo;re closed, if the app is broken, or if their order history has been deleted. The platform app is, predictably, no longer showing the restaurant &mdash; for a customer used to ordering that way, the absence reads as the restaurant being gone, not as a deliberate choice to leave the platform.</p>
 
     <p>Most of these conversations are recapturable. The script: we left the platform, you can order direct from the website at a lower price, here&rsquo;s the link. Some convert immediately. Some stop ordering. A handful stay in the &ldquo;thinking about it&rdquo; bucket. Budget for a small direct-channel credit ($10&ndash;$20) for the loudest complaints &mdash; most negative reviews come down once the customer accepts the credit and places a direct order.</p>
 
-    <h2>Week 3: the cost-line that flexes</h2>
+    <h2 id="week-3-the-cost-line-that-flexes">Week 3: the cost-line that flexes</h2>
 
-    <p>The unexpected line is usually packaging. Recaptured orders run larger than third-party orders did &mdash; bigger tickets, more items per order, more delivery containers per order if you&rsquo;re fulfilling through a last-mile service like DoorDash Drive flat-fee. Per-order packaging cost climbs even when total order volume is flat. It&rsquo;s an operational headache, not a margin problem.</p>
+    <p>The unexpected line is usually packaging. Recaptured orders run larger than third-party orders did &mdash; bigger tickets, more items per order, more delivery containers per order if you&rsquo;re fulfilling through a last-mile service like DoorDash Drive flat-fee. Per-order packaging cost climbs even when total order volume is flat. It&rsquo;s an operational headache, not a <!-- LIBRARY:autolink:start --><a href="/glossary/margin/" data-glossary-head="Margin" data-glossary-aka="sales minus costs; several kinds" data-glossary-blurb="Sales minus costs.">margin</a><!-- LIBRARY:autolink:end --> problem.</p>
 
     <p>The line that usually doesn&rsquo;t break is labor. Line-cook schedules absorb the channel shift by moving hours from late-evening third-party prep into mid-evening walk-in prep. No headcount changes, similar labor budget. The kitchen stops running the second wave of packing-and-bagging that platform orders pulled between 8pm and close.</p>
 
-    <h2>Week 4: where it lands</h2>
+    <h2 id="week-4-where-it-lands">Week 4: where it lands</h2>
 
     <p>By the end of the month, revenue is usually back within single-digit-percent of baseline &mdash; inside the noise floor most independents already see week-on-week from weather, events, and seasonality. The kept margin in dollars per day, however, is materially higher than baseline, because every recaptured order is now at the ~29% direct-channel kept rate instead of the ~18% kept rate on the third-party channel. The shift is what makes the math work; total revenue is lower, but retained dollars per ticket are higher.</p>
 
@@ -527,7 +588,7 @@ main{padding-top:64px}
         <div class="viz-waterfall__legend">
           <div class="viz-waterfall__row">
             <span class="viz-waterfall__swatch" data-tone="rust"></span>
-            <span>DoorDash commission (Marketplace Plus, 30%)</span>
+            <span>DoorDash <!-- LIBRARY:autolink:start --><a href="/glossary/commission/" data-glossary-head="Commission" data-glossary-aka="the % a platform takes per order" data-glossary-blurb="The percentage an aggregator or payment platform keeps per transaction.">commission</a><!-- LIBRARY:autolink:end --> (Marketplace Plus, 30%)</span>
             <span class="viz-waterfall__num">&minus;$12.60</span>
             <span class="viz-waterfall__pct">30.0%</span>
           </div>
@@ -551,7 +612,7 @@ main{padding-top:64px}
           </div>
           <div class="viz-waterfall__row">
             <span class="viz-waterfall__swatch" data-tone="ink"></span>
-            <span>Food cost (28%)</span>
+            <span><!-- LIBRARY:autolink:start --><a href="/glossary/food-cost/" data-glossary-head="Food cost" data-glossary-aka="cost of goods sold, as a % of sales" data-glossary-blurb="The cost of ingredients, alcohol, and consumables (paper goods, to-go packaging) expressed as a percentage of sales.">Food cost</a><!-- LIBRARY:autolink:end --> (28%)</span>
             <span class="viz-waterfall__num">&minus;$11.76</span>
             <span class="viz-waterfall__pct">28.0%</span>
           </div>
@@ -634,13 +695,13 @@ main{padding-top:64px}
 
     <p>Complaint volume usually tapers around the third week. The loudest review or DM normally comes down once the customer accepts a small direct-channel credit and places an order through the website. By week four the message channels are back to their pre-delisting baseline.</p>
 
-    <h2>What operators usually get wrong</h2>
+    <h2 id="what-operators-usually-get-wrong">What operators usually get wrong</h2>
 
     <p>The most common operator misread is how much of the third-party channel was already &ldquo;displaced&rdquo; relationship volume rather than net-new discovery. The operator believes the platform is bringing in ~40% net-new customers and 60% existing customers using a more convenient interface. After delisting, most operators discover the breakdown is closer to 10/90 &mdash; the discovery surface was mostly a vanity layer; the relationship was already theirs. The recovery is faster than expected because most of those orders were going to come back anyway.</p>
 
     <p>The other common misread is the conversion rate on a recapture offer. A 10% direct-channel discount works, but it converts at a lower rate than operators usually project. Some customers stop ordering at the previous frequency &mdash; not catastrophic, but not the &ldquo;they&rsquo;ll all convert&rdquo; story most operators sell themselves before delisting.</p>
 
-    <h2>What the math gets right</h2>
+    <h2 id="what-the-math-gets-right">What the math gets right</h2>
 
     <p>The basic premise &mdash; that the third-party channel is roughly a 30% margin tax on what may be a smaller incremental-revenue surface than the operator believes &mdash; holds up across most independent restaurants. The kept-margin lift on direct orders is the cleanest evidence available for the thesis. The decision works for restaurants where the channel is mostly relationship-displacement; it doesn&rsquo;t work for restaurants in genuinely discovery-driven contexts (urban density, transit-corridor flow, tourist neighborhoods) where the platform is actually bringing in new customers.</p>
 
@@ -649,20 +710,20 @@ main{padding-top:64px}
     </div>
 
     <div class="callout">
-      <p><strong>One playbook isn&rsquo;t a universal verdict.</strong> The decision is right for operations where the discovery surface isn&rsquo;t actually doing the discovery work the operator thinks it is. The next operator&rsquo;s 30-day numbers will look different. Run your own version of the <a href="/blog/an-honest-doordash-math-for-independent-restaurants-2026/" style="color:var(--teal)">margin walk</a> against your own statement before you act.</p>
+      <p><strong>One playbook isn&rsquo;t a universal verdict.</strong> The decision is right for operations where the discovery surface isn&rsquo;t actually doing the discovery work the operator thinks it is. The next operator&rsquo;s 30-day numbers will look different. Run your own version of the <a href="/library/third-party-delivery-economics/" style="color:var(--teal)">margin walk</a> against your own statement before you act.</p>
     </div>
 
     <hr style="margin:48px 0 32px;border:0;border-top:1px solid var(--line)">
 
     <p style="font-style:italic;font-size:15px;color:var(--ink-soft);text-align:center;margin:0">
-      Don Goldstein is a restaurant operator and runs <a href="/" style="color:var(--teal)">Muntin Digital</a>. This playbook describes the typical shape of the first 30 days after a delisting, anchored to the channel-economics walkthrough in <a href="/blog/an-honest-doordash-math-for-independent-restaurants-2026/" style="color:var(--teal)">An honest DoorDash math for independent restaurants</a>. Numbers in this article are illustrative ranges, not measured outcomes from a specific restaurant.
+      Don Goldstein is a restaurant operator and runs <a href="/" style="color:var(--teal)">Muntin Digital</a>. This playbook describes the typical shape of the first 30 days after a delisting, anchored to the channel-economics walkthrough in <a href="/library/third-party-delivery-economics/" style="color:var(--teal)">An honest DoorDash math for independent restaurants</a>. Numbers in this article are illustrative ranges, not measured outcomes from a specific restaurant.
     </p>
 
     <section style="margin-top:48px;padding-top:32px;border-top:1px solid var(--line)">
       <p class="eyebrow" style="margin-bottom:10px">Keep going</p>
       <ul style="font-size:15.5px;line-height:1.7;color:var(--teal);margin:0;padding-left:22px">
-        <li><a href="/blog/an-honest-doordash-math-for-independent-restaurants-2026/">An honest DoorDash math</a> &mdash; the underlying margin walk</li>
-        <li><a href="/blog/uber-eats-vs-doordash-vs-grubhub-restaurant-math-2026/">Uber vs DoorDash vs Grubhub</a> &mdash; the three-platform comparison</li>
+        <li><a href="/library/third-party-delivery-economics/">An honest DoorDash math</a> &mdash; the underlying margin walk</li>
+        <li><a href="/library/third-party-delivery-comparison/">Uber vs DoorDash vs Grubhub</a> &mdash; the three-platform comparison</li>
         <li><a href="/tools/margin-math/">Margin Math tool</a> &mdash; run the projection on your own numbers before you decide</li>
         <li><a href="/services/audit/">$499 audit</a> &mdash; the written diagnosis for your channel mix</li>
       </ul>
@@ -719,7 +780,7 @@ main{padding-top:64px}
 <aside class="smart-next" aria-labelledby="smart-next-h">
   <p class="smart-next__eyebrow" id="smart-next-h">What to do next</p>
   <ol class="smart-next__list">
-        <li class="smart-next__item smart-next__read"><span class="smart-next__verb">Read:</span> <a href="/glossary/commission/">the related glossary term →</a></li>
+        <li class="smart-next__item smart-next__read"><span class="smart-next__verb">Read:</span> <a href="/glossary/margin-math/">the related glossary term →</a></li>
         <li class="smart-next__item smart-next__try"><span class="smart-next__verb">Try:</span> <a href="/tools/audits/restaurant/?from=blog/30-days-after-leaving-doordash-restaurant-case-study&intent=watch">the tool that pairs with this article →</a></li>
         <li class="smart-next__item smart-next__note"><span class="smart-next__verb">Or send Don a note:</span> <a href="/window/?topic=30-days-after-leaving-doordash-restaurant-case-study">The Window →</a></li>
   </ol>
@@ -771,20 +832,47 @@ main{padding-top:64px}
     <div class="foot-grid">
       <div class="foot-col foot-brand">
         <a href="/" class="foot-lockup-wrap" aria-label="Muntin Digital home">
-          <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53" loading="lazy" decoding="async">
+          <!-- alt="" because the surrounding <a> is already labeled.
+               Without it, screen readers announce "Muntin Digital,
+               Muntin Digital home" on the lockup link. -->
+          <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="" width="240" height="53" loading="lazy" decoding="async">
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a <!-- count:glossary.terms -->149<!-- /count -->-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->24<!-- /count --> articles, <!-- count:tools.live -->12<!-- /count --> tools, <!-- count:glossary.terms -->149<!-- /count --> glossary terms &mdash; with a one-person web studio behind it in Silver Spring, MD.</p>
       </div>
 
-      <nav class="foot-col" aria-labelledby="foot-explore">
-        <p class="foot-heading" id="foot-explore">Studio</p>
+      <!-- Column order mirrors the 4-item primary nav
+           (Library, Tools-rolled-into-Library, Studio) so the
+           footer reinforces the same IA. The Library column leads
+           with /library/ (the post-Phase-7 three-doors hub); the
+           older /learn/ landing still resolves but no longer needs
+           its own footer slot. id="foot-learn" is the canonical-
+           footer marker that scripts/sync-includes.mjs keys on
+           (FOOTER_MAIN_FUNNEL_MARKER), so the id stays even though
+           the visible label is the more familiar "Library".
+
+           Phase 8 (portfolio sunset): the Studio column's "Case
+           studies" row used to link to /work/, the personal-portfolio
+           hub. That hub was retired when the company became the
+           resume; the row is now gone and /work/* 301s to /studio/. -->
+      <nav class="foot-col" aria-labelledby="foot-learn">
+        <p class="foot-heading" id="foot-learn">Library</p>
         <ul class="foot-links">
-          <li><a href="/services/">Services &amp; pricing</a></li>
-          <li><a href="/for/restaurants/">For restaurants</a></li>
+          <li><a href="/library/">Browse the library</a></li>
+          <li><a href="/glossary/">Glossary</a></li>
+          <li><a href="/tools/">Free tools</a></li>
+          <li><a href="/sheets/">Operator sheets</a></li>
+          <li><a href="/blog/">Commentary</a></li>
+        </ul>
+      </nav>
+
+      <nav class="foot-col" aria-labelledby="foot-studio">
+        <p class="foot-heading" id="foot-studio">Studio</p>
+        <ul class="foot-links">
+          <li><a href="/studio/#pricing">Pricing</a></li>
           <li><a href="/studio/compare/">Compare options</a></li>
-          <li><a href="/work/">Case studies</a></li>
+          <li><a href="/studio/#process">Process</a></li>
           <li><a href="/about/">About Don</a></li>
         </ul>
       </nav>
@@ -792,29 +880,11 @@ main{padding-top:64px}
       <nav class="foot-col" aria-labelledby="foot-trust">
         <p class="foot-heading" id="foot-trust">Trust</p>
         <ul class="foot-links">
-          <li><a href="/never/">Never</a></li>
+          <li><a href="/never/">What we never do</a></li>
           <li><a href="/ai/">AI policy</a></li>
-          <li><a href="/security/">Data &amp; security</a></li>
-          <li><a href="/methods/">Methods</a></li>
-          <li><a href="/receipts/">Receipts</a></li>
+          <li><a href="/methods/">Methods &amp; sources</a></li>
           <li><a href="/changelog/">Changelog</a></li>
-          <li><a href="/system/">The system</a></li>
-        </ul>
-      </nav>
-
-      <nav class="foot-col" aria-labelledby="foot-learn">
-        <p class="foot-heading" id="foot-learn">Library</p>
-        <ul class="foot-links">
-          <li><a href="/learn/">Library home</a></li>
-          <li><a href="/learn/start-here/">Start here</a></li>
-          <li><a href="/course/">Open the Doors bootcamp</a></li>
-          <li><a href="/learn/topics/">Topics</a></li>
-          <li><a href="/blog/">Articles</a></li>
-          <li><a href="/tools/">Free tools</a></li>
-          <li><a href="/glossary/">Glossary</a></li>
-          <li><a href="/learn/research/">Research</a></li>
-          <li><a href="/learn/checklists/">Checklists &amp; guides</a></li>
-          <li><a href="/sheets/">Operator sheets</a></li>
+          <li><a href="/receipts/">Receipts</a></li>
         </ul>
       </nav>
 
@@ -825,7 +895,7 @@ main{padding-top:64px}
           <li><a href="/window/">Reach Don</a></li>
           <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (opens in new tab)</span></a></li>
         </ul>
-        <p class="foot-trust"><strong>Reply:</strong> Mondays through Fridays, within 4 hours. Weekends, by Monday morning.</p>
+        <p class="foot-trust"><strong>Reply:</strong> within 4 hours Mon&ndash;Fri; weekends by Monday.</p>
       </nav>
     </div>
 

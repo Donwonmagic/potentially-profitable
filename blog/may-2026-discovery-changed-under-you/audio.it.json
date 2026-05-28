@@ -1,155 +1,339 @@
 {
   "version": 1,
-  "generatedAt": "2026-05-22T21:59:31.820Z",
+  "generatedAt": "2026-05-24T04:10:02.312Z",
   "engine": "kokoro",
   "model": "kokoro-v1.0.onnx",
   "voice": "im_nicola",
   "language": "it",
-  "total": 235.09,
+  "total": 710.01,
   "chunks": [
     {
       "id": 0,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(1)",
-      "text": "Il batch · 25 maggio, ventisei · 4 min di lettura &middot; Di Don Goldstein",
+      "text": "Il batch · 23 maggio, ventisei · 8 min di lettura &middot; Di Don Goldstein",
       "start": 0,
-      "end": 5.56
+      "end": 5.18
     },
     {
       "id": 1,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(2)",
-      "text": "In una sola settimana, la superficie che invia i clienti alla tua porta è stata ricostruita. Ecco la lettura dell'operatore su cosa è cambiato — e i cinque punti che rispondono a ciò, in ordine.",
-      "start": 5.91,
-      "end": 18.52
+      "text": "In una sola settimana, Google ha unificato le sue superfici di scoperta intorno a un unico asset: la leggibilità del tuo profilo. La panoramica spiega la convergenza; i cinque pezzi ti guidano attraverso il processo in ordine.",
+      "start": 5.53,
+      "end": 21.17
     },
     {
       "id": 2,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(3)",
       "text": "In breve",
-      "start": 19.04,
-      "end": 19.69
+      "start": 21.69,
+      "end": 22.34
     },
     {
       "id": 3,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "In una settimana di maggio ventisei, Google ha ricostruito la modalità AI a I/O, ha avviato un aggiornamento core, e Gemini è diventata la seconda fonte di riferimento AI.",
-      "start": 20.04,
-      "end": 32.28
+      "text": "In una settimana di maggio ventisei, Google ha unificato le sue superfici di scoperta intorno a un unico asset — il Google Business Profile — attraverso la ricostruzione dell'I/O di AI Mode, un aggiornamento core e la crescita di Gemini al 13,2% del traffico di riferimento AI.",
+      "start": 22.69,
+      "end": 41.87
     },
     {
       "id": 4,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "Tutti e tre premiano le stesse due cose: essere leggibili a una macchina e prenotabili senza una telefonata.",
-      "start": 32.6,
-      "end": 39.6
+      "text": "I tre spostamenti convergono su due requisiti: leggibilità (il modello può estrarre la tua risposta dal testo e dallo schema) e prenotabilità (l'agente può completare una prenotazione attraverso OpenTable, Resy o Tock).",
+      "start": 42.19,
+      "end": 56.95
     },
     {
       "id": 5,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "Questa onda è composta da cinque punti, in ordine: la nuova superficie, la tua visibilità, il costo, la nuova fonte di traffico e la prenotazione.",
-      "start": 39.92,
-      "end": 49.33
+      "text": "Un profilo ora alimenta quattro superfici — il map pack, il AI Overview, Gemini e l'agente di prenotazione — quindi un'ora spesa sul profilo viene ripagata quattro volte.",
+      "start": 57.27,
+      "end": 68.17
     },
     {
       "id": 6,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(4)",
-      "text": "La maggior parte delle settimane, il modo in cui i clienti ti trovano cambia un po'. La settimana del 19 maggio ventisei non è stata una settimana come le altre. Nel giro di pochi giorni, Google ha ricostruito la modalità AI alla sua conferenza I/O, ha iniziato a distribuire il suo secondo aggiornamento di ricerca core dell'anno, e — secondo una nuova lettura di BrightEdge — ha visto Gemini salire al secondo posto come fonte di riferimento AI. Tre cambiamenti, una direzione: la superficie che invia le persone alla tua porta sta essere riscritta, e adesso risponde e agisce prima che il cliente raggiunga te.",
-      "start": 49.85,
-      "end": 87.92
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "I cinque pezzi sono capitoli di una storia: vedi la nuova superficie, controlla se sei al suo interno, calcola il costo, passa alla nuova fonte di traffico, cattura la prenotazione.",
+      "start": 68.49,
+      "end": 80.22
     },
     {
       "id": 7,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(5)",
-      "text": "Nessuno di questi cambiamenti è una ragione per panico. Tutti premiano le stesse due cose: essere leggibili a una macchina, e prenotabili senza una telefonata. L'onda di questa settimana è composta da cinque punti che seguono esattamente questo, in ordine — dalla nuova superficie, al fatto che tu ci sei dentro, al costo, alla fonte di traffico, alla cattura della prenotazione.",
-      "start": 88.44,
-      "end": 110
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "I tre spostamenti sono avvenuti contemporaneamente (e puntano tutti nella stessa direzione).",
+      "start": 81.32,
+      "end": 87.48
     },
     {
       "id": 8,
-      "kind": "figure",
-      "selector": "#post-body > figure:nth-of-type(1)",
-      "text": "La scala di lettura per i cinque punti di questa settimana. Uno: la nuova superficie — Google ha ricostruito la modalità AI, e il risultato locale è ora generato e può prenotare il tavolo. Due: sei dentro? — l'83% dei ristoranti è invisibile nella ricerca AI; il controllo a quattro cifre. Tre: cosa costa — le chiamate e i tap su \"directions\" stanno scomparendo dai risultati. Quattro: da dove proviene il traffico adesso — Gemini è la tua seconda fonte di riferimento AI, e legge il tuo profilo Google. Cinque: cattura la prenotazione — l'agente può prenotare il tuo tavolo se sei connesso a un provider.",
-      "start": 110.8,
-      "end": 148.59
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "La maggior parte delle settimane, il modo in cui i commensali ti trovano cambia un poco. La settimana del 19 maggio ventisei non è stata una settimana come le altre. In quattro giorni, Google ha ricostruito AI Mode sul palco della sua conferenza I/O, ha iniziato a distribuire il suo secondo aggiornamento core di ricerca dell'anno il 21 maggio, e — secondo un rapporto di BrightEdge del 20 maggio — Gemini è stato confermato come la seconda fonte di riferimento AI, salendo dal 4,3% del traffico di riferimento AI all'inizio del Q1 al 13,2% ad aprile. Tre annunci, una direzione: la superficie che invia persone alla tua porta sta essere riscritta per rispondere e agire prima che il commensale raggiunga te.",
+      "start": 88.18,
+      "end": 132.4
     },
     {
       "id": 9,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(1)",
-      "text": "La tesi unica sotto tutti e cinque.",
-      "start": 149.69,
-      "end": 152.3
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "La quota di Gemini del traffico di riferimento AI nei primi quattro mesi del ventisei. A gennaio era del 4,3% del traffico di riferimento AI. Alla fine del primo trimestre era salita all'11,6%. Ad aprile aveva raggiunto il 13,2%. Nello stesso periodo, la quota di ChatGPT è scesa dall'89,2% all'81,4%. La storia è una rapida ascesa da un lato, una lenta resa dall'altro.",
+      "start": 133.2,
+      "end": 158.52
     },
     {
       "id": 10,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(6)",
-      "text": "Letta insieme, i cinque punti indicano un solo asset: il tuo Google Business Profile. Adesso è fondamentale in un modo che non lo era un anno fa — alimenta il map pack, il AI Overview, le risposte di Gemini e l'agente che prenota il tavolo. Mantienilo completo e aggiornato e stai lavorando su tutte e quattro le superfici con un solo pomeriggio di lavoro, senza budget per pubblicità.",
-      "start": 153,
-      "end": 174.67
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "Tre spostamenti, nessuno dei quali piccolo, tutti premiati dalle stesse due cose: essere leggibile per una macchina e prenotabile senza una telefonata. La ricostruzione dell'I/O ha reso il risultato locale una risposta composta che può agire. L'aggiornamento core ha ri-pesato il ranking sotto una superficie che sempre più riassume invece di elencare. E la crescita di Gemini significa che lo stesso profilo Google che vince il map pack è ora anche la superficie di ranking per l'assistente AI in più rapida crescita. I tre convergono su un unico asset. Il resto di questa panoramica è ciò che significa nella pratica, e i cinque pezzi la guidano dall'inizio alla fine.",
+      "start": 159.27,
+      "end": 200.27
     },
     {
       "id": 11,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(7)",
-      "text": "Se fai una cosa questa settimana, fallo: esegui il grader GBP per trovare i vuoti, poi il controllo di salute del negozio per assicurarti che il percorso dalla risposta alla tua porta funzioni ancora su un telefono. La superficie è cambiata. Il lavoro che vince è lo stesso lavoro di sempre — solo che adesso è rivolto a una macchina.",
-      "start": 175.19,
-      "end": 194.86
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Cosa significano effettivamente \"leggibilità\" e \"prenotabilità\" (operativamente).",
+      "start": 201.37,
+      "end": 206.5
     },
     {
       "id": 12,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(8)",
-      "text": "Cinque punti, pubblicati insieme, da leggere in ordine. La casella di ricerca si è spostata. Ecco come ti sposti con essa.",
-      "start": 195.38,
-      "end": 203.38
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "La leggibilità non è un'idea di marca. È la questione letterale di se un modello possa estrarre la risposta a \"cosa servono, quando sono aperti, sono buoni, rispondono alla mia richiesta\" da un testo semplice e campi strutturati. Se la risposta si trova solo all'interno di un menu fotografato, un PDF o un'immagine codificata a mano, il modello non può leggerla e cita un concorrente che l'ha scritta. La leggibilità è il controllo a quattro cifre sul Google Business Profile, il schema markup sulle tue pagine, i campi relativi agli orari e alla cucina compilati come una domanda di permesso — senza spazi vuoti.",
+      "start": 207.2,
+      "end": 243.91
     },
     {
       "id": 13,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(9)",
-      "text": "Punti chiave",
-      "start": 203.9,
-      "end": 204.81
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "La prenotabilità è la stessa idea applicata all'azione. La nuova risposta AI non si limita a descrivere; può completare una prenotazione attraverso OpenTable, Resy o Tock senza inviare il commensale al tuo sito. Se il tuo inventario si trova in un libro cartaceo presso il host stand o dietro una linea \"chiama noi\", l'agente non può vederlo — prenota un ristorante le cui tavolate può vedere. La prenotabilità è il tuo link di prenotazione, un fornitore connesso e un checkout mobile che non si interrompe durante il passaggio dell'agente.",
+      "start": 244.43,
+      "end": 274.08
     },
     {
       "id": 14,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
-      "text": "La superficie che invia i clienti alla tua porta è stata riscritta in una sola settimana — prima la risposta e poi l'azione.",
-      "start": 205.16,
-      "end": 212.99
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "Nessuno dei due concetti è nuovo. Gli operatori li hanno sentiti entrambi per anni. Ciò che è cambiato in una settimana è che sono diventati nuovamente portanti: gli stessi due requisiti decidono ora se sarai nominato dal modello, scelto dall'agente e visibile in tre delle quattro superfici che un commensale utilizza per trovarti. Non dovevi vincere sulla leggibilità e sulla prenotabilità prima; la matematica della vicinanza e della valutazione del map pack perdonava molto. La nuova superficie perdonava quasi nulla.",
+      "start": 274.6,
+      "end": 305.32
     },
     {
       "id": 15,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
-      "text": "Il tuo Google Business Profile è ora fondamentale per il map pack, il AI Overview, Gemini e la prenotazione agente allo stesso tempo.",
-      "start": 213.31,
-      "end": 222.11
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "L'unico asset che alimenta tutte e quattro le superfici.",
+      "start": 306.42,
+      "end": 309.93
     },
     {
       "id": 16,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
-      "text": "Leggi i cinque punti in ordine; ognuno riprende dove il precedente si è interrotto.",
-      "start": 222.43,
-      "end": 227.96
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "Tira via i tre turni e tutti raggiungono lo stesso file: il tuo Google Business Profile. Alimenta il map pack allo stesso modo di sempre. Alimenta il Google del AI Overview, dove una risposta generata è assemblata da tutto ciò che il modello può leggere e fidarsi di te — la ricostruzione che abbiamo coperto nella nuova superficie. Alimenta Gemini, che si appoggia all'ecosistema del Google (il tuo profilo, Maps e recensioni) molto più di ChatGPT o Perplexity — la dinamica nella nuova fonte di traffico. E alimenta l'agente di prenotazione, che costruisce la sua lista breve di tavolate che può prenotare dai profili che può vedere — la porta nella cattura della prenotazione.",
+      "start": 310.63,
+      "end": 350.99
     },
     {
       "id": 17,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(2)",
+      "text": "Un asset che alimenta quattro superfici di scoperta. Il Google Business Profile si trova al centro come hub. Da esso partono quattro raggi: al classico map pack, al Google del AI Overview, alle risposte del ristorante di Gemini e al flusso di prenotazione agente che completa una prenotazione attraverso OpenTable, Resy o Tock. Mantieni un profilo completo e aggiornato e stai lavorando su tutte e quattro le superfici con un pomeriggio di lavoro.",
+      "start": 351.79,
+      "end": 380.59
+    },
+    {
+      "id": 18,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "Questa è la convergenza. Un file, quattro uscite. Un profilo completo che lavora su tutte e quattro le superfici era un optional diciotto mesi fa, quando il map pack stava portando la maggior parte del traffico. Oggi è la mossa di scoperta a minor costo che puoi fare, perché ogni ora che spendi sul profilo ti viene pagata quattro volte.",
+      "start": 381.34,
+      "end": 401.22
+    },
+    {
+      "id": 19,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "Perché questi cinque pezzi sono ordinati nel modo in cui sono.",
+      "start": 402.32,
+      "end": 406.29
+    },
+    {
+      "id": 20,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "L'onda non è composta da cinque articoli scollegati. È una catena di dipendenze. Non puoi decidere cosa fare con la nuova superficie fino a quando non l'hai vista. Non puoi capire se ti sta danneggiando fino a quando non sai se ne sei parte. Non puoi giudicare la dimensione della perdita fino a quando non conosci il costo. E non puoi catturare la prenotazione fino a quando non hai letto i tre pezzi su come il diner arriva da te in primo luogo. Ogni pezzo guadagna il successivo.",
+      "start": 406.99,
+      "end": 432.66
+    },
+    {
+      "id": 21,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(3)",
+      "text": "L'ordine di lettura dei cinque pezzi, codificato a colori per fase. I passaggi uno, due e tre sono in verde acqua — vedi la nuova superficie, poi controlla se ne sei parte, poi conta cosa sta costando. I passaggi quattro e cinque sono in rosso ruggine — la svolta operativa verso una nuova fonte di traffico e l'atto di catturare la prenotazione. La pausa tra verde acqua e rosso ruggine segna la linea tra la comprensione della superficie e l'azione su di essa.",
+      "start": 433.46,
+      "end": 461.33
+    },
+    {
+      "id": 22,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "Letto fuori ordine, i pezzi mantengono comunque il loro significato. Letti in ordine, raccontano una storia: la superficie ha composto la risposta, la risposta ti ha saltato, la chiamata ha smesso di suonare, il traffico si è spostato, la prenotazione è avvenuta — senza di te. Ogni pezzo è un capitolo in quella sequenza, non un post autonomo.",
+      "start": 462.08,
+      "end": 482.37
+    },
+    {
+      "id": 23,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "Il lavoro che vince è il lavoro che già conosci.",
+      "start": 483.47,
+      "end": 486.55
+    },
+    {
+      "id": 24,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "Niente in questa onda ti chiede di imparare una nuova piattaforma, assumere un consulente o comprare annunci. I quattro movimenti che vincono la nuova superficie sono gli stessi quattro movimenti che hanno vinto la vecchia — sono solo ora visibili alle macchine che instradano il traffico. Completa il Google Business Profile, ogni campo, senza spazi vuoti. Mantieni le recensioni recenti rispondendo a quelle che hai; la data della risposta è il segnale di freschezza che il modello legge. Metti le risposte che un diner chiede effettivamente — gruppo di otto, piatto vegano, patio — in testo semplice sulle tue pagine, supportato da schema del ristorante. E collega un fornitore di prenotazioni reale in modo che l'agente abbia un tavolo che può assegnare al diner.",
+      "start": 487.25,
+      "end": 530.23
+    },
+    {
+      "id": 25,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "Nessuna di queste cose è nuova. I pavimenti di valutazione 4.3-4.1-3.9 contano solo perché gli assistenti AI li hanno resi visibili. Il declino dell'engagement su Maps conta solo perché il diner può ora risolvere la domanda senza toccare. La salita di Gemini conta solo perché lo stesso lavoro di profilo paga due volte. Letti insieme, i cinque pezzi sostengono che l'operatore che mantiene il profilo aggiornato, le recensioni fresche, le risposte in testo e il fornitore di prenotazioni attivo ha già fatto la maggior parte del lavoro che la nuova superficie richiede — senza nominarlo in quel modo.",
+      "start": 530.75,
+      "end": 566.23
+    },
+    {
+      "id": 26,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(6)",
+      "text": "Cinque pezzi, una tesi — leggili in ordine.",
+      "start": 567.33,
+      "end": 570.25
+    },
+    {
+      "id": 27,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "Tratta l'onda come un libro singolo in cinque capitoli, non cinque post che condividono una data di pubblicazione. La tesi è una frase: in una settimana, Google ha unificato le superfici di scoperta attorno a un asset singolo — la leggibilità del profilo — e i cinque pezzi sono come un ristorante indipendente si muove attraverso quella convergenza senza perdere il diner.",
+      "start": 570.95,
+      "end": 592.78
+    },
+    {
+      "id": 28,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "Inizia con la nuova superficie. Gli altri quattro hanno senso una volta che il primo atterra.",
+      "start": 593.3,
+      "end": 599.1
+    },
+    {
+      "id": 29,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(7)",
+      "text": "Cosa fare questa settimana.",
+      "start": 600.2,
+      "end": 602.26
+    },
+    {
+      "id": 30,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Esegui il GBP grader e chiudi i campi vuoti che segnala — ore per giorno, cucina, attributi, link al menu, link alla prenotazione.",
+      "start": 602.96,
+      "end": 611.51
+    },
+    {
+      "id": 31,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Tira fuori la tua valutazione a stelle e la data della tua recensione più recente. Nota il gap fino al pavimento dell'assistente più vicino (4.3, 4.1, 3.9) e se qualcosa è più vecchio di questo mese.",
+      "start": 611.83,
+      "end": 625.68
+    },
+    {
+      "id": 32,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "Scegli tre domande che un diner potrebbe effettivamente fare. Conferma che la risposta esiste, in testo semplice, sul tuo sito — non dietro un PDF o un menu fotografato.",
+      "start": 626,
+      "end": 637.29
+    },
+    {
+      "id": 33,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
-      "text": "Il lavoro che vince la nuova superficie è lo stesso lavoro di profilo e sito di prima, rivolto a una macchina.",
-      "start": 228.28,
-      "end": 235.09
+      "text": "Conferma che le tue prenotazioni sono attive su OpenTable, Resy o Tock, poi apri il tuo sito web su un telefono e prenota un tavolo da solo. Cronometra il tempo.",
+      "start": 637.61,
+      "end": 647.91
+    },
+    {
+      "id": 34,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(5)",
+      "text": "Esegui il controllo di salute del negozio per assicurarti che il percorso dalla risposta dell'AI alla tua porta funzioni ancora senza una telefonata.",
+      "start": 648.23,
+      "end": 658.26
+    },
+    {
+      "id": 35,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "Punti chiave",
+      "start": 658.78,
+      "end": 659.69
+    },
+    {
+      "id": 36,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "I tre turni di maggio ventisei convergono su un collo di bottiglia — leggibilità più prenotabilità attraverso il Google Business Profile.",
+      "start": 660.04,
+      "end": 669.28
+    },
+    {
+      "id": 37,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "Un profilo alimenta quattro superfici: il map pack, il AI Overview, Gemini (13,2% dei riferimenti AI), e il flusso di prenotazione agente.",
+      "start": 669.6,
+      "end": 679.8
+    },
+    {
+      "id": 38,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "Leggibilità e prenotabilità non sono concetti nuovi — sono nuovamente portanti, perché ogni superficie legge ora lo stesso file.",
+      "start": 680.12,
+      "end": 688.92
+    },
+    {
+      "id": 39,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
+      "text": "I cinque pezzi formano una catena di dipendenza: vedere la superficie, controllare la visibilità, calcolare il costo, passare alla nuova fonte di traffico, catturare la prenotazione.",
+      "start": 689.24,
+      "end": 701.24
+    },
+    {
+      "id": 40,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(5)",
+      "text": "Il lavoro che vince è il lavoro sul profilo e sul sito che già conosci — nuovamente visibile alle macchine che instradano il traffico.",
+      "start": 701.56,
+      "end": 710.01
     }
   ]
 }

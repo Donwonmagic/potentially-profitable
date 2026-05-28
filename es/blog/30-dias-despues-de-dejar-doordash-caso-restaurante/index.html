@@ -45,17 +45,55 @@
       "inLanguage": "es-ES",
       "datePublished": "2026-05-11T08:00:00-04:00",
       "dateModified": "2026-05-11",
-      "author": { "@id": "https://muntin.digital/#don-goldstein", "@type": "Person", "name": "Don Goldstein", "url": "https://muntin.digital/about/" },
-      "publisher": { "@id": "https://muntin.digital/#business" },
-      "image": "https://muntin.digital/brand/og/blog-30-days-after-doordash-es.png",
-      "mainEntityOfPage": { "@id": "https://muntin.digital/es/blog/30-dias-despues-de-dejar-doordash-caso-restaurante/" }
+      "author": {
+        "@id": "https://muntin.digital/#don-goldstein",
+        "@type": "Person",
+        "name": "Don Goldstein",
+        "url": "https://muntin.digital/about/"
+      },
+      "publisher": {
+        "@id": "https://muntin.digital/#business"
+      },
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://muntin.digital/brand/og/blog-30-days-after-doordash-es.png",
+        "width": 1200,
+        "height": 630,
+        "caption": "30 días después de dejar DoorDash: caso de estudio de un operador de restaurante"
+      },
+      "mainEntityOfPage": {
+        "@id": "https://muntin.digital/es/blog/30-dias-despues-de-dejar-doordash-caso-restaurante/"
+      },
+      "speakable": {
+        "@type": "SpeakableSpecification",
+        "cssSelector": [
+          "article#post-body",
+          "h1",
+          ".post-dek"
+        ]
+      }
     },
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Muntin Digital", "item": "https://muntin.digital/" },
-        { "@type": "ListItem", "position": 2, "name": "Artículos", "item": "https://muntin.digital/es/blog/" },
-        { "@type": "ListItem", "position": 3, "name": "30 días después de dejar DoorDash: caso de estudio de un operador de restaurante", "item": "https://muntin.digital/es/blog/30-dias-despues-de-dejar-doordash-caso-restaurante/" }
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Muntin Digital",
+          "item": "https://muntin.digital/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Artículos",
+          "item": "https://muntin.digital/es/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "30 días después de dejar DoorDash: caso de estudio de un operador de restaurante",
+          "item": "https://muntin.digital/es/blog/30-dias-despues-de-dejar-doordash-caso-restaurante/"
+        }
       ]
     }
   ]
@@ -99,7 +137,9 @@ header.nav{min-height:64px}
 main{padding-top:64px}
 </style>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-italic.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-italic.woff2" crossorigin>
 <link rel="preload" as="style" href="/assets/site-core.css" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="/assets/site-core.css"><link rel="stylesheet" href="/assets/site-article.css"></noscript>
@@ -113,7 +153,24 @@ main{padding-top:64px}
   "@type": "Article",
   "@id": "https://muntin.digital/es/blog/30-dias-despues-de-dejar-doordash-caso-restaurante/#article",
   "abstract": "Si te deslistas de DoorDash sin un reemplazo de descubrimiento, espera una caída de un dígito en los ingresos en la semana uno cuando el tráfico de marketplace de la plataforma se detiene; la mayoría de los operadores recupera la mayor parte para la semana cuatro a medida que las órdenes recapturadas se mueven al canal directo. El margen retenido por ticket sube porque cada orden recapturada se mueve del canal de terceros con tasa retenida ~18% al canal directo con tasa retenida ~29% (cifras del <a href=\"/es/blog/cuentas-honestas-de-doordash-para-restaurantes-independientes-2026/\">walk de margen de DoorDash</a>). La plataforma es mayormente una superficie de desplazamiento de relación para independientes establecidos — el descubrimiento netamente nuevo es menor de lo que el operador suele creer. Esta pieza es un playbook, no un caso de estudio; los números son rangos ilustrativos del walk de margen.",
-  "mentions": []
+  "mentions": [
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/es/glossary/margin/"
+    },
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/es/glossary/average-check/"
+    },
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/es/glossary/commission/"
+    },
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/es/glossary/client-side/"
+    }
+  ]
 }
 </script>
 <!-- article-abstract-mentions:end -->
@@ -122,25 +179,14 @@ main{padding-top:64px}
 
 <a class="skip-link" href="#main">Saltar al contenido principal</a>
 
-<script>
-  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
-     Apple devices. Runs early in <body> so the swap is essentially
-     invisible — script tags execute synchronously when the parser hits
-     them, before .nav-search-kbd renders below. CSS in site-core.css
-     conditions on <html data-platform="mac">. */
-  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
-    document.documentElement.dataset.platform = 'mac';
-  }
-</script>
 <!-- batch-banner:start -->
-<aside class="batch-banner" data-batch="2026-w2" role="complementary" aria-label="Semana 2 · 23 de mayo de 2026" style="background:var(--ink,#14161A);color:var(--cream,#FAF7F2);font-size:15px;line-height:1.5;padding:16px 0;border-bottom:1px solid rgba(250,247,242,0.12);position:relative;z-index:60">
-  <div style="max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,64px);display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap">
-    <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;min-width:0">
-      <span style="display:inline-block;font-family:Inter,system-ui,sans-serif;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;background:var(--teal,#2A50C8);color:var(--cream,#FAF7F2);padding:4px 10px;border-radius:3px;white-space:nowrap;flex-shrink:0">Nuevo esta semana</span>
-      <span style="font-family:Georgia,serif;font-size:11px;letter-spacing:0.10em;text-transform:uppercase;opacity:0.75;white-space:nowrap">Semana 2 · 23 de mayo de 2026</span>
-      <span style="font-family:Georgia,serif;font-size:17px;font-style:italic;line-height:1.35;min-width:0">La búsqueda cambió el 19 de mayo. Esta es la jugada del operador.</span>
+<aside class="batch-marquee" data-batch="2026-w2" role="complementary" aria-label="Semana 2 · 23 de mayo de 2026" style="background:var(--ink,#14161A);color:var(--cream,#FAF7F2);font-size:14px;line-height:1.4;padding:8px 0;border-bottom:1px solid rgba(250,247,242,0.12)">
+  <div style="max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,64px);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;min-width:0;flex:1 1 auto">
+      <span style="display:inline-block;font-family:Inter,system-ui,sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;background:var(--teal,#2A50C8);color:var(--cream,#FAF7F2);padding:3px 8px;border-radius:3px;white-space:nowrap;flex-shrink:0">Nuevo esta semana</span>
+      <span style="font-family:Georgia,serif;font-size:14px;font-style:italic;line-height:1.35;min-width:0">La búsqueda cambió el 19 de mayo. Esta es la jugada del operador.</span>
     </div>
-    <a href="/es/blog/la-busqueda-cambio-bajo-tus-pies-mayo-2026/" style="display:inline-flex;align-items:center;gap:6px;color:var(--ink,#14161A);background:var(--cream,#FAF7F2);text-decoration:none;font-family:Inter,system-ui,sans-serif;font-weight:600;font-size:14px;padding:9px 18px;border-radius:999px;white-space:nowrap;flex-shrink:0;transition:transform .15s ease">Leer el lote <span aria-hidden="true">&rarr;</span></a>
+    <a href="/es/blog/la-busqueda-cambio-bajo-tus-pies-mayo-2026/" style="display:inline-flex;align-items:center;gap:6px;color:var(--ink,#14161A);background:var(--cream,#FAF7F2);text-decoration:none;font-family:Inter,system-ui,sans-serif;font-weight:600;font-size:12px;padding:5px 12px;border-radius:999px;white-space:nowrap;flex-shrink:0;transition:transform .15s ease">Leer el lote <span aria-hidden="true">&rarr;</span></a>
   </div>
 </aside>
 <!-- batch-banner:end -->
@@ -160,7 +206,7 @@ main{padding-top:64px}
              along with the rest of the nav block on every build, keeping
              the partial strictly idempotent. Valid HTML5: <script> may
              appear in any flow-content context. */
-  window.__i18n=Object.assign(window.__i18n||{},{"nav.open_menu":"Abrir menú","nav.close_menu":"Cerrar menú","form.field_required":"Este campo es obligatorio.","form.invalid_email":"Ingresa un correo electrónico válido.","form.services_min_one":"Selecciona al menos una opción.","form.submit_fallback":"Algo falló. Inténtalo de nuevo o escribe directamente a don@muntin.digital.","audio.resume":"Reanudar audio","audio.pause":"Pausar","audio.play":"Reproducir versión en audio","audio.stop":"Detener y cerrar audio","audio.minimize":"Minimizar controles de audio","audio.expand":"Ampliar controles de audio","audio.prev":"Párrafo anterior","audio.next":"Párrafo siguiente","audio.back15":"Retroceder 15 segundos","audio.fwd15":"Adelantar 15 segundos","audio.progress":"Progreso del audio","audio.controls":"Controles del reproductor de audio","audio.article_label":"Versión en audio de este artículo","audio.speed":"Velocidad de reproducción","audio.voice":"Voz del narrador","search.placeholder":"Busca artículos, herramientas, términos del glosario…","search.close":"Cerrar","search.hint_title":"¿Qué estás buscando?","search.hint_body":"Prueba con \"DoorDash\", \"Core Web Vitals\" o \"precios del menú\". Los resultados vienen de cada artículo, herramienta y término del glosario.","search.empty":"Sin resultados para","search.empty_hint":"Prueba una consulta más corta o una palabra distinta.","search.loading":"Buscando…","search.nav_hint":"para moverte","search.open_hint":"para abrir","search.close_hint":"para cerrar","search.kind_article":"Artículo","search.kind_tool":"Herramienta","search.kind_term":"Glosario","search.kind_resource":"Guía","search.kind_library":"Biblioteca","search.kind_case":"Caso de estudio","search.kind_service":"Servicios","search.kind_industry":"Para ti","search.kind_page":"Página","drawer.kicker":"Nota de investigación","drawer.close":"Cerrar","drawer.loading":"Cargando el resumen…","drawer.err_title":"No pudimos cargar el resumen","drawer.err_body":"Abre la nota completa en una pestaña nueva — es el mismo contenido, solo que más completo.","drawer.findings_label":"Hallazgos clave","drawer.note_label":"La nota de Don","drawer.read_full":"Leer la nota completa","drawer.read_original":"Ver la fuente original","drawer.open_new_tab":"se abre en una pestaña nueva"});</script>
+  window.__i18n=Object.assign(window.__i18n||{},{"nav.open_menu":"Abrir menú","nav.close_menu":"Cerrar menú","form.field_required":"Este campo es obligatorio.","form.invalid_email":"Ingresa un correo electrónico válido.","form.services_min_one":"Selecciona al menos una opción.","form.submit_fallback":"Algo falló. Inténtalo de nuevo o escribe directamente a don@muntin.digital.","audio.resume":"Reanudar audio","audio.pause":"Pausar","audio.play":"Reproducir versión en audio","audio.stop":"Detener y cerrar audio","audio.minimize":"Minimizar controles de audio","audio.expand":"Ampliar controles de audio","audio.prev":"Párrafo anterior","audio.next":"Párrafo siguiente","audio.back15":"Retroceder 15 segundos","audio.fwd15":"Adelantar 15 segundos","audio.progress":"Progreso del audio","audio.controls":"Controles del reproductor de audio","audio.article_label":"Versión en audio de este artículo","audio.speed":"Velocidad de reproducción","audio.voice":"Voz del narrador","audio.byline_studio":"Narrado para The Muntin Desk","audio.byline_browser":"Leído por tu navegador","audio.preview":"Escucha 30 segundos primero →","audio.resume_chip_aria":"Reanudar desde la posición guardada","audio.share_aria":"Copiar enlace en este momento","audio.dismiss":"Descartar","audio.kicker":"Edición en audio","audio.headline":"¿Prefieres escucharlo?","audio.sub":"Pulsa reproducir y leeremos el artículo entero — gráficos incluidos.","audio.meta_handsfree":"manos libres","audio.meta_min":"min","audio.now_reading":"Reproduciendo","audio.resume_continue":"Continuar desde","audio.help_aria":"Ver atajos de teclado e información del reproductor","audio.help_title":"Consejos para escuchar","audio.help_chapters_eyebrow":"Capítulos","audio.finished_done":"Listo.","audio.finished_browse":"Explora la biblioteca →","audio.share_toast_ok":"Enlace copiado en {time}","audio.share_toast_fail":"No se pudo copiar — portapapeles bloqueado","audio.language_label":"Idioma","audio.help_kbd_eyebrow":"Teclado","audio.kbd_space":"Espacio","audio.kbd_space_help":"Reproducir o pausar","audio.kbd_jk_help":"Retroceder 15 segundos / avanzar 15 segundos","audio.kbd_arrows_help":"Párrafo anterior / siguiente párrafo","audio.help_about_eyebrow":"Sobre la voz","audio.help_about_body":"The Muntin Desk usa una voz generada por computadora ajustada para una lectura clara. Usamos la misma voz en cada artículo para que te resulte familiar. Cada grabación se produce una sola vez y se guarda como un archivo de audio que puedes descargar.","search.placeholder":"Busca artículos, herramientas, términos del glosario…","search.close":"Cerrar","search.hint_title":"¿Qué estás buscando?","search.hint_body":"Prueba con \"DoorDash\", \"Core Web Vitals\" o \"precios del menú\". Los resultados vienen de cada artículo, herramienta y término del glosario.","search.empty":"Sin resultados para","search.empty_hint":"Prueba una consulta más corta o una palabra distinta.","search.loading":"Buscando…","search.nav_hint":"para moverte","search.open_hint":"para abrir","search.close_hint":"para cerrar","search.kind_article":"Artículo","search.kind_tool":"Herramienta","search.kind_term":"Glosario","search.kind_resource":"Guía","search.kind_library":"Biblioteca","search.kind_case":"Caso de estudio","search.kind_service":"Servicios","search.kind_industry":"Para ti","search.kind_page":"Página","drawer.kicker":"Nota de investigación","drawer.close":"Cerrar","drawer.loading":"Cargando el resumen…","drawer.err_title":"No pudimos cargar el resumen","drawer.err_body":"Abre la nota completa en una pestaña nueva — es el mismo contenido, solo que más completo.","drawer.findings_label":"Hallazgos clave","drawer.note_label":"La nota de Don","drawer.read_full":"Leer la nota completa","drawer.read_original":"Ver la fuente original","drawer.open_new_tab":"se abre en una pestaña nueva"});</script>
   <div class="container nav-inner">
     <a href="/es/" class="logo" aria-label="Muntin Digital — inicio">
       <svg class="logo-mark" width="28" height="28" viewBox="0 0 128 128" fill="none" aria-hidden="true">
@@ -172,18 +218,22 @@ main{padding-top:64px}
       </svg>
       Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
     </a>
-    <!-- Phase 7: nav de 5 elementos, según el plan de lanzamiento Parte II.
-         Biblioteca / Herramientas / Proyectos / Estudio / Acceder.
+    <!-- Phase 7: nav de 4 elementos, según el plan de lanzamiento Parte II.
+         Biblioteca / Herramientas / Estudio / Acceder.
          Biblioteca apunta al hub canónico /es/library/. Herramientas
          se promueve del antiguo mega-menú a un elemento de primer
          nivel. Estudio reemplaza Servicios + Restaurantes + Sobre
          Don &mdash; todo vive bajo /es/studio/ ahora. El mega-menú
          se retira (el hub ES el menú); el controlador del script
-         también desaparece. -->
+         también desaparece.
+
+         /es/work/ se retiró en la pasada de portfolio-sunset de la
+         Fase 8 (el encuadre de la empresa-como-CV hizo redundante
+         el portafolio personal). Las URLs /es/work/* hacen 301 a
+         /es/studio/ vía _redirects. -->
     <nav class="nav-links" aria-label="Principal">
       <a href="/es/library/">Biblioteca</a>
       <a href="/es/tools/">Herramientas</a>
-      <a href="/es/work/">Proyectos</a>
       <a href="/es/studio/">Estudio</a>
       <a class="js-nav-signin nav-link-auth" href="/es/sign-in/" hidden>Acceder</a>
       <a class="js-nav-workshop nav-link-auth" href="/es/workbench/" hidden>El Taller</a>
@@ -212,7 +262,6 @@ main{padding-top:64px}
   <nav class="mobile-menu" id="mobileMenu" aria-label="Navegación móvil" hidden>
     <a href="/es/library/">Biblioteca</a>
     <a href="/es/tools/">Herramientas</a>
-    <a href="/es/work/">Proyectos</a>
     <a href="/es/studio/">Estudio</a>
     <a class="js-nav-signin mobile-auth" href="/es/sign-in/" hidden>Acceder</a>
     <a class="js-nav-workshop mobile-auth" href="/es/workbench/" hidden>El Taller</a>
@@ -278,7 +327,7 @@ main{padding-top:64px}
     </ol>
   </nav>
 
-  <article class="container article-body" id="post-body" data-content-pending="2026-05-11" style="max-width:720px;margin:32px auto 80px;padding:0 var(--pad-x)">
+  <article class="container article-body" id="post-body" style="max-width:720px;margin:32px auto 80px;padding:0 var(--pad-x)">
 
     <header style="margin-bottom:32px">
       <p class="eyebrow">Notas de campo &middot; 11 de mayo de 2026 &middot; 9 min de lectura &middot; By <a href="/es/about/#don-goldstein" style="color:var(--teal)">Don Goldstein</a></p>
@@ -295,7 +344,7 @@ main{padding-top:64px}
           <span class="listen-label i18n">Escuchar este artículo</span>
         </button>
       </div>
-      <p style="font-size:18px;line-height:1.55;color:var(--ink-soft);margin:0">Si estás considerando deslistar tu restaurante de DoorDash, los 30 días que siguen tienen una forma predecible. Este es el playbook &mdash; qué esperar cada semana, qué costos flexionan, qué quejas llegan, y dónde aterriza usualmente la mezcla de canales. Rangos ilustrativos, no un caso de estudio. Las matemáticas de margen subyacentes vienen del <a href="/es/blog/cuentas-honestas-de-doordash-para-restaurantes-independientes-2026/" style="color:var(--teal)">walk de margen de DoorDash</a>.</p>
+      <p style="font-size:18px;line-height:1.55;color:var(--ink-soft);margin:0">Si estás considerando deslistar tu restaurante de DoorDash, los 30 días que siguen tienen una forma predecible. Este es el playbook &mdash; qué esperar cada semana, qué costos flexionan, qué quejas llegan, y dónde aterriza usualmente la mezcla de canales. Rangos ilustrativos, no un caso de estudio. Las matemáticas de <!-- LIBRARY:autolink:start --><a href="/es/glossary/margin/" data-glossary-head="Margen" data-glossary-aka="ventas menos costos; varios tipos" data-glossary-blurb="Ventas menos costos.">margen</a><!-- LIBRARY:autolink:end --> subyacentes vienen del <a href="/es/blog/cuentas-honestas-de-doordash-para-restaurantes-independientes-2026/" style="color:var(--teal)">walk de margen de DoorDash</a>.</p>
     </header>
 
       <!-- article-tldr:start -->
@@ -309,7 +358,7 @@ main{padding-top:64px}
             </aside>
             <!-- article-tldr:end -->
 
-    <p>Antes del 7 de abril el restaurante hacía aproximadamente 1,800 órdenes de app de tercero por trimestre sólo por DoorDash, con un ticket promedio móvil de 12 meses de $39.60. Tier Marketplace Plus, 30% de comisión, la pila estándar de tarifas &mdash; la misma que recorrí en la <a href="/es/blog/como-salir-de-doordash-mi-restaurante/" style="color:var(--teal)">caminata de margen de DoorDash</a> tres semanas antes de tomar la decisión. El porcentaje retenido de esas órdenes, después de todas las tarifas y costos de comida/labor, era 18.4%. Llevaba dos años cargando con el canal asumiendo que la superficie de descubrimiento valía el impuesto al margen. Las cuentas, por fin en papel, decían que no.</p>
+    <p>Antes del 7 de abril el restaurante hacía aproximadamente 1,800 órdenes de app de tercero por trimestre sólo por DoorDash, con un <!-- LIBRARY:autolink:start --><a href="/es/glossary/average-check/" data-glossary-head="Ticket promedio" data-glossary-aka="ventas totales ÷ cubiertos" data-glossary-blurb="También llamado &quot;average check.&quot; Ventas totales divididas entre cubiertos totales.">ticket promedio</a><!-- LIBRARY:autolink:end --> móvil de 12 meses de $39.60. Tier Marketplace Plus, 30% de <!-- LIBRARY:autolink:start --><a href="/es/glossary/commission/" data-glossary-head="Comisión" data-glossary-aka="el % que la plataforma se lleva por orden" data-glossary-blurb="El porcentaje que un agregador o plataforma de pago se queda por transacción.">comisión</a><!-- LIBRARY:autolink:end -->, la pila estándar de tarifas &mdash; la misma que recorrí en la <a href="/es/library/como-salir-de-doordash-mi-restaurante/" style="color:var(--teal)">caminata de margen de DoorDash</a> tres semanas antes de tomar la decisión. El porcentaje retenido de esas órdenes, después de todas las tarifas y costos de comida/labor, era 18.4%. Llevaba dos años cargando con el canal asumiendo que la superficie de descubrimiento valía el impuesto al margen. Las cuentas, por fin en papel, decían que no.</p>
 
     <p>Deslisté un domingo en la noche. Cerré el storefront de DoorDash, no lo prendí de vuelta, no hice anuncio público, no lo mencioné en Instagram. Las llamadas y los walk-ins siguieron como siempre. Esto es cómo se vio cada una de las cuatro semanas después.</p>
 
@@ -380,7 +429,7 @@ main{padding-top:64px}
       <figcaption>Tono piedra = Día 0 (última semana completa en DoorDash). Tono teal = Día 30 (semana terminando 5 de mayo). El gasto de mercadeo era casi todo tarifas de listados patrocinados de DoorDash en el Día 0.</figcaption>
     </figure>
 
-    <h2>Semana 1: pánico que no llegó</h2>
+    <h2 id="semana-1-panico-que-no-llego">Semana 1: pánico que no llegó</h2>
 
     <p>Me había mentalizado para una caída de ingreso de 20-30%. El canal DoorDash hacía aproximadamente $580/día en órdenes brutas antes de comisión. Neto al restaurante, después de tarifas, comida, labor: cerca de $107/día. La expectativa era que iba a ver $400&ndash;$500/día de ese ingreso bruto evaporarse y quizá 60% volver por otros canales en un trimestre.</p>
 
@@ -477,19 +526,19 @@ main{padding-top:64px}
       <figcaption>Promedios diarios entre todos los canales &mdash; walk-in, teléfono, sitio propio, anteriormente DoorDash. El ingreso recuperó al 97.4% del base para la semana cuatro. El margen retenido subió 56% sobre el base.</figcaption>
     </figure>
 
-    <h2>Semana 2: las llamadas de &ldquo;¿DoorDash está caído?&rdquo;</h2>
+    <h2 id="semana-2-las-llamadas-de-doordash-esta-caido">Semana 2: las llamadas de &ldquo;¿DoorDash está caído?&rdquo;</h2>
 
     <p>El volumen de quejas alcanzó pico el día 11. Clientes que pedían regularmente por DoorDash empezaron a llamar al restaurante para preguntar si estábamos cerrados, si DoorDash estaba roto, o si su historial de órdenes había sido borrado. La app de DoorDash, predeciblemente, ya no nos mostraba &mdash; para un cliente acostumbrado a pedir por DoorDash, la ausencia se lee como que el restaurante se fue, no como una elección deliberada de dejar la plataforma.</p>
 
-    <p>Total de quejas del lado del cliente en semana 2: 23 llamadas telefónicas, 4 DMs de Instagram, 1 reseña negativa de Google (eliminada después cuando expliqué la situación). Le respondí a cada uno igual: nos salimos de DoorDash, puedes pedir directo desde nuestro sitio a un 10% menos, aquí está el link. De esas 28 conversaciones, 19 convirtieron a una orden directa en las dos semanas siguientes. 6 eligieron dejar de pedir. 3 siguen &ldquo;pensándolo&rdquo; según su última respuesta.</p>
+    <p>Total de quejas <!-- LIBRARY:autolink:start --><a href="/es/glossary/client-side/" data-glossary-head="Del lado del cliente" data-glossary-aka="cómputo en tu navegador, no en un servidor" data-glossary-blurb="Cómputo que ocurre dentro de tu pestaña del navegador, no en un servidor.">del lado del cliente</a><!-- LIBRARY:autolink:end --> en semana 2: 23 llamadas telefónicas, 4 DMs de Instagram, 1 reseña negativa de Google (eliminada después cuando expliqué la situación). Le respondí a cada uno igual: nos salimos de DoorDash, puedes pedir directo desde nuestro sitio a un 10% menos, aquí está el link. De esas 28 conversaciones, 19 convirtieron a una orden directa en las dos semanas siguientes. 6 eligieron dejar de pedir. 3 siguen &ldquo;pensándolo&rdquo; según su última respuesta.</p>
 
-    <h2>Semana 3: la línea de costo que se rompió</h2>
+    <h2 id="semana-3-la-linea-de-costo-que-se-rompio">Semana 3: la línea de costo que se rompió</h2>
 
     <p>Esta es la que no vi venir. La línea de empaque subió *18%* en la semana 3, aunque las órdenes totales se habían recuperado a dentro del 6% del base. Causa: las órdenes que migraron a directo eran más grandes en promedio (ticket de $46.30 vs base de $39.60), y pedían más ítems, lo que significaba más empaque por orden, especialmente para las órdenes de delivery que ahora cumplíamos por DoorDash Drive con tarifa plana. El costo de empaque de $1.40 por orden subió a $1.65 por orden. Un pequeño dolor de cabeza operativo; no material en términos de margen.</p>
 
     <p>Lo que esperaba que se rompiera &mdash; la mano de obra &mdash; no se rompió nada. El horario del line cook ya cubría el volumen de órdenes; sólo cambiamos algunas horas de prep nocturno para DoorDash a prep de media tarde para walk-in. Sin cambios de headcount. Mismo presupuesto de labor. La línea de costo de labor bajó ligeramente porque la cocina ya no corría la segunda ola de empacar-y-embolsar que las órdenes de DoorDash jalaban entre las 8pm y el cierre.</p>
 
-    <h2>Semana 4: dónde aterrizó</h2>
+    <h2 id="semana-4-donde-aterrizo">Semana 4: dónde aterrizó</h2>
 
     <p>Para fin de abril el ingreso diario había recuperado a dentro del 2.6% del base. Dentro del piso de ruido para este restaurante, que tiene 8-10% de variación semana a semana sólo por clima y calendario de eventos. El margen retenido en dólares por día, sin embargo, era 56% más alto que el base, porque cada orden recapturada ahora estaba al margen de canal directo de 28.9% en vez del margen de DoorDash de 18.4%. A lo largo del mes, la ganancia de margen retenido fue aproximadamente $4,000 en dólares absolutos &mdash; en un restaurante haciendo aproximadamente $58,000/mes en bruto.</p>
 
@@ -617,13 +666,13 @@ main{padding-top:64px}
 
     <p>Las quejas pararon cerca del día 18. La reseña de Google que se había puesto negativa bajó el día 21 cuando el cliente aceptó un crédito de $20 hacia una orden directa y nos pidió bajar la reseña él mismo. El volumen de DMs de Instagram se normalizó a su base pre-deslistar para el día 24.</p>
 
-    <h2>En qué me equivoqué</h2>
+    <h2 id="en-que-me-equivoque">En qué me equivoqué</h2>
 
     <p>Subestimé cuánto del canal DoorDash ya estaba &ldquo;desplazado&rdquo; en vez de &ldquo;netamente nuevo.&rdquo; La recuperación fue más rápida de lo que había planeado porque la mayoría de esas órdenes eran clientes que ya nos conocían; la plataforma era sólo un hábito, no una superficie de descubrimiento. Había asumido que la plataforma me traía ~40% clientes netamente nuevos y 60% clientes existentes usando una interfaz más conveniente. El desglose real estuvo más cerca de 10/90. La superficie de descubrimiento era mayormente una capa de vanidad; la relación ya era mía.</p>
 
     <p>También sobreestimé la conversión en el sitio directo. El descuento de 10% que le ofrecí a clientes recapturados funcionó, pero funcionó a menor conversión de la que había proyectado &mdash; 68% de clientes quejosos convirtieron a directo, no el 80% que esperaba. 32% sólo dejaron de pedir con esa frecuencia, lo cual está bien pero no es lo mismo que el cuento de &ldquo;todos van a convertir&rdquo; que me había vendido antes de deslistar.</p>
 
-    <h2>En qué acerté</h2>
+    <h2 id="en-que-acerte">En qué acerté</h2>
 
     <p>La premisa básica &mdash; que el canal DoorDash era un impuesto del 30% al margen por ~20% de ingreso incremental &mdash; aguantó. El alza del 56% en margen retenido para la semana cuatro es la evidencia más limpia que voy a tener para esa tesis. No voy a regresar. También acerté en que el segundo restaurante, que está en un barrio distinto con dinámicas distintas de tráfico peatonal, debería quedarse en la plataforma &mdash; la densidad urbana y el flujo de viajes Uber ahí significan que el canal DoorDash sí es de descubrimiento, no sólo desplazamiento de relación.</p>
 
@@ -644,8 +693,8 @@ main{padding-top:64px}
     <section style="margin-top:48px;padding-top:32px;border-top:1px solid var(--line)">
       <p class="eyebrow" style="margin-bottom:10px">Sigue leyendo</p>
       <ul style="font-size:15.5px;line-height:1.7;color:var(--teal);margin:0;padding-left:22px">
-        <li><a href="/es/blog/como-salir-de-doordash-mi-restaurante/">Cómo salir de DoorDash, mi restaurante</a> &mdash; la caminata de margen subyacente</li>
-        <li><a href="/es/blog/uber-eats-vs-doordash-vs-grubhub-cuentas-para-restaurante-2026/">Uber vs DoorDash vs Grubhub</a> &mdash; la comparación de tres plataformas</li>
+        <li><a href="/es/library/como-salir-de-doordash-mi-restaurante/">Cómo salir de DoorDash, mi restaurante</a> &mdash; la caminata de margen subyacente</li>
+        <li><a href="/es/library/uber-eats-vs-doordash-vs-grubhub-cuentas-para-restaurante-2026/">Uber vs DoorDash vs Grubhub</a> &mdash; la comparación de tres plataformas</li>
         <li><a href="/tools/margin-math/">Herramienta Margin Math</a> &mdash; corre la proyección con tus números antes de decidir</li>
       </ul>
     </section>
@@ -701,7 +750,7 @@ main{padding-top:64px}
 <aside class="smart-next" aria-labelledby="smart-next-h">
   <p class="smart-next__eyebrow" id="smart-next-h">Qué hacer ahora</p>
   <ol class="smart-next__list">
-        <li class="smart-next__item smart-next__read"><span class="smart-next__verb">Lee:</span> <a href="/es/glossary/">el término del glosario relacionado →</a></li>
+        <li class="smart-next__item smart-next__read"><span class="smart-next__verb">Lee:</span> <a href="/es/glossary/margin/">el término del glosario relacionado →</a></li>
         <li class="smart-next__item smart-next__try"><span class="smart-next__verb">Prueba:</span> <a href="/es/tools/audits/restaurant/?from=blog/30-dias-despues-de-dejar-doordash-caso-restaurante&intent=watch">la herramienta que acompaña este artículo →</a></li>
         <li class="smart-next__item smart-next__note"><span class="smart-next__verb">O escríbele a Don:</span> <a href="/es/window/?topic=30-dias-despues-de-dejar-doordash-caso-restaurante">La Ventana →</a></li>
   </ol>
@@ -756,40 +805,58 @@ main{padding-top:64px}
     <div class="foot-grid">
       <div class="foot-col foot-brand">
         <a href="/es/" class="foot-lockup-wrap" aria-label="Muntin Digital — inicio">
-          <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53" loading="lazy" decoding="async">
+          <!-- alt="" porque el <a> que envuelve ya está etiquetado.
+               Sin esto, los lectores de pantalla anuncian dos veces
+               "Muntin Digital" en el enlace del logotipo. -->
+          <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="" width="240" height="53" loading="lazy" decoding="async">
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">La ventana.</p>
-        <p class="foot-blurb">Una biblioteca web y estudio de dise&ntilde;o para restaurantes, con base en Silver Spring, MD &mdash; art&iacute;culos, herramientas gratis, investigaci&oacute;n y un glosario de <!-- count:glossary.terms -->149<!-- /count --> t&eacute;rminos, con el estudio detr&aacute;s cuando quieras contratar. Se habla espa&ntilde;ol.</p>
+        <p class="foot-blurb">Una biblioteca gratuita para restaurantes &mdash; <!-- count:articles.library -->24<!-- /count --> art&iacute;culos, <!-- count:tools.live -->12<!-- /count --> herramientas y un glosario de <!-- count:glossary.terms -->149<!-- /count --> t&eacute;rminos &mdash; con un estudio web de una persona detr&aacute;s, en Silver Spring, MD. Se habla espa&ntilde;ol.</p>
       </div>
 
-      <nav class="foot-col" aria-labelledby="foot-explore">
-        <p class="foot-heading" id="foot-explore">Explorar</p>
-        <ul class="foot-links">
-          <li><a href="/es/services/">Servicios</a></li>
-          <li><a href="/es/for/restaurants/">Para restaurantes</a></li>
-          <li><a href="/es/work/">Proyectos</a></li>
-          <li><a href="/es/about/">Sobre Don</a></li>
-          <li><a href="/es/system/">El sistema</a></li>
-          <li><a href="/receipts/" hreflang="en" lang="en">Receipts</a></li>
-          <li><a href="/methods/" hreflang="en" lang="en">Methods</a></li>
-          <li><a href="/changelog/" hreflang="en" lang="en">Changelog</a></li>
-        </ul>
-      </nav>
-
+      <!-- El orden de columnas refleja la navegación principal de 5
+           ítems (Biblioteca, Estudio, Confianza, Contacto). La
+           Biblioteca apunta primero al hub /es/library/ (las tres
+           puertas: Lee, Busca, Haz); el antiguo /es/learn/ sigue
+           resolviendo pero ya no necesita su propio enlace de pie.
+           id="foot-learn" es el marcador canónico que usa
+           scripts/sync-includes.mjs (FOOTER_MAIN_FUNNEL_MARKER), así
+           que el id se mantiene aunque la etiqueta visible sea
+           "Biblioteca". -->
       <nav class="foot-col" aria-labelledby="foot-learn">
         <p class="foot-heading" id="foot-learn">Biblioteca</p>
         <ul class="foot-links">
-          <li><a href="/es/learn/">Inicio de la biblioteca</a></li>
-          <li><a href="/es/learn/start-here/">Empieza aquí</a></li>
-          <li><a href="/es/course/">Bootcamp Open the Doors</a></li>
-          <li><a href="/es/learn/topics/">Temas</a></li>
-          <li><a href="/es/blog/">Artículos</a></li>
-          <li><a href="/es/tools/">Herramientas gratis</a></li>
+          <li><a href="/es/library/">Explora la biblioteca</a></li>
           <li><a href="/es/glossary/">Glosario</a></li>
-          <li><a href="/es/learn/research/">Investigación</a></li>
-          <li><a href="/es/learn/checklists/">Listas y recursos</a></li>
+          <li><a href="/es/tools/">Herramientas gratis</a></li>
           <li><a href="/es/sheets/">Hojas del operador</a></li>
+          <li><a href="/es/blog/">Comentarios</a></li>
+        </ul>
+      </nav>
+
+      <!-- Fase 8 (portfolio sunset): la fila "Proyectos" enlazaba a
+           /es/work/, el portafolio personal. Ese hub se retiró cuando
+           la empresa pasó a ser el currículum; la fila ya no está y
+           /es/work/* hace 301 a /es/studio/. -->
+      <nav class="foot-col" aria-labelledby="foot-studio">
+        <p class="foot-heading" id="foot-studio">Estudio</p>
+        <ul class="foot-links">
+          <li><a href="/es/studio/#pricing">Precios</a></li>
+          <li><a href="/es/studio/compare/">Comparar opciones</a></li>
+          <li><a href="/es/studio/#process">Proceso</a></li>
+          <li><a href="/es/about/">Sobre Don</a></li>
+        </ul>
+      </nav>
+
+      <nav class="foot-col" aria-labelledby="foot-trust">
+        <p class="foot-heading" id="foot-trust">Confianza</p>
+        <ul class="foot-links">
+          <li><a href="/es/never/">Lo que nunca hacemos</a></li>
+          <li><a href="/es/ai/">Pol&iacute;tica de IA</a></li>
+          <li><a href="/es/methods/">M&eacute;todos y fuentes</a></li>
+          <li><a href="/es/changelog/">Registro de cambios</a></li>
+          <li><a href="/es/receipts/">Recibos</a></li>
         </ul>
       </nav>
 
@@ -800,7 +867,7 @@ main{padding-top:64px}
           <li><a href="/es/window/">Contacta a Don</a></li>
           <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (se abre en una pestaña nueva)</span></a></li>
         </ul>
-        <p class="foot-trust"><strong>Respuesta:</strong> de lunes a viernes, en menos de 4 horas. Los fines de semana, el lunes en la mañana.</p>
+        <p class="foot-trust"><strong>Respuesta:</strong> en menos de 4 horas de lunes a viernes; fines de semana, el lunes.</p>
       </nav>
     </div>
 
@@ -868,7 +935,6 @@ main{padding-top:64px}
   <!-- listen-script:start -->
   <script src="/assets/js/listen.js?v=20260503-modsplit" defer></script>
   <!-- listen-script:end -->
-
 
 </body>
 </html>

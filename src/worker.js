@@ -316,6 +316,7 @@ import {
 import { MAX_VOICE_DURATION_HARD_MS } from './lib/window.js';
 import { sanitizePlaintext as sanitizeWindowBody } from './lib/submissions.js';
 import { sendCrisisSms } from './lib/sms.js';
+import { lookupBlogLibraryRedirect } from './lib/blog-library-redirects.js';
 
 
 // ------------------------------------------------------------
@@ -475,6 +476,20 @@ export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
     const pathname = url.pathname;
+
+    // Phase 7 — /blog/<slug>/ → /library/<slug>/ permanent redirects.
+    // Lives in code (not _redirects) because Cloudflare Workers Static
+    // Assets caps _redirects at 100 rules and the 53 entries here used
+    // to push the file over the limit (deploy error 100324). The Map
+    // lookup is O(1) and only fires for GET requests against the
+    // /blog/ and /es/blog/ namespaces, so the cost is negligible.
+    if (request.method === 'GET' && (pathname.startsWith('/blog/') || pathname.startsWith('/es/blog/'))) {
+      const target = lookupBlogLibraryRedirect(pathname);
+      if (target) {
+        const location = target + url.search;
+        return new Response(null, { status: 301, headers: { location } });
+      }
+    }
 
     // Sprint D3: embeddable SVG audit badge. Handled outside the
     // /api/* routing because it serves an SVG (not JSON) and is

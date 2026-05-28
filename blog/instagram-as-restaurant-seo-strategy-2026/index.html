@@ -47,17 +47,77 @@
       "inLanguage": "en-US",
       "datePublished": "2026-05-11T07:00:00-04:00",
       "dateModified": "2026-05-11",
-      "author": { "@id": "https://muntin.digital/#don-goldstein", "@type": "Person", "name": "Don Goldstein", "url": "https://muntin.digital/about/" },
-      "publisher": { "@id": "https://muntin.digital/#business" },
-      "image": "https://muntin.digital/brand/og/blog-instagram-as-seo.png",
-      "mainEntityOfPage": { "@id": "https://muntin.digital/blog/instagram-as-restaurant-seo-strategy-2026/" }
+      "author": {
+        "@id": "https://muntin.digital/#don-goldstein",
+        "@type": "Person",
+        "name": "Don Goldstein",
+        "url": "https://muntin.digital/about/"
+      },
+      "publisher": {
+        "@id": "https://muntin.digital/#business"
+      },
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://muntin.digital/brand/og/blog-instagram-as-seo.png",
+        "width": 1200,
+        "height": 630,
+        "caption": "Instagram as restaurant SEO: stop posting, start indexing"
+      },
+      "mainEntityOfPage": {
+        "@id": "https://muntin.digital/blog/instagram-as-restaurant-seo-strategy-2026/"
+      },
+      "keywords": [
+        "instagram restaurant seo 2026",
+        "instagram caption seo restaurant",
+        "restaurant instagram search optimization",
+        "google indexes instagram captions",
+        "restaurant social seo instagram"
+      ],
+      "speakable": {
+        "@type": "SpeakableSpecification",
+        "cssSelector": [
+          "article#post-body",
+          "h1",
+          ".post-dek"
+        ]
+      },
+      "audio": {
+        "@id": "https://muntin.digital/blog/instagram-as-restaurant-seo-strategy-2026/#audio"
+      }
+    },
+    {
+      "@type": "AudioObject",
+      "@id": "https://muntin.digital/blog/instagram-as-restaurant-seo-strategy-2026/#audio",
+      "contentUrl": "https://muntin.digital/blog/instagram-as-restaurant-seo-strategy-2026/audio.mp3",
+      "encodingFormat": "audio/mpeg",
+      "inLanguage": "en-US",
+      "name": "Instagram as restaurant SEO: stop posting, start indexing — audio narration",
+      "description": "Full article read aloud by Don. Also available in Spanish, French, Italian, Portuguese, and Chinese.",
+      "associatedArticle": {
+        "@id": "https://muntin.digital/blog/instagram-as-restaurant-seo-strategy-2026/#article"
+      }
     },
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Muntin Digital", "item": "https://muntin.digital/" },
-        { "@type": "ListItem", "position": 2, "name": "Articles", "item": "https://muntin.digital/blog/" },
-        { "@type": "ListItem", "position": 3, "name": "Instagram as restaurant SEO: stop posting, start indexing", "item": "https://muntin.digital/blog/instagram-as-restaurant-seo-strategy-2026/" }
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Muntin Digital",
+          "item": "https://muntin.digital/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Articles",
+          "item": "https://muntin.digital/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Instagram as restaurant SEO: stop posting, start indexing",
+          "item": "https://muntin.digital/blog/instagram-as-restaurant-seo-strategy-2026/"
+        }
       ]
     }
   ]
@@ -104,7 +164,9 @@ header.nav{min-height:64px}
 main{padding-top:64px}
 </style>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-italic.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-italic.woff2" crossorigin>
 <link rel="preload" as="style" href="/assets/site-core.css" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="/assets/site-core.css"><link rel="stylesheet" href="/assets/site-article.css"></noscript>
@@ -118,7 +180,16 @@ main{padding-top:64px}
   "@type": "Article",
   "@id": "https://muntin.digital/blog/instagram-as-restaurant-seo-strategy-2026/#article",
   "abstract": "Google has indexed Instagram captions since 2024 and the in-app search bar handles a meaningful share of restaurant discovery for younger guests; almost no independent restaurant writes captions like it. Five caption-level moves: the first nine words carry the keyword load, name the dish/cuisine/neighborhood, write for the search query not the photo, hashtags inside the sentence not stacked, fill the alt-text field every time. Saves and profile clicks (not likes) are the Instagram metrics that correlate with reservations. Treating the account as an SEO surface rather than a billboard shifts the metric mix in the right direction.",
-  "mentions": []
+  "mentions": [
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/glossary/cover/"
+    },
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/glossary/funnel/"
+    }
+  ]
 }
 </script>
 <!-- article-abstract-mentions:end -->
@@ -127,25 +198,14 @@ main{padding-top:64px}
 
 <a class="skip-link" href="#main">Skip to main content</a>
 
-<script>
-  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
-     Apple devices. Runs early in <body> so the swap is essentially
-     invisible — script tags execute synchronously when the parser hits
-     them, before .nav-search-kbd renders below. CSS in site-core.css
-     conditions on <html data-platform="mac">. */
-  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
-    document.documentElement.dataset.platform = 'mac';
-  }
-</script>
 <!-- batch-banner:start -->
-<aside class="batch-banner" data-batch="2026-w2" role="complementary" aria-label="Week 2 · May 23, 2026" style="background:var(--ink,#14161A);color:var(--cream,#FAF7F2);font-size:15px;line-height:1.5;padding:16px 0;border-bottom:1px solid rgba(250,247,242,0.12);position:relative;z-index:60">
-  <div style="max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,64px);display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap">
-    <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;min-width:0">
-      <span style="display:inline-block;font-family:Inter,system-ui,sans-serif;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;background:var(--teal,#2A50C8);color:var(--cream,#FAF7F2);padding:4px 10px;border-radius:3px;white-space:nowrap;flex-shrink:0">New this week</span>
-      <span style="font-family:Georgia,serif;font-size:11px;letter-spacing:0.10em;text-transform:uppercase;opacity:0.75;white-space:nowrap">Week 2 · May 23, 2026</span>
-      <span style="font-family:Georgia,serif;font-size:17px;font-style:italic;line-height:1.35;min-width:0">Search changed on May 19. Here's the operator's move.</span>
+<aside class="batch-marquee" data-batch="2026-w2" role="complementary" aria-label="Week 2 · May 23, 2026" style="background:var(--ink,#14161A);color:var(--cream,#FAF7F2);font-size:14px;line-height:1.4;padding:8px 0;border-bottom:1px solid rgba(250,247,242,0.12)">
+  <div style="max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,64px);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;min-width:0;flex:1 1 auto">
+      <span style="display:inline-block;font-family:Inter,system-ui,sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;background:var(--teal,#2A50C8);color:var(--cream,#FAF7F2);padding:3px 8px;border-radius:3px;white-space:nowrap;flex-shrink:0">New this week</span>
+      <span style="font-family:Georgia,serif;font-size:14px;font-style:italic;line-height:1.35;min-width:0">Search changed on May 19. Here's the operator's move.</span>
     </div>
-    <a href="/blog/may-2026-discovery-changed-under-you/" style="display:inline-flex;align-items:center;gap:6px;color:var(--ink,#14161A);background:var(--cream,#FAF7F2);text-decoration:none;font-family:Inter,system-ui,sans-serif;font-weight:600;font-size:14px;padding:9px 18px;border-radius:999px;white-space:nowrap;flex-shrink:0;transition:transform .15s ease">Read the batch <span aria-hidden="true">&rarr;</span></a>
+    <a href="/blog/may-2026-discovery-changed-under-you/" style="display:inline-flex;align-items:center;gap:6px;color:var(--ink,#14161A);background:var(--cream,#FAF7F2);text-decoration:none;font-family:Inter,system-ui,sans-serif;font-weight:600;font-size:12px;padding:5px 12px;border-radius:999px;white-space:nowrap;flex-shrink:0;transition:transform .15s ease">Read the batch <span aria-hidden="true">&rarr;</span></a>
   </div>
 </aside>
 <!-- batch-banner:end -->
@@ -172,8 +232,8 @@ main{padding-top:64px}
       Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
     </a>
     <!-- Phase 7: 5-item nav, per launch plan Part II.
-         Library / Tools / Work / Studio / Sign in.
-         Library now points at the canonical /library/ hub (the
+         Library / Tools / Studio / Sign in.
+         Library points at the canonical /library/ hub (the
          three-doors page). Tools is promoted from the old Library
          mega-menu to a top-level item. Studio replaces Services +
          Restaurants + About — they all live under /studio/ now,
@@ -183,11 +243,15 @@ main{padding-top:64px}
          Restaurants pages remain reachable via /studio/ and the
          _redirects table; /about/ is unchanged. The mega-menu is
          retired (the hub IS the menu now); the controller script
-         is gone too. -->
+         is gone too.
+
+         /work/ was retired with the Phase 8 portfolio-sunset pass:
+         the company-as-resume framing made the personal-portfolio
+         showcase redundant. Legacy /work/* URLs 301 to /studio/
+         via _redirects so old backlinks land softly. -->
     <nav class="nav-links" aria-label="Primary">
       <a href="/library/">Library</a>
       <a href="/tools/">Tools</a>
-      <a href="/work/">Work</a>
       <a href="/studio/">Studio</a>
       <!-- Both sign-in / workshop ship hidden by default; the
            auth-state JS at the bottom of this file calls
@@ -215,14 +279,14 @@ main{padding-top:64px}
          default state (sun) and clicks do nothing; the OS
          preference still drives dark-mode tokens via media query. -->
     <button type="button" class="theme-toggle js-theme-toggle" aria-label="Toggle dark mode" aria-pressed="false" hidden>
-      <svg class="theme-toggle__icon theme-toggle__icon--sun" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <svg class="theme-toggle__icon theme-toggle__icon--sun" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <circle cx="12" cy="12" r="4"/>
         <line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/>
         <line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/>
         <line x1="4.93" y1="4.93" x2="7.05" y2="7.05"/><line x1="16.95" y1="16.95" x2="19.07" y2="19.07"/>
         <line x1="4.93" y1="19.07" x2="7.05" y2="16.95"/><line x1="16.95" y1="7.05" x2="19.07" y2="4.93"/>
       </svg>
-      <svg class="theme-toggle__icon theme-toggle__icon--moon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <svg class="theme-toggle__icon theme-toggle__icon--moon" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
       </svg>
     </button>
@@ -244,7 +308,6 @@ main{padding-top:64px}
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
     <a href="/library/">Library</a>
     <a href="/tools/">Tools</a>
-    <a href="/work/">Work</a>
     <a href="/studio/">Studio</a>
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
@@ -313,27 +376,6 @@ main{padding-top:64px}
                 });
               })
               .catch(function () { /* silent */ });
-            // Course progress dot — appended after the workshop link
-            // when the operator is mid-bootcamp (> 0 but < 16 lessons
-            // done). Decorative + aria-hidden; the operator can still
-            // click the workshop link to see the canonical count.
-            fetch('/api/course/progress', { credentials: 'same-origin' })
-              .then(function (r3) { return r3.ok ? r3.json() : null; })
-              .then(function (j) {
-                if (!j || !j.progress || !Array.isArray(j.progress.completed)) return;
-                var n = j.progress.completed.length;
-                if (n <= 0 || n >= 16) return;
-                workshop.forEach(function (w) {
-                  if (w.querySelector('.nav-course-dot')) return;
-                  var dot = document.createElement('span');
-                  dot.className = 'nav-course-dot';
-                  dot.setAttribute('aria-hidden', 'true');
-                  dot.title = 'Open the Doors — lesson ' + n + ' / 16';
-                  dot.style.cssText = 'display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--teal);margin-left:6px;vertical-align:middle';
-                  w.appendChild(dot);
-                });
-              })
-              .catch(function () { /* silent — course endpoint optional */ });
             return;
           }
           show(signin);
@@ -357,7 +399,7 @@ main{padding-top:64px}
     </ol>
   </nav>
 
-  <article class="container article-body" id="post-body" data-content-pending="2026-05-11" style="max-width:720px;margin:32px auto 80px;padding:0 var(--pad-x)">
+  <article class="container article-body" id="post-body" style="max-width:720px;margin:32px auto 80px;padding:0 var(--pad-x)">
 
     <header style="margin-bottom:32px">
       <p class="eyebrow">Op-ed &middot; May 11, 2026 &middot; 7 min read &middot; By <a href="/about/#don-goldstein" style="color:var(--teal)">Don Goldstein</a></p>
@@ -396,43 +438,43 @@ main{padding-top:64px}
 
     <figure class="viz-figure article-figure" data-audio-alt="The relative direction of five Instagram traffic sources to a restaurant profile in 2026, after the iOS-17 referrer change and the algorithm penalty against stacked hashtags. Direct profile visits and story link-clicks have risen as the biggest channels. Saved-post discovery is rising because the in-app search now ranks against your save count. Hashtag traffic has diminished sharply because the algorithm penalizes stacked tags as low-quality content. Explore-page traffic is flat for established accounts. The point is the direction of each channel, not the exact share.">
       <div class="viz-bars">
-        <p class="viz-bars__title">Instagram traffic-source direction for a restaurant profile, 2026</p>
+        <p class="viz-bars__title">Instagram traffic-source direction for a restaurant profile, 2026 (rising / flat / falling)</p>
         <div class="viz-bars__row">
           <p class="viz-bars__label">Direct profile visits</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:1.00"></span></div>
-          <p class="viz-bars__num">rising &mdash; largest channel</p>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.85"></span></div>
+          <p class="viz-bars__num">↑ rising</p>
         </div>
         <div class="viz-bars__row">
           <p class="viz-bars__label">Story link-clicks</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.80"></span></div>
-          <p class="viz-bars__num">rising</p>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.85"></span></div>
+          <p class="viz-bars__num">↑ rising</p>
         </div>
         <div class="viz-bars__row">
           <p class="viz-bars__label">Saved-post discovery</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.55"></span></div>
-          <p class="viz-bars__num">rising sleeper</p>
-        </div>
-        <div class="viz-bars__row">
-          <p class="viz-bars__label">Hashtag traffic</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.25"></span></div>
-          <p class="viz-bars__num">diminished &mdash; algorithm penalty</p>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.85"></span></div>
+          <p class="viz-bars__num">↑ rising (sleeper)</p>
         </div>
         <div class="viz-bars__row">
           <p class="viz-bars__label">Explore page</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:0.20"></span></div>
-          <p class="viz-bars__num">flat for established accounts</p>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:0.50"></span></div>
+          <p class="viz-bars__num">→ flat</p>
+        </div>
+        <div class="viz-bars__row">
+          <p class="viz-bars__label">Hashtag traffic</p>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.20"></span></div>
+          <p class="viz-bars__num">↓ falling (algorithm penalty)</p>
         </div>
       </div>
-      <figcaption>Direction, not exact share. The hashtag channel was a top-three source through 2022 and has been declining since the 2024 algorithm update. Story-stickers and the saved-post search index are the two channels rising fastest.</figcaption>
+      <figcaption>Three lanes — rising (teal), flat (stone), falling (rust). The bars encode direction, not magnitude. Hashtag traffic was a top-three source through 2022 and has been declining since the 2024 algorithm update.</figcaption>
     </figure>
 
-    <h2>Why the platform changed and almost nobody noticed</h2>
+    <h2 id="why-the-platform-changed-and-almost-nobody-noticed">Why the platform changed and almost nobody noticed</h2>
 
     <p>Two things happened around mid-2024. Meta started exposing post captions to the public web crawl &mdash; you can verify this with a Google site:instagram.com query for any restaurant; their captions are indexed. And the in-app search algorithm shifted from ranking by engagement to ranking by content-match. A caption that contained the exact phrase the user searched outranked a caption with the same topic phrased differently, regardless of how many likes it had.</p>
 
     <p>The combined effect: every caption is now competing in two search markets at once. One is Google&rsquo;s, the other is Instagram&rsquo;s. The keywords that get you found are slightly different in each, but the writing moves are the same.</p>
 
-    <h2>The five caption-level moves</h2>
+    <h2 id="the-five-caption-level-moves">The five caption-level moves</h2>
 
     <figure class="viz-figure article-figure" data-audio-alt="Five caption-level moves that make a restaurant Instagram post discoverable in search, ranked by impact. Move one: the first nine words carry the keyword load. Instagram truncates captions at 125 characters on the feed; if your dish name and city aren't in the first nine words, the post won't surface in search. Move two: name the dish, the cuisine, and the neighborhood in plain language. 'Sea bass crudo' beats 'tonight's special'; 'Silver Spring Italian' beats 'come visit us'. Move three: write for the search query, not the photo. The caption answers what someone might have typed, not what the image already shows. Move four: hashtags go inside the caption sentence, not stacked at the bottom. The Instagram algorithm now penalizes hashtag stacks as low-quality content. Move five: alt-text is searchable. Fill in the actual alt-text field on every post; ninety percent of restaurant accounts skip this and surrender the search surface for free.">
       <div class="viz-flow">
@@ -477,19 +519,19 @@ main{padding-top:64px}
       <figcaption>Five caption-level moves, ranked by impact. Moves 1&ndash;3 get the search surface; 4&ndash;5 keep it.</figcaption>
     </figure>
 
-    <h2>Move 1: The first nine words carry the keyword load</h2>
+    <h2 id="move-1-the-first-nine-words-carry-the-keyword-load">Move 1: The first nine words carry the keyword load</h2>
 
     <p>Instagram truncates the caption at roughly 125 characters on the feed and search-result pages. That&rsquo;s about nine to fifteen words depending on word length. After the truncation, &ldquo;more&rdquo; appears, and most readers don&rsquo;t tap it. The keyword density in the first nine words is what the algorithm ranks; it&rsquo;s also what the human reader actually sees. Bury the dish name in the third sentence and the post is invisible.</p>
 
     <p>The discipline is simple and brutal: write the caption from the search box backwards. What would the guest type? Type that, then add the human flourish after. Not the other way around.</p>
 
-    <h2>Move 2: Name the dish, the cuisine, the neighborhood</h2>
+    <h2 id="move-2-name-the-dish-the-cuisine-the-neighborhood">Move 2: Name the dish, the cuisine, the neighborhood</h2>
 
     <p>Three entities, every caption. The dish (specific, not category). The cuisine or genre. The neighborhood or city. &ldquo;Pici al rag&ugrave; at Roma Cucina, Silver Spring Italian&rdquo; is fifteen syllables of pure entity match. The vibe goes after. The platform doesn&rsquo;t rank on vibe; it ranks on entities.</p>
 
     <p>The reason this feels uncomfortable is that restaurant marketing taught operators for fifteen years that the caption is supposed to evoke the experience. The caption is supposed to do that, eventually. But before it can evoke the experience to a follower, it has to surface to a stranger searching for a meal. The entities are the surfacing layer. The evocation comes after.</p>
 
-    <h2>The before / after</h2>
+    <h2 id="the-before-after">The before / after</h2>
 
     <figure class="viz-figure article-figure" data-audio-alt="Same dish, same restaurant, two captions side by side. The 2019-style caption: 'Tonight, we're so excited to share something special. Our chef has been working on this for weeks. Come in and let us know what you think. Made with love.' That caption has no dish name, no cuisine, no location, no searchable entity, and the first nine words contain only emotional language. Probability of surfacing on search, near zero. The 2026-style caption: 'Pici al ragù, hand-rolled, Tuesday dinner at Roma Cucina — Silver Spring Italian on Georgia Ave. Made with the same recipe my grandmother used in Marche. Reservations open.' That caption names the dish twice, the cuisine, the city, and the street, all in the first thirty characters. It also includes alt-text-friendly description and ends with a soft CTA. Probability of surfacing on search, high.">
       <div class="viz-ba">
@@ -508,29 +550,29 @@ main{padding-top:64px}
       <figcaption>The 2019 caption has zero entities in the first nine words. The 2026 caption has four. Same photo above either one.</figcaption>
     </figure>
 
-    <h2>Move 3: Write for the search query, not the photo</h2>
+    <h2 id="move-3-write-for-the-search-query-not-the-photo">Move 3: Write for the search query, not the photo</h2>
 
     <p>This is the move that takes the longest to internalize. The photo already shows the dish. The caption&rsquo;s job is not to describe it &mdash; the caption&rsquo;s job is to answer the search query that brought someone to the post. &ldquo;Where do I get carbonara in Silver Spring&rdquo; is a search query. &ldquo;Carbonara at Roma Cucina, Silver Spring Italian, $24, Tuesday through Sunday&rdquo; is the caption that answers it.</p>
 
-    <p>The test: cover the photo with your hand and read the caption. Does it stand alone as a search result? If yes, you&rsquo;ve done move 3. If you have to look at the photo for context, you haven&rsquo;t.</p>
+    <p>The test: <!-- LIBRARY:autolink:start --><a href="/glossary/cover/" data-glossary-head="Cover" data-glossary-aka="one customer served" data-glossary-blurb="One customer seated and served.">cover</a><!-- LIBRARY:autolink:end --> the photo with your hand and read the caption. Does it stand alone as a search result? If yes, you&rsquo;ve done move 3. If you have to look at the photo for context, you haven&rsquo;t.</p>
 
-    <h2>Move 4: Hashtags inside the sentence, not stacked</h2>
+    <h2 id="move-4-hashtags-inside-the-sentence-not-stacked">Move 4: Hashtags inside the sentence, not stacked</h2>
 
     <p>Instagram&rsquo;s late-2024 algorithm update started treating stacked hashtags &mdash; the wall of fifteen tags at the bottom of every post &mdash; as a low-quality signal. The platform now ranks two or three hashtags placed mid-sentence higher than fifteen stacked at the end. The reason is anti-spam: stacked hashtags were a marker for content farms, so the algorithm started discounting them across the board.</p>
 
     <p>The practical move: weave the tag into the sentence. Instead of #silverspringfood at the end, write &ldquo;...at #romacucina, our #silverspring kitchen...&rdquo; in the body. Same tag, ranked higher.</p>
 
-    <h2>Move 5: Fill the alt-text field every time</h2>
+    <h2 id="move-5-fill-the-alt-text-field-every-time">Move 5: Fill the alt-text field every time</h2>
 
     <p>Instagram has an alt-text field on every post that almost nobody uses. It&rsquo;s in the advanced settings under accessibility. The platform&rsquo;s search algorithm and Google&rsquo;s image crawler both read it. It&rsquo;s a free keyword surface that 90% of restaurant accounts surrender by default.</p>
 
     <p>The alt-text should describe the photo factually: &ldquo;Hand-rolled pici pasta with traditional ragù, served at Roma Cucina, an Italian restaurant in Silver Spring, MD.&rdquo; Plain language. The dish, the cuisine, the city. No emojis. The point is searchability, not personality.</p>
 
-    <h2>What this changes about your week</h2>
+    <h2 id="what-this-changes-about-your-week">What this changes about your week</h2>
 
     <p>Not much, actually. The frequency stays the same. The photo budget stays the same. The fifteen seconds you used to spend writing &ldquo;Made with love&rdquo; becomes thirty seconds of writing the caption from the search box backward, plus ten seconds for the alt-text. Total added time per post: under a minute. Total added cost: zero.</p>
 
-    <p>What changes is what surfaces in search ninety days later. Save rate climbs first. Profile-click rate climbs second. Reservations climb a quarter behind that, because the people finding you on the search bar are deeper-funnel than the people finding you on the feed.</p>
+    <p>What changes is what surfaces in search ninety days later. Save rate climbs first. Profile-click rate climbs second. Reservations climb a quarter behind that, because the people finding you on the search bar are deeper-<!-- LIBRARY:autolink:start --><a href="/glossary/funnel/" data-glossary-head="Funnel" data-glossary-aka="the path from visitor to customer" data-glossary-blurb="The sequence of steps a visitor goes through before becoming a customer — landing page → menu page → reserve button → reservation form → confirmation.">funnel</a><!-- LIBRARY:autolink:end --> than the people finding you on the feed.</p>
 
     <div class="callout">
       <p><strong>Stop optimizing your grid for followers.</strong> Optimize your captions for strangers searching from outside the platform. Followers will keep liking the photos. Strangers will start finding you. The two audiences don&rsquo;t conflict, but they reward different writing &mdash; and only one of them turns into a booking.</p>
@@ -545,8 +587,8 @@ main{padding-top:64px}
     <section style="margin-top:48px;padding-top:32px;border-top:1px solid var(--line)">
       <p class="eyebrow" style="margin-bottom:10px">Keep going</p>
       <ul style="font-size:15.5px;line-height:1.7;color:var(--teal);margin:0;padding-left:22px">
-        <li><a href="/blog/how-to-get-cited-in-google-ai-overviews-restaurant/">How to get cited in Google&rsquo;s AI Overviews</a> &mdash; the same writing discipline, different surface</li>
-        <li><a href="/blog/restaurant-photo-spec-sheet/">The restaurant photo spec sheet</a> &mdash; what to shoot for the captions you&rsquo;re now writing</li>
+        <li><a href="/library/how-to-get-cited-in-google-ai-overviews-restaurant/">How to get cited in Google&rsquo;s AI Overviews</a> &mdash; the same writing discipline, different surface</li>
+        <li><a href="/library/restaurant-photo-spec-sheet/">The restaurant photo spec sheet</a> &mdash; what to shoot for the captions you&rsquo;re now writing</li>
         <li><a href="/services/audit/">$499 audit</a> &mdash; if you want me to rewrite the last 30 captions on paper</li>
       </ul>
     </section>
@@ -601,7 +643,7 @@ main{padding-top:64px}
 <aside class="smart-next" aria-labelledby="smart-next-h">
   <p class="smart-next__eyebrow" id="smart-next-h">What to do next</p>
   <ol class="smart-next__list">
-        <li class="smart-next__item smart-next__read"><span class="smart-next__verb">Read:</span> <a href="/glossary/">the related glossary term →</a></li>
+        <li class="smart-next__item smart-next__read"><span class="smart-next__verb">Read:</span> <a href="/glossary/cover/">the related glossary term →</a></li>
         <li class="smart-next__item smart-next__try"><span class="smart-next__verb">Try:</span> <a href="/tools/audits/restaurant/?from=blog/instagram-as-restaurant-seo-strategy-2026&intent=watch">the tool that pairs with this article →</a></li>
         <li class="smart-next__item smart-next__note"><span class="smart-next__verb">Or send Don a note:</span> <a href="/window/?topic=instagram-as-restaurant-seo-strategy-2026">The Window →</a></li>
   </ol>
@@ -625,20 +667,47 @@ main{padding-top:64px}
     <div class="foot-grid">
       <div class="foot-col foot-brand">
         <a href="/" class="foot-lockup-wrap" aria-label="Muntin Digital home">
-          <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53" loading="lazy" decoding="async">
+          <!-- alt="" because the surrounding <a> is already labeled.
+               Without it, screen readers announce "Muntin Digital,
+               Muntin Digital home" on the lockup link. -->
+          <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="" width="240" height="53" loading="lazy" decoding="async">
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a <!-- count:glossary.terms -->149<!-- /count -->-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->24<!-- /count --> articles, <!-- count:tools.live -->12<!-- /count --> tools, <!-- count:glossary.terms -->149<!-- /count --> glossary terms &mdash; with a one-person web studio behind it in Silver Spring, MD.</p>
       </div>
 
-      <nav class="foot-col" aria-labelledby="foot-explore">
-        <p class="foot-heading" id="foot-explore">Studio</p>
+      <!-- Column order mirrors the 4-item primary nav
+           (Library, Tools-rolled-into-Library, Studio) so the
+           footer reinforces the same IA. The Library column leads
+           with /library/ (the post-Phase-7 three-doors hub); the
+           older /learn/ landing still resolves but no longer needs
+           its own footer slot. id="foot-learn" is the canonical-
+           footer marker that scripts/sync-includes.mjs keys on
+           (FOOTER_MAIN_FUNNEL_MARKER), so the id stays even though
+           the visible label is the more familiar "Library".
+
+           Phase 8 (portfolio sunset): the Studio column's "Case
+           studies" row used to link to /work/, the personal-portfolio
+           hub. That hub was retired when the company became the
+           resume; the row is now gone and /work/* 301s to /studio/. -->
+      <nav class="foot-col" aria-labelledby="foot-learn">
+        <p class="foot-heading" id="foot-learn">Library</p>
         <ul class="foot-links">
-          <li><a href="/services/">Services &amp; pricing</a></li>
-          <li><a href="/for/restaurants/">For restaurants</a></li>
+          <li><a href="/library/">Browse the library</a></li>
+          <li><a href="/glossary/">Glossary</a></li>
+          <li><a href="/tools/">Free tools</a></li>
+          <li><a href="/sheets/">Operator sheets</a></li>
+          <li><a href="/blog/">Commentary</a></li>
+        </ul>
+      </nav>
+
+      <nav class="foot-col" aria-labelledby="foot-studio">
+        <p class="foot-heading" id="foot-studio">Studio</p>
+        <ul class="foot-links">
+          <li><a href="/studio/#pricing">Pricing</a></li>
           <li><a href="/studio/compare/">Compare options</a></li>
-          <li><a href="/work/">Case studies</a></li>
+          <li><a href="/studio/#process">Process</a></li>
           <li><a href="/about/">About Don</a></li>
         </ul>
       </nav>
@@ -646,29 +715,11 @@ main{padding-top:64px}
       <nav class="foot-col" aria-labelledby="foot-trust">
         <p class="foot-heading" id="foot-trust">Trust</p>
         <ul class="foot-links">
-          <li><a href="/never/">Never</a></li>
+          <li><a href="/never/">What we never do</a></li>
           <li><a href="/ai/">AI policy</a></li>
-          <li><a href="/security/">Data &amp; security</a></li>
-          <li><a href="/methods/">Methods</a></li>
-          <li><a href="/receipts/">Receipts</a></li>
+          <li><a href="/methods/">Methods &amp; sources</a></li>
           <li><a href="/changelog/">Changelog</a></li>
-          <li><a href="/system/">The system</a></li>
-        </ul>
-      </nav>
-
-      <nav class="foot-col" aria-labelledby="foot-learn">
-        <p class="foot-heading" id="foot-learn">Library</p>
-        <ul class="foot-links">
-          <li><a href="/learn/">Library home</a></li>
-          <li><a href="/learn/start-here/">Start here</a></li>
-          <li><a href="/course/">Open the Doors bootcamp</a></li>
-          <li><a href="/learn/topics/">Topics</a></li>
-          <li><a href="/blog/">Articles</a></li>
-          <li><a href="/tools/">Free tools</a></li>
-          <li><a href="/glossary/">Glossary</a></li>
-          <li><a href="/learn/research/">Research</a></li>
-          <li><a href="/learn/checklists/">Checklists &amp; guides</a></li>
-          <li><a href="/sheets/">Operator sheets</a></li>
+          <li><a href="/receipts/">Receipts</a></li>
         </ul>
       </nav>
 
@@ -679,7 +730,7 @@ main{padding-top:64px}
           <li><a href="/window/">Reach Don</a></li>
           <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (opens in new tab)</span></a></li>
         </ul>
-        <p class="foot-trust"><strong>Reply:</strong> Mondays through Fridays, within 4 hours. Weekends, by Monday morning.</p>
+        <p class="foot-trust"><strong>Reply:</strong> within 4 hours Mon&ndash;Fri; weekends by Monday.</p>
       </nav>
     </div>
 

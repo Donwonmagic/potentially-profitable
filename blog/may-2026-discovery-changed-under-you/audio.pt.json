@@ -1,155 +1,339 @@
 {
   "version": 1,
-  "generatedAt": "2026-05-22T22:02:50.673Z",
+  "generatedAt": "2026-05-24T04:17:28.649Z",
   "engine": "kokoro",
   "model": "kokoro-v1.0.onnx",
   "voice": "pm_alex",
   "language": "pt",
-  "total": 212.42,
+  "total": 645.63,
   "chunks": [
     {
       "id": 0,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(1)",
-      "text": "O lote · 25 de maio, vinte e seis · 4 min de leitura &middot; Por Don Goldstein",
+      "text": "A partida · 23 de maio, vinte e seis · 8 min de leitura &middot; Por Don Goldstein",
       "start": 0,
-      "end": 6.91
+      "end": 7.02
     },
     {
       "id": 1,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(2)",
-      "text": "Em uma única semana, a superfície que envia clientes ao seu restaurante foi reconstruída. Aqui está a visão do operador sobre o que mudou — e as cinco peças que respondem a isso, em ordem.",
-      "start": 7.26,
-      "end": 18.13
+      "text": "Em uma semana, Google unificou suas superfícies de descoberta em torno de um ativo: a legibilidade do seu perfil. A visão geral explica a convergência; os cinco artigos o levam por ela, em ordem.",
+      "start": 7.37,
+      "end": 18.61
     },
     {
       "id": 2,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(3)",
       "text": "Em resumo",
-      "start": 18.65,
-      "end": 19.46
+      "start": 19.13,
+      "end": 19.94
     },
     {
       "id": 3,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "Em uma semana de maio de vinte e seis, Google reconstruiu o Modo AI no I/O, iniciou uma atualização central e Gemini se tornou a segunda fonte de referência de IA.",
-      "start": 19.81,
-      "end": 29.21
+      "text": "Em uma semana de maio de vinte e seis, Google unificou suas superfícies de descoberta em torno de um único ativo — o Google Business Profile — por meio da reconstrução do modo AI, uma atualização central e do crescimento de Gemini para 13,2% do tráfego de referência de AI.",
+      "start": 20.29,
+      "end": 36.21
     },
     {
       "id": 4,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "As três recompensam as mesmas duas coisas: ser legível para uma máquina e ser reservável sem uma ligação telefônica.",
-      "start": 29.53,
-      "end": 36.5
+      "text": "As três mudanças convergem em dois requisitos: legibilidade (o modelo pode extrair sua resposta do texto e do esquema) e bookabilidade (o agente pode concluir uma reserva por meio do OpenTable, Resy ou Tock).",
+      "start": 36.53,
+      "end": 49.13
     },
     {
       "id": 5,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "Essa onda é composta por cinco peças, em ordem: a nova superfície, sua visibilidade, o custo, a nova fonte de tráfego e a reserva.",
-      "start": 36.82,
-      "end": 44.67
+      "text": "Um perfil agora alimenta quatro superfícies — o map pack, o AI Overview, Gemini e o agente de reservas — então, uma hora gasta no perfil é recompensada quatro vezes.",
+      "start": 49.45,
+      "end": 58.85
     },
     {
       "id": 6,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(4)",
-      "text": "Na maioria das semanas, a forma como os clientes encontram você muda um pouco. A semana de 19 de maio de vinte e seis não foi como a maioria das semanas. Em um curto período de dias, Google reconstruiu o Modo AI em sua conferência I/O, começou a implantar sua segunda atualização central de busca do ano e — de acordo com um novo relatório da BrightEdge — viu Gemini subir ao segundo lugar como fonte de referência de IA. Três mudanças, uma direção: a superfície que envia pessoas ao seu restaurante está sendo reescrita, e agora responde e age antes que o cliente chegue a você.",
-      "start": 45.19,
-      "end": 77.93
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "Os cinco artigos são capítulos de uma história: veja a nova superfície, verifique se você está nela, conte o custo, mude para a nova fonte de tráfego, capture a reserva.",
+      "start": 59.17,
+      "end": 68.97
     },
     {
       "id": 7,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(5)",
-      "text": "Nada disso é motivo para pânico. Tudo isso recompensa as mesmas duas coisas: ser legível para uma máquina e ser reservável sem uma ligação telefônica. A onda desta semana é composta por cinco peças que abordam exatamente isso, em ordem — desde a nova superfície, até se você está nela, até o que está custando, até de onde o tráfego agora vem, até capturar a reserva.",
-      "start": 78.45,
-      "end": 99.16
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "As três mudanças aconteceram ao mesmo tempo (e elas apontam para a mesma direção).",
+      "start": 70.07,
+      "end": 74.78
     },
     {
       "id": 8,
-      "kind": "figure",
-      "selector": "#post-body > figure:nth-of-type(1)",
-      "text": "A escada de leitura para as cinco peças desta semana. Uma: a nova superfície — Google reconstruiu o Modo AI, e o resultado local agora é gerado e pode reservar a mesa. Dois: você está nela — oitenta e três por cento dos restaurantes são invisíveis na busca por IA; a verificação de quatro números. Três: o que está custando — as ligações e toques de direções estão desaparecendo dos resultados. Quatro: de onde o tráfego agora vem — Gemini é sua segunda fonte de referência de IA, e ela lê seu perfil Google. Cinco: capturar a reserva — o agente pode reservar sua mesa se você estiver conectado a um provedor.",
-      "start": 99.96,
-      "end": 133.79
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "Na maioria das semanas, a forma como os comensais encontram você muda um pouco. A semana de 19 de maio de vinte e seis não foi como a maioria das semanas. Em quatro dias, Google reconstruiu o modo AI em seu palco na conferência I/O, começou a lançar sua segunda atualização central de busca do ano em 21 de maio e — de acordo com uma leitura da BrightEdge que chegou em 20 de maio — Gemini foi confirmado como a segunda fonte de referência de AI, subindo de 4,3% do tráfego de referência de AI no início do Q1 para 13,2% em abril. Três anúncios, uma direção: a superfície que envia pessoas à sua porta está sendo reescrita para responder e agir antes que o comensal chegue a você.",
+      "start": 75.48,
+      "end": 116.08
     },
     {
       "id": 9,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(1)",
-      "text": "A única tese que abrange as cinco.",
-      "start": 134.89,
-      "end": 136.84
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "A participação de Gemini no tráfego de referência de AI nos primeiros quatro meses de vinte e seis. Em janeiro, era de 4,3% do tráfego de referência de AI. No final do primeiro trimestre, havia subido para 11,6%. Em abril, alcançou 13,2%. No mesmo período, a participação do ChatGPT caiu de 89,2% para 81,4%. A história é de subida rápida de um lado, devolução lenta do outro.",
+      "start": 116.88,
+      "end": 142.2
     },
     {
       "id": 10,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(6)",
-      "text": "Lidas juntas, as cinco apontam para um único ativo: seu Google Business Profile. Ele agora é fundamental de uma forma que não era há um ano — ele alimenta o map pack, o AI Overview, as respostas do Gemini e o agente que reserva a mesa. Mantenha-o completo e atualizado e você estará trabalhando em todas as quatro superfícies com um esforço de uma tarde, sem orçamento para anúncios.",
-      "start": 137.54,
-      "end": 157.69
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "Três mudanças, nenhuma delas pequena, todas recompensando as mesmas duas coisas: ser legível para uma máquina e ser bookável sem uma ligação telefônica. A reconstrução do I/O tornou o resultado local uma resposta composta que pode agir. A atualização central re-pesou o ranking sob uma superfície que cada vez mais resume em vez de lista. E a subida de Gemini significa que o mesmo perfil Google que vence o map pack agora também é a superfície de ranking para o assistente de AI de crescimento mais rápido. As três convergem em um ativo. O restante desta visão geral é o que isso significa na prática, e os cinco artigos o levam por ela, de ponta a ponta.",
+      "start": 142.95,
+      "end": 179.28
     },
     {
       "id": 11,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(7)",
-      "text": "Se você fizer uma coisa esta semana, faça isso: execute o gradador G B P para encontrar os espaços em branco, então a verificação de saúde da loja para garantir que o caminho da resposta até a sua porta ainda funcione em um telefone. A superfície mudou. O trabalho que vence é o mesmo que sempre foi — apenas agora está direcionado a uma máquina.",
-      "start": 158.21,
-      "end": 177.4
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "O que \"legibilidade\" e \"bookabilidade\" realmente significam (operacionalmente).",
+      "start": 180.38,
+      "end": 185.21
     },
     {
       "id": 12,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(8)",
-      "text": "Cinco peças, publicadas juntas, destinadas a ser lidas em ordem. A caixa de busca mudou. Aqui está como você pode se mover com ela.",
-      "start": 177.92,
-      "end": 185.65
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "Legibilidade não é uma ideia de marca. É a questão literal de saber se um modelo pode extrair a resposta para \"o que eles servem, quando estão abertos, são bons, atendem ao meu pedido\" a partir de texto simples e campos estruturados. Se a resposta só existe dentro de um menu fotografado, um PDF ou uma imagem codificada à mão, o modelo não consegue lê-la e cita um concorrente que a escreveu. Legibilidade é o cheque de quatro números no Google Business Profile, o schema markup nas suas próprias páginas, os campos de horas por dia e de culinária preenchidos como um pedido de permissão — sem espaços em branco.",
+      "start": 185.91,
+      "end": 219.88
     },
     {
       "id": 13,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(9)",
-      "text": "Pontos principais",
-      "start": 186.17,
-      "end": 187.3
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "Reservabilidade é a mesma ideia aplicada à ação. A nova resposta de IA não apenas descreve; ela pode completar uma reserva por meio do OpenTable, Resy ou Tock sem enviar o cliente ao seu site. Se o seu inventário estiver em um livro de papel ao lado do host stand ou atrás de uma linha \"ligue para nós\", o agente não consegue vê-lo — ele reserva um restaurante cujas mesas ele pode ver. Reservabilidade é o seu link de reserva, um provedor conectado e um checkout móvel que não quebra sob a transferência do agente.",
+      "start": 220.4,
+      "end": 248.92
     },
     {
       "id": 14,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
-      "text": "A superfície que envia clientes ao seu restaurante foi reescrita em uma única semana — primeira a responder e agente.",
-      "start": 187.65,
-      "end": 194.41
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "Nenhum dos conceitos é novo. Os operadores ouviram ambos há anos. O que mudou em uma semana é que eles se tornaram novos pontos de carga: os mesmos dois requisitos agora decidem se você é nomeado pelo modelo, escolhido pelo agente e visível em três das quatro superfícies que um cliente usa para encontrá-lo. Você não precisava vencer em legibilidade e reservabilidade antes; a matemática de proximidade e classificação do map pack perdoava muito. A nova superfície quase não perdoa nada.",
+      "start": 249.44,
+      "end": 277.07
     },
     {
       "id": 15,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
-      "text": "Seu Google Business Profile agora é fundamental para o map pack, AI Overview, Gemini e reserva agente ao mesmo tempo.",
-      "start": 194.73,
-      "end": 201.35
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "O único ativo que alimenta as quatro superfícies.",
+      "start": 278.17,
+      "end": 281.01
     },
     {
       "id": 16,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
-      "text": "Leia as cinco peças em ordem; cada uma continua onde a última parou.",
-      "start": 201.67,
-      "end": 205.73
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "Separe os três turnos e todos eles alcançam o mesmo arquivo: o seu Google Business Profile. Ele alimenta o map pack da mesma forma que sempre fez. Ele alimenta o Google do AI Overview, onde uma resposta gerada é montada a partir do que o modelo pode ler e confiar sobre você — a reconstrução que cobrimos na nova superfície. Ele alimenta o Gemini, que se apoia mais no próprio ecossistema do Google (seu perfil, Mapas e avaliações) do que o ChatGPT ou o Perplexity — a dinâmica na nova fonte de tráfego. E ele alimenta o agente de reservas, que constrói sua lista curta de mesas que pode reservar a partir dos perfis que pode ver — o portão na captura da reserva.",
+      "start": 281.71,
+      "end": 317.65
     },
     {
       "id": 17,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(2)",
+      "text": "Um ativo alimentando quatro superfícies de descoberta. O Google Business Profile está no centro como o hub. A partir dele saem quatro raios: para o clássico map pack, para o Google do AI Overview, para as respostas de restaurantes do Gemini e para o fluxo de reserva agente que completa uma reserva por meio do OpenTable, Resy ou Tock. Mantenha um perfil completo e atualizado e você estará trabalhando nas quatro superfícies com um esforço de uma tarde.",
+      "start": 318.45,
+      "end": 343.45
+    },
+    {
+      "id": 18,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "Esta é a convergência. Um arquivo, quatro saídas. Um perfil completo trabalhando nas quatro superfícies era um \"seria bom ter\" há dezoito meses, quando o map pack estava carregando a maior parte do tráfego. Hoje é a movimentação de descoberta de menor custo que você pode fazer, porque cada hora que você passa no perfil é paga quatro vezes.",
+      "start": 344.2,
+      "end": 362.56
+    },
+    {
+      "id": 19,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "Por que essas cinco peças estão ordenadas do jeito que estão.",
+      "start": 363.66,
+      "end": 367.03
+    },
+    {
+      "id": 20,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "A onda não é formada por cinco artigos soltos. É uma cadeia de dependência. Você não pode decidir o que fazer sobre a nova superfície até que a tenha visto. Você não pode dizer se ela está prejudicando você até saber se está nela. Você não pode julgar o tamanho do vazamento até saber o custo. E você não pode capturar a reserva até ter lido os três artigos sobre como o cliente chega até você em primeiro lugar. Cada peça ganha a próxima.",
+      "start": 367.73,
+      "end": 393.43
+    },
+    {
+      "id": 21,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(3)",
+      "text": "A ordem de leitura de cinco peças, codificada por cor por fase. As etapas um a três estão em azul-esverdeado — veja a nova superfície, então verifique se você está nela, então conte o que ela está custando. As etapas quatro e cinco estão em ferrugem — a mudança operacional para uma nova fonte de tráfego e o ato de capturar a reserva. A quebra de azul-esverdeado para ferrugem marca a linha entre entender a superfície e agir sobre ela.",
+      "start": 394.23,
+      "end": 419.22
+    },
+    {
+      "id": 22,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "Lidos fora de ordem, as peças ainda são válidas. Lidos em ordem, elas contam uma história: a superfície compôs a resposta, a resposta pulou você, o chamado parou de tocar, o tráfego se moveu, a reserva aconteceu — sem você. Cada peça é um capítulo nessa sequência, não um post autônomo.",
+      "start": 419.97,
+      "end": 436.47
+    },
+    {
+      "id": 23,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "O trabalho que vence é o trabalho que você já conhece.",
+      "start": 437.57,
+      "end": 440.8
+    },
+    {
+      "id": 24,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "Nada nessa onda pede que você aprenda uma nova plataforma, contrate um consultor ou compre anúncios. Os quatro movimentos que ganham a nova superfície são os mesmos quatro movimentos que ganharam a antiga — eles são apenas newly visíveis para as máquinas que roteiam o tráfego agora. Complete o Google Business Profile, todos os campos, sem espaços em branco. Mantenha as avaliações recentes respondendo às que você tem; a data da resposta é o sinal de frescor que o modelo lê. Coloque as respostas que um cliente realmente pergunta — grupo de oito, prato principal vegano, patio — em texto simples nas suas próprias páginas, apoiadas pelo schema de restaurante. E conecte um provedor de reserva real para que o agente tenha uma mesa que possa entregar ao cliente.",
+      "start": 441.5,
+      "end": 482.13
+    },
+    {
+      "id": 25,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "Nada disso é novo. Os pisos de classificação 4.3-4.1-3.9 só importam porque os assistentes de IA os destacaram. A declínio do engajamento no Maps só importa porque o cliente pode agora resolver a pergunta sem o toque. A subida do Gemini só importa porque o mesmo trabalho de perfil paga duas vezes. Lidos juntos, as cinco peças argumentam que o operador que mantém o perfil atualizado, as avaliações frescas, as respostas em texto e o provedor de reserva ativo já fez a maior parte do trabalho que a nova superfície pede — sem nomeá-lo dessa forma.",
+      "start": 482.65,
+      "end": 516.35
+    },
+    {
+      "id": 26,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(6)",
+      "text": "Cinco peças, uma tese — leia-as em ordem.",
+      "start": 517.45,
+      "end": 519.91
+    },
+    {
+      "id": 27,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "Trate a onda como um único livro em cinco capítulos, não cinco posts que acontecem de compartilhar uma data de publicação. A tese é uma frase: em uma semana, o Google unificou suas superfícies de descoberta em torno de um único ativo — legibilidade de perfil — e as cinco peças são como um restaurante independente se move através dessa convergência sem perder o cliente.",
+      "start": 520.61,
+      "end": 541.29
+    },
+    {
+      "id": 28,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "Comece com a nova superfície. As outras quatro fazem sentido uma vez que a primeira seja compreendida.",
+      "start": 541.81,
+      "end": 548.06
+    },
+    {
+      "id": 29,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(7)",
+      "text": "O que fazer esta semana.",
+      "start": 549.16,
+      "end": 550.68
+    },
+    {
+      "id": 30,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Execute o grader G B P e feche os campos em branco que ele sinaliza — horas por dia, cozinha, atributos, link de menu, link de reserva.",
+      "start": 551.38,
+      "end": 559.08
+    },
+    {
+      "id": 31,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Pegue sua classificação de estrelas e a data da sua avaliação mais recente. Note a lacuna até o piso de assistente mais próximo (4.3, 4.1, 3.9) e se algo é mais antigo do que este mês.",
+      "start": 559.4,
+      "end": 571.3
+    },
+    {
+      "id": 32,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "Escolha três perguntas que um cliente realmente faria. Confirme se a resposta existe, em texto simples, no seu próprio site — não atrás de um P D F ou menu fotografado.",
+      "start": 571.62,
+      "end": 581.74
+    },
+    {
+      "id": 33,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
-      "text": "O trabalho que ganha a nova superfície é o mesmo trabalho de perfil e site de antes, direcionado a uma máquina.",
-      "start": 206.05,
-      "end": 212.42
+      "text": "Confirme que suas reservas estão ativas no OpenTable, Resy, ou Tock, então abra seu próprio site em um telefone e reserve uma mesa você mesmo. Cronometre.",
+      "start": 582.06,
+      "end": 591.32
+    },
+    {
+      "id": 34,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(5)",
+      "text": "Execute a verificação de saúde da loja para garantir que o caminho da resposta da IA até sua porta ainda funcione sem uma ligação telefônica.",
+      "start": 591.64,
+      "end": 600.12
+    },
+    {
+      "id": 35,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "Pontos principais",
+      "start": 600.64,
+      "end": 601.77
+    },
+    {
+      "id": 36,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "Os três turnos de maio de vinte e seis convergem em um gargalo — legibilidade mais reservabilidade através do Google Business Profile.",
+      "start": 602.12,
+      "end": 610.23
+    },
+    {
+      "id": 37,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "Um perfil alimenta quatro superfícies: o map pack, o AI Overview, Gemini (13,2% das referências de IA), e o fluxo de reserva agente.",
+      "start": 610.55,
+      "end": 619.1
+    },
+    {
+      "id": 38,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "Legibilidade e reservabilidade não são conceitos novos — são novamente cruciais, porque todas as superfícies agora lêem o mesmo arquivo.",
+      "start": 619.42,
+      "end": 627.69
+    },
+    {
+      "id": 39,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
+      "text": "Os cinco componentes formam uma cadeia de dependência: veja a superfície, verifique a visibilidade, conte o custo, mude para a nova fonte de tráfego, capture a reserva.",
+      "start": 628.01,
+      "end": 637.96
+    },
+    {
+      "id": 40,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(5)",
+      "text": "O trabalho que vence é o trabalho de perfil e site que você já conhece — novamente visível para máquinas que roteiam tráfego.",
+      "start": 638.28,
+      "end": 645.63
     }
   ]
 }

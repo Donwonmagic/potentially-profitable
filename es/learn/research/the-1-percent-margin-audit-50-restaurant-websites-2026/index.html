@@ -167,14 +167,16 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <!-- Preload the two above-the-fold web fonts so they arrive in
      parallel with site.css instead of being discovered after parse. -->
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-italic.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-italic.woff2" crossorigin>
 <!-- Async-load the main stylesheet. Pattern: preload + onload-swap
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=4f505f60ca72" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=47810dd9477a" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=4f505f60ca72"><link rel="stylesheet" href="/assets/site-article.css?v=47810dd9477a"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=a497939fe0a3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=4c628560c207" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a497939fe0a3"><link rel="stylesheet" href="/assets/site-article.css?v=4c628560c207"></noscript>
 
 <!-- lazy-load:p --><script>(window.requestIdleCallback||function(c){return setTimeout(c,500);})(function(){var s=document.createElement("script");s.src="/assets/p.js?v=20260503";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:p -->
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
@@ -183,25 +185,14 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
 <a class="skip-link" href="#main">Saltar al contenido principal</a>
 
-<script>
-  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
-     Apple devices. Runs early in <body> so the swap is essentially
-     invisible — script tags execute synchronously when the parser hits
-     them, before .nav-search-kbd renders below. CSS in site-core.css
-     conditions on <html data-platform="mac">. */
-  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
-    document.documentElement.dataset.platform = 'mac';
-  }
-</script>
 <!-- batch-banner:start -->
-<aside class="batch-banner" data-batch="2026-w2" role="complementary" aria-label="Semana 2 · 23 de mayo de 2026" style="background:var(--ink,#14161A);color:var(--cream,#FAF7F2);font-size:15px;line-height:1.5;padding:16px 0;border-bottom:1px solid rgba(250,247,242,0.12);position:relative;z-index:60">
-  <div style="max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,64px);display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap">
-    <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;min-width:0">
-      <span style="display:inline-block;font-family:Inter,system-ui,sans-serif;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;background:var(--teal,#2A50C8);color:var(--cream,#FAF7F2);padding:4px 10px;border-radius:3px;white-space:nowrap;flex-shrink:0">Nuevo esta semana</span>
-      <span style="font-family:Georgia,serif;font-size:11px;letter-spacing:0.10em;text-transform:uppercase;opacity:0.75;white-space:nowrap">Semana 2 · 23 de mayo de 2026</span>
-      <span style="font-family:Georgia,serif;font-size:17px;font-style:italic;line-height:1.35;min-width:0">La búsqueda cambió el 19 de mayo. Esta es la jugada del operador.</span>
+<aside class="batch-marquee" data-batch="2026-w2" role="complementary" aria-label="Semana 2 · 23 de mayo de 2026" style="background:var(--ink,#14161A);color:var(--cream,#FAF7F2);font-size:14px;line-height:1.4;padding:8px 0;border-bottom:1px solid rgba(250,247,242,0.12)">
+  <div style="max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,64px);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;min-width:0;flex:1 1 auto">
+      <span style="display:inline-block;font-family:Inter,system-ui,sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;background:var(--teal,#2A50C8);color:var(--cream,#FAF7F2);padding:3px 8px;border-radius:3px;white-space:nowrap;flex-shrink:0">Nuevo esta semana</span>
+      <span style="font-family:Georgia,serif;font-size:14px;font-style:italic;line-height:1.35;min-width:0">La búsqueda cambió el 19 de mayo. Esta es la jugada del operador.</span>
     </div>
-    <a href="/es/blog/la-busqueda-cambio-bajo-tus-pies-mayo-2026/" style="display:inline-flex;align-items:center;gap:6px;color:var(--ink,#14161A);background:var(--cream,#FAF7F2);text-decoration:none;font-family:Inter,system-ui,sans-serif;font-weight:600;font-size:14px;padding:9px 18px;border-radius:999px;white-space:nowrap;flex-shrink:0;transition:transform .15s ease">Leer el lote <span aria-hidden="true">&rarr;</span></a>
+    <a href="/es/blog/la-busqueda-cambio-bajo-tus-pies-mayo-2026/" style="display:inline-flex;align-items:center;gap:6px;color:var(--ink,#14161A);background:var(--cream,#FAF7F2);text-decoration:none;font-family:Inter,system-ui,sans-serif;font-weight:600;font-size:12px;padding:5px 12px;border-radius:999px;white-space:nowrap;flex-shrink:0;transition:transform .15s ease">Leer el lote <span aria-hidden="true">&rarr;</span></a>
   </div>
 </aside>
 <!-- batch-banner:end -->
@@ -221,7 +212,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
              along with the rest of the nav block on every build, keeping
              the partial strictly idempotent. Valid HTML5: <script> may
              appear in any flow-content context. */
-  window.__i18n=Object.assign(window.__i18n||{},{"nav.open_menu":"Abrir menú","nav.close_menu":"Cerrar menú","form.field_required":"Este campo es obligatorio.","form.invalid_email":"Ingresa un correo electrónico válido.","form.services_min_one":"Selecciona al menos una opción.","form.submit_fallback":"Algo falló. Inténtalo de nuevo o escribe directamente a don@muntin.digital.","audio.resume":"Reanudar audio","audio.pause":"Pausar","audio.play":"Reproducir versión en audio","audio.stop":"Detener y cerrar audio","audio.minimize":"Minimizar controles de audio","audio.expand":"Ampliar controles de audio","audio.prev":"Párrafo anterior","audio.next":"Párrafo siguiente","audio.back15":"Retroceder 15 segundos","audio.fwd15":"Adelantar 15 segundos","audio.progress":"Progreso del audio","audio.controls":"Controles del reproductor de audio","audio.article_label":"Versión en audio de este artículo","audio.speed":"Velocidad de reproducción","audio.voice":"Voz del narrador","search.placeholder":"Busca artículos, herramientas, términos del glosario…","search.close":"Cerrar","search.hint_title":"¿Qué estás buscando?","search.hint_body":"Prueba con \"DoorDash\", \"Core Web Vitals\" o \"precios del menú\". Los resultados vienen de cada artículo, herramienta y término del glosario.","search.empty":"Sin resultados para","search.empty_hint":"Prueba una consulta más corta o una palabra distinta.","search.loading":"Buscando…","search.nav_hint":"para moverte","search.open_hint":"para abrir","search.close_hint":"para cerrar","search.kind_article":"Artículo","search.kind_tool":"Herramienta","search.kind_term":"Glosario","search.kind_resource":"Guía","search.kind_library":"Biblioteca","search.kind_case":"Caso de estudio","search.kind_service":"Servicios","search.kind_industry":"Para ti","search.kind_page":"Página","drawer.kicker":"Nota de investigación","drawer.close":"Cerrar","drawer.loading":"Cargando el resumen…","drawer.err_title":"No pudimos cargar el resumen","drawer.err_body":"Abre la nota completa en una pestaña nueva — es el mismo contenido, solo que más completo.","drawer.findings_label":"Hallazgos clave","drawer.note_label":"La nota de Don","drawer.read_full":"Leer la nota completa","drawer.read_original":"Ver la fuente original","drawer.open_new_tab":"se abre en una pestaña nueva"});</script>
+  window.__i18n=Object.assign(window.__i18n||{},{"nav.open_menu":"Abrir menú","nav.close_menu":"Cerrar menú","form.field_required":"Este campo es obligatorio.","form.invalid_email":"Ingresa un correo electrónico válido.","form.services_min_one":"Selecciona al menos una opción.","form.submit_fallback":"Algo falló. Inténtalo de nuevo o escribe directamente a don@muntin.digital.","audio.resume":"Reanudar audio","audio.pause":"Pausar","audio.play":"Reproducir versión en audio","audio.stop":"Detener y cerrar audio","audio.minimize":"Minimizar controles de audio","audio.expand":"Ampliar controles de audio","audio.prev":"Párrafo anterior","audio.next":"Párrafo siguiente","audio.back15":"Retroceder 15 segundos","audio.fwd15":"Adelantar 15 segundos","audio.progress":"Progreso del audio","audio.controls":"Controles del reproductor de audio","audio.article_label":"Versión en audio de este artículo","audio.speed":"Velocidad de reproducción","audio.voice":"Voz del narrador","audio.byline_studio":"Narrado para The Muntin Desk","audio.byline_browser":"Leído por tu navegador","audio.preview":"Escucha 30 segundos primero →","audio.resume_chip_aria":"Reanudar desde la posición guardada","audio.share_aria":"Copiar enlace en este momento","audio.dismiss":"Descartar","audio.kicker":"Edición en audio","audio.headline":"¿Prefieres escucharlo?","audio.sub":"Pulsa reproducir y leeremos el artículo entero — gráficos incluidos.","audio.meta_handsfree":"manos libres","audio.meta_min":"min","audio.now_reading":"Reproduciendo","audio.resume_continue":"Continuar desde","audio.help_aria":"Ver atajos de teclado e información del reproductor","audio.help_title":"Consejos para escuchar","audio.help_chapters_eyebrow":"Capítulos","audio.finished_done":"Listo.","audio.finished_browse":"Explora la biblioteca →","audio.share_toast_ok":"Enlace copiado en {time}","audio.share_toast_fail":"No se pudo copiar — portapapeles bloqueado","audio.language_label":"Idioma","audio.help_kbd_eyebrow":"Teclado","audio.kbd_space":"Espacio","audio.kbd_space_help":"Reproducir o pausar","audio.kbd_jk_help":"Retroceder 15 segundos / avanzar 15 segundos","audio.kbd_arrows_help":"Párrafo anterior / siguiente párrafo","audio.help_about_eyebrow":"Sobre la voz","audio.help_about_body":"The Muntin Desk usa una voz generada por computadora ajustada para una lectura clara. Usamos la misma voz en cada artículo para que te resulte familiar. Cada grabación se produce una sola vez y se guarda como un archivo de audio que puedes descargar.","search.placeholder":"Busca artículos, herramientas, términos del glosario…","search.close":"Cerrar","search.hint_title":"¿Qué estás buscando?","search.hint_body":"Prueba con \"DoorDash\", \"Core Web Vitals\" o \"precios del menú\". Los resultados vienen de cada artículo, herramienta y término del glosario.","search.empty":"Sin resultados para","search.empty_hint":"Prueba una consulta más corta o una palabra distinta.","search.loading":"Buscando…","search.nav_hint":"para moverte","search.open_hint":"para abrir","search.close_hint":"para cerrar","search.kind_article":"Artículo","search.kind_tool":"Herramienta","search.kind_term":"Glosario","search.kind_resource":"Guía","search.kind_library":"Biblioteca","search.kind_case":"Caso de estudio","search.kind_service":"Servicios","search.kind_industry":"Para ti","search.kind_page":"Página","drawer.kicker":"Nota de investigación","drawer.close":"Cerrar","drawer.loading":"Cargando el resumen…","drawer.err_title":"No pudimos cargar el resumen","drawer.err_body":"Abre la nota completa en una pestaña nueva — es el mismo contenido, solo que más completo.","drawer.findings_label":"Hallazgos clave","drawer.note_label":"La nota de Don","drawer.read_full":"Leer la nota completa","drawer.read_original":"Ver la fuente original","drawer.open_new_tab":"se abre en una pestaña nueva"});</script>
   <div class="container nav-inner">
     <a href="/es/" class="logo" aria-label="Muntin Digital — inicio">
       <svg class="logo-mark" width="28" height="28" viewBox="0 0 128 128" fill="none" aria-hidden="true">
@@ -233,18 +224,22 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       </svg>
       Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
     </a>
-    <!-- Phase 7: nav de 5 elementos, según el plan de lanzamiento Parte II.
-         Biblioteca / Herramientas / Proyectos / Estudio / Acceder.
+    <!-- Phase 7: nav de 4 elementos, según el plan de lanzamiento Parte II.
+         Biblioteca / Herramientas / Estudio / Acceder.
          Biblioteca apunta al hub canónico /es/library/. Herramientas
          se promueve del antiguo mega-menú a un elemento de primer
          nivel. Estudio reemplaza Servicios + Restaurantes + Sobre
          Don &mdash; todo vive bajo /es/studio/ ahora. El mega-menú
          se retira (el hub ES el menú); el controlador del script
-         también desaparece. -->
+         también desaparece.
+
+         /es/work/ se retiró en la pasada de portfolio-sunset de la
+         Fase 8 (el encuadre de la empresa-como-CV hizo redundante
+         el portafolio personal). Las URLs /es/work/* hacen 301 a
+         /es/studio/ vía _redirects. -->
     <nav class="nav-links" aria-label="Principal">
       <a href="/es/library/">Biblioteca</a>
       <a href="/es/tools/">Herramientas</a>
-      <a href="/es/work/">Proyectos</a>
       <a href="/es/studio/">Estudio</a>
       <a class="js-nav-signin nav-link-auth" href="/es/sign-in/" hidden>Acceder</a>
       <a class="js-nav-workshop nav-link-auth" href="/es/workbench/" hidden>El Taller</a>
@@ -273,7 +268,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   <nav class="mobile-menu" id="mobileMenu" aria-label="Navegación móvil" hidden>
     <a href="/es/library/">Biblioteca</a>
     <a href="/es/tools/">Herramientas</a>
-    <a href="/es/work/">Proyectos</a>
     <a href="/es/studio/">Estudio</a>
     <a class="js-nav-signin mobile-auth" href="/es/sign-in/" hidden>Acceder</a>
     <a class="js-nav-workshop mobile-auth" href="/es/workbench/" hidden>El Taller</a>
@@ -359,7 +353,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <li class="note-stat"><strong>43/50</strong><span>Tienen al menos 3 de 6 fugas activas ahora mismo</span></li>
     </ul>
 
-    <h2>De d&oacute;nde sale el 1%</h2>
+    <h2 id="de-d-nde-sale-el-1">De d&oacute;nde sale el 1%</h2>
 
     <p>El n&uacute;mero del 1% no es una corazonada. Es la suma a trav&eacute;s de seis fugas medidas, cada una con una cifra de alza publicada en investigaci&oacute;n primaria, aplicada al ingreso reportado por el propio operador. La metodolog&iacute;a est&aacute; abajo; el resultado titular est&aacute; en esta tabla.</p>
 
@@ -382,7 +376,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
     <p>La fuga m&aacute;s grande individual es la que afecta a menos operadores: pedidos solo por agregadores, sin camino directo. Cuando est&aacute; presente, el impacto es grande &mdash; casi medio punto del ingreso &mdash; porque cada orden pasa por una comisi&oacute;n del 30% en lugar de una tarifa de procesador del 3.6%. Las dos fugas que afectan a m&aacute;s operadores (LCP m&oacute;vil y CTA de pedido directo ausente) son menores por incidente pero se componen sobre m&aacute;s &oacute;rdenes.</p>
 
-    <h2>Distribuci&oacute;n de la fuga</h2>
+    <h2 id="distribuci-n-de-la-fuga">Distribuci&oacute;n de la fuga</h2>
 
     <p>La distribuci&oacute;n no es plana. Se concentra: la mayor&iacute;a de los operadores est&aacute;n en la banda de 0.5% a 1.5%, pero una cola larga est&aacute; fugando bien por encima del 2% &mdash; usualmente porque tienen las seis fugas activas a la vez.</p>
 
@@ -399,7 +393,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
     <p>Los operadores en la banda de menos del 0.5% comparten tres cosas: todos estaban en sitios custom-coded o hosteados en BentoBox (sin Wix), todos ten&iacute;an un <code>/es/</code> mirror real o estaban en barrios no-bilingues, y todos ten&iacute;an un bot&oacute;n de pedido directo posicionado arriba de sus enlaces de terceros. Tambi&eacute;n estaban sobrerrepresentados en la categor&iacute;a &laquo;de propiedad familiar por 20+ a&ntilde;os&raquo; &mdash; no porque los operadores viejos sean tech-forward, sino porque llevan tiempo arreglando una fuga por trimestre.</p>
 
-    <h2>Qu&eacute; significa 0.94% en d&oacute;lares</h2>
+    <h2 id="qu-significa-0-94-en-d-lares">Qu&eacute; significa 0.94% en d&oacute;lares</h2>
 
     <p>Aplicado al ingreso mediano reportado del operador (~USD 1.6M anual, USD 133K mensuales), 0.94% es <strong>USD 1,250 al mes, o USD 15,012 al a&ntilde;o</strong>. Para un operador del peor cuartil en la misma banda de ingreso pero con 2.3% de fuga, eso es <strong>USD 3,069 al mes, o USD 36,830 al a&ntilde;o</strong>. Para comparar, una reconstrucci&oacute;n tier Servicio Completo en este estudio cuesta entre USD 5,000 y USD 9,000 &mdash; la reconstrucci&oacute;n se paga sola en 2 a 7 meses con fuga mediana, y en menos de dos meses con peor cuartil.</p>
 
@@ -407,7 +401,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <p><strong>El titular.</strong> Los restaurantes independientes no se est&aacute;n, en general, vendiendo mal. Est&aacute;n perdiendo ingreso por seis fugas peque&ntilde;as, arreglables, bien entendidas. El operador mediano podr&iacute;a recuperar USD 15K anualizados pasando un fin de semana con una checklist. El peor cuartil podr&iacute;a recuperar entre USD 36K y USD 50K.</p>
     </div>
 
-    <h2>Dificultad de arreglo por fuga</h2>
+    <h2 id="dificultad-de-arreglo-por-fuga">Dificultad de arreglo por fuga</h2>
 
     <p>No todas las fugas requieren el mismo esfuerzo. Ordenadas por dificultad (la m&aacute;s f&aacute;cil primero):</p>
 
@@ -422,7 +416,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
     <p>Los primeros tres arreglos &mdash; menos de una hora combinados, sin desarrollador &mdash; recuperan aproximadamente la mitad de la fuga mediana. Son una tarde de s&aacute;bado, no un proyecto.</p>
 
-    <h2>Lo que esperaba encontrar y no estaba ah&iacute;</h2>
+    <h2 id="lo-que-esperaba-encontrar-y-no-estaba-ah">Lo que esperaba encontrar y no estaba ah&iacute;</h2>
 
     <ul>
       <li style="margin-bottom:10px"><strong>La calidad de la fotograf&iacute;a no correlacion&oacute; con la fuga.</strong> Restaurantes con fotos fenomenales y restaurantes con fotos del iPhone del operador fugaban a tasas pr&aacute;cticamente iguales. La fotograf&iacute;a empuja la consideraci&oacute;n, no la conversi&oacute;n. Reordena tus prioridades en consecuencia.</li>
@@ -431,7 +425,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <li><strong>Alta cocina no fugaba m&aacute;s que casual.</strong> La fuga del deeplink de reserva pega a ambos por igual; ambos pierden aproximadamente el mismo porcentaje de ingreso cuando la tienen.</li>
     </ul>
 
-    <h2>Metodolog&iacute;a</h2>
+    <h2 id="metodolog-a">Metodolog&iacute;a</h2>
 
     <p>Muestra: 50 restaurantes independientes, sin cadenas nacionales, sin marcas con due&ntilde;o de PE. Mezcla geogr&aacute;fica: 60% DMV (DC + MD + VA), 40% tri-state NY-NJ-CT. Banda de ingreso: USD 800K a USD 3M anuales (la mediana del independiente del DMV). La mezcla de cocinas coincide aproximadamente con la distribuci&oacute;n por corredor de RAMW 2025.</p>
 
@@ -441,7 +435,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
     <p>Lo que este estudio no es: una muestra aleatoria (los operadores se reclutaron de RAMW y de slacks de restaurantes del DMV), un estudio controlado (no se tomaron mediciones antes / despu&eacute;s) ni una lista exhaustiva de fugas (se eligieron seis porque cada una est&aacute; bien publicada). Es una foto direccional, deliberadamente peque&ntilde;a, con nombre y fechada.</p>
 
-    <h2>Corre la tuya</h2>
+    <h2 id="corre-la-tuya">Corre la tuya</h2>
 
     <p>La <a href="/es/tools/audits/restaurant/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">herramienta de auditor&iacute;a de restaurante gratis</a> califica tu sitio contra las mismas seis fugas, en 30 segundos, en tu navegador. El resultado te dice cu&aacute;les fugas tienes y qu&eacute; te est&aacute;n costando al mes.</p>
 
@@ -458,8 +452,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <ul style="font-size:15.5px;line-height:1.7;color:var(--teal);margin:0;padding-left:22px">
         <li><a href="/es/blog/an-honest-doordash-math-for-independent-restaurants-2026/">Una cuenta honesta de DoorDash, 2026</a> &mdash; la cuenta por orden detr&aacute;s de la fuga #6</li>
         <li><a href="/es/learn/research/dmv-restaurant-gbp-audit-2026/">Auditor&iacute;a de GBP de restaurantes del DMV, 2026</a> &mdash; el lado del descubrimiento del mismo problema</li>
-        <li><a href="/es/blog/why-your-restaurant-loses-reservations-every-night/">Por qu&eacute; pierdes reservas cada noche</a> &mdash; el largo complementario</li>
-        <li><a href="/es/blog/five-restaurant-website-changes-recover-one-percent-margin/">Cinco cambios de sitio que recuperan 1% de margen</a> &mdash; la lista de arreglos, ordenada</li>
+        <li><a href="/library/reservation-conversion-guide/">Por qu&eacute; pierdes reservas cada noche</a> &mdash; el largo complementario</li>
+        <li><a href="/library/reservation-conversion-guide/">Cinco cambios de sitio que recuperan 1% de margen</a> &mdash; la lista de arreglos, ordenada</li>
         <li><a href="/es/tools/audits/restaurant/">Corre la auditor&iacute;a gratis de 30 segundos</a> sobre tu propio sitio</li>
       </ul>
     </section>
@@ -486,7 +480,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <p class="foot-heading" id="foot-explore">Explorar</p>
         <ul class="foot-links">
           <li><a href="/es/services/">Servicios</a></li>
-          <li><a href="/es/work/">Proyectos</a></li>
+          
           <li><a href="/es/about/">Sobre Don</a></li>
         </ul>
       </nav>

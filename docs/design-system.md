@@ -167,6 +167,67 @@ Components: `.article-body`, `.cite`, `.share-btn`, `.listen-card`,
 `.breadcrumb`. New articles must not introduce per-page CSS
 beyond what's already in `site.css`.
 
+#### Audio edition card (`.listen-card`)
+
+Sits at the top of `.article-body` on posts that have a rendered
+audio variant. Defining choices to preserve when touching the card:
+
+- **Eyebrow contract.** The `.listen-card-kicker` text is `var(--stone)`
+  at the canonical eyebrow spec (`11px / 700 / 0.14em / uppercase`).
+  Resist the urge to color it the accent — eyebrows site-wide are
+  stone so the page reads coherently across sections.
+- **Muntin motif.** The single sash treatment on this card is a
+  `3px solid var(--teal)` underline applied as `border-bottom` on
+  `.listen-card-kicker` itself (NOT on the card edge). A card-edge
+  border collides with `.compare-card--featured`'s 2px teal frame on
+  hub pages; the eyebrow-anchored sash sidesteps that collision.
+- **Headline.** Fraunces 500, `clamp(22px, 1.4vw + 14px, 26px)` desktop,
+  drops to 20px under the 720px breakpoint.
+- **Byline.** `.listen-source-note` reads "Voiced for The Muntin Desk"
+  in studio mode and "Read by your browser" in speech-fallback mode.
+  Both go through `i18n()`; "The Muntin Desk" stays untranslated as the
+  publication's brand name even in localized renders.
+- **Palette.** All Listen-section rgba literals use `rgba(42,80,200,...)`
+  (= `#2A50C8`, the current `--teal`). Earlier work referenced
+  `rgba(31,78,91,...)` from a deprecated palette; that drift was
+  migrated for the Listen section only. Outside the Listen section,
+  ~24 other usages of the old value still exist site-wide — those are
+  not part of this card's contract.
+- **Reading sync.** Active body chunks get `.is-reading` (paragraph-
+  level `--teal-tint` wash). When the chunk is text-only,
+  `.listen-sent` spans wrap each sentence and the active sentence gets
+  `.is-sent-reading` (deeper teal tint + 2px teal underline). Mixed-
+  children paragraphs (links, em, strong) fall back to paragraph-
+  level highlight gracefully.
+- **Help dialog (`.listen-help-dialog`).** Native `<dialog>` opened
+  by the small `?` icon in the always-visible meta column (next to
+  the language pill). The icon was originally inside `.listen-card-
+  extras` but that row is hidden until first play; the help docs
+  must be reachable BEFORE the user discovers Play, so the trigger
+  moved up. Hosts keyboard-shortcut
+  documentation + a one-paragraph editorial note about the synthetic
+  narration. Contracts to preserve:
+  - **First focus on the title**, not the close button. listen.js's
+    openHelp() explicitly calls `helpTitle.focus()` after
+    `showModal()` so a reflex Space/Enter doesn't dismiss before
+    anything is read. The h3 has `tabindex="-1"` to make it
+    programmatically focusable; CSS suppresses the default outline.
+  - **Padding lives on `.listen-help-inner`**, NOT on the dialog
+    itself. The outside-click handler checks `e.target ===
+    helpDialog` — true only for genuine backdrop clicks. Moving
+    padding outside this check stops fat-finger taps on the
+    content edge from dismissing the dialog.
+  - **No fallback path.** Browsers without `<dialog>.showModal`
+    (effectively none in support as of May 2026) hide the help
+    button entirely. The previous "render as a modeless block"
+    fallback was strictly worse than no affordance.
+  - **Global keyboard shortcuts bail when the dialog is open** via
+    a check on `.listen-help-dialog[open]`. Space inside the dialog
+    must not toggle play.
+  - **Copy register: plain operator English.** No "broadcast
+    loudness", no "MP3", no "synthetic narration". The body reads
+    as a publication note, not a Pro Tools session.
+
 ### Conversation shell
 
 `/window/`, `/es/window/`. The intentionally-bare contact surface
