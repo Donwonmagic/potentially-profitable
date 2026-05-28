@@ -780,6 +780,43 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       </figure>
 
       <h2 id="the-structure-that-earns-its-keep">The structure that earns its keep</h2>
+
+      <figure class="viz-figure article-figure" data-audio-alt="A three-question decision tree for any page you are tempted to add to a restaurant site. Question one — does the page answer a question a first-time customer would actually type into Google before deciding to visit? Yes — keep it. The seven core pages all do. No — move to question two. Question two — does the page handle an inquiry that nothing else on the site captures, like private events or catering? Yes — keep it. The high-value inquiries need a dedicated landing or they leak to a generic contact form. No — move to question three. Question three — will you actually maintain this page on a monthly cadence? Yes — keep it. A blog with monthly posts, a press page with current mentions, a careers page with active listings all earn their place. No — cut it. An empty page hurts more than the absence; Google reads it as a neglected site, and customers read it the same way.">
+        <ol class="viz-tree" aria-label="Three-question decision tree for any restaurant website page">
+          <li class="viz-tree__node">
+            <details open>
+              <summary><span class="viz-tree__num">1</span><span class="viz-tree__title">Does it answer a question a first-time customer types?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+              <div class="viz-tree__body">
+                <p>What do they serve? When are they open? Where are they? Can I book? &mdash; the four-question shape of a real pre-visit search.</p>
+                <p><span class="viz-tree__verdict" data-tone="pass">Keep</span> The seven core pages all earn their place at this gate.</p>
+                <p><span class="viz-tree__verdict" data-tone="warn">Skip to Q2</span> The page exists for some other reason &mdash; an inquiry, an internal need, an obligation.</p>
+              </div>
+            </details>
+          </li>
+          <li class="viz-tree__node">
+            <details>
+              <summary><span class="viz-tree__num">2</span><span class="viz-tree__title">Does it handle an inquiry nothing else captures?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+              <div class="viz-tree__body">
+                <p>Private events, catering, large-party reservations, press contacts &mdash; the high-value inquiries that leak when they hit a generic contact form.</p>
+                <p><span class="viz-tree__verdict" data-tone="pass">Keep</span> Each high-value inquiry deserves a dedicated landing with its own form fields and follow-up routing.</p>
+                <p><span class="viz-tree__verdict" data-tone="warn">Skip to Q3</span> No specific inquiry sits behind the page; the case for keeping it has to come from somewhere else.</p>
+              </div>
+            </details>
+          </li>
+          <li class="viz-tree__node">
+            <details>
+              <summary><span class="viz-tree__num">3</span><span class="viz-tree__title">Will you maintain it monthly?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+              <div class="viz-tree__body">
+                <p>A blog with monthly posts, a press page with current mentions, a careers page with live listings, a gallery with rotating photos &mdash; pages that need active care to stay credible.</p>
+                <p><span class="viz-tree__verdict" data-tone="pass">Keep</span> Honest answer is yes, and you have a person who owns it.</p>
+                <p><span class="viz-tree__verdict" data-tone="fail">Cut</span> An empty page hurts more than the absence. Google reads neglect; customers read it the same way.</p>
+              </div>
+            </details>
+          </li>
+        </ol>
+        <figcaption>Three gates &mdash; any page that fails all three is a page that&rsquo;s costing the site more than it gives back.</figcaption>
+      </figure>
+
       <p>Here's the <!-- LIBRARY:autolink:start --><a href="/glossary/sitemap/" data-glossary-head="Sitemap" data-glossary-aka="sitemap.xml" data-glossary-blurb="A file at /sitemap.xml on your domain that lists every public page on your site.">sitemap</a><!-- LIBRARY:autolink:end --> I start with for most independent restaurant builds:</p>
       <ol>
         <li><strong>Homepage</strong> — cuisine, location, vibe, hours, CTA</li>

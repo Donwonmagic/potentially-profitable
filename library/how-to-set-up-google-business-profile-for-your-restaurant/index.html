@@ -832,6 +832,42 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <p>If you do nothing else on this list, pull up your profile and look at your primary. If it says "Restaurant" and you're any kind of specific cuisine, that's thirty seconds to fix and real ranking in return.</p>
       </aside>
 
+      <figure class="viz-figure article-figure" data-audio-alt="A three-question decision tree for picking the right Google Business Profile primary category. Question one — do you have a specific cuisine? Yes — pick the cuisine-specific category — Italian Restaurant, Korean Restaurant, Sushi Restaurant, Mexican Restaurant. The cuisine-specific category beats the generic 'Restaurant' every time for cuisine-near-me queries. No — your concept is broader, like New American or a cafe — move to question two. Question two — is your main draw a daypart? Brunch, breakfast, late-night? Yes — pick the daypart category — Brunch Restaurant, Breakfast Restaurant, Late-Night Restaurant. The daypart category beats the generic for daypart-near-me queries. No — move to question three. Question three — is your main draw a format? Cafe, gastropub, brewpub, bar? Yes — pick the format category — Cafe, Gastropub, Brewpub, Bar. No to all three — only then does the generic Restaurant category make sense. Always add two to five additional categories that accurately describe the business; never add categories you don't actually serve. Google suspends listings for misleading categories and re-verification takes weeks.">
+        <ol class="viz-tree" aria-label="Three-question decision tree for picking the right Google Business Profile primary category">
+          <li class="viz-tree__node">
+            <details open>
+              <summary><span class="viz-tree__num">1</span><span class="viz-tree__title">Do you have a specific cuisine?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+              <div class="viz-tree__body">
+                <p>Italian, Korean, Sushi, Mexican, Vietnamese, Ethiopian &mdash; the dish-driven categories Google ships out of the box.</p>
+                <p><span class="viz-tree__verdict" data-tone="pass">Pick this</span> The cuisine-specific category beats &ldquo;Restaurant&rdquo; every time for cuisine-near-me queries.</p>
+                <p><span class="viz-tree__verdict" data-tone="warn">Skip to Q2</span> Your concept is broader (New American, cafe, gastropub) &mdash; the cuisine field doesn&rsquo;t fit.</p>
+              </div>
+            </details>
+          </li>
+          <li class="viz-tree__node">
+            <details>
+              <summary><span class="viz-tree__num">2</span><span class="viz-tree__title">Is your main draw a daypart?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+              <div class="viz-tree__body">
+                <p>Brunch place, breakfast spot, late-night kitchen &mdash; the daypart-specific categories.</p>
+                <p><span class="viz-tree__verdict" data-tone="pass">Pick this</span> &ldquo;Brunch Restaurant&rdquo; beats &ldquo;Restaurant&rdquo; for brunch-near-me. Same for breakfast and late-night.</p>
+                <p><span class="viz-tree__verdict" data-tone="warn">Skip to Q3</span> Your daypart isn&rsquo;t the headline &mdash; you do dinner and lunch alongside everyone else.</p>
+              </div>
+            </details>
+          </li>
+          <li class="viz-tree__node">
+            <details>
+              <summary><span class="viz-tree__num">3</span><span class="viz-tree__title">Is your main draw a format?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+              <div class="viz-tree__body">
+                <p>Cafe, gastropub, brewpub, bar &mdash; the format-specific categories where the format is what guests come for.</p>
+                <p><span class="viz-tree__verdict" data-tone="pass">Pick this</span> The format category beats &ldquo;Restaurant&rdquo; for format-near-me queries.</p>
+                <p><span class="viz-tree__verdict" data-tone="fail">Only now</span> If none of the three questions earn a yes, the generic &ldquo;Restaurant&rdquo; primary is the right call. Most independents have an answer to at least one of the three.</p>
+              </div>
+            </details>
+          </li>
+        </ol>
+        <figcaption>Three questions, in order &mdash; the first &ldquo;yes&rdquo; picks your primary. Always add 2&ndash;5 additional categories that accurately fit.</figcaption>
+      </figure>
+
       <details class="cite">
         <summary>Source: Google category selection</summary>
         <div class="cite-body">

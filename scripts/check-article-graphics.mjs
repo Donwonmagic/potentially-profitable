@@ -106,12 +106,6 @@ const SCAN_ROOTS = ['library', 'blog', 'es/library', 'es/blog'];
 // Each waiver names the slug, the rule it bypasses, and the dated
 // reason. Removing an entry forces the next CI run to re-audit it.
 const HISTORICAL_WAIVERS = [
-  // EN variety follow-up — figures of a different viz-* kind needed.
-  { path: 'library/how-to-raise-restaurant-menu-prices-without-losing-reservations', rule: 2, why: '2026-05-28 — EN variety follow-up; only viz-ba present, needs viz-bars or viz-tree' },
-  { path: 'library/how-to-set-up-google-business-profile-for-your-restaurant',       rule: 2, why: '2026-05-28 — EN variety follow-up; only viz-flow present, needs viz-tree or viz-bars' },
-  { path: 'library/what-should-be-on-a-restaurant-website',                          rule: 2, why: '2026-05-28 — EN variety follow-up; only viz-flow present, needs viz-tree or viz-bars' },
-  { path: 'blog/google-ai-mode-restaurant-local-results-2026',                       rule: 2, why: '2026-05-28 — EN variety follow-up; three viz-flow figures, needs one viz-ba or viz-tree' },
-
   // ES translation sweep — mirror EN figures with translated metadata.
   { path: 'es/library/como-configurar-google-business-profile-para-tu-restaurante', rule: 2, why: '2026-05-28 — ES translation sweep pending; mirror EN variety addition' },
   { path: 'es/library/como-conseguir-mas-resenas-google-para-tu-restaurante',       rule: 1, why: '2026-05-28 — ES translation sweep pending; mirror EN second figure' },
