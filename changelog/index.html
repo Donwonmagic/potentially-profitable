@@ -149,9 +149,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=da841dee88d3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-core.css?v=a497939fe0a3" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=4c628560c207" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=da841dee88d3"><link rel="stylesheet" href="/assets/site-article.css?v=4c628560c207"></noscript>
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a497939fe0a3"><link rel="stylesheet" href="/assets/site-article.css?v=4c628560c207"></noscript>
 
 <!-- lazy-load:p --><script>(window.requestIdleCallback||function(c){return setTimeout(c,500);})(function(){var s=document.createElement("script");s.src="/assets/p.js?v=20260503";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:p -->
 <script>
@@ -198,8 +198,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
     </a>
     <!-- Phase 7: 5-item nav, per launch plan Part II.
-         Library / Tools / Work / Studio / Sign in.
-         Library now points at the canonical /library/ hub (the
+         Library / Tools / Studio / Sign in.
+         Library points at the canonical /library/ hub (the
          three-doors page). Tools is promoted from the old Library
          mega-menu to a top-level item. Studio replaces Services +
          Restaurants + About — they all live under /studio/ now,
@@ -209,11 +209,15 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
          Restaurants pages remain reachable via /studio/ and the
          _redirects table; /about/ is unchanged. The mega-menu is
          retired (the hub IS the menu now); the controller script
-         is gone too. -->
+         is gone too.
+
+         /work/ was retired with the Phase 8 portfolio-sunset pass:
+         the company-as-resume framing made the personal-portfolio
+         showcase redundant. Legacy /work/* URLs 301 to /studio/
+         via _redirects so old backlinks land softly. -->
     <nav class="nav-links" aria-label="Primary">
       <a href="/library/">Library</a>
       <a href="/tools/">Tools</a>
-      <a href="/work/">Work</a>
       <a href="/studio/">Studio</a>
       <!-- Both sign-in / workshop ship hidden by default; the
            auth-state JS at the bottom of this file calls
@@ -270,7 +274,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
     <a href="/library/">Library</a>
     <a href="/tools/">Tools</a>
-    <a href="/work/">Work</a>
     <a href="/studio/">Studio</a>
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
@@ -482,7 +485,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <p style="font-size:13.5px;color:var(--stone);margin:0 0 6px">2026-05-01</p>
         <h3 style="font-size:20px;font-weight:600;color:var(--ink);margin:0 0 8px">Phase 0: truth-telling pass</h3>
         <p style="font-size:15.5px;line-height:1.65;color:var(--ink);margin:0">
-          The largest single performance fix the site has shipped: removed the high-priority audio MP3 preload that was stalling LCP by 15&ndash;30 seconds on mid-tier Android over 4G. Calendly + Formspree references removed from privacy + cookies (we don't use either). <a href="/security/integrity.txt">/security/integrity.txt</a> now exists with real SHA-256s of the public bundle (was a 404 link). <a href="/.well-known/security.txt">/.well-known/security.txt</a> shipped per RFC 9116. Case studies (<a href="/work/tacombi/">Tacombi</a>, <a href="/work/irish-inn-glen-echo/">Irish Inn</a>, <a href="/work/off-day-collective/">Off Day</a>) now carry an explicit "Engagement" chip distinguishing in-house W-2 work from commissioned studio work from strategy studies.
+          The largest single performance fix the site has shipped: removed the high-priority audio MP3 preload that was stalling LCP by 15&ndash;30 seconds on mid-tier Android over 4G. Calendly + Formspree references removed from privacy + cookies (we don't use either). <a href="/security/integrity.txt">/security/integrity.txt</a> now exists with real SHA-256s of the public bundle (was a 404 link). <a href="/.well-known/security.txt">/.well-known/security.txt</a> shipped per RFC 9116. Case studies (Tacombi, Irish Inn, Off Day) now carry an explicit "Engagement" chip distinguishing in-house W-2 work from commissioned studio work from strategy studies. <em>(The /work/ section was retired in Phase 8, May 2026 — links removed here.)</em>
         </p>
       </div>
 
