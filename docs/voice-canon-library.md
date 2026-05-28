@@ -451,9 +451,6 @@ and from the AI Overview rotation depend on slug stability.
 
 ## Open editorial decisions
 
-Two items that should be resolved before the first post lands under
-this canon:
+One item remains for the desk:
 
-1. **`/methods/#voice-contract` POV table row for "Library articles"** still reads *first-person Don, byline at the top*. This canon assumes that row will be updated to reflect The Muntin Desk byline plus the I-rule. The methods edit has not been made yet; either land it in the same PR as this canon, or land it in the first library-post PR that ships under the new byline.
-
-2. **The blog canon (`docs/voice-canon-blog.md`)** is referenced throughout this document as the sibling reference but does not yet exist on disk. Until it does, the blog/library distinction in [§1](#1-the-library-vs-the-blog--the-load-bearing-distinction) is the load-bearing fallback. When the blog canon ships, cross-check the table for symmetry and update either side that drifts.
+1. **Existing library posts ship with `Op-ed · N min · By Don Goldstein` eyebrows.** Going forward, new library posts ship under *The Muntin Desk*. Decide whether to migrate existing posts in a single sweep (with `dateModified` bumps, audio re-renders, and ES eyebrow updates in lockstep) or to grandfather them in and only convert on the next substantive revision per piece.
