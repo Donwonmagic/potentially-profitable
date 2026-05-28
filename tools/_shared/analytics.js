@@ -281,6 +281,7 @@
       // (Celebration Audio). Both are bounded — one event per
       // pause-or-completion, no per-chunk-or-progress firehose.
       'Audio: Widget Pause',
+      'Audio: Widget Resume',
       'Course Celebration Audio',
       // Open the Doors bootcamp — engagement + progression events.
       // 'Course Lesson View' fires on page load (debounced via

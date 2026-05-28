@@ -62,6 +62,19 @@
     let awaitingWidget = null;
     let widgetWaitHandler = null;
     let widgetWaitTimeout = null;
+    // Set true by the 'seeked' listener before it calls tickStudio so
+    // Lesson Mode's widget-pause detector knows the playhead jumped
+    // by operator intent (chapter list, scrub bar) rather than by
+    // natural playback. Cleared at the top of tickStudio every call.
+    let tickFromSeek = false;
+    // Chunk indices the operator already satisfied — either by engaging
+    // the widget BEFORE the audio reached its pause point, or by
+    // answering the matching checkpoint elsewhere in the page. The
+    // widget-pause detector in tickStudio skips chunks in this set so
+    // the operator who's working ahead of the narration doesn't get
+    // halted at a pause they already cleared.
+    let satisfiedWidgetPauses = new Set();
+    let prewarmWidgetListener = null;
 
     // Engine selection. If the post's listen button points at a pre-
     // rendered MP3 (via data-audio-src) we use the HTMLAudioElement +
@@ -1349,7 +1362,13 @@
         // back, and the lock-screen position state keeps updating.
         // seeked fires after every scrub for instant response.
         audioEl.addEventListener('timeupdate', tickStudio);
-        audioEl.addEventListener('seeked',     tickStudio);
+        audioEl.addEventListener('seeked', () => {
+          // Mark the next tickStudio as seek-initiated so Lesson Mode
+          // doesn't re-engage widget-wait on a manual scrub past a
+          // widget-pause. Cleared at the top of tickStudio.
+          tickFromSeek = true;
+          tickStudio();
+        });
         audioEl.addEventListener('play',       () => syncMediaSessionState());
         audioEl.addEventListener('pause',      () => syncMediaSessionState());
       }
@@ -1424,6 +1443,7 @@
         // mtn:context-change + mtn:checkpoint-answered events to
         // resume after operator engagement.
         lessonMode = chunks.some((c) => c.kind === 'widget-pause');
+        if (lessonMode) bindPrewarmWidgetListener();
       }
       // Point the source-of-truth note at the branded reader. Reads as
       // a publication byline ("Voiced for The Muntin Desk"), not as a
@@ -1685,10 +1705,16 @@
       // first one. The chunk is zero-duration in the audio file, so the
       // playhead would otherwise step right over it; the explicit halt
       // pins the cursor there and engages widget-wait state.
-      if (lessonMode && !awaitingWidget) {
+      // Skipped when the tick was seek-initiated — the operator's scrub
+      // is an explicit pass-through; trapping them would feel hostile.
+      // Also skipped when satisfiedWidgetPauses already contains this
+      // chunk: the operator engaged the widget AHEAD of the narration.
+      const wasSeek = tickFromSeek;
+      tickFromSeek = false;
+      if (lessonMode && !awaitingWidget && !wasSeek) {
         for (let i = Math.max(0, prevIdx); i <= idx; i++) {
           const c = chunks[i];
-          if (c && c.kind === 'widget-pause') {
+          if (c && c.kind === 'widget-pause' && !satisfiedWidgetPauses.has(i)) {
             currentIndex = i;
             setCurrent(c.element, c);
             enterWidgetWait(c);
@@ -1723,14 +1749,47 @@
     }
 
     /* ---- Lesson Mode (Phase 3.2) — widget-pause runtime ---- */
+    // Bind a low-overhead listener on the document that watches widget
+    // commit events. When one fires for a widget whose pause hasn't
+    // been reached yet, mark the corresponding chunks as satisfied so
+    // tickStudio skips past them. Same listener also resumes audio if
+    // the engine happens to be in awaiting-widget state — but the
+    // widget-wait handler installed by enterWidgetWait is more
+    // specific and runs first when waiting. Idempotent: registers once
+    // per page; subsequent ensureStudioReady() calls re-use it.
+    function bindPrewarmWidgetListener() {
+      if (prewarmWidgetListener) return;
+      prewarmWidgetListener = (e) => {
+        if (!Array.isArray(chunks) || !chunks.length) return;
+        const isCheckpoint = e.type === 'mtn:checkpoint-answered';
+        const key = e.detail && e.detail.key;
+        for (let i = 0; i < chunks.length; i++) {
+          const c = chunks[i];
+          if (!c || c.kind !== 'widget-pause') continue;
+          if (satisfiedWidgetPauses.has(i)) continue;
+          // Skip the chunk we're currently waiting on — exitWidgetWait
+          // already handles that one's autoResume.
+          if (awaitingWidget && awaitingWidget.selector === c.selector) continue;
+          const matched = isCheckpoint
+            ? c.widget === 'course-checkpoint'
+            : (key && c.contextKey && c.contextKey === key);
+          if (matched) satisfiedWidgetPauses.add(i);
+        }
+      };
+      document.addEventListener('mtn:context-change',      prewarmWidgetListener);
+      document.addEventListener('mtn:checkpoint-answered', prewarmWidgetListener);
+    }
+
     // Enter the widget-wait state. Halts audio at the widget-pause
     // boundary, signals via dock + state, scrolls the widget into view,
     // and listens for the commit event the operator's engagement
     // produces. Resumes audio after a brief settle delay (so the
     // operator can see their commit reflected) when commit fires.
+    let widgetWaitStartedAt = 0;
     function enterWidgetWait(chunk) {
       if (!audioEl) return;
       awaitingWidget = chunk;
+      widgetWaitStartedAt = Date.now();
       try { audioEl.pause(); } catch (_) {}
       try { audioEl.currentTime = chunk.start || 0; } catch (_) {}
       setState('awaiting-widget');
@@ -1781,6 +1840,33 @@
         widgetWaitTimeout = null;
       }
       awaitingWidget = null;
+      // Mark the chunk satisfied so a back-seek doesn't re-engage the
+      // wait on the same widget.
+      if (wasWaiting) {
+        const idx = chunks.indexOf(wasWaiting);
+        if (idx >= 0) satisfiedWidgetPauses.add(idx);
+        // Engagement duration is the audit-grade signal — Plausible
+        // groups it into buckets so the funnel can show "L7 palette-
+        // picker stalled audio for a median 4 min while L8 menu stalled
+        // 30 s." Bounded to one event per pause exit.
+        try {
+          if (window.plausible) {
+            const durSec = Math.max(0, Math.round((Date.now() - widgetWaitStartedAt) / 1000));
+            window.plausible('Audio: Widget Resume', {
+              props: {
+                widget: wasWaiting.widget || '',
+                bucket: durSec < 10 ? '<10s'
+                      : durSec < 30 ? '10-30s'
+                      : durSec < 60 ? '30-60s'
+                      : durSec < 180 ? '1-3m'
+                      : durSec < 600 ? '3-10m'
+                      : '10m+',
+                resumeKind: opts.autoResume ? 'auto' : 'manual'
+              }
+            });
+          }
+        } catch (_) {}
+      }
       if (wasWaiting && wasWaiting.element) {
         wasWaiting.element.classList.remove('is-listen-waiting');
       }
@@ -1834,6 +1920,11 @@
       if (!audioEl || !chunks.length) return;
       idx = Math.max(0, Math.min(chunks.length - 1, idx));
       const chunk = chunks[idx];
+      // Lesson Mode: an explicit chunk-jump (chapter list click,
+      // prev/next buttons, deep-link) is an explicit operator
+      // override of any in-progress widget-wait. Exit the wait
+      // without auto-resume so we don't fight their navigation.
+      if (awaitingWidget) exitWidgetWait({ autoResume: false });
       audioEl.currentTime = chunk.start || 0;
       currentIndex = idx;
       setCurrent(chunk.element, chunk);
