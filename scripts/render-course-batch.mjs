@@ -70,12 +70,25 @@ const run         = argFlag('--run');
 const list        = argFlag('--list');         // print one line per pending lesson, no command
 const estimate    = argFlag('--estimate');     // print expected time per lesson + total
 const resume      = argFlag('--resume');       // skip lessons whose audio.mp3 already exists
+const nativeOnly  = argFlag('--native-only');  // render each lesson only in its source language
 const localeFilter = argValue('--locale');     // 'en' or 'es' or null
 const slugFilter   = argValue('--slug');       // exact slug match (manifest key)
 const languages    = argValue('--languages') || 'en,es,fr,it,pt,zh';
 const engine       = argValue('--engine')    || 'f5';
 const kokoroModel  = argValue('--kokoro-model');
 const kokoroVoices = argValue('--kokoro-voices');
+
+// F5 multilingual passthrough. With --f5-languages en,es the worker
+// voice-clones BOTH English (base model) and Spanish (a fine-tuned
+// checkpoint) in Don's voice instead of falling back to Kokoro for
+// Spanish. The Spanish checkpoint + vocab + reference clip are passed
+// straight through to render-post-audio.mjs.
+const f5Languages   = argValue('--f5-languages');
+const f5CkptEs      = argValue('--f5-ckpt-es');
+const f5VocabEs     = argValue('--f5-vocab-es');
+const f5ModelNameEs = argValue('--f5-model-name-es');
+const f5RefAudioEs  = argValue('--f5-ref-audio-es');
+const f5RefTextEs   = argValue('--f5-ref-text-es');
 
 // Per-language render-time estimate in minutes, per 5-min spoken
 // duration. Calibrated empirically against a 2026 M2 MacBook Air
@@ -148,6 +161,10 @@ function collectPending() {
       out.push({
         sectionKey, slug, locale, targetPath, exists,
         status: spec.status,
+        // The language the lesson HTML is authored in. es-course pages
+        // are hand-written Spanish; with --native-only we render only
+        // this language (no machine-translated tracks).
+        nativeLang: spec.source_lang || locale,
         alreadyRendered,
         spokenMin,
         estMins: Math.round(estMins)
@@ -157,12 +174,21 @@ function collectPending() {
   return out;
 }
 
-function buildCommand(targetPath) {
+function buildCommand(targetPath, nativeLang) {
   const argv = ['scripts/render-post-audio.mjs', targetPath];
   argv.push('--engine', engine);
-  argv.push('--languages', languages);
+  // --native-only renders just the lesson's own language (no machine
+  // translation). Otherwise honor the explicit --languages list.
+  argv.push('--languages', nativeOnly ? nativeLang : languages);
   if (kokoroModel)  argv.push('--kokoro-model', kokoroModel);
   if (kokoroVoices) argv.push('--kokoro-voices', kokoroVoices);
+  // F5 multilingual passthrough.
+  if (f5Languages)   argv.push('--f5-languages', f5Languages);
+  if (f5CkptEs)      argv.push('--f5-ckpt-es', f5CkptEs);
+  if (f5VocabEs)     argv.push('--f5-vocab-es', f5VocabEs);
+  if (f5ModelNameEs) argv.push('--f5-model-name-es', f5ModelNameEs);
+  if (f5RefAudioEs)  argv.push('--f5-ref-audio-es', f5RefAudioEs);
+  if (f5RefTextEs)   argv.push('--f5-ref-text-es', f5RefTextEs);
   return argv;
 }
 
@@ -224,9 +250,21 @@ if (missingIndex.length) {
   console.warn('');
 }
 
-if (run && (!kokoroModel || !kokoroVoices) && (engine === 'f5' || engine === 'kokoro')) {
-  console.error('render-course-batch: --run with engine=f5 or engine=kokoro requires --kokoro-model and --kokoro-voices.');
-  console.error('Even with engine=f5, the non-English languages route through Kokoro for narration so the model files are needed.');
+// Work out whether any rendered language will actually route through
+// Kokoro. F5 covers --f5-languages (default en); everything else needs
+// the Kokoro model + voices. With --native-only + --f5-languages en,es
+// the whole batch is F5-cloned, so the Kokoro files aren't required.
+const f5Covered = new Set((f5Languages || 'en').split(',').map((s) => s.trim().toLowerCase()).filter(Boolean));
+const renderedLangs = nativeOnly
+  ? new Set(pending.map((p) => p.nativeLang))
+  : new Set(languages.split(',').map((s) => s.trim().toLowerCase()).filter(Boolean));
+const needsKokoro = engine === 'kokoro' ||
+  (engine === 'f5' && [...renderedLangs].some((l) => !f5Covered.has(l)));
+
+if (run && needsKokoro && (!kokoroModel || !kokoroVoices)) {
+  console.error('render-course-batch: this run needs Kokoro (some languages aren\'t F5-cloned) — pass --kokoro-model and --kokoro-voices.');
+  console.error(`  rendered languages: ${[...renderedLangs].join(',')}; F5 covers: ${[...f5Covered].join(',')}`);
+  console.error('  Tip: --native-only --f5-languages en,es renders the whole course in Don\'s cloned voice and needs no Kokoro files.');
   process.exit(2);
 }
 
@@ -234,14 +272,15 @@ let ok = 0, failed = 0;
 
 for (const p of pending) {
   if (!p.exists) { failed++; continue; }
-  const argv = buildCommand(p.targetPath);
+  const argv = buildCommand(p.targetPath, p.nativeLang);
 
   if (!run) {
     console.log('  node ' + argv.map((a) => a.includes(' ') ? `"${a}"` : a).join(' '));
     continue;
   }
 
-  console.log(`\n[${p.targetPath}] starting render (engine=${engine}, langs=${languages})…`);
+  const lessonLangs = nativeOnly ? p.nativeLang : languages;
+  console.log(`\n[${p.targetPath}] starting render (engine=${engine}, langs=${lessonLangs})…`);
   const r = spawnSync(process.execPath, argv, {
     cwd: repoRoot,
     stdio: 'inherit'

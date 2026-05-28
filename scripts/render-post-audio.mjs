@@ -87,6 +87,16 @@ const VALUED = new Set([
   '--pronunciation',
   '--f5-ref-audio', '--f5-ref-text', '--f5-speed', '--f5-nfe-step',
   '--f5-cfg-strength', '--f5-device',
+  // F5 multilingual: which languages F5 voice-cloning handles (default
+  // en), plus per-language reference + checkpoint overrides. The base
+  // English voice uses the stock F5TTS model; Spanish routes through a
+  // fine-tuned checkpoint (e.g. jpgallegoar/F5-Spanish) with Don's
+  // Spanish reference clip.
+  '--f5-languages',
+  '--f5-ckpt', '--f5-vocab', '--f5-model-name',
+  '--f5-ref-audio-es', '--f5-ref-text-es',
+  '--f5-ckpt-es', '--f5-vocab-es', '--f5-model-name-es',
+  '--source-lang',
 ]);
 const flags = new Set(args.filter((a) => a.startsWith('--') && !VALUED.has(a)));
 const positional = [];
@@ -180,6 +190,51 @@ const f5NfeStep  = optVal('--f5-nfe-step')  || '48';
 const f5CfgStrength = optVal('--f5-cfg-strength') || '3';
 const f5Device   = optVal('--f5-device')    || '';
 
+// Which languages the F5 voice-cloning engine handles. Everything not
+// in this list falls back to Kokoro (with that language's catalog
+// voice). Default: English only. Pass --f5-languages en,es once Don's
+// Spanish reference clip + the F5-Spanish checkpoint are in place so
+// the Spanish narration is *his* voice instead of Kokoro's em_alex.
+const f5Languages = (optVal('--f5-languages') || 'en')
+  .split(',').map((s) => s.trim().toLowerCase()).filter(Boolean);
+
+// Resolve the per-language F5 reference + checkpoint. English uses the
+// stock F5TTS base model (no ckpt override needed) with Don's English
+// reference. Any other language needs (a) its own reference clip of
+// Don speaking that language and (b) a checkpoint that knows the
+// language — the base model only really knows English + Chinese, so
+// Spanish points at a fine-tune (jpgallegoar/F5-Spanish) via
+// --f5-ckpt-es / --f5-vocab-es. Falls back to the don-reference.<lang>
+// naming convention so a fully-provisioned voice-refs/ dir "just works".
+function f5ConfigFor(lang) {
+  if (lang === 'en') {
+    return {
+      refAudio:  f5RefAudio,
+      refText:   f5RefText,
+      ckpt:      optVal('--f5-ckpt')       || '',
+      vocab:     optVal('--f5-vocab')      || '',
+      modelName: optVal('--f5-model-name') || '',
+    };
+  }
+  return {
+    refAudio:  optVal(`--f5-ref-audio-${lang}`) || `scripts/voice-refs/don-reference.${lang}.m4a`,
+    refText:   optVal(`--f5-ref-text-${lang}`)  || `scripts/voice-refs/don-reference.${lang}.txt`,
+    ckpt:      optVal(`--f5-ckpt-${lang}`)       || '',
+    vocab:     optVal(`--f5-vocab-${lang}`)      || '',
+    modelName: optVal(`--f5-model-name-${lang}`) || '',
+  };
+}
+
+// Output-file naming. The page's SOURCE language is the unsuffixed
+// default (audio.mp3 / audio.json) — that's what data-audio-src points
+// at and what plays by default. Every other language gets a suffix
+// (audio.<lang>.mp3). For English pages sourceLang==='en', so this is
+// identical to the legacy behavior; for /es/ pages the native Spanish
+// lands at audio.mp3 instead of being mislabeled as the "en" slot.
+function audioName(lang, sourceLang, ext) {
+  return lang === sourceLang ? `audio.${ext}` : `audio.${lang}.${ext}`;
+}
+
 const dryRun = flags.has('--dry-run');
 if (!dryRun) {
   if (!which('ffmpeg')) fail('`ffmpeg` not found on PATH.');
@@ -194,10 +249,6 @@ if (!dryRun) {
     if (!fs.existsSync(kokoroVoices)) fail(`Kokoro voices not found at ${kokoroVoices}`);
     if (!which('python3')) fail('`python3` not found on PATH.');
   } else if (engine === 'f5') {
-    const refAudioPath = path.resolve(repoRoot, f5RefAudio);
-    const refTextPath  = path.resolve(repoRoot, f5RefText);
-    if (!fs.existsSync(refAudioPath)) fail(`F5 reference audio not found at ${refAudioPath}`);
-    if (!fs.existsSync(refTextPath))  fail(`F5 reference transcript not found at ${refTextPath}`);
     if (!which('python3')) fail('`python3` not found on PATH. Install Python 3.10+.');
     // Quiet import check so the user gets a friendly error if pip install f5-tts hasn't run.
     const probe = spawnSync(PYTHON_BIN, ['-c', 'import f5_tts'], { stdio: 'pipe' });
@@ -207,12 +258,31 @@ if (!dryRun) {
            `  2. Or point the script at a different Python that already has it:\n` +
            `       PYTHON=python3.12 node scripts/render-post-audio.mjs --engine f5 ...`);
     }
-    // F5 English-only: non-English languages still render via Kokoro, so
-    // we need Kokoro's model too if any non-EN language is requested.
-    const needsKokoro = languages.some((l) => l !== 'en');
+    // Verify a reference clip exists for every requested language that
+    // F5 is set to clone. A non-en F5 language also needs its
+    // fine-tuned checkpoint (the base model only knows en + zh).
+    for (const lang of languages) {
+      if (!f5Languages.includes(lang)) continue;
+      const cfg = f5ConfigFor(lang);
+      const refAudioPath = path.resolve(repoRoot, cfg.refAudio);
+      const refTextPath  = path.resolve(repoRoot, cfg.refText);
+      if (!fs.existsSync(refAudioPath)) fail(`F5 ${lang} reference audio not found at ${refAudioPath}`);
+      if (!fs.existsSync(refTextPath))  fail(`F5 ${lang} reference transcript not found at ${refTextPath}`);
+      if (lang !== 'en' && !cfg.ckpt) {
+        fail(`F5 ${lang} needs a fine-tuned checkpoint — pass --f5-ckpt-${lang} (and --f5-vocab-${lang}). ` +
+             `The base model only speaks English + Chinese.`);
+      }
+      if (cfg.ckpt && !fs.existsSync(path.resolve(repoRoot, cfg.ckpt))) {
+        fail(`F5 ${lang} checkpoint not found at ${path.resolve(repoRoot, cfg.ckpt)}`);
+      }
+    }
+    // Any requested language NOT cloned by F5 falls back to Kokoro, so
+    // we need Kokoro's model + voices for those.
+    const needsKokoro = languages.some((l) => !f5Languages.includes(l));
     if (needsKokoro) {
       if (!kokoroModel || !kokoroVoices) {
-        fail('F5 handles English; non-English languages still use Kokoro — pass --kokoro-model and --kokoro-voices too, or use --languages en.');
+        fail('F5 clones --f5-languages (default en); other languages still use Kokoro — ' +
+             'pass --kokoro-model and --kokoro-voices too, widen --f5-languages, or narrow --languages.');
       }
       if (!fs.existsSync(kokoroModel))  fail(`Kokoro model not found at ${kokoroModel}`);
       if (!fs.existsSync(kokoroVoices)) fail(`Kokoro voices not found at ${kokoroVoices}`);
@@ -407,10 +477,23 @@ function renderPost(postDir) {
   // and takeaway sections are voiced, widget sections become pause
   // markers, and the UDL plain-language alternative is excluded. See
   // extractCourseChunks() for the full contract.
-  const isCourse = /(^|\/)(course|es\/course)\//.test(path.relative(repoRoot, postDir).replace(/\\/g, '/'));
+  const relPath = path.relative(repoRoot, postDir).replace(/\\/g, '/');
+  const isCourse = /(^|\/)(course|es\/course)\//.test(relPath);
+
+  // The language the page's HTML is *written in*. Everything under
+  // /es/ is hand-authored Spanish (course lessons, library articles);
+  // the rest is English. The renderer synthesizes the source-language
+  // chunks DIRECTLY (no round-trip through the machine translator), and
+  // only the OTHER requested languages get translated. Before this, the
+  // source was hard-assumed to be English, so rendering an /es/ page's
+  // Spanish track Google-translated already-Spanish text back to itself
+  // and skipped the hand translation entirely. Override with
+  // --source-lang if a path ever breaks the /es/ heuristic.
+  const sourceLang = (optVal('--source-lang') || (/^es\//.test(relPath) ? 'es' : 'en')).toLowerCase();
+
   const chunks = isCourse ? extractCourseChunks(html) : extractChunks(html);
   if (!chunks.length) fail(`No audio-eligible chunks found in ${indexPath}`);
-  console.log(`[${path.basename(postDir)}] ${chunks.length} chunks${isCourse ? ' (course mode)' : ''}`);
+  console.log(`[${path.basename(postDir)}] ${chunks.length} chunks${isCourse ? ' (course mode)' : ''}${sourceLang !== 'en' ? ` [source=${sourceLang}]` : ''}`);
 
   if (dryRun) {
     chunks.forEach((c, i) => {
@@ -433,8 +516,8 @@ function renderPost(postDir) {
     // (slow) and risky (Google's unauth endpoint will 503 under load);
     // the render should be resumable across runs without re-doing
     // completed work. Pass --force-retranslate to override.
-    const mp3Name  = lang === 'en' ? 'audio.mp3'  : `audio.${lang}.mp3`;
-    const jsonName = lang === 'en' ? 'audio.json' : `audio.${lang}.json`;
+    const mp3Name  = audioName(lang, sourceLang, 'mp3');
+    const jsonName = audioName(lang, sourceLang, 'json');
     const mp3Path  = path.join(postDir, mp3Name);
     const jsonPath = path.join(postDir, jsonName);
     if (!flags.has('--force-retranslate')
@@ -445,7 +528,7 @@ function renderPost(postDir) {
     }
 
     let langChunks = chunks;
-    if (lang !== 'en') {
+    if (lang !== sourceLang) {
       // --use-existing-translations: skip the translator call and use
       // the chunks[] already present in audio.<lang>.json. This is how
       // we ship native (hand-written or Claude-written) translations
@@ -466,7 +549,7 @@ function renderPost(postDir) {
         langChunks = translateChunksFor(chunks, lang);
       }
     }
-    renderLanguage(postDir, langChunks, lang);
+    renderLanguage(postDir, langChunks, lang, sourceLang);
   }
 
   // Auto-commit + push each article's audio as soon as its full
@@ -475,7 +558,7 @@ function renderPost(postDir) {
   // --commit-per-article. Failures here log a warning but never
   // abort the run — the next article keeps rendering.
   if (flags.has('--commit-per-article') && !dryRun) {
-    commitArticleAudio(postDir);
+    commitArticleAudio(postDir, sourceLang);
   }
 }
 
@@ -485,7 +568,7 @@ function renderPost(postDir) {
 // (no upstream, push rejected, hook failure) gets logged and the
 // render keeps going with the next article. The local commit still
 // stands so the operator can sort it out manually later.
-function commitArticleAudio(postDir) {
+function commitArticleAudio(postDir, sourceLang = 'en') {
   const slug = path.relative(repoRoot, postDir);
   // Build the explicit file list rather than a glob — spawnSync with
   // an args array doesn't expand globs, and we want to be precise
@@ -493,8 +576,8 @@ function commitArticleAudio(postDir) {
   // no other files in the post directory).
   const filesToAdd = [];
   for (const lang of languages) {
-    const mp3Name  = lang === 'en' ? 'audio.mp3'  : `audio.${lang}.mp3`;
-    const jsonName = lang === 'en' ? 'audio.json' : `audio.${lang}.json`;
+    const mp3Name  = audioName(lang, sourceLang, 'mp3');
+    const jsonName = audioName(lang, sourceLang, 'json');
     for (const name of [mp3Name, jsonName]) {
       const p = path.join(postDir, name);
       if (fs.existsSync(p)) filesToAdd.push(path.relative(repoRoot, p));
@@ -547,7 +630,7 @@ function commitArticleAudio(postDir) {
   console.warn(`  ⚠ git push gave up for ${slug} — commit is local; push manually with: git push origin ${branch}`);
 }
 
-function renderLanguage(postDir, chunks, lang) {
+function renderLanguage(postDir, chunks, lang, sourceLang = 'en') {
   const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), `audio-render-${lang}-`));
   const segments = [];
   const manifestChunks = [];
@@ -640,12 +723,14 @@ function renderLanguage(postDir, chunks, lang) {
     return prevEndsSentence ? 0.52 : 0.35;
   }
 
-  // For F5-mode English we log the reference voice name (not a Kokoro
-  // catalog ID) into the manifest so downstream consumers can tell
-  // who's narrating. Non-English languages in F5 mode still use
+  // For F5-cloned languages we log the reference voice name (not a
+  // Kokoro catalog ID) into the manifest so downstream consumers can
+  // tell who's narrating. Languages F5 doesn't handle still use
   // Kokoro's catalog voice.
-  const voice = (engine === 'f5' && lang === 'en')
-    ? ('f5:' + path.basename(path.resolve(repoRoot, f5RefAudio)))
+  const useF5 = engine === 'f5' && f5Languages.includes(lang);
+  const f5cfg = useF5 ? f5ConfigFor(lang) : null;
+  const voice = useF5
+    ? ('f5:' + path.basename(path.resolve(repoRoot, f5cfg.refAudio)))
     : (LANG_VOICE[lang] || LANG_VOICE.en);
   const kokoroTag = LANG_KOKORO_TAG[lang] || 'en-us';
 
@@ -655,12 +740,12 @@ function renderLanguage(postDir, chunks, lang) {
   // shell out in a loop.
   const rawDir = path.join(tmpDir, 'raw');
   fs.mkdirSync(rawDir, { recursive: true });
-  // F5-TTS is English-only (it's the voice-cloning track for Don's
-  // own narration). For any non-English language we fall back to
-  // Kokoro with that language's mapped voice + tag, so a bilingual
-  // render still works with --engine f5.
-  if (engine === 'f5' && lang === 'en') {
-    synthesizeF5(chunks, rawDir);
+  // F5-TTS voice-clones the languages listed in --f5-languages (default
+  // en). For any other language we fall back to Kokoro with that
+  // language's mapped voice + tag, so a bilingual render still works
+  // even when only some languages have a cloned voice provisioned.
+  if (useF5) {
+    synthesizeF5(chunks, rawDir, f5cfg);
   } else if (engine === 'kokoro' || engine === 'f5') {
     synthesizeKokoro(chunks, rawDir, { voice, lang: kokoroTag });
   } else {
@@ -773,11 +858,12 @@ function renderLanguage(postDir, chunks, lang) {
     cursor += dur;
   }
 
-  // English keeps the legacy audio.mp3 / audio.json filenames for
-  // backward compatibility with existing HTML (data-audio-src="audio.mp3");
-  // other languages get audio.<lang>.mp3 / audio.<lang>.json alongside.
-  const mp3Name  = lang === 'en' ? 'audio.mp3'  : `audio.${lang}.mp3`;
-  const jsonName = lang === 'en' ? 'audio.json' : `audio.${lang}.json`;
+  // The source language keeps the unsuffixed audio.mp3 / audio.json
+  // names (what data-audio-src points at); other languages get
+  // audio.<lang>.mp3 / audio.<lang>.json alongside. For English pages
+  // sourceLang==='en', so this matches the legacy convention exactly.
+  const mp3Name  = audioName(lang, sourceLang, 'mp3');
+  const jsonName = audioName(lang, sourceLang, 'json');
   const mp3Out = path.join(postDir, mp3Name);
 
   // Single-pass concat → MP3 via the concat *filter* (not the demuxer).
@@ -802,13 +888,14 @@ function renderLanguage(postDir, chunks, lang) {
     version: 1,
     generatedAt: new Date().toISOString(),
     engine: engine,
-    // Model name logged into the manifest. F5 English uses the ref
-    // audio; everything else reports its TTS model path. Null-safe so
-    // an F5-only run without --kokoro-model doesn't crash here.
+    // Model name logged into the manifest. F5-cloned languages report
+    // their reference audio; everything else reports its TTS model
+    // path. Null-safe so an F5-only run without --kokoro-model doesn't
+    // crash here.
     model: (() => {
       const src =
         engine === 'piper' ? model :
-        engine === 'f5'    ? (lang === 'en' ? f5RefAudio : kokoroModel) :
+        useF5              ? f5cfg.refAudio :
                              kokoroModel;
       return src ? path.basename(src) : 'unknown';
     })(),
@@ -914,21 +1001,40 @@ function synthesizeKokoro(chunks, outDir, opts = {}) {
   }
 }
 
-function synthesizeF5(chunks, outDir) {
+function synthesizeF5(chunks, outDir, cfg = null) {
   // Spawn the F5-TTS Python helper once, stream the chunk list as
   // JSON. Model + vocoder stay in RAM across all chunks of the post.
   // Reference audio + transcript are passed via CLI args (they're
-  // constant across chunks).
+  // constant across chunks). `cfg` (from f5ConfigFor) carries the
+  // per-language reference + optional fine-tuned checkpoint; falls back
+  // to the English defaults when omitted.
+  const refAudio  = cfg && cfg.refAudio ? cfg.refAudio : f5RefAudio;
+  const refText   = cfg && cfg.refText  ? cfg.refText  : f5RefText;
+  const ckptFile  = cfg && cfg.ckpt     ? cfg.ckpt     : '';
+  const vocabFile = cfg && cfg.vocab    ? cfg.vocab    : '';
+  const modelName = cfg && cfg.modelName ? cfg.modelName : '';
+
+  const refAudioAbs = path.resolve(repoRoot, refAudio);
+  if (!fs.existsSync(refAudioAbs)) {
+    fail(`F5 reference audio not found: ${refAudioAbs}\n` +
+         `  (record it, or pass --f5-ref-audio${cfg ? '-<lang>' : ''} <path>)`);
+  }
+
   const helper = path.join(repoRoot, 'scripts', 'lib', 'f5_render.py');
   const args = [
     helper,
-    '--ref-audio',  path.resolve(repoRoot, f5RefAudio),
-    '--ref-text',   path.resolve(repoRoot, f5RefText),
+    '--ref-audio',  refAudioAbs,
+    '--ref-text',   path.resolve(repoRoot, refText),
     '--speed',         f5Speed,
     '--nfe-step',      f5NfeStep,
     '--cfg-strength',  f5CfgStrength,
     '--output-dir',    outDir,
   ];
+  // A fine-tuned checkpoint (e.g. F5-Spanish) needs its own weights +
+  // vocab; the base English model uses F5TTS's bundled defaults.
+  if (ckptFile)  { args.push('--ckpt-file',  path.resolve(repoRoot, ckptFile)); }
+  if (vocabFile) { args.push('--vocab-file', path.resolve(repoRoot, vocabFile)); }
+  if (modelName) { args.push('--model-name', modelName); }
   if (f5Device) { args.push('--device', f5Device); }
   const payload = JSON.stringify({
     chunks: chunks.map((c, i) => ({

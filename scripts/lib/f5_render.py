@@ -29,6 +29,19 @@ CLI args:
   --speed        1.0                          (speaking speed multiplier)
   --nfe-step     32                           (quality vs. speed; 32 default)
   --device       cpu|cuda|mps|auto            (auto-detect by default)
+  --ckpt-file    path/to/model.safetensors    (optional fine-tuned weights,
+                                               e.g. the F5-Spanish checkpoint)
+  --vocab-file   path/to/vocab.txt            (vocab that pairs with --ckpt-file)
+  --model-name   F5TTS_Base|F5TTS_v1_Base     (architecture for the checkpoint;
+                                               F5-Spanish needs F5TTS_Base)
+
+Multilingual note
+-----------------
+The bundled F5-TTS model only really knows English + Chinese. To clone
+a voice in another language (e.g. Don narrating Spanish) you point
+--ckpt-file / --vocab-file at a language fine-tune such as
+jpgallegoar/F5-Spanish (architecture: F5TTS_Base) and supply a
+reference clip of the speaker talking in that language.
 
 Output:
   <output-dir>/c0000.wav, c0001.wav, ...  (one per chunk id)
@@ -59,6 +72,44 @@ def resolve_ref_text(ref_text_arg: str) -> str:
     return ref_text_arg.strip()
 
 
+def build_tts(args):
+    """Construct F5TTS, tolerating API drift across f5-tts versions.
+
+    Newer releases take the architecture as `model=`, older ones as
+    `model_type=`. We only pass a model name when the caller supplied
+    one (a fine-tune like F5-Spanish needs F5TTS_Base); otherwise we
+    let F5TTS pick its bundled default. ckpt_file / vocab_file are
+    passed through whenever provided.
+    """
+    import inspect
+
+    base = {"device": args.device}
+    if args.ckpt_file:
+        base["ckpt_file"] = args.ckpt_file
+    if args.vocab_file:
+        base["vocab_file"] = args.vocab_file
+
+    sig = None
+    try:
+        sig = set(inspect.signature(F5TTS.__init__).parameters.keys())
+    except (TypeError, ValueError):
+        sig = None
+
+    if args.model_name:
+        # Pick whichever model-name kwarg this version exposes.
+        if sig is None or "model" in sig:
+            base["model"] = args.model_name
+        elif "model_type" in sig:
+            base["model_type"] = args.model_name
+
+    # Drop any kwargs this version doesn't accept so we fail loud only
+    # on genuine errors, not on a renamed parameter.
+    if sig is not None:
+        base = {k: v for k, v in base.items() if k in sig}
+
+    return F5TTS(**base)
+
+
 def main() -> int:
     p = argparse.ArgumentParser(description="F5-TTS voice-cloned synthesis")
     p.add_argument("--ref-audio",  required=True,
@@ -75,7 +126,21 @@ def main() -> int:
                         "output closer to gen_text and reduces reference bleed")
     p.add_argument("--device",     default=None,
                    help="cpu|cuda|mps|auto (default: auto-detect)")
+    p.add_argument("--ckpt-file",  default="",
+                   help="Optional fine-tuned checkpoint (.safetensors/.pt)")
+    p.add_argument("--vocab-file", default="",
+                   help="Vocab file that pairs with --ckpt-file")
+    p.add_argument("--model-name", default="",
+                   help="Architecture name for the checkpoint "
+                        "(e.g. F5TTS_Base for the F5-Spanish fine-tune)")
     args = p.parse_args()
+
+    if args.ckpt_file and not os.path.isfile(args.ckpt_file):
+        print(json.dumps({"ok": False, "error": f"ckpt file not found: {args.ckpt_file}"}))
+        return 1
+    if args.vocab_file and not os.path.isfile(args.vocab_file):
+        print(json.dumps({"ok": False, "error": f"vocab file not found: {args.vocab_file}"}))
+        return 1
 
     if not os.path.isfile(args.ref_audio):
         print(json.dumps({"ok": False, "error": f"ref audio not found: {args.ref_audio}"}))
@@ -95,7 +160,7 @@ def main() -> int:
     os.makedirs(args.output_dir, exist_ok=True)
 
     t_load = time.time()
-    tts = F5TTS(device=args.device)
+    tts = build_tts(args)
     print(f"# loaded F5-TTS in {time.time()-t_load:.1f}s", file=sys.stderr)
 
     total_audio = 0.0
