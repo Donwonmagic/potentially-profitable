@@ -256,3 +256,73 @@ Each lesson page picks up:
 All of this happens automatically once the MP3 + JSON files are on
 disk and `inject-course-listen.mjs` has run. No lesson-page edits
 needed beyond the stamp.
+
+## Lesson Mode — hand-recorded openers and wraps (Phase 3.4)
+
+Each lesson can optionally include a hand-recorded opener and a
+hand-recorded wrap that Don voices himself. They stitch into the
+front and back of the synthesized body at render time. Both files
+are independently optional — render the body without one or both
+and the pipeline still works.
+
+### Where the files live
+
+Drop them in the lesson directory alongside `index.html`. Sample
+file set for lesson 1 (welcome):
+
+```
+course/m1-orient/welcome/
+  index.html                        the lesson page
+  audio.opener.en.wav               (optional) Don's English opener
+  audio.opener.en.txt               (optional) the script text
+  audio.wrap.en.wav                 (optional) Don's English wrap
+  audio.wrap.en.txt                 (optional) the script text
+  audio.opener.es.wav               (optional) Don's Spanish opener
+  ...etc
+```
+
+Accepted audio extensions: `.wav`, `.mp3`, `.m4a`, `.flac`. The
+pipeline normalizes everything to 22050 Hz mono PCM at concat
+time, so format choice doesn't affect the rendered MP3.
+
+### Why the sidecar `.txt`
+
+The runtime player exposes a "Don is saying:" caption strip for
+the recorded segments (Lesson Mode + UDL — operators who keep
+sound off get the same content as the listeners). The text comes
+from `audio.opener.<lang>.txt` / `audio.wrap.<lang>.txt`. Without
+the sidecar the strip falls back to a generic "Don is opening
+this lesson" / "Don is closing this lesson" line, and the audio
+plays unchanged.
+
+### Recording brief
+
+- Opener: ~30 s. Names the stakes ("this is the lesson where you
+  lock in your one promise"), then a retrieval cue from the
+  previous lesson when applicable, then the handoff into the
+  body. The body picks up from there.
+- Wrap: ~15 s. Confirms what was locked in, names the carry-
+  forward to the next lesson. The celebration card handles the
+  personalized "Marche-region, fifteen seats" surface; the wrap
+  carries the editorial through-line.
+- Both: 44.1 kHz/24-bit at recording. The render normalizes
+  loudness; record clean, not loud.
+
+### What changes in `audio.json`
+
+Two new chunk kinds in the manifest when the recordings are
+present:
+
+```json
+{ "id": "opener", "kind": "opener-recorded", "selector": null,
+  "text": "<from .txt>", "start": 0, "end": 28.4, "recorded": true }
+…body chunks shifted by opener_duration…
+{ "id": "wrap", "kind": "wrap-recorded", "selector": null,
+  "text": "<from .txt>", "start": <end_of_body>, "end": <total>,
+  "recorded": true }
+```
+
+The runtime treats these specially: no element-highlight (no
+selector), but the caption strip surfaces the script text. Body
+chunks downstream keep their existing selector + highlight logic
+unchanged.

@@ -614,7 +614,37 @@ function renderLanguage(postDir, chunks, lang) {
     synthesizePiper(chunks, rawDir);
   }
 
+  // Lesson Mode (Phase 3.4) — optional hand-recorded opener / wrap.
+  // Don records audio.opener.<lang>.{wav,mp3} and audio.wrap.<lang>.{wav,
+  // mp3} alongside the lesson HTML. When present, they prepend / append
+  // the body narration with a small gap. Sidecar .txt file lets him
+  // expose the script as the caption strip (read by listen.js for the
+  // "Don is saying:" line). All three files are independently optional;
+  // any missing one no-ops, and the chain still runs end-to-end.
+  const openerAsset = findRecordedAsset(postDir, 'opener', lang);
+  const wrapAsset   = findRecordedAsset(postDir, 'wrap',   lang);
+  const openerGapSec = openerAsset ? 0.45 : 0;  // settle before body
+  const wrapGapSec   = wrapAsset   ? 0.70 : 0;  // breath into wrap
   let cursor = 0;
+  if (openerAsset) {
+    const openerWav = openerAsset.wav;
+    const dur = wavDuration(openerWav);
+    segments.push(openerWav);
+    manifestChunks.push({
+      id: 'opener',
+      kind: 'opener-recorded',
+      selector: null,
+      text: openerAsset.script || '',
+      start: 0,
+      end:   round(dur),
+      recorded: true,
+    });
+    cursor = dur;
+    if (openerGapSec > 0) {
+      segments.push(gapWav(openerGapSec));
+      cursor += openerGapSec;
+    }
+  }
   chunks.forEach((chunk, i) => {
     const gap = gapBefore(chunk, chunks[i - 1]);
 
@@ -660,6 +690,27 @@ function renderLanguage(postDir, chunks, lang) {
       end:   round(end),
     });
   });
+
+  // Lesson Mode (Phase 3.4) — append the wrap recording, if present.
+  if (wrapAsset) {
+    if (wrapGapSec > 0) {
+      segments.push(gapWav(wrapGapSec));
+      cursor += wrapGapSec;
+    }
+    const wrapWav = wrapAsset.wav;
+    const dur = wavDuration(wrapWav);
+    segments.push(wrapWav);
+    manifestChunks.push({
+      id: 'wrap',
+      kind: 'wrap-recorded',
+      selector: null,
+      text: wrapAsset.script || '',
+      start: round(cursor),
+      end:   round(cursor + dur),
+      recorded: true,
+    });
+    cursor += dur;
+  }
 
   // English keeps the legacy audio.mp3 / audio.json filenames for
   // backward compatibility with existing HTML (data-audio-src="audio.mp3");
@@ -869,6 +920,57 @@ function runPiper(text, outWav) {
 function renderSilence(outWav, seconds) {
   run('ffmpeg', ['-y', '-f', 'lavfi', '-i', `anullsrc=r=22050:cl=mono`,
                 '-t', String(seconds), '-c:a', 'pcm_s16le', outWav]);
+}
+
+// Look for a hand-recorded opener / wrap sidecar in the lesson dir.
+// Tries .wav, .mp3, .m4a, .flac in that order. Returns { wav, script }
+// where `wav` is a normalized 22050 mono WAV staged in a tmp file for
+// concat compatibility, and `script` is the optional caption text
+// from the sidecar .txt (read for the audio.json manifest). Returns
+// null when no asset is found — the pipeline falls back to body-only
+// narration with no opener / wrap.
+//
+// Per-locale resolution: looks for audio.<role>.<lang>.{ext} (e.g.,
+// audio.opener.en.wav). EN is the canonical record; other locales
+// are independent — Don records es separately. No fallback across
+// locales: if audio.opener.fr.wav doesn't exist, the FR rendering
+// just has no opener, even when EN does. The brand-recognition
+// value of "Don's voice on the opener" doesn't transfer across
+// languages he doesn't speak.
+function findRecordedAsset(postDir, role, lang) {
+  const exts = ['wav', 'mp3', 'm4a', 'flac'];
+  let foundSrc = null;
+  for (const ext of exts) {
+    const p = path.join(postDir, `audio.${role}.${lang}.${ext}`);
+    if (fs.existsSync(p)) { foundSrc = p; break; }
+  }
+  if (!foundSrc) return null;
+
+  // Normalize to a 22050 mono WAV in a tmp file so the concat filter
+  // accepts the stream alongside the Kokoro outputs (same sample rate,
+  // same channel layout). Original asset is untouched.
+  const tmp = path.join(
+    fs.mkdtempSync(path.join(os.tmpdir(), `recorded-${role}-${lang}-`)),
+    `${role}.wav`
+  );
+  run('ffmpeg', [
+    '-y', '-loglevel', 'error',
+    '-i', foundSrc,
+    '-ar', '22050', '-ac', '1',
+    '-c:a', 'pcm_s16le',
+    tmp,
+  ]);
+
+  // Optional sidecar .txt holds the spoken script. Used for the
+  // audio.json text field so the runtime's caption strip ("Don is
+  // saying:") can show the line during opener / wrap playback.
+  // Skipped silently if absent.
+  const txtPath = path.join(postDir, `audio.${role}.${lang}.txt`);
+  let script = '';
+  if (fs.existsSync(txtPath)) {
+    try { script = fs.readFileSync(txtPath, 'utf8').trim(); } catch (_) {}
+  }
+  return { wav: tmp, script };
 }
 
 // Strip leading + trailing silence from a WAV. Done in two passes

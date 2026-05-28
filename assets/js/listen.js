@@ -775,6 +775,16 @@
       if (chunk.kind === 'figure')  return 'Graphic — ' + trimLabel(chunk.text, 80);
       if (chunk.kind === 'quote')   return 'Pull quote';
       if (chunk.kind === 'list')    return 'List item';
+      // Lesson Mode (Phase 3.4) — hand-recorded opener / wrap. Surface
+      // the script as the dock label when one was recorded; otherwise
+      // a brand-line stand-in. Body / wrap labels are explicit to the
+      // listener that Don is speaking (not the synth).
+      if (chunk.kind === 'opener-recorded')
+        return chunk.text ? '“' + trimLabel(chunk.text, 80) + '”' : 'Don is opening this lesson';
+      if (chunk.kind === 'wrap-recorded')
+        return chunk.text ? '“' + trimLabel(chunk.text, 80) + '”' : 'Don is closing this lesson';
+      if (chunk.kind === 'opener') return 'Opener';
+      if (chunk.kind === 'wrap')   return 'Wrap';
       // Use the nearest preceding heading as the section title
       const h = nearestHeading(chunk.element);
       return h ? trimLabel(h) : 'Reading…';
