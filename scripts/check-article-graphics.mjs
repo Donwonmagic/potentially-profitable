@@ -46,6 +46,14 @@
  *   7. Cross-post dedup — the inner text of every content figure is
  *      hashed; if the same hash appears in two or more article slugs,
  *      flag (with an allowlist for legitimate shared diagrams).
+ *   8. Autolink-in-attribute — any HTML attribute value containing the
+ *      `LIBRARY:autolink:start` marker is invalid (the marker should
+ *      only live in body text, never inside `data-audio-alt`, `aria-
+ *      label`, or any other attribute). Catches the corruption pattern
+ *      that produced the original GSC fig #6 bug — a manual or scripted
+ *      copy-paste of body content (already autolinked) into an
+ *      attribute value, which then breaks attribute parsing at the
+ *      first unescaped quote in the autolink markup.
  *
  * Not enforced here (intentional gaps)
  *   - Citation-slug registry. Originally proposed: figures using a
@@ -133,7 +141,7 @@ const REPO       = path.resolve(path.dirname(__filename), '..');
 const args        = new Set(process.argv.slice(2));
 const skipDrafts  = args.has('--skip-drafts');
 
-const SCAN_ROOTS = ['library', 'blog', 'es/library', 'es/blog'];
+export const SCAN_ROOTS = ['library', 'blog', 'es/library', 'es/blog'];
 
 // { path: 'library/<slug>', rule: 1..7, why: 'YYYY-MM-DD — short reason' }
 //
@@ -175,17 +183,17 @@ const DEDUP_ALLOW = new Set([
   // that still ships the same article body in the ES tree). Both surfaces
   // are translations of the same EN library piece; same figure is the
   // right outcome until the legacy /es/blog/ slugs are migrated.
-  '3cd1a6b3c50e',
+  'd9b419909d34',
   // 2026-05-28 — page-gates viz-tree shared between es/library/que-debe-tener
   // (canonical) and es/blog/what-should-be-on (legacy slug). Same translation
   // intent as the entry above.
-  'bc7d3d6f3bc9',
+  '5e1492f6896e',
 ]);
 
 // The viz-* family names this gate recognises. Wrapper class viz-figure
 // or article-figure marks the figure; the *inner* class names the kind.
 // New kinds: add here AND mention in the canon §8 list.
-const VIZ_KINDS = [
+export const VIZ_KINDS = [
   'viz-bars',
   'viz-flow',
   'viz-tree',
@@ -198,7 +206,7 @@ const VIZ_KINDS = [
   'viz-scroll',
 ];
 
-const DATA_AUDIO_ALT_MIN = 80;
+export const DATA_AUDIO_ALT_MIN = 80;
 
 function* walkArticleHtml(rootRel) {
   const root = path.join(REPO, rootRel);
@@ -223,11 +231,11 @@ function isWaived(slugPath, ruleNum) {
   );
 }
 
-function isArticleBody(html) {
+export function isArticleBody(html) {
   return /<article\b[^>]*\bid="post-body"/.test(html);
 }
 
-function isDraft(html) {
+export function isDraft(html) {
   return /<article\b[^>]*\bdata-draft="true"/.test(html);
 }
 
@@ -236,7 +244,7 @@ function isDraft(html) {
 const CONTENT_FIGURE_RE =
   /<figure\b([^>]*\bclass="[^"]*\b(?:viz-figure|article-figure)\b[^"]*"[^>]*)>([\s\S]*?)<\/figure>/g;
 
-function collectContentFigures(html) {
+export function collectContentFigures(html) {
   CONTENT_FIGURE_RE.lastIndex = 0;
   const out = [];
   let m;
@@ -246,16 +254,16 @@ function collectContentFigures(html) {
   return out;
 }
 
-function getDataAudioAlt(openAttrs) {
+export function getDataAudioAlt(openAttrs) {
   const m = /\bdata-audio-alt=(['"])([\s\S]*?)\1/.exec(openAttrs);
   return m ? m[2] : '';
 }
 
-function hasFigcaption(inner) {
+export function hasFigcaption(inner) {
   return /<figcaption\b/.test(inner);
 }
 
-function detectVizKinds(inner) {
+export function detectVizKinds(inner) {
   const kinds = new Set();
   for (const kind of VIZ_KINDS) {
     // Match the kind as a whole class word inside class="…"
@@ -265,14 +273,57 @@ function detectVizKinds(inner) {
   return kinds;
 }
 
-function hashFigureInner(inner) {
+// Detect the autolink-marker-inside-attribute corruption pattern.
+// Returns an array of attribute-context strings that contain the marker.
+// The marker should only appear inside body text; finding it inside an
+// attribute value means the autolink HTML was copy-pasted into an
+// attribute, which breaks parsing at the first unescaped inner quote.
+export function findAutolinkInAttribute(html) {
+  // Strip body content first by scanning for attribute values only.
+  // Any attribute value containing "LIBRARY:autolink:start" is a hit.
+  const ATTR_RE = /\b([a-z][\w-]*)\s*=\s*"([^"]*LIBRARY:autolink:start[^"]*)"/gi;
+  const hits = [];
+  let m;
+  while ((m = ATTR_RE.exec(html)) !== null) {
+    const lineNum = html.slice(0, m.index).split('\n').length;
+    hits.push({ attr: m[1], excerpt: m[2].slice(0, 80), line: lineNum });
+  }
+  return hits;
+}
+
+export function hashFigureInner(inner) {
   // Strip whitespace + HTML comments so cosmetic-only differences don't
   // dodge the dedup gate. Hash the result.
+  //
+  // Normalization steps (in order):
+  //   1. Strip <!-- comments --> entirely.
+  //   2. Collapse runs of whitespace to a single space.
+  //   3. Drop whitespace between consecutive tags (`> <` → `><`) so a
+  //      pretty-printed copy hashes the same as a minified one.
+  //   4. Trim leading/trailing whitespace.
   const normalized = inner
     .replace(/<!--[\s\S]*?-->/g, '')
     .replace(/\s+/g, ' ')
+    .replace(/>\s+</g, '><')
     .trim();
   return crypto.createHash('sha1').update(normalized).digest('hex').slice(0, 12);
+}
+
+export function numTextToShare(text) {
+  if (!text) return null;
+  // Strip HTML entities, normalize.
+  const t = text.replace(/&middot;/g, '·').replace(/\s+/g, ' ').trim();
+  // "13.14%" / "57%" → 0.1314 / 0.57
+  let m = /^(-?\d+(?:\.\d+)?)\s*%/.exec(t);
+  if (m) return parseFloat(m[1]) / 100;
+  // "0.85" / "1.0" — bare share-of-one
+  m = /^0?\.\d+$/.exec(t);
+  if (m) return parseFloat(t);
+  if (t === '1' || t === '1.0') return 1;
+  // Everything else (dollar amounts, "rising, not flat", named ranks)
+  // is not a percent — we cannot reconcile against --w, so return null
+  // and skip the row.
+  return null;
 }
 
 function parseVizBarsRows(inner) {
@@ -298,23 +349,6 @@ function parseVizBarsRows(inner) {
     rows.push({ width: widths[i], numText: nums[i] });
   }
   return rows;
-}
-
-function numTextToShare(text) {
-  if (!text) return null;
-  // Strip HTML entities, normalize.
-  const t = text.replace(/&middot;/g, '·').replace(/\s+/g, ' ').trim();
-  // "13.14%" / "57%" → 0.1314 / 0.57
-  let m = /^(-?\d+(?:\.\d+)?)\s*%/.exec(t);
-  if (m) return parseFloat(m[1]) / 100;
-  // "0.85" / "1.0" — bare share-of-one
-  m = /^0?\.\d+$/.exec(t);
-  if (m) return parseFloat(t);
-  if (t === '1' || t === '1.0') return 1;
-  // Everything else (dollar amounts, "rising, not flat", named ranks)
-  // is not a percent — we cannot reconcile against --w, so return null
-  // and skip the row.
-  return null;
 }
 
 function checkVizBarsConsistency(figs) {
@@ -369,6 +403,17 @@ function checkVizBarsConsistency(figs) {
   }
   return out;
 }
+
+// --------------------------------------------------------------------
+//  Main entry — runs only when this file is executed directly. When
+//  imported (e.g., by scripts/test-article-graphics.mjs), the helpers
+//  above are available without triggering the filesystem audit.
+// --------------------------------------------------------------------
+
+const isMain = process.argv[1] && process.argv[1].endsWith('check-article-graphics.mjs');
+if (!isMain) {
+  // Module mode — skip the audit; helpers are already exported.
+} else {
 
 // --------------------------------------------------------------------
 //  Pass 1: collect every article's figures, hash them for cross-post
@@ -461,6 +506,19 @@ for (const art of articles) {
       failures.push({ file: rel, rule: 6, msg: m });
     }
   }
+
+  // Rule 8 — autolink markers inside attribute values. Runs on the
+  // whole HTML, not just figures, since the corruption can affect any
+  // attribute (data-audio-alt, aria-label, alt, etc.).
+  if (!isWaived(slugPath, 8)) {
+    const autolinkHits = findAutolinkInAttribute(html);
+    for (const h of autolinkHits) {
+      failures.push({
+        file: rel, rule: 8,
+        msg: `line ${h.line}: ${h.attr}="…${h.excerpt}…" contains LIBRARY:autolink:start marker inside attribute value`,
+      });
+    }
+  }
 }
 
 // Rule 7 — cross-post dedup. Run after all articles are collected.
@@ -512,8 +570,11 @@ console.error('  4 — every content figure contains a <figcaption>.');
 console.error('  5 — data-tone="teal" figures must be paired with data-tone="rust" somewhere in the post.');
 console.error('  6 — viz-bars rows: --w CSS width and rendered number must agree within ±0.02.');
 console.error('  7 — no cross-post figure duplication (allowlist via DEDUP_ALLOW).');
+console.error('  8 — no LIBRARY:autolink markers inside attribute values (catches body→attribute copy-paste corruption).');
 console.error('');
 console.error('Canon: docs/voice-canon-library.md §8 and docs/voice-canon-blog.md §7.');
 console.error('Waivers: add { path, rule, why } to HISTORICAL_WAIVERS with a dated comment.');
 
 process.exit(1);
+
+} // end of isMain block

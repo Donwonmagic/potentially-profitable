@@ -97,6 +97,13 @@ const CHECKS = [
   // HISTORICAL_WAIVERS by intent; the cutover edits the under-floor posts
   // it can and dates the rest as backlog. See scripts/check-article-graphics.mjs.
   ['Article graphics',    'check-article-graphics.mjs'],
+  // Phase H.2 — unit tests for the article-graphics gate above. The
+  // gate is 400+ lines of regex parsing and per-rule logic; these
+  // tests pin the parser behavior so future regressions surface
+  // before they ship. See scripts/test-article-graphics.mjs for the
+  // suite and scripts/run-article-graphics-tests.mjs for why a
+  // wrapper is needed.
+  ['Article graphics tests', 'run-article-graphics-tests.mjs'],
   // Phase SEO — H2 anchor IDs let AI search engines (Google AI Overview,
   // Perplexity, ChatGPT) deep-link to a specific section instead of the
   // article root. See scripts/inject-h2-anchor-ids.mjs for the slug
