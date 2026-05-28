@@ -144,6 +144,18 @@ export function mount(rootEl, state, deps) {
     feedbackEl.removeAttribute('hidden');
     buttons[i].focus();
     try { sessionStorage.setItem(storageKey, '1'); } catch (_) {} // h8-exempt:per-session "answered-before" UI state; never leaves the browser, never crosses tabs
+    // Lesson Mode signal — the audio player listens for this event to
+    // resume narration after a retrieval-practice pause. The widget
+    // doesn't grade answers (every option produces a feedback string),
+    // so we dispatch on every click. detail.optionIndex helps the
+    // listener distinguish first-answer-of-the-pause from re-clicks
+    // (the operator clicking a second option after reading the first
+    // option's feedback) without re-triggering audio resume.
+    try {
+      document.dispatchEvent(new CustomEvent('mtn:checkpoint-answered', {
+        detail: { storageKey: storageKey, optionIndex: i }
+      }));
+    } catch (_) {}
   }
 
   buttons.forEach((btn, i) => {
