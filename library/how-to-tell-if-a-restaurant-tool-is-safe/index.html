@@ -514,35 +514,35 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <figure class="viz-figure article-figure" data-audio-alt="The five-test browser audit, in the order you run them. Test one: open the Network tab and type a number. If a request fires on every keystroke, the tool is shipping your inputs to a server before you submit — walk away. Test two: look for the privacy claim at the point of input, not three clicks deep in a footer. Test three: check for an account, newsletter, or cookie gate — &quot;enter your email to see your results&quot; means your numbers are the price of admission. Test four: filter Network by JS and look for Google Analytics, Meta Pixel, HubSpot, FullStory, Hotjar — third-party surveillance vendors recording inputs you did not agree to share. Test five: right-click and View Source. A small, readable, unminified script is auditable; a four-megabyte minified bundle is not. Any single failure ends the audit.">
         <div class="viz-flow reveal">
           <ol class="viz-flow__list">
-            <li class="viz-flow__step" data-state="bad" data-tone="teal">
+            <li class="viz-flow__step" data-state="bad" data-tone="rust">
               <span class="viz-flow__num">1</span>
               <div class="viz-flow__body">
                 <p class="viz-flow__title">Network on keystroke</p>
                 <p class="viz-flow__meta">Open Network tab, type a number. If the request list grows per keystroke, the tool is silently shipping inputs to a server. <strong>Fail = walk away.</strong></p>
               </div>
             </li>
-            <li class="viz-flow__step" data-state="bad" data-tone="teal">
+            <li class="viz-flow__step" data-state="bad" data-tone="rust">
               <span class="viz-flow__num">2</span>
               <div class="viz-flow__body">
                 <p class="viz-flow__title">Privacy at the point of input</p>
                 <p class="viz-flow__meta">A trustworthy tool tells you what it does with your data <em>where you are typing</em> — not in a footer link three clicks deep. <strong>Fail = walk away.</strong></p>
               </div>
             </li>
-            <li class="viz-flow__step" data-state="bad" data-tone="teal">
+            <li class="viz-flow__step" data-state="bad" data-tone="rust">
               <span class="viz-flow__num">3</span>
               <div class="viz-flow__body">
                 <p class="viz-flow__title">Account / email / cookie gate</p>
                 <p class="viz-flow__meta">&ldquo;Enter your email to see your results&rdquo; means your numbers are the price of admission. The tool is not free. <strong>Fail = walk away.</strong></p>
               </div>
             </li>
-            <li class="viz-flow__step" data-state="bad" data-tone="teal">
+            <li class="viz-flow__step" data-state="bad" data-tone="rust">
               <span class="viz-flow__num">4</span>
               <div class="viz-flow__body">
                 <p class="viz-flow__title">Third-party scripts</p>
                 <p class="viz-flow__meta">Filter Network by JS. GA, Meta Pixel, HubSpot, FullStory, Hotjar — surveillance vendors who were never part of the deal. <strong>Fail = walk away.</strong></p>
               </div>
             </li>
-            <li class="viz-flow__step" data-state="bad" data-tone="teal">
+            <li class="viz-flow__step" data-state="bad" data-tone="rust">
               <span class="viz-flow__num">5</span>
               <div class="viz-flow__body">
                 <p class="viz-flow__title">Readable source</p>
