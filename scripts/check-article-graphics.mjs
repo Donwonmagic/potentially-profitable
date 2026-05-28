@@ -125,18 +125,26 @@ const HISTORICAL_WAIVERS = [
   { path: 'es/blog/can-chatgpt-write-your-restaurant-website',                       rule: 1, why: '2026-05-28 — ES translation sweep pending; legacy /es/blog/ slug, EN counterpart at /library/' },
   { path: 'es/blog/does-my-restaurant-need-a-website',                               rule: 1, why: '2026-05-28 — ES translation sweep pending; legacy /es/blog/ slug, EN counterpart at /library/' },
   { path: 'es/blog/google-ai-mode-resultados-locales-restaurante-2026',              rule: 1, why: '2026-05-28 — ES translation sweep pending; mirror EN second figure' },
-  { path: 'es/blog/how-to-get-more-google-reviews-for-your-restaurant',              rule: 1, why: '2026-05-28 — ES translation sweep pending; legacy /es/blog/ slug, EN counterpart at /library/' },
   { path: 'es/blog/how-to-raise-restaurant-menu-prices-without-losing-reservations', rule: 1, why: '2026-05-28 — ES translation sweep pending; legacy /es/blog/ slug, EN counterpart at /library/' },
   { path: 'es/blog/how-to-set-up-google-business-profile-for-your-restaurant',       rule: 1, why: '2026-05-28 — ES translation sweep pending; legacy /es/blog/ slug, EN counterpart at /library/' },
-  { path: 'es/blog/toast-vs-square-vs-clover-for-restaurants',                       rule: 1, why: '2026-05-28 — ES translation sweep pending; legacy /es/blog/ slug, EN counterpart at /library/' },
-  { path: 'es/blog/what-should-be-on-a-restaurant-website',                          rule: 1, why: '2026-05-28 — ES translation sweep pending; legacy /es/blog/ slug, EN counterpart at /library/' },
   { path: 'es/blog/wix-vs-custom-for-restaurants',                                   rule: 2, why: '2026-05-28 — ES translation sweep pending; legacy /es/blog/ slug, mirror EN viz-flow addition' },
   { path: 'es/blog/wix-vs-custom-for-restaurants',                                   rule: 3, why: '2026-05-28 — ES translation sweep pending; narration missing' },
 ];
 
 // Inner-text SHA1 hashes that are legitimately repeated across articles
 // (shared diagrams, side-by-side companions). Each entry: dated comment.
-const DEDUP_ALLOW = new Set();
+const DEDUP_ALLOW = new Set([
+  // 2026-05-28 — review-velocity viz-bars shared between es/library/
+  // (canonical, post-blog-library-split) and es/blog/ (legacy slug
+  // that still ships the same article body in the ES tree). Both surfaces
+  // are translations of the same EN library piece; same figure is the
+  // right outcome until the legacy /es/blog/ slugs are migrated.
+  '3cd1a6b3c50e',
+  // 2026-05-28 — page-gates viz-tree shared between es/library/que-debe-tener
+  // (canonical) and es/blog/what-should-be-on (legacy slug). Same translation
+  // intent as the entry above.
+  'bc7d3d6f3bc9',
+]);
 
 // The viz-* family names this gate recognises. Wrapper class viz-figure
 // or article-figure marks the figure; the *inner* class names the kind.

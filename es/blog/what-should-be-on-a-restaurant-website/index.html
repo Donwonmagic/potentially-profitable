@@ -591,6 +591,43 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       </ul>
 
       <h2 id="la-estructura-que-se-gana-su-lugar">La estructura que se gana su lugar</h2>
+
+      <figure class="viz-figure article-figure" data-audio-alt="Un árbol de decisión de tres preguntas para cualquier página que estés tentado a agregar a un sitio de restaurante. Pregunta uno — ¿responde una pregunta que un comensal nuevo realmente tecleó en Google antes de decidir visitar? Sí — consérvala. Las siete páginas principales lo hacen. No — pasa a la pregunta dos. Pregunta dos — ¿maneja una consulta que ninguna otra cosa del sitio captura, como eventos privados o catering? Sí — consérvala. Las consultas de alto valor necesitan un landing dedicado o se fugan a un formulario de contacto genérico. No — pasa a la pregunta tres. Pregunta tres — ¿realmente vas a mantener esta página con cadencia mensual? Sí — consérvala. Un blog con posts mensuales, una página de prensa con menciones actuales, una página de empleo con vacantes activas se ganan su lugar. No — quítala. Una página vacía duele más que la ausencia; Google la lee como un sitio abandonado.">
+        <ol class="viz-tree" aria-label="Árbol de decisión de tres preguntas para cualquier página de sitio de restaurante">
+          <li class="viz-tree__node">
+            <details open>
+              <summary><span class="viz-tree__num">1</span><span class="viz-tree__title">¿Responde una pregunta que un cliente nuevo teclea?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+              <div class="viz-tree__body">
+                <p>¿Qué sirven? ¿Cuándo están abiertos? ¿Dónde están? ¿Puedo reservar? &mdash; la forma de cuatro preguntas de una búsqueda real previa a la visita.</p>
+                <p><span class="viz-tree__verdict" data-tone="pass">Consérvala</span> Las siete páginas principales pasan este filtro.</p>
+                <p><span class="viz-tree__verdict" data-tone="warn">Salta a P2</span> La página existe por otra razón &mdash; una consulta, una necesidad interna, una obligación.</p>
+              </div>
+            </details>
+          </li>
+          <li class="viz-tree__node">
+            <details>
+              <summary><span class="viz-tree__num">2</span><span class="viz-tree__title">¿Maneja una consulta que nada más captura?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+              <div class="viz-tree__body">
+                <p>Eventos privados, catering, reservas para grupos grandes, contactos de prensa &mdash; las consultas de alto valor que se fugan al pegar en un formulario de contacto genérico.</p>
+                <p><span class="viz-tree__verdict" data-tone="pass">Consérvala</span> Cada consulta de alto valor merece un landing dedicado con sus propios campos de formulario y enrutamiento de seguimiento.</p>
+                <p><span class="viz-tree__verdict" data-tone="warn">Salta a P3</span> No hay una consulta específica detrás de la página; el caso para conservarla tiene que venir de otro lado.</p>
+              </div>
+            </details>
+          </li>
+          <li class="viz-tree__node">
+            <details>
+              <summary><span class="viz-tree__num">3</span><span class="viz-tree__title">¿La vas a mantener mensualmente?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+              <div class="viz-tree__body">
+                <p>Un blog con posts mensuales, una página de prensa con menciones actuales, una página de empleo con vacantes activas, una galería con fotos rotativas &mdash; páginas que necesitan cuidado activo para mantenerse creíbles.</p>
+                <p><span class="viz-tree__verdict" data-tone="pass">Consérvala</span> La respuesta honesta es sí, y tienes a alguien que la cuida.</p>
+                <p><span class="viz-tree__verdict" data-tone="fail">Quítala</span> Una página vacía duele más que la ausencia. Google lee abandono; el cliente lo lee igual.</p>
+              </div>
+            </details>
+          </li>
+        </ol>
+        <figcaption>Tres filtros &mdash; cualquier página que falla los tres es una página que le cuesta al sitio más de lo que le devuelve.</figcaption>
+      </figure>
+
       <p>Este es el sitemap con el que arranco en la mayoría de las construcciones para restaurantes independientes:</p>
       <ol>
         <li><strong>Portada</strong> — cocina, ubicación, ambiente, horarios, llamado a la acción</li>
