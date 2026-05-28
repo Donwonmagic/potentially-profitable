@@ -120,7 +120,6 @@ const HISTORICAL_WAIVERS = [
   { path: 'es/library/especificaciones-de-fotos-para-restaurantes',                 rule: 3, why: '2026-05-28 — ES translation sweep pending; narration length below floor' },
   { path: 'es/library/los-6-tipos-de-schema-markup-que-google-usa',                 rule: 2, why: '2026-05-28 — ES translation sweep pending; viz-* class missing on figures' },
   { path: 'es/library/los-6-tipos-de-schema-markup-que-google-usa',                 rule: 3, why: '2026-05-28 — ES translation sweep pending; narration length below floor' },
-  { path: 'es/library/reserva-en-google-ai-mode-restaurante-2026',                  rule: 1, why: '2026-05-28 — ES translation sweep pending; mirror EN second figure' },
   // ES /blog/ posts whose canonical EN counterpart now lives at /library/ — legacy from the blog→library split.
   { path: 'es/blog/can-chatgpt-write-your-restaurant-website',                       rule: 1, why: '2026-05-28 — ES translation sweep pending; legacy /es/blog/ slug, EN counterpart at /library/' },
   { path: 'es/blog/does-my-restaurant-need-a-website',                               rule: 1, why: '2026-05-28 — ES translation sweep pending; legacy /es/blog/ slug, EN counterpart at /library/' },
