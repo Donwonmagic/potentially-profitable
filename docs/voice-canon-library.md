@@ -448,9 +448,3 @@ bump `dateModified` in the JSON-LD, rerender any affected audio, and
 land the revision in a single PR. Do not retitle and do not move the
 slug; deep links from the smart-next blocks, from external citations,
 and from the AI Overview rotation depend on slug stability.
-
-## Open editorial decisions
-
-One item remains for the desk:
-
-1. **Existing library posts ship with `Op-ed · N min · By Don Goldstein` eyebrows.** Going forward, new library posts ship under *The Muntin Desk*. Decide whether to migrate existing posts in a single sweep (with `dateModified` bumps, audio re-renders, and ES eyebrow updates in lockstep) or to grandfather them in and only convert on the next substantive revision per piece.
