@@ -255,6 +255,14 @@ if (!allTargets.length) fail('Pass --manifest <path>, --all, or a post directory
 // TDZ error from `let`.
 let _pronunciationCache = null;
 
+// Same TDZ reasoning as _pronunciationCache: course renders invoke
+// extractCourseChunks → extractCourseChunksFromBody, which references
+// COURSE_SKIP_CLASS_RE synchronously. The function declarations are
+// hoisted but `const` is not, so the constant has to sit above the
+// renderPost() entry-point loop. (The full rationale for what the regex
+// skips lives next to extractCourseChunks further down the file.)
+const COURSE_SKIP_CLASS_RE = /class="[^"]*(course-plain|course-mc|course-save-strip|inline-cta|further-reading|sources|course-objectives)[^"]*"/i;
+
 for (const t of allTargets) renderPost(path.resolve(repoRoot, t));
 function loadPronunciation() {
   if (_pronunciationCache !== null) return _pronunciationCache;
@@ -1260,12 +1268,9 @@ function extractChunks(html) {
 // course-save-strip (procedural housekeeping), inline-cta / further-
 // reading / sources (existing convention).
 //
-// COURSE_SKIP_CLASS_RE is declared HERE (before both functions) because
-// extractCourseChunks calls extractCourseChunksFromBody which references
-// the constant. JavaScript's temporal dead zone means a function called
-// before the const initializer line runs throws on access — moving it
-// up resolves the TDZ.
-const COURSE_SKIP_CLASS_RE = /class="[^"]*(course-plain|course-mc|course-save-strip|inline-cta|further-reading|sources|course-objectives)[^"]*"/i;
+// (COURSE_SKIP_CLASS_RE is declared near the top of the module, above the
+// top-level renderPost() loop, to avoid a TDZ throw when course renders
+// hit extractCourseChunksFromBody before this point in the file executes.)
 
 function extractCourseChunks(html) {
   const out = [];
