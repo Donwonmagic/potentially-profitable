@@ -100,13 +100,16 @@ function buildListenButton(locale) {
   // convention so any future shared CSS picks up both surfaces.
   // data-audio-src is RELATIVE ("audio.mp3") so the same markup works
   // whether the page is served from /course/.../ or /es/course/.../.
+  // data-audio-source-lang tells listen.js which language the unsuffixed
+  // audio.mp3 is in (en for /course/, es for /es/course/) so the player
+  // defaults to the page's own language and maps the picker correctly.
   // data-audio-languages declares the full set of locales the listener
   // can switch through — listen.js fetches lazily so missing language
   // variants degrade gracefully.
   return [
     SENTINEL_START,
     '      <div class="row-center" style="margin:0 0 22px">',
-    `        <button type="button" id="listen-btn" class="listen-btn" aria-pressed="false" data-state="idle" data-audio-src="audio.mp3" data-audio-languages="en,es,fr,it,pt,zh">`,
+    `        <button type="button" id="listen-btn" class="listen-btn" aria-pressed="false" data-state="idle" data-audio-src="audio.mp3" data-audio-source-lang="${locale}" data-audio-languages="en,es,fr,it,pt,zh">`,
     '          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">',
     '            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor"/>',
     '            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>',

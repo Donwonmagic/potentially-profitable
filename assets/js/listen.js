@@ -100,12 +100,19 @@
     // additional languages live at audio.<lang>.mp3 / audio.<lang>.json.
     const availableLanguages = (listenBtn.getAttribute('data-audio-languages') || 'en')
       .split(',').map((s) => s.trim().toLowerCase()).filter(Boolean);
-    if (!availableLanguages.includes('en')) availableLanguages.unshift('en');
-    // User preference persists across posts via the shared prefs key.
-    let currentLanguage = 'en';
+    // The language the unsuffixed audio.mp3 / audio.json is rendered in.
+    // English pages omit the attribute (default 'en'); /es/ pages stamp
+    // 'es'. The source language is the unsuffixed file; every other
+    // language is audio.<lang>.mp3. This is what lets a Spanish page map
+    // its own audio to the base name and still offer English as an alt.
+    const sourceLang = (listenBtn.getAttribute('data-audio-source-lang') || 'en').trim().toLowerCase();
+    if (!availableLanguages.includes(sourceLang)) availableLanguages.unshift(sourceLang);
+    // Default to the page's own language; user preference (below) can
+    // override it. Persisted across posts via the shared prefs key.
+    let currentLanguage = sourceLang;
     function audioSrcFor(lang) {
       if (!audioSrcBase) return null;
-      return lang === 'en' ? audioSrcBase : audioSrcBase.replace(/\.mp3$/, `.${lang}.mp3`);
+      return lang === sourceLang ? audioSrcBase : audioSrcBase.replace(/\.mp3$/, `.${lang}.mp3`);
     }
     function manifestSrcFor(lang) {
       const a = audioSrcFor(lang);
