@@ -88,6 +88,15 @@ const CHECKS = [
   // capstone present, audio not pending, read time >= 5 min). See
   // scripts/check-overview-quality.mjs for the rule rationale.
   ['Overview quality',    'check-overview-quality.mjs'],
+  // Phase H.2 — per-article graphics gate. Where overview-quality is
+  // wider (≥3 figures, ≥1 viz-bars) and applies only to batch overviews,
+  // this gate is the universal floor for every regular article:
+  // ≥2 content figures, ≥2 distinct viz-* kinds, ≥80-char data-audio-alt
+  // on every figure, figcaption on every figure, teal-rust tone balance,
+  // viz-bars --w-vs-num consistency, and cross-post dedup. Empty
+  // HISTORICAL_WAIVERS by intent; the cutover edits the under-floor posts
+  // it can and dates the rest as backlog. See scripts/check-article-graphics.mjs.
+  ['Article graphics',    'check-article-graphics.mjs'],
   // Phase SEO — H2 anchor IDs let AI search engines (Google AI Overview,
   // Perplexity, ChatGPT) deep-link to a specific section instead of the
   // article root. See scripts/inject-h2-anchor-ids.mjs for the slug

@@ -93,7 +93,65 @@ const skipDrafts  = args.has('--skip-drafts');
 const SCAN_ROOTS = ['library', 'blog', 'es/library', 'es/blog'];
 
 // { path: 'library/<slug>', rule: 1..7, why: 'YYYY-MM-DD — short reason' }
-const HISTORICAL_WAIVERS = [];
+//
+// Two batches landed at gate-cutover:
+//   - EN_VARIETY — four EN articles ship with all figures of a single
+//     viz-* kind. Editorial work needed to add a second kind that fits
+//     the post's argument shape (decision-tree, before/after, bars).
+//   - ES_TRANSLATION — twenty-four ES posts inherited translation-era
+//     gaps: missing or class-stripped figures, sub-80-char narration,
+//     teal-only tone palettes. Mirror sweep from the EN counterparts
+//     will close these in a dedicated PR.
+//
+// Each waiver names the slug, the rule it bypasses, and the dated
+// reason. Removing an entry forces the next CI run to re-audit it.
+const HISTORICAL_WAIVERS = [
+  // EN variety follow-up — figures of a different viz-* kind needed.
+  { path: 'library/how-to-raise-restaurant-menu-prices-without-losing-reservations', rule: 2, why: '2026-05-28 — EN variety follow-up; only viz-ba present, needs viz-bars or viz-tree' },
+  { path: 'library/how-to-set-up-google-business-profile-for-your-restaurant',       rule: 2, why: '2026-05-28 — EN variety follow-up; only viz-flow present, needs viz-tree or viz-bars' },
+  { path: 'library/what-should-be-on-a-restaurant-website',                          rule: 2, why: '2026-05-28 — EN variety follow-up; only viz-flow present, needs viz-tree or viz-bars' },
+  { path: 'blog/google-ai-mode-restaurant-local-results-2026',                       rule: 2, why: '2026-05-28 — EN variety follow-up; three viz-flow figures, needs one viz-ba or viz-tree' },
+
+  // ES translation sweep — mirror EN figures with translated metadata.
+  { path: 'es/library/como-configurar-google-business-profile-para-tu-restaurante', rule: 2, why: '2026-05-28 — ES translation sweep pending; mirror EN variety addition' },
+  { path: 'es/library/como-conseguir-mas-resenas-google-para-tu-restaurante',       rule: 1, why: '2026-05-28 — ES translation sweep pending; mirror EN second figure' },
+  { path: 'es/library/como-hacer-sitio-web-para-mi-restaurante',                    rule: 1, why: '2026-05-28 — ES translation sweep pending; figures stripped in translation' },
+  { path: 'es/library/como-leer-google-search-console-de-tu-restaurante',           rule: 2, why: '2026-05-28 — ES translation sweep pending; viz-* class missing on figures' },
+  { path: 'es/library/como-leer-google-search-console-de-tu-restaurante',           rule: 3, why: '2026-05-28 — ES translation sweep pending; narration length below floor' },
+  { path: 'es/library/como-saber-si-una-herramienta-de-restaurante-es-segura',      rule: 2, why: '2026-05-28 — ES translation sweep pending; viz-* class missing on figures' },
+  { path: 'es/library/como-saber-si-una-herramienta-de-restaurante-es-segura',      rule: 3, why: '2026-05-28 — ES translation sweep pending; narration length below floor' },
+  { path: 'es/library/como-salir-de-doordash-mi-restaurante',                       rule: 1, why: '2026-05-28 — ES translation sweep pending; figures stripped in translation' },
+  { path: 'es/library/como-subir-precios-de-menu-sin-perder-reservas',              rule: 2, why: '2026-05-28 — ES translation sweep pending; mirror EN variety addition' },
+  { path: 'es/library/cuando-rehacer-tu-sitio-web-de-restaurante',                  rule: 2, why: '2026-05-28 — ES translation sweep pending; viz-* class missing on figures' },
+  { path: 'es/library/cuando-rehacer-tu-sitio-web-de-restaurante',                  rule: 3, why: '2026-05-28 — ES translation sweep pending; narration length below floor' },
+  { path: 'es/library/cuanto-cuesta-una-pagina-web-para-restaurante-2026',          rule: 1, why: '2026-05-28 — ES translation sweep pending; figures stripped in translation' },
+  { path: 'es/library/especificaciones-de-fotos-para-restaurantes',                 rule: 2, why: '2026-05-28 — ES translation sweep pending; viz-* class missing on figures' },
+  { path: 'es/library/especificaciones-de-fotos-para-restaurantes',                 rule: 3, why: '2026-05-28 — ES translation sweep pending; narration length below floor' },
+  { path: 'es/library/los-6-tipos-de-schema-markup-que-google-usa',                 rule: 2, why: '2026-05-28 — ES translation sweep pending; viz-* class missing on figures' },
+  { path: 'es/library/los-6-tipos-de-schema-markup-que-google-usa',                 rule: 3, why: '2026-05-28 — ES translation sweep pending; narration length below floor' },
+  { path: 'es/library/puede-chatgpt-escribir-tu-sitio-web-de-restaurante',          rule: 5, why: '2026-05-28 — ES translation sweep pending; mirror EN rust accent' },
+  { path: 'es/library/que-debe-tener-un-sitio-web-de-restaurante',                  rule: 2, why: '2026-05-28 — ES translation sweep pending; mirror EN variety addition' },
+  { path: 'es/library/que-debe-tener-un-sitio-web-de-restaurante',                  rule: 5, why: '2026-05-28 — ES translation sweep pending; mirror EN rust accent' },
+  { path: 'es/library/reserva-en-google-ai-mode-restaurante-2026',                  rule: 1, why: '2026-05-28 — ES translation sweep pending; mirror EN second figure' },
+  { path: 'es/library/toast-vs-square-vs-clover-para-restaurantes',                 rule: 1, why: '2026-05-28 — ES translation sweep pending; mirror EN second figure (viz-tree decision diagnostic)' },
+  { path: 'es/library/wix-vs-custom-para-restaurantes',                             rule: 2, why: '2026-05-28 — ES translation sweep pending; mirror EN viz-flow addition' },
+  { path: 'es/library/wix-vs-custom-para-restaurantes',                             rule: 3, why: '2026-05-28 — ES translation sweep pending; narration missing' },
+  // ES /blog/ posts whose canonical EN counterpart now lives at /library/ — legacy from the blog→library split.
+  { path: 'es/blog/can-chatgpt-write-your-restaurant-website',                       rule: 1, why: '2026-05-28 — ES translation sweep pending; legacy /es/blog/ slug, EN counterpart at /library/' },
+  { path: 'es/blog/does-my-restaurant-need-a-website',                               rule: 1, why: '2026-05-28 — ES translation sweep pending; legacy /es/blog/ slug, EN counterpart at /library/' },
+  { path: 'es/blog/google-ai-mode-resultados-locales-restaurante-2026',              rule: 1, why: '2026-05-28 — ES translation sweep pending; mirror EN second figure' },
+  { path: 'es/blog/how-to-get-more-google-reviews-for-your-restaurant',              rule: 1, why: '2026-05-28 — ES translation sweep pending; legacy /es/blog/ slug, EN counterpart at /library/' },
+  { path: 'es/blog/how-to-raise-restaurant-menu-prices-without-losing-reservations', rule: 1, why: '2026-05-28 — ES translation sweep pending; legacy /es/blog/ slug, EN counterpart at /library/' },
+  { path: 'es/blog/how-to-set-up-google-business-profile-for-your-restaurant',       rule: 1, why: '2026-05-28 — ES translation sweep pending; legacy /es/blog/ slug, EN counterpart at /library/' },
+  { path: 'es/blog/lanzamiento-mayo-2026-publicar-para-citacion',                    rule: 1, why: '2026-05-28 — ES translation sweep pending; mirror EN reading-arc viz-flow' },
+  { path: 'es/blog/lanzamiento-mayo-2026-publicar-para-citacion',                    rule: 5, why: '2026-05-28 — ES translation sweep pending; mirror EN rust accent' },
+  { path: 'es/blog/toast-vs-square-vs-clover-for-restaurants',                       rule: 1, why: '2026-05-28 — ES translation sweep pending; legacy /es/blog/ slug, EN counterpart at /library/' },
+  { path: 'es/blog/trafico-referido-gemini-restaurantes-2026',                       rule: 1, why: '2026-05-28 — ES translation sweep pending; mirror EN second figure' },
+  { path: 'es/blog/trafico-referido-gemini-restaurantes-2026',                       rule: 5, why: '2026-05-28 — ES translation sweep pending; mirror EN rust accent' },
+  { path: 'es/blog/what-should-be-on-a-restaurant-website',                          rule: 1, why: '2026-05-28 — ES translation sweep pending; legacy /es/blog/ slug, EN counterpart at /library/' },
+  { path: 'es/blog/wix-vs-custom-for-restaurants',                                   rule: 2, why: '2026-05-28 — ES translation sweep pending; legacy /es/blog/ slug, mirror EN viz-flow addition' },
+  { path: 'es/blog/wix-vs-custom-for-restaurants',                                   rule: 3, why: '2026-05-28 — ES translation sweep pending; narration missing' },
+];
 
 // Inner-text SHA1 hashes that are legitimately repeated across articles
 // (shared diagrams, side-by-side companions). Each entry: dated comment.
