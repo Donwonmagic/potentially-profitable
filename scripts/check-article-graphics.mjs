@@ -55,6 +55,49 @@
  *     not figures); enforcing this would require a separate per-figure
  *     marker first. Left for a follow-up if the registry adds one.
  *
+ * Known limitations (audited at cutover)
+ *   - The data-audio-alt regex `data-audio-alt=(['"])([\s\S]*?)\1` stops
+ *     at the first matching closing quote. In valid HTML this is fine
+ *     because attribute values cannot contain unescaped same-quote
+ *     characters. But `scripts/inject-library-autolinks.mjs` has been
+ *     observed injecting raw `<a href="…">…</a>` snippets INSIDE
+ *     data-audio-alt values, which produces invalid HTML and causes the
+ *     gate to under-count the narration length. Fix at source is to
+ *     teach the autolink injector to skip attribute values; the
+ *     workaround at the gate is that under-counting fails rule 3,
+ *     which surfaces the corruption.
+ *   - Rule 6 (viz-bars consistency) tolerates a single mismatched row
+ *     per figure as "max-normalized chart" (bars drawn relative to the
+ *     chart's max rather than absolute share-of-one). Charts whose
+ *     numeric labels are non-percentages (dollar amounts, "rising,
+ *     not flat", "single digits", pixel widths) are correctly skipped
+ *     by `numTextToShare`. A figure where every row's --w genuinely
+ *     drifts from its number by >2pp will fail; a figure with a single
+ *     intentionally rescaled row will pass.
+ *
+ * Open structural debt surfaced by the audit
+ *   - /es/blog/<en-slug>/ legacy duplicates. Sixteen sitemap entries
+ *     under /es/blog/ ship Spanish translations whose canonical EN
+ *     counterpart now lives at /library/ (post the May-2026 blog/library
+ *     split). The /es/library/<es-slug>/ canonical exists in parallel
+ *     for many of them; both surfaces are indexed. The graphics-floor
+ *     gate respects this by waiving rule 1 on the legacy slugs and
+ *     allowlisting the dedup hashes of figures that are intentionally
+ *     mirrored. The actual fix is a redirect or rename decision: either
+ *     /es/blog/<en-slug>/ 301s to /es/library/<es-slug>/, or the
+ *     canonical /es/library/<es-slug>/ adopts the EN slug. Until that
+ *     lands, the duplicate-content cost is a known SEO debt item.
+ *   - ES posts using `recovery-stack`, `funnel`, `lh-chart`, and
+ *     `timeline-track` inner shapes (not viz-*). Five es/library/ posts
+ *     ship content-bearing figures whose inner class is one of these
+ *     pre-Phase-1 shapes. They satisfy rules 1, 3, 4 (floor, narration,
+ *     figcaption) but fail rule 2 (variety) because none of these
+ *     classes are in `VIZ_KINDS`. Closing each requires either
+ *     restructuring an existing figure to use a viz-* family inner OR
+ *     adding new viz-* figures of two distinct kinds. Editorial
+ *     decision pending; the gate documents this via per-slug rule-2
+ *     waivers naming "viz-* class missing on figures."
+ *
  * Historical waivers
  *   Start empty by intent. Phase H.2 edits the under-floor posts
  *   instead of waiving them; if a future edge case genuinely cannot
@@ -122,7 +165,6 @@ const HISTORICAL_WAIVERS = [
   { path: 'es/blog/how-to-raise-restaurant-menu-prices-without-losing-reservations', rule: 1, why: '2026-05-28 — ES translation sweep pending; legacy /es/blog/ slug, EN counterpart at /library/' },
   { path: 'es/blog/how-to-set-up-google-business-profile-for-your-restaurant',       rule: 1, why: '2026-05-28 — ES translation sweep pending; legacy /es/blog/ slug, EN counterpart at /library/' },
   { path: 'es/blog/wix-vs-custom-for-restaurants',                                   rule: 2, why: '2026-05-28 — ES translation sweep pending; legacy /es/blog/ slug, mirror EN viz-flow addition' },
-  { path: 'es/blog/wix-vs-custom-for-restaurants',                                   rule: 3, why: '2026-05-28 — ES translation sweep pending; narration missing' },
 ];
 
 // Inner-text SHA1 hashes that are legitimately repeated across articles
