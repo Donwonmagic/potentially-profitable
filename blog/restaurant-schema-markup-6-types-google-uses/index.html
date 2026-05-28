@@ -579,7 +579,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <p>Minimum viable JSON-LD:</p>
 
-      <pre><code>{
+      <figure class="article-figure" data-audio-alt="The minimum viable Restaurant block: type Restaurant, name, image URL, phone, price range, a PostalAddress object with street, locality, region, postal code, country, a servesCuisine array, and acceptsReservations as True or False. Without this block, every other schema you ship sits orphaned — Google has nothing to attach the menu, hours, or reviews to."><pre><code>{
   "@context": "https://schema.org",
   "@type": "Restaurant",
   "name": "Your Restaurant",
@@ -596,7 +596,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   },
   "servesCuisine": ["Italian", "Bistro"],
   "acceptsReservations": "True"
-}</code></pre>
+}</code></pre></figure>
 
       <p>The <code>servesCuisine</code> array is doing more work than people realize — it's how Google knows to show you for cuisine-specific queries. Don't put more than two cuisines unless you actually serve them; ambiguity demotes you in queries you should win.</p>
 
@@ -606,7 +606,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <p>The structure that works:</p>
 
-      <pre><code>{
+      <figure class="article-figure" data-audio-alt="A Menu block, with hasMenuSection wrapping hasMenuItem entries. Each item gets a name, a description, and an Offer with price and currency. The description field is doing more work than people realize — it&apos;s what Google&apos;s AI Overviews lift verbatim when someone asks what tacos al pastor are like at your restaurant. Empty description, no AI citation."><pre><code>{
   "@context": "https://schema.org",
   "@type": "Menu",
   "name": "Dinner",
@@ -620,7 +620,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       "offers": { "@type": "Offer", "price": "14.00", "priceCurrency": "USD" }
     }]
   }]
-}</code></pre>
+}</code></pre></figure>
 
       <p>The description matters more than the name — that's the field Google's AI Overviews lift verbatim when someone asks "what are tacos al pastor like at Bistro Petit." Empty descriptions = no AI citation.</p>
 
@@ -649,7 +649,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <p>If your hours are wrong on Google, your hours are wrong everywhere. <a href="/glossary/opening-hours-specification/" data-glossary-head="OpeningHoursSpecification" data-glossary-blurb="A specific Schema.org structured-data type for representing when a place is open." target="_blank" rel="noopener">OpeningHoursSpecification</a> is the schema that powers the "Open now" / "Closes at 10 PM" badge on your search panel — and the one that gets stale when you change Sunday hours and forget to update the site.</p>
 
-      <pre><code>"openingHoursSpecification": [
+      <figure class="article-figure" data-audio-alt="An openingHoursSpecification array, one entry per day-of-week group. dayOfWeek is an array of weekday names; opens and closes are twenty-four-hour strings. The cost of skipping this is direct — customers see &apos;hours unavailable&apos; on the Google panel and walk past. Holiday overrides go in a separate specialOpeningHoursSpecification block, which is the most common reason an angry-on-Christmas-Eve review lands."><pre><code>"openingHoursSpecification": [
   {
     "@type": "OpeningHoursSpecification",
     "dayOfWeek": ["Tuesday", "Wednesday", "Thursday"],
@@ -662,7 +662,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     "opens": "17:00",
     "closes": "23:00"
   }
-]</code></pre>
+]</code></pre></figure>
 
       <p>Holiday overrides go in a separate <code>specialOpeningHoursSpecification</code> block — both Google and Apple Maps read it, and a missing holiday closure is the most common reason an angry-on-Christmas-Eve review lands. The failure mode worth naming: CMS or template updates can quietly strip JSON-LD overnight. If you don't have a monthly schema check on your calendar, the first time you'll know your hours block went missing is when the one-star reviews start arriving.</p>
 
@@ -672,11 +672,11 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <p>If you have reviews on your own site, <a href="/glossary/rich-results/">AggregateRating</a> shows up as the gold-star pattern in your search snippet. The CTR lift is real — typically 8-15% for restaurant queries.</p>
 
-      <pre><code>"aggregateRating": {
+      <figure class="article-figure" data-audio-alt="An AggregateRating block with ratingValue and reviewCount — a four point seven rating across four hundred twelve reviews. This is what puts the gold stars in your search snippet, and the click-through lift is typically eight to fifteen percent on restaurant queries. The constraint: the reviews have to be on your own site. Aggregating Google&apos;s reviews into your own AggregateRating violates Google&apos;s policy and earns a manual action."><pre><code>"aggregateRating": {
   "@type": "AggregateRating",
   "ratingValue": "4.7",
   "reviewCount": "412"
-}</code></pre>
+}</code></pre></figure>
 
       <p>The constraint: the reviews <em>have to be on your site</em>. You can't aggregate Google's reviews into your own AggregateRating — that violates Google's structured-data policies and can earn a manual action that takes weeks to lift.</p>
 
@@ -694,7 +694,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <p>FAQ schema isn't restaurant-specific, but it's the highest-leverage AI-citation surface for restaurant pages in 2026. ChatGPT, Perplexity, and Google's AI Overviews read FAQ blocks first when answering operational questions.</p>
 
-      <pre><code>{
+      <figure class="article-figure" data-audio-alt="An FAQPage block with mainEntity holding Question and Answer pairs. Each Question has a name field — the literal question — and an acceptedAnswer with a text field holding your reply. This is the format AI assistants pull verbatim into citations. Write the answer the way you&apos;d want to see it quoted back to a customer."><pre><code>{
   "@type": "FAQPage",
   "mainEntity": [{
     "@type": "Question",
@@ -704,7 +704,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       "text": "Yes — for parties of 8 to 14 we ask for a deposit of $25 per guest, refunded with the bill on the night."
     }
   }]
-}</code></pre>
+}</code></pre></figure>
 
       <p>Six well-written FAQ entries — actually useful operational questions, not marketing copy — typically lift AI-search-driven traffic 20-40% within 60 days.</p>
 
