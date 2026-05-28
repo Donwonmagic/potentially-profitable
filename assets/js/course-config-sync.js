@@ -102,6 +102,7 @@
   function schedule() {
     if (timer) clearTimeout(timer);
     var suppressThisPush = suppressNextScheduledPush;
+    if (suppressThisPush) suppressNextScheduledPush = false;
     timer = setTimeout(function () {
       var firedTimer = timer;
       timer = null;
@@ -177,8 +178,7 @@
         }
         if (Object.keys(patch).length) {
           suppressNextScheduledPush = true;  // freshly-merged state shouldn't immediately POST back
-          try { window.MuntinContext.merge(patch); } catch (_) {}
-          suppressNextScheduledPush = false;
+          try { window.MuntinContext.merge(patch); } catch (_) { suppressNextScheduledPush = false; }
         }
       }).catch(function () { /* offline — operator can still work locally */ });
     } catch (_) {}
