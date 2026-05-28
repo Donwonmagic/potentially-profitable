@@ -1879,10 +1879,14 @@
           try { audioEl.currentTime = next.start; } catch (_) {}
         }
         setState('paused');
-        widgetWaitTimeout = setTimeout(() => {
+        widgetWaitTimeout = setTimeout(async () => {
           widgetWaitTimeout = null;
-          if (state === 'paused' && !awaitingWidget) {
-            try { audioEl.play(); } catch (_) {}
+          if (state === 'paused' && !awaitingWidget && audioEl) {
+            audioEl.playbackRate = currentRate();
+            try { await audioEl.play(); } catch (_) { return; }
+            setState('playing');
+            ensureAmplitudeAnalyser();
+            tickStudio();
           }
         }, 1500);
       } else if (state === 'awaiting-widget') {
