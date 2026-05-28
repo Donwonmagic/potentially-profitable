@@ -1259,6 +1259,14 @@ function extractChunks(html) {
 // Skipped without voicing: course-mc (interactive button + cele card),
 // course-save-strip (procedural housekeeping), inline-cta / further-
 // reading / sources (existing convention).
+//
+// COURSE_SKIP_CLASS_RE is declared HERE (before both functions) because
+// extractCourseChunks calls extractCourseChunksFromBody which references
+// the constant. JavaScript's temporal dead zone means a function called
+// before the const initializer line runs throws on access — moving it
+// up resolves the TDZ.
+const COURSE_SKIP_CLASS_RE = /class="[^"]*(course-plain|course-mc|course-save-strip|inline-cta|further-reading|sources|course-objectives)[^"]*"/i;
+
 function extractCourseChunks(html) {
   const out = [];
 
@@ -1297,10 +1305,6 @@ function extractCourseChunks(html) {
   out.push(...extractCourseChunksFromBody(cleanBody, '#post-body'));
   return out;
 }
-
-// Skip-class filter: when an opening tag attribute string matches any of
-// these classes, the block is skipped without emitting a chunk.
-const COURSE_SKIP_CLASS_RE = /class="[^"]*(course-plain|course-mc|course-save-strip|inline-cta|further-reading|sources|course-objectives)[^"]*"/i;
 
 // Walk one body segment and emit chunks for its descendants. Called by
 // extractCourseChunks() on the post-body, then recursively on container
