@@ -67,6 +67,19 @@
     // by operator intent (chapter list, scrub bar) rather than by
     // natural playback. Cleared at the top of tickStudio every call.
     let tickFromSeek = false;
+
+    // Closed-cardinality lesson identifier for Plausible props. Lessons
+    // expose data-course-module + data-course-lesson on <body>; we
+    // assemble them into a single hyphenated slug for the funnel
+    // (e.g. 'm1-orient/welcome'). Non-lesson pages fall back to an
+    // empty string. NEVER pass location.pathname — Plausible flags
+    // unbounded-cardinality props at build time, and the audit at
+    // scripts/check-event-prop-cardinality.mjs will refuse the call.
+    function lessonProps() {
+      const m = document.body && document.body.getAttribute('data-course-module') || '';
+      const l = document.body && document.body.getAttribute('data-course-lesson') || '';
+      return { lesson: m && l ? (m + '/' + l) : '' };
+    }
     // Chunk indices the operator already satisfied — either by engaging
     // the widget BEFORE the audio reached its pause point, or by
     // answering the matching checkpoint elsewhere in the page. The
@@ -780,9 +793,11 @@
       // a brand-line stand-in. Body / wrap labels are explicit to the
       // listener that Don is speaking (not the synth).
       if (chunk.kind === 'opener-recorded')
-        return chunk.text ? '“' + trimLabel(chunk.text, 80) + '”' : 'Don is opening this lesson';
+        return chunk.text ? '“' + trimLabel(chunk.text, 80) + '”'
+          : i18n('lesson.opener_recorded', 'Don is opening this lesson');
       if (chunk.kind === 'wrap-recorded')
-        return chunk.text ? '“' + trimLabel(chunk.text, 80) + '”' : 'Don is closing this lesson';
+        return chunk.text ? '“' + trimLabel(chunk.text, 80) + '”'
+          : i18n('lesson.wrap_recorded', 'Don is closing this lesson');
       if (chunk.kind === 'opener') return 'Opener';
       if (chunk.kind === 'wrap')   return 'Wrap';
       // Use the nearest preceding heading as the section title
@@ -1767,8 +1782,62 @@
     // widget-wait handler installed by enterWidgetWait is more
     // specific and runs first when waiting. Idempotent: registers once
     // per page; subsequent ensureStudioReady() calls re-use it.
+    // Page-load satisfaction scan. Lessons the operator already engaged
+    // with (text-input widgets they filled, checkpoints they answered)
+    // shouldn't re-pause the audio when they come back to listen. Run
+    // once per Lesson Mode activation; reads MuntinContext for context-
+    // bound widgets, scans the DOM for course-checkpoint previously-
+    // answered state. Marks satisfied pauses in the same Set the
+    // tickStudio detector consults.
+    function scanInitialWidgetSatisfaction() {
+      const ctxRoot = (window.MuntinContext && typeof window.MuntinContext.read === 'function')
+        ? (window.MuntinContext.read() || {})
+        : null;
+      function ctxHasValue(key) {
+        if (!ctxRoot || !key) return false;
+        // Walk the dotted contextKey (e.g. "restaurantProfile.name")
+        // through the context object; a non-empty terminal value means
+        // the operator already wrote here.
+        let node = ctxRoot;
+        for (const part of key.split('.')) {
+          if (node == null || typeof node !== 'object') return false;
+          node = node[part];
+        }
+        if (node == null) return false;
+        if (typeof node === 'string')  return node.trim().length > 0;
+        if (typeof node === 'number')  return true;
+        if (typeof node === 'boolean') return true;
+        if (Array.isArray(node))       return node.length > 0;
+        if (typeof node === 'object')  return Object.keys(node).length > 0;
+        return false;
+      }
+      function checkpointAnsweredAt(selector) {
+        if (!selector) return false;
+        const root = document.querySelector(selector);
+        if (!root) return false;
+        // The widget marks the picked option with aria-checked="true"
+        // and reveals the feedback element. Either signal is enough.
+        if (root.querySelector('[aria-checked="true"]')) return true;
+        const fb = root.querySelector('.cqp-feedback');
+        if (fb && !fb.hasAttribute('hidden')) return true;
+        return false;
+      }
+      for (let i = 0; i < chunks.length; i++) {
+        const c = chunks[i];
+        if (!c || c.kind !== 'widget-pause') continue;
+        const sat = c.widget === 'course-checkpoint'
+          ? checkpointAnsweredAt(c.selector)
+          : ctxHasValue(c.contextKey);
+        if (sat) satisfiedWidgetPauses.add(i);
+      }
+    }
+
     function bindPrewarmWidgetListener() {
       if (prewarmWidgetListener) return;
+      // Run the initial scan once; subsequent calls are no-ops because
+      // satisfiedWidgetPauses is already populated for the chunks it
+      // applies to, and the live listener catches anything else.
+      scanInitialWidgetSatisfaction();
       prewarmWidgetListener = (e) => {
         if (!Array.isArray(chunks) || !chunks.length) return;
         const isCheckpoint = e.type === 'mtn:checkpoint-answered';
@@ -1833,7 +1902,7 @@
       document.addEventListener('mtn:checkpoint-answered',  widgetWaitHandler);
       try {
         if (window.plausible) window.plausible('Audio: Widget Pause', {
-          props: { widget: chunk.widget || '', lesson: location.pathname }
+          props: { widget: chunk.widget || '', lesson: lessonProps().lesson }
         });
       } catch (_) {}
     }
@@ -1869,6 +1938,7 @@
             window.plausible('Audio: Widget Resume', {
               props: {
                 widget: wasWaiting.widget || '',
+                lesson: lessonProps().lesson,
                 bucket: durSec < 10 ? '<10s'
                       : durSec < 30 ? '10-30s'
                       : durSec < 60 ? '30-60s'
@@ -1915,9 +1985,13 @@
     }
 
     // Render / clear the dock's widget-wait surface. Keeps the existing
-    // dock structure intact; just stamps a small inline status into
-    // .listen-dock-chapter so the caption strip and the dock both
-    // signal the wait state without a separate UI surface.
+    // dock structure intact; sets the chapter chip's textContent
+    // directly (visible AND announced by screen readers via the chip's
+    // existing aria-live="polite" region) and stamps an
+    // is-listen-waiting class for the color/animation cue. Also marks
+    // the .course-widget itself with role="region" + aria-label so
+    // screen-reader users tabbing through the page hear that the audio
+    // player is waiting on that widget.
     function updateDockWidgetWait(chunk, isWaiting) {
       const root = card.root || document;
       const chapterEl = root.querySelector('.listen-dock-chapter, .listen-dock-status');
@@ -1928,10 +2002,23 @@
           ? i18n('lesson.widget_wait_labeled', `Don is waiting — ${chunk.label}`)
               .replace('{label}', chunk.label)
           : i18n('lesson.widget_wait', 'Don is waiting — try the widget');
-        chapterEl.setAttribute('data-lesson-wait', labelTxt);
+        setChapterText(chapterEl, labelTxt);
+        if (chunk.element) {
+          chunk.element.setAttribute('role', 'region');
+          chunk.element.setAttribute('aria-label', labelTxt);
+        }
       } else {
         chapterEl.classList.remove('is-listen-waiting');
-        chapterEl.removeAttribute('data-lesson-wait');
+        // Restore the chapter chip text to the current chunk's normal
+        // label so the dock doesn't get stuck on "Don is waiting" after
+        // the operator engages the widget.
+        const live = chunks[currentIndex];
+        setChapterText(chapterEl, live ? chapterLabel(live) : '');
+        const el = chunk && chunk.element;
+        if (el) {
+          el.removeAttribute('role');
+          el.removeAttribute('aria-label');
+        }
       }
     }
 

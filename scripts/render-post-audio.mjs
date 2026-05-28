@@ -831,14 +831,13 @@ function synthesizeKokoro(chunks, outDir, opts = {}) {
   const expanded = new Set();
   const phoneticChunks = chunks.map((c, i) => ({
     id: i,
-    // Widget-pause chunks (Lesson Mode) carry no spoken text; send a
-    // single-character placeholder so Kokoro emits a tiny WAV in the
-    // expected output slot. The render loop never reads this file —
-    // widget-pauses are accounted for as zero-duration markers in
-    // the manifest — but the synthesizer expects contiguous chunk
-    // IDs and would otherwise leave a gap.
+    // Widget-pause chunks (Lesson Mode) carry no spoken text. The
+    // Python helper writes a silent placeholder WAV when text is
+    // empty, keeping the c{id}.wav numbering contiguous; the
+    // renderPost loop returns early for widget-pause chunks so the
+    // placeholder is never concatenated into the output.
     text: c.kind === 'widget-pause'
-      ? '·'
+      ? ''
       : applyPronunciation(c.text, (opts.lang || 'en-us').split('-')[0], expanded),
   }));
   const payload = JSON.stringify({ chunks: phoneticChunks });
@@ -874,7 +873,7 @@ function synthesizeF5(chunks, outDir) {
     chunks: chunks.map((c, i) => ({
       id: i,
       // Widget-pause: see synthesizeKokoro for rationale.
-      text: c.kind === 'widget-pause' ? '·' : c.text,
+      text: c.kind === 'widget-pause' ? '' : c.text,
     })),
   });
   const proc = spawnSync(PYTHON_BIN, args, {
@@ -892,7 +891,7 @@ function synthesizePiper(chunks, outDir) {
   chunks.forEach((chunk, i) => {
     const out = path.join(outDir, `c${String(i).padStart(4, '0')}.wav`);
     // Widget-pause: see synthesizeKokoro for rationale.
-    runPiper(chunk.kind === 'widget-pause' ? '·' : chunk.text, out);
+    runPiper(chunk.kind === 'widget-pause' ? '' : chunk.text, out);
     process.stdout.write(`  · chunk ${i + 1}/${chunks.length}\r`);
   });
   console.log('');
@@ -1354,6 +1353,21 @@ function stripTags(s) {
     // where Kokoro guesses wrong from context. Replace before the
     // generic tag strip so the override value survives.
     .replace(/<([a-z]+)\b[^>]*\sdata-say="([^"]*)"[^>]*>[\s\S]*?<\/\1>/gi, ' $2 ')
+    // <code>...</code> with HTML-entity-encoded angle brackets (e.g.
+    // `&lt;img alt=""&gt;` shown inline as a code reference) decodes
+    // back to literal `<img alt="">` after decodeEntities — the synth
+    // would otherwise read it as "less than I M G alt equals greater
+    // than", which sounds awful and conveys nothing. Strip the code
+    // block content to a brief placeholder ("(code)") so the
+    // surrounding narration still reads coherently.
+    .replace(/<code\b[^>]*>([\s\S]*?)<\/code>/gi, (_, inner) => {
+      const decoded = decodeEntities(inner);
+      // Inline code that's already speakable (no angle brackets, just
+      // a class name or attribute key like `data-audio-alt`) reads
+      // fine — keep the inner text verbatim. Code that contains
+      // angle brackets gets the placeholder.
+      return /[<>]/.test(decoded) ? ' (code) ' : ' ' + decoded + ' ';
+    })
     .replace(/<[^>]+>/g, ' '))
     .replace(/\s+/g, ' ')
     .trim());

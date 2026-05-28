@@ -2267,11 +2267,6 @@ body[data-audio-seek] .article-body .listen-sent:hover{background:rgba(42,80,200
   color:rgba(255,255,255,0.95);
   font-weight:600;
 }
-.listen-dock-chapter.is-listen-waiting::after{
-  content:attr(data-lesson-wait);
-  font-size:11.5px;
-  letter-spacing:0.02em;
-}
 .listen-dock-chapter.is-listen-waiting::before{
   background:#ffd166;
   box-shadow:0 0 0 3px rgba(255,209,102,0.30);
