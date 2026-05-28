@@ -64,7 +64,8 @@
 
   var timer = null;
   var serverKnownEmpty = false;
-  var suppressNextPush = false;  // flipped true right after hydrate; cleared by next push or timer
+  var suppressNextScheduledPush = false;
+  var suppressedTimer = null;
 
   function readContextSnapshot() {
     if (!window.MuntinContext || typeof window.MuntinContext.read !== 'function') return null;
@@ -81,35 +82,8 @@
     return Object.keys(snapshot).length ? snapshot : null;
   }
 
-  // True iff at least one allowlisted field has a non-empty value in
-  // local MuntinContext. Used to gate the hydrate decision: if the
-  // operator's local state has any real data, don't pull server data
-  // on top of it (would create a confusing flicker + risk clobbering
-  // in-progress work).
-  function localHasAnyAllowedField() {
-    if (!window.MuntinContext || typeof window.MuntinContext.read !== 'function') return false;
-    var ctx = window.MuntinContext.read() || {};
-    var profile = (typeof window.MuntinContext.readRestaurantProfile === 'function'
-                   ? window.MuntinContext.readRestaurantProfile() : null) || null;
-    if (profile) {
-      for (var p in profile) {
-        if (Object.prototype.hasOwnProperty.call(profile, p) && profile[p]) return true;
-      }
-    }
-    for (var i = 0; i < ALLOWED.length; i++) {
-      var k = ALLOWED[i];
-      if (k === 'restaurantProfile') continue;
-      var v = ctx[k];
-      if (v === undefined || v === null) continue;
-      if (Array.isArray(v) && v.length > 0) return true;
-      if (typeof v === 'object' && Object.keys(v).length > 0) return true;
-      if (typeof v === 'string' && v.trim()) return true;
-    }
-    return false;
-  }
-
-  function push() {
-    if (suppressNextPush) { suppressNextPush = false; return; }
+  function push(firedTimer) {
+    if (suppressedTimer === firedTimer) { suppressedTimer = null; return; }
     if (serverKnownEmpty) return;
     var snapshot = readContextSnapshot();
     if (!snapshot) return;
@@ -127,10 +101,17 @@
 
   function schedule() {
     if (timer) clearTimeout(timer);
+    var suppressThisPush = suppressNextScheduledPush;
     timer = setTimeout(function () {
+      var firedTimer = timer;
       timer = null;
-      push();
+      push(firedTimer);
     }, DEBOUNCE_MS);
+    if (suppressThisPush) {
+      suppressedTimer = timer;
+    } else {
+      suppressedTimer = null;
+    }
   }
 
   // ---- Hydrate -------------------------------------------------------
@@ -195,8 +176,9 @@
           patch[k] = cfg[k];
         }
         if (Object.keys(patch).length) {
-          suppressNextPush = true;  // freshly-merged state shouldn't immediately POST back
+          suppressNextScheduledPush = true;  // freshly-merged state shouldn't immediately POST back
           try { window.MuntinContext.merge(patch); } catch (_) {}
+          suppressNextScheduledPush = false;
         }
       }).catch(function () { /* offline — operator can still work locally */ });
     } catch (_) {}
