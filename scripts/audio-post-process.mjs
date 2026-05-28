@@ -109,7 +109,12 @@ import { spawnSync } from 'node:child_process';
 //      that listeners can't consciously hear but registers as
 //      "produced" rather than "AI demo". Disable via `--no-bed`
 //      if it turns out to be objectionable at scale.
-const PIPELINE_VERSION = '20260526.3';
+// .4 — optional intro tag (audio/assets/intro.wav) prepended ahead
+//      of the voice. Detected at run time: when the file exists, the
+//      output starts with the branded opener and a brief gap; when
+//      it doesn't, the chain is unchanged. Disable per-run with
+//      `--no-intro`. See audio/assets/README.md for recording spec.
+const PIPELINE_VERSION = '20260528.4';
 
 // VOICE chain WITHOUT loudnorm. The bed is added as a second input
 // stream and mixed in via -filter_complex; the chain below shapes the
@@ -147,11 +152,21 @@ const force   = flags.has('--force');
 const measure = flags.has('--measure');
 const noBackup = flags.has('--no-backup');
 const noBed    = flags.has('--no-bed');
+const noIntro  = flags.has('--no-intro');
 
 if (targets.length === 0) {
-  console.error('usage: audio-post-process.mjs <mp3 or post dir> [...] [--dry-run|--force|--measure|--no-backup|--no-bed]');
+  console.error('usage: audio-post-process.mjs <mp3 or post dir> [...] [--dry-run|--force|--measure|--no-backup|--no-bed|--no-intro]');
   process.exit(2);
 }
+
+// Intro tag: if audio/assets/intro.wav exists relative to the repo root,
+// prepend it (plus a short post-intro gap) before the voice. Absent →
+// no-op. Path is resolved from this script's location so the discovery
+// works regardless of cwd. See audio/assets/README.md for the spec.
+const REPO_ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
+const INTRO_PATH = path.join(REPO_ROOT, 'audio', 'assets', 'intro.wav');
+const INTRO_GAP_MS = 350;
+const useIntro = !noIntro && fs.existsSync(INTRO_PATH);
 
 /* -------------------- helpers -------------------- */
 function which(cmd) {
@@ -174,18 +189,44 @@ function readPipelineVersion(mp3Path) {
 
 // Build the full filter graph used by both passes. The graph mixes
 // the voice (input 0, processed through VOICE_CHAIN) with the bed
-// (input 1, pink noise from lavfi, attenuated). The terminal
-// loudnorm node is appended by the caller (with different args for
-// measure-vs-apply).
+// (input 1, pink noise from lavfi, attenuated). When the intro tag
+// asset is present it's input 2 (or 1 when --no-bed), prepended to
+// the voice via `concat` before the bed-mix and the terminal
+// loudnorm. The terminal loudnorm node is appended by the caller
+// (with different args for measure-vs-apply).
+//
+// Input-stream layout (driven by --no-bed and --no-intro):
+//   default     : [0] voice  [1] bed (lavfi)  [2] intro (file)
+//   --no-bed    : [0] voice                   [1] intro (file)
+//   --no-intro  : [0] voice  [1] bed (lavfi)
+//   both off    : [0] voice (no extra inputs)
 function buildFilterComplex(loudnormArgs) {
+  const introIdx = noBed ? 1 : 2;
+  // Brief silence between intro and voice so the brand tag doesn't
+  // collide phonetically with the article's first sentence.
+  const introTrailGapSec = (INTRO_GAP_MS / 1000).toFixed(3);
+
+  // Helper: produce the voice-stream label, optionally with the
+  // intro spliced in front. Output label: [voiced].
+  const voiceWithIntro = useIntro
+    ? [
+        `[${introIdx}:a] aresample=24000,aformat=channel_layouts=mono [intro]`,
+        `aevalsrc=0:d=${introTrailGapSec}:s=24000:c=mono [intro_pad]`,
+        `[0:a] ${VOICE_CHAIN} [voice]`,
+        `[intro][intro_pad][voice] concat=n=3:v=0:a=1 [voiced]`,
+      ]
+    : [`[0:a] ${VOICE_CHAIN} [voiced]`];
+
   if (noBed) {
-    // Bed disabled — single-input chain, no amix.
-    return `[0:a] ${VOICE_CHAIN},loudnorm=${loudnormArgs} [out]`;
+    return [
+      ...voiceWithIntro,
+      `[voiced] loudnorm=${loudnormArgs} [out]`,
+    ].join(';');
   }
   return [
-    `[0:a] ${VOICE_CHAIN} [voice]`,
+    ...voiceWithIntro,
     `[1:a] ${BED_FILTER} [bed]`,
-    `[voice][bed] amix=inputs=2:duration=first:dropout_transition=0,loudnorm=${loudnormArgs} [out]`,
+    `[voiced][bed] amix=inputs=2:duration=first:dropout_transition=0,loudnorm=${loudnormArgs} [out]`,
   ].join(';');
 }
 
@@ -195,6 +236,10 @@ function buildFilterComplex(loudnormArgs) {
 // amix's duration=first clips the output to the voice's length.
 const BED_INPUT_ARGS = ['-f', 'lavfi', '-i', 'anoisesrc=color=pink:amplitude=0.012:duration=9999'];
 
+// Intro tag input — a real file on disk, not lavfi. Read only when
+// `useIntro` is true; ignored otherwise.
+const INTRO_INPUT_ARGS = ['-i', INTRO_PATH];
+
 // First-pass measurement — run the WHOLE graph (voice chain + bed
 // mix + loudnorm in measure mode) so the measurement reflects what
 // pass 2 will actually normalize. Single-pass loudnorm-with-bed
@@ -203,6 +248,7 @@ const BED_INPUT_ARGS = ['-f', 'lavfi', '-i', 'anoisesrc=color=pink:amplitude=0.0
 function measureThroughChain(inputPath) {
   const cmd = ['-hide_banner', '-nostats', '-i', inputPath];
   if (!noBed) cmd.push(...BED_INPUT_ARGS);
+  if (useIntro) cmd.push(...INTRO_INPUT_ARGS);
   cmd.push(
     '-filter_complex', buildFilterComplex(`${LOUDNORM_TARGETS}:print_format=json`),
     '-map', '[out]',
@@ -298,6 +344,7 @@ function processOne(mp3Path) {
   // with measured loudnorm args instead of print_format=json.
   const applyCmd = ['-hide_banner', '-loglevel', 'error', '-y', '-i', inputPath];
   if (!noBed) applyCmd.push(...BED_INPUT_ARGS);
+  if (useIntro) applyCmd.push(...INTRO_INPUT_ARGS);
   applyCmd.push(
     '-filter_complex', buildFilterComplex(loudnormArgs),
     '-map', '[out]',

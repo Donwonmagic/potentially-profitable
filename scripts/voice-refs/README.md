@@ -61,9 +61,18 @@ auditioning a different reference.
 
 Runtime, per post:
   Apple Silicon (MPS):  ~2–3 min
-  Plain CPU:            ~6–10 min
+  Intel Mac / x86 CPU:  ~6–10 min
+  Colab T4 GPU:         ~6–10 min (free tier)
 
-All 8 posts together: ~15 min on MPS, ~60 min on CPU.
+All 8 posts together: ~15 min on MPS, ~60 min on Intel CPU, ~45-75 min on Colab T4.
+
+### Don't have Apple Silicon? Two options.
+
+**Option 1 — run locally on Intel CPU.** Same `pip install f5-tts` and same render command above. PyTorch ships x86_64 wheels; it just doesn't accelerate. ~60 min in the background; the laptop stays usable for everything else while it runs.
+
+**Option 2 — run on a free Colab GPU** (the path most operators pick). The notebook at `colab-f5-render.ipynb` next to this README does the whole flow: clones the repo, installs deps, renders, post-processes, zips, hands you a download. ~45-75 min wall-clock end-to-end, no local install. Set `Runtime → Change runtime type → T4 GPU` before running the cells.
+
+
 
 Output per post:
 ```

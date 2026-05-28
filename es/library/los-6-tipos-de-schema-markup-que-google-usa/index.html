@@ -462,7 +462,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <p>Este no se puede saltar. <a href="/es/glossary/schema/">Restaurant schema</a> le dice a Google qué tipo de negocio eres, tu dirección, teléfono, rango de precios, y un puñado de hechos que determinan si apareces para búsquedas como "restaurantes italianos cerca de mí".</p>
 
-      <pre><code>{
+      <figure class="article-figure" data-audio-alt="El bloque Restaurant mínimo viable: tipo Restaurant, nombre, teléfono, rango de precio, un objeto PostalAddress con calle, localidad, región y código postal, un array servesCuisine, y acceptsReservations en True o False. Sin este bloque, todos los demás schemas que envíes quedan huérfanos — Google no tiene a qué adjuntar el menú, los horarios o las reseñas."><pre><code>{
   "@context": "https://schema.org",
   "@type": "Restaurant",
   "name": "Tu Restaurante",
@@ -478,6 +478,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   "servesCuisine": ["Italiana", "Bistró"],
   "acceptsReservations": "True"
 }</code></pre>
+<figcaption class="figure-caption">El bloque Restaurant mínimo viable</figcaption>
+</figure>
 
       <h2 id="2-menu-el-tipo-que-la-mayoria-falsifica">2. Menu — el tipo que la mayoría falsifica</h2>
 
