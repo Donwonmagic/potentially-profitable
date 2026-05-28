@@ -395,9 +395,14 @@ function renderPost(postDir) {
   if (!fs.existsSync(indexPath)) fail(`${indexPath} does not exist`);
   const html = fs.readFileSync(indexPath, 'utf8');
 
-  const chunks = extractChunks(html);
+  // Course lessons get a different chunk model than articles: the opener
+  // and takeaway sections are voiced, widget sections become pause
+  // markers, and the UDL plain-language alternative is excluded. See
+  // extractCourseChunks() for the full contract.
+  const isCourse = /(^|\/)(course|es\/course)\//.test(path.relative(repoRoot, postDir).replace(/\\/g, '/'));
+  const chunks = isCourse ? extractCourseChunks(html) : extractChunks(html);
   if (!chunks.length) fail(`No audio-eligible chunks found in ${indexPath}`);
-  console.log(`[${path.basename(postDir)}] ${chunks.length} chunks`);
+  console.log(`[${path.basename(postDir)}] ${chunks.length} chunks${isCourse ? ' (course mode)' : ''}`);
 
   if (dryRun) {
     chunks.forEach((c, i) => {
@@ -557,6 +562,21 @@ function renderLanguage(postDir, chunks, lang) {
   // that the piece doesn't drag. Tuned by ear on Don's cloned voice.
   function gapBefore(chunk, prev) {
     if (!prev) return 0;
+    // Course-mode chunk kinds — opener / wrap / widget-pause — get
+    // their own gap timing. Opener and wrap chunks read at a slightly
+    // slower pace than body; the gap between them is longer than
+    // sentence-end so the listener feels the lesson framing settle.
+    if (chunk.kind === 'opener' && prev.kind !== 'opener')   return 0.90; // entering opener
+    if (prev.kind === 'opener' && chunk.kind !== 'opener')   return 1.20; // leaving opener for body
+    if (chunk.kind === 'opener')  return 0.65;                              // opener-to-opener
+    if (chunk.kind === 'wrap' && prev.kind !== 'wrap')       return 1.30; // entering wrap (closes the lesson)
+    if (chunk.kind === 'wrap')    return 0.60;                              // wrap-to-wrap
+    // widget-pause: the chunk itself is silent (no synth). Lead-in
+    // gap is short — the prior body sentence settles, the dock
+    // indicator appears, audio halts. Trailing gap is handled by
+    // the runtime when the operator commits the widget.
+    if (chunk.kind === 'widget-pause') return 0.40;
+    if (prev.kind === 'widget-pause')  return 0.40;
     if (chunk.kind === 'heading') return 1.10;           // section break
     if (chunk.kind === 'figure')  return 0.80;           // before graphic
     if (prev.kind === 'heading')  return 0.70;           // after heading
@@ -596,11 +616,35 @@ function renderLanguage(postDir, chunks, lang) {
 
   let cursor = 0;
   chunks.forEach((chunk, i) => {
+    const gap = gapBefore(chunk, chunks[i - 1]);
+
+    // Widget-pause chunks (Lesson Mode) — synthetic zero-duration
+    // markers. No raw audio synthesized for them; the runtime player
+    // halts on encountering one and waits for widget commit or
+    // manual resume. Record the boundary in the manifest plus the
+    // widget metadata so the runtime knows what to wait for.
+    if (chunk.kind === 'widget-pause') {
+      if (gap > 0) segments.push(gapWav(gap));
+      const start = cursor + gap;
+      cursor = start;
+      const entry = {
+        id: i,
+        kind: 'widget-pause',
+        selector: chunk.selector,
+        start: round(start),
+        end:   round(start),
+      };
+      if (chunk.widget)     entry.widget = chunk.widget;
+      if (chunk.contextKey) entry.contextKey = chunk.contextKey;
+      if (chunk.label)      entry.label = chunk.label;
+      manifestChunks.push(entry);
+      return;
+    }
+
     const rawWav = path.join(rawDir, `c${String(i).padStart(4, '0')}.wav`);
     const wav = path.join(tmpDir, `t${String(i).padStart(4, '0')}.wav`);
     trimSilence(rawWav, wav);
     const dur = wavDuration(wav);
-    const gap = gapBefore(chunk, chunks[i - 1]);
     if (gap > 0) segments.push(gapWav(gap));
     segments.push(wav);
 
@@ -736,7 +780,15 @@ function synthesizeKokoro(chunks, outDir, opts = {}) {
   const expanded = new Set();
   const phoneticChunks = chunks.map((c, i) => ({
     id: i,
-    text: applyPronunciation(c.text, (opts.lang || 'en-us').split('-')[0], expanded),
+    // Widget-pause chunks (Lesson Mode) carry no spoken text; send a
+    // single-character placeholder so Kokoro emits a tiny WAV in the
+    // expected output slot. The render loop never reads this file —
+    // widget-pauses are accounted for as zero-duration markers in
+    // the manifest — but the synthesizer expects contiguous chunk
+    // IDs and would otherwise leave a gap.
+    text: c.kind === 'widget-pause'
+      ? '·'
+      : applyPronunciation(c.text, (opts.lang || 'en-us').split('-')[0], expanded),
   }));
   const payload = JSON.stringify({ chunks: phoneticChunks });
   const proc = spawnSync(PYTHON_BIN, args, {
@@ -768,7 +820,11 @@ function synthesizeF5(chunks, outDir) {
   ];
   if (f5Device) { args.push('--device', f5Device); }
   const payload = JSON.stringify({
-    chunks: chunks.map((c, i) => ({ id: i, text: c.text })),
+    chunks: chunks.map((c, i) => ({
+      id: i,
+      // Widget-pause: see synthesizeKokoro for rationale.
+      text: c.kind === 'widget-pause' ? '·' : c.text,
+    })),
   });
   const proc = spawnSync(PYTHON_BIN, args, {
     input: payload,
@@ -784,7 +840,8 @@ function synthesizeF5(chunks, outDir) {
 function synthesizePiper(chunks, outDir) {
   chunks.forEach((chunk, i) => {
     const out = path.join(outDir, `c${String(i).padStart(4, '0')}.wav`);
-    runPiper(chunk.text, out);
+    // Widget-pause: see synthesizeKokoro for rationale.
+    runPiper(chunk.kind === 'widget-pause' ? '·' : chunk.text, out);
     process.stdout.write(`  · chunk ${i + 1}/${chunks.length}\r`);
   });
   console.log('');
@@ -963,6 +1020,227 @@ function extractChunks(html) {
   }
 
   return out;
+}
+
+// Course lesson chunk extractor — Lesson Mode (Move 3, Phase 3.1).
+//
+// Lessons differ from articles structurally and pedagogically. The
+// chunk model here honors four findings from the May 2026 instructional
+// audit (docs/course-instructional-audit.md) and the cognitive-load /
+// modality principles those audits cite:
+//
+//   1. <section class="course-widget"> blocks are interactive surfaces
+//      the operator engages with. Narrating their labels aloud collides
+//      with the operator's working memory (Mayer's modality principle).
+//      We emit a synthetic { kind: 'widget-pause', widget: <name>,
+//      contextKey: <key> } chunk in their place. The runtime player
+//      (assets/js/listen.js) auto-pauses on these.
+//
+//   2. <details class="course-plain"> is the UDL plain-language
+//      ALTERNATIVE channel (G-A2). Voicing it on top of the body
+//      duplicates the same content. Skip entirely.
+//
+//   3. <section class="course-hero"> contains the lesson opener (eyebrow,
+//      h1, the promise paragraph). These are the framing/stakes that
+//      Don's audio should set BEFORE the body. We voice them with
+//      kind: 'opener' so the runtime can stitch in a hand-recorded
+//      opener WAV later without re-rendering.
+//
+//   4. <section class="course-takeaways"> + the final h2 are the lesson's
+//      conclusion — operator hears what was accomplished + the carry-
+//      forward to the next lesson. Voiced with kind: 'wrap'.
+//
+// Skipped without voicing: course-mc (interactive button + cele card),
+// course-save-strip (procedural housekeeping), inline-cta / further-
+// reading / sources (existing convention).
+function extractCourseChunks(html) {
+  const out = [];
+
+  // 1. Voice the hero block as 'opener' chunks. Hero typically sits
+  //    OUTSIDE #post-body (in the page header region), so it's pulled
+  //    out separately and pushed onto the front of the chunk list.
+  const heroMatch = /<section[^>]*class="[^"]*\bcourse-hero\b[^"]*"[^>]*>([\s\S]*?)<\/section>/i.exec(html);
+  if (heroMatch) {
+    const heroInner = heroMatch[1];
+    const h1 = /<h1\b[^>]*>([\s\S]*?)<\/h1>/i.exec(heroInner);
+    if (h1) {
+      let t = stripTags(h1[1]);
+      if (t.length >= 2 && !/[.!?…]$/.test(t)) t += '.';
+      if (t.length >= 2) out.push({ text: t, kind: 'opener', selector: '.course-hero h1' });
+    }
+    const promise = /<p[^>]*class="[^"]*\bpromise\b[^"]*"[^>]*>([\s\S]*?)<\/p>/i.exec(heroInner);
+    if (promise) {
+      const t = stripTags(promise[1]);
+      if (t.length >= 2) out.push({ text: t, kind: 'opener', selector: '.course-hero .promise' });
+    }
+  }
+
+  // 2. Walk #post-body. Lessons contain nested <article> tags
+  //    (.compare-card pairs in voice lessons, .ti-input wrappers,
+  //    etc.), so non-greedy /<\/article>/ matches the wrong close
+  //    tag. Locate the matching close via depth-counting.
+  const body = findMatchingBlock(html, /<(article|div)[^>]*\bid="post-body"[^>]*>/i);
+  if (!body) return out;
+
+  // Strip <script>...</script> blocks before parsing — the celebration
+  // card has inline JavaScript with template strings like '<p class=
+  // "course-cele-quote">…</p>' that the TAG_RE would otherwise pick up
+  // as spoken chunks.
+  const cleanBody = body.replace(/<script\b[\s\S]*?<\/script>/gi, '');
+
+  out.push(...extractCourseChunksFromBody(cleanBody, '#post-body'));
+  return out;
+}
+
+// Skip-class filter: when an opening tag attribute string matches any of
+// these classes, the block is skipped without emitting a chunk.
+const COURSE_SKIP_CLASS_RE = /class="[^"]*(course-plain|course-mc|course-save-strip|inline-cta|further-reading|sources|course-objectives)[^"]*"/i;
+
+// Walk one body segment and emit chunks for its descendants. Called by
+// extractCourseChunks() on the post-body, then recursively on container
+// divs that hold nested widgets (e.g. .compare-grid wrapping article
+// pairs, or .course-callout wrapping a widget). Document order is
+// preserved across the recursion so widget-pause markers land in the
+// right place in the audio timeline.
+function extractCourseChunksFromBody(body, parentSel) {
+  const out = [];
+  const TAG_RE = /<(h2|h3|p|ul|ol|figure|div|blockquote|section|details|aside|article)\b([^>]*)>([\s\S]*?)<\/\1>/gi;
+  const counts = new Map();
+  let m;
+  while ((m = TAG_RE.exec(body)) !== null) {
+    const [, tagLower, attrs, inner] = m;
+    const tag = tagLower.toLowerCase();
+    const n = (counts.get(tag) || 0) + 1;
+    counts.set(tag, n);
+    const baseSel = `${parentSel} > ${tag}:nth-of-type(${n})`;
+    const attrBlob = attrs || '';
+
+    if (COURSE_SKIP_CLASS_RE.test(attrBlob)) continue;
+
+    // course-widget → emit a single pause marker chunk. The runtime
+    // player auto-pauses on this kind and waits for the widget's
+    // commit event (mtn:context-change) before advancing.
+    if (tag === 'section' && /class="[^"]*\bcourse-widget\b[^"]*"/i.test(attrBlob)) {
+      const widgetAttr = /data-widget="([^"]+)"/i.exec(attrBlob);
+      const ctxKey    = /data-context-key="([^"]+)"/i.exec(attrBlob);
+      const labelAttr = /data-label="([^"]+)"/i.exec(attrBlob);
+      out.push({
+        text: '',  // No spoken text — the chunk is a pause marker.
+        kind: 'widget-pause',
+        widget: widgetAttr ? widgetAttr[1] : '',
+        contextKey: ctxKey ? ctxKey[1] : '',
+        label: labelAttr ? labelAttr[1] : '',
+        selector: baseSel,
+      });
+      continue;
+    }
+
+    // course-takeaways → voice its inner h2 + paragraphs with
+    // kind: 'wrap'. Lets the player know we're closing the lesson.
+    if (tag === 'section' && /class="[^"]*\bcourse-takeaways\b[^"]*"/i.test(attrBlob)) {
+      const wrapH2 = /<h2\b[^>]*>([\s\S]*?)<\/h2>/gi;
+      const wrapP  = /<p\b[^>]*>([\s\S]*?)<\/p>/gi;
+      let hm;
+      while ((hm = wrapH2.exec(inner)) !== null) {
+        let t = stripTags(hm[1]);
+        if (t.length >= 2 && !/[.!?…]$/.test(t)) t += '.';
+        if (t.length >= 2) out.push({ text: t, kind: 'wrap', selector: `${baseSel} h2` });
+      }
+      let pm;
+      while ((pm = wrapP.exec(inner)) !== null) {
+        const t = stripTags(pm[1]);
+        if (t.length >= 2) out.push({ text: t, kind: 'wrap', selector: `${baseSel} p` });
+      }
+      continue;
+    }
+
+    // Container divs (.course-callout, .compare-grid, etc.) — recurse
+    // into their inner HTML so nested course-widget blocks and prose
+    // get voiced/paused at the right document position. The recursive
+    // call inherits the surrounding section's class skipping behavior.
+    if (tag === 'div' && !/data-audio-alt/i.test(attrBlob)) {
+      out.push(...extractCourseChunksFromBody(inner, baseSel));
+      continue;
+    }
+    // <article> nests inside .compare-grid / .compare-card pairs in
+    // voice lessons. Recurse so their paragraphs voice in document order
+    // (no nth-of-type bumps; their inner counts reset at this depth).
+    if (tag === 'article' || tag === 'aside') {
+      out.push(...extractCourseChunksFromBody(inner, baseSel));
+      continue;
+    }
+
+    // h2/h3/p/ul/ol/figure/blockquote — same logic as the article path.
+    if (tag === 'h2' || tag === 'h3') {
+      let t = stripTags(inner);
+      if (t.length >= 2 && !/[.!?…]$/.test(t)) t += '.';
+      if (t.length >= 2) out.push({ text: t, kind: 'heading', selector: baseSel });
+      continue;
+    }
+    if (tag === 'p') {
+      if (/class="[^"]*pull-quote[^"]*"/i.test(attrBlob)) {
+        out.push({ text: stripTags(inner), kind: 'quote', selector: baseSel });
+      } else {
+        const t = stripTags(inner);
+        if (t.length >= 2) out.push({ text: t, kind: 'body', selector: baseSel });
+      }
+      continue;
+    }
+    if (tag === 'ul' || tag === 'ol') {
+      const LI_RE = /<li\b[^>]*>([\s\S]*?)<\/li>/gi;
+      let li, li_n = 0;
+      while ((li = LI_RE.exec(inner)) !== null) {
+        li_n++;
+        const t = stripTags(li[1]);
+        if (t.length >= 2) out.push({ text: t, kind: 'list', selector: `${baseSel} > li:nth-of-type(${li_n})` });
+      }
+      continue;
+    }
+    if (tag === 'figure') {
+      const audioAltMatch  = /data-audio-alt="([\s\S]*?)"/i.exec(attrBlob)
+                          || /data-audio-alt="([\s\S]*?)"/i.exec(inner);
+      const ariaLabelMatch = /role="img"[^>]*aria-label="([\s\S]*?)"/i.exec(inner);
+      const captionMatch   = /<figcaption[^>]*>([\s\S]*?)<\/figcaption>/i.exec(inner);
+      let text = '';
+      if (audioAltMatch) text = normalizeForSpeech(decodeEntities(audioAltMatch[1]).trim());
+      else if (ariaLabelMatch) text = normalizeForSpeech(decodeEntities(ariaLabelMatch[1]).trim());
+      else if (captionMatch)   text = stripTags(captionMatch[1]);
+      if (text.length >= 2) out.push({ text, kind: 'figure', selector: baseSel });
+      continue;
+    }
+    if (tag === 'blockquote') {
+      const t = stripTags(inner);
+      if (t.length >= 2) out.push({ text: t, kind: 'quote', selector: baseSel });
+      continue;
+    }
+  }
+
+  return out;
+}
+
+// Find the substring between an opening tag matched by `openRe` and
+// its depth-aware closing tag. Handles nested same-name tags (e.g.
+// <article id="post-body"> containing <article class="compare-card">).
+// Returns the inner content without the surrounding open/close tags,
+// or null when no match is found.
+function findMatchingBlock(html, openRe) {
+  const m = openRe.exec(html);
+  if (!m) return null;
+  const tagName = m[0].match(/^<(\w+)/)[1].toLowerCase();
+  const innerStart = m.index + m[0].length;
+  const tagRe = new RegExp(`<(/?)${tagName}\\b[^>]*>`, 'gi');
+  tagRe.lastIndex = innerStart;
+  let depth = 1;
+  let t;
+  while ((t = tagRe.exec(html)) !== null) {
+    if (t[1] === '/') {
+      depth--;
+      if (depth === 0) return html.slice(innerStart, t.index);
+    } else {
+      depth++;
+    }
+  }
+  return null;
 }
 
 function stripTags(s) {
