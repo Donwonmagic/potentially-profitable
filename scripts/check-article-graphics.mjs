@@ -109,17 +109,12 @@ const HISTORICAL_WAIVERS = [
   // ES translation sweep — mirror EN figures with translated metadata.
   { path: 'es/library/como-hacer-sitio-web-para-mi-restaurante',                    rule: 1, why: '2026-05-28 — ES translation sweep pending; figures stripped in translation' },
   { path: 'es/library/como-leer-google-search-console-de-tu-restaurante',           rule: 2, why: '2026-05-28 — ES translation sweep pending; viz-* class missing on figures' },
-  { path: 'es/library/como-leer-google-search-console-de-tu-restaurante',           rule: 3, why: '2026-05-28 — ES translation sweep pending; narration length below floor' },
   { path: 'es/library/como-saber-si-una-herramienta-de-restaurante-es-segura',      rule: 2, why: '2026-05-28 — ES translation sweep pending; viz-* class missing on figures' },
-  { path: 'es/library/como-saber-si-una-herramienta-de-restaurante-es-segura',      rule: 3, why: '2026-05-28 — ES translation sweep pending; narration length below floor' },
   { path: 'es/library/como-salir-de-doordash-mi-restaurante',                       rule: 1, why: '2026-05-28 — ES translation sweep pending; figures stripped in translation' },
   { path: 'es/library/cuando-rehacer-tu-sitio-web-de-restaurante',                  rule: 2, why: '2026-05-28 — ES translation sweep pending; viz-* class missing on figures' },
-  { path: 'es/library/cuando-rehacer-tu-sitio-web-de-restaurante',                  rule: 3, why: '2026-05-28 — ES translation sweep pending; narration length below floor' },
   { path: 'es/library/cuanto-cuesta-una-pagina-web-para-restaurante-2026',          rule: 1, why: '2026-05-28 — ES translation sweep pending; figures stripped in translation' },
   { path: 'es/library/especificaciones-de-fotos-para-restaurantes',                 rule: 2, why: '2026-05-28 — ES translation sweep pending; viz-* class missing on figures' },
-  { path: 'es/library/especificaciones-de-fotos-para-restaurantes',                 rule: 3, why: '2026-05-28 — ES translation sweep pending; narration length below floor' },
   { path: 'es/library/los-6-tipos-de-schema-markup-que-google-usa',                 rule: 2, why: '2026-05-28 — ES translation sweep pending; viz-* class missing on figures' },
-  { path: 'es/library/los-6-tipos-de-schema-markup-que-google-usa',                 rule: 3, why: '2026-05-28 — ES translation sweep pending; narration length below floor' },
   // ES /blog/ posts whose canonical EN counterpart now lives at /library/ — legacy from the blog→library split.
   { path: 'es/blog/can-chatgpt-write-your-restaurant-website',                       rule: 1, why: '2026-05-28 — ES translation sweep pending; legacy /es/blog/ slug, EN counterpart at /library/' },
   { path: 'es/blog/does-my-restaurant-need-a-website',                               rule: 1, why: '2026-05-28 — ES translation sweep pending; legacy /es/blog/ slug, EN counterpart at /library/' },
