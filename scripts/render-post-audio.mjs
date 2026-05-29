@@ -185,7 +185,12 @@ const LANG_KOKORO_TAG = {
 //                        and away from the reference.
 const f5RefAudio = optVal('--f5-ref-audio') || 'scripts/voice-refs/don-reference.m4a';
 const f5RefText  = optVal('--f5-ref-text')  || 'scripts/voice-refs/don-reference.txt';
-const f5Speed    = optVal('--f5-speed')     || '0.9';
+// 0.75 default after listener feedback that 0.9 produced rushed output
+// (~240 wpm vs. the ~150 wpm of natural narration). F5's speed scalar
+// is relative to the reference clip, but its internal pacing tends to
+// drift fast; pulling the scalar down anchors it back toward natural
+// audiobook cadence. Override with --f5-speed.
+const f5Speed    = optVal('--f5-speed')     || '0.75';
 const f5NfeStep  = optVal('--f5-nfe-step')  || '48';
 const f5CfgStrength = optVal('--f5-cfg-strength') || '3';
 const f5Device   = optVal('--f5-device')    || '';
@@ -693,34 +698,37 @@ function renderLanguage(postDir, chunks, lang, sourceLang = 'en') {
     return out;
   }
 
-  // Gap values tuned for natural "breath" spots. Each pause is long
-  // enough the listener hears a beat between thoughts, short enough
-  // that the piece doesn't drag. Tuned by ear on Don's cloned voice.
+  // Gap values tuned for natural "breath" spots. Bumped ~50% from the
+  // first-render values after listener feedback that the playback felt
+  // rushed and breathless: 0.35s between body sentences reads as a UI
+  // beep, not a human pause. Real narrators leave 0.7-1.0s at paragraph
+  // breaks and ~1.2-1.5s at section transitions. Tune by ear on Don's
+  // cloned voice — the cloned timbre is unforgiving of rushed pacing.
   function gapBefore(chunk, prev) {
     if (!prev) return 0;
     // Course-mode chunk kinds — opener / wrap / widget-pause — get
     // their own gap timing. Opener and wrap chunks read at a slightly
     // slower pace than body; the gap between them is longer than
     // sentence-end so the listener feels the lesson framing settle.
-    if (chunk.kind === 'opener' && prev.kind !== 'opener')   return 0.90; // entering opener
-    if (prev.kind === 'opener' && chunk.kind !== 'opener')   return 1.20; // leaving opener for body
-    if (chunk.kind === 'opener')  return 0.65;                              // opener-to-opener
-    if (chunk.kind === 'wrap' && prev.kind !== 'wrap')       return 1.30; // entering wrap (closes the lesson)
-    if (chunk.kind === 'wrap')    return 0.60;                              // wrap-to-wrap
+    if (chunk.kind === 'opener' && prev.kind !== 'opener')   return 1.20; // entering opener
+    if (prev.kind === 'opener' && chunk.kind !== 'opener')   return 1.60; // leaving opener for body
+    if (chunk.kind === 'opener')  return 0.85;                              // opener-to-opener
+    if (chunk.kind === 'wrap' && prev.kind !== 'wrap')       return 1.70; // entering wrap (closes the lesson)
+    if (chunk.kind === 'wrap')    return 0.80;                              // wrap-to-wrap
     // widget-pause: the chunk itself is silent (no synth). Lead-in
-    // gap is short — the prior body sentence settles, the dock
-    // indicator appears, audio halts. Trailing gap is handled by
-    // the runtime when the operator commits the widget.
-    if (chunk.kind === 'widget-pause') return 0.40;
-    if (prev.kind === 'widget-pause')  return 0.40;
-    if (chunk.kind === 'heading') return 1.10;           // section break
-    if (chunk.kind === 'figure')  return 0.80;           // before graphic
-    if (prev.kind === 'heading')  return 0.70;           // after heading
-    if (prev.kind === 'figure')   return 0.75;           // after graphic
-    if (chunk.kind === 'list' && prev.kind === 'list') return 0.32;
-    if (chunk.kind === 'quote' || prev.kind === 'quote') return 0.75;
+    // gap is a real beat so the listener registers the prior thought
+    // before the widget surfaces. Trailing gap is handled by the
+    // runtime when the operator commits the widget.
+    if (chunk.kind === 'widget-pause') return 0.65;
+    if (prev.kind === 'widget-pause')  return 0.55;
+    if (chunk.kind === 'heading') return 1.50;           // section break — feels like a chapter
+    if (chunk.kind === 'figure')  return 1.10;           // before graphic
+    if (prev.kind === 'heading')  return 0.95;           // after heading
+    if (prev.kind === 'figure')   return 1.00;           // after graphic
+    if (chunk.kind === 'list' && prev.kind === 'list') return 0.50;
+    if (chunk.kind === 'quote' || prev.kind === 'quote') return 1.00;
     const prevEndsSentence = /[.!?]$/.test(prev.text);
-    return prevEndsSentence ? 0.52 : 0.35;
+    return prevEndsSentence ? 0.80 : 0.55;
   }
 
   // For F5-cloned languages we log the reference voice name (not a
@@ -745,7 +753,7 @@ function renderLanguage(postDir, chunks, lang, sourceLang = 'en') {
   // language's mapped voice + tag, so a bilingual render still works
   // even when only some languages have a cloned voice provisioned.
   if (useF5) {
-    synthesizeF5(chunks, rawDir, f5cfg);
+    synthesizeF5(chunks, rawDir, f5cfg, lang);
   } else if (engine === 'kokoro' || engine === 'f5') {
     synthesizeKokoro(chunks, rawDir, { voice, lang: kokoroTag });
   } else {
@@ -811,7 +819,15 @@ function renderLanguage(postDir, chunks, lang, sourceLang = 'en') {
 
     const rawWav = path.join(rawDir, `c${String(i).padStart(4, '0')}.wav`);
     const wav = path.join(tmpDir, `t${String(i).padStart(4, '0')}.wav`);
-    trimSilence(rawWav, wav);
+    // F5 generates real breath sounds at chunk boundaries — stripping
+    // them produces the rushed, breathless feel listeners complain
+    // about. Kokoro's boundaries are dead silence we want gone, so it
+    // keeps the trim.
+    if (useF5) {
+      fs.copyFileSync(rawWav, wav);
+    } else {
+      trimSilence(rawWav, wav);
+    }
     const dur = wavDuration(wav);
     if (gap > 0) {
       // Lesson Mode + Track 1C — pick the right buffer for the gap:
@@ -1001,7 +1017,7 @@ function synthesizeKokoro(chunks, outDir, opts = {}) {
   }
 }
 
-function synthesizeF5(chunks, outDir, cfg = null) {
+function synthesizeF5(chunks, outDir, cfg = null, lang = 'en') {
   // Spawn the F5-TTS Python helper once, stream the chunk list as
   // JSON. Model + vocoder stay in RAM across all chunks of the post.
   // Reference audio + transcript are passed via CLI args (they're
@@ -1037,11 +1053,20 @@ function synthesizeF5(chunks, outDir, cfg = null) {
   if (modelName) { args.push('--model-name', modelName); }
   if (f5Device) { args.push('--device', f5Device); }
   const payload = JSON.stringify({
-    chunks: chunks.map((c, i) => ({
-      id: i,
-      // Widget-pause: see synthesizeKokoro for rationale.
-      text: c.kind === 'widget-pause' ? '' : c.text,
-    })),
+    // Apply pronunciation overrides to the text F5 hears (same shape as
+    // synthesizeKokoro). audio.<lang>.json keeps the canonical spelling
+    // so the on-page highlight still matches the rendered text; only
+    // the synthesis input is phoneticized.
+    chunks: (() => {
+      const expanded = new Set();
+      return chunks.map((c, i) => ({
+        id: i,
+        // Widget-pause: see synthesizeKokoro for rationale.
+        text: c.kind === 'widget-pause'
+          ? ''
+          : applyPronunciation(c.text, lang, expanded),
+      }));
+    })(),
   });
   const proc = spawnSync(PYTHON_BIN, args, {
     input: payload,
