@@ -1,0 +1,205 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-29T01:54:00.072Z",
+  "engine": "f5",
+  "model": "don-reference.es.m4a",
+  "voice": "f5:don-reference.es.m4a",
+  "language": "es",
+  "total": 138.88,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "opener",
+      "selector": ".course-hero h1",
+      "text": "Una frase. Eso que los clientes les cuentan a sus amigos.",
+      "start": 0,
+      "end": 1.76
+    },
+    {
+      "id": 1,
+      "kind": "opener",
+      "selector": ".course-hero .promise",
+      "text": "Cada restaurante que dura tiene una promesa. Vas a comparar tres estilos de cómo escribirla, escribir la tuya, y mirar cómo aterriza en tu página de inicio en tiempo real. Esta es la última lección del Módulo 1.",
+      "start": 2.41,
+      "end": 9.85
+    },
+    {
+      "id": 2,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "Un cliente del barrio le cuenta de tu restaurante a un amigo en una frase. Quizá dos. Tu trabajo en esta lección es escribir esa frase tú mismo, antes de que tengan que inventarla por ti.",
+      "start": 11.05,
+      "end": 17.5
+    },
+    {
+      "id": 3,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "La promesa no es un lema. Un lema es para el menú, el toldo, la caja de cerillos. La promesa es eso que vive en la página de inicio, debajo del nombre, y responde la pregunta que cada visitante de primera vez trae sin decirlo: ¿por qué debería comer aquí en vez del lugar de al lado?",
+      "start": 18.02,
+      "end": 28.04
+    },
+    {
+      "id": 4,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "Hay tres maneras comunes de escribirla bien. Haz clic para verlas. Ninguna es correcta o incorrecta; la correcta para ti depende de lo que ordenaste en la Lección 2.",
+      "start": 28.56,
+      "end": 34.24
+    },
+    {
+      "id": 5,
+      "kind": "widget-pause",
+      "selector": "#post-body > section:nth-of-type(1)",
+      "start": 34.64,
+      "end": 34.64,
+      "widget": "tab-flip"
+    },
+    {
+      "id": 6,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "Tres estrategias diferentes, tres cosas distintas para apoyarse en ellas. Elige la que coincida con lo que ordenaste arriba de la Lección 2, eficiencia (claro y directo), apetito (plato emblemático), o pertenencia (barrio). Si tu trabajo principal fue un empate, el estilo en que escribas va a empujar el empate hacia un lado.",
+      "start": 35.04,
+      "end": 46.11
+    },
+    {
+      "id": 7,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Ahora escribe la tuya.",
+      "start": 47.21,
+      "end": 47.67
+    },
+    {
+      "id": 8,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "No apuntes a algo ingenioso. Apunta a algo específico . Las peores promesas son las que podrían describir cualquier restaurante: \"ingredientes locales frescos,\" \"pasión por la hospitalidad,\" \"una experiencia inolvidable.\" Eso no son promesas. Es ruido.",
+      "start": 48.37,
+      "end": 57.1
+    },
+    {
+      "id": 9,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "Tres reglas rápidas:",
+      "start": 57.62,
+      "end": 58.1
+    },
+    {
+      "id": 10,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Nombra algo concreto (un plato, un barrio, una técnica, una hora de apertura).",
+      "start": 58.45,
+      "end": 61.07
+    },
+    {
+      "id": 11,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Usa una palabra que un cliente del barrio diría realmente. Si no la dirías en persona en la entrada, no la pongas en tu página de inicio.",
+      "start": 61.39,
+      "end": 66.1
+    },
+    {
+      "id": 12,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Apunta a 8 a 20 palabras. Menos está bien. Más es esconderse.",
+      "start": 66.42,
+      "end": 68.42
+    },
+    {
+      "id": 13,
+      "kind": "widget-pause",
+      "selector": "#post-body > section:nth-of-type(2)",
+      "start": 68.82,
+      "end": 68.82,
+      "widget": "text-input",
+      "contextKey": "onePromise",
+      "label": "Tu promesa de una frase"
+    },
+    {
+      "id": 14,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "Mira la vista previa a la derecha. Tu frase ahora aparece debajo del nombre de tu restaurante, en tu página de inicio, en colores de marca (todavía provisionales). Léela como un desconocido. ¿Responde la pregunta no dicha?",
+      "start": 69.22,
+      "end": 76.99
+    },
+    {
+      "id": 15,
+      "kind": "body",
+      "selector": "#post-body > div:nth-of-type(1) > p:nth-of-type(1)",
+      "text": "Si te quedaste en blanco. Es normal. La mayoría de los operadores escriben cuatro o cinco antes de que les guste una. Escribe una versión cruda ahora, tienes todo el Módulo 2 para pensarlo antes de que la Lección 7 te pida revisitarla.",
+      "start": 77.51,
+      "end": 85.66
+    },
+    {
+      "id": 16,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Acabas de terminar el Módulo 1.",
+      "start": 86.76,
+      "end": 87.75
+    },
+    {
+      "id": 17,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "Tres lecciones. Probablemente menos de una hora de tiempo en pantalla, más el tiempo de pensar entre ellas. Tu página de inicio ahora tiene un nombre, una cocina, una dirección, una lista de prioridades ordenada, y una promesa de una frase que vive debajo de tu nombre en tu vista previa. Eso es más forma decidida de la que la mayoría de los restaurantes hacen en su primer mes en línea.",
+      "start": 88.45,
+      "end": 101.87
+    },
+    {
+      "id": 18,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "Si empezaste de cero, tienes una idea en papel. Si llegaste rehaciendo, tienes un borrador para reemplazar lo que tenías. De cualquier manera, ya pasaste la parte que detiene en seco a la mayoría de los operadores.",
+      "start": 102.39,
+      "end": 109.85
+    },
+    {
+      "id": 19,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(3) h2",
+      "text": "Módulo 1 terminado. Ya tienes tu versión 0.3 publicada.",
+      "start": 111.15,
+      "end": 112.93
+    },
+    {
+      "id": 20,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(3) p",
+      "text": "Tu nombre, tu cocina, tu dirección, tus trabajos ordenados, y tu promesa de una frase, guardados en tu navegador, visibles en la vista previa, listos para cargarlos el resto del bootcamp.",
+      "start": 113.53,
+      "end": 119.95
+    },
+    {
+      "id": 21,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(3) p",
+      "text": "Este es el punto que la mayoría de los operadores nunca alcanza. Llevan meses queriendo pensar en su sitio web. Tú acabas de pasar tres lecciones y ya tienes uno real.",
+      "start": 120.55,
+      "end": 126.21
+    },
+    {
+      "id": 22,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(3) p",
+      "text": "Imprime la hoja de la Lección 3 →",
+      "start": 126.81,
+      "end": 127.79
+    },
+    {
+      "id": 23,
+      "kind": "body",
+      "selector": "#post-body > div:nth-of-type(2) > p:nth-of-type(1)",
+      "text": "Dos maneras de seguir: Si tienes la energía ahora, en el Módulo 2 vemos las ocho decisiones más grandes una por una, cliente, nombre o auditoría, posicionamiento o diagnóstico, paleta y voz. Si prefieres regresar mañana, guarda esta página en favoritos (Ctrl+D / Cmd+D) y retoma justo donde te quedaste.",
+      "start": 128.14,
+      "end": 138.88
+    }
+  ]
+}

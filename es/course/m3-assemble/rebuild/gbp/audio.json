@@ -1,0 +1,406 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-29T02:41:56.487Z",
+  "engine": "f5",
+  "model": "don-reference.es.m4a",
+  "voice": "f5:don-reference.es.m4a",
+  "language": "es",
+  "total": 400.92,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "opener",
+      "selector": ".course-hero h1",
+      "text": "La ficha está ahí. Solo está mal.",
+      "start": 0,
+      "end": 1.03
+    },
+    {
+      "id": 1,
+      "kind": "opener",
+      "selector": ".course-hero .promise",
+      "text": "La mayoría de los GBPs existentes están mal, viejos, o sin monitoreo. Abre el tuyo en otra pestaña, ordena los diez problemas comunes según lo que más te está dañando, escribe las tres reparaciones principales. Sales con una lista clara y un responsable de mantener las actualizaciones de G B P.",
+      "start": 1.68,
+      "end": 12.12
+    },
+    {
+      "id": 2,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "Tu G B P existe. Los comensales lo están mirando ahora mismo. Si les dice la verdad es la pregunta, y la respuesta casi siempre es \"en parte, no toda, y la parte que está mal te está dañando.\"",
+      "start": 13.32,
+      "end": 19.97
+    },
+    {
+      "id": 3,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Por qué reparar le gana a rehacer el G B P.",
+      "start": 21.07,
+      "end": 22.33
+    },
+    {
+      "id": 4,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "El instinto para un G B P viejo y feo es borrarlo y empezar de cero. No lo hagas. La edad de tu ficha es una señal de ranking, Google le tiene más confianza a un perfil establecido que a uno nuevo. Tus reseñas viven ahí. Tus fotos viven ahí. El pin de ubicación en Maps vive ahí. Quieres reparar, no reemplazar.",
+      "start": 23.03,
+      "end": 33.8
+    },
+    {
+      "id": 5,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "Abre tu G B P en otra pestaña, ya sea vía business.google.com si lo has reclamado, o buscando el nombre de tu restaurante en Google y mirando el panel a la derecha. De cualquier manera, vas a necesitar verlo como lo ve un comensal. El trabajo de reparación va más rápido cuando puedes ver los problemas en vivo.",
+      "start": 34.32,
+      "end": 45
+    },
+    {
+      "id": 6,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Los diez problemas comunes del G B P.",
+      "start": 46.1,
+      "end": 47.11
+    },
+    {
+      "id": 7,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "Abajo están los diez modos de falla que más dañan a los GBPs de restaurantes. Ordénalos por lo que más está dañando tu ficha. Los tres primeros se vuelven rojos, esas son tus prioridades de reparación. Los del medio y los del fondo pueden esperar al calendario de ritmo de la L16.",
+      "start": 47.81,
+      "end": 57.82
+    },
+    {
+      "id": 8,
+      "kind": "body",
+      "selector": "#post-body > div:nth-of-type(1) > p:nth-of-type(1)",
+      "text": "Pre-vuelo: ¿es tuyo el G B P? Si no, o no estás seguro, esa es la única reparación que importa hoy. Las otras nueve requieren propiedad. Haz clic en \"Administrar ahora\" en tu ficha en los resultados de Google, o sigue el flujo estilo L11a en business.google.com antes de ordenar lo demás. El primer item del widget es \"No reclamado\" por defecto por esa razón, si no aplica, arrástralo al final y ordena el resto.",
+      "start": 58.34,
+      "end": 72.63
+    },
+    {
+      "id": 9,
+      "kind": "widget-pause",
+      "selector": "#post-body > section:nth-of-type(1)",
+      "start": 73.03,
+      "end": 73.03,
+      "widget": "drag-rank",
+      "contextKey": "gbpProblemRank"
+    },
+    {
+      "id": 10,
+      "kind": "body",
+      "selector": "#post-body > div:nth-of-type(2) > p:nth-of-type(1)",
+      "text": "Tus tres primeros están en rojo. Esos son tus objetivos de reparación para las próximas dos semanas. Si \"El G B P no está reclamado por ti\" está en tus tres primeros (especialmente number 1), reclámalo antes de tocar cualquier otra cosa, la mayoría de las demás reparaciones requieren propiedad.",
+      "start": 73.43,
+      "end": 83.83
+    },
+    {
+      "id": 11,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Notas sobre tus tres reparaciones principales.",
+      "start": 84.93,
+      "end": 86.31
+    },
+    {
+      "id": 12,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "Para cada uno de los tres items en rojo, escribe qué está mal específicamente en tu G B P, y cómo se ve el arreglo. La especificidad aquí es lo que hace que la reparación se haga, las notas vagas producen reparaciones vagas que vuelven a romperse en tres meses.",
+      "start": 87.01,
+      "end": 96.16
+    },
+    {
+      "id": 13,
+      "kind": "widget-pause",
+      "selector": "#post-body > section:nth-of-type(2)",
+      "start": 96.56,
+      "end": 96.56,
+      "widget": "text-input",
+      "contextKey": "gbpRepairNotes",
+      "label": "Notas sobre tus tres reparaciones principales del GBP"
+    },
+    {
+      "id": 14,
+      "kind": "body",
+      "selector": "#post-body > div:nth-of-type(3) > p:nth-of-type(1)",
+      "text": "Si ordenaste \"Reseñas sin respuesta\" entre los tres primeros. Responde a las reseñas negativas primero, duelen más, y la ausencia de respuesta es la señal visible. Responde una vez, brevemente, con profesionalismo. La Lección 13 (Reseñas + confianza de la primera semana) profundiza en plantillas de respuesta; para la reparación, solo cierra las negativas abiertas esta semana.",
+      "start": 96.96,
+      "end": 110.15
+    },
+    {
+      "id": 15,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "Vista previa de cómo se ve bien, lado a lado.",
+      "start": 111.25,
+      "end": 112.72
+    },
+    {
+      "id": 16,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "Abajo está como se verá tu ficha de G B P reparada una vez que las tres reparaciones principales aterricen, construida en vivo desde todo lo que has puesto en el bootcamp hasta ahora. Elige tu categoría principal si todavía no lo hiciste; la lista de revisión debajo marca todo lo pendiente. El ejercicio es mirar esta vista previa y preguntar \"¿es esto lo que un comensal esperaría de mi restaurante?\" Si sí, sabes cómo se ve \"terminado\".",
+      "start": 113.42,
+      "end": 128.74
+    },
+    {
+      "id": 17,
+      "kind": "widget-pause",
+      "selector": "#post-body > section:nth-of-type(3)",
+      "start": 129.14,
+      "end": 129.14,
+      "widget": "gbp-card-preview"
+    },
+    {
+      "id": 18,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "Cuando el camino feliz no funciona.",
+      "start": 129.54,
+      "end": 130.52
+    },
+    {
+      "id": 19,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "El flujo de \"reclamar, arreglar, seguir\" de arriba asume una herencia limpia: tú operas el restaurante y la ficha de Google está sin reclamar o ya es tuya. Para aproximadamente uno de cada tres operadores rehaciendo un sitio existente, la situación es más enredada. Los cuatro bloqueos más comunes, en orden de frecuencia:",
+      "start": 131.22,
+      "end": 142.23
+    },
+    {
+      "id": 20,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(1)",
+      "text": "1. La ficha está reclamada por alguien que no conoces.",
+      "start": 143.33,
+      "end": 145.14
+    },
+    {
+      "id": 21,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "Un dueño anterior, una agencia de marketing pasada, un consultor de S E O que despediste hace tres años, o, lo más común, alguien que la reclamó en un momento muerto y se olvidó. La ficha de Google muestra \"Propiedad de otra empresa\" cuando intentas reclamarla.",
+      "start": 145.84,
+      "end": 154.92
+    },
+    {
+      "id": 22,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "El camino: solicita la propiedad a través del flujo Manage listing → \"Request ownership\" en business.google.com . Google le envía un correo al dueño actual; tiene 7 días para responder. Si no responde, puedes presentar una solicitud de transferencia con prueba de propiedad (contrato de arrendamiento, Ein, factura de servicios, licencia de negocio). Resolución típica: 2-4 semanas.",
+      "start": 155.44,
+      "end": 168.69
+    },
+    {
+      "id": 23,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "Mientras esperas: NO crees una ficha duplicada. Los duplicados disparan los filtros antispam de Google y Ambas fichas pueden quedar suspendidas. Estaciona el trabajo de rehacer todo lo demás (menú, fotos, horarios-contacto, deploy) y retoma esto cuando la propiedad se transfiera.",
+      "start": 169.21,
+      "end": 178.95
+    },
+    {
+      "id": 24,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(2)",
+      "text": "2. La verificación por postal es tu única opción.",
+      "start": 180.05,
+      "end": 181.57
+    },
+    {
+      "id": 25,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "Para la mayoría de las fachadas en EE. UU., Google ahora ofrece verificación por video (clearance de 5 días). Para negocios de área de servicio, food trucks sin cocina fija, u operadores fuera de EE. UU., la única opción es la postal con un código de 5 dígitos enviada a tu dirección. Tiempo mediano: 5-14 días. A veces nunca llega.",
+      "start": 182.27,
+      "end": 193.82
+    },
+    {
+      "id": 26,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "El camino: solicita la postal ahora , antes de hacer cualquier otra cosa en esta lección, el reloj empieza el momento que la solicitas. Si no llega en 14 días, solicita una segunda (Google permite hasta tres intentos antes de escalar a una revisión telefónica o por video). Usa el tiempo de espera para finalizar la descripción (la L11a tiene la fórmula), elige la categoría principal en el widget gbp-card-preview abajo, y escribe las respuestas de reseñas de la L13. Nada de eso requiere que el G B P esté verificado todavía.",
+      "start": 194.34,
+      "end": 212.82
+    },
+    {
+      "id": 27,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(3)",
+      "text": "3. La ficha está suspendida.",
+      "start": 213.92,
+      "end": 214.77
+    },
+    {
+      "id": 28,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "Marcadores de \"Temporalmente cerrado\" de twenty twenty-twenty twenty-two a veces nunca se quitaron. Los operadores ocasionalmente disparan los filtros antispam de Google editando demasiados campos a la vez, o listando servicios que no coinciden con la categoría principal (un restaurante que ofrece \"alquiler de equipos de catering\" se marca). La ficha aparece en la búsqueda pero con \"Este perfil no está disponible actualmente\" o ya no rankea para consultas de marca.",
+      "start": 215.47,
+      "end": 231.7
+    },
+    {
+      "id": 29,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "El camino: presenta una solicitud de reinstalación en support.google.com/business/contact/bphr . Provee el nombre del negocio, dirección, la razón exacta de la suspensión si Google te la mandó (revisa tu correo registrado + carpeta de spam), y prueba de operación (facturas recientes, contrato de arrendamiento, facturas de servicios). Resolución: típicamente 3-10 días hábiles, a veces más.",
+      "start": 232.22,
+      "end": 245.94
+    },
+    {
+      "id": 30,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(4)",
+      "text": "4. Hay fichas duplicadas, la tuya y la de alguien más.",
+      "start": 247.04,
+      "end": 248.82
+    },
+    {
+      "id": 31,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "Común cuando un restaurante se ha mudado, cambiado de dueños, o tenido un cambio de nombre. Verás dos pines en Google Maps, a veces con direcciones o números de teléfono ligeramente distintos. Las reseñas se dispersan entre ambas; los comensales se confunden.",
+      "start": 249.52,
+      "end": 258.63
+    },
+    {
+      "id": 32,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "El camino: solicita la fusión vía soporte de Google Business Profile → \"Edit info\" → \"Suggest a fix\" → \"Mark as duplicate.\" El algoritmo de Google usualmente fusiona en 7-14 días. La ficha más sana (más reseñas, actividad más reciente) típicamente sobrevive; la otra redirige a ella.",
+      "start": 259.15,
+      "end": 269.29
+    },
+    {
+      "id": 33,
+      "kind": "body",
+      "selector": "#post-body > div:nth-of-type(4) > p:nth-of-type(1)",
+      "text": "Nada de esto bloquea el resto del bootcamp. Puedes terminar L12 (S E O local), L13 (reseñas), L14 (generador), L15 (deploy), L16 (ritmo) con un G B P no verificado o no fusionado. El sitio web es tuyo; desplegarlo no depende de que la ficha de Google esté en orden. Cuando el camino del G B P se resuelva, lleguen las postales, se completen las transferencias, vuelve al widget gbp-card-preview de arriba para finalizar la descripción + categoría principal, luego añade el campo de U R L en vivo. La mayoría de los operadores en esta situación terminan el bootcamp primero y vuelven al G B P una vez que el backend de Google ha hecho su parte.",
+      "start": 269.81,
+      "end": 292.19
+    },
+    {
+      "id": 34,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(6)",
+      "text": "La respuesta de proceso, para que esto no vuelva a deslizarse.",
+      "start": 293.29,
+      "end": 295.22
+    },
+    {
+      "id": 35,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "La L6b te pidió nombrar las causas; esta sección te pide nombrar a un responsable. El G B P no se desliza porque a nadie le importe, se desliza porque nadie es dueño del chequeo recurrente. Elige a una persona, nombra una frecuencia (cada dos semanas alcanza para la mayoría de los restaurantes), escríbelo.",
+      "start": 295.92,
+      "end": 306.75
+    },
+    {
+      "id": 36,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "La mayoría de los restaurantes necesitan dos cadencias. Un chequeo rápido (5 min, cada dos semanas), abrir el G B P, revisar reseñas nuevas, publicar una actualización. Una revisión completa (30 min, trimestral), verificar que los horarios coincidan con el sitio, revisar la descripción, actualizar fotos, auditar categorías. La Lección 16 (ritmo de 30 días) envuelve esto en un calendario que puedes exportar.",
+      "start": 307.27,
+      "end": 321.69
+    },
+    {
+      "id": 37,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(19)",
+      "text": "La persona que es dueña de esto necesita acceso al G B P. Si no lo tiene hoy, agrégala como gerente en la configuración de Google Business Profile antes de cerrar esta pestaña.",
+      "start": 322.21,
+      "end": 328.17
+    },
+    {
+      "id": 38,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(7)",
+      "text": "Una herramienta gratuita para calificar tu prioridad de reparación.",
+      "start": 329.27,
+      "end": 331.49
+    },
+    {
+      "id": 39,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Calificador de G B P de Muntin Gratis, sin registro. Califica tu G B P en los diez modos de falla de arriba + unos cuantos más. Útil como chequeo de tu orden. Abrir el calificador →",
+      "start": 332.19,
+      "end": 338.35
+    },
+    {
+      "id": 40,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "S E O Grader de Muntin Verifica específicamente la consistencia N A P entre tu G B P y tu sitio. Si \"N A P inconsistente\" está en tus tres primeros, esta es la manera más rápida de encontrar cada discrepancia. Abrir el S E O Grader →",
+      "start": 338.67,
+      "end": 346.88
+    },
+    {
+      "id": 41,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(8)",
+      "text": "Qué cambia esto de aquí en adelante.",
+      "start": 347.98,
+      "end": 349.1
+    },
+    {
+      "id": 42,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(20)",
+      "text": "La Lección 12 (S E O local) lee la descripción y la categoría de tu G B P para sugerir frases clave. La Lección 13 (reseñas) recorre el trabajo de respuesta en detalle, si ordenaste reseñas-sin-respuesta entre los tres primeros, esa lección es la siguiente a leer. La Lección 16 (ritmo) mete tu cadencia de G B P en un calendario.",
+      "start": 349.8,
+      "end": 361.38
+    },
+    {
+      "id": 43,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(21)",
+      "text": "El generador de la L14 auto-llena el marcado schema.org de tu sitio para coincidir con lo que tiene Google en tu G B P, pero solo si tu N A P es consistente. El trabajo de reparación aquí paga intereses compuestos en rankings de búsqueda local.",
+      "start": 361.9,
+      "end": 370.29
+    },
+    {
+      "id": 44,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(22)",
+      "text": "Lo siguiente es el Módulo 4, S E O local, reseñas, el generador, despliegue, el ritmo de 30 días. El trabajo curricular pesado quedó atrás. El M4 es mayormente mecánica y la descarga final del Zip.",
+      "start": 370.81,
+      "end": 377.72
+    },
+    {
+      "id": 45,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(4) h2",
+      "text": "Nombraste qué arreglar y quién se hace cargo de mantenerlo.",
+      "start": 379.02,
+      "end": 380.87
+    },
+    {
+      "id": 46,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(4) p",
+      "text": "Una lista ordenada de los diez problemas comunes del G B P, tus tres primeros en rojo, notas específicas sobre cada uno, y un compromiso de proceso para el chequeo recurrente, guardada en tu navegador. La lista de reparaciones es ahora tu trabajo de G B P de las próximas dos semanas; la cadencia es lo que previene el deslizamiento.",
+      "start": 381.47,
+      "end": 392.84
+    },
+    {
+      "id": 47,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(4) p",
+      "text": "La mayoría de los operadores que rehacen arreglan el sitio web e ignoran el G B P. El G B P es donde la mayoría de los comensales de verdad lee sobre ti. Tú lo nombraste.",
+      "start": 393.44,
+      "end": 399.38
+    },
+    {
+      "id": 48,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(4) p",
+      "text": "Imprime la hoja de la Lección 11 →",
+      "start": 399.98,
+      "end": 400.92
+    }
+  ]
+}

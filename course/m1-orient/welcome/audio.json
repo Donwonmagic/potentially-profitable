@@ -1,0 +1,137 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-29T00:18:49.940Z",
+  "engine": "f5",
+  "model": "don-reference.m4a",
+  "voice": "f5:don-reference.m4a",
+  "language": "en",
+  "total": 83.23,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "opener",
+      "selector": ".course-hero h1",
+      "text": "Type your restaurant's name. Watch it appear.",
+      "start": 0,
+      "end": 1.53
+    },
+    {
+      "id": 1,
+      "kind": "opener",
+      "selector": ".course-hero .promise",
+      "text": "In the next five minutes you will have your restaurant's name, cuisine, and address inside the very first version of your site, visible to the right, updating as you type. That is the whole lesson.",
+      "start": 2.18,
+      "end": 9.93
+    },
+    {
+      "id": 2,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "Almost every course about building a website starts with a chapter you can skip. This one does not. Type three things and your site begins.",
+      "start": 11.13,
+      "end": 16.51
+    },
+    {
+      "id": 3,
+      "kind": "widget-pause",
+      "selector": "#post-body > section:nth-of-type(1)",
+      "start": 16.91,
+      "end": 16.91,
+      "widget": "text-input",
+      "contextKey": "restaurantProfile.name",
+      "label": "Restaurant name"
+    },
+    {
+      "id": 4,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Look to the right. Your name is already there, on the very first version of your site. That browser-chrome around it is not a screenshot, it is a tiny working page that re-renders every time you type. Read it once. Then come back.",
+      "start": 17.31,
+      "end": 26.38
+    },
+    {
+      "id": 5,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "Everything after this lesson uses your own restaurant, your name, your cuisine, your neighborhood, as the working example. Generic examples are not allowed on Muntin. We do not show you what some restaurant's site looks like. We show you what yours looks like, one decision at a time. Two more inputs and you are done with this lesson.",
+      "start": 26.9,
+      "end": 40.04
+    },
+    {
+      "id": 6,
+      "kind": "widget-pause",
+      "selector": "#post-body > section:nth-of-type(2)",
+      "start": 40.44,
+      "end": 40.44,
+      "widget": "text-input",
+      "contextKey": "restaurantProfile.cuisine",
+      "label": "Cuisine"
+    },
+    {
+      "id": 7,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "Notice the small colored chip that just appeared above your name in the preview. That is a placeholder for your brand color, picked by your cuisine. You will choose three colors that are actually yours in Lesson 7; for now, you are seeing a reasonable starting point.",
+      "start": 40.84,
+      "end": 51.39
+    },
+    {
+      "id": 8,
+      "kind": "widget-pause",
+      "selector": "#post-body > section:nth-of-type(3)",
+      "start": 51.79,
+      "end": 51.79,
+      "widget": "text-input",
+      "contextKey": "restaurantProfile.address",
+      "label": "Address"
+    },
+    {
+      "id": 9,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "Scroll the preview on the right. Your address now appears under Find us .",
+      "start": 52.19,
+      "end": 54.8
+    },
+    {
+      "id": 10,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "That is it. You are done with Lesson 1.",
+      "start": 55.9,
+      "end": 57.13
+    },
+    {
+      "id": 11,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "You just made the first three decisions of your restaurant website. Everything that follows builds on these. The next lesson is about what a restaurant website is actually for, five minutes, no typing required.",
+      "start": 57.83,
+      "end": 66.13
+    },
+    {
+      "id": 12,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(4) h2",
+      "text": "You just shipped v0.1 of your website.",
+      "start": 67.43,
+      "end": 68.57
+    },
+    {
+      "id": 13,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(4) p",
+      "text": "A working preview of your home page with your name, your cuisine, and your address, saved in this browser. It is already a real page. By the last lesson, you will be downloading the finished version of it.",
+      "start": 69.17,
+      "end": 77.18
+    },
+    {
+      "id": 14,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(4) p",
+      "text": "The whole rest of the bootcamp uses these three values. Every example, every preview, every template, your restaurant, from this point forward.",
+      "start": 77.78,
+      "end": 83.23
+    }
+  ]
+}

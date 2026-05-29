@@ -1,0 +1,197 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-29T02:10:23.201Z",
+  "engine": "f5",
+  "model": "don-reference.es.m4a",
+  "voice": "f5:don-reference.es.m4a",
+  "language": "es",
+  "total": 139.39,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "opener",
+      "selector": ".course-hero h1",
+      "text": "Los síntomas son fáciles. Las causas son lo difícil.",
+      "start": 0,
+      "end": 1.72
+    },
+    {
+      "id": 1,
+      "kind": "opener",
+      "selector": ".course-hero .promise",
+      "text": "La Lección 5b ordenó qué está roto. Esta lección pregunta por qué. Para cada una de tus tres fugas principales, nombra la causa subyacente, porque los rehacer que solo tapan los síntomas vuelven a abrir la misma fuga seis meses después.",
+      "start": 2.37,
+      "end": 10.68
+    },
+    {
+      "id": 2,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "Un sitio que salió mal en la auditoría no llegó ahí por accidente. Algo, un hábito, un proceso que falta, una herramienta que nunca se terminó, un desarrollador que se fue, causó cada fuga. El rehacer tiene que arreglar eso, no solo el síntoma.",
+      "start": 11.88,
+      "end": 20.58
+    },
+    {
+      "id": 3,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Por qué existe esta lección.",
+      "start": 21.68,
+      "end": 22.55
+    },
+    {
+      "id": 4,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "El error más común al rehacer es este: un operador contrata a un diseñador, el diseñador arregla todo lo visible, el sitio nuevo se lanza, y en seis meses se ve como el viejo. Los horarios están viejos otra vez. El menú es un P D F otra vez. Las fotos no se han refrescado.",
+      "start": 23.25,
+      "end": 32.86
+    },
+    {
+      "id": 5,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "La razón no es el diseñador. Es que nada cambió sobre el por qué las cosas se pusieron viejas la primera vez. Si los horarios se ponen viejos porque nadie en tu negocio se hace cargo de actualizarlos, un sitio nuevo no cambia eso, solo te da un lugar más bonito para que pase lo mismo.",
+      "start": 33.38,
+      "end": 43.4
+    },
+    {
+      "id": 6,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "El ejercicio en esta lección es corto: toma tus tres fugas principales de la Lección 5b y escribe la causa detrás de cada una, en una o dos oraciones. La disciplina toma 10 minutos. El beneficio dura años.",
+      "start": 43.92,
+      "end": 51.05
+    },
+    {
+      "id": 7,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Pensamiento de síntoma vs pensamiento de causa.",
+      "start": 52.15,
+      "end": 53.61
+    },
+    {
+      "id": 8,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "Lee estas dos maneras de describir las mismas tres fugas comunes. La diferencia entre ellas es la diferencia entre un rehacer que dura y uno que no.",
+      "start": 54.31,
+      "end": 59.33
+    },
+    {
+      "id": 9,
+      "kind": "widget-pause",
+      "selector": "#post-body > section:nth-of-type(1)",
+      "start": 59.73,
+      "end": 59.73,
+      "widget": "tab-flip"
+    },
+    {
+      "id": 10,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "Las dos maneras de describir la fuga son precisas. Solo una es accionable más allá del siguiente lanzamiento.",
+      "start": 60.13,
+      "end": 63.76
+    },
+    {
+      "id": 11,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Escribe las causas de tus tres principales.",
+      "start": 64.86,
+      "end": 66.23
+    },
+    {
+      "id": 12,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "Abre tu orden de la Lección 5b en otra pestaña si lo necesitas. Para cada una de tus tres fugas principales, escribe una o dos oraciones que nombren la causa detrás del síntoma. Usa la misma forma que los ejemplos de \"Pensamiento de causa\" de arriba: \"X está roto porque Y.\"",
+      "start": 66.93,
+      "end": 76.51
+    },
+    {
+      "id": 13,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "Sé específico sobre quién, qué, cuándo. \"Nadie se hace cargo\" está bien; \"Pat actualizaba los horarios los martes y Pat se fue en marzo\" es mucho mejor. Mientras más concreta la causa, más obvia la solución.",
+      "start": 76.86,
+      "end": 84.07
+    },
+    {
+      "id": 14,
+      "kind": "widget-pause",
+      "selector": "#post-body > section:nth-of-type(2)",
+      "start": 84.47,
+      "end": 84.47,
+      "widget": "text-input",
+      "contextKey": "leakCauses",
+      "label": "La causa subyacente de cada una de tus tres fugas principales"
+    },
+    {
+      "id": 15,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "Lee lo que escribiste. Para cada causa, pregúntate: si rehacemos el sitio sin cambiar esto, ¿la misma fuga va a volver? Si la respuesta es sí, y casi siempre es sí, ahora sabes que el rehacer tiene que incluir un cambio de proceso, no solo un cambio de diseño.",
+      "start": 84.87,
+      "end": 93.95
+    },
+    {
+      "id": 16,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "Qué cambia esto para el resto del curso.",
+      "start": 95.05,
+      "end": 96.25
+    },
+    {
+      "id": 17,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "El Módulo 3 construye el reemplazo pieza por pieza. Cada lección de ahí tiene una pequeña barra lateral de \"y el proceso detrás\", la Lección 8 (menú) pregunta quién es dueño del archivo del menú y cada cuánto se actualiza; la Lección 10 (horarios) pregunta quién es dueño de los horarios; la Lección 11b (reparación de G B P) pregunta quién es dueño de las respuestas a reseñas. Las respuestas de proceso vienen de lo que escribes en esta lección.",
+      "start": 96.95,
+      "end": 112.97
+    },
+    {
+      "id": 18,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "Si sientes que esta lección te dio más trabajo del que querías (\"vine aquí a arreglar un sitio web, no a rediseñar mi gestión\"), esa es la reacción correcta. También es la diferencia entre un rehacer que arregla los síntomas por una temporada y un rehacer que los arregla por años.",
+      "start": 113.49,
+      "end": 123.52
+    },
+    {
+      "id": 19,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(3) h2",
+      "text": "Nombraste qué arreglar de verdad.",
+      "start": 124.82,
+      "end": 125.77
+    },
+    {
+      "id": 20,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(3) p",
+      "text": "Tres causas, las razones reales detrás de tus tres fugas principales de la auditoría, guardadas en tu navegador. El Módulo 3 parte de aquí y mete las respuestas de proceso en el reemplazo, no solo en el diseño.",
+      "start": 126.37,
+      "end": 133.7
+    },
+    {
+      "id": 21,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(3) p",
+      "text": "Esta es la mitad del rehacer que la mayoría de los operadores se saltan porque es incómoda. Tú no.",
+      "start": 134.3,
+      "end": 137.71
+    },
+    {
+      "id": 22,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(3) p",
+      "text": "Imprime la hoja de la Lección 6 →",
+      "start": 138.31,
+      "end": 139.39
+    }
+  ]
+}

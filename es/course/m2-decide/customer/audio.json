@@ -1,0 +1,213 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-29T01:57:15.811Z",
+  "engine": "f5",
+  "model": "don-reference.es.m4a",
+  "voice": "f5:don-reference.es.m4a",
+  "language": "es",
+  "total": 171.66,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "opener",
+      "selector": ".course-hero h1",
+      "text": "El comensal para quien cocinas. En un párrafo. No tu base de clientes, una persona.",
+      "start": 0,
+      "end": 2.81
+    },
+    {
+      "id": 1,
+      "kind": "opener",
+      "selector": ".course-hero .promise",
+      "text": "Cada lección siguiente, nombre, auditoría, fotos, menú, voz, se afina cuando sabes quién está leyendo. Al terminar, tienes un retrato funcional de esa persona, anclado a un barrio, guardado en tu contexto para el resto del curso.",
+      "start": 3.46,
+      "end": 11.44
+    },
+    {
+      "id": 2,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "\"Todo el mundo\" no es un cliente. Un restaurante para todos no sirve a nadie. Lo más útil que puedes hacer esta semana es nombrar a una persona y diseñar el resto del curso para ella.",
+      "start": 12.64,
+      "end": 18.96
+    },
+    {
+      "id": 3,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Las escuelas de marketing le llaman persona, un arquetipo ficticio pero específico de tu cliente real. Los operadores que se equivocan terminan escribiendo en una voz que no le queda a nadie, eligiendo fotos que no le hablan a nadie en particular, poniendo horarios que sirven a un promedio imaginario. Los que aciertan tienen una persona en mente cada vez que una decisión se pone difícil, y la decisión se vuelve más fácil.",
+      "start": 19.48,
+      "end": 34.29
+    },
+    {
+      "id": 4,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "Tu tarea en esta lección: escribe un párrafo sobre esa persona. Luego ánclala a un barrio y a una expectativa de precio. Eso es todo el ejercicio.",
+      "start": 34.81,
+      "end": 39.87
+    },
+    {
+      "id": 5,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "El mejor párrafo.",
+      "start": 40.97,
+      "end": 41.32
+    },
+    {
+      "id": 6,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "Elige a un cliente real que ya has servido (si estás rehaciendo) o al que esperas (si empiezas de cero). Dibújalo en tres a seis oraciones. Sé específico. Ana, 34, maestra de primaria, vive a diez cuadras, dos hijos en la escuela, viene los viernes cuando su esposo se queda con los niños, siempre pide lo mismo, comparte una botella con su hermana le gana a profesionales jóvenes que aprecian la buena comida por mucho.",
+      "start": 42.02,
+      "end": 56.57
+    },
+    {
+      "id": 7,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "Si no la puedes ver, no estás listo para diseñar para ella. Si sí, vas a ver la respuesta a la mayoría de tus preguntas de diseño en su cara.",
+      "start": 57.09,
+      "end": 61.98
+    },
+    {
+      "id": 8,
+      "kind": "widget-pause",
+      "selector": "#post-body > section:nth-of-type(1)",
+      "start": 62.38,
+      "end": 62.38,
+      "widget": "persona-card-builder"
+    },
+    {
+      "id": 9,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "Ahora lee lo que escribiste. ¿Hay oraciones que podrías escribir sobre cualquier restaurante? Bórralas. ¿Hay oraciones que solo describen al cliente habitual de tu restaurante? Quédatelas. El párrafo debería hacerte asentir con la cabeza al leerlo; si se siente genérico, escribe a una persona distinta que de verdad conozcas.",
+      "start": 62.78,
+      "end": 74.11
+    },
+    {
+      "id": 10,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Ánclala a un barrio.",
+      "start": 75.21,
+      "end": 75.51
+    },
+    {
+      "id": 11,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "La otra mitad de \"quién\" es \"dónde.\" Un comensal no existe en el vacío, existe en un lugar, con un camino al trabajo, con otros restaurantes cerca, con una escuela del barrio que decide a qué hora salen los niños y cuándo cenan las familias. Escribe la frase que captura dónde vive o trabaja tu cliente.",
+      "start": 76.21,
+      "end": 86.9
+    },
+    {
+      "id": 12,
+      "kind": "widget-pause",
+      "selector": "#post-body > section:nth-of-type(2)",
+      "start": 87.3,
+      "end": 87.3,
+      "widget": "text-input",
+      "contextKey": "neighborhoodAnchor",
+      "label": "El barrio, en una frase"
+    },
+    {
+      "id": 13,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "La Lección 12 (S E O local) parte de aquí para sugerir frases clave que encajen con cómo busca tu cliente. La Lección 9 (fotos) se basa en esto para sugerir qué deben evocar las fotos del lugar. La Lección 10 (horarios) lo usa para preguntar si tus horarios tienen sentido para las escuelas y los caminos al trabajo del barrio que acabas de nombrar.",
+      "start": 87.7,
+      "end": 99.58
+    },
+    {
+      "id": 14,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(1)",
+      "text": "¿Qué tan ancho llega ese barrio?",
+      "start": 100.68,
+      "end": 101.49
+    },
+    {
+      "id": 15,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "Arrastra el slider abajo para ver qué radio alrededor de tu restaurante se siente bien para \"quién viene un día de semana\". La mayoría de los restaurantes de barrio caen entre 1 y 2 millas para clientes a pie + viaje corto en auto. Los lugares de mostrador y con mucho takeout suelen ir más anchos. Los menús de degustación y restaurantes destino van todavía más anchos. Este número fluye a la Lección 12 para el fraseo de S E O local.",
+      "start": 102.19,
+      "end": 117.47
+    },
+    {
+      "id": 16,
+      "kind": "widget-pause",
+      "selector": "#post-body > section:nth-of-type(3)",
+      "start": 117.87,
+      "end": 117.87,
+      "widget": "map-radius"
+    },
+    {
+      "id": 17,
+      "kind": "body",
+      "selector": "#post-body > div:nth-of-type(1) > p:nth-of-type(1)",
+      "text": "Dos cosas importantes que esta lección NO te pide hacer. No te pide clavar tu lema (eso fue la Lección 3). No te pide pensar en clientes secundarios. Elige una persona. Lo demás viene después.",
+      "start": 118.27,
+      "end": 124.95
+    },
+    {
+      "id": 18,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Qué cambia esto de aquí en adelante.",
+      "start": 126.05,
+      "end": 127.07
+    },
+    {
+      "id": 19,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "De esta lección en adelante, cada vez que una lección te pida elegir una voz, un color, una foto, o un plato para liderar, la respuesta correcta es la que le queda a esta persona. No a todos tus clientes; a esta . La disciplina de elegir para una persona afina cada decisión siguiente.",
+      "start": 127.77,
+      "end": 137.71
+    },
+    {
+      "id": 20,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "Si te encuentras queriendo dos personas porque \"realmente tenemos dos tipos de clientes,\" eso es una señal, usualmente que tu concepto todavía no eligió su carril. Volveremos a eso en el Módulo 3 cuando la lección del menú te pregunte qué 3 platos liderar en la página de inicio. Dos personas significa dos páginas de inicio, y la mayoría de los restaurantes independientes no se pueden permitir dos páginas de inicio.",
+      "start": 138.23,
+      "end": 153.04
+    },
+    {
+      "id": 21,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(4) h2",
+      "text": "Nombraste a la persona para quien cocinas.",
+      "start": 154.34,
+      "end": 155.62
+    },
+    {
+      "id": 22,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(4) p",
+      "text": "Un párrafo específico sobre un cliente real o imaginado, anclado a un barrio específico, guardado en tu navegador. Cada lección siguiente parte de aquí para saber a quién le está diseñando.",
+      "start": 156.22,
+      "end": 162.89
+    },
+    {
+      "id": 23,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(4) p",
+      "text": "Nombrar al cliente es lo que separa a un restaurante que elige su carril de uno que espera por todo el mundo. La mayoría de los operadores nunca escribe este párrafo. Tú acabas de hacerlo.",
+      "start": 163.49,
+      "end": 169.95
+    },
+    {
+      "id": 24,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(4) p",
+      "text": "Imprime la hoja de la Lección 4 →",
+      "start": 170.55,
+      "end": 171.66
+    }
+  ]
+}
