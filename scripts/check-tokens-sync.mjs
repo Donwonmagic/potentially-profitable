@@ -21,6 +21,7 @@
  */
 
 import { readFileSync } from "node:fs";
+import { createHash } from "node:crypto";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -86,9 +87,38 @@ function selfTest() {
   console.log("✓ check-tokens-sync self-test passed");
 }
 
+// Cross-repo spine integrity: this vendored copy (site data/) and the
+// canonical muntin.tokens.json (product packages/ui) MUST hold identical token
+// VALUES. This pins a normalized hash (values only, ignoring $meta +
+// formatting); if either copy changes without updating BOTH copies and this
+// constant in BOTH guards, CI fails — keeping the two-repo single source of
+// truth honest.
+const EXPECTED_SPINE_HASH =
+  "3681742a5d58d95835dee6f1a67fd4c550f6ba929548d1b872ff0b079dcb6e11";
+function spineHash(spec) {
+  const j = JSON.parse(JSON.stringify(spec));
+  delete j["$meta"];
+  const st = (o) =>
+    Array.isArray(o)
+      ? o.map(st)
+      : o && typeof o === "object"
+        ? Object.keys(o)
+            .sort()
+            .reduce((a, k) => ((a[k] = st(o[k])), a), {})
+        : o;
+  return createHash("sha256").update(JSON.stringify(st(j))).digest("hex");
+}
+
 function main() {
   if (process.argv.includes("--self-test")) return selfTest();
-  const { failures, count } = check(readFileSync(SITE_CSS, "utf8"), JSON.parse(readFileSync(SPEC, "utf8")));
+  const spec = JSON.parse(readFileSync(SPEC, "utf8"));
+  const hash = spineHash(spec);
+  if (hash !== EXPECTED_SPINE_HASH) {
+    console.error(`✗ spine integrity: muntin.tokens.json hash ${hash} != expected ${EXPECTED_SPINE_HASH}`);
+    console.error("  Vendored (site) and canonical (product) token copies diverged, or tokens changed. Update BOTH copies + EXPECTED_SPINE_HASH in BOTH guards.");
+    process.exit(1);
+  }
+  const { failures, count } = check(readFileSync(SITE_CSS, "utf8"), spec);
   if (failures.length) {
     console.error(`✗ token sync: ${failures.length} of ${count} site palette tokens drifted from data/muntin.tokens.json:`);
     for (const f of failures) console.error("  - " + f);
