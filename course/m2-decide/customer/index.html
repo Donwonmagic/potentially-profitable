@@ -458,6 +458,18 @@ main{padding-top:64px}
 
   <div class="course-layout">
     <article class="course-body" id="post-body">
+      <!-- course-listen:start -->
+      <div class="row-center" style="margin:0 0 22px">
+        <button type="button" id="listen-btn" class="listen-btn" aria-pressed="false" data-state="idle" data-audio-src="audio.mp3" data-audio-source-lang="en" data-audio-languages="en,es,fr,it,pt,zh">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor"/>
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+          </svg>
+          <span class="listen-label i18n">Listen to this lesson</span>
+        </button>
+      </div>
+      <!-- course-listen:end -->
       <p class="lead">"Everyone" is not a customer. A restaurant for everyone serves no one. The most useful thing you can do this week is name a single person and design the rest of the bootcamp at them.</p>
 <!-- course-objectives:start -->
       <style>.course-objectives{margin:18px 0 24px;padding:0;border:1px solid var(--line);border-radius:8px;background:var(--cream-2);max-width:680px}.course-objectives summary{padding:12px 16px;font-family:var(--font-body);font-size:13px;letter-spacing:.04em;text-transform:uppercase;font-weight:700;color:var(--teal-dark);cursor:pointer;list-style:none;position:relative;padding-right:36px}.course-objectives summary::-webkit-details-marker{display:none}.course-objectives summary::after{content:"+";position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:18px;line-height:1;color:var(--stone);font-weight:300}.course-objectives[open] summary::after{content:"−"}.course-objectives summary:focus-visible{outline:2px solid var(--teal);outline-offset:-2px;border-radius:8px 8px 0 0}.course-objectives ul{margin:0;padding:0 22px 14px 38px;font-size:14.5px;line-height:1.55;color:var(--ink-soft)}.course-objectives li{margin-bottom:4px}.course-objectives li:last-child{margin-bottom:0}@media (prefers-contrast:more){.course-objectives ul{color:var(--ink)}}</style>
@@ -1360,6 +1372,9 @@ main{padding-top:64px}
 <!-- course-config-sync:start -->
 <script src="/assets/js/course-config-sync.js" defer></script>
 <!-- course-config-sync:end -->
+<!-- course-listen-script:start -->
+<script src="/assets/js/listen.js" defer></script>
+<!-- course-listen-script:end -->
 
 </body>
 </html>

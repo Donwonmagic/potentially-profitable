@@ -89,7 +89,9 @@ const LISTEN_SCRIPT_TAG = '<script src="/assets/js/listen.js" defer></script>';
 //      tag, before the first child (typically <p class="lead">).
 //   2. Script tag: right before the closing </body>. The other course
 //      scripts (workshop-widget.js, context-bus.js) sit there too.
-const ANCHOR_BUTTON_RE = /(<article\s+class="course-body">\s*)/;
+// Tolerant of additional attributes on the article tag (e.g. id="post-body"
+// — that exact form is what the lesson templates emit).
+const ANCHOR_BUTTON_RE = /(<article\b[^>]*\bclass="(?:[^"]*\s)?course-body(?:\s[^"]*)?"[^>]*>\s*)/;
 const ANCHOR_BODY_END_RE = /(\s*<\/body>)/;
 
 function buildListenButton(locale) {
