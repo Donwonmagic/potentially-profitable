@@ -76,13 +76,24 @@ const HEX = {
   "#b8901a": "#B7791F", // pre-Wave-8b --gold fallback
   "#d4a24c": "#B7791F", // pre-Wave-8b --gold fallback (lighter)
   "#143a45": "#1F3A93", // stale --teal-deep fallback (token undefined -> rendered warm)
+  "#fbefe3": "#EDEEF1", // warm cream variant in decorative gradients (.pane/.portrait)
 };
 
 // Old-teal rgba() glazes -> cool blue. Applied to chrome stylesheets only
 // (HTML inline swatches may legitimately use rgba and are left untouched).
 const RGBA = {
+  // old teal -> brand blue (#2A50C8)
   "rgba(31, 78, 91,": "rgba(42, 80, 200,",
   "rgba(31,78,91,": "rgba(42,80,200,",
+  // old teal-tint -> cool accent-soft (#EAF0FE)
+  "rgba(232, 241, 243,": "rgba(234, 240, 254,",
+  "rgba(232,241,243,": "rgba(234,240,254,",
+  // old teal-dark -> blue-dark (#1F3A93)
+  "rgba(20, 54, 64,": "rgba(31, 58, 147,",
+  "rgba(20,54,64,": "rgba(31,58,147,",
+  // old rust -> brand blue (decorative tints only; status red stays #C42E2E)
+  "rgba(201, 102, 45,": "rgba(42, 80, 200,",
+  "rgba(201,102,45,": "rgba(42,80,200,",
 };
 
 // Paths never touched: VCS, deps, editorial docs, this script + token
@@ -184,7 +195,9 @@ const TEMPLATES = [
 ].map((s) => path.join(REPO, "scripts", s));
 
 // Chrome stylesheets (no theme-swatch content) get a full safe sweep.
-const STYLESHEETS = ["assets/sheets.css"].map((s) => path.join(REPO, s));
+const STYLESHEETS = ["assets/sheets.css", "assets/site.css"].map((s) =>
+  path.join(REPO, s),
+);
 // Injector scripts whose template strings stamp chrome into pages. Warm
 // hex here would re-warm output on the next build, so sweep + lock them.
 // Safe to fullHex: these emit chrome only, no theme-swatch color data.
