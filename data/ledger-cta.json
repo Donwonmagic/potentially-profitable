@@ -1,0 +1,61 @@
+{
+  "_doc": "Per-article end-of-content CTA routing high-intent finance/privacy library readers to the sister product, Muntin Ledger (https://ledger.muntin.digital). Stamped by scripts/inject-ledger-cta.mjs as a <aside class=\"post-end-cta\"> between <!-- ledger-cta:start --> / <!-- ledger-cta:end -->, inserted AFTER the existing tool post-end-cta + smart-next blocks so it reads as the final 'and here is the product' step. The link is a plain external anchor (passes link equity to Ledger) carrying Plausible's declarative class API (plausible-event-name=Ledger+Route+Click, plausible-event-source=<slug>) so the click fires the registered 'Ledger Route Click' event with a bounded source prop; this also suppresses Plausible's automatic outbound-link event on the same click, so there is no double-count. EN + ES per article; the ES block stamps into es/library/<slug>/ when it exists, otherwise that locale is skipped. No invented numbers — copy describes only what Muntin Ledger's own pages already state (reads invoices with templates and rules, searchable ledger, clean CSV export, posts to QuickBooks Online).",
+  "posts": {
+    "how-to-tell-if-a-restaurant-tool-is-safe": {
+      "label_en": "See Muntin Ledger",
+      "label_es": "Conoce Muntin Ledger",
+      "headline_en": "A ledger built around this audit.",
+      "headline_es": "Un ledger hecho en torno a esta auditoría.",
+      "body_en": "Muntin Ledger reads vendor invoices with templates and rules, files them in a searchable ledger, and lets you export a clean CSV whenever you ask — the privacy posture this article describes, shipped as a product.",
+      "body_es": "Muntin Ledger lee facturas de proveedores con plantillas y reglas, las archiva en un ledger que puedes buscar, y te deja exportar un CSV limpio cuando lo pidas — la postura de privacidad que describe este artículo, hecha producto."
+    },
+    "third-party-delivery-economics": {
+      "label_en": "See Muntin Ledger",
+      "label_es": "Conoce Muntin Ledger",
+      "headline_en": "Keep these numbers in one ledger.",
+      "headline_es": "Guarda estos números en un solo ledger.",
+      "body_en": "Muntin Ledger files your vendor invoices into a searchable ledger and exports a clean CSV when you need it — so the delivery costs you just worked through stay in one place you control.",
+      "body_es": "Muntin Ledger archiva tus facturas de proveedores en un ledger que puedes buscar y exporta un CSV limpio cuando lo necesites — para que los costos de delivery que acabas de revisar queden en un lugar que tú controlas."
+    },
+    "third-party-delivery-comparison": {
+      "label_en": "See Muntin Ledger",
+      "label_es": "Conoce Muntin Ledger",
+      "headline_en": "File every channel invoice in one place.",
+      "headline_es": "Archiva cada factura de canal en un solo lugar.",
+      "body_en": "Muntin Ledger reads vendor and channel invoices with templates and rules, files them in a searchable ledger, and exports to CSV or your books when you are ready.",
+      "body_es": "Muntin Ledger lee facturas de proveedores y canales con plantillas y reglas, las archiva en un ledger que puedes buscar, y exporta a CSV o a tu contabilidad cuando estés listo."
+    },
+    "loyalty-program-roi": {
+      "label_en": "See Muntin Ledger",
+      "label_es": "Conoce Muntin Ledger",
+      "headline_en": "Track what the program actually costs.",
+      "headline_es": "Rastrea lo que cuesta el programa.",
+      "body_en": "Muntin Ledger files the vendor invoices behind your loyalty stack into a searchable ledger and exports a clean CSV — so the real cost stays visible, month over month.",
+      "body_es": "Muntin Ledger archiva las facturas detrás de tu programa de lealtad en un ledger que puedes buscar y exporta un CSV limpio — para que el costo real quede visible, mes con mes."
+    },
+    "service-charge-vs-tipping-model": {
+      "label_en": "See Muntin Ledger",
+      "label_es": "Conoce Muntin Ledger",
+      "headline_en": "Keep the back-office record findable.",
+      "headline_es": "Ten el registro de oficina a la mano.",
+      "body_en": "Muntin Ledger reads your vendor invoices with templates and rules, files them in a searchable ledger, and exports a clean CSV — the record that outlasts whichever model you choose.",
+      "body_es": "Muntin Ledger lee tus facturas con plantillas y reglas, las archiva en un ledger que puedes buscar, y exporta un CSV limpio — el registro que sobrevive al modelo que elijas."
+    },
+    "toast-vs-square-vs-clover-for-restaurants": {
+      "label_en": "See Muntin Ledger",
+      "label_es": "Conoce Muntin Ledger",
+      "headline_en": "Your POS rings sales. This files the bills.",
+      "headline_es": "Tu POS cobra ventas. Esto archiva las facturas.",
+      "body_en": "Muntin Ledger reads the vendor invoices your POS never sees, files them in a searchable ledger, and posts to QuickBooks Online or exports a clean CSV when you are ready.",
+      "body_es": "Muntin Ledger lee las facturas de proveedores que tu POS nunca ve, las archiva en un ledger que puedes buscar, y publica en QuickBooks Online o exporta un CSV limpio cuando estés listo."
+    },
+    "how-to-raise-restaurant-menu-prices-without-losing-reservations": {
+      "label_en": "See Muntin Ledger",
+      "label_es": "Conoce Muntin Ledger",
+      "headline_en": "Watch costs move after the change.",
+      "headline_es": "Observa los costos tras el cambio.",
+      "body_en": "Muntin Ledger files your vendor invoices into a searchable ledger and exports a clean CSV — so when supplier costs shift again, the record is already there.",
+      "body_es": "Muntin Ledger archiva tus facturas de proveedores en un ledger que puedes buscar y exporta un CSV limpio — para que cuando los costos cambien otra vez, el registro ya esté ahí."
+    }
+  }
+}
