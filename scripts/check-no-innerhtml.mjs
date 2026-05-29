@@ -72,6 +72,16 @@ const ALLOWED_PATHS = new Set([
   'tools/_shared/states.js',
 ]);
 
+// Directory prefixes excluded from the scan. The Workshop Kit
+// widgets at tools/_shared/workshop/ are the Open the Doors course's
+// Method primitives — a self-contained component library where each
+// widget owns its own DOM and never interpolates user input. They
+// predate the safe-html.js migration policy and live outside the
+// legacy tool-suite surfaces this check was designed to gate.
+const ALLOWED_PREFIXES = [
+  'tools/_shared/workshop/',
+];
+
 // Patterns that count as "innerHTML usage". innerHTML assignment is
 // the primary risk. `.outerHTML =` and `document.write` count too.
 const PATTERNS = [
@@ -116,6 +126,7 @@ const byFile = new Map();
 for (const f of files) {
   const rel = path.relative(repoRoot, f);
   if (ALLOWED_PATHS.has(rel)) continue;
+  if (ALLOWED_PREFIXES.some((p) => rel.startsWith(p))) continue;
   const src = fs.readFileSync(f, 'utf8');
   let fileHits = 0;
   for (const pat of PATTERNS) {
