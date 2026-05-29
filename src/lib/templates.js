@@ -167,6 +167,81 @@ export function lifecycleMonthlyDigestEmail(body) {
   return { subject, html, text };
 }
 
+// 4. lifecycleCourseStartedEmail  Trigger: first /api/course/progress
+//    POST + 24h passed. Names the bootcamp so the operator who
+//    started impulsively, then closed the tab, remembers what they
+//    opened. Locale-aware via templates.es.js fallthrough.
+export function lifecycleCourseStartedEmail(body) {
+  const locale = pickLocale(body);
+  if (locale === 'es' && typeof ES.lifecycleCourseStartedEmail === 'function') {
+    return ES.lifecycleCourseStartedEmail(body);
+  }
+  const courseUrl = String(body.courseUrl || 'https://muntin.digital/course/').trim();
+  const unsubUrl  = String(body.unsubUrl  || 'https://muntin.digital/sub/unsubscribe').trim();
+  const subject = 'About that bootcamp.';
+  const html = htmlShell(
+    'You opened the bootcamp',
+    [
+      '<p style="margin:0 0 16px;font-size:16px;line-height:1.55;color:#2A2D33;">You opened Open the Doors — the sixteen-lesson bootcamp that ends with a real, deployed restaurant site. The first lesson takes five minutes.</p>',
+      '<p style="margin:0 0 16px;font-size:16px;line-height:1.55;color:#2A2D33;">Every other lesson uses your own restaurant — your name, your cuisine, your address — as the working example. So the next lesson picks up where you left off.</p>',
+      '<p style="margin:24px 0 0;">' + primaryCta(courseUrl, 'Open the bootcamp') + '</p>',
+      '<p style="margin:32px 0 0;font-size:13px;color:#6B6B6B;font-style:italic;">— Don</p>',
+    ].join('\n'),
+    `You started the Open the Doors bootcamp on Muntin Digital. Unsubscribe: ${unsubUrl}`
+  );
+  const text = [
+    'About that bootcamp.',
+    '',
+    'You opened Open the Doors — the sixteen-lesson bootcamp that ends with a real, deployed restaurant site. The first lesson takes five minutes.',
+    '',
+    'Every other lesson uses your own restaurant — your name, your cuisine, your address — as the working example. So the next lesson picks up where you left off.',
+    '',
+    'Open the bootcamp: ' + courseUrl,
+    '',
+    '— Don',
+    '',
+    'Unsubscribe: ' + unsubUrl,
+  ].join('\n');
+  return { subject, html, text };
+}
+
+// 5. lifecycleCourseCompletedEmail  Trigger: course progress hits 16/16
+//    + no welcome_course_completed_sent_at on the sub record. Points
+//    at the post-launch care plan. Once per operator, ever.
+export function lifecycleCourseCompletedEmail(body) {
+  const locale = pickLocale(body);
+  if (locale === 'es' && typeof ES.lifecycleCourseCompletedEmail === 'function') {
+    return ES.lifecycleCourseCompletedEmail(body);
+  }
+  const carePlanUrl = String(body.carePlanUrl || 'https://muntin.digital/course/care-plan/').trim();
+  const unsubUrl    = String(body.unsubUrl    || 'https://muntin.digital/sub/unsubscribe').trim();
+  const subject = 'Sixteen lessons. Site is live.';
+  const html = htmlShell(
+    'You shipped the site',
+    [
+      '<p style="margin:0 0 16px;font-size:16px;line-height:1.55;color:#2A2D33;">Sixteen lessons. A deployed restaurant website. You did the work — that\'s the whole bootcamp.</p>',
+      '<p style="margin:0 0 16px;font-size:16px;line-height:1.55;color:#2A2D33;">Here\'s the 30/60/90-day care plan. Three checkpoints, each with one specific task and the tool that does it. Set the rhythm once; the site stays alive.</p>',
+      '<p style="margin:24px 0 0;">' + primaryCta(carePlanUrl, 'Open the care plan') + '</p>',
+      '<p style="margin:32px 0 0;font-size:13px;color:#6B6B6B;font-style:italic;">— Don</p>',
+    ].join('\n'),
+    `You completed the Open the Doors bootcamp on Muntin Digital. Unsubscribe: ${unsubUrl}`
+  );
+  const text = [
+    'Sixteen lessons. Site is live.',
+    '',
+    'Sixteen lessons. A deployed restaurant website. You did the work — that\'s the whole bootcamp.',
+    '',
+    'Here\'s the 30/60/90-day care plan. Three checkpoints, each with one specific task and the tool that does it. Set the rhythm once; the site stays alive.',
+    '',
+    'Open the care plan: ' + carePlanUrl,
+    '',
+    '— Don',
+    '',
+    'Unsubscribe: ' + unsubUrl,
+  ].join('\n');
+  return { subject, html, text };
+}
+
 export function pickLocale(body) {
   const raw = String((body && body.locale) || 'en').trim().toLowerCase();
   return SUPPORTED_LOCALES.has(raw) ? raw : 'en';

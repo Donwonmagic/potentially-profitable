@@ -1,0 +1,47 @@
+    <form id="sheet-fields" class="sheet-form" autocomplete="off" novalidate>
+      <fieldset>
+        <legend>Header</legend>
+        <label><span><span>Restaurant name</span></span><input type="text" name="name" data-context-key="restaurantProfile.name" /></label>
+        <label><span><span>Cuisine</span></span><input type="text" name="cuisine" data-context-key="restaurantProfile.cuisine" /></label>
+        <label><span><span>Neighborhood</span></span><input type="text" name="neighborhood" /></label>
+        <label><span><span>Quarter reviewed</span></span><input type="text" name="quarter" placeholder="e.g., Q3 2026" /></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Eight keyword phrases</legend>
+        <span class="field-help">From L12. Four formulas: cuisine+neighborhood, dish+neighborhood, occasion+neighborhood, intent+cuisine+neighborhood. Lowercase, no quotes.</span>
+        <table class="sheet-row-table">
+          <thead><tr><th>#</th><th>Phrase</th><th>Formula type</th><th>Live in Google? (run incognito)</th><th>Rank (1=top of pack)</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td><input type="text" name="k1_phrase" /></td><td><select name="k1_form"><option>—</option><option>cuisine+neighborhood</option><option>dish+neighborhood</option><option>occasion+neighborhood</option><option>intent+cuisine+neighborhood</option></select></td><td><select name="k1_live"><option>—</option><option>yes — we appear</option><option>partial — we appear page 2+</option><option>no</option></select></td><td><input type="number" name="k1_rank" min="1" max="50" /></td></tr>
+            <tr><td>2</td><td><input type="text" name="k2_phrase" /></td><td><select name="k2_form"><option>—</option><option>cuisine+neighborhood</option><option>dish+neighborhood</option><option>occasion+neighborhood</option><option>intent+cuisine+neighborhood</option></select></td><td><select name="k2_live"><option>—</option><option>yes — we appear</option><option>partial — we appear page 2+</option><option>no</option></select></td><td><input type="number" name="k2_rank" min="1" max="50" /></td></tr>
+            <tr><td>3</td><td><input type="text" name="k3_phrase" /></td><td><select name="k3_form"><option>—</option><option>cuisine+neighborhood</option><option>dish+neighborhood</option><option>occasion+neighborhood</option><option>intent+cuisine+neighborhood</option></select></td><td><select name="k3_live"><option>—</option><option>yes — we appear</option><option>partial — we appear page 2+</option><option>no</option></select></td><td><input type="number" name="k3_rank" min="1" max="50" /></td></tr>
+            <tr><td>4</td><td><input type="text" name="k4_phrase" /></td><td><select name="k4_form"><option>—</option><option>cuisine+neighborhood</option><option>dish+neighborhood</option><option>occasion+neighborhood</option><option>intent+cuisine+neighborhood</option></select></td><td><select name="k4_live"><option>—</option><option>yes — we appear</option><option>partial — we appear page 2+</option><option>no</option></select></td><td><input type="number" name="k4_rank" min="1" max="50" /></td></tr>
+            <tr><td>5</td><td><input type="text" name="k5_phrase" /></td><td><select name="k5_form"><option>—</option><option>cuisine+neighborhood</option><option>dish+neighborhood</option><option>occasion+neighborhood</option><option>intent+cuisine+neighborhood</option></select></td><td><select name="k5_live"><option>—</option><option>yes — we appear</option><option>partial — we appear page 2+</option><option>no</option></select></td><td><input type="number" name="k5_rank" min="1" max="50" /></td></tr>
+            <tr><td>6</td><td><input type="text" name="k6_phrase" /></td><td><select name="k6_form"><option>—</option><option>cuisine+neighborhood</option><option>dish+neighborhood</option><option>occasion+neighborhood</option><option>intent+cuisine+neighborhood</option></select></td><td><select name="k6_live"><option>—</option><option>yes — we appear</option><option>partial — we appear page 2+</option><option>no</option></select></td><td><input type="number" name="k6_rank" min="1" max="50" /></td></tr>
+            <tr><td>7</td><td><input type="text" name="k7_phrase" /></td><td><select name="k7_form"><option>—</option><option>cuisine+neighborhood</option><option>dish+neighborhood</option><option>occasion+neighborhood</option><option>intent+cuisine+neighborhood</option></select></td><td><select name="k7_live"><option>—</option><option>yes — we appear</option><option>partial — we appear page 2+</option><option>no</option></select></td><td><input type="number" name="k7_rank" min="1" max="50" /></td></tr>
+            <tr><td>8</td><td><input type="text" name="k8_phrase" /></td><td><select name="k8_form"><option>—</option><option>cuisine+neighborhood</option><option>dish+neighborhood</option><option>occasion+neighborhood</option><option>intent+cuisine+neighborhood</option></select></td><td><select name="k8_live"><option>—</option><option>yes — we appear</option><option>partial — we appear page 2+</option><option>no</option></select></td><td><input type="number" name="k8_rank" min="1" max="50" /></td></tr>
+          </tbody>
+        </table>
+        <span class="field-help">A phrase that returns hotels or stock-photo sites is mis-targeted. Replace it with something more local.</span>
+      </fieldset>
+
+      <fieldset>
+        <legend>This-quarter drift</legend>
+        <label><span><span>Which phrases dropped vs last quarter (if returning to this sheet)</span></span><textarea name="dropped" rows="2"></textarea></label>
+        <label><span><span>New phrases added this quarter (e.g., new dish on the menu)</span></span><textarea name="added" rows="2"></textarea></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Distribution</legend>
+        <label><input type="checkbox" name="dist_site" /><span><span>Phrases live in the deployed site's meta description + page titles (via L14 regenerate)</span></span></label>
+        <label><input type="checkbox" name="dist_gbp" /><span><span>Phrases reflected in the GBP business description</span></span></label>
+        <label><input type="checkbox" name="dist_menu" /><span><span>Dish names match the menu page exactly (no 'famous burger' on the menu vs 'classic cheeseburger' on the description)</span></span></label>
+      </fieldset>
+    </form>
+
+    <script>
+      (function () {
+        if (window.SheetPage) window.SheetPage.register({ slug: 'course-local-seo' });
+      })();
+    </script>

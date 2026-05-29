@@ -1,0 +1,221 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-29T02:28:54.661Z",
+  "engine": "f5",
+  "model": "don-reference.es.m4a",
+  "voice": "f5:don-reference.es.m4a",
+  "language": "es",
+  "total": 162.87,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "opener",
+      "selector": ".course-hero h1",
+      "text": "La pieza más leída de tu sitio. Hazlo bien una vez.",
+      "start": 0,
+      "end": 1.51
+    },
+    {
+      "id": 1,
+      "kind": "opener",
+      "selector": ".course-hero .promise",
+      "text": "Tus horarios y tu teléfono se leen más que todas las demás piezas de tu sitio combinadas. Al terminar esta lección, están puestos para cada día de la semana, los festivos están manejados, y tu teléfono es tocable en el móvil.",
+      "start": 2.16,
+      "end": 10.14
+    },
+    {
+      "id": 2,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "\"¿Están abiertos ahora?\" es la pregunta más común que un comensal le trae a tu sitio web. El sitio que la responde en dos segundos se queda con la cena. El sitio que la esconde detrás de un clic la pierde.",
+      "start": 11.34,
+      "end": 18.4
+    },
+    {
+      "id": 3,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Pon tus horarios semanales.",
+      "start": 19.5,
+      "end": 20.29
+    },
+    {
+      "id": 4,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Recorre de lunes a domingo abajo. Para cada día, pon a qué hora abres y a qué hora cierras, o marca \"Cerrado\" para los días que no abres. Usa los botones de atajo debajo de la grilla si tus horarios de lunes a viernes son los mismos, es un patrón común.",
+      "start": 20.99,
+      "end": 29.89
+    },
+    {
+      "id": 5,
+      "kind": "widget-pause",
+      "selector": "#post-body > section:nth-of-type(1)",
+      "start": 30.29,
+      "end": 30.29,
+      "widget": "weekly-hours-grid"
+    },
+    {
+      "id": 6,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "Léelos otra vez. Errores comunes: se te olvidó marcar un día cerrado; tu viernes cierra una hora más tarde que las otras cenas (escríbelo con precisión, importa); pusiste \"5 PM\" cuando en realidad empiezas a sentar a las 4:30 porque ahí es cuando empiezan a llegar los clientes habituales. Los horarios que pongas son a los que van a llegar los comensales. No van a llamar para verificar.",
+      "start": 30.69,
+      "end": 44.17
+    },
+    {
+      "id": 7,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Un teléfono, una dirección.",
+      "start": 45.27,
+      "end": 45.71
+    },
+    {
+      "id": 8,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "La Lección 1 capturó tu dirección. Ahora confirma el teléfono, el que se contesta, no el que está en el toldo y nadie monitorea. Si tienes un número aparte para reservaciones versus catering, pon el que llama un cliente del barrio para \"¿están abiertos esta noche?\"",
+      "start": 46.41,
+      "end": 55.81
+    },
+    {
+      "id": 9,
+      "kind": "widget-pause",
+      "selector": "#post-body > section:nth-of-type(2)",
+      "start": 56.21,
+      "end": 56.21,
+      "widget": "text-input",
+      "contextKey": "restaurantProfile.phone",
+      "label": "Número de teléfono"
+    },
+    {
+      "id": 10,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "Eso es lo esencial del contacto. La Lección 11 (la lección de G B P ) maneja una cosa relacionada, tener tus horarios y teléfono correctos en el registro de Google sobre ti, que es una bestia distinta.",
+      "start": 56.61,
+      "end": 63.61
+    },
+    {
+      "id": 11,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Festivos y cierres especiales.",
+      "start": 64.71,
+      "end": 65.49
+    },
+    {
+      "id": 12,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "Tus horarios semanales de arriba responden \"¿están abiertos los miércoles?\" No responden \"¿están abiertos el Día de Acción de Gracias?\" Las dos preguntas se hacen; la segunda solo importa alrededor de las fechas en que importa.",
+      "start": 66.19,
+      "end": 74.2
+    },
+    {
+      "id": 13,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "Por ahora, el generador renderiza solo tus horarios semanales. Dos convenciones prácticas para los festivos hasta que el widget de festivos llegue el próximo trimestre:",
+      "start": 74.72,
+      "end": 80.53
+    },
+    {
+      "id": 14,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Postea en redes una semana antes. Historia de Instagram + post de Facebook + post del Perfil de Google Business (Lección 11). La mayoría de los habituales miran ahí.",
+      "start": 80.88,
+      "end": 86.54
+    },
+    {
+      "id": 15,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Actualiza el mensaje de la contestadora para el día del cierre más el día siguiente. Mucho más útil de lo que la mayoría espera.",
+      "start": 86.86,
+      "end": 91.36
+    },
+    {
+      "id": 16,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "No quites tus horarios semanales. El error más común, los operadores actualizan los horarios de la página de inicio a \"Cerrado del 27 al 28 de noviembre\" y luego se olvidan de volver a poner los horarios regulares. Usa un banner o un aviso aparte; deja los horarios semanales en paz.",
+      "start": 91.68,
+      "end": 101.58
+    },
+    {
+      "id": 17,
+      "kind": "body",
+      "selector": "#post-body > div:nth-of-type(1) > p:nth-of-type(1)",
+      "text": "La pregunta de proceso, para operadores de la pista de \"arreglar lo que tengo\". Si ordenaste \"Los horarios están viejos\" en tu auditoría de la Lección 5b, esta lección arregla el síntoma inmediato, pero la causa que nombraste en la Lección 6b sigue ahí. Elige hoy a la persona que se hace cargo de actualizar los horarios cada trimestre, antes de cerrar esta pestaña. Las instrucciones de la Lección 11 (G B P) asumen que alguien se hace cargo.",
+      "start": 102.1,
+      "end": 117.59
+    },
+    {
+      "id": 18,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "Qué cambia esto de aquí en adelante.",
+      "start": 118.69,
+      "end": 119.86
+    },
+    {
+      "id": 19,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "La Lección 11 (Perfil de Google Business) lee tus horarios y tu teléfono y te pide verificar que coincidan con lo que tiene Google. La Lección 12 (S E O local) lee tus horarios para sugerir frases clave de hora de apertura. El generador de la L14 renderiza los horarios en el pie de la página de inicio y en una sección de contacto.",
+      "start": 120.56,
+      "end": 131.82
+    },
+    {
+      "id": 20,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "El generador también renderiza el teléfono como un enlace tel: en el móvil, un comensal que lo toca va directo a marcar. Esa sola pieza de amabilidad móvil rutinariamente mueve los números de clientes que entran más que cualquier rediseño.",
+      "start": 132.34,
+      "end": 140.65
+    },
+    {
+      "id": 21,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(3) h2",
+      "text": "Tus preguntas más comunes tienen respuestas.",
+      "start": 141.95,
+      "end": 143.21
+    },
+    {
+      "id": 22,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(3) p",
+      "text": "Horarios semanales, día por día, más un teléfono que de verdad contestan, guardados en tu navegador. El generador los renderiza en el pie de la página de inicio y en la sección de contacto, con el teléfono como enlace tocable en el móvil.",
+      "start": 143.81,
+      "end": 152.24
+    },
+    {
+      "id": 23,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(3) p",
+      "text": "Esta es la pieza del trabajo web de un restaurante con el mejor ratio de valor a esfuerzo.",
+      "start": 152.84,
+      "end": 155.74
+    },
+    {
+      "id": 24,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(3) p",
+      "text": "Imprime la hoja de la Lección 10 →",
+      "start": 156.34,
+      "end": 157.37
+    },
+    {
+      "id": 25,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "La Lección 11 se bifurca para empezar-de-cero (reclamar y llenar) vs arreglar-lo-que-tengo (auditar y reparar). El resumen del módulo enlaza a las dos.",
+      "start": 157.72,
+      "end": 162.87
+    }
+  ]
+}

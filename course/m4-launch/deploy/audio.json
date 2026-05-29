@@ -1,0 +1,251 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-29T01:41:04.094Z",
+  "engine": "f5",
+  "model": "don-reference.m4a",
+  "voice": "f5:don-reference.m4a",
+  "language": "en",
+  "total": 197.43,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "opener",
+      "selector": ".course-hero h1",
+      "text": "Drag the Zip onto a host. Your site is live in under thirty minutes.",
+      "start": 0,
+      "end": 2.43
+    },
+    {
+      "id": 1,
+      "kind": "opener",
+      "selector": ".course-hero .promise",
+      "text": "Cloudflare Pages, Netlify, and Vercel each let you publish a folder of H T M L for free. Pick one, the differences are smaller than the marketing makes them seem. Wire your own domain afterwards and your operator email signature finally has a U R L worth printing.",
+      "start": 3.08,
+      "end": 13.57
+    },
+    {
+      "id": 2,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "A host is a computer somewhere that answers when a browser asks for your-restaurant.com. You do not need to own the computer, configure it, or pay for it monthly. The three hosts below run your site for free as long as a few thousand diners visit per month, which, for a 60-seat neighborhood restaurant, is most of them.",
+      "start": 14.77,
+      "end": 27.36
+    },
+    {
+      "id": 3,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Pick a host, they are almost the same.",
+      "start": 28.46,
+      "end": 29.6
+    },
+    {
+      "id": 4,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "The honest truth: for a static H T M L site like yours, all three hosts do the same thing. They take your folder, copy it to a network of servers around the world, and serve it back over H T T P S when a diner's browser asks. The small differences:",
+      "start": 30.3,
+      "end": 39.97
+    },
+    {
+      "id": 5,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "Our suggestion: Cloudflare Pages if you already use Cloudflare for anything (or you are willing to). Netlify if you want the smoothest first-deploy experience. Vercel if you want the slickest dashboard. All three are real, free, fine.",
+      "start": 40.32,
+      "end": 49.5
+    },
+    {
+      "id": 6,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Step-by-step for each host.",
+      "start": 50.6,
+      "end": 51.12
+    },
+    {
+      "id": 7,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "The tabs below walk you through each host with the full detail. Above them, the seven-step tracker is your \"where am I\" anchor, pick your host at the top, then mark each step done as you complete it. Your progress saves locally and (if you are signed in) syncs across devices, so you can start the deploy on your laptop and check in from your phone.",
+      "start": 51.82,
+      "end": 65.59
+    },
+    {
+      "id": 8,
+      "kind": "widget-pause",
+      "selector": "#post-body > section:nth-of-type(2)",
+      "start": 65.99,
+      "end": 65.99,
+      "widget": "deploy-stepper"
+    },
+    {
+      "id": 9,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "The tabs walk you through each host. Each one starts from \"I have a Zip from Lesson 14\" and ends with \"my site is live at a real U R L.\" Pick the tab for the host you chose; ignore the other two.",
+      "start": 66.39,
+      "end": 73.74
+    },
+    {
+      "id": 10,
+      "kind": "widget-pause",
+      "selector": "#post-body > section:nth-of-type(3)",
+      "start": 74.14,
+      "end": 74.14,
+      "widget": "tab-flip"
+    },
+    {
+      "id": 11,
+      "kind": "body",
+      "selector": "#post-body > div:nth-of-type(1) > p:nth-of-type(1)",
+      "text": "You need a domain before the \"custom domain\" step works. If you do not own one yet, buy your-restaurant.com at Cloudflare Registrar (~10 dollars/year, no markup) or Porkbun (~11 dollars/year). Avoid GoDaddy and Squarespace, both charge double for the same product and lock you into upsells. If your restaurant name was checked in Lesson 5 and the .com was available, this is the moment to buy it.",
+      "start": 74.54,
+      "end": 90.22
+    },
+    {
+      "id": 12,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "The D N S step that scares everyone (it should not).",
+      "start": 91.32,
+      "end": 93.06
+    },
+    {
+      "id": 13,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "D N S (the Domain Name System) is the phone book of the internet. When you typed your restaurant's name into a host, the host gave you back a string like \"your-restaurant.netlify.app\", that is where the files live. The D N S step tells the phone book: \"when a diner types your-restaurant.com , send them to that Netlify address.\"",
+      "start": 93.76,
+      "end": 106.66
+    },
+    {
+      "id": 14,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "You are not configuring servers. You are updating one entry in a phone book. The host you picked gives you the exact lines to copy; the registrar where you bought your domain has a form to paste them into. Two screens, five minutes, one ten-minute wait for propagation. That is it.",
+      "start": 107.01,
+      "end": 117.7
+    },
+    {
+      "id": 15,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "If the D N S step feels alarming, the operator-friendly fix is: move your domain to Cloudflare Registrar (free transfer, takes a week). Then connect Cloudflare Pages, no D N S records to copy, one click.",
+      "start": 118.22,
+      "end": 126.2
+    },
+    {
+      "id": 16,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "Verify the deploy.",
+      "start": 127.3,
+      "end": 127.68
+    },
+    {
+      "id": 17,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "Before you tell anyone the U R L, run this three-minute check:",
+      "start": 128.38,
+      "end": 130.57
+    },
+    {
+      "id": 18,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Open the U R L on your phone over cellular (not WiFi). The home page should render in under two seconds; your name, hours, address, and phone should be visible without scrolling.",
+      "start": 130.92,
+      "end": 137.88
+    },
+    {
+      "id": 19,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Tap the phone number. It should open your phone's dialer with the right digits filled in.",
+      "start": 138.2,
+      "end": 141.5
+    },
+    {
+      "id": 20,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Tap the address. It should open Maps with the right pin.",
+      "start": 141.82,
+      "end": 143.74
+    },
+    {
+      "id": 21,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "Visit each of the four pages (home / menu / about / contact). No 404s, no broken links, no missing images.",
+      "start": 144.06,
+      "end": 147.93
+    },
+    {
+      "id": 22,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(5)",
+      "text": "Show your spouse, your business partner, or a regular. Ask: \"if you found this site by searching for a restaurant, would you call?\" If the answer is \"I do not know\", back to Lesson 3 for the promise.",
+      "start": 148.25,
+      "end": 156.03
+    },
+    {
+      "id": 23,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "What this changes downstream.",
+      "start": 157.13,
+      "end": 158.03
+    },
+    {
+      "id": 24,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "Lesson 16 (the 30-day rhythm) assumes your site is deployed and gives you the four recurring tasks that keep it from going stale, including \"regenerate and re-deploy when you add a dish.\" The Readme in your Zip from Lesson 14 has the host-specific deploy steps abbreviated, so you can re-deploy without coming back here. Your G B P from L11 now has a website U R L field to fill in, paste your live U R L there so Google's listing and your real site finally agree.",
+      "start": 158.73,
+      "end": 177.19
+    },
+    {
+      "id": 25,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(4) h2",
+      "text": "Your restaurant has a U R L.",
+      "start": 178.49,
+      "end": 179.32
+    },
+    {
+      "id": 26,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(4) p",
+      "text": "A real address on the internet, yours, on your domain, on H T T P S, free, fast, accessible. You picked a host, dragged a folder, copied two D N S lines. The site that thirteen lessons taught you to build is now live.",
+      "start": 179.92,
+      "end": 188.4
+    },
+    {
+      "id": 27,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(4) p",
+      "text": "The operator who walks back into the dining room after deploying just did the thing that scared them the most. Everything after this is iteration.",
+      "start": 189,
+      "end": 194.67
+    },
+    {
+      "id": 28,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(4) p",
+      "text": "Print the Lesson 15 tear-sheet →",
+      "start": 195.27,
+      "end": 196.24
+    },
+    {
+      "id": 29,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "Lesson 16 closes the bootcamp.",
+      "start": 196.59,
+      "end": 197.43
+    }
+  ]
+}

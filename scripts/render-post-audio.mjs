@@ -87,6 +87,16 @@ const VALUED = new Set([
   '--pronunciation',
   '--f5-ref-audio', '--f5-ref-text', '--f5-speed', '--f5-nfe-step',
   '--f5-cfg-strength', '--f5-device',
+  // F5 multilingual: which languages F5 voice-cloning handles (default
+  // en), plus per-language reference + checkpoint overrides. The base
+  // English voice uses the stock F5TTS model; Spanish routes through a
+  // fine-tuned checkpoint (e.g. jpgallegoar/F5-Spanish) with Don's
+  // Spanish reference clip.
+  '--f5-languages',
+  '--f5-ckpt', '--f5-vocab', '--f5-model-name',
+  '--f5-ref-audio-es', '--f5-ref-text-es',
+  '--f5-ckpt-es', '--f5-vocab-es', '--f5-model-name-es',
+  '--source-lang',
 ]);
 const flags = new Set(args.filter((a) => a.startsWith('--') && !VALUED.has(a)));
 const positional = [];
@@ -175,10 +185,60 @@ const LANG_KOKORO_TAG = {
 //                        and away from the reference.
 const f5RefAudio = optVal('--f5-ref-audio') || 'scripts/voice-refs/don-reference.m4a';
 const f5RefText  = optVal('--f5-ref-text')  || 'scripts/voice-refs/don-reference.txt';
-const f5Speed    = optVal('--f5-speed')     || '0.9';
+// 0.75 default after listener feedback that 0.9 produced rushed output
+// (~240 wpm vs. the ~150 wpm of natural narration). F5's speed scalar
+// is relative to the reference clip, but its internal pacing tends to
+// drift fast; pulling the scalar down anchors it back toward natural
+// audiobook cadence. Override with --f5-speed.
+const f5Speed    = optVal('--f5-speed')     || '0.75';
 const f5NfeStep  = optVal('--f5-nfe-step')  || '48';
 const f5CfgStrength = optVal('--f5-cfg-strength') || '3';
 const f5Device   = optVal('--f5-device')    || '';
+
+// Which languages the F5 voice-cloning engine handles. Everything not
+// in this list falls back to Kokoro (with that language's catalog
+// voice). Default: English only. Pass --f5-languages en,es once Don's
+// Spanish reference clip + the F5-Spanish checkpoint are in place so
+// the Spanish narration is *his* voice instead of Kokoro's em_alex.
+const f5Languages = (optVal('--f5-languages') || 'en')
+  .split(',').map((s) => s.trim().toLowerCase()).filter(Boolean);
+
+// Resolve the per-language F5 reference + checkpoint. English uses the
+// stock F5TTS base model (no ckpt override needed) with Don's English
+// reference. Any other language needs (a) its own reference clip of
+// Don speaking that language and (b) a checkpoint that knows the
+// language — the base model only really knows English + Chinese, so
+// Spanish points at a fine-tune (jpgallegoar/F5-Spanish) via
+// --f5-ckpt-es / --f5-vocab-es. Falls back to the don-reference.<lang>
+// naming convention so a fully-provisioned voice-refs/ dir "just works".
+function f5ConfigFor(lang) {
+  if (lang === 'en') {
+    return {
+      refAudio:  f5RefAudio,
+      refText:   f5RefText,
+      ckpt:      optVal('--f5-ckpt')       || '',
+      vocab:     optVal('--f5-vocab')      || '',
+      modelName: optVal('--f5-model-name') || '',
+    };
+  }
+  return {
+    refAudio:  optVal(`--f5-ref-audio-${lang}`) || `scripts/voice-refs/don-reference.${lang}.m4a`,
+    refText:   optVal(`--f5-ref-text-${lang}`)  || `scripts/voice-refs/don-reference.${lang}.txt`,
+    ckpt:      optVal(`--f5-ckpt-${lang}`)       || '',
+    vocab:     optVal(`--f5-vocab-${lang}`)      || '',
+    modelName: optVal(`--f5-model-name-${lang}`) || '',
+  };
+}
+
+// Output-file naming. The page's SOURCE language is the unsuffixed
+// default (audio.mp3 / audio.json) — that's what data-audio-src points
+// at and what plays by default. Every other language gets a suffix
+// (audio.<lang>.mp3). For English pages sourceLang==='en', so this is
+// identical to the legacy behavior; for /es/ pages the native Spanish
+// lands at audio.mp3 instead of being mislabeled as the "en" slot.
+function audioName(lang, sourceLang, ext) {
+  return lang === sourceLang ? `audio.${ext}` : `audio.${lang}.${ext}`;
+}
 
 const dryRun = flags.has('--dry-run');
 if (!dryRun) {
@@ -194,10 +254,6 @@ if (!dryRun) {
     if (!fs.existsSync(kokoroVoices)) fail(`Kokoro voices not found at ${kokoroVoices}`);
     if (!which('python3')) fail('`python3` not found on PATH.');
   } else if (engine === 'f5') {
-    const refAudioPath = path.resolve(repoRoot, f5RefAudio);
-    const refTextPath  = path.resolve(repoRoot, f5RefText);
-    if (!fs.existsSync(refAudioPath)) fail(`F5 reference audio not found at ${refAudioPath}`);
-    if (!fs.existsSync(refTextPath))  fail(`F5 reference transcript not found at ${refTextPath}`);
     if (!which('python3')) fail('`python3` not found on PATH. Install Python 3.10+.');
     // Quiet import check so the user gets a friendly error if pip install f5-tts hasn't run.
     const probe = spawnSync(PYTHON_BIN, ['-c', 'import f5_tts'], { stdio: 'pipe' });
@@ -207,12 +263,31 @@ if (!dryRun) {
            `  2. Or point the script at a different Python that already has it:\n` +
            `       PYTHON=python3.12 node scripts/render-post-audio.mjs --engine f5 ...`);
     }
-    // F5 English-only: non-English languages still render via Kokoro, so
-    // we need Kokoro's model too if any non-EN language is requested.
-    const needsKokoro = languages.some((l) => l !== 'en');
+    // Verify a reference clip exists for every requested language that
+    // F5 is set to clone. A non-en F5 language also needs its
+    // fine-tuned checkpoint (the base model only knows en + zh).
+    for (const lang of languages) {
+      if (!f5Languages.includes(lang)) continue;
+      const cfg = f5ConfigFor(lang);
+      const refAudioPath = path.resolve(repoRoot, cfg.refAudio);
+      const refTextPath  = path.resolve(repoRoot, cfg.refText);
+      if (!fs.existsSync(refAudioPath)) fail(`F5 ${lang} reference audio not found at ${refAudioPath}`);
+      if (!fs.existsSync(refTextPath))  fail(`F5 ${lang} reference transcript not found at ${refTextPath}`);
+      if (lang !== 'en' && !cfg.ckpt) {
+        fail(`F5 ${lang} needs a fine-tuned checkpoint — pass --f5-ckpt-${lang} (and --f5-vocab-${lang}). ` +
+             `The base model only speaks English + Chinese.`);
+      }
+      if (cfg.ckpt && !fs.existsSync(path.resolve(repoRoot, cfg.ckpt))) {
+        fail(`F5 ${lang} checkpoint not found at ${path.resolve(repoRoot, cfg.ckpt)}`);
+      }
+    }
+    // Any requested language NOT cloned by F5 falls back to Kokoro, so
+    // we need Kokoro's model + voices for those.
+    const needsKokoro = languages.some((l) => !f5Languages.includes(l));
     if (needsKokoro) {
       if (!kokoroModel || !kokoroVoices) {
-        fail('F5 handles English; non-English languages still use Kokoro — pass --kokoro-model and --kokoro-voices too, or use --languages en.');
+        fail('F5 clones --f5-languages (default en); other languages still use Kokoro — ' +
+             'pass --kokoro-model and --kokoro-voices too, widen --f5-languages, or narrow --languages.');
       }
       if (!fs.existsSync(kokoroModel))  fail(`Kokoro model not found at ${kokoroModel}`);
       if (!fs.existsSync(kokoroVoices)) fail(`Kokoro voices not found at ${kokoroVoices}`);
@@ -254,6 +329,14 @@ if (!allTargets.length) fail('Pass --manifest <path>, --all, or a post directory
 // reads this binding synchronously. Hoisting it above the loop avoids a
 // TDZ error from `let`.
 let _pronunciationCache = null;
+
+// Same TDZ reasoning as _pronunciationCache: course renders invoke
+// extractCourseChunks → extractCourseChunksFromBody, which references
+// COURSE_SKIP_CLASS_RE synchronously. The function declarations are
+// hoisted but `const` is not, so the constant has to sit above the
+// renderPost() entry-point loop. (The full rationale for what the regex
+// skips lives next to extractCourseChunks further down the file.)
+const COURSE_SKIP_CLASS_RE = /class="[^"]*(course-plain|course-mc|course-save-strip|inline-cta|further-reading|sources|course-objectives)[^"]*"/i;
 
 for (const t of allTargets) renderPost(path.resolve(repoRoot, t));
 function loadPronunciation() {
@@ -395,9 +478,27 @@ function renderPost(postDir) {
   if (!fs.existsSync(indexPath)) fail(`${indexPath} does not exist`);
   const html = fs.readFileSync(indexPath, 'utf8');
 
-  const chunks = extractChunks(html);
+  // Course lessons get a different chunk model than articles: the opener
+  // and takeaway sections are voiced, widget sections become pause
+  // markers, and the UDL plain-language alternative is excluded. See
+  // extractCourseChunks() for the full contract.
+  const relPath = path.relative(repoRoot, postDir).replace(/\\/g, '/');
+  const isCourse = /(^|\/)(course|es\/course)\//.test(relPath);
+
+  // The language the page's HTML is *written in*. Everything under
+  // /es/ is hand-authored Spanish (course lessons, library articles);
+  // the rest is English. The renderer synthesizes the source-language
+  // chunks DIRECTLY (no round-trip through the machine translator), and
+  // only the OTHER requested languages get translated. Before this, the
+  // source was hard-assumed to be English, so rendering an /es/ page's
+  // Spanish track Google-translated already-Spanish text back to itself
+  // and skipped the hand translation entirely. Override with
+  // --source-lang if a path ever breaks the /es/ heuristic.
+  const sourceLang = (optVal('--source-lang') || (/^es\//.test(relPath) ? 'es' : 'en')).toLowerCase();
+
+  const chunks = isCourse ? extractCourseChunks(html) : extractChunks(html);
   if (!chunks.length) fail(`No audio-eligible chunks found in ${indexPath}`);
-  console.log(`[${path.basename(postDir)}] ${chunks.length} chunks`);
+  console.log(`[${path.basename(postDir)}] ${chunks.length} chunks${isCourse ? ' (course mode)' : ''}${sourceLang !== 'en' ? ` [source=${sourceLang}]` : ''}`);
 
   if (dryRun) {
     chunks.forEach((c, i) => {
@@ -420,8 +521,8 @@ function renderPost(postDir) {
     // (slow) and risky (Google's unauth endpoint will 503 under load);
     // the render should be resumable across runs without re-doing
     // completed work. Pass --force-retranslate to override.
-    const mp3Name  = lang === 'en' ? 'audio.mp3'  : `audio.${lang}.mp3`;
-    const jsonName = lang === 'en' ? 'audio.json' : `audio.${lang}.json`;
+    const mp3Name  = audioName(lang, sourceLang, 'mp3');
+    const jsonName = audioName(lang, sourceLang, 'json');
     const mp3Path  = path.join(postDir, mp3Name);
     const jsonPath = path.join(postDir, jsonName);
     if (!flags.has('--force-retranslate')
@@ -432,7 +533,7 @@ function renderPost(postDir) {
     }
 
     let langChunks = chunks;
-    if (lang !== 'en') {
+    if (lang !== sourceLang) {
       // --use-existing-translations: skip the translator call and use
       // the chunks[] already present in audio.<lang>.json. This is how
       // we ship native (hand-written or Claude-written) translations
@@ -453,7 +554,7 @@ function renderPost(postDir) {
         langChunks = translateChunksFor(chunks, lang);
       }
     }
-    renderLanguage(postDir, langChunks, lang);
+    renderLanguage(postDir, langChunks, lang, sourceLang);
   }
 
   // Auto-commit + push each article's audio as soon as its full
@@ -462,7 +563,7 @@ function renderPost(postDir) {
   // --commit-per-article. Failures here log a warning but never
   // abort the run — the next article keeps rendering.
   if (flags.has('--commit-per-article') && !dryRun) {
-    commitArticleAudio(postDir);
+    commitArticleAudio(postDir, sourceLang);
   }
 }
 
@@ -472,7 +573,7 @@ function renderPost(postDir) {
 // (no upstream, push rejected, hook failure) gets logged and the
 // render keeps going with the next article. The local commit still
 // stands so the operator can sort it out manually later.
-function commitArticleAudio(postDir) {
+function commitArticleAudio(postDir, sourceLang = 'en') {
   const slug = path.relative(repoRoot, postDir);
   // Build the explicit file list rather than a glob — spawnSync with
   // an args array doesn't expand globs, and we want to be precise
@@ -480,8 +581,8 @@ function commitArticleAudio(postDir) {
   // no other files in the post directory).
   const filesToAdd = [];
   for (const lang of languages) {
-    const mp3Name  = lang === 'en' ? 'audio.mp3'  : `audio.${lang}.mp3`;
-    const jsonName = lang === 'en' ? 'audio.json' : `audio.${lang}.json`;
+    const mp3Name  = audioName(lang, sourceLang, 'mp3');
+    const jsonName = audioName(lang, sourceLang, 'json');
     for (const name of [mp3Name, jsonName]) {
       const p = path.join(postDir, name);
       if (fs.existsSync(p)) filesToAdd.push(path.relative(repoRoot, p));
@@ -534,7 +635,7 @@ function commitArticleAudio(postDir) {
   console.warn(`  ⚠ git push gave up for ${slug} — commit is local; push manually with: git push origin ${branch}`);
 }
 
-function renderLanguage(postDir, chunks, lang) {
+function renderLanguage(postDir, chunks, lang, sourceLang = 'en') {
   const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), `audio-render-${lang}-`));
   const segments = [];
   const manifestChunks = [];
@@ -597,27 +698,47 @@ function renderLanguage(postDir, chunks, lang) {
     return out;
   }
 
-  // Gap values tuned for natural "breath" spots. Each pause is long
-  // enough the listener hears a beat between thoughts, short enough
-  // that the piece doesn't drag. Tuned by ear on Don's cloned voice.
+  // Gap values tuned for natural "breath" spots. Bumped ~50% from the
+  // first-render values after listener feedback that the playback felt
+  // rushed and breathless: 0.35s between body sentences reads as a UI
+  // beep, not a human pause. Real narrators leave 0.7-1.0s at paragraph
+  // breaks and ~1.2-1.5s at section transitions. Tune by ear on Don's
+  // cloned voice — the cloned timbre is unforgiving of rushed pacing.
   function gapBefore(chunk, prev) {
     if (!prev) return 0;
-    if (chunk.kind === 'heading') return 1.10;           // section break
-    if (chunk.kind === 'figure')  return 0.80;           // before graphic
-    if (prev.kind === 'heading')  return 0.70;           // after heading
-    if (prev.kind === 'figure')   return 0.75;           // after graphic
-    if (chunk.kind === 'list' && prev.kind === 'list') return 0.32;
-    if (chunk.kind === 'quote' || prev.kind === 'quote') return 0.75;
+    // Course-mode chunk kinds — opener / wrap / widget-pause — get
+    // their own gap timing. Opener and wrap chunks read at a slightly
+    // slower pace than body; the gap between them is longer than
+    // sentence-end so the listener feels the lesson framing settle.
+    if (chunk.kind === 'opener' && prev.kind !== 'opener')   return 1.20; // entering opener
+    if (prev.kind === 'opener' && chunk.kind !== 'opener')   return 1.60; // leaving opener for body
+    if (chunk.kind === 'opener')  return 0.85;                              // opener-to-opener
+    if (chunk.kind === 'wrap' && prev.kind !== 'wrap')       return 1.70; // entering wrap (closes the lesson)
+    if (chunk.kind === 'wrap')    return 0.80;                              // wrap-to-wrap
+    // widget-pause: the chunk itself is silent (no synth). Lead-in
+    // gap is a real beat so the listener registers the prior thought
+    // before the widget surfaces. Trailing gap is handled by the
+    // runtime when the operator commits the widget.
+    if (chunk.kind === 'widget-pause') return 0.65;
+    if (prev.kind === 'widget-pause')  return 0.55;
+    if (chunk.kind === 'heading') return 1.50;           // section break — feels like a chapter
+    if (chunk.kind === 'figure')  return 1.10;           // before graphic
+    if (prev.kind === 'heading')  return 0.95;           // after heading
+    if (prev.kind === 'figure')   return 1.00;           // after graphic
+    if (chunk.kind === 'list' && prev.kind === 'list') return 0.50;
+    if (chunk.kind === 'quote' || prev.kind === 'quote') return 1.00;
     const prevEndsSentence = /[.!?]$/.test(prev.text);
-    return prevEndsSentence ? 0.52 : 0.35;
+    return prevEndsSentence ? 0.80 : 0.55;
   }
 
-  // For F5-mode English we log the reference voice name (not a Kokoro
-  // catalog ID) into the manifest so downstream consumers can tell
-  // who's narrating. Non-English languages in F5 mode still use
+  // For F5-cloned languages we log the reference voice name (not a
+  // Kokoro catalog ID) into the manifest so downstream consumers can
+  // tell who's narrating. Languages F5 doesn't handle still use
   // Kokoro's catalog voice.
-  const voice = (engine === 'f5' && lang === 'en')
-    ? ('f5:' + path.basename(path.resolve(repoRoot, f5RefAudio)))
+  const useF5 = engine === 'f5' && f5Languages.includes(lang);
+  const f5cfg = useF5 ? f5ConfigFor(lang) : null;
+  const voice = useF5
+    ? ('f5:' + path.basename(path.resolve(repoRoot, f5cfg.refAudio)))
     : (LANG_VOICE[lang] || LANG_VOICE.en);
   const kokoroTag = LANG_KOKORO_TAG[lang] || 'en-us';
 
@@ -627,26 +748,93 @@ function renderLanguage(postDir, chunks, lang) {
   // shell out in a loop.
   const rawDir = path.join(tmpDir, 'raw');
   fs.mkdirSync(rawDir, { recursive: true });
-  // F5-TTS is English-only (it's the voice-cloning track for Don's
-  // own narration). For any non-English language we fall back to
-  // Kokoro with that language's mapped voice + tag, so a bilingual
-  // render still works with --engine f5.
-  if (engine === 'f5' && lang === 'en') {
-    synthesizeF5(chunks, rawDir);
+  // F5-TTS voice-clones the languages listed in --f5-languages (default
+  // en). For any other language we fall back to Kokoro with that
+  // language's mapped voice + tag, so a bilingual render still works
+  // even when only some languages have a cloned voice provisioned.
+  if (useF5) {
+    synthesizeF5(chunks, rawDir, f5cfg, lang);
   } else if (engine === 'kokoro' || engine === 'f5') {
     synthesizeKokoro(chunks, rawDir, { voice, lang: kokoroTag });
   } else {
     synthesizePiper(chunks, rawDir);
   }
 
+  // Lesson Mode (Phase 3.4) — optional hand-recorded opener / wrap.
+  // Don records audio.opener.<lang>.{wav,mp3} and audio.wrap.<lang>.{wav,
+  // mp3} alongside the lesson HTML. When present, they prepend / append
+  // the body narration with a small gap. Sidecar .txt file lets him
+  // expose the script as the caption strip (read by listen.js for the
+  // "Don is saying:" line). All three files are independently optional;
+  // any missing one no-ops, and the chain still runs end-to-end.
+  const openerAsset = findRecordedAsset(postDir, 'opener', lang);
+  const wrapAsset   = findRecordedAsset(postDir, 'wrap',   lang);
+  const openerGapSec = openerAsset ? 0.45 : 0;  // settle before body
+  const wrapGapSec   = wrapAsset   ? 0.70 : 0;  // breath into wrap
   let cursor = 0;
+  if (openerAsset) {
+    const openerWav = openerAsset.wav;
+    const dur = wavDuration(openerWav);
+    segments.push(openerWav);
+    manifestChunks.push({
+      id: 'opener',
+      kind: 'opener-recorded',
+      selector: null,
+      text: openerAsset.script || '',
+      start: 0,
+      end:   round(dur),
+      recorded: true,
+    });
+    cursor = dur;
+    if (openerGapSec > 0) {
+      segments.push(gapWav(openerGapSec));
+      cursor += openerGapSec;
+    }
+  }
   chunks.forEach((chunk, i) => {
+    const gap = gapBefore(chunk, chunks[i - 1]);
+
+    // Widget-pause chunks (Lesson Mode) — synthetic zero-duration
+    // markers. No raw audio synthesized for them; the runtime player
+    // halts on encountering one and waits for widget commit or
+    // manual resume. Record the boundary in the manifest plus the
+    // widget metadata so the runtime knows what to wait for.
+    if (chunk.kind === 'widget-pause') {
+      if (gap > 0) segments.push(gapWav(gap));
+      const start = cursor + gap;
+      cursor = start;
+      const entry = {
+        id: i,
+        kind: 'widget-pause',
+        selector: chunk.selector,
+        start: round(start),
+        end:   round(start),
+      };
+      if (chunk.widget)     entry.widget = chunk.widget;
+      if (chunk.contextKey) entry.contextKey = chunk.contextKey;
+      if (chunk.label)      entry.label = chunk.label;
+      manifestChunks.push(entry);
+      return;
+    }
+
     const rawWav = path.join(rawDir, `c${String(i).padStart(4, '0')}.wav`);
     const wav = path.join(tmpDir, `t${String(i).padStart(4, '0')}.wav`);
-    trimSilence(rawWav, wav);
+    // F5 generates real breath sounds at chunk boundaries — stripping
+    // them produces the rushed, breathless feel listeners complain
+    // about. Kokoro's boundaries are dead silence we want gone, so it
+    // keeps the trim.
+    if (useF5) {
+      fs.copyFileSync(rawWav, wav);
+    } else {
+      trimSilence(rawWav, wav);
+    }
     const dur = wavDuration(wav);
-    const gap = gapBefore(chunk, chunks[i - 1]);
     if (gap > 0) {
+      // Lesson Mode + Track 1C — pick the right buffer for the gap:
+      // pure silence by default, but chapter-sting at heading
+      // transitions and breath-sample at paragraph breaks when those
+      // assets are on disk. Asset-absent path returns the same silence
+      // gapWav() would.
       const boundary = boundaryWav(chunk, chunks[i - 1], gap);
       if (boundary) segments.push(boundary);
     }
@@ -665,11 +853,33 @@ function renderLanguage(postDir, chunks, lang) {
     });
   });
 
-  // English keeps the legacy audio.mp3 / audio.json filenames for
-  // backward compatibility with existing HTML (data-audio-src="audio.mp3");
-  // other languages get audio.<lang>.mp3 / audio.<lang>.json alongside.
-  const mp3Name  = lang === 'en' ? 'audio.mp3'  : `audio.${lang}.mp3`;
-  const jsonName = lang === 'en' ? 'audio.json' : `audio.${lang}.json`;
+  // Lesson Mode (Phase 3.4) — append the wrap recording, if present.
+  if (wrapAsset) {
+    if (wrapGapSec > 0) {
+      segments.push(gapWav(wrapGapSec));
+      cursor += wrapGapSec;
+    }
+    const wrapWav = wrapAsset.wav;
+    const dur = wavDuration(wrapWav);
+    segments.push(wrapWav);
+    manifestChunks.push({
+      id: 'wrap',
+      kind: 'wrap-recorded',
+      selector: null,
+      text: wrapAsset.script || '',
+      start: round(cursor),
+      end:   round(cursor + dur),
+      recorded: true,
+    });
+    cursor += dur;
+  }
+
+  // The source language keeps the unsuffixed audio.mp3 / audio.json
+  // names (what data-audio-src points at); other languages get
+  // audio.<lang>.mp3 / audio.<lang>.json alongside. For English pages
+  // sourceLang==='en', so this matches the legacy convention exactly.
+  const mp3Name  = audioName(lang, sourceLang, 'mp3');
+  const jsonName = audioName(lang, sourceLang, 'json');
   const mp3Out = path.join(postDir, mp3Name);
 
   // Single-pass concat → MP3 via the concat *filter* (not the demuxer).
@@ -694,13 +904,14 @@ function renderLanguage(postDir, chunks, lang) {
     version: 1,
     generatedAt: new Date().toISOString(),
     engine: engine,
-    // Model name logged into the manifest. F5 English uses the ref
-    // audio; everything else reports its TTS model path. Null-safe so
-    // an F5-only run without --kokoro-model doesn't crash here.
+    // Model name logged into the manifest. F5-cloned languages report
+    // their reference audio; everything else reports its TTS model
+    // path. Null-safe so an F5-only run without --kokoro-model doesn't
+    // crash here.
     model: (() => {
       const src =
         engine === 'piper' ? model :
-        engine === 'f5'    ? (lang === 'en' ? f5RefAudio : kokoroModel) :
+        useF5              ? f5cfg.refAudio :
                              kokoroModel;
       return src ? path.basename(src) : 'unknown';
     })(),
@@ -784,7 +995,14 @@ function synthesizeKokoro(chunks, outDir, opts = {}) {
   const expanded = new Set();
   const phoneticChunks = chunks.map((c, i) => ({
     id: i,
-    text: applyPronunciation(c.text, (opts.lang || 'en-us').split('-')[0], expanded),
+    // Widget-pause chunks (Lesson Mode) carry no spoken text. The
+    // Python helper writes a silent placeholder WAV when text is
+    // empty, keeping the c{id}.wav numbering contiguous; the
+    // renderPost loop returns early for widget-pause chunks so the
+    // placeholder is never concatenated into the output.
+    text: c.kind === 'widget-pause'
+      ? ''
+      : applyPronunciation(c.text, (opts.lang || 'en-us').split('-')[0], expanded),
   }));
   const payload = JSON.stringify({ chunks: phoneticChunks });
   const proc = spawnSync(PYTHON_BIN, args, {
@@ -799,24 +1017,56 @@ function synthesizeKokoro(chunks, outDir, opts = {}) {
   }
 }
 
-function synthesizeF5(chunks, outDir) {
+function synthesizeF5(chunks, outDir, cfg = null, lang = 'en') {
   // Spawn the F5-TTS Python helper once, stream the chunk list as
   // JSON. Model + vocoder stay in RAM across all chunks of the post.
   // Reference audio + transcript are passed via CLI args (they're
-  // constant across chunks).
+  // constant across chunks). `cfg` (from f5ConfigFor) carries the
+  // per-language reference + optional fine-tuned checkpoint; falls back
+  // to the English defaults when omitted.
+  const refAudio  = cfg && cfg.refAudio ? cfg.refAudio : f5RefAudio;
+  const refText   = cfg && cfg.refText  ? cfg.refText  : f5RefText;
+  const ckptFile  = cfg && cfg.ckpt     ? cfg.ckpt     : '';
+  const vocabFile = cfg && cfg.vocab    ? cfg.vocab    : '';
+  const modelName = cfg && cfg.modelName ? cfg.modelName : '';
+
+  const refAudioAbs = path.resolve(repoRoot, refAudio);
+  if (!fs.existsSync(refAudioAbs)) {
+    fail(`F5 reference audio not found: ${refAudioAbs}\n` +
+         `  (record it, or pass --f5-ref-audio${cfg ? '-<lang>' : ''} <path>)`);
+  }
+
   const helper = path.join(repoRoot, 'scripts', 'lib', 'f5_render.py');
   const args = [
     helper,
-    '--ref-audio',  path.resolve(repoRoot, f5RefAudio),
-    '--ref-text',   path.resolve(repoRoot, f5RefText),
+    '--ref-audio',  refAudioAbs,
+    '--ref-text',   path.resolve(repoRoot, refText),
     '--speed',         f5Speed,
     '--nfe-step',      f5NfeStep,
     '--cfg-strength',  f5CfgStrength,
     '--output-dir',    outDir,
   ];
+  // A fine-tuned checkpoint (e.g. F5-Spanish) needs its own weights +
+  // vocab; the base English model uses F5TTS's bundled defaults.
+  if (ckptFile)  { args.push('--ckpt-file',  path.resolve(repoRoot, ckptFile)); }
+  if (vocabFile) { args.push('--vocab-file', path.resolve(repoRoot, vocabFile)); }
+  if (modelName) { args.push('--model-name', modelName); }
   if (f5Device) { args.push('--device', f5Device); }
   const payload = JSON.stringify({
-    chunks: chunks.map((c, i) => ({ id: i, text: c.text })),
+    // Apply pronunciation overrides to the text F5 hears (same shape as
+    // synthesizeKokoro). audio.<lang>.json keeps the canonical spelling
+    // so the on-page highlight still matches the rendered text; only
+    // the synthesis input is phoneticized.
+    chunks: (() => {
+      const expanded = new Set();
+      return chunks.map((c, i) => ({
+        id: i,
+        // Widget-pause: see synthesizeKokoro for rationale.
+        text: c.kind === 'widget-pause'
+          ? ''
+          : applyPronunciation(c.text, lang, expanded),
+      }));
+    })(),
   });
   const proc = spawnSync(PYTHON_BIN, args, {
     input: payload,
@@ -832,7 +1082,8 @@ function synthesizeF5(chunks, outDir) {
 function synthesizePiper(chunks, outDir) {
   chunks.forEach((chunk, i) => {
     const out = path.join(outDir, `c${String(i).padStart(4, '0')}.wav`);
-    runPiper(chunk.text, out);
+    // Widget-pause: see synthesizeKokoro for rationale.
+    runPiper(chunk.kind === 'widget-pause' ? '' : chunk.text, out);
     process.stdout.write(`  · chunk ${i + 1}/${chunks.length}\r`);
   });
   console.log('');
@@ -860,6 +1111,57 @@ function runPiper(text, outWav) {
 function renderSilence(outWav, seconds) {
   run('ffmpeg', ['-y', '-f', 'lavfi', '-i', `anullsrc=r=22050:cl=mono`,
                 '-t', String(seconds), '-c:a', 'pcm_s16le', outWav]);
+}
+
+// Look for a hand-recorded opener / wrap sidecar in the lesson dir.
+// Tries .wav, .mp3, .m4a, .flac in that order. Returns { wav, script }
+// where `wav` is a normalized 22050 mono WAV staged in a tmp file for
+// concat compatibility, and `script` is the optional caption text
+// from the sidecar .txt (read for the audio.json manifest). Returns
+// null when no asset is found — the pipeline falls back to body-only
+// narration with no opener / wrap.
+//
+// Per-locale resolution: looks for audio.<role>.<lang>.{ext} (e.g.,
+// audio.opener.en.wav). EN is the canonical record; other locales
+// are independent — Don records es separately. No fallback across
+// locales: if audio.opener.fr.wav doesn't exist, the FR rendering
+// just has no opener, even when EN does. The brand-recognition
+// value of "Don's voice on the opener" doesn't transfer across
+// languages he doesn't speak.
+function findRecordedAsset(postDir, role, lang) {
+  const exts = ['wav', 'mp3', 'm4a', 'flac'];
+  let foundSrc = null;
+  for (const ext of exts) {
+    const p = path.join(postDir, `audio.${role}.${lang}.${ext}`);
+    if (fs.existsSync(p)) { foundSrc = p; break; }
+  }
+  if (!foundSrc) return null;
+
+  // Normalize to a 22050 mono WAV in a tmp file so the concat filter
+  // accepts the stream alongside the Kokoro outputs (same sample rate,
+  // same channel layout). Original asset is untouched.
+  const tmp = path.join(
+    fs.mkdtempSync(path.join(os.tmpdir(), `recorded-${role}-${lang}-`)),
+    `${role}.wav`
+  );
+  run('ffmpeg', [
+    '-y', '-loglevel', 'error',
+    '-i', foundSrc,
+    '-ar', '22050', '-ac', '1',
+    '-c:a', 'pcm_s16le',
+    tmp,
+  ]);
+
+  // Optional sidecar .txt holds the spoken script. Used for the
+  // audio.json text field so the runtime's caption strip ("Don is
+  // saying:") can show the line during opener / wrap playback.
+  // Skipped silently if absent.
+  const txtPath = path.join(postDir, `audio.${role}.${lang}.txt`);
+  let script = '';
+  if (fs.existsSync(txtPath)) {
+    try { script = fs.readFileSync(txtPath, 'utf8').trim(); } catch (_) {}
+  }
+  return { wav: tmp, script };
 }
 
 // Render the heading-boundary gap: chapter sting on the leading edge,
@@ -1065,6 +1367,228 @@ function extractChunks(html) {
   return out;
 }
 
+// Course lesson chunk extractor — Lesson Mode (Move 3, Phase 3.1).
+//
+// Lessons differ from articles structurally and pedagogically. The
+// chunk model here honors four findings from the May 2026 instructional
+// audit (docs/course-instructional-audit.md) and the cognitive-load /
+// modality principles those audits cite:
+//
+//   1. <section class="course-widget"> blocks are interactive surfaces
+//      the operator engages with. Narrating their labels aloud collides
+//      with the operator's working memory (Mayer's modality principle).
+//      We emit a synthetic { kind: 'widget-pause', widget: <name>,
+//      contextKey: <key> } chunk in their place. The runtime player
+//      (assets/js/listen.js) auto-pauses on these.
+//
+//   2. <details class="course-plain"> is the UDL plain-language
+//      ALTERNATIVE channel (G-A2). Voicing it on top of the body
+//      duplicates the same content. Skip entirely.
+//
+//   3. <section class="course-hero"> contains the lesson opener (eyebrow,
+//      h1, the promise paragraph). These are the framing/stakes that
+//      Don's audio should set BEFORE the body. We voice them with
+//      kind: 'opener' so the runtime can stitch in a hand-recorded
+//      opener WAV later without re-rendering.
+//
+//   4. <section class="course-takeaways"> + the final h2 are the lesson's
+//      conclusion — operator hears what was accomplished + the carry-
+//      forward to the next lesson. Voiced with kind: 'wrap'.
+//
+// Skipped without voicing: course-mc (interactive button + cele card),
+// course-save-strip (procedural housekeeping), inline-cta / further-
+// reading / sources (existing convention).
+//
+// (COURSE_SKIP_CLASS_RE is declared near the top of the module, above the
+// top-level renderPost() loop, to avoid a TDZ throw when course renders
+// hit extractCourseChunksFromBody before this point in the file executes.)
+
+function extractCourseChunks(html) {
+  const out = [];
+
+  // 1. Voice the hero block as 'opener' chunks. Hero typically sits
+  //    OUTSIDE #post-body (in the page header region), so it's pulled
+  //    out separately and pushed onto the front of the chunk list.
+  const heroMatch = /<section[^>]*class="[^"]*\bcourse-hero\b[^"]*"[^>]*>([\s\S]*?)<\/section>/i.exec(html);
+  if (heroMatch) {
+    const heroInner = heroMatch[1];
+    const h1 = /<h1\b[^>]*>([\s\S]*?)<\/h1>/i.exec(heroInner);
+    if (h1) {
+      let t = stripTags(h1[1]);
+      if (t.length >= 2 && !/[.!?…]$/.test(t)) t += '.';
+      if (t.length >= 2) out.push({ text: t, kind: 'opener', selector: '.course-hero h1' });
+    }
+    const promise = /<p[^>]*class="[^"]*\bpromise\b[^"]*"[^>]*>([\s\S]*?)<\/p>/i.exec(heroInner);
+    if (promise) {
+      const t = stripTags(promise[1]);
+      if (t.length >= 2) out.push({ text: t, kind: 'opener', selector: '.course-hero .promise' });
+    }
+  }
+
+  // 2. Walk #post-body. Lessons contain nested <article> tags
+  //    (.compare-card pairs in voice lessons, .ti-input wrappers,
+  //    etc.), so non-greedy /<\/article>/ matches the wrong close
+  //    tag. Locate the matching close via depth-counting.
+  const body = findMatchingBlock(html, /<(article|div)[^>]*\bid="post-body"[^>]*>/i);
+  if (!body) return out;
+
+  // Strip <script>...</script> blocks before parsing — the celebration
+  // card has inline JavaScript with template strings like '<p class=
+  // "course-cele-quote">…</p>' that the TAG_RE would otherwise pick up
+  // as spoken chunks.
+  const cleanBody = body.replace(/<script\b[\s\S]*?<\/script>/gi, '');
+
+  out.push(...extractCourseChunksFromBody(cleanBody, '#post-body'));
+  return out;
+}
+
+// Walk one body segment and emit chunks for its descendants. Called by
+// extractCourseChunks() on the post-body, then recursively on container
+// divs that hold nested widgets (e.g. .compare-grid wrapping article
+// pairs, or .course-callout wrapping a widget). Document order is
+// preserved across the recursion so widget-pause markers land in the
+// right place in the audio timeline.
+function extractCourseChunksFromBody(body, parentSel) {
+  const out = [];
+  const TAG_RE = /<(h2|h3|p|ul|ol|figure|div|blockquote|section|details|aside|article)\b([^>]*)>([\s\S]*?)<\/\1>/gi;
+  const counts = new Map();
+  let m;
+  while ((m = TAG_RE.exec(body)) !== null) {
+    const [, tagLower, attrs, inner] = m;
+    const tag = tagLower.toLowerCase();
+    const n = (counts.get(tag) || 0) + 1;
+    counts.set(tag, n);
+    const baseSel = `${parentSel} > ${tag}:nth-of-type(${n})`;
+    const attrBlob = attrs || '';
+
+    if (COURSE_SKIP_CLASS_RE.test(attrBlob)) continue;
+
+    // course-widget → emit a single pause marker chunk. The runtime
+    // player auto-pauses on this kind and waits for the widget's
+    // commit event (mtn:context-change) before advancing.
+    if (tag === 'section' && /class="[^"]*\bcourse-widget\b[^"]*"/i.test(attrBlob)) {
+      const widgetAttr = /data-widget="([^"]+)"/i.exec(attrBlob);
+      const ctxKey    = /data-context-key="([^"]+)"/i.exec(attrBlob);
+      const labelAttr = /data-label="([^"]+)"/i.exec(attrBlob);
+      out.push({
+        text: '',  // No spoken text — the chunk is a pause marker.
+        kind: 'widget-pause',
+        widget: widgetAttr ? widgetAttr[1] : '',
+        contextKey: ctxKey ? ctxKey[1] : '',
+        label: labelAttr ? labelAttr[1] : '',
+        selector: baseSel,
+      });
+      continue;
+    }
+
+    // course-takeaways → voice its inner h2 + paragraphs with
+    // kind: 'wrap'. Lets the player know we're closing the lesson.
+    if (tag === 'section' && /class="[^"]*\bcourse-takeaways\b[^"]*"/i.test(attrBlob)) {
+      const wrapH2 = /<h2\b[^>]*>([\s\S]*?)<\/h2>/gi;
+      const wrapP  = /<p\b[^>]*>([\s\S]*?)<\/p>/gi;
+      let hm;
+      while ((hm = wrapH2.exec(inner)) !== null) {
+        let t = stripTags(hm[1]);
+        if (t.length >= 2 && !/[.!?…]$/.test(t)) t += '.';
+        if (t.length >= 2) out.push({ text: t, kind: 'wrap', selector: `${baseSel} h2` });
+      }
+      let pm;
+      while ((pm = wrapP.exec(inner)) !== null) {
+        const t = stripTags(pm[1]);
+        if (t.length >= 2) out.push({ text: t, kind: 'wrap', selector: `${baseSel} p` });
+      }
+      continue;
+    }
+
+    // Container divs (.course-callout, .compare-grid, etc.) — recurse
+    // into their inner HTML so nested course-widget blocks and prose
+    // get voiced/paused at the right document position. The recursive
+    // call inherits the surrounding section's class skipping behavior.
+    if (tag === 'div' && !/data-audio-alt/i.test(attrBlob)) {
+      out.push(...extractCourseChunksFromBody(inner, baseSel));
+      continue;
+    }
+    // <article> nests inside .compare-grid / .compare-card pairs in
+    // voice lessons. Recurse so their paragraphs voice in document order
+    // (no nth-of-type bumps; their inner counts reset at this depth).
+    if (tag === 'article' || tag === 'aside') {
+      out.push(...extractCourseChunksFromBody(inner, baseSel));
+      continue;
+    }
+
+    // h2/h3/p/ul/ol/figure/blockquote — same logic as the article path.
+    if (tag === 'h2' || tag === 'h3') {
+      let t = stripTags(inner);
+      if (t.length >= 2 && !/[.!?…]$/.test(t)) t += '.';
+      if (t.length >= 2) out.push({ text: t, kind: 'heading', selector: baseSel });
+      continue;
+    }
+    if (tag === 'p') {
+      if (/class="[^"]*pull-quote[^"]*"/i.test(attrBlob)) {
+        out.push({ text: stripTags(inner), kind: 'quote', selector: baseSel });
+      } else {
+        const t = stripTags(inner);
+        if (t.length >= 2) out.push({ text: t, kind: 'body', selector: baseSel });
+      }
+      continue;
+    }
+    if (tag === 'ul' || tag === 'ol') {
+      const LI_RE = /<li\b[^>]*>([\s\S]*?)<\/li>/gi;
+      let li, li_n = 0;
+      while ((li = LI_RE.exec(inner)) !== null) {
+        li_n++;
+        const t = stripTags(li[1]);
+        if (t.length >= 2) out.push({ text: t, kind: 'list', selector: `${baseSel} > li:nth-of-type(${li_n})` });
+      }
+      continue;
+    }
+    if (tag === 'figure') {
+      const audioAltMatch  = /data-audio-alt="([\s\S]*?)"/i.exec(attrBlob)
+                          || /data-audio-alt="([\s\S]*?)"/i.exec(inner);
+      const ariaLabelMatch = /role="img"[^>]*aria-label="([\s\S]*?)"/i.exec(inner);
+      const captionMatch   = /<figcaption[^>]*>([\s\S]*?)<\/figcaption>/i.exec(inner);
+      let text = '';
+      if (audioAltMatch) text = normalizeForSpeech(decodeEntities(audioAltMatch[1]).trim());
+      else if (ariaLabelMatch) text = normalizeForSpeech(decodeEntities(ariaLabelMatch[1]).trim());
+      else if (captionMatch)   text = stripTags(captionMatch[1]);
+      if (text.length >= 2) out.push({ text, kind: 'figure', selector: baseSel });
+      continue;
+    }
+    if (tag === 'blockquote') {
+      const t = stripTags(inner);
+      if (t.length >= 2) out.push({ text: t, kind: 'quote', selector: baseSel });
+      continue;
+    }
+  }
+
+  return out;
+}
+
+// Find the substring between an opening tag matched by `openRe` and
+// its depth-aware closing tag. Handles nested same-name tags (e.g.
+// <article id="post-body"> containing <article class="compare-card">).
+// Returns the inner content without the surrounding open/close tags,
+// or null when no match is found.
+function findMatchingBlock(html, openRe) {
+  const m = openRe.exec(html);
+  if (!m) return null;
+  const tagName = m[0].match(/^<(\w+)/)[1].toLowerCase();
+  const innerStart = m.index + m[0].length;
+  const tagRe = new RegExp(`<(/?)${tagName}\\b[^>]*>`, 'gi');
+  tagRe.lastIndex = innerStart;
+  let depth = 1;
+  let t;
+  while ((t = tagRe.exec(html)) !== null) {
+    if (t[1] === '/') {
+      depth--;
+      if (depth === 0) return html.slice(innerStart, t.index);
+    } else {
+      depth++;
+    }
+  }
+  return null;
+}
+
 function stripTags(s) {
   return normalizeForSpeech(decodeEntities(s
     // Inline pronunciation overrides: <span data-say="liv">live</span>
@@ -1074,6 +1598,21 @@ function stripTags(s) {
     // where Kokoro guesses wrong from context. Replace before the
     // generic tag strip so the override value survives.
     .replace(/<([a-z]+)\b[^>]*\sdata-say="([^"]*)"[^>]*>[\s\S]*?<\/\1>/gi, ' $2 ')
+    // <code>...</code> with HTML-entity-encoded angle brackets (e.g.
+    // `&lt;img alt=""&gt;` shown inline as a code reference) decodes
+    // back to literal `<img alt="">` after decodeEntities — the synth
+    // would otherwise read it as "less than I M G alt equals greater
+    // than", which sounds awful and conveys nothing. Strip the code
+    // block content to a brief placeholder ("(code)") so the
+    // surrounding narration still reads coherently.
+    .replace(/<code\b[^>]*>([\s\S]*?)<\/code>/gi, (_, inner) => {
+      const decoded = decodeEntities(inner);
+      // Inline code that's already speakable (no angle brackets, just
+      // a class name or attribute key like `data-audio-alt`) reads
+      // fine — keep the inner text verbatim. Code that contains
+      // angle brackets gets the placeholder.
+      return /[<>]/.test(decoded) ? ' (code) ' : ' ' + decoded + ' ';
+    })
     .replace(/<[^>]+>/g, ' '))
     .replace(/\s+/g, ' ')
     .trim());

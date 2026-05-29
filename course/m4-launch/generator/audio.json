@@ -1,0 +1,131 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-29T01:36:33.763Z",
+  "engine": "f5",
+  "model": "don-reference.m4a",
+  "voice": "f5:don-reference.m4a",
+  "language": "en",
+  "total": 116.51,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "opener",
+      "selector": ".course-hero h1",
+      "text": "The click that turns thirteen lessons of work into a downloadable site.",
+      "start": 0,
+      "end": 2.56
+    },
+    {
+      "id": 1,
+      "kind": "opener",
+      "selector": ".course-hero .promise",
+      "text": "Everything you have saved across the bootcamp, name, palette, dishes, hours, photos, G B P, S E O phrases, review template, gets packaged into a real H T M L+C S S site you download. No framework, no build step, no hosting yet. Just a Zip you unzip, look at, and ship.",
+      "start": 3.21,
+      "end": 13.84
+    },
+    {
+      "id": 2,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "A generator is just a function. It takes your data on one side and produces a working website on the other. The rail in the right column has been running that function on every page of this course, re-rendering your home page as you filled in each lesson. This page is where the same function lets you download the result.",
+      "start": 15.04,
+      "end": 27.66
+    },
+    {
+      "id": 3,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "What this lesson does that the others did not.",
+      "start": 28.76,
+      "end": 30.17
+    },
+    {
+      "id": 4,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Twelve lessons asked you to make a decision and save it. One lesson, Lesson 13, gave you a habit to keep using after launch. This lesson is the one where the saved decisions become a thing you can actually deploy. Three components:",
+      "start": 30.87,
+      "end": 40.1
+    },
+    {
+      "id": 5,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "The readiness checklist below tells you exactly what is filled in and what is missing. A red row means the generator will use a placeholder, clickable to jump to the lesson that captures the field.",
+      "start": 40.45,
+      "end": 48.17
+    },
+    {
+      "id": 6,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "The live preview in the rail shows the home page as it will ship. It is the same render the Zip contains, change a palette in L7 and this preview repaints in real time.",
+      "start": 48.49,
+      "end": 55.09
+    },
+    {
+      "id": 7,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "The download button packages everything into a Zip. Four H T M L pages (each with inline C S S), a sitemap, a robots.txt, and a Readme that tells you how to host it.",
+      "start": 55.41,
+      "end": 61.8
+    },
+    {
+      "id": 8,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "None of this calls a server. The Zip is built in your browser using a small library ( JSZip ) that the page lazy-loads only when you click download. Everything you saved across the bootcamp lives in your browser's localStorage (a small key-value store browsers expose to pages on the same domain); this page reads it, templates the pages, packs the Zip, hands you the file. We never see your restaurant data.",
+      "start": 62.32,
+      "end": 78.52
+    },
+    {
+      "id": 9,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "What this changes downstream.",
+      "start": 79.62,
+      "end": 80.45
+    },
+    {
+      "id": 10,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "Lesson 15 (deploy) takes the Zip you download here and walks you through three free hosts, Cloudflare Pages, Netlify, or Vercel, to get a real U R L pointing at your real domain in under thirty minutes. Lesson 16 (the 30-day rhythm) gives you the four recurring tasks that keep the deployed site from going stale, including \"regenerate when you add a dish\" so the L14 download stays current.",
+      "start": 81.15,
+      "end": 96.65
+    },
+    {
+      "id": 11,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(1) h2",
+      "text": "You have a deployable site, right now, in this browser.",
+      "start": 97.95,
+      "end": 99.95
+    },
+    {
+      "id": 12,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(1) p",
+      "text": "The readiness checklist tells you what is ready and what is still open. The rail shows you what will ship. The Zip download packages it all into a file you can hand to any host. Thirteen lessons of decisions just became a website.",
+      "start": 100.55,
+      "end": 109.57
+    },
+    {
+      "id": 13,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(1) p",
+      "text": "The generator is the proof that no fetch, no storage, no account was the right posture from the start.",
+      "start": 110.17,
+      "end": 114.01
+    },
+    {
+      "id": 14,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "Lessons 15 and 16 are live, deploy and the 30-day rhythm.",
+      "start": 114.53,
+      "end": 116.51
+    }
+  ]
+}

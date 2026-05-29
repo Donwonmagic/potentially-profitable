@@ -39,9 +39,9 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=a497939fe0a3" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=4c628560c207" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a497939fe0a3"><link rel="stylesheet" href="/assets/site-article.css?v=4c628560c207"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=eb64c9129835" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=8aacc4672d8a" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=eb64c9129835"><link rel="stylesheet" href="/assets/site-article.css?v=8aacc4672d8a"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -110,7 +110,7 @@
         "@id": "https://muntin.digital/#business"
       },
       "image": "https://muntin.digital/brand/og/glossary-hours-visibility.png",
-      "datePublished": "2026-05-10T19:09:28+00:00",
+      "datePublished": "2026-05-10T03:01:34+00:00",
       "isPartOf": {
         "@id": "https://muntin.digital/glossary/#muntin-glossary"
       }
@@ -308,6 +308,27 @@
                 });
               })
               .catch(function () { /* silent */ });
+            // Course progress dot — appended after the workshop link
+            // when the operator is mid-bootcamp (> 0 but < 16 lessons
+            // done). Decorative + aria-hidden; the operator can still
+            // click the workshop link to see the canonical count.
+            fetch('/api/course/progress', { credentials: 'same-origin' })
+              .then(function (r3) { return r3.ok ? r3.json() : null; })
+              .then(function (j) {
+                if (!j || !j.progress || !Array.isArray(j.progress.completed)) return;
+                var n = j.progress.completed.length;
+                if (n <= 0 || n >= 16) return;
+                workshop.forEach(function (w) {
+                  if (w.querySelector('.nav-course-dot')) return;
+                  var dot = document.createElement('span');
+                  dot.className = 'nav-course-dot';
+                  dot.setAttribute('aria-hidden', 'true');
+                  dot.title = 'Open the Doors — lesson ' + n + ' / 16';
+                  dot.style.cssText = 'display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--teal);margin-left:6px;vertical-align:middle';
+                  w.appendChild(dot);
+                });
+              })
+              .catch(function () { /* silent — course endpoint optional */ });
             return;
           }
           show(signin);
@@ -428,6 +449,25 @@
     </div>
   </aside>
 <!-- /glossary-knit -->
+<!-- glossary-lesson-sidecar:start -->
+<aside class="gloss-lesson-sidecar" aria-labelledby="gls-h-hours-visibility">
+  <p class="gls-eyebrow">LESSON 10 · MODULE · M3 ASSEMBLE</p>
+  <h2 class="gls-h" id="gls-h-hours-visibility"><a href="/course/m3-assemble/hours-contact/">Hours + holidays + contact</a></h2>
+  <p class="gls-intro">This term shows up in practice in Lesson 10 of Open the Doors — where you use it to build your own site, not just define it.</p>
+  <p class="gls-cta"><a href="/course/m3-assemble/hours-contact/">Open Lesson 10 →</a></p>
+</aside>
+<style>
+.gloss-lesson-sidecar{margin:32px 0 24px;padding:22px 26px;border:1px solid var(--line);border-radius:14px;background:var(--cream);max-width:680px}
+.gloss-lesson-sidecar .gls-eyebrow{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--stone);font-weight:600;margin:0 0 10px}
+.gloss-lesson-sidecar .gls-h{font-family:var(--font-display);font-weight:500;font-size:20px;line-height:1.25;margin:0 0 10px;color:var(--ink)}
+.gloss-lesson-sidecar .gls-h a{color:var(--ink);text-decoration:none;background:linear-gradient(to right,var(--teal),var(--teal)) no-repeat 0 100%/100% 1px}
+.gloss-lesson-sidecar .gls-h a:hover{color:var(--teal-dark)}
+.gloss-lesson-sidecar .gls-intro{font-size:15px;color:var(--ink-soft);line-height:1.55;margin:0 0 12px}
+.gloss-lesson-sidecar .gls-cta{margin:0;font-size:14.5px;font-weight:600}
+.gloss-lesson-sidecar .gls-cta a{color:var(--teal-dark);text-decoration:none}
+.gloss-lesson-sidecar .gls-cta a:hover{text-decoration:underline}
+</style>
+<!-- glossary-lesson-sidecar:end -->
 </main>
 
 <footer>

@@ -110,6 +110,51 @@ function renderToolLine(p) {
   return `- [${p.title}](${p.url})${desc ? ': ' + desc : ''}`;
 }
 
+function listCoursePages(dir, baseUrl) {
+  // Course has a fixed shape: hub + 4 modules + ~16 lesson pages.
+  // Walk the course tree, collect every index.html, return ordered
+  // by module + lesson position (matches the operator's reading
+  // path).
+  const root = path.join(repoRoot, dir);
+  if (!fs.existsSync(root)) return [];
+  const out = [];
+  function walk(rel) {
+    const full = path.join(root, rel);
+    if (!fs.existsSync(full)) return;
+    for (const entry of fs.readdirSync(full)) {
+      if (entry.startsWith('_')) continue;
+      const sub = path.join(rel, entry);
+      const subFull = path.join(full, entry);
+      if (fs.statSync(subFull).isDirectory()) {
+        const idx = path.join(subFull, 'index.html');
+        if (fs.existsSync(idx)) {
+          const meta = readMeta(idx);
+          if (meta) out.push({
+            slug: sub.replaceAll(path.sep, '/'),
+            url: `${baseUrl}${sub.replaceAll(path.sep, '/')}/`,
+            ...meta
+          });
+        }
+        walk(sub);
+      }
+    }
+  }
+  // The hub itself is rel=''.
+  const hubIdx = path.join(root, 'index.html');
+  if (fs.existsSync(hubIdx)) {
+    const meta = readMeta(hubIdx);
+    if (meta) out.push({ slug: '', url: baseUrl, ...meta });
+  }
+  walk('');
+  // Order: hub first, then by module ID (m1-orient < m2-decide < ...),
+  // then by lesson slug. This matches the operator's reading order.
+  return out.sort((a, b) => {
+    if (a.slug === '') return -1;
+    if (b.slug === '') return 1;
+    return a.slug.localeCompare(b.slug);
+  });
+}
+
 function buildContent(locale) {
   const isEs = locale === 'es';
   const baseUrl = 'https://muntin.digital' + (isEs ? '/es' : '');
@@ -122,6 +167,7 @@ function buildContent(locale) {
   const glossary = listIndexPages(isEs ? 'es/glossary' : 'glossary', `${baseUrl}/glossary/`);
   const tools    = listToolPages(isEs ? 'es/tools' : 'tools', `${baseUrl}/tools/`);
   const sheets   = listIndexPages(isEs ? 'es/sheets' : 'sheets', `${baseUrl}/sheets/`);
+  const course   = listCoursePages(isEs ? 'es/course' : 'course', `${baseUrl}/course/`);
 
   const headerEn = `# Muntin Digital
 
@@ -171,10 +217,19 @@ Los operadores pueden escribir directamente en /es/window/ — asíncrono, norma
 
   let body = isEs ? headerEs : headerEn;
   const h2Articles  = isEs ? '## Artículos'    : '## Articles';
+  const h2Course    = isEs
+    ? '## Abre las puertas — curso gratuito de 16 lecciones (sitio web de restaurante)'
+    : '## Open the Doors — free 16-lesson restaurant website course';
   const h2Glossary  = isEs ? '## Glosario'     : '## Glossary';
   const h2Tools     = isEs ? '## Herramientas' : '## Tools';
   const h2Sheets    = isEs ? '## Hojas del Operador (papeleo imprimible)' : '## Operator Sheets (printable paperwork)';
+  const courseIntro = isEs
+    ? 'Un curso gratuito y bilingüe (EN+ES) de aprender-haciendo que lleva al operador de un restaurante desde una página en blanco hasta un sitio desplegable. Sin cuenta. Cada lección contribuye decisiones específicas al generador de la L14 que empaqueta todo en un ZIP descargable. El operador despliega el ZIP a un host gratuito (Cloudflare Pages, Netlify o Vercel). Dos pistas: "fresh" (apertura nueva) y "rebuild" (sitio existente).'
+    : 'A free, bilingual (EN+ES), learn-by-doing course that walks a restaurant operator from a blank page to a deployable restaurant website. No account required. Every lesson contributes specific decisions to an L14 generator that packages everything into a downloadable ZIP. The operator deploys the ZIP themselves to a free host (Cloudflare Pages, Netlify, or Vercel). Two tracks: "fresh" (pre-opening) and "rebuild" (existing bad site).';
   body += `${h2Articles}\n\n${articles.map(renderArticleLine).join('\n')}\n\n`;
+  if (course.length) {
+    body += `${h2Course}\n\n${courseIntro}\n\n${course.map(renderToolLine).join('\n')}\n\n`;
+  }
   body += `${h2Glossary}\n\n${glossary.map(renderGlossaryLine).join('\n')}\n\n`;
   body += `${h2Tools}\n\n${tools.map(renderToolLine).join('\n')}\n\n`;
   if (sheets.length) {

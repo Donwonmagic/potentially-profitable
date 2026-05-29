@@ -2247,6 +2247,35 @@ body[data-audio-seek] .article-body .listen-sent:hover{background:rgba(42,80,200
 @media (prefers-reduced-motion:reduce){
   .article-body .listen-sent{transition:none}
 }
+/* Lesson Mode (Phase 3.2) — visual cue for the widget-pause wait state.
+ * The widget the player is waiting on gets a soft teal ring + breathing
+ * shadow. The dock's chapter strip surfaces "Don is waiting" via the
+ * data-lesson-wait attribute the runtime stamps. Both cues respect
+ * prefers-reduced-motion. */
+.course-widget.is-listen-waiting{
+  position:relative;
+  border-radius:14px;
+  box-shadow:0 0 0 2px var(--teal),0 0 0 10px rgba(42,80,200,0.16);
+  animation:lesson-widget-breathe 2.6s var(--ease-out) infinite;
+  transition:box-shadow 0.25s var(--ease);
+}
+@keyframes lesson-widget-breathe{
+  0%,100%{box-shadow:0 0 0 2px var(--teal),0 0 0 10px rgba(42,80,200,0.16)}
+  50%    {box-shadow:0 0 0 2px var(--teal),0 0 0 16px rgba(42,80,200,0.10)}
+}
+.listen-dock-chapter.is-listen-waiting{
+  color:rgba(255,255,255,0.95);
+  font-weight:600;
+}
+.listen-dock-chapter.is-listen-waiting::before{
+  background:#ffd166;
+  box-shadow:0 0 0 3px rgba(255,209,102,0.30);
+  animation:listen-breathe-dock 1.4s var(--ease) infinite;
+}
+@media (prefers-reduced-motion:reduce){
+  .course-widget.is-listen-waiting{animation:none}
+  .listen-dock-chapter.is-listen-waiting::before{animation:none}
+}
 .article-figure.is-reading{background:transparent;box-shadow:none}
 .article-figure.is-reading .funnel,.article-figure.is-reading figcaption{background:var(--teal-tint);border-radius:8px;padding:6px 10px;transition:background-color 0.25s var(--ease)}
 .article-figure.is-reading.is-reading-callout{background:transparent;box-shadow:0 0 0 2px var(--teal),0 0 0 8px var(--teal-tint)}

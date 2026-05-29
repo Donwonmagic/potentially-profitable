@@ -1,0 +1,131 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-29T02:53:14.172Z",
+  "engine": "f5",
+  "model": "don-reference.es.m4a",
+  "voice": "f5:don-reference.es.m4a",
+  "language": "es",
+  "total": 114.35,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "opener",
+      "selector": ".course-hero h1",
+      "text": "El clic que convierte trece lecciones de trabajo en un sitio descargable.",
+      "start": 0,
+      "end": 2.41
+    },
+    {
+      "id": 1,
+      "kind": "opener",
+      "selector": ".course-hero .promise",
+      "text": "Todo lo que guardaste durante el curso, nombre, paleta, platos, horarios, fotos, G B P, frases de S E O, plantilla de respuestas, se empaqueta en un sitio real de H T M L+C S S que descargas. Sin framework, sin paso de build, sin hosting todavía. Solo un Zip que descomprimes, miras y publicas.",
+      "start": 3.06,
+      "end": 13.21
+    },
+    {
+      "id": 2,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "Un generador es una función. Toma tus datos de un lado y produce un sitio web funcional del otro. La barra lateral derecha ha estado corriendo esa función en cada página del curso, re-renderizando tu página de inicio mientras llenabas cada lección. Esta página es donde la misma función te deja descargar el resultado.",
+      "start": 14.41,
+      "end": 25.54
+    },
+    {
+      "id": 3,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Lo que esta lección hace que las otras no.",
+      "start": 26.64,
+      "end": 27.97
+    },
+    {
+      "id": 4,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Doce lecciones te pidieron tomar una decisión y guardarla. Una lección, la 13, te dio un hábito para seguir usando después del lanzamiento. Esta lección es donde las decisiones guardadas se vuelven una cosa que puedes desplegar. Tres componentes:",
+      "start": 28.67,
+      "end": 37.25
+    },
+    {
+      "id": 5,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "La lista de revisión abajo te dice exactamente qué está lleno y qué falta. Una fila roja significa que el generador va a usar un marcador de posición, clic para saltar a la lección que captura ese dato.",
+      "start": 37.6,
+      "end": 44.74
+    },
+    {
+      "id": 6,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "La vista previa en la barra lateral derecha muestra la página de inicio como va a salir publicada. Es el mismo render que contiene el Zip, cambia la paleta en la L7 y esta vista previa se vuelve a pintar en tiempo real.",
+      "start": 45.06,
+      "end": 52.63
+    },
+    {
+      "id": 7,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "El botón de descarga empaqueta todo en un Zip. Cuatro páginas H T M L (cada una con C S S en línea), un sitemap, un robots.txt, y un Readme que te dice cómo alojarlo.",
+      "start": 52.95,
+      "end": 58.76
+    },
+    {
+      "id": 8,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "Nada de esto llama a un servidor. El Zip se construye en tu navegador usando una librería pequeña ( JSZip ) que la página carga de forma diferida solo cuando haces clic en descargar. Todo lo que guardaste durante el curso vive en el localStorage de tu navegador (un pequeño almacén de clave-valor que los navegadores exponen a las páginas del mismo dominio); esta página lo lee, arma las plantillas, empaca el Zip, te entrega el archivo. Nunca vemos los datos de tu restaurante.",
+      "start": 59.28,
+      "end": 75.76
+    },
+    {
+      "id": 9,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Qué cambia esto más adelante.",
+      "start": 76.86,
+      "end": 77.78
+    },
+    {
+      "id": 10,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "La Lección 15 (despliegue) toma el Zip que descargas aquí y te lleva por tres hosts gratuitos, Cloudflare Pages, Netlify o Vercel, para tener una U R L real apuntando a tu dominio real en menos de treinta minutos. La Lección 16 (el ritmo de 30 días) te da las cuatro tareas recurrentes que evitan que el sitio desplegado se ponga viejo, incluyendo \"vuelve a generar cuando agregues un plato\" para que la descarga de la L14 se mantenga al día.",
+      "start": 78.48,
+      "end": 93.75
+    },
+    {
+      "id": 11,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(1) h2",
+      "text": "Tienes un sitio desplegable, ahora mismo, en este navegador.",
+      "start": 95.05,
+      "end": 96.77
+    },
+    {
+      "id": 12,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(1) p",
+      "text": "La lista de revisión te dice qué está listo y qué sigue abierto. La barra lateral derecha te muestra lo que va a salir publicado. La descarga del Zip empaqueta todo en un archivo que le puedes pasar a cualquier host. Trece lecciones de decisiones acaban de volverse un sitio web.",
+      "start": 97.37,
+      "end": 107.12
+    },
+    {
+      "id": 13,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(1) p",
+      "text": "El generador es la prueba de que \"no fetch, no storage, no account\" era la postura correcta desde el principio.",
+      "start": 107.72,
+      "end": 111.43
+    },
+    {
+      "id": 14,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "Las Lecciones 15 y 16 están en vivo, despliegue y el ritmo de 30 días.",
+      "start": 111.95,
+      "end": 114.35
+    }
+  ]
+}

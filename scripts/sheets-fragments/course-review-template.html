@@ -1,0 +1,65 @@
+    <form id="sheet-fields" class="sheet-form" autocomplete="off" novalidate>
+      <fieldset>
+        <legend>Header</legend>
+        <label><span><span>Restaurant name</span></span><input type="text" name="name" data-context-key="restaurantProfile.name" /></label>
+        <label><span><span>Operator's first name (for the sign-off)</span></span><input type="text" name="signoff_name" /></label>
+        <label><span><span>Manager-on-duty name (if asking diner to ask for someone)</span></span><input type="text" name="mod_name" /></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>The three-part template — name + own + repair</legend>
+        <span class="field-help">From L13. Write the template ONCE; reuse for every bad review with light personalization.</span>
+        <label>
+          <span><span>1. Thank the reviewer + NAME the failure (specific, not generic)</span></span>
+          <textarea name="t1_name" rows="2" placeholder="e.g., Thanks for taking the time to write — and I'm sorry the service didn't match the food."></textarea>
+        </label>
+        <label>
+          <span><span>2. OWN it (no excuses, no 'we were short-staffed')</span></span>
+          <textarea name="t2_own" rows="2" placeholder="e.g., Forty-five minutes for entrees isn't what we aim for, even on a busy night."></textarea>
+        </label>
+        <label>
+          <span><span>3. Offer a specific REPAIR (not 'come back!' — name a person + the gesture)</span></span>
+          <textarea name="t3_repair" rows="2" placeholder="e.g., Would you come back? Ask for Joe at the host stand and dessert is on me."></textarea>
+        </label>
+        <label><span><span>Sign-off (your first name + role)</span></span><input type="text" name="t4_sign" placeholder="e.g., — Jolene, owner" /></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>The full draft (combined)</legend>
+        <label>
+          <span><span>Final template, ready to copy + paste into GBP / Yelp</span></span>
+          <textarea name="full" data-context-key="reviewResponseTemplate" rows="6"></textarea>
+        </label>
+        <span class="field-help">Aim for under 75 words. Long apologies read as performances. Sign with your first name.</span>
+      </fieldset>
+
+      <fieldset>
+        <legend>What NOT to write (mistakes to avoid)</legend>
+        <label><input type="checkbox" name="not_excuses" /><span><span>Don't make excuses ('we were short-staffed,' 'a vendor let us down')</span></span></label>
+        <label><input type="checkbox" name="not_corporate" /><span><span>Don't use corporate boilerplate ('We value all feedback…')</span></span></label>
+        <label><input type="checkbox" name="not_argue" /><span><span>Don't argue back ('Actually, our pasta takes 45 minutes by design')</span></span></label>
+        <label><input type="checkbox" name="not_silence" /><span><span>Don't go silent — a non-response signals that nobody cares</span></span></label>
+        <label><input type="checkbox" name="not_paste" /><span><span>Don't paste the same template across reviews verbatim — personalize the 'name' part each time</span></span></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Response log (when you actually use the template)</legend>
+        <table class="sheet-row-table">
+          <thead><tr><th>Date received</th><th>Platform</th><th>Star count</th><th>Date responded</th><th>Hours-to-respond</th><th>Repair offered</th></tr></thead>
+          <tbody>
+            <tr><td><input type="date" name="rl1_recv" /></td><td><select name="rl1_plat"><option>—</option><option>Google</option><option>Yelp</option><option>TripAdvisor</option><option>OpenTable</option><option>Other</option></select></td><td><input type="number" name="rl1_stars" min="1" max="5" /></td><td><input type="date" name="rl1_resp" /></td><td><input type="number" name="rl1_hours" min="0" /></td><td><input type="text" name="rl1_repair" /></td></tr>
+            <tr><td><input type="date" name="rl2_recv" /></td><td><select name="rl2_plat"><option>—</option><option>Google</option><option>Yelp</option><option>TripAdvisor</option><option>OpenTable</option><option>Other</option></select></td><td><input type="number" name="rl2_stars" min="1" max="5" /></td><td><input type="date" name="rl2_resp" /></td><td><input type="number" name="rl2_hours" min="0" /></td><td><input type="text" name="rl2_repair" /></td></tr>
+            <tr><td><input type="date" name="rl3_recv" /></td><td><select name="rl3_plat"><option>—</option><option>Google</option><option>Yelp</option><option>TripAdvisor</option><option>OpenTable</option><option>Other</option></select></td><td><input type="number" name="rl3_stars" min="1" max="5" /></td><td><input type="date" name="rl3_resp" /></td><td><input type="number" name="rl3_hours" min="0" /></td><td><input type="text" name="rl3_repair" /></td></tr>
+            <tr><td><input type="date" name="rl4_recv" /></td><td><select name="rl4_plat"><option>—</option><option>Google</option><option>Yelp</option><option>TripAdvisor</option><option>OpenTable</option><option>Other</option></select></td><td><input type="number" name="rl4_stars" min="1" max="5" /></td><td><input type="date" name="rl4_resp" /></td><td><input type="number" name="rl4_hours" min="0" /></td><td><input type="text" name="rl4_repair" /></td></tr>
+            <tr><td><input type="date" name="rl5_recv" /></td><td><select name="rl5_plat"><option>—</option><option>Google</option><option>Yelp</option><option>TripAdvisor</option><option>OpenTable</option><option>Other</option></select></td><td><input type="number" name="rl5_stars" min="1" max="5" /></td><td><input type="date" name="rl5_resp" /></td><td><input type="number" name="rl5_hours" min="0" /></td><td><input type="text" name="rl5_repair" /></td></tr>
+          </tbody>
+        </table>
+        <span class="field-help">Aim for hours-to-respond under 24. A week-late response reads as panic, not care.</span>
+      </fieldset>
+    </form>
+
+    <script>
+      (function () {
+        if (window.SheetPage) window.SheetPage.register({ slug: 'course-review-template' });
+      })();
+    </script>

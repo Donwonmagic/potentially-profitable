@@ -276,6 +276,33 @@
       'Audio: Help Opened',
       'Audio: Finished Prompt Shown',
       'Audio: Finished Prompt Clicked',
+      // Lesson Mode (Phase 3.2 + 3.3) — fires from assets/js/listen.js
+      // (Widget Pause) and the inline mark-complete script
+      // (Celebration Audio). Both are bounded — one event per
+      // pause-or-completion, no per-chunk-or-progress firehose.
+      'Audio: Widget Pause',
+      'Audio: Widget Resume',
+      'Course Celebration Audio',
+      // Open the Doors bootcamp — engagement + progression events.
+      // 'Course Lesson View' fires on page load (debounced via
+      // sessionStorage so reload-storm doesn't double-count). The other
+      // three fire on mark-complete: 'Course Lesson Complete' always,
+      // 'Course Module Complete' at M1/M2/M3 boundaries, 'Course
+      // Bootcamp Complete' on the final lesson. Props standardized to
+      // { module, lesson, locale } so cohort segmentation in Plausible
+      // is uniform across the funnel.
+      'Course Lesson View',
+      'Course Lesson Complete',
+      'Course Module Complete',
+      'Course Bootcamp Complete',
+      // Fired from course/m4-launch/generator/generator.js when the
+      // operator downloads the generated static-site ZIP — the L14
+      // payoff moment.
+      'Course Generator Download',
+      // Fired when a signed-in operator clicks "Save to the Workshop"
+      // on the L14 generator page — persists the MuntinContext
+      // snapshot under kind=course-generator-output.
+      'Course Generator Save',
       'Share',
       // Phase 3A (launch) — Cal.com booking surface (/studio/call/).
       // Fires once per page view, ~800ms after load (after the embed

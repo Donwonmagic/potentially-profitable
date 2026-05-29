@@ -89,8 +89,8 @@ header.nav{min-height:64px}
 @media (max-width:1100px){.nav-links{display:none}.nav-toggle{display:flex;width:44px;height:44px;flex-direction:column;justify-content:center;align-items:center;gap:5px;background:transparent;border:0;padding:0}.nav-toggle span{display:block;width:22px;height:2px;background:var(--ink)}.nav-inner .btn-primary{display:none}}
 main{padding-top:64px}
 </style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=a497939fe0a3" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a497939fe0a3"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=eb64c9129835" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=eb64c9129835"></noscript>
 </head>
 <body data-page="sheets-hub">
 <a class="skip-link" href="#main">Skip to main content</a>
@@ -278,6 +278,27 @@ main{padding-top:64px}
                 });
               })
               .catch(function () { /* silent */ });
+            // Course progress dot — appended after the workshop link
+            // when the operator is mid-bootcamp (> 0 but < 16 lessons
+            // done). Decorative + aria-hidden; the operator can still
+            // click the workshop link to see the canonical count.
+            fetch('/api/course/progress', { credentials: 'same-origin' })
+              .then(function (r3) { return r3.ok ? r3.json() : null; })
+              .then(function (j) {
+                if (!j || !j.progress || !Array.isArray(j.progress.completed)) return;
+                var n = j.progress.completed.length;
+                if (n <= 0 || n >= 16) return;
+                workshop.forEach(function (w) {
+                  if (w.querySelector('.nav-course-dot')) return;
+                  var dot = document.createElement('span');
+                  dot.className = 'nav-course-dot';
+                  dot.setAttribute('aria-hidden', 'true');
+                  dot.title = 'Open the Doors — lesson ' + n + ' / 16';
+                  dot.style.cssText = 'display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--teal);margin-left:6px;vertical-align:middle';
+                  w.appendChild(dot);
+                });
+              })
+              .catch(function () { /* silent — course endpoint optional */ });
             return;
           }
           show(signin);

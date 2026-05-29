@@ -1,0 +1,58 @@
+    <form id="sheet-fields" class="sheet-form" autocomplete="off" novalidate>
+      <fieldset>
+        <legend>Header</legend>
+        <label><span><span>Restaurant name</span></span><input type="text" name="name" data-context-key="restaurantProfile.name" /></label>
+        <label><span><span>Canonical phone (the one diners see everywhere)</span></span><input type="tel" name="phone" data-context-key="restaurantProfile.phone" placeholder="+1 (xxx) xxx-xxxx" /></label>
+        <label><span><span>Canonical address (the one diners see everywhere)</span></span><textarea name="address" data-context-key="restaurantProfile.address" rows="2"></textarea></label>
+        <label><span><span>Effective date</span></span><input type="date" name="effective" /></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Weekly hours</legend>
+        <span class="field-help">If closed a day, write 'Closed.' Use 24-hour times to avoid AM/PM confusion across surfaces.</span>
+        <table class="sheet-row-table">
+          <thead><tr><th>Day</th><th>Open</th><th>Close</th><th>Closed?</th><th>Notes (e.g., kitchen closes at)</th></tr></thead>
+          <tbody>
+            <tr><td>Monday</td><td><input type="time" name="mon_open" /></td><td><input type="time" name="mon_close" /></td><td><input type="checkbox" name="mon_closed" /></td><td><input type="text" name="mon_notes" /></td></tr>
+            <tr><td>Tuesday</td><td><input type="time" name="tue_open" /></td><td><input type="time" name="tue_close" /></td><td><input type="checkbox" name="tue_closed" /></td><td><input type="text" name="tue_notes" /></td></tr>
+            <tr><td>Wednesday</td><td><input type="time" name="wed_open" /></td><td><input type="time" name="wed_close" /></td><td><input type="checkbox" name="wed_closed" /></td><td><input type="text" name="wed_notes" /></td></tr>
+            <tr><td>Thursday</td><td><input type="time" name="thu_open" /></td><td><input type="time" name="thu_close" /></td><td><input type="checkbox" name="thu_closed" /></td><td><input type="text" name="thu_notes" /></td></tr>
+            <tr><td>Friday</td><td><input type="time" name="fri_open" /></td><td><input type="time" name="fri_close" /></td><td><input type="checkbox" name="fri_closed" /></td><td><input type="text" name="fri_notes" /></td></tr>
+            <tr><td>Saturday</td><td><input type="time" name="sat_open" /></td><td><input type="time" name="sat_close" /></td><td><input type="checkbox" name="sat_closed" /></td><td><input type="text" name="sat_notes" /></td></tr>
+            <tr><td>Sunday</td><td><input type="time" name="sun_open" /></td><td><input type="time" name="sun_close" /></td><td><input type="checkbox" name="sun_closed" /></td><td><input type="text" name="sun_notes" /></td></tr>
+          </tbody>
+        </table>
+      </fieldset>
+
+      <fieldset>
+        <legend>Holiday closures (next 6 months)</legend>
+        <table class="sheet-row-table">
+          <thead><tr><th>Holiday / event</th><th>Date</th><th>Hours that day</th><th>GBP special-hours set?</th></tr></thead>
+          <tbody>
+            <tr><td><input type="text" name="h1_name" /></td><td><input type="date" name="h1_date" /></td><td><input type="text" name="h1_hours" placeholder="Closed or 11–8" /></td><td><input type="checkbox" name="h1_gbp" /></td></tr>
+            <tr><td><input type="text" name="h2_name" /></td><td><input type="date" name="h2_date" /></td><td><input type="text" name="h2_hours" /></td><td><input type="checkbox" name="h2_gbp" /></td></tr>
+            <tr><td><input type="text" name="h3_name" /></td><td><input type="date" name="h3_date" /></td><td><input type="text" name="h3_hours" /></td><td><input type="checkbox" name="h3_gbp" /></td></tr>
+            <tr><td><input type="text" name="h4_name" /></td><td><input type="date" name="h4_date" /></td><td><input type="text" name="h4_hours" /></td><td><input type="checkbox" name="h4_gbp" /></td></tr>
+            <tr><td><input type="text" name="h5_name" /></td><td><input type="date" name="h5_date" /></td><td><input type="text" name="h5_hours" /></td><td><input type="checkbox" name="h5_gbp" /></td></tr>
+          </tbody>
+        </table>
+        <span class="field-help">Set GBP special hours 2 weeks ahead so Google indexes them in time.</span>
+      </fieldset>
+
+      <fieldset>
+        <legend>Surface check — all four MUST match</legend>
+        <span class="field-help">When you change hours, every surface needs to update. Check each before walking away.</span>
+        <label><input type="checkbox" name="surf_door" /><span><span>Door sign updated</span></span></label>
+        <label><input type="checkbox" name="surf_site" /><span><span>Website hours updated (regenerate + redeploy via L14)</span></span></label>
+        <label><input type="checkbox" name="surf_gbp" /><span><span>Google Business Profile updated</span></span></label>
+        <label><input type="checkbox" name="surf_voicemail" /><span><span>Voicemail re-recorded</span></span></label>
+        <label><input type="checkbox" name="surf_resy" /><span><span>Reservation system updated (OpenTable/Tock/etc.)</span></span></label>
+        <label><input type="checkbox" name="surf_socials" /><span><span>Social profiles updated</span></span></label>
+      </fieldset>
+    </form>
+
+    <script>
+      (function () {
+        if (window.SheetPage) window.SheetPage.register({ slug: 'course-hours' });
+      })();
+    </script>

@@ -50,6 +50,11 @@ const PACK_STYLE = {
   'conversions':       { accent: 'rust', glyph: 'conversions', focus: 'funnel' },
   'brand-design':      { accent: 'teal', glyph: 'brand',       focus: 'list' },
   'trust-reviews':     { accent: 'ink',  glyph: 'trust',       focus: 'score-ring' },
+  // The Open the Doors bootcamp sheets — each is a tear-sheet
+  // for one bootcamp lesson. Teal accent matches the Method brand;
+  // glyph picks the "resources" mark since these are downloadable
+  // operator artifacts.
+  'course-bootcamp':   { accent: 'teal', glyph: 'resources',   focus: 'list' },
 };
 
 // Per-sheet-format focus override. Some formats are universally

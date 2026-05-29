@@ -1,0 +1,36 @@
+{
+  "_doc": "Phase G.3 (Growth) — manual curation of Open the Doors bootcamp release/refresh dates. scripts/build-rss.mjs reads this file (alongside blog/tool/sheet releases) to build /feed.xml + /es/feed.xml. Add an entry when the bootcamp ships a new module, refreshes a major lesson, or graduates from beta. Slug is path-from-site-root (e.g. 'course' for the hub, 'course/m1-orient' for a module). note_en/note_es is a 1-line summary suitable for a feed reader's <description>.",
+
+  "releases": [
+    {
+      "slug": "course",
+      "date": "2026-05-25",
+      "note_en": "Open the Doors — a free 16-lesson bootcamp that ships a deployable restaurant website. Bilingual EN+ES. Learn-by-doing, no account, terminal ZIP download.",
+      "note_es": "Abre las puertas — un bootcamp gratuito de 16 lecciones que entrega un sitio de restaurante desplegable. Bilingüe EN+ES. Aprender haciendo, sin cuenta, ZIP final para descargar."
+    },
+    {
+      "slug": "course/m1-orient",
+      "date": "2026-05-25",
+      "note_en": "Module 1 — Orient. Three lessons on what a restaurant site does on a Tuesday night at 7:42pm, and the one promise yours will make.",
+      "note_es": "Módulo 1 — Orientar. Tres lecciones sobre qué hace un sitio de restaurante un martes a las 7:42pm, y la promesa que hará el tuyo."
+    },
+    {
+      "slug": "course/m2-decide",
+      "date": "2026-05-25",
+      "note_en": "Module 2 — Decide. The eight decisions every restaurant site is built on: customer, naming, positioning, palette, voice. Two tracks: fresh and rebuild.",
+      "note_es": "Módulo 2 — Decidir. Las ocho decisiones sobre las que se construye todo sitio de restaurante: cliente, nombre, posicionamiento, paleta, voz. Dos pistas: fresh y rebuild."
+    },
+    {
+      "slug": "course/m3-assemble",
+      "date": "2026-05-25",
+      "note_en": "Module 3 — Assemble. The operator paperwork: menu, photos, hours, contact, Google Business Profile. Five lessons of artifact-building.",
+      "note_es": "Módulo 3 — Ensamblar. El papeleo del operador: menú, fotos, horarios, contacto, Perfil de Negocio de Google. Cinco lecciones de construcción de artefactos."
+    },
+    {
+      "slug": "course/m4-launch",
+      "date": "2026-05-25",
+      "note_en": "Module 4 — Launch. The five terminal lessons: local SEO anchors, reviews flywheel, the L14 generator (download your site as a ZIP), deploy walkthrough, 30-day maintenance rhythm.",
+      "note_es": "Módulo 4 — Lanzar. Las cinco lecciones terminales: anclas de SEO local, ciclo de reseñas, generador de la L14 (descarga tu sitio como ZIP), guía de despliegue, ritmo de mantenimiento de 30 días."
+    }
+  ]
+}

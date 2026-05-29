@@ -1,0 +1,251 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-29T02:57:07.330Z",
+  "engine": "f5",
+  "model": "don-reference.es.m4a",
+  "voice": "f5:don-reference.es.m4a",
+  "language": "es",
+  "total": 194.43,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "opener",
+      "selector": ".course-hero h1",
+      "text": "Arrastra el Zip a un host. Tu sitio está en vivo en menos de treinta minutos.",
+      "start": 0,
+      "end": 2.57
+    },
+    {
+      "id": 1,
+      "kind": "opener",
+      "selector": ".course-hero .promise",
+      "text": "Cloudflare Pages, Netlify y Vercel te dejan publicar una carpeta de H T M L gratis. Elige uno, las diferencias son más pequeñas de lo que el marketing las hace parecer. Conecta tu propio dominio después y la firma de correo de tu operador por fin tiene una U R L que vale la pena imprimir.",
+      "start": 3.22,
+      "end": 13.21
+    },
+    {
+      "id": 2,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "Un host es una computadora en algún lugar que contesta cuando un navegador pregunta por tu-restaurante.com. No necesitas ser dueño de la computadora, configurarla, ni pagar por ella todos los meses. Los tres hosts de abajo corren tu sitio gratis siempre que unos pocos miles de comensales visiten al mes, lo cual, para un restaurante de barrio de 60 asientos, es la mayoría de ellos.",
+      "start": 14.41,
+      "end": 27.54
+    },
+    {
+      "id": 3,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Elige un host, son casi iguales.",
+      "start": 28.64,
+      "end": 29.55
+    },
+    {
+      "id": 4,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "La verdad honesta: para un sitio de H T M L estático como el tuyo, los tres hosts hacen lo mismo. Toman tu carpeta, la copian a una red de servidores alrededor del mundo, y la sirven de vuelta por H T T P S cuando el navegador de un comensal la pide. Las diferencias pequeñas:",
+      "start": 30.25,
+      "end": 39.77
+    },
+    {
+      "id": 5,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "Nuestra sugerencia: Cloudflare Pages si ya usas Cloudflare para algo (o estás dispuesto a). Netlify si quieres la experiencia de primer despliegue más suave. Vercel si quieres el panel más elegante. Los tres son reales, gratis, están bien.",
+      "start": 40.12,
+      "end": 48.35
+    },
+    {
+      "id": 6,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Paso a paso para cada host.",
+      "start": 49.45,
+      "end": 50.24
+    },
+    {
+      "id": 7,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "Las pestañas abajo te guían a través de cada host con todo el detalle. Arriba de ellas, el rastreador de siete pasos es tu ancla \"¿dónde voy?\", elige tu host arriba, luego marca cada paso como listo conforme lo completes. Tu progreso se guarda localmente y (si tienes sesión iniciada) sincroniza entre dispositivos, así puedes empezar el deploy en tu laptop y revisar desde tu teléfono.",
+      "start": 50.94,
+      "end": 64.38
+    },
+    {
+      "id": 8,
+      "kind": "widget-pause",
+      "selector": "#post-body > section:nth-of-type(2)",
+      "start": 64.78,
+      "end": 64.78,
+      "widget": "deploy-stepper"
+    },
+    {
+      "id": 9,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "Las pestañas de abajo te llevan por cada host. Cada una empieza desde \"tengo un Zip de la Lección 14\" y termina con \"mi sitio está en vivo en una U R L real.\" Elige la pestaña del host que escogiste; ignora las otras dos.",
+      "start": 65.18,
+      "end": 72.92
+    },
+    {
+      "id": 10,
+      "kind": "widget-pause",
+      "selector": "#post-body > section:nth-of-type(3)",
+      "start": 73.32,
+      "end": 73.32,
+      "widget": "tab-flip"
+    },
+    {
+      "id": 11,
+      "kind": "body",
+      "selector": "#post-body > div:nth-of-type(1) > p:nth-of-type(1)",
+      "text": "Necesitas un dominio antes de que el paso de \"dominio propio\" funcione. Si todavía no tienes uno, compra tu-restaurante.com en Cloudflare Registrar (~10 dollars/año, sin sobreprecio) o Porkbun (~11 dollars/año). Evita GoDaddy y Squarespace, los dos cobran el doble por el mismo producto y te encierran en upselling. Si el nombre de tu restaurante se revisó en la Lección 5 y el .com estaba disponible, este es el momento de comprarlo.",
+      "start": 73.72,
+      "end": 88.63
+    },
+    {
+      "id": 12,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "El paso de D N S que asusta a todos (no debería).",
+      "start": 89.73,
+      "end": 91.27
+    },
+    {
+      "id": 13,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "D N S (el Sistema de Nombres de Dominio) es la guía telefónica del internet. Cuando le diste el nombre de tu restaurante a un host, el host te devolvió una cadena como \"tu-restaurante.netlify.app\", ahí viven los archivos. El paso de D N S le dice a la guía telefónica: \"cuando un comensal escriba tu-restaurante.com , mándalo a esa dirección de Netlify.\"",
+      "start": 91.97,
+      "end": 104.19
+    },
+    {
+      "id": 14,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "No estás configurando servidores. Estás actualizando una entrada en una guía telefónica. El host que escogiste te da las líneas exactas que copiar; el registrador donde compraste tu dominio tiene un formulario donde las pegas. Dos pantallas, cinco minutos, una espera de diez minutos para la propagación. Eso es todo.",
+      "start": 104.54,
+      "end": 115.3
+    },
+    {
+      "id": 15,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "Si el paso de D N S te incomoda, el arreglo amigable para el operador es: mueve tu dominio a Cloudflare Registrar (transferencia gratis, tarda una semana). Luego conectas Cloudflare Pages, sin registros D N S que copiar, un solo clic.",
+      "start": 115.82,
+      "end": 123.76
+    },
+    {
+      "id": 16,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "Verifica el despliegue.",
+      "start": 124.86,
+      "end": 125.5
+    },
+    {
+      "id": 17,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "Antes de decirle a alguien la U R L, haz esta revisión de tres minutos:",
+      "start": 126.2,
+      "end": 128.61
+    },
+    {
+      "id": 18,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Abre la U R L en tu teléfono con datos móviles (no WiFi). La página de inicio debería renderizarse en menos de dos segundos; tu nombre, horarios, dirección y teléfono deberían verse sin hacer scroll.",
+      "start": 128.96,
+      "end": 135.98
+    },
+    {
+      "id": 19,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Toca el número de teléfono. Debería abrir el marcador de tu teléfono con los dígitos correctos llenos.",
+      "start": 136.3,
+      "end": 139.77
+    },
+    {
+      "id": 20,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Toca la dirección. Debería abrir Mapas con el pin correcto.",
+      "start": 140.09,
+      "end": 141.89
+    },
+    {
+      "id": 21,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "Visita cada una de las cuatro páginas (inicio / menú / acerca / contacto). Sin 404s, sin enlaces rotos, sin imágenes faltantes.",
+      "start": 142.21,
+      "end": 146.45
+    },
+    {
+      "id": 22,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(5)",
+      "text": "Muéstrasela a tu pareja, a tu socio, o a un cliente regular. Pregunta: \"si encontraras este sitio buscando un restaurante, ¿llamarías?\" Si la respuesta es \"no sé\", de regreso a la Lección 3 para la promesa.",
+      "start": 146.77,
+      "end": 153.9
+    },
+    {
+      "id": 23,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "Qué cambia esto más adelante.",
+      "start": 155,
+      "end": 155.97
+    },
+    {
+      "id": 24,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "La Lección 16 (el ritmo de 30 días) asume que tu sitio está desplegado y te da las cuatro tareas recurrentes que evitan que se ponga viejo, incluyendo \"vuelve a generar y vuelve a desplegar cuando agregues un plato.\" El Readme en tu Zip de la Lección 14 tiene los pasos de despliegue específicos del host abreviados, para que puedas volver a desplegar sin regresar aquí. Tu G B P de la L11 ahora tiene un campo de U R L del sitio web para llenar, pega tu U R L en vivo ahí para que la ficha de Google y tu sitio real por fin coincidan.",
+      "start": 156.67,
+      "end": 175.13
+    },
+    {
+      "id": 25,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(4) h2",
+      "text": "Tu restaurante tiene una U R L.",
+      "start": 176.43,
+      "end": 177.38
+    },
+    {
+      "id": 26,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(4) p",
+      "text": "Una dirección real en internet, tuya, en tu dominio, en H T T P S, gratis, rápida, accesible. Elegiste un host, arrastraste una carpeta, copiaste dos líneas de D N S. El sitio que trece lecciones te enseñaron a construir ya está en vivo.",
+      "start": 177.98,
+      "end": 186.23
+    },
+    {
+      "id": 27,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(4) p",
+      "text": "El operador que vuelve a entrar al comedor después de desplegar acaba de hacer lo que más le asustaba. Todo después de esto es iteración.",
+      "start": 186.83,
+      "end": 191.44
+    },
+    {
+      "id": 28,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(4) p",
+      "text": "Imprime la hoja de la Lección 15 →",
+      "start": 192.04,
+      "end": 193.11
+    },
+    {
+      "id": 29,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "La Lección 16 cierra el bootcamp.",
+      "start": 193.46,
+      "end": 194.43
+    }
+  ]
+}

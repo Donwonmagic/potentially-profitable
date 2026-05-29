@@ -226,9 +226,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=a497939fe0a3" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-tool.css?v=9aab013deef2" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a497939fe0a3"><link rel="stylesheet" href="/assets/site-tool.css?v=9aab013deef2"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=eb64c9129835" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-tool.css?v=2f602543d0d7" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=eb64c9129835"><link rel="stylesheet" href="/assets/site-tool.css?v=2f602543d0d7"></noscript>
 
 <style>
   /* ============ AUDIT TOOL STYLES ============ */
@@ -5774,6 +5774,27 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
                 });
               })
               .catch(function () { /* silent */ });
+            // Course progress dot — appended after the workshop link
+            // when the operator is mid-bootcamp (> 0 but < 16 lessons
+            // done). Decorative + aria-hidden; the operator can still
+            // click the workshop link to see the canonical count.
+            fetch('/api/course/progress', { credentials: 'same-origin' })
+              .then(function (r3) { return r3.ok ? r3.json() : null; })
+              .then(function (j) {
+                if (!j || !j.progress || !Array.isArray(j.progress.completed)) return;
+                var n = j.progress.completed.length;
+                if (n <= 0 || n >= 16) return;
+                workshop.forEach(function (w) {
+                  if (w.querySelector('.nav-course-dot')) return;
+                  var dot = document.createElement('span');
+                  dot.className = 'nav-course-dot';
+                  dot.setAttribute('aria-hidden', 'true');
+                  dot.title = 'Open the Doors — lesson ' + n + ' / 16';
+                  dot.style.cssText = 'display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--teal);margin-left:6px;vertical-align:middle';
+                  w.appendChild(dot);
+                });
+              })
+              .catch(function () { /* silent — course endpoint optional */ });
             return;
           }
           show(signin);
@@ -5809,7 +5830,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         actually doing?
       </h1>
       <!-- tool-verified:start -->
-            <p class="tool-verified">Last verified: <time datetime="2026-05-29">May 29, 2026</time></p>
+            <p class="tool-verified">Last verified: <time datetime="2026-05-28">May 28, 2026</time></p>
             <!-- tool-verified:end -->
       <!-- data-promise:start -->
             <aside class="tool-data-promise" aria-label="Data promise">
@@ -5818,7 +5839,27 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
               <p class="tool-data-promise__links"><a href="/security/">Read the full data promise &rarr;</a> &middot; <a href="/learn/checklists/audit-any-tool/">Audit any tool &rarr;</a></p>
             </aside>
             <!-- data-promise:end -->
-      <!-- storefront-rail:start -->
+      <!-- tool-sheet-rail:start -->
+<section class="topic-section tool-sheet-rail" aria-labelledby="tool-sheet-rail-h">
+  <div class="container">
+    <header class="topic-section-head">
+      <span class="eyebrow">Pair with paperwork</span>
+      <h2 id="tool-sheet-rail-h">Operator sheets that use this tool — printable, fillable, exports to CSV.</h2>
+    </header>
+    <ul class="topic-tool-list">
+        <li>
+          <a class="topic-tool-card" href="/sheets/course-audit/">
+            <h4>Audit your current site</h4>
+            <p>A printable scoresheet for the rebuild track — walk your current site as a diner would, with severity ratings on every page.</p>
+            <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
+          </a>
+        </li>
+    </ul>
+  </div>
+</section>
+<!-- tool-sheet-rail:end -->
+
+<!-- storefront-rail:start -->
             <p class="tool-storefront-rail">Part of <a href="/tools/storefront-health/"><strong>Storefront Health</strong></a> — the composite score that pairs this signal with five others on one scorecard.</p>
             <!-- storefront-rail:end -->
       <p class="hero-sub" style="margin:24px auto 0; max-width:580px;" data-tr="hero.sub">

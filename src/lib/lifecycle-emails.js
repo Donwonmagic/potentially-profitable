@@ -23,13 +23,18 @@ import {
   lifecycleWelcomeEmail,
   lifecycleSavedNoReturnEmail,
   lifecycleMonthlyDigestEmail,
+  lifecycleCourseStartedEmail,
+  lifecycleCourseCompletedEmail,
 } from './templates.js';
+import { readProgress as readCourseProgress } from './course.js';
 import { sendEmail } from './email.js';
 
 const QUARTER_MS = 90 * 24 * 60 * 60 * 1000;
 const FIVE_MIN_MS = 5 * 60 * 1000;
 const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
+const ONE_DAY_MS = 24 * 60 * 60 * 1000;
 const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
+const COURSE_TOTAL_LESSONS = 16;
 export const MAX_LIFECYCLE_EMAILS_PER_QUARTER = 4;
 
 const PER_TICK_BUDGET = 100;
@@ -180,6 +185,66 @@ async function processOne(env, ctx, now, key, sub) {
       return true;
     }
     return false;
+  }
+
+  // Open the Doors bootcamp — course-started + course-completed.
+  // Reads course:<hash> (the bootcamp's progress KV row) once per
+  // subscriber per tick. If the operator never opened the bootcamp,
+  // the read returns the empty default and both branches no-op.
+  //
+  // Trigger conditions:
+  //   - course-started:    progress.startedAt set + 24h passed +
+  //                        no welcome_course_sent_at on sub
+  //   - course-completed:  progress.completed.length >= 16 + no
+  //                        welcome_course_completed_sent_at on sub
+  //
+  // Both fire at most once per subscriber, ever. The 24h delay on
+  // the started email lets an operator who started impulsively and
+  // closed the tab get a nudge the next day instead of seeing the
+  // email seconds after they opened the page.
+  if (!sub.welcome_course_sent_at || !sub.welcome_course_completed_sent_at) {
+    const subHash = key.replace(/^sub:/, '');
+    let courseProgress = null;
+    try { courseProgress = await readCourseProgress(env, subHash); }
+    catch (_) { courseProgress = null; }
+    if (courseProgress) {
+      // course-started — startedAt set + 24h passed + not previously sent
+      if (!sub.welcome_course_sent_at
+          && Number.isFinite(courseProgress.startedAt)
+          && now - courseProgress.startedAt >= ONE_DAY_MS) {
+        const tpl = lifecycleCourseStartedEmail({
+          locale,
+          courseUrl: `${baseUrl}${locale === 'es' ? '/es' : ''}/course/`,
+          unsubUrl,
+        });
+        if (await sendLifecycle(env, ctx, key, sub, tpl)) {
+          sub.welcome_course_sent_at = now;
+          tickQuarterCount(sub, now);
+          await env.AUTH_SESSIONS.put(key, JSON.stringify(sub));
+          return true;
+        }
+        return false;
+      }
+      // course-completed — 16/16 lessons + not previously sent
+      const completedCount = Array.isArray(courseProgress.completed)
+        ? courseProgress.completed.length
+        : 0;
+      if (!sub.welcome_course_completed_sent_at
+          && completedCount >= COURSE_TOTAL_LESSONS) {
+        const tpl = lifecycleCourseCompletedEmail({
+          locale,
+          carePlanUrl: `${baseUrl}${locale === 'es' ? '/es' : ''}/course/care-plan/`,
+          unsubUrl,
+        });
+        if (await sendLifecycle(env, ctx, key, sub, tpl)) {
+          sub.welcome_course_completed_sent_at = now;
+          tickQuarterCount(sub, now);
+          await env.AUTH_SESSIONS.put(key, JSON.stringify(sub));
+          return true;
+        }
+        return false;
+      }
+    }
   }
 
   return false;

@@ -1,0 +1,230 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-29T00:38:10.142Z",
+  "engine": "f5",
+  "model": "don-reference.m4a",
+  "voice": "f5:don-reference.m4a",
+  "language": "en",
+  "total": 173.45,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "opener",
+      "selector": ".course-hero h1",
+      "text": "Before you replace it. Name what is broken.",
+      "start": 0,
+      "end": 1.48
+    },
+    {
+      "id": 1,
+      "kind": "opener",
+      "selector": ".course-hero .promise",
+      "text": "Open your current restaurant site in another tab. Walk through ten common audit items, rank them by how much they are hurting you, and write notes on the top three. You leave this lesson with a punch list, not a vague unease, and a clear sense of what to prioritize in the rebuild.",
+      "start": 2.13,
+      "end": 13.06
+    },
+    {
+      "id": 2,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "A vague feeling that \"my site is bad\" is the worst possible briefing for a rebuild. By the end of this lesson, you trade the feeling for a sorted list of specific problems, ordered by what they are costing you.",
+      "start": 14.26,
+      "end": 22.48
+    },
+    {
+      "id": 3,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Open your current site in another browser tab. Pull it up on your phone too. Look at it the way a stranger would, as someone who has never been to your restaurant, who has thirty seconds to decide whether to walk in tonight. That is the audit perspective. Do not grade the site against your taste; grade it against that stranger's needs.",
+      "start": 23,
+      "end": 36.09
+    },
+    {
+      "id": 4,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "The ten leaks.",
+      "start": 37.19,
+      "end": 37.19
+    },
+    {
+      "id": 5,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "Below are the ten most common things that hurt restaurant websites. Walk through each one against your real site. Use the up/down buttons to rank them in order of severity, the worst at the top.",
+      "start": 37.89,
+      "end": 45.6
+    },
+    {
+      "id": 6,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "The top three turn red as you rank them, because the top three are where you will spend your rebuild time. The bottom four can wait. The middle three are the ones you will write notes about after, issues you know about but have not decided how to handle yet.",
+      "start": 46.12,
+      "end": 56.28
+    },
+    {
+      "id": 7,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "The colors reflect your ranking, not ours. Red means \"you said this hurts most\", not \"the bootcamp grades this as bad.\"",
+      "start": 56.8,
+      "end": 61.31
+    },
+    {
+      "id": 8,
+      "kind": "widget-pause",
+      "selector": "#post-body > section:nth-of-type(1)",
+      "start": 61.71,
+      "end": 61.71,
+      "widget": "drag-rank",
+      "contextKey": "leakRank"
+    },
+    {
+      "id": 9,
+      "kind": "body",
+      "selector": "#post-body > div:nth-of-type(1) > p:nth-of-type(1)",
+      "text": "Your top three are now red. Those are what the rest of the bootcamp will help you fix first. The middle and bottom items still matter, but if you only had time to address three things this month, those are the ones.",
+      "start": 62.11,
+      "end": 70.53
+    },
+    {
+      "id": 10,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Notes on your top three.",
+      "start": 71.63,
+      "end": 72.21
+    },
+    {
+      "id": 11,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "For each of the top three you just ranked, take two minutes to write what specifically is wrong, not just \"the menu is buried\" but \"the menu is a twenty nineteen P D F and prices have changed twice since,\" or \"the hours show 5 PM but I actually open at 4 on Fridays.\" Specificity now saves you from re-discovering the same problem in Module 3.",
+      "start": 72.91,
+      "end": 86.43
+    },
+    {
+      "id": 12,
+      "kind": "widget-pause",
+      "selector": "#post-body > section:nth-of-type(2)",
+      "start": 86.83,
+      "end": 86.83,
+      "widget": "text-input",
+      "contextKey": "leakNotes",
+      "label": "Notes on your top three leaks"
+    },
+    {
+      "id": 13,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "One free tool to ground-truth the audit.",
+      "start": 87.23,
+      "end": 88.53
+    },
+    {
+      "id": 14,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "You just graded your site by eye. That is the right place to start, the human's read is what diners actually do. But there are a few free tools that will catch things eyes miss, especially around performance and how Google sees your page.",
+      "start": 89.23,
+      "end": 98.46
+    },
+    {
+      "id": 15,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Muntin Restaurant Audit Free, no signup. Scores your site on the ten leaks above plus a few more, in plain language. Open the audit →",
+      "start": 98.98,
+      "end": 104.13
+    },
+    {
+      "id": 16,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "PageSpeed Insights Google's free performance test. Run your site U R L through it; look at the mobile score. PageSpeed →",
+      "start": 104.45,
+      "end": 109.1
+    },
+    {
+      "id": 17,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Muntin S E O Grader Checks how a restaurant site shows up in local search, including Google Business Profile parity. Open S E O Grader →",
+      "start": 109.42,
+      "end": 114.7
+    },
+    {
+      "id": 18,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "If any of these surfaces something your audit missed, add it to your notes above. Then close those tabs and stop looking. You have enough to design from.",
+      "start": 115.05,
+      "end": 120.91
+    },
+    {
+      "id": 19,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "What this changes downstream.",
+      "start": 122.01,
+      "end": 122.84
+    },
+    {
+      "id": 20,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "From Lesson 7 forward, every lesson in this bootcamp is designed to fix one or more of the items in your ranking. Lesson 8 (menu) addresses \"menu buried\" and \"outdated copy\"; Lesson 9 (photos) addresses \"photos bad\"; Lesson 10 (hours) addresses \"hours stale\"; Lesson 12 (local S E O) addresses \"address vague.\" The rebuild track does not waste your time on things you do not need to fix.",
+      "start": 123.54,
+      "end": 138.8
+    },
+    {
+      "id": 21,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "Your top three are also load-bearing for the L14 generator: when you download your finished site at the end of the bootcamp, those three will be the ones the generator made sure to handle differently than your old site did.",
+      "start": 139.32,
+      "end": 148.05
+    },
+    {
+      "id": 22,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(3) h2",
+      "text": "You traded vague unease for a punch list.",
+      "start": 149.35,
+      "end": 150.59
+    },
+    {
+      "id": 23,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(3) p",
+      "text": "A ranked list of ten common restaurant-site failures, your top three turned red, and notes on what is specifically broken about each, saved in your browser. The rest of the bootcamp reads this and prioritizes the fixes you actually need.",
+      "start": 151.19,
+      "end": 160.61
+    },
+    {
+      "id": 24,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(3) p",
+      "text": "The discipline of naming what is broken is the half of rebuilding most operators skip. You did not.",
+      "start": 161.21,
+      "end": 164.95
+    },
+    {
+      "id": 25,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(3) p",
+      "text": "Print the Lesson 5 tear-sheet →",
+      "start": 165.55,
+      "end": 166.55
+    },
+    {
+      "id": 26,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "L6b uses the audit ranking you just set as the starting point for a deeper diagnostic of the top issues. The rest of the bootcamp reads both lessons' outputs directly.",
+      "start": 166.9,
+      "end": 173.45
+    }
+  ]
+}

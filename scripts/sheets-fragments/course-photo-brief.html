@@ -1,0 +1,48 @@
+    <form id="sheet-fields" class="sheet-form" autocomplete="off" novalidate>
+      <fieldset>
+        <legend>Header</legend>
+        <label><span><span>Restaurant name</span></span><input type="text" name="name" data-context-key="restaurantProfile.name" /></label>
+        <label><span><span>Shoot date</span></span><input type="date" name="shoot_date" /></label>
+        <label><span><span>Shooter (photographer name or 'in-house phone')</span></span><input type="text" name="shooter" /></label>
+        <label><span><span>Time of day (window-light hour)</span></span><input type="text" name="time_of_day" placeholder="e.g., 10–11 AM (north-facing window)" /></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Shot list — eight families</legend>
+        <span class="field-help">From L9. Most operators need three of each family. Skip the family if it doesn't apply (e.g., no outdoor seating → skip patio family).</span>
+        <table class="sheet-row-table">
+          <thead><tr><th>#</th><th>Family</th><th>Specific dish / subject</th><th>Plating note</th><th>Angle (overhead / 45° / eye)</th><th>Shot?</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>Hero dish (signature)</td><td><input type="text" name="s1_subj" /></td><td><input type="text" name="s1_note" /></td><td><select name="s1_ang"><option>—</option><option>overhead</option><option>45°</option><option>eye</option></select></td><td><input type="checkbox" name="s1_done" /></td></tr>
+            <tr><td>2</td><td>Range — 2nd dish (different section)</td><td><input type="text" name="s2_subj" /></td><td><input type="text" name="s2_note" /></td><td><select name="s2_ang"><option>—</option><option>overhead</option><option>45°</option><option>eye</option></select></td><td><input type="checkbox" name="s2_done" /></td></tr>
+            <tr><td>3</td><td>Range — 3rd dish (different section)</td><td><input type="text" name="s3_subj" /></td><td><input type="text" name="s3_note" /></td><td><select name="s3_ang"><option>—</option><option>overhead</option><option>45°</option><option>eye</option></select></td><td><input type="checkbox" name="s3_done" /></td></tr>
+            <tr><td>4</td><td>Drink (signature cocktail / coffee)</td><td><input type="text" name="s4_subj" /></td><td><input type="text" name="s4_note" /></td><td><select name="s4_ang"><option>—</option><option>overhead</option><option>45°</option><option>eye</option></select></td><td><input type="checkbox" name="s4_done" /></td></tr>
+            <tr><td>5</td><td>Process (kitchen / pour / plating)</td><td><input type="text" name="s5_subj" /></td><td><input type="text" name="s5_note" /></td><td><select name="s5_ang"><option>—</option><option>overhead</option><option>45°</option><option>eye</option></select></td><td><input type="checkbox" name="s5_done" /></td></tr>
+            <tr><td>6</td><td>Room (interior — empty + populated)</td><td><input type="text" name="s6_subj" /></td><td><input type="text" name="s6_note" /></td><td><select name="s6_ang"><option>—</option><option>overhead</option><option>45°</option><option>eye</option></select></td><td><input type="checkbox" name="s6_done" /></td></tr>
+            <tr><td>7</td><td>Exterior (street view, sign visible)</td><td><input type="text" name="s7_subj" /></td><td><input type="text" name="s7_note" /></td><td><select name="s7_ang"><option>—</option><option>overhead</option><option>45°</option><option>eye</option></select></td><td><input type="checkbox" name="s7_done" /></td></tr>
+            <tr><td>8</td><td>People (staff portrait — owner or chef)</td><td><input type="text" name="s8_subj" /></td><td><input type="text" name="s8_note" /></td><td><select name="s8_ang"><option>—</option><option>overhead</option><option>45°</option><option>eye</option></select></td><td><input type="checkbox" name="s8_done" /></td></tr>
+          </tbody>
+        </table>
+      </fieldset>
+
+      <fieldset>
+        <legend>Lighting + props</legend>
+        <label><span><span>Light source (window / softbox / overhead)</span></span><input type="text" name="light" /></label>
+        <label><span><span>Backdrop (linen, wood, marble, off-white)</span></span><input type="text" name="backdrop" /></label>
+        <label><span><span>Props (cutlery, napkin, garnish — agree before)</span></span><textarea name="props" rows="2"></textarea></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Delivery</legend>
+        <label><input type="checkbox" name="d_raw" /><span><span>Raw files delivered (within 1 week)</span></span></label>
+        <label><input type="checkbox" name="d_edited" /><span><span>Edited JPEGs delivered (within 2 weeks)</span></span></label>
+        <label><input type="checkbox" name="d_web" /><span><span>Web-sized versions in operator's hands (1500px wide max)</span></span></label>
+        <label><span><span>Where the final files live (drive link)</span></span><input type="url" name="d_location" /></label>
+      </fieldset>
+    </form>
+
+    <script>
+      (function () {
+        if (window.SheetPage) window.SheetPage.register({ slug: 'course-photo-brief' });
+      })();
+    </script>

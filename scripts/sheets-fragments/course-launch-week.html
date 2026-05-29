@@ -1,0 +1,62 @@
+    <form id="sheet-fields" class="sheet-form" autocomplete="off" novalidate>
+      <fieldset>
+        <legend>Header</legend>
+        <label><span><span>Restaurant name</span></span><input type="text" name="name" data-context-key="restaurantProfile.name" /></label>
+        <label><span><span>Live URL</span></span><input type="url" name="live_url" placeholder="https://your-restaurant.com" /></label>
+        <label><span><span>Deploy date (day site went live)</span></span><input type="date" name="deploy_date" /></label>
+        <label><span><span>Previous URL (if migrating from one)</span></span><input type="url" name="old_url" placeholder="https://old-domain.com" /></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Days 1-2 — Tell the world the site exists</legend>
+        <span class="field-help">Measurement first. Without these, you cannot see whether the next eight tasks worked.</span>
+        <table class="sheet-row-table">
+          <thead><tr><th>Task</th><th>Done?</th><th>Date</th><th>Notes / URL</th></tr></thead>
+          <tbody>
+            <tr><td>1. Submit sitemap.xml to <a href="https://search.google.com/search-console" target="_blank" rel="noopener">Google Search Console</a></td><td><input type="checkbox" name="t1_done" /></td><td><input type="date" name="t1_date" /></td><td><input type="text" name="t1_notes" placeholder="e.g., sitemap.xml accepted, 12 URLs indexed" /></td></tr>
+            <tr><td>2. Submit to <a href="https://www.bing.com/webmasters" target="_blank" rel="noopener">Bing Webmaster Tools</a> (5 min, free)</td><td><input type="checkbox" name="t2_done" /></td><td><input type="date" name="t2_date" /></td><td><input type="text" name="t2_notes" placeholder="optional but very fast" /></td></tr>
+            <tr><td>3. Verify <a href="/glossary/schema/">schema.org</a> markup on home page using Google's <a href="https://search.google.com/test/rich-results" target="_blank" rel="noopener">Rich Results test</a></td><td><input type="checkbox" name="t3_done" /></td><td><input type="date" name="t3_date" /></td><td><input type="text" name="t3_notes" placeholder="Restaurant schema valid? Address parses?" /></td></tr>
+            <tr><td>4. Run the live URL through <a href="/tools/seo-grader/">Muntin SEO Grader</a> and screenshot the baseline score</td><td><input type="checkbox" name="t4_done" /></td><td><input type="date" name="t4_date" /></td><td><input type="text" name="t4_notes" placeholder="baseline score; come back in 90 days to compare" /></td></tr>
+          </tbody>
+        </table>
+      </fieldset>
+
+      <fieldset>
+        <legend>Days 3-4 — Reconcile the old listings</legend>
+        <span class="field-help">Every diner who Googled your restaurant in the last year landed on whatever URL Google had cached. If you don't update these surfaces, half your traffic clicks into a dead address.</span>
+        <table class="sheet-row-table">
+          <thead><tr><th>Task</th><th>Done?</th><th>Date</th><th>Notes / URL</th></tr></thead>
+          <tbody>
+            <tr><td>5. Set up 301 redirects from old URL → new URL (if migrating)</td><td><input type="checkbox" name="t5_done" /></td><td><input type="date" name="t5_date" /></td><td><input type="text" name="t5_notes" placeholder="DNS or host-level redirects; preserves rankings + backlinks" /></td></tr>
+            <tr><td>6. Update website URL field in your <a href="/glossary/gbp/">Google Business Profile</a></td><td><input type="checkbox" name="t6_done" /></td><td><input type="date" name="t6_date" /></td><td><input type="text" name="t6_notes" placeholder="single biggest local-SEO lever" /></td></tr>
+            <tr><td>7. Update website URL on Yelp, TripAdvisor, OpenTable, Resy, Toast, DoorDash, Uber Eats — wherever you're listed</td><td><input type="checkbox" name="t7_done" /></td><td><input type="date" name="t7_date" /></td><td><input type="text" name="t7_notes" placeholder="list each platform you updated" /></td></tr>
+          </tbody>
+        </table>
+      </fieldset>
+
+      <fieldset>
+        <legend>Days 5-7 — Put the URL where diners see it</legend>
+        <span class="field-help">The site doesn't exist until people know about it. Three concrete places + a review-collection prompt.</span>
+        <table class="sheet-row-table">
+          <thead><tr><th>Task</th><th>Done?</th><th>Date</th><th>Notes / URL</th></tr></thead>
+          <tbody>
+            <tr><td>8. Add the URL to your Instagram bio + Facebook page + LinkedIn</td><td><input type="checkbox" name="t8_done" /></td><td><input type="date" name="t8_date" /></td><td><input type="text" name="t8_notes" placeholder="single most-clicked link in the bootcamp" /></td></tr>
+            <tr><td>9. Print 100 small cards / stickers with the URL; place at host stand, in takeout bags, at register</td><td><input type="checkbox" name="t9_done" /></td><td><input type="date" name="t9_date" /></td><td><input type="text" name="t9_notes" placeholder="VistaPrint / Moo / local printer — ~$30" /></td></tr>
+            <tr><td>10. Email 10 regulars: "we have a new site, would you tell us if anything is broken?" — most will leave a review at the same time</td><td><input type="checkbox" name="t10_done" /></td><td><input type="date" name="t10_date" /></td><td><input type="text" name="t10_notes" placeholder="seeds the first 5 reviews + finds last-mile bugs" /></td></tr>
+          </tbody>
+        </table>
+      </fieldset>
+
+      <fieldset>
+        <legend>Week-2 retrospective</legend>
+        <label><span><span>Which tasks didn't get done? Why?</span></span><textarea name="retro_skipped" rows="3" placeholder="e.g., Tasks 5 and 6 — I don't have access to the DNS for the old domain. Need to ask the former agency."></textarea></label>
+        <label><span><span>What surprised you about how the site looks live vs in preview?</span></span><textarea name="retro_surprises" rows="3" placeholder="e.g., the menu page looked great on desktop but the prices wrapped weirdly on mobile."></textarea></label>
+        <label><span><span>One thing to fix in the next L16 monthly regenerate cycle</span></span><textarea name="retro_next" rows="2" placeholder="e.g., shorten dish names that wrap to 3 lines on mobile."></textarea></label>
+      </fieldset>
+    </form>
+
+    <script>
+      (function () {
+        if (window.SheetPage) window.SheetPage.register({ slug: 'course-launch-week' });
+      })();
+    </script>

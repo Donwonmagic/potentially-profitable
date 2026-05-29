@@ -109,9 +109,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=a497939fe0a3" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=4c628560c207" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a497939fe0a3"><link rel="stylesheet" href="/assets/site-article.css?v=4c628560c207"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=eb64c9129835" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=8aacc4672d8a" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=eb64c9129835"><link rel="stylesheet" href="/assets/site-article.css?v=8aacc4672d8a"></noscript>
 </head>
 <body class="window-canvas" data-locale="en">
 
@@ -211,6 +211,12 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <p class="window-composer__hostess">Whatever you&rsquo;d type to a friend who knows this stuff &mdash; that&rsquo;s enough.</p>
 
       <form class="window-composer__form" id="windowForm" autocomplete="off">
+
+        <!-- Course-context hidden field — populated by window-course-context.js
+             when the visitor arrives from a /course/ page. The auto-reply
+             matcher in src/lib/window.js reads this on submission so Don's
+             auto-response can name the lesson. -->
+        <input type="hidden" id="windowFromLesson" name="from_lesson" value="" />
 
         <!-- Optional context, collapsed by default — restaurant first
              (operators identify by room before name), URL second, name
@@ -359,5 +365,54 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <script src="/assets/js/window-photos.js?v=20260501-engagement" defer></script>
 <script src="/assets/js/window-voice.js?v=20260501-engagement" defer></script>
 <script src="/assets/js/window-callback.js?v=20260501-engagement" defer></script>
+
+<!-- Course-context seeding — populates the hidden from_lesson field
+     + (when textarea is empty) the textarea pre-prompt when the
+     visitor arrives from a /course/ page. Anonymous-first preserved:
+     reads from document.referrer + window.location.search;
+     no fetch, no server lookup. -->
+<script>
+(function () {
+  if (typeof document === 'undefined') return;
+  var hidden = document.getElementById('windowFromLesson');
+  var body   = document.getElementById('windowBody');
+  if (!hidden && !body) return;
+
+  // Parse the referring URL for /course/<module>/[<fork>/]<lesson>/.
+  // Accept both EN (/course/) and ES (/es/course/) referrers.
+  var ref = (typeof document.referrer === 'string') ? document.referrer : '';
+  var fromQuery = '';
+  try {
+    var sp = new URLSearchParams(window.location.search);
+    fromQuery = sp.get('from_lesson') || sp.get('lesson') || '';
+  } catch (_) {}
+
+  var match = null;
+  if (fromQuery) {
+    match = { module: '', lesson: fromQuery.trim(), position: '' };
+  } else if (ref) {
+    var m = ref.match(/\/(es\/)?course\/(m[1-4]-[a-z-]+)\/(?:fresh\/|rebuild\/)?([a-z0-9-]+)\/?(?:[?#]|$)/);
+    if (m) match = { module: m[2], lesson: m[3], position: '' };
+  }
+  if (!match || !match.lesson) return;
+
+  // Populate the hidden field for the server-side auto-reply matcher.
+  if (hidden) hidden.value = match.lesson;
+
+  // If the textarea is empty, seed a one-line pre-prompt naming the
+  // lesson. Locale-aware via document.documentElement.lang.
+  if (body && !body.value) {
+    var locale = (document.documentElement.getAttribute('lang') || 'en').toLowerCase().startsWith('es') ? 'es' : 'en';
+    // Pretty-print lesson id: "what-a-site-does" → "what a site does"
+    var pretty = match.lesson.replace(/-/g, ' ');
+    var seed = locale === 'es'
+      ? ('Estoy en la lección "' + pretty + '" del bootcamp y ')
+      : ('I’m on the "' + pretty + '" lesson in the bootcamp and ');
+    body.value = seed;
+    // Move cursor to the end so the operator types after the seed.
+    try { body.setSelectionRange(seed.length, seed.length); } catch (_) {}
+  }
+})();
+</script>
 </body>
 </html>

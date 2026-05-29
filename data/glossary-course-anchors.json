@@ -1,0 +1,40 @@
+{
+  "_doc": "Phase G — glossary→course-lesson anchor map. For each glossary term where the course teaches the concept directly, point at the lesson where the operator does the thing. Consumed by scripts/inject-glossary-lesson-sidecar.mjs which stamps a 'First introduced in Lesson N' rail on each anchored term's page. Not every term needs an entry — only the ones where the course meaningfully demonstrates the concept. Verified term slugs match directory names under /glossary/.",
+
+  "_status": "v1 — seed 2026-05-26. Add entries as new course-glossary affinities emerge.",
+
+  "anchors": {
+    "above-the-fold":         { "lesson": "what-a-site-does",   "module": "m1-orient",   "position": 2,  "title_en": "What a restaurant site actually does",         "title_es": "Qué hace realmente un sitio de restaurante" },
+    "cta":                    { "lesson": "what-a-site-does",   "module": "m1-orient",   "position": 2,  "title_en": "What a restaurant site actually does",         "title_es": "Qué hace realmente un sitio de restaurante" },
+    "cuisine-pitch":          { "lesson": "one-promise",        "module": "m1-orient",   "position": 3,  "title_en": "Your one promise",                              "title_es": "Tu única promesa" },
+    "brand-identity":         { "lesson": "one-promise",        "module": "m1-orient",   "position": 3,  "title_en": "Your one promise",                              "title_es": "Tu única promesa" },
+    "brand-design":           { "lesson": "palette-voice",      "module": "m2-decide",   "position": 7,  "title_en": "Palette + voice",                               "title_es": "Paleta + voz" },
+    "color-palette":          { "lesson": "palette-voice",      "module": "m2-decide",   "position": 7,  "title_en": "Palette + voice",                               "title_es": "Paleta + voz" },
+    "color-harmony":          { "lesson": "palette-voice",      "module": "m2-decide",   "position": 7,  "title_en": "Palette + voice",                               "title_es": "Paleta + voz" },
+    "accessible-pair":        { "lesson": "palette-voice",      "module": "m2-decide",   "position": 7,  "title_en": "Palette + voice",                               "title_es": "Paleta + voz" },
+    "complementary-colors":   { "lesson": "palette-voice",      "module": "m2-decide",   "position": 7,  "title_en": "Palette + voice",                               "title_es": "Paleta + voz" },
+    "analogous-colors":       { "lesson": "palette-voice",      "module": "m2-decide",   "position": 7,  "title_en": "Palette + voice",                               "title_es": "Paleta + voz" },
+    "typography-pairing":     { "lesson": "palette-voice",      "module": "m2-decide",   "position": 7,  "title_en": "Palette + voice",                               "title_es": "Paleta + voz" },
+    "html-menu":              { "lesson": "menu",               "module": "m3-assemble", "position": 8,  "title_en": "Menu + plate-cost loop",                        "title_es": "Menú + ciclo de costo por plato" },
+    "menu-engineering":       { "lesson": "menu",               "module": "m3-assemble", "position": 8,  "title_en": "Menu + plate-cost loop",                        "title_es": "Menú + ciclo de costo por plato" },
+    "menu-copy":              { "lesson": "menu",               "module": "m3-assemble", "position": 8,  "title_en": "Menu + plate-cost loop",                        "title_es": "Menú + ciclo de costo por plato" },
+    "charm-pricing":          { "lesson": "menu",               "module": "m3-assemble", "position": 8,  "title_en": "Menu + plate-cost loop",                        "title_es": "Menú + ciclo de costo por plato" },
+    "photo-brief":            { "lesson": "photos",             "module": "m3-assemble", "position": 9,  "title_en": "Photo brief from scratch",                      "title_es": "Brief de fotos desde cero", "track": "fresh" },
+    "hours-of-operation":     { "lesson": "hours-contact",      "module": "m3-assemble", "position": 10, "title_en": "Hours + holidays + contact",                    "title_es": "Horarios + feriados + contacto" },
+    "hours-visibility":       { "lesson": "hours-contact",      "module": "m3-assemble", "position": 10, "title_en": "Hours + holidays + contact",                    "title_es": "Horarios + feriados + contacto" },
+    "holiday-hours":          { "lesson": "hours-contact",      "module": "m3-assemble", "position": 10, "title_en": "Hours + holidays + contact",                    "title_es": "Horarios + feriados + contacto" },
+    "click-to-call":          { "lesson": "hours-contact",      "module": "m3-assemble", "position": 10, "title_en": "Hours + holidays + contact",                    "title_es": "Horarios + feriados + contacto" },
+    "click-to-directions":    { "lesson": "hours-contact",      "module": "m3-assemble", "position": 10, "title_en": "Hours + holidays + contact",                    "title_es": "Horarios + feriados + contacto" },
+    "gbp":                    { "lesson": "gbp",                "module": "m3-assemble", "position": 11, "title_en": "Google Business Profile",                       "title_es": "Perfil de Negocio de Google", "track": "fresh" },
+    "google-business-profile":{ "lesson": "gbp",                "module": "m3-assemble", "position": 11, "title_en": "Google Business Profile",                       "title_es": "Perfil de Negocio de Google", "track": "fresh" },
+    "nap-consistency":        { "lesson": "gbp",                "module": "m3-assemble", "position": 11, "title_en": "Google Business Profile",                       "title_es": "Perfil de Negocio de Google", "track": "fresh" },
+    "map-pack":               { "lesson": "local-seo",          "module": "m4-launch",   "position": 12, "title_en": "Local SEO anchors",                             "title_es": "Anclas de SEO local" },
+    "schema":                 { "lesson": "local-seo",          "module": "m4-launch",   "position": 12, "title_en": "Local SEO anchors",                             "title_es": "Anclas de SEO local" },
+    "review-responsiveness":  { "lesson": "reviews",            "module": "m4-launch",   "position": 13, "title_en": "Reviews + first-week trust",                    "title_es": "Reseñas + confianza la primera semana" },
+    "core-web-vitals":        { "lesson": "generator",          "module": "m4-launch",   "position": 14, "title_en": "The Generator — download your site",            "title_es": "El Generador — descarga tu sitio" },
+    "sitemap":                { "lesson": "generator",          "module": "m4-launch",   "position": 14, "title_en": "The Generator — download your site",            "title_es": "El Generador — descarga tu sitio" },
+    "cdn":                    { "lesson": "deploy",             "module": "m4-launch",   "position": 15, "title_en": "Deploy your site to a free host",               "title_es": "Despliega tu sitio en un host gratuito" },
+    "domain-name":            { "lesson": "deploy",             "module": "m4-launch",   "position": 15, "title_en": "Deploy your site to a free host",               "title_es": "Despliega tu sitio en un host gratuito" },
+    "ssl-certificate":        { "lesson": "deploy",             "module": "m4-launch",   "position": 15, "title_en": "Deploy your site to a free host",               "title_es": "Despliega tu sitio en un host gratuito" }
+  }
+}

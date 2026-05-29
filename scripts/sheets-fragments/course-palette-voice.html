@@ -1,0 +1,53 @@
+    <form id="sheet-fields" class="sheet-form" autocomplete="off" novalidate>
+      <fieldset>
+        <legend>Header</legend>
+        <label><span><span>Restaurant name</span></span><input type="text" name="name" data-context-key="restaurantProfile.name" /></label>
+        <label><span><span>Cuisine</span></span><input type="text" name="cuisine" data-context-key="restaurantProfile.cuisine" /></label>
+        <label><span><span>Date chosen</span></span><input type="date" name="chosen_on" /></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Palette — three colors</legend>
+        <span class="field-help">From L7 palette-picker. Accent is the CTA + brand chrome; cream is the page background; ink is the body text. Pin this sheet next to the printer so any future signage / menu reorder cites these exact hex values.</span>
+        <label><span><span>Accent (hex)</span></span><input type="text" name="palette_accent" pattern="#[0-9A-Fa-f]{6}" placeholder="#1F4E5B" /></label>
+        <label><span><span>Cream / background (hex)</span></span><input type="text" name="palette_cream" pattern="#[0-9A-Fa-f]{6}" placeholder="#FAF7F2" /></label>
+        <label><span><span>Ink / body text (hex)</span></span><input type="text" name="palette_ink" pattern="#[0-9A-Fa-f]{6}" placeholder="#14161A" /></label>
+        <label><span><span>Contrast ratio (accent on cream — from picker)</span></span><input type="text" name="palette_contrast" placeholder="e.g., 6.2:1" /></label>
+        <span class="field-help">Aim for ≥4.5:1 at body text size. Below 3.0:1 the picker fails — start over with darker ink or lighter cream.</span>
+      </fieldset>
+
+      <fieldset>
+        <legend>Voice — three sliders</legend>
+        <span class="field-help">Mark where the restaurant sits on each axis. The host stand uses these to keep responses on-brand across shifts.</span>
+        <table class="sheet-row-table">
+          <thead><tr><th>Axis</th><th>Left end</th><th>Position (1–5)</th><th>Right end</th></tr></thead>
+          <tbody>
+            <tr><td>Formal ↔ Casual</td><td>Formal</td><td><input type="number" min="1" max="5" name="voice_formality" /></td><td>Casual</td></tr>
+            <tr><td>Classic ↔ Modern</td><td>Classic</td><td><input type="number" min="1" max="5" name="voice_era" /></td><td>Modern</td></tr>
+            <tr><td>Terse ↔ Warm</td><td>Terse</td><td><input type="number" min="1" max="5" name="voice_warmth" /></td><td>Warm</td></tr>
+          </tbody>
+        </table>
+      </fieldset>
+
+      <fieldset>
+        <legend>Sample copy — read aloud in your chosen voice</legend>
+        <label><span><span>The reservation confirmation email subject line</span></span><input type="text" name="sample_subject" placeholder="e.g., We've got your table — see you Saturday." /></label>
+        <label><span><span>The voicemail greeting</span></span><textarea name="sample_voicemail" rows="2" placeholder="e.g., Hey, you've got Jolene's. We're not at the phone right now — leave the name and party size and we'll text back."></textarea></label>
+        <label><span><span>The bad-review response opener (one sentence)</span></span><textarea name="sample_review" rows="2"></textarea></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Handoff record</legend>
+        <span class="field-help">Note who got the palette + voice sheet. They should ALL be working from this single source of truth.</span>
+        <label><span><span>Designer (name + date)</span></span><input type="text" name="handoff_designer" /></label>
+        <label><span><span>Printer (name + date)</span></span><input type="text" name="handoff_printer" /></label>
+        <label><span><span>Sign vendor (name + date)</span></span><input type="text" name="handoff_signage" /></label>
+        <label><span><span>FOH lead (name + date)</span></span><input type="text" name="handoff_foh" /></label>
+      </fieldset>
+    </form>
+
+    <script>
+      (function () {
+        if (window.SheetPage) window.SheetPage.register({ slug: 'course-palette-voice' });
+      })();
+    </script>

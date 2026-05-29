@@ -1,0 +1,230 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-29T02:04:09.606Z",
+  "engine": "f5",
+  "model": "don-reference.es.m4a",
+  "voice": "f5:don-reference.es.m4a",
+  "language": "es",
+  "total": 171.19,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "opener",
+      "selector": ".course-hero h1",
+      "text": "Antes de reemplazarlo. Nombra qué está roto.",
+      "start": 0,
+      "end": 1.28
+    },
+    {
+      "id": 1,
+      "kind": "opener",
+      "selector": ".course-hero .promise",
+      "text": "Abre tu sitio actual de restaurante en otra pestaña. Recorre diez puntos comunes de auditoría, ordénalos según cuánto te están haciendo daño, y escribe notas sobre los tres principales. Sales de esta lección con una lista, no con un malestar vago, y con claridad de qué priorizar en el rehacer.",
+      "start": 1.93,
+      "end": 12.45
+    },
+    {
+      "id": 2,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "Una sensación vaga de que \"mi sitio está mal\" es el peor punto de partida posible para rehacer el sitio. Al terminar esta lección, cambias la sensación por una lista ordenada de problemas específicos, según lo que te están costando.",
+      "start": 13.65,
+      "end": 21.87
+    },
+    {
+      "id": 3,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Abre tu sitio actual en otra pestaña del navegador. Ábrelo también en tu teléfono. Míralo como lo vería un desconocido, alguien que nunca ha estado en tu restaurante, que tiene treinta segundos para decidir si entra esta noche. Esa es la perspectiva de auditoría. No califiques el sitio contra tu gusto; califícalo contra las necesidades de ese desconocido.",
+      "start": 22.39,
+      "end": 34.78
+    },
+    {
+      "id": 4,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Las diez fugas.",
+      "start": 35.88,
+      "end": 36.27
+    },
+    {
+      "id": 5,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "Abajo están las diez cosas más comunes que les hacen daño a los sitios de restaurantes. Recorre cada una contra tu sitio real. Usa los botones de arriba y abajo para ordenarlas por severidad, la peor arriba.",
+      "start": 36.97,
+      "end": 44.09
+    },
+    {
+      "id": 6,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "Los tres primeros se vuelven rojos cuando los ordenas, porque los tres primeros son donde vas a gastar tu tiempo de rehacer. Los cuatro de abajo pueden esperar. Los tres del medio son los que vas a tomar notas después, problemas que conoces pero no has decidido cómo manejar.",
+      "start": 44.61,
+      "end": 54.16
+    },
+    {
+      "id": 7,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "Los colores reflejan tu orden, no el nuestro. Rojo significa \"tú dijiste que esto duele más\", no \"el curso lo califica de malo.\"",
+      "start": 54.68,
+      "end": 59.01
+    },
+    {
+      "id": 8,
+      "kind": "widget-pause",
+      "selector": "#post-body > section:nth-of-type(1)",
+      "start": 59.41,
+      "end": 59.41,
+      "widget": "drag-rank",
+      "contextKey": "leakRank"
+    },
+    {
+      "id": 9,
+      "kind": "body",
+      "selector": "#post-body > div:nth-of-type(1) > p:nth-of-type(1)",
+      "text": "Tus tres primeros están en rojo. Esos son los que el resto del curso te va a ayudar a arreglar primero. Los del medio y del fondo también importan, pero si solo tuvieras tiempo de arreglar tres cosas este mes, son esos.",
+      "start": 59.81,
+      "end": 67.32
+    },
+    {
+      "id": 10,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Notas sobre tus tres primeros.",
+      "start": 68.42,
+      "end": 69.35
+    },
+    {
+      "id": 11,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "Por cada uno de los tres primeros que acabas de ordenar, tómate dos minutos para escribir qué está mal específicamente, no solo \"el menú está enterrado\" sino \"el menú es un P D F de twenty nineteen y los precios cambiaron dos veces desde entonces\", o \"los horarios dicen 5 PM pero en realidad abro a las 4 los viernes\". Ser específico ahora te ahorra redescubrir el mismo problema en el Módulo 3.",
+      "start": 70.05,
+      "end": 84.03
+    },
+    {
+      "id": 12,
+      "kind": "widget-pause",
+      "selector": "#post-body > section:nth-of-type(2)",
+      "start": 84.43,
+      "end": 84.43,
+      "widget": "text-input",
+      "contextKey": "leakNotes",
+      "label": "Notas sobre tus tres fugas principales"
+    },
+    {
+      "id": 13,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Una herramienta gratuita para revisar la auditoría.",
+      "start": 84.83,
+      "end": 86.33
+    },
+    {
+      "id": 14,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "Acabas de calificar tu sitio a ojo. Ese es el lugar correcto para empezar, la lectura humana es lo que de verdad hacen los comensales. Pero hay algunas herramientas gratuitas que van a encontrar cosas que los ojos no, sobre todo de rendimiento y de cómo Google ve tu página.",
+      "start": 87.03,
+      "end": 96.56
+    },
+    {
+      "id": 15,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Auditoría de restaurante Muntin Gratis, sin registro. Califica tu sitio contra las diez fugas de arriba más unas cuantas más, en lenguaje claro. Abrir auditoría →",
+      "start": 97.08,
+      "end": 102.76
+    },
+    {
+      "id": 16,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "PageSpeed Insights La prueba de rendimiento gratuita de Google. Mete la U R L de tu sitio; mira la calificación móvil. PageSpeed →",
+      "start": 103.08,
+      "end": 107.63
+    },
+    {
+      "id": 17,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "S E O Grader de Muntin Verifica cómo aparece un sitio de restaurante en la búsqueda local, incluyendo paridad con Google Business Profile. Abrir S E O Grader →",
+      "start": 107.95,
+      "end": 113.44
+    },
+    {
+      "id": 18,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "Si alguna de estas te muestra algo que tu auditoría no vio, agrégalo a las notas de arriba. Luego cierra esas pestañas y deja de mirar. Tienes suficiente para diseñar.",
+      "start": 113.79,
+      "end": 119.61
+    },
+    {
+      "id": 19,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "Qué cambia esto de aquí en adelante.",
+      "start": 120.71,
+      "end": 121.89
+    },
+    {
+      "id": 20,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "De la Lección 7 en adelante, cada lección del bootcamp está diseñada para arreglar uno o más de los puntos de tu orden. La Lección 8 (menú) atiende \"menú enterrado\" y \"texto gastado\"; la Lección 9 (fotos) atiende \"fotos malas\"; la Lección 10 (horarios) atiende \"horarios viejos\"; la Lección 12 (S E O local) atiende \"dirección vaga\". La pista de rehacer no te hace perder tiempo en cosas que no necesitas arreglar.",
+      "start": 122.59,
+      "end": 137.21
+    },
+    {
+      "id": 21,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "Tus tres primeros también alimentan al generador de la L14: cuando descargues tu sitio terminado al final del bootcamp, esos tres son los que el generador se aseguró de manejar distinto a como lo hacía tu sitio viejo.",
+      "start": 137.73,
+      "end": 145.24
+    },
+    {
+      "id": 22,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(3) h2",
+      "text": "Cambiaste el malestar vago por una lista clara.",
+      "start": 146.54,
+      "end": 148.02
+    },
+    {
+      "id": 23,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(3) p",
+      "text": "Una lista ordenada de diez fallas comunes de sitios de restaurantes, tus tres primeros en rojo, y notas de qué está roto específicamente en cada uno, guardadas en tu navegador. El resto del curso usa esto para priorizar las correcciones que de verdad necesitas.",
+      "start": 148.62,
+      "end": 157.62
+    },
+    {
+      "id": 24,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(3) p",
+      "text": "La disciplina de nombrar qué está roto es la mitad del rehacer que la mayoría de los operadores se salta. Tú no.",
+      "start": 158.22,
+      "end": 162
+    },
+    {
+      "id": 25,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(3) p",
+      "text": "Imprime la hoja de la Lección 5 →",
+      "start": 162.6,
+      "end": 163.72
+    },
+    {
+      "id": 26,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "La L6b usa el orden de auditoría que acabas de fijar como punto de partida para un diagnóstico más profundo de los problemas principales. El resto del curso lee las salidas de ambas lecciones directamente.",
+      "start": 164.07,
+      "end": 171.19
+    }
+  ]
+}

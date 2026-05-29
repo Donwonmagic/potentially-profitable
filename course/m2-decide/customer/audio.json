@@ -1,0 +1,213 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-29T00:29:41.159Z",
+  "engine": "f5",
+  "model": "don-reference.m4a",
+  "voice": "f5:don-reference.m4a",
+  "language": "en",
+  "total": 188.01,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "opener",
+      "selector": ".course-hero h1",
+      "text": "The diner you are cooking for. In one paragraph. Not your customer base, one person.",
+      "start": 0,
+      "end": 2.8
+    },
+    {
+      "id": 1,
+      "kind": "opener",
+      "selector": ".course-hero .promise",
+      "text": "Every later lesson, naming, audit, photos, menu, voice, gets sharper when you know who is reading. By the end of this lesson, you have a single working sketch of that person, anchored to a neighborhood, saved in your context for the rest of the bootcamp.",
+      "start": 3.45,
+      "end": 13.61
+    },
+    {
+      "id": 2,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "\"Everyone\" is not a customer. A restaurant for everyone serves no one. The most useful thing you can do this week is name a single person and design the rest of the bootcamp at them.",
+      "start": 14.81,
+      "end": 21.92
+    },
+    {
+      "id": 3,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Marketing schools call this a persona, a fictional but specific archetype of your real customer. Operators who get this wrong end up writing in a voice that suits no one, picking photos that look great to no one in particular, choosing hours that work for an imaginary average. Operators who get it right have a person in mind whenever a decision is hard, and the decision gets easier.",
+      "start": 22.44,
+      "end": 37.76
+    },
+    {
+      "id": 4,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "Your task in this lesson: write one paragraph about that person. Then anchor it to a neighborhood and a price expectation. That is the whole exercise.",
+      "start": 38.28,
+      "end": 44.09
+    },
+    {
+      "id": 5,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "The single best paragraph.",
+      "start": 45.19,
+      "end": 45.97
+    },
+    {
+      "id": 6,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "Pick a real customer you have already served (if you are rebuilding) or the one you are hoping for (if you are starting fresh). Sketch them in three to six sentences. Be specific. Anna, 34, schoolteacher, lives ten blocks away, two kids in elementary school, comes in on Friday nights when her husband is on bedtime duty, orders the same thing each time, splits a bottle of wine with her sister beats young professionals who appreciate quality dining by a factor of twenty.",
+      "start": 46.67,
+      "end": 65.49
+    },
+    {
+      "id": 7,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "If you cannot picture them, you are not ready to design for them. If you can, you will see the answer to most of your design questions in their face.",
+      "start": 66.01,
+      "end": 71.71
+    },
+    {
+      "id": 8,
+      "kind": "widget-pause",
+      "selector": "#post-body > section:nth-of-type(1)",
+      "start": 72.11,
+      "end": 72.11,
+      "widget": "persona-card-builder"
+    },
+    {
+      "id": 9,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "Now read what you wrote. Are there sentences you could write about any restaurant? Cut them. Are there sentences that could only describe your restaurant's regular? Keep them. The paragraph should make you nod in recognition; if it feels generic, write a different person you actually know.",
+      "start": 72.51,
+      "end": 83.8
+    },
+    {
+      "id": 10,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Anchor them to a neighborhood.",
+      "start": 84.9,
+      "end": 85.74
+    },
+    {
+      "id": 11,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "The other half of \"who\" is \"where.\" A diner does not exist in a vacuum, they exist in a place, with a commute, with other restaurants nearby, with a public-school district that decides what time school lets out and when families eat dinner. Write down the one phrase that captures where your customer lives or works.",
+      "start": 86.44,
+      "end": 98.68
+    },
+    {
+      "id": 12,
+      "kind": "widget-pause",
+      "selector": "#post-body > section:nth-of-type(2)",
+      "start": 99.08,
+      "end": 99.08,
+      "widget": "text-input",
+      "contextKey": "neighborhoodAnchor",
+      "label": "The neighborhood, in one phrase"
+    },
+    {
+      "id": 13,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "Lesson 12 (local S E O) reads this and uses it to suggest keyword phrases that match your customer's search behavior. Lesson 9 (photos) reads it to suggest what the room photographs should evoke. Lesson 10 (hours) reads it to ask whether your hours make sense for the schools and commutes of the neighborhood you just named.",
+      "start": 99.48,
+      "end": 112.25
+    },
+    {
+      "id": 14,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(1)",
+      "text": "How wide does that neighborhood reach?",
+      "start": 113.35,
+      "end": 114.58
+    },
+    {
+      "id": 15,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "Drag the slider below to see what radius around your restaurant feels right for \"who comes on a weeknight.\" Most neighborhood restaurants land between 1 and 2 miles for walkable + short-drive customers. Counter-service and takeout-heavy spots often go wider. Tasting menus and destination restaurants go wider still. This number flows into Lesson 12 for local-S E O keyword phrasing.",
+      "start": 115.28,
+      "end": 130.41
+    },
+    {
+      "id": 16,
+      "kind": "widget-pause",
+      "selector": "#post-body > section:nth-of-type(3)",
+      "start": 130.81,
+      "end": 130.81,
+      "widget": "map-radius"
+    },
+    {
+      "id": 17,
+      "kind": "body",
+      "selector": "#post-body > div:nth-of-type(1) > p:nth-of-type(1)",
+      "text": "Two important things this lesson does Not ask you to do. It does not ask you to nail your tagline (that was Lesson 3). It does not ask you to think about secondary customers. Pick one person. The rest comes later.",
+      "start": 131.21,
+      "end": 139.61
+    },
+    {
+      "id": 18,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "What this changes downstream.",
+      "start": 140.71,
+      "end": 141.58
+    },
+    {
+      "id": 19,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "From this lesson forward, every time a lesson asks you to pick a voice, a color, a photograph, or a menu item to lead with, the right answer is the answer that fits this person. Not all your customers; this one . The discipline of choosing for one person sharpens every decision after.",
+      "start": 142.28,
+      "end": 153.46
+    },
+    {
+      "id": 20,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "If you find yourself wanting two personas because \"we really have two different kinds of customers,\" that is a signal, usually that your concept has not picked its lane yet. We will come back to that in Module 3 when the menu lesson asks which 3 dishes you would lead with on the home page. Two personas means two front pages, and most independent restaurants cannot afford two front pages.",
+      "start": 153.98,
+      "end": 169.36
+    },
+    {
+      "id": 21,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(4) h2",
+      "text": "You named the person you are cooking for.",
+      "start": 170.66,
+      "end": 171.91
+    },
+    {
+      "id": 22,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(4) p",
+      "text": "A specific paragraph about one real or imagined customer, anchored to a specific neighborhood, saved in your browser. Every later lesson reads this as the audience to design at.",
+      "start": 172.51,
+      "end": 179.5
+    },
+    {
+      "id": 23,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(4) p",
+      "text": "Naming the customer is what separates a restaurant that picks its lane from one that hopes for everybody. Most operators never write this paragraph down. You just did.",
+      "start": 180.1,
+      "end": 186.61
+    },
+    {
+      "id": 24,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(4) p",
+      "text": "Print the Lesson 4 tear-sheet →",
+      "start": 187.21,
+      "end": 188.01
+    }
+  ]
+}

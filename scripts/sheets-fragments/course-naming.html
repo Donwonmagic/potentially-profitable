@@ -1,0 +1,67 @@
+    <form id="sheet-fields" class="sheet-form" autocomplete="off" novalidate>
+      <fieldset>
+        <legend>Header</legend>
+        <label><span><span>Candidate name</span></span><input type="text" name="candidate" data-context-key="restaurantProfile.name" /></label>
+        <label><span><span>Cuisine / concept tag</span></span><input type="text" name="concept" /></label>
+        <label><span><span>Opening neighborhood</span></span><input type="text" name="neighborhood" /></label>
+        <label><span><span>Vetted by + date</span></span><input type="text" name="vetted_by" /></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Says-it-out-loud test</legend>
+        <span class="field-help">Read the name to three people over a noisy phone connection. They write it down. If anyone misspells it, the .com search will fail for diners too.</span>
+        <table class="sheet-row-table">
+          <thead><tr><th>Listener (first name)</th><th>Wrote it as</th><th>Correct?</th></tr></thead>
+          <tbody>
+            <tr><td><input type="text" name="l1_name" /></td><td><input type="text" name="l1_heard" /></td><td><input type="checkbox" name="l1_ok" /></td></tr>
+            <tr><td><input type="text" name="l2_name" /></td><td><input type="text" name="l2_heard" /></td><td><input type="checkbox" name="l2_ok" /></td></tr>
+            <tr><td><input type="text" name="l3_name" /></td><td><input type="text" name="l3_heard" /></td><td><input type="checkbox" name="l3_ok" /></td></tr>
+          </tbody>
+        </table>
+      </fieldset>
+
+      <fieldset>
+        <legend>Trademark search (USPTO + state)</legend>
+        <span class="field-help">tess2.uspto.gov for the federal mark. Your state's Secretary of State business-entity search for in-state collisions. Check both.</span>
+        <label><input type="checkbox" name="tm_uspto" /><span><span>USPTO TESS search clean (no live mark in class 43 — restaurants)</span></span></label>
+        <label><input type="checkbox" name="tm_state" /><span><span>State business-entity search clean</span></span></label>
+        <label><span><span>Notes / borderline collisions to investigate</span></span><textarea name="tm_notes" rows="2"></textarea></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Domain — register the .com FIRST</legend>
+        <label><span><span>Exact .com sought</span></span><input type="text" name="domain_com" placeholder="e.g., jolenescafe.com" /></label>
+        <label><input type="checkbox" name="domain_com_avail" /><span><span>.com available</span></span></label>
+        <label><span><span>If .com taken — what does the squatter want? Or alt domains?</span></span><textarea name="domain_alt" rows="2" placeholder="e.g., jolenes-cafe.com / jolenescafedc.com / wright-jolenes.com"></textarea></label>
+        <label><span><span>Registrar (recommend Cloudflare Registrar or Porkbun)</span></span><input type="text" name="domain_registrar" /></label>
+        <label><span><span>Date registered</span></span><input type="date" name="domain_date" /></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Social handles</legend>
+        <span class="field-help">Same handle across all four channels matters more than the name on each individual one. Pick one handle; reserve it everywhere even if you only use two.</span>
+        <table class="sheet-row-table">
+          <thead><tr><th>Platform</th><th>Handle</th><th>Reserved?</th></tr></thead>
+          <tbody>
+            <tr><td>Instagram</td><td><input type="text" name="ig" /></td><td><input type="checkbox" name="ig_ok" /></td></tr>
+            <tr><td>TikTok</td><td><input type="text" name="tt" /></td><td><input type="checkbox" name="tt_ok" /></td></tr>
+            <tr><td>Facebook page</td><td><input type="text" name="fb" /></td><td><input type="checkbox" name="fb_ok" /></td></tr>
+            <tr><td>X / Threads</td><td><input type="text" name="xt" /></td><td><input type="checkbox" name="xt_ok" /></td></tr>
+          </tbody>
+        </table>
+      </fieldset>
+
+      <fieldset>
+        <legend>Final lock-in</legend>
+        <label><input type="checkbox" name="final_name" /><span><span>Name chosen</span></span></label>
+        <label><input type="checkbox" name="final_domain" /><span><span>.com registered</span></span></label>
+        <label><input type="checkbox" name="final_socials" /><span><span>Social handles reserved</span></span></label>
+        <label><input type="checkbox" name="final_signage" /><span><span>Cleared to order signage</span></span></label>
+      </fieldset>
+    </form>
+
+    <script>
+      (function () {
+        if (window.SheetPage) window.SheetPage.register({ slug: 'course-naming' });
+      })();
+    </script>

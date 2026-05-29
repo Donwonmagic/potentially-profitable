@@ -189,6 +189,33 @@ function toolItems(locale) {
   return out;
 }
 
+function courseItems(locale) {
+  const dataPath = path.join(repoRoot, 'data/course-releases.json');
+  if (!fs.existsSync(dataPath)) return [];
+  const data = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
+  const out = [];
+  for (const entry of data.releases || []) {
+    const slug = entry.slug || ''; // 'course' for hub, 'course/m1-orient' for module
+    const file = path.join(repoRoot, locale === 'es' ? 'es' : '', slug, 'index.html');
+    if (!fs.existsSync(file)) continue;
+    const meta = readMeta(file);
+    if (!meta.title) continue;
+    const url = `${SITE}${locale === 'es' ? '/es' : ''}/${slug}/`;
+    const blurb = (locale === 'es' ? entry.note_es : entry.note_en) || meta.description;
+    out.push({
+      kind: 'course',
+      title: meta.title,
+      description: blurb,
+      url,
+      pubDate: normalizeDate(entry.date).rfc,
+      pubDateIso: normalizeDate(entry.date).iso,
+      image: meta.ogImage,
+      category: locale === 'es' ? 'Curso' : 'Course',
+    });
+  }
+  return out;
+}
+
 function sheetItems(locale) {
   const dataPath = path.join(repoRoot, 'data/sheet-releases.json');
   if (!fs.existsSync(dataPath)) return [];
@@ -224,6 +251,7 @@ function buildFeed(locale) {
     ...glossaryItems(locale),
     ...toolItems(locale),
     ...sheetItems(locale),
+    ...courseItems(locale),
   ].sort((a, b) => b.pubDateIso.localeCompare(a.pubDateIso)).slice(0, MAX_ITEMS);
 
   const feedUrl = `${SITE}${locale === 'es' ? '/es' : ''}/feed.xml`;

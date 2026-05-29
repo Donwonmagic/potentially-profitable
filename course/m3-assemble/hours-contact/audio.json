@@ -1,0 +1,221 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-29T01:07:40.181Z",
+  "engine": "f5",
+  "model": "don-reference.m4a",
+  "voice": "f5:don-reference.m4a",
+  "language": "en",
+  "total": 162.3,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "opener",
+      "selector": ".course-hero h1",
+      "text": "The most-read piece of your site. Get it right once.",
+      "start": 0,
+      "end": 1.82
+    },
+    {
+      "id": 1,
+      "kind": "opener",
+      "selector": ".course-hero .promise",
+      "text": "Your hours and your phone number are read more often than every other piece of your site combined. By the end of this lesson, they are set for every day of the week, holidays are handled, and your phone is tappable on mobile.",
+      "start": 2.47,
+      "end": 11.35
+    },
+    {
+      "id": 2,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "\"Are they open right now?\" is the most common question a diner brings to your website. The site that answers it in two seconds keeps the dinner. The site that hides it behind a click loses it.",
+      "start": 12.55,
+      "end": 20.09
+    },
+    {
+      "id": 3,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Set your weekly hours.",
+      "start": 21.19,
+      "end": 21.85
+    },
+    {
+      "id": 4,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Walk through Monday-to-Sunday below. For each day, set when you open and when you close, or tick \"Closed\" for the days you are not open. Use the shortcut buttons below the grid if your Monday-through-Friday hours are the same, that is a common pattern.",
+      "start": 22.55,
+      "end": 32.44
+    },
+    {
+      "id": 5,
+      "kind": "widget-pause",
+      "selector": "#post-body > section:nth-of-type(1)",
+      "start": 32.84,
+      "end": 32.84,
+      "widget": "weekly-hours-grid"
+    },
+    {
+      "id": 6,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "Read your hours back. Common mistakes: you forgot to mark a closure day; your Friday closes one hour later than your other dinner shifts (write that one down accurately, it matters); you wrote \"5 PM\" when you actually start seating at 4:30 because that is when the regulars start arriving. The hours you ship are the ones diners will arrive at. They will not call to check.",
+      "start": 33.24,
+      "end": 47.72
+    },
+    {
+      "id": 7,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "One phone number, one address.",
+      "start": 48.82,
+      "end": 49.62
+    },
+    {
+      "id": 8,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "Lesson 1 captured your address. Now confirm the phone number, the one that gets answered, not the one on the awning that nobody monitors. If you have a separate number for reservations versus catering, list the one a regular calls for \"are you open tonight?\"",
+      "start": 50.32,
+      "end": 60.55
+    },
+    {
+      "id": 9,
+      "kind": "widget-pause",
+      "selector": "#post-body > section:nth-of-type(2)",
+      "start": 60.95,
+      "end": 60.95,
+      "widget": "text-input",
+      "contextKey": "restaurantProfile.phone",
+      "label": "Phone number"
+    },
+    {
+      "id": 10,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "That is the contact essential. Lesson 11 (the G B P lesson) handles a related thing, getting your hours and phone correct in Google's record of you, which is a different beast.",
+      "start": 61.35,
+      "end": 68.15
+    },
+    {
+      "id": 11,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Holidays and special closures.",
+      "start": 69.25,
+      "end": 70.1
+    },
+    {
+      "id": 12,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "Your weekly hours above answer \"are you open on Wednesdays?\" They do not answer \"are you open Thanksgiving?\" Both questions get asked; the second one only matters around the dates it does.",
+      "start": 70.8,
+      "end": 78.14
+    },
+    {
+      "id": 13,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "For now, the generator renders only your weekly hours. Two practical conventions for holidays until the holiday widget ships next quarter:",
+      "start": 78.66,
+      "end": 84.07
+    },
+    {
+      "id": 14,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Post on social a week ahead. Instagram story + Facebook post + Google Business Profile post (Lesson 11). Most regulars look there.",
+      "start": 84.42,
+      "end": 89.33
+    },
+    {
+      "id": 15,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Update the answering machine for the closure day plus the day after. Far more useful than most operators expect.",
+      "start": 89.65,
+      "end": 93.89
+    },
+    {
+      "id": 16,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Do not take down your weekly hours. The most common mistake, operators update the home page hours to \"Closed Nov 27-28\" and then forget to put the regular hours back. Use a banner or a separate notice; leave the weekly hours alone.",
+      "start": 94.21,
+      "end": 103.35
+    },
+    {
+      "id": 17,
+      "kind": "body",
+      "selector": "#post-body > div:nth-of-type(1) > p:nth-of-type(1)",
+      "text": "The process question, for rebuild-track operators. If you ranked \"Hours are stale\" in your Lesson 5b audit, this is the lesson that fixes the immediate symptom, but the cause you named in Lesson 6b is still there. Pick the person who owns updating hours quarterly, today, before you close this tab. The lesson 11 (G B P) instructions assume someone owns this.",
+      "start": 103.87,
+      "end": 117.95
+    },
+    {
+      "id": 18,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "What this changes downstream.",
+      "start": 119.05,
+      "end": 119.84
+    },
+    {
+      "id": 19,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "Lesson 11 (Google Business Profile) reads your hours and your phone and asks you to verify they match what Google has. Lesson 12 (local S E O) reads your hours to suggest opening-time keyword phrases. The L14 generator renders hours on the home page footer and on a contact section.",
+      "start": 120.54,
+      "end": 131.5
+    },
+    {
+      "id": 20,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "The generator also renders the phone as a tel: link on mobile, a diner tapping it goes straight to dialing. That single piece of mobile-friendliness routinely moves walk-in numbers more than any redesign.",
+      "start": 132.02,
+      "end": 139.96
+    },
+    {
+      "id": 21,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(3) h2",
+      "text": "Your most-asked questions have answers.",
+      "start": 141.26,
+      "end": 142.53
+    },
+    {
+      "id": 22,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(3) p",
+      "text": "Weekly hours, day by day, plus a phone number that actually gets answered, saved in your browser. The generator renders these on the home page footer and contact section, with the phone as a tappable link on mobile.",
+      "start": 143.13,
+      "end": 151.66
+    },
+    {
+      "id": 23,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(3) p",
+      "text": "This is the single piece of restaurant web work with the highest ratio of value to effort.",
+      "start": 152.26,
+      "end": 155.7
+    },
+    {
+      "id": 24,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(3) p",
+      "text": "Print the Lesson 10 tear-sheet →",
+      "start": 156.3,
+      "end": 157.36
+    },
+    {
+      "id": 25,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "Lesson 11 forks for fresh-track (claim and fill) vs rebuild-track (audit and repair). The module overview links to both.",
+      "start": 157.71,
+      "end": 162.3
+    }
+  ]
+}

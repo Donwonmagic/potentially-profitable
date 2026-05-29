@@ -1,0 +1,137 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-29T01:48:21.874Z",
+  "engine": "f5",
+  "model": "don-reference.es.m4a",
+  "voice": "f5:don-reference.es.m4a",
+  "language": "es",
+  "total": 77.57,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "opener",
+      "selector": ".course-hero h1",
+      "text": "Escribe el nombre de tu restaurante. Míralo aparecer.",
+      "start": 0,
+      "end": 1.66
+    },
+    {
+      "id": 1,
+      "kind": "opener",
+      "selector": ".course-hero .promise",
+      "text": "En los próximos cinco minutos vas a tener el nombre de tu restaurante, la cocina y la dirección dentro de la primera versión de tu sitio, visible a la derecha, actualizándose mientras escribes. Esa es la lección entera.",
+      "start": 2.31,
+      "end": 9.91
+    },
+    {
+      "id": 2,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "Casi todos los cursos sobre construir un sitio web empiezan con un capítulo que te puedes saltar. Este no. Escribe tres cosas y tu sitio empieza.",
+      "start": 11.11,
+      "end": 16.01
+    },
+    {
+      "id": 3,
+      "kind": "widget-pause",
+      "selector": "#post-body > section:nth-of-type(1)",
+      "start": 16.41,
+      "end": 16.41,
+      "widget": "text-input",
+      "contextKey": "restaurantProfile.name",
+      "label": "Nombre del restaurante"
+    },
+    {
+      "id": 4,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Mira a la derecha. Tu nombre ya está ahí, en la primera versión de tu sitio. Ese contorno de navegador no es una captura, es una página pequeña, real, que se vuelve a dibujar cada vez que escribes. Léela una vez. Luego regresa.",
+      "start": 16.81,
+      "end": 24.81
+    },
+    {
+      "id": 5,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "Todo después de esta lección usa tu propio restaurante, tu nombre, tu cocina, tu barrio, como el ejemplo de trabajo. Los ejemplos genéricos no se usan en Muntin. No te mostramos cómo se ve el sitio de algún restaurante. Te mostramos cómo se ve el tuyo , una decisión a la vez. Dos campos más y terminas esta lección.",
+      "start": 25.33,
+      "end": 36.43
+    },
+    {
+      "id": 6,
+      "kind": "widget-pause",
+      "selector": "#post-body > section:nth-of-type(2)",
+      "start": 36.83,
+      "end": 36.83,
+      "widget": "text-input",
+      "contextKey": "restaurantProfile.cuisine",
+      "label": "Cocina"
+    },
+    {
+      "id": 7,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "Fíjate en la pequeña etiqueta de color que acaba de aparecer arriba de tu nombre en la vista previa. Es un ejemplo provisional para tu color de marca, elegido según tu cocina. En la Lección 7 vas a elegir tres colores que son realmente tuyos; por ahora, ves un punto de partida razonable.",
+      "start": 37.23,
+      "end": 47.29
+    },
+    {
+      "id": 8,
+      "kind": "widget-pause",
+      "selector": "#post-body > section:nth-of-type(3)",
+      "start": 47.69,
+      "end": 47.69,
+      "widget": "text-input",
+      "contextKey": "restaurantProfile.address",
+      "label": "Dirección"
+    },
+    {
+      "id": 9,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "Desplázate por la vista previa de la derecha. Tu dirección ahora aparece debajo de Encuéntranos .",
+      "start": 48.09,
+      "end": 51.3
+    },
+    {
+      "id": 10,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Eso es todo. Terminaste la Lección 1.",
+      "start": 52.4,
+      "end": 53.56
+    },
+    {
+      "id": 11,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "Acabas de tomar las tres primeras decisiones de tu sitio web. Todo lo que sigue se construye sobre estas. La próxima lección es sobre para qué sirve realmente un sitio web de restaurante, cinco minutos, sin escribir.",
+      "start": 54.26,
+      "end": 61.66
+    },
+    {
+      "id": 12,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(4) h2",
+      "text": "Acabas de soltar la versión 0.1 de tu sitio.",
+      "start": 62.96,
+      "end": 64.36
+    },
+    {
+      "id": 13,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(4) p",
+      "text": "Una vista previa funcional de tu página de inicio con tu nombre, tu cocina y tu dirección, guardada en este navegador. Ya es una página real. Para la última lección, vas a estar descargando la versión terminada.",
+      "start": 64.96,
+      "end": 72.27
+    },
+    {
+      "id": 14,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(4) p",
+      "text": "El resto del bootcamp completo usa estos tres valores. Cada ejemplo, cada vista previa, cada plantilla, tu restaurante, de aquí en adelante.",
+      "start": 72.87,
+      "end": 77.57
+    }
+  ]
+}

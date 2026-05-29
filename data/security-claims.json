@@ -214,6 +214,24 @@
     }
   ],
 
+  "exceptions": {
+    "_doc": "Narrowly-scoped exceptions to the site-wide no-fetch / no-storage / no-account posture. Each entry is named, scoped, and verifiable — they are NOT silent carve-outs. If you ship a new exception, add it here so the audit page can render it.",
+    "service_workers": [
+      {
+        "path": "/course/sw.js",
+        "scope": "/course/",
+        "purpose": "PWA installability heuristic only. iOS Safari and Chrome require a registered service worker before surfacing the 'Add to Home Screen' affordance. This worker has NO fetch event handler — every request from a course page reaches the network normally.",
+        "verifies": "Open DevTools → Application → Service Workers. The /course/sw.js worker is registered, but the Cache Storage panel for /course/ is empty. Open DevTools → Network. Reload a lesson — every request shows status 'fetched from network', none from 'ServiceWorker'."
+      },
+      {
+        "path": "/es/course/sw.js",
+        "scope": "/es/course/",
+        "purpose": "Mismo posicionamiento que /course/sw.js — instalabilidad de PWA solamente, sin manejador de fetch.",
+        "verifies": "Mismo método de verificación que /course/sw.js."
+      }
+    ]
+  },
+
   "data_promise_rail_3line": {
     "line1_en": "Runs in your browser. No accounts, no fetches, no tracking.",
     "line1_es": "Corre en tu navegador. Sin cuentas, sin fetches, sin tracking.",

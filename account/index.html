@@ -116,8 +116,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site.css?v=9d187ea72499" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site.css?v=9d187ea72499"></noscript>
+<link rel="preload" as="style" href="/assets/site.css?v=03623bcab9cd" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site.css?v=03623bcab9cd"></noscript>
 
 <style>
   /* Account-page shell — narrower column than /workbench/ since the
@@ -145,7 +145,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   .ac-field-value { font-size: 15px; color: var(--ink); word-break: break-all; }
   .ac-field-value.num { font-variant-numeric: tabular-nums; }
 
-  .ac-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 0 0 36px; }
+  .ac-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 0 0 36px; }
   .ac-stat { padding: 18px 22px; background: var(--surface-1); border: 1px solid var(--line); border-radius: var(--r-md); }
   .ac-stat-num { font-family: var(--font-display); font-size: 28px; font-weight: 500; color: var(--ink); margin: 0; line-height: 1; font-variant-numeric: tabular-nums; }
   .ac-stat-label { font-size: 13px; color: var(--stone); margin: 8px 0 0; }
@@ -227,6 +227,11 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           <p class="ac-stat-num" id="acWatchCount">&mdash;</p>
           <p class="ac-stat-label">Watched items</p>
         </div>
+        <a class="ac-stat" id="acCourseTile" href="/course/" style="text-decoration:none;color:inherit">
+          <p class="ac-stat-num" id="acCourseCount">&mdash;</p>
+          <p class="ac-stat-label">Open the Doors</p>
+          <p class="ac-stat-detail" id="acCourseDetail" style="font-size:12.5px;color:var(--stone);margin:4px 0 0;line-height:1.35;display:none"></p>
+        </a>
       </div>
 
       <section class="ac-danger" aria-labelledby="acDangerH">
@@ -261,6 +266,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   var lastSeenEl  = document.getElementById('acLastSeenAt');
   var savedEl     = document.getElementById('acSavedCount');
   var watchEl     = document.getElementById('acWatchCount');
+  var courseEl    = document.getElementById('acCourseCount');
+  var courseTile  = document.getElementById('acCourseTile');
 
   var openBtn     = document.getElementById('acDangerOpenBtn');
   var confirmWrap = document.getElementById('acConfirm');
@@ -290,6 +297,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     fetch('/api/auth/me',                { credentials: 'same-origin' }),
     fetch('/api/workbench/list',         { credentials: 'same-origin' }),
     fetch('/api/workbench/watch-list',   { credentials: 'same-origin' }),
+    fetch('/api/course/progress',        { credentials: 'same-origin' }),
   ]).then(function (rs) {
     if (rs[0].status === 401) {
       window.location.href = '/sign-in/?returnTo=' + encodeURIComponent('/account/');
@@ -299,6 +307,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       rs[0].ok ? rs[0].json() : null,
       rs[1].ok ? rs[1].json() : null,
       rs[2].ok ? rs[2].json() : null,
+      rs[3].ok ? rs[3].json() : null,
     ]);
   }).then(function (data) {
     var me = data[0] || {};
@@ -312,6 +321,48 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     var watches    = (data[2] && Array.isArray(data[2].items)) ? data[2].items.length : null;
     if (savedEl) savedEl.textContent = (savedItems == null) ? '—' : String(savedItems);
     if (watchEl) watchEl.textContent = (watches    == null) ? '—' : String(watches);
+    // /api/course/progress returns { ok, progress: { track, completed:[...], ... } }.
+    // The total — 16 — is the canonical bootcamp length (matches
+    // data/course-lessons.json totalLessons). Track-aware totals (a
+    // fresh + rebuild operator only walks ~18 unique lesson URLs vs
+    // the 20 the manifest carries) are an enhancement for later; for
+    // now the tile shows "<completed> / 16".
+    var courseProgress = (data[3] && data[3].progress) || null;
+    var completedCount = (courseProgress && Array.isArray(courseProgress.completed))
+      ? courseProgress.completed.length : null;
+    if (courseEl) courseEl.textContent = (completedCount == null) ? '—' : (completedCount + ' / 16');
+
+    // Render contextual "Lesson N — title — resume" or "Care plan
+    // — open the rhythm" copy in the detail line, and route the
+    // tile link to the right destination. Reads
+    // /assets/data/course-titles.json (a ~5KB bilingual bundle
+    // generated by scripts/build-course-titles-bundle.mjs).
+    var detailEl = document.getElementById('acCourseDetail');
+    if (courseTile && courseProgress && Array.isArray(courseProgress.completed) && courseProgress.completed.length) {
+      fetch('/assets/data/course-titles.json', { credentials: 'omit' }).then(function (r) {
+        if (!r.ok) return null;
+        return r.json();
+      }).then(function (bundle) {
+        if (!bundle || !bundle.lessons) return;
+        // Find the most-recently-completed lesson by timestamp.
+        var sorted = courseProgress.completed.slice().sort(function (a, b) { return (b.at || 0) - (a.at || 0); });
+        var latest = sorted[0] && sorted[0].lesson;
+        var info = latest && bundle.lessons[latest];
+        if (!info) return;
+        // Mid-bootcamp: route the tile to the LAST-COMPLETED lesson
+        // so the operator can pick back up at the lesson they just
+        // finished (it's the page that knows what's next via its
+        // pager). Once they hit 16/16, route to /course/ hub (future:
+        // care plan when shipped).
+        if (completedCount && completedCount < bundle.totalLessons) {
+          courseTile.href = info.path_en;
+          if (detailEl) {
+            detailEl.textContent = 'Lesson ' + info.position + ' — ' + info.title_en + ' — resume';
+            detailEl.style.display = '';
+          }
+        }
+      }).catch(function () { /* offline — keep the bare "N / 16" tile */ });
+    }
   }).catch(function (err) {
     if (err && err.message === 'redirect') return;
     // Non-fatal — operator can still run the delete flow.

@@ -1,0 +1,406 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-29T01:23:13.626Z",
+  "engine": "f5",
+  "model": "don-reference.m4a",
+  "voice": "f5:don-reference.m4a",
+  "language": "en",
+  "total": 403.03,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "opener",
+      "selector": ".course-hero h1",
+      "text": "The listing is right there. It is just wrong.",
+      "start": 0,
+      "end": 1.51
+    },
+    {
+      "id": 1,
+      "kind": "opener",
+      "selector": ".course-hero .promise",
+      "text": "Most existing GBPs are wrong, stale, or unmonitored. Open yours in another tab, rank the ten common problems by what is hurting you most, write the top three fixes. Walk out with a punch list and a person to own G B P updates going forward.",
+      "start": 2.16,
+      "end": 11.67
+    },
+    {
+      "id": 2,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "Your G B P exists. Diners are looking at it right now. Whether it tells them the truth is the question, and the answer is almost always \"partly, not all of it, and the part that is wrong is hurting you.\"",
+      "start": 12.87,
+      "end": 20.88
+    },
+    {
+      "id": 3,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Why G B P repair beats G B P rebuild.",
+      "start": 21.98,
+      "end": 23.14
+    },
+    {
+      "id": 4,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "The instinct for an old, ugly G B P is to delete it and start fresh. Do not. The age of your listing is a ranking signal, Google trusts an established profile more than a brand-new one. Your existing reviews live on it. Your existing photos live on it. The Maps location pin lives on it. You want to repair, not replace.",
+      "start": 23.84,
+      "end": 36.43
+    },
+    {
+      "id": 5,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "Open your G B P in another tab, either via business.google.com if you have claimed it, or by searching your restaurant name in Google and looking at the panel on the right. Either way, you will need to see it as a diner does. The repair work goes faster when you can see the problems live.",
+      "start": 36.95,
+      "end": 48.28
+    },
+    {
+      "id": 6,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "The ten common G B P problems.",
+      "start": 49.38,
+      "end": 50.03
+    },
+    {
+      "id": 7,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "Below are the ten failure modes that hurt most restaurant GBPs. Rank them by what is hurting your listing most. The top three turn red, those are your repair priorities. The middle and bottom can wait for the L16 rhythm calendar.",
+      "start": 50.73,
+      "end": 59.7
+    },
+    {
+      "id": 8,
+      "kind": "body",
+      "selector": "#post-body > div:nth-of-type(1) > p:nth-of-type(1)",
+      "text": "Pre-flight: is your G B P claimed by you? If no, or you are not sure, that is the only repair that matters today. The other nine require ownership. Click \"Manage now\" on your listing in Google search results, or follow the L11a-style claim flow at business.google.com before ranking the rest. The widget's first item is set to \"Not claimed\" by default for this reason, if it does not apply, drag it to the bottom and rank the rest.",
+      "start": 60.22,
+      "end": 77.33
+    },
+    {
+      "id": 9,
+      "kind": "widget-pause",
+      "selector": "#post-body > section:nth-of-type(1)",
+      "start": 77.73,
+      "end": 77.73,
+      "widget": "drag-rank",
+      "contextKey": "gbpProblemRank"
+    },
+    {
+      "id": 10,
+      "kind": "body",
+      "selector": "#post-body > div:nth-of-type(2) > p:nth-of-type(1)",
+      "text": "Your top three are now red. Those are your repair targets for the next two weeks. If \"G B P is not claimed by you\" is in your top three (especially number 1), claim it before touching anything else, most of the other repairs require ownership.",
+      "start": 78.13,
+      "end": 87.76
+    },
+    {
+      "id": 11,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Notes on your top three fixes.",
+      "start": 88.86,
+      "end": 89.81
+    },
+    {
+      "id": 12,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "For each of the three red items, write what specifically is wrong on your G B P, and what the fix looks like. Specificity here is what gets the repair done, vague notes produce vague repairs that drift back to broken in three months.",
+      "start": 90.51,
+      "end": 99.64
+    },
+    {
+      "id": 13,
+      "kind": "widget-pause",
+      "selector": "#post-body > section:nth-of-type(2)",
+      "start": 100.04,
+      "end": 100.04,
+      "widget": "text-input",
+      "contextKey": "gbpRepairNotes",
+      "label": "Notes on your top three GBP fixes"
+    },
+    {
+      "id": 14,
+      "kind": "body",
+      "selector": "#post-body > div:nth-of-type(3) > p:nth-of-type(1)",
+      "text": "If you ranked \"Reviews unanswered\" in the top three. Reply to the negative reviews first, they hurt more, and the absence of a response is the visible signal. Reply once, briefly, professionally. Lesson 13 (Reviews + first-week trust) goes deeper on response templates; for the repair, just close the open negatives this week.",
+      "start": 100.44,
+      "end": 113.07
+    },
+    {
+      "id": 15,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "Preview what good looks like, side by side.",
+      "start": 114.17,
+      "end": 115.63
+    },
+    {
+      "id": 16,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "Below is what your repaired G B P card will look like once the top three fixes land, built live from whatever you have put into the bootcamp so far. Pick your primary category if you have not yet; the readiness checklist underneath flags everything still pending. The exercise is to look at this preview and ask \"is this what a diner would expect from my restaurant?\" If yes, you know what done looks like.",
+      "start": 116.33,
+      "end": 132.36
+    },
+    {
+      "id": 17,
+      "kind": "widget-pause",
+      "selector": "#post-body > section:nth-of-type(3)",
+      "start": 132.76,
+      "end": 132.76,
+      "widget": "gbp-card-preview"
+    },
+    {
+      "id": 18,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "When the happy path does not work.",
+      "start": 133.16,
+      "end": 134.07
+    },
+    {
+      "id": 19,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "The \"claim it, fix it, move on\" flow above assumes a clean inheritance: you operate the restaurant and Google's listing is unclaimed or already yours. For roughly one in three operators rebuilding an existing site, the situation is messier. The four most common blockers, in order of frequency:",
+      "start": 134.77,
+      "end": 146.28
+    },
+    {
+      "id": 20,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(1)",
+      "text": "1. The listing is claimed by someone you do not know.",
+      "start": 147.38,
+      "end": 149.15
+    },
+    {
+      "id": 21,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "A previous owner, a former marketing agency, a S E O consultant you fired three years ago, or, most commonly, someone who claimed it during a lull and forgot. Google's listing shows \"Owned by another business\" when you try to claim it.",
+      "start": 149.85,
+      "end": 159.12
+    },
+    {
+      "id": 22,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "The path: request ownership through the Manage listing → \"Request ownership\" flow at business.google.com . Google emails the current owner; they have 7 days to respond. If they do not, you can file a transfer request with proof of ownership (lease, Ein, utility bill, business license). Typical resolution: 2-4 weeks.",
+      "start": 159.64,
+      "end": 172.17
+    },
+    {
+      "id": 23,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "While you wait: do Not create a duplicate listing. Duplicates trigger Google's anti-spam filters and Both listings can get suspended. Park the rebuild work on everything else (menu, photos, hours-contact, deploy) and pick this back up when ownership transfers.",
+      "start": 172.69,
+      "end": 182.93
+    },
+    {
+      "id": 24,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(2)",
+      "text": "2. Postcard verification is your only option.",
+      "start": 184.03,
+      "end": 185.63
+    },
+    {
+      "id": 25,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "For most US storefronts, Google now offers video verification (5-day clearance). For service-area businesses, food trucks without a fixed kitchen, or operators outside the US, the only option is the postcard with a 5-digit code mailed to your address. Median time: 5-14 days. Sometimes it never arrives.",
+      "start": 186.33,
+      "end": 198.1
+    },
+    {
+      "id": 26,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "The path: request the postcard now , before you do anything else in this lesson, the clock starts the moment you request. If it does not arrive in 14 days, request a second one (Google allows up to three attempts before they escalate to a phone or video review). Use the wait time to finalize the description (L11a has the formula), pick the primary category in the gbp-card-preview widget below, and write the L13 review responses. None of that requires the G B P to be verified yet.",
+      "start": 198.62,
+      "end": 217.95
+    },
+    {
+      "id": 27,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(3)",
+      "text": "3. The listing is suspended.",
+      "start": 219.05,
+      "end": 219.89
+    },
+    {
+      "id": 28,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "\"Temporarily closed\" markers from twenty twenty-twenty twenty-two sometimes never got removed. Operators occasionally trip Google's anti-spam filters by editing too many fields at once, or by listing services that do not match the primary category (a restaurant offering \"catering equipment rental\" gets flagged). The listing shows up in search but with \"This profile is currently unavailable\" or no longer ranks for branded queries.",
+      "start": 220.59,
+      "end": 237.72
+    },
+    {
+      "id": 29,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "The path: file a reinstatement request at support.google.com/business/contact/bphr . Provide the business name, address, the exact reason for suspension if Google sent one (check your registered email + spam folder), and proof of operation (recent invoices, lease, utility bills). Resolution: typically 3-10 business days, sometimes longer.",
+      "start": 238.24,
+      "end": 251.67
+    },
+    {
+      "id": 30,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(4)",
+      "text": "4. There are duplicate listings, yours and someone else's.",
+      "start": 252.77,
+      "end": 254.38
+    },
+    {
+      "id": 31,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "Common when a restaurant has moved, changed owners, or had a name change. You will see two pins in Google Maps, sometimes with slightly different addresses or phone numbers. Reviews scatter across both; diners get confused.",
+      "start": 255.08,
+      "end": 263.87
+    },
+    {
+      "id": 32,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "The path: request merging via Google Business Profile support → \"Edit info\" → \"Suggest a fix\" → \"Mark as duplicate.\" Google's algorithm usually merges within 7-14 days. The healthier listing (more reviews, more recent activity) typically survives; the other redirects to it.",
+      "start": 264.39,
+      "end": 275.38
+    },
+    {
+      "id": 33,
+      "kind": "body",
+      "selector": "#post-body > div:nth-of-type(4) > p:nth-of-type(1)",
+      "text": "None of these block the rest of the bootcamp. You can finish L12 (local S E O), L13 (reviews), L14 (generator), L15 (deploy), L16 (rhythm) with an un-verified or un-merged G B P. The website is yours; deploying it does not depend on Google's listing being in order. When the G B P path resolves, postcards arrive, transfers complete, come back to the gbp-card-preview widget above to finalize the description + primary category, then add the live U R L field. Most operators in this situation finish the bootcamp first and circle back to G B P once Google's backend has done its part.",
+      "start": 275.9,
+      "end": 299.07
+    },
+    {
+      "id": 34,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(6)",
+      "text": "The process answer, so this does not drift back.",
+      "start": 300.17,
+      "end": 301.78
+    },
+    {
+      "id": 35,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "L6b asked you to name causes; this section asks you to name an owner. The G B P does not drift because nobody cares, it drifts because nobody owns the recurring check. Pick a person, name a frequency (every two weeks is enough for most restaurants), write it down.",
+      "start": 302.48,
+      "end": 312.96
+    },
+    {
+      "id": 36,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "Most restaurants need two cadences. A quick check (5 min, every two weeks), open G B P, scan for new reviews, post one update. A full review (30 min, quarterly), verify hours match website, check description, update photos, audit categories. Lesson 16 (30-day rhythm) wraps this into a calendar you can export.",
+      "start": 313.48,
+      "end": 325.67
+    },
+    {
+      "id": 37,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(19)",
+      "text": "The person who owns this needs login access to the G B P. If they do not have it today, add them as a manager in Google Business Profile settings before you close this tab.",
+      "start": 326.19,
+      "end": 332.96
+    },
+    {
+      "id": 38,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(7)",
+      "text": "One free tool to grade your repair priority.",
+      "start": 334.06,
+      "end": 335.59
+    },
+    {
+      "id": 39,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Muntin G B P Grader Free, no signup. Scores your G B P on the ten failure modes above + a few more. Useful sanity check on your ranking. Open the grader →",
+      "start": 336.29,
+      "end": 342.19
+    },
+    {
+      "id": 40,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Muntin S E O Grader Specifically checks N A P consistency between your G B P and your website. If \"N A P inconsistent\" is in your top three, this is the fastest way to find every discrepancy. Open the S E O Grader →",
+      "start": 342.51,
+      "end": 351.07
+    },
+    {
+      "id": 41,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(8)",
+      "text": "What this changes downstream.",
+      "start": 352.17,
+      "end": 352.9
+    },
+    {
+      "id": 42,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(20)",
+      "text": "Lesson 12 (local S E O) reads your G B P description and category to suggest keyword phrases. Lesson 13 (reviews) walks through the response work in detail, if you ranked reviews-unanswered in your top three, that lesson is the next one to read. Lesson 16 (rhythm) folds your G B P cadence into a calendar.",
+      "start": 353.6,
+      "end": 365.58
+    },
+    {
+      "id": 43,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(21)",
+      "text": "The L14 generator auto-fills your website's schema.org markup to match what Google has on your G B P, but only if your N A P is consistent. The repair work here pays compounding interest in local search rankings.",
+      "start": 366.1,
+      "end": 374.47
+    },
+    {
+      "id": 44,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(22)",
+      "text": "Next is Module 4, local S E O, reviews, the generator, deploy, the 30-day rhythm. The heavy curriculum work is behind you. M4 is mostly mechanics and the final Zip download.",
+      "start": 374.99,
+      "end": 381.76
+    },
+    {
+      "id": 45,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(4) h2",
+      "text": "You named what to fix and who owns staying current.",
+      "start": 383.06,
+      "end": 384.79
+    },
+    {
+      "id": 46,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(4) p",
+      "text": "A ranked list of the ten common G B P problems, your top three turned red, specific notes on each, and a process commitment for the recurring check, saved in your browser. The repair list is now your next two weeks of G B P work; the cadence is what prevents the drift.",
+      "start": 385.39,
+      "end": 395.99
+    },
+    {
+      "id": 47,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(4) p",
+      "text": "Most rebuild operators fix the website and ignore the G B P. The G B P is where most diners actually read about you. You named it.",
+      "start": 396.59,
+      "end": 401.44
+    },
+    {
+      "id": 48,
+      "kind": "wrap",
+      "selector": "#post-body > section:nth-of-type(4) p",
+      "text": "Print the Lesson 11 tear-sheet →",
+      "start": 402.04,
+      "end": 403.03
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+    <form id="sheet-fields" class="sheet-form" autocomplete="off" novalidate>
+      <fieldset>
+        <legend>Header</legend>
+        <label><span><span>Restaurant name</span></span><input type="text" name="name" data-context-key="restaurantProfile.name" /></label>
+        <label><span><span>Cuisine</span></span><input type="text" name="cuisine" data-context-key="restaurantProfile.cuisine" /></label>
+        <label><span><span>Plot date</span></span><input type="date" name="plot_date" /></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Your placement on the grid</legend>
+        <span class="field-help">From L6a positioning-plotter. Coordinates are 0–1 (left/bottom to right/top); label is the tier-name pair the widget commits to MuntinContext.</span>
+        <label><span><span>X — cuisine breadth (0 = single specialty, 1 = many cuisines)</span></span><input type="number" name="x" min="0" max="1" step="0.05" /></label>
+        <label><span><span>Y — price tier (0 = $$$$ upscale, 1 = $ counter)</span></span><input type="number" name="y" min="0" max="1" step="0.05" /></label>
+        <label><span><span>Label (the tier-pair string)</span></span><input type="text" name="label" placeholder="e.g., $$ casual / Single specialty" /></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Competitor placement</legend>
+        <span class="field-help">Plot 3–5 nearest competitors on the same grid. Position is relative — you can't know yours without theirs.</span>
+        <table class="sheet-row-table">
+          <thead><tr><th>Competitor</th><th>X (breadth)</th><th>Y (price)</th><th>Where you overlap</th></tr></thead>
+          <tbody>
+            <tr><td><input type="text" name="c1_name" /></td><td><input type="number" name="c1_x" min="0" max="1" step="0.05" /></td><td><input type="number" name="c1_y" min="0" max="1" step="0.05" /></td><td><input type="text" name="c1_overlap" /></td></tr>
+            <tr><td><input type="text" name="c2_name" /></td><td><input type="number" name="c2_x" min="0" max="1" step="0.05" /></td><td><input type="number" name="c2_y" min="0" max="1" step="0.05" /></td><td><input type="text" name="c2_overlap" /></td></tr>
+            <tr><td><input type="text" name="c3_name" /></td><td><input type="number" name="c3_x" min="0" max="1" step="0.05" /></td><td><input type="number" name="c3_y" min="0" max="1" step="0.05" /></td><td><input type="text" name="c3_overlap" /></td></tr>
+            <tr><td><input type="text" name="c4_name" /></td><td><input type="number" name="c4_x" min="0" max="1" step="0.05" /></td><td><input type="number" name="c4_y" min="0" max="1" step="0.05" /></td><td><input type="text" name="c4_overlap" /></td></tr>
+            <tr><td><input type="text" name="c5_name" /></td><td><input type="number" name="c5_x" min="0" max="1" step="0.05" /></td><td><input type="number" name="c5_y" min="0" max="1" step="0.05" /></td><td><input type="text" name="c5_overlap" /></td></tr>
+          </tbody>
+        </table>
+      </fieldset>
+
+      <fieldset>
+        <legend>What this tells you</legend>
+        <label><span><span>Where the open space on the grid is (your differentiation)</span></span><textarea name="open_space" rows="2"></textarea></label>
+        <label><span><span>Who's closest to you — and what tells diners apart</span></span><textarea name="differentiator" rows="2"></textarea></label>
+        <label><span><span>What you must NOT drift toward (would collapse onto a competitor)</span></span><textarea name="avoid" rows="2"></textarea></label>
+      </fieldset>
+    </form>
+
+    <script>
+      (function () {
+        if (window.SheetPage) window.SheetPage.register({ slug: 'course-positioning' });
+      })();
+    </script>

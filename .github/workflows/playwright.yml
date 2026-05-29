@@ -1,0 +1,108 @@
+# Playwright CI — runtime regression net for the tool suite + bootcamp
+#
+# Runs all tests/*.spec.mjs on every PR to main and on direct pushes.
+# Four spec files in scope today:
+#
+#   tests/scroll-bottom.spec.mjs    — Phase 0 regression gate (no bare
+#                                     code halfway down any tool page)
+#   tests/hub-baseline.spec.mjs     — tool hub renders + tier filter +
+#                                     visual snapshot at desktop
+#   tests/workshop-widgets.spec.mjs — all 18 Workshop Kit widgets'
+#                                     demo pages render + key context
+#                                     round-trips
+#   tests/course-baseline.spec.mjs  — every lesson page renders, the
+#                                     mark-complete + generator round-
+#                                     trips work end-to-end
+#
+# Status: continue-on-error initially while baseline snapshots settle.
+# Promote to required-check once three consecutive PRs land green.
+
+name: Playwright
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: playwright-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    continue-on-error: true
+
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Set up Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # The same build chain LHCI runs — Playwright tests assume the
+      # post-build static shape (hreflang stamped, includes synced,
+      # sheet rails injected, etc.). Skip the vendor-pin step because
+      # the GH-Actions runner shouldn't reach R2 for it and the suite
+      # doesn't load-bear on vendored assets in test.
+      - name: Run build chain
+        run: |
+          set -e
+          node scripts/sync-includes.mjs
+          node scripts/stamp-hreflang.mjs
+          node scripts/build-sitemap.mjs
+
+      # Cache Playwright's browser binaries. The cache key includes the
+      # @playwright/test version to invalidate on upgrade. Chromium is
+      # ~150 MB downloaded; the cache hit shaves 30-60s off the run.
+      - name: Cache Playwright browsers
+        id: pw-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('playwright.config.mjs') }}
+
+      - name: Install Playwright + dependencies
+        # Install @playwright/test into a transient local node_modules so
+        # playwright.config.mjs can resolve `import { defineConfig, ... }
+        # from '@playwright/test'` at config-load time. --no-save keeps
+        # the install out of package.json (which the repo gitignores by
+        # convention — see CLAUDE.md). After the package is in
+        # node_modules, `npx playwright install` downloads the chromium
+        # binary + OS deps (libnss3, libatk-bridge, etc.).
+        run: |
+          npm install --no-save --no-fund --no-audit --silent @playwright/test@1.x
+          if [ "${{ steps.pw-cache.outputs.cache-hit }}" != "true" ]; then
+            npx playwright install --with-deps chromium
+          else
+            # Cache hit only restores the browser binaries; OS-level
+            # deps still need install on the runner.
+            npx playwright install-deps chromium
+          fi
+
+      - name: Run Playwright tests
+        # The playwright config's webServer block boots a Python http
+        # server on port 8765 against the repo root — no separate
+        # serve step needed here. --reporter=line keeps the workflow
+        # log readable. Runs the locally-installed binary so the config
+        # file's `@playwright/test` import resolves correctly.
+        run: |
+          npx playwright test --reporter=line --project=desktop
+
+      - name: Upload Playwright report on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7

@@ -172,6 +172,13 @@ const FORM_RATE_LIMIT_PATHS = new Set([
   '/api/admin/window/reply',
   '/api/admin/window/close',
   '/api/admin/window/archive',
+  // Phase course — bootcamp progress + config sync. Both POSTs touch
+  // KV per call; form-tier (10/IP/hour) keeps a misbehaving client
+  // (or open-tab background sync loop) from hammering. /reset is
+  // destructive — same tier.
+  '/api/course/progress',
+  '/api/course/config',
+  '/api/course/reset',
 ]);
 // D1: /api/audit-snapshot intentionally stays on the lighter
 // api-tier (30/min/IP) — a legit shared link might be opened by
@@ -220,6 +227,18 @@ import {
   SUBMISSION_KEY_PREFIX,
 } from './lib/submissions.js';
 import { ARTICLE_SLUGS } from './lib/article-slugs.generated.js';
+import {
+  // Phase course — Open the Doors bootcamp per-user progress + config sync.
+  // Anonymous-first; signed-in operators get cross-device sync of
+  // course:<sub> (progress) and course-config:<sub> (normalized
+  // generator config snapshot). Both live in env.AUTH_SESSIONS
+  // alongside the rest of the workbench surface.
+  readProgress as readCourseProgress,
+  mergeProgress as mergeCourseProgress,
+  resetProgress as resetCourseProgress,
+  readConfig as readCourseConfig,
+  writeConfig as writeCourseConfig,
+} from './lib/course.js';
 import {
   // Phase W.1 (The Window) — direct-line correspondence storage.
   validateMessageBody as validateWindowMessageBody,
@@ -385,6 +404,14 @@ const API_ROUTES = {
   // Phase 1a step 2 — operator attaches an email to their anon
   // thread so Don's reply email + claim-magic-link can find them.
   '/api/window/email':               handleWindowEmail,
+  // Phase course — Open the Doors bootcamp progress + config sync.
+  // All five require a valid session; anonymous calls return 401
+  // (anonymous operators get the same UX from localStorage). The
+  // five-route surface lets the client poll-and-merge progress
+  // independently of the heavier config snapshot.
+  '/api/course/progress':            handleCourseProgress,
+  '/api/course/config':              handleCourseConfig,
+  '/api/course/reset':               handleCourseReset,
   // Phase 2.6 — Resend webhook for email-bounce events.
   '/api/webhook/resend-bounce':      handleResendBounceWebhook,
   // Phase 3.2 — multimodal photo upload (POST). Download path
@@ -512,7 +539,7 @@ export default {
       // snapshot, GET (?token=XXX) reads one. Branches via a third
       // arm so neither of the existing method-checks below rejects
       // a legitimate call.
-      if (pathname === '/api/audit-snapshot' || pathname === '/api/auth/account-delete-confirm') {
+      if (pathname === '/api/audit-snapshot' || pathname === '/api/auth/account-delete-confirm' || pathname === '/api/course/progress' || pathname === '/api/course/config') {
         // Both endpoints branch on method internally:
         //   - audit-snapshot: GET reads, POST creates
         //   - account-delete-confirm: GET renders confirmation page,
@@ -5810,6 +5837,112 @@ async function _requireAdminSession(request, env) {
     return { error: jsonResponse({ ok: false, error: 'forbidden' }, 403) };
   }
   return auth;
+}
+
+// ------------------------------------------------------------
+// Course (Open the Doors bootcamp) — progress + config sync
+// ------------------------------------------------------------
+//
+// All three handlers share the workbench session shape — env.AUTH_SESSIONS
+// for storage, getSessionFromRequest for the cookie check, anonymous
+// callers get 401. The client layer falls back to localStorage for
+// anonymous-first parity; these endpoints only kick in when an
+// operator signs in and wants cross-device sync.
+
+async function _requireCourseSession(request, env) {
+  if (!env || !env.AUTH_SESSIONS) {
+    return { error: jsonResponse({ ok: false, error: 'service-unavailable' }, 503) };
+  }
+  const session = await getSessionFromRequest(request, env);
+  if (!session) {
+    return { error: jsonResponse({ ok: false, error: 'unauthenticated' }, 401) };
+  }
+  return { sub: session.payload.sub };
+}
+
+async function handleCourseProgress(request, env, ctx) {
+  if (!isOriginAllowed(request)) {
+    return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
+  }
+  const auth = await _requireCourseSession(request, env);
+  if (auth.error) return auth.error;
+
+  if (request.method === 'GET') {
+    const progress = await readCourseProgress(env, auth.sub);
+    return jsonResponse({ ok: true, progress });
+  }
+
+  // POST — merge semantics. The client sends a partial update;
+  // completed[] entries are upserted by lesson with latest-timestamp
+  // wins. Reset is a separate endpoint.
+  let body;
+  try { body = await parseFormBody(request); } catch (_) {
+    return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+  }
+
+  const result = await mergeCourseProgress(env, auth.sub, body);
+  if (!result.ok) {
+    const status = result.error === 'service-unavailable' ? 503
+                 : result.error === 'invalid-body'        ? 400
+                 : 500;
+    return jsonResponse({ ok: false, error: result.error }, status);
+  }
+  return jsonResponse({ ok: true, progress: result.progress });
+}
+
+async function handleCourseConfig(request, env, ctx) {
+  if (!isOriginAllowed(request)) {
+    return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
+  }
+  const auth = await _requireCourseSession(request, env);
+  if (auth.error) return auth.error;
+
+  if (request.method === 'GET') {
+    const config = await readCourseConfig(env, auth.sub);
+    return jsonResponse({ ok: true, config });
+  }
+
+  // POST — full replace. The client always sends the complete
+  // normalized snapshot; per-field merging happens client-side.
+  let body;
+  try { body = await parseFormBody(request); } catch (_) {
+    return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+  }
+
+  const result = await writeCourseConfig(env, auth.sub, body);
+  if (!result.ok) {
+    if (result.error === 'too-large') {
+      return jsonResponse({
+        ok: false,
+        error: 'too-large',
+        max: result.max,
+        size: result.size
+      }, 413);
+    }
+    const status = result.error === 'service-unavailable' ? 503
+                 : result.error === 'invalid-body'        ? 400
+                 : 500;
+    return jsonResponse({ ok: false, error: result.error }, status);
+  }
+  return jsonResponse({ ok: true, config: result.config });
+}
+
+async function handleCourseReset(request, env, ctx) {
+  if (!isOriginAllowed(request)) {
+    return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
+  }
+  if (request.method !== 'POST') {
+    return jsonResponse({ ok: false, error: 'Method not allowed — POST only' }, 405);
+  }
+  const auth = await _requireCourseSession(request, env);
+  if (auth.error) return auth.error;
+
+  const result = await resetCourseProgress(env, auth.sub);
+  if (!result.ok) {
+    const status = result.error === 'service-unavailable' ? 503 : 500;
+    return jsonResponse({ ok: false, error: result.error }, status);
+  }
+  return jsonResponse({ ok: true });
 }
 
 const _ARTICLE_SLUGS_SET = new Set(ARTICLE_SLUGS);

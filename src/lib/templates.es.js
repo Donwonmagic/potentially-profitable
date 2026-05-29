@@ -1046,6 +1046,72 @@ export function lifecycleMonthlyDigestEmail(body) {
   return { subject, html, text };
 }
 
+// 4. lifecycleCourseStartedEmail — primera vez que el operador
+//    arranca el bootcamp + 24h después. Mismo tono que las otras
+//    notas: corto, sin pitch, sin SaaS corporativo.
+export function lifecycleCourseStartedEmail(body) {
+  const courseUrl = String(body.courseUrl || 'https://muntin.digital/es/course/').trim();
+  const unsubUrl  = String(body.unsubUrl  || 'https://muntin.digital/sub/unsubscribe').trim();
+  const subject = 'Sobre ese bootcamp.';
+  const html = htmlShell(
+    'Abriste el bootcamp',
+    [
+      '<p style="margin:0 0 16px;font-size:16px;line-height:1.55;color:#2A2D33;">Abriste Open the Doors — el bootcamp de dieciséis lecciones que termina con un sitio de restaurante desplegado de verdad. La primera lección toma cinco minutos.</p>',
+      '<p style="margin:0 0 16px;font-size:16px;line-height:1.55;color:#2A2D33;">Cada lección usa tu propio restaurante — tu nombre, tu cocina, tu dirección — como el ejemplo de trabajo. Así que la siguiente lección retoma donde lo dejaste.</p>',
+      '<p style="margin:24px 0 0;">' + primaryCta(courseUrl, 'Abrir el bootcamp') + '</p>',
+      '<p style="margin:32px 0 0;font-size:13px;color:#6B6B6B;font-style:italic;">— Don</p>',
+    ].join('\n'),
+    `Empezaste el bootcamp Open the Doors en Muntin Digital. Cancelar suscripción: ${unsubUrl}`
+  );
+  const text = [
+    'Sobre ese bootcamp.',
+    '',
+    'Abriste Open the Doors — el bootcamp de dieciséis lecciones que termina con un sitio de restaurante desplegado de verdad. La primera lección toma cinco minutos.',
+    '',
+    'Cada lección usa tu propio restaurante — tu nombre, tu cocina, tu dirección — como el ejemplo de trabajo. Así que la siguiente lección retoma donde lo dejaste.',
+    '',
+    'Abrir el bootcamp: ' + courseUrl,
+    '',
+    '— Don',
+    '',
+    'Cancelar suscripción: ' + unsubUrl,
+  ].join('\n');
+  return { subject, html, text };
+}
+
+// 5. lifecycleCourseCompletedEmail — el operador llegó a 16/16
+//    lecciones. Apunta al plan de mantenimiento 30/60/90. Una sola
+//    vez por operador, nunca más.
+export function lifecycleCourseCompletedEmail(body) {
+  const carePlanUrl = String(body.carePlanUrl || 'https://muntin.digital/es/course/care-plan/').trim();
+  const unsubUrl    = String(body.unsubUrl    || 'https://muntin.digital/sub/unsubscribe').trim();
+  const subject = 'Dieciséis lecciones. El sitio está en vivo.';
+  const html = htmlShell(
+    'Enviaste el sitio',
+    [
+      '<p style="margin:0 0 16px;font-size:16px;line-height:1.55;color:#2A2D33;">Dieciséis lecciones. Un sitio de restaurante desplegado. Tú hiciste el trabajo — ese es todo el bootcamp.</p>',
+      '<p style="margin:0 0 16px;font-size:16px;line-height:1.55;color:#2A2D33;">Aquí está el plan de mantenimiento de 30/60/90 días. Tres puntos de control, cada uno con una tarea específica y la herramienta que la ejecuta. Pon el ritmo una vez; el sitio sigue vivo.</p>',
+      '<p style="margin:24px 0 0;">' + primaryCta(carePlanUrl, 'Abrir el plan de mantenimiento') + '</p>',
+      '<p style="margin:32px 0 0;font-size:13px;color:#6B6B6B;font-style:italic;">— Don</p>',
+    ].join('\n'),
+    `Completaste el bootcamp Open the Doors en Muntin Digital. Cancelar suscripción: ${unsubUrl}`
+  );
+  const text = [
+    'Dieciséis lecciones. El sitio está en vivo.',
+    '',
+    'Dieciséis lecciones. Un sitio de restaurante desplegado. Tú hiciste el trabajo — ese es todo el bootcamp.',
+    '',
+    'Aquí está el plan de mantenimiento de 30/60/90 días. Tres puntos de control, cada uno con una tarea específica y la herramienta que la ejecuta. Pon el ritmo una vez; el sitio sigue vivo.',
+    '',
+    'Abrir el plan de mantenimiento: ' + carePlanUrl,
+    '',
+    '— Don',
+    '',
+    'Cancelar suscripción: ' + unsubUrl,
+  ].join('\n');
+  return { subject, html, text };
+}
+
 // Phase G.10 — confirmación de suscripción al boletín.
 // Tono y promesa idénticos a la versión EN: corto, sin spam, con
 // el cap explícito de 4 notas por trimestre.

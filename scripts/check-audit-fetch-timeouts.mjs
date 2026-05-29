@@ -34,6 +34,7 @@ const TARGETS = [
 const SKIP_PATHS = new Set([
   '/api/auth/me',
   '/api/workbench/count',
+  '/api/course/progress',
 ]);
 
 const FETCH_RE = /fetch\(\s*(['"`])(\/api\/[^'"`]+)\1/g;
