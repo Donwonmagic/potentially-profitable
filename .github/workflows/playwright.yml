@@ -71,26 +71,31 @@ jobs:
           key: ${{ runner.os }}-playwright-${{ hashFiles('playwright.config.mjs') }}
 
       - name: Install Playwright + dependencies
-        # npx installs @playwright/test on first invocation; the chromium
-        # install command also installs the OS dependencies (libnss3,
-        # libatk-bridge, etc.) the headless browser needs on Ubuntu.
+        # Install @playwright/test into a transient local node_modules so
+        # playwright.config.mjs can resolve `import { defineConfig, ... }
+        # from '@playwright/test'` at config-load time. --no-save keeps
+        # the install out of package.json (which the repo gitignores by
+        # convention — see CLAUDE.md). After the package is in
+        # node_modules, `npx playwright install` downloads the chromium
+        # binary + OS deps (libnss3, libatk-bridge, etc.).
         run: |
-          npx -y @playwright/test@1.x --version
+          npm install --no-save --no-fund --no-audit --silent @playwright/test@1.x
           if [ "${{ steps.pw-cache.outputs.cache-hit }}" != "true" ]; then
-            npx -y @playwright/test@1.x install --with-deps chromium
+            npx playwright install --with-deps chromium
           else
             # Cache hit only restores the browser binaries; OS-level
             # deps still need install on the runner.
-            npx -y @playwright/test@1.x install-deps chromium
+            npx playwright install-deps chromium
           fi
 
       - name: Run Playwright tests
         # The playwright config's webServer block boots a Python http
         # server on port 8765 against the repo root — no separate
         # serve step needed here. --reporter=line keeps the workflow
-        # log readable.
+        # log readable. Runs the locally-installed binary so the config
+        # file's `@playwright/test` import resolves correctly.
         run: |
-          npx -y @playwright/test@1.x test --reporter=line --project=desktop
+          npx playwright test --reporter=line --project=desktop
 
       - name: Upload Playwright report on failure
         if: failure()
