@@ -1520,6 +1520,25 @@ br.br-lg{display:none}
    still clickable.
 */
 
+/* EDITORIAL PAUSE — audio editions hidden site-wide.
+   Reason: the six-language MP3 render pipeline is mid-flight; we
+   cannot guarantee a rendered audio.mp3 across en/es/fr/it/pt/zh
+   on every page that mounts a listen surface, and canon §12 (the
+   ship test, `docs/voice-canon-library.md`) blocks publish on a
+   click-to-listen that does not actually play. Hiding every audio
+   trigger + dynamically-mounted player surface at the CSS layer is
+   the safest single-point pause: no per-article markup changes, no
+   listen.js disable, and the `data/article-audio.json` `status`
+   fields remain the independent source of truth.
+   Restore (one move): delete this block. */
+.listen-btn,
+.listen-card,
+.listen-dock,
+.listen-resume-chip,
+.listen-help-dialog,
+.listen-iconbtn,
+.listen-mini-bar { display: none !important; }
+
 .listen-card{--lc-accent:var(--teal);--lc-accent-dark:var(--teal-dark);--lc-tint:var(--teal-tint);position:relative;display:grid;grid-template-columns:auto 1fr auto;grid-template-areas:"play body meta" "play progress progress" "play chapter chapter" "extras extras extras";align-items:center;gap:14px 20px;width:100%;max-width:640px;margin:28px auto 0;padding:22px 24px;background:linear-gradient(180deg,var(--white) 0%,var(--cream) 100%);border:1px solid var(--line-dark);border-radius:20px;box-shadow:0 1px 0 rgba(255,255,255,0.6) inset,0 18px 40px -24px rgba(20,22,26,0.22);text-align:left}
 .listen-card::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:linear-gradient(160deg,rgba(42,80,200,0.18),rgba(42,80,200,0) 55%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
 /* Sprint A1: ambient playback tint. ::after sits inside the card's
