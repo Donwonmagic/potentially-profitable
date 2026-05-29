@@ -48,17 +48,103 @@
       "@type": "Course",
       "@id": "https://muntin.digital/course/#course",
       "name": "Open the Doors",
+      "alternateName": "The free restaurant website course",
       "description": "A free, four-week, learn-by-doing bootcamp that walks a restaurant owner-operator from a blank page to a deployed restaurant website.",
       "url": "https://muntin.digital/course/",
+      "image": "https://muntin.digital/brand/og/course.png",
       "inLanguage": "en-US",
       "provider": { "@id": "https://muntin.digital/#business" },
       "educationalLevel": "Beginner",
       "audience": { "@type": "EducationalAudience", "educationalRole": "Restaurant owner-operator" },
+      "coursePrerequisites": "None — built for restaurant operators with no coding or design experience.",
       "isAccessibleForFree": true,
+      "offers": {
+        "@type": "Offer",
+        "category": "Free",
+        "price": "0",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock"
+      },
+      "teaches": [
+        "Define the one promise a restaurant website makes to a diner",
+        "Write a one-paragraph profile of the single customer you cook for",
+        "Choose a restaurant name and register a domain you can buy today",
+        "Position your restaurant against the local competitive landscape",
+        "Pick a color palette and brand voice before writing any copy",
+        "Build a menu page that reads well on a phone",
+        "Brief the photographs a restaurant website needs",
+        "Publish accurate hours, holidays, and contact details",
+        "Set up and optimize a Google Business Profile",
+        "Target the local-search phrases that anchor a restaurant in its city",
+        "Earn the first reviews that build first-week trust",
+        "Generate and download a deployable four-page website as a ZIP",
+        "Deploy the finished site to a free host on your own domain",
+        "Keep the site fresh with a four-task monthly rhythm"
+      ],
+      "about": [
+        { "@type": "Thing", "name": "Restaurant website" },
+        { "@type": "Thing", "name": "Local SEO" },
+        { "@type": "Thing", "name": "Google Business Profile" },
+        { "@type": "Thing", "name": "Menu design" },
+        { "@type": "Thing", "name": "Restaurant branding" },
+        { "@type": "DefinedTerm", "name": "Domain name", "url": "https://muntin.digital/glossary/domain-name/" },
+        { "@type": "Thing", "name": "Online reviews" },
+        { "@type": "Thing", "name": "Website deployment" }
+      ],
+      "hasPart": [
+        {
+          "@type": "Course",
+          "name": "Module 1 — Orient",
+          "description": "What a restaurant website actually does on a Tuesday night.",
+          "url": "https://muntin.digital/course/m1-orient/",
+          "provider": { "@id": "https://muntin.digital/#business" },
+          "isAccessibleForFree": true,
+          "hasCourseInstance": { "@type": "CourseInstance", "courseMode": "online" }
+        },
+        {
+          "@type": "Course",
+          "name": "Module 2 — Decide",
+          "description": "Customer, naming, positioning, palette, and voice — the decisions every restaurant website is built on.",
+          "url": "https://muntin.digital/course/m2-decide/",
+          "provider": { "@id": "https://muntin.digital/#business" },
+          "isAccessibleForFree": true,
+          "hasCourseInstance": { "@type": "CourseInstance", "courseMode": "online" }
+        },
+        {
+          "@type": "Course",
+          "name": "Module 3 — Assemble",
+          "description": "The operator paperwork: menu engineering, photo brief, weekly hours, and Google Business Profile.",
+          "url": "https://muntin.digital/course/m3-assemble/",
+          "provider": { "@id": "https://muntin.digital/#business" },
+          "isAccessibleForFree": true,
+          "hasCourseInstance": { "@type": "CourseInstance", "courseMode": "online" }
+        },
+        {
+          "@type": "Course",
+          "name": "Module 4 — Launch",
+          "description": "Local SEO anchors, the reviews flywheel, and the L14 generator that packages your site as a ZIP.",
+          "url": "https://muntin.digital/course/m4-launch/",
+          "provider": { "@id": "https://muntin.digital/#business" },
+          "isAccessibleForFree": true,
+          "hasCourseInstance": { "@type": "CourseInstance", "courseMode": "online" }
+        }
+      ],
       "hasCourseInstance": {
         "@type": "CourseInstance",
+        "name": "Open the Doors — self-paced",
         "courseMode": "online",
-        "courseWorkload": "PT12H"
+        "courseWorkload": "PT12H",
+        "inLanguage": ["en-US", "es-US"],
+        "isAccessibleForFree": true,
+        "instructor": { "@id": "https://muntin.digital/#person-don" },
+        "location": { "@type": "VirtualLocation", "url": "https://muntin.digital/course/" },
+        "offers": {
+          "@type": "Offer",
+          "category": "Free",
+          "price": "0",
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/InStock"
+        }
       }
     },
     {
@@ -135,22 +221,22 @@
       "itemListOrder": "https://schema.org/ItemListOrderAscending",
       "numberOfItems": 16,
       "itemListElement": [
-        { "@type": "ListItem", "position": 1,  "url": "https://muntin.digital/course/m1-orient/welcome/" },
-        { "@type": "ListItem", "position": 2,  "url": "https://muntin.digital/course/m1-orient/what-a-site-does/" },
-        { "@type": "ListItem", "position": 3,  "url": "https://muntin.digital/course/m1-orient/one-promise/" },
-        { "@type": "ListItem", "position": 4,  "url": "https://muntin.digital/course/m2-decide/customer/" },
-        { "@type": "ListItem", "position": 5,  "url": "https://muntin.digital/course/m2-decide/fresh/naming/" },
-        { "@type": "ListItem", "position": 6,  "url": "https://muntin.digital/course/m2-decide/fresh/positioning/" },
-        { "@type": "ListItem", "position": 7,  "url": "https://muntin.digital/course/m2-decide/palette-voice/" },
-        { "@type": "ListItem", "position": 8,  "url": "https://muntin.digital/course/m3-assemble/menu/" },
-        { "@type": "ListItem", "position": 9,  "url": "https://muntin.digital/course/m3-assemble/fresh/photos/" },
-        { "@type": "ListItem", "position": 10, "url": "https://muntin.digital/course/m3-assemble/hours-contact/" },
-        { "@type": "ListItem", "position": 11, "url": "https://muntin.digital/course/m3-assemble/fresh/gbp/" },
-        { "@type": "ListItem", "position": 12, "url": "https://muntin.digital/course/m4-launch/local-seo/" },
-        { "@type": "ListItem", "position": 13, "url": "https://muntin.digital/course/m4-launch/reviews/" },
-        { "@type": "ListItem", "position": 14, "url": "https://muntin.digital/course/m4-launch/generator/" },
-        { "@type": "ListItem", "position": 15, "url": "https://muntin.digital/course/m4-launch/deploy/" },
-        { "@type": "ListItem", "position": 16, "url": "https://muntin.digital/course/m4-launch/rhythm/" }
+        { "@type": "ListItem", "position": 1,  "name": "Welcome — type and see", "url": "https://muntin.digital/course/m1-orient/welcome/" },
+        { "@type": "ListItem", "position": 2,  "name": "What a site that books tables actually does", "url": "https://muntin.digital/course/m1-orient/what-a-site-does/" },
+        { "@type": "ListItem", "position": 3,  "name": "Your one promise", "url": "https://muntin.digital/course/m1-orient/one-promise/" },
+        { "@type": "ListItem", "position": 4,  "name": "Your customer in one paragraph", "url": "https://muntin.digital/course/m2-decide/customer/" },
+        { "@type": "ListItem", "position": 5,  "name": "Naming + domain", "url": "https://muntin.digital/course/m2-decide/fresh/naming/" },
+        { "@type": "ListItem", "position": 6,  "name": "Cuisine + positioning", "url": "https://muntin.digital/course/m2-decide/fresh/positioning/" },
+        { "@type": "ListItem", "position": 7,  "name": "Palette + voice", "url": "https://muntin.digital/course/m2-decide/palette-voice/" },
+        { "@type": "ListItem", "position": 8,  "name": "Your menu shortlist", "url": "https://muntin.digital/course/m3-assemble/menu/" },
+        { "@type": "ListItem", "position": 9,  "name": "Photo brief from scratch", "url": "https://muntin.digital/course/m3-assemble/fresh/photos/" },
+        { "@type": "ListItem", "position": 10, "name": "Hours, holidays, contact", "url": "https://muntin.digital/course/m3-assemble/hours-contact/" },
+        { "@type": "ListItem", "position": 11, "name": "Google Business Profile from zero", "url": "https://muntin.digital/course/m3-assemble/fresh/gbp/" },
+        { "@type": "ListItem", "position": 12, "name": "Local SEO anchors", "url": "https://muntin.digital/course/m4-launch/local-seo/" },
+        { "@type": "ListItem", "position": 13, "name": "Reviews + first-week trust", "url": "https://muntin.digital/course/m4-launch/reviews/" },
+        { "@type": "ListItem", "position": 14, "name": "The Generator — download your site", "url": "https://muntin.digital/course/m4-launch/generator/" },
+        { "@type": "ListItem", "position": 15, "name": "Deploy to Cloudflare, Netlify, or Vercel", "url": "https://muntin.digital/course/m4-launch/deploy/" },
+        { "@type": "ListItem", "position": 16, "name": "The 30-day rhythm", "url": "https://muntin.digital/course/m4-launch/rhythm/" }
       ]
     }
   ]
