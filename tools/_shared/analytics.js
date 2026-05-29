@@ -299,6 +299,10 @@
       // operator downloads the generated static-site ZIP — the L14
       // payoff moment.
       'Course Generator Download',
+      // Fired when a signed-in operator clicks "Save to the Workshop"
+      // on the L14 generator page — persists the MuntinContext
+      // snapshot under kind=course-generator-output.
+      'Course Generator Save',
       'Share',
       // Phase 3A (launch) — Cal.com booking surface (/studio/call/).
       // Fires once per page view, ~800ms after load (after the embed
@@ -401,18 +405,6 @@
     // capped at { sku, locale } so the cardinality guard stays calm.
     micro_offers: [
       'view_micro_offer',
-    ],
-    // Open the Doors bootcamp — lesson views, module + bootcamp
-    // celebrations, L14 generator download + Workshop save. Props
-    // are capped at { locale, lesson?, module? } so cardinality
-    // stays bounded across the 20 lesson pages.
-    course: [
-      'Course Bootcamp Complete',
-      'Course Generator Download',
-      'Course Generator Save',
-      'Course Lesson Complete',
-      'Course Lesson View',
-      'Course Module Complete',
     ],
   };
 
