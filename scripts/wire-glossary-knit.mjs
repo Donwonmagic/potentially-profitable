@@ -43,6 +43,13 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+// Canonical EN→{EN,ES} blog↔library slug+namespace resolution. This is
+// the same Map the Worker dispatches on every request to 301 the legacy
+// /blog/<slug>/ and /es/blog/<en-slug>/ paths to their canonical homes
+// after the Phase 7 blog↔library split. Reusing it here (rather than
+// reinventing the EN-slug → canonical-slug mapping) keeps the glossary
+// "read-next" hrefs aligned with where the content actually lives.
+import { BLOG_LIBRARY_REDIRECTS } from '../src/lib/blog-library-redirects.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const REPO       = path.resolve(path.dirname(__filename), '..');
@@ -52,6 +59,17 @@ const tags     = JSON.parse(fs.readFileSync(path.join(REPO, 'data', 'library-tag
 const topics   = JSON.parse(fs.readFileSync(path.join(REPO, 'data', 'topics.json'),       'utf8'));
 const toolsCfg = JSON.parse(fs.readFileSync(path.join(REPO, 'data', 'tools.json'),        'utf8'));
 const knit     = JSON.parse(fs.readFileSync(path.join(REPO, 'data', 'tool-knit.json'),    'utf8'));
+// EN↔ES slug map (data/i18n-slug-map.json). `library` and `blog` are
+// EN-canonical-slug → native-ES-slug maps; an entry present here means
+// the article has a Spanish translation living at the mapped path.
+const slugMap  = (() => {
+  try {
+    const m = JSON.parse(fs.readFileSync(path.join(REPO, 'data', 'i18n-slug-map.json'), 'utf8'));
+    return { library: m.library || {}, blog: m.blog || {} };
+  } catch {
+    return { library: {}, blog: {} };
+  }
+})();
 
 const SENTINEL_OPEN  = '<!-- glossary-knit -->';
 const SENTINEL_CLOSE = '<!-- /glossary-knit -->';
@@ -249,6 +267,75 @@ function articleLabel(slug, locale) {
   return post ? post.title : slug;
 }
 
+// --- ES article resolution (namespace-aware, slug-mapped) -------------
+//
+// The READ column lists article slugs in EN-canonical (and sometimes
+// legacy pre-merge/pre-rename) form. For ES we cannot just prefix /es/
+// onto /blog/<en-slug>/ — after the Phase 7 split most of these articles
+// live at /es/library/<native-es-slug>/ (or a native ES blog slug), and
+// the EN slug itself is often a retired alias. Resolution is three steps:
+//
+//   1. Canonicalize the emitted slug via the blog↔library redirect map
+//      (/blog/<emitted>/ → /<ns>/<canonical>/) so merged/renamed aliases
+//      collapse onto the slug that actually has a translation.
+//   2. Read the canonical slug's namespace from library-tags.json
+//      (blog_posts.<slug>.namespace; absent ⇒ "blog").
+//   3. Look up the native ES slug in data/i18n-slug-map.json[ns]. If the
+//      article has no ES translation, there is no entry — we return null
+//      and the caller omits the link rather than emit a known 404.
+
+// EN emitted slug → canonical EN slug. Uses the same /blog/<slug>/ keys
+// the Worker resolves; a slug with no redirect is already canonical.
+function canonicalArticleSlug(slug) {
+  const target = BLOG_LIBRARY_REDIRECTS.get(`/blog/${slug}/`);
+  if (!target) return slug;
+  const m = target.match(/^\/(?:library|blog)\/([^/]+)\/$/);
+  return m ? m[1] : slug;
+}
+
+// Canonical slug → namespace ("library" | "blog").
+function articleNamespace(canonicalSlug) {
+  const post = (tags.blog_posts || {})[canonicalSlug];
+  return post && post.namespace === 'library' ? 'library' : 'blog';
+}
+
+// Pull a Spanish link label from the published ES page's <title>
+// (decoded, minus the "| Muntin Digital" suffix). Mirrors the metadata
+// scrape build-library.mjs uses so ES titles stay single-sourced in the
+// translated pages. Cached per file.
+const esTitleCache = new Map();
+function esPageTitle(absFile) {
+  if (esTitleCache.has(absFile)) return esTitleCache.get(absFile);
+  let title = null;
+  try {
+    const html = fs.readFileSync(absFile, 'utf8');
+    const m = html.match(/<title>([\s\S]*?)<\/title>/i);
+    if (m) title = decodeEntities(m[1]).replace(/\s*\|\s*Muntin Digital\s*$/i, '').trim() || null;
+  } catch { /* missing file ⇒ no scraped title */ }
+  esTitleCache.set(absFile, title);
+  return title;
+}
+
+// Resolve an emitted article slug to its real ES { href, label }, or
+// null when the article has no Spanish translation (so the caller can
+// omit it instead of emitting a /es/blog/<en-slug>/ that 404s).
+function resolveEsArticle(slug) {
+  const canonical = canonicalArticleSlug(slug);
+  const ns        = articleNamespace(canonical);
+  const esSlug    = (slugMap[ns] || {})[canonical];
+  if (!esSlug) return null; // no ES translation — omit rather than 404.
+  const href = `/es/${ns}/${esSlug}/`;
+  // Guard against a slug-map entry whose page hasn't shipped yet.
+  if (!fs.existsSync(path.join(REPO, 'es', ns, esSlug, 'index.html'))) return null;
+  // Label: prefer the curated ES knit label keyed by the canonical URL,
+  // then the published ES page <title>, then the native ES slug.
+  const knitEntry = knit.articles[`/${ns}/${canonical}/`];
+  const label = (knitEntry && knitEntry.label_es)
+    || esPageTitle(path.join(REPO, 'es', ns, esSlug, 'index.html'))
+    || esSlug;
+  return { href, label };
+}
+
 // Decode the small set of HTML entities glossary term-h1 elements
 // might use, so escText() can re-encode them once instead of producing
 // "&amp;amp;" from "&amp;".
@@ -316,23 +403,59 @@ ${toolsList}
   // glossary term page now sends PageRank to 5 articles instead of
   // 3 (~67% lift in outbound link density across 130 terms).
   const directArticles = articleSlugsByTerm.get(slug) || [];
-  const articleSlugs = [...directArticles];
-  if (articleSlugs.length < 5 && me && me.topics.length) {
-    const myTopicSet = new Set(me.topics);
-    for (const [postSlug, post] of Object.entries(tags.blog_posts || {})) {
-      if (postSlug === '_doc') continue;
-      if (articleSlugs.includes(postSlug)) continue;
-      const postTopics = post.topics || [];
-      if (postTopics.some((t) => myTopicSet.has(t))) {
-        articleSlugs.push(postSlug);
-        if (articleSlugs.length >= 5) break;
+  let articlesList;
+  if (locale === 'en') {
+    // EN: unchanged. Declared first, then topic-fallback, capped at 5;
+    // hrefs stay /blog/<slug>/ and the Worker 301s any /library/ ones.
+    const articleSlugs = [...directArticles];
+    if (articleSlugs.length < 5 && me && me.topics.length) {
+      const myTopicSet = new Set(me.topics);
+      for (const [postSlug, post] of Object.entries(tags.blog_posts || {})) {
+        if (postSlug === '_doc') continue;
+        if (articleSlugs.includes(postSlug)) continue;
+        const postTopics = post.topics || [];
+        if (postTopics.some((t) => myTopicSet.has(t))) {
+          articleSlugs.push(postSlug);
+          if (articleSlugs.length >= 5) break;
+        }
       }
     }
+    articleSlugs.length = Math.min(articleSlugs.length, 5);
+    articlesList = articleSlugs.length
+      ? articleSlugs.map((as) => `          <li><a href="${escAttr(articleUrl(as, locale))}">${escText(articleLabel(as, locale))}</a></li>`).join('\n')
+      : `          <li class="glossary-knit__col-empty">${escText(headings.empty)}</li>`;
+  } else {
+    // ES: resolve every candidate to its real ES URL (namespace + native
+    // slug), drop articles with no Spanish translation, dedupe by the
+    // resolved href (merged/renamed aliases can collapse to one page),
+    // then take the first 5. The candidate pool is built in the same
+    // priority order as EN (declared, then topic-fallback over all
+    // blog_posts) but is NOT pre-capped at 5 — otherwise an untranslated
+    // article near the top would shrink the ES list below 5 instead of
+    // letting the next translated candidate move up.
+    const candidates = [...directArticles];
+    if (me && me.topics.length) {
+      const myTopicSet = new Set(me.topics);
+      for (const [postSlug, post] of Object.entries(tags.blog_posts || {})) {
+        if (postSlug === '_doc') continue;
+        if (candidates.includes(postSlug)) continue;
+        const postTopics = post.topics || [];
+        if (postTopics.some((t) => myTopicSet.has(t))) candidates.push(postSlug);
+      }
+    }
+    const seenHrefs = new Set();
+    const resolved = [];
+    for (const cand of candidates) {
+      const r = resolveEsArticle(cand);
+      if (!r || seenHrefs.has(r.href)) continue;
+      seenHrefs.add(r.href);
+      resolved.push(r);
+      if (resolved.length >= 5) break;
+    }
+    articlesList = resolved.length
+      ? resolved.map((r) => `          <li><a href="${escAttr(r.href)}">${escText(r.label)}</a></li>`).join('\n')
+      : `          <li class="glossary-knit__col-empty">${escText(headings.empty)}</li>`;
   }
-  articleSlugs.length = Math.min(articleSlugs.length, 5);
-  const articlesList = articleSlugs.length
-    ? articleSlugs.map((as) => `          <li><a href="${escAttr(articleUrl(as, locale))}">${escText(articleLabel(as, locale))}</a></li>`).join('\n')
-    : `          <li class="glossary-knit__col-empty">${escText(headings.empty)}</li>`;
   const articlesCol = `<div class="glossary-knit__col">
         <h3>${escText(headings.read)}</h3>
         <ul>
