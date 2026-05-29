@@ -24,7 +24,7 @@
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta property="article:published_time" content="2026-04-30" />
-<meta property="article:author" content="Don Goldstein" />
+<meta property="article:author" content="The Muntin Desk" />
 <meta property="article:section" content="Information Security" />
 <meta property="article:tag" content="Tool safety" />
 <meta property="article:tag" content="Data privacy" />
@@ -48,11 +48,11 @@
       "description": "The 5-test audit framework + 4-tier data model + a worked example. Verifiable in your own browser, under a minute per test.",
       "url": "https://muntin.digital/library/how-to-tell-if-a-restaurant-tool-is-safe/",
       "datePublished": "2026-04-30",
-      "dateModified": "2026-04-30",
+      "dateModified": "2026-05-28",
       "author": {
-        "@id": "https://muntin.digital/#don-goldstein",
-        "@type": "Person",
-        "name": "Don Goldstein",
+        "@id": "https://muntin.digital/#muntin-desk",
+        "@type": "Organization",
+        "name": "The Muntin Desk",
         "url": "https://muntin.digital/about/"
       },
       "publisher": {
@@ -458,7 +458,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           A 5-test framework you can run on any free tool — in your browser, in under a minute — before you type a single real number into it. The 4-tier data model that tells you what to share, where. And the worked example of what &ldquo;safe&rdquo; looks like in practice.
         </p>
         <p class="post-meta">
-          9 min read · By <a href="/about/#don-goldstein" class="author-chip"><strong>Don</strong></a>
+          9 min read · By <a href="/about/" class="author-chip"><strong>The Muntin Desk</strong></a>
         </p>
         <div class="row-center">
           <button type="button" id="listen-btn" class="listen-btn" aria-pressed="false" data-state="idle" data-audio-src="audio.mp3" data-audio-languages="en,es,fr,it,pt,zh">
@@ -535,35 +535,35 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <figure class="viz-figure article-figure" data-audio-alt="The five-test browser audit, in the order you run them. Test one: open the Network tab and type a number. If a request fires on every keystroke, the tool is shipping your inputs to a server before you submit — walk away. Test two: look for the privacy claim at the point of input, not three clicks deep in a footer. Test three: check for an account, newsletter, or cookie gate — &quot;enter your email to see your results&quot; means your numbers are the price of admission. Test four: filter Network by JS and look for Google Analytics, Meta Pixel, HubSpot, FullStory, Hotjar — third-party surveillance vendors recording inputs you did not agree to share. Test five: right-click and View Source. A small, readable, unminified script is auditable; a four-megabyte minified bundle is not. Any single failure ends the audit.">
         <div class="viz-flow reveal">
           <ol class="viz-flow__list">
-            <li class="viz-flow__step" data-state="bad" data-tone="teal">
+            <li class="viz-flow__step" data-state="bad" data-tone="rust">
               <span class="viz-flow__num">1</span>
               <div class="viz-flow__body">
                 <p class="viz-flow__title">Network on keystroke</p>
                 <p class="viz-flow__meta">Open Network tab, type a number. If the request list grows per keystroke, the tool is silently shipping inputs to a server. <strong>Fail = walk away.</strong></p>
               </div>
             </li>
-            <li class="viz-flow__step" data-state="bad" data-tone="teal">
+            <li class="viz-flow__step" data-state="bad" data-tone="rust">
               <span class="viz-flow__num">2</span>
               <div class="viz-flow__body">
                 <p class="viz-flow__title">Privacy at the point of input</p>
                 <p class="viz-flow__meta">A trustworthy tool tells you what it does with your data <em>where you are typing</em> — not in a footer link three clicks deep. <strong>Fail = walk away.</strong></p>
               </div>
             </li>
-            <li class="viz-flow__step" data-state="bad" data-tone="teal">
+            <li class="viz-flow__step" data-state="bad" data-tone="rust">
               <span class="viz-flow__num">3</span>
               <div class="viz-flow__body">
                 <p class="viz-flow__title">Account / email / cookie gate</p>
                 <p class="viz-flow__meta">&ldquo;Enter your email to see your results&rdquo; means your numbers are the price of admission. The tool is not free. <strong>Fail = walk away.</strong></p>
               </div>
             </li>
-            <li class="viz-flow__step" data-state="bad" data-tone="teal">
+            <li class="viz-flow__step" data-state="bad" data-tone="rust">
               <span class="viz-flow__num">4</span>
               <div class="viz-flow__body">
                 <p class="viz-flow__title">Third-party scripts</p>
                 <p class="viz-flow__meta">Filter Network by JS. GA, Meta Pixel, HubSpot, FullStory, Hotjar — surveillance vendors who were never part of the deal. <strong>Fail = walk away.</strong></p>
               </div>
             </li>
-            <li class="viz-flow__step" data-state="bad" data-tone="teal">
+            <li class="viz-flow__step" data-state="bad" data-tone="rust">
               <span class="viz-flow__num">5</span>
               <div class="viz-flow__body">
                 <p class="viz-flow__title">Readable source</p>

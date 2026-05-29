@@ -1,18 +1,18 @@
 {
   "_doc": "Audio coverage manifest for the Muntin library. Source of truth for which written pieces ship a 'Listen to this article' studio audio edition, in which languages.",
-  "_status": "v1 \u2014 2026-05-08. Tracks the studio-tier audio rollout. The pipeline that consumes this is scripts/render-post-audio.mjs (synthesis) + scripts/lib/translate.py (translation) + scripts/check-audio-coverage.mjs (audit).",
+  "_status": "v1 — 2026-05-08. Tracks the studio-tier audio rollout. The pipeline that consumes this is scripts/render-post-audio.mjs (synthesis) + scripts/lib/translate.py (translation) + scripts/check-audio-coverage.mjs (audit).",
   "_render_command": "node scripts/render-post-audio.mjs --manifest data/article-audio.json --languages en,es,fr,it,pt,zh --kokoro-model <path> --kokoro-voices <path>",
   "_audit_command": "node scripts/check-audio-coverage.mjs",
   "_languages": {
-    "en": "English \u2014 primary, narrated by F5-TTS voice clone (Don) when available, otherwise Kokoro am_michael",
-    "es": "Spanish \u2014 Kokoro em_alex",
-    "fr": "French \u2014 Kokoro ff_siwis",
-    "it": "Italian \u2014 Kokoro im_nicola",
-    "pt": "Portuguese (Brazilian) \u2014 Kokoro pm_alex",
-    "zh": "Mandarin \u2014 Kokoro zm_yunxi"
+    "en": "English — primary, narrated by F5-TTS voice clone (Don) when available, otherwise Kokoro am_michael",
+    "es": "Spanish — Kokoro em_alex",
+    "fr": "French — Kokoro ff_siwis",
+    "it": "Italian — Kokoro im_nicola",
+    "pt": "Portuguese (Brazilian) — Kokoro pm_alex",
+    "zh": "Mandarin — Kokoro zm_yunxi"
   },
   "_voice_canon": "One curated Kokoro voice per language, used across the entire library so brand recognition compounds. Don may swap voices via render-post-audio.mjs --kokoro-voice-<lang> when a better voice ships.",
-  "_translation_canon": "Each non-EN edition runs the source EN chunks through scripts/lib/translate.py \u2014 document-context batched translation with the GLOSSARY of brand + restaurant-industry terms preserved. The ES edition for posts with a hand-translated ES mirror SHOULD use --use-existing-translations against the ES article HTML so the audio matches Don's authored Spanish prose. Other languages use translate.py.",
+  "_translation_canon": "Each non-EN edition runs the source EN chunks through scripts/lib/translate.py — document-context batched translation with the GLOSSARY of brand + restaurant-industry terms preserved. The ES edition for posts with a hand-translated ES mirror SHOULD use --use-existing-translations against the ES article HTML so the audio matches Don's authored Spanish prose. Other languages use translate.py.",
   "_pronunciation_canon": "data/audio-pronunciation.json holds per-locale phonetic overrides. Kokoro applies them via the espeak phonemizer hint; terms not in the dictionary use Kokoro's default pronunciation.",
   "_pieces": {
     "_doc": "Each entry: { path, title, languages, status, owner }. Path is repo-root-relative without /index.html. Languages declare which audio editions this piece SHOULD ship; the audit complains when an entry is missing on disk. Status: 'rendered' (audio exists for every declared lang), 'partial' (some langs missing or stale), 'pending' (no audio yet). Owner is who narrated (kokoro, f5)."
@@ -116,7 +116,7 @@
     "_doc": "Spanish-only blog slugs (no EN counterpart). Their audio chunks come from the ES article HTML directly; other languages translate from the ES source."
   },
   "library": {
-    "_doc": "Phase 7: evergreen library articles. Same render + audit pipeline as /blog/; entries are added here as posts migrate from /blog/ into /library/ (Wave 4). Files live at /library/<slug>/audio.mp3 and audio.<lang>.json. Each entry's GUID for RSS purposes is stable across the blog\u2192library move (see scripts/build-rss.mjs).",
+    "_doc": "Phase 7: evergreen library articles. Same render + audit pipeline as /blog/; entries are added here as posts migrate from /blog/ into /library/ (Wave 4). Files live at /library/<slug>/audio.mp3 and audio.<lang>.json. Each entry's GUID for RSS purposes is stable across the blog→library move (see scripts/build-rss.mjs).",
     "can-chatgpt-write-your-restaurant-website": {
       "languages": [
         "en",
@@ -148,7 +148,7 @@
         "pt",
         "zh"
       ],
-      "status": "pending"
+      "status": "partial"
     },
     "how-to-get-more-google-reviews-for-your-restaurant": {
       "languages": [
@@ -214,7 +214,7 @@
         "pt",
         "zh"
       ],
-      "status": "pending"
+      "status": "partial"
     },
     "restaurant-photo-spec-sheet": {
       "languages": [
@@ -291,7 +291,7 @@
         "pt",
         "zh"
       ],
-      "status": "pending"
+      "status": "partial"
     },
     "service-charge-vs-tipping-model": {
       "languages": [
@@ -302,7 +302,7 @@
         "pt",
         "zh"
       ],
-      "status": "pending"
+      "status": "partial"
     },
     "google-review-response-playbook": {
       "languages": [
@@ -313,7 +313,7 @@
         "pt",
         "zh"
       ],
-      "status": "pending"
+      "status": "partial"
     },
     "loyalty-program-roi": {
       "languages": [
@@ -324,7 +324,7 @@
         "pt",
         "zh"
       ],
-      "status": "pending"
+      "status": "partial"
     },
     "restaurant-app-decision": {
       "languages": [
@@ -346,7 +346,7 @@
         "pt",
         "zh"
       ],
-      "status": "rendered",
+      "status": "partial",
       "owner": "f5+kokoro"
     },
     "restaurant-schema-markup-guide": {
@@ -542,7 +542,7 @@
         "zh"
       ],
       "status": "deferred",
-      "defer_reason": "post-body wraps <main> with nested <section><div class='container'><h2/p/li>... \u2014 extractor selectors don't resolve at runtime"
+      "defer_reason": "post-body wraps <main> with nested <section><div class='container'><h2/p/li>... — extractor selectors don't resolve at runtime"
     },
     "restaurant-website-checklist": {
       "languages": [
@@ -605,9 +605,9 @@
   },
   "_skipped": {
     "_doc": "Sections deliberately excluded from audio narration.",
-    "topics": "/learn/topics/<slug>/ \u2014 nav hubs (a few sentences + lists of articles); audio narration of a nav hub doesn't serve the listener.",
-    "glossary": "/glossary/<slug>/ \u2014 definitional pages (often <300 words); the per-term popover already reads the definition; no value in standalone audio editions.",
-    "tools": "/tools/<slug>/ \u2014 interactive tools, not articles; audio narration would describe a UI the listener should be touching.",
-    "sheets": "/sheets/<slug>/ \u2014 operator worksheets; the value is in filling them in, not listening to them."
+    "topics": "/learn/topics/<slug>/ — nav hubs (a few sentences + lists of articles); audio narration of a nav hub doesn't serve the listener.",
+    "glossary": "/glossary/<slug>/ — definitional pages (often <300 words); the per-term popover already reads the definition; no value in standalone audio editions.",
+    "tools": "/tools/<slug>/ — interactive tools, not articles; audio narration would describe a UI the listener should be touching.",
+    "sheets": "/sheets/<slug>/ — operator worksheets; the value is in filling them in, not listening to them."
   }
 }

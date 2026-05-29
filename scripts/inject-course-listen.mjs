@@ -155,7 +155,13 @@ function transform(src, lesson, locale) {
   ].join('\n');
 
   if (hasButtonSentinel) {
-    next = next.replace(SENTINEL_RE, '\n      ' + button + '\n      ');
+    // SENTINEL_RE strips the leading whitespace before the start sentinel
+    // and exactly one trailing newline after the end sentinel — it does
+    // NOT touch the next line's own indent. The replacement therefore
+    // adds back the newline + 6-space indent that fronts the block but
+    // leaves the following line untouched. (Trailing `\n      ` would
+    // double-indent on every re-run.)
+    next = next.replace(SENTINEL_RE, '\n      ' + button + '\n');
   } else {
     if (!ANCHOR_BUTTON_RE.test(next)) {
       return undefined; // no <article class="course-body"> anchor; skip + log

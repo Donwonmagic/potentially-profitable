@@ -25,7 +25,7 @@
 <meta property="og:image:height" content="630" />
 <meta property="article:published_time" content="2026-04-15" />
 <meta property="article:modified_time" content="2026-04-15" />
-<meta property="article:author" content="Don Goldstein" />
+<meta property="article:author" content="The Muntin Desk" />
 <meta property="article:section" content="Comparison" />
 <meta property="article:tag" content="Restaurant websites" />
 <meta property="article:tag" content="Wix" />
@@ -69,12 +69,15 @@
       },
       "url": "https://muntin.digital/library/wix-vs-custom-for-restaurants/",
       "datePublished": "2026-04-15",
-      "dateModified": "2026-04-15",
+      "dateModified": "2026-05-28",
       "inLanguage": "en-US",
       "wordCount": 2020,
       "keywords": "wix vs custom restaurant website, wix for restaurants, custom restaurant website, restaurant website platform comparison, wix restaurant limitations, custom vs template restaurant site",
       "author": {
-        "@id": "https://muntin.digital/about/#don-goldstein"
+        "@id": "https://muntin.digital/#muntin-desk",
+        "@type": "Organization",
+        "name": "The Muntin Desk",
+        "url": "https://muntin.digital/about/"
       },
       "publisher": {
         "@id": "https://muntin.digital/#business"
@@ -785,7 +788,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         An honest comparison — including the six places Wix runs out of room for an independent restaurant, the ROI math that makes switching worth it, and when Wix is actually the right call.
       </p>
       <p class="post-meta">
-        9 min read  ·  By <a href="/about/#don-goldstein" class="author-chip"><strong>Don</strong></a>
+        9 min read  ·  By <a href="/about/" class="author-chip"><strong>The Muntin Desk</strong></a>
       </p>
       <div class="row-center">
         <button type="button" id="listen-btn" class="listen-btn" aria-pressed="false" data-state="idle" data-audio-src="audio.mp3" data-audio-languages="en,es,fr,it,pt,zh">
@@ -853,13 +856,63 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       </ul>
       <p>If you're brand new, cash is tight, and you can genuinely accept that the site is a placeholder — not a reflection of the room — Wix is fine. This post is not for you. Everything below is for the restaurant that's been open a year or more, has regulars, has a menu worth photographing, and is starting to notice that the site is a problem.</p>
 
+      <figure class="viz-figure article-figure" data-audio-alt="The six places Wix tends to run out of room for an established restaurant, in roughly the order an operator runs into them. One: menu management is a trap — the menu lives inside Wix's closed system, not in real HTML, so Google can't cleanly crawl individual dishes. Two: mobile load speed — Lighthouse scores on mobile Wix restaurant sites consistently land below sixty, costing hungry mobile traffic before anyone sees the menu. Three: reservations integration — defaults heavily to OpenTable; if you're on Resy, Tock, SevenRooms, or Square Reservations, you usually get a generic iframe or a link-out. Four: SEO is template-good, not actually good — title tags exist, but the schema, the canonicals, and the internal-linking sit at the floor, not the ceiling. Five: anything custom requires hiring a Wix Partner — the cost of the template's flexibility is real, just delayed. Six: exit costs — Wix doesn't let you export your content cleanly; you discover this the year you try to leave.">
+        <div class="viz-flow">
+          <ol class="viz-flow__list">
+            <li class="viz-flow__step" data-tone="rust">
+              <span class="viz-flow__num">1</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">Menu management is a trap</p>
+                <p class="viz-flow__detail">Menu lives inside Wix&rsquo;s closed system &mdash; Google can&rsquo;t cleanly crawl individual dishes; updates fan out to four places by hand.</p>
+              </div>
+            </li>
+            <li class="viz-flow__step" data-tone="rust">
+              <span class="viz-flow__num">2</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">Mobile load speed</p>
+                <p class="viz-flow__detail">Lighthouse mobile scores consistently below 60 in audit experience; hungry mobile traffic bounces before the menu ever paints.</p>
+              </div>
+            </li>
+            <li class="viz-flow__step" data-tone="rust">
+              <span class="viz-flow__num">3</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">Reservations integration</p>
+                <p class="viz-flow__detail">Defaults to OpenTable. On Resy, Tock, SevenRooms, or Square Reservations, you get a generic iframe or a link-out.</p>
+              </div>
+            </li>
+            <li class="viz-flow__step" data-tone="stone">
+              <span class="viz-flow__num">4</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">SEO is template-good, not actually good</p>
+                <p class="viz-flow__detail">Title tags exist; schema, canonicals, and internal-linking sit at the floor, not the ceiling.</p>
+              </div>
+            </li>
+            <li class="viz-flow__step" data-tone="stone">
+              <span class="viz-flow__num">5</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">Anything custom requires a Wix Partner</p>
+                <p class="viz-flow__detail">The template&rsquo;s flexibility ceiling is real &mdash; you just don&rsquo;t hit it until the year you need something it doesn&rsquo;t do.</p>
+              </div>
+            </li>
+            <li class="viz-flow__step" data-tone="stone">
+              <span class="viz-flow__num">6</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">Exit costs are real</p>
+                <p class="viz-flow__detail">Wix doesn&rsquo;t let you export your content cleanly. You find this out the year you try to leave.</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+        <figcaption>Six places Wix tends to run out of room for an established restaurant &mdash; in the order an operator usually meets them.</figcaption>
+      </figure>
+
       <h2 id="break-1-menu-management-is-a-trap">Break #1 — Menu management is a trap</h2>
       <p>Wix has a "menu" widget. It looks great in the template preview. You drop in your categories, your dishes, your prices, and it renders a clean card layout on the page.</p>
       <p>Here's what you don't see until you've lived with it: <strong>your menu is inside Wix's closed system, not inside real HTML on your page.</strong> That sounds like a technicality. It isn't.</p>
       <p>What it means in practice: Google can't cleanly crawl individual dish descriptions, so you don't rank for "chicken parm near me" the way you could. Diners can't tap a dish to share it with a friend. When you update the menu on Wix, you still have to update it again on <!-- LIBRARY:autolink:start --><a href="/glossary/gbp/" data-glossary-head="Google Business Profile" data-glossary-aka="GBP, formerly Google My Business" data-glossary-blurb="Your business's free listing on Google Maps and Google Search — the panel on the right of a search that shows your name, hours, photos, reviews, and a link to your menu or booking.">Google Business Profile</a><!-- LIBRARY:autolink:end -->, on DoorDash, on Yelp, and anywhere else your menu lives — because nothing auto-syncs. The "easy updates" pitch quietly becomes "four separate places to update every time you change a price."</p>
       <p>A custom site with a real menu CMS updates once and pushes everywhere that's wired up. A Wix menu updates in one place and leaves the other four stale.</p>
 
-      <figure class="article-figure">
+      <figure class="article-figure" data-audio-alt="How menu data flows in a closed platform compared with a real HTML menu, side by side. The Wix menu widget is a closed system — Google cannot crawl it as Restaurant schema, diners cannot tap a dish to share the link, it will not sync to Google Business Profile or delivery apps, every edit requires the Wix editor, and the menu lives inside Wix with no portability. A custom HTML menu is an open system — the same source of truth is crawlable as Restaurant schema, each dish has a shareable anchor link, the data feeds other channels automatically, edits happen from a CMS or spreadsheet or text editor, and the data is portable across hosts. Same restaurant menu; two completely different operational profiles.">
         <div class="closed-vs-open" role="img" aria-label="Comparison of how menu data flows in a closed platform versus a real HTML menu">
           <div class="cvo-side wix">
             <div class="cvo-subtitle i18n">Wix menu widget</div>
@@ -995,6 +1048,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <p>The rebuild is almost always the right move — but it's a rebuild. Two or three years of content you thought you owned, effectively starts over. A custom site built on real HTML can be picked up, hosted anywhere, edited by anyone with a text editor, and moved between providers in an afternoon. That ownership is a feature the monthly Wix fee doesn't buy you.</p>
       <h2 id="the-math-that-almost-always-works">The math that almost always works</h2>
       <p>Here is the comparison most restaurant owners never actually do:</p>
+      <figure class="article-figure" data-audio-alt="Two-year total cost, line by line. Wix DIY: roughly twenty-five dollars a month in software for six hundred over twenty-four months, no upfront, no explicit care plan, plus about three thousand dollars of your own time at a hundred twenty hours valued at twenty-five an hour. Real two-year total: about thirty-six hundred. Custom site, Muntin Essentials tier: twenty-five hundred upfront, hosting included, care plan one twenty-five to three fifty a month for three thousand to eighty-four hundred. Two-year total: fifty-five hundred to ten thousand nine hundred. The custom site is roughly two to three times the cash cost, but it owns the code and clocks a mobile speed score above ninety against Wix&apos;s forty to fifty. The question isn&apos;t which line item is cheaper — it&apos;s whether the next two years of reservations are worth the speed and ownership gap.">
       <div class="table-scroll"><table class="comparison-table">
         <caption>Two-year total cost: Wix vs. custom site for an independent restaurant</caption>
         <thead>
@@ -1010,6 +1064,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           <tr><th scope="row">You own the code</th><td>No</td><td>Yes</td></tr>
         </tbody>
       </table></div>
+      
+<figcaption class="figure-caption">Two-year total cost: Wix vs. custom site, line by line</figcaption>
+</figure>
       <ul>
         <li><strong>Wix over two years:</strong> ~$25 a month × 24 months = <strong>$600</strong>, plus roughly 120 hours of your own time keeping it updated (at even a conservative $25/hour opportunity cost, that's another $3,000). Two-year real total: about <strong>$3,600</strong>.</li>
         <li><strong>Custom site over two years:</strong> $2,500 upfront (Essentials tier from Muntin) + $125–$350/month care plan × 24 months ($3,000–$8,400). Two-year total: <strong>$5,500–$10,900</strong>.</li>

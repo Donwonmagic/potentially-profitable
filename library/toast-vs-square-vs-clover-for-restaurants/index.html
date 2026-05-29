@@ -24,7 +24,7 @@
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta property="article:published_time" content="2026-05-07" />
-<meta property="article:author" content="Don Goldstein" />
+<meta property="article:author" content="The Muntin Desk" />
 <meta property="article:section" content="Comparison" />
 <meta property="article:tag" content="Restaurant POS" />
 <meta property="article:tag" content="Toast" />
@@ -69,11 +69,14 @@
       },
       "url": "https://muntin.digital/library/toast-vs-square-vs-clover-for-restaurants/",
       "datePublished": "2026-05-07",
-      "dateModified": "2026-05-07",
+      "dateModified": "2026-05-28",
       "inLanguage": "en-US",
       "wordCount": 2800,
       "author": {
-        "@id": "https://muntin.digital/about/#don-goldstein"
+        "@id": "https://muntin.digital/#muntin-desk",
+        "@type": "Organization",
+        "name": "The Muntin Desk",
+        "url": "https://muntin.digital/about/"
       },
       "publisher": {
         "@id": "https://muntin.digital/#business"
@@ -804,7 +807,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         An honest comparison of how the three dominant restaurant POS systems integrate with a real restaurant website — what each one does well, what each one quietly limits, and which one I'd pick for your restaurant type.
       </p>
       <p class="post-meta">
-        11 min read  ·  By <a href="/about/#don-goldstein" class="author-chip"><strong>Don</strong></a>
+        11 min read  ·  By <a href="/about/" class="author-chip"><strong>The Muntin Desk</strong></a>
       </p>
       <div class="row-center">
         <button type="button" id="listen-btn" class="listen-btn" aria-pressed="false" data-state="idle" data-audio-src="audio.mp3" data-audio-languages="en,es,fr,it,pt,zh">
@@ -952,7 +955,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <figcaption>Confident-yes marks per platform across the ten features below. Toast and Square are roughly tied; Clover is materially behind on website integration specifically.</figcaption>
       </figure>
 
-      <figure style="margin:48px 0;">
+      <figure style="margin:48px 0;" data-audio-alt="The ten-feature head-to-head: Toast, Square, and Clover scored across hardware, payment processing rates, online ordering, third-party delivery, reservations, gift cards, loyalty, analytics, payroll, and offline mode. Toast and Square each land seven confident yeses out of ten. Clover lands one — with seven of its rows reading as &apos;maybe, depending on the reseller you bought from.&apos; Toast wins on restaurant-built workflow: online ordering and reservations are first-party. Square wins on transparent pricing and fastest setup. Clover&apos;s feature list looks comparable on paper, but the reseller patchwork means two restaurants on Clover can have completely different software for the same monthly fee — which is the reason this scorecard exists.">
         <div class="pos-table-wrap">
           <div class="table-scroll"><table class="pos-table">
             <thead>
@@ -1035,23 +1038,38 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <h2 id="which-one-i-d-pick-by-restaurant-type">Which one I'd pick, by restaurant type</h2>
       <p>Here's how I'd match each POS to a restaurant type, based on what I see in audits. These are opinions, not rules — your actual best fit depends on variables I can't see from a blog post, so treat this as a starting point for your own evaluation, not a verdict.</p>
 
-      <div class="recommend-grid">
-        <div class="recommend-card">
-          <span class="badge">Single-location independent</span>
-          <h4>Square for Restaurants</h4>
-          <p>Clean API, public flat-rate pricing, short contracts, and a lower switching cost if you outgrow the fit. You get the website-integration quality you need for a first custom rebuild without committing to a walled garden before you're sure you want to stay.</p>
-        </div>
-        <div class="recommend-card">
-          <span class="badge">Growing 2–5 location group</span>
-          <h4>Toast</h4>
-          <p>Native ordering pipeline, mature menu sync, real-time 86, and a developer API that scales alongside the group. The "it just works" factor is genuine when multi-location operations are on the line and you need every integration to survive a Saturday rush.</p>
-        </div>
-        <div class="recommend-card">
-          <span class="badge">Hardware-heavy or hybrid</span>
-          <h4>Clover</h4>
-          <p>Widest hardware selection, handheld tableside, kiosk variants, integrated scales, app marketplace depth. If a specific physical configuration or a merchant services relationship matters more than pure developer ergonomics, Clover earns its place.</p>
-        </div>
-      </div>
+      <figure class="article-figure" data-audio-alt="Three POS picks mapped to restaurant shape, in a decision-tree shape. Branch one — single-location independent — Square for Restaurants is the best fit, because of the clean API, public flat-rate pricing, short contracts, and lower switching cost if you outgrow it. Branch two — growing two-to-five location group — Toast is the best fit, because of the native ordering pipeline, mature menu sync, real-time 86, and developer API that scales with the group; the 'it just works' factor is genuine when every integration has to survive a Saturday rush. Branch three — hardware-heavy or hybrid concept — Clover is the best fit, because of the widest hardware selection, handheld tableside, kiosk variants, integrated scales, and app marketplace depth. Three different operating realities, three different best fits.">
+        <ol class="viz-tree" aria-label="Three POS picks mapped to restaurant shape">
+          <li class="viz-tree__node">
+            <details open>
+              <summary><span class="viz-tree__num">1</span><span class="viz-tree__title">Single-location independent &rarr; Square for Restaurants</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+              <div class="viz-tree__body">
+                <p>Clean API, public flat-rate pricing, short contracts, and a lower switching cost if you outgrow the fit. You get the website-integration quality you need for a first custom rebuild without committing to a walled garden before you&rsquo;re sure you want to stay.</p>
+                <p><span class="viz-tree__verdict" data-tone="pass">Best fit</span> Single-location operators who want a clean rebuild without long-term lock-in.</p>
+              </div>
+            </details>
+          </li>
+          <li class="viz-tree__node">
+            <details>
+              <summary><span class="viz-tree__num">2</span><span class="viz-tree__title">Growing 2&ndash;5 location group &rarr; Toast</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+              <div class="viz-tree__body">
+                <p>Native ordering pipeline, mature menu sync, real-time 86, and a developer API that scales alongside the group. The &ldquo;it just works&rdquo; factor is genuine when multi-location operations are on the line and you need every integration to survive a Saturday rush.</p>
+                <p><span class="viz-tree__verdict" data-tone="pass">Best fit</span> Operators scaling past one location who can&rsquo;t afford an integration to break under load.</p>
+              </div>
+            </details>
+          </li>
+          <li class="viz-tree__node">
+            <details>
+              <summary><span class="viz-tree__num">3</span><span class="viz-tree__title">Hardware-heavy or hybrid &rarr; Clover</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+              <div class="viz-tree__body">
+                <p>Widest hardware selection, handheld tableside, kiosk variants, integrated scales, app marketplace depth. If a specific physical configuration or a merchant services relationship matters more than pure developer ergonomics, Clover earns its place.</p>
+                <p><span class="viz-tree__verdict" data-tone="pass">Best fit</span> Operators whose hardware needs or banking relationship outweigh integration ergonomics.</p>
+              </div>
+            </details>
+          </li>
+        </ol>
+        <figcaption>Three picks, by restaurant shape &mdash; opinions anchored to audit experience, not rules.</figcaption>
+      </figure>
 
       <h2 id="what-to-ask-your-pos-provider-before-you-build-a-website">What to ask your POS provider before you build a website</h2>
       <p>Whichever POS you're evaluating, there are six questions I'd ask the sales rep before you sign anything. Write these down, email them to your rep, and save the reply — the answers will tell you more about the integration quality you're signing up for than any glossy product page will. (Or run <a href="/tools/tech-stack/">Tech Stack</a> against your current setup to see which integration features your existing tools already deliver.)</p>

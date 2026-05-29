@@ -458,24 +458,17 @@ header.nav{min-height:64px}
       <h2 id="what-generative-changes-about-a-restaurant-result">What &ldquo;generative&rdquo; changes about a restaurant result</h2>
       <p>A generated answer &mdash; the same surface as a Google <a href="/glossary/ai-overview/">AI Overview</a> &mdash; is assembled from whatever the model can read and trust about you: your <a href="/glossary/gbp/">Google Business Profile</a>, your reviews, the text on your own pages. It is not a ranked feed. The old <a href="/glossary/map-pack/">map pack</a> rewarded proximity and rating; the generated answer rewards <em>legibility</em> &mdash; can the model state, in a sentence it&rsquo;s willing to put its name on, what you serve, when you&rsquo;re open, and whether you fit the diner&rsquo;s ask. If that sentence isn&rsquo;t readable somewhere, you&rsquo;re not in the paragraph. We walked the four signals that decide it in <a href="/blog/how-to-appear-in-ai-search-restaurant-2026/">the four-number check</a>.</p>
 
-      <figure class="viz-figure article-figure" data-audio-alt="The same diner query, run on the two surfaces. On the old surface — a search before the I/O rebuild — the result is a map plus a ranked list of about ten restaurants, and the diner taps, scrolls, calls, and decides on their own. On the new surface — AI Mode after the rebuild — the result is a generated paragraph that names roughly three places by name, with booking buttons attached, and the assistant can complete the reservation through OpenTable, Resy, or Tock inside the answer.">
-        <div class="viz-flow">
-          <ol class="viz-flow__list">
-            <li class="viz-flow__step" data-tone="rust">
-              <span class="viz-flow__num">A</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">Old surface &mdash; the diner sorts the list</p>
-                <p class="viz-flow__detail">Query &ldquo;quiet spot for four on Friday&rdquo; &rarr; a map plus roughly ten ranked restaurants. The diner taps, scrolls, calls, and decides on their own. You compete by ranking in the list.</p>
-              </div>
-            </li>
-            <li class="viz-flow__step" data-tone="teal">
-              <span class="viz-flow__num">B</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">New surface &mdash; the model writes the answer</p>
-                <p class="viz-flow__detail">Same query &rarr; a generated paragraph naming about three places, with booking buttons inline. The agent can finish the reservation through OpenTable, Resy, or Tock without sending the diner anywhere. You compete by being one of the few the model names.</p>
-              </div>
-            </li>
-          </ol>
+      <figure class="viz-figure article-figure" data-audio-alt="The same diner query, run on the two surfaces. Before the I/O rebuild, the result is a map plus a ranked list of about ten restaurants — the diner taps, scrolls, calls, and decides on their own. You compete by ranking in the list. After the rebuild, the result is a generated paragraph that names roughly three places by name with booking buttons inline; the assistant can complete the reservation through OpenTable, Resy, or Tock without sending the diner anywhere. You compete by being one of the few the model names.">
+        <div class="viz-ba">
+          <p class="viz-ba__label">&ldquo;Quiet spot for four on Friday&rdquo; &mdash; before and after the I/O rebuild</p>
+          <div class="snippet-box" data-tone="bad">
+            <span class="snippet-label">Before &mdash; old surface, the diner sorts the list</span>
+            <p>A map plus roughly ten ranked restaurants. The diner taps, scrolls, calls, and decides on their own. You compete by ranking in the list &mdash; proximity, rating, and review count carry most of the weight.</p>
+          </div>
+          <div class="snippet-box" data-tone="good">
+            <span class="snippet-label">After &mdash; new surface, the model writes the answer</span>
+            <p>A generated paragraph naming about three places, with booking buttons inline. The agent can finish the reservation through OpenTable, Resy, or Tock without sending the diner anywhere. You compete by being one of the few the model names &mdash; legibility and bookability decide it.</p>
+          </div>
         </div>
         <figcaption>The same diner question, asked of two different surfaces. The shift is from ten links the diner sorts to a short answer the model writes &mdash; with the booking attached.</figcaption>
       </figure>
