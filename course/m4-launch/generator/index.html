@@ -513,6 +513,20 @@ main{padding-top:64px}
           </button>
           <p class="pending" id="downloadHint">The button enables once all eight required fields above are green. JSZip lazy-loads on click (one small static asset, ~95 KB); nothing leaves your browser.</p>
         </section>
+
+        <!-- Save to Workshop — signed-in operators can keep a versioned
+             snapshot of their generated site in the Workshop. The save
+             is a config snapshot; the actual ZIP regenerates from it
+             on demand. Anonymous operators see a sign-in pitch. -->
+        <section class="gen-save" id="genSaveBox" aria-labelledby="gen-save-h" style="margin:24px 0 0;padding:18px 22px;border:1px solid var(--line);border-radius:10px;background:var(--cream)" hidden>
+          <h3 id="gen-save-h" style="margin:0 0 8px;font-family:var(--font-body);font-size:15px;font-weight:600;color:var(--ink)">Save this generated site to the Workshop</h3>
+          <p id="genSaveText" style="margin:0 0 12px;font-size:14px;color:var(--ink-soft);line-height:1.5">Keep a versioned snapshot so it follows you across devices. The save is your current answers — re-run the generator any time to regenerate the ZIP.</p>
+          <p id="genSaveActions" style="margin:0">
+            <button type="button" id="genSaveBtn" class="btn-secondary" style="display:none;padding:10px 18px;border-radius:99px;background:var(--cream-2);border:1.5px solid var(--teal);color:var(--teal-dark);font-family:var(--font-body);font-size:14px;font-weight:600;cursor:pointer">Save to the Workshop</button>
+            <a id="genSaveLink" href="/sign-in/?returnTo=%2Fcourse%2Fm4-launch%2Fgenerator%2F" style="display:none;padding:10px 18px;border-radius:99px;background:var(--cream-2);border:1.5px solid var(--teal);color:var(--teal-dark);font-family:var(--font-body);font-size:14px;font-weight:600;text-decoration:none">Sign in to save</a>
+          </p>
+          <p id="genSaveMsg" style="margin:10px 0 0;font-size:13px;color:var(--status-good);min-height:1.2em" role="status" aria-live="polite"></p>
+        </section>
       </details>
 
       <h2>What this changes downstream</h2>
@@ -1495,6 +1509,85 @@ main{padding-top:64px}
     }
   }
 
+  // Save-to-Workshop wiring. Reveals the affordance box, swaps
+  // between "Save" (signed-in) and "Sign in to save" (anonymous),
+  // POSTs to /api/workbench/save with kind="course-generator-output"
+  // and the operator's MuntinContext snapshot as the payload.
+  function wireSaveToWorkshop() {
+    var box  = document.getElementById('genSaveBox');
+    var btn  = document.getElementById('genSaveBtn');
+    var link = document.getElementById('genSaveLink');
+    var msg  = document.getElementById('genSaveMsg');
+    if (!box || !btn || !link) return;
+    if (box.dataset.wired === '1') return;
+    box.dataset.wired = '1';
+
+    box.hidden = false;
+    fetch('/api/auth/me', { credentials: 'same-origin' })
+      .then(function (r) { return r.status === 200 ? r.json() : null; })
+      .then(function (data) {
+        var signedIn = !!(data && data.email);
+        btn.style.display  = signedIn ? '' : 'none';
+        link.style.display = signedIn ? 'none' : '';
+      })
+      .catch(function () { link.style.display = ''; });
+
+    btn.addEventListener('click', function () {
+      btn.disabled = true;
+      if (msg) { msg.textContent = ''; msg.style.color = 'var(--status-good)'; }
+      var ctx = (window.MuntinContext && window.MuntinContext.read()) || {};
+      var profile = (window.MuntinContext && typeof window.MuntinContext.readRestaurantProfile === 'function')
+        ? window.MuntinContext.readRestaurantProfile() : null;
+      var name = (profile && profile.name) || (locale === 'es' ? 'mi restaurante' : 'my restaurant');
+      var payload = {
+        restaurantProfile: profile || null,
+        palette:           ctx.palette || [],
+        dishes:            ctx.dishes || [],
+        hours:             ctx.hours || null,
+        gbp:               ctx.gbp || null,
+        onePromise:        ctx.onePromise || '',
+        customerParagraph: ctx.customerParagraph || '',
+        voice:             ctx.voice || null,
+        deployTarget:      ctx.deployTarget || ''
+      };
+      fetch('/api/workbench/save', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          kind: 'course-generator-output',
+          title: (locale === 'es' ? 'Sitio generado — ' : 'Generated site — ') + name,
+          payload: payload
+        })
+      }).then(function (r) {
+        btn.disabled = false;
+        if (r.status === 401) {
+          link.style.display = '';
+          btn.style.display = 'none';
+          if (msg) { msg.style.color = 'var(--rust)'; msg.textContent = (locale === 'es' ? 'Tu sesión expiró. Inicia sesión para guardar.' : 'Your session expired. Sign in to save.'); }
+          return;
+        }
+        if (r.status === 409) {
+          if (msg) { msg.style.color = 'var(--rust)'; msg.textContent = (locale === 'es' ? 'Llegaste al límite de items guardados. Borra algunos en el Workshop primero.' : 'You’ve reached the saved-items limit. Delete some in the Workshop first.'); }
+          return;
+        }
+        if (!r.ok) {
+          if (msg) { msg.style.color = 'var(--rust)'; msg.textContent = (locale === 'es' ? 'No se pudo guardar. Vuelve a intentar en un momento.' : 'Could not save. Try again in a moment.'); }
+          return;
+        }
+        if (msg) msg.textContent = (locale === 'es' ? '✓ Guardado en el Workshop.' : '✓ Saved to the Workshop.');
+        try {
+          if (typeof window.plausible === 'function') {
+            window.plausible('Course Generator Save', { props: { locale: locale } });
+          }
+        } catch (_) { /* analytics best-effort */ }
+      }).catch(function () {
+        btn.disabled = false;
+        if (msg) { msg.style.color = 'var(--rust)'; msg.textContent = (locale === 'es' ? 'No se pudo contactar el servidor. Vuelve a intentar.' : 'Could not reach the server. Try again in a moment.'); }
+      });
+    });
+  }
+
   function wireDownload() {
     var btn = document.getElementById('downloadBtn');
     if (!btn || btn.dataset.wired === '1') return;
@@ -1518,6 +1611,7 @@ main{padding-top:64px}
     }
     render();
     wireDownload();
+    wireSaveToWorkshop();
     var eventName = (window.WorkshopKit && window.WorkshopKit.CONTEXT_CHANGE_EVENT) || 'mtn:context-change';
     document.addEventListener(eventName, render);
     window.addEventListener('storage', function (e) {

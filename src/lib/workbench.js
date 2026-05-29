@@ -61,6 +61,15 @@ const ALLOWED_KINDS = new Set([
   // "Weekly Prime Cost Worksheet"). Not watchable — sheets
   // are operator paperwork, not external-state checks.
   'sheet',
+  // Open the Doors bootcamp — L14 generator output snapshot.
+  // Payload carries the operator's MuntinContext snapshot at
+  // the moment they clicked save: restaurantProfile, palette,
+  // dishes, hours, gbp, deployTarget. The Workshop list
+  // renders these as "Generated site — <restaurant name>" so
+  // an operator who returns weeks later can re-download the
+  // exact bundle they shipped. The L14 page itself does the
+  // ZIP build; saving is independent of downloading.
+  'course-generator-output',
 ]);
 
 // Soft cap. Past this the save endpoint returns 409 with a clear

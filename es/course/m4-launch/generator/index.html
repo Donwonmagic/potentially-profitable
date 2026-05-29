@@ -439,6 +439,20 @@ main{padding-top:64px}
           </button>
           <p class="pending" id="downloadHint">El botón se habilita cuando los ocho campos requeridos de arriba están en verde. JSZip se carga de forma diferida al hacer clic (un pequeño archivo estático, ~95 KB); nada sale de tu navegador.</p>
         </section>
+
+        <!-- Guardar en el Workshop — operadores con sesión iniciada
+             mantienen una versión guardada de su sitio generado en el
+             Workshop. El guardado es un snapshot de la configuración;
+             el ZIP se regenera bajo demanda. Anónimos ven el invite. -->
+        <section class="gen-save" id="genSaveBox" aria-labelledby="gen-save-h" style="margin:24px 0 0;padding:18px 22px;border:1px solid var(--line);border-radius:10px;background:var(--cream)" hidden>
+          <h3 id="gen-save-h" style="margin:0 0 8px;font-family:var(--font-body);font-size:15px;font-weight:600;color:var(--ink)">Guarda este sitio generado en el Workshop</h3>
+          <p id="genSaveText" style="margin:0 0 12px;font-size:14px;color:var(--ink-soft);line-height:1.5">Mantén un snapshot versionado para que te siga entre dispositivos. El guardado son tus respuestas actuales — vuelve a correr el generador cuando quieras regenerar el ZIP.</p>
+          <p id="genSaveActions" style="margin:0">
+            <button type="button" id="genSaveBtn" class="btn-secondary" style="display:none;padding:10px 18px;border-radius:99px;background:var(--cream-2);border:1.5px solid var(--teal);color:var(--teal-dark);font-family:var(--font-body);font-size:14px;font-weight:600;cursor:pointer">Guardar en el Workshop</button>
+            <a id="genSaveLink" href="/es/sign-in/?returnTo=%2Fes%2Fcourse%2Fm4-launch%2Fgenerator%2F" style="display:none;padding:10px 18px;border-radius:99px;background:var(--cream-2);border:1.5px solid var(--teal);color:var(--teal-dark);font-family:var(--font-body);font-size:14px;font-weight:600;text-decoration:none">Inicia sesión para guardar</a>
+          </p>
+          <p id="genSaveMsg" style="margin:10px 0 0;font-size:13px;color:var(--status-good);min-height:1.2em" role="status" aria-live="polite"></p>
+        </section>
       </details>
 
       <h2>Qué cambia esto más adelante</h2>
@@ -1340,6 +1354,85 @@ main{padding-top:64px}
     }
   }
 
+  // Save-to-Workshop wiring. Mismo comportamiento que la versión EN
+  // — descubre el estado de sesión, alterna entre "Guardar"
+  // (signed-in) y "Inicia sesión para guardar" (anónimo), y postea
+  // a /api/workbench/save con kind="course-generator-output".
+  function wireSaveToWorkshop() {
+    var box  = document.getElementById('genSaveBox');
+    var btn  = document.getElementById('genSaveBtn');
+    var link = document.getElementById('genSaveLink');
+    var msg  = document.getElementById('genSaveMsg');
+    if (!box || !btn || !link) return;
+    if (box.dataset.wired === '1') return;
+    box.dataset.wired = '1';
+
+    box.hidden = false;
+    fetch('/api/auth/me', { credentials: 'same-origin' })
+      .then(function (r) { return r.status === 200 ? r.json() : null; })
+      .then(function (data) {
+        var signedIn = !!(data && data.email);
+        btn.style.display  = signedIn ? '' : 'none';
+        link.style.display = signedIn ? 'none' : '';
+      })
+      .catch(function () { link.style.display = ''; });
+
+    btn.addEventListener('click', function () {
+      btn.disabled = true;
+      if (msg) { msg.textContent = ''; msg.style.color = 'var(--status-good)'; }
+      var ctx = (window.MuntinContext && window.MuntinContext.read()) || {};
+      var profile = (window.MuntinContext && typeof window.MuntinContext.readRestaurantProfile === 'function')
+        ? window.MuntinContext.readRestaurantProfile() : null;
+      var name = (profile && profile.name) || 'mi restaurante';
+      var payload = {
+        restaurantProfile: profile || null,
+        palette:           ctx.palette || [],
+        dishes:            ctx.dishes || [],
+        hours:             ctx.hours || null,
+        gbp:               ctx.gbp || null,
+        onePromise:        ctx.onePromise || '',
+        customerParagraph: ctx.customerParagraph || '',
+        voice:             ctx.voice || null,
+        deployTarget:      ctx.deployTarget || ''
+      };
+      fetch('/api/workbench/save', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          kind: 'course-generator-output',
+          title: 'Sitio generado — ' + name,
+          payload: payload
+        })
+      }).then(function (r) {
+        btn.disabled = false;
+        if (r.status === 401) {
+          link.style.display = '';
+          btn.style.display = 'none';
+          if (msg) { msg.style.color = 'var(--rust)'; msg.textContent = 'Tu sesión expiró. Inicia sesión para guardar.'; }
+          return;
+        }
+        if (r.status === 409) {
+          if (msg) { msg.style.color = 'var(--rust)'; msg.textContent = 'Llegaste al límite de items guardados. Borra algunos en el Workshop primero.'; }
+          return;
+        }
+        if (!r.ok) {
+          if (msg) { msg.style.color = 'var(--rust)'; msg.textContent = 'No se pudo guardar. Vuelve a intentar en un momento.'; }
+          return;
+        }
+        if (msg) msg.textContent = '✓ Guardado en el Workshop.';
+        try {
+          if (typeof window.plausible === 'function') {
+            window.plausible('Course Generator Save', { props: { locale: 'es' } });
+          }
+        } catch (_) { /* analytics best-effort */ }
+      }).catch(function () {
+        btn.disabled = false;
+        if (msg) { msg.style.color = 'var(--rust)'; msg.textContent = 'No se pudo contactar el servidor. Vuelve a intentar.'; }
+      });
+    });
+  }
+
   function wireDownload() {
     var btn = document.getElementById('downloadBtn');
     if (!btn || btn.dataset.wired === '1') return;
@@ -1360,6 +1453,7 @@ main{padding-top:64px}
     }
     render();
     wireDownload();
+    wireSaveToWorkshop();
     var eventName = (window.WorkshopKit && window.WorkshopKit.CONTEXT_CHANGE_EVENT) || 'mtn:context-change';
     document.addEventListener(eventName, render);
     window.addEventListener('storage', function (e) {
