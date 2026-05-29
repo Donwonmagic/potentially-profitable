@@ -168,6 +168,35 @@ function escHtml(s) {
     .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 }
 
+// Clamp a meta/og description to <=`max` rendered glyphs (the SERP
+// ceiling enforced by check-meta-description-length.mjs). Measured on
+// the DECODED string so HTML entities count as one glyph each; trims to
+// the last whole word that fits (reserving a glyph for an ellipsis) and
+// strips a trailing separator so we never leave "word —…" or a partial
+// entity. Only the meta/og path is clamped; visible ledes and JSON-LD
+// descriptions keep the full source text.
+const _DESC_NAMED = {
+  amp: '&', lt: '<', gt: '>', quot: '"', apos: '’',
+  mdash: '—', ndash: '–', hellip: '…', nbsp: ' ',
+  rsquo: '’', lsquo: '‘', ldquo: '“', rdquo: '”',
+  iacute: 'í', oacute: 'ó', eacute: 'é', aacute: 'á',
+  uacute: 'ú', ntilde: 'ñ',
+};
+function clampDesc(text, max = 155) {
+  const s = String(text == null ? '' : text)
+    .replace(/&#39;/g, '’')
+    .replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(Number(n)))
+    .replace(/&#x([0-9a-f]+);/gi, (_, h) => String.fromCodePoint(parseInt(h, 16)))
+    .replace(/&([a-z]+);/gi, (m, n) => (_DESC_NAMED[n] !== undefined ? _DESC_NAMED[n] : m))
+    .replace(/\s+/g, ' ').trim();
+  if ([...s].length <= max) return s;
+  const cut = [...s].slice(0, max - 1).join('');
+  const lastSpace = cut.lastIndexOf(' ');
+  let head = lastSpace > 0 ? cut.slice(0, lastSpace) : cut;
+  head = head.replace(/[\s.,;:!?\-–—("'“”‘’]+$/u, '').trim();
+  return head + '…';
+}
+
 function themesForCuisine(matchers) {
   return THEMES.list().filter(id => {
     const t = THEMES.get(id);
@@ -290,7 +319,7 @@ function emitCuisinePage(cuisine, locale) {
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
 <title>${escHtml(label)} | Muntin Digital</title>
-<meta name="description" content="${escHtml(lede)}" />
+<meta name="description" content="${escHtml(clampDesc(lede))}" />
 <meta name="theme-color" content="#1F4E5B" />
 <link rel="canonical" href="https://muntin.digital${baseSlash}/library/menu-design-cuisines/${cuisine.slug}/" />
 <link rel="alternate" hreflang="en" href="https://muntin.digital/library/menu-design-cuisines/${cuisine.slug}/" />
@@ -300,7 +329,7 @@ function emitCuisinePage(cuisine, locale) {
 <meta property="og:locale:alternate" content="${locale === 'es' ? 'en_US' : 'es_US'}" />
 <meta property="og:type" content="website" />
 <meta property="og:title" content="${escHtml(label)}" />
-<meta property="og:description" content="${escHtml(lede)}" />
+<meta property="og:description" content="${escHtml(clampDesc(lede))}" />
 <meta property="og:url" content="https://muntin.digital${baseSlash}/library/menu-design-cuisines/${cuisine.slug}/" />
 <meta property="og:site_name" content="Muntin Digital" />
 <link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
@@ -499,7 +528,7 @@ function emitHubPage(locale) {
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
 <title>${escHtml(titleStr)}</title>
-<meta name="description" content="${escHtml(descStr)}" />
+<meta name="description" content="${escHtml(clampDesc(descStr))}" />
 <meta name="theme-color" content="#1F4E5B" />
 <link rel="canonical" href="${baseUrl}" />
 <link rel="alternate" hreflang="en" href="${baseUrlEN}" />
@@ -509,7 +538,7 @@ function emitHubPage(locale) {
 <meta property="og:locale:alternate" content="${locale === 'es' ? 'en_US' : 'es_US'}" />
 <meta property="og:type" content="website" />
 <meta property="og:title" content="${escHtml(heroH1)}" />
-<meta property="og:description" content="${escHtml(descStr)}" />
+<meta property="og:description" content="${escHtml(clampDesc(descStr))}" />
 <meta property="og:url" content="${baseUrl}" />
 <meta property="og:site_name" content="Muntin Digital" />
 <link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
