@@ -194,8 +194,44 @@ const SCRIPTS = [
   "scripts/inject-course-mark-complete.mjs",
   "scripts/build-sheets-index.mjs",
 ].map((s) => path.join(REPO, s));
-const SWEEP = new Set([...STYLESHEETS, ...SCRIPTS]);
-const files = [...walk(REPO, []), ...TEMPLATES, ...SCRIPTS, ...STYLESHEETS];
+// Brand chrome SVGs used directly in page HTML — cool + lock them here. NOT
+// brand/og (those render to PNGs -> the OG re-render follow-on) and NOT
+// brand/icons (they feed build-og-cards -> same follow-on).
+function collectSvg(dir) {
+  const out = [];
+  let names;
+  try {
+    names = readdirSync(dir);
+  } catch {
+    return out;
+  }
+  for (const n of names) {
+    const full = path.join(dir, n);
+    if (statSync(full).isDirectory()) out.push(...collectSvg(full));
+    else if (full.endsWith(".svg")) out.push(full);
+  }
+  return out;
+}
+const BRAND_SVGS = collectSvg(path.join(REPO, "brand/lockup"));
+// Tool pages whose warm hex lives in render-JS / inline SVG strings (beyond the
+// safe transform's reach). Full sweep is safe — calculator UI, no theme-swatch
+// color content.
+const TOOLS_FULLHEX = [
+  "tools/menu-engineering/index.html",
+  "es/tools/menu-engineering/index.html",
+].map((s) => path.join(REPO, s));
+
+const SWEEP = new Set([...STYLESHEETS, ...SCRIPTS, ...BRAND_SVGS, ...TOOLS_FULLHEX]);
+const files = [
+  ...new Set([
+    ...walk(REPO, []),
+    ...TEMPLATES,
+    ...SCRIPTS,
+    ...STYLESHEETS,
+    ...BRAND_SVGS,
+    ...TOOLS_FULLHEX,
+  ]),
+];
 let changed = 0;
 const samples = [];
 

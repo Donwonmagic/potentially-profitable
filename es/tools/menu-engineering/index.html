@@ -1153,16 +1153,16 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     svg += '<title id="meMatrixTitle">Matriz de ingeniería de menú — platos graficados por margen de contribución (x) y cuota de cubiertos (y), con tamaño del punto proporcional al ingreso.</title>';
     svg += '<desc id="meMatrixDesc">Las líneas de mediana dividen la cuadrícula en cuatro cuadrantes: Estrellas (alto MC, alta cuota), Caballos (bajo MC, alta cuota), Acertijos (alto MC, baja cuota), Perros (bajo MC, baja cuota). Cada cuadrante usa un color y un glifo distintos (estrella, triángulo, diamante, círculo) para que la matriz sea legible sin color. El detalle por plato sigue debajo.</desc>';
     // Background frame
-    svg += '<rect x="' + x0 + '" y="' + y0 + '" width="' + (x1 - x0) + '" height="' + (y1 - y0) + '" fill="#FAF7F2" stroke="#E5E0D8" />';
+    svg += '<rect x="' + x0 + '" y="' + y0 + '" width="' + (x1 - x0) + '" height="' + (y1 - y0) + '" fill="#F6F7F8" stroke="#E5E0D8" />';
     if (!byCategory) {
       // Quadrant tints (subtle) — only meaningful with a single shared median.
-      svg += '<rect x="' + medX + '" y="' + y0 + '" width="' + (x1 - medX) + '" height="' + (medY - y0) + '" fill="#1F4E5B" opacity="0.04" />';
+      svg += '<rect x="' + medX + '" y="' + y0 + '" width="' + (x1 - medX) + '" height="' + (medY - y0) + '" fill="#2A50C8" opacity="0.04" />';
       svg += '<rect x="' + x0 + '" y="' + y0 + '" width="' + (medX - x0) + '" height="' + (medY - y0) + '" fill="#C68A2C" opacity="0.05" />';
       svg += '<rect x="' + medX + '" y="' + medY + '" width="' + (x1 - medX) + '" height="' + (y1 - medY) + '" fill="#6E5DB3" opacity="0.05" />';
-      svg += '<rect x="' + x0 + '" y="' + medY + '" width="' + (medX - x0) + '" height="' + (y1 - medY) + '" fill="#B8541A" opacity="0.05" />';
+      svg += '<rect x="' + x0 + '" y="' + medY + '" width="' + (medX - x0) + '" height="' + (y1 - medY) + '" fill="#C42E2E" opacity="0.05" />';
       // Median lines
-      svg += '<line x1="' + medX + '" y1="' + y0 + '" x2="' + medX + '" y2="' + y1 + '" stroke="#14161A" stroke-dasharray="4 4" stroke-width="1" />';
-      svg += '<line x1="' + x0 + '" y1="' + medY + '" x2="' + x1 + '" y2="' + medY + '" stroke="#14161A" stroke-dasharray="4 4" stroke-width="1" />';
+      svg += '<line x1="' + medX + '" y1="' + y0 + '" x2="' + medX + '" y2="' + y1 + '" stroke="#16181D" stroke-dasharray="4 4" stroke-width="1" />';
+      svg += '<line x1="' + x0 + '" y1="' + medY + '" x2="' + x1 + '" y2="' + medY + '" stroke="#16181D" stroke-dasharray="4 4" stroke-width="1" />';
       // Quadrant labels
       svg += '<text x="' + (x0 + 8) + '" y="' + (y0 + 18) + '" font-size="11" fill="#5A5752" font-family="Inter,sans-serif">Plowhorses · popular but thin</text>';
       svg += '<text x="' + (x1 - 8) + '" y="' + (y0 + 18) + '" font-size="11" fill="#5A5752" font-family="Inter,sans-serif" text-anchor="end">Stars · push them</text>';
@@ -1172,24 +1172,24 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       svg += '<text x="' + ((x0 + x1) / 2) + '" y="' + (y0 + 18) + '" font-size="11" fill="#5A5752" font-family="Inter,sans-serif" text-anchor="middle">División por categoría — cuadrantes en la tabla por plato abajo</text>';
     }
     // Axis labels
-    svg += '<text x="' + (W / 2) + '" y="' + (H - 18) + '" font-size="12" fill="#14161A" font-family="Inter,sans-serif" text-anchor="middle">Margen de contribución por venta &rarr;</text>';
-    svg += '<text x="20" y="' + ((y0 + y1) / 2) + '" font-size="12" fill="#14161A" font-family="Inter,sans-serif" transform="rotate(-90 20 ' + ((y0 + y1) / 2) + ')" text-anchor="middle">&uarr; Cuota del total de cubiertos</text>';
+    svg += '<text x="' + (W / 2) + '" y="' + (H - 18) + '" font-size="12" fill="#16181D" font-family="Inter,sans-serif" text-anchor="middle">Margen de contribución por venta &rarr;</text>';
+    svg += '<text x="20" y="' + ((y0 + y1) / 2) + '" font-size="12" fill="#16181D" font-family="Inter,sans-serif" transform="rotate(-90 20 ' + ((y0 + y1) / 2) + ')" text-anchor="middle">&uarr; Cuota del total de cubiertos</text>';
 
     // Marcas de eje — cinco líneas espaciadas con sus valores etiquetados.
     // Sin esto, la matriz transmite posición pero no magnitud.
     for (var ti = 0; ti <= 4; ti++) {
       var xt = x0 + (ti / 4) * (x1 - x0);
       var xv = minCm + (ti / 4) * (maxCm - minCm);
-      svg += '<line x1="' + xt.toFixed(1) + '" y1="' + y1 + '" x2="' + xt.toFixed(1) + '" y2="' + (y1 + 4) + '" stroke="#9A958B" stroke-width="1" />';
-      svg += '<text x="' + xt.toFixed(1) + '" y="' + (y1 + 16) + '" font-size="10" fill="#6B6B6B" font-family="Inter,sans-serif" text-anchor="middle" aria-hidden="true">' + fmtMoney(xv) + '</text>';
+      svg += '<line x1="' + xt.toFixed(1) + '" y1="' + y1 + '" x2="' + xt.toFixed(1) + '" y2="' + (y1 + 4) + '" stroke="#9AA0AB" stroke-width="1" />';
+      svg += '<text x="' + xt.toFixed(1) + '" y="' + (y1 + 16) + '" font-size="10" fill="#6B7280" font-family="Inter,sans-serif" text-anchor="middle" aria-hidden="true">' + fmtMoney(xv) + '</text>';
       var yt = y1 - (ti / 4) * (y1 - y0);
       var yv = (ti / 4) * maxShare;
-      svg += '<line x1="' + (x0 - 4) + '" y1="' + yt.toFixed(1) + '" x2="' + x0 + '" y2="' + yt.toFixed(1) + '" stroke="#9A958B" stroke-width="1" />';
-      svg += '<text x="' + (x0 - 8) + '" y="' + (yt + 3).toFixed(1) + '" font-size="10" fill="#6B6B6B" font-family="Inter,sans-serif" text-anchor="end" aria-hidden="true">' + fmtPct(yv) + '</text>';
+      svg += '<line x1="' + (x0 - 4) + '" y1="' + yt.toFixed(1) + '" x2="' + x0 + '" y2="' + yt.toFixed(1) + '" stroke="#9AA0AB" stroke-width="1" />';
+      svg += '<text x="' + (x0 - 8) + '" y="' + (yt + 3).toFixed(1) + '" font-size="10" fill="#6B7280" font-family="Inter,sans-serif" text-anchor="end" aria-hidden="true">' + fmtPct(yv) + '</text>';
     }
 
     // Plot each item.
-    var QC = { Star: '#1F4E5B', Plowhorse: '#C68A2C', Puzzle: '#6E5DB3', Dog: '#B8541A' };
+    var QC = { Star: '#2A50C8', Plowhorse: '#C68A2C', Puzzle: '#6E5DB3', Dog: '#C42E2E' };
     var QGLYPH = { Star: '★', Plowhorse: '▲', Puzzle: '◆', Dog: '●' };
     var Q_ES = { Star: 'Estrella', Plowhorse: 'Caballo', Puzzle: 'Acertijo', Dog: 'Perro' };
     // Radio ponderado por ingresos — una Estrella de $50k y otra de $500
@@ -1204,18 +1204,18 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     items.forEach(function(it){
       var cx = sx(it.cm_dollars);
       var cy = sy(it.share);
-      var color = QC[it.quadrant] || '#14161A';
+      var color = QC[it.quadrant] || '#16181D';
       var glyph = QGLYPH[it.quadrant] || '';
       var r = dotRadius(it);
       svg += '<g>';
-      svg += '<circle cx="' + cx + '" cy="' + cy + '" r="' + r.toFixed(1) + '" fill="' + color + '" stroke="#FAF7F2" stroke-width="1.5">';
+      svg += '<circle cx="' + cx + '" cy="' + cy + '" r="' + r.toFixed(1) + '" fill="' + color + '" stroke="#F6F7F8" stroke-width="1.5">';
       svg += '<title>' + escHtml(it.item) + ' · CM ' + fmtMoney(it.cm_dollars) + ' · ' + fmtPct(it.share) + ' cuota · ingreso ' + fmtMoney(it.revenue) + ' · ' + (Q_ES[it.quadrant] || it.quadrant) + '</title>';
       svg += '</circle>';
       var glyphSize = Math.max(8, Math.round(r * 0.95));
-      svg += '<text x="' + cx + '" y="' + (cy + glyphSize * 0.34) + '" font-size="' + glyphSize + '" fill="#FAF7F2" font-family="Inter,sans-serif" font-weight="700" text-anchor="middle" pointer-events="none" aria-hidden="true">' + glyph + '</text>';
+      svg += '<text x="' + cx + '" y="' + (cy + glyphSize * 0.34) + '" font-size="' + glyphSize + '" fill="#F6F7F8" font-family="Inter,sans-serif" font-weight="700" text-anchor="middle" pointer-events="none" aria-hidden="true">' + glyph + '</text>';
       svg += '</g>';
       if (it.item) {
-        svg += '<text x="' + (cx + r + 4) + '" y="' + (cy + 4) + '" font-size="10" fill="#14161A" font-family="Inter,sans-serif" aria-hidden="true">' + escHtml(it.item.length > 18 ? it.item.slice(0, 17) + '…' : it.item) + '</text>';
+        svg += '<text x="' + (cx + r + 4) + '" y="' + (cy + 4) + '" font-size="10" fill="#16181D" font-family="Inter,sans-serif" aria-hidden="true">' + escHtml(it.item.length > 18 ? it.item.slice(0, 17) + '…' : it.item) + '</text>';
       }
     });
 
@@ -1867,7 +1867,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     setMode('manual');
     requestAnimationFrame(function(){
       var existing = warningsEl.querySelector('ul') ? warningsEl.querySelector('ul').innerHTML : '';
-      warningsEl.innerHTML = '<ul>' + existing + '<li style="background:rgba(31,78,91,0.06);color:var(--teal);border-color:rgba(31,78,91,0.18);">Menú cargado desde el fragmento de URL — comparte este enlace para compartir el análisis.</li></ul>';
+      warningsEl.innerHTML = '<ul>' + existing + '<li style="background:rgba(42,80,200,0.06);color:var(--teal);border-color:rgba(42,80,200,0.18);">Menú cargado desde el fragmento de URL — comparte este enlace para compartir el análisis.</li></ul>';
     });
     return true;
   }
