@@ -49,10 +49,13 @@ const args       = new Set(process.argv.slice(2));
 const jsonOut    = args.has('--json');
 const forceWarn  = args.has('--warn');
 
-// Promote-to-fail switch. Keep warn-only until the over-length backlog
-// (homepage/hub/library/blog inline + scripted glossary & sheet
-// templates) is worked off, then set to false.
-const WARN_ONLY = true;
+// Promote-to-fail switch. The over-length backlog (homepage/hub/library/
+// blog inline + scripted glossary & sheet templates) has been worked off
+// — generators clamp to <=155 (build-library pageHead, build-sheet-pages,
+// build-cuisine-landing-pages, build-theme-story-pages,
+// build-themes-review-board) and the residual inline pages were trimmed.
+// Gate is now hard-fail.
+const WARN_ONLY = false;
 
 // SERP truncation thresholds. MAX_LEN is the hard ceiling Google trims
 // around; MIN_LEN is a soft floor — below it the snippet is thin enough

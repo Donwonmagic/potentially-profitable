@@ -40,18 +40,34 @@ function escXml(s) {
   })[c]);
 }
 
+// Extract a <meta> content value, tolerating BOTH attribute orderings:
+//   <meta {attr}="{val}" content="…">   (name-/property-first)
+//   <meta content="…" {attr}="{val}">   (content-first — emitted by the
+//   ES post-translation pipeline). build-rss previously matched only the
+//   first form, so content-first ES posts parsed as empty description AND
+//   null article:published_time; the null pubDate then fell through to
+//   gitMtime()/new Date(), stamping a fresh timestamp into es/feed.xml on
+//   every run and making the feed non-deterministic. Matching both orders
+//   restores the real description + real published_time, so the feed is
+//   stable + idempotent.
+function metaContent(src, attr, val) {
+  const v = val.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return (
+    src.match(new RegExp(`<meta\\s+${attr}="${v}"\\s+content="([^"]*)"`, 'i'))?.[1] ??
+    src.match(new RegExp(`<meta\\s+content="([^"]*)"\\s+${attr}="${v}"`, 'i'))?.[1] ??
+    null
+  );
+}
+
 function readMeta(file) {
   const src = fs.readFileSync(file, 'utf8');
   const titleM = src.match(/<title>([^<]+)<\/title>/);
-  const descM = src.match(/<meta name="description" content="([^"]*)"/);
-  const pubM = src.match(/<meta property="article:published_time" content="([^"]*)"/);
-  const ogImageM = src.match(/<meta property="og:image" content="([^"]*)"/);
   const title = titleM ? titleM[1].split(' | ')[0].split(' — ')[0].trim() : null;
   return {
     title,
-    description: descM ? descM[1] : '',
-    pubDate: pubM ? pubM[1] : null,
-    ogImage: ogImageM ? ogImageM[1] : null,
+    description: metaContent(src, 'name', 'description') ?? '',
+    pubDate: metaContent(src, 'property', 'article:published_time'),
+    ogImage: metaContent(src, 'property', 'og:image'),
   };
 }
 
