@@ -402,6 +402,18 @@
     micro_offers: [
       'view_micro_offer',
     ],
+    // Open the Doors bootcamp — lesson views, module + bootcamp
+    // celebrations, L14 generator download + Workshop save. Props
+    // are capped at { locale, lesson?, module? } so cardinality
+    // stays bounded across the 20 lesson pages.
+    course: [
+      'Course Bootcamp Complete',
+      'Course Generator Download',
+      'Course Generator Save',
+      'Course Lesson Complete',
+      'Course Lesson View',
+      'Course Module Complete',
+    ],
   };
 
   // Flat allowlist used by the CI checker.
