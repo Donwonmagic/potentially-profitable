@@ -260,6 +260,11 @@ main{padding-top:64px}
       <a href="/library/">Library</a>
       <a href="/tools/">Tools</a>
       <a href="/studio/">Studio</a>
+      <!-- Ledger — sister product (the privacy-forward invoice ledger)
+           on its own subdomain. Plain external link so it passes link
+           equity to ledger.muntin.digital; Plausible's automatic
+           outbound-link tracking measures the nav click. -->
+      <a href="https://ledger.muntin.digital/">Ledger</a>
       <!-- Both sign-in / workshop ship hidden by default; the
            auth-state JS at the bottom of this file calls
            /api/auth/me and reveals exactly one. No-JS visitors see
@@ -316,6 +321,7 @@ main{padding-top:64px}
     <a href="/library/">Library</a>
     <a href="/tools/">Tools</a>
     <a href="/studio/">Studio</a>
+    <a href="https://ledger.muntin.digital/">Ledger</a>
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
     <button type="button" class="mobile-search js-open-search">
@@ -795,6 +801,14 @@ main{padding-top:64px}
   </ol>
 </aside>
 <!-- smart-next:end -->
+
+    <!-- ledger-cta:start -->
+    <aside class="post-end-cta" aria-label="Muntin Ledger">
+      <p class="post-end-cta-headline">File every channel invoice in one place.</p>
+      <p class="post-end-cta-body">Muntin Ledger reads vendor and channel invoices with templates and rules, files them in a searchable ledger, and exports to CSV or your books when you are ready.</p>
+      <a class="btn btn-primary plausible-event-name=Ledger+Route+Click plausible-event-source=third-party-delivery-comparison" href="https://ledger.muntin.digital/">See Muntin Ledger<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></a>
+    </aside>
+    <!-- ledger-cta:end -->
 
   <!-- field-notes-submit:start -->
             <section class="field-notes-submit" id="field-note-form" aria-labelledby="field-note-heading"

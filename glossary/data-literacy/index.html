@@ -161,6 +161,11 @@
       <a href="/library/">Library</a>
       <a href="/tools/">Tools</a>
       <a href="/studio/">Studio</a>
+      <!-- Ledger — sister product (the privacy-forward invoice ledger)
+           on its own subdomain. Plain external link so it passes link
+           equity to ledger.muntin.digital; Plausible's automatic
+           outbound-link tracking measures the nav click. -->
+      <a href="https://ledger.muntin.digital/">Ledger</a>
       <!-- Both sign-in / workshop ship hidden by default; the
            auth-state JS at the bottom of this file calls
            /api/auth/me and reveals exactly one. No-JS visitors see
@@ -217,6 +222,7 @@
     <a href="/library/">Library</a>
     <a href="/tools/">Tools</a>
     <a href="/studio/">Studio</a>
+    <a href="https://ledger.muntin.digital/">Ledger</a>
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
     <button type="button" class="mobile-search js-open-search">

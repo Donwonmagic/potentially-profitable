@@ -123,6 +123,13 @@ const CHECKS = [
   ['Hidden attribute',    'check-hidden-attribute.mjs',    '--check'],
   ['OG image refs',       'check-og-images.mjs'],
   ['OG coverage',         'check-og-coverage.mjs',         '--check'],
+  // SEO hygiene — meta-description length. Google truncates the SERP
+  // snippet ~155 chars; over-length descriptions leak their tail (CTA +
+  // long-tail keyword) and cost CTR. Warn-only during the initial pass
+  // (known over-length backlog, much of it scripted glossary/sheet
+  // pages — fix at the generator, not the HTML). Promote to fail-CI by
+  // dropping '--warn' here AND flipping WARN_ONLY=false in the script.
+  ['Meta description length (warn)', 'check-meta-description-length.mjs', '--warn'],
   ['Analytics vocab',     'check-analytics-vocabulary.mjs','--check'],
   // Wave A unit-test gate (node:test). Covers menu-schema +
   // reducer/store + allergens regime math today; new modules
@@ -214,6 +221,7 @@ const CHECKS = [
   ['Article abstract+mentions (idem)','inject-article-abstract-mentions.mjs','--check'],
   ['Smart-next CTA (idem)','inject-smart-next-cta.mjs',     '--check'],
   ['KnitRail (idem)',     'inject-knit-rail.mjs',           '--check'],
+  ['Ledger CTA (idem)',   'inject-ledger-cta.mjs',          '--check'],
   ['Topic eyebrow (idem)','inject-topic-eyebrow.mjs',       '--check'],
   ['Glossary term-example (idem)','inject-glossary-term-examples.mjs','--check'],
   ['Glossary article backlinks (idem)','inject-glossary-article-backlinks.mjs','--check'],

@@ -337,6 +337,16 @@
       'Tool First Result',
       'Tool Save Intent',
     ],
+    // Ledger funnel — outbound routing from muntin.digital content to
+    // the Muntin Ledger product (ledger.muntin.digital). Fired
+    // declaratively (Plausible class API) on a Ledger CTA click at the
+    // end of a feeder article; props are bounded to { source:
+    // '<feeder-slug>' }, a closed set drawn from data/ledger-cta.json,
+    // so the cardinality guard stays calm. Nav-link clicks are captured
+    // by Plausible's automatic outbound-link tracking instead.
+    ledger: [
+      'Ledger Route Click',
+    ],
     // Phase G.10 (Growth) — newsletter capture + double-opt confirm.
     newsletter: [
       'Lifecycle Email Click',
