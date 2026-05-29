@@ -3310,9 +3310,9 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
   --space-7: 48px;
   --space-8: 64px;
 
-  --status-info:        #1F4E5B;
-  --status-info-tint:   #E8F1F3;
-  --status-info-deep:   #143640;
+  --status-info:        var(--teal);
+  --status-info-tint:   var(--teal-tint);
+  --status-info-deep:   var(--teal-dark);
 
   --badge-sm-py: 2px;  --badge-sm-px: 6px;  --badge-sm-fs: 10.5px;
   --badge-md-py: 4px;  --badge-md-px: 10px; --badge-md-fs: 12px;

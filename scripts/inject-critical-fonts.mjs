@@ -80,7 +80,7 @@ const BLOCK = [
   // Font-family chains. Body + display tokens used everywhere; chains
   // point at the @font-face names declared immediately below so the
   // cascade resolves correctly at HTML parse time.
-  `:root{--font-display:'Fraunces','Fraunces Fallback',Georgia,'Times New Roman',serif;--font-body:'Inter','Inter Fallback',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;--ink-soft:#2A2D33;--teal:#1F4E5B;--teal-dark:#143640;--stone:#6B6B6B;--line:#E8E2D6;--line-dark:#D4CCBC}`,
+  `:root{--font-display:'Fraunces','Fraunces Fallback',Georgia,'Times New Roman',serif;--font-body:'Inter','Inter Fallback',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;--ink-soft:#4A4F59;--teal:#2A50C8;--teal-dark:#1F3A93;--stone:#6B7280;--line:#E3E5E9;--line-dark:#D7DAE0}`,
   `body{font-family:var(--font-body)}`,
   `h1,h2,h3,h4,h5,.serif-italic{font-family:var(--font-display)}`,
   // @font-face — four variable-font rules + two metric-matched fallbacks.

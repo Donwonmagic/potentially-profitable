@@ -320,7 +320,7 @@ function emitCuisinePage(cuisine, locale) {
 <meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
 <title>${escHtml(label)} | Muntin Digital</title>
 <meta name="description" content="${escHtml(clampDesc(lede))}" />
-<meta name="theme-color" content="#1F4E5B" />
+<meta name="theme-color" content="#2A50C8" />
 <link rel="canonical" href="https://muntin.digital${baseSlash}/library/menu-design-cuisines/${cuisine.slug}/" />
 <link rel="alternate" hreflang="en" href="https://muntin.digital/library/menu-design-cuisines/${cuisine.slug}/" />
 <link rel="alternate" hreflang="es" href="https://muntin.digital/es/library/menu-design-cuisines/${cuisine.slug}/" />
@@ -352,20 +352,20 @@ function emitCuisinePage(cuisine, locale) {
    fixed nav so layout doesn't shift when site.css applies. ~600
    bytes. Documented in Phase 3B perf cutover; the full token set
    reapplies once site.css arrives. */
-:root{--cream:#FAF7F2;--cream-2:#F3EEE3;--ink:#14161A;--ink-soft:#2A2D33;--teal:#1F4E5B;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
+:root{--cream:#F6F7F8;--cream-2:#EDEEF1;--ink:#16181D;--ink-soft:#4A4F59;--teal:#2A50C8;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
 html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
 body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--cream);line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased}
 .container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
 .skip-link{position:absolute;left:-9999px;top:0}
-.skip-link:focus{position:static;display:inline-block;background:#14161A;color:#FAF7F2;padding:12px 16px;z-index:100}
+.skip-link:focus{position:static;display:inline-block;background:#16181D;color:#F6F7F8;padding:12px 16px;z-index:100}
 /* injected by inject-critical-link-color.mjs */
 a{color:inherit}
 .btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:500;font-size:15px;text-decoration:none;white-space:nowrap;cursor:pointer}
 .btn-primary{background:var(--ink);color:var(--cream)}
-.btn-ghost{background:transparent;color:var(--ink);border:1px solid #D9D5CB}
+.btn-ghost{background:transparent;color:var(--ink);border:1px solid #D7DAE0}
 header.nav{min-height:64px}
 /* nav-critical */
-.nav{position:fixed;top:0;left:0;right:0;background:var(--cream);z-index:50;border-bottom:1px solid #E8E2D6}
+.nav{position:fixed;top:0;left:0;right:0;background:var(--cream);z-index:50;border-bottom:1px solid #E3E5E9}
 .nav-inner{display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:64px;padding:12px 0}
 .logo{display:flex;align-items:center;gap:10px;font-family:Georgia,serif;font-size:22px;font-weight:600;letter-spacing:-0.02em;flex-shrink:0;white-space:nowrap;color:inherit;text-decoration:none}
 .logo-mark{width:28px;height:28px;flex:0 0 28px}
@@ -529,7 +529,7 @@ function emitHubPage(locale) {
 <meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
 <title>${escHtml(titleStr)}</title>
 <meta name="description" content="${escHtml(clampDesc(descStr))}" />
-<meta name="theme-color" content="#1F4E5B" />
+<meta name="theme-color" content="#2A50C8" />
 <link rel="canonical" href="${baseUrl}" />
 <link rel="alternate" hreflang="en" href="${baseUrlEN}" />
 <link rel="alternate" hreflang="es" href="${baseUrlES}" />

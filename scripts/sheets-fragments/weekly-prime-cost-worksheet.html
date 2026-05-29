@@ -79,10 +79,10 @@
           <span class="sheet-output-label" style="font-weight:700;">Prime cost as % of sales</span>
           <span class="sheet-output-value" data-output="prime_cost_pct" data-band="idle">0.0%</span>
         </div>
-        <p style="margin:6px 0 0;font-size:13px;line-height:1.5;color:var(--ink-soft,#2A2D33);" data-output="recommendation">
+        <p style="margin:6px 0 0;font-size:13px;line-height:1.5;color:var(--ink-soft,#4A4F59);" data-output="recommendation">
           Type your numbers above. The healthy band for full-service independents runs 55–65% — anything above 65% is a margin emergency.
         </p>
-        <div data-output="anomalies" hidden style="margin:8px 0 0;padding:10px 12px;border-left:3px solid var(--rust,#B8541A);background:var(--cream-2,#F3EEE3);font-size:13px;line-height:1.5;color:var(--ink,#14161A);"></div>
+        <div data-output="anomalies" hidden style="margin:8px 0 0;padding:10px 12px;border-left:3px solid var(--rust,#C42E2E);background:var(--cream-2,#EDEEF1);font-size:13px;line-height:1.5;color:var(--ink,#16181D);"></div>
       </div>
     </form>
 
@@ -91,8 +91,8 @@
          and outputs update without touching the typed numbers. Reset
          button restores the unadjusted view. -->
     <details class="sheet-whatif" style="margin:18px 0 0;padding:14px 16px;border:1px solid var(--line,#E5DFD2);border-radius:6px;background:var(--white,#FFFFFF);">
-      <summary style="cursor:pointer;font-size:13px;font-weight:600;color:var(--teal,#1F4E5B);letter-spacing:0.02em;">Try a scenario — what if labor or food shifts?</summary>
-      <p style="margin:8px 0 12px;font-size:13px;line-height:1.5;color:var(--ink-soft,#2A2D33);">Slide one or more, watch the verdict re-run on top of your typed numbers. Nothing saves until you click Reset and refill, or use the Workshop save with the scenario flag.</p>
+      <summary style="cursor:pointer;font-size:13px;font-weight:600;color:var(--teal,#2A50C8);letter-spacing:0.02em;">Try a scenario — what if labor or food shifts?</summary>
+      <p style="margin:8px 0 12px;font-size:13px;line-height:1.5;color:var(--ink-soft,#4A4F59);">Slide one or more, watch the verdict re-run on top of your typed numbers. Nothing saves until you click Reset and refill, or use the Workshop save with the scenario flag.</p>
       <div class="sheet-whatif-controls" style="display:flex;flex-direction:column;gap:10px;">
         <label style="display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;">
           <span style="flex:1;">Labor change</span>
@@ -109,15 +109,15 @@
           <input type="range" name="whatif_sales" min="-15" max="15" step="1" value="0" style="flex:2;" />
           <output name="whatif_sales_out" style="flex:0 0 60px;text-align:right;font-variant-numeric:tabular-nums;font-weight:600;">0%</output>
         </label>
-        <button type="button" data-whatif-reset style="align-self:flex-start;background:transparent;border:1px solid var(--line-dark,#C9C2B6);color:var(--ink-soft,#2A2D33);padding:6px 12px;border-radius:6px;font:inherit;font-size:12px;cursor:pointer;">Reset scenario</button>
+        <button type="button" data-whatif-reset style="align-self:flex-start;background:transparent;border:1px solid var(--line-dark,#C9C2B6);color:var(--ink-soft,#4A4F59);padding:6px 12px;border-radius:6px;font:inherit;font-size:12px;cursor:pointer;">Reset scenario</button>
       </div>
     </details>
 
     <!-- D7 · Long-form companion essay link. Surfaces the slow think
          piece on prime cost — the why beneath the what the sheet does. -->
-    <p style="margin:18px 0 0;padding:14px 18px;border:1px solid var(--line,#E5DFD2);border-left:3px solid var(--gold,#D4A24C);border-radius:6px;background:var(--cream-2,#F3EEE3);font-size:14px;line-height:1.55;color:var(--ink,#14161A);">
+    <p style="margin:18px 0 0;padding:14px 18px;border:1px solid var(--line,#E5DFD2);border-left:3px solid var(--gold,#D4A24C);border-radius:6px;background:var(--cream-2,#EDEEF1);font-size:14px;line-height:1.55;color:var(--ink,#16181D);">
       <strong style="color:var(--gold-deep,#8C6A2A);font-size:11.5px;letter-spacing:0.12em;text-transform:uppercase;display:block;margin-bottom:4px;">Read the long version</strong>
-      The math, the four lies operators tell themselves, the verdict bands, and a four-week protocol for getting stable. <a href="./why/" style="color:var(--teal,#1F4E5B);font-weight:600;border-bottom:1px solid currentColor;text-decoration:none;">The trunk number — Why weekly prime cost is the only number that matters &rarr;</a>
+      The math, the four lies operators tell themselves, the verdict bands, and a four-week protocol for getting stable. <a href="./why/" style="color:var(--teal,#2A50C8);font-weight:600;border-bottom:1px solid currentColor;text-decoration:none;">The trunk number — Why weekly prime cost is the only number that matters &rarr;</a>
     </p>
 
     <script>

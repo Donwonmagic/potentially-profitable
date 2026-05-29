@@ -72,6 +72,15 @@ const CHECKS = [
   // build freshness (running build-css-shells --check would not
   // change anything). Fail-CI from day 1.
   ['CSS shells',          'check-css-shells.mjs',          '--check'],
+  // Brand token spine (Wave 8b -> unified). Two complementary locks:
+  //  sync  = site :root matches the canonical cross-brand spine
+  //          (data/muntin.tokens.json, vendored from the Ledger repo).
+  //  purge = no RETIRED warm palette lingers in muntin chrome (the ~850
+  //          pages' inline critical CSS, the page-generator templates,
+  //          and sheets.css). Pairs with sync: one forbids the old
+  //          values, the other pins the new ones.
+  ['Token sync',          'check-tokens-sync.mjs'],
+  ['Warm-palette purge',  'migrate-warm-palette.mjs',      '--check'],
   // Invoice-Decoder safety: the four server files in src/ that touch
   // the decoder pipeline must NOT contain any outbound network paths
   ['Banned words',        'check-banned-words.mjs'],

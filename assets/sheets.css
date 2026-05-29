@@ -18,11 +18,11 @@
 /* A1 · Pack-coded 2px top hairline on the active sheet card.
    Five existing tokens, no new colors. Drives the only per-pack
    visual identity on the page. */
-[data-page="sheet"][data-sheet-pack="operations-margin"] .mm-card.mm-live { border-top: 2px solid var(--gold, #B8901A); }
-[data-page="sheet"][data-sheet-pack="local-seo"]         .mm-card.mm-live { border-top: 2px solid var(--teal, #1F4E5B); }
-[data-page="sheet"][data-sheet-pack="conversions"]       .mm-card.mm-live { border-top: 2px solid var(--rust, #B8541A); }
-[data-page="sheet"][data-sheet-pack="brand-design"]      .mm-card.mm-live { border-top: 2px solid var(--ink-soft, #2A2D33); }
-[data-page="sheet"][data-sheet-pack="trust-reviews"]     .mm-card.mm-live { border-top: 2px solid var(--ink, #14161A); }
+[data-page="sheet"][data-sheet-pack="operations-margin"] .mm-card.mm-live { border-top: 2px solid var(--gold, #B7791F); }
+[data-page="sheet"][data-sheet-pack="local-seo"]         .mm-card.mm-live { border-top: 2px solid var(--teal, #2A50C8); }
+[data-page="sheet"][data-sheet-pack="conversions"]       .mm-card.mm-live { border-top: 2px solid var(--rust, #C42E2E); }
+[data-page="sheet"][data-sheet-pack="brand-design"]      .mm-card.mm-live { border-top: 2px solid var(--ink-soft, #4A4F59); }
+[data-page="sheet"][data-sheet-pack="trust-reviews"]     .mm-card.mm-live { border-top: 2px solid var(--ink, #16181D); }
 
 /* A2 · Paper rule-lines under fieldset legends and section H2s
    inside the active card. 1px hairline in cream-2; reads like
@@ -39,7 +39,7 @@
   content: "";
   display: block;
   height: 1px;
-  background: var(--cream-2, #F3EEE3);
+  background: var(--cream-2, #EDEEF1);
   margin-top: 6px;
   margin-left: -6px;
   margin-right: -6px;
@@ -91,16 +91,16 @@
   margin: 18px auto 0;
   max-width: 640px;
   padding: 10px 14px;
-  border: 1px solid var(--line-dark, #C9C2B6);
-  border-left: 3px solid var(--rust, #B8541A);
+  border: 1px solid var(--line-dark, #D7DAE0);
+  border-left: 3px solid var(--rust, #C42E2E);
   border-radius: var(--r-sm, 6px);
-  background: var(--cream-2, #F3EEE3);
-  color: var(--ink-soft, #2A2D33);
+  background: var(--cream-2, #EDEEF1);
+  color: var(--ink-soft, #4A4F59);
   font-size: 13.5px;
   line-height: 1.55;
   text-align: left;
 }
-.sheet-hazard strong { color: var(--rust, #B8541A); font-weight: 700; }
+.sheet-hazard strong { color: var(--rust, #C42E2E); font-weight: 700; }
 
 /* Pairs-with knit — three columns of related tools, glossary terms,
    and articles. Mirrors the visual rhythm of the existing
@@ -119,7 +119,7 @@
 }
 .sheet-knit-col {
   padding: 18px;
-  border: 1px solid var(--line, #E5DFD2);
+  border: 1px solid var(--line, #E3E5E9);
   border-radius: var(--r-md, 12px);
   background: var(--white, #FFFFFF);
 }
@@ -127,7 +127,7 @@
   font-family: var(--font-display, "Fraunces", Georgia, serif);
   font-size: 15px;
   font-weight: 500;
-  color: var(--teal, #1F4E5B);
+  color: var(--teal, #2A50C8);
   margin: 0 0 10px;
   letter-spacing: .02em;
 }
@@ -141,14 +141,14 @@
 }
 .sheet-knit-col li { font-size: 14px; line-height: 1.5; }
 .sheet-knit-col a {
-  color: var(--ink, #14161A);
+  color: var(--ink, #16181D);
   text-decoration: none;
-  border-bottom: 1px dashed var(--teal, #1F4E5B);
+  border-bottom: 1px dashed var(--teal, #2A50C8);
   padding-bottom: 1px;
 }
-.sheet-knit-col a:hover { color: var(--teal, #1F4E5B); }
+.sheet-knit-col a:hover { color: var(--teal, #2A50C8); }
 .sheet-knit-col-empty {
-  color: var(--stone, #6B6B6B);
+  color: var(--stone, #6B7280);
   font-size: 13.5px;
   font-style: italic;
 }
@@ -168,7 +168,7 @@
   gap: 6px;
   font-size: 13px;
   font-weight: 600;
-  color: var(--ink-soft, #2A2D33);
+  color: var(--ink-soft, #4A4F59);
 }
 .sheet-form label > span:first-child {
   display: flex;
@@ -182,12 +182,12 @@
 .sheet-form select,
 .sheet-form textarea {
   padding: 9px 11px;
-  border: 1px solid var(--line-dark, #C9C2B6);
+  border: 1px solid var(--line-dark, #D7DAE0);
   border-radius: var(--r-sm, 6px);
   font: inherit;
   font-size: 15px;
   background: var(--white, #FFFFFF);
-  color: var(--ink, #14161A);
+  color: var(--ink, #16181D);
   width: 100%;
   box-sizing: border-box;
   font-weight: 400;
@@ -197,18 +197,18 @@
 .sheet-form input[type="date"]:focus,
 .sheet-form select:focus,
 .sheet-form textarea:focus {
-  border-color: var(--teal, #1F4E5B);
-  outline: 2px solid var(--teal, #1F4E5B);
+  border-color: var(--teal, #2A50C8);
+  outline: 2px solid var(--teal, #2A50C8);
   outline-offset: -1px;
 }
 .sheet-form .field-help {
   font-size: 12.5px;
-  color: var(--stone, #6B6B6B);
+  color: var(--stone, #6B7280);
   font-weight: 400;
   margin: -2px 0 0;
 }
 .sheet-form fieldset {
-  border: 1px solid var(--line, #E5DFD2);
+  border: 1px solid var(--line, #E3E5E9);
   border-radius: var(--r-md, 12px);
   padding: 16px 18px;
   margin: 0;
@@ -218,7 +218,7 @@
   font-weight: 700;
   letter-spacing: .12em;
   text-transform: uppercase;
-  color: var(--teal, #1F4E5B);
+  color: var(--teal, #2A50C8);
   padding: 0 6px;
 }
 
@@ -233,17 +233,17 @@
 .sheet-row-table th,
 .sheet-row-table td {
   padding: 8px 10px;
-  border-bottom: 1px solid var(--line, #E5DFD2);
+  border-bottom: 1px solid var(--line, #E3E5E9);
   text-align: left;
   vertical-align: middle;
 }
 .sheet-row-table th {
-  background: var(--cream-2, #F3EEE3);
+  background: var(--cream-2, #EDEEF1);
   font-size: 12px;
   font-weight: 700;
   letter-spacing: .08em;
   text-transform: uppercase;
-  color: var(--stone, #6B6B6B);
+  color: var(--stone, #6B7280);
 }
 .sheet-row-table .num {
   text-align: right;
@@ -253,7 +253,7 @@
 .sheet-row-table select {
   width: 100%;
   padding: 6px 8px;
-  border: 1px solid var(--line, #E5DFD2);
+  border: 1px solid var(--line, #E3E5E9);
   border-radius: 4px;
   font: inherit;
   font-size: 14px;
@@ -261,28 +261,28 @@
 }
 .sheet-row-table input:focus,
 .sheet-row-table select:focus {
-  border-color: var(--teal, #1F4E5B);
+  border-color: var(--teal, #2A50C8);
   outline: none;
   background: var(--white, #FFFFFF);
 }
 .sheet-row-table tfoot td {
   font-weight: 600;
-  background: var(--cream-2, #F3EEE3);
+  background: var(--cream-2, #EDEEF1);
   border-bottom: 0;
-  border-top: 2px solid var(--ink, #14161A);
+  border-top: 2px solid var(--ink, #16181D);
 }
 .sheet-add-row {
   margin-top: 10px;
   font-size: 13px;
   font-weight: 600;
-  color: var(--teal, #1F4E5B);
+  color: var(--teal, #2A50C8);
   background: transparent;
-  border: 1px dashed var(--teal, #1F4E5B);
+  border: 1px dashed var(--teal, #2A50C8);
   padding: 8px 14px;
   border-radius: 999px;
   cursor: pointer;
 }
-.sheet-add-row:hover { background: var(--teal-tint, #E8F1F3); }
+.sheet-add-row:hover { background: var(--teal-tint, #EAF0FE); }
 
 /* Results / output strip — calculated values from the inputs.
    Reuses .mm-results from site.css; this just gives sheet pages a
@@ -290,9 +290,9 @@
 .sheet-output {
   margin-top: 14px;
   padding: 14px 16px;
-  border: 1px solid var(--line, #E5DFD2);
+  border: 1px solid var(--line, #E3E5E9);
   border-radius: var(--r-input, 8px);
-  background: var(--cream-2, #F3EEE3);
+  background: var(--cream-2, #EDEEF1);
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -306,18 +306,18 @@
 }
 .sheet-output-label {
   font-weight: 600;
-  color: var(--ink-soft, #2A2D33);
+  color: var(--ink-soft, #4A4F59);
 }
 .sheet-output-value {
   font-family: var(--font-display, "Fraunces", Georgia, serif);
   font-size: 22px;
   font-weight: 500;
-  color: var(--ink, #14161A);
+  color: var(--ink, #16181D);
   font-variant-numeric: tabular-nums;
 }
 .sheet-output-value[data-band="good"] { color: var(--status-good, #1F6B3A); }
 .sheet-output-value[data-band="warn"] { color: var(--status-warn-deep, #8A3E16); }
-.sheet-output-value[data-band="bad"]  { color: var(--rust, #B8541A); }
+.sheet-output-value[data-band="bad"]  { color: var(--rust, #C42E2E); }
 
 /* When-to-use and Common-mistakes wrappers — light tweaks on the
    shared .mm-card so the bullets read clean on mobile. */
@@ -326,10 +326,10 @@
   margin: 6px 0;
 }
 .sheet-when-to-use {
-  border-left: 3px solid var(--teal, #1F4E5B);
+  border-left: 3px solid var(--teal, #2A50C8);
 }
 .sheet-mistakes {
-  border-left: 3px solid var(--rust, #B8541A);
+  border-left: 3px solid var(--rust, #C42E2E);
 }
 
 /* Stay-paper sheets — when the sheet's "real" form is the printout.
@@ -341,10 +341,10 @@
 .sheet-paper-hint {
   margin: 10px 0 -2px;
   padding: 8px 12px;
-  background: var(--cream-2, #F3EEE3);
+  background: var(--cream-2, #EDEEF1);
   border-radius: var(--r-sm, 6px);
   font-size: 13px;
-  color: var(--stone, #6B6B6B);
+  color: var(--stone, #6B7280);
   text-align: center;
 }
 
@@ -454,33 +454,33 @@
   margin: -8px 0 18px;
   font-size: 12.5px;
   line-height: 1.5;
-  color: var(--ink-soft, #2A2D33);
+  color: var(--ink-soft, #4A4F59);
   font-weight: 500;
   letter-spacing: 0.01em;
 }
 .sheet-progress[hidden] { display: none; }
 .sheet-progress strong {
-  color: var(--ink, #14161A);
+  color: var(--ink, #16181D);
   font-weight: 600;
   font-variant-numeric: tabular-nums;
 }
 .sheet-progress .sheet-progress__next {
-  color: var(--teal, #1F4E5B);
+  color: var(--teal, #2A50C8);
 }
 
 /* B13 · Keyboard-shortcut hint — single muted line, bottom of form. */
 .sheet-keyboard-hint {
   margin: 14px 0 0;
   font-size: 11.5px;
-  color: var(--stone, #6B6B6B);
+  color: var(--stone, #6B7280);
   letter-spacing: 0.02em;
   text-align: right;
 }
 .sheet-keyboard-hint kbd {
   font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
   font-size: 11px;
-  background: var(--cream-2, #F3EEE3);
-  border: 1px solid var(--line, #E5DFD2);
+  background: var(--cream-2, #EDEEF1);
+  border: 1px solid var(--line, #E3E5E9);
   border-radius: 3px;
   padding: 1px 4px;
 }
@@ -494,7 +494,7 @@
   gap: 8px;
   margin: 6px 0;
   font-size: 12px;
-  color: var(--ink-soft, #2A2D33);
+  color: var(--ink-soft, #4A4F59);
 }
 .sheet-viz svg {
   display: block;
@@ -508,7 +508,7 @@
 }
 .sheet-viz-empty {
   font-size: 12px;
-  color: var(--stone, #6B6B6B);
+  color: var(--stone, #6B7280);
   font-style: italic;
 }
 @media print { .sheet-viz, .sheet-viz-empty { display: none !important; } }
@@ -520,8 +520,8 @@
   left: 50%;
   transform: translateX(-50%);
   z-index: 1500;
-  background: var(--ink, #14161A);
-  color: var(--cream, #FAF7F2);
+  background: var(--ink, #16181D);
+  color: var(--cream, #F6F7F8);
   padding: 10px 16px;
   border-radius: 999px;
   font-size: 13.5px;
@@ -535,7 +535,7 @@
 .sheet-undo-bar button {
   background: transparent;
   border: 0;
-  color: var(--cream, #FAF7F2);
+  color: var(--cream, #F6F7F8);
   font: inherit;
   font-weight: 600;
   letter-spacing: 0.02em;
@@ -544,7 +544,7 @@
   cursor: pointer;
 }
 .sheet-undo-bar button:focus-visible {
-  outline: 2px solid var(--cream, #FAF7F2);
+  outline: 2px solid var(--cream, #F6F7F8);
   outline-offset: 3px;
   border-radius: 4px;
 }
@@ -564,27 +564,27 @@
   align-items: center;
   gap: 10px;
   font-size: 13px;
-  color: var(--ink-soft, #2A2D33);
+  color: var(--ink-soft, #4A4F59);
   font-weight: 500;
 }
 .sheet-reset-confirm[hidden] { display: none; }
 .sheet-reset-confirm button {
-  background: var(--cream-2, #F3EEE3);
-  border: 1px solid var(--line, #E5DFD2);
+  background: var(--cream-2, #EDEEF1);
+  border: 1px solid var(--line, #E3E5E9);
   border-radius: 6px;
   padding: 8px 14px;
   font: inherit;
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  color: var(--ink, #14161A);
+  color: var(--ink, #16181D);
 }
 .sheet-reset-confirm button[data-confirm="yes"] {
-  color: var(--rust, #B8541A);
-  border-color: var(--rust, #B8541A);
+  color: var(--rust, #C42E2E);
+  border-color: var(--rust, #C42E2E);
 }
 .sheet-reset-confirm button:focus-visible {
-  outline: 2px solid var(--teal, #1F4E5B);
+  outline: 2px solid var(--teal, #2A50C8);
   outline-offset: 2px;
 }
 
@@ -601,7 +601,7 @@
   font-weight: 500;
   letter-spacing: 0.04em;
   text-transform: none;
-  color: var(--stone, #6B6B6B);
+  color: var(--stone, #6B7280);
   background: transparent;
   border: 0;
   padding: 2px 0;
@@ -610,10 +610,10 @@
 }
 .sheet-form fieldset > legend .sheet-clear-section[hidden] { display: none; }
 .sheet-form fieldset > legend .sheet-clear-section:hover {
-  color: var(--rust, #B8541A);
+  color: var(--rust, #C42E2E);
 }
 .sheet-form fieldset > legend .sheet-clear-section:focus-visible {
-  outline: 2px solid var(--teal, #1F4E5B);
+  outline: 2px solid var(--teal, #2A50C8);
   outline-offset: 2px;
   border-radius: 3px;
 }
@@ -644,26 +644,26 @@
   .mm-actions {
     position: sticky;
     bottom: 0;
-    background: var(--cream, #FAF7F2);
+    background: var(--cream, #F6F7F8);
     padding-top: 12px;
     padding-bottom: 12px;
     margin-bottom: 0;
     z-index: 50;
-    border-top: 1px solid var(--line, #E5DFD2);
+    border-top: 1px solid var(--line, #E3E5E9);
     box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.04);
   }
   /* Status chips render in solid fills, not tints (glare). */
   .status-chip[data-band="good"] {
     background: var(--status-good, #1F6B3A) !important;
-    color: var(--cream, #FAF7F2) !important;
+    color: var(--cream, #F6F7F8) !important;
   }
   .status-chip[data-band="warn"] {
     background: var(--status-warn-deep, #8A3E16) !important;
-    color: var(--cream, #FAF7F2) !important;
+    color: var(--cream, #F6F7F8) !important;
   }
   .status-chip[data-band="bad"] {
-    background: var(--rust, #B8541A) !important;
-    color: var(--cream, #FAF7F2) !important;
+    background: var(--rust, #C42E2E) !important;
+    color: var(--cream, #F6F7F8) !important;
   }
 }
 
@@ -684,7 +684,7 @@
     width: 100%;
   }
   .sheet-row-table tr {
-    border: 1px solid var(--line, #E5DFD2);
+    border: 1px solid var(--line, #E3E5E9);
     border-radius: 8px;
     margin: 8px 0;
     padding: 4px 8px;
@@ -696,7 +696,7 @@
     justify-content: space-between;
     gap: 8px;
     padding: 6px 0;
-    border-bottom: 1px dashed var(--cream-2, #F3EEE3);
+    border-bottom: 1px dashed var(--cream-2, #EDEEF1);
   }
   .sheet-row-table td:last-child { border-bottom: 0; }
   .sheet-row-table td::before {
@@ -704,7 +704,7 @@
     flex: 0 0 auto;
     font-size: 12px;
     font-weight: 600;
-    color: var(--ink-soft, #2A2D33);
+    color: var(--ink-soft, #4A4F59);
     letter-spacing: 0.02em;
   }
   .sheet-row-table td input,
@@ -721,10 +721,10 @@
 .sheet-worked-example {
   margin: 8px 0 18px;
   padding: 0;
-  border: 1px solid var(--line, #E5DFD2);
-  border-left: 3px solid var(--gold, #D4A24C);
+  border: 1px solid var(--line, #E3E5E9);
+  border-left: 3px solid var(--gold, #B7791F);
   border-radius: 6px;
-  background: var(--cream-2, #F3EEE3);
+  background: var(--cream-2, #EDEEF1);
 }
 .sheet-worked-example > summary {
   list-style: none;
@@ -738,7 +738,7 @@
 }
 .sheet-worked-example > summary::-webkit-details-marker { display: none; }
 .sheet-worked-example > summary:focus-visible {
-  outline: 3px solid var(--teal, #1F4E5B);
+  outline: 3px solid var(--teal, #2A50C8);
   outline-offset: 2px;
   border-radius: 6px;
 }
@@ -752,12 +752,12 @@
 }
 .sheet-worked-example .swe-subject {
   font-size: 14px;
-  color: var(--ink, #14161A);
+  color: var(--ink, #16181D);
   flex: 1 1 auto;
 }
 .sheet-worked-example .swe-cta {
   font-size: 12.5px;
-  color: var(--teal, #1F4E5B);
+  color: var(--teal, #2A50C8);
   font-weight: 600;
   border-bottom: 1px solid currentColor;
   flex: 0 0 auto;
@@ -765,7 +765,7 @@
 .sheet-worked-example[open] > summary .swe-cta { display: none; }
 .sheet-worked-example .swe-body {
   padding: 4px 16px 14px;
-  border-top: 1px dashed var(--line, #E5DFD2);
+  border-top: 1px dashed var(--line, #E3E5E9);
 }
 .sheet-worked-example .swe-section-label {
   margin: 12px 0 6px;
@@ -773,13 +773,13 @@
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--stone, #6B6B6B);
+  color: var(--stone, #6B7280);
 }
 .sheet-worked-example .swe-rows {
   width: 100%;
   border-collapse: collapse;
   background: var(--white, #FFFFFF);
-  border: 1px solid var(--line, #E5DFD2);
+  border: 1px solid var(--line, #E3E5E9);
   border-radius: 4px;
   overflow: hidden;
   font-size: 13.5px;
@@ -788,31 +788,31 @@
 .sheet-worked-example .swe-rows td {
   padding: 7px 12px;
   text-align: left;
-  border-bottom: 1px dashed var(--cream-2, #F3EEE3);
+  border-bottom: 1px dashed var(--cream-2, #EDEEF1);
 }
 .sheet-worked-example .swe-rows tr:last-child th,
 .sheet-worked-example .swe-rows tr:last-child td { border-bottom: 0; }
 .sheet-worked-example .swe-rows th {
   font-weight: 500;
-  color: var(--ink-soft, #2A2D33);
+  color: var(--ink-soft, #4A4F59);
   width: 60%;
 }
 .sheet-worked-example .swe-rows td {
   text-align: right;
   font-variant-numeric: tabular-nums;
-  color: var(--ink, #14161A);
+  color: var(--ink, #16181D);
   font-weight: 600;
 }
 .sheet-worked-example .swe-punchline {
   margin: 14px 0 0;
   font-size: 14.5px;
   line-height: 1.55;
-  color: var(--ink, #14161A);
+  color: var(--ink, #16181D);
 }
 .sheet-worked-example .swe-note {
   margin: 10px 0 0;
   font-size: 12px;
-  color: var(--stone, #6B6B6B);
+  color: var(--stone, #6B7280);
   font-style: italic;
 }
 @media print {
@@ -830,13 +830,13 @@
   gap: 8px 16px;
   margin: 0 0 14px;
   padding: 10px 14px;
-  border: 1px solid var(--line, #E5DFD2);
-  border-left: 3px solid var(--teal, #1F4E5B);
+  border: 1px solid var(--line, #E3E5E9);
+  border-left: 3px solid var(--teal, #2A50C8);
   border-radius: 6px;
-  background: var(--cream-2, #F3EEE3);
+  background: var(--cream-2, #EDEEF1);
   font-size: 13.5px;
   line-height: 1.5;
-  color: var(--ink, #14161A);
+  color: var(--ink, #16181D);
 }
 .sheet-prefill-banner__msg { flex: 1 1 auto; }
 .sheet-prefill-banner__clear {
@@ -849,20 +849,20 @@
   font: inherit;
   font-size: 13px;
   font-weight: 600;
-  color: var(--teal, #1F4E5B);
+  color: var(--teal, #2A50C8);
   cursor: pointer;
 }
-.sheet-prefill-banner__clear:hover { color: var(--teal-deep, #143A45); }
+.sheet-prefill-banner__clear:hover { color: var(--teal-deep, #1F3A93); }
 .sheet-prefill-banner__clear:focus-visible {
-  outline: 3px solid var(--teal, #1F4E5B);
+  outline: 3px solid var(--teal, #2A50C8);
   outline-offset: 2px;
   border-radius: 3px;
 }
 .sheet-form input[data-prefilled="1"],
 .sheet-form select[data-prefilled="1"],
 .sheet-form textarea[data-prefilled="1"] {
-  border-color: var(--teal, #1F4E5B);
-  background: rgba(31, 78, 91, 0.04);
+  border-color: var(--teal, #2A50C8);
+  background: rgba(42, 80, 200, 0.04);
 }
 @media print {
   .sheet-prefill-banner { display: none; }
