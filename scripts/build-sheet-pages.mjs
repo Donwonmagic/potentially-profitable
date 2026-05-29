@@ -128,6 +128,37 @@ function renderPackGlyph(packId) {
 function escAttr(s) { return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;'); }
 function escText(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
 
+// Clamp a meta/og description to <=`max` rendered glyphs (the SERP
+// truncation ceiling enforced by check-meta-description-length.mjs).
+// Length is measured on the DECODED string (each HTML entity renders as
+// one glyph), matching the gate. Trims to the last whole word that fits
+// (reserving one glyph for an ellipsis) and strips a trailing separator
+// so we never emit "word —…" or a half entity. Only the meta/og path is
+// clamped — the visible summary and JSON-LD keep the full source text.
+const _DESC_NAMED = {
+  amp: '&', lt: '<', gt: '>', quot: '"', apos: '’',
+  mdash: '—', ndash: '–', hellip: '…', nbsp: ' ',
+  rsquo: '’', lsquo: '‘', ldquo: '“', rdquo: '”',
+  iacute: 'í', oacute: 'ó', eacute: 'é', aacute: 'á',
+  uacute: 'ú', ntilde: 'ñ',
+};
+function decodeDescEntities(s) {
+  return String(s)
+    .replace(/&#39;/g, '’')
+    .replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(Number(n)))
+    .replace(/&#x([0-9a-f]+);/gi, (_, h) => String.fromCodePoint(parseInt(h, 16)))
+    .replace(/&([a-z]+);/gi, (m, n) => (_DESC_NAMED[n] !== undefined ? _DESC_NAMED[n] : m));
+}
+function clampDesc(text, max = 155) {
+  const s = decodeDescEntities(String(text == null ? '' : text)).replace(/\s+/g, ' ').trim();
+  if ([...s].length <= max) return s;
+  const cut = [...s].slice(0, max - 1).join('');
+  const lastSpace = cut.lastIndexOf(' ');
+  let head = lastSpace > 0 ? cut.slice(0, lastSpace) : cut;
+  head = head.replace(/[\s.,;:!?\-–—("'“”‘’]+$/u, '').trim();
+  return head + '…';
+}
+
 function pickI18n(obj, key, locale) {
   return obj[`${key}_${locale}`];
 }
@@ -292,7 +323,10 @@ function buildPage(slug, locale) {
   const pairsBlogHtml  = renderPairsCol(labels.pairsBlog, sheet.pairsWith?.blog, resolveBlog, locale, labels.pairsEmpty);
 
   const headTitle = `${title} — ${labels.sheets} | Muntin Digital`;
-  const headDesc  = summary;
+  // Clamp ONLY the meta/og description to the SERP ceiling. The visible
+  // SUMMARY block and the JSON-LD WebApplication.description below keep
+  // the full summary text.
+  const headDesc  = clampDesc(summary, 155);
 
   const subs = {
     LOCALE: locale,

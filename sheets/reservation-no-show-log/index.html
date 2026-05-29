@@ -57,6 +57,16 @@ header.nav{min-height:64px}
 </head>
 <body data-page="sheet" data-sheet-slug="reservation-no-show-log" data-sheet-pack="conversions" data-pagefind-meta="kind:sheet,pack:conversions">
 <a class="skip-link" href="#main">Skip to main content</a>
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
 <!-- batch-banner:start -->
 <aside class="batch-marquee" data-batch="2026-w2" role="complementary" aria-label="Week 2 · May 23, 2026" style="background:var(--ink,#14161A);color:var(--cream,#FAF7F2);font-size:14px;line-height:1.4;padding:8px 0;border-bottom:1px solid rgba(250,247,242,0.12)">
   <div style="max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,64px);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
@@ -68,16 +78,6 @@ header.nav{min-height:64px}
   </div>
 </aside>
 <!-- batch-banner:end -->
-<script>
-  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
-     Apple devices. Runs early in <body> so the swap is essentially
-     invisible — script tags execute synchronously when the parser hits
-     them, before .nav-search-kbd renders below. CSS in site-core.css
-     conditions on <html data-platform="mac">. */
-  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
-    document.documentElement.dataset.platform = 'mac';
-  }
-</script>
 <header class="nav" id="nav">
   <div class="container nav-inner">
     <a href="/" class="logo" aria-label="Muntin Digital home">
@@ -112,6 +112,11 @@ header.nav{min-height:64px}
       <a href="/library/">Library</a>
       <a href="/tools/">Tools</a>
       <a href="/studio/">Studio</a>
+      <!-- Ledger — sister product (the privacy-forward invoice ledger)
+           on its own subdomain. Plain external link so it passes link
+           equity to ledger.muntin.digital; Plausible's automatic
+           outbound-link tracking measures the nav click. -->
+      <a href="https://ledger.muntin.digital/">Ledger</a>
       <!-- Both sign-in / workshop ship hidden by default; the
            auth-state JS at the bottom of this file calls
            /api/auth/me and reveals exactly one. No-JS visitors see
@@ -168,6 +173,7 @@ header.nav{min-height:64px}
     <a href="/library/">Library</a>
     <a href="/tools/">Tools</a>
     <a href="/studio/">Studio</a>
+    <a href="https://ledger.muntin.digital/">Ledger</a>
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
     <button type="button" class="mobile-search js-open-search">

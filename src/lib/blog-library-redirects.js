@@ -106,6 +106,25 @@ export const BLOG_LIBRARY_REDIRECTS = new Map([
   ['/es/blog/why-your-restaurant-loses-reservations-every-night/',                    '/library/reservation-conversion-guide/'],
   ['/es/blog/los-6-tipos-de-schema-markup-que-google-usa/',                           '/es/library/los-6-tipos-de-schema-markup-que-google-usa/'],
   ['/es/blog/como-salir-de-doordash-mi-restaurante/',                                 '/es/library/como-salir-de-doordash-mi-restaurante/'],
+
+  // Cross-language gap-close (2026-05-29): eight EN-named /es/blog/
+  // mirrors were left live after the Phase 7 split — the EN side had
+  // its /blog/<slug>/ → /library/<slug>/ 301 AND its physical /blog/
+  // directory was deleted, but the matching ES mirrors kept their
+  // physical /es/blog/<en-slug>/index.html AND had no redirect, so
+  // they competed in search with the native ES library home. These
+  // 301s point each EN-named ES path at its native-slug /es/library/
+  // canonical (same target the EN→/library/ redirect resolves to,
+  // localized). The physical /es/blog/<en-slug>/ dirs were removed in
+  // the same change, mirroring the EN deletion.
+  ['/es/blog/can-chatgpt-write-your-restaurant-website/',                             '/es/library/puede-chatgpt-escribir-tu-sitio-web-de-restaurante/'],
+  ['/es/blog/does-my-restaurant-need-a-website/',                                     '/es/library/como-hacer-sitio-web-para-mi-restaurante/'],
+  ['/es/blog/how-to-get-more-google-reviews-for-your-restaurant/',                    '/es/library/como-conseguir-mas-resenas-google-para-tu-restaurante/'],
+  ['/es/blog/how-to-raise-restaurant-menu-prices-without-losing-reservations/',       '/es/library/como-subir-precios-de-menu-sin-perder-reservas/'],
+  ['/es/blog/how-to-set-up-google-business-profile-for-your-restaurant/',             '/es/library/como-configurar-google-business-profile-para-tu-restaurante/'],
+  ['/es/blog/toast-vs-square-vs-clover-for-restaurants/',                             '/es/library/toast-vs-square-vs-clover-para-restaurantes/'],
+  ['/es/blog/what-should-be-on-a-restaurant-website/',                                '/es/library/que-debe-tener-un-sitio-web-de-restaurante/'],
+  ['/es/blog/wix-vs-custom-for-restaurants/',                                         '/es/library/wix-vs-custom-para-restaurantes/'],
 ]);
 
 // Returns the redirect target path for a /blog/ or /es/blog/ pathname,
