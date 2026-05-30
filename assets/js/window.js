@@ -577,6 +577,13 @@
     if (attachIds.length) {
       params.set('attach_ids', attachIds.join(','));
     }
+    // Cross-site origin tag (plan §W): the hidden #windowSource field is
+    // set by applySource() from ?source=. Submit it so a NEW thread is
+    // stamped with where the operator came from. Backend allowlists it.
+    var srcEl = document.getElementById('windowSource');
+    if (srcEl && srcEl.value) {
+      params.set('source', srcEl.value);
+    }
 
     fetch('/api/window/append', {
       method: 'POST',

@@ -242,6 +242,7 @@ import {
 import {
   // Phase W.1 (The Window) — direct-line correspondence storage.
   validateMessageBody as validateWindowMessageBody,
+  normalizeWindowSource,
   getOpenThreadForUser,
   getThreadById,
   listThreadMessages,
