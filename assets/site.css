@@ -7700,8 +7700,26 @@ table[data-viz-sortable] th[aria-sort="descending"]::after{content:"\2193";color
    appeared and then disappeared." Phone widths (≤640px) genuinely
    don't have room; everything above does. */
 @media (max-width:640px){
-  .theme-toggle{display:none !important}
+  .theme-toggle:not(.mobile-theme){display:none !important}
 }
+
+/* Mobile-menu variant of the toggle: a full-width labelled row that
+   mirrors .mobile-search (the desktop nav keeps the icon-only circle).
+   Lives inside #mobileMenu, so it only shows when the menu is open and
+   is exempt from the phone-hide rule above. */
+.theme-toggle__label{display:none}
+.mobile-theme{
+  display:flex;align-items:center;gap:12px;width:100%;
+  height:auto;min-width:0;margin:0;padding:14px 2px;
+  background:transparent;border:0;border-bottom:1px solid var(--line);border-radius:0;
+  font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);
+  cursor:pointer;text-align:left;
+}
+.mobile-theme:hover{background:transparent;border-color:var(--line);color:var(--ink)}
+.mobile-theme:focus-visible{outline:none;box-shadow:var(--ring-focus)}
+.mobile-theme svg{color:var(--teal);flex:0 0 18px}
+.mobile-theme .theme-toggle__icon{width:18px;height:18px}
+.mobile-theme .theme-toggle__label{display:inline}
 
 /* @shell:core === Phase 4 — next-tool recommendation card (.mtn-next-tool) === */
 /* ============ Phase 4 — next-tool recommendation card =============
