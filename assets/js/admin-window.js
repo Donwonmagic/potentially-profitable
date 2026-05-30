@@ -147,12 +147,21 @@
       var a = document.createElement('a');
       a.className = 'admin-window__row' + (it.unreadByAdmin ? ' admin-window__row--unread' : '');
       a.href = hashLink;
+      // Cross-site origin chip (plan §W): show where the thread came
+      // from when it carries a source tag (e.g. "from Ledger"). Title-
+      // case the known sources; fall back to the raw slug otherwise.
+      var SOURCE_LABELS = { ledger: 'Ledger', digital: 'muntin.digital', blog: 'Blog', tool: 'Tool' };
+      var sourceChip = '';
+      if (it.source) {
+        var srcLabel = SOURCE_LABELS[it.source] || it.source;
+        sourceChip = '<span class="admin-window__row-source" data-source="' + escHtml(it.source) + '">from ' + escHtml(srcLabel) + '</span>';
+      }
       a.innerHTML =
         '<div class="admin-window__row-head">' +
           '<span class="admin-window__row-id">' + escHtml(idLabel) + '</span>' +
           '<span class="admin-window__row-time">' + fmtRelative(it.updatedAt) + '</span>' +
         '</div>' +
-        '<p class="admin-window__row-status">' + escHtml(it.status) + (it.unreadByAdmin ? ' · unread' : '') + '</p>';
+        '<p class="admin-window__row-status">' + escHtml(it.status) + (it.unreadByAdmin ? ' · unread' : '') + sourceChip + '</p>';
       els.list.appendChild(a);
     });
   }

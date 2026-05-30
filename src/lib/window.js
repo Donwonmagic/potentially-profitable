@@ -153,6 +153,20 @@ export function validateMessageBody(input) {
   return { ok: true, body };
 }
 
+// Cross-site source tag (plan §W / backend handoff). Ledger routes
+// contact to muntin.digital/window?source=ledger; the client sanitizes
+// the param to [a-z0-9-]≤24 and submits it on the append POST. We
+// allowlist it to a known set so the admin "where did they come from"
+// chip is a closed vocabulary, not free text. Anything outside the set
+// (including the empty string) normalizes to '' — untagged.
+export const WINDOW_SOURCES = new Set(['ledger', 'digital', 'blog', 'tool']);
+
+export function normalizeWindowSource(raw) {
+  if (typeof raw !== 'string') return '';
+  const s = raw.toLowerCase().replace(/[^a-z0-9-]/g, '').slice(0, 24);
+  return WINDOW_SOURCES.has(s) ? s : '';
+}
+
 // Returns the user's open thread or null. If multiple threads
 // exist (e.g., previous one hit the 100-msg cap), returns the
 // newest open one.
@@ -200,7 +214,7 @@ export async function listThreadMessages(env, threadId, limit = 50) {
 // Create a new thread for a user. Updates the per-user index.
 // `email` is stored on the thread row so the admin reply path can
 // look up the recipient address without a separate KV scan.
-export async function createThread(env, sub, email = null) {
+export async function createThread(env, sub, email = null, source = '') {
   let id = null;
   for (let attempt = 0; attempt < 3; attempt++) {
     const candidate = mintThreadId();
@@ -219,6 +233,9 @@ export async function createThread(env, sub, email = null) {
     msgCount: 0,
     unreadByUser: false,
     unreadByAdmin: false,
+    // Cross-site origin tag, set once at thread creation (plan §W).
+    // Normalized by normalizeWindowSource(); '' = untagged.
+    source: normalizeWindowSource(source),
   };
   await env.AUTH_SESSIONS.put(threadKey(sub, id), JSON.stringify(thread));
   // Update per-user index.
@@ -308,6 +325,11 @@ async function upsertAdminIndex(env, thread) {
   // thread row to render.
   if (thread.crisisTier === 'tier1' || thread.crisisTier === 'tier2') {
     entry.crisisTier = thread.crisisTier;
+  }
+  // Cross-site origin tag → admin "from Ledger" chip (plan §W). Copied
+  // onto the index entry so the queue scan renders without re-fetching.
+  if (thread.source) {
+    entry.source = thread.source;
   }
   row.entries.push(entry);
   await env.AUTH_SESSIONS.put(key, JSON.stringify(row));
@@ -638,7 +660,7 @@ export async function getOpenThreadForAnon(env, anonId) {
 // otherwise fall straight here). Returns the special error
 // 'anon-id-claimed' so handleWindowAppend can clear the stale cookie
 // and prompt the operator to sign in.
-export async function createAnonThread(env, anonId, locale = null) {
+export async function createAnonThread(env, anonId, locale = null, source = '') {
   if (!isValidSaveItemIdShape(anonId)) throw new Error('invalid-anon-id');
   const existingRaw = await env.AUTH_SESSIONS.get(anonThreadKey(anonId));
   if (existingRaw) {
@@ -675,6 +697,8 @@ export async function createAnonThread(env, anonId, locale = null) {
     msgCount: 0,
     unreadByUser: false,
     unreadByAdmin: false,
+    // Cross-site origin tag, set once at creation (plan §W).
+    source: normalizeWindowSource(source),
   };
   await env.AUTH_SESSIONS.put(anonThreadKey(anonId), JSON.stringify(thread));
   return thread;
