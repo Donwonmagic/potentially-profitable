@@ -58,15 +58,25 @@ const EDGE = 80;       // edge padding (up from 72 on legacy cards)
 const BASELINE = 8;    // 8px baseline grid
 
 // Single source of truth for category accents.
+//
+// "Golden Hour" palette (2026 brand refresh). The cool slate/blue spine
+// is the architecture (frame, glass, rigor); the warm marigold→coral
+// pair is the LIGHT that blooms through the muntin grid. Blue carries
+// trust, warm light carries energy — vibrant without betraying the
+// financial-grade discipline. All cool values match the canonical
+// spine (data/muntin.tokens.json); marigold/coral are the sanctioned
+// expressive accents (NOT on the retired-warm blocklist).
 const PALETTE = {
-  ink:    "#14161A",
-  cream:  "#FAF7F2",
-  teal:   "#1F4E5B",
-  rust:   "#B8541A",
-  gold:   "#C5A059",
-  muted:  "#6B6B6B",
-  rule:   "#E8E2D6",
-  dim:    "rgba(250,247,242,0.55)",
+  ink:     "#16181D",  // spine slate-900 (was warm #14161A)
+  cream:   "#F6F7F8",  // spine bg / slate-50 (was warm #FAF7F2)
+  teal:    "#2A50C8",  // spine editorial blue (was warm teal #1F4E5B)
+  primary: "#2A50C8",  // explicit brand blue (alias of teal, for clarity)
+  rust:    "#C42E2E",  // spine danger red (was warm #B8541A) — alert/fail
+  gold:    "#FFB020",  // MARIGOLD — the golden-hour light + Tools accent
+  coral:   "#FF6B5C",  // CORAL — vibrant warm-light companion
+  muted:   "#4A4F59",  // spine text-secondary (was #6B6B6B)
+  rule:    "#E3E5E9",  // spine divider (was warm #E8E2D6)
+  dim:     "rgba(246,247,248,0.55)",  // cool dim (was warm cream rgba)
 };
 
 // Whisper-muntin background field. The muntin grid is the brand
@@ -272,34 +282,95 @@ function muntinField({ onLight = false } = {}) {
   `;
 }
 
+/**
+ * "Golden Hour" light layer — the brand's vibrant signature.
+ *
+ * Warm marigold→coral light blooms from the top-right corner as if the
+ * sun were coming through a restaurant window; on dark grounds a cool
+ * blue cast settles in the opposite corner for golden-hour depth (warm
+ * key light, cool fill). Render right after muntinField(), before the
+ * focus module + type.
+ *
+ * Smooth gradients only — NO raster grain. An early build added a
+ * full-frame feTurbulence noise overlay (anti-banding insurance), but
+ * once rasterized it quadrupled PNG weight (~310KB → ~1.4MB) because
+ * high-frequency noise is incompressible — bad for share images and
+ * for the git push. The muntin-field texture already breaks up any
+ * banding, so the grain earned its removal.
+ *
+ * mode:
+ *   "dark"  — near-black (ink) grounds: warm bloom + cool blue cast
+ *   "blue"  — saturated blue (tool) grounds: warm bloom + base vignette
+ *   "light" — cream/near-white grounds: a soft warm corner wash
+ */
+function goldenHour({ mode = "dark" } = {}) {
+  const W = CANVAS_W, H = CANVAS_H;
+  if (mode === "light") {
+    return `
+  <defs>
+    <radialGradient id="ghWarmSoft" cx="92%" cy="6%" r="64%">
+      <stop offset="0%"  stop-color="${PALETTE.gold}"  stop-opacity="0.13"/>
+      <stop offset="52%" stop-color="${PALETTE.coral}" stop-opacity="0.05"/>
+      <stop offset="100%" stop-color="${PALETTE.gold}" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="${W}" height="${H}" fill="url(#ghWarmSoft)"/>`;
+  }
+  const warm = `
+    <radialGradient id="ghWarm" cx="86%" cy="13%" r="82%">
+      <stop offset="0%"  stop-color="${PALETTE.gold}"  stop-opacity="${mode === "blue" ? 0.34 : 0.30}"/>
+      <stop offset="38%" stop-color="${PALETTE.coral}" stop-opacity="${mode === "blue" ? 0.16 : 0.13}"/>
+      <stop offset="100%" stop-color="${PALETTE.gold}" stop-opacity="0"/>
+    </radialGradient>`;
+  const cast = mode === "blue"
+    ? `<radialGradient id="ghCast" cx="4%" cy="100%" r="80%">
+         <stop offset="0%"  stop-color="${PALETTE.ink}" stop-opacity="0.34"/>
+         <stop offset="100%" stop-color="${PALETTE.ink}" stop-opacity="0"/>
+       </radialGradient>`
+    : `<radialGradient id="ghCast" cx="5%" cy="98%" r="76%">
+         <stop offset="0%"  stop-color="${PALETTE.primary}" stop-opacity="0.22"/>
+         <stop offset="100%" stop-color="${PALETTE.primary}" stop-opacity="0"/>
+       </radialGradient>`;
+  return `
+  <defs>
+    ${warm}
+    ${cast}
+  </defs>
+  <rect width="${W}" height="${H}" fill="url(#ghCast)"/>
+  <rect width="${W}" height="${H}" fill="url(#ghWarm)"/>`;
+}
+
 // -------------------------------------------------------------
 // primitives — muntin-mark, footer, ornament
 // -------------------------------------------------------------
 
 /**
- * Muntin-mark leitmotif. A window-grid silhouette used as the
- * signature anchor on every card. `variant` controls size + placement:
- *   - "anchor":  bottom-left, large, low-opacity (page cards)
+ * Muntin-mark leitmotif — the solid four-pane "Pane" mark (2026 brand
+ * refresh), matching the product's WindowMark and the site brand/mark.
+ * At low opacity the filled panes read as a softly lit window rather
+ * than a wireframe — the same "light through the pane" idea the Golden
+ * Hour layer expresses. `variant` controls size + placement:
+ *   - "anchor":  bottom-left, large (page cards)
  *   - "inline":  mid-right corner, medium (article/research)
  *   - "focal":   oversized centerpiece for focus=type
+ *
+ * Geometry is the canonical 32-unit grid (centered vertical muntin,
+ * transom horizontal, r6 outer fillets), scaled by size/32.
  */
-function muntinMark({ variant = "anchor", stroke = PALETTE.cream, opacity = 0.12 } = {}) {
+function muntinMark({ variant = "anchor", fill = PALETTE.cream, opacity = 0.14 } = {}) {
   const specs = {
-    anchor: { x: EDGE,  y: 310, size: 260, sw: 10 },
-    inline: { x: 880,   y: 150, size: 180, sw: 7  },
-    focal:  { x: 760,   y: 140, size: 340, sw: 12 },
+    anchor: { x: EDGE, y: 300, size: 280 },
+    inline: { x: 900,  y: 150, size: 180 },
+    focal:  { x: 770,  y: 130, size: 360 },
   };
   const s = specs[variant] ?? specs.anchor;
-  const mid = s.size / 2;
-  const lintel = Math.round(s.size * 0.35);  // horizontal bar sits above midline
+  const f = s.size / 32;
   return `
-    <g transform="translate(${s.x}, ${s.y})"
-       stroke="${stroke}" stroke-width="${s.sw}"
-       stroke-linecap="square" stroke-linejoin="miter"
-       fill="none" opacity="${opacity}">
-      <rect x="0" y="0" width="${s.size}" height="${s.size}"/>
-      <line x1="${mid}" y1="0" x2="${mid}" y2="${s.size}"/>
-      <line x1="0" y1="${lintel}" x2="${s.size}" y2="${lintel}"/>
+    <g transform="translate(${s.x}, ${s.y}) scale(${f})" fill="${fill}" opacity="${opacity}">
+      <path d="M8 2 H14.5 V11.5 H2 V8 A6 6 0 0 1 8 2 Z"/>
+      <path d="M17.5 2 H24 A6 6 0 0 1 30 8 V11.5 H17.5 V2 Z"/>
+      <path d="M2 14.5 H14.5 V30 H8 A6 6 0 0 1 2 24 V14.5 Z"/>
+      <path d="M17.5 14.5 H30 V24 A6 6 0 0 1 24 30 H17.5 V14.5 Z"/>
     </g>
   `;
 }
@@ -362,8 +433,8 @@ const focusModules = {
   /** Typography-only focus. The mark itself is the anchor. */
   type: ({ card, fg }) => muntinMark({
     variant: "focal",
-    stroke: fg,
-    opacity: 0.14,
+    fill: fg,
+    opacity: 0.16,
   }),
 
   /**
@@ -500,9 +571,9 @@ const focusModules = {
     const yStart = snap(160);
     const rowH = 64;
     const rowW = 380;
-    const passColor = "#3AA368";
+    const passColor = "#1F9D55";  // spine --status-pass (vivid green, reads on dark + light)
     const failColor = PALETTE.rust;
-    const rowBg = onLight ? "rgba(20,22,26,0.05)" : "rgba(250,247,242,0.08)";
+    const rowBg = onLight ? "rgba(22,24,29,0.05)" : "rgba(246,247,248,0.08)";
     const textColor = onLight ? PALETTE.ink : fg;
     const rows = items.map((item, i) => {
       const y = yStart + i * (rowH + 8);
@@ -546,7 +617,7 @@ const focusModules = {
     // are always gold/rust — those read on both.
     const goodColor = onLight ? PALETTE.teal : (accentHex ?? PALETTE.gold);
     const zoneColor = value >= 70 ? goodColor : value >= 50 ? PALETTE.gold : PALETTE.rust;
-    const trackColor = onLight ? "rgba(20,22,26,0.08)" : "rgba(250,247,242,0.14)";
+    const trackColor = onLight ? "rgba(22,24,29,0.08)" : "rgba(246,247,248,0.14)";
     const numberColor = onLight ? PALETTE.ink : fg;
     // Threshold ticks at 50 and 90 (outer).
     const tick = (pct) => {
@@ -634,15 +705,9 @@ function renderPage(card) {
   const eyebrowX = EDGE + (card.glyph ? GLYPH_GUTTER : 0);
 
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${CANVAS_W} ${CANVAS_H}" width="${CANVAS_W}" height="${CANVAS_H}">
-  <defs>
-    <radialGradient id="glow" cx="85%" cy="20%" r="70%">
-      <stop offset="0%" stop-color="${PALETTE.teal}" stop-opacity="0.32"/>
-      <stop offset="100%" stop-color="${bg}" stop-opacity="0"/>
-    </radialGradient>
-  </defs>
   <rect width="${CANVAS_W}" height="${CANVAS_H}" fill="${bg}"/>
   ${muntinField({ onLight: false })}
-  <rect width="${CANVAS_W}" height="${CANVAS_H}" fill="url(#glow)"/>
+  ${goldenHour({ mode: "dark" })}
 
   ${focus}
 
@@ -667,7 +732,7 @@ function renderPage(card) {
         font-weight="400" fill="${fg}" opacity="0.65">${dek}</text>
 
   ${ornament({ color: fg })}
-  ${footer({ color: dim, ruleColor: "rgba(250,247,242,0.18)" })}
+  ${footer({ color: dim, ruleColor: "rgba(246,247,248,0.18)" })}
 </svg>
 `;
 }
@@ -709,6 +774,7 @@ function renderResearch(card) {
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${CANVAS_W} ${CANVAS_H}" width="${CANVAS_W}" height="${CANVAS_H}">
   <rect width="${CANVAS_W}" height="${CANVAS_H}" fill="${bg}"/>
   ${muntinField({ onLight: true })}
+  ${goldenHour({ mode: "light" })}
   ${categoryStrip(accentHex)}
 
   ${glyphSvg}
@@ -773,6 +839,7 @@ function renderArticle(card) {
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${CANVAS_W} ${CANVAS_H}" width="${CANVAS_W}" height="${CANVAS_H}">
   <rect width="${CANVAS_W}" height="${CANVAS_H}" fill="${bg}"/>
   ${muntinField({ onLight: true })}
+  ${goldenHour({ mode: "light" })}
   ${categoryStrip(accentHex)}
 
   ${glyphSvg}
@@ -851,6 +918,7 @@ function renderGlossary(card) {
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${CANVAS_W} ${CANVAS_H}" width="${CANVAS_W}" height="${CANVAS_H}">
   <rect width="${CANVAS_W}" height="${CANVAS_H}" fill="${bg}"/>
   ${muntinField({ onLight: true })}
+  ${goldenHour({ mode: "light" })}
   ${categoryStrip(accentHex)}
 
   ${glyphSvg}
@@ -909,15 +977,9 @@ function renderTool(card) {
   const eyebrowX = EDGE + (card.glyph ? GLYPH_GUTTER : 0);
 
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${CANVAS_W} ${CANVAS_H}" width="${CANVAS_W}" height="${CANVAS_H}">
-  <defs>
-    <radialGradient id="toolglow" cx="82%" cy="28%" r="65%">
-      <stop offset="0%" stop-color="${PALETTE.cream}" stop-opacity="0.08"/>
-      <stop offset="100%" stop-color="${bg}" stop-opacity="0"/>
-    </radialGradient>
-  </defs>
   <rect width="${CANVAS_W}" height="${CANVAS_H}" fill="${bg}"/>
   ${muntinField({ onLight: false })}
-  <rect width="${CANVAS_W}" height="${CANVAS_H}" fill="url(#toolglow)"/>
+  ${goldenHour({ mode: "blue" })}
   <rect x="0" y="0" width="12" height="${CANVAS_H * 0.4}" fill="${accentHex}"/>
   <rect x="0" y="${CANVAS_H * 0.4}" width="12" height="${CANVAS_H * 0.6}" fill="${accentHex}" opacity="0.4"/>
 
@@ -944,7 +1006,7 @@ function renderTool(card) {
   ${focus}
 
   ${ornament({ color: fg })}
-  ${footer({ color: "rgba(250,247,242,0.6)", ruleColor: "rgba(250,247,242,0.2)" })}
+  ${footer({ color: "rgba(246,247,248,0.6)", ruleColor: "rgba(246,247,248,0.2)" })}
 </svg>
 `;
 }
@@ -987,6 +1049,7 @@ function renderPeople(card) {
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${CANVAS_W} ${CANVAS_H}" width="${CANVAS_W}" height="${CANVAS_H}">
   <rect width="${CANVAS_W}" height="${CANVAS_H}" fill="${bg}"/>
   ${muntinField({ onLight: true })}
+  ${goldenHour({ mode: "light" })}
   ${categoryStrip(accentHex)}
 
   ${glyphSvg}

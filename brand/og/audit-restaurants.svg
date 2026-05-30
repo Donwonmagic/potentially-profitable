@@ -1,17 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
-  <defs>
-    <radialGradient id="toolglow" cx="82%" cy="28%" r="65%">
-      <stop offset="0%" stop-color="#FAF7F2" stop-opacity="0.08"/>
-      <stop offset="100%" stop-color="#1F4E5B" stop-opacity="0"/>
-    </radialGradient>
-  </defs>
-  <rect width="1200" height="630" fill="#1F4E5B"/>
+  <rect width="1200" height="630" fill="#2A50C8"/>
   
     <defs>
       <pattern id="muntinField" x="0" y="0" width="140" height="140"
                patternUnits="userSpaceOnUse">
         <g transform="translate(18, 18)"
-           fill="none" stroke="#FAF7F2" stroke-width="1.5"
+           fill="none" stroke="#F6F7F8" stroke-width="1.5"
            stroke-linecap="square" stroke-linejoin="miter">
           <rect x="0" y="0" width="104" height="104"/>
           <line x1="52" y1="0" x2="52" y2="104"/>
@@ -22,80 +16,94 @@
     <rect width="1200" height="630"
           fill="url(#muntinField)" opacity="0.05"/>
   
-  <rect width="1200" height="630" fill="url(#toolglow)"/>
-  <rect x="0" y="0" width="12" height="252" fill="#C5A059"/>
-  <rect x="0" y="252" width="12" height="378" fill="#C5A059" opacity="0.4"/>
+  
+  <defs>
+    
+    <radialGradient id="ghWarm" cx="86%" cy="13%" r="82%">
+      <stop offset="0%"  stop-color="#FFB020"  stop-opacity="0.34"/>
+      <stop offset="38%" stop-color="#FF6B5C" stop-opacity="0.16"/>
+      <stop offset="100%" stop-color="#FFB020" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="ghCast" cx="4%" cy="100%" r="80%">
+         <stop offset="0%"  stop-color="#16181D" stop-opacity="0.34"/>
+         <stop offset="100%" stop-color="#16181D" stop-opacity="0"/>
+       </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#ghCast)"/>
+  <rect width="1200" height="630" fill="url(#ghWarm)"/>
+  <rect x="0" y="0" width="12" height="252" fill="#FFB020"/>
+  <rect x="0" y="252" width="12" height="378" fill="#FFB020" opacity="0.4"/>
 
   
     <g transform="translate(80, 78) scale(1.5)"
-       fill="none" stroke="#C5A059" stroke-width="1.167"
+       fill="none" stroke="#FFB020" stroke-width="1.167"
        stroke-linecap="round" stroke-linejoin="round"
-       color="#C5A059" opacity="0.85">
+       color="#FFB020" opacity="0.85">
       <rect x="4" y="4" width="16" height="16" rx="1"/>
           <polyline points="8 12 11 15 16 9"/>
     </g>
   
   <text x="136" y="104"
         font-family="Inter, Arial, sans-serif" font-size="13"
-        font-weight="700" letter-spacing="4" fill="#C5A059">DROP YOUR URL · GET RESULTS IN 30 SECONDS</text>
+        font-weight="700" letter-spacing="4" fill="#FFB020">DROP YOUR URL · GET RESULTS IN 30 SECONDS</text>
 
   <text x="80" y="192"
         font-family="Fraunces, Georgia, serif" font-size="62"
-        font-weight="500" letter-spacing="-2" fill="#FAF7F2">Restaurant</text>
+        font-weight="500" letter-spacing="-2" fill="#F6F7F8">Restaurant</text>
   <text x="80" y="264"
         font-family="Fraunces, Georgia, serif" font-style="italic"
         font-size="62" font-weight="400" letter-spacing="-2"
-        fill="#C5A059">website</text>
+        fill="#FFB020">website</text>
   <text x="80" y="336"
         font-family="Fraunces, Georgia, serif" font-size="62"
-        font-weight="500" letter-spacing="-2" fill="#FAF7F2">audit.</text>
+        font-weight="500" letter-spacing="-2" fill="#F6F7F8">audit.</text>
 
   <text x="80" y="416"
         font-family="Inter, Arial, sans-serif" font-size="20"
-        font-weight="400" fill="#FAF7F2" opacity="0.72">Mobile speed, menu readability, ordering, GBP, reservations, schema.</text>
+        font-weight="400" fill="#F6F7F8" opacity="0.72">Mobile speed, menu readability, ordering, GBP, reservations, schema.</text>
 
   
-        <rect x="740" y="160" width="380" height="64" rx="10" fill="rgba(250,247,242,0.08)"/>
-        <circle cx="772" cy="192" r="18" fill="none" stroke="#3AA368" stroke-width="1.5" opacity="0.4"/>
+        <rect x="740" y="160" width="380" height="64" rx="10" fill="rgba(246,247,248,0.08)"/>
+        <circle cx="772" cy="192" r="18" fill="none" stroke="#1F9D55" stroke-width="1.5" opacity="0.4"/>
         <path d="M762 192 L769 199 L783 185"
-              stroke="#3AA368" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              stroke="#1F9D55" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
         <text x="804" y="198"
               font-family="Inter, Arial, sans-serif" font-size="17"
-              font-weight="500" fill="#FAF7F2" opacity="0.9">Mobile-friendly menu</text>
+              font-weight="500" fill="#F6F7F8" opacity="0.9">Mobile-friendly menu</text>
       
-        <rect x="740" y="232" width="380" height="64" rx="10" fill="rgba(250,247,242,0.08)"/>
-        <circle cx="772" cy="264" r="18" fill="none" stroke="#B8541A" stroke-width="1.5" opacity="0.4"/>
+        <rect x="740" y="232" width="380" height="64" rx="10" fill="rgba(246,247,248,0.08)"/>
+        <circle cx="772" cy="264" r="18" fill="none" stroke="#C42E2E" stroke-width="1.5" opacity="0.4"/>
         <path d="M763 255 L781 273 M781 255 L763 273"
-              stroke="#B8541A" stroke-width="3" fill="none" stroke-linecap="round"/>
+              stroke="#C42E2E" stroke-width="3" fill="none" stroke-linecap="round"/>
         <text x="804" y="270"
               font-family="Inter, Arial, sans-serif" font-size="17"
-              font-weight="500" fill="#FAF7F2" opacity="0.9">Schema markup</text>
+              font-weight="500" fill="#F6F7F8" opacity="0.9">Schema markup</text>
       
-        <rect x="740" y="304" width="380" height="64" rx="10" fill="rgba(250,247,242,0.08)"/>
-        <circle cx="772" cy="336" r="18" fill="none" stroke="#3AA368" stroke-width="1.5" opacity="0.4"/>
+        <rect x="740" y="304" width="380" height="64" rx="10" fill="rgba(246,247,248,0.08)"/>
+        <circle cx="772" cy="336" r="18" fill="none" stroke="#1F9D55" stroke-width="1.5" opacity="0.4"/>
         <path d="M762 336 L769 343 L783 329"
-              stroke="#3AA368" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              stroke="#1F9D55" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
         <text x="804" y="342"
               font-family="Inter, Arial, sans-serif" font-size="17"
-              font-weight="500" fill="#FAF7F2" opacity="0.9">Online ordering</text>
+              font-weight="500" fill="#F6F7F8" opacity="0.9">Online ordering</text>
       
 
   
-    <g transform="translate(80, 552)" fill="#FAF7F2" opacity="0.6">
-      <circle cx="8" cy="8" r="8" fill="none" stroke="#FAF7F2" stroke-width="1"/>
+    <g transform="translate(80, 552)" fill="#F6F7F8" opacity="0.6">
+      <circle cx="8" cy="8" r="8" fill="none" stroke="#F6F7F8" stroke-width="1"/>
       <text x="8" y="12" text-anchor="middle"
             font-family="Fraunces, Georgia, serif" font-style="italic"
-            font-size="11" font-weight="500" fill="#FAF7F2">d</text>
+            font-size="11" font-weight="500" fill="#F6F7F8">d</text>
     </g>
   
   
     <line x1="80" y1="584" x2="1120" y2="584"
-          stroke="rgba(250,247,242,0.2)" stroke-width="1"/>
+          stroke="rgba(246,247,248,0.2)" stroke-width="1"/>
     <text x="80" y="614"
           font-family="Inter, Arial, sans-serif" font-size="14"
-          font-weight="600" letter-spacing="2" fill="rgba(250,247,242,0.6)">MUNTIN DIGITAL</text>
+          font-weight="600" letter-spacing="2" fill="rgba(246,247,248,0.6)">MUNTIN DIGITAL</text>
     <text x="1120" y="614" text-anchor="end"
           font-family="Inter, Arial, sans-serif" font-size="14"
-          font-weight="600" letter-spacing="1" fill="rgba(250,247,242,0.6)">muntin.digital</text>
+          font-weight="600" letter-spacing="1" fill="rgba(246,247,248,0.6)">muntin.digital</text>
   
 </svg>
