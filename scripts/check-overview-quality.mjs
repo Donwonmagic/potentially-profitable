@@ -143,6 +143,11 @@ const tags = readJSON('data/library-tags.json');
 const overviews = [];
 for (const [key, batch] of Object.entries(batches)) {
   if (key.startsWith('_')) continue;
+  // Only weekly article batches carry batch-overview quality rules.
+  // Standalone launches (type:'course', etc.) point the banner at a
+  // landing page (e.g. /course/) with its own standards — they are not
+  // batch overviews, so they're excluded from this gate.
+  if (batch.type && batch.type !== 'batch') continue;
   if (!batch.overview_en && !batch.overview_es) continue;
   // Resolve deep-dives by matching the batch's date in library-tags.
   // Each entry's `namespace` (blog | library) determines its current

@@ -76,18 +76,40 @@ function buildBanner(locale) {
   // users), 14px italic headline that wraps to two lines max on mobile,
   // smaller "New this week" pill, smaller pill CTA. Total height ~70-90px
   // on mobile depending on headline wrap, ~40px on desktop.
-  const newLabel = locale === 'es' ? 'Nuevo esta semana' : 'New this week';
+  // Pill text + color. A course / standalone launch (type:'course') gets a
+  // warm marigold "Golden Hour" pill — the lit-doorway signal that also
+  // surfaces the value up front (e.g. "Free course"). A weekly article
+  // batch keeps the blue "New this week" pill. Pill text is data-driven
+  // (pill_en/es) and falls back to the batch default.
+  const isCourse = batch.type === 'course';
+  const pillText = locale === 'es'
+    ? (batch.pill_es || 'Nuevo esta semana')
+    : (batch.pill_en || 'New this week');
+  const pillBg = isCourse ? '#FFB020' : 'var(--teal,#2A50C8)';   // marigold | brand blue
+  const pillFg = isCourse ? '#16181D' : 'var(--cream,#F6F7F8)';  // ink on marigold | cream on blue
   return [
     '<!-- batch-banner:start -->',
-    `<aside class="batch-marquee" data-batch="${escAttr(batch.key)}" role="complementary" aria-label="${escAttr(label)}" style="background:var(--ink,#14161A);color:var(--cream,#FAF7F2);font-size:14px;line-height:1.4;padding:8px 0;border-bottom:1px solid rgba(250,247,242,0.12)">`,
+    `<aside class="batch-marquee" data-batch="${escAttr(batch.key)}" role="complementary" aria-label="${escAttr(label)}" style="background:var(--ink,#16181D);color:var(--cream,#F6F7F8);font-size:14px;line-height:1.4;padding:8px 0;border-bottom:1px solid rgba(246,247,248,0.12)">`,
     `  <div style="max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,64px);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">`,
     `    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;min-width:0;flex:1 1 auto">`,
-    `      <span style="display:inline-block;font-family:Inter,system-ui,sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;background:var(--teal,#2A50C8);color:var(--cream,#FAF7F2);padding:3px 8px;border-radius:3px;white-space:nowrap;flex-shrink:0">${escHtml(newLabel)}</span>`,
-    `      <span style="font-family:Georgia,serif;font-size:14px;font-style:italic;line-height:1.35;min-width:0">${escHtml(headline)}</span>`,
+    `      <span style="display:inline-block;font-family:Inter,system-ui,sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;background:${pillBg};color:${pillFg};padding:3px 8px;border-radius:3px;white-space:nowrap;flex-shrink:0">${escHtml(pillText)}</span>`,
+    `      <span style="font-family:'Fraunces',Georgia,'Times New Roman',serif;font-size:14px;font-style:italic;line-height:1.35;min-width:0">${escHtml(headline)}</span>`,
     `    </div>`,
-    `    <a href="${escAttr(href)}" style="display:inline-flex;align-items:center;gap:6px;color:var(--ink,#14161A);background:var(--cream,#FAF7F2);text-decoration:none;font-family:Inter,system-ui,sans-serif;font-weight:600;font-size:12px;padding:5px 12px;border-radius:999px;white-space:nowrap;flex-shrink:0;transition:transform .15s ease">${escHtml(cta)} <span aria-hidden="true">${arrow}</span></a>`,
+    `    <a href="${escAttr(href)}" style="display:inline-flex;align-items:center;gap:6px;color:var(--ink,#16181D);background:var(--cream,#F6F7F8);text-decoration:none;font-family:Inter,system-ui,sans-serif;font-weight:600;font-size:12px;padding:5px 12px;border-radius:999px;white-space:nowrap;flex-shrink:0;transition:transform .15s ease">${escHtml(cta)} <span aria-hidden="true">${arrow}</span></a>`,
     `  </div>`,
     `</aside>`,
+    // The banner is position:fixed and the nav is offset below it by
+    // var(--banner-h). A static --banner-h (40px / 72px mobile) can't
+    // track a banner whose height changes when the italic headline
+    // wraps — so the nav overlapped the banner's lower edge on narrow
+    // screens / long headlines. This measures the real height and sets
+    // --banner-h to it (inline style beats the CSS default + media
+    // query), re-measuring on resize, on orientation change, and after
+    // the Fraunces webfont swaps in (which changes the wrap). Runs at
+    // parse time right after the <aside>, so it sets the var before the
+    // async stylesheet pins anything. Removed automatically when the
+    // banner is hidden (the whole block is re-stamped).
+    `<script>(function(){var d=document.documentElement;function s(){var b=document.querySelector('.batch-marquee');if(b){d.style.setProperty('--banner-h',b.offsetHeight+'px');}}s();addEventListener('resize',s,{passive:true});addEventListener('orientationchange',s);if(document.fonts&&document.fonts.ready){document.fonts.ready.then(s);}})();</script>`,
     '<!-- batch-banner:end -->',
   ].join('\n');
 }
