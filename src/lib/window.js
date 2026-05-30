@@ -326,6 +326,11 @@ async function upsertAdminIndex(env, thread) {
   if (thread.crisisTier === 'tier1' || thread.crisisTier === 'tier2') {
     entry.crisisTier = thread.crisisTier;
   }
+  // Cross-site origin tag → admin "from Ledger" chip (plan §W). Copied
+  // onto the index entry so the queue scan renders without re-fetching.
+  if (thread.source) {
+    entry.source = thread.source;
+  }
   row.entries.push(entry);
   await env.AUTH_SESSIONS.put(key, JSON.stringify(row));
 }
@@ -655,7 +660,7 @@ export async function getOpenThreadForAnon(env, anonId) {
 // otherwise fall straight here). Returns the special error
 // 'anon-id-claimed' so handleWindowAppend can clear the stale cookie
 // and prompt the operator to sign in.
-export async function createAnonThread(env, anonId, locale = null) {
+export async function createAnonThread(env, anonId, locale = null, source = '') {
   if (!isValidSaveItemIdShape(anonId)) throw new Error('invalid-anon-id');
   const existingRaw = await env.AUTH_SESSIONS.get(anonThreadKey(anonId));
   if (existingRaw) {
