@@ -144,7 +144,7 @@ const html = `<!doctype html>
       "inLanguage": "${inLang}",
       "datePublished": "${published}",
       "dateModified": "${published.slice(0, 10)}",
-      "author": { "@id": "https://muntin.digital/#don-goldstein", "@type": "Person", "name": "Don Goldstein", "url": "https://muntin.digital/about/" },
+      "author": { "@id": "https://muntin.digital/#don-goldstein", "@type": "Person", "name": "Don Goldstein", "url": "https://muntin.digital/about/", "sameAs": "https://muntin.digital/#person-don" },
       "publisher": { "@id": "https://muntin.digital/#business" },
       "image": "${ogImageUrl}",
       "mainEntityOfPage": { "@id": "${canonicalUrl}" }

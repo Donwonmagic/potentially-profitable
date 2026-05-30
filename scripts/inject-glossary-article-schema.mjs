@@ -18,7 +18,8 @@
  *   - dateModified: git log -1 --format=%cI on the term directory.
  *   - image: /brand/og/glossary-<slug>(-es).png — same card the
  *     existing inject-glossary-og.mjs already points at.
- *   - author: https://muntin.digital/#don-goldstein (canonical Person).
+ *   - author: https://muntin.digital/#don-goldstein (byline Person), bridged
+ *     via sameAs to the credentialed canonical Person #person-don.
  *
  * Sentinels:
  *   <!-- glossary-article-schema:start -->
@@ -113,6 +114,12 @@ function buildBlock({ slug, locale, term, sameAs, src }) {
         '@id': `${SITE}/#don-goldstein`,
         name: 'Don Goldstein',
         url: `${SITE}/about/`,
+        // sameAs bridge: the lightweight byline Person (#don-goldstein) and the
+        // credentialed canonical Person (#person-don, defined on /about/ with
+        // jobTitle + ServSafe credentials + knowsAbout) are the same human.
+        // Linking them lets search/LLM engines attribute the founder's E-E-A-T
+        // to every bylined page. See about/index.html #person-don (reverse link).
+        sameAs: `${SITE}/#person-don`,
       },
       publisher: { '@id': `${SITE}/#business` },
       image: ogUrl,
