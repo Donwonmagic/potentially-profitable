@@ -136,7 +136,7 @@ function renderSheetCard(slug, locale) {
         <h3>${escText(title)}</h3>
         <p>${escText(summary)}</p>
         <p class="tool-card__walkaway"><span class="tool-card__walkaway-label">${escText(c.walkawayLabel)}:</span> ${escText(walkaway)}</p>
-        <p style="margin:6px 0 0;font-size:11.5px;color:var(--stone,#6B6B6B);font-weight:500;">${escText(c.cadenceLabel)}: ${escText(cadence)}</p>
+        <p style="margin:6px 0 0;font-size:11.5px;color:var(--stone,#6B7280);font-weight:500;">${escText(c.cadenceLabel)}: ${escText(cadence)}</p>
       </a>`;
   }
   // Queued — show as soon-card.
@@ -144,7 +144,7 @@ function renderSheetCard(slug, locale) {
         <span class="status">${escText(c.queuedLabel)}</span>
         <h3>${escText(title)}</h3>
         <p>${escText(summary)}</p>
-        <p style="margin:6px 0 0;font-size:11.5px;color:var(--stone,#6B6B6B);font-weight:500;">${escText(c.cadenceLabel)}: ${escText(cadence)}</p>
+        <p style="margin:6px 0 0;font-size:11.5px;color:var(--stone,#6B7280);font-weight:500;">${escText(c.cadenceLabel)}: ${escText(cadence)}</p>
       </li>`;
 }
 
@@ -173,7 +173,7 @@ ${queuedCards}
   // framing rendered as a quiet block under the blurb. Optional —
   // packs without an intro_* field render only the blurb.
   const introBlock = intro
-    ? `<details class="tool-cluster__intro" open><summary class="tool-cluster__intro-toggle">${locale === 'es' ? 'Cuándo sacar este paquete' : 'When to reach for this pack'}</summary><p style="font-size:14.5px;line-height:1.6;color:var(--ink-soft,#2A2D33);margin:8px 0 0;max-width:760px;">${escText(intro)}</p></details>`
+    ? `<details class="tool-cluster__intro" open><summary class="tool-cluster__intro-toggle">${locale === 'es' ? 'Cuándo sacar este paquete' : 'When to reach for this pack'}</summary><p style="font-size:14.5px;line-height:1.6;color:var(--ink-soft,#4A4F59);margin:8px 0 0;max-width:760px;">${escText(intro)}</p></details>`
     : '';
 
   return `<section id="${pack.id}" class="tool-cluster" aria-labelledby="pack-${pack.id}-heading">
@@ -190,9 +190,9 @@ ${queuedCards}
 function renderExclusions(locale) {
   const c = COPY[locale];
   const policy = SHEETS._exclusions[`policy_${locale}`];
-  return `<section class="block" style="margin-top:32px;padding:24px 0;border-top:1px solid var(--line,#E5DFD2);">
+  return `<section class="block" style="margin-top:32px;padding:24px 0;border-top:1px solid var(--line,#E3E5E9);">
     <h3 style="font-family:var(--font-display,'Fraunces',Georgia,serif);font-size:18px;font-weight:500;margin:0 0 8px;">${escText(c.exclusionsHeading)}</h3>
-    <p style="font-size:14px;line-height:1.6;color:var(--ink-soft,#2A2D33);max-width:760px;margin:0;">${escText(policy)}</p>
+    <p style="font-size:14px;line-height:1.6;color:var(--ink-soft,#4A4F59);max-width:760px;margin:0;">${escText(policy)}</p>
   </section>`;
 }
 

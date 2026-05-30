@@ -7,6 +7,21 @@ from, and the guardrails that catch drift before it lands.
 
 If you're adding a new tool or marketing page, read this first.
 
+> **Unified token spine (2026).** These tokens are the **editorial register**
+> of the cross-brand Muntin spine (`data/muntin.tokens.json`, vendored from the
+> Ledger product repo). One palette, two registers: the product is dark-first
+> Inter; this site is light + Fraunces and uses the deeper accent blue
+> `#2A50C8` as its primary accent for AA on light surfaces. The palette is the
+> cool, financial-grade system adopted in **Wave 8b** — "editorial warmth" now
+> comes from **type and layout (Fraunces, generous measure), not surface
+> color**. The values below are locked to the spine by
+> `scripts/check-tokens-sync.mjs`; the retired warm palette is forbidden in
+> muntin chrome by `scripts/migrate-warm-palette.mjs --check`.
+>
+> **Experience north star:** every surface should make a low-skill restaurant
+> operator feel *empowered and on the cutting edge* — clear, confident,
+> jargon-free, never intimidating.
+
 ## Tokens
 
 All tokens live in the two `:root` blocks at the top of
@@ -17,23 +32,24 @@ when you write new CSS.
 
 | Token | Hex | Use |
 |---|---|---|
-| `--cream` / `--surface-0` | `#FAF7F2` | Body / baseline |
-| `--cream-2` / `--surface-inset` | `#F3EEE3` | Recessed trays, CTA boxes |
-| `--white` / `--surface-2` | `#FFFFFF` | Cards on top of cream |
-| `--surface-1` | `#FFFDF8` | Slightly raised card |
-| `--ink` | `#14161A` | Primary text |
-| `--ink-soft` | `#2A2D33` | Secondary text |
-| `--stone` | `#6B6B6B` | Tertiary / meta |
-| `--stone-2` | `#9A958B` | Disabled / placeholder |
-| `--teal` | `#1F4E5B` | Brand accent, CTAs, focus |
-| `--teal-dark` | `#143640` | Hover state for teal |
-| `--teal-tint` | `#E8F1F3` | Teal background wash |
-| `--rust` | `#B8541A` | Error / warning |
-| `--line` | `#E8E2D6` | Subtle borders |
-| `--line-dark` | `#D4CCBC` | Stronger borders |
-| `--line-input` | `#8A8378` | Form input idle border |
+| `--cream` / `--surface-0` | `#F6F7F8` | Body / baseline (cool slate, kept `--cream` name) |
+| `--cream-2` / `--surface-inset` | `#EDEEF1` | Recessed trays, CTA boxes |
+| `--white` / `--surface-2` | `#FFFFFF` | Cards on top of the baseline |
+| `--surface-1` | `#FFFFFF` | Slightly raised card |
+| `--ink` | `#16181D` | Primary text |
+| `--ink-soft` | `#4A4F59` | Secondary text |
+| `--stone` | `#6B7280` | Tertiary / meta |
+| `--stone-2` | `#9AA0AB` | Disabled / placeholder |
+| `--teal` | `#2A50C8` | Brand accent, CTAs, focus (kept name; now blue) |
+| `--teal-dark` | `#1F3A93` | Hover / press state for the accent |
+| `--teal-tint` | `#EAF0FE` | Accent background wash |
+| `--rust` | `#C42E2E` | Error / danger |
+| `--line` | `#E3E5E9` | Subtle borders |
+| `--line-dark` | `#D7DAE0` | Stronger borders |
+| `--line-input` | `#868D9A` | Form input idle border |
 
-The site runs on a single accent (teal). Do not introduce a second.
+The site runs on a single accent (the brand blue, kept under the legacy
+`--teal` name). Do not introduce a second.
 For status (good / warn / bad) use the inline values you'll already
 find in tool result CSS: `#1f9d55` / `#C28B2E` (or `#8A6018` text)
 / `var(--rust)`. Don't invent new ones.
@@ -190,9 +206,10 @@ audio variant. Defining choices to preserve when touching the card:
 - **Palette.** All Listen-section rgba literals use `rgba(42,80,200,...)`
   (= `#2A50C8`, the current `--teal`). Earlier work referenced
   `rgba(31,78,91,...)` from a deprecated palette; that drift was
-  migrated for the Listen section only. Outside the Listen section,
-  ~24 other usages of the old value still exist site-wide — those are
-  not part of this card's contract.
+  migrated for the Listen section first; the sitewide teal→blue migration
+  is now complete (Wave 8b + the 2026 purge pass), so `#1F4E5B` no longer
+  appears in muntin chrome anywhere — `migrate-warm-palette.mjs --check`
+  enforces it.
 - **Reading sync.** Active body chunks get `.is-reading` (paragraph-
   level `--teal-tint` wash). When the chunk is text-only,
   `.listen-sent` spans wrap each sentence and the active sentence gets
