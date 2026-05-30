@@ -179,6 +179,12 @@ const INVERTED = [
  *    `color`, so the flipped --teal alone wouldn't show).
  */
 const EXCEPTIONS = [
+  ["/* Nav: .nav.scrolled hardcodes a LIGHT rgba (rgba(250,247,242,.88)) that a",
+   "   token swap can't reach — in dark mode it painted a near-white translucent",
+   "   bar and content bled through the wordmark. Re-pin a near-opaque dark bar so",
+   "   the wordmark always has a solid backing; keep the blur. */"],
+  [[".nav.scrolled"], "background:rgba(22,24,29,0.94);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom-color:var(--line)"],
+  [[".nav.menu-open", ".nav.scrolled.menu-open"], "background:#16181D"],
   ["/* hardcoded #fff form surface (flagship audit) — won't flip; re-pin dark */"],
   [[".tool-cta-form"], "background:#1B1E24;border-color:#2C3038"],
   ["/* status pass/fail use hardcoded dark hex — lift to legible on dark */"],
