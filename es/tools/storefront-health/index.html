@@ -133,6 +133,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 .foot-bottom{display:flex;justify-content:space-between;gap:24px;align-items:center;flex-wrap:wrap}
 .below-fold-island{content-visibility:auto;contain-intrinsic-size:auto 1200px}
 @media print{.below-fold-island{content-visibility:visible}}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) body{background:#16181D;color:#F1EDE5}:root:not([data-theme="light"]) .nav{background:#16181D;border-bottom-color:#2C3038}:root:not([data-theme="light"]) .nav-toggle span{background:#F1EDE5}:root:not([data-theme="light"]) .logo{color:#F1EDE5}:root:not([data-theme="light"]) h1,:root:not([data-theme="light"]) h2,:root:not([data-theme="light"]) h3,:root:not([data-theme="light"]) h4{color:#F1EDE5}:root:not([data-theme="light"]) .hero h1 .serif-italic{color:#7AA7FF}:root:not([data-theme="light"]) .hero-sub,:root:not([data-theme="light"]) .hero-counts,:root:not([data-theme="light"]) .section-header p,:root:not([data-theme="light"]) .trust-strip__list{color:#B8B3A8}:root:not([data-theme="light"]) .hero-counts__chip{background:#1B1E24;border-color:#2C3038}:root:not([data-theme="light"]) .hero-counts__chip strong{color:#7AA7FF}:root:not([data-theme="light"]) .bg-cream2{background:#1B1E24}:root:not([data-theme="light"]) .trust-strip{background:#1B1E24;border-block-color:#2C3038}:root:not([data-theme="light"]) .btn-ghost{color:#F1EDE5;border-color:#707784}:root:not([data-theme="light"]) .btn-primary{background:#F1EDE5;color:#16181D}}
 </style>
 <!-- Preload the two above-the-fold web fonts so they arrive in
      parallel with site.css instead of being discovered after parse. -->
@@ -144,9 +145,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=bb1d87df583c" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-core.css?v=9f6b21780e6e" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-tool.css?v=5c1a522b3590" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=bb1d87df583c"><link rel="stylesheet" href="/assets/site-tool.css?v=5c1a522b3590"></noscript>
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=9f6b21780e6e"><link rel="stylesheet" href="/assets/site-tool.css?v=5c1a522b3590"></noscript>
 <style>
   /* Storefront Health scorecard styles. Form, hero, note, result
      container, and CTA card live in site.css under "TOOL SHELL". */
@@ -483,7 +484,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <span class="eyebrow">Herramienta gratis &middot; 60 segundos</span>
   <h1>Tu storefront,<br><span class="serif-italic">calificado.</span></h1>
       <!-- tool-verified:start -->
-            <p class="tool-verified">Última revisión: <time datetime="2026-05-29">29 de mayo de 2026</time></p>
+            <p class="tool-verified">Última revisión: <time datetime="2026-05-30">30 de mayo de 2026</time></p>
             <!-- tool-verified:end -->
       <!-- data-promise:start -->
             <aside class="tool-data-promise" aria-label="Promesa de datos">
