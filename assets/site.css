@@ -1,5 +1,34 @@
 :root{--cream:#F6F7F8;--cream-2:#EDEEF1;--ink:#16181D;--ink-soft:#4A4F59;--teal:#2A50C8;--teal-dark:#1F3A93;--teal-tint:#EAF0FE;--rust:#C42E2E;--stone:#6B7280;--stone-2:#9AA0AB;--line:#E3E5E9;--line-dark:#D7DAE0;--line-input:#868D9A;--white:#FFFFFF;--font-display:'Fraunces','Fraunces Fallback',Georgia,'Times New Roman',serif;--font-body:'Inter','Inter Fallback',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;--max:1200px;--pad-x:clamp(20px,4vw,64px);--ease:cubic-bezier(.22,.61,.36,1);--ease-out:cubic-bezier(.16,1,.3,1);--t-fast:180ms;--t-med:420ms;--t-slow:900ms;--r-sm:8px;--r-md:14px;--r-lg:22px;--gold:#B7791F}
 
+/* @shell:core === Golden Hour expressive layer (2026 brand) === */
+/* The cool slate/blue spine is the architecture (frame, glass, rigor);
+   marigold -> coral is the LIGHT through the pane. This is the
+   sanctioned "vibrant layer" (web + social only; the Ledger product
+   app stays calm). Tokens are additive and ungated — declaring them
+   changes nothing until a selector opts in, so they can't affect the
+   locked spine that check-tokens-sync enforces above. Marigold/coral
+   are deliberately OUTSIDE the retired-warm blocklist; they are new
+   brand light, not the old warm palette. */
+:root{
+  --light-marigold:#FFB020;
+  --light-coral:#FF6B5C;
+  --light-amber:#F5A623;
+  /* Warm corner-light washes, normal-blend (browser-predictable, no
+     mix-blend gamble). Peak in the top-right, fading to nothing. */
+  --gradient-goldenhour:radial-gradient(120% 120% at 88% 6%,rgba(255,176,32,0.26) 0%,rgba(255,107,92,0.11) 38%,rgba(255,176,32,0) 76%);
+  --gradient-goldenhour-soft:radial-gradient(100% 100% at 92% 4%,rgba(255,176,32,0.12) 0%,rgba(255,107,92,0.05) 52%,rgba(255,176,32,0) 80%);
+  --glass-warm:rgba(255,176,32,0.06);
+}
+/* Homepage hero: golden-hour light behind the content column and
+   falling across the window glass. Scoped to .hero only; .hero is
+   already position:relative;overflow:hidden so the light is clipped
+   to the section + the rounded window. The window's ::after is
+   absolutely positioned, so it does NOT become a grid item. */
+.hero::after{content:'';position:absolute;inset:0;z-index:0;pointer-events:none;background:var(--gradient-goldenhour)}
+.hero>.container{position:relative;z-index:1}
+.window::after{content:'';position:absolute;inset:0;z-index:5;pointer-events:none;border-radius:6px;background:radial-gradient(86% 86% at 90% 7%,rgba(255,176,32,0.36) 0%,rgba(255,138,92,0.15) 34%,rgba(255,176,32,0) 70%)}
+@media (max-width:960px){.hero::after{background:var(--gradient-goldenhour-soft)}}
+
 /* @shell:core === Modernization tokens (Sprint 1) === */
 /* ============ Modernization tokens (Sprint 1) ============
    Additive vocabulary that later modernization sprints consume. No
@@ -7671,8 +7700,26 @@ table[data-viz-sortable] th[aria-sort="descending"]::after{content:"\2193";color
    appeared and then disappeared." Phone widths (≤640px) genuinely
    don't have room; everything above does. */
 @media (max-width:640px){
-  .theme-toggle{display:none !important}
+  .theme-toggle:not(.mobile-theme){display:none !important}
 }
+
+/* Mobile-menu variant of the toggle: a full-width labelled row that
+   mirrors .mobile-search (the desktop nav keeps the icon-only circle).
+   Lives inside #mobileMenu, so it only shows when the menu is open and
+   is exempt from the phone-hide rule above. */
+.theme-toggle__label{display:none}
+.mobile-theme{
+  display:flex;align-items:center;gap:12px;width:100%;
+  height:auto;min-width:0;margin:0;padding:14px 2px;
+  background:transparent;border:0;border-bottom:1px solid var(--line);border-radius:0;
+  font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);
+  cursor:pointer;text-align:left;
+}
+.mobile-theme:hover{background:transparent;border-color:var(--line);color:var(--ink)}
+.mobile-theme:focus-visible{outline:none;box-shadow:var(--ring-focus)}
+.mobile-theme svg{color:var(--teal);flex:0 0 18px}
+.mobile-theme .theme-toggle__icon{width:18px;height:18px}
+.mobile-theme .theme-toggle__label{display:inline}
 
 /* @shell:core === Phase 4 — next-tool recommendation card (.mtn-next-tool) === */
 /* ============ Phase 4 — next-tool recommendation card =============
@@ -7877,6 +7924,8 @@ body:has(.batch-marquee) main{padding-top:calc(64px + var(--banner-h,40px))}
     --refresh-text:       #F1EDE5;
     --refresh-text-soft:  #B8B3A8;
     --refresh-line:       #2C3038;
+    --refresh-line-strong:#707784;
+    --refresh-accent:     #7AA7FF;
   }
 }
 :root[data-theme="dark"]{
@@ -7886,6 +7935,8 @@ body:has(.batch-marquee) main{padding-top:calc(64px + var(--banner-h,40px))}
   --refresh-text:       #F1EDE5;
   --refresh-text-soft:  #B8B3A8;
   --refresh-line:       #2C3038;
+  --refresh-line-strong:#707784;
+  --refresh-accent:     #7AA7FF;
 }
 
 /* Apply the dark tokens to a curated set of homepage surfaces only.
@@ -7927,6 +7978,193 @@ body:has(.batch-marquee) main{padding-top:calc(64px + var(--banner-h,40px))}
 :root[data-theme="dark"] .search-voice:hover{background:var(--refresh-surface-2)}
 :root[data-theme="dark"] .theme-toggle{border-color:var(--refresh-line);color:var(--refresh-text)}
 :root[data-theme="dark"] .theme-toggle:hover{background:var(--refresh-surface-1);border-color:var(--teal)}
+
+/* @shell:core === Dark-mode contrast completion === */
+/* GEN:dark-mode:start — generated by scripts/build-dark-mode.mjs. DO NOT EDIT BY HAND. */
+/* TOKEN-FLIP dark theme (see scripts/build-dark-mode.mjs). The base palette
+   is remapped at the dark root so every surface and its text flip together;
+   inverted-by-design surfaces scope-restore the light tokens. Two activation
+   paths: OS preference (gated so the explicit Light toggle wins) + the
+   [data-theme="dark"] toggle. AA-verified by check-dark-contrast.mjs. */
+
+/* Base (light) values for de-inlined homepage notes. */
+.hp-smaller-note{color:var(--ink-soft)}
+.hp-smaller-note-link{color:var(--teal)}
+
+/* ===== OS preference path ===== */
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    /* Flip the base palette — every surface + its text invert together. */
+    --cream: #16181D;
+    --cream-2: #21262E;
+    --white: #1B1E24;
+    --surface-0: #16181D;
+    --surface-1: #1B1E24;
+    --surface-2: #21262E;
+    --ink: #F1EDE5;
+    --ink-soft: #BBB6AB;
+    --stone: #9CA3AE;
+    --stone-2: #99A0AB;
+    --line: #2C3038;
+    --line-dark: #6A7180;
+    --line-input: #6E7682;
+    --teal: #7AA7FF;
+    --teal-dark: #9DBEFF;
+    --teal-tint: #1E2740;
+    --rust: #F0796A;
+    --gold: #D9B06A;
+    --status-good: #56C98C;
+    --status-good-tint: #15281D;
+    --status-pass: #3FBE77;
+    --status-warn: #E0B341;
+    --status-warn-tint: #2A2113;
+    --status-bad-tint: #2E1A16;
+  }
+
+    /* Inverted-by-design surfaces: restore light-mode tokens so the surface
+       and all its descendants render as in light mode (children inherit). */
+    :root:not([data-theme="light"]) footer,
+    :root:not([data-theme="light"]) .process,
+    :root:not([data-theme="light"]) .step,
+    :root:not([data-theme="light"]) .final,
+    :root:not([data-theme="light"]) .compare .card.muntin,
+    :root:not([data-theme="light"]) .research-original,
+    :root:not([data-theme="light"]) .recovery-total,
+    :root:not([data-theme="light"]) .noscript-banner,
+    :root:not([data-theme="light"]) .skip-link,
+    :root:not([data-theme="light"]) .listen-dock,
+    :root:not([data-theme="light"]) .viz-ba__label,
+    :root:not([data-theme="light"]) .mtn-toast,
+    :root:not([data-theme="light"]) .gloss-tag--explainer,
+    :root:not([data-theme="light"]) .window-composer__crisis,
+    :root:not([data-theme="light"]) .admin-thread__outcome,
+    :root:not([data-theme="light"]) .mtn-form-error,
+    :root:not([data-theme="light"]) .mtn-card--danger,
+    :root:not([data-theme="light"]) .mtn-error-card,
+    :root:not([data-theme="light"]) .mtn-btn--danger{
+      --cream: #F6F7F8;
+      --cream-2: #EDEEF1;
+      --white: #FFFFFF;
+      --surface-0: #F6F7F8;
+      --surface-1: #FFFFFF;
+      --surface-2: #FFFFFF;
+      --ink: #16181D;
+      --ink-soft: #4A4F59;
+      --stone: #6B7280;
+      --stone-2: #9AA0AB;
+      --line: #E3E5E9;
+      --line-dark: #D7DAE0;
+      --line-input: #868D9A;
+      --teal: #2A50C8;
+      --teal-dark: #1F3A93;
+      --teal-tint: #EAF0FE;
+      --rust: #C42E2E;
+      --gold: #B7791F;
+      --status-good: #1F6B3A;
+      --status-good-tint: #E7F5EC;
+      --status-pass: #1f9d55;
+      --status-warn: #8A6018;
+      --status-warn-tint: #FDEFE3;
+      --status-bad-tint: #F7E7DC;
+    }
+
+    /* hardcoded #fff form surface (flagship audit) — won't flip; re-pin dark */
+    :root:not([data-theme="light"]) .tool-cta-form{background:#1B1E24;border-color:#2C3038}
+    /* status pass/fail use hardcoded dark hex — lift to legible on dark */
+    :root:not([data-theme="light"]) .audit-step__pass,
+    :root:not([data-theme="light"]) .security-audit__pass{color:#56C98C}
+    :root:not([data-theme="light"]) .audit-step__fail,
+    :root:not([data-theme="light"]) .security-audit__fail{color:#F0796A}
+    /* hero gradient-text: -webkit-text-fill-color overrides color */
+    :root:not([data-theme="light"]) .hero h1 .serif-italic{background:none;-webkit-text-fill-color:var(--teal);color:var(--teal)}
+}
+
+/* ===== Explicit [data-theme="dark"] path ===== */
+:root[data-theme="dark"]{
+  /* Flip the base palette — every surface + its text invert together. */
+  --cream: #16181D;
+  --cream-2: #21262E;
+  --white: #1B1E24;
+  --surface-0: #16181D;
+  --surface-1: #1B1E24;
+  --surface-2: #21262E;
+  --ink: #F1EDE5;
+  --ink-soft: #BBB6AB;
+  --stone: #9CA3AE;
+  --stone-2: #99A0AB;
+  --line: #2C3038;
+  --line-dark: #6A7180;
+  --line-input: #6E7682;
+  --teal: #7AA7FF;
+  --teal-dark: #9DBEFF;
+  --teal-tint: #1E2740;
+  --rust: #F0796A;
+  --gold: #D9B06A;
+  --status-good: #56C98C;
+  --status-good-tint: #15281D;
+  --status-pass: #3FBE77;
+  --status-warn: #E0B341;
+  --status-warn-tint: #2A2113;
+  --status-bad-tint: #2E1A16;
+}
+
+  /* Inverted-by-design surfaces: restore light-mode tokens so the surface
+     and all its descendants render as in light mode (children inherit). */
+  :root[data-theme="dark"] footer,
+  :root[data-theme="dark"] .process,
+  :root[data-theme="dark"] .step,
+  :root[data-theme="dark"] .final,
+  :root[data-theme="dark"] .compare .card.muntin,
+  :root[data-theme="dark"] .research-original,
+  :root[data-theme="dark"] .recovery-total,
+  :root[data-theme="dark"] .noscript-banner,
+  :root[data-theme="dark"] .skip-link,
+  :root[data-theme="dark"] .listen-dock,
+  :root[data-theme="dark"] .viz-ba__label,
+  :root[data-theme="dark"] .mtn-toast,
+  :root[data-theme="dark"] .gloss-tag--explainer,
+  :root[data-theme="dark"] .window-composer__crisis,
+  :root[data-theme="dark"] .admin-thread__outcome,
+  :root[data-theme="dark"] .mtn-form-error,
+  :root[data-theme="dark"] .mtn-card--danger,
+  :root[data-theme="dark"] .mtn-error-card,
+  :root[data-theme="dark"] .mtn-btn--danger{
+    --cream: #F6F7F8;
+    --cream-2: #EDEEF1;
+    --white: #FFFFFF;
+    --surface-0: #F6F7F8;
+    --surface-1: #FFFFFF;
+    --surface-2: #FFFFFF;
+    --ink: #16181D;
+    --ink-soft: #4A4F59;
+    --stone: #6B7280;
+    --stone-2: #9AA0AB;
+    --line: #E3E5E9;
+    --line-dark: #D7DAE0;
+    --line-input: #868D9A;
+    --teal: #2A50C8;
+    --teal-dark: #1F3A93;
+    --teal-tint: #EAF0FE;
+    --rust: #C42E2E;
+    --gold: #B7791F;
+    --status-good: #1F6B3A;
+    --status-good-tint: #E7F5EC;
+    --status-pass: #1f9d55;
+    --status-warn: #8A6018;
+    --status-warn-tint: #FDEFE3;
+    --status-bad-tint: #F7E7DC;
+  }
+
+  /* hardcoded #fff form surface (flagship audit) — won't flip; re-pin dark */
+  :root[data-theme="dark"] .tool-cta-form{background:#1B1E24;border-color:#2C3038}
+  /* status pass/fail use hardcoded dark hex — lift to legible on dark */
+  :root[data-theme="dark"] .audit-step__pass,
+  :root[data-theme="dark"] .security-audit__pass{color:#56C98C}
+  :root[data-theme="dark"] .audit-step__fail,
+  :root[data-theme="dark"] .security-audit__fail{color:#F0796A}
+  /* hero gradient-text: -webkit-text-fill-color overrides color */
+  :root[data-theme="dark"] .hero h1 .serif-italic{background:none;-webkit-text-fill-color:var(--teal);color:var(--teal)}
+/* GEN:dark-mode:end */
 
 /* ---- Reduced-motion suppression ---- */
 

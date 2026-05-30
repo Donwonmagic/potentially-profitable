@@ -61,14 +61,20 @@ changed.
 
 ## Templates
 
-- **page** — cream-forward landing pages (ink bg, Fraunces display,
-  muntin-mark focal). Home, About, Services, Learn hub, System, etc.
-- **research** — short evidence notes (cream bg, rust accent, one
+- **page** — landing pages (slate-ink bg, Fraunces display, the solid
+  Pane mark as a softly-lit focal). Home, About, Services, Learn hub, etc.
+- **research** — short evidence notes (light bg, red accent, one
   focal stat / quote / ring / list per card). Under `/learn/research/`.
-- **article** — blog posts (cream bg, teal accent, 3-line display
+- **article** — blog posts (light bg, blue accent, 3-line display
   with italic flourish, right-column focus module).
-- **tool** — audits + calculators (saturated teal bg, gold accent,
+- **tool** — audits + calculators (brand-blue bg, marigold accent,
   focus = score-ring or checks).
+
+All grounds carry the **Golden Hour** light layer (see palette below):
+a warm marigold→coral bloom from the top-right with a cool counter-cast,
+as if sun were coming through the window. Smooth gradients only — no
+raster grain (it inflates PNG weight ~4× for no gain over the muntin
+field).
 
 ## Focus modules
 
@@ -85,14 +91,22 @@ visual:
 | `funnel` | Horizontal stage-by-stage dropoff bars | `data[]`, `lost_label` |
 | `checks` | Audit-style pass/fail rows | `items[]` with `label` + `pass` |
 
-## Category palette
+## Category palette ("Golden Hour", 2026)
+
+Cool slate/blue spine = the architecture; marigold→coral = the light.
+Values match the canonical spine (`data/muntin.tokens.json`); marigold
+`#FFB020` + coral `#FF6B5C` are the sanctioned vibrant accents.
 
 | Kind | Background | Accent | Italic flourish color |
 |---|---|---|---|
-| `page` | Ink `#14161A` | — | Cream |
-| `research` | Cream `#FAF7F2` | Rust `#B8541A` | Rust italic |
-| `article` | Cream `#FAF7F2` | Teal `#1F4E5B` | Teal italic |
-| `tool` | Teal `#1F4E5B` | Gold `#C5A059` | Gold italic |
+| `page` | Slate-ink `#16181D` | — | Cream `#F6F7F8` |
+| `research` | Light `#F6F7F8` | Red `#C42E2E` | Red italic |
+| `article` | Light `#F6F7F8` | Blue `#2A50C8` | Blue italic |
+| `tool` | Blue `#2A50C8` | Marigold `#FFB020` | Marigold italic |
+
+**Vibrant light layer (all grounds):** marigold `#FFB020` → coral
+`#FF6B5C` radial bloom, top-right; cool cast (blue/ink) bottom-left on
+dark/blue grounds; a soft warm corner-wash on light grounds.
 
 ## Typography
 

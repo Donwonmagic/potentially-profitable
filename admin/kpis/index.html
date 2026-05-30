@@ -98,13 +98,14 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 .foot-bottom{display:flex;justify-content:space-between;gap:24px;align-items:center;flex-wrap:wrap}
 .below-fold-island{content-visibility:auto;contain-intrinsic-size:auto 1200px}
 @media print{.below-fold-island{content-visibility:visible}}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) body{background:#16181D;color:#F1EDE5}:root:not([data-theme="light"]) .nav{background:#16181D;border-bottom-color:#2C3038}:root:not([data-theme="light"]) .nav-toggle span{background:#F1EDE5}:root:not([data-theme="light"]) .logo{color:#F1EDE5}:root:not([data-theme="light"]) h1,:root:not([data-theme="light"]) h2,:root:not([data-theme="light"]) h3,:root:not([data-theme="light"]) h4{color:#F1EDE5}:root:not([data-theme="light"]) .hero h1 .serif-italic{color:#7AA7FF}:root:not([data-theme="light"]) .hero-sub,:root:not([data-theme="light"]) .hero-counts,:root:not([data-theme="light"]) .section-header p,:root:not([data-theme="light"]) .trust-strip__list{color:#B8B3A8}:root:not([data-theme="light"]) .hero-counts__chip{background:#1B1E24;border-color:#2C3038}:root:not([data-theme="light"]) .hero-counts__chip strong{color:#7AA7FF}:root:not([data-theme="light"]) .bg-cream2{background:#1B1E24}:root:not([data-theme="light"]) .trust-strip{background:#1B1E24;border-block-color:#2C3038}:root:not([data-theme="light"]) .btn-ghost{color:#F1EDE5;border-color:#707784}:root:not([data-theme="light"]) .btn-primary{background:#F1EDE5;color:#16181D}}
 </style>
 <!-- Async-load the main stylesheet. Pattern: preload + onload-swap
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site.css?v=cae59942dd28" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site.css?v=cae59942dd28"></noscript>
+<link rel="preload" as="style" href="/assets/site.css?v=8871a97182dc" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site.css?v=8871a97182dc"></noscript>
 <style>
   /* Phase G.12 (Growth) — admin KPI dashboard. Five tiles with the
      metric definition, Plausible filter, target_initial/target_q3,
