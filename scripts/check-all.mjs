@@ -83,6 +83,8 @@ const CHECKS = [
   ['Warm-palette purge',  'migrate-warm-palette.mjs',      '--check'],
   // Invoice-Decoder safety: the four server files in src/ that touch
   // the decoder pipeline must NOT contain any outbound network paths
+  ['Dark-mode block',     'build-dark-mode.mjs',           '--check'],
+  ['Dark contrast',       'check-dark-contrast.mjs'],
   ['Banned words',        'check-banned-words.mjs'],
   // Sprint M (2026-05-08): retired-slug regression guard. Fails CI
   // if either retired slug is reintroduced anywhere outside the
