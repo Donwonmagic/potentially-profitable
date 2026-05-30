@@ -4,11 +4,14 @@
 > ("best restaurant website builder", "BentoBox vs Popmenu", "Owner.com vs Toast website", etc.).
 > Researched by specialist agent, May 2026. **NOT yet published — see "Verification needed" below.**
 
-## ⚠️ Verification needed before publishing (fabrication-gate + accuracy)
-The official pricing pages for BentoBox, Popmenu, Owner.com, Toast, Wix, Squarespace **blocked automated fetch (403)**.
-Every "official-page" number below was read via search summaries and cross-checked against 2+ secondary sources.
-**Confirm live numbers on each official URL before publishing**, and register each surviving claim in `data/sourced-claims.json`.
-Explicitly uncertain (do NOT publish as fact without confirmation): (a) Wix online-ordering commission (Wix says "100% commission-free"; third parties report tiered transaction fees); (b) BentoBox exact tier names/prices ($279/$479 from secondary coverage, not a clean read of getbento.com); (c) Squarespace exact 0%-fee tier threshold; (d) Popmenu/BentoBox ordering add-on specifics. Date-stamp everything "as of May 2026."
+## ⚠️ Verification + integration decision (resolved)
+Confirmed by lead SEO (May 30 2026): the official pricing pages for BentoBox, Popmenu, Owner.com, Squarespace **all return HTTP 403 to every automated fetcher** (sub-agent tools AND direct WebFetch). Live official prices are **not programmatically obtainable** — these vendors block bots by design. So:
+
+**INTEGRATION FRAMING (use this on the live article):**
+1. Lead with the DURABLE, verifiable differentiators — these are stable and defensible and carry the article's authority: **ownership / lock-in** (only custom = you own the code & can move hosts), **commission MODEL** (commission % vs flat fee vs free), **who-it's-for**, and the honest tradeoffs. This is what earns the AI citation, more than a dollar figure.
+2. Present every PRICE as a **dated, source-attributed range** ("as of May 2026, per [secondary source]; vendors gate live pricing — confirm on their page"), NOT as a bare fact. Register each in `data/sourced-claims.json` against its secondary source, and add a prominent "confirm current pricing on each vendor's official page" line near the top.
+3. The genuinely-uncertain items stay explicitly hedged: (a) Wix online-ordering commission ("Wix says 100% commission-free; third parties report tiered transaction fees — verify your tier"); (b) BentoBox exact tier names/prices ($279/$479 are from secondary coverage, not a clean getbento.com read); (c) Squarespace exact 0%-fee tier threshold; (d) Popmenu/BentoBox ordering add-on specifics.
+4. Do NOT state a competitor price the secondary sources don't agree on; use a range or omit the number and describe the model.
 
 ## TL;DR
 - Lowest long-term cost + full ownership + top page-speed, no built-in ordering needed → **custom hand-built** (Muntin): you own the HTML/CSS, hosting ~$0–10/mo, no platform rent; bolt on ordering/reservations from a specialist only if needed.
