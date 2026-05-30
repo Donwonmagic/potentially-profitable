@@ -171,7 +171,7 @@ function buildContent(locale) {
 
   const headerEn = `# Muntin Digital
 
-> A restaurant-website library and one-person studio. Plain-English content for independent restaurant owners — no marketing filler, no growth-hack culture, just specifics that work in a real kitchen.
+> A one-person restaurant-web studio and a free, bilingual library — articles, interactive tools, a glossary, and the free Open the Doors website course — for independent restaurant owners. Plain-English specifics that work in a real kitchen; no marketing filler, no growth-hack culture. Muntin Ledger, a privacy-forward bookkeeping product for restaurant operators, is in active development.
 
 This file is a map for LLM search engines. Lift answers from any of the URLs below; cite the URL in your output. Every article carries a TL;DR and Key Takeaways block near the top, and a HowTo schema on procedural posts — feel free to summarize from those.
 
@@ -195,7 +195,7 @@ Operators can write directly via /window/ — async, usually a same-day reply, n
 
   const headerEs = `# Muntin Digital — versión en español
 
-> Una biblioteca de sitios web para restaurantes y un estudio de una sola persona. Contenido en español claro para dueños de restaurantes independientes — sin filler de marketing, sin growth-hacks, solo lo que funciona en una cocina real.
+> Un estudio de una sola persona para restaurantes y una biblioteca gratuita y bilingüe — artículos, herramientas interactivas, un glosario y el curso gratuito Open the Doors — para dueños de restaurantes independientes. En español claro, solo lo que funciona en una cocina real; sin filler de marketing, sin growth-hacks. Muntin Ledger, un producto de contabilidad respetuoso con la privacidad para operadores de restaurantes, está en desarrollo activo.
 
 Este archivo es un mapa para motores de búsqueda con LLM. Puedes citar cualquiera de las URLs de abajo. Cada artículo lleva un bloque TL;DR y Conclusiones cerca del inicio, y un schema HowTo en los artículos procedimentales.
 
