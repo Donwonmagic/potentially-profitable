@@ -6589,7 +6589,7 @@ async function handleWindowAppend(request, env, ctx) {
   let thread = await getOpenThreadForAnon(env, anonId);
   if (!thread || (thread.msgCount || 0) >= 100) {
     try {
-      thread = await createAnonThread(env, anonId, locale);
+      thread = await createAnonThread(env, anonId, locale, windowSource);
     } catch (err) {
       if (err && err.message === 'anon-id-claimed') {
         // Audit S3 — stale cookie pointing at a row that's already

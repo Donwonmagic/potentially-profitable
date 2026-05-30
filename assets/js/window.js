@@ -618,7 +618,11 @@
         // See docs/window-redesign-plan.md §9.6.
         try {
           var sendKind = (res.body && res.body.anon) ? 'anon' : 'identified';
-          window.plausible && window.plausible('Window Send', { props: { kind: sendKind, locale: locale } });
+          // Cross-site origin tag (plan §W): record where the operator
+          // arrived from so we can compare Ledger vs on-site send rates.
+          var sendSrcEl = document.getElementById('windowSource');
+          var sendSource = (sendSrcEl && sendSrcEl.value) ? sendSrcEl.value : 'direct';
+          window.plausible && window.plausible('Window Send', { props: { kind: sendKind, locale: locale, source: sendSource } });
         } catch (_) { /* analytics blocked or not loaded; do nothing */ }
         // Re-fetch thread to render the new message.
         return loadThread();
