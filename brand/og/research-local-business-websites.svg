@@ -1,11 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
-  <rect width="1200" height="630" fill="#FAF7F2"/>
+  <rect width="1200" height="630" fill="#F6F7F8"/>
   
     <defs>
       <pattern id="muntinField" x="0" y="0" width="140" height="140"
                patternUnits="userSpaceOnUse">
         <g transform="translate(18, 18)"
-           fill="none" stroke="#14161A" stroke-width="1.5"
+           fill="none" stroke="#16181D" stroke-width="1.5"
            stroke-linecap="square" stroke-linejoin="miter">
           <rect x="0" y="0" width="104" height="104"/>
           <line x1="52" y1="0" x2="52" y2="104"/>
@@ -17,97 +17,106 @@
           fill="url(#muntinField)" opacity="0.045"/>
   
   
-    <rect x="0" y="0" width="12" height="252" fill="#B8541A"/>
-    <rect x="0" y="252" width="12" height="378" fill="#B8541A" opacity="0.4"/>
+  <defs>
+    <radialGradient id="ghWarmSoft" cx="92%" cy="6%" r="64%">
+      <stop offset="0%"  stop-color="#FFB020"  stop-opacity="0.13"/>
+      <stop offset="52%" stop-color="#FF6B5C" stop-opacity="0.05"/>
+      <stop offset="100%" stop-color="#FFB020" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#ghWarmSoft)"/>
+  
+    <rect x="0" y="0" width="12" height="252" fill="#C42E2E"/>
+    <rect x="0" y="252" width="12" height="378" fill="#C42E2E" opacity="0.4"/>
   
 
   
     <g transform="translate(80, 78) scale(1.5)"
-       fill="none" stroke="#B8541A" stroke-width="1.167"
+       fill="none" stroke="#C42E2E" stroke-width="1.167"
        stroke-linecap="round" stroke-linejoin="round"
-       color="#B8541A" opacity="0.85">
+       color="#C42E2E" opacity="0.85">
       <path d="M12 22 C7 16 4 12 4 9 a8 8 0 0 1 16 0 c0 3 -3 7 -8 13 z"/>
                 <circle cx="12" cy="9" r="2.5"/>
     </g>
   
   <text x="136" y="104"
         font-family="Inter, Arial, sans-serif" font-size="13"
-        font-weight="700" letter-spacing="4" fill="#B8541A">NIELSEN NORMAN GROUP</text>
+        font-weight="700" letter-spacing="4" fill="#C42E2E">NIELSEN NORMAN GROUP</text>
 
   <text x="80" y="192"
         font-family="Fraunces, Georgia, serif" font-size="60"
-        font-weight="500" letter-spacing="-2" fill="#14161A">What diners</text>
+        font-weight="500" letter-spacing="-2" fill="#16181D">What diners</text>
   <text x="80" y="264"
         font-family="Fraunces, Georgia, serif" font-style="italic"
         font-size="60" font-weight="400" letter-spacing="-2"
-        fill="#B8541A">actually</text>
+        fill="#C42E2E">actually</text>
   <text x="80" y="328"
         font-family="Fraunces, Georgia, serif" font-size="60"
-        font-weight="500" letter-spacing="-2" fill="#14161A">come for.</text>
+        font-weight="500" letter-spacing="-2" fill="#16181D">come for.</text>
 
   <text x="80" y="408"
         font-family="Inter, Arial, sans-serif" font-size="20"
-        font-weight="400" fill="#6B6B6B">Hours, location, contact — the top-task list on every local site.</text>
+        font-weight="400" fill="#4A4F59">Hours, location, contact — the top-task list on every local site.</text>
 
   
       <text x="760" y="150"
             font-family="Inter, Arial, sans-serif" font-size="12"
-            font-weight="700" letter-spacing="3" fill="#14161A" opacity="0.5">TOP TASKS</text>
+            font-weight="700" letter-spacing="3" fill="#16181D" opacity="0.5">TOP TASKS</text>
       
         <circle cx="760" cy="176" r="18" fill="none"
-                stroke="#B8541A" stroke-width="1.5" opacity="0.75"/>
+                stroke="#C42E2E" stroke-width="1.5" opacity="0.75"/>
         <text x="760" y="181" text-anchor="middle"
               font-family="Fraunces, Georgia, serif" font-style="italic"
-              font-size="18" font-weight="500" fill="#B8541A">1</text>
+              font-size="18" font-weight="500" fill="#C42E2E">1</text>
         <text x="796" y="182"
               font-family="Inter, Arial, sans-serif" font-size="18"
-              font-weight="500" fill="#14161A" opacity="0.88">Hours of operation</text>
+              font-weight="500" fill="#16181D" opacity="0.88">Hours of operation</text>
       
         <circle cx="760" cy="240" r="18" fill="none"
-                stroke="#B8541A" stroke-width="1.5" opacity="0.75"/>
+                stroke="#C42E2E" stroke-width="1.5" opacity="0.75"/>
         <text x="760" y="245" text-anchor="middle"
               font-family="Fraunces, Georgia, serif" font-style="italic"
-              font-size="18" font-weight="500" fill="#B8541A">2</text>
+              font-size="18" font-weight="500" fill="#C42E2E">2</text>
         <text x="796" y="246"
               font-family="Inter, Arial, sans-serif" font-size="18"
-              font-weight="500" fill="#14161A" opacity="0.88">Location &amp; directions</text>
+              font-weight="500" fill="#16181D" opacity="0.88">Location &amp; directions</text>
       
         <circle cx="760" cy="304" r="18" fill="none"
-                stroke="#B8541A" stroke-width="1.5" opacity="0.75"/>
+                stroke="#C42E2E" stroke-width="1.5" opacity="0.75"/>
         <text x="760" y="309" text-anchor="middle"
               font-family="Fraunces, Georgia, serif" font-style="italic"
-              font-size="18" font-weight="500" fill="#B8541A">3</text>
+              font-size="18" font-weight="500" fill="#C42E2E">3</text>
         <text x="796" y="310"
               font-family="Inter, Arial, sans-serif" font-size="18"
-              font-weight="500" fill="#14161A" opacity="0.88">Phone · contact</text>
+              font-weight="500" fill="#16181D" opacity="0.88">Phone · contact</text>
       
         <circle cx="760" cy="368" r="18" fill="none"
-                stroke="#B8541A" stroke-width="1.5" opacity="0.75"/>
+                stroke="#C42E2E" stroke-width="1.5" opacity="0.75"/>
         <text x="760" y="373" text-anchor="middle"
               font-family="Fraunces, Georgia, serif" font-style="italic"
-              font-size="18" font-weight="500" fill="#B8541A">4</text>
+              font-size="18" font-weight="500" fill="#C42E2E">4</text>
         <text x="796" y="374"
               font-family="Inter, Arial, sans-serif" font-size="18"
-              font-weight="500" fill="#14161A" opacity="0.88">Menu or services</text>
+              font-weight="500" fill="#16181D" opacity="0.88">Menu or services</text>
       
     
 
   
-    <g transform="translate(80, 552)" fill="#6B6B6B" opacity="0.6">
-      <circle cx="8" cy="8" r="8" fill="none" stroke="#6B6B6B" stroke-width="1"/>
+    <g transform="translate(80, 552)" fill="#4A4F59" opacity="0.6">
+      <circle cx="8" cy="8" r="8" fill="none" stroke="#4A4F59" stroke-width="1"/>
       <text x="8" y="12" text-anchor="middle"
             font-family="Fraunces, Georgia, serif" font-style="italic"
-            font-size="11" font-weight="500" fill="#6B6B6B">d</text>
+            font-size="11" font-weight="500" fill="#4A4F59">d</text>
     </g>
   
   
     <line x1="80" y1="584" x2="1120" y2="584"
-          stroke="#E8E2D6" stroke-width="1"/>
+          stroke="#E3E5E9" stroke-width="1"/>
     <text x="80" y="614"
           font-family="Inter, Arial, sans-serif" font-size="14"
-          font-weight="600" letter-spacing="2" fill="#6B6B6B">MUNTIN DIGITAL</text>
+          font-weight="600" letter-spacing="2" fill="#4A4F59">MUNTIN DIGITAL</text>
     <text x="1120" y="614" text-anchor="end"
           font-family="Inter, Arial, sans-serif" font-size="14"
-          font-weight="600" letter-spacing="1" fill="#6B6B6B">muntin.digital</text>
+          font-weight="600" letter-spacing="1" fill="#4A4F59">muntin.digital</text>
   
 </svg>

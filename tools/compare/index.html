@@ -145,9 +145,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=9f6b21780e6e" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-tool.css?v=5c1a522b3590" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=9f6b21780e6e"><link rel="stylesheet" href="/assets/site-tool.css?v=5c1a522b3590"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=af2453ab9085" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-tool.css?v=cdb296efac08" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=af2453ab9085"><link rel="stylesheet" href="/assets/site-tool.css?v=cdb296efac08"></noscript>
 <style>
   /* Tool-specific result rendering. Form, hero, note, result container,
      and CTA card live in site.css under "TOOL SHELL" — see /docs/. */
@@ -304,10 +304,11 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   <div class="container nav-inner">
     <a href="/" class="logo" aria-label="Muntin Digital home">
       <svg class="logo-mark" width="28" height="28" viewBox="0 0 128 128" fill="none" aria-hidden="true">
-        <g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
-          <rect x="18" y="18" width="92" height="92"/>
-          <line x1="64" y1="18" x2="64" y2="110"/>
-          <line x1="18" y1="53" x2="110" y2="53"/>
+        <g fill="currentColor">
+          <path d="M32 8 H58 V46 H8 V32 A24 24 0 0 1 32 8 Z"/>
+          <path d="M70 8 H96 A24 24 0 0 1 120 32 V46 H70 V8 Z"/>
+          <path d="M8 58 H58 V120 H32 A24 24 0 0 1 8 96 V58 Z"/>
+          <path d="M70 58 H120 V96 A24 24 0 0 1 96 120 H70 V58 Z"/>
         </g>
       </svg>
       Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>

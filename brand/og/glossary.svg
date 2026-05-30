@@ -1,17 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
-  <defs>
-    <radialGradient id="glow" cx="85%" cy="20%" r="70%">
-      <stop offset="0%" stop-color="#1F4E5B" stop-opacity="0.32"/>
-      <stop offset="100%" stop-color="#14161A" stop-opacity="0"/>
-    </radialGradient>
-  </defs>
-  <rect width="1200" height="630" fill="#14161A"/>
+  <rect width="1200" height="630" fill="#16181D"/>
   
     <defs>
       <pattern id="muntinField" x="0" y="0" width="140" height="140"
                patternUnits="userSpaceOnUse">
         <g transform="translate(18, 18)"
-           fill="none" stroke="#FAF7F2" stroke-width="1.5"
+           fill="none" stroke="#F6F7F8" stroke-width="1.5"
            stroke-linecap="square" stroke-linejoin="miter">
           <rect x="0" y="0" width="104" height="104"/>
           <line x1="52" y1="0" x2="52" y2="104"/>
@@ -22,25 +16,39 @@
     <rect width="1200" height="630"
           fill="url(#muntinField)" opacity="0.05"/>
   
-  <rect width="1200" height="630" fill="url(#glow)"/>
+  
+  <defs>
+    
+    <radialGradient id="ghWarm" cx="86%" cy="13%" r="82%">
+      <stop offset="0%"  stop-color="#FFB020"  stop-opacity="0.3"/>
+      <stop offset="38%" stop-color="#FF6B5C" stop-opacity="0.13"/>
+      <stop offset="100%" stop-color="#FFB020" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="ghCast" cx="5%" cy="98%" r="76%">
+         <stop offset="0%"  stop-color="#2A50C8" stop-opacity="0.22"/>
+         <stop offset="100%" stop-color="#2A50C8" stop-opacity="0"/>
+       </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#ghCast)"/>
+  <rect width="1200" height="630" fill="url(#ghWarm)"/>
 
   
       <text x="780" y="200"
             font-family="Inter, Arial, sans-serif" font-size="12"
-            font-weight="700" letter-spacing="3" fill="#FAF7F2" opacity="0.5">THE GLOSSARY</text>
+            font-weight="700" letter-spacing="3" fill="#F6F7F8" opacity="0.5">THE GLOSSARY</text>
       <text x="780" y="320"
             font-family="Fraunces, Georgia, serif" font-size="128"
-            font-weight="500" letter-spacing="-4" fill="#C5A059">97</text>
+            font-weight="500" letter-spacing="-4" fill="#FFB020">97</text>
       <text x="780" y="376"
             font-family="Inter, Arial, sans-serif" font-size="18"
-            font-weight="500" fill="#FAF7F2" opacity="0.78">terms, every one written for owners</text>
+            font-weight="500" fill="#F6F7F8" opacity="0.78">terms, every one written for owners</text>
     
 
   
     <g transform="translate(80, 102) scale(1.5)"
-       fill="none" stroke="#C5A059" stroke-width="1.167"
+       fill="none" stroke="#FFB020" stroke-width="1.167"
        stroke-linecap="round" stroke-linejoin="round"
-       color="#C5A059" opacity="0.78">
+       color="#FFB020" opacity="0.78">
       <path d="M3 6 L12 5 L21 6 L21 19 L12 18 L3 19 Z"/>
              <line x1="12" y1="5" x2="12" y2="18"/>
              <line x1="6" y1="9" x2="9" y2="9"/>
@@ -49,39 +57,39 @@
   
   <text x="136" y="128"
         font-family="Inter, Arial, sans-serif" font-size="14"
-        font-weight="700" letter-spacing="5" fill="#FAF7F2" opacity="0.55">WEBSITE GLOSSARY</text>
+        font-weight="700" letter-spacing="5" fill="#F6F7F8" opacity="0.55">WEBSITE GLOSSARY</text>
 
   <text x="80" y="232"
         font-family="Fraunces, Georgia, serif" font-size="76"
-        font-weight="500" letter-spacing="-2" fill="#FAF7F2">Plain English,</text>
+        font-weight="500" letter-spacing="-2" fill="#F6F7F8">Plain English,</text>
   <text x="80" y="312"
         font-family="Fraunces, Georgia, serif" font-style="italic"
         font-size="76" font-weight="400" letter-spacing="-2"
-        fill="#FAF7F2" opacity="0.82">every</text>
+        fill="#F6F7F8" opacity="0.82">every</text>
   <text x="80" y="392"
         font-family="Fraunces, Georgia, serif" font-size="76"
-        font-weight="500" letter-spacing="-2" fill="#FAF7F2">term defined.</text>
+        font-weight="500" letter-spacing="-2" fill="#F6F7F8">term defined.</text>
 
   <text x="80" y="472"
         font-family="Inter, Arial, sans-serif" font-size="22"
-        font-weight="400" fill="#FAF7F2" opacity="0.65">Ninety-seven definitions written for owners, not developers.</text>
+        font-weight="400" fill="#F6F7F8" opacity="0.65">Ninety-seven definitions written for owners, not developers.</text>
 
   
-    <g transform="translate(80, 552)" fill="#FAF7F2" opacity="0.6">
-      <circle cx="8" cy="8" r="8" fill="none" stroke="#FAF7F2" stroke-width="1"/>
+    <g transform="translate(80, 552)" fill="#F6F7F8" opacity="0.6">
+      <circle cx="8" cy="8" r="8" fill="none" stroke="#F6F7F8" stroke-width="1"/>
       <text x="8" y="12" text-anchor="middle"
             font-family="Fraunces, Georgia, serif" font-style="italic"
-            font-size="11" font-weight="500" fill="#FAF7F2">d</text>
+            font-size="11" font-weight="500" fill="#F6F7F8">d</text>
     </g>
   
   
     <line x1="80" y1="584" x2="1120" y2="584"
-          stroke="rgba(250,247,242,0.18)" stroke-width="1"/>
+          stroke="rgba(246,247,248,0.18)" stroke-width="1"/>
     <text x="80" y="614"
           font-family="Inter, Arial, sans-serif" font-size="14"
-          font-weight="600" letter-spacing="2" fill="rgba(250,247,242,0.55)">MUNTIN DIGITAL</text>
+          font-weight="600" letter-spacing="2" fill="rgba(246,247,248,0.55)">MUNTIN DIGITAL</text>
     <text x="1120" y="614" text-anchor="end"
           font-family="Inter, Arial, sans-serif" font-size="14"
-          font-weight="600" letter-spacing="1" fill="rgba(250,247,242,0.55)">muntin.digital</text>
+          font-weight="600" letter-spacing="1" fill="rgba(246,247,248,0.55)">muntin.digital</text>
   
 </svg>

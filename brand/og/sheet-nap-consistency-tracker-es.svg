@@ -1,17 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
-  <defs>
-    <radialGradient id="toolglow" cx="82%" cy="28%" r="65%">
-      <stop offset="0%" stop-color="#FAF7F2" stop-opacity="0.08"/>
-      <stop offset="100%" stop-color="#1F4E5B" stop-opacity="0"/>
-    </radialGradient>
-  </defs>
-  <rect width="1200" height="630" fill="#1F4E5B"/>
+  <rect width="1200" height="630" fill="#2A50C8"/>
   
     <defs>
       <pattern id="muntinField" x="0" y="0" width="140" height="140"
                patternUnits="userSpaceOnUse">
         <g transform="translate(18, 18)"
-           fill="none" stroke="#FAF7F2" stroke-width="1.5"
+           fill="none" stroke="#F6F7F8" stroke-width="1.5"
            stroke-linecap="square" stroke-linejoin="miter">
           <rect x="0" y="0" width="104" height="104"/>
           <line x1="52" y1="0" x2="52" y2="104"/>
@@ -22,61 +16,75 @@
     <rect width="1200" height="630"
           fill="url(#muntinField)" opacity="0.05"/>
   
-  <rect width="1200" height="630" fill="url(#toolglow)"/>
-  <rect x="0" y="0" width="12" height="252" fill="#1F4E5B"/>
-  <rect x="0" y="252" width="12" height="378" fill="#1F4E5B" opacity="0.4"/>
+  
+  <defs>
+    
+    <radialGradient id="ghWarm" cx="86%" cy="13%" r="82%">
+      <stop offset="0%"  stop-color="#FFB020"  stop-opacity="0.34"/>
+      <stop offset="38%" stop-color="#FF6B5C" stop-opacity="0.16"/>
+      <stop offset="100%" stop-color="#FFB020" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="ghCast" cx="4%" cy="100%" r="80%">
+         <stop offset="0%"  stop-color="#16181D" stop-opacity="0.34"/>
+         <stop offset="100%" stop-color="#16181D" stop-opacity="0"/>
+       </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#ghCast)"/>
+  <rect width="1200" height="630" fill="url(#ghWarm)"/>
+  <rect x="0" y="0" width="12" height="252" fill="#2A50C8"/>
+  <rect x="0" y="252" width="12" height="378" fill="#2A50C8" opacity="0.4"/>
 
   
     <g transform="translate(80, 78) scale(1.5)"
-       fill="none" stroke="#1F4E5B" stroke-width="1.167"
+       fill="none" stroke="#2A50C8" stroke-width="1.167"
        stroke-linecap="round" stroke-linejoin="round"
-       color="#1F4E5B" opacity="0.85">
+       color="#2A50C8" opacity="0.85">
       <path d="M12 22 C7 16 4 12 4 9 a8 8 0 0 1 16 0 c0 3 -3 7 -8 13 z"/>
                 <circle cx="12" cy="9" r="2.5"/>
     </g>
   
   <text x="136" y="104"
         font-family="Inter, Arial, sans-serif" font-size="13"
-        font-weight="700" letter-spacing="4" fill="#1F4E5B">HOJA GRATIS DEL OPERADOR · TUS NÚMEROS NUNCA SALEN DEL NAVEGADOR</text>
+        font-weight="700" letter-spacing="4" fill="#2A50C8">HOJA GRATIS DEL OPERADOR · TUS NÚMEROS NUNCA SALEN DEL NAVEGADOR</text>
 
   <text x="80" y="192"
         font-family="Fraunces, Georgia, serif" font-size="62"
-        font-weight="500" letter-spacing="-2" fill="#FAF7F2">Seguimiento</text>
+        font-weight="500" letter-spacing="-2" fill="#F6F7F8">Seguimiento</text>
   <text x="80" y="264"
         font-family="Fraunces, Georgia, serif" font-style="italic"
         font-size="62" font-weight="400" letter-spacing="-2"
-        fill="#1F4E5B">de</text>
+        fill="#2A50C8">de</text>
   <text x="80" y="336"
         font-family="Fraunces, Georgia, serif" font-size="62"
-        font-weight="500" letter-spacing="-2" fill="#FAF7F2">consistencia NAP.</text>
+        font-weight="500" letter-spacing="-2" fill="#F6F7F8">consistencia NAP.</text>
 
   <text x="80" y="416"
         font-family="Inter, Arial, sans-serif" font-size="20"
-        font-weight="400" fill="#FAF7F2" opacity="0.72">Una lista de inconsistencias y un orden de prioridad de arreglos en 12 fuentes de citación.</text>
+        font-weight="400" fill="#F6F7F8" opacity="0.72">Una lista de inconsistencias y un orden de prioridad de arreglos en 12 fuentes de citación.</text>
 
   
       <text x="760" y="150"
             font-family="Inter, Arial, sans-serif" font-size="12"
-            font-weight="700" letter-spacing="3" fill="#FAF7F2" opacity="0.5"></text>
+            font-weight="700" letter-spacing="3" fill="#F6F7F8" opacity="0.5"></text>
       
     
 
   
-    <g transform="translate(80, 552)" fill="#FAF7F2" opacity="0.6">
-      <circle cx="8" cy="8" r="8" fill="none" stroke="#FAF7F2" stroke-width="1"/>
+    <g transform="translate(80, 552)" fill="#F6F7F8" opacity="0.6">
+      <circle cx="8" cy="8" r="8" fill="none" stroke="#F6F7F8" stroke-width="1"/>
       <text x="8" y="12" text-anchor="middle"
             font-family="Fraunces, Georgia, serif" font-style="italic"
-            font-size="11" font-weight="500" fill="#FAF7F2">d</text>
+            font-size="11" font-weight="500" fill="#F6F7F8">d</text>
     </g>
   
   
     <line x1="80" y1="584" x2="1120" y2="584"
-          stroke="rgba(250,247,242,0.2)" stroke-width="1"/>
+          stroke="rgba(246,247,248,0.2)" stroke-width="1"/>
     <text x="80" y="614"
           font-family="Inter, Arial, sans-serif" font-size="14"
-          font-weight="600" letter-spacing="2" fill="rgba(250,247,242,0.6)">MUNTIN DIGITAL</text>
+          font-weight="600" letter-spacing="2" fill="rgba(246,247,248,0.6)">MUNTIN DIGITAL</text>
     <text x="1120" y="614" text-anchor="end"
           font-family="Inter, Arial, sans-serif" font-size="14"
-          font-weight="600" letter-spacing="1" fill="rgba(250,247,242,0.6)">muntin.digital</text>
+          font-weight="600" letter-spacing="1" fill="rgba(246,247,248,0.6)">muntin.digital</text>
   
 </svg>

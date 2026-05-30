@@ -1,5 +1,34 @@
 :root{--cream:#F6F7F8;--cream-2:#EDEEF1;--ink:#16181D;--ink-soft:#4A4F59;--teal:#2A50C8;--teal-dark:#1F3A93;--teal-tint:#EAF0FE;--rust:#C42E2E;--stone:#6B7280;--stone-2:#9AA0AB;--line:#E3E5E9;--line-dark:#D7DAE0;--line-input:#868D9A;--white:#FFFFFF;--font-display:'Fraunces','Fraunces Fallback',Georgia,'Times New Roman',serif;--font-body:'Inter','Inter Fallback',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;--max:1200px;--pad-x:clamp(20px,4vw,64px);--ease:cubic-bezier(.22,.61,.36,1);--ease-out:cubic-bezier(.16,1,.3,1);--t-fast:180ms;--t-med:420ms;--t-slow:900ms;--r-sm:8px;--r-md:14px;--r-lg:22px;--gold:#B7791F}
 
+/* @shell:core === Golden Hour expressive layer (2026 brand) === */
+/* The cool slate/blue spine is the architecture (frame, glass, rigor);
+   marigold -> coral is the LIGHT through the pane. This is the
+   sanctioned "vibrant layer" (web + social only; the Ledger product
+   app stays calm). Tokens are additive and ungated — declaring them
+   changes nothing until a selector opts in, so they can't affect the
+   locked spine that check-tokens-sync enforces above. Marigold/coral
+   are deliberately OUTSIDE the retired-warm blocklist; they are new
+   brand light, not the old warm palette. */
+:root{
+  --light-marigold:#FFB020;
+  --light-coral:#FF6B5C;
+  --light-amber:#F5A623;
+  /* Warm corner-light washes, normal-blend (browser-predictable, no
+     mix-blend gamble). Peak in the top-right, fading to nothing. */
+  --gradient-goldenhour:radial-gradient(120% 120% at 88% 6%,rgba(255,176,32,0.26) 0%,rgba(255,107,92,0.11) 38%,rgba(255,176,32,0) 76%);
+  --gradient-goldenhour-soft:radial-gradient(100% 100% at 92% 4%,rgba(255,176,32,0.12) 0%,rgba(255,107,92,0.05) 52%,rgba(255,176,32,0) 80%);
+  --glass-warm:rgba(255,176,32,0.06);
+}
+/* Homepage hero: golden-hour light behind the content column and
+   falling across the window glass. Scoped to .hero only; .hero is
+   already position:relative;overflow:hidden so the light is clipped
+   to the section + the rounded window. The window's ::after is
+   absolutely positioned, so it does NOT become a grid item. */
+.hero::after{content:'';position:absolute;inset:0;z-index:0;pointer-events:none;background:var(--gradient-goldenhour)}
+.hero>.container{position:relative;z-index:1}
+.window::after{content:'';position:absolute;inset:0;z-index:5;pointer-events:none;border-radius:6px;background:radial-gradient(86% 86% at 90% 7%,rgba(255,176,32,0.36) 0%,rgba(255,138,92,0.15) 34%,rgba(255,176,32,0) 70%)}
+@media (max-width:960px){.hero::after{background:var(--gradient-goldenhour-soft)}}
+
 /* @shell:core === Modernization tokens (Sprint 1) === */
 /* ============ Modernization tokens (Sprint 1) ============
    Additive vocabulary that later modernization sprints consume. No
