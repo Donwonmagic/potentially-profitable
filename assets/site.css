@@ -8068,7 +8068,8 @@ body:has(.batch-marquee) main{padding-top:calc(64px + var(--banner-h,40px))}
     :root:not([data-theme="light"]) .mtn-form-error,
     :root:not([data-theme="light"]) .mtn-card--danger,
     :root:not([data-theme="light"]) .mtn-error-card,
-    :root:not([data-theme="light"]) .mtn-btn--danger{
+    :root:not([data-theme="light"]) .mtn-btn--danger,
+    :root:not([data-theme="light"]) .window-composer__mic.is-recording{
       --cream: #F6F7F8;
       --cream-2: #EDEEF1;
       --white: #FFFFFF;
@@ -8095,6 +8096,10 @@ body:has(.batch-marquee) main{padding-top:calc(64px + var(--banner-h,40px))}
       --status-bad-tint: #F7E7DC;
     }
 
+    /* Nav: .nav.scrolled hardcodes a LIGHT rgba (rgba(250,247,242,.88)) that a
+    :root:not([data-theme="light"]) .nav.scrolled{background:rgba(22,24,29,0.94);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom-color:var(--line)}
+    :root:not([data-theme="light"]) .nav.menu-open,
+    :root:not([data-theme="light"]) .nav.scrolled.menu-open{background:#16181D}
     /* hardcoded #fff form surface (flagship audit) — won't flip; re-pin dark */
     :root:not([data-theme="light"]) .tool-cta-form{background:#1B1E24;border-color:#2C3038}
     /* status pass/fail use hardcoded dark hex — lift to legible on dark */
@@ -8102,6 +8107,13 @@ body:has(.batch-marquee) main{padding-top:calc(64px + var(--banner-h,40px))}
     :root:not([data-theme="light"]) .security-audit__pass{color:#56C98C}
     :root:not([data-theme="light"]) .audit-step__fail,
     :root:not([data-theme="light"]) .security-audit__fail{color:#F0796A}
+    /* mtn-form error states hardcode dark-red (#A03A2A) ON the dark form — lift */
+    :root:not([data-theme="light"]) .mtn-form-group--error .mtn-form-label,
+    :root:not([data-theme="light"]) .mtn-form-required{color:#F0796A}
+    :root:not([data-theme="light"]) .mtn-form-group :is(input,textarea,select)[aria-invalid="true"]{border-color:#F0796A}
+    /* listen 'finished' prompt: dark-gold (#7C5A1F) on a faint gold pill over dark */
+    :root:not([data-theme="light"]) .listen-finished-text,
+    :root:not([data-theme="light"]) .listen-finished-dismiss{color:#D9B06A}
     /* hero gradient-text: -webkit-text-fill-color overrides color */
     :root:not([data-theme="light"]) .hero h1 .serif-italic{background:none;-webkit-text-fill-color:var(--teal);color:var(--teal)}
 }
@@ -8155,7 +8167,8 @@ body:has(.batch-marquee) main{padding-top:calc(64px + var(--banner-h,40px))}
   :root[data-theme="dark"] .mtn-form-error,
   :root[data-theme="dark"] .mtn-card--danger,
   :root[data-theme="dark"] .mtn-error-card,
-  :root[data-theme="dark"] .mtn-btn--danger{
+  :root[data-theme="dark"] .mtn-btn--danger,
+  :root[data-theme="dark"] .window-composer__mic.is-recording{
     --cream: #F6F7F8;
     --cream-2: #EDEEF1;
     --white: #FFFFFF;
@@ -8182,6 +8195,10 @@ body:has(.batch-marquee) main{padding-top:calc(64px + var(--banner-h,40px))}
     --status-bad-tint: #F7E7DC;
   }
 
+  /* Nav: .nav.scrolled hardcodes a LIGHT rgba (rgba(250,247,242,.88)) that a
+  :root[data-theme="dark"] .nav.scrolled{background:rgba(22,24,29,0.94);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom-color:var(--line)}
+  :root[data-theme="dark"] .nav.menu-open,
+  :root[data-theme="dark"] .nav.scrolled.menu-open{background:#16181D}
   /* hardcoded #fff form surface (flagship audit) — won't flip; re-pin dark */
   :root[data-theme="dark"] .tool-cta-form{background:#1B1E24;border-color:#2C3038}
   /* status pass/fail use hardcoded dark hex — lift to legible on dark */
@@ -8189,6 +8206,13 @@ body:has(.batch-marquee) main{padding-top:calc(64px + var(--banner-h,40px))}
   :root[data-theme="dark"] .security-audit__pass{color:#56C98C}
   :root[data-theme="dark"] .audit-step__fail,
   :root[data-theme="dark"] .security-audit__fail{color:#F0796A}
+  /* mtn-form error states hardcode dark-red (#A03A2A) ON the dark form — lift */
+  :root[data-theme="dark"] .mtn-form-group--error .mtn-form-label,
+  :root[data-theme="dark"] .mtn-form-required{color:#F0796A}
+  :root[data-theme="dark"] .mtn-form-group :is(input,textarea,select)[aria-invalid="true"]{border-color:#F0796A}
+  /* listen 'finished' prompt: dark-gold (#7C5A1F) on a faint gold pill over dark */
+  :root[data-theme="dark"] .listen-finished-text,
+  :root[data-theme="dark"] .listen-finished-dismiss{color:#D9B06A}
   /* hero gradient-text: -webkit-text-fill-color overrides color */
   :root[data-theme="dark"] .hero h1 .serif-italic{background:none;-webkit-text-fill-color:var(--teal);color:var(--teal)}
 /* GEN:dark-mode:end */

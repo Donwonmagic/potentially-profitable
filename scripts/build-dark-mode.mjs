@@ -169,6 +169,7 @@ const INVERTED = [
   ".mtn-card--danger",
   ".mtn-error-card",
   ".mtn-btn--danger", // hardcoded #A03A2A fill — keep cream text light
+  ".window-composer__mic.is-recording", // hardcoded #B83020 fill — keep cream text light
 ];
 
 /*
@@ -179,11 +180,22 @@ const INVERTED = [
  *    `color`, so the flipped --teal alone wouldn't show).
  */
 const EXCEPTIONS = [
+  ["/* Nav: .nav.scrolled hardcodes a LIGHT rgba (rgba(250,247,242,.88)) that a",
+   "   token swap can't reach — in dark mode it painted a near-white translucent",
+   "   bar and content bled through the wordmark. Re-pin a near-opaque dark bar so",
+   "   the wordmark always has a solid backing; keep the blur. */"],
+  [[".nav.scrolled"], "background:rgba(22,24,29,0.94);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom-color:var(--line)"],
+  [[".nav.menu-open", ".nav.scrolled.menu-open"], "background:#16181D"],
   ["/* hardcoded #fff form surface (flagship audit) — won't flip; re-pin dark */"],
   [[".tool-cta-form"], "background:#1B1E24;border-color:#2C3038"],
   ["/* status pass/fail use hardcoded dark hex — lift to legible on dark */"],
   [[".audit-step__pass", ".security-audit__pass"], "color:#56C98C"],
   [[".audit-step__fail", ".security-audit__fail"], "color:#F0796A"],
+  ["/* mtn-form error states hardcode dark-red (#A03A2A) ON the dark form — lift */"],
+  [[".mtn-form-group--error .mtn-form-label", ".mtn-form-required"], "color:#F0796A"],
+  [['.mtn-form-group :is(input,textarea,select)[aria-invalid="true"]'], "border-color:#F0796A"],
+  ["/* listen 'finished' prompt: dark-gold (#7C5A1F) on a faint gold pill over dark */"],
+  [[".listen-finished-text", ".listen-finished-dismiss"], "color:#D9B06A"],
   ["/* hero gradient-text: -webkit-text-fill-color overrides color */"],
   [[".hero h1 .serif-italic"], "background:none;-webkit-text-fill-color:var(--teal);color:var(--teal)"],
 ];
