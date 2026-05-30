@@ -43,10 +43,18 @@ function ratio(a, b) {
   return (hi + 0.05) / (lo + 0.05);
 }
 
-/** Read a --refresh-* token value from the [data-theme="dark"] :root block. */
+/**
+ * Read a base-palette token value from the dark token-flip block. The dark
+ * theme remaps the base tokens (--ink, --cream, …) at the [data-theme="dark"]
+ * root INSIDE the GEN:dark-mode block; that's the canonical dark ramp now.
+ */
 function tokenValue(css, name) {
-  // The explicit-override declaration block holds the canonical values.
-  const block = css.slice(css.indexOf(':root[data-theme="dark"]{'));
+  const gen = css.slice(css.indexOf("GEN:dark-mode:start"));
+  // The flip block is the [data-theme="dark"]{…} that declares --ink (the
+  // palette remap), not the inverted-surface scope-restore (which restores
+  // --ink to the LIGHT value). Anchor on the remap block specifically.
+  const start = gen.indexOf(':root[data-theme="dark"]{');
+  const block = gen.slice(start, start + 1200);
   const m = new RegExp(`--${name}\\s*:\\s*(#[0-9A-Fa-f]{6})`).exec(block);
   return m ? m[1] : null;
 }
@@ -65,45 +73,51 @@ function main() {
   }
 
   const css = fs.readFileSync(SITE_CSS, "utf8");
-  const T = {};
-  for (const n of [
-    "bg", "surface-1", "surface-2", "text", "text-soft", "accent", "line-strong", "line",
-  ]) {
-    T[n] = tokenValue(css, n) || tokenValue(css, n.replace("-", "-"));
-  }
-  // Map the short names the loop expects.
+  // The dark theme flips the base palette tokens. Read the remapped values.
   const tok = {
-    bg: tokenValue(css, "refresh-bg"),
-    s1: tokenValue(css, "refresh-surface-1"),
-    s2: tokenValue(css, "refresh-surface-2"),
-    text: tokenValue(css, "refresh-text"),
-    soft: tokenValue(css, "refresh-text-soft"),
-    accent: tokenValue(css, "refresh-accent"),
-    lineStrong: tokenValue(css, "refresh-line-strong"),
+    bg: tokenValue(css, "cream"), // page background
+    s1: tokenValue(css, "white"), // raised cards
+    s2: tokenValue(css, "cream-2"), // inset fills
+    text: tokenValue(css, "ink"),
+    soft: tokenValue(css, "ink-soft"),
+    stone: tokenValue(css, "stone"),
+    stone2: tokenValue(css, "stone-2"),
+    accent: tokenValue(css, "teal"),
+    accentDeep: tokenValue(css, "teal-dark"),
+    rust: tokenValue(css, "rust"),
+    lineDark: tokenValue(css, "line-dark"),
+    lineInput: tokenValue(css, "line-input"),
+    statusGood: tokenValue(css, "status-good"),
+    statusWarn: tokenValue(css, "status-warn"),
   };
 
   const missing = Object.entries(tok).filter(([, v]) => !v).map(([k]) => k);
   if (missing.length) {
-    console.error(`✗ check-dark-contrast: missing --refresh-* token(s): ${missing.join(", ")}`);
+    console.error(`✗ check-dark-contrast: missing dark base token(s): ${missing.join(", ")}`);
     process.exit(1);
   }
 
-  // [fg, bg, minRatio, label]
+  // [fg, bg, minRatio, label] — text 4.5:1, borders 3:1.
   const checks = [
-    [tok.text, tok.bg, 4.5, "text on bg"],
-    [tok.text, tok.s1, 4.5, "text on surface-1"],
-    [tok.text, tok.s2, 4.5, "text on surface-2"],
-    [tok.soft, tok.bg, 4.5, "text-soft on bg"],
-    [tok.soft, tok.s1, 4.5, "text-soft on surface-1"],
-    [tok.soft, tok.s2, 4.5, "text-soft on surface-2"],
-    [tok.accent, tok.bg, 4.5, "accent on bg"],
-    [tok.accent, tok.s1, 4.5, "accent on surface-1"],
-    [tok.accent, tok.s2, 4.5, "accent on surface-2"],
-    // Light primary pill: dark ink text on the --text-colored pill.
+    [tok.text, tok.bg, 4.5, "ink text on page"],
+    [tok.text, tok.s1, 4.5, "ink text on card"],
+    [tok.text, tok.s2, 4.5, "ink text on inset"],
+    [tok.soft, tok.bg, 4.5, "ink-soft on page"],
+    [tok.soft, tok.s1, 4.5, "ink-soft on card"],
+    [tok.stone, tok.bg, 4.5, "stone on page"],
+    [tok.stone, tok.s1, 4.5, "stone on card"],
+    [tok.stone2, tok.s1, 4.5, "stone-2 (placeholder) on card"],
+    [tok.accent, tok.bg, 4.5, "accent link on page"],
+    [tok.accent, tok.s1, 4.5, "accent link on card"],
+    [tok.accentDeep, tok.bg, 4.5, "accent-deep on page"],
+    [tok.rust, tok.bg, 4.5, "rust on page"],
+    [tok.statusGood, tok.s1, 4.5, "status-good on card"],
+    [tok.statusWarn, tok.s1, 4.5, "status-warn on card"],
+    // Inverted (light) primary pill: dark ink text on the light pill.
     ["#16181D", tok.text, 4.5, "primary-pill ink on light pill"],
-    // UI borders / chevrons (3:1 graphics threshold).
-    [tok.lineStrong, tok.bg, 3.0, "line-strong border on bg"],
-    [tok.lineStrong, tok.s1, 3.0, "line-strong border on surface-1"],
+    // Form/control borders (3:1 graphics threshold).
+    [tok.lineInput, tok.s1, 3.0, "input border on card"],
+    [tok.lineDark, tok.s1, 3.0, "strong border on card"],
   ];
 
   const fails = [];
@@ -115,7 +129,7 @@ function main() {
   if (fails.length) {
     console.error(`✗ dark-contrast: ${fails.length} pair(s) below WCAG AA:`);
     for (const f of fails) console.error("  - " + f);
-    console.error("\nFix the --refresh-* values in assets/site.css (the [data-theme=\"dark\"] block).");
+    console.error("\nFix the dark token values in scripts/build-dark-mode.mjs (the DARK map), then regenerate.");
     process.exit(1);
   }
   console.log(`✓ dark-contrast: ${checks.length} dark-mode token pairs pass WCAG AA (text 4.5:1, borders 3:1)`);
