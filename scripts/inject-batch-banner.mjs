@@ -98,6 +98,18 @@ function buildBanner(locale) {
     `    <a href="${escAttr(href)}" style="display:inline-flex;align-items:center;gap:6px;color:var(--ink,#16181D);background:var(--cream,#F6F7F8);text-decoration:none;font-family:Inter,system-ui,sans-serif;font-weight:600;font-size:12px;padding:5px 12px;border-radius:999px;white-space:nowrap;flex-shrink:0;transition:transform .15s ease">${escHtml(cta)} <span aria-hidden="true">${arrow}</span></a>`,
     `  </div>`,
     `</aside>`,
+    // The banner is position:fixed and the nav is offset below it by
+    // var(--banner-h). A static --banner-h (40px / 72px mobile) can't
+    // track a banner whose height changes when the italic headline
+    // wraps — so the nav overlapped the banner's lower edge on narrow
+    // screens / long headlines. This measures the real height and sets
+    // --banner-h to it (inline style beats the CSS default + media
+    // query), re-measuring on resize, on orientation change, and after
+    // the Fraunces webfont swaps in (which changes the wrap). Runs at
+    // parse time right after the <aside>, so it sets the var before the
+    // async stylesheet pins anything. Removed automatically when the
+    // banner is hidden (the whole block is re-stamped).
+    `<script>(function(){var d=document.documentElement;function s(){var b=document.querySelector('.batch-marquee');if(b){d.style.setProperty('--banner-h',b.offsetHeight+'px');}}s();addEventListener('resize',s,{passive:true});addEventListener('orientationchange',s);if(document.fonts&&document.fonts.ready){document.fonts.ready.then(s);}})();</script>`,
     '<!-- batch-banner:end -->',
   ].join('\n');
 }
