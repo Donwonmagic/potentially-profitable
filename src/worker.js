@@ -6415,6 +6415,11 @@ async function handleWindowAppend(request, env, ctx) {
   const attachIds = attachIdsRaw.split(',').map(s => s.trim()).filter(Boolean).slice(0, MAX_ATTACHMENTS_PER_MSG);
   const hasAttachments = attachIds.length > 0;
 
+  // Cross-site origin tag (plan §W). Allowlisted to a known set; used
+  // only when this POST opens a NEW thread (the source is the property
+  // the operator first arrived from and is sticky for the thread's life).
+  const windowSource = normalizeWindowSource(body && body.source);
+
   // Allow empty body only when attachments are present.
   if (!hasAttachments) {
     const validated = validateWindowMessageBody({ body: sanitized });
@@ -6454,7 +6459,7 @@ async function handleWindowAppend(request, env, ctx) {
 
     let thread = await getOpenThreadForUser(env, sub);
     if (!thread || (thread.msgCount || 0) >= 100) {
-      try { thread = await createWindowThread(env, sub, email); }
+      try { thread = await createWindowThread(env, sub, email, windowSource); }
       catch (_) { return jsonResponse({ ok: false, error: 'mint-collision' }, 500); }
     }
 
