@@ -697,6 +697,8 @@ export async function createAnonThread(env, anonId, locale = null, source = '') 
     msgCount: 0,
     unreadByUser: false,
     unreadByAdmin: false,
+    // Cross-site origin tag, set once at creation (plan §W).
+    source: normalizeWindowSource(source),
   };
   await env.AUTH_SESSIONS.put(anonThreadKey(anonId), JSON.stringify(thread));
   return thread;
