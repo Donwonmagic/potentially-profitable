@@ -169,6 +169,7 @@ const INVERTED = [
   ".mtn-card--danger",
   ".mtn-error-card",
   ".mtn-btn--danger", // hardcoded #A03A2A fill — keep cream text light
+  ".window-composer__mic.is-recording", // hardcoded #B83020 fill — keep cream text light
 ];
 
 /*
@@ -190,6 +191,11 @@ const EXCEPTIONS = [
   ["/* status pass/fail use hardcoded dark hex — lift to legible on dark */"],
   [[".audit-step__pass", ".security-audit__pass"], "color:#56C98C"],
   [[".audit-step__fail", ".security-audit__fail"], "color:#F0796A"],
+  ["/* mtn-form error states hardcode dark-red (#A03A2A) ON the dark form — lift */"],
+  [[".mtn-form-group--error .mtn-form-label", ".mtn-form-required"], "color:#F0796A"],
+  [['.mtn-form-group :is(input,textarea,select)[aria-invalid="true"]'], "border-color:#F0796A"],
+  ["/* listen 'finished' prompt: dark-gold (#7C5A1F) on a faint gold pill over dark */"],
+  [[".listen-finished-text", ".listen-finished-dismiss"], "color:#D9B06A"],
   ["/* hero gradient-text: -webkit-text-fill-color overrides color */"],
   [[".hero h1 .serif-italic"], "background:none;-webkit-text-fill-color:var(--teal);color:var(--teal)"],
 ];
