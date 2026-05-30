@@ -7196,6 +7196,33 @@ table[data-viz-sortable] th[aria-sort="descending"]::after{content:"\2193";color
   .sash--top__now{font-size:16px}
 }
 
+/* ===== [core] Golden Hour — the Window made literal: light through the pane =====
+   The cool slate sash is the frame + glass; a warm marigold->coral glow
+   is the interior light — the room beyond the glass, Don's lamp on. It
+   spills from the sidelight (Don's side, left) across the glass toward
+   the note. Fixed warm hues read on BOTH the light (#F6F7F8) and dark
+   (#16181D) sash, so the window glows in both themes: a lit window at
+   dusk in light mode, a lit window at night in dark. The muntin stays
+   quiet (cool); only the light is warm. Marigold/coral are the
+   sanctioned vibrant accents (not the retired warm palette). */
+.sash{background:radial-gradient(135% 120% at 1% -8%,rgba(255,176,32,0.13) 0%,rgba(255,107,92,0.05) 34%,rgba(255,176,32,0) 62%),var(--cream)}
+:root:not([data-theme="light"]) .sash,
+:root[data-theme="dark"] .sash{background:radial-gradient(135% 120% at 1% -8%,rgba(255,176,32,0.22) 0%,rgba(255,107,92,0.09) 36%,rgba(255,176,32,0) 64%),var(--cream)}
+.sidelight{background:linear-gradient(165deg,rgba(255,176,32,0.10) 0%,rgba(255,176,32,0) 55%),var(--cream-2)}
+.sill{background:linear-gradient(0deg,rgba(255,176,32,0.05) 0%,rgba(255,176,32,0) 72%),var(--cream-2)}
+/* Don's presence dot — marigold (the lamp is on / he's around). */
+.sidelight__pulse{background:#FFB020}
+/* "Send the note" — the warm, inviting action. A filled marigold
+   button (ink text clears AA on marigold), the one warm CTA the eye
+   walks toward; pops on both light and dark sash. */
+.window-composer__submit{background:#FFB020;border-color:#FFB020;color:#16181D}
+.window-composer__submit:hover,.window-composer__submit:focus-visible{background:#F5A623;border-color:#F5A623;color:#16181D;transform:translateY(-1px)}
+.window-composer__submit:focus-visible{outline:none;box-shadow:0 0 0 3px rgba(255,176,32,0.38)}
+/* A Ledger visitor's welcome line (revealed by window.js on ?source=ledger).
+   Warm, brief, names the bridge between the two products. */
+.window-composer__from-ledger{margin:14px 0 0;font-family:var(--font-display);font-style:italic;font-size:15px;line-height:1.5;color:var(--ink-soft)}
+.window-composer__from-ledger b{color:var(--ink);font-weight:600;font-style:normal}
+
 /* Composer additions — the new pieces inside .sash--bottom. */
 .window-composer__hostess{margin:14px 0 0;font-family:var(--font-display);font-style:italic;font-size:16px;line-height:1.5;color:var(--ink-soft)}
 .window-composer__trust-tell{margin:14px 0 0;font-size:13px;line-height:1.55;color:var(--stone);font-style:italic}
