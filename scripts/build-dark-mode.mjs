@@ -53,31 +53,64 @@ const END = "/* GEN:dark-mode:end */";
  * same or an adjacent entry, so we never leave light-on-light or dark-on-dark.
  */
 
-// Dark surface for "cards" (raised on the body): surface-1. Inset/quiet
-// fills: surface-2. Text on either: --refresh-text / --refresh-text-soft.
-const CARD = "background:var(--refresh-surface-1);border-color:var(--refresh-line)";
+// Shorthand decls reused across families. CARD = raised surface (cards sit on
+// the page bg); INSET = recessed/quiet fill; FIELD = inputs; TEXT/SOFT/ACCENT =
+// foreground intents. Text + background are always paired so no surface is left
+// light-on-light or dark-on-dark.
+const CARD = "background:var(--refresh-surface-1);border-color:var(--refresh-line);color:var(--refresh-text)";
 const INSET = "background:var(--refresh-surface-2);border-color:var(--refresh-line)";
+const FIELD = "background:var(--refresh-surface-1);border-color:var(--refresh-line-strong);color:var(--refresh-text)";
+const TEXT = "color:var(--refresh-text)";
+const SOFT = "color:var(--refresh-text-soft)";
+const ACCENT = "color:var(--refresh-accent)";
 
 const RULES = [
+  ["/* ===================================================================",
+   "   GLOBAL token-intent overrides — the load-bearing rules. The base",
+   "   palette (--ink/--cream/--teal/--line) is NEVER remapped because each",
+   "   token is overloaded (e.g. --ink is text in 214 places AND a background",
+   "   in 26; --cream is a surface AND cream-on-dark button text in 67). So",
+   "   we flip by INTENT here instead: page surface, default text, hairlines,",
+   "   and body links. Specific dark-by-design surfaces are re-pinned below.",
+   "   ===================================================================== */"],
+  // Page background + default text. Headings hardcode color:var(--ink) (line
+  // 662) so they need their own rule — body color alone won't reach them.
+  [["body"], "background:var(--refresh-bg);color:var(--refresh-text)"],
+  [["h1", "h2", "h3", "h4", "h5", "h6"], TEXT],
+  // Default inline body links + glossary autolinks ride --teal (fails on dark).
+  [[
+    ".article-body :where(p,li) a:not(.btn):not([class*='cta'])",
+    ".article-body a[href^=\"/glossary/\"]:hover",
+    ".prose a", ".term-body a",
+  ], ACCENT],
+
   ["/* ===== nav chrome ===== */"],
-  // The base .nav background comes from the inline critical CSS (var(--cream));
-  // darken the bar itself so the (now-light) wordmark + links sit on dark.
+  // Base .nav background comes from inline critical CSS (var(--cream)); darken
+  // the bar so the (now-light) wordmark + links sit on dark.
   [[".nav", ".nav.menu-open"], "background:var(--refresh-bg);border-bottom-color:var(--refresh-line)"],
-  [[".logo", ".nav.scrolled .logo"], "color:var(--refresh-text)"],
-  [[".logo .tm"], "color:var(--refresh-text-soft)"],
-  [[".logo-mark", ".nav.scrolled .logo-mark", ".logo:hover", ".logo:hover .logo-mark"], "color:var(--refresh-accent)"],
-  [[".nav-links a", ".nav.scrolled .nav-links a"], "color:var(--refresh-text-soft)"],
-  [[".nav-links a:hover", ".nav.scrolled .nav-links a:hover"], "color:var(--refresh-text)"],
+  [[".logo", ".nav.scrolled .logo"], TEXT],
+  [[".logo .tm"], SOFT],
+  [[".logo-mark", ".nav.scrolled .logo-mark", ".logo:hover", ".logo:hover .logo-mark"], ACCENT],
+  [[".nav-links a", ".nav.scrolled .nav-links a"], SOFT],
+  [[".nav-links a:hover", ".nav.scrolled .nav-links a:hover"], TEXT],
   [[".nav-search-btn", ".nav.scrolled .nav-search-btn"], "color:var(--refresh-text-soft);border-color:var(--refresh-line-strong)"],
   [[".nav-search-btn:hover"], "color:var(--refresh-accent);border-color:var(--refresh-accent)"],
   [[".nav-search-kbd"], "color:var(--refresh-text-soft);border-color:var(--refresh-line-strong);background:var(--refresh-surface-2)"],
   [[".lang-switch"], "border-color:var(--refresh-line-strong)"],
-  [[".lang-switch a", ".lang-switch .lang-switch-current", ".nav.scrolled .lang-switch a", ".nav.scrolled .lang-switch .lang-switch-current"], "color:var(--refresh-text-soft)"],
-  [[".lang-switch a[aria-current=\"true\"]"], "color:var(--refresh-text)"],
+  [[".lang-switch a", ".lang-switch .lang-switch-current", ".nav.scrolled .lang-switch a", ".nav.scrolled .lang-switch .lang-switch-current"], SOFT],
+  [[".lang-switch a[aria-current=\"true\"]"], TEXT],
+  [[".lang-hint"], "background:var(--refresh-surface-1);border-color:var(--refresh-line)"],
+  [[".lang-hint-text"], TEXT],
+  [[".lang-hint-accept", ".nav-auth:hover"], ACCENT],
   [[".nav-toggle span"], "background:var(--refresh-text)"],
-  // Mobile menu + sticky CTA bar (phones).
+  // Library mega-menu.
+  [[".nav-library-menu"], "background:var(--refresh-surface-1);border-color:var(--refresh-line)"],
+  [[".nav-library-menu__home strong", ".nav-library-menu__col a strong"], TEXT],
+  [[".nav-library-menu__col a:hover strong", ".nav-library-menu--mega .nav-library-menu__home:hover strong"], ACCENT],
+  [[".nav-library-menu a:focus-visible"], "background:var(--refresh-surface-2)"],
+  // Mobile menu + sticky CTA bar.
   [[".mobile-menu"], "background:var(--refresh-bg);border-top-color:var(--refresh-line)"],
-  [[".mobile-menu a", ".mobile-search"], "color:var(--refresh-text)"],
+  [[".mobile-menu a", ".mobile-search"], TEXT],
   [[".mobile-cta-bar"], "background:var(--refresh-bg);border-top-color:var(--refresh-line)"],
   [[".mobile-cta-bar__btn--ghost"], "color:var(--refresh-text);border-color:var(--refresh-line-strong)"],
   [[".mobile-cta-bar__btn--primary"], "background:var(--refresh-text);color:#16181D"],
@@ -85,83 +118,194 @@ const RULES = [
   ["/* ===== buttons ===== */"],
   [[".btn-ghost"], "color:var(--refresh-text);border-color:var(--refresh-line-strong)"],
   [[".btn-ghost:hover"], "background:var(--refresh-surface-2);border-color:var(--refresh-text-soft);color:var(--refresh-text)"],
-  // The default primary is an --ink pill → invisible on the --ink body.
-  // Flip to a light pill with dark text (15.2:1). The teal-backed primaries
-  // (.foot-cta, .post-end-cta) already read fine on dark and keep their look.
+  // The default primary is an --ink pill → invisible on the --ink-dark body.
+  // Flip to a light pill, dark text (15.2:1). Teal-backed primaries (.foot-cta,
+  // .post-end-cta) read fine on dark and keep their look.
   [[".hero-ctas .btn-primary", ".nav .btn-primary", ".mobile-menu a.btn-primary"], "background:var(--refresh-text);color:#16181D"],
   [[".hero-ctas .btn-primary:hover", ".nav .btn-primary:hover", ".mobile-menu a.btn-primary:hover"], "background:#FFFFFF;color:#16181D"],
+  [[".btn-link", ".mtn-btn--link", ".mtn-btn--ghost"], ACCENT],
 
-  ["/* ===== accents (cream-tuned --teal is too dark on near-black) ===== */"],
-  [[".eyebrow"], "color:var(--refresh-accent)"],
+  ["/* ===== accents: --teal-as-text → lighter blue (teal-as-fill buttons keep --teal) ===== */"],
+  [[".eyebrow"], ACCENT],
   [[".eyebrow::before"], "background:var(--refresh-accent)"],
-  // .process / .final are ink sections in BOTH themes → keep cream eyebrow.
-  [[".process .eyebrow", ".final .eyebrow"], "color:var(--refresh-text)"],
+  // .process / .final are ink sections in BOTH themes → keep light eyebrow/heads.
+  [[".process .eyebrow", ".final .eyebrow", ".process h2", ".final h2", ".step h3", ".compare .card.muntin h3", ".foot-cta-text", ".foot-heading", ".foot-tagline"], TEXT],
   [[".process .eyebrow::before", ".final .eyebrow::before"], "background:var(--refresh-text)"],
   [[".hero h1 .serif-italic"], "background:none;-webkit-text-fill-color:var(--refresh-accent);color:var(--refresh-accent)"],
-  // Generic inline prose links that ride --teal.
-  [[".gallery-cta", ".hero-note a", ".hero-meta-note a", ".hp-smaller-note-link"], "color:var(--refresh-accent)"],
+  [[".gallery-cta", ".hero-note a", ".hero-meta-note a", ".hp-smaller-note-link", ".signature", ".breadcrumb a:hover", ".section-aside a", ".sources a", ".proof-audit-link", ".tool-hero-glyph", ".post-end-glyph", ".coming-soon-icon"], ACCENT],
+  [[".breadcrumb [aria-current=\"page\"]", ".text-ink"], TEXT],
 
   ["/* ===== hero + section type ===== */"],
-  [[".hero-note", ".hero-meta", ".hero-meta-sub", ".hero-meta-note", ".hp-smaller-note"], "color:var(--refresh-text-soft)"],
-  [[".section-header p"], "color:var(--refresh-text-soft)"],
+  [[".hero-note", ".hero-meta", ".hero-meta-sub", ".hero-meta-note", ".hp-smaller-note", ".section-header p", ".recently-added__sub"], SOFT],
+  [[".recently-added__head h2", ".recently-added__card h3"], TEXT],
+  [[".recently-added__eyebrow", ".recently-added__card .meta .date"], ACCENT],
 
-  ["/* ===== sectioned bands that hardcode a light bg inline or in CSS ===== */"],
-  // .stances + .compare-section set background:var(--cream) inline on the
-  // homepage; the attribute selector reaches those without touching prose.
-  [["section.stances", "section.compare-section", "section[style*=\"--cream\"]"], "background:var(--refresh-bg)"],
+  ["/* ===== section bands that hardcode a light bg (inline or in CSS) ===== */"],
+  // Homepage .stances / .compare-section set background:var(--cream) inline;
+  // .proof / .topic-section-alt set it in CSS. The attribute selector reaches
+  // the inline ones without touching prose.
+  [["section.stances", "section.compare-section", "section[style*=\"--cream\"]", ".proof"], "background:var(--refresh-bg)"],
+  [[".topic-section-alt"], "background:var(--refresh-surface-1)"],
 
-  ["/* ===== cards / containers (raised → surface-1) ===== */"],
+  ["/* ===== cards / raised containers (→ surface-1) ===== */"],
   [[
-    ".card", ".service", ".compare-card", ".tool-card-flagship", ".tool-card",
-    ".recently-added__card", ".learn-start", ".learn-tool", ".learn-guide",
+    ".card", ".service", ".compare-card", ".compare .card", ".tool-card-flagship", ".tool-card",
+    ".tool-card-spotlight", ".recently-added__card", ".learn-start", ".learn-tool", ".learn-guide",
     ".learn-topic", ".topics-hub-card", ".topic-article-card", ".topic-research-card",
     ".topic-tool-card", ".research-index-card", ".restaurant-case", ".learn-quick-card",
-    ".resources-index-card", ".plan", ".work-item", ".coming-soon-card",
-  ], CARD + ";color:var(--refresh-text)"],
-  // Card titles + body + meta.
+    ".resources-index-card", ".plan", ".work-item", ".coming-soon-card", ".start-step",
+    ".score-card", ".security-claim", ".security-tier", ".smart-next", ".key-takeaways",
+    ".edu-result", ".edu-formula", ".audit-step", ".callout", ".wsh-state", ".wsh-item",
+    ".wsh-starter-card", ".tool-error", ".field-notes-form__msg", ".learn-back",
+    ".workshop-rationale", ".knit-rail", ".topic-essay", ".term-explainer",
+    ".term-explainer__captions", ".sys-stack > li", ".sys-swatches > li", ".sys-type > li",
+    ".sys-tokens-mini > li", ".sys-pipeline > li", ".sys-urls > li", ".sys-a11y > li",
+    ".sys-audio ul > li", ".tool-cta-form", ".services-collapse", ".services-collapse > summary",
+    ".window-fieldnotes-rail", ".admin-now", ".admin-window__row", ".admin-msg--user",
+    ".recovery-row", ".form-success", ".legal .contact-box", ".sash", ".tool-spotlight",
+    ".tool-cta-flagships", ".term-siblings-list a", ".research-cited-in-list a",
+    ".research-findings > li", ".research-uses > li > a", ".gloss-recent__card",
+    ".glossary-popover", ".tool-knit__col a", ".learn-glossary-terms a", ".tool-deep-card",
+    ".tool-deep-topic", ".admin-callbacks__phone-btn",
+  ], CARD],
+  // Card titles / strong text (default heading rule covers real <hN>; these are
+  // the class-named titles that hardcode --ink).
   [[
-    ".card h3", ".service h3", ".compare-card__h", ".tool-card-flagship__title",
-    ".learn-start-body h2", ".learn-tool h3", ".recently-added__card h3",
-  ], "color:var(--refresh-text)"],
+    ".compare-card__h", ".tool-card-flagship__title", ".tool-card-spotlight__title",
+    ".tool-cluster__head h2", ".tool-cta-flagships__heading", ".tool-spotlight__heading",
+    ".learn-start-body h2", ".learn-glossary-intro h2", ".topic-essay__title", ".topic-essay__body",
+    ".security-claim__title", ".security-claim__text", ".security-tier__desc", ".security-tier__share",
+    ".score-card-title", ".score-card-value", ".smart-next__item", ".key-takeaways__list li",
+    ".edu-result__lede", ".edu-range", ".edu-source__org", ".edu-caveat", ".edu-formula__body",
+    ".audit-step h3", ".callout-body", ".wsh-h1", ".wsh-state h2", ".wsh-item-title",
+    ".tool-error-headline", ".field-notes-submit__headline", ".workshop-rationale-headline",
+    ".window-fieldnotes-rail h2", ".window-fieldnotes-rail__quote", ".topic-tool-card h3",
+    ".admin-now__summary", ".admin-msg__body", ".admin-thread__email", ".sys-type-sample",
+    ".tool-cta-preview strong", ".tool-card__walkaway-label", ".tool-roadmap__head h2",
+    ".form-label", ".search-result-title", ".search-hint strong", ".search-empty strong",
+    ".term-def", ".term-why-h", ".gloss-recent__head-row h2", ".glossary-popover__head",
+    ".glossary-verified time", ".tool-verified time", ".tool-data-promise__line",
+    ".tldr__body", ".funnel-row .funnel-label", ".pullquote p", ".knit-rail__col a",
+    ".tool-knit__h", ".glossary-knit__h", ".glossary-knit__col a", ".restaurant-case h3",
+    ".window-shell__lockup", ".window-hero__headline", ".window-msg", ".sash--top__now",
+    ".tool-card-spotlight:hover .tool-card-spotlight__cta",
+  ], TEXT],
+  // Card body / meta / muted text.
   [[
     ".service .desc", ".compare-card__list", ".tool-card-flagship__headline",
-    ".learn-start-body p", ".learn-tool p", ".section-header p",
-  ], "color:var(--refresh-text-soft)"],
-  [[".compare-card__eyebrow", ".compare-card__price", ".service li", ".service .price small"], "color:var(--refresh-text-soft)"],
-  [[".service li", ".compare-card__list li"], "border-color:var(--refresh-line)"],
-  // Card CTAs + kickers that ride --teal/--rust accents.
-  [[".service-card-cta", ".learn-tool-cta", ".learn-start-cta", ".tool-card-flagship__cta", ".compare-card__badge"], "color:var(--refresh-accent)"],
-  // Featured compare card keeps an accent frame (lighter blue for visibility).
-  [[".compare-card--featured"], "border-color:var(--refresh-accent)"],
-
-  ["/* ===== inset / quiet fills (surface-2) ===== */"],
+    ".learn-start-body p", ".learn-tool p", ".compare-card__eyebrow", ".compare-card__price",
+    ".service li", ".service .price small", ".tool-card.soon", ".tool-chipnav__roadmap",
+    ".security-claim__verify", ".security-audit__hint", ".admin-now__current",
+    ".edu-formula__caption", ".research-findings > li", ".research-drawer-findings li",
+    ".sys-stack code", ".sys-audio ul > li", ".legal .cookie-table td", ".funnel-bar",
+  ], SOFT],
+  // Card CTAs / kickers / accents that ride --teal.
   [[
-    ".bg-cream2", ".trust-strip", ".tool-cta", ".tool-goals", ".tldr",
-    ".see-also-card", ".tool-knit", ".glossary-knit", ".gloss-recent",
-    ".term-research", ".term-siblings", ".research-note", ".research-citation",
-    ".start-step-why", ".callout--field", ".audit-summary",
+    ".service-card-cta", ".learn-tool-cta", ".learn-start-cta", ".learn-start-num",
+    ".tool-card-flagship__cta", ".tool-card-spotlight__cta", ".tool-cluster__topic",
+    ".compare-card__badge", ".security-claim__inspect summary", ".security-tier__label",
+    ".smart-next__item a", ".edu-result__next a", ".tool-data-promise__links a",
+    ".callout-eyebrow", ".callout-eyebrow-inline", ".field-notes-submit__eyebrow",
+    ".workshop-rationale-eyebrow", ".window-fieldnotes-rail__cite a", ".learn-topic-tag",
+    ".learn-guide-meta", ".start-step-num", ".topic-article-date", ".topic-research-source",
+    ".topic-tool-cta", ".topic-essay__body a", ".research-index-source", ".search-result-kind",
+    ".tldr__eyebrow", ".knit-rail__verb", ".gloss-tool-sidecar__list li a",
+    ".tool-knit__col a:hover", ".glossary-knit__col a:hover", ".tool-deep-kind", ".tool-deep-cta",
+    ".tool-deep-topic:hover", ".see-also-label", ".see-also-kind", ".restaurant-case-kicker",
+    ".restaurant-case-cta", ".learn-quick-kind", ".resources-index-kind", ".resources-index-cta",
+    ".tool-spotlight__heading + * a", ".tool-cta-flagships__secondary a", ".tool-storefront-rail a",
+    ".sys-stack-label", ".sys-pipeline-num", ".sys-urls-phase", ".tool-card-spotlight__chip",
+    ".window-hero__eyebrow", ".sill__alt-row a", ".admin-callbacks__phone-link",
+    ".admin-thread__quick-btn:hover", ".search-fallback-link", ".search-result a:hover",
+  ], ACCENT],
+
+  ["/* ===== inset / quiet fills (→ surface-2) ===== */"],
+  [[
+    ".bg-cream2", ".trust-strip", ".tool-cta", ".tool-goals", ".tldr", ".cite",
+    ".see-also-card", ".tool-knit", ".glossary-knit", ".gloss-recent", ".sidelight", ".sill",
+    ".term-research", ".term-siblings", ".research-note", ".research-citation", ".about-portrait-frame",
+    ".start-step-why", ".callout--field", ".audit-summary", ".tool-cta-chips li", ".tool-chipnav__roadmap",
+    ".tool-deep-links", ".learn-topic-soon", ".tool-data-promise", ".tool-save-prompt", ".tool-card.soon",
+    ".edu-formula__body", ".edu-formula__caption", ".edu-range", ".term-example code", ".funnel-bar",
+    ".field-notes-submit", ".field-notes-rail__card", ".window-signin", ".window-handoff",
+    ".window-composer__callback-form", ".window-composer__attach", ".admin-thread__head",
+    ".admin-msg--don", ".admin-thread__composer", ".admin-thread__resolved", ".admin-callbacks__card",
+    ".admin-now__current", ".share-recipient-banner", ".viz-bars__track", ".viz-waterfall__bar",
+    ".viz-slider", ".viz-ba", ".viz-tree", ".comparison-table thead th", ".security-audit thead th",
+    ".comparison-table tbody th[scope=\"row\"]", ".services-aside-cta", ".research-drawer-actions",
+    ".gloss-tool-sidecar", ".sys-stack code", ".tool-chipnav a", ".tool-cta-chips li",
   ], INSET + ";color:var(--refresh-text-soft)"],
-  [[".trust-strip__list"], "color:var(--refresh-text-soft)"],
+  [[".trust-strip__list"], SOFT],
+
+  ["/* ===== floating / modal surfaces (--surface-1/2 = #FFFFFF) ===== */"],
+  // --surface-1 (raised) and --surface-2 (modal) are #FFFFFF and never remapped;
+  // many tool/research surfaces ride them. Cover the shared ones here.
+  [[
+    ".share-menu", ".share-btn", ".research-drawer-head", ".research-drawer-inner",
+    ".window-composer__msg", ".tool-skeleton-card", ".window-fieldnotes-rail",
+  ], "background:var(--refresh-surface-1);border-color:var(--refresh-line);color:var(--refresh-text)"],
 
   ["/* ===== FAQ ===== */"],
   [[".faq-grid"], "border-top-color:var(--refresh-line-strong)"],
   [[".faq-item"], "border-bottom-color:var(--refresh-line-strong)"],
-  [[".faq-item summary"], "color:var(--refresh-text)"],
-  [[".faq-item summary:hover", ".faq-item[open] summary"], "color:var(--refresh-accent)"],
+  [[".faq-item summary"], TEXT],
+  [[".faq-item summary:hover", ".faq-item[open] summary"], ACCENT],
   [[".faq-item summary::after"], "border-color:var(--refresh-text-soft)"],
   [[".faq-item[open] summary::after"], "border-color:var(--refresh-accent)"],
-  [[".faq-item p"], "color:var(--refresh-text-soft)"],
+  [[".faq-item p"], SOFT],
+
+  ["/* ===== the four data tables (dark-on-dark text — top-priority) ===== */"],
+  // Library index, operator tables, comparison + security-audit tables. Their
+  // backgrounds are transparent (they ride the page bg) so only text + borders
+  // need flipping.
+  [[".lib-idx", ".op-table", ".comparison-table", ".security-audit"], SOFT],
+  [[".lib-idx-title a", ".op-table thead th", ".comparison-table tbody th[scope=\"row\"]"], TEXT],
+  [[".lib-idx-title a:hover"], "border-bottom-color:var(--refresh-text)"],
+  [[".lib-idx-section"], ACCENT],
+  [[".lib-idx-date", ".lib-idx-contributor", ".comparison-table caption", ".comparison-table thead th", ".security-audit thead th", ".security-audit__hint", ".legal .cookie-table td"], SOFT],
+  [[
+    ".lib-idx thead th", ".lib-idx tbody tr", ".lib-idx tbody tr:last-child",
+    ".op-table th", ".op-table td", ".op-table thead th", ".op-table tfoot td",
+    ".comparison-table th", ".comparison-table td", ".security-audit th", ".security-audit td",
+    ".legal .cookie-table thead", ".recovery-row",
+  ], "border-color:var(--refresh-line)"],
 
   ["/* ===== search modal ===== */"],
   [[".search-modal-inner"], "background:var(--refresh-bg)"],
   [[".search-input-wrap"], "background:var(--refresh-surface-1);border-bottom-color:var(--refresh-line)"],
   [[".search-close", ".search-footer", ".search-footer kbd"], "background:var(--refresh-surface-2);color:var(--refresh-text-soft);border-color:var(--refresh-line)"],
 
-  ["/* ===== form fields ===== */"],
+  ["/* ===== form fields + inputs ===== */"],
   [[
     ".form-group input", ".form-group textarea", ".form-group select",
     ".ts-form input", ".si-form input", ".cmp-inputs input", ".intake-form",
-  ], "background:var(--refresh-surface-1);border-color:var(--refresh-line-strong);color:var(--refresh-text)"],
+    ".speed-form input", ".mob-form input", ".seo-form input", ".sch-form input",
+    ".field-notes-form__name", ".field-notes-form__body", ".window-composer__field",
+    ".window-composer__field-pair input", ".admin-now__field input", ".admin-now__field select",
+  ], FIELD],
+
+  ["/* ===== Listen / audio player ===== */"],
+  [[".listen-card"], "background:var(--refresh-surface-1);border-color:var(--refresh-line)"],
+  [[".listen-card-title", ".listen-card-meta strong", ".listen-help-dialog", ".listen-help-title", ".listen-dock-play", ".listen-btn"], TEXT],
+  [[".listen-btn"], "background:var(--refresh-surface-1);border-color:var(--refresh-line-strong)"],
+  [[".listen-btn:hover"], "background:var(--refresh-surface-2);border-color:var(--refresh-accent);color:var(--refresh-accent)"],
+  [[".listen-help-kbd kbd"], "background:var(--refresh-surface-2);color:var(--refresh-text);border-color:var(--refresh-line-strong)"],
+  [[".listen-preview", ".listen-finished-link:hover", ".listen-chapter-jump:hover"], ACCENT],
+
+  ["/* ===== body window / sash / contact composer (the /window/ surface) ===== */"],
+  [["body.window-canvas"], "background:var(--refresh-bg);color:var(--refresh-text)"],
+  [[".window-paused__headline", ".window-composer__body-label", ".window-handoff__lead", ".window-composer__crisis"], TEXT],
+  [[".window-shell__back:hover", ".window-paused__eyebrow", ".window-onramp:hover", ".window-composer__alt a", ".window-handoff__eyebrow", ".window-composer__crisis a"], ACCENT],
+
+  ["/* ===== inline graphics (viz-*) — titles/labels/numbers ===== */"],
+  [[
+    ".viz-bars", ".viz-waterfall__title", ".viz-slider__title", ".viz-slider__hint b",
+    ".viz-flow__title", ".viz-flow__meta strong", ".viz-tree__node summary", ".viz-tree__body strong",
+    ".viz-gauge__num", ".viz-gauge__label strong", ".viz-ring__label strong", ".viz-ba__handle::after",
+    ".viz-tree__num",
+  ], TEXT],
+  [[".viz-slider__readout", ".viz-flow__num", ".viz-tree__icon", ".viz-waterfall__row[data-keep=\"true\"] .viz-waterfall__num"], ACCENT],
+  [[".viz-flow__num", ".viz-tree__num"], "background:var(--refresh-surface-1);border-color:var(--refresh-line-strong)"],
 ];
 
 function buildBlock() {
@@ -171,9 +315,11 @@ function buildBlock() {
   const explicitRoot = ':root[data-theme="dark"] ';
 
   // Emit the @media path and the [data-theme] path from the same list.
+  // A rule row is `[ [selectors...], "decls" ]` (entry[0] is an array); any
+  // other row is a comment block (one or more comment strings).
   const emit = (prefix) =>
     RULES.map((entry) => {
-      if (entry.length === 1) return "  " + entry[0]; // comment row
+      if (!Array.isArray(entry[0])) return entry.map((c) => "  " + c).join("\n"); // comment row(s)
       const [selectors, decls] = entry;
       const sel = selectors.map((s) => prefix + s).join(",\n  ");
       return `  ${sel}{${decls}}`;

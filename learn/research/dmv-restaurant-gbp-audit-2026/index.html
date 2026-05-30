@@ -166,6 +166,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 .foot-bottom{display:flex;justify-content:space-between;gap:24px;align-items:center;flex-wrap:wrap}
 .below-fold-island{content-visibility:auto;contain-intrinsic-size:auto 1200px}
 @media print{.below-fold-island{content-visibility:visible}}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) body{background:#16181D;color:#F1EDE5}:root:not([data-theme="light"]) .nav{background:#16181D;border-bottom-color:#2C3038}:root:not([data-theme="light"]) .nav-toggle span{background:#F1EDE5}:root:not([data-theme="light"]) .logo{color:#F1EDE5}:root:not([data-theme="light"]) h1,:root:not([data-theme="light"]) h2,:root:not([data-theme="light"]) h3,:root:not([data-theme="light"]) h4{color:#F1EDE5}:root:not([data-theme="light"]) .hero h1 .serif-italic{color:#7AA7FF}:root:not([data-theme="light"]) .hero-sub,:root:not([data-theme="light"]) .hero-counts,:root:not([data-theme="light"]) .section-header p,:root:not([data-theme="light"]) .trust-strip__list{color:#B8B3A8}:root:not([data-theme="light"]) .hero-counts__chip{background:#1B1E24;border-color:#2C3038}:root:not([data-theme="light"]) .hero-counts__chip strong{color:#7AA7FF}:root:not([data-theme="light"]) .bg-cream2{background:#1B1E24}:root:not([data-theme="light"]) .trust-strip{background:#1B1E24;border-block-color:#2C3038}:root:not([data-theme="light"]) .btn-ghost{color:#F1EDE5;border-color:#707784}:root:not([data-theme="light"]) .btn-primary{background:#F1EDE5;color:#16181D}}
 </style>
 <!-- Preload the two above-the-fold web fonts so they arrive in
      parallel with site.css instead of being discovered after parse. -->
@@ -177,9 +178,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=a6562c270d6d" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-core.css?v=af2453ab9085" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=547ffa3cb375" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a6562c270d6d"><link rel="stylesheet" href="/assets/site-article.css?v=547ffa3cb375"></noscript>
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=af2453ab9085"><link rel="stylesheet" href="/assets/site-article.css?v=547ffa3cb375"></noscript>
 
 <!-- lazy-load:p --><script>(window.requestIdleCallback||function(c){return setTimeout(c,500);})(function(){var s=document.createElement("script");s.src="/assets/p.js?v=20260503";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:p -->
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>

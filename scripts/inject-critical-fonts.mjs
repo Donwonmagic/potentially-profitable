@@ -184,6 +184,32 @@ const BLOCK = [
   // stylesheet override so paper output isn't blank.
   `.below-fold-island{content-visibility:auto;contain-intrinsic-size:auto 1200px}`,
   `@media print{.below-fold-island{content-visibility:visible}}`,
+  // First-paint dark mode. The inline critical CSS seeds LIGHT token values
+  // (body bg var(--cream), nav bg, etc.) that, before site-core.css loads,
+  // would flash — and persist — light for an OS-dark visitor. This mirrors the
+  // dark surface/border/accent values from the generated dark block
+  // (scripts/build-dark-mode.mjs) for just the handful of surfaces this
+  // skeleton paints, so the first paint is already dark. We override by
+  // PROPERTY (not by remapping --ink/--cream, which are overloaded — see the
+  // generator header) so footer/nav-toggle marks that legitimately use --ink
+  // as a dark fill stay correct.
+  `@media (prefers-color-scheme:dark){`+
+    `:root:not([data-theme="light"]) body{background:#16181D;color:#F1EDE5}`+
+    `:root:not([data-theme="light"]) .nav{background:#16181D;border-bottom-color:#2C3038}`+
+    `:root:not([data-theme="light"]) .nav-toggle span{background:#F1EDE5}`+
+    `:root:not([data-theme="light"]) .logo{color:#F1EDE5}`+
+    `:root:not([data-theme="light"]) h1,:root:not([data-theme="light"]) h2,:root:not([data-theme="light"]) h3,:root:not([data-theme="light"]) h4{color:#F1EDE5}`+
+    `:root:not([data-theme="light"]) .hero h1 .serif-italic{color:#7AA7FF}`+
+    `:root:not([data-theme="light"]) .hero-sub,:root:not([data-theme="light"]) .hero-counts,:root:not([data-theme="light"]) .section-header p,:root:not([data-theme="light"]) .trust-strip__list{color:#B8B3A8}`+
+    `:root:not([data-theme="light"]) .hero-counts__chip{background:#1B1E24;border-color:#2C3038}`+
+    `:root:not([data-theme="light"]) .hero-counts__chip strong{color:#7AA7FF}`+
+    `:root:not([data-theme="light"]) .bg-cream2{background:#1B1E24}`+
+    `:root:not([data-theme="light"]) .trust-strip{background:#1B1E24;border-block-color:#2C3038}`+
+    // footer is var(--ink) dark in BOTH themes; its cream text stays correct —
+    // no override needed. .btn-ghost (hero) flips to a visible light border.
+    `:root:not([data-theme="light"]) .btn-ghost{color:#F1EDE5;border-color:#707784}`+
+    `:root:not([data-theme="light"]) .btn-primary{background:#F1EDE5;color:#16181D}`+
+  `}`,
 ].join('\n') + '\n';
 
 // Anchor pair: the block lives between `main{padding-top:64px}\n`
