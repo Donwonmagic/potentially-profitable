@@ -822,6 +822,30 @@
     } catch (_) { /* ignore */ }
   })();
 
+  // Phase W — Ledger handoff. Visitors routed from Muntin Ledger
+  // arrive with ?source=ledger. Record the source on the hidden
+  // #windowSource field so it serializes with the form submission,
+  // and reveal the warm welcome line for Ledger arrivals. Mirrors
+  // the readTopicParam() slug-allowlist style: never trust the URL.
+  // Defensive null-guards throughout — this script runs site-wide
+  // via the bundle, so the elements exist only on /window/.
+  (function applySource() {
+    var search;
+    try { search = new URLSearchParams(location.search || ''); }
+    catch (_) { return; }
+    var raw = search.get('source') || '';
+    // Sanitize to a short safe slug: lowercase, strip to [a-z0-9-],
+    // cap at 24 chars. Empty after sanitizing → nothing to record.
+    var cleanSource = raw.toLowerCase().replace(/[^a-z0-9-]/g, '').slice(0, 24);
+    if (!cleanSource) return;
+    var sourceEl = document.getElementById('windowSource');
+    if (sourceEl) sourceEl.value = cleanSource;
+    if (cleanSource === 'ledger') {
+      var l = document.getElementById('windowFromLedger');
+      if (l) l.hidden = false;
+    }
+  })();
+
   // Phase 2.4 — handoff prefill receiver. URL convention:
   //   /window/?topic=<key>&prefill=<base64-encoded text>
   // where <key> is one of: audit, gbp, storefront-health, sheet:plate-cost,
