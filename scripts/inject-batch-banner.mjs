@@ -76,18 +76,52 @@ function buildBanner(locale) {
   // users), 14px italic headline that wraps to two lines max on mobile,
   // smaller "New this week" pill, smaller pill CTA. Total height ~70-90px
   // on mobile depending on headline wrap, ~40px on desktop.
-  const newLabel = locale === 'es' ? 'Nuevo esta semana' : 'New this week';
+  // Surfaces use FIXED hex (not var(--ink)/var(--cream)) so the banner
+  // does NOT invert in dark mode. The semantic tokens flip per theme,
+  // which turned the strip into a plain light bar under a dark-mode
+  // page; pinning the colours keeps it a consistent, striking dark
+  // "Golden Hour" marquee in both themes.
+  //
+  // A course / standalone launch (type:'course') is the conversion
+  // surface: a warm marigold->coral glow sits behind the CTA side (it
+  // adds depth and pulls the eye toward the action), the pill is a
+  // marigold "Free course" hook, and the CTA is a FILLED marigold
+  // button — a coloured, high-affordance target, not a flat pill. A
+  // weekly batch keeps the blue pill + cream CTA on the same dark strip.
+  const isCourse = batch.type === 'course';
+  const pillText = locale === 'es'
+    ? (batch.pill_es || 'Nuevo esta semana')
+    : (batch.pill_en || 'New this week');
+  const pillBg = isCourse ? '#FFB020' : '#2A50C8';   // marigold | brand blue
+  const pillFg = isCourse ? '#16181D' : '#F6F7F8';   // ink on marigold | cream on blue
+  const ground = isCourse
+    ? 'radial-gradient(160% 240% at 97% 50%,rgba(255,176,32,0.20) 0%,rgba(255,107,92,0.07) 33%,rgba(22,24,29,0) 60%),#16181D'
+    : '#16181D';
+  const ctaBg = isCourse ? '#FFB020' : '#F6F7F8';
+  const ctaFg = '#16181D';
   return [
     '<!-- batch-banner:start -->',
-    `<aside class="batch-marquee" data-batch="${escAttr(batch.key)}" role="complementary" aria-label="${escAttr(label)}" style="background:var(--ink,#14161A);color:var(--cream,#FAF7F2);font-size:14px;line-height:1.4;padding:8px 0;border-bottom:1px solid rgba(250,247,242,0.12)">`,
+    `<aside class="batch-marquee" data-batch="${escAttr(batch.key)}" role="complementary" aria-label="${escAttr(label)}" style="background:${ground};color:#F6F7F8;font-size:14px;line-height:1.4;padding:8px 0;border-bottom:1px solid rgba(246,247,248,0.16);box-shadow:inset 0 1px 0 rgba(255,255,255,0.05)">`,
     `  <div style="max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,64px);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">`,
     `    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;min-width:0;flex:1 1 auto">`,
-    `      <span style="display:inline-block;font-family:Inter,system-ui,sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;background:var(--teal,#2A50C8);color:var(--cream,#FAF7F2);padding:3px 8px;border-radius:3px;white-space:nowrap;flex-shrink:0">${escHtml(newLabel)}</span>`,
-    `      <span style="font-family:Georgia,serif;font-size:14px;font-style:italic;line-height:1.35;min-width:0">${escHtml(headline)}</span>`,
+    `      <span style="display:inline-block;font-family:Inter,system-ui,sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;background:${pillBg};color:${pillFg};padding:3px 8px;border-radius:3px;white-space:nowrap;flex-shrink:0">${escHtml(pillText)}</span>`,
+    `      <span style="font-family:'Fraunces',Georgia,'Times New Roman',serif;font-size:14px;font-style:italic;line-height:1.35;min-width:0;color:#F6F7F8">${escHtml(headline)}</span>`,
     `    </div>`,
-    `    <a href="${escAttr(href)}" style="display:inline-flex;align-items:center;gap:6px;color:var(--ink,#14161A);background:var(--cream,#FAF7F2);text-decoration:none;font-family:Inter,system-ui,sans-serif;font-weight:600;font-size:12px;padding:5px 12px;border-radius:999px;white-space:nowrap;flex-shrink:0;transition:transform .15s ease">${escHtml(cta)} <span aria-hidden="true">${arrow}</span></a>`,
+    `    <a href="${escAttr(href)}" style="display:inline-flex;align-items:center;gap:6px;color:${ctaFg};background:${ctaBg};text-decoration:none;font-family:Inter,system-ui,sans-serif;font-weight:700;font-size:13px;padding:6px 14px;border-radius:999px;white-space:nowrap;flex-shrink:0;box-shadow:0 1px 2px rgba(0,0,0,0.18);transition:transform .15s ease,box-shadow .15s ease">${escHtml(cta)} <span aria-hidden="true">${arrow}</span></a>`,
     `  </div>`,
     `</aside>`,
+    // The banner is position:fixed and the nav is offset below it by
+    // var(--banner-h). A static --banner-h (40px / 72px mobile) can't
+    // track a banner whose height changes when the italic headline
+    // wraps — so the nav overlapped the banner's lower edge on narrow
+    // screens / long headlines. This measures the real height and sets
+    // --banner-h to it (inline style beats the CSS default + media
+    // query), re-measuring on resize, on orientation change, and after
+    // the Fraunces webfont swaps in (which changes the wrap). Runs at
+    // parse time right after the <aside>, so it sets the var before the
+    // async stylesheet pins anything. Removed automatically when the
+    // banner is hidden (the whole block is re-stamped).
+    `<script>(function(){var d=document.documentElement;function s(){var b=document.querySelector('.batch-marquee');if(b){d.style.setProperty('--banner-h',b.offsetHeight+'px');}}s();addEventListener('resize',s,{passive:true});addEventListener('orientationchange',s);if(document.fonts&&document.fonts.ready){document.fonts.ready.then(s);}})();</script>`,
     '<!-- batch-banner:end -->',
   ].join('\n');
 }

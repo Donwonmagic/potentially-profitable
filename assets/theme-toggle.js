@@ -66,24 +66,34 @@
   }
 
   function init() {
-    var btn = document.querySelector('.js-theme-toggle');
-    if (!btn) return;
+    // Every .js-theme-toggle instance (desktop nav + mobile menu). They
+    // share one state and stay in sync — the desktop one is icon-only,
+    // the mobile one also carries a .js-theme-label text.
+    var btns = document.querySelectorAll('.js-theme-toggle');
+    if (!btns.length) return;
 
-    // Apply stored preference (if any) before un-hiding the button.
+    // Apply stored preference (if any) before un-hiding the buttons.
     var stored = safeRead();
     if (stored === 'dark' || stored === 'light') applyTheme(stored);
-    btn.hidden = false;
+    for (var i = 0; i < btns.length; i++) btns[i].hidden = false;
 
-    function syncButton() {
+    function syncButtons() {
       var resolved = readResolved();
       var isDark = resolved === 'dark';
-      btn.setAttribute('aria-pressed', isDark ? 'true' : 'false');
-      btn.setAttribute('aria-label',
-        isDark ? 'Switch to light mode' : 'Switch to dark mode');
+      for (var j = 0; j < btns.length; j++) {
+        var b = btns[j];
+        b.setAttribute('aria-pressed', isDark ? 'true' : 'false');
+        b.setAttribute('aria-label',
+          isDark ? 'Switch to light mode' : 'Switch to dark mode');
+        var lbl = b.querySelector('.js-theme-label');
+        if (lbl) lbl.textContent = isDark
+          ? (b.getAttribute('data-label-dark') || 'Dark mode')
+          : (b.getAttribute('data-label-light') || 'Light mode');
+      }
     }
-    syncButton();
+    syncButtons();
 
-    btn.addEventListener('click', function () {
+    function onToggle() {
       var current = safeRead(); // 'dark' | 'light' | null (auto)
       var next;
       if (current == null)      next = 'light';
@@ -92,18 +102,19 @@
       if (next == null) safeWrite(null);
       else              safeWrite(next);
       applyTheme(next);
-      syncButton();
+      syncButtons();
       if (window.plausible) {
         try { window.plausible('Theme Toggle', { props: { theme: next == null ? 'auto' : next } }); } catch (_) {}
       }
-    });
+    }
+    for (var k = 0; k < btns.length; k++) btns[k].addEventListener('click', onToggle);
 
-    // Keep the button label in sync if the OS preference flips while
-    // the user is on the page AND they're in 'auto' mode.
+    // Keep the labels in sync if the OS preference flips while the user
+    // is on the page AND they're in 'auto' mode.
     if (window.matchMedia) {
       var mq = window.matchMedia('(prefers-color-scheme: dark)');
       var listener = function () {
-        if (safeRead() == null) syncButton();
+        if (safeRead() == null) syncButtons();
       };
       if (mq.addEventListener) mq.addEventListener('change', listener);
       else if (mq.addListener) mq.addListener(listener);
