@@ -207,9 +207,15 @@ const SCRIPTS = [
   "scripts/inject-course-mark-complete.mjs",
   "scripts/build-sheets-index.mjs",
 ].map((s) => path.join(REPO, s));
-// Brand chrome SVGs used directly in page HTML — cool + lock them here. NOT
-// brand/og (those render to PNGs -> the OG re-render follow-on) and NOT
-// brand/icons (they feed build-og-cards -> same follow-on).
+// Brand SVGs. After the 2026 "Golden Hour" migration every brand asset is
+// on the cool spine — marks, lockups, the 17 icons, the 748 generated OG
+// cards, the master share image, and the muntin patterns. So the WHOLE
+// brand/ SVG tree is swept + locked here, closing the former
+// brand/og + brand/icons carve-out (the "OG re-render follow-on"): warm
+// drift can no longer return to any brand asset without failing --check.
+// Note: build-og-cards.mjs is intentionally NOT swept — its PALETTE
+// comments document the retired hexes (e.g. "was warm #14161A"), so the
+// generated OG SVGs are the lock point, not the generator.
 function collectSvg(dir) {
   const out = [];
   let names;
@@ -225,7 +231,7 @@ function collectSvg(dir) {
   }
   return out;
 }
-const BRAND_SVGS = collectSvg(path.join(REPO, "brand/lockup"));
+const BRAND_SVGS = collectSvg(path.join(REPO, "brand"));
 // Tool pages whose warm hex lives in render-JS / inline SVG strings (beyond the
 // safe transform's reach). Full sweep is safe — calculator UI, no theme-swatch
 // color content.
