@@ -64,8 +64,8 @@ const RULES = [
   '.btn-primary{background:var(--ink);color:var(--cream)}',
   // .btn-ghost — outlined variant used by See pricing and other
   // secondary actions. --line-dark isn't declared in critical CSS so
-  // hardcode the value here (#D9D5CB matches the token).
-  '.btn-ghost{background:transparent;color:var(--ink);border:1px solid #D9D5CB}',
+  // hardcode the value here (#D7DAE0 = the current --line-dark token).
+  '.btn-ghost{background:transparent;color:var(--ink);border:1px solid #D7DAE0}',
 ];
 const SENTINEL = '/* injected by inject-critical-link-color.mjs */';
 

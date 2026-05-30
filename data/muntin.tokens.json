@@ -1,0 +1,181 @@
+{
+  "$meta": {
+    "name": "Muntin canonical design tokens",
+    "purpose": "Single source of truth for the Muntin brand across BOTH surfaces: the Ledger product (Muntin-Invoice-Decoder) and the muntin.digital site (potentially-profitable). One palette, two registers.",
+    "anchor": "The product's packages/ui/tokens.css is the visual anchor (financial-grade slate + blue). These values mirror it. The product re-pigment landed there; the site adopted the same DNA in commit fb86dad3f ('Wave 8b — apex muntin.digital adopts financial-grade DNA', 2026-05-16).",
+    "registers": "Both registers share this palette. They differ ONLY by typography (product = Inter/Geist Mono; editorial = Fraunces display + Inter body), theme (product is dark-first; editorial is light), and which blue is primary (product fill #3b68f5; editorial uses the deeper accent.text #2a50c8 for AA on light surfaces). Editorial WARMTH is expressed through type + layout, NOT surface color.",
+    "guards": "Muntin-Invoice-Decoder/scripts/check-tokens-parity.mjs locks packages/ui/tokens.css to core+themes.dark. potentially-profitable/scripts/build-tokens.mjs --check locks assets/site.css :root to the editorial register. Color comparison is case-insensitive.",
+    "hexCasing": "Stored lowercase (matches the product anchor). Guards normalize case before comparing."
+  },
+
+  "core": {
+    "slate": {
+      "0": "#ffffff",
+      "25": "#fbfbfc",
+      "50": "#f6f7f8",
+      "100": "#edeef1",
+      "150": "#e3e5e9",
+      "200": "#d7dae0",
+      "300": "#c2c6cf",
+      "400": "#9aa0ab",
+      "500": "#6b7280",
+      "600": "#4a4f59",
+      "700": "#2c2f36",
+      "900": "#16181d",
+      "950": "#0c0d10"
+    },
+    "surface": {
+      "bg": "#f6f7f8",
+      "surface": "#ffffff",
+      "surface-2": "#f6f7f8",
+      "surface-3": "#edeef1",
+      "elevated": "#ffffff",
+      "overlay": "rgba(16, 18, 21, 0.45)",
+      "inverted": "#16181d"
+    },
+    "text": {
+      "primary": "#16181d",
+      "secondary": "#4a4f59",
+      "tertiary": "#5f6670",
+      "disabled": "#9aa0ab",
+      "on-accent": "#ffffff"
+    },
+    "border": {
+      "default": "#d7dae0",
+      "strong": "#868d9a",
+      "divider": "#e3e5e9",
+      "focus": "#3b68f5"
+    },
+    "accent": {
+      "default": "#3b68f5",
+      "hover": "#3058de",
+      "press": "#2647b8",
+      "fg": "#ffffff",
+      "soft": "#eaf0fe",
+      "border": "#b9ccfa",
+      "text": "#2a50c8"
+    },
+    "status": {
+      "success": "#1e874b",
+      "success-soft": "#e4f4ea",
+      "success-text": "#176b3c",
+      "warning": "#b7791f",
+      "warning-soft": "#fbf0dc",
+      "warning-text": "#92600f",
+      "danger": "#c42e2e",
+      "danger-soft": "#fbe6e6",
+      "danger-text": "#b22a2a",
+      "info": "#3b68f5",
+      "info-soft": "#eaf0fe",
+      "pos": "#1e874b",
+      "neg": "#d23b3b"
+    }
+  },
+
+  "themes": {
+    "dark": {
+      "_applies_to": "product register only (dark-first). Editorial/site is light-only today.",
+      "surface": {
+        "bg": "#0f1012",
+        "surface": "#141517",
+        "surface-2": "#191b1e",
+        "surface-3": "#1f2125",
+        "elevated": "#1b1d21",
+        "inverted": "#e9ebef"
+      },
+      "text": {
+        "primary": "#e9ebef",
+        "secondary": "#aeb3bd",
+        "tertiary": "#878d98",
+        "disabled": "#5a5f68",
+        "on-accent": "#0b0c0e"
+      },
+      "border": {
+        "default": "#26282d",
+        "strong": "#696f7a",
+        "divider": "#1f2125",
+        "focus": "#5b82ff"
+      },
+      "accent": {
+        "default": "#5b82ff",
+        "hover": "#7196ff",
+        "press": "#4a72f0",
+        "fg": "#0b0c0e",
+        "soft": "#16203a",
+        "border": "#2c3f6b",
+        "text": "#9db6ff"
+      },
+      "status": {
+        "success": "#3fbe74",
+        "warning": "#e0a33b",
+        "danger": "#f0605f",
+        "info": "#5b82ff",
+        "pos": "#3fbe74",
+        "neg": "#f0605f"
+      }
+    }
+  },
+
+  "scales": {
+    "_note": "Documented for cohesion; the color guards are the enforced lock. Radii differ by register (product = subtle rects; site = its established scale).",
+    "radius": { "xs": "4px", "sm": "6px", "md": "8px", "lg": "10px", "pill": "999px" },
+    "motion": {
+      "ease-default": "cubic-bezier(0.2, 0.8, 0.2, 1)",
+      "ease-exit": "cubic-bezier(0.4, 0, 1, 1)",
+      "ease-emphasis": "cubic-bezier(0.16, 1, 0.3, 1)",
+      "dur-micro": "120ms",
+      "dur-small": "180ms",
+      "dur-medium": "240ms",
+      "dur-large": "320ms"
+    },
+    "type": {
+      "body": "Inter",
+      "mono": "Geist Mono",
+      "editorial": "Fraunces"
+    }
+  },
+
+  "registers": {
+    "product": {
+      "consumer": "Muntin-Invoice-Decoder/packages/ui/tokens.css",
+      "varPrefix": "--mun-",
+      "theme": "dark-first (light + auto via lib/theme.ts)",
+      "primaryAccent": "core.accent.default (#3b68f5)",
+      "type": { "display": "Inter", "body": "Inter", "mono": "Geist Mono", "editorial": "Fraunces" }
+    },
+    "editorial": {
+      "consumer": "potentially-profitable/assets/site.css",
+      "varStyle": "legacy names (kept stable so the site re-pigments with zero selector edits)",
+      "theme": "light",
+      "primaryAccent": "core.accent.text (#2a50c8) — the deeper blue, AA on light surfaces",
+      "type": { "display": "Fraunces", "body": "Inter" },
+      "warmthVia": "typography (Fraunces) + generous editorial layout/measure — NOT surface color",
+      "legacyVarMap": {
+        "--white": "core.slate.0 (#ffffff)",
+        "--cream": "core.surface.bg (#f6f7f8)",
+        "--cream-2": "core.surface.surface-3 (#edeef1)",
+        "--ink": "core.text.primary (#16181d)",
+        "--ink-soft": "core.text.secondary (#4a4f59)",
+        "--stone": "core.slate.500 (#6b7280)",
+        "--stone-2": "core.slate.400 (#9aa0ab)",
+        "--teal": "core.accent.text (#2a50c8)",
+        "--teal-dark": "#1f3a93 (editorial-specific accent press; deeper than core.accent.press)",
+        "--teal-tint": "core.accent.soft (#eaf0fe)",
+        "--rust": "core.status.danger (#c42e2e)",
+        "--gold": "core.status.warning (#b7791f)",
+        "--line": "core.border.divider (#e3e5e9)",
+        "--line-dark": "core.border.default (#d7dae0)",
+        "--line-input": "core.border.strong (#868d9a)"
+      }
+    }
+  },
+
+  "retiredWarmPalette": {
+    "_note": "Pre-Wave-8b editorial values. Any live occurrence (outside docs) is a migration remnant to purge, NOT a value to honor.",
+    "cream": "#faf7f2",
+    "cream-2": "#f3eee3",
+    "teal": "#1f4e5b",
+    "teal-dark": "#143640",
+    "rust": "#b8541a"
+  }
+}

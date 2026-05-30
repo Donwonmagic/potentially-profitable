@@ -64,7 +64,7 @@ function buildBlock() {
   const css = [
     '<style>',
     '.course-mc{margin:48px 0 0;padding:22px 24px;border:1px dashed var(--line);border-radius:10px;background:var(--cream)}',
-    '.course-mc-btn{display:inline-flex;align-items:center;gap:10px;padding:12px 22px;font-family:var(--font-body);font-size:15px;font-weight:600;border-radius:99px;border:1.5px solid var(--teal);background:var(--teal);color:#FAF7F2;cursor:pointer;transition:transform .08s ease}',
+    '.course-mc-btn{display:inline-flex;align-items:center;gap:10px;padding:12px 22px;font-family:var(--font-body);font-size:15px;font-weight:600;border-radius:99px;border:1.5px solid var(--teal);background:var(--teal);color:#F6F7F8;cursor:pointer;transition:transform .08s ease}',
     '.course-mc-btn:hover{transform:translateY(-1px)}',
     '.course-mc-btn:focus-visible{outline:2px solid var(--teal-dark);outline-offset:2px}',
     '.course-mc-btn[data-state="saving"]{opacity:.7;cursor:wait}',
