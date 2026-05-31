@@ -105,6 +105,39 @@ function xmlEscape(s) {
 }
 
 /**
+ * Word-wrap a dek into <tspan> lines so it never trails off the card.
+ * Greedy wrap by estimated character width (Inter ≈ 0.52em average),
+ * capped at maxLines with an ellipsized tail if it still overruns.
+ * Returns the tspans to drop INSIDE the existing <text x y …> element
+ * (which carries the font-family / size / weight / fill). The first
+ * line sits on the original baseline (dy=0); each subsequent line drops
+ * by lineHeight. Pass the RAW dek (escaping happens per line here).
+ */
+function dekTspans(text, x, { fontSize = 20, lineHeight = 28, maxWidth = CANVAS_W - 2 * EDGE, maxLines = 3, ratio = 0.52 } = {}) {
+  const max = Math.max(12, Math.floor(maxWidth / (fontSize * ratio)));
+  const words = String(text ?? "").split(/\s+/).filter(Boolean);
+  const lines = [];
+  let cur = "";
+  for (const w of words) {
+    const next = cur ? cur + " " + w : w;
+    if (next.length > max && cur) { lines.push(cur); cur = w; }
+    else { cur = next; }
+  }
+  if (cur) lines.push(cur);
+  if (lines.length > maxLines) {
+    lines[maxLines - 1] = (lines[maxLines - 1] + " " + lines.slice(maxLines).join(" ")).trim();
+    lines.length = maxLines;
+    const lastMax = max - 1;
+    if (lines[maxLines - 1].length > lastMax) {
+      lines[maxLines - 1] = lines[maxLines - 1].slice(0, lastMax).replace(/\s+\S*$/, "") + "…";
+    }
+  }
+  return lines
+    .map((ln, i) => `<tspan x="${x}" dy="${i === 0 ? 0 : lineHeight}">${xmlEscape(ln)}</tspan>`)
+    .join("");
+}
+
+/**
  * Single source of truth for vertical layout slots. Renderers should
  * route every y-coordinate through this helper. New slots get added
  * here, not inlined in render*.
@@ -729,7 +762,7 @@ function renderPage(card) {
 
   <text x="${EDGE}" y="${yDek}"
         font-family="Inter, Arial, sans-serif" font-size="22"
-        font-weight="400" fill="${fg}" opacity="0.65">${dek}</text>
+        font-weight="400" fill="${fg}" opacity="0.65">${dekTspans(card.dek ?? "", EDGE, { fontSize: 22, lineHeight: 30 })}</text>
 
   ${ornament({ color: fg })}
   ${footer({ color: dim, ruleColor: "rgba(246,247,248,0.18)" })}
@@ -795,7 +828,7 @@ function renderResearch(card) {
 
   <text x="${EDGE}" y="${yDek}"
         font-family="Inter, Arial, sans-serif" font-size="20"
-        font-weight="400" fill="${PALETTE.muted}">${dek}</text>
+        font-weight="400" fill="${PALETTE.muted}">${dekTspans(card.dek ?? "", EDGE, { fontSize: 20, lineHeight: 28 })}</text>
 
   ${focus}
 
@@ -860,7 +893,7 @@ function renderArticle(card) {
 
   <text x="${EDGE}" y="${yDek}"
         font-family="Inter, Arial, sans-serif" font-size="20"
-        font-weight="400" fill="${PALETTE.muted}">${dek}</text>
+        font-weight="400" fill="${PALETTE.muted}">${dekTspans(card.dek ?? "", EDGE, { fontSize: 20, lineHeight: 28 })}</text>
 
   ${focus}
 
@@ -937,7 +970,7 @@ function renderGlossary(card) {
 
   <text x="${EDGE}" y="${yDek}"
         font-family="Inter, Arial, sans-serif" font-size="22"
-        font-weight="400" fill="${PALETTE.muted}">${dek}</text>
+        font-weight="400" fill="${PALETTE.muted}">${dekTspans(card.dek ?? "", EDGE, { fontSize: 22, lineHeight: 30 })}</text>
 
   ${ornament({ color: PALETTE.muted })}
   ${footer({ color: PALETTE.muted, ruleColor: PALETTE.rule })}
@@ -1001,7 +1034,7 @@ function renderTool(card) {
 
   <text x="${EDGE}" y="${yDek}"
         font-family="Inter, Arial, sans-serif" font-size="20"
-        font-weight="400" fill="${fg}" opacity="0.72">${dek}</text>
+        font-weight="400" fill="${fg}" opacity="0.72">${dekTspans(card.dek ?? "", EDGE, { fontSize: 20, lineHeight: 28 })}</text>
 
   ${focus}
 
@@ -1063,7 +1096,7 @@ function renderPeople(card) {
 
   <text x="${EDGE}" y="${yDek}"
         font-family="Inter, Arial, sans-serif" font-size="22"
-        font-weight="400" fill="${PALETTE.muted}">${dek}</text>
+        font-weight="400" fill="${PALETTE.muted}">${dekTspans(card.dek ?? "", EDGE, { fontSize: 22, lineHeight: 30 })}</text>
 
   ${ornament({ color: PALETTE.muted })}
   ${footer({ color: PALETTE.muted, ruleColor: PALETTE.rule })}
