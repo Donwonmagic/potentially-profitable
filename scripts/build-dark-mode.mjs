@@ -211,6 +211,13 @@ const EXCEPTIONS = [
   [[".form-group select"], "background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23BBB6AB' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E\")"],
   [[".cite summary::before"], "background:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23BBB6AB' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 19.5A2.5 2.5 0 0 1 6.5 17H20'/%3E%3Cpath d='M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z'/%3E%3C/svg%3E\") no-repeat center / contain"],
   [[".cite summary::after"], "background:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23BBB6AB' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E\") no-repeat center / contain;transition:transform var(--t-fast) var(--ease)"],
+  ["/* Hero 'window' panes hardcode bright #FFF/#EDEEF1 glass that can't flip →",
+   "   17.8:1 glare on the dark hero, competing with the headline. Dim to a soft",
+   "   slate glass (#2A3038) so it reads as a gently-lit window, not a lightbox.",
+   "   Keep the blue inner-glow stops; only the bright white/cream stops change. */"],
+  [[".pane:nth-child(odd)"], "background:radial-gradient(130% 100% at 80% 20%,#2A3038 0%,#222a3a 55%,rgba(42,80,200,0.22) 100%)"],
+  [[".pane:nth-child(3n)"], "background:radial-gradient(120% 120% at 30% 80%,#2A3038 0%,#21262E 45%,rgba(42,80,200,0.22) 100%)"],
+  [[".pane:nth-child(4)"], "background:radial-gradient(110% 110% at 50% 50%,#2A3038 0%,#21262E 50%,rgba(31,58,147,0.2) 100%)"],
   ["/* hero gradient-text: -webkit-text-fill-color overrides color */"],
   [[".hero h1 .serif-italic"], "background:none;-webkit-text-fill-color:var(--teal);color:var(--teal)"],
 ];
