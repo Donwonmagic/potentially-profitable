@@ -101,6 +101,57 @@ export const THROTTLE_TTL_SEC       = 48 * 3600;
 export const PENDING_DON_TTL_SEC    = 5 * 60;
 export const PENDING_DON_BATCH_MS   = 2 * 60 * 1000;
 
+// ── Phase 8 — operational backstops (plan §8) ─────────────────
+// §8.2 queue-depth daily cap. New threads beyond this in a UTC day are
+// NOT rejected — the note is still filed — but the composer shows the
+// "stack today, filed for tomorrow" half-success copy. A mathematical
+// bound on Don's day.
+export const MAX_NEW_THREADS_PER_DAY = 25;
+export const newThreadsDayKey = (day) => 'window:newthreads:' + day;
+
+// §8.1 auto-pause vital-signs thresholds, with HYSTERESIS so the public
+// state can't flap tick-to-tick when the unreplied count hovers at a
+// bound. Level 0 = normal · 1 = soft ("slower than usual") · 2 =
+// disabled. Trip points are higher than clear points (the gap is the
+// hysteresis):
+//   normal   → soft      when unreplied > 30  (TRIP_SOFT)
+//   soft     → normal     when unreplied < 25  (CLEAR_SOFT)
+//   soft     → disabled   when unreplied > 75  (TRIP_HARD)
+//   disabled → soft       when unreplied < 65  (CLEAR_HARD)
+// Plus a presence floor: if the breathing-dot lastSeen hasn't updated
+// in > 72h, hold at least soft (no operator around).
+export const AUTOPAUSE_TRIP_SOFT   = 30;
+export const AUTOPAUSE_CLEAR_SOFT  = 25;
+export const AUTOPAUSE_TRIP_HARD   = 75;
+export const AUTOPAUSE_CLEAR_HARD  = 65;
+export const AUTOPAUSE_STALE_HOURS = 72;
+
+/**
+ * Pure hysteresis state machine for the auto-pause level. Given the
+ * PREVIOUS level (0|1|2), the current unreplied-thread count, and hours
+ * since the breathing dot last updated, returns the next level. No I/O —
+ * unit-testable in isolation. Escalation uses the TRIP thresholds,
+ * de-escalation the lower CLEAR thresholds, so a count oscillating around
+ * one bound doesn't toggle the public state every 5 minutes.
+ */
+export function computeAutoPauseLevel(prevLevel, unreplied, staleHours) {
+  const prev = (prevLevel === 1 || prevLevel === 2) ? prevLevel : 0;
+  const n = Number.isFinite(unreplied) ? unreplied : 0;
+  let load;
+  if (prev >= 2) {
+    // Currently disabled: stay disabled until under CLEAR_HARD.
+    load = n < AUTOPAUSE_CLEAR_HARD ? (n > AUTOPAUSE_TRIP_SOFT ? 1 : 0) : 2;
+  } else if (prev >= 1) {
+    // Currently soft: escalate past TRIP_HARD, clear under CLEAR_SOFT.
+    load = n > AUTOPAUSE_TRIP_HARD ? 2 : (n < AUTOPAUSE_CLEAR_SOFT ? 0 : 1);
+  } else {
+    // Currently normal: trip soft past TRIP_SOFT, disabled past TRIP_HARD.
+    load = n > AUTOPAUSE_TRIP_HARD ? 2 : (n > AUTOPAUSE_TRIP_SOFT ? 1 : 0);
+  }
+  const staleFloor = (Number.isFinite(staleHours) && staleHours > AUTOPAUSE_STALE_HOURS) ? 1 : 0;
+  return Math.max(load, staleFloor);
+}
+
 export const THREAD_STATUSES = new Set(['open', 'closed', 'archived']);
 
 // Mirror save/submission id shape (10-char alphabet, ~49 bits).

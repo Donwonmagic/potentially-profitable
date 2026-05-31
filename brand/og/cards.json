@@ -3,6 +3,66 @@
   "_comment": "OG card manifest. Each entry produces <slug>.svg + <slug>.png in brand/og/. kind selects the template (page|article|research|tool). accent keys into PALETTE in scripts/build-og-cards.mjs (per accent rule: speed/mobile=teal, conversions/reservations=rust, local-seo=teal, margin/operations=gold, trust=ink, brand=cream-on-ink/teal-on-cream, research=rust, tools=gold, hubs=ink). glyph keys into the GLYPHS registry in build-og-cards.mjs and renders left of the eyebrow as a subject cue. focus is an optional module { type: 'type'|'funnel'|'stat'|'score-ring'|'list'|'quote'|'checks', ...data }. locale is for hreflang pairing; ES cards use slug '-es' suffix.",
   "cards": [
     {
+      "slug": "library-best-restaurant-website-platform",
+      "kind": "article",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "brand",
+      "eyebrow": "PLATFORMS · 2026",
+      "title_1": "The best website",
+      "title_italic": "platform",
+      "title_2": "for your restaurant.",
+      "dek": "Custom vs Wix, Squarespace, BentoBox, Popmenu, Owner.com, and Toast — ranked by what you own, what it costs, and who each one fits."
+    },
+    {
+      "slug": "library-commission-free-online-ordering-restaurants",
+      "kind": "article",
+      "locale": "en",
+      "accent": "rust",
+      "glyph": "delivery",
+      "eyebrow": "ONLINE ORDERING · 2026",
+      "title_1": "Commission-free",
+      "title_italic": "online ordering",
+      "title_2": "— who really wins.",
+      "dek": "Owner.com, Toast, and your own site against the 15–30% marketplaces — what each really costs, and who it fits."
+    },
+    {
+      "slug": "library-how-to-hire-a-restaurant-web-designer",
+      "kind": "article",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "trust",
+      "eyebrow": "HIRING · 2026",
+      "title_1": "How to hire a",
+      "title_italic": "web designer",
+      "title_2": "for your restaurant.",
+      "dek": "The questions to ask, fair pay ranges, the red flags, and how to tell a real builder from a template reseller."
+    },
+    {
+      "slug": "library-restaurant-online-menu-best-practices",
+      "kind": "article",
+      "locale": "en",
+      "accent": "gold",
+      "glyph": "conversions",
+      "eyebrow": "MENUS · 2026",
+      "title_1": "Put your menu",
+      "title_italic": "online",
+      "title_2": "the right way.",
+      "dek": "Real HTML beats a PDF: descriptions that sell, allergens done right, photos that work, and the setup that wins search."
+    },
+    {
+      "slug": "blog-ai-search-restaurant-website-platform-recommendations-2026",
+      "kind": "article",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "local-seo",
+      "eyebrow": "THE DESK · MAY 2026",
+      "title_1": "I asked the AIs",
+      "title_italic": "which platform",
+      "title_2": "to use.",
+      "dek": "ChatGPT, Perplexity, and Google AI on which restaurant website platform to use — what they recommend, who they cite, and how to be named."
+    },
+    {
       "slug": "blog-discovery-wave",
       "kind": "article",
       "locale": "en",
@@ -3781,18 +3841,6 @@
       "title_italic": "properly",
       "title_2": "online.",
       "dek": "Real HTML beats a PDF link. Descriptions that sell. Allergens, photos, schema — the most-visited page on your site, set up to win search and AI."
-    },
-    {
-      "slug": "library-commission-free-online-ordering",
-      "kind": "article",
-      "locale": "en",
-      "accent": "ink",
-      "glyph": "margin",
-      "eyebrow": "ORDERING ECONOMICS · 2026",
-      "title_1": "Commission-free",
-      "title_italic": "online ordering,",
-      "title_2": "honestly.",
-      "dek": "Owner.com vs Toast vs your own site vs the 15–30% marketplaces. Someone always pays — the question is who, and how much."
     },
     {
       "slug": "topic-information-security",

@@ -249,6 +249,11 @@ import {
   createThread as createWindowThread,
   appendMessageToThread,
   iterateAdminQueue,
+  dayBucket as windowDayBucket,
+  computeAutoPauseLevel,
+  AUTOPAUSE_STALE_HOURS,
+  MAX_NEW_THREADS_PER_DAY,
+  newThreadsDayKey,
   checkAndStampThrottle as checkAndStampWindowThrottle,
   pushPendingDon,
   iteratePendingDonReady,
@@ -1241,6 +1246,31 @@ export default {
       console.warn('[cron] kpi snapshot failed', err && err.message);
     }
 
+    // Phase 0 (Window redesign) — daily vital-signs snapshot. Writes a
+    // once-per-UTC-day record of the Window's load to KV so we have a
+    // server-side ground-truth baseline (not only Plausible events) for
+    // the 14-day measurement, and the raw inputs the Phase-8 auto-pause
+    // backstop will read (new-threads-today, pending-Don depth, oldest
+    // unanswered age). Idempotent via a per-day stamp; extra ticks no-op.
+    let windowVitalsWritten = false;
+    try {
+      const result = await snapshotWindowVitals(env);
+      windowVitalsWritten = !!(result && result.written);
+    } catch (err) {
+      console.warn('[cron] window vitals snapshot failed', err && err.message);
+    }
+
+    // Phase 8.1 — auto-pause vital-signs check (every tick). Reads the
+    // unreplied depth + operator presence, runs the hysteresis machine,
+    // persists the level for handleWindowActive to surface.
+    let windowAutoPauseLevel = null;
+    try {
+      const result = await computeAndPersistAutoPause(env);
+      windowAutoPauseLevel = (result && typeof result.level === 'number') ? result.level : null;
+    } catch (err) {
+      console.warn('[cron] window auto-pause check failed', err && err.message);
+    }
+
     console.log(JSON.stringify({
       event: 'cron.watch_tick',
       cron: (controller && controller.cron) || null,
@@ -1259,6 +1289,8 @@ export default {
       lifecycleSkipped,
       kpiSnapshotSent,
       kpiSnapshotSkipped,
+      windowVitalsWritten,
+      windowAutoPauseLevel,
       ms: Date.now() - t0,
     }));
   },
@@ -1323,6 +1355,119 @@ function isoWeekNumber(d) {
   const firstThursday = new Date(Date.UTC(date.getUTCFullYear(), 0, 4));
   const diff = (date - firstThursday) / 86400000;
   return 1 + Math.floor(diff / 7);
+}
+
+// Phase 0 (Window redesign) — daily vital-signs snapshot. Aggregates the
+// Window's standing load from the admin index and writes one record per
+// UTC day to window:vitals:<day> (90-day TTL). Server-side ground-truth
+// baseline for the 14-day measurement + the raw inputs the §8 auto-pause
+// backstop reads. Idempotent via a per-day guard; read-only + one put.
+async function snapshotWindowVitals(env) {
+  if (!env || !env.AUTH_SESSIONS) return { written: false, skipped: 'bindings-missing' };
+  if (!_windowGate(env)) return { written: false, skipped: 'window-off' };
+
+  const now = Date.now();
+  const today = windowDayBucket(now);
+  const stampKey = 'window:vitals:' + today;
+  const existing = await env.AUTH_SESSIONS.get(stampKey);
+  if (existing) return { written: false, skipped: 'already-today' };
+
+  let entries = [];
+  try { entries = await iterateAdminQueue(env, 30); }
+  catch (_) { return { written: false, skipped: 'queue-unavailable' }; }
+
+  const DAY_MS = 24 * 3600 * 1000;
+  const vitals = {
+    day: today, capturedAt: now,
+    totalThreads30d: entries.length,
+    openThreads: 0, unansweredThreads: 0, newToday: 0, new7d: 0,
+    crisisFlagged: 0, oldestUnansweredHrs: 0,
+    bySource: {}, byKind: { identified: 0, anon: 0 },
+  };
+  let oldestUnansweredAt = now;
+  for (const e of entries) {
+    const updatedAt = e.updatedAt || 0;
+    if (e.status === 'open') vitals.openThreads++;
+    if (e.unreadByAdmin) {
+      vitals.unansweredThreads++;
+      if (updatedAt && updatedAt < oldestUnansweredAt) oldestUnansweredAt = updatedAt;
+    }
+    if (updatedAt && (now - updatedAt) < DAY_MS) vitals.newToday++;
+    if (updatedAt && (now - updatedAt) < 7 * DAY_MS) vitals.new7d++;
+    if (e.crisisTier) vitals.crisisFlagged++;
+    const src = e.source || '(none)';
+    vitals.bySource[src] = (vitals.bySource[src] || 0) + 1;
+    if (e.kind === 'anon' || (!e.sub && e.anonId)) vitals.byKind.anon++;
+    else vitals.byKind.identified++;
+  }
+  vitals.oldestUnansweredHrs = vitals.unansweredThreads > 0
+    ? Math.round((now - oldestUnansweredAt) / 3600000) : 0;
+
+  try {
+    await env.AUTH_SESSIONS.put(stampKey, JSON.stringify(vitals), { expirationTtl: 90 * 24 * 3600 });
+  } catch (err) {
+    console.warn('[cron] window vitals snapshot write failed', err && err.message);
+    return { written: false, skipped: 'write-failed' };
+  }
+  console.log(JSON.stringify({ event: 'window.vitals', ...vitals }));
+  return { written: true, vitals };
+}
+
+// Phase 8.1 (Window redesign) — auto-pause vital-signs check (every tick).
+// Counts unreplied (open) threads + measures operator presence via the
+// breathing-dot lastSeen, runs the pure hysteresis machine seeded with the
+// PREVIOUS persisted level (so it can't flap), persists the level into
+// window:active-meta.autoPause for handleWindowActive to surface. Auto-
+// recovers by load. Tier-2 logs an alert; SMS lands in Phase 2 (Twilio).
+async function computeAndPersistAutoPause(env) {
+  if (!env || !env.AUTH_SESSIONS) return { level: null, skipped: 'bindings-missing' };
+  if (!_windowGate(env)) return { level: null, skipped: 'window-off' };
+
+  let unreplied = 0;
+  try {
+    const entries = await iterateAdminQueue(env, 30);
+    for (const e of entries) {
+      if (e.unreadByAdmin && e.status !== 'closed' && e.status !== 'archived') unreplied++;
+    }
+  } catch (_) { return { level: null, skipped: 'queue-unavailable' }; }
+
+  const meta = await getWindowActiveMeta(env);
+  const prevLevel = (meta && meta.autoPause && typeof meta.autoPause.level === 'number')
+    ? meta.autoPause.level : 0;
+  const lastSeen = meta && meta.lastSeen ? meta.lastSeen : null;
+  const staleHours = lastSeen ? (Date.now() - lastSeen) / 3600000 : (AUTOPAUSE_STALE_HOURS + 1);
+
+  const level = computeAutoPauseLevel(prevLevel, unreplied, staleHours);
+
+  if (prevLevel === level && meta && meta.autoPause && meta.autoPause.unreplied === unreplied) {
+    return { level, unreplied, unchanged: true };
+  }
+  const since = (prevLevel !== level)
+    ? Date.now()
+    : ((meta && meta.autoPause && meta.autoPause.since) || Date.now());
+  await setWindowActiveMeta(env, { autoPause: { level, unreplied, since } });
+
+  if (prevLevel !== level) {
+    console.log(JSON.stringify({ event: 'window.autopause', from: prevLevel, to: level, unreplied, staleHours: Math.round(staleHours) }));
+  }
+  if (level === 2 && prevLevel < 2) {
+    console.warn(JSON.stringify({ event: 'window.autopause.alert', level: 2, unreplied, note: 'composer disabled; SMS pending Twilio (Phase 2)' }));
+  }
+  return { level, unreplied };
+}
+
+// Phase 8.2 (Window redesign) — queue-depth daily cap. Increments the
+// per-UTC-day new-thread counter and returns the new count. The note is
+// NEVER rejected — when the count exceeds MAX_NEW_THREADS_PER_DAY the
+// caller flags dayCapped for the "filed for tomorrow" half-success copy.
+// 2-day TTL self-prunes; read-then-write race is immaterial at a 25/day bound.
+async function _bumpWindowNewThreadCount(env) {
+  const key = newThreadsDayKey(windowDayBucket(Date.now()));
+  let n = 0;
+  try { n = parseInt((await env.AUTH_SESSIONS.get(key)) || '0', 10) || 0; } catch (_) { /* treat as 0 */ }
+  n += 1;
+  try { await env.AUTH_SESSIONS.put(key, String(n), { expirationTtl: 2 * 24 * 3600 }); } catch (_) { /* best-effort */ }
+  return n;
 }
 
 // D7b: rewrite og:*/twitter:* meta tags on the audit tool page so
@@ -6459,9 +6604,13 @@ async function handleWindowAppend(request, env, ctx) {
     }
 
     let thread = await getOpenThreadForUser(env, sub);
+    let dayCapped = false;
     if (!thread || (thread.msgCount || 0) >= 100) {
       try { thread = await createWindowThread(env, sub, email, windowSource); }
       catch (_) { return jsonResponse({ ok: false, error: 'mint-collision' }, 500); }
+      // §8.2 daily cap — note is still filed; flag drives the half-success copy.
+      const newCount = await _bumpWindowNewThreadCount(env);
+      dayCapped = newCount > MAX_NEW_THREADS_PER_DAY;
     }
 
     // Phase 1b — pre-stamp crisis tier on the thread so the
@@ -6793,9 +6942,16 @@ async function handleWindowActive(request, env, ctx) {
   if (!_windowGate(env)) {
     return jsonResponse({ ok: false, error: 'not-found' }, 404);
   }
-  // Public; no auth required. The breathing-dot signal.
+  // Public; no auth required. The breathing-dot signal + the §8.1
+  // auto-pause level so the composer can render the half-state copy.
   const meta = await getWindowActiveMeta(env);
-  return new Response(JSON.stringify({ ok: true, lastSeen: meta && meta.lastSeen ? meta.lastSeen : null }), {
+  const autoPauseLevel = (meta && meta.autoPause && typeof meta.autoPause.level === 'number')
+    ? meta.autoPause.level : 0;
+  return new Response(JSON.stringify({
+    ok: true,
+    lastSeen: meta && meta.lastSeen ? meta.lastSeen : null,
+    autoPauseLevel,
+  }), {
     status: 200,
     headers: {
       'content-type': 'application/json; charset=utf-8',
