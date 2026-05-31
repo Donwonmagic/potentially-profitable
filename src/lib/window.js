@@ -332,6 +332,10 @@ export async function appendMessageToThread(env, sub, thread, from, body) {
   } else {
     thread.lastDonReplyAt = now;
     thread.unreadByUser = true;
+    // Audit E — Don's reply clears the admin-unread flag. Without this,
+    // unreadByAdmin is never reset, so the §8.1 auto-pause count treats
+    // every thread that ever got a visitor message as "unreplied" forever.
+    thread.unreadByAdmin = false;
   }
   await env.AUTH_SESSIONS.put(threadKey(sub, thread.id), JSON.stringify(thread));
 
@@ -343,8 +347,10 @@ export async function appendMessageToThread(env, sub, thread, from, body) {
 
 // Add or refresh a thread's entry in the admin index for the day
 // of `updatedAt`. Cheap, eventually consistent — the admin list
-// merges N recent buckets newest-first.
-async function upsertAdminIndex(env, thread) {
+// merges N recent buckets newest-first. Exported so status-only
+// mutations (close/archive) can re-index without an append — otherwise
+// a stale index entry keeps a closed thread in the auto-pause count.
+export async function upsertAdminIndex(env, thread) {
   const bucket = dayBucket(thread.updatedAt);
   const key = adminIndexKey(bucket);
   const raw = await env.AUTH_SESSIONS.get(key);
@@ -502,11 +508,26 @@ export async function* iteratePendingDonReady(env) {
   }
 }
 
-export async function setActiveMeta(env, payload) {
-  await env.AUTH_SESSIONS.put(META_ACTIVE_KEY, JSON.stringify({
-    lastSeen: Date.now(),
-    ...(payload || {}),
-  }));
+// Persist active-meta. MERGES into the existing row (read-modify-write)
+// so disjoint writers — the breathing-dot presence bump, the cron's
+// autoPause level, and the admin replyingTo marker — don't clobber each
+// other's fields. `lastSeen` is the operator-presence timestamp: it is
+// ONLY refreshed when opts.touch is true (a real operator signal). The
+// cron auto-pause write must pass touch:false so it can't fake presence
+// and defeat the 72h staleness floor that consults lastSeen.
+export async function setActiveMeta(env, payload, opts = {}) {
+  let existing = {};
+  try {
+    const raw = await env.AUTH_SESSIONS.get(META_ACTIVE_KEY);
+    if (raw) existing = JSON.parse(raw) || {};
+  } catch { existing = {}; }
+  const next = { ...existing, ...(payload || {}) };
+  // Refresh presence only on an explicit touch, or on the first-ever
+  // write when no lastSeen exists yet (so the dot has a baseline).
+  if (opts.touch === true || typeof next.lastSeen !== 'number') {
+    next.lastSeen = Date.now();
+  }
+  await env.AUTH_SESSIONS.put(META_ACTIVE_KEY, JSON.stringify(next));
 }
 
 export async function getActiveMeta(env) {
@@ -786,6 +807,8 @@ export async function appendMessageToAnonThread(env, anonId, thread, from, body)
   } else {
     thread.lastDonReplyAt = now;
     thread.unreadByUser = true;
+    // Audit E — Don's reply clears the admin-unread flag (see identified path).
+    thread.unreadByAdmin = false;
   }
   await env.AUTH_SESSIONS.put(anonThreadKey(anonId), JSON.stringify(thread));
 
