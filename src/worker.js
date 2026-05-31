@@ -249,6 +249,7 @@ import {
   createThread as createWindowThread,
   appendMessageToThread,
   iterateAdminQueue,
+  dayBucket as windowDayBucket,
   checkAndStampThrottle as checkAndStampWindowThrottle,
   pushPendingDon,
   iteratePendingDonReady,
@@ -1241,6 +1242,20 @@ export default {
       console.warn('[cron] kpi snapshot failed', err && err.message);
     }
 
+    // Phase 0 (Window redesign) — daily vital-signs snapshot. Writes a
+    // once-per-UTC-day record of the Window's load to KV so we have a
+    // server-side ground-truth baseline (not only Plausible events) for
+    // the 14-day measurement, and the raw inputs the Phase-8 auto-pause
+    // backstop will read (new-threads-today, pending-Don depth, oldest
+    // unanswered age). Idempotent via a per-day stamp; extra ticks no-op.
+    let windowVitalsWritten = false;
+    try {
+      const result = await snapshotWindowVitals(env);
+      windowVitalsWritten = !!(result && result.written);
+    } catch (err) {
+      console.warn('[cron] window vitals snapshot failed', err && err.message);
+    }
+
     console.log(JSON.stringify({
       event: 'cron.watch_tick',
       cron: (controller && controller.cron) || null,
@@ -1259,6 +1274,7 @@ export default {
       lifecycleSkipped,
       kpiSnapshotSent,
       kpiSnapshotSkipped,
+      windowVitalsWritten,
       ms: Date.now() - t0,
     }));
   },
