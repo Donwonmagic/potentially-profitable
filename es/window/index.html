@@ -110,9 +110,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=170c6735e31f" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=547ffa3cb375" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=170c6735e31f"><link rel="stylesheet" href="/assets/site-article.css?v=547ffa3cb375"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=08b30e7a51e1" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=c258d5f5b748" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=08b30e7a51e1"><link rel="stylesheet" href="/assets/site-article.css?v=c258d5f5b748"></noscript>
 </head>
 <body class="window-canvas" data-locale="es">
 
@@ -121,11 +121,10 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <header class="window-shell">
   <a class="window-shell__lockup" href="/es/" aria-label="Muntin Digital — inicio">
     <svg class="logo-mark" width="128" height="128" viewBox="0 0 128 128" fill="none" aria-hidden="true">
-      <g fill="currentColor">
-        <path d="M32 8 H58 V46 H8 V32 A24 24 0 0 1 32 8 Z"/>
-        <path d="M70 8 H96 A24 24 0 0 1 120 32 V46 H70 V8 Z"/>
-        <path d="M8 58 H58 V120 H32 A24 24 0 0 1 8 96 V58 Z"/>
-        <path d="M70 58 H120 V96 A24 24 0 0 1 96 120 H70 V58 Z"/>
+      <g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
+        <rect x="18" y="18" width="92" height="92"/>
+        <line x1="64" y1="18" x2="64" y2="110"/>
+        <line x1="18" y1="53" x2="110" y2="53"/>
       </g>
     </svg>
     <span>Muntin Digital</span>
@@ -184,10 +183,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <p class="window-composer__hostess">Lo que le escribir&iacute;as a un amigo que sabe del tema &mdash; con eso basta.</p>
 
-      <!-- Bienvenida entre sitios — revelada por window.js cuando ?source=ledger
-           (un visitante que llega desde Muntin Ledger). -->
-      <p class="window-composer__from-ledger" id="windowFromLedger" hidden>¿Vienes de <b>Muntin Ledger</b>? Mismo escritorio &mdash; yo llevo los dos. Cu&eacute;ntame qu&eacute; pasa.</p>
-
       <form class="window-composer__form" id="windowForm" autocomplete="off">
 
         <!-- Campo oculto de contexto-curso — poblado por el script al
@@ -195,8 +190,11 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
              /es/course/. -->
         <input type="hidden" id="windowFromLesson" name="from_lesson" value="" />
 
-        <!-- Origen entre sitios — poblado por window.js desde ?source= -->
+        <!-- Cross-site origin tag (plan §W). window.js applySource()
+             reads ?source= and writes it here; #windowFromLedger is the
+             warm welcome the script reveals for Ledger arrivals. -->
         <input type="hidden" id="windowSource" name="source" value="" />
+        <p class="window-composer__from-ledger" id="windowFromLedger" hidden>Vienes de Muntin Ledger &mdash; el mismo escritorio, la misma persona. Cu&eacute;ntame en qu&eacute; est&aacute;s trabajando.</p>
 
         <details class="window-composer__context-details" id="windowContextDetails">
           <summary class="window-composer__context-summary">Cu&eacute;ntame qui&eacute;n eres <span class="window-composer__opt">(opcional)</span></summary>
@@ -216,6 +214,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           </div>
         </details>
 
+        <label class="sr-only" for="windowBody">Tu mensaje para Don</label>
         <textarea class="window-composer__field" id="windowBody" name="body" rows="3" placeholder="Empieza por donde sea &mdash; con una l&iacute;nea basta." maxlength="4000" required aria-describedby="windowReassurance"></textarea>
 
         <p class="window-composer__crisis" id="windowCrisis" hidden role="status">Si esta noche pesa m&aacute;s que el sitio web, voy a leer esto igual &mdash; y estas personas contestan m&aacute;s r&aacute;pido que yo: <a href="tel:988">988</a> (llama o manda texto), <a href="https://chefswithissues.com/" rel="noopener" target="_blank">Chefs With Issues</a>, <a href="https://chowco.org/" rel="noopener" target="_blank">CHOW</a>.</p>
@@ -260,7 +259,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         </div>
 
         <div class="window-composer__row">
-          <button type="button" class="window-composer__mic" id="windowMic" hidden aria-label="Mandar nota de voz (pr&oacute;ximamente)" disabled title="Notas de voz en Fase 3">
+          <button type="button" class="window-composer__mic" id="windowMic" hidden aria-label="Mandar nota de voz (pr&oacute;ximamente)" disabled title="Notas de voz pr&oacute;ximamente">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <rect x="9" y="2" width="6" height="12" rx="3"/>
               <path d="M5 10v2a7 7 0 0 0 14 0v-2"/>
@@ -308,7 +307,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 </main>
 
 <!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260501-engagement";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
-<script src="/assets/js/window.js?v=20260530-window" defer></script>
+<script src="/assets/js/window.js?v=20260501-engagement" defer></script>
 <script src="/assets/js/window-photos.js?v=20260501-engagement" defer></script>
 <script src="/assets/js/window-voice.js?v=20260501-engagement" defer></script>
 <script src="/assets/js/window-callback.js?v=20260501-engagement" defer></script>

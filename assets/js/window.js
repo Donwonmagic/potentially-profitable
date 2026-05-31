@@ -259,6 +259,11 @@
     if (els.hero) els.hero.hidden = true;
     if (els.composer) els.composer.hidden = true;
     if (els.thread) els.thread.hidden = true;
+    // Hide the whole sash frame too — otherwise the "On a brief pause"
+    // panel renders alongside the residual sash (portrait, reply-time
+    // line, escape-hatch sill), a confusing dual state whose "reply
+    // within 4 hours" copy contradicts the paused message.
+    if (els.sash) els.sash.hidden = true;
   }
 
   function showSignin() {
@@ -571,11 +576,21 @@
     els.body.disabled = true;
     var origLabel = els.submit.textContent;
     els.submit.textContent = copy.sending;
+    // Expose the in-flight state to assistive tech (the visible label
+    // change alone isn't announced). Cleared on success/error below.
+    els.submit.setAttribute('aria-busy', 'true');
 
     var params = new URLSearchParams();
     params.set('body', bodyWithContext);
     if (attachIds.length) {
       params.set('attach_ids', attachIds.join(','));
+    }
+    // Cross-site origin tag (plan §W): the hidden #windowSource field is
+    // set by applySource() from ?source=. Submit it so a NEW thread is
+    // stamped with where the operator came from. Backend allowlists it.
+    var srcEl = document.getElementById('windowSource');
+    if (srcEl && srcEl.value) {
+      params.set('source', srcEl.value);
     }
 
     fetch('/api/window/append', {
@@ -611,7 +626,11 @@
         // See docs/window-redesign-plan.md §9.6.
         try {
           var sendKind = (res.body && res.body.anon) ? 'anon' : 'identified';
-          window.plausible && window.plausible('Window Send', { props: { kind: sendKind, locale: locale } });
+          // Cross-site origin tag (plan §W): record where the operator
+          // arrived from so we can compare Ledger vs on-site send rates.
+          var sendSrcEl = document.getElementById('windowSource');
+          var sendSource = (sendSrcEl && sendSrcEl.value) ? sendSrcEl.value : 'direct';
+          window.plausible && window.plausible('Window Send', { props: { kind: sendKind, locale: locale, source: sendSource } });
         } catch (_) { /* analytics blocked or not loaded; do nothing */ }
         // Re-fetch thread to render the new message.
         return loadThread();
@@ -642,6 +661,7 @@
       els.submit.disabled = false;
       els.body.disabled = false;
       els.submit.textContent = origLabel || copy.submitLabel;
+      els.submit.removeAttribute('aria-busy');
     });
   }
 
@@ -765,6 +785,13 @@
     els.msg.appendChild(artifactLine);
 
     els.msg.hidden = false;
+    // Move focus to the confirmation so keyboard/SR users land on the
+    // thank-you + "while you wait" link instead of the now-empty
+    // textarea. role="status" on #windowMsg still announces the text.
+    try {
+      els.msg.setAttribute('tabindex', '-1');
+      els.msg.focus({ preventScroll: false });
+    } catch (_) { /* focus may throw on detached node; non-critical */ }
   }
 
   // Boot: check auth, then either load identified thread or fall
