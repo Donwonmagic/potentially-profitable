@@ -18,6 +18,17 @@
     "_doc": "Each entry: { path, title, languages, status, owner }. Path is repo-root-relative without /index.html. Languages declare which audio editions this piece SHOULD ship; the audit complains when an entry is missing on disk. Status: 'rendered' (audio exists for every declared lang), 'partial' (some langs missing or stale), 'pending' (no audio yet). Owner is who narrated (kokoro, f5)."
   },
   "blog": {
+    "ai-search-restaurant-website-platform-recommendations-2026": {
+      "languages": [
+        "en",
+        "es",
+        "fr",
+        "it",
+        "pt",
+        "zh"
+      ],
+      "status": "pending"
+    },
     "may-2026-discovery-changed-under-you": {
       "languages": [
         "en",
@@ -397,6 +408,50 @@
       "needs_rerender": "Wave 5 fold from is-doordash-worth-it-for-restaurants-in-2026 added 222 lines; audio chunk map is stale for the appended sections."
     },
     "restaurant-local-seo": {
+      "languages": [
+        "en",
+        "es",
+        "fr",
+        "it",
+        "pt",
+        "zh"
+      ],
+      "status": "pending"
+    },
+    "best-restaurant-website-platform": {
+      "languages": [
+        "en",
+        "es",
+        "fr",
+        "it",
+        "pt",
+        "zh"
+      ],
+      "status": "pending"
+    },
+    "commission-free-online-ordering-restaurants": {
+      "languages": [
+        "en",
+        "es",
+        "fr",
+        "it",
+        "pt",
+        "zh"
+      ],
+      "status": "pending"
+    },
+    "how-to-hire-a-restaurant-web-designer": {
+      "languages": [
+        "en",
+        "es",
+        "fr",
+        "it",
+        "pt",
+        "zh"
+      ],
+      "status": "pending"
+    },
+    "restaurant-online-menu-best-practices": {
       "languages": [
         "en",
         "es",
