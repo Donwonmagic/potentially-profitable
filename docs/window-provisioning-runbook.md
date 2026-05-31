@@ -4,6 +4,35 @@
 DNS, legal). Each phase's *code* is built or buildable behind an OFF flag; this
 file is the gate list that lets each flag flip on safely.
 
+> ## ⏸️ RESUME HERE (pinned 2026-05-31, do both from your computer)
+>
+> Two phases are fully built + verified and waiting only on you. Knock them out
+> together next time you're at a desk:
+>
+> **1. Phase 2 — Crisis SMS (Twilio).** Account created; trial number
+> auto-assigned (so you have SID + Auth Token + a `TWILIO_FROM` number — 3 of 4).
+> Remaining:
+>   - Verify Don's mobile as a recipient: Console → *Phone Numbers → Manage →
+>     Verified Caller IDs* (trial accounts only text verified numbers; likely
+>     already done from signup).
+>   - Set 4 Worker secrets (Cloudflare → Workers & Pages → `muntin-digital` →
+>     Settings → Variables and Secrets, or `wrangler secret put`):
+>     `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_FROM` (+1…),
+>     `WINDOW_CRISIS_SMS_TO` (Don's mobile, +1…).
+>   - Deploy + test: send a Window note with a tier-1 crisis keyword; Don's phone
+>     should buzz. Code (`src/lib/sms.js`) auto-activates once all 4 secrets exist;
+>     silent no-op until then. A2P 10DLC paperwork can wait — trial→verified-number
+>     works for the single-recipient crisis alert today.
+>   - ⚠️ Don't paste the Auth Token into chat — type it into Cloudflare directly.
+>
+> **2. Phase 4 — /now/ presence widget.** Fully built + audit-clean. Decision
+> made: default tier = **fuzz** (already the code default, no change needed).
+> Remaining: set `WINDOW_NOW_ENABLED="true"` in `wrangler.jsonc`, then Don posts
+> his first status at `/admin/window/`. Widget stays hidden until he posts, so the
+> flag flip alone is safe + invisible. (I can PR the one-line flip on request.)
+>
+> Everything else below is reference.
+
 **Plan of record:** `docs/window-redesign-plan.md`. This runbook is the
 operational checklist that doc's §2/§7/§8/§11 imply.
 
