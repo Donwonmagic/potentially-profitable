@@ -128,6 +128,22 @@
             "@type": "Answer",
             "text": "Yes — a custom site with your own payment processor (~2.9% + 30 cents to Stripe or similar) takes 0% to anyone but the processor. The catch is upfront build cost and you need a real ordering integration, not just a Stripe Checkout button glued onto a menu page."
           }
+        },
+        {
+          "@type": "Question",
+          "name": "Is ChowNow really commission-free?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "ChowNow charges a flat monthly subscription instead of a per-order commission — secondary coverage reports around $119/month as of May 2026, quoted per location rather than published. You still pay standard card processing on each order, but there is no marketplace-style percentage cut, and you keep the customer data. Verify the current quote with ChowNow."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the cheapest commission-free way to take online orders?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Square Online's free tier and GloriaFood's free core both stand up a commission-free order page at no monthly platform cost — you pay only card processing (~2.9% + 30 cents online). The catch: Square Online ties to Square Payments, and GloriaFood's free headline covers the base only — the branded app and marketing tools are paid add-ons."
+          }
         }
       ]
     },
@@ -603,6 +619,57 @@ main{padding-top:64px}
 
     <p>Toast makes sense when the restaurant&rsquo;s POS is also Toast &mdash; or is going to be. The website, the <!-- LIBRARY:autolink:start --><a href="/glossary/online-ordering/" data-glossary-head="Online ordering" data-glossary-aka="digital ordering, web ordering" data-glossary-blurb="The guest places the order on a digital surface — your site, an app, or a marketplace — and the restaurant fulfills.">online ordering</a><!-- LIBRARY:autolink:end --> pipeline, the kitchen tickets, the loyalty program, and the analytics all match because they are one vendor. The cost of leaving is leaving every layer at once. For a single-location restaurant where the POS swap is already decided in Toast&rsquo;s favor, adding Toast direct ordering is a bolt-on of zero marginal commission; for an operator whose POS lives elsewhere (Square, Clover, Lightspeed), the Toast website is a wedge into a full migration, not a standalone choice. The trade-offs at the POS layer get walked in <a href="/library/toast-vs-square-vs-clover-for-restaurants/">Toast vs Square vs Clover</a>.</p>
 
+    <h2 id="chownow">ChowNow &mdash; the subscription ordering layer that bolts onto the site you already have</h2>
+
+    <p>ChowNow sells the commission-free promise most directly: a flat monthly subscription, no per-order platform cut, and an ordering surface that sits on top of whatever website the restaurant already runs. It is not a website builder and not a POS &mdash; it is the ordering layer in between, which is exactly why it shows up so often in &ldquo;commission-free ordering&rdquo; recommendations.</p>
+
+    <p>The model is a subscription instead of a commission. ChowNow does not take a percentage of each order the way a marketplace does; the restaurant pays a monthly fee and keeps the order revenue minus standard card processing. Secondary coverage as of May 2026 reports the subscription around $119 a month, though ChowNow quotes by location rather than publishing a single fixed public price &mdash; treat the figure as a directional anchor, not a quote. What the fee buys is a branded ordering page, a customer-facing app presence, and integrations that route the order into the kitchen and onto Google and Maps; the restaurant keeps the customer contact data rather than renting it back from a marketplace.</p>
+
+    <p>ChowNow fits the restaurant that wants commission-free ordering without rebuilding its website or swapping its POS. The trade-off is the monthly floor: at low order volume the subscription costs more per ticket than a custom processor flow, and at high volume the per-order math beats a marketplace but not always a custom build. What the subscription actually buys is speed and a managed ordering surface; whether that is worth the monthly fee depends on the order count it runs against.</p>
+
+    <details class="cite">
+      <summary>Source: ChowNow pricing, May 2026</summary>
+      <div class="cite-body">
+        <p><span class="cite-source">ChowNow / chownow.com</span> &mdash; pricing page and secondary coverage (Get Sauce, Restolabs).</p>
+        <p>ChowNow markets a flat-subscription, commission-free model. It does not publish a single fixed public price and quotes per location; secondary coverage as of May 2026 reports a subscription in the neighborhood of $119 per month, sometimes with a setup fee, plus standard card processing on each order. The branded app, website ordering widget, and Google/Maps ordering integrations are bundled at the subscription tier. Treat the monthly figure as directional; verify the current quote with ChowNow before signing.</p>
+        <a href="https://www.chownow.com" target="_blank" rel="noopener">chownow.com</a>
+      </div>
+    </details>
+
+    <h2 id="square-online">Square Online &mdash; the free-to-start branded order page</h2>
+
+    <p>Square Online is the lowest-friction commission-free entry point in the comparison: a free branded ordering page that ties directly to Square&rsquo;s POS and payment processing. There is no platform commission on the order; the cost is the card-processing rate, and the paid tiers are optional.</p>
+
+    <p>The free tier is genuinely free to stand up &mdash; no monthly platform fee, no per-order platform commission. The restaurant pays Square&rsquo;s card-processing rate, roughly 2.9% + 30&cent; on online card-not-present orders as of May 2026 (the in-person tap-or-dip rate is lower). Paid tiers &mdash; Plus at roughly $29 a month billed annually &mdash; remove the Square subdomain and add features, but the ordering itself works on the free tier. The menu syncs from the Square POS catalog, which is the reason Square Online is the easiest self-managed option for a restaurant already running Square at the counter.</p>
+
+    <p>Square Online fits the cafe, the counter-service spot, and the low-to-mid-volume independent that wants a commission-free order page live this week without an upfront build. The trade-off is design ceiling and lock-in: the page looks like a Square page, and the ordering is wired to Square Payments. For a restaurant that already chose Square as its POS, that is a feature, not a cost; for one that has not, it is a vendor decision worth making deliberately.</p>
+
+    <details class="cite">
+      <summary>Source: Square Online pricing, May 2026</summary>
+      <div class="cite-body">
+        <p><span class="cite-source">Block, Inc. / squareup.com</span> &mdash; Square Online and Square for Restaurants pricing pages.</p>
+        <p>Squareup.com publishes a free Square Online tier with no monthly platform fee and no per-order platform commission; the restaurant pays Square&rsquo;s processing rate, published at roughly 2.9% + 30&cent; for online card-not-present orders and a lower rate for in-person transactions, as of May 2026. Paid Square Online tiers (Plus around $29/month billed annually) add features and remove the Square-branded subdomain. Square Online menu data syncs from the Square POS catalog. Verify current rates and tier pricing on squareup.com before signing.</p>
+        <a href="https://squareup.com/us/en/online-store" target="_blank" rel="noopener">squareup.com</a>
+      </div>
+    </details>
+
+    <h2 id="gloriafood">GloriaFood &mdash; the free core, and what you actually pay for</h2>
+
+    <p>GloriaFood markets a fully commission-free, free-to-use ordering system &mdash; and the core genuinely is free. The honest part of the story is what sits around that free core: the paid add-ons and the processing the free headline does not mention.</p>
+
+    <p>The base online-ordering and table-reservation system carries no platform commission and no monthly fee. What the restaurant pays for is optional and named: a branded mobile app (reported around $59 a month in May 2026 secondary coverage), a &ldquo;promote&rdquo; upsell module, and &mdash; once it takes card payments online &mdash; a standard payment-processor rate, because GloriaFood routes payments through a processor rather than absorbing them. The free tier with cash-on-delivery or pay-at-pickup is the part that is truly free; online card payments bring the processor&rsquo;s cut back into the picture.</p>
+
+    <p>GloriaFood fits the budget-first independent testing whether direct ordering moves volume at all, before committing to a monthly platform. The trade-off is that the free tier is a starting point, not a destination &mdash; the features that make the channel competitive, the branded app and the marketing tools, are the paid ones, and the &ldquo;100% free&rdquo; headline is true only of the base.</p>
+
+    <details class="cite">
+      <summary>Source: GloriaFood pricing, May 2026</summary>
+      <div class="cite-body">
+        <p><span class="cite-source">GloriaFood / gloriafood.com</span> &mdash; pricing and add-on pages plus secondary coverage.</p>
+        <p>GloriaFood publishes a free core online-ordering and reservation system with no platform commission and no base monthly fee. Paid add-ons reported as of May 2026 include a branded mobile app (around $59/month in secondary coverage), a promotion/upsell module, and the standard card-processing rate applied once the restaurant accepts online card payments through the integrated processor. The genuinely free path is cash-or-pay-at-pickup; online card payments carry a processor cut. Verify current add-on pricing on gloriafood.com before relying on the free headline.</p>
+        <a href="https://www.gloriafood.com" target="_blank" rel="noopener">gloriafood.com</a>
+      </div>
+    </details>
+
     <h2 id="your-own-site-custom">Your own site (custom) &mdash; own the order, pick your processor</h2>
 
     <p>A custom site with a real ordering integration takes 0% to anyone but the payment processor &mdash; roughly 2.9% + 30&cent; per order to Stripe. The catch is upfront build cost and a real ordering surface, not a Stripe button stapled to a menu.</p>
@@ -752,6 +819,10 @@ main{padding-top:64px}
     <p><strong>Does Toast charge a commission on online orders?</strong> No platform commission on Toast direct ordering &mdash; processing only, around 3.50% + 15&cent; online card-not-present as of May 2026. The trade-off is structural: you commit to the Toast POS stack.</p>
 
     <p><strong>Can I take orders on my own website without paying any commission?</strong> Yes &mdash; custom site with your own payment processor (~2.9% + 30&cent;). The catch is upfront build cost and you need a real ordering integration, not just a Stripe Checkout button glued onto a menu page.</p>
+
+    <p><strong>Is ChowNow really commission-free?</strong> ChowNow charges a flat monthly subscription instead of a per-order commission &mdash; secondary coverage reports around $119/mo as of May 2026, quoted per location rather than published. You still pay card processing per order, but there is no marketplace-style percentage cut, and you keep the customer data. Verify the current quote with ChowNow.</p>
+
+    <p><strong>What is the cheapest commission-free way to take online orders?</strong> Square Online&rsquo;s free tier and GloriaFood&rsquo;s free core both stand up a commission-free order page at no monthly platform cost &mdash; you pay only card processing (~2.9% + 30&cent; online). The catch: Square Online ties to Square Payments, and GloriaFood&rsquo;s free headline covers the base only &mdash; the branded app and marketing tools are paid add-ons.</p>
 
   <!-- article-takeaways:start -->
             <aside class="key-takeaways" data-llm="takeaways" aria-label="Key takeaways">
