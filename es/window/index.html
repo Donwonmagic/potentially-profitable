@@ -110,9 +110,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=deedf8fe9ab9" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=55653c9d9940" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=deedf8fe9ab9"><link rel="stylesheet" href="/assets/site-article.css?v=55653c9d9940"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=08b30e7a51e1" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=c258d5f5b748" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=08b30e7a51e1"><link rel="stylesheet" href="/assets/site-article.css?v=c258d5f5b748"></noscript>
 </head>
 <body class="window-canvas" data-locale="es">
 
@@ -190,6 +190,12 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
              /es/course/. -->
         <input type="hidden" id="windowFromLesson" name="from_lesson" value="" />
 
+        <!-- Cross-site origin tag (plan §W). window.js applySource()
+             reads ?source= and writes it here; #windowFromLedger is the
+             warm welcome the script reveals for Ledger arrivals. -->
+        <input type="hidden" id="windowSource" name="source" value="" />
+        <p class="window-composer__from-ledger" id="windowFromLedger" hidden>Vienes de Muntin Ledger &mdash; el mismo escritorio, la misma persona. Cu&eacute;ntame en qu&eacute; est&aacute;s trabajando.</p>
+
         <details class="window-composer__context-details" id="windowContextDetails">
           <summary class="window-composer__context-summary">Cu&eacute;ntame qui&eacute;n eres <span class="window-composer__opt">(opcional)</span></summary>
           <div class="window-composer__context">
@@ -208,6 +214,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           </div>
         </details>
 
+        <label class="sr-only" for="windowBody">Tu mensaje para Don</label>
         <textarea class="window-composer__field" id="windowBody" name="body" rows="3" placeholder="Empieza por donde sea &mdash; con una l&iacute;nea basta." maxlength="4000" required aria-describedby="windowReassurance"></textarea>
 
         <p class="window-composer__crisis" id="windowCrisis" hidden role="status">Si esta noche pesa m&aacute;s que el sitio web, voy a leer esto igual &mdash; y estas personas contestan m&aacute;s r&aacute;pido que yo: <a href="tel:988">988</a> (llama o manda texto), <a href="https://chefswithissues.com/" rel="noopener" target="_blank">Chefs With Issues</a>, <a href="https://chowco.org/" rel="noopener" target="_blank">CHOW</a>.</p>
@@ -252,7 +259,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         </div>
 
         <div class="window-composer__row">
-          <button type="button" class="window-composer__mic" id="windowMic" hidden aria-label="Mandar nota de voz (pr&oacute;ximamente)" disabled title="Notas de voz en Fase 3">
+          <button type="button" class="window-composer__mic" id="windowMic" hidden aria-label="Mandar nota de voz (pr&oacute;ximamente)" disabled title="Notas de voz pr&oacute;ximamente">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <rect x="9" y="2" width="6" height="12" rx="3"/>
               <path d="M5 10v2a7 7 0 0 0 14 0v-2"/>

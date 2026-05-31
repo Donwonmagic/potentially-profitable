@@ -259,6 +259,11 @@
     if (els.hero) els.hero.hidden = true;
     if (els.composer) els.composer.hidden = true;
     if (els.thread) els.thread.hidden = true;
+    // Hide the whole sash frame too — otherwise the "On a brief pause"
+    // panel renders alongside the residual sash (portrait, reply-time
+    // line, escape-hatch sill), a confusing dual state whose "reply
+    // within 4 hours" copy contradicts the paused message.
+    if (els.sash) els.sash.hidden = true;
   }
 
   function showSignin() {
@@ -571,6 +576,9 @@
     els.body.disabled = true;
     var origLabel = els.submit.textContent;
     els.submit.textContent = copy.sending;
+    // Expose the in-flight state to assistive tech (the visible label
+    // change alone isn't announced). Cleared on success/error below.
+    els.submit.setAttribute('aria-busy', 'true');
 
     var params = new URLSearchParams();
     params.set('body', bodyWithContext);
@@ -653,6 +661,7 @@
       els.submit.disabled = false;
       els.body.disabled = false;
       els.submit.textContent = origLabel || copy.submitLabel;
+      els.submit.removeAttribute('aria-busy');
     });
   }
 
@@ -776,6 +785,13 @@
     els.msg.appendChild(artifactLine);
 
     els.msg.hidden = false;
+    // Move focus to the confirmation so keyboard/SR users land on the
+    // thank-you + "while you wait" link instead of the now-empty
+    // textarea. role="status" on #windowMsg still announces the text.
+    try {
+      els.msg.setAttribute('tabindex', '-1');
+      els.msg.focus({ preventScroll: false });
+    } catch (_) { /* focus may throw on detached node; non-critical */ }
   }
 
   // Boot: check auth, then either load identified thread or fall

@@ -84,6 +84,7 @@ const DARK = {
   "--surface-0": "#16181D",
   "--surface-1": "#1B1E24",
   "--surface-2": "#21262E",
+  "--surface-inset": "#21262E", // quiet inset fill (pills, ranges, skeletons)
   // Text (dark → light ramp)
   "--ink": "#F1EDE5", // 15.2:1 on --cream(dark)
   "--ink-soft": "#BBB6AB", // ~9:1
@@ -104,6 +105,7 @@ const DARK = {
   "--status-good-tint": "#15281D",
   "--status-pass": "#3FBE77",
   "--status-warn": "#E0B341",
+  "--status-warn-deep": "#E0B341", // warn TEXT/border on the dark warn-tint
   "--status-warn-tint": "#2A2113",
   "--status-bad-tint": "#2E1A16",
 };
@@ -133,10 +135,12 @@ const LIGHT = {
   "--teal-tint": "#EAF0FE",
   "--rust": "#C42E2E",
   "--gold": "#B7791F",
+  "--surface-inset": "#EDEEF1",
   "--status-good": "#1F6B3A",
   "--status-good-tint": "#E7F5EC",
   "--status-pass": "#1f9d55",
   "--status-warn": "#8A6018",
+  "--status-warn-deep": "#8A3E16",
   "--status-warn-tint": "#FDEFE3",
   "--status-bad-tint": "#F7E7DC",
 };
@@ -196,6 +200,24 @@ const EXCEPTIONS = [
   [['.mtn-form-group :is(input,textarea,select)[aria-invalid="true"]'], "border-color:#F0796A"],
   ["/* listen 'finished' prompt: dark-gold (#7C5A1F) on a faint gold pill over dark */"],
   [[".listen-finished-text", ".listen-finished-dismiss"], "color:#D9B06A"],
+  ["/* security-tier 4 hardcodes a light-pink bg (#FBEEEE) that won't flip → */"],
+  ["/* near-white card with flipped light text (1.04:1). Re-pin to a dark danger tint. */"],
+  [['.security-tier[data-tier="4"]'], "background:#2E1A16;border-color:#F0796A"],
+  ["/* .theme-brand hardcodes a dark-brown accent (#7A5C3E) → 2.7:1 eyebrow on dark. */"],
+  [[".theme-brand"], "--accent:var(--gold)"],
+  ["/* Chevron/disclosure SVG icons encode a fixed mid-gray stroke in a",
+   "   data: URI that can't inherit the flip (dim ~3:1 affordance on dark). Re-encode",
+   "   each with the SAME geometry but a light stroke so it reads on dark. */"],
+  [[".form-group select"], "background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23BBB6AB' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E\")"],
+  [[".cite summary::before"], "background:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23BBB6AB' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 19.5A2.5 2.5 0 0 1 6.5 17H20'/%3E%3Cpath d='M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z'/%3E%3C/svg%3E\") no-repeat center / contain"],
+  [[".cite summary::after"], "background:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23BBB6AB' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E\") no-repeat center / contain;transition:transform var(--t-fast) var(--ease)"],
+  ["/* Hero 'window' panes hardcode bright #FFF/#EDEEF1 glass that can't flip →",
+   "   17.8:1 glare on the dark hero, competing with the headline. Dim to a soft",
+   "   slate glass (#2A3038) so it reads as a gently-lit window, not a lightbox.",
+   "   Keep the blue inner-glow stops; only the bright white/cream stops change. */"],
+  [[".pane:nth-child(odd)"], "background:radial-gradient(130% 100% at 80% 20%,#2A3038 0%,#222a3a 55%,rgba(42,80,200,0.22) 100%)"],
+  [[".pane:nth-child(3n)"], "background:radial-gradient(120% 120% at 30% 80%,#2A3038 0%,#21262E 45%,rgba(42,80,200,0.22) 100%)"],
+  [[".pane:nth-child(4)"], "background:radial-gradient(110% 110% at 50% 50%,#2A3038 0%,#21262E 50%,rgba(31,58,147,0.2) 100%)"],
   ["/* hero gradient-text: -webkit-text-fill-color overrides color */"],
   [[".hero h1 .serif-italic"], "background:none;-webkit-text-fill-color:var(--teal);color:var(--teal)"],
 ];
