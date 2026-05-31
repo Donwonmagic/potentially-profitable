@@ -114,9 +114,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=deedf8fe9ab9" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=55653c9d9940" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=deedf8fe9ab9"><link rel="stylesheet" href="/assets/site-article.css?v=55653c9d9940"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=620794e39c06" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=c258d5f5b748" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=620794e39c06"><link rel="stylesheet" href="/assets/site-article.css?v=c258d5f5b748"></noscript>
 </head>
 <body class="window-canvas" data-locale="en">
 
@@ -223,6 +223,13 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
              auto-response can name the lesson. -->
         <input type="hidden" id="windowFromLesson" name="from_lesson" value="" />
 
+        <!-- Cross-site origin tag (plan §W). window.js applySource()
+             reads ?source= and writes it here so it serializes on submit;
+             #windowFromLedger is the warm welcome line it reveals for
+             Ledger arrivals. The backend allowlists the value. -->
+        <input type="hidden" id="windowSource" name="source" value="" />
+        <p class="window-composer__from-ledger" id="windowFromLedger" hidden>Brought over from Muntin Ledger &mdash; same desk, same person. Tell me what you&rsquo;re working on.</p>
+
         <!-- Optional context, collapsed by default — restaurant first
              (operators identify by room before name), URL second, name
              third. localStorage keeps these between visits. -->
@@ -244,6 +251,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           </div>
         </details>
 
+        <label class="sr-only" for="windowBody">Your message to Don</label>
         <textarea class="window-composer__field" id="windowBody" name="body" rows="3" placeholder="Start anywhere &mdash; a line is enough." maxlength="4000" required aria-describedby="windowReassurance"></textarea>
 
         <!-- Crisis allowlist line — revealed by JS (Phase 2.2) when the
@@ -305,7 +313,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         </div>
 
         <div class="window-composer__row">
-          <button type="button" class="window-composer__mic" id="windowMic" hidden aria-label="Record a voice note (coming soon)" disabled title="Voice notes coming in Phase 3">
+          <button type="button" class="window-composer__mic" id="windowMic" hidden aria-label="Record a voice note (coming soon)" disabled title="Voice notes coming soon">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <rect x="9" y="2" width="6" height="12" rx="3"/>
               <path d="M5 10v2a7 7 0 0 0 14 0v-2"/>

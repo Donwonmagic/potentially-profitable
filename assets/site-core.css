@@ -579,17 +579,27 @@
 @media print{.score-pill{display:none !important}}
 
 
-/* ===== [core] Global focus-visible (lines 567-575) ===== */
+/* ===== [core] Global focus-visible (lines 567-585) ===== */
 /* ----- Global focus-visible — :where() keeps specificity at 0 so
    per-tool overrides still win. Component focus rings (e.g.
-   .score-pill-btn:focus-visible's teal border) compose with this. ----- */
+   .score-pill-btn:focus-visible's teal border) compose with this.
+   `summary`/`details`/[tabindex] are included because the bare
+   `:focus{outline:none}` strips the native ring from disclosure
+   widgets (FAQ accordions, <details class="cite"> drawers, 168
+   pages) and box-shadow doesn't render on summary the same way —
+   so those get an explicit outline ring below. ----- */
 :where(button, input, select, textarea, a):focus-visible{
   box-shadow:var(--ring-focus);
   outline:none;
 }
+:where(summary, details, [tabindex]):focus-visible{
+  outline:2px solid var(--teal);
+  outline-offset:3px;
+  border-radius:4px;
+}
 
 
-/* ===== [core] Self-hosted web fonts (@font-face) (lines 576-642) ===== */
+/* ===== [core] Self-hosted web fonts (@font-face) (lines 586-652) ===== */
 /* ============ SELF-HOSTED WEB FONTS ============
    Fraunces (display) and Inter (body) are served from /assets/fonts/
    as VARIABLE font files: one woff2 per font/style covers every weight
@@ -657,7 +667,7 @@
 @font-face{font-family:'Inter Fallback';src:local('Arial');size-adjust:100%;ascent-override:96.875%;descent-override:24.121%;line-gap-override:0%}
 
 
-/* ===== [core] Breakpoint scale (lines 643-748) ===== */
+/* ===== [core] Breakpoint scale (lines 653-689) ===== */
 /* ============ BREAKPOINT SCALE ============
    The site transitions at exactly these widths, everywhere:
 
@@ -690,7 +700,25 @@
    or by clamp() on padding/font-size, not by a new breakpoint. */
 
 *,*::before,*::after{box-sizing:border-box}
-html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+/* scroll-padding-top offsets the fixed .nav (~64px) + the fixed
+   .batch-marquee (var(--banner-h)) so anchor jumps / skip-link / deep
+   links don't land the target heading hidden behind the chrome. */
+html{scroll-behavior:smooth;scroll-padding-top:calc(64px + var(--banner-h,0px) + 8px);-webkit-text-size-adjust:100%}
+
+/* ===== [core] Global reduced-motion safety net (lines 690-775) ===== */
+/* Site-wide catch-all so animations/transitions/smooth-scroll honor the
+   OS "reduce motion" setting even on surfaces without a component-scoped
+   rule (WCAG 2.3.3). Component blocks elsewhere can still add specifics;
+   this is the floor. Near-zero (not 0) durations keep JS transitionend
+   handlers firing. */
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{
+    animation-duration:0.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:0.01ms !important;
+    scroll-behavior:auto !important;
+  }
+}
 /* The HTML `hidden` attribute should always hide. The user-agent
    rule (`[hidden]{display:none}`) loses to author-stylesheet rules
    of equal specificity that set a different `display` (e.g. `.btn
@@ -764,7 +792,7 @@ pre code{overflow-wrap:normal;word-break:normal;white-space:pre}
 .post-end-mark p{font-family:var(--font-display);font-style:italic;font-size:18px;color:var(--stone);margin:0}
 .container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
 
-/* ===== [core] Button vocabulary (.btn family) (lines 749-1319) ===== */
+/* ===== [core] Button vocabulary (.btn family) (lines 776-1346) ===== */
 /* ============ Button vocabulary (Sprint 4 — locked) ============
    The site has ONE button family. Every interactive control should
    compose from these primitives unless it is a registered exception
@@ -1336,7 +1364,7 @@ section.block{padding:clamp(80px,10vw,140px) 0}
 .final .btn-ghost{color:var(--cream);border-color:rgba(250,247,242,0.3)}
 .final .btn-ghost:hover{background:rgba(250,247,242,0.08);border-color:var(--cream)}
 
-/* ===== [core] Footer (lines 1320-1417) ===== */
+/* ===== [core] Footer (lines 1347-1444) ===== */
 /* ============ FOOTER ============
    Three-section footer: a top CTA row, a 3-column discovery grid,
    and a thin bottom row with copyright + legal. Unified across all
@@ -1435,7 +1463,7 @@ body:has(.block.final) .foot-cta{display:none}
 @media (max-width:640px){.foot-bottom{flex-direction:column;align-items:flex-start;gap:14px}}
 
 
-/* ===== [core] Global focus-visible + skip-link + sr-only + nav-toggle + mobile-menu (every-page chrome) (lines 1448-1516) ===== */
+/* ===== [core] Global focus-visible + skip-link + sr-only + nav-toggle + mobile-menu (every-page chrome) (lines 1475-1543) ===== */
 :focus{outline:none}
 /* Sprint 3: global focus affordance. The 2px solid outline reads as
    a browser-default; the layered halo from --ring-focus reads as
@@ -1505,7 +1533,7 @@ br.br-lg{display:none}
    container width — the compression shoves the text against one side
    of the pill, which reads as "the text isn't centered". */
 
-/* ===== [core] Nav refinements + share widget (was inside CITATION DRAWER section) (lines 1517-1538) ===== */
+/* ===== [core] Nav refinements + share widget (was inside CITATION DRAWER section) (lines 1544-1565) ===== */
 .nav-inner .btn-primary{flex-shrink:0}
 @media (max-width:1100px){.nav-inner .btn-primary{display:none}
 .nav-toggle{display:flex}
@@ -1528,7 +1556,7 @@ br.br-lg{display:none}
 .share-item:hover,.share-item:focus-visible{background-color:var(--cream-2);outline:none}
 .share-item.copied{color:var(--teal);font-weight:600}
 
-/* ===== [core] Breadcrumbs (lines 2363-2389) ===== */
+/* ===== [core] Breadcrumbs (lines 2390-2416) ===== */
 /* ============ BREADCRUMBS ============
    Visual counterpart to the BreadcrumbList schema already present in
    JSON-LD on secondary pages. Sits between the nav and the page hero,
@@ -1556,7 +1584,7 @@ br.br-lg{display:none}
 @media (max-width:640px){.breadcrumb{font-size:12px;padding:88px 0 12px}.breadcrumb + .hero{padding-top:24px}}
 
 
-/* ===== [core] Homepage utility classes (lines 2390-2442) ===== */
+/* ===== [core] Homepage utility classes (lines 2417-2469) ===== */
 /* ============ HOMEPAGE UTILITY CLASSES ============
    Extracted from inline style= attributes during the Sprint 1 cleanup.
    Keep these tightly scoped — prefer new semantic classes over atomic
@@ -1610,7 +1638,7 @@ br.br-lg{display:none}
 .honeypot{display:none}
 
 
-/* ===== [core] Legal pages (lines 2443-2469) ===== */
+/* ===== [core] Legal pages (lines 2470-2496) ===== */
 /* ===== Legal pages (accessibility, privacy, cookies, terms) ===== */
 .legal{max-width:760px;margin:0 auto;padding:calc(80px + 64px) var(--pad-x) 96px}
 .legal h1{font-family:var(--font-display);font-weight:500;font-size:clamp(34px,5vw,48px);line-height:1.1;letter-spacing:-0.02em;margin:0 0 8px;color:var(--ink)}
@@ -1638,7 +1666,7 @@ br.br-lg{display:none}
 }
 
 
-/* ===== [core] Homepage primary tool CTA (restaurant audit) (lines 2470-2761) ===== */
+/* ===== [core] Homepage primary tool CTA (restaurant audit) (lines 2497-2788) ===== */
 /* ============================================================
    Homepage primary tool CTA (restaurant audit)
    ============================================================
@@ -1931,7 +1959,7 @@ br.br-lg{display:none}
 }
 
 
-/* ===== [core] Library nav-mega regroup (nav is everywhere) (lines 3496-3816) ===== */
+/* ===== [core] Library nav-mega regroup (nav is everywhere) (lines 3523-3843) ===== */
 
 /* ---------- Library nav-mega regroup (Phase 5) ---------------------
    The Library dropdown was an 8-item linear list. Now grouped into
@@ -2253,7 +2281,7 @@ br.br-lg{display:none}
 }
 
 
-/* ===== [core] /system/ colophon page (small, kept in core) (lines 3921-3998) ===== */
+/* ===== [core] /system/ colophon page (small, kept in core) (lines 3948-4025) ===== */
 /* ============================================================
    /system/ COLOPHON PAGE
    Shows the stack, design tokens, i18n pipeline, URL restructure
@@ -2332,7 +2360,7 @@ br.br-lg{display:none}
 .sys-a11y p{font-size:14.5px;line-height:1.6;color:var(--stone);margin:0}
 
 
-/* ===== [core] Search modal (Pagefind-backed; on every page) (lines 3999-4174) ===== */
+/* ===== [core] Search modal (Pagefind-backed; on every page) (lines 4026-4201) ===== */
 /* ============================================================
    SEARCH MODAL (Pagefind-backed)
    Keyboard opens via Cmd/Ctrl+K or the nav search button. Modal
@@ -2509,7 +2537,7 @@ br.br-lg{display:none}
 }
 
 
-/* ===== [core] Cloudflare Turnstile widget (reservation min-height) (lines 5656-5669) ===== */
+/* ===== [core] Cloudflare Turnstile widget (reservation min-height) (lines 5683-5696) ===== */
 
 /* ============ Cloudflare Turnstile widget (Phase 3B) ============
    Reserve the widget's render height so layout doesn't shift when
@@ -2524,7 +2552,7 @@ br.br-lg{display:none}
 }
 
 
-/* ===== [core] Workshop save banner (multi-context, kept in core) (lines 5670-5721) ===== */
+/* ===== [core] Workshop save banner (multi-context, kept in core) (lines 5697-5748) ===== */
 /* ============ Workshop (Sprint 3 — cohesion) ============
    /workbench/ + /es/workbench/ saved-items page. Shares the
    global frame (.nav + <footer>) with every other page so the
@@ -2577,7 +2605,7 @@ br.br-lg{display:none}
   .wsh-item-actions{justify-content:flex-end}
 }
 
-/* ===== [core] Workshop rationale (lines 5890-5906) ===== */
+/* ===== [core] Workshop rationale (lines 5917-5933) ===== */
 /* ============ Workshop rationale (Sprint 14 — cohesion) ============
    A small editorial block on /tools/, /glossary/, and a few other
    pages that explains the Workshop to anonymous visitors. The two
@@ -2595,7 +2623,7 @@ br.br-lg{display:none}
 .workshop-rationale-cta .js-nav-signin:hover,.workshop-rationale-cta .js-nav-workshop:hover{color:var(--teal-dark)}
 
 
-/* ===== [core] The Window (/window/ — kept in core to avoid a 4th shell) (lines 5907-6024) ===== */
+/* ===== [core] The Window (/window/ — kept in core to avoid a 4th shell) (lines 5934-6051) ===== */
 /* ============ THE WINDOW (Phase W.3) ============
    Full-page editorial canvas at /window/ and /es/window/. Suppresses
    the standard nav via body.window-canvas. The muntin hairline at
@@ -2714,7 +2742,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .window-signin strong{color:var(--ink)}
 
 
-/* ===== [core] Window composer (Phase-2 redesign) (lines 6025-6057) ===== */
+/* ===== [core] Window composer (Phase-2 redesign) (lines 6052-6084) ===== */
 /* ============ WINDOW COMPOSER — Phase-2 redesign ============
    On-ramp chips moved above the form, surface productized offers
    with prices. Optional context grid (Name / Restaurant / Site)
@@ -2723,14 +2751,14 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 */
 .window-onramps__hint{font-family:var(--font-body);font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--stone);margin:0 0 10px}
 .window-composer__onramps{flex-direction:column;align-items:flex-start;margin-top:0;margin-bottom:24px;gap:8px}
-.window-composer__onramps .window-onramp{padding:10px 16px;font-size:13px;letter-spacing:0;text-transform:none;font-weight:500;width:auto;display:inline-flex;align-items:center;gap:10px;line-height:1.3}
+.window-composer__onramps .window-onramp{padding:11px 16px;min-height:44px;font-size:13px;letter-spacing:0;text-transform:none;font-weight:500;width:auto;display:inline-flex;align-items:center;gap:10px;line-height:1.3}
 .window-composer__onramps .window-onramp em{font-family:var(--font-display);font-style:italic;font-weight:500;color:var(--teal);font-size:13.5px}
 .window-composer__onramps .window-onramp:hover em,.window-composer__onramps .window-onramp:focus-visible em{color:var(--teal-dark)}
 .window-composer__context{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
 .window-composer__field-pair{display:flex;flex-direction:column;gap:4px}
 .window-composer__field-pair--full{grid-column:1 / -1}
 .window-composer__field-pair label{font-family:var(--font-body);font-size:13px;font-weight:500;color:var(--ink-soft)}
-.window-composer__field-pair input{padding:10px 12px;border:1px solid var(--line-dark);border-radius:var(--r-input);font:inherit;font-size:15px;background:var(--white);color:var(--ink);min-height:44px}
+.window-composer__field-pair input{padding:10px 12px;border:1px solid var(--line-dark);border-radius:var(--r-input);font:inherit;font-size:16px;background:var(--white);color:var(--ink);min-height:44px}
 .window-composer__field-pair input:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(42,80,200,.18)}
 .window-composer__opt{font-weight:400;color:var(--stone);font-style:italic}
 .window-composer__body-label{display:block;font-family:var(--font-body);font-size:13px;font-weight:600;color:var(--ink);margin-bottom:6px;letter-spacing:0.01em}
@@ -2748,7 +2776,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
   .window-composer__alt-row li + li::before{display:none}
 }
 
-/* ===== [core] ADMIN /admin/window/ (kept in core; admin is auth-gated noindex) (lines 6058-6147) ===== */
+/* ===== [core] ADMIN /admin/window/ (kept in core; admin is auth-gated noindex) (lines 6085-6174) ===== */
 
 /* ============ ADMIN /admin/window/ (Phase W.3) ============ */
 .admin-window{max-width:760px;margin:0 auto;padding:32px 16px}
@@ -2839,7 +2867,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .tool-data-promise__links a:hover{border-bottom-color:var(--teal)}
 
 
-/* ===== [core] Newsletter capture (in global footer; on every page) (lines 6389-6411) ===== */
+/* ===== [core] Newsletter capture (in global footer; on every page) (lines 6416-6438) ===== */
 
 /* Phase G.10 (Growth) — quiet newsletter capture in the global footer.
    Two short lines, one input, one button — no badges, no pop-ups, no
@@ -2863,7 +2891,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 
 
 
-/* ===== [core] Touch-device hover hygiene (lines 6474-6512) ===== */
+/* ===== [core] Touch-device hover hygiene (lines 6501-6539) ===== */
 /* ============================================================
    Touch-device hover hygiene — neutralize sticky :hover effects
    on devices that don't have a hover capability. CSS :hover on
@@ -2903,7 +2931,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
   *:hover { transition-duration: 0ms !important; }
 }
 
-/* ===== [core] Hero mobile reorder (homepage) (lines 6513-6537) ===== */
+/* ===== [core] Hero mobile reorder (homepage) (lines 6540-6564) ===== */
 
 /* ============================================================
    Hero mobile reorder — phones first, primary CTA above the fold.
@@ -2929,7 +2957,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 }
 
 
-/* ===== [core] Hero count chips (homepage) (lines 6613-6644) ===== */
+/* ===== [core] Hero count chips (homepage) (lines 6640-6671) ===== */
 
 /* ============================================================
    Hero count chips — small pill row showing library counts
@@ -2962,7 +2990,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
   color: var(--teal);
 }
 
-/* ===== [core] Trust strip (homepage) (lines 6645-6671) ===== */
+/* ===== [core] Trust strip (homepage) (lines 6672-6698) ===== */
 
 /* ============================================================
    Trust strip — single thin band immediately under flagship
@@ -2990,7 +3018,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
   color: var(--stone);
 }
 
-/* ===== [core] Compare cards (homepage) (lines 6672-6757) ===== */
+/* ===== [core] Compare cards (homepage) (lines 6699-6784) ===== */
 
 /* ============================================================
    Compare cards — three-column Patchwork / Agency / Muntin
@@ -3077,7 +3105,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 }
 
 
-/* ===== [core] Window Phase 2/3.6/4/5+ additions (sash/sidelight, attach, now, pulses, admin) (lines 7098-7361) ===== */
+/* ===== [core] Window Phase 2/3.6/4/5+ additions (sash/sidelight, attach, now, pulses, admin) (lines 7125-7388) ===== */
 /* ============ THE WINDOW — Phase 2/3.6/4/5+ additions ============
    Sash/sidelight named-pane composer (Phase 2.1), photo+voice attach
    row (Phase 3.2-3.6), now-line widget (Phase 4), site-wide pulse
@@ -3342,7 +3370,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .admin-callbacks__voice-label--deleted{color:var(--stone)}
 .admin-callbacks__meta{font-size:12px;color:var(--ink-soft);font-style:italic;margin:8px 0 0}
 
-/* ===== [core] Phase 1 — design tokens + MuntinUI component shells (.mtn-*) (lines 7362-7574) ===== */
+/* ===== [core] Phase 1 — design tokens + MuntinUI component shells (.mtn-*) (lines 7389-7601) ===== */
 
 /* ============ Phase 1 tokens (tool-suite upgrade) ============
    Additive tokens that the MuntinUI primitives consume. Existing
@@ -3556,7 +3584,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
   }
 }
 
-/* ===== [core] Phase 2 — hub tier badge + tool-tier-filter strip (lines 7575-7628) ===== */
+/* ===== [core] Phase 2 — hub tier badge + tool-tier-filter strip (lines 7602-7655) ===== */
 
 /* ============ Phase 2 hub styles (tool-suite upgrade) ============
    Tier badge on each tool card + a JS-enhanced filter strip that
@@ -3611,7 +3639,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
   display:none;
 }
 
-/* ===== [core] Phase 5 — dark-mode token override (prefers-color-scheme + [data-theme]) (lines 7629-7690) ===== */
+/* ===== [core] Phase 5 — dark-mode token override (prefers-color-scheme + [data-theme]) (lines 7656-7717) ===== */
 
 /* ============ Phase 5 dark-mode tokens (tool-suite upgrade) ============
    The Phase 1 component primitives all reference --mtn-surface /
@@ -3674,7 +3702,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 }
 
 
-/* ===== [core] Phase 7 — dark-mode toggle button (.theme-toggle) (lines 7691-7751) ===== */
+/* ===== [core] Phase 7 — dark-mode toggle button (.theme-toggle) (lines 7718-7778) ===== */
 /* ============ Phase 7 — dark-mode toggle button =============
    Sits in the nav next to lang-switch. Two SVG icons (sun + moon)
    stacked; CSS shows one based on the current [data-theme] state.
@@ -3736,7 +3764,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .mobile-theme .theme-toggle__label{display:inline}
 
 
-/* ===== [core] Phase 4 — next-tool recommendation card (.mtn-next-tool) (lines 7752-7792) ===== */
+/* ===== [core] Phase 4 — next-tool recommendation card (.mtn-next-tool) (lines 7779-7819) ===== */
 /* ============ Phase 4 — next-tool recommendation card =============
    Mounted at the end of a tool's result region by
    MuntinNextTool.render(). Visually quiet so it doesn't compete
@@ -3778,13 +3806,13 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .mtn-next-tool__link:focus-visible{outline:none;box-shadow:var(--ring-focus)}
 
 
-/* ===== [core] Phase G — About portrait frame (real photo overlay) (lines 7793-7797) ===== */
+/* ===== [core] Phase G — About portrait frame (real photo overlay) (lines 7820-7824) ===== */
 /* ===== Phase G — About portrait frame (real photo overlay; reused on homepage About teaser + /about/) ===== */
 .about-portrait-frame{position:relative;width:100%;aspect-ratio:4/5;border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--line-dark);background:var(--cream-2)}
 .about-portrait-frame .portrait{position:absolute;inset:0;border:0;border-radius:0;aspect-ratio:auto;width:100%;height:100%}
 .about-portrait-frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 
-/* ===== [core] Batch marquee (lines 7798-7804) ===== */
+/* ===== [core] Batch marquee (lines 7825-7831) ===== */
 /* ===== Batch marquee — fixed strip above the nav (.batch-marquee is on every page when a batch is active) ===== */
 .batch-marquee{position:fixed;top:0;left:0;right:0;z-index:60}
 body:has(.batch-marquee) header.nav{top:var(--banner-h,40px)}
@@ -3792,7 +3820,7 @@ body:has(.batch-marquee) main{padding-top:calc(64px + var(--banner-h,40px))}
 @media (max-width:640px){:root{--banner-h:72px}}
 
 
-/* ===== [core] Phase 9 — Light refresh (micro-interactions, depth, voice search, dark-mode polish) (lines 7805-8009) ===== */
+/* ===== [core] Phase 9 — Light refresh (micro-interactions, depth, voice search, dark-mode polish) (lines 7832-8036) ===== */
 /* ============ Phase 9 — Light refresh ============
    A small, additive cosmetic pass that layers on top of every
    previous phase without re-declaring anything. Five concerns:
@@ -3998,7 +4026,7 @@ body:has(.batch-marquee) main{padding-top:calc(64px + var(--banner-h,40px))}
 :root[data-theme="dark"] .theme-toggle:hover{background:var(--refresh-surface-1);border-color:var(--teal)}
 
 
-/* ===== [core] Dark-mode contrast completion (lines 8010-8235) ===== */
+/* ===== [core] Dark-mode contrast completion (lines 8037-8288) ===== */
 /* GEN:dark-mode:start — generated by scripts/build-dark-mode.mjs. DO NOT EDIT BY HAND. */
 /* TOKEN-FLIP dark theme (see scripts/build-dark-mode.mjs). The base palette
    is remapped at the dark root so every surface and its text flip together;
@@ -4020,6 +4048,7 @@ body:has(.batch-marquee) main{padding-top:calc(64px + var(--banner-h,40px))}
     --surface-0: #16181D;
     --surface-1: #1B1E24;
     --surface-2: #21262E;
+    --surface-inset: #21262E;
     --ink: #F1EDE5;
     --ink-soft: #BBB6AB;
     --stone: #9CA3AE;
@@ -4036,6 +4065,7 @@ body:has(.batch-marquee) main{padding-top:calc(64px + var(--banner-h,40px))}
     --status-good-tint: #15281D;
     --status-pass: #3FBE77;
     --status-warn: #E0B341;
+    --status-warn-deep: #E0B341;
     --status-warn-tint: #2A2113;
     --status-bad-tint: #2E1A16;
   }
@@ -4080,10 +4110,12 @@ body:has(.batch-marquee) main{padding-top:calc(64px + var(--banner-h,40px))}
       --teal-tint: #EAF0FE;
       --rust: #C42E2E;
       --gold: #B7791F;
+      --surface-inset: #EDEEF1;
       --status-good: #1F6B3A;
       --status-good-tint: #E7F5EC;
       --status-pass: #1f9d55;
       --status-warn: #8A6018;
+      --status-warn-deep: #8A3E16;
       --status-warn-tint: #FDEFE3;
       --status-bad-tint: #F7E7DC;
     }
@@ -4106,6 +4138,15 @@ body:has(.batch-marquee) main{padding-top:calc(64px + var(--banner-h,40px))}
     /* listen 'finished' prompt: dark-gold (#7C5A1F) on a faint gold pill over dark */
     :root:not([data-theme="light"]) .listen-finished-text,
     :root:not([data-theme="light"]) .listen-finished-dismiss{color:#D9B06A}
+    /* security-tier 4 hardcodes a light-pink bg (#FBEEEE) that won't flip → */
+    /* near-white card with flipped light text (1.04:1). Re-pin to a dark danger tint. */
+    :root:not([data-theme="light"]) .security-tier[data-tier="4"]{background:#2E1A16;border-color:#F0796A}
+    /* .theme-brand hardcodes a dark-brown accent (#7A5C3E) → 2.7:1 eyebrow on dark. */
+    :root:not([data-theme="light"]) .theme-brand{--accent:var(--gold)}
+    /* Chevron/disclosure SVG icons encode a fixed mid-gray stroke in a
+    :root:not([data-theme="light"]) .form-group select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23BBB6AB' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E")}
+    :root:not([data-theme="light"]) .cite summary::before{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23BBB6AB' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 19.5A2.5 2.5 0 0 1 6.5 17H20'/%3E%3Cpath d='M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z'/%3E%3C/svg%3E") no-repeat center / contain}
+    :root:not([data-theme="light"]) .cite summary::after{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23BBB6AB' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat center / contain;transition:transform var(--t-fast) var(--ease)}
     /* hero gradient-text: -webkit-text-fill-color overrides color */
     :root:not([data-theme="light"]) .hero h1 .serif-italic{background:none;-webkit-text-fill-color:var(--teal);color:var(--teal)}
 }
@@ -4119,6 +4160,7 @@ body:has(.batch-marquee) main{padding-top:calc(64px + var(--banner-h,40px))}
   --surface-0: #16181D;
   --surface-1: #1B1E24;
   --surface-2: #21262E;
+  --surface-inset: #21262E;
   --ink: #F1EDE5;
   --ink-soft: #BBB6AB;
   --stone: #9CA3AE;
@@ -4135,6 +4177,7 @@ body:has(.batch-marquee) main{padding-top:calc(64px + var(--banner-h,40px))}
   --status-good-tint: #15281D;
   --status-pass: #3FBE77;
   --status-warn: #E0B341;
+  --status-warn-deep: #E0B341;
   --status-warn-tint: #2A2113;
   --status-bad-tint: #2E1A16;
 }
@@ -4179,10 +4222,12 @@ body:has(.batch-marquee) main{padding-top:calc(64px + var(--banner-h,40px))}
     --teal-tint: #EAF0FE;
     --rust: #C42E2E;
     --gold: #B7791F;
+    --surface-inset: #EDEEF1;
     --status-good: #1F6B3A;
     --status-good-tint: #E7F5EC;
     --status-pass: #1f9d55;
     --status-warn: #8A6018;
+    --status-warn-deep: #8A3E16;
     --status-warn-tint: #FDEFE3;
     --status-bad-tint: #F7E7DC;
   }
@@ -4205,6 +4250,15 @@ body:has(.batch-marquee) main{padding-top:calc(64px + var(--banner-h,40px))}
   /* listen 'finished' prompt: dark-gold (#7C5A1F) on a faint gold pill over dark */
   :root[data-theme="dark"] .listen-finished-text,
   :root[data-theme="dark"] .listen-finished-dismiss{color:#D9B06A}
+  /* security-tier 4 hardcodes a light-pink bg (#FBEEEE) that won't flip → */
+  /* near-white card with flipped light text (1.04:1). Re-pin to a dark danger tint. */
+  :root[data-theme="dark"] .security-tier[data-tier="4"]{background:#2E1A16;border-color:#F0796A}
+  /* .theme-brand hardcodes a dark-brown accent (#7A5C3E) → 2.7:1 eyebrow on dark. */
+  :root[data-theme="dark"] .theme-brand{--accent:var(--gold)}
+  /* Chevron/disclosure SVG icons encode a fixed mid-gray stroke in a
+  :root[data-theme="dark"] .form-group select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23BBB6AB' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E")}
+  :root[data-theme="dark"] .cite summary::before{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23BBB6AB' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 19.5A2.5 2.5 0 0 1 6.5 17H20'/%3E%3Cpath d='M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z'/%3E%3C/svg%3E") no-repeat center / contain}
+  :root[data-theme="dark"] .cite summary::after{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23BBB6AB' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat center / contain;transition:transform var(--t-fast) var(--ease)}
   /* hero gradient-text: -webkit-text-fill-color overrides color */
   :root[data-theme="dark"] .hero h1 .serif-italic{background:none;-webkit-text-fill-color:var(--teal);color:var(--teal)}
 /* GEN:dark-mode:end */
