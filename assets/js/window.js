@@ -37,6 +37,11 @@
       donActive: 'Don is around · last seen ',
       counterFmt: function (n) { return n + ' / 4000'; },
       submitLabel: 'Send it over',
+      // Phase 8.2 — daily-cap half-success (note still filed, plan §8.2).
+      sentDayCapped: "I've got a stack today. Your note is filed for tomorrow morning.",
+      // Phase 8.1 — auto-pause states (plan §8.1).
+      pauseSoft: "Don is on the floor this week — slower than usual. I'll get to your note within 2 business days, sometimes faster.",
+      pauseHard: 'Don is buried — try again Monday, or email don@muntin.digital for emergencies.',
     },
     es: {
       youStamp: 'tú',
@@ -56,6 +61,11 @@
       donActive: 'Don está cerca · visto ',
       counterFmt: function (n) { return n + ' / 4000'; },
       submitLabel: 'Enviar a Don',
+      // Phase 8.2 — daily-cap half-success (note still filed, plan §8.2).
+      sentDayCapped: 'Tengo una pila hoy. Tu nota queda para mañana en la mañana.',
+      // Phase 8.1 — auto-pause states (plan §8.1).
+      pauseSoft: 'Don está en el piso esta semana — más lento de lo normal. Llegaré a tu nota en un par de días hábiles, a veces antes.',
+      pauseHard: 'Don está hasta el cuello — intenta de nuevo el lunes, o escribe a don@muntin.digital para urgencias.',
     },
   };
   var copy = COPY[locale];
@@ -251,6 +261,22 @@
     if (diffSec < 3600) return Math.floor(diffSec / 60) + (locale === 'es' ? ' min atrás' : 'm ago');
     if (diffSec < 86400) return Math.floor(diffSec / 3600) + (locale === 'es' ? 'h atrás' : 'h ago');
     return Math.floor(diffSec / 86400) + (locale === 'es' ? 'd atrás' : 'd ago');
+  }
+
+  // Phase 8.1 — auto-pause half-states from /api/window/active.autoPauseLevel.
+  // 0 = normal (no-op). 1 = soft: a non-blocking advisory; composer stays
+  // usable. 2 = disabled: composer turned off and the operator is routed to
+  // email — the pauseHard copy carries don@muntin.digital as the emergency
+  // lane (plan §8.1). Runs once per load off the active fetch; only an
+  // explicit level 2 disables (a fetch failure is silent → composer usable).
+  function applyAutoPause(level) {
+    if (level >= 2) {
+      if (els.body) { els.body.disabled = true; els.body.setAttribute('aria-disabled', 'true'); }
+      if (els.submit) els.submit.disabled = true;
+      showMsg(copy.pauseHard, false);
+    } else if (level === 1) {
+      showMsg(copy.pauseSoft, false);
+    }
   }
 
   function showPaused() {
@@ -506,7 +532,11 @@
     fetch('/api/window/active')
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(function (j) {
-        if (!j || !j.lastSeen || !els.pulse) return;
+        if (!j) return;
+      // Phase 8.1 — apply auto-pause level before the breathing-dot logic
+      // (which early-returns when lastSeen is absent).
+      applyAutoPause(j.autoPauseLevel || 0);
+      if (!j.lastSeen || !els.pulse) return;
         var hoursAgo = (Date.now() - j.lastSeen) / 3600000;
         if (hoursAgo < 4) {
           els.pulse.hidden = false;
@@ -615,7 +645,7 @@
         // Plan §3.7. The crisis line stays visible if it was up
         // before send (so the resources travel with the operator
         // into the wait).
-        showSuccessState();
+        showSuccessState(res.body && res.body.dayCapped);
         // Reset chip-key tracking so a follow-up send doesn't
         // mis-route to the prior chip's artifact.
         lastChipKey = null;
@@ -746,7 +776,7 @@
   // stays. The "Drop your email" upgrade is gone — the email
   // arrives because Don replies; the page does not need to ask.
   // Plan §3.7 + §3.11.
-  function showSuccessState() {
+  function showSuccessState(dayCapped) {
     if (!els.msg) return;
     var locale_ = locale;
     var artifactMap = CHIP_ARTIFACTS[locale_] || CHIP_ARTIFACTS.en;
@@ -770,6 +800,17 @@
     thanksLine.style.fontWeight = '500';
     thanksLine.textContent = thanks;
     els.msg.appendChild(thanksLine);
+
+    // Phase 8.2 — daily-cap half-success. The note IS filed (server still
+    // 200s); this line just sets the "tomorrow morning" expectation.
+    if (dayCapped) {
+      var cappedLine = document.createElement('span');
+      cappedLine.style.display = 'block';
+      cappedLine.style.marginTop = '6px';
+      cappedLine.style.color = 'var(--ink-soft)';
+      cappedLine.textContent = copy.sentDayCapped;
+      els.msg.appendChild(cappedLine);
+    }
 
     var artifactLine = document.createElement('span');
     artifactLine.style.display = 'block';
