@@ -263,6 +263,22 @@
     return Math.floor(diffSec / 86400) + (locale === 'es' ? 'd atrás' : 'd ago');
   }
 
+  // Phase 8.1 — auto-pause half-states from /api/window/active.autoPauseLevel.
+  // 0 = normal (no-op). 1 = soft: a non-blocking advisory; composer stays
+  // usable. 2 = disabled: composer turned off and the operator is routed to
+  // email — the pauseHard copy carries don@muntin.digital as the emergency
+  // lane (plan §8.1). Runs once per load off the active fetch; only an
+  // explicit level 2 disables (a fetch failure is silent → composer usable).
+  function applyAutoPause(level) {
+    if (level >= 2) {
+      if (els.body) { els.body.disabled = true; els.body.setAttribute('aria-disabled', 'true'); }
+      if (els.submit) els.submit.disabled = true;
+      showMsg(copy.pauseHard, false);
+    } else if (level === 1) {
+      showMsg(copy.pauseSoft, false);
+    }
+  }
+
   function showPaused() {
     state.paused = true;
     if (els.paused) els.paused.hidden = false;
@@ -516,7 +532,11 @@
     fetch('/api/window/active')
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(function (j) {
-        if (!j || !j.lastSeen || !els.pulse) return;
+        if (!j) return;
+      // Phase 8.1 — apply auto-pause level before the breathing-dot logic
+      // (which early-returns when lastSeen is absent).
+      applyAutoPause(j.autoPauseLevel || 0);
+      if (!j.lastSeen || !els.pulse) return;
         var hoursAgo = (Date.now() - j.lastSeen) / 3600000;
         if (hoursAgo < 4) {
           els.pulse.hidden = false;
