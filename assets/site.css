@@ -18,6 +18,17 @@
   --gradient-goldenhour:radial-gradient(120% 120% at 88% 6%,rgba(255,176,32,0.26) 0%,rgba(255,107,92,0.11) 38%,rgba(255,176,32,0) 76%);
   --gradient-goldenhour-soft:radial-gradient(100% 100% at 92% 4%,rgba(255,176,32,0.12) 0%,rgba(255,107,92,0.05) 52%,rgba(255,176,32,0) 80%);
   --glass-warm:rgba(255,176,32,0.06);
+  /* Section rhythm (2026) — clear, AA-verified section separation.
+     Sections separated only by a near-identical bg swap with no edge, so
+     neighbours blurred. Composed fix: a crisp hairline on every section
+     boundary (primary separator — never touches text contrast) + an
+     alternating surface tier + a faint warm Golden-Hour wash on alt
+     bands. --stone is a locked spine token, so the light alt tier LIFTS
+     to white (the AA-safe "different" direction) rather than darkening;
+     the dark tiers mirror this in the generated dark block. Held to
+     WCAG AA by scripts/check-contrast.mjs. */
+  --section-base:#F6F7F8; --section-alt:#FFFFFF; --section-raised:#FFFFFF;
+  --section-line:#CDD2DA; --section-line-warm:rgba(255,176,32,0.22);
 }
 /* Homepage hero: golden-hour light behind the content column and
    falling across the window glass. Scoped to .hero only; .hero is
@@ -1098,11 +1109,11 @@ to{opacity:1;transform:translateZ(0)}
 .proof-logos{display:flex;gap:44px;flex-wrap:wrap;font-family:var(--font-display);font-weight:500;font-size:18px;color:var(--stone);letter-spacing:-0.01em;align-items:center}
 .proof-logos span{}
 .proof-logos span:nth-child(even){font-style:italic}
-section.block{padding:clamp(80px,10vw,140px) 0}
+section.block{padding:clamp(80px,10vw,140px) 0;border-top:1px solid var(--section-line)}
 .section-header{max-width:760px;margin-bottom:64px}
 .section-header h2{margin-top:16px}
 .section-header p{margin-top:20px;font-size:19px;line-height:1.55;color:var(--ink-soft);max-width:640px}
-.bg-cream2{background:var(--cream-2)}
+.bg-cream2{background:linear-gradient(180deg,var(--section-line-warm) 0,rgba(255,176,32,0) 96px),var(--section-alt)}
 .compare{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
 @media (max-width:960px){.compare{grid-template-columns:1fr}
 }
