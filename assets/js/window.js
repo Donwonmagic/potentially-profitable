@@ -238,6 +238,12 @@
     pollTimer: null,
     activeTimer: null,
     paused: false,
+    // Phase 8.1 — true while a level-2 auto-pause has disabled the
+    // composer, so a later level-0 poll knows to re-enable it.
+    autoPauseDisabled: false,
+    // True between submit and response so an auto-pause poll firing
+    // mid-send doesn't re-enable the composer underneath the request.
+    sending: false,
   };
 
   function escHtml(s) {
@@ -267,15 +273,35 @@
   // 0 = normal (no-op). 1 = soft: a non-blocking advisory; composer stays
   // usable. 2 = disabled: composer turned off and the operator is routed to
   // email — the pauseHard copy carries don@muntin.digital as the emergency
-  // lane (plan §8.1). Runs once per load off the active fetch; only an
-  // explicit level 2 disables (a fetch failure is silent → composer usable).
+  // lane (plan §8.1). Called from pollActive on init AND every 60s, so it
+  // must be idempotent and recover: level 0/1 re-enable a previously
+  // disabled composer. Only an explicit level 2 disables (a fetch failure
+  // is silent → composer stays usable).
   function applyAutoPause(level) {
     if (level >= 2) {
       if (els.body) { els.body.disabled = true; els.body.setAttribute('aria-disabled', 'true'); }
       if (els.submit) els.submit.disabled = true;
+      state.autoPauseDisabled = true;
       showMsg(copy.pauseHard, false);
     } else if (level === 1) {
+      // Soft: advisory only, composer usable. If we'd previously hard-
+      // disabled (level 2 → 1 recovery), re-enable now.
+      if (state.autoPauseDisabled) {
+        if (els.body) { els.body.disabled = false; els.body.removeAttribute('aria-disabled'); }
+        if (els.submit && !state.sending) els.submit.disabled = false;
+        state.autoPauseDisabled = false;
+      }
       showMsg(copy.pauseSoft, false);
+    } else {
+      // Level 0 — healthy. Audit D: actively recover from a prior
+      // disable/advisory. Only undo what auto-pause itself set, and don't
+      // fight an in-flight send (state.sending) or the paused state.
+      if (state.autoPauseDisabled) {
+        if (els.body) { els.body.disabled = false; els.body.removeAttribute('aria-disabled'); }
+        if (els.submit && !state.sending) els.submit.disabled = false;
+        state.autoPauseDisabled = false;
+        hideMsg();
+      }
     }
   }
 
@@ -602,6 +628,7 @@
     if (bodyWithContext.length > 4000) { showMsg(copy.errorBodyTooLong, true); return; }
     hideMsg();
     persistContextToStorage();
+    state.sending = true;
     els.submit.disabled = true;
     els.body.disabled = true;
     var origLabel = els.submit.textContent;
@@ -688,10 +715,18 @@
     }).catch(function () {
       showMsg(copy.error, true);
     }).finally(function () {
+      state.sending = false;
       els.submit.disabled = false;
       els.body.disabled = false;
       els.submit.textContent = origLabel || copy.submitLabel;
       els.submit.removeAttribute('aria-busy');
+      // If auto-pause had hard-disabled the composer, the unconditional
+      // re-enable above would briefly undo it; the next pollActive tick
+      // (≤60s) re-applies the level. Re-assert immediately to avoid the gap.
+      if (state.autoPauseDisabled) {
+        if (els.body) els.body.disabled = true;
+        if (els.submit) els.submit.disabled = true;
+      }
     });
   }
 

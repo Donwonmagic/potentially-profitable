@@ -249,6 +249,7 @@ import {
   createThread as createWindowThread,
   appendMessageToThread,
   iterateAdminQueue,
+  upsertAdminIndex as upsertWindowAdminIndex,
   dayBucket as windowDayBucket,
   computeAutoPauseLevel,
   AUTOPAUSE_STALE_HOURS,
@@ -1372,6 +1373,12 @@ async function snapshotWindowVitals(env) {
   const existing = await env.AUTH_SESSIONS.get(stampKey);
   if (existing) return { written: false, skipped: 'already-today' };
 
+  // Audit F (known limitation): the admin index iterates the last 30
+  // day-buckets keyed by updatedAt, so a thread untouched for >30 days
+  // is invisible here — unansweredThreads and oldestUnansweredHrs reflect
+  // the *recent* backlog (≤~720h), not all-time. Acceptable: auto-pause
+  // is a load gauge on the active queue, and a 30-day-stale thread isn't
+  // driving today's load. Revisit only if a true all-time SLA is needed.
   let entries = [];
   try { entries = await iterateAdminQueue(env, 30); }
   catch (_) { return { written: false, skipped: 'queue-unavailable' }; }
@@ -6605,12 +6612,11 @@ async function handleWindowAppend(request, env, ctx) {
 
     let thread = await getOpenThreadForUser(env, sub);
     let dayCapped = false;
+    let isNewThread = false;
     if (!thread || (thread.msgCount || 0) >= 100) {
       try { thread = await createWindowThread(env, sub, email, windowSource); }
       catch (_) { return jsonResponse({ ok: false, error: 'mint-collision' }, 500); }
-      // §8.2 daily cap — note is still filed; flag drives the half-success copy.
-      const newCount = await _bumpWindowNewThreadCount(env);
-      dayCapped = newCount > MAX_NEW_THREADS_PER_DAY;
+      isNewThread = true;
     }
 
     // Phase 1b — pre-stamp crisis tier on the thread so the
@@ -6627,6 +6633,13 @@ async function handleWindowAppend(request, env, ctx) {
     const result = await appendMessageToThread(env, sub, thread, 'user', sanitized);
     if (!result.ok) {
       return jsonResponse({ ok: false, ...result }, result.error === 'thread-full' ? 409 : 500);
+    }
+    // §8.2 daily cap — bump AFTER a successful append so a failed send
+    // doesn't over-count. The note is still filed; dayCapped only drives
+    // the "filed for tomorrow" half-success copy past the 25/day bound.
+    if (isNewThread) {
+      const newCount = await _bumpWindowNewThreadCount(env);
+      dayCapped = newCount > MAX_NEW_THREADS_PER_DAY;
     }
     // Phase 3.2 — link pending attachments to the new msg row.
     if (hasAttachments) {
@@ -6678,7 +6691,7 @@ async function handleWindowAppend(request, env, ctx) {
     }
 
     console.log(JSON.stringify({ event: 'window.append', sub, threadId: thread.id, msgId: result.msg.id, ts: result.msg.createdAt, firstMsg: isFirstUserMessage }));
-    return jsonResponse({ ok: true, threadId: thread.id, msgId: result.msg.id, createdAt: result.msg.createdAt, msgCount: result.thread.msgCount }, 200);
+    return jsonResponse({ ok: true, threadId: thread.id, msgId: result.msg.id, createdAt: result.msg.createdAt, msgCount: result.thread.msgCount, dayCapped }, 200);
   }
 
   // ── Anonymous path (Phase 1a) ─────────────────────────────────
@@ -6736,9 +6749,11 @@ async function handleWindowAppend(request, env, ctx) {
 
   // Get or create the anon thread (one per cookie lifetime).
   let thread = await getOpenThreadForAnon(env, anonId);
+  let isNewThread = false;
   if (!thread || (thread.msgCount || 0) >= 100) {
     try {
       thread = await createAnonThread(env, anonId, locale, windowSource);
+      isNewThread = true;
     } catch (err) {
       if (err && err.message === 'anon-id-claimed') {
         // Audit S3 — stale cookie pointing at a row that's already
@@ -6765,6 +6780,13 @@ async function handleWindowAppend(request, env, ctx) {
   const result = await appendMessageToAnonThread(env, anonId, thread, 'user', sanitized);
   if (!result.ok) {
     return jsonResponse({ ok: false, ...result }, result.error === 'thread-full' ? 409 : 500);
+  }
+  // §8.2 daily cap — anon threads count toward the same site-wide 25/day
+  // bound. Bump AFTER a successful append (no over-count on failure).
+  let dayCapped = false;
+  if (isNewThread) {
+    const newCount = await _bumpWindowNewThreadCount(env);
+    dayCapped = newCount > MAX_NEW_THREADS_PER_DAY;
   }
   // Phase 3.2 — link pending attachments to the new anon msg row.
   if (hasAttachments) {
@@ -6801,7 +6823,7 @@ async function handleWindowAppend(request, env, ctx) {
   if (mintedNewCookie) {
     _setWindowAnonCookie(headers, anonId);
   }
-  const payload = { ok: true, threadId: thread.id, msgId: result.msg.id, createdAt: result.msg.createdAt, msgCount: result.thread.msgCount, anon: true };
+  const payload = { ok: true, threadId: thread.id, msgId: result.msg.id, createdAt: result.msg.createdAt, msgCount: result.thread.msgCount, anon: true, dayCapped };
   return new Response(JSON.stringify(payload), { status: 200, headers });
 }
 
@@ -8072,7 +8094,10 @@ async function handleAdminWindowReply(request, env, ctx) {
     return jsonResponse({ ok: false, ...result }, result.error === 'thread-full' ? 409 : 500);
   }
   // Update Don's "active" signal so the breathing dot lights up.
-  await setWindowActiveMeta(env, { replyingTo: resolved.threadId });
+  // touch:true — a reply is real operator presence, so refresh lastSeen.
+  // (The cron auto-pause write deliberately omits touch so it can't fake
+  // presence and defeat the 72h staleness floor.)
+  await setWindowActiveMeta(env, { replyingTo: resolved.threadId }, { touch: true });
 
   // Email the visitor with Don's reply inline. Best-effort — the
   // message is already persisted; visitor will see it on their
@@ -8190,6 +8215,11 @@ async function handleAdminWindowClose(request, env, ctx) {
     ? windowAnonThreadKey(resolved.anonId)
     : windowThreadKey(resolved.sub, resolved.threadId);
   await env.AUTH_SESSIONS.put(writeKey, JSON.stringify(resolved.thread));
+  // Audit C — re-index so the admin index reflects status:'closed';
+  // otherwise the §8.1 auto-pause count keeps counting this thread as
+  // unreplied. Ensure kind/anonId are present so anon threads index right.
+  if (resolved.kind === 'anon') { resolved.thread.kind = 'anon'; resolved.thread.anonId = resolved.anonId; }
+  await upsertWindowAdminIndex(env, resolved.thread);
   console.log(JSON.stringify({ event: 'window.close', kind: resolved.kind, sub: resolved.sub, anonId: resolved.anonId, threadId: resolved.threadId, ts: resolved.thread.updatedAt }));
   return jsonResponse({ ok: true, status: 'closed' }, 200);
 }
@@ -8221,10 +8251,12 @@ async function handleAdminWindowArchive(request, env, ctx) {
     ? windowAnonThreadKey(resolved.anonId)
     : windowThreadKey(resolved.sub, resolved.threadId);
   await env.AUTH_SESSIONS.put(writeKey, JSON.stringify(resolved.thread));
-  // Note: thread stays in admin-index buckets but the iterator
-  // could filter status='archived' if needed. For now, archived
-  // threads still appear (visually deprioritized) so Don can
-  // un-archive if needed.
+  // Audit C — re-index so the index entry carries status:'archived'.
+  // The admin queue still shows archived threads (visually deprioritized)
+  // so Don can un-archive; but the §8.1 auto-pause count filters them out,
+  // which only works if the index status is current.
+  if (resolved.kind === 'anon') { resolved.thread.kind = 'anon'; resolved.thread.anonId = resolved.anonId; }
+  await upsertWindowAdminIndex(env, resolved.thread);
   console.log(JSON.stringify({ event: 'window.archive', kind: resolved.kind, sub: resolved.sub, anonId: resolved.anonId, threadId: resolved.threadId, ts: resolved.thread.updatedAt }));
   return jsonResponse({ ok: true, status: 'archived' }, 200);
 }
