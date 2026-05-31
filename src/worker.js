@@ -249,6 +249,11 @@ import {
   createThread as createWindowThread,
   appendMessageToThread,
   iterateAdminQueue,
+  dayBucket as windowDayBucket,
+  computeAutoPauseLevel,
+  AUTOPAUSE_STALE_HOURS,
+  MAX_NEW_THREADS_PER_DAY,
+  newThreadsDayKey,
   checkAndStampThrottle as checkAndStampWindowThrottle,
   pushPendingDon,
   iteratePendingDonReady,
@@ -1241,6 +1246,31 @@ export default {
       console.warn('[cron] kpi snapshot failed', err && err.message);
     }
 
+    // Phase 0 (Window redesign) — daily vital-signs snapshot. Writes a
+    // once-per-UTC-day record of the Window's load to KV so we have a
+    // server-side ground-truth baseline (not only Plausible events) for
+    // the 14-day measurement, and the raw inputs the Phase-8 auto-pause
+    // backstop will read (new-threads-today, pending-Don depth, oldest
+    // unanswered age). Idempotent via a per-day stamp; extra ticks no-op.
+    let windowVitalsWritten = false;
+    try {
+      const result = await snapshotWindowVitals(env);
+      windowVitalsWritten = !!(result && result.written);
+    } catch (err) {
+      console.warn('[cron] window vitals snapshot failed', err && err.message);
+    }
+
+    // Phase 8.1 — auto-pause vital-signs check (every tick). Reads the
+    // unreplied depth + operator presence, runs the hysteresis machine,
+    // persists the level for handleWindowActive to surface.
+    let windowAutoPauseLevel = null;
+    try {
+      const result = await computeAndPersistAutoPause(env);
+      windowAutoPauseLevel = (result && typeof result.level === 'number') ? result.level : null;
+    } catch (err) {
+      console.warn('[cron] window auto-pause check failed', err && err.message);
+    }
+
     console.log(JSON.stringify({
       event: 'cron.watch_tick',
       cron: (controller && controller.cron) || null,
@@ -1259,6 +1289,8 @@ export default {
       lifecycleSkipped,
       kpiSnapshotSent,
       kpiSnapshotSkipped,
+      windowVitalsWritten,
+      windowAutoPauseLevel,
       ms: Date.now() - t0,
     }));
   },
@@ -6459,9 +6491,13 @@ async function handleWindowAppend(request, env, ctx) {
     }
 
     let thread = await getOpenThreadForUser(env, sub);
+    let dayCapped = false;
     if (!thread || (thread.msgCount || 0) >= 100) {
       try { thread = await createWindowThread(env, sub, email, windowSource); }
       catch (_) { return jsonResponse({ ok: false, error: 'mint-collision' }, 500); }
+      // §8.2 daily cap — note is still filed; flag drives the half-success copy.
+      const newCount = await _bumpWindowNewThreadCount(env);
+      dayCapped = newCount > MAX_NEW_THREADS_PER_DAY;
     }
 
     // Phase 1b — pre-stamp crisis tier on the thread so the
@@ -6793,9 +6829,16 @@ async function handleWindowActive(request, env, ctx) {
   if (!_windowGate(env)) {
     return jsonResponse({ ok: false, error: 'not-found' }, 404);
   }
-  // Public; no auth required. The breathing-dot signal.
+  // Public; no auth required. The breathing-dot signal + the §8.1
+  // auto-pause level so the composer can render the half-state copy.
   const meta = await getWindowActiveMeta(env);
-  return new Response(JSON.stringify({ ok: true, lastSeen: meta && meta.lastSeen ? meta.lastSeen : null }), {
+  const autoPauseLevel = (meta && meta.autoPause && typeof meta.autoPause.level === 'number')
+    ? meta.autoPause.level : 0;
+  return new Response(JSON.stringify({
+    ok: true,
+    lastSeen: meta && meta.lastSeen ? meta.lastSeen : null,
+    autoPauseLevel,
+  }), {
     status: 200,
     headers: {
       'content-type': 'application/json; charset=utf-8',
