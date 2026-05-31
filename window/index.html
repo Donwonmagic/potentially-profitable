@@ -312,6 +312,16 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           <ul class="window-composer__previews" id="windowPreviews" aria-live="polite"></ul>
         </div>
 
+        <!-- Phase 2.7 — Turnstile bot gate for the first anonymous send.
+             Hidden by default; window.js reveals it (and lazy-loads the
+             Cloudflare script) only when /api/window/turnstile-state
+             reports required:true — an unsigned visitor on their
+             cookie-minting first POST. The widget writes a
+             cf-turnstile-response field the worker validates. -->
+        <div class="window-composer__turnstile" id="windowTurnstileWrap" hidden>
+          <div class="cf-turnstile" data-sitekey="0x4AAAAAADIgoGh56MvqeE8L" data-action="window-anon" data-size="flexible"></div>
+        </div>
+
         <div class="window-composer__row">
           <button type="button" class="window-composer__mic" id="windowMic" hidden aria-label="Record a voice note (coming soon)" disabled title="Voice notes coming soon">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">

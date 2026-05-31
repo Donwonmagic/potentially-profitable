@@ -407,6 +407,7 @@ const API_ROUTES = {
   '/api/window/thread':              handleWindowThread,
   '/api/window/poll':                handleWindowPoll,
   '/api/window/active':              handleWindowActive,
+  '/api/window/turnstile-state':     handleWindowTurnstileState,
   '/api/window/me-unread':           handleWindowMeUnread,
   // Phase 1a step 2 — operator attaches an email to their anon
   // thread so Don's reply email + claim-magic-link can find them.
@@ -554,7 +555,7 @@ export default {
         if (request.method !== 'GET' && request.method !== 'POST') {
           return jsonResponse({ ok: false, error: 'Method not allowed — endpoint accepts GET or POST' }, 405);
         }
-      } else if (pathname === '/api/og-snapshot' || pathname === '/api/ping' || pathname === '/api/gbp-lookup' || pathname === '/api/seo-check' || pathname === '/api/schema-check' || pathname === '/api/page-crawl' || pathname === '/api/psi' || pathname === '/api/did-you-mean' || pathname === '/api/observatory' || pathname === '/api/wayback-first-seen' || pathname === '/api/crux-history' || pathname === '/api/gbp-details' || pathname === '/api/dns-email-health' || pathname === '/api/auth/verify' || pathname === '/api/auth/me' || pathname === '/api/workbench/list' || pathname === '/api/workbench/get' || pathname === '/api/workbench/sheet-history' || pathname === '/api/workbench/watch-list' || pathname === '/api/workbench/property/list' || pathname === '/api/workbench/property/get' || pathname === '/api/workbench/property/rollup' || pathname === '/api/submission/list-mine' || pathname === '/api/admin/submissions/list' || pathname === '/api/window/thread' || pathname === '/api/window/poll' || pathname === '/api/window/active' || pathname === '/api/window/me-unread' || pathname === '/api/admin/window/list' || pathname === '/api/admin/window/thread') {
+      } else if (pathname === '/api/og-snapshot' || pathname === '/api/ping' || pathname === '/api/gbp-lookup' || pathname === '/api/seo-check' || pathname === '/api/schema-check' || pathname === '/api/page-crawl' || pathname === '/api/psi' || pathname === '/api/did-you-mean' || pathname === '/api/observatory' || pathname === '/api/wayback-first-seen' || pathname === '/api/crux-history' || pathname === '/api/gbp-details' || pathname === '/api/dns-email-health' || pathname === '/api/auth/verify' || pathname === '/api/auth/me' || pathname === '/api/workbench/list' || pathname === '/api/workbench/get' || pathname === '/api/workbench/sheet-history' || pathname === '/api/workbench/watch-list' || pathname === '/api/workbench/property/list' || pathname === '/api/workbench/property/get' || pathname === '/api/workbench/property/rollup' || pathname === '/api/submission/list-mine' || pathname === '/api/admin/submissions/list' || pathname === '/api/window/thread' || pathname === '/api/window/poll' || pathname === '/api/window/active' || pathname === '/api/window/turnstile-state' || pathname === '/api/window/me-unread' || pathname === '/api/admin/window/list' || pathname === '/api/admin/window/thread') {
         if (request.method !== 'GET') {
           return jsonResponse({ ok: false, error: 'Method not allowed' }, 405);
         }
@@ -6980,6 +6981,33 @@ async function handleWindowActive(request, env, ctx) {
       'cache-control': 'public, max-age=60',
     },
   });
+}
+
+// Phase 2.7 — Turnstile-required signal for the composer. Returns
+// { required: bool }. Because the anon cookie is HttpOnly (JS can't
+// read it), the server is the only place that knows whether THIS
+// visitor's next send is the cookie-minting first POST that the
+// _windowTurnstileAnonGate challenges. Required iff: not signed in,
+// anon gate on, turnstile gate on, AND no anon cookie yet. This is
+// per-visitor state, so it MUST NOT be cached — `private, no-store`
+// (unlike /api/window/active, which is a shared, cacheable signal).
+async function handleWindowTurnstileState(request, env, ctx) {
+  const headers = {
+    'content-type': 'application/json; charset=utf-8',
+    'cache-control': 'private, no-store',
+  };
+  if (!_windowGate(env)) {
+    return new Response(JSON.stringify({ ok: false, error: 'not-found' }), { status: 404, headers });
+  }
+  let required = false;
+  // Signed-in visitors are never challenged (identified path).
+  const session = env && env.AUTH_SESSIONS ? await getSessionFromRequest(request, env) : null;
+  if (!session && _windowAnonGate(env) && _windowTurnstileAnonGate(env)) {
+    // Challenge only the first POST from a device — i.e. before the
+    // anon cookie exists. A returning anon (cookie present) is trusted.
+    required = !_readWindowAnonCookie(request);
+  }
+  return new Response(JSON.stringify({ ok: true, required }), { status: 200, headers });
 }
 
 // Phase 1a step 2 — operator attaches an email to their anon thread

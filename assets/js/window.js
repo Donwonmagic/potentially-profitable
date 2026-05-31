@@ -23,6 +23,7 @@
       errorBodyTooLong: 'A bit long — keep it under 4,000 characters.',
       errorBodyEmpty: 'Write something first.',
       errorRateLimited: 'Slow down a moment — wait 60 seconds and try again.',
+      errorTurnstile: "Quick check didn't go through — try sending again.",
       errorDayCap: "You've reached the daily limit. Try again tomorrow.",
       errorAuth: 'Sign in to send your note.',
       errorPaused: 'The Window is on a brief pause.',
@@ -52,6 +53,7 @@
       errorBodyTooLong: 'Un poco largo — mantenlo en menos de 4,000 caracteres.',
       errorBodyEmpty: 'Escribe algo primero.',
       errorRateLimited: 'Un momento — espera 60 segundos e inténtalo de nuevo.',
+      errorTurnstile: 'La verificación no pasó — intenta enviar de nuevo.',
       errorDayCap: 'Llegaste al límite diario. Inténtalo mañana.',
       errorAuth: 'Inicia sesión para enviar tu nota.',
       errorPaused: 'La Ventana está en pausa breve.',
@@ -97,6 +99,8 @@
     mic:        document.getElementById('windowMic'),
     currents:   document.getElementById('windowCurrents'),
     sash:       document.getElementById('windowSash'),
+    // Phase 2.7 — Turnstile wrapper, hidden until turnstile-state says required.
+    turnstileWrap: document.getElementById('windowTurnstileWrap'),
   };
 
   var CONTEXT_STORAGE_KEY = 'md_window_context_v1';
@@ -303,6 +307,40 @@
         hideMsg();
       }
     }
+  }
+
+  // Phase 2.7 — Turnstile for the first anonymous send. The widget is in
+  // the markup but hidden; we only reveal it (and load Cloudflare's script
+  // once) when the server says this visitor's next send is the
+  // cookie-minting first POST that the anon gate challenges. Signed-in and
+  // returning-anon (cookie present) visitors are never shown it.
+  var turnstileScriptLoaded = false;
+  function loadTurnstileScriptOnce() {
+    if (turnstileScriptLoaded) return;
+    turnstileScriptLoaded = true;
+    var s = document.createElement('script');
+    s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+    s.async = true; s.defer = true;
+    document.head.appendChild(s);
+  }
+  function loadTurnstileState() {
+    if (!els.turnstileWrap) return;
+    fetch('/api/window/turnstile-state', { credentials: 'same-origin' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (j) {
+        if (j && j.ok && j.required) {
+          els.turnstileWrap.hidden = false;
+          loadTurnstileScriptOnce();
+        }
+      })
+      .catch(function () { /* silent — server still fail-closes on POST */ });
+  }
+  // Read the token the widget wrote into the form (the implicit-render
+  // widget injects a hidden input named cf-turnstile-response).
+  function readTurnstileToken() {
+    if (!els.form) return '';
+    var f = els.form.querySelector('[name="cf-turnstile-response"]');
+    return (f && f.value) ? f.value : '';
   }
 
   function showPaused() {
@@ -649,6 +687,14 @@
     if (srcEl && srcEl.value) {
       params.set('source', srcEl.value);
     }
+    // Phase 2.7 — the worker reads cf-turnstile-response from the POST
+    // body (window.js builds params manually, so the form field is NOT
+    // auto-included — it must be set explicitly). Only present on the
+    // first anon send, when the widget is revealed.
+    var tsToken = readTurnstileToken();
+    if (tsToken) {
+      params.set('cf-turnstile-response', tsToken);
+    }
 
     fetch('/api/window/append', {
       method: 'POST',
@@ -703,6 +749,12 @@
       else if (code === 'thread-claimed-please-signin') { text = copy.errorClaimed; showSignin(); }
       else if (code === 'unauthenticated') { showSignin(); return; }
       else if (code === 'not-found') { showPaused(); return; }
+      // Phase 2.7 — a failed/expired Turnstile challenge. Reset the widget
+      // so the visitor gets a fresh token to retry with.
+      else if (code.indexOf('turnstile-') === 0) {
+        text = copy.errorTurnstile;
+        try { if (window.turnstile && typeof window.turnstile.reset === 'function') window.turnstile.reset(); } catch (_) { /* ignore */ }
+      }
       // Phase 2 audit followup — measurement event per plan §9.6.
       // Single Window Error event with code prop covers what plan-§9.6
       // listed as window-day-cap, window-rate-limit, window-pii-blocked,
@@ -905,6 +957,9 @@
   loadContextFromStorage();
   // Phase 4 — fire one-shot fetch for the /now/ presence line.
   loadNow();
+  // Phase 2.7 — reveal the Turnstile widget if this visitor's first send
+  // needs it (anon gate + turnstile gate on, no anon cookie yet).
+  loadTurnstileState();
 
   // Phase 3.4 — listen for satellite scripts (window-callback.js,
   // future window-now.js) that mutate the thread on the server and

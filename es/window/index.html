@@ -258,6 +258,14 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           <ul class="window-composer__previews" id="windowPreviews" aria-live="polite"></ul>
         </div>
 
+        <!-- Phase 2.7 — Turnstile (mismo patr&oacute;n que EN). Oculto por
+             defecto; window.js lo revela y carga el script de Cloudflare
+             s&oacute;lo cuando /api/window/turnstile-state responde
+             required:true (visitante sin sesi&oacute;n en su primer env&iacute;o). -->
+        <div class="window-composer__turnstile" id="windowTurnstileWrap" hidden>
+          <div class="cf-turnstile" data-sitekey="0x4AAAAAADIgoGh56MvqeE8L" data-action="window-anon" data-size="flexible"></div>
+        </div>
+
         <div class="window-composer__row">
           <button type="button" class="window-composer__mic" id="windowMic" hidden aria-label="Mandar nota de voz (pr&oacute;ximamente)" disabled title="Notas de voz pr&oacute;ximamente">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
