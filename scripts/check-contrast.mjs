@@ -25,7 +25,7 @@ const css = fs.readFileSync(path.join(REPO, "assets/site.css"), "utf8");
 // Canonical section-system tokens — source of truth, mirrored in site.css.
 const T = {
   light: {
-    "section-base": "#F6F7F8", "section-alt": "#F2F3F6", "section-raised": "#FFFFFF",
+    "section-base": "#F6F7F8", "section-alt": "#FFFFFF", "section-raised": "#FFFFFF",
     "section-line": "#CDD2DA",
     ink: "#16181D", "ink-soft": "#4A4F59", stone: "#6B7280", teal: "#2A50C8",
   },

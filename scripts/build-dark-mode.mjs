@@ -84,7 +84,12 @@ const DARK = {
   "--surface-0": "#16181D",
   "--surface-1": "#1B1E24",
   "--surface-2": "#21262E",
-  "--surface-inset": "#21262E", // quiet inset fill (pills, ranges, skeletons)
+  "--surface-inset": "#21262E",
+  "--section-base": "#16181D",
+  "--section-alt": "#1E232B",
+  "--section-raised": "#1B1E24",
+  "--section-line": "#3A414C",
+  "--section-line-warm": "rgba(255,176,32,0.30)", // quiet inset fill (pills, ranges, skeletons)
   // Text (dark → light ramp)
   "--ink": "#F1EDE5", // 15.2:1 on --cream(dark)
   "--ink-soft": "#BBB6AB", // ~9:1

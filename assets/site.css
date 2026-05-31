@@ -8057,12 +8057,9 @@ body:has(.batch-marquee) main{padding-top:calc(64px + var(--banner-h,40px))}
     --surface-1: #1B1E24;
     --surface-2: #21262E;
     --surface-inset: #21262E;
-    /* Section rhythm — dark tiers (AA-verified by check-contrast.mjs).
-       Deeper alt + sunk give clear separation; line is visible on dark. */
     --section-base: #16181D;
     --section-alt: #1E232B;
     --section-raised: #1B1E24;
-    --section-sunk: #101216;
     --section-line: #3A414C;
     --section-line-warm: rgba(255,176,32,0.30);
     --ink: #F1EDE5;
@@ -8181,6 +8178,11 @@ body:has(.batch-marquee) main{padding-top:calc(64px + var(--banner-h,40px))}
   --surface-1: #1B1E24;
   --surface-2: #21262E;
   --surface-inset: #21262E;
+  --section-base: #16181D;
+  --section-alt: #1E232B;
+  --section-raised: #1B1E24;
+  --section-line: #3A414C;
+  --section-line-warm: rgba(255,176,32,0.30);
   --ink: #F1EDE5;
   --ink-soft: #BBB6AB;
   --stone: #9CA3AE;
