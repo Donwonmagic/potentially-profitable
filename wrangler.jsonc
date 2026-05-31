@@ -227,7 +227,7 @@
     // without Turnstile — the per-IP and per-anonId throttles + threat-
     // score gate carry the spam floor. Flip ONLY after the widget UI
     // ships in /window/. See docs/window-redesign-plan.md §2.6.
-    "WINDOW_TURNSTILE_ANON_ENABLED": "false",
+    "WINDOW_TURNSTILE_ANON_ENABLED": "true",
     // Phase 3 (multimodal) — per-modality flags. Each requires the
     // R2 binding `WINDOW_ATTACHMENTS` and (for voice) the AI binding
     // for Whisper. Flags ship dark; provision the binding (commented
@@ -241,7 +241,7 @@
     // fuzz between 21:00-06:00 local (stalker safety). Admin sets the
     // row via /api/admin/window/now. Flag ships dark; flip after the
     // first row lands. See docs/window-redesign-plan.md §4.4 + §11.4.
-    "WINDOW_NOW_ENABLED":      "false",
+    "WINDOW_NOW_ENABLED":      "true",
     // Phase G.11 (Growth) — lifecycle email dispatcher feature flag.
     // When "true", the cron tick iterates sub:<hash> records and
     // dispatches welcome/nudge/digest emails per state machine.
