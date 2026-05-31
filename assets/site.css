@@ -6099,6 +6099,14 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .admin-window__row-time{font-size:12px;color:var(--stone);font-variant-numeric:tabular-nums}
 .admin-window__row-status{font-size:12px;color:var(--stone);text-transform:uppercase;letter-spacing:0.08em;margin:0}
 .admin-window__row-source{display:inline-block;margin-left:8px;padding:1px 8px;border-radius:999px;font-size:11px;font-weight:600;letter-spacing:0.02em;text-transform:none;background:var(--teal-tint);color:var(--teal);vertical-align:baseline}
+/* Phase 8.4 — client/prospect/cold SLA chip in the admin queue. Client = filled
+   teal (priority), prospect = gold tint, cold = neutral gray; overdue overrides
+   to rust regardless of tier. Shares the pill shape with the source chip. */
+.admin-window__row-client{display:inline-block;margin-left:8px;padding:1px 8px;border-radius:999px;font-size:11px;font-weight:600;letter-spacing:0.02em;text-transform:none;vertical-align:baseline;background:var(--line);color:var(--stone)}
+.admin-window__row-client[data-client="client"]{background:var(--teal);color:var(--white)}
+.admin-window__row-client[data-client="prospect"]{background:rgba(183,121,31,0.14);color:var(--gold)}
+.admin-window__row-client[data-client="cold"]{background:var(--cream-2);color:var(--stone)}
+.admin-window__row-client[data-overdue="1"]{background:var(--rust);color:var(--white)}
 .admin-window__empty{text-align:center;padding:48px 16px;color:var(--stone);font-style:italic}
 
 .admin-thread{max-width:680px;margin:0 auto;padding:24px 16px 120px}

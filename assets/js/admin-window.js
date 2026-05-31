@@ -156,12 +156,34 @@
         var srcLabel = SOURCE_LABELS[it.source] || it.source;
         sourceChip = '<span class="admin-window__row-source" data-source="' + escHtml(it.source) + '">from ' + escHtml(srcLabel) + '</span>';
       }
+      // Phase 8.4 — client/prospect/cold tag + SLA target. Client threads
+      // (12h) outrank prospects (36h); `cold` is an anon thread with no
+      // identity yet. `overdue` flags an open, unanswered thread whose
+      // oldest user message has passed its SLA target — the queue's
+      // at-a-glance "answer this first" signal.
+      var CLIENT_TIERS = {
+        client:   { label: 'Client',   sla: 12 },
+        prospect: { label: 'Prospect', sla: 36 },
+        cold:     { label: 'Cold',     sla: 0 }
+      };
+      var clientChip = '';
+      var tier = CLIENT_TIERS[it.clientStatus];
+      if (tier) {
+        var overdue = false;
+        if (tier.sla && it.status === 'open' && it.unreadByAdmin && it.lastUserMsgAt) {
+          overdue = (Date.now() - it.lastUserMsgAt) > (tier.sla * 3600 * 1000);
+        }
+        var slaTxt = tier.sla ? (' · ' + tier.sla + 'h') : '';
+        clientChip = '<span class="admin-window__row-client" data-client="' + escHtml(it.clientStatus) + '"' +
+          (overdue ? ' data-overdue="1"' : '') + '>' +
+          escHtml(tier.label) + slaTxt + (overdue ? ' · overdue' : '') + '</span>';
+      }
       a.innerHTML =
         '<div class="admin-window__row-head">' +
           '<span class="admin-window__row-id">' + escHtml(idLabel) + '</span>' +
           '<span class="admin-window__row-time">' + fmtRelative(it.updatedAt) + '</span>' +
         '</div>' +
-        '<p class="admin-window__row-status">' + escHtml(it.status) + (it.unreadByAdmin ? ' · unread' : '') + sourceChip + '</p>';
+        '<p class="admin-window__row-status">' + escHtml(it.status) + (it.unreadByAdmin ? ' · unread' : '') + clientChip + sourceChip + '</p>';
       els.list.appendChild(a);
     });
   }

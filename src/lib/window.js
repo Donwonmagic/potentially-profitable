@@ -33,6 +33,7 @@
 // for audit forever.
 
 import { mintSaveItemId, isValidSaveItemIdShape } from './workbench.js';
+import { classifyThreadClientStatus } from './window-clients.js';
 
 export const THREAD_KEY_PREFIX        = 'window:thread:';
 export const MSG_KEY_PREFIX           = 'window:msg:';
@@ -387,6 +388,16 @@ export async function upsertAdminIndex(env, thread) {
   // onto the index entry so the queue scan renders without re-fetching.
   if (thread.source) {
     entry.source = thread.source;
+  }
+  // Phase 8.4 — client/prospect/cold tag drives the admin-queue SLA chip
+  // (client 12h vs prospect 36h). Derived from the client roster
+  // (src/lib/window-clients.js) and stamped here so the queue scan renders
+  // without re-fetching the thread. `cold` = no identity yet (anonymous).
+  // lastUserMsgAt rides along so the frontend can flag SLA-overdue threads
+  // (oldest unanswered user message past the tier's target).
+  entry.clientStatus = await classifyThreadClientStatus(thread);
+  if (thread.lastUserMsgAt) {
+    entry.lastUserMsgAt = thread.lastUserMsgAt;
   }
   row.entries.push(entry);
   await env.AUTH_SESSIONS.put(key, JSON.stringify(row));
