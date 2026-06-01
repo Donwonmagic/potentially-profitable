@@ -5,6 +5,10 @@ ships at `/blog/<slug>/`, plus the per-post entries in `data/article-*`
 JSON, the blog index card, the sitemap entry, the RSS feed (`feed.xml`),
 and the LLM feed (`feed-llm.json`).
 
+> This canon governs the studio voice on `muntin.digital`. How that voice
+> relates to the Muntin Ledger product voice — and the one boundary between
+> them — lives in `docs/brand/voice-and-naming-architecture.md`.
+
 It is a **sister document** to `voice-canon-sheets.md`. Where this file
 is silent, the sheets canon governs.
 
