@@ -4,12 +4,22 @@
 DNS, legal). Each phase's *code* is built or buildable behind an OFF flag; this
 file is the gate list that lets each flag flip on safely.
 
-> ## ⏸️ RESUME HERE (pinned 2026-05-31, do both from your computer)
+> ## ⏸️ RESUME HERE (updated 2026-05-31 — three activations, one deploy)
 >
-> Two phases are fully built + verified and waiting only on you. Knock them out
-> together next time you're at a desk:
+> Three things are fully built + verified and waiting only on you. **Merging to
+> main did NOT touch production** — there's no deploy workflow (`.github/workflows/`
+> is tests only). A manual **`wrangler deploy`** from your computer is what makes
+> all three live, so do them in one sitting and deploy once at the end.
 >
-> **1. Phase 2 — Crisis SMS (Twilio).** Account created; trial number
+> **1. Phase 2.7 — Turnstile bot gate (UI merged in #405).** The composer widget
+> now ships on main; only the flag is off. Flip `WINDOW_TURNSTILE_ANON_ENABLED`
+> `false`→`true` in `wrangler.jsonc` (line ~230). `TURNSTILE_SECRET_KEY` + sitekey
+> already bound (shared with newsletter). Effect: first-time anonymous senders get
+> one Cloudflare challenge; signed-in + returning visitors never see it. Fails
+> closed. ⚠️ This is a real visitor-facing change on deploy — flip it when you can
+> watch one anon send go through.
+>
+> **2. Phase 2 — Crisis SMS (Twilio).** Account created; trial number
 > auto-assigned (so you have SID + Auth Token + a `TWILIO_FROM` number — 3 of 4).
 > Remaining:
 >   - Verify Don's mobile as a recipient: Console → *Phone Numbers → Manage →
@@ -19,17 +29,21 @@ file is the gate list that lets each flag flip on safely.
 >     Settings → Variables and Secrets, or `wrangler secret put`):
 >     `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_FROM` (+1…),
 >     `WINDOW_CRISIS_SMS_TO` (Don's mobile, +1…).
->   - Deploy + test: send a Window note with a tier-1 crisis keyword; Don's phone
->     should buzz. Code (`src/lib/sms.js`) auto-activates once all 4 secrets exist;
->     silent no-op until then. A2P 10DLC paperwork can wait — trial→verified-number
->     works for the single-recipient crisis alert today.
+>   - Test after deploy: send a Window note with a tier-1 crisis keyword; Don's
+>     phone should buzz. Code (`src/lib/sms.js`) auto-activates once all 4 secrets
+>     exist; silent no-op until then. A2P 10DLC paperwork can wait —
+>     trial→verified-number works for the single-recipient crisis alert today.
 >   - ⚠️ Don't paste the Auth Token into chat — type it into Cloudflare directly.
 >
-> **2. Phase 4 — /now/ presence widget.** Fully built + audit-clean. Decision
+> **3. Phase 4 — /now/ presence widget.** Fully built + audit-clean. Decision
 > made: default tier = **fuzz** (already the code default, no change needed).
-> Remaining: set `WINDOW_NOW_ENABLED="true"` in `wrangler.jsonc`, then Don posts
-> his first status at `/admin/window/`. Widget stays hidden until he posts, so the
-> flag flip alone is safe + invisible. (I can PR the one-line flip on request.)
+> Flip `WINDOW_NOW_ENABLED` `false`→`true` in `wrangler.jsonc` (line ~244), then
+> Don posts his first status at `/admin/window/`. Widget stays hidden until he
+> posts, so this flip is safe + invisible.
+>
+> **Then:** one `wrangler deploy` ships the merged Turnstile code + both flag
+> flips + picks up the Twilio secrets. Verify each live. (I can PR the two
+> `false`→`true` flag edits on request, leaving you just the secrets + deploy.)
 >
 > Everything else below is reference.
 
