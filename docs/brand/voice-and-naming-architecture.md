@@ -151,9 +151,11 @@ existing gates until reviewed.
    extensions (see §5), read by both repos. Until that lands, the two gate
    files remain the executable source of truth.
 
-A prototype of check (1)+(2) ships alongside this document as
-`scripts/check-voice-boundary.mjs` in the product repo — runnable, not yet
-wired into CI, so it can report without blocking.
+Checks (1)+(2) ship as `scripts/check-voice-boundary.mjs` in the product
+repo, wired into the `node-lints` job in `.github/workflows/ci.yml`. It
+passes clean today (91 files) and blocks a regression — the named voice
+"Don" leaking into product copy — pre-merge. Check (3), the merged banned
+list, is the remaining follow-on.
 
 ---
 
