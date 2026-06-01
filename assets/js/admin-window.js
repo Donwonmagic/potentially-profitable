@@ -17,6 +17,8 @@
   var COPY = {
     en: {
       sending: 'Sending…',
+      drafting: 'Drafting…',
+      draftFailed: "Couldn't draft right now. Try again.",
       send: 'Send',
       closing: 'Setting down…',
       closeConfirm: 'Set this thread down? Visitor sees the door is still open — they can write again.',
@@ -33,6 +35,8 @@
     },
     es: {
       sending: 'Enviando…',
+      drafting: 'Redactando…',
+      draftFailed: 'No se pudo redactar ahora. Inténtalo de nuevo.',
       send: 'Enviar',
       closing: 'Dejando…',
       closeConfirm: '¿Dejar este hilo? El visitante ve que la puerta sigue abierta — puede escribir otra vez.',
@@ -50,8 +54,9 @@
   };
   var copy = COPY[locale];
 
-  // 5 quick-reply templates, mirrors src/lib/window-templates.js.
-  // Locale-aware. Hard-coded here to avoid an extra fetch.
+  // Quick-reply templates, mirrors src/lib/window-templates.js.
+  // Locale-aware. Hard-coded here to avoid an extra fetch — keep in
+  // sync with the server list (Phase 8.3a added the topic group below).
   var QUICK_REPLIES = {
     en: [
       "I'd want to see the site first — drop a URL when you have a sec, and I'll look before I answer.",
@@ -59,6 +64,11 @@
       "Quick yes — that's a {tool} thing. Here's the tool, takes about a minute: {link}",
       "I don't think we're the right fit for this one — but here's the thing I'd actually do in your spot: {thought}.",
       "Need a few days on this — saving it to my desk and I'll come back with a real answer, not a rushed one.",
+      "Before I weigh in, run it through my free storefront check — about a minute, and it shows the big gaps: {link}. Send me what it flags.",
+      "This is the kind of thing a Care Plan covers — I keep an eye on it monthly so you don't have to. Want me to walk you through what's included?",
+      "Straight answer: this is outside what I do well, and you'd be better served by someone who specializes in {area}. Not going to pretend otherwise.",
+      "Happy to put a real number on it. Tell me the one outcome you care about most and I'll send back a scoped price — not a vague range.",
+      "I'm booked solid right now — if it can wait a bit, I'll do it right; if it can't, email me and I'll point you to someone good.",
     ],
     es: [
       'Primero quiero ver el sitio — pásame el enlace cuando puedas y lo reviso antes de responder.',
@@ -66,6 +76,11 @@
       'Sí, rápido — eso es cosa de {tool}. Aquí está, te toma como un minuto: {link}',
       'No creo que seamos lo indicado para esto — pero esto es lo que yo haría en tu lugar: {pensamiento}.',
       'Necesito unos días con esto — lo guardo en el escritorio y vuelvo con una respuesta de verdad, no apurada.',
+      'Antes de opinar, pásalo por mi chequeo gratuito de escaparate — como un minuto, y muestra los huecos grandes: {link}. Mándame lo que marque.',
+      'Esto es justo lo que cubre un Care Plan — lo reviso cada mes para que tú no tengas que hacerlo. ¿Quieres que te explique qué incluye?',
+      'Respuesta directa: esto está fuera de lo que hago bien, y te serviría mejor alguien especializado en {area}. No te voy a decir lo contrario.',
+      'Con gusto le pongo un número real. Dime el resultado que más te importa y te mando un precio dimensionado — no un rango vago.',
+      'Ahora mismo estoy lleno — si puede esperar un poco, lo hago bien; si no, escríbeme y te recomiendo a alguien bueno.',
     ],
   };
 
@@ -82,6 +97,7 @@
     threadForm:  document.getElementById('adminThreadForm'),
     threadBody:  document.getElementById('adminThreadBody'),
     threadSend:  document.getElementById('adminThreadSend'),
+    draftBtn:    document.getElementById('adminThreadDraft'),
     threadClose: document.getElementById('adminThreadClose'),
     threadQuick: document.getElementById('adminThreadQuick'),
   };
@@ -416,6 +432,9 @@
         if (els.threadEmail) els.threadEmail.textContent = identityLabel(identity, j.thread && j.thread.email);
         renderThreadMsgs(j.messages || [], j.attachmentsByMsgId || {}, j.callbacks || []);
         renderQuickReplies();
+        // Phase 8.3b — reveal the AI-draft button only when the server says
+        // the flag is on and the Workers AI binding is present.
+        if (els.draftBtn) els.draftBtn.hidden = !j.aiDraftEnabled;
       });
   }
 
@@ -450,6 +469,45 @@
     var hashed = parseHash();
     if (hashed) showThreadView(hashed.threadId, hashed);
     else showListView();
+  }
+
+  // Phase 8.3b — AI-draft. Fills the composer with a suggested reply Don
+  // edits before sending; never auto-sends. Revealed by loadThread only
+  // when aiDraftEnabled. Button is disabled during the request.
+  if (els.draftBtn) {
+    els.draftBtn.addEventListener('click', function () {
+      var hashed = parseHash();
+      if (!hashed) return;
+      els.draftBtn.disabled = true;
+      var orig = els.draftBtn.textContent;
+      els.draftBtn.textContent = copy.drafting;
+      var params = new URLSearchParams();
+      params.set('threadId', hashed.threadId);
+      setIdentityParams(params, hashed);
+      params.set('locale', locale);
+      fetch('/api/admin/window/draft', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'content-type': 'application/x-www-form-urlencoded' },
+        body: params.toString(),
+      }).then(function (r) {
+        return r.json().then(function (j) { return { status: r.status, body: j }; });
+      }).then(function (res) {
+        if (res.status === 200 && res.body && res.body.ok && res.body.draft) {
+          if (els.threadBody) {
+            els.threadBody.value = res.body.draft;
+            els.threadBody.focus();
+          }
+        } else {
+          window.alert(copy.draftFailed);
+        }
+      }).catch(function () {
+        window.alert(copy.draftFailed);
+      }).then(function () {
+        els.draftBtn.disabled = false;
+        els.draftBtn.textContent = orig;
+      });
+    });
   }
 
   // Send reply.

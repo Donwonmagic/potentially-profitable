@@ -170,6 +170,7 @@ const FORM_RATE_LIMIT_PATHS = new Set([
   // Phase W.1 (The Window) — write paths.
   '/api/window/append',
   '/api/admin/window/reply',
+  '/api/admin/window/draft',
   '/api/admin/window/close',
   '/api/admin/window/archive',
   // Phase course — bootcamp progress + config sync. Both POSTs touch
@@ -446,6 +447,7 @@ const API_ROUTES = {
   '/api/admin/window/list':          handleAdminWindowList,
   '/api/admin/window/thread':        handleAdminWindowThread,
   '/api/admin/window/reply':         handleAdminWindowReply,
+  '/api/admin/window/draft':         handleAdminWindowDraft,
   '/api/admin/window/close':         handleAdminWindowClose,
   '/api/admin/window/archive':       handleAdminWindowArchive,
   // Phase 4 — /now/ operator presence widget. Public GET returns
@@ -8082,6 +8084,9 @@ async function handleAdminWindowThread(request, env, ctx) {
     kind: resolved.kind,
     attachmentsByMsgId,
     callbacks,
+    // Phase 8.3b — tells the admin UI whether to reveal the "Draft reply"
+    // button (flag on AND the Workers AI binding is present).
+    aiDraftEnabled: _aiDraftEnabled(env),
   }, 200);
 }
 
@@ -8214,6 +8219,89 @@ async function handleAdminWindowReply(request, env, ctx) {
     ts: result.msg.createdAt,
   }));
   return jsonResponse({ ok: true, msgId: result.msg.id, createdAt: result.msg.createdAt }, 200);
+}
+
+// Phase 8.3b — admin AI-draft. Workers AI text model used to suggest a
+// reply Don edits before sending. Cheap 8B instruct model; the draft is
+// always operator-reviewed, never auto-sent.
+const WINDOW_AI_DRAFT_MODEL = '@cf/meta/llama-3.1-8b-instruct';
+
+function _aiDraftEnabled(env) {
+  return (env.WINDOW_AI_DRAFT_ENABLED === 'true' || env.WINDOW_AI_DRAFT_ENABLED === true)
+    && !!(env.AI && typeof env.AI.run === 'function');
+}
+
+// Build the chat prompt from the thread transcript. Don's voice, brief,
+// first-person, no sign-off. Kept free of specific bio claims so the
+// fabrication gate stays green and the draft can't assert facts Don didn't.
+function _buildDraftPrompt(messages, thread, locale) {
+  const isEs = locale === 'es';
+  const sys = isEs
+    ? "Eres Don, que lleva un estudio web de una sola persona para restaurantes. Redacta un BORRADOR breve y directo, en primera persona y en su tono práctico, para responder a este visitante. Sin relleno de marketing, sin firma, máximo 3 frases. Es un borrador para que Don lo revise y edite antes de enviar; nunca se envía solo."
+    : "You are Don, who runs a one-person restaurant web studio. Draft a brief, direct, first-person reply in his plain, practical voice. No marketing filler, no sign-off, 3 sentences max. This is a DRAFT for Don to review and edit before sending — it is never sent automatically.";
+  const ordered = messages.slice().sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
+  const transcript = ordered
+    .map((m) => (m.from === 'don' ? 'Don' : 'Visitor') + ': ' + (m.body || ''))
+    .join('\n')
+    .slice(0, 6000); // bound the context window defensively
+  const ctxLine = thread && thread.source ? ('\n\n(This thread came in from: ' + thread.source + '.)') : '';
+  const user = (isEs ? 'Conversación hasta ahora:\n' : 'Conversation so far:\n')
+    + transcript + ctxLine
+    + (isEs ? "\n\nRedacta la siguiente respuesta de Don:" : "\n\nDraft Don's next reply:");
+  return [
+    { role: 'system', content: sys },
+    { role: 'user', content: user },
+  ];
+}
+
+async function handleAdminWindowDraft(request, env, ctx) {
+  if (!_windowGate(env)) {
+    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  }
+  if (!isOriginAllowed(request)) {
+    return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
+  }
+  const auth = await _requireAdminSession(request, env);
+  if (auth.error) return auth.error;
+  // Ships dark — flag off (or AI binding absent) → 503 so the UI can hide
+  // the button and degrade gracefully.
+  if (!_aiDraftEnabled(env)) {
+    return jsonResponse({ ok: false, error: 'disabled' }, 503);
+  }
+  let body;
+  try { body = await parseFormBody(request); } catch (_) {
+    return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+  }
+  const resolved = await _resolveAdminWindowThread(env, {
+    sub: body.sub,
+    anonId: body.anonId,
+    threadId: body.threadId,
+  });
+  if (resolved.error) {
+    return jsonResponse({ ok: false, error: resolved.error }, resolved.status);
+  }
+  const messages = await listThreadMessages(env, resolved.threadId, 100);
+  if (!messages.length) {
+    return jsonResponse({ ok: false, error: 'empty-thread' }, 400);
+  }
+  const locale = body.locale === 'es' ? 'es' : 'en';
+  let draft = '';
+  try {
+    const out = await env.AI.run(WINDOW_AI_DRAFT_MODEL, {
+      messages: _buildDraftPrompt(messages, resolved.thread, locale),
+      max_tokens: 320,
+      temperature: 0.4,
+    });
+    draft = String((out && (out.response || out.result)) || '').trim();
+  } catch (_) {
+    return jsonResponse({ ok: false, error: 'ai-error' }, 502);
+  }
+  if (!draft) {
+    return jsonResponse({ ok: false, error: 'empty-draft' }, 502);
+  }
+  // Never exceed the composer's hard limit (textarea maxlength=4000).
+  if (draft.length > 4000) draft = draft.slice(0, 4000);
+  return jsonResponse({ ok: true, draft }, 200);
 }
 
 async function handleAdminWindowClose(request, env, ctx) {

@@ -242,6 +242,11 @@
     // row via /api/admin/window/now. Flag ships dark; flip after the
     // first row lands. See docs/window-redesign-plan.md §4.4 + §11.4.
     "WINDOW_NOW_ENABLED":      "true",
+    // Phase 8.3b — admin AI-draft (Workers AI). When "true", the admin
+    // thread view shows a "Draft reply" button that calls /api/admin/window/
+    // draft → env.AI.run to suggest a reply Don edits before sending. Never
+    // auto-sends. Requires the "ai" binding above. Ships dark.
+    "WINDOW_AI_DRAFT_ENABLED": "false",
     // Phase G.11 (Growth) — lifecycle email dispatcher feature flag.
     // When "true", the cron tick iterates sub:<hash> records and
     // dispatches welcome/nudge/digest emails per state machine.
@@ -320,7 +325,11 @@
   // "r2_buckets": [
   //   { "binding": "WINDOW_ATTACHMENTS", "bucket_name": "muntin-window-attachments" }
   // ],
-  // "ai": { "binding": "AI" },
+  // Workers AI binding — uncommented for Phase 8.3b (admin AI-draft). The
+  // binding alone costs nothing; usage only accrues on env.AI.run(), which
+  // is gated behind WINDOW_AI_DRAFT_ENABLED (admin-only, default off). R2
+  // above stays commented until Phase 3 photo/voice provisioning lands.
+  "ai": { "binding": "AI" },
 
   // ─────────────────────────────────────────────────────────────────
   // Cron Trigger — Phase 0 (Window redesign) ENABLED.
