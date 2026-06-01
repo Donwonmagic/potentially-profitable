@@ -4,12 +4,22 @@
 DNS, legal). Each phase's *code* is built or buildable behind an OFF flag; this
 file is the gate list that lets each flag flip on safely.
 
-> ## ⏸️ RESUME HERE (pinned 2026-05-31, do both from your computer)
+> ## ⏸️ RESUME HERE (updated 2026-05-31 — three activations, one deploy)
 >
-> Two phases are fully built + verified and waiting only on you. Knock them out
-> together next time you're at a desk:
+> Three things are fully built + verified and waiting only on you. **Merging to
+> main did NOT touch production** — there's no deploy workflow (`.github/workflows/`
+> is tests only). A manual **`wrangler deploy`** from your computer is what makes
+> all three live, so do them in one sitting and deploy once at the end.
 >
-> **1. Phase 2 — Crisis SMS (Twilio).** Account created; trial number
+> **1. Phase 2.7 — Turnstile bot gate (UI merged in #405).** The composer widget
+> now ships on main; only the flag is off. Flip `WINDOW_TURNSTILE_ANON_ENABLED`
+> `false`→`true` in `wrangler.jsonc` (line ~230). `TURNSTILE_SECRET_KEY` + sitekey
+> already bound (shared with newsletter). Effect: first-time anonymous senders get
+> one Cloudflare challenge; signed-in + returning visitors never see it. Fails
+> closed. ⚠️ This is a real visitor-facing change on deploy — flip it when you can
+> watch one anon send go through.
+>
+> **2. Phase 2 — Crisis SMS (Twilio).** Account created; trial number
 > auto-assigned (so you have SID + Auth Token + a `TWILIO_FROM` number — 3 of 4).
 > Remaining:
 >   - Verify Don's mobile as a recipient: Console → *Phone Numbers → Manage →
@@ -19,17 +29,21 @@ file is the gate list that lets each flag flip on safely.
 >     Settings → Variables and Secrets, or `wrangler secret put`):
 >     `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_FROM` (+1…),
 >     `WINDOW_CRISIS_SMS_TO` (Don's mobile, +1…).
->   - Deploy + test: send a Window note with a tier-1 crisis keyword; Don's phone
->     should buzz. Code (`src/lib/sms.js`) auto-activates once all 4 secrets exist;
->     silent no-op until then. A2P 10DLC paperwork can wait — trial→verified-number
->     works for the single-recipient crisis alert today.
+>   - Test after deploy: send a Window note with a tier-1 crisis keyword; Don's
+>     phone should buzz. Code (`src/lib/sms.js`) auto-activates once all 4 secrets
+>     exist; silent no-op until then. A2P 10DLC paperwork can wait —
+>     trial→verified-number works for the single-recipient crisis alert today.
 >   - ⚠️ Don't paste the Auth Token into chat — type it into Cloudflare directly.
 >
-> **2. Phase 4 — /now/ presence widget.** Fully built + audit-clean. Decision
+> **3. Phase 4 — /now/ presence widget.** Fully built + audit-clean. Decision
 > made: default tier = **fuzz** (already the code default, no change needed).
-> Remaining: set `WINDOW_NOW_ENABLED="true"` in `wrangler.jsonc`, then Don posts
-> his first status at `/admin/window/`. Widget stays hidden until he posts, so the
-> flag flip alone is safe + invisible. (I can PR the one-line flip on request.)
+> Flip `WINDOW_NOW_ENABLED` `false`→`true` in `wrangler.jsonc` (line ~244), then
+> Don posts his first status at `/admin/window/`. Widget stays hidden until he
+> posts, so this flip is safe + invisible.
+>
+> **Then:** one `wrangler deploy` ships the merged Turnstile code + both flag
+> flips + picks up the Twilio secrets. Verify each live. (I can PR the two
+> `false`→`true` flag edits on request, leaving you just the secrets + deploy.)
 >
 > Everything else below is reference.
 
@@ -72,10 +86,28 @@ Already enabled (`triggers.crons: ["*/5 * * * *"]`) and running:
     Twilio (see Phase 2). Until then auto-pause still works (disables the
     composer + email lane); Don just isn't texted.
 - ✅ **8.2 daily cap** (merged #402) + frontend (this branch) — *no provisioning.*
-- 🔨 **8.4 client/prospect SLA** — buildable but needs a **client-identity
-  source** (who is a Care-Plan client?). Decide where that signal lives
-  (a KV flag set at onboarding? an account field?) and I'll wire 12h/36h.
-  Until then it can ship single-tier (everyone = prospect/36h).
+- 🔨 **8.4 client/prospect SLA** — *scoped 2026-05-31; decision made, code-only,
+  no provisioning. Ready to build on your go.*
+  - **Finding:** there is **no existing client/Care-Plan data source** in the
+    codebase. "Care Plan" lives only as marketing copy in
+    `data/services-pricing.json` (Light $99/mo, Standard $225/mo) — no enrollment
+    record, no customer roster, no account-tier field, no payment webhook. So the
+    signal "who is a client" has to be created; it can't be read today.
+  - **Decision — Option A: a client roster, auto-tag.** Maintain a short list of
+    client emails (a `window:clients:*` KV record, or a `data/window-clients.json`
+    file in the repo). On thread create/append, match the sender against it and
+    stamp `clientStatus: 'client' | 'prospect' | 'cold'` on the thread. (Threads
+    already store the sender `email`, so it's a direct membership check — no
+    hashing needed.) You maintain the small list; client threads then visibly
+    jump the queue with a 12h SLA badge vs 36h for prospects.
+  - **Rendering is a solved pattern:** copy `clientStatus` onto the admin-index
+    entry exactly like `crisisTier` is today (`src/lib/window.js` ~L383), then
+    render a color-coded chip + SLA badge next to the existing `source` chip in
+    `/admin/window/` (`assets/js/admin-window.js` ~L153). Small build.
+  - **Wrinkle:** an anonymous sender has no email until they claim/sign in, so
+    anon threads read as prospect/cold until then — acceptable.
+  - **Fallback if you defer:** ship single-tier (everyone = prospect / 36h) with
+    the color scaffolding, wire the roster later.
 
 **Non-negotiable backstops already in code:** auto-pause, 25/day cap. Still
 needed before heavy promotion: admin reply templates + AI-draft-then-Don-reviews
