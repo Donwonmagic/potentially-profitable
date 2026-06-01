@@ -86,10 +86,28 @@ Already enabled (`triggers.crons: ["*/5 * * * *"]`) and running:
     Twilio (see Phase 2). Until then auto-pause still works (disables the
     composer + email lane); Don just isn't texted.
 - ✅ **8.2 daily cap** (merged #402) + frontend (this branch) — *no provisioning.*
-- 🔨 **8.4 client/prospect SLA** — buildable but needs a **client-identity
-  source** (who is a Care-Plan client?). Decide where that signal lives
-  (a KV flag set at onboarding? an account field?) and I'll wire 12h/36h.
-  Until then it can ship single-tier (everyone = prospect/36h).
+- 🔨 **8.4 client/prospect SLA** — *scoped 2026-05-31; decision made, code-only,
+  no provisioning. Ready to build on your go.*
+  - **Finding:** there is **no existing client/Care-Plan data source** in the
+    codebase. "Care Plan" lives only as marketing copy in
+    `data/services-pricing.json` (Light $99/mo, Standard $225/mo) — no enrollment
+    record, no customer roster, no account-tier field, no payment webhook. So the
+    signal "who is a client" has to be created; it can't be read today.
+  - **Decision — Option A: a client roster, auto-tag.** Maintain a short list of
+    client emails (a `window:clients:*` KV record, or a `data/window-clients.json`
+    file in the repo). On thread create/append, match the sender against it and
+    stamp `clientStatus: 'client' | 'prospect' | 'cold'` on the thread. (Threads
+    already store the sender `email`, so it's a direct membership check — no
+    hashing needed.) You maintain the small list; client threads then visibly
+    jump the queue with a 12h SLA badge vs 36h for prospects.
+  - **Rendering is a solved pattern:** copy `clientStatus` onto the admin-index
+    entry exactly like `crisisTier` is today (`src/lib/window.js` ~L383), then
+    render a color-coded chip + SLA badge next to the existing `source` chip in
+    `/admin/window/` (`assets/js/admin-window.js` ~L153). Small build.
+  - **Wrinkle:** an anonymous sender has no email until they claim/sign in, so
+    anon threads read as prospect/cold until then — acceptable.
+  - **Fallback if you defer:** ship single-tier (everyone = prospect / 36h) with
+    the color scaffolding, wire the roster later.
 
 **Non-negotiable backstops already in code:** auto-pause, 25/day cap. Still
 needed before heavy promotion: admin reply templates + AI-draft-then-Don-reviews
