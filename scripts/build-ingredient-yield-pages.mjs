@@ -102,7 +102,16 @@ const CATEGORIES = {
     guide_es: 'Compras la fruta entera pero usas solo el jugo o los gajos. El rendimiento es bajo, así que el costo por onza útil sube.' },
   meat:       { en: 'Meat & poultry', es: 'Carne y aves',
     guide_en: 'Bone, skin, and trim are the loss. A whole bird costs less per pound but yields far less usable meat than a portioned cut.',
-    guide_es: 'Hueso, piel y recorte son la merma. Un ave entera cuesta menos por libra pero rinde mucha menos carne útil que un corte porcionado.' }
+    guide_es: 'Hueso, piel y recorte son la merma. Un ave entera cuesta menos por libra pero rinde mucha menos carne útil que un corte porcionado.' },
+  beef:       { en: 'Beef & lamb', es: 'Res y cordero',
+    guide_en: 'Bone, fat cap, and silverskin are the loss — and they vary by cut and butcher. Bone-in costs less per pound but yields less plate.',
+    guide_es: 'Hueso, capa de grasa y telilla son la merma — y varían por corte y carnicero. Con hueso cuesta menos por libra pero rinde menos al plato.' },
+  seafood:    { en: 'Seafood', es: 'Pescados',
+    guide_en: 'On a whole fish, the head, frame, skin, and trim are the loss — a whole fish at a low per-pound price can cost more per plated ounce than a fillet.',
+    guide_es: 'En un pescado entero, la cabeza, el espinazo, la piel y el recorte son la merma — un pescado entero barato por libra puede costar más por onza emplatada que un filete.' },
+  shellfish:  { en: 'Shellfish', es: 'Mariscos',
+    guide_en: 'Shell, head, and water weight are the loss — shellfish yields are the lowest in the kitchen, so the cost per usable ounce runs high.',
+    guide_es: 'Cáscara, cabeza y agua son la merma — los mariscos tienen el rendimiento más bajo de la cocina, así que el costo por onza útil es alto.' }
 };
 
 // Curated first batch (sourced yields from plate-cost.js YIELD_TABLE).
@@ -119,7 +128,21 @@ const INGREDIENTS = [
   { slug: 'tomato',          en: 'Tomato',           es: 'Jitomate',       yield: 0.91, cat: 'fruiting',   unit_en: 'lb',   unit_es: 'libra',  apCents: 240 },
   { slug: 'avocado',         en: 'Avocado',          es: 'Aguacate',       yield: 0.75, cat: 'fruit',      unit_en: 'each', unit_es: 'pieza',  apCents: 120 },
   { slug: 'lime',            en: 'Lime',             es: 'Limón',          yield: 0.35, cat: 'citrus',     unit_en: 'each', unit_es: 'pieza',  apCents: 30  },
-  { slug: 'whole-chicken',   en: 'Whole chicken',    es: 'Pollo entero',   yield: 0.60, cat: 'meat',       unit_en: 'lb',   unit_es: 'libra',  apCents: 160 }
+  { slug: 'whole-chicken',   en: 'Whole chicken',    es: 'Pollo entero',   yield: 0.60, cat: 'meat',       unit_en: 'lb',   unit_es: 'libra',  apCents: 160 },
+  { slug: 'chicken-breast',  en: 'Chicken breast',   es: 'Pechuga de pollo', yield: 0.95, cat: 'meat',     unit_en: 'lb', unit_es: 'libra', apCents: 380 },
+  { slug: 'chicken-thigh',   en: 'Chicken thigh',    es: 'Muslo de pollo', yield: 0.90, cat: 'meat',       unit_en: 'lb', unit_es: 'libra', apCents: 220 },
+  { slug: 'pork-shoulder',   en: 'Pork shoulder',    es: 'Espaldilla de cerdo', yield: 0.75, cat: 'meat',  unit_en: 'lb', unit_es: 'libra', apCents: 250 },
+  { slug: 'pork-loin',       en: 'Pork loin',        es: 'Lomo de cerdo',  yield: 0.85, cat: 'meat',       unit_en: 'lb', unit_es: 'libra', apCents: 350 },
+  { slug: 'ribeye',          en: 'Ribeye',           es: 'Ribeye (costilla)', yield: 0.75, cat: 'beef',     unit_en: 'lb', unit_es: 'libra', apCents: 1400 },
+  { slug: 'striploin',       en: 'Striploin',        es: 'New York (bife angosto)', yield: 0.80, cat: 'beef', unit_en: 'lb', unit_es: 'libra', apCents: 1200 },
+  { slug: 'beef-tenderloin', en: 'Beef tenderloin',  es: 'Filete de res',  yield: 0.85, cat: 'beef',       unit_en: 'lb', unit_es: 'libra', apCents: 2000 },
+  { slug: 'leg-of-lamb',     en: 'Leg of lamb',      es: 'Pierna de cordero', yield: 0.70, cat: 'beef',     unit_en: 'lb', unit_es: 'libra', apCents: 900 },
+  { slug: 'whole-salmon',    en: 'Whole salmon',     es: 'Salmón entero',  yield: 0.55, cat: 'seafood',    unit_en: 'lb', unit_es: 'libra', apCents: 700 },
+  { slug: 'salmon-fillet',   en: 'Salmon fillet',    es: 'Filete de salmón', yield: 0.95, cat: 'seafood',  unit_en: 'lb', unit_es: 'libra', apCents: 1200 },
+  { slug: 'tuna-loin',       en: 'Tuna loin',        es: 'Lomo de atún',   yield: 0.85, cat: 'seafood',    unit_en: 'lb', unit_es: 'libra', apCents: 1400 },
+  { slug: 'whole-branzino',  en: 'Whole branzino',   es: 'Branzino entero', yield: 0.55, cat: 'seafood',   unit_en: 'lb', unit_es: 'libra', apCents: 900 },
+  { slug: 'shrimp',          en: 'Shrimp (shell-on)', es: 'Camarón con cáscara', yield: 0.85, cat: 'shellfish', unit_en: 'lb', unit_es: 'libra', apCents: 900 },
+  { slug: 'whole-lobster',   en: 'Whole lobster',    es: 'Langosta entera', yield: 0.30, cat: 'shellfish',  unit_en: 'lb', unit_es: 'libra', apCents: 1400 }
 ];
 
 function relatedInCategory(ing, locale) {
@@ -303,14 +326,14 @@ function emitIngredientPage(ing, locale) {
 <p>${guide}</p>
 <div class="iy-calc">
   <p class="iy-calc-line">Digamos que tu factura muestra <strong>${money(ing.apCents)}</strong> por ${unit} de ${name.toLowerCase()} (precio AP, de ejemplo).</p>
-  <p class="iy-calc-line">Con ${pct}% de rendimiento, tu costo real es <span class="iy-calc-ep">${money(ep)} por ${unit} EP</span> &mdash; porque ${money(ing.apCents)} ÷ 0.${String(pct).padStart(2,'0')} = ${money(ep)}.</p>
+  <p class="iy-calc-line">Con ${pct}% de rendimiento, tu costo real es <span class="iy-calc-ep">${money(ep)} por ${unit} EP</span> &mdash; porque ${money(ing.apCents)} ÷ ${ing.yield.toFixed(2)} = ${money(ep)}.</p>
   <small>Precio AP ilustrativo; el EP se calcula (AP ÷ rendimiento). Usa tu factura real abajo.</small>
 </div>`
     : `<p><strong>Yield</strong> is the fraction of an ingredient that actually reaches the plate after you clean, peel, and trim it. What you pay is the <em>AP</em> (as-purchased) price; what it costs on the plate is the <em>EP</em> (edible-portion) price.</p>
 <p>${guide}</p>
 <div class="iy-calc">
   <p class="iy-calc-line">Say your invoice shows <strong>${money(ing.apCents)}</strong> per ${unit} of ${name.toLowerCase()} (an example AP price).</p>
-  <p class="iy-calc-line">At ${pct}% yield, your real cost is <span class="iy-calc-ep">${money(ep)} per ${unit} EP</span> &mdash; because ${money(ing.apCents)} ÷ 0.${String(pct).padStart(2,'0')} = ${money(ep)}.</p>
+  <p class="iy-calc-line">At ${pct}% yield, your real cost is <span class="iy-calc-ep">${money(ep)} per ${unit} EP</span> &mdash; because ${money(ing.apCents)} ÷ ${ing.yield.toFixed(2)} = ${money(ep)}.</p>
   <small>AP price is illustrative; the EP figure is computed (AP ÷ yield). Use your real invoice price below.</small>
 </div>`;
 
