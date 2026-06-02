@@ -111,7 +111,13 @@ const CATEGORIES = {
     guide_es: 'En un pescado entero, la cabeza, el espinazo, la piel y el recorte son la merma — un pescado entero barato por libra puede costar más por onza emplatada que un filete.' },
   shellfish:  { en: 'Shellfish', es: 'Mariscos',
     guide_en: 'Shell, head, and water weight are the loss — shellfish yields are the lowest in the kitchen, so the cost per usable ounce runs high.',
-    guide_es: 'Cáscara, cabeza y agua son la merma — los mariscos tienen el rendimiento más bajo de la cocina, así que el costo por onza útil es alto.' }
+    guide_es: 'Cáscara, cabeza y agua son la merma — los mariscos tienen el rendimiento más bajo de la cocina, así que el costo por onza útil es alto.' },
+  herbs:      { en: 'Herbs', es: 'Hierbas',
+    guide_en: 'Leaves are what you plate; the stems are the loss. Stem-on herbs can shed half their weight to picking.',
+    guide_es: 'Las hojas son lo que emplatas; los tallos son la merma. Las hierbas con tallo pueden perder la mitad de su peso al deshojar.' },
+  mushroom:   { en: 'Mushrooms', es: 'Hongos',
+    guide_en: 'Trimming the dry stem ends is the only real loss — mushrooms are nearly all usable.',
+    guide_es: 'Recortar las puntas secas del tallo es la única merma real — los hongos se aprovechan casi por completo.' }
 };
 
 // Curated first batch (sourced yields from plate-cost.js YIELD_TABLE).
@@ -142,7 +148,17 @@ const INGREDIENTS = [
   { slug: 'tuna-loin',       en: 'Tuna loin',        es: 'Lomo de atún',   yield: 0.85, cat: 'seafood',    unit_en: 'lb', unit_es: 'libra', apCents: 1400 },
   { slug: 'whole-branzino',  en: 'Whole branzino',   es: 'Branzino entero', yield: 0.55, cat: 'seafood',   unit_en: 'lb', unit_es: 'libra', apCents: 900 },
   { slug: 'shrimp',          en: 'Shrimp (shell-on)', es: 'Camarón con cáscara', yield: 0.85, cat: 'shellfish', unit_en: 'lb', unit_es: 'libra', apCents: 900 },
-  { slug: 'whole-lobster',   en: 'Whole lobster',    es: 'Langosta entera', yield: 0.30, cat: 'shellfish',  unit_en: 'lb', unit_es: 'libra', apCents: 1400 }
+  { slug: 'whole-lobster',   en: 'Whole lobster',    es: 'Langosta entera', yield: 0.30, cat: 'shellfish',  unit_en: 'lb', unit_es: 'libra', apCents: 1400 },
+  { slug: 'kale',            en: 'Kale',             es: 'Col rizada (kale)', yield: 0.70, cat: 'greens',    unit_en: 'lb',    unit_es: 'libra',  apCents: 250 },
+  { slug: 'cauliflower',     en: 'Cauliflower',      es: 'Coliflor',       yield: 0.60, cat: 'cruciferous', unit_en: 'head',  unit_es: 'pieza',  apCents: 300 },
+  { slug: 'bell-pepper',     en: 'Bell pepper',      es: 'Pimiento morrón', yield: 0.82, cat: 'fruiting',   unit_en: 'lb',    unit_es: 'libra',  apCents: 200 },
+  { slug: 'sweet-potato',    en: 'Sweet potato',     es: 'Camote',         yield: 0.75, cat: 'tuber',       unit_en: 'lb',    unit_es: 'libra',  apCents: 120 },
+  { slug: 'corn-on-the-cob', en: 'Corn on the cob',  es: 'Elote (mazorca)', yield: 0.28, cat: 'fruiting',   unit_en: 'ear',   unit_es: 'pieza',  apCents: 50 },
+  { slug: 'button-mushroom', en: 'Button mushroom',  es: 'Champiñón',      yield: 0.90, cat: 'mushroom',    unit_en: 'lb',    unit_es: 'libra',  apCents: 350 },
+  { slug: 'basil',           en: 'Basil',            es: 'Albahaca',       yield: 0.50, cat: 'herbs',       unit_en: 'bunch', unit_es: 'manojo', apCents: 200 },
+  { slug: 'cilantro',        en: 'Cilantro',         es: 'Cilantro',       yield: 0.70, cat: 'herbs',       unit_en: 'bunch', unit_es: 'manojo', apCents: 80 },
+  { slug: 'lemon',           en: 'Lemon',            es: 'Limón amarillo', yield: 0.45, cat: 'citrus',      unit_en: 'each',  unit_es: 'pieza',  apCents: 40 },
+  { slug: 'pineapple',       en: 'Pineapple',        es: 'Piña',           yield: 0.50, cat: 'fruit',       unit_en: 'each',  unit_es: 'pieza',  apCents: 300 }
 ];
 
 function relatedInCategory(ing, locale) {
