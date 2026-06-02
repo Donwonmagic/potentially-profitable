@@ -208,19 +208,31 @@ main{padding-top:64px}
   "@context": "https://schema.org",
   "@type": "Article",
   "@id": "https://muntin.digital/library/restaurant-website-legal-essentials/#article",
-  "abstract": "The legal and trust layer a 2026 restaurant website needs &mdash; Terms of Service, privacy policy, cookie banner, SSL, footer hygiene, and the incident-response plan &mdash; named so the operator can have a ten-minute call with counsel instead of a two-hour discovery call.",
+  "abstract": "The legal + trust layer of a restaurant website in 2026: ToS, privacy policy, cookie banner, SSL, footer-year, and the breach plan to keep ready.",
   "mentions": [
-    {
-      "@type": "DefinedTerm",
-      "url": "https://muntin.digital/glossary/pii/"
-    },
     {
       "@type": "DefinedTerm",
       "url": "https://muntin.digital/glossary/terms-of-service/"
     },
     {
       "@type": "DefinedTerm",
+      "url": "https://muntin.digital/glossary/stale-copyright/"
+    },
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/glossary/data-tiering/"
+    },
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/glossary/pii/"
+    },
+    {
+      "@type": "DefinedTerm",
       "url": "https://muntin.digital/glossary/cookie-banner/"
+    },
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/glossary/ssl-certificate/"
     },
     {
       "@type": "DefinedTerm",
@@ -229,18 +241,6 @@ main{padding-top:64px}
     {
       "@type": "DefinedTerm",
       "url": "https://muntin.digital/glossary/incident-response/"
-    },
-    {
-      "@type": "DefinedTerm",
-      "url": "https://muntin.digital/glossary/stale-copyright/"
-    },
-    {
-      "@type": "DefinedTerm",
-      "url": "https://muntin.digital/glossary/ssl-certificate/"
-    },
-    {
-      "@type": "DefinedTerm",
-      "url": "https://muntin.digital/glossary/data-tiering/"
     }
   ]
 }
@@ -659,9 +659,9 @@ main{padding-top:64px}
 <aside class="smart-next" aria-labelledby="smart-next-h">
   <p class="smart-next__eyebrow" id="smart-next-h">What to do next</p>
   <ol class="smart-next__list">
-        <li class="smart-next__item smart-next__read"><span class="smart-next__verb">Read:</span> <a href="/glossary/pii/">the related glossary term &rarr;</a></li>
-        <li class="smart-next__item smart-next__try"><span class="smart-next__verb">Try:</span> <a href="/library/privacy-forward-restaurant-bookkeeping/">the bookkeeping privacy companion &rarr;</a></li>
-        <li class="smart-next__item smart-next__note"><span class="smart-next__verb">Or send Don a note:</span> <a href="/window/?topic=restaurant-website-legal-essentials">The Window &rarr;</a></li>
+        <li class="smart-next__item smart-next__read"><span class="smart-next__verb">Read:</span> <a href="/glossary/terms-of-service/">the related glossary term →</a></li>
+        <li class="smart-next__item smart-next__try"><span class="smart-next__verb">Try:</span> <a href="/tools/audits/restaurant/?from=blog/restaurant-website-legal-essentials&intent=watch">the tool that pairs with this article →</a></li>
+        <li class="smart-next__item smart-next__note"><span class="smart-next__verb">Or send Don a note:</span> <a href="/window/?topic=restaurant-website-legal-essentials">The Window →</a></li>
   </ol>
 </aside>
 <!-- smart-next:end -->
@@ -707,12 +707,12 @@ main{padding-top:64px}
 
   <!-- field-notes-submit:start -->
             <section class="field-notes-submit" id="field-note-form" aria-labelledby="field-note-heading"
-                    data-article-slug="restaurant-website-legal-essentials" data-locale="en" data-fnenabled="true">
+                    data-article-slug="" data-locale="en" data-fnenabled="true">
               <p class="field-notes-submit__eyebrow">Tell us</p>
               <h2 class="field-notes-submit__headline" id="field-note-heading">Be the first field note on this piece.</h2>
-              <p class="field-notes-submit__subhead">Tried this in your own restaurant? 100&ndash;400 words, your name on it. Don reads every one. Your note shows up here once approved.</p>
+              <p class="field-notes-submit__subhead">Tried this in your own restaurant? 100–400 words, your name on it. Don reads every one. Your note shows up here once approved.</p>
               <p class="field-notes-submit__signin js-field-notes-signin" hidden>
-                <a href="/sign-in/?return=%2Flibrary%2Frestaurant-website-legal-essentials%2F%23field-note-form">Sign in to share your experience &rarr;</a>
+                <a href="/sign-in/?return=%2Fblog%2F%2F%23field-note-form">Sign in to share your experience →</a>
               </p>
               <form class="field-notes-form js-field-notes-form" hidden method="post" action="/api/submission/create">
                 <label class="field-notes-form__label">
@@ -721,10 +721,10 @@ main{padding-top:64px}
                 </label>
                 <label class="field-notes-form__label">
                   <span class="field-notes-form__label-text">Your note</span>
-                  <textarea name="body" class="field-notes-form__body" rows="6" placeholder="What you tried, what happened, what you learned. Plain text &mdash; no links." required></textarea>
+                  <textarea name="body" class="field-notes-form__body" rows="6" placeholder="What you tried, what happened, what you learned. Plain text — no links." required></textarea>
                   <span class="field-notes-form__counter js-field-notes-counter" aria-live="polite"></span>
                 </label>
-                <input type="hidden" name="articleSlug" value="restaurant-website-legal-essentials">
+                <input type="hidden" name="articleSlug" value="">
                 <input type="hidden" name="locale" value="en">
                 <button type="submit" class="field-notes-form__submit btn btn-primary">Send the note</button>
                 <p class="field-notes-form__msg js-field-notes-msg" role="status" hidden></p>
@@ -777,7 +777,7 @@ main{padding-top:64px}
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->30<!-- /count --> articles, <!-- count:tools.live -->12<!-- /count --> tools, <!-- count:glossary.terms -->149<!-- /count --> glossary terms &mdash; with a one-person web studio behind it in Silver Spring, MD.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->34<!-- /count --> articles, <!-- count:tools.live -->12<!-- /count --> tools, <!-- count:glossary.terms -->149<!-- /count --> glossary terms &mdash; with a one-person web studio behind it in Silver Spring, MD.</p>
       </div>
 
       <nav class="foot-col" aria-labelledby="foot-learn">
