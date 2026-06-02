@@ -135,9 +135,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=ab576c3b2ed6" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=eda1f9ad3f38" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ab576c3b2ed6"><link rel="stylesheet" href="/assets/site-article.css?v=eda1f9ad3f38"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=82c8e0678bd3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=96ce2c24881c" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=82c8e0678bd3"><link rel="stylesheet" href="/assets/site-article.css?v=96ce2c24881c"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -217,6 +217,38 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 }
 </script>
 <!-- glossary-article-schema:end -->
+<!-- glossary-faq-schema:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "@id": "https://muntin.digital/es/glossary/third-party-marketplace/#faq",
+      "inLanguage": "es",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Qué es marketplace de terceros?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Marketplace de terceros es una plataforma que se sit&uacute;a entre t&uacute; y tu cliente &mdash; DoorDash, Uber Eats, Grubhub, Yelp, OpenTable, Find a Table de Google. Encaminan demanda, cobran una cuota (15&ndash;30&#37; en delivery; por cubierto o suscripci&oacute;n en reservas) y son due&ntilde;os de la relaci&oacute;n con el cliente. Lo opuesto de un canal propio."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Por qué importa marketplace de terceros para un restaurante?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Los marketplaces de terceros resuelven problemas reales &mdash; descubrimiento de demanda, log&iacute;stica de despacho, la cuota de no-show &mdash; y no son inherentemente malos. La trampa es estructural: cuando un marketplace se vuelve tu canal principal, la plataforma decide tu precio efectivo, qui&eacute;n te ve y se queda con el contacto del cliente. La matem&aacute;tica honesta para cualquier restaurante es: &iquest;qu&eacute; porcentaje de mis ingresos vive en rieles que no controlo, y c&oacute;mo se ver&iacute;a el a&ntilde;o si esos rieles cuestan 30&#37; m&aacute;s el pr&oacute;ximo trimestre?"
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<!-- glossary-faq-schema:end -->
 </head>
 <body>
 
@@ -417,6 +449,19 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <p><a href="/es/learn/research/lighthouse-performance-scoring/">Cómo califica Lighthouse el rendimiento <span aria-hidden="true">↗</span></a></p>
     </aside>
       <!-- glossary-explainer-cue:start --><!-- glossary-explainer-cue:end -->
+      <!-- glossary-faq:start -->
+      <section class="term-faq" aria-labelledby="term-faq-h">
+        <h2 class="term-faq__h" id="term-faq-h">Preguntas frecuentes</h2>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">¿Qué es marketplace de terceros?</h3>
+          <p class="term-faq__a">Marketplace de terceros es una plataforma que se sit&amp;uacute;a entre t&amp;uacute; y tu cliente &amp;mdash; DoorDash, Uber Eats, Grubhub, Yelp, OpenTable, Find a Table de Google. Encaminan demanda, cobran una cuota (15&amp;ndash;30&amp;#37; en delivery; por cubierto o suscripci&amp;oacute;n en reservas) y son due&amp;ntilde;os de la relaci&amp;oacute;n con el cliente. Lo opuesto de un canal propio.</p>
+        </div>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">¿Por qué importa marketplace de terceros para un restaurante?</h3>
+          <p class="term-faq__a">Los marketplaces de terceros resuelven problemas reales &amp;mdash; descubrimiento de demanda, log&amp;iacute;stica de despacho, la cuota de no-show &amp;mdash; y no son inherentemente malos. La trampa es estructural: cuando un marketplace se vuelve tu canal principal, la plataforma decide tu precio efectivo, qui&amp;eacute;n te ve y se queda con el contacto del cliente. La matem&amp;aacute;tica honesta para cualquier restaurante es: &amp;iquest;qu&amp;eacute; porcentaje de mis ingresos vive en rieles que no controlo, y c&amp;oacute;mo se ver&amp;iacute;a el a&amp;ntilde;o si esos rieles cuestan 30&amp;#37; m&amp;aacute;s el pr&amp;oacute;ximo trimestre?</p>
+        </div>
+      </section>
+      <!-- glossary-faq:end -->
     </div>
   </div>
 </section>

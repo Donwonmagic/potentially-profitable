@@ -39,9 +39,9 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=ab576c3b2ed6" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=eda1f9ad3f38" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ab576c3b2ed6"><link rel="stylesheet" href="/assets/site-article.css?v=eda1f9ad3f38"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=82c8e0678bd3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=96ce2c24881c" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=82c8e0678bd3"><link rel="stylesheet" href="/assets/site-article.css?v=96ce2c24881c"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -121,6 +121,38 @@
 }
 </script>
 <!-- glossary-article-schema:end -->
+<!-- glossary-faq-schema:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "@id": "https://muntin.digital/glossary/menu-mix/#faq",
+      "inLanguage": "en-US",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is menu mix?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Menu mix is for each item: units sold divided by total units sold across the menu in the same period. The denominator that turns a raw sales count into a velocity figure comparable across menus of different sizes. The y-axis of the menu-engineering matrix."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why does menu mix matter for a restaurant?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A dish that sold 80 covers tells you nothing on its own — 80 out of 200 is a Star, 80 out of 5,000 is a Dog. Menu mix is the math that lets a chef compare velocity across services, seasons, and menu sizes without recalibrating the eye each time."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<!-- glossary-faq-schema:end -->
 </head>
 <body>
 
@@ -394,6 +426,19 @@
       
       <!-- glossary-explainer-cue:start -->
       <!-- glossary-explainer-cue:end -->
+      <!-- glossary-faq:start -->
+      <section class="term-faq" aria-labelledby="term-faq-h">
+        <h2 class="term-faq__h" id="term-faq-h">Frequently asked</h2>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">What is menu mix?</h3>
+          <p class="term-faq__a">Menu mix is for each item: units sold divided by total units sold across the menu in the same period. The denominator that turns a raw sales count into a velocity figure comparable across menus of different sizes. The y-axis of the menu-engineering matrix.</p>
+        </div>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">Why does menu mix matter for a restaurant?</h3>
+          <p class="term-faq__a">A dish that sold 80 covers tells you nothing on its own — 80 out of 200 is a Star, 80 out of 5,000 is a Dog. Menu mix is the math that lets a chef compare velocity across services, seasons, and menu sizes without recalibrating the eye each time.</p>
+        </div>
+      </section>
+      <!-- glossary-faq:end -->
     </div>
   </div>
 </section>

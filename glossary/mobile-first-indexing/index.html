@@ -39,9 +39,9 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=ab576c3b2ed6" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=eda1f9ad3f38" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ab576c3b2ed6"><link rel="stylesheet" href="/assets/site-article.css?v=eda1f9ad3f38"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=82c8e0678bd3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=96ce2c24881c" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=82c8e0678bd3"><link rel="stylesheet" href="/assets/site-article.css?v=96ce2c24881c"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -120,6 +120,38 @@
 }
 </script>
 <!-- glossary-article-schema:end -->
+<!-- glossary-faq-schema:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "@id": "https://muntin.digital/glossary/mobile-first-indexing/#faq",
+      "inLanguage": "en-US",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is mobile-first indexing?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Mobile-first indexing is Google's rule, in effect since 2019, that it only looks at the mobile version of your site when deciding how to rank it. Whatever your desktop site does well no longer matters if the mobile version is bad."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why does mobile-first indexing matter for a restaurant?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Every audit, every fix, every copy tweak has to be tested on a phone first. Desktop is a nice-to-have in 2026; mobile is the thing Google actually scores."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<!-- glossary-faq-schema:end -->
 </head>
 <body>
 
@@ -396,6 +428,19 @@
     </aside>
       <!-- glossary-explainer-cue:start -->
       <!-- glossary-explainer-cue:end -->
+      <!-- glossary-faq:start -->
+      <section class="term-faq" aria-labelledby="term-faq-h">
+        <h2 class="term-faq__h" id="term-faq-h">Frequently asked</h2>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">What is mobile-first indexing?</h3>
+          <p class="term-faq__a">Mobile-first indexing is Google's rule, in effect since 2019, that it only looks at the mobile version of your site when deciding how to rank it. Whatever your desktop site does well no longer matters if the mobile version is bad.</p>
+        </div>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">Why does mobile-first indexing matter for a restaurant?</h3>
+          <p class="term-faq__a">Every audit, every fix, every copy tweak has to be tested on a phone first. Desktop is a nice-to-have in 2026; mobile is the thing Google actually scores.</p>
+        </div>
+      </section>
+      <!-- glossary-faq:end -->
     </div>
   </div>
 </section>

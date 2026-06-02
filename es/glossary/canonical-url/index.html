@@ -39,9 +39,9 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=ab576c3b2ed6" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=eda1f9ad3f38" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ab576c3b2ed6"><link rel="stylesheet" href="/assets/site-article.css?v=eda1f9ad3f38"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=82c8e0678bd3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=96ce2c24881c" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=82c8e0678bd3"><link rel="stylesheet" href="/assets/site-article.css?v=96ce2c24881c"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -129,6 +129,38 @@
 }
 </script>
 <!-- glossary-article-schema:end -->
+<!-- glossary-faq-schema:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "@id": "https://muntin.digital/es/glossary/canonical-url/#faq",
+      "inLanguage": "es",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Qué es URL canónica?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "URL canónica es una etiqueta en el HTML de una página que le dice a Google \"esta es la dirección real de esta página, ignora los duplicados\". Importa cuando el mismo contenido vive en varios URLs (con y sin www, con y sin parámetros de seguimiento, versiones para imprimir)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Por qué importa URL canónica para un restaurante?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sin canónica, Google no sabe qué versión de una página rankear y termina dividiendo la señal de SEO entre tres copias. Una etiqueta de un solo renglón concentra todo el crédito de búsqueda en la versión a la que sí quieres que llegue la gente."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<!-- glossary-faq-schema:end -->
 </head>
 <body>
 
@@ -330,6 +362,19 @@
     </aside>
       <!-- glossary-explainer-cue:start -->
       <!-- glossary-explainer-cue:end -->
+      <!-- glossary-faq:start -->
+      <section class="term-faq" aria-labelledby="term-faq-h">
+        <h2 class="term-faq__h" id="term-faq-h">Preguntas frecuentes</h2>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">¿Qué es URL canónica?</h3>
+          <p class="term-faq__a">URL canónica es una etiqueta en el HTML de una página que le dice a Google "esta es la dirección real de esta página, ignora los duplicados". Importa cuando el mismo contenido vive en varios URLs (con y sin www, con y sin parámetros de seguimiento, versiones para imprimir).</p>
+        </div>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">¿Por qué importa URL canónica para un restaurante?</h3>
+          <p class="term-faq__a">Sin canónica, Google no sabe qué versión de una página rankear y termina dividiendo la señal de SEO entre tres copias. Una etiqueta de un solo renglón concentra todo el crédito de búsqueda en la versión a la que sí quieres que llegue la gente.</p>
+        </div>
+      </section>
+      <!-- glossary-faq:end -->
     </div>
   </div>
 </section>

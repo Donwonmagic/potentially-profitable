@@ -39,9 +39,9 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=ab576c3b2ed6" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=eda1f9ad3f38" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ab576c3b2ed6"><link rel="stylesheet" href="/assets/site-article.css?v=eda1f9ad3f38"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=82c8e0678bd3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=96ce2c24881c" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=82c8e0678bd3"><link rel="stylesheet" href="/assets/site-article.css?v=96ce2c24881c"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -128,6 +128,38 @@
 }
 </script>
 <!-- glossary-article-schema:end -->
+<!-- glossary-faq-schema:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "@id": "https://muntin.digital/es/glossary/pagespeed-insights/#faq",
+      "inLanguage": "es",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Qué es pageSpeed Insights?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "PageSpeed Insights es la herramienta web gratuita de Google en pagespeed.web.dev que corre una auditoría de Lighthouse sobre cualquier URL y te muestra tus Core Web Vitals más una lista priorizada de arreglos. Construida sobre el motor de Lighthouse."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Por qué importa pageSpeed Insights para un restaurante?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "PSI es la herramienta con la que Google mira tu sitio, así que su puntuación es lo más cerca que vas a estar de la opinión de Google sobre ti sin trabajar ahí. Córrelo una vez al mes; córrelo otra vez después de cualquier cambio grande."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<!-- glossary-faq-schema:end -->
 </head>
 <body>
 
@@ -329,6 +361,19 @@
     </aside>
       <!-- glossary-explainer-cue:start -->
       <!-- glossary-explainer-cue:end -->
+      <!-- glossary-faq:start -->
+      <section class="term-faq" aria-labelledby="term-faq-h">
+        <h2 class="term-faq__h" id="term-faq-h">Preguntas frecuentes</h2>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">¿Qué es pageSpeed Insights?</h3>
+          <p class="term-faq__a">PageSpeed Insights es la herramienta web gratuita de Google en pagespeed.web.dev que corre una auditoría de Lighthouse sobre cualquier URL y te muestra tus Core Web Vitals más una lista priorizada de arreglos. Construida sobre el motor de Lighthouse.</p>
+        </div>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">¿Por qué importa pageSpeed Insights para un restaurante?</h3>
+          <p class="term-faq__a">PSI es la herramienta con la que Google mira tu sitio, así que su puntuación es lo más cerca que vas a estar de la opinión de Google sobre ti sin trabajar ahí. Córrelo una vez al mes; córrelo otra vez después de cualquier cambio grande.</p>
+        </div>
+      </section>
+      <!-- glossary-faq:end -->
     </div>
   </div>
 </section>

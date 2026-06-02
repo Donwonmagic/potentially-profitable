@@ -39,9 +39,9 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=ab576c3b2ed6" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=eda1f9ad3f38" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ab576c3b2ed6"><link rel="stylesheet" href="/assets/site-article.css?v=eda1f9ad3f38"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=82c8e0678bd3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=96ce2c24881c" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=82c8e0678bd3"><link rel="stylesheet" href="/assets/site-article.css?v=96ce2c24881c"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -132,6 +132,38 @@
 .term-sheet-sidecar__walkaway{font-size:13px;line-height:1.45;color:var(--ink-soft,#4A4F59)}
 @media print{.term-sheet-sidecar{display:none !important}}
 </style>
+<!-- glossary-faq-schema:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "@id": "https://muntin.digital/glossary/yield-percent/#faq",
+      "inLanguage": "en-US",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is yield percent?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yield percent is for a given ingredient: the percentage of as-purchased weight that survives trim, peel, bone, fat, and cooking shrinkage. Romaine yields about 75%; a whole halibut closer to 50%; a whole chicken 60%. Sourced from culinary-school standard yield tables; varies &plusmn;5% by handler skill and product specification."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why does yield percent matter for a restaurant?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The most-skipped concept in independent restaurant cost accounting. An owner who divides invoice cost by purchase weight under-prices most produce by 20&ndash;30%, and the loss compounds across every plate the recipe runs. Yield is the multiplier that turns AP cost into the real cost of a usable ounce — without it, every downstream number lies a little, in the same direction."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<!-- glossary-faq-schema:end -->
 </head>
 <body>
 
@@ -425,6 +457,19 @@
       
       <!-- glossary-explainer-cue:start -->
       <!-- glossary-explainer-cue:end -->
+      <!-- glossary-faq:start -->
+      <section class="term-faq" aria-labelledby="term-faq-h">
+        <h2 class="term-faq__h" id="term-faq-h">Frequently asked</h2>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">What is yield percent?</h3>
+          <p class="term-faq__a">Yield percent is for a given ingredient: the percentage of as-purchased weight that survives trim, peel, bone, fat, and cooking shrinkage. Romaine yields about 75%; a whole halibut closer to 50%; a whole chicken 60%. Sourced from culinary-school standard yield tables; varies &amp;plusmn;5% by handler skill and product specification.</p>
+        </div>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">Why does yield percent matter for a restaurant?</h3>
+          <p class="term-faq__a">The most-skipped concept in independent restaurant cost accounting. An owner who divides invoice cost by purchase weight under-prices most produce by 20&amp;ndash;30%, and the loss compounds across every plate the recipe runs. Yield is the multiplier that turns AP cost into the real cost of a usable ounce — without it, every downstream number lies a little, in the same direction.</p>
+        </div>
+      </section>
+      <!-- glossary-faq:end -->
     </div>
   </div>
 </section>

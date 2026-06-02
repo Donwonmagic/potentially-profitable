@@ -39,9 +39,9 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=ab576c3b2ed6" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=eda1f9ad3f38" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ab576c3b2ed6"><link rel="stylesheet" href="/assets/site-article.css?v=eda1f9ad3f38"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=82c8e0678bd3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=96ce2c24881c" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=82c8e0678bd3"><link rel="stylesheet" href="/assets/site-article.css?v=96ce2c24881c"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -121,6 +121,38 @@
 }
 </script>
 <!-- glossary-article-schema:end -->
+<!-- glossary-faq-schema:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "@id": "https://muntin.digital/glossary/color-blindness/#faq",
+      "inLanguage": "en-US",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is color blindness?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Color blindness is a set of inherited vision conditions — protanopia, deuteranopia, tritanopia, and milder partial forms — in which one of the three cone-cell types is missing or weakened. The eye no longer distinguishes certain hue pairs (most commonly red from green), even when they look obviously different to other readers."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why does color blindness matter for a restaurant?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Roughly 8% of men and 0.5% of women experience some form. A palette that grades AA on luminance can still merge a \"go\" green into a \"stop\" red for a deuteranope, sinking accessibility despite passing automated checks. Brand Suite includes a Brettel/Viénot simulation toggle on its contrast grid so the math gets a vision-model sanity check too."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<!-- glossary-faq-schema:end -->
 </head>
 <body>
 
@@ -394,6 +426,19 @@
       
       <!-- glossary-explainer-cue:start -->
       <!-- glossary-explainer-cue:end -->
+      <!-- glossary-faq:start -->
+      <section class="term-faq" aria-labelledby="term-faq-h">
+        <h2 class="term-faq__h" id="term-faq-h">Frequently asked</h2>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">What is color blindness?</h3>
+          <p class="term-faq__a">Color blindness is a set of inherited vision conditions — protanopia, deuteranopia, tritanopia, and milder partial forms — in which one of the three cone-cell types is missing or weakened. The eye no longer distinguishes certain hue pairs (most commonly red from green), even when they look obviously different to other readers.</p>
+        </div>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">Why does color blindness matter for a restaurant?</h3>
+          <p class="term-faq__a">Roughly 8% of men and 0.5% of women experience some form. A palette that grades AA on luminance can still merge a "go" green into a "stop" red for a deuteranope, sinking accessibility despite passing automated checks. Brand Suite includes a Brettel/Viénot simulation toggle on its contrast grid so the math gets a vision-model sanity check too.</p>
+        </div>
+      </section>
+      <!-- glossary-faq:end -->
     </div>
   </div>
 </section>

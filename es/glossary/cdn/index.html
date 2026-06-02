@@ -39,9 +39,9 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=ab576c3b2ed6" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=eda1f9ad3f38" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ab576c3b2ed6"><link rel="stylesheet" href="/assets/site-article.css?v=eda1f9ad3f38"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=82c8e0678bd3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=96ce2c24881c" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=82c8e0678bd3"><link rel="stylesheet" href="/assets/site-article.css?v=96ce2c24881c"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -128,6 +128,38 @@
 }
 </script>
 <!-- glossary-article-schema:end -->
+<!-- glossary-faq-schema:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "@id": "https://muntin.digital/es/glossary/cdn/#faq",
+      "inLanguage": "es",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Qué es CDN?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "CDN es una red global de servidores — Cloudflare, Fastly, AWS CloudFront — que mantienen copias en caché de tu sitio cerca de cada visitante del mundo, para que la página viaje 30 millas en vez de 3.000. La mayoría de los buenos hosts te lo conecta gratis."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Por qué importa CDN para un restaurante?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Un CDN es la mejora de velocidad más grande del tipo «no tengo que pensarlo» disponible. Aunque la mitad de tus clientes esté en una sola ciudad, la otra mitad recibe el mismo sitio rápido, y tu servidor de origen hace dramáticamente menos trabajo."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<!-- glossary-faq-schema:end -->
 </head>
 <body>
 
@@ -329,6 +361,19 @@
     </aside>
       <!-- glossary-explainer-cue:start -->
       <!-- glossary-explainer-cue:end -->
+      <!-- glossary-faq:start -->
+      <section class="term-faq" aria-labelledby="term-faq-h">
+        <h2 class="term-faq__h" id="term-faq-h">Preguntas frecuentes</h2>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">¿Qué es CDN?</h3>
+          <p class="term-faq__a">CDN es una red global de servidores — Cloudflare, Fastly, AWS CloudFront — que mantienen copias en caché de tu sitio cerca de cada visitante del mundo, para que la página viaje 30 millas en vez de 3.000. La mayoría de los buenos hosts te lo conecta gratis.</p>
+        </div>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">¿Por qué importa CDN para un restaurante?</h3>
+          <p class="term-faq__a">Un CDN es la mejora de velocidad más grande del tipo «no tengo que pensarlo» disponible. Aunque la mitad de tus clientes esté en una sola ciudad, la otra mitad recibe el mismo sitio rápido, y tu servidor de origen hace dramáticamente menos trabajo.</p>
+        </div>
+      </section>
+      <!-- glossary-faq:end -->
     </div>
   </div>
 </section>

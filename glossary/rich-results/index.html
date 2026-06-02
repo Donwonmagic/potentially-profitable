@@ -39,9 +39,9 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=ab576c3b2ed6" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=eda1f9ad3f38" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ab576c3b2ed6"><link rel="stylesheet" href="/assets/site-article.css?v=eda1f9ad3f38"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=82c8e0678bd3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=96ce2c24881c" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=82c8e0678bd3"><link rel="stylesheet" href="/assets/site-article.css?v=96ce2c24881c"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -121,6 +121,38 @@
 }
 </script>
 <!-- glossary-article-schema:end -->
+<!-- glossary-faq-schema:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "@id": "https://muntin.digital/glossary/rich-results/#faq",
+      "inLanguage": "en-US",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is rich results?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Rich results is enhanced Google search results that show more than a plain blue link — star ratings, hours, prices, FAQ dropdowns, image carousels. Unlocked by having the right schema markup on your page."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why does rich results matter for a restaurant?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A result with a 4.8-star rating and a \"$\" price next to it gets clicked far more often than a text-only result directly above it. Rich results are one of the few SEO levers where a small technical fix produces a visible, front-page win."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<!-- glossary-faq-schema:end -->
 </head>
 <body>
 
@@ -397,6 +429,19 @@
     </aside>
       <!-- glossary-explainer-cue:start -->
       <!-- glossary-explainer-cue:end -->
+      <!-- glossary-faq:start -->
+      <section class="term-faq" aria-labelledby="term-faq-h">
+        <h2 class="term-faq__h" id="term-faq-h">Frequently asked</h2>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">What is rich results?</h3>
+          <p class="term-faq__a">Rich results is enhanced Google search results that show more than a plain blue link — star ratings, hours, prices, FAQ dropdowns, image carousels. Unlocked by having the right schema markup on your page.</p>
+        </div>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">Why does rich results matter for a restaurant?</h3>
+          <p class="term-faq__a">A result with a 4.8-star rating and a "$" price next to it gets clicked far more often than a text-only result directly above it. Rich results are one of the few SEO levers where a small technical fix produces a visible, front-page win.</p>
+        </div>
+      </section>
+      <!-- glossary-faq:end -->
     </div>
   </div>
 </section>

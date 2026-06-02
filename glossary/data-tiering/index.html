@@ -137,9 +137,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=ab576c3b2ed6" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=eda1f9ad3f38" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ab576c3b2ed6"><link rel="stylesheet" href="/assets/site-article.css?v=eda1f9ad3f38"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=82c8e0678bd3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=96ce2c24881c" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=82c8e0678bd3"><link rel="stylesheet" href="/assets/site-article.css?v=96ce2c24881c"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -219,6 +219,38 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 }
 </script>
 <!-- glossary-article-schema:end -->
+<!-- glossary-faq-schema:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "@id": "https://muntin.digital/glossary/data-tiering/#faq",
+      "inLanguage": "en-US",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is data tiering?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Data tiering is a four-tier classification of business data — Public, Competitive-sensitive, Operational-confidential, Regulated — that decides who gets which information. The principle: data never flows up a tier."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why does data tiering matter for a restaurant?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Most operators carry every kind of data in the same mental bucket — which means the supplier list and the tax ID get the same protection (often the same low level of it). Tiering forces the question 'who is this person, and what do they actually need?' before you hand anything over."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<!-- glossary-faq-schema:end -->
 </head>
 <body>
 
@@ -498,6 +530,19 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     </aside>
       <!-- glossary-explainer-cue:start -->
       <!-- glossary-explainer-cue:end -->
+      <!-- glossary-faq:start -->
+      <section class="term-faq" aria-labelledby="term-faq-h">
+        <h2 class="term-faq__h" id="term-faq-h">Frequently asked</h2>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">What is data tiering?</h3>
+          <p class="term-faq__a">Data tiering is a four-tier classification of business data — Public, Competitive-sensitive, Operational-confidential, Regulated — that decides who gets which information. The principle: data never flows up a tier.</p>
+        </div>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">Why does data tiering matter for a restaurant?</h3>
+          <p class="term-faq__a">Most operators carry every kind of data in the same mental bucket — which means the supplier list and the tax ID get the same protection (often the same low level of it). Tiering forces the question 'who is this person, and what do they actually need?' before you hand anything over.</p>
+        </div>
+      </section>
+      <!-- glossary-faq:end -->
     </div>
   </div>
 </section>

@@ -39,9 +39,9 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=ab576c3b2ed6" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=eda1f9ad3f38" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ab576c3b2ed6"><link rel="stylesheet" href="/assets/site-article.css?v=eda1f9ad3f38"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=82c8e0678bd3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=96ce2c24881c" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=82c8e0678bd3"><link rel="stylesheet" href="/assets/site-article.css?v=96ce2c24881c"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -132,6 +132,38 @@
 .term-sheet-sidecar__walkaway{font-size:13px;line-height:1.45;color:var(--ink-soft,#4A4F59)}
 @media print{.term-sheet-sidecar{display:none !important}}
 </style>
+<!-- glossary-faq-schema:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "@id": "https://muntin.digital/es/glossary/fixed-costs/#faq",
+      "inLanguage": "es",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Qué es costos fijos?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Costos fijos es costos que no cambian con el volumen de ventas: renta, seguro, pagos de préstamo, servicios básicos, suscripciones SaaS (POS, reservas, nómina, herramientas de marketing), gerencia asalariada, iguala del contador. Independientes de si hiciste 40 o 400 cubiertos anoche."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Por qué importa costos fijos para un restaurante?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "El piso que tus cubiertos tienen que cruzar cada mes antes de que empiece la ganancia. El primer lugar donde buscar cuando un negocio que \"se siente bien\" sigue teniendo meses negativos — los costos fijos se arrastran despacio (un nuevo SaaS por trimestre, una cláusula de escalación de renta) y nadie se da cuenta hasta que el total mueve el punto de equilibrio."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<!-- glossary-faq-schema:end -->
 </head>
 <body>
 
@@ -341,6 +373,19 @@
       
       <!-- glossary-explainer-cue:start -->
       <!-- glossary-explainer-cue:end -->
+      <!-- glossary-faq:start -->
+      <section class="term-faq" aria-labelledby="term-faq-h">
+        <h2 class="term-faq__h" id="term-faq-h">Preguntas frecuentes</h2>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">¿Qué es costos fijos?</h3>
+          <p class="term-faq__a">Costos fijos es costos que no cambian con el volumen de ventas: renta, seguro, pagos de préstamo, servicios básicos, suscripciones SaaS (POS, reservas, nómina, herramientas de marketing), gerencia asalariada, iguala del contador. Independientes de si hiciste 40 o 400 cubiertos anoche.</p>
+        </div>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">¿Por qué importa costos fijos para un restaurante?</h3>
+          <p class="term-faq__a">El piso que tus cubiertos tienen que cruzar cada mes antes de que empiece la ganancia. El primer lugar donde buscar cuando un negocio que "se siente bien" sigue teniendo meses negativos — los costos fijos se arrastran despacio (un nuevo SaaS por trimestre, una cláusula de escalación de renta) y nadie se da cuenta hasta que el total mueve el punto de equilibrio.</p>
+        </div>
+      </section>
+      <!-- glossary-faq:end -->
     </div>
   </div>
 </section>

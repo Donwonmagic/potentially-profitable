@@ -39,9 +39,9 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=ab576c3b2ed6" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=eda1f9ad3f38" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ab576c3b2ed6"><link rel="stylesheet" href="/assets/site-article.css?v=eda1f9ad3f38"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=82c8e0678bd3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=96ce2c24881c" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=82c8e0678bd3"><link rel="stylesheet" href="/assets/site-article.css?v=96ce2c24881c"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -121,6 +121,38 @@
 }
 </script>
 <!-- glossary-article-schema:end -->
+<!-- glossary-faq-schema:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "@id": "https://muntin.digital/glossary/html-menu/#faq",
+      "inLanguage": "en-US",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is HTML menu?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "HTML menu is a menu built as real text on a web page, instead of as a PDF file or a photograph of a printed card. Real text means phones can render it at readable sizes, Google can index it, and screen readers can read it aloud."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why does HTML menu matter for a restaurant?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "PDF menus are the single most common reason a restaurant site loses mobile visitors. They download slowly, open in a separate viewer, force pinch-zoom, and often fail on older phones outright. An HTML menu is searchable, fast, updatable in seconds, and gives Google a crawlable list of what you actually serve."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<!-- glossary-faq-schema:end -->
 </head>
 <body>
 
@@ -400,6 +432,19 @@
     </aside>
       <!-- glossary-explainer-cue:start -->
       <!-- glossary-explainer-cue:end -->
+      <!-- glossary-faq:start -->
+      <section class="term-faq" aria-labelledby="term-faq-h">
+        <h2 class="term-faq__h" id="term-faq-h">Frequently asked</h2>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">What is HTML menu?</h3>
+          <p class="term-faq__a">HTML menu is a menu built as real text on a web page, instead of as a PDF file or a photograph of a printed card. Real text means phones can render it at readable sizes, Google can index it, and screen readers can read it aloud.</p>
+        </div>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">Why does HTML menu matter for a restaurant?</h3>
+          <p class="term-faq__a">PDF menus are the single most common reason a restaurant site loses mobile visitors. They download slowly, open in a separate viewer, force pinch-zoom, and often fail on older phones outright. An HTML menu is searchable, fast, updatable in seconds, and gives Google a crawlable list of what you actually serve.</p>
+        </div>
+      </section>
+      <!-- glossary-faq:end -->
     </div>
   </div>
 </section>

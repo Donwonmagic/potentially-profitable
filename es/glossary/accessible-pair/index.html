@@ -39,9 +39,9 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=ab576c3b2ed6" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=eda1f9ad3f38" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ab576c3b2ed6"><link rel="stylesheet" href="/assets/site-article.css?v=eda1f9ad3f38"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=82c8e0678bd3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=96ce2c24881c" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=82c8e0678bd3"><link rel="stylesheet" href="/assets/site-article.css?v=96ce2c24881c"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -121,6 +121,38 @@
 }
 </script>
 <!-- glossary-article-schema:end -->
+<!-- glossary-faq-schema:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "@id": "https://muntin.digital/es/glossary/accessible-pair/#faq",
+      "inLanguage": "es",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Qué es par accesible?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Par accesible es una versión de un color de marca cuya luminosidad se ha desplazado lo justo — preservando matiz y carácter — para que el texto en ese color sobre un fondo nombrado alcance el umbral WCAG AA (4,5:1 para texto normal). Normalmente se generan dos pares por color: uno sobre superficie clara, otro sobre superficie oscura."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Por qué importa par accesible para un restaurante?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "El verde azulado de marca se ve genial en el logo y resulta ilegible como texto de cuerpo de 14px sobre crema. Diseñar un sistema usable significa conocer tanto el color de marca *como* su vecino accesible — y usar el indicado en cada contexto. La Suite de Marca los deriva automáticamente y exporta ambas variantes como tokens CSS."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<!-- glossary-faq-schema:end -->
 </head>
 <body>
 
@@ -316,6 +348,19 @@
       
       <!-- glossary-explainer-cue:start -->
       <!-- glossary-explainer-cue:end -->
+      <!-- glossary-faq:start -->
+      <section class="term-faq" aria-labelledby="term-faq-h">
+        <h2 class="term-faq__h" id="term-faq-h">Preguntas frecuentes</h2>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">¿Qué es par accesible?</h3>
+          <p class="term-faq__a">Par accesible es una versión de un color de marca cuya luminosidad se ha desplazado lo justo — preservando matiz y carácter — para que el texto en ese color sobre un fondo nombrado alcance el umbral WCAG AA (4,5:1 para texto normal). Normalmente se generan dos pares por color: uno sobre superficie clara, otro sobre superficie oscura.</p>
+        </div>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">¿Por qué importa par accesible para un restaurante?</h3>
+          <p class="term-faq__a">El verde azulado de marca se ve genial en el logo y resulta ilegible como texto de cuerpo de 14px sobre crema. Diseñar un sistema usable significa conocer tanto el color de marca *como* su vecino accesible — y usar el indicado en cada contexto. La Suite de Marca los deriva automáticamente y exporta ambas variantes como tokens CSS.</p>
+        </div>
+      </section>
+      <!-- glossary-faq:end -->
     </div>
   </div>
 </section>

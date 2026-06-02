@@ -39,9 +39,9 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=ab576c3b2ed6" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=eda1f9ad3f38" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ab576c3b2ed6"><link rel="stylesheet" href="/assets/site-article.css?v=eda1f9ad3f38"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=82c8e0678bd3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=96ce2c24881c" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=82c8e0678bd3"><link rel="stylesheet" href="/assets/site-article.css?v=96ce2c24881c"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -132,6 +132,38 @@
 .term-sheet-sidecar__walkaway{font-size:13px;line-height:1.45;color:var(--ink-soft,#4A4F59)}
 @media print{.term-sheet-sidecar{display:none !important}}
 </style>
+<!-- glossary-faq-schema:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "@id": "https://muntin.digital/glossary/contribution-margin/#faq",
+      "inLanguage": "en-US",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is contribution margin?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Contribution margin is for a single menu item: sale price minus the variable cost of producing one unit (plated food cost). Reported in dollars (CM&nbsp;$) and as a percent of price (CM&nbsp;%). Distinct from operating margin and from food-cost percentage."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why does contribution margin matter for a restaurant?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Most operators optimise on food-cost percent, but the dollar figure is what actually pays rent. A 30%-food-cost $10 appetiser earns $7 per sale; a 40%-food-cost $30 entrée earns $18 — the &ldquo;worse-cost&rdquo; entrée nearly triples the contribution. Menu engineering plots CM&nbsp;$, not CM&nbsp;%. The Plate Cost Calculator suggests three menu prices at 28% / 30% / 33% and reports the dollar contribution margin at each."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<!-- glossary-faq-schema:end -->
 </head>
 <body>
 
@@ -425,6 +457,19 @@
       
       <!-- glossary-explainer-cue:start -->
       <!-- glossary-explainer-cue:end -->
+      <!-- glossary-faq:start -->
+      <section class="term-faq" aria-labelledby="term-faq-h">
+        <h2 class="term-faq__h" id="term-faq-h">Frequently asked</h2>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">What is contribution margin?</h3>
+          <p class="term-faq__a">Contribution margin is for a single menu item: sale price minus the variable cost of producing one unit (plated food cost). Reported in dollars (CM&amp;nbsp;$) and as a percent of price (CM&amp;nbsp;%). Distinct from operating margin and from food-cost percentage.</p>
+        </div>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">Why does contribution margin matter for a restaurant?</h3>
+          <p class="term-faq__a">Most operators optimise on food-cost percent, but the dollar figure is what actually pays rent. A 30%-food-cost $10 appetiser earns $7 per sale; a 40%-food-cost $30 entrée earns $18 — the &amp;ldquo;worse-cost&amp;rdquo; entrée nearly triples the contribution. Menu engineering plots CM&amp;nbsp;$, not CM&amp;nbsp;%. The Plate Cost Calculator suggests three menu prices at 28% / 30% / 33% and reports the dollar contribution margin at each.</p>
+        </div>
+      </section>
+      <!-- glossary-faq:end -->
     </div>
   </div>
 </section>

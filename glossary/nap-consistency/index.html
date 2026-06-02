@@ -39,9 +39,9 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=ab576c3b2ed6" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=eda1f9ad3f38" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ab576c3b2ed6"><link rel="stylesheet" href="/assets/site-article.css?v=eda1f9ad3f38"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=82c8e0678bd3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=96ce2c24881c" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=82c8e0678bd3"><link rel="stylesheet" href="/assets/site-article.css?v=96ce2c24881c"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -132,6 +132,38 @@
 .term-sheet-sidecar__walkaway{font-size:13px;line-height:1.45;color:var(--ink-soft,#4A4F59)}
 @media print{.term-sheet-sidecar{display:none !important}}
 </style>
+<!-- glossary-faq-schema:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "@id": "https://muntin.digital/glossary/nap-consistency/#faq",
+      "inLanguage": "en-US",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is NAP consistency?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "NAP consistency is your business name, address, and phone number written identically across your website, Google Business Profile, Yelp, Apple Maps, Facebook, and every other directory. \"Suite 200\" vs. \"Ste. 200\" counts as a mismatch to Google. Increasingly, hours-of-operation matters here too — Google treats day-of-week conflicts the same way it treats address conflicts."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why does NAP consistency matter for a restaurant?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Google cross-references your NAP across every mention of your business online and downgrades listings with inconsistent info — it reads as \"this business might not be real\". One tidy-up, done once, recovers rank you didn't know you'd lost. Open Hours covers the hours half; the other fields are a separate fix-up."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<!-- glossary-faq-schema:end -->
 </head>
 <body>
 
@@ -428,6 +460,19 @@
             <!-- field-note:end -->
       <!-- glossary-explainer-cue:start -->
       <!-- glossary-explainer-cue:end -->
+      <!-- glossary-faq:start -->
+      <section class="term-faq" aria-labelledby="term-faq-h">
+        <h2 class="term-faq__h" id="term-faq-h">Frequently asked</h2>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">What is NAP consistency?</h3>
+          <p class="term-faq__a">NAP consistency is your business name, address, and phone number written identically across your website, Google Business Profile, Yelp, Apple Maps, Facebook, and every other directory. "Suite 200" vs. "Ste. 200" counts as a mismatch to Google. Increasingly, hours-of-operation matters here too — Google treats day-of-week conflicts the same way it treats address conflicts.</p>
+        </div>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">Why does NAP consistency matter for a restaurant?</h3>
+          <p class="term-faq__a">Google cross-references your NAP across every mention of your business online and downgrades listings with inconsistent info — it reads as "this business might not be real". One tidy-up, done once, recovers rank you didn't know you'd lost. Open Hours covers the hours half; the other fields are a separate fix-up.</p>
+        </div>
+      </section>
+      <!-- glossary-faq:end -->
     </div>
   </div>
 </section>

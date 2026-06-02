@@ -39,9 +39,9 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=ab576c3b2ed6" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=eda1f9ad3f38" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ab576c3b2ed6"><link rel="stylesheet" href="/assets/site-article.css?v=eda1f9ad3f38"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=82c8e0678bd3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=96ce2c24881c" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=82c8e0678bd3"><link rel="stylesheet" href="/assets/site-article.css?v=96ce2c24881c"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -132,6 +132,38 @@
 .term-sheet-sidecar__walkaway{font-size:13px;line-height:1.45;color:var(--ink-soft,#4A4F59)}
 @media print{.term-sheet-sidecar{display:none !important}}
 </style>
+<!-- glossary-faq-schema:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "@id": "https://muntin.digital/es/glossary/gbp/#faq",
+      "inLanguage": "es",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Qué es ficha de Google Business?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Ficha de Google Business es el listado gratuito de tu negocio en Google Maps y en Google Search — ese panel que aparece a la derecha del buscador con el nombre, horarios, fotos, reseñas y el enlace al menú o a reservas. Se reclama y se edita en google.com/business."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Por qué importa ficha de Google Business para un restaurante?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Para la mayoría de los negocios locales pequeños, la ficha de Google Business trae más gente nueva que el propio sitio web. Una ficha bien puesta — con las categorías correctas, buenas fotos, horarios completos y un enlace al menú actual — suele ser la hora mejor invertida en marketing de todo el año."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<!-- glossary-faq-schema:end -->
 </head>
 <body>
 
@@ -353,6 +385,19 @@
             <!-- field-note:end -->
       <!-- glossary-explainer-cue:start -->
       <!-- glossary-explainer-cue:end -->
+      <!-- glossary-faq:start -->
+      <section class="term-faq" aria-labelledby="term-faq-h">
+        <h2 class="term-faq__h" id="term-faq-h">Preguntas frecuentes</h2>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">¿Qué es ficha de Google Business?</h3>
+          <p class="term-faq__a">Ficha de Google Business es el listado gratuito de tu negocio en Google Maps y en Google Search — ese panel que aparece a la derecha del buscador con el nombre, horarios, fotos, reseñas y el enlace al menú o a reservas. Se reclama y se edita en google.com/business.</p>
+        </div>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">¿Por qué importa ficha de Google Business para un restaurante?</h3>
+          <p class="term-faq__a">Para la mayoría de los negocios locales pequeños, la ficha de Google Business trae más gente nueva que el propio sitio web. Una ficha bien puesta — con las categorías correctas, buenas fotos, horarios completos y un enlace al menú actual — suele ser la hora mejor invertida en marketing de todo el año.</p>
+        </div>
+      </section>
+      <!-- glossary-faq:end -->
     </div>
   </div>
 </section>

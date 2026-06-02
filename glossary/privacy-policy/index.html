@@ -39,9 +39,9 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=ab576c3b2ed6" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=eda1f9ad3f38" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ab576c3b2ed6"><link rel="stylesheet" href="/assets/site-article.css?v=eda1f9ad3f38"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=82c8e0678bd3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=96ce2c24881c" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=82c8e0678bd3"><link rel="stylesheet" href="/assets/site-article.css?v=96ce2c24881c"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -120,6 +120,38 @@
 }
 </script>
 <!-- glossary-article-schema:end -->
+<!-- glossary-faq-schema:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "@id": "https://muntin.digital/glossary/privacy-policy/#faq",
+      "inLanguage": "en-US",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is privacy policy?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Privacy policy is a page on your site (usually at /privacy) that plainly states what information you collect from visitors, what you use it for, and how you keep it safe. Legally required in the EU (GDPR), California (CCPA), and a growing list of US states."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why does privacy policy matter for a restaurant?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Even if you only collect emails through a contact form, a missing privacy policy is a legal exposure and a trust red flag. The good news: a one-page, honest policy satisfies most rules. It doesn't need to be written by a lawyer for a site that just has hours and a menu."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<!-- glossary-faq-schema:end -->
 </head>
 <body>
 
@@ -393,6 +425,19 @@
       
       <!-- glossary-explainer-cue:start -->
       <!-- glossary-explainer-cue:end -->
+      <!-- glossary-faq:start -->
+      <section class="term-faq" aria-labelledby="term-faq-h">
+        <h2 class="term-faq__h" id="term-faq-h">Frequently asked</h2>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">What is privacy policy?</h3>
+          <p class="term-faq__a">Privacy policy is a page on your site (usually at /privacy) that plainly states what information you collect from visitors, what you use it for, and how you keep it safe. Legally required in the EU (GDPR), California (CCPA), and a growing list of US states.</p>
+        </div>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">Why does privacy policy matter for a restaurant?</h3>
+          <p class="term-faq__a">Even if you only collect emails through a contact form, a missing privacy policy is a legal exposure and a trust red flag. The good news: a one-page, honest policy satisfies most rules. It doesn't need to be written by a lawyer for a site that just has hours and a menu.</p>
+        </div>
+      </section>
+      <!-- glossary-faq:end -->
     </div>
   </div>
 </section>

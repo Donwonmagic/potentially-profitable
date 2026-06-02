@@ -39,9 +39,9 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=ab576c3b2ed6" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=eda1f9ad3f38" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ab576c3b2ed6"><link rel="stylesheet" href="/assets/site-article.css?v=eda1f9ad3f38"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=82c8e0678bd3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=96ce2c24881c" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=82c8e0678bd3"><link rel="stylesheet" href="/assets/site-article.css?v=96ce2c24881c"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -132,6 +132,38 @@
 .term-sheet-sidecar__walkaway{font-size:13px;line-height:1.45;color:var(--ink-soft,#4A4F59)}
 @media print{.term-sheet-sidecar{display:none !important}}
 </style>
+<!-- glossary-faq-schema:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "@id": "https://muntin.digital/es/glossary/food-cost/#faq",
+      "inLanguage": "es",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Qué es food cost?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Food cost es el costo de los ingredientes, alcohol y consumibles (productos de papel, empaque para llevar) expresado como porcentaje de ventas. Target 28–32% para la mayoría de los formatos; pizzerías y cafés a menudo corren más bajo, steakhouses y sushi más alto."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Por qué importa food cost para un restaurante?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Cada punto por encima del target es margen que se escapa por la puerta de la cocina — y típicamente es la palanca más rápida de arreglar, mediante specs de porción, logs de merma, auditorías de proveedores e ingeniería de menú. La Calculadora de Costo del Plato arma el costo por plato a partir de una receta en cinco minutos — la pieza que falta para defender el número agregado."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<!-- glossary-faq-schema:end -->
 </head>
 <body>
 
@@ -347,6 +379,19 @@
       
       <!-- glossary-explainer-cue:start -->
       <!-- glossary-explainer-cue:end -->
+      <!-- glossary-faq:start -->
+      <section class="term-faq" aria-labelledby="term-faq-h">
+        <h2 class="term-faq__h" id="term-faq-h">Preguntas frecuentes</h2>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">¿Qué es food cost?</h3>
+          <p class="term-faq__a">Food cost es el costo de los ingredientes, alcohol y consumibles (productos de papel, empaque para llevar) expresado como porcentaje de ventas. Target 28–32% para la mayoría de los formatos; pizzerías y cafés a menudo corren más bajo, steakhouses y sushi más alto.</p>
+        </div>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">¿Por qué importa food cost para un restaurante?</h3>
+          <p class="term-faq__a">Cada punto por encima del target es margen que se escapa por la puerta de la cocina — y típicamente es la palanca más rápida de arreglar, mediante specs de porción, logs de merma, auditorías de proveedores e ingeniería de menú. La Calculadora de Costo del Plato arma el costo por plato a partir de una receta en cinco minutos — la pieza que falta para defender el número agregado.</p>
+        </div>
+      </section>
+      <!-- glossary-faq:end -->
     </div>
   </div>
 </section>

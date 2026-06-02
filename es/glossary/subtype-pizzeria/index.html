@@ -39,9 +39,9 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=ab576c3b2ed6" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=eda1f9ad3f38" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ab576c3b2ed6"><link rel="stylesheet" href="/assets/site-article.css?v=eda1f9ad3f38"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=82c8e0678bd3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=96ce2c24881c" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=82c8e0678bd3"><link rel="stylesheet" href="/assets/site-article.css?v=96ce2c24881c"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -121,6 +121,38 @@
 }
 </script>
 <!-- glossary-article-schema:end -->
+<!-- glossary-faq-schema:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "@id": "https://muntin.digital/es/glossary/subtype-pizzeria/#faq",
+      "inLanguage": "es",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Qué es pizzería?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Pizzería es restaurantes donde la pizza es el eje y pedir ES el negocio — cada pizza por Slice/DoorDash/Grubhub se lleva 20–30 % de comisión. Schema: Restaurant, FastFoodRestaurant."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Por qué importa pizzería para un restaurante?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "El diagnóstico pondera las conversiones con 2,0× y añade una revisión del radio de entrega con 1,5×. Un flujo de pedido directo (Toast, ChowNow, Square o Slice Direct) frente a mandar todo por los agregadores es la diferencia entre ~78 % y ~55 % de margen bruto por pizza. Pistas de plataforma: Slice es la señal más clara, después Toast, ChowNow, DoorDash, Grubhub. Señales de palabras clave: pizza, napolitana, horno de leña, carbón, siciliana, estilo Detroit, calzone."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<!-- glossary-faq-schema:end -->
 </head>
 <body>
 
@@ -320,6 +352,19 @@
     </aside>
       <!-- glossary-explainer-cue:start -->
       <!-- glossary-explainer-cue:end -->
+      <!-- glossary-faq:start -->
+      <section class="term-faq" aria-labelledby="term-faq-h">
+        <h2 class="term-faq__h" id="term-faq-h">Preguntas frecuentes</h2>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">¿Qué es pizzería?</h3>
+          <p class="term-faq__a">Pizzería es restaurantes donde la pizza es el eje y pedir ES el negocio — cada pizza por Slice/DoorDash/Grubhub se lleva 20–30 % de comisión. Schema: Restaurant, FastFoodRestaurant.</p>
+        </div>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">¿Por qué importa pizzería para un restaurante?</h3>
+          <p class="term-faq__a">El diagnóstico pondera las conversiones con 2,0× y añade una revisión del radio de entrega con 1,5×. Un flujo de pedido directo (Toast, ChowNow, Square o Slice Direct) frente a mandar todo por los agregadores es la diferencia entre ~78 % y ~55 % de margen bruto por pizza. Pistas de plataforma: Slice es la señal más clara, después Toast, ChowNow, DoorDash, Grubhub. Señales de palabras clave: pizza, napolitana, horno de leña, carbón, siciliana, estilo Detroit, calzone.</p>
+        </div>
+      </section>
+      <!-- glossary-faq:end -->
     </div>
   </div>
 </section>

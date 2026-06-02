@@ -39,9 +39,9 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=ab576c3b2ed6" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=eda1f9ad3f38" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ab576c3b2ed6"><link rel="stylesheet" href="/assets/site-article.css?v=eda1f9ad3f38"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=82c8e0678bd3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=96ce2c24881c" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=82c8e0678bd3"><link rel="stylesheet" href="/assets/site-article.css?v=96ce2c24881c"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -129,6 +129,38 @@
 }
 </script>
 <!-- glossary-article-schema:end -->
+<!-- glossary-faq-schema:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "@id": "https://muntin.digital/glossary/core-web-vitals/#faq",
+      "inLanguage": "en-US",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is Core Web Vitals?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Core Web Vitals is Google's three performance scores for a real page load on a phone — one for loading speed (LCP), one for layout stability (CLS), and one for responsiveness (INP). You'll see them as colored bars in any audit report."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why does Core Web Vitals matter for a restaurant?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Google explicitly uses Core Web Vitals as a search ranking signal. Two restaurants with identical menus and identical Google Business Profiles will rank differently if one's vitals are green and the other's are red."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<!-- glossary-faq-schema:end -->
 </head>
 <body>
 
@@ -417,6 +449,19 @@
             <!-- field-note:end -->
       <!-- glossary-explainer-cue:start -->
       <!-- glossary-explainer-cue:end -->
+      <!-- glossary-faq:start -->
+      <section class="term-faq" aria-labelledby="term-faq-h">
+        <h2 class="term-faq__h" id="term-faq-h">Frequently asked</h2>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">What is Core Web Vitals?</h3>
+          <p class="term-faq__a">Core Web Vitals is Google's three performance scores for a real page load on a phone — one for loading speed (LCP), one for layout stability (CLS), and one for responsiveness (INP). You'll see them as colored bars in any audit report.</p>
+        </div>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">Why does Core Web Vitals matter for a restaurant?</h3>
+          <p class="term-faq__a">Google explicitly uses Core Web Vitals as a search ranking signal. Two restaurants with identical menus and identical Google Business Profiles will rank differently if one's vitals are green and the other's are red.</p>
+        </div>
+      </section>
+      <!-- glossary-faq:end -->
     </div>
   </div>
 </section>

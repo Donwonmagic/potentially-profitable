@@ -39,9 +39,9 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=ab576c3b2ed6" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=eda1f9ad3f38" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ab576c3b2ed6"><link rel="stylesheet" href="/assets/site-article.css?v=eda1f9ad3f38"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=82c8e0678bd3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=96ce2c24881c" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=82c8e0678bd3"><link rel="stylesheet" href="/assets/site-article.css?v=96ce2c24881c"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -132,6 +132,38 @@
 .term-sheet-sidecar__walkaway{font-size:13px;line-height:1.45;color:var(--ink-soft,#4A4F59)}
 @media print{.term-sheet-sidecar{display:none !important}}
 </style>
+<!-- glossary-faq-schema:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "@id": "https://muntin.digital/es/glossary/hours-of-operation/#faq",
+      "inLanguage": "es",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Qué es horario de operación?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Horario de operación es la representación estructurada de cuándo está abierto un restaurante a lo largo de la semana — codificada de varias formas: campos de Google Business Profile, Información de Negocio en Yelp, entradas en Apple Business Connect, OpeningHoursSpecification de Schema.org en tu sitio, y un cartel hecho a mano en la puerta. Cada superficie tiene un formato distinto; la decisión de fondo es la misma."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Por qué importa horario de operación para un restaurante?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Tener mal el horario en un solo lugar es la causa #2 de malas reseñas después del menú desactualizado, y la causa #1 del deterioro de calidad de la ficha de Google Business. Los comensales revisan Google antes de salir de casa; un &ldquo;cerrado&rdquo; que aparece en sábado al almuerzo manda la mesa al competidor. Horario Abierto es el ajuste de 15 minutos que mantiene los seis lugares alineados."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<!-- glossary-faq-schema:end -->
 </head>
 <body>
 
@@ -344,6 +376,19 @@
     </aside>
       <!-- glossary-explainer-cue:start -->
       <!-- glossary-explainer-cue:end -->
+      <!-- glossary-faq:start -->
+      <section class="term-faq" aria-labelledby="term-faq-h">
+        <h2 class="term-faq__h" id="term-faq-h">Preguntas frecuentes</h2>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">¿Qué es horario de operación?</h3>
+          <p class="term-faq__a">Horario de operación es la representación estructurada de cuándo está abierto un restaurante a lo largo de la semana — codificada de varias formas: campos de Google Business Profile, Información de Negocio en Yelp, entradas en Apple Business Connect, OpeningHoursSpecification de Schema.org en tu sitio, y un cartel hecho a mano en la puerta. Cada superficie tiene un formato distinto; la decisión de fondo es la misma.</p>
+        </div>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">¿Por qué importa horario de operación para un restaurante?</h3>
+          <p class="term-faq__a">Tener mal el horario en un solo lugar es la causa #2 de malas reseñas después del menú desactualizado, y la causa #1 del deterioro de calidad de la ficha de Google Business. Los comensales revisan Google antes de salir de casa; un &amp;ldquo;cerrado&amp;rdquo; que aparece en sábado al almuerzo manda la mesa al competidor. Horario Abierto es el ajuste de 15 minutos que mantiene los seis lugares alineados.</p>
+        </div>
+      </section>
+      <!-- glossary-faq:end -->
     </div>
   </div>
 </section>

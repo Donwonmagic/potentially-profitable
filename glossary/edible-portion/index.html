@@ -39,9 +39,9 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=ab576c3b2ed6" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=eda1f9ad3f38" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ab576c3b2ed6"><link rel="stylesheet" href="/assets/site-article.css?v=eda1f9ad3f38"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=82c8e0678bd3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=96ce2c24881c" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=82c8e0678bd3"><link rel="stylesheet" href="/assets/site-article.css?v=96ce2c24881c"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -132,6 +132,38 @@
 .term-sheet-sidecar__walkaway{font-size:13px;line-height:1.45;color:var(--ink-soft,#4A4F59)}
 @media print{.term-sheet-sidecar{display:none !important}}
 </style>
+<!-- glossary-faq-schema:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "@id": "https://muntin.digital/glossary/edible-portion/#faq",
+      "inLanguage": "en-US",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is edible portion (EP)?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Edible portion (EP) is the cost of one unit of an ingredient after yield correction: EP cost = AP cost &divide; yield. Always &ge; the as-purchased cost; for low-yield items (whole halibut, whole chicken) it can be nearly double. The number that should drive menu pricing — using AP cost in its place under-prices most produce-heavy menus by 20&ndash;30%."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why does edible portion (EP) matter for a restaurant?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "EP is the language of every culinary-school cost-control text and every printed yield table. Once an operator can read AP and EP fluently, they can audit any recipe's plate cost in their head from the invoice. It's the conceptual handle that lets a restaurant owner have an honest conversation with their chef and their accountant in the same vocabulary. The Plate Cost Calculator walks the AP→EP math row by row using ~80 canonical yields — override any one if your supplier's product yields differently."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<!-- glossary-faq-schema:end -->
 </head>
 <body>
 
@@ -419,6 +451,19 @@
       
       <!-- glossary-explainer-cue:start -->
       <!-- glossary-explainer-cue:end -->
+      <!-- glossary-faq:start -->
+      <section class="term-faq" aria-labelledby="term-faq-h">
+        <h2 class="term-faq__h" id="term-faq-h">Frequently asked</h2>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">What is edible portion (EP)?</h3>
+          <p class="term-faq__a">Edible portion (EP) is the cost of one unit of an ingredient after yield correction: EP cost = AP cost &amp;divide; yield. Always &amp;ge; the as-purchased cost; for low-yield items (whole halibut, whole chicken) it can be nearly double. The number that should drive menu pricing — using AP cost in its place under-prices most produce-heavy menus by 20&amp;ndash;30%.</p>
+        </div>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">Why does edible portion (EP) matter for a restaurant?</h3>
+          <p class="term-faq__a">EP is the language of every culinary-school cost-control text and every printed yield table. Once an operator can read AP and EP fluently, they can audit any recipe's plate cost in their head from the invoice. It's the conceptual handle that lets a restaurant owner have an honest conversation with their chef and their accountant in the same vocabulary. The Plate Cost Calculator walks the AP→EP math row by row using ~80 canonical yields — override any one if your supplier's product yields differently.</p>
+        </div>
+      </section>
+      <!-- glossary-faq:end -->
     </div>
   </div>
 </section>

@@ -39,9 +39,9 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=ab576c3b2ed6" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=eda1f9ad3f38" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ab576c3b2ed6"><link rel="stylesheet" href="/assets/site-article.css?v=eda1f9ad3f38"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=82c8e0678bd3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=96ce2c24881c" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=82c8e0678bd3"><link rel="stylesheet" href="/assets/site-article.css?v=96ce2c24881c"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -121,6 +121,38 @@
 }
 </script>
 <!-- glossary-article-schema:end -->
+<!-- glossary-faq-schema:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "@id": "https://muntin.digital/glossary/reservation-link/#faq",
+      "inLanguage": "en-US",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is reservation link?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Reservation link is a persistent link — in the nav, in the hero, and in the mobile footer — that starts a reservation flow. Ideally wired to whichever platform your hostess stand already trusts (OpenTable, Resy, Tock, Square) so bookings land in the same system your team already checks."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why does reservation link matter for a restaurant?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A reservation that has to be emailed, or lives three clicks deep, is a reservation half your visitors abandon. One tap, one booking, one confirmation — that's the standard diners have been trained on."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<!-- glossary-faq-schema:end -->
 </head>
 <body>
 
@@ -397,6 +429,19 @@
     </aside>
       <!-- glossary-explainer-cue:start -->
       <!-- glossary-explainer-cue:end -->
+      <!-- glossary-faq:start -->
+      <section class="term-faq" aria-labelledby="term-faq-h">
+        <h2 class="term-faq__h" id="term-faq-h">Frequently asked</h2>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">What is reservation link?</h3>
+          <p class="term-faq__a">Reservation link is a persistent link — in the nav, in the hero, and in the mobile footer — that starts a reservation flow. Ideally wired to whichever platform your hostess stand already trusts (OpenTable, Resy, Tock, Square) so bookings land in the same system your team already checks.</p>
+        </div>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">Why does reservation link matter for a restaurant?</h3>
+          <p class="term-faq__a">A reservation that has to be emailed, or lives three clicks deep, is a reservation half your visitors abandon. One tap, one booking, one confirmation — that's the standard diners have been trained on.</p>
+        </div>
+      </section>
+      <!-- glossary-faq:end -->
     </div>
   </div>
 </section>

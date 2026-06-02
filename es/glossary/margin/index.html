@@ -39,9 +39,9 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=ab576c3b2ed6" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=eda1f9ad3f38" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ab576c3b2ed6"><link rel="stylesheet" href="/assets/site-article.css?v=eda1f9ad3f38"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=82c8e0678bd3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=96ce2c24881c" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=82c8e0678bd3"><link rel="stylesheet" href="/assets/site-article.css?v=96ce2c24881c"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -121,6 +121,38 @@
 }
 </script>
 <!-- glossary-article-schema:end -->
+<!-- glossary-faq-schema:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "@id": "https://muntin.digital/es/glossary/margin/#faq",
+      "inLanguage": "es",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Qué es margen?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Margen es ventas menos costos. Margen bruto = ventas − food cost. Margen de contribución = ventas − costos variables (food + labor por hora + comisiones de tarjeta). Margen operativo = ventas − (food + labor + costos fijos). La palabra sola es ambigua — siempre pregunta cuál margen."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Por qué importa margen para un restaurante?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Consultores, prestamistas y proveedores usan \"margen\" con soltura. Saber cuál está sobre la mesa en una conversación específica te evita estar de acuerdo con un número que suena bien pero se refiere a otra línea. Cuando Cálculo de Margen dice \"contribución por cubierto,\" quiere decir margen bruto menos costos variables, que es el input correcto para la matemática de punto de equilibrio — no margen operativo."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<!-- glossary-faq-schema:end -->
 </head>
 <body>
 
@@ -336,6 +368,19 @@
       
       <!-- glossary-explainer-cue:start -->
       <!-- glossary-explainer-cue:end -->
+      <!-- glossary-faq:start -->
+      <section class="term-faq" aria-labelledby="term-faq-h">
+        <h2 class="term-faq__h" id="term-faq-h">Preguntas frecuentes</h2>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">¿Qué es margen?</h3>
+          <p class="term-faq__a">Margen es ventas menos costos. Margen bruto = ventas − food cost. Margen de contribución = ventas − costos variables (food + labor por hora + comisiones de tarjeta). Margen operativo = ventas − (food + labor + costos fijos). La palabra sola es ambigua — siempre pregunta cuál margen.</p>
+        </div>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">¿Por qué importa margen para un restaurante?</h3>
+          <p class="term-faq__a">Consultores, prestamistas y proveedores usan "margen" con soltura. Saber cuál está sobre la mesa en una conversación específica te evita estar de acuerdo con un número que suena bien pero se refiere a otra línea. Cuando Cálculo de Margen dice "contribución por cubierto," quiere decir margen bruto menos costos variables, que es el input correcto para la matemática de punto de equilibrio — no margen operativo.</p>
+        </div>
+      </section>
+      <!-- glossary-faq:end -->
     </div>
   </div>
 </section>

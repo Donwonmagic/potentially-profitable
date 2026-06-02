@@ -39,9 +39,9 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=ab576c3b2ed6" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=eda1f9ad3f38" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ab576c3b2ed6"><link rel="stylesheet" href="/assets/site-article.css?v=eda1f9ad3f38"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=82c8e0678bd3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=96ce2c24881c" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=82c8e0678bd3"><link rel="stylesheet" href="/assets/site-article.css?v=96ce2c24881c"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -121,6 +121,38 @@
 }
 </script>
 <!-- glossary-article-schema:end -->
+<!-- glossary-faq-schema:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "@id": "https://muntin.digital/glossary/click-to-call/#faq",
+      "inLanguage": "en-US",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is click-to-call?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Click-to-call is a phone number on your site that, when tapped on a phone, opens the dialer with your number pre-filled — instead of being plain text the visitor has to copy. Built with an href=\"tel:+1555…\" link."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why does click-to-call matter for a restaurant?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "If a customer has to copy your number, switch apps, paste, and dial, many won't. One tap, one ring — that's the shortest path from \"I'm hungry\" or \"I need a haircut\" to paying you."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<!-- glossary-faq-schema:end -->
 </head>
 <body>
 
@@ -410,6 +442,19 @@
     </aside>
       <!-- glossary-explainer-cue:start -->
       <!-- glossary-explainer-cue:end -->
+      <!-- glossary-faq:start -->
+      <section class="term-faq" aria-labelledby="term-faq-h">
+        <h2 class="term-faq__h" id="term-faq-h">Frequently asked</h2>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">What is click-to-call?</h3>
+          <p class="term-faq__a">Click-to-call is a phone number on your site that, when tapped on a phone, opens the dialer with your number pre-filled — instead of being plain text the visitor has to copy. Built with an href="tel:+1555…" link.</p>
+        </div>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">Why does click-to-call matter for a restaurant?</h3>
+          <p class="term-faq__a">If a customer has to copy your number, switch apps, paste, and dial, many won't. One tap, one ring — that's the shortest path from "I'm hungry" or "I need a haircut" to paying you.</p>
+        </div>
+      </section>
+      <!-- glossary-faq:end -->
     </div>
   </div>
 </section>

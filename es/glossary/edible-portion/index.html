@@ -39,9 +39,9 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=ab576c3b2ed6" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=eda1f9ad3f38" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ab576c3b2ed6"><link rel="stylesheet" href="/assets/site-article.css?v=eda1f9ad3f38"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=82c8e0678bd3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=96ce2c24881c" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=82c8e0678bd3"><link rel="stylesheet" href="/assets/site-article.css?v=96ce2c24881c"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -132,6 +132,38 @@
 .term-sheet-sidecar__walkaway{font-size:13px;line-height:1.45;color:var(--ink-soft,#4A4F59)}
 @media print{.term-sheet-sidecar{display:none !important}}
 </style>
+<!-- glossary-faq-schema:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "@id": "https://muntin.digital/es/glossary/edible-portion/#faq",
+      "inLanguage": "es",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Qué es porción comestible (EP)?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Porción comestible (EP) es el costo de una unidad de un ingrediente después de la corrección por rendimiento: costo EP = costo AP &divide; rendimiento. Siempre &ge; al costo tal como se compra; para artículos de bajo rendimiento (fletán entero, pollo entero) puede ser casi el doble. El número que debería guiar los precios del menú — usar el costo AP en su lugar subvalúa la mayoría de los menús cargados de productos en un 20&ndash;30%."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Por qué importa porción comestible (EP) para un restaurante?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "EP es el lenguaje de cada texto de control de costos de las escuelas culinarias y cada tabla de rendimiento impresa. Una vez que un operador puede leer AP y EP con fluidez, puede auditar el costo del plato de cualquier receta mentalmente desde la factura. Es el manejo conceptual que permite al dueño de un restaurante tener una conversación honesta con su chef y su contador en el mismo vocabulario. La Calculadora de Costo del Plato recorre las matemáticas AP→EP fila por fila usando ~80 rendimientos canónicos — anula cualquiera si el producto de tu proveedor rinde distinto."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<!-- glossary-faq-schema:end -->
 </head>
 <body>
 
@@ -341,6 +373,19 @@
       
       <!-- glossary-explainer-cue:start -->
       <!-- glossary-explainer-cue:end -->
+      <!-- glossary-faq:start -->
+      <section class="term-faq" aria-labelledby="term-faq-h">
+        <h2 class="term-faq__h" id="term-faq-h">Preguntas frecuentes</h2>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">¿Qué es porción comestible (EP)?</h3>
+          <p class="term-faq__a">Porción comestible (EP) es el costo de una unidad de un ingrediente después de la corrección por rendimiento: costo EP = costo AP &amp;divide; rendimiento. Siempre &amp;ge; al costo tal como se compra; para artículos de bajo rendimiento (fletán entero, pollo entero) puede ser casi el doble. El número que debería guiar los precios del menú — usar el costo AP en su lugar subvalúa la mayoría de los menús cargados de productos en un 20&amp;ndash;30%.</p>
+        </div>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">¿Por qué importa porción comestible (EP) para un restaurante?</h3>
+          <p class="term-faq__a">EP es el lenguaje de cada texto de control de costos de las escuelas culinarias y cada tabla de rendimiento impresa. Una vez que un operador puede leer AP y EP con fluidez, puede auditar el costo del plato de cualquier receta mentalmente desde la factura. Es el manejo conceptual que permite al dueño de un restaurante tener una conversación honesta con su chef y su contador en el mismo vocabulario. La Calculadora de Costo del Plato recorre las matemáticas AP→EP fila por fila usando ~80 rendimientos canónicos — anula cualquiera si el producto de tu proveedor rinde distinto.</p>
+        </div>
+      </section>
+      <!-- glossary-faq:end -->
     </div>
   </div>
 </section>

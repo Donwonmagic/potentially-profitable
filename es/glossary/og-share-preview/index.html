@@ -39,9 +39,9 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=ab576c3b2ed6" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=eda1f9ad3f38" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ab576c3b2ed6"><link rel="stylesheet" href="/assets/site-article.css?v=eda1f9ad3f38"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=82c8e0678bd3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=96ce2c24881c" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=82c8e0678bd3"><link rel="stylesheet" href="/assets/site-article.css?v=96ce2c24881c"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -121,6 +121,38 @@
 }
 </script>
 <!-- glossary-article-schema:end -->
+<!-- glossary-faq-schema:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "@id": "https://muntin.digital/es/glossary/og-share-preview/#faq",
+      "inLanguage": "es",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Qué es vista previa al compartir (OG)?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Vista previa al compartir (OG) es la tarjeta de previsualización que iMessage / WhatsApp / Messenger / Facebook muestran al compartir tu URL — un título, una descripción corta y una foto, extraídos de &lt;meta property=\"og:image\"&gt; y similares en el &lt;head&gt; de tu página."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Por qué importa vista previa al compartir (OG) para un restaurante?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Cuando alguien envía tu URL a cuatro amigos para planear cenar, esa vista previa es la mitad de la decisión de hacer clic. Sin ella — caja en blanco, solo el dominio — la mitad de esos amigos nunca toca el enlace. Una imagen y un título en la configuración SEO de tu plataforma; la ganancia son docenas de planes de comida perdidos al año que de repente se convierten en reservas."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<!-- glossary-faq-schema:end -->
 </head>
 <body>
 
@@ -316,6 +348,19 @@
       
       <!-- glossary-explainer-cue:start -->
       <!-- glossary-explainer-cue:end -->
+      <!-- glossary-faq:start -->
+      <section class="term-faq" aria-labelledby="term-faq-h">
+        <h2 class="term-faq__h" id="term-faq-h">Preguntas frecuentes</h2>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">¿Qué es vista previa al compartir (OG)?</h3>
+          <p class="term-faq__a">Vista previa al compartir (OG) es la tarjeta de previsualización que iMessage / WhatsApp / Messenger / Facebook muestran al compartir tu URL — un título, una descripción corta y una foto, extraídos de &amp;lt;meta property="og:image"&amp;gt; y similares en el &amp;lt;head&amp;gt; de tu página.</p>
+        </div>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">¿Por qué importa vista previa al compartir (OG) para un restaurante?</h3>
+          <p class="term-faq__a">Cuando alguien envía tu URL a cuatro amigos para planear cenar, esa vista previa es la mitad de la decisión de hacer clic. Sin ella — caja en blanco, solo el dominio — la mitad de esos amigos nunca toca el enlace. Una imagen y un título en la configuración SEO de tu plataforma; la ganancia son docenas de planes de comida perdidos al año que de repente se convierten en reservas.</p>
+        </div>
+      </section>
+      <!-- glossary-faq:end -->
     </div>
   </div>
 </section>

@@ -137,9 +137,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=ab576c3b2ed6" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=eda1f9ad3f38" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ab576c3b2ed6"><link rel="stylesheet" href="/assets/site-article.css?v=eda1f9ad3f38"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=82c8e0678bd3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=96ce2c24881c" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=82c8e0678bd3"><link rel="stylesheet" href="/assets/site-article.css?v=96ce2c24881c"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -219,6 +219,38 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 }
 </script>
 <!-- glossary-article-schema:end -->
+<!-- glossary-faq-schema:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "@id": "https://muntin.digital/glossary/owned-channel/#faq",
+      "inLanguage": "en-US",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is owned channel?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Owned channel is any customer relationship, ordering path, or data stream you control end-to-end &mdash; your website, your direct-ordering link, your email list, your phone, your Google Business Profile (which you don&rsquo;t fully own but you do operate). The opposite of a third-party marketplace where someone else owns the rails."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why does owned channel matter for a restaurant?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Owned channels keep two things on your side of the table: the customer&rsquo;s contact information and the margin on the order. A direct delivery via your own ordering page typically nets 18&ndash;28%; the same order via DoorDash typically nets 5&ndash;12% after the 30% commission, the marketing fee, and the delivery share. Owned channels also compound &mdash; a returning customer on your site is yours next time too."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<!-- glossary-faq-schema:end -->
 </head>
 <body>
 
@@ -497,6 +529,19 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <p><a href="/learn/research/lighthouse-performance-scoring/">How Lighthouse scores performance <span aria-hidden="true">↗</span></a></p>
     </aside>
       <!-- glossary-explainer-cue:start --><!-- glossary-explainer-cue:end -->
+      <!-- glossary-faq:start -->
+      <section class="term-faq" aria-labelledby="term-faq-h">
+        <h2 class="term-faq__h" id="term-faq-h">Frequently asked</h2>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">What is owned channel?</h3>
+          <p class="term-faq__a">Owned channel is any customer relationship, ordering path, or data stream you control end-to-end &amp;mdash; your website, your direct-ordering link, your email list, your phone, your Google Business Profile (which you don&amp;rsquo;t fully own but you do operate). The opposite of a third-party marketplace where someone else owns the rails.</p>
+        </div>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">Why does owned channel matter for a restaurant?</h3>
+          <p class="term-faq__a">Owned channels keep two things on your side of the table: the customer&amp;rsquo;s contact information and the margin on the order. A direct delivery via your own ordering page typically nets 18&amp;ndash;28%; the same order via DoorDash typically nets 5&amp;ndash;12% after the 30% commission, the marketing fee, and the delivery share. Owned channels also compound &amp;mdash; a returning customer on your site is yours next time too.</p>
+        </div>
+      </section>
+      <!-- glossary-faq:end -->
     </div>
   </div>
 </section>

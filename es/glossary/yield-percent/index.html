@@ -39,9 +39,9 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=ab576c3b2ed6" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=eda1f9ad3f38" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ab576c3b2ed6"><link rel="stylesheet" href="/assets/site-article.css?v=eda1f9ad3f38"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=82c8e0678bd3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=96ce2c24881c" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=82c8e0678bd3"><link rel="stylesheet" href="/assets/site-article.css?v=96ce2c24881c"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -132,6 +132,38 @@
 .term-sheet-sidecar__walkaway{font-size:13px;line-height:1.45;color:var(--ink-soft,#4A4F59)}
 @media print{.term-sheet-sidecar{display:none !important}}
 </style>
+<!-- glossary-faq-schema:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "@id": "https://muntin.digital/es/glossary/yield-percent/#faq",
+      "inLanguage": "es",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Qué es porcentaje de rendimiento?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Porcentaje de rendimiento es para un ingrediente dado: el porcentaje del peso tal como se compra que sobrevive a la limpieza, el pelado, los huesos, la grasa y la merma de cocción. La lechuga romana rinde alrededor del 75%; un fletán entero más bien 50%; un pollo entero 60%. Tomado de tablas de rendimiento estándar de las escuelas culinarias; varía &plusmn;5% según destreza y especificación del producto."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Por qué importa porcentaje de rendimiento para un restaurante?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "El concepto que más se omite en la contabilidad de costos del restaurante independiente. Un dueño que divide el costo de la factura entre el peso comprado subvalúa la mayoría de los productos un 20&ndash;30%, y la pérdida se acumula plato tras plato. El rendimiento es el multiplicador que convierte el costo AP en el costo real de una onza usable — sin él, cada número aguas abajo miente un poco, todos en la misma dirección."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<!-- glossary-faq-schema:end -->
 </head>
 <body>
 
@@ -347,6 +379,19 @@
       
       <!-- glossary-explainer-cue:start -->
       <!-- glossary-explainer-cue:end -->
+      <!-- glossary-faq:start -->
+      <section class="term-faq" aria-labelledby="term-faq-h">
+        <h2 class="term-faq__h" id="term-faq-h">Preguntas frecuentes</h2>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">¿Qué es porcentaje de rendimiento?</h3>
+          <p class="term-faq__a">Porcentaje de rendimiento es para un ingrediente dado: el porcentaje del peso tal como se compra que sobrevive a la limpieza, el pelado, los huesos, la grasa y la merma de cocción. La lechuga romana rinde alrededor del 75%; un fletán entero más bien 50%; un pollo entero 60%. Tomado de tablas de rendimiento estándar de las escuelas culinarias; varía &amp;plusmn;5% según destreza y especificación del producto.</p>
+        </div>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">¿Por qué importa porcentaje de rendimiento para un restaurante?</h3>
+          <p class="term-faq__a">El concepto que más se omite en la contabilidad de costos del restaurante independiente. Un dueño que divide el costo de la factura entre el peso comprado subvalúa la mayoría de los productos un 20&amp;ndash;30%, y la pérdida se acumula plato tras plato. El rendimiento es el multiplicador que convierte el costo AP en el costo real de una onza usable — sin él, cada número aguas abajo miente un poco, todos en la misma dirección.</p>
+        </div>
+      </section>
+      <!-- glossary-faq:end -->
     </div>
   </div>
 </section>

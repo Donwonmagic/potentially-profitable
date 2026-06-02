@@ -39,9 +39,9 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=ab576c3b2ed6" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=eda1f9ad3f38" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ab576c3b2ed6"><link rel="stylesheet" href="/assets/site-article.css?v=eda1f9ad3f38"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=82c8e0678bd3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=96ce2c24881c" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=82c8e0678bd3"><link rel="stylesheet" href="/assets/site-article.css?v=96ce2c24881c"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -82,6 +82,38 @@
   ]
 }
 </script>
+<!-- glossary-faq-schema:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "@id": "https://muntin.digital/es/glossary/sitemap/#faq",
+      "inLanguage": "es",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Qué es mapa del sitio?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Mapa del sitio es un archivo en /sitemap.xml de tu dominio que lista todas las páginas públicas de tu sitio. Lo envías una vez a Google Search Console y a Bing Webmaster Tools para que sepan dónde mirar."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Por qué importa mapa del sitio para un restaurante?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sin mapa del sitio, Google termina encontrando tus páginas, pero despacio. Con uno, las nuevas entradas de blog, los menús actualizados y los especiales se indexan en días en vez de semanas. Una configuración única que rinde para siempre."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<!-- glossary-faq-schema:end -->
 </head>
 <body>
 
@@ -280,6 +312,19 @@
     </aside>
       <!-- glossary-explainer-cue:start -->
       <!-- glossary-explainer-cue:end -->
+      <!-- glossary-faq:start -->
+      <section class="term-faq" aria-labelledby="term-faq-h">
+        <h2 class="term-faq__h" id="term-faq-h">Preguntas frecuentes</h2>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">¿Qué es mapa del sitio?</h3>
+          <p class="term-faq__a">Mapa del sitio es un archivo en /sitemap.xml de tu dominio que lista todas las páginas públicas de tu sitio. Lo envías una vez a Google Search Console y a Bing Webmaster Tools para que sepan dónde mirar.</p>
+        </div>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">¿Por qué importa mapa del sitio para un restaurante?</h3>
+          <p class="term-faq__a">Sin mapa del sitio, Google termina encontrando tus páginas, pero despacio. Con uno, las nuevas entradas de blog, los menús actualizados y los especiales se indexan en días en vez de semanas. Una configuración única que rinde para siempre.</p>
+        </div>
+      </section>
+      <!-- glossary-faq:end -->
     </div>
   </div>
 </section>

@@ -39,9 +39,9 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=ab576c3b2ed6" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=eda1f9ad3f38" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ab576c3b2ed6"><link rel="stylesheet" href="/assets/site-article.css?v=eda1f9ad3f38"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=82c8e0678bd3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=96ce2c24881c" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=82c8e0678bd3"><link rel="stylesheet" href="/assets/site-article.css?v=96ce2c24881c"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -121,6 +121,38 @@
 }
 </script>
 <!-- glossary-article-schema:end -->
+<!-- glossary-faq-schema:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "@id": "https://muntin.digital/es/glossary/fcp/#faq",
+      "inLanguage": "es",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Qué es First Contentful Paint?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "First Contentful Paint es el momento en que el navegador pinta el primer pedazo de tu página — normalmente un titular, un logo, o una zona de color de fondo. Se mide en segundos. Menos de 1,8 s es bueno, más de 3 s es pobre."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Por qué importa First Contentful Paint para un restaurante?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "El FCP es la señal de «algo está pasando». Una pantalla blanca en blanco por tres segundos se lee como rota aunque la página esté por cargar; un primer pintado antes de 1,8 s le dice al visitante que el sitio está funcionando y te da tiempo para terminar de cargar."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<!-- glossary-faq-schema:end -->
 </head>
 <body>
 
@@ -319,6 +351,19 @@
     </aside>
       <!-- glossary-explainer-cue:start -->
       <!-- glossary-explainer-cue:end -->
+      <!-- glossary-faq:start -->
+      <section class="term-faq" aria-labelledby="term-faq-h">
+        <h2 class="term-faq__h" id="term-faq-h">Preguntas frecuentes</h2>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">¿Qué es First Contentful Paint?</h3>
+          <p class="term-faq__a">First Contentful Paint es el momento en que el navegador pinta el primer pedazo de tu página — normalmente un titular, un logo, o una zona de color de fondo. Se mide en segundos. Menos de 1,8 s es bueno, más de 3 s es pobre.</p>
+        </div>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">¿Por qué importa First Contentful Paint para un restaurante?</h3>
+          <p class="term-faq__a">El FCP es la señal de «algo está pasando». Una pantalla blanca en blanco por tres segundos se lee como rota aunque la página esté por cargar; un primer pintado antes de 1,8 s le dice al visitante que el sitio está funcionando y te da tiempo para terminar de cargar.</p>
+        </div>
+      </section>
+      <!-- glossary-faq:end -->
     </div>
   </div>
 </section>

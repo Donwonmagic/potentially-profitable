@@ -135,9 +135,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=ab576c3b2ed6" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=eda1f9ad3f38" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ab576c3b2ed6"><link rel="stylesheet" href="/assets/site-article.css?v=eda1f9ad3f38"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=82c8e0678bd3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=96ce2c24881c" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=82c8e0678bd3"><link rel="stylesheet" href="/assets/site-article.css?v=96ce2c24881c"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -217,6 +217,38 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 }
 </script>
 <!-- glossary-article-schema:end -->
+<!-- glossary-faq-schema:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "@id": "https://muntin.digital/es/glossary/pii/#faq",
+      "inLanguage": "es",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Qué es PII?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "PII es información de Identificación Personal — cualquier dato que puede identificar a una persona específica solo o en combinación con otros datos. Para un operador de restaurante: nombres de clientes, correos, teléfonos, datos de pago, SSN de empleados, registros I-9. La PII tiene protección legal; manejarla mal trae multas y demandas."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Por qué importa PII para un restaurante?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "La mayoría de los operadores confunden PII con \"la lista de correos.\" Pero los datos de pago, las cuentas bancarias de empleados, y los registros de reservas también son PII — y cada uno trae su propio marco regulatorio (PCI-DSS para tarjetas, leyes estatales de breach-notification para el resto). Saber qué cuenta es el prerequisito para manejarlo bien."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<!-- glossary-faq-schema:end -->
 </head>
 <body>
 
@@ -416,6 +448,19 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     </aside>
       <!-- glossary-explainer-cue:start -->
       <!-- glossary-explainer-cue:end -->
+      <!-- glossary-faq:start -->
+      <section class="term-faq" aria-labelledby="term-faq-h">
+        <h2 class="term-faq__h" id="term-faq-h">Preguntas frecuentes</h2>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">¿Qué es PII?</h3>
+          <p class="term-faq__a">PII es información de Identificación Personal — cualquier dato que puede identificar a una persona específica solo o en combinación con otros datos. Para un operador de restaurante: nombres de clientes, correos, teléfonos, datos de pago, SSN de empleados, registros I-9. La PII tiene protección legal; manejarla mal trae multas y demandas.</p>
+        </div>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">¿Por qué importa PII para un restaurante?</h3>
+          <p class="term-faq__a">La mayoría de los operadores confunden PII con "la lista de correos." Pero los datos de pago, las cuentas bancarias de empleados, y los registros de reservas también son PII — y cada uno trae su propio marco regulatorio (PCI-DSS para tarjetas, leyes estatales de breach-notification para el resto). Saber qué cuenta es el prerequisito para manejarlo bien.</p>
+        </div>
+      </section>
+      <!-- glossary-faq:end -->
     </div>
   </div>
 </section>

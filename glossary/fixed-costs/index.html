@@ -39,9 +39,9 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=ab576c3b2ed6" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=eda1f9ad3f38" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ab576c3b2ed6"><link rel="stylesheet" href="/assets/site-article.css?v=eda1f9ad3f38"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=82c8e0678bd3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=96ce2c24881c" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=82c8e0678bd3"><link rel="stylesheet" href="/assets/site-article.css?v=96ce2c24881c"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -132,6 +132,38 @@
 .term-sheet-sidecar__walkaway{font-size:13px;line-height:1.45;color:var(--ink-soft,#4A4F59)}
 @media print{.term-sheet-sidecar{display:none !important}}
 </style>
+<!-- glossary-faq-schema:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "@id": "https://muntin.digital/glossary/fixed-costs/#faq",
+      "inLanguage": "en-US",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is fixed costs?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Fixed costs is costs that don't change with sales volume: rent, insurance, loan payments, base utilities, SaaS subscriptions (POS, reservations, payroll, marketing tools), salaried management, accountant retainer. Independent of whether you did 40 covers or 400 last night."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why does fixed costs matter for a restaurant?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The floor your covers have to clear every month before profit starts. The first place to look when a business that \"feels fine\" keeps running negative months — fixed costs creep slowly (one new SaaS per quarter, a rent escalation clause) and nobody notices until the total moves the break-even."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<!-- glossary-faq-schema:end -->
 </head>
 <body>
 
@@ -419,6 +451,19 @@
       
       <!-- glossary-explainer-cue:start -->
       <!-- glossary-explainer-cue:end -->
+      <!-- glossary-faq:start -->
+      <section class="term-faq" aria-labelledby="term-faq-h">
+        <h2 class="term-faq__h" id="term-faq-h">Frequently asked</h2>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">What is fixed costs?</h3>
+          <p class="term-faq__a">Fixed costs is costs that don't change with sales volume: rent, insurance, loan payments, base utilities, SaaS subscriptions (POS, reservations, payroll, marketing tools), salaried management, accountant retainer. Independent of whether you did 40 covers or 400 last night.</p>
+        </div>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">Why does fixed costs matter for a restaurant?</h3>
+          <p class="term-faq__a">The floor your covers have to clear every month before profit starts. The first place to look when a business that "feels fine" keeps running negative months — fixed costs creep slowly (one new SaaS per quarter, a rent escalation clause) and nobody notices until the total moves the break-even.</p>
+        </div>
+      </section>
+      <!-- glossary-faq:end -->
     </div>
   </div>
 </section>

@@ -135,9 +135,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=ab576c3b2ed6" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=eda1f9ad3f38" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ab576c3b2ed6"><link rel="stylesheet" href="/assets/site-article.css?v=eda1f9ad3f38"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=82c8e0678bd3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=96ce2c24881c" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=82c8e0678bd3"><link rel="stylesheet" href="/assets/site-article.css?v=96ce2c24881c"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -217,6 +217,38 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 }
 </script>
 <!-- glossary-article-schema:end -->
+<!-- glossary-faq-schema:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "@id": "https://muntin.digital/es/glossary/breadcrumb/#faq",
+      "inLanguage": "es",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Qué es breadcrumb?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Breadcrumb es una fila de enlaces arriba de la p&aacute;gina que muestra d&oacute;nde est&aacute;s en la jerarqu&iacute;a del sitio &mdash; Inicio &rsaquo; Glosario &rsaquo; Breadcrumb. Google tambi&eacute;n lo lee como datos estructurados (BreadcrumbList), lo que decide c&oacute;mo aparece la URL de la p&aacute;gina en los resultados."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Por qué importa breadcrumb para un restaurante?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "En un tel&eacute;fono, los breadcrumbs son el segundo elemento de navegaci&oacute;n m&aacute;s usado despu&eacute;s del bot&oacute;n &laquo;atr&aacute;s&raquo;. En la p&aacute;gina de resultados de Google, un BreadcrumbList limpio reemplaza una URL larga con una ruta corta (muntin.digital &rsaquo; Glosario &rsaquo; Breadcrumb), lo que sube el CTR. La mayor&iacute;a de los sitios de restaurante o no los tienen o estampan el JSON-LD sin renderizar nada visible &mdash; lo que falla la elegibilidad de rich-result de Google."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<!-- glossary-faq-schema:end -->
 </head>
 <body>
 
@@ -417,6 +449,19 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <p><a href="/es/learn/research/lighthouse-performance-scoring/">Cómo califica Lighthouse el rendimiento <span aria-hidden="true">↗</span></a></p>
     </aside>
       <!-- glossary-explainer-cue:start --><!-- glossary-explainer-cue:end -->
+      <!-- glossary-faq:start -->
+      <section class="term-faq" aria-labelledby="term-faq-h">
+        <h2 class="term-faq__h" id="term-faq-h">Preguntas frecuentes</h2>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">¿Qué es breadcrumb?</h3>
+          <p class="term-faq__a">Breadcrumb es una fila de enlaces arriba de la p&amp;aacute;gina que muestra d&amp;oacute;nde est&amp;aacute;s en la jerarqu&amp;iacute;a del sitio &amp;mdash; Inicio &amp;rsaquo; Glosario &amp;rsaquo; Breadcrumb. Google tambi&amp;eacute;n lo lee como datos estructurados (BreadcrumbList), lo que decide c&amp;oacute;mo aparece la URL de la p&amp;aacute;gina en los resultados.</p>
+        </div>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">¿Por qué importa breadcrumb para un restaurante?</h3>
+          <p class="term-faq__a">En un tel&amp;eacute;fono, los breadcrumbs son el segundo elemento de navegaci&amp;oacute;n m&amp;aacute;s usado despu&amp;eacute;s del bot&amp;oacute;n &amp;laquo;atr&amp;aacute;s&amp;raquo;. En la p&amp;aacute;gina de resultados de Google, un BreadcrumbList limpio reemplaza una URL larga con una ruta corta (muntin.digital &amp;rsaquo; Glosario &amp;rsaquo; Breadcrumb), lo que sube el CTR. La mayor&amp;iacute;a de los sitios de restaurante o no los tienen o estampan el JSON-LD sin renderizar nada visible &amp;mdash; lo que falla la elegibilidad de rich-result de Google.</p>
+        </div>
+      </section>
+      <!-- glossary-faq:end -->
     </div>
   </div>
 </section>

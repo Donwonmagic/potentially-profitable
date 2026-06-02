@@ -39,9 +39,9 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=ab576c3b2ed6" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=eda1f9ad3f38" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ab576c3b2ed6"><link rel="stylesheet" href="/assets/site-article.css?v=eda1f9ad3f38"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=82c8e0678bd3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=96ce2c24881c" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=82c8e0678bd3"><link rel="stylesheet" href="/assets/site-article.css?v=96ce2c24881c"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -132,6 +132,38 @@
 .term-sheet-sidecar__walkaway{font-size:13px;line-height:1.45;color:var(--ink-soft,#4A4F59)}
 @media print{.term-sheet-sidecar{display:none !important}}
 </style>
+<!-- glossary-faq-schema:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "@id": "https://muntin.digital/glossary/gbp/#faq",
+      "inLanguage": "en-US",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is Google Business Profile?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Google Business Profile is your business's free listing on Google Maps and Google Search — the panel on the right of a search that shows your name, hours, photos, reviews, and a link to your menu or booking. Claim and edit it at google.com/business."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why does Google Business Profile matter for a restaurant?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "For most small local businesses, the Google Business Profile drives more discovery than the website itself. A well-tuned profile — right categories, good photos, complete hours, current menu link — is usually the highest-ROI hour anyone will spend on marketing."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<!-- glossary-faq-schema:end -->
 </head>
 <body>
 
@@ -465,6 +497,19 @@
             <!-- field-note:end -->
       <!-- glossary-explainer-cue:start -->
       <!-- glossary-explainer-cue:end -->
+      <!-- glossary-faq:start -->
+      <section class="term-faq" aria-labelledby="term-faq-h">
+        <h2 class="term-faq__h" id="term-faq-h">Frequently asked</h2>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">What is Google Business Profile?</h3>
+          <p class="term-faq__a">Google Business Profile is your business's free listing on Google Maps and Google Search — the panel on the right of a search that shows your name, hours, photos, reviews, and a link to your menu or booking. Claim and edit it at google.com/business.</p>
+        </div>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">Why does Google Business Profile matter for a restaurant?</h3>
+          <p class="term-faq__a">For most small local businesses, the Google Business Profile drives more discovery than the website itself. A well-tuned profile — right categories, good photos, complete hours, current menu link — is usually the highest-ROI hour anyone will spend on marketing.</p>
+        </div>
+      </section>
+      <!-- glossary-faq:end -->
     </div>
   </div>
 </section>

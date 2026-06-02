@@ -39,9 +39,9 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=ab576c3b2ed6" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=eda1f9ad3f38" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ab576c3b2ed6"><link rel="stylesheet" href="/assets/site-article.css?v=eda1f9ad3f38"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=82c8e0678bd3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=96ce2c24881c" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=82c8e0678bd3"><link rel="stylesheet" href="/assets/site-article.css?v=96ce2c24881c"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -128,6 +128,38 @@
 }
 </script>
 <!-- glossary-article-schema:end -->
+<!-- glossary-faq-schema:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "@id": "https://muntin.digital/es/glossary/robots-txt/#faq",
+      "inLanguage": "es",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Qué es robots.txt?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "robots.txt es un archivito de texto plano en /robots.txt de tu dominio que les dice a los rastreadores de los buscadores qué partes del sitio pueden leer y cuáles no. Suele ser un archivo de cinco líneas; a veces es la razón silenciosa de que una página no aparezca en Google."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Por qué importa robots.txt para un restaurante?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Un robots.txt mal puesto o demasiado restrictivo por accidente es una de las causas más comunes de \"¿por qué mi sitio es invisible en Google?\". Un solo error ahí, y la mitad de tus páginas desaparecen del buscador de la noche a la mañana."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<!-- glossary-faq-schema:end -->
 </head>
 <body>
 
@@ -326,6 +358,19 @@
     </aside>
       <!-- glossary-explainer-cue:start -->
       <!-- glossary-explainer-cue:end -->
+      <!-- glossary-faq:start -->
+      <section class="term-faq" aria-labelledby="term-faq-h">
+        <h2 class="term-faq__h" id="term-faq-h">Preguntas frecuentes</h2>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">¿Qué es robots.txt?</h3>
+          <p class="term-faq__a">robots.txt es un archivito de texto plano en /robots.txt de tu dominio que les dice a los rastreadores de los buscadores qué partes del sitio pueden leer y cuáles no. Suele ser un archivo de cinco líneas; a veces es la razón silenciosa de que una página no aparezca en Google.</p>
+        </div>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">¿Por qué importa robots.txt para un restaurante?</h3>
+          <p class="term-faq__a">Un robots.txt mal puesto o demasiado restrictivo por accidente es una de las causas más comunes de "¿por qué mi sitio es invisible en Google?". Un solo error ahí, y la mitad de tus páginas desaparecen del buscador de la noche a la mañana.</p>
+        </div>
+      </section>
+      <!-- glossary-faq:end -->
     </div>
   </div>
 </section>

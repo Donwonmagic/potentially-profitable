@@ -39,9 +39,9 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=ab576c3b2ed6" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=eda1f9ad3f38" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ab576c3b2ed6"><link rel="stylesheet" href="/assets/site-article.css?v=eda1f9ad3f38"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=82c8e0678bd3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=96ce2c24881c" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=82c8e0678bd3"><link rel="stylesheet" href="/assets/site-article.css?v=96ce2c24881c"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -132,6 +132,38 @@
 .term-sheet-sidecar__walkaway{font-size:13px;line-height:1.45;color:var(--ink-soft,#4A4F59)}
 @media print{.term-sheet-sidecar{display:none !important}}
 </style>
+<!-- glossary-faq-schema:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "@id": "https://muntin.digital/glossary/labor-cost/#faq",
+      "inLanguage": "en-US",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is labor cost?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Labor cost is wages, payroll taxes, and the tipped-employee contribution expressed as a percentage of sales. Target 28–32% for most formats, with quick-service at the low end and full-service at the high end."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why does labor cost matter for a restaurant?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Rising labor markets make this the margin battlefield of the 2020s. Labor has faster turning radius than food cost — you can adjust a schedule this week; you can't renegotiate a tomato contract. When prime cost runs hot, this is usually where owners look first."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<!-- glossary-faq-schema:end -->
 </head>
 <body>
 
@@ -438,6 +470,19 @@
       
       <!-- glossary-explainer-cue:start -->
       <!-- glossary-explainer-cue:end -->
+      <!-- glossary-faq:start -->
+      <section class="term-faq" aria-labelledby="term-faq-h">
+        <h2 class="term-faq__h" id="term-faq-h">Frequently asked</h2>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">What is labor cost?</h3>
+          <p class="term-faq__a">Labor cost is wages, payroll taxes, and the tipped-employee contribution expressed as a percentage of sales. Target 28–32% for most formats, with quick-service at the low end and full-service at the high end.</p>
+        </div>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">Why does labor cost matter for a restaurant?</h3>
+          <p class="term-faq__a">Rising labor markets make this the margin battlefield of the 2020s. Labor has faster turning radius than food cost — you can adjust a schedule this week; you can't renegotiate a tomato contract. When prime cost runs hot, this is usually where owners look first.</p>
+        </div>
+      </section>
+      <!-- glossary-faq:end -->
     </div>
   </div>
 </section>

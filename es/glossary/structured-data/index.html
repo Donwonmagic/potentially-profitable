@@ -39,9 +39,9 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=ab576c3b2ed6" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=eda1f9ad3f38" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ab576c3b2ed6"><link rel="stylesheet" href="/assets/site-article.css?v=eda1f9ad3f38"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=82c8e0678bd3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=96ce2c24881c" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=82c8e0678bd3"><link rel="stylesheet" href="/assets/site-article.css?v=96ce2c24881c"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -121,6 +121,38 @@
 }
 </script>
 <!-- glossary-article-schema:end -->
+<!-- glossary-faq-schema:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "@id": "https://muntin.digital/es/glossary/structured-data/#faq",
+      "inLanguage": "es",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Qué es datos estructurados?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Datos estructurados es un pequeño bloque JSON embebido en el &lt;head&gt; de tu sitio que refleja el contenido visible (horarios, dirección, platos del menú, reseñas, precios) en un formato que los buscadores pueden indexar sin tener que entender tu diseño. La convención es el vocabulario de Schema.org, expresado como JSON-LD; lo que reconoces como &ldquo;resultado enriquecido&rdquo; en la página de resultados es consecuencia de estos datos."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Por qué importa datos estructurados para un restaurante?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "La copia legible por máquina decide qué muestra Google en tu ficha, en tu panel de conocimiento y en la primera pantalla de &ldquo;[nombre del restaurante] horario&rdquo;. Un diseño bonito no importa si los datos estructurados faltan o están mal — Google no ve CSS. Horario Abierto genera la parte del horario de tus datos estructurados automáticamente; mandarle el bloque a quien hizo tu sitio normalmente le toma cinco minutos instalarlo."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<!-- glossary-faq-schema:end -->
 </head>
 <body>
 
@@ -332,6 +364,19 @@
     </aside>
       <!-- glossary-explainer-cue:start -->
       <!-- glossary-explainer-cue:end -->
+      <!-- glossary-faq:start -->
+      <section class="term-faq" aria-labelledby="term-faq-h">
+        <h2 class="term-faq__h" id="term-faq-h">Preguntas frecuentes</h2>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">¿Qué es datos estructurados?</h3>
+          <p class="term-faq__a">Datos estructurados es un pequeño bloque JSON embebido en el &amp;lt;head&amp;gt; de tu sitio que refleja el contenido visible (horarios, dirección, platos del menú, reseñas, precios) en un formato que los buscadores pueden indexar sin tener que entender tu diseño. La convención es el vocabulario de Schema.org, expresado como JSON-LD; lo que reconoces como &amp;ldquo;resultado enriquecido&amp;rdquo; en la página de resultados es consecuencia de estos datos.</p>
+        </div>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">¿Por qué importa datos estructurados para un restaurante?</h3>
+          <p class="term-faq__a">La copia legible por máquina decide qué muestra Google en tu ficha, en tu panel de conocimiento y en la primera pantalla de &amp;ldquo;[nombre del restaurante] horario&amp;rdquo;. Un diseño bonito no importa si los datos estructurados faltan o están mal — Google no ve CSS. Horario Abierto genera la parte del horario de tus datos estructurados automáticamente; mandarle el bloque a quien hizo tu sitio normalmente le toma cinco minutos instalarlo.</p>
+        </div>
+      </section>
+      <!-- glossary-faq:end -->
     </div>
   </div>
 </section>
