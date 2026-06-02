@@ -736,6 +736,26 @@ body[data-pc-mode="recost"] .pc-recost-banner{display:flex}
         <div class="pc-stress-out" id="pcStressOut" hidden></div>
       </div>
 
+      <div class="pc-year" id="pcYear" hidden>
+        <h3>¿Cuánto vale este platillo al año?</h3>
+        <div class="pc-year-grid">
+          <label class="pc-year-input">
+            <span>Platos vendidos por semana (de tu POS o un estimado rápido)</span>
+            <input type="number" id="pcYearVolume" min="0" step="1" inputmode="numeric" placeholder="ej. 28">
+          </label>
+          <div class="pc-year-out" id="pcYearOut" aria-live="polite">
+            <span class="pc-year-out-label">A tu precio sugerido intermedio, este platillo deja</span>
+            <span class="pc-year-out-amount" id="pcYearAmount">— al año</span>
+            <span class="pc-year-out-detail" id="pcYearDetail">Escribe un volumen semanal para ver la contribución anual.</span>
+          </div>
+        </div>
+        <div class="pc-year-upload" style="margin-top:14px;display:flex;flex-wrap:wrap;align-items:center;gap:10px;">
+          <input type="file" id="pcMixFile" accept=".csv,.tsv,.txt,text/csv" hidden>
+          <button type="button" class="pc-action-btn" id="pcMixBtn">Sube tu mezcla de ventas para llenar esto &rarr;</button>
+          <span class="pc-year-mix-status" id="pcMixStatus" role="status" aria-live="polite" style="font-size:13px;color:var(--ink-soft);line-height:1.5;"></span>
+        </div>
+      </div>
+
       <aside class="edu-result" id="pcEduResult" aria-labelledby="pcEduResultLede">
         <p class="edu-result__lede" id="pcEduResultLede">Toma esto como <strong>línea de partida</strong>, no como precio fijo. El rendimiento varía un ±5&ndash;10% según limpieza y proveedor; recoste cuando una factura se mueva más que unos puntos.</p>
         <p class="edu-result__rule">Si tus tres precios sugeridos rodean un precio que de verdad puedes cobrar en tu mercado, vas bien. Si hasta la columna del 33% está por debajo de lo que el comensal pagará, el plato es <strong>candidato a plowhorse</strong> &mdash; llévalo a Ingeniería de Menú con datos de ventas.</p>
@@ -988,6 +1008,9 @@ Margen de contribución por plato = precio menú &minus; costo del plato</pre>
 <script src="/tools/_shared/next-tool.js?v=phase4"></script>
 <script src="/tools/_shared/handoff.js?v=phase4"></script>
 <script src="/tools/_shared/device-key.js?v=20260501-w3-4"></script>
+<script src="/tools/_shared/stem.js?v=20260504-w10-0a"></script>
+<script src="/tools/_shared/sku-match.js?v=20260504-w10-1"></script>
+<script src="/tools/_shared/sales-mix.js?v=20260602-pos1"></script>
 <script src="/tools/plate-cost/plate-cost.js?v=20260428-pcF"></script>
 <script src="/tools/plate-cost/card-render.js?v=20260426-pc2"></script>
 <script>
@@ -1200,6 +1223,35 @@ Margen de contribución por plato = precio menú &minus; costo del plato</pre>
         '</div>' +
       '</div>';
     }).join('');
+
+    // Panel de valor anual — objetivo intermedio (30%) × volumen semanal × 52.
+    var pcYearBox = document.getElementById('pcYear');
+    var pcYearVol = document.getElementById('pcYearVolume');
+    var pcYearAmount = document.getElementById('pcYearAmount');
+    var pcYearDetail = document.getElementById('pcYearDetail');
+    if (pcYearBox) {
+      var midPrice = (prices[1] && prices[1].price) || (prices[0] && prices[0].price) || 0;
+      var midCm    = (prices[1] && prices[1].cmDollars) || (prices[0] && prices[0].cmDollars) || 0;
+      var hasPlate = isFinite(summary.plateCost) && summary.plateCost > 0;
+      pcYearBox.hidden = !hasPlate;
+      function recomputeYear() {
+        if (!pcYearVol || !pcYearAmount || !pcYearDetail) return;
+        var v = parseFloat(pcYearVol.value);
+        if (!isFinite(v) || v <= 0) {
+          pcYearAmount.textContent = '— al año';
+          pcYearDetail.textContent = 'Escribe un volumen semanal para ver la contribución anual.';
+          return;
+        }
+        var annual = midCm * v * 52;
+        pcYearAmount.textContent = fmtMoney(annual) + ' al año';
+        pcYearDetail.textContent = 'A ' + fmtMoney(midPrice) + ' y ' + Math.round(v) + ' platos/semana, este platillo deja ' + fmtMoney(midCm) + ' × ' + Math.round(v) + ' × 52 = ' + fmtMoney(annual) + ' para la casa.';
+      }
+      if (pcYearVol && !pcYearVol.__bound) {
+        pcYearVol.__bound = true;
+        pcYearVol.addEventListener('input', recomputeYear);
+      }
+      recomputeYear();
+    }
 
     // Bottleneck callout + sugerencias de sustitución / sourcing.
     var bottleneckEl = document.getElementById('pcBottleneck');
@@ -2057,6 +2109,58 @@ Margen de contribución por plato = precio menú &minus; costo del plato</pre>
   rerenderRows(Array.from({ length: 5 }, blankRow));
   hydrateFromFragment();
   if (!driftBaseline) renderResults();
+
+  // --- Sales-mix upload → real weekly covers (POS-fallback) -------------
+  (function wireSalesMixUpload() {
+    var btn = document.getElementById('pcMixBtn');
+    var fileInput = document.getElementById('pcMixFile');
+    var statusEl = document.getElementById('pcMixStatus');
+    if (!btn || !fileInput || typeof window.MuntinSalesMix === 'undefined') return;
+    var ES = (document.documentElement.getAttribute('lang') || 'en').toLowerCase().indexOf('es') === 0;
+    function t(en, es) { return ES ? es : en; }
+    function setStatus(msg) { if (statusEl) statusEl.textContent = msg; }
+    btn.addEventListener('click', function () { fileInput.click(); });
+    fileInput.addEventListener('change', function () {
+      var f = fileInput.files && fileInput.files[0];
+      if (!f) return;
+      var reader = new FileReader();
+      reader.onerror = function () { setStatus(t('Couldn’t read that file.', 'No se pudo leer ese archivo.')); };
+      reader.onload = function () {
+        try {
+          var parsed = window.MuntinSalesMix.parseSalesMixCsv(String(reader.result || ''));
+          if (!parsed.rows.length) { setStatus(t('Couldn’t read that as a sales mix — it needs an item column and a units-sold column.', 'No se pudo leer como mezcla de ventas — necesita una columna de artículo y otra de unidades vendidas.')); return; }
+          var recipeName = (nameEl && nameEl.value || '').trim();
+          if (!recipeName) { setStatus(t('Name this recipe above first — we match your upload by dish name.', 'Primero ponle nombre a esta receta arriba — emparejamos tu archivo por el nombre del platillo.')); return; }
+          var stems = [], byStem = {};
+          parsed.rows.forEach(function (r) {
+            var st = (window.MuntinStem ? window.MuntinStem.extractStem(r.item) : String(r.item).toLowerCase());
+            if (!st) return;
+            if (!byStem[st]) { byStem[st] = { item: r.item, units: 0 }; stems.push(st); }
+            byStem[st].units += r.unitsSold;
+          });
+          var matchStem = null, fuzzy = false;
+          if (window.MuntinSkuMatch) {
+            var c = window.MuntinSkuMatch.classify(recipeName, stems);
+            if (c.tier === 'auto') matchStem = c.stem;
+            else if (c.tier === 'propose') { matchStem = c.stem; fuzzy = true; }
+          }
+          if (!matchStem) { var own = window.MuntinStem ? window.MuntinStem.extractStem(recipeName) : recipeName.toLowerCase(); if (byStem[own]) matchStem = own; }
+          if (!matchStem || !byStem[matchStem]) { setStatus(t('Couldn’t find “' + recipeName + '” in that file — type the weekly volume above.', 'No encontramos “' + recipeName + '” en ese archivo — escribe el volumen semanal arriba.')); return; }
+          var hit = byStem[matchStem];
+          var covers = Math.round(hit.units * 10) / 10;
+          var yv = document.getElementById('pcYearVolume');
+          if (yv) { yv.value = covers; yv.dispatchEvent(new Event('input', { bubbles: true })); }
+          var lead = fuzzy ? t('Best match: “', 'Mejor coincidencia: “') : t('Matched “', 'Coincidencia: “');
+          var tail = t('” — ' + covers + '/week from your upload (treated as one week).', '” — ' + covers + '/semana de tu archivo (contado como una semana).');
+          setStatus(lead + hit.item + tail + (fuzzy ? t(' Not your dish? Type the volume.', ' ¿No es tu platillo? Escribe el volumen.') : ''));
+        } catch (err) {
+          setStatus(t('Couldn’t read that file. Use a CSV with item and units-sold columns.', 'No se pudo leer el archivo. Usa un CSV con columnas de artículo y unidades vendidas.'));
+        }
+      };
+      reader.readAsText(f);
+    });
+  })();
+
 })();
 </script>
 </body>
