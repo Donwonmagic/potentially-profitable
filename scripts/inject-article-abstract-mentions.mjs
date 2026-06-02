@@ -23,6 +23,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { isNonArticleLibrarySlug } from './lib/library-skips.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const repoRoot   = path.resolve(path.dirname(__filename), '..');
@@ -50,7 +51,7 @@ function articleFiles() {
     for (const slug of fs.readdirSync(root)) {
       if (slug === 'drafts') continue;
       // Skip library collection landings — they're not articles.
-      if (namespace === 'library' && (slug === 'menu-design-cuisines' || slug === 'menu-design-themes')) continue;
+      if (namespace === 'library' && isNonArticleLibrarySlug(slug)) continue;
       const file = path.join(root, slug, 'index.html');
       if (fs.existsSync(file)) out.push({ file, slug, locale, namespace });
     }

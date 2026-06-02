@@ -306,6 +306,7 @@ const CHECKS = [
   ['Themes review board (idem)','build-themes-review-board.mjs','--check'],
   ['Theme story pages (idem)','build-theme-story-pages.mjs','--check'],
   ['Cuisine landing pages (idem)','build-cuisine-landing-pages.mjs','--check'],
+  ['Ingredient-yield pages (idem)','build-ingredient-yield-pages.mjs','--check'],
   ['Security claims',      'check-security-claims.mjs'],
   ['Data promise rail',    'check-data-promise-rail.mjs'],
   ['Security locale parity','check-security-locale-parity.mjs'],
