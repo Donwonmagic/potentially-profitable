@@ -1,0 +1,64 @@
+{
+  "_doc": "Maps each ingredientKey (matching /library/ingredient-yields/<slug>/) to its native identifier in each public price source. The CI/prod fetch worker reads this to resolve what to pull; the composite engine (tools/_shared/composite-price.js) decides LEVEL vs TREND by basis. EVERY id here is an UNVERIFIED best-guess (verified:false) per the API-integration spec — resolve each against the source's discovery endpoint (AMS /reports, BLS series directory, FRED /series/search, NOAA FOSS species list) and flip verified:true before it ships behind the fact-gate. basis mapping: ams=wholesale level, noaa=wholesale (ex-vessel) level, fred=level or index per its 'basis', bls=index (trend-only). A missing source key = that source is simply skipped for that ingredient; \"\" = known to have none. See scripts/check-cost-index-sources.mjs (shape + alignment validator, warns on unverified) and the 'Cost Index — API Integration Architecture' section of the plan.",
+  "ingredients": {
+    "ribeye": {
+      "verified": false,
+      "ams":  { "reportId": "LM_XB403", "commodity": "Ribeye", "market": "National", "reducer": "mostlyMid" },
+      "bls":  { "seriesId": "WPU0233" },
+      "fred": { "seriesId": "APU0000703112", "basis": "retail" }
+    },
+    "beef-tenderloin": {
+      "verified": false,
+      "ams":  { "reportId": "LM_XB403", "commodity": "Tenderloin", "market": "National", "reducer": "mostlyMid" },
+      "bls":  { "seriesId": "WPU0233" }
+    },
+    "chicken-breast": {
+      "verified": false,
+      "ams":  { "reportId": "PY_PORTAL", "commodity": "Breast, B/S", "reducer": "mostlyMid" },
+      "fred": { "seriesId": "APU0000706111", "basis": "retail" },
+      "bls":  { "seriesId": "WPU0222" }
+    },
+    "whole-chicken": {
+      "verified": false,
+      "ams":  { "reportId": "PY_PORTAL", "commodity": "Whole Broiler/Fryer", "reducer": "mostlyMid" },
+      "bls":  { "seriesId": "WPU0222" }
+    },
+    "pork-loin": {
+      "verified": false,
+      "ams":  { "reportId": "LM_PK602", "commodity": "Loin", "reducer": "mostlyMid" },
+      "bls":  { "seriesId": "WPU0223" }
+    },
+    "pork-shoulder": {
+      "verified": false,
+      "ams":  { "reportId": "LM_PK602", "commodity": "Shoulder", "reducer": "mostlyMid" },
+      "bls":  { "seriesId": "WPU0223" }
+    },
+    "salmon-fillet": {
+      "verified": false,
+      "noaa": { "species": "SALMON", "reducer": "valuePerPound" }
+    },
+    "shrimp": {
+      "verified": false,
+      "noaa": { "species": "SHRIMP", "reducer": "valuePerPound" }
+    },
+    "romaine-lettuce": {
+      "verified": false,
+      "ams":  { "reportId": "FVDPP", "commodity": "Lettuce, Romaine", "market": "Los Angeles", "reducer": "mostlyMid" },
+      "bls":  { "seriesId": "WPU01130217" }
+    },
+    "tomato": {
+      "verified": false,
+      "ams":  { "reportId": "FVDPP", "commodity": "Tomatoes", "market": "Los Angeles", "reducer": "mostlyMid" },
+      "bls":  { "seriesId": "WPU01130213" }
+    },
+    "onion": {
+      "verified": false,
+      "ams":  { "reportId": "FVDPP", "commodity": "Onions, Dry", "market": "Los Angeles", "reducer": "mostlyMid" }
+    },
+    "russet-potato": {
+      "verified": false,
+      "ams":  { "reportId": "FVDPP", "commodity": "Potatoes, Russet", "market": "Los Angeles", "reducer": "mostlyMid" },
+      "fred": { "seriesId": "WPU01120206", "basis": "index" }
+    }
+  }
+}
