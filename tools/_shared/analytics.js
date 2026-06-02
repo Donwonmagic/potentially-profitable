@@ -112,6 +112,8 @@
       'Brand Suite Manual Open',
       'Brand Suite Workshop Open',
       'Brand Suite Workshop Pick',
+      'Bench Assessed',
+      'Bench Loaded',
       'Cost Pulse Loaded',
       'Invoice Decoder Accountant Export',
       'Invoice Decoder Adaptive Reread',
