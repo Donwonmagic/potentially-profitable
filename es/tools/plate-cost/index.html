@@ -762,6 +762,19 @@ Margen de contribución por plato = precio menú &minus; costo del plato</pre>
           <p class="edu-formula__caption">Los rendimientos vienen de las Tablas Estándar de Rendimiento del CIA; la varianza del chef suele ser &plusmn;5%, más en proteínas con mucha limpieza. El módulo completo está en <code>/tools/plate-cost/plate-cost.js</code> &mdash; sin minificación, sin build, legible directamente.</p>
         </details>
       </aside>
+
+      <!-- Embudo “mantenlo al día” → Muntin Ledger. El recordatorio .ics
+           de abajo es la respuesta MANUAL del tool gratuito a “los precios
+           cambian”; este es el automático. Puente honesto gratis→pago: el
+           tool gratuito responde la pregunta de una sola vez con los precios
+           que escribes; Muntin Ledger vende la recurrencia. Vive dentro de
+           #pcResult, así que solo aparece DESPUÉS de costear un platillo. -->
+      <aside class="pc-keep-live" id="pcKeepLive" aria-labelledby="pcKeepLiveH" style="margin:20px 0 0;padding:20px 22px;border-radius:12px;background:linear-gradient(100deg,#0f3a37 0%,#1f6f6a 100%);color:#fff;">
+        <span style="display:inline-block;font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;opacity:0.85;margin:0 0 6px;">Mantenlo al día</span>
+        <h3 id="pcKeepLiveH" style="font-family:var(--font-display);font-size:20px;font-weight:500;color:#fff;margin:0 0 8px;line-height:1.2;">O deja de recostear a mano.</h3>
+        <p style="font-size:14px;line-height:1.55;color:rgba(255,255,255,0.92);margin:0 0 14px;max-width:60ch;">Esta calculadora costea tu platillo una vez, con los precios que escribes. <strong style="color:#fff;">Muntin Ledger</strong> lee tus facturas reales y mantiene cada platillo costeado automáticamente &mdash; y el día que un precio cambia, te dice a qué platillos les pegó, y por cuánto. El recordatorio de abajo es la versión manual; Ledger es la que vigila por ti.</p>
+        <a class="plausible-event-name=Ledger+Route+Click plausible-event-source=plate-cost" href="https://ledger.muntin.digital/" style="display:inline-flex;align-items:center;gap:6px;padding:11px 20px;border-radius:999px;background:#fff;color:#0f3a37;font-weight:600;font-size:14px;text-decoration:none;">Conoce Muntin Ledger <span aria-hidden="true">&rarr;</span></a>
+      </aside>
     </div>
 
     <div class="pc-actions" id="pcActions" style="display:none;">
