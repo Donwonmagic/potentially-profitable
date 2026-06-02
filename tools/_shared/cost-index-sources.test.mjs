@@ -79,6 +79,29 @@ test('end-to-end: three sources → composite with wholesale level + blended up-
   assert.ok(r.provenance.length >= 4);             // every source retained, citeable
 });
 
+test('AMS reducer: mostlyMid averages the mostly band, falls back to low/high', () => {
+  assert.equal(S.reduceAmsRow({ mostly_low: '13.00', mostly_high: '15.00' }, 'mostlyMid'), 14);
+  // no mostly_* → fall back to low/high
+  assert.equal(S.reduceAmsRow({ low_price: '$12.00', high_price: '$16.00' }, 'mostlyMid'), 14);
+  // neither present → null (dropped, never guessed)
+  assert.equal(S.reduceAmsRow({ note: 'no price' }, 'mostlyMid'), null);
+});
+
+test('AMS reducer: valuePerPound derives $/lb from dollars and pounds', () => {
+  assert.equal(S.reduceAmsRow({ dollars: '2800', pounds: '200' }, 'valuePerPound'), 14);
+  assert.equal(S.reduceAmsRow({ dollars: '2800', pounds: '0' }, 'valuePerPound'), null); // no div-by-zero
+});
+
+test('normalizeAms honors a mostlyMid reducer on ranged rows', () => {
+  const out = S.normalizeAms(
+    { results: [
+      { report_date: '2026-05-01', mostly_low: '12.50', mostly_high: '13.50' },
+      { report_date: '2026-05-08', mostly_low: '13.00', mostly_high: '15.00' },
+    ] },
+    { source: 'usda-ams', basis: 'wholesale', reducer: 'mostlyMid' });
+  assert.deepEqual(out.points.map(p => p.value), [13.0, 14.0]);
+});
+
 test('contract guard: an empty/garbage payload yields no points, not a crash', () => {
   assert.deepEqual(S.normalizeFred({}, {}).points, []);
   assert.deepEqual(S.normalizeBls({ Results: { series: [] } }, {}).points, []);

@@ -64,17 +64,55 @@
     return { source: meta.source || 'bls', basis: meta.basis || 'index', unit: meta.unit || 'index', points: points };
   }
 
+  /** Strip currency/whitespace → number, or null. */
+  function num(s) {
+    if (typeof s === 'number') return isFinite(s) ? s : null;
+    if (s == null) return null;
+    var n = parseFloat(String(s).replace(/[^0-9.\-]/g, ''));
+    return isFinite(n) ? n : null;
+  }
+
+  /**
+   * Collapse one USDA AMS report row to a single deterministic number.
+   * AMS reports prices as RANGES, not points, so the reducer is part of
+   * the mapping config (data/cost-index-sources.json):
+   *   - 'mostlyMid'    → midpoint of mostly_low..mostly_high (fallback
+   *                      low_price..high_price). The standard wholesale read.
+   *   - 'valuePerPound'→ dollars / pounds (for value+quantity reports, e.g. NOAA-style).
+   *   - 'single'       → a single named field (fields.price | 'avg_price').
+   * Returns null when the needed fields are missing (row is then dropped,
+   * never guessed).
+   */
+  function reduceAmsRow(row, reducer, fields) {
+    if (!row) return null;
+    fields = fields || {};
+    reducer = reducer || 'single';
+    if (reducer === 'mostlyMid') {
+      var ml = num(row[fields.mostlyLow || 'mostly_low']);
+      var mh = num(row[fields.mostlyHigh || 'mostly_high']);
+      if (ml != null && mh != null) return (ml + mh) / 2;
+      var lo = num(row[fields.low || 'low_price']);
+      var hi = num(row[fields.high || 'high_price']);
+      if (lo != null && hi != null) return (lo + hi) / 2;
+      return null;
+    }
+    if (reducer === 'valuePerPound') {
+      var d = num(row[fields.dollars || 'dollars']);
+      var p = num(row[fields.pounds || 'pounds']);
+      return (d != null && p != null && p > 0) ? d / p : null;
+    }
+    return num(row[fields.price || 'avg_price']);
+  }
+
   /** USDA AMS Market News report rows. Format varies by report, so the
-   *  field names are configurable. Prices may carry currency symbols. */
+   *  reducer + field names are configurable (per the mapping file). */
   function normalizeAms(json, meta) {
     meta = meta || {};
     var rows = (json && (json.results || json.report || json.data)) || [];
     var dateField = meta.dateField || 'report_date';
-    var priceField = meta.priceField || 'avg_price';
     var points = rows.map(function (r) {
       if (!r) return null;
-      var raw = r[priceField];
-      var v = (typeof raw === 'string') ? parseFloat(raw.replace(/[^0-9.\-]/g, '')) : raw;
+      var v = reduceAmsRow(r, meta.reducer, meta.fields);
       var date = isoDate(r[dateField]);
       return (date && v != null && isFinite(v)) ? { date: date, value: v } : null;
     }).filter(Boolean).sort(byDate);
@@ -114,6 +152,7 @@
     normalizeFred: normalizeFred,
     normalizeBls: normalizeBls,
     normalizeAms: normalizeAms,
+    reduceAmsRow: reduceAmsRow,
     buildCompositeInput: buildCompositeInput
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
