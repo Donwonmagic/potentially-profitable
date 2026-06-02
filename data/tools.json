@@ -9,6 +9,7 @@
       "blurb_es": "La matemática honesta de un restaurante independiente — costo de comida, mezcla de menú y los precios que protegen tu margen.",
       "tools": [
         "cost-pulse",
+        "vendor-benchmark",
         "margin-math",
         "menu-engineering",
         "plate-cost"
@@ -268,6 +269,22 @@
       "cluster": "operations-margin",
       "status": "live",
       "added": "2026-05-01",
+      "tier": "standard"
+    },
+    "vendor-benchmark": {
+      "title_en": "Muntin Bench",
+      "title_es": "Muntin Bench",
+      "summary_en": "Enter an item and the price you pay. Bench recognizes the item, pins the unit, and tells you if the price moved out of line with your own history.",
+      "summary_es": "Escribe un artículo y el precio que pagas. Bench reconoce el artículo, fija la unidad y te dice si el precio se salió de línea respecto a tu propio historial.",
+      "walkaway_en": "A plain-language verdict and a negotiation line, checked against your own saved prices — on device.",
+      "walkaway_es": "Un veredicto claro y una frase para negociar, comparado con tus precios guardados — en tu dispositivo.",
+      "cta_en": "Open Muntin Bench",
+      "cta_es": "Abrir Muntin Bench",
+      "url_en": "/tools/vendor-benchmark/",
+      "url_es": "/es/tools/vendor-benchmark/",
+      "cluster": "operations-margin",
+      "status": "live",
+      "added": "2026-06-02",
       "tier": "standard"
     },
     "store-hours": {
