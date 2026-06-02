@@ -9,6 +9,7 @@
 export const NON_ARTICLE_LIBRARY_SLUGS = new Set([
   'menu-design-cuisines',
   'menu-design-themes',
+  'ingredient-yields',
 ]);
 
 /**
