@@ -267,9 +267,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=ab576c3b2ed6" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=eda1f9ad3f38" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ab576c3b2ed6"><link rel="stylesheet" href="/assets/site-article.css?v=eda1f9ad3f38"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=82c8e0678bd3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=96ce2c24881c" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=82c8e0678bd3"><link rel="stylesheet" href="/assets/site-article.css?v=96ce2c24881c"></noscript>
 
 <style>
   /* ============ BLOG POST LAYOUT (shared with other posts; will extract to site.css in a later refactor) ============ */
@@ -437,6 +437,14 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     {
       "@type": "DefinedTerm",
       "url": "https://muntin.digital/glossary/food-cost/"
+    },
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/glossary/subtype-pizzeria/"
+    },
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/glossary/charm-pricing/"
     }
   ]
 }
@@ -867,7 +875,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <h3>Tier 2 &mdash; Core items, raised 4 to 6 percent</h3>
 
-      <p>The core of your menu is where the weighted-average raise actually happens. Most of your entrées. Most of your pastas. Most of your pizzas, if you're a pizza place. These are the items guests order regularly but don't have an exact-dollar memory of. They remember "it was around twenty bucks." A move from $21 to $22.25 is inside that memory tolerance. A move from $21 to $25 is not.</p>
+      <p>The core of your menu is where the weighted-average raise actually happens. Most of your entrées. Most of your pastas. Most of your pizzas, if you're a <!-- LIBRARY:autolink:start --><a href="/glossary/subtype-pizzeria/" data-glossary-head="Pizzeria" data-glossary-aka="Neapolitan, Detroit, Sicilian, slice shop" data-glossary-blurb="Pizza-first restaurants where ordering IS the business and every Slice/DoorDash/Grubhub pie costs 20-30% in commission.">pizza place</a><!-- LIBRARY:autolink:end -->. These are the items guests order regularly but don't have an exact-dollar memory of. They remember "it was around twenty bucks." A move from $21 to $22.25 is inside that memory tolerance. A move from $21 to $25 is not.</p>
 
       <p>Four to six percent is the sweet spot. Below 4%, you barely recover margin and you've spent political capital for nothing. Above 6%, guests start to notice the menu "feels" more expensive, even if they can't point to a specific item. Stay in that band on the core and you'll recover roughly two thirds of the margin you've lost to cost inflation, silently.</p>
 
@@ -976,7 +984,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
             <aside class="key-takeaways" data-llm="takeaways" aria-label="Key takeaways">
               <p class="key-takeaways__eyebrow">Key takeaways</p>
               <ul class="key-takeaways__list">
-              <li>Charm pricing ($X.95) still works for casual; round pricing ($X) reads upscale — the choice depends on your room.</li>
+              <li><!-- LIBRARY:autolink:start --><a href="/glossary/charm-pricing/" data-glossary-head="Charm pricing" data-glossary-aka="prices ending in .95, .99, or .49" data-glossary-blurb="A pricing convention in which the cents portion ends in a number designed to make the price feel lower than the next round figure — $19.95 instead of $20, $11.99 instead of…">Charm pricing</a><!-- LIBRARY:autolink:end --> ($X.95) still works for casual; round pricing ($X) reads upscale — the choice depends on your room.</li>
         <li>Raise the prices on items where the description is best, not where the margin is worst.</li>
         <li>Re-photograph the items you raise — the perceived value moves more than the actual change.</li>
         <li>Put the reservation CTA above the fold the same week you raise prices; the site has to feel current.</li>
@@ -1190,7 +1198,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->30<!-- /count --> articles, <!-- count:tools.live -->12<!-- /count --> tools, <!-- count:glossary.terms -->149<!-- /count --> glossary terms &mdash; with a one-person web studio behind it in Silver Spring, MD.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->34<!-- /count --> articles, <!-- count:tools.live -->12<!-- /count --> tools, <!-- count:glossary.terms -->149<!-- /count --> glossary terms &mdash; with a one-person web studio behind it in Silver Spring, MD.</p>
       </div>
 
       <!-- Column order mirrors the 4-item primary nav

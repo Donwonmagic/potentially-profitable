@@ -215,9 +215,9 @@ main{padding-top:64px}
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-italic.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-italic.woff2" crossorigin>
-<link rel="preload" as="style" href="/assets/site-core.css?v=ab576c3b2ed6" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=eda1f9ad3f38" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ab576c3b2ed6"><link rel="stylesheet" href="/assets/site-article.css?v=eda1f9ad3f38"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=82c8e0678bd3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=96ce2c24881c" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=82c8e0678bd3"><link rel="stylesheet" href="/assets/site-article.css?v=96ce2c24881c"></noscript>
 
 <!-- lazy-load:p --><script>(window.requestIdleCallback||function(c){return setTimeout(c,500);})(function(){var s=document.createElement("script");s.src="/assets/p.js?v=20260503";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:p -->
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
@@ -240,6 +240,10 @@ main{padding-top:64px}
     {
       "@type": "DefinedTerm",
       "url": "https://muntin.digital/glossary/online-ordering/"
+    },
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/glossary/gift-card-checkout/"
     },
     {
       "@type": "DefinedTerm",
@@ -662,11 +666,11 @@ main{padding-top:64px}
 
     <h2 id="your-own-site-custom">Your own site (custom) &mdash; own the order, pick your processor</h2>
 
-    <p>A custom site with a real ordering integration takes 0% to anyone but the payment processor &mdash; roughly 2.9% + 30&cent; per order to Stripe. The catch is upfront build cost and a real ordering surface, not a Stripe button stapled to a menu.</p>
+    <p>A custom site with a real ordering integration takes 0% to anyone but the payment processor &mdash; roughly 2.9% + 30&cent; per order to Stripe. The catch is upfront build cost and a real ordering surface, not a Stripe button stapled to a menu &mdash; if you go this route, <a href="/library/how-to-hire-a-restaurant-web-designer/">how to hire a restaurant web designer</a> covers what to ask and what to pay.</p>
 
     <p>The per-order math is the cleanest in the comparison. A $100 ticket costs $3.20 in processing &mdash; full stop. There is no platform monthly fee, no guest support fee, no second-layer charge. Hosting is real but small; a restaurant site at typical traffic levels runs $10 to $30 a month on a real hosting provider, plus the annual domain registration. On a per-$100-order basis with 200 orders a week, the hosting amortizes to under $0.10 per ticket. The total per-order cost lands at about $3.30 &mdash; the floor of the comparison.</p>
 
-    <p>The catch is two-fold. First, a real ordering integration is real software. The simple version is Stripe Checkout for a single-item flow (a private dinner deposit, a gift-card purchase, a fixed-price tasting menu); the full version is an order builder with menu modifiers, kitchen-ticket integration, scheduled-order support, delivery-zone routing, and the operator dashboard. The simple version is a weekend of work; the full version is a real software project, which is why the platforms exist in the first place. Second, the upfront cost is real. A built-to-order restaurant ordering site lives in the $5,000 to $30,000 range as of May 2026 depending on integration depth, walked in <a href="/library/custom-restaurant-website-pricing/">custom restaurant website pricing</a>. That cost is paid once; the platforms charge it every month forever.</p>
+    <p>The catch is two-fold. First, a real ordering integration is real software. The simple version is Stripe Checkout for a single-item flow (a private dinner deposit, a <!-- LIBRARY:autolink:start --><a href="/glossary/gift-card-checkout/" data-glossary-head="Gift-card checkout" data-glossary-aka="e-gift, digital gift card" data-glossary-blurb="A page on your site where someone can buy a gift card in minutes, usually delivered as an email with a code the recipient redeems in-house or online.">gift-card purchase</a><!-- LIBRARY:autolink:end -->, a fixed-price tasting menu); the full version is an order builder with menu modifiers, kitchen-ticket integration, scheduled-order support, delivery-zone routing, and the operator dashboard. The simple version is a weekend of work; the full version is a real software project, which is why the platforms exist in the first place. Second, the upfront cost is real. A built-to-order restaurant ordering site lives in the $5,000 to $30,000 range as of May 2026 depending on integration depth, walked in <a href="/library/custom-restaurant-website-pricing/">custom restaurant website pricing</a>. That cost is paid once; the platforms charge it every month forever.</p>
 
     <details class="cite">
       <summary>Source: payment-processor card-not-present rates, May 2026</summary>
@@ -961,7 +965,7 @@ main{padding-top:64px}
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->30<!-- /count --> articles, <!-- count:tools.live -->12<!-- /count --> tools, <!-- count:glossary.terms -->149<!-- /count --> glossary terms &mdash; with a one-person web studio behind it in Silver Spring, MD.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->34<!-- /count --> articles, <!-- count:tools.live -->12<!-- /count --> tools, <!-- count:glossary.terms -->149<!-- /count --> glossary terms &mdash; with a one-person web studio behind it in Silver Spring, MD.</p>
       </div>
 
       <!-- Column order mirrors the 4-item primary nav

@@ -4,8 +4,8 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-<title>Fragmento de URL vs query — Glosario Muntin Digital</title>
-<meta name="description" content="Fragmento de URL vs query: En una URL, la parte después del <code>?</code> es el query (se manda al servidor con cada request). La parte después de…" />
+<title>¿Qué es Fragmento de URL vs query? | Muntin Digital</title>
+<meta name="description" content="Fragmento de URL vs query es en una URL, la parte después del ? es el query (se manda al servidor con cada request). La parte después del # es el…" />
 <meta name="theme-color" content="#2A50C8" />
 <link rel="canonical" href="https://muntin.digital/es/glossary/url-fragment-vs-query/" />
 <link rel="alternate" hreflang="en" href="https://muntin.digital/glossary/url-fragment-vs-query/" />
@@ -135,9 +135,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=ab576c3b2ed6" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=eda1f9ad3f38" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ab576c3b2ed6"><link rel="stylesheet" href="/assets/site-article.css?v=eda1f9ad3f38"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=82c8e0678bd3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=96ce2c24881c" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=82c8e0678bd3"><link rel="stylesheet" href="/assets/site-article.css?v=96ce2c24881c"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -217,6 +217,38 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 }
 </script>
 <!-- glossary-article-schema:end -->
+<!-- glossary-faq-schema:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "@id": "https://muntin.digital/es/glossary/url-fragment-vs-query/#faq",
+      "inLanguage": "es",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Qué es fragmento de URL vs query?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Fragmento de URL vs query es en una URL, la parte después del ? es el query (se manda al servidor con cada request). La parte después del # es el fragmento (por especificación HTTP, los navegadores nunca lo mandan al servidor). Las herramientas que comparten escenarios vía el fragmento mantienen tus inputs fuera de los logs del servidor."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Por qué importa fragmento de URL vs query para un restaurante?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Cuando una herramienta dice \"tus números se quedan en la URL\", verifica si viven en el query (que significa que el servidor los guarda en logs) o el fragmento (que significa que el servidor nunca los ve). Es la diferencia entre una promesa de privacidad y una realidad de privacidad."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<!-- glossary-faq-schema:end -->
 </head>
 <body>
 
@@ -397,7 +429,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <header class="term-head">
       <span class="eyebrow"><a href="/es/glossary/mobile/">Móvil y velocidad</a></span>
       <h1 class="term-h1">Fragmento de URL vs query</h1>
-      <!-- term-example:start --><!-- term-example:end -->
+      <!-- term-example:start -->
+            <p class="term-example">Ejemplo: Antes de confiar en la promesa de una herramienta de precios de que "tus números se quedan en la URL", el dueño de una cafetería verifica si los costos de los alimentos van después del ? donde el servidor los registra, o después del # donde el servidor nunca los ve.</p>
+            <!-- term-example:end -->
       <!-- glossary-backlinks:start --><!-- glossary-backlinks:end -->
       <p class="term-aka">el #-vs-?</p>
       <div class="term-meta">
@@ -416,6 +450,19 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     </aside>
       <!-- glossary-explainer-cue:start -->
       <!-- glossary-explainer-cue:end -->
+      <!-- glossary-faq:start -->
+      <section class="term-faq" aria-labelledby="term-faq-h">
+        <h2 class="term-faq__h" id="term-faq-h">Preguntas frecuentes</h2>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">¿Qué es fragmento de URL vs query?</h3>
+          <p class="term-faq__a">Fragmento de URL vs query es en una URL, la parte después del ? es el query (se manda al servidor con cada request). La parte después del # es el fragmento (por especificación HTTP, los navegadores nunca lo mandan al servidor). Las herramientas que comparten escenarios vía el fragmento mantienen tus inputs fuera de los logs del servidor.</p>
+        </div>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">¿Por qué importa fragmento de URL vs query para un restaurante?</h3>
+          <p class="term-faq__a">Cuando una herramienta dice "tus números se quedan en la URL", verifica si viven en el query (que significa que el servidor los guarda en logs) o el fragmento (que significa que el servidor nunca los ve). Es la diferencia entre una promesa de privacidad y una realidad de privacidad.</p>
+        </div>
+      </section>
+      <!-- glossary-faq:end -->
     </div>
   </div>
 </section>
@@ -501,7 +548,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">La ventana.</p>
-        <p class="foot-blurb">Una biblioteca gratuita para restaurantes &mdash; <!-- count:articles.library -->30<!-- /count --> art&iacute;culos, <!-- count:tools.live -->12<!-- /count --> herramientas y un glosario de <!-- count:glossary.terms -->149<!-- /count --> t&eacute;rminos &mdash; con un estudio web de una persona detr&aacute;s, en Silver Spring, MD. Se habla espa&ntilde;ol.</p>
+        <p class="foot-blurb">Una biblioteca gratuita para restaurantes &mdash; <!-- count:articles.library -->34<!-- /count --> art&iacute;culos, <!-- count:tools.live -->12<!-- /count --> herramientas y un glosario de <!-- count:glossary.terms -->149<!-- /count --> t&eacute;rminos &mdash; con un estudio web de una persona detr&aacute;s, en Silver Spring, MD. Se habla espa&ntilde;ol.</p>
       </div>
 
       <!-- El orden de columnas refleja la navegación principal de 5

@@ -251,9 +251,9 @@ main{padding-top:64px}
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-italic.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-italic.woff2" crossorigin>
-<link rel="preload" as="style" href="/assets/site-core.css?v=ab576c3b2ed6" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=eda1f9ad3f38" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ab576c3b2ed6"><link rel="stylesheet" href="/assets/site-article.css?v=eda1f9ad3f38"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=82c8e0678bd3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=96ce2c24881c" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=82c8e0678bd3"><link rel="stylesheet" href="/assets/site-article.css?v=96ce2c24881c"></noscript>
 
 <!-- lazy-load:p --><script>(window.requestIdleCallback||function(c){return setTimeout(c,500);})(function(){var s=document.createElement("script");s.src="/assets/p.js?v=20260503";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:p -->
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
@@ -268,6 +268,10 @@ main{padding-top:64px}
     {
       "@type": "DefinedTerm",
       "url": "https://muntin.digital/glossary/html-menu/"
+    },
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/glossary/lazy-loading/"
     },
     {
       "@type": "DefinedTerm",
@@ -653,7 +657,7 @@ main{padding-top:64px}
       </div>
     </details>
 
-    <p>One adjacent piece worth naming: photographs of dishes. Real photos on the menu page lift bookings on every measure, but only when shot to the spec the platforms expect &mdash; aspect ratio, resolution, and weight all matter. The full reference lives in the <a href="/library/restaurant-photo-spec-sheet/">restaurant photo spec sheet</a>; the short version is &ldquo;real photos of your real dishes, never stock, sized for the surface they appear on, lazy-loaded so they do not slow the first paint.&rdquo;</p>
+    <p>One adjacent piece worth naming: photographs of dishes. Real photos on the menu page lift bookings on every measure, but only when shot to the spec the platforms expect &mdash; aspect ratio, resolution, and weight all matter. The full reference lives in the <a href="/library/restaurant-photo-spec-sheet/">restaurant photo spec sheet</a>; the short version is &ldquo;real photos of your real dishes, never stock, sized for the surface they appear on, <!-- LIBRARY:autolink:start --><a href="/glossary/lazy-loading/" data-glossary-head="Lazy loading" data-glossary-aka="deferred loading, below-the-fold loading" data-glossary-blurb="A technique where images and videos further down the page don't start downloading until the visitor actually scrolls near them.">lazy-loaded</a><!-- LIBRARY:autolink:end --> so they do not slow the first paint.&rdquo;</p>
 
     <details class="cite">
       <summary>Source: Muntin photo specifications</summary>
@@ -698,7 +702,7 @@ main{padding-top:64px}
     <p>None of these need a developer for the weekly edit. The one-time build does &mdash; setting up the sync, the schema generator, the rebuild trigger &mdash; but after that the menu page becomes a kitchen edit, not an IT ticket. That is the difference between a menu page that stays current and one that quietly drifts until the host stand starts fielding &ldquo;is the chicken parm still on the menu&rdquo; calls.</p>
 
     <div class="callout">
-      <p><strong>The first-party order angle.</strong> If you take delivery and pickup directly, the same source-of-truth pattern feeds the <!-- LIBRARY:autolink:start --><a href="/glossary/online-ordering/" data-glossary-head="Online ordering" data-glossary-aka="ordering food from a restaurant through its website or app" data-glossary-blurb="The full stack of taking food and drink orders from a diner through a website or app, including the menu surface, the cart, payment, and the kitchen ticket.">online ordering</a><!-- LIBRARY:autolink:end --> surface as well as the menu page. A diner reading the menu and tapping &ldquo;order direct&rdquo; should see the same items at the same prices &mdash; the kind of <!-- LIBRARY:autolink:start --><a href="/glossary/direct-ordering/" data-glossary-head="Direct ordering" data-glossary-aka="ordering through the restaurant&rsquo;s own surface, not a delivery aggregator" data-glossary-blurb="Taking takeout and delivery orders through the restaurant&rsquo;s own website or app rather than through a delivery aggregator, so the restaurant keeps the customer relationship and avoids the platform commission.">direct ordering</a><!-- LIBRARY:autolink:end --> setup that keeps you off a 15-to-30-percent platform commission.</p>
+      <p><strong>The first-party order angle.</strong> If you take delivery and pickup directly, the same source-of-truth pattern feeds the <!-- LIBRARY:autolink:start --><a href="/glossary/online-ordering/" data-glossary-head="Online ordering" data-glossary-aka="ordering food from a restaurant through its website or app" data-glossary-blurb="The full stack of taking food and drink orders from a diner through a website or app, including the menu surface, the cart, payment, and the kitchen ticket.">online ordering</a><!-- LIBRARY:autolink:end --> surface as well as the menu page. A diner reading the menu and tapping &ldquo;order direct&rdquo; should see the same items at the same prices &mdash; the kind of <!-- LIBRARY:autolink:start --><a href="/glossary/direct-ordering/" data-glossary-head="Direct ordering" data-glossary-aka="ordering through the restaurant&rsquo;s own surface, not a delivery aggregator" data-glossary-blurb="Taking takeout and delivery orders through the restaurant&rsquo;s own website or app rather than through a delivery aggregator, so the restaurant keeps the customer relationship and avoids the platform commission.">direct ordering</a><!-- LIBRARY:autolink:end --> setup that keeps you off a 15-to-30-percent platform commission. The full walk of that trade-off — ChowNow, Toast, Square, Owner.com, and your own site, compared on the real per-order cost — lives in <a href="/library/commission-free-online-ordering-restaurants/">commission-free online ordering for restaurants</a>, and the choice of where the whole site lives is in <a href="/library/best-restaurant-website-platform/">best restaurant website platform</a>.</p>
     </div>
 
     <h2 id="the-8-point-menu-page-checklist">The 8-point menu-page checklist (close)</h2>
@@ -947,7 +951,7 @@ main{padding-top:64px}
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->30<!-- /count --> articles, <!-- count:tools.live -->12<!-- /count --> tools, <!-- count:glossary.terms -->149<!-- /count --> glossary terms &mdash; with a one-person web studio behind it in Silver Spring, MD.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->34<!-- /count --> articles, <!-- count:tools.live -->12<!-- /count --> tools, <!-- count:glossary.terms -->149<!-- /count --> glossary terms &mdash; with a one-person web studio behind it in Silver Spring, MD.</p>
       </div>
 
       <!-- Column order mirrors the 4-item primary nav

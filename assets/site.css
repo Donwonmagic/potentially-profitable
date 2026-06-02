@@ -329,6 +329,15 @@
 .prose h3,
 .article-body h3,
 .term-body h3{margin-top:1.4em}
+/* Glossary term FAQ (Wave G1) — a visible Q&A block under the term
+   body, mirrored by FAQPage JSON-LD. Answers are the term's own
+   fact-checked def/why prose, restated in question form for AEO. */
+.term-faq{margin-top:2.4em;padding-top:1.6em;border-top:1px solid var(--line)}
+.term-faq__h{font-family:var(--font-display);font-size:1.05rem;font-weight:600;letter-spacing:.02em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 1em}
+.term-faq__item{margin:0 0 1.2em}
+.term-faq__item:last-child{margin-bottom:0}
+.term-faq__q{font-family:var(--font-display);font-size:1.12rem;font-weight:600;color:var(--ink);margin:0 0 .35em}
+.term-faq__a{margin:0;color:var(--ink-soft);line-height:var(--leading-prose)}
 /* Drop cap is opt-in: add `prose--lede` to the wrapper to enable on
    the first paragraph only. Wrapped in @supports so older browsers
    fall through to plain ::first-letter and never break layout. Disabled

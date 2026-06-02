@@ -1,0 +1,1405 @@
+{
+  "_doc": "SEO title + meta description overrides for glossary term pages, consumed by scripts/inject-glossary-seo.mjs. Titles follow 'What Is X? …| Muntin Digital'; metas are the term's own first FAQ answer (fact-checked prose) trimmed to ~155 chars. Hand-edit any entry to tune. Shape: { seo: { slug: { en:{title,desc}, es:{title,desc} } } }",
+  "seo": {
+    "above-the-fold": {
+      "en": {
+        "title": "What Is Above the Fold? | Muntin Digital",
+        "desc": "Above the fold is the part of your homepage a visitor sees without scrolling. The term is borrowed from newspapers — the half of the front page that was…"
+      },
+      "es": {
+        "title": "¿Qué es Sobre el pliegue? | Muntin Digital",
+        "desc": "Sobre el pliegue es la parte de tu portada que el visitante ve sin hacer scroll. El término viene de los periódicos — la mitad de la portada que era…"
+      }
+    },
+    "accessible-pair": {
+      "en": {
+        "title": "What Is Accessible Pair? | Muntin Digital",
+        "desc": "Accessible pair is a version of a brand color whose lightness has been shifted just far enough — preserving hue and feel — that text rendered in it on a…"
+      },
+      "es": {
+        "title": "¿Qué es Par accesible? | Muntin Digital",
+        "desc": "Par accesible es una versión de un color de marca cuya luminosidad se ha desplazado lo justo — preservando matiz y carácter — para que el texto en ese…"
+      }
+    },
+    "aggregator": {
+      "en": {
+        "title": "What Is Aggregator? | Muntin Digital",
+        "desc": "Aggregator is a third-party marketplace that takes orders on your behalf (DoorDash, Uber Eats, Grubhub) and keeps a commission per transaction. Not the…"
+      },
+      "es": {
+        "title": "¿Qué es Agregador? | Muntin Digital",
+        "desc": "Agregador es un marketplace de terceros que toma órdenes en tu nombre (DoorDash, Uber Eats, Grubhub) y se queda con una comisión por transacción. No es lo…"
+      }
+    },
+    "ai-overview": {
+      "en": {
+        "title": "What Is AI Overview? | Muntin Digital",
+        "desc": "AI Overview is a paragraph Google's generative answer engine writes at the top of a search results page, citing two or three sources by name. Triggered on…"
+      },
+      "es": {
+        "title": "¿Qué es AI Overview? | Muntin Digital",
+        "desc": "AI Overview es un párrafo que el motor de respuesta generativa de Google escribe en la parte superior de una página de resultados, citando dos o tres…"
+      }
+    },
+    "alt-text": {
+      "en": {
+        "title": "What Is Alt Text? | Muntin Digital",
+        "desc": "Alt text is a short written description of every image, set via the alt=\"…\" attribute in the HTML. Screen readers read it aloud; Google uses it to…"
+      },
+      "es": {
+        "title": "¿Qué es Texto alternativo? | Muntin Digital",
+        "desc": "Texto alternativo es una descripción escrita breve de cada imagen, puesta mediante el atributo alt=\"…\" en el HTML. Los lectores de pantalla la leen en voz…"
+      }
+    },
+    "analogous-colors": {
+      "en": {
+        "title": "What Is Analogous Colors? | Muntin Digital",
+        "desc": "Analogous colors is a palette built from hues 15–30° apart on the color wheel — terracotta with rust and ochre, forest with sage and juniper. Analogous…"
+      },
+      "es": {
+        "title": "¿Qué es Colores análogos? | Muntin Digital",
+        "desc": "Colores análogos es una paleta construida con matices a 15–30° de distancia en el círculo cromático — terracota con óxido y ocre, bosque con salvia y…"
+      }
+    },
+    "apple-bing-maps": {
+      "en": {
+        "title": "What Is Apple Maps &amp; Bing Places? | Muntin Digital",
+        "desc": "Apple Maps & Bing Places is the non-Google map services — Apple Maps Connect (for iPhone users) and Bing Places (for Edge, Cortana, and ChatGPT-style…"
+      },
+      "es": {
+        "title": "¿Qué es Apple Maps y Bing Places? | Muntin Digital",
+        "desc": "Apple Maps y Bing Places es los servicios de mapas que no son de Google — Apple Maps Connect (para quienes usan iPhone) y Bing Places (para Edge, Cortana…"
+      }
+    },
+    "aspect-ratio": {
+      "en": {
+        "title": "What Is Aspect Ratio? | Muntin Digital",
+        "desc": "Aspect ratio is the ratio of an image's width to its height, expressed as w:h. Eight surfaces own canonical ratios: web hero 16:9, OG card 1.91:1, Yelp…"
+      },
+      "es": {
+        "title": "¿Qué es Proporción de aspecto? | Muntin Digital",
+        "desc": "Proporción de aspecto es la razón entre el ancho y la altura de una imagen, expresada como w:h. Ocho superficies tienen razones canónicas: web hero 16:9…"
+      }
+    },
+    "average-check": {
+      "en": {
+        "title": "What Is Average Check? | Muntin Digital",
+        "desc": "Average check is also called \"average ticket.\" Total sales divided by total covers. If 180 covers spent $4,500 total, average check is $25."
+      },
+      "es": {
+        "title": "¿Qué es Ticket promedio? | Muntin Digital",
+        "desc": "Ticket promedio es también llamado \"average check.\" Ventas totales divididas entre cubiertos totales. Si 180 cubiertos gastaron $4,500 en total, el ticket…"
+      }
+    },
+    "body-text-size": {
+      "en": {
+        "title": "What Is Body Text Size? | Muntin Digital",
+        "desc": "Body text size is the default size of regular paragraph text on your site. On phones, 16 pixels is the absolute floor; 17–18px is more comfortable for…"
+      },
+      "es": {
+        "title": "¿Qué es Tamaño del texto de cuerpo? | Muntin Digital",
+        "desc": "Tamaño del texto de cuerpo es el tamaño por defecto del texto de párrafo normal en tu sitio. En celulares, 16 píxeles es el piso absoluto; 17–18 px es más…"
+      }
+    },
+    "bounce-rate": {
+      "en": {
+        "title": "What Is Bounce Rate? | Muntin Digital",
+        "desc": "Bounce rate is the percentage of visitors who land on your site and leave without clicking anything — no menu page, no reserve button, no second page. A…"
+      },
+      "es": {
+        "title": "¿Qué es Tasa de rebote? | Muntin Digital",
+        "desc": "Tasa de rebote es el porcentaje de visitantes que llegan a tu sitio y se van sin hacer clic en nada — ninguna página de menú, ningún botón de reservar…"
+      }
+    },
+    "brand-identity": {
+      "en": {
+        "title": "What Is Brand Identity? | Muntin Digital",
+        "desc": "Brand identity is the full visible system that carries a business across every touchpoint — logo, colors, typography, voice, and the rules for using them…"
+      },
+      "es": {
+        "title": "¿Qué es Identidad de marca? | Muntin Digital",
+        "desc": "Identidad de marca es el sistema visible completo que lleva a un negocio por cada punto de contacto — logo, colores, tipografía, voz y las reglas para…"
+      }
+    },
+    "breadcrumb": {
+      "en": {
+        "title": "What Is Breadcrumb? | Muntin Digital",
+        "desc": "Breadcrumb is a row of links at the top of a page that shows where you are in the site hierarchy — Home › Glossary › Breadcrumb. Search engines also read…"
+      },
+      "es": {
+        "title": "¿Qué es Breadcrumb? | Muntin Digital",
+        "desc": "Breadcrumb es una fila de enlaces arriba de la p&aacute;gina que muestra d&oacute;nde est&aacute;s en la jerarqu&iacute;a del sitio &mdash; Inicio…"
+      }
+    },
+    "break-even": {
+      "en": {
+        "title": "What Is Break-Even? | Muntin Digital",
+        "desc": "Break-even is the sales volume at which revenue equals total costs. Below break-even, every cover loses money. Above break-even, every cover is profit…"
+      },
+      "es": {
+        "title": "¿Qué es Punto de equilibrio? | Muntin Digital",
+        "desc": "Punto de equilibrio es el volumen de ventas al que los ingresos igualan los costos totales. Por debajo del punto de equilibrio, cada cubierto pierde…"
+      }
+    },
+    "canonical-url": {
+      "en": {
+        "title": "What Is Canonical URL? | Muntin Digital",
+        "desc": "Canonical URL is a tag in a page's HTML that tells Google \"this is the real address for this page, ignore any duplicates\". Matters when the same content…"
+      },
+      "es": {
+        "title": "¿Qué es URL canónica? | Muntin Digital",
+        "desc": "URL canónica es una etiqueta en el HTML de una página que le dice a Google \"esta es la dirección real de esta página, ignora los duplicados\". Importa…"
+      }
+    },
+    "catering-page": {
+      "en": {
+        "title": "What Is Catering / Private-Events Page? | Muntin Digital",
+        "desc": "Catering / private-events page is a dedicated page explaining your catering or private-event offering — minimums, packages, sample menus, lead time, and…"
+      },
+      "es": {
+        "title": "¿Qué es Página de catering / eventos privados? | Muntin Digital",
+        "desc": "Página de catering / eventos privados es una página dedicada que explica tu oferta de catering o de eventos privados — mínimos, paquetes, menús de…"
+      }
+    },
+    "cdn": {
+      "en": {
+        "title": "What Is CDN? | Muntin Digital",
+        "desc": "CDN is a global network of servers — Cloudflare, Fastly, AWS CloudFront — that keep cached copies of your site close to every visitor in the world, so the…"
+      },
+      "es": {
+        "title": "¿Qué es CDN? | Muntin Digital",
+        "desc": "CDN es una red global de servidores — Cloudflare, Fastly, AWS CloudFront — que mantienen copias en caché de tu sitio cerca de cada visitante del mundo…"
+      }
+    },
+    "charm-pricing": {
+      "en": {
+        "title": "What Is Charm Pricing? | Muntin Digital",
+        "desc": "Charm pricing is a pricing convention in which the cents portion ends in a number designed to make the price feel lower than the next round figure —…"
+      },
+      "es": {
+        "title": "¿Qué es Precio psicológico? | Muntin Digital",
+        "desc": "Precio psicológico es una convención de precios en la que la porción de centavos termina en un número diseñado para hacer sentir el precio menor que la…"
+      }
+    },
+    "clearspace": {
+      "en": {
+        "title": "What Is Clearspace? | Muntin Digital",
+        "desc": "Clearspace is the minimum empty area that must surround a logo, usually measured in multiples of the mark's x-height or in a defined unit like \"one…"
+      },
+      "es": {
+        "title": "¿Qué es Espacio de resguardo? | Muntin Digital",
+        "desc": "Espacio de resguardo es el área vacía mínima que debe rodear a un logo, medida habitualmente en múltiplos de la altura-x del símbolo, o en una unidad…"
+      }
+    },
+    "click-to-call": {
+      "en": {
+        "title": "What Is Click-to-Call? | Muntin Digital",
+        "desc": "Click-to-call is a phone number on your site that, when tapped on a phone, opens the dialer with your number pre-filled — instead of being plain text the…"
+      },
+      "es": {
+        "title": "¿Qué es Toque para llamar? | Muntin Digital",
+        "desc": "Toque para llamar es un número de teléfono en tu sitio que, al tocarlo en un celular, abre el marcador con tu número ya cargado — en vez de ser texto…"
+      }
+    },
+    "click-to-directions": {
+      "en": {
+        "title": "What Is Click-to-Directions? | Muntin Digital",
+        "desc": "Click-to-directions is tapping your address on a phone should launch Apple Maps or Google Maps with your business pre-filled as the destination. Built…"
+      },
+      "es": {
+        "title": "¿Qué es Clic para indicaciones? | Muntin Digital",
+        "desc": "Clic para indicaciones es tocar tu dirección en un celular debería abrir Apple Maps o Google Maps con tu negocio ya cargado como destino. Construido con…"
+      }
+    },
+    "client-side": {
+      "en": {
+        "title": "What Is Client-Side? | Muntin Digital",
+        "desc": "Client-side is computation that happens inside your browser tab, not on a server. A client-side tool takes your inputs, runs the math in JavaScript, and…"
+      },
+      "es": {
+        "title": "¿Qué es Del lado del cliente? | Muntin Digital",
+        "desc": "Del lado del cliente es cómputo que ocurre dentro de tu pestaña del navegador, no en un servidor. Una herramienta del lado del cliente toma tus entradas…"
+      }
+    },
+    "client-side-tool": {
+      "en": {
+        "title": "What Is Client-Side Tool? | Muntin Digital",
+        "desc": "Client-side tool is a tool whose math runs entirely in your browser — no server stores your inputs, no fetch fires when you type. Verifiable in DevTools'…"
+      },
+      "es": {
+        "title": "¿Qué es Herramienta client-side? | Muntin Digital",
+        "desc": "Herramienta client-side es una herramienta cuyas matemáticas corren por completo en tu navegador — ningún servidor guarda tus inputs, no se dispara fetch…"
+      }
+    },
+    "cls": {
+      "en": {
+        "title": "What Is Cumulative Layout Shift? | Muntin Digital",
+        "desc": "Cumulative Layout Shift is a score that measures how much your page jumps around as it loads — when a banner slides in, an image arrives late, or a…"
+      },
+      "es": {
+        "title": "¿Qué es Cumulative Layout Shift? | Muntin Digital",
+        "desc": "Cumulative Layout Shift es una calificación que mide cuánto salta tu página mientras carga — cuando entra un banner, llega tarde una imagen, o una fuente…"
+      }
+    },
+    "color-blindness": {
+      "en": {
+        "title": "What Is Color Blindness? | Muntin Digital",
+        "desc": "Color blindness is a set of inherited vision conditions — protanopia, deuteranopia, tritanopia, and milder partial forms — in which one of the three…"
+      },
+      "es": {
+        "title": "¿Qué es Daltonismo? | Muntin Digital",
+        "desc": "Daltonismo es un conjunto de condiciones visuales heredadas — protanopía, deuteranopía, tritanopía y formas parciales más leves — en las que falta o está…"
+      }
+    },
+    "color-harmony": {
+      "en": {
+        "title": "What Is Color Harmony? | Muntin Digital",
+        "desc": "Color harmony is the relationship between the colors in a palette, measured by how far apart their hues sit on the color wheel. Named families —…"
+      },
+      "es": {
+        "title": "¿Qué es Armonía cromática? | Muntin Digital",
+        "desc": "Armonía cromática es la relación entre los colores de una paleta, medida por la distancia que separa sus matices en el círculo cromático. Hay familias con…"
+      }
+    },
+    "color-palette": {
+      "en": {
+        "title": "What Is Color Palette? | Muntin Digital",
+        "desc": "Color palette is the curated set of colors that belong to a brand — typically a primary, a secondary, a small number of accents, and a couple of neutrals…"
+      },
+      "es": {
+        "title": "¿Qué es Paleta de colores? | Muntin Digital",
+        "desc": "Paleta de colores es el conjunto curado de colores que le pertenecen a una marca — típicamente un primario, un secundario, un pequeño número de acentos y…"
+      }
+    },
+    "commission": {
+      "en": {
+        "title": "What Is Commission? | Muntin Digital",
+        "desc": "Commission is the percentage an aggregator or payment platform keeps per transaction. Aggregators: 15–30% depending on tier (marketing, delivery, priority…"
+      },
+      "es": {
+        "title": "¿Qué es Comisión? | Muntin Digital",
+        "desc": "Comisión es el porcentaje que un agregador o plataforma de pago se queda por transacción. Agregadores: 15–30% según nivel (marketing, delivery, colocación…"
+      }
+    },
+    "complementary-colors": {
+      "en": {
+        "title": "What Is Complementary Colors? | Muntin Digital",
+        "desc": "Complementary colors is two colors whose hues sit roughly 180° apart on the color wheel — terracotta and teal, mustard and indigo, brick and forest. The…"
+      },
+      "es": {
+        "title": "¿Qué es Colores complementarios? | Muntin Digital",
+        "desc": "Colores complementarios es dos colores cuyos matices están a unos 180° en el círculo cromático — terracota y verde azulado, mostaza e índigo, ladrillo y…"
+      }
+    },
+    "contribution-margin": {
+      "en": {
+        "title": "What Is Contribution Margin? | Muntin Digital",
+        "desc": "Contribution margin is for a single menu item: sale price minus the variable cost of producing one unit (plated food cost). Reported in dollars…"
+      },
+      "es": {
+        "title": "¿Qué es Margen de contribución? | Muntin Digital",
+        "desc": "Margen de contribución es para un plato individual: precio de venta menos el costo variable de producir una unidad (costo de comida emplatado). Se reporta…"
+      }
+    },
+    "conversion-rate": {
+      "en": {
+        "title": "What Is Conversion Rate? | Muntin Digital",
+        "desc": "Conversion rate is the percentage of visitors who do the specific thing you wanted them to do — book a reservation, place an order, fill out a contact…"
+      },
+      "es": {
+        "title": "¿Qué es Tasa de conversión? | Muntin Digital",
+        "desc": "Tasa de conversión es el porcentaje de visitantes que hacen la cosa específica que querías que hicieran — reservar, hacer un pedido, llenar un formulario…"
+      }
+    },
+    "cookie-banner": {
+      "en": {
+        "title": "What Is Cookie Banner? | Muntin Digital",
+        "desc": "Cookie banner is the small bar or modal at the bottom of a page asking visitors to accept tracking cookies. Required by law in the EU and parts of the US…"
+      },
+      "es": {
+        "title": "¿Qué es Banner de cookies? | Muntin Digital",
+        "desc": "Banner de cookies es la barra pequeña o el modal abajo de la página que pide al visitante que acepte cookies de seguimiento. Obligatorio por ley en la UE…"
+      }
+    },
+    "copyable-address": {
+      "en": {
+        "title": "What Is Copyable Address? | Muntin Digital",
+        "desc": "Copyable address is your street address as real, selectable text on the page — not baked into an image or a graphic. Ideally wrapped in a Google Maps link…"
+      },
+      "es": {
+        "title": "¿Qué es Dirección copiable? | Muntin Digital",
+        "desc": "Dirección copiable es tu dirección como texto real y seleccionable en la página — no horneada dentro de una imagen o de un gráfico. Idealmente envuelta en…"
+      }
+    },
+    "core-web-vitals": {
+      "en": {
+        "title": "What Is Core Web Vitals? | Muntin Digital",
+        "desc": "Core Web Vitals is Google's three performance scores for a real page load on a phone — one for loading speed (LCP), one for layout stability (CLS), and…"
+      },
+      "es": {
+        "title": "¿Qué es Core Web Vitals? | Muntin Digital",
+        "desc": "Core Web Vitals es las tres calificaciones de desempeño de Google para la carga real de una página en un celular — una para velocidad de carga (LCP), una…"
+      }
+    },
+    "cover": {
+      "en": {
+        "title": "What Is Cover? | Muntin Digital",
+        "desc": "Cover is one customer seated and served. The restaurant industry's base unit of sales volume. \"We did 180 covers on Saturday\" means 180 customers came in…"
+      },
+      "es": {
+        "title": "¿Qué es Cubierto? | Muntin Digital",
+        "desc": "Cubierto es un cliente sentado y servido. La unidad base de volumen de ventas en la industria restaurantera. \"Hicimos 180 cubiertos el sábado\" significa…"
+      }
+    },
+    "cta": {
+      "en": {
+        "title": "What Is Call to Action? | Muntin Digital",
+        "desc": "Call to action is the specific button or link that asks a visitor to do the next thing — \"Reserve a Table\", \"Order Online\", \"Book a Class\", \"Get a Quote\"…"
+      },
+      "es": {
+        "title": "¿Qué es Llamada a la acción? | Muntin Digital",
+        "desc": "Llamada a la acción es el botón o enlace específico que le pide al visitante hacer lo siguiente — «Reservar mesa», «Pedir en línea», «Reservar una clase»…"
+      }
+    },
+    "cuisine-pitch": {
+      "en": {
+        "title": "What Is One-Sentence Pitch? | Muntin Digital",
+        "desc": "One-sentence pitch is a single sentence — usually in the hero — that tells a first-time visitor your cuisine, neighborhood, and vibe. Example: \"Wood-fired…"
+      },
+      "es": {
+        "title": "¿Qué es Presentación en una oración? | Muntin Digital",
+        "desc": "Presentación en una oración es una sola oración — normalmente en el hero — que le dice al visitante de primera vez tu cocina, tu barrio y tu ambiente…"
+      }
+    },
+    "data-tiering": {
+      "en": {
+        "title": "What Is Data Tiering? | Muntin Digital",
+        "desc": "Data tiering is a four-tier classification of business data — Public, Competitive-sensitive, Operational-confidential, Regulated — that decides who gets…"
+      },
+      "es": {
+        "title": "¿Qué es Niveles de datos? | Muntin Digital",
+        "desc": "Niveles de datos es una clasificación de cuatro niveles de los datos del negocio — Público, Competitivamente sensible, Operacionalmente confidencial…"
+      }
+    },
+    "delivery-presence": {
+      "en": {
+        "title": "What Is Delivery Presence? | Muntin Digital",
+        "desc": "Delivery presence is whether your site links out to at least one major third-party delivery aggregator (DoorDash, Uber Eats, Grubhub, Slice, ChowNow)…"
+      },
+      "es": {
+        "title": "¿Qué es Presencia en delivery? | Muntin Digital",
+        "desc": "Presencia en delivery es si tu sitio enlaza al menos a un agregador de delivery (DoorDash, Uber Eats, Grubhub, Slice, ChowNow). Se detecta siguiendo el…"
+      }
+    },
+    "design-token": {
+      "en": {
+        "title": "What Is Design Token? | Muntin Digital",
+        "desc": "Design token is a named reference for a brand decision — a color, a font size, a corner radius, a spacing step — exported as a portable file (CSS…"
+      },
+      "es": {
+        "title": "¿Qué es Token de diseño? | Muntin Digital",
+        "desc": "Token de diseño es una referencia con nombre para una decisión de marca — un color, un tamaño de fuente, un radio de borde, un paso de espaciado —…"
+      }
+    },
+    "dietary-markers": {
+      "en": {
+        "title": "What Is Dietary &amp; Allergen Markers? | Muntin Digital",
+        "desc": "Dietary & allergen markers is small labels next to menu items indicating gluten-free, vegan, vegetarian, dairy-free, or nut-containing preparations. Best…"
+      },
+      "es": {
+        "title": "¿Qué es Señales de dieta y alérgenos? | Muntin Digital",
+        "desc": "Señales de dieta y alérgenos es etiquetas pequeñas junto a los platos del menú que indican preparaciones sin gluten, veganas, vegetarianas, sin lácteos o…"
+      }
+    },
+    "direct-ordering": {
+      "en": {
+        "title": "What Is Direct Ordering? | Muntin Digital",
+        "desc": "Direct ordering is a customer ordering through your own website or POS (Toast, Square, Olo, ChowNow), bypassing aggregators. You pay only the…"
+      },
+      "es": {
+        "title": "¿Qué es Pedidos directos? | Muntin Digital",
+        "desc": "Pedidos directos es un cliente ordenando a través de tu propio sitio web o POS (Toast, Square, Olo, ChowNow), sin pasar por agregadores. Pagas solo la…"
+      }
+    },
+    "domain-name": {
+      "en": {
+        "title": "What Is Domain Name? | Muntin Digital",
+        "desc": "Domain name is the human-readable address people type to reach your site — \"rowhousegarden.com\". You buy it yearly from a registrar (Namecheap, Google…"
+      },
+      "es": {
+        "title": "¿Qué es Nombre de dominio? | Muntin Digital",
+        "desc": "Nombre de dominio es la dirección legible que la gente tipea para llegar a tu sitio — «rowhousegarden.com». La compras cada año a un registrador…"
+      }
+    },
+    "edible-portion": {
+      "en": {
+        "title": "What Is Edible Portion (EP)? | Muntin Digital",
+        "desc": "Edible portion (EP) is the cost of one unit of an ingredient after yield correction: EP cost = AP cost &divide; yield. Always &ge; the as-purchased cost…"
+      },
+      "es": {
+        "title": "¿Qué es Porción comestible (EP)? | Muntin Digital",
+        "desc": "Porción comestible (EP) es el costo de una unidad de un ingrediente después de la corrección por rendimiento: costo EP = costo AP &divide; rendimiento…"
+      }
+    },
+    "elasticity": {
+      "en": {
+        "title": "What Is Price Elasticity? | Muntin Digital",
+        "desc": "Price elasticity is how much cover count changes when prices change. Rough working rule in independent dining: a 6% menu-wide raise typically loses 2–3%…"
+      },
+      "es": {
+        "title": "¿Qué es Elasticidad de precio? | Muntin Digital",
+        "desc": "Elasticidad de precio es cuánto cambia el conteo de cubiertos cuando cambian los precios. Regla práctica en comedor independiente: un alza de 6% en el…"
+      }
+    },
+    "favicon": {
+      "en": {
+        "title": "What Is Favicon? | Muntin Digital",
+        "desc": "Favicon is the small icon displayed in the browser tab and in bookmark lists. Modern sites ship it at multiple sizes — 16, 32, 192, 512 pixels — because…"
+      },
+      "es": {
+        "title": "¿Qué es Favicon? | Muntin Digital",
+        "desc": "Favicon es el pequeño ícono mostrado en la pestaña del navegador y en las listas de favoritos. Los sitios modernos lo entregan en múltiples tamaños — 16…"
+      }
+    },
+    "fcp": {
+      "en": {
+        "title": "What Is First Contentful Paint? | Muntin Digital",
+        "desc": "First Contentful Paint is the moment the browser paints the first piece of your page — usually a headline, a logo, or a patch of background color…"
+      },
+      "es": {
+        "title": "¿Qué es First Contentful Paint? | Muntin Digital",
+        "desc": "First Contentful Paint es el momento en que el navegador pinta el primer pedazo de tu página — normalmente un titular, un logo, o una zona de color de…"
+      }
+    },
+    "fetch-request": {
+      "en": {
+        "title": "What Is Fetch Request? | Muntin Digital",
+        "desc": "Fetch request is the browser's way of sending data to a server over HTTP. Visible in DevTools' Network tab. Modern tools may use fetch(), XMLHttpRequest…"
+      },
+      "es": {
+        "title": "¿Qué es Solicitud fetch? | Muntin Digital",
+        "desc": "Solicitud fetch es la forma del navegador de enviar datos a un servidor sobre HTTP. Visible en la pestaña Network de DevTools. Las herramientas modernas…"
+      }
+    },
+    "fixed-costs": {
+      "en": {
+        "title": "What Is Fixed Costs? | Muntin Digital",
+        "desc": "Fixed costs is costs that don't change with sales volume: rent, insurance, loan payments, base utilities, SaaS subscriptions (POS, reservations, payroll…"
+      },
+      "es": {
+        "title": "¿Qué es Costos fijos? | Muntin Digital",
+        "desc": "Costos fijos es costos que no cambian con el volumen de ventas: renta, seguro, pagos de préstamo, servicios básicos, suscripciones SaaS (POS, reservas…"
+      }
+    },
+    "food-cost": {
+      "en": {
+        "title": "What Is Food Cost? | Muntin Digital",
+        "desc": "Food cost is the cost of ingredients, alcohol, and consumables (paper goods, to-go packaging) expressed as a percentage of sales. Target 28–32% for most…"
+      },
+      "es": {
+        "title": "¿Qué es Food cost? | Muntin Digital",
+        "desc": "Food cost es el costo de los ingredientes, alcohol y consumibles (productos de papel, empaque para llevar) expresado como porcentaje de ventas. Target…"
+      }
+    },
+    "form-abandonment": {
+      "en": {
+        "title": "What Is Form Abandonment? | Muntin Digital",
+        "desc": "Form abandonment is when a visitor starts filling out a form — reservation, contact, inquiry — and leaves before submitting. Usually caused by too many…"
+      },
+      "es": {
+        "title": "¿Qué es Abandono de formulario? | Muntin Digital",
+        "desc": "Abandono de formulario es cuando un visitante empieza a llenar un formulario — reserva, contacto, consulta — y se va antes de enviarlo. Normalmente lo…"
+      }
+    },
+    "funnel": {
+      "en": {
+        "title": "What Is Funnel? | Muntin Digital",
+        "desc": "Funnel is the sequence of steps a visitor goes through before becoming a customer — landing page → menu page → reserve button → reservation form →…"
+      },
+      "es": {
+        "title": "¿Qué es Embudo? | Muntin Digital",
+        "desc": "Embudo es la secuencia de pasos por los que pasa un visitante antes de convertirse en cliente — página de aterrizaje → página de menú → botón de reservar…"
+      }
+    },
+    "gbp": {
+      "en": {
+        "title": "What Is Google Business Profile? | Muntin Digital",
+        "desc": "Google Business Profile is your business's free listing on Google Maps and Google Search — the panel on the right of a search that shows your name, hours…"
+      },
+      "es": {
+        "title": "¿Qué es Ficha de Google Business? | Muntin Digital",
+        "desc": "Ficha de Google Business es el listado gratuito de tu negocio en Google Maps y en Google Search — ese panel que aparece a la derecha del buscador con el…"
+      }
+    },
+    "gbp-hours-mismatch": {
+      "en": {
+        "title": "What Is Hours Mismatch? | Muntin Digital",
+        "desc": "Hours mismatch is when the weekly hours your website declares (via OpeningHoursSpecification schema markup) don't match the hours Google shows on your…"
+      },
+      "es": {
+        "title": "¿Qué es Horarios en conflicto? | Muntin Digital",
+        "desc": "Horarios en conflicto es cuando los horarios semanales que tu sitio declara (vía marcado OpeningHoursSpecification) no coinciden con los horarios que…"
+      }
+    },
+    "gbp-photo-count": {
+      "en": {
+        "title": "What Is GBP Photo Count? | Muntin Digital",
+        "desc": "GBP photo count is how many photos are attached to your Google Business Profile — visible in the photo carousel at the top of your Google search panel and…"
+      },
+      "es": {
+        "title": "¿Qué es Cantidad de fotos del Perfil de Google? | Muntin Digital",
+        "desc": "Cantidad de fotos del Perfil de Google es cuántas fotos tiene tu Perfil de Empresa de Google — visibles en el carrusel arriba del panel de búsqueda y en…"
+      }
+    },
+    "gift-card-checkout": {
+      "en": {
+        "title": "What Is Gift-Card Checkout? | Muntin Digital",
+        "desc": "Gift-card checkout is a page on your site where someone can buy a gift card in minutes, usually delivered as an email with a code the recipient redeems…"
+      },
+      "es": {
+        "title": "¿Qué es Compra de tarjeta de regalo? | Muntin Digital",
+        "desc": "Compra de tarjeta de regalo es una página en tu sitio donde alguien puede comprar una tarjeta de regalo en minutos, que normalmente llega como un correo…"
+      }
+    },
+    "hero": {
+      "en": {
+        "title": "What Is Hero Section? | Muntin Digital",
+        "desc": "Hero section is the large top section of your homepage, above everything else. It's the only area most first-time visitors will see before deciding…"
+      },
+      "es": {
+        "title": "¿Qué es Sección hero? | Muntin Digital",
+        "desc": "Sección hero es la sección grande de arriba en tu portada, encima de todo lo demás. Es la única zona que la mayoría de los visitantes de primera vez van a…"
+      }
+    },
+    "hero-shot": {
+      "en": {
+        "title": "What Is Hero Shot? | Muntin Digital",
+        "desc": "Hero shot is for a given destination surface (web hero, Yelp featured, Instagram profile-grid lead, Google Business cover), the single photograph that…"
+      },
+      "es": {
+        "title": "¿Qué es Toma hero? | Muntin Digital",
+        "desc": "Toma hero es para una superficie de destino (web hero, destacada de Yelp, lead del perfil de Instagram, portada de Google Business), la única fotografía…"
+      }
+    },
+    "holiday-hours": {
+      "en": {
+        "title": "What Is Holiday Hours? | Muntin Digital",
+        "desc": "Holiday hours is the subset of special hours that recur on a calendar — closed on Thanksgiving and Christmas Day, early-close on Christmas Eve…"
+      },
+      "es": {
+        "title": "¿Qué es Horarios festivos? | Muntin Digital",
+        "desc": "Horarios festivos es el subconjunto de horarios especiales que vuelven cada año en el calendario — cerrado en Acción de Gracias y Navidad, cierre temprano…"
+      }
+    },
+    "honest-pricing": {
+      "en": {
+        "title": "What Is Honest Menu Prices? | Muntin Digital",
+        "desc": "Honest menu prices is showing the price of every dish on your menu page — or, for tasting-menu formats, prominently stating the total. No \"contact us for…"
+      },
+      "es": {
+        "title": "¿Qué es Precios honestos en el menú? | Muntin Digital",
+        "desc": "Precios honestos en el menú es mostrar el precio de cada plato en tu página de menú — o, en menús de degustación, indicar bien visible el total. Nada de…"
+      }
+    },
+    "hosting": {
+      "en": {
+        "title": "What Is Web Hosting? | Muntin Digital",
+        "desc": "Web hosting is the server, somewhere on the internet, that sends your website to a visitor's phone when they type your domain. Small-business hosting runs…"
+      },
+      "es": {
+        "title": "¿Qué es Hosting web? | Muntin Digital",
+        "desc": "Hosting web es el servidor, en algún lugar del internet, que le envía tu sitio al celular del visitante cuando este tipea tu dominio. El hosting para…"
+      }
+    },
+    "hours-of-operation": {
+      "en": {
+        "title": "What Is Hours of Operation? | Muntin Digital",
+        "desc": "Hours of operation is the structured representation of when a restaurant is open across the week — encoded variously as Google Business Profile fields…"
+      },
+      "es": {
+        "title": "¿Qué es Horario de operación? | Muntin Digital",
+        "desc": "Horario de operación es la representación estructurada de cuándo está abierto un restaurante a lo largo de la semana — codificada de varias formas: campos…"
+      }
+    },
+    "hours-visibility": {
+      "en": {
+        "title": "What Is Hours Visibility? | Muntin Digital",
+        "desc": "Hours visibility is whether today's hours are visible on your homepage within five seconds of landing, without scrolling or clicking. Distinct from just…"
+      },
+      "es": {
+        "title": "¿Qué es Visibilidad de horarios? | Muntin Digital",
+        "desc": "Visibilidad de horarios es si los horarios de hoy se ven en tu portada dentro de los cinco segundos de haber llegado, sin hacer scroll ni clic. Distinto…"
+      }
+    },
+    "hreflang": {
+      "en": {
+        "title": "What Is Hreflang? | Muntin Digital",
+        "desc": "hreflang is an HTML attribute (&lt;link rel=&quot;alternate&quot; hreflang=&quot;es&quot; href=&quot;...&quot;&gt;) that tells Google which language and…"
+      },
+      "es": {
+        "title": "¿Qué es hreflang? | Muntin Digital",
+        "desc": "hreflang es un atributo HTML (&lt;link rel=&quot;alternate&quot; hreflang=&quot;es&quot; href=&quot;...&quot;&gt;) que le dice a Google a qu&eacute…"
+      }
+    },
+    "html-menu": {
+      "en": {
+        "title": "What Is HTML Menu? | Muntin Digital",
+        "desc": "HTML menu is a menu built as real text on a web page, instead of as a PDF file or a photograph of a printed card. Real text means phones can render it at…"
+      },
+      "es": {
+        "title": "¿Qué es Menú en HTML? | Muntin Digital",
+        "desc": "Menú en HTML es un menú construido como texto real en una página web, en vez de como un archivo PDF o una foto de una carta impresa. Texto real significa…"
+      }
+    },
+    "https": {
+      "en": {
+        "title": "What Is HTTPS? | Muntin Digital",
+        "desc": "HTTPS is the little padlock icon in the browser's address bar. It means your site is served over a secure, encrypted connection — everything between the…"
+      },
+      "es": {
+        "title": "¿Qué es HTTPS? | Muntin Digital",
+        "desc": "HTTPS es el pequeño ícono de candado en la barra de direcciones del navegador. Significa que tu sitio se sirve por una conexión segura y cifrada — todo…"
+      }
+    },
+    "incident-response": {
+      "en": {
+        "title": "What Is Incident Response? | Muntin Digital",
+        "desc": "Incident response is a pre-decided plan for what you do in the first 24 hours of a data breach: who do you call, what do you change, what do you tell…"
+      },
+      "es": {
+        "title": "¿Qué es Respuesta a incidentes? | Muntin Digital",
+        "desc": "Respuesta a incidentes es un plan predecidido de qué haces en las primeras 24 horas de una brecha de datos: a quién llamas, qué cambias, a quién le dices…"
+      }
+    },
+    "inp": {
+      "en": {
+        "title": "What Is Interaction to Next Paint? | Muntin Digital",
+        "desc": "Interaction to Next Paint is how long your site takes to respond after a visitor taps, clicks, or types something. Measured in milliseconds; under 200ms…"
+      },
+      "es": {
+        "title": "¿Qué es Interaction to Next Paint? | Muntin Digital",
+        "desc": "Interaction to Next Paint es cuánto tarda tu sitio en responder después de que un visitante toca, hace clic o teclea algo. Se mide en milisegundos; menos…"
+      }
+    },
+    "labor-cost": {
+      "en": {
+        "title": "What Is Labor Cost? | Muntin Digital",
+        "desc": "Labor cost is wages, payroll taxes, and the tipped-employee contribution expressed as a percentage of sales. Target 28–32% for most formats, with…"
+      },
+      "es": {
+        "title": "¿Qué es Labor cost? | Muntin Digital",
+        "desc": "Labor cost es sueldos, impuestos de nómina y el aporte del empleado de propinas expresado como porcentaje de ventas. Target 28–32% para la mayoría de los…"
+      }
+    },
+    "last-updated-signal": {
+      "en": {
+        "title": "What Is Last-Updated Signal? | Muntin Digital",
+        "desc": "Last-updated signal is anything on your site that subtly tells a visitor \"someone is still running this place\" — a seasonal menu badge, a \"this week's…"
+      },
+      "es": {
+        "title": "¿Qué es Señal de última actualización? | Muntin Digital",
+        "desc": "Señal de última actualización es cualquier cosa en tu sitio que le diga al visitante, con sutileza, «alguien sigue llevando este lugar» — una etiqueta de…"
+      }
+    },
+    "lazy-loading": {
+      "en": {
+        "title": "What Is Lazy Loading? | Muntin Digital",
+        "desc": "Lazy loading is a technique where images and videos further down the page don't start downloading until the visitor actually scrolls near them. Built into…"
+      },
+      "es": {
+        "title": "¿Qué es Carga diferida? | Muntin Digital",
+        "desc": "Carga diferida es una técnica en la que las imágenes y los videos más abajo de la página no empiezan a descargar hasta que el visitante de verdad hace…"
+      }
+    },
+    "lcp": {
+      "en": {
+        "title": "What Is Largest Contentful Paint? | Muntin Digital",
+        "desc": "Largest Contentful Paint is how long it takes for the biggest visible chunk of your homepage — usually the hero image or the headline — to finish drawing…"
+      },
+      "es": {
+        "title": "¿Qué es Largest Contentful Paint? | Muntin Digital",
+        "desc": "Largest Contentful Paint es cuánto tarda en terminarse de dibujar la pieza visible más grande de tu portada — normalmente la foto del hero o el titular —…"
+      }
+    },
+    "lighthouse": {
+      "en": {
+        "title": "What Is Lighthouse? | Muntin Digital",
+        "desc": "Lighthouse is the open-source auditing tool Google ships inside Chrome and inside PageSpeed Insights. It simulates a mobile page load and scores your site…"
+      },
+      "es": {
+        "title": "¿Qué es Lighthouse? | Muntin Digital",
+        "desc": "Lighthouse es la herramienta de auditoría de código abierto que Google trae dentro de Chrome y dentro de PageSpeed Insights. Simula una carga de página en…"
+      }
+    },
+    "logo-lockup": {
+      "en": {
+        "title": "What Is Logo Lockup? | Muntin Digital",
+        "desc": "Logo lockup is a fixed composition of a mark, a wordmark, and sometimes a tagline, designed as one asset — spacing, alignment, and proportions locked in…"
+      },
+      "es": {
+        "title": "¿Qué es Composición de logo (lockup)? | Muntin Digital",
+        "desc": "Composición de logo (lockup) es una composición fija de un símbolo, un logotipo y a veces un lema, diseñada como un único activo — con espaciado…"
+      }
+    },
+    "map-pack": {
+      "en": {
+        "title": "What Is Map Pack? | Muntin Digital",
+        "desc": "Map pack is the three-restaurant card Google shows above the blue links when a query has local intent — \"Italian restaurant near me\", \"best omakase in…"
+      },
+      "es": {
+        "title": "¿Qué es Map pack? | Muntin Digital",
+        "desc": "Map pack es la tarjeta de tres restaurantes que Google muestra arriba de los enlaces azules cuando una consulta tiene intención local — \"restaurante…"
+      }
+    },
+    "margin": {
+      "en": {
+        "title": "What Is Margin? | Muntin Digital",
+        "desc": "Margin is sales minus costs. Gross margin = sales − food cost. Contribution margin = sales − variable costs (food + hourly labor + card fees). Operating…"
+      },
+      "es": {
+        "title": "¿Qué es Margen? | Muntin Digital",
+        "desc": "Margen es ventas menos costos. Margen bruto = ventas − food cost. Margen de contribución = ventas − costos variables (food + labor por hora + comisiones…"
+      }
+    },
+    "margin-math": {
+      "en": {
+        "title": "What Is Margin Math? | Muntin Digital",
+        "desc": "Margin Math is four browser-side calculators — Delivery Break-Even, Prime Cost Check, Break-Even Covers, Price-Raise Simulator — plus a printable Monthly…"
+      },
+      "es": {
+        "title": "¿Qué es Cálculo de Margen? | Muntin Digital",
+        "desc": "Cálculo de Margen es cuatro calculadoras que corren en tu navegador — Punto de equilibrio con delivery, Chequeo de prime cost, Cubiertos para romper el…"
+      }
+    },
+    "menu-copy": {
+      "en": {
+        "title": "What Is Menu Copy? | Muntin Digital",
+        "desc": "Menu copy is the words next to each item — the descriptive sentence, the dish name, the price as it appears on the page — viewed as a separate craft from…"
+      },
+      "es": {
+        "title": "¿Qué es Copy de menú? | Muntin Digital",
+        "desc": "Copy de menú es las palabras que acompañan a cada plato — la oración descriptiva, el nombre del plato, el precio tal como aparece en la página — vistas…"
+      }
+    },
+    "menu-engineering": {
+      "en": {
+        "title": "What Is Menu Engineering? | Muntin Digital",
+        "desc": "Menu engineering is a 50-year-old restaurant analysis (Kasavana & Smith, 1990) that plots every menu item on a 2&times;2 of contribution margin ($ per…"
+      },
+      "es": {
+        "title": "¿Qué es Ingeniería de menú? | Muntin Digital",
+        "desc": "Ingeniería de menú es un análisis clásico de la industria restaurantera (Kasavana & Smith, 1990) que grafica cada plato en un 2&times;2 de margen de…"
+      }
+    },
+    "menu-mix": {
+      "en": {
+        "title": "What Is Menu Mix? | Muntin Digital",
+        "desc": "Menu mix is for each item: units sold divided by total units sold across the menu in the same period. The denominator that turns a raw sales count into a…"
+      },
+      "es": {
+        "title": "¿Qué es Cuota del menú? | Muntin Digital",
+        "desc": "Cuota del menú es para cada plato: unidades vendidas dividido entre el total de unidades vendidas del menú en el mismo periodo. El denominador que…"
+      }
+    },
+    "meta-description": {
+      "en": {
+        "title": "What Is Meta Description? | Muntin Digital",
+        "desc": "Meta description is the short paragraph of text Google shows underneath the blue headline in a search result. Set in the HTML with &lt;meta…"
+      },
+      "es": {
+        "title": "¿Qué es Meta descripción? | Muntin Digital",
+        "desc": "Meta descripción es el párrafo corto que Google muestra debajo del titular azul en un resultado de búsqueda. Se pone en el HTML con &lt;meta…"
+      }
+    },
+    "mobile-first-indexing": {
+      "en": {
+        "title": "What Is Mobile-First Indexing? | Muntin Digital",
+        "desc": "Mobile-first indexing is Google's rule, in effect since 2019, that it only looks at the mobile version of your site when deciding how to rank it. Whatever…"
+      },
+      "es": {
+        "title": "¿Qué es Indexación móvil primero? | Muntin Digital",
+        "desc": "Indexación móvil primero es la regla de Google, vigente desde 2019, de que solo mira la versión móvil de tu sitio para decidir cómo rankearlo. Lo bien que…"
+      }
+    },
+    "monochromatic-palette": {
+      "en": {
+        "title": "What Is Monochromatic Palette? | Muntin Digital",
+        "desc": "Monochromatic palette is a palette built from a single hue rendered at multiple lightness levels — a deep navy paired with a mid-blue, a pale ice, and a…"
+      },
+      "es": {
+        "title": "¿Qué es Paleta monocromática? | Muntin Digital",
+        "desc": "Paleta monocromática es una paleta construida a partir de un solo matiz, llevado a varios niveles de luminosidad — un azul marino profundo junto a un azul…"
+      }
+    },
+    "monochrome-variant": {
+      "en": {
+        "title": "What Is Monochrome Variant? | Muntin Digital",
+        "desc": "Monochrome variant is a single-color version of a logo, usually pure black and pure white (and occasionally a single brand color), designed for contexts…"
+      },
+      "es": {
+        "title": "¿Qué es Variante monocromática? | Muntin Digital",
+        "desc": "Variante monocromática es una versión de un solo color de un logo, normalmente en negro puro y blanco puro (y ocasionalmente en un solo color de marca)…"
+      }
+    },
+    "nap-consistency": {
+      "en": {
+        "title": "What Is NAP Consistency? | Muntin Digital",
+        "desc": "NAP consistency is your business name, address, and phone number written identically across your website, Google Business Profile, Yelp, Apple Maps…"
+      },
+      "es": {
+        "title": "¿Qué es Consistencia de NAP? | Muntin Digital",
+        "desc": "Consistencia de NAP es el nombre, la dirección y el teléfono de tu negocio escritos igualito en tu sitio web, en la ficha de Google Business, en Yelp, en…"
+      }
+    },
+    "newsletter-capture": {
+      "en": {
+        "title": "What Is Newsletter Capture? | Muntin Digital",
+        "desc": "Newsletter capture is a simple form on your site that collects an email address in exchange for an actual reason to give it — \"first to know about the…"
+      },
+      "es": {
+        "title": "¿Qué es Captura de newsletter? | Muntin Digital",
+        "desc": "Captura de newsletter es un formulario simple en tu sitio que recibe una dirección de correo a cambio de una razón concreta para darla — \"sé el primero en…"
+      }
+    },
+    "og-share-preview": {
+      "en": {
+        "title": "What Is OG Share Preview? | Muntin Digital",
+        "desc": "OG share preview is the preview card iMessage / WhatsApp / Messenger / Facebook show when someone shares your URL — a title, a short description, and a…"
+      },
+      "es": {
+        "title": "¿Qué es Vista previa al compartir (OG)? | Muntin Digital",
+        "desc": "Vista previa al compartir (OG) es la tarjeta de previsualización que iMessage / WhatsApp / Messenger / Facebook muestran al compartir tu URL — un título…"
+      }
+    },
+    "oklab": {
+      "en": {
+        "title": "What Is OKLab? | Muntin Digital",
+        "desc": "OKLab is a color space designed so that mathematical distance between two colors matches the perceived difference a human reader sees. Plain RGB does not…"
+      },
+      "es": {
+        "title": "¿Qué es OKLab? | Muntin Digital",
+        "desc": "OKLab es un espacio de color diseñado para que la distancia matemática entre dos colores coincida con la diferencia que un lector humano percibe. El RGB…"
+      }
+    },
+    "online-ordering": {
+      "en": {
+        "title": "What Is Online Ordering Link? | Muntin Digital",
+        "desc": "Online ordering link is a button on your menu page that links directly to your pickup or delivery checkout — not a landing page, not an interstitial…"
+      },
+      "es": {
+        "title": "¿Qué es Enlace de pedidos en línea? | Muntin Digital",
+        "desc": "Enlace de pedidos en línea es un botón en tu página de menú que enlaza directo al checkout de recoger o de delivery — no a una página de aterrizaje, no a…"
+      }
+    },
+    "open-graph": {
+      "en": {
+        "title": "What Is Open Graph? | Muntin Digital",
+        "desc": "Open Graph is a set of meta tags that tell Facebook, Instagram, LinkedIn, iMessage, and Slack how to preview your link when someone pastes it — which…"
+      },
+      "es": {
+        "title": "¿Qué es Open Graph? | Muntin Digital",
+        "desc": "Open Graph es un conjunto de etiquetas meta que le dicen a Facebook, Instagram, LinkedIn, iMessage y Slack cómo mostrar la vista previa de tu enlace…"
+      }
+    },
+    "opening-hours-specification": {
+      "en": {
+        "title": "What Is OpeningHoursSpecification? | Muntin Digital",
+        "desc": "OpeningHoursSpecification is a specific Schema.org structured-data type for representing when a place is open. Lives inside a Restaurant JSON-LD block as…"
+      },
+      "es": {
+        "title": "¿Qué es OpeningHoursSpecification? | Muntin Digital",
+        "desc": "OpeningHoursSpecification es un tipo específico de datos estructurados de Schema.org para representar cuándo un lugar está abierto. Vive dentro de un…"
+      }
+    },
+    "owned-channel": {
+      "en": {
+        "title": "What Is Owned Channel? | Muntin Digital",
+        "desc": "Owned channel is any customer relationship, ordering path, or data stream you control end-to-end &mdash; your website, your direct-ordering link, your…"
+      },
+      "es": {
+        "title": "¿Qué es Canal propio? | Muntin Digital",
+        "desc": "Canal propio es cualquier relaci&oacute;n con el cliente, ruta de pedido o flujo de datos que controlas de extremo a extremo &mdash; tu sitio web, tu…"
+      }
+    },
+    "pagespeed-insights": {
+      "en": {
+        "title": "What Is PageSpeed Insights? | Muntin Digital",
+        "desc": "PageSpeed Insights is Google's free web tool at pagespeed.web.dev that runs a Lighthouse audit on any URL and shows you your Core Web Vitals plus a…"
+      },
+      "es": {
+        "title": "¿Qué es PageSpeed Insights? | Muntin Digital",
+        "desc": "PageSpeed Insights es la herramienta web gratuita de Google en pagespeed.web.dev que corre una auditoría de Lighthouse sobre cualquier URL y te muestra…"
+      }
+    },
+    "photo-brief": {
+      "en": {
+        "title": "What Is Photo Brief? | Muntin Digital",
+        "desc": "Photo brief is a structured shot list a restaurant owner hands to a photographer at the start of a session: which dishes get shot, where each shot is…"
+      },
+      "es": {
+        "title": "¿Qué es Brief de fotos? | Muntin Digital",
+        "desc": "Brief de fotos es una lista de tomas estructurada que el dueño de un restaurante le entrega al fotógrafo al inicio de una sesión: qué platos se…"
+      }
+    },
+    "pii": {
+      "en": {
+        "title": "What Is PII? | Muntin Digital",
+        "desc": "PII is personally Identifiable Information — any data that can identify a specific person on its own or in combination with other data. For a restaurant…"
+      },
+      "es": {
+        "title": "¿Qué es PII? | Muntin Digital",
+        "desc": "PII es información de Identificación Personal — cualquier dato que puede identificar a una persona específica solo o en combinación con otros datos. Para…"
+      }
+    },
+    "plate-cost": {
+      "en": {
+        "title": "What Is Plate Cost? | Muntin Digital",
+        "desc": "Plate cost is what it costs you in ingredients to send one plate of a dish to the pass, after trim, peel, bone, and shrink. Computed per ingredient as…"
+      },
+      "es": {
+        "title": "¿Qué es Costo del plato? | Muntin Digital",
+        "desc": "Costo del plato es lo que te cuesta en ingredientes mandar un plato al pase, después de la limpieza, el pelado, el deshuesado y la merma. Se calcula por…"
+      }
+    },
+    "prime-cost": {
+      "en": {
+        "title": "What Is Prime Cost? | Muntin Digital",
+        "desc": "Prime cost is your food cost plus your labor cost, expressed as a percentage of sales. Healthy independents land between 55–65%; above 70% is…"
+      },
+      "es": {
+        "title": "¿Qué es Prime cost? | Muntin Digital",
+        "desc": "Prime cost es tu food cost más tu labor cost, expresado como porcentaje de ventas. Los independientes saludables caen entre 55–65%; por encima de 70% es…"
+      }
+    },
+    "privacy-policy": {
+      "en": {
+        "title": "What Is Privacy Policy? | Muntin Digital",
+        "desc": "Privacy policy is a page on your site (usually at /privacy) that plainly states what information you collect from visitors, what you use it for, and how…"
+      },
+      "es": {
+        "title": "¿Qué es Política de privacidad? | Muntin Digital",
+        "desc": "Política de privacidad es una página en tu sitio (normalmente en /privacy) que indica con claridad qué información recopilas de los visitantes, para qué…"
+      }
+    },
+    "professional-email": {
+      "en": {
+        "title": "What Is Professional Email? | Muntin Digital",
+        "desc": "Professional email is email that runs on your own domain (hello@rowhousegarden.com) rather than a free Gmail or Yahoo address. Usually $6–$12/month per…"
+      },
+      "es": {
+        "title": "¿Qué es Correo profesional? | Muntin Digital",
+        "desc": "Correo profesional es correo que corre en tu propio dominio (hola@rowhousegarden.com) en vez de una dirección gratis de Gmail o Yahoo. Suele costar entre…"
+      }
+    },
+    "real-photos": {
+      "en": {
+        "title": "What Is Real Photos? | Muntin Digital",
+        "desc": "Real photos is photographs of your space, your food, and your team — not royalty-free stock images licensed from an agency."
+      },
+      "es": {
+        "title": "¿Qué es Fotos reales? | Muntin Digital",
+        "desc": "Fotos reales es fotografías de tu espacio, de tu comida y de tu equipo — no imágenes de stock con licencia de una agencia."
+      }
+    },
+    "reservation-link": {
+      "en": {
+        "title": "What Is Reservation Link? | Muntin Digital",
+        "desc": "Reservation link is a persistent link — in the nav, in the hero, and in the mobile footer — that starts a reservation flow. Ideally wired to whichever…"
+      },
+      "es": {
+        "title": "¿Qué es Enlace de reserva? | Muntin Digital",
+        "desc": "Enlace de reserva es un enlace persistente — en la navegación, en el hero, y en el pie móvil — que arranca un flujo de reserva. Idealmente conectado a la…"
+      }
+    },
+    "responsive-design": {
+      "en": {
+        "title": "What Is Responsive Design? | Muntin Digital",
+        "desc": "Responsive design is a design approach where the same page automatically rearranges itself to fit whatever screen it lands on — phone, tablet, desktop —…"
+      },
+      "es": {
+        "title": "¿Qué es Diseño responsivo? | Muntin Digital",
+        "desc": "Diseño responsivo es un enfoque de diseño en el que la misma página se reacomoda automáticamente para caber en la pantalla donde aterrice — celular…"
+      }
+    },
+    "review-responsiveness": {
+      "en": {
+        "title": "What Is Review Responsiveness? | Muntin Digital",
+        "desc": "Review responsiveness is the percentage of your recent Google reviews to which the business owner has posted a reply — visible right under each review on…"
+      },
+      "es": {
+        "title": "¿Qué es Respuesta a reseñas? | Muntin Digital",
+        "desc": "Respuesta a reseñas es el porcentaje de tus reseñas recientes de Google a las que el dueño del negocio respondió — visible justo debajo de cada reseña en…"
+      }
+    },
+    "rich-results": {
+      "en": {
+        "title": "What Is Rich Results? | Muntin Digital",
+        "desc": "Rich results is enhanced Google search results that show more than a plain blue link — star ratings, hours, prices, FAQ dropdowns, image carousels…"
+      },
+      "es": {
+        "title": "¿Qué es Resultados enriquecidos? | Muntin Digital",
+        "desc": "Resultados enriquecidos es resultados de Google mejorados que muestran más que un enlace azul simple — calificaciones con estrellas, horario, precios…"
+      }
+    },
+    "robots-txt": {
+      "en": {
+        "title": "What Is Robots.txt? | Muntin Digital",
+        "desc": "robots.txt is a tiny plain-text file at /robots.txt on your domain that tells search-engine crawlers which parts of your site they can and can't read…"
+      },
+      "es": {
+        "title": "¿Qué es robots.txt? | Muntin Digital",
+        "desc": "robots.txt es un archivito de texto plano en /robots.txt de tu dominio que les dice a los rastreadores de los buscadores qué partes del sitio pueden leer…"
+      }
+    },
+    "schema": {
+      "en": {
+        "title": "What Is Schema Markup? | Muntin Digital",
+        "desc": "Schema markup is invisible tags on your page that spell out, in a format Google can read directly, exactly what kind of business you are — \"I'm a…"
+      },
+      "es": {
+        "title": "¿Qué es Marcado schema? | Muntin Digital",
+        "desc": "Marcado schema es etiquetas invisibles en tu página que le dicen a Google, en un formato que lee directo, exactamente qué tipo de negocio eres — \"soy un…"
+      }
+    },
+    "search-console": {
+      "en": {
+        "title": "What Is Google Search Console? | Muntin Digital",
+        "desc": "Google Search Console is the free Google dashboard that shows you which search terms people used to find your site, which pages they landed on, and…"
+      },
+      "es": {
+        "title": "¿Qué es Google Search Console? | Muntin Digital",
+        "desc": "Google Search Console es el panel gratuito de Google que te muestra con qué términos de búsqueda llegó la gente a tu sitio, en qué páginas aterrizó y si…"
+      }
+    },
+    "sensory-adjective": {
+      "en": {
+        "title": "What Is Sensory Adjective? | Muntin Digital",
+        "desc": "Sensory adjective is a modifier in a menu description that names a perceptual quality of the dish — flavor (smoky, briny, tangy), texture (crispy, silky…"
+      },
+      "es": {
+        "title": "¿Qué es Adjetivo sensorial? | Muntin Digital",
+        "desc": "Adjetivo sensorial es un modificador en la descripción de un plato que nombra una cualidad perceptual — sabor (ahumado, salobre, picante), textura…"
+      }
+    },
+    "service-charge": {
+      "en": {
+        "title": "What Is Service Charge? | Muntin Digital",
+        "desc": "Service charge is a percentage (commonly 18–22%) the restaurant adds to the guest check automatically, in lieu of or alongside tipping. Treated as…"
+      },
+      "es": {
+        "title": "¿Qué es Cargo de servicio? | Muntin Digital",
+        "desc": "Cargo de servicio es un porcentaje (comúnmente 18–22%) que el restaurante agrega a la cuenta del comensal automáticamente, en lugar de o además de la…"
+      }
+    },
+    "sitemap": {
+      "en": {
+        "title": "What Is Sitemap? | Muntin Digital",
+        "desc": "Sitemap is a file at /sitemap.xml on your domain that lists every public page on your site. You submit it once to Google Search Console and Bing Webmaster…"
+      },
+      "es": {
+        "title": "¿Qué es Mapa del sitio? | Muntin Digital",
+        "desc": "Mapa del sitio es un archivo en /sitemap.xml de tu dominio que lista todas las páginas públicas de tu sitio. Lo envías una vez a Google Search Console y a…"
+      }
+    },
+    "social-proof": {
+      "en": {
+        "title": "What Is Social Proof? | Muntin Digital",
+        "desc": "Social proof is a quote, star rating, or press mention surfaced on your homepage — ideally in or near the hero, not buried on a Testimonials page — that…"
+      },
+      "es": {
+        "title": "¿Qué es Prueba social? | Muntin Digital",
+        "desc": "Prueba social es una cita, una calificación con estrellas o una mención de prensa puesta arriba en la portada — idealmente en o cerca del hero, no…"
+      }
+    },
+    "special-hours": {
+      "en": {
+        "title": "What Is Special Hours? | Muntin Digital",
+        "desc": "Special hours is a separate entity in Google's data model from regular hours: per-date overrides for holidays, private events, weather closures, and…"
+      },
+      "es": {
+        "title": "¿Qué es Horarios especiales? | Muntin Digital",
+        "desc": "Horarios especiales es una entidad aparte del horario regular en el modelo de datos de Google: excepciones por fecha para feriados, eventos privados…"
+      }
+    },
+    "ssl-certificate": {
+      "en": {
+        "title": "What Is SSL Certificate? | Muntin Digital",
+        "desc": "SSL certificate is a small file your web server uses to prove it's really you and to encrypt the connection to a visitor's browser. HTTPS is the result…"
+      },
+      "es": {
+        "title": "¿Qué es Certificado SSL? | Muntin Digital",
+        "desc": "Certificado SSL es un archivo pequeño que tu servidor web usa para probar que eres tú de verdad y para cifrar la conexión hacia el navegador del…"
+      }
+    },
+    "stale-copyright": {
+      "en": {
+        "title": "What Is Stale Copyright? | Muntin Digital",
+        "desc": "Stale copyright is the copyright year shown in your site footer (e.g. \"© 2024 Joe's Pizza\"). Diners use it as a subconscious freshness signal —…"
+      },
+      "es": {
+        "title": "¿Qué es Copyright desactualizado? | Muntin Digital",
+        "desc": "Copyright desactualizado es el año de copyright que aparece en el pie de página de tu sitio (por ejemplo \"© 2024 Pizzería de Joe\"). Los comensales lo usan…"
+      }
+    },
+    "sticky-footer": {
+      "en": {
+        "title": "What Is Sticky Mobile Footer? | Muntin Digital",
+        "desc": "Sticky mobile footer is a thin bar pinned to the bottom of every mobile page holding one or two of your most important actions — usually Call, Reserve, or…"
+      },
+      "es": {
+        "title": "¿Qué es Pie móvil fijo? | Muntin Digital",
+        "desc": "Pie móvil fijo es una barra delgada anclada al fondo de cada página móvil que sostiene una o dos de tus acciones más importantes — normalmente Llamar…"
+      }
+    },
+    "structured-data": {
+      "en": {
+        "title": "What Is Structured Data? | Muntin Digital",
+        "desc": "Structured data is a small JSON block embedded in your website's &lt;head&gt; that mirrors the human-facing content (hours, address, menu items, reviews…"
+      },
+      "es": {
+        "title": "¿Qué es Datos estructurados? | Muntin Digital",
+        "desc": "Datos estructurados es un pequeño bloque JSON embebido en el &lt;head&gt; de tu sitio que refleja el contenido visible (horarios, dirección, platos del…"
+      }
+    },
+    "subtype-bakery": {
+      "en": {
+        "title": "What Is Bakery / Pâtisserie? | Muntin Digital",
+        "desc": "Bakery / pâtisserie is bakeries, patisseries, and dessert shops where custom-cake intake and wholesale accounts are the margin engine beneath the walk-in…"
+      },
+      "es": {
+        "title": "¿Qué es Panadería / repostería? | Muntin Digital",
+        "desc": "Panadería / repostería es panaderías, pastelerías y dulcerías donde los encargos de pasteles personalizados y las cuentas mayoristas son el motor de…"
+      }
+    },
+    "subtype-bar-pub": {
+      "en": {
+        "title": "What Is Bar / Pub / Brewery? | Muntin Digital",
+        "desc": "Bar / pub / brewery is bars, pubs, taprooms, breweries, wine bars, cocktail rooms — drink-led spots where private-party events and happy-hour clarity…"
+      },
+      "es": {
+        "title": "¿Qué es Bar / pub / cervecería? | Muntin Digital",
+        "desc": "Bar / pub / cervecería es bares, pubs, taprooms, cervecerías, bares de vinos, coctelerías — lugares con eje en las bebidas donde los eventos privados y la…"
+      }
+    },
+    "subtype-cafe": {
+      "en": {
+        "title": "What Is Café / Coffee Shop? | Muntin Digital",
+        "desc": "Café / coffee shop is coffee-led spots where morning traffic is 80% of revenue and the two most-read pieces of content are hours and location. Schema…"
+      },
+      "es": {
+        "title": "¿Qué es Café / cafetería? | Muntin Digital",
+        "desc": "Café / cafetería es lugares con eje en el café donde el tráfico de la mañana es el 80 % de los ingresos y los dos datos que más busca la gente son el…"
+      }
+    },
+    "subtype-casual-dining": {
+      "en": {
+        "title": "What Is Casual / Full-Service? | Muntin Digital",
+        "desc": "Casual / full-service is sit-down restaurants that live in both worlds — reservations for dinner rushes, online ordering for lunch takeout. Neighborhood…"
+      },
+      "es": {
+        "title": "¿Qué es Casual / servicio completo? | Muntin Digital",
+        "desc": "Casual / servicio completo es restaurantes de mesa que viven en los dos mundos — reservas para la hora pico de la cena, pedidos en línea para el almuerzo…"
+      }
+    },
+    "subtype-catering-only": {
+      "en": {
+        "title": "What Is Catering-Only / Private Events? | Muntin Digital",
+        "desc": "Catering-only / private events is businesses that exist primarily to serve off-premise events — corporate catering, wedding catering, private-chef work…"
+      },
+      "es": {
+        "title": "¿Qué es Solo catering / eventos privados? | Muntin Digital",
+        "desc": "Solo catering / eventos privados es negocios que existen principalmente para servir eventos fuera del local — catering corporativo, catering de bodas…"
+      }
+    },
+    "subtype-fast-casual": {
+      "en": {
+        "title": "What Is Fast-Casual / Quick-Service? | Muntin Digital",
+        "desc": "Fast-casual / quick-service is counter-service restaurants where online ordering IS the business model. Every order through DoorDash/Grubhub costs 20-30%…"
+      },
+      "es": {
+        "title": "¿Qué es Fast-casual / servicio rápido? | Muntin Digital",
+        "desc": "Fast-casual / servicio rápido es restaurantes de mostrador donde pedir en línea ES el modelo de negocio. Cada pedido por DoorDash/Grubhub cuesta 20–30 %…"
+      }
+    },
+    "subtype-fine-dining": {
+      "en": {
+        "title": "What Is Fine-Dining? | Muntin Digital",
+        "desc": "Fine-dining is tasting-menu or prix-fixe restaurants where the reservation is the conversion, the wine list is marketing, and OpenTable/Resy/Tock…"
+      },
+      "es": {
+        "title": "¿Qué es Alta cocina? | Muntin Digital",
+        "desc": "Alta cocina es restaurantes de menú de degustación o prix-fixe donde la reserva es la conversión, la carta de vinos es marketing y la integración con…"
+      }
+    },
+    "subtype-food-truck": {
+      "en": {
+        "title": "What Is Food Truck / Pop-Up? | Muntin Digital",
+        "desc": "Food truck / pop-up is mobile kitchens and pop-ups where the primary content question is \"where are you today?\" — and static storefront maps are worse…"
+      },
+      "es": {
+        "title": "¿Qué es Food truck / pop-up? | Muntin Digital",
+        "desc": "Food truck / pop-up es cocinas móviles y pop-ups donde la pregunta central del contenido es \"¿dónde están hoy?\" — y un mapa fijo de local es peor que no…"
+      }
+    },
+    "subtype-ghost-kitchen": {
+      "en": {
+        "title": "What Is Ghost Kitchen / Delivery-Only? | Muntin Digital",
+        "desc": "Ghost kitchen / delivery-only is virtual brands and cloud kitchens that operate exclusively through aggregators — no dine-in, no pickup window, customers…"
+      },
+      "es": {
+        "title": "¿Qué es Cocina fantasma / solo entrega? | Muntin Digital",
+        "desc": "Cocina fantasma / solo entrega es marcas virtuales y cloud kitchens que operan exclusivamente por agregadores — sin mesa, sin ventanilla de recogida, el…"
+      }
+    },
+    "subtype-pizzeria": {
+      "en": {
+        "title": "What Is Pizzeria? | Muntin Digital",
+        "desc": "Pizzeria is pizza-first restaurants where ordering IS the business and every Slice/DoorDash/Grubhub pie costs 20-30% in commission. Schema: Restaurant…"
+      },
+      "es": {
+        "title": "¿Qué es Pizzería? | Muntin Digital",
+        "desc": "Pizzería es restaurantes donde la pizza es el eje y pedir ES el negocio — cada pizza por Slice/DoorDash/Grubhub se lleva 20–30 % de comisión. Schema…"
+      }
+    },
+    "tap-targets": {
+      "en": {
+        "title": "What Is Tap Targets? | Muntin Digital",
+        "desc": "Tap targets is any clickable element — button, link, menu item — that a finger taps on a phone. Google and Apple both recommend a minimum 44×44-pixel tap…"
+      },
+      "es": {
+        "title": "¿Qué es Objetivos de toque? | Muntin Digital",
+        "desc": "Objetivos de toque es cualquier elemento clicable — botón, enlace, ítem de menú — que un dedo toca en un celular. Google y Apple recomiendan un área…"
+      }
+    },
+    "terms-of-service": {
+      "en": {
+        "title": "What Is Terms of Service? | Muntin Digital",
+        "desc": "Terms of Service is a page covering the rules of using your site — reservation cancellation policy, gift-card terms, any disputes. Less strictly required…"
+      },
+      "es": {
+        "title": "¿Qué es Términos del servicio? | Muntin Digital",
+        "desc": "Términos del servicio es una página que cubre las reglas de usar tu sitio — política de cancelación de reservas, términos de tarjetas de regalo, cualquier…"
+      }
+    },
+    "third-party-marketplace": {
+      "en": {
+        "title": "What Is Third-Party Marketplace? | Muntin Digital",
+        "desc": "Third-party marketplace is a platform that sits between you and your customer &mdash; DoorDash, Uber Eats, Grubhub, Yelp, OpenTable, Google&rsquo;s Find a…"
+      },
+      "es": {
+        "title": "¿Qué es Marketplace de terceros? | Muntin Digital",
+        "desc": "Marketplace de terceros es una plataforma que se sit&uacute;a entre t&uacute; y tu cliente &mdash; DoorDash, Uber Eats, Grubhub, Yelp, OpenTable, Find a…"
+      }
+    },
+    "title-tag": {
+      "en": {
+        "title": "What Is Title Tag? | Muntin Digital",
+        "desc": "Title tag is the line of text that shows up as the clickable blue headline of your page in Google search results, and as the name of the tab in a browser…"
+      },
+      "es": {
+        "title": "¿Qué es Etiqueta de título? | Muntin Digital",
+        "desc": "Etiqueta de título es el renglón de texto que aparece como titular azul clicable de tu página en los resultados de Google, y como nombre de la pestaña del…"
+      }
+    },
+    "transport-security": {
+      "en": {
+        "title": "What Is Transport Security? | Muntin Digital",
+        "desc": "Transport security is the bundle of HTTP headers a modern site sends to tell browsers it should always load over HTTPS and how to handle script / frame…"
+      },
+      "es": {
+        "title": "¿Qué es Seguridad de transporte? | Muntin Digital",
+        "desc": "Seguridad de transporte es el conjunto de encabezados HTTP que un sitio moderno envía para indicar al navegador que siempre debe cargarse por HTTPS y cómo…"
+      }
+    },
+    "ttfb": {
+      "en": {
+        "title": "What Is Time to First Byte? | Muntin Digital",
+        "desc": "Time to First Byte is how long it takes your web server to send the very first byte of a page after a visitor requests it. Measured in milliseconds. Under…"
+      },
+      "es": {
+        "title": "¿Qué es Time to First Byte? | Muntin Digital",
+        "desc": "Time to First Byte es cuánto tarda tu servidor web en enviar el primer byte de una página después de que un visitante la pide. Se mide en milisegundos…"
+      }
+    },
+    "typography-pairing": {
+      "en": {
+        "title": "What Is Typography Pairing? | Muntin Digital",
+        "desc": "Typography pairing is the combination of a display typeface (used for headings and signage) and a body typeface (used for long-form reading) that together…"
+      },
+      "es": {
+        "title": "¿Qué es Combinación tipográfica? | Muntin Digital",
+        "desc": "Combinación tipográfica es la combinación de una tipografía display (usada para titulares y rótulos) y una tipografía de cuerpo (usada para lectura larga)…"
+      }
+    },
+    "url-fragment": {
+      "en": {
+        "title": "What Is URL Fragment? | Muntin Digital",
+        "desc": "URL fragment is the portion of a URL that comes after the # symbol (sometimes called the \"hash\"). Per HTTP specification, browsers never transmit…"
+      },
+      "es": {
+        "title": "¿Qué es Fragmento de URL? | Muntin Digital",
+        "desc": "Fragmento de URL es la porción de una URL que viene después del símbolo # (a veces llamada \"hash\"). Según la especificación HTTP, los navegadores nunca…"
+      }
+    },
+    "url-fragment-vs-query": {
+      "en": {
+        "title": "What Is URL Fragment Vs. Query? | Muntin Digital",
+        "desc": "URL fragment vs. query is in a URL, the part after ? is the query (sent to the server with every request). The part after # is the fragment (per HTTP…"
+      },
+      "es": {
+        "title": "¿Qué es Fragmento de URL vs query? | Muntin Digital",
+        "desc": "Fragmento de URL vs query es en una URL, la parte después del ? es el query (se manda al servidor con cada request). La parte después del # es el…"
+      }
+    },
+    "variable-costs": {
+      "en": {
+        "title": "What Is Variable Costs? | Muntin Digital",
+        "desc": "Variable costs is costs that scale with sales volume: food ingredients, hourly labor (cooks, servers, bussers, dishwashers), credit-card processing…"
+      },
+      "es": {
+        "title": "¿Qué es Costos variables? | Muntin Digital",
+        "desc": "Costos variables es costos que escalan con el volumen de ventas: ingredientes, labor por hora (cocineros, meseros, bus, lavaplatos), procesamiento de…"
+      }
+    },
+    "viewport-meta": {
+      "en": {
+        "title": "What Is Viewport Meta Tag? | Muntin Digital",
+        "desc": "Viewport meta tag is a single line of code in the &lt;head&gt; of every page (&lt;meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"&gt;)…"
+      },
+      "es": {
+        "title": "¿Qué es Etiqueta meta viewport? | Muntin Digital",
+        "desc": "Etiqueta meta viewport es una sola línea de código en el &lt;head&gt; de cada página (&lt;meta name=\"viewport\" content=\"width=device-width…"
+      }
+    },
+    "wcag-contrast": {
+      "en": {
+        "title": "What Is WCAG AA Contrast? | Muntin Digital",
+        "desc": "WCAG AA contrast is a readability standard, defined by the Web Content Accessibility Guidelines (WCAG), that requires body text to contrast at least 4.5:1…"
+      },
+      "es": {
+        "title": "¿Qué es Contraste WCAG AA? | Muntin Digital",
+        "desc": "Contraste WCAG AA es un estándar de legibilidad, definido por las Web Content Accessibility Guidelines (WCAG), que exige que el texto de cuerpo contraste…"
+      }
+    },
+    "working-contact-form": {
+      "en": {
+        "title": "What Is Working Contact Form? | Muntin Digital",
+        "desc": "Working contact form is a form where a visitor can type a question or an inquiry and actually get a response. \"Working\" is the important word — the form…"
+      },
+      "es": {
+        "title": "¿Qué es Formulario de contacto que funciona? | Muntin Digital",
+        "desc": "Formulario de contacto que funciona es un formulario donde un visitante puede escribir una pregunta o una consulta y de verdad recibir respuesta. «Que…"
+      }
+    },
+    "yield-percent": {
+      "en": {
+        "title": "What Is Yield Percent? | Muntin Digital",
+        "desc": "Yield percent is for a given ingredient: the percentage of as-purchased weight that survives trim, peel, bone, fat, and cooking shrinkage. Romaine yields…"
+      },
+      "es": {
+        "title": "¿Qué es Porcentaje de rendimiento? | Muntin Digital",
+        "desc": "Porcentaje de rendimiento es para un ingrediente dado: el porcentaje del peso tal como se compra que sobrevive a la limpieza, el pelado, los huesos, la…"
+      }
+    }
+  }
+}

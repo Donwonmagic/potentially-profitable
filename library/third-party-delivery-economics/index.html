@@ -222,9 +222,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=ab576c3b2ed6" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=eda1f9ad3f38" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ab576c3b2ed6"><link rel="stylesheet" href="/assets/site-article.css?v=eda1f9ad3f38"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=82c8e0678bd3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=96ce2c24881c" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=82c8e0678bd3"><link rel="stylesheet" href="/assets/site-article.css?v=96ce2c24881c"></noscript>
 
 <!-- lazy-load:p --><script>(window.requestIdleCallback||function(c){return setTimeout(c,500);})(function(){var s=document.createElement("script");s.src="/assets/p.js?v=20260503";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:p -->
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
@@ -263,6 +263,10 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     {
       "@type": "DefinedTerm",
       "url": "https://muntin.digital/glossary/cover/"
+    },
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/glossary/cta/"
     },
     {
       "@type": "DefinedTerm",
@@ -742,7 +746,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
     <p>I am not telling you to delist. DoorDash is, structurally, a customer-acquisition tool that costs you 30%. For an independent restaurant with a kitchen capable of 60% incremental volume, that 30% is the price you pay for the marginal <!-- LIBRARY:autolink:start --><a href="/glossary/cover/" data-glossary-head="Cover" data-glossary-aka="one customer served" data-glossary-blurb="One customer seated and served.">cover</a><!-- LIBRARY:autolink:end --> &mdash; and it&rsquo;s a fair price <em>if you treat the platform as a discovery channel, not a relationship channel</em>.</p>
 
-    <p>The problem isn&rsquo;t that you&rsquo;re on DoorDash. The problem is that you&rsquo;re on DoorDash <em>and</em> not actively converting those customers to direct. The first-time DoorDash order is a $4.42 loss versus direct. The second-time order, also through DoorDash, is the same. The customer&rsquo;s third order is the one where margin compounds &mdash; and the third order is the one most independents never recapture, because there&rsquo;s no website call-to-action that asks them to.</p>
+    <p>The problem isn&rsquo;t that you&rsquo;re on DoorDash. The problem is that you&rsquo;re on DoorDash <em>and</em> not actively converting those customers to direct. The first-time DoorDash order is a $4.42 loss versus direct. The second-time order, also through DoorDash, is the same. The customer&rsquo;s third order is the one where margin compounds &mdash; and the third order is the one most independents never recapture, because there&rsquo;s no website <!-- LIBRARY:autolink:start --><a href="/glossary/cta/" data-glossary-head="Call to action" data-glossary-aka="CTA" data-glossary-blurb="The specific button or link that asks a visitor to do the next thing — &quot;Reserve a Table&quot;, &quot;Order Online&quot;, &quot;Book a Class&quot;, &quot;Get a Quote&quot;.">call-to-action</a><!-- LIBRARY:autolink:end --> that asks them to.</p>
 
     <p>An order-confirmation receipt with a 5%-off coupon to your direct site, mailed through DoorDash&rsquo;s own customer-receipt flow, is a free conversion lever. So is the QR code on the takeout bag. So is a card in the bag that says, in plain English, &ldquo;next time, save $3 by ordering direct.&rdquo;</p>
 
@@ -1089,7 +1093,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->30<!-- /count --> articles, <!-- count:tools.live -->12<!-- /count --> tools, <!-- count:glossary.terms -->149<!-- /count --> glossary terms &mdash; with a one-person web studio behind it in Silver Spring, MD.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->34<!-- /count --> articles, <!-- count:tools.live -->12<!-- /count --> tools, <!-- count:glossary.terms -->149<!-- /count --> glossary terms &mdash; with a one-person web studio behind it in Silver Spring, MD.</p>
       </div>
 
       <!-- Column order mirrors the 4-item primary nav

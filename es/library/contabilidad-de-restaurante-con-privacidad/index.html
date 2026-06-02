@@ -221,9 +221,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=ab576c3b2ed6" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=eda1f9ad3f38" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ab576c3b2ed6"><link rel="stylesheet" href="/assets/site-article.css?v=eda1f9ad3f38"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=82c8e0678bd3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=96ce2c24881c" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=82c8e0678bd3"><link rel="stylesheet" href="/assets/site-article.css?v=96ce2c24881c"></noscript>
 <!-- article-abstract-mentions:start -->
 <script type="application/ld+json">
 {
@@ -247,6 +247,10 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     {
       "@type": "DefinedTerm",
       "url": "https://muntin.digital/es/glossary/privacy-policy/"
+    },
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/es/glossary/data-tiering/"
     }
   ]
 }
@@ -554,7 +558,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <p>Todo operador quiere saber si su <!-- LIBRARY:autolink:start --><a href="/es/glossary/food-cost/" data-glossary-head="Food cost" data-glossary-aka="costo de los insumos, como % de ventas" data-glossary-blurb="El costo de los ingredientes, alcohol y consumibles (productos de papel, empaque para llevar) expresado como porcentaje de ventas.">food cost</a><!-- LIBRARY:autolink:end --> está alto para su concepto. Esa curiosidad es legítima; el precio de saciarla no debería ser que tu lista de proveedores se vuelva una fila en un dataset de comparación que nunca aceptaste sembrar. Opt-in, no opt-out. Agregado, no crudo.</p>
 
-      <p>La trampa es que un benchmark se siente como un regalo mientras toma inventario de tu negocio. El momento en que tu costo de proveedores se vuelve una fila en el dataset de comparación de alguien, salió de tu control, y no lo puedes regresar. Este es el modelo de cuatro niveles de la <a href="/es/library/como-saber-si-una-herramienta-de-restaurante-es-segura/#2-el-modelo-de-cuatro-niveles-que-compartir-donde">auditoría de herramientas</a> aplicado a la contabilidad: tu P&amp;L mensual y tu porcentaje de food cost son datos de Tier 3, operacionalmente confidenciales; tu lista de proveedores y tu costo real de bienes son de Tier 2. Ninguno fluye hacia arriba a un benchmark compartido solo porque el feature existe.</p>
+      <p>La trampa es que un benchmark se siente como un regalo mientras toma inventario de tu negocio. El momento en que tu costo de proveedores se vuelve una fila en el dataset de comparación de alguien, salió de tu control, y no lo puedes regresar. Este es el <!-- LIBRARY:autolink:start --><a href="/es/glossary/data-tiering/" data-glossary-head="Data tiering" data-glossary-aka="Tier 1 / 2 / 3 / 4 model" data-glossary-blurb="A four-tier classification of business data — Public, Competitive-sensitive, Operational-confidential, Regulated — that decides who gets which information.">modelo de cuatro niveles</a><!-- LIBRARY:autolink:end --> de la <a href="/es/library/como-saber-si-una-herramienta-de-restaurante-es-segura/#2-el-modelo-de-cuatro-niveles-que-compartir-donde">auditoría de herramientas</a> aplicado a la contabilidad: tu P&amp;L mensual y tu porcentaje de food cost son datos de Tier 3, operacionalmente confidenciales; tu lista de proveedores y tu costo real de bienes son de Tier 2. Ninguno fluye hacia arriba a un benchmark compartido solo porque el feature existe.</p>
 
       <p>La verificación tiene dos partes. Primero, el default: un libro con privacidad envía los features de comparación apagados, y prenderlos es una decisión deliberada con una declaración clara de qué sale de tu cuenta. Segundo, la forma de lo que viaja: incluso en un benchmark opt-in, lo que debería salir es un agregado anonimizado, nunca tus partidas crudas. Si el pitch de una herramienta empieza con &ldquo;mira cómo te comparas con otros restaurantes&rdquo; y nunca aceptaste contribuir, tus números ya están en el pool. La versión honesta del feature dice, en claro, que tus datos siguen siendo tuyos y que el benchmark es algo a lo que te unes, no algo que te hacen.</p>
 
@@ -818,7 +822,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">La ventana.</p>
-        <p class="foot-blurb">Una biblioteca gratuita para restaurantes &mdash; <!-- count:articles.library -->30<!-- /count --> art&iacute;culos, <!-- count:tools.live -->12<!-- /count --> herramientas y un glosario de <!-- count:glossary.terms -->149<!-- /count --> t&eacute;rminos &mdash; con un estudio web de una persona detr&aacute;s, en Silver Spring, MD. Se habla espa&ntilde;ol.</p>
+        <p class="foot-blurb">Una biblioteca gratuita para restaurantes &mdash; <!-- count:articles.library -->34<!-- /count --> art&iacute;culos, <!-- count:tools.live -->12<!-- /count --> herramientas y un glosario de <!-- count:glossary.terms -->149<!-- /count --> t&eacute;rminos &mdash; con un estudio web de una persona detr&aacute;s, en Silver Spring, MD. Se habla espa&ntilde;ol.</p>
       </div>
 
       <!-- El orden de columnas refleja la navegación principal de 5

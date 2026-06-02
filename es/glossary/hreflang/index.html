@@ -4,8 +4,8 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-<title>CDN — Glosario Muntin Digital</title>
-<meta name="description" content="hreflang: Un atributo HTML (&lt;link rel=&quot;alternate&quot; hreflang=&quot;es&quot; href=&quot;...&quot;&gt;) que le dice a Google a qu&eacute; idioma y r…" />
+<title>¿Qué es hreflang? | Muntin Digital</title>
+<meta name="description" content="hreflang es un atributo HTML (&amp;lt;link rel=&amp;quot;alternate&amp;quot; hreflang=&amp;quot;es&amp;quot; href=&amp;quot;...&amp;quot;&amp;gt;) que le dice a Google a qu&amp;eacute…" />
 <meta name="theme-color" content="#2A50C8" />
 <link rel="canonical" href="https://muntin.digital/es/glossary/hreflang/" />
 <link rel="alternate" hreflang="en" href="https://muntin.digital/glossary/cdn/" />
@@ -135,9 +135,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=ab576c3b2ed6" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=eda1f9ad3f38" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ab576c3b2ed6"><link rel="stylesheet" href="/assets/site-article.css?v=eda1f9ad3f38"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=82c8e0678bd3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=96ce2c24881c" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=82c8e0678bd3"><link rel="stylesheet" href="/assets/site-article.css?v=96ce2c24881c"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -217,6 +217,38 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 }
 </script>
 <!-- glossary-article-schema:end -->
+<!-- glossary-faq-schema:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "@id": "https://muntin.digital/es/glossary/hreflang/#faq",
+      "inLanguage": "es",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Qué es hreflang?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "hreflang es un atributo HTML (&lt;link rel=&quot;alternate&quot; hreflang=&quot;es&quot; href=&quot;...&quot;&gt;) que le dice a Google a qu&eacute; idioma y regi&oacute;n est&aacute; dirigida una p&aacute;gina, y d&oacute;nde vive la p&aacute;gina equivalente en otro idioma. El cintur&oacute;n de seguridad del restaurante biling&uuml;e contra mostrar resultados en ingl&eacute;s a un comensal hispanohablante que buscaba en espa&ntilde;ol."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Por qué importa hreflang para un restaurante?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Si publicas versiones en ingl&eacute;s y espa&ntilde;ol de tu p&aacute;gina del men&uacute; (o de todo el sitio), Google necesita hreflang para mantenerlas separadas. Sin &eacute;l, el idioma equivocado puede aparecer en la b&uacute;squeda equivocada, puedes dividir tu equity entre ambas URLs, o una puede ser descartada del &iacute;ndice como duplicada. Las reglas no perdonan: cada alternativa tiene que estar accesible (sin 404), las declaraciones deben ser rec&iacute;procas (cada p&aacute;gina nombra a las dem&aacute;s) y la auto-referencia es obligatoria."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<!-- glossary-faq-schema:end -->
 </head>
 <body>
 
@@ -398,7 +430,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <span class="eyebrow"><a href="/es/glossary/mobile/">Móvil y velocidad</a></span>
       <h1 class="term-h1">hreflang</h1>
       <!-- term-example:start -->
-            <p class="term-example">Ejemplo: Un comensal en Silver Spring busca en espa&ntilde;ol &laquo;tacos cerca de m&iacute;.&raquo; El sitio de Tacombi tiene hreflang declarado en cada p&aacute;gina apuntando la versi&oacute;n en espa&ntilde;ol a <code>/es/menu/</code>. Google muestra la p&aacute;gina en espa&ntilde;ol en el SERP en espa&ntilde;ol. Sin hreflang, aparecer&iacute;a la versi&oacute;n en ingl&eacute;s y el visitante rebotar&iacute;a.</p>
+            <p class="term-example">Ejemplo: Una taquería bilingüe agrega una etiqueta hreflang que vincula su página de menú en inglés con la versión en español, de modo que un comensal hispanohablante que busca en español llega a la versión en español en lugar de la página en inglés con un aviso de traducir.</p>
             <!-- term-example:end -->
       <!-- glossary-backlinks:start --><!-- glossary-backlinks:end -->
       <p class="term-aka">etiqueta de idioma, alternativa de locale</p>
@@ -417,6 +449,19 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <p><a href="/es/learn/research/lighthouse-performance-scoring/">Cómo califica Lighthouse el rendimiento <span aria-hidden="true">↗</span></a></p>
     </aside>
       <!-- glossary-explainer-cue:start --><!-- glossary-explainer-cue:end -->
+      <!-- glossary-faq:start -->
+      <section class="term-faq" aria-labelledby="term-faq-h">
+        <h2 class="term-faq__h" id="term-faq-h">Preguntas frecuentes</h2>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">¿Qué es hreflang?</h3>
+          <p class="term-faq__a">hreflang es un atributo HTML (&amp;lt;link rel=&amp;quot;alternate&amp;quot; hreflang=&amp;quot;es&amp;quot; href=&amp;quot;...&amp;quot;&amp;gt;) que le dice a Google a qu&amp;eacute; idioma y regi&amp;oacute;n est&amp;aacute; dirigida una p&amp;aacute;gina, y d&amp;oacute;nde vive la p&amp;aacute;gina equivalente en otro idioma. El cintur&amp;oacute;n de seguridad del restaurante biling&amp;uuml;e contra mostrar resultados en ingl&amp;eacute;s a un comensal hispanohablante que buscaba en espa&amp;ntilde;ol.</p>
+        </div>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">¿Por qué importa hreflang para un restaurante?</h3>
+          <p class="term-faq__a">Si publicas versiones en ingl&amp;eacute;s y espa&amp;ntilde;ol de tu p&amp;aacute;gina del men&amp;uacute; (o de todo el sitio), Google necesita hreflang para mantenerlas separadas. Sin &amp;eacute;l, el idioma equivocado puede aparecer en la b&amp;uacute;squeda equivocada, puedes dividir tu equity entre ambas URLs, o una puede ser descartada del &amp;iacute;ndice como duplicada. Las reglas no perdonan: cada alternativa tiene que estar accesible (sin 404), las declaraciones deben ser rec&amp;iacute;procas (cada p&amp;aacute;gina nombra a las dem&amp;aacute;s) y la auto-referencia es obligatoria.</p>
+        </div>
+      </section>
+      <!-- glossary-faq:end -->
     </div>
   </div>
 </section>
@@ -514,7 +559,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">La ventana.</p>
-        <p class="foot-blurb">Una biblioteca gratuita para restaurantes &mdash; <!-- count:articles.library -->30<!-- /count --> art&iacute;culos, <!-- count:tools.live -->12<!-- /count --> herramientas y un glosario de <!-- count:glossary.terms -->149<!-- /count --> t&eacute;rminos &mdash; con un estudio web de una persona detr&aacute;s, en Silver Spring, MD. Se habla espa&ntilde;ol.</p>
+        <p class="foot-blurb">Una biblioteca gratuita para restaurantes &mdash; <!-- count:articles.library -->34<!-- /count --> art&iacute;culos, <!-- count:tools.live -->12<!-- /count --> herramientas y un glosario de <!-- count:glossary.terms -->149<!-- /count --> t&eacute;rminos &mdash; con un estudio web de una persona detr&aacute;s, en Silver Spring, MD. Se habla espa&ntilde;ol.</p>
       </div>
 
       <!-- El orden de columnas refleja la navegación principal de 5

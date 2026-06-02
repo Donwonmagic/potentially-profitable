@@ -233,9 +233,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=ab576c3b2ed6" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=eda1f9ad3f38" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ab576c3b2ed6"><link rel="stylesheet" href="/assets/site-article.css?v=eda1f9ad3f38"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=82c8e0678bd3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=96ce2c24881c" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=82c8e0678bd3"><link rel="stylesheet" href="/assets/site-article.css?v=96ce2c24881c"></noscript>
 <!-- article-abstract-mentions:start -->
 <script type="application/ld+json">
 {
@@ -275,6 +275,14 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     {
       "@type": "DefinedTerm",
       "url": "https://muntin.digital/glossary/core-web-vitals/"
+    },
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/glossary/special-hours/"
+    },
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/glossary/inp/"
     }
   ]
 }
@@ -784,7 +792,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
               <span class="viz-flow__num">5</span>
               <div class="viz-flow__body">
                 <p class="viz-flow__title">Small change ships in under an hour</p>
-                <p class="viz-flow__detail">Try updating holiday hours right now. If you can&rsquo;t &mdash; no access, complex CMS, requires a developer &mdash; that operational burden is already a leak.</p>
+                <p class="viz-flow__detail">Try updating <!-- LIBRARY:autolink:start --><a href="/glossary/special-hours/" data-glossary-head="Special hours" data-glossary-aka="the override for any day that doesn't follow your usual schedule" data-glossary-blurb="A separate entity in Google's data model from regular hours: per-date overrides for holidays, private events, weather closures, and modified-hours days (early-close on Christmas…">holiday hours</a><!-- LIBRARY:autolink:end --> right now. If you can&rsquo;t &mdash; no access, complex CMS, requires a developer &mdash; that operational burden is already a leak.</p>
               </div>
             </li>
             <li class="viz-flow__step" data-tone="rust">
@@ -896,7 +904,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <a class="see-also-card" href="/learn/research/lighthouse-performance-scoring/">
           <span class="see-also-kind">Research <span class="see-also-time">2 min read</span></span>
           <h3>How Lighthouse Scores Performance</h3>
-          <p>Lighthouse&#39;s performance metric is a composite of LCP, CLS, INP, and other Core Web Vitals; understanding the weighting helps prioritize fixes.</p>
+          <p>Lighthouse&#39;s performance metric is a composite of LCP, CLS, <!-- LIBRARY:autolink:start --><a href="/glossary/inp/" data-glossary-head="Interaction to Next Paint" data-glossary-aka="INP" data-glossary-blurb="Google's Core Web Vital for how quickly a page responds to a tap or click — the worst single interaction across the visit, in milliseconds.">INP</a><!-- LIBRARY:autolink:end -->, and other Core Web Vitals; understanding the weighting helps prioritize fixes.</p>
         </a>
       </li>
     </ul>
@@ -1010,7 +1018,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->30<!-- /count --> articles, <!-- count:tools.live -->12<!-- /count --> tools, <!-- count:glossary.terms -->149<!-- /count --> glossary terms &mdash; with a one-person web studio behind it in Silver Spring, MD.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->34<!-- /count --> articles, <!-- count:tools.live -->12<!-- /count --> tools, <!-- count:glossary.terms -->149<!-- /count --> glossary terms &mdash; with a one-person web studio behind it in Silver Spring, MD.</p>
       </div>
 
       <!-- Column order mirrors the 4-item primary nav

@@ -239,9 +239,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=ab576c3b2ed6" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=eda1f9ad3f38" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ab576c3b2ed6"><link rel="stylesheet" href="/assets/site-article.css?v=eda1f9ad3f38"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=82c8e0678bd3" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=96ce2c24881c" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=82c8e0678bd3"><link rel="stylesheet" href="/assets/site-article.css?v=96ce2c24881c"></noscript>
 <!-- article-abstract-mentions:start -->
 <script type="application/ld+json">
 {
@@ -265,6 +265,14 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     {
       "@type": "DefinedTerm",
       "url": "https://muntin.digital/glossary/meta-description/"
+    },
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/glossary/hours-of-operation/"
+    },
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/glossary/apple-bing-maps/"
     },
     {
       "@type": "DefinedTerm",
@@ -729,10 +737,10 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     "closes": "23:00"
   }
 ]</code></pre>
-<figcaption class="figure-caption">openingHoursSpecification — one entry per day-of-week group</figcaption>
+<figcaption class="figure-caption"><!-- LIBRARY:autolink:start --><a href="/glossary/hours-of-operation/" data-glossary-head="Hours of operation" data-glossary-aka="the times your restaurant is open, expressed in a way every map and listing service can read" data-glossary-blurb="The structured representation of when a restaurant is open across the week — encoded variously as Google Business Profile fields, Yelp's Business Information, Apple Business…">openingHoursSpecification</a><!-- LIBRARY:autolink:end --> — one entry per day-of-week group</figcaption>
 </figure>
 
-      <p>Holiday overrides go in a separate <code>specialOpeningHoursSpecification</code> block — both Google and Apple Maps read it, and a missing holiday closure is the most common reason an angry-on-Christmas-Eve review lands. The failure mode worth naming: CMS or template updates can quietly strip JSON-LD overnight. If you don't have a monthly schema check on your calendar, the first time you'll know your hours block went missing is when the one-star reviews start arriving.</p>
+      <p>Holiday overrides go in a separate <code>specialOpeningHoursSpecification</code> block — both Google and <!-- LIBRARY:autolink:start --><a href="/glossary/apple-bing-maps/" data-glossary-head="Apple Maps &amp; Bing Places" data-glossary-blurb="The non-Google map services — Apple Maps Connect (for iPhone users) and Bing Places (for Edge, Cortana, and ChatGPT-style Copilot) — where you can also claim and edit your…">Apple Maps</a><!-- LIBRARY:autolink:end --> read it, and a missing holiday closure is the most common reason an angry-on-Christmas-Eve review lands. The failure mode worth naming: CMS or template updates can quietly strip JSON-LD overnight. If you don't have a monthly schema check on your calendar, the first time you'll know your hours block went missing is when the one-star reviews start arriving.</p>
 
       <p>Run <a href="/tools/schema-check/">Schema Checker</a> on your homepage to see whether your current hours schema is valid; <a href="/tools/open-hours/">Open Hours</a> generates the JSON-LD if you need a fresh start.</p>
 
@@ -1225,7 +1233,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->30<!-- /count --> articles, <!-- count:tools.live -->12<!-- /count --> tools, <!-- count:glossary.terms -->149<!-- /count --> glossary terms &mdash; with a one-person web studio behind it in Silver Spring, MD.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->34<!-- /count --> articles, <!-- count:tools.live -->12<!-- /count --> tools, <!-- count:glossary.terms -->149<!-- /count --> glossary terms &mdash; with a one-person web studio behind it in Silver Spring, MD.</p>
       </div>
 
       <!-- Column order mirrors the 4-item primary nav
