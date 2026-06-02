@@ -254,6 +254,7 @@ const CHECKS = [
   ['Topic eyebrow (idem)','inject-topic-eyebrow.mjs',       '--check'],
   ['Glossary term-example (idem)','inject-glossary-term-examples.mjs','--check'],
   ['Glossary FAQ (idem)', 'inject-glossary-faq.mjs',                  '--check'],
+  ['Glossary SEO meta (idem)', 'inject-glossary-seo.mjs',             '--check'],
   ['Glossary article backlinks (idem)','inject-glossary-article-backlinks.mjs','--check'],
   ['Glossary deep anchors (idem)','inject-glossary-deep-anchors.mjs','--check'],
   ['Glossary verified stamp (idem)','inject-glossary-verified-stamp.mjs','--check'],
