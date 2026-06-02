@@ -750,7 +750,8 @@ body[data-pc-mode="recost"] .pc-recost-banner{display:flex}
           </div>
         </div>
         <div class="pc-year-upload" style="margin-top:14px;display:flex;flex-wrap:wrap;align-items:center;gap:10px;">
-          <input type="file" id="pcMixFile" accept=".csv,.tsv,.txt,text/csv" hidden>
+          <input type="file" id="pcMixFile" accept=".csv,.tsv,.txt,text/csv" aria-label="Archivo de mezcla de ventas (CSV)" hidden>
+          <label style="font-size:13px;color:var(--ink-soft);display:inline-flex;align-items:center;gap:6px;">que cubre <select id="pcMixPeriod" style="font:inherit;font-size:13px;padding:5px 8px;border:1px solid #D7DAE0;border-radius:7px;background:#fff;color:var(--ink);"><option value="7">1 semana</option><option value="14">2 semanas</option><option value="28">4 semanas</option><option value="30">1 mes</option></select></label>
           <button type="button" class="pc-action-btn" id="pcMixBtn">Sube tu mezcla de ventas para llenar esto &rarr;</button>
           <span class="pc-year-mix-status" id="pcMixStatus" role="status" aria-live="polite" style="font-size:13px;color:var(--ink-soft);line-height:1.5;"></span>
         </div>
@@ -2147,11 +2148,11 @@ Margen de contribución por plato = precio menú &minus; costo del plato</pre>
           if (!matchStem) { var own = window.MuntinStem ? window.MuntinStem.extractStem(recipeName) : recipeName.toLowerCase(); if (byStem[own]) matchStem = own; }
           if (!matchStem || !byStem[matchStem]) { setStatus(t('Couldn’t find “' + recipeName + '” in that file — type the weekly volume above.', 'No encontramos “' + recipeName + '” en ese archivo — escribe el volumen semanal arriba.')); return; }
           var hit = byStem[matchStem];
-          var covers = Math.round(hit.units * 10) / 10;
+          var covers = Math.round(hit.units * 7 / (parseInt((document.getElementById("pcMixPeriod")||{}).value,10)||7) * 10) / 10;
           var yv = document.getElementById('pcYearVolume');
           if (yv) { yv.value = covers; yv.dispatchEvent(new Event('input', { bubbles: true })); }
           var lead = fuzzy ? t('Best match: “', 'Mejor coincidencia: “') : t('Matched “', 'Coincidencia: “');
-          var tail = t('” — ' + covers + '/week from your upload (treated as one week).', '” — ' + covers + '/semana de tu archivo (contado como una semana).');
+          var tail = t('” — ' + covers + '/week, on your sales mix.', '” — ' + covers + '/semana, de tu mezcla de ventas.');
           setStatus(lead + hit.item + tail + (fuzzy ? t(' Not your dish? Type the volume.', ' ¿No es tu platillo? Escribe el volumen.') : ''));
         } catch (err) {
           setStatus(t('Couldn’t read that file. Use a CSV with item and units-sold columns.', 'No se pudo leer el archivo. Usa un CSV con columnas de artículo y unidades vendidas.'));
