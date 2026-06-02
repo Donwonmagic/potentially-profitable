@@ -1606,7 +1606,7 @@ br.br-lg{display:none}
 .listen-iconbtn,
 .listen-mini-bar { display: none !important; }
 
-.listen-card{--lc-accent:var(--teal);--lc-accent-dark:var(--teal-dark);--lc-tint:var(--teal-tint);position:relative;display:grid;grid-template-columns:auto 1fr auto;grid-template-areas:"play body meta" "play progress progress" "play chapter chapter" "extras extras extras";align-items:center;gap:14px 20px;width:100%;max-width:640px;margin:28px auto 0;padding:22px 24px;background:linear-gradient(180deg,var(--white) 0%,var(--cream) 100%);border:1px solid var(--line-dark);border-radius:20px;box-shadow:0 1px 0 rgba(255,255,255,0.6) inset,0 18px 40px -24px rgba(20,22,26,0.22);text-align:left}
+.listen-card{--lc-accent:var(--teal);--lc-accent-dark:var(--teal-dark);--lc-tint:var(--teal-tint);position:relative;display:grid;grid-template-columns:auto 1fr auto;grid-template-areas:"play body meta" "play progress progress" "play chapter chapter" "extras extras extras";align-items:center;gap:10px 16px;width:100%;max-width:540px;margin:18px auto 0;padding:14px 18px;background:linear-gradient(180deg,var(--white) 0%,var(--cream) 100%);border:1px solid var(--line-dark);border-radius:14px;box-shadow:0 1px 0 rgba(255,255,255,0.5) inset,0 10px 24px -18px rgba(20,22,26,0.18);text-align:left}
 .listen-card::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:linear-gradient(160deg,rgba(42,80,200,0.18),rgba(42,80,200,0) 55%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
 /* Sprint A1: ambient playback tint. ::after sits inside the card's
    own stacking context, below content (z-index:0) but above the
@@ -1645,11 +1645,11 @@ br.br-lg{display:none}
 }
 .listen-card[hidden]{display:none}
 
-.listen-card-play{grid-area:play;position:relative;width:64px;height:64px;border-radius:50%;border:0;background:var(--lc-accent);color:var(--white);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 10px 24px -10px rgba(42,80,200,0.55),0 2px 0 rgba(255,255,255,0.4) inset;transition:transform var(--t-fast) var(--ease),background-color var(--t-fast) var(--ease),box-shadow var(--t-fast) var(--ease)}
+.listen-card-play{grid-area:play;position:relative;width:52px;height:52px;border-radius:50%;border:0;background:var(--lc-accent);color:var(--white);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 6px 14px -8px rgba(42,80,200,0.45),0 1px 0 rgba(255,255,255,0.35) inset;transition:transform var(--t-fast) var(--ease),background-color var(--t-fast) var(--ease),box-shadow var(--t-fast) var(--ease)}
 .listen-card-play:hover{background:var(--lc-accent-dark);transform:translateY(-1px)}
 .listen-card-play:active{transform:translateY(0)}
 .listen-card-play:focus-visible{outline:2px solid var(--lc-accent);outline-offset:3px}
-.listen-card-play svg{width:26px;height:26px;flex:none}
+.listen-card-play svg{width:22px;height:22px;flex:none}
 .listen-card-play .icon-pause,.listen-card-play .icon-finished{display:none}
 .listen-card[data-state="playing"] .listen-card-play .icon-play{display:none}
 .listen-card[data-state="playing"] .listen-card-play .icon-pause{display:block}
@@ -1730,14 +1730,14 @@ br.br-lg{display:none}
    motif — a single window-pane sash rather than a card-edge border,
    so it doesn't collide with .compare-card--featured's 2px teal frame
    on hub pages that show both. */
-.listen-card-kicker{font-family:var(--font-body);font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--stone);display:inline-flex;align-items:center;gap:8px;margin:0 0 8px;padding-bottom:6px;border-bottom:3px solid var(--teal)}
+.listen-card-kicker{font-family:var(--font-body);font-size:10.5px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--stone);display:inline-flex;align-items:center;gap:8px;margin:0 0 4px;padding-bottom:4px;border-bottom:2px solid var(--teal)}
 .listen-card-kicker::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--lc-accent);box-shadow:0 0 0 4px rgba(42,80,200,0.12)}
 /* Sprint A14: soft breathe replaces the hard blink. The dot no
    longer reads like a blinking cursor — opacity drifts to 0.55 and
    the box-shadow aura expands + thins, giving a slow-breath feel
    over 2.2s rather than 1.4s on/off. */
 .listen-card[data-state="playing"] .listen-card-kicker::before{animation:listen-breathe 2.2s var(--ease) infinite}
-.listen-card-title{font-family:var(--font-display);font-weight:500;font-size:clamp(22px, 1.4vw + 14px, 26px);line-height:1.2;color:var(--ink);margin:0 0 2px}
+.listen-card-title{font-family:var(--font-display);font-weight:500;font-size:clamp(18px, 1vw + 13px, 21px);line-height:1.25;color:var(--ink);margin:0 0 2px}
 .listen-card-sub{font-family:var(--font-body);font-size:13.5px;line-height:1.45;color:var(--stone);margin:0}
 /* Phase 3 — help dialog. Native <dialog> for the focus trap + ESC
    handling + inert-other-content behavior. Padding lives on the
@@ -2073,15 +2073,15 @@ br.br-lg{display:none}
    row wraps under the body, which is the only layout that breathes
    once the language pill is in its full-size in-meta variant. */
 @media (max-width:720px){
-  .listen-card{grid-template-columns:auto 1fr;grid-template-areas:"play body" "meta meta" "progress progress" "chapter chapter" "extras extras";padding:18px;gap:10px 16px}
+  .listen-card{grid-template-columns:auto 1fr;grid-template-areas:"play body" "meta meta" "progress progress" "chapter chapter" "extras extras";padding:12px 14px;gap:8px 12px}
   /* align-items:center so the new help iconbtn (36px tall) aligns
      with the 11.5px text siblings on its midline — earlier
      align-items:flex-start hugged the text to the top while the
      button towered below it. */
   .listen-card-meta{grid-area:meta;align-items:center;flex-direction:row;gap:8px;font-size:11.5px;padding-top:6px;margin-top:2px;border-top:1px dashed var(--line)}
   .listen-card-meta strong{margin-right:0}
-  .listen-card-play{width:56px;height:56px}
-  .listen-card-title{font-size:20px}
+  .listen-card-play{width:46px;height:46px}
+  .listen-card-title{font-size:17px}
   .listen-card-extras{justify-content:flex-start}
 }
 
