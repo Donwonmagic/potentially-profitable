@@ -51,8 +51,8 @@ header.nav{min-height:64px}
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-italic.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-italic.woff2" crossorigin>
-<link rel="preload" as="style" href="/assets/site-core.css?v=82c8e0678bd3" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=82c8e0678bd3"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=631fdb08afba" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=631fdb08afba"></noscript>
 <link rel="stylesheet" href="/assets/sheets.css?v=20260503">
 </head>
 <body data-page="sheet" data-sheet-slug="weekly-prime-cost-worksheet" data-sheet-pack="operations-margin" data-pagefind-meta="kind:sheet,pack:operations-margin">
@@ -79,6 +79,16 @@ header.nav{min-height:64px}
 </aside>
 <script>(function(){var d=document.documentElement;function s(){var b=document.querySelector('.batch-marquee');if(b){d.style.setProperty('--banner-h',b.offsetHeight+'px');}}s();addEventListener('resize',s,{passive:true});addEventListener('orientationchange',s);if(document.fonts&&document.fonts.ready){document.fonts.ready.then(s);}})();</script>
 <!-- batch-banner:end -->
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
 <header class="nav" id="nav">
   <div class="container nav-inner">
     <a href="/" class="logo" aria-label="Muntin Digital home">
@@ -112,6 +122,7 @@ header.nav{min-height:64px}
          via _redirects so old backlinks land softly. -->
     <nav class="nav-links" aria-label="Primary">
       <a href="/library/">Library</a>
+      <a href="/start/">Start</a>
       <a href="/tools/">Tools</a>
       <a href="/studio/">Studio</a>
       <!-- Ledger — sister product (the privacy-forward invoice ledger)
@@ -173,6 +184,7 @@ header.nav{min-height:64px}
        toggles js-nav-signin vs js-nav-workshop in both surfaces. -->
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
     <a href="/library/">Library</a>
+    <a href="/start/">Start</a>
     <a href="/tools/">Tools</a>
     <a href="/studio/">Studio</a>
     <a href="https://ledger.muntin.digital/">Ledger</a>
@@ -557,6 +569,58 @@ header.nav{min-height:64px}
 
 </div></section>
 
+
+
+  <!-- companion-kit:start -->
+  <aside class="companion-kit" data-surface="sheet" data-source-slug="weekly-prime-cost-worksheet" aria-labelledby="companion-kit-h-sheet-weekly-prime-cost-worksheet">
+    <div class="container">
+      <p class="companion-kit__eyebrow">The four corners</p>
+      <h2 id="companion-kit-h-sheet-weekly-prime-cost-worksheet" class="companion-kit__h">Read, run, write down, look up.</h2>
+      <div class="companion-kit__grid">
+        <div class="companion-kit__col companion-kit__col--read">
+          <h3>Read</h3>
+        <ul class="companion-kit__list">
+        <li><a class="see-also-card" href="/library/restaurant-menu-engineering/">
+          <span class="see-also-kind">Article <span class="see-also-time">11 min read</span></span>
+          <h4>Restaurant Menu Engineering (2026): The Math Behind Which Dishes Make Money</h4>
+          <p>Restaurant menu engineering, plainly: plate cost, edible portion, yield, mix, and the elasticity tests that fix margin without raising headline prices.</p>
+        </a></li>
+        <li><a class="see-also-card" href="/library/third-party-delivery-economics/">
+          <span class="see-also-kind">Article <span class="see-also-time">7 min read</span></span>
+          <h4>An honest DoorDash math for independent restaurants</h4>
+          <p>The real math behind a DoorDash order at a DMV restaurant — commission, processing, packaging, food, labor, fees — and the breakeven for switching.</p>
+        </a></li>
+        <li><a class="see-also-card" href="/library/service-charge-vs-tipping-model/">
+          <span class="see-also-kind">Article <span class="see-also-time">8 min read</span></span>
+          <h4>Service charges vs tipping: the operator's math</h4>
+          <p>The DMV is mid-transition: some restaurants 20% service charge, some tipping, some hybrid. Server take-home, operator cost, customer perception, on paper.</p>
+        </a></li>
+        </ul>
+        </div>
+        <div class="companion-kit__col companion-kit__col--try">
+          <h3>Run on your own site</h3>
+        <a class="companion-kit__single see-also-card" href="/tools/margin-math/">
+          <span class="see-also-kind">Tool</span>
+          <h4>Margin Math — Free Client-Side Restaurant Finance Calculators</h4>
+          <p>Decision-support math for your specific restaurant: delivery break-even, price-raise simulation, prime cost, covers needed. Numbers stay in your browser.</p>
+        </a>
+        </div>
+        <div class="companion-kit__col companion-kit__col--write">
+          <h3>Write it down</h3>
+        <p class="companion-kit__self">You're on the sheet. The other corners keep you moving.</p>
+        </div>
+        <div class="companion-kit__col companion-kit__col--lookup">
+          <h3>Look up</h3>
+        <ul class="companion-kit__chips">
+          <li><a class="glossary-chip" href="/glossary/prime-cost/">Prime cost</a></li>
+          <li><a class="glossary-chip" href="/glossary/labor-cost/">Labor cost</a></li>
+          <li><a class="glossary-chip" href="/glossary/food-cost/">Food cost</a></li>
+        </ul>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <!-- /companion-kit:end -->
 </main>
 <!-- sheet-glossary-popovers:applied -->
 

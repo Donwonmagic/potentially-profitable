@@ -175,9 +175,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=82c8e0678bd3" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=96ce2c24881c" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=82c8e0678bd3"><link rel="stylesheet" href="/assets/site-article.css?v=96ce2c24881c"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=631fdb08afba" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=15ac955f199e" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=631fdb08afba"><link rel="stylesheet" href="/assets/site-article.css?v=15ac955f199e"></noscript>
 
 <!-- lazy-load:p --><script>(window.requestIdleCallback||function(c){return setTimeout(c,500);})(function(){var s=document.createElement("script");s.src="/assets/p.js?v=20260503";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:p -->
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
@@ -241,6 +241,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
          /es/studio/ vía _redirects. -->
     <nav class="nav-links" aria-label="Principal">
       <a href="/es/library/">Biblioteca</a>
+      <a href="/es/start/">Comienza</a>
       <a href="/es/tools/">Herramientas</a>
       <a href="/es/studio/">Estudio</a>
       <a href="https://ledger.muntin.digital/">Ledger</a>
@@ -270,6 +271,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   </div>
   <nav class="mobile-menu" id="mobileMenu" aria-label="Navegación móvil" hidden>
     <a href="/es/library/">Biblioteca</a>
+    <a href="/es/start/">Comienza</a>
     <a href="/es/tools/">Herramientas</a>
     <a href="/es/studio/">Estudio</a>
     <a href="https://ledger.muntin.digital/">Ledger</a>
@@ -413,11 +415,11 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
     <section class="lib-section" aria-labelledby="start-h">
       <p class="eyebrow" style="color:var(--teal)">No sabes por d&oacute;nde empezar</p>
-      <h2 id="start-h" style="font-family:var(--font-display);font-size:clamp(28px,3.6vw,40px);font-weight:500;line-height:1.15;letter-spacing:-0.3px;color:var(--ink);margin:0 0 14px">El recorrido guiado de 60 minutos.</h2>
-      <p style="font-size:17px;line-height:1.6;color:var(--ink-soft);margin:0 0 18px;max-width:720px">Una secuencia curada de art&iacute;culos + herramientas que cubre lo que la mayor&iacute;a de los due&ntilde;os de restaurante independientes necesita saber sobre su sitio web &mdash; en aproximadamente una hora, en el orden en que lo ense&ntilde;ar&iacute;a.</p>
-      <p><a class="btn btn-primary" href="/es/learn/start-here/">Empezar el recorrido
+      <h2 id="start-h" style="font-family:var(--font-display);font-size:clamp(28px,3.6vw,40px);font-weight:500;line-height:1.15;letter-spacing:-0.3px;color:var(--ink);margin:0 0 14px">Tres preguntas, un plan.</h2>
+      <p style="font-size:17px;line-height:1.6;color:var(--ink-soft);margin:0 0 18px;max-width:720px">Cu&eacute;ntanos qu&eacute; est&aacute; goteando, en qu&eacute; etapa est&aacute;s, y qu&eacute; n&uacute;meros tienes a mano &mdash; te apuntamos a los tres art&iacute;culos, una herramienta y una hoja que te sirvan. Nada sale de tu navegador.</p>
+      <p><a class="btn btn-primary" href="/es/start/">Comienza aqu&iacute;
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
-      </a></p>
+      </a> <a href="/es/learn/start-here/" style="margin-left:14px;font-size:14.5px;color:var(--ink-soft);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px">&iquest;Prefieres el recorrido guiado de 60 minutos? &rarr;</a></p>
     </section>
 
     <section class="lib-section" aria-labelledby="trust-h">

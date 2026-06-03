@@ -137,9 +137,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=82c8e0678bd3" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=96ce2c24881c" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=82c8e0678bd3"><link rel="stylesheet" href="/assets/site-article.css?v=96ce2c24881c"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=631fdb08afba" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=15ac955f199e" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=631fdb08afba"><link rel="stylesheet" href="/assets/site-article.css?v=15ac955f199e"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -210,7 +210,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         "@id": "https://muntin.digital/#business"
       },
       "image": "https://muntin.digital/brand/og/glossary-owned-channel.png",
-      "datePublished": "2026-05-14T17:48:51+00:00",
+      "datePublished": "2026-05-10T04:31:37+00:00",
       "isPartOf": {
         "@id": "https://muntin.digital/glossary/#muntin-glossary"
       }
@@ -311,6 +311,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
          via _redirects so old backlinks land softly. -->
     <nav class="nav-links" aria-label="Primary">
       <a href="/library/">Library</a>
+      <a href="/start/">Start</a>
       <a href="/tools/">Tools</a>
       <a href="/studio/">Studio</a>
       <!-- Ledger — sister product (the privacy-forward invoice ledger)
@@ -372,6 +373,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
        toggles js-nav-signin vs js-nav-workshop in both surfaces. -->
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
     <a href="/library/">Library</a>
+    <a href="/start/">Start</a>
     <a href="/tools/">Tools</a>
     <a href="/studio/">Studio</a>
     <a href="https://ledger.muntin.digital/">Ledger</a>
@@ -612,6 +614,58 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     </div>
   </aside>
 <!-- /glossary-knit -->
+
+
+  <!-- companion-kit:start -->
+  <aside class="companion-kit" data-surface="glossary" data-source-slug="owned-channel" aria-labelledby="companion-kit-h-glossary-owned-channel">
+    <div class="container">
+      <p class="companion-kit__eyebrow">The four corners</p>
+      <h2 id="companion-kit-h-glossary-owned-channel" class="companion-kit__h">Read, run, write down, look up.</h2>
+      <div class="companion-kit__grid">
+        <div class="companion-kit__col companion-kit__col--read">
+          <h3>Read</h3>
+        <ul class="companion-kit__list">
+        <li><a class="see-also-card" href="/library/commission-free-online-ordering-restaurants/">
+          <span class="see-also-kind">Article <span class="see-also-time">11 min read</span></span>
+          <h4>Commission-Free Online Ordering for Restaurants (2026): Owner.com vs Toast vs Your Own Site</h4>
+          <p>Commission-free online ordering compared: Owner.com, Toast, and your own site vs the 15–30% marketplaces — what each really costs and who it fits.</p>
+        </a></li>
+        <li><a class="see-also-card" href="/library/third-party-delivery-economics/">
+          <span class="see-also-kind">Article <span class="see-also-time">7 min read</span></span>
+          <h4>An honest DoorDash math for independent restaurants</h4>
+          <p>The real math behind a DoorDash order at a DMV restaurant — commission, processing, packaging, food, labor, fees — and the breakeven for switching.</p>
+        </a></li>
+        <li><a class="see-also-card" href="/library/loyalty-program-roi/">
+          <span class="see-also-kind">Article <span class="see-also-time">7 min read</span></span>
+          <h4>Loyalty programs for independent restaurants: what works, what doesn't, what they cost</h4>
+          <p>Restaurant loyalty programs compared: what the four main models — punch cards, Toast/Square Loyalty, Fivestars, Slice/ChowNow — cost and actually return.</p>
+        </a></li>
+        </ul>
+        </div>
+        <div class="companion-kit__col companion-kit__col--try">
+          <h3>Run on your own site</h3>
+        <a class="companion-kit__single see-also-card" href="/tools/margin-math/">
+          <span class="see-also-kind">Tool</span>
+          <h4>Margin Math — Free Client-Side Restaurant Finance Calculators</h4>
+          <p>Decision-support math for your specific restaurant: delivery break-even, price-raise simulation, prime cost, covers needed. Numbers stay in your browser.</p>
+        </a>
+        </div>
+        <div class="companion-kit__col companion-kit__col--write">
+          <h3>Write it down</h3>
+        <a class="companion-kit__single see-also-card" href="/sheets/third-party-channel-pnl/">
+          <span class="see-also-kind">Sheet</span>
+          <h4>Third-Party Channel P&amp;L — Sheets</h4>
+          <p>Run the honest math on DoorDash, Uber Eats, or Grubhub. Gross sales minus commission, marketing fees, refunds, packaging, and the labor those orders…</p>
+        </a>
+        </div>
+        <div class="companion-kit__col companion-kit__col--lookup">
+          <h3>Look up</h3>
+        <p class="companion-kit__self">You're on the term. The other corners keep you moving.</p>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <!-- /companion-kit:end -->
 </main>
 
 <footer>

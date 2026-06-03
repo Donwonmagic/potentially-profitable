@@ -179,9 +179,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=82c8e0678bd3" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=96ce2c24881c" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=82c8e0678bd3"><link rel="stylesheet" href="/assets/site-article.css?v=96ce2c24881c"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=631fdb08afba" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=15ac955f199e" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=631fdb08afba"><link rel="stylesheet" href="/assets/site-article.css?v=15ac955f199e"></noscript>
 
 <!-- lazy-load:p --><script>(window.requestIdleCallback||function(c){return setTimeout(c,500);})(function(){var s=document.createElement("script");s.src="/assets/p.js?v=20260503";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:p -->
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
@@ -245,6 +245,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
          via _redirects so old backlinks land softly. -->
     <nav class="nav-links" aria-label="Primary">
       <a href="/library/">Library</a>
+      <a href="/start/">Start</a>
       <a href="/tools/">Tools</a>
       <a href="/studio/">Studio</a>
       <!-- Ledger — sister product (the privacy-forward invoice ledger)
@@ -306,6 +307,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
        toggles js-nav-signin vs js-nav-workshop in both surfaces. -->
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
     <a href="/library/">Library</a>
+    <a href="/start/">Start</a>
     <a href="/tools/">Tools</a>
     <a href="/studio/">Studio</a>
     <a href="https://ledger.muntin.digital/">Ledger</a>
@@ -495,11 +497,11 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
     <section class="lib-section" aria-labelledby="start-h">
       <p class="eyebrow" style="color:var(--teal)">Not sure where to start</p>
-      <h2 id="start-h" style="font-family:var(--font-display);font-size:clamp(28px,3.6vw,40px);font-weight:500;line-height:1.15;letter-spacing:-0.3px;color:var(--ink);margin:0 0 14px">The 60-minute guided tour.</h2>
-      <p style="font-size:17px;line-height:1.6;color:var(--ink-soft);margin:0 0 18px;max-width:720px">A handpicked sequence of articles + tools that cover what most independent restaurant owners need to know about their website &mdash; in roughly an hour, in the order I&rsquo;d teach it.</p>
-      <p><a class="btn btn-primary" href="/learn/start-here/">Start the tour
+      <h2 id="start-h" style="font-family:var(--font-display);font-size:clamp(28px,3.6vw,40px);font-weight:500;line-height:1.15;letter-spacing:-0.3px;color:var(--ink);margin:0 0 14px">Three questions, one plan.</h2>
+      <p style="font-size:17px;line-height:1.6;color:var(--ink-soft);margin:0 0 18px;max-width:720px">Tell us what&rsquo;s leaking, what stage you&rsquo;re in, and what records you have on hand &mdash; we&rsquo;ll point you at the three articles, one tool, and one sheet that match. Nothing leaves your browser.</p>
+      <p><a class="btn btn-primary" href="/start/">Start here
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
-      </a></p>
+      </a> <a href="/learn/start-here/" style="margin-left:14px;font-size:14.5px;color:var(--ink-soft);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px">Prefer a 60-minute guided tour? &rarr;</a></p>
     </section>
 
     <section class="lib-section" aria-labelledby="topics-h">
