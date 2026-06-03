@@ -15,7 +15,7 @@
 import type { Basis, LevelObs } from './composite-price.js';
 
 export interface Point { date: string; value: number; }
-export interface AdapterOutput { source: string; basis: Basis; unit: string; points: Point[]; weight?: number; }
+export interface AdapterOutput { source: string; basis: Basis; unit: string; points: Point[]; weight?: number; family?: string; }
 export interface AdapterMeta { source?: string; basis?: Basis; unit?: string; dateField?: string; reducer?: string; fields?: Record<string, string>; }
 
 function byDate(a: Point, b: Point): number { return a.date < b.date ? -1 : a.date > b.date ? 1 : 0; }
@@ -99,17 +99,17 @@ function latestDate(outputs: AdapterOutput[]): string | null {
   return d;
 }
 
-export interface CompositeInput { levelObs: LevelObs[]; sourceSeries: Record<string, { basis: Basis; values: number[]; weight?: number }>; asOf: string | null; }
+export interface CompositeInput { levelObs: LevelObs[]; sourceSeries: Record<string, { basis: Basis; values: number[]; weight?: number; family?: string }>; asOf: string | null; }
 
 export function buildCompositeInput(outputs: AdapterOutput[], opts: { asOf?: string } = {}): CompositeInput {
   const sourceSeries: CompositeInput['sourceSeries'] = {};
   const levelObs: LevelObs[] = [];
   (outputs || []).forEach((o) => {
     if (!o || !Array.isArray(o.points) || !o.points.length) return;
-    sourceSeries[o.source] = { basis: o.basis, values: o.points.map((p) => p.value), weight: o.weight };
+    sourceSeries[o.source] = { basis: o.basis, values: o.points.map((p) => p.value), weight: o.weight, family: o.family };
     if (o.basis !== 'index') {
       const latest = o.points[o.points.length - 1];
-      levelObs.push({ source: o.source, basis: o.basis, valueCents: Math.round(latest.value * 100), date: latest.date });
+      levelObs.push({ source: o.source, basis: o.basis, valueCents: Math.round(latest.value * 100), date: latest.date, family: o.family });
     }
   });
   return { levelObs, sourceSeries, asOf: opts.asOf || latestDate(outputs) };

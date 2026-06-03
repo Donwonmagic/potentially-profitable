@@ -102,9 +102,12 @@ async function liveFetch(ingredient, m) {
 // normalize raw payloads → adapter outputs, honoring the per-source basis/reducer.
 function toOutputs(ingredient, raw, m) {
   const outs = [];
-  if (raw.ams) outs.push(S.normalizeAms(raw.ams, { source: 'usda-ams', basis: 'wholesale', reducer: (m.ams && m.ams.reducer) || 'mostlyMid' }));
-  if (raw.bls) outs.push(S.normalizeBls(raw.bls, { source: 'bls', basis: 'index' }));
-  if (raw.fred) outs.push(S.normalizeFred(raw.fred, { source: 'fred', basis: (m.fred && m.fred.basis) || 'index' }));
+  // `family` declares source lineage so mirror feeds de-correlate in the engine
+  // (e.g. set fred.family:'bls' when a FRED series republishes the BLS one).
+  // Defaults to each source's own family → no de-correlation until declared.
+  if (raw.ams) { const o = S.normalizeAms(raw.ams, { source: 'usda-ams', basis: 'wholesale', reducer: (m.ams && m.ams.reducer) || 'mostlyMid' }); o.family = (m.ams && m.ams.family) || 'usda-ams'; outs.push(o); }
+  if (raw.bls) { const o = S.normalizeBls(raw.bls, { source: 'bls', basis: 'index' }); o.family = (m.bls && m.bls.family) || 'bls'; outs.push(o); }
+  if (raw.fred) { const o = S.normalizeFred(raw.fred, { source: 'fred', basis: (m.fred && m.fred.basis) || 'index' }); o.family = (m.fred && m.fred.family) || 'fred'; outs.push(o); }
   return outs.filter((o) => o.points.length);
 }
 

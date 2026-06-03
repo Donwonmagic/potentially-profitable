@@ -87,12 +87,20 @@
       var basis = priority[i];
       var obs = byBasis[basis];
       if (obs && obs.length) {
-        var vals = obs.map(function (o) { return o.valueCents; });
+        // De-correlate: collapse mirror sources sharing a `family` (e.g. FRED
+        // republishing a USDA series) to ONE value each, so correlated feeds
+        // can't fake dispersion in the p25–p75 range. Default family = source,
+        // so this is a no-op until a lineage map declares families.
+        var famGroups = {};
+        obs.forEach(function (o) { var f = o.family || o.source; (famGroups[f] = famGroups[f] || []).push(o.valueCents); });
+        var famKeys = Object.keys(famGroups);
+        var vals = famKeys.map(function (f) { return median(famGroups[f]); });
         return {
           basis: basis,
           medianCents: Math.round(median(vals)),
           rangeCents: [Math.round(percentile(vals, 0.25)), Math.round(percentile(vals, 0.75))],
           nObs: obs.length,
+          nFamilies: famKeys.length,
           nSources: distinct(obs.map(function (o) { return o.source; })),
           provenance: obs.map(function (o) { return { source: o.source, valueCents: o.valueCents, date: o.date || null }; })
         };
@@ -125,26 +133,38 @@
    */
   function blendTrend(changes) {
     var valid = (changes || []).filter(function (c) { return c && typeof c.pct === 'number' && isFinite(c.pct); });
-    if (!valid.length) return { pct: null, dir: 'flat', agreement: 0, nSources: 0 };
-    var pct = weightedMedian(valid.map(function (c) { return { v: c.pct, w: (c.weight > 0 ? c.weight : 1) }; }));
+    if (!valid.length) return { pct: null, dir: 'flat', agreement: 0, nSources: 0, nFamilies: 0 };
+    // De-correlate: collapse mirror sources (same `family`, e.g. FRED mirroring
+    // BLS) into ONE vote each — median move + the family's strongest weight —
+    // so three echoes can't outvote one independent source or inflate
+    // agreement/confidence. Default family = source → no-op until declared.
+    var fam = {};
+    valid.forEach(function (c) { var f = c.family || c.source; (fam[f] = fam[f] || []).push(c); });
+    var collapsed = Object.keys(fam).map(function (f) {
+      var m = fam[f];
+      return { pct: median(m.map(function (x) { return x.pct; })), w: Math.max.apply(null, m.map(function (x) { return x.weight > 0 ? x.weight : 1; })) };
+    });
+    var pct = weightedMedian(collapsed.map(function (c) { return { v: c.pct, w: c.w }; }));
     var FLAT = 0.005; // ±0.5% = flat
     var dir = pct > FLAT ? 'up' : pct < -FLAT ? 'down' : 'flat';
-    var sameDir = valid.filter(function (c) {
+    var sameDir = collapsed.filter(function (c) {
       var d = c.pct > FLAT ? 'up' : c.pct < -FLAT ? 'down' : 'flat';
       return d === dir;
     }).length;
     return {
       pct: pct,
       dir: dir,
-      agreement: +(sameDir / valid.length).toFixed(3),
-      nSources: distinct(valid.map(function (c) { return c.source; }))
+      agreement: +(sameDir / collapsed.length).toFixed(3),
+      nSources: distinct(valid.map(function (c) { return c.source; })),
+      nFamilies: collapsed.length
     };
   }
 
   function confidenceFor(level, trend) {
-    // Honest confidence: needs a real level AND corroborated direction.
-    var nLvl = level ? level.nSources : 0;
-    var nTrd = trend ? trend.nSources : 0;
+    // Honest confidence: needs a real level AND corroborated direction — counted
+    // by INDEPENDENT families, not raw source keys, so mirrors don't inflate it.
+    var nLvl = level ? (level.nFamilies != null ? level.nFamilies : level.nSources) : 0;
+    var nTrd = trend ? (trend.nFamilies != null ? trend.nFamilies : trend.nSources) : 0;
     var agree = trend ? trend.agreement : 0;
     if (!level && nTrd >= 2 && agree >= 0.66) return 'directional'; // trend only, no level
     if (nLvl >= 2 && nTrd >= 3 && agree >= 0.75) return 'high';
@@ -154,6 +174,16 @@
 
   function fmtPct(p) { return (p >= 0 ? '+' : '') + (p * 100).toFixed(1).replace(/\.0$/, '') + '%'; }
   function dollars(c) { return '$' + (Math.round(c) / 100).toFixed(2); }
+
+  // Honest level phrasing: one independent family (or a degenerate p25===p75)
+  // is a single point, NOT a measured band — never print "$X–$X" as if it were.
+  function levelPhrase(level) {
+    var nFam = (level.nFamilies != null ? level.nFamilies : level.nSources);
+    var single = nFam <= 1 || level.rangeCents[0] === level.rangeCents[1];
+    return single
+      ? 'About ' + dollars(level.rangeCents[0]) + ' (' + level.basis + ' reference, single source — range not yet measurable)'
+      : 'About ' + dollars(level.rangeCents[0]) + '–' + dollars(level.rangeCents[1]) + ' (' + level.basis + ' reference)';
+  }
 
   /**
    * assess({ levelObs, sourceSeries, opts }) -> one composite Cost-Index
@@ -173,7 +203,7 @@
     var changes = Object.keys(series).map(function (src) {
       var s = series[src] || {};
       var pct = windowChange(s.values);
-      return pct == null ? null : { source: src, pct: pct, weight: s.weight };
+      return pct == null ? null : { source: src, pct: pct, weight: s.weight, family: s.family };
     }).filter(Boolean);
     var trend = blendTrend(changes);
     var confidence = confidenceFor(level, trend);
@@ -185,15 +215,13 @@
     var label;
     var dirWord = trend.dir === 'up' ? 'up' : trend.dir === 'down' ? 'down' : 'flat';
     if (level && trend.pct != null) {
-      label = 'About ' + dollars(level.rangeCents[0]) + '–' + dollars(level.rangeCents[1]) +
-        ' (' + level.basis + ' reference), ' + dirWord + ' ' + fmtPct(trend.pct) + ' over the window. ' +
-        level.nSources + '+ sources for level, ' + trend.nSources + ' for trend.';
+      label = levelPhrase(level) + ', ' + dirWord + ' ' + fmtPct(trend.pct) + ' over the window. ' +
+        level.nSources + '+ source(s) for level, ' + trend.nSources + ' for trend.';
     } else if (trend.pct != null) {
       label = 'Directional only — no comparable price level. The market moved ' + dirWord + ' ' +
         fmtPct(trend.pct) + ' across ' + trend.nSources + ' source(s).';
     } else if (level) {
-      label = 'About ' + dollars(level.rangeCents[0]) + '–' + dollars(level.rangeCents[1]) +
-        ' (' + level.basis + ' reference). Not enough history yet for a trend.';
+      label = levelPhrase(level) + '. Not enough history yet for a trend.';
     } else {
       label = 'Not enough data yet.';
     }

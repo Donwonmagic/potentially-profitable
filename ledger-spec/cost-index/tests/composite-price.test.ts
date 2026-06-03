@@ -97,3 +97,41 @@ test('assess: empty input degrades gracefully', () => {
   assert.equal(r.trend.pct, null);
   assert.match(r.label, /Not enough data/);
 });
+
+test('LEVEL n=1: a single independent family is a point, never a fake $X–$X band', () => {
+  const r = C.assess({
+    levelObs: [{ source: 'usda-ams', basis: 'wholesale', valueCents: 1390 }],
+    sourceSeries: { 'usda-ams': { basis: 'wholesale', values: [1300, 1390] } },
+  });
+  assert.equal(r.level!.nFamilies, 1);
+  assert.match(r.label, /single source/);
+  assert.doesNotMatch(r.label, /\$13\.90.\$13\.90/);
+});
+
+test('DE-CORRELATION: mirror sources sharing a family count as ONE and cannot dominate', () => {
+  const t = C.blendTrend([
+    { source: 'bls', pct: 0.20, family: 'us-index' },
+    { source: 'fred', pct: 0.20, family: 'us-index' },
+    { source: 'ams', pct: 0.04, family: 'ams' },
+  ]);
+  assert.equal(t.nFamilies, 2);
+  assert.equal(t.nSources, 3);
+  assert.ok(t.pct! < 0.20);
+});
+
+test('DE-CORRELATION flows through confidence: three echoes of one family cannot reach "high"', () => {
+  const r = C.assess({
+    levelObs: [
+      { source: 'ams1', basis: 'wholesale', valueCents: 1300, family: 'ams' },
+      { source: 'ams2', basis: 'wholesale', valueCents: 1500, family: 'ams' },
+    ],
+    sourceSeries: {
+      fred1: { basis: 'index', values: [100, 107], family: 'us-index' },
+      fred2: { basis: 'index', values: [200, 214], family: 'us-index' },
+      fred3: { basis: 'index', values: [300, 321], family: 'us-index' },
+    },
+  });
+  assert.equal(r.level!.nFamilies, 1);
+  assert.equal(r.trend.nFamilies, 1);
+  assert.notEqual(r.confidence, 'high');
+});
