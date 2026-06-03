@@ -917,12 +917,17 @@ body[data-pc-mode="recost"] .pc-prev-cell{display:block}
             <span class="pc-year-out-detail" id="pcYearDetail">Type a weekly volume to see the annual contribution.</span>
           </div>
         </div>
+        <label class="pc-year-input" style="margin-top:14px;display:block;">
+          <span>What you charge for it now ($) — optional, for a margin read</span>
+          <input type="number" id="pcPriceNow" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 14.00">
+        </label>
         <div class="pc-year-upload" style="margin-top:14px;display:flex;flex-wrap:wrap;align-items:center;gap:10px;">
           <input type="file" id="pcMixFile" accept=".csv,.tsv,.txt,text/csv" aria-label="Sales mix file (CSV)" hidden>
           <label style="font-size:13px;color:var(--ink-soft);display:inline-flex;align-items:center;gap:6px;">covering <select id="pcMixPeriod" style="font:inherit;font-size:13px;padding:5px 8px;border:1px solid #D7DAE0;border-radius:7px;background:#fff;color:var(--ink);"><option value="7">1 week</option><option value="14">2 weeks</option><option value="28">4 weeks</option><option value="30">1 month</option></select></label>
           <button type="button" class="pc-action-btn" id="pcMixBtn">Upload your sales mix to fill this in &rarr;</button>
           <span class="pc-year-mix-status" id="pcMixStatus" role="status" aria-live="polite" style="font-size:13px;color:var(--ink-soft);line-height:1.5;"></span>
         </div>
+        <div id="pcAdvice" class="pc-advice" hidden style="margin-top:14px;"></div>
       </div>
 
       <aside class="edu-result" id="pcEduResult" aria-labelledby="pcEduResultLede">
@@ -1185,6 +1190,7 @@ Contribution margin per plate = menu price &minus; plate cost</pre>
 <script src="/tools/_shared/stem.js?v=20260504-w10-0a"></script>
 <script src="/tools/_shared/sku-match.js?v=20260504-w10-1"></script>
 <script src="/tools/_shared/sales-mix.js?v=20260602-pos1"></script>
+<script src="/tools/_shared/plate-advice.js?v=20260603-plate1"></script>
 <script src="/tools/_shared/portion-bridge.js?v=20260504-w10-2"></script>
 <script src="/tools/_shared/cross-vendor.js?v=20260504-w10-13"></script>
 <script src="/tools/_shared/whats-new.js?v=20260504-w14-8" defer></script>
@@ -1463,6 +1469,73 @@ Contribution margin per plate = menu price &minus; plate cost</pre>
         pcYearVol.addEventListener('input', recomputeYear);
       }
       recomputeYear();
+
+      // plate-advice — when the operator enters what they charge now, judge
+      // it on the real plate cost + their weekly volume and surface the
+      // re-price / re-portion / hold call. Built via DOM (no innerHTML).
+      var ADV_TARGET = { 'fine-dining': 0.28, 'casual': 0.30, 'high-volume': 0.33 };
+      var ADV_LOCALE = (document.documentElement.getAttribute('lang') || 'en').toLowerCase().slice(0, 2);
+      function advTierLabel(tier) {
+        var m = ADV_LOCALE === 'es'
+          ? { healthy:'En línea', watch:'Para vigilar', over_target:'Arriba de tu meta', underwater:'Bajo el agua', hike:'Subida de precio', price_needed:'Pon un precio', 'mixed-units':'Revisa unidades', insufficient:'Agrega más' }
+          : { healthy:'In line', watch:'Worth a glance', over_target:'Over your goal', underwater:'Underwater', hike:'Price hike', price_needed:'Set a price', 'mixed-units':'Check the units', insufficient:'Add more' };
+        return m[tier] || tier;
+      }
+      function advTierColors(tier) {
+        if (tier === 'healthy') return ['#c7e4d4', '#0c4a26'];
+        if (tier === 'watch') return ['#fdecc8', '#7a531f'];
+        if (tier === 'over_target' || tier === 'underwater' || tier === 'hike') return ['#fce0d7', '#7a2e1f'];
+        return ['#EDEEF1', '#4A4F59'];
+      }
+      function renderAdvice() {
+        var adviceEl = document.getElementById('pcAdvice');
+        var priceEl = document.getElementById('pcPriceNow');
+        if (!adviceEl || !priceEl || typeof window.MuntinPlateAdvice === 'undefined') return;
+        while (adviceEl.firstChild) adviceEl.removeChild(adviceEl.firstChild);
+        var pv = parseFloat(priceEl.value);
+        if (!isFinite(pv) || pv <= 0 || !hasPlate) { adviceEl.hidden = true; return; }
+        var cov = parseFloat(pcYearVol && pcYearVol.value);
+        var r = window.MuntinPlateAdvice.advise({
+          itemName: (nameEl && nameEl.value || '').trim(),
+          plateCostCents: Math.round(summary.plateCost * 100),
+          menuPriceCents: Math.round(pv * 100),
+          targetFoodCostPct: ADV_TARGET[recTier] || 0.30,
+          coversPerWeek: (isFinite(cov) && cov > 0) ? cov : null,
+          locale: ADV_LOCALE
+        });
+        var card = document.createElement('div');
+        card.style.cssText = 'padding:16px 18px;border:1px solid var(--line);border-radius:10px;background:var(--white,#fff);';
+        var badge = document.createElement('span');
+        var col = advTierColors(r.tier);
+        badge.textContent = advTierLabel(r.tier);
+        badge.style.cssText = 'display:inline-block;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:4px 10px;border-radius:999px;margin:0 0 10px;background:' + col[0] + ';color:' + col[1] + ';';
+        card.appendChild(badge);
+        var head = document.createElement('p');
+        head.textContent = r.headline;
+        head.style.cssText = 'font-size:15px;line-height:1.55;color:var(--ink);margin:0;';
+        card.appendChild(head);
+        if (r.options && r.options.length) {
+          var ul = document.createElement('ul');
+          ul.style.cssText = 'list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:8px;';
+          r.options.forEach(function (o, i) {
+            var li = document.createElement('li');
+            li.style.cssText = 'font-size:13.5px;line-height:1.5;color:var(--ink-soft);' + (i === 0 ? 'border-left:3px solid var(--teal);padding-left:10px;' : 'padding-left:13px;');
+            var strong = document.createElement('strong');
+            strong.textContent = o.label;
+            strong.style.color = 'var(--ink)';
+            li.appendChild(strong);
+            if (o.detail) li.appendChild(document.createTextNode(' — ' + o.detail));
+            ul.appendChild(li);
+          });
+          card.appendChild(ul);
+        }
+        adviceEl.appendChild(card);
+        adviceEl.hidden = false;
+      }
+      var advPriceEl = document.getElementById('pcPriceNow');
+      if (advPriceEl && !advPriceEl.__advBound) { advPriceEl.__advBound = true; advPriceEl.addEventListener('input', renderAdvice); }
+      if (pcYearVol && !pcYearVol.__advBound2) { pcYearVol.__advBound2 = true; pcYearVol.addEventListener('input', renderAdvice); }
+      renderAdvice();
     }
 
     // Bottleneck callout — surfaces only when one ingredient ≥ 30%
