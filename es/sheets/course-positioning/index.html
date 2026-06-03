@@ -51,8 +51,8 @@ header.nav{min-height:64px}
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-italic.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-italic.woff2" crossorigin>
-<link rel="preload" as="style" href="/assets/site-core.css?v=82c8e0678bd3" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=82c8e0678bd3"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=631fdb08afba" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=631fdb08afba"></noscript>
 <link rel="stylesheet" href="/assets/sheets.css?v=20260503">
 </head>
 <body data-page="sheet" data-sheet-slug="course-positioning" data-sheet-pack="course-bootcamp" data-pagefind-meta="kind:sheet,pack:course-bootcamp">
@@ -79,6 +79,16 @@ header.nav{min-height:64px}
 </aside>
 <script>(function(){var d=document.documentElement;function s(){var b=document.querySelector('.batch-marquee');if(b){d.style.setProperty('--banner-h',b.offsetHeight+'px');}}s();addEventListener('resize',s,{passive:true});addEventListener('orientationchange',s);if(document.fonts&&document.fonts.ready){document.fonts.ready.then(s);}})();</script>
 <!-- batch-banner:end -->
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
 <header class="nav" id="nav">
   <script>/* i18n runtime dictionary — read by assets/site.js via window.__i18n.
              Placed inside <header> so sync-includes replaces it atomically
@@ -112,6 +122,7 @@ header.nav{min-height:64px}
          /es/studio/ vía _redirects. -->
     <nav class="nav-links" aria-label="Principal">
       <a href="/es/library/">Biblioteca</a>
+      <a href="/es/start/">Comienza</a>
       <a href="/es/tools/">Herramientas</a>
       <a href="/es/studio/">Estudio</a>
       <a href="https://ledger.muntin.digital/">Ledger</a>
@@ -141,6 +152,7 @@ header.nav{min-height:64px}
   </div>
   <nav class="mobile-menu" id="mobileMenu" aria-label="Navegación móvil" hidden>
     <a href="/es/library/">Biblioteca</a>
+    <a href="/es/start/">Comienza</a>
     <a href="/es/tools/">Herramientas</a>
     <a href="/es/studio/">Estudio</a>
     <a href="https://ledger.muntin.digital/">Ledger</a>

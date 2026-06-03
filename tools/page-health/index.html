@@ -178,9 +178,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=82c8e0678bd3" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-tool.css?v=a17614b50071" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=82c8e0678bd3"><link rel="stylesheet" href="/assets/site-tool.css?v=a17614b50071"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=631fdb08afba" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-tool.css?v=aee67503f378" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=631fdb08afba"><link rel="stylesheet" href="/assets/site-tool.css?v=aee67503f378"></noscript>
 
 <style>
   /* Tool-specific result rendering. Form, hero, note, result container,
@@ -416,6 +416,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
          via _redirects so old backlinks land softly. -->
     <nav class="nav-links" aria-label="Primary">
       <a href="/library/">Library</a>
+      <a href="/start/">Start</a>
       <a href="/tools/">Tools</a>
       <a href="/studio/">Studio</a>
       <!-- Ledger — sister product (the privacy-forward invoice ledger)
@@ -477,6 +478,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
        toggles js-nav-signin vs js-nav-workshop in both surfaces. -->
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
     <a href="/library/">Library</a>
+    <a href="/start/">Start</a>
     <a href="/tools/">Tools</a>
     <a href="/studio/">Studio</a>
     <a href="https://ledger.muntin.digital/">Ledger</a>

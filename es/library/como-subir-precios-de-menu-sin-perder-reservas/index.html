@@ -269,9 +269,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=82c8e0678bd3" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=96ce2c24881c" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=82c8e0678bd3"><link rel="stylesheet" href="/assets/site-article.css?v=96ce2c24881c"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=631fdb08afba" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=15ac955f199e" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=631fdb08afba"><link rel="stylesheet" href="/assets/site-article.css?v=15ac955f199e"></noscript>
 
 <style>
   /* ============ BLOG POST LAYOUT (shared with other posts; will extract to site.css in a later refactor) ============ */
@@ -511,6 +511,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
          /es/studio/ vía _redirects. -->
     <nav class="nav-links" aria-label="Principal">
       <a href="/es/library/">Biblioteca</a>
+      <a href="/es/start/">Comienza</a>
       <a href="/es/tools/">Herramientas</a>
       <a href="/es/studio/">Estudio</a>
       <a href="https://ledger.muntin.digital/">Ledger</a>
@@ -540,6 +541,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   </div>
   <nav class="mobile-menu" id="mobileMenu" aria-label="Navegación móvil" hidden>
     <a href="/es/library/">Biblioteca</a>
+    <a href="/es/start/">Comienza</a>
     <a href="/es/tools/">Herramientas</a>
     <a href="/es/studio/">Estudio</a>
     <a href="https://ledger.muntin.digital/">Ledger</a>
@@ -950,6 +952,62 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <a class="btn btn-primary" href="/es/tools/margin-math/?from=library%2Fcomo-subir-precios-de-menu-sin-perder-reservas&amp;intent=watch">Abrir Margin Math<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></a>
     </aside>
     <!-- post-end-cta:end -->
+
+  <!-- companion-kit:start -->
+  <aside class="companion-kit" data-surface="library" data-source-slug="how-to-raise-restaurant-menu-prices-without-losing-reservations" aria-labelledby="companion-kit-h-library-how-to-raise-restaurant-menu-prices-without-losing-reservations">
+    <div class="container">
+      <p class="companion-kit__eyebrow">Las cuatro esquinas</p>
+      <h2 id="companion-kit-h-library-how-to-raise-restaurant-menu-prices-without-losing-reservations" class="companion-kit__h">Lee, corre, anota, busca.</h2>
+      <div class="companion-kit__grid">
+        <div class="companion-kit__col companion-kit__col--read">
+          <h3>Lee</h3>
+        <ul class="companion-kit__list">
+        <li><a class="see-also-card" href="/library/restaurant-menu-engineering/">
+          <span class="see-also-kind">Artículo <span class="see-also-time">11 min de lectura</span></span>
+          <h4>Restaurant Menu Engineering (2026): The Math Behind Which Dishes Make Money</h4>
+          <p>Restaurant menu engineering, plainly: plate cost, edible portion, yield, mix, and the elasticity tests that fix margin without raising headline prices.</p>
+        </a></li>
+        <li><a class="see-also-card" href="/library/restaurant-online-menu-best-practices/">
+          <span class="see-also-kind">Artículo <span class="see-also-time">9 min de lectura</span></span>
+          <h4>Restaurant Online Menu: How to Put Your Menu on Your Website (2026 Best Practices)</h4>
+          <p>Put your restaurant menu online the right way: real HTML over PDFs, descriptions that sell, allergens, photos, and the setup that wins search.</p>
+        </a></li>
+        <li><a class="see-also-card" href="/es/library/como-salir-de-doordash-mi-restaurante/">
+          <span class="see-also-kind">Artículo</span>
+          <h4>Cómo salir de DoorDash sin perder clientes (plan en 90 días)</h4>
+          <p>Salir de DoorDash sin perder clientes: las cinco etapas — margen, ordering propio, comunicación, transición y la charla con DoorDash — en 90 días.</p>
+        </a></li>
+        </ul>
+        </div>
+        <div class="companion-kit__col companion-kit__col--try">
+          <h3>Corre en tu propio sitio</h3>
+        <a class="companion-kit__single see-also-card" href="/es/tools/plate-cost/">
+          <span class="see-also-kind">Herramienta</span>
+          <h4>Costo del Plato — ¿Cuánto cuesta de verdad cada plato?</h4>
+          <p>Escribe una receta y obtén el costo real de un plato tras merma y limpieza, más tres precios de menú sugeridos. Unos 5 minutos. En tu navegador.</p>
+        </a>
+        </div>
+        <div class="companion-kit__col companion-kit__col--write">
+          <h3>Anota</h3>
+        <a class="companion-kit__single see-also-card" href="/es/sheets/recipe-cost-card/">
+          <span class="see-also-kind">Hoja</span>
+          <h4>Tarjeta de costo de receta — Hojas</h4>
+          <p>Mete ingredientes, precios AP y rendimientos. Llévate el costo del plato, el precio objetivo a tu meta de costo de comida y una tarjeta imprimible para…</p>
+        </a>
+        </div>
+        <div class="companion-kit__col companion-kit__col--lookup">
+          <h3>Busca</h3>
+        <ul class="companion-kit__chips">
+          <li><a class="glossary-chip" href="/es/glossary/charm-pricing/">Precio psicológico</a></li>
+          <li><a class="glossary-chip" href="/es/glossary/menu-mix/">Cuota del menú</a></li>
+          <li><a class="glossary-chip" href="/es/glossary/contribution-margin/">Margen de contribución</a></li>
+        </ul>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <!-- /companion-kit:end -->
+
 <!-- knit-rail:start --><!-- knit-rail:end -->
 
       <!-- smart-next:start -->

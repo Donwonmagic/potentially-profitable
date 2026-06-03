@@ -250,9 +250,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=82c8e0678bd3" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=96ce2c24881c" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=82c8e0678bd3"><link rel="stylesheet" href="/assets/site-article.css?v=96ce2c24881c"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=631fdb08afba" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=15ac955f199e" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=631fdb08afba"><link rel="stylesheet" href="/assets/site-article.css?v=15ac955f199e"></noscript>
 
 <style>
   .post-hero { max-width: 760px; margin: 0 auto; text-align: center; padding-bottom: 24px; }
@@ -416,6 +416,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
          via _redirects so old backlinks land softly. -->
     <nav class="nav-links" aria-label="Primary">
       <a href="/library/">Library</a>
+      <a href="/start/">Start</a>
       <a href="/tools/">Tools</a>
       <a href="/studio/">Studio</a>
       <!-- Ledger — sister product (the privacy-forward invoice ledger)
@@ -477,6 +478,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
        toggles js-nav-signin vs js-nav-workshop in both surfaces. -->
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
     <a href="/library/">Library</a>
+    <a href="/start/">Start</a>
     <a href="/tools/">Tools</a>
     <a href="/studio/">Studio</a>
     <a href="https://ledger.muntin.digital/">Ledger</a>
@@ -934,6 +936,62 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <a class="btn btn-primary" href="/tools/audits/restaurant/?from=library%2Fwhat-should-be-on-a-restaurant-website&amp;intent=watch">Run the audit<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></a>
     </aside>
     <!-- post-end-cta:end -->
+
+  <!-- companion-kit:start -->
+  <aside class="companion-kit" data-surface="library" data-source-slug="what-should-be-on-a-restaurant-website" aria-labelledby="companion-kit-h-library-what-should-be-on-a-restaurant-website">
+    <div class="container">
+      <p class="companion-kit__eyebrow">The four corners</p>
+      <h2 id="companion-kit-h-library-what-should-be-on-a-restaurant-website" class="companion-kit__h">Read, run, write down, look up.</h2>
+      <div class="companion-kit__grid">
+        <div class="companion-kit__col companion-kit__col--read">
+          <h3>Read</h3>
+        <ul class="companion-kit__list">
+        <li><a class="see-also-card" href="/library/reservation-conversion-guide/">
+          <span class="see-also-kind">Article <span class="see-also-time">10 min read</span></span>
+          <h4>Why Your Restaurant Loses Reservations Every Night (And How to Fix It)</h4>
+          <p>A real reservation-loss funnel: the six places your restaurant website quietly leaks diners, what each leak costs in dollars, and the fix for every one.</p>
+        </a></li>
+        <li><a class="see-also-card" href="/library/restaurant-online-menu-best-practices/">
+          <span class="see-also-kind">Article <span class="see-also-time">9 min read</span></span>
+          <h4>Restaurant Online Menu: How to Put Your Menu on Your Website (2026 Best Practices)</h4>
+          <p>Put your restaurant menu online the right way: real HTML over PDFs, descriptions that sell, allergens, photos, and the setup that wins search.</p>
+        </a></li>
+        <li><a class="see-also-card" href="/library/best-restaurant-website-platform/">
+          <span class="see-also-kind">Article <span class="see-also-time">12 min read</span></span>
+          <h4>Best Restaurant Website Platform (2026): Custom vs Wix, Squarespace, BentoBox, Popmenu, Owner.com &amp; Toast</h4>
+          <p>Best restaurant website platform 2026: custom vs Wix, Squarespace, BentoBox, Popmenu, Owner.com &amp; Toast — ownership, commissions, who each fits.</p>
+        </a></li>
+        </ul>
+        </div>
+        <div class="companion-kit__col companion-kit__col--try">
+          <h3>Run on your own site</h3>
+        <a class="companion-kit__single see-also-card" href="/tools/storefront-health/">
+          <span class="see-also-kind">Tool</span>
+          <h4>Storefront Health — One URL, Six Checks, One Score</h4>
+          <p>Paste your restaurant's URL for a unified scorecard across SEO, speed, mobile, schema, and GBP, with the next fix linked to the tool that runs it. Free.</p>
+        </a>
+        </div>
+        <div class="companion-kit__col companion-kit__col--write">
+          <h3>Write it down</h3>
+        <a class="companion-kit__single see-also-card" href="/sheets/website-conversion-checklist/">
+          <span class="see-also-kind">Sheet</span>
+          <h4>Website Conversion Checklist — Sheets</h4>
+          <p>Mobile menu loads in three seconds, click-to-call above the fold, reservation CTA above the fold, hours visible, address tap-to-map, allergen and menu…</p>
+        </a>
+        </div>
+        <div class="companion-kit__col companion-kit__col--lookup">
+          <h3>Look up</h3>
+        <ul class="companion-kit__chips">
+          <li><a class="glossary-chip" href="/glossary/reservation-link/">Reservation link</a></li>
+          <li><a class="glossary-chip" href="/glossary/html-menu/">HTML menu</a></li>
+          <li><a class="glossary-chip" href="/glossary/hours-of-operation/">Hours of operation</a></li>
+        </ul>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <!-- /companion-kit:end -->
+
 <!-- knit-rail:start -->
 <aside class="knit-rail" data-knit="article" aria-labelledby="knit-rail-h-what-should-be-on-a-restaurant-website">
   <h3 class="knit-rail__h" id="knit-rail-h-what-should-be-on-a-restaurant-website">Keep going.</h3>

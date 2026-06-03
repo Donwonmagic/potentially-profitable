@@ -39,9 +39,9 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=82c8e0678bd3" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=96ce2c24881c" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=82c8e0678bd3"><link rel="stylesheet" href="/assets/site-article.css?v=96ce2c24881c"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=631fdb08afba" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=15ac955f199e" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=631fdb08afba"><link rel="stylesheet" href="/assets/site-article.css?v=15ac955f199e"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -213,6 +213,7 @@
          via _redirects so old backlinks land softly. -->
     <nav class="nav-links" aria-label="Primary">
       <a href="/library/">Library</a>
+      <a href="/start/">Start</a>
       <a href="/tools/">Tools</a>
       <a href="/studio/">Studio</a>
       <!-- Ledger — sister product (the privacy-forward invoice ledger)
@@ -274,6 +275,7 @@
        toggles js-nav-signin vs js-nav-workshop in both surfaces. -->
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
     <a href="/library/">Library</a>
+    <a href="/start/">Start</a>
     <a href="/tools/">Tools</a>
     <a href="/studio/">Studio</a>
     <a href="https://ledger.muntin.digital/">Ledger</a>
@@ -514,7 +516,7 @@
       <div class="glossary-knit__col">
         <h3>Used in</h3>
         <ul>
-          <li class="glossary-knit__col-empty">Nothing yet</li>
+          <li><a href="/tools/menu-converter/">Menu Converter</a></li>
         </ul>
       </div>
       <div class="glossary-knit__col">
@@ -559,6 +561,58 @@
 .gloss-lesson-sidecar .gls-cta a:hover{text-decoration:underline}
 </style>
 <!-- glossary-lesson-sidecar:end -->
+
+  <!-- companion-kit:start -->
+  <aside class="companion-kit" data-surface="glossary" data-source-slug="schema" aria-labelledby="companion-kit-h-glossary-schema">
+    <div class="container">
+      <p class="companion-kit__eyebrow">The four corners</p>
+      <h2 id="companion-kit-h-glossary-schema" class="companion-kit__h">Read, run, write down, look up.</h2>
+      <div class="companion-kit__grid">
+        <div class="companion-kit__col companion-kit__col--read">
+          <h3>Read</h3>
+        <ul class="companion-kit__list">
+        <li><a class="see-also-card" href="/library/restaurant-schema-markup-guide/">
+          <span class="see-also-kind">Article <span class="see-also-time">9 min read</span></span>
+          <h4>Restaurant Schema Markup: The 6 Types Google Actually Uses</h4>
+          <p>The six schema.org types that move restaurant search — Restaurant, Menu, OpeningHours, AggregateRating, Reservation, FAQ — with copy-paste JSON-LD.</p>
+        </a></li>
+        <li><a class="see-also-card" href="/library/restaurant-local-seo/">
+          <span class="see-also-kind">Article <span class="see-also-time">11 min read</span></span>
+          <h4>Restaurant Local SEO 101: How to Get Your Restaurant Found on Google</h4>
+          <p>Restaurant local SEO in plain English: get on Google Maps, rank the Map Pack, earn reviews, and get named in AI search — what actually moves bookings.</p>
+        </a></li>
+        <li><a class="see-also-card" href="/library/how-to-get-cited-in-google-ai-overviews-restaurant/">
+          <span class="see-also-kind">Article <span class="see-also-time">8 min read</span></span>
+          <h4>How to get your restaurant cited in Google's AI Overviews</h4>
+          <p>The search result is a paragraph Google wrote, citing a few sources. The citation pattern AI Overviews reward, and five moves that get your answer lifted.</p>
+        </a></li>
+        </ul>
+        </div>
+        <div class="companion-kit__col companion-kit__col--try">
+          <h3>Run on your own site</h3>
+        <a class="companion-kit__single see-also-card" href="/tools/storefront-health/">
+          <span class="see-also-kind">Tool</span>
+          <h4>Storefront Health — One URL, Six Checks, One Score</h4>
+          <p>Paste your restaurant's URL for a unified scorecard across SEO, speed, mobile, schema, and GBP, with the next fix linked to the tool that runs it. Free.</p>
+        </a>
+        </div>
+        <div class="companion-kit__col companion-kit__col--write">
+          <h3>Write it down</h3>
+        <a class="companion-kit__single see-also-card" href="/sheets/local-keyword-map/">
+          <span class="see-also-kind">Sheet</span>
+          <h4>Local Keyword × Page Map — Sheets</h4>
+          <p>Which keyword each page targets, neighborhood modifier, current rank, page H1, schema type. Surfaces cannibalization and coverage gaps.</p>
+        </a>
+        </div>
+        <div class="companion-kit__col companion-kit__col--lookup">
+          <h3>Look up</h3>
+        <p class="companion-kit__self">You're on the term. The other corners keep you moving.</p>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <!-- /companion-kit:end -->
+
 </main>
 
 <footer>
