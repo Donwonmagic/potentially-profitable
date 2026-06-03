@@ -45,13 +45,28 @@ for (const root of [['en', 'glossary'], ['es', 'es/glossary']]) {
     const pairings = anchors[slug];
     if (!pairings) { skipped++; continue; }
     const src = fs.readFileSync(file, 'utf8');
-    let next = src;
-    for (const [toolSlug, anchor] of Object.entries(pairings)) {
-      const pathPrefix = locale === 'es' ? `/es/tools/${toolSlug}/` : `/tools/${toolSlug}/`;
-      // Match href="/tools/<toolSlug>/" — a bare root URL — and append #anchor.
-      const re = new RegExp(`href="${pathPrefix.replace(/\//g, '\\/')}"`, 'g');
-      next = next.replace(re, `href="${pathPrefix}#${anchor}"`);
+    // Carve out the companion-kit block: inject-companion-kit.mjs owns
+    // every href inside it and rewrites them on each run from its data
+    // source (which emits bare /tools/<slug>/ URLs). Mutating tool hrefs
+    // inside the block would just bounce back on the next companion-kit
+    // run, breaking idempotence for both gates.
+    const ckStart = src.indexOf('<!-- companion-kit:start -->');
+    const ckEnd   = src.indexOf('<!-- /companion-kit:end -->');
+    const head    = ckStart >= 0 ? src.slice(0, ckStart) : src;
+    const block   = ckStart >= 0 && ckEnd > ckStart ? src.slice(ckStart, ckEnd + '<!-- /companion-kit:end -->'.length) : '';
+    const tail    = ckEnd  >  ckStart ? src.slice(ckEnd + '<!-- /companion-kit:end -->'.length) : '';
+    function rewrite(chunk) {
+      let out = chunk;
+      for (const [toolSlug, anchor] of Object.entries(pairings)) {
+        const pathPrefix = locale === 'es' ? `/es/tools/${toolSlug}/` : `/tools/${toolSlug}/`;
+        const re = new RegExp(`href="${pathPrefix.replace(/\//g, '\\/')}"`, 'g');
+        out = out.replace(re, `href="${pathPrefix}#${anchor}"`);
+      }
+      return out;
     }
+    const next = ckStart >= 0
+      ? rewrite(head) + block + rewrite(tail)
+      : rewrite(src);
     if (next === src) continue;
     if (!checkOnly) fs.writeFileSync(file, next);
     console.log(`${checkOnly ? 'would update' : 'updated'}: ${path.relative(repoRoot, file)}`);
