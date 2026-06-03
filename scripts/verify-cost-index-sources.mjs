@@ -74,7 +74,33 @@ async function probe(src, m) {
   return { ok: false, err: 'unknown source' };
 }
 
+// --discover [query]: list the MARS API report directory (so you can find the
+// NUMERIC report id the API wants — the slugs like 'LM_XB403' 404). The 404s on
+// every ams probe mean auth works but the path/id is wrong; this finds the id.
+async function discoverAms(query) {
+  if (!keys.AMS) { console.error('AMS_KEY required for --discover.'); process.exit(1); }
+  const auth = 'Basic ' + Buffer.from(keys.AMS + ':').toString('base64');
+  let list;
+  try { list = await fetchJson('https://marsapi.ams.usda.gov/services/v1.2/reports', { headers: { Authorization: auth } }); }
+  catch (e) { console.error(`Could not reach the reports directory (${e.message}). If this 404s too, the API base path changed — check https://mymarketnews.ams.usda.gov/mars-api`); process.exit(1); }
+  const reports = Array.isArray(list) ? list : (list.results || list.reports || []);
+  console.log(`AMS reports directory: ${reports.length} report(s).`);
+  if (reports[0]) console.log('record fields:', Object.keys(reports[0]).join(', '), '\n');
+  const q = (query || '').toLowerCase();
+  const matches = q ? reports.filter((r) => JSON.stringify(r).toLowerCase().includes(q)) : reports.slice(0, 40);
+  console.log(`${matches.length} match(es)${q ? ` for "${query}"` : ' (showing first 40)'}:`);
+  for (const r of matches.slice(0, 80)) {
+    const id = r.report_id ?? r.reportId ?? r.id ?? r.slug_id ?? '?';
+    const slug = r.slug_id ?? r.slug ?? r.report_slug ?? '';
+    const title = r.report_title ?? r.title ?? r.report_name ?? r.name ?? '';
+    console.log(`  id=${id}  slug=${slug}  ${title}`);
+  }
+  console.log('\nPut the numeric id into data/cost-index-sources.json (ams.reportId), then re-run verify.');
+}
+
 async function main() {
+  const di = process.argv.indexOf('--discover');
+  if (di >= 0) return discoverAms(process.argv[di + 1]);
   console.log('Verifying cost-index source ids against the live APIs…\n');
   const ready = [];
   for (const ing of Object.keys(sources)) {
