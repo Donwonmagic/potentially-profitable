@@ -138,10 +138,10 @@
     var sourceSeries = {}, levelObs = [];
     (outputs || []).forEach(function (o) {
       if (!o || !Array.isArray(o.points) || !o.points.length) return;
-      sourceSeries[o.source] = { basis: o.basis, values: o.points.map(function (p) { return p.value; }), weight: o.weight };
+      sourceSeries[o.source] = { basis: o.basis, values: o.points.map(function (p) { return p.value; }), weight: o.weight, family: o.family };
       if (o.basis !== 'index') {
         var latest = o.points[o.points.length - 1];
-        levelObs.push({ source: o.source, basis: o.basis, valueCents: Math.round(latest.value * 100), date: latest.date });
+        levelObs.push({ source: o.source, basis: o.basis, valueCents: Math.round(latest.value * 100), date: latest.date, family: o.family });
       }
     });
     return { levelObs: levelObs, sourceSeries: sourceSeries, asOf: opts.asOf || latestDate(outputs) };
