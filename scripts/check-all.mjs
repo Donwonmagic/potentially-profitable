@@ -308,6 +308,7 @@ const CHECKS = [
   ['Cuisine landing pages (idem)','build-cuisine-landing-pages.mjs','--check'],
   ['Ingredient-yield pages (idem)','build-ingredient-yield-pages.mjs','--check'],
   ['Cost-index sources','check-cost-index-sources.mjs','--check'],
+  ['Cost-index sync',   'check-cost-index-sync.mjs',     '--check'],
   ['Security claims',      'check-security-claims.mjs'],
   ['Data promise rail',    'check-data-promise-rail.mjs'],
   ['Security locale parity','check-security-locale-parity.mjs'],
