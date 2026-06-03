@@ -138,8 +138,14 @@ function fmt(point, ingredient) {
 }
 
 async function main() {
-  console.log(`Cost Index orchestrator — ${LIVE ? 'LIVE' : 'DEMO (canned payloads)'} mode`);
+  const arg = (k) => { const i = process.argv.indexOf(k); return i >= 0 ? process.argv[i + 1] : null; };
+  const outFile = arg('--out');
+  const jsonMode = process.argv.includes('--json') || !!outFile;
+  const log = jsonMode ? () => {} : (...a) => console.log(...a);   // stay quiet in JSON mode
+
+  log(`Cost Index orchestrator — ${LIVE ? 'LIVE' : 'DEMO (canned payloads)'} mode`);
   const ingredients = LIVE ? Object.keys(sourceMap) : Object.keys(FIXTURES);
+  const artifact = { generatedAt: new Date().toISOString(), points: {} };
   let composed = 0, skipped = 0;
   for (const ing of ingredients) {
     const m = sourceMap[ing] || {};
@@ -148,18 +154,32 @@ async function main() {
     try {
       raw = LIVE ? await liveFetch(ing, m) : (FIXTURES[ing] || {});
     } catch (e) {
-      console.log(`\n■ ${ing}  ·  fetch error: ${e.message} (contributes nothing)`);
+      log(`\n■ ${ing}  ·  fetch error: ${e.message} (contributes nothing)`);
       continue;
     }
     const outputs = toOutputs(ing, raw, m);
-    if (!outputs.length) { console.log(`\n■ ${ing}  ·  no source data`); continue; }
+    if (!outputs.length) { log(`\n■ ${ing}  ·  no source data`); continue; }
     const point = composeIngredient(ing, outputs);
-    if (!point) { console.log(`\n■ ${ing}  ·  all sources failed the quality gate`); continue; }
-    fmt(point, ing);
+    if (!point) { log(`\n■ ${ing}  ·  all sources failed the quality gate`); continue; }
+    if (!jsonMode) fmt(point, ing);
+    // The artifact point is exactly a MuntinComposite.assess result — the shape
+    // build-cost-index.mjs vendors (it adds asOf already; ensure it's present).
+    artifact.points[ing] = { asOf: point.result.asOf, ...point.result };
     composed++;
   }
-  console.log(`\n— ${composed} ingredient(s) composed${LIVE ? `, ${skipped} skipped (verified:false — confirm source ids first, pin #8)` : ''}.`);
-  if (!LIVE) console.log('  Run with --live + FRED_KEY/BLS_KEY/AMS_KEY once source ids are verified to fetch real data.');
+
+  // --out <file> / --json: emit the build-cost-index artifact (the clean
+  // fetch→vendor handoff). Otherwise print the human summary.
+  if (outFile) {
+    const fs = await import('node:fs');
+    fs.writeFileSync(outFile, JSON.stringify(artifact, null, 2) + '\n');
+    console.log(`Wrote ${composed} point(s) → ${outFile}. Next: node scripts/build-cost-index.mjs --artifact ${outFile}`);
+  } else if (jsonMode) {
+    process.stdout.write(JSON.stringify(artifact, null, 2) + '\n');
+  } else {
+    log(`\n— ${composed} ingredient(s) composed${LIVE ? `, ${skipped} skipped (verified:false — confirm source ids first, pin #8)` : ''}.`);
+    if (!LIVE) log('  Run with --live + FRED_KEY/BLS_KEY/AMS_KEY once source ids are verified to fetch real data.');
+  }
 }
 
 main().catch((e) => { console.error(e); process.exit(1); });
