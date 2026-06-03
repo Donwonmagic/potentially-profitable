@@ -70,6 +70,46 @@ function clampDesc(text, max = 155) {
 }
 function money(cents) { return '$' + (Math.round(cents) / 100).toFixed(2); }
 
+// --- Live Cost Index block (dormant until data/cost-index.json carries a
+// verified, sourced point for the ingredient — fact-gated by
+// scripts/check-cost-index-sync.mjs). Empty today, so it renders nothing and
+// the pages stay byte-identical; the moment real data lands it flows in here. ---
+const COST_INDEX = (() => {
+  try { return JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/cost-index.json'), 'utf8')).ingredients || {}; }
+  catch { return {}; }
+})();
+const CI_SOURCE_LABELS = { 'usda-ams': 'USDA AMS', bls: 'BLS PPI', fred: 'FRED', noaa: 'NOAA Fisheries' };
+function costIndexBlock(slug, locale) {
+  const entry = COST_INDEX[slug];
+  const point = entry && Array.isArray(entry.points) && entry.points[0];
+  if (!point) return '';                       // nothing verified+sourced yet → render nothing
+  const es = locale === 'es';
+  const conf = point.confidence || 'low';
+  const confWord = es ? ({ high: 'alta', medium: 'media', low: 'baja', directional: 'direccional' }[conf] || conf) : conf;
+  const rc = point.level && Array.isArray(point.level.rangeCents) ? point.level.rangeCents : null;
+  const range = (rc && rc[0] !== rc[1])
+    ? `${money(rc[0])}–${money(rc[1])} ${es ? '(referencia mayorista)' : '(wholesale reference)'}`
+    : rc
+      ? `${money(rc[0])} ${es ? '(referencia mayorista, una fuente)' : '(wholesale reference, single source)'}`
+      : (es ? 'solo dirección' : 'directional only');
+  const tr = point.trend || {};
+  const dirWord = tr.dir === 'up' ? (es ? 'al alza' : 'up') : tr.dir === 'down' ? (es ? 'a la baja' : 'down') : (es ? 'estable' : 'flat');
+  const trendStr = (typeof tr.pct === 'number') ? `, ${dirWord} ${(tr.pct >= 0 ? '+' : '')}${(tr.pct * 100).toFixed(1).replace(/\.0$/, '')}%` : '';
+  const sources = [...new Set((point.provenance || []).map((p) => CI_SOURCE_LABELS[p.source] || p.source).filter(Boolean))];
+  const asOf = point.asOf || '—';
+  const head = es ? 'Lectura de mercado' : 'Market read';
+  const line = es ? `Alrededor de ${range}${trendStr} en la ventana reciente.` : `About ${range}${trendStr} over the recent window.`;
+  const badge = `${es ? 'confianza' : 'confidence'} ${confWord} · ${es ? 'al' : 'as of'} ${asOf}`;
+  const srcSummary = `${es ? 'Fuentes' : 'Sources'} · ${sources.length}`;
+  const srcBody = `${sources.join(' · ')} — ${es ? 'datos públicos' : 'public data'}, ${es ? 'al' : 'as of'} ${asOf}. ${es ? 'Referencia mayorista, no el precio entregado que pagas.' : 'Wholesale reference, not the delivered price you pay.'}`;
+  return `
+<div class="iy-costindex">
+  <p class="iy-ci-head">${head}<span class="iy-ci-badge">${badge}</span></p>
+  <p class="iy-ci-line">${line}</p>
+  <details class="iy-ci-src"><summary>${srcSummary}</summary><div>${srcBody}</div></details>
+</div>`;
+}
+
 // ---- Data ----------------------------------------------------------
 // Category-level guidance (the "what's the loss" truth), bilingual.
 const CATEGORIES = {
@@ -274,6 +314,13 @@ main{padding-top:64px}
 .iy-keep a{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border-radius:999px;background:#fff;color:#0f3a37;font-weight:600;font-size:13.5px;text-decoration:none}
 .iy-source{font-size:12.5px;color:var(--ink-soft);margin:20px 0 0}
 .iy-source a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+.iy-costindex{margin:14px 0 0;padding:14px 18px;background:var(--cream-2,#EDEEF1);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:10px}
+.iy-ci-head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin:0 0 6px}
+.iy-ci-badge{font-weight:600;text-transform:none;letter-spacing:0;font-size:12px;color:var(--ink-soft);margin-left:8px}
+.iy-ci-line{font-size:14.5px;line-height:1.55;color:var(--ink);margin:0}
+.iy-ci-src{margin-top:8px;font-size:12.5px}
+.iy-ci-src summary{cursor:pointer;color:var(--ink-soft);font-weight:600}
+.iy-ci-src div{margin-top:6px;color:var(--ink-soft);line-height:1.5}
 .iy-related{font-size:13px;color:var(--ink-soft);margin:18px 0 0}
 .iy-related-label{display:inline-block;font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:11px;margin-right:8px}
 .iy-related a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
@@ -380,7 +427,7 @@ function emitIngredientPage(ing, locale) {
     <p class="iy-hero-lede">${escHtml(lede)}</p>
   </section>
   <section class="iy-body">
-    ${body}
+    ${body}${costIndexBlock(ing.slug, locale)}
     <div class="iy-cta-row">
       <a class="iy-cta" href="${base}/tools/plate-cost/">${calcCta} <span aria-hidden="true">→</span></a>
     </div>
