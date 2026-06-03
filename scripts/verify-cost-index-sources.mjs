@@ -84,18 +84,20 @@ async function discoverAms(query) {
   try { list = await fetchJson('https://marsapi.ams.usda.gov/services/v1.2/reports', { headers: { Authorization: auth } }); }
   catch (e) { console.error(`Could not reach the reports directory (${e.message}). If this 404s too, the API base path changed — check https://mymarketnews.ams.usda.gov/mars-api`); process.exit(1); }
   const reports = Array.isArray(list) ? list : (list.results || list.reports || []);
-  console.log(`AMS reports directory: ${reports.length} report(s).`);
-  if (reports[0]) console.log('record fields:', Object.keys(reports[0]).join(', '), '\n');
-  const q = (query || '').toLowerCase();
-  const matches = q ? reports.filter((r) => JSON.stringify(r).toLowerCase().includes(q)) : reports.slice(0, 40);
-  console.log(`${matches.length} match(es)${q ? ` for "${query}"` : ' (showing first 40)'}:`);
-  for (const r of matches.slice(0, 80)) {
-    const id = r.report_id ?? r.reportId ?? r.id ?? r.slug_id ?? '?';
-    const slug = r.slug_id ?? r.slug ?? r.report_slug ?? '';
-    const title = r.report_title ?? r.title ?? r.report_name ?? r.name ?? '';
-    console.log(`  id=${id}  slug=${slug}  ${title}`);
+  const all = process.argv.includes('--all');
+  const q = (query || '').toLowerCase().trim();
+  // Match report_title OR slug_name (the AMS report code, e.g. LM_XB459). The
+  // numeric slug_id is what the data endpoint wants in ams.reportId.
+  const matches = (all || !q) ? reports
+    : reports.filter((r) => (((r.report_title || '') + ' ' + (r.slug_name || '')).toLowerCase().includes(q)));
+  console.log(`AMS reports directory: ${reports.length} total · ${matches.length} ${q ? `matching "${query}"` : 'shown'}\n`);
+  const limit = all ? reports.length : 100;
+  for (const r of matches.slice(0, limit)) {
+    console.log(`  reportId=${r.slug_id}   code=${r.slug_name || '?'}   ${r.report_title || ''}   (${r.report_date || r.published_date || ''})`);
   }
-  console.log('\nPut the numeric id into data/cost-index-sources.json (ams.reportId), then re-run verify.');
+  console.log('\nPut the numeric reportId into data/cost-index-sources.json (ams.reportId), then re-run verify.');
+  console.log('Tip: ribeye/cuts live INSIDE a boxed-beef report — search "beef", "boxed", "cutout", "terminal", "lettuce", "vegetable".');
+  console.log('     `--discover --all > /tmp/ams-reports.txt` dumps the whole directory to grep locally.');
 }
 
 async function main() {
