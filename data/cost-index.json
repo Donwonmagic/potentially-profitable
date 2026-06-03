@@ -1,0 +1,6 @@
+{
+  "_doc": "Vendored Muntin Restaurant Cost Index — per-ingredient composite price points (LEVEL range + blended TREND + confidence + provenance + asOf), built by scripts/build-cost-index.mjs from the live-fetch artifact (the ledger-spec/cost-index orchestrator → R2 in prod). THE FACT GATE: an ingredient appears here ONLY if its source ids in data/cost-index-sources.json are verified:true AND a live fetch produced real points — nothing renders behind the fact gate before then. Every point carries provenance (source + date) and an asOf date. Parity + freshness + fact-gate enforced by scripts/check-cost-index-sync.mjs. EMPTY today: all 12 ingredients are still verified:false (pin #8 — confirm source ids, then run build-cost-index with --artifact from a live fetch).",
+  "_lastReviewed": "2026-06-03",
+  "_generatedFrom": "verified-sources-only",
+  "ingredients": {}
+}
