@@ -33,10 +33,11 @@
       "verified": false,
       "ams": {
         "reportId": "3646",
-        "commodity": "Breast",
+        "commodity": "Breast - B/S",
+        "matchFields": ["item"],
         "market": "National",
-        "reducer": "mostlyMid",
-        "_report": "Weekly National Chicken Report"
+        "reducer": "wtdAvg",
+        "_report": "Weekly National Chicken Report; item 'Breast - B/S' = boneless/skinless, wtd_avg_price in Cents Per Lb"
       },
       "fred": {
         "seriesId": "APU0000706111",
@@ -51,9 +52,10 @@
       "ams": {
         "reportId": "3646",
         "commodity": "Whole",
+        "matchFields": ["item"],
         "market": "National",
-        "reducer": "mostlyMid",
-        "_report": "Weekly National Chicken Report"
+        "reducer": "wtdAvg",
+        "_report": "Weekly National Chicken Report; wtd_avg_price in Cents Per Lb"
       },
       "bls": {
         "seriesId": "WPU0222"

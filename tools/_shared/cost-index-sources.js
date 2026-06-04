@@ -84,38 +84,65 @@
   }
 
   /**
-   * Collapse one USDA AMS report row to a single deterministic number.
-   * AMS reports prices as RANGES, not points, so the reducer is part of
-   * the mapping config (data/cost-index-sources.json):
-   *   - 'mostlyMid'    → midpoint of mostly_low..mostly_high (fallback
-   *                      low_price..high_price). The standard wholesale read.
-   *   - 'valuePerPound'→ dollars / pounds (for value+quantity reports, e.g. NOAA-style).
+   * Price-unit awareness. AMS varies the price unit PER REPORT: the National
+   * Chicken Report quotes "Cents Per Lb" (so 145.72 means $1.4572/lb), while the
+   * terminal produce reports quote dollars per package. Read the row's price_unit
+   * so a cents value never reaches the engine wearing a dollars costume — the
+   * exact bug that made $1.46/lb breast look like $145/lb and get hard-rejected.
+   * Returns { scale } (cents→dollars) and { unit } (lb/dozen/cwt when stated).
+   */
+  function priceMeta(row, fields) {
+    var pu = String((row && row[(fields && fields.priceUnit) || 'price_unit']) || '').toLowerCase();
+    var scale = /cent/.test(pu) ? 0.01 : 1;                 // cents → dollars
+    var unit = /lb|pound/.test(pu) ? 'lb'
+      : (/dozen|\bdoz\b/.test(pu) ? 'dozen'
+      : (/cwt|hundredweight/.test(pu) ? 'cwt' : null));      // null = unit not stated (e.g. produce per-package)
+    return { scale: scale, unit: unit };
+  }
+
+  /** Midpoint of the "mostly" band, falling back to the full low/high range.
+   *  Field aliases: terminal reports use mostly_low_price/mostly_high_price (the
+   *  _price suffix); others use mostly_low/mostly_high. Returns null if absent. */
+  function bandMid(row, fields) {
+    var ml = num(pickField(row, [fields.mostlyLow, 'mostly_low_price', 'mostly_low']));
+    var mh = num(pickField(row, [fields.mostlyHigh, 'mostly_high_price', 'mostly_high']));
+    if (ml != null && mh != null) return (ml + mh) / 2;
+    var lo = num(pickField(row, [fields.low, 'low_price', 'low']));
+    var hi = num(pickField(row, [fields.high, 'high_price', 'high']));
+    if (lo != null && hi != null) return (lo + hi) / 2;
+    return null;
+  }
+
+  /**
+   * Collapse one USDA AMS report row to a single deterministic number, in
+   * DOLLARS (cents auto-converted via price_unit). Reducer is mapping config:
+   *   - 'wtdAvg'       → the volume-weighted average (wtd_avg_price) when the
+   *                      report carries it (the most honest single number),
+   *                      else the band midpoint. Use for the chicken report.
+   *   - 'mostlyMid'    → midpoint of the mostly band (fallback low/high). The
+   *                      standard terminal-report read.
+   *   - 'valuePerPound'→ dollars / pounds (value+quantity reports, NOAA-style).
    *   - 'single'       → a single named field (fields.price | 'avg_price').
-   * Returns null when the needed fields are missing (row is then dropped,
-   * never guessed).
+   * Returns null when the needed fields are missing (row dropped, never guessed).
    */
   function reduceAmsRow(row, reducer, fields) {
     if (!row) return null;
     fields = fields || {};
     reducer = reducer || 'single';
-    if (reducer === 'mostlyMid') {
-      // Field aliases: AMS terminal reports use mostly_low_price/mostly_high_price
-      // (with the _price suffix); other reports use mostly_low/mostly_high. Prefer
-      // the tighter "mostly" band; fall back to the full low_price/high_price range.
-      var ml = num(pickField(row, [fields.mostlyLow, 'mostly_low_price', 'mostly_low']));
-      var mh = num(pickField(row, [fields.mostlyHigh, 'mostly_high_price', 'mostly_high']));
-      if (ml != null && mh != null) return (ml + mh) / 2;
-      var lo = num(pickField(row, [fields.low, 'low_price', 'low']));
-      var hi = num(pickField(row, [fields.high, 'high_price', 'high']));
-      if (lo != null && hi != null) return (lo + hi) / 2;
-      return null;
-    }
-    if (reducer === 'valuePerPound') {
+    var raw;
+    if (reducer === 'wtdAvg') {
+      raw = num(pickField(row, [fields.wtdAvg, 'wtd_avg_price', 'weighted_average', 'avg_price']));
+      if (raw == null) raw = bandMid(row, fields);
+    } else if (reducer === 'mostlyMid') {
+      raw = bandMid(row, fields);
+    } else if (reducer === 'valuePerPound') {
       var d = num(row[fields.dollars || 'dollars']);
       var p = num(row[fields.pounds || 'pounds']);
-      return (d != null && p != null && p > 0) ? d / p : null;
+      raw = (d != null && p != null && p > 0) ? d / p : null;
+    } else {
+      raw = num(row[fields.price || 'avg_price']);
     }
-    return num(row[fields.price || 'avg_price']);
+    return raw == null ? null : raw * priceMeta(row, fields).scale;
   }
 
   /** USDA AMS Market News report rows. Format varies by report, so the
@@ -136,26 +163,31 @@
     var rows = (json && (json.results || json.report || json.data)) || [];
     var dateField = meta.dateField || 'report_date';
     var commodity = meta.commodity ? String(meta.commodity).toLowerCase() : null;
+    // Match the commodity in DESCRIPTIVE fields only — not every string. The old
+    // field-agnostic scan also hit region="National", price_unit, office names,
+    // grades, so a term could match noise. Override with meta.matchFields.
+    var matchFields = meta.matchFields || ['commodity', 'item', 'variety', 'class', 'grade', 'category', 'primal'];
     function rowMatches(r) {
       if (!commodity) return true;
-      for (var k in r) {
-        if (Object.prototype.hasOwnProperty.call(r, k)) {
-          var v = r[k];
-          if (typeof v === 'string' && v.toLowerCase().indexOf(commodity) !== -1) return true;
-        }
+      for (var i = 0; i < matchFields.length; i++) {
+        var v = r[matchFields[i]];
+        if (typeof v === 'string' && v.toLowerCase().indexOf(commodity) !== -1) return true;
       }
       return false;
     }
-    var byDate = {};
+    var byDate = {}, detectedUnit = null;
     rows.forEach(function (r) {
       if (!r || !rowMatches(r)) return;
       var v = reduceAmsRow(r, meta.reducer, meta.fields);
       var date = isoDate(r[dateField]);
-      if (date && v != null && isFinite(v)) (byDate[date] = byDate[date] || []).push(v);
+      if (date && v != null && isFinite(v) && v > 0) {
+        (byDate[date] = byDate[date] || []).push(v);
+        if (!detectedUnit) detectedUnit = priceMeta(r, meta.fields).unit;   // carry the real unit so the quality gate can catch a flip
+      }
     });
     var points = Object.keys(byDate).map(function (d) { return { date: d, value: _amsMedian(byDate[d]) }; })
       .sort(function (a, b) { return a.date < b.date ? -1 : a.date > b.date ? 1 : 0; });
-    return { source: meta.source || 'usda-ams', basis: meta.basis || 'wholesale', unit: meta.unit || 'usd', points: points };
+    return { source: meta.source || 'usda-ams', basis: meta.basis || 'wholesale', unit: detectedUnit || meta.unit || null, points: points };
   }
 
   function latestDate(outputs) {
@@ -180,7 +212,7 @@
       sourceSeries[o.source] = { basis: o.basis, values: o.points.map(function (p) { return p.value; }), weight: o.weight, family: o.family };
       if (o.basis !== 'index') {
         var latest = o.points[o.points.length - 1];
-        levelObs.push({ source: o.source, basis: o.basis, valueCents: Math.round(latest.value * 100), date: latest.date, family: o.family });
+        levelObs.push({ source: o.source, basis: o.basis, valueCents: Math.round(latest.value * 100), date: latest.date, family: o.family, unit: o.unit });
       }
     });
     return { levelObs: levelObs, sourceSeries: sourceSeries, asOf: opts.asOf || latestDate(outputs) };
