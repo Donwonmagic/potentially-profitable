@@ -76,43 +76,10 @@ const FIXTURES = {
 };
 
 // ---- live fetchers (only used with --live) --------------------------------
-const AMS_WINDOW_DAYS = Number(process.env.AMS_WINDOW_DAYS || 120);
-const FETCH_TIMEOUT_MS = Number(process.env.FETCH_TIMEOUT_MS || 25000);
+// Transport (timeout + transient retry + AMS window/section + fan-out) is shared
+// with the verifier so the two can't drift.
+const F = require('../tools/_shared/cost-index-fetch.js');
 
-async function fetchJson(url, init = {}) {
-  // Hard ceiling: a huge/slow terminal report errors out instead of hanging the run.
-  const res = await fetch(url, { ...init, signal: init.signal || AbortSignal.timeout(FETCH_TIMEOUT_MS) });
-  if (!res.ok) throw new Error('HTTP ' + res.status);
-  return res.json();
-}
-function amsWindowStr(days) {
-  const f = (d) => `${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')}/${d.getFullYear()}`;
-  const end = new Date(); const start = new Date(end.getTime() - days * 864e5);
-  return `${f(start)}:${f(end)}`;
-}
-// Detail section (where prices live), scoped to a recent window so the (often
-// enormous) terminal reports return a small current slice; falls back to full
-// history if the date filter is rejected. Detail-section names differ across
-// reports ("Report Details" vs "Report Detail") and MARS silently returns the
-// HEADER on a name miss, so auto-correct to the section the report advertises.
-async function fetchAmsReport(reportId, sectionRaw, auth) {
-  const h = { Authorization: auth };
-  const win = AMS_WINDOW_DAYS > 0 ? `?q=${encodeURIComponent('report_begin_date=' + amsWindowStr(AMS_WINDOW_DAYS))}` : '';
-  const base = `https://marsapi.ams.usda.gov/services/v1.2/reports/${reportId}`;
-  const want = sectionRaw === '' ? '' : (sectionRaw || 'Report Details');
-  const get = async (section) => {
-    const path = section === '' ? '' : '/' + encodeURIComponent(section);
-    try { return await fetchJson(`${base}${path}${win}`, { headers: h }); }
-    catch (e) { if (win) return fetchJson(`${base}${path}`, { headers: h }); throw e; }
-  };
-  let j = await get(want);
-  if (want && j && j.reportSection === 'Report Header' && want !== 'Report Header' && Array.isArray(j.reportSections)) {
-    const detail = j.reportSections.find((s) => s !== 'Report Header' && /detail/i.test(s))
-                || j.reportSections.find((s) => s !== 'Report Header');
-    if (detail && detail !== want) j = await get(detail);
-  }
-  return j;
-}
 // ams may be a single mapping OR an array of terminal markets (multiple
 // independent terminals → a real national p25–p75 level, not one city).
 function amsSpecs(m) { return Array.isArray(m.ams) ? m.ams : (m.ams ? [m.ams] : []); }
@@ -121,26 +88,22 @@ const slug = (s) => String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').re
 async function liveFetch(ingredient, m) {
   const out = { ams: [] };
   if (m.fred && process.env.FRED_KEY) {
-    out.fred = await fetchJson(`https://api.stlouisfed.org/fred/series/observations?series_id=${m.fred.seriesId}&file_type=json&api_key=${process.env.FRED_KEY}`);
+    out.fred = await F.fetchJson(`https://api.stlouisfed.org/fred/series/observations?series_id=${m.fred.seriesId}&file_type=json&api_key=${process.env.FRED_KEY}`);
   }
   if (m.bls && process.env.BLS_KEY) {
-    out.bls = await fetchJson('https://api.bls.gov/publicAPI/v2/timeseries/data/', {
+    out.bls = await F.fetchJson('https://api.bls.gov/publicAPI/v2/timeseries/data/', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ seriesid: [m.bls.seriesId], registrationkey: process.env.BLS_KEY }),
     });
   }
   if (process.env.AMS_KEY) {
     const auth = 'Basic ' + Buffer.from(process.env.AMS_KEY + ':').toString('base64');
-    for (const spec of amsSpecs(m)) {
-      // Per-terminal resilience: one market missing the commodity this week
-      // (or one slow report) must not drop the whole ingredient (cardinal rule).
-      try {
-        // Prices live in a report SECTION (e.g. "Report Details"); the bare
-        // /reports/{id} returns the Report Header (metadata, no prices).
-        const json = await fetchAmsReport(spec.reportId, spec.section, auth);
-        out.ams.push({ json, spec });
-      } catch (e) { /* skip this terminal; others still contribute */ }
-    }
+    // Fan out the terminals in parallel (bounded). mapLimit always settles each,
+    // so one market missing the commodity or one slow report drops only itself —
+    // the others still contribute (the cardinal rule), without 8 sequential waits.
+    const settled = await F.mapLimit(amsSpecs(m), F.AMS_CONCURRENCY,
+      (spec) => F.fetchAmsReport(spec.reportId, spec.section, auth).then((json) => ({ json, spec })));
+    settled.forEach((r) => { if (r.ok) out.ams.push(r.value); });
   }
   return out;
 }
@@ -228,6 +191,13 @@ async function main() {
   // --out <file> / --json: emit the build-cost-index artifact (the clean
   // fetch→vendor handoff). Otherwise print the human summary.
   if (outFile) {
+    // Don't clobber a good artifact with an empty one: if a LIVE run composed
+    // nothing (every source transiently down), refuse to write so the prior
+    // vendored index survives (the last-good rule). Demo always has fixtures.
+    if (LIVE && composed === 0) {
+      console.error(`Refusing to write ${outFile}: 0 points composed (all sources failed?). Last-good artifact left intact — investigate before vendoring.`);
+      process.exit(1);
+    }
     const fs = await import('node:fs');
     fs.writeFileSync(outFile, JSON.stringify(artifact, null, 2) + '\n');
     console.log(`Wrote ${composed} point(s) → ${outFile}. Next: node scripts/build-cost-index.mjs --artifact ${outFile}`);
