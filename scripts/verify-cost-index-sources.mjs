@@ -27,6 +27,7 @@ import { fileURLToPath } from 'node:url';
 const require = createRequire(import.meta.url);
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const S = require('../tools/_shared/cost-index-sources.js');
+const F = require('../tools/_shared/cost-index-fetch.js');   // shared transport: timeout + transient retry + AMS window/section + fan-out
 
 const FLIP = process.argv.includes('--flip');
 const SRC = path.join(repoRoot, 'data/cost-index-sources.json');
@@ -38,50 +39,6 @@ const bounds = rd(path.join(repoRoot, 'data/cost-index-bounds.json')).bounds || 
 const keys = { FRED: process.env.FRED_KEY, BLS: process.env.BLS_KEY, AMS: process.env.AMS_KEY };
 for (const [k, v] of Object.entries(keys)) if (!v) console.warn(`! ${k}_KEY not set — its sources will be skipped.`);
 
-// AMS terminal "Report Details" sections carry ALL history (some reports run to
-// ~1.9M rows), so an unscoped fetch is huge and can hang. Scope to a recent
-// window by default; AMS_WINDOW_DAYS=0 scans full history.
-const AMS_WINDOW_DAYS = Number(process.env.AMS_WINDOW_DAYS || 120);
-const FETCH_TIMEOUT_MS = Number(process.env.FETCH_TIMEOUT_MS || 25000);
-
-async function fetchJson(url, init = {}) {
-  // Hard ceiling so one slow/huge report can't hang the whole run — it errors,
-  // and the other sources/markets still get their turn.
-  const res = await fetch(url, { ...init, signal: init.signal || AbortSignal.timeout(FETCH_TIMEOUT_MS) });
-  if (!res.ok) throw new Error('HTTP ' + res.status);
-  return res.json();
-}
-
-function amsWindow(days) {
-  const f = (d) => `${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')}/${d.getFullYear()}`;
-  const end = new Date(); const start = new Date(end.getTime() - days * 864e5);
-  return `${f(start)}:${f(end)}`;
-}
-// Fetch a report's DETAIL section (where prices live — the bare report is the
-// header). Scoped to a recent date window (MARS supports ?q=report_begin_date=
-// MM/DD/YYYY:MM/DD/YYYY); falls back to unwindowed if a report rejects the filter.
-// Detail-section names differ across reports ("Report Details" on terminal produce,
-// "Report Detail" on the National Chicken Report) — and MARS silently returns the
-// HEADER when the name doesn't match, so we auto-correct to the section it advertises.
-async function fetchAms(reportId, sectionRaw, auth) {
-  const h = { Authorization: auth };
-  const win = AMS_WINDOW_DAYS > 0 ? `?q=${encodeURIComponent('report_begin_date=' + amsWindow(AMS_WINDOW_DAYS))}` : '';
-  const base = `https://marsapi.ams.usda.gov/services/v1.2/reports/${reportId}`;
-  const want = sectionRaw === '' ? '' : (sectionRaw || 'Report Details');
-  const get = async (section) => {
-    const path = section === '' ? '' : '/' + encodeURIComponent(section);
-    try { return await fetchJson(`${base}${path}${win}`, { headers: h }); }
-    catch (e) { if (win) return fetchJson(`${base}${path}`, { headers: h }); throw e; }
-  };
-  let j = await get(want);
-  if (want && j && j.reportSection === 'Report Header' && want !== 'Report Header' && Array.isArray(j.reportSections)) {
-    const detail = j.reportSections.find((s) => s !== 'Report Header' && /detail/i.test(s))
-                || j.reportSections.find((s) => s !== 'Report Header');
-    if (detail && detail !== want) j = await get(detail);
-  }
-  return j;
-}
-
 // Returns { ok, n, latest, basis } or { ok:false, err }.
 async function probe(src, m) {
   try {
@@ -89,15 +46,15 @@ async function probe(src, m) {
       if (!keys.AMS) return { ok: false, err: 'no AMS_KEY' };
       // Prices live in a report SECTION ("Report Details"); the bare report is the header.
       const auth = 'Basic ' + Buffer.from(keys.AMS + ':').toString('base64');
-      const j = await fetchAms(m.reportId, m.section, auth);
+      const j = await F.fetchAmsReport(m.reportId, m.section, auth);
       const o = S.normalizeAms(j, { source: 'usda-ams', basis: 'wholesale', reducer: m.reducer || 'mostlyMid', commodity: m.commodity, matchFields: m.matchFields, unit: m.unit });
       const latest = o.points[o.points.length - 1];
       return latest ? { ok: true, n: o.points.length, latest: latest.value, basis: 'wholesale', level: true }
-        : { ok: false, err: `fetched OK, 0 priced rows matched${m.commodity ? ` commodity "${m.commodity}"` : ''}${AMS_WINDOW_DAYS ? ` (last ${AMS_WINDOW_DAYS}d — set AMS_WINDOW_DAYS=0 for full history)` : ''} (check report JSON shape / commodity term)` };
+        : { ok: false, err: `fetched OK, 0 priced rows matched${m.commodity ? ` commodity "${m.commodity}"` : ''}${F.AMS_WINDOW_DAYS ? ` (last ${F.AMS_WINDOW_DAYS}d — set AMS_WINDOW_DAYS=0 for full history)` : ''} (check report JSON shape / commodity term)` };
     }
     if (src === 'bls') {
       if (!keys.BLS) return { ok: false, err: 'no BLS_KEY' };
-      const j = await fetchJson('https://api.bls.gov/publicAPI/v2/timeseries/data/', {
+      const j = await F.fetchJson('https://api.bls.gov/publicAPI/v2/timeseries/data/', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ seriesid: [m.seriesId], registrationkey: keys.BLS }) });
       const o = S.normalizeBls(j, { source: 'bls', basis: 'index' });
@@ -107,7 +64,7 @@ async function probe(src, m) {
     }
     if (src === 'fred') {
       if (!keys.FRED) return { ok: false, err: 'no FRED_KEY' };
-      const j = await fetchJson(`https://api.stlouisfed.org/fred/series/observations?series_id=${m.seriesId}&file_type=json&api_key=${keys.FRED}`);
+      const j = await F.fetchJson(`https://api.stlouisfed.org/fred/series/observations?series_id=${m.seriesId}&file_type=json&api_key=${keys.FRED}`);
       const o = S.normalizeFred(j, { source: 'fred', basis: m.basis || 'index' });
       const latest = o.points[o.points.length - 1];
       return latest ? { ok: true, n: o.points.length, latest: latest.value, basis: m.basis || 'index', level: (m.basis === 'retail' || m.basis === 'wholesale') }
@@ -124,7 +81,7 @@ async function discoverAms(query) {
   if (!keys.AMS) { console.error('AMS_KEY required for --discover.'); process.exit(1); }
   const auth = 'Basic ' + Buffer.from(keys.AMS + ':').toString('base64');
   let list;
-  try { list = await fetchJson('https://marsapi.ams.usda.gov/services/v1.2/reports', { headers: { Authorization: auth } }); }
+  try { list = await F.fetchJson('https://marsapi.ams.usda.gov/services/v1.2/reports', { headers: { Authorization: auth } }); }
   catch (e) { console.error(`Could not reach the reports directory (${e.message}). If this 404s too, the API base path changed — check https://mymarketnews.ams.usda.gov/mars-api`); process.exit(1); }
   const reports = Array.isArray(list) ? list : (list.results || list.reports || []);
   const all = process.argv.includes('--all');
@@ -158,7 +115,10 @@ async function main() {
       targets.push({ kind: 'ams', label: 'ams' + (s.market ? `:${s.market}` : ''), spec: s }));
     if (entry.bls) targets.push({ kind: 'bls', label: 'bls', spec: entry.bls });
     if (entry.fred) targets.push({ kind: 'fred', label: 'fred', spec: entry.fred });
-    for (const t of targets) t.res = await probe(t.kind, t.spec);
+    // Probe in parallel (bounded) — 8 produce terminals sequentially is what made
+    // this feel hung; mapLimit always settles each, so a dead market drops only itself.
+    const results = await F.mapLimit(targets, F.AMS_CONCURRENCY, (t) => probe(t.kind, t.spec));
+    targets.forEach((t, i) => { t.res = results[i].ok ? results[i].value : { ok: false, err: String(results[i].error && results[i].error.message || results[i].error) }; });
 
     const lines = [];
     const amsT = targets.filter((t) => t.kind === 'ams');

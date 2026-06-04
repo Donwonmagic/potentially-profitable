@@ -1,0 +1,118 @@
+/**
+ * Muntin — Cost Index live-fetch transport (shared by the verifier and the
+ * orchestrator, so the two can never drift). Pure IO concerns:
+ *   - a timeout + transient-only retry with jittered backoff (a flaky 5xx/429
+ *     or network blip is retried; a 4xx bad id/key fails fast — that's the
+ *     signal verify exists to surface; a 200 that parses is never retried —
+ *     a contract failure is poison, not a blip, handled by the caller),
+ *   - the AMS date-window + detail-section discovery,
+ *   - bounded-concurrency fan-out (fetch terminals in parallel, politely).
+ *
+ * Node only (global fetch / AbortSignal). Not browser. CommonJS so the .mjs
+ * scripts load it via createRequire, exactly like the other tools/_shared libs.
+ */
+'use strict';
+
+var FETCH_TIMEOUT_MS = Number(process.env.FETCH_TIMEOUT_MS || 25000);
+var AMS_WINDOW_DAYS = Number(process.env.AMS_WINDOW_DAYS || 120);
+var MAX_RETRIES = Number(process.env.FETCH_RETRIES || 3);
+var AMS_CONCURRENCY = Number(process.env.AMS_CONCURRENCY || 5);
+
+var TRANSIENT_STATUS = new Set([429, 500, 502, 503, 504]);
+var TRANSIENT_ERR = /ECONNRESET|ENOTFOUND|ECONNREFUSED|EAI_AGAIN|ETIMEDOUT|UND_ERR|terminated|socket|network/i;
+
+function sleep(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
+
+function backoff(attempt, headers) {
+  var ms = Math.min(8000, 500 * Math.pow(2, attempt)) * (0.5 + Math.random());   // full jitter, cap 8s
+  var ra = headers && headers.get && headers.get('retry-after');
+  if (ra != null) { var s = Number(ra); if (isFinite(s)) ms = Math.max(ms, s * 1000); }   // honor Retry-After
+  return ms;
+}
+
+async function fetchJson(url, init) {
+  init = init || {};
+  for (var attempt = 0; ; attempt++) {
+    var res;
+    try {
+      res = await fetch(url, Object.assign({}, init, { signal: init.signal || AbortSignal.timeout(FETCH_TIMEOUT_MS) })); // h8-exempt: Node-only build/CI transport for the live Cost Index fetch; never bundled or served to the browser (no window export)
+    } catch (e) {
+      var msg = String((e && e.message) || e);
+      var transient = (e && (e.name === 'TimeoutError' || e.name === 'AbortError')) || TRANSIENT_ERR.test(msg);
+      if (!transient || attempt >= MAX_RETRIES) throw e;
+      await sleep(backoff(attempt));
+      continue;
+    }
+    if (res.ok) return res.json();
+    if (!TRANSIENT_STATUS.has(res.status) || attempt >= MAX_RETRIES) throw new Error('HTTP ' + res.status);
+    await sleep(backoff(attempt, res.headers));
+  }
+}
+
+function amsWindow(days) {
+  var f = function (d) { return ('0' + (d.getMonth() + 1)).slice(-2) + '/' + ('0' + d.getDate()).slice(-2) + '/' + d.getFullYear(); };
+  var end = new Date(); var start = new Date(end.getTime() - days * 864e5);
+  return f(start) + ':' + f(end);
+}
+
+/**
+ * Fetch a report's DETAIL section (prices live there; the bare report is the
+ * header). Windowed to recent dates so huge terminal reports return a small
+ * current slice; auto-corrects the section name when MARS hands back the header
+ * (section names differ: "Report Details" on produce, "Report Detail" on the
+ * chicken report). Falls back to the unwindowed fetch if a report rejects the
+ * date filter, so the window can only help.
+ */
+async function fetchAmsReport(reportId, sectionRaw, auth) {
+  var h = { Authorization: auth };
+  var win = AMS_WINDOW_DAYS > 0 ? '?q=' + encodeURIComponent('report_begin_date=' + amsWindow(AMS_WINDOW_DAYS)) : '';
+  var base = 'https://marsapi.ams.usda.gov/services/v1.2/reports/' + reportId;
+  var want = sectionRaw === '' ? '' : (sectionRaw || 'Report Details');
+  async function get(section) {
+    var path = section === '' ? '' : '/' + encodeURIComponent(section);
+    try { return await fetchJson(base + path + win, { headers: h }); }
+    catch (e) { if (win) return fetchJson(base + path, { headers: h }); throw e; }
+  }
+  var j = await get(want);
+  if (want && j && j.reportSection === 'Report Header' && want !== 'Report Header' && Array.isArray(j.reportSections)) {
+    var sections = j.reportSections.filter(function (s) { return s && s !== 'Report Header'; });
+    var detail = sections.find(function (s) { return /report detail/i.test(s); })
+              || sections.find(function (s) { return /detail/i.test(s); })
+              || sections[0];
+    if (detail && detail !== want) j = await get(detail);
+  }
+  return j;
+}
+
+/**
+ * Bounded-concurrency map. Fans out up to `limit` at a time (per-host politeness
+ * — all AMS terminals share one host) and ALWAYS settles every item: one
+ * failure can't reject the batch (the cardinal rule — a dead market drops only
+ * itself). Returns results in input order: { ok:true, value } | { ok:false, error }.
+ */
+async function mapLimit(items, limit, fn) {
+  var out = new Array(items.length);
+  var next = 0;
+  var n = Math.max(1, Math.min(limit || 1, items.length));
+  async function worker() {
+    while (next < items.length) {
+      var idx = next++;
+      try { out[idx] = { ok: true, value: await fn(items[idx], idx) }; }
+      catch (e) { out[idx] = { ok: false, error: e }; }
+    }
+  }
+  var workers = [];
+  for (var i = 0; i < n; i++) workers.push(worker());
+  await Promise.all(workers);
+  return out;
+}
+
+module.exports = {
+  fetchJson: fetchJson,
+  amsWindow: amsWindow,
+  fetchAmsReport: fetchAmsReport,
+  mapLimit: mapLimit,
+  FETCH_TIMEOUT_MS: FETCH_TIMEOUT_MS,
+  AMS_WINDOW_DAYS: AMS_WINDOW_DAYS,
+  AMS_CONCURRENCY: AMS_CONCURRENCY,
+};
