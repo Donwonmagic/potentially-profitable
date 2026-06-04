@@ -32,25 +32,47 @@ number wear a delivered costume.
 
 ---
 
+## Specialist hardening pass (2026-06-04) — 4-specialist API-integration review
+
+A 4-specialist review (adapter correctness · fetch reliability · data integrity ·
+accuracy/coverage) drove a correctness + resilience pass. All shipped, check-all
+149/151:
+- **AMS adapter is now unit-aware** (`78bf47d80b`): reads `price_unit` and
+  converts cents→dollars (the chicken report is "Cents Per Lb" — $1.46/lb was
+  being read as $145 and dropped); new `wtdAvg` reducer prefers the
+  volume-weighted `wtd_avg_price`; commodity match scoped to descriptive fields;
+  the unit flows through so the dormant unit-mismatch hard-reject is armed.
+- **Section auto-detect** (`9408c03d7a`): "Report Detail" (chicken) vs "Report
+  Details" (produce) — MARS returns the header on a name miss, so we read the
+  advertised `reportSections` and refetch the real detail section.
+- **Vendor fact-gate hardened** (`383d906d1f`): tight `[min,max]` bounds (no 2x
+  slop on a rendered number), point staleness is a HARD fail (no frozen
+  carry-forward), provenance must carry date/basis not just a source.
+- **Produce labeled per-case** (`52bf0b8db4`, founder call): the level renders
+  "$24.00/carton" — never implies a $/lb we didn't measure. Produce specs carry
+  a package unit; bounds recalibrated to per-case.
+- **Shared fetch transport** (`25f9ba5ca0`): one `tools/_shared/cost-index-fetch.js`
+  for verify + orchestrator — transient-only retry+backoff (the BLS 500 that
+  dropped pork-shoulder), bounded-concurrency parallel fan-out (8 produce
+  terminals no longer felt hung), last-good guard (an all-failed run can't
+  clobber the vendored index), + the AMS window/timeout.
+
 ## NEXT — to get the Cost Index live (in priority order)
 
-1. **Fix the AMS adapter for terminal/chicken reports.** ✅ **ADAPTER DONE** — two
-   fixes landed from the sample JSON: (a) prices live in the **"Report Details"**
-   section, now fetched (`6b01981347`); (b) the mostlyMid reducer reads the live
-   field aliases `mostly_low_price`/`mostly_high_price` (and falls through to
-   `low_price`/`high_price` when the mostly band is blank) via a `pickField()`
-   helper (`cd55351013`), pinned in the adapter contract test. **Remaining (founder,
-   needs keys/network):** re-run `verify --flip` locally to confirm produce +
-   chicken resolve in-bounds and go READY. If 0 rows persist, the report window may
-   predate the target commodity — add a `?q=report_begin_date=MM/DD/YYYY:…` recent
-   window to the AMS fetch.
-2. **Beef & pork need the LMR API.** Boxed-beef-cutout / negotiated-pork wholesale
-   reports are NOT in the Market News v1.2 directory — they're under USDA's
-   **LMR (Livestock Mandatory Reporting) / Datamart**. Needs a fetcher + likely the
-   second USDA key. (ribeye, beef-tenderloin, pork-loin, pork-shoulder.)
-3. **Fix FRED russet-potato** (HTTP 400 — bad series id) and **drop FRED ribeye**
+1. **Re-run verify with the unit fix (founder, needs keys).** chicken-breast +
+   whole-chicken should now resolve IN BOUNDS (was "0 in bounds" = the cents bug).
+   `node scripts/verify-cost-index-sources.mjs --flip`, then the go-live sequence
+   (runbook §4). Produce should run without hanging (parallel + windowed).
+2. **Breadth: dairy/eggs/oils (founder-chosen coverage direction).** Add butter/
+   eggs/cooking-oil from the AMS Dairy + Egg Market News + BLS families already
+   wired (same MARS key). Needs report-ID discovery (`--discover`), bounds, and
+   ingredient-yield pages. The fuller menu coverage feeds programmatic SEO.
+3. **Beef & pork need the LMR API.** Boxed-beef-cutout / negotiated-pork wholesale
+   are NOT in Market News v1.2 — they're under USDA's **LMR / Datamart** (separate
+   fetcher; ribeye/tenderloin/pork-* carry BLS trend only until then).
+4. **Fix FRED russet-potato** (HTTP 400 — bad series id) and **drop FRED ribeye**
    (wrong cut, ~$6.90 generic beef).
-4. **Verify → flip → fetch --live --out → build-cost-index → check-sync → render.**
+5. **Verify → flip → fetch --live --out → build-cost-index → check-sync → render.**
 
 ## API KEYS (founder)
 - ✅ FRED, BLS, USDA AMS (Market News) — have them.
