@@ -24,7 +24,7 @@ const __filename = fileURLToPath(import.meta.url);
 const repoRoot = path.resolve(path.dirname(__filename), '..');
 
 const ID_FIELD = { ams: 'reportId', bls: 'seriesId', fred: 'seriesId', noaa: 'species' };
-const REDUCERS = new Set(['mostlyMid', 'valuePerPound', 'single']);
+const REDUCERS = new Set(['mostlyMid', 'wtdAvg', 'valuePerPound', 'single']);
 
 const errors = [];
 const warns = [];

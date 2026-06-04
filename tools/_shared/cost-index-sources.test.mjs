@@ -13,6 +13,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const S = require('./cost-index-sources.js');
 const C = require('./composite-price.js');
+const Q = require('./observation-quality.js');
 
 // ---- canned fixtures (the upstream dialects) ----
 const FRED_FIXTURE = {
@@ -94,6 +95,42 @@ test('AMS reducer: mostlyMid averages the mostly band, falls back to low/high', 
 test('AMS reducer: valuePerPound derives $/lb from dollars and pounds', () => {
   assert.equal(S.reduceAmsRow({ dollars: '2800', pounds: '200' }, 'valuePerPound'), 14);
   assert.equal(S.reduceAmsRow({ dollars: '2800', pounds: '0' }, 'valuePerPound'), null); // no div-by-zero
+});
+
+test('AMS reducer: price_unit "Cents Per Lb" is converted to dollars (the chicken bug)', () => {
+  // Real National Chicken Report row: 145.72 ¢/lb must become $1.4572/lb, not $145.72.
+  const row = { item: 'Breast - B/S', wtd_avg_price: 145.72, low_price: '120.00', high_price: '173.00', price_unit: 'Cents Per Lb' };
+  assert.equal(S.reduceAmsRow(row, 'wtdAvg').toFixed(4), '1.4572');     // prefers the volume-weighted average
+  assert.equal(S.reduceAmsRow(row, 'mostlyMid'), 1.465);               // (120+173)/2 = 146.5 ¢ → $1.465
+  // Dollars rows (no price_unit) are unscaled — produce path stays correct.
+  assert.equal(S.reduceAmsRow({ mostly_low_price: '16.00', mostly_high_price: '18.00' }, 'mostlyMid'), 17);
+});
+
+test('AMS reducer: wtdAvg falls back to the band when wtd_avg_price is absent', () => {
+  assert.equal(S.reduceAmsRow({ mostly_low: '2.10', mostly_high: '2.30' }, 'wtdAvg'), 2.2);
+  assert.equal(S.reduceAmsRow({ note: 'no price' }, 'wtdAvg'), null);
+});
+
+test('normalizeAms carries the reported unit and scoped commodity match', () => {
+  const chicken = { results: [
+    { item: 'Breast - B/S', wtd_avg_price: 145.72, price_unit: 'Cents Per Lb', report_date: '05/25/2026', region: 'National' },
+    { item: 'Backs and Necks', wtd_avg_price: 9.1, price_unit: 'Cents Per Lb', report_date: '05/25/2026' },
+  ] };
+  const out = S.normalizeAms(chicken, { reducer: 'wtdAvg', commodity: 'Breast - B/S', matchFields: ['item'] });
+  assert.equal(out.unit, 'lb');                          // detected from price_unit, not a constant 'usd'
+  assert.equal(out.points.length, 1);
+  assert.equal(out.points[0].value.toFixed(4), '1.4572'); // only the B/S breast row, in dollars
+  // the bare token "National" must NOT match via region now that matching is field-scoped:
+  const none = S.normalizeAms(chicken, { reducer: 'wtdAvg', commodity: 'National', matchFields: ['item'] });
+  assert.equal(none.points.length, 0);
+});
+
+test('quality screen hard-rejects a flipped unit even when the number lands in band', () => {
+  // $/dozen value (300¢) inside the chicken band [90,500] but the wrong unit → reject, not silently kept.
+  const r = Q.validateObservation({ source: 'usda-ams', basis: 'wholesale', valueCents: 300, unit: 'dozen', date: '2026-05-25' },
+    { bounds: { minCents: 90, maxCents: 500 }, expectedUnit: 'lb' });
+  assert.equal(r.ok, false);
+  assert.deepEqual(r.flags, ['unit_mismatch']);
 });
 
 test('normalizeAms honors a mostlyMid reducer on ranged rows', () => {

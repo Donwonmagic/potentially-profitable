@@ -59,9 +59,10 @@ const FIXTURES = {
     ] },
   },
   'chicken-breast': {
+    // Real National Chicken Report shape: item field, cents-per-lb, wtd_avg_price.
     ams: { results: [
-      { report_date: '03/03/2026', commodity: 'Breast, B/S', mostly_low: '2.10', mostly_high: '2.30' },
-      { report_date: '05/04/2026', commodity: 'Breast, B/S', mostly_low: '2.15', mostly_high: '2.35' },
+      { report_date: '03/03/2026', item: 'Breast - B/S', price_unit: 'Cents Per Lb', low_price: '130.00', high_price: '160.00', wtd_avg_price: 142.0 },
+      { report_date: '05/04/2026', item: 'Breast - B/S', price_unit: 'Cents Per Lb', low_price: '135.00', high_price: '168.00', wtd_avg_price: 145.72 },
     ] },
     bls: { Results: { series: [{ data: [
       { year: '2026', period: 'M03', value: '118.2' },
@@ -172,9 +173,11 @@ function composeIngredient(ingredient, outputs) {
     const latest = o.points[o.points.length - 1];
     return o.basis === 'index'
       ? { source: o.source, basis: 'index', value: latest.value, date: latest.date }
-      : { source: o.source, basis: o.basis, valueCents: Math.round(latest.value * 100), unit: (b && b.unit) || 'lb', date: latest.date };
+      // Carry the source's OWN reported unit (not the bounds unit) so a flipped
+      // price_unit is a hard reject, not a number wearing the expected costume.
+      : { source: o.source, basis: o.basis, valueCents: Math.round(latest.value * 100), unit: o.unit, date: latest.date };
   });
-  const screened = Q.screen(obs, { bounds: b ? { minCents: b.minCents, maxCents: b.maxCents } : undefined });
+  const screened = Q.screen(obs, { bounds: b ? { minCents: b.minCents, maxCents: b.maxCents } : undefined, expectedUnit: b && b.unit });
   const okSources = new Set(screened.kept.map((k) => k.source));
   const kept = outputs.filter((o) => okSources.has(o.source)).map((o) => ({ ...o, weight: screened.sourceWeight[o.source] }));
   if (!kept.length) return null;
