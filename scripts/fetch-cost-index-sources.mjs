@@ -89,17 +89,28 @@ function amsWindowStr(days) {
   const end = new Date(); const start = new Date(end.getTime() - days * 864e5);
   return `${f(start)}:${f(end)}`;
 }
-// Detail section, scoped to a recent window so the (often enormous) terminal
-// reports return a small current slice; falls back to full history on rejection.
+// Detail section (where prices live), scoped to a recent window so the (often
+// enormous) terminal reports return a small current slice; falls back to full
+// history if the date filter is rejected. Detail-section names differ across
+// reports ("Report Details" vs "Report Detail") and MARS silently returns the
+// HEADER on a name miss, so auto-correct to the section the report advertises.
 async function fetchAmsReport(reportId, sectionRaw, auth) {
-  const section = sectionRaw === '' ? '' : '/' + encodeURIComponent(sectionRaw || 'Report Details');
-  const base = `https://marsapi.ams.usda.gov/services/v1.2/reports/${reportId}${section}`;
   const h = { Authorization: auth };
-  if (AMS_WINDOW_DAYS > 0) {
-    try { return await fetchJson(`${base}?q=${encodeURIComponent('report_begin_date=' + amsWindowStr(AMS_WINDOW_DAYS))}`, { headers: h }); }
-    catch (e) { /* date filter unsupported on this report → fall through to full history */ }
+  const win = AMS_WINDOW_DAYS > 0 ? `?q=${encodeURIComponent('report_begin_date=' + amsWindowStr(AMS_WINDOW_DAYS))}` : '';
+  const base = `https://marsapi.ams.usda.gov/services/v1.2/reports/${reportId}`;
+  const want = sectionRaw === '' ? '' : (sectionRaw || 'Report Details');
+  const get = async (section) => {
+    const path = section === '' ? '' : '/' + encodeURIComponent(section);
+    try { return await fetchJson(`${base}${path}${win}`, { headers: h }); }
+    catch (e) { if (win) return fetchJson(`${base}${path}`, { headers: h }); throw e; }
+  };
+  let j = await get(want);
+  if (want && j && j.reportSection === 'Report Header' && want !== 'Report Header' && Array.isArray(j.reportSections)) {
+    const detail = j.reportSections.find((s) => s !== 'Report Header' && /detail/i.test(s))
+                || j.reportSections.find((s) => s !== 'Report Header');
+    if (detail && detail !== want) j = await get(detail);
   }
-  return fetchJson(base, { headers: h });
+  return j;
 }
 // ams may be a single mapping OR an array of terminal markets (multiple
 // independent terminals → a real national p25–p75 level, not one city).
