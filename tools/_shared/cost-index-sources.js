@@ -72,6 +72,17 @@
     return isFinite(n) ? n : null;
   }
 
+  /** First non-empty field value among a list of candidate keys (field
+   *  aliases — different AMS reports name the same column differently:
+   *  mostly_low_price vs mostly_low). Returns null when none is present. */
+  function pickField(row, keys) {
+    for (var i = 0; i < keys.length; i++) {
+      var k = keys[i];
+      if (k && row[k] != null && row[k] !== '') return row[k];
+    }
+    return null;
+  }
+
   /**
    * Collapse one USDA AMS report row to a single deterministic number.
    * AMS reports prices as RANGES, not points, so the reducer is part of
@@ -88,11 +99,14 @@
     fields = fields || {};
     reducer = reducer || 'single';
     if (reducer === 'mostlyMid') {
-      var ml = num(row[fields.mostlyLow || 'mostly_low']);
-      var mh = num(row[fields.mostlyHigh || 'mostly_high']);
+      // Field aliases: AMS terminal reports use mostly_low_price/mostly_high_price
+      // (with the _price suffix); other reports use mostly_low/mostly_high. Prefer
+      // the tighter "mostly" band; fall back to the full low_price/high_price range.
+      var ml = num(pickField(row, [fields.mostlyLow, 'mostly_low_price', 'mostly_low']));
+      var mh = num(pickField(row, [fields.mostlyHigh, 'mostly_high_price', 'mostly_high']));
       if (ml != null && mh != null) return (ml + mh) / 2;
-      var lo = num(row[fields.low || 'low_price']);
-      var hi = num(row[fields.high || 'high_price']);
+      var lo = num(pickField(row, [fields.low, 'low_price', 'low']));
+      var hi = num(pickField(row, [fields.high, 'high_price', 'high']));
       if (lo != null && hi != null) return (lo + hi) / 2;
       return null;
     }

@@ -81,6 +81,10 @@ test('end-to-end: three sources → composite with wholesale level + blended up-
 
 test('AMS reducer: mostlyMid averages the mostly band, falls back to low/high', () => {
   assert.equal(S.reduceAmsRow({ mostly_low: '13.00', mostly_high: '15.00' }, 'mostlyMid'), 14);
+  // live MARS terminal rows use the _price suffix (mostly_low_price/mostly_high_price)
+  assert.equal(S.reduceAmsRow({ mostly_low_price: '16.00', mostly_high_price: '18.00' }, 'mostlyMid'), 17);
+  // a null/blank mostly band (common — band often absent) falls through to low/high
+  assert.equal(S.reduceAmsRow({ mostly_low_price: null, mostly_high_price: '', low_price: '12.00', high_price: '16.00' }, 'mostlyMid'), 14);
   // no mostly_* → fall back to low/high
   assert.equal(S.reduceAmsRow({ low_price: '$12.00', high_price: '$16.00' }, 'mostlyMid'), 14);
   // neither present → null (dropped, never guessed)
