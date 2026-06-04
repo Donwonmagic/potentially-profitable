@@ -34,11 +34,16 @@ number wear a delivered costume.
 
 ## NEXT — to get the Cost Index live (in priority order)
 
-1. **Fix the AMS adapter for terminal/chicken reports.** Verify shows the numeric
-   reportIds RESOLVE (no 404) but yield 0 priced rows — the report JSON shape /
-   commodity field / price field doesn't match the adapter yet. **BLOCKER: need a
-   sample report JSON** (`curl` reportId 2282 + 3646) to map the fields. Then
-   produce + chicken go READY.
+1. **Fix the AMS adapter for terminal/chicken reports.** ✅ **ADAPTER DONE** — two
+   fixes landed from the sample JSON: (a) prices live in the **"Report Details"**
+   section, now fetched (`6b01981347`); (b) the mostlyMid reducer reads the live
+   field aliases `mostly_low_price`/`mostly_high_price` (and falls through to
+   `low_price`/`high_price` when the mostly band is blank) via a `pickField()`
+   helper (`cd55351013`), pinned in the adapter contract test. **Remaining (founder,
+   needs keys/network):** re-run `verify --flip` locally to confirm produce +
+   chicken resolve in-bounds and go READY. If 0 rows persist, the report window may
+   predate the target commodity — add a `?q=report_begin_date=MM/DD/YYYY:…` recent
+   window to the AMS fetch.
 2. **Beef & pork need the LMR API.** Boxed-beef-cutout / negotiated-pork wholesale
    reports are NOT in the Market News v1.2 directory — they're under USDA's
    **LMR (Livestock Mandatory Reporting) / Datamart**. Needs a fetcher + likely the
