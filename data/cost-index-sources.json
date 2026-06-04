@@ -3,62 +3,319 @@
   "ingredients": {
     "ribeye": {
       "verified": false,
-      "ams":  { "reportId": "LM_XB403", "commodity": "Ribeye", "market": "National", "reducer": "mostlyMid" },
-      "bls":  { "seriesId": "WPU0233" },
-      "fred": { "seriesId": "APU0000703112", "basis": "retail" }
+      "ams": {
+        "reportId": "LM_XB403",
+        "commodity": "Ribeye",
+        "market": "National",
+        "reducer": "mostlyMid"
+      },
+      "bls": {
+        "seriesId": "WPU0233"
+      },
+      "fred": {
+        "seriesId": "APU0000703112",
+        "basis": "retail"
+      }
     },
     "beef-tenderloin": {
       "verified": false,
-      "ams":  { "reportId": "LM_XB403", "commodity": "Tenderloin", "market": "National", "reducer": "mostlyMid" },
-      "bls":  { "seriesId": "WPU0233" }
+      "ams": {
+        "reportId": "LM_XB403",
+        "commodity": "Tenderloin",
+        "market": "National",
+        "reducer": "mostlyMid"
+      },
+      "bls": {
+        "seriesId": "WPU0233"
+      }
     },
     "chicken-breast": {
       "verified": false,
-      "ams":  { "reportId": "3646", "commodity": "Breast", "market": "National", "reducer": "mostlyMid", "_report": "Weekly National Chicken Report" },
-      "fred": { "seriesId": "APU0000706111", "basis": "retail" },
-      "bls":  { "seriesId": "WPU0222" }
+      "ams": {
+        "reportId": "3646",
+        "commodity": "Breast",
+        "market": "National",
+        "reducer": "mostlyMid",
+        "_report": "Weekly National Chicken Report"
+      },
+      "fred": {
+        "seriesId": "APU0000706111",
+        "basis": "retail"
+      },
+      "bls": {
+        "seriesId": "WPU0222"
+      }
     },
     "whole-chicken": {
       "verified": false,
-      "ams":  { "reportId": "3646", "commodity": "Whole", "market": "National", "reducer": "mostlyMid", "_report": "Weekly National Chicken Report" },
-      "bls":  { "seriesId": "WPU0222" }
+      "ams": {
+        "reportId": "3646",
+        "commodity": "Whole",
+        "market": "National",
+        "reducer": "mostlyMid",
+        "_report": "Weekly National Chicken Report"
+      },
+      "bls": {
+        "seriesId": "WPU0222"
+      }
     },
     "pork-loin": {
       "verified": false,
-      "ams":  { "reportId": "LM_PK602", "commodity": "Loin", "reducer": "mostlyMid" },
-      "bls":  { "seriesId": "WPU0223" }
+      "ams": {
+        "reportId": "LM_PK602",
+        "commodity": "Loin",
+        "reducer": "mostlyMid"
+      },
+      "bls": {
+        "seriesId": "WPU0223"
+      }
     },
     "pork-shoulder": {
       "verified": false,
-      "ams":  { "reportId": "LM_PK602", "commodity": "Shoulder", "reducer": "mostlyMid" },
-      "bls":  { "seriesId": "WPU0223" }
+      "ams": {
+        "reportId": "LM_PK602",
+        "commodity": "Shoulder",
+        "reducer": "mostlyMid"
+      },
+      "bls": {
+        "seriesId": "WPU0223"
+      }
     },
     "salmon-fillet": {
       "verified": false,
-      "noaa": { "species": "SALMON", "reducer": "valuePerPound" }
+      "noaa": {
+        "species": "SALMON",
+        "reducer": "valuePerPound"
+      }
     },
     "shrimp": {
       "verified": false,
-      "noaa": { "species": "SHRIMP", "reducer": "valuePerPound" }
+      "noaa": {
+        "species": "SHRIMP",
+        "reducer": "valuePerPound"
+      }
     },
     "romaine-lettuce": {
       "verified": false,
-      "ams":  { "reportId": "2282", "commodity": "Romaine", "market": "Baltimore", "reducer": "mostlyMid", "_report": "Baltimore Terminal Market Vegetables (BP_FV020)" },
-      "bls":  { "seriesId": "WPU01130217" }
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Romaine",
+          "reducer": "mostlyMid"
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Romaine",
+          "reducer": "mostlyMid"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Romaine",
+          "reducer": "mostlyMid"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Romaine",
+          "reducer": "mostlyMid"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Romaine",
+          "reducer": "mostlyMid"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Romaine",
+          "reducer": "mostlyMid"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Romaine",
+          "reducer": "mostlyMid"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Romaine",
+          "reducer": "mostlyMid"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217"
+      }
     },
     "tomato": {
       "verified": false,
-      "ams":  { "reportId": "2282", "commodity": "Tomatoes", "market": "Baltimore", "reducer": "mostlyMid", "_report": "Baltimore Terminal Market Vegetables (BP_FV020)" },
-      "bls":  { "seriesId": "WPU01130213" }
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Tomatoes",
+          "reducer": "mostlyMid"
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Tomatoes",
+          "reducer": "mostlyMid"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Tomatoes",
+          "reducer": "mostlyMid"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Tomatoes",
+          "reducer": "mostlyMid"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Tomatoes",
+          "reducer": "mostlyMid"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Tomatoes",
+          "reducer": "mostlyMid"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Tomatoes",
+          "reducer": "mostlyMid"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Tomatoes",
+          "reducer": "mostlyMid"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130213"
+      }
     },
     "onion": {
       "verified": false,
-      "ams":  { "reportId": "2283", "commodity": "Onions", "market": "Baltimore", "reducer": "mostlyMid", "_report": "Baltimore Terminal Market Onions and Potatoes (BP_FV030)" }
+      "ams": [
+        {
+          "reportId": "2279",
+          "market": "Atlanta",
+          "commodity": "Onions",
+          "reducer": "mostlyMid"
+        },
+        {
+          "reportId": "2283",
+          "market": "Baltimore",
+          "commodity": "Onions",
+          "reducer": "mostlyMid"
+        },
+        {
+          "reportId": "2287",
+          "market": "Boston",
+          "commodity": "Onions",
+          "reducer": "mostlyMid"
+        },
+        {
+          "reportId": "2292",
+          "market": "Chicago",
+          "commodity": "Onions",
+          "reducer": "mostlyMid"
+        },
+        {
+          "reportId": "2304",
+          "market": "Detroit",
+          "commodity": "Onions",
+          "reducer": "mostlyMid"
+        },
+        {
+          "reportId": "2308",
+          "market": "Los Angeles",
+          "commodity": "Onions",
+          "reducer": "mostlyMid"
+        },
+        {
+          "reportId": "2312",
+          "market": "Miami",
+          "commodity": "Onions",
+          "reducer": "mostlyMid"
+        },
+        {
+          "reportId": "2316",
+          "market": "New York",
+          "commodity": "Onions",
+          "reducer": "mostlyMid"
+        }
+      ]
     },
     "russet-potato": {
       "verified": false,
-      "ams":  { "reportId": "2283", "commodity": "Russet", "market": "Baltimore", "reducer": "mostlyMid", "_report": "Baltimore Terminal Market Onions and Potatoes (BP_FV030)" },
-      "fred": { "seriesId": "WPU01120206", "basis": "index" }
+      "ams": [
+        {
+          "reportId": "2279",
+          "market": "Atlanta",
+          "commodity": "Russet",
+          "reducer": "mostlyMid"
+        },
+        {
+          "reportId": "2283",
+          "market": "Baltimore",
+          "commodity": "Russet",
+          "reducer": "mostlyMid"
+        },
+        {
+          "reportId": "2287",
+          "market": "Boston",
+          "commodity": "Russet",
+          "reducer": "mostlyMid"
+        },
+        {
+          "reportId": "2292",
+          "market": "Chicago",
+          "commodity": "Russet",
+          "reducer": "mostlyMid"
+        },
+        {
+          "reportId": "2304",
+          "market": "Detroit",
+          "commodity": "Russet",
+          "reducer": "mostlyMid"
+        },
+        {
+          "reportId": "2308",
+          "market": "Los Angeles",
+          "commodity": "Russet",
+          "reducer": "mostlyMid"
+        },
+        {
+          "reportId": "2312",
+          "market": "Miami",
+          "commodity": "Russet",
+          "reducer": "mostlyMid"
+        },
+        {
+          "reportId": "2316",
+          "market": "New York",
+          "commodity": "Russet",
+          "reducer": "mostlyMid"
+        }
+      ],
+      "fred": {
+        "seriesId": "WPU01120206",
+        "basis": "index"
+      }
     }
   }
 }
