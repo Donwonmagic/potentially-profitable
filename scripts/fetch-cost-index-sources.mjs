@@ -102,7 +102,10 @@ async function liveFetch(ingredient, m) {
       // Per-terminal resilience: one market missing the commodity this week
       // must not drop the whole ingredient (the cardinal rule).
       try {
-        const json = await fetchJson(`https://marsapi.ams.usda.gov/services/v1.2/reports/${spec.reportId}`, { headers: { Authorization: auth } });
+        // Prices live in a report SECTION (e.g. "Report Details"); the bare
+        // /reports/{id} returns the Report Header (metadata, no prices).
+        const section = spec.section === '' ? '' : '/' + encodeURIComponent(spec.section || 'Report Details');
+        const json = await fetchJson(`https://marsapi.ams.usda.gov/services/v1.2/reports/${spec.reportId}${section}`, { headers: { Authorization: auth } });
         out.ams.push({ json, spec });
       } catch (e) { /* skip this terminal; others still contribute */ }
     }
