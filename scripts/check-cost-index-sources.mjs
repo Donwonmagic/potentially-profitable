@@ -55,14 +55,19 @@ if (sources) {
         errors.push(`${key}: maps to no known source (need at least one of ams/bls/fred/noaa).`);
       }
       for (const sk of srcKeys) {
-        const obj = entry[sk];
         const idField = ID_FIELD[sk];
-        if (!obj || typeof obj !== 'object' || typeof obj[idField] !== 'string' || obj[idField] === '') {
-          errors.push(`${key}.${sk}: missing "${idField}".`);
-        }
-        if (sk === 'ams' && obj && obj.reducer && !REDUCERS.has(obj.reducer)) {
-          errors.push(`${key}.ams.reducer "${obj.reducer}" is not one of ${[...REDUCERS].join(', ')}.`);
-        }
+        // ams may be a single mapping OR an array of terminal markets.
+        const specs = Array.isArray(entry[sk]) ? entry[sk] : [entry[sk]];
+        if (Array.isArray(entry[sk]) && entry[sk].length === 0) errors.push(`${key}.${sk}: empty array.`);
+        specs.forEach((obj, i) => {
+          const where = Array.isArray(entry[sk]) ? `${key}.${sk}[${i}]` : `${key}.${sk}`;
+          if (!obj || typeof obj !== 'object' || typeof obj[idField] !== 'string' || obj[idField] === '') {
+            errors.push(`${where}: missing "${idField}".`);
+          }
+          if (sk === 'ams' && obj && obj.reducer && !REDUCERS.has(obj.reducer)) {
+            errors.push(`${where}.reducer "${obj.reducer}" is not one of ${[...REDUCERS].join(', ')}.`);
+          }
+        });
       }
       if (entry.verified !== true) unverified++;
       if (!pageExists(key)) warns.push(`${key}: no /library/ingredient-yields/${key}/ page (mapping/page drift).`);

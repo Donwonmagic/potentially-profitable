@@ -46,8 +46,8 @@ const bounds = rd('data/cost-index-bounds.json').bounds || {};
 const FIXTURES = {
   ribeye: {
     ams: { results: [
-      { report_date: '03/03/2026', mostly_low: '12.80', mostly_high: '13.40' },
-      { report_date: '05/04/2026', mostly_low: '13.60', mostly_high: '14.20' },
+      { report_date: '03/03/2026', commodity: 'Ribeye, 1x1', mostly_low: '12.80', mostly_high: '13.40' },
+      { report_date: '05/04/2026', commodity: 'Ribeye, 1x1', mostly_low: '13.60', mostly_high: '14.20' },
     ] },
     bls: { Results: { series: [{ data: [
       { year: '2026', period: 'M03', value: '231.4' },
@@ -60,8 +60,8 @@ const FIXTURES = {
   },
   'chicken-breast': {
     ams: { results: [
-      { report_date: '03/03/2026', mostly_low: '2.10', mostly_high: '2.30' },
-      { report_date: '05/04/2026', mostly_low: '2.15', mostly_high: '2.35' },
+      { report_date: '03/03/2026', commodity: 'Breast, B/S', mostly_low: '2.10', mostly_high: '2.30' },
+      { report_date: '05/04/2026', commodity: 'Breast, B/S', mostly_low: '2.15', mostly_high: '2.35' },
     ] },
     bls: { Results: { series: [{ data: [
       { year: '2026', period: 'M03', value: '118.2' },
@@ -80,8 +80,13 @@ async function fetchJson(url, init) {
   if (!res.ok) throw new Error('HTTP ' + res.status);
   return res.json();
 }
+// ams may be a single mapping OR an array of terminal markets (multiple
+// independent terminals → a real national p25–p75 level, not one city).
+function amsSpecs(m) { return Array.isArray(m.ams) ? m.ams : (m.ams ? [m.ams] : []); }
+const slug = (s) => String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
 async function liveFetch(ingredient, m) {
-  const out = {};
+  const out = { ams: [] };
   if (m.fred && process.env.FRED_KEY) {
     out.fred = await fetchJson(`https://api.stlouisfed.org/fred/series/observations?series_id=${m.fred.seriesId}&file_type=json&api_key=${process.env.FRED_KEY}`);
   }
@@ -91,10 +96,16 @@ async function liveFetch(ingredient, m) {
       body: JSON.stringify({ seriesid: [m.bls.seriesId], registrationkey: process.env.BLS_KEY }),
     });
   }
-  if (m.ams && process.env.AMS_KEY) {
-    out.ams = await fetchJson(`https://marsapi.ams.usda.gov/services/v1.2/reports/${m.ams.reportId}`, {
-      headers: { Authorization: 'Basic ' + Buffer.from(process.env.AMS_KEY + ':').toString('base64') },
-    });
+  if (process.env.AMS_KEY) {
+    const auth = 'Basic ' + Buffer.from(process.env.AMS_KEY + ':').toString('base64');
+    for (const spec of amsSpecs(m)) {
+      // Per-terminal resilience: one market missing the commodity this week
+      // must not drop the whole ingredient (the cardinal rule).
+      try {
+        const json = await fetchJson(`https://marsapi.ams.usda.gov/services/v1.2/reports/${spec.reportId}`, { headers: { Authorization: auth } });
+        out.ams.push({ json, spec });
+      } catch (e) { /* skip this terminal; others still contribute */ }
+    }
   }
   return out;
 }
@@ -102,13 +113,22 @@ async function liveFetch(ingredient, m) {
 // normalize raw payloads → adapter outputs, honoring the per-source basis/reducer.
 function toOutputs(ingredient, raw, m) {
   const outs = [];
-  // `family` declares source lineage so mirror feeds de-correlate in the engine
-  // (e.g. set fred.family:'bls' when a FRED series republishes the BLS one).
-  // Defaults to each source's own family → no de-correlation until declared.
-  if (raw.ams) { const o = S.normalizeAms(raw.ams, { source: 'usda-ams', basis: 'wholesale', reducer: (m.ams && m.ams.reducer) || 'mostlyMid', commodity: (m.ams && m.ams.commodity) }); o.family = (m.ams && m.ams.family) || 'usda-ams'; outs.push(o); }
-  if (raw.bls) { const o = S.normalizeBls(raw.bls, { source: 'bls', basis: 'index' }); o.family = (m.bls && m.bls.family) || 'bls'; outs.push(o); }
-  if (raw.fred) { const o = S.normalizeFred(raw.fred, { source: 'fred', basis: (m.fred && m.fred.basis) || 'index' }); o.family = (m.fred && m.fred.family) || 'fred'; outs.push(o); }
-  return outs.filter((o) => o.points.length);
+  // Each AMS terminal becomes its own source/family (independent markets), so
+  // compositeLevel sees real cross-market dispersion → an honest national range.
+  // `family` declares lineage so mirror feeds (e.g. fred.family:'bls') de-correlate.
+  const amsArr = Array.isArray(raw.ams)
+    ? raw.ams
+    : (raw.ams ? [{ json: raw.ams, spec: amsSpecs(m)[0] || {} }] : []);   // demo: single json + the mapping's spec
+  amsArr.forEach((a) => {
+    const spec = a.spec || {};
+    const key = 'usda-ams' + (spec.market ? '-' + slug(spec.market) : '');
+    const o = S.normalizeAms(a.json, { source: key, basis: 'wholesale', reducer: spec.reducer || 'mostlyMid', commodity: spec.commodity });
+    o.family = spec.family || key;
+    if (o.points.length) outs.push(o);
+  });
+  if (raw.bls) { const o = S.normalizeBls(raw.bls, { source: 'bls', basis: 'index' }); o.family = (m.bls && m.bls.family) || 'bls'; if (o.points.length) outs.push(o); }
+  if (raw.fred) { const o = S.normalizeFred(raw.fred, { source: 'fred', basis: (m.fred && m.fred.basis) || 'index' }); o.family = (m.fred && m.fred.family) || 'fred'; if (o.points.length) outs.push(o); }
+  return outs;
 }
 
 // quality-screen the latest level-bearing obs per source, then assess.

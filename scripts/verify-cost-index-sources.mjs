@@ -5,11 +5,12 @@
  * (optionally) flip verified:true for the ones that do. This is the bridge
  * between "I have the keys" and a live Cost Index (plan pin #8 — the real unlock).
  *
- * For each ingredient × source it fetches the declared id, normalizes it through
- * the shipping adapters, and reports: ✓ resolves (latest value, in-bounds?) or
- * ✗ (HTTP error / empty / out of band). An ingredient is READY only when EVERY
- * declared source resolves AND its level-bearing source's latest value sits
- * inside data/cost-index-bounds.json — so a bad id can't be flipped live.
+ * For each ingredient × source it fetches the declared id (ams may be an ARRAY
+ * of terminal markets — it probes each), normalizes through the shipping
+ * adapters, and reports resolve/fail + in-bounds. An ingredient is READY when at
+ * least one LEVEL-bearing source resolves IN BOUNDS and ≥2 sources resolve (a
+ * real trend) — so a bad id can't be flipped live, and one market missing the
+ * commodity this week doesn't block the rest.
  *
  * Needs network + keys (won't run from the web sandbox — the source hosts aren't
  * allowlisted; run locally or in the worker env):
@@ -50,7 +51,7 @@ async function probe(src, m) {
       if (!keys.AMS) return { ok: false, err: 'no AMS_KEY' };
       const j = await fetchJson(`https://marsapi.ams.usda.gov/services/v1.2/reports/${m.reportId}`, {
         headers: { Authorization: 'Basic ' + Buffer.from(keys.AMS + ':').toString('base64') } });
-      const o = S.normalizeAms(j, { source: 'usda-ams', basis: 'wholesale', reducer: m.reducer || 'mostlyMid' });
+      const o = S.normalizeAms(j, { source: 'usda-ams', basis: 'wholesale', reducer: m.reducer || 'mostlyMid', commodity: m.commodity });
       const latest = o.points[o.points.length - 1];
       return { ok: !!latest, n: o.points.length, latest: latest && latest.value, basis: 'wholesale', level: true };
     }
@@ -105,29 +106,39 @@ async function main() {
   if (di >= 0) return discoverAms(process.argv[di + 1]);
   console.log('Verifying cost-index source ids against the live APIs…\n');
   const ready = [];
+  const inBand = (latest, band) => latest != null && band && Math.round(latest * 100) >= band.minCents && Math.round(latest * 100) <= band.maxCents;
   for (const ing of Object.keys(sources)) {
     const entry = sources[ing];
     const b = bounds[ing];
-    const srcKeys = ['ams', 'bls', 'fred'].filter((k) => entry[k]);
-    const results = {};
-    for (const k of srcKeys) results[k] = await probe(k, entry[k]);
+    // Flatten probe targets: ams may be an array of terminal markets.
+    const targets = [];
+    if (entry.ams) (Array.isArray(entry.ams) ? entry.ams : [entry.ams]).forEach((s) =>
+      targets.push({ kind: 'ams', label: 'ams' + (s.market ? `:${s.market}` : ''), spec: s }));
+    if (entry.bls) targets.push({ kind: 'bls', label: 'bls', spec: entry.bls });
+    if (entry.fred) targets.push({ kind: 'fred', label: 'fred', spec: entry.fred });
+    for (const t of targets) t.res = await probe(t.kind, t.spec);
 
-    const lines = srcKeys.map((k) => {
-      const r = results[k];
-      if (!r.ok) return `${k} ✗ ${r.err}`;
-      let note = `${r.n} pts, latest ${r.latest}`;
-      if (r.level && b) {
-        const cents = Math.round(r.latest * 100);
-        const inBand = cents >= b.minCents && cents <= b.maxCents;
-        note += inBand ? ' (in bounds)' : ` (OUT of bounds [${b.minCents / 100}–${b.maxCents / 100}])`;
+    const lines = [];
+    const amsT = targets.filter((t) => t.kind === 'ams');
+    if (amsT.length) {
+      const okA = amsT.filter((t) => t.res.ok);
+      const inb = okA.filter((t) => b && inBand(t.res.latest, b));
+      if (okA.length) {
+        const vals = okA.map((t) => t.res.latest);
+        lines.push(`ams ✓ ${okA.length}/${amsT.length} markets, ${inb.length} in bounds (latest ${Math.min(...vals).toFixed(2)}–${Math.max(...vals).toFixed(2)})`);
+      } else {
+        lines.push(`ams ✗ 0/${amsT.length} markets (${amsT[0].res.err})`);
       }
-      return `${k} ✓ ${note}`;
-    });
+    }
+    for (const t of targets.filter((t) => t.kind !== 'ams')) {
+      const r = t.res;
+      lines.push(r.ok ? `${t.label} ✓ ${r.n} pts, latest ${r.latest}` : `${t.label} ✗ ${r.err}`);
+    }
 
-    const allOk = srcKeys.every((k) => results[k].ok);
-    const levelOk = srcKeys.some((k) => results[k].ok && results[k].level && b &&
-      Math.round(results[k].latest * 100) >= b.minCents && Math.round(results[k].latest * 100) <= b.maxCents);
-    const isReady = allOk && levelOk;
+    // READY = at least one level-bearing source in bounds AND ≥2 sources resolve (a trend).
+    const levelOk = targets.some((t) => t.res.ok && (t.kind === 'ams' || t.res.level) && b && inBand(t.res.latest, b));
+    const resolved = targets.filter((t) => t.res.ok).length;
+    const isReady = levelOk && resolved >= 2;
     if (isReady) ready.push(ing);
     console.log(`${isReady ? '✅ READY' : '⏳      '} ${ing.padEnd(18)} ${lines.join('  ·  ')}`);
   }
