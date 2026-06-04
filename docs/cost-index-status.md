@@ -73,3 +73,15 @@ recommended move, receipts on tap.
 ## Where the durable plan lives
 Full detail in the session plan; this file is the in-repo, persistent summary.
 The ledger-spec/ READMEs carry the copy-paste maps + verify sequences.
+
+## Findings 2026-06-03 (live verify with keys)
+- AMS report prices live in the **"Report Details"** section, not the bare
+  `/reports/{id}` (which returns "Report Header" = weather/metadata). Fetchers
+  now request `/reports/{id}/Report Details` (override via `ams.section`).
+  → confirm the Detail row field names (commodity, price) from one sample, then
+  produce + chicken go READY.
+- Beef/pork wholesale (boxed-beef cutout, negotiated pork) are **NOT** in the
+  Market News (MARS) API — `2461` is invalid; `--discover beef/pork` shows only
+  import/variety/grocery-feature. They require the **LMR Datamart**
+  (https://mpr.datamart.ams.usda.gov/) — a separate fetcher (likely keyless).
+  Until then beef/pork carry BLS trend only (no wholesale level).

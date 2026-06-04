@@ -49,7 +49,9 @@ async function probe(src, m) {
   try {
     if (src === 'ams') {
       if (!keys.AMS) return { ok: false, err: 'no AMS_KEY' };
-      const j = await fetchJson(`https://marsapi.ams.usda.gov/services/v1.2/reports/${m.reportId}`, {
+      // Prices live in a report SECTION ("Report Details"); the bare report is the header.
+      const section = m.section === '' ? '' : '/' + encodeURIComponent(m.section || 'Report Details');
+      const j = await fetchJson(`https://marsapi.ams.usda.gov/services/v1.2/reports/${m.reportId}${section}`, {
         headers: { Authorization: 'Basic ' + Buffer.from(keys.AMS + ':').toString('base64') } });
       const o = S.normalizeAms(j, { source: 'usda-ams', basis: 'wholesale', reducer: m.reducer || 'mostlyMid', commodity: m.commodity });
       const latest = o.points[o.points.length - 1];

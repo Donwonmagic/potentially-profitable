@@ -66,7 +66,7 @@ entries. `ams.commodity` filters a multi-commodity report to one ingredient.
 
 ```bash
 set -a; . ./.env; set +a
-curl -s -u "$AMS_KEY:" "https://marsapi.ams.usda.gov/services/v1.2/reports/2282" | head -c 3000
+curl -s -u "$AMS_KEY:" "https://marsapi.ams.usda.gov/services/v1.2/reports/2282/Report%20Details" | head -c 3000
 ```
 Shows where rows live (`results`?), the commodity field, and the price fields —
 so the adapter's `reducer` (mostlyMid → mostly_low/high or low/high) and
