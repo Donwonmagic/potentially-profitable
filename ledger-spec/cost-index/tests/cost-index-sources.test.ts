@@ -97,3 +97,13 @@ test('contract guard: an empty/garbage payload yields no points, not a crash', (
   const r = C.assess(S.buildCompositeInput([], {}));
   assert.match(r.label, /Not enough data/);
 });
+
+test('normalizeAms commodity filter pulls ONE ingredient out of a multi-commodity report', () => {
+  const veg = { results: [
+    { report_date: '06/03/2026', commodity: 'Lettuce, Romaine', low_price: '24.00', high_price: '26.00' },
+    { report_date: '06/03/2026', commodity: 'Tomatoes', low_price: '18.00', high_price: '22.00' },
+  ] };
+  const out = S.normalizeAms(veg, { source: 'usda-ams', basis: 'wholesale', reducer: 'mostlyMid', commodity: 'romaine' });
+  assert.equal(out.points.length, 1);
+  assert.equal(out.points[0].value, 25);
+});

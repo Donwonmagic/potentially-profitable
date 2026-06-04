@@ -1,5 +1,5 @@
 {
-  "_doc": "Maps each ingredientKey (matching /library/ingredient-yields/<slug>/) to its native identifier in each public price source. The CI/prod fetch worker reads this to resolve what to pull; the composite engine (tools/_shared/composite-price.js) decides LEVEL vs TREND by basis. EVERY id here is an UNVERIFIED best-guess (verified:false) per the API-integration spec — resolve each against the source's discovery endpoint (AMS /reports, BLS series directory, FRED /series/search, NOAA FOSS species list) and flip verified:true before it ships behind the fact-gate. basis mapping: ams=wholesale level, noaa=wholesale (ex-vessel) level, fred=level or index per its 'basis', bls=index (trend-only). A missing source key = that source is simply skipped for that ingredient; \"\" = known to have none. See scripts/check-cost-index-sources.mjs (shape + alignment validator, warns on unverified) and the 'Cost Index — API Integration Architecture' section of the plan.",
+  "_doc": "Maps each ingredientKey (matching /library/ingredient-yields/<slug>/) to its native identifier in each public price source. The CI/prod fetch worker reads this to resolve what to pull; the composite engine (tools/_shared/composite-price.js) decides LEVEL vs TREND by basis. EVERY id here is an UNVERIFIED best-guess (verified:false) per the API-integration spec — resolve each against the source's discovery endpoint (AMS /reports, BLS series directory, FRED /series/search, NOAA FOSS species list) and flip verified:true before it ships behind the fact-gate. basis mapping: ams=wholesale level, noaa=wholesale (ex-vessel) level, fred=level or index per its 'basis', bls=index (trend-only). A missing source key = that source is simply skipped for that ingredient; \"\" = known to have none. ams.reportId is the NUMERIC MARS slug_id (find it with `node scripts/verify-cost-index-sources.mjs --discover <term>` — the report slug like LM_XB403 404s). ams.commodity filters a multi-commodity report (e.g. a terminal 'Vegetables' report) down to one ingredient's rows (field-agnostic match). _report is a human label, ignored by code. Produce uses the Baltimore terminal (DMV market); chicken uses the National Chicken Report. Beef/pork (ribeye, tenderloin, pork-*) still carry LMR slugs (LM_XB403/LM_PK602) — the boxed-beef/negotiated-pork wholesale reports aren't in the Market News v1.2 directory, so confirm whether they need the separate LMR/Datamart API. See scripts/check-cost-index-sources.mjs (shape + alignment validator, warns on unverified) and the 'Cost Index — API Integration Architecture' section of the plan.",
   "ingredients": {
     "ribeye": {
       "verified": false,
@@ -14,13 +14,13 @@
     },
     "chicken-breast": {
       "verified": false,
-      "ams":  { "reportId": "PY_PORTAL", "commodity": "Breast, B/S", "reducer": "mostlyMid" },
+      "ams":  { "reportId": "3646", "commodity": "Breast", "market": "National", "reducer": "mostlyMid", "_report": "Weekly National Chicken Report" },
       "fred": { "seriesId": "APU0000706111", "basis": "retail" },
       "bls":  { "seriesId": "WPU0222" }
     },
     "whole-chicken": {
       "verified": false,
-      "ams":  { "reportId": "PY_PORTAL", "commodity": "Whole Broiler/Fryer", "reducer": "mostlyMid" },
+      "ams":  { "reportId": "3646", "commodity": "Whole", "market": "National", "reducer": "mostlyMid", "_report": "Weekly National Chicken Report" },
       "bls":  { "seriesId": "WPU0222" }
     },
     "pork-loin": {
@@ -43,21 +43,21 @@
     },
     "romaine-lettuce": {
       "verified": false,
-      "ams":  { "reportId": "FVDPP", "commodity": "Lettuce, Romaine", "market": "Los Angeles", "reducer": "mostlyMid" },
+      "ams":  { "reportId": "2282", "commodity": "Romaine", "market": "Baltimore", "reducer": "mostlyMid", "_report": "Baltimore Terminal Market Vegetables (BP_FV020)" },
       "bls":  { "seriesId": "WPU01130217" }
     },
     "tomato": {
       "verified": false,
-      "ams":  { "reportId": "FVDPP", "commodity": "Tomatoes", "market": "Los Angeles", "reducer": "mostlyMid" },
+      "ams":  { "reportId": "2282", "commodity": "Tomatoes", "market": "Baltimore", "reducer": "mostlyMid", "_report": "Baltimore Terminal Market Vegetables (BP_FV020)" },
       "bls":  { "seriesId": "WPU01130213" }
     },
     "onion": {
       "verified": false,
-      "ams":  { "reportId": "FVDPP", "commodity": "Onions, Dry", "market": "Los Angeles", "reducer": "mostlyMid" }
+      "ams":  { "reportId": "2283", "commodity": "Onions", "market": "Baltimore", "reducer": "mostlyMid", "_report": "Baltimore Terminal Market Onions and Potatoes (BP_FV030)" }
     },
     "russet-potato": {
       "verified": false,
-      "ams":  { "reportId": "FVDPP", "commodity": "Potatoes, Russet", "market": "Los Angeles", "reducer": "mostlyMid" },
+      "ams":  { "reportId": "2283", "commodity": "Russet", "market": "Baltimore", "reducer": "mostlyMid", "_report": "Baltimore Terminal Market Onions and Potatoes (BP_FV030)" },
       "fred": { "seriesId": "WPU01120206", "basis": "index" }
     }
   }
