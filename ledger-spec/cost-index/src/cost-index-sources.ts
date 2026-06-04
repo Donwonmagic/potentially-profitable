@@ -16,7 +16,7 @@ import type { Basis, LevelObs } from './composite-price.js';
 
 export interface Point { date: string; value: number; }
 export interface AdapterOutput { source: string; basis: Basis; unit: string; points: Point[]; weight?: number; family?: string; }
-export interface AdapterMeta { source?: string; basis?: Basis; unit?: string; dateField?: string; reducer?: string; fields?: Record<string, string>; }
+export interface AdapterMeta { source?: string; basis?: Basis; unit?: string; dateField?: string; reducer?: string; fields?: Record<string, string>; commodity?: string; }
 
 function byDate(a: Point, b: Point): number { return a.date < b.date ? -1 : a.date > b.date ? 1 : 0; }
 
@@ -82,12 +82,33 @@ export function reduceAmsRow(row: any, reducer?: string, fields: Record<string, 
 export function normalizeAms(json: any, meta: AdapterMeta = {}): AdapterOutput {
   const rows = (json && (json.results || json.report || json.data)) || [];
   const dateField = meta.dateField || 'report_date';
-  const points = rows.map((r: any) => {
-    if (!r) return null;
+  // meta.commodity filters a multi-commodity report to one ingredient's rows
+  // (field-agnostic match), then groups by date (median per date).
+  const commodity = meta.commodity ? String(meta.commodity).toLowerCase() : null;
+  const rowMatches = (r: any): boolean => {
+    if (!commodity) return true;
+    for (const k in r) if (Object.prototype.hasOwnProperty.call(r, k)) {
+      const v = r[k];
+      if (typeof v === 'string' && v.toLowerCase().indexOf(commodity) !== -1) return true;
+    }
+    return false;
+  };
+  const amsMedian = (a: number[]): number | null => {
+    if (!a.length) return null;
+    const s = a.slice().sort((x, y) => x - y);
+    const m = Math.floor(s.length / 2);
+    return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2;
+  };
+  const byDateMap: Record<string, number[]> = {};
+  rows.forEach((r: any) => {
+    if (!r || !rowMatches(r)) return;
     const v = reduceAmsRow(r, meta.reducer, meta.fields);
     const date = isoDate(r[dateField]);
-    return (date && v != null && isFinite(v)) ? { date, value: v } : null;
-  }).filter(Boolean).sort(byDate) as Point[];
+    if (date && v != null && isFinite(v)) (byDateMap[date] = byDateMap[date] || []).push(v);
+  });
+  const points = Object.keys(byDateMap)
+    .map((d) => ({ date: d, value: amsMedian(byDateMap[d]) as number }))
+    .sort(byDate) as Point[];
   return { source: meta.source || 'usda-ams', basis: meta.basis || 'wholesale', unit: meta.unit || 'usd', points };
 }
 

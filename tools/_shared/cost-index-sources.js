@@ -105,17 +105,42 @@
   }
 
   /** USDA AMS Market News report rows. Format varies by report, so the
-   *  reducer + field names are configurable (per the mapping file). */
+   *  reducer + field names are configurable (per the mapping file).
+   *  meta.commodity (string) filters a MULTI-commodity report (e.g. a terminal
+   *  "Vegetables" report holding lettuce, tomatoes, peppers) down to the rows
+   *  for one ingredient — matched field-agnostically against any string value
+   *  in the row. Surviving rows are grouped by date (median per date), so one
+   *  market yields one clean series. */
+  function _amsMedian(a) {
+    if (!a.length) return null;
+    var s = a.slice().sort(function (x, y) { return x - y; });
+    var m = Math.floor(s.length / 2);
+    return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2;
+  }
   function normalizeAms(json, meta) {
     meta = meta || {};
     var rows = (json && (json.results || json.report || json.data)) || [];
     var dateField = meta.dateField || 'report_date';
-    var points = rows.map(function (r) {
-      if (!r) return null;
+    var commodity = meta.commodity ? String(meta.commodity).toLowerCase() : null;
+    function rowMatches(r) {
+      if (!commodity) return true;
+      for (var k in r) {
+        if (Object.prototype.hasOwnProperty.call(r, k)) {
+          var v = r[k];
+          if (typeof v === 'string' && v.toLowerCase().indexOf(commodity) !== -1) return true;
+        }
+      }
+      return false;
+    }
+    var byDate = {};
+    rows.forEach(function (r) {
+      if (!r || !rowMatches(r)) return;
       var v = reduceAmsRow(r, meta.reducer, meta.fields);
       var date = isoDate(r[dateField]);
-      return (date && v != null && isFinite(v)) ? { date: date, value: v } : null;
-    }).filter(Boolean).sort(byDate);
+      if (date && v != null && isFinite(v)) (byDate[date] = byDate[date] || []).push(v);
+    });
+    var points = Object.keys(byDate).map(function (d) { return { date: d, value: _amsMedian(byDate[d]) }; })
+      .sort(function (a, b) { return a.date < b.date ? -1 : a.date > b.date ? 1 : 0; });
     return { source: meta.source || 'usda-ams', basis: meta.basis || 'wholesale', unit: meta.unit || 'usd', points: points };
   }
 
