@@ -21,7 +21,7 @@ number wear a delivered costume.
 - **Source verifier**: `scripts/verify-cost-index-sources.mjs` (`--discover`, `--flip`) `bc3637a190`,`175a2dfe7a`,`4cfca64eef`.
 - **Engine accuracy wins**: honest single-source level (no fake `$X–$X`) + source-family de-correlation `25801333ad`; AMS commodity row-filter `bd9446243c`; **multi-terminal national level** (ams as array, 8 markets) `d24d11f2a1`.
 
-**ledger-spec/ (build-ready staging, copy-paste into Muntin-Invoice-Decoder)**
+**Ledger MVP staging — MOVED to the `Muntin-Invoice-Decoder` repo** (branch `claude/muntin-brand-audit-xtVSf`, commit `904b52f`, 2026-06-03). No longer in the storefront; build-ready, copy-paste per each README. Commits below were the storefront history before the move:
 - Track B Plate MVP (migrations + recost hero loop + route + tests) `a6f339c425` — RLS proven in real Postgres.
 - Cost Index live-fetch pipeline (TS ports + worker) `5a1ca7c4ed` — 26 vectors parity.
 - First-party k-anonymous benchmark (the moat) `4db80ca416` — k≥10 proven in real Postgres.
