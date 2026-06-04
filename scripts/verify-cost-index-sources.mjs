@@ -53,7 +53,8 @@ async function probe(src, m) {
         headers: { Authorization: 'Basic ' + Buffer.from(keys.AMS + ':').toString('base64') } });
       const o = S.normalizeAms(j, { source: 'usda-ams', basis: 'wholesale', reducer: m.reducer || 'mostlyMid', commodity: m.commodity });
       const latest = o.points[o.points.length - 1];
-      return { ok: !!latest, n: o.points.length, latest: latest && latest.value, basis: 'wholesale', level: true };
+      return latest ? { ok: true, n: o.points.length, latest: latest.value, basis: 'wholesale', level: true }
+        : { ok: false, err: `fetched OK, 0 priced rows matched${m.commodity ? ` commodity "${m.commodity}"` : ''} (check report JSON shape / fields)` };
     }
     if (src === 'bls') {
       if (!keys.BLS) return { ok: false, err: 'no BLS_KEY' };
@@ -62,14 +63,16 @@ async function probe(src, m) {
         body: JSON.stringify({ seriesid: [m.seriesId], registrationkey: keys.BLS }) });
       const o = S.normalizeBls(j, { source: 'bls', basis: 'index' });
       const latest = o.points[o.points.length - 1];
-      return { ok: !!latest, n: o.points.length, latest: latest && latest.value, basis: 'index', level: false };
+      return latest ? { ok: true, n: o.points.length, latest: latest.value, basis: 'index', level: false }
+        : { ok: false, err: 'fetched OK, 0 data points (check series id)' };
     }
     if (src === 'fred') {
       if (!keys.FRED) return { ok: false, err: 'no FRED_KEY' };
       const j = await fetchJson(`https://api.stlouisfed.org/fred/series/observations?series_id=${m.seriesId}&file_type=json&api_key=${keys.FRED}`);
       const o = S.normalizeFred(j, { source: 'fred', basis: m.basis || 'index' });
       const latest = o.points[o.points.length - 1];
-      return { ok: !!latest, n: o.points.length, latest: latest && latest.value, basis: m.basis || 'index', level: (m.basis === 'retail' || m.basis === 'wholesale') };
+      return latest ? { ok: true, n: o.points.length, latest: latest.value, basis: m.basis || 'index', level: (m.basis === 'retail' || m.basis === 'wholesale') }
+        : { ok: false, err: 'fetched OK, 0 data points (check series id)' };
     }
   } catch (e) { return { ok: false, err: String(e.message || e) }; }
   return { ok: false, err: 'unknown source' };
