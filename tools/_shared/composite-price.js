@@ -95,8 +95,14 @@
         obs.forEach(function (o) { var f = o.family || o.source; (famGroups[f] = famGroups[f] || []).push(o.valueCents); });
         var famKeys = Object.keys(famGroups);
         var vals = famKeys.map(function (f) { return median(famGroups[f]); });
+        // Carry the unit so the rendered level says "$1.46/lb" / "$24/carton" and
+        // never implies a per-lb price we didn't measure. First stated unit wins
+        // (within one basis+ingredient the unit is consistent).
+        var unit = null;
+        for (var u = 0; u < obs.length; u++) { if (obs[u].unit) { unit = obs[u].unit; break; } }
         return {
           basis: basis,
+          unit: unit,
           medianCents: Math.round(median(vals)),
           rangeCents: [Math.round(percentile(vals, 0.25)), Math.round(percentile(vals, 0.75))],
           nObs: obs.length,
@@ -180,9 +186,10 @@
   function levelPhrase(level) {
     var nFam = (level.nFamilies != null ? level.nFamilies : level.nSources);
     var single = nFam <= 1 || level.rangeCents[0] === level.rangeCents[1];
+    var u = level.unit ? '/' + level.unit : '';      // "/lb", "/carton" — never implies a unit we didn't measure
     return single
-      ? 'About ' + dollars(level.rangeCents[0]) + ' (' + level.basis + ' reference, single source — range not yet measurable)'
-      : 'About ' + dollars(level.rangeCents[0]) + '–' + dollars(level.rangeCents[1]) + ' (' + level.basis + ' reference)';
+      ? 'About ' + dollars(level.rangeCents[0]) + u + ' (' + level.basis + ' reference, single source — range not yet measurable)'
+      : 'About ' + dollars(level.rangeCents[0]) + '–' + dollars(level.rangeCents[1]) + u + ' (' + level.basis + ' reference)';
   }
 
   /**

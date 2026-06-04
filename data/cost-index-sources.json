@@ -34,7 +34,9 @@
       "ams": {
         "reportId": "3646",
         "commodity": "Breast - B/S",
-        "matchFields": ["item"],
+        "matchFields": [
+          "item"
+        ],
         "market": "National",
         "reducer": "wtdAvg",
         "_report": "Weekly National Chicken Report; item 'Breast - B/S' = boneless/skinless, wtd_avg_price in Cents Per Lb"
@@ -52,7 +54,9 @@
       "ams": {
         "reportId": "3646",
         "commodity": "Whole",
-        "matchFields": ["item"],
+        "matchFields": [
+          "item"
+        ],
         "market": "National",
         "reducer": "wtdAvg",
         "_report": "Weekly National Chicken Report; wtd_avg_price in Cents Per Lb"
@@ -104,49 +108,57 @@
           "reportId": "2278",
           "market": "Atlanta",
           "commodity": "Romaine",
-          "reducer": "mostlyMid"
+          "reducer": "mostlyMid",
+          "unit": "carton"
         },
         {
           "reportId": "2282",
           "market": "Baltimore",
           "commodity": "Romaine",
-          "reducer": "mostlyMid"
+          "reducer": "mostlyMid",
+          "unit": "carton"
         },
         {
           "reportId": "2286",
           "market": "Boston",
           "commodity": "Romaine",
-          "reducer": "mostlyMid"
+          "reducer": "mostlyMid",
+          "unit": "carton"
         },
         {
           "reportId": "2291",
           "market": "Chicago",
           "commodity": "Romaine",
-          "reducer": "mostlyMid"
+          "reducer": "mostlyMid",
+          "unit": "carton"
         },
         {
           "reportId": "2303",
           "market": "Detroit",
           "commodity": "Romaine",
-          "reducer": "mostlyMid"
+          "reducer": "mostlyMid",
+          "unit": "carton"
         },
         {
           "reportId": "2307",
           "market": "Los Angeles",
           "commodity": "Romaine",
-          "reducer": "mostlyMid"
+          "reducer": "mostlyMid",
+          "unit": "carton"
         },
         {
           "reportId": "2311",
           "market": "Miami",
           "commodity": "Romaine",
-          "reducer": "mostlyMid"
+          "reducer": "mostlyMid",
+          "unit": "carton"
         },
         {
           "reportId": "2315",
           "market": "New York",
           "commodity": "Romaine",
-          "reducer": "mostlyMid"
+          "reducer": "mostlyMid",
+          "unit": "carton"
         }
       ],
       "bls": {
@@ -160,49 +172,57 @@
           "reportId": "2278",
           "market": "Atlanta",
           "commodity": "Tomatoes",
-          "reducer": "mostlyMid"
+          "reducer": "mostlyMid",
+          "unit": "carton"
         },
         {
           "reportId": "2282",
           "market": "Baltimore",
           "commodity": "Tomatoes",
-          "reducer": "mostlyMid"
+          "reducer": "mostlyMid",
+          "unit": "carton"
         },
         {
           "reportId": "2286",
           "market": "Boston",
           "commodity": "Tomatoes",
-          "reducer": "mostlyMid"
+          "reducer": "mostlyMid",
+          "unit": "carton"
         },
         {
           "reportId": "2291",
           "market": "Chicago",
           "commodity": "Tomatoes",
-          "reducer": "mostlyMid"
+          "reducer": "mostlyMid",
+          "unit": "carton"
         },
         {
           "reportId": "2303",
           "market": "Detroit",
           "commodity": "Tomatoes",
-          "reducer": "mostlyMid"
+          "reducer": "mostlyMid",
+          "unit": "carton"
         },
         {
           "reportId": "2307",
           "market": "Los Angeles",
           "commodity": "Tomatoes",
-          "reducer": "mostlyMid"
+          "reducer": "mostlyMid",
+          "unit": "carton"
         },
         {
           "reportId": "2311",
           "market": "Miami",
           "commodity": "Tomatoes",
-          "reducer": "mostlyMid"
+          "reducer": "mostlyMid",
+          "unit": "carton"
         },
         {
           "reportId": "2315",
           "market": "New York",
           "commodity": "Tomatoes",
-          "reducer": "mostlyMid"
+          "reducer": "mostlyMid",
+          "unit": "carton"
         }
       ],
       "bls": {
@@ -216,49 +236,57 @@
           "reportId": "2279",
           "market": "Atlanta",
           "commodity": "Onions",
-          "reducer": "mostlyMid"
+          "reducer": "mostlyMid",
+          "unit": "sack"
         },
         {
           "reportId": "2283",
           "market": "Baltimore",
           "commodity": "Onions",
-          "reducer": "mostlyMid"
+          "reducer": "mostlyMid",
+          "unit": "sack"
         },
         {
           "reportId": "2287",
           "market": "Boston",
           "commodity": "Onions",
-          "reducer": "mostlyMid"
+          "reducer": "mostlyMid",
+          "unit": "sack"
         },
         {
           "reportId": "2292",
           "market": "Chicago",
           "commodity": "Onions",
-          "reducer": "mostlyMid"
+          "reducer": "mostlyMid",
+          "unit": "sack"
         },
         {
           "reportId": "2304",
           "market": "Detroit",
           "commodity": "Onions",
-          "reducer": "mostlyMid"
+          "reducer": "mostlyMid",
+          "unit": "sack"
         },
         {
           "reportId": "2308",
           "market": "Los Angeles",
           "commodity": "Onions",
-          "reducer": "mostlyMid"
+          "reducer": "mostlyMid",
+          "unit": "sack"
         },
         {
           "reportId": "2312",
           "market": "Miami",
           "commodity": "Onions",
-          "reducer": "mostlyMid"
+          "reducer": "mostlyMid",
+          "unit": "sack"
         },
         {
           "reportId": "2316",
           "market": "New York",
           "commodity": "Onions",
-          "reducer": "mostlyMid"
+          "reducer": "mostlyMid",
+          "unit": "sack"
         }
       ]
     },
@@ -269,49 +297,57 @@
           "reportId": "2279",
           "market": "Atlanta",
           "commodity": "Russet",
-          "reducer": "mostlyMid"
+          "reducer": "mostlyMid",
+          "unit": "sack"
         },
         {
           "reportId": "2283",
           "market": "Baltimore",
           "commodity": "Russet",
-          "reducer": "mostlyMid"
+          "reducer": "mostlyMid",
+          "unit": "sack"
         },
         {
           "reportId": "2287",
           "market": "Boston",
           "commodity": "Russet",
-          "reducer": "mostlyMid"
+          "reducer": "mostlyMid",
+          "unit": "sack"
         },
         {
           "reportId": "2292",
           "market": "Chicago",
           "commodity": "Russet",
-          "reducer": "mostlyMid"
+          "reducer": "mostlyMid",
+          "unit": "sack"
         },
         {
           "reportId": "2304",
           "market": "Detroit",
           "commodity": "Russet",
-          "reducer": "mostlyMid"
+          "reducer": "mostlyMid",
+          "unit": "sack"
         },
         {
           "reportId": "2308",
           "market": "Los Angeles",
           "commodity": "Russet",
-          "reducer": "mostlyMid"
+          "reducer": "mostlyMid",
+          "unit": "sack"
         },
         {
           "reportId": "2312",
           "market": "Miami",
           "commodity": "Russet",
-          "reducer": "mostlyMid"
+          "reducer": "mostlyMid",
+          "unit": "sack"
         },
         {
           "reportId": "2316",
           "market": "New York",
           "commodity": "Russet",
-          "reducer": "mostlyMid"
+          "reducer": "mostlyMid",
+          "unit": "sack"
         }
       ],
       "fred": {

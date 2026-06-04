@@ -1,17 +1,65 @@
 {
   "_doc": "Plausible-range guardrails for the observation quality gate (tools/_shared/observation-quality.js). NOT price claims and never rendered to users — engineering bounds in cents for the expected wholesale unit, used to catch units flips and sentinels (a value < min/2 or > max*2 is hard-rejected; mildly out of band is down-weighted). Wide on purpose; tighten as real data arrives. Keyed by ingredientKey.",
   "bounds": {
-    "ribeye":          { "minCents": 700,  "maxCents": 3000, "unit": "lb" },
-    "beef-tenderloin": { "minCents": 1200, "maxCents": 4500, "unit": "lb" },
-    "chicken-breast":  { "minCents": 90,   "maxCents": 500,  "unit": "lb" },
-    "whole-chicken":   { "minCents": 60,   "maxCents": 300,  "unit": "lb" },
-    "pork-loin":       { "minCents": 150,  "maxCents": 700,  "unit": "lb" },
-    "pork-shoulder":   { "minCents": 100,  "maxCents": 500,  "unit": "lb" },
-    "salmon-fillet":   { "minCents": 600,  "maxCents": 2500, "unit": "lb" },
-    "shrimp":          { "minCents": 400,  "maxCents": 2000, "unit": "lb" },
-    "romaine-lettuce": { "minCents": 80,   "maxCents": 600,  "unit": "head" },
-    "tomato":          { "minCents": 80,   "maxCents": 600,  "unit": "lb" },
-    "onion":           { "minCents": 30,   "maxCents": 300,  "unit": "lb" },
-    "russet-potato":   { "minCents": 20,   "maxCents": 250,  "unit": "lb" }
+    "ribeye": {
+      "minCents": 700,
+      "maxCents": 3000,
+      "unit": "lb"
+    },
+    "beef-tenderloin": {
+      "minCents": 1200,
+      "maxCents": 4500,
+      "unit": "lb"
+    },
+    "chicken-breast": {
+      "minCents": 90,
+      "maxCents": 500,
+      "unit": "lb"
+    },
+    "whole-chicken": {
+      "minCents": 60,
+      "maxCents": 300,
+      "unit": "lb"
+    },
+    "pork-loin": {
+      "minCents": 150,
+      "maxCents": 700,
+      "unit": "lb"
+    },
+    "pork-shoulder": {
+      "minCents": 100,
+      "maxCents": 500,
+      "unit": "lb"
+    },
+    "salmon-fillet": {
+      "minCents": 600,
+      "maxCents": 2500,
+      "unit": "lb"
+    },
+    "shrimp": {
+      "minCents": 400,
+      "maxCents": 2000,
+      "unit": "lb"
+    },
+    "romaine-lettuce": {
+      "minCents": 1000,
+      "maxCents": 5000,
+      "unit": "carton"
+    },
+    "tomato": {
+      "minCents": 700,
+      "maxCents": 4500,
+      "unit": "carton"
+    },
+    "onion": {
+      "minCents": 500,
+      "maxCents": 3500,
+      "unit": "sack"
+    },
+    "russet-potato": {
+      "minCents": 500,
+      "maxCents": 3500,
+      "unit": "sack"
+    }
   }
 }

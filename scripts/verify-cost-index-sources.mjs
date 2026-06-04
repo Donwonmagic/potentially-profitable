@@ -90,7 +90,7 @@ async function probe(src, m) {
       // Prices live in a report SECTION ("Report Details"); the bare report is the header.
       const auth = 'Basic ' + Buffer.from(keys.AMS + ':').toString('base64');
       const j = await fetchAms(m.reportId, m.section, auth);
-      const o = S.normalizeAms(j, { source: 'usda-ams', basis: 'wholesale', reducer: m.reducer || 'mostlyMid', commodity: m.commodity });
+      const o = S.normalizeAms(j, { source: 'usda-ams', basis: 'wholesale', reducer: m.reducer || 'mostlyMid', commodity: m.commodity, matchFields: m.matchFields, unit: m.unit });
       const latest = o.points[o.points.length - 1];
       return latest ? { ok: true, n: o.points.length, latest: latest.value, basis: 'wholesale', level: true }
         : { ok: false, err: `fetched OK, 0 priced rows matched${m.commodity ? ` commodity "${m.commodity}"` : ''}${AMS_WINDOW_DAYS ? ` (last ${AMS_WINDOW_DAYS}d — set AMS_WINDOW_DAYS=0 for full history)` : ''} (check report JSON shape / commodity term)` };
