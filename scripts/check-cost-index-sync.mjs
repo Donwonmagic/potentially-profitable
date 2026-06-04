@@ -42,22 +42,36 @@ const parseDay = (d) => Date.parse(d + 'T00:00:00Z');   // always UTC midnight
  * issue codes. Used by BOTH the gate (per committed point) and the build
  * (per artifact point + per carried-forward point).
  */
-export function pointIssues(ingredient, point, srcIng, boundsMap) {
+export function pointIssues(ingredient, point, srcIng, boundsMap, now = Date.now()) {
   const out = [];
   if (!srcIng[ingredient]) out.push('orphan');                          // not in cost-index-sources.json
   else if (srcIng[ingredient].verified !== true) out.push('unverified'); // fact gate
   if (!boundsMap[ingredient]) out.push('no-bounds');                     // must have a plausibility band
   if (!point || !DATE_RE.test(point.asOf || '')) out.push('bad-asof');
+  // Provenance: every element must name a source AND carry its WHEN (date) or
+  // its BASIS (what it measured). A rendered number with no as-of/basis backing
+  // isn't citeable — the whole point of the fact gate.
   if (!point || !Array.isArray(point.provenance) || point.provenance.length === 0 ||
-      !point.provenance.every((p) => p && typeof p.source === 'string' && p.source.trim())) {
-    out.push('no-provenance');                                          // every element must name a source
+      !point.provenance.every((p) => p && typeof p.source === 'string' && p.source.trim() &&
+        (DATE_RE.test(p.date || '') || (typeof p.basis === 'string' && p.basis.trim())))) {
+    out.push('no-provenance');
   }
   const hasLevel = point && point.level && typeof point.level.medianCents === 'number';
   const hasTrend = point && point.trend && (typeof point.trend.pct === 'number');
   if (!hasLevel && !hasTrend) out.push('empty-point');                  // must carry meaningful data
   if (hasLevel && boundsMap[ingredient]) {
     const b = boundsMap[ingredient];
-    if (point.level.medianCents < b.minCents / 2 || point.level.medianCents > b.maxCents * 2) out.push('out-of-bounds');
+    // TIGHT band: the rendered level must be inside the plausible range itself,
+    // not merely within 2x of it. The 2x slop is the raw-observation screen's
+    // job (catching gross unit flips pre-composite); by the time a level is
+    // vendored it's the number a user reads, so it must actually be plausible.
+    if (point.level.medianCents < b.minCents || point.level.medianCents > b.maxCents) out.push('out-of-bounds');
+  }
+  // Freshness is a HARD gate here, not a warning: a stale point must never
+  // render as a "current" price. The carry-forward re-vendor path re-runs this,
+  // so a series that stops updating ages out instead of freezing a stale level.
+  if (point && DATE_RE.test(point.asOf || '') && (now - parseDay(point.asOf)) / 86400000 > POINT_STALE_DAYS) {
+    out.push('stale');
   }
   return out;
 }
@@ -87,12 +101,8 @@ export function validateIndex(index, sources, bounds, now = Date.now()) {
     const points = (ingredients[key] && ingredients[key].points) || [];
     if (!Array.isArray(points)) { errors.push(`${key}.points must be an array.`); continue; }
     for (const p of points) {
-      const issues = pointIssues(key, p, srcIng, boundsMap);
+      const issues = pointIssues(key, p, srcIng, boundsMap, now);   // staleness is now one of these (hard fail)
       if (issues.length) errors.push(`${key} @ ${p && p.asOf ? p.asOf : '?'}: ${issues.join(', ')}.`);
-      if (p && DATE_RE.test(p.asOf || '')) {
-        const age = (now - parseDay(p.asOf)) / 86400000;
-        if (age > POINT_STALE_DAYS) warnings.push(`${key} @ ${p.asOf}: point is ${Math.round(age)}d old (>${POINT_STALE_DAYS}d).`);
-      }
     }
   }
   return { errors, warnings };
@@ -102,16 +112,20 @@ function selfTest() {
   const sources = { ingredients: { ribeye: { verified: true }, onion: { verified: false } } };
   const bounds = { bounds: { ribeye: { minCents: 700, maxCents: 3000, unit: 'lb' }, onion: { minCents: 30, maxCents: 300, unit: 'lb' } } };
   const NOW = parseDay('2026-06-10');
-  const good = { asOf: '2026-06-01', level: { medianCents: 1400 }, trend: { pct: 0.05 }, provenance: [{ kind: 'level', source: 'usda-ams' }] };
+  const good = { asOf: '2026-06-01', level: { medianCents: 1400 }, trend: { pct: 0.05 }, provenance: [{ kind: 'level', source: 'usda-ams', date: '2026-06-01' }] };
   const cases = [
     ['empty canonical passes', { _lastReviewed: '2026-06-01', _generatedFrom: 'verified-sources-only', ingredients: {} }, true],
     ['empty + old _lastReviewed still passes (exempt)', { _lastReviewed: '2025-01-01', _generatedFrom: 'verified-sources-only', ingredients: {} }, true],
     ['verified+sourced+bounded point passes', { _lastReviewed: '2026-06-01', _generatedFrom: 'verified-sources-only', ingredients: { ribeye: { points: [good] } } }, true],
+    ['trend-kind provenance (basis, no date) passes', { _lastReviewed: '2026-06-01', _generatedFrom: 'verified-sources-only', ingredients: { ribeye: { points: [{ ...good, provenance: [{ kind: 'trend', source: 'bls', basis: 'index' }] }] } } }, true],
     ['unverified ingredient FAILS', { _lastReviewed: '2026-06-01', _generatedFrom: 'verified-sources-only', ingredients: { onion: { points: [good] } } }, false],
     ['empty provenance FAILS', { _lastReviewed: '2026-06-01', _generatedFrom: 'verified-sources-only', ingredients: { ribeye: { points: [{ ...good, provenance: [] }] } } }, false],
     ['provenance of empty objects FAILS', { _lastReviewed: '2026-06-01', _generatedFrom: 'verified-sources-only', ingredients: { ribeye: { points: [{ ...good, provenance: [{}] }] } } }, false],
-    ['out-of-bounds level FAILS', { _lastReviewed: '2026-06-01', _generatedFrom: 'verified-sources-only', ingredients: { ribeye: { points: [{ ...good, level: { medianCents: 999999 } }] } } }, false],
-    ['neither level nor trend FAILS', { _lastReviewed: '2026-06-01', _generatedFrom: 'verified-sources-only', ingredients: { ribeye: { points: [{ asOf: '2026-06-01', provenance: [{ source: 'x' }] }] } } }, false],
+    ['provenance with source but no date AND no basis FAILS', { _lastReviewed: '2026-06-01', _generatedFrom: 'verified-sources-only', ingredients: { ribeye: { points: [{ ...good, provenance: [{ source: 'usda-ams' }] }] } } }, false],
+    ['wildly out-of-bounds level FAILS', { _lastReviewed: '2026-06-01', _generatedFrom: 'verified-sources-only', ingredients: { ribeye: { points: [{ ...good, level: { medianCents: 999999 } }] } } }, false],
+    ['just-over-max level FAILS (tight band, no 2x slop)', { _lastReviewed: '2026-06-01', _generatedFrom: 'verified-sources-only', ingredients: { ribeye: { points: [{ ...good, level: { medianCents: 3001 } }] } } }, false],
+    ['stale point FAILS (older than POINT_STALE_DAYS)', { _lastReviewed: '2026-06-01', _generatedFrom: 'verified-sources-only', ingredients: { ribeye: { points: [{ ...good, asOf: '2026-01-01' }] } } }, false],
+    ['neither level nor trend FAILS', { _lastReviewed: '2026-06-01', _generatedFrom: 'verified-sources-only', ingredients: { ribeye: { points: [{ asOf: '2026-06-01', provenance: [{ source: 'x', date: '2026-06-01' }] }] } } }, false],
     ['non-empty + stale _lastReviewed FAILS', { _lastReviewed: '2026-01-01', _generatedFrom: 'verified-sources-only', ingredients: { ribeye: { points: [good] } } }, false],
     ['orphan ingredient FAILS', { _lastReviewed: '2026-06-01', _generatedFrom: 'verified-sources-only', ingredients: { saffron: { points: [good] } } }, false],
     ['missing _generatedFrom FAILS', { _lastReviewed: '2026-06-01', ingredients: {} }, false],
