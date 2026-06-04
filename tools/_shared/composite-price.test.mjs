@@ -151,3 +151,14 @@ test('DE-CORRELATION flows through confidence: three echoes of ONE family cannot
   assert.equal(r.trend.nFamilies, 1);    // all 'us-index' → one family
   assert.notEqual(r.confidence, 'high'); // one independent family each → never high
 });
+
+test('LEVEL carries its unit so the phrase never implies a $/lb we did not measure', () => {
+  // Produce is priced per carton; the label must say "/carton", not a bare dollar.
+  const r = C.assess({
+    levelObs: [{ source: 'usda-ams-ny', basis: 'wholesale', valueCents: 2400, unit: 'carton' }],
+    sourceSeries: { 'usda-ams-ny': { basis: 'wholesale', values: [2300, 2400] } },
+  });
+  assert.equal(r.level.unit, 'carton');
+  assert.match(r.label, /\$24\.00\/carton/);
+  assert.match(r.label, /wholesale reference/);
+});

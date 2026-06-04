@@ -157,7 +157,7 @@ function toOutputs(ingredient, raw, m) {
   amsArr.forEach((a) => {
     const spec = a.spec || {};
     const key = 'usda-ams' + (spec.market ? '-' + slug(spec.market) : '');
-    const o = S.normalizeAms(a.json, { source: key, basis: 'wholesale', reducer: spec.reducer || 'mostlyMid', commodity: spec.commodity });
+    const o = S.normalizeAms(a.json, { source: key, basis: 'wholesale', reducer: spec.reducer || 'mostlyMid', commodity: spec.commodity, matchFields: spec.matchFields, unit: spec.unit });
     o.family = spec.family || key;
     if (o.points.length) outs.push(o);
   });
