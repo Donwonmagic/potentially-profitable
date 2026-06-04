@@ -52,6 +52,15 @@ Reads each ingredient × source, reports `✓ resolves (latest, in-bounds)` /
 adapter can't read it yet → inspect its JSON, step 3). An ingredient is **READY**
 when ≥1 level-bearing source is in bounds AND ≥2 sources resolve.
 
+> **AMS fetches are date-windowed** (last 120 days by default) — the produce
+> terminal "Report Details" sections carry all history (some ~1.9M rows) and an
+> unscoped fetch is huge/slow. Tune or disable: `AMS_WINDOW_DAYS=60 node …` or
+> `AMS_WINDOW_DAYS=0` for full history. Every request also has a 25s ceiling
+> (`FETCH_TIMEOUT_MS`) so one slow report can't hang the run.
+>
+> Salmon/shrimp print `noaa only — dormant`: no free public wholesale source, so
+> they carry no live point by design (not a bug, not stuck).
+
 Flip the READY ones to `verified:true`:
 ```bash
 node scripts/verify-cost-index-sources.mjs --flip

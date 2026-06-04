@@ -75,10 +75,31 @@ const FIXTURES = {
 };
 
 // ---- live fetchers (only used with --live) --------------------------------
-async function fetchJson(url, init) {
-  const res = await fetch(url, init);
+const AMS_WINDOW_DAYS = Number(process.env.AMS_WINDOW_DAYS || 120);
+const FETCH_TIMEOUT_MS = Number(process.env.FETCH_TIMEOUT_MS || 25000);
+
+async function fetchJson(url, init = {}) {
+  // Hard ceiling: a huge/slow terminal report errors out instead of hanging the run.
+  const res = await fetch(url, { ...init, signal: init.signal || AbortSignal.timeout(FETCH_TIMEOUT_MS) });
   if (!res.ok) throw new Error('HTTP ' + res.status);
   return res.json();
+}
+function amsWindowStr(days) {
+  const f = (d) => `${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')}/${d.getFullYear()}`;
+  const end = new Date(); const start = new Date(end.getTime() - days * 864e5);
+  return `${f(start)}:${f(end)}`;
+}
+// Detail section, scoped to a recent window so the (often enormous) terminal
+// reports return a small current slice; falls back to full history on rejection.
+async function fetchAmsReport(reportId, sectionRaw, auth) {
+  const section = sectionRaw === '' ? '' : '/' + encodeURIComponent(sectionRaw || 'Report Details');
+  const base = `https://marsapi.ams.usda.gov/services/v1.2/reports/${reportId}${section}`;
+  const h = { Authorization: auth };
+  if (AMS_WINDOW_DAYS > 0) {
+    try { return await fetchJson(`${base}?q=${encodeURIComponent('report_begin_date=' + amsWindowStr(AMS_WINDOW_DAYS))}`, { headers: h }); }
+    catch (e) { /* date filter unsupported on this report → fall through to full history */ }
+  }
+  return fetchJson(base, { headers: h });
 }
 // ams may be a single mapping OR an array of terminal markets (multiple
 // independent terminals → a real national p25–p75 level, not one city).
@@ -100,12 +121,11 @@ async function liveFetch(ingredient, m) {
     const auth = 'Basic ' + Buffer.from(process.env.AMS_KEY + ':').toString('base64');
     for (const spec of amsSpecs(m)) {
       // Per-terminal resilience: one market missing the commodity this week
-      // must not drop the whole ingredient (the cardinal rule).
+      // (or one slow report) must not drop the whole ingredient (cardinal rule).
       try {
         // Prices live in a report SECTION (e.g. "Report Details"); the bare
         // /reports/{id} returns the Report Header (metadata, no prices).
-        const section = spec.section === '' ? '' : '/' + encodeURIComponent(spec.section || 'Report Details');
-        const json = await fetchJson(`https://marsapi.ams.usda.gov/services/v1.2/reports/${spec.reportId}${section}`, { headers: { Authorization: auth } });
+        const json = await fetchAmsReport(spec.reportId, spec.section, auth);
         out.ams.push({ json, spec });
       } catch (e) { /* skip this terminal; others still contribute */ }
     }

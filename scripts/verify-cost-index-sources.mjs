@@ -38,10 +38,37 @@ const bounds = rd(path.join(repoRoot, 'data/cost-index-bounds.json')).bounds || 
 const keys = { FRED: process.env.FRED_KEY, BLS: process.env.BLS_KEY, AMS: process.env.AMS_KEY };
 for (const [k, v] of Object.entries(keys)) if (!v) console.warn(`! ${k}_KEY not set — its sources will be skipped.`);
 
-async function fetchJson(url, init) {
-  const res = await fetch(url, init);
+// AMS terminal "Report Details" sections carry ALL history (some reports run to
+// ~1.9M rows), so an unscoped fetch is huge and can hang. Scope to a recent
+// window by default; AMS_WINDOW_DAYS=0 scans full history.
+const AMS_WINDOW_DAYS = Number(process.env.AMS_WINDOW_DAYS || 120);
+const FETCH_TIMEOUT_MS = Number(process.env.FETCH_TIMEOUT_MS || 25000);
+
+async function fetchJson(url, init = {}) {
+  // Hard ceiling so one slow/huge report can't hang the whole run — it errors,
+  // and the other sources/markets still get their turn.
+  const res = await fetch(url, { ...init, signal: init.signal || AbortSignal.timeout(FETCH_TIMEOUT_MS) });
   if (!res.ok) throw new Error('HTTP ' + res.status);
   return res.json();
+}
+
+function amsWindow(days) {
+  const f = (d) => `${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')}/${d.getFullYear()}`;
+  const end = new Date(); const start = new Date(end.getTime() - days * 864e5);
+  return `${f(start)}:${f(end)}`;
+}
+// Fetch a report's detail section, scoped to a recent date window (MARS supports
+// ?q=report_begin_date=MM/DD/YYYY:MM/DD/YYYY). Falls back to the unwindowed fetch
+// if a report rejects the date filter, so the window can only help, never break.
+async function fetchAms(reportId, sectionRaw, auth) {
+  const section = sectionRaw === '' ? '' : '/' + encodeURIComponent(sectionRaw || 'Report Details');
+  const base = `https://marsapi.ams.usda.gov/services/v1.2/reports/${reportId}${section}`;
+  const h = { Authorization: auth };
+  if (AMS_WINDOW_DAYS > 0) {
+    try { return await fetchJson(`${base}?q=${encodeURIComponent('report_begin_date=' + amsWindow(AMS_WINDOW_DAYS))}`, { headers: h }); }
+    catch (e) { /* date filter unsupported on this report → fall through to full history */ }
+  }
+  return fetchJson(base, { headers: h });
 }
 
 // Returns { ok, n, latest, basis } or { ok:false, err }.
@@ -50,13 +77,12 @@ async function probe(src, m) {
     if (src === 'ams') {
       if (!keys.AMS) return { ok: false, err: 'no AMS_KEY' };
       // Prices live in a report SECTION ("Report Details"); the bare report is the header.
-      const section = m.section === '' ? '' : '/' + encodeURIComponent(m.section || 'Report Details');
-      const j = await fetchJson(`https://marsapi.ams.usda.gov/services/v1.2/reports/${m.reportId}${section}`, {
-        headers: { Authorization: 'Basic ' + Buffer.from(keys.AMS + ':').toString('base64') } });
+      const auth = 'Basic ' + Buffer.from(keys.AMS + ':').toString('base64');
+      const j = await fetchAms(m.reportId, m.section, auth);
       const o = S.normalizeAms(j, { source: 'usda-ams', basis: 'wholesale', reducer: m.reducer || 'mostlyMid', commodity: m.commodity });
       const latest = o.points[o.points.length - 1];
       return latest ? { ok: true, n: o.points.length, latest: latest.value, basis: 'wholesale', level: true }
-        : { ok: false, err: `fetched OK, 0 priced rows matched${m.commodity ? ` commodity "${m.commodity}"` : ''} (check report JSON shape / fields)` };
+        : { ok: false, err: `fetched OK, 0 priced rows matched${m.commodity ? ` commodity "${m.commodity}"` : ''}${AMS_WINDOW_DAYS ? ` (last ${AMS_WINDOW_DAYS}d — set AMS_WINDOW_DAYS=0 for full history)` : ''} (check report JSON shape / commodity term)` };
     }
     if (src === 'bls') {
       if (!keys.BLS) return { ok: false, err: 'no BLS_KEY' };
@@ -139,6 +165,9 @@ async function main() {
       const r = t.res;
       lines.push(r.ok ? `${t.label} ✓ ${r.n} pts, latest ${r.latest}` : `${t.label} ✗ ${r.err}`);
     }
+    if (!targets.length) lines.push(entry.noaa
+      ? 'noaa only — no free public wholesale source (dormant by design, not stuck)'
+      : 'no live source configured (dormant)');
 
     // READY = at least one level-bearing source in bounds AND ≥2 sources resolve (a trend).
     const levelOk = targets.some((t) => t.res.ok && (t.kind === 'ams' || t.res.level) && b && inBand(t.res.latest, b));
