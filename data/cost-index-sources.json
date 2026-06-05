@@ -394,6 +394,13 @@
       },
       "bls": {
         "seriesId": "WPU0232"
+      },
+      "ams": {
+        "reportId": "DY_NDPSR",
+        "commodity": "Butter",
+        "reducer": "wtdAvg",
+        "unit": "lb",
+        "_report": "FIX: needs the NUMERIC MARS reportId — run --discover \"dairy\"/\"butter\" (the DY_NDPSR slug 404s, like LM_ did). AMS National Dairy Products Sales Report, weekly wholesale."
       }
     },
     "cheddar-cheese": {
@@ -405,6 +412,13 @@
         "seriesId": "APU0000710212",
         "basis": "retail",
         "unit": "lb"
+      },
+      "ams": {
+        "reportId": "DY_NDPSR",
+        "commodity": "Cheddar",
+        "reducer": "wtdAvg",
+        "unit": "lb",
+        "_report": "FIX: numeric id via --discover \"dairy\"/\"cheese\". NDPSR cheddar (40-lb block), weekly wholesale."
       }
     },
     "eggs": {
@@ -416,6 +430,18 @@
         "seriesId": "APU0000708111",
         "basis": "retail",
         "unit": "dozen"
+      },
+      "ams": {
+        "reportId": "PY_EGG",
+        "commodity": "Large",
+        "matchFields": [
+          "item",
+          "grade",
+          "commodity"
+        ],
+        "reducer": "mostlyMid",
+        "unit": "dozen",
+        "_report": "FIX: numeric id via --discover \"egg\". AMS Egg Market News, wholesale shell eggs (Grade A Large)."
       }
     },
     "vegetable-oil": {
