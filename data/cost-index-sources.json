@@ -6,10 +6,11 @@
       "lmr": {
         "reportId": "2453",
         "commodity": "Ribeye",
-        "reducer": "mostlyMid",
+        "reducer": "wtdAvg",
         "unit": "lb",
         "_report": "LMR Datamart 2453, section \"Choice Cuts\" (prices live in sections; bare report = Summary). Confirm the ribeye cut term + price fields via a section curl.",
-        "section": "Choice Cuts"
+        "section": "Choice Cuts",
+        "priceUnit": "Dollars Per Cwt"
       },
       "bls": {
         "seriesId": "WPU0233"
@@ -25,10 +26,11 @@
       "lmr": {
         "reportId": "2453",
         "commodity": "Tenderloin",
-        "reducer": "mostlyMid",
+        "reducer": "wtdAvg",
         "unit": "lb",
         "_report": "LMR 2453, section \"Choice Cuts\". Confirm tenderloin cut term via section curl.",
-        "section": "Choice Cuts"
+        "section": "Choice Cuts",
+        "priceUnit": "Dollars Per Cwt"
       },
       "bls": {
         "seriesId": "WPU0233"
@@ -76,10 +78,11 @@
       "lmr": {
         "reportId": "2498",
         "commodity": "Loin",
-        "reducer": "mostlyMid",
+        "reducer": "wtdAvg",
         "unit": "lb",
         "_report": "LMR 2498, section \"Loin Cuts\". Confirm loin cut term/unit via section curl.",
-        "section": "Loin Cuts"
+        "section": "Loin Cuts",
+        "priceUnit": "Dollars Per Cwt"
       },
       "bls": {
         "seriesId": "WPU0223"
@@ -90,10 +93,11 @@
       "lmr": {
         "reportId": "2498",
         "commodity": "Butt",
-        "reducer": "mostlyMid",
+        "reducer": "wtdAvg",
         "unit": "lb",
         "_report": "LMR 2498, section \"Butt Cuts\" (Boston butt = pork shoulder). Confirm cut term via section curl.",
-        "section": "Butt Cuts"
+        "section": "Butt Cuts",
+        "priceUnit": "Dollars Per Cwt"
       },
       "bls": {
         "seriesId": "WPU0223"

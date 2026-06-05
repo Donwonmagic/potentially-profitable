@@ -92,7 +92,9 @@
    * Returns { scale } (cents→dollars) and { unit } (lb/dozen/cwt when stated).
    */
   function priceMeta(row, fields) {
-    var pu = String((row && row[(fields && fields.priceUnit) || 'price_unit']) || '').toLowerCase();
+    // The LMR Datamart omits a price_unit field but quotes $/cwt — so a spec can
+    // declare `unitFallback` (e.g. "Dollars Per Cwt") used when the row is silent.
+    var pu = String((row && row[(fields && fields.priceUnit) || 'price_unit']) || (fields && fields.unitFallback) || '').toLowerCase();
     var perCwt = /cwt|hundredweight/.test(pu);             // LMR boxed-beef/pork quote $/cwt → ÷100 for $/lb
     var scale = (/cent/.test(pu) ? 0.01 : 1) * (perCwt ? 0.01 : 1);   // cents→dollars and/or cwt→lb
     var unit = (perCwt || /lb|pound/.test(pu)) ? 'lb'
@@ -107,8 +109,8 @@
     var ml = num(pickField(row, [fields.mostlyLow, 'mostly_low_price', 'mostly_low']));
     var mh = num(pickField(row, [fields.mostlyHigh, 'mostly_high_price', 'mostly_high']));
     if (ml != null && mh != null) return (ml + mh) / 2;
-    var lo = num(pickField(row, [fields.low, 'low_price', 'low']));
-    var hi = num(pickField(row, [fields.high, 'high_price', 'high']));
+    var lo = num(pickField(row, [fields.low, 'low_price', 'price_range_low', 'low']));   // price_range_low = LMR
+    var hi = num(pickField(row, [fields.high, 'high_price', 'price_range_high', 'high']));
     if (lo != null && hi != null) return (lo + hi) / 2;
     return null;
   }
@@ -166,23 +168,30 @@
     // Match the commodity in DESCRIPTIVE fields only — not every string. The old
     // field-agnostic scan also hit region="National", price_unit, office names,
     // grades, so a term could match noise. Override with meta.matchFields.
-    var matchFields = meta.matchFields || ['commodity', 'item', 'item_description', 'cut', 'description', 'variety', 'class', 'grade', 'category', 'primal'];
+    // Field names match CASE-INSENSITIVELY — LMR uses "Item_Description", MARS
+    // uses "item"/"commodity". Override the set with meta.matchFields.
+    var matchFields = (meta.matchFields || ['commodity', 'item', 'item_description', 'cut', 'description', 'variety', 'class', 'grade', 'category', 'primal'])
+      .map(function (s) { return String(s).toLowerCase(); });
     function rowMatches(r) {
       if (!commodity) return true;
-      for (var i = 0; i < matchFields.length; i++) {
-        var v = r[matchFields[i]];
+      for (var k in r) {
+        if (!Object.prototype.hasOwnProperty.call(r, k)) continue;
+        if (matchFields.indexOf(k.toLowerCase()) === -1) continue;
+        var v = r[k];
         if (typeof v === 'string' && v.toLowerCase().indexOf(commodity) !== -1) return true;
       }
       return false;
     }
+    // Thread a per-source price-unit fallback (LMR omits the field but is $/cwt).
+    var f = Object.assign({}, meta.fields, meta.priceUnit ? { unitFallback: meta.priceUnit } : {});
     var byDate = {}, detectedUnit = null;
     rows.forEach(function (r) {
       if (!r || !rowMatches(r)) return;
-      var v = reduceAmsRow(r, meta.reducer, meta.fields);
+      var v = reduceAmsRow(r, meta.reducer, f);
       var date = isoDate(r[dateField]);
       if (date && v != null && isFinite(v) && v > 0) {
         (byDate[date] = byDate[date] || []).push(v);
-        if (!detectedUnit) detectedUnit = priceMeta(r, meta.fields).unit;   // carry the real unit so the quality gate can catch a flip
+        if (!detectedUnit) detectedUnit = priceMeta(r, f).unit;   // carry the real unit so the quality gate can catch a flip
       }
     });
     var points = Object.keys(byDate).map(function (d) { return { date: d, value: _amsMedian(byDate[d]) }; })

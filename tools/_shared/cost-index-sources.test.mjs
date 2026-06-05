@@ -115,6 +115,19 @@ test('AMS/LMR reducer: "Dollars Per Cwt" is converted to $/lb (boxed beef / pork
   assert.equal(out.points[0].value, 3.0);
 });
 
+test('LMR Datamart row: case-insensitive Item_Description match + weighted_average + $/cwt fallback', () => {
+  // Real LMR pork row shape: capital "Item_Description", price_range_*/weighted_average,
+  // NO price_unit field (the spec supplies the $/cwt fallback).
+  const lmr = { results: [
+    { report_date: '06/04/2026', Item_Description: '1/4 Trimmed Loin VAC', price_range_low: '100.00', price_range_high: '122.07', weighted_average: '103.19' },
+    { report_date: '06/04/2026', Item_Description: 'Belly, 9-13#', price_range_low: '180.00', price_range_high: '190.00', weighted_average: '185.00' },
+  ] };
+  const out = S.normalizeAms(lmr, { source: 'usda-lmr', reducer: 'wtdAvg', commodity: 'Loin', priceUnit: 'Dollars Per Cwt' });
+  assert.equal(out.unit, 'lb');
+  assert.equal(out.points.length, 1);                       // only the loin row (belly excluded by the commodity match)
+  assert.equal(out.points[0].value.toFixed(4), '1.0319');   // 103.19 $/cwt → $1.0319/lb
+});
+
 test('AMS reducer: wtdAvg falls back to the band when wtd_avg_price is absent', () => {
   assert.equal(S.reduceAmsRow({ mostly_low: '2.10', mostly_high: '2.30' }, 'wtdAvg'), 2.2);
   assert.equal(S.reduceAmsRow({ note: 'no price' }, 'wtdAvg'), null);

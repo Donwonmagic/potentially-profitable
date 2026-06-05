@@ -47,7 +47,7 @@ async function probe(src, m) {
       // Prices live in a report SECTION ("Report Details"); the bare report is the header.
       const auth = 'Basic ' + Buffer.from(keys.AMS + ':').toString('base64');
       const j = await F.fetchAmsReport(m.reportId, m.section, auth);
-      const o = S.normalizeAms(j, { source: 'usda-ams', basis: 'wholesale', reducer: m.reducer || 'mostlyMid', commodity: m.commodity, matchFields: m.matchFields, unit: m.unit });
+      const o = S.normalizeAms(j, { source: 'usda-ams', basis: 'wholesale', reducer: m.reducer || 'mostlyMid', commodity: m.commodity, matchFields: m.matchFields, unit: m.unit, priceUnit: m.priceUnit });
       const latest = o.points[o.points.length - 1];
       return latest ? { ok: true, n: o.points.length, latest: latest.value, basis: 'wholesale', level: true }
         : { ok: false, err: `fetched OK, 0 priced rows matched${m.commodity ? ` commodity "${m.commodity}"` : ''}${F.AMS_WINDOW_DAYS ? ` (last ${F.AMS_WINDOW_DAYS}d — set AMS_WINDOW_DAYS=0 for full history)` : ''} (check report JSON shape / commodity term)` };
@@ -57,7 +57,7 @@ async function probe(src, m) {
       // same AMS normalizer. Optional LMR_KEY if the Datamart ever requires auth.
       const auth = process.env.LMR_KEY ? 'Basic ' + Buffer.from(process.env.LMR_KEY + ':').toString('base64') : undefined;
       const j = await F.fetchLmrReport(m.reportId, m.section, auth);
-      const o = S.normalizeAms(j, { source: 'usda-lmr', basis: 'wholesale', reducer: m.reducer || 'mostlyMid', commodity: m.commodity, matchFields: m.matchFields, unit: m.unit });
+      const o = S.normalizeAms(j, { source: 'usda-lmr', basis: 'wholesale', reducer: m.reducer || 'mostlyMid', commodity: m.commodity, matchFields: m.matchFields, unit: m.unit, priceUnit: m.priceUnit });
       const latest = o.points[o.points.length - 1];
       return latest ? { ok: true, n: o.points.length, latest: latest.value, basis: 'wholesale', level: true }
         : { ok: false, err: `fetched OK, 0 priced rows matched${m.commodity ? ` commodity "${m.commodity}"` : ''} (LMR Datamart — confirm slug via --discover-lmr + row/price fields)` };
