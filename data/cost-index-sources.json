@@ -14,12 +14,12 @@
         "windowDays": 45
       },
       "bls": {
-        "seriesId": "WPU0233"
+        "seriesId": "WPU022101"
       },
       "fred": {
-        "seriesId": "APU0000703112",
+        "seriesId": "APU0000FC3101",
         "basis": "index",
-        "_report": "generic beef retail (FRED APU) — kept as a beef-direction TREND proxy only (basis index, never a ribeye level); re-point to a ribeye-specific series via --discover-fred if one exists"
+        "_report": "All Uncooked Beef Steaks retail — beef-direction TREND proxy (LMR is the level)."
       }
     },
     "beef-tenderloin": {
@@ -35,7 +35,7 @@
         "windowDays": 45
       },
       "bls": {
-        "seriesId": "WPU0233"
+        "seriesId": "WPU022101"
       }
     },
     "chicken-breast": {
@@ -88,7 +88,7 @@
         "windowDays": 45
       },
       "bls": {
-        "seriesId": "WPU0223"
+        "seriesId": "WPS022104"
       }
     },
     "pork-shoulder": {
@@ -104,7 +104,7 @@
         "windowDays": 45
       },
       "bls": {
-        "seriesId": "WPU0223"
+        "seriesId": "WPS022104"
       }
     },
     "salmon-fillet": {
@@ -191,10 +191,7 @@
           "reducer": "mostlyMid",
           "unit": "carton"
         }
-      ],
-      "bls": {
-        "seriesId": "WPU01130217"
-      }
+      ]
     },
     "tomato": {
       "verified": false,
@@ -257,7 +254,7 @@
         }
       ],
       "bls": {
-        "seriesId": "WPU01130213"
+        "seriesId": "WPU01130217"
       }
     },
     "onion": {
@@ -380,11 +377,7 @@
           "reducer": "mostlyMid",
           "unit": "sack"
         }
-      ],
-      "fred": {
-        "seriesId": "WPU01120206",
-        "basis": "index"
-      }
+      ]
     },
     "butter": {
       "verified": false,
@@ -394,9 +387,6 @@
         "reducer": "wtdAvg",
         "unit": "lb",
         "_report": "National Dairy Products Sales Report (weekly wholesale) — discover: dairy / NDPSR"
-      },
-      "bls": {
-        "seriesId": "WPU02310301"
       },
       "fred": {
         "seriesId": "APU0000FS1101",
