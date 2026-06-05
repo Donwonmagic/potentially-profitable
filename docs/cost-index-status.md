@@ -70,8 +70,11 @@ accuracy/coverage) drove a correctness + resilience pass. All shipped, check-all
 3. **Beef & pork need the LMR API.** Boxed-beef-cutout / negotiated-pork wholesale
    are NOT in Market News v1.2 — they're under USDA's **LMR / Datamart** (separate
    fetcher; ribeye/tenderloin/pork-* carry BLS trend only until then).
-4. **Fix FRED russet-potato** (HTTP 400 — bad series id) and **drop FRED ribeye**
-   (wrong cut, ~$6.90 generic beef).
+4. **Resolve the FRED ids by SEARCH, not deletion** — `scripts/verify-cost-index-sources.mjs
+   --discover-fred "<query>"` searches the FRED catalog (incl. BLS PPI/CPI via FRED).
+   russet-potato fred 400s → find the right potato series; ribeye fred is generic
+   beef (no ribeye cut in FRED retail) → either keep as an honest `index` trend or
+   wait for the LMR ribeye wholesale level. Don't drop the slot — search for the id.
 5. **Verify → flip → fetch --live --out → build-cost-index → check-sync → render.**
 
 ## API KEYS (founder)

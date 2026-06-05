@@ -78,6 +78,21 @@ Put the numeric `reportId` into `data/cost-index-sources.json` (`ams.reportId`).
 `ams` may be an ARRAY of terminal markets (national range) — see the produce
 entries. `ams.commodity` filters a multi-commodity report to one ingredient.
 
+### Find the right FRED / BLS series id (don't guess — search)
+
+A bad or wrong-cut series (e.g. russet's 400, ribeye's generic-beef retail) is
+resolved by SEARCHING the catalog, not dropping the slot:
+```bash
+node scripts/verify-cost-index-sources.mjs --discover-fred "russet potatoes"
+node scripts/verify-cost-index-sources.mjs --discover-fred "beef"
+node scripts/verify-cost-index-sources.mjs --discover-fred "soybean oil"
+```
+FRED indexes most BLS PPI/CPI series too, so this surfaces `WPU*`/`CUUR*` (trend,
+→ `bls.seriesId`) AND `APU*` ($-per-unit level, → `fred.seriesId` with `basis:
+retail` + a matching `unit`). Avoid IMF/OECD/World Bank series (redistribution-
+limited). Set `basis: index` for an index series (trend only), `retail`/`wholesale`
+for a $-per-unit level.
+
 ## 3. Inspect a report's JSON (to map fields)
 
 ```bash

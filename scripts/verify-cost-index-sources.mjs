@@ -100,7 +100,31 @@ async function discoverAms(query) {
   console.log('     `--discover --all > /tmp/ams-reports.txt` dumps the whole directory to grep locally.');
 }
 
+// --discover-fred <query>: search the FRED catalog for the right series id (so we
+// resolve a bad/wrong id by SEARCHING rather than guessing or dropping the slot).
+// FRED indexes most BLS PPI/CPI series too, so this finds WPU*/CUUR* (trend) AND
+// APU* ($-level) ids. basis: retail/wholesale = a level; index = trend-only.
+async function discoverFred(query) {
+  if (!keys.FRED) { console.error('FRED_KEY required for --discover-fred.'); process.exit(1); }
+  if (!query) { console.error('Usage: --discover-fred "russet potatoes"'); process.exit(1); }
+  const url = `https://api.stlouisfed.org/fred/series/search?search_text=${encodeURIComponent(query)}`
+    + `&api_key=${keys.FRED}&file_type=json&limit=40&order_by=popularity&sort_order=desc`;
+  let j;
+  try { j = await F.fetchJson(url); }
+  catch (e) { console.error(`FRED search failed (${e.message}). Check FRED_KEY / network.`); process.exit(1); }
+  const list = j.seriess || [];
+  console.log(`FRED series matching "${query}": ${j.count != null ? j.count : list.length} total · showing ${list.length}\n`);
+  for (const s of list) {
+    console.log(`  ${s.id}  [${s.frequency_short || '?'}, ${s.units_short || s.units || '?'}, ${(s.observation_start || '').slice(0, 4)}–${(s.observation_end || '').slice(0, 4)}]  ${s.title || ''}`);
+  }
+  console.log('\nPut the chosen id into data/cost-index-sources.json (fred.seriesId, or bls.seriesId for a WPU/CUUR code).');
+  console.log('Set basis: a $-per-unit series (APU*, "Dollars per…") = retail/wholesale LEVEL (add a matching `unit`); an index ("Index 1982=100") = trend-only.');
+  console.log('Tip: --discover-fred "potatoes" / "beef" / "butter" / "eggs" / "soybean oil". Avoid IMF/OECD/World Bank series (redistribution-limited).');
+}
+
 async function main() {
+  const dfi = process.argv.indexOf('--discover-fred');
+  if (dfi >= 0) return discoverFred(process.argv[dfi + 1]);
   const di = process.argv.indexOf('--discover');
   if (di >= 0) return discoverAms(process.argv[di + 1]);
   console.log('Verifying cost-index source ids against the live APIs…\n');
