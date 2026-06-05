@@ -22,8 +22,11 @@
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createRequire } from 'node:module';
 import { pointIssues } from './check-cost-index-sync.mjs';
 
+const require = createRequire(import.meta.url);
+const B = require('../tools/_shared/cost-basket.js');
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const arg = (k) => { const i = process.argv.indexOf(k); return i >= 0 ? process.argv[i + 1] : null; };
 const DRY = process.argv.includes('--dry-run');
@@ -41,6 +44,8 @@ const srcIng = sources.ingredients || {};
 const boundsMap = bounds.bounds || {};
 const today = arg('--date') || new Date().toISOString().slice(0, 10);
 
+const basketWeights = (() => { try { return rd(path.join(repoRoot, 'data/cost-basket-weights.json')).weights || {}; } catch { return {}; } })();
+
 function emptyCanonical() {
   const existing = existsSync(OUT) ? rd(OUT) : {};
   return {
@@ -48,7 +53,20 @@ function emptyCanonical() {
     _lastReviewed: today,
     _generatedFrom: 'verified-sources-only',
     ingredients: {},
+    basket: null,
   };
+}
+
+// Recompute the headline Basket from the VENDORED ingredients only (newest point
+// each), so the published headline can never reflect a point that didn't clear
+// the fact gate. Honest coverage = the share of basket weight that actually shipped.
+function computeBasket(out) {
+  const latest = {};
+  for (const k of Object.keys(out.ingredients)) {
+    const pts = (out.ingredients[k] && out.ingredients[k].points) || [];
+    if (pts.length) latest[k] = pts[0];   // mergePoints sorts newest-first
+  }
+  return B.basketTrend(latest, basketWeights);
 }
 
 const ok = (ingredient, point) => pointIssues(ingredient, point, srcIng, boundsMap).length === 0;
@@ -99,9 +117,11 @@ function main() {
     if (kept.length) out.ingredients[ingredient] = { points: kept };
   }
 
+  out.basket = computeBasket(out);   // headline from the post-gate vendored set only
   if (!DRY) writeFileSync(OUT, JSON.stringify(out, null, 2) + '\n');
   const dropMsg = Object.keys(dropped).length ? ` · dropped: ${Object.entries(dropped).map(([k, v]) => `${v} ${k}`).join(', ')}` : '';
-  console.log(`build-cost-index: vendored ${vendored} ingredient(s)${dropMsg}.${DRY ? ' (dry-run)' : ''}`);
+  const bk = out.basket && out.basket.pct != null ? ` · basket ${(out.basket.pct * 100).toFixed(1)}% (${Math.round(out.basket.coverage * 100)}% covered)` : '';
+  console.log(`build-cost-index: vendored ${vendored} ingredient(s)${dropMsg}${bk}.${DRY ? ' (dry-run)' : ''}`);
 }
 
 main();
