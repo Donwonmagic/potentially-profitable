@@ -34,11 +34,13 @@ const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..'
 const C = require('../tools/_shared/composite-price.js');
 const S = require('../tools/_shared/cost-index-sources.js');
 const Q = require('../tools/_shared/observation-quality.js');
+const B = require('../tools/_shared/cost-basket.js');
 
 const LIVE = process.argv.includes('--live');
 const rd = (p) => JSON.parse(readFileSync(path.join(repoRoot, p), 'utf8'));
 const sourceMap = rd('data/cost-index-sources.json').ingredients || {};
 const bounds = rd('data/cost-index-bounds.json').bounds || {};
+const basketWeights = (() => { try { return rd('data/cost-basket-weights.json').weights || {}; } catch { return {}; } })();
 
 // ---- realistic canned payloads (the upstream dialects) for --demo ----------
 // Shapes match the live APIs exactly, so the demo exercises the same
@@ -186,6 +188,15 @@ async function main() {
     // build-cost-index.mjs vendors (it adds asOf already; ensure it's present).
     artifact.points[ing] = { asOf: point.result.asOf, ...point.result };
     composed++;
+  }
+
+  // Headline: compose the per-ingredient trends into the Muntin Restaurant Basket
+  // (a weighted basis-agnostic % move for the declared basket — never a level).
+  const basket = B.basketTrend(artifact.points, basketWeights);
+  artifact.basket = basket;
+  if (!jsonMode) {
+    log('\n══ Muntin Restaurant Basket ══');
+    log('  ' + B.basketPhrase(basket));
   }
 
   // --out <file> / --json: emit the build-cost-index artifact (the clean
