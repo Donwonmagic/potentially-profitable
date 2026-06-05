@@ -217,17 +217,14 @@
     var nameFields = (meta.matchFields || ['name', 'hts_description', 'product', 'products', 'commodity_name', 'description'])
       .map(function (s) { return String(s).toLowerCase(); });
     var htsPrefix = meta.hts ? String(meta.hts) : null;
-    var tradeField = meta.tradeField || 'trade_type';
+    var tradeField = meta.tradeField || 'source';   // NOAA trade_data flags direction in `source` = "IMP" / "EXP"
 
     function isImport(r) {
-      // Prefer an explicit trade-type field; otherwise accept (the query should
-      // already scope to imports) but never count a row flagged export.
-      var vals = [];
-      for (var k in r) if (Object.prototype.hasOwnProperty.call(r, k) && typeof r[k] === 'string') vals.push(r[k].toLowerCase());
-      if (vals.indexOf('export') !== -1 || vals.indexOf('exports') !== -1) return false;
-      var tt = r[tradeField] != null ? String(r[tradeField]).toLowerCase() : '';
-      if (tt) return tt.indexOf('import') !== -1;
-      return true;
+      // Direction is the abbreviated `source` field ("IMP"/"EXP") — NOT the word
+      // "export", so we must match the code, or exports silently inflate the value.
+      var tt = String((r[tradeField] != null ? r[tradeField] : '')).trim().toUpperCase();
+      if (tt) return tt === 'IMP' || tt === 'IMPORT' || tt.indexOf('IMP') === 0;
+      return true;   // no direction field → assume the query scoped to imports
     }
     function matches(r) {
       if (htsPrefix) { var h = String(r.hts_number || r.hts || r.hts_code || ''); if (h.indexOf(htsPrefix) === 0) return true; }

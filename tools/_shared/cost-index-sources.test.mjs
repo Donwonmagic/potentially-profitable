@@ -167,10 +167,10 @@ test('normalizeAms honors a mostlyMid reducer on ranged rows', () => {
 
 test('NOAA trade: import unit value = sum(value)/sum(kilos) per month → $/lb (exports + other species excluded)', () => {
   const j = { items: [
-    { year: 2026, month: 3, name: 'SHRIMP, frozen', kilos: 1000, val: 8000, trade_type: 'import' },
-    { year: 2026, month: 3, name: 'SHRIMP, peeled', kilos: 1000, val: 10000, trade_type: 'import' },
-    { year: 2026, month: 3, name: 'SHRIMP, frozen', kilos: 500, val: 9999, trade_type: 'export' },   // export → excluded
-    { year: 2026, month: 4, name: 'SALMON, fillet', kilos: 100, val: 2000, trade_type: 'import' },    // wrong species → excluded
+    { year: 2026, month: 3, name: 'SHRIMP, frozen', kilos: 1000, val: 8000, source: 'IMP' },
+    { year: 2026, month: 3, name: 'SHRIMP, peeled', kilos: 1000, val: 10000, source: 'IMP' },
+    { year: 2026, month: 3, name: 'SHRIMP, frozen', kilos: 500, val: 9999, source: 'EXP' },    // EXPORT (abbrev) → excluded
+    { year: 2026, month: 4, name: 'SALMON, fillet', kilos: 100, val: 2000, source: 'IMP' },     // wrong species → excluded
   ] };
   const out = S.normalizeNoaaTrade(j, { commodity: 'shrimp', unit: 'lb' });
   assert.equal(out.unit, 'lb');
