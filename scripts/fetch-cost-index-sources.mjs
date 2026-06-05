@@ -125,7 +125,7 @@ function toOutputs(ingredient, raw, m) {
     if (o.points.length) outs.push(o);
   });
   if (raw.bls) { const o = S.normalizeBls(raw.bls, { source: 'bls', basis: 'index' }); o.family = (m.bls && m.bls.family) || 'bls'; if (o.points.length) outs.push(o); }
-  if (raw.fred) { const o = S.normalizeFred(raw.fred, { source: 'fred', basis: (m.fred && m.fred.basis) || 'index' }); o.family = (m.fred && m.fred.family) || 'fred'; if (o.points.length) outs.push(o); }
+  if (raw.fred) { const o = S.normalizeFred(raw.fred, { source: 'fred', basis: (m.fred && m.fred.basis) || 'index', unit: m.fred && m.fred.unit }); o.family = (m.fred && m.fred.family) || 'fred'; if (o.points.length) outs.push(o); }
   return outs;
 }
 
