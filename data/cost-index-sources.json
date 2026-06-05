@@ -449,5 +449,44 @@
         "_report": "PPI Soybean Oil (US-gov) — distinct oil family from the cooking-oil PPI. Trend only; no free oil LEVEL, so vegetable-oil is directional (feeds the basket, not independently READY)."
       }
     }
+  },
+  "drivers": {
+    "_doc": "Explanatory INPUTS (not menu ingredients) for the \"why\" behind protein cost moves — fed to the lead-lag analyzer (tools/_shared/cost-leadlag.js). feed-grain (corn/soybeans) is the genuine LEADING signal (USDA ERS: ~10wk chicken to ~30mo beef); diesel is coincident (moves alongside, not a leader). All index/trend, US-gov redistributable. Association with a lag, NEVER causation. Verify the series ids live, then the build computes each driver vs the protein/basket history.",
+    "corn": {
+      "bls": {
+        "seriesId": "WPS012202"
+      },
+      "kind": "feed-grain",
+      "leads": [
+        "chicken-breast",
+        "whole-chicken",
+        "pork-loin",
+        "pork-shoulder",
+        "ribeye",
+        "beef-tenderloin",
+        "eggs"
+      ]
+    },
+    "soybeans": {
+      "bls": {
+        "seriesId": "WPU01830131"
+      },
+      "kind": "feed-grain",
+      "leads": [
+        "chicken-breast",
+        "whole-chicken",
+        "pork-loin",
+        "pork-shoulder"
+      ]
+    },
+    "diesel": {
+      "fred": {
+        "seriesId": "GASDESW",
+        "basis": "index"
+      },
+      "kind": "energy",
+      "leads": [],
+      "_report": "coincident gauge (moves alongside food), not a leader — frame as association only"
+    }
   }
 }

@@ -74,6 +74,20 @@ if (sources) {
     }
     if (unverified) warns.push(`${unverified}/${total} ingredient mappings are verified:false — resolve their source IDs before the live fetch ships.`);
   }
+
+  // Drivers (feed-grain / energy explanatory inputs) — trend-only, no bounds/pages.
+  const drivers = sources.drivers;
+  if (drivers && typeof drivers === 'object') {
+    for (const [key, entry] of Object.entries(drivers)) {
+      if (key.startsWith('_') || !entry || typeof entry !== 'object') continue;
+      const srcKeys = Object.keys(entry).filter((k) => ID_FIELD[k]);
+      if (!srcKeys.length) { errors.push(`driver ${key}: maps to no known source (need bls/fred/ams/lmr).`); continue; }
+      for (const sk of srcKeys) {
+        const obj = entry[sk];
+        if (!obj || typeof obj[ID_FIELD[sk]] !== 'string' || obj[ID_FIELD[sk]] === '') errors.push(`driver ${key}.${sk}: missing "${ID_FIELD[sk]}".`);
+      }
+    }
+  }
 }
 
 if (bounds) {
