@@ -400,7 +400,8 @@
         "commodity": "Butter",
         "reducer": "wtdAvg",
         "unit": "lb",
-        "_report": "AMS 1623 Dairy Monthly Averages — CANDIDATE for butter wholesale. If 0 rows, NDPSR likely needs its own datamart like LMR; curl 1623 to confirm."
+        "_report": "AMS 1623, section \"Hard Products Monthly Averages\" (butter/cheese spot). Confirm commodity term + price field via sample.",
+        "section": "Hard Products Monthly Averages"
       }
     },
     "cheddar-cheese": {
@@ -418,7 +419,8 @@
         "commodity": "Cheddar",
         "reducer": "wtdAvg",
         "unit": "lb",
-        "_report": "AMS 1623 Dairy Monthly Averages — CANDIDATE for cheddar wholesale. Confirm via sample."
+        "_report": "AMS 1623, section \"Hard Products Monthly Averages\". Confirm cheddar term (block vs barrel) + price field via sample.",
+        "section": "Hard Products Monthly Averages"
       }
     },
     "eggs": {
@@ -435,7 +437,8 @@
         "reportId": "2843",
         "reducer": "mostlyMid",
         "unit": "dozen",
-        "_report": "AMS 2843 Daily National Shell Egg Index — national wholesale $/dozen. Confirm price fields/grade via a sample if 0 rows."
+        "_report": "AMS 2843, section \"Report Detail Weighted\". Confirm the egg price field/grade via sample.",
+        "section": "Report Detail Weighted"
       }
     },
     "vegetable-oil": {
