@@ -399,10 +399,10 @@
         "_report": "NDPSR cheddar (40-lb block), weekly wholesale — discover: dairy / cheese"
       },
       "bls": {
-        "seriesId": "WPU02310312"
+        "seriesId": "PCU3115133115131"
       },
       "fred": {
-        "seriesId": "APU0000710411",
+        "seriesId": "APU0000710212",
         "basis": "retail",
         "unit": "lb"
       }
@@ -433,16 +433,16 @@
     "vegetable-oil": {
       "verified": false,
       "bls": {
-        "seriesId": "WPU0237",
-        "family": "ppi-fats-oils",
-        "type": "ppi-fats-oils"
+        "seriesId": "WPU0278",
+        "family": "ppi-cooking-oil",
+        "type": "ppi-cooking-oil"
       },
       "fred": {
-        "seriesId": "WPU0237",
+        "seriesId": "PCU3112243112243",
         "basis": "index",
-        "family": "ppi-fats-oils",
-        "type": "ppi-fats-oils",
-        "_report": "SAME series as bls today (mirror — collapsed to one vote, no double-count). Find a DISTINCT soybean/veg-oil series via --discover-fred \"soybean oil\" for a real 2nd source."
+        "family": "ppi-soybean-oil",
+        "type": "ppi-soybean-oil",
+        "_report": "PPI Soybean Oil (US-gov) — distinct oil family from the cooking-oil PPI. Trend only; no free oil LEVEL, so vegetable-oil is directional (feeds the basket, not independently READY)."
       }
     }
   }
