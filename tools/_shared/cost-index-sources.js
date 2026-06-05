@@ -133,7 +133,7 @@
     reducer = reducer || 'single';
     var raw;
     if (reducer === 'wtdAvg') {
-      raw = num(pickField(row, [fields.wtdAvg, 'wtd_avg_price', 'weighted_average', 'avg_price']));
+      raw = num(pickField(row, [fields.wtdAvg, 'wtd_avg_price', 'weighted_average', 'weighted_prices', 'weighted_price', 'avg_price']));
       if (raw == null) raw = bandMid(row, fields);
     } else if (reducer === 'mostlyMid') {
       raw = bandMid(row, fields);
