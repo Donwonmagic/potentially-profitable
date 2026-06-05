@@ -46,7 +46,7 @@ async function probe(src, m) {
       if (!keys.AMS) return { ok: false, err: 'no AMS_KEY' };
       // Prices live in a report SECTION ("Report Details"); the bare report is the header.
       const auth = 'Basic ' + Buffer.from(keys.AMS + ':').toString('base64');
-      const j = await F.fetchAmsReport(m.reportId, m.section, auth);
+      const j = await F.fetchAmsReport(m.reportId, m.section, auth, m.windowDays);
       const o = S.normalizeAms(j, { source: 'usda-ams', basis: 'wholesale', reducer: m.reducer || 'mostlyMid', commodity: m.commodity, matchFields: m.matchFields, unit: m.unit, priceUnit: m.priceUnit });
       const latest = o.points[o.points.length - 1];
       return latest ? { ok: true, n: o.points.length, latest: latest.value, basis: 'wholesale', level: true }
@@ -56,7 +56,7 @@ async function probe(src, m) {
       // LMR Datamart (boxed beef / negotiated pork) — keyless; rows parse with the
       // same AMS normalizer. Optional LMR_KEY if the Datamart ever requires auth.
       const auth = process.env.LMR_KEY ? 'Basic ' + Buffer.from(process.env.LMR_KEY + ':').toString('base64') : undefined;
-      const j = await F.fetchLmrReport(m.reportId, m.section, auth);
+      const j = await F.fetchLmrReport(m.reportId, m.section, auth, m.windowDays);
       const o = S.normalizeAms(j, { source: 'usda-lmr', basis: 'wholesale', reducer: m.reducer || 'mostlyMid', commodity: m.commodity, matchFields: m.matchFields, unit: m.unit, priceUnit: m.priceUnit });
       const latest = o.points[o.points.length - 1];
       return latest ? { ok: true, n: o.points.length, latest: latest.value, basis: 'wholesale', level: true }

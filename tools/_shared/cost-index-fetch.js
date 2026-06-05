@@ -78,9 +78,16 @@ var LMR_BASE = 'https://mpr.datamart.ams.usda.gov/services/v1.1/reports/';  // L
  * timeout/network failure, where the full-history fetch would deepen the stall.
  * Host-agnostic: shared by MARS (keyed) and the LMR Datamart (keyless).
  */
-async function fetchReport(baseUrl, reportId, sectionRaw, auth, winField) {
+// In-run cache: a report+section+window is fetched ONCE per process and reused.
+// Beef ribeye + tenderloin share one report (2453/Choice Cuts) — without this it
+// was fetched twice and the second timed out. Caches the in-flight promise so
+// concurrent callers also share. (One run = fresh data; the process exits after.)
+var _reportCache = new Map();
+
+async function _doFetchReport(baseUrl, reportId, sectionRaw, auth, winField, days) {
+  var d = days == null ? AMS_WINDOW_DAYS : days;
   var h = auth ? { Authorization: auth } : {};   // LMR is keyless → no header
-  var win = AMS_WINDOW_DAYS > 0 ? '?q=' + encodeURIComponent((winField || 'report_begin_date') + '=' + amsWindow(AMS_WINDOW_DAYS)) : '';
+  var win = d > 0 ? '?q=' + encodeURIComponent((winField || 'report_begin_date') + '=' + amsWindow(d)) : '';
   var base = baseUrl + reportId;
   var want = sectionRaw === '' ? '' : (sectionRaw || 'Report Details');
   async function get(section) {
@@ -102,14 +109,24 @@ async function fetchReport(baseUrl, reportId, sectionRaw, auth, winField) {
   return j;
 }
 
+function fetchReport(baseUrl, reportId, sectionRaw, auth, winField, days) {
+  var key = [baseUrl, reportId, sectionRaw == null ? '' : sectionRaw, winField || '', days == null ? '' : days].join('|');
+  var hit = _reportCache.get(key);
+  if (hit) return hit;                                  // reuse the in-flight or completed fetch
+  var pr = _doFetchReport(baseUrl, reportId, sectionRaw, auth, winField, days)
+    .catch(function (e) { _reportCache.delete(key); throw e; });   // a failed fetch shouldn't poison the cache
+  _reportCache.set(key, pr);
+  return pr;
+}
+
 // MARS report: keyed, windows on report_begin_date, section defaults to "Report Details".
-function fetchAmsReport(reportId, sectionRaw, auth) {
-  return fetchReport(MARS_BASE, reportId, sectionRaw, auth, 'report_begin_date');
+function fetchAmsReport(reportId, sectionRaw, auth, days) {
+  return fetchReport(MARS_BASE, reportId, sectionRaw, auth, 'report_begin_date', days);
 }
 // LMR Datamart report: keyless (auth optional), windows on report_date, NO section
 // by default (the Datamart returns results directly) — override with spec.section.
-function fetchLmrReport(reportId, sectionRaw, auth) {
-  return fetchReport(LMR_BASE, reportId, sectionRaw == null ? '' : sectionRaw, auth, 'report_date');
+function fetchLmrReport(reportId, sectionRaw, auth, days) {
+  return fetchReport(LMR_BASE, reportId, sectionRaw == null ? '' : sectionRaw, auth, 'report_date', days);
 }
 
 /**
