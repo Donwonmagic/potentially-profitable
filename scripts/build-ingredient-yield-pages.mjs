@@ -86,11 +86,17 @@ function costIndexBlock(slug, locale) {
   const es = locale === 'es';
   const conf = point.confidence || 'low';
   const confWord = es ? ({ high: 'alta', medium: 'media', low: 'baja', directional: 'direccional' }[conf] || conf) : conf;
-  const rc = point.level && Array.isArray(point.level.rangeCents) ? point.level.rangeCents : null;
+  const lvl = point.level;
+  const basis = (lvl && lvl.basis) || 'wholesale';
+  const unitSfx = lvl && lvl.unit ? '/' + lvl.unit : '';                  // never imply a $/lb we didn't measure (produce is $/carton)
+  const basisRef = es
+    ? ({ wholesale: 'referencia mayorista', retail: 'referencia minorista', delivered: 'precio entregado' }[basis] || 'referencia')
+    : ({ wholesale: 'wholesale reference', retail: 'retail reference', delivered: 'delivered' }[basis] || 'reference');
+  const rc = lvl && Array.isArray(lvl.rangeCents) ? lvl.rangeCents : null;
   const range = (rc && rc[0] !== rc[1])
-    ? `${money(rc[0])}–${money(rc[1])} ${es ? '(referencia mayorista)' : '(wholesale reference)'}`
+    ? `${money(rc[0])}–${money(rc[1])}${unitSfx} (${basisRef})`
     : rc
-      ? `${money(rc[0])} ${es ? '(referencia mayorista, una fuente)' : '(wholesale reference, single source)'}`
+      ? `${money(rc[0])}${unitSfx} (${basisRef}${es ? ', una fuente' : ', single source'})`
       : (es ? 'solo dirección' : 'directional only');
   const tr = point.trend || {};
   const dirWord = tr.dir === 'up' ? (es ? 'al alza' : 'up') : tr.dir === 'down' ? (es ? 'a la baja' : 'down') : (es ? 'estable' : 'flat');
@@ -101,7 +107,10 @@ function costIndexBlock(slug, locale) {
   const line = es ? `Alrededor de ${range}${trendStr} en la ventana reciente.` : `About ${range}${trendStr} over the recent window.`;
   const badge = `${es ? 'confianza' : 'confidence'} ${confWord} · ${es ? 'al' : 'as of'} ${asOf}`;
   const srcSummary = `${es ? 'Fuentes' : 'Sources'} · ${sources.length}`;
-  const srcBody = `${sources.join(' · ')} — ${es ? 'datos públicos' : 'public data'}, ${es ? 'al' : 'as of'} ${asOf}. ${es ? 'Referencia mayorista, no el precio entregado que pagas.' : 'Wholesale reference, not the delivered price you pay.'}`;
+  const disclaimer = basis === 'retail'
+    ? (es ? 'Referencia minorista, no el precio mayorista ni el entregado que pagas.' : 'Retail reference, not the wholesale or delivered price you pay.')
+    : (es ? 'Referencia mayorista, no el precio entregado que pagas.' : 'Wholesale reference, not the delivered price you pay.');
+  const srcBody = `${sources.join(' · ')} — ${es ? 'datos públicos' : 'public data'}, ${es ? 'al' : 'as of'} ${asOf}. ${disclaimer}`;
   return `
 <div class="iy-costindex">
   <p class="iy-ci-head">${head}<span class="iy-ci-badge">${badge}</span></p>

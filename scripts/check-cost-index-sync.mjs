@@ -59,6 +59,13 @@ export function pointIssues(ingredient, point, srcIng, boundsMap, now = Date.now
   const hasLevel = point && point.level && typeof point.level.medianCents === 'number';
   const hasTrend = point && point.trend && (typeof point.trend.pct === 'number');
   if (!hasLevel && !hasTrend) out.push('empty-point');                  // must carry meaningful data
+  // A level must be anchored on FRESH observations — not just carry a fresh
+  // composite asOf (a fresh trend can mask a stale level behind it). Check the
+  // level provenance dates directly, so build + gate catch what verify catches.
+  if (hasLevel && Array.isArray(point.level.provenance)) {
+    const staleLevel = point.level.provenance.some((lp) => lp && DATE_RE.test(lp.date || '') && (now - parseDay(lp.date)) / 86400000 > POINT_STALE_DAYS);
+    if (staleLevel) out.push('stale-level');
+  }
   if (hasLevel && boundsMap[ingredient]) {
     const b = boundsMap[ingredient];
     // TIGHT band: the rendered level must be inside the plausible range itself,
@@ -151,6 +158,8 @@ function selfTest() {
     ['basket claiming a non-vendored contributor FAILS', { _lastReviewed: '2026-06-01', _generatedFrom: 'verified-sources-only', ingredients: { ribeye: { points: [good] } }, basket: { pct: 0.05, coverage: 0.5, asOf: '2026-06-01', contributors: [{ ingredient: 'saffron' }] } }, false],
     ['basket pct with no asOf FAILS', { _lastReviewed: '2026-06-01', _generatedFrom: 'verified-sources-only', ingredients: { ribeye: { points: [good] } }, basket: { pct: 0.05, coverage: 0.5, contributors: [{ ingredient: 'ribeye' }] } }, false],
     ['null basket passes (empty canonical)', { _lastReviewed: '2026-06-01', _generatedFrom: 'verified-sources-only', ingredients: {}, basket: null }, true],
+    ['stale LEVEL provenance FAILS even with a fresh asOf', { _lastReviewed: '2026-06-01', _generatedFrom: 'verified-sources-only', ingredients: { ribeye: { points: [{ ...good, level: { medianCents: 1400, provenance: [{ source: 'usda-ams', date: '2025-01-01' }] } }] } } }, false],
+    ['fresh LEVEL provenance passes', { _lastReviewed: '2026-06-01', _generatedFrom: 'verified-sources-only', ingredients: { ribeye: { points: [{ ...good, level: { medianCents: 1400, provenance: [{ source: 'usda-ams', date: '2026-06-01' }] } }] } } }, true],
   ];
   let pass = 0;
   for (const [name, idx, shouldPass] of cases) {
