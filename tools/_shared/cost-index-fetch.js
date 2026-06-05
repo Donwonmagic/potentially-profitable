@@ -16,7 +16,7 @@
 var FETCH_TIMEOUT_MS = Number(process.env.FETCH_TIMEOUT_MS || 25000);
 var AMS_WINDOW_DAYS = Number(process.env.AMS_WINDOW_DAYS || 120);
 var MAX_RETRIES = Number(process.env.FETCH_RETRIES || 3);
-var AMS_CONCURRENCY = Number(process.env.AMS_CONCURRENCY || 3);   // polite to the single MARS host — high fan-out triggers throttling
+var AMS_CONCURRENCY = Number(process.env.AMS_CONCURRENCY || 2);   // polite to the single MARS host — heavy produce fetches starve other sources at higher fan-out
 
 var TRANSIENT_STATUS = new Set([429, 500, 502, 503, 504]);
 var TRANSIENT_ERR = /ECONNRESET|ENOTFOUND|ECONNREFUSED|EAI_AGAIN|ETIMEDOUT|UND_ERR|terminated|socket|network|fetch failed/i;
