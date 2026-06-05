@@ -16,12 +16,24 @@
 var FETCH_TIMEOUT_MS = Number(process.env.FETCH_TIMEOUT_MS || 25000);
 var AMS_WINDOW_DAYS = Number(process.env.AMS_WINDOW_DAYS || 120);
 var MAX_RETRIES = Number(process.env.FETCH_RETRIES || 3);
-var AMS_CONCURRENCY = Number(process.env.AMS_CONCURRENCY || 5);
+var AMS_CONCURRENCY = Number(process.env.AMS_CONCURRENCY || 3);   // polite to the single MARS host — high fan-out triggers throttling
 
 var TRANSIENT_STATUS = new Set([429, 500, 502, 503, 504]);
-var TRANSIENT_ERR = /ECONNRESET|ENOTFOUND|ECONNREFUSED|EAI_AGAIN|ETIMEDOUT|UND_ERR|terminated|socket|network/i;
+var TRANSIENT_ERR = /ECONNRESET|ENOTFOUND|ECONNREFUSED|EAI_AGAIN|ETIMEDOUT|UND_ERR|terminated|socket|network|fetch failed/i;
 
 function sleep(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
+
+// Node's global fetch wraps a transient network error as a bare "TypeError:
+// fetch failed" with the real code (ECONNRESET, …) buried in e.cause — so check
+// both, plus our own AbortSignal timeout. This is what made onion/russet ("fetch
+// failed") never retry: the message alone matched nothing.
+function isTransient(e) {
+  if (!e) return false;
+  if (e.name === 'TimeoutError' || e.name === 'AbortError') return true;
+  var msg = String(e.message || '');
+  var cause = e.cause ? String(e.cause.code || e.cause.message || e.cause) : '';
+  return TRANSIENT_ERR.test(msg) || TRANSIENT_ERR.test(cause);
+}
 
 function backoff(attempt, headers) {
   var ms = Math.min(8000, 500 * Math.pow(2, attempt)) * (0.5 + Math.random());   // full jitter, cap 8s
@@ -37,9 +49,7 @@ async function fetchJson(url, init) {
     try {
       res = await fetch(url, Object.assign({}, init, { signal: init.signal || AbortSignal.timeout(FETCH_TIMEOUT_MS) })); // h8-exempt: Node-only build/CI transport for the live Cost Index fetch; never bundled or served to the browser (no window export)
     } catch (e) {
-      var msg = String((e && e.message) || e);
-      var transient = (e && (e.name === 'TimeoutError' || e.name === 'AbortError')) || TRANSIENT_ERR.test(msg);
-      if (!transient || attempt >= MAX_RETRIES) throw e;
+      if (!isTransient(e) || attempt >= MAX_RETRIES) throw e;
       await sleep(backoff(attempt));
       continue;
     }
@@ -71,7 +81,13 @@ async function fetchAmsReport(reportId, sectionRaw, auth) {
   async function get(section) {
     var path = section === '' ? '' : '/' + encodeURIComponent(section);
     try { return await fetchJson(base + path + win, { headers: h }); }
-    catch (e) { if (win) return fetchJson(base + path, { headers: h }); throw e; }
+    catch (e) {
+      // Fall back to the (bigger) unwindowed fetch ONLY if the window itself was
+      // rejected (4xx bad query) — never on a timeout/network failure, where the
+      // full-history fetch would be even slower and deepen the stall.
+      if (win && /HTTP 4\d\d/.test(String(e && e.message))) return fetchJson(base + path, { headers: h });
+      throw e;
+    }
   }
   var j = await get(want);
   if (want && j && j.reportSection === 'Report Header' && want !== 'Report Header' && Array.isArray(j.reportSections)) {
@@ -109,6 +125,7 @@ async function mapLimit(items, limit, fn) {
 
 module.exports = {
   fetchJson: fetchJson,
+  isTransient: isTransient,
   amsWindow: amsWindow,
   fetchAmsReport: fetchAmsReport,
   mapLimit: mapLimit,
