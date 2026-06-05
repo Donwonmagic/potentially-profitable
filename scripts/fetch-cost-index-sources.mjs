@@ -37,6 +37,7 @@ const Q = require('../tools/_shared/observation-quality.js');
 const B = require('../tools/_shared/cost-basket.js');
 
 const LIVE = process.argv.includes('--live');
+const STALE_DAYS = 120;   // a level obs older than this can't anchor a current level (matches verify + the build gate)
 const rd = (p) => JSON.parse(readFileSync(path.join(repoRoot, p), 'utf8'));
 const sourceMap = rd('data/cost-index-sources.json').ingredients || {};
 const bounds = rd('data/cost-index-bounds.json').bounds || {};
@@ -172,9 +173,17 @@ function composeIngredient(ingredient, outputs) {
       // price_unit is a hard reject, not a number wearing the expected costume.
       : { source: o.source, basis: o.basis, valueCents: Math.round(latest.value * 100), unit: o.unit, date: latest.date };
   });
-  const screened = Q.screen(obs, { bounds: b ? { minCents: b.minCents, maxCents: b.maxCents } : undefined, expectedUnit: b && b.unit });
+  const asOf = outputs.reduce((d, o) => { const p = o.points[o.points.length - 1]; return p && p.date && (!d || p.date > d) ? p.date : d; }, null);
+  const screened = Q.screen(obs, { bounds: b ? { minCents: b.minCents, maxCents: b.maxCents } : undefined, expectedUnit: b && b.unit, asOf, maxAgeDays: STALE_DAYS });
   const okSources = new Set(screened.kept.map((k) => k.source));
-  const kept = outputs.filter((o) => okSources.has(o.source)).map((o) => ({ ...o, weight: screened.sourceWeight[o.source] }));
+  // A stale level must not anchor a current level (it still feeds the trend). Mark
+  // each non-index source level-eligible only if its latest obs is fresh — same
+  // 120d bar as verify + the build gate, so the three agree.
+  const isFresh = (d) => !d || (Date.now() - Date.parse(d + 'T00:00:00Z')) / 86400000 <= STALE_DAYS;
+  const kept = outputs.filter((o) => okSources.has(o.source)).map((o) => {
+    const latest = o.points[o.points.length - 1];
+    return { ...o, weight: screened.sourceWeight[o.source], levelEligible: o.basis !== 'index' && isFresh(latest && latest.date) };
+  });
   if (!kept.length) return null;
   const input = S.buildCompositeInput(kept);
   return { result: C.assess(input), rejected: screened.rejected };

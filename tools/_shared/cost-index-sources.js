@@ -283,7 +283,11 @@
     (outputs || []).forEach(function (o) {
       if (!o || !Array.isArray(o.points) || !o.points.length) return;
       sourceSeries[o.source] = { basis: o.basis, values: o.points.map(function (p) { return p.value; }), weight: o.weight, family: o.family, type: o.type };
-      if (o.basis !== 'index') {
+      // A non-index source contributes a LEVEL only if it's level-eligible — a
+      // STALE source still feeds the trend (its history is real) but must NOT
+      // anchor a current level. levelEligible:false (set by the composer for
+      // stale obs) keeps a discontinued/lagging series out of the level.
+      if (o.basis !== 'index' && o.levelEligible !== false) {
         var latest = o.points[o.points.length - 1];
         levelObs.push({ source: o.source, basis: o.basis, valueCents: Math.round(latest.value * 100), date: latest.date, family: o.family, type: o.type, unit: o.unit });
       }
