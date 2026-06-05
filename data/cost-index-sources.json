@@ -111,14 +111,22 @@
       "verified": false,
       "noaa": {
         "species": "SALMON",
-        "reducer": "valuePerPound"
+        "reducer": "valuePerPound",
+        "_report": "future LEVEL: NOAA import unit value ($/kg landed-adjacent) via st.nmfs.noaa.gov/ords/foss/trade_data/ — not yet wired"
+      },
+      "bls": {
+        "seriesId": "WPU02230103"
       }
     },
     "shrimp": {
       "verified": false,
       "noaa": {
         "species": "SHRIMP",
-        "reducer": "valuePerPound"
+        "reducer": "valuePerPound",
+        "_report": "future LEVEL: NOAA import unit value via trade_data. PPI WPU02230501 last seen May 2025 — verify it is current, else fall back to WPU0223 (seafood) or WPU02230603 (frozen shellfish)."
+      },
+      "bls": {
+        "seriesId": "WPU02230501"
       }
     },
     "romaine-lettuce": {

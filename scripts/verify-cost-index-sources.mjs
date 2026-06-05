@@ -49,7 +49,7 @@ async function probe(src, m) {
       const j = await F.fetchAmsReport(m.reportId, m.section, auth, m.windowDays);
       const o = S.normalizeAms(j, { source: 'usda-ams', basis: 'wholesale', reducer: m.reducer || 'mostlyMid', commodity: m.commodity, matchFields: m.matchFields, unit: m.unit, priceUnit: m.priceUnit });
       const latest = o.points[o.points.length - 1];
-      return latest ? { ok: true, n: o.points.length, latest: latest.value, basis: 'wholesale', level: true }
+      return latest ? { ok: true, n: o.points.length, latest: latest.value, date: latest.date, basis: 'wholesale', level: true }
         : { ok: false, err: `fetched OK, 0 priced rows matched${m.commodity ? ` commodity "${m.commodity}"` : ''}${F.AMS_WINDOW_DAYS ? ` (last ${F.AMS_WINDOW_DAYS}d — set AMS_WINDOW_DAYS=0 for full history)` : ''} (check report JSON shape / commodity term)` };
     }
     if (src === 'lmr') {
@@ -59,7 +59,7 @@ async function probe(src, m) {
       const j = await F.fetchLmrReport(m.reportId, m.section, auth, m.windowDays);
       const o = S.normalizeAms(j, { source: 'usda-lmr', basis: 'wholesale', reducer: m.reducer || 'mostlyMid', commodity: m.commodity, matchFields: m.matchFields, unit: m.unit, priceUnit: m.priceUnit });
       const latest = o.points[o.points.length - 1];
-      return latest ? { ok: true, n: o.points.length, latest: latest.value, basis: 'wholesale', level: true }
+      return latest ? { ok: true, n: o.points.length, latest: latest.value, date: latest.date, basis: 'wholesale', level: true }
         : { ok: false, err: `fetched OK, 0 priced rows matched${m.commodity ? ` commodity "${m.commodity}"` : ''} (LMR Datamart — confirm slug via --discover-lmr + row/price fields)` };
     }
     if (src === 'bls') {
@@ -69,7 +69,7 @@ async function probe(src, m) {
         body: JSON.stringify({ seriesid: [m.seriesId], registrationkey: keys.BLS }) });
       const o = S.normalizeBls(j, { source: 'bls', basis: 'index' });
       const latest = o.points[o.points.length - 1];
-      return latest ? { ok: true, n: o.points.length, latest: latest.value, basis: 'index', level: false }
+      return latest ? { ok: true, n: o.points.length, latest: latest.value, date: latest.date, basis: 'index', level: false }
         : { ok: false, err: 'fetched OK, 0 data points (check series id)' };
     }
     if (src === 'fred') {
@@ -77,7 +77,7 @@ async function probe(src, m) {
       const j = await F.fetchJson(`https://api.stlouisfed.org/fred/series/observations?series_id=${m.seriesId}&file_type=json&api_key=${keys.FRED}`);
       const o = S.normalizeFred(j, { source: 'fred', basis: m.basis || 'index' });
       const latest = o.points[o.points.length - 1];
-      return latest ? { ok: true, n: o.points.length, latest: latest.value, basis: m.basis || 'index', level: (m.basis === 'retail' || m.basis === 'wholesale') }
+      return latest ? { ok: true, n: o.points.length, latest: latest.value, date: latest.date, basis: m.basis || 'index', level: (m.basis === 'retail' || m.basis === 'wholesale') }
         : { ok: false, err: 'fetched OK, 0 data points (check series id)' };
     }
   } catch (e) { return { ok: false, err: String(e.message || e) }; }
@@ -162,6 +162,15 @@ async function main() {
   console.log('Verifying cost-index source ids against the live APIs…\n');
   const ready = [];
   const inBand = (latest, band) => latest != null && band && Math.round(latest * 100) >= band.minCents && Math.round(latest * 100) <= band.maxCents;
+  // Show the DATA date (not fetch time) + loudly flag a genuinely stale source —
+  // normal monthly lag is fine; 120d+ means discontinued/dead and the build gate
+  // would reject it anyway. This is how you spot a lagging series at a glance.
+  const STALE_DAYS = 120;
+  const dateTag = (d) => {
+    if (!d) return '';
+    const age = Math.round((Date.now() - Date.parse(d + 'T00:00:00Z')) / 86400000);
+    return ` @ ${d}${age > STALE_DAYS ? ` ⚠STALE(${age}d)` : ''}`;
+  };
   for (const ing of Object.keys(sources)) {
     const entry = sources[ing];
     const b = bounds[ing];
@@ -185,14 +194,15 @@ async function main() {
       const inb = okA.filter((t) => b && inBand(t.res.latest, b));
       if (okA.length) {
         const vals = okA.map((t) => t.res.latest);
-        lines.push(`ams ✓ ${okA.length}/${amsT.length} markets, ${inb.length} in bounds (latest ${Math.min(...vals).toFixed(2)}–${Math.max(...vals).toFixed(2)})`);
+        const newest = okA.map((t) => t.res.date).filter(Boolean).sort().pop();   // most-recent market date
+        lines.push(`ams ✓ ${okA.length}/${amsT.length} markets, ${inb.length} in bounds (latest ${Math.min(...vals).toFixed(2)}–${Math.max(...vals).toFixed(2)})${dateTag(newest)}`);
       } else {
         lines.push(`ams ✗ 0/${amsT.length} markets (${amsT[0].res.err})`);
       }
     }
     for (const t of targets.filter((t) => t.kind !== 'ams')) {
       const r = t.res;
-      lines.push(r.ok ? `${t.label} ✓ ${r.n} pts, latest ${r.latest}` : `${t.label} ✗ ${r.err}`);
+      lines.push(r.ok ? `${t.label} ✓ ${r.n} pts, latest ${r.latest}${dateTag(r.date)}` : `${t.label} ✗ ${r.err}`);
     }
     if (!targets.length) lines.push(entry.noaa
       ? 'noaa only — no free public wholesale source (dormant by design, not stuck)'
