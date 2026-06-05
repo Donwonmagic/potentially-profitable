@@ -200,6 +200,7 @@ async function main() {
   if (di >= 0) return discoverAms(process.argv[di + 1]);
   console.log('Verifying cost-index source ids against the live APIs…\n');
   const ready = [];
+  const directional = [];
   const inBand = (latest, band) => latest != null && band && Math.round(latest * 100) >= band.minCents && Math.round(latest * 100) <= band.maxCents;
   // Show the DATA date (not fetch time) + loudly flag a genuinely stale source —
   // normal monthly lag is fine; 120d+ means discontinued/dead and the build gate
@@ -252,19 +253,46 @@ async function main() {
     const levelOk = targets.some((t) => t.res.ok && (t.kind === 'ams' || t.kind === 'lmr' || t.res.level) && b && inBand(t.res.latest, b));
     const resolved = targets.filter((t) => t.res.ok).length;
     const isReady = levelOk && resolved >= 2;
-    if (isReady) ready.push(ing);
-    console.log(`${isReady ? '✅ READY' : '⏳      '} ${ing.padEnd(18)} ${lines.join('  ·  ')}`);
+    // DIRECTIONAL = no comparable price LEVEL, but ≥2 trend sources resolve. Honest
+    // trend-only (e.g. cooking oil — no free oil level exists). Vendorable: it
+    // composes a directional point + feeds the basket; just no level to anchor.
+    const isDirectional = !isReady && !levelOk && resolved >= 2;
+    if (isReady || isDirectional) ready.push(ing);
+    if (isDirectional) directional.push(ing);
+    const tag = isReady ? '✅ READY ' : isDirectional ? '◆ DIRECT' : '⏳       ';
+    console.log(`${tag} ${ing.padEnd(18)} ${lines.join('  ·  ')}`);
   }
 
-  console.log(`\n${ready.length}/${Object.keys(sources).length} ingredient(s) READY to flip verified:true.`);
+  // Drivers (feed-grain / fuel) — the explanatory "why" layer. Trend-only; shown
+  // so the feed + fuel numbers are visibly confirmed, not just assumed.
+  const drivers = doc.drivers || {};
+  const driverKeys = Object.keys(drivers).filter((k) => !k.startsWith('_'));
+  if (driverKeys.length) {
+    console.log('\n── drivers (feed / fuel — the "why" behind protein moves) ──');
+    for (const dk of driverKeys) {
+      const e = drivers[dk];
+      const dts = [];
+      if (e.bls) dts.push({ kind: 'bls', spec: e.bls });
+      if (e.fred) dts.push({ kind: 'fred', spec: e.fred });
+      const res = await F.mapLimit(dts, F.AMS_CONCURRENCY, (t) => probe(t.kind, t.spec));
+      const dl = dts.map((t, i) => {
+        const r = res[i].ok ? res[i].value : { ok: false, err: String(res[i].error && res[i].error.message || res[i].error) };
+        return r.ok ? `${t.kind} ✓ latest ${r.latest}${dateTag(r.date)}` : `${t.kind} ✗ ${r.err}`;
+      });
+      console.log(`   ${(dk + ` (${e.kind || '?'})`).padEnd(20)} ${dl.join('  ·  ')}`);
+    }
+  }
+
+  const readyCount = ready.length - directional.length;
+  console.log(`\n${readyCount} READY (level + trend) + ${directional.length} directional (trend-only) = ${ready.length} flippable of ${Object.keys(sources).length}.`);
   if (FLIP && ready.length) {
     for (const ing of ready) sources[ing].verified = true;
     writeFileSync(SRC, JSON.stringify(doc, null, 2) + '\n');
     console.log(`Flipped verified:true for: ${ready.join(', ')}. Re-run check-cost-index-sources.mjs, then fetch --live + build-cost-index.`);
   } else if (ready.length) {
-    console.log('Run again with --flip to set verified:true for the READY ones.');
+    console.log('Run again with --flip to set verified:true for the READY + directional ones.');
   }
-  if (!ready.length) console.log('Nothing READY yet — fix the ✗ ids (wrong report/series id, or out-of-bounds → check the unit/reducer).');
+  if (!ready.length) console.log('Nothing resolvable yet — fix the ✗ ids (wrong report/series id, or out-of-bounds → check the unit/reducer).');
 }
 
 main().catch((e) => { console.error(e); process.exit(1); });
