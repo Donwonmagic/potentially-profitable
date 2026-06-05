@@ -133,7 +133,8 @@ function fetchLmrReport(reportId, sectionRaw, auth, days) {
 // and ORDS returns HTML without an Accept header — so try both hosts WITH the
 // JSON Accept header, using the first that returns parseable JSON.
 var NOAA_TRADE_HOSTS = [
-  'https://apps-st.fisheries.noaa.gov/ords/foss/trade_data/',
+  'https://apps-st.fisheries.noaa.gov/ods/foss/trade_data/',    // current — FOSS migrated /ords/ → /ods/ (cloud move)
+  'https://apps-st.fisheries.noaa.gov/ords/foss/trade_data/',   // legacy fallbacks
   'https://www.st.nmfs.noaa.gov/ords/foss/trade_data/'
 ];
 var NOAA_TRADE_BASE = NOAA_TRADE_HOSTS[0];
