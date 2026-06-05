@@ -387,13 +387,6 @@
     },
     "butter": {
       "verified": false,
-      "ams": {
-        "reportId": "DY_NDPSR",
-        "commodity": "Butter",
-        "reducer": "wtdAvg",
-        "unit": "lb",
-        "_report": "National Dairy Products Sales Report (weekly wholesale) — discover: dairy / NDPSR"
-      },
       "fred": {
         "seriesId": "APU0000FS1101",
         "basis": "retail",
@@ -405,13 +398,6 @@
     },
     "cheddar-cheese": {
       "verified": false,
-      "ams": {
-        "reportId": "DY_NDPSR",
-        "commodity": "Cheddar",
-        "reducer": "wtdAvg",
-        "unit": "lb",
-        "_report": "NDPSR cheddar (40-lb block), weekly wholesale — discover: dairy / cheese"
-      },
       "bls": {
         "seriesId": "PCU3115133115131"
       },
@@ -423,18 +409,6 @@
     },
     "eggs": {
       "verified": false,
-      "ams": {
-        "reportId": "PY_EGG",
-        "commodity": "Large",
-        "matchFields": [
-          "item",
-          "grade",
-          "commodity"
-        ],
-        "reducer": "mostlyMid",
-        "unit": "dozen",
-        "_report": "Egg Market News, wholesale shell eggs (Grade A Large) — discover: egg"
-      },
       "bls": {
         "seriesId": "WPU017107"
       },
@@ -457,6 +431,13 @@
         "family": "ppi-soybean-oil",
         "type": "ppi-soybean-oil",
         "_report": "Soybean Oil PPI (trend). The retail APU0000716121 was DISCONTINUED 2005 — no current free oil LEVEL via FRED/BLS. For a wholesale level, wire AMS report 3511 (Crude Soybean Oil, Central IL) via the AMS key."
+      },
+      "ams": {
+        "reportId": "3511",
+        "commodity": "Crude Soybean Oil",
+        "reducer": "wtdAvg",
+        "unit": "lb",
+        "_report": "UNVERIFIED scaffold — AMS Grain & Oilseed Processor Feedstuff Report (Crude Soybean Oil, Central IL, ~cents/lb wholesale). Confirm the numeric reportId via --discover \"soybean oil\"/\"oilseed\" and the commodity term/section/price unit via a sample BEFORE relying on it."
       }
     }
   },
