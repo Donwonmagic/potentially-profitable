@@ -4,11 +4,11 @@
     "ribeye": {
       "verified": false,
       "lmr": {
-        "reportId": "LM_XB403",
+        "reportId": "2453",
         "commodity": "Ribeye",
         "reducer": "mostlyMid",
         "unit": "lb",
-        "_report": "Boxed-beef cuts (LMR Datamart, keyless). Confirm the slug + the ribeye subprimal + price unit ($/cwt vs $/lb) via --discover-lmr \"boxed beef\"/\"ribeye\" then a sample curl."
+        "_report": "National Daily Boxed Beef Cutout & Cuts (LMR Datamart, numeric id 2453). Confirm the API returns JSON (title says PDF) + the ribeye cut term + price unit via a sample curl."
       },
       "bls": {
         "seriesId": "WPU0233"
@@ -22,11 +22,11 @@
     "beef-tenderloin": {
       "verified": false,
       "lmr": {
-        "reportId": "LM_XB403",
+        "reportId": "2453",
         "commodity": "Tenderloin",
         "reducer": "mostlyMid",
         "unit": "lb",
-        "_report": "Boxed-beef cuts (LMR Datamart). Confirm slug/cut/unit via --discover-lmr + sample."
+        "_report": "National Daily Boxed Beef Cuts (id 2453). Confirm cut term/unit via sample."
       },
       "bls": {
         "seriesId": "WPU0233"
@@ -72,11 +72,11 @@
     "pork-loin": {
       "verified": false,
       "lmr": {
-        "reportId": "LM_PK602",
+        "reportId": "2498",
         "commodity": "Loin",
         "reducer": "mostlyMid",
         "unit": "lb",
-        "_report": "Negotiated pork cuts (LMR Datamart, keyless). Confirm slug/cut/unit via --discover-lmr \"pork\"/\"loin\"."
+        "_report": "National Daily Pork FOB Plant - Negotiated (LMR Datamart, id 2498). Confirm JSON + loin cut term + unit via sample."
       },
       "bls": {
         "seriesId": "WPU0223"
@@ -85,11 +85,11 @@
     "pork-shoulder": {
       "verified": false,
       "lmr": {
-        "reportId": "LM_PK602",
-        "commodity": "Shoulder",
+        "reportId": "2498",
+        "commodity": "Butt",
         "reducer": "mostlyMid",
         "unit": "lb",
-        "_report": "Negotiated pork cuts (LMR Datamart). Pork shoulder may be reported as \"Butt\" — confirm via --discover-lmr + sample."
+        "_report": "National Daily Pork FOB Plant (id 2498). Pork shoulder is usually reported as Boston \"Butt\" — confirm via sample (could also be \"Shoulder\"/\"Picnic\")."
       },
       "bls": {
         "seriesId": "WPU0223"
