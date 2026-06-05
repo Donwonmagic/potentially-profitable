@@ -146,7 +146,7 @@ async function fetchNoaaTrade(opts) {
   opts = opts || {};
   var years = opts.years || 2;
   var fromYear = (new Date().getFullYear()) - (years - 1);
-  var q = encodeURIComponent(JSON.stringify({ year: { '$gte': fromYear } }));   // ORDS filter
+  var q = encodeURIComponent(JSON.stringify({ year: { '$gte': String(fromYear) } }));   // ORDS filter — `year` is a STRING field
   var pageSize = opts.pageSize || 5000, cap = opts.maxRows || 50000;
   var hosts = opts.hosts || NOAA_TRADE_HOSTS;
   var headers = { Accept: 'application/json' };   // force JSON (ORDS serves HTML to header-less requests)
