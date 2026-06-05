@@ -116,8 +116,8 @@
         "_report": "NOAA Fisheries import unit value (val/kilos -> $/lb, landed-adjacent proxy). Confirm trade_data fields/commodity (or set hts e.g. 0304 for salmon fillet) via a sample curl."
       },
       "bls": {
-        "seriesId": "WPU0223",
-        "_report": "WPU02230103 (salmon-specific) was STALE 187d; WPU0223 = aggregate seafood PPI, verify freshness. Salmon trend also comes from the NOAA import-value series."
+        "seriesId": "WPU02230103",
+        "_report": "salmon-specific PPI; last seen STALE (~187d) — kept salmon-labeled (the ⚠STALE flag is honest) pending a confirmed fresh seafood series + the NOAA import-value level. Do NOT use WPU0223 (that returns the pork value)."
       }
     },
     "shrimp": {
