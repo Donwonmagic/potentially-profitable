@@ -160,7 +160,38 @@ async function discoverLmr(query) {
   console.log('Tip: --discover-lmr "boxed beef" / "cutout" / "ribeye" / "pork" / "loin". Then curl one report to confirm the row/price fields.');
 }
 
+// --audit-titles: print the REAL FRED title + freshness for every bls/fred series
+// in the mapping, so a mislabeled series (e.g. a "beef" trend that's actually the
+// cheese PPI) is caught at a glance. The id resolving is NOT enough — the title
+// must match the ingredient it's used by.
+async function auditTitles() {
+  if (!keys.FRED) { console.error('FRED_KEY required for --audit-titles.'); process.exit(1); }
+  const seen = new Map();   // seriesId → ["ingredient.bls", ...]
+  const collect = (obj, where) => {
+    if (!obj) return;
+    for (const sk of ['bls', 'fred']) {
+      const s = obj[sk];
+      if (s && s.seriesId) { if (!seen.has(s.seriesId)) seen.set(s.seriesId, []); seen.get(s.seriesId).push(`${where}.${sk}`); }
+    }
+  };
+  for (const [ing, e] of Object.entries(sources)) collect(e, ing);
+  for (const [d, e] of Object.entries(doc.drivers || {})) if (!d.startsWith('_')) collect(e, `driver:${d}`);
+  console.log(`Auditing ${seen.size} FRED/BLS series — confirm each TITLE matches the ingredient using it:\n`);
+  for (const [id, wheres] of seen) {
+    try {
+      const j = await F.fetchJson(`https://api.stlouisfed.org/fred/series?series_id=${id}&file_type=json&api_key=${keys.FRED}`);
+      const s = (j.seriess || [])[0];
+      if (!s) { console.log(`  ${id.padEnd(16)} ✗ not on FRED   used by: ${wheres.join(', ')}`); continue; }
+      const age = Math.round((Date.now() - Date.parse(s.observation_end + 'T00:00:00Z')) / 86400000);
+      console.log(`  ${id.padEnd(16)} ${s.observation_end}${age > 120 ? ` ⚠STALE(${age}d)` : ''}  ${s.title}`);
+      console.log(`  ${''.padEnd(16)} used by: ${wheres.join(', ')}`);
+    } catch (e) { console.log(`  ${id.padEnd(16)} ✗ ${e.message}   used by: ${wheres.join(', ')}`); }
+  }
+  console.log('\nFix any title that does not match its ingredient (use --discover-fred "<term>" to find the right id).');
+}
+
 async function main() {
+  if (process.argv.includes('--audit-titles')) return auditTitles();
   const dli = process.argv.indexOf('--discover-lmr');
   if (dli >= 0) return discoverLmr(process.argv[dli + 1]);
   const dfi = process.argv.indexOf('--discover-fred');
