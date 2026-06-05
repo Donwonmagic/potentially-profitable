@@ -123,11 +123,12 @@ function toOutputs(ingredient, raw, m) {
     const spec = a.spec || {};
     const key = 'usda-ams' + (spec.market ? '-' + slug(spec.market) : '');
     const o = S.normalizeAms(a.json, { source: key, basis: 'wholesale', reducer: spec.reducer || 'mostlyMid', commodity: spec.commodity, matchFields: spec.matchFields, unit: spec.unit });
-    o.family = spec.family || key;
+    o.family = spec.family || key;                 // distinct per market → real p25–p75 dispersion
+    o.type = spec.type || 'usda-ams';              // ONE methodology → all terminals are one corroborating line for confidence
     if (o.points.length) outs.push(o);
   });
-  if (raw.bls) { const o = S.normalizeBls(raw.bls, { source: 'bls', basis: 'index' }); o.family = (m.bls && m.bls.family) || 'bls'; if (o.points.length) outs.push(o); }
-  if (raw.fred) { const o = S.normalizeFred(raw.fred, { source: 'fred', basis: (m.fred && m.fred.basis) || 'index', unit: m.fred && m.fred.unit }); o.family = (m.fred && m.fred.family) || 'fred'; if (o.points.length) outs.push(o); }
+  if (raw.bls) { const o = S.normalizeBls(raw.bls, { source: 'bls', basis: 'index' }); o.family = (m.bls && m.bls.family) || 'bls'; o.type = (m.bls && m.bls.type) || 'bls'; if (o.points.length) outs.push(o); }
+  if (raw.fred) { const o = S.normalizeFred(raw.fred, { source: 'fred', basis: (m.fred && m.fred.basis) || 'index', unit: m.fred && m.fred.unit }); o.family = (m.fred && m.fred.family) || 'fred'; o.type = (m.fred && m.fred.type) || 'fred'; if (o.points.length) outs.push(o); }
   return outs;
 }
 

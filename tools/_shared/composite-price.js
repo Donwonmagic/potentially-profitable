@@ -100,6 +100,13 @@
         // (within one basis+ingredient the unit is consistent).
         var unit = null;
         for (var u = 0; u < obs.length; u++) { if (obs[u].unit) { unit = obs[u].unit; break; } }
+        // `family` = distinct DATA (8 terminal markets are 8 families → real
+        // dispersion → the p25–p75 range). `type` = distinct METHODOLOGY/source
+        // PROGRAM (all 8 terminals share one type 'usda-ams' → ONE independent
+        // line of evidence). Confidence counts TYPES, so a fleet of correlated
+        // terminals can't fake "high" — they widen the range, not the corroboration.
+        var typeKeys = {};
+        obs.forEach(function (o) { typeKeys[o.type || o.family || o.source] = 1; });
         return {
           basis: basis,
           unit: unit,
@@ -107,6 +114,7 @@
           rangeCents: [Math.round(percentile(vals, 0.25)), Math.round(percentile(vals, 0.75))],
           nObs: obs.length,
           nFamilies: famKeys.length,
+          nTypes: Object.keys(typeKeys).length,
           nSources: distinct(obs.map(function (o) { return o.source; })),
           provenance: obs.map(function (o) { return { source: o.source, valueCents: o.valueCents, date: o.date || null }; })
         };
@@ -157,20 +165,27 @@
       var d = c.pct > FLAT ? 'up' : c.pct < -FLAT ? 'down' : 'flat';
       return d === dir;
     }).length;
+    // Independent METHODOLOGIES (types), not raw families — so N correlated
+    // terminal markets count as ONE corroborating line for confidence.
+    var typeKeys = {};
+    valid.forEach(function (c) { typeKeys[c.type || c.family || c.source] = 1; });
     return {
       pct: pct,
       dir: dir,
       agreement: +(sameDir / collapsed.length).toFixed(3),
       nSources: distinct(valid.map(function (c) { return c.source; })),
-      nFamilies: collapsed.length
+      nFamilies: collapsed.length,
+      nTypes: Object.keys(typeKeys).length
     };
   }
 
   function confidenceFor(level, trend) {
     // Honest confidence: needs a real level AND corroborated direction — counted
-    // by INDEPENDENT families, not raw source keys, so mirrors don't inflate it.
-    var nLvl = level ? (level.nFamilies != null ? level.nFamilies : level.nSources) : 0;
-    var nTrd = trend ? (trend.nFamilies != null ? trend.nFamilies : trend.nSources) : 0;
+    // by INDEPENDENT methodologies (types), falling back to families then raw
+    // sources, so neither mirrors NOR a fleet of correlated terminal markets can
+    // inflate it (8 USDA terminals = one independent line, not eight).
+    var nLvl = level ? (level.nTypes != null ? level.nTypes : (level.nFamilies != null ? level.nFamilies : level.nSources)) : 0;
+    var nTrd = trend ? (trend.nTypes != null ? trend.nTypes : (trend.nFamilies != null ? trend.nFamilies : trend.nSources)) : 0;
     var agree = trend ? trend.agreement : 0;
     if (!level && nTrd >= 2 && agree >= 0.66) return 'directional'; // trend only, no level
     if (nLvl >= 2 && nTrd >= 3 && agree >= 0.75) return 'high';
@@ -210,7 +225,7 @@
     var changes = Object.keys(series).map(function (src) {
       var s = series[src] || {};
       var pct = windowChange(s.values);
-      return pct == null ? null : { source: src, pct: pct, weight: s.weight, family: s.family };
+      return pct == null ? null : { source: src, pct: pct, weight: s.weight, family: s.family, type: s.type };
     }).filter(Boolean);
     var trend = blendTrend(changes);
     var confidence = confidenceFor(level, trend);
