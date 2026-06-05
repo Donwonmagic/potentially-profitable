@@ -162,3 +162,24 @@ test('LEVEL carries its unit so the phrase never implies a $/lb we did not measu
   assert.match(r.label, /\$24\.00\/carton/);
   assert.match(r.label, /wholesale reference/);
 });
+
+test('TYPE de-correlation: many correlated terminals widen the range but cannot fake "high" confidence', () => {
+  // 5 AMS terminal markets (distinct families → real dispersion) but ONE type
+  // 'usda-ams', plus a BLS index trend (a 2nd type). Level corroboration = 1
+  // methodology → must NOT be "high".
+  const mk = (src, cents) => ({ source: src, basis: 'wholesale', valueCents: cents, family: src, type: 'usda-ams' });
+  const r = C.assess({
+    levelObs: [mk('ams-atl', 2000), mk('ams-bal', 2200), mk('ams-chi', 2400), mk('ams-la', 2600), mk('ams-ny', 2800)],
+    sourceSeries: {
+      'ams-atl': { basis: 'wholesale', values: [1900, 2000], family: 'ams-atl', type: 'usda-ams' },
+      'ams-bal': { basis: 'wholesale', values: [2100, 2200], family: 'ams-bal', type: 'usda-ams' },
+      'ams-ny':  { basis: 'wholesale', values: [2700, 2800], family: 'ams-ny',  type: 'usda-ams' },
+      bls: { basis: 'index', values: [100, 106], family: 'bls', type: 'bls' },
+    },
+  });
+  assert.equal(r.level.nFamilies, 5);     // 5 markets → genuine dispersion for the range
+  assert.equal(r.level.nTypes, 1);        // but ONE methodology
+  assert.ok(r.level.rangeCents[1] > r.level.rangeCents[0], 'the range still reflects cross-market dispersion');
+  assert.notEqual(r.confidence, 'high');  // one wholesale methodology → never "high" off correlated terminals
+  assert.equal(r.trend.nTypes, 2);        // usda-ams + bls
+});

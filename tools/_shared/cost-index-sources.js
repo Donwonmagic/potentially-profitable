@@ -209,10 +209,10 @@
     var sourceSeries = {}, levelObs = [];
     (outputs || []).forEach(function (o) {
       if (!o || !Array.isArray(o.points) || !o.points.length) return;
-      sourceSeries[o.source] = { basis: o.basis, values: o.points.map(function (p) { return p.value; }), weight: o.weight, family: o.family };
+      sourceSeries[o.source] = { basis: o.basis, values: o.points.map(function (p) { return p.value; }), weight: o.weight, family: o.family, type: o.type };
       if (o.basis !== 'index') {
         var latest = o.points[o.points.length - 1];
-        levelObs.push({ source: o.source, basis: o.basis, valueCents: Math.round(latest.value * 100), date: latest.date, family: o.family, unit: o.unit });
+        levelObs.push({ source: o.source, basis: o.basis, valueCents: Math.round(latest.value * 100), date: latest.date, family: o.family, type: o.type, unit: o.unit });
       }
     });
     return { levelObs: levelObs, sourceSeries: sourceSeries, asOf: opts.asOf || latestDate(outputs) };
