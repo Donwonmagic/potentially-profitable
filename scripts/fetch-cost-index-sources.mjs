@@ -115,7 +115,7 @@ async function liveFetch(ingredient, m) {
     const lauth = process.env.LMR_KEY ? 'Basic ' + Buffer.from(process.env.LMR_KEY + ':').toString('base64') : undefined;
     out.lmr = [];
     const settled = await F.mapLimit(lmrSpecs(m), F.AMS_CONCURRENCY,
-      (spec) => F.fetchLmrReport(spec.reportId, spec.section, lauth, spec.windowDays).then((json) => ({ json, spec })));
+      (spec) => F.fetchLmrReport(spec.reportId, spec.section, lauth, spec.windowDays, spec.dateField).then((json) => ({ json, spec })));
     settled.forEach((r) => { if (r.ok) out.lmr.push(r.value); });
   }
   if (m.noaa) {
