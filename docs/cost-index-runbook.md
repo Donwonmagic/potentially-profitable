@@ -27,8 +27,9 @@ Registration links:
 - **FRED** — https://fredaccount.stlouisfed.org/apikeys
 - **BLS** — https://data.bls.gov/registrationEngine/
 - **USDA AMS (MARS)** — https://mymarketnews.ams.usda.gov/ (Settings → Request API Key)
-- **EIA** (diesel/freight) — https://www.eia.gov/opendata/register.php
-- **USDA LMR Datamart** (beef/pork, likely keyless) — https://mpr.datamart.ams.usda.gov/
+- **EIA** (diesel/freight) — https://www.eia.gov/opendata/register.php — OPTIONAL: diesel already flows via FRED series `GASDESW` (uses FRED_KEY). Only needed if you want diesel pulled DIRECT from EIA (weekly, freshest). Feed-grain is the *leading* signal; diesel is a coincident gauge, so FRED diesel is sufficient.
+- **USDA LMR Datamart** (beef/pork) — https://mpr.datamart.ams.usda.gov/ — KEYLESS (no key).
+- **NOAA Fisheries FOSS** (seafood import unit value) — https://www.st.nmfs.noaa.gov/ords/foss/ — KEYLESS (no key). (The token-gated NOAA service is NCEI/Climate Data — NOT this.)
 
 > curl gotcha: `AMS_KEY=… curl -u "$AMS_KEY:"` sends an EMPTY key — bash expands
 > `$AMS_KEY` before the inline assignment applies. `export AMS_KEY=…` first, then curl.
@@ -58,7 +59,8 @@ when ≥1 level-bearing source is in bounds AND ≥2 sources resolve.
 > `AMS_WINDOW_DAYS=0` for full history. Every request also has a 25s ceiling
 > (`FETCH_TIMEOUT_MS`) so one slow report can't hang the run.
 >
-> Salmon/shrimp print `noaa only — dormant`: no free public wholesale source, so
+> Salmon/shrimp now carry a BLS PPI trend + a NOAA import-unit-value level
+> (landed-adjacent, keyless) — no longer dormant. Earlier note below is historical:
 > they carry no live point by design (not a bug, not stuck).
 
 Flip the READY ones to `verified:true`:
