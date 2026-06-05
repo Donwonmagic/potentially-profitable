@@ -8,7 +8,8 @@
         "commodity": "Ribeye",
         "reducer": "mostlyMid",
         "unit": "lb",
-        "_report": "National Daily Boxed Beef Cutout & Cuts (LMR Datamart, numeric id 2453). Confirm the API returns JSON (title says PDF) + the ribeye cut term + price unit via a sample curl."
+        "_report": "LMR Datamart 2453, section \"Choice Cuts\" (prices live in sections; bare report = Summary). Confirm the ribeye cut term + price fields via a section curl.",
+        "section": "Choice Cuts"
       },
       "bls": {
         "seriesId": "WPU0233"
@@ -26,7 +27,8 @@
         "commodity": "Tenderloin",
         "reducer": "mostlyMid",
         "unit": "lb",
-        "_report": "National Daily Boxed Beef Cuts (id 2453). Confirm cut term/unit via sample."
+        "_report": "LMR 2453, section \"Choice Cuts\". Confirm tenderloin cut term via section curl.",
+        "section": "Choice Cuts"
       },
       "bls": {
         "seriesId": "WPU0233"
@@ -76,7 +78,8 @@
         "commodity": "Loin",
         "reducer": "mostlyMid",
         "unit": "lb",
-        "_report": "National Daily Pork FOB Plant - Negotiated (LMR Datamart, id 2498). Confirm JSON + loin cut term + unit via sample."
+        "_report": "LMR 2498, section \"Loin Cuts\". Confirm loin cut term/unit via section curl.",
+        "section": "Loin Cuts"
       },
       "bls": {
         "seriesId": "WPU0223"
@@ -89,7 +92,8 @@
         "commodity": "Butt",
         "reducer": "mostlyMid",
         "unit": "lb",
-        "_report": "National Daily Pork FOB Plant (id 2498). Pork shoulder is usually reported as Boston \"Butt\" — confirm via sample (could also be \"Shoulder\"/\"Picnic\")."
+        "_report": "LMR 2498, section \"Butt Cuts\" (Boston butt = pork shoulder). Confirm cut term via section curl.",
+        "section": "Butt Cuts"
       },
       "bls": {
         "seriesId": "WPU0223"

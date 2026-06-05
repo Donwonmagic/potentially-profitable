@@ -166,7 +166,7 @@
     // Match the commodity in DESCRIPTIVE fields only — not every string. The old
     // field-agnostic scan also hit region="National", price_unit, office names,
     // grades, so a term could match noise. Override with meta.matchFields.
-    var matchFields = meta.matchFields || ['commodity', 'item', 'variety', 'class', 'grade', 'category', 'primal'];
+    var matchFields = meta.matchFields || ['commodity', 'item', 'item_description', 'cut', 'description', 'variety', 'class', 'grade', 'category', 'primal'];
     function rowMatches(r) {
       if (!commodity) return true;
       for (var i = 0; i < matchFields.length; i++) {
