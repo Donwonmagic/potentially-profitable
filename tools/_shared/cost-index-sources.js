@@ -46,7 +46,7 @@
       var date = isoDate(o.date);
       return (date && v != null && isFinite(v)) ? { date: date, value: v } : null;
     }).filter(Boolean).sort(byDate);
-    return { source: meta.source || 'fred', basis: meta.basis || 'index', unit: meta.unit || 'index', points: points };
+    return { source: meta.source || 'fred', basis: meta.basis || 'index', unit: meta.unit || null, points: points };
   }
 
   /** BLS v2: { Results: { series: [{ data: [{ year, period:'M01'..'M12'|'M13', value }] }] } }.
