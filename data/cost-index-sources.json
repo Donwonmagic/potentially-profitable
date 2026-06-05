@@ -452,11 +452,10 @@
         "type": "ppi-cooking-oil"
       },
       "fred": {
-        "seriesId": "PCU3112243112243",
-        "basis": "index",
-        "family": "ppi-soybean-oil",
-        "type": "ppi-soybean-oil",
-        "_report": "PPI Soybean Oil (US-gov) — distinct oil family from the cooking-oil PPI. Trend only; no free oil LEVEL, so vegetable-oil is directional (feeds the basket, not independently READY)."
+        "seriesId": "APU0000716121",
+        "basis": "retail",
+        "unit": "lb",
+        "_report": "Shortening, Vegetable Oil Blends, US city avg — retail $/lb LEVEL (confirm title via --audit-titles). Wholesale alt: AMS report 3511 Crude Soybean Oil Central IL."
       }
     }
   },
