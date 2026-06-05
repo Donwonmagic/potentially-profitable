@@ -92,6 +92,16 @@ test('AMS reducer: mostlyMid averages the mostly band, falls back to low/high', 
   assert.equal(S.reduceAmsRow({ note: 'no price' }, 'mostlyMid'), null);
 });
 
+test('AMS reducer: single reads fields.price as string OR candidate array (NDPSR butter/cheddar)', () => {
+  // Butter: one confirmed column name.
+  assert.equal(S.reduceAmsRow({ Butter_Price: '1.4234' }, 'single', { price: 'Butter_Price' }).toFixed(4), '1.4234');
+  // Cheddar: unconfirmed column — candidates tried in order, first present wins.
+  const cheddarKeys = ['Cheddar_Price', 'Block_Price', 'Cheese_Price'];
+  assert.equal(S.reduceAmsRow({ Block_Price: '1.85' }, 'single', { price: cheddarKeys }), 1.85);
+  assert.equal(S.reduceAmsRow({ Cheddar_Price: '1.90', Block_Price: '99' }, 'single', { price: cheddarKeys }), 1.90); // order priority
+  assert.equal(S.reduceAmsRow({ Weighted_Price: '2.00' }, 'single', { price: cheddarKeys }), null);                   // none present → dropped, not guessed
+});
+
 test('AMS reducer: valuePerPound derives $/lb from dollars and pounds', () => {
   assert.equal(S.reduceAmsRow({ dollars: '2800', pounds: '200' }, 'valuePerPound'), 14);
   assert.equal(S.reduceAmsRow({ dollars: '2800', pounds: '0' }, 'valuePerPound'), null); // no div-by-zero
