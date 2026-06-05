@@ -491,7 +491,22 @@
       },
       "kind": "energy",
       "leads": [],
-      "_report": "coincident gauge (moves alongside food), not a leader — frame as association only"
+      "_report": "coincident gauge (moves alongside food), not a leader — frame as association only",
+      "family": "energy"
+    },
+    "electricity": {
+      "eia": {
+        "route": "electricity/retail-sales",
+        "facets": {
+          "sectorid": "COM",
+          "stateid": "US"
+        },
+        "frequency": "monthly",
+        "value": "price"
+      },
+      "kind": "energy",
+      "family": "energy",
+      "_report": "EIA commercial electricity retail price (cents/kWh) — coincident ON-SITE energy gauge (refrigeration/ops). The distinct EIA signal (diesel stays on FRED GASDESW to avoid duplication). Confirm facet form via a sample if 0 points."
     }
   }
 }

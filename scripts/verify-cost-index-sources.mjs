@@ -70,6 +70,14 @@ async function probe(src, m) {
       return latest ? { ok: true, n: o.points.length, latest: latest.value, date: latest.date, basis: 'wholesale', level: true }
         : { ok: false, err: `fetched OK, 0 import rows matched${m.commodity ? ` "${m.commodity}"` : ''} (confirm NOAA trade_data fields / commodity / hts via a sample)` };
     }
+    if (src === 'eia') {
+      if (!process.env.EIA_KEY) return { ok: false, err: 'no EIA_KEY' };
+      const j = await F.fetchEia(m);
+      const o = S.normalizeEia(j, { source: 'eia', basis: 'index', value: m.value });
+      const latest = o.points[o.points.length - 1];
+      return latest ? { ok: true, n: o.points.length, latest: latest.value, date: latest.date, basis: 'index', level: false }
+        : { ok: false, err: 'fetched OK, 0 points (confirm EIA route/facets/value field via a sample)' };
+    }
     if (src === 'bls') {
       if (!keys.BLS) return { ok: false, err: 'no BLS_KEY' };
       const j = await F.fetchJson('https://api.bls.gov/publicAPI/v2/timeseries/data/', {
@@ -277,6 +285,7 @@ async function main() {
       const dts = [];
       if (e.bls) dts.push({ kind: 'bls', spec: e.bls });
       if (e.fred) dts.push({ kind: 'fred', spec: e.fred });
+      if (e.eia) dts.push({ kind: 'eia', spec: e.eia });
       const res = await F.mapLimit(dts, F.AMS_CONCURRENCY, (t) => probe(t.kind, t.spec));
       const dl = dts.map((t, i) => {
         const r = res[i].ok ? res[i].value : { ok: false, err: String(res[i].error && res[i].error.message || res[i].error) };

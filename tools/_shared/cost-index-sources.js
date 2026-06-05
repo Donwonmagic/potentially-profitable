@@ -260,6 +260,27 @@
     return { source: meta.source || 'noaa', basis: meta.basis || 'wholesale', unit: meta.unit || 'lb', points: points };
   }
 
+  /** EIA Open Data API v2: { response: { data: [{ period:'YYYY-MM', <value> }] } }.
+   *  Drivers are trend-only (basis 'index'); the value field is configurable
+   *  (electricity returns it under 'price'). period 'YYYY-MM' → '-01'. */
+  function normalizeEia(json, meta) {
+    meta = meta || {};
+    var rows = (json && json.response && json.response.data) || (json && json.data) || [];
+    var valField = meta.value || 'value';
+    var byDate = {};
+    rows.forEach(function (r) {
+      if (!r) return;
+      var v = num(r[valField] != null ? r[valField] : (r.value != null ? r.value : r.price));
+      var per = String(r.period || '');
+      var date = /^\d{4}-\d{2}-\d{2}/.test(per) ? per.slice(0, 10)
+        : (/^\d{4}-\d{2}$/.test(per) ? per + '-01'
+        : (/^\d{4}$/.test(per) ? per + '-01-01' : null));
+      if (date && v != null && isFinite(v)) byDate[date] = v;   // one point per period
+    });
+    var points = Object.keys(byDate).sort().map(function (d) { return { date: d, value: byDate[d] }; });
+    return { source: meta.source || 'eia', basis: meta.basis || 'index', unit: meta.unit || null, points: points };
+  }
+
   function latestDate(outputs) {
     var d = null;
     (outputs || []).forEach(function (o) {
@@ -298,6 +319,7 @@
     normalizeBls: normalizeBls,
     normalizeAms: normalizeAms,
     normalizeNoaaTrade: normalizeNoaaTrade,
+    normalizeEia: normalizeEia,
     reduceAmsRow: reduceAmsRow,
     buildCompositeInput: buildCompositeInput
   };

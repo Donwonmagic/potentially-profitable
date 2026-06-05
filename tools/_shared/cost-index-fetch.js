@@ -180,6 +180,30 @@ async function fetchNoaaTrade(opts) {
   return pr;
 }
 
+var EIA_BASE = 'https://api.eia.gov/v2/';   // EIA Open Data API v2 — needs EIA_KEY
+
+// EIA v2 time series. spec: { route, facets:{sectorid,stateid,...}, frequency, value }.
+// /data/ is the last node; data[]=<value>, facets[id][]=code, sort by period desc.
+// Response value array at response.data[]. Cached per run.
+async function fetchEia(spec) {
+  spec = spec || {};
+  var key = process.env.EIA_KEY;
+  if (!key) throw new Error('no EIA_KEY');
+  var route = String(spec.route || '').replace(/^\/+|\/+$/g, '');
+  var valueCol = spec.value || 'value';
+  var params = ['api_key=' + encodeURIComponent(key), 'frequency=' + (spec.frequency || 'monthly'),
+    'data[]=' + encodeURIComponent(valueCol), 'sort[0][column]=period', 'sort[0][direction]=desc',
+    'offset=0', 'length=' + (spec.length || 5000)];
+  var facets = spec.facets || {};
+  for (var f in facets) if (Object.prototype.hasOwnProperty.call(facets, f)) params.push('facets[' + f + '][]=' + encodeURIComponent(facets[f]));
+  var url = EIA_BASE + route + '/data/?' + params.join('&');
+  var cacheKey = 'eia|' + route + '|' + valueCol + '|' + JSON.stringify(facets) + '|' + (spec.frequency || 'monthly');
+  if (_reportCache.has(cacheKey)) return _reportCache.get(cacheKey);
+  var pr = fetchJson(url, { headers: { Accept: 'application/json' } }).catch(function (e) { _reportCache.delete(cacheKey); throw e; });
+  _reportCache.set(cacheKey, pr);
+  return pr;
+}
+
 /**
  * Bounded-concurrency map. Fans out up to `limit` at a time (per-host politeness
  * — all AMS terminals share one host) and ALWAYS settles every item: one
@@ -210,8 +234,10 @@ module.exports = {
   fetchAmsReport: fetchAmsReport,
   fetchLmrReport: fetchLmrReport,
   fetchNoaaTrade: fetchNoaaTrade,
+  fetchEia: fetchEia,
   LMR_BASE: LMR_BASE,
   NOAA_TRADE_BASE: NOAA_TRADE_BASE,
+  EIA_BASE: EIA_BASE,
   mapLimit: mapLimit,
   FETCH_TIMEOUT_MS: FETCH_TIMEOUT_MS,
   AMS_WINDOW_DAYS: AMS_WINDOW_DAYS,

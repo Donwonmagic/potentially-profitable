@@ -23,7 +23,7 @@ import { fileURLToPath } from 'node:url';
 const __filename = fileURLToPath(import.meta.url);
 const repoRoot = path.resolve(path.dirname(__filename), '..');
 
-const ID_FIELD = { ams: 'reportId', lmr: 'reportId', bls: 'seriesId', fred: 'seriesId', noaa: 'commodity' };
+const ID_FIELD = { ams: 'reportId', lmr: 'reportId', bls: 'seriesId', fred: 'seriesId', noaa: 'commodity', eia: 'route' };
 const REDUCERS = new Set(['mostlyMid', 'wtdAvg', 'valuePerPound', 'single']);
 
 const errors = [];

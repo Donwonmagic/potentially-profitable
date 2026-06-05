@@ -180,6 +180,19 @@ test('NOAA trade: import unit value = sum(value)/sum(kilos) per month → $/lb (
   assert.equal(out.points[0].value.toFixed(3), '4.082');  // (8000+10000)/(1000+1000)=$9/kg ÷ 2.20462 = $4.082/lb
 });
 
+test('EIA v2: response.data[] → points; period YYYY-MM → -01; value field configurable', () => {
+  const j = { response: { data: [
+    { period: '2026-03', sectorid: 'COM', price: 13.5 },
+    { period: '2026-02', sectorid: 'COM', price: 13.2 },
+  ] } };
+  const out = S.normalizeEia(j, { value: 'price' });
+  assert.equal(out.basis, 'index');
+  assert.equal(out.points.length, 2);
+  assert.equal(out.points[0].date, '2026-02-01');   // sorted oldest→newest
+  assert.equal(out.points[1].value, 13.5);
+  assert.deepEqual(S.normalizeEia({}, {}).points, []);   // garbage → no points, no crash
+});
+
 test('NOAA trade: empty/garbage payload yields no points, not a crash', () => {
   assert.deepEqual(S.normalizeNoaaTrade(null, {}).points, []);
   assert.deepEqual(S.normalizeNoaaTrade({ items: [] }, { commodity: 'shrimp' }).points, []);
