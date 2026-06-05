@@ -145,25 +145,31 @@ var NOAA_TRADE_BASE = NOAA_TRADE_HOSTS[0];
 async function fetchNoaaTrade(opts) {
   opts = opts || {};
   var years = opts.years || 2;
-  var fromYear = (new Date().getFullYear()) - (years - 1);
-  var q = encodeURIComponent(JSON.stringify({ year: { '$gte': String(fromYear) } }));   // ORDS filter — `year` is a STRING field
+  var thisYear = new Date().getFullYear();
+  var yearList = [];
+  for (var y = 0; y < years; y++) yearList.push(String(thisYear - y));   // ['2026','2025'] — query each year
   var pageSize = opts.pageSize || 5000, cap = opts.maxRows || 50000;
   var hosts = opts.hosts || NOAA_TRADE_HOSTS;
   var headers = { Accept: 'application/json' };   // force JSON (ORDS serves HTML to header-less requests)
-  var key = 'noaa-trade|' + fromYear + '|' + pageSize;
+  var key = 'noaa-trade|' + yearList.join(',') + '|' + pageSize;
   if (_reportCache.has(key)) return _reportCache.get(key);
   var pr = (async function () {
     var lastErr;
     for (var hi = 0; hi < hosts.length; hi++) {
       try {
-        var base = hosts[hi], items = [], offset = 0;
-        for (var guard = 0; guard < 40; guard++) {
-          var url = base + '?q=' + q + '&limit=' + pageSize + '&offset=' + offset;
-          var j = await fetchJson(url, { headers: headers });   // throws on HTML (json parse) → next host
-          var page = (j && (j.items || j.results)) || [];
-          items = items.concat(page);
-          if (!j || j.hasMore !== true || page.length === 0 || items.length >= cap) break;
-          offset += page.length;
+        var base = hosts[hi], items = [];
+        for (var yi = 0; yi < yearList.length; yi++) {
+          // EQUALITY filter per year — the Akamai WAF blocks the {"$gte":...}
+          // operator (looks like an injection probe) but allows {"year":"2026"}.
+          var q = '?q=' + encodeURIComponent(JSON.stringify({ year: yearList[yi] }));
+          var offset = 0;
+          for (var guard = 0; guard < 40 && items.length < cap; guard++) {
+            var j = await fetchJson(base + q + '&limit=' + pageSize + '&offset=' + offset, { headers: headers });
+            var page = (j && (j.items || j.results)) || [];
+            items = items.concat(page);
+            if (!j || j.hasMore !== true || page.length === 0) break;
+            offset += page.length;
+          }
         }
         return { items: items, _host: base };   // first host that returns parseable JSON wins
       } catch (e) { lastErr = e; }               // HTML/parse/network → try the next host
