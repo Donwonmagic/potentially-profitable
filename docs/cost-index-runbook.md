@@ -114,16 +114,25 @@ node scripts/check-all.mjs                                                  # fu
 ```
 After this, the live range/trend renders on every covered ingredient page.
 
-## 5. Beef & pork (boxed-beef cutout / negotiated pork)
+## 5. Beef & pork (boxed-beef cutout / negotiated pork) — the LMR Datamart
 
-Not in the Market News directory by name — check whether they ride the AMS key
-or need the LMR Datamart:
+Beef/pork wholesale isn't in MARS — it's the separate **LMR Datamart** (keyless),
+now wired as the `lmr` source. ribeye/tenderloin/pork-loin/pork-shoulder carry
+best-guess slugs (`LM_XB403`, `LM_PK602`) to confirm:
 ```bash
-node scripts/verify-cost-index-sources.mjs --discover beef
-curl -s -u "$AMS_KEY:" "https://marsapi.ams.usda.gov/services/v1.2/reports/2461" | head -c 1500   # LM_XB459 boxed beef
+node scripts/verify-cost-index-sources.mjs --discover-lmr "boxed beef"
+node scripts/verify-cost-index-sources.mjs --discover-lmr "pork"
 ```
-If `2461` returns rows → same key, just fix the report IDs. If it 404s → it's the
-LMR Datamart (https://mpr.datamart.ams.usda.gov/), and we add a fetcher.
+Put the confirmed slug into `lmr.reportId` and the cut into `lmr.commodity` (e.g.
+"Ribeye"). Then curl one report to confirm the row + price fields (the Datamart
+returns `results` directly, no section):
+```bash
+curl -s "https://mpr.datamart.ams.usda.gov/services/v1.1/reports/LM_XB403?q=report_date=$(date -v-14d +%m/%d/%Y):$(date +%m/%d/%Y)" | head -c 3000
+```
+The adapter already converts **$/cwt → $/lb** when `price_unit` says "Cwt", so
+boxed-beef cutout values land in the per-lb bounds. If the LMR ever needs auth,
+set `LMR_KEY` (read automatically). Paste a sample row if the fields differ and
+I'll map them — same loop as the chicken report.
 
 ---
 

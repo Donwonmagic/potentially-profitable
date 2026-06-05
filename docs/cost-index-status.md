@@ -75,9 +75,12 @@ accuracy/coverage) drove a correctness + resilience pass. All shipped, check-all
    eggs/cooking-oil from the AMS Dairy + Egg Market News + BLS families already
    wired (same MARS key). Needs report-ID discovery (`--discover`), bounds, and
    ingredient-yield pages. The fuller menu coverage feeds programmatic SEO.
-3. **Beef & pork need the LMR API.** Boxed-beef-cutout / negotiated-pork wholesale
-   are NOT in Market News v1.2 — they're under USDA's **LMR / Datamart** (separate
-   fetcher; ribeye/tenderloin/pork-* carry BLS trend only until then).
+3. **Beef & pork — LMR fetcher SHIPPED; confirm the slugs.** The LMR Datamart
+   (keyless) is now wired as the `lmr` source (shares the AMS normalizer + the new
+   $/cwt→$/lb conversion). ribeye/tenderloin → `LM_XB403`, pork-loin/shoulder →
+   `LM_PK602` (best-guess). Confirm via `--discover-lmr "boxed beef"/"pork"` + a
+   sample curl, set `lmr.reportId`/`lmr.commodity`, then they go READY (level +
+   BLS trend). Set `LMR_KEY` only if the Datamart requires auth.
 4. **Resolve the FRED ids by SEARCH, not deletion** — `scripts/verify-cost-index-sources.mjs
    --discover-fred "<query>"` searches the FRED catalog (incl. BLS PPI/CPI via FRED).
    russet-potato fred 400s → find the right potato series; ribeye fred is generic

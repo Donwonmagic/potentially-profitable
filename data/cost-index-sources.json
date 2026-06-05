@@ -3,28 +3,25 @@
   "ingredients": {
     "ribeye": {
       "verified": false,
-      "ams": {
+      "lmr": {
         "reportId": "LM_XB403",
         "commodity": "Ribeye",
-        "market": "National",
-        "reducer": "mostlyMid"
+        "reducer": "mostlyMid",
+        "unit": "lb",
+        "_report": "Boxed-beef cuts (LMR Datamart, keyless). Confirm the slug + the ribeye subprimal + price unit ($/cwt vs $/lb) via --discover-lmr \"boxed beef\"/\"ribeye\" then a sample curl."
       },
       "bls": {
         "seriesId": "WPU0233"
-      },
-      "fred": {
-        "seriesId": "APU0000703112",
-        "basis": "retail",
-        "unit": "lb"
       }
     },
     "beef-tenderloin": {
       "verified": false,
-      "ams": {
+      "lmr": {
         "reportId": "LM_XB403",
         "commodity": "Tenderloin",
-        "market": "National",
-        "reducer": "mostlyMid"
+        "reducer": "mostlyMid",
+        "unit": "lb",
+        "_report": "Boxed-beef cuts (LMR Datamart). Confirm slug/cut/unit via --discover-lmr + sample."
       },
       "bls": {
         "seriesId": "WPU0233"
@@ -69,10 +66,12 @@
     },
     "pork-loin": {
       "verified": false,
-      "ams": {
+      "lmr": {
         "reportId": "LM_PK602",
         "commodity": "Loin",
-        "reducer": "mostlyMid"
+        "reducer": "mostlyMid",
+        "unit": "lb",
+        "_report": "Negotiated pork cuts (LMR Datamart, keyless). Confirm slug/cut/unit via --discover-lmr \"pork\"/\"loin\"."
       },
       "bls": {
         "seriesId": "WPU0223"
@@ -80,10 +79,12 @@
     },
     "pork-shoulder": {
       "verified": false,
-      "ams": {
+      "lmr": {
         "reportId": "LM_PK602",
         "commodity": "Shoulder",
-        "reducer": "mostlyMid"
+        "reducer": "mostlyMid",
+        "unit": "lb",
+        "_report": "Negotiated pork cuts (LMR Datamart). Pork shoulder may be reported as \"Butt\" — confirm via --discover-lmr + sample."
       },
       "bls": {
         "seriesId": "WPU0223"

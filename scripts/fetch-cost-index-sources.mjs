@@ -85,6 +85,7 @@ const F = require('../tools/_shared/cost-index-fetch.js');
 // ams may be a single mapping OR an array of terminal markets (multiple
 // independent terminals → a real national p25–p75 level, not one city).
 function amsSpecs(m) { return Array.isArray(m.ams) ? m.ams : (m.ams ? [m.ams] : []); }
+function lmrSpecs(m) { return Array.isArray(m.lmr) ? m.lmr : (m.lmr ? [m.lmr] : []); }
 const slug = (s) => String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
 async function liveFetch(ingredient, m) {
@@ -107,6 +108,15 @@ async function liveFetch(ingredient, m) {
       (spec) => F.fetchAmsReport(spec.reportId, spec.section, auth).then((json) => ({ json, spec })));
     settled.forEach((r) => { if (r.ok) out.ams.push(r.value); });
   }
+  if (m.lmr) {
+    // LMR Datamart (boxed beef / negotiated pork) — keyless by default. Same
+    // per-report resilience + parse path as AMS, just a different host.
+    const lauth = process.env.LMR_KEY ? 'Basic ' + Buffer.from(process.env.LMR_KEY + ':').toString('base64') : undefined;
+    out.lmr = [];
+    const settled = await F.mapLimit(lmrSpecs(m), F.AMS_CONCURRENCY,
+      (spec) => F.fetchLmrReport(spec.reportId, spec.section, lauth).then((json) => ({ json, spec })));
+    settled.forEach((r) => { if (r.ok) out.lmr.push(r.value); });
+  }
   return out;
 }
 
@@ -125,6 +135,19 @@ function toOutputs(ingredient, raw, m) {
     const o = S.normalizeAms(a.json, { source: key, basis: 'wholesale', reducer: spec.reducer || 'mostlyMid', commodity: spec.commodity, matchFields: spec.matchFields, unit: spec.unit });
     o.family = spec.family || key;                 // distinct per market → real p25–p75 dispersion
     o.type = spec.type || 'usda-ams';              // ONE methodology → all terminals are one corroborating line for confidence
+    if (o.points.length) outs.push(o);
+  });
+  // LMR Datamart (beef/pork wholesale) — parses with the same AMS normalizer,
+  // its own source type 'usda-lmr' so it's an independent line of evidence.
+  const lmrArr = Array.isArray(raw.lmr)
+    ? raw.lmr
+    : (raw.lmr ? [{ json: raw.lmr, spec: lmrSpecs(m)[0] || {} }] : []);
+  lmrArr.forEach((a) => {
+    const spec = a.spec || {};
+    const key = 'usda-lmr' + (spec.market ? '-' + slug(spec.market) : '');
+    const o = S.normalizeAms(a.json, { source: key, basis: 'wholesale', reducer: spec.reducer || 'mostlyMid', commodity: spec.commodity, matchFields: spec.matchFields, unit: spec.unit });
+    o.family = spec.family || key;
+    o.type = spec.type || 'usda-lmr';
     if (o.points.length) outs.push(o);
   });
   if (raw.bls) { const o = S.normalizeBls(raw.bls, { source: 'bls', basis: 'index' }); o.family = (m.bls && m.bls.family) || 'bls'; o.type = (m.bls && m.bls.type) || 'bls'; if (o.points.length) outs.push(o); }
