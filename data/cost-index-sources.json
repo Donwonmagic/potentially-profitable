@@ -398,9 +398,13 @@
       "lmr": {
         "reportId": "2993",
         "section": "Butter Prices and Sales",
-        "reducer": "wtdAvg",
+        "reducer": "single",
+        "fields": {
+          "price": "Butter_Price"
+        },
+        "dateField": "week_ending_date",
         "unit": "lb",
-        "_report": "NDPSR (LMR Datamart 2993, keyless), section \"Butter Prices and Sales\", weighted-avg $/lb. Confirm price field via sample."
+        "_report": "NDPSR (LMR Datamart 2993, keyless). Butter_Price = weighted-avg $/lb, dated week_ending_date. Confirmed field."
       }
     },
     "cheddar-cheese": {
@@ -416,9 +420,13 @@
       "lmr": {
         "reportId": "2993",
         "section": "40 Pound Block Cheddar Cheese Prices and Sales",
-        "reducer": "wtdAvg",
+        "reducer": "single",
+        "fields": {
+          "price": "Cheddar_Price"
+        },
+        "dateField": "week_ending_date",
         "unit": "lb",
-        "_report": "NDPSR 2993, section \"40 Pound Block Cheddar Cheese Prices and Sales\" (restaurant-standard block), weighted-avg $/lb."
+        "_report": "NDPSR 2993 block cheddar. price field BEST-GUESS \"Cheddar_Price\" — confirm via sample (could be Block_Price / 40_Pound_Block_Cheddar_Price)."
       }
     },
     "eggs": {
