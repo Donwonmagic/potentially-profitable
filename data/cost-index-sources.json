@@ -110,9 +110,10 @@
     "salmon-fillet": {
       "verified": false,
       "noaa": {
-        "species": "SALMON",
-        "reducer": "valuePerPound",
-        "_report": "future LEVEL: NOAA import unit value ($/kg landed-adjacent) via st.nmfs.noaa.gov/ords/foss/trade_data/ — not yet wired"
+        "commodity": "salmon",
+        "unit": "lb",
+        "years": 2,
+        "_report": "NOAA Fisheries import unit value (val/kilos -> $/lb, landed-adjacent proxy). Confirm trade_data fields/commodity (or set hts e.g. 0304 for salmon fillet) via a sample curl."
       },
       "bls": {
         "seriesId": "WPU02230103"
@@ -121,9 +122,10 @@
     "shrimp": {
       "verified": false,
       "noaa": {
-        "species": "SHRIMP",
-        "reducer": "valuePerPound",
-        "_report": "future LEVEL: NOAA import unit value via trade_data. PPI WPU02230501 last seen May 2025 — verify it is current, else fall back to WPU0223 (seafood) or WPU02230603 (frozen shellfish)."
+        "commodity": "shrimp",
+        "unit": "lb",
+        "years": 2,
+        "_report": "NOAA Fisheries import unit value -> $/lb (landed-adjacent). Confirm fields/commodity (or hts 0306) via sample."
       },
       "bls": {
         "seriesId": "WPU02230501"

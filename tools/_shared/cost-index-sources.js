@@ -199,6 +199,70 @@
     return { source: meta.source || 'usda-ams', basis: meta.basis || 'wholesale', unit: detectedUnit || meta.unit || null, points: points };
   }
 
+  var KG_PER_LB = 2.2046226218;
+
+  /**
+   * NOAA Fisheries trade_data (ORDS) → an import UNIT VALUE per month.
+   * Because most US shrimp/salmon is imported, customs value÷volume is a
+   * landed/wholesale-ADJACENT proxy (NOT delivered, NOT retail) — labeled as such.
+   * Aggregation differs from a price report: we SUM dollars and SUM kilos across
+   * all matching import rows in a month, then divide (a volume-weighted unit
+   * value), and convert $/kg → $/lb. meta.commodity matches the species in the
+   * descriptive fields; export rows are excluded. Returns one point per month.
+   */
+  function normalizeNoaaTrade(json, meta) {
+    meta = meta || {};
+    var rows = (json && (json.items || json.results || json.data)) || [];
+    var commodity = meta.commodity ? String(meta.commodity).toLowerCase() : null;
+    var nameFields = (meta.matchFields || ['name', 'hts_description', 'product', 'products', 'commodity_name', 'description'])
+      .map(function (s) { return String(s).toLowerCase(); });
+    var htsPrefix = meta.hts ? String(meta.hts) : null;
+    var tradeField = meta.tradeField || 'trade_type';
+
+    function isImport(r) {
+      // Prefer an explicit trade-type field; otherwise accept (the query should
+      // already scope to imports) but never count a row flagged export.
+      var vals = [];
+      for (var k in r) if (Object.prototype.hasOwnProperty.call(r, k) && typeof r[k] === 'string') vals.push(r[k].toLowerCase());
+      if (vals.indexOf('export') !== -1 || vals.indexOf('exports') !== -1) return false;
+      var tt = r[tradeField] != null ? String(r[tradeField]).toLowerCase() : '';
+      if (tt) return tt.indexOf('import') !== -1;
+      return true;
+    }
+    function matches(r) {
+      if (htsPrefix) { var h = String(r.hts_number || r.hts || r.hts_code || ''); if (h.indexOf(htsPrefix) === 0) return true; }
+      if (!commodity) return !htsPrefix;   // no filter → all (only if no hts either)
+      for (var i = 0; i < nameFields.length; i++) {
+        for (var k in r) {
+          if (!Object.prototype.hasOwnProperty.call(r, k)) continue;
+          if (k.toLowerCase() !== nameFields[i]) continue;
+          var v = r[k];
+          if (typeof v === 'string' && v.toLowerCase().indexOf(commodity) !== -1) return true;
+        }
+      }
+      return false;
+    }
+
+    var byPeriod = {};
+    rows.forEach(function (r) {
+      if (!r || !isImport(r) || !matches(r)) return;
+      var kilos = num(pickField(r, ['kilos', 'kg', 'volume', 'quantity']));
+      var val = num(pickField(r, ['val', 'value', 'dollars', 'value_usd']));
+      if (kilos == null || val == null || kilos <= 0) return;
+      var y = r.year != null ? r.year : (r.yr != null ? r.yr : null);
+      var mo = r.month != null ? r.month : (r.mo != null ? r.mo : null);
+      if (y == null) return;
+      var key = mo != null ? (y + '-' + ('0' + mo).slice(-2)) : (y + '-01');   // month if present, else year
+      var b = byPeriod[key] || (byPeriod[key] = { val: 0, kg: 0 });
+      b.val += val; b.kg += kilos;
+    });
+    var points = Object.keys(byPeriod).sort().map(function (k) {
+      var b = byPeriod[k];
+      return { date: k + '-01', value: (b.val / b.kg) / KG_PER_LB };   // $/kg → $/lb
+    });
+    return { source: meta.source || 'noaa', basis: meta.basis || 'wholesale', unit: meta.unit || 'lb', points: points };
+  }
+
   function latestDate(outputs) {
     var d = null;
     (outputs || []).forEach(function (o) {
@@ -232,6 +296,7 @@
     normalizeFred: normalizeFred,
     normalizeBls: normalizeBls,
     normalizeAms: normalizeAms,
+    normalizeNoaaTrade: normalizeNoaaTrade,
     reduceAmsRow: reduceAmsRow,
     buildCompositeInput: buildCompositeInput
   };

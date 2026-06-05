@@ -62,6 +62,14 @@ async function probe(src, m) {
       return latest ? { ok: true, n: o.points.length, latest: latest.value, date: latest.date, basis: 'wholesale', level: true }
         : { ok: false, err: `fetched OK, 0 priced rows matched${m.commodity ? ` commodity "${m.commodity}"` : ''} (LMR Datamart — confirm slug via --discover-lmr + row/price fields)` };
     }
+    if (src === 'noaa') {
+      // NOAA Fisheries import unit value (keyless) → landed-adjacent $/lb level.
+      const j = await F.fetchNoaaTrade({ years: m.years });
+      const o = S.normalizeNoaaTrade(j, { source: 'noaa', basis: 'wholesale', commodity: m.commodity, hts: m.hts, unit: m.unit || 'lb' });
+      const latest = o.points[o.points.length - 1];
+      return latest ? { ok: true, n: o.points.length, latest: latest.value, date: latest.date, basis: 'wholesale', level: true }
+        : { ok: false, err: `fetched OK, 0 import rows matched${m.commodity ? ` "${m.commodity}"` : ''} (confirm NOAA trade_data fields / commodity / hts via a sample)` };
+    }
     if (src === 'bls') {
       if (!keys.BLS) return { ok: false, err: 'no BLS_KEY' };
       const j = await F.fetchJson('https://api.bls.gov/publicAPI/v2/timeseries/data/', {
@@ -180,6 +188,7 @@ async function main() {
       targets.push({ kind: 'ams', label: 'ams' + (s.market ? `:${s.market}` : ''), spec: s }));
     if (entry.lmr) (Array.isArray(entry.lmr) ? entry.lmr : [entry.lmr]).forEach((s) =>
       targets.push({ kind: 'lmr', label: 'lmr' + (s.market ? `:${s.market}` : ''), spec: s }));
+    if (entry.noaa) targets.push({ kind: 'noaa', label: 'noaa', spec: entry.noaa });
     if (entry.bls) targets.push({ kind: 'bls', label: 'bls', spec: entry.bls });
     if (entry.fred) targets.push({ kind: 'fred', label: 'fred', spec: entry.fred });
     // Probe in parallel (bounded) — 8 produce terminals sequentially is what made
