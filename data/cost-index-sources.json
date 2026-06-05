@@ -404,7 +404,8 @@
         },
         "dateField": "week_ending_date",
         "unit": "lb",
-        "_report": "NDPSR (LMR Datamart 2993, keyless). Butter_Price = weighted-avg $/lb, dated week_ending_date. Confirmed field."
+        "windowDays": 0,
+        "_report": "NDPSR (LMR Datamart 2993, keyless). Butter_Price = weighted-avg $/lb, dated week_ending_date. Confirmed field. windowDays:0 = fetch unwindowed: the Datamart windows on report_date, which NDPSR rows lack, so a window returns 0 rows; unwindowed returns full history and normalizeAms picks the latest week."
       }
     },
     "cheddar-cheese": {
@@ -426,7 +427,8 @@
         },
         "dateField": "week_ending_date",
         "unit": "lb",
-        "_report": "NDPSR 2993 block cheddar. price column CONFIRMED via live header = cheese_40_Price (40-lb block weighted-avg $/lb, dated week_ending_date). Legacy names kept as fallbacks. First present column wins; row dropped if none."
+        "windowDays": 0,
+        "_report": "NDPSR 2993 block cheddar. price column CONFIRMED via live header = cheese_40_Price (40-lb block weighted-avg $/lb, dated week_ending_date). Legacy names kept as fallbacks. windowDays:0 = unwindowed (the Datamart windows on report_date, absent from NDPSR rows, so a window returns 0)."
       }
     },
     "eggs": {
