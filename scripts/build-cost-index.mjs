@@ -27,6 +27,7 @@ import { pointIssues } from './check-cost-index-sync.mjs';
 
 const require = createRequire(import.meta.url);
 const B = require('../tools/_shared/cost-basket.js');
+const Spike = require('../tools/_shared/cost-spike.js');
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const arg = (k) => { const i = process.argv.indexOf(k); return i >= 0 ? process.argv[i + 1] : null; };
 const DRY = process.argv.includes('--dry-run');
@@ -117,6 +118,11 @@ function main() {
     if (kept.length) out.ingredients[ingredient] = { points: kept };
   }
 
+  // Attach the spike-vs-structural flag per ingredient (from its own history) —
+  // the "should I act?" read the render/Plate fork consumes. Thin history → 'insufficient'.
+  for (const k of Object.keys(out.ingredients)) {
+    out.ingredients[k].flag = Spike.classify(out.ingredients[k].points || []);
+  }
   out.basket = computeBasket(out);   // headline from the post-gate vendored set only
   if (!DRY) writeFileSync(OUT, JSON.stringify(out, null, 2) + '\n');
   const dropMsg = Object.keys(dropped).length ? ` · dropped: ${Object.entries(dropped).map(([k, v]) => `${v} ${k}`).join(', ')}` : '';

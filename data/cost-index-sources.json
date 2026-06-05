@@ -419,13 +419,16 @@
     "vegetable-oil": {
       "verified": false,
       "bls": {
-        "seriesId": "WPU0237"
+        "seriesId": "WPU0237",
+        "family": "ppi-fats-oils",
+        "type": "ppi-fats-oils"
       },
       "fred": {
         "seriesId": "WPU0237",
         "basis": "index",
-        "family": "bls-fats-oils",
-        "_report": "FRED mirror of the BLS PPI fats-&-oils series — same family (de-correlated); trend only, needs a 2nd independent US-gov source to corroborate"
+        "family": "ppi-fats-oils",
+        "type": "ppi-fats-oils",
+        "_report": "SAME series as bls today (mirror — collapsed to one vote, no double-count). Find a DISTINCT soybean/veg-oil series via --discover-fred \"soybean oil\" for a real 2nd source."
       }
     }
   }
