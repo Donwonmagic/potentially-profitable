@@ -23,7 +23,7 @@ import { fileURLToPath } from 'node:url';
 const __filename = fileURLToPath(import.meta.url);
 const repoRoot = path.resolve(path.dirname(__filename), '..');
 
-const ID_FIELD = { ams: 'reportId', bls: 'seriesId', fred: 'seriesId', noaa: 'species' };
+const ID_FIELD = { ams: 'reportId', lmr: 'reportId', bls: 'seriesId', fred: 'seriesId', noaa: 'species' };
 const REDUCERS = new Set(['mostlyMid', 'wtdAvg', 'valuePerPound', 'single']);
 
 const errors = [];
@@ -64,7 +64,7 @@ if (sources) {
           if (!obj || typeof obj !== 'object' || typeof obj[idField] !== 'string' || obj[idField] === '') {
             errors.push(`${where}: missing "${idField}".`);
           }
-          if (sk === 'ams' && obj && obj.reducer && !REDUCERS.has(obj.reducer)) {
+          if ((sk === 'ams' || sk === 'lmr') && obj && obj.reducer && !REDUCERS.has(obj.reducer)) {
             errors.push(`${where}.reducer "${obj.reducer}" is not one of ${[...REDUCERS].join(', ')}.`);
           }
         });

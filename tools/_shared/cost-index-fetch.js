@@ -65,26 +65,28 @@ function amsWindow(days) {
   return f(start) + ':' + f(end);
 }
 
+var MARS_BASE = 'https://marsapi.ams.usda.gov/services/v1.2/reports/';      // Market News (produce/poultry) — keyed
+var LMR_BASE = 'https://mpr.datamart.ams.usda.gov/services/v1.1/reports/';  // LMR Datamart (boxed beef / negotiated pork) — typically keyless
+
 /**
  * Fetch a report's DETAIL section (prices live there; the bare report is the
- * header). Windowed to recent dates so huge terminal reports return a small
- * current slice; auto-corrects the section name when MARS hands back the header
+ * header). Windowed to recent dates so huge reports return a small current
+ * slice; auto-corrects the section name when the API hands back the header
  * (section names differ: "Report Details" on produce, "Report Detail" on the
- * chicken report). Falls back to the unwindowed fetch if a report rejects the
- * date filter, so the window can only help.
+ * chicken report; the Datamart often has no section). Falls back to the
+ * unwindowed fetch ONLY if a report REJECTS the date filter (4xx) — never on a
+ * timeout/network failure, where the full-history fetch would deepen the stall.
+ * Host-agnostic: shared by MARS (keyed) and the LMR Datamart (keyless).
  */
-async function fetchAmsReport(reportId, sectionRaw, auth) {
-  var h = { Authorization: auth };
-  var win = AMS_WINDOW_DAYS > 0 ? '?q=' + encodeURIComponent('report_begin_date=' + amsWindow(AMS_WINDOW_DAYS)) : '';
-  var base = 'https://marsapi.ams.usda.gov/services/v1.2/reports/' + reportId;
+async function fetchReport(baseUrl, reportId, sectionRaw, auth, winField) {
+  var h = auth ? { Authorization: auth } : {};   // LMR is keyless → no header
+  var win = AMS_WINDOW_DAYS > 0 ? '?q=' + encodeURIComponent((winField || 'report_begin_date') + '=' + amsWindow(AMS_WINDOW_DAYS)) : '';
+  var base = baseUrl + reportId;
   var want = sectionRaw === '' ? '' : (sectionRaw || 'Report Details');
   async function get(section) {
     var path = section === '' ? '' : '/' + encodeURIComponent(section);
     try { return await fetchJson(base + path + win, { headers: h }); }
     catch (e) {
-      // Fall back to the (bigger) unwindowed fetch ONLY if the window itself was
-      // rejected (4xx bad query) — never on a timeout/network failure, where the
-      // full-history fetch would be even slower and deepen the stall.
       if (win && /HTTP 4\d\d/.test(String(e && e.message))) return fetchJson(base + path, { headers: h });
       throw e;
     }
@@ -98,6 +100,16 @@ async function fetchAmsReport(reportId, sectionRaw, auth) {
     if (detail && detail !== want) j = await get(detail);
   }
   return j;
+}
+
+// MARS report: keyed, windows on report_begin_date, section defaults to "Report Details".
+function fetchAmsReport(reportId, sectionRaw, auth) {
+  return fetchReport(MARS_BASE, reportId, sectionRaw, auth, 'report_begin_date');
+}
+// LMR Datamart report: keyless (auth optional), windows on report_date, NO section
+// by default (the Datamart returns results directly) — override with spec.section.
+function fetchLmrReport(reportId, sectionRaw, auth) {
+  return fetchReport(LMR_BASE, reportId, sectionRaw == null ? '' : sectionRaw, auth, 'report_date');
 }
 
 /**
@@ -128,6 +140,8 @@ module.exports = {
   isTransient: isTransient,
   amsWindow: amsWindow,
   fetchAmsReport: fetchAmsReport,
+  fetchLmrReport: fetchLmrReport,
+  LMR_BASE: LMR_BASE,
   mapLimit: mapLimit,
   FETCH_TIMEOUT_MS: FETCH_TIMEOUT_MS,
   AMS_WINDOW_DAYS: AMS_WINDOW_DAYS,

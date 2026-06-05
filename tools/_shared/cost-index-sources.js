@@ -93,10 +93,10 @@
    */
   function priceMeta(row, fields) {
     var pu = String((row && row[(fields && fields.priceUnit) || 'price_unit']) || '').toLowerCase();
-    var scale = /cent/.test(pu) ? 0.01 : 1;                 // cents → dollars
-    var unit = /lb|pound/.test(pu) ? 'lb'
-      : (/dozen|\bdoz\b/.test(pu) ? 'dozen'
-      : (/cwt|hundredweight/.test(pu) ? 'cwt' : null));      // null = unit not stated (e.g. produce per-package)
+    var perCwt = /cwt|hundredweight/.test(pu);             // LMR boxed-beef/pork quote $/cwt → ÷100 for $/lb
+    var scale = (/cent/.test(pu) ? 0.01 : 1) * (perCwt ? 0.01 : 1);   // cents→dollars and/or cwt→lb
+    var unit = (perCwt || /lb|pound/.test(pu)) ? 'lb'
+      : (/dozen|\bdoz\b/.test(pu) ? 'dozen' : null);        // null = unit not stated (e.g. produce per-package)
     return { scale: scale, unit: unit };
   }
 

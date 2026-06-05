@@ -52,6 +52,16 @@ async function probe(src, m) {
       return latest ? { ok: true, n: o.points.length, latest: latest.value, basis: 'wholesale', level: true }
         : { ok: false, err: `fetched OK, 0 priced rows matched${m.commodity ? ` commodity "${m.commodity}"` : ''}${F.AMS_WINDOW_DAYS ? ` (last ${F.AMS_WINDOW_DAYS}d — set AMS_WINDOW_DAYS=0 for full history)` : ''} (check report JSON shape / commodity term)` };
     }
+    if (src === 'lmr') {
+      // LMR Datamart (boxed beef / negotiated pork) — keyless; rows parse with the
+      // same AMS normalizer. Optional LMR_KEY if the Datamart ever requires auth.
+      const auth = process.env.LMR_KEY ? 'Basic ' + Buffer.from(process.env.LMR_KEY + ':').toString('base64') : undefined;
+      const j = await F.fetchLmrReport(m.reportId, m.section, auth);
+      const o = S.normalizeAms(j, { source: 'usda-lmr', basis: 'wholesale', reducer: m.reducer || 'mostlyMid', commodity: m.commodity, matchFields: m.matchFields, unit: m.unit });
+      const latest = o.points[o.points.length - 1];
+      return latest ? { ok: true, n: o.points.length, latest: latest.value, basis: 'wholesale', level: true }
+        : { ok: false, err: `fetched OK, 0 priced rows matched${m.commodity ? ` commodity "${m.commodity}"` : ''} (LMR Datamart — confirm slug via --discover-lmr + row/price fields)` };
+    }
     if (src === 'bls') {
       if (!keys.BLS) return { ok: false, err: 'no BLS_KEY' };
       const j = await F.fetchJson('https://api.bls.gov/publicAPI/v2/timeseries/data/', {
@@ -122,7 +132,29 @@ async function discoverFred(query) {
   console.log('Tip: --discover-fred "potatoes" / "beef" / "butter" / "eggs" / "soybean oil". Avoid IMF/OECD/World Bank series (redistribution-limited).');
 }
 
+// --discover-lmr [query]: list the LMR Datamart report directory (boxed beef /
+// negotiated pork wholesale — the reports that 404 in MARS because they live in
+// this separate, keyless system). Find the slug for ribeye/tenderloin/pork cuts.
+async function discoverLmr(query) {
+  const auth = process.env.LMR_KEY ? 'Basic ' + Buffer.from(process.env.LMR_KEY + ':').toString('base64') : undefined;
+  let list;
+  try { list = await F.fetchJson(F.LMR_BASE.replace(/\/reports\/$/, '/reports'), auth ? { headers: { Authorization: auth } } : {}); }
+  catch (e) { console.error(`Could not reach the LMR Datamart directory (${e.message}). If it needs auth, set LMR_KEY. Base: ${F.LMR_BASE}`); process.exit(1); }
+  const reports = Array.isArray(list) ? list : (list.results || list.reports || []);
+  const q = (query || '').toLowerCase().trim();
+  const matches = !q ? reports
+    : reports.filter((r) => ((r.report_title || r.title || '') + ' ' + (r.slug_name || r.slug_id || '')).toLowerCase().includes(q));
+  console.log(`LMR Datamart: ${reports.length} reports · ${matches.length} ${q ? `matching "${query}"` : 'shown'}\n`);
+  for (const r of matches.slice(0, 120)) {
+    console.log(`  reportId=${r.slug_id || r.slug_name || r.report_id}   ${r.report_title || r.title || ''}   (${r.report_date || r.published_date || ''})`);
+  }
+  console.log('\nPut the slug into data/cost-index-sources.json (lmr.reportId), set lmr.commodity to the cut (e.g. "Ribeye"), then re-run verify.');
+  console.log('Tip: --discover-lmr "boxed beef" / "cutout" / "ribeye" / "pork" / "loin". Then curl one report to confirm the row/price fields.');
+}
+
 async function main() {
+  const dli = process.argv.indexOf('--discover-lmr');
+  if (dli >= 0) return discoverLmr(process.argv[dli + 1]);
   const dfi = process.argv.indexOf('--discover-fred');
   if (dfi >= 0) return discoverFred(process.argv[dfi + 1]);
   const di = process.argv.indexOf('--discover');
@@ -137,6 +169,8 @@ async function main() {
     const targets = [];
     if (entry.ams) (Array.isArray(entry.ams) ? entry.ams : [entry.ams]).forEach((s) =>
       targets.push({ kind: 'ams', label: 'ams' + (s.market ? `:${s.market}` : ''), spec: s }));
+    if (entry.lmr) (Array.isArray(entry.lmr) ? entry.lmr : [entry.lmr]).forEach((s) =>
+      targets.push({ kind: 'lmr', label: 'lmr' + (s.market ? `:${s.market}` : ''), spec: s }));
     if (entry.bls) targets.push({ kind: 'bls', label: 'bls', spec: entry.bls });
     if (entry.fred) targets.push({ kind: 'fred', label: 'fred', spec: entry.fred });
     // Probe in parallel (bounded) — 8 produce terminals sequentially is what made
@@ -165,7 +199,7 @@ async function main() {
       : 'no live source configured (dormant)');
 
     // READY = at least one level-bearing source in bounds AND ≥2 sources resolve (a trend).
-    const levelOk = targets.some((t) => t.res.ok && (t.kind === 'ams' || t.res.level) && b && inBand(t.res.latest, b));
+    const levelOk = targets.some((t) => t.res.ok && (t.kind === 'ams' || t.kind === 'lmr' || t.res.level) && b && inBand(t.res.latest, b));
     const resolved = targets.filter((t) => t.res.ok).length;
     const isReady = levelOk && resolved >= 2;
     if (isReady) ready.push(ing);

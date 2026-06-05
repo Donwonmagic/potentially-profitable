@@ -106,6 +106,15 @@ test('AMS reducer: price_unit "Cents Per Lb" is converted to dollars (the chicke
   assert.equal(S.reduceAmsRow({ mostly_low_price: '16.00', mostly_high_price: '18.00' }, 'mostlyMid'), 17);
 });
 
+test('AMS/LMR reducer: "Dollars Per Cwt" is converted to $/lb (boxed beef / pork)', () => {
+  // LMR boxed-beef cuts quote $/cwt → divide by 100 for a $/lb level.
+  const row = { commodity: 'Ribeye', low_price: '280.00', high_price: '320.00', price_unit: 'Dollars Per Cwt' };
+  assert.equal(S.reduceAmsRow(row, 'mostlyMid'), 3.0);             // (280+320)/2 = 300 $/cwt → $3.00/lb
+  const out = S.normalizeAms({ results: [{ ...row, report_date: '2026-05-01' }] }, { reducer: 'mostlyMid', commodity: 'Ribeye' });
+  assert.equal(out.unit, 'lb');
+  assert.equal(out.points[0].value, 3.0);
+});
+
 test('AMS reducer: wtdAvg falls back to the band when wtd_avg_price is absent', () => {
   assert.equal(S.reduceAmsRow({ mostly_low: '2.10', mostly_high: '2.30' }, 'wtdAvg'), 2.2);
   assert.equal(S.reduceAmsRow({ note: 'no price' }, 'wtdAvg'), null);
