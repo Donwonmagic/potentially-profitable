@@ -396,11 +396,11 @@
         "seriesId": "WPU0232"
       },
       "ams": {
-        "reportId": "DY_NDPSR",
+        "reportId": "1623",
         "commodity": "Butter",
         "reducer": "wtdAvg",
         "unit": "lb",
-        "_report": "FIX: needs the NUMERIC MARS reportId — run --discover \"dairy\"/\"butter\" (the DY_NDPSR slug 404s, like LM_ did). AMS National Dairy Products Sales Report, weekly wholesale."
+        "_report": "AMS 1623 Dairy Monthly Averages — CANDIDATE for butter wholesale. If 0 rows, NDPSR likely needs its own datamart like LMR; curl 1623 to confirm."
       }
     },
     "cheddar-cheese": {
@@ -414,11 +414,11 @@
         "unit": "lb"
       },
       "ams": {
-        "reportId": "DY_NDPSR",
+        "reportId": "1623",
         "commodity": "Cheddar",
         "reducer": "wtdAvg",
         "unit": "lb",
-        "_report": "FIX: numeric id via --discover \"dairy\"/\"cheese\". NDPSR cheddar (40-lb block), weekly wholesale."
+        "_report": "AMS 1623 Dairy Monthly Averages — CANDIDATE for cheddar wholesale. Confirm via sample."
       }
     },
     "eggs": {
@@ -432,16 +432,10 @@
         "unit": "dozen"
       },
       "ams": {
-        "reportId": "PY_EGG",
-        "commodity": "Large",
-        "matchFields": [
-          "item",
-          "grade",
-          "commodity"
-        ],
+        "reportId": "2843",
         "reducer": "mostlyMid",
         "unit": "dozen",
-        "_report": "FIX: numeric id via --discover \"egg\". AMS Egg Market News, wholesale shell eggs (Grade A Large)."
+        "_report": "AMS 2843 Daily National Shell Egg Index — national wholesale $/dozen. Confirm price fields/grade via a sample if 0 rows."
       }
     },
     "vegetable-oil": {
@@ -463,7 +457,7 @@
         "commodity": "Crude Soybean Oil",
         "reducer": "wtdAvg",
         "unit": "lb",
-        "_report": "UNVERIFIED scaffold — AMS Grain & Oilseed Processor Feedstuff Report (Crude Soybean Oil, Central IL, ~cents/lb wholesale). Confirm the numeric reportId via --discover \"soybean oil\"/\"oilseed\" and the commodity term/section/price unit via a sample BEFORE relying on it."
+        "_report": "AMS 3511 National Grain & Oilseed Processor Feedstuff Report (CONFIRMED id). Confirm the Crude Soybean Oil commodity term + section + price unit via a sample."
       }
     }
   },
