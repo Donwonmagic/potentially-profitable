@@ -123,10 +123,13 @@ function fetchReport(baseUrl, reportId, sectionRaw, auth, winField, days) {
 function fetchAmsReport(reportId, sectionRaw, auth, days) {
   return fetchReport(MARS_BASE, reportId, sectionRaw, auth, 'report_begin_date', days);
 }
-// LMR Datamart report: keyless (auth optional), windows on report_date, NO section
-// by default (the Datamart returns results directly) — override with spec.section.
-function fetchLmrReport(reportId, sectionRaw, auth, days) {
-  return fetchReport(LMR_BASE, reportId, sectionRaw == null ? '' : sectionRaw, auth, 'report_date', days);
+// LMR Datamart report: keyless (auth optional), NO section by default (the
+// Datamart returns results directly) — override with spec.section. Windows on
+// report_date by DEFAULT, but NDPSR dairy reports (2993) date rows by
+// week_ending_date and carry no report_date, so a report_date window returns 0
+// rows — pass winField (the spec's dateField) to window on the real date column.
+function fetchLmrReport(reportId, sectionRaw, auth, days, winField) {
+  return fetchReport(LMR_BASE, reportId, sectionRaw == null ? '' : sectionRaw, auth, winField || 'report_date', days);
 }
 
 // NOAA Fisheries customs trade (FOSS ORDS, keyless). The host has moved before,
