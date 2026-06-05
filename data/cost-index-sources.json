@@ -443,7 +443,8 @@
       "bls": {
         "seriesId": "WPU0278",
         "family": "ppi-cooking-oil",
-        "type": "ppi-cooking-oil"
+        "type": "ppi-cooking-oil",
+        "_report": "Cooking-oil PPI (trend). No free oil price LEVEL exists (retail APU discontinued 2005; AMS 3511 is feedstuffs not oil; IMF/CME restricted) → vegetable-oil is honestly directional."
       },
       "fred": {
         "seriesId": "PCU3112243112243",
@@ -451,14 +452,6 @@
         "family": "ppi-soybean-oil",
         "type": "ppi-soybean-oil",
         "_report": "Soybean Oil PPI (trend). The retail APU0000716121 was DISCONTINUED 2005 — no current free oil LEVEL via FRED/BLS. For a wholesale level, wire AMS report 3511 (Crude Soybean Oil, Central IL) via the AMS key."
-      },
-      "ams": {
-        "reportId": "3511",
-        "commodity": "Crude Soybean Oil",
-        "reducer": "wtdAvg",
-        "unit": "lb",
-        "_report": "AMS 3511, section \"Report Detail\" (confirmed). Confirm the Crude Soybean Oil commodity/item term + price field via a Report Detail sample.",
-        "section": "Report Detail"
       }
     }
   },
