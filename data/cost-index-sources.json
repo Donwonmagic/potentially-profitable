@@ -394,14 +394,6 @@
       },
       "bls": {
         "seriesId": "WPU0232"
-      },
-      "ams": {
-        "reportId": "1623",
-        "commodity": "Butter",
-        "reducer": "wtdAvg",
-        "unit": "lb",
-        "_report": "AMS 1623, section \"Hard Products Monthly Averages\" (butter/cheese spot). Confirm commodity term + price field via sample.",
-        "section": "Hard Products Monthly Averages"
       }
     },
     "cheddar-cheese": {
@@ -413,14 +405,6 @@
         "seriesId": "APU0000710212",
         "basis": "retail",
         "unit": "lb"
-      },
-      "ams": {
-        "reportId": "1623",
-        "commodity": "Cheddar",
-        "reducer": "wtdAvg",
-        "unit": "lb",
-        "_report": "AMS 1623, section \"Hard Products Monthly Averages\". Confirm cheddar term (block vs barrel) + price field via sample.",
-        "section": "Hard Products Monthly Averages"
       }
     },
     "eggs": {
@@ -432,13 +416,6 @@
         "seriesId": "APU0000708111",
         "basis": "retail",
         "unit": "dozen"
-      },
-      "ams": {
-        "reportId": "2843",
-        "reducer": "mostlyMid",
-        "unit": "dozen",
-        "_report": "AMS 2843, section \"Report Detail Weighted\". Confirm the egg price field/grade via sample.",
-        "section": "Report Detail Weighted"
       }
     },
     "vegetable-oil": {
