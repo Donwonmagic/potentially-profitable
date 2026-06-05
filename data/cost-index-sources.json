@@ -12,6 +12,11 @@
       },
       "bls": {
         "seriesId": "WPU0233"
+      },
+      "fred": {
+        "seriesId": "APU0000703112",
+        "basis": "index",
+        "_report": "generic beef retail (FRED APU) — kept as a beef-direction TREND proxy only (basis index, never a ribeye level); re-point to a ribeye-specific series via --discover-fred if one exists"
       }
     },
     "beef-tenderloin": {
