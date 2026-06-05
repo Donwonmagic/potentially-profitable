@@ -249,8 +249,11 @@ async function main() {
       ? 'noaa only — no free public wholesale source (dormant by design, not stuck)'
       : 'no live source configured (dormant)');
 
-    // READY = at least one level-bearing source in bounds AND ≥2 sources resolve (a trend).
-    const levelOk = targets.some((t) => t.res.ok && (t.kind === 'ams' || t.kind === 'lmr' || t.res.level) && b && inBand(t.res.latest, b));
+    // READY = at least one level-bearing source that is IN BOUNDS *and FRESH* AND
+    // ≥2 sources resolve. A stale level (e.g. a discontinued series) must NOT count
+    // — that would diverge from the build gate, which hard-rejects stale points.
+    const isFresh = (d) => { if (!d) return true; return (Date.now() - Date.parse(d + 'T00:00:00Z')) / 86400000 <= STALE_DAYS; };
+    const levelOk = targets.some((t) => t.res.ok && (t.kind === 'ams' || t.kind === 'lmr' || t.res.level) && b && inBand(t.res.latest, b) && isFresh(t.res.date));
     const resolved = targets.filter((t) => t.res.ok).length;
     const isReady = levelOk && resolved >= 2;
     // DIRECTIONAL = no comparable price LEVEL, but ≥2 trend sources resolve. Honest

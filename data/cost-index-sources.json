@@ -452,10 +452,11 @@
         "type": "ppi-cooking-oil"
       },
       "fred": {
-        "seriesId": "APU0000716121",
-        "basis": "retail",
-        "unit": "lb",
-        "_report": "Shortening, Vegetable Oil Blends, US city avg — retail $/lb LEVEL (confirm title via --audit-titles). Wholesale alt: AMS report 3511 Crude Soybean Oil Central IL."
+        "seriesId": "PCU3112243112243",
+        "basis": "index",
+        "family": "ppi-soybean-oil",
+        "type": "ppi-soybean-oil",
+        "_report": "Soybean Oil PPI (trend). The retail APU0000716121 was DISCONTINUED 2005 — no current free oil LEVEL via FRED/BLS. For a wholesale level, wire AMS report 3511 (Crude Soybean Oil, Central IL) via the AMS key."
       }
     }
   },
