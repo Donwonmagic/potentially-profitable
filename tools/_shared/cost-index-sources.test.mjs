@@ -165,6 +165,26 @@ test('normalizeAms honors a mostlyMid reducer on ranged rows', () => {
   assert.deepEqual(out.points.map(p => p.value), [13.0, 14.0]);
 });
 
+test('NOAA trade: import unit value = sum(value)/sum(kilos) per month → $/lb (exports + other species excluded)', () => {
+  const j = { items: [
+    { year: 2026, month: 3, name: 'SHRIMP, frozen', kilos: 1000, val: 8000, trade_type: 'import' },
+    { year: 2026, month: 3, name: 'SHRIMP, peeled', kilos: 1000, val: 10000, trade_type: 'import' },
+    { year: 2026, month: 3, name: 'SHRIMP, frozen', kilos: 500, val: 9999, trade_type: 'export' },   // export → excluded
+    { year: 2026, month: 4, name: 'SALMON, fillet', kilos: 100, val: 2000, trade_type: 'import' },    // wrong species → excluded
+  ] };
+  const out = S.normalizeNoaaTrade(j, { commodity: 'shrimp', unit: 'lb' });
+  assert.equal(out.unit, 'lb');
+  assert.equal(out.basis, 'wholesale');
+  assert.equal(out.points.length, 1);                 // only the March shrimp imports
+  assert.equal(out.points[0].date, '2026-03-01');
+  assert.equal(out.points[0].value.toFixed(3), '4.082');  // (8000+10000)/(1000+1000)=$9/kg ÷ 2.20462 = $4.082/lb
+});
+
+test('NOAA trade: empty/garbage payload yields no points, not a crash', () => {
+  assert.deepEqual(S.normalizeNoaaTrade(null, {}).points, []);
+  assert.deepEqual(S.normalizeNoaaTrade({ items: [] }, { commodity: 'shrimp' }).points, []);
+});
+
 test('contract guard: an empty/garbage payload yields no points, not a crash', () => {
   assert.deepEqual(S.normalizeFred({}, {}).points, []);
   assert.deepEqual(S.normalizeBls({ Results: { series: [] } }, {}).points, []);

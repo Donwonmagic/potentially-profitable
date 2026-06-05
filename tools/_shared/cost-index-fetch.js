@@ -129,6 +129,35 @@ function fetchLmrReport(reportId, sectionRaw, auth, days) {
   return fetchReport(LMR_BASE, reportId, sectionRaw == null ? '' : sectionRaw, auth, 'report_date', days);
 }
 
+var NOAA_TRADE_BASE = 'https://www.st.nmfs.noaa.gov/ords/foss/trade_data/';   // NOAA Fisheries customs trade (ORDS, keyless)
+
+// NOAA import unit value: pull recent trade_data rows (ORDS JSON), scoped to the
+// last `years` years, following ORDS pagination (items + hasMore) up to a cap.
+// Returns { items:[...] } for normalizeNoaaTrade. Keyless. Cached per run.
+async function fetchNoaaTrade(opts) {
+  opts = opts || {};
+  var years = opts.years || 2;
+  var fromYear = (new Date().getFullYear()) - (years - 1);
+  var q = encodeURIComponent(JSON.stringify({ year: { '$gte': fromYear } }));   // ORDS filter
+  var pageSize = opts.pageSize || 5000, cap = opts.maxRows || 50000;
+  var key = 'noaa-trade|' + fromYear + '|' + pageSize;
+  if (_reportCache.has(key)) return _reportCache.get(key);
+  var pr = (async function () {
+    var items = [], offset = 0;
+    for (var guard = 0; guard < 40; guard++) {
+      var url = NOAA_TRADE_BASE + '?q=' + q + '&limit=' + pageSize + '&offset=' + offset;
+      var j = await fetchJson(url);
+      var page = (j && (j.items || j.results)) || [];
+      items = items.concat(page);
+      if (!j || j.hasMore !== true || page.length === 0 || items.length >= cap) break;
+      offset += page.length;
+    }
+    return { items: items };
+  })().catch(function (e) { _reportCache.delete(key); throw e; });
+  _reportCache.set(key, pr);
+  return pr;
+}
+
 /**
  * Bounded-concurrency map. Fans out up to `limit` at a time (per-host politeness
  * — all AMS terminals share one host) and ALWAYS settles every item: one
@@ -158,7 +187,9 @@ module.exports = {
   amsWindow: amsWindow,
   fetchAmsReport: fetchAmsReport,
   fetchLmrReport: fetchLmrReport,
+  fetchNoaaTrade: fetchNoaaTrade,
   LMR_BASE: LMR_BASE,
+  NOAA_TRADE_BASE: NOAA_TRADE_BASE,
   mapLimit: mapLimit,
   FETCH_TIMEOUT_MS: FETCH_TIMEOUT_MS,
   AMS_WINDOW_DAYS: AMS_WINDOW_DAYS,
