@@ -397,10 +397,10 @@
       },
       "lmr": {
         "reportId": "2993",
-        "commodity": "Butter",
+        "section": "Butter Prices and Sales",
         "reducer": "wtdAvg",
         "unit": "lb",
-        "_report": "NDPSR (LMR Datamart 2993, keyless) — National Dairy Products Sales Report, weekly wholesale butter, $/lb. Confirm section + price field via sample."
+        "_report": "NDPSR (LMR Datamart 2993, keyless), section \"Butter Prices and Sales\", weighted-avg $/lb. Confirm price field via sample."
       }
     },
     "cheddar-cheese": {
@@ -415,10 +415,10 @@
       },
       "lmr": {
         "reportId": "2993",
-        "commodity": "Cheddar",
+        "section": "40 Pound Block Cheddar Cheese Prices and Sales",
         "reducer": "wtdAvg",
         "unit": "lb",
-        "_report": "NDPSR 2993 cheddar (40-lb Block is the standard; barrel also reported). Confirm exact commodity term (block vs barrel) + price field via sample."
+        "_report": "NDPSR 2993, section \"40 Pound Block Cheddar Cheese Prices and Sales\" (restaurant-standard block), weighted-avg $/lb."
       }
     },
     "eggs": {
