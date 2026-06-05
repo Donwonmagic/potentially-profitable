@@ -57,6 +57,14 @@ accuracy/coverage) drove a correctness + resilience pass. All shipped, check-all
   terminals no longer felt hung), last-good guard (an all-failed run can't
   clobber the vendored index), + the AMS window/timeout.
 
+## Engine-room completion (2026-06-05) — the in-sandbox core is done
+
+- **Headline Basket** shipped + fact-gated: `tools/_shared/cost-basket.js` (weighted-median, basis-agnostic % for the frozen `data/cost-basket-weights.json` basket — never a level); `build-cost-index` recomputes it from the post-gate vendored set; `check-cost-index-sync` validates it.
+- **Spike-vs-structural flag** shipped: `tools/_shared/cost-spike.js` — per-ingredient "should I act?" by persistence × retrace (not magnitude); thin history → WATCH, never hold-through-a-hike. `build-cost-index` attaches it per ingredient.
+- **Confidence counts source TYPES, not correlated markets** — 8 terminals widen the range (families) but are one methodology for confidence; produce/chicken cap at "medium" honestly.
+- **FRED search** (`--discover-fred`) + restored ribeye/russet/8-terminal slots (search/keep, never drop). vegetable-oil mirror legs collapsed to one family/type.
+- Shared resilient transport (retry/backoff/parallel/last-good), unit-aware adapter (cents→dollars, wtdAvg, scoped match, per-case produce). check-all 149/151; unit tests 153/153.
+
 ## NEXT — to get the Cost Index live (in priority order)
 
 1. **Re-run verify with the unit fix (founder, needs keys).** chicken-breast +
