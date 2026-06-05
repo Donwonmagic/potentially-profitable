@@ -105,7 +105,7 @@ async function liveFetch(ingredient, m) {
     // so one market missing the commodity or one slow report drops only itself —
     // the others still contribute (the cardinal rule), without 8 sequential waits.
     const settled = await F.mapLimit(amsSpecs(m), F.AMS_CONCURRENCY,
-      (spec) => F.fetchAmsReport(spec.reportId, spec.section, auth).then((json) => ({ json, spec })));
+      (spec) => F.fetchAmsReport(spec.reportId, spec.section, auth, spec.windowDays).then((json) => ({ json, spec })));
     settled.forEach((r) => { if (r.ok) out.ams.push(r.value); });
   }
   if (m.lmr) {
@@ -114,7 +114,7 @@ async function liveFetch(ingredient, m) {
     const lauth = process.env.LMR_KEY ? 'Basic ' + Buffer.from(process.env.LMR_KEY + ':').toString('base64') : undefined;
     out.lmr = [];
     const settled = await F.mapLimit(lmrSpecs(m), F.AMS_CONCURRENCY,
-      (spec) => F.fetchLmrReport(spec.reportId, spec.section, lauth).then((json) => ({ json, spec })));
+      (spec) => F.fetchLmrReport(spec.reportId, spec.section, lauth, spec.windowDays).then((json) => ({ json, spec })));
     settled.forEach((r) => { if (r.ok) out.lmr.push(r.value); });
   }
   return out;
