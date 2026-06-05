@@ -105,6 +105,24 @@ export function validateIndex(index, sources, bounds, now = Date.now()) {
       if (issues.length) errors.push(`${key} @ ${p && p.asOf ? p.asOf : '?'}: ${issues.join(', ')}.`);
     }
   }
+
+  // ---- headline Basket (optional): validate shape + that it only claims what shipped ----
+  // build-cost-index recomputes it from the vendored set; absent/null is fine.
+  if (index && index.basket != null) {
+    const bk = index.basket;
+    if (typeof bk !== 'object') {
+      errors.push('basket must be an object or null.');
+    } else {
+      if (bk.pct != null && (typeof bk.pct !== 'number' || !isFinite(bk.pct))) errors.push('basket.pct must be a number or null.');
+      if (bk.coverage != null && (typeof bk.coverage !== 'number' || bk.coverage < 0 || bk.coverage > 1)) errors.push('basket.coverage must be within [0,1].');
+      if (bk.pct != null) {
+        if (!DATE_RE.test(bk.asOf || '')) errors.push('basket has a pct but no valid asOf.');
+        for (const c of (Array.isArray(bk.contributors) ? bk.contributors : [])) {
+          if (!c || !ingredients[c.ingredient]) errors.push(`basket contributor "${c && c.ingredient}" is not a vendored ingredient.`);
+        }
+      }
+    }
+  }
   return { errors, warnings };
 }
 
@@ -129,6 +147,10 @@ function selfTest() {
     ['non-empty + stale _lastReviewed FAILS', { _lastReviewed: '2026-01-01', _generatedFrom: 'verified-sources-only', ingredients: { ribeye: { points: [good] } } }, false],
     ['orphan ingredient FAILS', { _lastReviewed: '2026-06-01', _generatedFrom: 'verified-sources-only', ingredients: { saffron: { points: [good] } } }, false],
     ['missing _generatedFrom FAILS', { _lastReviewed: '2026-06-01', ingredients: {} }, false],
+    ['valid basket over a vendored ingredient passes', { _lastReviewed: '2026-06-01', _generatedFrom: 'verified-sources-only', ingredients: { ribeye: { points: [good] } }, basket: { pct: 0.05, coverage: 0.5, asOf: '2026-06-01', contributors: [{ ingredient: 'ribeye' }] } }, true],
+    ['basket claiming a non-vendored contributor FAILS', { _lastReviewed: '2026-06-01', _generatedFrom: 'verified-sources-only', ingredients: { ribeye: { points: [good] } }, basket: { pct: 0.05, coverage: 0.5, asOf: '2026-06-01', contributors: [{ ingredient: 'saffron' }] } }, false],
+    ['basket pct with no asOf FAILS', { _lastReviewed: '2026-06-01', _generatedFrom: 'verified-sources-only', ingredients: { ribeye: { points: [good] } }, basket: { pct: 0.05, coverage: 0.5, contributors: [{ ingredient: 'ribeye' }] } }, false],
+    ['null basket passes (empty canonical)', { _lastReviewed: '2026-06-01', _generatedFrom: 'verified-sources-only', ingredients: {}, basket: null }, true],
   ];
   let pass = 0;
   for (const [name, idx, shouldPass] of cases) {
