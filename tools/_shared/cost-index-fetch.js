@@ -129,30 +129,45 @@ function fetchLmrReport(reportId, sectionRaw, auth, days) {
   return fetchReport(LMR_BASE, reportId, sectionRaw == null ? '' : sectionRaw, auth, 'report_date', days);
 }
 
-var NOAA_TRADE_BASE = 'https://www.st.nmfs.noaa.gov/ords/foss/trade_data/';   // NOAA Fisheries customs trade (ORDS, keyless)
+// NOAA Fisheries customs trade (FOSS ORDS, keyless). The host has moved before,
+// and ORDS returns HTML without an Accept header — so try both hosts WITH the
+// JSON Accept header, using the first that returns parseable JSON.
+var NOAA_TRADE_HOSTS = [
+  'https://apps-st.fisheries.noaa.gov/ords/foss/trade_data/',
+  'https://www.st.nmfs.noaa.gov/ords/foss/trade_data/'
+];
+var NOAA_TRADE_BASE = NOAA_TRADE_HOSTS[0];
 
 // NOAA import unit value: pull recent trade_data rows (ORDS JSON), scoped to the
 // last `years` years, following ORDS pagination (items + hasMore) up to a cap.
-// Returns { items:[...] } for normalizeNoaaTrade. Keyless. Cached per run.
+// Returns { items:[...], _host } for normalizeNoaaTrade. Keyless. Cached per run.
 async function fetchNoaaTrade(opts) {
   opts = opts || {};
   var years = opts.years || 2;
   var fromYear = (new Date().getFullYear()) - (years - 1);
   var q = encodeURIComponent(JSON.stringify({ year: { '$gte': fromYear } }));   // ORDS filter
   var pageSize = opts.pageSize || 5000, cap = opts.maxRows || 50000;
+  var hosts = opts.hosts || NOAA_TRADE_HOSTS;
+  var headers = { Accept: 'application/json' };   // force JSON (ORDS serves HTML to header-less requests)
   var key = 'noaa-trade|' + fromYear + '|' + pageSize;
   if (_reportCache.has(key)) return _reportCache.get(key);
   var pr = (async function () {
-    var items = [], offset = 0;
-    for (var guard = 0; guard < 40; guard++) {
-      var url = NOAA_TRADE_BASE + '?q=' + q + '&limit=' + pageSize + '&offset=' + offset;
-      var j = await fetchJson(url);
-      var page = (j && (j.items || j.results)) || [];
-      items = items.concat(page);
-      if (!j || j.hasMore !== true || page.length === 0 || items.length >= cap) break;
-      offset += page.length;
+    var lastErr;
+    for (var hi = 0; hi < hosts.length; hi++) {
+      try {
+        var base = hosts[hi], items = [], offset = 0;
+        for (var guard = 0; guard < 40; guard++) {
+          var url = base + '?q=' + q + '&limit=' + pageSize + '&offset=' + offset;
+          var j = await fetchJson(url, { headers: headers });   // throws on HTML (json parse) → next host
+          var page = (j && (j.items || j.results)) || [];
+          items = items.concat(page);
+          if (!j || j.hasMore !== true || page.length === 0 || items.length >= cap) break;
+          offset += page.length;
+        }
+        return { items: items, _host: base };   // first host that returns parseable JSON wins
+      } catch (e) { lastErr = e; }               // HTML/parse/network → try the next host
     }
-    return { items: items };
+    throw lastErr || new Error('NOAA trade_data: no host returned JSON');
   })().catch(function (e) { _reportCache.delete(key); throw e; });
   _reportCache.set(key, pr);
   return pr;
