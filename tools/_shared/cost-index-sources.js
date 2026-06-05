@@ -124,7 +124,12 @@
    *   - 'mostlyMid'    → midpoint of the mostly band (fallback low/high). The
    *                      standard terminal-report read.
    *   - 'valuePerPound'→ dollars / pounds (value+quantity reports, NOAA-style).
-   *   - 'single'       → a single named field (fields.price | 'avg_price').
+   *   - 'single'       → a single named field. fields.price may be a string
+   *                      (one confirmed column) OR an array of candidate column
+   *                      names tried in order via pickField — used when a report
+   *                      (e.g. NDPSR cheddar) names its price column one of a few
+   *                      plausible ways and the live header isn't yet confirmed.
+   *                      Defaults to 'avg_price'.
    * Returns null when the needed fields are missing (row dropped, never guessed).
    */
   function reduceAmsRow(row, reducer, fields) {
@@ -142,7 +147,8 @@
       var p = num(row[fields.pounds || 'pounds']);
       raw = (d != null && p != null && p > 0) ? d / p : null;
     } else {
-      raw = num(row[fields.price || 'avg_price']);
+      var priceKeys = Array.isArray(fields.price) ? fields.price : [fields.price || 'avg_price'];
+      raw = num(pickField(row, priceKeys));
     }
     return raw == null ? null : raw * priceMeta(row, fields).scale;
   }
