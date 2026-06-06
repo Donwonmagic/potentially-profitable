@@ -57,7 +57,13 @@ const SKIP_PATH_PREFIXES = [
   'library/menu-design-cuisines/',
   'library/menu-design-themes/',
   'es/library/menu-design-cuisines/',
-  'es/library/menu-design-themes/'
+  'es/library/menu-design-themes/',
+  // Ingredient-yield pages — build-ingredient-yield-pages.mjs emits its
+  // own hreflang + og:locale block in the page <head>, same as the
+  // cuisine/theme generators above. Stamping a second block here would
+  // orphan the generator's lines after the sentinel.
+  'library/ingredient-yields/',
+  'es/library/ingredient-yields/'
 ];
 
 function collectHtml(dir, out = []) {

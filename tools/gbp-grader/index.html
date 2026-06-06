@@ -145,9 +145,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=ab576c3b2ed6" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-tool.css?v=cc214c77bfe0" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ab576c3b2ed6"><link rel="stylesheet" href="/assets/site-tool.css?v=cc214c77bfe0"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=933461d49609" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-tool.css?v=aee67503f378" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=933461d49609"><link rel="stylesheet" href="/assets/site-tool.css?v=aee67503f378"></noscript>
 <style>
   .gbp-hero{max-width:680px;margin:0 auto;text-align:center}
   .gbp-form{display:flex;gap:10px;max-width:560px;margin:32px auto 0}
@@ -489,6 +489,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
          via _redirects so old backlinks land softly. -->
     <nav class="nav-links" aria-label="Primary">
       <a href="/library/">Library</a>
+      <a href="/start/">Start</a>
       <a href="/tools/">Tools</a>
       <a href="/studio/">Studio</a>
       <!-- Ledger — sister product (the privacy-forward invoice ledger)
@@ -550,6 +551,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
        toggles js-nav-signin vs js-nav-workshop in both surfaces. -->
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
     <a href="/library/">Library</a>
+    <a href="/start/">Start</a>
     <a href="/tools/">Tools</a>
     <a href="/studio/">Studio</a>
     <a href="https://ledger.muntin.digital/">Ledger</a>
@@ -680,7 +682,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <span class="eyebrow">Free tool &middot; 10 seconds</span>
   <h1>Grade your<br><span class="serif-italic">Google Business Profile.</span></h1>
       <!-- tool-verified:start -->
-            <p class="tool-verified">Last verified: <time datetime="2026-05-31">May 31, 2026</time></p>
+            <p class="tool-verified">Last verified: <time datetime="2026-06-01">June 1, 2026</time></p>
             <!-- tool-verified:end -->
       <!-- data-promise:start -->
             <aside class="tool-data-promise" aria-label="Data promise">
@@ -853,6 +855,57 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     </div>
   </aside>
 <!-- /tool-knit -->
+
+  <!-- companion-kit:start -->
+  <aside class="companion-kit" data-surface="tool" data-source-slug="gbp-grader" aria-labelledby="companion-kit-h-tool-gbp-grader">
+    <div class="container">
+      <p class="companion-kit__eyebrow">The four corners</p>
+      <h2 id="companion-kit-h-tool-gbp-grader" class="companion-kit__h">Read, run, write down, look up.</h2>
+      <div class="companion-kit__grid">
+        <div class="companion-kit__col companion-kit__col--read">
+          <h3>Read</h3>
+        <ul class="companion-kit__list">
+        <li><a class="see-also-card" href="/library/how-to-set-up-google-business-profile-for-your-restaurant/">
+          <span class="see-also-kind">Article <span class="see-also-time">7 min read</span></span>
+          <h4>How to Set Up Google Business Profile for Your Restaurant</h4>
+          <p>A step-by-step guide to Google Business Profile for your restaurant: claiming, verification, categories, photos, menu links, and the settings owners miss.</p>
+        </a></li>
+        <li><a class="see-also-card" href="/library/my-restaurant-isnt-on-google-maps-10-minute-diagnostic/">
+          <span class="see-also-kind">Article <span class="see-also-time">6 min read</span></span>
+          <h4>My restaurant isn't on Google Maps: the 10-minute diagnostic</h4>
+          <p>Restaurant not on Google Maps? Four causes cover most cases: unclaimed profile, wrong category, suspended or duplicate listing. Diagnose and fix in 10 min.</p>
+        </a></li>
+        <li><a class="see-also-card" href="/library/restaurant-local-seo/">
+          <span class="see-also-kind">Article <span class="see-also-time">11 min read</span></span>
+          <h4>Restaurant Local SEO 101: How to Get Your Restaurant Found on Google</h4>
+          <p>Restaurant local SEO in plain English: get on Google Maps, rank the Map Pack, earn reviews, and get named in AI search — what actually moves bookings.</p>
+        </a></li>
+        </ul>
+        </div>
+        <div class="companion-kit__col companion-kit__col--try">
+          <h3>Run on your own site</h3>
+        <p class="companion-kit__self">You're on the tool. The other corners keep you moving.</p>
+        </div>
+        <div class="companion-kit__col companion-kit__col--write">
+          <h3>Write it down</h3>
+        <a class="companion-kit__single see-also-card" href="/sheets/gbp-monthly-audit/">
+          <span class="see-also-kind">Sheet</span>
+          <h4>GBP Monthly Health Check — Sheets</h4>
+          <p>Fifteen-minute walk of your Google Business Profile. Hours, primary category, photo count, posts, Q&amp;A, review velocity, NAP match versus your website…</p>
+        </a>
+        </div>
+        <div class="companion-kit__col companion-kit__col--lookup">
+          <h3>Look up</h3>
+        <ul class="companion-kit__chips">
+          <li><a class="glossary-chip" href="/glossary/gbp/">Google Business Profile</a></li>
+          <li><a class="glossary-chip" href="/glossary/map-pack/">Map pack</a></li>
+          <li><a class="glossary-chip" href="/glossary/nap-consistency/">NAP consistency</a></li>
+        </ul>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <!-- /companion-kit:end -->
 <!-- tool-course-crosslink:start -->
 <aside class="tool-course-crosslink" aria-labelledby="tcx-h">
   <p class="tcx-eyebrow">LESSON 11 · MODULE · ASSEMBLE</p>

@@ -201,9 +201,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=ab576c3b2ed6" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=eda1f9ad3f38" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ab576c3b2ed6"><link rel="stylesheet" href="/assets/site-article.css?v=eda1f9ad3f38"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=933461d49609" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=15ac955f199e" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=933461d49609"><link rel="stylesheet" href="/assets/site-article.css?v=15ac955f199e"></noscript>
 <!-- article-abstract-mentions:start -->
 <script type="application/ld+json">
 {
@@ -226,7 +226,19 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     },
     {
       "@type": "DefinedTerm",
+      "url": "https://muntin.digital/es/glossary/data-tiering/"
+    },
+    {
+      "@type": "DefinedTerm",
       "url": "https://muntin.digital/es/glossary/commission/"
+    },
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/es/glossary/pii/"
+    },
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/es/glossary/ssl-certificate/"
     },
     {
       "@type": "DefinedTerm",
@@ -296,6 +308,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
          /es/studio/ vía _redirects. -->
     <nav class="nav-links" aria-label="Principal">
       <a href="/es/library/">Biblioteca</a>
+      <a href="/es/start/">Comienza</a>
       <a href="/es/tools/">Herramientas</a>
       <a href="/es/studio/">Estudio</a>
       <a href="https://ledger.muntin.digital/">Ledger</a>
@@ -325,6 +338,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   </div>
   <nav class="mobile-menu" id="mobileMenu" aria-label="Navegación móvil" hidden>
     <a href="/es/library/">Biblioteca</a>
+    <a href="/es/start/">Comienza</a>
     <a href="/es/tools/">Herramientas</a>
     <a href="/es/studio/">Estudio</a>
     <a href="https://ledger.muntin.digital/">Ledger</a>
@@ -468,7 +482,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <p>La mayoría de las &ldquo;auditorías de <!-- LIBRARY:autolink:start --><a href="/es/glossary/margin/" data-glossary-head="Margen" data-glossary-aka="ventas menos costos; varios tipos" data-glossary-blurb="Ventas menos costos.">margen</a><!-- LIBRARY:autolink:end --> gratis&rdquo; tienen un precio. Solo se paga con datos. El patrón se repite: tecleas tu ticket real, tu <!-- LIBRARY:autolink:start --><a href="/es/glossary/food-cost/" data-glossary-head="Food cost" data-glossary-aka="costo de los insumos, como % de ventas" data-glossary-blurb="El costo de los ingredientes, alcohol y consumibles (productos de papel, empaque para llevar) expresado como porcentaje de ventas.">food cost</a><!-- LIBRARY:autolink:end --> real, tu mano de obra real — y la herramienta te devuelve un número. También tiende a devolverte vendedores en el inbox a la mañana siguiente, cada uno con una propuesta armada sobre números que nunca debían salir de tu oficina. La herramienta era el <!-- LIBRARY:autolink:start --><a href="/es/glossary/funnel/" data-glossary-head="Embudo" data-glossary-aka="el camino de visitante a cliente" data-glossary-blurb="La secuencia de pasos por los que pasa un visitante antes de convertirse en cliente — página de aterrizaje → página de menú → botón de reservar → formulario de reserva →…">embudo</a><!-- LIBRARY:autolink:end -->. Tus números eran el calificador.</p>
 
-      <p>El patrón se esconde porque nadie hace la pregunta obvia: ¿a dónde van mis inputs el momento en que los tecleo? En un navegador funcional, puedes responder eso en menos de un minuto. Este artículo es el framework — cinco pruebas, cuatro niveles de datos, un ejemplo trabajado — y al final, una checklist que puedes correr en cualquier herramienta.</p>
+      <p>El patrón se esconde porque nadie hace la pregunta obvia: ¿a dónde van mis inputs el momento en que los tecleo? En un navegador funcional, puedes responder eso en menos de un minuto. Este artículo es el framework — cinco pruebas, cuatro <!-- LIBRARY:autolink:start --><a href="/es/glossary/data-tiering/" data-glossary-head="Niveles de datos" data-glossary-aka="Modelo Tier 1 / 2 / 3 / 4" data-glossary-blurb="Una clasificación de cuatro niveles de los datos del negocio — Público, Competitivamente sensible, Operacionalmente confidencial, Regulado — que decide quién recibe qué…">niveles de datos</a><!-- LIBRARY:autolink:end -->, un ejemplo trabajado — y al final, una checklist que puedes correr en cualquier herramienta.</p>
 
       <p>Las herramientas que pasan estas pruebas te lo dicen claramente. Las que las fallan están a punto de explicarte por qué las pruebas no aplican a su caso. Esa es la pista.</p>
 
@@ -615,6 +629,62 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     </aside>
     <!-- post-end-cta:end -->
 
+  <!-- companion-kit:start -->
+  <aside class="companion-kit" data-surface="library" data-source-slug="how-to-tell-if-a-restaurant-tool-is-safe" aria-labelledby="companion-kit-h-library-how-to-tell-if-a-restaurant-tool-is-safe">
+    <div class="container">
+      <p class="companion-kit__eyebrow">Las cuatro esquinas</p>
+      <h2 id="companion-kit-h-library-how-to-tell-if-a-restaurant-tool-is-safe" class="companion-kit__h">Lee, corre, anota, busca.</h2>
+      <div class="companion-kit__grid">
+        <div class="companion-kit__col companion-kit__col--read">
+          <h3>Lee</h3>
+        <ul class="companion-kit__list">
+        <li><a class="see-also-card" href="/es/library/contabilidad-de-restaurante-con-privacidad/">
+          <span class="see-also-kind">Artículo</span>
+          <h4>Contabilidad de Restaurante con Privacidad: Lo que un Libro Digital Nunca Debe Hacer</h4>
+          <p>Contabilidad de restaurante con privacidad: las cinco cosas que un libro digital nunca debe hacer con tus números — y cómo verificar cada una.</p>
+        </a></li>
+        <li><a class="see-also-card" href="/library/restaurant-website-legal-essentials/">
+          <span class="see-also-kind">Artículo <span class="see-also-time">9 min de lectura</span></span>
+          <h4>Restaurant Website Legal &amp; Trust Essentials (2026): ToS, Privacy, Cookies, SSL</h4>
+          <p>The legal + trust layer of a restaurant website in 2026: ToS, privacy policy, cookie banner, SSL, footer-year, and the breach plan to keep ready.</p>
+        </a></li>
+        <li><a class="see-also-card" href="/library/best-restaurant-website-platform/">
+          <span class="see-also-kind">Artículo <span class="see-also-time">12 min de lectura</span></span>
+          <h4>Best Restaurant Website Platform (2026): Custom vs Wix, Squarespace, BentoBox, Popmenu, Owner.com &amp; Toast</h4>
+          <p>Best restaurant website platform 2026: custom vs Wix, Squarespace, BentoBox, Popmenu, Owner.com &amp; Toast — ownership, commissions, who each fits.</p>
+        </a></li>
+        </ul>
+        </div>
+        <div class="companion-kit__col companion-kit__col--try">
+          <h3>Corre en tu propio sitio</h3>
+        <a class="companion-kit__single see-also-card" href="/es/tools/storefront-health/">
+          <span class="see-also-kind">Herramienta</span>
+          <h4>Salud del Storefront — Una URL, seis chequeos, una calificación</h4>
+          <p>Pega la URL de tu restaurante y recibe una boleta unificada de SEO, velocidad, móvil, schema y GBP, con el siguiente arreglo enlazado. Gratis.</p>
+        </a>
+        </div>
+        <div class="companion-kit__col companion-kit__col--write">
+          <h3>Anota</h3>
+        <a class="companion-kit__single see-also-card" href="/es/sheets/incident-report/">
+          <span class="see-also-kind">Hoja</span>
+          <h4>Reporte de incidente (resbalón · lesión · cliente) — Hojas</h4>
+          <p>Fecha y hora, lugar, personas, testigos, descripción, fotos, acciones tomadas, firma del gerente. Se llena el día del incidente, no la semana después.</p>
+        </a>
+        </div>
+        <div class="companion-kit__col companion-kit__col--lookup">
+          <h3>Busca</h3>
+        <ul class="companion-kit__chips">
+          <li><a class="glossary-chip" href="/es/glossary/pii/">PII</a></li>
+          <li><a class="glossary-chip" href="/es/glossary/data-tiering/">Niveles de datos</a></li>
+          <li><a class="glossary-chip" href="/es/glossary/ssl-certificate/">Certificado SSL</a></li>
+        </ul>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <!-- /companion-kit:end -->
+
+
       <!-- smart-next:start -->
 <aside class="smart-next" aria-labelledby="smart-next-h">
   <p class="smart-next__eyebrow" id="smart-next-h">Qué hacer ahora</p>
@@ -729,7 +799,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">La ventana.</p>
-        <p class="foot-blurb">Una biblioteca gratuita para restaurantes &mdash; <!-- count:articles.library -->32<!-- /count --> art&iacute;culos, <!-- count:tools.live -->13<!-- /count --> herramientas y un glosario de <!-- count:glossary.terms -->149<!-- /count --> t&eacute;rminos &mdash; con un estudio web de una persona detr&aacute;s, en Silver Spring, MD. Se habla espa&ntilde;ol.</p>
+        <p class="foot-blurb">Una biblioteca gratuita para restaurantes &mdash; <!-- count:articles.library -->36<!-- /count --> art&iacute;culos, <!-- count:tools.live -->13<!-- /count --> herramientas y un glosario de <!-- count:glossary.terms -->149<!-- /count --> t&eacute;rminos &mdash; con un estudio web de una persona detr&aacute;s, en Silver Spring, MD. Se habla espa&ntilde;ol.</p>
       </div>
 
       <!-- El orden de columnas refleja la navegación principal de 5

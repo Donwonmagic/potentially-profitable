@@ -145,9 +145,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=ab576c3b2ed6" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-tool.css?v=cc214c77bfe0" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ab576c3b2ed6"><link rel="stylesheet" href="/assets/site-tool.css?v=cc214c77bfe0"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=933461d49609" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-tool.css?v=aee67503f378" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=933461d49609"><link rel="stylesheet" href="/assets/site-tool.css?v=aee67503f378"></noscript>
 <style>
   /* Storefront Health scorecard styles. Form, hero, note, result
      container, and CTA card live in site.css under "TOOL SHELL". */
@@ -397,6 +397,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
          via _redirects so old backlinks land softly. -->
     <nav class="nav-links" aria-label="Primary">
       <a href="/library/">Library</a>
+      <a href="/start/">Start</a>
       <a href="/tools/">Tools</a>
       <a href="/studio/">Studio</a>
       <!-- Ledger — sister product (the privacy-forward invoice ledger)
@@ -458,6 +459,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
        toggles js-nav-signin vs js-nav-workshop in both surfaces. -->
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
     <a href="/library/">Library</a>
+    <a href="/start/">Start</a>
     <a href="/tools/">Tools</a>
     <a href="/studio/">Studio</a>
     <a href="https://ledger.muntin.digital/">Ledger</a>
@@ -588,7 +590,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <span class="eyebrow">Free tool &middot; 60 seconds</span>
   <h1>Your storefront,<br><span class="serif-italic">scored.</span></h1>
       <!-- tool-verified:start -->
-            <p class="tool-verified">Last verified: <time datetime="2026-05-31">May 31, 2026</time></p>
+            <p class="tool-verified">Last verified: <time datetime="2026-06-01">June 1, 2026</time></p>
             <!-- tool-verified:end -->
       <!-- data-promise:start -->
             <aside class="tool-data-promise" aria-label="Data promise">
@@ -700,6 +702,58 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     </div>
   </aside>
 <!-- /tool-knit -->
+
+  <!-- companion-kit:start -->
+  <aside class="companion-kit" data-surface="tool" data-source-slug="storefront-health" aria-labelledby="companion-kit-h-tool-storefront-health">
+    <div class="container">
+      <p class="companion-kit__eyebrow">The four corners</p>
+      <h2 id="companion-kit-h-tool-storefront-health" class="companion-kit__h">Read, run, write down, look up.</h2>
+      <div class="companion-kit__grid">
+        <div class="companion-kit__col companion-kit__col--read">
+          <h3>Read</h3>
+        <ul class="companion-kit__list">
+        <li><a class="see-also-card" href="/library/restaurant-website-technical-seo-checklist/">
+          <span class="see-also-kind">Article <span class="see-also-time">11 min read</span></span>
+          <h4>Restaurant Website Technical SEO Checklist (2026): The Operator&rsquo;s Audit</h4>
+          <p>The technical SEO checklist for restaurant websites in 2026: page speed, mobile, schema, robots, sitemap — the audit you can run yourself.</p>
+        </a></li>
+        <li><a class="see-also-card" href="/library/what-should-be-on-a-restaurant-website/">
+          <span class="see-also-kind">Article <span class="see-also-time">5 min read</span></span>
+          <h4>What Should Be on a Restaurant Website? The 7 Pages That Matter</h4>
+          <p>The seven pages every restaurant website actually needs — and what belongs on each. No filler. A structural guide for a build or a rebuild.</p>
+        </a></li>
+        <li><a class="see-also-card" href="/library/reservation-conversion-guide/">
+          <span class="see-also-kind">Article <span class="see-also-time">10 min read</span></span>
+          <h4>Why Your Restaurant Loses Reservations Every Night (And How to Fix It)</h4>
+          <p>A real reservation-loss funnel: the six places your restaurant website quietly leaks diners, what each leak costs in dollars, and the fix for every one.</p>
+        </a></li>
+        </ul>
+        </div>
+        <div class="companion-kit__col companion-kit__col--try">
+          <h3>Run on your own site</h3>
+        <p class="companion-kit__self">You're on the tool. The other corners keep you moving.</p>
+        </div>
+        <div class="companion-kit__col companion-kit__col--write">
+          <h3>Write it down</h3>
+        <a class="companion-kit__single see-also-card" href="/sheets/website-conversion-checklist/">
+          <span class="see-also-kind">Sheet</span>
+          <h4>Website Conversion Checklist — Sheets</h4>
+          <p>Mobile menu loads in three seconds, click-to-call above the fold, reservation CTA above the fold, hours visible, address tap-to-map, allergen and menu…</p>
+        </a>
+        </div>
+        <div class="companion-kit__col companion-kit__col--lookup">
+          <h3>Look up</h3>
+        <ul class="companion-kit__chips">
+          <li><a class="glossary-chip" href="/glossary/core-web-vitals/">Core Web Vitals</a></li>
+          <li><a class="glossary-chip" href="/glossary/lighthouse/">Lighthouse</a></li>
+          <li><a class="glossary-chip" href="/glossary/gbp/">Google Business Profile</a></li>
+        </ul>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <!-- /companion-kit:end -->
+
 
 </main>
 

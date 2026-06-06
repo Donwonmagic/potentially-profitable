@@ -249,10 +249,18 @@ const CHECKS = [
   ['Article HowTo schema (idem)','inject-article-howto-schema.mjs','--check'],
   ['Article abstract+mentions (idem)','inject-article-abstract-mentions.mjs','--check'],
   ['Smart-next CTA (idem)','inject-smart-next-cta.mjs',     '--check'],
+  // Phase 2B (Cohesion) — Companion kit four-corner footer. The
+  // sentinel-bracketed block at the bottom of every library article,
+  // tool, sheet, and curated glossary page; resolves titles + deks
+  // from the live HTML so check fails on drift. See
+  // docs/start-here-canon.md §6 and data/cross-surface-map.json.
+  ['Companion kit (idem)','inject-companion-kit.mjs',       '--check'],
   ['KnitRail (idem)',     'inject-knit-rail.mjs',           '--check'],
   ['Ledger CTA (idem)',   'inject-ledger-cta.mjs',          '--check'],
   ['Topic eyebrow (idem)','inject-topic-eyebrow.mjs',       '--check'],
   ['Glossary term-example (idem)','inject-glossary-term-examples.mjs','--check'],
+  ['Glossary FAQ (idem)', 'inject-glossary-faq.mjs',                  '--check'],
+  ['Glossary SEO meta (idem)', 'inject-glossary-seo.mjs',             '--check'],
   ['Glossary article backlinks (idem)','inject-glossary-article-backlinks.mjs','--check'],
   ['Glossary deep anchors (idem)','inject-glossary-deep-anchors.mjs','--check'],
   ['Glossary verified stamp (idem)','inject-glossary-verified-stamp.mjs','--check'],

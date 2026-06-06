@@ -1,0 +1,1063 @@
+{
+  "_doc": "Source of truth for the Companion kit footer block injected at the bottom of every library article, live tool, operator sheet, and (where curated) glossary page. Each entry names the four corners: 3 related articles + 1 tool + 1 sheet + 3 glossary terms (libraries), or the symmetric shape per surface. The Phase 2 inject script (scripts/inject-companion-kit.mjs, not in this PR) reads this file, walks every surface, and writes the block between <!-- companion-kit:start --> ... <!-- /companion-kit:end --> sentinels. Idempotent: --check mode exits non-zero on drift. Missing entries fall back to topic-tag co-occurrence inferred from data/library-tags.json (the topic pillar of the source page, then the three highest-tag-co-occurring siblings). When you edit this file: (1) every slug referenced must exist on disk; (2) related_articles must be different from the source slug; (3) bump _lastReviewed and update docs/start-here-canon.md §6 if the pattern changes.",
+  "_lastReviewed": "2026-06-03",
+  "library": {
+    "ai-mode-reservation-strategy": {
+      "related_articles": [
+        "how-to-get-cited-in-google-ai-overviews-restaurant",
+        "reservation-conversion-guide",
+        "restaurant-local-seo"
+      ],
+      "tool": "storefront-health",
+      "sheet": "website-conversion-checklist",
+      "glossary": ["ai-overview", "reservation-link", "schema"]
+    },
+    "best-restaurant-website-platform": {
+      "related_articles": [
+        "wix-vs-custom-for-restaurants",
+        "custom-restaurant-website-pricing",
+        "when-to-rebuild-your-restaurant-website"
+      ],
+      "tool": "storefront-health",
+      "sheet": "menu-redesign-brief",
+      "glossary": ["hosting", "domain-name", "professional-email"]
+    },
+    "can-chatgpt-write-your-restaurant-website": {
+      "related_articles": [
+        "what-should-be-on-a-restaurant-website",
+        "how-to-get-cited-in-google-ai-overviews-restaurant",
+        "restaurant-local-seo"
+      ],
+      "tool": "menu-copy",
+      "sheet": "menu-redesign-brief",
+      "glossary": ["ai-overview", "menu-copy", "sensory-adjective"]
+    },
+    "commission-free-online-ordering-restaurants": {
+      "related_articles": [
+        "third-party-delivery-comparison",
+        "third-party-delivery-economics",
+        "restaurant-menu-engineering"
+      ],
+      "tool": "margin-math",
+      "sheet": "third-party-channel-pnl",
+      "glossary": ["commission", "owned-channel", "third-party-marketplace"]
+    },
+    "custom-restaurant-website-pricing": {
+      "related_articles": [
+        "best-restaurant-website-platform",
+        "wix-vs-custom-for-restaurants",
+        "how-to-hire-a-restaurant-web-designer"
+      ],
+      "tool": "brand-suite",
+      "sheet": "brand-asset-inventory",
+      "glossary": ["hosting", "domain-name", "ssl-certificate"]
+    },
+    "does-my-restaurant-need-a-website": {
+      "related_articles": [
+        "what-should-be-on-a-restaurant-website",
+        "best-restaurant-website-platform",
+        "restaurant-local-seo"
+      ],
+      "tool": "storefront-health",
+      "sheet": "website-conversion-checklist",
+      "glossary": ["gbp", "owned-channel", "reservation-link"]
+    },
+    "google-review-response-playbook": {
+      "related_articles": [
+        "how-to-get-more-google-reviews-for-your-restaurant",
+        "restaurant-local-seo",
+        "how-to-set-up-google-business-profile-for-your-restaurant"
+      ],
+      "tool": "gbp-grader",
+      "sheet": "review-response-log",
+      "glossary": ["review-responsiveness", "gbp", "social-proof"]
+    },
+    "how-to-get-cited-in-google-ai-overviews-restaurant": {
+      "related_articles": [
+        "ai-mode-reservation-strategy",
+        "restaurant-schema-markup-guide",
+        "restaurant-local-seo"
+      ],
+      "tool": "storefront-health",
+      "sheet": "local-keyword-map",
+      "glossary": ["ai-overview", "schema", "rich-results"]
+    },
+    "how-to-get-more-google-reviews-for-your-restaurant": {
+      "related_articles": [
+        "google-review-response-playbook",
+        "how-to-set-up-google-business-profile-for-your-restaurant",
+        "restaurant-local-seo"
+      ],
+      "tool": "gbp-grader",
+      "sheet": "review-response-log",
+      "glossary": ["review-responsiveness", "gbp", "social-proof"]
+    },
+    "how-to-hire-a-restaurant-web-designer": {
+      "related_articles": [
+        "custom-restaurant-website-pricing",
+        "best-restaurant-website-platform",
+        "wix-vs-custom-for-restaurants"
+      ],
+      "tool": "brand-suite",
+      "sheet": "brand-asset-inventory",
+      "glossary": ["brand-identity", "design-token", "logo-lockup"]
+    },
+    "how-to-raise-restaurant-menu-prices-without-losing-reservations": {
+      "related_articles": [
+        "restaurant-menu-engineering",
+        "restaurant-online-menu-best-practices",
+        "third-party-delivery-economics"
+      ],
+      "tool": "plate-cost",
+      "sheet": "recipe-cost-card",
+      "glossary": ["charm-pricing", "menu-mix", "contribution-margin"]
+    },
+    "how-to-read-restaurant-google-search-console": {
+      "related_articles": [
+        "restaurant-local-seo",
+        "restaurant-website-technical-seo-checklist",
+        "how-to-set-up-google-business-profile-for-your-restaurant"
+      ],
+      "tool": "storefront-health",
+      "sheet": "local-keyword-map",
+      "glossary": ["search-console", "title-tag", "rich-results"]
+    },
+    "how-to-set-up-google-business-profile-for-your-restaurant": {
+      "related_articles": [
+        "my-restaurant-isnt-on-google-maps-10-minute-diagnostic",
+        "restaurant-local-seo",
+        "how-to-get-more-google-reviews-for-your-restaurant"
+      ],
+      "tool": "gbp-grader",
+      "sheet": "gbp-monthly-audit",
+      "glossary": ["gbp", "map-pack", "nap-consistency"]
+    },
+    "how-to-tell-if-a-restaurant-tool-is-safe": {
+      "related_articles": [
+        "privacy-forward-restaurant-bookkeeping",
+        "restaurant-website-legal-essentials",
+        "best-restaurant-website-platform"
+      ],
+      "tool": "storefront-health",
+      "sheet": "incident-report",
+      "glossary": ["pii", "data-tiering", "ssl-certificate"]
+    },
+    "loyalty-program-roi": {
+      "related_articles": [
+        "commission-free-online-ordering-restaurants",
+        "third-party-delivery-economics",
+        "restaurant-menu-engineering"
+      ],
+      "tool": "margin-math",
+      "sheet": "email-list-growth-log",
+      "glossary": ["average-check", "owned-channel", "newsletter-capture"]
+    },
+    "my-restaurant-isnt-on-google-maps-10-minute-diagnostic": {
+      "related_articles": [
+        "how-to-set-up-google-business-profile-for-your-restaurant",
+        "restaurant-local-seo",
+        "how-to-read-restaurant-google-search-console"
+      ],
+      "tool": "gbp-grader",
+      "sheet": "gbp-monthly-audit",
+      "glossary": ["gbp", "map-pack", "nap-consistency"]
+    },
+    "privacy-forward-restaurant-bookkeeping": {
+      "related_articles": [
+        "how-to-tell-if-a-restaurant-tool-is-safe",
+        "restaurant-website-legal-essentials",
+        "commission-free-online-ordering-restaurants"
+      ],
+      "tool": "cost-pulse",
+      "sheet": "monthly-pnl-snapshot",
+      "glossary": ["pii", "data-tiering", "privacy-policy"]
+    },
+    "reservation-conversion-guide": {
+      "related_articles": [
+        "what-should-be-on-a-restaurant-website",
+        "restaurant-online-menu-best-practices",
+        "ai-mode-reservation-strategy"
+      ],
+      "tool": "storefront-health",
+      "sheet": "website-conversion-checklist",
+      "glossary": ["reservation-link", "conversion-rate", "funnel"]
+    },
+    "restaurant-app-decision": {
+      "related_articles": [
+        "does-my-restaurant-need-a-website",
+        "best-restaurant-website-platform",
+        "commission-free-online-ordering-restaurants"
+      ],
+      "tool": "storefront-health",
+      "sheet": "website-conversion-checklist",
+      "glossary": ["owned-channel", "online-ordering", "third-party-marketplace"]
+    },
+    "restaurant-brand-system-colors-type-logo": {
+      "related_articles": [
+        "restaurant-photo-spec-sheet",
+        "how-to-hire-a-restaurant-web-designer",
+        "best-restaurant-website-platform"
+      ],
+      "tool": "brand-suite",
+      "sheet": "brand-asset-inventory",
+      "glossary": ["color-palette", "logo-lockup", "wcag-contrast"]
+    },
+    "restaurant-local-seo": {
+      "related_articles": [
+        "how-to-set-up-google-business-profile-for-your-restaurant",
+        "restaurant-schema-markup-guide",
+        "restaurant-website-technical-seo-checklist"
+      ],
+      "tool": "gbp-grader",
+      "sheet": "local-keyword-map",
+      "glossary": ["gbp", "map-pack", "schema"]
+    },
+    "restaurant-menu-engineering": {
+      "related_articles": [
+        "how-to-raise-restaurant-menu-prices-without-losing-reservations",
+        "third-party-delivery-comparison",
+        "restaurant-online-menu-best-practices"
+      ],
+      "tool": "menu-engineering",
+      "sheet": "recipe-cost-card",
+      "glossary": ["menu-mix", "contribution-margin", "plate-cost"]
+    },
+    "restaurant-online-menu-best-practices": {
+      "related_articles": [
+        "what-should-be-on-a-restaurant-website",
+        "restaurant-menu-engineering",
+        "restaurant-photo-spec-sheet"
+      ],
+      "tool": "menu-converter",
+      "sheet": "menu-redesign-brief",
+      "glossary": ["html-menu", "menu-copy", "dietary-markers"]
+    },
+    "restaurant-photo-spec-sheet": {
+      "related_articles": [
+        "restaurant-brand-system-colors-type-logo",
+        "restaurant-online-menu-best-practices",
+        "how-to-set-up-google-business-profile-for-your-restaurant"
+      ],
+      "tool": "photo-brief",
+      "sheet": "photo-shot-list",
+      "glossary": ["photo-brief", "aspect-ratio", "hero-shot"]
+    },
+    "restaurant-schema-markup-guide": {
+      "related_articles": [
+        "restaurant-local-seo",
+        "restaurant-website-technical-seo-checklist",
+        "how-to-get-cited-in-google-ai-overviews-restaurant"
+      ],
+      "tool": "storefront-health",
+      "sheet": "local-keyword-map",
+      "glossary": ["schema", "structured-data", "rich-results"]
+    },
+    "restaurant-website-legal-essentials": {
+      "related_articles": [
+        "privacy-forward-restaurant-bookkeeping",
+        "how-to-tell-if-a-restaurant-tool-is-safe",
+        "best-restaurant-website-platform"
+      ],
+      "tool": "storefront-health",
+      "sheet": "incident-report",
+      "glossary": ["privacy-policy", "terms-of-service", "cookie-banner"]
+    },
+    "restaurant-website-technical-seo-checklist": {
+      "related_articles": [
+        "restaurant-local-seo",
+        "restaurant-schema-markup-guide",
+        "how-to-read-restaurant-google-search-console"
+      ],
+      "tool": "storefront-health",
+      "sheet": "website-conversion-checklist",
+      "glossary": ["core-web-vitals", "lcp", "cls"]
+    },
+    "service-charge-vs-tipping-model": {
+      "related_articles": [
+        "how-to-raise-restaurant-menu-prices-without-losing-reservations",
+        "restaurant-menu-engineering",
+        "third-party-delivery-economics"
+      ],
+      "tool": "margin-math",
+      "sheet": "monthly-pnl-snapshot",
+      "glossary": ["service-charge", "labor-cost", "honest-pricing"]
+    },
+    "third-party-delivery-comparison": {
+      "related_articles": [
+        "third-party-delivery-economics",
+        "commission-free-online-ordering-restaurants",
+        "restaurant-menu-engineering"
+      ],
+      "tool": "margin-math",
+      "sheet": "third-party-channel-pnl",
+      "glossary": ["commission", "third-party-marketplace", "owned-channel"]
+    },
+    "third-party-delivery-economics": {
+      "related_articles": [
+        "third-party-delivery-comparison",
+        "commission-free-online-ordering-restaurants",
+        "how-to-raise-restaurant-menu-prices-without-losing-reservations"
+      ],
+      "tool": "margin-math",
+      "sheet": "third-party-channel-pnl",
+      "glossary": ["commission", "third-party-marketplace", "break-even"]
+    },
+    "toast-vs-square-vs-clover-for-restaurants": {
+      "related_articles": [
+        "best-restaurant-website-platform",
+        "commission-free-online-ordering-restaurants",
+        "when-to-rebuild-your-restaurant-website"
+      ],
+      "tool": "storefront-health",
+      "sheet": "menu-redesign-brief",
+      "glossary": ["online-ordering", "owned-channel", "hosting"]
+    },
+    "what-should-be-on-a-restaurant-website": {
+      "related_articles": [
+        "reservation-conversion-guide",
+        "restaurant-online-menu-best-practices",
+        "best-restaurant-website-platform"
+      ],
+      "tool": "storefront-health",
+      "sheet": "website-conversion-checklist",
+      "glossary": ["reservation-link", "html-menu", "hours-of-operation"]
+    },
+    "when-to-rebuild-your-restaurant-website": {
+      "related_articles": [
+        "best-restaurant-website-platform",
+        "wix-vs-custom-for-restaurants",
+        "custom-restaurant-website-pricing"
+      ],
+      "tool": "storefront-health",
+      "sheet": "menu-redesign-brief",
+      "glossary": ["hosting", "responsive-design", "core-web-vitals"]
+    },
+    "wix-vs-custom-for-restaurants": {
+      "related_articles": [
+        "best-restaurant-website-platform",
+        "custom-restaurant-website-pricing",
+        "when-to-rebuild-your-restaurant-website"
+      ],
+      "tool": "storefront-health",
+      "sheet": "menu-redesign-brief",
+      "glossary": ["hosting", "domain-name", "responsive-design"]
+    }
+  },
+  "tools": {
+    "brand-suite": {
+      "related_articles": [
+        "restaurant-brand-system-colors-type-logo",
+        "restaurant-photo-spec-sheet",
+        "how-to-hire-a-restaurant-web-designer"
+      ],
+      "sheet": "brand-asset-inventory",
+      "glossary": ["color-palette", "wcag-contrast", "logo-lockup"]
+    },
+    "cost-pulse": {
+      "related_articles": [
+        "restaurant-menu-engineering",
+        "how-to-raise-restaurant-menu-prices-without-losing-reservations",
+        "privacy-forward-restaurant-bookkeeping"
+      ],
+      "sheet": "invoice-receiving-checklist",
+      "glossary": ["food-cost", "labor-cost", "fixed-costs"]
+    },
+    "gbp-grader": {
+      "related_articles": [
+        "how-to-set-up-google-business-profile-for-your-restaurant",
+        "my-restaurant-isnt-on-google-maps-10-minute-diagnostic",
+        "restaurant-local-seo"
+      ],
+      "sheet": "gbp-monthly-audit",
+      "glossary": ["gbp", "map-pack", "nap-consistency"]
+    },
+    "margin-math": {
+      "related_articles": [
+        "restaurant-menu-engineering",
+        "third-party-delivery-economics",
+        "how-to-raise-restaurant-menu-prices-without-losing-reservations"
+      ],
+      "sheet": "weekly-prime-cost-worksheet",
+      "glossary": ["prime-cost", "break-even", "contribution-margin"]
+    },
+    "menu-converter": {
+      "related_articles": [
+        "restaurant-online-menu-best-practices",
+        "what-should-be-on-a-restaurant-website",
+        "how-to-raise-restaurant-menu-prices-without-losing-reservations"
+      ],
+      "sheet": "menu-redesign-brief",
+      "glossary": ["html-menu", "schema", "dietary-markers"]
+    },
+    "menu-copy": {
+      "related_articles": [
+        "restaurant-online-menu-best-practices",
+        "restaurant-menu-engineering",
+        "how-to-raise-restaurant-menu-prices-without-losing-reservations"
+      ],
+      "sheet": "menu-redesign-brief",
+      "glossary": ["menu-copy", "sensory-adjective", "charm-pricing"]
+    },
+    "menu-engineering": {
+      "related_articles": [
+        "restaurant-menu-engineering",
+        "how-to-raise-restaurant-menu-prices-without-losing-reservations",
+        "restaurant-online-menu-best-practices"
+      ],
+      "sheet": "recipe-cost-card",
+      "glossary": ["menu-mix", "contribution-margin", "plate-cost"]
+    },
+    "photo-brief": {
+      "related_articles": [
+        "restaurant-photo-spec-sheet",
+        "restaurant-brand-system-colors-type-logo",
+        "how-to-set-up-google-business-profile-for-your-restaurant"
+      ],
+      "sheet": "photo-shot-list",
+      "glossary": ["photo-brief", "aspect-ratio", "hero-shot"]
+    },
+    "plate-cost": {
+      "related_articles": [
+        "restaurant-menu-engineering",
+        "how-to-raise-restaurant-menu-prices-without-losing-reservations",
+        "third-party-delivery-economics"
+      ],
+      "sheet": "recipe-cost-card",
+      "glossary": ["plate-cost", "yield-percent", "edible-portion"]
+    },
+    "restaurant-audit": {
+      "related_articles": [
+        "restaurant-website-technical-seo-checklist",
+        "reservation-conversion-guide",
+        "what-should-be-on-a-restaurant-website"
+      ],
+      "sheet": "website-conversion-checklist",
+      "glossary": ["core-web-vitals", "lighthouse", "lcp"]
+    },
+    "store-hours": {
+      "related_articles": [
+        "how-to-set-up-google-business-profile-for-your-restaurant",
+        "restaurant-local-seo",
+        "my-restaurant-isnt-on-google-maps-10-minute-diagnostic"
+      ],
+      "sheet": "holiday-hours-planner",
+      "glossary": ["hours-of-operation", "special-hours", "nap-consistency"]
+    },
+    "storefront-health": {
+      "related_articles": [
+        "restaurant-website-technical-seo-checklist",
+        "what-should-be-on-a-restaurant-website",
+        "reservation-conversion-guide"
+      ],
+      "sheet": "website-conversion-checklist",
+      "glossary": ["core-web-vitals", "lighthouse", "gbp"]
+    }
+  },
+  "sheets": {
+    "allergen-matrix": {
+      "related_articles": [
+        "restaurant-online-menu-best-practices",
+        "restaurant-website-legal-essentials",
+        "what-should-be-on-a-restaurant-website"
+      ],
+      "tool": "menu-converter",
+      "glossary": ["dietary-markers", "html-menu", "menu-copy"]
+    },
+    "brand-asset-inventory": {
+      "related_articles": [
+        "restaurant-brand-system-colors-type-logo",
+        "restaurant-photo-spec-sheet",
+        "how-to-hire-a-restaurant-web-designer"
+      ],
+      "tool": "brand-suite",
+      "glossary": ["brand-identity", "logo-lockup", "color-palette"]
+    },
+    "cash-handling-log": {
+      "related_articles": [
+        "privacy-forward-restaurant-bookkeeping",
+        "service-charge-vs-tipping-model",
+        "restaurant-website-legal-essentials"
+      ],
+      "tool": "cost-pulse",
+      "glossary": ["fixed-costs", "labor-cost", "incident-response"]
+    },
+    "complaint-root-cause-tracker": {
+      "related_articles": [
+        "google-review-response-playbook",
+        "how-to-get-more-google-reviews-for-your-restaurant",
+        "restaurant-website-legal-essentials"
+      ],
+      "tool": "gbp-grader",
+      "glossary": ["review-responsiveness", "social-proof", "trust"]
+    },
+    "daily-sales-recap": {
+      "related_articles": [
+        "restaurant-menu-engineering",
+        "how-to-raise-restaurant-menu-prices-without-losing-reservations",
+        "service-charge-vs-tipping-model"
+      ],
+      "tool": "margin-math",
+      "glossary": ["average-check", "menu-mix", "labor-cost"]
+    },
+    "daypart-traffic-map": {
+      "related_articles": [
+        "restaurant-menu-engineering",
+        "reservation-conversion-guide",
+        "how-to-raise-restaurant-menu-prices-without-losing-reservations"
+      ],
+      "tool": "margin-math",
+      "glossary": ["cover", "average-check", "labor-cost"]
+    },
+    "email-list-growth-log": {
+      "related_articles": [
+        "loyalty-program-roi",
+        "commission-free-online-ordering-restaurants",
+        "reservation-conversion-guide"
+      ],
+      "tool": "storefront-health",
+      "glossary": ["newsletter-capture", "owned-channel", "conversion-rate"]
+    },
+    "gbp-monthly-audit": {
+      "related_articles": [
+        "how-to-set-up-google-business-profile-for-your-restaurant",
+        "my-restaurant-isnt-on-google-maps-10-minute-diagnostic",
+        "restaurant-local-seo"
+      ],
+      "tool": "gbp-grader",
+      "glossary": ["gbp", "map-pack", "nap-consistency"]
+    },
+    "health-inspection-prep": {
+      "related_articles": [
+        "restaurant-website-legal-essentials",
+        "how-to-tell-if-a-restaurant-tool-is-safe",
+        "what-should-be-on-a-restaurant-website"
+      ],
+      "tool": "storefront-health",
+      "glossary": ["incident-response", "trust", "honest-pricing"]
+    },
+    "holiday-hours-planner": {
+      "related_articles": [
+        "how-to-set-up-google-business-profile-for-your-restaurant",
+        "restaurant-local-seo",
+        "what-should-be-on-a-restaurant-website"
+      ],
+      "tool": "store-hours",
+      "glossary": ["hours-of-operation", "special-hours", "holiday-hours"]
+    },
+    "incident-report": {
+      "related_articles": [
+        "restaurant-website-legal-essentials",
+        "privacy-forward-restaurant-bookkeeping",
+        "how-to-tell-if-a-restaurant-tool-is-safe"
+      ],
+      "tool": "storefront-health",
+      "glossary": ["incident-response", "pii", "privacy-policy"]
+    },
+    "inventory-count-sheet": {
+      "related_articles": [
+        "restaurant-menu-engineering",
+        "how-to-raise-restaurant-menu-prices-without-losing-reservations",
+        "third-party-delivery-economics"
+      ],
+      "tool": "cost-pulse",
+      "glossary": ["food-cost", "yield-percent", "variable-costs"]
+    },
+    "invoice-receiving-checklist": {
+      "related_articles": [
+        "restaurant-menu-engineering",
+        "how-to-raise-restaurant-menu-prices-without-losing-reservations",
+        "privacy-forward-restaurant-bookkeeping"
+      ],
+      "tool": "cost-pulse",
+      "glossary": ["food-cost", "variable-costs", "yield-percent"]
+    },
+    "line-check-sheet": {
+      "related_articles": [
+        "restaurant-menu-engineering",
+        "restaurant-online-menu-best-practices",
+        "restaurant-photo-spec-sheet"
+      ],
+      "tool": "plate-cost",
+      "glossary": ["food-cost", "yield-percent", "menu-mix"]
+    },
+    "local-keyword-map": {
+      "related_articles": [
+        "restaurant-local-seo",
+        "how-to-read-restaurant-google-search-console",
+        "restaurant-schema-markup-guide"
+      ],
+      "tool": "gbp-grader",
+      "glossary": ["gbp", "search-console", "rich-results"]
+    },
+    "menu-redesign-brief": {
+      "related_articles": [
+        "restaurant-online-menu-best-practices",
+        "restaurant-menu-engineering",
+        "restaurant-photo-spec-sheet"
+      ],
+      "tool": "menu-converter",
+      "glossary": ["html-menu", "menu-copy", "dietary-markers"]
+    },
+    "monthly-pnl-snapshot": {
+      "related_articles": [
+        "restaurant-menu-engineering",
+        "third-party-delivery-economics",
+        "service-charge-vs-tipping-model"
+      ],
+      "tool": "margin-math",
+      "glossary": ["prime-cost", "labor-cost", "fixed-costs"]
+    },
+    "nap-consistency-tracker": {
+      "related_articles": [
+        "how-to-set-up-google-business-profile-for-your-restaurant",
+        "my-restaurant-isnt-on-google-maps-10-minute-diagnostic",
+        "restaurant-local-seo"
+      ],
+      "tool": "gbp-grader",
+      "glossary": ["nap-consistency", "gbp", "map-pack"]
+    },
+    "photo-refresh-tracker": {
+      "related_articles": [
+        "restaurant-photo-spec-sheet",
+        "how-to-set-up-google-business-profile-for-your-restaurant",
+        "restaurant-brand-system-colors-type-logo"
+      ],
+      "tool": "photo-brief",
+      "glossary": ["photo-brief", "real-photos", "gbp-photo-count"]
+    },
+    "photo-shot-list": {
+      "related_articles": [
+        "restaurant-photo-spec-sheet",
+        "restaurant-brand-system-colors-type-logo",
+        "restaurant-online-menu-best-practices"
+      ],
+      "tool": "photo-brief",
+      "glossary": ["photo-brief", "aspect-ratio", "hero-shot"]
+    },
+    "recipe-cost-card": {
+      "related_articles": [
+        "how-to-raise-restaurant-menu-prices-without-losing-reservations",
+        "restaurant-menu-engineering",
+        "third-party-delivery-economics"
+      ],
+      "tool": "plate-cost",
+      "glossary": ["plate-cost", "yield-percent", "edible-portion"]
+    },
+    "reservation-no-show-log": {
+      "related_articles": [
+        "reservation-conversion-guide",
+        "ai-mode-reservation-strategy",
+        "what-should-be-on-a-restaurant-website"
+      ],
+      "tool": "storefront-health",
+      "glossary": ["reservation-link", "conversion-rate", "form-abandonment"]
+    },
+    "review-response-log": {
+      "related_articles": [
+        "google-review-response-playbook",
+        "how-to-get-more-google-reviews-for-your-restaurant",
+        "restaurant-local-seo"
+      ],
+      "tool": "gbp-grader",
+      "glossary": ["review-responsiveness", "gbp", "social-proof"]
+    },
+    "signage-spec-sheet": {
+      "related_articles": [
+        "restaurant-brand-system-colors-type-logo",
+        "restaurant-photo-spec-sheet",
+        "what-should-be-on-a-restaurant-website"
+      ],
+      "tool": "brand-suite",
+      "glossary": ["brand-identity", "logo-lockup", "clearspace"]
+    },
+    "social-content-calendar": {
+      "related_articles": [
+        "how-to-get-more-google-reviews-for-your-restaurant",
+        "restaurant-photo-spec-sheet",
+        "loyalty-program-roi"
+      ],
+      "tool": "photo-brief",
+      "glossary": ["social-proof", "newsletter-capture", "owned-channel"]
+    },
+    "staff-onboarding-checklist": {
+      "related_articles": [
+        "service-charge-vs-tipping-model",
+        "restaurant-website-legal-essentials",
+        "what-should-be-on-a-restaurant-website"
+      ],
+      "tool": "storefront-health",
+      "glossary": ["incident-response", "labor-cost", "trust"]
+    },
+    "third-party-channel-pnl": {
+      "related_articles": [
+        "third-party-delivery-economics",
+        "third-party-delivery-comparison",
+        "commission-free-online-ordering-restaurants"
+      ],
+      "tool": "margin-math",
+      "glossary": ["commission", "third-party-marketplace", "owned-channel"]
+    },
+    "vendor-contact-sheet": {
+      "related_articles": [
+        "privacy-forward-restaurant-bookkeeping",
+        "how-to-tell-if-a-restaurant-tool-is-safe",
+        "restaurant-website-legal-essentials"
+      ],
+      "tool": "cost-pulse",
+      "glossary": ["variable-costs", "fixed-costs", "incident-response"]
+    },
+    "waste-log": {
+      "related_articles": [
+        "restaurant-menu-engineering",
+        "how-to-raise-restaurant-menu-prices-without-losing-reservations",
+        "third-party-delivery-economics"
+      ],
+      "tool": "plate-cost",
+      "glossary": ["food-cost", "yield-percent", "edible-portion"]
+    },
+    "website-conversion-checklist": {
+      "related_articles": [
+        "reservation-conversion-guide",
+        "what-should-be-on-a-restaurant-website",
+        "restaurant-online-menu-best-practices"
+      ],
+      "tool": "storefront-health",
+      "glossary": ["conversion-rate", "reservation-link", "funnel"]
+    },
+    "weekly-prime-cost-worksheet": {
+      "related_articles": [
+        "restaurant-menu-engineering",
+        "third-party-delivery-economics",
+        "service-charge-vs-tipping-model"
+      ],
+      "tool": "margin-math",
+      "glossary": ["prime-cost", "labor-cost", "food-cost"]
+    }
+  },
+  "glossary": {
+    "ai-overview": {
+      "related_articles": [
+        "how-to-get-cited-in-google-ai-overviews-restaurant",
+        "ai-mode-reservation-strategy",
+        "restaurant-local-seo"
+      ],
+      "tool": "storefront-health",
+      "sheet": "local-keyword-map"
+    },
+    "average-check": {
+      "related_articles": [
+        "restaurant-menu-engineering",
+        "how-to-raise-restaurant-menu-prices-without-losing-reservations",
+        "loyalty-program-roi"
+      ],
+      "tool": "margin-math",
+      "sheet": "daily-sales-recap"
+    },
+    "break-even": {
+      "related_articles": [
+        "third-party-delivery-economics",
+        "third-party-delivery-comparison",
+        "commission-free-online-ordering-restaurants"
+      ],
+      "tool": "margin-math",
+      "sheet": "weekly-prime-cost-worksheet"
+    },
+    "brand-identity": {
+      "related_articles": [
+        "restaurant-brand-system-colors-type-logo",
+        "how-to-hire-a-restaurant-web-designer",
+        "restaurant-photo-spec-sheet"
+      ],
+      "tool": "brand-suite",
+      "sheet": "brand-asset-inventory"
+    },
+    "charm-pricing": {
+      "related_articles": [
+        "how-to-raise-restaurant-menu-prices-without-losing-reservations",
+        "restaurant-menu-engineering",
+        "restaurant-online-menu-best-practices"
+      ],
+      "tool": "menu-copy",
+      "sheet": "menu-redesign-brief"
+    },
+    "cls": {
+      "related_articles": [
+        "restaurant-website-technical-seo-checklist",
+        "restaurant-local-seo",
+        "what-should-be-on-a-restaurant-website"
+      ],
+      "tool": "storefront-health",
+      "sheet": "website-conversion-checklist"
+    },
+    "color-palette": {
+      "related_articles": [
+        "restaurant-brand-system-colors-type-logo",
+        "restaurant-photo-spec-sheet",
+        "how-to-hire-a-restaurant-web-designer"
+      ],
+      "tool": "brand-suite",
+      "sheet": "brand-asset-inventory"
+    },
+    "commission": {
+      "related_articles": [
+        "third-party-delivery-comparison",
+        "third-party-delivery-economics",
+        "commission-free-online-ordering-restaurants"
+      ],
+      "tool": "margin-math",
+      "sheet": "third-party-channel-pnl"
+    },
+    "contribution-margin": {
+      "related_articles": [
+        "restaurant-menu-engineering",
+        "how-to-raise-restaurant-menu-prices-without-losing-reservations",
+        "third-party-delivery-economics"
+      ],
+      "tool": "menu-engineering",
+      "sheet": "recipe-cost-card"
+    },
+    "conversion-rate": {
+      "related_articles": [
+        "reservation-conversion-guide",
+        "what-should-be-on-a-restaurant-website",
+        "restaurant-online-menu-best-practices"
+      ],
+      "tool": "storefront-health",
+      "sheet": "website-conversion-checklist"
+    },
+    "core-web-vitals": {
+      "related_articles": [
+        "restaurant-website-technical-seo-checklist",
+        "what-should-be-on-a-restaurant-website",
+        "reservation-conversion-guide"
+      ],
+      "tool": "storefront-health",
+      "sheet": "website-conversion-checklist"
+    },
+    "domain-name": {
+      "related_articles": [
+        "best-restaurant-website-platform",
+        "wix-vs-custom-for-restaurants",
+        "custom-restaurant-website-pricing"
+      ],
+      "tool": "storefront-health",
+      "sheet": "brand-asset-inventory"
+    },
+    "edible-portion": {
+      "related_articles": [
+        "restaurant-menu-engineering",
+        "how-to-raise-restaurant-menu-prices-without-losing-reservations",
+        "third-party-delivery-economics"
+      ],
+      "tool": "plate-cost",
+      "sheet": "recipe-cost-card"
+    },
+    "food-cost": {
+      "related_articles": [
+        "restaurant-menu-engineering",
+        "how-to-raise-restaurant-menu-prices-without-losing-reservations",
+        "third-party-delivery-economics"
+      ],
+      "tool": "plate-cost",
+      "sheet": "recipe-cost-card"
+    },
+    "funnel": {
+      "related_articles": [
+        "reservation-conversion-guide",
+        "what-should-be-on-a-restaurant-website",
+        "restaurant-online-menu-best-practices"
+      ],
+      "tool": "storefront-health",
+      "sheet": "website-conversion-checklist"
+    },
+    "gbp": {
+      "related_articles": [
+        "how-to-set-up-google-business-profile-for-your-restaurant",
+        "my-restaurant-isnt-on-google-maps-10-minute-diagnostic",
+        "restaurant-local-seo"
+      ],
+      "tool": "gbp-grader",
+      "sheet": "gbp-monthly-audit"
+    },
+    "hosting": {
+      "related_articles": [
+        "best-restaurant-website-platform",
+        "wix-vs-custom-for-restaurants",
+        "custom-restaurant-website-pricing"
+      ],
+      "tool": "storefront-health",
+      "sheet": "brand-asset-inventory"
+    },
+    "labor-cost": {
+      "related_articles": [
+        "service-charge-vs-tipping-model",
+        "restaurant-menu-engineering",
+        "how-to-raise-restaurant-menu-prices-without-losing-reservations"
+      ],
+      "tool": "margin-math",
+      "sheet": "weekly-prime-cost-worksheet"
+    },
+    "lcp": {
+      "related_articles": [
+        "restaurant-website-technical-seo-checklist",
+        "what-should-be-on-a-restaurant-website",
+        "reservation-conversion-guide"
+      ],
+      "tool": "storefront-health",
+      "sheet": "website-conversion-checklist"
+    },
+    "lighthouse": {
+      "related_articles": [
+        "restaurant-website-technical-seo-checklist",
+        "reservation-conversion-guide",
+        "what-should-be-on-a-restaurant-website"
+      ],
+      "tool": "storefront-health",
+      "sheet": "website-conversion-checklist"
+    },
+    "logo-lockup": {
+      "related_articles": [
+        "restaurant-brand-system-colors-type-logo",
+        "restaurant-photo-spec-sheet",
+        "how-to-hire-a-restaurant-web-designer"
+      ],
+      "tool": "brand-suite",
+      "sheet": "brand-asset-inventory"
+    },
+    "map-pack": {
+      "related_articles": [
+        "restaurant-local-seo",
+        "how-to-set-up-google-business-profile-for-your-restaurant",
+        "my-restaurant-isnt-on-google-maps-10-minute-diagnostic"
+      ],
+      "tool": "gbp-grader",
+      "sheet": "gbp-monthly-audit"
+    },
+    "menu-copy": {
+      "related_articles": [
+        "restaurant-online-menu-best-practices",
+        "how-to-raise-restaurant-menu-prices-without-losing-reservations",
+        "restaurant-menu-engineering"
+      ],
+      "tool": "menu-copy",
+      "sheet": "menu-redesign-brief"
+    },
+    "menu-mix": {
+      "related_articles": [
+        "restaurant-menu-engineering",
+        "how-to-raise-restaurant-menu-prices-without-losing-reservations",
+        "restaurant-online-menu-best-practices"
+      ],
+      "tool": "menu-engineering",
+      "sheet": "recipe-cost-card"
+    },
+    "nap-consistency": {
+      "related_articles": [
+        "how-to-set-up-google-business-profile-for-your-restaurant",
+        "my-restaurant-isnt-on-google-maps-10-minute-diagnostic",
+        "restaurant-local-seo"
+      ],
+      "tool": "gbp-grader",
+      "sheet": "nap-consistency-tracker"
+    },
+    "newsletter-capture": {
+      "related_articles": [
+        "loyalty-program-roi",
+        "reservation-conversion-guide",
+        "commission-free-online-ordering-restaurants"
+      ],
+      "tool": "storefront-health",
+      "sheet": "email-list-growth-log"
+    },
+    "owned-channel": {
+      "related_articles": [
+        "commission-free-online-ordering-restaurants",
+        "third-party-delivery-economics",
+        "loyalty-program-roi"
+      ],
+      "tool": "margin-math",
+      "sheet": "third-party-channel-pnl"
+    },
+    "photo-brief": {
+      "related_articles": [
+        "restaurant-photo-spec-sheet",
+        "restaurant-brand-system-colors-type-logo",
+        "how-to-set-up-google-business-profile-for-your-restaurant"
+      ],
+      "tool": "photo-brief",
+      "sheet": "photo-shot-list"
+    },
+    "plate-cost": {
+      "related_articles": [
+        "restaurant-menu-engineering",
+        "how-to-raise-restaurant-menu-prices-without-losing-reservations",
+        "third-party-delivery-economics"
+      ],
+      "tool": "plate-cost",
+      "sheet": "recipe-cost-card"
+    },
+    "prime-cost": {
+      "related_articles": [
+        "restaurant-menu-engineering",
+        "third-party-delivery-economics",
+        "how-to-raise-restaurant-menu-prices-without-losing-reservations"
+      ],
+      "tool": "margin-math",
+      "sheet": "weekly-prime-cost-worksheet"
+    },
+    "professional-email": {
+      "related_articles": [
+        "best-restaurant-website-platform",
+        "custom-restaurant-website-pricing",
+        "how-to-hire-a-restaurant-web-designer"
+      ],
+      "tool": "storefront-health",
+      "sheet": "brand-asset-inventory"
+    },
+    "reservation-link": {
+      "related_articles": [
+        "reservation-conversion-guide",
+        "what-should-be-on-a-restaurant-website",
+        "ai-mode-reservation-strategy"
+      ],
+      "tool": "storefront-health",
+      "sheet": "website-conversion-checklist"
+    },
+    "review-responsiveness": {
+      "related_articles": [
+        "google-review-response-playbook",
+        "how-to-get-more-google-reviews-for-your-restaurant",
+        "restaurant-local-seo"
+      ],
+      "tool": "gbp-grader",
+      "sheet": "review-response-log"
+    },
+    "schema": {
+      "related_articles": [
+        "restaurant-schema-markup-guide",
+        "restaurant-local-seo",
+        "how-to-get-cited-in-google-ai-overviews-restaurant"
+      ],
+      "tool": "storefront-health",
+      "sheet": "local-keyword-map"
+    },
+    "sensory-adjective": {
+      "related_articles": [
+        "restaurant-online-menu-best-practices",
+        "how-to-raise-restaurant-menu-prices-without-losing-reservations",
+        "restaurant-menu-engineering"
+      ],
+      "tool": "menu-copy",
+      "sheet": "menu-redesign-brief"
+    },
+    "yield-percent": {
+      "related_articles": [
+        "restaurant-menu-engineering",
+        "how-to-raise-restaurant-menu-prices-without-losing-reservations",
+        "third-party-delivery-economics"
+      ],
+      "tool": "plate-cost",
+      "sheet": "recipe-cost-card"
+    }
+  }
+}

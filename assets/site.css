@@ -329,6 +329,15 @@
 .prose h3,
 .article-body h3,
 .term-body h3{margin-top:1.4em}
+/* Glossary term FAQ (Wave G1) — a visible Q&A block under the term
+   body, mirrored by FAQPage JSON-LD. Answers are the term's own
+   fact-checked def/why prose, restated in question form for AEO. */
+.term-faq{margin-top:2.4em;padding-top:1.6em;border-top:1px solid var(--line)}
+.term-faq__h{font-family:var(--font-display);font-size:1.05rem;font-weight:600;letter-spacing:.02em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 1em}
+.term-faq__item{margin:0 0 1.2em}
+.term-faq__item:last-child{margin-bottom:0}
+.term-faq__q{font-family:var(--font-display);font-size:1.12rem;font-weight:600;color:var(--ink);margin:0 0 .35em}
+.term-faq__a{margin:0;color:var(--ink-soft);line-height:var(--leading-prose)}
 /* Drop cap is opt-in: add `prose--lede` to the wrapper to enable on
    the first paragraph only. Wrapped in @supports so older browsers
    fall through to plain ::first-letter and never break layout. Disabled
@@ -5925,6 +5934,133 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 .post-end-cta .btn-primary{background:var(--teal);color:var(--cream)}
 .post-end-cta .btn-primary:hover{background:var(--teal-dark)}
 
+/* @shell:core === Companion kit — four-corner cross-surface footer block === */
+/* ============ Companion kit (Phase 2B — cohesion) ============
+   The four-corner footer block — Read · Run · Write · Look up —
+   injected by scripts/inject-companion-kit.mjs at the bottom of
+   every library article, live tool, operator sheet, and curated
+   glossary page. Source of truth: data/cross-surface-map.json.
+   Spec: docs/start-here-canon.md §6.
+
+   Lives in CORE because tools load site-core+site-tool, sheets
+   load site-core+sheets, and library/glossary load site-core+
+   site-article — only core reaches all four surfaces. The
+   nested .see-also-card-style rules are scoped to the block so
+   they don't depend on the article shell. */
+
+.companion-kit{
+  margin:48px auto 64px;
+  padding:clamp(28px,4vw,40px) clamp(20px,3vw,28px);
+  background:var(--cream-2);
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+}
+.companion-kit .container{max-width:1100px;margin:0 auto}
+.companion-kit__eyebrow{
+  font-family:var(--font-body);font-size:11px;font-weight:700;
+  letter-spacing:0.14em;text-transform:uppercase;
+  color:var(--teal);margin:0 0 6px;
+}
+.companion-kit__h{
+  font-family:var(--font-display);
+  font-size:clamp(22px,2.6vw,30px);font-weight:500;
+  letter-spacing:-0.01em;line-height:1.2;
+  color:var(--ink);margin:0 0 28px;
+}
+.companion-kit__grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:clamp(16px,2vw,24px);
+}
+.companion-kit__col{display:flex;flex-direction:column;gap:12px}
+.companion-kit__col h3{
+  font-family:var(--font-body);font-size:11px;font-weight:700;
+  letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--ink-soft);margin:0 0 4px;
+}
+.companion-kit__list{
+  list-style:none;padding:0;margin:0;
+  display:flex;flex-direction:column;gap:10px;
+}
+.companion-kit__chips{
+  list-style:none;padding:0;margin:0;
+  display:flex;flex-wrap:wrap;gap:6px;
+}
+/* Self-corner sentence: same paragraph weight, dimmed. */
+.companion-kit__self{
+  font-size:13.5px;line-height:1.55;color:var(--stone);
+  font-style:italic;margin:0;
+}
+/* Self-corner dimming: in addition to the sentence-replacement,
+   tone down the column header so the eye reads the active
+   corners first. */
+.companion-kit[data-surface="tool"] .companion-kit__col--try h3,
+.companion-kit[data-surface="sheet"] .companion-kit__col--write h3,
+.companion-kit[data-surface="glossary"] .companion-kit__col--lookup h3{
+  color:var(--stone);opacity:0.7;
+}
+/* Nested see-also-card chrome. Re-stated here so the rules apply
+   even on surfaces that don't load site-article.css (tools, sheets).
+   Identical visual to the library article see-also block. */
+.companion-kit .see-also-card{
+  display:flex;flex-direction:column;height:100%;
+  padding:14px 16px;
+  background:var(--white);
+  border:1px solid var(--line);
+  border-radius:var(--r-sm);
+  text-decoration:none;color:inherit;
+  transition:border-color var(--t-fast) var(--ease),background var(--t-fast) var(--ease),transform var(--t-fast) var(--ease);
+}
+.companion-kit .see-also-card:hover{
+  border-color:var(--teal);
+  background:var(--white);
+  transform:translateY(-2px);
+}
+.companion-kit .see-also-kind{
+  font-family:var(--font-body);font-size:10px;font-weight:700;
+  letter-spacing:0.14em;text-transform:uppercase;
+  color:var(--teal);margin-bottom:6px;
+  display:inline-flex;align-items:center;gap:6px;
+}
+.companion-kit .see-also-time{
+  font-family:var(--font-body);font-size:10px;font-weight:500;
+  letter-spacing:0.06em;text-transform:none;
+  color:var(--stone);
+  padding-left:6px;border-left:1px solid var(--line);
+}
+.companion-kit .see-also-card h4{
+  font-family:var(--font-display);
+  font-size:15px;font-weight:500;
+  letter-spacing:-0.005em;line-height:1.3;
+  margin:0 0 4px;color:var(--ink);
+}
+.companion-kit .see-also-card p{
+  font-size:13px;line-height:1.5;color:var(--stone);margin:0;
+}
+.companion-kit__single{display:block}
+/* Glossary chip — link-only pill. Self-contained so tool/sheet
+   pages render the same look as glossary/library pages. */
+.companion-kit .glossary-chip{
+  display:inline-flex;align-items:center;
+  padding:4px 10px;font-size:12.5px;font-weight:500;
+  background:var(--white);border:1px solid var(--line);
+  border-radius:9999px;color:var(--ink-soft);
+  text-decoration:none;
+  transition:border-color var(--t-fast) var(--ease),color var(--t-fast) var(--ease),background var(--t-fast) var(--ease);
+}
+.companion-kit .glossary-chip:hover{
+  border-color:var(--teal);color:var(--teal-dark);
+  background:var(--teal-tint);
+}
+/* Mobile: 2x2 then 1-col. */
+@media (max-width:900px){
+  .companion-kit__grid{grid-template-columns:1fr 1fr}
+}
+@media (max-width:560px){
+  .companion-kit__grid{grid-template-columns:1fr}
+  .companion-kit{padding:24px 18px;margin:36px auto 48px}
+}
+
 /* @shell:core === Workshop rationale === */
 /* ============ Workshop rationale (Sprint 14 — cohesion) ============
    A small editorial block on /tools/, /glossary/, and a few other
@@ -7844,8 +7980,15 @@ table[data-viz-sortable] th[aria-sort="descending"]::after{content:"\2193";color
 /* @shell:core === Batch marquee === */
 /* ===== Batch marquee — fixed strip above the nav (.batch-marquee is on every page when a batch is active) ===== */
 .batch-marquee{position:fixed;top:0;left:0;right:0;z-index:60}
-body:has(.batch-marquee) header.nav{top:var(--banner-h,40px)}
-body:has(.batch-marquee) main{padding-top:calc(64px + var(--banner-h,40px))}
+/* The fixed nav is offset below the fixed banner by --banner-h (set to the
+   banner's real height by the inline measurer in the banner partial). The
+   max(...,50px) floor keeps the nav clear of the redesigned, taller banner
+   even when that measurement is missing or stale — e.g. course pages, which
+   don't load site.js and reflow late — so the banner can no longer overlap
+   the nav. The measured value still wins when it is larger (a two-line
+   banner on narrow widths). */
+body:has(.batch-marquee) header.nav{top:max(var(--banner-h,50px),50px)}
+body:has(.batch-marquee) main{padding-top:calc(64px + max(var(--banner-h,50px),50px))}
 @media (max-width:640px){:root{--banner-h:72px}}
 
 /* @shell:core === Phase 9 — Light refresh (micro-interactions, depth, voice search, dark-mode polish) === */

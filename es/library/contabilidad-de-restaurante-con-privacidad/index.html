@@ -221,9 +221,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=ab576c3b2ed6" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=eda1f9ad3f38" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ab576c3b2ed6"><link rel="stylesheet" href="/assets/site-article.css?v=eda1f9ad3f38"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=933461d49609" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=15ac955f199e" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=933461d49609"><link rel="stylesheet" href="/assets/site-article.css?v=15ac955f199e"></noscript>
 <!-- article-abstract-mentions:start -->
 <script type="application/ld+json">
 {
@@ -247,6 +247,14 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     {
       "@type": "DefinedTerm",
       "url": "https://muntin.digital/es/glossary/privacy-policy/"
+    },
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/es/glossary/data-tiering/"
+    },
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/es/glossary/pii/"
     }
   ]
 }
@@ -312,6 +320,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
          /es/studio/ vía _redirects. -->
     <nav class="nav-links" aria-label="Principal">
       <a href="/es/library/">Biblioteca</a>
+      <a href="/es/start/">Comienza</a>
       <a href="/es/tools/">Herramientas</a>
       <a href="/es/studio/">Estudio</a>
       <a href="https://ledger.muntin.digital/">Ledger</a>
@@ -341,6 +350,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   </div>
   <nav class="mobile-menu" id="mobileMenu" aria-label="Navegación móvil" hidden>
     <a href="/es/library/">Biblioteca</a>
+    <a href="/es/start/">Comienza</a>
     <a href="/es/tools/">Herramientas</a>
     <a href="/es/studio/">Estudio</a>
     <a href="https://ledger.muntin.digital/">Ledger</a>
@@ -554,7 +564,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <p>Todo operador quiere saber si su <!-- LIBRARY:autolink:start --><a href="/es/glossary/food-cost/" data-glossary-head="Food cost" data-glossary-aka="costo de los insumos, como % de ventas" data-glossary-blurb="El costo de los ingredientes, alcohol y consumibles (productos de papel, empaque para llevar) expresado como porcentaje de ventas.">food cost</a><!-- LIBRARY:autolink:end --> está alto para su concepto. Esa curiosidad es legítima; el precio de saciarla no debería ser que tu lista de proveedores se vuelva una fila en un dataset de comparación que nunca aceptaste sembrar. Opt-in, no opt-out. Agregado, no crudo.</p>
 
-      <p>La trampa es que un benchmark se siente como un regalo mientras toma inventario de tu negocio. El momento en que tu costo de proveedores se vuelve una fila en el dataset de comparación de alguien, salió de tu control, y no lo puedes regresar. Este es el modelo de cuatro niveles de la <a href="/es/library/como-saber-si-una-herramienta-de-restaurante-es-segura/#2-el-modelo-de-cuatro-niveles-que-compartir-donde">auditoría de herramientas</a> aplicado a la contabilidad: tu P&amp;L mensual y tu porcentaje de food cost son datos de Tier 3, operacionalmente confidenciales; tu lista de proveedores y tu costo real de bienes son de Tier 2. Ninguno fluye hacia arriba a un benchmark compartido solo porque el feature existe.</p>
+      <p>La trampa es que un benchmark se siente como un regalo mientras toma inventario de tu negocio. El momento en que tu costo de proveedores se vuelve una fila en el dataset de comparación de alguien, salió de tu control, y no lo puedes regresar. Este es el <!-- LIBRARY:autolink:start --><a href="/es/glossary/data-tiering/" data-glossary-head="Data tiering" data-glossary-aka="Tier 1 / 2 / 3 / 4 model" data-glossary-blurb="A four-tier classification of business data — Public, Competitive-sensitive, Operational-confidential, Regulated — that decides who gets which information.">modelo de cuatro niveles</a><!-- LIBRARY:autolink:end --> de la <a href="/es/library/como-saber-si-una-herramienta-de-restaurante-es-segura/#2-el-modelo-de-cuatro-niveles-que-compartir-donde">auditoría de herramientas</a> aplicado a la contabilidad: tu P&amp;L mensual y tu porcentaje de food cost son datos de Tier 3, operacionalmente confidenciales; tu lista de proveedores y tu costo real de bienes son de Tier 2. Ninguno fluye hacia arriba a un benchmark compartido solo porque el feature existe.</p>
 
       <p>La verificación tiene dos partes. Primero, el default: un libro con privacidad envía los features de comparación apagados, y prenderlos es una decisión deliberada con una declaración clara de qué sale de tu cuenta. Segundo, la forma de lo que viaja: incluso en un benchmark opt-in, lo que debería salir es un agregado anonimizado, nunca tus partidas crudas. Si el pitch de una herramienta empieza con &ldquo;mira cómo te comparas con otros restaurantes&rdquo; y nunca aceptaste contribuir, tus números ya están en el pool. La versión honesta del feature dice, en claro, que tus datos siguen siendo tuyos y que el benchmark es algo a lo que te unes, no algo que te hacen.</p>
 
@@ -677,6 +687,62 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <a class="btn btn-primary" href="/es/learn/checklists/audit-any-tool/?from=library%2Fcontabilidad-de-restaurante-con-privacidad">Abrir la checklist<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></a>
     </aside>
     <!-- post-end-cta:end -->
+
+  <!-- companion-kit:start -->
+  <aside class="companion-kit" data-surface="library" data-source-slug="privacy-forward-restaurant-bookkeeping" aria-labelledby="companion-kit-h-library-privacy-forward-restaurant-bookkeeping">
+    <div class="container">
+      <p class="companion-kit__eyebrow">Las cuatro esquinas</p>
+      <h2 id="companion-kit-h-library-privacy-forward-restaurant-bookkeeping" class="companion-kit__h">Lee, corre, anota, busca.</h2>
+      <div class="companion-kit__grid">
+        <div class="companion-kit__col companion-kit__col--read">
+          <h3>Lee</h3>
+        <ul class="companion-kit__list">
+        <li><a class="see-also-card" href="/es/library/como-saber-si-una-herramienta-de-restaurante-es-segura/">
+          <span class="see-also-kind">Artículo</span>
+          <h4>Cómo Saber Si una Herramienta de Restaurante Es Segura</h4>
+          <p>Framework de 5 pruebas para cualquier herramienta gratis, en tu navegador en menos de un minuto, antes de teclear un número real. Y el modelo de 4 niveles.</p>
+        </a></li>
+        <li><a class="see-also-card" href="/library/restaurant-website-legal-essentials/">
+          <span class="see-also-kind">Artículo <span class="see-also-time">9 min de lectura</span></span>
+          <h4>Restaurant Website Legal &amp; Trust Essentials (2026): ToS, Privacy, Cookies, SSL</h4>
+          <p>The legal + trust layer of a restaurant website in 2026: ToS, privacy policy, cookie banner, SSL, footer-year, and the breach plan to keep ready.</p>
+        </a></li>
+        <li><a class="see-also-card" href="/library/commission-free-online-ordering-restaurants/">
+          <span class="see-also-kind">Artículo <span class="see-also-time">11 min de lectura</span></span>
+          <h4>Commission-Free Online Ordering for Restaurants (2026): Owner.com vs Toast vs Your Own Site</h4>
+          <p>Commission-free online ordering compared: Owner.com, Toast, and your own site vs the 15–30% marketplaces — what each really costs and who it fits.</p>
+        </a></li>
+        </ul>
+        </div>
+        <div class="companion-kit__col companion-kit__col--try">
+          <h3>Corre en tu propio sitio</h3>
+        <a class="companion-kit__single see-also-card" href="/es/tools/cost-pulse/">
+          <span class="see-also-kind">Herramienta</span>
+          <h4>Pulso de Costos — Tendencias de costos para tu restaurante</h4>
+          <p>Panel gratuito para restaurantes independientes: detecta deriva en costos, cambios por categoría y medianas móviles entre tus facturas. En tu dispositivo.</p>
+        </a>
+        </div>
+        <div class="companion-kit__col companion-kit__col--write">
+          <h3>Anota</h3>
+        <a class="companion-kit__single see-also-card" href="/es/sheets/monthly-pnl-snapshot/">
+          <span class="see-also-kind">Hoja</span>
+          <h4>Resumen mensual de P&amp;G — Hojas</h4>
+          <p>Un P&amp;G de una página que el operador lee en 90 segundos — no la versión del contador. Ventas por daypart, costo de mercancía, mano de obra, ocupación…</p>
+        </a>
+        </div>
+        <div class="companion-kit__col companion-kit__col--lookup">
+          <h3>Busca</h3>
+        <ul class="companion-kit__chips">
+          <li><a class="glossary-chip" href="/es/glossary/pii/">PII</a></li>
+          <li><a class="glossary-chip" href="/es/glossary/data-tiering/">Niveles de datos</a></li>
+          <li><a class="glossary-chip" href="/es/glossary/privacy-policy/">Política de privacidad</a></li>
+        </ul>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <!-- /companion-kit:end -->
+
 
       <!-- smart-next:start -->
 <aside class="smart-next" aria-labelledby="smart-next-h">
@@ -818,7 +884,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">La ventana.</p>
-        <p class="foot-blurb">Una biblioteca gratuita para restaurantes &mdash; <!-- count:articles.library -->32<!-- /count --> art&iacute;culos, <!-- count:tools.live -->13<!-- /count --> herramientas y un glosario de <!-- count:glossary.terms -->149<!-- /count --> t&eacute;rminos &mdash; con un estudio web de una persona detr&aacute;s, en Silver Spring, MD. Se habla espa&ntilde;ol.</p>
+        <p class="foot-blurb">Una biblioteca gratuita para restaurantes &mdash; <!-- count:articles.library -->36<!-- /count --> art&iacute;culos, <!-- count:tools.live -->13<!-- /count --> herramientas y un glosario de <!-- count:glossary.terms -->149<!-- /count --> t&eacute;rminos &mdash; con un estudio web de una persona detr&aacute;s, en Silver Spring, MD. Se habla espa&ntilde;ol.</p>
       </div>
 
       <!-- El orden de columnas refleja la navegación principal de 5

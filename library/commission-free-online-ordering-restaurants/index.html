@@ -215,9 +215,9 @@ main{padding-top:64px}
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-italic.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-italic.woff2" crossorigin>
-<link rel="preload" as="style" href="/assets/site-core.css?v=ab576c3b2ed6" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=eda1f9ad3f38" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ab576c3b2ed6"><link rel="stylesheet" href="/assets/site-article.css?v=eda1f9ad3f38"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=933461d49609" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=15ac955f199e" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=933461d49609"><link rel="stylesheet" href="/assets/site-article.css?v=15ac955f199e"></noscript>
 
 <!-- lazy-load:p --><script>(window.requestIdleCallback||function(c){return setTimeout(c,500);})(function(){var s=document.createElement("script");s.src="/assets/p.js?v=20260503";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:p -->
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
@@ -243,7 +243,15 @@ main{padding-top:64px}
     },
     {
       "@type": "DefinedTerm",
+      "url": "https://muntin.digital/glossary/gift-card-checkout/"
+    },
+    {
+      "@type": "DefinedTerm",
       "url": "https://muntin.digital/glossary/owned-channel/"
+    },
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/glossary/third-party-marketplace/"
     }
   ]
 }
@@ -309,6 +317,7 @@ main{padding-top:64px}
          via _redirects so old backlinks land softly. -->
     <nav class="nav-links" aria-label="Primary">
       <a href="/library/">Library</a>
+      <a href="/start/">Start</a>
       <a href="/tools/">Tools</a>
       <a href="/studio/">Studio</a>
       <!-- Ledger — sister product (the privacy-forward invoice ledger)
@@ -370,6 +379,7 @@ main{padding-top:64px}
        toggles js-nav-signin vs js-nav-workshop in both surfaces. -->
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
     <a href="/library/">Library</a>
+    <a href="/start/">Start</a>
     <a href="/tools/">Tools</a>
     <a href="/studio/">Studio</a>
     <a href="https://ledger.muntin.digital/">Ledger</a>
@@ -662,11 +672,11 @@ main{padding-top:64px}
 
     <h2 id="your-own-site-custom">Your own site (custom) &mdash; own the order, pick your processor</h2>
 
-    <p>A custom site with a real ordering integration takes 0% to anyone but the payment processor &mdash; roughly 2.9% + 30&cent; per order to Stripe. The catch is upfront build cost and a real ordering surface, not a Stripe button stapled to a menu.</p>
+    <p>A custom site with a real ordering integration takes 0% to anyone but the payment processor &mdash; roughly 2.9% + 30&cent; per order to Stripe. The catch is upfront build cost and a real ordering surface, not a Stripe button stapled to a menu &mdash; if you go this route, <a href="/library/how-to-hire-a-restaurant-web-designer/">how to hire a restaurant web designer</a> covers what to ask and what to pay.</p>
 
     <p>The per-order math is the cleanest in the comparison. A $100 ticket costs $3.20 in processing &mdash; full stop. There is no platform monthly fee, no guest support fee, no second-layer charge. Hosting is real but small; a restaurant site at typical traffic levels runs $10 to $30 a month on a real hosting provider, plus the annual domain registration. On a per-$100-order basis with 200 orders a week, the hosting amortizes to under $0.10 per ticket. The total per-order cost lands at about $3.30 &mdash; the floor of the comparison.</p>
 
-    <p>The catch is two-fold. First, a real ordering integration is real software. The simple version is Stripe Checkout for a single-item flow (a private dinner deposit, a gift-card purchase, a fixed-price tasting menu); the full version is an order builder with menu modifiers, kitchen-ticket integration, scheduled-order support, delivery-zone routing, and the operator dashboard. The simple version is a weekend of work; the full version is a real software project, which is why the platforms exist in the first place. Second, the upfront cost is real. A built-to-order restaurant ordering site lives in the $5,000 to $30,000 range as of May 2026 depending on integration depth, walked in <a href="/library/custom-restaurant-website-pricing/">custom restaurant website pricing</a>. That cost is paid once; the platforms charge it every month forever.</p>
+    <p>The catch is two-fold. First, a real ordering integration is real software. The simple version is Stripe Checkout for a single-item flow (a private dinner deposit, a <!-- LIBRARY:autolink:start --><a href="/glossary/gift-card-checkout/" data-glossary-head="Gift-card checkout" data-glossary-aka="e-gift, digital gift card" data-glossary-blurb="A page on your site where someone can buy a gift card in minutes, usually delivered as an email with a code the recipient redeems in-house or online.">gift-card purchase</a><!-- LIBRARY:autolink:end -->, a fixed-price tasting menu); the full version is an order builder with menu modifiers, kitchen-ticket integration, scheduled-order support, delivery-zone routing, and the operator dashboard. The simple version is a weekend of work; the full version is a real software project, which is why the platforms exist in the first place. Second, the upfront cost is real. A built-to-order restaurant ordering site lives in the $5,000 to $30,000 range as of May 2026 depending on integration depth, walked in <a href="/library/custom-restaurant-website-pricing/">custom restaurant website pricing</a>. That cost is paid once; the platforms charge it every month forever.</p>
 
     <details class="cite">
       <summary>Source: payment-processor card-not-present rates, May 2026</summary>
@@ -836,6 +846,62 @@ main{padding-top:64px}
       <a class="btn btn-primary" href="/tools/audits/restaurant/?from=library%2Fcommission-free-online-ordering-restaurants">Open the audit<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></a>
     </aside>
     <!-- post-end-cta:end -->
+
+  <!-- companion-kit:start -->
+  <aside class="companion-kit" data-surface="library" data-source-slug="commission-free-online-ordering-restaurants" aria-labelledby="companion-kit-h-library-commission-free-online-ordering-restaurants">
+    <div class="container">
+      <p class="companion-kit__eyebrow">The four corners</p>
+      <h2 id="companion-kit-h-library-commission-free-online-ordering-restaurants" class="companion-kit__h">Read, run, write down, look up.</h2>
+      <div class="companion-kit__grid">
+        <div class="companion-kit__col companion-kit__col--read">
+          <h3>Read</h3>
+        <ul class="companion-kit__list">
+        <li><a class="see-also-card" href="/library/third-party-delivery-comparison/">
+          <span class="see-also-kind">Article <span class="see-also-time">8 min read</span></span>
+          <h4>Uber Eats vs DoorDash vs Grubhub: the honest math for independent restaurants</h4>
+          <p>Three delivery platforms, the same $42 ticket, the same line items. Side-by-side margin walks, the marketing-fee trap nobody mentions, and the one to drop.</p>
+        </a></li>
+        <li><a class="see-also-card" href="/library/third-party-delivery-economics/">
+          <span class="see-also-kind">Article <span class="see-also-time">7 min read</span></span>
+          <h4>An honest DoorDash math for independent restaurants</h4>
+          <p>The real math behind a DoorDash order at a DMV restaurant — commission, processing, packaging, food, labor, fees — and the breakeven for switching.</p>
+        </a></li>
+        <li><a class="see-also-card" href="/library/restaurant-menu-engineering/">
+          <span class="see-also-kind">Article <span class="see-also-time">11 min read</span></span>
+          <h4>Restaurant Menu Engineering (2026): The Math Behind Which Dishes Make Money</h4>
+          <p>Restaurant menu engineering, plainly: plate cost, edible portion, yield, mix, and the elasticity tests that fix margin without raising headline prices.</p>
+        </a></li>
+        </ul>
+        </div>
+        <div class="companion-kit__col companion-kit__col--try">
+          <h3>Run on your own site</h3>
+        <a class="companion-kit__single see-also-card" href="/tools/margin-math/">
+          <span class="see-also-kind">Tool</span>
+          <h4>Margin Math — Free Client-Side Restaurant Finance Calculators</h4>
+          <p>Decision-support math for your specific restaurant: delivery break-even, price-raise simulation, prime cost, covers needed. Numbers stay in your browser.</p>
+        </a>
+        </div>
+        <div class="companion-kit__col companion-kit__col--write">
+          <h3>Write it down</h3>
+        <a class="companion-kit__single see-also-card" href="/sheets/third-party-channel-pnl/">
+          <span class="see-also-kind">Sheet</span>
+          <h4>Third-Party Channel P&amp;L — Sheets</h4>
+          <p>Run the honest math on DoorDash, Uber Eats, or Grubhub. Gross sales minus commission, marketing fees, refunds, packaging, and the labor those orders…</p>
+        </a>
+        </div>
+        <div class="companion-kit__col companion-kit__col--lookup">
+          <h3>Look up</h3>
+        <ul class="companion-kit__chips">
+          <li><a class="glossary-chip" href="/glossary/commission/">Commission</a></li>
+          <li><a class="glossary-chip" href="/glossary/owned-channel/">Owned channel</a></li>
+          <li><a class="glossary-chip" href="/glossary/third-party-marketplace/">Third-party marketplace</a></li>
+        </ul>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <!-- /companion-kit:end -->
+
     <!-- smart-next:start -->
 <aside class="smart-next" aria-labelledby="smart-next-h">
   <p class="smart-next__eyebrow" id="smart-next-h">What to do next</p>
@@ -961,7 +1027,7 @@ main{padding-top:64px}
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->32<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->149<!-- /count --> glossary terms &mdash; with a one-person web studio behind it in Silver Spring, MD.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->149<!-- /count --> glossary terms &mdash; with a one-person web studio behind it in Silver Spring, MD.</p>
       </div>
 
       <!-- Column order mirrors the 4-item primary nav

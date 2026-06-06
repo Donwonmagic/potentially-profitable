@@ -193,9 +193,9 @@ main{padding-top:64px}
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-italic.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-italic.woff2" crossorigin>
-<link rel="preload" as="style" href="/assets/site-core.css?v=ab576c3b2ed6" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=eda1f9ad3f38" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ab576c3b2ed6"><link rel="stylesheet" href="/assets/site-article.css?v=eda1f9ad3f38"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=933461d49609" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=15ac955f199e" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=933461d49609"><link rel="stylesheet" href="/assets/site-article.css?v=15ac955f199e"></noscript>
 
 <!-- lazy-load:p --><script>(window.requestIdleCallback||function(c){return setTimeout(c,500);})(function(){var s=document.createElement("script");s.src="/assets/p.js?v=20260503";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:p -->
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
@@ -213,11 +213,27 @@ main{padding-top:64px}
     },
     {
       "@type": "DefinedTerm",
+      "url": "https://muntin.digital/glossary/menu-copy/"
+    },
+    {
+      "@type": "DefinedTerm",
       "url": "https://muntin.digital/glossary/domain-name/"
     },
     {
       "@type": "DefinedTerm",
       "url": "https://muntin.digital/glossary/hosting/"
+    },
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/glossary/brand-identity/"
+    },
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/glossary/design-token/"
+    },
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/glossary/logo-lockup/"
     }
   ]
 }
@@ -288,6 +304,7 @@ main{padding-top:64px}
          via _redirects so old backlinks land softly. -->
     <nav class="nav-links" aria-label="Primary">
       <a href="/library/">Library</a>
+      <a href="/start/">Start</a>
       <a href="/tools/">Tools</a>
       <a href="/studio/">Studio</a>
       <!-- Ledger — sister product (the privacy-forward invoice ledger)
@@ -349,6 +366,7 @@ main{padding-top:64px}
        toggles js-nav-signin vs js-nav-workshop in both surfaces. -->
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
     <a href="/library/">Library</a>
+    <a href="/start/">Start</a>
     <a href="/tools/">Tools</a>
     <a href="/studio/">Studio</a>
     <a href="https://ledger.muntin.digital/">Ledger</a>
@@ -555,7 +573,7 @@ main{padding-top:64px}
 
     <p>Before vetting builders, name what the site is for. A restaurant website is an <!-- LIBRARY:autolink:start --><a href="/glossary/owned-channel/" data-glossary-head="Owned channel" data-glossary-aka="a customer path you control" data-glossary-blurb="Any customer relationship, ordering path, or data stream you control end-to-end — your website, your direct-ordering link, your email list.">owned channel</a><!-- LIBRARY:autolink:end --> that has to do six jobs cleanly: answer the search query, hold the menu, hand off the booking, take the direct order, route the call, and feed the schema.</p>
 
-    <p>Search-query handling means the page reads cleanly when Google quotes it, which is mostly a writing job. Menu means the live menu in real HTML &mdash; not a PDF, not a photographed laminated card, not a Canva image &mdash; because Google&rsquo;s extractor and an AI assistant both have to read it as text. Booking is the click that hands the guest to OpenTable, Resy, or whichever reservation system you run, in one tap from the home page. Direct ordering is the click that keeps the transaction off a 15-to-30-percent commission platform. Routing the call is the phone-number link that opens the dialer on mobile. Feeding the schema is the structured-data block that names the cuisine, hours, address, and menu so the result reads correctly in search and Maps. A restaurant specialist builds for these six jobs by default. A generalist asks what they are. A template reseller hands you a template that does two of them.</p>
+    <p>Search-query handling means the page reads cleanly when Google quotes it, which is mostly a writing job. Menu means the live menu in real HTML &mdash; not a PDF, not a photographed laminated card, not a Canva image &mdash; because Google&rsquo;s extractor and an AI assistant both have to read it as text (the full case is in <a href="/library/restaurant-online-menu-best-practices/">how to put your restaurant menu online</a>). Booking is the click that hands the guest to OpenTable, Resy, or whichever reservation system you run, in one tap from the home page. Direct ordering is the click that keeps the transaction off a 15-to-30-percent commission platform. Routing the call is the phone-number link that opens the dialer on mobile. Feeding the schema is the structured-data block that names the cuisine, hours, address, and menu so the result reads correctly in search and Maps. A restaurant specialist builds for these six jobs by default. A generalist asks what they are. A template reseller hands you a template that does two of them.</p>
 
     <p>The implication for hiring: if the builder you are talking to cannot itemize these six jobs without prompting, you are not talking to a restaurant specialist. That is fine in some cases &mdash; a known freelance generalist working under a tight brief can build all six on instruction. It is not fine in others. A reseller will quote the same monthly bill regardless, because the bill is the product.</p>
 
@@ -567,7 +585,7 @@ main{padding-top:64px}
 
     <p>The fair-pay question splits along the same three kinds of builder. DIY-assisted runs roughly $0 to $500 plus a monthly platform bill. Freelance runs $2,500 to $8,000 one-time. Restaurant specialist runs $8,000 to $25,000 or more. The wide bands track scope, not skill alone.</p>
 
-    <p>DIY-assisted means the operator builds on Squarespace, Wix, or a similar platform &mdash; the cash cost is the template fee, the platform&rsquo;s monthly rent ($16 to $40 typically), and a domain registration of about $15 a year. Add an optional one-time consultation with a freelancer to clean up the menu page and you are still well under $500 cash. Freelance one-time fees cover a five-to-seven-page brochure build on WordPress or Webflow with a known menu, basic Google Business Profile alignment, and one or two feedback rounds. The $8,000 ceiling reflects what custom-restaurant pricing actually quotes for a clean independent build, as of May 2026; varies by scope. Specialist pricing covers everything the freelance band covers plus integrated ordering, menu schema, reservation handoff, photography direction, page-speed budgets, and a content workshop on the menu copy itself. The $25,000-and-up ceiling is the high end of independent specialist work and reflects what published agency-directory benchmarks (Clutch, GoodFirms) report for the same scope.</p>
+    <p>DIY-assisted means the operator builds on Squarespace, Wix, or a similar platform &mdash; the cash cost is the template fee, the platform&rsquo;s monthly rent ($16 to $40 typically), and a domain registration of about $15 a year. Add an optional one-time consultation with a freelancer to clean up the menu page and you are still well under $500 cash. Freelance one-time fees cover a five-to-seven-page brochure build on WordPress or Webflow with a known menu, basic Google Business Profile alignment, and one or two feedback rounds. The $8,000 ceiling reflects what custom-restaurant pricing actually quotes for a clean independent build, as of May 2026; varies by scope. Specialist pricing covers everything the freelance band covers plus integrated ordering, menu schema, reservation handoff, photography direction, page-speed budgets, and a content workshop on the <!-- LIBRARY:autolink:start --><a href="/glossary/menu-copy/" data-glossary-head="Menu copy" data-glossary-aka="the language doing the selling, separate from the dish" data-glossary-blurb="The words next to each item — the descriptive sentence, the dish name, the price as it appears on the page — viewed as a separate craft from the cooking itself.">menu copy</a><!-- LIBRARY:autolink:end --> itself. The $25,000-and-up ceiling is the high end of independent specialist work and reflects what published agency-directory benchmarks (Clutch, GoodFirms) report for the same scope.</p>
 
     <p>Where the money goes inside each band matters as much as the headline number. A reseller&rsquo;s monthly bill funds the platform&rsquo;s rent first and the builder&rsquo;s margin second; a freelancer&rsquo;s one-time fee funds the build and nothing else; a specialist&rsquo;s fee funds the build, the integration work, and a finished asset the operator keeps. The chart below walks each kind&rsquo;s monthly-vs-one-time split so the &ldquo;cheap&rdquo; option does not stay cheap on the second look.</p>
 
@@ -711,6 +729,62 @@ main{padding-top:64px}
     </aside>
     <!-- post-end-cta:end -->
 
+  <!-- companion-kit:start -->
+  <aside class="companion-kit" data-surface="library" data-source-slug="how-to-hire-a-restaurant-web-designer" aria-labelledby="companion-kit-h-library-how-to-hire-a-restaurant-web-designer">
+    <div class="container">
+      <p class="companion-kit__eyebrow">The four corners</p>
+      <h2 id="companion-kit-h-library-how-to-hire-a-restaurant-web-designer" class="companion-kit__h">Read, run, write down, look up.</h2>
+      <div class="companion-kit__grid">
+        <div class="companion-kit__col companion-kit__col--read">
+          <h3>Read</h3>
+        <ul class="companion-kit__list">
+        <li><a class="see-also-card" href="/library/custom-restaurant-website-pricing/">
+          <span class="see-also-kind">Article <span class="see-also-time">12 min read</span></span>
+          <h4>How Much Does a Custom Restaurant Website Cost?</h4>
+          <p>Custom restaurant website costs, itemized line by line — from $2,500 to $15,000+. Real numbers, real tradeoffs, and what nobody else is saying.</p>
+        </a></li>
+        <li><a class="see-also-card" href="/library/best-restaurant-website-platform/">
+          <span class="see-also-kind">Article <span class="see-also-time">12 min read</span></span>
+          <h4>Best Restaurant Website Platform (2026): Custom vs Wix, Squarespace, BentoBox, Popmenu, Owner.com &amp; Toast</h4>
+          <p>Best restaurant website platform 2026: custom vs Wix, Squarespace, BentoBox, Popmenu, Owner.com &amp; Toast — ownership, commissions, who each fits.</p>
+        </a></li>
+        <li><a class="see-also-card" href="/library/wix-vs-custom-for-restaurants/">
+          <span class="see-also-kind">Article <span class="see-also-time">9 min read</span></span>
+          <h4>Wix vs. Custom for Restaurants: What Breaks First</h4>
+          <p>An honest comparison of Wix and a custom restaurant website: six places Wix runs out of room, the ROI math behind switching, and when Wix is right.</p>
+        </a></li>
+        </ul>
+        </div>
+        <div class="companion-kit__col companion-kit__col--try">
+          <h3>Run on your own site</h3>
+        <a class="companion-kit__single see-also-card" href="/tools/brand-suite/">
+          <span class="see-also-kind">Tool</span>
+          <h4>Brand Suite — Free Client-Side Logo Palette &amp; Contrast Tool</h4>
+          <p>Drop in your logo and get a color palette, accessible pairs, and CSS tokens, all in your browser. A starter kit for the brand around your mark. No upload.</p>
+        </a>
+        </div>
+        <div class="companion-kit__col companion-kit__col--write">
+          <h3>Write it down</h3>
+        <a class="companion-kit__single see-also-card" href="/sheets/brand-asset-inventory/">
+          <span class="see-also-kind">Sheet</span>
+          <h4>Brand Asset Inventory — Sheets</h4>
+          <p>Asset type, file location, last updated, owner, license. Catches the logo that only exists on a former employee's laptop.</p>
+        </a>
+        </div>
+        <div class="companion-kit__col companion-kit__col--lookup">
+          <h3>Look up</h3>
+        <ul class="companion-kit__chips">
+          <li><a class="glossary-chip" href="/glossary/brand-identity/">Brand identity</a></li>
+          <li><a class="glossary-chip" href="/glossary/design-token/">Design token</a></li>
+          <li><a class="glossary-chip" href="/glossary/logo-lockup/">Logo lockup</a></li>
+        </ul>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <!-- /companion-kit:end -->
+
+
     <!-- smart-next:start -->
 <aside class="smart-next" aria-labelledby="smart-next-h">
   <p class="smart-next__eyebrow" id="smart-next-h">What to do next</p>
@@ -836,7 +910,7 @@ main{padding-top:64px}
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->32<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->149<!-- /count --> glossary terms &mdash; with a one-person web studio behind it in Silver Spring, MD.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->149<!-- /count --> glossary terms &mdash; with a one-person web studio behind it in Silver Spring, MD.</p>
       </div>
 
       <!-- Column order mirrors the 4-item primary nav

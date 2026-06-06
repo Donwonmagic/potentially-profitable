@@ -253,6 +253,7 @@
     library: [
       'Checklist Completed',
       'Start Here Path',
+      'Start Journey',
       'Checklist Learn-more',
       'Checklist Subtype',
       'Glossary AZ',
