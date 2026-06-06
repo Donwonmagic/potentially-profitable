@@ -1070,6 +1070,7 @@ Margen de contribución por plato = precio menú &minus; costo del plato</pre>
 <script src="/tools/_shared/plate-advice.js?v=20260603-plate1"></script>
 <script src="/tools/_shared/portion-bridge.js?v=20260504-w10-2"></script>
 <script src="/tools/_shared/cross-vendor.js?v=20260504-w10-13"></script>
+<script src="/tools/_shared/whats-new.js?v=20260504-w14-8" defer></script>
 <script src="/tools/plate-cost/plate-cost.js?v=20260428-pcF"></script>
 <script src="/tools/plate-cost/card-render.js?v=20260426-pc2"></script>
 <script>
@@ -2342,6 +2343,51 @@ Margen de contribución por plato = precio menú &minus; costo del plato</pre>
   rerenderRows(Array.from({ length: 5 }, blankRow));
   hydrateFromFragment();
   if (!driftBaseline) renderResults();
+
+  // Wave 14.8 — pulso de descubrimiento para las superficies cross-tool
+  // que los operadores ganaron cuando aterrizó la columna del
+  // Decodificador de Facturas. Cada pastilla es descartable por operador
+  // y auto-expira 60 días después de shipDate. Las cadenas se localizan
+  // vía el mismo patrón t(en, es) que usa el resto de la página.
+  if (window.MuntinWhatsNew) {
+    var WN_ES = (document.documentElement.getAttribute('lang') || 'en').toLowerCase().indexOf('es') === 0;
+    var wt = function (en, es) { return WN_ES ? es : en; };
+    window.MuntinWhatsNew.register({
+      toolKey: 'plate-cost',
+      surfaces: [
+        {
+          id: 'stale-banner',
+          target: '#pcStaleBanner',
+          label: wt('New', 'Nuevo'),
+          title: wt('New: invoice-aware recipe updates',
+                    'Nuevo: actualizaciones de receta con datos de factura'),
+          body: wt('When you save an invoice in the Invoice Decoder, this banner offers to refresh your recipe prices in one tap. Bytes stay on this device.',
+                   'Cuando guardas una factura en el Decodificador de Facturas, este banner ofrece actualizar los precios de tu receta con un toque. Los bytes se quedan en este dispositivo.'),
+          shipDate: '2026-04-21'
+        },
+        {
+          id: 'ghost-chip',
+          target: '.pc-ghost-chip',
+          label: wt('New', 'Nuevo'),
+          title: wt('New: gentle yield + portion suggestions',
+                    'Nuevo: sugerencias suaves de rendimiento + porción'),
+          body: wt('When your past invoices imply a different pack size or yield, a dashed chip suggests it. Tap to accept or ignore — never auto-applied.',
+                   'Cuando tus facturas pasadas implican un tamaño de paquete o un rendimiento distinto, un chip punteado lo sugiere. Toca para aceptar o ignorar — nunca se aplica solo.'),
+          shipDate: '2026-04-25'
+        },
+        {
+          id: 'match-health',
+          target: '#pcMatchHealth',
+          label: wt('New', 'Nuevo'),
+          title: wt('New: invoice → recipe match health',
+                    'Nuevo: salud del emparejamiento factura → receta'),
+          body: wt('See at a glance how many invoice items found a recipe row. Lower coverage = more SKUs to bind.',
+                   'Ve de un vistazo cuántos artículos de factura encontraron una fila de receta. Menos cobertura = más SKU por enlazar.'),
+          shipDate: '2026-04-28'
+        }
+      ]
+    });
+  }
 
   // --- Sales-mix upload → real weekly covers (POS-fallback) -------------
   (function wireSalesMixUpload() {
