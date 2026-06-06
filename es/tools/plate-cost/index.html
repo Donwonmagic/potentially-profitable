@@ -226,6 +226,22 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 .pc-prices{padding:18px 22px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--white)}
 .pc-prices h3{font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);margin:0 0 4px}
 .pc-prices p.pc-prices-dek{font-size:12.5px;color:var(--stone);margin:0 0 14px;line-height:1.5}
+.pc-advice{padding:18px 22px;border:1px solid var(--line);border-left:3px solid var(--rust);border-radius:var(--r-md);background:var(--white);margin-top:16px}
+.pc-advice h3{font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);margin:0 0 10px}
+.pc-advice-input{display:block;font-size:13px;color:var(--ink);margin:0 0 6px}
+.pc-advice-input small{color:var(--stone);font-weight:400}
+.pc-advice-money{display:inline-flex;align-items:center;gap:4px;margin-top:6px;border:1px solid var(--line);border-radius:var(--r-sm);padding:6px 10px;background:var(--white)}
+.pc-advice-money input{border:0;outline:0;font:inherit;width:7em;background:transparent;color:var(--ink)}
+.pc-advice-money:focus-within{outline:2px solid var(--teal);outline-offset:1px}
+.pc-advice-hint{font-size:11.5px;color:var(--stone);margin:6px 0 12px}
+.pc-advice-headline{font-size:15px;line-height:1.5;color:var(--ink);margin:0 0 12px;font-weight:500}
+.pc-advice-options{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.pc-advice-option{padding:10px 12px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--cream-1)}
+.pc-advice-option.is-primary{border-color:var(--rust);background:var(--cream-2)}
+.pc-advice-do{display:inline-block;font-size:10.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--rust);margin-bottom:3px}
+.pc-advice-label{display:block;font-weight:500;color:var(--ink);font-size:13.5px}
+.pc-advice-detail{display:block;font-size:12.5px;color:var(--stone);line-height:1.5;margin-top:2px}
+.pc-advice-ledger{font-size:12.5px;color:var(--stone);line-height:1.5;margin:14px 0 0;padding-top:12px;border-top:1px solid var(--line)}
 .pc-price-row{display:grid;grid-template-columns:64px 1fr auto;align-items:baseline;gap:10px;padding:10px 0;border-top:1px solid var(--line);font-variant-numeric:tabular-nums}
 .pc-price-row:first-of-type{border-top:0}
 .pc-price-target{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:14px;font-weight:600;color:var(--ink)}
@@ -601,7 +617,7 @@ body[data-pc-mode="recost"] .pc-recost-banner{display:flex}
     <span class="eyebrow">Herramienta gratis · se queda en tu navegador</span>
     <h1 style="font-family:var(--font-display);font-size:clamp(34px,4.5vw,52px);font-weight:500;color:var(--ink);margin:14px 0 14px;line-height:1.1;">¿Cuánto cuesta de verdad cada plato?</h1>
       <!-- tool-verified:start -->
-            <p class="tool-verified">Última revisión: <time datetime="2026-05-31">31 de mayo de 2026</time></p>
+            <p class="tool-verified">Última revisión: <time datetime="2026-06-06">6 de junio de 2026</time></p>
             <!-- tool-verified:end -->
       <!-- data-promise:start -->
             <aside class="tool-data-promise" aria-label="Promesa de datos">
@@ -736,6 +752,27 @@ body[data-pc-mode="recost"] .pc-recost-banner{display:flex}
           <span>Mostrar un precio bajo estrés <small>(ingrediente cuello de botella +15%, rendimiento de proteína −5 pp)</small></span>
         </label>
         <div class="pc-stress-out" id="pcStressOut" hidden></div>
+      </div>
+
+      <!-- Panel de recomendación — el gancho de decisión de la herramienta
+           gratis. Según lo que cobras ahora, el motor devuelve UN movimiento
+           en lenguaje claro (subir precio / reducir porción / mantener).
+           Usa tools/_shared/plate-advice.js — el MISMO motor que corre Muntin
+           Ledger en el servidor (contrato de paridad). Accesibilidad: input
+           opcional con etiqueta + región aria-live; la acción recomendada va
+           primero. Render con DOM (sin innerHTML). -->
+      <div class="pc-advice" id="pcAdvice" hidden>
+        <h3>¿Qué deberías hacer?</h3>
+        <label class="pc-advice-input" for="pcCurrentPrice">
+          <span>¿Cuánto cobras por él ahora? <small>(opcional — desbloquea la recomendación)</small></span>
+        </label>
+        <span class="pc-advice-money">
+          <span aria-hidden="true">$</span>
+          <input type="text" id="pcCurrentPrice" inputmode="decimal" autocomplete="off"
+                 placeholder="ej. 16.00" aria-describedby="pcAdviceHint">
+        </span>
+        <p class="pc-advice-hint" id="pcAdviceHint">Se queda en tu navegador, como todo aquí.</p>
+        <div class="pc-advice-out" id="pcAdviceOut" role="status" aria-live="polite"></div>
       </div>
 
       <aside class="edu-result" id="pcEduResult" aria-labelledby="pcEduResultLede">
@@ -977,8 +1014,99 @@ Margen de contribución por plato = precio menú &minus; costo del plato</pre>
 <script src="/tools/_shared/next-tool.js?v=phase4"></script>
 <script src="/tools/_shared/handoff.js?v=phase4"></script>
 <script src="/tools/_shared/device-key.js?v=20260501-w3-4"></script>
+<script src="/tools/_shared/plate-advice.js?v=20260606-w15-1"></script>
 <script src="/tools/plate-cost/plate-cost.js?v=20260428-pcF"></script>
 <script src="/tools/plate-cost/card-render.js?v=20260426-pc2"></script>
+<script>
+/* Plate Cost — panel de recomendación (el gancho gratis→Ledger). Define
+   window.MuntinPlateAdviceUI = { render(summary), clear() }, llamado desde
+   renderResults abajo. DOM puro (sin innerHTML) + textContent para todo valor
+   dinámico, así un nombre de platillo/ingrediente tecleado no inyecta markup.
+   La matemática vive en tools/_shared/plate-advice.js (paridad con Ledger). */
+(function(){
+  'use strict';
+  var panel = document.getElementById('pcAdvice');
+  var out   = document.getElementById('pcAdviceOut');
+  var priceInput = document.getElementById('pcCurrentPrice');
+  var volInput   = document.getElementById('pcYearVolume');
+  var nameInput  = document.getElementById('pcName');
+  if (!panel || !out) return;
+
+  var lastPlateCents = null;
+
+  function moneyToCents(v){
+    if (v == null) return null;
+    var n = parseFloat(String(v).replace(/[^0-9.]/g, ''));
+    return (isFinite(n) && n >= 0) ? Math.round(n * 100) : null;
+  }
+  function clearNode(n){ while (n.firstChild) n.removeChild(n.firstChild); }
+  function el(tag, cls, text){
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+
+  function paint(){
+    if (lastPlateCents == null || lastPlateCents <= 0) { panel.hidden = true; return; }
+    panel.hidden = false;
+    clearNode(out);
+    if (!window.MuntinPlateAdvice) return;
+
+    var menuCents = moneyToCents(priceInput && priceInput.value);
+    var covers = volInput ? parseFloat(volInput.value) : NaN;
+    var locale = (document.documentElement.lang || 'en').slice(0, 2) === 'es' ? 'es' : 'en';
+
+    var res = window.MuntinPlateAdvice.advise({
+      itemName: (nameInput && nameInput.value) || '',
+      plateCostCents: lastPlateCents,
+      menuPriceCents: menuCents,
+      menuPricesCents: menuCents != null ? [menuCents] : undefined,
+      coversPerWeek: (isFinite(covers) && covers > 0) ? covers : null,
+      targetFoodCostPct: 0.30,
+      locale: locale
+    });
+
+    var headline = el('p', 'pc-advice-headline', res.headline);
+    headline.setAttribute('data-tier', res.tier);
+    out.appendChild(headline);
+
+    if (res.options && res.options.length) {
+      var ul = el('ul', 'pc-advice-options');
+      res.options.forEach(function(o, i){
+        var li = el('li', 'pc-advice-option' + (i === 0 ? ' is-primary' : ''));
+        if (i === 0) li.appendChild(el('span', 'pc-advice-do', locale === 'es' ? 'Haz esto' : 'Do this'));
+        li.appendChild(el('span', 'pc-advice-label', o.label));
+        li.appendChild(el('span', 'pc-advice-detail', o.detail));
+        ul.appendChild(li);
+      });
+      out.appendChild(ul);
+    }
+
+    var ledger = el('p', 'pc-advice-ledger');
+    ledger.appendChild(document.createTextNode(
+      locale === 'es' ? '¿Quieres que esto se vigile solo? ' : 'Want this watched for you? '));
+    var a = el('a', 'pc-advice-ledger-link plausible-event-name=Ledger+Route+Click plausible-event-source=plate-cost-advice', 'Muntin Ledger');
+    a.href = 'https://ledger.muntin.digital/';
+    ledger.appendChild(a);
+    ledger.appendChild(document.createTextNode(
+      locale === 'es'
+        ? ' recosta tus platillos solo cuando una factura sube — sin hoja de cálculo, sin volver a teclear.'
+        : ' re-costs your dishes automatically when an invoice price jumps — no spreadsheet, no re-typing.'));
+    out.appendChild(ledger);
+  }
+
+  window.MuntinPlateAdviceUI = {
+    render: function(summary){
+      lastPlateCents = (summary && isFinite(summary.plateCost)) ? Math.round(summary.plateCost * 100) : null;
+      paint();
+    },
+    clear: function(){ lastPlateCents = null; panel.hidden = true; clearNode(out); }
+  };
+
+  if (priceInput) priceInput.addEventListener('input', paint);
+})();
+</script>
 <script>
 (function(){
   'use strict';
@@ -1108,6 +1236,7 @@ Margen de contribución por plato = precio menú &minus; costo del plato</pre>
       if (sigEl) sigEl.style.display = 'none';
       latestSummary = null;
       latestRecipe  = null;
+      if (window.MuntinPlateAdviceUI) window.MuntinPlateAdviceUI.clear();
       Array.prototype.forEach.call(rowsEl.querySelectorAll('[data-cell="cost"]'), function(c){
         c.textContent = '—';
       });
@@ -1271,6 +1400,7 @@ Margen de contribución por plato = precio menú &minus; costo del plato</pre>
     if (sigEl2) sigEl2.style.display = 'block';
     latestSummary = summary;
     latestRecipe  = recipe;
+    if (window.MuntinPlateAdviceUI) window.MuntinPlateAdviceUI.render(summary);
     renderDriftLayer(summary);
 
     if (window.MuntinHandoff && window.MuntinHandoff.complete) {
