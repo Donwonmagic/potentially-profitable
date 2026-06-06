@@ -20,6 +20,16 @@ const __filename = fileURLToPath(import.meta.url);
 const repoRoot   = path.resolve(path.dirname(__filename), '..');
 const checkOnly  = process.argv.includes('--check');
 
+// EN↔ES slug map (data/i18n-slug-map.json) for the language switcher, so
+// divergent-slug library articles (e.g. keep-plate-cost-honest ↔
+// costo-del-plato-cuando-cambian-los-precios) link to the real counterpart
+// instead of a same-slug 404. Mirrors scripts/stamp-hreflang.mjs.
+let slugMap = { blog: {}, library: {} };
+try {
+  slugMap = JSON.parse(fs.readFileSync(path.join(repoRoot, 'data', 'i18n-slug-map.json'), 'utf8'));
+  if (!slugMap.library) slugMap.library = {};
+} catch (_) { /* missing/unreadable: the prefix-swap fallback still applies */ }
+
 const SKIP_DIRS = new Set([
   '_includes', 'node_modules', '.git', '.github', 'dist', '.wrangler',
   'docs', 'src', 'brand', 'assets', 'scripts'
@@ -246,12 +256,26 @@ function counterpartUrl(relPath, pageLocale) {
   if (pageLocale === 'en') {
     // EN page → point to /<otherLocale>/... counterpart.
     const other = NON_DEFAULT_LOCALES[0];
-    url = pretty === '/' ? `/${other}/` : `/${other}${pretty}`;
-    targetRel = pretty === '/' ? `${other}/index.html` : `${other}${pretty}index.html`;
+    const libM = pretty.match(/^\/library\/([^/]+)\/$/);
+    if (libM && slugMap.library && slugMap.library[libM[1]]) {
+      // Divergent-slug library article: map EN slug → real ES slug.
+      url = `/${other}/library/${slugMap.library[libM[1]]}/`;
+      targetRel = `${other}/library/${slugMap.library[libM[1]]}/index.html`;
+    } else {
+      url = pretty === '/' ? `/${other}/` : `/${other}${pretty}`;
+      targetRel = pretty === '/' ? `${other}/index.html` : `${other}${pretty}index.html`;
+    }
   } else {
     // Non-default locale → strip the leading /<locale>/ and land at EN.
     const stripped = pretty.replace(new RegExp(`^/${pageLocale}(/|$)`), '/');
-    url = stripped || '/';
+    const libM = stripped.match(/^\/library\/([^/]+)\/$/);
+    let mapped = null;
+    if (libM && slugMap.library) {
+      // Divergent-slug ES library article: reverse-map ES slug → EN slug.
+      const enSlug = Object.keys(slugMap.library).find((k) => slugMap.library[k] === libM[1]);
+      if (enSlug) mapped = `/library/${enSlug}/`;
+    }
+    url = mapped || stripped || '/';
     targetRel = url === '/' ? 'index.html' : url.slice(1) + 'index.html';
   }
   // Missing-counterpart fallback: specifically for blog posts (where
