@@ -49,6 +49,22 @@ export const BLOG_LIBRARY_REDIRECTS = new Map([
   ['/blog/what-should-be-on-a-restaurant-website/',                          '/library/what-should-be-on-a-restaurant-website/'],
   ['/blog/when-to-rebuild-your-restaurant-website/',                         '/library/when-to-rebuild-your-restaurant-website/'],
   ['/blog/wix-vs-custom-for-restaurants/',                                   '/library/wix-vs-custom-for-restaurants/'],
+  // EN kept-slug gap-close (2026-06-06): twelve library articles were
+  // migrated in the Phase 7 split without a matching /blog/<slug>/ 301,
+  // so their old kept-slug /blog/ URLs 404'd. Same slug on both sides;
+  // /library/<slug>/index.html verified present on disk for each.
+  ['/blog/best-restaurant-website-platform/',                                '/library/best-restaurant-website-platform/'],
+  ['/blog/commission-free-online-ordering-restaurants/',                     '/library/commission-free-online-ordering-restaurants/'],
+  ['/blog/how-to-hire-a-restaurant-web-designer/',                           '/library/how-to-hire-a-restaurant-web-designer/'],
+  ['/blog/restaurant-online-menu-best-practices/',                           '/library/restaurant-online-menu-best-practices/'],
+  ['/blog/restaurant-local-seo/',                                            '/library/restaurant-local-seo/'],
+  ['/blog/privacy-forward-restaurant-bookkeeping/',                          '/library/privacy-forward-restaurant-bookkeeping/'],
+  ['/blog/custom-restaurant-website-pricing/',                               '/library/custom-restaurant-website-pricing/'],
+  ['/blog/loyalty-program-roi/',                                             '/library/loyalty-program-roi/'],
+  ['/blog/service-charge-vs-tipping-model/',                                 '/library/service-charge-vs-tipping-model/'],
+  ['/blog/third-party-delivery-comparison/',                                 '/library/third-party-delivery-comparison/'],
+  ['/blog/restaurant-app-decision/',                                         '/library/restaurant-app-decision/'],
+  ['/blog/third-party-delivery-economics/',                                  '/library/third-party-delivery-economics/'],
 
   // EN rename moves (de-timed)
   ['/blog/how-much-does-a-custom-restaurant-website-cost-in-2026/',          '/library/custom-restaurant-website-pricing/'],
