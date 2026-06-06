@@ -271,6 +271,14 @@ function pageHead(opts) {
 <meta property="og:description" content="${escHtml(clampDesc(desc))}" />
 <meta property="og:url" content="${canon}" />
 <meta property="og:site_name" content="Muntin Digital" />
+<meta property="og:image" content="https://muntin.digital/brand/og/library${locale === 'es' ? '-es' : ''}.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="2400" />
+<meta property="og:image:height" content="1260" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="${escHtml(title)}" />
+<meta name="twitter:description" content="${escHtml(clampDesc(desc))}" />
+<meta name="twitter:image" content="https://muntin.digital/brand/og/library${locale === 'es' ? '-es' : ''}.png" />
 <link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
 <link rel="icon" type="image/png" sizes="192x192" href="/brand/favicons/android-chrome-192x192.png" />
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
