@@ -186,6 +186,40 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 .pc-pull-invoice:hover{filter:brightness(1.06)}
 .pc-pull-invoice[disabled]{opacity:.55;cursor:wait}
 .pc-pull-invoice-msg{font-size:12.5px;margin:6px 12px 0;color:var(--ink-soft)}
+/* Wave 10.5 — banner de receta desactualizada (superficie de carga en frío desde el Decodificador de Facturas) */
+#pcStaleBanner{margin:6px 12px}
+#pcStaleBanner[hidden]{display:none}
+.pc-stale{padding:12px 14px;background:color-mix(in srgb,var(--teal) 6%,var(--cream));border:1px solid color-mix(in srgb,var(--teal) 30%,var(--line,#d6d2c2));border-left:3px solid var(--teal);border-radius:8px}
+.pc-stale-msg{margin:0 0 8px;font-size:13.5px;color:var(--ink);line-height:1.55}
+.pc-stale-actions{display:flex;flex-wrap:wrap;gap:6px}
+.pc-stale-review,.pc-stale-acceptall,.pc-stale-dismiss{font:inherit;font-size:12.5px;padding:6px 12px;border-radius:6px;border:1px solid var(--line,#d6d2c2);background:var(--cream);color:var(--ink);cursor:pointer}
+.pc-stale-acceptall{background:var(--teal);color:var(--cream);border-color:var(--teal)}
+.pc-stale-acceptall:hover{filter:brightness(1.06)}
+.pc-stale-review:hover,.pc-stale-dismiss:hover{border-color:var(--ink-soft)}
+.pc-stale-list{margin:8px 0 10px;padding:0;list-style:none}
+.pc-stale-row{display:grid;grid-template-columns:1fr auto auto auto;gap:8px;align-items:center;padding:6px 0;font-size:12.5px;border-bottom:1px dashed var(--line,#d6d2c2)}
+.pc-stale-row-dish{color:var(--ink);font-weight:500}
+.pc-stale-row-prices{font-variant-numeric:tabular-nums;color:var(--ink-soft)}
+.pc-stale-delta{margin-left:6px;padding:1px 6px;border-radius:4px;font-size:11px;font-weight:600}
+.pc-stale-delta[data-dir="up"]{background:#fce0d7;color:#7a2e1f}
+.pc-stale-delta[data-dir="down"]{background:#c7e4d4;color:#0c4a26}
+.pc-stale-row-accept,.pc-stale-row-skip{font:inherit;font-size:11.5px;padding:3px 8px;border-radius:5px;border:1px solid var(--line,#d6d2c2);background:var(--cream);cursor:pointer}
+.pc-stale-row-accept{background:var(--teal);color:var(--cream);border-color:var(--teal)}
+
+/* Wave 10.6 — chip fantasma por fila que muestra el último precio de factura */
+.pc-ghost-chip{display:inline-flex;align-items:center;gap:3px;margin:4px 0 0;padding:1px 8px;border-radius:5px;background:transparent;border:1px dashed var(--ink-soft);color:var(--ink-soft);font-size:11px;cursor:pointer;font-family:inherit;font-style:italic;white-space:nowrap;font-variant-numeric:tabular-nums;opacity:0.85}
+.pc-ghost-chip:hover{background:color-mix(in srgb,var(--teal) 8%,var(--cream));border-color:var(--teal);color:var(--ink);opacity:1}
+.pc-ghost-chip:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+/* Wave 10.13 — chip de cambio de proveedor (pista de "más barato en otro lugar") */
+.pc-vswap-chip{display:inline-flex;align-items:center;margin:4px 0 0 6px;padding:1px 8px;border-radius:5px;background:#c7e4d4;border:1px solid #0c4a26;color:#0c4a26;font-size:11px;cursor:pointer;font-family:inherit;font-weight:600;white-space:nowrap;font-variant-numeric:tabular-nums}
+.pc-vswap-chip:hover{filter:brightness(1.05)}
+.pc-vswap-chip:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+/* Wave 10.14 — línea de salud de emparejamiento */
+.pc-match-health{margin:6px 12px 0;font-size:12.5px;color:var(--ink-soft)}
+.pc-match-health[hidden]{display:none}
+.pc-match-rest{font:inherit;font-size:12px;padding:3px 9px;border-radius:5px;border:1px solid var(--teal);background:var(--teal);color:var(--cream);cursor:pointer;margin-left:4px}
+.pc-match-rest:hover{filter:brightness(1.05)}
+.pc-match-allgood{color:#0c4a26;font-weight:600;margin-left:4px}
 .pc-ocr{margin:0;padding:14px 16px;background:var(--cream-2);border-top:1px solid var(--line)}
 .pc-ocr[open]{padding-bottom:18px}
 .pc-ocr-summary{cursor:pointer;font-size:13.5px;font-weight:600;color:var(--ink);list-style:none;display:flex;align-items:center;gap:8px}
@@ -696,6 +730,20 @@ body[data-pc-mode="recost"] .pc-recost-banner{display:flex}
       </div>
       <p class="pc-pull-invoice-msg" id="pcPullInvoiceMsg" role="status" aria-live="polite"></p>
 
+      <!-- Wave 10.14 — línea de salud de emparejamiento: cuántos
+           ingredientes se enlazan al historial de facturas y cuántos
+           todavía necesitan un emparejamiento. Muestra el foso de
+           aprendizaje compuesto propiedad del operador. -->
+      <p class="pc-match-health" id="pcMatchHealth" hidden></p>
+
+      <!-- Wave 10.5 — banner de receta desactualizada. Se renderiza
+           sobre el CTA de "traer" cuando MuntinContext.recipeStaleQueue
+           tiene entradas que el Decodificador de Facturas empuja al
+           guardar. Disciplina de orden de render: la lectura síncrona
+           aquí ocurre ANTES del descifrado asíncrono readInvoiceItems
+           que impulsa el CTA de traer. -->
+      <div id="pcStaleBanner" hidden role="status" aria-live="polite"></div>
+
       <details class="pc-ocr">
         <summary class="pc-ocr-summary">📷 Sácale foto a tu factura mejor <span class="pc-ocr-beta">beta</span></summary>
         <div class="pc-ocr-body">
@@ -1082,7 +1130,16 @@ Margen de contribución por plato = precio menú &minus; costo del plato</pre>
   }
 
   function rowHtml(row, idx) {
-    return '<tr data-idx="' + idx + '">' +
+    // Wave 10.7 — los campos aditivos al esquema `_boundStem` /
+    // `_apPriceSource` / `_apPricePrev` viajan junto con los datos de
+    // la fila; se exponen como atributos data-* para que el módulo de
+    // banner-desactualizado + chip-fantasma pueda leerlos sin volver a
+    // parsear los inputs.
+    var sourceAttr  = row._apPriceSource ? ' data-ap-price-source="' + esc(row._apPriceSource) + '"' : '';
+    var stemAttr    = row._boundStem     ? ' data-bound-stem="' + esc(row._boundStem) + '"' : '';
+    var prevAttr    = (row._apPricePrev != null && row._apPricePrev !== '')
+                        ? ' data-ap-price-prev="' + esc(row._apPricePrev) + '"' : '';
+    return '<tr data-pc-row data-idx="' + idx + '"' + stemAttr + sourceAttr + prevAttr + '>' +
       '<td data-label="Ingrediente"><input type="text" data-field="ingredient" list="pcYieldNames" autocomplete="off" value="' + esc(row.ingredient) + '" placeholder="ej. Romaine" /></td>' +
       '<td data-label="Precio AP ($)"><input type="number" data-field="apPrice" min="0" step="0.01" value="' + esc(row.apPrice) + '" /></td>' +
       '<td data-label="Cant. AP"><input type="number" data-field="apQty" min="0" step="0.01" value="' + esc(row.apQty) + '" /></td>' +
@@ -1106,6 +1163,16 @@ Margen de contribución por plato = precio menú &minus; costo del plato</pre>
       Array.prototype.forEach.call(tr.querySelectorAll('[data-field]'), function(el){
         row[el.dataset.field] = el.value;
       });
+      // Wave 10.7 — preserva los campos aditivos al esquema expuestos
+      // como atributos data-* para que el viaje de ida y vuelta de la
+      // fila conserve el stem enlazado + la fuente del precio entre
+      // re-renderizados.
+      var stem = tr.getAttribute('data-bound-stem');
+      var src  = tr.getAttribute('data-ap-price-source');
+      var prev = tr.getAttribute('data-ap-price-prev');
+      if (stem) row._boundStem = stem;
+      if (src)  row._apPriceSource = src;
+      if (prev != null && prev !== '') row._apPricePrev = prev;
       rows.push(row);
     });
     return rows;
@@ -2182,6 +2249,94 @@ Margen de contribución por plato = precio menú &minus; costo del plato</pre>
       window.plausible('Plate Cost Compute', { props: props });
     }, 1200);
   }
+
+  // -------------------- Wave 10.5/10.6 ganchos del controlador --------------------
+  // El módulo de banner-desactualizado / chip-fantasma
+  // (tools/plate-cost/stale-banner.js) llama a estos. Ambos actualizan
+  // el estado vía el viaje de ida y vuelta readRows/rerenderRows
+  // existente para que renderResults siga siendo la única fuente de verdad.
+
+  function applyStaleUpdates(entries) {
+    if (!Array.isArray(entries) || !entries.length) return;
+    var rows = readRows();
+    var changed = 0;
+    var changedDishes = {};  // nombre del platillo → fue tocado
+    entries.forEach(function (entry) {
+      if (!entry || !entry.stem) return;
+      // Emparejar por nombre de ingrediente actual → stem. Re-derivamos
+      // vía MuntinStem para honrar el levantamiento cross-tool de 10.0a.
+      if (typeof window.MuntinStem === 'undefined') return;
+      var newPerBaseUnit = entry.newPerBaseUnit;
+      var baseUnit = entry.baseUnit;
+      rows.forEach(function (r) {
+        var stem = r._boundStem || window.MuntinStem.extractStem(r.ingredient || '');
+        if (!stem || stem !== entry.stem) return;
+        // Convierte el perBaseUnit de la factura a la familia del apUnit
+        // de la fila cuando sea necesario. Omite filas donde las
+        // familias son incompatibles.
+        var apUnit = (r.apUnit || '').toLowerCase();
+        var newApPrice = newPerBaseUnit;
+        if (apUnit && window.MuntinPortionBridge) {
+          if (!window.MuntinPortionBridge.unitsCompatible(baseUnit, apUnit)) return;
+          var oneBaseInApUnit = window.MuntinPortionBridge.convertQuantity(1, baseUnit, apUnit);
+          if (oneBaseInApUnit && oneBaseInApUnit > 0) newApPrice = newPerBaseUnit / oneBaseInApUnit;
+        }
+        r._apPricePrev = r.apPrice;
+        r.apPrice = newApPrice.toFixed(4).replace(/\.?0+$/, '');
+        r._boundStem = entry.stem;
+        r._apPriceSource = entry.source || ('invoice:' + Date.now());
+        changed++;
+      });
+      if (entry.dish) changedDishes[entry.dish] = true;
+    });
+    if (changed) {
+      rerenderRows(rows);
+      renderResults();
+      // Cascada Wave 10.8 — empuja entradas de historial de costo por
+      // platillo para que Menu Engineering / Margin Math / Cost Pulse
+      // recojan el delta. Usa el latestSummary que renderResults calculó
+      // para la receta actual; para cualquier otro platillo en el conjunto
+      // de cambios lo recalculamos desde MuntinContext.dishes si está disponible.
+      try {
+        if (window.MuntinContext && typeof window.MuntinContext.pushDishCostEntry === 'function') {
+          var ts = Date.now();
+          var vendor = (entries[0] && entries[0].vendor) || null;
+          // Receta actual en el editor.
+          if (latestSummary && nameEl && nameEl.value) {
+            var dishName = nameEl.value.trim();
+            if (dishName && changedDishes[dishName]) {
+              window.MuntinContext.pushDishCostEntry(dishName, {
+                ts: ts,
+                foodCost: latestSummary.batchCost / Math.max(1, Number(portionsEl.value) || 1),
+                foodCostPct: null,    // requiere precio-menú; aquí se deja null
+                vendorTrigger: vendor
+              });
+            }
+          }
+        }
+      } catch (_) {}
+    }
+  }
+
+  function acceptGhostUpdate(args) {
+    if (!args || !args.rowEl) return;
+    var rows = readRows();
+    var idx = parseInt(args.rowEl.getAttribute('data-idx'), 10);
+    if (!isFinite(idx) || !rows[idx]) return;
+    rows[idx]._apPricePrev = rows[idx].apPrice;
+    rows[idx].apPrice = (typeof args.newApPrice === 'number') ? args.newApPrice.toFixed(4).replace(/\.?0+$/, '') : args.newApPrice;
+    if (args.boundStem) rows[idx]._boundStem = args.boundStem;
+    if (args.source)    rows[idx]._apPriceSource = args.source;
+    rerenderRows(rows);
+    renderResults();
+  }
+
+  // Expone el controlador para stale-banner.js + pruebas.
+  window.PlateCost = window.PlateCost || {};
+  window.PlateCost.applyStaleUpdates = applyStaleUpdates;
+  window.PlateCost.acceptGhostUpdate = acceptGhostUpdate;
+  window.PlateCost.readRows          = readRows;
+  window.PlateCost.rerenderRows      = rerenderRows;
 
   // -------------------- Initial state --------------------
   rerenderRows(Array.from({ length: 5 }, blankRow));
