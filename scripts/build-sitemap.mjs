@@ -32,6 +32,48 @@ const checkOnly  = process.argv.includes('--check');
 const SITE = 'https://muntin.digital';
 const OUT_PATH = path.join(repoRoot, 'sitemap.xml');
 
+// EN↔ES slug map. Library (and blog) ES translations use native Spanish
+// slugs that differ from the EN slug, so a same-slug pairing of EN↔ES
+// sitemap entries silently falls back to the /es/ homepage for those
+// pages. Load the map so emit() can pair /library/<en>/ with its real
+// /es/library/<es>/ counterpart (and the reverse for ES entries).
+const slugMapPath = path.join(repoRoot, 'data', 'i18n-slug-map.json');
+let slugMap = { blog: {}, library: {}, esOriginal: [] };
+try {
+  slugMap = JSON.parse(fs.readFileSync(slugMapPath, 'utf8'));
+  if (!slugMap.blog) slugMap.blog = {};
+  if (!slugMap.library) slugMap.library = {};
+} catch (_) {
+  // Missing/unreadable slug-map: fall back to same-slug pairing.
+}
+// Reverse maps (es-slug → en-slug) for pairing ES entries back to EN.
+const esToEnLibrary = {};
+for (const [enSlug, esSlug] of Object.entries(slugMap.library || {})) {
+  if (!(esSlug in esToEnLibrary)) esToEnLibrary[esSlug] = enSlug;
+}
+const esToEnBlog = {};
+for (const [enSlug, esSlug] of Object.entries(slugMap.blog || {})) {
+  if (!(esSlug in esToEnBlog)) esToEnBlog[esSlug] = enSlug;
+}
+
+// Translate a pretty path to its counterpart-locale lookup key so the
+// emit() hreflang pairing finds the real divergent-slug counterpart
+// instead of falling back to the /es/ (or /) homepage.
+function counterpartKey(prettyKey, fromLocale) {
+  if (fromLocale === 'en') {
+    let m = prettyKey.match(/^\/library\/([^/]+)\/$/);
+    if (m && slugMap.library[m[1]]) return `/library/${slugMap.library[m[1]]}/`;
+    m = prettyKey.match(/^\/blog\/([^/]+)\/$/);
+    if (m && slugMap.blog[m[1]]) return `/blog/${slugMap.blog[m[1]]}/`;
+  } else {
+    let m = prettyKey.match(/^\/library\/([^/]+)\/$/);
+    if (m && esToEnLibrary[m[1]]) return `/library/${esToEnLibrary[m[1]]}/`;
+    m = prettyKey.match(/^\/blog\/([^/]+)\/$/);
+    if (m && esToEnBlog[m[1]]) return `/blog/${esToEnBlog[m[1]]}/`;
+  }
+  return prettyKey;
+}
+
 const EXCLUDE_DIRS = new Set([
   'node_modules', '.git', '.github', 'dist', '.wrangler', 'docs',
   'brand', 'assets', '_includes', 'scripts', 'src', 'data',
@@ -123,7 +165,9 @@ lines.push('  xmlns:image="http://www.sitemaps.org/schemas/sitemap-image/1.1">')
 function emit(entry, locale) {
   const otherLocale = locale === 'en' ? 'es' : 'en';
   const otherMap = locale === 'en' ? es : en;
-  const hreflangPair = otherMap.get('/' + (entry.slug || '') + '/') || otherMap.get('/');
+  const ownKey = '/' + (entry.slug || '') + '/';
+  const lookupKey = counterpartKey(ownKey, locale);
+  const hreflangPair = otherMap.get(lookupKey) || otherMap.get('/');
   lines.push('  <url>');
   lines.push(`    <loc>${escXml(entry.loc)}</loc>`);
   lines.push(`    <lastmod>${entry.lastmod}</lastmod>`);
