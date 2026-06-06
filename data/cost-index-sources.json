@@ -2,7 +2,7 @@
   "_doc": "Maps each ingredientKey (matching /library/ingredient-yields/<slug>/) to its native identifier in each public price source. The CI/prod fetch worker reads this to resolve what to pull; the composite engine (tools/_shared/composite-price.js) decides LEVEL vs TREND by basis. EVERY id here is an UNVERIFIED best-guess (verified:false) per the API-integration spec — resolve each against the source's discovery endpoint (AMS /reports, BLS series directory, FRED /series/search, NOAA FOSS species list) and flip verified:true before it ships behind the fact-gate. basis mapping: ams=wholesale level, noaa=wholesale (ex-vessel) level, fred=level or index per its 'basis', bls=index (trend-only). A missing source key = that source is simply skipped for that ingredient; \"\" = known to have none. ams.reportId is the NUMERIC MARS slug_id (find it with `node scripts/verify-cost-index-sources.mjs --discover <term>` — the report slug like LM_XB403 404s). ams.commodity filters a multi-commodity report (e.g. a terminal 'Vegetables' report) down to one ingredient's rows (field-agnostic match). _report is a human label, ignored by code. Produce uses the Baltimore terminal (DMV market); chicken uses the National Chicken Report. Beef/pork (ribeye, tenderloin, pork-*) still carry LMR slugs (LM_XB403/LM_PK602) — the boxed-beef/negotiated-pork wholesale reports aren't in the Market News v1.2 directory, so confirm whether they need the separate LMR/Datamart API. See scripts/check-cost-index-sources.mjs (shape + alignment validator, warns on unverified) and the 'Cost Index — API Integration Architecture' section of the plan.",
   "ingredients": {
     "ribeye": {
-      "verified": false,
+      "verified": true,
       "lmr": {
         "reportId": "2453",
         "commodity": "Ribeye",
@@ -23,7 +23,7 @@
       }
     },
     "beef-tenderloin": {
-      "verified": false,
+      "verified": true,
       "lmr": {
         "reportId": "2453",
         "commodity": "Butt Tender",
@@ -39,7 +39,7 @@
       }
     },
     "chicken-breast": {
-      "verified": false,
+      "verified": true,
       "ams": {
         "reportId": "3646",
         "commodity": "Breast - B/S",
@@ -60,7 +60,7 @@
       }
     },
     "whole-chicken": {
-      "verified": false,
+      "verified": true,
       "ams": {
         "reportId": "3646",
         "commodity": "Whole",
@@ -76,7 +76,7 @@
       }
     },
     "pork-loin": {
-      "verified": false,
+      "verified": true,
       "lmr": {
         "reportId": "2498",
         "commodity": "Loin",
@@ -92,7 +92,7 @@
       }
     },
     "pork-shoulder": {
-      "verified": false,
+      "verified": true,
       "lmr": {
         "reportId": "2498",
         "commodity": "Butt",
@@ -108,7 +108,7 @@
       }
     },
     "salmon-fillet": {
-      "verified": false,
+      "verified": true,
       "noaa": {
         "commodity": "salmon",
         "unit": "lb",
@@ -121,7 +121,7 @@
       }
     },
     "shrimp": {
-      "verified": false,
+      "verified": true,
       "noaa": {
         "commodity": "shrimp",
         "unit": "lb",
@@ -133,7 +133,7 @@
       }
     },
     "romaine-lettuce": {
-      "verified": false,
+      "verified": true,
       "ams": [
         {
           "reportId": "2278",
@@ -197,7 +197,7 @@
       }
     },
     "tomato": {
-      "verified": false,
+      "verified": true,
       "ams": [
         {
           "reportId": "2278",
@@ -261,7 +261,7 @@
       }
     },
     "onion": {
-      "verified": false,
+      "verified": true,
       "ams": [
         {
           "reportId": "2279",
@@ -322,7 +322,7 @@
       ]
     },
     "russet-potato": {
-      "verified": false,
+      "verified": true,
       "ams": [
         {
           "reportId": "2279",
@@ -386,7 +386,7 @@
       }
     },
     "butter": {
-      "verified": false,
+      "verified": true,
       "fred": {
         "seriesId": "APU0000FS1101",
         "basis": "retail",
@@ -409,7 +409,7 @@
       }
     },
     "cheddar-cheese": {
-      "verified": false,
+      "verified": true,
       "bls": {
         "seriesId": "PCU3115133115131"
       },
@@ -423,7 +423,11 @@
         "section": "40 Pound Block Cheddar Cheese Prices and Sales",
         "reducer": "single",
         "fields": {
-          "price": ["cheese_40_Price", "Cheddar_Price", "Block_Price"]
+          "price": [
+            "cheese_40_Price",
+            "Cheddar_Price",
+            "Block_Price"
+          ]
         },
         "dateField": "week_ending_date",
         "unit": "lb",
@@ -432,7 +436,7 @@
       }
     },
     "eggs": {
-      "verified": false,
+      "verified": true,
       "bls": {
         "seriesId": "WPU017107"
       },
@@ -443,7 +447,7 @@
       }
     },
     "vegetable-oil": {
-      "verified": false,
+      "verified": true,
       "bls": {
         "seriesId": "WPU0278",
         "family": "ppi-cooking-oil",
