@@ -513,9 +513,13 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
     var matchNote = '';
     if (hist.tier === 'propose') {
-      matchNote = h`<p class="vb-match">Matched to <strong>${hist.stem}</strong> from your saved prices. Not the same item? Use a more specific name to keep them apart.</p>`;
+      matchNote = LOCALE === 'es'
+        ? h`<p class="vb-match">Coincidió con <strong>${hist.stem}</strong> de tus precios guardados. ¿No es el mismo artículo? Usa un nombre más específico para mantenerlos separados.</p>`
+        : h`<p class="vb-match">Matched to <strong>${hist.stem}</strong> from your saved prices. Not the same item? Use a more specific name to keep them apart.</p>`;
     } else if (hist.observations.length) {
-      matchNote = h`<p class="vb-match">Compared against <strong>${String(hist.observations.length)}</strong> earlier price(s) you saved for this item, on this device.</p>`;
+      matchNote = LOCALE === 'es'
+        ? h`<p class="vb-match">Comparado contra <strong>${String(hist.observations.length)}</strong> precio(s) anterior(es) que guardaste para este artículo, en este dispositivo.</p>`
+        : h`<p class="vb-match">Compared against <strong>${String(hist.observations.length)}</strong> earlier price(s) you saved for this item, on this device.</p>`;
     }
 
     var ledger = '';
@@ -523,10 +527,16 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       ledger = h`<div class="vb-ledger"><strong>${LOCALE === 'es' ? 'Bench lo detectó.' : 'Bench caught this one.'}</strong> ${LOCALE === 'es' ? 'Mira en cuáles de tus platillos está este ingrediente — y qué le hace a su margen — en' : 'See which of your dishes use this ingredient — and what the move does to their margin — in'} <a href="${LOCALE === 'es' ? '/es' : ''}/tools/plate-cost/">${LOCALE === 'es' ? 'Costo del Plato' : 'Plate Cost'}</a>. ${LOCALE === 'es' ? 'Luego mantenlo vigilado: Muntin Ledger marca la próxima subida en cuanto subes la factura.' : 'Then keep it tracked: Muntin Ledger flags the next hike the moment you file the invoice.'} <a href="https://ledger.muntin.digital/">${LOCALE === 'es' ? 'Conoce Muntin Ledger →' : 'See Muntin Ledger →'}</a></div>`;
     }
 
-    var peer = h`<div class="vb-dormant"><h3>How you compare to peers <span class="vb-soon">soon</span></h3><p>${r.peer.message}</p></div>`;
-    var market = h`<div class="vb-dormant"><h3>Your move vs. the market <span class="vb-soon">soon</span></h3><p>${r.market.message}</p></div>`;
+    var soon = LOCALE === 'es' ? 'pronto' : 'soon';
+    var peerHead = LOCALE === 'es' ? 'Cómo te comparas con tus colegas' : 'How you compare to peers';
+    var marketHead = LOCALE === 'es' ? 'Tu movimiento frente al mercado' : 'Your move vs. the market';
+    var peer = h`<div class="vb-dormant"><h3>${peerHead} <span class="vb-soon">${soon}</span></h3><p>${r.peer.message}</p></div>`;
+    var market = h`<div class="vb-dormant"><h3>${marketHead} <span class="vb-soon">${soon}</span></h3><p>${r.market.message}</p></div>`;
 
-    var card = h`<div class="vb-card"><span class="vb-badge" data-tier="${r.tier}">${label}</span><p class="vb-verdict">${r.talkingPoint}</p>${matchNote}${ledger}<p class="vb-ondevice">Saved on this device only — never sent anywhere. Clear it from your browser anytime.</p></div>`;
+    var ondevice = LOCALE === 'es'
+      ? 'Guardado solo en este dispositivo — nunca se envía a ningún lado. Bórralo de tu navegador cuando quieras.'
+      : 'Saved on this device only — never sent anywhere. Clear it from your browser anytime.';
+    var card = h`<div class="vb-card"><span class="vb-badge" data-tier="${r.tier}">${label}</span><p class="vb-verdict">${r.talkingPoint}</p>${matchNote}${ledger}<p class="vb-ondevice">${ondevice}</p></div>`;
 
     SH.setHTML(resultEl, h`${card}${peer}${market}`);
   }
@@ -552,7 +562,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     if (priorCents != null) series.push({ cents: priorCents, ts: Date.now() - 86400000, unit: unit });
     series.push({ cents: latestCents, ts: Date.now(), unit: unit });
 
-    var r = Bench.assess({ item: item, observations: series });
+    var r = Bench.assess({ item: item, observations: series, locale: LOCALE });
 
     // Personal data machine — keep the prices on this device so the next
     // check compares automatically. Never leaves the browser (the

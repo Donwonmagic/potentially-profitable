@@ -157,7 +157,10 @@
    * Identical units are compared as-entered (exact Ledger parity);
    * differing units within one dimension are converted to $/base.
    */
-  function comparable(observations) {
+  function tt(locale, en, es) { return locale === 'es' ? es : en; }
+
+  function comparable(observations, locale) {
+    locale = (locale === 'es') ? 'es' : 'en';
     var infos = observations.map(function (o) { return { o: o, u: unitInfo(o.unit) }; });
     var anyUnit = infos.some(function (x) { return x.u.kind !== 'none'; });
     if (!anyUnit) {
@@ -169,7 +172,9 @@
       var u = infos[i].u;
       if (u.kind === 'none') {
         return { ok: false, reason: 'missing-unit',
-          message: 'Some prices have a unit and some don’t. Put every entry in the same unit so Bench compares like with like.' };
+          message: tt(locale,
+            'Some prices have a unit and some don’t. Put every entry in the same unit so Bench compares like with like.',
+            'Algunos precios traen unidad y otros no. Pon cada entrada en la misma unidad para que Bench compare lo mismo con lo mismo.') };
       }
       if (u.kind === 'known') { dims[u.dim] = true; raws[u.raw] = true; }
       else { opaques[u.raw] = true; raws[u.raw] = true; }
@@ -177,8 +182,11 @@
     var dimKeys = Object.keys(dims), opKeys = Object.keys(opaques);
     if (opKeys.length && (dimKeys.length || opKeys.length > 1)) {
       return { ok: false, reason: 'opaque-pack',
-        message: 'These mix a pack unit (“' + opKeys[0] + '”) with other units. Bench can’t convert a ' + opKeys[0] +
-          ' to a weight without knowing its pack size — that’s what Muntin Ledger’s catalog does. Re-enter in one basis.' };
+        message: tt(locale,
+          'These mix a pack unit (“' + opKeys[0] + '”) with other units. Bench can’t convert a ' + opKeys[0] +
+            ' to a weight without knowing its pack size — that’s what Muntin Ledger’s catalog does. Re-enter in one basis.',
+          'Estas mezclan una unidad de empaque (“' + opKeys[0] + '”) con otras unidades. Bench no puede convertir un ' + opKeys[0] +
+            ' a peso sin conocer su tamaño de empaque — eso lo hace el catálogo de Muntin Ledger. Vuelve a ingresarlas en una sola base.') };
     }
     if (!dimKeys.length && opKeys.length === 1) {
       // All the same opaque unit (e.g. every entry "per case") — compare as-is.
@@ -186,7 +194,9 @@
     }
     if (dimKeys.length > 1) {
       return { ok: false, reason: 'incompatible-dimensions',
-        message: 'These prices mix ' + dimKeys.join(' and ') + ' units, which don’t convert into each other. Compare within one dimension.' };
+        message: tt(locale,
+          'These prices mix ' + dimKeys.join(' and ') + ' units, which don’t convert into each other. Compare within one dimension.',
+          'Estos precios mezclan unidades de ' + dimKeys.join(' y ') + ', que no se convierten entre sí. Compara dentro de una sola dimensión.') };
     }
     // Single known dimension. If every entry is literally the same unit,
     // compare as-entered for exact parity with Ledger; otherwise convert
@@ -213,6 +223,7 @@
     input = input || {};
     var item = (input.item || '').toString().trim();
     var observations = Array.isArray(input.observations) ? input.observations : [];
+    var locale = (input.locale === 'es') ? 'es' : 'en';
     var opts = {
       thresholdPct: input.thresholdPct,
       thresholdCents: input.thresholdCents,
@@ -231,14 +242,18 @@
       thresholdCents: (opts.thresholdCents != null) ? opts.thresholdCents : DEFAULT_THRESHOLD_CENTS,
       talkingPoint: '',
       // Layers designed-in but data-gated (see module header).
-      peer: peerBenchmark(item),
-      market: marketTrend(item)
+      peer: peerBenchmark(item, locale),
+      market: marketTrend(item, locale)
     };
 
     if (observations.length < 2) {
       result.talkingPoint = item
-        ? 'Enter at least one earlier price you paid for ' + item + ' so Bench can compare the latest one against your own baseline.'
-        : 'Enter the item plus the latest price and at least one earlier price you paid.';
+        ? tt(locale,
+            'Enter at least one earlier price you paid for ' + item + ' so Bench can compare the latest one against your own baseline.',
+            'Ingresa al menos un precio anterior que pagaste por ' + item + ' para que Bench compare el más reciente contra tu propia base.')
+        : tt(locale,
+            'Enter the item plus the latest price and at least one earlier price you paid.',
+            'Ingresa el artículo más el último precio y al menos un precio anterior que pagaste.');
       return result;
     }
 
@@ -248,7 +263,7 @@
     // doesn't have. This is the no-login mirror of Ledger's pack
     // normalization (product_canonical: pack_uom / pack_count /
     // pack_weight_lb).
-    var comp = comparable(observations);
+    var comp = comparable(observations, locale);
     if (!comp.ok) {
       result.tier = 'mixed-units';
       result.unitReason = comp.reason;
@@ -273,7 +288,9 @@
 
     if (medianCents <= 0) {
       result.tier = 'steady';
-      result.talkingPoint = 'Bench needs a positive earlier price to compare against.';
+      result.talkingPoint = tt(locale,
+        'Bench needs a positive earlier price to compare against.',
+        'Bench necesita un precio anterior positivo para poder comparar.');
       return result;
     }
 
@@ -282,32 +299,44 @@
     result.deltaCents = deltaCents;
     result.deltaPct = deltaPct;
 
-    var label = item || 'this item';
+    var label = item || tt(locale, 'this item', 'este artículo');
     var from = unitMoney(medianCents, baseUnit) + ' → ' + unitMoney(latestCents, baseUnit);
     var hike = computePriceHike(sorted, opts);
 
     if (hike) {
       result.tier = 'hike';
-      result.talkingPoint =
+      result.talkingPoint = tt(locale,
         'Your latest price for ' + label + ' is ' + pct(deltaPct) + ' over your trailing median (' + from +
         '), a ' + unitMoney(deltaCents, baseUnit) + ' jump. That clears the 8% / $5 line Muntin Ledger flags as a ' +
-        'price hike. Bring the earlier price to your rep and ask what changed.';
+        'price hike. Bring the earlier price to your rep and ask what changed.',
+        'Tu último precio de ' + label + ' está ' + pct(deltaPct) + ' por encima de tu mediana reciente (' + from +
+        '), un salto de ' + unitMoney(deltaCents, baseUnit) + '. Eso cruza la línea de 8% / $5 que Muntin Ledger marca como ' +
+        'subida de precio. Lleva el precio anterior a tu proveedor y pregúntale qué cambió.');
     } else if (deltaCents <= 0) {
       result.tier = 'steady';
       result.talkingPoint = deltaCents === 0
-        ? 'Your latest price for ' + label + ' matches your trailing median (' + unitMoney(medianCents, baseUnit) + '). Holding steady.'
-        : 'Your latest price for ' + label + ' is ' + pct(Math.abs(deltaPct)) + ' under your trailing median (' +
-          from + '). Moving the right way.';
+        ? tt(locale,
+            'Your latest price for ' + label + ' matches your trailing median (' + unitMoney(medianCents, baseUnit) + '). Holding steady.',
+            'Tu último precio de ' + label + ' coincide con tu mediana reciente (' + unitMoney(medianCents, baseUnit) + '). Se mantiene estable.')
+        : tt(locale,
+            'Your latest price for ' + label + ' is ' + pct(Math.abs(deltaPct)) + ' under your trailing median (' +
+              from + '). Moving the right way.',
+            'Tu último precio de ' + label + ' está ' + pct(Math.abs(deltaPct)) + ' por debajo de tu mediana reciente (' +
+              from + '). Va en la dirección correcta.');
     } else if (deltaPct >= WATCH_PCT) {
       result.tier = 'watch';
-      result.talkingPoint =
+      result.talkingPoint = tt(locale,
         'Your latest price for ' + label + ' is up ' + pct(deltaPct) + ' over your trailing median (' + from +
-        '). Below the 8% / $5 line Bench flags as a hike, but worth a glance next invoice.';
+        '). Below the 8% / $5 line Bench flags as a hike, but worth a glance next invoice.',
+        'Tu último precio de ' + label + ' subió ' + pct(deltaPct) + ' sobre tu mediana reciente (' + from +
+        '). Está por debajo de la línea de 8% / $5 que Bench marca como subida, pero vale la pena revisarlo en la próxima factura.');
     } else {
       result.tier = 'steady';
-      result.talkingPoint =
+      result.talkingPoint = tt(locale,
         'Your latest price for ' + label + ' is up ' + pct(deltaPct) + ' over your trailing median (' + from +
-        ') — within normal drift.';
+        ') — within normal drift.',
+        'Tu último precio de ' + label + ' subió ' + pct(deltaPct) + ' sobre tu mediana reciente (' + from +
+        ') — dentro de la variación normal.');
     }
 
     return result;
@@ -319,11 +348,14 @@
    * a stable "not available" shape so the UI can render an honest
    * placeholder rather than a fabricated percentile.
    */
-  function peerBenchmark(/* item */) {
+  function peerBenchmark(item, locale) {
+    locale = (locale === 'es') ? 'es' : 'en';
     return {
       available: false,
       reason: 'no-pool',
-      message: 'Peer comparison turns on per category once enough operators have opted in through Muntin Ledger. Until then, Bench compares your price against your own history.'
+      message: tt(locale,
+        'Peer comparison turns on per category once enough operators have opted in through Muntin Ledger. Until then, Bench compares your price against your own history.',
+        'La comparación con colegas se activa por categoría cuando suficientes operadores se suman a través de Muntin Ledger. Hasta entonces, Bench compara tu precio contra tu propio historial.')
     };
   }
 
@@ -332,11 +364,14 @@
    * index series is vendored in with source attribution. Never asserts
    * a "fair" price level — only rate-of-change once live.
    */
-  function marketTrend(/* item */) {
+  function marketTrend(item, locale) {
+    locale = (locale === 'es') ? 'es' : 'en';
     return {
       available: false,
       reason: 'no-index',
-      message: 'Market-trend comparison turns on once Bench vendors in a public commodity index for this category.'
+      message: tt(locale,
+        'Market-trend comparison turns on once Bench vendors in a public commodity index for this category.',
+        'La comparación con la tendencia del mercado se activa cuando Bench incorpora un índice público de materias primas para esta categoría.')
     };
   }
 
