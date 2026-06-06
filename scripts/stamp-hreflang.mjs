@@ -101,10 +101,11 @@ function prettyPathFor(relPath) {
 // is two-step: drop the file into /es/blog/<es-slug>/ AND add an entry to
 // data/i18n-slug-map.json's "blog" map, then re-run this script.
 const slugMapPath = path.join(repoRoot, 'data', 'i18n-slug-map.json');
-let slugMap = { blog: {}, esOriginal: [] };
+let slugMap = { blog: {}, library: {}, esOriginal: [] };
 try {
   slugMap = JSON.parse(fs.readFileSync(slugMapPath, 'utf8'));
   if (!slugMap.blog) slugMap.blog = {};
+  if (!slugMap.library) slugMap.library = {};
   if (!slugMap.esOriginal) slugMap.esOriginal = [];
 } catch (_) {
   // Missing or unreadable slug-map: behave as if empty. Pages still
@@ -117,8 +118,15 @@ function alternatesFor(enPath, repoRoot) {
   // at the actual translated URL.
   let esPath;
   const blogMatch = enPath.match(/^\/blog\/([^/]+)\/$/);
+  const libMatch = enPath.match(/^\/library\/([^/]+)\/$/);
   if (blogMatch && slugMap.blog && slugMap.blog[blogMatch[1]]) {
     esPath = `/es/blog/${slugMap.blog[blogMatch[1]]}/`;
+  } else if (libMatch && slugMap.library && slugMap.library[libMatch[1]]) {
+    // Library articles with a translated ES slug (e.g. keep-plate-cost-honest
+    // → costo-del-plato-cuando-cambian-los-precios). Without this, the EN page
+    // would point hreflang="es" at /es/library/<same-en-slug>/, which doesn't
+    // exist, so the alternate gets dropped — leaving a one-way hreflang pair.
+    esPath = `/es/library/${slugMap.library[libMatch[1]]}/`;
   } else {
     esPath = enPath === '/' ? '/es/' : `/es${enPath}`;
   }
