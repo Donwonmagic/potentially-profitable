@@ -1,56 +1,39 @@
 /**
- * Muntin Plate — the recommendation engine.
+ * Shared plate-advice — turn plate-cost numbers into a decision an owner
+ * can act on in five seconds.
  *
- * This is the soul of Muntin Plate: it turns cost numbers into a
- * decision an owner can act on in five seconds. It is the literal
- * implementation of the product's discipline — "no number ships
- * naked": every figure leaves this module paired with a plain-language
- * meaning and exactly ONE recommended action, with the rest of the
- * fork (re-price / re-portion / absorb) available behind it.
+ * "No number ships naked": every figure leaves paired with a plain-language
+ * meaning and exactly ONE recommended action, with the rest of the fork
+ * (re-price / re-portion / absorb) behind it. Pure, deterministic, no LLM,
+ * no network, no DOM. Money is integer cents end to end.
  *
- * It composes with, and never duplicates, the existing math:
- *   - plate cost / food-cost % / contribution come from
- *     tools/plate-cost/plate-cost.js (computePlateCost, suggestMenuPrices)
- *   - per-dish price-move impact + ranked drivers come from
- *     tools/_shared/dish-drift.js (compute) — feed its output in as
- *     `priceMove`.
- * This module's only job is JUDGMENT: tier the situation, frame the
- * dollars (loss-aversion, $/week when covers are known), and produce a
- * charm-rounded, menu-anchored re-price plus the re-portion / absorb
- * alternatives.
+ * PARITY CONTRACT (canonical source). This module is the source of truth for
+ * the Plate recommendation engine. The paid product (Muntin Ledger) ships a
+ * behaviour-identical TypeScript port at apps/api/src/lib/plate-advice.ts; the
+ * 11 vectors in plate-advice.test.mjs are mirrored verbatim on that side. If
+ * you change the math or the tiers here, change the Ledger port in the same
+ * change — or the free tool and the product will recommend different things
+ * for the same dish in front of the same operator.
  *
- * Principles enforced here (Empowerment pod):
- *   - Anchor on the OWNER'S target margin, never a textbook number.
- *   - Loss framing in dollars, not percents ("costing you $74/week").
- *   - Blame the price, not the owner.
- *   - Silence on healthy dishes is a feature (tell them they're fine).
- *   - Never "cost ÷ 30%": round to the menu's own convention, respect
- *     the price ladder, and offer the re-portion/absorb fork.
- *   - State confidence; never fabricate. Pure, deterministic, no LLM,
- *     no network. Money in integer cents end to end.
+ * Accessibility: headlines and option copy are plain language at a low reading
+ * grade, EN + ES, no jargon, no abbreviations the owner has to decode. The
+ * one recommended action is always first; "healthy" says so and stops
+ * (silence is a feature).
  *
- * Browser: window.MuntinPlateAdvice. Node: module.exports.
+ * Privacy posture: pure function. No fetch, no localStorage, no DOM.
  */
 (function (root) {
   'use strict';
 
-  var DEFAULT_TARGET = 0.30;            // owner's goal food-cost %, overridable
-  var WATCH_BAND = 0.02;               // within 2 pts over target = "watch", not "act"
+  var DEFAULT_TARGET = 0.30; // owner's goal food-cost %, overridable
+  var WATCH_BAND = 0.02;     // within 2 pts over target = "watch", not "act"
 
   // ---- money helpers (integer cents) --------------------------------
-  function dollars(cents) {
-    return '$' + (Math.round(cents) / 100).toFixed(2);
-  }
-  // Whole-dollar headline framing ("$74"), cents only in detail/receipt.
-  function dollarsRound(cents) {
-    return '$' + Math.round(cents / 100);
-  }
+  function dollars(cents) { return '$' + (Math.round(cents) / 100).toFixed(2); }
+  function dollarsRound(cents) { return '$' + Math.round(cents / 100); }
   function pct(p) { return Math.round(p * 100) + '%'; }
 
   // ---- charm rounding to the menu's own convention ------------------
-  // Detect whether the operator's other prices end in .00 / .95 / .99,
-  // and round a target price UP to that convention (never down — never
-  // recommend a price that misses the goal margin).
   function detectConvention(menuPricesCents) {
     if (!Array.isArray(menuPricesCents) || !menuPricesCents.length) return 'whole';
     var tally = { whole: 0, ninetyfive: 0, ninetynine: 0, other: 0 };
@@ -68,6 +51,7 @@
     });
     return bestN > 0 ? best : 'whole';
   }
+
   function charmRoundUp(cents, convention) {
     cents = Math.max(0, Math.ceil(cents));
     if (convention === 'ninetyfive') {
@@ -85,23 +69,7 @@
 
   function tt(locale, en, es) { return locale === 'es' ? es : en; }
 
-  /**
-   * advise(input) -> recommendation object.
-   *
-   * input:
-   *   plateCostCents     (int, required)   cost to make one plate
-   *   menuPriceCents     (int|null)        current sell price (null => price-needed)
-   *   targetFoodCostPct  (number)          owner's goal, default 0.30
-   *   menuPricesCents    (int[])           other dish prices (charm convention + ladder)
-   *   coversPerWeek      (number|null)     how many sell per week (=> $/week framing)
-   *   priceMove          (object|null)     { addedCostCentsPerPlate, ingredient, vendor, pctMove, seasonal }
-   *   confidence         ('high'|'medium'|'low')
-   *   locale             ('en'|'es')
-   *   itemName           (string)          for copy
-   *
-   * Returns { tier, foodCostPct, contributionCents, headline, options[], confidence, receipt }.
-   * options[0] is the recommended action; each is { kind, label, detail, newPriceCents?, trimPct? }.
-   */
+  // The headline function. See plate-advice.test.mjs for the worked vectors.
   function advise(input) {
     input = input || {};
     var locale = input.locale === 'es' ? 'es' : 'en';
@@ -135,11 +103,9 @@
       return result;
     }
 
-    // The price that would hit the owner's OWN goal, charm-rounded up.
     var targetPriceRaw = plate / target;
     var repriceCents = charmRoundUp(targetPriceRaw, convention);
 
-    // Re-price option (always computable).
     function repriceOption() {
       var newPct = repriceCents > 0 ? plate / repriceCents : null;
       return {
@@ -151,7 +117,6 @@
           'Llega a tu meta de ' + pct(target) + (newPct ? ' (' + pct(newPct) + ' de costo)' : '') + '.')
       };
     }
-    // Re-portion: trim cost back to the target-implied cost at the CURRENT price.
     function reportionOption() {
       if (menu == null) return null;
       var targetCost = Math.round(menu * target);
@@ -193,7 +158,6 @@
     result.foodCostPct = +foodCostPct.toFixed(4);
     result.contributionCents = contribution;
 
-    // weekly framing helper
     function weekly(centsPerPlate) {
       if (!covers || centsPerPlate <= 0) return null;
       return Math.round(centsPerPlate * covers);
@@ -214,7 +178,6 @@
         ing + ' went up' + moveStr + ' — it’s costing you ' + feltLoss(added) + ' on ' + name + '.',
         'Subió ' + ing + moveStr + ' — te está costando ' + feltLoss(added) + ' en ' + name + '.');
       var opts = [];
-      // Seasonal spikes: recommend HOLD first (don't re-price a transient move).
       if (move.seasonal) {
         opts.push(absorbOption());
         opts.push(reportionOption());
@@ -223,7 +186,6 @@
           ' Looks seasonal — it should ease, so holding is usually right.',
           ' Parece de temporada — debería bajar, así que mantenerlo suele ser lo correcto.');
       } else {
-        // Structural: if the dish is now over goal, re-price first; else offer the fork.
         if (foodCostPct > target + WATCH_BAND) opts.push(repriceOption());
         var rp = reportionOption(); if (rp) opts.push(rp);
         if (foodCostPct <= target + WATCH_BAND) opts.push(repriceOption());
@@ -275,10 +237,10 @@
   }
 
   var api = {
-    DEFAULT_TARGET: DEFAULT_TARGET,
     advise: advise,
     detectConvention: detectConvention,
-    charmRoundUp: charmRoundUp
+    charmRoundUp: charmRoundUp,
+    DEFAULT_TARGET: DEFAULT_TARGET
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   if (typeof self !== 'undefined') self.MuntinPlateAdvice = api;

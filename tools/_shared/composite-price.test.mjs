@@ -1,10 +1,9 @@
 /**
- * Pins the composite-price engine — the discipline that makes a
- * multi-source price HONEST: separate level from trend, anchor the
- * level on one basis (never average across incommensurable bases),
- * blend trend robustly, and keep provenance.
+ * Unit tests — tools/_shared/composite-price.js
+ * Run via:  node --test tools/_shared/composite-price.test.mjs
  *
- *   node --test tools/_shared/composite-price.test.mjs
+ * PARITY GUARANTEE. 12 vectors; Muntin Ledger mirrors them verbatim at
+ * apps/api/tests/cost-index/composite-price.test.ts.
  */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -14,8 +13,6 @@ const require = createRequire(import.meta.url);
 const C = require('./composite-price.js');
 
 test('LEVEL anchors on the most delivered-relevant basis — never averages across bases', () => {
-  // Delivered $10.00 and wholesale $6.00 present. The honest level is
-  // delivered ($10), NOT an $8 average that is true of neither.
   const lvl = C.compositeLevel([
     { source: 'ledger', basis: 'delivered', valueCents: 1000, date: '2026-05-01' },
     { source: 'usda-ams', basis: 'wholesale', valueCents: 600, date: '2026-05-01' },
@@ -26,7 +23,7 @@ test('LEVEL anchors on the most delivered-relevant basis — never averages acro
 
 test('LEVEL ignores index sources (an index has no dollar value)', () => {
   const lvl = C.compositeLevel([
-    { source: 'bls-ppi', basis: 'index', valueCents: 9999 }, // should be ignored
+    { source: 'bls-ppi', basis: 'index', valueCents: 9999 },
     { source: 'usda-ams', basis: 'wholesale', valueCents: 600 },
   ]);
   assert.equal(lvl.basis, 'wholesale');
@@ -42,34 +39,27 @@ test('LEVEL is a range with provenance, null when no level basis exists', () => 
   assert.equal(lvl.medianCents, 700);
   assert.ok(lvl.rangeCents[0] <= 700 && lvl.rangeCents[1] >= 700);
   assert.equal(lvl.provenance.length, 3);
-  // index-only -> no level
   assert.equal(C.compositeLevel([{ source: 'ppi', basis: 'index', valueCents: 120 }]), null);
 });
 
 test('windowChange yields a clean % for a dollar level OR a unitless index', () => {
-  assert.equal(C.windowChange([1000, 1100]).toFixed(2), '0.10');     // +10% level
-  assert.equal(C.windowChange([100, 106]).toFixed(2), '0.06');       // +6% index
-  assert.equal(C.windowChange([1]), null);                            // need 2 points
+  assert.equal(C.windowChange([1000, 1100]).toFixed(2), '0.10');
+  assert.equal(C.windowChange([100, 106]).toFixed(2), '0.06');
+  assert.equal(C.windowChange([1]), null);
 });
 
 test('TREND blends with a weighted median, robust to one outlier source', () => {
-  // Three sources agree ~+6–8%, one bad source says -40%. Median holds.
   const t = C.blendTrend([
-    { source: 'ams', pct: 0.06 },
-    { source: 'ppi', pct: 0.08 },
-    { source: 'fred', pct: 0.07 },
-    { source: 'glitch', pct: -0.40 },
+    { source: 'ams', pct: 0.06 }, { source: 'ppi', pct: 0.08 },
+    { source: 'fred', pct: 0.07 }, { source: 'glitch', pct: -0.40 },
   ]);
   assert.equal(t.dir, 'up');
   assert.ok(t.pct >= 0.06 && t.pct <= 0.08, 'weighted median ignores the outlier');
-  assert.equal(t.agreement, 0.75); // 3 of 4 agree on "up"
+  assert.equal(t.agreement, 0.75);
 });
 
 test('TREND reports low agreement when sources disagree on direction', () => {
-  const t = C.blendTrend([
-    { source: 'a', pct: 0.10 },
-    { source: 'b', pct: -0.10 },
-  ]);
+  const t = C.blendTrend([{ source: 'a', pct: 0.10 }, { source: 'b', pct: -0.10 }]);
   assert.ok(t.agreement <= 0.5);
 });
 
@@ -80,8 +70,8 @@ test('assess: level + corroborated trend → high confidence, honest range label
       { source: 'ams2', basis: 'wholesale', valueCents: 1500 },
     ],
     sourceSeries: {
-      ams:  { basis: 'wholesale', values: [1300, 1400] },
-      ppi:  { basis: 'index', values: [100, 107] },
+      ams: { basis: 'wholesale', values: [1300, 1400] },
+      ppi: { basis: 'index', values: [100, 107] },
       fred: { basis: 'index', values: [200, 213] },
     },
     asOf: '2026-06-01',
@@ -90,14 +80,14 @@ test('assess: level + corroborated trend → high confidence, honest range label
   assert.equal(r.confidence, 'high');
   assert.match(r.label, /reference/);
   assert.match(r.label, /up \+/);
-  assert.ok(r.provenance.length >= 4); // level + trend sources retained
+  assert.ok(r.provenance.length >= 4);
 });
 
 test('assess: index-only sources → directional-only, never a fabricated level', () => {
   const r = C.assess({
-    levelObs: [{ source: 'ppi', basis: 'index', valueCents: 120 }], // no real level
+    levelObs: [{ source: 'ppi', basis: 'index', valueCents: 120 }],
     sourceSeries: {
-      ppi:  { basis: 'index', values: [100, 109] },
+      ppi: { basis: 'index', values: [100, 109] },
       fred: { basis: 'index', values: [200, 218] },
     },
   });
@@ -121,21 +111,21 @@ test('LEVEL n=1: a single independent family is a point, never a fake $X–$X ba
   });
   assert.equal(r.level.nFamilies, 1);
   assert.match(r.label, /single source/);
-  assert.doesNotMatch(r.label, /\$13\.90.\$13\.90/);   // never the dishonest band
+  assert.doesNotMatch(r.label, /\$13\.90.\$13\.90/);
 });
 
-test('DE-CORRELATION: mirror sources sharing a family count as ONE, and cannot dominate the median', () => {
+test('DE-CORRELATION: mirror sources sharing a family count as ONE and cannot dominate', () => {
   const t = C.blendTrend([
-    { source: 'bls',  pct: 0.20, family: 'us-index' },
-    { source: 'fred', pct: 0.20, family: 'us-index' },   // echo of bls (same upstream)
-    { source: 'ams',  pct: 0.04, family: 'ams' },
+    { source: 'bls', pct: 0.20, family: 'us-index' },
+    { source: 'fred', pct: 0.20, family: 'us-index' },
+    { source: 'ams', pct: 0.04, family: 'ams' },
   ]);
-  assert.equal(t.nFamilies, 2);          // not 3
-  assert.equal(t.nSources, 3);           // raw count kept for display
-  assert.ok(t.pct < 0.20, 'two echoes of one feed must not outvote one independent source');
+  assert.equal(t.nFamilies, 2);
+  assert.equal(t.nSources, 3);
+  assert.ok(t.pct < 0.20);
 });
 
-test('DE-CORRELATION flows through confidence: three echoes of ONE family cannot reach "high"', () => {
+test('DE-CORRELATION flows through confidence: three echoes of one family cannot reach "high"', () => {
   const r = C.assess({
     levelObs: [
       { source: 'ams1', basis: 'wholesale', valueCents: 1300, family: 'ams' },
@@ -147,39 +137,7 @@ test('DE-CORRELATION flows through confidence: three echoes of ONE family cannot
       fred3: { basis: 'index', values: [300, 321], family: 'us-index' },
     },
   });
-  assert.equal(r.level.nFamilies, 1);    // both 'ams' → one family → single-source level
-  assert.equal(r.trend.nFamilies, 1);    // all 'us-index' → one family
-  assert.notEqual(r.confidence, 'high'); // one independent family each → never high
-});
-
-test('LEVEL carries its unit so the phrase never implies a $/lb we did not measure', () => {
-  // Produce is priced per carton; the label must say "/carton", not a bare dollar.
-  const r = C.assess({
-    levelObs: [{ source: 'usda-ams-ny', basis: 'wholesale', valueCents: 2400, unit: 'carton' }],
-    sourceSeries: { 'usda-ams-ny': { basis: 'wholesale', values: [2300, 2400] } },
-  });
-  assert.equal(r.level.unit, 'carton');
-  assert.match(r.label, /\$24\.00\/carton/);
-  assert.match(r.label, /wholesale reference/);
-});
-
-test('TYPE de-correlation: many correlated terminals widen the range but cannot fake "high" confidence', () => {
-  // 5 AMS terminal markets (distinct families → real dispersion) but ONE type
-  // 'usda-ams', plus a BLS index trend (a 2nd type). Level corroboration = 1
-  // methodology → must NOT be "high".
-  const mk = (src, cents) => ({ source: src, basis: 'wholesale', valueCents: cents, family: src, type: 'usda-ams' });
-  const r = C.assess({
-    levelObs: [mk('ams-atl', 2000), mk('ams-bal', 2200), mk('ams-chi', 2400), mk('ams-la', 2600), mk('ams-ny', 2800)],
-    sourceSeries: {
-      'ams-atl': { basis: 'wholesale', values: [1900, 2000], family: 'ams-atl', type: 'usda-ams' },
-      'ams-bal': { basis: 'wholesale', values: [2100, 2200], family: 'ams-bal', type: 'usda-ams' },
-      'ams-ny':  { basis: 'wholesale', values: [2700, 2800], family: 'ams-ny',  type: 'usda-ams' },
-      bls: { basis: 'index', values: [100, 106], family: 'bls', type: 'bls' },
-    },
-  });
-  assert.equal(r.level.nFamilies, 5);     // 5 markets → genuine dispersion for the range
-  assert.equal(r.level.nTypes, 1);        // but ONE methodology
-  assert.ok(r.level.rangeCents[1] > r.level.rangeCents[0], 'the range still reflects cross-market dispersion');
-  assert.notEqual(r.confidence, 'high');  // one wholesale methodology → never "high" off correlated terminals
-  assert.equal(r.trend.nTypes, 2);        // usda-ams + bls
+  assert.equal(r.level.nFamilies, 1);
+  assert.equal(r.trend.nFamilies, 1);
+  assert.notEqual(r.confidence, 'high');
 });

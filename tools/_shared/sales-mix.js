@@ -1,32 +1,34 @@
 /**
- * Muntin — sales-mix → real covers (the CSV fallback adapter).
+ * Shared sales-mix — turn a POS sales-mix export into real weekly covers.
  *
- * Plate computes a *theoretical* plate cost and can only frame impact as
- * "$/week" when it knows COVERS (units sold). POS integrations (Square/
- * Toast/Clover) supply that live, but they need OAuth and a partner
- * account. This pure module is the fallback that ships day one: the
- * operator uploads a sales-mix export (units sold per item over a date
- * range) from any POS, and Plate gets real covers immediately — turning
- * theoretical cost into actual food cost and making the hero "$X/week"
- * number precise.
+ * Plate frames "$X/week" only when it knows COVERS (units sold). A live POS
+ * integration supplies that, but needs OAuth + a partner account. This is the
+ * fallback that works with zero setup: paste or upload any POS sales-mix
+ * export (CSV/TSV) and get real covers immediately — turning a theoretical
+ * plate cost into actual food cost. Produces the same normalized shape a POS
+ * adapter would, so everything downstream stays POS-agnostic.
  *
- * It produces the SAME normalized shape a POS SalesMixAdapter would, so
- * everything downstream (plate-advice.js, dish-drift.js) is POS-agnostic.
+ * PARITY CONTRACT (canonical source). This module is the source of truth.
+ * Muntin Ledger ships a behaviour-identical TypeScript port at
+ * apps/api/src/lib/sales-mix.ts; the 8 vectors in sales-mix.test.mjs are
+ * mirrored verbatim there (including the end-to-end CSV → covers →
+ * plate-advice vector). Change one, change the other in the same change.
  *
- * Pure, deterministic, no network, no LLM. Integer cents. Browser:
- * window.MuntinSalesMix. Node: module.exports.
+ * Privacy posture: pure function. No fetch, no localStorage, no DOM. Money is
+ * integer cents.
  */
 (function (root) {
   'use strict';
 
-  // Column header synonyms → our fields. Lowercased, punctuation-stripped.
   var HEADERS = {
     item:  ['item', 'menu item', 'name', 'product', 'dish', 'plu', 'item name', 'description'],
     units: ['units sold', 'units', 'qty', 'quantity', 'count', 'sold', 'items sold', 'qty sold'],
     sales: ['net sales', 'gross sales', 'sales', 'revenue', 'total', 'amount', 'net amount']
   };
 
-  function norm(s) { return String(s == null ? '' : s).toLowerCase().replace(/[^a-z0-9 ]+/g, ' ').replace(/\s+/g, ' ').trim(); }
+  function norm(s) {
+    return String(s == null ? '' : s).toLowerCase().replace(/[^a-z0-9 ]+/g, ' ').replace(/\s+/g, ' ').trim();
+  }
   function toCents(s) {
     if (typeof s === 'number') return Math.round(s * 100);
     var n = parseFloat(String(s == null ? '' : s).replace(/[^0-9.\-]/g, ''));
@@ -38,8 +40,6 @@
     return isFinite(n) ? n : null;
   }
 
-  // Minimal delimited-row split: tab if present, else comma; tolerates
-  // simple double-quoted cells containing the delimiter.
   function splitRows(text) {
     var lines = String(text == null ? '' : text).split(/\r\n|\r|\n/).filter(function (l) { return l.trim() !== ''; });
     if (!lines.length) return [];
@@ -69,21 +69,13 @@
     return map;
   }
 
-  /**
-   * parseSalesMixCsv(text, opts) -> { rows, mapping, warnings }.
-   * rows: [{ item, unitsSold, grossSalesCents }]. Requires at least an
-   * item column and a units column; sales is optional. Rows with no
-   * item or non-positive units are skipped (with a warning count).
-   */
-  function parseSalesMixCsv(text, opts) {
-    opts = opts || {};
+  function parseSalesMixCsv(text) {
     var warnings = [];
     var grid = splitRows(text);
     if (!grid.length) return { rows: [], mapping: { item: -1, units: -1, sales: -1 }, warnings: ['Empty file.'] };
     var map = mapHeader(grid[0]);
     var headerDetected = map.item !== -1 && map.units !== -1;
     if (!headerDetected) {
-      // Fallback: assume col 0 = item, col 1 = units, col 2 = sales.
       map = { item: 0, units: 1, sales: grid[0].length > 2 ? 2 : -1 };
       warnings.push('No header row recognized; assumed columns: item, units, sales.');
     }
@@ -95,24 +87,12 @@
       item = String(item).trim();
       var units = toNum(map.units >= 0 ? cells[map.units] : null);
       if (!item || units == null || units <= 0) continue;
-      rows.push({
-        item: item,
-        unitsSold: units,
-        grossSalesCents: (map.sales >= 0) ? (toCents(cells[map.sales]) || 0) : null
-      });
+      rows.push({ item: item, unitsSold: units, grossSalesCents: (map.sales >= 0) ? (toCents(cells[map.sales]) || 0) : null });
     }
     if (!rows.length) warnings.push('No usable rows (need an item name and a positive units-sold value).');
     return { rows: rows, mapping: map, warnings: warnings };
   }
 
-  /**
-   * weeklyCovers(rows, opts) -> { [itemKey]: coversPerWeek }.
-   * Normalizes units sold over the export's period to a per-week rate, so
-   * Plate's $/week is consistent regardless of whether the export covered
-   * a week, two weeks, or a month. opts.periodDays defaults to 7.
-   * itemKey is the raw item label unless opts.keyFn is provided (e.g. to
-   * stem/match against recipe names).
-   */
   function weeklyCovers(rows, opts) {
     opts = opts || {};
     var days = (typeof opts.periodDays === 'number' && opts.periodDays > 0) ? opts.periodDays : 7;
@@ -124,7 +104,6 @@
       var perWeek = row.unitsSold * 7 / days;
       out[key] = (out[key] || 0) + perWeek;
     });
-    // Round to a clean cover count.
     Object.keys(out).forEach(function (k) { out[k] = Math.round(out[k] * 10) / 10; });
     return out;
   }
@@ -132,7 +111,7 @@
   var api = {
     parseSalesMixCsv: parseSalesMixCsv,
     weeklyCovers: weeklyCovers,
-    _toCents: toCents
+    HEADERS: HEADERS
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   if (typeof self !== 'undefined') self.MuntinSalesMix = api;

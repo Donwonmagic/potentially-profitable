@@ -186,40 +186,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 .pc-pull-invoice:hover{filter:brightness(1.06)}
 .pc-pull-invoice[disabled]{opacity:.55;cursor:wait}
 .pc-pull-invoice-msg{font-size:12.5px;margin:6px 12px 0;color:var(--ink-soft)}
-/* Wave 10.5 — banner de receta desactualizada (superficie de carga en frío desde el Decodificador de Facturas) */
-#pcStaleBanner{margin:6px 12px}
-#pcStaleBanner[hidden]{display:none}
-.pc-stale{padding:12px 14px;background:color-mix(in srgb,var(--teal) 6%,var(--cream));border:1px solid color-mix(in srgb,var(--teal) 30%,var(--line,#d6d2c2));border-left:3px solid var(--teal);border-radius:8px}
-.pc-stale-msg{margin:0 0 8px;font-size:13.5px;color:var(--ink);line-height:1.55}
-.pc-stale-actions{display:flex;flex-wrap:wrap;gap:6px}
-.pc-stale-review,.pc-stale-acceptall,.pc-stale-dismiss{font:inherit;font-size:12.5px;padding:6px 12px;border-radius:6px;border:1px solid var(--line,#d6d2c2);background:var(--cream);color:var(--ink);cursor:pointer}
-.pc-stale-acceptall{background:var(--teal);color:var(--cream);border-color:var(--teal)}
-.pc-stale-acceptall:hover{filter:brightness(1.06)}
-.pc-stale-review:hover,.pc-stale-dismiss:hover{border-color:var(--ink-soft)}
-.pc-stale-list{margin:8px 0 10px;padding:0;list-style:none}
-.pc-stale-row{display:grid;grid-template-columns:1fr auto auto auto;gap:8px;align-items:center;padding:6px 0;font-size:12.5px;border-bottom:1px dashed var(--line,#d6d2c2)}
-.pc-stale-row-dish{color:var(--ink);font-weight:500}
-.pc-stale-row-prices{font-variant-numeric:tabular-nums;color:var(--ink-soft)}
-.pc-stale-delta{margin-left:6px;padding:1px 6px;border-radius:4px;font-size:11px;font-weight:600}
-.pc-stale-delta[data-dir="up"]{background:#fce0d7;color:#7a2e1f}
-.pc-stale-delta[data-dir="down"]{background:#c7e4d4;color:#0c4a26}
-.pc-stale-row-accept,.pc-stale-row-skip{font:inherit;font-size:11.5px;padding:3px 8px;border-radius:5px;border:1px solid var(--line,#d6d2c2);background:var(--cream);cursor:pointer}
-.pc-stale-row-accept{background:var(--teal);color:var(--cream);border-color:var(--teal)}
-
-/* Wave 10.6 — chip fantasma por fila que muestra el último precio de factura */
-.pc-ghost-chip{display:inline-flex;align-items:center;gap:3px;margin:4px 0 0;padding:1px 8px;border-radius:5px;background:transparent;border:1px dashed var(--ink-soft);color:var(--ink-soft);font-size:11px;cursor:pointer;font-family:inherit;font-style:italic;white-space:nowrap;font-variant-numeric:tabular-nums;opacity:0.85}
-.pc-ghost-chip:hover{background:color-mix(in srgb,var(--teal) 8%,var(--cream));border-color:var(--teal);color:var(--ink);opacity:1}
-.pc-ghost-chip:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
-/* Wave 10.13 — chip de cambio de proveedor (pista de "más barato en otro lugar") */
-.pc-vswap-chip{display:inline-flex;align-items:center;margin:4px 0 0 6px;padding:1px 8px;border-radius:5px;background:#c7e4d4;border:1px solid #0c4a26;color:#0c4a26;font-size:11px;cursor:pointer;font-family:inherit;font-weight:600;white-space:nowrap;font-variant-numeric:tabular-nums}
-.pc-vswap-chip:hover{filter:brightness(1.05)}
-.pc-vswap-chip:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
-/* Wave 10.14 — línea de salud de emparejamiento */
-.pc-match-health{margin:6px 12px 0;font-size:12.5px;color:var(--ink-soft)}
-.pc-match-health[hidden]{display:none}
-.pc-match-rest{font:inherit;font-size:12px;padding:3px 9px;border-radius:5px;border:1px solid var(--teal);background:var(--teal);color:var(--cream);cursor:pointer;margin-left:4px}
-.pc-match-rest:hover{filter:brightness(1.05)}
-.pc-match-allgood{color:#0c4a26;font-weight:600;margin-left:4px}
 .pc-ocr{margin:0;padding:14px 16px;background:var(--cream-2);border-top:1px solid var(--line)}
 .pc-ocr[open]{padding-bottom:18px}
 .pc-ocr-summary{cursor:pointer;font-size:13.5px;font-weight:600;color:var(--ink);list-style:none;display:flex;align-items:center;gap:8px}
@@ -260,6 +226,22 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 .pc-prices{padding:18px 22px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--white)}
 .pc-prices h3{font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);margin:0 0 4px}
 .pc-prices p.pc-prices-dek{font-size:12.5px;color:var(--stone);margin:0 0 14px;line-height:1.5}
+.pc-advice{padding:18px 22px;border:1px solid var(--line);border-left:3px solid var(--rust);border-radius:var(--r-md);background:var(--white);margin-top:16px}
+.pc-advice h3{font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);margin:0 0 10px}
+.pc-advice-input{display:block;font-size:13px;color:var(--ink);margin:0 0 6px}
+.pc-advice-input small{color:var(--stone);font-weight:400}
+.pc-advice-money{display:inline-flex;align-items:center;gap:4px;margin-top:6px;border:1px solid var(--line);border-radius:var(--r-sm);padding:6px 10px;background:var(--white)}
+.pc-advice-money input{border:0;outline:0;font:inherit;width:7em;background:transparent;color:var(--ink)}
+.pc-advice-money:focus-within{outline:2px solid var(--teal);outline-offset:1px}
+.pc-advice-hint{font-size:11.5px;color:var(--stone);margin:6px 0 12px}
+.pc-advice-headline{font-size:15px;line-height:1.5;color:var(--ink);margin:0 0 12px;font-weight:500}
+.pc-advice-options{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.pc-advice-option{padding:10px 12px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--cream-1)}
+.pc-advice-option.is-primary{border-color:var(--rust);background:var(--cream-2)}
+.pc-advice-do{display:inline-block;font-size:10.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--rust);margin-bottom:3px}
+.pc-advice-label{display:block;font-weight:500;color:var(--ink);font-size:13.5px}
+.pc-advice-detail{display:block;font-size:12.5px;color:var(--stone);line-height:1.5;margin-top:2px}
+.pc-advice-ledger{font-size:12.5px;color:var(--stone);line-height:1.5;margin:14px 0 0;padding-top:12px;border-top:1px solid var(--line)}
 .pc-price-row{display:grid;grid-template-columns:64px 1fr auto;align-items:baseline;gap:10px;padding:10px 0;border-top:1px solid var(--line);font-variant-numeric:tabular-nums}
 .pc-price-row:first-of-type{border-top:0}
 .pc-price-target{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:14px;font-weight:600;color:var(--ink)}
@@ -730,20 +712,6 @@ body[data-pc-mode="recost"] .pc-recost-banner{display:flex}
       </div>
       <p class="pc-pull-invoice-msg" id="pcPullInvoiceMsg" role="status" aria-live="polite"></p>
 
-      <!-- Wave 10.14 — línea de salud de emparejamiento: cuántos
-           ingredientes se enlazan al historial de facturas y cuántos
-           todavía necesitan un emparejamiento. Muestra el foso de
-           aprendizaje compuesto propiedad del operador. -->
-      <p class="pc-match-health" id="pcMatchHealth" hidden></p>
-
-      <!-- Wave 10.5 — banner de receta desactualizada. Se renderiza
-           sobre el CTA de "traer" cuando MuntinContext.recipeStaleQueue
-           tiene entradas que el Decodificador de Facturas empuja al
-           guardar. Disciplina de orden de render: la lectura síncrona
-           aquí ocurre ANTES del descifrado asíncrono readInvoiceItems
-           que impulsa el CTA de traer. -->
-      <div id="pcStaleBanner" hidden role="status" aria-live="polite"></div>
-
       <details class="pc-ocr">
         <summary class="pc-ocr-summary">📷 Sácale foto a tu factura mejor <span class="pc-ocr-beta">beta</span></summary>
         <div class="pc-ocr-body">
@@ -786,37 +754,32 @@ body[data-pc-mode="recost"] .pc-recost-banner{display:flex}
         <div class="pc-stress-out" id="pcStressOut" hidden></div>
       </div>
 
-      <div class="pc-year" id="pcYear" hidden>
-        <h3>¿Cuánto vale este platillo al año?</h3>
-        <div class="pc-year-grid">
-          <label class="pc-year-input">
-            <span>Platos vendidos por semana (de tu POS o un estimado rápido)</span>
-            <input type="number" id="pcYearVolume" min="0" step="1" inputmode="numeric" placeholder="ej. 28">
-          </label>
-          <div class="pc-year-out" id="pcYearOut" aria-live="polite">
-            <span class="pc-year-out-label">A tu precio sugerido intermedio, este platillo deja</span>
-            <span class="pc-year-out-amount" id="pcYearAmount">— al año</span>
-            <span class="pc-year-out-detail" id="pcYearDetail">Escribe un volumen semanal para ver la contribución anual.</span>
-          </div>
-        </div>
-        <label class="pc-year-input" style="margin-top:14px;display:block;">
-          <span>Lo que cobras por él ahora ($) — opcional, para ver el margen</span>
-          <input type="number" id="pcPriceNow" min="0" step="0.01" inputmode="decimal" placeholder="ej. 14.00">
+      <!-- Panel de recomendación — el gancho de decisión de la herramienta
+           gratis. Según lo que cobras ahora, el motor devuelve UN movimiento
+           en lenguaje claro (subir precio / reducir porción / mantener).
+           Usa tools/_shared/plate-advice.js — el MISMO motor que corre Muntin
+           Ledger en el servidor (contrato de paridad). Accesibilidad: input
+           opcional con etiqueta + región aria-live; la acción recomendada va
+           primero. Render con DOM (sin innerHTML). -->
+      <div class="pc-advice" id="pcAdvice" hidden>
+        <h3>¿Qué deberías hacer?</h3>
+        <label class="pc-advice-input" for="pcCurrentPrice">
+          <span>¿Cuánto cobras por él ahora? <small>(opcional — desbloquea la recomendación)</small></span>
         </label>
-        <div class="pc-year-upload" style="margin-top:14px;display:flex;flex-wrap:wrap;align-items:center;gap:10px;">
-          <input type="file" id="pcMixFile" accept=".csv,.tsv,.txt,text/csv" aria-label="Archivo de mezcla de ventas (CSV)" hidden>
-          <label style="font-size:13px;color:var(--ink-soft);display:inline-flex;align-items:center;gap:6px;">que cubre <select id="pcMixPeriod" style="font:inherit;font-size:13px;padding:5px 8px;border:1px solid #D7DAE0;border-radius:7px;background:#fff;color:var(--ink);"><option value="7">1 semana</option><option value="14">2 semanas</option><option value="28">4 semanas</option><option value="30">1 mes</option></select></label>
-          <button type="button" class="pc-action-btn" id="pcMixBtn">Sube tu mezcla de ventas para llenar esto &rarr;</button>
-          <span class="pc-year-mix-status" id="pcMixStatus" role="status" aria-live="polite" style="font-size:13px;color:var(--ink-soft);line-height:1.5;"></span>
-        </div>
-        <div id="pcAdvice" class="pc-advice" hidden style="margin-top:14px;"></div>
+        <span class="pc-advice-money">
+          <span aria-hidden="true">$</span>
+          <input type="text" id="pcCurrentPrice" inputmode="decimal" autocomplete="off"
+                 placeholder="ej. 16.00" aria-describedby="pcAdviceHint">
+        </span>
+        <p class="pc-advice-hint" id="pcAdviceHint">Se queda en tu navegador, como todo aquí.</p>
+        <div class="pc-advice-out" id="pcAdviceOut" role="status" aria-live="polite"></div>
       </div>
 
       <aside class="edu-result" id="pcEduResult" aria-labelledby="pcEduResultLede">
         <p class="edu-result__lede" id="pcEduResultLede">Toma esto como <strong>línea de partida</strong>, no como precio fijo. El rendimiento varía un ±5&ndash;10% según limpieza y proveedor; recoste cuando una factura se mueva más que unos puntos.</p>
         <p class="edu-result__rule">Si tus tres precios sugeridos rodean un precio que de verdad puedes cobrar en tu mercado, vas bien. Si hasta la columna del 33% está por debajo de lo que el comensal pagará, el plato es <strong>candidato a plowhorse</strong> &mdash; llévalo a Ingeniería de Menú con datos de ventas.</p>
         <p class="edu-result__next"><span class="edu-result__next-label">Siguiente paso</span><a href="#pc-actions">Imprime la Ficha del Plato para la cocina</a><span aria-hidden="true">&middot;</span><a href="/es/tools/menu-engineering/">Prueba contra tu mezcla de ventas</a><span aria-hidden="true">&middot;</span><a href="/es/tools/margin-math/">Verifica el costo primo</a></p>
-        <p class="edu-result__source"><span class="edu-result__source-label">Fuente</span><a href="/es/glossary/food-cost/">Tablas de rendimiento del CIA</a> &middot; <a href="/es/library/ingredient-yields/">rendimientos por ingrediente</a> &middot; benchmarks de costo de alimento NRA (edición 2026; medianas, segmento full-service) &middot; <a href="/es/glossary/contribution-margin/">margen de contribución</a></p>
+        <p class="edu-result__source"><span class="edu-result__source-label">Fuente</span><a href="/es/glossary/food-cost/">Tablas de rendimiento del CIA</a> &middot; benchmarks de costo de alimento NRA (edición 2026; medianas, segmento full-service) &middot; <a href="/es/glossary/contribution-margin/">margen de contribución</a></p>
 
         <details class="edu-formula">
           <summary>Muestra la matemática (la fórmula detrás de cada fila)</summary>
@@ -837,19 +800,6 @@ Tres precios de menú sugeridos, cada uno despejado de una meta de food cost:
 Margen de contribución por plato = precio menú &minus; costo del plato</pre>
           <p class="edu-formula__caption">Los rendimientos vienen de las Tablas Estándar de Rendimiento del CIA; la varianza del chef suele ser &plusmn;5%, más en proteínas con mucha limpieza. El módulo completo está en <code>/tools/plate-cost/plate-cost.js</code> &mdash; sin minificación, sin build, legible directamente.</p>
         </details>
-      </aside>
-
-      <!-- Embudo “mantenlo al día” → Muntin Ledger. El recordatorio .ics
-           de abajo es la respuesta MANUAL del tool gratuito a “los precios
-           cambian”; este es el automático. Puente honesto gratis→pago: el
-           tool gratuito responde la pregunta de una sola vez con los precios
-           que escribes; Muntin Ledger vende la recurrencia. Vive dentro de
-           #pcResult, así que solo aparece DESPUÉS de costear un platillo. -->
-      <aside class="pc-keep-live" id="pcKeepLive" aria-labelledby="pcKeepLiveH" style="margin:20px 0 0;padding:20px 22px;border-radius:12px;background:linear-gradient(100deg,#0f3a37 0%,#1f6f6a 100%);color:#fff;">
-        <span style="display:inline-block;font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;opacity:0.85;margin:0 0 6px;">Mantenlo al día</span>
-        <h3 id="pcKeepLiveH" style="font-family:var(--font-display);font-size:20px;font-weight:500;color:#fff;margin:0 0 8px;line-height:1.2;">O deja de recostear a mano.</h3>
-        <p style="font-size:14px;line-height:1.55;color:rgba(255,255,255,0.92);margin:0 0 14px;max-width:60ch;">Esta calculadora costea tu platillo una vez, con los precios que escribes. <strong style="color:#fff;">Muntin Ledger</strong> lee tus facturas reales y mantiene cada platillo costeado automáticamente &mdash; y el día que un precio cambia, te dice a qué platillos les pegó, y por cuánto. El recordatorio de abajo es la versión manual; Ledger es la que vigila por ti.</p>
-        <a class="plausible-event-name=Ledger+Route+Click plausible-event-source=plate-cost" href="https://ledger.muntin.digital/" style="display:inline-flex;align-items:center;gap:6px;padding:11px 20px;border-radius:999px;background:#fff;color:#0f3a37;font-weight:600;font-size:14px;text-decoration:none;">Conoce Muntin Ledger <span aria-hidden="true">&rarr;</span></a>
       </aside>
     </div>
 
@@ -1060,19 +1010,103 @@ Margen de contribución por plato = precio menú &minus; costo del plato</pre>
 
 <!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260422-cohesion";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
 <script src="/tools/_shared/parse-number.js?v=20260428-shared1"></script>
-<script src="/tools/_shared/context-bus.js?v=20260504-w10-3"></script>
+<script src="/tools/_shared/context-bus.js?v=20260501-w4-7"></script>
 <script src="/tools/_shared/next-tool.js?v=phase4"></script>
 <script src="/tools/_shared/handoff.js?v=phase4"></script>
 <script src="/tools/_shared/device-key.js?v=20260501-w3-4"></script>
-<script src="/tools/_shared/stem.js?v=20260504-w10-0a"></script>
-<script src="/tools/_shared/sku-match.js?v=20260504-w10-1"></script>
-<script src="/tools/_shared/sales-mix.js?v=20260602-pos1"></script>
-<script src="/tools/_shared/plate-advice.js?v=20260603-plate1"></script>
-<script src="/tools/_shared/portion-bridge.js?v=20260504-w10-2"></script>
-<script src="/tools/_shared/cross-vendor.js?v=20260504-w10-13"></script>
-<script src="/tools/_shared/whats-new.js?v=20260504-w14-8" defer></script>
-<script src="/tools/plate-cost/plate-cost.js?v=20260504-w10-7"></script>
+<script src="/tools/_shared/plate-advice.js?v=20260606-w15-1"></script>
+<script src="/tools/plate-cost/plate-cost.js?v=20260428-pcF"></script>
 <script src="/tools/plate-cost/card-render.js?v=20260426-pc2"></script>
+<script>
+/* Plate Cost — panel de recomendación (el gancho gratis→Ledger). Define
+   window.MuntinPlateAdviceUI = { render(summary), clear() }, llamado desde
+   renderResults abajo. DOM puro (sin innerHTML) + textContent para todo valor
+   dinámico, así un nombre de platillo/ingrediente tecleado no inyecta markup.
+   La matemática vive en tools/_shared/plate-advice.js (paridad con Ledger). */
+(function(){
+  'use strict';
+  var panel = document.getElementById('pcAdvice');
+  var out   = document.getElementById('pcAdviceOut');
+  var priceInput = document.getElementById('pcCurrentPrice');
+  var volInput   = document.getElementById('pcYearVolume');
+  var nameInput  = document.getElementById('pcName');
+  if (!panel || !out) return;
+
+  var lastPlateCents = null;
+
+  function moneyToCents(v){
+    if (v == null) return null;
+    var n = parseFloat(String(v).replace(/[^0-9.]/g, ''));
+    return (isFinite(n) && n >= 0) ? Math.round(n * 100) : null;
+  }
+  function clearNode(n){ while (n.firstChild) n.removeChild(n.firstChild); }
+  function el(tag, cls, text){
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+
+  function paint(){
+    if (lastPlateCents == null || lastPlateCents <= 0) { panel.hidden = true; return; }
+    panel.hidden = false;
+    clearNode(out);
+    if (!window.MuntinPlateAdvice) return;
+
+    var menuCents = moneyToCents(priceInput && priceInput.value);
+    var covers = volInput ? parseFloat(volInput.value) : NaN;
+    var locale = (document.documentElement.lang || 'en').slice(0, 2) === 'es' ? 'es' : 'en';
+
+    var res = window.MuntinPlateAdvice.advise({
+      itemName: (nameInput && nameInput.value) || '',
+      plateCostCents: lastPlateCents,
+      menuPriceCents: menuCents,
+      menuPricesCents: menuCents != null ? [menuCents] : undefined,
+      coversPerWeek: (isFinite(covers) && covers > 0) ? covers : null,
+      targetFoodCostPct: 0.30,
+      locale: locale
+    });
+
+    var headline = el('p', 'pc-advice-headline', res.headline);
+    headline.setAttribute('data-tier', res.tier);
+    out.appendChild(headline);
+
+    if (res.options && res.options.length) {
+      var ul = el('ul', 'pc-advice-options');
+      res.options.forEach(function(o, i){
+        var li = el('li', 'pc-advice-option' + (i === 0 ? ' is-primary' : ''));
+        if (i === 0) li.appendChild(el('span', 'pc-advice-do', locale === 'es' ? 'Haz esto' : 'Do this'));
+        li.appendChild(el('span', 'pc-advice-label', o.label));
+        li.appendChild(el('span', 'pc-advice-detail', o.detail));
+        ul.appendChild(li);
+      });
+      out.appendChild(ul);
+    }
+
+    var ledger = el('p', 'pc-advice-ledger');
+    ledger.appendChild(document.createTextNode(
+      locale === 'es' ? '¿Quieres que esto se vigile solo? ' : 'Want this watched for you? '));
+    var a = el('a', 'pc-advice-ledger-link plausible-event-name=Ledger+Route+Click plausible-event-source=plate-cost-advice', 'Muntin Ledger');
+    a.href = 'https://ledger.muntin.digital/';
+    ledger.appendChild(a);
+    ledger.appendChild(document.createTextNode(
+      locale === 'es'
+        ? ' recosta tus platillos solo cuando una factura sube — sin hoja de cálculo, sin volver a teclear.'
+        : ' re-costs your dishes automatically when an invoice price jumps — no spreadsheet, no re-typing.'));
+    out.appendChild(ledger);
+  }
+
+  window.MuntinPlateAdviceUI = {
+    render: function(summary){
+      lastPlateCents = (summary && isFinite(summary.plateCost)) ? Math.round(summary.plateCost * 100) : null;
+      paint();
+    },
+    clear: function(){ lastPlateCents = null; panel.hidden = true; clearNode(out); }
+  };
+
+  if (priceInput) priceInput.addEventListener('input', paint);
+})();
+</script>
 <script>
 (function(){
   'use strict';
@@ -1131,16 +1165,7 @@ Margen de contribución por plato = precio menú &minus; costo del plato</pre>
   }
 
   function rowHtml(row, idx) {
-    // Wave 10.7 — los campos aditivos al esquema `_boundStem` /
-    // `_apPriceSource` / `_apPricePrev` viajan junto con los datos de
-    // la fila; se exponen como atributos data-* para que el módulo de
-    // banner-desactualizado + chip-fantasma pueda leerlos sin volver a
-    // parsear los inputs.
-    var sourceAttr  = row._apPriceSource ? ' data-ap-price-source="' + esc(row._apPriceSource) + '"' : '';
-    var stemAttr    = row._boundStem     ? ' data-bound-stem="' + esc(row._boundStem) + '"' : '';
-    var prevAttr    = (row._apPricePrev != null && row._apPricePrev !== '')
-                        ? ' data-ap-price-prev="' + esc(row._apPricePrev) + '"' : '';
-    return '<tr data-pc-row data-idx="' + idx + '"' + stemAttr + sourceAttr + prevAttr + '>' +
+    return '<tr data-idx="' + idx + '">' +
       '<td data-label="Ingrediente"><input type="text" data-field="ingredient" list="pcYieldNames" autocomplete="off" value="' + esc(row.ingredient) + '" placeholder="ej. Romaine" /></td>' +
       '<td data-label="Precio AP ($)"><input type="number" data-field="apPrice" min="0" step="0.01" value="' + esc(row.apPrice) + '" /></td>' +
       '<td data-label="Cant. AP"><input type="number" data-field="apQty" min="0" step="0.01" value="' + esc(row.apQty) + '" /></td>' +
@@ -1164,16 +1189,6 @@ Margen de contribución por plato = precio menú &minus; costo del plato</pre>
       Array.prototype.forEach.call(tr.querySelectorAll('[data-field]'), function(el){
         row[el.dataset.field] = el.value;
       });
-      // Wave 10.7 — preserva los campos aditivos al esquema expuestos
-      // como atributos data-* para que el viaje de ida y vuelta de la
-      // fila conserve el stem enlazado + la fuente del precio entre
-      // re-renderizados.
-      var stem = tr.getAttribute('data-bound-stem');
-      var src  = tr.getAttribute('data-ap-price-source');
-      var prev = tr.getAttribute('data-ap-price-prev');
-      if (stem) row._boundStem = stem;
-      if (src)  row._apPriceSource = src;
-      if (prev != null && prev !== '') row._apPricePrev = prev;
       rows.push(row);
     });
     return rows;
@@ -1221,6 +1236,7 @@ Margen de contribución por plato = precio menú &minus; costo del plato</pre>
       if (sigEl) sigEl.style.display = 'none';
       latestSummary = null;
       latestRecipe  = null;
+      if (window.MuntinPlateAdviceUI) window.MuntinPlateAdviceUI.clear();
       Array.prototype.forEach.call(rowsEl.querySelectorAll('[data-cell="cost"]'), function(c){
         c.textContent = '—';
       });
@@ -1303,102 +1319,6 @@ Margen de contribución por plato = precio menú &minus; costo del plato</pre>
       '</div>';
     }).join('');
 
-    // Panel de valor anual — objetivo intermedio (30%) × volumen semanal × 52.
-    var pcYearBox = document.getElementById('pcYear');
-    var pcYearVol = document.getElementById('pcYearVolume');
-    var pcYearAmount = document.getElementById('pcYearAmount');
-    var pcYearDetail = document.getElementById('pcYearDetail');
-    if (pcYearBox) {
-      var midPrice = (prices[1] && prices[1].price) || (prices[0] && prices[0].price) || 0;
-      var midCm    = (prices[1] && prices[1].cmDollars) || (prices[0] && prices[0].cmDollars) || 0;
-      var hasPlate = isFinite(summary.plateCost) && summary.plateCost > 0;
-      pcYearBox.hidden = !hasPlate;
-      function recomputeYear() {
-        if (!pcYearVol || !pcYearAmount || !pcYearDetail) return;
-        var v = parseFloat(pcYearVol.value);
-        if (!isFinite(v) || v <= 0) {
-          pcYearAmount.textContent = '— al año';
-          pcYearDetail.textContent = 'Escribe un volumen semanal para ver la contribución anual.';
-          return;
-        }
-        var annual = midCm * v * 52;
-        pcYearAmount.textContent = fmtMoney(annual) + ' al año';
-        pcYearDetail.textContent = 'A ' + fmtMoney(midPrice) + ' y ' + Math.round(v) + ' platos/semana, este platillo deja ' + fmtMoney(midCm) + ' × ' + Math.round(v) + ' × 52 = ' + fmtMoney(annual) + ' para la casa.';
-      }
-      if (pcYearVol && !pcYearVol.__bound) {
-        pcYearVol.__bound = true;
-        pcYearVol.addEventListener('input', recomputeYear);
-      }
-      recomputeYear();
-
-      // plate-advice — when the operator enters what they charge now, judge
-      // it on the real plate cost + their weekly volume and surface the
-      // re-price / re-portion / hold call. Built via DOM (no innerHTML).
-      var ADV_TARGET = { 'fine-dining': 0.28, 'casual': 0.30, 'high-volume': 0.33 };
-      var ADV_LOCALE = (document.documentElement.getAttribute('lang') || 'en').toLowerCase().slice(0, 2);
-      function advTierLabel(tier) {
-        var m = ADV_LOCALE === 'es'
-          ? { healthy:'En línea', watch:'Para vigilar', over_target:'Arriba de tu meta', underwater:'Bajo el agua', hike:'Subida de precio', price_needed:'Pon un precio', 'mixed-units':'Revisa unidades', insufficient:'Agrega más' }
-          : { healthy:'In line', watch:'Worth a glance', over_target:'Over your goal', underwater:'Underwater', hike:'Price hike', price_needed:'Set a price', 'mixed-units':'Check the units', insufficient:'Add more' };
-        return m[tier] || tier;
-      }
-      function advTierColors(tier) {
-        if (tier === 'healthy') return ['#c7e4d4', '#0c4a26'];
-        if (tier === 'watch') return ['#fdecc8', '#7a531f'];
-        if (tier === 'over_target' || tier === 'underwater' || tier === 'hike') return ['#fce0d7', '#7a2e1f'];
-        return ['#EDEEF1', '#4A4F59'];
-      }
-      function renderAdvice() {
-        var adviceEl = document.getElementById('pcAdvice');
-        var priceEl = document.getElementById('pcPriceNow');
-        if (!adviceEl || !priceEl || typeof window.MuntinPlateAdvice === 'undefined') return;
-        while (adviceEl.firstChild) adviceEl.removeChild(adviceEl.firstChild);
-        var pv = parseFloat(priceEl.value);
-        if (!isFinite(pv) || pv <= 0 || !hasPlate) { adviceEl.hidden = true; return; }
-        var cov = parseFloat(pcYearVol && pcYearVol.value);
-        var r = window.MuntinPlateAdvice.advise({
-          itemName: (nameEl && nameEl.value || '').trim(),
-          plateCostCents: Math.round(summary.plateCost * 100),
-          menuPriceCents: Math.round(pv * 100),
-          targetFoodCostPct: ADV_TARGET[recTier] || 0.30,
-          coversPerWeek: (isFinite(cov) && cov > 0) ? cov : null,
-          locale: ADV_LOCALE
-        });
-        var card = document.createElement('div');
-        card.style.cssText = 'padding:16px 18px;border:1px solid var(--line);border-radius:10px;background:var(--white,#fff);';
-        var badge = document.createElement('span');
-        var col = advTierColors(r.tier);
-        badge.textContent = advTierLabel(r.tier);
-        badge.style.cssText = 'display:inline-block;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:4px 10px;border-radius:999px;margin:0 0 10px;background:' + col[0] + ';color:' + col[1] + ';';
-        card.appendChild(badge);
-        var head = document.createElement('p');
-        head.textContent = r.headline;
-        head.style.cssText = 'font-size:15px;line-height:1.55;color:var(--ink);margin:0;';
-        card.appendChild(head);
-        if (r.options && r.options.length) {
-          var ul = document.createElement('ul');
-          ul.style.cssText = 'list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:8px;';
-          r.options.forEach(function (o, i) {
-            var li = document.createElement('li');
-            li.style.cssText = 'font-size:13.5px;line-height:1.5;color:var(--ink-soft);' + (i === 0 ? 'border-left:3px solid var(--teal);padding-left:10px;' : 'padding-left:13px;');
-            var strong = document.createElement('strong');
-            strong.textContent = o.label;
-            strong.style.color = 'var(--ink)';
-            li.appendChild(strong);
-            if (o.detail) li.appendChild(document.createTextNode(' — ' + o.detail));
-            ul.appendChild(li);
-          });
-          card.appendChild(ul);
-        }
-        adviceEl.appendChild(card);
-        adviceEl.hidden = false;
-      }
-      var advPriceEl = document.getElementById('pcPriceNow');
-      if (advPriceEl && !advPriceEl.__advBound) { advPriceEl.__advBound = true; advPriceEl.addEventListener('input', renderAdvice); }
-      if (pcYearVol && !pcYearVol.__advBound2) { pcYearVol.__advBound2 = true; pcYearVol.addEventListener('input', renderAdvice); }
-      renderAdvice();
-    }
-
     // Bottleneck callout + sugerencias de sustitución / sourcing.
     var bottleneckEl = document.getElementById('pcBottleneck');
     var bottleneck = PC.bottleneckLine(summary);
@@ -1480,6 +1400,7 @@ Margen de contribución por plato = precio menú &minus; costo del plato</pre>
     if (sigEl2) sigEl2.style.display = 'block';
     latestSummary = summary;
     latestRecipe  = recipe;
+    if (window.MuntinPlateAdviceUI) window.MuntinPlateAdviceUI.render(summary);
     renderDriftLayer(summary);
 
     if (window.MuntinHandoff && window.MuntinHandoff.complete) {
@@ -2251,195 +2172,10 @@ Margen de contribución por plato = precio menú &minus; costo del plato</pre>
     }, 1200);
   }
 
-  // -------------------- Wave 10.5/10.6 ganchos del controlador --------------------
-  // El módulo de banner-desactualizado / chip-fantasma
-  // (tools/plate-cost/stale-banner.js) llama a estos. Ambos actualizan
-  // el estado vía el viaje de ida y vuelta readRows/rerenderRows
-  // existente para que renderResults siga siendo la única fuente de verdad.
-
-  function applyStaleUpdates(entries) {
-    if (!Array.isArray(entries) || !entries.length) return;
-    var rows = readRows();
-    var changed = 0;
-    var changedDishes = {};  // nombre del platillo → fue tocado
-    entries.forEach(function (entry) {
-      if (!entry || !entry.stem) return;
-      // Emparejar por nombre de ingrediente actual → stem. Re-derivamos
-      // vía MuntinStem para honrar el levantamiento cross-tool de 10.0a.
-      if (typeof window.MuntinStem === 'undefined') return;
-      var newPerBaseUnit = entry.newPerBaseUnit;
-      var baseUnit = entry.baseUnit;
-      rows.forEach(function (r) {
-        var stem = r._boundStem || window.MuntinStem.extractStem(r.ingredient || '');
-        if (!stem || stem !== entry.stem) return;
-        // Convierte el perBaseUnit de la factura a la familia del apUnit
-        // de la fila cuando sea necesario. Omite filas donde las
-        // familias son incompatibles.
-        var apUnit = (r.apUnit || '').toLowerCase();
-        var newApPrice = newPerBaseUnit;
-        if (apUnit && window.MuntinPortionBridge) {
-          if (!window.MuntinPortionBridge.unitsCompatible(baseUnit, apUnit)) return;
-          var oneBaseInApUnit = window.MuntinPortionBridge.convertQuantity(1, baseUnit, apUnit);
-          if (oneBaseInApUnit && oneBaseInApUnit > 0) newApPrice = newPerBaseUnit / oneBaseInApUnit;
-        }
-        r._apPricePrev = r.apPrice;
-        r.apPrice = newApPrice.toFixed(4).replace(/\.?0+$/, '');
-        r._boundStem = entry.stem;
-        r._apPriceSource = entry.source || ('invoice:' + Date.now());
-        changed++;
-      });
-      if (entry.dish) changedDishes[entry.dish] = true;
-    });
-    if (changed) {
-      rerenderRows(rows);
-      renderResults();
-      // Cascada Wave 10.8 — empuja entradas de historial de costo por
-      // platillo para que Menu Engineering / Margin Math / Cost Pulse
-      // recojan el delta. Usa el latestSummary que renderResults calculó
-      // para la receta actual; para cualquier otro platillo en el conjunto
-      // de cambios lo recalculamos desde MuntinContext.dishes si está disponible.
-      try {
-        if (window.MuntinContext && typeof window.MuntinContext.pushDishCostEntry === 'function') {
-          var ts = Date.now();
-          var vendor = (entries[0] && entries[0].vendor) || null;
-          // Receta actual en el editor.
-          if (latestSummary && nameEl && nameEl.value) {
-            var dishName = nameEl.value.trim();
-            if (dishName && changedDishes[dishName]) {
-              window.MuntinContext.pushDishCostEntry(dishName, {
-                ts: ts,
-                foodCost: latestSummary.batchCost / Math.max(1, Number(portionsEl.value) || 1),
-                foodCostPct: null,    // requiere precio-menú; aquí se deja null
-                vendorTrigger: vendor
-              });
-            }
-          }
-        }
-      } catch (_) {}
-    }
-  }
-
-  function acceptGhostUpdate(args) {
-    if (!args || !args.rowEl) return;
-    var rows = readRows();
-    var idx = parseInt(args.rowEl.getAttribute('data-idx'), 10);
-    if (!isFinite(idx) || !rows[idx]) return;
-    rows[idx]._apPricePrev = rows[idx].apPrice;
-    rows[idx].apPrice = (typeof args.newApPrice === 'number') ? args.newApPrice.toFixed(4).replace(/\.?0+$/, '') : args.newApPrice;
-    if (args.boundStem) rows[idx]._boundStem = args.boundStem;
-    if (args.source)    rows[idx]._apPriceSource = args.source;
-    rerenderRows(rows);
-    renderResults();
-  }
-
-  // Expone el controlador para stale-banner.js + pruebas.
-  window.PlateCost = window.PlateCost || {};
-  window.PlateCost.applyStaleUpdates = applyStaleUpdates;
-  window.PlateCost.acceptGhostUpdate = acceptGhostUpdate;
-  window.PlateCost.readRows          = readRows;
-  window.PlateCost.rerenderRows      = rerenderRows;
-
   // -------------------- Initial state --------------------
   rerenderRows(Array.from({ length: 5 }, blankRow));
   hydrateFromFragment();
   if (!driftBaseline) renderResults();
-
-  // Wave 14.8 — pulso de descubrimiento para las superficies cross-tool
-  // que los operadores ganaron cuando aterrizó la columna del
-  // Decodificador de Facturas. Cada pastilla es descartable por operador
-  // y auto-expira 60 días después de shipDate. Las cadenas se localizan
-  // vía el mismo patrón t(en, es) que usa el resto de la página.
-  if (window.MuntinWhatsNew) {
-    var WN_ES = (document.documentElement.getAttribute('lang') || 'en').toLowerCase().indexOf('es') === 0;
-    var wt = function (en, es) { return WN_ES ? es : en; };
-    window.MuntinWhatsNew.register({
-      toolKey: 'plate-cost',
-      surfaces: [
-        {
-          id: 'stale-banner',
-          target: '#pcStaleBanner',
-          label: wt('New', 'Nuevo'),
-          title: wt('New: invoice-aware recipe updates',
-                    'Nuevo: actualizaciones de receta con datos de factura'),
-          body: wt('When you save an invoice in the Invoice Decoder, this banner offers to refresh your recipe prices in one tap. Bytes stay on this device.',
-                   'Cuando guardas una factura en el Decodificador de Facturas, este banner ofrece actualizar los precios de tu receta con un toque. Los bytes se quedan en este dispositivo.'),
-          shipDate: '2026-04-21'
-        },
-        {
-          id: 'ghost-chip',
-          target: '.pc-ghost-chip',
-          label: wt('New', 'Nuevo'),
-          title: wt('New: gentle yield + portion suggestions',
-                    'Nuevo: sugerencias suaves de rendimiento + porción'),
-          body: wt('When your past invoices imply a different pack size or yield, a dashed chip suggests it. Tap to accept or ignore — never auto-applied.',
-                   'Cuando tus facturas pasadas implican un tamaño de paquete o un rendimiento distinto, un chip punteado lo sugiere. Toca para aceptar o ignorar — nunca se aplica solo.'),
-          shipDate: '2026-04-25'
-        },
-        {
-          id: 'match-health',
-          target: '#pcMatchHealth',
-          label: wt('New', 'Nuevo'),
-          title: wt('New: invoice → recipe match health',
-                    'Nuevo: salud del emparejamiento factura → receta'),
-          body: wt('See at a glance how many invoice items found a recipe row. Lower coverage = more SKUs to bind.',
-                   'Ve de un vistazo cuántos artículos de factura encontraron una fila de receta. Menos cobertura = más SKU por enlazar.'),
-          shipDate: '2026-04-28'
-        }
-      ]
-    });
-  }
-
-  // --- Sales-mix upload → real weekly covers (POS-fallback) -------------
-  (function wireSalesMixUpload() {
-    var btn = document.getElementById('pcMixBtn');
-    var fileInput = document.getElementById('pcMixFile');
-    var statusEl = document.getElementById('pcMixStatus');
-    if (!btn || !fileInput || typeof window.MuntinSalesMix === 'undefined') return;
-    var ES = (document.documentElement.getAttribute('lang') || 'en').toLowerCase().indexOf('es') === 0;
-    function t(en, es) { return ES ? es : en; }
-    function setStatus(msg) { if (statusEl) statusEl.textContent = msg; }
-    btn.addEventListener('click', function () { fileInput.click(); });
-    fileInput.addEventListener('change', function () {
-      var f = fileInput.files && fileInput.files[0];
-      if (!f) return;
-      var reader = new FileReader();
-      reader.onerror = function () { setStatus(t('Couldn’t read that file.', 'No se pudo leer ese archivo.')); };
-      reader.onload = function () {
-        try {
-          var parsed = window.MuntinSalesMix.parseSalesMixCsv(String(reader.result || ''));
-          if (!parsed.rows.length) { setStatus(t('Couldn’t read that as a sales mix — it needs an item column and a units-sold column.', 'No se pudo leer como mezcla de ventas — necesita una columna de artículo y otra de unidades vendidas.')); return; }
-          var recipeName = (nameEl && nameEl.value || '').trim();
-          if (!recipeName) { setStatus(t('Name this recipe above first — we match your upload by dish name.', 'Primero ponle nombre a esta receta arriba — emparejamos tu archivo por el nombre del platillo.')); return; }
-          var stems = [], byStem = {};
-          parsed.rows.forEach(function (r) {
-            var st = (window.MuntinStem ? window.MuntinStem.extractStem(r.item) : String(r.item).toLowerCase());
-            if (!st) return;
-            if (!byStem[st]) { byStem[st] = { item: r.item, units: 0 }; stems.push(st); }
-            byStem[st].units += r.unitsSold;
-          });
-          var matchStem = null, fuzzy = false;
-          if (window.MuntinSkuMatch) {
-            var c = window.MuntinSkuMatch.classify(recipeName, stems);
-            if (c.tier === 'auto') matchStem = c.stem;
-            else if (c.tier === 'propose') { matchStem = c.stem; fuzzy = true; }
-          }
-          if (!matchStem) { var own = window.MuntinStem ? window.MuntinStem.extractStem(recipeName) : recipeName.toLowerCase(); if (byStem[own]) matchStem = own; }
-          if (!matchStem || !byStem[matchStem]) { setStatus(t('Couldn’t find “' + recipeName + '” in that file — type the weekly volume above.', 'No encontramos “' + recipeName + '” en ese archivo — escribe el volumen semanal arriba.')); return; }
-          var hit = byStem[matchStem];
-          var covers = Math.round(hit.units * 7 / (parseInt((document.getElementById("pcMixPeriod")||{}).value,10)||7) * 10) / 10;
-          var yv = document.getElementById('pcYearVolume');
-          if (yv) { yv.value = covers; yv.dispatchEvent(new Event('input', { bubbles: true })); }
-          var lead = fuzzy ? t('Best match: “', 'Mejor coincidencia: “') : t('Matched “', 'Coincidencia: “');
-          var tail = t('” — ' + covers + '/week, on your sales mix.', '” — ' + covers + '/semana, de tu mezcla de ventas.');
-          setStatus(lead + hit.item + tail + (fuzzy ? t(' Not your dish? Type the volume.', ' ¿No es tu platillo? Escribe el volumen.') : ''));
-        } catch (err) {
-          setStatus(t('Couldn’t read that file. Use a CSV with item and units-sold columns.', 'No se pudo leer el archivo. Usa un CSV con columnas de artículo y unidades vendidas.'));
-        }
-      };
-      reader.readAsText(f);
-    });
-  })();
-
 })();
 </script>
 </body>
