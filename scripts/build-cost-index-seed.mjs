@@ -77,6 +77,9 @@ function main() {
       if (hist.length) {
         const h0 = hist[0], hN = hist[hist.length - 1];
         entry.spark_meta = { basis: hN.basis, source: hN.source, from: h0.date, to: hN.date, n: spark.length };
+        // Dates aligned 1:1 with `spark` (same filter), so the UI can compute an
+        // honest week-over-week step across daily- OR weekly-cadence series.
+        if (histVals.length) entry.spark_dates = hist.filter((h) => h && typeof h.valueCents === 'number').map((h) => h.date);
       }
     }
     out.push(entry);

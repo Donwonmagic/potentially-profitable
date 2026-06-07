@@ -63,7 +63,11 @@ const SKIP_PATH_PREFIXES = [
   // cuisine/theme generators above. Stamping a second block here would
   // orphan the generator's lines after the sentinel.
   'library/ingredient-yields/',
-  'es/library/ingredient-yields/'
+  'es/library/ingredient-yields/',
+  // Cost-index pages — build-cost-index-pages.mjs emits its own hreflang
+  // + og:locale block, same pattern as the generators above.
+  'cost-index/',
+  'es/cost-index/'
 ];
 
 function collectHtml(dir, out = []) {
