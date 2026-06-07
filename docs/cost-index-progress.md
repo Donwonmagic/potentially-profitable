@@ -20,10 +20,13 @@ Living record of the Cost Index / Plate effort. Update as items land. Status:
 - ✅ Deep anchors (`#ci-<ingredient>`) + filter (activates ≥8 items).
 - ✅ Cross-wire free tools (Plate Cost ⇄ Cost Index, with Plausible events).
 - ✅ Structured data: WebApplication + FAQPage + BreadcrumbList JSON-LD.
-- ▶︎ `/glossary/cost-index/` (+ES) page with a visible FAQ matching the JSON-LD. (H1 #2 remainder.)
+- ✅ `/glossary/cost-index/` (+ES): DefinedTerm + Article + FAQPage + Breadcrumb, visible
+  FAQ matching JSON-LD, canonical OG cards rendered (SVG+PNG), full derived-artifact
+  propagation (sitemap, llms.txt, RSS, hub schema, OG seed). (H1 #2 done.)
+- ✅ "Your basket" persisted in the URL hash — per-card Track, basket bar (count /
+  show-only-tracked / clear), composes with search. Keys only, no storage, no-fetch. (H1 #4)
 
 ## Buildable next — no external deps (Horizon 1 runway)
-- ☐ "Your basket" persisted in the URL hash (personal index, no login, no-fetch). (H1 #4)
 - ☐ Negotiation helper: when above band, draft a vendor email (client-side). (new)
 - ☐ Broader Plausible instrumentation (ingredient opened, price entered, above/in/below). (H1 #5)
 - ☐ Confidence-driven UI polish; "biggest gap to market" ordering once prices entered.
