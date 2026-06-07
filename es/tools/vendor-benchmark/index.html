@@ -1,0 +1,589 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+<title>Muntin Bench — ¿Mi precio de restaurante se mueve mal? | Muntin Digital</title>
+<meta name="description" content="Escribe un artículo y el precio que pagas: Bench te dice si se salió de línea respecto a tu propio historial. En tu dispositivo, sin cuenta." />
+<meta name="theme-color" content="#2A50C8" />
+<link rel="canonical" href="https://muntin.digital/es/tools/vendor-benchmark/" />
+<link rel="alternate" hreflang="en" href="https://muntin.digital/tools/vendor-benchmark/" />
+<link rel="alternate" hreflang="es" href="https://muntin.digital/es/tools/vendor-benchmark/" />
+<link rel="alternate" hreflang="x-default" href="https://muntin.digital/tools/vendor-benchmark/" />
+<meta property="og:locale" content="es_US" />
+<meta property="og:locale:alternate" content="en_US" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Muntin Bench — ¿Mi precio de restaurante se mueve mal?" />
+<meta property="og:description" content="Escribe un artículo y el precio que pagas. Bench te dice si se movió fuera de línea respecto a tu propio historial — en tu dispositivo, sin cuenta." />
+<meta property="og:url" content="https://muntin.digital/es/tools/vendor-benchmark/" />
+<meta property="og:site_name" content="Muntin Digital" />
+<meta property="og:image" content="https://muntin.digital/brand/og/tool-vendor-benchmark-es.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Muntin Bench — ¿Mi precio de restaurante se mueve mal?" />
+<meta name="twitter:description" content="Bench te dice si tu precio se movió fuera de línea respecto a tu propio historial." />
+<meta name="twitter:image" content="https://muntin.digital/brand/og/tool-vendor-benchmark-es.png" />
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","@id":"https://muntin.digital/es/tools/vendor-benchmark/#tool","name":"Muntin Bench","description":"Verificación de movimiento de precios del lado del cliente para restaurantes independientes. Escribe un artículo y el precio que pagas; Bench lo compara con la mediana reciente de tus propios precios guardados y te dice si se salió de línea. Los precios se quedan en el navegador.","url":"https://muntin.digital/es/tools/vendor-benchmark/","applicationCategory":"BusinessApplication","operatingSystem":"Web","inLanguage":["es","en"],"isAccessibleForFree":true,"browserRequirements":"Requiere un navegador moderno con JavaScript habilitado","audience":{"@type":"BusinessAudience","audienceType":"Dueños y operadores de restaurantes independientes"},"featureList":["Compara tu último precio con la mediana reciente de tus propios precios guardados","Marca una subida de precio en la línea de 8% / $5; si no, reporta vigilar o estable","Guarda cada precio en tu dispositivo — sin cuenta, sin subir nada, bórralo cuando quieras","Consciente de unidades: convierte dentro de una dimensión y se niega a comparar unidades incompatibles","Te lleva al calculador Costo del Plato para ver qué le hace un movimiento al margen del platillo"],"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"creator":{"@id":"https://muntin.digital/#business"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Muntin Digital","item":"https://muntin.digital/"},{"@type":"ListItem","position":2,"name":"Herramientas","item":"https://muntin.digital/es/tools/"},{"@type":"ListItem","position":3,"name":"Muntin Bench","item":"https://muntin.digital/es/tools/vendor-benchmark/"}]}]}</script>
+<link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
+<style>
+/* Critical CSS — prevents flash of unstyled content while the main
+   stylesheet (assets/site.css) loads non-render-blocking via the
+   <link> below. Carries: token vars used in inline styles elsewhere,
+   body baseline (cream + ink + body-size + line-height), container
+   width, skip-link affordance, and a min-height reservation for the
+   fixed nav so layout doesn't shift when site.css applies. ~600
+   bytes. Documented in Phase 3B perf cutover; the full token set
+   reapplies once site.css arrives. */
+:root{--cream:#F6F7F8;--cream-2:#EDEEF1;--ink:#16181D;--ink-soft:#4A4F59;--teal:#2A50C8;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
+html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--cream);line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased}
+.container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
+.skip-link{position:absolute;left:-9999px;top:0}
+.skip-link:focus{position:static;display:inline-block;background:#16181D;color:#F6F7F8;padding:12px 16px;z-index:100}
+/* injected by inject-critical-link-color.mjs */
+.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:500;font-size:15px;text-decoration:none;white-space:nowrap;cursor:pointer}
+.btn-primary{background:var(--ink);color:var(--cream)}
+.btn-ghost{background:transparent;color:var(--ink);border:1px solid #D7DAE0}
+/* injected by inject-critical-link-color.mjs */
+a{color:inherit}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:500;font-size:15px;text-decoration:none;white-space:nowrap;cursor:pointer}
+.btn-primary{background:var(--ink);color:var(--cream)}
+.btn-ghost{background:transparent;color:var(--ink);border:1px solid #D7DAE0}
+header.nav{min-height:64px}
+/* nav-critical */
+.nav{position:fixed;top:0;left:0;right:0;background:var(--cream);z-index:50;border-bottom:1px solid #E3E5E9}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:64px;padding:12px 0}
+.logo{display:flex;align-items:center;gap:10px;font-family:Georgia,serif;font-size:22px;font-weight:600;letter-spacing:-0.02em;flex-shrink:0;white-space:nowrap;color:inherit;text-decoration:none}
+.logo-mark{width:28px;height:28px;flex:0 0 28px}
+.tm{font-size:0.5em;vertical-align:super;margin-left:1px}
+.nav-links{display:flex;gap:36px;font-size:15px}
+.nav-links a{text-decoration:none;color:inherit}
+.nav-toggle{display:none}
+.nav-search-btn,.lang-switch{display:none}
+@media (max-width:1100px){.nav-links{display:none}.nav-toggle{display:flex;width:44px;height:44px;flex-direction:column;justify-content:center;align-items:center;gap:5px;background:transparent;border:0;padding:0}.nav-toggle span{display:block;width:22px;height:2px;background:var(--ink)}.nav-inner .btn-primary{display:none}}
+main{padding-top:64px}
+/* perf-critical */
+:root{--font-display:'Fraunces','Fraunces Fallback',Georgia,'Times New Roman',serif;--font-body:'Inter','Inter Fallback',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;--ink-soft:#4A4F59;--teal:#2A50C8;--teal-dark:#1F3A93;--stone:#6B7280;--line:#E3E5E9;--line-dark:#D7DAE0}
+body{font-family:var(--font-body)}
+h1,h2,h3,h4,h5,.serif-italic{font-family:var(--font-display)}
+@font-face{font-family:'Fraunces';font-style:normal;font-weight:100 900;font-display:swap;src:url('/assets/fonts/fraunces-variable-latin-wght-normal.woff2') format('woff2-variations');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Fraunces';font-style:italic;font-weight:100 900;font-display:swap;src:url('/assets/fonts/fraunces-variable-latin-wght-italic.woff2') format('woff2-variations');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Inter';font-style:normal;font-weight:100 900;font-display:swap;src:url('/assets/fonts/inter-variable-latin-wght-normal.woff2') format('woff2-variations');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Inter';font-style:italic;font-weight:100 900;font-display:swap;src:url('/assets/fonts/inter-variable-latin-wght-italic.woff2') format('woff2-variations');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Fraunces Fallback';src:local('Times New Roman');size-adjust:100%;ascent-override:97.8%;descent-override:25.5%;line-gap-override:0%}
+@font-face{font-family:'Inter Fallback';src:local('Arial');size-adjust:100%;ascent-override:96.875%;descent-override:24.121%;line-gap-override:0%}
+.hero{padding:160px 0 100px;position:relative;overflow:hidden}
+.hero-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:60px;align-items:center}
+@media (max-width:960px){.hero{padding:130px 0 60px}.hero-grid{grid-template-columns:1fr;gap:48px}}
+.hero h1{margin-top:24px;text-wrap:balance;max-width:18ch}
+.hero h1 .serif-italic{font-style:italic;font-weight:400;color:var(--teal)}
+.hero-sub{margin-top:28px;max-width:520px;font-size:clamp(17px,1.35vw,20px);line-height:1.55;color:var(--ink-soft)}
+.hero-ctas{margin-top:40px;display:flex;gap:14px;flex-wrap:wrap}
+.hero-counts{display:flex;flex-wrap:wrap;gap:10px 14px;list-style:none;padding:0;margin:18px 0 22px;font-size:13.5px;font-weight:600;letter-spacing:0.02em;color:var(--ink-soft)}
+.hero-counts__chip{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:var(--cream-2)}
+.hero-counts__chip strong{color:var(--teal)}
+section.block{padding:clamp(80px,10vw,140px) 0}
+.bg-cream2{background:var(--cream-2)}
+.section-header{max-width:760px;margin-bottom:64px}
+.section-header h2{margin-top:16px}
+.section-header p{margin-top:20px;font-size:19px;line-height:1.55;color:var(--ink-soft);max-width:640px}
+.section-center{text-align:center;margin-left:auto;margin-right:auto}
+.compare,.services,.care,.steps{display:grid;grid-template-columns:1fr;gap:20px}
+.work{display:grid;grid-template-columns:repeat(12,1fr);gap:24px}
+.work-item{grid-column:span 12}
+.about-grid{display:grid;grid-template-columns:1fr;gap:48px;align-items:center}
+.contact-grid{display:grid;grid-template-columns:1fr;gap:clamp(40px,6vw,80px);align-items:start}
+.form-row{display:grid;grid-template-columns:1fr;gap:16px}
+@media (min-width:961px){.compare,.services,.care{grid-template-columns:repeat(3,1fr)}.steps{grid-template-columns:repeat(4,1fr)}.work-item:nth-child(1){grid-column:span 7}.work-item:nth-child(2){grid-column:span 5}.work-item:nth-child(3){grid-column:span 5}.work-item:nth-child(4){grid-column:span 7}.about-grid{grid-template-columns:0.9fr 1.1fr;gap:80px}.contact-grid{grid-template-columns:1fr 1.2fr}}
+@media (min-width:641px){.form-row{grid-template-columns:1fr 1fr}}
+@media (max-width:960px){.window,.window-caption{display:none}}
+.mobile-cta-bar{display:none}
+.trust-strip{padding:18px 0;background:var(--cream-2);border-block:1px solid var(--line)}
+.trust-strip__list{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 18px;list-style:none;padding:0;margin:0;font-size:13.5px;color:var(--ink-soft);line-height:1.5}
+footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;border-top:1px solid rgba(250,247,242,0.08);font-size:14px}
+.foot-cta{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;padding-bottom:40px;margin-bottom:48px;border-bottom:1px solid rgba(250,247,242,0.08)}
+.foot-cta-text{color:var(--cream);font-family:var(--font-display);font-size:clamp(22px,2.6vw,30px);line-height:1.2;letter-spacing:-0.01em;max-width:460px}
+.foot-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr 1.1fr;gap:clamp(24px,3vw,44px);padding-bottom:48px;margin-bottom:32px;border-bottom:1px solid rgba(250,247,242,0.08)}
+@media (max-width:1100px){.foot-grid{grid-template-columns:1fr 1fr 1fr 1fr;gap:36px}}
+@media (max-width:960px){.foot-grid{grid-template-columns:1fr 1fr 1fr;gap:40px}}
+@media (max-width:640px){.foot-grid{grid-template-columns:1fr 1fr}.foot-cta{flex-direction:column;align-items:flex-start;gap:20px}}
+@media (max-width:420px){.foot-grid{grid-template-columns:1fr}}
+.foot-bottom{display:flex;justify-content:space-between;gap:24px;align-items:center;flex-wrap:wrap}
+.below-fold-island{content-visibility:auto;contain-intrinsic-size:auto 1200px}
+@media print{.below-fold-island{content-visibility:visible}}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) body{background:#16181D;color:#F1EDE5}:root:not([data-theme="light"]) .nav{background:#16181D;border-bottom-color:#2C3038}:root:not([data-theme="light"]) .nav-toggle span{background:#F1EDE5}:root:not([data-theme="light"]) .logo{color:#F1EDE5}:root:not([data-theme="light"]) h1,:root:not([data-theme="light"]) h2,:root:not([data-theme="light"]) h3,:root:not([data-theme="light"]) h4{color:#F1EDE5}:root:not([data-theme="light"]) .hero h1 .serif-italic{color:#7AA7FF}:root:not([data-theme="light"]) .hero-sub,:root:not([data-theme="light"]) .hero-counts,:root:not([data-theme="light"]) .section-header p,:root:not([data-theme="light"]) .trust-strip__list{color:#B8B3A8}:root:not([data-theme="light"]) .hero-counts__chip{background:#1B1E24;border-color:#2C3038}:root:not([data-theme="light"]) .hero-counts__chip strong{color:#7AA7FF}:root:not([data-theme="light"]) .bg-cream2{background:#1B1E24}:root:not([data-theme="light"]) .trust-strip{background:#1B1E24;border-block-color:#2C3038}:root:not([data-theme="light"]) .btn-ghost{color:#F1EDE5;border-color:#707784}:root:not([data-theme="light"]) .btn-primary{background:#F1EDE5;color:#16181D}}
+</style>
+<!-- Preload the two above-the-fold web fonts so they arrive in
+     parallel with site.css instead of being discovered after parse. -->
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-italic.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-italic.woff2" crossorigin>
+<!-- Async-load the main stylesheet. Pattern: preload + onload-swap
+     (with a <noscript> fallback for the JS-disabled path). The
+     onload assigns this.rel='stylesheet', which the browser then
+     applies; before that the critical CSS above carries the page. -->
+<link rel="preload" as="style" href="/assets/site-core.css?v=933461d49609" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-tool.css?v=aee67503f378" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=933461d49609"><link rel="stylesheet" href="/assets/site-tool.css?v=aee67503f378"></noscript>
+<style>
+.vb-shell{max-width:760px;margin:0 auto;padding:48px 16px 80px}
+.vb-hero h1{font-family:var(--font-display);font-size:36px;font-weight:500;color:var(--ink);margin:0 0 10px;line-height:1.15}
+.vb-hero p.vb-lede{font-size:17px;color:var(--ink-soft);line-height:1.55;margin:0 0 32px;max-width:620px}
+.vb-card{background:var(--surface-1,#fff);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin:0 0 18px;box-shadow:var(--elev-1)}
+.vb-card h2{font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);margin:0 0 12px}
+.vb-card p{font-size:14.5px;color:var(--ink-soft);line-height:1.6;margin:0 0 12px}
+.vb-card p:last-child{margin-bottom:0}
+/* Form */
+.vb-form{display:grid;gap:16px}
+.vb-field{display:flex;flex-direction:column;gap:6px}
+.vb-field label{font-size:13px;font-weight:600;color:var(--ink)}
+.vb-field .vb-hint{font-size:12px;color:var(--ink-soft);font-weight:400}
+.vb-input,.vb-select{font:inherit;font-size:15px;padding:11px 13px;border:1px solid var(--line-dark);border-radius:9px;background:var(--surface-1,#fff);color:var(--ink);width:100%}
+.vb-input:focus,.vb-select:focus{outline:2px solid var(--teal);outline-offset:1px;border-color:var(--teal)}
+.vb-row{display:grid;grid-template-columns:1fr;gap:16px}
+@media (min-width:560px){.vb-row{grid-template-columns:1fr 1fr 1fr}}
+.vb-submit{display:inline-flex;align-items:center;gap:8px;padding:13px 24px;border-radius:999px;background:var(--ink,#16181D);color:var(--cream,#FAF6EE);font-weight:600;font-size:15px;border:0;cursor:pointer;justify-self:start}
+.vb-submit:hover{background:var(--teal,#2A50C8)}
+.vb-err{font-size:13px;color:var(--status-warn-deep,#a05a00);margin:0}
+/* Result */
+.vb-result{margin-top:4px}
+.vb-badge{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;padding:5px 11px;border-radius:999px;margin-bottom:12px}
+.vb-badge[data-tier="hike"]{background:#fce0d7;color:#7a2e1f}
+.vb-badge[data-tier="watch"]{background:#fdecc8;color:#7a531f}
+.vb-badge[data-tier="steady"]{background:#c7e4d4;color:#0c4a26}
+.vb-badge[data-tier="mixed-units"],.vb-badge[data-tier="insufficient"]{background:var(--cream-2);color:var(--ink-soft)}
+.vb-verdict{font-size:16px;line-height:1.55;color:var(--ink);margin:0 0 4px}
+.vb-prices{font-variant-numeric:tabular-nums;color:var(--ink-soft);font-size:14px}
+.vb-match{font-size:12.5px;color:var(--ink-soft);margin-top:10px}
+.vb-match strong{color:var(--ink)}
+/* Dormant layers — honest "not yet" cards */
+.vb-dormant{border:1px dashed var(--line-dark);background:var(--cream-2);border-radius:12px;padding:16px 18px;margin:0 0 14px}
+.vb-dormant h3{font-size:14px;font-weight:600;color:var(--ink);margin:0 0 6px;display:flex;align-items:center;gap:8px}
+.vb-dormant p{font-size:13px;color:var(--ink-soft);line-height:1.5;margin:0}
+.vb-soon{font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;background:var(--line);color:var(--ink-soft);padding:2px 7px;border-radius:4px}
+/* Ledger funnel — only on a hike verdict */
+.vb-ledger{margin-top:6px;padding:16px 18px;background:linear-gradient(90deg,#0f3a37 0%,#1f6f6a 100%);color:#fff;border-radius:10px;font-size:14px;line-height:1.5}
+.vb-ledger strong{color:#fff;font-weight:600}
+.vb-ledger a{display:inline-flex;align-items:center;gap:6px;margin-top:10px;padding:9px 18px;border-radius:999px;background:#fff;color:#0f3a37;font-weight:600;font-size:13.5px;text-decoration:none}
+.vb-ondevice{font-size:12px;color:var(--ink-soft);margin-top:14px}
+@media(max-width:540px){.vb-hero h1{font-size:28px}.vb-card{padding:18px}}
+</style>
+</head>
+<body>
+<!-- batch-banner:start -->
+<aside class="batch-marquee" data-batch="course-open-the-doors" role="complementary" aria-label="Curso gratis · Open the Doors, el bootcamp gratuito de Muntin" style="background:radial-gradient(160% 240% at 97% 50%,rgba(255,176,32,0.20) 0%,rgba(255,107,92,0.07) 33%,rgba(22,24,29,0) 60%),#16181D;color:#F6F7F8;font-size:14px;line-height:1.4;padding:8px 0;border-bottom:1px solid rgba(246,247,248,0.16);box-shadow:inset 0 1px 0 rgba(255,255,255,0.05)">
+  <div style="max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,64px);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;min-width:0;flex:1 1 auto">
+      <span style="display:inline-block;font-family:Inter,system-ui,sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;background:#FFB020;color:#16181D;padding:3px 8px;border-radius:3px;white-space:nowrap;flex-shrink:0">Curso gratis</span>
+      <span style="font-family:'Fraunces',Georgia,'Times New Roman',serif;font-size:14px;font-style:italic;line-height:1.35;min-width:0;color:#F6F7F8">Open the Doors — crea el sitio web de tu restaurante, gratis.</span>
+    </div>
+    <a href="/es/course/" style="display:inline-flex;align-items:center;gap:6px;color:#16181D;background:#FFB020;text-decoration:none;font-family:Inter,system-ui,sans-serif;font-weight:700;font-size:13px;padding:6px 14px;border-radius:999px;white-space:nowrap;flex-shrink:0;box-shadow:0 1px 2px rgba(0,0,0,0.18);transition:transform .15s ease,box-shadow .15s ease">Empezar el curso <span aria-hidden="true">&rarr;</span></a>
+  </div>
+</aside>
+<script>(function(){var d=document.documentElement;function s(){var b=document.querySelector('.batch-marquee');if(b){d.style.setProperty('--banner-h',b.offsetHeight+'px');}}s();addEventListener('resize',s,{passive:true});addEventListener('orientationchange',s);if(document.fonts&&document.fonts.ready){document.fonts.ready.then(s);}})();</script>
+<!-- batch-banner:end -->
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
+<header class="nav" id="nav">
+  <script>/* i18n runtime dictionary — read by assets/site.js via window.__i18n.
+             Placed inside <header> so sync-includes replaces it atomically
+             along with the rest of the nav block on every build, keeping
+             the partial strictly idempotent. Valid HTML5: <script> may
+             appear in any flow-content context. */
+  window.__i18n=Object.assign(window.__i18n||{},{"nav.open_menu":"Abrir menú","nav.close_menu":"Cerrar menú","form.field_required":"Este campo es obligatorio.","form.invalid_email":"Ingresa un correo electrónico válido.","form.services_min_one":"Selecciona al menos una opción.","form.submit_fallback":"Algo falló. Inténtalo de nuevo o escribe directamente a don@muntin.digital.","audio.resume":"Reanudar audio","audio.pause":"Pausar","audio.play":"Reproducir versión en audio","audio.stop":"Detener y cerrar audio","audio.minimize":"Minimizar controles de audio","audio.expand":"Ampliar controles de audio","audio.prev":"Párrafo anterior","audio.next":"Párrafo siguiente","audio.back15":"Retroceder 15 segundos","audio.fwd15":"Adelantar 15 segundos","audio.progress":"Progreso del audio","audio.controls":"Controles del reproductor de audio","audio.article_label":"Versión en audio de este artículo","audio.speed":"Velocidad de reproducción","audio.voice":"Voz del narrador","audio.byline_studio":"Narrado para The Muntin Desk","audio.byline_browser":"Leído por tu navegador","audio.preview":"Escucha 30 segundos primero →","audio.resume_chip_aria":"Reanudar desde la posición guardada","audio.share_aria":"Copiar enlace en este momento","audio.dismiss":"Descartar","audio.kicker":"Edición en audio","audio.headline":"¿Prefieres escucharlo?","audio.sub":"Pulsa reproducir y leeremos el artículo entero — gráficos incluidos.","audio.meta_handsfree":"manos libres","audio.meta_min":"min","audio.now_reading":"Reproduciendo","audio.resume_continue":"Continuar desde","audio.help_aria":"Ver atajos de teclado e información del reproductor","audio.help_title":"Consejos para escuchar","audio.help_chapters_eyebrow":"Capítulos","audio.finished_done":"Listo.","audio.finished_browse":"Explora la biblioteca →","audio.share_toast_ok":"Enlace copiado en {time}","audio.share_toast_fail":"No se pudo copiar — portapapeles bloqueado","audio.language_label":"Idioma","lesson.widget_wait":"Don está esperando — usa el widget","lesson.widget_wait_labeled":"Don está esperando — {label}","lesson.opener_recorded":"Don abre esta lección","lesson.wrap_recorded":"Don cierra esta lección","audio.help_kbd_eyebrow":"Teclado","audio.kbd_space":"Espacio","audio.kbd_space_help":"Reproducir o pausar","audio.kbd_jk_help":"Retroceder 15 segundos / avanzar 15 segundos","audio.kbd_arrows_help":"Párrafo anterior / siguiente párrafo","audio.help_about_eyebrow":"Sobre la voz","audio.help_about_body":"The Muntin Desk usa una voz generada por computadora ajustada para una lectura clara. Usamos la misma voz en cada artículo para que te resulte familiar. Cada grabación se produce una sola vez y se guarda como un archivo de audio que puedes descargar.","search.placeholder":"Busca artículos, herramientas, términos del glosario…","search.close":"Cerrar","search.hint_title":"¿Qué estás buscando?","search.hint_body":"Prueba con \"DoorDash\", \"Core Web Vitals\" o \"precios del menú\". Los resultados vienen de cada artículo, herramienta y término del glosario.","search.empty":"Sin resultados para","search.empty_hint":"Prueba una consulta más corta o una palabra distinta.","search.loading":"Buscando…","search.nav_hint":"para moverte","search.open_hint":"para abrir","search.close_hint":"para cerrar","search.kind_article":"Artículo","search.kind_tool":"Herramienta","search.kind_term":"Glosario","search.kind_resource":"Guía","search.kind_library":"Biblioteca","search.kind_case":"Caso de estudio","search.kind_service":"Servicios","search.kind_industry":"Para ti","search.kind_page":"Página","search.voice_start":"Buscar por voz","search.voice_stop":"Detener la escucha","search.voice_hint":"Escuchando… habla ahora","drawer.kicker":"Nota de investigación","drawer.close":"Cerrar","drawer.loading":"Cargando el resumen…","drawer.err_title":"No pudimos cargar el resumen","drawer.err_body":"Abre la nota completa en una pestaña nueva — es el mismo contenido, solo que más completo.","drawer.findings_label":"Hallazgos clave","drawer.note_label":"La nota de Don","drawer.read_full":"Leer la nota completa","drawer.read_original":"Ver la fuente original","drawer.open_new_tab":"se abre en una pestaña nueva"});</script>
+  <div class="container nav-inner">
+    <a href="/es/" class="logo" aria-label="Muntin Digital — inicio">
+      <svg class="logo-mark" width="28" height="28" viewBox="0 0 128 128" fill="none" aria-hidden="true">
+        <g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
+          <rect x="18" y="18" width="92" height="92"/>
+          <line x1="64" y1="18" x2="64" y2="110"/>
+          <line x1="18" y1="53" x2="110" y2="53"/>
+        </g>
+      </svg>
+      Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
+    </a>
+    <!-- Phase 7: nav de 4 elementos, según el plan de lanzamiento Parte II.
+         Biblioteca / Herramientas / Estudio / Acceder.
+         Biblioteca apunta al hub canónico /es/library/. Herramientas
+         se promueve del antiguo mega-menú a un elemento de primer
+         nivel. Estudio reemplaza Servicios + Restaurantes + Sobre
+         Don &mdash; todo vive bajo /es/studio/ ahora. El mega-menú
+         se retira (el hub ES el menú); el controlador del script
+         también desaparece.
+
+         /es/work/ se retiró en la pasada de portfolio-sunset de la
+         Fase 8 (el encuadre de la empresa-como-CV hizo redundante
+         el portafolio personal). Las URLs /es/work/* hacen 301 a
+         /es/studio/ vía _redirects. -->
+    <nav class="nav-links" aria-label="Principal">
+      <a href="/es/library/">Biblioteca</a>
+      <a href="/es/start/">Comienza</a>
+      <a href="/es/tools/">Herramientas</a>
+      <a href="/es/studio/">Estudio</a>
+      <a href="https://ledger.muntin.digital/">Ledger</a>
+      <a class="js-nav-signin nav-link-auth" href="/es/sign-in/" hidden>Acceder</a>
+      <a class="js-nav-workshop nav-link-auth" href="/es/workbench/" hidden>El Taller</a>
+    </nav>
+    <button type="button" class="nav-search-btn js-open-search" aria-label="Abrir búsqueda (Cmd+K)" title="Buscar — Cmd K">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="7"/>
+        <line x1="21" y1="21" x2="16.5" y2="16.5"/>
+      </svg>
+      <span class="nav-search-label">Buscar</span>
+      <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mac"><span class="nav-search-kbd-mod">⌘</span>K</span><span class="nav-search-kbd-pc">Ctrl+K</span></kbd>
+    </button>
+    <nav class="lang-switch" aria-label="Idioma">
+      <a href="/tools/vendor-benchmark/" hreflang="en" lang="en" class="js-lang-switch" data-set-locale="en">English</a>
+      <span class="lang-switch-current" aria-current="true">ES</span>
+    </nav>
+    <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">
+      <span class="nav-window-pulse" id="navWindowPulse" hidden aria-hidden="true" title="Don está cerca"></span>
+      Contacta a Don
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-controls="mobileMenu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Navegación móvil" hidden>
+    <a href="/es/library/">Biblioteca</a>
+    <a href="/es/start/">Comienza</a>
+    <a href="/es/tools/">Herramientas</a>
+    <a href="/es/studio/">Estudio</a>
+    <a href="https://ledger.muntin.digital/">Ledger</a>
+    <a class="js-nav-signin mobile-auth" href="/es/sign-in/" hidden>Acceder</a>
+    <a class="js-nav-workshop mobile-auth" href="/es/workbench/" hidden>El Taller</a>
+    <button type="button" class="mobile-search js-open-search">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+      <span>Buscar en la biblioteca</span>
+    </button>
+    <!-- Interruptor de modo oscuro para móvil (el de escritorio se oculta
+         en teléfonos ≤640px). Mismo gancho .js-theme-toggle. -->
+    <button type="button" class="theme-toggle mobile-theme js-theme-toggle" aria-pressed="false" aria-label="Cambiar modo oscuro" data-label-dark="Modo oscuro" data-label-light="Modo claro" hidden>
+      <svg class="theme-toggle__icon theme-toggle__icon--sun" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="4"/>
+        <line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/>
+        <line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/>
+        <line x1="4.93" y1="4.93" x2="7.05" y2="7.05"/><line x1="16.95" y1="16.95" x2="19.07" y2="19.07"/>
+        <line x1="4.93" y1="19.07" x2="7.05" y2="16.95"/><line x1="16.95" y1="7.05" x2="19.07" y2="4.93"/>
+      </svg>
+      <svg class="theme-toggle__icon theme-toggle__icon--moon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+      <span class="theme-toggle__label js-theme-label">Modo claro</span>
+    </button>
+    <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Contacta a Don</a>
+    <a href="/tools/vendor-benchmark/" hreflang="en" lang="en" class="mobile-lang js-lang-switch" data-set-locale="en">View in English</a>
+  </nav>
+
+  <!-- Mega-menu controller retired in Phase 7: Biblioteca is now a
+       single link to /es/library/ (the canonical three-doors hub IS
+       the menu). Las reglas CSS de .nav-library-* permanecen para
+       reusar el patrón si vuelve un mega-menú en el futuro. -->
+
+  <!-- Phase 2 (Workshop) — toggle del estado de auth para el nav.
+       Llama a /api/auth/me y revela el enlace "Acceder" o "El Taller"
+       según la respuesta. Ambos enlaces empiezan ocultos para que un
+       visitante anónimo sin JS no vea ninguno (la biblioteca y las
+       herramientas funcionan completas sin acceso, así que la
+       affordance ausente es aceptable). -->
+  <script>
+    (function () {
+      var signin   = document.querySelectorAll('.js-nav-signin');
+      var workshop = document.querySelectorAll('.js-nav-workshop');
+      if (!signin.length && !workshop.length) return;
+      var show = function (nodes) { nodes.forEach(function (n) { n.hidden = false; }); };
+      fetch('/api/auth/me', { credentials: 'same-origin' })
+        .then(function (r) {
+          if (r.status === 200) {
+            show(workshop);
+            fetch('/api/workbench/count', { credentials: 'same-origin' })
+              .then(function (r2) { return r2.ok ? r2.json() : null; })
+              .then(function (j) {
+                if (!j || typeof j.count !== 'number' || j.count <= 0) return;
+                workshop.forEach(function (n) {
+                  if (n.querySelector('.nav-workshop-count')) return;
+                  var b = document.createElement('span');
+                  b.className = 'nav-workshop-count';
+                  b.textContent = ' (' + j.count + ')';
+                  n.appendChild(b);
+                });
+              })
+              .catch(function () {});
+            return;
+          }
+          show(signin);
+        })
+        .catch(function () { show(signin); });
+    })();
+  </script>
+  <!-- Phase 7 — manejador del modo oscuro. Cargado después del nav
+       para que el botón .js-theme-toggle ya esté en el DOM. (Faltaba
+       en el nav en español, así que el interruptor no funcionaba en
+       las páginas /es/.) -->
+  <script src="/assets/theme-toggle.js?v=phase8"></script>
+</header>
+
+<main>
+<section class="vb-shell">
+  <div class="vb-hero">
+    <span class="eyebrow">Herramienta gratis · Tu precio vs. tu propio historial</span>
+    <h1>¿Mi precio se está moviendo mal?</h1>
+      <!-- tool-verified:start -->
+            <p class="tool-verified">Última revisión: <time datetime="2026-06-06">6 de junio de 2026</time></p>
+            <!-- tool-verified:end -->
+      <!-- data-promise:start -->
+            <aside class="tool-data-promise" aria-label="Promesa de datos">
+              <p class="tool-data-promise__line">Corre en tu navegador. Sin cuentas, sin fetches, sin tracking.</p>
+              <p class="tool-data-promise__line">Verifícalo: abre DevTools → Network → usa la herramienta. La pestaña Network se mantiene vacía.</p>
+              <p class="tool-data-promise__links"><a href="/es/security/">Lee la promesa completa &rarr;</a> &middot; <a href="/es/learn/checklists/audit-any-tool/">Audita cualquier herramienta &rarr;</a></p>
+            </aside>
+            <!-- data-promise:end -->
+    <p class="vb-lede">Escribe un artículo y el precio que pagas. Bench lo compara con lo que has pagado antes — reconociendo el artículo aunque cambie la redacción o el tamaño del paquete — y te dice, en lenguaje claro, si el movimiento es normal o si conviene llamar a tu proveedor. Funciona en tu dispositivo y guarda tus precios ahí, así cada consulta afina la siguiente.</p>
+  </div>
+
+  <div class="vb-card">
+    <h2>Revisa un precio</h2>
+    <form class="vb-form" id="vbForm" novalidate>
+      <div class="vb-field">
+        <label for="vbItem">Artículo <span class="vb-hint">— como aparece en tu factura</span></label>
+        <input class="vb-input" type="text" id="vbItem" name="item" autocomplete="off" placeholder="ej. lomo de res, aceite de oliva 3L" />
+      </div>
+      <div class="vb-row">
+        <div class="vb-field">
+          <label for="vbUnit">Precio por</label>
+          <select class="vb-select" id="vbUnit" name="unit">
+            <option value="lb">libra (lb)</option>
+            <option value="oz">onza (oz)</option>
+            <option value="kg">kilogramo (kg)</option>
+            <option value="each">unidad</option>
+            <option value="dozen">docena</option>
+            <option value="gal">galón</option>
+            <option value="l">litro</option>
+            <option value="case">caja</option>
+          </select>
+        </div>
+        <div class="vb-field">
+          <label for="vbLatest">Último precio ($)</label>
+          <input class="vb-input" type="number" inputmode="decimal" min="0" step="0.01" id="vbLatest" name="latest" placeholder="0.00" />
+        </div>
+        <div class="vb-field">
+          <label for="vbPrior">Precio anterior ($) <span class="vb-hint">— opcional</span></label>
+          <input class="vb-input" type="number" inputmode="decimal" min="0" step="0.01" id="vbPrior" name="prior" placeholder="0.00" />
+        </div>
+      </div>
+      <button class="vb-submit" type="submit">Revisar el movimiento</button>
+      <p class="vb-err" id="vbErr" hidden></p>
+    </form>
+  </div>
+
+  <div id="vbResult" class="vb-result" aria-live="polite"></div>
+
+  <div class="vb-card">
+    <h2>Cómo lo lee Bench.</h2>
+    <p><strong>Reconoce el artículo.</strong> «Aceite de Oliva 3 L» y «ACEITE DE OLIVA 3L» son lo mismo; una redacción parecida se ofrece como coincidencia para confirmar. Nunca mantienes un nombre canónico.</p>
+    <p><strong>Fija la unidad.</strong> $/lb y $/oz se reconcilian solos; una «caja» no se puede convertir a peso sin su tamaño de paquete, así que Bench lo dice en vez de adivinar.</p>
+    <p><strong>Usa tu propia base.</strong> El veredicto compara tu último precio con la mediana móvil de lo que <em>tú</em> has pagado — la misma regla que usa <a href="https://ledger.muntin.digital/">Muntin Ledger</a>, para que nunca se contradigan.</p>
+    <p><strong>Se queda en tu dispositivo.</strong> Los precios se guardan en este navegador, nunca se envían. La comparación con otros operadores es una función aparte, opcional, dentro de Ledger — nunca se construye con lo que escribes aquí.</p>
+  </div>
+</section>
+<!-- tool-knit -->
+<aside class="tool-knit" aria-labelledby="tool-knit-heading-vendor-benchmark">
+    <div class="container">
+      <h2 id="tool-knit-heading-vendor-benchmark" class="tool-knit__h">Sigue.</h2>
+      <div class="tool-knit__grid">
+      <div class="tool-knit__col">
+        <h3>Tema</h3>
+        <a href="/es/learn/topics/operations-margin/">Operaciones y margen</a>
+      </div>
+      <div class="tool-knit__col">
+        <h3>Herramientas relacionadas</h3>
+        <ul>
+          <li><a href="/es/tools/plate-cost/">Costo del Plato</a></li>
+          <li><a href="/es/tools/margin-math/">Cálculo de Margen</a></li>
+        </ul>
+      </div>
+      <div class="tool-knit__col">
+        <h3>Lee</h3>
+        <ul>
+          <li><a href="/es/library/keep-plate-cost-honest-when-prices-change/">Mantén honesto el costo del plato</a></li>
+          <li><a href="/es/library/how-to-raise-restaurant-menu-prices-without-losing-reservations/">Subir precios sin perder reservas</a></li>
+        </ul>
+      </div>
+      <div class="tool-knit__col">
+        <h3>Palabras</h3>
+        <ul>
+
+        </ul>
+      </div>
+      </div>
+    </div>
+  </aside>
+<!-- /tool-knit -->
+
+
+<!-- LIBRARY:tool-deep-links:start -->
+<section class="tool-deep-links" aria-labelledby="tool-deep-h">
+  <div class="container">
+    <header class="tool-deep-head">
+      <span class="eyebrow">Aprende más</span>
+      <h2 id="tool-deep-h">Por qué existe esta herramienta.</h2>
+      <p class="tool-deep-blurb">Cada chequeo que esta herramienta hace conecta con un concepto específico en la biblioteca. Dos puntos de partida — una definición, una guía.</p>
+      <div class="tool-deep-topics"><a class="tool-deep-topic" href="/es/learn/topics/operations-margin/">Operaciones y margen</a></div>
+    </header>
+    <div class="tool-deep-grid">
+      <a class="tool-deep-card tool-deep-card-term" href="/es/glossary/contribution-margin/">
+          <span class="tool-deep-kind">Glosario</span>
+          <h3>Margen de contribución</h3>
+          <p class="tool-deep-aka">lo que una venta de un plato aporta a cubrir costos fijos y utilidad</p>
+          <p class="tool-deep-snippet">Para un plato individual: precio de venta menos el costo variable de producir una unidad (costo de comida emplatado). Se reporta en dólares …</p>
+          <span class="tool-deep-cta">Leer la definición <span aria-hidden="true">→</span></span>
+        </a>
+      <a class="tool-deep-card tool-deep-card-term" href="/es/glossary/labor-cost/">
+          <span class="tool-deep-kind">Glosario</span>
+          <h3>Labor cost</h3>
+          <p class="tool-deep-aka">sueldos + impuestos de nómina, como % de ventas</p>
+          <p class="tool-deep-snippet">Sueldos, impuestos de nómina y el aporte del empleado de propinas expresado como porcentaje de ventas. Target 28–32% para la mayoría de los …</p>
+          <span class="tool-deep-cta">Leer la definición <span aria-hidden="true">→</span></span>
+        </a>
+      <a class="tool-deep-card tool-deep-card-term" href="/es/glossary/fixed-costs/">
+          <span class="tool-deep-kind">Glosario</span>
+          <h3>Costos fijos</h3>
+          <p class="tool-deep-aka">costos que no escalan con las ventas</p>
+          <p class="tool-deep-snippet">Costos que no cambian con el volumen de ventas: renta, seguro, pagos de préstamo, servicios básicos, suscripciones SaaS (POS, reservas, nómi…</p>
+          <span class="tool-deep-cta">Leer la definición <span aria-hidden="true">→</span></span>
+        </a>
+      <a class="tool-deep-card tool-deep-card-article" href="/es/blog/five-restaurant-website-changes-recover-one-percent-margin/">
+          <span class="tool-deep-kind">Artículo</span>
+          <h3>five-restaurant-website-changes-recover-one-percent-margin</h3>
+          <p class="tool-deep-snippet"></p>
+          <span class="tool-deep-cta">Leer la guía <span aria-hidden="true">→</span></span>
+        </a>
+    </div>
+  </div>
+</section>
+<!-- LIBRARY:tool-deep-links:end -->
+
+</main>
+
+<footer class="site-footer" id="footer"></footer>
+
+<!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260430-cohesion";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
+<script src="/tools/_shared/safe-html.js?v=phase0"></script>
+<script src="/tools/_shared/context-bus.js?v=20260504-w10-3"></script>
+<script src="/tools/_shared/stem.js?v=20260504-w10-0a"></script>
+<script src="/tools/_shared/sku-match.js?v=20260504-w10-1"></script>
+<script src="/tools/_shared/bench-lookup.js?v=20260602-bench-1"></script>
+<script>
+(function () {
+  'use strict';
+  var Bench = window.MuntinBench;
+  var SH = window.MuntinSafeHtml;
+  var LOCALE = (document.documentElement.getAttribute('lang') || 'en').toLowerCase().slice(0, 2);
+
+  var form = document.getElementById('vbForm');
+  var resultEl = document.getElementById('vbResult');
+  var errEl = document.getElementById('vbErr');
+  if (!form || !resultEl || !Bench || !SH) return;
+
+  var TIER_LABEL = LOCALE === 'es'
+    ? { hike: 'Subida de precio', watch: 'Para vigilar', steady: 'En línea', 'mixed-units': 'Revisa las unidades', insufficient: 'Falta un precio' }
+    : { hike: 'Price hike', watch: 'Worth a glance', steady: 'In line', 'mixed-units': 'Check the units', insufficient: 'Need one more price' };
+
+  function showErr(msg) {
+    if (!errEl) return;
+    errEl.textContent = msg;
+    errEl.hidden = false;
+  }
+
+  function render(r, hist) {
+    var h = SH.h;
+    var label = TIER_LABEL[r.tier] || r.tier;
+
+    var matchNote = '';
+    if (hist.tier === 'propose') {
+      matchNote = LOCALE === 'es'
+        ? h`<p class="vb-match">Coincidió con <strong>${hist.stem}</strong> de tus precios guardados. ¿No es el mismo artículo? Usa un nombre más específico para mantenerlos separados.</p>`
+        : h`<p class="vb-match">Matched to <strong>${hist.stem}</strong> from your saved prices. Not the same item? Use a more specific name to keep them apart.</p>`;
+    } else if (hist.observations.length) {
+      matchNote = LOCALE === 'es'
+        ? h`<p class="vb-match">Comparado contra <strong>${String(hist.observations.length)}</strong> precio(s) anterior(es) que guardaste para este artículo, en este dispositivo.</p>`
+        : h`<p class="vb-match">Compared against <strong>${String(hist.observations.length)}</strong> earlier price(s) you saved for this item, on this device.</p>`;
+    }
+
+    var ledger = '';
+    if (r.tier === 'hike') {
+      ledger = h`<div class="vb-ledger"><strong>${LOCALE === 'es' ? 'Bench lo detectó.' : 'Bench caught this one.'}</strong> ${LOCALE === 'es' ? 'Mira en cuáles de tus platillos está este ingrediente — y qué le hace a su margen — en' : 'See which of your dishes use this ingredient — and what the move does to their margin — in'} <a href="${LOCALE === 'es' ? '/es' : ''}/tools/plate-cost/">${LOCALE === 'es' ? 'Costo del Plato' : 'Plate Cost'}</a>. ${LOCALE === 'es' ? 'Luego mantenlo vigilado: Muntin Ledger marca la próxima subida en cuanto subes la factura.' : 'Then keep it tracked: Muntin Ledger flags the next hike the moment you file the invoice.'} <a href="https://ledger.muntin.digital/">${LOCALE === 'es' ? 'Conoce Muntin Ledger →' : 'See Muntin Ledger →'}</a></div>`;
+    }
+
+    var soon = LOCALE === 'es' ? 'pronto' : 'soon';
+    var peerHead = LOCALE === 'es' ? 'Cómo te comparas con tus colegas' : 'How you compare to peers';
+    var marketHead = LOCALE === 'es' ? 'Tu movimiento frente al mercado' : 'Your move vs. the market';
+    var peer = h`<div class="vb-dormant"><h3>${peerHead} <span class="vb-soon">${soon}</span></h3><p>${r.peer.message}</p></div>`;
+    var market = h`<div class="vb-dormant"><h3>${marketHead} <span class="vb-soon">${soon}</span></h3><p>${r.market.message}</p></div>`;
+
+    var ondevice = LOCALE === 'es'
+      ? 'Guardado solo en este dispositivo — nunca se envía a ningún lado. Bórralo de tu navegador cuando quieras.'
+      : 'Saved on this device only — never sent anywhere. Clear it from your browser anytime.';
+    var card = h`<div class="vb-card"><span class="vb-badge" data-tier="${r.tier}">${label}</span><p class="vb-verdict">${r.talkingPoint}</p>${matchNote}${ledger}<p class="vb-ondevice">${ondevice}</p></div>`;
+
+    SH.setHTML(resultEl, h`${card}${peer}${market}`);
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (errEl) errEl.hidden = true;
+
+    var item = (document.getElementById('vbItem').value || '').trim();
+    var unit = document.getElementById('vbUnit').value;
+    var latest = parseFloat(document.getElementById('vbLatest').value);
+    var priorRaw = document.getElementById('vbPrior').value;
+    var prior = priorRaw === '' ? null : parseFloat(priorRaw);
+
+    if (!item) { showErr(LOCALE === 'es' ? 'Escribe el nombre del artículo.' : 'Enter the item name.'); return; }
+    if (!(latest > 0)) { showErr(LOCALE === 'es' ? 'Escribe el último precio que pagaste.' : 'Enter the latest price you paid.'); return; }
+
+    var latestCents = Math.round(latest * 100);
+    var priorCents = (prior != null && prior > 0) ? Math.round(prior * 100) : null;
+
+    var hist = Bench.readObservations(item);
+    var series = hist.observations.slice();
+    if (priorCents != null) series.push({ cents: priorCents, ts: Date.now() - 86400000, unit: unit });
+    series.push({ cents: latestCents, ts: Date.now(), unit: unit });
+
+    var r = Bench.assess({ item: item, observations: series, locale: LOCALE });
+
+    // Personal data machine — keep the prices on this device so the next
+    // check compares automatically. Never leaves the browser (the
+    // data-promise above holds: no fetch on this path).
+    if (priorCents != null && !hist.observations.length) {
+      Bench.pushObservation(item, priorCents, Date.now() - 86400000, unit);
+    }
+    Bench.pushObservation(item, latestCents, Date.now(), unit);
+
+    render(r, hist);
+
+    if (window.plausible) {
+      try { window.plausible('Bench Assessed', { props: { tier: r.tier } }); } catch (_) {}
+    }
+  });
+
+  if (window.plausible) {
+    try { window.plausible('Bench Loaded'); } catch (_) {}
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,520 @@
+{
+  "_doc": "Maps each ingredientKey (matching /library/ingredient-yields/<slug>/) to its native identifier in each public price source. The CI/prod fetch worker reads this to resolve what to pull; the composite engine (tools/_shared/composite-price.js) decides LEVEL vs TREND by basis. EVERY id here is an UNVERIFIED best-guess (verified:false) per the API-integration spec — resolve each against the source's discovery endpoint (AMS /reports, BLS series directory, FRED /series/search, NOAA FOSS species list) and flip verified:true before it ships behind the fact-gate. basis mapping: ams=wholesale level, noaa=wholesale (ex-vessel) level, fred=level or index per its 'basis', bls=index (trend-only). A missing source key = that source is simply skipped for that ingredient; \"\" = known to have none. ams.reportId is the NUMERIC MARS slug_id (find it with `node scripts/verify-cost-index-sources.mjs --discover <term>` — the report slug like LM_XB403 404s). ams.commodity filters a multi-commodity report (e.g. a terminal 'Vegetables' report) down to one ingredient's rows (field-agnostic match). _report is a human label, ignored by code. Produce uses the Baltimore terminal (DMV market); chicken uses the National Chicken Report. Beef/pork (ribeye, tenderloin, pork-*) still carry LMR slugs (LM_XB403/LM_PK602) — the boxed-beef/negotiated-pork wholesale reports aren't in the Market News v1.2 directory, so confirm whether they need the separate LMR/Datamart API. See scripts/check-cost-index-sources.mjs (shape + alignment validator, warns on unverified) and the 'Cost Index — API Integration Architecture' section of the plan.",
+  "ingredients": {
+    "ribeye": {
+      "verified": true,
+      "lmr": {
+        "reportId": "2453",
+        "commodity": "Ribeye",
+        "reducer": "wtdAvg",
+        "unit": "lb",
+        "_report": "LMR Datamart 2453, section \"Choice Cuts\" (prices live in sections; bare report = Summary). Confirm the ribeye cut term + price fields via a section curl.",
+        "section": "Choice Cuts",
+        "priceUnit": "Dollars Per Cwt",
+        "windowDays": 45
+      },
+      "bls": {
+        "seriesId": "WPU022101"
+      },
+      "fred": {
+        "seriesId": "APU0000FC3101",
+        "basis": "index",
+        "_report": "All Uncooked Beef Steaks retail — beef-direction TREND proxy (LMR is the level)."
+      }
+    },
+    "beef-tenderloin": {
+      "verified": true,
+      "lmr": {
+        "reportId": "2453",
+        "commodity": "Butt Tender",
+        "reducer": "wtdAvg",
+        "unit": "lb",
+        "_report": "LMR 2453, section \"Choice Cuts\". Tenderloin is labeled \"Loin, butt tender, trimmed (191A)\" (~$14.75/lb) — match \"Butt Tender\", NOT \"tenderloin\" (absent) or \"tender\" (would catch chuck/clod tender).",
+        "section": "Choice Cuts",
+        "priceUnit": "Dollars Per Cwt",
+        "windowDays": 45
+      },
+      "bls": {
+        "seriesId": "WPU022101"
+      }
+    },
+    "chicken-breast": {
+      "verified": true,
+      "ams": {
+        "reportId": "3646",
+        "commodity": "Breast - B/S",
+        "matchFields": [
+          "item"
+        ],
+        "market": "National",
+        "reducer": "wtdAvg",
+        "_report": "Weekly National Chicken Report; item 'Breast - B/S' = boneless/skinless, wtd_avg_price in Cents Per Lb"
+      },
+      "fred": {
+        "seriesId": "APU0000706111",
+        "basis": "retail",
+        "unit": "lb"
+      },
+      "bls": {
+        "seriesId": "WPU0222"
+      }
+    },
+    "whole-chicken": {
+      "verified": true,
+      "ams": {
+        "reportId": "3646",
+        "commodity": "Whole",
+        "matchFields": [
+          "item"
+        ],
+        "market": "National",
+        "reducer": "wtdAvg",
+        "_report": "Weekly National Chicken Report; wtd_avg_price in Cents Per Lb"
+      },
+      "bls": {
+        "seriesId": "WPU0222"
+      }
+    },
+    "pork-loin": {
+      "verified": true,
+      "lmr": {
+        "reportId": "2498",
+        "commodity": "Loin",
+        "reducer": "wtdAvg",
+        "unit": "lb",
+        "_report": "LMR 2498, section \"Loin Cuts\". Confirm loin cut term/unit via section curl.",
+        "section": "Loin Cuts",
+        "priceUnit": "Dollars Per Cwt",
+        "windowDays": 45
+      },
+      "bls": {
+        "seriesId": "WPS022104"
+      }
+    },
+    "pork-shoulder": {
+      "verified": true,
+      "lmr": {
+        "reportId": "2498",
+        "commodity": "Butt",
+        "reducer": "wtdAvg",
+        "unit": "lb",
+        "_report": "LMR 2498, section \"Butt Cuts\" (Boston butt = pork shoulder). Confirm cut term via section curl.",
+        "section": "Butt Cuts",
+        "priceUnit": "Dollars Per Cwt",
+        "windowDays": 45
+      },
+      "bls": {
+        "seriesId": "WPS022104"
+      }
+    },
+    "salmon-fillet": {
+      "verified": true,
+      "noaa": {
+        "commodity": "salmon",
+        "unit": "lb",
+        "years": 2,
+        "_report": "NOAA Fisheries import unit value (val/kilos -> $/lb, landed-adjacent proxy). Confirm trade_data fields/commodity (or set hts e.g. 0304 for salmon fillet) via a sample curl."
+      },
+      "bls": {
+        "seriesId": "WPU0223",
+        "_report": "Aggregate seafood PPI (Unprocessed & Prepared Seafood, current). Salmon-specific WPU02230103 is stale; this is the fresh seafood trend."
+      }
+    },
+    "shrimp": {
+      "verified": true,
+      "noaa": {
+        "commodity": "shrimp",
+        "unit": "lb",
+        "years": 2,
+        "_report": "NOAA Fisheries import unit value -> $/lb (landed-adjacent). Confirm fields/commodity (or hts 0306) via sample."
+      },
+      "bls": {
+        "seriesId": "WPU02230501"
+      }
+    },
+    "romaine-lettuce": {
+      "verified": true,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Romaine",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Romaine",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Romaine",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Romaine",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Romaine",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Romaine",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Romaine",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Romaine",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130215"
+      }
+    },
+    "tomato": {
+      "verified": true,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Tomatoes",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Tomatoes",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Tomatoes",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Tomatoes",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Tomatoes",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Tomatoes",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Tomatoes",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Tomatoes",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217"
+      }
+    },
+    "onion": {
+      "verified": true,
+      "ams": [
+        {
+          "reportId": "2279",
+          "market": "Atlanta",
+          "commodity": "Onions",
+          "reducer": "mostlyMid",
+          "unit": "sack"
+        },
+        {
+          "reportId": "2283",
+          "market": "Baltimore",
+          "commodity": "Onions",
+          "reducer": "mostlyMid",
+          "unit": "sack"
+        },
+        {
+          "reportId": "2287",
+          "market": "Boston",
+          "commodity": "Onions",
+          "reducer": "mostlyMid",
+          "unit": "sack"
+        },
+        {
+          "reportId": "2292",
+          "market": "Chicago",
+          "commodity": "Onions",
+          "reducer": "mostlyMid",
+          "unit": "sack"
+        },
+        {
+          "reportId": "2304",
+          "market": "Detroit",
+          "commodity": "Onions",
+          "reducer": "mostlyMid",
+          "unit": "sack"
+        },
+        {
+          "reportId": "2308",
+          "market": "Los Angeles",
+          "commodity": "Onions",
+          "reducer": "mostlyMid",
+          "unit": "sack"
+        },
+        {
+          "reportId": "2312",
+          "market": "Miami",
+          "commodity": "Onions",
+          "reducer": "mostlyMid",
+          "unit": "sack"
+        },
+        {
+          "reportId": "2316",
+          "market": "New York",
+          "commodity": "Onions",
+          "reducer": "mostlyMid",
+          "unit": "sack"
+        }
+      ]
+    },
+    "russet-potato": {
+      "verified": true,
+      "ams": [
+        {
+          "reportId": "2279",
+          "market": "Atlanta",
+          "commodity": "Russet",
+          "reducer": "mostlyMid",
+          "unit": "sack"
+        },
+        {
+          "reportId": "2283",
+          "market": "Baltimore",
+          "commodity": "Russet",
+          "reducer": "mostlyMid",
+          "unit": "sack"
+        },
+        {
+          "reportId": "2287",
+          "market": "Boston",
+          "commodity": "Russet",
+          "reducer": "mostlyMid",
+          "unit": "sack"
+        },
+        {
+          "reportId": "2292",
+          "market": "Chicago",
+          "commodity": "Russet",
+          "reducer": "mostlyMid",
+          "unit": "sack"
+        },
+        {
+          "reportId": "2304",
+          "market": "Detroit",
+          "commodity": "Russet",
+          "reducer": "mostlyMid",
+          "unit": "sack"
+        },
+        {
+          "reportId": "2308",
+          "market": "Los Angeles",
+          "commodity": "Russet",
+          "reducer": "mostlyMid",
+          "unit": "sack"
+        },
+        {
+          "reportId": "2312",
+          "market": "Miami",
+          "commodity": "Russet",
+          "reducer": "mostlyMid",
+          "unit": "sack"
+        },
+        {
+          "reportId": "2316",
+          "market": "New York",
+          "commodity": "Russet",
+          "reducer": "mostlyMid",
+          "unit": "sack"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130603"
+      }
+    },
+    "butter": {
+      "verified": true,
+      "fred": {
+        "seriesId": "APU0000FS1101",
+        "basis": "retail",
+        "unit": "lb"
+      },
+      "bls": {
+        "seriesId": "WPU0232"
+      },
+      "lmr": {
+        "reportId": "2993",
+        "section": "Butter Prices and Sales",
+        "reducer": "single",
+        "fields": {
+          "price": "Butter_Price"
+        },
+        "dateField": "week_ending_date",
+        "unit": "lb",
+        "windowDays": 90,
+        "_report": "NDPSR (LMR Datamart 2993, keyless). Butter_Price = weighted-avg $/lb, dated week_ending_date. Confirmed field. The fetcher windows on dateField (week_ending_date) — NDPSR carries no report_date, so the default report_date window returns 0 rows; week_ending_date returns a ~13-week slice (fast, no timeout)."
+      }
+    },
+    "cheddar-cheese": {
+      "verified": true,
+      "bls": {
+        "seriesId": "PCU3115133115131"
+      },
+      "fred": {
+        "seriesId": "APU0000710212",
+        "basis": "retail",
+        "unit": "lb"
+      },
+      "lmr": {
+        "reportId": "2993",
+        "section": "40 Pound Block Cheddar Cheese Prices and Sales",
+        "reducer": "single",
+        "fields": {
+          "price": [
+            "cheese_40_Price",
+            "Cheddar_Price",
+            "Block_Price"
+          ]
+        },
+        "dateField": "week_ending_date",
+        "unit": "lb",
+        "windowDays": 90,
+        "_report": "NDPSR 2993 block cheddar. price column CONFIRMED via live header = cheese_40_Price (40-lb block weighted-avg $/lb, dated week_ending_date). Legacy names kept as fallbacks. Windows on dateField (week_ending_date) for a fast ~13-week slice; the default report_date window returns 0 rows (NDPSR rows have no report_date) and unwindowed times out."
+      }
+    },
+    "eggs": {
+      "verified": true,
+      "bls": {
+        "seriesId": "WPU017107"
+      },
+      "fred": {
+        "seriesId": "APU0000708111",
+        "basis": "retail",
+        "unit": "dozen"
+      }
+    },
+    "vegetable-oil": {
+      "verified": true,
+      "bls": {
+        "seriesId": "WPU0278",
+        "family": "ppi-cooking-oil",
+        "type": "ppi-cooking-oil",
+        "_report": "Cooking-oil PPI (trend). No free oil price LEVEL exists (retail APU discontinued 2005; AMS 3511 is feedstuffs not oil; IMF/CME restricted) → vegetable-oil is honestly directional."
+      },
+      "fred": {
+        "seriesId": "PCU3112243112243",
+        "basis": "index",
+        "family": "ppi-soybean-oil",
+        "type": "ppi-soybean-oil",
+        "_report": "Soybean Oil PPI (trend). The retail APU0000716121 was DISCONTINUED 2005 — no current free oil LEVEL via FRED/BLS. For a wholesale level, wire AMS report 3511 (Crude Soybean Oil, Central IL) via the AMS key."
+      }
+    }
+  },
+  "drivers": {
+    "_doc": "Explanatory INPUTS (not menu ingredients) for the \"why\" behind protein cost moves — fed to the lead-lag analyzer (tools/_shared/cost-leadlag.js). feed-grain (corn/soybeans) is the genuine LEADING signal (USDA ERS: ~10wk chicken to ~30mo beef); diesel is coincident (moves alongside, not a leader). All index/trend, US-gov redistributable. Association with a lag, NEVER causation. Verify the series ids live, then the build computes each driver vs the protein/basket history.",
+    "corn": {
+      "bls": {
+        "seriesId": "WPS012202"
+      },
+      "kind": "feed-grain",
+      "leads": [
+        "chicken-breast",
+        "whole-chicken",
+        "pork-loin",
+        "pork-shoulder",
+        "ribeye",
+        "beef-tenderloin",
+        "eggs"
+      ]
+    },
+    "soybeans": {
+      "bls": {
+        "seriesId": "WPU01830131"
+      },
+      "kind": "feed-grain",
+      "leads": [
+        "chicken-breast",
+        "whole-chicken",
+        "pork-loin",
+        "pork-shoulder"
+      ]
+    },
+    "diesel": {
+      "fred": {
+        "seriesId": "GASDESW",
+        "basis": "index"
+      },
+      "kind": "energy",
+      "leads": [],
+      "_report": "coincident gauge (moves alongside food), not a leader — frame as association only",
+      "family": "energy"
+    },
+    "electricity": {
+      "eia": {
+        "route": "electricity/retail-sales",
+        "facets": {
+          "sectorid": "COM",
+          "stateid": "US"
+        },
+        "frequency": "monthly",
+        "value": "price"
+      },
+      "kind": "energy",
+      "family": "energy",
+      "_report": "EIA commercial electricity retail price (cents/kWh) — coincident ON-SITE energy gauge (refrigeration/ops). The distinct EIA signal (diesel stays on FRED GASDESW to avoid duplication). Confirm facet form via a sample if 0 points."
+    }
+  }
+}

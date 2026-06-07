@@ -471,7 +471,7 @@ body[data-pc-mode="recost"] .pc-prev-cell{display:block}
         "availability": "https://schema.org/InStock"
       },
       "name": "Plate Cost Calculator",
-      "description": "Type a recipe — what you bought, what you used, what it yields. The tool walks the math from invoice to plate cost and suggests three menu prices."
+      "description": "Upload your POS sales mix and see what each dish actually makes the house per year — on your real volume and your invoice prices. Then get a plain call when a price moves: raise, re-portion, or hold."
     },
     {
       "@type": "HowTo",
@@ -958,13 +958,24 @@ body[data-pc-mode="recost"] .pc-prev-cell{display:block}
             <span class="pc-year-out-detail" id="pcYearDetail">Type a weekly volume to see the annual contribution.</span>
           </div>
         </div>
+        <label class="pc-year-input" style="margin-top:14px;display:block;">
+          <span>What you charge for it now ($) — optional, for a margin read</span>
+          <input type="number" id="pcPriceNow" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 14.00">
+        </label>
+        <div class="pc-year-upload" style="margin-top:14px;display:flex;flex-wrap:wrap;align-items:center;gap:10px;">
+          <input type="file" id="pcMixFile" accept=".csv,.tsv,.txt,text/csv" aria-label="Sales mix file (CSV)" hidden>
+          <label style="font-size:13px;color:var(--ink-soft);display:inline-flex;align-items:center;gap:6px;">covering <select id="pcMixPeriod" style="font:inherit;font-size:13px;padding:5px 8px;border:1px solid #D7DAE0;border-radius:7px;background:#fff;color:var(--ink);"><option value="7">1 week</option><option value="14">2 weeks</option><option value="28">4 weeks</option><option value="30">1 month</option></select></label>
+          <button type="button" class="pc-action-btn" id="pcMixBtn">Upload your sales mix to fill this in &rarr;</button>
+          <span class="pc-year-mix-status" id="pcMixStatus" role="status" aria-live="polite" style="font-size:13px;color:var(--ink-soft);line-height:1.5;"></span>
+        </div>
+        <div id="pcAdvice" class="pc-advice" hidden style="margin-top:14px;"></div>
       </div>
 
       <aside class="edu-result" id="pcEduResult" aria-labelledby="pcEduResultLede">
         <p class="edu-result__lede" id="pcEduResultLede">Treat this as a <strong>starting line</strong>, not a price tag. Yield varies by ±5&ndash;10% with trim quality and supplier; revisit when an invoice moves more than a few percent.</p>
         <p class="edu-result__rule">If your three suggested prices straddle a price you can actually charge in your market, you&rsquo;re in shape. If even the 33% column is below what guests will pay, the dish is a <strong>plowhorse candidate</strong> &mdash; bring it to Menu Engineering with sales data.</p>
         <p class="edu-result__next"><span class="edu-result__next-label">Next step</span><a href="#pc-actions">Print the Plate Card for the kitchen</a><span aria-hidden="true">&middot;</span><a href="/tools/menu-engineering/">Test against your sales mix</a><span aria-hidden="true">&middot;</span><a href="/tools/margin-math/">Sanity-check prime cost</a></p>
-        <p class="edu-result__source"><span class="edu-result__source-label">Sourced</span><a href="/glossary/food-cost/">CIA yield tables</a> &middot; NRA food-cost benchmarks (2026 edition; medians, full-service segment) &middot; <a href="/glossary/contribution-margin/">contribution margin</a></p>
+        <p class="edu-result__source"><span class="edu-result__source-label">Sourced</span><a href="/glossary/food-cost/">CIA yield tables</a> &middot; <a href="/library/ingredient-yields/">per-ingredient yields</a> &middot; NRA food-cost benchmarks (2026 edition; medians, full-service segment) &middot; <a href="/glossary/contribution-margin/">contribution margin</a></p>
 
         <details class="edu-formula">
           <summary>Show the math (the formula behind every row)</summary>
@@ -985,6 +996,25 @@ Three suggested menu prices, each backsolved from a food-cost target:
 Contribution margin per plate = menu price &minus; plate cost</pre>
           <p class="edu-formula__caption">Yields come from the CIA Standard Yield Tables; chef variance is typically &plusmn;5%, more for trim-heavy proteins. The full module is at <code>/tools/plate-cost/plate-cost.js</code> &mdash; no minification, no build step, readable directly.</p>
         </details>
+      </aside>
+
+      <!-- Keep this live → Muntin Ledger funnel. The .ics "recost in 90
+           days" reminder below is the free tool's MANUAL answer to
+           "invoice prices drift"; this is the automatic one. Honest
+           free→paid bridge (no bait-and-switch): the free calculator
+           fully answers the one-time question with prices you type;
+           Muntin Ledger sells recurrence — it costs every dish from
+           your real invoices and flags the dishes a price hike hits.
+           Lives inside #pcResult so it only appears AFTER the operator
+           has costed a dish. Plain external anchor with Plausible's
+           declarative class API → fires the registered "Ledger Route
+           Click" event (source=plate-cost), suppressing the duplicate
+           outbound-link event. -->
+      <aside class="pc-keep-live" id="pcKeepLive" aria-labelledby="pcKeepLiveH" style="margin:20px 0 0;padding:20px 22px;border-radius:12px;background:linear-gradient(100deg,#0f3a37 0%,#1f6f6a 100%);color:#fff;">
+        <span style="display:inline-block;font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;opacity:0.85;margin:0 0 6px;">Keep this live</span>
+        <h3 id="pcKeepLiveH" style="font-family:var(--font-display);font-size:20px;font-weight:500;color:#fff;margin:0 0 8px;line-height:1.2;">Or stop recosting by hand.</h3>
+        <p style="font-size:14px;line-height:1.55;color:rgba(255,255,255,0.92);margin:0 0 14px;max-width:60ch;">This calculator costs your dish once, with prices you type in. <strong style="color:#fff;">Muntin Ledger</strong> reads your real vendor invoices and keeps every dish costed automatically &mdash; and the day a price moves, it tells you which dishes it hit, and by how much. The reminder below is the manual version; Ledger is the one that watches for you.</p>
+        <a class="plausible-event-name=Ledger+Route+Click plausible-event-source=plate-cost" href="https://ledger.muntin.digital/" style="display:inline-flex;align-items:center;gap:6px;padding:11px 20px;border-radius:999px;background:#fff;color:#0f3a37;font-weight:600;font-size:14px;text-decoration:none;">See Muntin Ledger <span aria-hidden="true">&rarr;</span></a>
       </aside>
     </div>
 
@@ -1252,6 +1282,8 @@ Contribution margin per plate = menu price &minus; plate cost</pre>
 <script src="/tools/_shared/handoff.js?v=phase4"></script>
 <script src="/tools/_shared/stem.js?v=20260504-w10-0a"></script>
 <script src="/tools/_shared/sku-match.js?v=20260504-w10-1"></script>
+<script src="/tools/_shared/sales-mix.js?v=20260602-pos1"></script>
+<script src="/tools/_shared/plate-advice.js?v=20260603-plate1"></script>
 <script src="/tools/_shared/portion-bridge.js?v=20260504-w10-2"></script>
 <script src="/tools/_shared/plate-advice.js?v=20260606-w15-1"></script>
 <script src="/tools/_shared/cross-vendor.js?v=20260504-w10-13"></script>
@@ -1634,6 +1666,73 @@ Contribution margin per plate = menu price &minus; plate cost</pre>
         pcYearVol.addEventListener('input', recomputeYear);
       }
       recomputeYear();
+
+      // plate-advice — when the operator enters what they charge now, judge
+      // it on the real plate cost + their weekly volume and surface the
+      // re-price / re-portion / hold call. Built via DOM (no innerHTML).
+      var ADV_TARGET = { 'fine-dining': 0.28, 'casual': 0.30, 'high-volume': 0.33 };
+      var ADV_LOCALE = (document.documentElement.getAttribute('lang') || 'en').toLowerCase().slice(0, 2);
+      function advTierLabel(tier) {
+        var m = ADV_LOCALE === 'es'
+          ? { healthy:'En línea', watch:'Para vigilar', over_target:'Arriba de tu meta', underwater:'Bajo el agua', hike:'Subida de precio', price_needed:'Pon un precio', 'mixed-units':'Revisa unidades', insufficient:'Agrega más' }
+          : { healthy:'In line', watch:'Worth a glance', over_target:'Over your goal', underwater:'Underwater', hike:'Price hike', price_needed:'Set a price', 'mixed-units':'Check the units', insufficient:'Add more' };
+        return m[tier] || tier;
+      }
+      function advTierColors(tier) {
+        if (tier === 'healthy') return ['#c7e4d4', '#0c4a26'];
+        if (tier === 'watch') return ['#fdecc8', '#7a531f'];
+        if (tier === 'over_target' || tier === 'underwater' || tier === 'hike') return ['#fce0d7', '#7a2e1f'];
+        return ['#EDEEF1', '#4A4F59'];
+      }
+      function renderAdvice() {
+        var adviceEl = document.getElementById('pcAdvice');
+        var priceEl = document.getElementById('pcPriceNow');
+        if (!adviceEl || !priceEl || typeof window.MuntinPlateAdvice === 'undefined') return;
+        while (adviceEl.firstChild) adviceEl.removeChild(adviceEl.firstChild);
+        var pv = parseFloat(priceEl.value);
+        if (!isFinite(pv) || pv <= 0 || !hasPlate) { adviceEl.hidden = true; return; }
+        var cov = parseFloat(pcYearVol && pcYearVol.value);
+        var r = window.MuntinPlateAdvice.advise({
+          itemName: (nameEl && nameEl.value || '').trim(),
+          plateCostCents: Math.round(summary.plateCost * 100),
+          menuPriceCents: Math.round(pv * 100),
+          targetFoodCostPct: ADV_TARGET[recTier] || 0.30,
+          coversPerWeek: (isFinite(cov) && cov > 0) ? cov : null,
+          locale: ADV_LOCALE
+        });
+        var card = document.createElement('div');
+        card.style.cssText = 'padding:16px 18px;border:1px solid var(--line);border-radius:10px;background:var(--white,#fff);';
+        var badge = document.createElement('span');
+        var col = advTierColors(r.tier);
+        badge.textContent = advTierLabel(r.tier);
+        badge.style.cssText = 'display:inline-block;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:4px 10px;border-radius:999px;margin:0 0 10px;background:' + col[0] + ';color:' + col[1] + ';';
+        card.appendChild(badge);
+        var head = document.createElement('p');
+        head.textContent = r.headline;
+        head.style.cssText = 'font-size:15px;line-height:1.55;color:var(--ink);margin:0;';
+        card.appendChild(head);
+        if (r.options && r.options.length) {
+          var ul = document.createElement('ul');
+          ul.style.cssText = 'list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:8px;';
+          r.options.forEach(function (o, i) {
+            var li = document.createElement('li');
+            li.style.cssText = 'font-size:13.5px;line-height:1.5;color:var(--ink-soft);' + (i === 0 ? 'border-left:3px solid var(--teal);padding-left:10px;' : 'padding-left:13px;');
+            var strong = document.createElement('strong');
+            strong.textContent = o.label;
+            strong.style.color = 'var(--ink)';
+            li.appendChild(strong);
+            if (o.detail) li.appendChild(document.createTextNode(' — ' + o.detail));
+            ul.appendChild(li);
+          });
+          card.appendChild(ul);
+        }
+        adviceEl.appendChild(card);
+        adviceEl.hidden = false;
+      }
+      var advPriceEl = document.getElementById('pcPriceNow');
+      if (advPriceEl && !advPriceEl.__advBound) { advPriceEl.__advBound = true; advPriceEl.addEventListener('input', renderAdvice); }
+      if (pcYearVol && !pcYearVol.__advBound2) { pcYearVol.__advBound2 = true; pcYearVol.addEventListener('input', renderAdvice); }
+      renderAdvice();
     }
 
     // Bottleneck callout — surfaces only when one ingredient ≥ 30%
@@ -2747,6 +2846,83 @@ Contribution margin per plate = menu price &minus; plate cost</pre>
       ]
     });
   }
+
+  // --- Sales-mix upload → real weekly covers (POS-fallback) -------------
+  // The operator uploads a sales-mix export from any POS; we parse it
+  // on-device (FileReader — no network, the data-promise holds), match
+  // this dish by stem to a row, and fill the weekly-volume input so the
+  // "worth per year" panel runs on REAL covers, not a guess. Locale-aware
+  // so the same handler serves the EN and ES pages.
+  (function wireSalesMixUpload() {
+    var btn = document.getElementById('pcMixBtn');
+    var fileInput = document.getElementById('pcMixFile');
+    var statusEl = document.getElementById('pcMixStatus');
+    if (!btn || !fileInput || typeof window.MuntinSalesMix === 'undefined') return;
+    var ES = (document.documentElement.getAttribute('lang') || 'en').toLowerCase().indexOf('es') === 0;
+    function t(en, es) { return ES ? es : en; }
+    function setStatus(msg) { if (statusEl) statusEl.textContent = msg; }
+
+    btn.addEventListener('click', function () { fileInput.click(); });
+    fileInput.addEventListener('change', function () {
+      var f = fileInput.files && fileInput.files[0];
+      if (!f) return;
+      var reader = new FileReader();
+      reader.onerror = function () { setStatus(t('Couldn’t read that file.', 'No se pudo leer ese archivo.')); };
+      reader.onload = function () {
+        try {
+          var parsed = window.MuntinSalesMix.parseSalesMixCsv(String(reader.result || ''));
+          if (!parsed.rows.length) {
+            setStatus(t('Couldn’t read that as a sales mix — it needs an item column and a units-sold column.',
+                        'No se pudo leer como mezcla de ventas — necesita una columna de artículo y otra de unidades vendidas.'));
+            return;
+          }
+          var recipeName = (nameEl && nameEl.value || '').trim();
+          if (!recipeName) {
+            setStatus(t('Name this recipe above first — we match your upload by dish name.',
+                        'Primero ponle nombre a esta receta arriba — emparejamos tu archivo por el nombre del platillo.'));
+            return;
+          }
+          var stems = [], byStem = {};
+          parsed.rows.forEach(function (r) {
+            var s = (window.MuntinStem ? window.MuntinStem.extractStem(r.item) : String(r.item).toLowerCase());
+            if (!s) return;
+            if (!byStem[s]) { byStem[s] = { item: r.item, units: 0 }; stems.push(s); }
+            byStem[s].units += r.unitsSold;
+          });
+          var matchStem = null, fuzzy = false;
+          if (window.MuntinSkuMatch) {
+            var c = window.MuntinSkuMatch.classify(recipeName, stems);
+            if (c.tier === 'auto') matchStem = c.stem;
+            else if (c.tier === 'propose') { matchStem = c.stem; fuzzy = true; }
+          }
+          if (!matchStem) {
+            var own = window.MuntinStem ? window.MuntinStem.extractStem(recipeName) : recipeName.toLowerCase();
+            if (byStem[own]) matchStem = own;
+          }
+          if (!matchStem || !byStem[matchStem]) {
+            setStatus(t('Couldn’t find “' + recipeName + '” in that file — type the weekly volume above.',
+                        'No encontramos “' + recipeName + '” en ese archivo — escribe el volumen semanal arriba.'));
+            return;
+          }
+          var hit = byStem[matchStem];
+          var covers = Math.round(hit.units * 7 / (parseInt((document.getElementById("pcMixPeriod")||{}).value,10)||7) * 10) / 10; // export treated as one week
+          var yv = document.getElementById('pcYearVolume');
+          if (yv) {
+            yv.value = covers;
+            yv.dispatchEvent(new Event('input', { bubbles: true }));
+          }
+          var lead = fuzzy ? t('Best match: “', 'Mejor coincidencia: “') : t('Matched “', 'Coincidencia: “');
+          var tail = t('” — ' + covers + '/week, on your sales mix.',
+                       '” — ' + covers + '/semana, de tu mezcla de ventas.');
+          setStatus(lead + hit.item + tail + (fuzzy ? t(' Not your dish? Type the volume.', ' ¿No es tu platillo? Escribe el volumen.') : ''));
+        } catch (err) {
+          setStatus(t('Couldn’t read that file. Use a CSV with item and units-sold columns.',
+                      'No se pudo leer el archivo. Usa un CSV con columnas de artículo y unidades vendidas.'));
+        }
+      };
+      reader.readAsText(f);
+    });
+  })();
 })();
 </script>
 </body>

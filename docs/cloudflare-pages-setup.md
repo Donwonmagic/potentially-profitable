@@ -238,3 +238,29 @@ Total rollback time: ~10 minutes. The risk is bounded.
 - `/docs/search-console-setup.md` — Google Search Console runbook
   (no changes needed during this migration; Search Console verifies
   via DNS TXT which is unchanged)
+
+## ⚠️ Build requirement: the deploy build needs FULL git history
+
+The `wrangler.jsonc` build command runs date-stamping injectors that
+derive `datePublished` / "Last verified" from git history:
+
+- `scripts/inject-glossary-verified-stamp.mjs` and
+  `scripts/inject-glossary-article-schema.mjs` compute each glossary
+  term's publish date from `git log --reverse --format=%cI -- <dir>`
+  (the **first** commit that created the term directory).
+
+If the build runs on a **shallow clone** (e.g. `git clone --depth=N`,
+the common CI default), `git log --reverse` only walks back to the
+shallow boundary — so it re-derives a **later, wrong** first-commit
+date and rewrites every glossary page's `datePublished` on each deploy
+(silent drift, e.g. 2026-04-24 → the deploy date). Some glossary terms
+have 200+ commits, so the shallow window rarely reaches the true first
+commit.
+
+**Action:** ensure the Cloudflare Workers Build clones full history.
+In the Workers Builds / Pages build settings, disable shallow clone (or
+set fetch depth to 0 / "full"). If that knob isn't exposed, add an
+`git fetch --unshallow || true` step at the very front of the build
+command, before the first injector runs. Verify after a deploy:
+`curl -s https://muntin.digital/glossary/core-web-vitals/ | grep datePublished`
+should read `2026-04-24`, not the deploy date.

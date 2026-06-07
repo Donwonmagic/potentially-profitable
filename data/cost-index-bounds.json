@@ -1,0 +1,85 @@
+{
+  "_doc": "Plausible-range guardrails for the observation quality gate (tools/_shared/observation-quality.js). NOT price claims and never rendered to users — engineering bounds in cents for the expected wholesale unit, used to catch units flips and sentinels (a value < min/2 or > max*2 is hard-rejected; mildly out of band is down-weighted). Wide on purpose; tighten as real data arrives. Keyed by ingredientKey.",
+  "bounds": {
+    "ribeye": {
+      "minCents": 700,
+      "maxCents": 3000,
+      "unit": "lb"
+    },
+    "beef-tenderloin": {
+      "minCents": 1200,
+      "maxCents": 4500,
+      "unit": "lb"
+    },
+    "chicken-breast": {
+      "minCents": 90,
+      "maxCents": 500,
+      "unit": "lb"
+    },
+    "whole-chicken": {
+      "minCents": 60,
+      "maxCents": 300,
+      "unit": "lb"
+    },
+    "pork-loin": {
+      "minCents": 70,
+      "maxCents": 400,
+      "unit": "lb"
+    },
+    "pork-shoulder": {
+      "minCents": 50,
+      "maxCents": 300,
+      "unit": "lb"
+    },
+    "salmon-fillet": {
+      "minCents": 350,
+      "maxCents": 2000,
+      "unit": "lb"
+    },
+    "shrimp": {
+      "minCents": 250,
+      "maxCents": 1200,
+      "unit": "lb"
+    },
+    "romaine-lettuce": {
+      "minCents": 1500,
+      "maxCents": 12000,
+      "unit": "carton"
+    },
+    "tomato": {
+      "minCents": 700,
+      "maxCents": 6000,
+      "unit": "carton"
+    },
+    "onion": {
+      "minCents": 500,
+      "maxCents": 3500,
+      "unit": "sack"
+    },
+    "russet-potato": {
+      "minCents": 500,
+      "maxCents": 3500,
+      "unit": "sack"
+    },
+    "butter": {
+      "minCents": 150,
+      "maxCents": 600,
+      "unit": "lb"
+    },
+    "cheddar-cheese": {
+      "minCents": 120,
+      "maxCents": 800,
+      "unit": "lb"
+    },
+    "eggs": {
+      "minCents": 80,
+      "maxCents": 700,
+      "unit": "dozen"
+    },
+    "vegetable-oil": {
+      "minCents": 50,
+      "maxCents": 1000,
+      "unit": "lb"
+    }
+  }
+}

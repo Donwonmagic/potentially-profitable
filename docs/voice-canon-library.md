@@ -7,6 +7,10 @@ and `headline`, the OG description, the LLM feeds (`llms.txt`,
 `feed-llm.json`), and the audio narration scripts (which are read aloud
 verbatim and so must clear the bar in both registers).
 
+> This canon governs the studio voice on `muntin.digital`. How that voice
+> relates to the Muntin Ledger product voice — and the one boundary between
+> them — lives in `docs/brand/voice-and-naming-architecture.md`.
+
 If you are reviewing a PR that touches any of those surfaces under
 `/library/`, this file is the spec. The methods voice contract at
 [`/methods/#voice-contract`](../methods/index.html) governs the whole

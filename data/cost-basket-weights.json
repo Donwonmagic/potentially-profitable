@@ -1,0 +1,23 @@
+{
+  "_doc": "FROZEN, versioned weights for the Muntin Restaurant Basket — the headline Cost Index. Weights approximate a representative independent-restaurant purchase mix: proteins + cooking oil carry the basket (~62%, real dollar share), while eggs and produce are CAPPED (most volatile but smallest spend share — heavy weighting would make the headline thrash on items that don't dominate a P&L; their spikiness is surfaced by the per-ingredient flag, not the basket). The index claims a BASIS-AGNOSTIC RATE-OF-CHANGE for THIS declared basket — never a national price level, never 'what restaurants pay'. Weights are INTERNAL JUDGMENT (label illustrative), NOT a sourced fact, pending Muntin's own aggregate buy data. FREEZE + version: never re-weight to whatever data is densest, or the index becomes uncomparable across quarters; a _version bump requires a methodology note. Computed via tools/_shared/cost-basket.js (weighted median of per-ingredient composite trends). Salmon/shrimp omitted (dormant — no free wholesale source).",
+  "_version": "2026-Q2",
+  "_methodology": "Weighted median (not mean) of each ingredient's composite TREND %, weighted below; coverage = contributing weight / total declared weight; confidence steps down as coverage/agreement fall. Direction of a declared basket, on public wholesale/index data. Salmon/shrimp added 2026-Q2b (directional, BLS PPI trend).",
+  "weights": {
+    "chicken-breast": 0.17,
+    "whole-chicken": 0.06,
+    "ribeye": 0.11,
+    "beef-tenderloin": 0.04,
+    "pork-loin": 0.07,
+    "pork-shoulder": 0.05,
+    "vegetable-oil": 0.12,
+    "butter": 0.06,
+    "cheddar-cheese": 0.06,
+    "eggs": 0.05,
+    "romaine-lettuce": 0.05,
+    "tomato": 0.05,
+    "onion": 0.055,
+    "russet-potato": 0.055,
+    "salmon-fillet": 0.03,
+    "shrimp": 0.04
+  }
+}
