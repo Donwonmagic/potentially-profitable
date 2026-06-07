@@ -110,6 +110,24 @@
     var thin = confidence === 'low' || confidence === 'directional';   // dashed = provisional read
     function X(i) { return pad + i * step; }
     function Y(v) { return h - pad - ((v - min) / span) * (h - 2 * pad); }
+    // Today-in-its-own-range: a faint band at this ingredient's OWN p25–p75 over
+    // the window, so the eye sees whether today's endpoint sits high or low in
+    // its recent spread (fuses with the percentile-of-history sentence). Drawn
+    // first → behind the line. Grayscale-safe (a light gray fill, no color
+    // dependency). Needs >=12 valid weeks for the spread to mean anything.
+    if (finite.length >= 12) {
+      var sorted = finite.slice().sort(function (a, b) { return a - b; });
+      function q(p) { var pos = (sorted.length - 1) * p, b = Math.floor(pos), rest = pos - b; return sorted[b + 1] !== undefined ? sorted[b] + rest * (sorted[b + 1] - sorted[b]) : sorted[b]; }
+      var yTop = Y(q(0.75)), yBot = Y(q(0.25));
+      var bandRect = document.createElementNS(NS, 'rect');
+      bandRect.setAttribute('x', pad.toFixed(1));
+      bandRect.setAttribute('width', (w - 2 * pad).toFixed(1));
+      bandRect.setAttribute('y', Math.min(yTop, yBot).toFixed(1));
+      bandRect.setAttribute('height', Math.max(0.5, Math.abs(yBot - yTop)).toFixed(1));
+      bandRect.setAttribute('fill', 'var(--stone)'); bandRect.setAttribute('fill-opacity', '0.16');
+      bandRect.setAttribute('class', 'cp-spark-band');
+      svg.appendChild(bandRect);
+    }
     // Break the line at gaps (null/non-finite weeks) — NEVER bridge a missing
     // week into a straight line, which would lie about continuity. Each run of
     // present weeks is its own polyline; a lone point is a dot.
