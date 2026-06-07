@@ -23,7 +23,7 @@ import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
-import { pointIssues } from './check-cost-index-sync.mjs';
+import { pointIssues, historyIssues, driverIssues } from './check-cost-index-sync.mjs';
 
 const require = createRequire(import.meta.url);
 const B = require('../tools/_shared/cost-basket.js');
@@ -42,6 +42,7 @@ function rd(p) {
 const sources = rd(path.join(repoRoot, 'data/cost-index-sources.json'));
 const bounds = rd(path.join(repoRoot, 'data/cost-index-bounds.json'));
 const srcIng = sources.ingredients || {};
+const srcDrivers = sources.drivers || {};
 const boundsMap = bounds.bounds || {};
 const today = arg('--date') || new Date().toISOString().slice(0, 10);
 
@@ -105,17 +106,29 @@ function main() {
     if (issues.length) { for (const i of issues) dropped[i] = (dropped[i] || 0) + 1; continue; }
     const prior = (existing.ingredients?.[ingredient]?.points) || [];
     out.ingredients[ingredient] = { points: mergePoints(prior, [points[ingredient]]) };
+    // Historical curve (sibling to points): gated for citeability + bounds but
+    // NOT for staleness (old by design). A failing series is dropped, never
+    // vendored — the current point still ships.
+    const hist = points[ingredient].history;
+    const hIssues = historyIssues(ingredient, hist, srcIng, boundsMap);
+    if (!hIssues.length && Array.isArray(hist) && hist.length) out.ingredients[ingredient].history = hist.slice(-MAX_POINTS);
+    else if (hIssues.length) for (const i of hIssues) dropped[i] = (dropped[i] || 0) + 1;
     vendored++;
   }
 
-  // Carry forward prior history for verified ingredients with no new point this
-  // run — but re-filter each carried point through the SAME predicate, so a
-  // point that has since gone out-of-bounds / lost its source is dropped, never
-  // silently re-vendored.
+  // Carry forward prior points AND history for verified ingredients with no new
+  // point this run — re-filter each through the SAME predicates, so anything
+  // that has since gone out-of-bounds / lost its source is dropped, never
+  // silently re-vendored. History is re-validated WITHOUT the staleness check.
   for (const ingredient of Object.keys(existing.ingredients || {})) {
     if (out.ingredients[ingredient]) continue;
     const kept = ((existing.ingredients[ingredient].points) || []).filter((p) => ok(ingredient, p));
-    if (kept.length) out.ingredients[ingredient] = { points: kept };
+    if (!kept.length) continue;
+    out.ingredients[ingredient] = { points: kept };
+    const priorHist = existing.ingredients[ingredient].history;
+    if (Array.isArray(priorHist) && priorHist.length && !historyIssues(ingredient, priorHist, srcIng, boundsMap).length) {
+      out.ingredients[ingredient].history = priorHist.slice(-MAX_POINTS);
+    }
   }
 
   // Attach the spike-vs-structural flag per ingredient (from its own history) —
@@ -123,11 +136,32 @@ function main() {
   for (const k of Object.keys(out.ingredients)) {
     out.ingredients[k].flag = Spike.classify(out.ingredients[k].points || []);
   }
+
+  // Drivers (corn/soybeans/diesel/electricity): the explanatory "why" layer.
+  // Gated for trend + citeable index history + leads that name known ingredients
+  // (the source universe — a lead isn't "bad" just because it had a thin week).
+  const inDrivers = artifact.drivers || {};
+  let vendoredDrivers = 0;
+  const outDrivers = {};
+  for (const d of Object.keys(inDrivers)) {
+    const dIssues = driverIssues(d, inDrivers[d], srcDrivers, srcIng);
+    if (dIssues.length) { for (const i of dIssues) dropped[i] = (dropped[i] || 0) + 1; continue; }
+    outDrivers[d] = {
+      kind: inDrivers[d].kind,
+      leads: Array.isArray(inDrivers[d].leads) ? inDrivers[d].leads : [],
+      trend: inDrivers[d].trend,
+      history: (inDrivers[d].history || []).slice(-MAX_POINTS),
+    };
+    vendoredDrivers++;
+  }
+  if (vendoredDrivers) out.drivers = outDrivers;
+
   out.basket = computeBasket(out);   // headline from the post-gate vendored set only
   if (!DRY) writeFileSync(OUT, JSON.stringify(out, null, 2) + '\n');
   const dropMsg = Object.keys(dropped).length ? ` · dropped: ${Object.entries(dropped).map(([k, v]) => `${v} ${k}`).join(', ')}` : '';
+  const histN = Object.values(out.ingredients).filter((x) => Array.isArray(x.history) && x.history.length).length;
   const bk = out.basket && out.basket.pct != null ? ` · basket ${(out.basket.pct * 100).toFixed(1)}% (${Math.round(out.basket.coverage * 100)}% covered)` : '';
-  console.log(`build-cost-index: vendored ${vendored} ingredient(s)${dropMsg}${bk}.${DRY ? ' (dry-run)' : ''}`);
+  console.log(`build-cost-index: vendored ${vendored} ingredient(s), ${histN} with history, ${vendoredDrivers} driver(s)${dropMsg}${bk}.${DRY ? ' (dry-run)' : ''}`);
 }
 
 main();

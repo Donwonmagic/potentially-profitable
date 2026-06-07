@@ -168,7 +168,9 @@ export function validateIndex(index, sources, bounds, now = Date.now()) {
   const srcDrivers = (sources && sources.drivers) || {};
   const drivers = (index && index.drivers) || {};
   for (const dkey of Object.keys(drivers)) {
-    const dIssues = driverIssues(dkey, drivers[dkey], srcDrivers, ingredients);
+    // leads are checked against the known ingredient universe (srcIng), not the
+    // transient vendored set — a lead isn't "bad" just because it had a thin week.
+    const dIssues = driverIssues(dkey, drivers[dkey], srcDrivers, srcIng);
     if (dIssues.length) errors.push(`driver ${dkey}: ${dIssues.join(', ')}.`);
   }
 
