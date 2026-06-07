@@ -409,6 +409,14 @@
 
     var sparkVals = ing.spark || pickSeries(ing.input);
     if (sparkVals && sparkVals.length >= 2) fig.appendChild(sparkSvg(sparkVals, r.trend.dir));
+    // Cite the curve, and never let an index series read as a dollar price.
+    var sm = ing.spark_meta;
+    if (sm) {
+      var citeTxt = L('Price history: ', 'Historial de precio: ') + sm.source + ', ' + sm.from + '–' + sm.to
+        + (sm.basis === 'index' ? L(' (index, not $)', ' (índice, no $)') : '');
+      fig.appendChild(el('p', 'cp-spark-cite', citeTxt));
+      fig.setAttribute('data-audio-alt', (fig.getAttribute('data-audio-alt') || '') + ' ' + citeTxt + '.');
+    }
 
     if (ing.seasonal) {
       fig.appendChild(el('p', 'cp-market-seasonal',
@@ -478,7 +486,8 @@
 
     // Screen-reader numbers table.
     var srt = el('div', 'cp-sr-only');
-    var caption = name + ': ' + rangeText + '; ' + trendText + '; ' + conf + ' ' + L('confidence', 'confianza') + '; ' + metaText + '.';
+    var caption = name + ': ' + rangeText + '; ' + trendText + '; ' + conf + ' ' + L('confidence', 'confianza') + '; ' + metaText + '.'
+      + (sm ? ' ' + L('Price history from ', 'Historial de precio de ') + sm.source + ', ' + sm.from + ' ' + L('to', 'a') + ' ' + sm.to + (sm.basis === 'index' ? L(' (index, not a dollar price)', ' (índice, no un precio en dólares)') : '') + '.' : '');
     srt.appendChild(el('p', null, caption));
     fig.appendChild(srt);
 
@@ -598,6 +607,42 @@
   ].forEach(function (txt) { mp.appendChild(el('p', null, txt)); });
   method.appendChild(mp);
   card.insertBefore(method, document.getElementById('cpMarketCta'));
+
+  // Drivers — the "why" strip. Public commodities (corn/diesel…) that tend to
+  // move BEFORE the ingredients above. Framed as association, never cause, and
+  // only naming leads actually shown on this surface. Collapsed by default.
+  if (Array.isArray(DATA.drivers) && DATA.drivers.length) {
+    var nameByKey = {};
+    (DATA.ingredients || []).forEach(function (ig) { if (ig.key) nameByKey[ig.key] = L(ig.label_en, ig.label_es); });
+    var dWrap = el('details', 'cp-drivers');
+    dWrap.appendChild(el('summary', null, L("Why it's moving", 'Por qué se mueve')));
+    var dBody = el('div', 'cp-drivers-body');
+    dBody.appendChild(el('p', 'cp-drivers-lead', L(
+      'These public commodities tend to move before the ingredients above — an association, not a proven cause.',
+      'Estas materias primas públicas suelen moverse antes que los ingredientes de arriba — una asociación, no una causa comprobada.')));
+    DATA.drivers.forEach(function (d) {
+      var dir = (d.trend && d.trend.dir) || 'flat';
+      var dpct = d.trend && d.trend.pct;
+      var dWord = dir === 'up' ? L('up', 'arriba') : dir === 'down' ? L('down', 'abajo') : L('flat', 'estable');
+      var dPctTxt = dpct == null ? '' : ' ' + Math.abs(Math.round(dpct * 100)) + '%';
+      var row = el('div', 'cp-driver');
+      var dhead = el('div', 'cp-driver-head');
+      dhead.appendChild(el('span', 'cp-driver-name', L(d.label_en, d.label_es)));
+      var dt = el('span', 'cp-driver-trend', (dir === 'up' ? '▲ ' : dir === 'down' ? '▼ ' : '● ') + dWord + dPctTxt);
+      dt.setAttribute('data-dir', dir);
+      dhead.appendChild(dt);
+      row.appendChild(dhead);
+      if (Array.isArray(d.spark) && d.spark.length >= 2) row.appendChild(sparkSvg(d.spark, dir));
+      var leads = (d.leads || []).filter(function (k) { return nameByKey[k]; }).slice(0, 2).map(function (k) { return nameByKey[k]; });
+      if (leads.length) {
+        row.appendChild(el('p', 'cp-driver-leads',
+          L('Tends to move before ' + leads.join(', ') + '.', 'Suele moverse antes que ' + leads.join(', ') + '.')));
+      }
+      dBody.appendChild(row);
+    });
+    dWrap.appendChild(dBody);
+    card.insertBefore(dWrap, document.getElementById('cpMarketCta'));
+  }
 
   var cta = document.getElementById('cpMarketCta');
   cta.appendChild(document.createTextNode(L('Want this checked against your own invoices? ', '¿Quieres comparar esto con tus propias facturas? ')));
