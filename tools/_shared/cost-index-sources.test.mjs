@@ -169,6 +169,23 @@ test('normalizeAms commodityExact matches EQUAL, not contains (eggs Large exclud
   assert.equal(eg.points[0].value, 1.57); // (150+164)/2 = 157c → $1.57; Extra Large excluded
 });
 
+test('normalizeAms filters (multi-field) + priceUnitField (per-row unit) — eggs Large White Caged', () => {
+  const rows = [
+    { report_date: '06/01/2026', class: 'Large', color: 'White', environment: 'Caged', region: 'NE', avg_price: '165', price_unit: 'Cents per Dozen' },
+    { report_date: '06/01/2026', class: 'Large', color: 'White', environment: 'Caged', region: 'SE', avg_price: '155', price_unit: 'Cents per Dozen' },
+    { report_date: '06/01/2026', class: 'Extra Large', color: 'White', environment: 'Caged', region: 'NE', avg_price: '185', price_unit: 'Cents per Dozen' },
+    { report_date: '06/01/2026', class: 'Large', color: 'Brown', environment: 'Cage-Free', region: 'NE', avg_price: '320', price_unit: 'Cents per Dozen' },
+  ];
+  const o = S.normalizeAms({ results: rows }, { filters: { class: 'Large', color: 'White', environment: 'Caged' }, reducer: 'single', fields: { price: ['avg_price'] }, priceUnitField: 'price_unit', dateField: 'report_date', unit: 'dozen' });
+  assert.deepEqual(o.points, [{ date: '2026-06-01', value: 1.6 }]); // median(1.65,1.55); XL/brown/cage-free excluded; cents→$ via per-row unit
+});
+
+test('normalizeAms priceUnitField reads dollars-per-unit rows without scaling', () => {
+  const o = S.normalizeAms({ results: [{ report_date: '06/01/2026', class: 'Large', avg_price: '1.60', price_unit: 'Dollars per Dozen' }] },
+    { filters: { class: 'Large' }, reducer: 'single', fields: { price: ['avg_price'] }, priceUnitField: 'price_unit', dateField: 'report_date' });
+  assert.equal(o.points[0].value, 1.6);
+});
+
 test('normalizeEia parses response.data, skips nulls, sorts oldest→newest (basis index)', () => {
   const eia = { response: { dateFormat: 'YYYY-MM', data: [
     { period: '2026-03', price: '12.88', 'price-units': 'cents per kilowatthour' },

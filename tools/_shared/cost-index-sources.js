@@ -129,11 +129,27 @@
       var m = Math.floor(s.length / 2);
       return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2;
     };
+    // Optional multi-field filter for granular reports (e.g. shell eggs:
+    // class=Large, color=White, environment=Caged) — EVERY pair must match
+    // (case-insensitive equals), isolating one product instead of blending.
+    var filters = (meta.filters && typeof meta.filters === 'object') ? meta.filters : null;
+    var filtersMatch = function (r) {
+      if (!filters) return true;
+      for (var k in filters) if (Object.prototype.hasOwnProperty.call(filters, k)) {
+        var want = String(filters[k]).toLowerCase().trim();
+        var got = (r[k] == null ? '' : String(r[k])).toLowerCase().trim();
+        if (got !== want) return false;
+      }
+      return true;
+    };
     var byDateMap = {};
     rows.forEach(function (r) {
-      if (!r || !rowMatches(r)) return;
+      if (!r || !rowMatches(r) || !filtersMatch(r)) return;
       var v = reduceAmsRow(r, meta.reducer, meta.fields);
-      if (v != null && isFinite(v)) v = v * factor;                            // unit-normalize before binning
+      // Prefer the row's OWN reported unit (priceUnitField) over a fixed
+      // meta.priceUnit — removes the cents-vs-dollars guess for mixed reports.
+      var f = meta.priceUnitField ? priceUnitFactor(r[meta.priceUnitField]) : factor;
+      if (v != null && isFinite(v)) v = v * f;                                 // unit-normalize before binning
       var date = isoDate(r[dateField]);
       if (date && v != null && isFinite(v)) (byDateMap[date] = byDateMap[date] || []).push(v);
     });

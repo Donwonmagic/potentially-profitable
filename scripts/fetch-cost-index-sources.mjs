@@ -158,7 +158,7 @@ function toOutputs(ingredient, raw, m) {
   amsArr.forEach((a) => {
     const spec = a.spec || {};
     const key = 'usda-ams' + (spec.market ? '-' + slug(spec.market) : '');
-    const o = S.normalizeAms(a.json, { source: key, basis: 'wholesale', reducer: spec.reducer || 'mostlyMid', commodity: spec.commodity, matchFields: spec.matchFields, unit: spec.unit, priceUnit: spec.priceUnit, fields: spec.fields, dateField: spec.dateField });
+    const o = S.normalizeAms(a.json, { source: key, basis: 'wholesale', reducer: spec.reducer || 'mostlyMid', commodity: spec.commodity, matchFields: spec.matchFields, commodityExact: spec.commodityExact, filters: spec.filters, priceUnitField: spec.priceUnitField, unit: spec.unit, priceUnit: spec.priceUnit, fields: spec.fields, dateField: spec.dateField });
     o.family = spec.family || key;                 // distinct per market → real p25–p75 dispersion
     o.type = spec.type || 'usda-ams';              // ONE methodology → all terminals are one corroborating line for confidence
     if (o.points.length) outs.push(o);
@@ -171,7 +171,7 @@ function toOutputs(ingredient, raw, m) {
   lmrArr.forEach((a) => {
     const spec = a.spec || {};
     const key = 'usda-lmr' + (spec.market ? '-' + slug(spec.market) : '');
-    const o = S.normalizeAms(a.json, { source: key, basis: 'wholesale', reducer: spec.reducer || 'mostlyMid', commodity: spec.commodity, matchFields: spec.matchFields, unit: spec.unit, priceUnit: spec.priceUnit, fields: spec.fields, dateField: spec.dateField });
+    const o = S.normalizeAms(a.json, { source: key, basis: 'wholesale', reducer: spec.reducer || 'mostlyMid', commodity: spec.commodity, matchFields: spec.matchFields, commodityExact: spec.commodityExact, filters: spec.filters, priceUnitField: spec.priceUnitField, unit: spec.unit, priceUnit: spec.priceUnit, fields: spec.fields, dateField: spec.dateField });
     o.family = spec.family || key;
     o.type = spec.type || 'usda-lmr';
     if (o.points.length) outs.push(o);

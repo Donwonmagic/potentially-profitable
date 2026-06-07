@@ -488,18 +488,23 @@
       },
       "ams": {
         "reportId": "2848",
-        "commodity": "Large",
-        "matchFields": [
-          "class",
-          "commodity",
-          "item"
-        ],
-        "reducer": "mostlyMid",
+        "section": "Report Detail Simple",
+        "filters": {
+          "class": "Large",
+          "color": "White",
+          "environment": "Caged"
+        },
+        "reducer": "single",
+        "fields": {
+          "price": [
+            "avg_price"
+          ]
+        },
+        "priceUnitField": "price_unit",
+        "dateField": "report_date",
         "unit": "dozen",
-        "priceUnit": "Cents per Dozen",
         "windowDays": 60,
-        "_report": "Weekly Combined Regional Shell Egg Report (AMS_2848), Grade A Large, cents/dozen. mostlyMid = (low+high)/2. matchFields tries class/commodity/item for the size label. If 0 rows live, confirm the size field; eggs falls back to its BLS/FRED retail otherwise. NOT report 2843 (a normalized index).",
-        "commodityExact": true
+        "_report": "Weekly Combined Regional Shell Egg Report (AMS_2848), section \"Report Detail Simple\" (the Weighted sections are empty). Filter to the standard commodity egg: class=Large, color=White, environment=Caged; median avg_price across regions. price_unit read per-row (priceUnitField) so cents/dollars is auto. Replaces the FRED retail proxy."
       }
     },
     "vegetable-oil": {
