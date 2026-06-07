@@ -154,6 +154,21 @@ test('normalizeNoaaTrade: shrimp configured as index (directional), name-guarded
   assert.equal(out.points.length, 1); // lobster excluded by name guard
 });
 
+test('normalizeAms fields.price as an ARRAY picks the first present column', () => {
+  const ch = S.normalizeAms({ results: [{ week_ending_date: '05/30/2026', cheese_40_Price: '1.4881' }] },
+    { reducer: 'single', fields: { price: ['cheese_40_Price', 'Cheddar_Price', 'Block_Price'] }, dateField: 'week_ending_date', unit: 'lb' });
+  assert.deepEqual(ch.points, [{ date: '2026-05-30', value: 1.4881 }]);
+});
+
+test('normalizeAms commodityExact matches EQUAL, not contains (eggs Large excludes Extra Large)', () => {
+  const eg = S.normalizeAms({ results: [
+    { report_date: '10/17/2025', class: 'Large', low_price: '150', high_price: '164' },
+    { report_date: '10/17/2025', class: 'Extra Large', low_price: '170', high_price: '180' },
+  ] }, { reducer: 'mostlyMid', commodity: 'Large', matchFields: ['class'], commodityExact: true, priceUnit: 'Cents per Dozen', unit: 'dozen' });
+  assert.equal(eg.points.length, 1);
+  assert.equal(eg.points[0].value, 1.57); // (150+164)/2 = 157c → $1.57; Extra Large excluded
+});
+
 test('normalizeEia parses response.data, skips nulls, sorts oldest→newest (basis index)', () => {
   const eia = { response: { dateFormat: 'YYYY-MM', data: [
     { period: '2026-03', price: '12.88', 'price-units': 'cents per kilowatthour' },

@@ -56,28 +56,40 @@
     return isFinite(n) ? n : null;
   }
 
+  // Look up a row value by field name(s). `name` may be a STRING or an ARRAY of
+  // fallback names (try each until one is present) — report column spellings vary
+  // and are sometimes only confirmable live, so a spec can list candidates.
+  function pickField(row, name, dflt) {
+    var list = Array.isArray(name) ? name : (name != null ? [name] : []);
+    if (dflt != null) list = list.concat([dflt]);
+    for (var i = 0; i < list.length; i++) {
+      var v = row[list[i]];
+      if (v != null && v !== '') return v;
+    }
+    return undefined;
+  }
   function reduceAmsRow(row, reducer, fields) {
     fields = fields || {};
     if (!row) return null;
     reducer = reducer || 'single';
     if (reducer === 'mostlyMid') {
-      var ml = num(row[fields.mostlyLow || 'mostly_low']);
-      var mh = num(row[fields.mostlyHigh || 'mostly_high']);
+      var ml = num(pickField(row, fields.mostlyLow, 'mostly_low'));
+      var mh = num(pickField(row, fields.mostlyHigh, 'mostly_high'));
       if (ml != null && mh != null) return (ml + mh) / 2;
-      var lo = num(row[fields.low || 'low_price']);
-      var hi = num(row[fields.high || 'high_price']);
+      var lo = num(pickField(row, fields.low, 'low_price'));
+      var hi = num(pickField(row, fields.high, 'high_price'));
       if (lo != null && hi != null) return (lo + hi) / 2;
       return null;
     }
     if (reducer === 'valuePerPound') {
-      var d = num(row[fields.dollars || 'dollars']);
-      var p = num(row[fields.pounds || 'pounds']);
+      var d = num(pickField(row, fields.dollars, 'dollars'));
+      var p = num(pickField(row, fields.pounds, 'pounds'));
       return (d != null && p != null && p > 0) ? d / p : null;
     }
     if (reducer === 'wtdAvg') {
-      return num(row[fields.price || 'wtd_avg_price']);
+      return num(pickField(row, fields.price, 'wtd_avg_price'));
     }
-    return num(row[fields.price || 'avg_price']);
+    return num(pickField(row, fields.price, 'avg_price'));
   }
 
   // Convert a reported price unit to the composite's base ($ per the ingredient's
@@ -96,6 +108,7 @@
     var dateField = meta.dateField || 'report_date';
     var commodity = meta.commodity ? String(meta.commodity).toLowerCase() : null;
     var matchFields = Array.isArray(meta.matchFields) ? meta.matchFields : null;
+    var exact = !!meta.commodityExact;   // EQUALS, not contains — e.g. eggs "Large" must not catch "Extra Large"
     var factor = priceUnitFactor(meta.priceUnit);
     var rowMatches = function (r) {
       if (!commodity) return true;
@@ -104,7 +117,9 @@
       var keys = matchFields || Object.keys(r);
       for (var i = 0; i < keys.length; i++) {
         var v = r[keys[i]];
-        if (typeof v === 'string' && v.toLowerCase().indexOf(commodity) !== -1) return true;
+        if (typeof v !== 'string') continue;
+        var lv = v.toLowerCase().trim();
+        if (exact ? lv === commodity : lv.indexOf(commodity) !== -1) return true;
       }
       return false;
     };
