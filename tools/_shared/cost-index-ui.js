@@ -136,11 +136,13 @@
     low: L('low', 'baja'), directional: L('directional', 'direccional')
   };
 
+  var movers = [];
   (DATA.ingredients || []).forEach(function (ing) {
     var r = MuntinCompositePrice.assess(ing.input || {});
     var name = L(ing.label_en, ing.label_es);
     var unit = L(ing.unit_en || 'unit', ing.unit_es || 'unidad');
     var lvl = r.level;
+    movers.push({ name: name, dir: r.trend.dir, pct: r.trend.pct });
     var single = !lvl || lvl.nFamilies <= 1 || lvl.rangeCents[0] === lvl.rangeCents[1];
     var rangeText = !lvl
       ? L('No clear price level yet', 'Sin nivel de precio claro aún')
@@ -232,6 +234,40 @@
 
     listEl.appendChild(fig);
   });
+
+  // Scan-level orientation above the cards: lead with the gestalt, then detail.
+  var ups = movers.filter(function (m) { return m.dir === 'up'; }).length;
+  var downs = movers.filter(function (m) { return m.dir === 'down'; }).length;
+  var biggest = movers.slice().filter(function (m) { return m.pct != null; })
+    .sort(function (a, b) { return Math.abs(b.pct) - Math.abs(a.pct); })[0];
+  var sum = el('p', 'cp-market-summary');
+  var sumText = L(movers.length + ' ingredients tracked. ', movers.length + ' ingredientes. ')
+    + L(ups + ' rising, ' + downs + ' easing.', ups + ' suben, ' + downs + ' bajan.');
+  if (biggest && biggest.pct != null) {
+    var bdir = biggest.dir === 'up' ? L('up', 'arriba') : biggest.dir === 'down' ? L('down', 'abajo') : L('flat', 'estable');
+    var bpct = Math.abs(Math.round(biggest.pct * 100)) + '%';
+    sumText += ' ' + L('Biggest move: ' + biggest.name + ' ' + bdir + ' ' + bpct + '.',
+                       'Mayor cambio: ' + biggest.name + ' ' + bdir + ' ' + bpct + '.');
+  }
+  sum.textContent = sumText;
+  if (movers.length) listEl.insertBefore(sum, listEl.firstChild);
+
+  // Methodology disclosure — trust by showing how the read is made.
+  var method = el('details', 'cp-method');
+  method.appendChild(el('summary', null, L('How we read the market', 'Cómo leemos el mercado')));
+  var mp = el('div', 'cp-method-body');
+  [
+    L('Range: the typical price across public sources — the middle half, p25 to p75. We never blend different price types (delivered, wholesale, an index) into one number.',
+      'Rango: el precio típico entre fuentes públicas — la mitad central, p25 a p75. Nunca mezclamos tipos de precio distintos (entregado, mayoreo, índice) en un solo número.'),
+    L('Trend: a blended rate of change across sources, built so one bad feed cannot swing it, and mirror feeds count once.',
+      'Tendencia: un cambio combinado entre fuentes, hecho para que una fuente mala no lo mueva, y las fuentes espejo cuentan una vez.'),
+    L('Confidence: steps from high down to directional as sources thin out — fewer agreeing sources, a wider and more cautious read.',
+      'Confianza: baja de alta a direccional cuando hay menos fuentes — menos fuentes de acuerdo, una lectura más amplia y prudente.'),
+    L('Freshness: "As of" shows the oldest contributing date, not when we fetched. A stale source is dropped, never carried forward.',
+      'Frescura: "Al" muestra la fecha más antigua que aporta, no cuándo consultamos. Una fuente vieja se descarta, nunca se arrastra.')
+  ].forEach(function (txt) { mp.appendChild(el('p', null, txt)); });
+  method.appendChild(mp);
+  card.insertBefore(method, document.getElementById('cpMarketCta'));
 
   var cta = document.getElementById('cpMarketCta');
   cta.appendChild(document.createTextNode(L('Want this checked against your own invoices? ', '¿Quieres comparar esto con tus propias facturas? ')));
