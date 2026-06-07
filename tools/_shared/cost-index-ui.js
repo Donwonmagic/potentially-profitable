@@ -94,7 +94,7 @@
   // Trend sparkline as DOM-built SVG (no innerHTML). Decorative (aria-hidden);
   // the figure's data-audio-alt + sr-only line carry the numbers. No animation,
   // so it's reduced-motion-safe and adds no layout shift.
-  function sparkSvg(values, dir, confidence) {
+  function sparkSvg(values, dir, confidence, fresh) {
     var NS = 'http://www.w3.org/2000/svg';
     var w = 132, h = 30, pad = 3;
     var svg = document.createElementNS(NS, 'svg');
@@ -156,8 +156,17 @@
     }
     flush();
     if (lastIdx >= 0) {
+      // Freshness as a non-color channel: a solid dot when the latest read is
+      // current, a hollow ring when it has aged (the static page self-signals
+      // staleness without a rebuild). Survives grayscale — ring vs. fill, not hue.
       var dot = document.createElementNS(NS, 'circle');
-      dot.setAttribute('cx', X(lastIdx).toFixed(1)); dot.setAttribute('cy', Y(lastVal).toFixed(1)); dot.setAttribute('r', '2.2'); dot.setAttribute('fill', color);
+      dot.setAttribute('cx', X(lastIdx).toFixed(1)); dot.setAttribute('cy', Y(lastVal).toFixed(1));
+      if (fresh === false) {
+        dot.setAttribute('r', '2.4'); dot.setAttribute('fill', 'var(--surface-1, #fff)');
+        dot.setAttribute('stroke', color); dot.setAttribute('stroke-width', '1.3');
+      } else {
+        dot.setAttribute('r', '2.2'); dot.setAttribute('fill', color);
+      }
       svg.appendChild(dot);
     }
     return svg;
@@ -623,8 +632,16 @@
     var pctText = '';
     var wowText = '';
     if (sparkVals && sparkVals.length >= 2) {
-      fig.appendChild(sparkSvg(sparkVals, r.trend.dir, r.confidence));
+      // Freshness of the latest read, measured at render time so an aged static
+      // page self-signals: solid dot ≤21 days old, hollow ring beyond.
+      var fresh = true;
+      if (Array.isArray(ing.spark_dates) && ing.spark_dates.length) {
+        var lastDms = Date.parse(ing.spark_dates[ing.spark_dates.length - 1]);
+        if (isFinite(lastDms)) fresh = (Date.now() - lastDms) <= 21 * 86400000;
+      }
+      fig.appendChild(sparkSvg(sparkVals, r.trend.dir, r.confidence, fresh));
       sparkText = sparkShape(sparkVals);
+      if (!fresh) sparkText = (sparkText ? sparkText + ' ' : '') + L('This reading has not refreshed in over three weeks.', 'Esta lectura no se ha actualizado en más de tres semanas.');
       if (sparkText) fig.setAttribute('data-audio-alt', (fig.getAttribute('data-audio-alt') || '') + ' ' + sparkText);
       // "today vs its own recent range" — only on a firm read (a directional/thin
       // series can't carry an honest percentile).
