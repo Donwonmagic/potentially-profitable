@@ -40,10 +40,13 @@
   function basketKeys() { return Object.keys(basket); }
   function writeBasket() {
     var keys = basketKeys();
-    try {
-      if (keys.length) history.replaceState(null, '', '#basket=' + keys.map(encodeURIComponent).join(','));
-      else history.replaceState(null, '', location.pathname + location.search);
-    } catch (e) { /* history may be unavailable */ }
+    // Only ever touch the basket part of the hash — never clobber a
+    // #ci-<ingredient> deep anchor (a load-bearing AI-Overview entry path).
+    var hash = (location.hash || '').replace(/(^#|&)basket=[^&]*/, '$1').replace(/^#?&/, '#');
+    if (keys.length) hash = (hash && hash !== '#' ? hash + '&' : '#') + 'basket=' + keys.map(encodeURIComponent).join(',');
+    if (hash === '#') hash = '';
+    try { history.replaceState(null, '', location.pathname + location.search + hash); }
+    catch (e) { /* history may be unavailable */ }
   }
   function applyFilters() {
     var keys = basketKeys();
@@ -197,9 +200,10 @@
     }
     if (!youSummaryEl) {
       youSummaryEl = el('div', 'cp-you-summary');
-      youSummaryEl.setAttribute('role', 'status');
-      youSummaryEl.setAttribute('aria-live', 'polite');
-      listEl.insertBefore(youSummaryEl, listEl.firstChild);
+      // Visual prioritization aid placed just above the cards (not above the
+      // basket bar / search). Not a live region: each card's own aria-live
+      // verdict already speaks the facts, so this avoids triple-announcing.
+      listEl.insertBefore(youSummaryEl, listEl.querySelector('.cp-market-item'));
     }
     youSummaryEl.hidden = false;
     var n = aboves.length, top = aboves[0];
@@ -276,8 +280,9 @@
     region.appendChild(ta); region.appendChild(actions);
     root.appendChild(region);
 
+    var nm = (L(ing.label_en, ing.label_es) || ing.key || '');
     function mailtoHref(body) {
-      var subject = L('Pricing question — ' + ing.label_en, 'Consulta de precio — ' + ing.label_es);
+      var subject = L('Pricing question — ', 'Consulta de precio — ') + nm;
       return 'mailto:?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
     }
     ta.addEventListener('input', function () { dirty = true; mail.href = mailtoHref(ta.value); });
@@ -313,7 +318,7 @@
     });
 
     function fill(cents, band) {
-      if (!dirty) ta.value = vendorDraft(L(ing.label_en, ing.label_es), unit, cents, band);
+      if (!dirty) ta.value = vendorDraft(nm, unit, cents, band);
       mail.href = mailtoHref(ta.value);
     }
     function collapse() {
@@ -321,6 +326,7 @@
       region.hidden = true;
       status.textContent = '';
       if (statusTimer) clearTimeout(statusTimer);
+      dirty = false; // re-entry regenerates a fresh draft; never cite a stale price
     }
     return { root: root, fill: fill, collapse: collapse };
   }
@@ -558,8 +564,9 @@
   // Deep anchor: a URL like /…/#ci-romaine should bring that card into view +
   // flag it. The browser's initial hash scroll fired before these JS-built
   // cards existed, so do it here after render.
-  if (location.hash && /^#ci-[a-z0-9-]+$/i.test(location.hash)) {
-    var target = document.getElementById(location.hash.slice(1));
+  var ciMatch = (location.hash || '').match(/^#(ci-[a-z0-9-]+)/i);
+  if (ciMatch) {
+    var target = document.getElementById(ciMatch[1]);
     if (target) {
       target.classList.add('cp-market-hit');
       if (target.scrollIntoView) target.scrollIntoView({ block: 'center' });

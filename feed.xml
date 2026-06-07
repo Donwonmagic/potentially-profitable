@@ -8,9 +8,19 @@
     <description>Articles, glossary, and tools for independent restaurants — written and maintained by Don Goldstein.</description>
     <language>en-us</language>
     <copyright>Muntin Digital</copyright>
-    <lastBuildDate>Sat, 06 Jun 2026 12:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 07 Jun 2026 12:00:00 GMT</lastBuildDate>
     <generator>scripts/build-rss.mjs</generator>
     <atom:link href="https://muntin.digital/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>What Is a Cost Index?</title>
+      <link>https://muntin.digital/glossary/cost-index/</link>
+      <guid isPermaLink="true">https://muntin.digital/glossary/cost-index/</guid>
+      <pubDate>Sun, 07 Jun 2026 12:00:00 GMT</pubDate>
+      <description>Where common restaurant ingredients are priced across public sources — a typical range and a trend — so you tell a market move from a vendor markup.</description>
+      <category>Glossary</category>
+      <dc:creator>Don Goldstein</dc:creator>
+      <enclosure url="https://muntin.digital/brand/og/tool-cost-pulse.png" type="image/png" length="0" />
+    </item>
     <item>
       <title>Muntin Bench</title>
       <link>https://muntin.digital/tools/vendor-benchmark/</link>
@@ -500,16 +510,6 @@
       <category>Article</category>
       <dc:creator>Don Goldstein</dc:creator>
       <enclosure url="https://muntin.digital/brand/og/blog-restaurant-need-website.png" type="image/png" length="0" />
-    </item>
-    <item>
-      <title>What Is OpeningHoursSpecification?</title>
-      <link>https://muntin.digital/glossary/opening-hours-specification/</link>
-      <guid isPermaLink="true">https://muntin.digital/glossary/opening-hours-specification/</guid>
-      <pubDate>Sun, 26 Apr 2026 12:00:00 GMT</pubDate>
-      <description>OpeningHoursSpecification is a specific Schema.org structured-data type for representing when a place is open. Lives inside a Restaurant JSON-LD block as…</description>
-      <category>Glossary</category>
-      <dc:creator>Don Goldstein</dc:creator>
-      <enclosure url="https://muntin.digital/brand/og/glossary-opening-hours-specification.png" type="image/png" length="0" />
     </item>
   </channel>
 </rss>
