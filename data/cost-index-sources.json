@@ -115,9 +115,13 @@
       "verified": true,
       "noaa": {
         "commodity": "salmon",
+        "hts": ["030441", "030481"],
+        "nameMatch": "SALMON",
+        "basis": "wholesale",
+        "edibleOnly": true,
         "unit": "lb",
         "years": 2,
-        "_report": "NOAA Fisheries import unit value (val/kilos -> $/lb, landed-adjacent proxy). Confirm trade_data fields/commodity (or set hts e.g. 0304 for salmon fillet) via a sample curl."
+        "_report": "NOAA FOSS trade_data IMPORT unit value (sum val / sum kilos -> $/lb). HTS 030441 (salmon fillet fresh/chilled) + 030481 (frozen) only — bare 0304 dilutes with other species. Lands ~$5-7/lb, inside salmon-fillet bounds; a conservative landed-adjacent proxy, BELOW true delivered wholesale (excludes duty/freight/margin). Cited to NOAA in provenance."
       },
       "bls": {
         "seriesId": "WPU0223",
@@ -128,9 +132,13 @@
       "verified": true,
       "noaa": {
         "commodity": "shrimp",
+        "hts": ["0306"],
+        "nameMatch": "SHRIMP|PRAWN",
+        "basis": "index",
+        "edibleOnly": true,
         "unit": "lb",
         "years": 2,
-        "_report": "NOAA Fisheries import unit value -> $/lb (landed-adjacent). Confirm fields/commodity (or hts 0306) via sample."
+        "_report": "NOAA FOSS trade_data IMPORT unit value. basis:index (DIRECTIONAL ONLY, no dollar level) — commodity shrimp import value runs ~$1.6-2.3/lb, at/below the 250c floor, so a $ level would be rejected or misleadingly cheap. Feeds trend/history; the wholesale level stays from BLS direction. HTS 0306 + name guard (0306 also has lobster/crab)."
       },
       "bls": {
         "seriesId": "WPU02230501"

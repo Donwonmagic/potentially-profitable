@@ -176,7 +176,7 @@ function toOutputs(ingredient, raw, m) {
     o.type = spec.type || 'usda-lmr';
     if (o.points.length) outs.push(o);
   });
-  if (raw.noaa && typeof S.normalizeNoaaTrade === 'function') { const o = S.normalizeNoaaTrade(raw.noaa, { source: 'noaa', basis: 'wholesale', commodity: m.noaa && m.noaa.commodity, hts: m.noaa && m.noaa.hts, unit: (m.noaa && m.noaa.unit) || 'lb' }); o.family = 'noaa'; o.type = 'noaa-trade'; if (o.points.length) outs.push(o); }
+  if (raw.noaa && typeof S.normalizeNoaaTrade === 'function') { const o = S.normalizeNoaaTrade(raw.noaa, { source: 'noaa', basis: (m.noaa && m.noaa.basis) || 'wholesale', commodity: m.noaa && m.noaa.commodity, hts: m.noaa && m.noaa.hts, nameMatch: m.noaa && m.noaa.nameMatch, edibleOnly: m.noaa && m.noaa.edibleOnly, unit: (m.noaa && m.noaa.unit) || 'lb' }); o.family = 'noaa'; o.type = 'noaa-trade'; if (o.points.length) outs.push(o); }
   if (raw.bls) { const o = S.normalizeBls(raw.bls, { source: 'bls', basis: 'index' }); o.family = (m.bls && m.bls.family) || 'bls'; o.type = (m.bls && m.bls.type) || 'bls'; if (o.points.length) outs.push(o); }
   if (raw.fred) { const o = S.normalizeFred(raw.fred, { source: 'fred', basis: (m.fred && m.fred.basis) || 'index', unit: m.fred && m.fred.unit }); o.family = (m.fred && m.fred.family) || 'fred'; o.type = (m.fred && m.fred.type) || 'fred'; if (o.points.length) outs.push(o); }
   if (raw.eia && typeof S.normalizeEia === 'function') { const o = S.normalizeEia(raw.eia, { source: 'eia', basis: 'index', value: (m.eia && m.eia.value) || 'price' }); o.family = (m.eia && m.eia.family) || m.family || 'eia'; o.type = 'eia'; if (o.points.length) outs.push(o); }

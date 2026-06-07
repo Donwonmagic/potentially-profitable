@@ -130,6 +130,30 @@ test('normalizeAms priceUnit Dollars Per Cwt → dollars per lb', () => {
   assert.equal(out.points[0].value, 11.59); // $1159/cwt → $11.59/lb
 });
 
+test('normalizeNoaaTrade: salmon-fillet IMPORT unit value $/lb, excludes export/wrong-species', () => {
+  const fx = { items: [
+    { year: 2025, month: 1, hts_number: '0304410010', name: 'SALMON ATLANTIC FILLET FRESH', kilos: 100000, val: 1200000, source: 'IMP', edible_code: 'E' },
+    { year: 2025, month: 1, hts_number: '0304810010', name: 'SALMON ATLANTIC FILLET FROZEN', kilos: 50000, val: 480000, source: 'IMP', edible_code: 'E' },
+    { year: 2025, month: 1, hts_number: '0304620000', name: 'CATFISH FILLET FROZEN', kilos: 80000, val: 300000, source: 'IMP', edible_code: 'E' }, // wrong species
+    { year: 2025, month: 1, hts_number: '0304410010', name: 'SALMON FILLET FRESH', kilos: 20000, val: 260000, source: 'EXP', edible_code: 'E' }, // export
+  ] };
+  const out = S.normalizeNoaaTrade(fx, { source: 'noaa', basis: 'wholesale', hts: ['030441', '030481'], nameMatch: 'SALMON', edibleOnly: true, unit: 'lb' });
+  assert.equal(out.basis, 'wholesale');
+  assert.equal(out.points.length, 1);
+  assert.equal(out.points[0].date, '2025-01-01');
+  assert.ok(Math.abs(out.points[0].value - 5.08) < 0.001); // (1.68M / 150k) / 2.20462 = $5.08/lb
+});
+
+test('normalizeNoaaTrade: shrimp configured as index (directional), name-guarded vs lobster', () => {
+  const fx = { items: [
+    { year: 2025, month: 1, hts_number: '0306170040', name: 'SHRIMP PEELED FROZEN', kilos: 100000, val: 380000, source: 'IMP', edible_code: 'E' },
+    { year: 2025, month: 1, hts_number: '0306120000', name: 'LOBSTER FROZEN', kilos: 50000, val: 900000, source: 'IMP', edible_code: 'E' }, // 0306 but not shrimp
+  ] };
+  const out = S.normalizeNoaaTrade(fx, { source: 'noaa', basis: 'index', hts: ['0306'], nameMatch: 'SHRIMP|PRAWN', edibleOnly: true, unit: 'lb' });
+  assert.equal(out.basis, 'index'); // never a $ level
+  assert.equal(out.points.length, 1); // lobster excluded by name guard
+});
+
 test('normalizeEia parses response.data, skips nulls, sorts oldest→newest (basis index)', () => {
   const eia = { response: { dateFormat: 'YYYY-MM', data: [
     { period: '2026-03', price: '12.88', 'price-units': 'cents per kilowatthour' },

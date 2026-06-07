@@ -147,6 +147,43 @@
     return { source: meta.source || 'eia', basis: meta.basis || 'index', unit: meta.unit || 'index', points: points };
   }
 
+  // NOAA Fisheries FOSS trade_data: { items:[ {year, month(1-12), name(UPPER),
+  // hts_number(10-digit), source:'IMP'|'EXP'|'RE-EXP', val(USD customs), kilos} ] }.
+  // No price field — compute a volume-weighted monthly IMPORT unit value:
+  // sum(val)/sum(kilos) → $/kg → $/lb (÷2.20462). Filter to imports of the
+  // commodity by HTS prefix (+ optional name guard). basis is per-spec: salmon
+  // fillet 'wholesale' (a conservative landed-adjacent level, inside bounds);
+  // shrimp 'index' (import value runs below a usable wholesale price → trend only).
+  function normalizeNoaaTrade(json, meta) {
+    meta = meta || {};
+    var items = (json && (json.items || json.results || json.data)) || [];
+    var htsPrefixes = Array.isArray(meta.hts) ? meta.hts.map(String) : (meta.hts ? [String(meta.hts)] : null);
+    var nameRe = meta.nameMatch ? new RegExp(meta.nameMatch, 'i') : null;
+    var pad2 = function (n) { n = String(n); return n.length < 2 ? '0' + n : n; };
+    var matches = function (r) {
+      if (String(r.source || '').toUpperCase() !== 'IMP') return false;                 // imports only
+      if (meta.edibleOnly && String(r.edible_code || '').toUpperCase() !== 'E') return false;
+      var hts = String(r.hts_number || '');
+      if (htsPrefixes && !htsPrefixes.some(function (p) { return hts.indexOf(p) === 0; })) return false;
+      if (nameRe && !nameRe.test(String(r.name || ''))) return false;
+      return true;
+    };
+    var acc = {};
+    items.forEach(function (r) {
+      if (!r || !matches(r)) return;
+      if (r.year == null || r.month == null) return;
+      var key = String(r.year) + '-' + pad2(r.month);
+      var val = num(r.val), kilos = num(r.kilos);
+      if (val == null || kilos == null || kilos <= 0) return;
+      var a = acc[key] || (acc[key] = { val: 0, kilos: 0 });
+      a.val += val; a.kilos += kilos;
+    });
+    var points = Object.keys(acc).map(function (key) {
+      return { date: key + '-01', value: (acc[key].val / acc[key].kilos) / 2.20462 };   // $/kg → $/lb
+    }).sort(byDate);
+    return { source: meta.source || 'noaa', basis: meta.basis || 'wholesale', unit: meta.unit || 'lb', points: points };
+  }
+
   function latestDate(outputs) {
     var d = null;
     (outputs || []).forEach(function (o) {
@@ -177,6 +214,7 @@
     reduceAmsRow: reduceAmsRow,
     normalizeAms: normalizeAms,
     normalizeEia: normalizeEia,
+    normalizeNoaaTrade: normalizeNoaaTrade,
     buildCompositeInput: buildCompositeInput
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
