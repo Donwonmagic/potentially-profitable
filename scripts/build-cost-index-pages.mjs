@@ -225,13 +225,14 @@ function marketReadBlock(slug, locale) {
   const basisRef = es
     ? ({ wholesale: 'referencia mayorista', retail: 'referencia minorista', delivered: 'precio entregado' }[r.basis] || 'referencia')
     : ({ wholesale: 'wholesale reference', retail: 'retail reference', delivered: 'delivered' }[r.basis] || 'reference');
-  let rangeStr;
+  let rangeStr = '';
+  let hasNumber = false;
   if (r.emitRange && r.distinctRange) {
     rangeStr = `${money(r.rc[0])}–${money(r.rc[1])}${unitSfx} (${basisRef})`;
+    hasNumber = true;
   } else if (r.emitPoint && r.rc) {
     rangeStr = `${money(r.rc[0])}${unitSfx} (${basisRef}${es ? ', una fuente' : ', single source'})`;
-  } else {
-    rangeStr = es ? 'solo dirección' : 'direction only';
+    hasNumber = true;
   }
   const trendStr = (r.emitPoint && typeof r.trend.pct === 'number')
     ? `, ${dirWord(r.trend, locale)} ${(r.trend.pct >= 0 ? '+' : '')}${(r.trend.pct * 100).toFixed(1).replace(/\.0$/, '')}%`
@@ -242,9 +243,17 @@ function marketReadBlock(slug, locale) {
   const shortList = [...new Set((r.point.provenance || []).map((p) => shortSource(p.source)))];
   const asOf = r.asOf || '—';
   const head = es ? 'Lectura de mercado' : 'Market read';
-  const line = es
-    ? `Alrededor de ${rangeStr}${trendStr} en la ventana reciente.`
-    : `About ${rangeStr}${trendStr} over the recent window.`;
+  const dw = r.trend.dir ? dirWord(r.trend, locale) : null;
+  let line;
+  if (hasNumber) {
+    line = es
+      ? `Alrededor de ${rangeStr}${trendStr} en la ventana reciente.`
+      : `About ${rangeStr}${trendStr} over the recent window.`;
+  } else {
+    line = es
+      ? `${dw ? 'Tendencia ' + dw : 'Sin tendencia clara'} en la ventana reciente — sin cifra publicada por ahora (poca coincidencia entre fuentes para fijar un número).`
+      : `${dw ? 'Trending ' + dw : 'No clear trend'} over the recent window — no published figure this period (too little source agreement to set a number).`;
+  }
   const badge = `${es ? 'confianza' : 'confidence'} ${confWord} · ${es ? 'al' : 'as of'} ${asOf}`;
   const disclaimer = r.basis === 'retail'
     ? (es ? 'Referencia minorista, no el precio mayorista ni el entregado que pagas.' : 'Retail reference, not the wholesale or delivered price you pay.')
