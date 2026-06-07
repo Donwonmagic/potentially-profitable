@@ -63,6 +63,61 @@
     svg.appendChild(dot);
     return svg;
   }
+  function parseMoney(v) {
+    var n = parseFloat(String(v == null ? '' : v).replace(/[^0-9.]/g, ''));
+    return isFinite(n) && n >= 0 ? Math.round(n * 100) : null;
+  }
+  // "Where you sit" band — CSP-safe SVG (rects only, preserveAspectRatio none).
+  // Shows the p25–p75 typical band, the median tick, and the operator's price
+  // as a pin (rust above band / teal below / ink inside). Decorative; the
+  // verdict text carries the meaning.
+  function bandSvg(p25, p75, median, userCents) {
+    var NS = 'http://www.w3.org/2000/svg';
+    var W = 240, H = 34, pad = 8;
+    var lo = Math.min(p25, userCents), hi = Math.max(p75, userCents);
+    var spanRaw = (hi - lo) || Math.max(1, hi);
+    lo -= spanRaw * 0.12; hi += spanRaw * 0.12;
+    var span = (hi - lo) || 1;
+    function X(v) { return pad + ((v - lo) / span) * (W - 2 * pad); }
+    var svg = document.createElementNS(NS, 'svg');
+    svg.setAttribute('width', '100%'); svg.setAttribute('height', String(H));
+    svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+    svg.setAttribute('preserveAspectRatio', 'none');
+    svg.setAttribute('class', 'cp-band'); svg.setAttribute('aria-hidden', 'true');
+    function rect(x, y, w, h, fill) {
+      var r = document.createElementNS(NS, 'rect');
+      r.setAttribute('x', x.toFixed(1)); r.setAttribute('y', String(y));
+      r.setAttribute('width', Math.max(0.5, w).toFixed(1)); r.setAttribute('height', String(h));
+      r.setAttribute('fill', fill); svg.appendChild(r);
+    }
+    rect(pad, 16, W - 2 * pad, 2, 'var(--line)');           // baseline
+    rect(X(p25), 13, X(p75) - X(p25), 8, 'var(--cream-2)');  // typical band
+    rect(X(median) - 0.75, 10, 1.5, 14, 'var(--stone)');     // median tick
+    var pos = userCents < p25 ? 'below' : userCents > p75 ? 'above' : 'in';
+    var pin = pos === 'above' ? 'var(--rust)' : pos === 'below' ? 'var(--teal)' : 'var(--ink)';
+    rect(X(userCents) - 1.25, 6, 2.5, 22, pin);              // your pin
+    return svg;
+  }
+  function renderYou(out, lvl, val) {
+    while (out.firstChild) out.removeChild(out.firstChild);
+    var cents = parseMoney(val);
+    if (cents == null) return;
+    var p25 = lvl.rangeCents[0], p75 = lvl.rangeCents[1], median = lvl.medianCents;
+    var pos = cents < p25 ? 'below' : cents > p75 ? 'above' : 'in';
+    out.appendChild(bandSvg(p25, p75, median, cents));
+    var band = money(p25) + '–' + money(p75);
+    var verdict = el('p', 'cp-you-verdict',
+      pos === 'above'
+        ? L('You pay ' + money(cents) + ' — above the typical ' + band + '. Worth a vendor conversation.',
+            'Pagas ' + money(cents) + ' — arriba del rango típico ' + band + '. Vale una conversación con tu proveedor.')
+        : pos === 'below'
+          ? L('You pay ' + money(cents) + ' — below the typical ' + band + '. Good deal.',
+              'Pagas ' + money(cents) + ' — abajo del rango típico ' + band + '. Buen precio.')
+          : L('You pay ' + money(cents) + ' — right in the typical ' + band + '.',
+              'Pagas ' + money(cents) + ' — dentro del rango típico ' + band + '.'));
+    verdict.setAttribute('data-pos', pos);
+    out.appendChild(verdict);
+  }
 
   document.getElementById('cpMarketHeading').textContent = L("What the market's doing", 'Qué hace el mercado');
   document.getElementById('cpMarketDek').textContent = L(
@@ -148,6 +203,26 @@
     fig.appendChild(el('figcaption', null,
       L('Read the range first, then the direction — and check whether your invoice agrees.',
         'Lee primero el rango, luego la dirección — y revisa si tu factura coincide.')));
+
+    // "Where do you sit?" — operator types their price, sees it pinned on the
+    // band. A free taste of vendor-vs-market; only when there's a real level.
+    if (lvl) {
+      var you = el('div', 'cp-you');
+      var lab = el('label', 'cp-you-label');
+      lab.setAttribute('for', 'cpYou-' + ing.key);
+      lab.appendChild(document.createTextNode(
+        L('What do you pay? ($ a ' + unit + ', optional)', '¿Cuánto pagas? ($ por ' + unit + ', opcional)')));
+      var inp = el('input', 'cp-you-input');
+      inp.type = 'text'; inp.id = 'cpYou-' + ing.key; inp.inputMode = 'decimal';
+      inp.setAttribute('autocomplete', 'off'); inp.placeholder = '$';
+      var youOut = el('div', 'cp-you-out');
+      youOut.setAttribute('role', 'status'); youOut.setAttribute('aria-live', 'polite');
+      (function (o, level) {
+        inp.addEventListener('input', function () { renderYou(o, level, inp.value); });
+      })(youOut, lvl);
+      you.appendChild(lab); you.appendChild(inp); you.appendChild(youOut);
+      fig.appendChild(you);
+    }
 
     // Screen-reader numbers table.
     var srt = el('div', 'cp-sr-only');
