@@ -40,11 +40,12 @@
   function basketKeys() { return Object.keys(basket); }
   function writeBasket() {
     var keys = basketKeys();
-    // Only ever touch the basket part of the hash — never clobber a
+    // Only ever touch the basket segment of the hash — never clobber a
     // #ci-<ingredient> deep anchor (a load-bearing AI-Overview entry path).
-    var hash = (location.hash || '').replace(/(^#|&)basket=[^&]*/, '$1').replace(/^#?&/, '#');
-    if (keys.length) hash = (hash && hash !== '#' ? hash + '&' : '#') + 'basket=' + keys.map(encodeURIComponent).join(',');
-    if (hash === '#') hash = '';
+    var parts = (location.hash || '').replace(/^#/, '').split('&')
+      .filter(function (p) { return p && p.indexOf('basket=') !== 0; });
+    if (keys.length) parts.push('basket=' + keys.map(encodeURIComponent).join(','));
+    var hash = parts.length ? '#' + parts.join('&') : '';
     try { history.replaceState(null, '', location.pathname + location.search + hash); }
     catch (e) { /* history may be unavailable */ }
   }
