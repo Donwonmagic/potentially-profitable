@@ -94,32 +94,70 @@
   // Trend sparkline as DOM-built SVG (no innerHTML). Decorative (aria-hidden);
   // the figure's data-audio-alt + sr-only line carry the numbers. No animation,
   // so it's reduced-motion-safe and adds no layout shift.
-  function sparkSvg(values, dir) {
+  function sparkSvg(values, dir, confidence) {
     var NS = 'http://www.w3.org/2000/svg';
     var w = 132, h = 30, pad = 3;
     var svg = document.createElementNS(NS, 'svg');
     svg.setAttribute('width', String(w)); svg.setAttribute('height', String(h));
     svg.setAttribute('viewBox', '0 0 ' + w + ' ' + h);
     svg.setAttribute('class', 'cp-market-spark'); svg.setAttribute('aria-hidden', 'true');
-    var vals = values.filter(function (v) { return typeof v === 'number' && isFinite(v); });
-    if (vals.length < 2) return svg;
-    var min = Math.min.apply(null, vals), max = Math.max.apply(null, vals), span = (max - min) || 1;
-    var step = (w - 2 * pad) / (vals.length - 1);
+    var finite = values.filter(function (v) { return typeof v === 'number' && isFinite(v); });
+    if (finite.length < 2) return svg;
+    var min = Math.min.apply(null, finite), max = Math.max.apply(null, finite), span = (max - min) || 1;
+    var n = values.length;
+    var step = n > 1 ? (w - 2 * pad) / (n - 1) : 0;
     var color = dir === 'up' ? 'var(--rust)' : dir === 'down' ? 'var(--teal)' : 'var(--stone)';
-    var pts = vals.map(function (v, i) {
-      var x = pad + i * step, y = h - pad - ((v - min) / span) * (h - 2 * pad);
-      return x.toFixed(1) + ',' + y.toFixed(1);
-    }).join(' ');
-    var pl = document.createElementNS(NS, 'polyline');
-    pl.setAttribute('fill', 'none'); pl.setAttribute('stroke', color);
-    pl.setAttribute('stroke-width', '1.5'); pl.setAttribute('stroke-linejoin', 'round'); pl.setAttribute('stroke-linecap', 'round');
-    pl.setAttribute('points', pts);
-    svg.appendChild(pl);
-    var lx = pad + (vals.length - 1) * step, ly = h - pad - ((vals[vals.length - 1] - min) / span) * (h - 2 * pad);
-    var dot = document.createElementNS(NS, 'circle');
-    dot.setAttribute('cx', lx.toFixed(1)); dot.setAttribute('cy', ly.toFixed(1)); dot.setAttribute('r', '2.2'); dot.setAttribute('fill', color);
-    svg.appendChild(dot);
+    var thin = confidence === 'low' || confidence === 'directional';   // dashed = provisional read
+    function X(i) { return pad + i * step; }
+    function Y(v) { return h - pad - ((v - min) / span) * (h - 2 * pad); }
+    // Break the line at gaps (null/non-finite weeks) — NEVER bridge a missing
+    // week into a straight line, which would lie about continuity. Each run of
+    // present weeks is its own polyline; a lone point is a dot.
+    var seg = [], lastIdx = -1, lastVal = null;
+    function flush() {
+      if (seg.length >= 2) {
+        var pl = document.createElementNS(NS, 'polyline');
+        pl.setAttribute('fill', 'none'); pl.setAttribute('stroke', color);
+        pl.setAttribute('stroke-width', thin ? '1.2' : '1.5');
+        pl.setAttribute('stroke-linejoin', 'round'); pl.setAttribute('stroke-linecap', 'round');
+        if (thin) { pl.setAttribute('stroke-dasharray', '3,3'); pl.setAttribute('stroke-opacity', '0.85'); }
+        pl.setAttribute('points', seg.join(' '));
+        svg.appendChild(pl);
+      } else if (seg.length === 1) {
+        var p = seg[0].split(',');
+        var d1 = document.createElementNS(NS, 'circle');
+        d1.setAttribute('cx', p[0]); d1.setAttribute('cy', p[1]); d1.setAttribute('r', '1.6'); d1.setAttribute('fill', color);
+        svg.appendChild(d1);
+      }
+      seg = [];
+    }
+    for (var i = 0; i < n; i++) {
+      var v = values[i];
+      if (typeof v === 'number' && isFinite(v)) { seg.push(X(i).toFixed(1) + ',' + Y(v).toFixed(1)); lastIdx = i; lastVal = v; }
+      else { flush(); }
+    }
+    flush();
+    if (lastIdx >= 0) {
+      var dot = document.createElementNS(NS, 'circle');
+      dot.setAttribute('cx', X(lastIdx).toFixed(1)); dot.setAttribute('cy', Y(lastVal).toFixed(1)); dot.setAttribute('r', '2.2'); dot.setAttribute('fill', color);
+      svg.appendChild(dot);
+    }
     return svg;
+  }
+  // Plain-language "shape sentence" for the audio/sr text — the spark itself is
+  // aria-hidden, so without this the weekly history is invisible to non-sighted
+  // and low-numeracy readers. Notes gaps honestly.
+  function sparkShape(values) {
+    var finite = values.filter(function (v) { return typeof v === 'number' && isFinite(v); });
+    if (finite.length < 2) return '';
+    var first = finite[0], last = finite[finite.length - 1];
+    var chg = (last - first) / (first || 1);
+    var dir = Math.abs(chg) < 0.04 ? L('held about steady', 'se mantuvo estable')
+      : chg > 0 ? L('rose over the period', 'subió en el periodo')
+        : L('eased over the period', 'bajó en el periodo');
+    var gaps = values.some(function (v) { return !(typeof v === 'number' && isFinite(v)); })
+      ? L(' (some weeks missing)', ' (faltan algunas semanas)') : '';
+    return L('Weekly price ' + dir + gaps + '.', 'El precio semanal ' + dir + gaps + '.');
   }
   function parseMoney(v) {
     var n = parseFloat(String(v == null ? '' : v).replace(/[^0-9.]/g, ''));
@@ -463,7 +501,12 @@
     }
 
     var sparkVals = ing.spark || pickSeries(ing.input);
-    if (sparkVals && sparkVals.length >= 2) fig.appendChild(sparkSvg(sparkVals, r.trend.dir));
+    var sparkText = '';
+    if (sparkVals && sparkVals.length >= 2) {
+      fig.appendChild(sparkSvg(sparkVals, r.trend.dir, r.confidence));
+      sparkText = sparkShape(sparkVals);
+      if (sparkText) fig.setAttribute('data-audio-alt', (fig.getAttribute('data-audio-alt') || '') + ' ' + sparkText);
+    }
     // Cite the curve, and never let an index series read as a dollar price.
     var sm = ing.spark_meta;
     if (sm) {
@@ -542,6 +585,7 @@
     // Screen-reader numbers table.
     var srt = el('div', 'cp-sr-only');
     var caption = name + ': ' + rangeText + '; ' + trendText + '; ' + confPhrase + '; ' + metaText + '.'
+      + (sparkText ? ' ' + sparkText : '')
       + (fv ? ' ' + fv.verb + '. ' + fv.note : '')
       + (sm ? ' ' + L('Price history from ', 'Historial de precio de ') + sm.source + ', ' + sm.from + ' ' + L('to', 'a') + ' ' + sm.to + (sm.basis === 'index' ? L(' (index, not a dollar price)', ' (índice, no un precio en dólares)') : '') + '.' : '');
     srt.appendChild(el('p', null, caption));
