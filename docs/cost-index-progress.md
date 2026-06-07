@@ -34,8 +34,11 @@ Living record of the Cost Index / Plate effort. Update as items land. Status:
   never the typed price). Events: `Cost Index Price Entered` {ingredient, verdict
   above/in/below}, `Cost Index Ingredient Tracked` {ingredient}, `Cost Index Vendor
   Note` {action opened/copied/mailto, ingredient}. (H1 #5 done.)
-- ☐ Confidence-driven UI polish; "biggest gap to market" ordering once prices entered.
+- ✅ "Where you're overpaying most" live summary — as prices are entered, ranks the
+  ingredients furthest above the typical top (p75) into one prioritized action line.
+  Per-unit gaps (no cross-unit summing); aria-live, dedup'd to limit announcements. (done)
 - ☐ Shareable per-ingredient OG "market snapshot" cards. (new)
+- ☐ Confidence-driven card ordering (surface high-confidence, big-move items first).
 
 ## Gated — needs founder env (the big value)
 - ⛔ H2: flip index preview → live (USDA/BLS/FRED keys); real freshness/history; last-good banner.

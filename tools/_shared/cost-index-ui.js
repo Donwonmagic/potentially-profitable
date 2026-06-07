@@ -180,6 +180,39 @@
   // "typical range from public sources" — never as a live or authoritative
   // quote. Built once per ingredient; renderYou toggles it per keystroke.
   var preview = DATA.status === 'preview';
+
+  // Live "where you're overpaying most" — as the operator enters prices, rank the
+  // ingredients where they sit furthest above the typical top (p75). Turns
+  // scattered inputs into one prioritized action list. Client-side; gaps are per
+  // the displayed unit, so we don't sum across mismatched units.
+  var youState = {};
+  var youSummaryEl = null, youSummaryLast = '';
+  function updateYouSummary() {
+    var aboves = Object.keys(youState).map(function (k) { return youState[k]; })
+      .filter(function (s) { return s.pos === 'above' && s.gap > 0; })
+      .sort(function (a, b) { return b.gap - a.gap; });
+    if (!aboves.length) {
+      if (youSummaryEl) { youSummaryEl.hidden = true; youSummaryEl.textContent = ''; youSummaryLast = ''; }
+      return;
+    }
+    if (!youSummaryEl) {
+      youSummaryEl = el('div', 'cp-you-summary');
+      youSummaryEl.setAttribute('role', 'status');
+      youSummaryEl.setAttribute('aria-live', 'polite');
+      listEl.insertBefore(youSummaryEl, listEl.firstChild);
+    }
+    youSummaryEl.hidden = false;
+    var n = aboves.length, top = aboves[0];
+    var lead = L(
+      'Above the typical range on ' + n + (n === 1 ? ' ingredient' : ' ingredients') + '. ',
+      'Arriba del rango típico en ' + n + (n === 1 ? ' ingrediente' : ' ingredientes') + '. ');
+    var biggest = L(
+      'Biggest gap: ' + top.name + ' (' + money(top.gap) + ' over per ' + top.unit + ').',
+      'Mayor diferencia: ' + top.name + ' (' + money(top.gap) + ' de más por ' + top.unit + ').');
+    var txt = lead + biggest;
+    if (txt !== youSummaryLast) { youSummaryEl.textContent = txt; youSummaryLast = txt; }
+  }
+
   function vendorDraft(name, unit, cents, band) {
     return L(
       'Hi [vendor rep],\n\n' +
@@ -404,13 +437,19 @@
         var priceFired = false;
         inp.addEventListener('input', function () {
           var pos = renderYou(o, level, inp.value);
+          var cents = parseMoney(inp.value);
           if (pos && !priceFired) {
             priceFired = true;
             track('Cost Index Price Entered', { ingredient: ing.key || '', verdict: pos });
           }
+          youState[ing.key || name] = {
+            name: name, unit: unit, pos: pos,
+            gap: (pos === 'above' && cents != null) ? (cents - level.rangeCents[1]) : 0
+          };
+          updateYouSummary();
           if (pos === 'above') {
             var band = money(level.rangeCents[0]) + '–' + money(level.rangeCents[1]);
-            h.fill(parseMoney(inp.value), band);
+            h.fill(cents, band);
             h.root.hidden = false;
           } else {
             h.root.hidden = true;
