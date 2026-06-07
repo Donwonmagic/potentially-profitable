@@ -1,5 +1,14 @@
 # Muntin Graphic-Asset Audit — May 2026
 
+> **⚠ Partially superseded (2026-06-07).** This audit's central claim — that the OG
+> cards and brand icons "still ship the retired warm palette" — is **no longer true**.
+> The OG migration shipped: a live grep of `brand/og/*.svg` (764 files) finds **zero**
+> warm hexes (`#1F4E5B`/`#FAF7F2`/`#B8541A`/`#C5A059`) and the cool spine + the Golden
+> Hour editorial accent throughout. Do **not** brief off this doc's palette/migration
+> status. The current visual authority is **`docs/brand/visual-system.md`**; dated facts
+> live in **`docs/brand/ground-truth-pack.md`**. The asset inventory counts and the
+> mark-split discussion remain useful as historical context.
+
 **Author:** Graphic Design Lead (Creative Director, brand execution)
 **Date:** 2026-05-30
 **Scope:** Every rendered visual asset across both product surfaces —

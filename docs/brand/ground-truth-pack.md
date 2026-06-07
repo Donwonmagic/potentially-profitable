@@ -64,8 +64,13 @@ as a name (repo/analytics/code identifier only). ◦
 | `{product}/docs/visual-design-system.md` | locked 2026-05-11; predates the slate+blue re-pigment by 5 days |
 
 Retired warm hexes (`#1F4E5B`, `#FAF7F2`, `#B8541A`) are **forbidden in chrome**
-(`migrate-warm-palette --check`). Superseding these docs with one current guideline
-is **P0**.
+(`migrate-warm-palette --check`).
+
+**Resolved 2026-06-07 (cycle 1):** the current guideline
+**`docs/brand/visual-system.md`** now supersedes the palette/OG claims in all three;
+each carries a dated supersession banner. Live grep confirmed `brand/og/*.svg` (764
+files) carry **0** retired-warm hexes — so the `graphic-asset-audit`'s "OG/icons still
+warm" claim was itself stale, now flagged as such on the doc.
 
 ## 5. Cohesion gates (where each lives — asymmetries are deliberate)
 
@@ -83,7 +88,13 @@ is **P0**.
   icons. The **merged two-tier banned list** (one list read by both) is *specified*
   but *not built* (P1).
 
-## 6. Cross-product seams ✓ (Golden Hour confirmed at `build-og-cards.mjs:62-67`)
+## 6. Cross-product seams ✓ (Golden Hour at `build-og-cards.mjs:62-80` — now governed)
+
+> **Golden Hour update (2026-06-07):** marigold `#FFB020` + coral `#FF6B5C` are live in
+> **765/766** OG cards and marigold doubles as the editorial "Tools / free-course badge"
+> accent. **Decided** (ADR-001): a sanctioned *editorial-only* accent, excluded from the
+> spine and from `{product}`. Enforcement gate still pending (P1).
+
 
 - **Storefront → Ledger:** `{site}/data/ledger-cta.json` + `inject-ledger-cta.mjs`
   (end-of-article aside) + nav CTA → `ledger.muntin.digital`; demo-handoff magic-link. ◦
@@ -96,9 +107,12 @@ is **P0**.
 
 ## 7. Open findings (the live backlog this pack supports)
 
-- **P0** "Golden Hour" marigold/coral accent — ✓ real, `{site}/scripts/build-og-cards.mjs:62-67`;
-  not in spine/docs/product; contradicts single-accent. *Confirm-tier decision.*
-- **P0** Stale design docs → one current guideline.
+- **DONE (P0)** "Golden Hour" marigold/coral accent — **decided** (ADR-001): blessed as
+  editorial-only, excluded from spine/`{product}`. Documented in `visual-system.md §3`.
+- **DONE (P0)** Stale design docs → one current guideline (`visual-system.md`); 3 docs
+  banner-superseded.
+- **P1** Golden Hour **scope gate** — ban `#FFB020`/`#FF6B5C` in `{product}`, assert
+  absent from the shared spine, allow in `{site}` editorial. (Moves scorecard Dim 2 → 3.)
 - **P1** Manual/fragile token-sync → real publish-and-vendor step.
 - **P1** Merged two-tier banned list → implement, read by both repos.
 - **P2** Naming seam (Workshop/Ledger); mark-geometry single spec; cross-repo
@@ -113,4 +127,6 @@ is **P0**.
 3. Diff against the previous stamp; note what changed and update the date.
 4. If a *fact* changed (not just drift), check whether an ADR is owed.
 
-> Verification log: `2026-06-07 — created; §1–6 spot-verified against live code.`
+> Verification log:
+> `2026-06-07 — created; §1–6 spot-verified against live code.`
+> `2026-06-07 — cycle 1: tokens.json byte-identical + hashes equal; brand/og/*.svg = 0 warm hexes, Golden Hour in 765/766; §4/§6/§7 updated; ADR-001 logged; visual-system.md published.`

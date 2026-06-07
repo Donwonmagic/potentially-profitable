@@ -41,21 +41,25 @@ decisions have to move a number, not a vibe.
 | 9 | **Cross-seam coherence** | Funnel + shared entity strings agree | Read `{site}/data/ledger-cta.json`, `{product}` `MarketingFooter.tsx`, `funnel-emit.ts`; confirm shared Org `@id` + event names | — |
 | 10 | **Doc currency** | The "official" docs match the code | Confirm the 3 stale docs are superseded by the current guideline (not cited as truth) | 3 |
 
-## Current snapshot — 2026-06-07 (baseline, agent-assessed; re-score on engagement start)
+## Current snapshot — 2026-06-07 (cycle 1, re-scored against live code)
+
+Re-scored from gate truth + live greps (not the prior agent estimate). Dims 1, 3, 8
+spot-verified live this cycle; the moved dims (2, 7, 10) reflect this cycle's work.
 
 | Dim | Score | Note |
 |---|---|---|
-| 1 Token-spine parity | **3** | Hash-locked both sides; the lock works — but sync is *manual* (a fragility, not a score hit; see loop charter / backlog P1). |
-| 2 Single-accent | **1** | The undocumented "Golden Hour" marigold/coral lives only in `{site}` OG, contradicting the single-accent rule. **P0 decision pending.** |
-| 3 Palette currency | **3** | Re-pigment to slate+blue landed (Wave 8b); warm hexes gate-forbidden in chrome. |
+| 1 Token-spine parity | **3** | Verified live: `data/muntin.tokens.json` ↔ `{product}/packages/ui/muntin.tokens.json` **byte-identical**; both hashes `3681742a…` match. Sync still *manual* (P1, a fragility not a score hit). |
+| 2 Single-accent | **2** ↑ | Golden Hour **decided + documented** (ADR-001 + `visual-system.md §3`): blessed as editorial-only, excluded from spine/`{product}`. Not yet **3** — the scope **gate** is pending (P1). |
+| 3 Palette currency | **3** | Verified: `brand/og/*.svg` carry **0** retired-warm hexes; cool spine throughout. Warm gate-forbidden in chrome. |
 | 4 Voice boundary | **2** | Enforced one-directionally (the "Don" gate lives only in `{product}`); the merged two-tier banned list is specified but not built (P1). |
 | 5 Naming | **2** | Canon is clear; the "Workshop / Workbench / Ledger" relationship is undocumented (P2). |
 | 6 Mark geometry | **2** | Geometry duplicated in ≥4 places; no single spec governs them (P2). |
-| 7 OG currency | **2** | Migrated + covered, but carries the ungoverned Golden Hour layer (ties to Dim 2). |
+| 7 OG currency | **3** ↑ | Palette current + coverage gated (`check-og-*`) **and** the Golden Hour layer is now governed (ADR-001), no longer an ungoverned accent. |
 | 8 Contrast | **3** | AA gated in both repos, both themes. |
 | 9 Cross-seam | **2** | Funnel + shared Org `@id` exist; the hardcoded studio inbox + `/window` coupling is undocumented (P2). |
-| 10 Doc currency | **1** | Three design docs are stale and would mislead; no current superseding guideline yet (P0). |
-| **Total** | **21 / 30** | Strong spine, real edges. The cheapest jumps: ship the guideline (10), decide Golden Hour (2/7), build the merged banned list (4). |
+| 10 Doc currency | **2** ↑ | `visual-system.md` published; the 3 stale docs carry dated supersession banners. Not yet **3** — no gate asserts docs match code (refresh on cadence). |
+| **Total** | **24 / 30** | +3 from baseline via the cheapest predicted jumps (10, 2, 7). Next cheapest: the Golden Hour scope gate (2→3) and the merged banned list (4→3). |
 
 > History (append each cycle): `YYYY-MM-DD — NN/30 — one-line what moved`.
 > `2026-06-07 — 21/30 — baseline.`
+> `2026-06-07 — 24/30 — cycle 1: kit synced; visual-system.md guideline published; Golden Hour blessed (ADR-001); 3 stale docs superseded.`

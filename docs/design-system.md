@@ -353,6 +353,14 @@ the `<!-- LIBRARY:tool-deep-links -->` block at the page bottom:
 
 ## OG cards (Sprint 8 — locked)
 
+> **⚠ Superseded (2026-06-07).** The palette in this section is **stale** — it
+> describes the retired warm scheme (`#FAF7F2` cream, `#1F4E5B` teal, gold accent).
+> The OG system migrated to the **cool slate/blue spine + the Golden Hour editorial
+> accent** in Wave 8b; the live truth is `scripts/build-og-cards.mjs` and the current
+> guideline **`docs/brand/visual-system.md`**. The structural rules below (kinds,
+> coverage, manifest schema, build sequence) remain accurate. The rest of this doc's
+> core token table is current.
+
 Every shared link should look like it came from one publication.
 The OG card system is spec-driven: `brand/og/cards.json` is the
 manifest, `scripts/build-og-cards.mjs` renders SVGs from four
