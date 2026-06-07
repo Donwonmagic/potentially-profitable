@@ -64,59 +64,64 @@ export function sourceType(id) {
   return s || 'unknown';
 }
 
-function independenceCeiling(point) {
-  const types = new Set((point.provenance || []).map((p) => sourceType(p.source)));
-  const t = types.size;
-  if (t >= 2) return RANK.high;
-  if (t === 1) return RANK.medium;
-  return RANK.directional;
+// Distinct independent TYPES among provenance of a given kind ('level' | 'trend').
+// Correlated terminals collapse (usda-ams-boston / -chicago → 'ams'), so six
+// markets are one methodology. Split by kind because a BLS/FRED index can
+// corroborate the TREND but never sets a dollar LEVEL.
+export function typeCount(point, kind) {
+  return new Set((point.provenance || [])
+    .filter((p) => !kind || p.kind === kind)
+    .map((p) => sourceType(p.source))).size;
 }
-function completenessCeiling(historyLen) {
-  if (historyLen >= 12) return RANK.high;
-  if (historyLen >= 8) return RANK.medium;
-  if (historyLen >= 4) return RANK.low;
-  return RANK.directional;
+// Distinct weeks the history actually covers (epoch/7 buckets) — daily LMR/AMS
+// rows over five weeks are five weekly TREND reads, not twenty-six.
+export function historyWeeks(history) {
+  const wk = new Set();
+  (history || []).forEach((h) => { const t = Date.parse(h && h.date); if (isFinite(t)) wk.add(Math.floor(t / (7 * 86400000))); });
+  return wk.size;
 }
-function agreementCeiling(point) {
-  const a = point.trend && typeof point.trend.agreement === 'number' ? point.trend.agreement : null;
-  if (a == null) return RANK.high;            // no agreement signal → don't constrain on this axis
-  if (a >= 0.66) return RANK.high;
-  if (a >= 0.33) return RANK.medium;
-  if (a > 0) return RANK.low;
-  return RANK.directional;
+function levelCeiling(point) {
+  const lt = typeCount(point, 'level');
+  return lt >= 2 ? RANK.high : lt >= 1 ? RANK.medium : RANK.directional;
+}
+function trendCeiling(point, weeks) {
+  const tt = typeCount(point, 'trend');
+  const a = point.trend && typeof point.trend.agreement === 'number' ? point.trend.agreement : 0;
+  const indep = (tt >= 2 && a >= 0.66) ? RANK.high : (tt >= 2 && a >= 0.33) ? RANK.medium : tt >= 1 ? RANK.low : RANK.directional;
+  const complete = weeks >= 8 ? RANK.high : weeks >= 4 ? RANK.medium : weeks >= 2 ? RANK.low : RANK.directional;
+  return Math.min(indep, complete);
 }
 
-// The calibrated ceiling for a point + its history length. Exported for tests.
-export function calibrationCeiling(point, historyLen) {
-  return Math.min(
-    independenceCeiling(point),
-    completenessCeiling(historyLen),
-    agreementCeiling(point)
-  );
+// The calibrated ceiling = min(level, trend) — mirrors composite-price.confidenceFor.
+// Takes the history ARRAY (for week-coverage), not a row count. Exported for tests.
+export function calibrationCeiling(point, history) {
+  return Math.min(levelCeiling(point), trendCeiling(point, historyWeeks(history)));
 }
 
 function runSelfTest() {
   const cases = [];
   const ok = (name, got, want) => cases.push({ name, pass: got === want, got, want });
-  // independence
-  ok('two types → high allowed', independenceCeiling({ provenance: [{ source: 'usda-ams-boston' }, { source: 'bls-x' }] }), RANK.high);
-  ok('six AMS terminals = one type → medium cap', independenceCeiling({ provenance: ['boston', 'chicago', 'detroit', 'miami', 'new-york', 'los-angeles'].map((c) => ({ source: 'usda-ams-' + c })) }), RANK.medium);
-  ok('no provenance → directional', independenceCeiling({ provenance: [] }), RANK.directional);
-  // completeness
-  ok('12 reads → high allowed', completenessCeiling(12), RANK.high);
-  ok('8 reads → medium cap', completenessCeiling(8), RANK.medium);
-  ok('5 reads → low cap', completenessCeiling(5), RANK.low);
-  ok('2 reads → directional', completenessCeiling(2), RANK.directional);
-  // agreement
-  ok('agreement 1.0 → high', agreementCeiling({ trend: { agreement: 1 } }), RANK.high);
-  ok('agreement 0.5 → medium', agreementCeiling({ trend: { agreement: 0.5 } }), RANK.medium);
-  ok('agreement absent → unconstrained', agreementCeiling({ trend: {} }), RANK.high);
-  // min-of-gates composition
-  ok('one strong gate cannot lift a weak one', calibrationCeiling({ provenance: [{ source: 'usda-ams-boston' }], trend: { agreement: 1 } }, 26), RANK.medium);
-  ok('onion-shaped (1 type, deep, agree) → medium ceiling',
-    calibrationCeiling({ provenance: ['a', 'b', 'c'].map((c) => ({ source: 'usda-ams-' + c })), trend: { agreement: 0.83 } }, 26), RANK.medium);
-  ok('romaine-shaped (2 types) → high ceiling',
-    calibrationCeiling({ provenance: [{ source: 'usda-ams-boston' }, { source: 'bls-ppi' }], trend: { agreement: 1 } }, 26), RANK.high);
+  const lev = (n, t) => Array.from({ length: n }, (_, i) => ({ kind: 'level', source: t + '-' + i }));
+  const trd = (arr) => arr.map((s) => ({ kind: 'trend', source: s }));
+  const weeks = (n) => Array.from({ length: n }, (_, i) => ({ date: new Date(Date.UTC(2026, 0, 5 + i * 7)).toISOString().slice(0, 10) }));
+  const daily = (n) => Array.from({ length: n }, (_, i) => ({ date: new Date(Date.UTC(2026, 4, 1 + i)).toISOString().slice(0, 10) }));
+  // type counting (level vs trend, terminals collapse)
+  ok('six AMS terminals = one level type', typeCount({ provenance: lev(6, 'usda-ams') }, 'level'), 1);
+  ok('ams + bls = two trend types', typeCount({ provenance: trd(['usda-ams-x', 'bls-ppi']) }, 'trend'), 2);
+  // week coverage
+  ok('12 weekly rows = 12 weeks', historyWeeks(weeks(12)), 12);
+  ok('26 daily rows = a handful of weeks, not 26', historyWeeks(daily(26)) <= 6 && historyWeeks(daily(26)) >= 4 ? 1 : 0, 1);
+  // composed ceilings
+  ok('two independent dollar types + corroborated, deep trend → high',
+    calibrationCeiling({ provenance: [...lev(1, 'usda-lmr'), ...lev(1, 'cme'), ...trd(['usda-lmr', 'cme', 'bls'])], trend: { agreement: 1 } }, weeks(12)), RANK.high);
+  ok('six AMS terminals (one type) cannot reach high',
+    calibrationCeiling({ provenance: [...lev(6, 'usda-ams'), ...trd(['usda-ams-x'])], trend: { agreement: 0.9 } }, weeks(12)), RANK.low);
+  ok('onion-shaped (single AMS methodology) → low',
+    calibrationCeiling({ provenance: [...lev(6, 'usda-ams'), ...trd(['usda-ams-a', 'usda-ams-b'])], trend: { agreement: 0.83 } }, daily(26)), RANK.low);
+  ok('romaine-shaped (1 level type, ams+bls trend) → medium',
+    calibrationCeiling({ provenance: [...lev(6, 'usda-ams'), ...trd(['usda-ams-a', 'bls-ppi'])], trend: { agreement: 1 } }, weeks(12)), RANK.medium);
+  ok('thin history (4 weeks) caps even independent types at medium',
+    calibrationCeiling({ provenance: [...lev(1, 'usda-lmr'), ...lev(1, 'cme'), ...trd(['usda-lmr', 'cme'])], trend: { agreement: 1 } }, weeks(4)), RANK.medium);
 
   const failed = cases.filter((c) => !c.pass);
   for (const c of failed) console.error(`  ✗ ${c.name}: got ${NAME[c.got] ?? c.got}, want ${NAME[c.want] ?? c.want}`);
@@ -136,18 +141,17 @@ function runCheck() {
     const point = e && Array.isArray(e.points) && e.points[0];
     if (!point || !point.confidence) continue;
     checked++;
-    const histLen = Array.isArray(e.history) ? e.history.length : 0;
-    const ceiling = calibrationCeiling(point, histLen);
+    const history = Array.isArray(e.history) ? e.history : [];
+    const ceiling = calibrationCeiling(point, history);
     const shipped = RANK[point.confidence];
     if (typeof shipped === 'number' && shipped > ceiling) {
-      const types = [...new Set((point.provenance || []).map((p) => sourceType(p.source)))];
-      overstated.push({ key, shipped: point.confidence, ceiling: NAME[ceiling], types: types.join('+'), hist: histLen });
+      overstated.push({ key, shipped: point.confidence, ceiling: NAME[ceiling], levelTypes: typeCount(point, 'level'), trendTypes: typeCount(point, 'trend'), weeks: historyWeeks(history) });
     }
   }
   if (overstated.length) {
     console.log(`cost-index calibration: ${overstated.length} confidence overstatement(s) of ${checked} checked:`);
     for (const o of overstated) {
-      console.log(`  ${o.key}: vendored '${o.shipped}' but data supports at most '${o.ceiling}' (types=${o.types}, history=${o.hist}).`);
+      console.log(`  ${o.key}: vendored '${o.shipped}' but data supports at most '${o.ceiling}' (level-types=${o.levelTypes}, trend-types=${o.trendTypes}, weeks=${o.weeks}).`);
     }
     console.log('  Fix is upstream in the orchestrator composite-price (confidence counts source TYPES, not correlated markets).');
     if (FAIL_ON_DRIFT) process.exit(1);
