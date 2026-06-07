@@ -83,6 +83,52 @@ export function pointIssues(ingredient, point, srcIng, boundsMap, now = Date.now
   return out;
 }
 
+/**
+ * historyIssues — gate for a per-ingredient HISTORICAL series (the curve behind
+ * the current point). DELIBERATELY EXEMPT from the staleness gate: history is
+ * old by design. It is NOT exempt from citeability or plausibility — every
+ * entry must name a source + a valid date, and dollar values must sit in the
+ * 2x raw-observation band (the gross-unit-flip screen, not the tight rendered
+ * band; index-basis entries carry no dollar meaning and are unbounded).
+ * Absence of history is fine (returns []).
+ */
+export function historyIssues(ingredient, history, srcIng, boundsMap) {
+  const out = [];
+  if (history == null) return out;                                  // optional — absence is fine
+  if (!Array.isArray(history) || history.length === 0) { out.push('history-empty'); return out; }
+  if (!srcIng[ingredient]) out.push('history-orphan');
+  else if (srcIng[ingredient].verified !== true) out.push('history-unverified');
+  const b = boundsMap[ingredient];
+  for (const h of history) {
+    // CITEABILITY: every historical point names a source AND a valid date.
+    if (!h || typeof h.source !== 'string' || !h.source.trim() || !DATE_RE.test(h.date || '')) { out.push('history-uncited'); break; }
+    if (typeof h.valueCents !== 'number' || !isFinite(h.valueCents)) { out.push('history-badvalue'); break; }
+    // BOUNDS for dollar history only, on the 2x slop band — a historical point
+    // is a raw observation, not the rendered "current" number, so the gross-flip
+    // screen applies, not pointIssues' tight band. Index history is unbounded.
+    if (b && h.basis !== 'index' && (h.valueCents < b.minCents / 2 || h.valueCents > b.maxCents * 2)) { out.push('history-out-of-bounds'); break; }
+  }
+  // NOTE: no asOf/stale check — historical points are old by design.
+  return out;
+}
+
+/**
+ * driverIssues — gate for a driver (corn/soybeans/diesel/electricity): must be a
+ * known driver, carry a trend, a citeable (index) history, and only name leads
+ * that are actually vendored ingredients. Drivers have no level and no bounds.
+ */
+export function driverIssues(driver, d, srcDrivers, ingredients) {
+  const out = [];
+  if (!srcDrivers || !srcDrivers[driver]) out.push('driver-orphan');
+  if (!d || !d.trend || typeof d.trend.pct !== 'number') out.push('driver-empty');
+  // reuse the citeability check (treat the driver as verified, no bounds).
+  out.push(...historyIssues(driver, d && d.history, { [driver]: { verified: true } }, {}));
+  for (const led of (d && Array.isArray(d.leads) ? d.leads : [])) {
+    if (!ingredients[led]) out.push('driver-bad-lead');
+  }
+  return out;
+}
+
 export function validateIndex(index, sources, bounds, now = Date.now()) {
   const errors = [];
   const warnings = [];
@@ -111,6 +157,19 @@ export function validateIndex(index, sources, bounds, now = Date.now()) {
       const issues = pointIssues(key, p, srcIng, boundsMap, now);   // staleness is now one of these (hard fail)
       if (issues.length) errors.push(`${key} @ ${p && p.asOf ? p.asOf : '?'}: ${issues.join(', ')}.`);
     }
+    // Historical series (optional, sibling to points): citeable + bounded, but
+    // EXEMPT from staleness (old by design). Lives outside the points[] array
+    // the stale gate iterates, so the current-price gate is untouched.
+    const hIssues = historyIssues(key, ingredients[key] && ingredients[key].history, srcIng, boundsMap);
+    if (hIssues.length) errors.push(`${key} history: ${hIssues.join(', ')}.`);
+  }
+
+  // ---- drivers (corn/soybeans/diesel/electricity): trend + citeable index history ----
+  const srcDrivers = (sources && sources.drivers) || {};
+  const drivers = (index && index.drivers) || {};
+  for (const dkey of Object.keys(drivers)) {
+    const dIssues = driverIssues(dkey, drivers[dkey], srcDrivers, ingredients);
+    if (dIssues.length) errors.push(`driver ${dkey}: ${dIssues.join(', ')}.`);
   }
 
   // ---- headline Basket (optional): validate shape + that it only claims what shipped ----
@@ -134,10 +193,13 @@ export function validateIndex(index, sources, bounds, now = Date.now()) {
 }
 
 function selfTest() {
-  const sources = { ingredients: { ribeye: { verified: true }, onion: { verified: false } } };
+  const sources = { ingredients: { ribeye: { verified: true }, onion: { verified: false } }, drivers: { corn: { verified: true } } };
   const bounds = { bounds: { ribeye: { minCents: 700, maxCents: 3000, unit: 'lb' }, onion: { minCents: 30, maxCents: 300, unit: 'lb' } } };
   const NOW = parseDay('2026-06-10');
   const good = { asOf: '2026-06-01', level: { medianCents: 1400 }, trend: { pct: 0.05 }, provenance: [{ kind: 'level', source: 'usda-ams', date: '2026-06-01' }] };
+  const staleHist = [{ date: '2025-01-01', valueCents: 1300, source: 'usda-ams', basis: 'wholesale' }, { date: '2025-01-08', valueCents: 1350, source: 'usda-ams', basis: 'wholesale' }];
+  const idxHist = [{ date: '2025-01-01', valueCents: 999999, source: 'bls', basis: 'index' }, { date: '2025-01-08', valueCents: 1000000, source: 'bls', basis: 'index' }];
+  const goodDriver = { trend: { pct: 0.1 }, history: [{ date: '2026-05-01', valueCents: 500, source: 'bls', basis: 'index' }], leads: ['ribeye'] };
   const cases = [
     ['empty canonical passes', { _lastReviewed: '2026-06-01', _generatedFrom: 'verified-sources-only', ingredients: {} }, true],
     ['empty + old _lastReviewed still passes (exempt)', { _lastReviewed: '2025-01-01', _generatedFrom: 'verified-sources-only', ingredients: {} }, true],
@@ -160,6 +222,20 @@ function selfTest() {
     ['null basket passes (empty canonical)', { _lastReviewed: '2026-06-01', _generatedFrom: 'verified-sources-only', ingredients: {}, basket: null }, true],
     ['stale LEVEL provenance FAILS even with a fresh asOf', { _lastReviewed: '2026-06-01', _generatedFrom: 'verified-sources-only', ingredients: { ribeye: { points: [{ ...good, level: { medianCents: 1400, provenance: [{ source: 'usda-ams', date: '2025-01-01' }] } }] } } }, false],
     ['fresh LEVEL provenance passes', { _lastReviewed: '2026-06-01', _generatedFrom: 'verified-sources-only', ingredients: { ribeye: { points: [{ ...good, level: { medianCents: 1400, provenance: [{ source: 'usda-ams', date: '2026-06-01' }] } }] } } }, true],
+    // ---- history: citeable + bounded, but EXEMPT from staleness ----
+    ['stale-dated HISTORY passes (exempt from staleness)', { _lastReviewed: '2026-06-01', _generatedFrom: 'verified-sources-only', ingredients: { ribeye: { points: [good], history: staleHist } } }, true],
+    ['absent history passes', { _lastReviewed: '2026-06-01', _generatedFrom: 'verified-sources-only', ingredients: { ribeye: { points: [good] } } }, true],
+    ['history entry missing a source FAILS', { _lastReviewed: '2026-06-01', _generatedFrom: 'verified-sources-only', ingredients: { ribeye: { points: [good], history: [{ date: '2026-05-01', valueCents: 1300, basis: 'wholesale' }] } } }, false],
+    ['history entry missing a date FAILS', { _lastReviewed: '2026-06-01', _generatedFrom: 'verified-sources-only', ingredients: { ribeye: { points: [good], history: [{ valueCents: 1300, source: 'usda-ams', basis: 'wholesale' }] } } }, false],
+    ['dollar history out of 2x band FAILS', { _lastReviewed: '2026-06-01', _generatedFrom: 'verified-sources-only', ingredients: { ribeye: { points: [good], history: [{ date: '2026-05-01', valueCents: 999999, source: 'usda-ams', basis: 'wholesale' }] } } }, false],
+    ['index-basis history is unbounded — passes', { _lastReviewed: '2026-06-01', _generatedFrom: 'verified-sources-only', ingredients: { ribeye: { points: [good], history: idxHist } } }, true],
+    ['CRITICAL: stale current point STILL FAILS while history is exempt', { _lastReviewed: '2026-06-01', _generatedFrom: 'verified-sources-only', ingredients: { ribeye: { points: [{ ...good, asOf: '2026-01-01' }], history: staleHist } } }, false],
+    // ---- drivers ----
+    ['driver with trend + index history + valid lead passes', { _lastReviewed: '2026-06-01', _generatedFrom: 'verified-sources-only', ingredients: { ribeye: { points: [good] } }, drivers: { corn: goodDriver } }, true],
+    ['driver naming a non-vendored lead FAILS', { _lastReviewed: '2026-06-01', _generatedFrom: 'verified-sources-only', ingredients: { ribeye: { points: [good] } }, drivers: { corn: { ...goodDriver, leads: ['saffron'] } } }, false],
+    ['driver missing trend FAILS', { _lastReviewed: '2026-06-01', _generatedFrom: 'verified-sources-only', ingredients: { ribeye: { points: [good] } }, drivers: { corn: { history: goodDriver.history, leads: ['ribeye'] } } }, false],
+    ['unknown driver FAILS (orphan)', { _lastReviewed: '2026-06-01', _generatedFrom: 'verified-sources-only', ingredients: { ribeye: { points: [good] } }, drivers: { diesel: goodDriver } }, false],
+    ['driver with uncited history FAILS', { _lastReviewed: '2026-06-01', _generatedFrom: 'verified-sources-only', ingredients: { ribeye: { points: [good] } }, drivers: { corn: { trend: { pct: 0.1 }, history: [{ valueCents: 500, basis: 'index' }], leads: ['ribeye'] } } }, false],
   ];
   let pass = 0;
   for (const [name, idx, shouldPass] of cases) {
