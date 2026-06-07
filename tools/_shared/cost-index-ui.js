@@ -348,6 +348,14 @@
     high: L('high', 'alta'), medium: L('medium', 'media'),
     low: L('low', 'baja'), directional: L('directional', 'direccional')
   };
+  // What the confidence word MEANS, in plain terms (for the chip's aria-label and
+  // the audio/sr text) — "directional" is jargon to a tired, non-native reader.
+  var confPhraseMap = {
+    high: L('Strong read — several sources agree.', 'Lectura sólida — varias fuentes coinciden.'),
+    medium: L('Fair read — a few sources.', 'Lectura aceptable — pocas fuentes.'),
+    low: L('Rough read — thin data.', 'Lectura aproximada — pocos datos.'),
+    directional: L('Early hint only — not a firm number.', 'Solo una señal temprana — no es un número firme.')
+  };
 
   // Turn the build-time spike/structural flag into a plain SUGGESTION — never a
   // command. Calibrated to confidence: a thin read can never say "re-price". The
@@ -399,11 +407,19 @@
     // percent — showing one would overstate the signal. Give the direction with
     // an honest hedge instead (the fact-gate ethos applied to the UI).
     var soften = r.confidence === 'directional' && r.trend.dir !== 'flat';
+    // Numeracy aid: anchor the percent to a dollar an operator recognizes
+    // (derived from the displayed median + pct — no new data, fact-gate-safe).
+    var deltaTxt = '';
+    if (!soften && pct != null && lvl && typeof lvl.medianCents === 'number' && r.trend.dir !== 'flat') {
+      var deltaCents = Math.abs(Math.round(lvl.medianCents - lvl.medianCents / (1 + pct)));
+      if (deltaCents > 0) deltaTxt = L(' — about ' + money(deltaCents) + ' ' + (r.trend.dir === 'up' ? 'more' : 'less') + ' a ' + unit + ' over the window',
+                                       ' — cerca de ' + money(deltaCents) + ' ' + (r.trend.dir === 'up' ? 'más' : 'menos') + ' por ' + unit + ' en el periodo');
+    }
     var trendText = pct == null
       ? L('Not enough history yet for a trend', 'Sin suficiente historial para una tendencia')
       : soften
         ? L(dirWord + ' — early signal, not a firm number yet', dirWord + ' — señal temprana, aún no es un número firme')
-        : L(dirWord + ' ' + pctTxt + ' over the window', dirWord + ' ' + pctTxt + ' en el periodo');
+        : L(dirWord + ' ' + pctTxt + ' over the window', dirWord + ' ' + pctTxt + ' en el periodo') + deltaTxt;
 
     var conf = confWordMap[r.confidence] || r.confidence;
     var nSrc = (r.trend && r.trend.nSources) || (lvl ? lvl.nSources : 0);
@@ -413,14 +429,16 @@
     if (ing.key) fig.id = 'ci-' + ing.key;          // deep anchor: /…/#ci-romaine
     if (ing.key) fig.setAttribute('data-key', ing.key); // for the basket
     fig.setAttribute('data-name', name.toLowerCase()); // for the filter
+    var confPhrase = confPhraseMap[r.confidence] || (conf + ' ' + L('confidence', 'confianza'));
     fig.setAttribute('data-audio-alt',
-      name + '. ' + rangeText + '. ' + L('The market is ', 'El mercado va ') + trendText + ', ' +
-      conf + ' ' + L('confidence', 'confianza') + '. ' + metaText + '.');
+      name + '. ' + rangeText + '. ' + L('The market is ', 'El mercado va ') + trendText + '. ' +
+      confPhrase + ' ' + metaText + '.');
 
     var head = el('div', 'cp-market-head');
     head.appendChild(el('span', 'cp-market-name', name));
     var chip = el('span', 'cp-conf', conf);
     chip.setAttribute('data-level', r.confidence);
+    chip.setAttribute('aria-label', confPhrase);   // chip shows the short word; SR hears what it means
     var headRight = el('span', 'cp-head-right');
     headRight.appendChild(chip);
     if (ing.key) headRight.appendChild(trackButton(ing.key));
@@ -523,7 +541,7 @@
 
     // Screen-reader numbers table.
     var srt = el('div', 'cp-sr-only');
-    var caption = name + ': ' + rangeText + '; ' + trendText + '; ' + conf + ' ' + L('confidence', 'confianza') + '; ' + metaText + '.'
+    var caption = name + ': ' + rangeText + '; ' + trendText + '; ' + confPhrase + '; ' + metaText + '.'
       + (fv ? ' ' + fv.verb + '. ' + fv.note : '')
       + (sm ? ' ' + L('Price history from ', 'Historial de precio de ') + sm.source + ', ' + sm.from + ' ' + L('to', 'a') + ' ' + sm.to + (sm.basis === 'index' ? L(' (index, not a dollar price)', ' (índice, no un precio en dólares)') : '') + '.' : '');
     srt.appendChild(el('p', null, caption));
