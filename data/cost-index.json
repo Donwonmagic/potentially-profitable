@@ -1,0 +1,1615 @@
+{
+  "_doc": "Vendored Muntin Restaurant Cost Index — per-ingredient composite price points (LEVEL range + blended TREND + confidence + provenance + asOf), built by scripts/build-cost-index.mjs from the live-fetch artifact (the ledger-spec/cost-index orchestrator → R2 in prod). THE FACT GATE: an ingredient appears here ONLY if its source ids in data/cost-index-sources.json are verified:true AND a live fetch produced real points — nothing renders behind the fact gate before then. Every point carries provenance (source + date) and an asOf date. Parity + freshness + fact-gate enforced by scripts/check-cost-index-sync.mjs. EMPTY today: all 12 ingredients are still verified:false (pin #8 — confirm source ids, then run build-cost-index with --artifact from a live fetch).",
+  "_lastReviewed": "2026-06-06",
+  "_generatedFrom": "verified-sources-only",
+  "ingredients": {
+    "ribeye": {
+      "points": [
+        {
+          "asOf": "2026-06-05",
+          "level": {
+            "basis": "wholesale",
+            "unit": "lb",
+            "medianCents": 1159,
+            "rangeCents": [
+              1159,
+              1159
+            ],
+            "nObs": 1,
+            "nFamilies": 1,
+            "nTypes": 1,
+            "nSources": 1,
+            "provenance": [
+              {
+                "source": "usda-lmr",
+                "valueCents": 1159,
+                "date": "2026-06-05"
+              }
+            ]
+          },
+          "trend": {
+            "pct": 0.30280175394915204,
+            "dir": "up",
+            "agreement": 1,
+            "nSources": 3,
+            "nFamilies": 3,
+            "nTypes": 3
+          },
+          "confidence": "medium",
+          "label": "About $11.59/lb (wholesale reference, single source — range not yet measurable), up +30.3% over the window. 1+ source(s) for level, 3 for trend.",
+          "provenance": [
+            {
+              "kind": "level",
+              "source": "usda-lmr",
+              "valueCents": 1159,
+              "date": "2026-06-05"
+            },
+            {
+              "kind": "trend",
+              "source": "usda-lmr",
+              "basis": "wholesale"
+            },
+            {
+              "kind": "trend",
+              "source": "bls",
+              "basis": "index"
+            },
+            {
+              "kind": "trend",
+              "source": "fred",
+              "basis": "index"
+            }
+          ]
+        }
+      ],
+      "flag": {
+        "verdict": "insufficient",
+        "actionBias": "watch",
+        "reason": "not enough history to tell a spike from a real trend — treat as real",
+        "move": null,
+        "retrace": null,
+        "elevatedWeeks": null,
+        "nHistory": 1
+      }
+    },
+    "beef-tenderloin": {
+      "points": [
+        {
+          "asOf": "2026-06-05",
+          "level": {
+            "basis": "wholesale",
+            "unit": "lb",
+            "medianCents": 1527,
+            "rangeCents": [
+              1527,
+              1527
+            ],
+            "nObs": 1,
+            "nFamilies": 1,
+            "nTypes": 1,
+            "nSources": 1,
+            "provenance": [
+              {
+                "source": "usda-lmr",
+                "valueCents": 1527,
+                "date": "2026-06-05"
+              }
+            ]
+          },
+          "trend": {
+            "pct": 0.028110881436045246,
+            "dir": "up",
+            "agreement": 1,
+            "nSources": 2,
+            "nFamilies": 2,
+            "nTypes": 2
+          },
+          "confidence": "medium",
+          "label": "About $15.27/lb (wholesale reference, single source — range not yet measurable), up +2.8% over the window. 1+ source(s) for level, 2 for trend.",
+          "provenance": [
+            {
+              "kind": "level",
+              "source": "usda-lmr",
+              "valueCents": 1527,
+              "date": "2026-06-05"
+            },
+            {
+              "kind": "trend",
+              "source": "usda-lmr",
+              "basis": "wholesale"
+            },
+            {
+              "kind": "trend",
+              "source": "bls",
+              "basis": "index"
+            }
+          ]
+        }
+      ],
+      "flag": {
+        "verdict": "insufficient",
+        "actionBias": "watch",
+        "reason": "not enough history to tell a spike from a real trend — treat as real",
+        "move": null,
+        "retrace": null,
+        "elevatedWeeks": null,
+        "nHistory": 1
+      }
+    },
+    "chicken-breast": {
+      "points": [
+        {
+          "asOf": "2026-06-01",
+          "level": {
+            "basis": "wholesale",
+            "unit": "lb",
+            "medianCents": 137,
+            "rangeCents": [
+              137,
+              137
+            ],
+            "nObs": 1,
+            "nFamilies": 1,
+            "nTypes": 1,
+            "nSources": 1,
+            "provenance": [
+              {
+                "source": "usda-ams-national",
+                "valueCents": 137,
+                "date": "2026-06-01"
+              }
+            ]
+          },
+          "trend": {
+            "pct": 0.09086693645517173,
+            "dir": "up",
+            "agreement": 0.667,
+            "nSources": 3,
+            "nFamilies": 3,
+            "nTypes": 3
+          },
+          "confidence": "medium",
+          "label": "About $1.37/lb (wholesale reference, single source — range not yet measurable), up +9.1% over the window. 1+ source(s) for level, 3 for trend.",
+          "provenance": [
+            {
+              "kind": "level",
+              "source": "usda-ams-national",
+              "valueCents": 137,
+              "date": "2026-06-01"
+            },
+            {
+              "kind": "trend",
+              "source": "usda-ams-national",
+              "basis": "wholesale"
+            },
+            {
+              "kind": "trend",
+              "source": "bls",
+              "basis": "index"
+            },
+            {
+              "kind": "trend",
+              "source": "fred",
+              "basis": "retail"
+            }
+          ]
+        }
+      ],
+      "flag": {
+        "verdict": "insufficient",
+        "actionBias": "watch",
+        "reason": "not enough history to tell a spike from a real trend — treat as real",
+        "move": null,
+        "retrace": null,
+        "elevatedWeeks": null,
+        "nHistory": 1
+      }
+    },
+    "whole-chicken": {
+      "points": [
+        {
+          "asOf": "2026-06-01",
+          "level": {
+            "basis": "wholesale",
+            "unit": "lb",
+            "medianCents": 83,
+            "rangeCents": [
+              83,
+              83
+            ],
+            "nObs": 1,
+            "nFamilies": 1,
+            "nTypes": 1,
+            "nSources": 1,
+            "provenance": [
+              {
+                "source": "usda-ams-national",
+                "valueCents": 83,
+                "date": "2026-06-01"
+              }
+            ]
+          },
+          "trend": {
+            "pct": -0.31766545933487,
+            "dir": "down",
+            "agreement": 0.5,
+            "nSources": 2,
+            "nFamilies": 2,
+            "nTypes": 2
+          },
+          "confidence": "low",
+          "label": "About $0.83/lb (wholesale reference, single source — range not yet measurable), down -31.8% over the window. 1+ source(s) for level, 2 for trend.",
+          "provenance": [
+            {
+              "kind": "level",
+              "source": "usda-ams-national",
+              "valueCents": 83,
+              "date": "2026-06-01"
+            },
+            {
+              "kind": "trend",
+              "source": "usda-ams-national",
+              "basis": "wholesale"
+            },
+            {
+              "kind": "trend",
+              "source": "bls",
+              "basis": "index"
+            }
+          ]
+        }
+      ],
+      "flag": {
+        "verdict": "insufficient",
+        "actionBias": "watch",
+        "reason": "not enough history to tell a spike from a real trend — treat as real",
+        "move": null,
+        "retrace": null,
+        "elevatedWeeks": null,
+        "nHistory": 1
+      }
+    },
+    "pork-loin": {
+      "points": [
+        {
+          "asOf": "2026-06-05",
+          "level": {
+            "basis": "wholesale",
+            "unit": "lb",
+            "medianCents": 131,
+            "rangeCents": [
+              131,
+              131
+            ],
+            "nObs": 1,
+            "nFamilies": 1,
+            "nTypes": 1,
+            "nSources": 1,
+            "provenance": [
+              {
+                "source": "usda-lmr",
+                "valueCents": 131,
+                "date": "2026-06-05"
+              }
+            ]
+          },
+          "trend": {
+            "pct": 0.005482818664727041,
+            "dir": "up",
+            "agreement": 1,
+            "nSources": 2,
+            "nFamilies": 2,
+            "nTypes": 2
+          },
+          "confidence": "medium",
+          "label": "About $1.31/lb (wholesale reference, single source — range not yet measurable), up +0.5% over the window. 1+ source(s) for level, 2 for trend.",
+          "provenance": [
+            {
+              "kind": "level",
+              "source": "usda-lmr",
+              "valueCents": 131,
+              "date": "2026-06-05"
+            },
+            {
+              "kind": "trend",
+              "source": "usda-lmr",
+              "basis": "wholesale"
+            },
+            {
+              "kind": "trend",
+              "source": "bls",
+              "basis": "index"
+            }
+          ]
+        }
+      ],
+      "flag": {
+        "verdict": "insufficient",
+        "actionBias": "watch",
+        "reason": "not enough history to tell a spike from a real trend — treat as real",
+        "move": null,
+        "retrace": null,
+        "elevatedWeeks": null,
+        "nHistory": 1
+      }
+    },
+    "pork-shoulder": {
+      "points": [
+        {
+          "asOf": "2026-06-05",
+          "level": {
+            "basis": "wholesale",
+            "unit": "lb",
+            "medianCents": 186,
+            "rangeCents": [
+              186,
+              186
+            ],
+            "nObs": 1,
+            "nFamilies": 1,
+            "nTypes": 1,
+            "nSources": 1,
+            "provenance": [
+              {
+                "source": "usda-lmr",
+                "valueCents": 186,
+                "date": "2026-06-05"
+              }
+            ]
+          },
+          "trend": {
+            "pct": 0.005482818664727041,
+            "dir": "up",
+            "agreement": 1,
+            "nSources": 2,
+            "nFamilies": 2,
+            "nTypes": 2
+          },
+          "confidence": "medium",
+          "label": "About $1.86/lb (wholesale reference, single source — range not yet measurable), up +0.5% over the window. 1+ source(s) for level, 2 for trend.",
+          "provenance": [
+            {
+              "kind": "level",
+              "source": "usda-lmr",
+              "valueCents": 186,
+              "date": "2026-06-05"
+            },
+            {
+              "kind": "trend",
+              "source": "usda-lmr",
+              "basis": "wholesale"
+            },
+            {
+              "kind": "trend",
+              "source": "bls",
+              "basis": "index"
+            }
+          ]
+        }
+      ],
+      "flag": {
+        "verdict": "insufficient",
+        "actionBias": "watch",
+        "reason": "not enough history to tell a spike from a real trend — treat as real",
+        "move": null,
+        "retrace": null,
+        "elevatedWeeks": null,
+        "nHistory": 1
+      }
+    },
+    "salmon-fillet": {
+      "points": [
+        {
+          "asOf": "2026-04-01",
+          "level": {
+            "basis": "wholesale",
+            "unit": "lb",
+            "medianCents": 526,
+            "rangeCents": [
+              526,
+              526
+            ],
+            "nObs": 1,
+            "nFamilies": 1,
+            "nTypes": 1,
+            "nSources": 1,
+            "provenance": [
+              {
+                "source": "noaa",
+                "valueCents": 526,
+                "date": "2026-03-01"
+              }
+            ]
+          },
+          "trend": {
+            "pct": -0.2897017060128828,
+            "dir": "down",
+            "agreement": 0.5,
+            "nSources": 2,
+            "nFamilies": 2,
+            "nTypes": 2
+          },
+          "confidence": "low",
+          "label": "About $5.26/lb (wholesale reference, single source — range not yet measurable), down -29% over the window. 1+ source(s) for level, 2 for trend.",
+          "provenance": [
+            {
+              "kind": "level",
+              "source": "noaa",
+              "valueCents": 526,
+              "date": "2026-03-01"
+            },
+            {
+              "kind": "trend",
+              "source": "noaa",
+              "basis": "wholesale"
+            },
+            {
+              "kind": "trend",
+              "source": "bls",
+              "basis": "index"
+            }
+          ]
+        }
+      ],
+      "flag": {
+        "verdict": "insufficient",
+        "actionBias": "watch",
+        "reason": "not enough history to tell a spike from a real trend — treat as real",
+        "move": null,
+        "retrace": null,
+        "elevatedWeeks": null,
+        "nHistory": 1
+      }
+    },
+    "shrimp": {
+      "points": [
+        {
+          "asOf": "2026-04-01",
+          "level": {
+            "basis": "wholesale",
+            "unit": "lb",
+            "medianCents": 384,
+            "rangeCents": [
+              384,
+              384
+            ],
+            "nObs": 1,
+            "nFamilies": 1,
+            "nTypes": 1,
+            "nSources": 1,
+            "provenance": [
+              {
+                "source": "noaa",
+                "valueCents": 384,
+                "date": "2026-03-01"
+              }
+            ]
+          },
+          "trend": {
+            "pct": -0.0014533402658149803,
+            "dir": "flat",
+            "agreement": 0.5,
+            "nSources": 2,
+            "nFamilies": 2,
+            "nTypes": 2
+          },
+          "confidence": "low",
+          "label": "About $3.84/lb (wholesale reference, single source — range not yet measurable), flat -0.1% over the window. 1+ source(s) for level, 2 for trend.",
+          "provenance": [
+            {
+              "kind": "level",
+              "source": "noaa",
+              "valueCents": 384,
+              "date": "2026-03-01"
+            },
+            {
+              "kind": "trend",
+              "source": "noaa",
+              "basis": "wholesale"
+            },
+            {
+              "kind": "trend",
+              "source": "bls",
+              "basis": "index"
+            }
+          ]
+        }
+      ],
+      "flag": {
+        "verdict": "insufficient",
+        "actionBias": "watch",
+        "reason": "not enough history to tell a spike from a real trend — treat as real",
+        "move": null,
+        "retrace": null,
+        "elevatedWeeks": null,
+        "nHistory": 1
+      }
+    },
+    "romaine-lettuce": {
+      "points": [
+        {
+          "asOf": "2026-06-05",
+          "level": {
+            "basis": "wholesale",
+            "unit": "carton",
+            "medianCents": 8150,
+            "rangeCents": [
+              7800,
+              8200
+            ],
+            "nObs": 6,
+            "nFamilies": 6,
+            "nTypes": 1,
+            "nSources": 6,
+            "provenance": [
+              {
+                "source": "usda-ams-baltimore",
+                "valueCents": 8200,
+                "date": "2026-06-05"
+              },
+              {
+                "source": "usda-ams-boston",
+                "valueCents": 8900,
+                "date": "2026-06-05"
+              },
+              {
+                "source": "usda-ams-detroit",
+                "valueCents": 8100,
+                "date": "2026-06-05"
+              },
+              {
+                "source": "usda-ams-los-angeles",
+                "valueCents": 6050,
+                "date": "2026-06-05"
+              },
+              {
+                "source": "usda-ams-miami",
+                "valueCents": 7700,
+                "date": "2026-06-05"
+              },
+              {
+                "source": "usda-ams-new-york",
+                "valueCents": 8200,
+                "date": "2026-06-05"
+              }
+            ]
+          },
+          "trend": {
+            "pct": 1.6885245901639345,
+            "dir": "up",
+            "agreement": 1,
+            "nSources": 7,
+            "nFamilies": 7,
+            "nTypes": 2
+          },
+          "confidence": "medium",
+          "label": "About $78.00–$82.00/carton (wholesale reference), up +168.9% over the window. 6+ source(s) for level, 7 for trend.",
+          "provenance": [
+            {
+              "kind": "level",
+              "source": "usda-ams-baltimore",
+              "valueCents": 8200,
+              "date": "2026-06-05"
+            },
+            {
+              "kind": "level",
+              "source": "usda-ams-boston",
+              "valueCents": 8900,
+              "date": "2026-06-05"
+            },
+            {
+              "kind": "level",
+              "source": "usda-ams-detroit",
+              "valueCents": 8100,
+              "date": "2026-06-05"
+            },
+            {
+              "kind": "level",
+              "source": "usda-ams-los-angeles",
+              "valueCents": 6050,
+              "date": "2026-06-05"
+            },
+            {
+              "kind": "level",
+              "source": "usda-ams-miami",
+              "valueCents": 7700,
+              "date": "2026-06-05"
+            },
+            {
+              "kind": "level",
+              "source": "usda-ams-new-york",
+              "valueCents": 8200,
+              "date": "2026-06-05"
+            },
+            {
+              "kind": "trend",
+              "source": "usda-ams-baltimore",
+              "basis": "wholesale"
+            },
+            {
+              "kind": "trend",
+              "source": "usda-ams-boston",
+              "basis": "wholesale"
+            },
+            {
+              "kind": "trend",
+              "source": "usda-ams-detroit",
+              "basis": "wholesale"
+            },
+            {
+              "kind": "trend",
+              "source": "usda-ams-los-angeles",
+              "basis": "wholesale"
+            },
+            {
+              "kind": "trend",
+              "source": "usda-ams-miami",
+              "basis": "wholesale"
+            },
+            {
+              "kind": "trend",
+              "source": "usda-ams-new-york",
+              "basis": "wholesale"
+            },
+            {
+              "kind": "trend",
+              "source": "bls",
+              "basis": "index"
+            }
+          ]
+        }
+      ],
+      "flag": {
+        "verdict": "insufficient",
+        "actionBias": "watch",
+        "reason": "not enough history to tell a spike from a real trend — treat as real",
+        "move": null,
+        "retrace": null,
+        "elevatedWeeks": null,
+        "nHistory": 1
+      }
+    },
+    "tomato": {
+      "points": [
+        {
+          "asOf": "2026-06-05",
+          "level": {
+            "basis": "wholesale",
+            "unit": "carton",
+            "medianCents": 2275,
+            "rangeCents": [
+              2063,
+              2550
+            ],
+            "nObs": 8,
+            "nFamilies": 8,
+            "nTypes": 1,
+            "nSources": 8,
+            "provenance": [
+              {
+                "source": "usda-ams-atlanta",
+                "valueCents": 2550,
+                "date": "2026-06-05"
+              },
+              {
+                "source": "usda-ams-baltimore",
+                "valueCents": 1800,
+                "date": "2026-06-05"
+              },
+              {
+                "source": "usda-ams-boston",
+                "valueCents": 2550,
+                "date": "2026-06-05"
+              },
+              {
+                "source": "usda-ams-chicago",
+                "valueCents": 2350,
+                "date": "2026-06-05"
+              },
+              {
+                "source": "usda-ams-detroit",
+                "valueCents": 3100,
+                "date": "2026-06-05"
+              },
+              {
+                "source": "usda-ams-los-angeles",
+                "valueCents": 2150,
+                "date": "2026-06-05"
+              },
+              {
+                "source": "usda-ams-miami",
+                "valueCents": 2200,
+                "date": "2026-06-05"
+              },
+              {
+                "source": "usda-ams-new-york",
+                "valueCents": 1575,
+                "date": "2026-06-05"
+              }
+            ]
+          },
+          "trend": {
+            "pct": -0.06521739130434782,
+            "dir": "down",
+            "agreement": 0.667,
+            "nSources": 9,
+            "nFamilies": 9,
+            "nTypes": 2
+          },
+          "confidence": "medium",
+          "label": "About $20.63–$25.50/carton (wholesale reference), down -6.5% over the window. 8+ source(s) for level, 9 for trend.",
+          "provenance": [
+            {
+              "kind": "level",
+              "source": "usda-ams-atlanta",
+              "valueCents": 2550,
+              "date": "2026-06-05"
+            },
+            {
+              "kind": "level",
+              "source": "usda-ams-baltimore",
+              "valueCents": 1800,
+              "date": "2026-06-05"
+            },
+            {
+              "kind": "level",
+              "source": "usda-ams-boston",
+              "valueCents": 2550,
+              "date": "2026-06-05"
+            },
+            {
+              "kind": "level",
+              "source": "usda-ams-chicago",
+              "valueCents": 2350,
+              "date": "2026-06-05"
+            },
+            {
+              "kind": "level",
+              "source": "usda-ams-detroit",
+              "valueCents": 3100,
+              "date": "2026-06-05"
+            },
+            {
+              "kind": "level",
+              "source": "usda-ams-los-angeles",
+              "valueCents": 2150,
+              "date": "2026-06-05"
+            },
+            {
+              "kind": "level",
+              "source": "usda-ams-miami",
+              "valueCents": 2200,
+              "date": "2026-06-05"
+            },
+            {
+              "kind": "level",
+              "source": "usda-ams-new-york",
+              "valueCents": 1575,
+              "date": "2026-06-05"
+            },
+            {
+              "kind": "trend",
+              "source": "usda-ams-atlanta",
+              "basis": "wholesale"
+            },
+            {
+              "kind": "trend",
+              "source": "usda-ams-baltimore",
+              "basis": "wholesale"
+            },
+            {
+              "kind": "trend",
+              "source": "usda-ams-boston",
+              "basis": "wholesale"
+            },
+            {
+              "kind": "trend",
+              "source": "usda-ams-chicago",
+              "basis": "wholesale"
+            },
+            {
+              "kind": "trend",
+              "source": "usda-ams-detroit",
+              "basis": "wholesale"
+            },
+            {
+              "kind": "trend",
+              "source": "usda-ams-los-angeles",
+              "basis": "wholesale"
+            },
+            {
+              "kind": "trend",
+              "source": "usda-ams-miami",
+              "basis": "wholesale"
+            },
+            {
+              "kind": "trend",
+              "source": "usda-ams-new-york",
+              "basis": "wholesale"
+            },
+            {
+              "kind": "trend",
+              "source": "bls",
+              "basis": "index"
+            }
+          ]
+        }
+      ],
+      "flag": {
+        "verdict": "insufficient",
+        "actionBias": "watch",
+        "reason": "not enough history to tell a spike from a real trend — treat as real",
+        "move": null,
+        "retrace": null,
+        "elevatedWeeks": null,
+        "nHistory": 1
+      }
+    },
+    "onion": {
+      "points": [
+        {
+          "asOf": "2026-06-05",
+          "level": {
+            "basis": "wholesale",
+            "unit": "sack",
+            "medianCents": 2250,
+            "rangeCents": [
+              2100,
+              2475
+            ],
+            "nObs": 7,
+            "nFamilies": 7,
+            "nTypes": 1,
+            "nSources": 7,
+            "provenance": [
+              {
+                "source": "usda-ams-atlanta",
+                "valueCents": 2450,
+                "date": "2026-06-05"
+              },
+              {
+                "source": "usda-ams-baltimore",
+                "valueCents": 1950,
+                "date": "2026-06-05"
+              },
+              {
+                "source": "usda-ams-boston",
+                "valueCents": 2500,
+                "date": "2026-06-05"
+              },
+              {
+                "source": "usda-ams-detroit",
+                "valueCents": 2850,
+                "date": "2026-06-05"
+              },
+              {
+                "source": "usda-ams-los-angeles",
+                "valueCents": 1550,
+                "date": "2026-06-05"
+              },
+              {
+                "source": "usda-ams-miami",
+                "valueCents": 2250,
+                "date": "2026-06-05"
+              },
+              {
+                "source": "usda-ams-new-york",
+                "valueCents": 2250,
+                "date": "2026-06-05"
+              }
+            ]
+          },
+          "trend": {
+            "pct": 0.16666666666666666,
+            "dir": "up",
+            "agreement": 0.714,
+            "nSources": 7,
+            "nFamilies": 7,
+            "nTypes": 1
+          },
+          "confidence": "low",
+          "label": "About $21.00–$24.75/sack (wholesale reference), up +16.7% over the window. 7+ source(s) for level, 7 for trend.",
+          "provenance": [
+            {
+              "kind": "level",
+              "source": "usda-ams-atlanta",
+              "valueCents": 2450,
+              "date": "2026-06-05"
+            },
+            {
+              "kind": "level",
+              "source": "usda-ams-baltimore",
+              "valueCents": 1950,
+              "date": "2026-06-05"
+            },
+            {
+              "kind": "level",
+              "source": "usda-ams-boston",
+              "valueCents": 2500,
+              "date": "2026-06-05"
+            },
+            {
+              "kind": "level",
+              "source": "usda-ams-detroit",
+              "valueCents": 2850,
+              "date": "2026-06-05"
+            },
+            {
+              "kind": "level",
+              "source": "usda-ams-los-angeles",
+              "valueCents": 1550,
+              "date": "2026-06-05"
+            },
+            {
+              "kind": "level",
+              "source": "usda-ams-miami",
+              "valueCents": 2250,
+              "date": "2026-06-05"
+            },
+            {
+              "kind": "level",
+              "source": "usda-ams-new-york",
+              "valueCents": 2250,
+              "date": "2026-06-05"
+            },
+            {
+              "kind": "trend",
+              "source": "usda-ams-atlanta",
+              "basis": "wholesale"
+            },
+            {
+              "kind": "trend",
+              "source": "usda-ams-baltimore",
+              "basis": "wholesale"
+            },
+            {
+              "kind": "trend",
+              "source": "usda-ams-boston",
+              "basis": "wholesale"
+            },
+            {
+              "kind": "trend",
+              "source": "usda-ams-detroit",
+              "basis": "wholesale"
+            },
+            {
+              "kind": "trend",
+              "source": "usda-ams-los-angeles",
+              "basis": "wholesale"
+            },
+            {
+              "kind": "trend",
+              "source": "usda-ams-miami",
+              "basis": "wholesale"
+            },
+            {
+              "kind": "trend",
+              "source": "usda-ams-new-york",
+              "basis": "wholesale"
+            }
+          ]
+        }
+      ],
+      "flag": {
+        "verdict": "insufficient",
+        "actionBias": "watch",
+        "reason": "not enough history to tell a spike from a real trend — treat as real",
+        "move": null,
+        "retrace": null,
+        "elevatedWeeks": null,
+        "nHistory": 1
+      }
+    },
+    "russet-potato": {
+      "points": [
+        {
+          "asOf": "2026-06-05",
+          "level": {
+            "basis": "wholesale",
+            "unit": "sack",
+            "medianCents": 1700,
+            "rangeCents": [
+              1581,
+              2038
+            ],
+            "nObs": 8,
+            "nFamilies": 8,
+            "nTypes": 1,
+            "nSources": 8,
+            "provenance": [
+              {
+                "source": "usda-ams-atlanta",
+                "valueCents": 1750,
+                "date": "2026-06-05"
+              },
+              {
+                "source": "usda-ams-baltimore",
+                "valueCents": 1950,
+                "date": "2026-06-05"
+              },
+              {
+                "source": "usda-ams-boston",
+                "valueCents": 2425,
+                "date": "2026-06-05"
+              },
+              {
+                "source": "usda-ams-chicago",
+                "valueCents": 1650,
+                "date": "2026-06-05"
+              },
+              {
+                "source": "usda-ams-detroit",
+                "valueCents": 1525,
+                "date": "2026-06-05"
+              },
+              {
+                "source": "usda-ams-los-angeles",
+                "valueCents": 1350,
+                "date": "2026-06-05"
+              },
+              {
+                "source": "usda-ams-miami",
+                "valueCents": 2300,
+                "date": "2026-06-05"
+              },
+              {
+                "source": "usda-ams-new-york",
+                "valueCents": 1600,
+                "date": "2026-06-05"
+              }
+            ]
+          },
+          "trend": {
+            "pct": 0,
+            "dir": "flat",
+            "agreement": 0.222,
+            "nSources": 9,
+            "nFamilies": 9,
+            "nTypes": 2
+          },
+          "confidence": "low",
+          "label": "About $15.81–$20.38/sack (wholesale reference), flat +0% over the window. 8+ source(s) for level, 9 for trend.",
+          "provenance": [
+            {
+              "kind": "level",
+              "source": "usda-ams-atlanta",
+              "valueCents": 1750,
+              "date": "2026-06-05"
+            },
+            {
+              "kind": "level",
+              "source": "usda-ams-baltimore",
+              "valueCents": 1950,
+              "date": "2026-06-05"
+            },
+            {
+              "kind": "level",
+              "source": "usda-ams-boston",
+              "valueCents": 2425,
+              "date": "2026-06-05"
+            },
+            {
+              "kind": "level",
+              "source": "usda-ams-chicago",
+              "valueCents": 1650,
+              "date": "2026-06-05"
+            },
+            {
+              "kind": "level",
+              "source": "usda-ams-detroit",
+              "valueCents": 1525,
+              "date": "2026-06-05"
+            },
+            {
+              "kind": "level",
+              "source": "usda-ams-los-angeles",
+              "valueCents": 1350,
+              "date": "2026-06-05"
+            },
+            {
+              "kind": "level",
+              "source": "usda-ams-miami",
+              "valueCents": 2300,
+              "date": "2026-06-05"
+            },
+            {
+              "kind": "level",
+              "source": "usda-ams-new-york",
+              "valueCents": 1600,
+              "date": "2026-06-05"
+            },
+            {
+              "kind": "trend",
+              "source": "usda-ams-atlanta",
+              "basis": "wholesale"
+            },
+            {
+              "kind": "trend",
+              "source": "usda-ams-baltimore",
+              "basis": "wholesale"
+            },
+            {
+              "kind": "trend",
+              "source": "usda-ams-boston",
+              "basis": "wholesale"
+            },
+            {
+              "kind": "trend",
+              "source": "usda-ams-chicago",
+              "basis": "wholesale"
+            },
+            {
+              "kind": "trend",
+              "source": "usda-ams-detroit",
+              "basis": "wholesale"
+            },
+            {
+              "kind": "trend",
+              "source": "usda-ams-los-angeles",
+              "basis": "wholesale"
+            },
+            {
+              "kind": "trend",
+              "source": "usda-ams-miami",
+              "basis": "wholesale"
+            },
+            {
+              "kind": "trend",
+              "source": "usda-ams-new-york",
+              "basis": "wholesale"
+            },
+            {
+              "kind": "trend",
+              "source": "bls",
+              "basis": "index"
+            }
+          ]
+        }
+      ],
+      "flag": {
+        "verdict": "insufficient",
+        "actionBias": "watch",
+        "reason": "not enough history to tell a spike from a real trend — treat as real",
+        "move": null,
+        "retrace": null,
+        "elevatedWeeks": null,
+        "nHistory": 1
+      }
+    },
+    "butter": {
+      "points": [
+        {
+          "asOf": "2026-05-30",
+          "level": {
+            "basis": "wholesale",
+            "unit": "lb",
+            "medianCents": 162,
+            "rangeCents": [
+              162,
+              162
+            ],
+            "nObs": 1,
+            "nFamilies": 1,
+            "nTypes": 1,
+            "nSources": 1,
+            "provenance": [
+              {
+                "source": "usda-lmr",
+                "valueCents": 162,
+                "date": "2026-05-30"
+              }
+            ]
+          },
+          "trend": {
+            "pct": -0.10970116457921335,
+            "dir": "down",
+            "agreement": 0.667,
+            "nSources": 3,
+            "nFamilies": 3,
+            "nTypes": 3
+          },
+          "confidence": "medium",
+          "label": "About $1.62/lb (wholesale reference, single source — range not yet measurable), down -11% over the window. 1+ source(s) for level, 3 for trend.",
+          "provenance": [
+            {
+              "kind": "level",
+              "source": "usda-lmr",
+              "valueCents": 162,
+              "date": "2026-05-30"
+            },
+            {
+              "kind": "trend",
+              "source": "usda-lmr",
+              "basis": "wholesale"
+            },
+            {
+              "kind": "trend",
+              "source": "bls",
+              "basis": "index"
+            },
+            {
+              "kind": "trend",
+              "source": "fred",
+              "basis": "retail"
+            }
+          ]
+        },
+        {
+          "asOf": "2026-04-01",
+          "level": {
+            "basis": "retail",
+            "unit": "lb",
+            "medianCents": 422,
+            "rangeCents": [
+              422,
+              422
+            ],
+            "nObs": 1,
+            "nFamilies": 1,
+            "nTypes": 1,
+            "nSources": 1,
+            "provenance": [
+              {
+                "source": "fred",
+                "valueCents": 422,
+                "date": "2026-04-01"
+              }
+            ]
+          },
+          "trend": {
+            "pct": -0.3248829556702962,
+            "dir": "down",
+            "agreement": 0.5,
+            "nSources": 2,
+            "nFamilies": 2,
+            "nTypes": 2
+          },
+          "confidence": "low",
+          "label": "About $4.22/lb (retail reference, single source — range not yet measurable), down -32.5% over the window. 1+ source(s) for level, 2 for trend.",
+          "provenance": [
+            {
+              "kind": "level",
+              "source": "fred",
+              "valueCents": 422,
+              "date": "2026-04-01"
+            },
+            {
+              "kind": "trend",
+              "source": "bls",
+              "basis": "index"
+            },
+            {
+              "kind": "trend",
+              "source": "fred",
+              "basis": "retail"
+            }
+          ]
+        }
+      ],
+      "flag": {
+        "verdict": "insufficient",
+        "actionBias": "watch",
+        "reason": "not enough history to tell a spike from a real trend — treat as real",
+        "move": null,
+        "retrace": null,
+        "elevatedWeeks": null,
+        "nHistory": 2
+      }
+    },
+    "cheddar-cheese": {
+      "points": [
+        {
+          "asOf": "2026-05-30",
+          "level": {
+            "basis": "wholesale",
+            "unit": "lb",
+            "medianCents": 166,
+            "rangeCents": [
+              166,
+              166
+            ],
+            "nObs": 1,
+            "nFamilies": 1,
+            "nTypes": 1,
+            "nSources": 1,
+            "provenance": [
+              {
+                "source": "usda-lmr",
+                "valueCents": 166,
+                "date": "2026-05-30"
+              }
+            ]
+          },
+          "trend": {
+            "pct": 0.12351109907958845,
+            "dir": "up",
+            "agreement": 1,
+            "nSources": 3,
+            "nFamilies": 3,
+            "nTypes": 3
+          },
+          "confidence": "medium",
+          "label": "About $1.66/lb (wholesale reference, single source — range not yet measurable), up +12.4% over the window. 1+ source(s) for level, 3 for trend.",
+          "provenance": [
+            {
+              "kind": "level",
+              "source": "usda-lmr",
+              "valueCents": 166,
+              "date": "2026-05-30"
+            },
+            {
+              "kind": "trend",
+              "source": "usda-lmr",
+              "basis": "wholesale"
+            },
+            {
+              "kind": "trend",
+              "source": "bls",
+              "basis": "index"
+            },
+            {
+              "kind": "trend",
+              "source": "fred",
+              "basis": "retail"
+            }
+          ]
+        },
+        {
+          "asOf": "2026-04-01",
+          "level": {
+            "basis": "retail",
+            "unit": "lb",
+            "medianCents": 603,
+            "rangeCents": [
+              603,
+              603
+            ],
+            "nObs": 1,
+            "nFamilies": 1,
+            "nTypes": 1,
+            "nSources": 1,
+            "provenance": [
+              {
+                "source": "fred",
+                "valueCents": 603,
+                "date": "2026-04-01"
+              }
+            ]
+          },
+          "trend": {
+            "pct": 0.02388785069048472,
+            "dir": "up",
+            "agreement": 1,
+            "nSources": 2,
+            "nFamilies": 2,
+            "nTypes": 2
+          },
+          "confidence": "medium",
+          "label": "About $6.03/lb (retail reference, single source — range not yet measurable), up +2.4% over the window. 1+ source(s) for level, 2 for trend.",
+          "provenance": [
+            {
+              "kind": "level",
+              "source": "fred",
+              "valueCents": 603,
+              "date": "2026-04-01"
+            },
+            {
+              "kind": "trend",
+              "source": "bls",
+              "basis": "index"
+            },
+            {
+              "kind": "trend",
+              "source": "fred",
+              "basis": "retail"
+            }
+          ]
+        }
+      ],
+      "flag": {
+        "verdict": "insufficient",
+        "actionBias": "watch",
+        "reason": "not enough history to tell a spike from a real trend — treat as real",
+        "move": null,
+        "retrace": null,
+        "elevatedWeeks": null,
+        "nHistory": 2
+      }
+    },
+    "eggs": {
+      "points": [
+        {
+          "asOf": "2026-04-01",
+          "level": {
+            "basis": "retail",
+            "unit": "dozen",
+            "medianCents": 225,
+            "rangeCents": [
+              225,
+              225
+            ],
+            "nObs": 1,
+            "nFamilies": 1,
+            "nTypes": 1,
+            "nSources": 1,
+            "provenance": [
+              {
+                "source": "fred",
+                "valueCents": 225,
+                "date": "2026-04-01"
+              }
+            ]
+          },
+          "trend": {
+            "pct": -0.6569520743305018,
+            "dir": "down",
+            "agreement": 0.5,
+            "nSources": 2,
+            "nFamilies": 2,
+            "nTypes": 2
+          },
+          "confidence": "low",
+          "label": "About $2.25/dozen (retail reference, single source — range not yet measurable), down -65.7% over the window. 1+ source(s) for level, 2 for trend.",
+          "provenance": [
+            {
+              "kind": "level",
+              "source": "fred",
+              "valueCents": 225,
+              "date": "2026-04-01"
+            },
+            {
+              "kind": "trend",
+              "source": "bls",
+              "basis": "index"
+            },
+            {
+              "kind": "trend",
+              "source": "fred",
+              "basis": "retail"
+            }
+          ]
+        }
+      ],
+      "flag": {
+        "verdict": "insufficient",
+        "actionBias": "watch",
+        "reason": "not enough history to tell a spike from a real trend — treat as real",
+        "move": null,
+        "retrace": null,
+        "elevatedWeeks": null,
+        "nHistory": 1
+      }
+    },
+    "vegetable-oil": {
+      "points": [
+        {
+          "asOf": "2026-04-01",
+          "level": null,
+          "trend": {
+            "pct": 0.1294851749963952,
+            "dir": "up",
+            "agreement": 1,
+            "nSources": 2,
+            "nFamilies": 2,
+            "nTypes": 2
+          },
+          "confidence": "directional",
+          "label": "Directional only — no comparable price level. The market moved up +12.9% across 2 source(s).",
+          "provenance": [
+            {
+              "kind": "trend",
+              "source": "bls",
+              "basis": "index"
+            },
+            {
+              "kind": "trend",
+              "source": "fred",
+              "basis": "index"
+            }
+          ]
+        }
+      ],
+      "flag": {
+        "verdict": "insufficient",
+        "actionBias": "watch",
+        "reason": "not enough history to tell a spike from a real trend — treat as real",
+        "move": null,
+        "retrace": null,
+        "elevatedWeeks": null,
+        "nHistory": 0
+      }
+    }
+  },
+  "basket": {
+    "pct": 0.09086693645517173,
+    "dir": "up",
+    "agreement": 0.678,
+    "coverage": 1,
+    "nContributing": 16,
+    "nDeclared": 16,
+    "asOf": "2026-04-01",
+    "confidence": "high",
+    "contributors": [
+      {
+        "ingredient": "chicken-breast",
+        "pct": 0.09086693645517173,
+        "weight": 0.17
+      },
+      {
+        "ingredient": "vegetable-oil",
+        "pct": 0.1294851749963952,
+        "weight": 0.12
+      },
+      {
+        "ingredient": "ribeye",
+        "pct": 0.30280175394915204,
+        "weight": 0.11
+      },
+      {
+        "ingredient": "pork-loin",
+        "pct": 0.005482818664727041,
+        "weight": 0.07
+      },
+      {
+        "ingredient": "whole-chicken",
+        "pct": -0.31766545933487,
+        "weight": 0.06
+      },
+      {
+        "ingredient": "butter",
+        "pct": -0.10970116457921335,
+        "weight": 0.06
+      },
+      {
+        "ingredient": "cheddar-cheese",
+        "pct": 0.12351109907958845,
+        "weight": 0.06
+      },
+      {
+        "ingredient": "onion",
+        "pct": 0.16666666666666666,
+        "weight": 0.055
+      },
+      {
+        "ingredient": "russet-potato",
+        "pct": 0,
+        "weight": 0.055
+      },
+      {
+        "ingredient": "pork-shoulder",
+        "pct": 0.005482818664727041,
+        "weight": 0.05
+      },
+      {
+        "ingredient": "eggs",
+        "pct": -0.6569520743305018,
+        "weight": 0.05
+      },
+      {
+        "ingredient": "romaine-lettuce",
+        "pct": 1.6885245901639345,
+        "weight": 0.05
+      },
+      {
+        "ingredient": "tomato",
+        "pct": -0.06521739130434782,
+        "weight": 0.05
+      },
+      {
+        "ingredient": "beef-tenderloin",
+        "pct": 0.028110881436045246,
+        "weight": 0.04
+      },
+      {
+        "ingredient": "shrimp",
+        "pct": -0.0014533402658149803,
+        "weight": 0.04
+      },
+      {
+        "ingredient": "salmon-fillet",
+        "pct": -0.2897017060128828,
+        "weight": 0.03
+      }
+    ]
+  }
+}

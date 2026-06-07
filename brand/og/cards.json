@@ -1443,6 +1443,34 @@
       "glyph": "margin"
     },
     {
+      "slug": "tool-vendor-benchmark",
+      "kind": "tool",
+      "locale": "en",
+      "eyebrow": "FREE · YOUR PRICES STAY ON YOUR DEVICE",
+      "title_1": "Is my price",
+      "title_italic": "moving wrong?",
+      "title_2": "Check it against your own history.",
+      "dek": "Enter an item and the price you pay. Bench tells you if it moved out of line with your own history. On-device, no login.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "margin"
+    },
+    {
+      "slug": "tool-vendor-benchmark-es",
+      "kind": "tool",
+      "locale": "es",
+      "eyebrow": "GRATIS · TUS PRECIOS SE QUEDAN EN TU DISPOSITIVO",
+      "title_1": "¿Mi precio",
+      "title_italic": "se mueve mal?",
+      "title_2": "Compáralo con tu propio historial.",
+      "dek": "Escribe un artículo y el precio que pagas. Bench te dice si se salió de línea respecto a tu propio historial. En tu dispositivo, sin cuenta.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "margin"
+    },
+    {
       "slug": "tool-store-hours",
       "kind": "tool",
       "locale": "en",
@@ -1475,10 +1503,10 @@
       "kind": "tool",
       "locale": "en",
       "eyebrow": "FREE · YOUR RECIPES STAY IN YOUR BROWSER",
-      "title_1": "What does",
-      "title_italic": "each plate",
-      "title_2": "actually cost?",
-      "dek": "Type a recipe. Get the real cost after trim and shrink, plus three menu prices.",
+      "title_1": "Know what",
+      "title_italic": "your menu",
+      "title_2": "makes you.",
+      "dek": "Upload your sales mix. See what each dish makes you per year — plus a call when a price moves.",
       "focus": {
         "type": "type"
       },
@@ -1517,10 +1545,10 @@
       "kind": "tool",
       "locale": "es",
       "eyebrow": "GRATIS · TUS RECETAS NUNCA SALEN DEL NAVEGADOR",
-      "title_1": "¿Cuánto cuesta",
-      "title_italic": "de verdad",
-      "title_2": "cada plato?",
-      "dek": "Escribe una receta. Obtén el costo real tras la merma, más tres precios sugeridos.",
+      "title_1": "Sabe cuánto",
+      "title_italic": "te deja",
+      "title_2": "tu menú.",
+      "dek": "Sube tu mezcla de ventas. Mira cuánto te deja cada plato al año — y qué hacer cuando un precio sube.",
       "focus": {
         "type": "type"
       },
@@ -6701,6 +6729,113 @@
       "glyph": "delivery"
     },
     {
+      "slug": "library-plate-cost-honest",
+      "kind": "article",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "margin",
+      "eyebrow": "OPERATIONS · 2026",
+      "title_1": "Keep your plate cost",
+      "title_italic": "honest",
+      "title_2": "when prices change.",
+      "dek": "Cost the edible portion, recompute the day a price moves, then raise, re-portion, or hold."
+    },
+    {
+      "slug": "library-plate-cost-honest-es",
+      "kind": "article",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "margin",
+      "eyebrow": "OPERACIONES · 2026",
+      "title_1": "Mantén honesto el",
+      "title_italic": "costo del plato",
+      "title_2": "cuando cambian los precios.",
+      "dek": "Cuesta la porción comestible, recalcula el día que un precio se mueve, y sube, recorta o aguanta."
+    },
+    {
+      "slug": "library-third-party-delivery-economics",
+      "kind": "article",
+      "locale": "en",
+      "eyebrow": "DELIVERY · BREAKEVEN",
+      "title_1": "Does the delivery",
+      "title_italic": "math",
+      "title_2": "actually work?",
+      "dek": "What 30% commission really costs a 12%-margin restaurant.",
+      "focus": {
+        "type": "stat",
+        "value": "30%",
+        "caption": "platform fee against a 12% operating margin",
+        "source": "DOORDASH PARTNER AGREEMENT · 2026"
+      },
+      "glyph": "delivery"
+    },
+    {
+      "slug": "library-reservation-conversion-guide",
+      "kind": "article",
+      "locale": "en",
+      "eyebrow": "CONVERSION · RESERVATIONS",
+      "title_1": "Why your restaurant",
+      "title_italic": "loses",
+      "title_2": "reservations.",
+      "dek": "Six leaks. Real dollar math. The fix for each one.",
+      "focus": {
+        "type": "funnel",
+        "label": "THE FUNNEL",
+        "data": [
+          100,
+          85,
+          73,
+          50,
+          47
+        ],
+        "labels": [
+          100,
+          85,
+          73,
+          50,
+          47
+        ],
+        "lost_label": "53 lost per 100 visitors"
+      },
+      "glyph": "reservations"
+    },
+    {
+      "slug": "library-restaurant-schema-markup-guide",
+      "kind": "article",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "code",
+      "eyebrow": "LOCAL SEO · SCHEMA",
+      "title_1": "Restaurant schema:",
+      "title_italic": "the six types",
+      "title_2": "Google uses.",
+      "dek": "Restaurant, Menu, OpeningHoursSpecification, AggregateRating, Reservation, FAQ — copy-paste JSON-LD."
+    },
+    {
+      "slug": "library-privacy-forward-restaurant-bookkeeping",
+      "kind": "article",
+      "locale": "en",
+      "accent": "ink",
+      "glyph": "code",
+      "eyebrow": "INFO SEC · OPERATOR TRUST",
+      "title_1": "Five things a ledger",
+      "title_italic": "should never",
+      "title_2": "do with your numbers.",
+      "dek": "No resale. No model training without consent. No pooled benchmark. No export wall. No quiet access creep. Each one verifiable in the terms, the network tab, or the export."
+    },
+    {
+      "slug": "library-restaurant-local-seo",
+      "kind": "article",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "local-seo",
+      "eyebrow": "LOCAL SEO · 2026",
+      "title_1": "Get your restaurant",
+      "title_italic": "found",
+      "title_2": "on Google.",
+      "dek": "Maps, the Map Pack, reviews, and getting named in AI search — what actually moves bookings."
+    },
+    {
       "slug": "glossary-above-the-fold",
       "kind": "glossary",
       "locale": "en",
@@ -10035,89 +10170,6 @@
       "title_italic": "la parte de lo comprado que termina en un plato",
       "title_2": "",
       "dek": "Para un ingrediente dado: el porcentaje del peso tal como se compra que sobrevive a la limpieza, el pelado, los huesos, la grasa y la merma de cocción."
-    },
-    {
-      "slug": "library-third-party-delivery-economics",
-      "kind": "article",
-      "locale": "en",
-      "eyebrow": "DELIVERY · BREAKEVEN",
-      "title_1": "Does the delivery",
-      "title_italic": "math",
-      "title_2": "actually work?",
-      "dek": "What 30% commission really costs a 12%-margin restaurant.",
-      "focus": {
-        "type": "stat",
-        "value": "30%",
-        "caption": "platform fee against a 12% operating margin",
-        "source": "DOORDASH PARTNER AGREEMENT · 2026"
-      },
-      "glyph": "delivery"
-    },
-    {
-      "slug": "library-reservation-conversion-guide",
-      "kind": "article",
-      "locale": "en",
-      "eyebrow": "CONVERSION · RESERVATIONS",
-      "title_1": "Why your restaurant",
-      "title_italic": "loses",
-      "title_2": "reservations.",
-      "dek": "Six leaks. Real dollar math. The fix for each one.",
-      "focus": {
-        "type": "funnel",
-        "label": "THE FUNNEL",
-        "data": [
-          100,
-          85,
-          73,
-          50,
-          47
-        ],
-        "labels": [
-          100,
-          85,
-          73,
-          50,
-          47
-        ],
-        "lost_label": "53 lost per 100 visitors"
-      },
-      "glyph": "reservations"
-    },
-    {
-      "slug": "library-restaurant-schema-markup-guide",
-      "kind": "article",
-      "locale": "en",
-      "accent": "teal",
-      "glyph": "code",
-      "eyebrow": "LOCAL SEO · SCHEMA",
-      "title_1": "Restaurant schema:",
-      "title_italic": "the six types",
-      "title_2": "Google uses.",
-      "dek": "Restaurant, Menu, OpeningHoursSpecification, AggregateRating, Reservation, FAQ — copy-paste JSON-LD."
-    },
-    {
-      "slug": "library-privacy-forward-restaurant-bookkeeping",
-      "kind": "article",
-      "locale": "en",
-      "accent": "ink",
-      "glyph": "code",
-      "eyebrow": "INFO SEC · OPERATOR TRUST",
-      "title_1": "Five things a ledger",
-      "title_italic": "should never",
-      "title_2": "do with your numbers.",
-      "dek": "No resale. No model training without consent. No pooled benchmark. No export wall. No quiet access creep. Each one verifiable in the terms, the network tab, or the export."
-    },
-    {
-      "slug": "library-restaurant-local-seo",
-      "kind": "article",
-      "locale": "en",
-      "accent": "teal",
-      "glyph": "local-seo",
-      "eyebrow": "LOCAL SEO · 2026",
-      "title_1": "Get your restaurant",
-      "title_italic": "found",
-      "title_2": "on Google.",
-      "dek": "Maps, the Map Pack, reviews, and getting named in AI search — what actually moves bookings."
     }
   ]
 }

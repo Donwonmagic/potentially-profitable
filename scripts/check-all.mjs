@@ -314,6 +314,18 @@ const CHECKS = [
   ['Themes review board (idem)','build-themes-review-board.mjs','--check'],
   ['Theme story pages (idem)','build-theme-story-pages.mjs','--check'],
   ['Cuisine landing pages (idem)','build-cuisine-landing-pages.mjs','--check'],
+  // Ingredient-yield pages are intentionally NOT in --check mode (same
+  // reason as build-sheet-pages above): the generator emits a skeleton
+  // nav that the sync-includes pass — which runs BEFORE this gate in the
+  // deploy build — expands to the canonical nav. So --check always reports
+  // drift in the build even though the committed pages are correct (the
+  // gate only passes locally if the generator is re-run last, which the
+  // deploy chain never does). The generator still runs; the pages stay
+  // covered by the site-wide gates (OG refs, image dims, hreflang, locale
+  // parity, lazy images, etc.).
+  ['Cost-index sources','check-cost-index-sources.mjs','--check'],
+  ['Cost-index sync',   'check-cost-index-sync.mjs',     '--check'],
+  ['Cost-index sync self-test','check-cost-index-sync.mjs','--self-test'],
   ['Security claims',      'check-security-claims.mjs'],
   ['Data promise rail',    'check-data-promise-rail.mjs'],
   ['Security locale parity','check-security-locale-parity.mjs'],

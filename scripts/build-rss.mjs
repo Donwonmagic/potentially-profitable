@@ -23,6 +23,7 @@
  */
 
 import fs from 'node:fs';
+import { NON_ARTICLE_LIBRARY_SLUGS } from "./lib/library-skips.mjs";
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execSync } from 'node:child_process';
@@ -103,7 +104,7 @@ function blogItems(locale) {
   // are excluded from the feed.
   const namespaces = [
     { dir: locale === 'es' ? 'es/blog' : 'blog',    urlPrefix: `${locale === 'es' ? '/es' : ''}/blog/`,    skip: new Set(['drafts']) },
-    { dir: locale === 'es' ? 'es/library' : 'library', urlPrefix: `${locale === 'es' ? '/es' : ''}/library/`, skip: new Set(['menu-design-cuisines', 'menu-design-themes']) },
+    { dir: locale === 'es' ? 'es/library' : 'library', urlPrefix: `${locale === 'es' ? '/es' : ''}/library/`, skip: NON_ARTICLE_LIBRARY_SLUGS },
   ];
   for (const { dir, urlPrefix, skip } of namespaces) {
     const root = path.join(repoRoot, dir);

@@ -6,6 +6,10 @@ This is the authoritative voice reference for any copy that ships in
 in sheet fragments (field-help, callouts, error mirrors, draft
 markers, recovery prompts).
 
+> This canon governs the studio voice on `muntin.digital`. How that voice
+> relates to the Muntin Ledger product voice — and the one boundary between
+> them — lives in `docs/brand/voice-and-naming-architecture.md`.
+
 If you are reviewing a PR that changes any of those surfaces, this
 file is the spec. Lint catches a few mechanical things; everything
 below is human-judgment.
