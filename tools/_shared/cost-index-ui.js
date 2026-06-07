@@ -159,6 +159,23 @@
       ? L(' (some weeks missing)', ' (faltan algunas semanas)') : '';
     return L('Weekly price ' + dir + gaps + '.', 'El precio semanal ' + dir + gaps + '.');
   }
+  // Percentile-of-history, stated as an honest COUNT (never a smoothed "85th
+  // percentile" — that implies a fitted distribution we don't have). Separates
+  // "expensive" from "rising": today can sit inside the typical band yet at the
+  // top of its OWN recent range. Needs >=8 valid weekly reads; the window is all
+  // the history that exists, so we say "of its last N" — never "all-time".
+  function percentileLine(values) {
+    var v = values.filter(function (x) { return typeof x === 'number' && isFinite(x); });
+    if (v.length < 8) return '';
+    var today = v[v.length - 1];
+    var prior = v.slice(0, v.length - 1);
+    var below = prior.filter(function (x) { return x <= today; }).length;
+    var n = prior.length;
+    var bucket = below >= n * 0.75 ? L(' — near the top of its recent range.', ' — cerca del tope de su rango reciente.')
+      : below <= n * 0.25 ? L(' — near the bottom of its recent range.', ' — cerca del fondo de su rango reciente.')
+        : L(' — around the middle of its recent range.', ' — cerca de la mitad de su rango reciente.');
+    return L('Higher than ' + below + ' of its last ' + n + ' weekly reads', 'Más alto que ' + below + ' de sus últimas ' + n + ' lecturas semanales') + bucket;
+  }
   function parseMoney(v) {
     var n = parseFloat(String(v == null ? '' : v).replace(/[^0-9.]/g, ''));
     return isFinite(n) && n >= 0 ? Math.round(n * 100) : null;
@@ -502,10 +519,20 @@
 
     var sparkVals = ing.spark || pickSeries(ing.input);
     var sparkText = '';
+    var pctText = '';
     if (sparkVals && sparkVals.length >= 2) {
       fig.appendChild(sparkSvg(sparkVals, r.trend.dir, r.confidence));
       sparkText = sparkShape(sparkVals);
       if (sparkText) fig.setAttribute('data-audio-alt', (fig.getAttribute('data-audio-alt') || '') + ' ' + sparkText);
+      // "today vs its own recent range" — only on a firm read (a directional/thin
+      // series can't carry an honest percentile).
+      if (r.confidence !== 'directional') {
+        pctText = percentileLine(sparkVals);
+        if (pctText) {
+          fig.appendChild(el('p', 'cp-market-percentile', pctText));
+          fig.setAttribute('data-audio-alt', (fig.getAttribute('data-audio-alt') || '') + ' ' + pctText);
+        }
+      }
     }
     // Cite the curve, and never let an index series read as a dollar price.
     var sm = ing.spark_meta;
@@ -592,6 +619,7 @@
     var srt = el('div', 'cp-sr-only');
     var caption = name + ': ' + rangeText + '; ' + trendText + '; ' + confPhrase + '; ' + metaText + '.'
       + (sparkText ? ' ' + sparkText : '')
+      + (pctText ? ' ' + pctText : '')
       + (fv ? ' ' + fv.verb + '. ' + fv.note : '')
       + (sm ? ' ' + L('Price history from ', 'Historial de precio de ') + sm.source + ', ' + sm.from + ' ' + L('to', 'a') + ' ' + sm.to + (sm.basis === 'index' ? L(' (index, not a dollar price)', ' (índice, no un precio en dólares)') : '') + '.' : '');
     srt.appendChild(el('p', null, caption));
