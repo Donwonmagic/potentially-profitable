@@ -19,6 +19,13 @@
     if (txt != null) e.textContent = txt;
     return e;
   }
+  // Privacy-respecting analytics: only ingredient keys + categorical labels
+  // (verdict, action) ever leave — never the operator's typed price. Best-effort
+  // and guarded, so a missing/blocked Plausible never breaks the tool.
+  function track(name, props) {
+    try { if (window.plausible) window.plausible(name, props ? { props: props } : undefined); }
+    catch (e) { /* analytics is best-effort */ }
+  }
 
   // "Your basket" — track ingredients; the selection (never prices) lives in the
   // URL hash (#basket=romaine,butter), so it is shareable with no storage and no
@@ -57,6 +64,7 @@
     b.addEventListener('click', function () {
       if (basket[key]) delete basket[key]; else basket[key] = 1;
       var now = !!basket[key];
+      if (now) track('Cost Index Ingredient Tracked', { ingredient: key });
       b.setAttribute('aria-pressed', now ? 'true' : 'false');
       b.textContent = now ? L('★ Tracking', '★ Siguiendo') : L('☆ Track', '☆ Seguir');
       writeBasket();
@@ -252,6 +260,7 @@
         try { ta.focus(); ta.select(); ta.setSelectionRange(0, ta.value.length); } catch (e2) { /* noop */ }
         setStatus(L('Press Ctrl/Cmd-C to copy the selected text', 'Pulsa Ctrl/Cmd-C para copiar el texto seleccionado'));
       }
+      track('Cost Index Vendor Note', { action: 'copied', ingredient: ing.key || '' });
       try {
         if (navigator.clipboard && navigator.clipboard.writeText) {
           navigator.clipboard.writeText(ta.value).then(function () { setStatus(L('Copied', 'Copiado')); }, manualCopy);
@@ -260,11 +269,14 @@
       } catch (e) { /* clipboard access can throw */ }
       manualCopy();
     });
+    mail.addEventListener('click', function () {
+      track('Cost Index Vendor Note', { action: 'mailto', ingredient: ing.key || '' });
+    });
     toggle.addEventListener('click', function () {
       var open = toggle.getAttribute('aria-expanded') !== 'true';
       toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
       region.hidden = !open;
-      if (open && ta.focus) ta.focus();
+      if (open) { track('Cost Index Vendor Note', { action: 'opened', ingredient: ing.key || '' }); if (ta.focus) ta.focus(); }
     });
 
     function fill(cents, band) {
@@ -389,8 +401,13 @@
       var note = buildVendorNote(ing, unit);
       note.root.hidden = true;
       (function (o, level, h) {
+        var priceFired = false;
         inp.addEventListener('input', function () {
           var pos = renderYou(o, level, inp.value);
+          if (pos && !priceFired) {
+            priceFired = true;
+            track('Cost Index Price Entered', { ingredient: ing.key || '', verdict: pos });
+          }
           if (pos === 'above') {
             var band = money(level.rangeCents[0]) + '–' + money(level.rangeCents[1]);
             h.fill(parseMoney(inp.value), band);

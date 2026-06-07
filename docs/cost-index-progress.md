@@ -27,8 +27,13 @@ Living record of the Cost Index / Plate effort. Update as items land. Status:
   show-only-tracked / clear), composes with search. Keys only, no storage, no-fetch. (H1 #4)
 
 ## Buildable next — no external deps (Horizon 1 runway)
-- ☐ Negotiation helper: when above band, draft a vendor email (client-side). (new)
-- ☐ Broader Plausible instrumentation (ingredient opened, price entered, above/in/below). (H1 #5)
+- ✅ Negotiation helper: when above band, an editable vendor note — copy
+  (clipboard + select fallback) or mailto. Honest framing ("typical range from
+  public sources"); sample-data caution; a11y disclosure + aria-live. (done)
+- ✅ Plausible instrumentation — privacy-respecting (ingredient key + label only,
+  never the typed price). Events: `Cost Index Price Entered` {ingredient, verdict
+  above/in/below}, `Cost Index Ingredient Tracked` {ingredient}, `Cost Index Vendor
+  Note` {action opened/copied/mailto, ingredient}. (H1 #5 done.)
 - ☐ Confidence-driven UI polish; "biggest gap to market" ordering once prices entered.
 - ☐ Shareable per-ingredient OG "market snapshot" cards. (new)
 
