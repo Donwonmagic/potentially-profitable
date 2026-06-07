@@ -131,10 +131,20 @@ function main() {
     }
   }
 
-  // Attach the spike-vs-structural flag per ingredient (from its own history) —
-  // the "should I act?" read the render/Plate fork consumes. Thin history → 'insufficient'.
+  // Attach the spike-vs-structural flag per ingredient — the "should I act?" read
+  // the render/Plate fork consumes. Classify on the DEEP history series (the curve
+  // that actually exists this run) rather than the thin vendored points[] (one
+  // snapshot per weekly run), so the buy/hold/watch verb is live immediately
+  // instead of reading 'insufficient' until weeks of points accrue. Falls back to
+  // points[] when there's no richer history. Spike.classify wants newest-first
+  // { level:{medianCents} }; history is {date,valueCents} oldest→newest.
   for (const k of Object.keys(out.ingredients)) {
-    out.ingredients[k].flag = Spike.classify(out.ingredients[k].points || []);
+    const hist = out.ingredients[k].history;
+    const pts = out.ingredients[k].points || [];
+    const fromHistory = Array.isArray(hist) && hist.length >= pts.length && hist.length >= 2
+      ? hist.slice().reverse().map((h) => ({ level: { medianCents: h.valueCents }, asOf: h.date }))
+      : pts;
+    out.ingredients[k].flag = Spike.classify(fromHistory);
   }
 
   // Drivers (corn/soybeans/diesel/electricity): the explanatory "why" layer.
