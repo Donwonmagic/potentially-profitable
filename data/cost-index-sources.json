@@ -492,7 +492,11 @@
         "filters": {
           "class": "Large",
           "color": "White",
-          "environment": "Caged"
+          "environment": "Caged",
+          "egg_type": "Cartoned",
+          "grade": "Grade A",
+          "delivery": "Delivered Warehouse",
+          "region": "National"
         },
         "reducer": "single",
         "fields": {
@@ -504,7 +508,7 @@
         "dateField": "report_date",
         "unit": "dozen",
         "windowDays": 60,
-        "_report": "Weekly Combined Regional Shell Egg Report (AMS_2848), section \"Report Detail Simple\" (the Weighted sections are empty). Filter to the standard commodity egg: class=Large, color=White, environment=Caged; median avg_price across regions. price_unit read per-row (priceUnitField) so cents/dollars is auto. Replaces the FRED retail proxy."
+        "_report": "Weekly Combined Regional Shell Egg Report (AMS_2848), section \"Report Detail Simple\". Pin the NATIONAL Delivered-Warehouse Grade A Large White Caged Cartoned row — the standard wholesale benchmark (excludes farm-gate FOB ~32c and store-door). price_unit read per-row. NOTE: eggs genuinely run ~55-65c/doz wholesale in the 2026 post-shortage oversupply — that is real, not a unit error."
       }
     },
     "vegetable-oil": {
