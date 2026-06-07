@@ -129,3 +129,14 @@ test('normalizeAms priceUnit Dollars Per Cwt → dollars per lb', () => {
   const out = S.normalizeAms(beef, { source: 'usda-lmr', basis: 'wholesale', reducer: 'wtdAvg', priceUnit: 'Dollars Per Cwt', commodity: 'ribeye', unit: 'lb' });
   assert.equal(out.points[0].value, 11.59); // $1159/cwt → $11.59/lb
 });
+
+test('normalizeEia parses response.data, skips nulls, sorts oldest→newest (basis index)', () => {
+  const eia = { response: { dateFormat: 'YYYY-MM', data: [
+    { period: '2026-03', price: '12.88', 'price-units': 'cents per kilowatthour' },
+    { period: '2026-04', price: null, 'price-units': 'cents per kilowatthour' }, // preliminary → skipped
+    { period: '2026-02', price: '12.61', 'price-units': 'cents per kilowatthour' },
+  ] } };
+  const out = S.normalizeEia(eia, { source: 'eia', basis: 'index', value: 'price' });
+  assert.equal(out.basis, 'index');
+  assert.deepEqual(out.points, [{ date: '2026-02-01', value: 12.61 }, { date: '2026-03-01', value: 12.88 }]);
+});

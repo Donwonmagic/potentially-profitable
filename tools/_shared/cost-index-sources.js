@@ -128,6 +128,25 @@
     return { source: meta.source || 'usda-ams', basis: meta.basis || 'wholesale', unit: meta.unit || 'usd', points: points };
   }
 
+  // EIA API v2: rows at json.response.data[]; period is 'YYYY-MM' (monthly) or
+  // 'YYYY' (annual); the value column is meta.value (e.g. 'price', a STRING since
+  // 2024) and units live under 'price-units'. Recent months can be null → skip.
+  // Drivers only — basis 'index' (an energy direction signal, never a $ level).
+  function normalizeEia(json, meta) {
+    meta = meta || {};
+    var rows = (json && json.response && json.response.data) || [];
+    var valueCol = meta.value || 'price';
+    var points = rows.map(function (r) {
+      if (!r) return null;
+      var raw = r[valueCol];
+      var v = (raw == null) ? null : parseFloat(raw);
+      var p = String(r.period || '');
+      var date = /^\d{4}-\d{2}$/.test(p) ? p + '-01' : (/^\d{4}$/.test(p) ? p + '-01-01' : isoDate(p));
+      return (date && v != null && isFinite(v)) ? { date: date, value: v } : null;
+    }).filter(Boolean).sort(byDate);
+    return { source: meta.source || 'eia', basis: meta.basis || 'index', unit: meta.unit || 'index', points: points };
+  }
+
   function latestDate(outputs) {
     var d = null;
     (outputs || []).forEach(function (o) {
@@ -157,6 +176,7 @@
     normalizeBls: normalizeBls,
     reduceAmsRow: reduceAmsRow,
     normalizeAms: normalizeAms,
+    normalizeEia: normalizeEia,
     buildCompositeInput: buildCompositeInput
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;

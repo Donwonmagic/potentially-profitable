@@ -139,6 +139,10 @@ async function liveFetch(ingredient, m) {
     // across species; normalizeNoaaTrade filters by commodity.
     try { out.noaa = await F.fetchNoaaTrade({ years: m.noaa.years }); } catch (e) { /* skip; others contribute */ }
   }
+  if (m.eia && process.env.EIA_KEY) {
+    // EIA v2 (electricity etc.) — needs EIA_KEY; an energy-direction index signal.
+    try { out.eia = await F.fetchEia(m.eia); } catch (e) { /* skip; transient/missing */ }
+  }
   return out;
 }
 
@@ -175,6 +179,7 @@ function toOutputs(ingredient, raw, m) {
   if (raw.noaa && typeof S.normalizeNoaaTrade === 'function') { const o = S.normalizeNoaaTrade(raw.noaa, { source: 'noaa', basis: 'wholesale', commodity: m.noaa && m.noaa.commodity, hts: m.noaa && m.noaa.hts, unit: (m.noaa && m.noaa.unit) || 'lb' }); o.family = 'noaa'; o.type = 'noaa-trade'; if (o.points.length) outs.push(o); }
   if (raw.bls) { const o = S.normalizeBls(raw.bls, { source: 'bls', basis: 'index' }); o.family = (m.bls && m.bls.family) || 'bls'; o.type = (m.bls && m.bls.type) || 'bls'; if (o.points.length) outs.push(o); }
   if (raw.fred) { const o = S.normalizeFred(raw.fred, { source: 'fred', basis: (m.fred && m.fred.basis) || 'index', unit: m.fred && m.fred.unit }); o.family = (m.fred && m.fred.family) || 'fred'; o.type = (m.fred && m.fred.type) || 'fred'; if (o.points.length) outs.push(o); }
+  if (raw.eia && typeof S.normalizeEia === 'function') { const o = S.normalizeEia(raw.eia, { source: 'eia', basis: 'index', value: (m.eia && m.eia.value) || 'price' }); o.family = (m.eia && m.eia.family) || m.family || 'eia'; o.type = 'eia'; if (o.points.length) outs.push(o); }
   return outs;
 }
 
