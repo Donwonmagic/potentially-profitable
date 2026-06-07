@@ -604,10 +604,20 @@
   var xlink = el('p', 'cp-market-crosslink');
   xlink.appendChild(document.createTextNode(L('Costing a specific dish? ', '¿Costeando un platillo? ')));
   var px = el('a', null, L('Use the free Plate Cost calculator', 'Usa la calculadora Plate Cost gratis'));
-  px.href = '/tools/plate-cost/';
+  px.href = (es ? '/es' : '') + '/tools/plate-cost/';
   xlink.appendChild(px);
   xlink.appendChild(document.createTextNode('.'));
   card.insertBefore(xlink, document.getElementById('cpMarketCta'));
+
+  // Cross-wire to Bench — the complement: this card reads the MARKET; Bench
+  // reads the operator's OWN saved prices ("did my vendor move me out of line").
+  var blink = el('p', 'cp-market-crosslink');
+  blink.appendChild(document.createTextNode(L('Checking your own price history instead? ', '¿Revisas tu propio historial de precios? ')));
+  var bx = el('a', null, L('See if a vendor moved you out of line with Bench', 'Mira si un proveedor te sacó de línea con Bench'));
+  bx.href = (es ? '/es' : '') + '/tools/vendor-benchmark/';
+  blink.appendChild(bx);
+  blink.appendChild(document.createTextNode('.'));
+  card.insertBefore(blink, document.getElementById('cpMarketCta'));
 
   card.hidden = false;
 })();

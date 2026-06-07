@@ -37,8 +37,35 @@ Living record of the Cost Index / Plate effort. Update as items land. Status:
 - ✅ "Where you're overpaying most" live summary — as prices are entered, ranks the
   ingredients furthest above the typical top (p75) into one prioritized action line.
   Per-unit gaps (no cross-unit summing); aria-live, dedup'd to limit announcements. (done)
+- ✅ Cross-wire Cost Pulse ⇄ Bench (vendor-benchmark): the market read vs. the
+  operator's own price history — so it's clear which tool answers which question. (done)
 - ☐ Shareable per-ingredient OG "market snapshot" cards. (new)
 - ☐ Confidence-driven card ordering (surface high-confidence, big-move items first).
+
+## Architecture reconciliation (post-merge audit, 2026-06-07)
+Two Cost Index streams now coexist; a 10-point audit found NO critical conflict.
+Decisions recorded so they aren't relitigated:
+- **`data/cost-index.js` (preview seed) vs `data/cost-index.json` (gated output).**
+  Complementary by design. `cost-index.js` ships RAW engine input; the browser runs
+  `composite-price.assess()` live (no-fetch). `cost-index.json` is the fact-gated
+  BAKED output written by `scripts/build-cost-index.mjs` and guarded by
+  `check-cost-index-sync.mjs` (verified sources only, bounds, <120-day freshness).
+  It is currently EMPTY (all sources `verified:false` — gated on founder API keys).
+  DECISION: when sources are verified and the JSON populates, the browser seed
+  `cost-index.js` should be GENERATED from the gated JSON (status flips
+  preview→live; the UI's preview banner already keys off `DATA.status`). Until then,
+  the labeled preview is correct and the surface needs no change. Do NOT hand-edit
+  `cost-index.js` to fake "live" numbers — that bypasses the fact gate.
+- **Duplicated stats primitives** (`median`/`percentile`/`weightedMedian`/`mean`) exist
+  in both `composite-price.js` (Stream A, PARITY-mirrored to Ledger) and the Node-side
+  `cost-spike.js`/`cost-basket.js`/`cost-leadlag.js` (Stream B). DECISION: leave as-is
+  for now. Severity is low (deterministic math, each independently tested), and
+  `composite-price.js` is under the parity contract — extracting a shared `stats.js`
+  would force a mirrored refactor in the Ledger port for little gain. Revisit only if
+  the math needs to change.
+- **Bench vs Cost Pulse**: complementary, not duplicative (own-history hike detector vs
+  market read). Now cross-linked both ways. Parity contract: single canonical source
+  intact (`composite-price.js` + `cost-index-sources.js`); Stream B reuses them.
 
 ## Gated — needs founder env (the big value)
 - ⛔ H2: flip index preview → live (USDA/BLS/FRED keys); real freshness/history; last-good banner.
