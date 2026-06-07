@@ -147,7 +147,7 @@
   function renderYou(out, lvl, val) {
     while (out.firstChild) out.removeChild(out.firstChild);
     var cents = parseMoney(val);
-    if (cents == null) return;
+    if (cents == null) return null;
     var p25 = lvl.rangeCents[0], p75 = lvl.rangeCents[1], median = lvl.medianCents;
     var pos = cents < p25 ? 'below' : cents > p75 ? 'above' : 'in';
     out.appendChild(bandSvg(p25, p75, median, cents));
@@ -163,6 +163,121 @@
               'Pagas ' + money(cents) + ' — dentro del rango típico ' + band + '.'));
     verdict.setAttribute('data-pos', pos);
     out.appendChild(verdict);
+    return pos;
+  }
+
+  // Negotiation helper — when an operator sits above the band, offer a vendor
+  // note they can edit, copy, or open in their mail app. Client-side only (no
+  // fetch); the draft cites their own price + the displayed range, framed as a
+  // "typical range from public sources" — never as a live or authoritative
+  // quote. Built once per ingredient; renderYou toggles it per keystroke.
+  var preview = DATA.status === 'preview';
+  function vendorDraft(name, unit, cents, band) {
+    return L(
+      'Hi [vendor rep],\n\n' +
+      'Thank you for taking care of my orders — I value working with you and want to keep my business here.\n\n' +
+      'I am reviewing my food costs and had a question about ' + name + ' (' + unit + '). ' +
+      'I currently pay ' + money(cents) + ' per ' + unit + '. ' +
+      'Public market data shows a typical range of ' + band + ' per ' + unit + ' right now, ' +
+      'so I wanted to ask if we can look at it together.\n\n' +
+      'I order this regularly and plan to keep doing so. Is there room to bring my price closer to that range, ' +
+      'or a different pack or standing order that would help?\n\n' +
+      'Could you let me know before my next order?\n\n' +
+      'Thanks again,\n[your name]\n[restaurant name]',
+
+      'Hola [proveedor]:\n\n' +
+      'Gracias por atender mis pedidos. Valoro trabajar con usted y quiero seguir comprando aquí.\n\n' +
+      'Estoy revisando mis costos y tengo una pregunta sobre ' + name + ' (' + unit + '). ' +
+      'Actualmente pago ' + money(cents) + ' por ' + unit + '. ' +
+      'Los datos públicos del mercado muestran un rango típico de ' + band + ' por ' + unit + ' en este momento, ' +
+      'así que quería pedirle que lo revisemos juntos.\n\n' +
+      'Compro este producto con regularidad y pienso seguir haciéndolo. ¿Habría posibilidad de acercar mi precio a ese rango, ' +
+      'o algún tamaño de presentación o pedido fijo que ayude?\n\n' +
+      '¿Me podría avisar antes de mi próximo pedido?\n\n' +
+      'Gracias de nuevo,\n[su nombre]\n[su restaurante]');
+  }
+  function buildVendorNote(ing, unit) {
+    var key = ing.key || ('x' + Math.random().toString(36).slice(2));
+    var root = el('div', 'cp-note');
+    var toggle = el('button', 'cp-note-toggle', L('Draft a vendor note', 'Redactar nota al proveedor'));
+    toggle.type = 'button';
+    var regionId = 'cpNote-' + key;
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.setAttribute('aria-controls', regionId);
+    root.appendChild(toggle);
+
+    var region = el('div', 'cp-note-region');
+    region.id = regionId;
+    region.hidden = true;
+    if (preview) {
+      region.appendChild(el('p', 'cp-note-caution',
+        L('Sample range — confirm the live number before you send this.',
+          'Rango de muestra — confirma el número real antes de enviar esto.')));
+    }
+    var taId = 'cpNoteText-' + key;
+    var lab = el('label', 'cp-note-label', L('Edit before you send', 'Edítalo antes de enviar'));
+    lab.setAttribute('for', taId);
+    region.appendChild(lab);
+
+    var ta = el('textarea', 'cp-note-text');
+    ta.id = taId; ta.rows = 9;
+    ta.setAttribute('autocomplete', 'off');
+    var dirty = false;
+
+    var actions = el('div', 'cp-note-actions');
+    var copy = el('button', 'cp-note-copy', L('Copy', 'Copiar'));
+    copy.type = 'button';
+    var mail = el('a', 'cp-note-mail', L('Open in email', 'Abrir en correo'));
+    mail.href = 'mailto:';
+    var status = el('span', 'cp-note-status');
+    status.setAttribute('role', 'status'); status.setAttribute('aria-live', 'polite'); status.setAttribute('aria-atomic', 'true');
+    actions.appendChild(copy); actions.appendChild(mail); actions.appendChild(status);
+    region.appendChild(ta); region.appendChild(actions);
+    root.appendChild(region);
+
+    function mailtoHref(body) {
+      var subject = L('Pricing question — ' + ing.label_en, 'Consulta de precio — ' + ing.label_es);
+      return 'mailto:?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+    }
+    ta.addEventListener('input', function () { dirty = true; mail.href = mailtoHref(ta.value); });
+
+    var statusTimer = null;
+    function setStatus(txt) {
+      status.textContent = txt;
+      if (statusTimer) clearTimeout(statusTimer);
+      statusTimer = setTimeout(function () { status.textContent = ''; }, 4000);
+    }
+    copy.addEventListener('click', function () {
+      function manualCopy() {
+        try { ta.focus(); ta.select(); ta.setSelectionRange(0, ta.value.length); } catch (e2) { /* noop */ }
+        setStatus(L('Press Ctrl/Cmd-C to copy the selected text', 'Pulsa Ctrl/Cmd-C para copiar el texto seleccionado'));
+      }
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(ta.value).then(function () { setStatus(L('Copied', 'Copiado')); }, manualCopy);
+          return;
+        }
+      } catch (e) { /* clipboard access can throw */ }
+      manualCopy();
+    });
+    toggle.addEventListener('click', function () {
+      var open = toggle.getAttribute('aria-expanded') !== 'true';
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      region.hidden = !open;
+      if (open && ta.focus) ta.focus();
+    });
+
+    function fill(cents, band) {
+      if (!dirty) ta.value = vendorDraft(L(ing.label_en, ing.label_es), unit, cents, band);
+      mail.href = mailtoHref(ta.value);
+    }
+    function collapse() {
+      toggle.setAttribute('aria-expanded', 'false');
+      region.hidden = true;
+      status.textContent = '';
+      if (statusTimer) clearTimeout(statusTimer);
+    }
+    return { root: root, fill: fill, collapse: collapse };
   }
 
   document.getElementById('cpMarketHeading').textContent = L("What the market's doing", 'Qué hace el mercado');
@@ -271,10 +386,22 @@
       inp.setAttribute('autocomplete', 'off'); inp.placeholder = '$';
       var youOut = el('div', 'cp-you-out');
       youOut.setAttribute('role', 'status'); youOut.setAttribute('aria-live', 'polite');
-      (function (o, level) {
-        inp.addEventListener('input', function () { renderYou(o, level, inp.value); });
-      })(youOut, lvl);
-      you.appendChild(lab); you.appendChild(inp); you.appendChild(youOut);
+      var note = buildVendorNote(ing, unit);
+      note.root.hidden = true;
+      (function (o, level, h) {
+        inp.addEventListener('input', function () {
+          var pos = renderYou(o, level, inp.value);
+          if (pos === 'above') {
+            var band = money(level.rangeCents[0]) + '–' + money(level.rangeCents[1]);
+            h.fill(parseMoney(inp.value), band);
+            h.root.hidden = false;
+          } else {
+            h.root.hidden = true;
+            h.collapse();
+          }
+        });
+      })(youOut, lvl, note);
+      you.appendChild(lab); you.appendChild(inp); you.appendChild(youOut); you.appendChild(note.root);
       fig.appendChild(you);
     }
 
