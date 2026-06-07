@@ -399,6 +399,48 @@
       'Vista de muestra — cifras ilustrativas, no datos de mercado en vivo. Las fuentes USDA, BLS y FRED se conectan pronto.');
   }
 
+  // Learning primer — teach the five signals once, in plain diner language, so a
+  // first-timer (or a tired, limited-English owner) can read any card. One shared
+  // <details> (no per-card noise), glossary-linked, bilingual.
+  (function () {
+    function item(lead, body, term, linkText) {
+      var p = el('p', 'cp-learn-item');
+      p.appendChild(el('strong', null, lead + ' '));
+      p.appendChild(document.createTextNode(body));
+      if (term) {
+        p.appendChild(document.createTextNode(' '));
+        var a = el('a', null, linkText);
+        a.href = (es ? '/es' : '') + '/glossary/' + term + '/';
+        p.appendChild(a);
+        p.appendChild(document.createTextNode('.'));
+      }
+      return p;
+    }
+    var learn = el('details', 'cp-learn');
+    learn.appendChild(el('summary', null, L('New here? How to read these cards', '¿Primera vez? Cómo leer estas tarjetas')));
+    var lb = el('div', 'cp-learn-body');
+    lb.appendChild(item(L('The range', 'El rango'),
+      L('is the typical price — the middle half of what kitchens pay, low to high. Your job is to find which side of it you sit on.',
+        'es el precio típico — la mitad central de lo que pagan las cocinas, de bajo a alto. Tu tarea es ver de qué lado estás.'),
+      'cost-index', L('What a cost index is', 'Qué es un índice de costos')));
+    lb.appendChild(item(L('Market or your vendor?', '¿El mercado o tu proveedor?'),
+      L('When the trend here moves, the whole market moved. If your invoice jumped but this stayed flat, that points to your vendor — worth a conversation.',
+        'Cuando la tendencia aquí se mueve, se movió todo el mercado. Si tu factura subió pero esto siguió estable, apunta a tu proveedor — vale una conversación.')));
+    lb.appendChild(item(L('Confidence', 'Confianza'),
+      L('is how much the public sources agree. Strong means several line up; an early or rough read is a hint, not a fact — wait for more before a big call.',
+        'es cuánto coinciden las fuentes públicas. Sólida significa que varias concuerdan; una lectura temprana o aproximada es un indicio, no un hecho — espera antes de una decisión grande.'),
+      'data-literacy', L('reading the data', 'leer los datos')));
+    lb.appendChild(item(L('"As of"', '"Al"'),
+      L('is the date of the oldest source behind the number. An old date means treat it as a starting point and check it against your own invoice.',
+        'es la fecha de la fuente más antigua detrás del número. Una fecha vieja: tómalo como punto de partida y compáralo con tu factura.'),
+      'last-updated-signal', L('the freshness signal', 'la señal de frescura')));
+    lb.appendChild(item(L('The line', 'La línea'),
+      L('is the last few weeks. One week can spike for any reason; the shape over time tells you whether a move is real and sticking, or only a passing bounce.',
+        'son las últimas semanas. Una semana puede saltar por cualquier motivo; la forma en el tiempo te dice si un movimiento es real y se sostiene, o solo un rebote pasajero.')));
+    learn.appendChild(lb);
+    card.insertBefore(learn, document.getElementById('cpMarketPreview'));
+  })();
+
   var confWordMap = {
     high: L('high', 'alta'), medium: L('medium', 'media'),
     low: L('low', 'baja'), directional: L('directional', 'direccional')
