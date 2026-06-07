@@ -194,6 +194,47 @@
         : L(' — around the middle of its recent range.', ' — cerca de la mitad de su rango reciente.');
     return L('Higher than ' + below + ' of its last ' + n + ' weekly reads', 'Más alto que ' + below + ' de sus últimas ' + n + ' lecturas semanales') + bucket;
   }
+  // Week-over-week — the single most recent step, the number operators repeat
+  // ("eggs up a dime a dozen since last week"). Honest across cadences: finds
+  // the read closest to 7 days before the latest (window 4–11 days), never an
+  // index-1 guess that could span a month of gaps. Anchors the % to a dollar.
+  // Skipped on index/directional reads (a $ delta would be meaningless). Returns
+  // { text, srText } or null. `dates` must be 1:1 with `values`.
+  function weekOverWeek(values, dates, unit) {
+    if (!Array.isArray(values) || !Array.isArray(dates) || dates.length !== values.length) return null;
+    var li = -1;
+    for (var i = values.length - 1; i >= 0; i--) { if (typeof values[i] === 'number' && isFinite(values[i])) { li = i; break; } }
+    if (li < 1) return null;
+    var lastV = values[li], lastMs = Date.parse(dates[li]);
+    if (!isFinite(lastMs)) return null;
+    var target = lastMs - 7 * 86400000, best = -1, bestDiff = Infinity, bestMs = null;
+    for (var j = 0; j < li; j++) {
+      if (!(typeof values[j] === 'number' && isFinite(values[j]))) continue;
+      var dj = Date.parse(dates[j]); if (!isFinite(dj)) continue;
+      var ageDays = (lastMs - dj) / 86400000;
+      if (ageDays < 4 || ageDays > 11) continue;             // must be ~a week back
+      var diff = Math.abs(dj - target);
+      if (diff < bestDiff) { bestDiff = diff; best = j; bestMs = dj; }
+    }
+    if (best < 0) return null;
+    var prevV = values[best];
+    if (!(prevV > 0)) return null;
+    var deltaCents = lastV - prevV, pct = deltaCents / prevV;
+    var priorDate = dates[best];
+    if (Math.abs(pct) < 0.01) {
+      return { text: L('About flat vs last week.', 'Casi sin cambio frente a la semana pasada.'),
+        srText: L('About flat versus ' + priorDate + '.', 'Casi sin cambio frente al ' + priorDate + '.') };
+    }
+    var dirW = deltaCents > 0 ? L('up', 'arriba') : L('down', 'abajo');
+    var pctStr = (pct > 0 ? '+' : '−') + Math.abs(pct * 100).toFixed(Math.abs(pct * 100) < 10 ? 1 : 0).replace(/\.0$/, '') + '%';
+    var dollarStr = money(Math.abs(deltaCents)) + ' ' + L('a ', 'por ') + unit;
+    return {
+      text: L('Vs last week: ' + dirW + ' ' + pctStr + ' — about ' + dollarStr + '.',
+              'Frente a la semana pasada: ' + dirW + ' ' + pctStr + ' — unos ' + dollarStr + '.'),
+      srText: L('Versus ' + priorDate + ': ' + dirW + ' ' + pctStr + ', about ' + dollarStr + '.',
+                'Frente al ' + priorDate + ': ' + dirW + ' ' + pctStr + ', unos ' + dollarStr + '.')
+    };
+  }
   function parseMoney(v) {
     var n = parseFloat(String(v == null ? '' : v).replace(/[^0-9.]/g, ''));
     return isFinite(n) && n >= 0 ? Math.round(n * 100) : null;
@@ -580,6 +621,7 @@
     var sparkVals = ing.spark || pickSeries(ing.input);
     var sparkText = '';
     var pctText = '';
+    var wowText = '';
     if (sparkVals && sparkVals.length >= 2) {
       fig.appendChild(sparkSvg(sparkVals, r.trend.dir, r.confidence));
       sparkText = sparkShape(sparkVals);
@@ -591,6 +633,16 @@
         if (pctText) {
           fig.appendChild(el('p', 'cp-market-percentile', pctText));
           fig.setAttribute('data-audio-alt', (fig.getAttribute('data-audio-alt') || '') + ' ' + pctText);
+        }
+        // Week-over-week step in $ — only on a dollar-priced read (not an index),
+        // where the $-anchored delta is honest.
+        if (lvl && (!ing.spark_meta || ing.spark_meta.basis !== 'index')) {
+          var wow = weekOverWeek(sparkVals, ing.spark_dates, unit);
+          if (wow) {
+            fig.appendChild(el('p', 'cp-market-wow', wow.text));
+            wowText = wow.srText;
+            fig.setAttribute('data-audio-alt', (fig.getAttribute('data-audio-alt') || '') + ' ' + wow.srText);
+          }
         }
       }
     }
@@ -680,6 +732,7 @@
     var caption = name + ': ' + rangeText + '; ' + trendText + '; ' + confPhrase + '; ' + metaText + '.'
       + (sparkText ? ' ' + sparkText : '')
       + (pctText ? ' ' + pctText : '')
+      + (wowText ? ' ' + wowText : '')
       + (fv ? ' ' + fv.verb + '. ' + fv.note : '')
       + (sm ? ' ' + L('Price history from ', 'Historial de precio de ') + sm.source + ', ' + sm.from + ' ' + L('to', 'a') + ' ' + sm.to + (sm.basis === 'index' ? L(' (index, not a dollar price)', ' (índice, no un precio en dólares)') : '') + '.' : '');
     srt.appendChild(el('p', null, caption));
