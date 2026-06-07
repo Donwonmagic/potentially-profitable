@@ -50,9 +50,13 @@ function main() {
     const lab = labels[key];
     if (!lab) { missingLabel.push(key); continue; }  // no display label → can't render bilingually
 
-    // Real sparkline from the ingredient's own level history (oldest→newest).
-    const spark = pts.map((p) => p.level && typeof p.level.medianCents === 'number' ? p.level.medianCents : null)
-      .filter((n) => n != null).reverse();
+    // Sparkline: prefer the dedicated history curve (one source, oldest→newest);
+    // fall back to the per-point level medians (the weekly accumulation).
+    const hist = Array.isArray(ingredientsObj[key].history) ? ingredientsObj[key].history : [];
+    const histVals = hist.filter((h) => h && typeof h.valueCents === 'number').map((h) => h.valueCents);
+    const spark = histVals.length
+      ? histVals
+      : pts.map((p) => p.level && typeof p.level.medianCents === 'number' ? p.level.medianCents : null).filter((n) => n != null).reverse();
 
     const entry = {
       key,
@@ -63,8 +67,30 @@ function main() {
     if (lab.seasonal) entry.seasonal = true;
     // Sparkline needs real history to be honest — a 2-point line can mislead
     // (and can straddle bases). Hold it until ~a month of weekly points exists.
-    if (spark.length >= 4) entry.spark = spark;
+    if (spark.length >= 4) {
+      entry.spark = spark;
+      // Attribution so the UI can cite the curve and never read an index series
+      // as dollars. Only when the curve came from the dedicated history field.
+      if (hist.length) {
+        const h0 = hist[0], hN = hist[hist.length - 1];
+        entry.spark_meta = { basis: hN.basis, source: hN.source, from: h0.date, to: hN.date, n: spark.length };
+      }
+    }
     out.push(entry);
+  }
+
+  // Drivers — the "why" strip. Pass through trend + spark (from index history) +
+  // leads, joined with bilingual labels (data/cost-index-labels.json#drivers).
+  const driverLabels = (rd(LABELS_IN).drivers) || {};
+  const driversOut = [];
+  for (const dkey of Object.keys(data.drivers || {})) {
+    const d = data.drivers[dkey];
+    const dl = driverLabels[dkey];
+    if (!dl || !d || !d.trend) continue;
+    const dHist = (Array.isArray(d.history) ? d.history : []).filter((h) => h && typeof h.valueCents === 'number').map((h) => h.valueCents);
+    const dentry = { key: dkey, label_en: dl.en, label_es: dl.es, kind: d.kind, trend: d.trend, leads: Array.isArray(d.leads) ? d.leads : [] };
+    if (dHist.length >= 4) dentry.spark = dHist;
+    driversOut.push(dentry);
   }
 
   if (!out.length) {
@@ -78,6 +104,7 @@ function main() {
     generatedAt: data._lastReviewed || new Date().toISOString().slice(0, 10),
     ingredients: out,
   };
+  if (driversOut.length) seed.drivers = driversOut;
 
   const banner = `/**
  * Cost Index — browser seed (LIVE). GENERATED — do not edit by hand.
