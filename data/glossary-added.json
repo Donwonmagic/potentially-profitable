@@ -1,8 +1,9 @@
 {
   "_doc": "Source-of-truth for the 'Recently added' rail on /glossary/ (EN+ES). Edit this file when a new term lands; scripts/inject-glossary-recent.mjs reads it and stamps the rail between <!-- glossary-recent:start --> sentinels in glossary/index.html and es/glossary/index.html. Order is newest-first; only the first `display_count` entries render. Term slugs must exist as directories under glossary/ (the script verifies and skips orphans).",
-  "updated": "2026-04-26",
+  "updated": "2026-06-07",
   "display_count": 6,
   "added": [
+    { "slug": "cost-index",                  "date": "2026-06-07", "note": "Where common ingredients are priced across public sources — a typical range and a trend." },
     { "slug": "opening-hours-specification", "date": "2026-04-26", "note": "Re-added from orphan; the Schema.org type Google reads to render hours." },
     { "slug": "holiday-hours",                "date": "2026-04-26", "note": "Re-added from orphan; the recurring per-date overrides every restaurant has to make." },
     { "slug": "menu-engineering",             "date": "2026-04-22", "note": "Kasavana & Smith's Star/Plowhorse/Puzzle/Dog framework." },
