@@ -113,3 +113,19 @@ test('normalizeAms commodity filter pulls ONE ingredient out of a multi-commodit
   assert.equal(out.points.length, 1);
   assert.equal(out.points[0].value, 25);
 });
+
+test('normalizeAms wtdAvg + priceUnit (Cents Per Lb) + matchFields restricts the match', () => {
+  const chicken = { results: [
+    { report_date: '05/04/2026', item: 'Breast - B/S', price_unit: 'Cents Per Lb', wtd_avg_price: 145.72 },
+    { report_date: '05/04/2026', item: 'Whole', notes: 'breast - b/s trim note', wtd_avg_price: 88.0 }, // 'breast' only outside item → must NOT match
+  ] };
+  const out = S.normalizeAms(chicken, { source: 'usda-ams-national', basis: 'wholesale', reducer: 'wtdAvg', priceUnit: 'Cents Per Lb', matchFields: ['item'], commodity: 'Breast - B/S', unit: 'lb' });
+  assert.equal(out.points.length, 1);
+  assert.equal(out.points[0].value, 1.4572); // 145.72 cents → dollars/lb
+});
+
+test('normalizeAms priceUnit Dollars Per Cwt → dollars per lb', () => {
+  const beef = { results: [{ report_date: '06/05/2026', commodity: 'Ribeye', wtd_avg_price: 1159 }] };
+  const out = S.normalizeAms(beef, { source: 'usda-lmr', basis: 'wholesale', reducer: 'wtdAvg', priceUnit: 'Dollars Per Cwt', commodity: 'ribeye', unit: 'lb' });
+  assert.equal(out.points[0].value, 11.59); // $1159/cwt → $11.59/lb
+});

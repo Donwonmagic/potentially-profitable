@@ -74,7 +74,20 @@
       var p = num(row[fields.pounds || 'pounds']);
       return (d != null && p != null && p > 0) ? d / p : null;
     }
+    if (reducer === 'wtdAvg') {
+      return num(row[fields.price || 'wtd_avg_price']);
+    }
     return num(row[fields.price || 'avg_price']);
+  }
+
+  // Convert a reported price unit to the composite's base ($ per the ingredient's
+  // unit). Cents→dollars and $/cwt→$/lb both scale by 0.01; an unknown/absent
+  // unit is left as-is. A wrong factor is caught downstream by the bounds gate.
+  function priceUnitFactor(pu) {
+    var s = String(pu || '').toLowerCase();
+    if (s.indexOf('cent') !== -1) return 0.01;                                       // cents per X → dollars per X
+    if (s.indexOf('cwt') !== -1 || s.indexOf('hundredweight') !== -1) return 0.01;   // $/cwt → $/lb (100 lb)
+    return 1;
   }
 
   function normalizeAms(json, meta) {
@@ -82,10 +95,15 @@
     var rows = (json && (json.results || json.report || json.data)) || [];
     var dateField = meta.dateField || 'report_date';
     var commodity = meta.commodity ? String(meta.commodity).toLowerCase() : null;
+    var matchFields = Array.isArray(meta.matchFields) ? meta.matchFields : null;
+    var factor = priceUnitFactor(meta.priceUnit);
     var rowMatches = function (r) {
       if (!commodity) return true;
-      for (var k in r) if (Object.prototype.hasOwnProperty.call(r, k)) {
-        var v = r[k];
+      // matchFields restricts the commodity match to named columns (e.g. ["item"]
+      // on the National Chicken Report); default scans every string field.
+      var keys = matchFields || Object.keys(r);
+      for (var i = 0; i < keys.length; i++) {
+        var v = r[keys[i]];
         if (typeof v === 'string' && v.toLowerCase().indexOf(commodity) !== -1) return true;
       }
       return false;
@@ -100,6 +118,7 @@
     rows.forEach(function (r) {
       if (!r || !rowMatches(r)) return;
       var v = reduceAmsRow(r, meta.reducer, meta.fields);
+      if (v != null && isFinite(v)) v = v * factor;                            // unit-normalize before binning
       var date = isoDate(r[dateField]);
       if (date && v != null && isFinite(v)) (byDateMap[date] = byDateMap[date] || []).push(v);
     });
