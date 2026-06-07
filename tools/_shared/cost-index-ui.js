@@ -164,6 +164,8 @@
     var metaText = (r.asOf ? L('As of ', 'Al ') + r.asOf + ' · ' : '') + nSrc + ' ' + L('sources', 'fuentes');
 
     var fig = el('figure', 'cp-market-item');
+    if (ing.key) fig.id = 'ci-' + ing.key;          // deep anchor: /…/#ci-romaine
+    fig.setAttribute('data-name', name.toLowerCase()); // for the filter
     fig.setAttribute('data-audio-alt',
       name + '. ' + rangeText + '. ' + L('The market is ', 'El mercado va ') + trendText + ', ' +
       conf + ' ' + L('confidence', 'confianza') + '. ' + metaText + '.');
@@ -252,6 +254,32 @@
   sum.textContent = sumText;
   if (movers.length) listEl.insertBefore(sum, listEl.firstChild);
 
+  // Filter — appears once the list is long enough to need it (i.e. live data).
+  if (movers.length >= 8) {
+    var srch = el('input', 'cp-market-search');
+    srch.type = 'search';
+    srch.setAttribute('aria-label', L('Filter ingredients', 'Filtrar ingredientes'));
+    srch.placeholder = L('Filter ingredients…', 'Filtrar ingredientes…');
+    srch.addEventListener('input', function () {
+      var q = srch.value.toLowerCase().trim();
+      Array.prototype.forEach.call(listEl.querySelectorAll('.cp-market-item'), function (c) {
+        c.hidden = q !== '' && (c.getAttribute('data-name') || '').indexOf(q) === -1;
+      });
+    });
+    listEl.insertBefore(srch, listEl.firstChild);
+  }
+
+  // Deep anchor: a URL like /…/#ci-romaine should bring that card into view +
+  // flag it. The browser's initial hash scroll fired before these JS-built
+  // cards existed, so do it here after render.
+  if (location.hash && /^#ci-[a-z0-9-]+$/i.test(location.hash)) {
+    var target = document.getElementById(location.hash.slice(1));
+    if (target) {
+      target.classList.add('cp-market-hit');
+      if (target.scrollIntoView) target.scrollIntoView({ block: 'center' });
+    }
+  }
+
   // Methodology disclosure — trust by showing how the read is made.
   var method = el('details', 'cp-method');
   method.appendChild(el('summary', null, L('How we read the market', 'Cómo leemos el mercado')));
@@ -277,6 +305,15 @@
   cta.appendChild(document.createTextNode(L(
     ' tells you if your vendor is above market on a line — and re-costs the dishes that use it.',
     ' te dice si tu proveedor está por encima del mercado en una línea — y recuesta los platillos que la usan.')));
+
+  // Cross-wire to the free Plate Cost calculator (cost a dish that uses these).
+  var xlink = el('p', 'cp-market-crosslink');
+  xlink.appendChild(document.createTextNode(L('Costing a specific dish? ', '¿Costeando un platillo? ')));
+  var px = el('a', null, L('Use the free Plate Cost calculator', 'Usa la calculadora Plate Cost gratis'));
+  px.href = '/tools/plate-cost/';
+  xlink.appendChild(px);
+  xlink.appendChild(document.createTextNode('.'));
+  card.insertBefore(xlink, document.getElementById('cpMarketCta'));
 
   card.hidden = false;
 })();

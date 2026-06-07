@@ -1093,6 +1093,14 @@ Margen de contribución por plato = precio menú &minus; costo del plato</pre>
       locale === 'es'
         ? ' recosta tus platillos solo cuando una factura sube — sin hoja de cálculo, sin volver a teclear.'
         : ' re-costs your dishes automatically when an invoice price jumps — no spreadsheet, no re-typing.'));
+    // Cross-link to the market read: is the move the market or your vendor?
+    ledger.appendChild(document.createElement('br'));
+    ledger.appendChild(document.createTextNode(
+      locale === 'es' ? '¿El alza es del mercado o de tu proveedor? ' : 'Is that increase the market, or your vendor? '));
+    var ciA = el('a', 'plausible-event-name=Cost+Index+Click plausible-event-source=plate-cost-advice',
+      locale === 'es' ? 'Ver el Cost Index' : 'See the Cost Index');
+    ciA.href = '/tools/cost-pulse/';
+    ledger.appendChild(ciA);
     out.appendChild(ledger);
   }
 
