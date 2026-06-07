@@ -555,8 +555,8 @@
       var note = buildVendorNote(ing, unit);
       note.root.hidden = true;
       (function (o, level, h) {
-        var priceFired = false;
-        inp.addEventListener('input', function () {
+        var priceFired = false, debounce = null;
+        function update() {
           var pos = renderYou(o, level, inp.value);
           var cents = parseMoney(inp.value);
           if (pos && !priceFired) {
@@ -576,6 +576,12 @@
             h.root.hidden = true;
             h.collapse();
           }
+        }
+        // Debounce: the verdict lives in an aria-live region, so updating on every
+        // keystroke machine-guns a screen reader mid-typing. Settle ~350ms first.
+        inp.addEventListener('input', function () {
+          if (debounce) clearTimeout(debounce);
+          debounce = setTimeout(update, 350);
         });
       })(youOut, lvl, note);
       you.appendChild(lab); you.appendChild(inp); you.appendChild(youOut); you.appendChild(note.root);
@@ -678,6 +684,11 @@
   }
   updateBasketBar();
   applyFilters();
+
+  // Lead with the gestalt: the plain one-line summary is the orienting element,
+  // so force it above the basket bar / search controls (each of those prepended
+  // at firstChild above). A tired reader gets the "what moved" sentence first.
+  if (movers.length && sum.parentNode === listEl) listEl.insertBefore(sum, listEl.firstChild);
 
   // Deep anchor: a URL like /…/#ci-romaine should bring that card into view +
   // flag it. The browser's initial hash scroll fired before these JS-built
