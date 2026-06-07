@@ -94,32 +94,87 @@
   // Trend sparkline as DOM-built SVG (no innerHTML). Decorative (aria-hidden);
   // the figure's data-audio-alt + sr-only line carry the numbers. No animation,
   // so it's reduced-motion-safe and adds no layout shift.
-  function sparkSvg(values, dir) {
+  function sparkSvg(values, dir, confidence) {
     var NS = 'http://www.w3.org/2000/svg';
     var w = 132, h = 30, pad = 3;
     var svg = document.createElementNS(NS, 'svg');
     svg.setAttribute('width', String(w)); svg.setAttribute('height', String(h));
     svg.setAttribute('viewBox', '0 0 ' + w + ' ' + h);
     svg.setAttribute('class', 'cp-market-spark'); svg.setAttribute('aria-hidden', 'true');
-    var vals = values.filter(function (v) { return typeof v === 'number' && isFinite(v); });
-    if (vals.length < 2) return svg;
-    var min = Math.min.apply(null, vals), max = Math.max.apply(null, vals), span = (max - min) || 1;
-    var step = (w - 2 * pad) / (vals.length - 1);
+    var finite = values.filter(function (v) { return typeof v === 'number' && isFinite(v); });
+    if (finite.length < 2) return svg;
+    var min = Math.min.apply(null, finite), max = Math.max.apply(null, finite), span = (max - min) || 1;
+    var n = values.length;
+    var step = n > 1 ? (w - 2 * pad) / (n - 1) : 0;
     var color = dir === 'up' ? 'var(--rust)' : dir === 'down' ? 'var(--teal)' : 'var(--stone)';
-    var pts = vals.map(function (v, i) {
-      var x = pad + i * step, y = h - pad - ((v - min) / span) * (h - 2 * pad);
-      return x.toFixed(1) + ',' + y.toFixed(1);
-    }).join(' ');
-    var pl = document.createElementNS(NS, 'polyline');
-    pl.setAttribute('fill', 'none'); pl.setAttribute('stroke', color);
-    pl.setAttribute('stroke-width', '1.5'); pl.setAttribute('stroke-linejoin', 'round'); pl.setAttribute('stroke-linecap', 'round');
-    pl.setAttribute('points', pts);
-    svg.appendChild(pl);
-    var lx = pad + (vals.length - 1) * step, ly = h - pad - ((vals[vals.length - 1] - min) / span) * (h - 2 * pad);
-    var dot = document.createElementNS(NS, 'circle');
-    dot.setAttribute('cx', lx.toFixed(1)); dot.setAttribute('cy', ly.toFixed(1)); dot.setAttribute('r', '2.2'); dot.setAttribute('fill', color);
-    svg.appendChild(dot);
+    var thin = confidence === 'low' || confidence === 'directional';   // dashed = provisional read
+    function X(i) { return pad + i * step; }
+    function Y(v) { return h - pad - ((v - min) / span) * (h - 2 * pad); }
+    // Break the line at gaps (null/non-finite weeks) — NEVER bridge a missing
+    // week into a straight line, which would lie about continuity. Each run of
+    // present weeks is its own polyline; a lone point is a dot.
+    var seg = [], lastIdx = -1, lastVal = null;
+    function flush() {
+      if (seg.length >= 2) {
+        var pl = document.createElementNS(NS, 'polyline');
+        pl.setAttribute('fill', 'none'); pl.setAttribute('stroke', color);
+        pl.setAttribute('stroke-width', thin ? '1.2' : '1.5');
+        pl.setAttribute('stroke-linejoin', 'round'); pl.setAttribute('stroke-linecap', 'round');
+        if (thin) { pl.setAttribute('stroke-dasharray', '3,3'); pl.setAttribute('stroke-opacity', '0.85'); }
+        pl.setAttribute('points', seg.join(' '));
+        svg.appendChild(pl);
+      } else if (seg.length === 1) {
+        var p = seg[0].split(',');
+        var d1 = document.createElementNS(NS, 'circle');
+        d1.setAttribute('cx', p[0]); d1.setAttribute('cy', p[1]); d1.setAttribute('r', '1.6'); d1.setAttribute('fill', color);
+        svg.appendChild(d1);
+      }
+      seg = [];
+    }
+    for (var i = 0; i < n; i++) {
+      var v = values[i];
+      if (typeof v === 'number' && isFinite(v)) { seg.push(X(i).toFixed(1) + ',' + Y(v).toFixed(1)); lastIdx = i; lastVal = v; }
+      else { flush(); }
+    }
+    flush();
+    if (lastIdx >= 0) {
+      var dot = document.createElementNS(NS, 'circle');
+      dot.setAttribute('cx', X(lastIdx).toFixed(1)); dot.setAttribute('cy', Y(lastVal).toFixed(1)); dot.setAttribute('r', '2.2'); dot.setAttribute('fill', color);
+      svg.appendChild(dot);
+    }
     return svg;
+  }
+  // Plain-language "shape sentence" for the audio/sr text — the spark itself is
+  // aria-hidden, so without this the weekly history is invisible to non-sighted
+  // and low-numeracy readers. Notes gaps honestly.
+  function sparkShape(values) {
+    var finite = values.filter(function (v) { return typeof v === 'number' && isFinite(v); });
+    if (finite.length < 2) return '';
+    var first = finite[0], last = finite[finite.length - 1];
+    var chg = (last - first) / (first || 1);
+    var dir = Math.abs(chg) < 0.04 ? L('held about steady', 'se mantuvo estable')
+      : chg > 0 ? L('rose over the period', 'subió en el periodo')
+        : L('eased over the period', 'bajó en el periodo');
+    var gaps = values.some(function (v) { return !(typeof v === 'number' && isFinite(v)); })
+      ? L(' (some weeks missing)', ' (faltan algunas semanas)') : '';
+    return L('Weekly price ' + dir + gaps + '.', 'El precio semanal ' + dir + gaps + '.');
+  }
+  // Percentile-of-history, stated as an honest COUNT (never a smoothed "85th
+  // percentile" — that implies a fitted distribution we don't have). Separates
+  // "expensive" from "rising": today can sit inside the typical band yet at the
+  // top of its OWN recent range. Needs >=8 valid weekly reads; the window is all
+  // the history that exists, so we say "of its last N" — never "all-time".
+  function percentileLine(values) {
+    var v = values.filter(function (x) { return typeof x === 'number' && isFinite(x); });
+    if (v.length < 8) return '';
+    var today = v[v.length - 1];
+    var prior = v.slice(0, v.length - 1);
+    var below = prior.filter(function (x) { return x <= today; }).length;
+    var n = prior.length;
+    var bucket = below >= n * 0.75 ? L(' — near the top of its recent range.', ' — cerca del tope de su rango reciente.')
+      : below <= n * 0.25 ? L(' — near the bottom of its recent range.', ' — cerca del fondo de su rango reciente.')
+        : L(' — around the middle of its recent range.', ' — cerca de la mitad de su rango reciente.');
+    return L('Higher than ' + below + ' of its last ' + n + ' weekly reads', 'Más alto que ' + below + ' de sus últimas ' + n + ' lecturas semanales') + bucket;
   }
   function parseMoney(v) {
     var n = parseFloat(String(v == null ? '' : v).replace(/[^0-9.]/g, ''));
@@ -344,14 +399,91 @@
       'Vista de muestra — cifras ilustrativas, no datos de mercado en vivo. Las fuentes USDA, BLS y FRED se conectan pronto.');
   }
 
+  // Learning primer — teach the five signals once, in plain diner language, so a
+  // first-timer (or a tired, limited-English owner) can read any card. One shared
+  // <details> (no per-card noise), glossary-linked, bilingual.
+  (function () {
+    function item(lead, body, term, linkText) {
+      var p = el('p', 'cp-learn-item');
+      p.appendChild(el('strong', null, lead + ' '));
+      p.appendChild(document.createTextNode(body));
+      if (term) {
+        p.appendChild(document.createTextNode(' '));
+        var a = el('a', null, linkText);
+        a.href = (es ? '/es' : '') + '/glossary/' + term + '/';
+        p.appendChild(a);
+        p.appendChild(document.createTextNode('.'));
+      }
+      return p;
+    }
+    var learn = el('details', 'cp-learn');
+    learn.appendChild(el('summary', null, L('New here? How to read these cards', '¿Primera vez? Cómo leer estas tarjetas')));
+    var lb = el('div', 'cp-learn-body');
+    lb.appendChild(item(L('The range', 'El rango'),
+      L('is the typical price — the middle half of what kitchens pay, low to high. Your job is to find which side of it you sit on.',
+        'es el precio típico — la mitad central de lo que pagan las cocinas, de bajo a alto. Tu tarea es ver de qué lado estás.'),
+      'cost-index', L('What a cost index is', 'Qué es un índice de costos')));
+    lb.appendChild(item(L('Market or your vendor?', '¿El mercado o tu proveedor?'),
+      L('When the trend here moves, the whole market moved. If your invoice jumped but this stayed flat, that points to your vendor — worth a conversation.',
+        'Cuando la tendencia aquí se mueve, se movió todo el mercado. Si tu factura subió pero esto siguió estable, apunta a tu proveedor — vale una conversación.')));
+    lb.appendChild(item(L('Confidence', 'Confianza'),
+      L('is how much the public sources agree. Strong means several line up; an early or rough read is a hint, not a fact — wait for more before a big call.',
+        'es cuánto coinciden las fuentes públicas. Sólida significa que varias concuerdan; una lectura temprana o aproximada es un indicio, no un hecho — espera antes de una decisión grande.'),
+      'data-literacy', L('reading the data', 'leer los datos')));
+    lb.appendChild(item(L('"As of"', '"Al"'),
+      L('is the date of the oldest source behind the number. An old date means treat it as a starting point and check it against your own invoice.',
+        'es la fecha de la fuente más antigua detrás del número. Una fecha vieja: tómalo como punto de partida y compáralo con tu factura.'),
+      'last-updated-signal', L('the freshness signal', 'la señal de frescura')));
+    lb.appendChild(item(L('The line', 'La línea'),
+      L('is the last few weeks. One week can spike for any reason; the shape over time tells you whether a move is real and sticking, or only a passing bounce.',
+        'son las últimas semanas. Una semana puede saltar por cualquier motivo; la forma en el tiempo te dice si un movimiento es real y se sostiene, o solo un rebote pasajero.')));
+    learn.appendChild(lb);
+    card.insertBefore(learn, document.getElementById('cpMarketPreview'));
+  })();
+
   var confWordMap = {
     high: L('high', 'alta'), medium: L('medium', 'media'),
     low: L('low', 'baja'), directional: L('directional', 'direccional')
   };
+  // What the confidence word MEANS, in plain terms (for the chip's aria-label and
+  // the audio/sr text) — "directional" is jargon to a tired, non-native reader.
+  var confPhraseMap = {
+    high: L('Strong read — several sources agree.', 'Lectura sólida — varias fuentes coinciden.'),
+    medium: L('Fair read — a few sources.', 'Lectura aceptable — pocas fuentes.'),
+    low: L('Rough read — thin data.', 'Lectura aproximada — pocos datos.'),
+    directional: L('Early hint only — not a firm number.', 'Solo una señal temprana — no es un número firme.')
+  };
+
+  // Turn the build-time spike/structural flag into a plain SUGGESTION — never a
+  // command. Calibrated to confidence: a thin read can never say "re-price". The
+  // operator decides; we only say what the data leans toward. Returns
+  // { tone:'reprice'|'hold'|'watch', verb, note } or null.
+  function flagVerb(flag, confidence) {
+    if (!flag || !flag.verdict) return null;
+    var thin = confidence === 'low' || confidence === 'directional';
+    var wk = flag.elevatedWeeks;
+    switch (flag.verdict) {
+      case 'structural':
+        if (thin) return { tone: 'watch', verb: L('Watch', 'Observa'), note: L('Up and holding, but the data is thin — wait for more before a big call.', 'Sube y se mantiene, pero hay pocos datos — espera más antes de una decisión grande.') };
+        return { tone: 'reprice', verb: L('Consider re-pricing', 'Considera ajustar el precio'), note: L('Up and holding' + (wk ? ' for ' + wk + ' weeks' : '') + ' — this looks like a real reset, not a blip. Many operators would re-price the dishes that use it.', 'Sube y se mantiene' + (wk ? ' por ' + wk + ' semanas' : '') + ' — parece un cambio real, no un repunte. Muchos operadores ajustarían el precio de los platillos que lo usan.') };
+      case 'spike':
+        return { tone: 'hold', verb: L('Hold', 'Espera'), note: L('Jumped, then pulled back — this often reverts. Re-pricing now risks chasing a number that is already falling.', 'Subió y luego bajó — suele revertir. Ajustar ahora arriesga perseguir un número que ya está cayendo.') };
+      case 'easing':
+        return { tone: 'hold', verb: L('Hold', 'Espera'), note: L('Easing — this can be a chance to renegotiate, not a reason to re-price.', 'Bajando — puede ser oportunidad de renegociar, no razón para reajustar.') };
+      case 'emerging':
+        return { tone: 'watch', verb: L('Watch', 'Observa'), note: L('A real move, but it has not held yet. Give it a couple of weeks.', 'Un movimiento real, pero aún no se sostiene. Dale un par de semanas.') };
+      case 'flat':
+        return { tone: 'hold', verb: L('Hold', 'Espera'), note: L('Inside its usual range — nothing to do.', 'Dentro de su rango usual — nada que hacer.') };
+      default: // insufficient
+        return { tone: 'watch', verb: L('Watch', 'Observa'), note: L('Too new to call — too little history so far. Treat the price as real until a pattern shows.', 'Muy nuevo para concluir — poco historial aún. Trata el precio como real hasta que se vea un patrón.') };
+    }
+  }
 
   var movers = [];
   (DATA.ingredients || []).forEach(function (ing) {
-    var r = MuntinCompositePrice.assess(ing.input || {});
+    // Live seed carries the baked, fact-gated assessment (already an assess()
+    // shape); preview seed carries raw input we run the engine on in-browser.
+    var r = ing.assessment || MuntinCompositePrice.assess(ing.input || {});
     var name = L(ing.label_en, ing.label_es);
     var unit = L(ing.unit_en || 'unit', ing.unit_es || 'unidad');
     var lvl = r.level;
@@ -368,9 +500,23 @@
     var pct = r.trend.pct;
     var dirWord = r.trend.dir === 'up' ? L('up', 'arriba') : r.trend.dir === 'down' ? L('down', 'abajo') : L('flat', 'estable');
     var pctTxt = pct == null ? '' : Math.abs(Math.round(pct * 100)) + '%';
+    // On a 'directional' read the data is too thin to stand behind a precise
+    // percent — showing one would overstate the signal. Give the direction with
+    // an honest hedge instead (the fact-gate ethos applied to the UI).
+    var soften = r.confidence === 'directional' && r.trend.dir !== 'flat';
+    // Numeracy aid: anchor the percent to a dollar an operator recognizes
+    // (derived from the displayed median + pct — no new data, fact-gate-safe).
+    var deltaTxt = '';
+    if (!soften && pct != null && lvl && typeof lvl.medianCents === 'number' && r.trend.dir !== 'flat') {
+      var deltaCents = Math.abs(Math.round(lvl.medianCents - lvl.medianCents / (1 + pct)));
+      if (deltaCents > 0) deltaTxt = L(' — about ' + money(deltaCents) + ' ' + (r.trend.dir === 'up' ? 'more' : 'less') + ' a ' + unit + ' over the window',
+                                       ' — cerca de ' + money(deltaCents) + ' ' + (r.trend.dir === 'up' ? 'más' : 'menos') + ' por ' + unit + ' en el periodo');
+    }
     var trendText = pct == null
       ? L('Not enough history yet for a trend', 'Sin suficiente historial para una tendencia')
-      : L(dirWord + ' ' + pctTxt + ' over the window', dirWord + ' ' + pctTxt + ' en el periodo');
+      : soften
+        ? L(dirWord + ' — early signal, not a firm number yet', dirWord + ' — señal temprana, aún no es un número firme')
+        : L(dirWord + ' ' + pctTxt + ' over the window', dirWord + ' ' + pctTxt + ' en el periodo') + deltaTxt;
 
     var conf = confWordMap[r.confidence] || r.confidence;
     var nSrc = (r.trend && r.trend.nSources) || (lvl ? lvl.nSources : 0);
@@ -380,14 +526,16 @@
     if (ing.key) fig.id = 'ci-' + ing.key;          // deep anchor: /…/#ci-romaine
     if (ing.key) fig.setAttribute('data-key', ing.key); // for the basket
     fig.setAttribute('data-name', name.toLowerCase()); // for the filter
+    var confPhrase = confPhraseMap[r.confidence] || (conf + ' ' + L('confidence', 'confianza'));
     fig.setAttribute('data-audio-alt',
-      name + '. ' + rangeText + '. ' + L('The market is ', 'El mercado va ') + trendText + ', ' +
-      conf + ' ' + L('confidence', 'confianza') + '. ' + metaText + '.');
+      name + '. ' + rangeText + '. ' + L('The market is ', 'El mercado va ') + trendText + '. ' +
+      confPhrase + ' ' + metaText + '.');
 
     var head = el('div', 'cp-market-head');
     head.appendChild(el('span', 'cp-market-name', name));
     var chip = el('span', 'cp-conf', conf);
     chip.setAttribute('data-level', r.confidence);
+    chip.setAttribute('aria-label', confPhrase);   // chip shows the short word; SR hears what it means
     var headRight = el('span', 'cp-head-right');
     headRight.appendChild(chip);
     if (ing.key) headRight.appendChild(trackButton(ing.key));
@@ -399,8 +547,43 @@
     tEl.setAttribute('data-dir', r.trend.dir);
     fig.appendChild(tEl);
 
-    var sparkVals = pickSeries(ing.input);
-    if (sparkVals && sparkVals.length >= 2) fig.appendChild(sparkSvg(sparkVals, r.trend.dir));
+    // "What would you do?" — a confidence-calibrated suggestion (never a command).
+    var fv = flagVerb(ing.flag, r.confidence);
+    if (fv) {
+      var vEl = el('p', 'cp-market-verdict');
+      var vChip = el('span', 'cp-verb', fv.verb);
+      vChip.setAttribute('data-tone', fv.tone);
+      vEl.appendChild(vChip);
+      vEl.appendChild(el('span', 'cp-verb-note', ' ' + fv.note));
+      fig.appendChild(vEl);
+      fig.setAttribute('data-audio-alt', (fig.getAttribute('data-audio-alt') || '') + ' ' + fv.verb + '. ' + fv.note);
+    }
+
+    var sparkVals = ing.spark || pickSeries(ing.input);
+    var sparkText = '';
+    var pctText = '';
+    if (sparkVals && sparkVals.length >= 2) {
+      fig.appendChild(sparkSvg(sparkVals, r.trend.dir, r.confidence));
+      sparkText = sparkShape(sparkVals);
+      if (sparkText) fig.setAttribute('data-audio-alt', (fig.getAttribute('data-audio-alt') || '') + ' ' + sparkText);
+      // "today vs its own recent range" — only on a firm read (a directional/thin
+      // series can't carry an honest percentile).
+      if (r.confidence !== 'directional') {
+        pctText = percentileLine(sparkVals);
+        if (pctText) {
+          fig.appendChild(el('p', 'cp-market-percentile', pctText));
+          fig.setAttribute('data-audio-alt', (fig.getAttribute('data-audio-alt') || '') + ' ' + pctText);
+        }
+      }
+    }
+    // Cite the curve, and never let an index series read as a dollar price.
+    var sm = ing.spark_meta;
+    if (sm) {
+      var citeTxt = L('Price history: ', 'Historial de precio: ') + sm.source + ', ' + sm.from + '–' + sm.to
+        + (sm.basis === 'index' ? L(' (index, not $)', ' (índice, no $)') : '');
+      fig.appendChild(el('p', 'cp-spark-cite', citeTxt));
+      fig.setAttribute('data-audio-alt', (fig.getAttribute('data-audio-alt') || '') + ' ' + citeTxt + '.');
+    }
 
     if (ing.seasonal) {
       fig.appendChild(el('p', 'cp-market-seasonal',
@@ -441,8 +624,8 @@
       var note = buildVendorNote(ing, unit);
       note.root.hidden = true;
       (function (o, level, h) {
-        var priceFired = false;
-        inp.addEventListener('input', function () {
+        var priceFired = false, debounce = null;
+        function update() {
           var pos = renderYou(o, level, inp.value);
           var cents = parseMoney(inp.value);
           if (pos && !priceFired) {
@@ -462,6 +645,12 @@
             h.root.hidden = true;
             h.collapse();
           }
+        }
+        // Debounce: the verdict lives in an aria-live region, so updating on every
+        // keystroke machine-guns a screen reader mid-typing. Settle ~350ms first.
+        inp.addEventListener('input', function () {
+          if (debounce) clearTimeout(debounce);
+          debounce = setTimeout(update, 350);
         });
       })(youOut, lvl, note);
       you.appendChild(lab); you.appendChild(inp); you.appendChild(youOut); you.appendChild(note.root);
@@ -470,7 +659,11 @@
 
     // Screen-reader numbers table.
     var srt = el('div', 'cp-sr-only');
-    var caption = name + ': ' + rangeText + '; ' + trendText + '; ' + conf + ' ' + L('confidence', 'confianza') + '; ' + metaText + '.';
+    var caption = name + ': ' + rangeText + '; ' + trendText + '; ' + confPhrase + '; ' + metaText + '.'
+      + (sparkText ? ' ' + sparkText : '')
+      + (pctText ? ' ' + pctText : '')
+      + (fv ? ' ' + fv.verb + '. ' + fv.note : '')
+      + (sm ? ' ' + L('Price history from ', 'Historial de precio de ') + sm.source + ', ' + sm.from + ' ' + L('to', 'a') + ' ' + sm.to + (sm.basis === 'index' ? L(' (index, not a dollar price)', ' (índice, no un precio en dólares)') : '') + '.' : '');
     srt.appendChild(el('p', null, caption));
     fig.appendChild(srt);
 
@@ -562,6 +755,11 @@
   updateBasketBar();
   applyFilters();
 
+  // Lead with the gestalt: the plain one-line summary is the orienting element,
+  // so force it above the basket bar / search controls (each of those prepended
+  // at firstChild above). A tired reader gets the "what moved" sentence first.
+  if (movers.length && sum.parentNode === listEl) listEl.insertBefore(sum, listEl.firstChild);
+
   // Deep anchor: a URL like /…/#ci-romaine should bring that card into view +
   // flag it. The browser's initial hash scroll fired before these JS-built
   // cards existed, so do it here after render.
@@ -591,6 +789,42 @@
   method.appendChild(mp);
   card.insertBefore(method, document.getElementById('cpMarketCta'));
 
+  // Drivers — the "why" strip. Public commodities (corn/diesel…) that tend to
+  // move BEFORE the ingredients above. Framed as association, never cause, and
+  // only naming leads actually shown on this surface. Collapsed by default.
+  if (Array.isArray(DATA.drivers) && DATA.drivers.length) {
+    var nameByKey = {};
+    (DATA.ingredients || []).forEach(function (ig) { if (ig.key) nameByKey[ig.key] = L(ig.label_en, ig.label_es); });
+    var dWrap = el('details', 'cp-drivers');
+    dWrap.appendChild(el('summary', null, L("Why it's moving", 'Por qué se mueve')));
+    var dBody = el('div', 'cp-drivers-body');
+    dBody.appendChild(el('p', 'cp-drivers-lead', L(
+      'These public commodities tend to move before the ingredients above — an association, not a proven cause.',
+      'Estas materias primas públicas suelen moverse antes que los ingredientes de arriba — una asociación, no una causa comprobada.')));
+    DATA.drivers.forEach(function (d) {
+      var dir = (d.trend && d.trend.dir) || 'flat';
+      var dpct = d.trend && d.trend.pct;
+      var dWord = dir === 'up' ? L('up', 'arriba') : dir === 'down' ? L('down', 'abajo') : L('flat', 'estable');
+      var dPctTxt = dpct == null ? '' : ' ' + Math.abs(Math.round(dpct * 100)) + '%';
+      var row = el('div', 'cp-driver');
+      var dhead = el('div', 'cp-driver-head');
+      dhead.appendChild(el('span', 'cp-driver-name', L(d.label_en, d.label_es)));
+      var dt = el('span', 'cp-driver-trend', (dir === 'up' ? '▲ ' : dir === 'down' ? '▼ ' : '● ') + dWord + dPctTxt);
+      dt.setAttribute('data-dir', dir);
+      dhead.appendChild(dt);
+      row.appendChild(dhead);
+      if (Array.isArray(d.spark) && d.spark.length >= 2) row.appendChild(sparkSvg(d.spark, dir));
+      var leads = (d.leads || []).filter(function (k) { return nameByKey[k]; }).slice(0, 2).map(function (k) { return nameByKey[k]; });
+      if (leads.length) {
+        row.appendChild(el('p', 'cp-driver-leads',
+          L('Tends to move before ' + leads.join(', ') + '.', 'Suele moverse antes que ' + leads.join(', ') + '.')));
+      }
+      dBody.appendChild(row);
+    });
+    dWrap.appendChild(dBody);
+    card.insertBefore(dWrap, document.getElementById('cpMarketCta'));
+  }
+
   var cta = document.getElementById('cpMarketCta');
   cta.appendChild(document.createTextNode(L('Want this checked against your own invoices? ', '¿Quieres comparar esto con tus propias facturas? ')));
   var a = el('a', 'plausible-event-name=Ledger+Route+Click plausible-event-source=cost-pulse-market', 'Muntin Ledger');
@@ -604,10 +838,20 @@
   var xlink = el('p', 'cp-market-crosslink');
   xlink.appendChild(document.createTextNode(L('Costing a specific dish? ', '¿Costeando un platillo? ')));
   var px = el('a', null, L('Use the free Plate Cost calculator', 'Usa la calculadora Plate Cost gratis'));
-  px.href = '/tools/plate-cost/';
+  px.href = (es ? '/es' : '') + '/tools/plate-cost/';
   xlink.appendChild(px);
   xlink.appendChild(document.createTextNode('.'));
   card.insertBefore(xlink, document.getElementById('cpMarketCta'));
+
+  // Cross-wire to Bench — the complement: this card reads the MARKET; Bench
+  // reads the operator's OWN saved prices ("did my vendor move me out of line").
+  var blink = el('p', 'cp-market-crosslink');
+  blink.appendChild(document.createTextNode(L('Checking your own price history instead? ', '¿Revisas tu propio historial de precios? ')));
+  var bx = el('a', null, L('See if a vendor moved you out of line with Bench', 'Mira si un proveedor te sacó de línea con Bench'));
+  bx.href = (es ? '/es' : '') + '/tools/vendor-benchmark/';
+  blink.appendChild(bx);
+  blink.appendChild(document.createTextNode('.'));
+  card.insertBefore(blink, document.getElementById('cpMarketCta'));
 
   card.hidden = false;
 })();

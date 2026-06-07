@@ -8,10 +8,18 @@
         "commodity": "Ribeye",
         "reducer": "wtdAvg",
         "unit": "lb",
-        "_report": "LMR Datamart 2453, section \"Choice Cuts\" (prices live in sections; bare report = Summary). Confirm the ribeye cut term + price fields via a section curl.",
+        "_report": "LMR Datamart 2453 (LM_XB403, PM), section Choice Cuts. Match \"Ribeye\" (IMPS 109E/112A). Price column Weighted_Average (confirmed label; exact JSON key inferred → array of candidates). $/cwt → /100 for $/lb. Daily report → report_date (default).",
         "section": "Choice Cuts",
         "priceUnit": "Dollars Per Cwt",
-        "windowDays": 45
+        "windowDays": 45,
+        "fields": {
+          "price": [
+            "Weighted_Average",
+            "weighted_average",
+            "wtd_avg_price",
+            "avg_price"
+          ]
+        }
       },
       "bls": {
         "seriesId": "WPU022101"
@@ -29,10 +37,18 @@
         "commodity": "Butt Tender",
         "reducer": "wtdAvg",
         "unit": "lb",
-        "_report": "LMR 2453, section \"Choice Cuts\". Tenderloin is labeled \"Loin, butt tender, trimmed (191A)\" (~$14.75/lb) — match \"Butt Tender\", NOT \"tenderloin\" (absent) or \"tender\" (would catch chuck/clod tender).",
+        "_report": "LMR 2453 Choice Cuts. Live shows \"tenderloin\" matches 0 rows on this report; the cut is labeled \"Loin, butt tender, trimmed (191A)\" — match \"Butt Tender\" (~$14.75/lb). Same section/column as ribeye (which composes), so only the cut term differs.",
         "section": "Choice Cuts",
         "priceUnit": "Dollars Per Cwt",
-        "windowDays": 45
+        "windowDays": 45,
+        "fields": {
+          "price": [
+            "Weighted_Average",
+            "weighted_average",
+            "wtd_avg_price",
+            "avg_price"
+          ]
+        }
       },
       "bls": {
         "seriesId": "WPU022101"
@@ -48,6 +64,8 @@
         ],
         "market": "National",
         "reducer": "wtdAvg",
+        "priceUnit": "Cents Per Lb",
+        "unit": "lb",
         "_report": "Weekly National Chicken Report; item 'Breast - B/S' = boneless/skinless, wtd_avg_price in Cents Per Lb"
       },
       "fred": {
@@ -69,6 +87,8 @@
         ],
         "market": "National",
         "reducer": "wtdAvg",
+        "priceUnit": "Cents Per Lb",
+        "unit": "lb",
         "_report": "Weekly National Chicken Report; wtd_avg_price in Cents Per Lb"
       },
       "bls": {
@@ -79,13 +99,17 @@
       "verified": true,
       "lmr": {
         "reportId": "2498",
-        "commodity": "Loin",
-        "reducer": "wtdAvg",
+        "reducer": "single",
         "unit": "lb",
-        "_report": "LMR 2498, section \"Loin Cuts\". Confirm loin cut term/unit via section curl.",
-        "section": "Loin Cuts",
+        "_report": "LMR 2498 (LM_PK602), section \"Cutout and Primal Values\", column pork_loin (CONFIRMED key). Primal cutout value $/cwt → /100 for $/lb. report_date (default).",
+        "section": "Cutout and Primal Values",
         "priceUnit": "Dollars Per Cwt",
-        "windowDays": 45
+        "windowDays": 45,
+        "fields": {
+          "price": [
+            "pork_loin"
+          ]
+        }
       },
       "bls": {
         "seriesId": "WPS022104"
@@ -95,13 +119,17 @@
       "verified": true,
       "lmr": {
         "reportId": "2498",
-        "commodity": "Butt",
-        "reducer": "wtdAvg",
+        "reducer": "single",
         "unit": "lb",
-        "_report": "LMR 2498, section \"Butt Cuts\" (Boston butt = pork shoulder). Confirm cut term via section curl.",
-        "section": "Butt Cuts",
+        "_report": "LMR 2498, section \"Cutout and Primal Values\", column pork_butt (Boston butt = pork shoulder; CONFIRMED key). $/cwt → /100 for $/lb.",
+        "section": "Cutout and Primal Values",
         "priceUnit": "Dollars Per Cwt",
-        "windowDays": 45
+        "windowDays": 45,
+        "fields": {
+          "price": [
+            "pork_butt"
+          ]
+        }
       },
       "bls": {
         "seriesId": "WPS022104"
@@ -111,9 +139,16 @@
       "verified": true,
       "noaa": {
         "commodity": "salmon",
+        "hts": [
+          "030441",
+          "030481"
+        ],
+        "nameMatch": "SALMON",
+        "basis": "wholesale",
+        "edibleOnly": true,
         "unit": "lb",
         "years": 2,
-        "_report": "NOAA Fisheries import unit value (val/kilos -> $/lb, landed-adjacent proxy). Confirm trade_data fields/commodity (or set hts e.g. 0304 for salmon fillet) via a sample curl."
+        "_report": "NOAA FOSS trade_data IMPORT unit value (sum val / sum kilos -> $/lb). HTS 030441 (salmon fillet fresh/chilled) + 030481 (frozen) only — bare 0304 dilutes with other species. Lands ~$5-7/lb, inside salmon-fillet bounds; a conservative landed-adjacent proxy, BELOW true delivered wholesale (excludes duty/freight/margin). Cited to NOAA in provenance."
       },
       "bls": {
         "seriesId": "WPU0223",
@@ -124,9 +159,15 @@
       "verified": true,
       "noaa": {
         "commodity": "shrimp",
+        "hts": [
+          "0306"
+        ],
+        "nameMatch": "SHRIMP|PRAWN",
+        "basis": "index",
+        "edibleOnly": true,
         "unit": "lb",
         "years": 2,
-        "_report": "NOAA Fisheries import unit value -> $/lb (landed-adjacent). Confirm fields/commodity (or hts 0306) via sample."
+        "_report": "NOAA FOSS trade_data IMPORT unit value. basis:index (DIRECTIONAL ONLY, no dollar level) — commodity shrimp import value runs ~$1.6-2.3/lb, at/below the 250c floor, so a $ level would be rejected or misleadingly cheap. Feeds trend/history; the wholesale level stays from BLS direction. HTS 0306 + name guard (0306 also has lobster/crab)."
       },
       "bls": {
         "seriesId": "WPU02230501"
@@ -444,6 +485,30 @@
         "seriesId": "APU0000708111",
         "basis": "retail",
         "unit": "dozen"
+      },
+      "ams": {
+        "reportId": "2848",
+        "section": "Report Detail Simple",
+        "filters": {
+          "class": "Large",
+          "color": "White",
+          "environment": "Caged",
+          "egg_type": "Cartoned",
+          "grade": "Grade A",
+          "delivery": "Delivered Warehouse",
+          "region": "National"
+        },
+        "reducer": "single",
+        "fields": {
+          "price": [
+            "avg_price"
+          ]
+        },
+        "priceUnitField": "price_unit",
+        "dateField": "report_date",
+        "unit": "dozen",
+        "windowDays": 60,
+        "_report": "Weekly Combined Regional Shell Egg Report (AMS_2848), section \"Report Detail Simple\". Pin the NATIONAL Delivered-Warehouse Grade A Large White Caged Cartoned row — the standard wholesale benchmark (excludes farm-gate FOB ~32c and store-door). price_unit read per-row. NOTE: eggs genuinely run ~55-65c/doz wholesale in the 2026 post-shortage oversupply — that is real, not a unit error."
       }
     },
     "vegetable-oil": {
@@ -459,7 +524,7 @@
         "basis": "index",
         "family": "ppi-soybean-oil",
         "type": "ppi-soybean-oil",
-        "_report": "Soybean Oil PPI (trend). The retail APU0000716121 was DISCONTINUED 2005 — no current free oil LEVEL via FRED/BLS. For a wholesale level, wire AMS report 3511 (Crude Soybean Oil, Central IL) via the AMS key."
+        "_report": "Soybean Oil PPI (trend). Retail APU0000716121 discontinued 2005 — no current free oil LEVEL via FRED/BLS. For a wholesale level, AMS report 3190 (GX_GR117, Crude Soybean Oil, Central IL, cents/lb) is the correct report (NOT 3511, which is feedstuffs/meal). Held directional: crude soybean oil runs well below refined fryer oil, so it would mislead as the operator-facing level."
       }
     }
   },

@@ -1,0 +1,27 @@
+{
+  "_doc": "Bilingual display labels + units for the Cost Index ingredients. The data layer (data/cost-index.json) is keyed by ingredient and carries NO display strings; scripts/build-cost-index-seed.mjs joins these labels onto the gated points to emit the browser seed data/cost-index.js. Keys MUST match data/cost-index-sources.json. Names/units are factual descriptors (no market data here). 'seasonal' flags produce that typically eases in season — used only to soften the UI's hold-vs-reprice nudge.",
+  "labels": {
+    "ribeye":          { "en": "Ribeye", "es": "Ribeye (bife ancho)", "unit_en": "lb", "unit_es": "libra" },
+    "beef-tenderloin": { "en": "Beef tenderloin", "es": "Lomo fino de res", "unit_en": "lb", "unit_es": "libra" },
+    "chicken-breast":  { "en": "Chicken breast (boneless)", "es": "Pechuga de pollo (sin hueso)", "unit_en": "lb", "unit_es": "libra" },
+    "whole-chicken":   { "en": "Whole chicken", "es": "Pollo entero", "unit_en": "lb", "unit_es": "libra" },
+    "pork-loin":       { "en": "Pork loin", "es": "Lomo de cerdo", "unit_en": "lb", "unit_es": "libra" },
+    "pork-shoulder":   { "en": "Pork shoulder", "es": "Espaldilla de cerdo", "unit_en": "lb", "unit_es": "libra" },
+    "salmon-fillet":   { "en": "Salmon fillet", "es": "Filete de salmón", "unit_en": "lb", "unit_es": "libra" },
+    "shrimp":          { "en": "Shrimp", "es": "Camarón", "unit_en": "lb", "unit_es": "libra" },
+    "romaine-lettuce": { "en": "Romaine lettuce", "es": "Lechuga romana", "unit_en": "carton", "unit_es": "caja", "seasonal": true },
+    "tomato":          { "en": "Tomatoes (round)", "es": "Jitomate (bola)", "unit_en": "carton", "unit_es": "caja", "seasonal": true },
+    "onion":           { "en": "Onions", "es": "Cebolla", "unit_en": "sack", "unit_es": "saco" },
+    "russet-potato":   { "en": "Russet potatoes", "es": "Papa russet", "unit_en": "sack", "unit_es": "saco" },
+    "butter":          { "en": "Butter (AA, bulk)", "es": "Mantequilla (AA, a granel)", "unit_en": "lb", "unit_es": "libra" },
+    "cheddar-cheese":  { "en": "Cheddar cheese", "es": "Queso cheddar", "unit_en": "lb", "unit_es": "libra" },
+    "eggs":            { "en": "Eggs", "es": "Huevo", "unit_en": "dozen", "unit_es": "docena" },
+    "vegetable-oil":   { "en": "Vegetable oil", "es": "Aceite vegetal", "unit_en": "lb", "unit_es": "libra" }
+  },
+  "drivers": {
+    "corn":        { "en": "Corn (feed)", "es": "Maíz (forraje)" },
+    "soybeans":    { "en": "Soybeans (feed)", "es": "Soya (forraje)" },
+    "diesel":      { "en": "Diesel", "es": "Diésel" },
+    "electricity": { "en": "Electricity", "es": "Electricidad" }
+  }
+}

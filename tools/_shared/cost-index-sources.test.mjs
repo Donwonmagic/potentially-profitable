@@ -113,3 +113,86 @@ test('normalizeAms commodity filter pulls ONE ingredient out of a multi-commodit
   assert.equal(out.points.length, 1);
   assert.equal(out.points[0].value, 25);
 });
+
+test('normalizeAms wtdAvg + priceUnit (Cents Per Lb) + matchFields restricts the match', () => {
+  const chicken = { results: [
+    { report_date: '05/04/2026', item: 'Breast - B/S', price_unit: 'Cents Per Lb', wtd_avg_price: 145.72 },
+    { report_date: '05/04/2026', item: 'Whole', notes: 'breast - b/s trim note', wtd_avg_price: 88.0 }, // 'breast' only outside item → must NOT match
+  ] };
+  const out = S.normalizeAms(chicken, { source: 'usda-ams-national', basis: 'wholesale', reducer: 'wtdAvg', priceUnit: 'Cents Per Lb', matchFields: ['item'], commodity: 'Breast - B/S', unit: 'lb' });
+  assert.equal(out.points.length, 1);
+  assert.equal(out.points[0].value, 1.4572); // 145.72 cents → dollars/lb
+});
+
+test('normalizeAms priceUnit Dollars Per Cwt → dollars per lb', () => {
+  const beef = { results: [{ report_date: '06/05/2026', commodity: 'Ribeye', wtd_avg_price: 1159 }] };
+  const out = S.normalizeAms(beef, { source: 'usda-lmr', basis: 'wholesale', reducer: 'wtdAvg', priceUnit: 'Dollars Per Cwt', commodity: 'ribeye', unit: 'lb' });
+  assert.equal(out.points[0].value, 11.59); // $1159/cwt → $11.59/lb
+});
+
+test('normalizeNoaaTrade: salmon-fillet IMPORT unit value $/lb, excludes export/wrong-species', () => {
+  const fx = { items: [
+    { year: 2025, month: 1, hts_number: '0304410010', name: 'SALMON ATLANTIC FILLET FRESH', kilos: 100000, val: 1200000, source: 'IMP', edible_code: 'E' },
+    { year: 2025, month: 1, hts_number: '0304810010', name: 'SALMON ATLANTIC FILLET FROZEN', kilos: 50000, val: 480000, source: 'IMP', edible_code: 'E' },
+    { year: 2025, month: 1, hts_number: '0304620000', name: 'CATFISH FILLET FROZEN', kilos: 80000, val: 300000, source: 'IMP', edible_code: 'E' }, // wrong species
+    { year: 2025, month: 1, hts_number: '0304410010', name: 'SALMON FILLET FRESH', kilos: 20000, val: 260000, source: 'EXP', edible_code: 'E' }, // export
+  ] };
+  const out = S.normalizeNoaaTrade(fx, { source: 'noaa', basis: 'wholesale', hts: ['030441', '030481'], nameMatch: 'SALMON', edibleOnly: true, unit: 'lb' });
+  assert.equal(out.basis, 'wholesale');
+  assert.equal(out.points.length, 1);
+  assert.equal(out.points[0].date, '2025-01-01');
+  assert.ok(Math.abs(out.points[0].value - 5.08) < 0.001); // (1.68M / 150k) / 2.20462 = $5.08/lb
+});
+
+test('normalizeNoaaTrade: shrimp configured as index (directional), name-guarded vs lobster', () => {
+  const fx = { items: [
+    { year: 2025, month: 1, hts_number: '0306170040', name: 'SHRIMP PEELED FROZEN', kilos: 100000, val: 380000, source: 'IMP', edible_code: 'E' },
+    { year: 2025, month: 1, hts_number: '0306120000', name: 'LOBSTER FROZEN', kilos: 50000, val: 900000, source: 'IMP', edible_code: 'E' }, // 0306 but not shrimp
+  ] };
+  const out = S.normalizeNoaaTrade(fx, { source: 'noaa', basis: 'index', hts: ['0306'], nameMatch: 'SHRIMP|PRAWN', edibleOnly: true, unit: 'lb' });
+  assert.equal(out.basis, 'index'); // never a $ level
+  assert.equal(out.points.length, 1); // lobster excluded by name guard
+});
+
+test('normalizeAms fields.price as an ARRAY picks the first present column', () => {
+  const ch = S.normalizeAms({ results: [{ week_ending_date: '05/30/2026', cheese_40_Price: '1.4881' }] },
+    { reducer: 'single', fields: { price: ['cheese_40_Price', 'Cheddar_Price', 'Block_Price'] }, dateField: 'week_ending_date', unit: 'lb' });
+  assert.deepEqual(ch.points, [{ date: '2026-05-30', value: 1.4881 }]);
+});
+
+test('normalizeAms commodityExact matches EQUAL, not contains (eggs Large excludes Extra Large)', () => {
+  const eg = S.normalizeAms({ results: [
+    { report_date: '10/17/2025', class: 'Large', low_price: '150', high_price: '164' },
+    { report_date: '10/17/2025', class: 'Extra Large', low_price: '170', high_price: '180' },
+  ] }, { reducer: 'mostlyMid', commodity: 'Large', matchFields: ['class'], commodityExact: true, priceUnit: 'Cents per Dozen', unit: 'dozen' });
+  assert.equal(eg.points.length, 1);
+  assert.equal(eg.points[0].value, 1.57); // (150+164)/2 = 157c → $1.57; Extra Large excluded
+});
+
+test('normalizeAms filters (multi-field) + priceUnitField (per-row unit) — eggs Large White Caged', () => {
+  const rows = [
+    { report_date: '06/01/2026', class: 'Large', color: 'White', environment: 'Caged', region: 'NE', avg_price: '165', price_unit: 'Cents per Dozen' },
+    { report_date: '06/01/2026', class: 'Large', color: 'White', environment: 'Caged', region: 'SE', avg_price: '155', price_unit: 'Cents per Dozen' },
+    { report_date: '06/01/2026', class: 'Extra Large', color: 'White', environment: 'Caged', region: 'NE', avg_price: '185', price_unit: 'Cents per Dozen' },
+    { report_date: '06/01/2026', class: 'Large', color: 'Brown', environment: 'Cage-Free', region: 'NE', avg_price: '320', price_unit: 'Cents per Dozen' },
+  ];
+  const o = S.normalizeAms({ results: rows }, { filters: { class: 'Large', color: 'White', environment: 'Caged' }, reducer: 'single', fields: { price: ['avg_price'] }, priceUnitField: 'price_unit', dateField: 'report_date', unit: 'dozen' });
+  assert.deepEqual(o.points, [{ date: '2026-06-01', value: 1.6 }]); // median(1.65,1.55); XL/brown/cage-free excluded; cents→$ via per-row unit
+});
+
+test('normalizeAms priceUnitField reads dollars-per-unit rows without scaling', () => {
+  const o = S.normalizeAms({ results: [{ report_date: '06/01/2026', class: 'Large', avg_price: '1.60', price_unit: 'Dollars per Dozen' }] },
+    { filters: { class: 'Large' }, reducer: 'single', fields: { price: ['avg_price'] }, priceUnitField: 'price_unit', dateField: 'report_date' });
+  assert.equal(o.points[0].value, 1.6);
+});
+
+test('normalizeEia parses response.data, skips nulls, sorts oldest→newest (basis index)', () => {
+  const eia = { response: { dateFormat: 'YYYY-MM', data: [
+    { period: '2026-03', price: '12.88', 'price-units': 'cents per kilowatthour' },
+    { period: '2026-04', price: null, 'price-units': 'cents per kilowatthour' }, // preliminary → skipped
+    { period: '2026-02', price: '12.61', 'price-units': 'cents per kilowatthour' },
+  ] } };
+  const out = S.normalizeEia(eia, { source: 'eia', basis: 'index', value: 'price' });
+  assert.equal(out.basis, 'index');
+  assert.deepEqual(out.points, [{ date: '2026-02-01', value: 12.61 }, { date: '2026-03-01', value: 12.88 }]);
+});

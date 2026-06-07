@@ -56,25 +56,50 @@
     return isFinite(n) ? n : null;
   }
 
+  // Look up a row value by field name(s). `name` may be a STRING or an ARRAY of
+  // fallback names (try each until one is present) — report column spellings vary
+  // and are sometimes only confirmable live, so a spec can list candidates.
+  function pickField(row, name, dflt) {
+    var list = Array.isArray(name) ? name : (name != null ? [name] : []);
+    if (dflt != null) list = list.concat([dflt]);
+    for (var i = 0; i < list.length; i++) {
+      var v = row[list[i]];
+      if (v != null && v !== '') return v;
+    }
+    return undefined;
+  }
   function reduceAmsRow(row, reducer, fields) {
     fields = fields || {};
     if (!row) return null;
     reducer = reducer || 'single';
     if (reducer === 'mostlyMid') {
-      var ml = num(row[fields.mostlyLow || 'mostly_low']);
-      var mh = num(row[fields.mostlyHigh || 'mostly_high']);
+      var ml = num(pickField(row, fields.mostlyLow, 'mostly_low'));
+      var mh = num(pickField(row, fields.mostlyHigh, 'mostly_high'));
       if (ml != null && mh != null) return (ml + mh) / 2;
-      var lo = num(row[fields.low || 'low_price']);
-      var hi = num(row[fields.high || 'high_price']);
+      var lo = num(pickField(row, fields.low, 'low_price'));
+      var hi = num(pickField(row, fields.high, 'high_price'));
       if (lo != null && hi != null) return (lo + hi) / 2;
       return null;
     }
     if (reducer === 'valuePerPound') {
-      var d = num(row[fields.dollars || 'dollars']);
-      var p = num(row[fields.pounds || 'pounds']);
+      var d = num(pickField(row, fields.dollars, 'dollars'));
+      var p = num(pickField(row, fields.pounds, 'pounds'));
       return (d != null && p != null && p > 0) ? d / p : null;
     }
-    return num(row[fields.price || 'avg_price']);
+    if (reducer === 'wtdAvg') {
+      return num(pickField(row, fields.price, 'wtd_avg_price'));
+    }
+    return num(pickField(row, fields.price, 'avg_price'));
+  }
+
+  // Convert a reported price unit to the composite's base ($ per the ingredient's
+  // unit). Cents→dollars and $/cwt→$/lb both scale by 0.01; an unknown/absent
+  // unit is left as-is. A wrong factor is caught downstream by the bounds gate.
+  function priceUnitFactor(pu) {
+    var s = String(pu || '').toLowerCase();
+    if (s.indexOf('cent') !== -1) return 0.01;                                       // cents per X → dollars per X
+    if (s.indexOf('cwt') !== -1 || s.indexOf('hundredweight') !== -1) return 0.01;   // $/cwt → $/lb (100 lb)
+    return 1;
   }
 
   function normalizeAms(json, meta) {
@@ -82,11 +107,19 @@
     var rows = (json && (json.results || json.report || json.data)) || [];
     var dateField = meta.dateField || 'report_date';
     var commodity = meta.commodity ? String(meta.commodity).toLowerCase() : null;
+    var matchFields = Array.isArray(meta.matchFields) ? meta.matchFields : null;
+    var exact = !!meta.commodityExact;   // EQUALS, not contains — e.g. eggs "Large" must not catch "Extra Large"
+    var factor = priceUnitFactor(meta.priceUnit);
     var rowMatches = function (r) {
       if (!commodity) return true;
-      for (var k in r) if (Object.prototype.hasOwnProperty.call(r, k)) {
-        var v = r[k];
-        if (typeof v === 'string' && v.toLowerCase().indexOf(commodity) !== -1) return true;
+      // matchFields restricts the commodity match to named columns (e.g. ["item"]
+      // on the National Chicken Report); default scans every string field.
+      var keys = matchFields || Object.keys(r);
+      for (var i = 0; i < keys.length; i++) {
+        var v = r[keys[i]];
+        if (typeof v !== 'string') continue;
+        var lv = v.toLowerCase().trim();
+        if (exact ? lv === commodity : lv.indexOf(commodity) !== -1) return true;
       }
       return false;
     };
@@ -96,10 +129,27 @@
       var m = Math.floor(s.length / 2);
       return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2;
     };
+    // Optional multi-field filter for granular reports (e.g. shell eggs:
+    // class=Large, color=White, environment=Caged) — EVERY pair must match
+    // (case-insensitive equals), isolating one product instead of blending.
+    var filters = (meta.filters && typeof meta.filters === 'object') ? meta.filters : null;
+    var filtersMatch = function (r) {
+      if (!filters) return true;
+      for (var k in filters) if (Object.prototype.hasOwnProperty.call(filters, k)) {
+        var want = String(filters[k]).toLowerCase().trim();
+        var got = (r[k] == null ? '' : String(r[k])).toLowerCase().trim();
+        if (got !== want) return false;
+      }
+      return true;
+    };
     var byDateMap = {};
     rows.forEach(function (r) {
-      if (!r || !rowMatches(r)) return;
+      if (!r || !rowMatches(r) || !filtersMatch(r)) return;
       var v = reduceAmsRow(r, meta.reducer, meta.fields);
+      // Prefer the row's OWN reported unit (priceUnitField) over a fixed
+      // meta.priceUnit — removes the cents-vs-dollars guess for mixed reports.
+      var f = meta.priceUnitField ? priceUnitFactor(r[meta.priceUnitField]) : factor;
+      if (v != null && isFinite(v)) v = v * f;                                 // unit-normalize before binning
       var date = isoDate(r[dateField]);
       if (date && v != null && isFinite(v)) (byDateMap[date] = byDateMap[date] || []).push(v);
     });
@@ -107,6 +157,62 @@
       .map(function (d) { return { date: d, value: amsMedian(byDateMap[d]) }; })
       .sort(byDate);
     return { source: meta.source || 'usda-ams', basis: meta.basis || 'wholesale', unit: meta.unit || 'usd', points: points };
+  }
+
+  // EIA API v2: rows at json.response.data[]; period is 'YYYY-MM' (monthly) or
+  // 'YYYY' (annual); the value column is meta.value (e.g. 'price', a STRING since
+  // 2024) and units live under 'price-units'. Recent months can be null → skip.
+  // Drivers only — basis 'index' (an energy direction signal, never a $ level).
+  function normalizeEia(json, meta) {
+    meta = meta || {};
+    var rows = (json && json.response && json.response.data) || [];
+    var valueCol = meta.value || 'price';
+    var points = rows.map(function (r) {
+      if (!r) return null;
+      var raw = r[valueCol];
+      var v = (raw == null) ? null : parseFloat(raw);
+      var p = String(r.period || '');
+      var date = /^\d{4}-\d{2}$/.test(p) ? p + '-01' : (/^\d{4}$/.test(p) ? p + '-01-01' : isoDate(p));
+      return (date && v != null && isFinite(v)) ? { date: date, value: v } : null;
+    }).filter(Boolean).sort(byDate);
+    return { source: meta.source || 'eia', basis: meta.basis || 'index', unit: meta.unit || 'index', points: points };
+  }
+
+  // NOAA Fisheries FOSS trade_data: { items:[ {year, month(1-12), name(UPPER),
+  // hts_number(10-digit), source:'IMP'|'EXP'|'RE-EXP', val(USD customs), kilos} ] }.
+  // No price field — compute a volume-weighted monthly IMPORT unit value:
+  // sum(val)/sum(kilos) → $/kg → $/lb (÷2.20462). Filter to imports of the
+  // commodity by HTS prefix (+ optional name guard). basis is per-spec: salmon
+  // fillet 'wholesale' (a conservative landed-adjacent level, inside bounds);
+  // shrimp 'index' (import value runs below a usable wholesale price → trend only).
+  function normalizeNoaaTrade(json, meta) {
+    meta = meta || {};
+    var items = (json && (json.items || json.results || json.data)) || [];
+    var htsPrefixes = Array.isArray(meta.hts) ? meta.hts.map(String) : (meta.hts ? [String(meta.hts)] : null);
+    var nameRe = meta.nameMatch ? new RegExp(meta.nameMatch, 'i') : null;
+    var pad2 = function (n) { n = String(n); return n.length < 2 ? '0' + n : n; };
+    var matches = function (r) {
+      if (String(r.source || '').toUpperCase() !== 'IMP') return false;                 // imports only
+      if (meta.edibleOnly && String(r.edible_code || '').toUpperCase() !== 'E') return false;
+      var hts = String(r.hts_number || '');
+      if (htsPrefixes && !htsPrefixes.some(function (p) { return hts.indexOf(p) === 0; })) return false;
+      if (nameRe && !nameRe.test(String(r.name || ''))) return false;
+      return true;
+    };
+    var acc = {};
+    items.forEach(function (r) {
+      if (!r || !matches(r)) return;
+      if (r.year == null || r.month == null) return;
+      var key = String(r.year) + '-' + pad2(r.month);
+      var val = num(r.val), kilos = num(r.kilos);
+      if (val == null || kilos == null || kilos <= 0) return;
+      var a = acc[key] || (acc[key] = { val: 0, kilos: 0 });
+      a.val += val; a.kilos += kilos;
+    });
+    var points = Object.keys(acc).map(function (key) {
+      return { date: key + '-01', value: (acc[key].val / acc[key].kilos) / 2.20462 };   // $/kg → $/lb
+    }).sort(byDate);
+    return { source: meta.source || 'noaa', basis: meta.basis || 'wholesale', unit: meta.unit || 'lb', points: points };
   }
 
   function latestDate(outputs) {
@@ -138,6 +244,8 @@
     normalizeBls: normalizeBls,
     reduceAmsRow: reduceAmsRow,
     normalizeAms: normalizeAms,
+    normalizeEia: normalizeEia,
+    normalizeNoaaTrade: normalizeNoaaTrade,
     buildCompositeInput: buildCompositeInput
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;

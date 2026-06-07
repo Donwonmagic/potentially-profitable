@@ -37,8 +37,57 @@ Living record of the Cost Index / Plate effort. Update as items land. Status:
 - ✅ "Where you're overpaying most" live summary — as prices are entered, ranks the
   ingredients furthest above the typical top (p75) into one prioritized action line.
   Per-unit gaps (no cross-unit summing); aria-live, dedup'd to limit announcements. (done)
-- ☐ Shareable per-ingredient OG "market snapshot" cards. (new)
-- ☐ Confidence-driven card ordering (surface high-confidence, big-move items first).
+- ✅ Cross-wire Cost Pulse ⇄ Bench (vendor-benchmark): the market read vs. the
+  operator's own price history — so it's clear which tool answers which question. (done)
+- ✅ Confidence-aware trend honesty — on a `directional` read (thin data, no level)
+  the UI drops the false-precise percent and says "up — early signal, not a firm
+  number yet" instead. High/medium keep the percent. Dormant in the all-`medium`
+  preview; verified via constructed directional input; ready for live data. (done)
+- ☐ Shareable per-ingredient OG "market snapshot" cards. (deferred — can't honestly
+  bake illustrative numbers into a shareable card; revisit once data is live.)
+
+## Architecture reconciliation (post-merge audit, 2026-06-07)
+Two Cost Index streams now coexist; a 10-point audit found NO critical conflict.
+Decisions recorded so they aren't relitigated:
+- **`data/cost-index.js` (preview seed) vs `data/cost-index.json` (gated output).**
+  Complementary by design. `cost-index.js` ships RAW engine input; the browser runs
+  `composite-price.assess()` live (no-fetch). `cost-index.json` is the fact-gated
+  BAKED output written by `scripts/build-cost-index.mjs` and guarded by
+  `check-cost-index-sync.mjs` (verified sources only, bounds, <120-day freshness).
+  It is currently EMPTY (all sources `verified:false` — gated on founder API keys).
+  DECISION: when sources are verified and the JSON populates, the browser seed
+  `cost-index.js` should be GENERATED from the gated JSON (status flips
+  preview→live; the UI's preview banner already keys off `DATA.status`). Until then,
+  the labeled preview is correct and the surface needs no change. Do NOT hand-edit
+  `cost-index.js` to fake "live" numbers — that bypasses the fact gate.
+- **Duplicated stats primitives** (`median`/`percentile`/`weightedMedian`/`mean`) exist
+  in both `composite-price.js` (Stream A, PARITY-mirrored to Ledger) and the Node-side
+  `cost-spike.js`/`cost-basket.js`/`cost-leadlag.js` (Stream B). DECISION: leave as-is
+  for now. Severity is low (deterministic math, each independently tested), and
+  `composite-price.js` is under the parity contract — extracting a shared `stats.js`
+  would force a mirrored refactor in the Ledger port for little gain. Revisit only if
+  the math needs to change.
+- **Bench vs Cost Pulse**: complementary, not duplicative (own-history hike detector vs
+  market read). Now cross-linked both ways. Parity contract: single canonical source
+  intact (`composite-price.js` + `cost-index-sources.js`); Stream B reuses them.
+
+## Live wiring (2026-06-07)
+- ✅ The data layer (`data/cost-index.json`) was already vendored (16 ingredients,
+  fact-gated, citeable) but the surface still showed the preview seed. Built the
+  bridge: `scripts/build-cost-index-seed.mjs` emits `data/cost-index.js`
+  (status:'live') from the gated JSON + `data/cost-index-labels.json` (bilingual
+  names/units). Renderer reads `ing.assessment` directly (falls back to the
+  engine for the preview shape). Cost Pulse now shows real prices; stale "sample
+  preview" FAQ copy fixed; cache-busts bumped. Bake path validated with a fixture
+  (vendored 4, dropped 1 out-of-bounds). All 16 numbers verified citeable.
+- ⚠️ NO historical record yet — 1 point per ingredient (butter/cheddar have 2).
+  The schema accumulates up to 26 weekly points and the build merges them, but
+  the orchestrator has run once. Sparklines are held until ≥4 points. The trend %
+  (e.g. romaine +169%) is computed upstream from series NOT committed here, so the
+  curve behind it isn't shown. To make today's prices relevant: (a) accumulate —
+  run the orchestrator weekly + commit (history grows automatically), or (b)
+  backfill — have the orchestrator emit historical points (FRED/BLS/AMS all carry
+  history) so build-cost-index vendors the climb. Both run upstream (keys+egress).
 
 ## Gated — needs founder env (the big value)
 - ⛔ H2: flip index preview → live (USDA/BLS/FRED keys); real freshness/history; last-good banner.

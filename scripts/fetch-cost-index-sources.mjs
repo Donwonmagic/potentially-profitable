@@ -89,6 +89,22 @@ function amsSpecs(m) { return Array.isArray(m.ams) ? m.ams : (m.ams ? [m.ams] : 
 function lmrSpecs(m) { return Array.isArray(m.lmr) ? m.lmr : (m.lmr ? [m.lmr] : []); }
 const slug = (s) => String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
+// Surface the historical curve from the screened outputs — the same series the
+// renderer draws: highest-priority non-index basis (delivered>wholesale>retail),
+// longest wins ties; fall back to the longest index series (index-only items).
+// Points emitted verbatim (oldest→newest, capped) — gaps stay gaps, never filled.
+const BASIS_RANK = { delivered: 0, wholesale: 1, retail: 2, index: 99 };
+function buildHistory(outputs, capN = 26) {
+  const ranked = (outputs || []).slice().sort((a, b) => {
+    const ra = BASIS_RANK[a.basis] == null ? 99 : BASIS_RANK[a.basis];
+    const rb = BASIS_RANK[b.basis] == null ? 99 : BASIS_RANK[b.basis];
+    return ra !== rb ? ra - rb : b.points.length - a.points.length;
+  });
+  const primary = ranked[0];
+  if (!primary || !primary.points || !primary.points.length) return [];
+  return primary.points.slice(-capN).map((p) => ({ date: p.date, valueCents: Math.round(p.value * 100), source: primary.source, basis: primary.basis }));
+}
+
 async function liveFetch(ingredient, m) {
   const out = { ams: [] };
   if (m.fred && process.env.FRED_KEY) {
@@ -118,10 +134,14 @@ async function liveFetch(ingredient, m) {
       (spec) => F.fetchLmrReport(spec.reportId, spec.section, lauth, spec.windowDays, spec.dateField).then((json) => ({ json, spec })));
     settled.forEach((r) => { if (r.ok) out.lmr.push(r.value); });
   }
-  if (m.noaa) {
+  if (m.noaa && typeof S.normalizeNoaaTrade === 'function') {
     // NOAA Fisheries import unit value (keyless). One trade dump, cached + reused
     // across species; normalizeNoaaTrade filters by commodity.
     try { out.noaa = await F.fetchNoaaTrade({ years: m.noaa.years }); } catch (e) { /* skip; others contribute */ }
+  }
+  if (m.eia && process.env.EIA_KEY) {
+    // EIA v2 (electricity etc.) — needs EIA_KEY; an energy-direction index signal.
+    try { out.eia = await F.fetchEia(m.eia); } catch (e) { /* skip; transient/missing */ }
   }
   return out;
 }
@@ -138,7 +158,7 @@ function toOutputs(ingredient, raw, m) {
   amsArr.forEach((a) => {
     const spec = a.spec || {};
     const key = 'usda-ams' + (spec.market ? '-' + slug(spec.market) : '');
-    const o = S.normalizeAms(a.json, { source: key, basis: 'wholesale', reducer: spec.reducer || 'mostlyMid', commodity: spec.commodity, matchFields: spec.matchFields, unit: spec.unit, priceUnit: spec.priceUnit, fields: spec.fields, dateField: spec.dateField });
+    const o = S.normalizeAms(a.json, { source: key, basis: 'wholesale', reducer: spec.reducer || 'mostlyMid', commodity: spec.commodity, matchFields: spec.matchFields, commodityExact: spec.commodityExact, filters: spec.filters, priceUnitField: spec.priceUnitField, unit: spec.unit, priceUnit: spec.priceUnit, fields: spec.fields, dateField: spec.dateField });
     o.family = spec.family || key;                 // distinct per market → real p25–p75 dispersion
     o.type = spec.type || 'usda-ams';              // ONE methodology → all terminals are one corroborating line for confidence
     if (o.points.length) outs.push(o);
@@ -151,14 +171,15 @@ function toOutputs(ingredient, raw, m) {
   lmrArr.forEach((a) => {
     const spec = a.spec || {};
     const key = 'usda-lmr' + (spec.market ? '-' + slug(spec.market) : '');
-    const o = S.normalizeAms(a.json, { source: key, basis: 'wholesale', reducer: spec.reducer || 'mostlyMid', commodity: spec.commodity, matchFields: spec.matchFields, unit: spec.unit, priceUnit: spec.priceUnit, fields: spec.fields, dateField: spec.dateField });
+    const o = S.normalizeAms(a.json, { source: key, basis: 'wholesale', reducer: spec.reducer || 'mostlyMid', commodity: spec.commodity, matchFields: spec.matchFields, commodityExact: spec.commodityExact, filters: spec.filters, priceUnitField: spec.priceUnitField, unit: spec.unit, priceUnit: spec.priceUnit, fields: spec.fields, dateField: spec.dateField });
     o.family = spec.family || key;
     o.type = spec.type || 'usda-lmr';
     if (o.points.length) outs.push(o);
   });
-  if (raw.noaa) { const o = S.normalizeNoaaTrade(raw.noaa, { source: 'noaa', basis: 'wholesale', commodity: m.noaa && m.noaa.commodity, hts: m.noaa && m.noaa.hts, unit: (m.noaa && m.noaa.unit) || 'lb' }); o.family = 'noaa'; o.type = 'noaa-trade'; if (o.points.length) outs.push(o); }
+  if (raw.noaa && typeof S.normalizeNoaaTrade === 'function') { const o = S.normalizeNoaaTrade(raw.noaa, { source: 'noaa', basis: (m.noaa && m.noaa.basis) || 'wholesale', commodity: m.noaa && m.noaa.commodity, hts: m.noaa && m.noaa.hts, nameMatch: m.noaa && m.noaa.nameMatch, edibleOnly: m.noaa && m.noaa.edibleOnly, unit: (m.noaa && m.noaa.unit) || 'lb' }); o.family = 'noaa'; o.type = 'noaa-trade'; if (o.points.length) outs.push(o); }
   if (raw.bls) { const o = S.normalizeBls(raw.bls, { source: 'bls', basis: 'index' }); o.family = (m.bls && m.bls.family) || 'bls'; o.type = (m.bls && m.bls.type) || 'bls'; if (o.points.length) outs.push(o); }
   if (raw.fred) { const o = S.normalizeFred(raw.fred, { source: 'fred', basis: (m.fred && m.fred.basis) || 'index', unit: m.fred && m.fred.unit }); o.family = (m.fred && m.fred.family) || 'fred'; o.type = (m.fred && m.fred.type) || 'fred'; if (o.points.length) outs.push(o); }
+  if (raw.eia && typeof S.normalizeEia === 'function') { const o = S.normalizeEia(raw.eia, { source: 'eia', basis: 'index', value: (m.eia && m.eia.value) || 'price' }); o.family = (m.eia && m.eia.family) || m.family || 'eia'; o.type = 'eia'; if (o.points.length) outs.push(o); }
   return outs;
 }
 
@@ -186,7 +207,14 @@ function composeIngredient(ingredient, outputs) {
   });
   if (!kept.length) return null;
   const input = S.buildCompositeInput(kept);
-  return { result: C.assess(input), rejected: screened.rejected };
+  return { result: C.assess(input), rejected: screened.rejected, kept };
+}
+
+// A driver (corn/soybeans/diesel/electricity): index/trend only — no level, no
+// bounds, no quality screen. Just blend the trend and surface its index history.
+function composeDriver(outputs) {
+  if (!outputs.length) return null;
+  return { trend: C.assess(S.buildCompositeInput(outputs)).trend, history: buildHistory(outputs) };
 }
 
 function fmt(point, ingredient) {
@@ -225,9 +253,31 @@ async function main() {
     if (!jsonMode) fmt(point, ing);
     // The artifact point is exactly a MuntinComposite.assess result — the shape
     // build-cost-index.mjs vendors (it adds asOf already; ensure it's present).
-    artifact.points[ing] = { asOf: point.result.asOf, ...point.result };
+    // history = the citeable curve behind it (gaps verbatim), if any.
+    const history = buildHistory(point.kept);
+    artifact.points[ing] = { asOf: point.result.asOf, ...point.result, ...(history.length ? { history } : {}) };
     composed++;
   }
+
+  // Drivers (corn/soybeans/diesel/electricity) — the "why" layer: index/trend +
+  // citeable index history + the ingredients each tends to lead. LIVE only; EIA
+  // (electricity) has no fetcher in this path yet, so it skips gracefully.
+  const driverMap = rd('data/cost-index-sources.json').drivers || {};
+  const drivers = {};
+  let driversComposed = 0;
+  if (LIVE) {
+    for (const d of Object.keys(driverMap)) {
+      if (d === '_doc' || (driverMap[d] && driverMap[d].verified === false)) continue;
+      let raw;
+      try { raw = await liveFetch(d, driverMap[d]); } catch (e) { log(`\n■ driver ${d}  ·  fetch error: ${e.message}`); continue; }
+      const outs = toOutputs(d, raw, driverMap[d]);
+      const dp = composeDriver(outs);
+      if (!dp) { log(`\n■ driver ${d}  ·  no source data (EIA/electricity unsupported in this path yet)`); continue; }
+      drivers[d] = { kind: driverMap[d].kind, leads: Array.isArray(driverMap[d].leads) ? driverMap[d].leads : [], trend: dp.trend, history: dp.history };
+      driversComposed++;
+    }
+  }
+  if (driversComposed) artifact.drivers = drivers;
 
   // Headline: compose the per-ingredient trends into the Muntin Restaurant Basket
   // (a weighted basis-agnostic % move for the declared basket — never a level).
@@ -254,7 +304,8 @@ async function main() {
   } else if (jsonMode) {
     process.stdout.write(JSON.stringify(artifact, null, 2) + '\n');
   } else {
-    log(`\n— ${composed} ingredient(s) composed${LIVE ? `, ${skipped} skipped (verified:false — confirm source ids first, pin #8)` : ''}.`);
+    const withHist = Object.values(artifact.points).filter((p) => Array.isArray(p.history) && p.history.length).length;
+    log(`\n— ${composed} ingredient(s) composed (${withHist} with history), ${driversComposed} driver(s)${LIVE ? `, ${skipped} skipped (verified:false — confirm source ids first, pin #8)` : ''}.`);
     if (!LIVE) log('  Run with --live + FRED_KEY/BLS_KEY/AMS_KEY once source ids are verified to fetch real data.');
   }
 }
