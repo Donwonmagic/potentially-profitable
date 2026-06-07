@@ -4,8 +4,8 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-<title>Pulso de Costos — Tendencias de costos para tu restaurante | Muntin Digital</title>
-<meta name="description" content="Panel gratuito para restaurantes independientes: detecta deriva en costos, cambios por categoría y medianas móviles entre tus facturas. En tu dispositivo." />
+<title>Pulso de Costos — cuánto cuestan los ingredientes ahora | Muntin Digital</title>
+<meta name="description" content="Lectura de mercado gratis del precio típico de ingredientes comunes de restaurante — un rango, la tendencia y qué tan fresco es cada dato." />
 <meta name="theme-color" content="#2A50C8" />
 <link rel="canonical" href="https://muntin.digital/es/tools/cost-pulse/" />
 <link rel="alternate" hreflang="en" href="https://muntin.digital/tools/cost-pulse/" />
@@ -14,8 +14,8 @@
 <meta property="og:locale" content="es_US" />
 <meta property="og:locale:alternate" content="en_US" />
 <meta property="og:type" content="website" />
-<meta property="og:title" content="Pulso de Costos — Tendencias de costos para tu restaurante" />
-<meta property="og:description" content="Alertas de deriva, sparklines por categoría y medianas móviles entre facturas guardadas. Gratis, en tu dispositivo, encriptado." />
+<meta property="og:title" content="Pulso de Costos — cuánto cuestan los ingredientes ahora" />
+<meta property="og:description" content="Lectura de mercado gratis de precios de ingredientes comunes — rango típico, tendencia y frescura, de fuentes públicas (USDA, BLS, FRED)." />
 <meta property="og:url" content="https://muntin.digital/es/tools/cost-pulse/" />
 <meta property="og:site_name" content="Muntin Digital" />
 <meta property="og:image" content="https://muntin.digital/brand/og/tool-cost-pulse-es.png" />
@@ -23,8 +23,8 @@
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Pulso de Costos — Tendencias de costos para tu restaurante" />
-<meta name="twitter:description" content="Alertas de deriva, sparklines por categoría y medianas móviles entre facturas guardadas." />
+<meta name="twitter:title" content="Pulso de Costos — cuánto cuestan los ingredientes ahora" />
+<meta name="twitter:description" content="Lectura de mercado gratis de precios de ingredientes comunes — rango típico, tendencia y frescura, de fuentes públicas." />
 <meta name="twitter:image" content="https://muntin.digital/brand/og/tool-cost-pulse-es.png" />
 <link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
 <script type="application/ld+json">
@@ -135,6 +135,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 .cp-shell{max-width:880px;margin:0 auto;padding:48px 16px 80px}
 .cp-hero h1{font-family:var(--font-display);font-size:36px;font-weight:500;color:var(--ink);margin:0 0 10px;line-height:1.15}
 .cp-hero p.cp-lede{font-size:17px;color:var(--ink-soft);line-height:1.55;margin:0 0 32px;max-width:620px}
+.cp-lede-legacy{display:block;margin-top:8px;font-size:14px;color:var(--stone)}
 .cp-card{background:var(--surface-1,#fff);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin:0 0 18px;box-shadow:var(--elev-1)}
 .cp-market{border-left:3px solid var(--teal)}
 .cp-market-dek{font-size:14px;color:var(--ink-soft);line-height:1.5;margin:2px 0 14px;max-width:60ch}
@@ -422,8 +423,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <main>
 <section class="cp-shell">
   <div class="cp-hero">
-    <span class="eyebrow">Herramienta gratis · Tendencias de tus facturas guardadas</span>
-    <h1>Tu pulso de costos.</h1>
+    <span class="eyebrow">Herramienta gratis · Una lectura de mercado de precios</span>
+    <h1>Cuánto cuestan los ingredientes ahora.</h1>
       <!-- tool-verified:start -->
             <p class="tool-verified">Última revisión: <time datetime="2026-06-06">6 de junio de 2026</time></p>
             <!-- tool-verified:end -->
@@ -434,7 +435,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
               <p class="tool-data-promise__links"><a href="/es/security/">Lee la promesa completa &rarr;</a> &middot; <a href="/es/learn/checklists/audit-any-tool/">Audita cualquier herramienta &rarr;</a></p>
             </aside>
             <!-- data-promise:end -->
-    <p class="cp-lede">Un panel sobre las facturas que guardaste antes de que retiráramos el decodificador en vivo. Detecta deriva en tu data histórica, mira cambios de participación por categoría y encuentra la peor semana sin abrir QuickBooks. (Sin nuevas capturas &mdash; <a href="/es/learn/topics/operations-margin/read-restaurant-invoice-no-ocr/">lee la guía sin OCR</a> para el flujo manual.)</p>
+    <p class="cp-lede">Una lectura de mercado gratis de dónde se ubican los precios de ingredientes comunes de restaurante — un rango típico, la tendencia y qué tan fresco es cada dato, de fuentes públicas (USDA, BLS, FRED). Úsala para distinguir un movimiento real del mercado de un sobreprecio del proveedor. <span class="cp-lede-legacy">¿Facturas guardadas del decodificador retirado? Tu panel histórico está más abajo.</span></p>
   </div>
 
   <div id="cpStatus"></div>
@@ -453,7 +454,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   </div>
 
   <div class="cp-card cp-empty" id="cpEmpty" hidden>
-    <p><strong>No hay facturas guardadas en este navegador.</strong> Pulso de Costos lee facturas guardadas con el Decodificador de Facturas antes de su retiro el 2026-05-08. Si no tienes ninguna, el panel no tiene nada que mostrar.</p>
+    <p><strong>¿Buscas el panel de facturas guardadas?</strong> Pulso de Costos leía facturas guardadas con el Decodificador de Facturas antes de su retiro el 2026-05-08. Si guardaste algunas entonces, aparecen aquí — la lectura de mercado de arriba funciona para todos, con o sin facturas.</p>
     <p><a class="cp-cta" href="/es/learn/topics/operations-margin/read-restaurant-invoice-no-ocr/">Leer una factura sin OCR &rarr;</a></p>
   </div>
 
