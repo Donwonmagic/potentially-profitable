@@ -163,6 +163,23 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 .cp-you-verdict[data-pos="above"]{color:var(--rust)}
 .cp-you-verdict[data-pos="below"]{color:var(--teal)}
 .cp-you-verdict[data-pos="in"]{color:var(--ink-soft)}
+.cp-note{margin:8px 0 0}
+.cp-note-toggle{border:1px solid var(--rust);border-radius:6px;background:var(--surface-1,#fff);color:var(--rust);font:inherit;font-size:12.5px;font-weight:600;padding:4px 11px;cursor:pointer}
+.cp-note-toggle:hover{background:var(--status-bad-tint,#F7E7DC)}
+.cp-note-toggle:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+.cp-note-region{margin-top:9px;padding:11px;background:var(--cream-2);border-radius:8px}
+.cp-note-caution{font-size:12px;color:var(--status-warn-deep,#8A3E16);margin:0 0 7px;line-height:1.4}
+.cp-note-label{display:block;font-size:12px;color:var(--ink-soft);margin-bottom:5px}
+.cp-note-text{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:6px;padding:8px 10px;font:inherit;font-size:13px;line-height:1.5;color:var(--ink);background:var(--surface-1,#fff);resize:vertical}
+.cp-note-text:focus{outline:2px solid var(--teal);outline-offset:1px}
+.cp-note-actions{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:8px}
+.cp-note-copy{border:1px solid var(--line);border-radius:6px;background:var(--surface-1,#fff);color:var(--ink);font:inherit;font-size:12.5px;font-weight:600;padding:4px 13px;cursor:pointer}
+.cp-note-copy:hover{border-color:var(--teal);color:var(--teal)}
+.cp-note-copy:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+.cp-note-mail{font-size:12.5px;color:var(--teal);font-weight:600}
+.cp-note-mail:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+.cp-note-status{font-size:12px;color:var(--ink-soft);min-height:1.2em;font-variant-numeric:tabular-nums}
+.cp-you-summary{font-size:13px;font-weight:600;color:var(--rust);margin:0 0 14px;padding:9px 13px;background:var(--status-bad-tint,#F7E7DC);border-radius:8px;font-variant-numeric:tabular-nums}
 .cp-market-summary{font-size:13px;color:var(--ink);font-weight:500;margin:0 0 14px;padding:9px 13px;background:var(--cream-2);border-radius:8px}
 .cp-method{margin:14px 0 0;font-size:12.5px}
 .cp-method summary{cursor:pointer;color:var(--ink-soft);font-weight:500}
@@ -170,6 +187,17 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 .cp-method-body p{margin:0 0 8px;max-width:62ch}
 .cp-market-search{width:100%;max-width:280px;margin:0 0 14px;border:1px solid var(--line);border-radius:8px;padding:7px 11px;font:inherit;font-size:13px;color:var(--ink);background:var(--surface-1,#fff)}
 .cp-market-search:focus{outline:2px solid var(--teal);outline-offset:1px}
+.cp-head-right{display:inline-flex;align-items:center;gap:8px;flex-shrink:0}
+.cp-track{border:1px solid var(--line);border-radius:999px;background:var(--surface-1,#fff);color:var(--ink-soft);font:inherit;font-size:11.5px;font-weight:600;padding:3px 10px;cursor:pointer;white-space:nowrap}
+.cp-track:hover{border-color:var(--teal);color:var(--teal)}
+.cp-track:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+.cp-track[aria-pressed="true"]{background:var(--teal);border-color:var(--teal);color:#fff}
+.cp-basket-bar{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin:0 0 14px;padding:9px 13px;background:var(--cream-2);border-radius:8px;font-size:13px}
+.cp-basket-count{font-weight:600;color:var(--ink)}
+.cp-basket-only{display:inline-flex;align-items:center;gap:5px;color:var(--ink-soft);cursor:pointer}
+.cp-basket-clear{margin-left:auto;border:1px solid var(--line);border-radius:6px;background:var(--surface-1,#fff);color:var(--ink-soft);font:inherit;font-size:12.5px;padding:3px 11px;cursor:pointer}
+.cp-basket-clear:hover{border-color:var(--rust);color:var(--rust)}
+.cp-basket-clear:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
 .cp-market-hit{box-shadow:0 0 0 2px var(--teal);border-radius:8px}
 .cp-market-crosslink{font-size:13px;color:var(--ink-soft);margin:10px 0 0}
 .cp-market-seasonal{font-size:12.5px;color:var(--ink-soft);margin:0 0 2px}
