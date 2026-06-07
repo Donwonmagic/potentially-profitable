@@ -71,6 +71,24 @@ Decisions recorded so they aren't relitigated:
   market read). Now cross-linked both ways. Parity contract: single canonical source
   intact (`composite-price.js` + `cost-index-sources.js`); Stream B reuses them.
 
+## Live wiring (2026-06-07)
+- ✅ The data layer (`data/cost-index.json`) was already vendored (16 ingredients,
+  fact-gated, citeable) but the surface still showed the preview seed. Built the
+  bridge: `scripts/build-cost-index-seed.mjs` emits `data/cost-index.js`
+  (status:'live') from the gated JSON + `data/cost-index-labels.json` (bilingual
+  names/units). Renderer reads `ing.assessment` directly (falls back to the
+  engine for the preview shape). Cost Pulse now shows real prices; stale "sample
+  preview" FAQ copy fixed; cache-busts bumped. Bake path validated with a fixture
+  (vendored 4, dropped 1 out-of-bounds). All 16 numbers verified citeable.
+- ⚠️ NO historical record yet — 1 point per ingredient (butter/cheddar have 2).
+  The schema accumulates up to 26 weekly points and the build merges them, but
+  the orchestrator has run once. Sparklines are held until ≥4 points. The trend %
+  (e.g. romaine +169%) is computed upstream from series NOT committed here, so the
+  curve behind it isn't shown. To make today's prices relevant: (a) accumulate —
+  run the orchestrator weekly + commit (history grows automatically), or (b)
+  backfill — have the orchestrator emit historical points (FRED/BLS/AMS all carry
+  history) so build-cost-index vendors the climb. Both run upstream (keys+egress).
+
 ## Gated — needs founder env (the big value)
 - ⛔ H2: flip index preview → live (USDA/BLS/FRED keys); real freshness/history; last-good banner.
 - ⛔ H3: `/v1/cost-index` = artifact ⨝ invoices; watchlist + alerts; market-vs-vendor → Plate

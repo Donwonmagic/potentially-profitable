@@ -351,7 +351,9 @@
 
   var movers = [];
   (DATA.ingredients || []).forEach(function (ing) {
-    var r = MuntinCompositePrice.assess(ing.input || {});
+    // Live seed carries the baked, fact-gated assessment (already an assess()
+    // shape); preview seed carries raw input we run the engine on in-browser.
+    var r = ing.assessment || MuntinCompositePrice.assess(ing.input || {});
     var name = L(ing.label_en, ing.label_es);
     var unit = L(ing.unit_en || 'unit', ing.unit_es || 'unidad');
     var lvl = r.level;
@@ -405,7 +407,7 @@
     tEl.setAttribute('data-dir', r.trend.dir);
     fig.appendChild(tEl);
 
-    var sparkVals = pickSeries(ing.input);
+    var sparkVals = ing.spark || pickSeries(ing.input);
     if (sparkVals && sparkVals.length >= 2) fig.appendChild(sparkSvg(sparkVals, r.trend.dir));
 
     if (ing.seasonal) {
