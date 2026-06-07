@@ -39,8 +39,12 @@ Living record of the Cost Index / Plate effort. Update as items land. Status:
   Per-unit gaps (no cross-unit summing); aria-live, dedup'd to limit announcements. (done)
 - ✅ Cross-wire Cost Pulse ⇄ Bench (vendor-benchmark): the market read vs. the
   operator's own price history — so it's clear which tool answers which question. (done)
-- ☐ Shareable per-ingredient OG "market snapshot" cards. (new)
-- ☐ Confidence-driven card ordering (surface high-confidence, big-move items first).
+- ✅ Confidence-aware trend honesty — on a `directional` read (thin data, no level)
+  the UI drops the false-precise percent and says "up — early signal, not a firm
+  number yet" instead. High/medium keep the percent. Dormant in the all-`medium`
+  preview; verified via constructed directional input; ready for live data. (done)
+- ☐ Shareable per-ingredient OG "market snapshot" cards. (deferred — can't honestly
+  bake illustrative numbers into a shareable card; revisit once data is live.)
 
 ## Architecture reconciliation (post-merge audit, 2026-06-07)
 Two Cost Index streams now coexist; a 10-point audit found NO critical conflict.

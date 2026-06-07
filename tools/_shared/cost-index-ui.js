@@ -368,9 +368,15 @@
     var pct = r.trend.pct;
     var dirWord = r.trend.dir === 'up' ? L('up', 'arriba') : r.trend.dir === 'down' ? L('down', 'abajo') : L('flat', 'estable');
     var pctTxt = pct == null ? '' : Math.abs(Math.round(pct * 100)) + '%';
+    // On a 'directional' read the data is too thin to stand behind a precise
+    // percent — showing one would overstate the signal. Give the direction with
+    // an honest hedge instead (the fact-gate ethos applied to the UI).
+    var soften = r.confidence === 'directional' && r.trend.dir !== 'flat';
     var trendText = pct == null
       ? L('Not enough history yet for a trend', 'Sin suficiente historial para una tendencia')
-      : L(dirWord + ' ' + pctTxt + ' over the window', dirWord + ' ' + pctTxt + ' en el periodo');
+      : soften
+        ? L(dirWord + ' — early signal, not a firm number yet', dirWord + ' — señal temprana, aún no es un número firme')
+        : L(dirWord + ' ' + pctTxt + ' over the window', dirWord + ' ' + pctTxt + ' en el periodo');
 
     var conf = confWordMap[r.confidence] || r.confidence;
     var nSrc = (r.trend && r.trend.nSources) || (lvl ? lvl.nSources : 0);
