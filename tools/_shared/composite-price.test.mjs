@@ -141,3 +141,36 @@ test('DE-CORRELATION flows through confidence: three echoes of one family cannot
   assert.equal(r.trend.nFamilies, 1);
   assert.notEqual(r.confidence, 'high');
 });
+
+test('CONFIDENCE counts TYPES not families: correlated terminals cannot reach "high"', () => {
+  const r = C.assess({
+    levelObs: [
+      { source: 'usda-ams-boston', basis: 'wholesale', valueCents: 2200, family: 'usda-ams-boston', type: 'usda-ams' },
+      { source: 'usda-ams-chicago', basis: 'wholesale', valueCents: 2400, family: 'usda-ams-chicago', type: 'usda-ams' },
+      { source: 'usda-ams-miami', basis: 'wholesale', valueCents: 2600, family: 'usda-ams-miami', type: 'usda-ams' },
+    ],
+    sourceSeries: {
+      'usda-ams-boston': { basis: 'wholesale', values: [2000, 2200], family: 'usda-ams-boston', type: 'usda-ams' },
+      'usda-ams-chicago': { basis: 'wholesale', values: [2100, 2400], family: 'usda-ams-chicago', type: 'usda-ams' },
+    },
+  });
+  assert.equal(r.level.nFamilies, 3);   // three markets widen the RANGE
+  assert.equal(r.level.nTypes, 1);      // but one methodology for CONFIDENCE
+  assert.notEqual(r.confidence, 'high');
+});
+
+test('CONFIDENCE: two independent dollar TYPES that agree reach "high"', () => {
+  const r = C.assess({
+    levelObs: [
+      { source: 'usda-lmr', basis: 'wholesale', valueCents: 1300, family: 'lmr', type: 'usda-lmr' },
+      { source: 'cme-cash', basis: 'wholesale', valueCents: 1320, family: 'cme', type: 'cme' },
+    ],
+    sourceSeries: {
+      'usda-lmr': { basis: 'wholesale', values: [1200, 1300], family: 'lmr', type: 'usda-lmr' },
+      'cme-cash': { basis: 'wholesale', values: [1210, 1320], family: 'cme', type: 'cme' },
+      bls: { basis: 'index', values: [100, 108], family: 'bls', type: 'bls' },
+    },
+  });
+  assert.equal(r.level.nTypes, 2);
+  assert.equal(r.confidence, 'high');
+});

@@ -75,6 +75,7 @@
           nObs: obs.length,
           nFamilies: famKeys.length,
           nSources: distinct(obs.map(function (o) { return o.source; })),
+          nTypes: distinct(obs.map(function (o) { return o.type || o.family || o.source; })),
           provenance: obs.map(function (o) { return { source: o.source, valueCents: o.valueCents, date: o.date || null }; })
         };
       }
@@ -106,17 +107,25 @@
       var d = c.pct > FLAT ? 'up' : c.pct < -FLAT ? 'down' : 'flat';
       return d === dir;
     }).length;
-    return { pct: pct, dir: dir, agreement: +(sameDir / collapsed.length).toFixed(3), nSources: distinct(valid.map(function (c) { return c.source; })), nFamilies: collapsed.length };
+    return { pct: pct, dir: dir, agreement: +(sameDir / collapsed.length).toFixed(3), nSources: distinct(valid.map(function (c) { return c.source; })), nFamilies: collapsed.length, nTypes: distinct(valid.map(function (c) { return c.type || c.family || c.source; })) };
   }
 
+  // Confidence is gated on INDEPENDENT source TYPES, never correlated markets:
+  // six USDA-AMS terminals are one methodology (nTypes=1) even though they are
+  // six families. Level- and trend-confidence are computed separately and the
+  // headline is their MIN — one weak axis caps the read (you cannot buy "high"
+  // with a strong level while the trend can't be corroborated, or vice-versa).
   function confidenceFor(level, trend) {
-    var nLvl = level ? (level.nFamilies != null ? level.nFamilies : level.nSources) : 0;
-    var nTrd = trend ? (trend.nFamilies != null ? trend.nFamilies : trend.nSources) : 0;
+    var lt = level ? (level.nTypes != null ? level.nTypes : (level.nFamilies != null ? level.nFamilies : level.nSources)) : 0;
+    var tt = trend ? (trend.nTypes != null ? trend.nTypes : (trend.nFamilies != null ? trend.nFamilies : trend.nSources)) : 0;
     var agree = trend ? trend.agreement : 0;
-    if (!level && nTrd >= 2 && agree >= 0.66) return 'directional';
-    if (nLvl >= 2 && nTrd >= 3 && agree >= 0.75) return 'high';
-    if (nLvl >= 1 && nTrd >= 2 && agree >= 0.6) return 'medium';
-    return 'low';
+    // No usable dollar level → direction-only (when a trend exists), else low.
+    if (!level) return (trend && trend.pct != null && tt >= 1) ? 'directional' : 'low';
+    var levelCeil = lt >= 2 ? 2 : lt >= 1 ? 1 : 0;            // 2=high · 1=medium · 0=low
+    var trendCeil;
+    if (!trend || trend.pct == null) trendCeil = 2;          // no trend signal → don't cap the level
+    else trendCeil = (tt >= 2 && agree >= 0.66) ? 2 : (tt >= 2 && agree >= 0.33) ? 1 : 0;
+    return ['low', 'medium', 'high'][Math.min(levelCeil, trendCeil)];
   }
 
   function fmtPct(p) { return (p >= 0 ? '+' : '') + (p * 100).toFixed(1).replace(/\.0$/, '') + '%'; }
@@ -138,7 +147,7 @@
     var changes = Object.keys(series).map(function (src) {
       var s = series[src] || {};
       var pct = windowChange(s.values);
-      return pct == null ? null : { source: src, pct: pct, weight: s.weight, family: s.family };
+      return pct == null ? null : { source: src, pct: pct, weight: s.weight, family: s.family, type: s.type };
     }).filter(Boolean);
     var trend = blendTrend(changes);
     var confidence = confidenceFor(level, trend);
