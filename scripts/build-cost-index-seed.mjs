@@ -65,6 +65,9 @@ function main() {
       assessment: newest,                            // already an assess()-shaped point
     };
     if (lab.seasonal) entry.seasonal = true;
+    // The spike-vs-structural flag (verdict + actionBias) — a build-time, fact-gated
+    // "story so far" the renderer turns into a buy/hold/watch suggestion.
+    if (ingredientsObj[key].flag) entry.flag = ingredientsObj[key].flag;
     // Sparkline needs real history to be honest — a 2-point line can mislead
     // (and can straddle bases). Hold it until ~a month of weekly points exists.
     if (spark.length >= 4) {

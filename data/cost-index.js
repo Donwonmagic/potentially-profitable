@@ -75,6 +75,15 @@
             "basis": "index"
           }
         ]
+      },
+      "flag": {
+        "verdict": "insufficient",
+        "actionBias": "watch",
+        "reason": "not enough history to tell a spike from a real trend — treat as real",
+        "move": null,
+        "retrace": null,
+        "elevatedWeeks": null,
+        "nHistory": 1
       }
     },
     {
@@ -133,6 +142,15 @@
             "basis": "index"
           }
         ]
+      },
+      "flag": {
+        "verdict": "insufficient",
+        "actionBias": "watch",
+        "reason": "not enough history to tell a spike from a real trend — treat as real",
+        "move": null,
+        "retrace": null,
+        "elevatedWeeks": null,
+        "nHistory": 1
       }
     },
     {
@@ -196,6 +214,15 @@
             "basis": "retail"
           }
         ]
+      },
+      "flag": {
+        "verdict": "insufficient",
+        "actionBias": "watch",
+        "reason": "not enough history to tell a spike from a real trend — treat as real",
+        "move": null,
+        "retrace": null,
+        "elevatedWeeks": null,
+        "nHistory": 1
       }
     },
     {
@@ -254,6 +281,15 @@
             "basis": "index"
           }
         ]
+      },
+      "flag": {
+        "verdict": "insufficient",
+        "actionBias": "watch",
+        "reason": "not enough history to tell a spike from a real trend — treat as real",
+        "move": null,
+        "retrace": null,
+        "elevatedWeeks": null,
+        "nHistory": 1
       }
     },
     {
@@ -312,6 +348,15 @@
             "basis": "index"
           }
         ]
+      },
+      "flag": {
+        "verdict": "insufficient",
+        "actionBias": "watch",
+        "reason": "not enough history to tell a spike from a real trend — treat as real",
+        "move": null,
+        "retrace": null,
+        "elevatedWeeks": null,
+        "nHistory": 1
       }
     },
     {
@@ -370,6 +415,15 @@
             "basis": "index"
           }
         ]
+      },
+      "flag": {
+        "verdict": "insufficient",
+        "actionBias": "watch",
+        "reason": "not enough history to tell a spike from a real trend — treat as real",
+        "move": null,
+        "retrace": null,
+        "elevatedWeeks": null,
+        "nHistory": 1
       }
     },
     {
@@ -428,6 +482,15 @@
             "basis": "index"
           }
         ]
+      },
+      "flag": {
+        "verdict": "insufficient",
+        "actionBias": "watch",
+        "reason": "not enough history to tell a spike from a real trend — treat as real",
+        "move": null,
+        "retrace": null,
+        "elevatedWeeks": null,
+        "nHistory": 1
       }
     },
     {
@@ -486,6 +549,15 @@
             "basis": "index"
           }
         ]
+      },
+      "flag": {
+        "verdict": "insufficient",
+        "actionBias": "watch",
+        "reason": "not enough history to tell a spike from a real trend — treat as real",
+        "move": null,
+        "retrace": null,
+        "elevatedWeeks": null,
+        "nHistory": 1
       }
     },
     {
@@ -625,7 +697,16 @@
           }
         ]
       },
-      "seasonal": true
+      "seasonal": true,
+      "flag": {
+        "verdict": "insufficient",
+        "actionBias": "watch",
+        "reason": "not enough history to tell a spike from a real trend — treat as real",
+        "move": null,
+        "retrace": null,
+        "elevatedWeeks": null,
+        "nHistory": 1
+      }
     },
     {
       "key": "tomato",
@@ -796,7 +877,16 @@
           }
         ]
       },
-      "seasonal": true
+      "seasonal": true,
+      "flag": {
+        "verdict": "insufficient",
+        "actionBias": "watch",
+        "reason": "not enough history to tell a spike from a real trend — treat as real",
+        "move": null,
+        "retrace": null,
+        "elevatedWeeks": null,
+        "nHistory": 1
+      }
     },
     {
       "key": "onion",
@@ -945,6 +1035,15 @@
             "basis": "wholesale"
           }
         ]
+      },
+      "flag": {
+        "verdict": "insufficient",
+        "actionBias": "watch",
+        "reason": "not enough history to tell a spike from a real trend — treat as real",
+        "move": null,
+        "retrace": null,
+        "elevatedWeeks": null,
+        "nHistory": 1
       }
     },
     {
@@ -1115,6 +1214,15 @@
             "basis": "index"
           }
         ]
+      },
+      "flag": {
+        "verdict": "insufficient",
+        "actionBias": "watch",
+        "reason": "not enough history to tell a spike from a real trend — treat as real",
+        "move": null,
+        "retrace": null,
+        "elevatedWeeks": null,
+        "nHistory": 1
       }
     },
     {
@@ -1178,6 +1286,15 @@
             "basis": "retail"
           }
         ]
+      },
+      "flag": {
+        "verdict": "insufficient",
+        "actionBias": "watch",
+        "reason": "not enough history to tell a spike from a real trend — treat as real",
+        "move": null,
+        "retrace": null,
+        "elevatedWeeks": null,
+        "nHistory": 2
       }
     },
     {
@@ -1241,6 +1358,15 @@
             "basis": "retail"
           }
         ]
+      },
+      "flag": {
+        "verdict": "insufficient",
+        "actionBias": "watch",
+        "reason": "not enough history to tell a spike from a real trend — treat as real",
+        "move": null,
+        "retrace": null,
+        "elevatedWeeks": null,
+        "nHistory": 2
       }
     },
     {
@@ -1299,6 +1425,15 @@
             "basis": "retail"
           }
         ]
+      },
+      "flag": {
+        "verdict": "insufficient",
+        "actionBias": "watch",
+        "reason": "not enough history to tell a spike from a real trend — treat as real",
+        "move": null,
+        "retrace": null,
+        "elevatedWeeks": null,
+        "nHistory": 1
       }
     },
     {
@@ -1332,6 +1467,15 @@
             "basis": "index"
           }
         ]
+      },
+      "flag": {
+        "verdict": "insufficient",
+        "actionBias": "watch",
+        "reason": "not enough history to tell a spike from a real trend — treat as real",
+        "move": null,
+        "retrace": null,
+        "elevatedWeeks": null,
+        "nHistory": 0
       }
     }
   ]
