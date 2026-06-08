@@ -24,10 +24,10 @@
  * check re-derives the ceiling from the vendored provenance + history and only
  * READS — it never edits confidence. The fix for any flag is upstream.
  *
- * ROLLOUT: warn-only by default (FAIL_ON_DRIFT=false), matching the repo's
- * pattern for new gates (pricing-consistency, sheets-parity). Flip the flag to
- * fail-CI once the upstream confidences are reconciled. Today it flags `onion`
- * (high on 6 AMS terminals = one type → should cap at medium).
+ * ROLLOUT: STRICT (fail-CI) as of the 2026-06-08 first live vendor — every
+ * vendored confidence is within its data-supported ceiling, so any future
+ * overstatement fails CI rather than just warning. Set COST_INDEX_WARN_ONLY=1
+ * to temporarily downgrade to warn (e.g. while reconciling a new source).
  *
  * DEFERRED sub-part of #36: range-widening (rolling IQR/MAD feeding the level
  * range) is an orchestrator/pipeline change inside the parity-locked module, so
@@ -45,7 +45,7 @@ const SELF_TEST = process.argv.includes('--self-test');
 
 // Flip to true to make calibration overstatements fail CI (once the upstream
 // orchestrator confidences are reconciled — see the `onion` note above).
-const FAIL_ON_DRIFT = false;
+const FAIL_ON_DRIFT = process.env.COST_INDEX_WARN_ONLY !== '1';   // strict by default; COST_INDEX_WARN_ONLY=1 → warn
 
 const RANK = { directional: 0, low: 1, medium: 2, high: 3 };
 const NAME = ['directional', 'low', 'medium', 'high'];
