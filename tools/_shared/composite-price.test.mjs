@@ -177,6 +177,36 @@ test('RANGE-WIDENING: too few recent reads → honest point, no fabricated band'
   assert.equal(lvl.rangeCents[0], lvl.rangeCents[1]);
 });
 
+test('STABILITY: a smooth steep move stays high; a jagged path is capped', () => {
+  const smooth = C.assess({
+    levelObs: [
+      { source: 'usda-lmr', basis: 'wholesale', valueCents: 1300, family: 'lmr', type: 'usda-lmr' },
+      { source: 'cme', basis: 'wholesale', valueCents: 1320, family: 'cme', type: 'cme' },
+    ],
+    sourceSeries: {
+      'usda-lmr': { basis: 'wholesale', values: [1000, 1075, 1150, 1225, 1300], family: 'lmr', type: 'usda-lmr' },
+      cme: { basis: 'wholesale', values: [1020, 1095, 1170, 1245, 1320], family: 'cme', type: 'cme' },
+      bls: { basis: 'index', values: [100, 103, 106, 109, 112], family: 'bls', type: 'bls' },
+    },
+  });
+  assert.equal(smooth.confidence, 'high');
+  assert.ok(smooth.trend.noise < 0.02);
+
+  const jagged = C.assess({
+    levelObs: [
+      { source: 'usda-lmr', basis: 'wholesale', valueCents: 1300, family: 'lmr', type: 'usda-lmr' },
+      { source: 'cme', basis: 'wholesale', valueCents: 1320, family: 'cme', type: 'cme' },
+    ],
+    sourceSeries: {
+      'usda-lmr': { basis: 'wholesale', values: [1000, 1300, 1050, 1350, 1300], family: 'lmr', type: 'usda-lmr' },
+      cme: { basis: 'wholesale', values: [1020, 1330, 1070, 1360, 1320], family: 'cme', type: 'cme' },
+      bls: { basis: 'index', values: [100, 130, 105, 135, 112], family: 'bls', type: 'bls' },
+    },
+  });
+  assert.ok(jagged.trend.noise > 0.08);
+  assert.notEqual(jagged.confidence, 'high');
+});
+
 test('LEVEL-AGREEMENT: two independent types that DISAGREE on price cannot reach "high"', () => {
   const r = C.assess({
     levelObs: [

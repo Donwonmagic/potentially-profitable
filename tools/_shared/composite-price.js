@@ -133,7 +133,7 @@
 
   function blendTrend(changes) {
     var valid = (changes || []).filter(function (c) { return c && typeof c.pct === 'number' && isFinite(c.pct); });
-    if (!valid.length) return { pct: null, dir: 'flat', agreement: 0, nSources: 0, nFamilies: 0 };
+    if (!valid.length) return { pct: null, dir: 'flat', agreement: 0, nSources: 0, nFamilies: 0, nTypes: 0, noise: null };
     var fam = {};
     valid.forEach(function (c) { var f = c.family || c.source; (fam[f] = fam[f] || []).push(c); });
     var collapsed = Object.keys(fam).map(function (f) {
@@ -155,6 +155,27 @@
   // six families. Level- and trend-confidence are computed separately and the
   // headline is their MIN — one weak axis caps the read (you cannot buy "high"
   // with a strong level while the trend can't be corroborated, or vice-versa).
+  // Theil–Sen robust line fit (median of pairwise slopes) — outlier-resistant,
+  // so one bad print can't swing the detrend.
+  function theilSen(v) {
+    var slopes = [];
+    for (var i = 0; i < v.length; i++) for (var j = i + 1; j < v.length; j++) slopes.push((v[j] - v[i]) / (j - i));
+    var slope = median(slopes);
+    return { slope: slope, intercept: median(v.map(function (y, i) { return y - slope * i; })) };
+  }
+  // Trend stability: detrend, then residual scatter relative to level. A smooth
+  // steep move (romaine spike) reads ~0; a jagged series reads high — noise
+  // dressed as a trend. Null until ≥4 reads.
+  function residualNoise(values) {
+    var v = (values || []).filter(function (x) { return typeof x === 'number' && isFinite(x); });
+    if (v.length < 4) return null;
+    var ts = theilSen(v);
+    var resid = v.map(function (y, i) { return Math.abs(y - (ts.intercept + ts.slope * i)); });
+    var m = median(v);
+    if (m <= 0) return null;
+    return +((1.4826 * median(resid)) / m).toFixed(4);
+  }
+
   function confidenceFor(level, trend) {
     var lt = level ? (level.nTypes != null ? level.nTypes : (level.nFamilies != null ? level.nFamilies : level.nSources)) : 0;
     var tt = trend ? (trend.nTypes != null ? trend.nTypes : (trend.nFamilies != null ? trend.nFamilies : trend.nSources)) : 0;
@@ -168,6 +189,12 @@
     var trendCeil;
     if (!trend || trend.pct == null) trendCeil = 2;          // no trend signal → don't cap the level
     else trendCeil = (tt >= 2 && agree >= 0.66) ? 2 : (tt >= 2 && agree >= 0.33) ? 1 : 0;
+    // Stability: a jagged path is noise dressed as a trend — endpoints agreeing
+    // doesn't redeem it. >20% residual scatter → low; >8% → at most medium.
+    if (trend && trend.noise != null) {
+      if (trend.noise > 0.20) trendCeil = 0;
+      else if (trend.noise > 0.08 && trendCeil > 1) trendCeil = 1;
+    }
     return ['low', 'medium', 'high'][Math.min(levelCeil, trendCeil)];
   }
 
@@ -195,6 +222,15 @@
       return pct == null ? null : { source: src, pct: pct, weight: s.weight, family: s.family, type: s.type };
     }).filter(Boolean);
     var trend = blendTrend(changes);
+    // Stability per de-correlated family, then the median across families.
+    var noiseByFam = {};
+    Object.keys(series).forEach(function (src) {
+      var s = series[src] || {}; var f = s.family || src;
+      var nz = residualNoise(s.values);
+      if (nz != null) (noiseByFam[f] = noiseByFam[f] || []).push(nz);
+    });
+    var famNoise = Object.keys(noiseByFam).map(function (f) { return median(noiseByFam[f]); });
+    trend.noise = famNoise.length ? median(famNoise) : null;
     var confidence = confidenceFor(level, trend);
 
     var provenance = [];
