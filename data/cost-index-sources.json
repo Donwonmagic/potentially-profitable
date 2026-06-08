@@ -375,16 +375,6 @@
           "commodity": "Onions",
           "reducer": "mostlyMid",
           "unit": "sack"
-        },
-        {
-          "reportId": "2926",
-          "market": "Shipping Point",
-          "commodity": "Onions",
-          "reducer": "mostlyMid",
-          "unit": "sack",
-          "type": "usda-ams",
-          "_status": "STAGED verified:false — confirm reportId via `node scripts/verify-cost-index-sources.mjs --discover \"potato onion shipping point\"` (coverage panel: slug ~2926). Same USDA-AMS methodology as the terminals (type 'usda-ams') so it WIDENS the cross-market range + cross-checks agreement; it does NOT add an independent type.",
-          "_report": "AMS National Potato & Onion FOB shipping-point, onion $/sack."
         }
       ],
       "bls": {
@@ -452,16 +442,6 @@
           "commodity": "Russet",
           "reducer": "mostlyMid",
           "unit": "sack"
-        },
-        {
-          "reportId": "2926",
-          "market": "Shipping Point",
-          "commodity": "Russet",
-          "reducer": "mostlyMid",
-          "unit": "sack",
-          "type": "usda-ams",
-          "_status": "STAGED verified:false — same slug 2926 as onion (`--discover \"potato onion shipping point\"`). Same-methodology FOB survey: widens the range, not an independent type (russet is already MEDIUM via ams+bls).",
-          "_report": "AMS National Potato & Onion FOB shipping-point, russet 50-lb sacks (panel-verified rows)."
         }
       ],
       "bls": {
@@ -492,22 +472,62 @@
       },
       "ams": [
         {
-          "reportId": "DISCOVER",
+          "reportId": "1089",
+          "market": "Central",
           "commodity": "Butter",
           "reducer": "single",
           "unit": "lb",
           "priceUnit": "Dollars Per Lb",
-          "family": "cme-cash",
-          "type": "cme",
+          "basis": "wholesale",
+          "type": "usda-lmr",
+          "family": "dmn-central",
           "fields": {
             "price": [
-              "cash_price",
+              "wtd_avg_price",
+              "avg_price",
               "weighted_average",
               "price"
             ]
           },
-          "_status": "STAGED verified:false — run `node scripts/verify-cost-index-sources.mjs --discover \"CME cash butter\"` (coverage panel: report family AMS_1603). Replace reportId 'DISCOVER' with the numeric slug and confirm the price column. CME cash is an INDEPENDENT level type vs the NDPSR weekly survey (lmr 2993) -> lifts butter MEDIUM->HIGH.",
-          "_report": "CME spot/cash butter via AMS MARS. Different price discovery than NDPSR."
+          "_status": "STAGED verified:false — AMS Dairy Market News butter (regions 1089/1090/1091, confirmed via --discover). SAME type as NDPSR (2993) on purpose: adds a multi-region wholesale BAND + a disagreement signal (band widens if they diverge), NOT an independent confidence type → butter stays MEDIUM. Re-verify to confirm the price column (candidates listed); if the rows don't parse, curl report 1089 and set fields.price to the real column."
+        },
+        {
+          "reportId": "1090",
+          "market": "East",
+          "commodity": "Butter",
+          "reducer": "single",
+          "unit": "lb",
+          "priceUnit": "Dollars Per Lb",
+          "basis": "wholesale",
+          "type": "usda-lmr",
+          "family": "dmn-east",
+          "fields": {
+            "price": [
+              "wtd_avg_price",
+              "avg_price",
+              "weighted_average",
+              "price"
+            ]
+          }
+        },
+        {
+          "reportId": "1091",
+          "market": "West",
+          "commodity": "Butter",
+          "reducer": "single",
+          "unit": "lb",
+          "priceUnit": "Dollars Per Lb",
+          "basis": "wholesale",
+          "type": "usda-lmr",
+          "family": "dmn-west",
+          "fields": {
+            "price": [
+              "wtd_avg_price",
+              "avg_price",
+              "weighted_average",
+              "price"
+            ]
+          }
         }
       ]
     },
@@ -539,22 +559,62 @@
       },
       "ams": [
         {
-          "reportId": "DISCOVER",
-          "commodity": "Cheese",
+          "reportId": "1083",
+          "market": "Central",
+          "commodity": "Cheddar",
           "reducer": "single",
           "unit": "lb",
           "priceUnit": "Dollars Per Lb",
-          "family": "cme-cash",
-          "type": "cme",
+          "basis": "wholesale",
+          "type": "usda-lmr",
+          "family": "dmn-central",
           "fields": {
             "price": [
-              "cash_price",
-              "block_price",
-              "weighted_average"
+              "wtd_avg_price",
+              "avg_price",
+              "weighted_average",
+              "price"
             ]
           },
-          "_status": "STAGED verified:false — `--discover \"CME cash cheese\"` (AMS_1603 family). Replace 'DISCOVER' + confirm the 40-lb block cash column. Independent type vs NDPSR (lmr 2993) -> cheddar MEDIUM->HIGH.",
-          "_report": "CME spot/cash block cheddar via AMS MARS."
+          "_status": "STAGED verified:false — AMS Dairy Market News cheese (regions 1083/1084/1085). SAME type as NDPSR (2993): multi-region band + disagreement signal, not an independent type → cheddar stays MEDIUM. Confirm fields.price + that commodity 'Cheddar' filters to the block (not barrel/other) via re-verify or a curl of 1083."
+        },
+        {
+          "reportId": "1084",
+          "market": "East",
+          "commodity": "Cheddar",
+          "reducer": "single",
+          "unit": "lb",
+          "priceUnit": "Dollars Per Lb",
+          "basis": "wholesale",
+          "type": "usda-lmr",
+          "family": "dmn-east",
+          "fields": {
+            "price": [
+              "wtd_avg_price",
+              "avg_price",
+              "weighted_average",
+              "price"
+            ]
+          }
+        },
+        {
+          "reportId": "1085",
+          "market": "West",
+          "commodity": "Cheddar",
+          "reducer": "single",
+          "unit": "lb",
+          "priceUnit": "Dollars Per Lb",
+          "basis": "wholesale",
+          "type": "usda-lmr",
+          "family": "dmn-west",
+          "fields": {
+            "price": [
+              "wtd_avg_price",
+              "avg_price",
+              "weighted_average",
+              "price"
+            ]
+          }
         }
       ]
     },
