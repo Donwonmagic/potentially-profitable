@@ -97,27 +97,36 @@ proteins/dairy (AMS-fed — NASS is only independent for produce/eggs); CME↔ND
 `wholesale` if the cutout $/lb falls outside the ribeye-cut bounds** (corroborate
 direction, not level).
 
-**IMF trend (FRED) — needs a small code change first:** the fetcher reads one
-`raw.fred` per ingredient. Add a `fredSpecs()` fan-out (mirror `amsSpecs`) so a
-`fred` array fetches multiple series, then add
-`{ "seriesId":"PBEEFUSDM", "basis":"index", "family":"imf-beef", "type":"imf" }`.
+**IMF trend (FRED) — config-only now (fan-out shipped).** The fetcher fans out a
+`fred` array of series (`fredSpecs()`), each settling independently. Make `fred`
+an array and add the IMF series alongside the existing one:
+```jsonc
+"fred": [
+  { "seriesId": "<existing>", "family": "bls", "type": "bls" },
+  { "seriesId": "PBEEFUSDM", "source": "fred-imf-beef", "basis": "index", "family": "imf-beef", "type": "imf" }
+]
+```
+Give each fan-out series a distinct `source` (or the loader derives `fred-<seriesId>`).
+Tag the IMF series `type:"imf"` so it counts as an independent trend type; keep
+BLS-rehosts under `family:"bls"` so they don't.
 
 ---
 
-## The one engine increment still open (P1 #36 tail — parity work)
+## Engine overhaul — SHIPPED (P1 #36, parity JS/TS + vectors)
 
-Range-widening + level-agreement + stability, all inside the parity-locked
-`composite-price` (mirror JS/TS + vectors). Specified by the methodologist:
-- **Range-widening:** publish `union(cross-market p25–p75, rolling MAD band)` over
-  the last 8 weekly-resampled reads — `band = median ± 0.6745·(1.4826·MAD)`. Gives
-  single-source items an honest band instead of `[x,x]`.
-- **Level-agreement:** when `nLevelTypes≥2`, cap confidence if independent dollar
-  types disagree — `rCoV = 1.4826·MAD / median` (n≥3) or IQR-overlap (n=2).
-- **Stability:** Theil–Sen detrend, then residual `rCoV` caps confidence — so a
-  smooth spike (romaine) stays high but noisy scatter drops.
+All four increments are in this branch, behaviour-identical across the storefront
+`composite-price.js` and the Ledger `composite-price.ts`:
+- **Type-counting (keystone):** confidence = `min(level, trend)` on independent
+  source TYPES; correlated terminals collapse. (onion-overstatement fix.)
+- **Range-widening:** `union(cross-market p25–p75, rolling weekly-MAD band)`,
+  `half-width = 0.6745·1.4826·MAD`, de-correlated per family; `rangeBasis` tags
+  markets / volatility / point. Single-source items get an honest band.
+- **Level-agreement:** `typeDispersion = 1.4826·MAD / median` of per-type medians;
+  >15% caps the level at medium (catches a wrong-commodity 2nd source).
+- **Stability:** Theil–Sen detrend → residual `rCoV` (`trend.noise`); >20% → low,
+  >8% → medium. A smooth spike keeps high; jagged scatter drops.
 
-These are additive to the shipped type-counting fix and can land as a follow-up
-engine commit without re-touching the source wiring.
+Effect takes hold on the next live fetch (the orchestrator recomputes confidence).
 
 ---
 
@@ -140,5 +149,5 @@ Per source, mirroring `docs/cost-index-runbook.md` §4:
 
 **Keyless / keys-you-have (do first):** AMS shipping-point (onion/russet/romaine/
 tomato), AMS_1603 dairy (butter/cheddar), AMS crude soybean oil (veg-oil), LMR
-cutout (proteins). **Needs a code change first:** the FRED fan-out for IMF trend
-series. **New key (optional):** NASS (produce/eggs farm survey), EIA (energy).
+cutout (proteins), and the IMF FRED trend series (fan-out now shipped — config
+only). **New key (optional):** NASS (produce/eggs farm survey), EIA (energy).

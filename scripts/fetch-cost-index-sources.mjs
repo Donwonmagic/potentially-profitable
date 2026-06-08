@@ -87,6 +87,7 @@ const F = require('../tools/_shared/cost-index-fetch.js');
 // independent terminals → a real national p25–p75 level, not one city).
 function amsSpecs(m) { return Array.isArray(m.ams) ? m.ams : (m.ams ? [m.ams] : []); }
 function lmrSpecs(m) { return Array.isArray(m.lmr) ? m.lmr : (m.lmr ? [m.lmr] : []); }
+function fredSpecs(m) { return Array.isArray(m.fred) ? m.fred : (m.fred ? [m.fred] : []); }
 const slug = (s) => String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
 // Surface the historical curve from the screened outputs — the same series the
@@ -108,7 +109,12 @@ function buildHistory(outputs, capN = 26) {
 async function liveFetch(ingredient, m) {
   const out = { ams: [] };
   if (m.fred && process.env.FRED_KEY) {
-    out.fred = await F.fetchJson(`https://api.stlouisfed.org/fred/series/observations?series_id=${m.fred.seriesId}&file_type=json&api_key=${process.env.FRED_KEY}`);
+    // Fan out FRED series (e.g. a BLS-rehost trend + an independent IMF series)
+    // in parallel; each settles on its own so one bad series_id drops only itself.
+    const settled = await F.mapLimit(fredSpecs(m), F.AMS_CONCURRENCY,
+      (spec) => F.fetchJson(`https://api.stlouisfed.org/fred/series/observations?series_id=${spec.seriesId}&file_type=json&api_key=${process.env.FRED_KEY}`).then((json) => ({ json, spec })));
+    out.fred = [];
+    settled.forEach((r) => { if (r.ok) out.fred.push(r.value); });
   }
   if (m.bls && process.env.BLS_KEY) {
     out.bls = await F.fetchJson('https://api.bls.gov/publicAPI/v2/timeseries/data/', {
@@ -178,7 +184,20 @@ function toOutputs(ingredient, raw, m) {
   });
   if (raw.noaa && typeof S.normalizeNoaaTrade === 'function') { const o = S.normalizeNoaaTrade(raw.noaa, { source: 'noaa', basis: (m.noaa && m.noaa.basis) || 'wholesale', commodity: m.noaa && m.noaa.commodity, hts: m.noaa && m.noaa.hts, nameMatch: m.noaa && m.noaa.nameMatch, edibleOnly: m.noaa && m.noaa.edibleOnly, unit: (m.noaa && m.noaa.unit) || 'lb' }); o.family = 'noaa'; o.type = 'noaa-trade'; if (o.points.length) outs.push(o); }
   if (raw.bls) { const o = S.normalizeBls(raw.bls, { source: 'bls', basis: 'index' }); o.family = (m.bls && m.bls.family) || 'bls'; o.type = (m.bls && m.bls.type) || 'bls'; if (o.points.length) outs.push(o); }
-  if (raw.fred) { const o = S.normalizeFred(raw.fred, { source: 'fred', basis: (m.fred && m.fred.basis) || 'index', unit: m.fred && m.fred.unit }); o.family = (m.fred && m.fred.family) || 'fred'; o.type = (m.fred && m.fred.type) || 'fred'; if (o.points.length) outs.push(o); }
+  // FRED fan-out: an array of {json, spec} (multi-series) or a single json (demo).
+  // Distinct `source` per series so sourceSeries keys don't collide; default stays
+  // 'fred' for the single-series case so existing data is unchanged.
+  const fredArr = Array.isArray(raw.fred)
+    ? raw.fred
+    : (raw.fred ? [{ json: raw.fred, spec: fredSpecs(m)[0] || {} }] : []);
+  fredArr.forEach((a, idx) => {
+    const spec = a.spec || {};
+    const o = S.normalizeFred(a.json, { source: spec.source, basis: spec.basis || 'index', unit: spec.unit });
+    o.source = spec.source || (fredArr.length > 1 ? 'fred-' + slug(spec.seriesId || String(idx)) : 'fred');
+    o.family = spec.family || 'fred';
+    o.type = spec.type || 'fred';
+    if (o.points.length) outs.push(o);
+  });
   if (raw.eia && typeof S.normalizeEia === 'function') { const o = S.normalizeEia(raw.eia, { source: 'eia', basis: 'index', value: (m.eia && m.eia.value) || 'price' }); o.family = (m.eia && m.eia.family) || m.family || 'eia'; o.type = 'eia'; if (o.points.length) outs.push(o); }
   return outs;
 }
