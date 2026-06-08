@@ -71,7 +71,7 @@ export function sourceType(id) {
 export function typeCount(point, kind) {
   return new Set((point.provenance || [])
     .filter((p) => !kind || p.kind === kind)
-    .map((p) => sourceType(p.source))).size;
+    .map((p) => p.type || sourceType(p.source))).size;   // explicit type; prefix-collapse only for legacy data
 }
 // Distinct weeks the history actually covers (epoch/7 buckets) — daily LMR/AMS
 // rows over five weeks are five weekly TREND reads, not twenty-six.
@@ -91,7 +91,7 @@ function med(xs) {
 export function levelDispersion(point) {
   const byType = {};
   (point.provenance || []).filter((p) => p.kind === 'level' && typeof p.valueCents === 'number')
-    .forEach((p) => { const t = sourceType(p.source); (byType[t] = byType[t] || []).push(p.valueCents); });
+    .forEach((p) => { const t = p.type || sourceType(p.source); (byType[t] = byType[t] || []).push(p.valueCents); });
   const tm = Object.keys(byType).map((t) => med(byType[t]));
   if (tm.length < 2) return 0;
   const m = med(tm);

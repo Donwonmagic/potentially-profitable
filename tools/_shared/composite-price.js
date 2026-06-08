@@ -116,7 +116,7 @@
           nFamilies: famKeys.length,
           nSources: distinct(obs.map(function (o) { return o.source; })),
           nTypes: distinct(obs.map(function (o) { return o.type || o.family || o.source; })),
-          provenance: obs.map(function (o) { return { source: o.source, valueCents: o.valueCents, date: o.date || null }; })
+          provenance: obs.map(function (o) { return { source: o.source, type: o.type || o.family || o.source, valueCents: o.valueCents, date: o.date || null }; })
         };
       }
     }
@@ -234,8 +234,8 @@
     var confidence = confidenceFor(level, trend);
 
     var provenance = [];
-    if (level) level.provenance.forEach(function (p) { provenance.push({ kind: 'level', source: p.source, valueCents: p.valueCents, date: p.date }); });
-    Object.keys(series).forEach(function (src) { provenance.push({ kind: 'trend', source: src, basis: series[src].basis }); });
+    if (level) level.provenance.forEach(function (p) { provenance.push({ kind: 'level', source: p.source, type: p.type, valueCents: p.valueCents, date: p.date }); });
+    Object.keys(series).forEach(function (src) { var s = series[src] || {}; provenance.push({ kind: 'trend', source: src, type: s.type || s.family || src, basis: s.basis }); });
 
     var label;
     var dirWord = trend.dir === 'up' ? 'up' : trend.dir === 'down' ? 'down' : 'flat';

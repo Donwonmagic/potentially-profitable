@@ -177,6 +177,18 @@ test('RANGE-WIDENING: too few recent reads → honest point, no fabricated band'
   assert.equal(lvl.rangeCents[0], lvl.rangeCents[1]);
 });
 
+test('PROVENANCE carries explicit type so the gate counts types identically to the engine', () => {
+  const r = C.assess({
+    levelObs: [{ source: 'usda-ams-boston', basis: 'wholesale', valueCents: 2200, family: 'usda-ams-boston', type: 'usda-ams' }],
+    sourceSeries: {
+      'usda-ams-boston': { basis: 'wholesale', values: [2000, 2200], family: 'usda-ams-boston', type: 'usda-ams' },
+      bls: { basis: 'index', values: [100, 108], family: 'bls', type: 'bls' },
+    },
+  });
+  assert.equal(r.provenance.find((p) => p.kind === 'level').type, 'usda-ams');
+  assert.equal(r.provenance.find((p) => p.kind === 'trend' && p.source === 'bls').type, 'bls');
+});
+
 test('STABILITY: a smooth steep move stays high; a jagged path is capped', () => {
   const smooth = C.assess({
     levelObs: [
