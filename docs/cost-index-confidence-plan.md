@@ -62,19 +62,33 @@ Each staged source carries an `_status` field with its exact `--discover` comman
 Run `node scripts/verify-cost-index-sources.mjs` to see which resolve, fix the
 `DISCOVER` slugs, then `--flip`. Simulated outcomes through the real engine:
 
-| ingredient | staged source | type | outcome on confirm |
+| ingredient | staged source | type | outcome (live-verified) |
 |---|---|---|---|
-| **butter** | CME cash butter (`reportId:"DISCOVER"` → AMS_1603) | `cme` | medium → **high** |
-| **cheddar-cheese** | CME cash block cheddar (`DISCOVER`) | `cme` | medium → **high** |
-| **onion** | BLS dry-onion PPI + FOB shipping-point `2926` | `bls` + `usda-ams` | low → **medium** |
-| **russet-potato** | FOB shipping-point `2926` | `usda-ams` | medium (range tightened) |
-| **shrimp** | IMF global shrimp `PSHRIUSDM` | `imf` | directional (corroborated) |
-| **salmon-fillet** | IMF global fish/salmon `PSALMUSDM` | `imf` | trend corroborated |
+| **onion** | BLS dry-onion PPI (`WPU01130217`) | `bls` | low → **medium** ✓ resolved |
+| **shrimp** | IMF global shrimp `PSHRIUSDM` | `imf` | directional, corroborated ✓ |
+| **salmon-fillet** | IMF global fish/salmon `PSALMUSDM` | `imf` | trend corroborated ✓ |
+| **butter / cheddar** | ~~AMS Dairy Market News 1089/1083~~ | — | **not viable** (see below) — stays medium |
 
-To push **onion/russet/romaine/tomato to high** you need a *non-AMS* dollar level
-(NASS farm price is a different basis → trend only; there is no second wholesale
-agency for produce), so they top out at medium on free public data — that's the
-honest ceiling, not a wiring gap.
+**Why nothing reaches `high` on free public data — the honest ceiling.** `high`
+needs **two independent-agency wholesale *dollar* levels** that agree. The free
+public sources give exactly one dollar-level methodology per commodity:
+- **produce** → USDA-AMS terminals only (a 2nd AMS source, e.g. FOB shipping-point,
+  is the *same* agency/type — and the produce shipping-point slugs didn't match
+  rows anyway). NASS is farm-gate (different basis → trend only).
+- **proteins** → USDA-LMR cut only (the boxed-beef *cutout* is an index, not the
+  cut). 
+- **dairy** → USDA-NDPSR survey only. The AMS Dairy Market News regional reports
+  (1089/1090/1091 butter, 1083/1084/1085 cheese) publish **`price_Unit:"Basis
+  Pricing"`** — a differential *over/under the CME spot* (e.g. −0.04 to +0.03),
+  **not an absolute price**. Unusable as a level without separately licensing CME.
+- **seafood** → NOAA ex-vessel only.
+
+So **medium is the honest ceiling for this basket on free data.** Reaching `high`
+would require a *paid* second independent level feed (CME/Urner Barry/Mintec).
+That's the engine working as designed — it refuses to call one-methodology data
+`high`. The win this session is that confidence is now *honest*: onion corrected
+**up** to medium (real, via the BLS PPI), the rest corroborated, and the three
+false highs gone.
 
 ---
 
