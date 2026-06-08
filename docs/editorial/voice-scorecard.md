@@ -44,7 +44,7 @@ say it aloud in six languages.
 |---|---|---|
 | 1 Fact integrity | **3** | The crown jewel: absolute gate, registry, singular bio, born of a real incident and enforced because the renderer speaks violations aloud. Protect it without exception. |
 | 2 Voice & register fidelity | **2** | Strong canons + `check-voice-boundary` blocks "Don" — but the studio "we" isn't machine-banned and the byline canon doc is stale. |
-| 3 Audio truthfulness | **2** | Coverage tracked + scripts verbatim — but **no per-language fact-gate**; a translated fabrication could reach speech before a human hears it. |
+| 3 Audio truthfulness | **3** | **Per-language audio fact-gate shipped** (`check-audio-fabrications.mjs`, wired into `check-all.mjs`): scans all ~328 `audio.<lang>.json` the HTML gate skips — invariant URL rules on every track, en/es/fr/it/pt/zh bio-drift rules on their own track (shared registry `scripts/lib/fabrication-patterns.mjs`), plus warn-first numeric-parity (a translation may not speak a number absent from the source). On first run it caught the retired two-restaurants bio live in 6 languages across 3 stale pre-cleanup renders + the Spanish voice-clone reference — all dated-waived and tracked for re-render (see backlog). Residual: a rogue-number-free prose mistranslation in fr/it/pt/zh (ADR-001 follow-on). |
 | 4 EN↔ES parity & i18n | **2** | Studio EN↔ES is strong + gated (would be 3 alone) — pulled down by **product-ES**: draft v0.1 canon, unreviewed `copy.es.ts`, no `check-voice-es-mx`. |
 | 5 CTA & smart-next | **3** | Locked verbs, one-to-one EN/ES, gated by `check-cta-canon`. Clean. |
 | 6 Reading-grade & clarity | **2** | Product FK≤7 gate exists but scans **`copy.ts` only** — route inline copy + email escape it. |
@@ -52,6 +52,9 @@ say it aloud in six languages.
 | 8 Banned-word & verboten coverage | **2** | Functional but **fragmented**: two separate lists (24 + 32), unmerged; studio "we" missing; product verboten skips email. |
 | 9 Article craft & structure | **3** | 8-rule graphics gate + stricter overview bar + ≥2,800-word floor + living-doc discipline + JSON-LD. Mature. |
 | 10 Cross-surface voice coherence | **2** | Canonical register split documented + naming gated — but the boundary is **enforced asymmetrically** (product checks "Don"; studio doesn't check "we"). |
-| **Total** | **23 / 30** | A gold-standard fact gate and strong article/CTA/i18n craft (the 3s) — every open seam is **governance coverage**, not broken prose. Cheapest jumps: extend verboten + grade to **email** (6,7), ship the **per-language audio fact-gate** (3), **merge** the banned lists + machine-ban studio "we" (8,2), review + gate **product-ES** (4). |
+| **Total** | **24 / 30** | The fact gate now reaches the spoken surface in all six languages — the highest-blast-radius seam, closed. Remaining open seams are all governance coverage: extend verboten + grade to **email** (6,7), **merge** the banned lists + machine-ban studio "we" (8,2), review + gate **product-ES** (4). |
 
-> History (append each cycle): `2026-06-07 — 23/30 — baseline (canons strong; gate reach is the work).`
+> History (append each cycle):
+> - `2026-06-07 — 23/30 — baseline (canons strong; gate reach is the work).`
+> - `2026-06-08 — reach audit re-confirmed; 23/30 baseline holds.`
+> - `2026-06-08 — 24/30 — shipped per-language audio fact-gate (Dim 3 2→3). Gate caught the retired two-restaurants bio spoken live in 6 langs across 3 stale renders + the Spanish voice-clone reference; dated-waived, re-render tracked in ground-truth backlog. Dim 1 stays 3.`

@@ -14,7 +14,13 @@
  * claims, it either has to be added to data/sourced-claims.json with a
  * real source URL, or labeled illustrative in the prose, or removed.
  *
- * Patterns blocked:
+ * The pattern registry now lives in scripts/lib/fabrication-patterns.mjs so
+ * the language-aware audio gate (scripts/check-audio-fabrications.mjs) can
+ * share the exact same rules. This file scans HTML / JSON / MD / MJS source;
+ * the audio gate scans the per-language audio narration JSON that this file
+ * deliberately skips (see SKIP_PATHS below).
+ *
+ * Patterns blocked (see the registry for the full list + per-language tags):
  *   1. "two restaurants I manage" / "manages two DMV restaurants" /
  *      "los dos restaurantes que manejo" / "maneja dos restaurantes" —
  *      the keystone bio fabrication (real bio: full-time at Tacombi
@@ -43,147 +49,13 @@
  */
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-
-const __filename = fileURLToPath(import.meta.url);
-const repoRoot = path.resolve(path.dirname(__filename), '..');
-
-// Build a Set of URLs that have been verified and registered in
-// data/sourced-claims.json with url_status: "deep-link". These URLs are
-// exempt from the deep-link blocklist rules below — they're allowed
-// because someone (presumably Don) confirmed they 200 in a real browser.
-// To add a new verified deep-link, edit data/sourced-claims.json.
-const ALLOWED_DEEP_LINKS = (() => {
-  const out = new Set();
-  try {
-    const registry = JSON.parse(
-      fs.readFileSync(path.join(repoRoot, 'data/sourced-claims.json'), 'utf8')
-    );
-    for (const entry of Object.values(registry.claims || {})) {
-      if (entry.url_status === 'deep-link' && entry.source_url) {
-        out.add(entry.source_url);
-      }
-    }
-  } catch (e) {
-    // If the registry is unreadable, fall back to empty allowlist (strict).
-  }
-  return out;
-})();
-
-// Each rule: { pattern: RegExp, label: string, fix: string }
-// The pattern is matched against article HTML; fix describes what to do.
-const BLOCKED = [
-  {
-    pattern: /\btwo restaurants I manage\b/gi,
-    label: 'bio: "two restaurants I manage"',
-    fix: 'Bio is now singular (Tacombi Bethesda only). Rewrite to "the restaurant I manage" or "my front-of-house role" or remove the parenthetical.',
-  },
-  {
-    pattern: /\bmanages two (DMV )?restaurants\b/gi,
-    label: 'bio: "manages two restaurants"',
-    fix: 'Don is currently full-time at Tacombi Bethesda only. Rewrite to "is a restaurant operator" or "is front-of-house manager at Tacombi Bethesda."',
-  },
-  {
-    pattern: /\bI manage two (DMV )?restaurants\b/gi,
-    label: 'bio: "I manage two restaurants"',
-    fix: 'Don is currently full-time at Tacombi Bethesda only. Rewrite to first-person singular role.',
-  },
-  {
-    pattern: /\bmanaging two (DMV )?restaurants\b/gi,
-    label: 'bio: "managing two restaurants"',
-    fix: 'Rewrite to "running front-of-house at a DMV restaurant" or similar.',
-  },
-  {
-    pattern: /\bboth (DMV )?restaurants\b/gi,
-    label: 'bio: "both restaurants" (references the dropped two-restaurant frame)',
-    fix: 'Singular bio. Replace with "the restaurant" or rework the surrounding clause.',
-  },
-  {
-    pattern: /\bthe two DMV restaurants( Don| I)?\b/gi,
-    label: 'bio: "the two DMV restaurants"',
-    fix: 'Singular bio. Replace with "the restaurant" or rework.',
-  },
-  // ES equivalents
-  {
-    pattern: /\bLlevo dos restaurantes\b/gi,
-    label: 'ES bio: "Llevo dos restaurantes"',
-    fix: 'Reescribe a "Soy jefe de salón en Tacombi en Bethesda" o forma singular equivalente.',
-  },
-  {
-    pattern: /\blos dos restaurantes que (manejo|llevo|administro)\b/gi,
-    label: 'ES bio: "los dos restaurantes que manejo"',
-    fix: 'Singular. Reescribe a "el restaurante que manejo".',
-  },
-  {
-    pattern: /\bmaneja dos restaurantes\b/gi,
-    label: 'ES bio: "maneja dos restaurantes"',
-    fix: 'Reescribe a "es operador de restaurante".',
-  },
-  {
-    pattern: /\badministra dos restaurantes\b/gi,
-    label: 'ES bio: "administra dos restaurantes"',
-    fix: 'Reescribe a "lleva el salón de un restaurante".',
-  },
-  // Invented datasets — these were named on old /methods/ and across articles
-  {
-    pattern: /\bpaired[- ]restaurant operating ledgers?\b/gi,
-    label: 'invented dataset: "paired-restaurant operating ledgers"',
-    fix: 'This dataset does not exist. Cite a real source from data/sourced-claims.json or remove the claim.',
-  },
-  {
-    pattern: /\bAI Overviews citation-tracking\b/gi,
-    label: 'invented dataset: "AI Overviews citation-tracking" (the 90-day paired-query study)',
-    fix: 'This dataset does not exist. Use the Search Engine Land March 2025 measurement (registered as ai_overview_share_march_2025) instead.',
-  },
-  {
-    pattern: /\b90 days of paired (Google )?queries\b/gi,
-    label: 'invented methodology: "90 days of paired queries"',
-    fix: 'This study was never conducted. Cite the public AI Overview measurement or label the framing illustrative.',
-  },
-  {
-    pattern: /\b(?:100|50)-restaurant DMV cohort\b/gi,
-    label: 'invented sampling: "N-restaurant DMV cohort"',
-    fix: 'No such measured cohort exists. Reframe as "in operator practice" or "across the restaurants Muntin audits" without specific N.',
-  },
-  // Quarterly AI Overview percentages outside the registered claim.
-  // Only the March 2025 13.14% figure has a real source.
-  {
-    pattern: /Q[1234]\s*20(2[4-9])\s*[\(:]?[^"<]{0,30}\b(?:six|nine|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)\s*(percent|%)/gi,
-    label: 'AI Overview quarterly trajectory (only Q1 2025 13.14% is sourced)',
-    fix: 'Cite only the registered March 2025 13.14% figure (data/sourced-claims.json#ai_overview_share_march_2025). Report subsequent direction qualitatively as "rising, not flat".',
-  },
-  // External URL deep-link patterns previously caught as fabricated. Each
-  // of these was a specific URL path that did not resolve on the live
-  // source. The library now cites these sources by name with a TLD link.
-  // If you need to deep-link any of these hosts in a new article, paste
-  // the live URL from a browser visit, verify it 200s, and add the
-  // specific claim to data/sourced-claims.json with url_status: "deep-link".
-  {
-    pattern: /https?:\/\/(?:www\.)?nngroup\.com\/articles\/[a-z0-9\-]+\/?/gi,
-    label: 'NNG deep-link citation (slugs reported as 404)',
-    fix: 'Replace with TLD-only link (https://www.nngroup.com/) and credit Nielsen Norman Group by name. If you must deep-link, paste the live URL from a browser visit and add the article to data/sourced-claims.json.',
-  },
-  {
-    pattern: /https?:\/\/baymard\.com\/lists\/[a-z0-9\-]+/gi,
-    label: 'Baymard deep-link citation (slug unverified)',
-    fix: 'Replace with TLD-only link (https://baymard.com/) and credit Baymard Institute by name. If you must deep-link, paste the live URL from a browser visit and add the page to data/sourced-claims.json.',
-  },
-  {
-    pattern: /https?:\/\/(?:www\.)?thinkwithgoogle\.com\/marketing-strategies\/[a-z0-9\-\/]+/gi,
-    label: 'Think with Google deep-link citation (slug unverified)',
-    fix: 'Replace with TLD-only link (https://www.thinkwithgoogle.com/) and credit Think with Google by name.',
-  },
-  {
-    pattern: /https?:\/\/(?:www\.)?searchengineland\.com\/[a-z0-9\-]{6,}/gi,
-    label: 'Search Engine Land deep-link citation (slug unverified)',
-    fix: 'Replace with TLD-only link (https://searchengineland.com/) and credit Search Engine Land + the date and title of the article in the citation drawer.',
-  },
-  {
-    pattern: /https?:\/\/restaurant\.org\/research-and-media\/[a-z0-9\-\/]+/gi,
-    label: 'National Restaurant Association deep-link citation (slug unverified)',
-    fix: 'Replace with TLD-only link (https://restaurant.org/) and credit the National Restaurant Association by name.',
-  },
-];
+import {
+  repoRoot,
+  BLOCKED,
+  ALLOWED_DEEP_LINKS,
+  ALLOWED_CONTEXTS,
+  normalizeUrlMatch,
+} from './lib/fabrication-patterns.mjs';
 
 // Files to skip — historical changelog (should be allowed to reference
 // the patterns to explain what was cut), the audit-page reader-addressing
@@ -192,22 +64,26 @@ const SKIP_PATHS = [
   /\/changelog\//,
   /\/drafts\//,
   /scripts\/check-fabrications\.mjs$/, // this file
+  /scripts\/check-audio-fabrications\.mjs$/, // the audio gate documents the patterns
+  /scripts\/test-audio-fabrications\.mjs$/, // its tests use the patterns as fixtures
+  /scripts\/lib\/fabrication-patterns\.mjs$/, // the shared pattern registry
+  /docs\/editorial\//, // the editorial OS (doctrine, ground-truth, scorecard, ADRs) documents the blocked patterns + the re-render backlog, like docs/fact-check.md
   /scripts\/inject-article-author-card\.mjs$/, // template (cleaned)
   /scripts\/sweep-two-restaurants/, // the cleanup script itself
   /data\/sourced-claims\.json$/, // the registry itself
   /docs\/fact-check\.md$/, // the rule doc documents the blocked patterns
   /docs\/voice-canon-blog\.md$/, // blog canon documents the same blocked patterns
   /docs\/release-notes\/.*audio-retranslate\.md$/, // re-render runbook documents which patterns were cut
+  // 2026-06-08: the Spanish F5 voice-clone reference transcript (quoted in
+  // this README, stored verbatim in the un-scanned don-reference.es.txt and
+  // paired with Don's don-reference.es.m4a recording) still carries the
+  // retired "Administro dos restaurantes" bio. Fixing it means re-recording
+  // the reference, not editing text — a confirm-tier task owned by Don,
+  // tracked in docs/editorial/ground-truth-pack.md. Skipped until re-recorded.
+  /scripts\/voice-refs\/README\.md$/,
   /\.git\//,
   /node_modules\//,
-  /\/audio(\.[a-z]+)?\.json$/, // audio narration files — regenerated from cleaned HTML; not source of truth
-];
-
-// Phrases-in-context that are allowed even though they pattern-match. These
-// are the addressing-the-reader uses ("you manage two or more restaurants").
-const ALLOWED_CONTEXTS = [
-  /You manage two or more restaurants/, // services/audit reader prompt
-  /same day for two restaurants/, // services/audit booking policy
+  /\/audio(\.[a-z]+)?\.json$/, // audio narration files — fact-checked by the language-aware check-audio-fabrications.mjs
 ];
 
 function walk(dir, out = []) {
@@ -242,7 +118,7 @@ for (const file of files) {
       // data/sourced-claims.json with url_status: "deep-link", let it
       // through. The registry is the system-of-record for verified URLs.
       const matched = match[0];
-      if (matched.startsWith('http') && ALLOWED_DEEP_LINKS.has(matched.replace(/[)\].,;]+$/, ''))) continue;
+      if (matched.startsWith('http') && ALLOWED_DEEP_LINKS.has(normalizeUrlMatch(matched))) continue;
       // Line number for the operator
       const lineNum = text.slice(0, match.index).split('\n').length;
       violations.push({

@@ -35,6 +35,14 @@ const CHECKS = [
   // the registry with a real source URL, be cited inline via a
   // <details class="cite"> drawer, or be labeled illustrative.
   ['Fabrication blocklist','check-fabrications.mjs',       '--check'],
+  // Per-language audio fact gate — the HTML gate above deliberately skips the
+  // narration JSON, but the renderer speaks chunks[].text verbatim in six
+  // languages. This applies the shared fabrication registry per spoken
+  // language (invariant URL rules everywhere; en/es/fr/it/pt/zh bio-drift
+  // rules to their tracks) plus a warn-first numeric-parity check. Pattern
+  // hits are fail-CI; known-stale pre-cleanup renders are waived (dated) in
+  // the script and re-render is tracked in docs/editorial/ground-truth-pack.md.
+  ['Audio fabrication blocklist','check-audio-fabrications.mjs','--check'],
   // Phase-2 cohesion guards. Sentinel-escape is fail-CI from day 1
   // (the regression cost was 247 frozen pages); banned-words is
   // warn-only at first so existing usage can be flagged + fixed
