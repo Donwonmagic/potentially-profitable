@@ -88,7 +88,8 @@ warm" claim was itself stale, now flagged as such on the doc.
   **check-editorial-accent-boundary** (bans the studio Golden Hour accent anywhere in the
   product — ADR-001), **check-mark-geometry** (WindowMark/favicon/gradient clip conform to
   the window-mark spec), **check-brand-asset-palette** (icon/favicon SVGs stay on the cool
-  spine). Plus Lighthouse + Playwright visual baselines. ◦
+  spine), **check-cross-repo-seams** (window→source=ledger attribution + shared business
+  @id + contact). Plus Lighthouse + Playwright visual baselines. ◦
 - **Asymmetries (don't "fix" without a charter):** the "Don" gate + the lucide
   icon-lock exist *only* in `{product}`; the site ships bespoke `currentColor`
   icons. The **merged two-tier banned list** (one list read by both) is *specified*
@@ -102,13 +103,19 @@ warm" claim was itself stale, now flagged as such on the doc.
 > spine and from `{product}`. Enforcement gate still pending (P1).
 
 
+> **Mapped + corrected (cycle 5):** the full, code-verified seam inventory is now
+> `docs/brand/cross-repo-seams.md` (treat IT as truth where it disagrees with this §6).
+> Two §6 claims were aspirational and are fixed/corrected there: the shared Org `@id`
+> was **not** actually referenced by the product (now linked + gated), and funnel event
+> names are **not** shared across repos (different analytics by design — not a gap).
+
 - **Storefront → Ledger:** `{site}/data/ledger-cta.json` + `inject-ledger-cta.mjs`
-  (end-of-article aside) + nav CTA → `ledger.muntin.digital`; demo-handoff magic-link. ◦
+  (end-of-article aside) + nav CTA → `ledger.muntin.digital`; Plausible "Ledger Route Click". ✓
 - **Ledger → Studio:** `{product}` `MarketingFooter.tsx` links muntin.digital;
   contact routes to `muntin.digital/window?source=ledger`; `@muntin/ui` ErrorBanner
-  hardcodes `hello@muntin.digital`. ◦
-- **Shared:** Org `@id` `https://muntin.digital/#business`; one GA4 + cross-domain;
-  funnel event names must match across repos. ◦
+  hardcodes `hello@muntin.digital`. ✓ (attribution + entity gated by `check-cross-repo-seams.mjs`)
+- **Shared business entity:** `@id` `https://muntin.digital/#business` — declared by
+  `{site}` (777×); `{product}` `parentOrganization` now anchors to it. ✓
 - **Mark geometry** — one spec now governs all encodings: `docs/brand/window-mark-geometry.md`
   (transom 9.5u/15.5u, r6, channel 3u, 32u grid) + `check-mark-geometry.mjs` in **both** repos.
   Verified 2026-06-07: all encodings agree (WindowMark.tsx ≡ favicon paths; site 128u marks
@@ -131,7 +138,13 @@ warm" claim was itself stale, now flagged as such on the doc.
   cool spine (`#F6F7F8`/`#16181D`); `check-brand-asset-palette.mjs` keeps the product's
   icon/favicon chrome warm-free (scoped to brand assets — does not touch the demo
   letterhead/receipt, which deliberately depict third-party vendor paper).
-- **P2** Naming seam (Workshop/Ledger); cross-repo coupling (studio inbox, `/window`).
+- **DONE (P2, cycle 5)** Cross-repo coupling — mapped in `cross-repo-seams.md` + gated
+  (`check-cross-repo-seams.mjs`); linked the product's `parentOrganization` to the shared
+  business `@id`. (Dim 9 → 3.)
+- **P2** Naming seam (Workshop/Ledger) — still undocumented.
+- **P3** Analytics unification — {site} Plausible vs {product} custom funnel + GA4 are
+  separate by design; revisit only if a single cross-domain funnel is wanted (a
+  product/analytics call, not brand).
 - **P3** Legacy-alias migration mid-flight — finish or freeze deliberately.
 
 ## How to refresh this pack (do this when the stamp is stale)
@@ -148,3 +161,4 @@ warm" claim was itself stale, now flagged as such on the doc.
 > `2026-06-07 — cycle 2: audited Golden Hour hexes (product = 0, both spines = 0, site uses --light-marigold/--light-coral editorial tokens); built + self/negative-tested the boundary gates both repos; Dim 2 → 3 (25/30).`
 > `2026-06-07 — cycle 3: audited all ≥6 mark encodings (agree at scale 32/128/320/400); wrote window-mark-geometry.md + check-mark-geometry.mjs both repos (self+negative-tested); found favicon palette drift (#FAF7F2/#14161A → P2); Dim 6 → 3 (26/30).`
 > `2026-06-07 — cycle 4: re-pigmented the product favicon to the cool spine; built check-brand-asset-palette.mjs (scoped to icon/favicon chrome, ignores comments + demo paper; self+negative-tested). Hardening — total holds at 26/30.`
+> `2026-06-07 — cycle 5: audited the seams (found the shared @id was NOT actually referenced by the product; funnel vocab not shared by design); wrote cross-repo-seams.md, linked product parentOrganization to …/#business, built check-cross-repo-seams.mjs (self+negative-tested); Dim 9 → 3 (27/30).`
