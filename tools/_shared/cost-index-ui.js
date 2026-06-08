@@ -8,9 +8,10 @@
   var card = document.getElementById('cpMarketCard');
   var listEl = document.getElementById('cpMarketList');
   var DATA = (typeof window !== 'undefined') ? window.MUNTIN_COST_INDEX : null;
-  if (!card || !listEl || !DATA || typeof MuntinCompositePrice === 'undefined') return;
+  if (!card || !listEl || !DATA || typeof MuntinCompositePrice === 'undefined' || typeof MuntinCostFormat === 'undefined') return;
 
   var es = (document.documentElement.getAttribute('lang') || 'en').toLowerCase().slice(0, 2) === 'es';
+  var FMT = MuntinCostFormat(es);   // pure honesty-phrasing helpers (cost-index-format.js)
   function L(en, esStr) { return es ? esStr : en; }
   function money(c) { return '$' + (Math.round(c) / 100).toFixed(2); }
   function el(tag, cls, txt) {
@@ -174,76 +175,20 @@
   // Plain-language "shape sentence" for the audio/sr text — the spark itself is
   // aria-hidden, so without this the weekly history is invisible to non-sighted
   // and low-numeracy readers. Notes gaps honestly.
-  function sparkShape(values) {
-    var finite = values.filter(function (v) { return typeof v === 'number' && isFinite(v); });
-    if (finite.length < 2) return '';
-    var first = finite[0], last = finite[finite.length - 1];
-    var chg = (last - first) / (first || 1);
-    var dir = Math.abs(chg) < 0.04 ? L('held about steady', 'se mantuvo estable')
-      : chg > 0 ? L('rose over the period', 'subió en el periodo')
-        : L('eased over the period', 'bajó en el periodo');
-    var gaps = values.some(function (v) { return !(typeof v === 'number' && isFinite(v)); })
-      ? L(' (some weeks missing)', ' (faltan algunas semanas)') : '';
-    return L('Weekly price ' + dir + gaps + '.', 'El precio semanal ' + dir + gaps + '.');
-  }
+  function sparkShape(values) { return FMT.sparkShape(values); }
   // Percentile-of-history, stated as an honest COUNT (never a smoothed "85th
   // percentile" — that implies a fitted distribution we don't have). Separates
   // "expensive" from "rising": today can sit inside the typical band yet at the
   // top of its OWN recent range. Needs >=8 valid weekly reads; the window is all
   // the history that exists, so we say "of its last N" — never "all-time".
-  function percentileLine(values) {
-    var v = values.filter(function (x) { return typeof x === 'number' && isFinite(x); });
-    if (v.length < 8) return '';
-    var today = v[v.length - 1];
-    var prior = v.slice(0, v.length - 1);
-    var below = prior.filter(function (x) { return x <= today; }).length;
-    var n = prior.length;
-    var bucket = below >= n * 0.75 ? L(' — near the top of its recent range.', ' — cerca del tope de su rango reciente.')
-      : below <= n * 0.25 ? L(' — near the bottom of its recent range.', ' — cerca del fondo de su rango reciente.')
-        : L(' — around the middle of its recent range.', ' — cerca de la mitad de su rango reciente.');
-    return L('Higher than ' + below + ' of its last ' + n + ' weekly reads', 'Más alto que ' + below + ' de sus últimas ' + n + ' lecturas semanales') + bucket;
-  }
+  function percentileLine(values) { return FMT.percentileLine(values); }
   // Week-over-week — the single most recent step, the number operators repeat
   // ("eggs up a dime a dozen since last week"). Honest across cadences: finds
   // the read closest to 7 days before the latest (window 4–11 days), never an
   // index-1 guess that could span a month of gaps. Anchors the % to a dollar.
   // Skipped on index/directional reads (a $ delta would be meaningless). Returns
   // { text, srText } or null. `dates` must be 1:1 with `values`.
-  function weekOverWeek(values, dates, unit) {
-    if (!Array.isArray(values) || !Array.isArray(dates) || dates.length !== values.length) return null;
-    var li = -1;
-    for (var i = values.length - 1; i >= 0; i--) { if (typeof values[i] === 'number' && isFinite(values[i])) { li = i; break; } }
-    if (li < 1) return null;
-    var lastV = values[li], lastMs = Date.parse(dates[li]);
-    if (!isFinite(lastMs)) return null;
-    var target = lastMs - 7 * 86400000, best = -1, bestDiff = Infinity, bestMs = null;
-    for (var j = 0; j < li; j++) {
-      if (!(typeof values[j] === 'number' && isFinite(values[j]))) continue;
-      var dj = Date.parse(dates[j]); if (!isFinite(dj)) continue;
-      var ageDays = (lastMs - dj) / 86400000;
-      if (ageDays < 4 || ageDays > 11) continue;             // must be ~a week back
-      var diff = Math.abs(dj - target);
-      if (diff < bestDiff) { bestDiff = diff; best = j; bestMs = dj; }
-    }
-    if (best < 0) return null;
-    var prevV = values[best];
-    if (!(prevV > 0)) return null;
-    var deltaCents = lastV - prevV, pct = deltaCents / prevV;
-    var priorDate = dates[best];
-    if (Math.abs(pct) < 0.01) {
-      return { text: L('About flat vs last week.', 'Casi sin cambio frente a la semana pasada.'),
-        srText: L('About flat versus ' + priorDate + '.', 'Casi sin cambio frente al ' + priorDate + '.') };
-    }
-    var dirW = deltaCents > 0 ? L('up', 'arriba') : L('down', 'abajo');
-    var pctStr = (pct > 0 ? '+' : '−') + Math.abs(pct * 100).toFixed(Math.abs(pct * 100) < 10 ? 1 : 0).replace(/\.0$/, '') + '%';
-    var dollarStr = money(Math.abs(deltaCents)) + ' ' + L('a ', 'por ') + unit;
-    return {
-      text: L('Vs last week: ' + dirW + ' ' + pctStr + ' — about ' + dollarStr + '.',
-              'Frente a la semana pasada: ' + dirW + ' ' + pctStr + ' — unos ' + dollarStr + '.'),
-      srText: L('Versus ' + priorDate + ': ' + dirW + ' ' + pctStr + ', about ' + dollarStr + '.',
-                'Frente al ' + priorDate + ': ' + dirW + ' ' + pctStr + ', unos ' + dollarStr + '.')
-    };
-  }
+  function weekOverWeek(values, dates, unit) { return FMT.weekOverWeek(values, dates, unit); }
   function parseMoney(v) {
     var n = parseFloat(String(v == null ? '' : v).replace(/[^0-9.]/g, ''));
     return isFinite(n) && n >= 0 ? Math.round(n * 100) : null;
@@ -526,26 +471,7 @@
   // command. Calibrated to confidence: a thin read can never say "re-price". The
   // operator decides; we only say what the data leans toward. Returns
   // { tone:'reprice'|'hold'|'watch', verb, note } or null.
-  function flagVerb(flag, confidence) {
-    if (!flag || !flag.verdict) return null;
-    var thin = confidence === 'low' || confidence === 'directional';
-    var wk = flag.elevatedWeeks;
-    switch (flag.verdict) {
-      case 'structural':
-        if (thin) return { tone: 'watch', verb: L('Watch', 'Observa'), note: L('Up and holding, but the data is thin — wait for more before a big call.', 'Sube y se mantiene, pero hay pocos datos — espera más antes de una decisión grande.') };
-        return { tone: 'reprice', verb: L('Consider re-pricing', 'Considera ajustar el precio'), note: L('Up and holding' + (wk ? ' for ' + wk + ' weeks' : '') + ' — this looks like a real reset, not a blip. Many operators would re-price the dishes that use it.', 'Sube y se mantiene' + (wk ? ' por ' + wk + ' semanas' : '') + ' — parece un cambio real, no un repunte. Muchos operadores ajustarían el precio de los platillos que lo usan.') };
-      case 'spike':
-        return { tone: 'hold', verb: L('Hold', 'Espera'), note: L('Jumped, then pulled back — this often reverts. Re-pricing now risks chasing a number that is already falling.', 'Subió y luego bajó — suele revertir. Ajustar ahora arriesga perseguir un número que ya está cayendo.') };
-      case 'easing':
-        return { tone: 'hold', verb: L('Hold', 'Espera'), note: L('Easing — this can be a chance to renegotiate, not a reason to re-price.', 'Bajando — puede ser oportunidad de renegociar, no razón para reajustar.') };
-      case 'emerging':
-        return { tone: 'watch', verb: L('Watch', 'Observa'), note: L('A real move, but it has not held yet. Give it a couple of weeks.', 'Un movimiento real, pero aún no se sostiene. Dale un par de semanas.') };
-      case 'flat':
-        return { tone: 'hold', verb: L('Hold', 'Espera'), note: L('Inside its usual range — nothing to do.', 'Dentro de su rango usual — nada que hacer.') };
-      default: // insufficient
-        return { tone: 'watch', verb: L('Watch', 'Observa'), note: L('Too new to call — too little history so far. Treat the price as real until a pattern shows.', 'Muy nuevo para concluir — poco historial aún. Trata el precio como real hasta que se vea un patrón.') };
-    }
-  }
+  function flagVerb(flag, confidence) { return FMT.flagVerb(flag, confidence); }
 
   var movers = [];
   (DATA.ingredients || []).forEach(function (ing) {
