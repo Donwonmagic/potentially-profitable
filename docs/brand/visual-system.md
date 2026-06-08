@@ -98,16 +98,22 @@ not a second brand accent.
 
 ## 4. Marks and icons
 
-- **Product mark:** `{product}/packages/ui/src/WindowMark.tsx` — the solid "Pane"
-  (filled panes, muntin cross as negative channel; 32u grid, transom proportion
-  9.5u/15.5u, r6 fillets, channel 3u). `BrandLockup.tsx` pairs it with the wordmark.
-- **Studio mark:** `{site}/brand/mark/` — a hairline **outline** sash window.
+- **One mark, "The Pane":** a solid rounded square with the muntin cross cut as a
+  negative channel (four filled panes). Both repos use it — `{product}/packages/ui/src/
+  WindowMark.tsx` is canonical (32u grid, transom 9.5u/15.5u, r6, channel 3u); `{site}`
+  ships six SVG variants in `brand/mark/` at 128u (the canonical paths ×4). The earlier
+  "studio outline vs. product solid" split is **resolved** — `brand/mark/*.svg` are all
+  solid Panes.
+- **Geometry is spec'd + gated** (cycle 3): the single source of truth is
+  **`docs/brand/window-mark-geometry.md`**; `check-mark-geometry.mjs` in **both** repos
+  asserts every encoding (WindowMark, favicon, gradient-field clip, the six studio
+  variants) conforms. Negative-tested.
 - **Icons:** `{product}` is **lucide-only**, re-exported through
   `packages/ui/src/system-icons.ts` and locked by `check-icon-source.mjs`. `{site}`
   ships bespoke `currentColor` icons. This asymmetry is a deliberate seam.
-- **Open (P2):** the window-mark geometry is duplicated in ≥4 places with no single
-  governing spec, and the studio outline vs. product solid "Pane" split is unresolved.
-  Not decided here.
+- **Open (P2):** the product favicon (`muntin-ledger.svg`) has correct geometry but
+  still fills with retired-warm `#FAF7F2`/`#14161A` — a palette drift to re-pigment
+  (tracked in `ground-truth-pack.md §7`). Not fixed here.
 
 ---
 
@@ -122,6 +128,7 @@ not a second brand accent.
 | Icon source | (bespoke) | `check-icon-source` (lucide-only) |
 | OG currency / coverage | `check-og-{images,coverage,template-grid}` | — |
 | Golden Hour accent boundary | `check-tokens-sync` (absent from spine) | `check-editorial-accent-boundary` (absent anywhere) |
+| Window-mark geometry | `check-mark-geometry` (128u studio variants) | `check-mark-geometry` (32u: WindowMark/favicon/clip) |
 
 **Deliberate asymmetries (don't "fix" without a charter):** the "Don" gate and the
 lucide-lock live only in `{product}`; `{site}` ships bespoke icons.

@@ -78,14 +78,16 @@ warm" claim was itself stale, now flagged as such on the doc.
   check-contrast (AA light+dark), check-banned-words, check-cta-canon,
   check-button-vocabulary, check-name-coherence, check-og-{images,coverage,template-grid},
   check-cls-animation (keyframes), check-css-drift, check-css-shells, locale-parity/hreflang,
-  **check-tokens-sync** (also asserts the Golden Hour accent stays out of the spine — ADR-001). ◦
+  **check-tokens-sync** (also asserts the Golden Hour accent stays out of the spine — ADR-001),
+  **check-mark-geometry** (studio marks conform to the window-mark spec). ◦
 - **`{product}`** (`.github/workflows/ci.yml`): check-tokens-parity ✓, check-contrast,
   check-icon-source (lucide-only via `@muntin/ui/icons`), check-focus-discipline
   (`.mun-focus`), check-keyframes-allowlist, visuals-budget, **check-voice-boundary**
   (bans the studio persona in product copy — ✓ references "studio"), check-verboten-phrases,
   check-copy-grade (FK≤7), check-pronunciations,
   **check-editorial-accent-boundary** (bans the studio Golden Hour accent anywhere in the
-  product — ADR-001). Plus Lighthouse + Playwright visual baselines. ◦
+  product — ADR-001), **check-mark-geometry** (WindowMark/favicon/gradient clip conform to
+  the window-mark spec). Plus Lighthouse + Playwright visual baselines. ◦
 - **Asymmetries (don't "fix" without a charter):** the "Don" gate + the lucide
   icon-lock exist *only* in `{product}`; the site ships bespoke `currentColor`
   icons. The **merged two-tier banned list** (one list read by both) is *specified*
@@ -106,7 +108,10 @@ warm" claim was itself stale, now flagged as such on the doc.
   hardcodes `hello@muntin.digital`. ◦
 - **Shared:** Org `@id` `https://muntin.digital/#business`; one GA4 + cross-domain;
   funnel event names must match across repos. ◦
-- **Mark geometry** duplicated in ≥4 places (transom 9.5u/15.5u, r6, channel 3u). ◦
+- **Mark geometry** — one spec now governs all encodings: `docs/brand/window-mark-geometry.md`
+  (transom 9.5u/15.5u, r6, channel 3u, 32u grid) + `check-mark-geometry.mjs` in **both** repos.
+  Verified 2026-06-07: all encodings agree (WindowMark.tsx ≡ favicon paths; site 128u marks
+  = 32u ×4; gradient clip at transom proportion). ✓
 
 ## 7. Open findings (the live backlog this pack supports)
 
@@ -119,8 +124,12 @@ warm" claim was itself stale, now flagged as such on the doc.
   (asserts absent from the shared spine). Both self-tested + negative-tested. (Dim 2 → 3.)
 - **P1** Manual/fragile token-sync → real publish-and-vendor step.
 - **P1** Merged two-tier banned list → implement, read by both repos.
-- **P2** Naming seam (Workshop/Ledger); mark-geometry single spec; cross-repo
-  coupling (studio inbox, `/window`).
+- **DONE (P2, cycle 3)** Mark-geometry single spec — `window-mark-geometry.md` +
+  `check-mark-geometry.mjs` in both repos. (Dim 6 → 3.)
+- **P2** Naming seam (Workshop/Ledger); cross-repo coupling (studio inbox, `/window`).
+- **P2** Favicon palette drift — `{product}/apps/web/public/icons/muntin-ledger.svg`
+  geometry is correct but it still fills with retired-warm `#FAF7F2` (backplate) +
+  `#14161A` (ink). Re-pigment to the cool spine. (Surfaced during the cycle-3 mark audit.)
 - **P3** Legacy-alias migration mid-flight — finish or freeze deliberately.
 
 ## How to refresh this pack (do this when the stamp is stale)
@@ -135,3 +144,4 @@ warm" claim was itself stale, now flagged as such on the doc.
 > `2026-06-07 — created; §1–6 spot-verified against live code.`
 > `2026-06-07 — cycle 1: tokens.json byte-identical + hashes equal; brand/og/*.svg = 0 warm hexes, Golden Hour in 765/766; §4/§6/§7 updated; ADR-001 logged; visual-system.md published.`
 > `2026-06-07 — cycle 2: audited Golden Hour hexes (product = 0, both spines = 0, site uses --light-marigold/--light-coral editorial tokens); built + self/negative-tested the boundary gates both repos; Dim 2 → 3 (25/30).`
+> `2026-06-07 — cycle 3: audited all ≥6 mark encodings (agree at scale 32/128/320/400); wrote window-mark-geometry.md + check-mark-geometry.mjs both repos (self+negative-tested); found favicon palette drift (#FAF7F2/#14161A → P2); Dim 6 → 3 (26/30).`

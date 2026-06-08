@@ -53,14 +53,15 @@ spot-verified live this cycle; the moved dims (2, 7, 10) reflect this cycle's wo
 | 3 Palette currency | **3** | Verified: `brand/og/*.svg` carry **0** retired-warm hexes; cool spine throughout. Warm gate-forbidden in chrome. |
 | 4 Voice boundary | **2** | Enforced one-directionally (the "Don" gate lives only in `{product}`); the merged two-tier banned list is specified but not built (P1). |
 | 5 Naming | **2** | Canon is clear; the "Workshop / Workbench / Ledger" relationship is undocumented (P2). |
-| 6 Mark geometry | **2** | Geometry duplicated in ≥4 places; no single spec governs them (P2). |
+| 6 Mark geometry | **3** ↑ | One spec (`window-mark-geometry.md`) + conformance gates both repos (`check-mark-geometry.mjs`): studio 128u variants ({site}) and the 32u encodings — WindowMark/favicon/gradient clip ({product}). Verified: all encodings agree; self + negative-tested. |
 | 7 OG currency | **3** ↑ | Palette current + coverage gated (`check-og-*`) **and** the Golden Hour layer is now governed (ADR-001), no longer an ungoverned accent. |
 | 8 Contrast | **3** | AA gated in both repos, both themes. |
 | 9 Cross-seam | **2** | Funnel + shared Org `@id` exist; the hardcoded studio inbox + `/window` coupling is undocumented (P2). |
 | 10 Doc currency | **2** ↑ | `visual-system.md` published; the 3 stale docs carry dated supersession banners. Not yet **3** — no gate asserts docs match code (refresh on cadence). |
-| **Total** | **25 / 30** | Spine, palette, contrast, single-accent, and OG currency all gated (3). Remaining edges are voice (4), naming (5), mark geometry (6), cross-seam (9) — and doc currency (10), which has no enforcing gate by nature. |
+| **Total** | **26 / 30** | Spine, palette, contrast, single-accent, OG currency, and mark geometry all gated (3). Remaining edges: voice (4), naming (5), cross-seam (9) — and doc currency (10), ungateable by nature. |
 
 > History (append each cycle): `YYYY-MM-DD — NN/30 — one-line what moved`.
 > `2026-06-07 — 21/30 — baseline.`
 > `2026-06-07 — 24/30 — cycle 1: kit synced; visual-system.md guideline published; Golden Hour blessed (ADR-001); 3 stale docs superseded.`
 > `2026-06-07 — 25/30 — cycle 2: Golden Hour boundary gate-enforced both repos (Dim 2 → 3).`
+> `2026-06-07 — 26/30 — cycle 3: window-mark geometry spec + conformance gates both repos (Dim 6 → 3).`

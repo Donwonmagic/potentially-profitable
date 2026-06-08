@@ -81,6 +81,7 @@ const CHECKS = [
   //          values, the other pins the new ones.
   ['Token sync',          'check-tokens-sync.mjs'],
   ['Warm-palette purge',  'migrate-warm-palette.mjs',      '--check'],
+  ['Mark geometry',       'check-mark-geometry.mjs'],
   // Invoice-Decoder safety: the four server files in src/ that touch
   // the decoder pipeline must NOT contain any outbound network paths
   ['Dark-mode block',     'build-dark-mode.mjs',           '--check'],
