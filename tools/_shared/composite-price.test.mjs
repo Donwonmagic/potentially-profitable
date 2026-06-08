@@ -141,3 +141,113 @@ test('DE-CORRELATION flows through confidence: three echoes of one family cannot
   assert.equal(r.trend.nFamilies, 1);
   assert.notEqual(r.confidence, 'high');
 });
+
+test('CONFIDENCE counts TYPES not families: correlated terminals cannot reach "high"', () => {
+  const r = C.assess({
+    levelObs: [
+      { source: 'usda-ams-boston', basis: 'wholesale', valueCents: 2200, family: 'usda-ams-boston', type: 'usda-ams' },
+      { source: 'usda-ams-chicago', basis: 'wholesale', valueCents: 2400, family: 'usda-ams-chicago', type: 'usda-ams' },
+      { source: 'usda-ams-miami', basis: 'wholesale', valueCents: 2600, family: 'usda-ams-miami', type: 'usda-ams' },
+    ],
+    sourceSeries: {
+      'usda-ams-boston': { basis: 'wholesale', values: [2000, 2200], family: 'usda-ams-boston', type: 'usda-ams' },
+      'usda-ams-chicago': { basis: 'wholesale', values: [2100, 2400], family: 'usda-ams-chicago', type: 'usda-ams' },
+    },
+  });
+  assert.equal(r.level.nFamilies, 3);   // three markets widen the RANGE
+  assert.equal(r.level.nTypes, 1);      // but one methodology for CONFIDENCE
+  assert.notEqual(r.confidence, 'high');
+});
+
+test('RANGE-WIDENING: a single market gets an honest band from recent volatility', () => {
+  const lvl = C.compositeLevel([
+    { source: 'usda-lmr', basis: 'wholesale', valueCents: 1400, family: 'lmr', recent: [1300, 1500, 1350, 1450, 1400] },
+  ]);
+  assert.equal(lvl.nFamilies, 1);
+  assert.equal(lvl.rangeBasis, 'volatility');
+  assert.ok(lvl.rangeCents[0] < lvl.rangeCents[1]);                 // not a [x,x] point
+  assert.ok(lvl.rangeCents[0] < 1400 && lvl.rangeCents[1] > 1400); // band straddles the median
+});
+
+test('RANGE-WIDENING: too few recent reads → honest point, no fabricated band', () => {
+  const lvl = C.compositeLevel([
+    { source: 'usda-lmr', basis: 'wholesale', valueCents: 1400, family: 'lmr', recent: [1390, 1410] },
+  ]);
+  assert.equal(lvl.rangeBasis, 'point');
+  assert.equal(lvl.rangeCents[0], lvl.rangeCents[1]);
+});
+
+test('PROVENANCE carries explicit type so the gate counts types identically to the engine', () => {
+  const r = C.assess({
+    levelObs: [{ source: 'usda-ams-boston', basis: 'wholesale', valueCents: 2200, family: 'usda-ams-boston', type: 'usda-ams' }],
+    sourceSeries: {
+      'usda-ams-boston': { basis: 'wholesale', values: [2000, 2200], family: 'usda-ams-boston', type: 'usda-ams' },
+      bls: { basis: 'index', values: [100, 108], family: 'bls', type: 'bls' },
+    },
+  });
+  assert.equal(r.provenance.find((p) => p.kind === 'level').type, 'usda-ams');
+  assert.equal(r.provenance.find((p) => p.kind === 'trend' && p.source === 'bls').type, 'bls');
+});
+
+test('STABILITY: a smooth steep move stays high; a jagged path is capped', () => {
+  const smooth = C.assess({
+    levelObs: [
+      { source: 'usda-lmr', basis: 'wholesale', valueCents: 1300, family: 'lmr', type: 'usda-lmr' },
+      { source: 'cme', basis: 'wholesale', valueCents: 1320, family: 'cme', type: 'cme' },
+    ],
+    sourceSeries: {
+      'usda-lmr': { basis: 'wholesale', values: [1000, 1075, 1150, 1225, 1300], family: 'lmr', type: 'usda-lmr' },
+      cme: { basis: 'wholesale', values: [1020, 1095, 1170, 1245, 1320], family: 'cme', type: 'cme' },
+      bls: { basis: 'index', values: [100, 103, 106, 109, 112], family: 'bls', type: 'bls' },
+    },
+  });
+  assert.equal(smooth.confidence, 'high');
+  assert.ok(smooth.trend.noise < 0.02);
+
+  const jagged = C.assess({
+    levelObs: [
+      { source: 'usda-lmr', basis: 'wholesale', valueCents: 1300, family: 'lmr', type: 'usda-lmr' },
+      { source: 'cme', basis: 'wholesale', valueCents: 1320, family: 'cme', type: 'cme' },
+    ],
+    sourceSeries: {
+      'usda-lmr': { basis: 'wholesale', values: [1000, 1300, 1050, 1350, 1300], family: 'lmr', type: 'usda-lmr' },
+      cme: { basis: 'wholesale', values: [1020, 1330, 1070, 1360, 1320], family: 'cme', type: 'cme' },
+      bls: { basis: 'index', values: [100, 130, 105, 135, 112], family: 'bls', type: 'bls' },
+    },
+  });
+  assert.ok(jagged.trend.noise > 0.08);
+  assert.notEqual(jagged.confidence, 'high');
+});
+
+test('LEVEL-AGREEMENT: two independent types that DISAGREE on price cannot reach "high"', () => {
+  const r = C.assess({
+    levelObs: [
+      { source: 'usda-lmr', basis: 'wholesale', valueCents: 1300, family: 'lmr', type: 'usda-lmr' },
+      { source: 'cme-cash', basis: 'wholesale', valueCents: 2000, family: 'cme', type: 'cme' },
+    ],
+    sourceSeries: {
+      'usda-lmr': { basis: 'wholesale', values: [1200, 1300], family: 'lmr', type: 'usda-lmr' },
+      'cme-cash': { basis: 'wholesale', values: [1900, 2000], family: 'cme', type: 'cme' },
+      bls: { basis: 'index', values: [100, 108], family: 'bls', type: 'bls' },
+    },
+  });
+  assert.equal(r.level.nTypes, 2);
+  assert.ok(r.level.typeDispersion > 0.15);
+  assert.notEqual(r.confidence, 'high');   // capped at medium by disagreement
+});
+
+test('CONFIDENCE: two independent dollar TYPES that agree reach "high"', () => {
+  const r = C.assess({
+    levelObs: [
+      { source: 'usda-lmr', basis: 'wholesale', valueCents: 1300, family: 'lmr', type: 'usda-lmr' },
+      { source: 'cme-cash', basis: 'wholesale', valueCents: 1320, family: 'cme', type: 'cme' },
+    ],
+    sourceSeries: {
+      'usda-lmr': { basis: 'wholesale', values: [1200, 1300], family: 'lmr', type: 'usda-lmr' },
+      'cme-cash': { basis: 'wholesale', values: [1210, 1320], family: 'cme', type: 'cme' },
+      bls: { basis: 'index', values: [100, 108], family: 'bls', type: 'bls' },
+    },
+  });
+  assert.equal(r.level.nTypes, 2);
+  assert.equal(r.confidence, 'high');
+});

@@ -153,6 +153,14 @@
       "bls": {
         "seriesId": "WPU0223",
         "_report": "Aggregate seafood PPI (Unprocessed & Prepared Seafood, current). Salmon-specific WPU02230103 is stale; this is the fresh seafood trend."
+      },
+      "fred": {
+        "seriesId": "PSALMUSDM",
+        "basis": "index",
+        "family": "imf-salmon",
+        "type": "imf",
+        "_status": "STAGED verified:false — confirm via `--discover-fred \"global price fish salmon\"` (try PSALMUSDM / PFISHUSDM). Independent trend type beyond NOAA ex-vessel + BLS.",
+        "_report": "FRED/IMF Global price of Fish/Salmon (index, monthly)."
       }
     },
     "shrimp": {
@@ -171,6 +179,14 @@
       },
       "bls": {
         "seriesId": "WPU02230501"
+      },
+      "fred": {
+        "seriesId": "PSHRIUSDM",
+        "basis": "index",
+        "family": "imf-shrimp",
+        "type": "imf",
+        "_status": "STAGED verified:false — confirm via `--discover-fred \"global price shrimp\"`. IMF global shrimp index: an INDEPENDENT trend type beyond NOAA+BLS. Shrimp stays DIRECTIONAL (no dollar level exists) but its direction is now corroborated.",
+        "_report": "FRED/IMF Global price of Shrimp (index, monthly)."
       }
     },
     "romaine-lettuce": {
@@ -359,8 +375,24 @@
           "commodity": "Onions",
           "reducer": "mostlyMid",
           "unit": "sack"
+        },
+        {
+          "reportId": "2926",
+          "market": "Shipping Point",
+          "commodity": "Onions",
+          "reducer": "mostlyMid",
+          "unit": "sack",
+          "type": "usda-ams",
+          "_status": "STAGED verified:false — confirm reportId via `node scripts/verify-cost-index-sources.mjs --discover \"potato onion shipping point\"` (coverage panel: slug ~2926). Same USDA-AMS methodology as the terminals (type 'usda-ams') so it WIDENS the cross-market range + cross-checks agreement; it does NOT add an independent type.",
+          "_report": "AMS National Potato & Onion FOB shipping-point, onion $/sack."
         }
-      ]
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls",
+        "_status": "STAGED verified:false — confirm the dry-onion PPI series id (BLS directory, or `--discover-fred \"onions ppi\"`). This is onion's FIRST independent (non-AMS) trend type -> lifts onion low->MEDIUM.",
+        "_report": "BLS PPI, dry onions (trend index). Independent agency from USDA-AMS."
+      }
     },
     "russet-potato": {
       "verified": true,
@@ -420,6 +452,16 @@
           "commodity": "Russet",
           "reducer": "mostlyMid",
           "unit": "sack"
+        },
+        {
+          "reportId": "2926",
+          "market": "Shipping Point",
+          "commodity": "Russet",
+          "reducer": "mostlyMid",
+          "unit": "sack",
+          "type": "usda-ams",
+          "_status": "STAGED verified:false — same slug 2926 as onion (`--discover \"potato onion shipping point\"`). Same-methodology FOB survey: widens the range, not an independent type (russet is already MEDIUM via ams+bls).",
+          "_report": "AMS National Potato & Onion FOB shipping-point, russet 50-lb sacks (panel-verified rows)."
         }
       ],
       "bls": {
@@ -447,7 +489,27 @@
         "unit": "lb",
         "windowDays": 90,
         "_report": "NDPSR (LMR Datamart 2993, keyless). Butter_Price = weighted-avg $/lb, dated week_ending_date. Confirmed field. The fetcher windows on dateField (week_ending_date) — NDPSR carries no report_date, so the default report_date window returns 0 rows; week_ending_date returns a ~13-week slice (fast, no timeout)."
-      }
+      },
+      "ams": [
+        {
+          "reportId": "DISCOVER",
+          "commodity": "Butter",
+          "reducer": "single",
+          "unit": "lb",
+          "priceUnit": "Dollars Per Lb",
+          "family": "cme-cash",
+          "type": "cme",
+          "fields": {
+            "price": [
+              "cash_price",
+              "weighted_average",
+              "price"
+            ]
+          },
+          "_status": "STAGED verified:false — run `node scripts/verify-cost-index-sources.mjs --discover \"CME cash butter\"` (coverage panel: report family AMS_1603). Replace reportId 'DISCOVER' with the numeric slug and confirm the price column. CME cash is an INDEPENDENT level type vs the NDPSR weekly survey (lmr 2993) -> lifts butter MEDIUM->HIGH.",
+          "_report": "CME spot/cash butter via AMS MARS. Different price discovery than NDPSR."
+        }
+      ]
     },
     "cheddar-cheese": {
       "verified": true,
@@ -474,7 +536,27 @@
         "unit": "lb",
         "windowDays": 90,
         "_report": "NDPSR 2993 block cheddar. price column CONFIRMED via live header = cheese_40_Price (40-lb block weighted-avg $/lb, dated week_ending_date). Legacy names kept as fallbacks. Windows on dateField (week_ending_date) for a fast ~13-week slice; the default report_date window returns 0 rows (NDPSR rows have no report_date) and unwindowed times out."
-      }
+      },
+      "ams": [
+        {
+          "reportId": "DISCOVER",
+          "commodity": "Cheese",
+          "reducer": "single",
+          "unit": "lb",
+          "priceUnit": "Dollars Per Lb",
+          "family": "cme-cash",
+          "type": "cme",
+          "fields": {
+            "price": [
+              "cash_price",
+              "block_price",
+              "weighted_average"
+            ]
+          },
+          "_status": "STAGED verified:false — `--discover \"CME cash cheese\"` (AMS_1603 family). Replace 'DISCOVER' + confirm the 40-lb block cash column. Independent type vs NDPSR (lmr 2993) -> cheddar MEDIUM->HIGH.",
+          "_report": "CME spot/cash block cheddar via AMS MARS."
+        }
+      ]
     },
     "eggs": {
       "verified": true,

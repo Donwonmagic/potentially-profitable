@@ -230,7 +230,8 @@ async function main() {
       targets.push({ kind: 'lmr', label: 'lmr' + (s.market ? `:${s.market}` : ''), spec: s }));
     if (entry.noaa) targets.push({ kind: 'noaa', label: 'noaa', spec: entry.noaa });
     if (entry.bls) targets.push({ kind: 'bls', label: 'bls', spec: entry.bls });
-    if (entry.fred) targets.push({ kind: 'fred', label: 'fred', spec: entry.fred });
+    if (entry.fred) (Array.isArray(entry.fred) ? entry.fred : [entry.fred]).forEach((s) =>
+      targets.push({ kind: 'fred', label: 'fred' + (s.seriesId ? `:${s.seriesId}` : ''), spec: s }));
     // Probe in parallel (bounded) — 8 produce terminals sequentially is what made
     // this feel hung; mapLimit always settles each, so a dead market drops only itself.
     const results = await F.mapLimit(targets, F.AMS_CONCURRENCY, (t) => probe(t.kind, t.spec));
