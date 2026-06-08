@@ -109,6 +109,7 @@ const CI = (() => {
   catch { return { ingredients: {}, drivers: {} }; }
 })();
 const COST_INDEX = CI.ingredients || {};
+const DRIVERS = CI.drivers || {};
 const LABELS_DOC  = (() => {
   try { return JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/cost-index-labels.json'), 'utf8')); }
   catch { return { labels: {}, drivers: {} }; }
@@ -642,6 +643,9 @@ main{padding-top:64px}
 .ci-read__capsule{margin:0;font-size:14.5px;line-height:1.45;color:var(--ink)}
 .ci-read__capsule-note{color:var(--ink-soft);font-size:12.5px}
 .ci-read__rank{color:var(--ink-soft)}
+.ci-why{margin:14px 0 8px;padding:14px 18px;background:var(--white);border:1px solid var(--line);border-radius:12px}
+.ci-why__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 6px}
+.ci-why__line{font-size:15px;line-height:1.55;color:var(--ink);margin:0}
 .ci-read__src{margin-top:8px;font-size:12.5px}
 .ci-read__src summary{cursor:pointer;color:var(--ink-soft);font-weight:600}
 .ci-read__src div{margin-top:6px;color:var(--ink-soft);line-height:1.5}
@@ -701,6 +705,43 @@ const pageTail = `</div>
 `;
 
 // ---- Per-ingredient body content -----------------------------------
+// "Why it's moving now" — turns the static driver prose into a dated read:
+// each upstream input's CURRENT direction, with feed-grain framed as a
+// leading association (it has tended to move before protein prices) and
+// energy as coincident. Direction words only (allowed in prose, dated);
+// never a fabricated lag number — the driver/ingredient cadences differ,
+// so a build-time lag would be false precision. Honest rule: not a cause.
+function whyMovingBlock(slug, locale) {
+  const es = locale === 'es';
+  const meta = ING_META[slug] || { drivers: [] };
+  const rel = (meta.drivers || [])
+    .map((d) => ({ d, dr: DRIVERS[d] }))
+    .filter((x) => x.dr && x.dr.trend && x.dr.trend.dir);
+  if (!rel.length) return '';
+  const labelOf = (d) => ((es ? (DRIVER_LABELS[d] && DRIVER_LABELS[d].es) : (DRIVER_LABELS[d] && DRIVER_LABELS[d].en)) || d)
+    .replace(/\s*\([^)]*\)\s*$/, '');   // drop a trailing "(feed)" — the clause already says feed-grain
+  const part = (x) => `${escHtml(labelOf(x.d))} (${dirWord(x.dr.trend, locale)})`;
+  const feed = rel.filter((x) => x.dr.kind === 'feed-grain');
+  const energy = rel.filter((x) => x.dr.kind !== 'feed-grain');
+  const clauses = [];
+  if (feed.length) clauses.push(
+    (es ? 'forraje — ' : 'feed-grain — ') + feed.map(part).join(', ') +
+    (es ? ' — que ha tendido a moverse antes que los precios de proteína' : ' — which has tended to move before protein prices'));
+  if (energy.length) clauses.push(
+    energy.map(part).join(', ') + (es ? ', que se mueve junto al costo de los alimentos' : ', which moves alongside food costs'));
+  const lead = es ? 'Insumos río arriba ahora: ' : 'Upstream inputs right now: ';
+  const tail = es ? ' Asociación, no causa.' : ' Association, not cause.';
+  let asOf = null;
+  rel.forEach((x) => (x.dr.history || []).forEach((h) => { if (h.date && (!asOf || h.date > asOf)) asOf = h.date; }));
+  const head = es ? 'Por qué se mueve' : "Why it's moving";
+  const badge = asOf ? `<span class="ci-read__badge">${es ? 'al' : 'as of'} ${asOf}</span>` : '';
+  return `
+  <aside class="ci-why" aria-label="${head}">
+    <p class="ci-why__head">${head}${badge}</p>
+    <p class="ci-why__line">${lead}${clauses.join('; ')}.${tail}</p>
+  </aside>`;
+}
+
 function whyItMatters(slug, locale) {
   const es = locale === 'es';
   const lab = LABELS[slug] || {};
@@ -831,6 +872,7 @@ function emitIngredientPage(slug, locale) {
   </section>
   <div class="ci-body">
     ${marketReadBlock(slug, locale)}
+    ${whyMovingBlock(slug, locale)}
     ${whyItMatters(slug, locale)}
     ${howToUse(slug, locale)}
     ${faqHtml}
