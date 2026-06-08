@@ -214,11 +214,47 @@ function dirWord(trend, locale) {
   return es ? 'casi estable' : 'about flat';
 }
 
+// ---- The spike-vs-structural verdict, as a calibrated SUGGESTION ----
+// Reads the build-time, fact-gated `flag` (tools/_shared/cost-spike.js:
+// persistence × retrace, never magnitude). Rendered as guidance a peer
+// "would consider", never a command; leads with the low-regret action
+// (hold/watch before re-price); HOLD is first-class. No sourced numbers
+// live here — qualitative direction words only, per the honesty contract.
+const VERDICT_COPY = {
+  flat:        { en: 'Sitting inside its normal range — most operators would hold.',
+                 es: 'Dentro de su rango normal — la mayoría mantendría el precio.' },
+  easing:      { en: 'Coming down from its baseline — holding is the low-regret call.',
+                 es: 'Bajando desde su base — mantener es la opción de bajo riesgo.' },
+  spike:       { en: 'Ran up, then pulled back from a recent peak — likely reverting, so most would hold before re-pricing.',
+                 es: 'Subió y luego retrocedió desde un pico reciente — probablemente revierte; la mayoría mantendría antes de re-precificar.' },
+  emerging:    { en: "A real move that hasn't persisted yet — worth a watch; check the next read before you move.",
+                 es: 'Un movimiento real que aún no se asienta — conviene vigilar; mira la próxima lectura antes de mover.' },
+  structural:  { en: 'Elevated and sustained — the increase looks real. Many operators would ask the vendor first, then consider re-pricing the dishes that use it.',
+                 es: 'Elevado y sostenido — el aumento parece real. Muchos consultarían primero al proveedor y luego considerarían re-precificar los platos que lo usan.' },
+  insufficient:{ en: "Not enough history yet to tell a spike from a real trend — treat it as real and watch the next reads.",
+                 es: 'Aún no hay suficiente historial para distinguir un pico de una tendencia real — trátalo como real y vigila las próximas lecturas.' }
+};
+const VERB_LABEL = {
+  'hold':     { en: 'Hold',     es: 'Mantener' },
+  'watch':    { en: 'Watch',    es: 'Vigilar' },
+  're-price': { en: 'Re-price', es: 'Re-precificar' }
+};
+function verdictLine(flag, locale) {
+  if (!flag || !flag.verdict) return '';
+  const copy = VERDICT_COPY[flag.verdict];
+  const verb = VERB_LABEL[flag.actionBias];
+  if (!copy || !verb) return '';
+  const es = locale === 'es';
+  return `
+    <p class="ci-read__verdict"><span class="ci-read__verb" data-bias="${flag.actionBias}">${verb[es ? 'es' : 'en']}</span>${copy[es ? 'es' : 'en']}</p>`;
+}
+
 // ---- The visible "Market read" data block --------------------------
 function marketReadBlock(slug, locale) {
   const r = readingOf(slug);
   if (!r) return '';
   const es = locale === 'es';
+  const verdict = verdictLine(r.entry.flag, locale);
   const lab = LABELS[slug] || {};
   const unit = es ? (lab.unit_es || lab.unit_en) : lab.unit_en;
   const unitSfx = unit ? '/' + unit : '';
@@ -263,7 +299,7 @@ function marketReadBlock(slug, locale) {
   return `
   <aside class="ci-read" aria-label="${es ? 'Lectura de mercado' : 'Market read'}">
     <p class="ci-read__head">${head}<span class="ci-read__badge">${badge}</span></p>
-    <p class="ci-read__line">${line}</p>
+    <p class="ci-read__line">${line}</p>${verdict}
     <details class="ci-read__src"><summary>${es ? 'Fuentes' : 'Sources'} · ${(shortList.length || agencies.length)}</summary><div>${srcBody}</div></details>
     <p class="ci-read__live"><a href="${es ? '/es' : ''}/tools/cost-pulse/#ci-${slug}">${liveLabel} <span aria-hidden="true">→</span></a></p>
   </aside>`;
@@ -493,6 +529,11 @@ main{padding-top:64px}
 .ci-read__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin:0 0 6px}
 .ci-read__badge{font-weight:600;text-transform:none;letter-spacing:0;font-size:12px;color:var(--ink-soft);margin-left:8px}
 .ci-read__line{font-size:16px;line-height:1.55;color:var(--ink);margin:0}
+.ci-read__verdict{margin:10px 0 0;font-size:15px;line-height:1.5;color:var(--ink)}
+.ci-read__verb{display:inline-block;font-weight:700;font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:999px;margin-right:8px;vertical-align:1px;background:var(--cream);border:1px solid var(--line);color:var(--ink-soft)}
+.ci-read__verb[data-bias="hold"]{color:#2A50C8;border-color:#2A50C8}
+.ci-read__verb[data-bias="watch"]{color:#8a6d1f;border-color:#cdb368}
+.ci-read__verb[data-bias="re-price"]{color:#A23B2D;border-color:#A23B2D}
 .ci-read__src{margin-top:8px;font-size:12.5px}
 .ci-read__src summary{cursor:pointer;color:var(--ink-soft);font-weight:600}
 .ci-read__src div{margin-top:6px;color:var(--ink-soft);line-height:1.5}
