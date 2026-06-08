@@ -65,13 +65,39 @@
       var obs = byBasis[basis];
       if (obs && obs.length) {
         var famGroups = {};
-        obs.forEach(function (o) { var f = o.family || o.source; (famGroups[f] = famGroups[f] || []).push(o.valueCents); });
+        var famRecent = {};
+        obs.forEach(function (o) {
+          var f = o.family || o.source;
+          (famGroups[f] = famGroups[f] || []).push(o.valueCents);
+          if (Array.isArray(o.recent)) o.recent.forEach(function (v) { if (typeof v === 'number' && isFinite(v) && v > 0) (famRecent[f] = famRecent[f] || []).push(v); });
+        });
         var famKeys = Object.keys(famGroups);
         var vals = famKeys.map(function (f) { return median(famGroups[f]); });
+        var medianCents = Math.round(median(vals));
+        var range = [Math.round(percentile(vals, 0.25)), Math.round(percentile(vals, 0.75))];
+        // Rolling-MAD band: a market's recent (weekly-resampled) volatility, so a
+        // lone source gets an honest width instead of a $X–$X point. De-correlated
+        // per family (each market's deviations around its OWN median) so cross-
+        // market level gaps don't masquerade as volatility. Union with p25–p75.
+        var devPool = [];
+        famKeys.forEach(function (f) {
+          var arr = famRecent[f]; if (!arr || arr.length < 2) return;
+          var fm = median(arr);
+          arr.forEach(function (v) { devPool.push(Math.abs(v - fm)); });
+        });
+        var rangeBasis = famKeys.length >= 2 ? 'markets' : 'point';
+        if (devPool.length >= 4) {
+          var k = 0.6745 * 1.4826 * median(devPool);   // robust half-IQR from MAD
+          if (k > 0) {
+            range = [Math.round(Math.min(range[0], medianCents - k)), Math.round(Math.max(range[1], medianCents + k))];
+            if (rangeBasis === 'point') rangeBasis = 'volatility';
+          }
+        }
         return {
           basis: basis,
-          medianCents: Math.round(median(vals)),
-          rangeCents: [Math.round(percentile(vals, 0.25)), Math.round(percentile(vals, 0.75))],
+          medianCents: medianCents,
+          rangeCents: range,
+          rangeBasis: rangeBasis,
           nObs: obs.length,
           nFamilies: famKeys.length,
           nSources: distinct(obs.map(function (o) { return o.source; })),
@@ -132,11 +158,13 @@
   function dollars(c) { return '$' + (Math.round(c) / 100).toFixed(2); }
 
   function levelPhrase(level) {
-    var nFam = (level.nFamilies != null ? level.nFamilies : level.nSources);
-    var single = nFam <= 1 || level.rangeCents[0] === level.rangeCents[1];
-    return single
-      ? 'About ' + dollars(level.rangeCents[0]) + ' (' + level.basis + ' reference, single source — range not yet measurable)'
-      : 'About ' + dollars(level.rangeCents[0]) + '–' + dollars(level.rangeCents[1]) + ' (' + level.basis + ' reference)';
+    var band = dollars(level.rangeCents[0]) + '–' + dollars(level.rangeCents[1]);
+    var degenerate = level.rangeCents[0] === level.rangeCents[1];
+    if (level.rangeBasis === 'volatility' && !degenerate)
+      return 'About ' + band + ' (' + level.basis + ' reference, single market — band from recent volatility)';
+    if (level.rangeBasis === 'markets' && !degenerate)
+      return 'About ' + band + ' (' + level.basis + ' reference)';
+    return 'About ' + dollars(level.rangeCents[0]) + ' (' + level.basis + ' reference, single source — range not yet measurable)';
   }
 
   function assess(input) {

@@ -159,6 +159,24 @@ test('CONFIDENCE counts TYPES not families: correlated terminals cannot reach "h
   assert.notEqual(r.confidence, 'high');
 });
 
+test('RANGE-WIDENING: a single market gets an honest band from recent volatility', () => {
+  const lvl = C.compositeLevel([
+    { source: 'usda-lmr', basis: 'wholesale', valueCents: 1400, family: 'lmr', recent: [1300, 1500, 1350, 1450, 1400] },
+  ]);
+  assert.equal(lvl.nFamilies, 1);
+  assert.equal(lvl.rangeBasis, 'volatility');
+  assert.ok(lvl.rangeCents[0] < lvl.rangeCents[1]);                 // not a [x,x] point
+  assert.ok(lvl.rangeCents[0] < 1400 && lvl.rangeCents[1] > 1400); // band straddles the median
+});
+
+test('RANGE-WIDENING: too few recent reads → honest point, no fabricated band', () => {
+  const lvl = C.compositeLevel([
+    { source: 'usda-lmr', basis: 'wholesale', valueCents: 1400, family: 'lmr', recent: [1390, 1410] },
+  ]);
+  assert.equal(lvl.rangeBasis, 'point');
+  assert.equal(lvl.rangeCents[0], lvl.rangeCents[1]);
+});
+
 test('CONFIDENCE: two independent dollar TYPES that agree reach "high"', () => {
   const r = C.assess({
     levelObs: [

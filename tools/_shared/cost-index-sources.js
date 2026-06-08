@@ -223,6 +223,19 @@
     return d;
   }
 
+  // Weekly-resampled tail (last value per ISO-ish week, last n weeks, in cents) —
+  // feeds composite-price's rolling-MAD band. Resampling first so daily
+  // autocorrelation can't shrink the deviation and understate the band.
+  function weeklyTail(points, n) {
+    var pts = (points || []).filter(function (p) { return p && isFinite(Date.parse(p.date)) && typeof p.value === 'number'; })
+      .slice().sort(function (a, b) { return Date.parse(a.date) - Date.parse(b.date); });
+    var byWeek = {};
+    pts.forEach(function (p) { byWeek[Math.floor(Date.parse(p.date) / (7 * 86400000))] = p.value; });
+    var keys = Object.keys(byWeek).map(Number).sort(function (a, b) { return a - b; });
+    if (n && keys.length > n) keys = keys.slice(keys.length - n);
+    return keys.map(function (wk) { return Math.round(byWeek[wk] * 100); });
+  }
+
   function buildCompositeInput(outputs, opts) {
     opts = opts || {};
     var sourceSeries = {};
@@ -232,7 +245,7 @@
       sourceSeries[o.source] = { basis: o.basis, values: o.points.map(function (p) { return p.value; }), weight: o.weight, family: o.family, type: o.type };
       if (o.basis !== 'index') {
         var latest = o.points[o.points.length - 1];
-        levelObs.push({ source: o.source, basis: o.basis, valueCents: Math.round(latest.value * 100), date: latest.date, family: o.family, type: o.type });
+        levelObs.push({ source: o.source, basis: o.basis, valueCents: Math.round(latest.value * 100), date: latest.date, family: o.family, type: o.type, recent: weeklyTail(o.points, 8) });
       }
     });
     return { levelObs: levelObs, sourceSeries: sourceSeries, asOf: opts.asOf || latestDate(outputs) };
