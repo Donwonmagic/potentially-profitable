@@ -62,6 +62,10 @@ const require    = createRequire(import.meta.url);
 // Reuse the shared, no-DOM inline-SVG sparkline primitive (the same one
 // Cost Pulse + the audits tool ship) rather than forking a renderer.
 const MuntinSparkline = require(path.join(repoRoot, 'tools/_shared/sparkline.js'));
+// ONE shared verdict voice — the same module the Cost Pulse dashboard uses, so
+// the static pages, the hub, and the live tool can never disagree (a thin-data
+// "structural" reads "Watch", not "Re-price", on every surface).
+const MuntinCostVerdict = require(path.join(repoRoot, 'tools/_shared/cost-verdict.js'));
 const checkMode  = process.argv.includes('--check');
 const onlyArg    = (process.argv.find((a) => a.startsWith('--only=')) || '').slice('--only='.length);
 const ONLY       = onlyArg ? new Set(onlyArg.split(',').map((s) => s.trim()).filter(Boolean)) : null;
@@ -221,64 +225,56 @@ function dirWord(trend, locale) {
 }
 
 // ---- The spike-vs-structural verdict, as a calibrated SUGGESTION ----
-// Reads the build-time, fact-gated `flag` (tools/_shared/cost-spike.js:
-// persistence × retrace, never magnitude). Rendered as guidance a peer
-// "would consider", never a command; leads with the low-regret action
-// (hold/watch before re-price); HOLD is first-class. No sourced numbers
-// live here — qualitative direction words only, per the honesty contract.
-const VERDICT_COPY = {
-  flat:        { en: 'Sitting inside its normal range — most operators would hold.',
-                 es: 'Dentro de su rango normal — la mayoría mantendría el precio.' },
-  easing:      { en: 'Coming down from its baseline — holding is the low-regret call.',
-                 es: 'Bajando desde su base — mantener es la opción de bajo riesgo.' },
-  spike:       { en: 'Ran up, then pulled back from a recent peak — likely reverting, so most would hold before re-pricing.',
-                 es: 'Subió y luego retrocedió desde un pico reciente — probablemente revierte; la mayoría mantendría antes de re-precificar.' },
-  emerging:    { en: "A real move that hasn't persisted yet — worth a watch; check the next read before you move.",
-                 es: 'Un movimiento real que aún no se asienta — conviene vigilar; mira la próxima lectura antes de mover.' },
-  structural:  { en: 'Elevated and sustained — the increase looks real. Many operators would ask the vendor first, then consider re-pricing the dishes that use it.',
-                 es: 'Elevado y sostenido — el aumento parece real. Muchos consultarían primero al proveedor y luego considerarían re-precificar los platos que lo usan.' },
-  insufficient:{ en: "Not enough history yet to tell a spike from a real trend — treat it as real and watch the next reads.",
-                 es: 'Aún no hay suficiente historial para distinguir un pico de una tendencia real — trátalo como real y vigila las próximas lecturas.' }
-};
-const VERB_LABEL = {
+// Delegates to the shared, confidence-aware MuntinCostVerdict so the static
+// pages, the hub, and the Cost Pulse dashboard speak identically — a thin-data
+// "structural" reads "Watch", not "Re-price", on every surface. The chip is
+// the terse action; the note is the calibrated reason. The flag is a build-
+// time, fact-gated qualitative read — no sourced numbers live here.
+const TONE_BIAS = { hold: 'hold', watch: 'watch', reprice: 're-price' };
+const TONE_LABEL = {
   'hold':     { en: 'Hold',     es: 'Mantener' },
   'watch':    { en: 'Watch',    es: 'Vigilar' },
   're-price': { en: 'Re-price', es: 'Re-precificar' }
 };
-function verdictLine(flag, locale) {
-  if (!flag || !flag.verdict) return '';
-  const copy = VERDICT_COPY[flag.verdict];
-  const verb = VERB_LABEL[flag.actionBias];
-  if (!copy || !verb) return '';
+function verdictChip(v, locale) {
+  const bias = TONE_BIAS[v.tone] || 'watch';
+  const lab = TONE_LABEL[bias];
+  return `<span class="ci-read__verb" data-bias="${bias}">${lab[locale === 'es' ? 'es' : 'en']}</span>`;
+}
+function verdictLine(flag, confidence, locale) {
+  const v = MuntinCostVerdict.verdict(flag, confidence);
+  if (!v) return '';
   const es = locale === 'es';
   return `
-    <p class="ci-read__verdict"><span class="ci-read__verb" data-bias="${flag.actionBias}">${verb[es ? 'es' : 'en']}</span>${copy[es ? 'es' : 'en']}</p>`;
+    <p class="ci-read__verdict">${verdictChip(v, locale)}${es ? v.note_es : v.note_en}</p>`;
 }
 
 // ---- Hub "what's moving now" + per-card action chip ----------------
-// The landing hub led with a bare directory of links; an operator
-// couldn't tell at a glance which ingredient needs attention. Surface
-// the same fact-gated spike flag: a per-card action chip, plus a lead
-// section that ranks the ones worth a look (re-price, then watch) first.
-// Qualitative only — no numbers on the hub.
+// Same shared verdict + confidence, so the hub never disagrees with the page
+// it links to. Surfaces the ones worth a look (re-price, then watch) first.
+const TONE_RANK = { reprice: 0, watch: 1, hold: 2 };
 const MOVING_REASON = {
-  structural:   { en: 'elevated and sustained', es: 'elevado y sostenido' },
+  reprice:      { en: 'elevated and sustained', es: 'elevado y sostenido' },
+  structural:   { en: 'up, but the data is thin', es: 'sube, pero hay pocos datos' },
   emerging:     { en: 'a real move, not settled yet', es: 'un movimiento real, aún sin asentarse' },
-  insufficient: { en: 'too new to call — treat as real', es: 'demasiado nuevo — trátalo como real' }
+  insufficient: { en: 'too new to call', es: 'demasiado nuevo para concluir' }
 };
-const BIAS_RANK = { 're-price': 0, 'watch': 1, 'hold': 2 };
 function hubFlag(slug) { return (COST_INDEX[slug] || {}).flag || null; }
-function actionChip(flag, locale) {
-  if (!flag || !VERB_LABEL[flag.actionBias]) return '';
-  const es = locale === 'es';
-  return `<span class="ci-read__verb" data-bias="${flag.actionBias}">${VERB_LABEL[flag.actionBias][es ? 'es' : 'en']}</span>`;
+function hubConf(slug) { const p = (COST_INDEX[slug] || {}).points; return (p && p[0] && p[0].confidence) || 'low'; }
+function ingVerdict(slug) { return MuntinCostVerdict.verdict(hubFlag(slug), hubConf(slug)); }
+function actionChip(slug, locale) { const v = ingVerdict(slug); return v ? verdictChip(v, locale) : ''; }
+function reasonFor(slug, v, locale) {
+  // reprice → firm structural; watch → name the underlying verdict honestly.
+  const key = v.tone === 'reprice' ? 'reprice' : ((hubFlag(slug) || {}).verdict || 'insufficient');
+  const r = MOVING_REASON[key] || MOVING_REASON.insufficient;
+  return locale === 'es' ? r.es : r.en;
 }
 function movingNowSection(slugs, locale) {
   const es = locale === 'es';
   const rows = slugs
-    .map((s) => ({ s, flag: hubFlag(s) }))
-    .filter((x) => x.flag && MOVING_REASON[x.flag.verdict])
-    .sort((a, b) => (BIAS_RANK[a.flag.actionBias] - BIAS_RANK[b.flag.actionBias]) || a.s.localeCompare(b.s));
+    .map((s) => ({ s, v: ingVerdict(s) }))
+    .filter((x) => x.v && x.v.tone !== 'hold')   // surface watch + reprice
+    .sort((a, b) => (TONE_RANK[a.v.tone] - TONE_RANK[b.v.tone]) || a.s.localeCompare(b.s));
   const head = es ? 'Qué se está moviendo ahora' : "What's moving now";
   if (!rows.length) {
     const calm = es
@@ -289,9 +285,8 @@ function movingNowSection(slugs, locale) {
   const lis = rows.map((x) => {
     const l = LABELS[x.s] || {};
     const nm = (es ? (l.es || l.en) : l.en) || x.s;
-    const reason = MOVING_REASON[x.flag.verdict][es ? 'es' : 'en'];
     const base = es ? '/es' : '';
-    return `<li class="ci-moving-item">${actionChip(x.flag, locale)}<a href="${base}/cost-index/${x.s}/">${escHtml(nm)}</a> <span class="ci-moving-reason">— ${escHtml(reason)}</span></li>`;
+    return `<li class="ci-moving-item">${verdictChip(x.v, locale)}<a href="${base}/cost-index/${x.s}/">${escHtml(nm)}</a> <span class="ci-moving-reason">— ${escHtml(reasonFor(x.s, x.v, locale))}</span></li>`;
   }).join('');
   return `<section class="ci-moving"><h2 class="ci-cat-h" id="moving">${head}</h2><ul class="ci-moving-list">${lis}</ul></section>`;
 }
@@ -357,7 +352,7 @@ function marketReadBlock(slug, locale) {
   const r = readingOf(slug);
   if (!r) return '';
   const es = locale === 'es';
-  const verdict = verdictLine(r.entry.flag, locale);
+  const verdict = verdictLine(r.entry.flag, r.conf, locale);
   const spark = sparkBlock(r, locale);
   const lab = LABELS[slug] || {};
   const unit = es ? (lab.unit_es || lab.unit_en) : lab.unit_en;
@@ -916,7 +911,7 @@ function emitHubPage(locale, slugs) {
     const cards = byCat[c].map((s) => {
       const l = LABELS[s] || {};
       const nm = (es ? (l.es || l.en) : l.en) || s;
-      const chip = actionChip(hubFlag(s), locale);
+      const chip = actionChip(s, locale);
       return `<div class="ci-card"><a href="${base}/cost-index/${s}/">${escHtml(nm)}</a><span class="ci-card-note">${escHtml(hubCardNote(s, locale))}</span>${chip ? `<div class="ci-card-action">${chip}</div>` : ''}</div>`;
     }).join('');
     return `<h2 class="ci-cat-h" id="${c}">${escHtml(es ? cat.es : cat.en)}</h2><div class="ci-grid">${cards}</div>`;

@@ -528,6 +528,16 @@
   // { tone:'reprice'|'hold'|'watch', verb, note } or null.
   function flagVerb(flag, confidence) {
     if (!flag || !flag.verdict) return null;
+    // Single source of truth: tools/_shared/cost-verdict.js. The inline switch
+    // below is kept as a fallback so the dashboard never breaks if that script
+    // isn't loaded (e.g. an older cached page).
+    var V = (typeof MuntinCostVerdict !== 'undefined' && MuntinCostVerdict) ||
+            (typeof self !== 'undefined' && self.MuntinCostVerdict) ||
+            (typeof window !== 'undefined' && window.MuntinCostVerdict);
+    if (V && V.verdict) {
+      var sv = V.verdict(flag, confidence);
+      return sv ? { tone: sv.tone, verb: L(sv.verb_en, sv.verb_es), note: L(sv.note_en, sv.note_es) } : null;
+    }
     var thin = confidence === 'low' || confidence === 'directional';
     var wk = flag.elevatedWeeks;
     switch (flag.verdict) {
