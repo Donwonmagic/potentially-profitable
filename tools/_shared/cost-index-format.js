@@ -118,7 +118,51 @@
       }
     }
 
-    return { L: L, money: money, sparkShape: sparkShape, percentileLine: percentileLine, weekOverWeek: weekOverWeek, flagVerb: flagVerb };
+    // Vs-last-year — the figure operators actually repeat ("eggs are double last
+    // year"). Same gap-safe discipline as weekOverWeek: the read closest to 365
+    // days back, inside a 330–400-day window, so a thin series never fakes a
+    // year-ago comparison. $-anchored; "about double/half" when the ratio is near
+    // 2× / ½×. Returns { text, srText } or null — DORMANT until ~a year of history
+    // exists, so it self-activates without any code change.
+    function vsLastYear(values, dates, unit) {
+      if (!Array.isArray(values) || !Array.isArray(dates) || dates.length !== values.length) return null;
+      var li = -1;
+      for (var i = values.length - 1; i >= 0; i--) { if (typeof values[i] === 'number' && isFinite(values[i])) { li = i; break; } }
+      if (li < 1) return null;
+      var lastV = values[li], lastMs = Date.parse(dates[li]);
+      if (!isFinite(lastMs)) return null;
+      var target = lastMs - 365 * 86400000, best = -1, bestDiff = Infinity;
+      for (var j = 0; j < li; j++) {
+        if (!(typeof values[j] === 'number' && isFinite(values[j]))) continue;
+        var dj = Date.parse(dates[j]); if (!isFinite(dj)) continue;
+        var ageDays = (lastMs - dj) / 86400000;
+        if (ageDays < 330 || ageDays > 400) continue;          // ~a year back (±~5 weeks)
+        var diff = Math.abs(dj - target);
+        if (diff < bestDiff) { bestDiff = diff; best = j; }
+      }
+      if (best < 0) return null;
+      var prevV = values[best];
+      if (!(prevV > 0)) return null;
+      var deltaCents = lastV - prevV, pct = deltaCents / prevV, ratio = lastV / prevV;
+      var priorDate = dates[best];
+      if (Math.abs(pct) < 0.03) {
+        return { text: L('About the same as a year ago.', 'Casi igual que hace un año.'),
+          srText: L('About the same as ' + priorDate + '.', 'Casi igual que el ' + priorDate + '.') };
+      }
+      var dirW = deltaCents > 0 ? L('up', 'arriba') : L('down', 'abajo');
+      var mult = (ratio >= 1.8 && ratio <= 2.2) ? L(' (about double)', ' (casi el doble)')
+        : (ratio >= 0.45 && ratio <= 0.55) ? L(' (about half)', ' (casi la mitad)') : '';
+      var pctStr = (pct > 0 ? '+' : '−') + Math.abs(pct * 100).toFixed(Math.abs(pct * 100) < 10 ? 1 : 0).replace(/\.0$/, '') + '%';
+      var dollarStr = money(Math.abs(deltaCents)) + ' ' + L('a ', 'por ') + unit;
+      return {
+        text: L('Vs last year: ' + dirW + ' ' + pctStr + mult + ' — about ' + dollarStr + '.',
+                'Frente al año pasado: ' + dirW + ' ' + pctStr + mult + ' — unos ' + dollarStr + '.'),
+        srText: L('Versus ' + priorDate + ': ' + dirW + ' ' + pctStr + mult + ', about ' + dollarStr + '.',
+                  'Frente al ' + priorDate + ': ' + dirW + ' ' + pctStr + mult + ', unos ' + dollarStr + '.')
+      };
+    }
+
+    return { L: L, money: money, sparkShape: sparkShape, percentileLine: percentileLine, weekOverWeek: weekOverWeek, vsLastYear: vsLastYear, flagVerb: flagVerb };
   }
 
   var api = make;          // MuntinCostFormat(es) → bound, locale-aware helpers

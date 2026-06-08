@@ -47,6 +47,21 @@ test('weekOverWeek: $-anchored, ~7d window, gap-safe, flat under 1%, null on bad
   assert.match(ES.weekOverWeek([1000, 1100], ['2026-05-01', '2026-05-08'], 'lb').text, /Frente a la semana pasada/);
 });
 
+test('vsLastYear: ~year-back, $-anchored, "double/half" flourish, gap-safe, dormant otherwise', () => {
+  const dbl = EN.vsLastYear([500, 1000], ['2025-05-08', '2026-05-08'], 'dozen');
+  assert.match(dbl.text, /Vs last year: up \+100% \(about double\)/);
+  assert.match(dbl.text, /\$5\.00 a dozen/);
+  const half = EN.vsLastYear([1000, 500], ['2025-05-08', '2026-05-08'], 'dozen');
+  assert.match(half.text, /down −50% \(about half\)/);
+  // only ~a year back counts — a 200-day-old prior read is not "last year":
+  assert.equal(EN.vsLastYear([500, 1000], ['2025-10-20', '2026-05-08'], 'dozen'), null);
+  // ~flat within 3%:
+  assert.match(EN.vsLastYear([1000, 1010], ['2025-05-08', '2026-05-08'], 'dozen').text, /About the same as a year ago/);
+  // dormant until a year of history exists (weekly series spanning weeks, not a year):
+  assert.equal(EN.vsLastYear([100, 110, 120], ['2026-05-01', '2026-05-08', '2026-05-15'], 'lb'), null);
+  assert.match(ES.vsLastYear([500, 1000], ['2025-05-08', '2026-05-08'], 'dozen').text, /Frente al año pasado/);
+});
+
 test('flagVerb: thin data never says re-price; verdicts map to buy/hold/watch', () => {
   const struct = { verdict: 'structural', elevatedWeeks: 3 };
   assert.equal(EN.flagVerb(struct, 'medium').tone, 'reprice');

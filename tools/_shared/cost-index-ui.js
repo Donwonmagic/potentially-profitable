@@ -189,6 +189,7 @@
   // Skipped on index/directional reads (a $ delta would be meaningless). Returns
   // { text, srText } or null. `dates` must be 1:1 with `values`.
   function weekOverWeek(values, dates, unit) { return FMT.weekOverWeek(values, dates, unit); }
+  function vsLastYear(values, dates, unit) { return FMT.vsLastYear(values, dates, unit); }
   function parseMoney(v) {
     var n = parseFloat(String(v == null ? '' : v).replace(/[^0-9.]/g, ''));
     return isFinite(n) && n >= 0 ? Math.round(n * 100) : null;
@@ -585,6 +586,13 @@
             fig.appendChild(el('p', 'cp-market-wow', wow.text));
             wowText = wow.srText;
             fig.setAttribute('data-audio-alt', (fig.getAttribute('data-audio-alt') || '') + ' ' + wow.srText);
+          }
+          // Vs-last-year — dormant (null) until ~a year of weekly history exists,
+          // then self-activates. Styled like the week line.
+          var vly = vsLastYear(sparkVals, ing.spark_dates, unit);
+          if (vly) {
+            fig.appendChild(el('p', 'cp-market-wow cp-market-vly', vly.text));
+            fig.setAttribute('data-audio-alt', (fig.getAttribute('data-audio-alt') || '') + ' ' + vly.srText);
           }
         }
       }
