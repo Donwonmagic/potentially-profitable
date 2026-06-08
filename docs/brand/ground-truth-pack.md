@@ -89,7 +89,9 @@ warm" claim was itself stale, now flagged as such on the doc.
   product — ADR-001), **check-mark-geometry** (WindowMark/favicon/gradient clip conform to
   the window-mark spec), **check-brand-asset-palette** (icon/favicon SVGs stay on the cool
   spine), **check-cross-repo-seams** (window→source=ledger attribution + shared business
-  @id + contact). Plus Lighthouse + Playwright visual baselines. ◦
+  @id + contact), **check-name-coherence** (bans the retired "Invoice Decoder" in product
+  user copy — mirrors the {site} Workbench→Workshop gate). Plus Lighthouse + Playwright
+  visual baselines. ◦
 - **Asymmetries (don't "fix" without a charter):** the "Don" gate + the lucide
   icon-lock exist *only* in `{product}`; the site ships bespoke `currentColor`
   icons. The **merged two-tier banned list** (one list read by both) is *specified*
@@ -141,7 +143,9 @@ warm" claim was itself stale, now flagged as such on the doc.
 - **DONE (P2, cycle 5)** Cross-repo coupling — mapped in `cross-repo-seams.md` + gated
   (`check-cross-repo-seams.mjs`); linked the product's `parentOrganization` to the shared
   business `@id`. (Dim 9 → 3.)
-- **P2** Naming seam (Workshop/Ledger) — still undocumented.
+- **DONE (P2, cycle 6)** Naming seam — Workshop/Workbench/Ledger documented in the
+  naming canon (`voice-and-naming-architecture.md §3`); enforced both repos via
+  `check-name-coherence`. (Dim 5 → 3.)
 - **P3** Analytics unification — {site} Plausible vs {product} custom funnel + GA4 are
   separate by design; revisit only if a single cross-domain funnel is wanted (a
   product/analytics call, not brand).
@@ -162,3 +166,4 @@ warm" claim was itself stale, now flagged as such on the doc.
 > `2026-06-07 — cycle 3: audited all ≥6 mark encodings (agree at scale 32/128/320/400); wrote window-mark-geometry.md + check-mark-geometry.mjs both repos (self+negative-tested); found favicon palette drift (#FAF7F2/#14161A → P2); Dim 6 → 3 (26/30).`
 > `2026-06-07 — cycle 4: re-pigmented the product favicon to the cool spine; built check-brand-asset-palette.mjs (scoped to icon/favicon chrome, ignores comments + demo paper; self+negative-tested). Hardening — total holds at 26/30.`
 > `2026-06-07 — cycle 5: audited the seams (found the shared @id was NOT actually referenced by the product; funnel vocab not shared by design); wrote cross-repo-seams.md, linked product parentOrganization to …/#business, built check-cross-repo-seams.mjs (self+negative-tested); Dim 9 → 3 (27/30).`
+> `2026-06-07 — cycle 6: documented Workshop (studio tool workspace) vs Workbench (legacy id) vs Muntin Ledger (product) in the naming canon; built {product} check-name-coherence.mjs (retired "Invoice Decoder", user copy only; self+negative-tested); Dim 5 → 3 (28/30).`

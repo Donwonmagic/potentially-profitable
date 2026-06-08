@@ -110,8 +110,18 @@ questions ("Can I export my data?"). None of that is a violation. The line is:
 | **Muntin Digital** | The studio / parent brand | Apex `muntin.digital`: titles, OG, JSON-LD, footers |
 | **Muntin Ledger** | The product | `ledger.muntin.digital`, app, product email, README |
 | **Muntin** | Short form | Only where space forces it: PWA `short_name`, ES "Registro" |
+| **the Workshop** | The studio's interactive **tool workspace** (save/watch tools) — a `{site}` surface, **not** the product | User copy on `muntin.digital`. Distinct from Muntin Ledger. |
 | `muntin.digital` / `ledger.muntin.digital` | Domains | URLs, email addresses, `security.txt` |
 | **Muntin `<Noun>`** | Future products | One word, a noun from the window/operator family |
+
+**the Workshop vs Muntin Ledger — do not conflate.** "the Workshop" is the studio's
+on-site tool workspace (the saved-tools canvas); **Muntin Ledger** is the standalone
+product at `ledger.muntin.digital`. Two different surfaces with two different names.
+
+**Legacy identifier — "Workbench":** the Workshop's pre-rename name. Retained **only**
+as a non-user identifier — the URL `/workbench/`, code (`MuntinWorkbench`, `wb-*`,
+`js-wb-*`), and analytics event names ("Workbench Save", …). **Never in user copy** —
+`{site}/scripts/check-name-coherence.mjs` (`--check`, fail-CI) enforces Workbench→Workshop.
 
 **Retired:** "Invoice Decoder" / "the Decoder" as a *product name*. It
 predates the Ledger naming. Retirement is **scoped to user-visible prose
