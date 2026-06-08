@@ -101,16 +101,35 @@ Plan + per-ingredient detail: `docs/cost-index-confidence-plan.md`.
 old "NEXT"): honest-gaps sparkline (breaks at missing weeks), own-range p25–p75
 band (≥12wk), confidence as dash/weight, freshness as filled-vs-hollow end dot,
 `sparkShape` text alternative, `percentileLine` (count, not smoothed), `weekOverWeek`
-($-anchored, ~7d window, gap-safe), `flagVerb` buy/hold/watch. **Untested today** —
-node-testable extraction is the clean next step.
+($-anchored, ~7d window, gap-safe), `flagVerb` buy/hold/watch.
+
+**P1 experience-layer — now EXTRACTED + TESTED** (`tools/_shared/cost-index-format.js`,
+factory `MuntinCostFormat(es)`, loaded before `cost-index-ui.js` like composite-price):
+the four honesty-phrasing helpers above are now a node-tested module (the UI
+delegates verbatim), plus **`vsLastYear`** SHIPPED — gap-safe ~365d comparison with
+an "about double/half" flourish, behind the index/directional guards. On today's
+data salmon activates live ("down −11% — about $0.72 a lb"); the daily-series items
+stay dormant until ~a year of history accrues, then self-activate. `cost-index-format.test.mjs`
+covers all of it.
 
 **Coverage matrix:** `scripts/build-cost-index-health.mjs` → `data/cost-index-health.json`
 (per-ingredient: dollar-level? · families · level/trend types · confidence · ceiling ·
 weeks · `toHigh` hint), `--check` idempotency wired into check-all. Self-prioritizes
 the family work and proves honest maintenance.
 
-**P1 still open:** vs-last-year number (needs ≥1yr history), weekly "since you last
-looked" heartbeat (local-only), driver lag-claim copy. Mostly gated on history depth.
+**P1 remaining — both are FOUNDER DECISIONS, not engineering:**
+- **Weekly heartbeat** ("you last checked {when}") — phrasing helper built + tested
+  (`MuntinCostFormat.heartbeat`), but a cross-visit marker needs localStorage, which
+  **/security/ claim #4 forbids** for this tool (CI-enforced by `check-tool-no-fetch.mjs`).
+  Wiring it = exempting cost-pulse from claim 4 = changing a public privacy promise.
+  Decision: ship the heartbeat and narrow the claim, or drop it. (A storage-free
+  "prices as of {date}" panel marker is the honest alternative if we keep the claim.)
+- **Driver lag-claim** ("diesel turned up ~3 weeks before produce — association, not
+  cause") — deliberately deferred: lead-lag on the current ~6–26-week series risks a
+  spurious correlation, and a causal-adjacent claim needs an editorial honesty bar +
+  more history (≥~1yr). Not safe to ship autonomously.
+
+vs-last-year (the third old item) is now SHIPPED (above).
 
 ## NEXT — to get the Cost Index live (in priority order)
 
