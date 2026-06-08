@@ -54,9 +54,14 @@ import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
+import { createRequire } from 'node:module';
 
 const __filename = fileURLToPath(import.meta.url);
 const repoRoot   = path.resolve(path.dirname(__filename), '..');
+const require    = createRequire(import.meta.url);
+// Reuse the shared, no-DOM inline-SVG sparkline primitive (the same one
+// Cost Pulse + the audits tool ship) rather than forking a renderer.
+const MuntinSparkline = require(path.join(repoRoot, 'tools/_shared/sparkline.js'));
 const checkMode  = process.argv.includes('--check');
 const onlyArg    = (process.argv.find((a) => a.startsWith('--only=')) || '').slice('--only='.length);
 const ONLY       = onlyArg ? new Set(onlyArg.split(',').map((s) => s.trim()).filter(Boolean)) : null;
@@ -249,12 +254,61 @@ function verdictLine(flag, locale) {
     <p class="ci-read__verdict"><span class="ci-read__verb" data-bias="${flag.actionBias}">${verb[es ? 'es' : 'en']}</span>${copy[es ? 'es' : 'en']}</p>`;
 }
 
+// ---- History sparkline + "normally X–Y, right now Z" capsule -------
+// Charts the gated history series the page already ships as series.json,
+// so the trend the verdict asserts is visible, not just claimed. Numbers
+// only when confidence supports them (same gate as the market-read line);
+// the SVG carries a text alternative (role=img + aria-label) and a visible
+// capsule, closing the WCAG 1.1.1 gap. "Usual range" is the ingredient's
+// own tracked window — never implied as a seasonal/annual normal (which
+// would need ≥1yr of history we don't claim).
+function pctile(sorted, p) {
+  if (!sorted.length) return 0;
+  if (sorted.length === 1) return sorted[0];
+  const idx = (sorted.length - 1) * p, lo = Math.floor(idx), hi = Math.ceil(idx);
+  return lo === hi ? sorted[lo] : sorted[lo] + (sorted[hi] - sorted[lo]) * (idx - lo);
+}
+function medOf(a) { const s = a.slice().sort((x, y) => x - y); const n = s.length, m = Math.floor(n / 2); return n % 2 ? s[m] : (s[m - 1] + s[m]) / 2; }
+function sparkBlock(r, locale) {
+  const es = locale === 'es';
+  if (!r.emitPoint) return '';   // qualitative-only confidence → no chart, no numbers
+  const basis = r.basis;
+  const vals = (r.entry.history || [])
+    .filter((h) => h && h.basis === basis && typeof h.valueCents === 'number' && isFinite(h.valueCents) && h.valueCents > 0)
+    .map((h) => h.valueCents);
+  if (vals.length < 8) return '';   // too thin to chart an honest line
+  const sorted = vals.slice().sort((a, b) => a - b);
+  const lo = Math.round(pctile(sorted, 0.25)), hi = Math.round(pctile(sorted, 0.75));
+  const now = vals[vals.length - 1];
+  const pos = now < lo ? (es ? 'por debajo de su rango habitual — buena compra' : 'below its usual range — a good buy')
+    : now > hi ? (es ? 'en la parte alta de su rango habitual' : 'top of its usual range')
+    : (es ? 'dentro de su rango habitual' : 'inside its usual range');
+  const half = Math.floor(vals.length / 2);
+  const ch = (() => { const a = medOf(vals.slice(0, half)); const b = medOf(vals.slice(half)); return a > 0 ? (b - a) / a : 0; })();
+  const shape = ch > 0.03 ? (es ? 'subió a lo largo de la ventana' : 'rose over the tracked window')
+    : ch < -0.03 ? (es ? 'bajó a lo largo de la ventana' : 'eased over the tracked window')
+    : (es ? 'se mantuvo estable en la ventana' : 'held steady over the tracked window');
+  const windowNote = es ? 'en la ventana seguida' : 'over the tracked window';
+  const capsule = es
+    ? `Normalmente ${money(lo)}–${money(hi)}, ahora ${money(now)} — ${pos}.`
+    : `Normally ${money(lo)}–${money(hi)}, right now ${money(now)} — ${pos}.`;
+  const alt = (es ? 'Precio ' : 'Price ') + shape + '. ' + capsule;
+  const svg = MuntinSparkline.render(vals, {
+    width: 248, height: 46, stroke: '#2A50C8',
+    baseline: Math.round(pctile(sorted, 0.5)),
+    ariaLabel: alt
+  });
+  return `
+    <div class="ci-read__spark">${svg}<p class="ci-read__capsule">${capsule} <span class="ci-read__capsule-note">(${windowNote})</span></p></div>`;
+}
+
 // ---- The visible "Market read" data block --------------------------
 function marketReadBlock(slug, locale) {
   const r = readingOf(slug);
   if (!r) return '';
   const es = locale === 'es';
   const verdict = verdictLine(r.entry.flag, locale);
+  const spark = sparkBlock(r, locale);
   const lab = LABELS[slug] || {};
   const unit = es ? (lab.unit_es || lab.unit_en) : lab.unit_en;
   const unitSfx = unit ? '/' + unit : '';
@@ -299,7 +353,7 @@ function marketReadBlock(slug, locale) {
   return `
   <aside class="ci-read" aria-label="${es ? 'Lectura de mercado' : 'Market read'}">
     <p class="ci-read__head">${head}<span class="ci-read__badge">${badge}</span></p>
-    <p class="ci-read__line">${line}</p>${verdict}
+    <p class="ci-read__line">${line}</p>${verdict}${spark}
     <details class="ci-read__src"><summary>${es ? 'Fuentes' : 'Sources'} · ${(shortList.length || agencies.length)}</summary><div>${srcBody}</div></details>
     <p class="ci-read__live"><a href="${es ? '/es' : ''}/tools/cost-pulse/#ci-${slug}">${liveLabel} <span aria-hidden="true">→</span></a></p>
   </aside>`;
@@ -534,6 +588,10 @@ main{padding-top:64px}
 .ci-read__verb[data-bias="hold"]{color:#2A50C8;border-color:#2A50C8}
 .ci-read__verb[data-bias="watch"]{color:#8a6d1f;border-color:#cdb368}
 .ci-read__verb[data-bias="re-price"]{color:#A23B2D;border-color:#A23B2D}
+.ci-read__spark{margin:12px 0 0;display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px}
+.ci-read__spark .mtn-spark{flex:0 0 auto;overflow:visible}
+.ci-read__capsule{margin:0;font-size:14.5px;line-height:1.45;color:var(--ink)}
+.ci-read__capsule-note{color:var(--ink-soft);font-size:12.5px}
 .ci-read__src{margin-top:8px;font-size:12.5px}
 .ci-read__src summary{cursor:pointer;color:var(--ink-soft);font-weight:600}
 .ci-read__src div{margin-top:6px;color:var(--ink-soft);line-height:1.5}
