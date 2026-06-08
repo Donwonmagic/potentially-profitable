@@ -153,6 +153,13 @@ warm" claim was itself stale, now flagged as such on the doc.
   (`MARKETING_SURFACES`/`BANNED_MARKETING`). The audit found all 7 site uses legit (editorial
   "powerful", critique-quoted "Welcome to"/"AI-powered") and 0 on marketing surfaces, so no
   copy pass was needed — the right fix was scope, not rewrites. Negative-tested. §3a updated.
+- **DONE (P2, cycle 10b)** Mirrored Tier-1b into Spanish on `es/` brand surfaces
+  (`BANNED_MARKETING_ES`: `potente`/`sin esfuerzo`/`Bienvenido a`). Audit found one drifted
+  line (`es/for/restaurants` claimed menus "pasan sin esfuerzo" — not in the EN source; fixed)
+  and 0 others. Negative-tested (es/studio probe caught; es/library editorial stays free).
+- **P3 (new, cycle 10b)** No Spanish mirror yet for the **global** Tier-1 jargon list
+  (`world-class`/`mundialmente reconocido`, etc.) on the site — only Tier-1b is mirrored.
+  Lower-value (jargon rarely drifts into es/ editorial), logged for a future pass.
 - **P2 (new, cycle 7)** {site} copy pass to adopt the universal anti-overclaim words
   (`seamless`, `powerful`, `Welcome to`, `AI-powered`) into the site's enforced core —
   blocked today only by false-positive collisions (the `Seamless` delivery brand; one

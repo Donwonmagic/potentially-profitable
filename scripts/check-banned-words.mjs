@@ -95,14 +95,31 @@ const BANNED_MARKETING = [
   { rx: /\bAI[- ]?powered\b/gi,  word: 'AI-powered' },
 ];
 
+// Spanish mirror of the anti-overclaim cluster, for the es/ brand pages.
+// Locale parity: the es/ translation of a brochure page deserves the same
+// guard its EN source has. potente=powerful, sin esfuerzo=effortless(≈seamless),
+// Bienvenido a=Welcome to. ("AI-powered" has no clean idiomatic mirror and 0
+// hits — logged in ground-truth, not guessed at here.) The global Tier-1
+// jargon list still has no Spanish mirror on the site — separate backlog.
+const BANNED_MARKETING_ES = [
+  { rx: /\bpotente(s)?\b/gi,       word: 'potente' },
+  { rx: /\bsin esfuerzo\b/gi,      word: 'sin esfuerzo' },
+  { rx: /\bBienvenidos?\s+a\b/gi,  word: 'Bienvenido a' },
+];
+
 // Brochure/brand surfaces where the anti-overclaim cluster applies. The
 // content trees (library, blog, learn, glossary, course, tools, sheets,
-// cost-index) are intentionally out of scope. Extend this list when a new
+// cost-index) are intentionally out of scope. Extend these lists when a new
 // marketing dir is added — canon §3a.
 const MARKETING_SURFACES = ['about/', 'studio/', 'services/', 'for/', 'start/', 'method/'];
+const MARKETING_SURFACES_ES = MARKETING_SURFACES.map((p) => 'es/' + p);
 function isMarketingSurface(relPath) {
   const rel = relPath.replace(/\\/g, '/');
   return rel === 'index.html' || MARKETING_SURFACES.some((p) => rel.startsWith(p));
+}
+function isMarketingSurfaceEs(relPath) {
+  const rel = relPath.replace(/\\/g, '/');
+  return rel === 'es/index.html' || MARKETING_SURFACES_ES.some((p) => rel.startsWith(p));
 }
 
 function collectHtml(dir, out = []) {
@@ -140,7 +157,9 @@ for (const file of collectHtml(repoRoot)) {
   const rel = path.relative(repoRoot, file);
   if (isAllowlisted(rel)) continue;
   const src = scrub(fs.readFileSync(file, 'utf8'));
-  const wordlist = isMarketingSurface(rel) ? [...BANNED, ...BANNED_MARKETING] : BANNED;
+  let wordlist = BANNED;
+  if (isMarketingSurface(rel))   wordlist = [...wordlist, ...BANNED_MARKETING];
+  if (isMarketingSurfaceEs(rel)) wordlist = [...wordlist, ...BANNED_MARKETING_ES];
   for (const { rx, word } of wordlist) {
     rx.lastIndex = 0;
     const matches = src.match(rx);

@@ -161,6 +161,17 @@ articles. Those words are ordinary English on the editorial trees, so the site s
 ban to brand surfaces rather than forcing rewrites of good prose. Extend `MARKETING_SURFACES`
 when a new brochure dir is added.
 
+The site also mirrors Tier-1b into Spanish on `es/` brand surfaces (cycle 10b,
+`BANNED_MARKETING_ES` / `MARKETING_SURFACES_ES`): `potente` (powerful) · `sin esfuerzo`
+(effortless) · `Bienvenido a` (Welcome to) — a locale-parity guard, since an `es/`
+translation of a brochure page deserves the same line its EN source holds. (The audit
+found one drifted line — `es/for/restaurants` said menus "pasan sin esfuerzo" where the EN
+source claims nothing of the kind — fixed.) `AI-powered` has no clean idiomatic mirror and
+no hits, so it is not guessed at. Two gaps remain logged, not silently closed: the global
+Tier-1 jargon list (`world-class` etc.) still has **no** Spanish mirror on the site, and the
+product's broader es-MX set (`inteligencia artificial`, opening `¡`, `empoderar`,
+`mundialmente reconocido`) stays product-tier, owned by the es-MX canon.
+
 **Tier 2 — per register.**
 
 - **Studio ({site}):** `X solutions` · meeting-speak (`circle back` / `loop in` /
