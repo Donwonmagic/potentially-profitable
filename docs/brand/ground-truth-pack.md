@@ -47,11 +47,13 @@ as a name (repo/analytics/code identifier only). ◦
 ## 3. The token spine + its lock (the most load-bearing mechanism)
 
 - Canonical `{product}/packages/ui/muntin.tokens.json` → vendored copy
-  `{site}/data/muntin.tokens.json`. **Manually copied.**
+  `{site}/data/muntin.tokens.json`. Re-vendored by **`scripts/vendor-tokens.mjs --from <canonical>`**
+  (cycle 8) — no longer a hand copy.
 - Pinned by a SHA-256 spine hash: `EXPECTED_SPINE_HASH` in **both**
   `{site}/scripts/check-tokens-sync.mjs` ✓ and `{product}/scripts/check-tokens-parity.mjs` ✓.
-  A token change must update **both** hashes + re-copy the JSON, in lockstep, or
-  both repos' CI fails. This is **fragile by design and a P1 to harden.**
+  A token change must update **both** hashes + re-vendor the JSON, in lockstep, or both
+  repos' CI fails. **Fragile by design (fails loud + safe); now scripted + documented** —
+  runbook `docs/brand/token-spine.md`, `vendor-tokens.mjs --check` in `check-all.mjs`. ✓
 - `legacyVarMap` (in the JSON) is the Rosetta Stone between `--mun-*` and the
   site's legacy names. **Legacy names are load-bearing — do not "clean them up."** ◦
 
@@ -79,6 +81,7 @@ warm" claim was itself stale, now flagged as such on the doc.
   check-button-vocabulary, check-name-coherence, check-og-{images,coverage,template-grid},
   check-cls-animation (keyframes), check-css-drift, check-css-shells, locale-parity/hreflang,
   **check-tokens-sync** (also asserts the Golden Hour accent stays out of the spine — ADR-001),
+  **vendor-tokens --check** (vendored spine matches the pinned hash),
   **check-mark-geometry** (studio marks conform to the window-mark spec). ◦
 - **`{product}`** (`.github/workflows/ci.yml`): check-tokens-parity ✓, check-contrast,
   check-icon-source (lucide-only via `@muntin/ui/icons`), check-focus-discipline
@@ -136,7 +139,11 @@ warm" claim was itself stale, now flagged as such on the doc.
 - **DONE (P1, cycle 7)** Merged two-tier banned list — shared Tier-1 core enforced both
   repos (added 7 marketing-speak words to `{product}/check-verboten-phrases.mjs`); canon
   `voice-and-naming-architecture.md §3a`. (Dim 4 → 3.)
-- **P1** Manual/fragile token-sync → real publish-and-vendor step. (The remaining P1 — see §6 note.)
+- **DONE (P1, cycle 8)** Token-sync hardened — `vendor-tokens.mjs` (scripted copy + hash +
+  cross-repo `--diff`) + runbook `token-spine.md` + `vendor-tokens --check` in CI. The
+  manual ritual is now one command; the hash-lock design (loud, safe) is kept. A real
+  `@muntin/tokens` npm package remains the optional long-term step (documented, not
+  warranted yet).
 - **P2 (new, cycle 7)** Promote `{site}/check-banned-words.mjs` to `--check` (fail-CI) in
   `check-all.mjs` — currently warn-only; blocked by a pre-existing ~13-hit backlog to clear
   first. Until then Tier-1 is hard on the product, advisory on the site.
@@ -179,3 +186,4 @@ warm" claim was itself stale, now flagged as such on the doc.
 > `2026-06-07 — cycle 5: audited the seams (found the shared @id was NOT actually referenced by the product; funnel vocab not shared by design); wrote cross-repo-seams.md, linked product parentOrganization to …/#business, built check-cross-repo-seams.mjs (self+negative-tested); Dim 9 → 3 (27/30).`
 > `2026-06-07 — cycle 6: documented Workshop (studio tool workspace) vs Workbench (legacy id) vs Muntin Ledger (product) in the naming canon; built {product} check-name-coherence.mjs (retired "Invoice Decoder", user copy only; self+negative-tested); Dim 5 → 3 (28/30).`
 > `2026-06-07 — cycle 7: audited both banned lists + scanned all live copy against the union (collisions were false positives: Seamless the brand, critique pages, doc-comments). Built the two-tier model (canon §3a); added 7 shared-core marketing-speak words to {product} (gate stays green, negative-tested); annotated both gates. Dim 4 → 3 (29/30 — practical ceiling).`
+> `2026-06-07 — cycle 8: audited the token-sync (found the cross-repo hash-lock already exists + both JSON copies identical; the real gap was an undocumented manual ritual). Built vendor-tokens.mjs (copy + hash + cross-repo --diff; self+negative-tested) + token-spine.md runbook; wired --check into check-all. P1 hardened (Dim 1 stays 3, less fragile). Score holds at 29/30.`

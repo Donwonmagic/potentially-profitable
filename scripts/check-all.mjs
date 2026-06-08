@@ -80,6 +80,7 @@ const CHECKS = [
   //          and sheets.css). Pairs with sync: one forbids the old
   //          values, the other pins the new ones.
   ['Token sync',          'check-tokens-sync.mjs'],
+  ['Token vendor',        'vendor-tokens.mjs'],
   ['Warm-palette purge',  'migrate-warm-palette.mjs',      '--check'],
   ['Mark geometry',       'check-mark-geometry.mjs'],
   // Invoice-Decoder safety: the four server files in src/ that touch
