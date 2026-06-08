@@ -105,9 +105,15 @@ function levelCeiling(point) {
 function trendCeiling(point, weeks) {
   const tt = typeCount(point, 'trend');
   const a = point.trend && typeof point.trend.agreement === 'number' ? point.trend.agreement : 0;
+  const noise = point.trend && point.trend.noise != null ? point.trend.noise : null;
   const indep = (tt >= 2 && a >= 0.66) ? RANK.high : (tt >= 2 && a >= 0.33) ? RANK.medium : tt >= 1 ? RANK.low : RANK.directional;
   const complete = weeks >= 8 ? RANK.high : weeks >= 4 ? RANK.medium : weeks >= 2 ? RANK.low : RANK.directional;
-  return Math.min(indep, complete);
+  // Stability mirrors composite-price.confidenceFor: a jagged trend (>20% residual
+  // MAD) can't exceed low, mildly noisy (>8%) can't exceed medium. Null on legacy
+  // data → no cap. Without this the gate would be looser than the engine and miss a
+  // hand-edited medium on a noisy trend.
+  const stable = noise == null ? RANK.high : noise > 0.20 ? RANK.low : noise > 0.08 ? RANK.medium : RANK.high;
+  return Math.min(indep, complete, stable);
 }
 
 // The calibrated ceiling = min(level, trend) — mirrors composite-price.confidenceFor.
@@ -144,6 +150,10 @@ function runSelfTest() {
     calibrationCeiling({ provenance: [{ kind: 'level', source: 'usda-lmr', valueCents: 1300 }, { kind: 'level', source: 'cme-cash', valueCents: 2000 }, ...trd(['usda-lmr', 'cme', 'bls'])], trend: { agreement: 1 } }, weeks(12)), RANK.medium);
   ok('two level types that AGREE reach high',
     calibrationCeiling({ provenance: [{ kind: 'level', source: 'usda-lmr', valueCents: 1300 }, { kind: 'level', source: 'cme-cash', valueCents: 1320 }, ...trd(['usda-lmr', 'cme', 'bls'])], trend: { agreement: 1 } }, weeks(12)), RANK.high);
+  ok('jagged trend (noise>20%) caps at low even with clean types + deep history',
+    calibrationCeiling({ provenance: [...lev(1, 'usda-ams'), ...trd(['usda-ams', 'bls'])], trend: { agreement: 1, noise: 0.34 } }, weeks(12)), RANK.low);
+  ok('mildly noisy trend (noise>8%) caps two clean dollar types at medium',
+    calibrationCeiling({ provenance: [{ kind: 'level', source: 'usda-lmr', valueCents: 1300 }, { kind: 'level', source: 'cme-cash', valueCents: 1320 }, ...trd(['usda-lmr', 'cme', 'bls'])], trend: { agreement: 1, noise: 0.12 } }, weeks(12)), RANK.medium);
 
   const failed = cases.filter((c) => !c.pass);
   for (const c of failed) console.error(`  ✗ ${c.name}: got ${NAME[c.got] ?? c.got}, want ${NAME[c.want] ?? c.want}`);
