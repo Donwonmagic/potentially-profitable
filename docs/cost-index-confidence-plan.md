@@ -49,9 +49,36 @@ Two rules that decide whether a candidate source actually lifts confidence:
   new `type`; give a republish the *same* `family` as its source so it can't fake
   independence (FRED `APU/WPU/PCU` = BLS; EIA diesel = FRED `GASDESW`).
 
+- **Same agency collapses.** A 2nd USDA-AMS source (e.g. FOB shipping-point beside
+  the terminals) is the *same* `type` — it widens the cross-market range and feeds
+  the agreement/dispersion check, but does **not** add an independent type. Earning
+  a higher ceiling needs a *different agency*: CME (`cme`), BLS (`bls`), IMF (`imf`).
+
 ---
 
-## Per-ingredient plan (verified sources from the coverage panel)
+## What's STAGED in this commit (verified:false, in `data/cost-index-sources.json`)
+
+Each staged source carries an `_status` field with its exact `--discover` command.
+Run `node scripts/verify-cost-index-sources.mjs` to see which resolve, fix the
+`DISCOVER` slugs, then `--flip`. Simulated outcomes through the real engine:
+
+| ingredient | staged source | type | outcome on confirm |
+|---|---|---|---|
+| **butter** | CME cash butter (`reportId:"DISCOVER"` → AMS_1603) | `cme` | medium → **high** |
+| **cheddar-cheese** | CME cash block cheddar (`DISCOVER`) | `cme` | medium → **high** |
+| **onion** | BLS dry-onion PPI + FOB shipping-point `2926` | `bls` + `usda-ams` | low → **medium** |
+| **russet-potato** | FOB shipping-point `2926` | `usda-ams` | medium (range tightened) |
+| **shrimp** | IMF global shrimp `PSHRIUSDM` | `imf` | directional (corroborated) |
+| **salmon-fillet** | IMF global fish/salmon `PSALMUSDM` | `imf` | trend corroborated |
+
+To push **onion/russet/romaine/tomato to high** you need a *non-AMS* dollar level
+(NASS farm price is a different basis → trend only; there is no second wholesale
+agency for produce), so they top out at medium on free public data — that's the
+honest ceiling, not a wiring gap.
+
+---
+
+## Per-ingredient reference (verified sources from the coverage panel)
 
 | ingredient | today | add (verified) | basis / type | lifts | wiring |
 |---|---|---|---|---|---|
