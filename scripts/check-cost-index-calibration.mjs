@@ -184,4 +184,8 @@ function runCheck() {
   process.exit(0);
 }
 
-if (SELF_TEST) runSelfTest(); else runCheck();
+// Run the CLI only when invoked directly — importing this module (e.g. from
+// build-cost-index-health.mjs) reuses its exported primitives without side effects.
+if (path.resolve(process.argv[1] || '') === fileURLToPath(import.meta.url)) {
+  if (SELF_TEST) runSelfTest(); else runCheck();
+}

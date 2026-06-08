@@ -329,8 +329,10 @@ const CHECKS = [
   // Confidence calibration (P1 #36) — min-of-gates ceiling governs precision.
   // Warn-only during rollout (FAIL_ON_DRIFT in the script); flip once the
   // upstream orchestrator confidences are reconciled (today: onion high → medium).
-  ['Cost-index calibration (warn)','check-cost-index-calibration.mjs'],
+  ['Cost-index calibration','check-cost-index-calibration.mjs'],
   ['Cost-index calibration self-test','check-cost-index-calibration.mjs','--self-test'],
+  ['Cost-index health (idem)','build-cost-index-health.mjs','--check'],
+  ['Cost-index health self-test','build-cost-index-health.mjs','--self-test'],
   ['Security claims',      'check-security-claims.mjs'],
   ['Data promise rail',    'check-data-promise-rail.mjs'],
   ['Security locale parity','check-security-locale-parity.mjs'],
