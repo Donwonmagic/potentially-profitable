@@ -48,6 +48,12 @@ const BANNED = [
   // Each word includes a regex with word boundaries so we don't
   // false-positive on substrings ("solutionary", "leveraged" data
   // structures inside code blocks, etc.).
+  //
+  // Tier-1 entries (synergize … move the needle, incl. world-class +
+  // best-in-class) are the SHARED cross-brand core — the product's
+  // check-verboten-phrases.mjs enforces the same set. Canon:
+  // docs/brand/voice-and-naming-architecture.md §3a. The trailing entries
+  // (X solutions, meeting-speak, leverage-verb) are studio Tier-2.
   { rx: /\bsynergize[ds]?\b/gi,                             word: 'synergize' },
   { rx: /\bbest[- ]in[- ]class\b/gi,                        word: 'best-in-class' },
   { rx: /\bgrowth[- ]hack(?:s|er|ers|ed|ing)?\b/gi,         word: 'growth-hack' },

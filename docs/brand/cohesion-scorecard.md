@@ -51,14 +51,14 @@ spot-verified live this cycle; the moved dims (2, 7, 10) reflect this cycle's wo
 | 1 Token-spine parity | **3** | Verified live: `data/muntin.tokens.json` ↔ `{product}/packages/ui/muntin.tokens.json` **byte-identical**; both hashes `3681742a…` match. Sync still *manual* (P1, a fragility not a score hit). |
 | 2 Single-accent | **3** ↑ | Golden Hour decided (ADR-001) **and gate-enforced** (cycle 2): `{product}/check-editorial-accent-boundary.mjs` bans the hexes anywhere in the product; `{site}/check-tokens-sync.mjs` keeps them out of the shared spine. Negative-tested. |
 | 3 Palette currency | **3** | Verified: `brand/og/*.svg` carry **0** retired-warm hexes; cool spine throughout. Warm gate-forbidden in chrome both repos — `migrate-warm-palette` ({site}) + `check-brand-asset-palette` ({product} icon/favicon, cycle 4, after re-pigmenting the favicon). |
-| 4 Voice boundary | **2** | Enforced one-directionally (the "Don" gate lives only in `{product}`); the merged two-tier banned list is specified but not built (P1). |
+| 4 Voice boundary | **3** ↑ | Two-tier banned list built (canon §3a): shared Tier-1 core carried by **both** gates (added the 7 missing marketing-speak words to `{product}`; both annotate the core). Enforcement is asymmetric and honestly so — **fail-CI in {product}**, **warn-only in {site}** (its gate runs without `--check`; promoting it is blocked by a pre-existing 13-hit backlog, logged). Audited live copy first; the collisions were false positives (proper noun, critique pages, doc-comments). |
 | 5 Naming | **3** ↑ | Canon now documents the Workshop/Workbench/Ledger relationship (`voice-and-naming-architecture.md §3`). Enforced **both** repos via `check-name-coherence` — {site}: Workbench→Workshop (`--check`, fail-CI); {product}: bans the retired "Invoice Decoder" in user copy. |
 | 6 Mark geometry | **3** ↑ | One spec (`window-mark-geometry.md`) + conformance gates both repos (`check-mark-geometry.mjs`): studio 128u variants ({site}) and the 32u encodings — WindowMark/favicon/gradient clip ({product}). Verified: all encodings agree; self + negative-tested. |
 | 7 OG currency | **3** ↑ | Palette current + coverage gated (`check-og-*`) **and** the Golden Hour layer is now governed (ADR-001), no longer an ungoverned accent. |
 | 8 Contrast | **3** | AA gated in both repos, both themes. |
 | 9 Cross-seam | **3** ↑ | Mapped in `cross-repo-seams.md` + gated (`check-cross-repo-seams.mjs`): window→`source=ledger` attribution, the shared business `@id` linkage (the product's `parentOrganization` now anchors to `…/#business` — fixed this cycle), and the canonical contact. The audit corrected two aspirational §6 claims (the @id was not actually shared; funnel vocab is not shared by design). |
 | 10 Doc currency | **2** ↑ | `visual-system.md` published; the 3 stale docs carry dated supersession banners. Not yet **3** — no gate asserts docs match code (refresh on cadence). |
-| **Total** | **28 / 30** | Nine dimensions gated at 3. Remaining: voice (4) — the merged two-tier banned list, the last build — and doc currency (10), ungateable by nature (the practical ceiling is 29/30). |
+| **Total** | **29 / 30** | The practical ceiling. Nine dimensions gated at 3; the tenth (doc currency) can't be gated by nature — kept current by the per-cycle fold-back discipline instead. |
 
 > History (append each cycle): `YYYY-MM-DD — NN/30 — one-line what moved`.
 > `2026-06-07 — 21/30 — baseline.`
@@ -68,3 +68,4 @@ spot-verified live this cycle; the moved dims (2, 7, 10) reflect this cycle's wo
 > `2026-06-07 — 26/30 — cycle 4: re-pigmented product favicon to cool spine + check-brand-asset-palette gate (hardening; Dim 3 stays 3, now gated both sides).`
 > `2026-06-07 — 27/30 — cycle 5: cross-repo seam map + gate; linked product parentOrganization to the shared business @id (Dim 9 → 3).`
 > `2026-06-07 — 28/30 — cycle 6: documented Workshop/Workbench/Ledger in the naming canon + product name-coherence gate (retired "Invoice Decoder") (Dim 5 → 3).`
+> `2026-06-07 — 29/30 — cycle 7: two-tier banned list — shared Tier-1 core enforced both repos (added 7 marketing-speak words to product); canon §3a (Dim 4 → 3). Practical ceiling reached.`

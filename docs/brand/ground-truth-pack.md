@@ -94,8 +94,9 @@ warm" claim was itself stale, now flagged as such on the doc.
   visual baselines. ◦
 - **Asymmetries (don't "fix" without a charter):** the "Don" gate + the lucide
   icon-lock exist *only* in `{product}`; the site ships bespoke `currentColor`
-  icons. The **merged two-tier banned list** (one list read by both) is *specified*
-  but *not built* (P1).
+  icons. The **merged two-tier banned list** is now **built** (cycle 7): a shared Tier-1
+  core is enforced in both repos, with per-register Tier-2 — canon in
+  `voice-and-naming-architecture.md §3a`.
 
 ## 6. Cross-product seams ✓ (Golden Hour at `build-og-cards.mjs:62-80` — now governed)
 
@@ -132,8 +133,18 @@ warm" claim was itself stale, now flagged as such on the doc.
 - **DONE (P1, cycle 2)** Golden Hour **boundary gate** — `{product}/check-editorial-accent-boundary.mjs`
   (bans the hexes anywhere in the product, in `ci.yml`) + `{site}/check-tokens-sync.mjs`
   (asserts absent from the shared spine). Both self-tested + negative-tested. (Dim 2 → 3.)
-- **P1** Manual/fragile token-sync → real publish-and-vendor step.
-- **P1** Merged two-tier banned list → implement, read by both repos.
+- **DONE (P1, cycle 7)** Merged two-tier banned list — shared Tier-1 core enforced both
+  repos (added 7 marketing-speak words to `{product}/check-verboten-phrases.mjs`); canon
+  `voice-and-naming-architecture.md §3a`. (Dim 4 → 3.)
+- **P1** Manual/fragile token-sync → real publish-and-vendor step. (The remaining P1 — see §6 note.)
+- **P2 (new, cycle 7)** Promote `{site}/check-banned-words.mjs` to `--check` (fail-CI) in
+  `check-all.mjs` — currently warn-only; blocked by a pre-existing ~13-hit backlog to clear
+  first. Until then Tier-1 is hard on the product, advisory on the site.
+- **P2 (new, cycle 7)** {site} copy pass to adopt the universal anti-overclaim words
+  (`seamless`, `powerful`, `Welcome to`, `AI-powered`) into the site's enforced core —
+  blocked today only by false-positive collisions (the `Seamless` delivery brand; one
+  "powerful" library use; "Welcome to" critique examples). Needs allowlisting or surgical
+  copy edits, then promote to Tier-1 on the site.
 - **DONE (P2, cycle 3)** Mark-geometry single spec — `window-mark-geometry.md` +
   `check-mark-geometry.mjs` in both repos. (Dim 6 → 3.)
 - **DONE (P2, cycle 4)** Favicon palette drift — `muntin-ledger.svg` re-pigmented to the
@@ -167,3 +178,4 @@ warm" claim was itself stale, now flagged as such on the doc.
 > `2026-06-07 — cycle 4: re-pigmented the product favicon to the cool spine; built check-brand-asset-palette.mjs (scoped to icon/favicon chrome, ignores comments + demo paper; self+negative-tested). Hardening — total holds at 26/30.`
 > `2026-06-07 — cycle 5: audited the seams (found the shared @id was NOT actually referenced by the product; funnel vocab not shared by design); wrote cross-repo-seams.md, linked product parentOrganization to …/#business, built check-cross-repo-seams.mjs (self+negative-tested); Dim 9 → 3 (27/30).`
 > `2026-06-07 — cycle 6: documented Workshop (studio tool workspace) vs Workbench (legacy id) vs Muntin Ledger (product) in the naming canon; built {product} check-name-coherence.mjs (retired "Invoice Decoder", user copy only; self+negative-tested); Dim 5 → 3 (28/30).`
+> `2026-06-07 — cycle 7: audited both banned lists + scanned all live copy against the union (collisions were false positives: Seamless the brand, critique pages, doc-comments). Built the two-tier model (canon §3a); added 7 shared-core marketing-speak words to {product} (gate stays green, negative-tested); annotated both gates. Dim 4 → 3 (29/30 — practical ceiling).`

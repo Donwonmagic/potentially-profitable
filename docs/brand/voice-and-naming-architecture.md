@@ -136,6 +136,46 @@ name:
 
 ---
 
+---
+
+## 3a. Banned vocabulary — two tiers
+
+One shared core, plus per-register extensions. This is the canon; the two gates
+(`{site}/scripts/check-banned-words.mjs`, `{product}/scripts/check-verboten-phrases.mjs`)
+each enforce **Tier 1 + their own Tier 2**. Keep Tier 1 in sync with this list.
+
+**Tier 1 — shared core (both repos retire).** Universal marketing-speak:
+
+> `world-class` · `best-in-class` · `synergize` · `growth-hack` · `game-changer` ·
+> `disrupt` · `paradigm` · `low-hanging fruit` · `move the needle`
+
+Enforced in both today. A second cluster — `seamless` · `powerful` · `Welcome to` ·
+`AI-powered` — is enforced in **{product}** and is core in spirit, but **{site}**
+adoption is pending a copy pass: live false-positive collisions exist (`Seamless` the
+delivery brand in a tool's aggregator list; "most powerful trust signal" in a library
+article; "Welcome to…" quoted as the *bad* example in critique pages). Logged as backlog,
+not silently enforced.
+
+**Tier 2 — per register.**
+
+- **Studio ({site}):** `X solutions` · meeting-speak (`circle back` / `loop in` /
+  `deep-dive`) · `leverage` *(verb)*. (Plus the historical list quoted on `/methods/`.)
+- **Product ({product}):** `99% accurate` · `no AI` · `just docling` · `deterministic` ·
+  `the engine` · `empowering` · `✨`/`sparkle` · `luddite`/`old-school`/`traditional` ·
+  exclamation points · and the Spanish set (`empoderar`, `potente`, `mundialmente
+  reconocido`, `sin esfuerzo`, `Bienvenido a`, `inteligencia artificial`).
+
+Both gates skip comment lines and scrub `<code>`/`<pre>`/`<script>`, so naming a banned
+word *as documentation* (like this section, or a gate's own rule list) does not trip them.
+
+**Enforcement posture (be precise):** `{product}/check-verboten-phrases.mjs` is **fail-CI**.
+`{site}/check-banned-words.mjs` runs **warn-only** in `check-all.mjs` (no `--check`) — it
+reports Tier-1/Tier-2 hits but does not block. Promoting the site gate to `--check` is
+backlog, gated on clearing its pre-existing hits first (≈13 at last scan). Until then,
+Tier-1 is hard on the product and advisory on the site.
+
+---
+
 ## 4. Enforcement — why this is not just a sixth document
 
 Muntin already had five voice documents and still drifted (a stale "hairline"
