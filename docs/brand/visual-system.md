@@ -111,9 +111,11 @@ not a second brand accent.
 - **Icons:** `{product}` is **lucide-only**, re-exported through
   `packages/ui/src/system-icons.ts` and locked by `check-icon-source.mjs`. `{site}`
   ships bespoke `currentColor` icons. This asymmetry is a deliberate seam.
-- **Open (P2):** the product favicon (`muntin-ledger.svg`) has correct geometry but
-  still fills with retired-warm `#FAF7F2`/`#14161A` — a palette drift to re-pigment
-  (tracked in `ground-truth-pack.md §7`). Not fixed here.
+- **Favicon on the cool spine (cycle 4):** the product favicon (`muntin-ledger.svg`)
+  was re-pigmented from retired-warm `#FAF7F2`/`#14161A` to the cool spine
+  (`#F6F7F8`/`#16181D`); geometry unchanged. `check-brand-asset-palette.mjs` keeps the
+  product's icon/favicon chrome warm-free (it deliberately does **not** touch the demo
+  letterhead/receipt, which depict third-party vendor paper).
 
 ---
 
@@ -129,6 +131,7 @@ not a second brand accent.
 | OG currency / coverage | `check-og-{images,coverage,template-grid}` | — |
 | Golden Hour accent boundary | `check-tokens-sync` (absent from spine) | `check-editorial-accent-boundary` (absent anywhere) |
 | Window-mark geometry | `check-mark-geometry` (128u studio variants) | `check-mark-geometry` (32u: WindowMark/favicon/clip) |
+| Brand-asset palette | `migrate-warm-palette` (chrome) | `check-brand-asset-palette` (icon/favicon SVGs) |
 
 **Deliberate asymmetries (don't "fix" without a charter):** the "Don" gate and the
 lucide-lock live only in `{product}`; `{site}` ships bespoke icons.

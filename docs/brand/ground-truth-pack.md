@@ -87,7 +87,8 @@ warm" claim was itself stale, now flagged as such on the doc.
   check-copy-grade (FK≤7), check-pronunciations,
   **check-editorial-accent-boundary** (bans the studio Golden Hour accent anywhere in the
   product — ADR-001), **check-mark-geometry** (WindowMark/favicon/gradient clip conform to
-  the window-mark spec). Plus Lighthouse + Playwright visual baselines. ◦
+  the window-mark spec), **check-brand-asset-palette** (icon/favicon SVGs stay on the cool
+  spine). Plus Lighthouse + Playwright visual baselines. ◦
 - **Asymmetries (don't "fix" without a charter):** the "Don" gate + the lucide
   icon-lock exist *only* in `{product}`; the site ships bespoke `currentColor`
   icons. The **merged two-tier banned list** (one list read by both) is *specified*
@@ -126,10 +127,11 @@ warm" claim was itself stale, now flagged as such on the doc.
 - **P1** Merged two-tier banned list → implement, read by both repos.
 - **DONE (P2, cycle 3)** Mark-geometry single spec — `window-mark-geometry.md` +
   `check-mark-geometry.mjs` in both repos. (Dim 6 → 3.)
+- **DONE (P2, cycle 4)** Favicon palette drift — `muntin-ledger.svg` re-pigmented to the
+  cool spine (`#F6F7F8`/`#16181D`); `check-brand-asset-palette.mjs` keeps the product's
+  icon/favicon chrome warm-free (scoped to brand assets — does not touch the demo
+  letterhead/receipt, which deliberately depict third-party vendor paper).
 - **P2** Naming seam (Workshop/Ledger); cross-repo coupling (studio inbox, `/window`).
-- **P2** Favicon palette drift — `{product}/apps/web/public/icons/muntin-ledger.svg`
-  geometry is correct but it still fills with retired-warm `#FAF7F2` (backplate) +
-  `#14161A` (ink). Re-pigment to the cool spine. (Surfaced during the cycle-3 mark audit.)
 - **P3** Legacy-alias migration mid-flight — finish or freeze deliberately.
 
 ## How to refresh this pack (do this when the stamp is stale)
@@ -145,3 +147,4 @@ warm" claim was itself stale, now flagged as such on the doc.
 > `2026-06-07 — cycle 1: tokens.json byte-identical + hashes equal; brand/og/*.svg = 0 warm hexes, Golden Hour in 765/766; §4/§6/§7 updated; ADR-001 logged; visual-system.md published.`
 > `2026-06-07 — cycle 2: audited Golden Hour hexes (product = 0, both spines = 0, site uses --light-marigold/--light-coral editorial tokens); built + self/negative-tested the boundary gates both repos; Dim 2 → 3 (25/30).`
 > `2026-06-07 — cycle 3: audited all ≥6 mark encodings (agree at scale 32/128/320/400); wrote window-mark-geometry.md + check-mark-geometry.mjs both repos (self+negative-tested); found favicon palette drift (#FAF7F2/#14161A → P2); Dim 6 → 3 (26/30).`
+> `2026-06-07 — cycle 4: re-pigmented the product favicon to the cool spine; built check-brand-asset-palette.mjs (scoped to icon/favicon chrome, ignores comments + demo paper; self+negative-tested). Hardening — total holds at 26/30.`

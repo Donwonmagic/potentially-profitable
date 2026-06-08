@@ -50,7 +50,7 @@ spot-verified live this cycle; the moved dims (2, 7, 10) reflect this cycle's wo
 |---|---|---|
 | 1 Token-spine parity | **3** | Verified live: `data/muntin.tokens.json` ↔ `{product}/packages/ui/muntin.tokens.json` **byte-identical**; both hashes `3681742a…` match. Sync still *manual* (P1, a fragility not a score hit). |
 | 2 Single-accent | **3** ↑ | Golden Hour decided (ADR-001) **and gate-enforced** (cycle 2): `{product}/check-editorial-accent-boundary.mjs` bans the hexes anywhere in the product; `{site}/check-tokens-sync.mjs` keeps them out of the shared spine. Negative-tested. |
-| 3 Palette currency | **3** | Verified: `brand/og/*.svg` carry **0** retired-warm hexes; cool spine throughout. Warm gate-forbidden in chrome. |
+| 3 Palette currency | **3** | Verified: `brand/og/*.svg` carry **0** retired-warm hexes; cool spine throughout. Warm gate-forbidden in chrome both repos — `migrate-warm-palette` ({site}) + `check-brand-asset-palette` ({product} icon/favicon, cycle 4, after re-pigmenting the favicon). |
 | 4 Voice boundary | **2** | Enforced one-directionally (the "Don" gate lives only in `{product}`); the merged two-tier banned list is specified but not built (P1). |
 | 5 Naming | **2** | Canon is clear; the "Workshop / Workbench / Ledger" relationship is undocumented (P2). |
 | 6 Mark geometry | **3** ↑ | One spec (`window-mark-geometry.md`) + conformance gates both repos (`check-mark-geometry.mjs`): studio 128u variants ({site}) and the 32u encodings — WindowMark/favicon/gradient clip ({product}). Verified: all encodings agree; self + negative-tested. |
@@ -65,3 +65,4 @@ spot-verified live this cycle; the moved dims (2, 7, 10) reflect this cycle's wo
 > `2026-06-07 — 24/30 — cycle 1: kit synced; visual-system.md guideline published; Golden Hour blessed (ADR-001); 3 stale docs superseded.`
 > `2026-06-07 — 25/30 — cycle 2: Golden Hour boundary gate-enforced both repos (Dim 2 → 3).`
 > `2026-06-07 — 26/30 — cycle 3: window-mark geometry spec + conformance gates both repos (Dim 6 → 3).`
+> `2026-06-07 — 26/30 — cycle 4: re-pigmented product favicon to cool spine + check-brand-asset-palette gate (hardening; Dim 3 stays 3, now gated both sides).`
