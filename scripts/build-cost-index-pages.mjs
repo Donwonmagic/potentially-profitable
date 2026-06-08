@@ -333,14 +333,22 @@ function sparkBlock(r, locale) {
   const capsule = es
     ? `Normalmente ${money(lo)}–${money(hi)}, ahora ${money(now)} — ${pos}.`
     : `Normally ${money(lo)}–${money(hi)}, right now ${money(now)} — ${pos}.`;
-  const alt = (es ? 'Precio ' : 'Price ') + shape + '. ' + capsule;
+  // Percentile-of-history as a COUNT (never a smoothed "85th percentile"):
+  // the figure operators repeat. Last ≤12 prior reads, honesty-gated like
+  // the rest of the block.
+  const recent = vals.slice(Math.max(0, vals.length - 13), vals.length - 1);
+  const above = recent.filter((v) => now > v).length;
+  const rank = recent.length >= 8
+    ? (es ? `Más alto que ${above} de sus últimas ${recent.length} lecturas.` : `Higher than ${above} of its last ${recent.length} reads.`)
+    : '';
+  const alt = (es ? 'Precio ' : 'Price ') + shape + '. ' + capsule + (rank ? ' ' + rank : '');
   const svg = MuntinSparkline.render(vals, {
     width: 248, height: 46, stroke: '#2A50C8',
     baseline: Math.round(pctile(sorted, 0.5)),
     ariaLabel: alt
   });
   return `
-    <div class="ci-read__spark">${svg}<p class="ci-read__capsule">${capsule} <span class="ci-read__capsule-note">(${windowNote})</span></p></div>`;
+    <div class="ci-read__spark">${svg}<p class="ci-read__capsule">${capsule}${rank ? ` <span class="ci-read__rank">${rank}</span>` : ''} <span class="ci-read__capsule-note">(${windowNote})</span></p></div>`;
 }
 
 // ---- The visible "Market read" data block --------------------------
@@ -633,6 +641,7 @@ main{padding-top:64px}
 .ci-read__spark .mtn-spark{flex:0 0 auto;overflow:visible}
 .ci-read__capsule{margin:0;font-size:14.5px;line-height:1.45;color:var(--ink)}
 .ci-read__capsule-note{color:var(--ink-soft);font-size:12.5px}
+.ci-read__rank{color:var(--ink-soft)}
 .ci-read__src{margin-top:8px;font-size:12.5px}
 .ci-read__src summary{cursor:pointer;color:var(--ink-soft);font-weight:600}
 .ci-read__src div{margin-top:6px;color:var(--ink-soft);line-height:1.5}
