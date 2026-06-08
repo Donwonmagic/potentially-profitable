@@ -51,7 +51,7 @@ Every content figure carries `data-audio-alt` (full narration, not alt text), `<
 
   - Manifest: `data/article-audio.json` — per-article `{ path, title, languages, status, owner }`. Status is `rendered`, `partial`, `pending`, or `deferred`.
   - Per-post scripts: `<post>/audio.json` + `audio.<lang>.json` for `en/es/fr/it/pt/zh`. MP3 sibling files render via `scripts/render-post-audio.mjs`.
-  - Audio script `text` is read aloud verbatim. Must clear `check-fabrications.mjs` in every language.
+  - Audio script `text` is read aloud verbatim. Enforced by `scripts/check-audio-fabrications.mjs` — the language-aware fact gate that scans every `audio.<lang>.json` (`check-fabrications.mjs` itself skips the narration JSON). It applies the shared registry (`scripts/lib/fabrication-patterns.mjs`) per spoken language — invariant URL rules on every track, en/es/fr/it/pt/zh bio-drift rules on their own track — plus a warn-first numeric-parity check (a translation must not speak a number absent from the source article). Pattern hits are fail-CI; known-stale pre-cleanup renders are waived (dated) in the script pending re-render.
 
 ## Conventions worth knowing
 

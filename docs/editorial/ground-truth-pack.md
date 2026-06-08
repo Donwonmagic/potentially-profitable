@@ -57,7 +57,7 @@ is "a canon that isn't yet a gate." Close them, in that order of blast radius.
 | # | Sev | Seam | Evidence | Fix (turn the canon into a gate) |
 |---|---|---|---|---|
 | 1 | HIGH | **Email copy under-gated** — transactional + digest email follows the product canon but `check-verboten-phrases` & `check-copy-grade` don't scan it (only `check-voice-boundary` does) | `apps/api/src/lib/email.ts`, `…/accountant-digest.ts`, `scheduled/{accountant,ops}-digest.ts` | Add email files to the verboten + grade TARGETS |
-| 2 | HIGH | **No per-language audio fact-gate** — EN prose is gated, but a *translated* script could reintroduce a fabrication before a human hears it | `scripts/render-post-audio.mjs`; gate runs on EN only (`voice-canon-library.md` ~:354) | `check-audio-fabrications.mjs` over the translated script JSON in all declared langs, pre-render |
+| 2 | ✅ CLOSED 2026-06-08 | ~~No per-language audio fact-gate~~ — **shipped** `scripts/check-audio-fabrications.mjs` (wired into `check-all.mjs`). Scans all ~328 `audio.<lang>.json` (the HTML gate skips them) using the shared registry `scripts/lib/fabrication-patterns.mjs`: invariant URL rules on every track, en/es/fr/it/pt/zh bio-drift rules on their own track, + warn-first numeric-parity. Pinned by `scripts/test-audio-fabrications.mjs`. See ADR-001. | `scripts/check-audio-fabrications.mjs`, `scripts/lib/fabrication-patterns.mjs` | Residual (ADR-001 follow-ons): promote numeric-parity warn→fail; a rogue-number-free prose mistranslation in fr/it/pt/zh is still not caught (needs a spoken-language detector) |
 | 3 | MED | **Product-ES unreviewed & ungated** — `copy.es.ts` has key-parity but the es-MX voice canon is **draft v0.1, pending bilingual review**, and `check-voice-es-mx.mjs` doesn't exist | `Muntin-Invoice-Decoder/docs/voice-es-mx.md` ~:3–4,145–146; `apps/web/lib/copy.es.ts` | Complete the bilingual review; ship the gate (no "Bienvenido a", no "potente", **tú** not **usted**) |
 | 4 | MED | **Two banned-word lists, unmerged** — studio's 24 (`check-banned-words`) and product's 32 (`check-verboten-phrases`) don't cross-reference; a phrase banned in one is allowed in the other | `voice-and-naming-architecture.md` ~:152–182 (§4–5) | One shared `banned-words.json` both repos read, core + per-register tiers |
 | 5 | MED | **Studio "we" not machine-banned** — the contract bans the royal "we" but no gate checks it; fake-team "we" could slip into studio marketing | `voice-and-naming-architecture.md` ~:78,95; `check-banned-words.mjs` (no "we") | Add a "we" pattern to the studio gate (allowlist changelog/methods/quotes) |
@@ -65,26 +65,45 @@ is "a canon that isn't yet a gate." Close them, in that order of blast radius.
 | 7 | LOW | **Byline canon doc is stale** — `voice-canon-library.md` still says the methods POV table "should now read…" but the HTML was already updated | `voice-canon-library.md` ~:74–76 vs `methods/index.html:520` (already correct) | Update the canon prose to past tense (confirm, don't prescribe) |
 | 8 | LOW | **Voice-boundary check is one-directional** — product checks for "Don"; studio has no reverse check that product's "we" hasn't leaked into editorial | `Muntin-Invoice-Decoder/scripts/check-voice-boundary.mjs` (product only) | Comment the asymmetry; optionally a studio-side belt-and-braces check (overlaps #5) |
 
+### 3a. Confirm-tier remediation queue (surfaced by the audio gate, 2026-06-08)
+The per-language audio gate immediately caught the retired **two-restaurants bio**
+(the exact May-2026 incident) being **spoken aloud right now in all six languages**.
+Source HTML is clean — these are stale pre-cleanup artifacts. They are **dated-waived**
+in the gate (so it stays green and protects everything else) and are **confirm-tier**:
+the honest fix is re-render / re-record, not a text edit (a text-only edit leaves the
+MP3/M4A still speaking it). Owner: **Don** (needs the TTS / recording toolchain).
+
+| Artifact | What it speaks | Fix | Where waived |
+|---|---|---|---|
+| `library/does-my-restaurant-need-a-website/audio.{json,es,fr,it,pt,zh}` (gen 2026-05-10) | "I manage two restaurants" + 5 translations | Re-render from clean HTML (`render-post-audio.mjs`) | `check-audio-fabrications.mjs` `STALE_AUDIO_WAIVERS` |
+| `learn/research/dmv-restaurant-gbp-audit-2026/audio.*` (gen 2026-05-09) | "manages two DMV restaurants" + 5 translations | Re-render | same |
+| `learn/research/the-1-percent-margin-audit-50-restaurant-websites-2026/audio.*` (gen 2026-05-09) | "manages two DMV restaurants" + 5 translations | Re-render | same |
+| `scripts/voice-refs/don-reference.es.txt` + `README.md` (paired with `don-reference.es.m4a`) | "Administro dos restaurantes…" (Spanish voice-clone seed) | Re-record the Spanish reference to the singular bio, update transcript | `check-fabrications.mjs` `SKIP_PATHS` (dated) |
+
+Remove each waiver the moment its artifact is re-rendered/re-recorded — the audio gate
+prints a notice when a waiver no longer matches anything. **Numeric-parity** also flagged
+~45 files (warn-only) worth a triage pass for translation-introduced figures.
+
 ## 4. The CI editorial-net (the gates that keep content honest)
-Studio: `check-fabrications` (ABSOLUTE — bio drift, invented data) · `check-banned-words`
-(24) · `check-cta-canon` (locked verbs) · `check-article-graphics` (8 rules incl.
-caption/figcaption) · `check-overview-quality` (stricter overview bar) · `check-audio-
-coverage` · `check-locale-parity` + `check-hreflang-orphans` (EN↔ES) · `check-name-
-coherence`. Product: `check-voice-boundary` (no "Don") · `check-verboten-phrases` (32)
+Studio: `check-fabrications` (ABSOLUTE — bio drift, invented data; HTML/JSON/MD) ·
+**`check-audio-fabrications` (ABSOLUTE — the same registry over all 6 spoken-language
+narration tracks)** · `check-banned-words` (24) · `check-cta-canon` (locked verbs) ·
+`check-article-graphics` (8 rules incl. caption/figcaption) · `check-overview-quality`
+(stricter overview bar) · `check-audio-coverage` · `check-locale-parity` +
+`check-hreflang-orphans` (EN↔ES) · `check-name-coherence`. Product: `check-voice-boundary` (no "Don") · `check-verboten-phrases` (32)
 · `check-copy-grade` (FK≤7) · `check-email-templates` (privacy placeholders) ·
 `check-es-coverage`. **The pattern in §3:** the gaps are all *reach* — a gate exists
-but doesn't cover email / routes / product-ES / per-language audio, or the two lists
-aren't unified. Closing a seam = extending a gate's TARGETS or shipping the one
-missing gate.
+but doesn't cover email / routes / product-ES, or the two lists aren't unified.
+Closing a seam = extending a gate's TARGETS or shipping the one missing gate.
 
 ## 5. The highest-leverage move, always
 **Turn the canon into a gate — or extend the gate to the surface it's missing.** The
-canons are strong; the leverage is *coverage*. The two highest-blast-radius jumps:
-extend verboten + grade to **email** (item 1), and ship the **per-language audio
-fact-gate** (item 2) — because both protect the surfaces where an error is hardest
-to catch by eye (a digest nobody re-reads; a Mandarin script nobody on the team
-speaks). A canon protects what a careful human remembers; a gate protects what
-everyone forgets.
+canons are strong; the leverage is *coverage*. The per-language audio fact-gate (the
+top-blast-radius jump — a Mandarin script nobody on the team speaks) **shipped
+2026-06-08** and immediately caught live fabrications no human had re-heard. The next
+highest-blast-radius jump is **email**: extend verboten + grade to the transactional +
+digest templates (item 1) — a digest nobody re-reads. A canon protects what a careful
+human remembers; a gate protects what everyone forgets.
 
 ## 6. Content inventory (for scale)
 Studio (Register A): ~39 library articles · ~10 blog (+ `blog/drafts/`) · 151
