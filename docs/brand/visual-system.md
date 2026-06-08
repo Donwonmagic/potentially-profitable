@@ -75,20 +75,24 @@ rigor); Golden Hour is the **light** that blooms through the muntin grid.
 **Decision (ADR-001):** Golden Hour is a **sanctioned _editorial_ expressive accent**,
 not a second brand accent.
 
-- **Where it is sanctioned:** studio (`{site}`) surfaces only — OG/social cards
-  (rendered into 765 of 766 cards via `scripts/build-og-cards.mjs:62-80`) and editorial
-  marketing accents (marigold doubles as the "Tools / free-course badge" hue on
-  `/workbench/`, `/ai/`, `/services/*`, `/tools/brand-suite/`).
+- **Where it is sanctioned:** studio (`{site}`) surfaces only. It is a first-class
+  editorial token here — **`--light-marigold` / `--light-coral`** in `assets/site.css`
+  (+ `site-core.css`), used by editorial chrome like `.sidelight__pulse` and
+  `.window-composer__submit`; a generator constant in `scripts/build-og-cards.mjs:62-80`
+  (rendered into 765 of 766 OG cards); and marigold doubles as the "Tools / free-course
+  badge" hue across editorial pages.
 - **The hard boundary:** Golden Hour is **never a product accent, never in the shared
   token spine, and must not appear in `{product}`.** The product stays single-accent
-  (`#3b68f5` / `#5b82ff`). Keeping marigold/coral as `{site}`-scoped generator
-  constants (not spine tokens) is the honest encoding of "editorial-only."
+  (`#3b68f5` / `#5b82ff`). The accent lives in the studio's **own** editorial CSS
+  (`--light-*`), deliberately **not** in the cross-repo `muntin.tokens.json` spine —
+  that separation is the honest encoding of "editorial-only."
 - **Why blessed, not retired:** it is already shipped at scale across the OG system and
   is a deliberate brand-refresh choice; retiring it would revert 765 committed assets.
   See ADR-001 for the steelman of the alternatives and the pre-mortem.
-- **Pending hardening (P1):** an enforcement gate — ban `#FFB020`/`#FF6B5C` in
-  `{product}`, assert absence from the shared spine, allow in `{site}` editorial. Until
-  it lands, this boundary is doc-enforced, not gate-enforced.
+- **Enforced (cycle 2):** the boundary is now **gate-enforced**, not just documented:
+  `{product}/scripts/check-editorial-accent-boundary.mjs` forbids `#FFB020`/`#FF6B5C`
+  anywhere in the product (wired into `ci.yml`), and `{site}/scripts/check-tokens-sync.mjs`
+  asserts they never enter the shared spine. Both ship with `--self-test`.
 
 ---
 
@@ -117,13 +121,14 @@ not a second brand accent.
 | Voice / persona boundary | `check-banned-words` | `check-voice-boundary` (bans "Don") |
 | Icon source | (bespoke) | `check-icon-source` (lucide-only) |
 | OG currency / coverage | `check-og-{images,coverage,template-grid}` | — |
+| Golden Hour accent boundary | `check-tokens-sync` (absent from spine) | `check-editorial-accent-boundary` (absent anywhere) |
 
 **Deliberate asymmetries (don't "fix" without a charter):** the "Don" gate and the
 lucide-lock live only in `{product}`; `{site}` ships bespoke icons.
 
-**Not yet gated (tracked backlog):** Golden Hour accent scope (P1), the **merged
-two-tier banned list** read by both repos (specified, not built — P1), and doc-vs-code
-currency (no gate asserts these docs still match the code — refresh on cadence).
+**Not yet gated (tracked backlog):** the **merged two-tier banned list** read by both
+repos (specified, not built — P1), token-sync hardening (manual vendor step — P1), and
+doc-vs-code currency (no gate asserts these docs still match the code — refresh on cadence).
 
 ---
 

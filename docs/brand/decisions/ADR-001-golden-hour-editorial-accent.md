@@ -62,9 +62,10 @@ Documented in `docs/brand/visual-system.md §3`.
 It is 2026-12 and this was a mistake — why?
 
 1. **Leak into product.** Marigold/coral appear in `{product}` chrome and the product
-   starts to read "warmer / less serious." *Detect early:* the deferred P1 enforcement
-   gate that bans `#FFB020`/`#FF6B5C` in `{product}` and asserts their absence from the
-   shared spine. Until that gate ships, this is doc-enforced only — the main residual risk.
+   starts to read "warmer / less serious." *Detect early:* the enforcement gate that
+   bans `#FFB020`/`#FF6B5C` in `{product}` and asserts their absence from the shared
+   spine. **Shipped 2026-06-07 (cycle 2)** — see the Update below; this is no longer a
+   doc-only boundary.
 2. **Sprawl within `{site}`.** The "editorial accent" creeps into body text, data viz,
    or focus states, fragmenting the studio identity. *Detect:* periodic grep of
    `assets/*.css` for the two hexes outside OG + the sanctioned badge usage.
@@ -76,11 +77,24 @@ It is 2026-12 and this was a mistake — why?
 
 - **+** Guideline matches reality; product restraint is protected; the studio keeps its
   warmth. Scorecard Dim 2 moves 1 → 2 (decided + documented).
-- **−** Until the enforcement gate lands, the boundary is documentation, not a gate —
-  so Dim 2 is not yet 3. **Committed follow-on (P1):** add the Golden Hour scope gate
-  (ban in `{product}`, assert absent from spine, allow in `{site}` editorial); logged in
-  `ground-truth-pack.md §7`. Reversibility: high — the accent is contained to `{site}`
-  generator constants and editorial markup.
+- **−** A documented boundary without a gate is "cohesion a human has to remember."
+  Mitigated by the follow-on gate (see Update). Reversibility: high — the accent is
+  contained to `{site}` editorial CSS (`--light-marigold`/`--light-coral`) and markup.
+
+## Update — 2026-06-07 (cycle 2): the boundary is now gate-enforced
+
+The committed follow-on shipped, moving this from a doc-only decision to an
+un-regressible one (scorecard Dim 2: 2 → 3):
+
+- **`{product}/scripts/check-editorial-accent-boundary.mjs`** — fails CI if `#FFB020`
+  or `#FF6B5C` appears anywhere in the product (apps/packages/docs); wired into
+  `.github/workflows/ci.yml` "Node lints"; ships `--self-test`.
+- **`{site}/scripts/check-tokens-sync.mjs`** — now also asserts the two hexes never
+  appear in the shared spine `data/muntin.tokens.json`.
+
+Both verified with negative tests (a planted hex fails each gate, exit 1). Editorial
+usage in `{site}` (the `--light-*` tokens, `brand/og/*`, editorial pages) is untouched
+— the gates police only the register boundary, not legitimate studio use.
 
 ## Review
 

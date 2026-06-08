@@ -49,7 +49,7 @@ spot-verified live this cycle; the moved dims (2, 7, 10) reflect this cycle's wo
 | Dim | Score | Note |
 |---|---|---|
 | 1 Token-spine parity | **3** | Verified live: `data/muntin.tokens.json` ↔ `{product}/packages/ui/muntin.tokens.json` **byte-identical**; both hashes `3681742a…` match. Sync still *manual* (P1, a fragility not a score hit). |
-| 2 Single-accent | **2** ↑ | Golden Hour **decided + documented** (ADR-001 + `visual-system.md §3`): blessed as editorial-only, excluded from spine/`{product}`. Not yet **3** — the scope **gate** is pending (P1). |
+| 2 Single-accent | **3** ↑ | Golden Hour decided (ADR-001) **and gate-enforced** (cycle 2): `{product}/check-editorial-accent-boundary.mjs` bans the hexes anywhere in the product; `{site}/check-tokens-sync.mjs` keeps them out of the shared spine. Negative-tested. |
 | 3 Palette currency | **3** | Verified: `brand/og/*.svg` carry **0** retired-warm hexes; cool spine throughout. Warm gate-forbidden in chrome. |
 | 4 Voice boundary | **2** | Enforced one-directionally (the "Don" gate lives only in `{product}`); the merged two-tier banned list is specified but not built (P1). |
 | 5 Naming | **2** | Canon is clear; the "Workshop / Workbench / Ledger" relationship is undocumented (P2). |
@@ -58,8 +58,9 @@ spot-verified live this cycle; the moved dims (2, 7, 10) reflect this cycle's wo
 | 8 Contrast | **3** | AA gated in both repos, both themes. |
 | 9 Cross-seam | **2** | Funnel + shared Org `@id` exist; the hardcoded studio inbox + `/window` coupling is undocumented (P2). |
 | 10 Doc currency | **2** ↑ | `visual-system.md` published; the 3 stale docs carry dated supersession banners. Not yet **3** — no gate asserts docs match code (refresh on cadence). |
-| **Total** | **24 / 30** | +3 from baseline via the cheapest predicted jumps (10, 2, 7). Next cheapest: the Golden Hour scope gate (2→3) and the merged banned list (4→3). |
+| **Total** | **25 / 30** | Spine, palette, contrast, single-accent, and OG currency all gated (3). Remaining edges are voice (4), naming (5), mark geometry (6), cross-seam (9) — and doc currency (10), which has no enforcing gate by nature. |
 
 > History (append each cycle): `YYYY-MM-DD — NN/30 — one-line what moved`.
 > `2026-06-07 — 21/30 — baseline.`
 > `2026-06-07 — 24/30 — cycle 1: kit synced; visual-system.md guideline published; Golden Hour blessed (ADR-001); 3 stale docs superseded.`
+> `2026-06-07 — 25/30 — cycle 2: Golden Hour boundary gate-enforced both repos (Dim 2 → 3).`

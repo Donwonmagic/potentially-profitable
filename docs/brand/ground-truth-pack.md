@@ -77,12 +77,15 @@ warm" claim was itself stale, now flagged as such on the doc.
 - **`{site}`** (`node scripts/check-all.mjs`): check-tokens-sync, migrate-warm-palette,
   check-contrast (AA light+dark), check-banned-words, check-cta-canon,
   check-button-vocabulary, check-name-coherence, check-og-{images,coverage,template-grid},
-  check-cls-animation (keyframes), check-css-drift, check-css-shells, locale-parity/hreflang. ◦
+  check-cls-animation (keyframes), check-css-drift, check-css-shells, locale-parity/hreflang,
+  **check-tokens-sync** (also asserts the Golden Hour accent stays out of the spine — ADR-001). ◦
 - **`{product}`** (`.github/workflows/ci.yml`): check-tokens-parity ✓, check-contrast,
   check-icon-source (lucide-only via `@muntin/ui/icons`), check-focus-discipline
   (`.mun-focus`), check-keyframes-allowlist, visuals-budget, **check-voice-boundary**
   (bans the studio persona in product copy — ✓ references "studio"), check-verboten-phrases,
-  check-copy-grade (FK≤7), check-pronunciations. Plus Lighthouse + Playwright visual baselines. ◦
+  check-copy-grade (FK≤7), check-pronunciations,
+  **check-editorial-accent-boundary** (bans the studio Golden Hour accent anywhere in the
+  product — ADR-001). Plus Lighthouse + Playwright visual baselines. ◦
 - **Asymmetries (don't "fix" without a charter):** the "Don" gate + the lucide
   icon-lock exist *only* in `{product}`; the site ships bespoke `currentColor`
   icons. The **merged two-tier banned list** (one list read by both) is *specified*
@@ -111,8 +114,9 @@ warm" claim was itself stale, now flagged as such on the doc.
   editorial-only, excluded from spine/`{product}`. Documented in `visual-system.md §3`.
 - **DONE (P0)** Stale design docs → one current guideline (`visual-system.md`); 3 docs
   banner-superseded.
-- **P1** Golden Hour **scope gate** — ban `#FFB020`/`#FF6B5C` in `{product}`, assert
-  absent from the shared spine, allow in `{site}` editorial. (Moves scorecard Dim 2 → 3.)
+- **DONE (P1, cycle 2)** Golden Hour **boundary gate** — `{product}/check-editorial-accent-boundary.mjs`
+  (bans the hexes anywhere in the product, in `ci.yml`) + `{site}/check-tokens-sync.mjs`
+  (asserts absent from the shared spine). Both self-tested + negative-tested. (Dim 2 → 3.)
 - **P1** Manual/fragile token-sync → real publish-and-vendor step.
 - **P1** Merged two-tier banned list → implement, read by both repos.
 - **P2** Naming seam (Workshop/Ledger); mark-geometry single spec; cross-repo
@@ -130,3 +134,4 @@ warm" claim was itself stale, now flagged as such on the doc.
 > Verification log:
 > `2026-06-07 — created; §1–6 spot-verified against live code.`
 > `2026-06-07 — cycle 1: tokens.json byte-identical + hashes equal; brand/og/*.svg = 0 warm hexes, Golden Hour in 765/766; §4/§6/§7 updated; ADR-001 logged; visual-system.md published.`
+> `2026-06-07 — cycle 2: audited Golden Hour hexes (product = 0, both spines = 0, site uses --light-marigold/--light-coral editorial tokens); built + self/negative-tested the boundary gates both repos; Dim 2 → 3 (25/30).`
