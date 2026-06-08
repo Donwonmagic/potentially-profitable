@@ -254,6 +254,47 @@ function verdictLine(flag, locale) {
     <p class="ci-read__verdict"><span class="ci-read__verb" data-bias="${flag.actionBias}">${verb[es ? 'es' : 'en']}</span>${copy[es ? 'es' : 'en']}</p>`;
 }
 
+// ---- Hub "what's moving now" + per-card action chip ----------------
+// The landing hub led with a bare directory of links; an operator
+// couldn't tell at a glance which ingredient needs attention. Surface
+// the same fact-gated spike flag: a per-card action chip, plus a lead
+// section that ranks the ones worth a look (re-price, then watch) first.
+// Qualitative only — no numbers on the hub.
+const MOVING_REASON = {
+  structural:   { en: 'elevated and sustained', es: 'elevado y sostenido' },
+  emerging:     { en: 'a real move, not settled yet', es: 'un movimiento real, aún sin asentarse' },
+  insufficient: { en: 'too new to call — treat as real', es: 'demasiado nuevo — trátalo como real' }
+};
+const BIAS_RANK = { 're-price': 0, 'watch': 1, 'hold': 2 };
+function hubFlag(slug) { return (COST_INDEX[slug] || {}).flag || null; }
+function actionChip(flag, locale) {
+  if (!flag || !VERB_LABEL[flag.actionBias]) return '';
+  const es = locale === 'es';
+  return `<span class="ci-read__verb" data-bias="${flag.actionBias}">${VERB_LABEL[flag.actionBias][es ? 'es' : 'en']}</span>`;
+}
+function movingNowSection(slugs, locale) {
+  const es = locale === 'es';
+  const rows = slugs
+    .map((s) => ({ s, flag: hubFlag(s) }))
+    .filter((x) => x.flag && MOVING_REASON[x.flag.verdict])
+    .sort((a, b) => (BIAS_RANK[a.flag.actionBias] - BIAS_RANK[b.flag.actionBias]) || a.s.localeCompare(b.s));
+  const head = es ? 'Qué se está moviendo ahora' : "What's moving now";
+  if (!rows.length) {
+    const calm = es
+      ? `Nada exige acción esta semana — la mayoría de los ingredientes están en su rango habitual.`
+      : `Nothing needs action this week — most ingredients are sitting in their usual range.`;
+    return `<section class="ci-moving"><h2 class="ci-cat-h" id="moving">${head}</h2><p class="ci-moving-calm">${calm}</p></section>`;
+  }
+  const lis = rows.map((x) => {
+    const l = LABELS[x.s] || {};
+    const nm = (es ? (l.es || l.en) : l.en) || x.s;
+    const reason = MOVING_REASON[x.flag.verdict][es ? 'es' : 'en'];
+    const base = es ? '/es' : '';
+    return `<li class="ci-moving-item">${actionChip(x.flag, locale)}<a href="${base}/cost-index/${x.s}/">${escHtml(nm)}</a> <span class="ci-moving-reason">— ${escHtml(reason)}</span></li>`;
+  }).join('');
+  return `<section class="ci-moving"><h2 class="ci-cat-h" id="moving">${head}</h2><ul class="ci-moving-list">${lis}</ul></section>`;
+}
+
 // ---- History sparkline + "normally X–Y, right now Z" capsule -------
 // Charts the gated history series the page already ships as series.json,
 // so the trend the verdict asserts is visible, not just claimed. Numbers
@@ -613,6 +654,15 @@ main{padding-top:64px}
 .ci-card a:hover{color:var(--teal)}
 .ci-card-note{display:block;font-size:13px;color:var(--ink-soft);margin-top:4px}
 .ci-cat-h{font-family:var(--font-display);font-size:16px;color:var(--ink-soft);margin:30px 0 0;text-transform:uppercase;letter-spacing:.04em;font-weight:600}
+.ci-card-action{margin-top:10px}
+.ci-moving{margin:20px 0 8px;padding:16px 20px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:12px}
+.ci-moving .ci-cat-h{margin:0 0 10px}
+.ci-moving-list{list-style:none;margin:0;padding:0}
+.ci-moving-item{margin:0 0 8px;font-size:15.5px;line-height:1.5}
+.ci-moving-item a{color:var(--ink);text-decoration:none;font-weight:600;border-bottom:1px dashed var(--line)}
+.ci-moving-item a:hover{color:var(--teal)}
+.ci-moving-reason{color:var(--ink-soft);font-size:14px}
+.ci-moving-calm{margin:0;font-size:15.5px;color:var(--ink)}
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=${SHELL_HASH.core}" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=${SHELL_HASH.article}" onload="this.onload=null;this.rel='stylesheet'">
@@ -815,7 +865,8 @@ function emitHubPage(locale, slugs) {
     const cards = byCat[c].map((s) => {
       const l = LABELS[s] || {};
       const nm = (es ? (l.es || l.en) : l.en) || s;
-      return `<div class="ci-card"><a href="${base}/cost-index/${s}/">${escHtml(nm)}</a><span class="ci-card-note">${escHtml(hubCardNote(s, locale))}</span></div>`;
+      const chip = actionChip(hubFlag(s), locale);
+      return `<div class="ci-card"><a href="${base}/cost-index/${s}/">${escHtml(nm)}</a><span class="ci-card-note">${escHtml(hubCardNote(s, locale))}</span>${chip ? `<div class="ci-card-action">${chip}</div>` : ''}</div>`;
     }).join('');
     return `<h2 class="ci-cat-h" id="${c}">${escHtml(es ? cat.es : cat.en)}</h2><div class="ci-grid">${cards}</div>`;
   }).join('\n');
@@ -871,6 +922,7 @@ function emitHubPage(locale, slugs) {
       <a class="btn btn-primary" href="${base}/tools/cost-pulse/">${es ? 'Abrir Cost Pulse' : 'Open Cost Pulse'}</a>
       <a class="btn btn-ghost" href="${base}/glossary/cost-index/">${es ? '¿Qué es un índice de costos?' : 'What is a cost index?'}</a>
     </div>
+    ${movingNowSection(slugs, locale)}
     ${sections}
     ${driverNote}
     <p class="ci-source"><strong>${es ? 'Fuente' : 'Sourced'}:</strong> ${es ? 'datos públicos de mercado (USDA AMS/LMR, BLS, FRED, EIA, NOAA), vía' : 'public market data (USDA AMS/LMR, BLS, FRED, EIA, NOAA), via'} <a href="${base}/tools/cost-pulse/">Cost Pulse</a>.</p>
