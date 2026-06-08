@@ -80,8 +80,11 @@ function selfTest() {
   const spec = { registers: { editorial: { legacyVarMap: { "--teal": "accent (#2a50c8)" } } } };
   const ok = check(":root{--teal:#2A50C8}", spec).failures;
   const bad = check(":root{--teal:#1F4E5B}", spec).failures;
-  if (ok.length !== 0 || bad.length === 0) {
-    console.error("✗ self-test FAILED", { ok, bad });
+  // ADR-001 clause: the editorial Golden Hour accent must not appear in the spine.
+  const spineClean = editorialAccentInSpine(`{"core":{"accent":{"default":"#3b68f5"}}}`).length === 0;
+  const spineLeak = editorialAccentInSpine(`{"x":"#FFB020"}`).length === 1;
+  if (ok.length !== 0 || bad.length === 0 || !spineClean || !spineLeak) {
+    console.error("✗ self-test FAILED", { ok, bad, spineClean, spineLeak });
     process.exit(1);
   }
   console.log("✓ check-tokens-sync self-test passed");
@@ -95,6 +98,19 @@ function selfTest() {
 // truth honest.
 const EXPECTED_SPINE_HASH =
   "3681742a5d58d95835dee6f1a67fd4c550f6ba929548d1b872ff0b079dcb6e11";
+
+// ADR-001: the studio "Golden Hour" accent (marigold #FFB020 / coral #FF6B5C) is an
+// editorial-ONLY layer. It lives in this repo's editorial CSS (--light-marigold /
+// --light-coral in assets/site.css) and in brand/og/* — but it must NEVER enter the
+// SHARED cross-repo spine (data/muntin.tokens.json), or it would become available to
+// the product and blur the two registers. The product's mirror gate
+// (Muntin-Invoice-Decoder/scripts/check-editorial-accent-boundary.mjs) forbids these
+// hexes anywhere in the product; this clause keeps them out of the spine on our side.
+const EDITORIAL_ACCENT_IN_SPINE = /#(?:FFB020|FF6B5C)\b/gi;
+function editorialAccentInSpine(rawSpecText) {
+  const hits = rawSpecText.match(EDITORIAL_ACCENT_IN_SPINE);
+  return hits ? [...new Set(hits.map((h) => h.toUpperCase()))] : [];
+}
 function spineHash(spec) {
   const j = JSON.parse(JSON.stringify(spec));
   delete j["$meta"];
@@ -111,7 +127,21 @@ function spineHash(spec) {
 
 function main() {
   if (process.argv.includes("--self-test")) return selfTest();
-  const spec = JSON.parse(readFileSync(SPEC, "utf8"));
+  const rawSpec = readFileSync(SPEC, "utf8");
+  const leaked = editorialAccentInSpine(rawSpec);
+  if (leaked.length) {
+    console.error(
+      `✗ editorial accent in spine: ${leaked.join(", ")} found in data/muntin.tokens.json`,
+    );
+    console.error(
+      "  Golden Hour (marigold/coral) is an editorial-only layer (ADR-001) and must not enter the shared cross-repo spine.",
+    );
+    console.error(
+      "  Keep it in assets/site.css (--light-marigold / --light-coral) and brand/og/*, not the token spine.",
+    );
+    process.exit(1);
+  }
+  const spec = JSON.parse(rawSpec);
   const hash = spineHash(spec);
   if (hash !== EXPECTED_SPINE_HASH) {
     console.error(`✗ spine integrity: muntin.tokens.json hash ${hash} != expected ${EXPECTED_SPINE_HASH}`);

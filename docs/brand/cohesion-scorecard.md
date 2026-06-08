@@ -41,21 +41,33 @@ decisions have to move a number, not a vibe.
 | 9 | **Cross-seam coherence** | Funnel + shared entity strings agree | Read `{site}/data/ledger-cta.json`, `{product}` `MarketingFooter.tsx`, `funnel-emit.ts`; confirm shared Org `@id` + event names | — |
 | 10 | **Doc currency** | The "official" docs match the code | Confirm the 3 stale docs are superseded by the current guideline (not cited as truth) | 3 |
 
-## Current snapshot — 2026-06-07 (baseline, agent-assessed; re-score on engagement start)
+## Current snapshot — 2026-06-07 (cycle 1, re-scored against live code)
+
+Re-scored from gate truth + live greps (not the prior agent estimate). Dims 1, 3, 8
+spot-verified live this cycle; the moved dims (2, 7, 10) reflect this cycle's work.
 
 | Dim | Score | Note |
 |---|---|---|
-| 1 Token-spine parity | **3** | Hash-locked both sides; the lock works — but sync is *manual* (a fragility, not a score hit; see loop charter / backlog P1). |
-| 2 Single-accent | **1** | The undocumented "Golden Hour" marigold/coral lives only in `{site}` OG, contradicting the single-accent rule. **P0 decision pending.** |
-| 3 Palette currency | **3** | Re-pigment to slate+blue landed (Wave 8b); warm hexes gate-forbidden in chrome. |
-| 4 Voice boundary | **2** | Enforced one-directionally (the "Don" gate lives only in `{product}`); the merged two-tier banned list is specified but not built (P1). |
-| 5 Naming | **2** | Canon is clear; the "Workshop / Workbench / Ledger" relationship is undocumented (P2). |
-| 6 Mark geometry | **2** | Geometry duplicated in ≥4 places; no single spec governs them (P2). |
-| 7 OG currency | **2** | Migrated + covered, but carries the ungoverned Golden Hour layer (ties to Dim 2). |
+| 1 Token-spine parity | **3** | Verified live: `data/muntin.tokens.json` ↔ `{product}/packages/ui/muntin.tokens.json` **byte-identical**; both hashes `3681742a…` match. Sync is now **scripted + documented** (`vendor-tokens.mjs` + `token-spine.md`, cycle 8) — the P1 fragility hardened, not just noted. |
+| 2 Single-accent | **3** ↑ | Golden Hour decided (ADR-001) **and gate-enforced** (cycle 2): `{product}/check-editorial-accent-boundary.mjs` bans the hexes anywhere in the product; `{site}/check-tokens-sync.mjs` keeps them out of the shared spine. Negative-tested. |
+| 3 Palette currency | **3** | Verified: `brand/og/*.svg` carry **0** retired-warm hexes; cool spine throughout. Warm gate-forbidden in chrome both repos — `migrate-warm-palette` ({site}) + `check-brand-asset-palette` ({product} icon/favicon, cycle 4, after re-pigmenting the favicon). |
+| 4 Voice boundary | **3** | Two-tier banned list, **now fail-CI in BOTH repos** (cycle 9: cleared the 13 pre-existing {site} hits — meaning-preserving rewrites of "move the needle"/meeting-speak, fixed at source in `topic-essays.json`/`article-content.json`/`library-tags.json` + re-rendered — and promoted `check-banned-words` to `--check`; also tightened the leverage regex's `highest-leverage` false positive). Shared Tier-1 core in both gates (canon §3a). |
+| 5 Naming | **3** ↑ | Canon now documents the Workshop/Workbench/Ledger relationship (`voice-and-naming-architecture.md §3`). Enforced **both** repos via `check-name-coherence` — {site}: Workbench→Workshop (`--check`, fail-CI); {product}: bans the retired "Invoice Decoder" in user copy. |
+| 6 Mark geometry | **3** ↑ | One spec (`window-mark-geometry.md`) + conformance gates both repos (`check-mark-geometry.mjs`): studio 128u variants ({site}) and the 32u encodings — WindowMark/favicon/gradient clip ({product}). Verified: all encodings agree; self + negative-tested. |
+| 7 OG currency | **3** ↑ | Palette current + coverage gated (`check-og-*`) **and** the Golden Hour layer is now governed (ADR-001), no longer an ungoverned accent. |
 | 8 Contrast | **3** | AA gated in both repos, both themes. |
-| 9 Cross-seam | **2** | Funnel + shared Org `@id` exist; the hardcoded studio inbox + `/window` coupling is undocumented (P2). |
-| 10 Doc currency | **1** | Three design docs are stale and would mislead; no current superseding guideline yet (P0). |
-| **Total** | **21 / 30** | Strong spine, real edges. The cheapest jumps: ship the guideline (10), decide Golden Hour (2/7), build the merged banned list (4). |
+| 9 Cross-seam | **3** ↑ | Mapped in `cross-repo-seams.md` + gated (`check-cross-repo-seams.mjs`): window→`source=ledger` attribution, the shared business `@id` linkage (the product's `parentOrganization` now anchors to `…/#business` — fixed this cycle), and the canonical contact. The audit corrected two aspirational §6 claims (the @id was not actually shared; funnel vocab is not shared by design). |
+| 10 Doc currency | **2** ↑ | `visual-system.md` published; the 3 stale docs carry dated supersession banners. Not yet **3** — no gate asserts docs match code (refresh on cadence). |
+| **Total** | **29 / 30** | The practical ceiling. Nine dimensions gated at 3; the tenth (doc currency) can't be gated by nature — kept current by the per-cycle fold-back discipline instead. |
 
 > History (append each cycle): `YYYY-MM-DD — NN/30 — one-line what moved`.
 > `2026-06-07 — 21/30 — baseline.`
+> `2026-06-07 — 24/30 — cycle 1: kit synced; visual-system.md guideline published; Golden Hour blessed (ADR-001); 3 stale docs superseded.`
+> `2026-06-07 — 25/30 — cycle 2: Golden Hour boundary gate-enforced both repos (Dim 2 → 3).`
+> `2026-06-07 — 26/30 — cycle 3: window-mark geometry spec + conformance gates both repos (Dim 6 → 3).`
+> `2026-06-07 — 26/30 — cycle 4: re-pigmented product favicon to cool spine + check-brand-asset-palette gate (hardening; Dim 3 stays 3, now gated both sides).`
+> `2026-06-07 — 27/30 — cycle 5: cross-repo seam map + gate; linked product parentOrganization to the shared business @id (Dim 9 → 3).`
+> `2026-06-07 — 28/30 — cycle 6: documented Workshop/Workbench/Ledger in the naming canon + product name-coherence gate (retired "Invoice Decoder") (Dim 5 → 3).`
+> `2026-06-07 — 29/30 — cycle 7: two-tier banned list — shared Tier-1 core enforced both repos (added 7 marketing-speak words to product); canon §3a (Dim 4 → 3). Practical ceiling reached.`
+> `2026-06-07 — 29/30 — cycle 8: hardened the token-sync P1 — vendor-tokens.mjs (scripted copy + hash + cross-repo diff) + token-spine.md runbook. Score holds; structural fragility reduced.`
+> `2026-06-07 — 29/30 — cycle 9: cleared the 13 {site} banned-word hits (fixed at source + re-rendered) and promoted check-banned-words to --check — Tier-1 now fail-CI both repos. Dim 4 hardened to a symmetric 3.`

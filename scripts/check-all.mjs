@@ -88,13 +88,15 @@ const CHECKS = [
   //          and sheets.css). Pairs with sync: one forbids the old
   //          values, the other pins the new ones.
   ['Token sync',          'check-tokens-sync.mjs'],
+  ['Token vendor',        'vendor-tokens.mjs'],
   ['Warm-palette purge',  'migrate-warm-palette.mjs',      '--check'],
+  ['Mark geometry',       'check-mark-geometry.mjs'],
   // Invoice-Decoder safety: the four server files in src/ that touch
   // the decoder pipeline must NOT contain any outbound network paths
   ['Dark-mode block',     'build-dark-mode.mjs',           '--check'],
   ['Dark contrast',       'check-dark-contrast.mjs'],
   ['Section contrast',    'check-contrast.mjs'],
-  ['Banned words',        'check-banned-words.mjs'],
+  ['Banned words',        'check-banned-words.mjs',        '--check'],
   // Sprint M (2026-05-08): retired-slug regression guard. Fails CI
   // if either retired slug is reintroduced anywhere outside the
   // documented allow list (_redirects, 404.html, historical
