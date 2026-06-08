@@ -177,6 +177,23 @@ test('RANGE-WIDENING: too few recent reads → honest point, no fabricated band'
   assert.equal(lvl.rangeCents[0], lvl.rangeCents[1]);
 });
 
+test('LEVEL-AGREEMENT: two independent types that DISAGREE on price cannot reach "high"', () => {
+  const r = C.assess({
+    levelObs: [
+      { source: 'usda-lmr', basis: 'wholesale', valueCents: 1300, family: 'lmr', type: 'usda-lmr' },
+      { source: 'cme-cash', basis: 'wholesale', valueCents: 2000, family: 'cme', type: 'cme' },
+    ],
+    sourceSeries: {
+      'usda-lmr': { basis: 'wholesale', values: [1200, 1300], family: 'lmr', type: 'usda-lmr' },
+      'cme-cash': { basis: 'wholesale', values: [1900, 2000], family: 'cme', type: 'cme' },
+      bls: { basis: 'index', values: [100, 108], family: 'bls', type: 'bls' },
+    },
+  });
+  assert.equal(r.level.nTypes, 2);
+  assert.ok(r.level.typeDispersion > 0.15);
+  assert.notEqual(r.confidence, 'high');   // capped at medium by disagreement
+});
+
 test('CONFIDENCE: two independent dollar TYPES that agree reach "high"', () => {
   const r = C.assess({
     levelObs: [

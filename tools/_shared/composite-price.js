@@ -93,11 +93,25 @@
             if (rangeBasis === 'point') rangeBasis = 'volatility';
           }
         }
+        // Level-agreement: do the INDEPENDENT methodologies (types) agree on the
+        // dollar level? Robust relative dispersion of the per-type medians
+        // (1.4826·MAD / median). When two+ types disagree, the level can't earn
+        // 'high' on count alone — confidenceFor reads this to cap.
+        var typeGroups = {};
+        obs.forEach(function (o) { var t = o.type || o.family || o.source; (typeGroups[t] = typeGroups[t] || []).push(o.valueCents); });
+        var typeMedians = Object.keys(typeGroups).map(function (t) { return median(typeGroups[t]); });
+        var typeDispersion = 0;
+        if (typeMedians.length >= 2) {
+          var tm = median(typeMedians);
+          var tdevs = typeMedians.map(function (v) { return Math.abs(v - tm); });
+          typeDispersion = tm > 0 ? +((1.4826 * median(tdevs)) / tm).toFixed(4) : 0;
+        }
         return {
           basis: basis,
           medianCents: medianCents,
           rangeCents: range,
           rangeBasis: rangeBasis,
+          typeDispersion: typeDispersion,
           nObs: obs.length,
           nFamilies: famKeys.length,
           nSources: distinct(obs.map(function (o) { return o.source; })),
@@ -148,6 +162,9 @@
     // No usable dollar level → direction-only (when a trend exists), else low.
     if (!level) return (trend && trend.pct != null && tt >= 1) ? 'directional' : 'low';
     var levelCeil = lt >= 2 ? 2 : lt >= 1 ? 1 : 0;            // 2=high · 1=medium · 0=low
+    // Independent dollar types that DISAGREE (>15% robust CoV — a wiring/commodity
+    // mismatch, not normal cross-source spread) can't buy 'high'.
+    if (lt >= 2 && level.typeDispersion != null && level.typeDispersion > 0.15) levelCeil = 1;
     var trendCeil;
     if (!trend || trend.pct == null) trendCeil = 2;          // no trend signal → don't cap the level
     else trendCeil = (tt >= 2 && agree >= 0.66) ? 2 : (tt >= 2 && agree >= 0.33) ? 1 : 0;

@@ -80,9 +80,27 @@ export function historyWeeks(history) {
   (history || []).forEach((h) => { const t = Date.parse(h && h.date); if (isFinite(t)) wk.add(Math.floor(t / (7 * 86400000))); });
   return wk.size;
 }
+function med(xs) {
+  if (!xs.length) return 0;
+  const s = xs.slice().sort((a, b) => a - b), m = s.length >> 1;
+  return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2;
+}
+// Robust relative dispersion of the per-TYPE level medians (1.4826·MAD / median).
+// Mirrors composite-price.compositeLevel.typeDispersion: independent dollar types
+// that disagree (>15%) signal a wiring/commodity mismatch.
+export function levelDispersion(point) {
+  const byType = {};
+  (point.provenance || []).filter((p) => p.kind === 'level' && typeof p.valueCents === 'number')
+    .forEach((p) => { const t = sourceType(p.source); (byType[t] = byType[t] || []).push(p.valueCents); });
+  const tm = Object.keys(byType).map((t) => med(byType[t]));
+  if (tm.length < 2) return 0;
+  const m = med(tm);
+  return m > 0 ? (1.4826 * med(tm.map((v) => Math.abs(v - m)))) / m : 0;
+}
 function levelCeiling(point) {
   const lt = typeCount(point, 'level');
-  return lt >= 2 ? RANK.high : lt >= 1 ? RANK.medium : RANK.directional;
+  if (lt >= 2) return levelDispersion(point) > 0.15 ? RANK.medium : RANK.high;
+  return lt >= 1 ? RANK.medium : RANK.directional;
 }
 function trendCeiling(point, weeks) {
   const tt = typeCount(point, 'trend');
@@ -122,6 +140,10 @@ function runSelfTest() {
     calibrationCeiling({ provenance: [...lev(6, 'usda-ams'), ...trd(['usda-ams-a', 'bls-ppi'])], trend: { agreement: 1 } }, weeks(12)), RANK.medium);
   ok('thin history (4 weeks) caps even independent types at medium',
     calibrationCeiling({ provenance: [...lev(1, 'usda-lmr'), ...lev(1, 'cme'), ...trd(['usda-lmr', 'cme'])], trend: { agreement: 1 } }, weeks(4)), RANK.medium);
+  ok('two level types that DISAGREE (>15%) cap at medium',
+    calibrationCeiling({ provenance: [{ kind: 'level', source: 'usda-lmr', valueCents: 1300 }, { kind: 'level', source: 'cme-cash', valueCents: 2000 }, ...trd(['usda-lmr', 'cme', 'bls'])], trend: { agreement: 1 } }, weeks(12)), RANK.medium);
+  ok('two level types that AGREE reach high',
+    calibrationCeiling({ provenance: [{ kind: 'level', source: 'usda-lmr', valueCents: 1300 }, { kind: 'level', source: 'cme-cash', valueCents: 1320 }, ...trd(['usda-lmr', 'cme', 'bls'])], trend: { agreement: 1 } }, weeks(12)), RANK.high);
 
   const failed = cases.filter((c) => !c.pass);
   for (const c of failed) console.error(`  ✗ ${c.name}: got ${NAME[c.got] ?? c.got}, want ${NAME[c.want] ?? c.want}`);
