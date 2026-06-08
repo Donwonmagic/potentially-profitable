@@ -62,6 +62,8 @@ const BANNED = [
   // check-verboten-phrases.mjs enforces the same set. Canon:
   // docs/brand/voice-and-naming-architecture.md §3a. The trailing entries
   // (X solutions, meeting-speak, leverage-verb) are studio Tier-2.
+  // tier1-core:start — SHARED cross-brand core. Must equal data/banned-core.json
+  // AND the product gate's tier1-core block; enforced by check-banned-core-sync.mjs.
   { rx: /\bsynergize[ds]?\b/gi,                             word: 'synergize' },
   { rx: /\bbest[- ]in[- ]class\b/gi,                        word: 'best-in-class' },
   { rx: /\bgrowth[- ]hack(?:s|er|ers|ed|ing)?\b/gi,         word: 'growth-hack' },
@@ -71,6 +73,7 @@ const BANNED = [
   { rx: /\bparadigm(?:s)?\b/gi,                             word: 'paradigm' },
   { rx: /\blow[- ]hanging fruit\b/gi,                       word: 'low-hanging fruit' },
   { rx: /\bmove the needle\b/gi,                            word: 'move the needle' },
+  // tier1-core:end
   { rx: /\b(circle back|loop in|deep[- ]div(?:e|ing))\b/gi, word: 'meeting-speak' },
   // "leverage" as a verb only — keeping the noun (financial leverage,
   // operating leverage) is fine. The (?<!-) excludes the hyphenated noun

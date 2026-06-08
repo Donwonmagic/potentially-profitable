@@ -157,6 +157,13 @@ warm" claim was itself stale, now flagged as such on the doc.
   (`BANNED_MARKETING_ES`: `potente`/`sin esfuerzo`/`Bienvenido a`). Audit found one drifted
   line (`es/for/restaurants` claimed menus "pasan sin esfuerzo" — not in the EN source; fixed)
   and 0 others. Negative-tested (es/studio probe caught; es/library editorial stays free).
+- **DONE (cycle 11)** Cross-repo Tier-1 sync guard — the §4 item-3 "merged banned list"
+  follow-on, landed for the Tier-1 core. `data/banned-core.json` (single source of truth,
+  vendored byte-identically into both repos) + `check-banned-core-sync.mjs` (parses each
+  gate's `tier1-core` sentinel block, asserts 9 bodies == manifest, cross-checks the sibling
+  manifest is identical; self-tested; fail-CI in both lint jobs). Audit confirmed the cores
+  already matched; tightened two product regexes (`\b` anchors) for byte-identical bodies.
+  Closes the canon's last unenforced "keep in sync by hand" instruction.
 - **P3 (new, cycle 10b)** No Spanish mirror yet for the **global** Tier-1 jargon list
   (`world-class`/`mundialmente reconocido`, etc.) on the site — only Tier-1b is mirrored.
   Lower-value (jargon rarely drifts into es/ editorial), logged for a future pass.
@@ -202,3 +209,5 @@ warm" claim was itself stale, now flagged as such on the doc.
 > `2026-06-07 — cycle 8: audited the token-sync (found the cross-repo hash-lock already exists + both JSON copies identical; the real gap was an undocumented manual ritual). Built vendor-tokens.mjs (copy + hash + cross-repo --diff; self+negative-tested) + token-spine.md runbook; wired --check into check-all. P1 hardened (Dim 1 stays 3, less fragile). Score holds at 29/30.`
 > `2026-06-07 — cycle 9: cleared the 13 {site} banned-word hits — verified each was natural prose (not critique), rewrote at SOURCE (topic-essays/article-content/library-tags JSON) so the generators stay idempotent, re-rendered the topic pages; fixed a leverage-regex false positive (highest-leverage); promoted check-banned-words to --check. Tier-1 fail-CI both repos. 29/30 holds.`
 > `2026-06-08 — cycle 10: audit-first paid off — the §3a "pending a copy pass" backlog assumed bad copy; the scan found 7 hits, all legit (editorial "powerful", critique-quoted "Welcome to"/"AI-powered"), 0 on marketing surfaces. Added the anti-overclaim cluster scoped to brochure surfaces (Tier-1b) instead of rewriting good prose; negative-tested; corrected the canon. 29/30 holds.`
+> `2026-06-08 — cycle 10b: mirrored Tier-1b into Spanish on es/ brand surfaces; audit caught one drifted line (es/for/restaurants "pasan sin esfuerzo"), fixed it; negative-tested. 29/30 holds.`
+> `2026-06-08 — cycle 11: turned the canon's "keep Tier-1 in sync" instruction into a gate. data/banned-core.json (single source of truth, vendored to both repos) + check-banned-core-sync.mjs (cross-repo drift guard parsing both gates' tier1-core sentinel blocks; self-tested; fail-CI both lint jobs). Cores already matched; \b-anchored two product regexes for byte-identical bodies. The §4 item-3 merged-list follow-on, landed for Tier-1. Dim 4 now structurally drift-proof, not just enforced. 29/30 holds.`

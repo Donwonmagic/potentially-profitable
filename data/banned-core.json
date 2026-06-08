@@ -1,0 +1,14 @@
+{
+  "_doc": "Canonical SHARED Tier-1 banned-vocabulary core. Both voice gates — {site}/scripts/check-banned-words.mjs and {product}/scripts/check-verboten-phrases.mjs — MUST enforce exactly these nine, no more, no fewer. This file is the single source of truth (canon: docs/brand/voice-and-naming-architecture.md §3a) and is vendored byte-identically into both repos. Drift is caught by scripts/check-banned-core-sync.mjs, which parses each gate's tier1-core sentinel block and compares names + normalized regex bodies against this list. To change the shared core: edit this file in one repo, copy it to the other, update both gate blocks, and let the sync gate confirm. 'body' is the regex source WITHOUT flags (gates may use /gi or /i as their scan needs require).",
+  "tier1": [
+    { "name": "synergize",        "body": "\\bsynergize[ds]?\\b" },
+    { "name": "best-in-class",    "body": "\\bbest[- ]in[- ]class\\b" },
+    { "name": "growth-hack",      "body": "\\bgrowth[- ]hack(?:s|er|ers|ed|ing)?\\b" },
+    { "name": "world-class",      "body": "\\bworld[- ]class\\b" },
+    { "name": "game-changer",     "body": "\\bgame[- ]chang(?:er|ing)\\b" },
+    { "name": "disrupt",          "body": "\\bdisrupt(?:s|ed|ing|ive|ion)?\\b" },
+    { "name": "paradigm",         "body": "\\bparadigm(?:s)?\\b" },
+    { "name": "low-hanging fruit","body": "\\blow[- ]hanging fruit\\b" },
+    { "name": "move the needle",  "body": "\\bmove the needle\\b" }
+  ]
+}

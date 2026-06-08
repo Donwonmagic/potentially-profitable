@@ -142,9 +142,16 @@ name:
 
 One shared core, plus per-register extensions. This is the canon; the two gates
 (`{site}/scripts/check-banned-words.mjs`, `{product}/scripts/check-verboten-phrases.mjs`)
-each enforce **Tier 1 + their own Tier 2**. Keep Tier 1 in sync with this list.
+each enforce **Tier 1 + their own Tier 2**. Tier 1 is no longer kept in sync by hand:
+`data/banned-core.json` (vendored byte-identically into both repos) is the single source of
+truth, and `scripts/check-banned-core-sync.mjs` — fail-CI in both — parses each gate's
+`tier1-core:start … tier1-core:end` block and asserts its nine regex bodies match the
+manifest, plus (when the sibling repo is checked out) that the two manifests are identical.
+Drift between the two gates now fails a build, not a code review. *(This is the §4 item-3
+"merged banned list" follow-on, landed for the Tier-1 core.)*
 
-**Tier 1 — shared core (both repos retire).** Universal marketing-speak:
+**Tier 1 — shared core (both repos retire).** Universal marketing-speak (canonical list +
+regex bodies in `data/banned-core.json`):
 
 > `world-class` · `best-in-class` · `synergize` · `growth-hack` · `game-changer` ·
 > `disrupt` · `paradigm` · `low-hanging fruit` · `move the needle`
@@ -212,21 +219,25 @@ existing gates until reviewed.
 3. **One banned list, two tiers.** Merge the storefront's 24 entries
    (`check-banned-words.mjs`) and the product's 32 patterns
    (`check-verboten-phrases.mjs`) into one shared core plus per-register
-   extensions (see §5), read by both repos. Until that lands, the two gate
-   files remain the executable source of truth.
+   extensions (see §5), read by both repos. **Landed for the Tier-1 core:**
+   `data/banned-core.json` is the single source of truth, vendored into both
+   repos and enforced by `check-banned-core-sync.mjs` (§3a). The per-register
+   Tier-2 lists stay in their own gate files by design.
 
 Checks (1)+(2) ship as `scripts/check-voice-boundary.mjs` in the product
 repo, wired into the `node-lints` job in `.github/workflows/ci.yml`. It
 passes clean today (91 files) and blocks a regression — the named voice
-"Don" leaking into product copy — pre-merge. Check (3), the merged banned
-list, is the remaining follow-on.
+"Don" leaking into product copy — pre-merge. Check (3) landed for the
+Tier-1 core: `check-banned-core-sync.mjs` + `data/banned-core.json`, fail-CI
+in both repos' lint jobs (the Tier-2 per-register lists stay split by design).
 
 ---
 
 ## 5. The merged banned list (specification)
 
-The executable source stays in the two gate files until the shared list
-lands. The merge policy:
+The Tier-1 core's executable source of truth is now `data/banned-core.json`
+(synced by `check-banned-core-sync.mjs`, §3a); the Tier-2 per-register lists
+stay in their own gate files. The merge policy:
 
 - **Universal core (both surfaces):** marketing clichés and hype —
   *solutions, leverage, synergize, world-class, best-in-class, robust,
