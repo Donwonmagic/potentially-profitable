@@ -166,7 +166,10 @@ signal" / "single most powerful conversion element" (descriptive editorial in li
 and the four `Welcome to` + one `AI-powered` all *quoted as the bad example* in critique
 articles. Those words are ordinary English on the editorial trees, so the site scopes the
 ban to brand surfaces rather than forcing rewrites of good prose. Extend `MARKETING_SURFACES`
-when a new brochure dir is added.
+when a new brochure dir is added. The four EN patterns are part of the shared
+`data/banned-core.json` (`tier1b` list, cycle 12) and drift-guarded across both repos by
+`check-banned-core-sync.mjs` exactly like Tier-1 — same words, different scope, byte-identical
+regex bodies.
 
 The site also mirrors Tier-1b into Spanish on `es/` brand surfaces (cycle 10b,
 `BANNED_MARKETING_ES` / `MARKETING_SURFACES_ES`): `potente` (powerful) · `sin esfuerzo`

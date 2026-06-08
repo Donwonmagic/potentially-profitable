@@ -164,6 +164,12 @@ warm" claim was itself stale, now flagged as such on the doc.
   manifest is identical; self-tested; fail-CI in both lint jobs). Audit confirmed the cores
   already matched; tightened two product regexes (`\b` anchors) for byte-identical bodies.
   Closes the canon's last unenforced "keep in sync by hand" instruction.
+- **DONE (cycle 12)** Extended the manifest + guard to **Tier-1b** (`seamless`/`powerful`/
+  `Welcome to`/`AI-powered`) — a `tier1b` list in `banned-core.json` + `tier1b-core` sentinels
+  in both gates. The audit caught real latent drift: the two `AI-powered` patterns had already
+  diverged (`/AI[ -]?powered/` vs `/\bAI[- ]?powered\b/`); reconciled to one anchored body and
+  regrouped the product's four entries contiguous. 13 shared-core entries (9+4) now guarded
+  both ways; negative-tested per-tier. The "banned-core" now covers the full shared surface.
 - **P3 (new, cycle 10b)** No Spanish mirror yet for the **global** Tier-1 jargon list
   (`world-class`/`mundialmente reconocido`, etc.) on the site — only Tier-1b is mirrored.
   Lower-value (jargon rarely drifts into es/ editorial), logged for a future pass.
@@ -211,3 +217,4 @@ warm" claim was itself stale, now flagged as such on the doc.
 > `2026-06-08 — cycle 10: audit-first paid off — the §3a "pending a copy pass" backlog assumed bad copy; the scan found 7 hits, all legit (editorial "powerful", critique-quoted "Welcome to"/"AI-powered"), 0 on marketing surfaces. Added the anti-overclaim cluster scoped to brochure surfaces (Tier-1b) instead of rewriting good prose; negative-tested; corrected the canon. 29/30 holds.`
 > `2026-06-08 — cycle 10b: mirrored Tier-1b into Spanish on es/ brand surfaces; audit caught one drifted line (es/for/restaurants "pasan sin esfuerzo"), fixed it; negative-tested. 29/30 holds.`
 > `2026-06-08 — cycle 11: turned the canon's "keep Tier-1 in sync" instruction into a gate. data/banned-core.json (single source of truth, vendored to both repos) + check-banned-core-sync.mjs (cross-repo drift guard parsing both gates' tier1-core sentinel blocks; self-tested; fail-CI both lint jobs). Cores already matched; \b-anchored two product regexes for byte-identical bodies. The §4 item-3 merged-list follow-on, landed for Tier-1. Dim 4 now structurally drift-proof, not just enforced. 29/30 holds.`
+> `2026-06-08 — cycle 12: finished the banned-core — extended the manifest + guard to Tier-1b. Audit caught latent drift the cycle-11 guard didn't cover: the two AI-powered patterns had already diverged. Reconciled to one anchored body, added tier1b-core sentinels both gates, regrouped the product's four contiguous. 13 shared entries guarded both ways, negative-tested per-tier. 29/30 holds.`

@@ -1,5 +1,5 @@
 {
-  "_doc": "Canonical SHARED Tier-1 banned-vocabulary core. Both voice gates — {site}/scripts/check-banned-words.mjs and {product}/scripts/check-verboten-phrases.mjs — MUST enforce exactly these nine, no more, no fewer. This file is the single source of truth (canon: docs/brand/voice-and-naming-architecture.md §3a) and is vendored byte-identically into both repos. Drift is caught by scripts/check-banned-core-sync.mjs, which parses each gate's tier1-core sentinel block and compares names + normalized regex bodies against this list. To change the shared core: edit this file in one repo, copy it to the other, update both gate blocks, and let the sync gate confirm. 'body' is the regex source WITHOUT flags (gates may use /gi or /i as their scan needs require).",
+  "_doc": "Canonical SHARED banned-vocabulary core. Both voice gates — {site}/scripts/check-banned-words.mjs and {product}/scripts/check-verboten-phrases.mjs — MUST enforce exactly these. This file is the single source of truth (canon: docs/brand/voice-and-naming-architecture.md §3a) and is vendored byte-identically into both repos. Drift is caught by scripts/check-banned-core-sync.mjs, which parses each gate's tier1-core / tier1b-core sentinel blocks and compares names + normalized regex bodies against these lists. 'tier1' is universal marketing-speak (retired everywhere off the allowlist in both repos). 'tier1b' is the anti-overclaim cluster (retired outright in {product}; marketing-surface-scoped in {site}) — shared words, different scope, identical patterns. 'body' is the regex source WITHOUT flags (gates may use /gi or /i as their scan needs require). To change the shared core: edit this file in one repo, copy it to the other, update both gate blocks, and let the sync gate confirm.",
   "tier1": [
     { "name": "synergize",        "body": "\\bsynergize[ds]?\\b" },
     { "name": "best-in-class",    "body": "\\bbest[- ]in[- ]class\\b" },
@@ -10,5 +10,11 @@
     { "name": "paradigm",         "body": "\\bparadigm(?:s)?\\b" },
     { "name": "low-hanging fruit","body": "\\blow[- ]hanging fruit\\b" },
     { "name": "move the needle",  "body": "\\bmove the needle\\b" }
+  ],
+  "tier1b": [
+    { "name": "seamless",    "body": "\\bseamless(?:ly)?\\b" },
+    { "name": "powerful",    "body": "\\bpowerful\\b" },
+    { "name": "Welcome to",  "body": "\\bWelcome to\\b" },
+    { "name": "AI-powered",  "body": "\\bAI[- ]?powered\\b" }
   ]
 }

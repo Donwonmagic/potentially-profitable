@@ -9,8 +9,9 @@
  *
  * Single source of truth: data/banned-core.json (vendored byte-identically
  * into both repos). This check:
- *   1. Parses the local gate's `tier1-core:start … tier1-core:end` block and
- *      asserts its regex bodies (and, where present, names) match the manifest.
+ *   1. Parses the local gate's `tier1-core` and `tier1b-core` sentinel blocks
+ *      and asserts their regex bodies (and, where present, names) match the
+ *      manifest's tier1 / tier1b lists (the shared jargon + anti-overclaim core).
  *   2. If the sibling repo is reachable (env MUNTIN_SIBLING_REPO, or a default
  *      sibling dir), asserts its vendored manifest is byte-identical to ours and
  *      validates its gate block too. When the sibling is absent (a single-repo
@@ -38,14 +39,14 @@ const GATE_FILES = [
 
 const MANIFEST_REL = 'data/banned-core.json';
 
-// Pull the regex bodies (and any `word:` names) out of a gate file's
-// tier1-core sentinel block. Bodies contain no '/' or ',', so a per-literal
-// match is unambiguous.
-function extractTier1(gateSource, label) {
-  const start = gateSource.indexOf('tier1-core:start');
-  const end = gateSource.indexOf('tier1-core:end');
+// Pull the regex bodies (and any `word:` names) out of one of a gate file's
+// sentinel blocks (e.g. tier1-core / tier1b-core). Bodies contain no '/' or
+// ',', so a per-literal match is unambiguous.
+function extractBlock(gateSource, marker, label) {
+  const start = gateSource.indexOf(`${marker}:start`);
+  const end = gateSource.indexOf(`${marker}:end`);
   if (start === -1 || end === -1 || end < start) {
-    throw new Error(`${label}: missing tier1-core:start/end sentinels`);
+    throw new Error(`${label}: missing ${marker}:start/end sentinels`);
   }
   const block = gateSource.slice(start, end);
   const bodies = [];
@@ -58,6 +59,12 @@ function extractTier1(gateSource, label) {
   return { bodies, names };
 }
 
+// Each shared tier: the manifest key + the sentinel marker the gates wrap it in.
+const TIERS = [
+  { key: 'tier1', marker: 'tier1-core', label: 'Tier-1' },
+  { key: 'tier1b', marker: 'tier1b-core', label: 'Tier-1b' },
+];
+
 function loadManifest(file, label) {
   let parsed;
   try {
@@ -65,8 +72,10 @@ function loadManifest(file, label) {
   } catch (e) {
     throw new Error(`${label}: cannot read/parse ${file} — ${e.message}`);
   }
-  if (!Array.isArray(parsed.tier1)) throw new Error(`${label}: no tier1[] array`);
-  return parsed.tier1;
+  for (const { key } of TIERS) {
+    if (!Array.isArray(parsed[key])) throw new Error(`${label}: no ${key}[] array`);
+  }
+  return parsed;
 }
 
 const sortedJoin = (arr) => [...arr].sort().join('\n');
@@ -77,14 +86,12 @@ const notes = [];
 // ── self-test ────────────────────────────────────────────────────────────
 if (process.argv.includes('--self-test')) {
   const manifest = loadManifest(path.join(repoRoot, MANIFEST_REL), 'manifest');
-  const canonical = manifest.map((e) => e.body);
+  const canonical = TIERS.flatMap(({ key }) => manifest[key].map((e) => e.body));
   // a gate that drops one core word must be caught
-  const drifted = canonical.slice(1);
-  const ok1 = sortedJoin(drifted) !== sortedJoin(canonical);
+  const ok1 = sortedJoin(canonical.slice(1)) !== sortedJoin(canonical);
   // a gate that adds a stray word must be caught
-  const extra = [...canonical, '\\bextra\\b'];
-  const ok2 = sortedJoin(extra) !== sortedJoin(canonical);
-  // a renamed body (anchor dropped) must be caught
+  const ok2 = sortedJoin([...canonical, '\\bextra\\b']) !== sortedJoin(canonical);
+  // a mutated body (anchor dropped) must be caught
   const mutated = canonical.map((b, i) => (i === 0 ? b.replace(/\\b/g, '') : b));
   const ok3 = sortedJoin(mutated) !== sortedJoin(canonical);
   if (ok1 && ok2 && ok3) {
@@ -98,24 +105,34 @@ if (process.argv.includes('--self-test')) {
 // ── canonical manifest (this repo) ─────────────────────────────────────────
 const manifestPath = path.join(repoRoot, MANIFEST_REL);
 const manifest = loadManifest(manifestPath, 'local manifest');
-const canonBodies = manifest.map((e) => e.body);
-const canonNames = manifest.map((e) => e.name);
 const manifestRaw = fs.readFileSync(manifestPath, 'utf8');
 
 function validateGate(absGatePath, label, { checkNames }) {
   const src = fs.readFileSync(absGatePath, 'utf8');
-  const { bodies, names } = extractTier1(src, label);
-  if (sortedJoin(bodies) !== sortedJoin(canonBodies)) {
-    problems.push(
-      `${label}: Tier-1 regex bodies differ from ${MANIFEST_REL}.\n` +
-        `      gate:     ${sortedJoin(bodies).replace(/\n/g, ' | ')}\n` +
-        `      manifest: ${sortedJoin(canonBodies).replace(/\n/g, ' | ')}`,
-    );
+  let matched = 0;
+  for (const { key, marker, label: tierLabel } of TIERS) {
+    const canonBodies = manifest[key].map((e) => e.body);
+    const canonNames = manifest[key].map((e) => e.name);
+    let block;
+    try {
+      block = extractBlock(src, marker, label);
+    } catch (e) {
+      problems.push(`${label}: ${e.message}`);
+      continue;
+    }
+    if (sortedJoin(block.bodies) !== sortedJoin(canonBodies)) {
+      problems.push(
+        `${label}: ${tierLabel} regex bodies differ from ${MANIFEST_REL}.\n` +
+          `      gate:     ${sortedJoin(block.bodies).replace(/\n/g, ' | ')}\n` +
+          `      manifest: ${sortedJoin(canonBodies).replace(/\n/g, ' | ')}`,
+      );
+    }
+    if (checkNames && block.names.length && sortedJoin(block.names) !== sortedJoin(canonNames)) {
+      problems.push(`${label}: ${tierLabel} names differ from manifest.`);
+    }
+    matched += block.bodies.length;
   }
-  if (checkNames && names.length && sortedJoin(names) !== sortedJoin(canonNames)) {
-    problems.push(`${label}: Tier-1 names differ from manifest.`);
-  }
-  notes.push(`  ✓ ${label}: ${bodies.length} Tier-1 entries match.`);
+  notes.push(`  ✓ ${label}: ${matched} shared-core entries match.`);
 }
 
 // Local gate(s)

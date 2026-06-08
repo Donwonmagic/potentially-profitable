@@ -92,10 +92,15 @@ const BANNED = [
 // "AI-powered" appear there only as *quoted bad examples* in critique. On a
 // brochure/brand page, all four are decoration the voice contract retires.
 const BANNED_MARKETING = [
+  // tier1b-core:start — SHARED anti-overclaim core. Must equal data/banned-core.json
+  // AND the product gate's tier1b-core block; enforced by check-banned-core-sync.mjs.
+  // (Shared words; on the site they are marketing-surface-scoped, in the product
+  // outright — same patterns, different scope.)
   { rx: /\bseamless(?:ly)?\b/gi, word: 'seamless' },
   { rx: /\bpowerful\b/gi,        word: 'powerful' },
   { rx: /\bWelcome to\b/gi,      word: 'Welcome to' },
   { rx: /\bAI[- ]?powered\b/gi,  word: 'AI-powered' },
+  // tier1b-core:end
 ];
 
 // Spanish mirror of the anti-overclaim cluster, for the es/ brand pages.
