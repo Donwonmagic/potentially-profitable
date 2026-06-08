@@ -144,9 +144,10 @@ warm" claim was itself stale, now flagged as such on the doc.
   manual ritual is now one command; the hash-lock design (loud, safe) is kept. A real
   `@muntin/tokens` npm package remains the optional long-term step (documented, not
   warranted yet).
-- **P2 (new, cycle 7)** Promote `{site}/check-banned-words.mjs` to `--check` (fail-CI) in
-  `check-all.mjs` — currently warn-only; blocked by a pre-existing ~13-hit backlog to clear
-  first. Until then Tier-1 is hard on the product, advisory on the site.
+- **DONE (P2, cycle 9)** `{site}/check-banned-words.mjs` promoted to `--check` (fail-CI)
+  after clearing the 13 pre-existing hits (rewritten at source — `topic-essays.json` /
+  `article-content.json` / `library-tags.json` — then re-rendered) + a leverage-regex
+  false-positive fix. Tier-1 is now hard on **both** repos.
 - **P2 (new, cycle 7)** {site} copy pass to adopt the universal anti-overclaim words
   (`seamless`, `powerful`, `Welcome to`, `AI-powered`) into the site's enforced core —
   blocked today only by false-positive collisions (the `Seamless` delivery brand; one
@@ -187,3 +188,4 @@ warm" claim was itself stale, now flagged as such on the doc.
 > `2026-06-07 — cycle 6: documented Workshop (studio tool workspace) vs Workbench (legacy id) vs Muntin Ledger (product) in the naming canon; built {product} check-name-coherence.mjs (retired "Invoice Decoder", user copy only; self+negative-tested); Dim 5 → 3 (28/30).`
 > `2026-06-07 — cycle 7: audited both banned lists + scanned all live copy against the union (collisions were false positives: Seamless the brand, critique pages, doc-comments). Built the two-tier model (canon §3a); added 7 shared-core marketing-speak words to {product} (gate stays green, negative-tested); annotated both gates. Dim 4 → 3 (29/30 — practical ceiling).`
 > `2026-06-07 — cycle 8: audited the token-sync (found the cross-repo hash-lock already exists + both JSON copies identical; the real gap was an undocumented manual ritual). Built vendor-tokens.mjs (copy + hash + cross-repo --diff; self+negative-tested) + token-spine.md runbook; wired --check into check-all. P1 hardened (Dim 1 stays 3, less fragile). Score holds at 29/30.`
+> `2026-06-07 — cycle 9: cleared the 13 {site} banned-word hits — verified each was natural prose (not critique), rewrote at SOURCE (topic-essays/article-content/library-tags JSON) so the generators stay idempotent, re-rendered the topic pages; fixed a leverage-regex false positive (highest-leverage); promoted check-banned-words to --check. Tier-1 fail-CI both repos. 29/30 holds.`

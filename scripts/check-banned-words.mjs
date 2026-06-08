@@ -65,8 +65,10 @@ const BANNED = [
   { rx: /\bmove the needle\b/gi,                            word: 'move the needle' },
   { rx: /\b(circle back|loop in|deep[- ]div(?:e|ing))\b/gi, word: 'meeting-speak' },
   // "leverage" as a verb only — keeping the noun (financial leverage,
-  // operating leverage) is fine.
-  { rx: /\bleverag(?:e|es|ed|ing)\s+(?:our|the|your|a|an|every|all)\b/gi, word: 'leverage (verb)' },
+  // operating leverage) is fine. The (?<!-) excludes the hyphenated noun
+  // "highest-leverage / high-leverage <thing>" (which is allowed); only the
+  // bare verb "leverage the/our/your/a…" is retired.
+  { rx: /(?<!-)\bleverag(?:e|es|ed|ing)\s+(?:our|the|your|a|an|every|all)\b/gi, word: 'leverage (verb)' },
   // "solutions" used as a generic SaaS suffix.
   { rx: /\b(?:web|business|enterprise|digital|marketing)\s+solutions\b/gi, word: 'X solutions' },
 ];

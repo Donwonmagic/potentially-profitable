@@ -88,7 +88,7 @@ const CHECKS = [
   ['Dark-mode block',     'build-dark-mode.mjs',           '--check'],
   ['Dark contrast',       'check-dark-contrast.mjs'],
   ['Section contrast',    'check-contrast.mjs'],
-  ['Banned words',        'check-banned-words.mjs'],
+  ['Banned words',        'check-banned-words.mjs',        '--check'],
   // Sprint M (2026-05-08): retired-slug regression guard. Fails CI
   // if either retired slug is reintroduced anywhere outside the
   // documented allow list (_redirects, 404.html, historical

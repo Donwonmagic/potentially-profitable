@@ -168,11 +168,9 @@ not silently enforced.
 Both gates skip comment lines and scrub `<code>`/`<pre>`/`<script>`, so naming a banned
 word *as documentation* (like this section, or a gate's own rule list) does not trip them.
 
-**Enforcement posture (be precise):** `{product}/check-verboten-phrases.mjs` is **fail-CI**.
-`{site}/check-banned-words.mjs` runs **warn-only** in `check-all.mjs` (no `--check`) — it
-reports Tier-1/Tier-2 hits but does not block. Promoting the site gate to `--check` is
-backlog, gated on clearing its pre-existing hits first (≈13 at last scan). Until then,
-Tier-1 is hard on the product and advisory on the site.
+**Enforcement posture:** **both** gates are now **fail-CI** —
+`{product}/check-verboten-phrases.mjs` and `{site}/check-banned-words.mjs` (`--check` in
+`check-all.mjs` since cycle 9, after the 13 pre-existing {site} hits were cleared).
 
 ---
 
