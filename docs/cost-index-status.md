@@ -117,19 +117,19 @@ covers all of it.
 weeks · `toHigh` hint), `--check` idempotency wired into check-all. Self-prioritizes
 the family work and proves honest maintenance.
 
-**P1 remaining — both are FOUNDER DECISIONS, not engineering:**
-- **Weekly heartbeat** ("you last checked {when}") — phrasing helper built + tested
-  (`MuntinCostFormat.heartbeat`), but a cross-visit marker needs localStorage, which
-  **/security/ claim #4 forbids** for this tool (CI-enforced by `check-tool-no-fetch.mjs`).
-  Wiring it = exempting cost-pulse from claim 4 = changing a public privacy promise.
-  Decision: ship the heartbeat and narrow the claim, or drop it. (A storage-free
-  "prices as of {date}" panel marker is the honest alternative if we keep the claim.)
-- **Driver lag-claim** ("diesel turned up ~3 weeks before produce — association, not
-  cause") — deliberately deferred: lead-lag on the current ~6–26-week series risks a
-  spurious correlation, and a causal-adjacent claim needs an editorial honesty bar +
-  more history (≥~1yr). Not safe to ship autonomously.
+**P1 remaining — DECIDED 2026-06-08 (founder):**
+- **Weekly heartbeat** → **keep the privacy promise; not wired.** A cross-visit
+  marker needs localStorage, which **/security/ claim #4 forbids** for this tool
+  (CI-enforced by `check-tool-no-fetch.mjs`). The `MuntinCostFormat.heartbeat`
+  phrasing helper is built + tested and left ready; wiring it would mean exempting
+  cost-pulse from claim 4 (a public-promise change) — declined for now. The
+  no-client-storage claim stays a trust differentiator.
+- **Driver lag-claim** → **deferred.** Lead-lag on the current ~6–26-week series
+  risks a spurious correlation and a causal-adjacent claim needs an editorial
+  honesty bar + ≥~1yr history. Revisit once history deepens.
 
-vs-last-year (the third old item) is now SHIPPED (above).
+vs-last-year (the third old item) is now SHIPPED (above). **P1 experience layer is
+complete** for everything safely shippable today.
 
 ## NEXT — to get the Cost Index live (in priority order)
 
