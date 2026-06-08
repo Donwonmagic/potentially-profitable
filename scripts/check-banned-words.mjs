@@ -9,6 +9,14 @@
  * appear in user-facing marketing surfaces — homepage, services,
  * studio pages, hero copy, etc.
  *
+ * Two tiers: the global list (pure marketing jargon — synergize,
+ * world-class, move the needle…) is retired everywhere off the
+ * allowlist; the anti-overclaim cluster (seamless / powerful /
+ * Welcome to / AI-powered — Tier-1b, shared with the product gate) is
+ * scoped to brochure/brand surfaces only, since the editorial trees
+ * use those words legitimately (descriptive "powerful", quoted-as-bad
+ * "Welcome to"). See canon §3a.
+ *
  * The check scans HTML files for the banned words used as plain
  * marketing copy. Matches inside <code>, <pre>, blockquotes
  * marked with attribution, and pages on the allowlist are ignored.
@@ -73,6 +81,30 @@ const BANNED = [
   { rx: /\b(?:web|business|enterprise|digital|marketing)\s+solutions\b/gi, word: 'X solutions' },
 ];
 
+// Tier-1b — the anti-overclaim cluster, shared in spirit with the product's
+// verboten gate (canon §3a). On the site these are scoped to MARKETING
+// surfaces only: unlike the pure jargon above, "powerful"/"seamless" are
+// ordinary adjectives the editorial trees (library/learn/blog) use
+// legitimately ("the most powerful trust signal"), and "Welcome to" /
+// "AI-powered" appear there only as *quoted bad examples* in critique. On a
+// brochure/brand page, all four are decoration the voice contract retires.
+const BANNED_MARKETING = [
+  { rx: /\bseamless(?:ly)?\b/gi, word: 'seamless' },
+  { rx: /\bpowerful\b/gi,        word: 'powerful' },
+  { rx: /\bWelcome to\b/gi,      word: 'Welcome to' },
+  { rx: /\bAI[- ]?powered\b/gi,  word: 'AI-powered' },
+];
+
+// Brochure/brand surfaces where the anti-overclaim cluster applies. The
+// content trees (library, blog, learn, glossary, course, tools, sheets,
+// cost-index) are intentionally out of scope. Extend this list when a new
+// marketing dir is added — canon §3a.
+const MARKETING_SURFACES = ['about/', 'studio/', 'services/', 'for/', 'start/', 'method/'];
+function isMarketingSurface(relPath) {
+  const rel = relPath.replace(/\\/g, '/');
+  return rel === 'index.html' || MARKETING_SURFACES.some((p) => rel.startsWith(p));
+}
+
 function collectHtml(dir, out = []) {
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
     if (entry.name.startsWith('.')) continue;
@@ -108,7 +140,8 @@ for (const file of collectHtml(repoRoot)) {
   const rel = path.relative(repoRoot, file);
   if (isAllowlisted(rel)) continue;
   const src = scrub(fs.readFileSync(file, 'utf8'));
-  for (const { rx, word } of BANNED) {
+  const wordlist = isMarketingSurface(rel) ? [...BANNED, ...BANNED_MARKETING] : BANNED;
+  for (const { rx, word } of wordlist) {
     rx.lastIndex = 0;
     const matches = src.match(rx);
     if (matches) {

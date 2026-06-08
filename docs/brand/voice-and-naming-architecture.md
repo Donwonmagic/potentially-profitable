@@ -149,12 +149,17 @@ each enforce **Tier 1 + their own Tier 2**. Keep Tier 1 in sync with this list.
 > `world-class` · `best-in-class` · `synergize` · `growth-hack` · `game-changer` ·
 > `disrupt` · `paradigm` · `low-hanging fruit` · `move the needle`
 
-Enforced in both today. A second cluster — `seamless` · `powerful` · `Welcome to` ·
-`AI-powered` — is enforced in **{product}** and is core in spirit, but **{site}**
-adoption is pending a copy pass: live false-positive collisions exist (`Seamless` the
-delivery brand in a tool's aggregator list; "most powerful trust signal" in a library
-article; "Welcome to…" quoted as the *bad* example in critique pages). Logged as backlog,
-not silently enforced.
+**Tier 1b — anti-overclaim cluster.** `seamless` · `powerful` · `Welcome to` ·
+`AI-powered`. Enforced **outright in {product}** (a tightly-controlled surface) and, since
+cycle 10, in **{site}** *scoped to brochure/brand surfaces* (`/`, `/about/`, `/studio/`,
+`/services/`, `/for/`, `/start/`, `/method/` — `BANNED_MARKETING` + `MARKETING_SURFACES` in
+the gate). The earlier "pending a copy pass" note was wrong: a full audit found **zero**
+marketing-surface hits and all seven site occurrences legitimate — "most powerful trust
+signal" / "single most powerful conversion element" (descriptive editorial in library/learn),
+and the four `Welcome to` + one `AI-powered` all *quoted as the bad example* in critique
+articles. Those words are ordinary English on the editorial trees, so the site scopes the
+ban to brand surfaces rather than forcing rewrites of good prose. Extend `MARKETING_SURFACES`
+when a new brochure dir is added.
 
 **Tier 2 — per register.**
 

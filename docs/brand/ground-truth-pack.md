@@ -148,6 +148,11 @@ warm" claim was itself stale, now flagged as such on the doc.
   after clearing the 13 pre-existing hits (rewritten at source — `topic-essays.json` /
   `article-content.json` / `library-tags.json` — then re-rendered) + a leverage-regex
   false-positive fix. Tier-1 is now hard on **both** repos.
+- **DONE (P2, cycle 10)** Extended the {site} gate with the anti-overclaim cluster
+  (`seamless`/`powerful`/`Welcome to`/`AI-powered`, Tier-1b) — **marketing-surface-scoped**
+  (`MARKETING_SURFACES`/`BANNED_MARKETING`). The audit found all 7 site uses legit (editorial
+  "powerful", critique-quoted "Welcome to"/"AI-powered") and 0 on marketing surfaces, so no
+  copy pass was needed — the right fix was scope, not rewrites. Negative-tested. §3a updated.
 - **P2 (new, cycle 7)** {site} copy pass to adopt the universal anti-overclaim words
   (`seamless`, `powerful`, `Welcome to`, `AI-powered`) into the site's enforced core —
   blocked today only by false-positive collisions (the `Seamless` delivery brand; one
@@ -189,3 +194,4 @@ warm" claim was itself stale, now flagged as such on the doc.
 > `2026-06-07 — cycle 7: audited both banned lists + scanned all live copy against the union (collisions were false positives: Seamless the brand, critique pages, doc-comments). Built the two-tier model (canon §3a); added 7 shared-core marketing-speak words to {product} (gate stays green, negative-tested); annotated both gates. Dim 4 → 3 (29/30 — practical ceiling).`
 > `2026-06-07 — cycle 8: audited the token-sync (found the cross-repo hash-lock already exists + both JSON copies identical; the real gap was an undocumented manual ritual). Built vendor-tokens.mjs (copy + hash + cross-repo --diff; self+negative-tested) + token-spine.md runbook; wired --check into check-all. P1 hardened (Dim 1 stays 3, less fragile). Score holds at 29/30.`
 > `2026-06-07 — cycle 9: cleared the 13 {site} banned-word hits — verified each was natural prose (not critique), rewrote at SOURCE (topic-essays/article-content/library-tags JSON) so the generators stay idempotent, re-rendered the topic pages; fixed a leverage-regex false positive (highest-leverage); promoted check-banned-words to --check. Tier-1 fail-CI both repos. 29/30 holds.`
+> `2026-06-08 — cycle 10: audit-first paid off — the §3a "pending a copy pass" backlog assumed bad copy; the scan found 7 hits, all legit (editorial "powerful", critique-quoted "Welcome to"/"AI-powered"), 0 on marketing surfaces. Added the anti-overclaim cluster scoped to brochure surfaces (Tier-1b) instead of rewriting good prose; negative-tested; corrected the canon. 29/30 holds.`
