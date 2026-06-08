@@ -875,5 +875,11 @@
   blink.appendChild(document.createTextNode('.'));
   card.insertBefore(blink, document.getElementById('cpMarketCta'));
 
+  // NOTE: a cross-visit "since you last looked" heartbeat would need
+  // localStorage/sessionStorage, which /security/ claim #4 forbids for this tool
+  // (enforced by check-tool-no-fetch.mjs). The phrasing helper exists and is
+  // tested (MuntinCostFormat.heartbeat), but wiring it is a founder decision —
+  // it would require exempting cost-pulse from claim 4 (a public-promise change).
+
   card.hidden = false;
 })();

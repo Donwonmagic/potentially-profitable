@@ -162,7 +162,28 @@
       };
     }
 
-    return { L: L, money: money, sparkShape: sparkShape, percentileLine: percentileLine, weekOverWeek: weekOverWeek, vsLastYear: vsLastYear, flagVerb: flagVerb };
+    // Weekly heartbeat — a calm "you last checked {when}" marker for a returning
+    // operator, computed from a LOCAL last-visit timestamp (no server, no account).
+    // Deliberately no streaks, badges, counts, or urgency: it only orients in time.
+    // Returns null on a first visit or a same-day return (never nags). Pure so the
+    // relative phrasing is testable.
+    //
+    // NOT WIRED into the Cost Pulse panel: persisting the last-visit timestamp needs
+    // localStorage, which /security/ claim #4 forbids for that tool (enforced by
+    // check-tool-no-fetch.mjs). Wiring it is a founder decision — it would mean
+    // exempting cost-pulse from claim 4, a change to a public privacy promise.
+    function heartbeat(lastSeenMs, nowMs) {
+      if (lastSeenMs == null || !isFinite(lastSeenMs) || !isFinite(nowMs)) return null;
+      var days = Math.floor((nowMs - lastSeenMs) / 86400000);
+      if (days < 1) return null;                               // same day → no nag
+      var rel = days === 1 ? L('yesterday', 'ayer')
+        : days < 7 ? L(days + ' days ago', 'hace ' + days + ' días')
+          : days < 14 ? L('about a week ago', 'hace cerca de una semana')
+            : L(Math.round(days / 7) + ' weeks ago', 'hace ' + Math.round(days / 7) + ' semanas');
+      return L('You last checked these prices ' + rel + '.', 'Revisaste estos precios por última vez ' + rel + '.');
+    }
+
+    return { L: L, money: money, sparkShape: sparkShape, percentileLine: percentileLine, weekOverWeek: weekOverWeek, vsLastYear: vsLastYear, heartbeat: heartbeat, flagVerb: flagVerb };
   }
 
   var api = make;          // MuntinCostFormat(es) → bound, locale-aware helpers

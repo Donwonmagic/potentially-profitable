@@ -62,6 +62,20 @@ test('vsLastYear: ~year-back, $-anchored, "double/half" flourish, gap-safe, dorm
   assert.match(ES.vsLastYear([500, 1000], ['2025-05-08', '2026-05-08'], 'dozen').text, /Frente al año pasado/);
 });
 
+test('heartbeat: calm local "you last checked {when}"; silent on first/same-day; no urgency', () => {
+  const DAY = 86400000;
+  const now = Date.parse('2026-06-08T12:00:00Z');
+  assert.equal(EN.heartbeat(null, now), null);                       // first visit → silent
+  assert.equal(EN.heartbeat(now - DAY / 2, now), null);              // same day → no nag
+  assert.match(EN.heartbeat(now - DAY, now), /You last checked these prices yesterday\./);
+  assert.match(EN.heartbeat(now - 3 * DAY, now), /3 days ago/);
+  assert.match(EN.heartbeat(now - 9 * DAY, now), /about a week ago/);
+  assert.match(EN.heartbeat(now - 21 * DAY, now), /3 weeks ago/);
+  assert.match(ES.heartbeat(now - DAY, now), /Revisaste estos precios por última vez ayer\./);
+  // no streaks / counts / urgency words ever:
+  assert.doesNotMatch(EN.heartbeat(now - 5 * DAY, now), /streak|don't miss|hurry|act now|\d+ in a row/i);
+});
+
 test('flagVerb: thin data never says re-price; verdicts map to buy/hold/watch', () => {
   const struct = { verdict: 'structural', elevatedWeeks: 3 };
   assert.equal(EN.flagVerb(struct, 'medium').tone, 'reprice');
