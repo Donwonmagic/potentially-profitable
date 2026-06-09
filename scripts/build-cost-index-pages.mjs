@@ -752,6 +752,8 @@ main{padding-top:64px}
 .ci-outlook__how div{margin-top:6px;color:var(--ink-soft);line-height:1.55}
 .ci-outlook__panel{margin:0 0 8px;padding-left:18px}
 .ci-outlook__panel li{margin:0 0 4px}
+.ci-outlook__lab{margin:10px 0 0;font-size:13.5px}
+.ci-outlook__lab a{color:#6b4fa1;text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=${SHELL_HASH.core}" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=${SHELL_HASH.article}" onload="this.onload=null;this.rel='stylesheet'">
@@ -935,6 +937,7 @@ function pressureBlock(slug, locale) {
     <p class="ci-outlook__head">${head}<span class="ci-read__badge">${chip}</span></p>
     <p class="ci-outlook__line" data-dir="${dir}">${line}</p>
     <details class="ci-outlook__how"><summary>${howHead}</summary><div><ul class="ci-outlook__panel">${rows}</ul><p>${note}</p></div></details>
+    <p class="ci-outlook__lab"><a href="${es ? '/es' : ''}/cost-index/lab/?it=${slug}">${es ? 'Juega con las señales' : 'Play with the signals'} <span aria-hidden="true">→</span></a></p>
   </aside>`;
 }
 
@@ -1187,6 +1190,7 @@ function emitHubPage(locale, slugs) {
   <div class="ci-body">
     <div class="ci-cta-row">
       <a class="btn btn-primary" href="${base}/tools/cost-pulse/">${es ? 'Abrir Cost Pulse' : 'Open Cost Pulse'}</a>
+      <a class="btn btn-ghost" href="${base}/cost-index/lab/">${es ? 'Laboratorio de Presión' : 'Pressure Lab'}</a>
       <a class="btn btn-ghost" href="${base}/glossary/cost-index/">${es ? '¿Qué es un índice de costos?' : 'What is a cost index?'}</a>
     </div>
     ${movingNowSection(shipSlugs, locale)}
