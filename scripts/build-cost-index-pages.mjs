@@ -66,6 +66,9 @@ const MuntinSparkline = require(path.join(repoRoot, 'tools/_shared/sparkline.js'
 // the static pages, the hub, and the live tool can never disagree (a thin-data
 // "structural" reads "Watch", not "Re-price", on every surface).
 const MuntinCostVerdict = require(path.join(repoRoot, 'tools/_shared/cost-verdict.js'));
+// Level/trend confidence split + the shippable bar — so a solid multi-market
+// price isn't buried under a noisy trend's "low", and nothing apologetic ships.
+const MuntinCostConfidence = require(path.join(repoRoot, 'tools/_shared/cost-confidence.js'));
 const checkMode  = process.argv.includes('--check');
 const onlyArg    = (process.argv.find((a) => a.startsWith('--only=')) || '').slice('--only='.length);
 const ONLY       = onlyArg ? new Set(onlyArg.split(',').map((s) => s.trim()).filter(Boolean)) : null;
@@ -209,11 +212,15 @@ function readingOf(slug) {
   const conf = point.confidence || 'low';
   const trend = point.trend || {};
   const hist = Array.isArray(entry.history) ? entry.history : [];
-  // What may render as a number, by confidence (honesty contract).
+  // Confidence is split: a measured wholesale LEVEL stands on its own even when
+  // the week-to-week TREND is choppy. The number renders by LEVEL confidence
+  // (not the headline min), so a solid 8-market range reads as the fact it is.
+  const levelConf = MuntinCostConfidence.levelConfidence(lvl);
+  const trendConf = MuntinCostConfidence.trendConfidence(trend);
   const distinctRange = !!(rc && rc[0] !== rc[1]);
-  const emitPoint = (conf === 'high' || conf === 'medium') && !!lvl && rc != null;
-  const emitRange = emitPoint || (conf === 'low' && distinctRange);
-  return { entry, point, lvl, rc, conf, trend, hist, distinctRange, emitPoint, emitRange,
+  const emitPoint = (levelConf === 'high' || levelConf === 'medium') && !!lvl && rc != null;
+  const emitRange = emitPoint || (levelConf === 'low' && distinctRange);
+  return { entry, point, lvl, rc, conf, levelConf, trendConf, trend, hist, distinctRange, emitPoint, emitRange,
     basis: (lvl && lvl.basis) || 'wholesale', asOf: point.asOf || null };
 }
 
@@ -360,36 +367,55 @@ function marketReadBlock(slug, locale) {
   const basisRef = es
     ? ({ wholesale: 'referencia mayorista', retail: 'referencia minorista', delivered: 'precio entregado' }[r.basis] || 'referencia')
     : ({ wholesale: 'wholesale reference', retail: 'retail reference', delivered: 'delivered' }[r.basis] || 'reference');
-  let rangeStr = '';
-  let hasNumber = false;
-  if (r.emitRange && r.distinctRange) {
-    rangeStr = `${money(r.rc[0])}–${money(r.rc[1])}${unitSfx} (${basisRef})`;
-    hasNumber = true;
-  } else if (r.emitPoint && r.rc) {
-    rangeStr = `${money(r.rc[0])}${unitSfx} (${basisRef}${es ? ', una fuente' : ', single source'})`;
-    hasNumber = true;
-  }
-  const trendStr = (r.emitPoint && typeof r.trend.pct === 'number')
-    ? `, ${dirWord(r.trend, locale)} ${(r.trend.pct >= 0 ? '+' : '')}${(r.trend.pct * 100).toFixed(1).replace(/\.0$/, '')}%`
-    : (r.trend.dir ? `, ${dirWord(r.trend, locale)}` : '');
-  const conf = r.conf;
-  const confWord = es ? ({ high: 'alta', medium: 'media', low: 'baja', directional: 'direccional' }[conf] || conf) : conf;
-  const agencies = citedAgencies(r.entry, r.point);
-  const shortList = [...new Set((r.point.provenance || []).map((p) => shortSource(p.source)))];
   const asOf = r.asOf || '—';
   const head = es ? 'Lectura de mercado' : 'Market read';
-  const dw = r.trend.dir ? dirWord(r.trend, locale) : null;
-  let line;
-  if (hasNumber) {
+  const nMk = (r.lvl && r.lvl.nFamilies) || 0;
+  const measured = !!(r.lvl && r.lvl.rangeBasis === 'markets' && nMk >= 3);
+  const srcNote = measured
+    ? (es ? ` en ${nMk} mercados USDA` : ` across ${nMk} USDA markets`)
+    : (es ? ', un mercado USDA' : ', single USDA market');
+  // The LEVEL — a dated, sourced wholesale fact (not "low"): a measured
+  // multi-market range, or a single authoritative market.
+  let line, hasNumber = false;
+  if (r.emitRange && r.distinctRange) {
     line = es
-      ? `Alrededor de ${rangeStr}${trendStr} en la ventana reciente.`
-      : `About ${rangeStr}${trendStr} over the recent window.`;
+      ? `Alrededor de ${money(r.rc[0])}–${money(r.rc[1])}${unitSfx} (${basisRef}${srcNote}), al ${asOf}.`
+      : `About ${money(r.rc[0])}–${money(r.rc[1])}${unitSfx} (${basisRef}${srcNote}), as of ${asOf}.`;
+    hasNumber = true;
+  } else if (r.emitPoint && r.rc) {
+    line = es
+      ? `Alrededor de ${money(r.rc[0])}${unitSfx} (${basisRef}${srcNote}), al ${asOf}.`
+      : `About ${money(r.rc[0])}${unitSfx} (${basisRef}${srcNote}), as of ${asOf}.`;
+    hasNumber = true;
   } else {
+    // Defensive only — the shippable-bar gate keeps no-level items off the site.
+    const dw = r.trend.dir ? dirWord(r.trend, locale) : null;
     line = es
-      ? `${dw ? 'Tendencia ' + dw : 'Sin tendencia clara'} en la ventana reciente — sin cifra publicada por ahora (poca coincidencia entre fuentes para fijar un número).`
-      : `${dw ? 'Trending ' + dw : 'No clear trend'} over the recent window — no published figure this period (too little source agreement to set a number).`;
+      ? `${dw ? 'Tendencia ' + dw : 'Sin tendencia clara'} en la ventana reciente.`
+      : `${dw ? 'Trending ' + dw : 'No clear trend'} over the recent window.`;
   }
+  // The TREND — its own honesty. A firm trend states the move; a low-confidence
+  // one is a hint with no number flaunted.
+  let trendLine = '';
+  if (hasNumber && typeof r.trend.pct === 'number' && r.trendConf) {
+    const dirw = dirWord(r.trend, locale);
+    if (r.trendConf === 'low') {
+      trendLine = `<p class="ci-read__trend">${es
+        ? `Tendencia ${dirw} en la ventana — pero las fuentes no coinciden; tómalo como una pista, no una cifra firme.`
+        : `Trend ${dirw} over the window — but the sources disagree; read it as a hint, not a firm move.`}</p>`;
+    } else {
+      const pctTxt = `${(r.trend.pct >= 0 ? '+' : '')}${(r.trend.pct * 100).toFixed(1).replace(/\.0$/, '')}%`;
+      trendLine = `<p class="ci-read__trend">${es
+        ? `Tendencia: ${dirw} ${pctTxt} en la ventana reciente.`
+        : `Trend: ${dirw} ${pctTxt} over the recent window.`}</p>`;
+    }
+  }
+  // Badge carries the LEVEL's own confidence (what the number is worth), dated.
+  const badgeConf = hasNumber ? r.levelConf : r.conf;
+  const confWord = es ? ({ high: 'alta', medium: 'media', low: 'baja', directional: 'direccional' }[badgeConf] || badgeConf) : badgeConf;
   const badge = `${es ? 'confianza' : 'confidence'} ${confWord} · ${es ? 'al' : 'as of'} ${asOf}`;
+  const agencies = citedAgencies(r.entry, r.point);
+  const shortList = [...new Set((r.point.provenance || []).map((p) => shortSource(p.source)))];
   const disclaimer = r.basis === 'retail'
     ? (es ? 'Referencia minorista, no el precio mayorista ni el entregado que pagas.' : 'Retail reference, not the wholesale or delivered price you pay.')
     : (es ? 'Referencia mayorista, no el precio entregado que pagas.' : 'Wholesale reference, not the delivered price you pay.');
@@ -398,7 +424,7 @@ function marketReadBlock(slug, locale) {
   return `
   <aside class="ci-read" aria-label="${es ? 'Lectura de mercado' : 'Market read'}">
     <p class="ci-read__head">${head}<span class="ci-read__badge">${badge}</span></p>
-    <p class="ci-read__line">${line}</p>${verdict}${spark}
+    <p class="ci-read__line">${line}</p>${trendLine}${verdict}${spark}
     <details class="ci-read__src"><summary>${es ? 'Fuentes' : 'Sources'} · ${(shortList.length || agencies.length)}</summary><div>${srcBody}</div></details>
     <p class="ci-read__live"><a href="${es ? '/es' : ''}/tools/cost-pulse/#ci-${slug}">${liveLabel} <span aria-hidden="true">→</span></a></p>
   </aside>`;
@@ -628,6 +654,7 @@ main{padding-top:64px}
 .ci-read__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin:0 0 6px}
 .ci-read__badge{font-weight:600;text-transform:none;letter-spacing:0;font-size:12px;color:var(--ink-soft);margin-left:8px}
 .ci-read__line{font-size:16px;line-height:1.55;color:var(--ink);margin:0}
+.ci-read__trend{margin:6px 0 0;font-size:14.5px;line-height:1.5;color:var(--ink-soft)}
 .ci-read__verdict{margin:10px 0 0;font-size:15px;line-height:1.5;color:var(--ink)}
 .ci-read__verb{display:inline-block;font-weight:700;font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:999px;margin-right:8px;vertical-align:1px;background:var(--cream);border:1px solid var(--line);color:var(--ink-soft)}
 .ci-read__verb[data-bias="hold"]{color:#2A50C8;border-color:#2A50C8}
