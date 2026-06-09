@@ -53,7 +53,8 @@
   function indName(id) { return INDICATOR_NAME[id] || id; }
 
   // ---- State: live base (immutable) + user scenario (working copy) ----------
-  var item = (location.hash.match(/[#&]it=([a-z0-9-]+)/) || [])[1] || 'chicken-breast';
+  var qs = (location.search || '') + (location.hash || '');
+  var item = (qs.match(/[?#&]it=([a-z0-9-]+)/) || [])[1] || 'chicken-breast';
   if (!RULES.items[item]) item = Object.keys(RULES.items)[0];
   var panel = Object.assign({}, RULES.defaults, RULES.items[item], { item: item });
   var indicators = (panel.indicators || []);
@@ -71,6 +72,26 @@
   // ---- Build the DOM once; mutate on recompute ------------------------------
   root.setAttribute('data-layer', 'inferred');
   root.textContent = '';
+
+  // Ingredient picker — full navigation so each item gets a clean engine run
+  // (no risky in-place re-mount); only items with a live read are offered.
+  var labBase = es ? '/es' : '';
+  function titleCase(s) { return String(s).replace(/-/g, ' ').replace(/\b\w/g, function (c) { return c.toUpperCase(); }); }
+  var pickWrap = el('div', 'plab-pick');
+  var pickLabel = el('label', 'plab-pick__label', L('Ingredient', 'Ingrediente'));
+  pickLabel.setAttribute('for', 'plabPick');
+  var picker = document.createElement('select');
+  picker.id = 'plabPick'; picker.className = 'plab-pick__select';
+  Object.keys(RULES.items).forEach(function (k) {
+    if (!(LIVE.observations && LIVE.observations[k])) return;
+    var o = document.createElement('option');
+    o.value = k; o.textContent = titleCase(k);
+    if (k === item) o.selected = true;
+    picker.appendChild(o);
+  });
+  picker.addEventListener('change', function () { location.href = labBase + '/cost-index/lab/?it=' + picker.value; });
+  pickWrap.appendChild(pickLabel); pickWrap.appendChild(picker);
+  root.appendChild(pickWrap);
 
   var verdict = el('div', 'plab-verdict');
   var vArrow = el('span', 'plab-arrow');

@@ -1206,6 +1206,9 @@ function emitHubPage(locale, slugs) {
 // ---- Pressure Lab — the playable engine (a new tool page) -----------
 const LAB_CSS = `<style>
 #pressureLab[data-layer]{margin:18px 0}
+.plab-pick{display:flex;align-items:center;gap:8px;margin:0 0 14px;flex-wrap:wrap}
+.plab-pick__label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft)}
+.plab-pick__select{font:inherit;font-size:14px;padding:6px 10px;border:1px solid var(--line);border-radius:8px;background:var(--white);color:var(--ink)}
 .plab-verdict{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;padding:16px 20px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid #6b4fa1;border-radius:12px}
 .plab-arrow{font-size:22px;line-height:1}
 .plab-arrow[data-dir="building"]{color:#A23B2D}.plab-arrow[data-dir="easing"]{color:#2A50C8}.plab-arrow[data-dir="steady"]{color:#8a6d1f}
