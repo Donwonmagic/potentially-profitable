@@ -120,6 +120,14 @@ main{padding-top:64px}
 .ci-pending-note{font-size:13.5px;color:var(--ink-soft);margin:8px 0 0}
 .ci-read--pending{border-left-color:#cdb368;background:var(--cream-2)}
 .ci-read--pending .ci-read__head{color:#8a6d1f}
+.ci-outlook{margin:14px 0 8px;padding:16px 20px;background:#fff;border:1px solid var(--line);border-left:4px solid #6b4fa1;border-radius:12px}
+.ci-outlook__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#6b4fa1;margin:0 0 6px}
+.ci-outlook__line{font-size:15.5px;line-height:1.5;color:var(--ink);margin:0}
+.ci-outlook__how{margin-top:8px;font-size:12.5px}
+.ci-outlook__how summary{cursor:pointer;color:var(--ink-soft);font-weight:600}
+.ci-outlook__how div{margin-top:6px;color:var(--ink-soft);line-height:1.55}
+.ci-outlook__panel{margin:0 0 8px;padding-left:18px}
+.ci-outlook__panel li{margin:0 0 4px}
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=933461d49609" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=15ac955f199e" onload="this.onload=null;this.rel='stylesheet'">
@@ -369,7 +377,7 @@ main{padding-top:64px}
   </section>
   <div class="ci-body">
     
-  <aside class="ci-read" aria-label="Market read">
+  <aside class="ci-read" data-layer="measured" aria-label="Market read">
     <p class="ci-read__head">Market read<span class="ci-read__badge">confidence medium · as of 2026-05-30</span></p>
     <p class="ci-read__line">About $1.57–$1.67/lb (wholesale reference, single USDA market), as of 2026-05-30.</p><p class="ci-read__trend">Trend: down -11% over the recent window.</p>
     <p class="ci-read__verdict"><span class="ci-read__verb" data-bias="hold">Hold</span>Easing — this can be a chance to renegotiate, not a reason to re-price.</p>
@@ -377,6 +385,7 @@ main{padding-top:64px}
     <details class="ci-read__src"><summary>Sources · 3</summary><div>USDA LMR · BLS · FRED — public data, as of 2026-05-30. Wholesale reference, not the delivered price you pay.</div></details>
     <p class="ci-read__live"><a href="/tools/cost-pulse/#ci-butter">See butter (aa, bulk) live in Cost Pulse <span aria-hidden="true">→</span></a></p>
   </aside>
+    
     
   <aside class="ci-why" aria-label="Why it's moving">
     <p class="ci-why__head">Why it's moving<span class="ci-read__badge">as of 2026-06-01</span></p>

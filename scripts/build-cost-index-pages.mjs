@@ -124,6 +124,44 @@ const LABELS_DOC  = (() => {
 const LABELS  = LABELS_DOC.labels || {};
 const DRIVER_LABELS = LABELS_DOC.drivers || {};
 
+// ---- Pressure (inferred outlook) layer -----------------------------
+const PRESSURE = (() => {
+  try { return JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/cost-pressure.json'), 'utf8')); }
+  catch { return { items: {} }; }
+})();
+const PRESSURE_ITEMS = PRESSURE.items || {};
+const PRESSURE_RULES = (() => {
+  try { return JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/pressure-rules.json'), 'utf8')); }
+  catch { return { sources: {} }; }
+})();
+const PRESSURE_SOURCES = PRESSURE_RULES.sources || {};
+const INDICATOR_NAME = {
+  'feed-futures':              { en: 'Feed (corn/soy) futures', es: 'Futuros de forraje (maíz/soya)' },
+  'broiler-placements':        { en: 'Broiler chick placements', es: 'Colocación de pollitos' },
+  'cattle-on-feed-placements': { en: 'Cattle-on-feed placements', es: 'Ganado en engorda (colocaciones)' },
+  'hogs-market-supply':        { en: 'Market-hog supply', es: 'Oferta de cerdos de mercado' },
+  'cold-storage-poultry':      { en: 'Cold-storage stocks', es: 'Inventario en frío' },
+  'cold-storage-beef':         { en: 'Cold-storage stocks', es: 'Inventario en frío' },
+  'cold-storage-pork':         { en: 'Cold-storage stocks', es: 'Inventario en frío' },
+  'ams-shipments':             { en: 'Produce shipments', es: 'Envíos de producto' },
+  'freeze-alert':              { en: 'Freeze warnings', es: 'Alertas de helada' },
+  'drought-ca-az':             { en: 'Drought (CA/AZ)', es: 'Sequía (CA/AZ)' },
+  'drought-fl-ca':             { en: 'Drought (FL/CA)', es: 'Sequía (FL/CA)' },
+  'drought':                   { en: 'Drought (growing regions)', es: 'Sequía (regiones de cultivo)' },
+  'crop-condition':            { en: 'Crop condition', es: 'Condición del cultivo' },
+  'diesel':                    { en: 'Diesel / freight', es: 'Diésel / flete' }
+};
+function sourceShort(key) {
+  if (!key) return '';
+  if (key.indexOf('nass') === 0) return 'USDA NASS';
+  if (key.indexOf('ams') === 0) return 'USDA AMS';
+  if (key.indexOf('ers') === 0) return 'USDA ERS';
+  if (key.indexOf('eia') === 0) return 'EIA';
+  if (key.indexOf('usdm') === 0) return 'US Drought Monitor';
+  if (key.indexOf('nws') === 0) return 'NWS';
+  return key;
+}
+
 // Source-id prefix → { agency name, url } — derived map for citations.
 const SOURCE_AGENCY = [
   [/^usda-ams/, { name: 'USDA Agricultural Marketing Service', url: 'https://www.ams.usda.gov/market-news' }],
@@ -422,7 +460,7 @@ function marketReadBlock(slug, locale) {
   const srcBody = `${(shortList.length ? shortList.join(' · ') : agencies.map((a) => a.name).join(' · '))} — ${es ? 'datos públicos' : 'public data'}, ${es ? 'al' : 'as of'} ${asOf}. ${disclaimer}`;
   const liveLabel = es ? `Ver ${(lab.es || lab.en || slug).toLowerCase()} en vivo en Cost Pulse` : `See ${(lab.en || slug).toLowerCase()} live in Cost Pulse`;
   return `
-  <aside class="ci-read" aria-label="${es ? 'Lectura de mercado' : 'Market read'}">
+  <aside class="ci-read" data-layer="measured" aria-label="${es ? 'Lectura de mercado' : 'Market read'}">
     <p class="ci-read__head">${head}<span class="ci-read__badge">${badge}</span></p>
     <p class="ci-read__line">${line}</p>${trendLine}${verdict}${spark}
     <details class="ci-read__src"><summary>${es ? 'Fuentes' : 'Sources'} · ${(shortList.length || agencies.length)}</summary><div>${srcBody}</div></details>
@@ -703,6 +741,14 @@ main{padding-top:64px}
 .ci-pending-note{font-size:13.5px;color:var(--ink-soft);margin:8px 0 0}
 .ci-read--pending{border-left-color:#cdb368;background:var(--cream-2)}
 .ci-read--pending .ci-read__head{color:#8a6d1f}
+.ci-outlook{margin:14px 0 8px;padding:16px 20px;background:#fff;border:1px solid var(--line);border-left:4px solid #6b4fa1;border-radius:12px}
+.ci-outlook__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#6b4fa1;margin:0 0 6px}
+.ci-outlook__line{font-size:15.5px;line-height:1.5;color:var(--ink);margin:0}
+.ci-outlook__how{margin-top:8px;font-size:12.5px}
+.ci-outlook__how summary{cursor:pointer;color:var(--ink-soft);font-weight:600}
+.ci-outlook__how div{margin-top:6px;color:var(--ink-soft);line-height:1.55}
+.ci-outlook__panel{margin:0 0 8px;padding-left:18px}
+.ci-outlook__panel li{margin:0 0 4px}
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=${SHELL_HASH.core}" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=${SHELL_HASH.article}" onload="this.onload=null;this.rel='stylesheet'">
@@ -840,6 +886,53 @@ function ledeDirection(slug, locale) {
   const r = readingOf(slug);
   if (!r || !r.trend || !r.trend.dir) return null;
   return { word: dirWord(r.trend, locale), asOf: r.asOf };
+}
+
+// ---- The Pressure overlay — INFERRED outlook, structurally separate -------
+// A distinct data-layer="inferred" aside: direction + confidence + the leading-
+// indicator panel. NO price ever appears here (the record carries none);
+// check-pressure-honesty.mjs recomputes the arrow and scans this block for any
+// $. Verbs are honest — "looks to be", "tends to lead", never "will".
+function pressureBlock(slug, locale) {
+  const rec = PRESSURE_ITEMS[slug];
+  if (!rec || rec.direction === 'unknown') return '';
+  const es = locale === 'es';
+  const dir = rec.under_review ? 'review' : rec.direction;
+  const lines = {
+    building: { en: 'Cost pressure looks to be building — the leading signals lean higher.', es: 'La presión de costo parece ir en aumento — las señales adelantadas apuntan al alza.' },
+    easing:   { en: 'Cost pressure looks to be easing — the leading signals lean lower.', es: 'La presión de costo parece ceder — las señales adelantadas apuntan a la baja.' },
+    steady:   { en: 'Signals are mixed — no clear lean right now.', es: 'Señales mixtas — sin una tendencia clara por ahora.' },
+    review:   { en: 'Awaiting the next measured price — too far past the last print to call.', es: 'A la espera de la próxima lectura medida — demasiado tiempo desde la última cifra para concluir.' }
+  };
+  const line = lines[dir][es ? 'es' : 'en'];
+  const confWord = es ? ({ high: 'alta', moderate: 'media', low: 'baja' }[rec.confidence] || rec.confidence) : rec.confidence;
+  const fresh = rec.freshness_weeks != null ? rec.freshness_weeks : '—';
+  const head = es ? 'Perspectiva' : 'Outlook';
+  const chip = es
+    ? `inferido · confianza ${confWord} · hace ${fresh} sem de la última cifra`
+    : `inferred · ${confWord} confidence · ${fresh}w since last price`;
+  const rows = (rec.contributors || []).map((c) => {
+    const nm = (INDICATOR_NAME[c.indicator] && INDICATOR_NAME[c.indicator][es ? 'es' : 'en']) || c.indicator;
+    const src = sourceShort(c.source);
+    const url = PRESSURE_SOURCES[c.cite] || PRESSURE_SOURCES[c.source] || null;
+    const push = c.signed_signal > 0 ? (es ? 'empuja al alza' : 'pushing up')
+      : c.signed_signal < 0 ? (es ? 'empuja a la baja' : 'pushing down')
+      : (es ? 'neutral' : 'neutral');
+    const unit = c.lead ? (c.lead.unit === 'week' ? (es ? 'sem' : 'wk') : c.lead.unit) : '';
+    const lead = c.lead ? `~${c.lead.min}–${c.lead.max} ${unit}` : '';
+    const nameHtml = url ? `<a href="${url}" rel="noopener">${escHtml(nm)}</a>` : escHtml(nm);
+    return `<li>${nameHtml} (${escHtml(src)}) — ${push}${lead ? `; ${es ? 'suele anticipar' : 'tends to lead'} ${lead}` : ''}.</li>`;
+  }).join('');
+  const howHead = es ? 'Cómo se calcula' : 'How this is computed';
+  const note = es
+    ? `Dirección inferida de indicadores públicos adelantados — no es un precio. Regla ${rec.rule_version || ''}.`
+    : `Inferred direction from public leading indicators — not a price. Rule ${rec.rule_version || ''}.`;
+  return `
+  <aside class="ci-outlook" data-layer="inferred" data-as-of="${rec.as_of || ''}" data-rule-version="${rec.rule_version || ''}" aria-label="${head}">
+    <p class="ci-outlook__head">${head}<span class="ci-read__badge">${chip}</span></p>
+    <p class="ci-outlook__line" data-dir="${dir}">${line}</p>
+    <details class="ci-outlook__how"><summary>${howHead}</summary><div><ul class="ci-outlook__panel">${rows}</ul><p>${note}</p></div></details>
+  </aside>`;
 }
 
 // The shippable bar (tools/_shared/cost-confidence.js): an ingredient earns a
@@ -982,6 +1075,7 @@ function emitIngredientPage(slug, locale) {
   </section>
   <div class="ci-body">
     ${marketReadBlock(slug, locale)}
+    ${pressureBlock(slug, locale)}
     ${whyMovingBlock(slug, locale)}
     ${whyItMatters(slug, locale)}
     ${howToUse(slug, locale)}

@@ -344,6 +344,9 @@ const CHECKS = [
   // Shippable bar — below-bar ingredients must stay out of the browser seed
   // (no thin / no-level read on the dashboard; they live as expanding-coverage).
   ['Cost-index shippable bar','check-shippable-bar.mjs'],
+  // Pressure honesty — the inferred outlook can't carry a price, can't use a
+  // banned verb, and its rendered direction must equal what the rules recompute.
+  ['Cost-pressure honesty','check-pressure-honesty.mjs'],
   ['Security claims',      'check-security-claims.mjs'],
   ['Data promise rail',    'check-data-promise-rail.mjs'],
   ['Security locale parity','check-security-locale-parity.mjs'],

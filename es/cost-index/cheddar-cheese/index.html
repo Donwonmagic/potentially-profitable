@@ -120,6 +120,14 @@ main{padding-top:64px}
 .ci-pending-note{font-size:13.5px;color:var(--ink-soft);margin:8px 0 0}
 .ci-read--pending{border-left-color:#cdb368;background:var(--cream-2)}
 .ci-read--pending .ci-read__head{color:#8a6d1f}
+.ci-outlook{margin:14px 0 8px;padding:16px 20px;background:#fff;border:1px solid var(--line);border-left:4px solid #6b4fa1;border-radius:12px}
+.ci-outlook__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#6b4fa1;margin:0 0 6px}
+.ci-outlook__line{font-size:15.5px;line-height:1.5;color:var(--ink);margin:0}
+.ci-outlook__how{margin-top:8px;font-size:12.5px}
+.ci-outlook__how summary{cursor:pointer;color:var(--ink-soft);font-weight:600}
+.ci-outlook__how div{margin-top:6px;color:var(--ink-soft);line-height:1.55}
+.ci-outlook__panel{margin:0 0 8px;padding-left:18px}
+.ci-outlook__panel li{margin:0 0 4px}
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=933461d49609" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=15ac955f199e" onload="this.onload=null;this.rel='stylesheet'">
@@ -291,7 +299,7 @@ main{padding-top:64px}
   </section>
   <div class="ci-body">
     
-  <aside class="ci-read" aria-label="Lectura de mercado">
+  <aside class="ci-read" data-layer="measured" aria-label="Lectura de mercado">
     <p class="ci-read__head">Lectura de mercado<span class="ci-read__badge">confianza media · al 2026-05-30</span></p>
     <p class="ci-read__line">Alrededor de $1.65–$1.67/libra (referencia mayorista, un mercado USDA), al 2026-05-30.</p><p class="ci-read__trend">Tendencia: al alza +12.4% en la ventana reciente.</p>
     <p class="ci-read__verdict"><span class="ci-read__verb" data-bias="hold">Mantener</span>Dentro de su rango usual — nada que hacer.</p>
@@ -299,6 +307,7 @@ main{padding-top:64px}
     <details class="ci-read__src"><summary>Fuentes · 3</summary><div>USDA LMR · BLS · FRED — datos públicos, al 2026-05-30. Referencia mayorista, no el precio entregado que pagas.</div></details>
     <p class="ci-read__live"><a href="/es/tools/cost-pulse/#ci-cheddar-cheese">Ver queso cheddar en vivo en Cost Pulse <span aria-hidden="true">→</span></a></p>
   </aside>
+    
     
   <aside class="ci-why" aria-label="Por qué se mueve">
     <p class="ci-why__head">Por qué se mueve<span class="ci-read__badge">al 2026-06-01</span></p>
