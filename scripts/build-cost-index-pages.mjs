@@ -1234,8 +1234,8 @@ function emitLabPage(locale) {
   const es = locale === 'es';
   const lang = es ? 'es' : 'en';
   const base = es ? '/es' : '';
-  const canonEn = 'https://muntin.digital/tools/pressure-lab/';
-  const canonEs = 'https://muntin.digital/es/tools/pressure-lab/';
+  const canonEn = 'https://muntin.digital/cost-index/lab/';
+  const canonEs = 'https://muntin.digital/es/cost-index/lab/';
   const h1 = es ? 'Laboratorio de Presión' : 'Pressure Lab';
   const title = es ? `${h1} — juega con lo que mueve tus costos | Muntin Digital`
     : `${h1} — play with what's moving your food costs | Muntin Digital`;
@@ -1250,7 +1250,7 @@ function emitLabPage(locale) {
     { '@type': 'WebApplication', '@id': baseUrl + '#tool', 'name': h1, 'url': baseUrl, 'applicationCategory': 'BusinessApplication', 'operatingSystem': 'Web', 'inLanguage': es ? 'es' : 'en', 'isAccessibleForFree': true, 'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' }, 'creator': { '@id': 'https://muntin.digital/#business' }, 'description': desc },
     { '@type': 'BreadcrumbList', 'itemListElement': [
       { '@type': 'ListItem', 'position': 1, 'name': es ? 'Inicio' : 'Home', 'item': es ? 'https://muntin.digital/es/' : 'https://muntin.digital/' },
-      { '@type': 'ListItem', 'position': 2, 'name': es ? 'Herramientas' : 'Tools', 'item': (es ? 'https://muntin.digital/es' : 'https://muntin.digital') + '/tools/' },
+      { '@type': 'ListItem', 'position': 2, 'name': es ? 'Índice de costos' : 'Cost index', 'item': (es ? 'https://muntin.digital/es' : 'https://muntin.digital') + '/cost-index/' },
       { '@type': 'ListItem', 'position': 3, 'name': h1, 'item': baseUrl } ] }
   ]});
   const methodHead = es ? 'Cómo funciona' : 'How this works';
@@ -1263,7 +1263,7 @@ function emitLabPage(locale) {
   return pageHead({ lang, locale, title, desc, canonEn, canonEs, jsonld, extraCss: LAB_CSS }) + `
   <nav class="breadcrumb" aria-label="Breadcrumb">
     <a href="${base}/">${es ? 'Inicio' : 'Home'}</a> ›
-    <a href="${base}/tools/">${es ? 'Herramientas' : 'Tools'}</a> ›
+    <a href="${base}/cost-index/">${es ? 'Índice de costos' : 'Cost index'}</a> ›
     ${escHtml(h1)}
   </nav>
   <section class="ci-hero">
@@ -1310,10 +1310,12 @@ for (const slug of buildSlugs) {
 // build the hub from the full gated set so its ItemList stays complete.
 targets.push({ path: 'cost-index/index.html',    content: emitHubPage('en', allGated) });
 targets.push({ path: 'es/cost-index/index.html', content: emitHubPage('es', allGated) });
-// The Pressure Lab (a tool page, generated here to reuse the chrome + self-emit
-// hreflang). Built whole regardless of --only so EN/ES stay in parity.
-targets.push({ path: 'tools/pressure-lab/index.html',    content: emitLabPage('en') });
-targets.push({ path: 'es/tools/pressure-lab/index.html', content: emitLabPage('es') });
+// The Pressure Lab — the cost-index suite's playable instrument. Lives under
+// /cost-index/ (not /tools/) so it inherits the cost-index chrome + hreflang
+// skip and isn't held to the /tools/ shell conventions. Built whole regardless
+// of --only so EN/ES stay in parity.
+targets.push({ path: 'cost-index/lab/index.html',    content: emitLabPage('en') });
+targets.push({ path: 'es/cost-index/lab/index.html', content: emitLabPage('es') });
 
 let drift = 0;
 for (const tgt of targets) {
