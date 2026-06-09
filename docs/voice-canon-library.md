@@ -70,10 +70,11 @@ will leave the moment the page stops answering it.
 
 **Byline.** Library articles ship under **The Muntin Desk** —
 not *Don Goldstein*. The blog keeps the Don byline; the library carries
-the studio's reference-desk label. This is a 2026 decision that updates
-`/methods/#voice-contract` (the POV table row for "Library articles"
-should now read: *third-person Muntin Desk byline; first-person Don
-appears only as personal operator practice, per `docs/voice-canon-library.md`*).
+the studio's reference-desk label. This 2026 decision is reflected in
+`/methods/#voice-contract` (the POV table row for "Library articles" reads:
+*The Muntin Desk byline; first-person "I" appears only when naming personal
+operator practice, never as narrator of an event; full rule in
+`docs/voice-canon-library.md`* — confirmed at `methods/index.html:520`).
 
 **The I-rule.** *"I"* is rare on a library page. It appears only when
 the prose is naming Don's own operator practice — something he has

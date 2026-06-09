@@ -68,7 +68,11 @@ const SKIP_DIRS = [/\.git\//, /node_modules\//, /\/drafts\//];
 // after confirming a parity warning is a false positive, never to silence a
 // real invented figure. Empty by intent at launch.
 const PARITY_ALLOW = new Set([
-  // e.g. '2025', // 2026-06-08: <reason>
+  // 2026-06-08: Chinese myriad grouping. zh groups by 万 (10^4): the EN
+  // "11.8 million mobile pages" is faithfully rendered "1180万" (1180 × 10^4),
+  // so "1180" has no EN digit-run. Structural number-system difference, not
+  // drift (learn/research/mobile-page-speed-3-second-rule/audio.zh.json).
+  '1180',
 ]);
 
 // Known-stale narration awaiting a full re-render. These posts were rendered
@@ -134,13 +138,16 @@ export function spokenText(absPath) {
   }
 }
 
-// Value-normalized numeric tokens. Locales separate thousands and decimals
-// differently ("$40,000" en, "40.000" it/pt, "40 000" fr), so comparing raw
-// strings is hopeless. We collapse a run of digits-plus-separators to its
-// bare digit sequence and strip leading zeros: "40,000"/"40.000"/"40 000"
-// -> "40000", "13.14"/"13,14" -> "1314", "2026" -> "2026", "03" -> "3".
-// This trades a little precision for a parity check that is robust across
-// the six rendered languages.
+// Compare the multiset of digit-RUNS, not value-normalized numbers. Locale
+// makes "." vs "," ambiguous (decimal vs thousands: "1.176,28" es ==
+// "$1,176.28" en) and K/M abbreviations expand differently per language
+// ("$133K" -> "133.000"), so value-normalization invents phantom tokens (an
+// earlier pass flagged a non-existent "117628" by stripping the decimal out
+// of "1.176,28"). Digit-runs are separator-, decimal-, and spacing-invariant.
+// We drop runs of <=2 digits and all-zero runs — cents, small counts, and the
+// "000" halves of thousands groups — which are formatting noise, not the kind
+// of figure a fabrication turns on. Stays a warn-first drift signal (ADR-001):
+// coarser, but free of the locale false positives that made v1 unusable.
 export function extractNumbers(text) {
   const out = new Set();
   if (!text) return out;
@@ -148,9 +155,13 @@ export function extractNumbers(text) {
   const re = /\d[\d.,   ]*\d|\d/g;
   let m;
   while ((m = re.exec(text)) !== null) {
-    let tok = m[0].replace(/\D/g, ''); // bare digits
-    tok = tok.replace(/^0+(?=\d)/, ''); // drop leading zeros, keep one digit
-    if (tok.length) out.add(tok);
+    // Split each matched span into bare digit-runs (separator-invariant).
+    for (const run of m[0].split(/\D+/)) {
+      const tok = run.replace(/^0+(?=\d)/, ''); // drop leading zeros
+      if (tok.length <= 2) continue; // cents / small counts / thousands halves
+      if (/^0+$/.test(tok)) continue; // all-zero run
+      out.add(tok);
+    }
   }
   return out;
 }
@@ -182,15 +193,36 @@ export function scanPatterns(text, lang) {
   return hits;
 }
 
+// Joined form of separator-grouped numbers: "$3,000" -> "3000", "1.176,28"
+// -> "117628". Added to the SOURCE set so a separator-less language (zh/ja
+// write "3000", not "3,000") matches an EN/es source whose digit-runs were
+// atomized by the comma/period. Source-only: it can only make matching MORE
+// conservative, never invent a spoken flag.
+function joinedNumbers(text) {
+  const out = new Set();
+  if (!text) return out;
+  const re = /\d[\d.,   ]*\d/g;
+  let m;
+  while ((m = re.exec(text)) !== null) {
+    const tok = m[0].replace(/\D/g, '').replace(/^0+(?=\d)/, '');
+    if (tok.length >= 3 && !/^0+$/.test(tok)) out.add(tok);
+  }
+  return out;
+}
+
 // Source-of-truth numbers for a post: the fact-gated article HTML plus the
 // source-language narration. A number the translation speaks that is absent
-// here was introduced after the gate — the parity signal.
+// here was introduced after the gate — the parity signal. We index both the
+// digit-runs and the joined forms so locale separator conventions (separated
+// vs separator-less) don't create phantom mismatches.
 function sourceNumbers(dir) {
   const nums = new Set();
   for (const name of ['index.html', 'audio.json']) {
     const p = path.join(dir, name);
     if (fs.existsSync(p)) {
-      for (const n of extractNumbers(fs.readFileSync(p, 'utf8'))) nums.add(n);
+      const text = fs.readFileSync(p, 'utf8');
+      for (const n of extractNumbers(text)) nums.add(n);
+      for (const n of joinedNumbers(text)) nums.add(n);
     }
   }
   return nums;
