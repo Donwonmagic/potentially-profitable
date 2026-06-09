@@ -341,6 +341,9 @@ const CHECKS = [
   // upstream orchestrator confidences are reconciled (today: onion high → medium).
   ['Cost-index calibration (warn)','check-cost-index-calibration.mjs'],
   ['Cost-index calibration self-test','check-cost-index-calibration.mjs','--self-test'],
+  // Shippable bar — below-bar ingredients must stay out of the browser seed
+  // (no thin / no-level read on the dashboard; they live as expanding-coverage).
+  ['Cost-index shippable bar','check-shippable-bar.mjs'],
   ['Security claims',      'check-security-claims.mjs'],
   ['Data promise rail',    'check-data-promise-rail.mjs'],
   ['Security locale parity','check-security-locale-parity.mjs'],

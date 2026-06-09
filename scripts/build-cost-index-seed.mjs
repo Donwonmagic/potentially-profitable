@@ -23,8 +23,13 @@
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createRequire } from 'node:module';
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const require = createRequire(import.meta.url);
+// The shippable bar — keep below-bar ingredients out of the Cost Pulse seed too,
+// so the dashboard never shows a thin/no-level read the pages won't.
+const MuntinCostConfidence = require(path.join(repoRoot, 'tools/_shared/cost-confidence.js'));
 const DRY = process.argv.includes('--dry-run');
 const JSON_IN = path.join(repoRoot, 'data/cost-index.json');
 const LABELS_IN = path.join(repoRoot, 'data/cost-index-labels.json');
@@ -47,6 +52,7 @@ function main() {
     const hasLevel = newest.level && typeof newest.level.medianCents === 'number';
     const hasTrend = newest.trend && typeof newest.trend.pct === 'number';
     if (!hasLevel && !hasTrend) continue;            // defensive — gate already enforces this
+    if (!MuntinCostConfidence.isShippable(newest)) continue;   // below the shippable bar → not on the dashboard
     const lab = labels[key];
     if (!lab) { missingLabel.push(key); continue; }  // no display label → can't render bilingually
 

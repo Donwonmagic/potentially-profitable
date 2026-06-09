@@ -698,6 +698,11 @@ main{padding-top:64px}
 .ci-moving-item a:hover{color:var(--teal)}
 .ci-moving-reason{color:var(--ink-soft);font-size:14px}
 .ci-moving-calm{margin:0;font-size:15.5px;color:var(--ink)}
+.ci-card--pending{opacity:.72;background:var(--cream-2)}
+.ci-card--pending a{color:var(--ink-soft)}
+.ci-pending-note{font-size:13.5px;color:var(--ink-soft);margin:8px 0 0}
+.ci-read--pending{border-left-color:#cdb368;background:var(--cream-2)}
+.ci-read--pending .ci-read__head{color:#8a6d1f}
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=${SHELL_HASH.core}" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=${SHELL_HASH.article}" onload="this.onload=null;this.rel='stylesheet'">
@@ -837,7 +842,90 @@ function ledeDirection(slug, locale) {
   return { word: dirWord(r.trend, locale), asOf: r.asOf };
 }
 
+// The shippable bar (tools/_shared/cost-confidence.js): an ingredient earns a
+// full public reading only with a credible wholesale dollar level. Below the
+// bar it gets an honest "expanding coverage" page — URL kept alive (slugs are
+// final-forever), but no apologetic price.
+function shippable(slug) {
+  const e = COST_INDEX[slug];
+  const p = e && Array.isArray(e.points) && e.points[0];
+  return !!p && MuntinCostConfidence.isShippable(p);
+}
+
+// Expanding-coverage page: honest absence, not an apology. No price, no Dataset.
+function emitExpandingPage(slug, locale) {
+  const es = locale === 'es';
+  const lang = es ? 'es' : 'en';
+  const base = es ? '/es' : '';
+  const lab = LABELS[slug] || {};
+  const name = es ? (lab.es || lab.en || slug) : (lab.en || slug);
+  const lc = name.toLowerCase();
+  const meta = ING_META[slug] || { cat: 'pantry' };
+  const cat = CATEGORIES[meta.cat] || { en: 'Pantry', es: 'Despensa' };
+  const canonEn = `https://muntin.digital/cost-index/${slug}/`;
+  const canonEs = `https://muntin.digital/es/cost-index/${slug}/`;
+  const title = es
+    ? `${name} al mayoreo — cobertura en preparación | Muntin Digital`
+    : `${name} wholesale price — coverage in progress | Muntin Digital`;
+  const desc = es
+    ? `Aún no publicamos un precio mayorista para ${lc}: solo mostramos una cifra cuando los datos públicos respaldan una lectura honesta y completa.`
+    : `We don't publish a wholesale price for ${lc} yet — the index shows a number only when public data supports an honest, complete read.`;
+  const jsonld = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@graph': [
+      { '@type': 'WebPage', '@id': (es ? canonEs : canonEn) + '#page', 'url': es ? canonEs : canonEn,
+        'name': name, 'inLanguage': es ? 'es-US' : 'en-US', 'isPartOf': { '@id': 'https://muntin.digital/#website' },
+        'description': desc },
+      { '@type': 'BreadcrumbList', 'itemListElement': [
+        { '@type': 'ListItem', 'position': 1, 'name': es ? 'Inicio' : 'Home', 'item': es ? 'https://muntin.digital/es/' : 'https://muntin.digital/' },
+        { '@type': 'ListItem', 'position': 2, 'name': es ? 'Índice de costos' : 'Cost index', 'item': (es ? 'https://muntin.digital/es' : 'https://muntin.digital') + '/cost-index/' },
+        { '@type': 'ListItem', 'position': 3, 'name': name, 'item': es ? canonEs : canonEn } ] }
+    ]
+  });
+  const body = es
+    ? `<div class="ci-body">
+    <aside class="ci-read ci-read--pending" aria-label="Cobertura en preparación">
+      <p class="ci-read__head">Cobertura en preparación</p>
+      <p class="ci-read__line">Seguimos ${lc} para el índice, pero todavía no tenemos una lectura mayorista gratuita y completa que respaldaríamos — así que no publicamos una cifra. El índice muestra un precio solo cuando los datos públicos lo sostienen.</p>
+    </aside>
+    <h2>Por qué aún no hay número</h2>
+    <p>La regla es simple: un precio se publica solo cuando podemos obtenerlo de datos públicos (USDA, BLS, FRED) con una calidad sobre la que actuaríamos nosotros mismos. Para ${lc}, la serie mayorista gratuita que necesitamos aún no está conectada. Una estimación de una sola fuente sería peor que nada.</p>
+    <h2>Qué puedes hacer ahora</h2>
+    <p>Compara tu última factura de ${lc} con tus facturas recientes, o abre <a href="${base}/tools/cost-pulse/">Cost Pulse</a> para los ingredientes que sí cubrimos. Esta página se completará cuando lo hagan los datos.</p>
+    <div class="ci-cta-row">
+      <a class="btn btn-ghost" href="${base}/cost-index/">Ver todas las lecturas</a>
+      <a class="btn btn-ghost" href="${base}/glossary/cost-index/">Qué es un índice de costos</a>
+    </div>
+  </div>`
+    : `<div class="ci-body">
+    <aside class="ci-read ci-read--pending" aria-label="Coverage in progress">
+      <p class="ci-read__head">Coverage in progress</p>
+      <p class="ci-read__line">We track ${lc} for the index, but we don't yet have a complete, free wholesale read we'd stand behind — so we're not publishing a number. The index shows a price only when public data supports an honest one.</p>
+    </aside>
+    <h2>Why there's no number yet</h2>
+    <p>The rule is simple: a price ships only when we can source it from public USDA, BLS or FRED data at a quality we'd act on ourselves. For ${lc}, the free wholesale series we need isn't wired up yet — and a thin, single-source guess would be worse than nothing.</p>
+    <h2>What you can do now</h2>
+    <p>Check your last ${lc} invoice against your own recent ones, or open <a href="${base}/tools/cost-pulse/">Cost Pulse</a> for the ingredients we do cover. This page fills in when the data does.</p>
+    <div class="ci-cta-row">
+      <a class="btn btn-ghost" href="${base}/cost-index/">Browse all readings</a>
+      <a class="btn btn-ghost" href="${base}/glossary/cost-index/">What is a cost index?</a>
+    </div>
+  </div>`;
+  return pageHead({ lang, locale, title, desc, canonEn, canonEs, jsonld }) + `
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="${base}/">${es ? 'Inicio' : 'Home'}</a> ›
+    <a href="${base}/cost-index/">${es ? 'Índice de costos' : 'Cost index'}</a> ›
+    ${escHtml(name)}
+  </nav>
+  <section class="ci-hero">
+    <p class="ci-eyebrow"><a href="${base}/cost-index/#${meta.cat}">${escHtml(es ? cat.es : cat.en)}</a></p>
+    <h1>${escHtml(name)}</h1>
+  </section>
+  ${body}` + pageTail;
+}
+
 function emitIngredientPage(slug, locale) {
+  if (!shippable(slug)) return emitExpandingPage(slug, locale);
   const es = locale === 'es';
   const lang = es ? 'es' : 'en';
   const base = es ? '/es' : '';
@@ -921,18 +1009,22 @@ function emitHubPage(locale, slugs) {
   const base = es ? '/es' : '';
   const canonEn = 'https://muntin.digital/cost-index/';
   const canonEs = 'https://muntin.digital/es/cost-index/';
+  // Only ingredients past the shippable bar get a live reading; the rest are
+  // listed honestly under "expanding coverage" (no price, URL preserved).
+  const shipSlugs = slugs.filter(shippable);
+  const pendingSlugs = slugs.filter((s) => !shippable(s));
   const title = es ? 'Índice de costos de restaurante | Muntin Digital' : 'Restaurant ingredient cost index | Muntin Digital';
   const desc = es
     ? 'Dónde se cotizan al mayoreo ingredientes comunes de restaurante — un rango típico y la tendencia, de fuentes públicas (USDA, BLS, FRED) — para distinguir un movimiento de mercado de un sobreprecio.'
     : 'Where common restaurant ingredients are priced wholesale — a typical range and a trend, from public sources (USDA, BLS, FRED) — so you can tell a market move from a vendor markup.';
   const heroH1 = es ? 'Índice de costos de ingredientes' : 'Restaurant ingredient cost index';
   const heroLede = es
-    ? `Dónde se cotizan al mayoreo ${slugs.length} ingredientes comunes de restaurante — un rango típico y una tendencia, de datos públicos de USDA, BLS y FRED — para distinguir un movimiento real de mercado de un sobreprecio de proveedor. Elige un ingrediente para su lectura, o abre Cost Pulse para verlos todos a la vez.`
-    : `Where ${slugs.length} common restaurant ingredients are priced wholesale — a typical range and a trend, drawn from public USDA, BLS and FRED data — so you can tell a real market move from a vendor markup. Pick an ingredient for its reading, or open Cost Pulse to see them all at once.`;
+    ? `Dónde se cotizan al mayoreo ${shipSlugs.length} ingredientes comunes de restaurante — un rango típico y una tendencia, de datos públicos de USDA, BLS y FRED — para distinguir un movimiento real de mercado de un sobreprecio de proveedor. Elige un ingrediente para su lectura, o abre Cost Pulse para verlos todos a la vez.`
+    : `Where ${shipSlugs.length} common restaurant ingredients are priced wholesale — a typical range and a trend, drawn from public USDA, BLS and FRED data — so you can tell a real market move from a vendor markup. Pick an ingredient for its reading, or open Cost Pulse to see them all at once.`;
 
-  // Grouped cards by category.
+  // Grouped cards by category — shippable readings only.
   const byCat = {};
-  for (const s of slugs) { const c = (ING_META[s] || {}).cat || 'pantry'; (byCat[c] = byCat[c] || []).push(s); }
+  for (const s of shipSlugs) { const c = (ING_META[s] || {}).cat || 'pantry'; (byCat[c] = byCat[c] || []).push(s); }
   const sections = CATEGORY_ORDER.filter((c) => byCat[c] && byCat[c].length).map((c) => {
     const cat = CATEGORIES[c];
     const cards = byCat[c].map((s) => {
@@ -950,11 +1042,16 @@ function emitHubPage(locale, slugs) {
 
   // Schema: DataCatalog + CollectionPage + ItemList + Breadcrumb.
   const baseUrl = es ? canonEs : canonEn;
-  const datasetRefs = slugs.map((s) => ({ '@id': `https://muntin.digital${base}/cost-index/${s}/#dataset` }));
-  const items = slugs.map((s, i) => {
+  // Catalog + ItemList carry only complete datasets (shippable readings).
+  const datasetRefs = shipSlugs.map((s) => ({ '@id': `https://muntin.digital${base}/cost-index/${s}/#dataset` }));
+  const items = shipSlugs.map((s, i) => {
     const l = LABELS[s] || {};
     return { '@type': 'ListItem', 'position': i + 1, 'name': (es ? (l.es || l.en) : l.en) || s, 'item': `${baseUrl}${s}/` };
   });
+  // Honest "expanding coverage" list — kept-alive URLs, no price claimed.
+  const pendingSection = pendingSlugs.length ? `<h2 class="ci-cat-h" id="expanding">${es ? 'Cobertura en preparación' : 'Expanding coverage'}</h2>
+    <p class="ci-pending-note">${es ? 'Seguimos estos, pero aún no publicamos un precio: solo mostramos una cifra cuando los datos públicos gratuitos la sostienen.' : 'We track these, but don\'t publish a price yet — the index shows a number only when free public data supports an honest one.'}</p>
+    <div class="ci-grid">${pendingSlugs.map((s) => { const l = LABELS[s] || {}; const nm = (es ? (l.es || l.en) : l.en) || s; return `<div class="ci-card ci-card--pending"><a href="${base}/cost-index/${s}/">${escHtml(nm)}</a><span class="ci-card-note">${es ? 'cobertura en preparación' : 'coverage in progress'}</span></div>`; }).join('')}</div>` : '';
   const crumb = es
     ? [['Inicio', 'https://muntin.digital/es/'], ['Índice de costos', baseUrl]]
     : [['Home', 'https://muntin.digital/'], ['Cost index', baseUrl]];
@@ -995,8 +1092,9 @@ function emitHubPage(locale, slugs) {
       <a class="btn btn-primary" href="${base}/tools/cost-pulse/">${es ? 'Abrir Cost Pulse' : 'Open Cost Pulse'}</a>
       <a class="btn btn-ghost" href="${base}/glossary/cost-index/">${es ? '¿Qué es un índice de costos?' : 'What is a cost index?'}</a>
     </div>
-    ${movingNowSection(slugs, locale)}
+    ${movingNowSection(shipSlugs, locale)}
     ${sections}
+    ${pendingSection}
     ${driverNote}
     <p class="ci-source"><strong>${es ? 'Fuente' : 'Sourced'}:</strong> ${es ? 'datos públicos de mercado (USDA AMS/LMR, BLS, FRED, EIA, NOAA), vía' : 'public market data (USDA AMS/LMR, BLS, FRED, EIA, NOAA), via'} <a href="${base}/tools/cost-pulse/">Cost Pulse</a>.</p>
   </div>` + pageTail;
@@ -1014,8 +1112,12 @@ const targets = [];
 for (const slug of buildSlugs) {
   targets.push({ path: `cost-index/${slug}/index.html`,    content: emitIngredientPage(slug, 'en') });
   targets.push({ path: `es/cost-index/${slug}/index.html`, content: emitIngredientPage(slug, 'es') });
-  targets.push({ path: `cost-index/${slug}/series.json`,   content: seriesJson(slug), raw: true });
-  targets.push({ path: `cost-index/${slug}/series.csv`,    content: seriesCsv(slug),  raw: true });
+  // Downloadable series only for shippable readings — never expose the thin
+  // data behind an "expanding coverage" ingredient as a data file.
+  if (shippable(slug)) {
+    targets.push({ path: `cost-index/${slug}/series.json`,   content: seriesJson(slug), raw: true });
+    targets.push({ path: `cost-index/${slug}/series.csv`,    content: seriesCsv(slug),  raw: true });
+  }
 }
 // Hub lists every gated ingredient regardless of the --only subset, so it
 // never advertises a page that isn't built. When --only is active we still
