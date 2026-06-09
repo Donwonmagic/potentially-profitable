@@ -1,0 +1,114 @@
+{
+  "_doc": "Pressure call track record — predicted direction vs the realized measured trend, scored once the next price prints. No price. Append-only, capped.",
+  "_version": "2026-Q2-1",
+  "items": {
+    "chicken-breast": [
+      {
+        "asOf": "2026-06-08",
+        "anchor": "2026-06-01",
+        "direction": "easing",
+        "score": -5,
+        "realized": null
+      }
+    ],
+    "whole-chicken": [
+      {
+        "asOf": "2026-06-08",
+        "anchor": "2026-06-01",
+        "direction": "easing",
+        "score": -5,
+        "realized": null
+      }
+    ],
+    "ribeye": [
+      {
+        "asOf": "2026-06-08",
+        "anchor": "2026-06-05",
+        "direction": "building",
+        "score": 4,
+        "realized": null
+      }
+    ],
+    "beef-tenderloin": [
+      {
+        "asOf": "2026-06-08",
+        "anchor": "2026-06-05",
+        "direction": "building",
+        "score": 3,
+        "realized": null
+      }
+    ],
+    "pork-loin": [
+      {
+        "asOf": "2026-06-08",
+        "anchor": "2026-06-05",
+        "direction": "easing",
+        "score": -4,
+        "realized": null
+      }
+    ],
+    "pork-shoulder": [
+      {
+        "asOf": "2026-06-08",
+        "anchor": "2026-06-05",
+        "direction": "easing",
+        "score": -4,
+        "realized": null
+      }
+    ],
+    "romaine-lettuce": [
+      {
+        "asOf": "2026-06-08",
+        "anchor": "2026-06-05",
+        "direction": "building",
+        "score": 6,
+        "realized": null
+      }
+    ],
+    "tomato": [
+      {
+        "asOf": "2026-06-08",
+        "anchor": "2026-06-05",
+        "direction": "steady",
+        "score": -1,
+        "realized": null
+      }
+    ],
+    "onion": [
+      {
+        "asOf": "2026-06-08",
+        "anchor": "2026-06-05",
+        "direction": "building",
+        "score": 6,
+        "realized": null
+      }
+    ],
+    "russet-potato": [
+      {
+        "asOf": "2026-06-08",
+        "anchor": "2026-06-05",
+        "direction": "easing",
+        "score": -5,
+        "realized": null
+      }
+    ],
+    "butter": [
+      {
+        "asOf": "2026-06-08",
+        "anchor": "2026-05-30",
+        "direction": "easing",
+        "score": -4,
+        "realized": null
+      }
+    ],
+    "cheddar-cheese": [
+      {
+        "asOf": "2026-06-08",
+        "anchor": "2026-05-30",
+        "direction": "building",
+        "score": 5,
+        "realized": null
+      }
+    ]
+  }
+}

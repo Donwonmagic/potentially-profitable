@@ -26,6 +26,7 @@ const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..'
 const require = createRequire(import.meta.url);
 const { assess } = require(path.join(repoRoot, 'tools/_shared/cost-pressure.js'));
 const { isShippable } = require(path.join(repoRoot, 'tools/_shared/cost-confidence.js'));
+const Accuracy = require(path.join(repoRoot, 'tools/_shared/pressure-accuracy.js'));
 const DRY = process.argv.includes('--dry-run');
 const rd = (p) => JSON.parse(readFileSync(path.join(repoRoot, p), 'utf8'));
 
@@ -83,10 +84,38 @@ function umd(varName, globalName, value) {
 }
 const liveSeed = { _doc: 'Live observation vector + anchor dates for the Pressure Lab — % changes only, never a price.', status, asOf: obsDoc.asOf, anchor: anchors, observations: liveObs };
 
+// Track record: append this run's call per item (deduped by asOf), score the
+// PRIOR call once the measured anchor advances (a hit/miss vs the realized
+// trend), and let the regime-breaker suppress an item on a cold streak. The
+// log can't be backfilled — it accrues from here. Direction/score only, no price.
+let history = { _doc: 'Pressure call track record — predicted direction vs the realized measured trend, scored once the next price prints. No price. Append-only, capped.', _version: rules._version, items: {} };
+try { const prev = rd('data/pressure-history.json'); if (prev && prev.items) history.items = prev.items; } catch { /* first run */ }
+for (const [item, rec] of Object.entries(items)) {
+  const arr = history.items[item] = history.items[item] || [];
+  const last = arr[arr.length - 1];
+  const curAnchor = rec.anchor_print_date;
+  const realizedDir = (ci[item] && ci[item].points && ci[item].points[0] && ci[item].points[0].trend && ci[item].points[0].trend.dir) || null;
+  // A new measured print since the last recorded call → that call is now scorable.
+  if (last && last.anchor && curAnchor && last.anchor !== curAnchor && last.realized == null) last.realized = realizedDir;
+  if (!last || last.asOf !== rec.as_of) {
+    arr.push({ asOf: rec.as_of, anchor: curAnchor, direction: rec.direction, score: rec.score, realized: null });
+    while (arr.length > 26) arr.shift();
+  }
+  // Regime-breaker: a cold streak flags the item under review (the renderer shows
+  // "awaiting the next price"). We set ONLY under_review — never overriding the
+  // raw direction/confidence/score — so check-pressure-honesty's recompute still
+  // matches. Inert until calls are scored.
+  const pairs = arr.filter((e) => e.realized).map((e) => ({ predicted: e.direction, realized: e.realized }));
+  if (Accuracy.shouldSuppress(pairs)) rec.under_review = true;
+  const acc = Accuracy.scoreCalls(pairs);
+  if (acc.n) rec.track_record = { n: acc.n, hits: acc.hits, hitRate: acc.hitRate };
+}
+
 if (DRY) { console.log(`(dry-run) ${built} pressure record(s) + 2 Lab seed(s).`); }
 else {
   writeFileSync(path.join(repoRoot, 'data/cost-pressure.json'), JSON.stringify(out, null, 2) + '\n');
   writeFileSync(path.join(repoRoot, 'data/pressure-rules.js'), umd('RULES', 'MUNTIN_PRESSURE_RULES', rules));
   writeFileSync(path.join(repoRoot, 'data/pressure-live.js'), umd('LIVE', 'MUNTIN_PRESSURE_LIVE', liveSeed));
-  console.log(`Wrote data/cost-pressure.json + pressure-rules.js + pressure-live.js (status=${status}, ${built} record(s)).`);
+  writeFileSync(path.join(repoRoot, 'data/pressure-history.json'), JSON.stringify(history, null, 2) + '\n');
+  console.log(`Wrote data/cost-pressure.json + pressure-rules.js + pressure-live.js + pressure-history.json (status=${status}, ${built} record(s)).`);
 }
