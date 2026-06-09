@@ -528,6 +528,16 @@
   // { tone:'reprice'|'hold'|'watch', verb, note } or null.
   function flagVerb(flag, confidence) {
     if (!flag || !flag.verdict) return null;
+    // Single source of truth: tools/_shared/cost-verdict.js. The inline switch
+    // below is kept as a fallback so the dashboard never breaks if that script
+    // isn't loaded (e.g. an older cached page).
+    var V = (typeof MuntinCostVerdict !== 'undefined' && MuntinCostVerdict) ||
+            (typeof self !== 'undefined' && self.MuntinCostVerdict) ||
+            (typeof window !== 'undefined' && window.MuntinCostVerdict);
+    if (V && V.verdict) {
+      var sv = V.verdict(flag, confidence);
+      return sv ? { tone: sv.tone, verb: L(sv.verb_en, sv.verb_es), note: L(sv.note_en, sv.note_es) } : null;
+    }
     var thin = confidence === 'low' || confidence === 'directional';
     var wk = flag.elevatedWeeks;
     switch (flag.verdict) {
@@ -625,6 +635,27 @@
       vEl.appendChild(el('span', 'cp-verb-note', ' ' + fv.note));
       fig.appendChild(vEl);
       fig.setAttribute('data-audio-alt', (fig.getAttribute('data-audio-alt') || '') + ' ' + fv.verb + '. ' + fv.note);
+    }
+
+    // Outlook — the INFERRED pressure overlay (direction only, never a price).
+    // Fail-silent: shown only when the seed carries a pressure summary.
+    var pr = ing.pressure;
+    if (pr && pr.direction && pr.direction !== 'unknown') {
+      var dir = pr.under_review ? 'review' : pr.direction;
+      var oLine = ({
+        building: L('Outlook: cost pressure looks to be building.', 'Perspectiva: la presión de costo parece ir en aumento.'),
+        easing:   L('Outlook: cost pressure looks to be easing.', 'Perspectiva: la presión de costo parece ceder.'),
+        steady:   L('Outlook: signals are mixed — no clear lean yet.', 'Perspectiva: señales mixtas — sin tendencia clara aún.'),
+        review:   L('Outlook: awaiting the next measured price.', 'Perspectiva: a la espera de la próxima lectura medida.')
+      })[dir];
+      if (oLine) {
+        var oEl = el('p', 'cp-market-outlook');
+        oEl.setAttribute('data-layer', 'inferred');
+        oEl.appendChild(el('span', 'cp-outlook-line', oLine));
+        oEl.appendChild(el('span', 'cp-outlook-chip', ' (' + L('inferred', 'inferido') + ' · ' + (pr.confidence || '') + ')'));
+        fig.appendChild(oEl);
+        fig.setAttribute('data-audio-alt', (fig.getAttribute('data-audio-alt') || '') + ' ' + oLine);
+      }
     }
 
     var sparkVals = ing.spark || pickSeries(ing.input);

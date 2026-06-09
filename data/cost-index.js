@@ -250,6 +250,12 @@
         "elevatedWeeks": 0,
         "nHistory": 26
       },
+      "pressure": {
+        "direction": "building",
+        "confidence": "high",
+        "freshness_weeks": 0,
+        "under_review": false
+      },
       "spark": [
         1063,
         1083,
@@ -544,6 +550,12 @@
         "elevatedWeeks": 0,
         "nHistory": 26
       },
+      "pressure": {
+        "direction": "building",
+        "confidence": "moderate",
+        "freshness_weeks": 0,
+        "under_review": false
+      },
       "spark": [
         1480,
         1472,
@@ -790,6 +802,12 @@
         "elevatedWeeks": 0,
         "nHistory": 17
       },
+      "pressure": {
+        "direction": "easing",
+        "confidence": "high",
+        "freshness_weeks": 1,
+        "under_review": false
+      },
       "spark": [
         146,
         146,
@@ -1011,6 +1029,12 @@
         "retrace": 0,
         "elevatedWeeks": 0,
         "nHistory": 17
+      },
+      "pressure": {
+        "direction": "easing",
+        "confidence": "high",
+        "freshness_weeks": 1,
+        "under_review": false
       },
       "spark": [
         121,
@@ -1287,6 +1311,12 @@
         "retrace": 0,
         "elevatedWeeks": 1,
         "nHistory": 26
+      },
+      "pressure": {
+        "direction": "easing",
+        "confidence": "high",
+        "freshness_weeks": 0,
+        "under_review": false
       },
       "spark": [
         88,
@@ -1582,6 +1612,12 @@
         "elevatedWeeks": 0,
         "nHistory": 26
       },
+      "pressure": {
+        "direction": "easing",
+        "confidence": "high",
+        "freshness_weeks": 0,
+        "under_review": false
+      },
       "spark": [
         130,
         131,
@@ -1816,278 +1852,6 @@
         "2026-01-01",
         "2026-02-01",
         "2026-03-01"
-      ]
-    },
-    {
-      "key": "shrimp",
-      "label_en": "Shrimp",
-      "label_es": "Camarón",
-      "unit_en": "lb",
-      "unit_es": "libra",
-      "assessment": {
-        "asOf": "2026-05-01",
-        "level": null,
-        "trend": {
-          "pct": 0.3938608820657777,
-          "dir": "up",
-          "agreement": 0.667,
-          "nSources": 3,
-          "nFamilies": 3,
-          "nTypes": 3,
-          "noise": 0.0872
-        },
-        "confidence": "directional",
-        "label": "Directional only — no comparable price level. The market moved up +39.4% across 3 source(s).",
-        "provenance": [
-          {
-            "kind": "trend",
-            "source": "noaa",
-            "type": "noaa-trade",
-            "basis": "index"
-          },
-          {
-            "kind": "trend",
-            "source": "bls",
-            "type": "bls",
-            "basis": "index"
-          },
-          {
-            "kind": "trend",
-            "source": "fred",
-            "type": "imf",
-            "basis": "index"
-          }
-        ],
-        "history": [
-          {
-            "date": "2024-04-01",
-            "valueCents": 707,
-            "source": "fred",
-            "basis": "index"
-          },
-          {
-            "date": "2024-05-01",
-            "valueCents": 710,
-            "source": "fred",
-            "basis": "index"
-          },
-          {
-            "date": "2024-06-01",
-            "valueCents": 707,
-            "source": "fred",
-            "basis": "index"
-          },
-          {
-            "date": "2024-07-01",
-            "valueCents": 699,
-            "source": "fred",
-            "basis": "index"
-          },
-          {
-            "date": "2024-08-01",
-            "valueCents": 731,
-            "source": "fred",
-            "basis": "index"
-          },
-          {
-            "date": "2024-09-01",
-            "valueCents": 769,
-            "source": "fred",
-            "basis": "index"
-          },
-          {
-            "date": "2024-10-01",
-            "valueCents": 797,
-            "source": "fred",
-            "basis": "index"
-          },
-          {
-            "date": "2024-11-01",
-            "valueCents": 840,
-            "source": "fred",
-            "basis": "index"
-          },
-          {
-            "date": "2024-12-01",
-            "valueCents": 800,
-            "source": "fred",
-            "basis": "index"
-          },
-          {
-            "date": "2025-01-01",
-            "valueCents": 733,
-            "source": "fred",
-            "basis": "index"
-          },
-          {
-            "date": "2025-02-01",
-            "valueCents": 739,
-            "source": "fred",
-            "basis": "index"
-          },
-          {
-            "date": "2025-03-01",
-            "valueCents": 725,
-            "source": "fred",
-            "basis": "index"
-          },
-          {
-            "date": "2025-04-01",
-            "valueCents": 659,
-            "source": "fred",
-            "basis": "index"
-          },
-          {
-            "date": "2025-05-01",
-            "valueCents": 714,
-            "source": "fred",
-            "basis": "index"
-          },
-          {
-            "date": "2025-06-01",
-            "valueCents": 663,
-            "source": "fred",
-            "basis": "index"
-          },
-          {
-            "date": "2025-07-01",
-            "valueCents": 728,
-            "source": "fred",
-            "basis": "index"
-          },
-          {
-            "date": "2025-08-01",
-            "valueCents": 669,
-            "source": "fred",
-            "basis": "index"
-          },
-          {
-            "date": "2025-09-01",
-            "valueCents": 673,
-            "source": "fred",
-            "basis": "index"
-          },
-          {
-            "date": "2025-10-01",
-            "valueCents": 685,
-            "source": "fred",
-            "basis": "index"
-          },
-          {
-            "date": "2025-11-01",
-            "valueCents": 674,
-            "source": "fred",
-            "basis": "index"
-          },
-          {
-            "date": "2025-12-01",
-            "valueCents": 727,
-            "source": "fred",
-            "basis": "index"
-          },
-          {
-            "date": "2026-01-01",
-            "valueCents": 727,
-            "source": "fred",
-            "basis": "index"
-          },
-          {
-            "date": "2026-02-01",
-            "valueCents": 746,
-            "source": "fred",
-            "basis": "index"
-          },
-          {
-            "date": "2026-03-01",
-            "valueCents": 719,
-            "source": "fred",
-            "basis": "index"
-          },
-          {
-            "date": "2026-04-01",
-            "valueCents": 702,
-            "source": "fred",
-            "basis": "index"
-          },
-          {
-            "date": "2026-05-01",
-            "valueCents": 692,
-            "source": "fred",
-            "basis": "index"
-          }
-        ]
-      },
-      "flag": {
-        "verdict": "flat",
-        "actionBias": "hold",
-        "reason": "within the normal range",
-        "move": -0.0533515731874145,
-        "retrace": 0,
-        "elevatedWeeks": 0,
-        "nHistory": 26
-      },
-      "spark": [
-        707,
-        710,
-        707,
-        699,
-        731,
-        769,
-        797,
-        840,
-        800,
-        733,
-        739,
-        725,
-        659,
-        714,
-        663,
-        728,
-        669,
-        673,
-        685,
-        674,
-        727,
-        727,
-        746,
-        719,
-        702,
-        692
-      ],
-      "spark_meta": {
-        "basis": "index",
-        "source": "fred",
-        "from": "2024-04-01",
-        "to": "2026-05-01",
-        "n": 26
-      },
-      "spark_dates": [
-        "2024-04-01",
-        "2024-05-01",
-        "2024-06-01",
-        "2024-07-01",
-        "2024-08-01",
-        "2024-09-01",
-        "2024-10-01",
-        "2024-11-01",
-        "2024-12-01",
-        "2025-01-01",
-        "2025-02-01",
-        "2025-03-01",
-        "2025-04-01",
-        "2025-05-01",
-        "2025-06-01",
-        "2025-07-01",
-        "2025-08-01",
-        "2025-09-01",
-        "2025-10-01",
-        "2025-11-01",
-        "2025-12-01",
-        "2026-01-01",
-        "2026-02-01",
-        "2026-03-01",
-        "2026-04-01",
-        "2026-05-01"
       ]
     },
     {
@@ -2434,6 +2198,12 @@
         "retrace": 0,
         "elevatedWeeks": 8,
         "nHistory": 26
+      },
+      "pressure": {
+        "direction": "building",
+        "confidence": "high",
+        "freshness_weeks": 0,
+        "under_review": false
       },
       "spark": [
         4275,
@@ -2843,6 +2613,12 @@
         "retrace": 0,
         "elevatedWeeks": 0,
         "nHistory": 26
+      },
+      "pressure": {
+        "direction": "steady",
+        "confidence": "low",
+        "freshness_weeks": 0,
+        "under_review": false
       },
       "spark": [
         6850,
@@ -3271,6 +3047,12 @@
         "elevatedWeeks": 0,
         "nHistory": 26
       },
+      "pressure": {
+        "direction": "building",
+        "confidence": "high",
+        "freshness_weeks": 0,
+        "under_review": false
+      },
       "spark": [
         2525,
         2525,
@@ -3697,6 +3479,12 @@
         "retrace": 0,
         "elevatedWeeks": 0,
         "nHistory": 26
+      },
+      "pressure": {
+        "direction": "easing",
+        "confidence": "high",
+        "freshness_weeks": 0,
+        "under_review": false
       },
       "spark": [
         1775,
@@ -4136,428 +3924,6 @@
         "2026-05-16",
         "2026-05-23",
         "2026-05-30"
-      ]
-    },
-    {
-      "key": "eggs",
-      "label_en": "Eggs",
-      "label_es": "Huevo",
-      "unit_en": "dozen",
-      "unit_es": "docena",
-      "assessment": {
-        "asOf": "2026-06-01",
-        "level": {
-          "basis": "wholesale",
-          "medianCents": 56,
-          "rangeCents": [
-            51,
-            61
-          ],
-          "rangeBasis": "volatility",
-          "typeDispersion": 0,
-          "nObs": 1,
-          "nFamilies": 1,
-          "nSources": 1,
-          "nTypes": 1,
-          "provenance": [
-            {
-              "source": "usda-ams",
-              "type": "usda-ams",
-              "valueCents": 56,
-              "date": "2026-06-01"
-            }
-          ]
-        },
-        "trend": {
-          "pct": -0.06230270809104499,
-          "dir": "down",
-          "agreement": 0.667,
-          "nSources": 3,
-          "nFamilies": 3,
-          "nTypes": 3,
-          "noise": 0.2614
-        },
-        "confidence": "low",
-        "label": "About $0.51–$0.61 (wholesale reference, single market — band from recent volatility), down -6.2% over the window. 1+ source(s) for level, 3 for trend.",
-        "provenance": [
-          {
-            "kind": "level",
-            "source": "usda-ams",
-            "type": "usda-ams",
-            "valueCents": 56,
-            "date": "2026-06-01"
-          },
-          {
-            "kind": "trend",
-            "source": "usda-ams",
-            "type": "usda-ams",
-            "basis": "wholesale"
-          },
-          {
-            "kind": "trend",
-            "source": "bls",
-            "type": "bls",
-            "basis": "index"
-          },
-          {
-            "kind": "trend",
-            "source": "fred",
-            "type": "fred",
-            "basis": "retail"
-          }
-        ],
-        "history": [
-          {
-            "date": "2026-04-13",
-            "valueCents": 60,
-            "source": "usda-ams",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-04-20",
-            "valueCents": 60,
-            "source": "usda-ams",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-04-27",
-            "valueCents": 50,
-            "source": "usda-ams",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-04",
-            "valueCents": 49,
-            "source": "usda-ams",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-11",
-            "valueCents": 66,
-            "source": "usda-ams",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-18",
-            "valueCents": 66,
-            "source": "usda-ams",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-25",
-            "valueCents": 60,
-            "source": "usda-ams",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-06-01",
-            "valueCents": 56,
-            "source": "usda-ams",
-            "basis": "wholesale"
-          }
-        ]
-      },
-      "flag": {
-        "verdict": "flat",
-        "actionBias": "hold",
-        "reason": "within the normal range",
-        "move": 0.01818181818181818,
-        "retrace": 0,
-        "elevatedWeeks": 0,
-        "nHistory": 8
-      },
-      "spark": [
-        60,
-        60,
-        50,
-        49,
-        66,
-        66,
-        60,
-        56
-      ],
-      "spark_meta": {
-        "basis": "wholesale",
-        "source": "usda-ams",
-        "from": "2026-04-13",
-        "to": "2026-06-01",
-        "n": 8
-      },
-      "spark_dates": [
-        "2026-04-13",
-        "2026-04-20",
-        "2026-04-27",
-        "2026-05-04",
-        "2026-05-11",
-        "2026-05-18",
-        "2026-05-25",
-        "2026-06-01"
-      ]
-    },
-    {
-      "key": "vegetable-oil",
-      "label_en": "Vegetable oil",
-      "label_es": "Aceite vegetal",
-      "unit_en": "lb",
-      "unit_es": "libra",
-      "assessment": {
-        "asOf": "2026-04-01",
-        "level": null,
-        "trend": {
-          "pct": 0.1294851749963952,
-          "dir": "up",
-          "agreement": 1,
-          "nSources": 2,
-          "nFamilies": 2,
-          "nTypes": 2,
-          "noise": 0.1439
-        },
-        "confidence": "directional",
-        "label": "Directional only — no comparable price level. The market moved up +12.9% across 2 source(s).",
-        "provenance": [
-          {
-            "kind": "trend",
-            "source": "bls",
-            "type": "ppi-cooking-oil",
-            "basis": "index"
-          },
-          {
-            "kind": "trend",
-            "source": "fred",
-            "type": "ppi-soybean-oil",
-            "basis": "index"
-          }
-        ],
-        "history": [
-          {
-            "date": "2024-03-01",
-            "valueCents": 24006,
-            "source": "fred",
-            "basis": "index"
-          },
-          {
-            "date": "2024-04-01",
-            "valueCents": 23890,
-            "source": "fred",
-            "basis": "index"
-          },
-          {
-            "date": "2024-05-01",
-            "valueCents": 23494,
-            "source": "fred",
-            "basis": "index"
-          },
-          {
-            "date": "2024-06-01",
-            "valueCents": 23555,
-            "source": "fred",
-            "basis": "index"
-          },
-          {
-            "date": "2024-07-01",
-            "valueCents": 23866,
-            "source": "fred",
-            "basis": "index"
-          },
-          {
-            "date": "2024-08-01",
-            "valueCents": 23431,
-            "source": "fred",
-            "basis": "index"
-          },
-          {
-            "date": "2024-09-01",
-            "valueCents": 23496,
-            "source": "fred",
-            "basis": "index"
-          },
-          {
-            "date": "2024-10-01",
-            "valueCents": 23577,
-            "source": "fred",
-            "basis": "index"
-          },
-          {
-            "date": "2024-11-01",
-            "valueCents": 23808,
-            "source": "fred",
-            "basis": "index"
-          },
-          {
-            "date": "2024-12-01",
-            "valueCents": 23370,
-            "source": "fred",
-            "basis": "index"
-          },
-          {
-            "date": "2025-01-01",
-            "valueCents": 23477,
-            "source": "fred",
-            "basis": "index"
-          },
-          {
-            "date": "2025-02-01",
-            "valueCents": 23693,
-            "source": "fred",
-            "basis": "index"
-          },
-          {
-            "date": "2025-03-01",
-            "valueCents": 24148,
-            "source": "fred",
-            "basis": "index"
-          },
-          {
-            "date": "2025-04-01",
-            "valueCents": 23569,
-            "source": "fred",
-            "basis": "index"
-          },
-          {
-            "date": "2025-05-01",
-            "valueCents": 24462,
-            "source": "fred",
-            "basis": "index"
-          },
-          {
-            "date": "2025-06-01",
-            "valueCents": 24243,
-            "source": "fred",
-            "basis": "index"
-          },
-          {
-            "date": "2025-07-01",
-            "valueCents": 25925,
-            "source": "fred",
-            "basis": "index"
-          },
-          {
-            "date": "2025-08-01",
-            "valueCents": 27753,
-            "source": "fred",
-            "basis": "index"
-          },
-          {
-            "date": "2025-09-01",
-            "valueCents": 28499,
-            "source": "fred",
-            "basis": "index"
-          },
-          {
-            "date": "2025-10-01",
-            "valueCents": 28074,
-            "source": "fred",
-            "basis": "index"
-          },
-          {
-            "date": "2025-11-01",
-            "valueCents": 27484,
-            "source": "fred",
-            "basis": "index"
-          },
-          {
-            "date": "2025-12-01",
-            "valueCents": 27112,
-            "source": "fred",
-            "basis": "index"
-          },
-          {
-            "date": "2026-01-01",
-            "valueCents": 27113,
-            "source": "fred",
-            "basis": "index"
-          },
-          {
-            "date": "2026-02-01",
-            "valueCents": 27046,
-            "source": "fred",
-            "basis": "index"
-          },
-          {
-            "date": "2026-03-01",
-            "valueCents": 29285,
-            "source": "fred",
-            "basis": "index"
-          },
-          {
-            "date": "2026-04-01",
-            "valueCents": 30994,
-            "source": "fred",
-            "basis": "index"
-          }
-        ]
-      },
-      "flag": {
-        "verdict": "structural",
-        "actionBias": "re-price",
-        "reason": "elevated and sustained — the increase looks real",
-        "move": 0.31458624931076895,
-        "retrace": 0,
-        "elevatedWeeks": 8,
-        "nHistory": 26
-      },
-      "spark": [
-        24006,
-        23890,
-        23494,
-        23555,
-        23866,
-        23431,
-        23496,
-        23577,
-        23808,
-        23370,
-        23477,
-        23693,
-        24148,
-        23569,
-        24462,
-        24243,
-        25925,
-        27753,
-        28499,
-        28074,
-        27484,
-        27112,
-        27113,
-        27046,
-        29285,
-        30994
-      ],
-      "spark_meta": {
-        "basis": "index",
-        "source": "fred",
-        "from": "2024-03-01",
-        "to": "2026-04-01",
-        "n": 26
-      },
-      "spark_dates": [
-        "2024-03-01",
-        "2024-04-01",
-        "2024-05-01",
-        "2024-06-01",
-        "2024-07-01",
-        "2024-08-01",
-        "2024-09-01",
-        "2024-10-01",
-        "2024-11-01",
-        "2024-12-01",
-        "2025-01-01",
-        "2025-02-01",
-        "2025-03-01",
-        "2025-04-01",
-        "2025-05-01",
-        "2025-06-01",
-        "2025-07-01",
-        "2025-08-01",
-        "2025-09-01",
-        "2025-10-01",
-        "2025-11-01",
-        "2025-12-01",
-        "2026-01-01",
-        "2026-02-01",
-        "2026-03-01",
-        "2026-04-01"
       ]
     }
   ],

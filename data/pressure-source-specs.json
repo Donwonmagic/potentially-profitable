@@ -1,0 +1,45 @@
+{
+  "_doc": "Per-indicator FETCH specs for the Pressure layer — what scripts/fetch-pressure-observations.mjs pulls to compute each indicator's window % change. Mirrors data/cost-index-sources.json: every spec carries `verified`. EIA/USDM/NWS specs are VERIFIED (stable series id / keyless REST). The NASS Quick Stats and AMS specs are best-guess query skeletons (verified:false) — confirm the exact short_desc / report slug against the live discovery endpoint, flip verified:true, then go live. Keys (free): EIA_KEY, NASS_KEY. USDM + NWS are keyless. scripts/check-pressure-sources.mjs validates shape + manifest alignment and reports readiness.",
+  "_version": "2026-Q2-1",
+  "specs": {
+    "diesel": { "type": "eia", "verified": true, "series": "PET.EMD_EPD2D_PTE_NUS_DPG.W", "tail": 5, "unit": "$/gal",
+      "note": "Weekly U.S. No. 2 diesel retail (EIA Open Data v2). VERIFIED series id." },
+
+    "drought-ca-az": { "type": "usdm", "verified": true, "areas": ["06", "04"], "categories": ["D2", "D3", "D4"], "tail": 5,
+      "note": "US Drought Monitor REST, CA+AZ state FIPS, severe-area share. Keyless." },
+    "drought-fl-ca": { "type": "usdm", "verified": true, "areas": ["12", "06"], "categories": ["D2", "D3", "D4"], "tail": 5,
+      "note": "FL+CA severe-area share. Keyless." },
+    "drought": { "type": "usdm", "verified": true, "areas": ["US"], "categories": ["D2", "D3", "D4"], "tail": 5,
+      "note": "National severe-area share. Keyless." },
+
+    "freeze-alert": { "type": "nws", "verified": true, "events": ["Freeze Warning", "Hard Freeze Warning"], "areaMatch": "CA|AZ|FL",
+      "note": "Active freeze warnings over the winter growing zones (api.weather.gov). Keyless; encodes active=+1." },
+
+    "feed-futures": { "type": "ams", "verified": false, "report": "ams_3046", "field": "close", "commodity": "Corn|Soybeans", "tail": 20,
+      "_verify": "Confirm CBOT corn+soy settlement field in an AMS daily grain report (e.g. ams_3046 Minneapolis) or My Market News; window 4w (~20 business days)." },
+    "ams-shipments": { "type": "ams", "verified": false, "report": "movement", "field": "shipments", "tail": 7,
+      "_verify": "Confirm the Fruit & Vegetable Movement report slug + per-commodity shipment-volume field on My Market News (MARS v1.2)." },
+
+    "broiler-placements": { "type": "nass", "verified": false, "tail": 5,
+      "query": { "source_desc": "SURVEY", "sector_desc": "ANIMALS & PRODUCTS", "group_desc": "POULTRY", "commodity_desc": "CHICKENS", "statisticcat_desc": "PLACED", "agg_level_desc": "NATIONAL" },
+      "_verify": "Confirm the exact short_desc for weekly broiler chicks placed (Broiler Hatchery) in the NASS Quick Stats param browser." },
+    "cattle-on-feed-placements": { "type": "nass", "verified": false, "tail": 4,
+      "query": { "source_desc": "SURVEY", "sector_desc": "ANIMALS & PRODUCTS", "commodity_desc": "CATTLE", "statisticcat_desc": "PLACED ON FEED", "agg_level_desc": "NATIONAL" },
+      "_verify": "Confirm monthly Cattle on Feed placements short_desc." },
+    "hogs-market-supply": { "type": "nass", "verified": false, "tail": 4,
+      "query": { "source_desc": "SURVEY", "sector_desc": "ANIMALS & PRODUCTS", "commodity_desc": "HOGS", "class_desc": "MARKET", "statisticcat_desc": "INVENTORY", "agg_level_desc": "NATIONAL" },
+      "_verify": "Confirm quarterly Hogs & Pigs market-hog inventory short_desc (weight-class total)." },
+    "cold-storage-poultry": { "type": "nass", "verified": false, "tail": 4,
+      "query": { "source_desc": "SURVEY", "commodity_desc": "CHICKENS", "statisticcat_desc": "STOCKS", "agg_level_desc": "NATIONAL" },
+      "_verify": "Confirm monthly Cold Storage poultry stocks short_desc." },
+    "cold-storage-beef": { "type": "nass", "verified": false, "tail": 4,
+      "query": { "source_desc": "SURVEY", "commodity_desc": "BEEF", "statisticcat_desc": "STOCKS", "agg_level_desc": "NATIONAL" },
+      "_verify": "Confirm monthly Cold Storage boneless-beef stocks short_desc." },
+    "cold-storage-pork": { "type": "nass", "verified": false, "tail": 4,
+      "query": { "source_desc": "SURVEY", "commodity_desc": "PORK", "statisticcat_desc": "STOCKS", "agg_level_desc": "NATIONAL" },
+      "_verify": "Confirm monthly Cold Storage pork stocks short_desc." },
+    "crop-condition": { "type": "nass", "verified": false, "tail": 4,
+      "query": { "source_desc": "SURVEY", "statisticcat_desc": "CONDITION", "unit_desc": "PCT GOOD", "agg_level_desc": "NATIONAL" },
+      "_verify": "Confirm weekly Crop Progress condition (% good/excellent) short_desc per crop (potato/onion)." }
+  }
+}
