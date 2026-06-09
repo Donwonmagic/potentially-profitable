@@ -34,15 +34,25 @@
   }
 
   // ---- USDA NASS Quick Stats ----------------------------------------
-  // rows: [{ Value, year, reference_period_desc|begin_code, ... }]. Returns the
-  // numeric values sorted oldest→newest by (year, period), most-recent `tail`.
+  // rows: [{ Value, year, begin_code, reference_period_desc, ... }]. Returns the
+  // numeric values sorted oldest→newest, most-recent `tail`.
+  //
+  // Ordering key is the NUMERIC `begin_code` (week# 1–52 or month# 1–12), NOT the
+  // human `reference_period_desc`. That label does not sort chronologically:
+  // lexically "WEEK #20" < "WEEK #9" (the "2" beats the "9"), and "MAY" < "MARCH"
+  // alphabetically — both wrong. NASS always returns begin_code; we lean on it and
+  // fall back to the period string only when it is somehow absent.
   function nassSeries(rows, opts) {
     opts = opts || {};
     var key = opts.valueKey || 'Value';
     var arr = (rows || []).map(function (r) {
-      return { v: parseNum(r[key]), y: parseNum(r.year), p: String(r.reference_period_desc || r.begin_code || r.period || '') };
+      return { v: parseNum(r[key]), y: parseNum(r.year), c: parseNum(r.begin_code), p: String(r.reference_period_desc || r.period || '') };
     }).filter(function (r) { return r.v != null; });
-    arr.sort(function (a, b) { return (a.y - b.y) || a.p.localeCompare(b.p); });
+    arr.sort(function (a, b) {
+      if ((a.y || 0) !== (b.y || 0)) return (a.y || 0) - (b.y || 0);
+      if (a.c != null && b.c != null && a.c !== b.c) return a.c - b.c;
+      return a.p.localeCompare(b.p);
+    });
     var vals = arr.map(function (r) { return r.v; });
     return opts.tail ? vals.slice(-opts.tail) : vals;
   }
@@ -75,16 +85,24 @@
   // ---- US Drought Monitor -------------------------------------------
   // rows: [{ MapDate|ValidStart, D0..D4 }]. Returns a series of the summed
   // SEVERE-area share (default D2+D3+D4), oldest→newest — rising = worse.
+  //
+  // Multi-area specs (aoi=06,04 → CA+AZ) return one row per state per date; we
+  // collapse to one point per date by AVERAGING the states' severe shares, so the
+  // window % change reads a single regional trend and not an interleaved
+  // two-state zig-zag. Single-area is the degenerate case (one row per date).
   function usdmSeverity(rows, opts) {
     opts = opts || {};
     var cats = opts.categories || ['D2', 'D3', 'D4'];
-    var arr = (rows || []).map(function (r) {
+    var byDate = {};
+    (rows || []).forEach(function (r) {
       var sum = 0, any = false;
       cats.forEach(function (c) { var n = parseNum(r[c]); if (n != null) { sum += n; any = true; } });
-      return { v: any ? sum : null, d: String(r.MapDate || r.ValidStart || r.validStart || '') };
-    }).filter(function (r) { return r.v != null; });
-    arr.sort(function (a, b) { return a.d.localeCompare(b.d); });
-    return arr.map(function (r) { return r.v; });
+      if (!any) return;
+      var d = String(r.MapDate || r.ValidStart || r.validStart || '');
+      (byDate[d] = byDate[d] || []).push(sum);
+    });
+    return Object.keys(byDate).sort(function (a, b) { return a.localeCompare(b); })
+      .map(function (d) { var a = byDate[d]; return a.reduce(function (s, x) { return s + x; }, 0) / a.length; });
   }
 
   // ---- NWS api.weather.gov active alerts ----------------------------

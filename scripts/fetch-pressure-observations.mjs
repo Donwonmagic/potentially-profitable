@@ -46,11 +46,23 @@ function changeFromRaw(spec, raw) {
 
 // ---- self-test: prove the dispatch on canned fixtures (no network) --------
 function selfTest() {
+  // Fixtures mimic the MESSY real responses, not clean toy ones, so a green
+  // self-test actually predicts a green --live: EIA newest-first nested under
+  // response.data; NASS reverse-chronological with begin_code ordering + a comma
+  // value + a withheld (D) cell; AMS with a $ string; USDM two states per date
+  // (multi-area mean); NWS geojson feature.
   const fx = {
-    eia:  { spec: { type: 'eia', tail: 5 }, raw: { response: { data: [{ period: '2026-05-25', value: '3.80' }, { period: '2026-06-08', value: '3.99' }] } }, want: (v) => v > 0 },
-    nass: { spec: { type: 'nass', tail: 5 }, raw: { data: [{ Value: '180', year: '2026', reference_period_desc: 'WEEK #20' }, { Value: '200', year: '2026', reference_period_desc: 'WEEK #22' }] }, want: (v) => v > 0 },
-    ams:  { spec: { type: 'ams', field: 'price', tail: 5 }, raw: { results: [{ report_date: '2026-05-29', price: '70.1' }, { report_date: '2026-06-05', price: '74.5' }] }, want: (v) => v > 0 },
-    usdm: { spec: { type: 'usdm', categories: ['D2', 'D3', 'D4'] }, raw: [{ MapDate: '20260601', D2: '10', D3: '5', D4: '0' }, { MapDate: '20260608', D2: '14', D3: '8', D4: '2' }], want: (v) => v > 0 },
+    eia:  { spec: { type: 'eia', tail: 5 }, raw: { response: { data: [{ period: '2026-06-08', value: '3.99' }, { period: '2026-05-25', value: '3.80' }] } }, want: (v) => v > 0 },
+    nass: { spec: { type: 'nass', tail: 5 }, raw: { data: [
+              { Value: '(D)', year: '2026', begin_code: '22', reference_period_desc: 'WEEK #22' },
+              { Value: '2,000', year: '2026', begin_code: '20', reference_period_desc: 'WEEK #20' },
+              { Value: '1,800', year: '2026', begin_code: '9',  reference_period_desc: 'WEEK #9' }
+            ] }, want: (v) => v > 0 },
+    ams:  { spec: { type: 'ams', field: 'price', tail: 5 }, raw: { results: [{ report_date: '2026-06-05', price: '$74.50' }, { report_date: '2026-05-29', price: '$70.10' }] }, want: (v) => v > 0 },
+    usdm: { spec: { type: 'usdm', categories: ['D2', 'D3', 'D4'] }, raw: [
+              { ValidStart: '2026-06-01', D2: '10', D3: '5', D4: '0' }, { ValidStart: '2026-06-01', D2: '20', D3: '5', D4: '0' },
+              { ValidStart: '2026-06-08', D2: '14', D3: '8', D4: '2' }, { ValidStart: '2026-06-08', D2: '30', D3: '6', D4: '0' }
+            ], want: (v) => v > 0 },
     nws:  { spec: { type: 'nws', events: ['Freeze Warning'], areaMatch: 'AZ' }, raw: { features: [{ properties: { event: 'Freeze Warning', areaDesc: 'Yuma County, AZ' } }] }, want: (v) => v === 1 }
   };
   let fail = 0;
@@ -65,7 +77,7 @@ function selfTest() {
 }
 
 // ---- live fetch (founder runs with free keys) -----------------------------
-async function fetchJson(url, init) {
+async function fetchOnce(url, init) {
   const ctrl = new AbortController();
   const to = setTimeout(() => ctrl.abort(), 25000);
   try {
@@ -73,6 +85,17 @@ async function fetchJson(url, init) {
     if (!r.ok) throw new Error('HTTP ' + r.status);
     return await r.json();
   } finally { clearTimeout(to); }
+}
+// Retry transient blips (the free NASS/AMS endpoints are flaky): up to 3 tries
+// with a short backoff. A persistent failure still surfaces as a gap — we never
+// invent a value, we just don't let one timeout drop an indicator for the week.
+async function fetchJson(url, init) {
+  let lastErr;
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    try { return await fetchOnce(url, init); }
+    catch (e) { lastErr = e; if (attempt < 3) await new Promise((r) => setTimeout(r, attempt * 1500)); }
+  }
+  throw lastErr;
 }
 function urlFor(id, spec) {
   const EIA_KEY = process.env.EIA_KEY, NASS_KEY = process.env.NASS_KEY;
@@ -87,7 +110,12 @@ function urlFor(id, spec) {
   }
   if (spec.type === 'usdm') {
     const aoi = (spec.areas || ['US']).join(',');
-    return { url: `https://usdmdataservices.unl.edu/api/StateStatistics/GetDroughtSeverityStatisticsByAreaPercent?aoi=${aoi}&startdate=1/1/2026&enddate=12/31/2026&statisticsType=1` };
+    // Rolling ~5-month window to today (NOT a hardcoded calendar year — that
+    // silently empties every January). USDM wants M/D/YYYY.
+    const fmt = (d) => `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`;
+    const end = new Date();
+    const start = new Date(end.getTime() - 150 * 86400000);
+    return { url: `https://usdmdataservices.unl.edu/api/StateStatistics/GetDroughtSeverityStatisticsByAreaPercent?aoi=${aoi}&startdate=${fmt(start)}&enddate=${fmt(end)}&statisticsType=1` };
   }
   if (spec.type === 'nws') {
     const ev = (spec.events || []).map(encodeURIComponent).join(',');

@@ -22,8 +22,9 @@ API keys; the rest keyless).
 | Deterministic scorer | `tools/_shared/cost-pressure.js` | ✅ live, tested |
 | Rule manifest (panels, signs, weights, lags, cites) | `data/pressure-rules.json` | ✅ |
 | Source normalizers (raw API → window %) | `tools/_shared/pressure-sources.js` | ✅ tested |
-| Per-indicator fetch specs | `data/pressure-source-specs.json` | ⏳ 5/14 verified |
-| Fetch orchestrator | `scripts/fetch-pressure-observations.mjs` | ✅ (`--self-test` passes) |
+| Per-indicator fetch specs | `data/pressure-source-specs.json` | ⏳ 5/17 verified |
+| Source normalizers hardened (begin_code ordering, multi-area drought, withheld cells) | `tools/_shared/pressure-sources.js` | ✅ tested |
+| Fetch orchestrator | `scripts/fetch-pressure-observations.mjs` | ✅ (`--self-test` passes, messy-shape fixtures) |
 | Scorer build → records | `scripts/build-cost-pressure.mjs` | ✅ |
 | Page render (Outlook block) | `scripts/build-cost-index-pages.mjs` | ✅ preview |
 | Honesty gate (recompute + no-price) | `scripts/check-pressure-honesty.mjs` | ✅ in check-all |
@@ -37,10 +38,12 @@ API keys; the rest keyless).
 - US Drought Monitor and NWS (`api.weather.gov`) are **keyless**.
 - **No paid feed is used anywhere.** Futures come *through* free USDA AMS, not CME.
 
-### 2. Verify the 9 outstanding source specs
+### 2. Verify the 12 outstanding source specs
 ```
-node scripts/check-pressure-sources.mjs      # prints the go-live checklist
+node scripts/check-pressure-sources.mjs      # prints the per-spec go-live worksheet
 ```
+The gate now prints a grouped worksheet — each unverified spec with its discovery
+endpoint and the exact `short_desc`/slug to confirm. Work it top to bottom.
 For each `verified:false` spec in `data/pressure-source-specs.json`, confirm the
 exact identifier against the live discovery endpoint, then flip `verified:true`:
 - **NASS** (`broiler-placements`, `cattle-on-feed-placements`, `hogs-market-supply`,
