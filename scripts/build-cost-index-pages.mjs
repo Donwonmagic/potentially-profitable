@@ -1194,6 +1194,98 @@ function emitHubPage(locale, slugs) {
   </div>` + pageTail;
 }
 
+// ---- Pressure Lab — the playable engine (a new tool page) -----------
+const LAB_CSS = `<style>
+#pressureLab[data-layer]{margin:18px 0}
+.plab-verdict{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;padding:16px 20px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid #6b4fa1;border-radius:12px}
+.plab-arrow{font-size:22px;line-height:1}
+.plab-arrow[data-dir="building"]{color:#A23B2D}.plab-arrow[data-dir="easing"]{color:#2A50C8}.plab-arrow[data-dir="steady"]{color:#8a6d1f}
+.plab-verdict__line{font-size:16px;margin:0;font-weight:600;flex:1 1 60%}
+.plab-verdict__meta{font-size:11px;color:var(--ink-soft);margin:0;text-transform:uppercase;letter-spacing:.04em}
+.plab-sr{position:absolute;left:-9999px}
+.plab-board{margin:14px 0;display:grid;gap:8px}
+.plab-bar{display:grid;grid-template-columns:140px 1fr 70px;align-items:center;gap:10px;font-size:13px}
+.plab-bar__name{color:var(--ink-soft)}
+.plab-bar__track{height:14px;background:var(--cream-2);border-radius:8px;overflow:hidden}
+.plab-bar__fill{display:block;height:100%;border-radius:8px}
+.plab-bar__fill[data-push="up"]{background:#A23B2D}.plab-bar__fill[data-push="down"]{background:#2A50C8}.plab-bar__fill[data-push="flat"]{background:#9aa0ab}
+.plab-bar__fill[data-zero]{opacity:.4}
+.plab-bar__push{font-variant-numeric:tabular-nums;color:var(--ink-soft);text-align:right}
+.plab-sum{display:grid;grid-template-columns:140px 1fr 120px;align-items:center;gap:10px;margin-top:6px;font-size:13px}
+.plab-sum__label{color:var(--ink-soft)}
+.plab-meter{position:relative;height:18px;background:var(--cream-2);border-radius:9px}
+.plab-meter__line{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--ink-soft);opacity:.5}
+.plab-meter__needle{position:absolute;top:-4px;width:4px;height:26px;border-radius:2px;background:#6b4fa1;transform:translateX(-50%)}
+.plab-meter__needle[data-dir="building"]{background:#A23B2D}.plab-meter__needle[data-dir="easing"]{background:#2A50C8}
+.plab-sum__num{font-variant-numeric:tabular-nums;color:var(--ink-soft);text-align:right}
+.plab-controls{margin:16px 0;padding:14px 18px;background:var(--white);border:1px solid var(--line);border-radius:12px}
+.plab-controls__head{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft);margin:0 0 10px}
+.plab-ctrl{margin:0 0 10px}
+.plab-ctrl__label{display:flex;justify-content:space-between;font-size:13.5px;margin:0 0 2px}
+.plab-ctrl__val{font-variant-numeric:tabular-nums;color:#6b4fa1;font-weight:600}
+.plab-ctrl input[type=range]{width:100%;accent-color:#6b4fa1}
+.plab-reset{font:inherit;font-size:13px;cursor:pointer;border:1px solid var(--line);background:var(--cream);border-radius:999px;padding:6px 14px;margin-top:4px}
+.plab-reset:hover{border-color:#6b4fa1;color:#6b4fa1}
+.plab-foot{font-size:12.5px;color:var(--ink-soft);margin:8px 0 0}
+@media (max-width:560px){.plab-bar,.plab-sum{grid-template-columns:90px 1fr 56px}}
+</style>`;
+
+function emitLabPage(locale) {
+  const es = locale === 'es';
+  const lang = es ? 'es' : 'en';
+  const base = es ? '/es' : '';
+  const canonEn = 'https://muntin.digital/tools/pressure-lab/';
+  const canonEs = 'https://muntin.digital/es/tools/pressure-lab/';
+  const h1 = es ? 'Laboratorio de Presión' : 'Pressure Lab';
+  const title = es ? `${h1} — juega con lo que mueve tus costos | Muntin Digital`
+    : `${h1} — play with what's moving your food costs | Muntin Digital`;
+  const desc = es
+    ? 'Mueve un indicador adelantado y observa cómo cambia en vivo la perspectiva de costos — un modelo transparente, sin fetch, con datos públicos de USDA y EIA. Una dirección, nunca un precio.'
+    : 'Drag a leading indicator and watch the food-cost outlook change live — a transparent, no-fetch model fed by free USDA and EIA data. A direction, never a price.';
+  const lede = es
+    ? 'Este es el modelo real detrás de la perspectiva del Índice de Costos — y puedes jugarlo. Mueve una señal y observa cómo cambia la dirección. Nada aquí es un precio; es hacia dónde parecen ir los costos.'
+    : 'This is the actual model behind the Cost Index outlook — and you can play it. Move a signal and watch the direction change. Nothing here is a price; it\'s where costs look to be headed.';
+  const baseUrl = es ? canonEs : canonEn;
+  const jsonld = JSON.stringify({ '@context': 'https://schema.org', '@graph': [
+    { '@type': 'WebApplication', '@id': baseUrl + '#tool', 'name': h1, 'url': baseUrl, 'applicationCategory': 'BusinessApplication', 'operatingSystem': 'Web', 'inLanguage': es ? 'es' : 'en', 'isAccessibleForFree': true, 'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' }, 'creator': { '@id': 'https://muntin.digital/#business' }, 'description': desc },
+    { '@type': 'BreadcrumbList', 'itemListElement': [
+      { '@type': 'ListItem', 'position': 1, 'name': es ? 'Inicio' : 'Home', 'item': es ? 'https://muntin.digital/es/' : 'https://muntin.digital/' },
+      { '@type': 'ListItem', 'position': 2, 'name': es ? 'Herramientas' : 'Tools', 'item': (es ? 'https://muntin.digital/es' : 'https://muntin.digital') + '/tools/' },
+      { '@type': 'ListItem', 'position': 3, 'name': h1, 'item': baseUrl } ] }
+  ]});
+  const methodHead = es ? 'Cómo funciona' : 'How this works';
+  const methodBody = es
+    ? 'El modelo es una suma transparente: P = Σ(peso × signo × señal). Cada indicador público adelantado aporta un voto — al alza, a la baja o neutral dentro de una banda muerta — ponderado por su nivel de evidencia. Si P cruza la línea ±, la dirección cambia. Sin ajustes subjetivos: los mismos números que podrías rehacer a mano. Es una dirección inferida, no un precio; los rezagos vienen de USDA/EIA y la ponderación por semana es nuestra estimación.'
+    : 'The model is a transparent sum: P = Σ(weight × sign × signal). Each public leading indicator casts one vote — up, down, or neutral inside a deadband — weighted by its evidence tier. When P crosses the ± line, the direction flips. No subjective adjustments: the same numbers you could redo by hand. It is an inferred direction, not a price; the lead times come from USDA/EIA and the per-week weighting is our estimate.';
+  const noscript = es ? 'El Laboratorio de Presión necesita JavaScript. Verás la perspectiva en vivo en cada página de ingrediente.'
+    : 'The Pressure Lab needs JavaScript — you\'ll find the live outlook on each ingredient page.';
+  const v = 'v=20260608-lab1';
+  return pageHead({ lang, locale, title, desc, canonEn, canonEs, jsonld, extraCss: LAB_CSS }) + `
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="${base}/">${es ? 'Inicio' : 'Home'}</a> ›
+    <a href="${base}/tools/">${es ? 'Herramientas' : 'Tools'}</a> ›
+    ${escHtml(h1)}
+  </nav>
+  <section class="ci-hero">
+    <p class="ci-eyebrow"><a href="${base}/cost-index/">${es ? 'Índice de costos' : 'Cost index'}</a></p>
+    <h1>${escHtml(h1)}</h1>
+    <p class="ci-lede">${escHtml(lede)}</p>
+  </section>
+  <div class="ci-body">
+    <div id="pressureLab" data-layer="inferred"><noscript>${escHtml(noscript)}</noscript></div>
+    <details class="ci-read__src" style="margin-top:18px"><summary>${methodHead}</summary><div>${escHtml(methodBody)}</div></details>
+    <div class="ci-cta-row">
+      <a class="btn btn-ghost" href="${base}/cost-index/">${es ? 'Ver el índice' : 'Browse the index'}</a>
+      <a class="btn btn-ghost" href="${base}/tools/cost-pulse/">${es ? 'Abrir Cost Pulse' : 'Open Cost Pulse'}</a>
+    </div>
+  </div>
+  <script src="/tools/_shared/cost-pressure.js?${v}"></script>
+  <script src="/data/pressure-rules.js?${v}"></script>
+  <script src="/data/pressure-live.js?${v}"></script>
+  <script src="/tools/_shared/pressure-scenario.js?${v}"></script>
+  <script src="/tools/_shared/pressure-lab-ui.js?${v}"></script>` + pageTail;
+}
+
 // ---- Write or check ------------------------------------------------
 const allGated = gatedSlugs();
 const buildSlugs = ONLY ? allGated.filter((s) => ONLY.has(s)) : allGated;
@@ -1218,6 +1310,10 @@ for (const slug of buildSlugs) {
 // build the hub from the full gated set so its ItemList stays complete.
 targets.push({ path: 'cost-index/index.html',    content: emitHubPage('en', allGated) });
 targets.push({ path: 'es/cost-index/index.html', content: emitHubPage('es', allGated) });
+// The Pressure Lab (a tool page, generated here to reuse the chrome + self-emit
+// hreflang). Built whole regardless of --only so EN/ES stay in parity.
+targets.push({ path: 'tools/pressure-lab/index.html',    content: emitLabPage('en') });
+targets.push({ path: 'es/tools/pressure-lab/index.html', content: emitLabPage('es') });
 
 let drift = 0;
 for (const tgt of targets) {

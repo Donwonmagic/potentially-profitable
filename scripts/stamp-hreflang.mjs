@@ -67,7 +67,10 @@ const SKIP_PATH_PREFIXES = [
   // Cost-index pages — build-cost-index-pages.mjs emits its own hreflang
   // + og:locale block, same pattern as the generators above.
   'cost-index/',
-  'es/cost-index/'
+  'es/cost-index/',
+  // Pressure Lab — emitted by build-cost-index-pages.mjs with its own hreflang.
+  'tools/pressure-lab/',
+  'es/tools/pressure-lab/'
 ];
 
 function collectHtml(dir, out = []) {

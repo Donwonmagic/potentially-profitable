@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+<title>Pressure Lab — play with what&#39;s moving your food costs | Muntin Digital</title>
+<meta name="description" content="Drag a leading indicator and watch the food-cost outlook change live — a transparent, no-fetch model fed by free USDA and EIA data. A direction, never a…" />
+<meta name="theme-color" content="#2A50C8" />
+<link rel="canonical" href="https://muntin.digital/tools/pressure-lab/" />
+<link rel="alternate" hreflang="en" href="https://muntin.digital/tools/pressure-lab/" />
+<link rel="alternate" hreflang="es" href="https://muntin.digital/es/tools/pressure-lab/" />
+<link rel="alternate" hreflang="x-default" href="https://muntin.digital/tools/pressure-lab/" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:locale:alternate" content="es_US" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Pressure Lab — play with what&#39;s moving your food costs | Muntin Digital" />
+<meta property="og:description" content="Drag a leading indicator and watch the food-cost outlook change live — a transparent, no-fetch model fed by free USDA and EIA data. A direction, never a…" />
+<meta property="og:url" content="https://muntin.digital/tools/pressure-lab/" />
+<meta property="og:site_name" content="Muntin Digital" />
+<meta property="og:image" content="https://muntin.digital/brand/og/tool-cost-pulse.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Pressure Lab — play with what&#39;s moving your food costs | Muntin Digital" />
+<meta name="twitter:description" content="Drag a leading indicator and watch the food-cost outlook change live — a transparent, no-fetch model fed by free USDA and EIA data. A direction, never a…" />
+<meta name="twitter:image" content="https://muntin.digital/brand/og/tool-cost-pulse.png" />
+<link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
+<link rel="icon" type="image/png" sizes="192x192" href="/brand/favicons/android-chrome-192x192.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
+<link rel="manifest" href="/brand/favicons/site.webmanifest" />
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","@id":"https://muntin.digital/tools/pressure-lab/#tool","name":"Pressure Lab","url":"https://muntin.digital/tools/pressure-lab/","applicationCategory":"BusinessApplication","operatingSystem":"Web","inLanguage":"en","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"creator":{"@id":"https://muntin.digital/#business"},"description":"Drag a leading indicator and watch the food-cost outlook change live — a transparent, no-fetch model fed by free USDA and EIA data. A direction, never a price."},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://muntin.digital/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://muntin.digital/tools/"},{"@type":"ListItem","position":3,"name":"Pressure Lab","item":"https://muntin.digital/tools/pressure-lab/"}]}]}</script>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
+<style>
+:root{--cream:#F6F7F8;--cream-2:#EDEEF1;--ink:#16181D;--ink-soft:#4A4F59;--teal:#2A50C8;--white:#fff;--line:#E3E5E9;--font-display:'Fraunces',Georgia,serif;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
+html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--cream);line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased}
+.container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
+.skip-link{position:absolute;left:-9999px;top:0}
+.skip-link:focus{position:static;display:inline-block;background:#16181D;color:#F6F7F8;padding:12px 16px;z-index:100}
+a{color:inherit}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:500;font-size:15px;text-decoration:none;white-space:nowrap;cursor:pointer}
+.btn-primary{background:var(--ink);color:var(--cream)}
+.btn-ghost{background:transparent;color:var(--ink);border:1px solid #D7DAE0}
+header.nav{min-height:64px}
+.nav{position:fixed;top:0;left:0;right:0;background:var(--cream);z-index:50;border-bottom:1px solid #E3E5E9}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:64px;padding:12px 0}
+.logo{display:flex;align-items:center;gap:10px;font-family:Georgia,serif;font-size:22px;font-weight:600;letter-spacing:-0.02em;flex-shrink:0;white-space:nowrap;color:inherit;text-decoration:none}
+.logo-mark{width:28px;height:28px;flex:0 0 28px}
+.nav-links{display:flex;gap:36px;font-size:15px}
+.nav-toggle{display:none}
+.nav-search-btn,.lang-switch{display:none}
+@media (max-width:1100px){.nav-links{display:none}}
+main{padding-top:64px}
+.breadcrumb{font-size:13px;color:var(--ink-soft);margin:24px 0 0}
+.breadcrumb a{color:var(--ink-soft);text-decoration:none;border-bottom:1px dashed currentColor}
+.breadcrumb a:hover{color:var(--teal)}
+.ci-hero{padding:40px 0 8px}
+.ci-eyebrow{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin:0 0 10px}
+.ci-eyebrow a{color:var(--teal);text-decoration:none}
+.ci-hero h1{font-family:var(--font-display);font-size:clamp(30px,5vw,46px);font-weight:500;line-height:1.12;color:var(--ink);margin:0 0 14px}
+.ci-lede{font-size:18px;line-height:1.6;color:var(--ink);margin:0;max-width:720px}
+.ci-body{margin:8px auto 0;max-width:760px}
+.ci-body h2{font-family:var(--font-display);font-size:clamp(20px,3vw,26px);font-weight:500;color:var(--ink);margin:34px 0 10px;line-height:1.2}
+.ci-body p{margin:0 0 16px;font-size:16px;line-height:1.7}
+.ci-body ol,.ci-body ul{margin:0 0 16px;padding-left:22px;font-size:16px;line-height:1.7}
+.ci-body li{margin:0 0 8px}
+.ci-read{margin:22px 0 8px;padding:18px 20px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:12px;font-variant-numeric:tabular-nums}
+.ci-read__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin:0 0 6px}
+.ci-read__badge{font-weight:600;text-transform:none;letter-spacing:0;font-size:12px;color:var(--ink-soft);margin-left:8px}
+.ci-read__line{font-size:16px;line-height:1.55;color:var(--ink);margin:0}
+.ci-read__trend{margin:6px 0 0;font-size:14.5px;line-height:1.5;color:var(--ink-soft)}
+.ci-read__verdict{margin:10px 0 0;font-size:15px;line-height:1.5;color:var(--ink)}
+.ci-read__verb{display:inline-block;font-weight:700;font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:999px;margin-right:8px;vertical-align:1px;background:var(--cream);border:1px solid var(--line);color:var(--ink-soft)}
+.ci-read__verb[data-bias="hold"]{color:#2A50C8;border-color:#2A50C8}
+.ci-read__verb[data-bias="watch"]{color:#8a6d1f;border-color:#cdb368}
+.ci-read__verb[data-bias="re-price"]{color:#A23B2D;border-color:#A23B2D}
+.ci-read__spark{margin:12px 0 0;display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px}
+.ci-read__spark .mtn-spark{flex:0 0 auto;overflow:visible}
+.ci-read__capsule{margin:0;font-size:14.5px;line-height:1.45;color:var(--ink)}
+.ci-read__capsule-note{color:var(--ink-soft);font-size:12.5px}
+.ci-read__rank{color:var(--ink-soft)}
+.ci-why{margin:14px 0 8px;padding:14px 18px;background:var(--white);border:1px solid var(--line);border-radius:12px}
+.ci-why__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 6px}
+.ci-why__line{font-size:15px;line-height:1.55;color:var(--ink);margin:0}
+.ci-read__src{margin-top:8px;font-size:12.5px}
+.ci-read__src summary{cursor:pointer;color:var(--ink-soft);font-weight:600}
+.ci-read__src div{margin-top:6px;color:var(--ink-soft);line-height:1.5}
+.ci-read__live{margin:10px 0 0;font-size:14px}
+.ci-read__live a{color:var(--teal);text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
+.ci-faq{margin:34px 0 0}
+.ci-faq__item{margin:0 0 18px}
+.ci-faq__q{font-family:var(--font-display);font-size:17px;font-weight:600;color:var(--ink);margin:0 0 6px}
+.ci-faq__a{font-size:15.5px;line-height:1.65;color:var(--ink-soft);margin:0}
+.ci-sibs{margin:30px 0 0;font-size:14px;color:var(--ink-soft)}
+.ci-sibs-label{display:inline-block;font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:11px;margin-right:8px}
+.ci-sibs a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+.ci-cta-row{display:flex;flex-wrap:wrap;gap:12px;margin:30px 0 8px}
+.ci-source{font-size:12.5px;color:var(--ink-soft);margin:24px 0 40px}
+.ci-source a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+.ci-grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(min(260px,100%),1fr));margin:14px 0 0}
+.ci-card{padding:16px 18px;background:var(--white);border:1px solid var(--line);border-radius:10px}
+.ci-card a{font-family:var(--font-display);font-size:17px;color:var(--ink);text-decoration:none}
+.ci-card a:hover{color:var(--teal)}
+.ci-card-note{display:block;font-size:13px;color:var(--ink-soft);margin-top:4px}
+.ci-cat-h{font-family:var(--font-display);font-size:16px;color:var(--ink-soft);margin:30px 0 0;text-transform:uppercase;letter-spacing:.04em;font-weight:600}
+.ci-card-action{margin-top:10px}
+.ci-moving{margin:20px 0 8px;padding:16px 20px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:12px}
+.ci-moving .ci-cat-h{margin:0 0 10px}
+.ci-moving-list{list-style:none;margin:0;padding:0}
+.ci-moving-item{margin:0 0 8px;font-size:15.5px;line-height:1.5}
+.ci-moving-item a{color:var(--ink);text-decoration:none;font-weight:600;border-bottom:1px dashed var(--line)}
+.ci-moving-item a:hover{color:var(--teal)}
+.ci-moving-reason{color:var(--ink-soft);font-size:14px}
+.ci-moving-calm{margin:0;font-size:15.5px;color:var(--ink)}
+.ci-card--pending{opacity:.72;background:var(--cream-2)}
+.ci-card--pending a{color:var(--ink-soft)}
+.ci-pending-note{font-size:13.5px;color:var(--ink-soft);margin:8px 0 0}
+.ci-read--pending{border-left-color:#cdb368;background:var(--cream-2)}
+.ci-read--pending .ci-read__head{color:#8a6d1f}
+.ci-outlook{margin:14px 0 8px;padding:16px 20px;background:#fff;border:1px solid var(--line);border-left:4px solid #6b4fa1;border-radius:12px}
+.ci-outlook__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#6b4fa1;margin:0 0 6px}
+.ci-outlook__line{font-size:15.5px;line-height:1.5;color:var(--ink);margin:0}
+.ci-outlook__how{margin-top:8px;font-size:12.5px}
+.ci-outlook__how summary{cursor:pointer;color:var(--ink-soft);font-weight:600}
+.ci-outlook__how div{margin-top:6px;color:var(--ink-soft);line-height:1.55}
+.ci-outlook__panel{margin:0 0 8px;padding-left:18px}
+.ci-outlook__panel li{margin:0 0 4px}
+</style>
+<link rel="preload" as="style" href="/assets/site-core.css?v=933461d49609" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=15ac955f199e" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=933461d49609"><link rel="stylesheet" href="/assets/site-article.css?v=15ac955f199e"></noscript>
+<style>
+#pressureLab[data-layer]{margin:18px 0}
+.plab-verdict{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;padding:16px 20px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid #6b4fa1;border-radius:12px}
+.plab-arrow{font-size:22px;line-height:1}
+.plab-arrow[data-dir="building"]{color:#A23B2D}.plab-arrow[data-dir="easing"]{color:#2A50C8}.plab-arrow[data-dir="steady"]{color:#8a6d1f}
+.plab-verdict__line{font-size:16px;margin:0;font-weight:600;flex:1 1 60%}
+.plab-verdict__meta{font-size:11px;color:var(--ink-soft);margin:0;text-transform:uppercase;letter-spacing:.04em}
+.plab-sr{position:absolute;left:-9999px}
+.plab-board{margin:14px 0;display:grid;gap:8px}
+.plab-bar{display:grid;grid-template-columns:140px 1fr 70px;align-items:center;gap:10px;font-size:13px}
+.plab-bar__name{color:var(--ink-soft)}
+.plab-bar__track{height:14px;background:var(--cream-2);border-radius:8px;overflow:hidden}
+.plab-bar__fill{display:block;height:100%;border-radius:8px}
+.plab-bar__fill[data-push="up"]{background:#A23B2D}.plab-bar__fill[data-push="down"]{background:#2A50C8}.plab-bar__fill[data-push="flat"]{background:#9aa0ab}
+.plab-bar__fill[data-zero]{opacity:.4}
+.plab-bar__push{font-variant-numeric:tabular-nums;color:var(--ink-soft);text-align:right}
+.plab-sum{display:grid;grid-template-columns:140px 1fr 120px;align-items:center;gap:10px;margin-top:6px;font-size:13px}
+.plab-sum__label{color:var(--ink-soft)}
+.plab-meter{position:relative;height:18px;background:var(--cream-2);border-radius:9px}
+.plab-meter__line{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--ink-soft);opacity:.5}
+.plab-meter__needle{position:absolute;top:-4px;width:4px;height:26px;border-radius:2px;background:#6b4fa1;transform:translateX(-50%)}
+.plab-meter__needle[data-dir="building"]{background:#A23B2D}.plab-meter__needle[data-dir="easing"]{background:#2A50C8}
+.plab-sum__num{font-variant-numeric:tabular-nums;color:var(--ink-soft);text-align:right}
+.plab-controls{margin:16px 0;padding:14px 18px;background:var(--white);border:1px solid var(--line);border-radius:12px}
+.plab-controls__head{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft);margin:0 0 10px}
+.plab-ctrl{margin:0 0 10px}
+.plab-ctrl__label{display:flex;justify-content:space-between;font-size:13.5px;margin:0 0 2px}
+.plab-ctrl__val{font-variant-numeric:tabular-nums;color:#6b4fa1;font-weight:600}
+.plab-ctrl input[type=range]{width:100%;accent-color:#6b4fa1}
+.plab-reset{font:inherit;font-size:13px;cursor:pointer;border:1px solid var(--line);background:var(--cream);border-radius:999px;padding:6px 14px;margin-top:4px}
+.plab-reset:hover{border-color:#6b4fa1;color:#6b4fa1}
+.plab-foot{font-size:12.5px;color:var(--ink-soft);margin:8px 0 0}
+@media (max-width:560px){.plab-bar,.plab-sum{grid-template-columns:90px 1fr 56px}}
+</style></head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<!-- batch-banner:start --><!-- batch-banner:end -->
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
+<header class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="/" class="logo" aria-label="Muntin Digital home">
+      <svg class="logo-mark" width="28" height="28" viewBox="0 0 128 128" fill="none" aria-hidden="true">
+        <g fill="currentColor">
+          <path d="M32 8 H58 V46 H8 V32 A24 24 0 0 1 32 8 Z"/>
+          <path d="M70 8 H96 A24 24 0 0 1 120 32 V46 H70 V8 Z"/>
+          <path d="M8 58 H58 V120 H32 A24 24 0 0 1 8 96 V58 Z"/>
+          <path d="M70 58 H120 V96 A24 24 0 0 1 96 120 H70 V58 Z"/>
+        </g>
+      </svg>
+      Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
+    </a>
+    <!-- Phase 7: 5-item nav, per launch plan Part II.
+         Library / Tools / Studio / Sign in.
+         Library points at the canonical /library/ hub (the
+         three-doors page). Tools is promoted from the old Library
+         mega-menu to a top-level item. Studio replaces Services +
+         Restaurants + About — they all live under /studio/ now,
+         either as anchored sections (#pricing, #offers, #cities,
+         #process, #about) or as full child pages (/studio/compare/,
+         /studio/silver-spring/, etc.). The old Services and
+         Restaurants pages remain reachable via /studio/ and the
+         _redirects table; /about/ is unchanged. The mega-menu is
+         retired (the hub IS the menu now); the controller script
+         is gone too.
+
+         /work/ was retired with the Phase 8 portfolio-sunset pass:
+         the company-as-resume framing made the personal-portfolio
+         showcase redundant. Legacy /work/* URLs 301 to /studio/
+         via _redirects so old backlinks land softly. -->
+    <nav class="nav-links" aria-label="Primary">
+      <a href="/library/">Library</a>
+      <a href="/start/">Start</a>
+      <a href="/tools/">Tools</a>
+      <a href="/studio/">Studio</a>
+      <!-- Ledger — sister product (the privacy-forward invoice ledger)
+           on its own subdomain. Plain external link so it passes link
+           equity to ledger.muntin.digital; Plausible's automatic
+           outbound-link tracking measures the nav click. -->
+      <a href="https://ledger.muntin.digital/">Ledger</a>
+      <!-- Both sign-in / workshop ship hidden by default; the
+           auth-state JS at the bottom of this file calls
+           /api/auth/me and reveals exactly one. No-JS visitors see
+           neither, which is acceptable: the library and tools work
+           fully without sign-in (Workshop is the only auth surface). -->
+      <a class="js-nav-signin nav-link-auth" href="/sign-in/" hidden>Sign in</a>
+      <a class="js-nav-workshop nav-link-auth" href="/workbench/" hidden>Workshop</a>
+    </nav>
+    <button type="button" class="nav-search-btn js-open-search" aria-label="Open search (Cmd+K)" title="Search — Cmd K">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="7"/>
+        <line x1="21" y1="21" x2="16.5" y2="16.5"/>
+      </svg>
+      <span class="nav-search-label">Search</span>
+      <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mac"><span class="nav-search-kbd-mod">⌘</span>K</span><span class="nav-search-kbd-pc">Ctrl+K</span></kbd>
+    </button>
+    <nav class="lang-switch" aria-label="Language">
+      <a href="/es/tools/pressure-lab/" hreflang="es" lang="es" class="js-lang-switch" data-set-locale="es">Español</a>
+      <span class="lang-switch-current" aria-current="true">EN</span>
+    </nav>
+    <!-- Phase 7 — dark-mode toggle. The icon SVG flips between sun
+         and moon via CSS based on the [data-theme] state set by
+         theme-toggle.js. With JS off the button stays in its
+         default state (sun) and clicks do nothing; the OS
+         preference still drives dark-mode tokens via media query. -->
+    <button type="button" class="theme-toggle js-theme-toggle" aria-label="Toggle dark mode" aria-pressed="false" hidden>
+      <svg class="theme-toggle__icon theme-toggle__icon--sun" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="4"/>
+        <line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/>
+        <line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/>
+        <line x1="4.93" y1="4.93" x2="7.05" y2="7.05"/><line x1="16.95" y1="16.95" x2="19.07" y2="19.07"/>
+        <line x1="4.93" y1="19.07" x2="7.05" y2="16.95"/><line x1="16.95" y1="7.05" x2="19.07" y2="4.93"/>
+      </svg>
+      <svg class="theme-toggle__icon theme-toggle__icon--moon" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+    </button>
+    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">
+      <!-- Phase 5+ — site-wide pulse propagation. Hidden by default;
+           window-state.js reveals when lastSeen <4h. Decorative; the
+           label "Reach Don" remains the accessible affordance. -->
+      <span class="nav-window-pulse" id="navWindowPulse" hidden aria-hidden="true" title="Don is around"></span>
+      Reach Don
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <!-- Mobile menu mirrors the 5-item desktop nav, plus search, lang
+       switcher, and the Reach Don CTA. The auth-state JS below
+       toggles js-nav-signin vs js-nav-workshop in both surfaces. -->
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
+    <a href="/library/">Library</a>
+    <a href="/start/">Start</a>
+    <a href="/tools/">Tools</a>
+    <a href="/studio/">Studio</a>
+    <a href="https://ledger.muntin.digital/">Ledger</a>
+    <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
+    <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
+    <button type="button" class="mobile-search js-open-search">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+      <span>Search the library</span>
+    </button>
+    <!-- Mobile dark-mode toggle. The desktop .theme-toggle is hidden on
+         phones (≤640px), so this surfaces the same control inside the
+         menu. Same .js-theme-toggle hook — theme-toggle.js wires every
+         instance and keeps them in sync. Shows a text label (the desktop
+         one is icon-only). Un-hidden by the script so no-JS users don't
+         see a dead control. -->
+    <button type="button" class="theme-toggle mobile-theme js-theme-toggle" aria-pressed="false" aria-label="Toggle dark mode" data-label-dark="Dark mode" data-label-light="Light mode" hidden>
+      <svg class="theme-toggle__icon theme-toggle__icon--sun" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="4"/>
+        <line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/>
+        <line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/>
+        <line x1="4.93" y1="4.93" x2="7.05" y2="7.05"/><line x1="16.95" y1="16.95" x2="19.07" y2="19.07"/>
+        <line x1="4.93" y1="19.07" x2="7.05" y2="16.95"/><line x1="16.95" y1="7.05" x2="19.07" y2="4.93"/>
+      </svg>
+      <svg class="theme-toggle__icon theme-toggle__icon--moon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+      <span class="theme-toggle__label js-theme-label">Light mode</span>
+    </button>
+    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Reach Don</a>
+    <a href="/es/tools/pressure-lab/" hreflang="es" lang="es" class="mobile-lang js-lang-switch" data-set-locale="es">Ver en español</a>
+  </nav>
+
+  <!-- Opt-in Spanish banner. Rendered hidden by default; site.js
+       removes the hidden attribute only when (a) the reader's browser
+       lists Spanish in navigator.languages, (b) no md_locale cookie
+       has been set yet, and (c) the banner hasn't been dismissed.
+       Speaks directly in Spanish because its audience, by definition,
+       is a Spanish-speaking visitor. Link target is the page's own
+       hreflang="es" alternate from <head>, read at runtime. -->
+  <aside class="lang-hint" id="langHint" role="complementary" aria-label="Sugerencia de idioma" lang="es" hidden>
+    <div class="container lang-hint-inner">
+      <span class="lang-hint-text"><strong>¿Prefieres este sitio en español?</strong> Tenemos una versión completa.</span>
+      <a href="/es/tools/pressure-lab/" class="lang-hint-accept js-lang-switch" data-set-locale="es" hreflang="es" lang="es">Ver en español &rarr;</a>
+      <button type="button" class="lang-hint-dismiss" id="langHintDismiss" aria-label="Cerrar">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Mega-menu controller retired in Phase 7: Library is a single
+       link to /library/ now (the canonical three-doors hub IS the
+       menu). The CSS rules in site.css for .nav-library-* remain in
+       place defensively so any future mega-menu reuses the pattern. -->
+
+  <!-- Phase 2 (Workshop) — auth-state toggle for the nav.
+       Calls /api/auth/me and reveals either the "Sign in" or
+       "Workshop" link based on the response. Both links ship hidden
+       so anonymous visitors with JS disabled see neither (the
+       library + tools work fully without sign-in, so the missing
+       affordance is acceptable). The script runs once, fire-and-
+       forget; no observable side effects on a 401. -->
+  <script>
+    /* Phase 3C-perf — deferred via requestIdleCallback so the
+       /api/auth/me round-trip stays off the critical path. Both
+       .js-nav-signin / .js-nav-workshop ship hidden, so a one-frame
+       delay before the correct affordance reveals is invisible. */
+    (window.requestIdleCallback || function (cb) { return setTimeout(cb, 200); })(function () {
+      var signin   = document.querySelectorAll('.js-nav-signin');
+      var workshop = document.querySelectorAll('.js-nav-workshop');
+      if (!signin.length && !workshop.length) return;
+      var show = function (nodes) { nodes.forEach(function (n) { n.hidden = false; }); };
+      fetch('/api/auth/me', { credentials: 'same-origin' })
+        .then(function (r) {
+          if (r.status === 200) {
+            show(workshop);
+            // Phase G.10 — append (N) badge with the user's save count.
+            fetch('/api/workbench/count', { credentials: 'same-origin' })
+              .then(function (r2) { return r2.ok ? r2.json() : null; })
+              .then(function (j) {
+                if (!j || typeof j.count !== 'number' || j.count <= 0) return;
+                workshop.forEach(function (n) {
+                  if (n.querySelector('.nav-workshop-count')) return;
+                  var b = document.createElement('span');
+                  b.className = 'nav-workshop-count';
+                  b.textContent = ' (' + j.count + ')';
+                  n.appendChild(b);
+                });
+              })
+              .catch(function () { /* silent */ });
+            // Course progress dot — appended after the workshop link
+            // when the operator is mid-bootcamp (> 0 but < 16 lessons
+            // done). Decorative + aria-hidden; the operator can still
+            // click the workshop link to see the canonical count.
+            fetch('/api/course/progress', { credentials: 'same-origin' })
+              .then(function (r3) { return r3.ok ? r3.json() : null; })
+              .then(function (j) {
+                if (!j || !j.progress || !Array.isArray(j.progress.completed)) return;
+                var n = j.progress.completed.length;
+                if (n <= 0 || n >= 16) return;
+                workshop.forEach(function (w) {
+                  if (w.querySelector('.nav-course-dot')) return;
+                  var dot = document.createElement('span');
+                  dot.className = 'nav-course-dot';
+                  dot.setAttribute('aria-hidden', 'true');
+                  dot.title = 'Open the Doors — lesson ' + n + ' / 16';
+                  dot.style.cssText = 'display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--teal);margin-left:6px;vertical-align:middle';
+                  w.appendChild(dot);
+                });
+              })
+              .catch(function () { /* silent — course endpoint optional */ });
+            return;
+          }
+          show(signin);
+        })
+        .catch(function () { show(signin); });
+    });
+  </script>
+  <!-- Phase 7 — dark-mode toggle handler. Loaded after the nav
+       partial so the .js-theme-toggle button is in the DOM. -->
+  <script src="/assets/theme-toggle.js?v=phase8"></script>
+</header>
+<main id="main" role="main">
+<div class="container">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="/">Home</a> ›
+    <a href="/tools/">Tools</a> ›
+    Pressure Lab
+  </nav>
+  <section class="ci-hero">
+    <p class="ci-eyebrow"><a href="/cost-index/">Cost index</a></p>
+    <h1>Pressure Lab</h1>
+    <p class="ci-lede">This is the actual model behind the Cost Index outlook — and you can play it. Move a signal and watch the direction change. Nothing here is a price; it&#39;s where costs look to be headed.</p>
+  </section>
+  <div class="ci-body">
+    <div id="pressureLab" data-layer="inferred"><noscript>The Pressure Lab needs JavaScript — you&#39;ll find the live outlook on each ingredient page.</noscript></div>
+    <details class="ci-read__src" style="margin-top:18px"><summary>How this works</summary><div>The model is a transparent sum: P = Σ(weight × sign × signal). Each public leading indicator casts one vote — up, down, or neutral inside a deadband — weighted by its evidence tier. When P crosses the ± line, the direction flips. No subjective adjustments: the same numbers you could redo by hand. It is an inferred direction, not a price; the lead times come from USDA/EIA and the per-week weighting is our estimate.</div></details>
+    <div class="ci-cta-row">
+      <a class="btn btn-ghost" href="/cost-index/">Browse the index</a>
+      <a class="btn btn-ghost" href="/tools/cost-pulse/">Open Cost Pulse</a>
+    </div>
+  </div>
+  <script src="/tools/_shared/cost-pressure.js?v=20260608-lab1"></script>
+  <script src="/data/pressure-rules.js?v=20260608-lab1"></script>
+  <script src="/data/pressure-live.js?v=20260608-lab1"></script>
+  <script src="/tools/_shared/pressure-scenario.js?v=20260608-lab1"></script>
+  <script src="/tools/_shared/pressure-lab-ui.js?v=20260608-lab1"></script></div>
+</main>
+<footer class="site-footer" id="footer"></footer>
+<!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260430-cohesion";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
+</body>
+</html>
