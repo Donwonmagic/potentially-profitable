@@ -97,6 +97,11 @@ const CHECKS = [
   ['Dark contrast',       'check-dark-contrast.mjs'],
   ['Section contrast',    'check-contrast.mjs'],
   ['Banned words',        'check-banned-words.mjs',        '--check'],
+  // Studio voice-boundary — mirror of the product's "Don" check. Blocks a
+  // fake-team / corporate "we" ("our team", "a team of") on the studio's own
+  // marketing surfaces; the studio is one person (Don, "I"). Marketing-scoped
+  // (content registers quote operators, so they are excluded).
+  ['Studio voice boundary','check-studio-voice-boundary.mjs','--check'],
   // Sprint M (2026-05-08): retired-slug regression guard. Fails CI
   // if either retired slug is reintroduced anywhere outside the
   // documented allow list (_redirects, 404.html, historical
