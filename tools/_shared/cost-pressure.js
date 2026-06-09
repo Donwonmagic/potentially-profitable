@@ -22,7 +22,7 @@
  *   }
  *
  * panel: one item's rule from data/pressure-rules.json —
- *   { item, rule_version, cutoffT, deadband, agreement:{highT,modT},
+ *   { item, rule_version, cutoffT, deadband, agreement:{highT,modT,minHigh,minMod},
  *     decay:{weeksPerNotch, floorWeeks},
  *     indicators:[{ id, source, sign(+1|-1), weight, tier, lead:{min,max,unit},
  *                   window, deadband?, group?, cite }] }
@@ -106,6 +106,18 @@
     var aM = (panel.agreement && panel.agreement.modT) || 0.33;
     var order = ['high', 'moderate', 'low'];
     var conf = agreement >= aH ? 'high' : agreement >= aM ? 'moderate' : 'low';
+
+    // Breadth floor: confidence measures AGREEMENT AMONG INDICATORS, so it cannot
+    // outrun how many actually reported. With a sample of one, agreement is
+    // trivially 1.0 — but one surviving signal is a hint, not a confident read. A
+    // panel thinned by an absent/off-season indicator (no active freeze warning in
+    // summer) or a fetch gap must step its claim down: 'high' needs minHigh active
+    // indicators, 'moderate' needs minMod; a lone signal caps at 'low'.
+    var nActive = contributors.length;
+    var minHigh = (panel.agreement && panel.agreement.minHigh) || 3;
+    var minMod = (panel.agreement && panel.agreement.minMod) || 2;
+    if (nActive < minHigh && conf === 'high') conf = 'moderate';
+    if (nActive < minMod && conf !== 'low') conf = 'low';
 
     // Staleness decay: the further past the last measured print, the weaker the
     // claim. Step confidence down on a published schedule; past the floor, the
