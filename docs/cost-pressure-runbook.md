@@ -39,17 +39,29 @@ API keys; the rest keyless).
 - **No paid feed is used anywhere.** Futures come *through* free USDA AMS, not CME.
 
 ### 2. Verify the 12 outstanding source specs
+
+**Fast path — let `--probe` do the discovery for you** (needs the keys from step 1,
+run on a machine with internet egress):
 ```
-node scripts/check-pressure-sources.mjs      # prints the per-spec go-live worksheet
+EIA_KEY=… NASS_KEY=… node scripts/fetch-pressure-observations.mjs --probe
 ```
-The gate now prints a grouped worksheet — each unverified spec with its discovery
-endpoint and the exact `short_desc`/slug to confirm. Work it top to bottom.
-For each `verified:false` spec in `data/pressure-source-specs.json`, confirm the
-exact identifier against the live discovery endpoint, then flip `verified:true`:
+`--probe` tries **every** spec live (ignoring `verified`), writes nothing, and
+prints for each: row count, the normalized % change, and — for NASS — the exact
+`short_desc`/`unit_desc` the query matched. A `✓` with a sensible `short_desc`
+means the skeleton already works: flip `verified:true`. A `⚠ rows=0` or a wrong
+`short_desc` means tighten the `query` and re-probe. This collapses 12
+param-browser lookups into one command you re-run until everything is `✓`.
+
+The static worksheet (discovery endpoints + what to confirm) is also available:
+```
+node scripts/check-pressure-sources.mjs      # grouped per-spec go-live worksheet
+```
+Reference endpoints when a query needs hand-tuning:
 - **NASS** (`broiler-placements`, `cattle-on-feed-placements`, `hogs-market-supply`,
-  `cold-storage-*`, `crop-condition`): confirm the `short_desc` in the Quick Stats
-  parameter browser (<https://quickstats.nass.usda.gov>), tighten the `query`.
-- **AMS** (`feed-futures`, `ams-shipments`): confirm the My Market News report slug
+  `cold-storage-*`, `crop-condition`, `milk-production`): the Quick Stats parameter
+  browser (<https://quickstats.nass.usda.gov>) — tighten the `query` (add `unit_desc`
+  when `--probe` reports multiple units).
+- **AMS** (`feed-futures`, `ams-shipments`): the My Market News report slug
   + numeric field (<https://mymarketnews.ams.usda.gov/mymarketnews-api>).
 
 ### 3. Prove the wiring, then fetch

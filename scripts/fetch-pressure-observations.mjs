@@ -11,6 +11,10 @@
  * Modes:
  *   --self-test   run the spec→normalizer dispatch over bundled FIXTURES (no
  *                 network) — proves the wiring before any key exists.
+ *   --probe       try EVERY spec live (ignoring `verified`) and report what each
+ *                 endpoint returns — row count, normalized change, and (for NASS)
+ *                 the matched short_desc/unit_desc — so the 12-spec verification
+ *                 is one command, not 12 param-browser lookups. Writes nothing.
  *   --demo        re-emit data/pressure-observations.demo.json (pipeline smoke).
  *   --live        fetch real sources. EIA needs EIA_KEY; NASS needs NASS_KEY;
  *                 USDM + NWS are keyless. Skips any spec with verified:false or a
@@ -123,6 +127,50 @@ function urlFor(id, spec) {
   }
   return { skip: 'unknown type' };
 }
+// Extract the row array per source type (mirrors changeFromRaw's digging).
+function rowsFor(spec, raw) {
+  switch (spec.type) {
+    case 'eia':  return (raw && raw.response && raw.response.data) || (raw && raw.data) || [];
+    case 'nass': return (raw && raw.data) || (Array.isArray(raw) ? raw : []);
+    case 'ams':  return (raw && raw.results) || (Array.isArray(raw) ? raw : []);
+    case 'usdm': return Array.isArray(raw) ? raw : ((raw && raw.data) || []);
+    case 'nws':  return (raw && raw.features) || [];
+    default: return [];
+  }
+}
+function distinct(rows, key, cap) {
+  const seen = []; for (const r of rows) { const v = r && r[key]; if (v != null && seen.indexOf(v) < 0) { seen.push(v); if (seen.length >= (cap || 6)) break; } } return seen;
+}
+
+// ---- probe: try EVERY spec live (ignore `verified`) and report what comes back
+// so the founder can confirm/tighten each query in one pass. Writes nothing.
+async function probe() {
+  console.log('Probing every spec live (writes nothing). NASS/EIA need keys; USDM/NWS keyless.\n');
+  const ready = [];
+  for (const [id, spec] of Object.entries(specs)) {
+    const u = urlFor(id, spec);
+    if (u.skip) { console.log(`  ✗ ${id.padEnd(26)} [${spec.type}] skipped: ${u.skip}`); continue; }
+    try {
+      const raw = await fetchJson(u.url);
+      const rows = rowsFor(spec, raw);
+      const cp = changeFromRaw(spec, raw);
+      const usable = cp != null;
+      const flag = usable ? '✓' : '⚠';
+      let detail = `rows=${rows.length} change=${usable ? (cp * 100).toFixed(1) + '%' : 'none'}`;
+      if (spec.type === 'nass') {
+        const sd = distinct(rows, 'short_desc'), ud = distinct(rows, 'unit_desc');
+        detail += `\n      short_desc: ${sd.length ? sd.join(' | ') : '(none — query matched nothing)'}`;
+        if (ud.length > 1) detail += `\n      unit_desc (multiple — tighten with unit_desc): ${ud.join(' | ')}`;
+      }
+      console.log(`  ${flag} ${id.padEnd(26)} [${spec.type}] ${detail}`);
+      if (usable) ready.push(id);
+    } catch (e) { console.log(`  ✗ ${id.padEnd(26)} [${spec.type}] fetch failed: ${e.message}`); }
+  }
+  console.log(`\n${ready.length}/${Object.keys(specs).length} specs returned a usable series.`);
+  const toFlip = ready.filter((id) => specs[id].verified === false);
+  if (toFlip.length) console.log(`Ready to flip verified:true (confirm the short_desc above looks right first):\n  ${toFlip.join('\n  ')}`);
+}
+
 async function live() {
   const observations = {};
   const gaps = [];
@@ -160,5 +208,6 @@ else if (arg('--demo')) {
   const demo = rd('data/pressure-observations.demo.json');
   writeFileSync(path.join(repoRoot, 'data/pressure-observations.json'), JSON.stringify(demo, null, 2) + '\n');
   console.log('Wrote data/pressure-observations.json from demo fixture.');
-} else if (arg('--live')) { live(); }
-else { console.log('usage: --self-test | --demo | --live   (live needs free EIA_KEY + NASS_KEY; USDM/NWS keyless)'); }
+} else if (arg('--probe')) { probe(); }
+else if (arg('--live')) { live(); }
+else { console.log('usage: --self-test | --probe | --demo | --live\n  --probe  try every spec live (ignores verified), report what each returns, write nothing\n  --live   fetch verified specs → data/pressure-observations.json\n  (live/probe need free EIA_KEY + NASS_KEY; USDM/NWS keyless)'); }
