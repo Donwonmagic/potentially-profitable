@@ -1,0 +1,83 @@
+{
+  "_doc": "Muntin Cost PRESSURE rules — the transparent, versioned manifest the deterministic engine (tools/_shared/cost-pressure.js) scores into an inferred 'where it's headed' direction per ingredient. THIS IS NOT A PRICE. Each indicator declares: a public free SOURCE, a direction SIGN (does indicator-up mean cost-up +1 or cost-down -1), an evidence-tier WEIGHT, a sourced LEAD range, and a CITE. The reports + lead ranges are USDA/EIA-sourced and citeable; the per-indicator WEIGHTS are Muntin's evidence-tier judgment (illustrative, frozen per _version). Enforced by scripts/check-pressure-honesty.mjs: every indicator needs source+lead+cite, weight above tier C needs a cite, and the rendered direction must equal what this manifest + the engine recompute. A weight/sign change REQUIRES a _version bump + changelog. Sequencing: status:'preview' (demo observations) until the free fetchers (NASS Quick Stats, EIA, AMS MMN/MARS, USDM, NWS) are wired; then live.",
+  "_version": "2026-Q2-1",
+  "_methodology": "P = Σ(weight × sign × discretize(window-change, deadband)); correlated indicators share one weight bucket (group); |P|≥cutoffT → building/easing else steady; confidence from sign-agreement, decayed by weeks since the last MEASURED print, suppressed to 'under review' past the floor. Lags are biological/empirical (USDA ERS); the month-by-month pass-through weighting is Muntin's estimate, never a USDA figure.",
+  "defaults": { "deadband": 0.02, "cutoffT": 2, "agreement": { "highT": 0.66, "modT": 0.33 }, "decay": { "weeksPerNotch": 3, "floorWeeks": 8 } },
+  "sources": {
+    "ams-grain": "https://www.ams.usda.gov/market-news/state-grain-reports",
+    "ams-mmn": "https://mymarketnews.ams.usda.gov/mymarketnews-api",
+    "ams-movement": "https://www.ams.usda.gov/market-news/fruit-and-vegetable-movement-reports",
+    "nass-broiler": "https://www.nass.usda.gov/Surveys/Guide_to_NASS_Surveys/Broiler_Hatchery/index.php",
+    "nass-cattle-on-feed": "https://www.nass.usda.gov/Surveys/Guide_to_NASS_Surveys/Cattle_On_Feed/index.php",
+    "nass-hogs": "https://www.nass.usda.gov/Surveys/Guide_to_NASS_Surveys/Hog_Inventory/index.php",
+    "nass-cold-storage": "https://www.nass.usda.gov/Surveys/Guide_to_NASS_Surveys/Cold_Storage/index.php",
+    "nass-crop-progress": "https://www.nass.usda.gov/Publications/National_Crop_Progress/",
+    "eia-diesel": "https://www.eia.gov/petroleum/gasdiesel/",
+    "usdm-drought": "https://droughtmonitor.unl.edu/DmData/DataDownload/WebServiceInfo.aspx",
+    "nws-alerts": "https://api.weather.gov/alerts/active",
+    "ers-feed-cost": "https://www.ers.usda.gov/topics/animal-products/poultry-eggs/sector-at-a-glance",
+    "ers-cycles": "https://www.ers.usda.gov/amber-waves/2025/march/livestock-production-cycles-affect-long-term-price-outlook-for-cattle-hogs-and-chickens"
+  },
+  "items": {
+    "chicken-breast": { "rule_version": "2026-Q2-1", "indicators": [
+      { "id": "feed-futures", "source": "ams-grain", "sign": 1, "weight": 3, "tier": "A", "window": "4w", "lead": { "min": 6, "max": 9, "unit": "week" }, "cite": "ers-feed-cost", "note": "feed is 50-70% of broiler cost (ERS); corn+soy settlements via AMS" },
+      { "id": "broiler-placements", "source": "nass-broiler", "sign": -1, "weight": 2, "tier": "B", "window": "4w", "lead": { "min": 6, "max": 10, "unit": "week" }, "cite": "nass-broiler", "note": "more chicks placed → more meat ~6-10 wk out → cost down" },
+      { "id": "cold-storage-poultry", "source": "nass-cold-storage", "sign": -1, "weight": 1, "tier": "C", "window": "1m", "lead": { "min": 4, "max": 8, "unit": "week" }, "cite": "nass-cold-storage" },
+      { "id": "diesel", "source": "eia-diesel", "sign": 1, "weight": 1, "tier": "A", "window": "4w", "lead": { "min": 0, "max": 4, "unit": "week" }, "group": "freight", "cite": "eia-diesel", "note": "freight rides every ingredient" }
+    ] },
+    "whole-chicken": { "rule_version": "2026-Q2-1", "indicators": [
+      { "id": "feed-futures", "source": "ams-grain", "sign": 1, "weight": 3, "tier": "A", "window": "4w", "lead": { "min": 6, "max": 9, "unit": "week" }, "cite": "ers-feed-cost" },
+      { "id": "broiler-placements", "source": "nass-broiler", "sign": -1, "weight": 2, "tier": "B", "window": "4w", "lead": { "min": 6, "max": 10, "unit": "week" }, "cite": "nass-broiler" },
+      { "id": "cold-storage-poultry", "source": "nass-cold-storage", "sign": -1, "weight": 1, "tier": "C", "window": "1m", "lead": { "min": 4, "max": 8, "unit": "week" }, "cite": "nass-cold-storage" },
+      { "id": "diesel", "source": "eia-diesel", "sign": 1, "weight": 1, "tier": "A", "window": "4w", "lead": { "min": 0, "max": 4, "unit": "week" }, "group": "freight", "cite": "eia-diesel" }
+    ] },
+    "ribeye": { "rule_version": "2026-Q2-1", "indicators": [
+      { "id": "cattle-on-feed-placements", "source": "nass-cattle-on-feed", "sign": -1, "weight": 2, "tier": "B", "window": "1m", "lead": { "min": 16, "max": 26, "unit": "week" }, "cite": "nass-cattle-on-feed", "note": "placements forecast marketings 4-6 mo out (NASS)" },
+      { "id": "cold-storage-beef", "source": "nass-cold-storage", "sign": -1, "weight": 1, "tier": "C", "window": "1m", "lead": { "min": 4, "max": 8, "unit": "week" }, "cite": "nass-cold-storage" },
+      { "id": "feed-futures", "source": "ams-grain", "sign": 1, "weight": 1, "tier": "C", "window": "4w", "lead": { "min": 26, "max": 78, "unit": "week" }, "cite": "ers-cycles", "note": "feed is a weak NEAR-TERM lever for beef; herd cycle dominates" },
+      { "id": "diesel", "source": "eia-diesel", "sign": 1, "weight": 1, "tier": "A", "window": "4w", "lead": { "min": 0, "max": 4, "unit": "week" }, "group": "freight", "cite": "eia-diesel" }
+    ] },
+    "beef-tenderloin": { "rule_version": "2026-Q2-1", "indicators": [
+      { "id": "cattle-on-feed-placements", "source": "nass-cattle-on-feed", "sign": -1, "weight": 2, "tier": "B", "window": "1m", "lead": { "min": 16, "max": 26, "unit": "week" }, "cite": "nass-cattle-on-feed" },
+      { "id": "cold-storage-beef", "source": "nass-cold-storage", "sign": -1, "weight": 1, "tier": "C", "window": "1m", "lead": { "min": 4, "max": 8, "unit": "week" }, "cite": "nass-cold-storage" },
+      { "id": "feed-futures", "source": "ams-grain", "sign": 1, "weight": 1, "tier": "C", "window": "4w", "lead": { "min": 26, "max": 78, "unit": "week" }, "cite": "ers-cycles" },
+      { "id": "diesel", "source": "eia-diesel", "sign": 1, "weight": 1, "tier": "A", "window": "4w", "lead": { "min": 0, "max": 4, "unit": "week" }, "group": "freight", "cite": "eia-diesel" }
+    ] },
+    "pork-loin": { "rule_version": "2026-Q2-1", "indicators": [
+      { "id": "hogs-market-supply", "source": "nass-hogs", "sign": -1, "weight": 2, "tier": "B", "window": "1q", "lead": { "min": 8, "max": 26, "unit": "week" }, "cite": "nass-hogs", "note": "weight-class bins map to slaughter windows; farrowing intentions lead ~8-10 mo" },
+      { "id": "feed-futures", "source": "ams-grain", "sign": 1, "weight": 2, "tier": "B", "window": "4w", "lead": { "min": 13, "max": 26, "unit": "week" }, "cite": "ers-feed-cost" },
+      { "id": "cold-storage-pork", "source": "nass-cold-storage", "sign": -1, "weight": 1, "tier": "C", "window": "1m", "lead": { "min": 4, "max": 8, "unit": "week" }, "cite": "nass-cold-storage" },
+      { "id": "diesel", "source": "eia-diesel", "sign": 1, "weight": 1, "tier": "A", "window": "4w", "lead": { "min": 0, "max": 4, "unit": "week" }, "group": "freight", "cite": "eia-diesel" }
+    ] },
+    "pork-shoulder": { "rule_version": "2026-Q2-1", "indicators": [
+      { "id": "hogs-market-supply", "source": "nass-hogs", "sign": -1, "weight": 2, "tier": "B", "window": "1q", "lead": { "min": 8, "max": 26, "unit": "week" }, "cite": "nass-hogs" },
+      { "id": "feed-futures", "source": "ams-grain", "sign": 1, "weight": 2, "tier": "B", "window": "4w", "lead": { "min": 13, "max": 26, "unit": "week" }, "cite": "ers-feed-cost" },
+      { "id": "cold-storage-pork", "source": "nass-cold-storage", "sign": -1, "weight": 1, "tier": "C", "window": "1m", "lead": { "min": 4, "max": 8, "unit": "week" }, "cite": "nass-cold-storage" },
+      { "id": "diesel", "source": "eia-diesel", "sign": 1, "weight": 1, "tier": "A", "window": "4w", "lead": { "min": 0, "max": 4, "unit": "week" }, "group": "freight", "cite": "eia-diesel" }
+    ] },
+    "romaine-lettuce": { "rule_version": "2026-Q2-1", "indicators": [
+      { "id": "ams-shipments", "source": "ams-movement", "sign": -1, "weight": 3, "tier": "A", "window": "1w", "lead": { "min": 0, "max": 2, "unit": "week" }, "cite": "ams-movement", "note": "shipments down → tightening → cost up; fastest produce tell" },
+      { "id": "freeze-alert", "source": "nws-alerts", "sign": 1, "weight": 3, "tier": "A", "window": "active", "lead": { "min": 1, "max": 6, "unit": "week" }, "cite": "nws-alerts", "note": "active freeze in CA/AZ growing zone → spike in 1-6 wk" },
+      { "id": "drought-ca-az", "source": "usdm-drought", "sign": 1, "weight": 2, "tier": "B", "window": "4w", "lead": { "min": 4, "max": 17, "unit": "week" }, "cite": "usdm-drought" },
+      { "id": "diesel", "source": "eia-diesel", "sign": 1, "weight": 1, "tier": "A", "window": "4w", "lead": { "min": 0, "max": 4, "unit": "week" }, "group": "freight", "cite": "eia-diesel" }
+    ] },
+    "tomato": { "rule_version": "2026-Q2-1", "indicators": [
+      { "id": "ams-shipments", "source": "ams-movement", "sign": -1, "weight": 3, "tier": "A", "window": "1w", "lead": { "min": 0, "max": 2, "unit": "week" }, "cite": "ams-movement" },
+      { "id": "freeze-alert", "source": "nws-alerts", "sign": 1, "weight": 3, "tier": "A", "window": "active", "lead": { "min": 1, "max": 6, "unit": "week" }, "cite": "nws-alerts", "note": "FL freezes drove field tomato to an 8-yr high in 2026" },
+      { "id": "drought-fl-ca", "source": "usdm-drought", "sign": 1, "weight": 2, "tier": "B", "window": "4w", "lead": { "min": 4, "max": 17, "unit": "week" }, "cite": "usdm-drought" },
+      { "id": "diesel", "source": "eia-diesel", "sign": 1, "weight": 1, "tier": "A", "window": "4w", "lead": { "min": 0, "max": 4, "unit": "week" }, "group": "freight", "cite": "eia-diesel" }
+    ] },
+    "onion": { "rule_version": "2026-Q2-1", "indicators": [
+      { "id": "ams-shipments", "source": "ams-movement", "sign": -1, "weight": 2, "tier": "A", "window": "1w", "lead": { "min": 0, "max": 2, "unit": "week" }, "cite": "ams-movement" },
+      { "id": "crop-condition", "source": "nass-crop-progress", "sign": -1, "weight": 2, "tier": "B", "window": "2w", "lead": { "min": 2, "max": 8, "unit": "week" }, "cite": "nass-crop-progress", "note": "condition down → supply tightening → cost up" },
+      { "id": "drought", "source": "usdm-drought", "sign": 1, "weight": 1, "tier": "C", "window": "4w", "lead": { "min": 4, "max": 17, "unit": "week" }, "cite": "usdm-drought" },
+      { "id": "diesel", "source": "eia-diesel", "sign": 1, "weight": 1, "tier": "A", "window": "4w", "lead": { "min": 0, "max": 4, "unit": "week" }, "group": "freight", "cite": "eia-diesel" }
+    ] },
+    "russet-potato": { "rule_version": "2026-Q2-1", "indicators": [
+      { "id": "crop-condition", "source": "nass-crop-progress", "sign": -1, "weight": 3, "tier": "B", "window": "2w", "lead": { "min": 2, "max": 8, "unit": "week" }, "cite": "nass-crop-progress" },
+      { "id": "ams-shipments", "source": "ams-movement", "sign": -1, "weight": 2, "tier": "A", "window": "1w", "lead": { "min": 0, "max": 2, "unit": "week" }, "cite": "ams-movement" },
+      { "id": "drought", "source": "usdm-drought", "sign": 1, "weight": 1, "tier": "C", "window": "4w", "lead": { "min": 4, "max": 17, "unit": "week" }, "cite": "usdm-drought" },
+      { "id": "diesel", "source": "eia-diesel", "sign": 1, "weight": 1, "tier": "A", "window": "4w", "lead": { "min": 0, "max": 4, "unit": "week" }, "group": "freight", "cite": "eia-diesel" }
+    ] }
+  }
+}
