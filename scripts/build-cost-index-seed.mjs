@@ -84,6 +84,7 @@ function main() {
     const pr = PRESSURE_ITEMS[key];
     if (pr && pr.direction && pr.direction !== 'unknown') {
       entry.pressure = { direction: pr.direction, confidence: pr.confidence, freshness_weeks: pr.freshness_weeks, under_review: !!pr.under_review };
+      if (pr.track_record && pr.track_record.n) entry.pressure.track_record = pr.track_record;
     }
     // Sparkline needs real history to be honest — a 2-point line can mislead
     // (and can straddle bases). Hold it until ~a month of weekly points exists.

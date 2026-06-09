@@ -747,6 +747,7 @@ main{padding-top:64px}
 .ci-outlook{margin:14px 0 8px;padding:16px 20px;background:#fff;border:1px solid var(--line);border-left:4px solid #6b4fa1;border-radius:12px}
 .ci-outlook__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#6b4fa1;margin:0 0 6px}
 .ci-outlook__line{font-size:15.5px;line-height:1.5;color:var(--ink);margin:0}
+.ci-outlook__record{margin:6px 0 0;font-size:12.5px;color:var(--ink-soft);font-variant-numeric:tabular-nums}
 .ci-outlook__how{margin-top:8px;font-size:12.5px}
 .ci-outlook__how summary{cursor:pointer;color:var(--ink-soft);font-weight:600}
 .ci-outlook__how div{margin-top:6px;color:var(--ink-soft);line-height:1.55}
@@ -935,7 +936,8 @@ function pressureBlock(slug, locale) {
   return `
   <aside class="ci-outlook" data-layer="inferred" data-as-of="${rec.as_of || ''}" data-rule-version="${rec.rule_version || ''}" aria-label="${head}">
     <p class="ci-outlook__head">${head}<span class="ci-read__badge">${chip}</span></p>
-    <p class="ci-outlook__line" data-dir="${dir}">${line}</p>
+    <p class="ci-outlook__line" data-dir="${dir}">${line}</p>${(rec.track_record && rec.track_record.n) ? `
+    <p class="ci-outlook__record">${es ? `Acertó ${rec.track_record.hits} de las últimas ${rec.track_record.n} lecturas medidas.` : `Right on ${rec.track_record.hits} of the last ${rec.track_record.n} measured reads.`}</p>` : ''}
     <details class="ci-outlook__how"><summary>${howHead}</summary><div><ul class="ci-outlook__panel">${rows}</ul><p>${note}</p></div></details>
     <p class="ci-outlook__lab"><a href="${es ? '/es' : ''}/cost-index/lab/?it=${slug}">${es ? 'Juega con las señales' : 'Play with the signals'} <span aria-hidden="true">→</span></a></p>
   </aside>`;
