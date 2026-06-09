@@ -60,6 +60,15 @@
   var indicators = (panel.indicators || []);
   var base = Object.assign({}, (LIVE.observations && LIVE.observations[item]) || {});
   var scenario = Object.assign({}, base);
+  // Rehydrate a shared scenario (#v=1&it=…&o=… or ?o=…) — applies only the
+  // indicators the sharer moved off live; everything else stays at the live read.
+  try {
+    var SC0 = window.MuntinPressureScenario;
+    if (SC0) {
+      var dec = SC0.decode((location.search || '') + (location.hash || ''));
+      if (dec && dec.item === item && dec.obs) { for (var did in dec.obs) if (did in base) scenario[did] = dec.obs[did]; }
+    }
+  } catch (e0) { /* fail-silent */ }
   var anchorDate = (LIVE.anchor && LIVE.anchor[item]) || null;
 
   function assessFor(obsMap) {
@@ -142,6 +151,23 @@
     recompute();
   });
   controls.appendChild(resetBtn);
+  // Share — encode the current scenario into a URL (no fetch/storage; the part
+  // after # never reaches a server). Only the moved indicators are encoded.
+  var shareBtn = el('button', 'plab-share', L('Copy scenario link', 'Copiar enlace del escenario'));
+  shareBtn.type = 'button';
+  shareBtn.addEventListener('click', function () {
+    try {
+      var SC = window.MuntinPressureScenario;
+      if (!SC) return;
+      var frag = SC.encode(item, scenario, base);                 // '#v=1&it=…&o=…'
+      var path = labBase + '/cost-index/lab/' + frag;
+      try { history.replaceState(null, '', path); } catch (e1) {}
+      var done = function () { shareBtn.textContent = L('Copied ✓', 'Copiado ✓'); setTimeout(function () { shareBtn.textContent = L('Copy scenario link', 'Copiar enlace del escenario'); }, 1500); };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(location.origin + path).then(done, done);
+      else done();
+    } catch (e2) { /* fail-silent */ }
+  });
+  controls.appendChild(shareBtn);
   root.appendChild(controls);
 
   var foot = el('p', 'plab-foot', L(

@@ -1236,8 +1236,8 @@ const LAB_CSS = `<style>
 .plab-ctrl__label{display:flex;justify-content:space-between;font-size:13.5px;margin:0 0 2px}
 .plab-ctrl__val{font-variant-numeric:tabular-nums;color:#6b4fa1;font-weight:600}
 .plab-ctrl input[type=range]{width:100%;accent-color:#6b4fa1}
-.plab-reset{font:inherit;font-size:13px;cursor:pointer;border:1px solid var(--line);background:var(--cream);border-radius:999px;padding:6px 14px;margin-top:4px}
-.plab-reset:hover{border-color:#6b4fa1;color:#6b4fa1}
+.plab-reset,.plab-share{font:inherit;font-size:13px;cursor:pointer;border:1px solid var(--line);background:var(--cream);border-radius:999px;padding:6px 14px;margin:4px 6px 0 0}
+.plab-reset:hover,.plab-share:hover{border-color:#6b4fa1;color:#6b4fa1}
 .plab-foot{font-size:12.5px;color:var(--ink-soft);margin:8px 0 0}
 @media (max-width:560px){.plab-bar,.plab-sum{grid-template-columns:90px 1fr 56px}}
 </style>`;
