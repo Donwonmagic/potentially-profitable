@@ -52,6 +52,17 @@ for (const [item, rec] of Object.entries(items)) {
   }
 }
 
+// Seed purity — the Cost Pulse seed's pressure summary must carry no price.
+try {
+  const code = readFileSync(path.join(repoRoot, 'data/cost-index.js'), 'utf8');
+  const self = {};
+  (new Function('self', code))(self);
+  for (const ing of (self.MUNTIN_COST_INDEX && self.MUNTIN_COST_INDEX.ingredients) || []) {
+    if (!ing.pressure) continue;
+    for (const k of BANNED_KEYS) if (k in ing.pressure) fails.push(`seed/${ing.key}: pressure summary carries banned key '${k}'`);
+  }
+} catch { /* seed optional */ }
+
 // Rule 9 — recompute and compare (deterministic, reproducible).
 if (obsDoc) {
   const defaults = rules.defaults || {};

@@ -37,6 +37,11 @@ const OUT = path.join(repoRoot, 'data/cost-index.js');
 
 const rd = (p) => JSON.parse(readFileSync(p, 'utf8'));
 
+const PRESSURE_ITEMS = (() => {
+  try { return rd(path.join(repoRoot, 'data/cost-pressure.json')).items || {}; }
+  catch { return {}; }
+})();
+
 function main() {
   const data = rd(JSON_IN);
   const labels = (rd(LABELS_IN).labels) || {};
@@ -74,6 +79,12 @@ function main() {
     // The spike-vs-structural flag (verdict + actionBias) — a build-time, fact-gated
     // "story so far" the renderer turns into a buy/hold/watch suggestion.
     if (ingredientsObj[key].flag) entry.flag = ingredientsObj[key].flag;
+    // Pressure overlay summary (inferred direction only — never a price). Trimmed
+    // to the headline so the dashboard can show "where it's headed" honestly.
+    const pr = PRESSURE_ITEMS[key];
+    if (pr && pr.direction && pr.direction !== 'unknown') {
+      entry.pressure = { direction: pr.direction, confidence: pr.confidence, freshness_weeks: pr.freshness_weeks, under_review: !!pr.under_review };
+    }
     // Sparkline needs real history to be honest — a 2-point line can mislead
     // (and can straddle bases). Hold it until ~a month of weekly points exists.
     if (spark.length >= 4) {

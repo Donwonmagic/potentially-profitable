@@ -250,6 +250,12 @@
         "elevatedWeeks": 0,
         "nHistory": 26
       },
+      "pressure": {
+        "direction": "building",
+        "confidence": "high",
+        "freshness_weeks": 0,
+        "under_review": false
+      },
       "spark": [
         1063,
         1083,
@@ -544,6 +550,12 @@
         "elevatedWeeks": 0,
         "nHistory": 26
       },
+      "pressure": {
+        "direction": "building",
+        "confidence": "moderate",
+        "freshness_weeks": 0,
+        "under_review": false
+      },
       "spark": [
         1480,
         1472,
@@ -790,6 +802,12 @@
         "elevatedWeeks": 0,
         "nHistory": 17
       },
+      "pressure": {
+        "direction": "easing",
+        "confidence": "high",
+        "freshness_weeks": 1,
+        "under_review": false
+      },
       "spark": [
         146,
         146,
@@ -1011,6 +1029,12 @@
         "retrace": 0,
         "elevatedWeeks": 0,
         "nHistory": 17
+      },
+      "pressure": {
+        "direction": "easing",
+        "confidence": "high",
+        "freshness_weeks": 1,
+        "under_review": false
       },
       "spark": [
         121,
@@ -1287,6 +1311,12 @@
         "retrace": 0,
         "elevatedWeeks": 1,
         "nHistory": 26
+      },
+      "pressure": {
+        "direction": "easing",
+        "confidence": "high",
+        "freshness_weeks": 0,
+        "under_review": false
       },
       "spark": [
         88,
@@ -1581,6 +1611,12 @@
         "retrace": 0,
         "elevatedWeeks": 0,
         "nHistory": 26
+      },
+      "pressure": {
+        "direction": "easing",
+        "confidence": "high",
+        "freshness_weeks": 0,
+        "under_review": false
       },
       "spark": [
         130,
@@ -2163,6 +2199,12 @@
         "elevatedWeeks": 8,
         "nHistory": 26
       },
+      "pressure": {
+        "direction": "building",
+        "confidence": "high",
+        "freshness_weeks": 0,
+        "under_review": false
+      },
       "spark": [
         4275,
         4275,
@@ -2571,6 +2613,12 @@
         "retrace": 0,
         "elevatedWeeks": 0,
         "nHistory": 26
+      },
+      "pressure": {
+        "direction": "steady",
+        "confidence": "low",
+        "freshness_weeks": 0,
+        "under_review": false
       },
       "spark": [
         6850,
@@ -2999,6 +3047,12 @@
         "elevatedWeeks": 0,
         "nHistory": 26
       },
+      "pressure": {
+        "direction": "building",
+        "confidence": "high",
+        "freshness_weeks": 0,
+        "under_review": false
+      },
       "spark": [
         2525,
         2525,
@@ -3425,6 +3479,12 @@
         "retrace": 0,
         "elevatedWeeks": 0,
         "nHistory": 26
+      },
+      "pressure": {
+        "direction": "easing",
+        "confidence": "high",
+        "freshness_weeks": 0,
+        "under_review": false
       },
       "spark": [
         1775,
