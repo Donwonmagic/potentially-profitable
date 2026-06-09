@@ -89,7 +89,7 @@ function scanDir(dir) {
     const p = path.join(dir, slug, 'index.html');
     if (!existsSync(p)) continue;
     const h = readFileSync(p, 'utf8');
-    const blocks = h.match(/data-layer="inferred"[\s\S]*?<\/aside>/g) || [];
+    const blocks = h.match(/data-layer="inferred"[\s\S]*?<\/(?:aside|div)>/g) || [];
     if (blocks.length) pagesScanned++;
     for (const b of blocks) {
       if (PRICE_RE.test(b)) fails.push(`${path.relative(repoRoot, p)}: a price/unit appears inside an inferred block`);
@@ -99,6 +99,17 @@ function scanDir(dir) {
 }
 scanDir(path.join(repoRoot, 'cost-index'));
 scanDir(path.join(repoRoot, 'es/cost-index'));
+scanDir(path.join(repoRoot, 'tools'));
+scanDir(path.join(repoRoot, 'es/tools'));
+
+// Lint the Pressure Lab's RUNTIME verdict vocabulary (JS string literals the
+// gate's HTML scan can't see) through the same price + banned-verb rules.
+try {
+  const ui = readFileSync(path.join(repoRoot, 'tools/_shared/pressure-lab-ui.js'), 'utf8')
+    .replace(/^\/\*[\s\S]*?\*\//, '');   // drop the header comment
+  if (PRICE_RE.test(ui)) fails.push('pressure-lab-ui.js: a price/unit string in the Lab vocabulary');
+  for (const v of BANNED_VERBS) if (v.test(ui)) fails.push(`pressure-lab-ui.js: banned verb ${v} in the Lab vocabulary`);
+} catch { /* optional */ }
 
 if (fails.length) {
   console.error('✗ pressure honesty:');
