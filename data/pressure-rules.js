@@ -27,6 +27,7 @@
     "nass-cattle-on-feed": "https://www.nass.usda.gov/Surveys/Guide_to_NASS_Surveys/Cattle_On_Feed/index.php",
     "nass-hogs": "https://www.nass.usda.gov/Surveys/Guide_to_NASS_Surveys/Hog_Inventory/index.php",
     "nass-cold-storage": "https://www.nass.usda.gov/Surveys/Guide_to_NASS_Surveys/Cold_Storage/index.php",
+    "nass-milk": "https://www.nass.usda.gov/Surveys/Guide_to_NASS_Surveys/Milk_Production/index.php",
     "nass-crop-progress": "https://www.nass.usda.gov/Publications/National_Crop_Progress/",
     "eia-diesel": "https://www.eia.gov/petroleum/gasdiesel/",
     "usdm-drought": "https://droughtmonitor.unl.edu/DmData/DataDownload/WebServiceInfo.aspx",
@@ -647,6 +648,134 @@
             "unit": "week"
           },
           "cite": "usdm-drought"
+        },
+        {
+          "id": "diesel",
+          "source": "eia-diesel",
+          "sign": 1,
+          "weight": 1,
+          "tier": "A",
+          "window": "4w",
+          "lead": {
+            "min": 0,
+            "max": 4,
+            "unit": "week"
+          },
+          "group": "freight",
+          "cite": "eia-diesel"
+        }
+      ]
+    },
+    "butter": {
+      "rule_version": "2026-Q2-1",
+      "indicators": [
+        {
+          "id": "milk-production",
+          "source": "nass-milk",
+          "sign": -1,
+          "weight": 2,
+          "tier": "B",
+          "window": "1m",
+          "lead": {
+            "min": 4,
+            "max": 12,
+            "unit": "week"
+          },
+          "cite": "nass-milk",
+          "note": "more milk → more butterfat → cost down; production leads the churn"
+        },
+        {
+          "id": "cold-storage-butter",
+          "source": "nass-cold-storage",
+          "sign": -1,
+          "weight": 2,
+          "tier": "B",
+          "window": "1m",
+          "lead": {
+            "min": 4,
+            "max": 8,
+            "unit": "week"
+          },
+          "cite": "nass-cold-storage",
+          "note": "Cold Storage tracks butter stocks; high stocks → downward pressure"
+        },
+        {
+          "id": "feed-futures",
+          "source": "ams-grain",
+          "sign": 1,
+          "weight": 1,
+          "tier": "C",
+          "window": "4w",
+          "lead": {
+            "min": 13,
+            "max": 26,
+            "unit": "week"
+          },
+          "cite": "ers-feed-cost",
+          "note": "feed → milk cost is a slow, weaker channel"
+        },
+        {
+          "id": "diesel",
+          "source": "eia-diesel",
+          "sign": 1,
+          "weight": 1,
+          "tier": "A",
+          "window": "4w",
+          "lead": {
+            "min": 0,
+            "max": 4,
+            "unit": "week"
+          },
+          "group": "freight",
+          "cite": "eia-diesel"
+        }
+      ]
+    },
+    "cheddar-cheese": {
+      "rule_version": "2026-Q2-1",
+      "indicators": [
+        {
+          "id": "milk-production",
+          "source": "nass-milk",
+          "sign": -1,
+          "weight": 2,
+          "tier": "B",
+          "window": "1m",
+          "lead": {
+            "min": 4,
+            "max": 12,
+            "unit": "week"
+          },
+          "cite": "nass-milk"
+        },
+        {
+          "id": "cold-storage-cheese",
+          "source": "nass-cold-storage",
+          "sign": -1,
+          "weight": 2,
+          "tier": "B",
+          "window": "1m",
+          "lead": {
+            "min": 4,
+            "max": 8,
+            "unit": "week"
+          },
+          "cite": "nass-cold-storage",
+          "note": "Cold Storage tracks natural-cheese stocks"
+        },
+        {
+          "id": "feed-futures",
+          "source": "ams-grain",
+          "sign": 1,
+          "weight": 1,
+          "tier": "C",
+          "window": "4w",
+          "lead": {
+            "min": 13,
+            "max": 26,
+            "unit": "week"
+          },
+          "cite": "ers-feed-cost"
         },
         {
           "id": "diesel",

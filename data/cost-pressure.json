@@ -762,6 +762,164 @@
           "as_of": "2026-06-08"
         }
       ]
+    },
+    "butter": {
+      "item": "butter",
+      "direction": "easing",
+      "confidence": "high",
+      "agreement": 0.667,
+      "score": -4,
+      "cutoff": 2,
+      "freshness_weeks": 1,
+      "anchor_print_date": "2026-05-30",
+      "as_of": "2026-06-08",
+      "under_review": false,
+      "rule_version": "2026-Q2-1",
+      "contributors": [
+        {
+          "indicator": "milk-production",
+          "source": "nass-milk",
+          "signed_signal": -1,
+          "weight": 2,
+          "lead": {
+            "min": 4,
+            "max": 12,
+            "unit": "week"
+          },
+          "tier": "B",
+          "cite": "nass-milk",
+          "group": null,
+          "change_pct": 0.03,
+          "as_of": "2026-06-08"
+        },
+        {
+          "indicator": "cold-storage-butter",
+          "source": "nass-cold-storage",
+          "signed_signal": -1,
+          "weight": 2,
+          "lead": {
+            "min": 4,
+            "max": 8,
+            "unit": "week"
+          },
+          "tier": "B",
+          "cite": "nass-cold-storage",
+          "group": null,
+          "change_pct": 0.04,
+          "as_of": "2026-06-08"
+        },
+        {
+          "indicator": "feed-futures",
+          "source": "ams-grain",
+          "signed_signal": 0,
+          "weight": 1,
+          "lead": {
+            "min": 13,
+            "max": 26,
+            "unit": "week"
+          },
+          "tier": "C",
+          "cite": "ers-feed-cost",
+          "group": null,
+          "change_pct": -0.02,
+          "as_of": "2026-06-08"
+        },
+        {
+          "indicator": "diesel",
+          "source": "eia-diesel",
+          "signed_signal": 0,
+          "weight": 1,
+          "lead": {
+            "min": 0,
+            "max": 4,
+            "unit": "week"
+          },
+          "tier": "A",
+          "cite": "eia-diesel",
+          "group": "freight",
+          "change_pct": 0.01,
+          "as_of": "2026-06-08"
+        }
+      ]
+    },
+    "cheddar-cheese": {
+      "item": "cheddar-cheese",
+      "direction": "building",
+      "confidence": "high",
+      "agreement": 0.833,
+      "score": 5,
+      "cutoff": 2,
+      "freshness_weeks": 1,
+      "anchor_print_date": "2026-05-30",
+      "as_of": "2026-06-08",
+      "under_review": false,
+      "rule_version": "2026-Q2-1",
+      "contributors": [
+        {
+          "indicator": "milk-production",
+          "source": "nass-milk",
+          "signed_signal": 1,
+          "weight": 2,
+          "lead": {
+            "min": 4,
+            "max": 12,
+            "unit": "week"
+          },
+          "tier": "B",
+          "cite": "nass-milk",
+          "group": null,
+          "change_pct": -0.04,
+          "as_of": "2026-06-08"
+        },
+        {
+          "indicator": "cold-storage-cheese",
+          "source": "nass-cold-storage",
+          "signed_signal": 1,
+          "weight": 2,
+          "lead": {
+            "min": 4,
+            "max": 8,
+            "unit": "week"
+          },
+          "tier": "B",
+          "cite": "nass-cold-storage",
+          "group": null,
+          "change_pct": -0.03,
+          "as_of": "2026-06-08"
+        },
+        {
+          "indicator": "feed-futures",
+          "source": "ams-grain",
+          "signed_signal": 0,
+          "weight": 1,
+          "lead": {
+            "min": 13,
+            "max": 26,
+            "unit": "week"
+          },
+          "tier": "C",
+          "cite": "ers-feed-cost",
+          "group": null,
+          "change_pct": 0.01,
+          "as_of": "2026-06-08"
+        },
+        {
+          "indicator": "diesel",
+          "source": "eia-diesel",
+          "signed_signal": 1,
+          "weight": 1,
+          "lead": {
+            "min": 0,
+            "max": 4,
+            "unit": "week"
+          },
+          "tier": "A",
+          "cite": "eia-diesel",
+          "group": "freight",
+          "change_pct": 0.05,
+          "as_of": "2026-06-08"
+        }
+      ]
     }
   }
 }
