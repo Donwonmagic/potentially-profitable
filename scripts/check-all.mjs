@@ -347,6 +347,7 @@ const CHECKS = [
   // Pressure honesty — the inferred outlook can't carry a price, can't use a
   // banned verb, and its rendered direction must equal what the rules recompute.
   ['Cost-pressure honesty','check-pressure-honesty.mjs'],
+  ['Cost-pressure sources (shape+readiness)','check-pressure-sources.mjs'],
   ['Security claims',      'check-security-claims.mjs'],
   ['Data promise rail',    'check-data-promise-rail.mjs'],
   ['Security locale parity','check-security-locale-parity.mjs'],
