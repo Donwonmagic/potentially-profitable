@@ -92,18 +92,18 @@ function alignWeekly(a, b) {                               // inner-join two wee
 const LMR_BASE = 'https://mpr.datamart.ams.usda.gov/services/v1.1/reports/';
 const MARS_BASE = 'https://marsapi.ams.usda.gov/services/v1.2/reports/';
 const ANCHOR = {
-  'ribeye':          { host: 'lmr', report: '2453', section: 'Choice Cuts', match: { field: 'commodity', value: 'Ribeye' }, field: 'Weighted_Average', dateField: 'report_date', note: 'LMR 2453 Choice Cuts / Ribeye' },
-  'beef-tenderloin': { host: 'lmr', report: '2453', section: 'Choice Cuts', match: { field: 'commodity', value: 'Butt Tender' }, field: 'Weighted_Average', dateField: 'report_date', note: 'LMR 2453 / Butt Tender (191A)' },
-  'pork-loin':       { host: 'lmr', report: '2498', section: 'Cutout and Primal Values', field: 'pork_loin', dateField: 'report_date', note: 'LMR 2498 cutout / pork_loin' },
-  'pork-shoulder':   { host: 'lmr', report: '2498', section: 'Cutout and Primal Values', field: 'pork_butt', dateField: 'report_date', note: 'LMR 2498 cutout / pork_butt' },
+  'ribeye':          { host: 'lmr', report: '2453', section: 'Choice Cuts', match: { field: 'commodity', value: 'Ribeye' }, field: 'Weighted_Average', dateField: 'report_date', winField: 'report_date', note: 'LMR 2453 Choice Cuts / Ribeye' },
+  'beef-tenderloin': { host: 'lmr', report: '2453', section: 'Choice Cuts', match: { field: 'commodity', value: 'Butt Tender' }, field: 'Weighted_Average', dateField: 'report_date', winField: 'report_date', note: 'LMR 2453 / Butt Tender (191A)' },
+  'pork-loin':       { host: 'lmr', report: '2498', section: 'Cutout and Primal Values', field: 'pork_loin', dateField: 'report_date', winField: 'report_date', note: 'LMR 2498 cutout / pork_loin' },
+  'pork-shoulder':   { host: 'lmr', report: '2498', section: 'Cutout and Primal Values', field: 'pork_butt', dateField: 'report_date', winField: 'report_date', note: 'LMR 2498 cutout / pork_butt' },
   'chicken-breast':  { host: 'mars', report: '3646', section: 'Report Detail', match: { field: 'item', value: 'Breast - B/S' }, field: 'wtd_avg_price', dateField: 'report_date', note: 'AMS 3646 Nat. Chicken / Breast B/S' },
   'whole-chicken':   { host: 'mars', report: '3646', section: 'Report Detail', match: { field: 'item', value: 'Whole' }, field: 'wtd_avg_price', dateField: 'report_date', note: 'AMS 3646 / Whole' },
   'butter':          { host: 'lmr', report: '2993', section: 'Butter Prices and Sales', field: 'Butter_Price', dateField: 'week_ending_date', winField: 'week_ending_date', note: 'NDPSR 2993 butter' },
   'cheddar-cheese':  { host: 'lmr', report: '2993', section: '40 Pound Block Cheddar Cheese Prices and Sales', field: 'cheese_40_Price', dateField: 'week_ending_date', winField: 'week_ending_date', note: 'NDPSR 2993 block cheddar' },
   'romaine-lettuce': { host: 'mars', report: 'hc_fv020', section: 'Report Details', match: { field: 'commodity', value: 'Lettuce, Romaine', exact: true }, field: 'low_price', dateField: 'report_begin_date', note: 'LA terminal / Romaine' },
   'tomato':          { host: 'mars', report: 'hc_fv020', section: 'Report Details', match: { field: 'commodity', value: 'Tomatoes', exact: true }, field: 'low_price', dateField: 'report_begin_date', note: 'LA terminal / Tomatoes' },
-  'onion':           { host: 'mars', report: 'hc_fv020', section: 'Report Details', match: { field: 'commodity', value: 'Onions, Dry', exact: true }, field: 'low_price', dateField: 'report_begin_date', note: 'LA terminal / Onions, Dry' },
-  'russet-potato':   { host: 'mars', report: 'hc_fv020', section: 'Report Details', match: { field: 'commodity', value: 'Potatoes', exact: true }, field: 'low_price', dateField: 'report_begin_date', note: 'LA terminal / Potatoes' }
+  'onion':           { host: 'mars', report: 'hc_fv020', section: 'Report Details', match: { field: 'commodity', value: 'Onions' }, field: 'low_price', dateField: 'report_begin_date', note: 'LA terminal / Onions' },
+  'russet-potato':   { host: 'mars', report: 'hc_fv020', section: 'Report Details', match: { field: 'commodity', value: 'Russet' }, field: 'low_price', dateField: 'report_begin_date', note: 'LA terminal / Russet potatoes' }
 };
 function amsAuth() { const k = process.env.AMS_KEY; return k ? 'Basic ' + Buffer.from(k + ':').toString('base64') : null; }
 // Stitch a report's section across ~150-day windows back `years` (the APIs cap each
@@ -218,14 +218,15 @@ function alignedChanges(al) {
 
 async function calibrate(getProxy, getIndicator, getAnchor) {
   const edges = [];
-  const proxyCache = {}, anchorCache = {};
+  const proxyCache = {}, anchorCache = {}, indHistCache = {};   // share fetches across items
   for (const [item, panel] of Object.entries(rules.items || {})) {
     // Prefer the WEEKLY anchor (the price we publish); fall back to monthly PPI.
     let resolution = 'monthly', target = null, targetLabel = null;
     const aspec = ANCHOR[item];
     if (getAnchor && aspec) {
       try {
-        const arows = anchorCache[item] = anchorCache[item] || await getAnchor(aspec);
+        const akey = `${aspec.report}|${aspec.section}|${aspec.winField || ''}`;   // raw rows shared by report
+        const arows = anchorCache[akey] = anchorCache[akey] || await getAnchor(aspec);
         const wk = weeklyFromDated(anchorSeries(arows, aspec));
         if (wk.length >= 60) { resolution = 'weekly'; target = wk; targetLabel = `${aspec.host}:${aspec.report}`; }
       } catch (e) { /* fall back to PPI */ }
@@ -247,7 +248,7 @@ async function calibrate(getProxy, getIndicator, getAnchor) {
       rec.fairness = resolution === 'weekly' ? 'judgeable' : ((ind.lead && ind.lead.max >= 8) ? 'judgeable' : 'short-lead (monthly test blind)');
       if (!spec || SKIP_TYPES.has(type)) { rec.status = 'skipped'; rec.reason = !spec ? 'no spec' : `type ${type}`; edges.push(rec); continue; }
       let hist;
-      try { hist = await getIndicator(spec); } catch (e) { rec.status = 'fetch-failed'; rec.reason = e.message; edges.push(rec); continue; }
+      try { hist = indHistCache[ind.id] = indHistCache[ind.id] || await getIndicator(spec); } catch (e) { rec.status = 'fetch-failed'; rec.reason = e.message; edges.push(rec); continue; }
       if (hist.skip) { rec.status = 'skipped'; rec.reason = hist.skip; edges.push(rec); continue; }
       const al = align(bucket(hist.pairs), target);
       if (al.length < minAlign) { rec.status = 'insufficient'; rec.n = al.length; edges.push(rec); continue; }
@@ -304,7 +305,8 @@ async function anchorDiscover() {
         const r0 = rows[0];
         const nums = Object.keys(r0).filter((k) => r0[k] !== '' && r0[k] != null && isFinite(Number(String(r0[k]).replace(/[$,]/g, ''))) && !/date|year|_id|code|format/i.test(k));
         console.log(`      → field '${a.field}' or match '${a.match ? a.match.field + '=' + a.match.value : '(none)'}' didn't resolve. value-candidates: ${nums.join(', ') || '(none)'}`);
-        console.log(`      keys: ${Object.keys(r0).join(', ')}`);
+        if (a.match) { const dv = []; rows.forEach((r) => { const c = r[a.match.field]; if (c && dv.indexOf(c) < 0 && dv.length < 30) dv.push(c); }); console.log(`      actual ${a.match.field} values: ${dv.join(' | ')}`); }
+        else console.log(`      keys: ${Object.keys(r0).join(', ')}`);
       } else if (ok) {
         console.log(`      latest: ${ser[ser.length - 1].date} = ${ser[ser.length - 1].value}`);
       } else console.log('      (no rows — confirm slug/section/host)');
@@ -362,7 +364,7 @@ function selftest() {
 if (arg('--selftest')) { selftest(); }
 else if (arg('--anchor-discover')) { anchorDiscover(); }
 else {
-  const getAnchor = (spec) => fetchReportWindowed(spec, 8);   // ~8 years of weekly anchor history
+  const getAnchor = (spec) => fetchReportWindowed(spec, 6);   // ~6 years of weekly anchor history (cached per report)
   calibrate(fetchProxy, fetchIndicatorHistory, getAnchor).then((edges) => {
     report(edges);
     const out = { _doc: 'GENERATED by scripts/calibrate-pressure.mjs — empirical lead/sign/strength per indicator→ingredient edge vs the hand-set rule. TARGET: each ingredient is backtested against the WEEKLY wholesale anchor it actually publishes (LMR cutout / AMS terminal / NDPSR dairy, via the same source specs as data/cost-index-sources.json) at WEEKLY resolution; items whose weekly anchor does not resolve fall back to the monthly BLS-PPI proxy (resolution:monthly). Informs human weight edits; NEVER auto-applied. No price. CAVEATS: weekly-anchor edges that still flip sign are real evidence (no resolution excuse); monthly-fallback edges keep the proxy mismatch caveat. Surviving edges are hypotheses to NNLS-fit + benchmark vs equal-weight OOS, then apply by hand with a _version bump.', generatedAt: new Date().toISOString().slice(0, 10), edges };
