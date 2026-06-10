@@ -92,13 +92,18 @@
   // two-state zig-zag. Single-area is the degenerate case (one row per date).
   function usdmSeverity(rows, opts) {
     opts = opts || {};
-    var cats = opts.categories || ['D2', 'D3', 'D4'];
+    // The USDM JSON capitalizes inconsistently across endpoints (MapDate vs
+    // mapDate, D2 vs d2). Match keys case-insensitively so the share series
+    // builds regardless of which casing the service returns.
+    var cats = (opts.categories || ['D2', 'D3', 'D4']).map(function (c) { return c.toLowerCase(); });
     var byDate = {};
     (rows || []).forEach(function (r) {
+      if (!r || typeof r !== 'object') return;
+      var lc = {}; Object.keys(r).forEach(function (k) { lc[k.toLowerCase()] = r[k]; });
       var sum = 0, any = false;
-      cats.forEach(function (c) { var n = parseNum(r[c]); if (n != null) { sum += n; any = true; } });
+      cats.forEach(function (c) { var n = parseNum(lc[c]); if (n != null) { sum += n; any = true; } });
       if (!any) return;
-      var d = String(r.MapDate || r.ValidStart || r.validStart || '');
+      var d = String(lc.mapdate || lc.validstart || lc.validend || '');
       (byDate[d] = byDate[d] || []).push(sum);
     });
     return Object.keys(byDate).sort(function (a, b) { return a.localeCompare(b); })

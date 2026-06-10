@@ -167,6 +167,12 @@ async function probe() {
         detail += `\n      short_desc: ${sd.length ? sd.join(' | ') : '(none — query matched nothing)'}`;
         if (ud.length > 1) detail += `\n      unit_desc (multiple — tighten with unit_desc): ${ud.join(' | ')}`;
       }
+      // USDM: when the share series won't compute, dump the first row's keys so
+      // we can see exactly which field names the JSON uses (MapDate/D2 casing).
+      if (spec.type === 'usdm' && rows.length) {
+        detail += `\n      usdm keys: ${Object.keys(rows[0]).join(', ')}`;
+        if (!usable) detail += `\n      usdm row[0]: ${JSON.stringify(rows[0])}`;
+      }
       console.log(`  ${flag} ${id.padEnd(26)} [${spec.type}] ${detail}`);
       if (usable) ready.push(id);
     } catch (e) { console.log(`  ✗ ${id.padEnd(26)} [${spec.type}] fetch failed: ${e.message}`); }
