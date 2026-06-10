@@ -46,7 +46,7 @@
       "url": "https://muntin.digital/library/ai-mode-reservation-strategy/",
       "inLanguage": "en-US",
       "datePublished": "2026-05-23T10:00:00-04:00",
-      "dateModified": "2026-05-28",
+      "dateModified": "2026-06-10",
       "author": {
         "@id": "https://muntin.digital/#muntin-desk",
         "@type": "Organization",
@@ -508,7 +508,7 @@ header.nav{min-height:64px}
           </div>
           <div class="viz-bars__row">
             <p class="viz-bars__label">Through a third-party platform</p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:0.35"></span></div>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.35"></span></div>
             <p class="viz-bars__num">35%</p>
           </div>
         </div>
@@ -524,71 +524,76 @@ header.nav{min-height:64px}
       </details>
 
       <figure class="viz-figure article-figure" data-audio-alt="The agentic booking path in Google's AI Mode. Step one: the diner asks the assistant for a table. Step two: the assistant finds tables it can actually book — only restaurants connected to a supported provider. Step three: it completes the reservation through OpenTable, Resy, or Tock, inside the answer. Step four: phone-only restaurants are skipped, because the agent cannot dial a phone.">
-        <div class="viz-flow">
-          <ol class="viz-flow__list">
-            <li class="viz-flow__step" data-tone="teal">
-              <span class="viz-flow__num">1</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">The diner asks the assistant for a table</p>
-                <p class="viz-flow__detail">&ldquo;Somewhere for six on Friday with a patio&rdquo; &mdash; spoken or typed into the <a href="/glossary/ai-overview/">AI answer</a>.</p>
-              </div>
-            </li>
-            <li class="viz-flow__step" data-tone="teal">
-              <span class="viz-flow__num">2</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">It shortlists tables it can book</p>
-                <p class="viz-flow__detail">Only restaurants connected to a supported provider &mdash; surfaced from your <a href="/glossary/gbp/">Google Business Profile</a> and the <a href="/glossary/map-pack/">map</a>.</p>
-              </div>
-            </li>
-            <li class="viz-flow__step" data-tone="teal">
-              <span class="viz-flow__num">3</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">It completes the reservation</p>
-                <p class="viz-flow__detail">Through OpenTable, Resy, or Tock, inside the answer &mdash; the diner confirms without leaving.</p>
-              </div>
-            </li>
-            <li class="viz-flow__step" data-tone="rust">
-              <span class="viz-flow__num">4</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">Phone-only restaurants are skipped</p>
-                <p class="viz-flow__detail">The agent can&rsquo;t dial a phone. No bookable inventory means no booking &mdash; the table goes to whoever is connected.</p>
-              </div>
-            </li>
-          </ol>
-        </div>
-        <figcaption>Where the booking goes &mdash; and where a phone-only restaurant drops out of the flow entirely.</figcaption>
+        <ol class="viz-flow reveal" aria-label="The agentic booking path in Google AI Mode, step by step">
+          <li class="viz-flow__step" data-state="done">
+            <span class="viz-flow__num">1</span>
+            <div class="viz-flow__body">
+              <h4 class="viz-flow__title">The diner asks the assistant for a table</h4>
+              <p class="viz-flow__meta">&ldquo;Somewhere for six on Friday with a patio&rdquo; &mdash; spoken or typed into the <a href="/glossary/ai-overview/">AI answer</a>.</p>
+            </div>
+          </li>
+          <li class="viz-flow__step" data-state="done">
+            <span class="viz-flow__num">2</span>
+            <div class="viz-flow__body">
+              <h4 class="viz-flow__title">It shortlists only tables it can book</h4>
+              <p class="viz-flow__meta">The filter that decides your fate: <strong>only restaurants connected to a supported provider</strong> make the list &mdash; surfaced from your <a href="/glossary/gbp/">Google Business Profile</a> and the <a href="/glossary/map-pack/">map</a>.</p>
+            </div>
+          </li>
+          <li class="viz-flow__step" data-state="done">
+            <span class="viz-flow__num">3</span>
+            <div class="viz-flow__body">
+              <h4 class="viz-flow__title">It completes the reservation in the answer</h4>
+              <p class="viz-flow__meta">Through OpenTable, Resy, or Tock &mdash; the diner confirms without ever opening your website or dialing your phone.</p>
+            </div>
+          </li>
+          <li class="viz-flow__step" data-state="bad">
+            <span class="viz-flow__num">4</span>
+            <div class="viz-flow__body">
+              <h4 class="viz-flow__title">Phone-only restaurants never enter the flow</h4>
+              <p class="viz-flow__meta">The drop-out point: the agent can&rsquo;t dial a phone, so no bookable inventory means <strong>no booking</strong> &mdash; the table goes to whoever is connected.</p>
+            </div>
+          </li>
+        </ol>
+        <figcaption>Step 2 is the gate: a restaurant that isn&rsquo;t on a supported provider is filtered out before the booking step it can never reach.</figcaption>
       </figure>
 
       <h2 id="what-to-check-this-week">What to check this week</h2>
       <p>Two things, both quick. First, confirm your reservations are live on a supported provider, not just a phone line &mdash; that&rsquo;s your ticket into the agent&rsquo;s shortlist. Second, open your own site on a phone and book a table yourself: if the <a href="/glossary/reservation-link/">reservation link</a> is slow, hidden below the fold, or dumps you into a clunky third-party frame, the repeat booking you should own goes back to the platform. The reservation-recovery playbook in <a href="/library/reservation-conversion-guide/">recovering reservations from Find a Table</a> covers the fixes; the <a href="/tools/storefront-health/">storefront health</a> check and the <a href="/tools/gbp-grader/">GBP grader</a> flag the broken paths before a diner finds them.</p>
 
-      <figure class="viz-figure article-figure" data-audio-alt="The operator's three-step setup to make sure your tables show up in the agentic booking flow. Step one: get a provider account live on OpenTable, Resy, or Tock with real inventory the agent can see. Step two: keep the menu and the photos current, since the agent's shortlist reads the profile fields. Step three: put the reservation link on your Google Business Profile and on your own site, above the fold on a phone, so the repeat booking comes back to you.">
-        <div class="viz-flow">
-          <ol class="viz-flow__list">
-            <li class="viz-flow__step" data-tone="teal">
-              <span class="viz-flow__num">1</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">Provider account live</p>
-                <p class="viz-flow__detail">An OpenTable, Resy, or Tock account with real inventory the agent can see &mdash; not a phone line, not a paper book. This is the ticket into the shortlist.</p>
+      <figure class="viz-figure article-figure" data-audio-alt="A decision tree the operator can walk to find out where the agentic booking flow breaks for their restaurant. Question one: are your tables live on a supported provider — OpenTable, Resy, or Tock — with real inventory, not just a phone line? If no, stop here; you are invisible to the agent, and nothing below this matters until you fix it. If yes, go on. Question two: are your menu and photos current on your Google Business Profile? If no, you may be in the candidate pool but you are a weak pick in a three-name answer; refresh the profile. If yes, go on. Question three: is your own reservation link above the fold on a phone, one tap to a real booking widget? If no, the agent still hands you the first booking, but the commission-free repeat booking leaks back to the platform; fix the mobile link. If yes to all three, you are bookable by the agent and built to keep the repeat. The order is the lesson: question one unlocks the agent, question three unlocks the commission-free repeat.">
+        <ol class="viz-tree" aria-label="Decision tree: where does the agentic booking flow break for your restaurant?">
+          <li class="viz-tree__node">
+            <details open>
+              <summary><span class="viz-tree__num">1</span><span class="viz-tree__title">Are your tables live on a supported provider?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+              <div class="viz-tree__body">
+                <p>OpenTable, Resy, or Tock, with real inventory the agent can see &mdash; not a phone line, not a paper book by the host stand.</p>
+                <p><span class="viz-tree__verdict" data-tone="pass">Yes &mdash; continue</span> You are a candidate the agent can actually book. Drop to question 2.</p>
+                <p><span class="viz-tree__verdict" data-tone="fail">No &mdash; stop here</span> You are invisible to the agent. Nothing below this matters until a provider is live &mdash; this is the gate, not a nicety.</p>
               </div>
-            </li>
-            <li class="viz-flow__step" data-tone="teal">
-              <span class="viz-flow__num">2</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">Menu and photos current</p>
-                <p class="viz-flow__detail">The agent reads your <a href="/glossary/gbp/">profile</a> fields to decide which tables fit the ask. A stale menu or missing photos is a vote against you in a three-name answer.</p>
+            </details>
+          </li>
+          <li class="viz-tree__node">
+            <details>
+              <summary><span class="viz-tree__num">2</span><span class="viz-tree__title">Are your menu and photos current on your profile?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+              <div class="viz-tree__body">
+                <p>The agent reads your <a href="/glossary/gbp/">Google Business Profile</a> fields to decide which tables fit the diner&rsquo;s ask.</p>
+                <p><span class="viz-tree__verdict" data-tone="pass">Yes &mdash; continue</span> You read as a strong fit. Drop to question 3.</p>
+                <p><span class="viz-tree__verdict" data-tone="warn">No &mdash; refresh first</span> You are in the pool but a weak pick. A stale menu or missing photos is a vote against you in a three-name answer.</p>
               </div>
-            </li>
-            <li class="viz-flow__step" data-tone="teal">
-              <span class="viz-flow__num">3</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">Reservation link on GBP and your own site</p>
-                <p class="viz-flow__detail"><!-- LIBRARY:autolink:start --><a href="/glossary/above-the-fold/" data-glossary-head="Above the fold" data-glossary-aka="the first screen, &quot;what loads first&quot;" data-glossary-blurb="The part of your homepage a visitor sees without scrolling.">Above the fold</a><!-- LIBRARY:autolink:end --> on a phone, one tap to a real booking widget. The first booking comes through the agent; the second one should come straight to you.</p>
+            </details>
+          </li>
+          <li class="viz-tree__node">
+            <details>
+              <summary><span class="viz-tree__num">3</span><span class="viz-tree__title">Is your own reservation link one tap, above the fold, on a phone?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+              <div class="viz-tree__body">
+                <p><!-- LIBRARY:autolink:start --><a href="/glossary/above-the-fold/" data-glossary-head="Above the fold" data-glossary-aka="the first screen, &quot;what loads first&quot;" data-glossary-blurb="The part of your homepage a visitor sees without scrolling.">Above the fold</a><!-- LIBRARY:autolink:end --> on a phone, one tap to a real booking widget &mdash; on your Google Business Profile and your own site.</p>
+                <p><span class="viz-tree__verdict" data-tone="pass">Yes &mdash; you keep the repeat</span> The agent hands you the first booking; your own link takes the second one, commission-free.</p>
+                <p><span class="viz-tree__verdict" data-tone="fail">No &mdash; the repeat leaks</span> The first booking still arrives through the agent, but the commission-free repeat goes back to the platform you pay.</p>
               </div>
-            </li>
-          </ol>
-        </div>
-        <figcaption>Three steps, in this order. Skip the first and you are invisible to the agent; skip the third and the repeat booking goes back to the platform.</figcaption>
+            </details>
+          </li>
+        </ol>
+        <figcaption>Walk it top to bottom and stop at the first &ldquo;no&rdquo; &mdash; that is the move to make this week. Question 1 unlocks the agent; question 3 unlocks the commission-free repeat. The order is the lesson.</figcaption>
       </figure>
 
       <p>Agentic booking isn&rsquo;t a threat to fight; it&rsquo;s a flow to be in. Be bookable so the agent can hand you the first reservation, and own your own booking so you keep the second one.</p>

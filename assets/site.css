@@ -7202,6 +7202,17 @@ table[data-viz-sortable] th[aria-sort="descending"]::after{content:"\2193";color
 .viz-ba:has(.viz-ba__input:focus-visible) .viz-ba__handle::before{box-shadow:0 0 0 4px rgba(42,80,200,0.35),0 2px 6px rgba(20,22,26,0.18)}
 .viz-ba__input::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:38px;height:38px;background:transparent;border:0;cursor:ew-resize}
 .viz-ba__input::-moz-range-thumb{width:38px;height:38px;background:transparent;border:0;cursor:ew-resize}
+/* Stacked before/after fallback. The overlay-slider variant above
+   assumes the full layer + input + handle structure. A before/after
+   that compares two TEXT blocks (a menu line, a JSON-LD snippet, a
+   review reply) reads better stacked than wiped — so a .viz-ba that
+   carries no slider input renders as two panels in normal flow with
+   padding, and its label drops from an absolute overlay pill to an
+   inline caption (otherwise the absolutely-positioned label overlaps
+   the first panel — the exact overlap bug this refresh exists to kill).
+   Functional sliders are unaffected: they always contain .viz-ba__input. */
+.viz-ba:not(:has(.viz-ba__input)){padding:8px 14px 14px}
+.viz-ba:not(:has(.viz-ba__input)) .viz-ba__label{position:static;display:inline-block;margin:8px 0 2px;left:auto;right:auto}
 
 /* .viz-flow — vertical numbered ProcessTimeline. Each step is a
    numbered circle (the "station") plus a body block (title +
@@ -7221,6 +7232,18 @@ table[data-viz-sortable] th[aria-sort="descending"]::after{content:"\2193";color
 .viz-flow__step[data-state="done"] .viz-flow__num{background:var(--teal);color:var(--cream)}
 .viz-flow__step[data-state="warn"] .viz-flow__num{border-color:#C5A059;color:#C5A059}
 .viz-flow__step[data-state="bad"] .viz-flow__num{border-color:var(--rust);color:var(--rust)}
+/* Non-canonical viz-flow dialect (predates the viz-* unification; lives
+   in ~17 articles). Steps are wrapped in <ol class="viz-flow__list">
+   with <p class="viz-flow__detail"> meta lines and a data-tone state.
+   Without these aliases the <ol> paints its own decimal markers on top
+   of the .viz-flow__num circles — double, offset numbers — and indents
+   the whole flow, while the detail line and tone state render unstyled.
+   Map the dialect onto the canonical treatment so both render alike. */
+.viz-flow__list{list-style:none;margin:0;padding:0}
+.viz-flow__detail{font-size:13px;color:var(--stone);margin:0;line-height:1.5}
+.viz-flow__detail strong{color:var(--ink);font-weight:600}
+.viz-flow__step[data-tone="rust"] .viz-flow__num{border-color:var(--rust);color:var(--rust)}
+.viz-flow__step[data-tone="stone"] .viz-flow__num{border-color:var(--stone);color:var(--stone)}
 .viz-flow__body{padding-top:8px;min-width:0}
 .viz-flow__title{font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);margin:0 0 4px;letter-spacing:-0.005em;line-height:1.35}
 .viz-flow__meta{font-size:13px;color:var(--stone);margin:0;line-height:1.5}

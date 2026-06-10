@@ -63,7 +63,7 @@
       },
       "url": "https://muntin.digital/library/how-to-raise-restaurant-menu-prices-without-losing-reservations/",
       "datePublished": "2026-04-20",
-      "dateModified": "2026-05-28",
+      "dateModified": "2026-06-10",
       "inLanguage": "en-US",
       "wordCount": 2100,
       "author": {
@@ -847,26 +847,39 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <h2 id="the-tiers-up-close">The tiers, up close</h2>
 
-      <figure class="viz-figure article-figure" data-audio-alt="The three-tier menu-price lift the rest of this section walks. Tier one — anchors you never touch — zero percent. The burger, the Caesar, the signature cocktail at fourteen — the items guests carry as reference prices in their heads. Movement here gets talked about within a week. Tier two — core items — four to six percent. Most entrées, most pastas, most pizzas. The middle band where the weighted-average raise actually happens and guests don't have an exact-dollar memory to anchor against. Tier three — signature items — eight to twelve percent. The tasting menu, the chef's special, the one dish you're known for. Price-inelastic because the guest can't comparison-shop against another restaurant's version. Stage in this order and the menu shifts under guests without the wrong reservation showing up at the wrong table.">
-        <div class="viz-bars">
-          <p class="viz-bars__title">Recommended lift by menu tier</p>
-          <div class="viz-bars__row">
-            <p class="viz-bars__label">Tier 1 &mdash; Anchors</p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.01"></span></div>
-            <p class="viz-bars__num">0% (hold)</p>
+      <p>Before the tiers up close, sit with the math that makes the whole move worth the nerve. The reason a few points of weighted lift matters so much is that food cost comes straight off contribution: on $100 of menu sales, every point the food-cost share drops is a dollar that stays in the room. The widget below takes the article&rsquo;s own drift &mdash; a menu costed at 30% that crept to 34% &mdash; and lets you drag the food-cost share back. Watch contribution recover dollar-for-dollar. These are illustrative figures, but the trade is exact.</p>
+
+      <figure class="viz-figure article-figure" data-audio-alt="An interactive cost stack on one hundred dollars of menu sales, showing why a few points of weighted price lift is worth the nerve. As written, the menu ran a thirty-percent food cost: thirty dollars of food cost, seventy dollars of contribution toward labor, rent, and profit. The article's example menu drifted to thirty-four percent, which is sixty-six dollars of contribution — four dollars off every hundred in sales. Drag the food-cost share from thirty-six back down toward twenty-eight and watch the contribution segment recover one-for-one, because on held volume each point of food cost is a dollar of contribution. On a restaurant doing one point two million a year, that four-point drift is roughly forty-eight thousand dollars, which is the entire reason to run the three-tier raise rather than keep eating the cost.">
+        <div class="viz-waterfall" data-viz-waterfall data-vw-config='{"ticket":100,"variableSeg":"food","baseRate":0.30,"baseKeep":0.70}'>
+          <p class="viz-waterfall__title">$100 of menu sales: drag the food-cost share, watch contribution recover</p>
+          <div class="viz-waterfall__bar" role="img" aria-label="$100 of menu sales split into a food-cost segment (30% as written) and a contribution segment (70%); moving the food-cost share changes contribution one-for-one.">
+            <span class="viz-waterfall__seg" data-tone="rust" data-vw-seg="food" style="--w:0.300">30%</span>
+            <span class="viz-waterfall__seg viz-waterfall__seg--keep" data-vw-seg="keep" style="--w:0.700">70%</span>
           </div>
-          <div class="viz-bars__row">
-            <p class="viz-bars__label">Tier 2 &mdash; Core</p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.5"></span></div>
-            <p class="viz-bars__num">4&ndash;6%</p>
+          <div class="viz-waterfall__legend">
+            <div class="viz-waterfall__row" data-vw-row="food">
+              <span class="viz-waterfall__swatch" data-tone="rust"></span>
+              <span>Food cost (<span data-vw-display>30</span>% of $100 in sales)</span>
+              <span class="viz-waterfall__num">&minus;$<span data-vw-amount>30.00</span></span>
+              <span class="viz-waterfall__pct"><span data-vw-pct>30.0</span>%</span>
+            </div>
+            <div class="viz-waterfall__row" data-keep="true" data-vw-row="keep">
+              <span class="viz-waterfall__swatch" data-tone="teal"></span>
+              <span>Contribution (toward labor, rent, profit)</span>
+              <span class="viz-waterfall__num">$<span data-vw-amount>70.00</span></span>
+              <span class="viz-waterfall__pct"><span data-vw-pct>70.0</span>%</span>
+            </div>
           </div>
-          <div class="viz-bars__row">
-            <p class="viz-bars__label">Tier 3 &mdash; Signature</p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:1.0"></span></div>
-            <p class="viz-bars__num">8&ndash;12%</p>
+          <div class="viz-slider">
+            <div class="viz-slider__label">
+              <span class="viz-slider__title">Food-cost share of sales</span>
+              <span class="viz-slider__readout"><span data-vw-display>30</span>%</span>
+            </div>
+            <input type="range" min="28" max="36" step="1" value="30" data-vw-slider aria-label="Food-cost share of menu sales, percent">
+            <p class="viz-slider__hint">As written: <b>30%</b>. The drifted menu in this article: <b>34%</b>. The teal segment is contribution &mdash; the three-tier raise is the move that drags the food-cost share back left without the wrong reservation noticing.</p>
           </div>
         </div>
-        <figcaption>Hold the anchors, raise the core inside guest memory tolerance, and price the signature items at what the experience is worth.</figcaption>
+        <figcaption><strong>Interactive:</strong> at the 30% it was written, $70 of every $100 stays in the room. At the drifted 34%, $66 &mdash; the $4 gap is ~$48k a year at $1.2M in sales, and the whole reason to raise.</figcaption>
       </figure>
 
       <h3>Tier 1 &mdash; Anchors you never touch</h3>

@@ -3261,7 +3261,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 }
 
 
-/* ===== [core] Window Phase 2/3.6/4/5+ additions (sash/sidelight, attach, now, pulses, admin) (lines 7304-7567) ===== */
+/* ===== [core] Window Phase 2/3.6/4/5+ additions (sash/sidelight, attach, now, pulses, admin) (lines 7327-7590) ===== */
 /* ============ THE WINDOW — Phase 2/3.6/4/5+ additions ============
    Sash/sidelight named-pane composer (Phase 2.1), photo+voice attach
    row (Phase 3.2-3.6), now-line widget (Phase 4), site-wide pulse
@@ -3526,7 +3526,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .admin-callbacks__voice-label--deleted{color:var(--stone)}
 .admin-callbacks__meta{font-size:12px;color:var(--ink-soft);font-style:italic;margin:8px 0 0}
 
-/* ===== [core] Phase 1 — design tokens + MuntinUI component shells (.mtn-*) (lines 7568-7780) ===== */
+/* ===== [core] Phase 1 — design tokens + MuntinUI component shells (.mtn-*) (lines 7591-7803) ===== */
 
 /* ============ Phase 1 tokens (tool-suite upgrade) ============
    Additive tokens that the MuntinUI primitives consume. Existing
@@ -3740,7 +3740,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
   }
 }
 
-/* ===== [core] Phase 2 — hub tier badge + tool-tier-filter strip (lines 7781-7834) ===== */
+/* ===== [core] Phase 2 — hub tier badge + tool-tier-filter strip (lines 7804-7857) ===== */
 
 /* ============ Phase 2 hub styles (tool-suite upgrade) ============
    Tier badge on each tool card + a JS-enhanced filter strip that
@@ -3795,7 +3795,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
   display:none;
 }
 
-/* ===== [core] Phase 5 — dark-mode token override (prefers-color-scheme + [data-theme]) (lines 7835-7896) ===== */
+/* ===== [core] Phase 5 — dark-mode token override (prefers-color-scheme + [data-theme]) (lines 7858-7919) ===== */
 
 /* ============ Phase 5 dark-mode tokens (tool-suite upgrade) ============
    The Phase 1 component primitives all reference --mtn-surface /
@@ -3858,7 +3858,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 }
 
 
-/* ===== [core] Phase 7 — dark-mode toggle button (.theme-toggle) (lines 7897-7957) ===== */
+/* ===== [core] Phase 7 — dark-mode toggle button (.theme-toggle) (lines 7920-7980) ===== */
 /* ============ Phase 7 — dark-mode toggle button =============
    Sits in the nav next to lang-switch. Two SVG icons (sun + moon)
    stacked; CSS shows one based on the current [data-theme] state.
@@ -3920,7 +3920,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .mobile-theme .theme-toggle__label{display:inline}
 
 
-/* ===== [core] Phase 4 — next-tool recommendation card (.mtn-next-tool) (lines 7958-7998) ===== */
+/* ===== [core] Phase 4 — next-tool recommendation card (.mtn-next-tool) (lines 7981-8021) ===== */
 /* ============ Phase 4 — next-tool recommendation card =============
    Mounted at the end of a tool's result region by
    MuntinNextTool.render(). Visually quiet so it doesn't compete
@@ -3962,13 +3962,13 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .mtn-next-tool__link:focus-visible{outline:none;box-shadow:var(--ring-focus)}
 
 
-/* ===== [core] Phase G — About portrait frame (real photo overlay) (lines 7999-8003) ===== */
+/* ===== [core] Phase G — About portrait frame (real photo overlay) (lines 8022-8026) ===== */
 /* ===== Phase G — About portrait frame (real photo overlay; reused on homepage About teaser + /about/) ===== */
 .about-portrait-frame{position:relative;width:100%;aspect-ratio:4/5;border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--line-dark);background:var(--cream-2)}
 .about-portrait-frame .portrait{position:absolute;inset:0;border:0;border-radius:0;aspect-ratio:auto;width:100%;height:100%}
 .about-portrait-frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 
-/* ===== [core] Batch marquee (lines 8004-8017) ===== */
+/* ===== [core] Batch marquee (lines 8027-8040) ===== */
 /* ===== Batch marquee — fixed strip above the nav (.batch-marquee is on every page when a batch is active) ===== */
 .batch-marquee{position:fixed;top:0;left:0;right:0;z-index:60}
 /* The fixed nav is offset below the fixed banner by --banner-h (set to the
@@ -3983,7 +3983,7 @@ body:has(.batch-marquee) main{padding-top:calc(64px + max(var(--banner-h,50px),5
 @media (max-width:640px){:root{--banner-h:72px}}
 
 
-/* ===== [core] Phase 9 — Light refresh (micro-interactions, depth, voice search, dark-mode polish) (lines 8018-8222) ===== */
+/* ===== [core] Phase 9 — Light refresh (micro-interactions, depth, voice search, dark-mode polish) (lines 8041-8245) ===== */
 /* ============ Phase 9 — Light refresh ============
    A small, additive cosmetic pass that layers on top of every
    previous phase without re-declaring anything. Five concerns:
@@ -4189,7 +4189,7 @@ body:has(.batch-marquee) main{padding-top:calc(64px + max(var(--banner-h,50px),5
 :root[data-theme="dark"] .theme-toggle:hover{background:var(--refresh-surface-1);border-color:var(--teal)}
 
 
-/* ===== [core] Dark-mode contrast completion (lines 8223-8492) ===== */
+/* ===== [core] Dark-mode contrast completion (lines 8246-8515) ===== */
 /* GEN:dark-mode:start — generated by scripts/build-dark-mode.mjs. DO NOT EDIT BY HAND. */
 /* TOKEN-FLIP dark theme (see scripts/build-dark-mode.mjs). The base palette
    is remapped at the dark root so every surface and its text flip together;
