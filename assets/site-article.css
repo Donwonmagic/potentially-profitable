@@ -2850,7 +2850,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   }
 }
 
-/* ===== [article] Article viz components (.viz-* family) (lines 6940-7279) ===== */
+/* ===== [article] Article viz components (.viz-* family) (lines 6940-7303) ===== */
 /* ============ ARTICLE VIZ COMPONENTS ============
    Namespaced .viz-* family for inline article graphics. Tokens-only
    (--cream, --ink, --teal, --rust, --stone, --status-*, --t-*),
@@ -2872,7 +2872,15 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 .viz-figure>figcaption{font-family:var(--font-body);font-size:13px;line-height:1.5;color:var(--stone);margin-top:14px;font-style:italic;text-align:center}
 .viz-figure .viz-sr-table{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 
-.viz-bars{display:grid;grid-template-columns:auto 1fr auto;gap:8px 14px;align-items:center;margin:16px 0;font-family:var(--font-body);font-size:14px;color:var(--ink)}
+.viz-bars{display:grid;grid-template-columns:minmax(110px,34%) minmax(60px,1fr) auto;gap:8px 14px;align-items:center;margin:16px 0;font-family:var(--font-body);font-size:14px;color:var(--ink)}
+/* Canon markup wraps each label/track/num triplet in a .viz-bars__row
+   div. display:contents lifts the triplet into the parent grid so each
+   piece lands in its own column; without it every row collapses into a
+   single grid cell and the whole chart renders as a side-by-side jumble
+   of overlapping labels, tracks, and numbers. Rowless markup (triplets
+   as direct children) renders identically under the same rules. */
+.viz-bars__row{display:contents}
+.viz-bars__title{grid-column:1/-1;font-family:var(--font-display);font-size:14.5px;font-weight:500;color:var(--ink);margin:0 0 4px;letter-spacing:-0.005em;line-height:1.4}
 .viz-bars__label{font-variant-numeric:tabular-nums;line-height:1.3}
 .viz-bars__track{background:var(--cream-2);border-radius:4px;height:20px;overflow:hidden;position:relative}
 .viz-bars__fill{display:block;height:100%;background:var(--teal);border-radius:4px;transform:scaleX(var(--w,1));transform-origin:left center;width:100%}
@@ -2880,6 +2888,19 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 .viz-bars__fill[data-tone="stone"]{background:var(--stone)}
 .viz-bars__fill[data-tone="ink"]{background:var(--ink)}
 .viz-bars__num{font-variant-numeric:tabular-nums;color:var(--stone);text-align:right;line-height:1.3}
+/* Benchmark tick — a vertical reference line inside a track at
+   --x (0..1 share of the track width). Lets a bar teach against a
+   named threshold ("the healthy band starts here") instead of only
+   ranking rows against each other. Pair with a .viz-bars__note or the
+   figcaption naming what the tick marks. */
+.viz-bars__mark{position:absolute;top:0;bottom:0;left:calc(var(--x,0)*100%);width:2px;border-radius:1px;background:var(--ink);opacity:0.55}
+.viz-bars__mark[data-tone="rust"]{background:var(--rust);opacity:0.8}
+.viz-bars__mark[data-tone="teal"]{background:var(--teal);opacity:0.8}
+/* Full-width annotation row — the "so what" line under a row or at the
+   foot of the chart. Keeps the teaching beat inside the figure instead
+   of orphaning it in prose. */
+.viz-bars__note{grid-column:1/-1;font-size:12.5px;line-height:1.5;color:var(--stone);margin:0 0 4px;font-style:italic}
+.viz-bars__note strong,.viz-bars__note b{color:var(--ink);font-style:normal;font-weight:600}
 @media (prefers-reduced-motion:no-preference){
   /* Bars start at scaleX(0) and grow to scaleX(var(--w)) when the
      wrapper enters the viewport (.in is added by the existing IO in
@@ -2890,7 +2911,10 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   .viz-bars[data-animate="grow"].in .viz-bars__fill{transform:scaleX(var(--w,1))}
 }
 @media (max-width:520px){
-  .viz-bars{font-size:13px;gap:6px 10px}
+  /* Stack: label gets its own full-width line; the track and number
+     share the line below. Three tight columns never fit a phone. */
+  .viz-bars{font-size:13px;gap:4px 10px;grid-template-columns:minmax(0,1fr) auto}
+  .viz-bars__label{grid-column:1/-1;margin-top:6px}
   .viz-bars__track{height:16px}
 }
 
