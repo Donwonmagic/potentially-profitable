@@ -55,7 +55,7 @@
       "description": "The four reports that matter, what each number means, and the three weekly habits that actually move bookings.",
       "url": "https://muntin.digital/library/how-to-read-restaurant-google-search-console/",
       "datePublished": "2026-04-30",
-      "dateModified": "2026-05-28",
+      "dateModified": "2026-06-10",
       "author": {
         "@id": "https://muntin.digital/#muntin-desk",
         "@type": "Organization",
@@ -632,7 +632,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
             <div class="recovery-val">on alert</div>
           </div>
         </div>
-        <figcaption class="i18n">The 4 reports that move bookings · your weekly sweep</figcaption>
+        <figcaption class="i18n">Four reports, four cadences &mdash; Performance weekly, Queries monthly, Pages quarterly, Coverage only when the alert fires. Everything else in the sidebar is ignorable.</figcaption>
       </figure>
 
       <h2 id="report-1-performance-the-headline-numbers">Report 1: Performance — the headline numbers</h2>
@@ -646,40 +646,40 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <li><strong>Average position</strong> — your average rank across all queries that showed your site.</li>
       </ul>
 
-      <figure class="viz-figure article-figure" data-audio-alt="The four Performance numbers in order. One: total clicks — how many people actually clicked through to your site from Google search. Two: total impressions — how many times your site appeared in any search result, whether anyone clicked or not. Three: average CTR — clicks divided by impressions, the percentage of times your snippet won the click. Four: average position — your average rank across all queries that showed your site. The math runs left to right: impressions become clicks at the rate of CTR, and position shapes both of the first two.">
+      <figure class="viz-figure article-figure" data-audio-alt="The four Performance numbers rearranged into the order the math actually runs, which is not the order Google displays them. Step one: average position — where you rank decides how often Google shows you at all. Step two: total impressions — every appearance position earned, whether anyone clicked or not. Step three: average CTR — the share of those appearances where your snippet won the click. This is the step marked as the lever, because it is the only one of the four you can rewrite on a Tuesday afternoon, and a branded CTR below forty percent means the snippet is broken. Step four: total clicks — the output, impressions multiplied by CTR. The reason this order matters: when clicks drop, walk the chain backwards. If impressions held and clicks fell, the leak is at step three and the fix is a snippet rewrite, not a ranking campaign.">
         <div class="viz-flow">
           <ol class="viz-flow__list">
-            <li class="viz-flow__step" data-tone="teal">
+            <li class="viz-flow__step" data-state="ok">
               <span class="viz-flow__num">1</span>
               <div class="viz-flow__body">
-                <p class="viz-flow__title">Total clicks</p>
-                <p class="viz-flow__meta">How many people actually clicked through to your site from Google search.</p>
+                <p class="viz-flow__title">Average position</p>
+                <p class="viz-flow__meta">Where you rank decides how often you&rsquo;re shown at all. Slow to move &mdash; months, not weeks.</p>
               </div>
             </li>
-            <li class="viz-flow__step" data-tone="teal">
+            <li class="viz-flow__step" data-state="ok">
               <span class="viz-flow__num">2</span>
               <div class="viz-flow__body">
                 <p class="viz-flow__title">Total impressions</p>
-                <p class="viz-flow__meta">How many times your site appeared in any search result, whether anyone clicked or not.</p>
+                <p class="viz-flow__meta">Every appearance position earned, whether anyone clicked or not.</p>
               </div>
             </li>
-            <li class="viz-flow__step" data-tone="teal">
+            <li class="viz-flow__step" data-state="warn">
               <span class="viz-flow__num">3</span>
               <div class="viz-flow__body">
-                <p class="viz-flow__title">Average CTR</p>
-                <p class="viz-flow__meta">Clicks &divide; impressions. The percentage of times your snippet won the click.</p>
+                <p class="viz-flow__title">Average CTR &mdash; the lever</p>
+                <p class="viz-flow__meta">Clicks &divide; impressions: the share of appearances your snippet converts. <strong>Branded CTR below 40% = broken snippet.</strong></p>
               </div>
             </li>
-            <li class="viz-flow__step" data-tone="teal">
+            <li class="viz-flow__step" data-state="done">
               <span class="viz-flow__num">4</span>
               <div class="viz-flow__body">
-                <p class="viz-flow__title">Average position</p>
-                <p class="viz-flow__meta">Your average rank across all queries that showed your site.</p>
+                <p class="viz-flow__title">Total clicks &mdash; the output</p>
+                <p class="viz-flow__meta">Impressions &times; CTR. Nothing moves this number except the two steps above it.</p>
               </div>
             </li>
           </ol>
         </div>
-        <figcaption>The Performance screen, in the order Google reports them. Impressions become clicks at the rate of CTR &mdash; the only one of the four you can move on a Tuesday afternoon.</figcaption>
+        <figcaption>Not the dashboard order &mdash; the causal order. When clicks drop, walk the chain backwards: impressions held but clicks fell means the leak is at step 3, and the fix is a snippet rewrite, not a ranking campaign.</figcaption>
       </figure>
 
       <p>The leverage is almost always in CTR, not in position. A restaurant ranked #4 with a strong title + <!-- LIBRARY:autolink:start --><a href="/glossary/meta-description/" data-glossary-head="Meta description" data-glossary-blurb="The short paragraph of text Google shows underneath the blue headline in a search result.">meta description</a><!-- LIBRARY:autolink:end --> outperforms a restaurant ranked #2 with a generic one. If your CTR for branded queries (your restaurant name) is below 40%, the snippet is broken — almost always the meta description. The pattern shows up sharpest when branded-query CTR is healthy (a customer searching for you by name finds you and clicks) but the cuisine-query CTR is in the low single digits. Same site. Same domain authority. Two different snippets — one written by a human who knows the room, one autogenerated from the <!-- LIBRARY:autolink:start --><a href="/glossary/title-tag/" data-glossary-head="Title tag" data-glossary-aka="the page's &lt;title&gt;" data-glossary-blurb="The line of text that shows up as the clickable blue headline of your page in Google search results, and as the name of the tab in a browser.">page title</a><!-- LIBRARY:autolink:end -->.</p>

@@ -900,54 +900,52 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       </ul>
       <p>If you're brand new, cash is tight, and you can genuinely accept that the site is a placeholder — not a reflection of the room — Wix is fine. This post is not for you. Everything below is for the restaurant that's been open a year or more, has regulars, has a menu worth photographing, and is starting to notice that the site is a problem.</p>
 
-      <figure class="viz-figure article-figure" data-audio-alt="The six places Wix tends to run out of room for an established restaurant, in roughly the order an operator runs into them. One: menu management is a trap — the menu lives inside Wix's closed system, not in real HTML, so Google can't cleanly crawl individual dishes. Two: mobile load speed — Lighthouse scores on mobile Wix restaurant sites consistently land below sixty, costing hungry mobile traffic before anyone sees the menu. Three: reservations integration — defaults heavily to OpenTable; if you're on Resy, Tock, SevenRooms, or Square Reservations, you usually get a generic iframe or a link-out. Four: SEO is template-good, not actually good — title tags exist, but the schema, the canonicals, and the internal-linking sit at the floor, not the ceiling. Five: anything custom requires hiring a Wix Partner — the cost of the template's flexibility is real, just delayed. Six: exit costs — Wix doesn't let you export your content cleanly; you discover this the year you try to leave.">
-        <div class="viz-flow">
-          <ol class="viz-flow__list">
-            <li class="viz-flow__step" data-tone="rust">
-              <span class="viz-flow__num">1</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">Menu management is a trap</p>
-                <p class="viz-flow__detail">Menu lives inside Wix&rsquo;s closed system &mdash; Google can&rsquo;t cleanly crawl individual dishes; updates fan out to four places by hand.</p>
-              </div>
-            </li>
-            <li class="viz-flow__step" data-tone="rust">
-              <span class="viz-flow__num">2</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">Mobile load speed</p>
-                <p class="viz-flow__detail"><!-- LIBRARY:autolink:start --><a href="/glossary/lighthouse/" data-glossary-head="Lighthouse" data-glossary-aka="Google's audit engine" data-glossary-blurb="The open-source auditing tool Google ships inside Chrome and inside PageSpeed Insights.">Lighthouse</a><!-- LIBRARY:autolink:end --> mobile scores consistently below 60 in audit experience; hungry mobile traffic bounces before the menu ever paints.</p>
-              </div>
-            </li>
-            <li class="viz-flow__step" data-tone="rust">
-              <span class="viz-flow__num">3</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">Reservations integration</p>
-                <p class="viz-flow__detail">Defaults to OpenTable. On Resy, Tock, SevenRooms, or Square Reservations, you get a generic iframe or a link-out.</p>
-              </div>
-            </li>
-            <li class="viz-flow__step" data-tone="stone">
-              <span class="viz-flow__num">4</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">SEO is template-good, not actually good</p>
-                <p class="viz-flow__detail"><!-- LIBRARY:autolink:start --><a href="/glossary/title-tag/" data-glossary-head="Title tag" data-glossary-aka="the page's &lt;title&gt;" data-glossary-blurb="The line of text that shows up as the clickable blue headline of your page in Google search results, and as the name of the tab in a browser.">Title tags</a><!-- LIBRARY:autolink:end --> exist; schema, <!-- LIBRARY:autolink:start --><a href="/glossary/canonical-url/" data-glossary-head="Canonical URL" data-glossary-aka="rel=canonical, the &quot;official&quot; address" data-glossary-blurb="A tag in a page's HTML that tells Google &quot;this is the real address for this page, ignore any duplicates&quot;.">canonicals</a><!-- LIBRARY:autolink:end -->, and internal-linking sit at the floor, not the ceiling.</p>
-              </div>
-            </li>
-            <li class="viz-flow__step" data-tone="stone">
-              <span class="viz-flow__num">5</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">Anything custom requires a Wix Partner</p>
-                <p class="viz-flow__detail">The template&rsquo;s flexibility ceiling is real &mdash; you just don&rsquo;t hit it until the year you need something it doesn&rsquo;t do.</p>
-              </div>
-            </li>
-            <li class="viz-flow__step" data-tone="stone">
-              <span class="viz-flow__num">6</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">Exit costs are real</p>
-                <p class="viz-flow__detail">Wix doesn&rsquo;t let you export your content cleanly. You find this out the year you try to leave.</p>
-              </div>
-            </li>
-          </ol>
-        </div>
-        <figcaption>Six places Wix tends to run out of room for an established restaurant &mdash; in the order an operator usually meets them.</figcaption>
+      <figure class="viz-figure article-figure" data-audio-alt="The six places Wix tends to run out of room for an established restaurant, walked in the order an operator meets them, each with the moment it bites. One: menu management is a trap — it bites on every price change, because the menu lives inside Wix's closed system and every update fans out to four other places by hand. Two: mobile load speed — it bites from day one, because Lighthouse scores on mobile Wix restaurant sites consistently land below sixty and hungry mobile traffic bounces before the menu paints. Three: reservations integration — it bites the night a third-party embed URL changes, because anything that is not OpenTable is usually a generic iframe that breaks silently. Four: SEO is template-good, not actually good — it bites the quarter you start chasing cuisine-near-me rankings, because schema, canonicals, and internal linking sit at the floor. Five: anything custom requires hiring a Wix Partner — it bites the year you need something the template does not do, at custom-build rates inside the same ceiling. Six: exit costs — it bites the year you try to leave, because the content does not export cleanly and the rebuild starts from scratch. The first three and the last one are red, the middle two amber: the dearest walls are the ones at the start and at the exit.">
+        <ol class="viz-flow">
+          <li class="viz-flow__step" data-state="bad">
+            <span class="viz-flow__num">1</span>
+            <div class="viz-flow__body">
+              <p class="viz-flow__title">Menu management is a trap</p>
+              <p class="viz-flow__meta"><strong>Bites on every price change.</strong> The menu lives inside Wix&rsquo;s closed system &mdash; Google can&rsquo;t cleanly crawl individual dishes, and each update fans out to four other places by hand.</p>
+            </div>
+          </li>
+          <li class="viz-flow__step" data-state="bad">
+            <span class="viz-flow__num">2</span>
+            <div class="viz-flow__body">
+              <p class="viz-flow__title">Mobile load speed</p>
+              <p class="viz-flow__meta"><strong>Bites from day one.</strong> <!-- LIBRARY:autolink:start --><a href="/glossary/lighthouse/" data-glossary-head="Lighthouse" data-glossary-aka="Google's audit engine" data-glossary-blurb="The open-source auditing tool Google ships inside Chrome and inside PageSpeed Insights.">Lighthouse</a><!-- LIBRARY:autolink:end --> mobile scores consistently below 60 in audit experience; hungry mobile traffic bounces before the menu ever paints.</p>
+            </div>
+          </li>
+          <li class="viz-flow__step" data-state="bad">
+            <span class="viz-flow__num">3</span>
+            <div class="viz-flow__body">
+              <p class="viz-flow__title">Reservations integration</p>
+              <p class="viz-flow__meta"><strong>Bites the Friday night an embed URL changes.</strong> Defaults to OpenTable; on Resy, Tock, SevenRooms, or Square Reservations you get a generic iframe or a link-out that breaks silently.</p>
+            </div>
+          </li>
+          <li class="viz-flow__step" data-state="warn">
+            <span class="viz-flow__num">4</span>
+            <div class="viz-flow__body">
+              <p class="viz-flow__title">SEO is template-good, not actually good</p>
+              <p class="viz-flow__meta"><strong>Bites the quarter you chase &ldquo;[cuisine] near me.&rdquo;</strong> <!-- LIBRARY:autolink:start --><a href="/glossary/title-tag/" data-glossary-head="Title tag" data-glossary-aka="the page's &lt;title&gt;" data-glossary-blurb="The line of text that shows up as the clickable blue headline of your page in Google search results, and as the name of the tab in a browser.">Title tags</a><!-- LIBRARY:autolink:end --> exist; schema, <!-- LIBRARY:autolink:start --><a href="/glossary/canonical-url/" data-glossary-head="Canonical URL" data-glossary-aka="rel=canonical, the &quot;official&quot; address" data-glossary-blurb="A tag in a page's HTML that tells Google &quot;this is the real address for this page, ignore any duplicates&quot;.">canonicals</a><!-- LIBRARY:autolink:end -->, and internal-linking sit at the floor, not the ceiling.</p>
+            </div>
+          </li>
+          <li class="viz-flow__step" data-state="warn">
+            <span class="viz-flow__num">5</span>
+            <div class="viz-flow__body">
+              <p class="viz-flow__title">Anything custom requires a Wix Partner</p>
+              <p class="viz-flow__meta"><strong>Bites the year you outgrow the template.</strong> The flexibility ceiling is real &mdash; and crossing it means agency rates for work still constrained by Wix&rsquo;s architecture.</p>
+            </div>
+          </li>
+          <li class="viz-flow__step" data-state="bad">
+            <span class="viz-flow__num">6</span>
+            <div class="viz-flow__body">
+              <p class="viz-flow__title">Exit costs are real</p>
+              <p class="viz-flow__meta"><strong>Bites the year you try to leave.</strong> The content doesn&rsquo;t export cleanly &mdash; two or three years of work effectively starts over as a rebuild.</p>
+            </div>
+          </li>
+        </ol>
+        <figcaption>Each wall has a predictable moment it bites &mdash; the expensive ones sit at the start (menu, speed) and at the exit, which is why they never show up in the template preview.</figcaption>
       </figure>
 
       <h2 id="break-1-menu-management-is-a-trap">Break #1 — Menu management is a trap</h2>
