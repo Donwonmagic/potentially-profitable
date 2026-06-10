@@ -68,11 +68,20 @@ function amsWindowQ(days) {
 // Fetch + merge Report Details rows across every movement city. A city that 404s
 // or times out is skipped (logged as a gap) — one flaky report can't drop the
 // whole national series. Returns { rows, cities, gaps } or { skip }.
+//
+// Cached by report-set + window for the process lifetime: all four produce specs
+// pull the SAME ~17 city reports (they only differ in which commodity they filter),
+// so without this a probe/live run would fetch each report 4× and quadruple both
+// the runtime and the API load.
+const _moveCache = new Map();
 async function fetchMovement(spec) {
   const auth = amsAuth();
   if (!auth) return { skip: 'no AMS_KEY' };
   const reports = spec.reports || MOVEMENT_REPORTS;
-  const q = amsWindowQ(spec.windowDays || 430);
+  const days = spec.windowDays || 430;
+  const key = `${reports.join(',')}|${days}`;
+  if (_moveCache.has(key)) return _moveCache.get(key);
+  const q = amsWindowQ(days);
   let rows = [], cities = 0; const gaps = [];
   for (const slug of reports) {
     try {
@@ -81,7 +90,9 @@ async function fetchMovement(spec) {
       rows = rows.concat(rs); cities++;
     } catch (e) { gaps.push(`${slug}:${e.message}`); }
   }
-  return { rows, cities, gaps };
+  const res = { rows, cities, gaps };
+  _moveCache.set(key, res);
+  return res;
 }
 // Aggregate → the spec's emitted indicator observations (volume/imports/pace).
 function computeMovement(spec, rows) {
