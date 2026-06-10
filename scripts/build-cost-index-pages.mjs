@@ -147,9 +147,22 @@ const INDICATOR_NAME = {
   'cold-storage-cheese':       { en: 'Cold-storage stocks', es: 'Inventario en frío' },
   'milk-production':           { en: 'Milk production', es: 'Producción de leche' },
   'ams-shipments':             { en: 'Produce shipments', es: 'Envíos de producto' },
+  'onion-shipments':           { en: 'Shipment volume', es: 'Volumen de envíos' },
+  'lettuce-shipments':         { en: 'Shipment volume', es: 'Volumen de envíos' },
+  'tomato-shipments':          { en: 'Shipment volume', es: 'Volumen de envíos' },
+  'potato-shipments':          { en: 'Shipment volume', es: 'Volumen de envíos' },
+  'onion-imports':             { en: 'Import share', es: 'Cuota de importación' },
+  'lettuce-imports':           { en: 'Import share', es: 'Cuota de importación' },
+  'tomato-imports':            { en: 'Import share', es: 'Cuota de importación' },
+  'potato-imports':            { en: 'Import share', es: 'Cuota de importación' },
+  'onion-pace':                { en: 'Shipments vs last year', es: 'Envíos vs. año pasado' },
+  'lettuce-pace':              { en: 'Shipments vs last year', es: 'Envíos vs. año pasado' },
+  'tomato-pace':               { en: 'Shipments vs last year', es: 'Envíos vs. año pasado' },
+  'potato-pace':               { en: 'Shipments vs last year', es: 'Envíos vs. año pasado' },
   'freeze-alert':              { en: 'Freeze warnings', es: 'Alertas de helada' },
   'drought-ca-az':             { en: 'Drought (CA/AZ)', es: 'Sequía (CA/AZ)' },
   'drought-fl-ca':             { en: 'Drought (FL/CA)', es: 'Sequía (FL/CA)' },
+  'drought-id':                { en: 'Drought (Idaho)', es: 'Sequía (Idaho)' },
   'drought':                   { en: 'Drought (growing regions)', es: 'Sequía (regiones de cultivo)' },
   'crop-condition':            { en: 'Crop condition', es: 'Condición del cultivo' },
   'diesel':                    { en: 'Diesel / freight', es: 'Diésel / flete' }
@@ -1271,7 +1284,7 @@ function emitLabPage(locale) {
     : 'The model is a transparent sum: P = Σ(weight × sign × signal). Each public leading indicator casts one vote — up, down, or neutral inside a deadband — weighted by its evidence tier. When P crosses the ± line, the direction flips. No subjective adjustments: the same numbers you could redo by hand. It is an inferred direction, not a price; the lead times come from USDA/EIA and the per-week weighting is our estimate.';
   const noscript = es ? 'El Laboratorio de Presión necesita JavaScript. Verás la perspectiva en vivo en cada página de ingrediente.'
     : 'The Pressure Lab needs JavaScript — you\'ll find the live outlook on each ingredient page.';
-  const v = 'v=20260608-lab1';
+  const v = 'v=20260610-move1';
   return pageHead({ lang, locale, title, desc, canonEn, canonEs, jsonld, extraCss: LAB_CSS }) + `
   <nav class="breadcrumb" aria-label="Breadcrumb">
     <a href="${base}/">${es ? 'Inicio' : 'Home'}</a> ›
