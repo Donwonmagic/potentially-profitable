@@ -46,6 +46,7 @@ function changeFromRaw(spec, raw) {
     case 'ams':  return S.windowChange(S.amsSeries((raw && raw.results) || raw, { field: spec.field, dateKey: spec.dateKey, commodity: spec.commodity, commodityKey: spec.commodityKey, tail: spec.tail }));
     case 'usdm': return S.windowChange(S.usdmSeverity((raw && raw.length != null) ? raw : (raw && raw.data) || [], { categories: spec.categories, tail: spec.tail }));
     case 'nws':  return S.eventSignal(S.nwsFreezeActive(raw, { events: spec.events, areaMatch: spec.areaMatch }));
+    case 'season': return S.seasonSignal(spec.windows, spec._now ? new Date(spec._now) : new Date());
     default: return null;
   }
 }
@@ -132,7 +133,8 @@ function selfTest() {
               { ValidStart: '2026-06-08', D2: '14', D3: '8', D4: '2' }, { ValidStart: '2026-06-08', D2: '30', D3: '6', D4: '0' }
             ], want: (v) => v > 0 },
     nws:  { spec: { type: 'nws', events: ['Freeze Warning'], areaMatch: 'AZ' }, raw: { features: [{ properties: { event: 'Freeze Warning', areaDesc: 'Yuma County, AZ' } }] }, want: (v) => v === 1 },
-    fred: { spec: { type: 'fred', tail: 4 }, raw: { observations: [{ date: '2026-03-01', value: '180.0' }, { date: '2026-04-01', value: '.' }, { date: '2026-05-01', value: '190.0' }] }, want: (v) => v > 0 }
+    fred: { spec: { type: 'fred', tail: 4 }, raw: { observations: [{ date: '2026-03-01', value: '180.0' }, { date: '2026-04-01', value: '.' }, { date: '2026-05-01', value: '190.0' }] }, want: (v) => v > 0 },
+    season: { spec: { type: 'season', windows: [['10-20', '12-05'], ['03-20', '04-30']], _now: '2026-11-15' }, raw: null, want: (v) => v === 1 }
   };
   let fail = 0;
   for (const [t, c] of Object.entries(fx)) {
@@ -255,6 +257,13 @@ async function probe() {
   console.log('Probing every spec live (writes nothing). NASS/EIA need keys; USDM/NWS keyless.\n');
   const ready = [];
   for (const [id, spec] of Object.entries(specs)) {
+    // season: deterministic calendar flag, no fetch.
+    if (spec.type === 'season') {
+      const v = S.seasonSignal(spec.windows, new Date());
+      console.log(`  ✓ ${id.padEnd(26)} [season] ${v ? 'IN transition window (+1)' : 'outside window (0)'} — windows: ${(spec.windows || []).map((w) => w.join('→')).join(', ')}`);
+      ready.push(id);
+      continue;
+    }
     // ams-move: pool every movement city, aggregate the commodity, show the 3 emits.
     if (spec.type === 'ams-move') {
       const f = await fetchMovement(spec);
@@ -387,6 +396,7 @@ async function live() {
     if (!spec) { gaps.push(`${id}: no spec`); continue; }
     if (spec.type === 'ams-move') continue;        // spec id isn't an indicator id; handled above
     if (spec.verified === false) { gaps.push(`${id}: spec not verified yet`); continue; }
+    if (spec.type === 'season') { observations[id] = changeFromRaw(spec, null); continue; }   // deterministic, no fetch
     const u = urlFor(id, spec);
     if (u.skip) { gaps.push(`${id}: ${u.skip}`); continue; }
     try {

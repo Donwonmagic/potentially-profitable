@@ -34,6 +34,16 @@
       "emits": { "volume": "potato-shipments", "imports": "potato-imports", "pace": "potato-pace" },
       "_verify": "Fresh table potatoes (exact 'Potatoes' — excludes Seed/Chipper). Idaho Falls + others; mostly domestic." },
 
+    "_season_doc": "Deterministic region-rotation flags (type 'season', keyless, verified by construction). Produce supply hands off between growing regions a few times a year; in those gap windows a soft shipment-volume reading is a PRICE EVENT, not routine (the Nov-2025 romaine spike: 20-lb shredded ~$23→$80 while national volume looked merely seasonally soft). The MM-DD windows are Muntin's illustrative encoding of documented USDA AMS shipping-point seasonality, not a USDA figure; revise as patterns shift. Returns +1 in-window (elevated spike risk → cost-up lean), 0 otherwise.",
+    "lettuce-transition": { "type": "season", "verified": true, "windows": [["10-20", "12-05"], ["03-20", "04-30"]],
+      "note": "Romaine Salinas↔Yuma handoffs (fall + spring) — the recurring lettuce price-spike windows." },
+    "tomato-transition": { "type": "season", "verified": true, "windows": [["04-15", "05-31"], ["10-15", "11-30"]],
+      "note": "Field tomato FL↔MX / domestic handoff windows (spring + fall)." },
+    "onion-transition": { "type": "season", "verified": true, "windows": [["04-15", "05-31"], ["09-01", "10-15"]],
+      "note": "Onion storage→spring-fresh (spring) and summer→storage (fall) handoffs." },
+    "potato-transition": { "type": "season", "verified": true, "windows": [["08-15", "09-30"]],
+      "note": "Russet old-storage→new-crop gap (late summer), when storage runs thin before harvest." },
+
     "broiler-placements": { "type": "nass", "verified": true, "tail": 5,
       "query": { "source_desc": "SURVEY", "sector_desc": "ANIMALS & PRODUCTS", "commodity_desc": "CHICKENS", "class_desc": "BROILERS", "statisticcat_desc": "PLACEMENTS", "agg_level_desc": "NATIONAL", "short_desc": "CHICKENS, BROILERS - PLACEMENTS, MEASURED IN HEAD" },
       "note": "Weekly broiler chicks placed (Broiler Hatchery). Probe: rows=713 change=-0.3%, single short_desc — pinned + verified." },

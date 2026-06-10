@@ -19,7 +19,7 @@ const specs = (rd('data/pressure-source-specs.json').specs) || {};
 const REQUIRED = {
   eia: ['series'], fred: ['series'], nass: ['query'], ams: ['report', 'field'],
   'ams-move': ['commodity', 'emits'],
-  usdm: ['areas', 'categories'], nws: ['events']
+  usdm: ['areas', 'categories'], nws: ['events'], season: ['windows']
 };
 const fails = [], warns = [];
 
@@ -54,7 +54,8 @@ const DISCOVERY = {
   eia:  'https://www.eia.gov/opendata/ — confirm the series id resolves',
   fred: 'https://fred.stlouisfed.org — confirm series id resolves (free FRED_KEY)',
   usdm: 'https://droughtmonitor.unl.edu/DmData/DataDownload.aspx — keyless; confirm area FIPS',
-  nws:  'https://api.weather.gov/alerts/active — keyless; confirm event name string'
+  nws:  'https://api.weather.gov/alerts/active — keyless; confirm event name string',
+  season: 'deterministic calendar (no fetch) — confirm the transition windows look right'
 };
 if (warns.length) {
   console.log(`  go-live checklist — ${warns.length} spec(s) to verify, then flip verified:true:`);

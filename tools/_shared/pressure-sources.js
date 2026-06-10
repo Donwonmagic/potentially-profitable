@@ -153,6 +153,24 @@
   // An active event encoded as a change the engine will read as a +1 signal.
   function eventSignal(active) { return active ? 1 : 0; }
 
+  // ---- Region-rotation / transition calendar ------------------------
+  // Deterministic, keyless. Produce supply hands off between growing regions a
+  // few times a year (lettuce Salinas↔Yuma, tomato FL↔MX, onion/potato storage↔
+  // fresh); in those gap windows a soft shipment-volume reading is a PRICE EVENT,
+  // not routine seasonality (the Nov-2025 romaine spike). Returns +1 when today
+  // sits in any declared MM-DD window (handles year-wrap), else 0 — an elevated-
+  // spike-risk flag the engine reads alongside the volume signal.
+  function seasonSignal(windows, now) {
+    now = now || new Date();
+    var md = ('0' + (now.getMonth() + 1)).slice(-2) + '-' + ('0' + now.getDate()).slice(-2);
+    for (var i = 0; i < (windows || []).length; i++) {
+      var s = windows[i][0], e = windows[i][1];
+      var inW = s <= e ? (md >= s && md <= e) : (md >= s || md <= e);   // year-wrap (e.g. 12-15→01-31)
+      if (inW) return 1;
+    }
+    return 0;
+  }
+
   // ---- AMS produce MOVEMENT aggregate -------------------------------
   // Rows pooled from EVERY active Daily Movement city report (one report carries
   // many commodities; many rows per day per origin/mode). For one commodity it
@@ -202,7 +220,7 @@
     parseNum: parseNum, windowChange: windowChange,
     nassSeries: nassSeries, eiaSeries: eiaSeries, amsSeries: amsSeries, fredSeries: fredSeries,
     usdmSeverity: usdmSeverity, nwsFreezeActive: nwsFreezeActive, eventSignal: eventSignal,
-    movementAggregate: movementAggregate
+    seasonSignal: seasonSignal, movementAggregate: movementAggregate
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   if (typeof self !== 'undefined') self.MuntinPressureSources = api;

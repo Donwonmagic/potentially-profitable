@@ -3482,7 +3482,7 @@
       },
       "pressure": {
         "direction": "easing",
-        "confidence": "high",
+        "confidence": "moderate",
         "freshness_weeks": 0,
         "under_review": false
       },

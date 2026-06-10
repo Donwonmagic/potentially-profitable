@@ -24,6 +24,7 @@
     "fred-feed": "https://fred.stlouisfed.org/series/PMAIZMTUSDM",
     "ams-mmn": "https://mymarketnews.ams.usda.gov/mymarketnews-api",
     "ams-movement": "https://www.ams.usda.gov/market-news/fruit-and-vegetable-movement-reports",
+    "ams-shipping-point": "https://www.ams.usda.gov/market-news/fruit-and-vegetable-shipping-point-market-price-reports",
     "nass-broiler": "https://www.nass.usda.gov/Surveys/Guide_to_NASS_Surveys/Broiler_Hatchery/index.php",
     "nass-cattle-on-feed": "https://www.nass.usda.gov/Surveys/Guide_to_NASS_Surveys/Cattle_On_Feed/index.php",
     "nass-hogs": "https://www.nass.usda.gov/Surveys/Guide_to_NASS_Surveys/Hog_Inventory/index.php",
@@ -509,6 +510,21 @@
           },
           "group": "freight",
           "cite": "eia-diesel"
+        },
+        {
+          "id": "lettuce-transition",
+          "source": "ams-shipping-point",
+          "sign": 1,
+          "weight": 1,
+          "tier": "B",
+          "window": "season",
+          "lead": {
+            "min": 1,
+            "max": 4,
+            "unit": "week"
+          },
+          "cite": "ams-shipping-point",
+          "note": "region handoff window → elevated spike risk"
         }
       ]
     },
@@ -606,6 +622,21 @@
           },
           "group": "freight",
           "cite": "eia-diesel"
+        },
+        {
+          "id": "tomato-transition",
+          "source": "ams-shipping-point",
+          "sign": 1,
+          "weight": 1,
+          "tier": "B",
+          "window": "season",
+          "lead": {
+            "min": 1,
+            "max": 4,
+            "unit": "week"
+          },
+          "cite": "ams-shipping-point",
+          "note": "region handoff window → elevated spike risk"
         }
       ]
     },
@@ -688,6 +719,21 @@
           },
           "group": "freight",
           "cite": "eia-diesel"
+        },
+        {
+          "id": "onion-transition",
+          "source": "ams-shipping-point",
+          "sign": 1,
+          "weight": 1,
+          "tier": "B",
+          "window": "season",
+          "lead": {
+            "min": 1,
+            "max": 4,
+            "unit": "week"
+          },
+          "cite": "ams-shipping-point",
+          "note": "region handoff window → elevated spike risk"
         }
       ]
     },
@@ -784,6 +830,21 @@
           },
           "group": "freight",
           "cite": "eia-diesel"
+        },
+        {
+          "id": "potato-transition",
+          "source": "ams-shipping-point",
+          "sign": 1,
+          "weight": 1,
+          "tier": "B",
+          "window": "season",
+          "lead": {
+            "min": 1,
+            "max": 4,
+            "unit": "week"
+          },
+          "cite": "ams-shipping-point",
+          "note": "region handoff window → elevated spike risk"
         }
       ]
     },
