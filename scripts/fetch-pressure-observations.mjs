@@ -85,7 +85,10 @@ async function fetchOnce(url, init) {
   const ctrl = new AbortController();
   const to = setTimeout(() => ctrl.abort(), 25000);
   try {
-    const r = await fetch(url, Object.assign({ signal: ctrl.signal, headers: { 'User-Agent': 'muntin.digital cost-index (contact dongoldstein.accts@gmail.com)' } }, init || {}));
+    // Merge headers so a per-spec Accept (USDM needs application/json or it
+    // returns CSV) doesn't clobber the User-Agent the public endpoints expect.
+    const headers = Object.assign({ 'User-Agent': 'muntin.digital cost-index (contact dongoldstein.accts@gmail.com)' }, (init && init.headers) || {});
+    const r = await fetch(url, Object.assign({ signal: ctrl.signal }, init || {}, { headers }));
     if (!r.ok) throw new Error('HTTP ' + r.status);
     return await r.json();
   } finally { clearTimeout(to); }
@@ -119,7 +122,9 @@ function urlFor(id, spec) {
     const fmt = (d) => `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`;
     const end = new Date();
     const start = new Date(end.getTime() - 150 * 86400000);
-    return { url: `https://usdmdataservices.unl.edu/api/StateStatistics/GetDroughtSeverityStatisticsByAreaPercent?aoi=${aoi}&startdate=${fmt(start)}&enddate=${fmt(end)}&statisticsType=1` };
+    // USDM defaults to CSV — ask for JSON explicitly or fetchOnce's r.json() chokes
+    // on "MapDate,St...".
+    return { url: `https://usdmdataservices.unl.edu/api/StateStatistics/GetDroughtSeverityStatisticsByAreaPercent?aoi=${aoi}&startdate=${fmt(start)}&enddate=${fmt(end)}&statisticsType=1`, init: { headers: { Accept: 'application/json' } } };
   }
   if (spec.type === 'nws') {
     const ev = (spec.events || []).map(encodeURIComponent).join(',');
@@ -151,7 +156,7 @@ async function probe() {
     const u = urlFor(id, spec);
     if (u.skip) { console.log(`  ✗ ${id.padEnd(26)} [${spec.type}] skipped: ${u.skip}`); continue; }
     try {
-      const raw = await fetchJson(u.url);
+      const raw = await fetchJson(u.url, u.init);
       const rows = rowsFor(spec, raw);
       const cp = changeFromRaw(spec, raw);
       const usable = cp != null;
@@ -184,7 +189,7 @@ async function live() {
     const u = urlFor(id, spec);
     if (u.skip) { gaps.push(`${id}: ${u.skip}`); continue; }
     try {
-      const raw = await fetchJson(u.url);
+      const raw = await fetchJson(u.url, u.init);
       const cp = changeFromRaw(spec, raw);
       if (cp == null) { gaps.push(`${id}: no usable series`); continue; }
       observations[id] = cp;
