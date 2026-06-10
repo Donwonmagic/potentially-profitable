@@ -83,39 +83,60 @@ function alignWeekly(a, b) {                               // inner-join two wee
   return a.filter((p) => p.wk in mb).map((p) => ({ wk: p.wk, mo: p.mo, x: p.v, y: mb[p.wk] })).sort((p, q) => p.wk - q.wk);
 }
 
-// Ingredient → the WEEKLY wholesale ANCHOR we actually publish (USDA MARS/LMR).
-// Best-guess report slug + value/date fields; `--anchor-discover` confirms the exact
-// field names (mirrors how the AMS-movement integration was nailed down). Seafood
-// has no free weekly series → stays on the monthly FRED proxy.
+// Ingredient → the WEEKLY wholesale ANCHOR we actually publish — MIRRORS the exact
+// source specs the MEASURED index uses (data/cost-index-sources.json), so the
+// calibration target IS the published price. Meat/dairy: keyless LMR Datamart
+// (mpr.datamart.ams.usda.gov). Chicken + produce: keyed MARS (marsapi). Scale is
+// irrelevant (we calibrate on % CHANGES, which are scale-free). matchField filters
+// rows to the cut/commodity; dateField is the report's own date column.
+const LMR_BASE = 'https://mpr.datamart.ams.usda.gov/services/v1.1/reports/';
+const MARS_BASE = 'https://marsapi.ams.usda.gov/services/v1.2/reports/';
 const ANCHOR = {
-  'ribeye':          { report: 'lm_xb459', commodity: 'Choice', note: 'National Weekly Boxed Beef Cutout (Choice)' },
-  'beef-tenderloin': { report: 'lm_xb459', commodity: 'Choice', note: 'Choice cutout (tenderloin tracks the middle-meat cutout)' },
-  'pork-loin':       { report: 'lm_pk602', note: 'Pork Carcass Cutout (weekly avg of daily)' },
-  'pork-shoulder':   { report: 'lm_pk602', note: 'Pork cutout' },
-  'chicken-breast':  { report: 'py_py018', note: 'Weekly broiler/fryer parts — confirm slug+field' },
-  'whole-chicken':   { report: 'py_py018', note: 'Weekly national whole broiler/fryer' },
-  'butter':          { report: 'dy_wk100', commodity: 'Butter', note: 'NDPSR weekly butter — confirm slug+field' },
-  'cheddar-cheese':  { report: 'dy_wk100', commodity: 'Cheddar 40', note: 'NDPSR weekly block cheddar' },
-  'romaine-lettuce': { report: 'hc_fv020', commodity: 'Lettuce, Romaine', note: 'LA terminal veg (one origin/grade — confirm)' },
-  'tomato':          { report: 'hc_fv020', commodity: 'Tomatoes', note: 'LA terminal veg' },
-  'onion':           { report: 'hc_fv020', commodity: 'Onions, Dry', note: 'LA terminal veg' },
-  'russet-potato':   { report: 'hc_fv020', commodity: 'Potatoes', note: 'LA terminal veg' }
+  'ribeye':          { host: 'lmr', report: '2453', section: 'Choice Cuts', match: { field: 'commodity', value: 'Ribeye' }, field: 'Weighted_Average', dateField: 'report_date', note: 'LMR 2453 Choice Cuts / Ribeye' },
+  'beef-tenderloin': { host: 'lmr', report: '2453', section: 'Choice Cuts', match: { field: 'commodity', value: 'Butt Tender' }, field: 'Weighted_Average', dateField: 'report_date', note: 'LMR 2453 / Butt Tender (191A)' },
+  'pork-loin':       { host: 'lmr', report: '2498', section: 'Cutout and Primal Values', field: 'pork_loin', dateField: 'report_date', note: 'LMR 2498 cutout / pork_loin' },
+  'pork-shoulder':   { host: 'lmr', report: '2498', section: 'Cutout and Primal Values', field: 'pork_butt', dateField: 'report_date', note: 'LMR 2498 cutout / pork_butt' },
+  'chicken-breast':  { host: 'mars', report: '3646', section: 'Report Detail', match: { field: 'item', value: 'Breast - B/S' }, field: 'wtd_avg_price', dateField: 'report_date', note: 'AMS 3646 Nat. Chicken / Breast B/S' },
+  'whole-chicken':   { host: 'mars', report: '3646', section: 'Report Detail', match: { field: 'item', value: 'Whole' }, field: 'wtd_avg_price', dateField: 'report_date', note: 'AMS 3646 / Whole' },
+  'butter':          { host: 'lmr', report: '2993', section: 'Butter Prices and Sales', field: 'Butter_Price', dateField: 'week_ending_date', winField: 'week_ending_date', note: 'NDPSR 2993 butter' },
+  'cheddar-cheese':  { host: 'lmr', report: '2993', section: '40 Pound Block Cheddar Cheese Prices and Sales', field: 'cheese_40_Price', dateField: 'week_ending_date', winField: 'week_ending_date', note: 'NDPSR 2993 block cheddar' },
+  'romaine-lettuce': { host: 'mars', report: 'hc_fv020', section: 'Report Details', match: { field: 'commodity', value: 'Lettuce, Romaine', exact: true }, field: 'low_price', dateField: 'report_begin_date', note: 'LA terminal / Romaine' },
+  'tomato':          { host: 'mars', report: 'hc_fv020', section: 'Report Details', match: { field: 'commodity', value: 'Tomatoes', exact: true }, field: 'low_price', dateField: 'report_begin_date', note: 'LA terminal / Tomatoes' },
+  'onion':           { host: 'mars', report: 'hc_fv020', section: 'Report Details', match: { field: 'commodity', value: 'Onions, Dry', exact: true }, field: 'low_price', dateField: 'report_begin_date', note: 'LA terminal / Onions, Dry' },
+  'russet-potato':   { host: 'mars', report: 'hc_fv020', section: 'Report Details', match: { field: 'commodity', value: 'Potatoes', exact: true }, field: 'low_price', dateField: 'report_begin_date', note: 'LA terminal / Potatoes' }
 };
 function amsAuth() { const k = process.env.AMS_KEY; return k ? 'Basic ' + Buffer.from(k + ':').toString('base64') : null; }
-// MARS report DETAILS, stitched across ~150-day windows back `years` years (the API
-// caps each call ~180d). Returns the merged rows. A failed window is skipped.
-async function fetchReportWindowed(report, years, auth) {
+// Stitch a report's section across ~150-day windows back `years` (the APIs cap each
+// call ~180d). Host-aware: LMR Datamart is keyless, MARS is keyed. A failed window
+// is skipped (one gap can't drop the series).
+async function fetchReportWindowed(spec, years) {
+  const base = spec.host === 'lmr' ? LMR_BASE : MARS_BASE;
+  const auth = spec.host === 'lmr' ? null : amsAuth();
+  if (spec.host !== 'lmr' && !auth) return [];
+  const winField = spec.winField || 'report_begin_date';
+  const sect = spec.section ? `/${encodeURIComponent(spec.section)}` : '';
   const fmt = (d) => `${('0' + (d.getMonth() + 1)).slice(-2)}/${('0' + d.getDate()).slice(-2)}/${d.getFullYear()}`;
   const out = []; const now = Date.now(); const step = 150 * 864e5;
   for (let end = now; end > now - years * 365 * 864e5; end -= step) {
     const e = new Date(end), s = new Date(end - step);
-    const q = `?q=${encodeURIComponent('report_begin_date=' + fmt(s) + ':' + fmt(e))}`;
+    const q = `?q=${encodeURIComponent(winField + '=' + fmt(s) + ':' + fmt(e))}`;
     try {
-      const j = await getJson(`https://marsapi.ams.usda.gov/services/v1.2/reports/${encodeURIComponent(report)}/${encodeURIComponent('Report Details')}${q}`, { headers: { Authorization: auth } });
+      const j = await getJson(`${base}${encodeURIComponent(spec.report)}${sect}${q}`, auth ? { headers: { Authorization: auth } } : {});
       (j && j.results || []).forEach((r) => out.push(r));
     } catch (e2) { /* skip this window */ }
   }
   return out;
+}
+// rows → [{date, value}] for one anchor: filter to the cut/commodity, read the price
+// column + the report's date column. Scale-free (calibration uses % changes).
+function anchorSeries(rows, spec) {
+  const m = spec.match;
+  return (rows || []).filter((r) => {
+    if (!m) return true;
+    const cv = String(r[m.field] || '');
+    return m.exact ? cv === m.value : cv.toUpperCase().indexOf(String(m.value).toUpperCase()) >= 0;
+  }).map((r) => ({ date: r[spec.dateField], value: r[spec.field] }))
+    .filter((p) => p.date && p.value != null && p.value !== '' && isFinite(Number(String(p.value).replace(/[$,]/g, ''))));
 }
 
 // ---- live fetchers (run in the Action; each → [{date:'YYYY-MM-DD'|'YYYY-MM', value}]) ----
@@ -185,42 +206,57 @@ function nassDate(r) {
 }
 
 // ---- the run -------------------------------------------------------
-async function calibrate(getProxy, getIndicator) {
+// stationary deseasonalized changes of an aligned [{x,y,mo|ym}] series, robust to
+// pctChange dropping a non-positive base (inner-join the x/y changes on their index).
+function alignedChanges(al) {
+  const xCh = C.pctChange(al.map((p) => p.x), 1), yCh = C.pctChange(al.map((p) => p.y), 1);
+  const ym = {}; yCh.forEach((o) => { ym[o.idx] = o.v; });
+  const xs = [], ys = [], mos = [];
+  xCh.forEach((o) => { if (o.idx in ym) { xs.push(o.v); ys.push(ym[o.idx]); const r = al[o.idx]; mos.push(r.mo != null ? r.mo : parseInt(String(r.ym).slice(5, 7), 10) - 1); } });
+  return { xc: C.deseasonalizeByMonth(xs, mos), yc: C.deseasonalizeByMonth(ys, mos), n: xs.length };
+}
+
+async function calibrate(getProxy, getIndicator, getAnchor) {
   const edges = [];
-  const proxyCache = {};
+  const proxyCache = {}, anchorCache = {};
   for (const [item, panel] of Object.entries(rules.items || {})) {
-    const proxyId = PROXY[item]; if (!proxyId) continue;
-    let proxy;
-    try { proxy = proxyCache[proxyId] = proxyCache[proxyId] || monthlyFromDated(await getProxy(proxyId)); }
-    catch (e) { console.log(`  proxy ${item} (${proxyId}) failed: ${e.message}`); continue; }
+    // Prefer the WEEKLY anchor (the price we publish); fall back to monthly PPI.
+    let resolution = 'monthly', target = null, targetLabel = null;
+    const aspec = ANCHOR[item];
+    if (getAnchor && aspec) {
+      try {
+        const arows = anchorCache[item] = anchorCache[item] || await getAnchor(aspec);
+        const wk = weeklyFromDated(anchorSeries(arows, aspec));
+        if (wk.length >= 60) { resolution = 'weekly'; target = wk; targetLabel = `${aspec.host}:${aspec.report}`; }
+      } catch (e) { /* fall back to PPI */ }
+    }
+    if (!target) {
+      const proxyId = PROXY[item]; if (!proxyId) continue;
+      try { target = proxyCache[proxyId] = proxyCache[proxyId] || monthlyFromDated(await getProxy(proxyId)); targetLabel = proxyId; }
+      catch (e) { console.log(`  target ${item} failed: ${e.message}`); continue; }
+    }
+    const bucket = resolution === 'weekly' ? weeklyFromDated : monthlyFromDated;
+    const align = resolution === 'weekly' ? alignWeekly : alignMonthly;
+    const maxLag = resolution === 'weekly' ? 16 : 12;     // 16 weeks vs 12 months
+    const minN = resolution === 'weekly' ? 60 : 36, minAlign = resolution === 'weekly' ? 40 : 24;
     for (const ind of (panel.indicators || [])) {
       const spec = specs[ind.id] || resolveMoveSpec(ind.id);
       const type = spec ? spec.type : '(emit)';
-      const rec = { item, indicator: ind.id, type, ruleSign: ind.sign, ruleWeight: ind.weight, ruleLeadWk: ind.lead ? `${ind.lead.min}-${ind.lead.max}` : null, proxy: proxyId };
-      // A MONTHLY PPI proxy can only fairly judge LONG-lead signals. A signal whose
-      // hand-set lead is < ~8 weeks (diesel, placements) is resolution-limited here:
-      // a flipped sign / a multi-month "lead" on it is a monthly-aggregation artifact,
-      // not evidence the signal is wrong. Those calibrate from the accruing weekly
-      // snapshot log over time, not from this run.
-      rec.fairness = (ind.lead && ind.lead.max >= 8) ? 'judgeable' : 'short-lead (monthly test blind)';
-      if (!spec || SKIP_TYPES.has(type) || !PROXY[item]) { rec.status = 'skipped'; rec.reason = !spec ? 'no spec' : `type ${type}`; edges.push(rec); continue; }
+      const rec = { item, indicator: ind.id, type, resolution, target: targetLabel, ruleSign: ind.sign, ruleWeight: ind.weight, ruleLeadWk: ind.lead ? `${ind.lead.min}-${ind.lead.max}` : null };
+      // WEEKLY resolution can fairly judge short-lead signals; monthly cannot.
+      rec.fairness = resolution === 'weekly' ? 'judgeable' : ((ind.lead && ind.lead.max >= 8) ? 'judgeable' : 'short-lead (monthly test blind)');
+      if (!spec || SKIP_TYPES.has(type)) { rec.status = 'skipped'; rec.reason = !spec ? 'no spec' : `type ${type}`; edges.push(rec); continue; }
       let hist;
       try { hist = await getIndicator(spec); } catch (e) { rec.status = 'fetch-failed'; rec.reason = e.message; edges.push(rec); continue; }
       if (hist.skip) { rec.status = 'skipped'; rec.reason = hist.skip; edges.push(rec); continue; }
-      const indM = monthlyFromDated(hist.pairs);
-      const al = alignMonthly(indM, proxy);
-      if (al.length < 24) { rec.status = 'insufficient'; rec.n = al.length; edges.push(rec); continue; }
-      // stationary monthly changes, deseasonalized
-      const xRaw = C.pctChange(al.map((p) => p.x), 1), yRaw = C.pctChange(al.map((p) => p.y), 1);
-      const idxMonths = monthNums(al).slice(1);
-      const xc = C.deseasonalizeByMonth(xRaw.map((o) => o.v), idxMonths);
-      const yc = C.deseasonalizeByMonth(yRaw.map((o) => o.v), idxMonths);
-      const ed = C.calibrateEdge(xc, yc, { maxLag: 12, minN: 36 });
-      Object.assign(rec, ed, { status: ed.ok ? 'tested' : 'untestable', circular: CIRCULAR_SOURCES.has(ind.source) });
+      const al = align(bucket(hist.pairs), target);
+      if (al.length < minAlign) { rec.status = 'insufficient'; rec.n = al.length; edges.push(rec); continue; }
+      const ch = alignedChanges(al);
+      const ed = C.calibrateEdge(ch.xc, ch.yc, { maxLag, minN });
+      Object.assign(rec, ed, { status: ed.ok ? 'tested' : 'untestable', circular: CIRCULAR_SOURCES.has(ind.source), lagUnit: resolution === 'weekly' ? 'wk' : 'mo' });
       edges.push(rec);
     }
   }
-  // FDR across all tested edges
   const tested = edges.filter((e) => e.status === 'tested' && typeof e.p === 'number');
   C.benjaminiHochberg(tested, 0.10);
   tested.forEach((e) => { e.suggestWeight = e.circular ? 0 : C.suggestWeight(e, 3); });
@@ -235,45 +271,46 @@ function resolveMoveSpec(id) {
 function report(edges) {
   console.log('\nCALIBRATION — empirical lead/sign/strength vs the hand-set rule (BLS PPI proxy):\n');
   const tested = edges.filter((e) => e.status === 'tested');
-  console.log('  edge'.padEnd(40) + 'ruleLead  empLag  ruleSign empSign  N    p      OOS   BH  →weight  flag');
+  console.log('  edge'.padEnd(40) + 'res ruleLd  empLag ruleSgn empSgn  N    p      OOS   BH  →wt    flag   (res W=weekly anchor, m=monthly PPI)');
   for (const e of edges) {
     const tag = `${e.item}/${e.indicator}`.padEnd(38);
     if (e.status !== 'tested') { console.log(`  ${tag}  ${e.status}${e.reason ? ' (' + e.reason + ')' : ''}`); continue; }
     const signFlag = (e.ruleSign != null && e.sign != null && e.ruleSign !== e.sign) ? 'SIGN-FLIP!' : '';
-    const empWk = `~${Math.round(e.lag * 4.345)}wk`;
-    console.log('  ' + tag + `  ${String(e.ruleLeadWk || '?').padEnd(8)}  ${empWk.padEnd(6)}  ${String(e.ruleSign).padEnd(8)} ${String(e.sign).padEnd(7)} ${String(e.n).padEnd(4)} ${e.p.toFixed(3)}  ${e.oosPass ? 'hold' : 'fail'}  ${e.bhPass ? '✓' : '·'}  ${String(e.suggestWeight).padEnd(7)} ${signFlag}`);
+    const empWk = e.lagUnit === 'wk' ? `~${e.lag}wk` : `~${Math.round(e.lag * 4.345)}wk`;
+    const res = e.resolution === 'weekly' ? 'W' : 'm';
+    console.log('  ' + tag + ` ${res} ${String(e.ruleLeadWk || '?').padEnd(7)} ${empWk.padEnd(6)} ${String(e.ruleSign).padEnd(7)} ${String(e.sign).padEnd(7)} ${String(e.n).padEnd(4)} ${e.p.toFixed(3)}  ${e.oosPass ? 'hold' : 'fail'}  ${e.bhPass ? '✓' : '·'}  ${String(e.suggestWeight).padEnd(6)} ${signFlag}`);
   }
+  const wk = tested.filter((e) => e.resolution === 'weekly'), mo = tested.filter((e) => e.resolution === 'monthly');
   const judge = tested.filter((e) => e.fairness === 'judgeable');
   const pass = judge.filter((e) => e.bhPass && e.oosPass && e.enoughN);
   const holdRightSign = judge.filter((e) => e.oosPass && e.ruleSign === e.sign);
-  console.log(`\n  ${tested.length} edge(s) tested (${judge.length} long-lead/judgeable, ${tested.length - judge.length} short-lead/resolution-limited).`);
-  console.log(`  Among judgeable: ${pass.length} survived BH+OOS+N · ${holdRightSign.length} hold OOS with the rule's sign (weak but not noise) · ${judge.filter((e) => e.ruleSign !== e.sign).length} sign disagreement(s).`);
-  console.log('  CAUTION: the monthly BLS-PPI proxy is national & smoothed, not our weekly spot anchor — a weak/flipped edge can be a proxy or resolution mismatch, NOT a dead signal. Do not flip rule signs on short-lead edges. Review data/pressure-calibration.json before any hand edit (+ _version bump).');
+  console.log(`\n  ${tested.length} edge(s) tested — ${wk.length} against the WEEKLY anchor (the price we publish), ${mo.length} on the monthly PPI fallback.`);
+  console.log(`  ${pass.length} survived BH+OOS+N · ${holdRightSign.length} hold OOS with the rule's sign · ${judge.filter((e) => e.ruleSign !== e.sign).length} sign disagreement(s).`);
+  console.log('  NEXT: NNLS-fit the surviving edges per item (the weights), benchmark vs equal-weight OOS, apply by hand with a _version bump. Weekly edges that still flip sign are now real evidence (the resolution excuse is gone); monthly-fallback edges keep the proxy caveat.');
 }
 
 // ---- anchor discovery: confirm each weekly target report's fields ----------
 async function anchorDiscover() {
   const auth = amsAuth();
   if (!auth) { console.log('anchor-discover needs AMS_KEY.'); process.exit(1); }
-  console.log('ANCHOR discovery — confirm each weekly target report\'s value + date field (writes nothing).\n');
-  const seen = new Set();
+  console.log('ANCHOR discovery — does each weekly target resolve to a price series? (writes nothing)\n');
   for (const [item, a] of Object.entries(ANCHOR)) {
-    if (seen.has(a.report)) continue; seen.add(a.report);            // shared reports once
     try {
-      const rows = await fetchReportWindowed(a.report, 0.5, auth);   // ~6 months
-      const r0 = rows[0];
-      console.log(`  [${a.report}] (${item}…) rows=${rows.length} — ${a.note || ''}`);
-      if (r0) {
+      const rows = await fetchReportWindowed(a, 0.5);                 // ~6 months
+      const ser = anchorSeries(rows, a);                             // apply the configured extraction
+      const ok = ser.length >= 4;
+      console.log(`  ${ok ? '✓' : '✗'} ${item.padEnd(16)} [${a.host} ${a.report}/${a.section}] rows=${rows.length} → matched ${ser.length} priced weeks — ${a.note}`);
+      if (!ok && rows[0]) {
+        const r0 = rows[0];
         const nums = Object.keys(r0).filter((k) => r0[k] !== '' && r0[k] != null && isFinite(Number(String(r0[k]).replace(/[$,]/g, ''))) && !/date|year|_id|code|format/i.test(k));
-        const dates = Object.keys(r0).filter((k) => /date/i.test(k));
-        console.log(`      value-candidates: ${nums.join(', ') || '(none — check section/slug)'}`);
-        console.log(`      date-candidates: ${dates.join(', ')}`);
-        if (a.commodity) { const cv = []; rows.forEach((r) => { const c = r.commodity || r.item; if (c && cv.indexOf(c) < 0 && cv.length < 12) cv.push(c); }); if (cv.length) console.log(`      commodities: ${cv.join(' | ')}`); }
-        console.log(`      sample: ${JSON.stringify(r0).slice(0, 280)}`);
-      } else console.log('      (no rows — confirm the slug)');
-    } catch (e) { console.log(`  [${a.report}] (${item}…) failed: ${e.message}`); }
+        console.log(`      → field '${a.field}' or match '${a.match ? a.match.field + '=' + a.match.value : '(none)'}' didn't resolve. value-candidates: ${nums.join(', ') || '(none)'}`);
+        console.log(`      keys: ${Object.keys(r0).join(', ')}`);
+      } else if (ok) {
+        console.log(`      latest: ${ser[ser.length - 1].date} = ${ser[ser.length - 1].value}`);
+      } else console.log('      (no rows — confirm slug/section/host)');
+    } catch (e) { console.log(`  ✗ ${item.padEnd(16)} failed: ${e.message}`); }
   }
-  console.log('\nPaste this back — I pin the value/date/commodity fields, then the weekly target replaces the monthly PPI proxy.');
+  console.log('\nGreen rows = the weekly target resolves; I wire those into calibrate. Red rows = paste the keys/candidates and I pin them.');
 }
 
 // ---- selftest: synthetic dated series, no network ------------------
@@ -297,7 +334,8 @@ function selftest() {
   const realRules = JSON.parse(JSON.stringify(rules.items));
   rules.items = { ribeye: { indicators: [{ id: '_lead', source: 'x', sign: 1, weight: 1, lead: { min: 8, max: 12 } }, { id: '_noise', source: 'x', sign: 1, weight: 1, lead: { min: 0, max: 4 } }] } };
   specs._lead = { type: 'fred', series: 'LEAD' }; specs._noise = { type: 'fred', series: 'NOISE' };
-  return calibrate(getProxy, getInd).then((edges) => {
+  const getAnchor = async () => [];   // no anchor in selftest → exercises the monthly fallback path
+  return calibrate(getProxy, getInd, getAnchor).then((edges) => {
     rules.items = realRules;
     const lead = edges.find((e) => e.indicator === '_lead'), noise = edges.find((e) => e.indicator === '_noise');
     let fail = 0; const ok = (c, m) => { console.log(`  ${c ? '✓' : '✗ FAIL'} ${m}`); if (!c) fail++; };
@@ -311,6 +349,11 @@ function selftest() {
     ok(wkly.length === 2 && Math.abs(wkly[0].v - 11) < 1e-9, `weeklyFromDated buckets+averages by ISO week (got ${wkly.length} weeks)`);
     const al = alignWeekly([{ wk: 1, mo: 0, v: 5 }, { wk: 2, mo: 0, v: 6 }], [{ wk: 2, v: 7 }, { wk: 3, v: 8 }]);
     ok(al.length === 1 && al[0].x === 6 && al[0].y === 7, 'alignWeekly inner-joins two weekly series');
+    // anchorSeries: filter to the cut + read the configured price/date columns
+    const aser = anchorSeries(
+      [{ commodity: 'Ribeye', Weighted_Average: '8.50', report_date: '2026-06-01' }, { commodity: 'Chuck', Weighted_Average: '4.00', report_date: '2026-06-01' }, { commodity: 'Ribeye', Weighted_Average: '', report_date: '2026-06-08' }],
+      { match: { field: 'commodity', value: 'Ribeye' }, field: 'Weighted_Average', dateField: 'report_date' });
+    ok(aser.length === 1 && aser[0].value === '8.50' && aser[0].date === '2026-06-01', `anchorSeries filters cut + reads price/date (got ${aser.length} priced rows)`);
     console.log(fail ? `\ncalibrate-pressure: ${fail} FAIL` : '\ncalibrate-pressure: OK — pipeline recovers truth, rejects noise.');
     process.exit(fail ? 1 : 0);
   });
@@ -319,9 +362,10 @@ function selftest() {
 if (arg('--selftest')) { selftest(); }
 else if (arg('--anchor-discover')) { anchorDiscover(); }
 else {
-  calibrate(fetchProxy, fetchIndicatorHistory).then((edges) => {
+  const getAnchor = (spec) => fetchReportWindowed(spec, 8);   // ~8 years of weekly anchor history
+  calibrate(fetchProxy, fetchIndicatorHistory, getAnchor).then((edges) => {
     report(edges);
-    const out = { _doc: 'GENERATED by scripts/calibrate-pressure.mjs — empirical lead/sign/strength per indicator→ingredient edge vs the hand-set rule, backtested on long BLS-PPI price history. Informs human weight edits; NEVER auto-applied. No price. LIMITATIONS: (1) the proxy is the national, monthly, smoothed BLS PPI — NOT our weekly spot anchor (LMR cutout / AMS terminal), so a weak edge may be a proxy mismatch; produce items share the coarse fresh-veg index. (2) Monthly resolution can only fairly judge LONG-lead (≥~2mo) signals — short-lead weekly signals (diesel, placements, movement) are marked fairness:short-lead and must be calibrated from the accruing weekly snapshot log (data/pressure-history.json), not this run. A flipped sign or multi-month lead on a short-lead edge is an aggregation ARTIFACT. Treat survivors as hypotheses, not mandates.', generatedAt: new Date().toISOString().slice(0, 10), edges };
+    const out = { _doc: 'GENERATED by scripts/calibrate-pressure.mjs — empirical lead/sign/strength per indicator→ingredient edge vs the hand-set rule. TARGET: each ingredient is backtested against the WEEKLY wholesale anchor it actually publishes (LMR cutout / AMS terminal / NDPSR dairy, via the same source specs as data/cost-index-sources.json) at WEEKLY resolution; items whose weekly anchor does not resolve fall back to the monthly BLS-PPI proxy (resolution:monthly). Informs human weight edits; NEVER auto-applied. No price. CAVEATS: weekly-anchor edges that still flip sign are real evidence (no resolution excuse); monthly-fallback edges keep the proxy mismatch caveat. Surviving edges are hypotheses to NNLS-fit + benchmark vs equal-weight OOS, then apply by hand with a _version bump.', generatedAt: new Date().toISOString().slice(0, 10), edges };
     writeFileSync(path.join(repoRoot, 'data/pressure-calibration.json'), JSON.stringify(out, null, 2) + '\n');
     console.log('\nWrote data/pressure-calibration.json');
   }).catch((e) => { console.error('calibrate failed:', e.message); process.exit(1); });
