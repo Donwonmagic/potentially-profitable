@@ -3702,6 +3702,12 @@
         "elevatedWeeks": 0,
         "nHistory": 12
       },
+      "pressure": {
+        "direction": "easing",
+        "confidence": "high",
+        "freshness_weeks": 1,
+        "under_review": false
+      },
       "spark": [
         182,
         186,
@@ -3889,6 +3895,12 @@
         "retrace": 0,
         "elevatedWeeks": 0,
         "nHistory": 12
+      },
+      "pressure": {
+        "direction": "building",
+        "confidence": "high",
+        "freshness_weeks": 1,
+        "under_review": false
       },
       "spark": [
         148,

@@ -143,6 +143,9 @@ const INDICATOR_NAME = {
   'cold-storage-poultry':      { en: 'Cold-storage stocks', es: 'Inventario en frío' },
   'cold-storage-beef':         { en: 'Cold-storage stocks', es: 'Inventario en frío' },
   'cold-storage-pork':         { en: 'Cold-storage stocks', es: 'Inventario en frío' },
+  'cold-storage-butter':       { en: 'Cold-storage stocks', es: 'Inventario en frío' },
+  'cold-storage-cheese':       { en: 'Cold-storage stocks', es: 'Inventario en frío' },
+  'milk-production':           { en: 'Milk production', es: 'Producción de leche' },
   'ams-shipments':             { en: 'Produce shipments', es: 'Envíos de producto' },
   'freeze-alert':              { en: 'Freeze warnings', es: 'Alertas de helada' },
   'drought-ca-az':             { en: 'Drought (CA/AZ)', es: 'Sequía (CA/AZ)' },
@@ -744,11 +747,14 @@ main{padding-top:64px}
 .ci-outlook{margin:14px 0 8px;padding:16px 20px;background:#fff;border:1px solid var(--line);border-left:4px solid #6b4fa1;border-radius:12px}
 .ci-outlook__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#6b4fa1;margin:0 0 6px}
 .ci-outlook__line{font-size:15.5px;line-height:1.5;color:var(--ink);margin:0}
+.ci-outlook__record{margin:6px 0 0;font-size:12.5px;color:var(--ink-soft);font-variant-numeric:tabular-nums}
 .ci-outlook__how{margin-top:8px;font-size:12.5px}
 .ci-outlook__how summary{cursor:pointer;color:var(--ink-soft);font-weight:600}
 .ci-outlook__how div{margin-top:6px;color:var(--ink-soft);line-height:1.55}
 .ci-outlook__panel{margin:0 0 8px;padding-left:18px}
 .ci-outlook__panel li{margin:0 0 4px}
+.ci-outlook__lab{margin:10px 0 0;font-size:13.5px}
+.ci-outlook__lab a{color:#6b4fa1;text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=${SHELL_HASH.core}" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=${SHELL_HASH.article}" onload="this.onload=null;this.rel='stylesheet'">
@@ -930,8 +936,10 @@ function pressureBlock(slug, locale) {
   return `
   <aside class="ci-outlook" data-layer="inferred" data-as-of="${rec.as_of || ''}" data-rule-version="${rec.rule_version || ''}" aria-label="${head}">
     <p class="ci-outlook__head">${head}<span class="ci-read__badge">${chip}</span></p>
-    <p class="ci-outlook__line" data-dir="${dir}">${line}</p>
+    <p class="ci-outlook__line" data-dir="${dir}">${line}</p>${(rec.track_record && rec.track_record.n) ? `
+    <p class="ci-outlook__record">${es ? `Acertó ${rec.track_record.hits} de las últimas ${rec.track_record.n} lecturas medidas.` : `Right on ${rec.track_record.hits} of the last ${rec.track_record.n} measured reads.`}</p>` : ''}
     <details class="ci-outlook__how"><summary>${howHead}</summary><div><ul class="ci-outlook__panel">${rows}</ul><p>${note}</p></div></details>
+    <p class="ci-outlook__lab"><a href="${es ? '/es' : ''}/cost-index/lab/?it=${slug}">${es ? 'Juega con las señales' : 'Play with the signals'} <span aria-hidden="true">→</span></a></p>
   </aside>`;
 }
 
@@ -1184,6 +1192,7 @@ function emitHubPage(locale, slugs) {
   <div class="ci-body">
     <div class="ci-cta-row">
       <a class="btn btn-primary" href="${base}/tools/cost-pulse/">${es ? 'Abrir Cost Pulse' : 'Open Cost Pulse'}</a>
+      <a class="btn btn-ghost" href="${base}/cost-index/lab/">${es ? 'Laboratorio de Presión' : 'Pressure Lab'}</a>
       <a class="btn btn-ghost" href="${base}/glossary/cost-index/">${es ? '¿Qué es un índice de costos?' : 'What is a cost index?'}</a>
     </div>
     ${movingNowSection(shipSlugs, locale)}
@@ -1197,6 +1206,9 @@ function emitHubPage(locale, slugs) {
 // ---- Pressure Lab — the playable engine (a new tool page) -----------
 const LAB_CSS = `<style>
 #pressureLab[data-layer]{margin:18px 0}
+.plab-pick{display:flex;align-items:center;gap:8px;margin:0 0 14px;flex-wrap:wrap}
+.plab-pick__label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft)}
+.plab-pick__select{font:inherit;font-size:14px;padding:6px 10px;border:1px solid var(--line);border-radius:8px;background:var(--white);color:var(--ink)}
 .plab-verdict{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;padding:16px 20px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid #6b4fa1;border-radius:12px}
 .plab-arrow{font-size:22px;line-height:1}
 .plab-arrow[data-dir="building"]{color:#A23B2D}.plab-arrow[data-dir="easing"]{color:#2A50C8}.plab-arrow[data-dir="steady"]{color:#8a6d1f}
@@ -1224,8 +1236,8 @@ const LAB_CSS = `<style>
 .plab-ctrl__label{display:flex;justify-content:space-between;font-size:13.5px;margin:0 0 2px}
 .plab-ctrl__val{font-variant-numeric:tabular-nums;color:#6b4fa1;font-weight:600}
 .plab-ctrl input[type=range]{width:100%;accent-color:#6b4fa1}
-.plab-reset{font:inherit;font-size:13px;cursor:pointer;border:1px solid var(--line);background:var(--cream);border-radius:999px;padding:6px 14px;margin-top:4px}
-.plab-reset:hover{border-color:#6b4fa1;color:#6b4fa1}
+.plab-reset,.plab-share{font:inherit;font-size:13px;cursor:pointer;border:1px solid var(--line);background:var(--cream);border-radius:999px;padding:6px 14px;margin:4px 6px 0 0}
+.plab-reset:hover,.plab-share:hover{border-color:#6b4fa1;color:#6b4fa1}
 .plab-foot{font-size:12.5px;color:var(--ink-soft);margin:8px 0 0}
 @media (max-width:560px){.plab-bar,.plab-sum{grid-template-columns:90px 1fr 56px}}
 </style>`;

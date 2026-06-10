@@ -40,6 +40,15 @@
       "_verify": "Confirm monthly Cold Storage pork stocks short_desc." },
     "crop-condition": { "type": "nass", "verified": false, "tail": 4,
       "query": { "source_desc": "SURVEY", "statisticcat_desc": "CONDITION", "unit_desc": "PCT GOOD", "agg_level_desc": "NATIONAL" },
-      "_verify": "Confirm weekly Crop Progress condition (% good/excellent) short_desc per crop (potato/onion)." }
+      "_verify": "Confirm weekly Crop Progress condition (% good/excellent) short_desc per crop (potato/onion)." },
+    "milk-production": { "type": "nass", "verified": false, "tail": 6,
+      "query": { "source_desc": "SURVEY", "sector_desc": "ANIMALS & PRODUCTS", "commodity_desc": "MILK", "statisticcat_desc": "PRODUCTION", "agg_level_desc": "NATIONAL" },
+      "_verify": "Confirm monthly Milk Production total (lb) short_desc in the NASS Quick Stats param browser." },
+    "cold-storage-butter": { "type": "nass", "verified": false, "tail": 4,
+      "query": { "source_desc": "SURVEY", "commodity_desc": "BUTTER", "statisticcat_desc": "STOCKS", "agg_level_desc": "NATIONAL" },
+      "_verify": "Confirm monthly Cold Storage butter stocks short_desc." },
+    "cold-storage-cheese": { "type": "nass", "verified": false, "tail": 4,
+      "query": { "source_desc": "SURVEY", "commodity_desc": "CHEESE", "statisticcat_desc": "STOCKS", "agg_level_desc": "NATIONAL" },
+      "_verify": "Confirm monthly Cold Storage natural-cheese stocks short_desc." }
   }
 }

@@ -39,6 +39,9 @@
     'cold-storage-poultry': L('Cold-storage stocks', 'Inventario en frío'),
     'cold-storage-beef': L('Cold-storage stocks', 'Inventario en frío'),
     'cold-storage-pork': L('Cold-storage stocks', 'Inventario en frío'),
+    'cold-storage-butter': L('Cold-storage stocks', 'Inventario en frío'),
+    'cold-storage-cheese': L('Cold-storage stocks', 'Inventario en frío'),
+    'milk-production': L('Milk production', 'Producción de leche'),
     'ams-shipments': L('Produce shipments', 'Envíos de producto'),
     'freeze-alert': L('Freeze warnings', 'Alertas de helada'),
     'drought-ca-az': L('Drought (CA/AZ)', 'Sequía (CA/AZ)'),
@@ -50,12 +53,22 @@
   function indName(id) { return INDICATOR_NAME[id] || id; }
 
   // ---- State: live base (immutable) + user scenario (working copy) ----------
-  var item = (location.hash.match(/[#&]it=([a-z0-9-]+)/) || [])[1] || 'chicken-breast';
+  var qs = (location.search || '') + (location.hash || '');
+  var item = (qs.match(/[?#&]it=([a-z0-9-]+)/) || [])[1] || 'chicken-breast';
   if (!RULES.items[item]) item = Object.keys(RULES.items)[0];
   var panel = Object.assign({}, RULES.defaults, RULES.items[item], { item: item });
   var indicators = (panel.indicators || []);
   var base = Object.assign({}, (LIVE.observations && LIVE.observations[item]) || {});
   var scenario = Object.assign({}, base);
+  // Rehydrate a shared scenario (#v=1&it=…&o=… or ?o=…) — applies only the
+  // indicators the sharer moved off live; everything else stays at the live read.
+  try {
+    var SC0 = window.MuntinPressureScenario;
+    if (SC0) {
+      var dec = SC0.decode((location.search || '') + (location.hash || ''));
+      if (dec && dec.item === item && dec.obs) { for (var did in dec.obs) if (did in base) scenario[did] = dec.obs[did]; }
+    }
+  } catch (e0) { /* fail-silent */ }
   var anchorDate = (LIVE.anchor && LIVE.anchor[item]) || null;
 
   function assessFor(obsMap) {
@@ -68,6 +81,26 @@
   // ---- Build the DOM once; mutate on recompute ------------------------------
   root.setAttribute('data-layer', 'inferred');
   root.textContent = '';
+
+  // Ingredient picker — full navigation so each item gets a clean engine run
+  // (no risky in-place re-mount); only items with a live read are offered.
+  var labBase = es ? '/es' : '';
+  function titleCase(s) { return String(s).replace(/-/g, ' ').replace(/\b\w/g, function (c) { return c.toUpperCase(); }); }
+  var pickWrap = el('div', 'plab-pick');
+  var pickLabel = el('label', 'plab-pick__label', L('Ingredient', 'Ingrediente'));
+  pickLabel.setAttribute('for', 'plabPick');
+  var picker = document.createElement('select');
+  picker.id = 'plabPick'; picker.className = 'plab-pick__select';
+  Object.keys(RULES.items).forEach(function (k) {
+    if (!(LIVE.observations && LIVE.observations[k])) return;
+    var o = document.createElement('option');
+    o.value = k; o.textContent = titleCase(k);
+    if (k === item) o.selected = true;
+    picker.appendChild(o);
+  });
+  picker.addEventListener('change', function () { location.href = labBase + '/cost-index/lab/?it=' + picker.value; });
+  pickWrap.appendChild(pickLabel); pickWrap.appendChild(picker);
+  root.appendChild(pickWrap);
 
   var verdict = el('div', 'plab-verdict');
   var vArrow = el('span', 'plab-arrow');
@@ -118,6 +151,23 @@
     recompute();
   });
   controls.appendChild(resetBtn);
+  // Share — encode the current scenario into a URL (no fetch/storage; the part
+  // after # never reaches a server). Only the moved indicators are encoded.
+  var shareBtn = el('button', 'plab-share', L('Copy scenario link', 'Copiar enlace del escenario'));
+  shareBtn.type = 'button';
+  shareBtn.addEventListener('click', function () {
+    try {
+      var SC = window.MuntinPressureScenario;
+      if (!SC) return;
+      var frag = SC.encode(item, scenario, base);                 // '#v=1&it=…&o=…'
+      var path = labBase + '/cost-index/lab/' + frag;
+      try { history.replaceState(null, '', path); } catch (e1) {}
+      var done = function () { shareBtn.textContent = L('Copied ✓', 'Copiado ✓'); setTimeout(function () { shareBtn.textContent = L('Copy scenario link', 'Copiar enlace del escenario'); }, 1500); };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(location.origin + path).then(done, done);
+      else done();
+    } catch (e2) { /* fail-silent */ }
+  });
+  controls.appendChild(shareBtn);
   root.appendChild(controls);
 
   var foot = el('p', 'plab-foot', L(

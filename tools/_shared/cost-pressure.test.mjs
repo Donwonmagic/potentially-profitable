@@ -78,3 +78,24 @@ test('no observations → unknown (never a fabricated lean)', () => {
   assert.equal(r.direction, 'unknown');
   assert.equal(r.contributors.length, 0);
 });
+
+test('breadth floor: a lone surviving signal cannot claim high confidence', () => {
+  // Only corn reports (placements + coldstorage absent — e.g. a fetch gap, or an
+  // off-season indicator). Score 3 ≥ cutoff → building, agreement trivially 1.0.
+  // But with a sample of ONE, confidence must floor to 'low', not 'high'.
+  const r = assess(panel, { corn: { changePct: 0.06 } }, opts);
+  assert.equal(r.direction, 'building');
+  assert.equal(r.agreement, 1);
+  assert.equal(r.contributors.length, 1);
+  assert.equal(r.confidence, 'low', 'one indicator is a hint, not a confident read');
+});
+
+test('breadth floor: two agreeing signals cap at moderate (high needs three)', () => {
+  // corn up (+3) + coldstorage down→cost up (+1): agreement 1.0, but only 2 of the
+  // panel reported, so the ceiling is 'moderate' until a third aligns.
+  const r = assess(panel, { corn: { changePct: 0.06 }, coldstorage: { changePct: -0.06 } }, opts);
+  assert.equal(r.direction, 'building');
+  assert.equal(r.agreement, 1);
+  assert.equal(r.contributors.length, 2);
+  assert.equal(r.confidence, 'moderate');
+});

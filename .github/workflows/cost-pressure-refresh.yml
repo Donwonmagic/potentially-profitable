@@ -1,0 +1,114 @@
+# Cost Pressure refresh — the weekly "where it's headed" pipeline
+#
+# Fetches the free public leading indicators (USDA NASS + EIA + keyless USDM/NWS),
+# scores them into INFERRED direction records (never a price), re-renders the
+# Outlook blocks, and commits the scoped result so the Cloudflare Workers build
+# deploys it. INFERRED-direction only — the honesty gate runs BEFORE any commit,
+# so bad data can never reach the site.
+#
+# Two ways to run:
+#   • workflow_dispatch, mode=probe  → Gate 2 verification. Tries EVERY spec live
+#     (ignoring `verified`), prints what each endpoint returns (row count, change,
+#     and for NASS the matched short_desc), writes nothing. Read the logs, then
+#     tell Claude which to flip verified:true / which queries to tighten.
+#   • workflow_dispatch, mode=live (or the weekly schedule) → fetch verified specs,
+#     score, render, gate, commit data/ + cost-index pages, push → Cloudflare deploys.
+#
+# Secrets required (Settings → Secrets and variables → Actions):
+#   EIA_KEY   — free, https://www.eia.gov/opendata/
+#   NASS_KEY  — free, https://quickstats.nass.usda.gov/api/
+# USDM + NWS are keyless. NO paid feed anywhere.
+
+name: Cost Pressure refresh
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'probe = verify specs (writes nothing) · live = fetch + render + commit'
+        type: choice
+        options: [probe, live]
+        default: probe
+  schedule:
+    # Mondays 11:00 UTC — weekly cadence. The measured anchor refreshes on its own
+    # slower clock; this overlay refreshes weekly and tracks freshness_weeks since
+    # the last measured print (auto-suppresses to "under review" past the decay floor).
+    - cron: '0 11 * * 1'
+
+# Scheduled runs have no inputs → default to 'live'. Dispatch honors the choice.
+env:
+  MODE: ${{ github.event.inputs.mode || 'live' }}
+
+permissions:
+  contents: write   # the live mode commits the refreshed data + pages back
+
+concurrency:
+  group: cost-pressure-${{ github.ref }}
+  cancel-in-progress: false   # never interrupt a run mid-commit
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Set up Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # --- Gate 2: probe (writes nothing) -------------------------------------
+      - name: Probe every spec (verification)
+        if: env.MODE == 'probe'
+        env:
+          EIA_KEY: ${{ secrets.EIA_KEY }}
+          NASS_KEY: ${{ secrets.NASS_KEY }}
+        run: node scripts/fetch-pressure-observations.mjs --probe
+
+      # --- Gates 3+4: live fetch → score → render → gate → commit -------------
+      - name: Live refresh
+        if: env.MODE == 'live'
+        env:
+          EIA_KEY: ${{ secrets.EIA_KEY }}
+          NASS_KEY: ${{ secrets.NASS_KEY }}
+        run: |
+          set -e
+          # Wiring guard: if the normalizer dispatch is broken, stop before fetching.
+          node scripts/fetch-pressure-observations.mjs --self-test
+          # Fetch the verified specs → data/pressure-observations.json (live).
+          node scripts/fetch-pressure-observations.mjs --live
+          # Score → records + browser seeds + track-record accrual.
+          node scripts/build-cost-pressure.mjs
+          # Re-join the pressure overlay into the dashboard seed.
+          node scripts/build-cost-index-seed.mjs
+          # Re-render the per-ingredient Outlook blocks + hub + lab.
+          node scripts/build-cost-index-pages.mjs
+          # Restore canonical nav (build emits skeleton include sentinels).
+          node scripts/sync-includes.mjs
+          # HONESTY GATE — must pass before anything is committed. Recompute-and-
+          # compare + no-price/verb scan + source shape/readiness.
+          node scripts/check-pressure-honesty.mjs
+          node scripts/check-pressure-sources.mjs
+
+      - name: Commit scoped refresh
+        if: env.MODE == 'live'
+        run: |
+          set -e
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # Stage ONLY the pressure data + the cost-index surfaces. Then discard any
+          # incidental sweep (e.g. nav re-stamps on unrelated pages) so the commit
+          # is always exactly the pressure refresh, never a surprise.
+          git add data/pressure-observations.json data/cost-pressure.json \
+                  data/pressure-rules.js data/pressure-live.js data/pressure-history.json \
+                  data/cost-index.js \
+                  cost-index es/cost-index
+          git checkout -- . 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "No change in the pressure surface this run — nothing to commit."
+            exit 0
+          fi
+          git commit -m "chore(cost-pressure): weekly refresh ($(date -u +%Y-%m-%d))"
+          git push

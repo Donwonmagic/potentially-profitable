@@ -17,7 +17,9 @@
     "romaine-lettuce": "2026-06-05",
     "tomato": "2026-06-05",
     "onion": "2026-06-05",
-    "russet-potato": "2026-06-05"
+    "russet-potato": "2026-06-05",
+    "butter": "2026-05-30",
+    "cheddar-cheese": "2026-05-30"
   },
   "observations": {
     "chicken-breast": {
@@ -77,6 +79,18 @@
       "ams-shipments": 0.05,
       "drought": 0,
       "diesel": 0.01
+    },
+    "butter": {
+      "milk-production": 0.03,
+      "cold-storage-butter": 0.04,
+      "feed-futures": -0.02,
+      "diesel": 0.01
+    },
+    "cheddar-cheese": {
+      "milk-production": -0.04,
+      "cold-storage-cheese": -0.03,
+      "feed-futures": 0.01,
+      "diesel": 0.05
     }
   }
 };

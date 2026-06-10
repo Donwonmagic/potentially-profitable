@@ -22,8 +22,9 @@ API keys; the rest keyless).
 | Deterministic scorer | `tools/_shared/cost-pressure.js` | ✅ live, tested |
 | Rule manifest (panels, signs, weights, lags, cites) | `data/pressure-rules.json` | ✅ |
 | Source normalizers (raw API → window %) | `tools/_shared/pressure-sources.js` | ✅ tested |
-| Per-indicator fetch specs | `data/pressure-source-specs.json` | ⏳ 5/14 verified |
-| Fetch orchestrator | `scripts/fetch-pressure-observations.mjs` | ✅ (`--self-test` passes) |
+| Per-indicator fetch specs | `data/pressure-source-specs.json` | ⏳ 5/17 verified |
+| Source normalizers hardened (begin_code ordering, multi-area drought, withheld cells) | `tools/_shared/pressure-sources.js` | ✅ tested |
+| Fetch orchestrator | `scripts/fetch-pressure-observations.mjs` | ✅ (`--self-test` passes, messy-shape fixtures) |
 | Scorer build → records | `scripts/build-cost-pressure.mjs` | ✅ |
 | Page render (Outlook block) | `scripts/build-cost-index-pages.mjs` | ✅ preview |
 | Honesty gate (recompute + no-price) | `scripts/check-pressure-honesty.mjs` | ✅ in check-all |
@@ -37,16 +38,30 @@ API keys; the rest keyless).
 - US Drought Monitor and NWS (`api.weather.gov`) are **keyless**.
 - **No paid feed is used anywhere.** Futures come *through* free USDA AMS, not CME.
 
-### 2. Verify the 9 outstanding source specs
+### 2. Verify the 12 outstanding source specs
+
+**Fast path — let `--probe` do the discovery for you** (needs the keys from step 1,
+run on a machine with internet egress):
 ```
-node scripts/check-pressure-sources.mjs      # prints the go-live checklist
+EIA_KEY=… NASS_KEY=… node scripts/fetch-pressure-observations.mjs --probe
 ```
-For each `verified:false` spec in `data/pressure-source-specs.json`, confirm the
-exact identifier against the live discovery endpoint, then flip `verified:true`:
+`--probe` tries **every** spec live (ignoring `verified`), writes nothing, and
+prints for each: row count, the normalized % change, and — for NASS — the exact
+`short_desc`/`unit_desc` the query matched. A `✓` with a sensible `short_desc`
+means the skeleton already works: flip `verified:true`. A `⚠ rows=0` or a wrong
+`short_desc` means tighten the `query` and re-probe. This collapses 12
+param-browser lookups into one command you re-run until everything is `✓`.
+
+The static worksheet (discovery endpoints + what to confirm) is also available:
+```
+node scripts/check-pressure-sources.mjs      # grouped per-spec go-live worksheet
+```
+Reference endpoints when a query needs hand-tuning:
 - **NASS** (`broiler-placements`, `cattle-on-feed-placements`, `hogs-market-supply`,
-  `cold-storage-*`, `crop-condition`): confirm the `short_desc` in the Quick Stats
-  parameter browser (<https://quickstats.nass.usda.gov>), tighten the `query`.
-- **AMS** (`feed-futures`, `ams-shipments`): confirm the My Market News report slug
+  `cold-storage-*`, `crop-condition`, `milk-production`): the Quick Stats parameter
+  browser (<https://quickstats.nass.usda.gov>) — tighten the `query` (add `unit_desc`
+  when `--probe` reports multiple units).
+- **AMS** (`feed-futures`, `ams-shipments`): the My Market News report slug
   + numeric field (<https://mymarketnews.ams.usda.gov/mymarketnews-api>).
 
 ### 3. Prove the wiring, then fetch
