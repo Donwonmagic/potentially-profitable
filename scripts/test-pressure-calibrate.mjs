@@ -81,5 +81,28 @@ for (let i = 0; i < 120; i++) { const m = i % 12; months.push(m); seasonal.push(
 const deseas = C.deseasonalizeByMonth(seasonal, months);
 ok(sd(deseas) < 0.2 * sd(seasonal), `deseasonalize kills the calendar (sd ${sd(seasonal).toFixed(3)} → ${sd(deseas).toFixed(3)})`);
 
+// --- sign-constrained NNLS weight fitting recovers known signed weights ---
+{
+  const X = [], y = [];
+  for (let i = 0; i < 200; i++) {
+    const x1 = randn(), x2 = randn(), x3 = randn();   // x3 = useless
+    X.push([x1, x2, x3]);
+    y.push(0.5 * x1 - 0.3 * x2 + 0.15 * randn());      // x2 truly NEGATIVE, x3 absent
+  }
+  const fit = C.nnlsFit(X, y, [1, -1, 1]);             // declare signs +,−,+
+  ok(fit && fit.weights[0] > 0.3 && fit.weights[0] < 0.7, `NNLS recovers +0.5 weight (got ${fit && fit.weights[0].toFixed(2)})`);
+  ok(fit && fit.weights[1] < -0.15 && fit.weights[1] > -0.45, `NNLS recovers −0.3 weight (got ${fit && fit.weights[1].toFixed(2)})`);
+  ok(fit && Math.abs(fit.weights[2]) < 0.1, `NNLS zeros the useless feature (got ${fit && fit.weights[2].toFixed(2)})`);
+  // declaring x2 with the WRONG sign (+) must force its weight to 0 (constraint kills it)
+  const wrong = C.nnlsFit(X, y, [1, 1, 1]);
+  ok(wrong && Math.abs(wrong.weights[1]) < 0.06, `wrong-signed feature pinned to ~0 (got ${wrong && wrong.weights[1].toFixed(2)})`);
+  // sum-to-one yields readable shares
+  const shares = C.nnlsFit(X, y, [1, -1, 1], { sumToOne: true });
+  const tot = shares.magnitudes.reduce((a, b) => a + b, 0);
+  ok(Math.abs(shares.weights.reduce((a, b) => a + Math.abs(b), 0) - 1) < 1e-6 || tot === 0, 'sum-to-one weights read as shares');
+  const eq = C.equalWeightPredict([[1, 1, 1], [2, -2, 0]], [1, -1, 1]);
+  ok(Math.abs(eq[0] - (1 - 1 + 1) / 3) < 1e-9, 'equal-weight benchmark combines with signs');
+}
+
 console.log(fails ? `\npressure-calibrate: ${fails} FAIL` : '\npressure-calibrate: OK — recovers truth, rejects noise.');
 process.exit(fails ? 1 : 0);

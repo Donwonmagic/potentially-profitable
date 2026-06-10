@@ -194,11 +194,62 @@
     return Math.max(0, Math.min(maxW, Math.round(maxW * oosR2 * 10) / 10));
   }
 
+  // ---- sign-constrained weight fitting (NNLS) -----------------------
+  // Fit weights so the panel best predicts the target, but FORCE each indicator's
+  // weight to keep its economic sign — the sign constraint IS the regularization
+  // (nothing to overfit), and the output is fixed coefficients a reader re-multiplies.
+  // Solves min ||Xw − y||² s.t. signs·w ≥ 0 by flipping each column to its expected
+  // sign, running non-negative least squares (exact coordinate descent on the normal
+  // equations — convex, converges), then restoring signs. Optionally sum-to-one so
+  // weights read as shares.
+  function nnlsFit(X, y, signs, opts) {
+    opts = opts || {};
+    var m = X.length; if (!m) return null;
+    var n = X[0].length;
+    signs = signs || []; for (var s = 0; s < n; s++) if (signs[s] !== -1) signs[s] = 1;
+    // Flip columns to expected sign so a correctly-signed relationship → positive coef.
+    var G = [], c = [], i, j, k;
+    for (j = 0; j < n; j++) { G.push(new Array(n).fill(0)); c.push(0); }
+    for (i = 0; i < m; i++) {
+      for (j = 0; j < n; j++) {
+        var xij = X[i][j] * signs[j];
+        c[j] += xij * y[i];
+        for (k = 0; k < n; k++) G[j][k] += xij * (X[i][k] * signs[k]);
+      }
+    }
+    var w = new Array(n).fill(0);
+    for (var it = 0; it < (opts.maxIter || 500); it++) {
+      var maxd = 0;
+      for (j = 0; j < n; j++) {
+        if (G[j][j] <= 1e-12) continue;
+        var dot = 0; for (k = 0; k < n; k++) if (k !== j) dot += G[j][k] * w[k];
+        var wj = Math.max(0, (c[j] - dot) / G[j][j]);
+        maxd = Math.max(maxd, Math.abs(wj - w[j])); w[j] = wj;
+      }
+      if (maxd < 1e-10) break;
+    }
+    var mag = w.slice();                                  // non-negative magnitudes
+    var sum = mag.reduce(function (a, b) { return a + b; }, 0);
+    var weights = mag.map(function (v, idx) { return (opts.sumToOne && sum > 0 ? v / sum : v) * signs[idx]; });
+    // R² on the fit
+    var my = mean(y), sse = 0, sst = 0;
+    for (i = 0; i < m; i++) { var pred = 0; for (j = 0; j < n; j++) pred += X[i][j] * weights[j] * (opts.sumToOne ? 1 : 1); sse += (y[i] - pred) * (y[i] - pred); sst += (y[i] - my) * (y[i] - my); }
+    return { weights: weights, magnitudes: mag, r2: sst === 0 ? 0 : 1 - sse / sst, sumToOne: !!opts.sumToOne };
+  }
+
+  // Equal-weight combination — the benchmark a fitted scheme must beat out-of-sample
+  // (the "forecast combination puzzle": equal weights often win on short noisy data).
+  function equalWeightPredict(X, signs) {
+    signs = signs || [];
+    return X.map(function (row) { var s = 0; for (var j = 0; j < row.length; j++) s += row[j] * (signs[j] === -1 ? -1 : 1); return s / (row.length || 1); });
+  }
+
   var api = {
     pctChange: pctChange, deseasonalizeByMonth: deseasonalizeByMonth,
     pearson: pearson, olsHAC: olsHAC, normCdf: normCdf,
     lagScan: lagScan, walkForward: walkForward, calibrateEdge: calibrateEdge,
-    benjaminiHochberg: benjaminiHochberg, suggestWeight: suggestWeight
+    benjaminiHochberg: benjaminiHochberg, suggestWeight: suggestWeight,
+    nnlsFit: nnlsFit, equalWeightPredict: equalWeightPredict
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   if (root) root.MuntinPressureCalibrate = api;
