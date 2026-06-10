@@ -106,8 +106,12 @@
       var d = String(lc.mapdate || lc.validstart || lc.validend || '');
       (byDate[d] = byDate[d] || []).push(sum);
     });
-    return Object.keys(byDate).sort(function (a, b) { return a.localeCompare(b); })
+    var series = Object.keys(byDate).sort(function (a, b) { return a.localeCompare(b); })
       .map(function (d) { var a = byDate[d]; return a.reduce(function (s, x) { return s + x; }, 0) / a.length; });
+    // Honor `tail` like every other source: change over the recent N readings,
+    // NOT the full ~5-month fetch window (which exploded a low-base drought into
+    // a 337% "change"). USDM is weekly, so tail:5 ≈ a 5-week window.
+    return opts.tail ? series.slice(-opts.tail) : series;
   }
 
   // ---- NWS api.weather.gov active alerts ----------------------------
