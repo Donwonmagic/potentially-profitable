@@ -46,7 +46,7 @@
       "url": "https://muntin.digital/blog/may-2026-wave-publishing-for-citation/",
       "inLanguage": "en-US",
       "datePublished": "2026-05-11T09:30:00-04:00",
-      "dateModified": "2026-05-11",
+      "dateModified": "2026-06-10",
       "author": {
         "@id": "https://muntin.digital/#don-goldstein",
         "@type": "Person",
@@ -606,21 +606,27 @@ main{padding-top:64px}
 
     <p>Two things are happening at the same time, and they compound. One: Google&rsquo;s search-result page is a paragraph the model wrote, citing two or three sources. As of March 2025 it triggered on 13.14% of US desktop searches; by spring 2026 it&rsquo;s approaching one in five, and restaurant queries trigger it more often than the average. Two: the <a href="/glossary/map-pack/" style="color:var(--teal)">map pack</a> still sits beneath that paragraph, and it&rsquo;s still where most local-intent traffic clicks. So you&rsquo;re competing on two surfaces at once &mdash; one new and shaped by paragraph quality, one old and shaped by <!-- LIBRARY:autolink:start --><a href="/glossary/gbp/" data-glossary-head="Google Business Profile" data-glossary-aka="GBP, formerly Google My Business" data-glossary-blurb="Your business's free listing on Google Maps and Google Search — the panel on the right of a search that shows your name, hours, photos, reviews, and a link to your menu or booking.">Google Business Profile</a><!-- LIBRARY:autolink:end --> health.</p>
 
-    <figure class="viz-figure article-figure" data-audio-alt="The most-cited measurement of AI Overview share in US desktop search is from March twenty twenty-five. Thirteen point one four percent of US desktop queries resolved with an AI Overview at the top of the page. By spring twenty twenty-six the share is approaching one in five queries; restaurant queries trigger above the all-categories average. The wave ships now because the writing moves are still relatively unknown among independent restaurants — the gap between operators who have figured out citation-shaped writing and those who haven't is the widest it will be.">
+    <figure class="viz-figure article-figure" data-audio-alt="AI Overview share of US desktop search, climbing across three readings, with a tick on each bar marking where the measure stood in January twenty twenty-five so the slope is visible. In January twenty twenty-five it was six point four nine percent of US desktop queries. By March twenty twenty-five it had roughly doubled to thirteen point one four percent, the most-cited measurement. By spring twenty twenty-six the share is approaching one in five queries, about twenty percent, and restaurant queries trigger it above the all-categories average. The tick on the later bars sits back at the January six point four nine starting point, so the eye reads the gain directly. The wave ships now because the gap between operators who write citation-shaped pages and those who do not is the widest it will be.">
       <div class="viz-bars">
-        <p class="viz-bars__title">AI Overview share of US desktop search</p>
+        <p class="viz-bars__title">AI Overview share of US desktop search, climbing (the tick is the Jan 2025 starting point)</p>
+        <div class="viz-bars__row">
+          <p class="viz-bars__label">Jan 2025 (measured)</p>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:0.0649"></span></div>
+          <p class="viz-bars__num">6.49%</p>
+        </div>
         <div class="viz-bars__row">
           <p class="viz-bars__label">Mar 2025 (measured)</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.1314"></span></div>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.1314"></span><span class="viz-bars__mark" data-tone="ink" style="--x:0.0649" aria-hidden="true"></span></div>
           <p class="viz-bars__num">13.14%</p>
         </div>
         <div class="viz-bars__row">
           <p class="viz-bars__label">Spring 2026 (est.)</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.20"></span></div>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.20"></span><span class="viz-bars__mark" data-tone="ink" style="--x:0.0649" aria-hidden="true"></span></div>
           <p class="viz-bars__num">~20%</p>
         </div>
+        <p class="viz-bars__note">From the tick to each bar is the climb: <strong>6.49% &rarr; 13.14%</strong> in two months of early 2025, then on toward <strong>one in five queries</strong> by spring 2026. The direction has only been up.</p>
       </div>
-      <figcaption>13.14% is the most-cited measured share; the trend has been up, not flat, since. Restaurant queries trigger above the all-categories average.</figcaption>
+      <figcaption>The most-cited measured share doubled from 6.49% to 13.14% in early 2025 and has kept climbing toward ~20%. Restaurant queries trigger above the all-categories average &mdash; the answer paragraph is the new front door.</figcaption>
     </figure>
     <details class="cite">
       <summary>Source: Search Engine Land, March 2025 AI Overview share</summary>
@@ -630,6 +636,41 @@ main{padding-top:64px}
     </details>
 
     <p>Five of the nine pieces address those two surfaces directly. The remaining four address the operating-economics decisions that determine what your restaurant actually has to say on those surfaces &mdash; what your menu costs to put in front of a guest, who handles the discovery, what compensation model your kitchen runs on.</p>
+
+    <p>Before the reading order, the one test the whole wave is built around: when the model drafts that paragraph and reaches for two or three sources, is your page one it can actually lift from? Walk the three questions.</p>
+
+    <figure class="viz-figure article-figure" data-audio-alt="A decision tree for whether your page is citation-shaped — the single test the nine-piece wave is built around. First question: does a single paragraph on your page answer one specific diner question in plain text, like where to get carbonara in your neighborhood? If no, the model has nothing clean to lift and quotes a competitor who wrote it down; that is the fix the thesis piece teaches. If yes, you have a candidate paragraph. Second question: can a machine read your key facts — cuisine, hours, location, price — without a human looking at the photo? If those facts live only in a photographed menu or a PDF, the model cannot parse them, which is the gap the schema-markup companion closes. Third question: do your reviews and profile back the claim up, so the model trusts the source it is about to cite? If the rating is thin or the newest review is old, the model hesitates, which is why the review-response playbook sits in the first band. Clear all three and you are a citable source; miss any one and you are furniture below the answer. The verdict pill on each branch names the outcome.">
+      <ol class="viz-tree">
+        <li class="viz-tree__node">
+          <details>
+            <summary><span class="viz-tree__num">1</span><span class="viz-tree__title">Does one paragraph answer one diner question in plain text?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+            <div class="viz-tree__body">
+              <p><strong>No &rarr;</strong> <span class="viz-tree__verdict" data-tone="fail">Not citable yet</span> If &ldquo;where do I get carbonara near here&rdquo; has no clean, self-contained answer on your page, the model lifts a competitor&rsquo;s paragraph instead. This is the gap the thesis piece, <a href="/library/how-to-get-cited-in-google-ai-overviews-restaurant/">how to get cited</a>, exists to close.</p>
+              <p><strong>Yes &rarr;</strong> <span class="viz-tree__verdict" data-tone="pass">Candidate paragraph</span> You have something the model can quote. Now make sure it can read the facts.</p>
+            </div>
+          </details>
+        </li>
+        <li class="viz-tree__node">
+          <details>
+            <summary><span class="viz-tree__num">2</span><span class="viz-tree__title">Can a machine read your facts without seeing the photo?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+            <div class="viz-tree__body">
+              <p><strong>No &rarr;</strong> <span class="viz-tree__verdict" data-tone="fail">Illegible</span> Cuisine, hours, location, and price trapped in a photographed menu or a PDF are invisible to the model. The <a href="/library/restaurant-schema-markup-guide/">schema-markup companion</a> puts those facts in a format Google reads directly.</p>
+              <p><strong>Yes &rarr;</strong> <span class="viz-tree__verdict" data-tone="pass">Legible</span> The entity scaffolding is in place. One question left: does the source look trustworthy?</p>
+            </div>
+          </details>
+        </li>
+        <li class="viz-tree__node">
+          <details>
+            <summary><span class="viz-tree__num">3</span><span class="viz-tree__title">Do your reviews and profile make you a source worth citing?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+            <div class="viz-tree__body">
+              <p><strong>No &rarr;</strong> <span class="viz-tree__verdict" data-tone="warn">Thin trust</span> A stale rating or an old newest-review date makes the model hesitate to quote you. The <a href="/library/google-review-response-playbook/">review-response playbook</a> is why this band comes before social and ops.</p>
+              <p><strong>Yes &rarr;</strong> <span class="viz-tree__verdict" data-tone="pass">Citable source</span> Clean answer, legible facts, trusted profile &mdash; you&rsquo;re a source the answer paragraph can reach for. Everything downstream compounds from here.</p>
+            </div>
+          </details>
+        </li>
+      </ol>
+      <figcaption>The wave&rsquo;s one test, as a branch: a clean answer paragraph, facts a machine can read, and a profile worth trusting. Miss any one and you sit below the answer instead of inside it.</figcaption>
+    </figure>
 
     <h2 id="the-reading-order">The reading order</h2>
 
