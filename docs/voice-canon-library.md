@@ -294,7 +294,7 @@ trust faster when the mechanism is visible.
 Use only the existing `viz-*` patterns from `assets/site-article.css`.
 Each viz family carries a defined job:
 
-- **`viz-bars`** — measured share, before/after on a single metric, comparative ranking. (Library uses sparingly; the blog leans on this.)
+- **`viz-bars`** — measured share, before/after on a single metric, comparative ranking. (Library uses sparingly; the blog leans on this.) A bar chart must compare comparable magnitudes — never ship a zero-width bar as a stand-in for "no data." Two teaching affordances: `viz-bars__mark` draws a benchmark tick inside a track at `--x` (0..1) so a row reads against a named threshold, and `viz-bars__note` is a full-width annotation row for the takeaway line that belongs inside the figure. Name what the tick marks in the note or the figcaption.
 - **`viz-tree`** — decision diagnostics, branching troubleshooting. The library leans here.
 - **`viz-ba`** — before/after rewrites of a specific paragraph, profile, or schema block. The library leans here.
 - **`viz-flow`** — mechanism sequences, the order a process walks. The library leans here.
