@@ -9,6 +9,8 @@
       "note": "US Drought Monitor REST, CA+AZ state FIPS, severe-area share. Keyless. Endpoint returns CSV unless Accept: application/json is sent (fetcher sets it)." },
     "drought-fl-ca": { "type": "usdm", "verified": true, "areas": ["12", "06"], "categories": ["D2", "D3", "D4"], "tail": 5,
       "note": "FL+CA severe-area share. Keyless. Accept: application/json (fetcher sets it)." },
+    "drought-id": { "type": "usdm", "verified": false, "areas": ["16"], "categories": ["D2", "D3", "D4"], "tail": 5,
+      "_verify": "Idaho (FIPS 16) severe-area share for russet potatoes — identical keyless mechanism to drought-ca-az/fl-ca (which return data), just a different aoi. Confirm in --probe (expect rows≈22, a sane % change), then flip." },
     "drought": { "type": "usdm", "verified": false, "areas": ["US"], "categories": ["D2", "D3", "D4"], "tail": 5,
       "_verify": "aoi=US returns empty from the StateStatistics endpoint — national needs the USStatistics/GetDroughtSeverityStatisticsByArea path, not StateStatistics. Confirm the national endpoint before flipping. The two state specs already cover the CA/AZ/FL produce zones." },
 

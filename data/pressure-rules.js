@@ -660,7 +660,7 @@
           "note": "season pace above last year → ample supply → cost down"
         },
         {
-          "id": "drought",
+          "id": "drought-ca-az",
           "source": "usdm-drought",
           "sign": 1,
           "weight": 1,
@@ -756,7 +756,7 @@
           "note": "season pace above last year → ample supply → cost down"
         },
         {
-          "id": "drought",
+          "id": "drought-id",
           "source": "usdm-drought",
           "sign": 1,
           "weight": 1,

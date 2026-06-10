@@ -575,10 +575,10 @@
     },
     "onion": {
       "item": "onion",
-      "direction": "building",
-      "confidence": "moderate",
+      "direction": "steady",
+      "confidence": "low",
       "agreement": 1,
-      "score": 2,
+      "score": 1,
       "cutoff": 2,
       "freshness_weeks": 0,
       "anchor_print_date": "2026-06-05",
@@ -586,22 +586,6 @@
       "under_review": false,
       "rule_version": "2026-Q2-1",
       "contributors": [
-        {
-          "indicator": "drought",
-          "source": "usdm-drought",
-          "signed_signal": 1,
-          "weight": 1,
-          "lead": {
-            "min": 4,
-            "max": 17,
-            "unit": "week"
-          },
-          "tier": "C",
-          "cite": "usdm-drought",
-          "group": null,
-          "change_pct": 0.03,
-          "as_of": "2026-06-08"
-        },
         {
           "indicator": "diesel",
           "source": "eia-diesel",
@@ -624,7 +608,7 @@
       "item": "russet-potato",
       "direction": "easing",
       "confidence": "moderate",
-      "agreement": 0.6,
+      "agreement": 0.75,
       "score": -3,
       "cutoff": 2,
       "freshness_weeks": 0,
@@ -647,22 +631,6 @@
           "cite": "nass-crop-progress",
           "group": null,
           "change_pct": 0.04,
-          "as_of": "2026-06-08"
-        },
-        {
-          "indicator": "drought",
-          "source": "usdm-drought",
-          "signed_signal": 0,
-          "weight": 1,
-          "lead": {
-            "min": 4,
-            "max": 17,
-            "unit": "week"
-          },
-          "tier": "C",
-          "cite": "usdm-drought",
-          "group": null,
-          "change_pct": 0,
           "as_of": "2026-06-08"
         },
         {
