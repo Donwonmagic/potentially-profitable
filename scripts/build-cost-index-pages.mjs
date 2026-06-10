@@ -165,6 +165,7 @@ const INDICATOR_NAME = {
   'drought-id':                { en: 'Drought (Idaho)', es: 'Sequía (Idaho)' },
   'drought':                   { en: 'Drought (growing regions)', es: 'Sequía (regiones de cultivo)' },
   'crop-condition':            { en: 'Crop condition', es: 'Condición del cultivo' },
+  'feed-grain':                { en: 'Feed grain (corn)', es: 'Grano forrajero (maíz)' },
   'diesel':                    { en: 'Diesel / freight', es: 'Diésel / flete' }
 };
 function sourceShort(key) {
