@@ -34,7 +34,8 @@ const rd = (p) => JSON.parse(readFileSync(path.join(repoRoot, p), 'utf8'));
 const arg = (f) => process.argv.includes(f);
 
 const rules = rd('data/pressure-rules.json');
-const specs = (rd('data/pressure-source-specs.json').specs) || {};
+// `_`-prefixed keys (e.g. _movement_doc) are documentation notes, not specs.
+const specs = Object.fromEntries(Object.entries((rd('data/pressure-source-specs.json').specs) || {}).filter(([k]) => !k.startsWith('_')));
 
 // The one place raw → changePct per source type. Same dispatch live + self-test.
 function changeFromRaw(spec, raw) {
@@ -87,7 +88,14 @@ function computeMovement(spec, rows) {
   const agg = S.movementAggregate(rows, { commodity: spec.commodity, commodityExact: spec.commodityExact, commodityKey: spec.commodityKey, tail: spec.tail });
   const emits = spec.emits || {}, out = {};
   if (emits.volume) out[emits.volume] = S.windowChange(agg.volume);
-  if (emits.imports) out[emits.imports] = agg.importShare.length > 1 ? S.windowChange(agg.importShare) : null;
+  if (emits.imports) {
+    // Import SHARE is a 0..1 fraction — windowChange breaks on a 0 base (domestic
+    // produce is ~0% import most of the year). Use the absolute Δ in share over the
+    // window, but only when imports are non-trivial somewhere in it; otherwise the
+    // signal is honestly ABSENT (null) rather than a noisy 0.
+    const imp = agg.importShare;
+    out[emits.imports] = (imp.length > 1 && Math.max.apply(null, imp) >= 0.03) ? imp[imp.length - 1] - imp[0] : null;
+  }
   if (emits.pace) out[emits.pace] = agg.pace;
   return { out, agg };
 }
