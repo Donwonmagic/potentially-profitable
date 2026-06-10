@@ -220,10 +220,11 @@ async function amsDiscover() {
     const re = /movement|shipment|arrival|specialty|fruit|vegetable|produce/i;
     const hits = arr.filter((r) => re.test(JSON.stringify(r)));
     console.log(`\n  movement/specialty-looking reports (${hits.length}):`);
-    hits.slice(0, 40).forEach((r) => {
-      const slug = r.slug_id || r.slug_name || r.slug || r.report_id || '?';
+    hits.slice(0, 60).forEach((r) => {
+      const slug = r.slug_name || r.slug_id || r.slug || r.report_id || '?';
       const title = r.report_title || r.report_name || r.title || r.name || '';
-      console.log(`    [${slug}] ${title}`);
+      const mt = r.market_type ? ` {${r.market_type}}` : '';
+      console.log(`    [${slug} / id ${r.slug_id || '?'}]${mt} ${title}`);
     });
   } catch (e) { console.log(`  reports list failed: ${e.message}`); }
   // 2) Commodity names matching our produce items (exact spelling for the filter).

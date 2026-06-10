@@ -16,7 +16,7 @@
       "note": "Active freeze warnings over the winter growing zones (api.weather.gov). Keyless; encodes active=+1. Probe: rows=1." },
 
     "feed-futures": { "type": "ams", "verified": false, "report": "ams_3046", "field": "close", "commodity": "Corn|Soybeans", "tail": 20,
-      "_verify": "DEFERRED: the `ams` type has no urlFor handler yet (probe: 'unknown type'). Implement the My Market News MARS v1.2 fetch before flipping. Not blocking go-live." },
+      "_verify": "PERMANENTLY DEFERRED (wrong source): AMS_3046 is the Minneapolis Daily Grain NARRATIVE report — rows are report headers with a report_narrative text blob, no structured close/price field. CBOT futures settlement isn't AMS data anyway (that's CME). Leave as an unwired future slot on the meat panels (they already have 3 live signals); revisit only with a real structured grain/feed price source." },
     "ams-shipments": { "type": "ams", "verified": false, "report": "movement", "field": "shipments", "tail": 7,
       "_verify": "DEFERRED: same — `ams` type unimplemented. Confirm the Fruit & Vegetable Movement report slug + shipment-volume field on My Market News (MARS v1.2) and add a urlFor case before flipping." },
 
