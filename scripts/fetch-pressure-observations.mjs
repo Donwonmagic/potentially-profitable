@@ -41,7 +41,7 @@ function changeFromRaw(spec, raw) {
   switch (spec.type) {
     case 'eia':  return S.windowChange(S.eiaSeries(raw, { tail: spec.tail }));
     case 'nass': return S.windowChange(S.nassSeries((raw && raw.data) || raw, { tail: spec.tail }));
-    case 'ams':  return S.windowChange(S.amsSeries((raw && raw.results) || raw, { field: spec.field, tail: spec.tail }));
+    case 'ams':  return S.windowChange(S.amsSeries((raw && raw.results) || raw, { field: spec.field, dateKey: spec.dateKey, commodity: spec.commodity, commodityKey: spec.commodityKey, tail: spec.tail }));
     case 'usdm': return S.windowChange(S.usdmSeverity((raw && raw.length != null) ? raw : (raw && raw.data) || [], { categories: spec.categories, tail: spec.tail }));
     case 'nws':  return S.eventSignal(S.nwsFreezeActive(raw, { events: spec.events, areaMatch: spec.areaMatch }));
     default: return null;
@@ -130,6 +130,17 @@ function urlFor(id, spec) {
     const ev = (spec.events || []).map(encodeURIComponent).join(',');
     return { url: `https://api.weather.gov/alerts/active?event=${ev}` };
   }
+  if (spec.type === 'ams') {
+    // USDA AMS My Market News (MARS v1.2). Auth: API key as the Basic-auth
+    // username, blank password → base64(key + ':'). One report per slug; the
+    // optional `q` filters server-side (e.g. "commodity=ONIONS;market_type=Movement").
+    const AMS_KEY = process.env.AMS_KEY;
+    if (!AMS_KEY) return { skip: 'no AMS_KEY' };
+    if (!spec.report) return { skip: 'no report slug' };
+    const qs = spec.q ? `?q=${encodeURIComponent(spec.q)}` : '';
+    const auth = Buffer.from(AMS_KEY + ':').toString('base64');
+    return { url: `https://marsapi.ams.usda.gov/services/v1.2/reports/${encodeURIComponent(spec.report)}${qs}`, init: { headers: { Authorization: `Basic ${auth}` } } };
+  }
   return { skip: 'unknown type' };
 }
 // Extract the row array per source type (mirrors changeFromRaw's digging).
@@ -173,6 +184,14 @@ async function probe() {
         detail += `\n      usdm keys: ${Object.keys(rows[0]).join(', ')}`;
         if (!usable) detail += `\n      usdm row[0]: ${JSON.stringify(rows[0])}`;
       }
+      // AMS: dump the report's field names + the distinct commodity values so we
+      // can confirm the volume field + the exact commodity spelling to filter on.
+      if (spec.type === 'ams' && rows.length) {
+        detail += `\n      ams keys: ${Object.keys(rows[0]).join(', ')}`;
+        const cv = distinct(rows, spec.commodityKey || 'commodity', 12);
+        if (cv.length) detail += `\n      commodities: ${cv.join(' | ')}`;
+        if (!usable) detail += `\n      ams row[0]: ${JSON.stringify(rows[0])}`;
+      }
       console.log(`  ${flag} ${id.padEnd(26)} [${spec.type}] ${detail}`);
       if (usable) ready.push(id);
     } catch (e) { console.log(`  ✗ ${id.padEnd(26)} [${spec.type}] fetch failed: ${e.message}`); }
@@ -180,6 +199,41 @@ async function probe() {
   console.log(`\n${ready.length}/${Object.keys(specs).length} specs returned a usable series.`);
   const toFlip = ready.filter((id) => specs[id].verified === false);
   if (toFlip.length) console.log(`Ready to flip verified:true (confirm the short_desc above looks right first):\n  ${toFlip.join('\n  ')}`);
+}
+
+// ---- AMS discovery: find the produce-movement report slug + the exact commodity
+// spelling. MARS has hundreds of reports; this lists the ones that look like
+// movement/shipment/specialty-crop feeds + the matching commodity names, so we
+// can fill in `report` + `commodity` on the shipment specs. Writes nothing.
+async function amsDiscover() {
+  const AMS_KEY = process.env.AMS_KEY;
+  if (!AMS_KEY) { console.log('AMS discovery needs AMS_KEY (free MARS key from mymarketnews.ams.usda.gov).'); process.exit(1); }
+  const auth = 'Basic ' + Buffer.from(AMS_KEY + ':').toString('base64');
+  const init = { headers: { Authorization: auth } };
+  const base = 'https://marsapi.ams.usda.gov/services/v1.2';
+  console.log('AMS discovery (writes nothing).\n');
+  // 1) Reports whose title/market hints at movement/shipment/specialty crops.
+  try {
+    const reports = await fetchJson(`${base}/reports`, init);
+    const arr = Array.isArray(reports) ? reports : (reports.results || reports.reports || []);
+    console.log(`reports: ${arr.length} total. first row keys: ${arr[0] ? Object.keys(arr[0]).join(', ') : '(none)'}`);
+    const re = /movement|shipment|arrival|specialty|fruit|vegetable|produce/i;
+    const hits = arr.filter((r) => re.test(JSON.stringify(r)));
+    console.log(`\n  movement/specialty-looking reports (${hits.length}):`);
+    hits.slice(0, 40).forEach((r) => {
+      const slug = r.slug_id || r.slug_name || r.slug || r.report_id || '?';
+      const title = r.report_title || r.report_name || r.title || r.name || '';
+      console.log(`    [${slug}] ${title}`);
+    });
+  } catch (e) { console.log(`  reports list failed: ${e.message}`); }
+  // 2) Commodity names matching our produce items (exact spelling for the filter).
+  try {
+    const coms = await fetchJson(`${base}/commodities`, init);
+    const arr = Array.isArray(coms) ? coms : (coms.results || coms.commodities || []);
+    const re = /onion|lettuce|tomato|potato/i;
+    const hits = arr.map((c) => (typeof c === 'string' ? c : (c.commodity || c.commodity_name || c.name || JSON.stringify(c)))).filter((c) => re.test(c));
+    console.log(`\n  produce commodity names (${hits.length} of ${arr.length}): ${hits.join(' | ') || '(none matched)'}`);
+  } catch (e) { console.log(`  commodities list failed: ${e.message}`); }
 }
 
 async function live() {
@@ -220,5 +274,6 @@ else if (arg('--demo')) {
   writeFileSync(path.join(repoRoot, 'data/pressure-observations.json'), JSON.stringify(demo, null, 2) + '\n');
   console.log('Wrote data/pressure-observations.json from demo fixture.');
 } else if (arg('--probe')) { probe(); }
+else if (arg('--ams-discover')) { amsDiscover(); }
 else if (arg('--live')) { live(); }
-else { console.log('usage: --self-test | --probe | --demo | --live\n  --probe  try every spec live (ignores verified), report what each returns, write nothing\n  --live   fetch verified specs → data/pressure-observations.json\n  (live/probe need free EIA_KEY + NASS_KEY; USDM/NWS keyless)'); }
+else { console.log('usage: --self-test | --probe | --ams-discover | --demo | --live\n  --probe         try every spec live (ignores verified), report what each returns, write nothing\n  --ams-discover  list MARS movement/specialty reports + produce commodity names (find the AMS slug)\n  --live          fetch verified specs → data/pressure-observations.json\n  (live/probe need free EIA_KEY + NASS_KEY; AMS needs AMS_KEY; USDM/NWS keyless)'); }

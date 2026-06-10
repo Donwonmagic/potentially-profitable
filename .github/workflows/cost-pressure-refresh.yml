@@ -25,9 +25,9 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: 'probe = verify specs (writes nothing) · live = fetch + render + commit'
+        description: 'probe = verify specs · ams-discover = find the MARS report slug · live = fetch + render + commit'
         type: choice
-        options: [probe, live]
+        options: [probe, ams-discover, live]
         default: probe
   schedule:
     # Mondays 11:00 UTC — weekly cadence. The measured anchor refreshes on its own
@@ -65,7 +65,15 @@ jobs:
         env:
           EIA_KEY: ${{ secrets.EIA_KEY }}
           NASS_KEY: ${{ secrets.NASS_KEY }}
+          AMS_KEY: ${{ secrets.AMS_KEY }}
         run: node scripts/fetch-pressure-observations.mjs --probe
+
+      # --- AMS discovery: find the MARS produce-movement report slug ----------
+      - name: AMS discover (writes nothing)
+        if: env.MODE == 'ams-discover'
+        env:
+          AMS_KEY: ${{ secrets.AMS_KEY }}
+        run: node scripts/fetch-pressure-observations.mjs --ams-discover
 
       # --- Gates 3+4: live fetch → score → render → gate → commit -------------
       - name: Live refresh
@@ -73,6 +81,7 @@ jobs:
         env:
           EIA_KEY: ${{ secrets.EIA_KEY }}
           NASS_KEY: ${{ secrets.NASS_KEY }}
+          AMS_KEY: ${{ secrets.AMS_KEY }}
         run: |
           set -e
           # Wiring guard: if the normalizer dispatch is broken, stop before fetching.

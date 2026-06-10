@@ -75,7 +75,14 @@
     opts = opts || {};
     var field = opts.field || 'price';
     var dateKey = opts.dateKey || 'report_date';
-    var arr = (rows || []).map(function (r) { return { v: parseNum(r[field]), d: String(r[dateKey] || r.report_begin_date || '') }; })
+    // One MARS report carries every commodity; keep only the rows for this spec's
+    // commodity (server-side `q` should already narrow it, but filter defensively
+    // so a shared report can't bleed onion volume into the tomato series).
+    var comKey = opts.commodityKey || 'commodity';
+    var com = opts.commodity ? String(opts.commodity).toUpperCase() : null;
+    var arr = (rows || []).filter(function (r) {
+      return !com || String((r && r[comKey]) || '').toUpperCase().indexOf(com) >= 0;
+    }).map(function (r) { return { v: parseNum(r[field]), d: String(r[dateKey] || r.report_begin_date || r.report_end_date || '') }; })
       .filter(function (r) { return r.v != null; });
     arr.sort(function (a, b) { return a.d.localeCompare(b.d); });
     var vals = arr.map(function (r) { return r.v; });
