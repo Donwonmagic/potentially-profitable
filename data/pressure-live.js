@@ -59,25 +59,34 @@
       "diesel": 0.01
     },
     "romaine-lettuce": {
-      "ams-shipments": -0.08,
+      "lettuce-shipments": -0.08,
+      "lettuce-imports": 0.03,
+      "lettuce-pace": -0.05,
+      "freeze-alert": 0,
       "drought-ca-az": 0.06,
       "diesel": 0.03
     },
     "tomato": {
-      "ams-shipments": 0.04,
+      "tomato-shipments": 0.04,
+      "tomato-imports": -0.02,
+      "tomato-pace": 0.06,
+      "freeze-alert": 0,
       "drought-fl-ca": 0.05,
       "diesel": 0.01
     },
     "onion": {
-      "ams-shipments": -0.1,
-      "crop-condition": -0.05,
-      "drought": 0.03,
+      "onion-shipments": -0.1,
+      "onion-imports": 0.04,
+      "onion-pace": -0.06,
+      "drought-ca-az": 0.03,
       "diesel": 0.04
     },
     "russet-potato": {
       "crop-condition": 0.04,
-      "ams-shipments": 0.05,
-      "drought": 0,
+      "potato-shipments": 0.05,
+      "potato-imports": 0.01,
+      "potato-pace": 0.03,
+      "drought-id": 0,
       "diesel": 0.01
     },
     "butter": {

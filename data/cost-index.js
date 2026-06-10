@@ -2201,7 +2201,7 @@
       },
       "pressure": {
         "direction": "building",
-        "confidence": "moderate",
+        "confidence": "high",
         "freshness_weeks": 0,
         "under_review": false
       },
@@ -2615,8 +2615,8 @@
         "nHistory": 26
       },
       "pressure": {
-        "direction": "building",
-        "confidence": "moderate",
+        "direction": "steady",
+        "confidence": "low",
         "freshness_weeks": 0,
         "under_review": false
       },
@@ -3048,8 +3048,8 @@
         "nHistory": 26
       },
       "pressure": {
-        "direction": "steady",
-        "confidence": "low",
+        "direction": "building",
+        "confidence": "high",
         "freshness_weeks": 0,
         "under_review": false
       },
@@ -3482,7 +3482,7 @@
       },
       "pressure": {
         "direction": "easing",
-        "confidence": "moderate",
+        "confidence": "high",
         "freshness_weeks": 0,
         "under_review": false
       },

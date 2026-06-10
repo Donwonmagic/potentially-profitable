@@ -482,9 +482,9 @@
     "romaine-lettuce": {
       "item": "romaine-lettuce",
       "direction": "building",
-      "confidence": "moderate",
-      "agreement": 1,
-      "score": 3,
+      "confidence": "high",
+      "agreement": 0.667,
+      "score": 6,
       "cutoff": 2,
       "freshness_weeks": 0,
       "anchor_print_date": "2026-06-05",
@@ -492,6 +492,70 @@
       "under_review": false,
       "rule_version": "2026-Q2-1",
       "contributors": [
+        {
+          "indicator": "lettuce-shipments",
+          "source": "ams-movement",
+          "signed_signal": 1,
+          "weight": 3,
+          "lead": {
+            "min": 0,
+            "max": 3,
+            "unit": "week"
+          },
+          "tier": "A",
+          "cite": "ams-movement",
+          "group": "movement",
+          "change_pct": -0.08,
+          "as_of": "2026-06-08"
+        },
+        {
+          "indicator": "lettuce-imports",
+          "source": "ams-movement",
+          "signed_signal": 1,
+          "weight": 1,
+          "lead": {
+            "min": 1,
+            "max": 6,
+            "unit": "week"
+          },
+          "tier": "B",
+          "cite": "ams-movement",
+          "group": "movement",
+          "change_pct": 0.03,
+          "as_of": "2026-06-08"
+        },
+        {
+          "indicator": "lettuce-pace",
+          "source": "ams-movement",
+          "signed_signal": 1,
+          "weight": 1,
+          "lead": {
+            "min": 2,
+            "max": 10,
+            "unit": "week"
+          },
+          "tier": "B",
+          "cite": "ams-movement",
+          "group": "movement",
+          "change_pct": -0.05,
+          "as_of": "2026-06-08"
+        },
+        {
+          "indicator": "freeze-alert",
+          "source": "nws-alerts",
+          "signed_signal": 0,
+          "weight": 3,
+          "lead": {
+            "min": 1,
+            "max": 6,
+            "unit": "week"
+          },
+          "tier": "A",
+          "cite": "nws-alerts",
+          "group": null,
+          "change_pct": 0,
+          "as_of": "2026-06-08"
+        },
         {
           "indicator": "drought-ca-az",
           "source": "usdm-drought",
@@ -528,10 +592,10 @@
     },
     "tomato": {
       "item": "tomato",
-      "direction": "building",
-      "confidence": "moderate",
-      "agreement": 0.667,
-      "score": 2,
+      "direction": "steady",
+      "confidence": "low",
+      "agreement": 0.111,
+      "score": -1,
       "cutoff": 2,
       "freshness_weeks": 0,
       "anchor_print_date": "2026-06-05",
@@ -539,6 +603,70 @@
       "under_review": false,
       "rule_version": "2026-Q2-1",
       "contributors": [
+        {
+          "indicator": "tomato-shipments",
+          "source": "ams-movement",
+          "signed_signal": -1,
+          "weight": 3,
+          "lead": {
+            "min": 0,
+            "max": 3,
+            "unit": "week"
+          },
+          "tier": "A",
+          "cite": "ams-movement",
+          "group": "movement",
+          "change_pct": 0.04,
+          "as_of": "2026-06-08"
+        },
+        {
+          "indicator": "tomato-imports",
+          "source": "ams-movement",
+          "signed_signal": 0,
+          "weight": 1,
+          "lead": {
+            "min": 1,
+            "max": 6,
+            "unit": "week"
+          },
+          "tier": "B",
+          "cite": "ams-movement",
+          "group": "movement",
+          "change_pct": -0.02,
+          "as_of": "2026-06-08"
+        },
+        {
+          "indicator": "tomato-pace",
+          "source": "ams-movement",
+          "signed_signal": -1,
+          "weight": 1,
+          "lead": {
+            "min": 2,
+            "max": 10,
+            "unit": "week"
+          },
+          "tier": "B",
+          "cite": "ams-movement",
+          "group": "movement",
+          "change_pct": 0.06,
+          "as_of": "2026-06-08"
+        },
+        {
+          "indicator": "freeze-alert",
+          "source": "nws-alerts",
+          "signed_signal": 0,
+          "weight": 3,
+          "lead": {
+            "min": 1,
+            "max": 6,
+            "unit": "week"
+          },
+          "tier": "A",
+          "cite": "nws-alerts",
+          "group": null,
+          "change_pct": 0,
+          "as_of": "2026-06-08"
+        },
         {
           "indicator": "drought-fl-ca",
           "source": "usdm-drought",
@@ -575,10 +703,10 @@
     },
     "onion": {
       "item": "onion",
-      "direction": "steady",
-      "confidence": "low",
+      "direction": "building",
+      "confidence": "high",
       "agreement": 1,
-      "score": 1,
+      "score": 4,
       "cutoff": 2,
       "freshness_weeks": 0,
       "anchor_print_date": "2026-06-05",
@@ -586,6 +714,70 @@
       "under_review": false,
       "rule_version": "2026-Q2-1",
       "contributors": [
+        {
+          "indicator": "onion-shipments",
+          "source": "ams-movement",
+          "signed_signal": 1,
+          "weight": 2,
+          "lead": {
+            "min": 0,
+            "max": 3,
+            "unit": "week"
+          },
+          "tier": "A",
+          "cite": "ams-movement",
+          "group": "movement",
+          "change_pct": -0.1,
+          "as_of": "2026-06-08"
+        },
+        {
+          "indicator": "onion-imports",
+          "source": "ams-movement",
+          "signed_signal": 1,
+          "weight": 1,
+          "lead": {
+            "min": 1,
+            "max": 6,
+            "unit": "week"
+          },
+          "tier": "B",
+          "cite": "ams-movement",
+          "group": "movement",
+          "change_pct": 0.04,
+          "as_of": "2026-06-08"
+        },
+        {
+          "indicator": "onion-pace",
+          "source": "ams-movement",
+          "signed_signal": 1,
+          "weight": 1,
+          "lead": {
+            "min": 2,
+            "max": 10,
+            "unit": "week"
+          },
+          "tier": "B",
+          "cite": "ams-movement",
+          "group": "movement",
+          "change_pct": -0.06,
+          "as_of": "2026-06-08"
+        },
+        {
+          "indicator": "drought-ca-az",
+          "source": "usdm-drought",
+          "signed_signal": 1,
+          "weight": 1,
+          "lead": {
+            "min": 4,
+            "max": 17,
+            "unit": "week"
+          },
+          "tier": "C",
+          "cite": "usdm-drought",
+          "group": null,
+          "change_pct": 0.03,
+          "as_of": "2026-06-08"
+        },
         {
           "indicator": "diesel",
           "source": "eia-diesel",
@@ -607,9 +799,9 @@
     "russet-potato": {
       "item": "russet-potato",
       "direction": "easing",
-      "confidence": "moderate",
-      "agreement": 0.75,
-      "score": -3,
+      "confidence": "high",
+      "agreement": 0.714,
+      "score": -5,
       "cutoff": 2,
       "freshness_weeks": 0,
       "anchor_print_date": "2026-06-05",
@@ -631,6 +823,70 @@
           "cite": "nass-crop-progress",
           "group": null,
           "change_pct": 0.04,
+          "as_of": "2026-06-08"
+        },
+        {
+          "indicator": "potato-shipments",
+          "source": "ams-movement",
+          "signed_signal": -1,
+          "weight": 2,
+          "lead": {
+            "min": 0,
+            "max": 3,
+            "unit": "week"
+          },
+          "tier": "A",
+          "cite": "ams-movement",
+          "group": "movement",
+          "change_pct": 0.05,
+          "as_of": "2026-06-08"
+        },
+        {
+          "indicator": "potato-imports",
+          "source": "ams-movement",
+          "signed_signal": 0,
+          "weight": 1,
+          "lead": {
+            "min": 1,
+            "max": 6,
+            "unit": "week"
+          },
+          "tier": "B",
+          "cite": "ams-movement",
+          "group": "movement",
+          "change_pct": 0.01,
+          "as_of": "2026-06-08"
+        },
+        {
+          "indicator": "potato-pace",
+          "source": "ams-movement",
+          "signed_signal": -1,
+          "weight": 1,
+          "lead": {
+            "min": 2,
+            "max": 10,
+            "unit": "week"
+          },
+          "tier": "B",
+          "cite": "ams-movement",
+          "group": "movement",
+          "change_pct": 0.03,
+          "as_of": "2026-06-08"
+        },
+        {
+          "indicator": "drought-id",
+          "source": "usdm-drought",
+          "signed_signal": 0,
+          "weight": 1,
+          "lead": {
+            "min": 4,
+            "max": 17,
+            "unit": "week"
+          },
+          "tier": "C",
+          "cite": "usdm-drought",
+          "group": null,
+          "change_pct": 0,
           "as_of": "2026-06-08"
         },
         {
