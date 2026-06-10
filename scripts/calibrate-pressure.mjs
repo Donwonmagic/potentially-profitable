@@ -93,7 +93,7 @@ const LMR_BASE = 'https://mpr.datamart.ams.usda.gov/services/v1.1/reports/';
 const MARS_BASE = 'https://marsapi.ams.usda.gov/services/v1.2/reports/';
 const ANCHOR = {
   'ribeye':          { host: 'lmr', report: '2453', section: 'Choice Cuts', match: { field: 'item_description', value: 'Ribeye' }, field: 'weighted_average', dateField: 'report_date', winField: 'report_date', note: 'LMR 2453 Choice Cuts / Ribeye' },
-  'beef-tenderloin': { host: 'lmr', report: '2453', section: 'Choice Cuts', match: { field: 'item_description', value: 'Tenderloin' }, field: 'weighted_average', dateField: 'report_date', winField: 'report_date', note: 'LMR 2453 / Tenderloin' },
+  'beef-tenderloin': { host: 'lmr', report: '2453', section: 'Choice Cuts', match: { field: 'item_description', value: 'Butt Tender' }, field: 'weighted_average', dateField: 'report_date', winField: 'report_date', note: 'LMR 2453 / Loin, butt tender, trimmed (191A)' },
   'pork-loin':       { host: 'lmr', report: '2498', section: 'Cutout and Primal Values', field: 'pork_loin', dateField: 'report_date', winField: 'report_date', note: 'LMR 2498 cutout / pork_loin' },
   'pork-shoulder':   { host: 'lmr', report: '2498', section: 'Cutout and Primal Values', field: 'pork_butt', dateField: 'report_date', winField: 'report_date', note: 'LMR 2498 cutout / pork_butt' },
   'chicken-breast':  { host: 'mars', report: '3646', section: 'Report Detail', match: { field: 'item', value: 'Breast - B/S' }, field: 'wtd_avg_price', dateField: 'report_date', note: 'AMS 3646 Nat. Chicken / Breast B/S' },
