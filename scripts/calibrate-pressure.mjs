@@ -49,8 +49,21 @@ const CIRCULAR_SOURCES = new Set([]);  // none today; e.g. add 'lmr-cutout' if i
 // Indicator types we don't calibrate this pass (deterministic / event / windowed).
 const SKIP_TYPES = new Set(['season', 'nws', 'ams-move']);
 
+// ---- date normalization --------------------------------------------
+// USDA reports date as MM/DD/YYYY; FRED/BLS/NASS as YYYY-MM-DD or YYYY-MM. Normalize
+// everything to YYYY-MM-DD (or YYYY-MM) so the week/month bucketers agree — the
+// MM/DD/YYYY anchors were silently bucketing to ZERO weeks → monthly fallback.
+function normDate(s) {
+  s = String(s || '');
+  let m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+  if (m) return `${m[3]}-${('0' + m[1]).slice(-2)}-${('0' + m[2]).slice(-2)}`;
+  m = s.match(/^(\d{4})-(\d{2})(?:-(\d{2}))?/);
+  if (m) return m[3] ? `${m[1]}-${m[2]}-${m[3]}` : `${m[1]}-${m[2]}`;
+  return s;
+}
+
 // ---- monthly series helpers ----------------------------------------
-const ym = (d) => String(d || '').slice(0, 7);           // 'YYYY-MM-DD' → 'YYYY-MM'
+const ym = (d) => normDate(d).slice(0, 7);               // → 'YYYY-MM'
 function monthlyFromDated(pairs) {                         // [{date,value}] → sorted [{ym, v}] (avg per month)
   const by = {};
   pairs.forEach((p) => { const k = ym(p.date); const v = Number(p.value); if (!k || !isFinite(v)) return; (by[k] = by[k] || []).push(v); });
@@ -67,8 +80,8 @@ function monthNums(rows) { return rows.map((r) => parseInt(r.ym.slice(5, 7), 10)
 // ---- WEEKLY machinery (the target-rebuild: align to the price we publish) -------
 // The weekly anchor is the keystone fix — monthly PPI smeared away the weekly leads.
 const WK = 7 * 864e5;
-function weekKey(dateStr) {                                // 'YYYY-MM-DD' → integer week bucket (sortable) + its month
-  const m = String(dateStr || '').match(/(\d{4})-(\d{2})-(\d{2})/);
+function weekKey(dateStr) {                                // any date → integer week bucket (sortable) + its month
+  const m = normDate(dateStr).match(/(\d{4})-(\d{2})-(\d{2})/);
   if (!m) return null;
   const t = Date.UTC(+m[1], +m[2] - 1, +m[3]);
   return { wk: Math.floor(t / WK), mo: +m[2] - 1 };
@@ -213,17 +226,47 @@ function nassDate(r) {
 // ---- the run -------------------------------------------------------
 // stationary deseasonalized changes of an aligned [{x,y,mo|ym}] series, robust to
 // pctChange dropping a non-positive base (inner-join the x/y changes on their index).
-function alignedChanges(al) {
+// Also returns xMap: the indicator change keyed by its week/month bucket (for the
+// per-item joint weight fit).
+function keyedChanges(al) {
   const xCh = C.pctChange(al.map((p) => p.x), 1), yCh = C.pctChange(al.map((p) => p.y), 1);
   const ym = {}; yCh.forEach((o) => { ym[o.idx] = o.v; });
-  const xs = [], ys = [], mos = [];
-  xCh.forEach((o) => { if (o.idx in ym) { xs.push(o.v); ys.push(ym[o.idx]); const r = al[o.idx]; mos.push(r.mo != null ? r.mo : parseInt(String(r.ym).slice(5, 7), 10) - 1); } });
-  return { xc: C.deseasonalizeByMonth(xs, mos), yc: C.deseasonalizeByMonth(ys, mos), n: xs.length };
+  const idxs = [], xs = [], ys = [], mos = [];
+  xCh.forEach((o) => { if (o.idx in ym) { idxs.push(o.idx); xs.push(o.v); ys.push(ym[o.idx]); const r = al[o.idx]; mos.push(r.mo != null ? r.mo : parseInt(String(r.ym).slice(5, 7), 10) - 1); } });
+  const xc = C.deseasonalizeByMonth(xs, mos), yc = C.deseasonalizeByMonth(ys, mos);
+  const xMap = {}; idxs.forEach((idx, i) => { const r = al[idx]; xMap[r.wk != null ? r.wk : r.ym] = xc[i]; });
+  return { xc, yc, xMap, n: xs.length };
+}
+// deseasonalized % change of a standalone series ([{wk,mo,v}] or [{ym,v}]), keyed by bucket.
+function seriesChanges(series) {
+  const ch = C.pctChange(series.map((p) => p.v), 1);
+  const mos = ch.map((o) => { const r = series[o.idx]; return r.mo != null ? r.mo : parseInt(String(r.ym).slice(5, 7), 10) - 1; });
+  const dc = C.deseasonalizeByMonth(ch.map((o) => o.v), mos);
+  const map = {}; ch.forEach((o, i) => { const r = series[o.idx]; map[r.wk != null ? r.wk : r.ym] = dc[i]; });
+  return map;
+}
+// Joint per-item weight fit: assemble X from the survivors' lag-shifted change maps
+// (survivor predicts target week W via xMap[W − lag]) vs the target change, run the
+// sign-constrained NNLS. Weekly only (integer week keys; monthly-fallback items skip).
+function fitItemWeights(targetChg, survivors, minRows) {
+  minRows = minRows || 30;
+  const Ws = Object.keys(targetChg).map(Number).filter((w) => isFinite(w)).sort((a, b) => a - b);
+  const X = [], y = [];
+  for (const W of Ws) {
+    if (targetChg[W] == null) continue;
+    const row = []; let ok = true;
+    for (const s of survivors) { const v = s.xMap[W - s.lag]; if (v == null) { ok = false; break; } row.push(v); }
+    if (ok) { X.push(row); y.push(targetChg[W]); }
+  }
+  if (X.length < minRows) return null;
+  const fit = C.nnlsFit(X, y, survivors.map((s) => s.sign), { sumToOne: false });
+  return { indicators: survivors.map((s, i) => ({ id: s.id, lag: s.lag, sign: s.sign, weight: Math.round(fit.weights[i] * 1000) / 1000 })), r2: Math.round(fit.r2 * 1000) / 1000, n: X.length };
 }
 
 async function calibrate(getProxy, getIndicator, getAnchor) {
   const edges = [];
   const proxyCache = {}, anchorCache = {}, indHistCache = {};   // share fetches across items
+  const perItem = {}, fits = {};   // per-item joint weight fit (weekly items)
   for (const [item, panel] of Object.entries(rules.items || {})) {
     // Prefer the WEEKLY anchor (the price we publish); fall back to monthly PPI.
     let resolution = 'monthly', target = null, targetLabel = null;
@@ -241,6 +284,7 @@ async function calibrate(getProxy, getIndicator, getAnchor) {
       try { target = proxyCache[proxyId] = proxyCache[proxyId] || monthlyFromDated(await getProxy(proxyId)); targetLabel = proxyId; }
       catch (e) { console.log(`  target ${item} failed: ${e.message}`); continue; }
     }
+    if (resolution === 'weekly') perItem[item] = { targetChg: seriesChanges(target), cands: [] };
     const bucket = resolution === 'weekly' ? weeklyFromDated : monthlyFromDated;
     const align = resolution === 'weekly' ? alignWeekly : alignMonthly;
     const maxLag = resolution === 'weekly' ? 16 : 12;     // 16 weeks vs 12 months
@@ -257,16 +301,24 @@ async function calibrate(getProxy, getIndicator, getAnchor) {
       if (hist.skip) { rec.status = 'skipped'; rec.reason = hist.skip; edges.push(rec); continue; }
       const al = align(bucket(hist.pairs), target);
       if (al.length < minAlign) { rec.status = 'insufficient'; rec.n = al.length; edges.push(rec); continue; }
-      const ch = alignedChanges(al);
+      const ch = keyedChanges(al);
       const ed = C.calibrateEdge(ch.xc, ch.yc, { maxLag, minN });
       Object.assign(rec, ed, { status: ed.ok ? 'tested' : 'untestable', circular: CIRCULAR_SOURCES.has(ind.source), lagUnit: resolution === 'weekly' ? 'wk' : 'mo' });
+      if (rec.status === 'tested' && resolution === 'weekly' && perItem[item]) perItem[item].cands.push({ rec, lag: ed.lag, sign: ind.sign, xMap: ch.xMap });
       edges.push(rec);
     }
   }
   const tested = edges.filter((e) => e.status === 'tested' && typeof e.p === 'number');
   C.benjaminiHochberg(tested, 0.10);
   tested.forEach((e) => { e.suggestWeight = e.circular ? 0 : C.suggestWeight(e, 3); });
-  return edges;
+  // Per-item joint NNLS fit over the survivors (BH+OOS+N) → suggested weights.
+  for (const [item, pi] of Object.entries(perItem)) {
+    const survivors = pi.cands.filter((c) => c.rec.bhPass && c.rec.oosPass && c.rec.enoughN);
+    if (!survivors.length) continue;
+    const f = fitItemWeights(pi.targetChg, survivors);
+    if (f) fits[item] = f;
+  }
+  return { edges, fits };
 }
 // movement emits resolve to their ams-move spec (skipped anyway, but report the type)
 function resolveMoveSpec(id) {
@@ -274,8 +326,9 @@ function resolveMoveSpec(id) {
   return null;
 }
 
-function report(edges) {
-  console.log('\nCALIBRATION — empirical lead/sign/strength vs the hand-set rule (BLS PPI proxy):\n');
+function report(result) {
+  const edges = result.edges || result, fits = result.fits || {};
+  console.log('\nCALIBRATION — empirical lead/sign/strength vs the hand-set rule:\n');
   const tested = edges.filter((e) => e.status === 'tested');
   console.log('  edge'.padEnd(40) + 'res ruleLd  empLag ruleSgn empSgn  N    p      OOS   BH  →wt    flag   (res W=weekly anchor, m=monthly PPI)');
   for (const e of edges) {
@@ -292,7 +345,18 @@ function report(edges) {
   const holdRightSign = judge.filter((e) => e.oosPass && e.ruleSign === e.sign);
   console.log(`\n  ${tested.length} edge(s) tested — ${wk.length} against the WEEKLY anchor (the price we publish), ${mo.length} on the monthly PPI fallback.`);
   console.log(`  ${pass.length} survived BH+OOS+N · ${holdRightSign.length} hold OOS with the rule's sign · ${judge.filter((e) => e.ruleSign !== e.sign).length} sign disagreement(s).`);
-  console.log('  NEXT: NNLS-fit the surviving edges per item (the weights), benchmark vs equal-weight OOS, apply by hand with a _version bump. Weekly edges that still flip sign are now real evidence (the resolution excuse is gone); monthly-fallback edges keep the proxy caveat.');
+  // Suggested weights — the sign-constrained NNLS fit over each item's survivors.
+  const items = Object.keys(fits);
+  if (items.length) {
+    console.log('\n  SUGGESTED WEIGHTS (sign-constrained NNLS over the survivors — review, then apply by hand + _version bump):');
+    for (const it of items) {
+      const f = fits[it];
+      console.log(`    ${it.padEnd(16)} R²=${f.r2} (N=${f.n}): ` + f.indicators.map((i) => `${i.id}=${i.weight}@${i.lag}${'wk'}`).join('  '));
+    }
+  } else {
+    console.log('\n  SUGGESTED WEIGHTS: none — no item had enough weekly survivors to fit (expected until the weekly anchor + signals clear the bar).');
+  }
+  console.log('  Apply by hand with a _version bump; weekly edges that still flip sign are real evidence now.');
 }
 
 // ---- anchor discovery: confirm each weekly target report's fields ----------
@@ -342,8 +406,9 @@ function selftest() {
   rules.items = { ribeye: { indicators: [{ id: '_lead', source: 'x', sign: 1, weight: 1, lead: { min: 8, max: 12 } }, { id: '_noise', source: 'x', sign: 1, weight: 1, lead: { min: 0, max: 4 } }] } };
   specs._lead = { type: 'fred', series: 'LEAD' }; specs._noise = { type: 'fred', series: 'NOISE' };
   const getAnchor = async () => [];   // no anchor in selftest → exercises the monthly fallback path
-  return calibrate(getProxy, getInd, getAnchor).then((edges) => {
+  return calibrate(getProxy, getInd, getAnchor).then((result) => {
     rules.items = realRules;
+    const edges = result.edges;
     const lead = edges.find((e) => e.indicator === '_lead'), noise = edges.find((e) => e.indicator === '_noise');
     let fail = 0; const ok = (c, m) => { console.log(`  ${c ? '✓' : '✗ FAIL'} ${m}`); if (!c) fail++; };
     console.log('calibrate-pressure selftest (synthetic, no network):');
@@ -361,6 +426,23 @@ function selftest() {
       [{ commodity: 'Ribeye', Weighted_Average: '8.50', report_date: '2026-06-01' }, { commodity: 'Chuck', Weighted_Average: '4.00', report_date: '2026-06-01' }, { commodity: 'Ribeye', Weighted_Average: '', report_date: '2026-06-08' }],
       { match: { field: 'commodity', value: 'Ribeye' }, field: 'Weighted_Average', dateField: 'report_date' });
     ok(aser.length === 1 && aser[0].value === '8.50' && aser[0].date === '2026-06-01', `anchorSeries filters cut + reads price/date (got ${aser.length} priced rows)`);
+    // fitItemWeights: a survivor that leads the target by lag L with a known sign must
+    // earn a positive-magnitude weight; a useless survivor must be pinned to ~0. Build a
+    // weekly target change map + two survivor change maps keyed by integer week.
+    {
+      const rnd2 = mul(99), rn = () => { let u = 0, v = 0; while (!u) u = rnd2(); while (!v) v = rnd2(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); };
+      const target = {}, good = {}, junk = {}, L = 3;
+      for (let w = 1000; w < 1240; w++) { target[w] = 0.02 * rn(); junk[w] = rn(); }       // target noise + a pure-noise survivor
+      for (let w = 1000; w < 1240; w++) { good[w - L] = target[w] + 0.3 * 0.02 * rn(); }    // good LEADS target by L weeks
+      const fit = fitItemWeights(target, [
+        { id: 'good', lag: L, sign: 1, xMap: good },
+        { id: 'junk', lag: 0, sign: 1, xMap: junk }
+      ], 30);
+      ok(fit && fit.n >= 30, `fitItemWeights assembles enough lag-shifted rows (n=${fit && fit.n})`);
+      const gw = fit && fit.indicators.find((i) => i.id === 'good'), jw = fit && fit.indicators.find((i) => i.id === 'junk');
+      ok(gw && gw.weight > 0.3, `fitItemWeights gives the true leader a real weight (got ${gw && gw.weight})`);
+      ok(jw && Math.abs(jw.weight) < 0.2, `fitItemWeights pins the useless survivor near 0 (got ${jw && jw.weight})`);
+    }
     console.log(fail ? `\ncalibrate-pressure: ${fail} FAIL` : '\ncalibrate-pressure: OK — pipeline recovers truth, rejects noise.');
     process.exit(fail ? 1 : 0);
   });
@@ -370,9 +452,10 @@ if (arg('--selftest')) { selftest(); }
 else if (arg('--anchor-discover')) { anchorDiscover(); }
 else {
   const getAnchor = (spec) => fetchReportWindowed(spec, 4);   // ~4 years of weekly anchor history (server-filtered + cached)
-  calibrate(fetchProxy, fetchIndicatorHistory, getAnchor).then((edges) => {
-    report(edges);
-    const out = { _doc: 'GENERATED by scripts/calibrate-pressure.mjs — empirical lead/sign/strength per indicator→ingredient edge vs the hand-set rule. TARGET: each ingredient is backtested against the WEEKLY wholesale anchor it actually publishes (LMR cutout / AMS terminal / NDPSR dairy, via the same source specs as data/cost-index-sources.json) at WEEKLY resolution; items whose weekly anchor does not resolve fall back to the monthly BLS-PPI proxy (resolution:monthly). Informs human weight edits; NEVER auto-applied. No price. CAVEATS: weekly-anchor edges that still flip sign are real evidence (no resolution excuse); monthly-fallback edges keep the proxy mismatch caveat. Surviving edges are hypotheses to NNLS-fit + benchmark vs equal-weight OOS, then apply by hand with a _version bump.', generatedAt: new Date().toISOString().slice(0, 10), edges };
+  calibrate(fetchProxy, fetchIndicatorHistory, getAnchor).then((result) => {
+    report(result);
+    const { edges, fits } = result;
+    const out = { _doc: 'GENERATED by scripts/calibrate-pressure.mjs — empirical lead/sign/strength per indicator→ingredient edge vs the hand-set rule. TARGET: each ingredient is backtested against the WEEKLY wholesale anchor it actually publishes (LMR cutout / AMS terminal / NDPSR dairy, via the same source specs as data/cost-index-sources.json) at WEEKLY resolution; items whose weekly anchor does not resolve fall back to the monthly BLS-PPI proxy (resolution:monthly). Informs human weight edits; NEVER auto-applied. No price. CAVEATS: weekly-anchor edges that still flip sign are real evidence (no resolution excuse); monthly-fallback edges keep the proxy mismatch caveat. Surviving edges are hypotheses to NNLS-fit + benchmark vs equal-weight OOS, then apply by hand with a _version bump. fits = the sign-constrained NNLS joint weight fit per item over its surviving weekly edges (suggestions only).', generatedAt: new Date().toISOString().slice(0, 10), edges, fits };
     writeFileSync(path.join(repoRoot, 'data/pressure-calibration.json'), JSON.stringify(out, null, 2) + '\n');
     console.log('\nWrote data/pressure-calibration.json');
   }).catch((e) => { console.error('calibrate failed:', e.message); process.exit(1); });
