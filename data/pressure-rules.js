@@ -17,6 +17,10 @@
     "decay": {
       "weeksPerNotch": 3,
       "floorWeeks": 8
+    },
+    "proving": {
+      "minCalls": 12,
+      "minHitRate": 0.6
     }
   },
   "sources": {

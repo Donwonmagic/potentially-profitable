@@ -135,6 +135,20 @@ const PRESSURE_RULES = (() => {
   catch { return { sources: {} }; }
 })();
 const PRESSURE_SOURCES = PRESSURE_RULES.sources || {};
+
+// HOLD-UNTIL-PROVEN. The 2026-Q2 calibration (scripts/calibrate-pressure.mjs) found
+// the hand-set pressure weights have weak out-of-sample support against the best
+// free long-history price proxy. So the inferred Outlook overlay is PUBLISHED for an
+// ingredient only once its OWN live track record (predicted direction vs the realized
+// measured trend) clears this bar — it earns its public slot by demonstrated hit
+// rate, never by assertion. Until then the page ships the MEASURED read alone and the
+// overlay accrues its record silently. (Config lives here, transparent + tunable.)
+const PROVING = (PRESSURE_RULES.defaults && PRESSURE_RULES.defaults.proving) || { minCalls: 12, minHitRate: 0.6 };
+function pressureProven(rec) {
+  const tr = rec && rec.track_record;
+  return !!(tr && tr.n >= PROVING.minCalls && tr.hitRate >= PROVING.minHitRate);
+}
+function anyPressureProven() { return Object.values(PRESSURE_ITEMS).some(pressureProven); }
 const INDICATOR_NAME = {
   'feed-futures':              { en: 'Feed (corn/soy) futures', es: 'Futuros de forraje (maíz/soya)' },
   'broiler-placements':        { en: 'Broiler chick placements', es: 'Colocación de pollitos' },
@@ -921,6 +935,7 @@ function ledeDirection(slug, locale) {
 function pressureBlock(slug, locale) {
   const rec = PRESSURE_ITEMS[slug];
   if (!rec || rec.direction === 'unknown') return '';
+  if (!pressureProven(rec)) return '';   // HOLD: overlay stays private until its track record earns it
   const es = locale === 'es';
   const dir = rec.under_review ? 'review' : rec.direction;
   const lines = {
@@ -1211,7 +1226,7 @@ function emitHubPage(locale, slugs) {
   <div class="ci-body">
     <div class="ci-cta-row">
       <a class="btn btn-primary" href="${base}/tools/cost-pulse/">${es ? 'Abrir Cost Pulse' : 'Open Cost Pulse'}</a>
-      <a class="btn btn-ghost" href="${base}/cost-index/lab/">${es ? 'Laboratorio de Presión' : 'Pressure Lab'}</a>
+      ${anyPressureProven() ? `<a class="btn btn-ghost" href="${base}/cost-index/lab/">${es ? 'Laboratorio de Presión' : 'Pressure Lab'}</a>` : ''}
       <a class="btn btn-ghost" href="${base}/glossary/cost-index/">${es ? '¿Qué es un índice de costos?' : 'What is a cost index?'}</a>
     </div>
     ${movingNowSection(shipSlugs, locale)}
