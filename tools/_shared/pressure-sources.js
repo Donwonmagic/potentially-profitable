@@ -75,7 +75,14 @@
     opts = opts || {};
     var field = opts.field || 'price';
     var dateKey = opts.dateKey || 'report_date';
-    var arr = (rows || []).map(function (r) { return { v: parseNum(r[field]), d: String(r[dateKey] || r.report_begin_date || '') }; })
+    // One MARS report carries every commodity; keep only the rows for this spec's
+    // commodity (server-side `q` should already narrow it, but filter defensively
+    // so a shared report can't bleed onion volume into the tomato series).
+    var comKey = opts.commodityKey || 'commodity';
+    var com = opts.commodity ? String(opts.commodity).toUpperCase() : null;
+    var arr = (rows || []).filter(function (r) {
+      return !com || String((r && r[comKey]) || '').toUpperCase().indexOf(com) >= 0;
+    }).map(function (r) { return { v: parseNum(r[field]), d: String(r[dateKey] || r.report_begin_date || r.report_end_date || '') }; })
       .filter(function (r) { return r.v != null; });
     arr.sort(function (a, b) { return a.d.localeCompare(b.d); });
     var vals = arr.map(function (r) { return r.v; });
@@ -92,17 +99,26 @@
   // two-state zig-zag. Single-area is the degenerate case (one row per date).
   function usdmSeverity(rows, opts) {
     opts = opts || {};
-    var cats = opts.categories || ['D2', 'D3', 'D4'];
+    // The USDM JSON capitalizes inconsistently across endpoints (MapDate vs
+    // mapDate, D2 vs d2). Match keys case-insensitively so the share series
+    // builds regardless of which casing the service returns.
+    var cats = (opts.categories || ['D2', 'D3', 'D4']).map(function (c) { return c.toLowerCase(); });
     var byDate = {};
     (rows || []).forEach(function (r) {
+      if (!r || typeof r !== 'object') return;
+      var lc = {}; Object.keys(r).forEach(function (k) { lc[k.toLowerCase()] = r[k]; });
       var sum = 0, any = false;
-      cats.forEach(function (c) { var n = parseNum(r[c]); if (n != null) { sum += n; any = true; } });
+      cats.forEach(function (c) { var n = parseNum(lc[c]); if (n != null) { sum += n; any = true; } });
       if (!any) return;
-      var d = String(r.MapDate || r.ValidStart || r.validStart || '');
+      var d = String(lc.mapdate || lc.validstart || lc.validend || '');
       (byDate[d] = byDate[d] || []).push(sum);
     });
-    return Object.keys(byDate).sort(function (a, b) { return a.localeCompare(b); })
+    var series = Object.keys(byDate).sort(function (a, b) { return a.localeCompare(b); })
       .map(function (d) { var a = byDate[d]; return a.reduce(function (s, x) { return s + x; }, 0) / a.length; });
+    // Honor `tail` like every other source: change over the recent N readings,
+    // NOT the full ~5-month fetch window (which exploded a low-base drought into
+    // a 337% "change"). USDM is weekly, so tail:5 ≈ a 5-week window.
+    return opts.tail ? series.slice(-opts.tail) : series;
   }
 
   // ---- NWS api.weather.gov active alerts ----------------------------

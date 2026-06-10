@@ -3,7 +3,7 @@
   "_version": "2026-Q2-1",
   "status": "preview",
   "asOf": "2026-06-08",
-  "generatedAt": "2026-06-09",
+  "generatedAt": "2026-06-10",
   "items": {
     "chicken-breast": {
       "item": "chicken-breast",
@@ -610,7 +610,7 @@
       "direction": "building",
       "confidence": "high",
       "agreement": 1,
-      "score": 6,
+      "score": 4,
       "cutoff": 2,
       "freshness_weeks": 0,
       "anchor_print_date": "2026-06-05",
@@ -632,22 +632,6 @@
           "cite": "ams-movement",
           "group": null,
           "change_pct": -0.1,
-          "as_of": "2026-06-08"
-        },
-        {
-          "indicator": "crop-condition",
-          "source": "nass-crop-progress",
-          "signed_signal": 1,
-          "weight": 2,
-          "lead": {
-            "min": 2,
-            "max": 8,
-            "unit": "week"
-          },
-          "tier": "B",
-          "cite": "nass-crop-progress",
-          "group": null,
-          "change_pct": -0.05,
           "as_of": "2026-06-08"
         },
         {

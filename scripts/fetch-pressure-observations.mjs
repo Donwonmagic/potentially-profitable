@@ -41,8 +41,8 @@ function changeFromRaw(spec, raw) {
   switch (spec.type) {
     case 'eia':  return S.windowChange(S.eiaSeries(raw, { tail: spec.tail }));
     case 'nass': return S.windowChange(S.nassSeries((raw && raw.data) || raw, { tail: spec.tail }));
-    case 'ams':  return S.windowChange(S.amsSeries((raw && raw.results) || raw, { field: spec.field, tail: spec.tail }));
-    case 'usdm': return S.windowChange(S.usdmSeverity((raw && raw.length != null) ? raw : (raw && raw.data) || [], { categories: spec.categories }));
+    case 'ams':  return S.windowChange(S.amsSeries((raw && raw.results) || raw, { field: spec.field, dateKey: spec.dateKey, commodity: spec.commodity, commodityKey: spec.commodityKey, tail: spec.tail }));
+    case 'usdm': return S.windowChange(S.usdmSeverity((raw && raw.length != null) ? raw : (raw && raw.data) || [], { categories: spec.categories, tail: spec.tail }));
     case 'nws':  return S.eventSignal(S.nwsFreezeActive(raw, { events: spec.events, areaMatch: spec.areaMatch }));
     default: return null;
   }
@@ -85,7 +85,10 @@ async function fetchOnce(url, init) {
   const ctrl = new AbortController();
   const to = setTimeout(() => ctrl.abort(), 25000);
   try {
-    const r = await fetch(url, Object.assign({ signal: ctrl.signal, headers: { 'User-Agent': 'muntin.digital cost-index (contact dongoldstein.accts@gmail.com)' } }, init || {}));
+    // Merge headers so a per-spec Accept (USDM needs application/json or it
+    // returns CSV) doesn't clobber the User-Agent the public endpoints expect.
+    const headers = Object.assign({ 'User-Agent': 'muntin.digital cost-index (contact dongoldstein.accts@gmail.com)' }, (init && init.headers) || {});
+    const r = await fetch(url, Object.assign({ signal: ctrl.signal }, init || {}, { headers }));
     if (!r.ok) throw new Error('HTTP ' + r.status);
     return await r.json();
   } finally { clearTimeout(to); }
@@ -119,11 +122,24 @@ function urlFor(id, spec) {
     const fmt = (d) => `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`;
     const end = new Date();
     const start = new Date(end.getTime() - 150 * 86400000);
-    return { url: `https://usdmdataservices.unl.edu/api/StateStatistics/GetDroughtSeverityStatisticsByAreaPercent?aoi=${aoi}&startdate=${fmt(start)}&enddate=${fmt(end)}&statisticsType=1` };
+    // USDM defaults to CSV — ask for JSON explicitly or fetchOnce's r.json() chokes
+    // on "MapDate,St...".
+    return { url: `https://usdmdataservices.unl.edu/api/StateStatistics/GetDroughtSeverityStatisticsByAreaPercent?aoi=${aoi}&startdate=${fmt(start)}&enddate=${fmt(end)}&statisticsType=1`, init: { headers: { Accept: 'application/json' } } };
   }
   if (spec.type === 'nws') {
     const ev = (spec.events || []).map(encodeURIComponent).join(',');
     return { url: `https://api.weather.gov/alerts/active?event=${ev}` };
+  }
+  if (spec.type === 'ams') {
+    // USDA AMS My Market News (MARS v1.2). Auth: API key as the Basic-auth
+    // username, blank password → base64(key + ':'). One report per slug; the
+    // optional `q` filters server-side (e.g. "commodity=ONIONS;market_type=Movement").
+    const AMS_KEY = process.env.AMS_KEY;
+    if (!AMS_KEY) return { skip: 'no AMS_KEY' };
+    if (!spec.report) return { skip: 'no report slug' };
+    const qs = spec.q ? `?q=${encodeURIComponent(spec.q)}` : '';
+    const auth = Buffer.from(AMS_KEY + ':').toString('base64');
+    return { url: `https://marsapi.ams.usda.gov/services/v1.2/reports/${encodeURIComponent(spec.report)}${qs}`, init: { headers: { Authorization: `Basic ${auth}` } } };
   }
   return { skip: 'unknown type' };
 }
@@ -151,7 +167,7 @@ async function probe() {
     const u = urlFor(id, spec);
     if (u.skip) { console.log(`  ✗ ${id.padEnd(26)} [${spec.type}] skipped: ${u.skip}`); continue; }
     try {
-      const raw = await fetchJson(u.url);
+      const raw = await fetchJson(u.url, u.init);
       const rows = rowsFor(spec, raw);
       const cp = changeFromRaw(spec, raw);
       const usable = cp != null;
@@ -162,6 +178,20 @@ async function probe() {
         detail += `\n      short_desc: ${sd.length ? sd.join(' | ') : '(none — query matched nothing)'}`;
         if (ud.length > 1) detail += `\n      unit_desc (multiple — tighten with unit_desc): ${ud.join(' | ')}`;
       }
+      // USDM: when the share series won't compute, dump the first row's keys so
+      // we can see exactly which field names the JSON uses (MapDate/D2 casing).
+      if (spec.type === 'usdm' && rows.length) {
+        detail += `\n      usdm keys: ${Object.keys(rows[0]).join(', ')}`;
+        if (!usable) detail += `\n      usdm row[0]: ${JSON.stringify(rows[0])}`;
+      }
+      // AMS: dump the report's field names + the distinct commodity values so we
+      // can confirm the volume field + the exact commodity spelling to filter on.
+      if (spec.type === 'ams' && rows.length) {
+        detail += `\n      ams keys: ${Object.keys(rows[0]).join(', ')}`;
+        const cv = distinct(rows, spec.commodityKey || 'commodity', 12);
+        if (cv.length) detail += `\n      commodities: ${cv.join(' | ')}`;
+        if (!usable) detail += `\n      ams row[0]: ${JSON.stringify(rows[0])}`;
+      }
       console.log(`  ${flag} ${id.padEnd(26)} [${spec.type}] ${detail}`);
       if (usable) ready.push(id);
     } catch (e) { console.log(`  ✗ ${id.padEnd(26)} [${spec.type}] fetch failed: ${e.message}`); }
@@ -169,6 +199,57 @@ async function probe() {
   console.log(`\n${ready.length}/${Object.keys(specs).length} specs returned a usable series.`);
   const toFlip = ready.filter((id) => specs[id].verified === false);
   if (toFlip.length) console.log(`Ready to flip verified:true (confirm the short_desc above looks right first):\n  ${toFlip.join('\n  ')}`);
+}
+
+// ---- AMS discovery: find the produce-movement report slug + the exact commodity
+// spelling. MARS has hundreds of reports; this lists the ones that look like
+// movement/shipment/specialty-crop feeds + the matching commodity names, so we
+// can fill in `report` + `commodity` on the shipment specs. Writes nothing.
+async function amsDiscover() {
+  const AMS_KEY = process.env.AMS_KEY;
+  if (!AMS_KEY) { console.log('AMS discovery needs AMS_KEY (free MARS key from mymarketnews.ams.usda.gov).'); process.exit(1); }
+  const auth = 'Basic ' + Buffer.from(AMS_KEY + ':').toString('base64');
+  const init = { headers: { Authorization: auth } };
+  const base = 'https://marsapi.ams.usda.gov/services/v1.2';
+  console.log('AMS discovery (writes nothing).\n');
+  // 1) Reports whose title/market hints at movement/shipment/specialty crops.
+  try {
+    const reports = await fetchJson(`${base}/reports`, init);
+    const arr = Array.isArray(reports) ? reports : (reports.results || reports.reports || []);
+    console.log(`reports: ${arr.length} total. first row keys: ${arr[0] ? Object.keys(arr[0]).join(', ') : '(none)'}`);
+    const title = (r) => String(r.report_title || r.report_name || r.title || r.name || '');
+    const line = (r) => `    [${r.slug_name || r.slug_id || '?'} / id ${r.slug_id || '?'}] {mt: ${[].concat(r.market_types || r.market_type || []).join('; ') || '?'}} ${title(r)}`;
+    // 1) TRUE volume reports — movement / shipment / arrival in the title.
+    const vol = arr.filter((r) => /\bmovement\b|\bshipment|\barrival/i.test(title(r)));
+    console.log(`\n  VOLUME reports — movement/shipment/arrival (${vol.length}):`);
+    vol.forEach((r) => console.log(line(r)));
+    // 2) Report taxonomy — every distinct market_type, so we can see if there's a
+    // "Movement"/"Shipment"/"Shipping Point" family we should be querying instead.
+    const mts = {};
+    arr.forEach((r) => [].concat(r.market_types || r.market_type || []).forEach((m) => { mts[m] = (mts[m] || 0) + 1; }));
+    console.log(`\n  market_types across catalog: ${Object.entries(mts).sort((a, b) => b[1] - a[1]).map(([m, n]) => `${m}(${n})`).join(' | ')}`);
+    // 3) Fallback set — terminal-market VEGETABLE price reports (current, structured).
+    const veg = arr.filter((r) => /terminal market veget/i.test(title(r)) && !/discontinued/i.test(title(r)));
+    console.log(`\n  fallback — active Terminal Market Vegetable price reports (${veg.length}):`);
+    veg.slice(0, 20).forEach((r) => console.log(line(r)));
+  } catch (e) { console.log(`  reports list failed: ${e.message}`); }
+  // 2) Commodity names matching our produce items (exact spelling for the filter).
+  try {
+    const coms = await fetchJson(`${base}/commodities`, init);
+    const arr = Array.isArray(coms) ? coms : (coms.results || coms.commodities || []);
+    const re = /onion|lettuce|tomato|potato/i;
+    const hits = arr.map((c) => (typeof c === 'string' ? c : (c.commodity || c.commodity_name || c.name || JSON.stringify(c)))).filter((c) => re.test(c));
+    console.log(`\n  produce commodity names (${hits.length} of ${arr.length}): ${hits.join(' | ') || '(none matched)'}`);
+  } catch (e) { console.log(`  commodities list failed: ${e.message}`); }
+  // 3) Sample the LA terminal-vegetable report so we see the fallback DATA shape
+  // (which field is volume vs price, the date field, the commodity column) — recent
+  // window so we don't pull years of history.
+  try {
+    const sample = await fetchJson(`${base}/reports/hc_fv020?q=commodity=Onions, Dry`, init);
+    const rows = (sample && sample.results) || (Array.isArray(sample) ? sample : []);
+    console.log(`\n  SAMPLE hc_fv020 (LA veg, q=Onions, Dry): ${rows.length} rows. keys: ${rows[0] ? Object.keys(rows[0]).join(', ') : '(none)'}`);
+    if (rows[0]) console.log(`  sample row: ${JSON.stringify(rows[0])}`);
+  } catch (e) { console.log(`  hc_fv020 sample failed: ${e.message}`); }
 }
 
 async function live() {
@@ -184,7 +265,7 @@ async function live() {
     const u = urlFor(id, spec);
     if (u.skip) { gaps.push(`${id}: ${u.skip}`); continue; }
     try {
-      const raw = await fetchJson(u.url);
+      const raw = await fetchJson(u.url, u.init);
       const cp = changeFromRaw(spec, raw);
       if (cp == null) { gaps.push(`${id}: no usable series`); continue; }
       observations[id] = cp;
@@ -209,5 +290,6 @@ else if (arg('--demo')) {
   writeFileSync(path.join(repoRoot, 'data/pressure-observations.json'), JSON.stringify(demo, null, 2) + '\n');
   console.log('Wrote data/pressure-observations.json from demo fixture.');
 } else if (arg('--probe')) { probe(); }
+else if (arg('--ams-discover')) { amsDiscover(); }
 else if (arg('--live')) { live(); }
-else { console.log('usage: --self-test | --probe | --demo | --live\n  --probe  try every spec live (ignores verified), report what each returns, write nothing\n  --live   fetch verified specs → data/pressure-observations.json\n  (live/probe need free EIA_KEY + NASS_KEY; USDM/NWS keyless)'); }
+else { console.log('usage: --self-test | --probe | --ams-discover | --demo | --live\n  --probe         try every spec live (ignores verified), report what each returns, write nothing\n  --ams-discover  list MARS movement/specialty reports + produce commodity names (find the AMS slug)\n  --live          fetch verified specs → data/pressure-observations.json\n  (live/probe need free EIA_KEY + NASS_KEY; AMS needs AMS_KEY; USDM/NWS keyless)'); }
