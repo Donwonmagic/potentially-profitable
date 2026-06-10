@@ -84,8 +84,10 @@ jobs:
           NASS_KEY: ${{ secrets.NASS_KEY }}
           FRED_KEY: ${{ secrets.FRED_KEY }}
           BLS_KEY: ${{ secrets.BLS_KEY }}
+          AMS_KEY: ${{ secrets.AMS_KEY }}
         run: |
           node scripts/test-pressure-calibrate.mjs
+          node scripts/calibrate-pressure.mjs --anchor-discover
           node scripts/calibrate-pressure.mjs
 
       # --- Gates 3+4: live fetch → score → render → gate → commit -------------

@@ -64,6 +64,60 @@ function alignMonthly(a, b) {                              // inner-join two [{y
 }
 function monthNums(rows) { return rows.map((r) => parseInt(r.ym.slice(5, 7), 10) - 1); }
 
+// ---- WEEKLY machinery (the target-rebuild: align to the price we publish) -------
+// The weekly anchor is the keystone fix — monthly PPI smeared away the weekly leads.
+const WK = 7 * 864e5;
+function weekKey(dateStr) {                                // 'YYYY-MM-DD' → integer week bucket (sortable) + its month
+  const m = String(dateStr || '').match(/(\d{4})-(\d{2})-(\d{2})/);
+  if (!m) return null;
+  const t = Date.UTC(+m[1], +m[2] - 1, +m[3]);
+  return { wk: Math.floor(t / WK), mo: +m[2] - 1 };
+}
+function weeklyFromDated(pairs) {                          // [{date,value}] → sorted [{wk, mo, v}] (avg per ISO week)
+  const by = {};
+  pairs.forEach((p) => { const k = weekKey(p.date); const v = Number(p.value); if (!k || !isFinite(v)) return; (by[k.wk] = by[k.wk] || { mo: k.mo, vals: [] }).vals.push(v); });
+  return Object.keys(by).map(Number).sort((a, b) => a - b).map((w) => ({ wk: w, mo: by[w].mo, v: by[w].vals.reduce((s, x) => s + x, 0) / by[w].vals.length }));
+}
+function alignWeekly(a, b) {                               // inner-join two weekly series on wk
+  const mb = {}; b.forEach((p) => { mb[p.wk] = p.v; });
+  return a.filter((p) => p.wk in mb).map((p) => ({ wk: p.wk, mo: p.mo, x: p.v, y: mb[p.wk] })).sort((p, q) => p.wk - q.wk);
+}
+
+// Ingredient → the WEEKLY wholesale ANCHOR we actually publish (USDA MARS/LMR).
+// Best-guess report slug + value/date fields; `--anchor-discover` confirms the exact
+// field names (mirrors how the AMS-movement integration was nailed down). Seafood
+// has no free weekly series → stays on the monthly FRED proxy.
+const ANCHOR = {
+  'ribeye':          { report: 'lm_xb459', commodity: 'Choice', note: 'National Weekly Boxed Beef Cutout (Choice)' },
+  'beef-tenderloin': { report: 'lm_xb459', commodity: 'Choice', note: 'Choice cutout (tenderloin tracks the middle-meat cutout)' },
+  'pork-loin':       { report: 'lm_pk602', note: 'Pork Carcass Cutout (weekly avg of daily)' },
+  'pork-shoulder':   { report: 'lm_pk602', note: 'Pork cutout' },
+  'chicken-breast':  { report: 'py_py018', note: 'Weekly broiler/fryer parts — confirm slug+field' },
+  'whole-chicken':   { report: 'py_py018', note: 'Weekly national whole broiler/fryer' },
+  'butter':          { report: 'dy_wk100', commodity: 'Butter', note: 'NDPSR weekly butter — confirm slug+field' },
+  'cheddar-cheese':  { report: 'dy_wk100', commodity: 'Cheddar 40', note: 'NDPSR weekly block cheddar' },
+  'romaine-lettuce': { report: 'hc_fv020', commodity: 'Lettuce, Romaine', note: 'LA terminal veg (one origin/grade — confirm)' },
+  'tomato':          { report: 'hc_fv020', commodity: 'Tomatoes', note: 'LA terminal veg' },
+  'onion':           { report: 'hc_fv020', commodity: 'Onions, Dry', note: 'LA terminal veg' },
+  'russet-potato':   { report: 'hc_fv020', commodity: 'Potatoes', note: 'LA terminal veg' }
+};
+function amsAuth() { const k = process.env.AMS_KEY; return k ? 'Basic ' + Buffer.from(k + ':').toString('base64') : null; }
+// MARS report DETAILS, stitched across ~150-day windows back `years` years (the API
+// caps each call ~180d). Returns the merged rows. A failed window is skipped.
+async function fetchReportWindowed(report, years, auth) {
+  const fmt = (d) => `${('0' + (d.getMonth() + 1)).slice(-2)}/${('0' + d.getDate()).slice(-2)}/${d.getFullYear()}`;
+  const out = []; const now = Date.now(); const step = 150 * 864e5;
+  for (let end = now; end > now - years * 365 * 864e5; end -= step) {
+    const e = new Date(end), s = new Date(end - step);
+    const q = `?q=${encodeURIComponent('report_begin_date=' + fmt(s) + ':' + fmt(e))}`;
+    try {
+      const j = await getJson(`https://marsapi.ams.usda.gov/services/v1.2/reports/${encodeURIComponent(report)}/${encodeURIComponent('Report Details')}${q}`, { headers: { Authorization: auth } });
+      (j && j.results || []).forEach((r) => out.push(r));
+    } catch (e2) { /* skip this window */ }
+  }
+  return out;
+}
+
 // ---- live fetchers (run in the Action; each → [{date:'YYYY-MM-DD'|'YYYY-MM', value}]) ----
 async function getJson(url, init) {
   const r = await fetch(url, Object.assign({ headers: { 'User-Agent': 'muntin.digital cost-index calibrate' } }, init || {}));
@@ -197,6 +251,31 @@ function report(edges) {
   console.log('  CAUTION: the monthly BLS-PPI proxy is national & smoothed, not our weekly spot anchor — a weak/flipped edge can be a proxy or resolution mismatch, NOT a dead signal. Do not flip rule signs on short-lead edges. Review data/pressure-calibration.json before any hand edit (+ _version bump).');
 }
 
+// ---- anchor discovery: confirm each weekly target report's fields ----------
+async function anchorDiscover() {
+  const auth = amsAuth();
+  if (!auth) { console.log('anchor-discover needs AMS_KEY.'); process.exit(1); }
+  console.log('ANCHOR discovery — confirm each weekly target report\'s value + date field (writes nothing).\n');
+  const seen = new Set();
+  for (const [item, a] of Object.entries(ANCHOR)) {
+    if (seen.has(a.report)) continue; seen.add(a.report);            // shared reports once
+    try {
+      const rows = await fetchReportWindowed(a.report, 0.5, auth);   // ~6 months
+      const r0 = rows[0];
+      console.log(`  [${a.report}] (${item}…) rows=${rows.length} — ${a.note || ''}`);
+      if (r0) {
+        const nums = Object.keys(r0).filter((k) => r0[k] !== '' && r0[k] != null && isFinite(Number(String(r0[k]).replace(/[$,]/g, ''))) && !/date|year|_id|code|format/i.test(k));
+        const dates = Object.keys(r0).filter((k) => /date/i.test(k));
+        console.log(`      value-candidates: ${nums.join(', ') || '(none — check section/slug)'}`);
+        console.log(`      date-candidates: ${dates.join(', ')}`);
+        if (a.commodity) { const cv = []; rows.forEach((r) => { const c = r.commodity || r.item; if (c && cv.indexOf(c) < 0 && cv.length < 12) cv.push(c); }); if (cv.length) console.log(`      commodities: ${cv.join(' | ')}`); }
+        console.log(`      sample: ${JSON.stringify(r0).slice(0, 280)}`);
+      } else console.log('      (no rows — confirm the slug)');
+    } catch (e) { console.log(`  [${a.report}] (${item}…) failed: ${e.message}`); }
+  }
+  console.log('\nPaste this back — I pin the value/date/commodity fields, then the weekly target replaces the monthly PPI proxy.');
+}
+
 // ---- selftest: synthetic dated series, no network ------------------
 function selftest() {
   // Build a proxy (random-ish monthly walk) and an indicator that leads it by 3
@@ -227,12 +306,18 @@ function selftest() {
     ok(lead && lead.sign === 1 && lead.oosPass, 'lead: correct sign, holds OOS');
     ok(lead && lead.suggestWeight > 0, `lead earns a weight (${lead && lead.suggestWeight})`);
     ok(noise && (!noise.bhPass || !noise.oosPass) && noise.suggestWeight === 0, 'noise earns weight 0');
+    // weekly machinery (the target-rebuild plumbing)
+    const wkly = weeklyFromDated([{ date: '2026-01-05', value: 10 }, { date: '2026-01-07', value: 12 }, { date: '2026-01-12', value: 20 }]);
+    ok(wkly.length === 2 && Math.abs(wkly[0].v - 11) < 1e-9, `weeklyFromDated buckets+averages by ISO week (got ${wkly.length} weeks)`);
+    const al = alignWeekly([{ wk: 1, mo: 0, v: 5 }, { wk: 2, mo: 0, v: 6 }], [{ wk: 2, v: 7 }, { wk: 3, v: 8 }]);
+    ok(al.length === 1 && al[0].x === 6 && al[0].y === 7, 'alignWeekly inner-joins two weekly series');
     console.log(fail ? `\ncalibrate-pressure: ${fail} FAIL` : '\ncalibrate-pressure: OK — pipeline recovers truth, rejects noise.');
     process.exit(fail ? 1 : 0);
   });
 }
 
 if (arg('--selftest')) { selftest(); }
+else if (arg('--anchor-discover')) { anchorDiscover(); }
 else {
   calibrate(fetchProxy, fetchIndicatorHistory).then((edges) => {
     report(edges);
