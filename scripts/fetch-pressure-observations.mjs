@@ -41,6 +41,7 @@ const specs = Object.fromEntries(Object.entries((rd('data/pressure-source-specs.
 function changeFromRaw(spec, raw) {
   switch (spec.type) {
     case 'eia':  return S.windowChange(S.eiaSeries(raw, { tail: spec.tail }));
+    case 'fred': return S.windowChange(S.fredSeries(raw, { tail: spec.tail }));
     case 'nass': return S.windowChange(S.nassSeries((raw && raw.data) || raw, { tail: spec.tail }));
     case 'ams':  return S.windowChange(S.amsSeries((raw && raw.results) || raw, { field: spec.field, dateKey: spec.dateKey, commodity: spec.commodity, commodityKey: spec.commodityKey, tail: spec.tail }));
     case 'usdm': return S.windowChange(S.usdmSeverity((raw && raw.length != null) ? raw : (raw && raw.data) || [], { categories: spec.categories, tail: spec.tail }));
@@ -130,7 +131,8 @@ function selfTest() {
               { ValidStart: '2026-06-01', D2: '10', D3: '5', D4: '0' }, { ValidStart: '2026-06-01', D2: '20', D3: '5', D4: '0' },
               { ValidStart: '2026-06-08', D2: '14', D3: '8', D4: '2' }, { ValidStart: '2026-06-08', D2: '30', D3: '6', D4: '0' }
             ], want: (v) => v > 0 },
-    nws:  { spec: { type: 'nws', events: ['Freeze Warning'], areaMatch: 'AZ' }, raw: { features: [{ properties: { event: 'Freeze Warning', areaDesc: 'Yuma County, AZ' } }] }, want: (v) => v === 1 }
+    nws:  { spec: { type: 'nws', events: ['Freeze Warning'], areaMatch: 'AZ' }, raw: { features: [{ properties: { event: 'Freeze Warning', areaDesc: 'Yuma County, AZ' } }] }, want: (v) => v === 1 },
+    fred: { spec: { type: 'fred', tail: 4 }, raw: { observations: [{ date: '2026-03-01', value: '180.0' }, { date: '2026-04-01', value: '.' }, { date: '2026-05-01', value: '190.0' }] }, want: (v) => v > 0 }
   };
   let fail = 0;
   for (const [t, c] of Object.entries(fx)) {
@@ -185,6 +187,11 @@ function urlFor(id, spec) {
     if (!EIA_KEY) return { skip: 'no EIA_KEY' };
     return { url: `https://api.eia.gov/v2/seriesid/${encodeURIComponent(spec.series)}?api_key=${EIA_KEY}` };
   }
+  if (spec.type === 'fred') {
+    const FRED_KEY = process.env.FRED_KEY;
+    if (!FRED_KEY) return { skip: 'no FRED_KEY' };
+    return { url: `https://api.stlouisfed.org/fred/series/observations?series_id=${encodeURIComponent(spec.series)}&api_key=${FRED_KEY}&file_type=json&sort_order=desc&limit=${spec.limit || 24}` };
+  }
   if (spec.type === 'nass') {
     if (!NASS_KEY) return { skip: 'no NASS_KEY' };
     const q = Object.entries(spec.query || {}).map(([k, v]) => `${k}=${encodeURIComponent(v)}`).join('&');
@@ -230,6 +237,7 @@ function urlFor(id, spec) {
 function rowsFor(spec, raw) {
   switch (spec.type) {
     case 'eia':  return (raw && raw.response && raw.response.data) || (raw && raw.data) || [];
+    case 'fred': return (raw && raw.observations) || [];
     case 'nass': return (raw && raw.data) || (Array.isArray(raw) ? raw : []);
     case 'ams':  return (raw && raw.results) || (Array.isArray(raw) ? raw : []);
     case 'usdm': return Array.isArray(raw) ? raw : ((raw && raw.data) || []);

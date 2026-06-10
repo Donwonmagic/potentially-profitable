@@ -5,6 +5,7 @@
   "defaults": { "deadband": 0.02, "cutoffT": 2, "agreement": { "highT": 0.66, "modT": 0.33 }, "decay": { "weeksPerNotch": 3, "floorWeeks": 8 } },
   "sources": {
     "ams-grain": "https://www.ams.usda.gov/market-news/state-grain-reports",
+    "fred-feed": "https://fred.stlouisfed.org/series/PMAIZMTUSDM",
     "ams-mmn": "https://mymarketnews.ams.usda.gov/mymarketnews-api",
     "ams-movement": "https://www.ams.usda.gov/market-news/fruit-and-vegetable-movement-reports",
     "nass-broiler": "https://www.nass.usda.gov/Surveys/Guide_to_NASS_Surveys/Broiler_Hatchery/index.php",
@@ -21,13 +22,13 @@
   },
   "items": {
     "chicken-breast": { "rule_version": "2026-Q2-1", "indicators": [
-      { "id": "feed-futures", "source": "ams-grain", "sign": 1, "weight": 3, "tier": "A", "window": "4w", "lead": { "min": 6, "max": 9, "unit": "week" }, "cite": "ers-feed-cost", "note": "feed is 50-70% of broiler cost (ERS); corn+soy settlements via AMS" },
+      { "id": "feed-grain", "source": "fred-feed", "sign": 1, "weight": 3, "tier": "A", "window": "4w", "lead": { "min": 6, "max": 9, "unit": "week" }, "cite": "fred-feed", "note": "feed is 50-70% of broiler cost (ERS); corn+soy settlements via AMS" },
       { "id": "broiler-placements", "source": "nass-broiler", "sign": -1, "weight": 2, "tier": "B", "window": "4w", "lead": { "min": 6, "max": 10, "unit": "week" }, "cite": "nass-broiler", "note": "more chicks placed → more meat ~6-10 wk out → cost down" },
       { "id": "cold-storage-poultry", "source": "nass-cold-storage", "sign": -1, "weight": 1, "tier": "C", "window": "1m", "lead": { "min": 4, "max": 8, "unit": "week" }, "cite": "nass-cold-storage" },
       { "id": "diesel", "source": "eia-diesel", "sign": 1, "weight": 1, "tier": "A", "window": "4w", "lead": { "min": 0, "max": 4, "unit": "week" }, "group": "freight", "cite": "eia-diesel", "note": "freight rides every ingredient" }
     ] },
     "whole-chicken": { "rule_version": "2026-Q2-1", "indicators": [
-      { "id": "feed-futures", "source": "ams-grain", "sign": 1, "weight": 3, "tier": "A", "window": "4w", "lead": { "min": 6, "max": 9, "unit": "week" }, "cite": "ers-feed-cost" },
+      { "id": "feed-grain", "source": "fred-feed", "sign": 1, "weight": 3, "tier": "A", "window": "4w", "lead": { "min": 6, "max": 9, "unit": "week" }, "cite": "fred-feed" },
       { "id": "broiler-placements", "source": "nass-broiler", "sign": -1, "weight": 2, "tier": "B", "window": "4w", "lead": { "min": 6, "max": 10, "unit": "week" }, "cite": "nass-broiler" },
       { "id": "cold-storage-poultry", "source": "nass-cold-storage", "sign": -1, "weight": 1, "tier": "C", "window": "1m", "lead": { "min": 4, "max": 8, "unit": "week" }, "cite": "nass-cold-storage" },
       { "id": "diesel", "source": "eia-diesel", "sign": 1, "weight": 1, "tier": "A", "window": "4w", "lead": { "min": 0, "max": 4, "unit": "week" }, "group": "freight", "cite": "eia-diesel" }
@@ -35,24 +36,24 @@
     "ribeye": { "rule_version": "2026-Q2-1", "indicators": [
       { "id": "cattle-on-feed-placements", "source": "nass-cattle-on-feed", "sign": -1, "weight": 2, "tier": "B", "window": "1m", "lead": { "min": 16, "max": 26, "unit": "week" }, "cite": "nass-cattle-on-feed", "note": "placements forecast marketings 4-6 mo out (NASS)" },
       { "id": "cold-storage-beef", "source": "nass-cold-storage", "sign": -1, "weight": 1, "tier": "C", "window": "1m", "lead": { "min": 4, "max": 8, "unit": "week" }, "cite": "nass-cold-storage" },
-      { "id": "feed-futures", "source": "ams-grain", "sign": 1, "weight": 1, "tier": "C", "window": "4w", "lead": { "min": 26, "max": 78, "unit": "week" }, "cite": "ers-cycles", "note": "feed is a weak NEAR-TERM lever for beef; herd cycle dominates" },
+      { "id": "feed-grain", "source": "fred-feed", "sign": 1, "weight": 1, "tier": "C", "window": "4w", "lead": { "min": 26, "max": 78, "unit": "week" }, "cite": "fred-feed", "note": "feed is a weak NEAR-TERM lever for beef; herd cycle dominates" },
       { "id": "diesel", "source": "eia-diesel", "sign": 1, "weight": 1, "tier": "A", "window": "4w", "lead": { "min": 0, "max": 4, "unit": "week" }, "group": "freight", "cite": "eia-diesel" }
     ] },
     "beef-tenderloin": { "rule_version": "2026-Q2-1", "indicators": [
       { "id": "cattle-on-feed-placements", "source": "nass-cattle-on-feed", "sign": -1, "weight": 2, "tier": "B", "window": "1m", "lead": { "min": 16, "max": 26, "unit": "week" }, "cite": "nass-cattle-on-feed" },
       { "id": "cold-storage-beef", "source": "nass-cold-storage", "sign": -1, "weight": 1, "tier": "C", "window": "1m", "lead": { "min": 4, "max": 8, "unit": "week" }, "cite": "nass-cold-storage" },
-      { "id": "feed-futures", "source": "ams-grain", "sign": 1, "weight": 1, "tier": "C", "window": "4w", "lead": { "min": 26, "max": 78, "unit": "week" }, "cite": "ers-cycles" },
+      { "id": "feed-grain", "source": "fred-feed", "sign": 1, "weight": 1, "tier": "C", "window": "4w", "lead": { "min": 26, "max": 78, "unit": "week" }, "cite": "fred-feed" },
       { "id": "diesel", "source": "eia-diesel", "sign": 1, "weight": 1, "tier": "A", "window": "4w", "lead": { "min": 0, "max": 4, "unit": "week" }, "group": "freight", "cite": "eia-diesel" }
     ] },
     "pork-loin": { "rule_version": "2026-Q2-1", "indicators": [
       { "id": "hogs-market-supply", "source": "nass-hogs", "sign": -1, "weight": 2, "tier": "B", "window": "1q", "lead": { "min": 8, "max": 26, "unit": "week" }, "cite": "nass-hogs", "note": "weight-class bins map to slaughter windows; farrowing intentions lead ~8-10 mo" },
-      { "id": "feed-futures", "source": "ams-grain", "sign": 1, "weight": 2, "tier": "B", "window": "4w", "lead": { "min": 13, "max": 26, "unit": "week" }, "cite": "ers-feed-cost" },
+      { "id": "feed-grain", "source": "fred-feed", "sign": 1, "weight": 2, "tier": "B", "window": "4w", "lead": { "min": 13, "max": 26, "unit": "week" }, "cite": "fred-feed" },
       { "id": "cold-storage-pork", "source": "nass-cold-storage", "sign": -1, "weight": 1, "tier": "C", "window": "1m", "lead": { "min": 4, "max": 8, "unit": "week" }, "cite": "nass-cold-storage" },
       { "id": "diesel", "source": "eia-diesel", "sign": 1, "weight": 1, "tier": "A", "window": "4w", "lead": { "min": 0, "max": 4, "unit": "week" }, "group": "freight", "cite": "eia-diesel" }
     ] },
     "pork-shoulder": { "rule_version": "2026-Q2-1", "indicators": [
       { "id": "hogs-market-supply", "source": "nass-hogs", "sign": -1, "weight": 2, "tier": "B", "window": "1q", "lead": { "min": 8, "max": 26, "unit": "week" }, "cite": "nass-hogs" },
-      { "id": "feed-futures", "source": "ams-grain", "sign": 1, "weight": 2, "tier": "B", "window": "4w", "lead": { "min": 13, "max": 26, "unit": "week" }, "cite": "ers-feed-cost" },
+      { "id": "feed-grain", "source": "fred-feed", "sign": 1, "weight": 2, "tier": "B", "window": "4w", "lead": { "min": 13, "max": 26, "unit": "week" }, "cite": "fred-feed" },
       { "id": "cold-storage-pork", "source": "nass-cold-storage", "sign": -1, "weight": 1, "tier": "C", "window": "1m", "lead": { "min": 4, "max": 8, "unit": "week" }, "cite": "nass-cold-storage" },
       { "id": "diesel", "source": "eia-diesel", "sign": 1, "weight": 1, "tier": "A", "window": "4w", "lead": { "min": 0, "max": 4, "unit": "week" }, "group": "freight", "cite": "eia-diesel" }
     ] },
@@ -90,13 +91,13 @@
     "butter": { "rule_version": "2026-Q2-1", "indicators": [
       { "id": "milk-production", "source": "nass-milk", "sign": -1, "weight": 2, "tier": "B", "window": "1m", "lead": { "min": 4, "max": 12, "unit": "week" }, "cite": "nass-milk", "note": "more milk → more butterfat → cost down; production leads the churn" },
       { "id": "cold-storage-butter", "source": "nass-cold-storage", "sign": -1, "weight": 2, "tier": "B", "window": "1m", "lead": { "min": 4, "max": 8, "unit": "week" }, "cite": "nass-cold-storage", "note": "Cold Storage tracks butter stocks; high stocks → downward pressure" },
-      { "id": "feed-futures", "source": "ams-grain", "sign": 1, "weight": 1, "tier": "C", "window": "4w", "lead": { "min": 13, "max": 26, "unit": "week" }, "cite": "ers-feed-cost", "note": "feed → milk cost is a slow, weaker channel" },
+      { "id": "feed-grain", "source": "fred-feed", "sign": 1, "weight": 1, "tier": "C", "window": "4w", "lead": { "min": 13, "max": 26, "unit": "week" }, "cite": "fred-feed", "note": "feed → milk cost is a slow, weaker channel" },
       { "id": "diesel", "source": "eia-diesel", "sign": 1, "weight": 1, "tier": "A", "window": "4w", "lead": { "min": 0, "max": 4, "unit": "week" }, "group": "freight", "cite": "eia-diesel" }
     ] },
     "cheddar-cheese": { "rule_version": "2026-Q2-1", "indicators": [
       { "id": "milk-production", "source": "nass-milk", "sign": -1, "weight": 2, "tier": "B", "window": "1m", "lead": { "min": 4, "max": 12, "unit": "week" }, "cite": "nass-milk" },
       { "id": "cold-storage-cheese", "source": "nass-cold-storage", "sign": -1, "weight": 2, "tier": "B", "window": "1m", "lead": { "min": 4, "max": 8, "unit": "week" }, "cite": "nass-cold-storage", "note": "Cold Storage tracks natural-cheese stocks" },
-      { "id": "feed-futures", "source": "ams-grain", "sign": 1, "weight": 1, "tier": "C", "window": "4w", "lead": { "min": 13, "max": 26, "unit": "week" }, "cite": "ers-feed-cost" },
+      { "id": "feed-grain", "source": "fred-feed", "sign": 1, "weight": 1, "tier": "C", "window": "4w", "lead": { "min": 13, "max": 26, "unit": "week" }, "cite": "fred-feed" },
       { "id": "diesel", "source": "eia-diesel", "sign": 1, "weight": 1, "tier": "A", "window": "4w", "lead": { "min": 0, "max": 4, "unit": "week" }, "group": "freight", "cite": "eia-diesel" }
     ] }
   }

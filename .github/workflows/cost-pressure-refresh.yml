@@ -65,6 +65,7 @@ jobs:
         env:
           EIA_KEY: ${{ secrets.EIA_KEY }}
           NASS_KEY: ${{ secrets.NASS_KEY }}
+          FRED_KEY: ${{ secrets.FRED_KEY }}
           AMS_KEY: ${{ secrets.AMS_KEY }}
         run: node scripts/fetch-pressure-observations.mjs --probe
 
@@ -81,6 +82,7 @@ jobs:
         env:
           EIA_KEY: ${{ secrets.EIA_KEY }}
           NASS_KEY: ${{ secrets.NASS_KEY }}
+          FRED_KEY: ${{ secrets.FRED_KEY }}
           AMS_KEY: ${{ secrets.AMS_KEY }}
         run: |
           set -e

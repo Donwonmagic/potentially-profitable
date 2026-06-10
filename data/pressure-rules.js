@@ -21,6 +21,7 @@
   },
   "sources": {
     "ams-grain": "https://www.ams.usda.gov/market-news/state-grain-reports",
+    "fred-feed": "https://fred.stlouisfed.org/series/PMAIZMTUSDM",
     "ams-mmn": "https://mymarketnews.ams.usda.gov/mymarketnews-api",
     "ams-movement": "https://www.ams.usda.gov/market-news/fruit-and-vegetable-movement-reports",
     "nass-broiler": "https://www.nass.usda.gov/Surveys/Guide_to_NASS_Surveys/Broiler_Hatchery/index.php",
@@ -40,8 +41,8 @@
       "rule_version": "2026-Q2-1",
       "indicators": [
         {
-          "id": "feed-futures",
-          "source": "ams-grain",
+          "id": "feed-grain",
+          "source": "fred-feed",
           "sign": 1,
           "weight": 3,
           "tier": "A",
@@ -51,7 +52,7 @@
             "max": 9,
             "unit": "week"
           },
-          "cite": "ers-feed-cost",
+          "cite": "fred-feed",
           "note": "feed is 50-70% of broiler cost (ERS); corn+soy settlements via AMS"
         },
         {
@@ -105,8 +106,8 @@
       "rule_version": "2026-Q2-1",
       "indicators": [
         {
-          "id": "feed-futures",
-          "source": "ams-grain",
+          "id": "feed-grain",
+          "source": "fred-feed",
           "sign": 1,
           "weight": 3,
           "tier": "A",
@@ -116,7 +117,7 @@
             "max": 9,
             "unit": "week"
           },
-          "cite": "ers-feed-cost"
+          "cite": "fred-feed"
         },
         {
           "id": "broiler-placements",
@@ -196,8 +197,8 @@
           "cite": "nass-cold-storage"
         },
         {
-          "id": "feed-futures",
-          "source": "ams-grain",
+          "id": "feed-grain",
+          "source": "fred-feed",
           "sign": 1,
           "weight": 1,
           "tier": "C",
@@ -207,7 +208,7 @@
             "max": 78,
             "unit": "week"
           },
-          "cite": "ers-cycles",
+          "cite": "fred-feed",
           "note": "feed is a weak NEAR-TERM lever for beef; herd cycle dominates"
         },
         {
@@ -259,8 +260,8 @@
           "cite": "nass-cold-storage"
         },
         {
-          "id": "feed-futures",
-          "source": "ams-grain",
+          "id": "feed-grain",
+          "source": "fred-feed",
           "sign": 1,
           "weight": 1,
           "tier": "C",
@@ -270,7 +271,7 @@
             "max": 78,
             "unit": "week"
           },
-          "cite": "ers-cycles"
+          "cite": "fred-feed"
         },
         {
           "id": "diesel",
@@ -308,8 +309,8 @@
           "note": "weight-class bins map to slaughter windows; farrowing intentions lead ~8-10 mo"
         },
         {
-          "id": "feed-futures",
-          "source": "ams-grain",
+          "id": "feed-grain",
+          "source": "fred-feed",
           "sign": 1,
           "weight": 2,
           "tier": "B",
@@ -319,7 +320,7 @@
             "max": 26,
             "unit": "week"
           },
-          "cite": "ers-feed-cost"
+          "cite": "fred-feed"
         },
         {
           "id": "cold-storage-pork",
@@ -370,8 +371,8 @@
           "cite": "nass-hogs"
         },
         {
-          "id": "feed-futures",
-          "source": "ams-grain",
+          "id": "feed-grain",
+          "source": "fred-feed",
           "sign": 1,
           "weight": 2,
           "tier": "B",
@@ -381,7 +382,7 @@
             "max": 26,
             "unit": "week"
           },
-          "cite": "ers-feed-cost"
+          "cite": "fred-feed"
         },
         {
           "id": "cold-storage-pork",
@@ -820,8 +821,8 @@
           "note": "Cold Storage tracks butter stocks; high stocks → downward pressure"
         },
         {
-          "id": "feed-futures",
-          "source": "ams-grain",
+          "id": "feed-grain",
+          "source": "fred-feed",
           "sign": 1,
           "weight": 1,
           "tier": "C",
@@ -831,7 +832,7 @@
             "max": 26,
             "unit": "week"
           },
-          "cite": "ers-feed-cost",
+          "cite": "fred-feed",
           "note": "feed → milk cost is a slow, weaker channel"
         },
         {
@@ -884,8 +885,8 @@
           "note": "Cold Storage tracks natural-cheese stocks"
         },
         {
-          "id": "feed-futures",
-          "source": "ams-grain",
+          "id": "feed-grain",
+          "source": "fred-feed",
           "sign": 1,
           "weight": 1,
           "tier": "C",
@@ -895,7 +896,7 @@
             "max": 26,
             "unit": "week"
           },
-          "cite": "ers-feed-cost"
+          "cite": "fred-feed"
         },
         {
           "id": "diesel",

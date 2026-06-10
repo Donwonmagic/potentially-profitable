@@ -17,8 +17,8 @@
     "freeze-alert": { "type": "nws", "verified": true, "events": ["Freeze Warning", "Hard Freeze Warning"], "areaMatch": "CA|AZ|FL",
       "note": "Active freeze warnings over the winter growing zones (api.weather.gov). Keyless; encodes active=+1. Probe: rows=1." },
 
-    "feed-futures": { "type": "ams", "verified": false, "report": "ams_3046", "field": "close", "commodity": "Corn|Soybeans", "tail": 20,
-      "_verify": "PERMANENTLY DEFERRED (wrong source): AMS_3046 is the Minneapolis Daily Grain NARRATIVE report — rows are report headers with a report_narrative text blob, no structured close/price field. CBOT futures settlement isn't AMS data anyway (that's CME). Leave as an unwired future slot on the meat panels (they already have 3 live signals); revisit only with a real structured grain/feed price source." },
+    "feed-grain": { "type": "fred", "verified": false, "series": "PMAIZMTUSDM", "tail": 4, "limit": 24,
+      "_verify": "Global corn price (IMF via FRED, monthly) as the feed-cost proxy — feed is 60-70% of meat/dairy cost, and the old AMS feed-futures was a narrative report (dead). Needs FRED_KEY (free, fredaccount.stlouisfed.org). Probe to confirm the series resolves + a sane monthly change, then flip. Soy-meal (PSMEAUSDM) blend is a documented fast-follow." },
     "_movement_doc": "ams-move specs pool Report Details rows from ALL active Daily Movement city reports (default list MOVEMENT_REPORTS in fetch-pressure-observations.mjs), filter to one commodity (exact), and EMIT three indicator observations — volume (national weekly lbs trend), imports (import-share trend), pace (trailing-4wk vs ~52wk-ago). The emitted ids are the rule indicators; the spec id (e.g. onion-movement) is not itself an indicator. Volume field is '1 lb units'; import flag is 'import/Export' (I=import). check-pressure-sources resolves emits → indicators.",
 
     "onion-movement": { "type": "ams-move", "verified": true, "commodity": "Onions, Dry", "commodityExact": true, "windowDays": 430, "tail": 6,

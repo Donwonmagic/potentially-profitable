@@ -57,6 +57,18 @@
     return opts.tail ? vals.slice(-opts.tail) : vals;
   }
 
+  // ---- FRED (St. Louis Fed) -----------------------------------------
+  // json: { observations: [{ date, value }] }. Missing values arrive as ".".
+  function fredSeries(json, opts) {
+    opts = opts || {};
+    var obs = (json && json.observations) || [];
+    var arr = obs.map(function (o) { return { v: parseNum(o.value), d: String(o.date || '') }; })
+      .filter(function (o) { return o.v != null; });   // FRED missing cell is '.', parseNum → null
+    arr.sort(function (a, b) { return a.d.localeCompare(b.d); });
+    var vals = arr.map(function (o) { return o.v; });
+    return opts.tail ? vals.slice(-opts.tail) : vals;
+  }
+
   // ---- EIA Open Data v2 ---------------------------------------------
   // json: { response: { data: [{ period, value }] } } (newest-first or oldest).
   function eiaSeries(json, opts) {
@@ -188,7 +200,7 @@
 
   var api = {
     parseNum: parseNum, windowChange: windowChange,
-    nassSeries: nassSeries, eiaSeries: eiaSeries, amsSeries: amsSeries,
+    nassSeries: nassSeries, eiaSeries: eiaSeries, amsSeries: amsSeries, fredSeries: fredSeries,
     usdmSeverity: usdmSeverity, nwsFreezeActive: nwsFreezeActive, eventSignal: eventSignal,
     movementAggregate: movementAggregate
   };

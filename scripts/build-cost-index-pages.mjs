@@ -173,6 +173,7 @@ function sourceShort(key) {
   if (key.indexOf('ams') === 0) return 'USDA AMS';
   if (key.indexOf('ers') === 0) return 'USDA ERS';
   if (key.indexOf('eia') === 0) return 'EIA';
+  if (key.indexOf('fred') === 0) return 'FRED';
   if (key.indexOf('usdm') === 0) return 'US Drought Monitor';
   if (key.indexOf('nws') === 0) return 'NWS';
   return key;
@@ -1284,7 +1285,7 @@ function emitLabPage(locale) {
     : 'The model is a transparent sum: P = Σ(weight × sign × signal). Each public leading indicator casts one vote — up, down, or neutral inside a deadband — weighted by its evidence tier. When P crosses the ± line, the direction flips. No subjective adjustments: the same numbers you could redo by hand. It is an inferred direction, not a price; the lead times come from USDA/EIA and the per-week weighting is our estimate.';
   const noscript = es ? 'El Laboratorio de Presión necesita JavaScript. Verás la perspectiva en vivo en cada página de ingrediente.'
     : 'The Pressure Lab needs JavaScript — you\'ll find the live outlook on each ingredient page.';
-  const v = 'v=20260610-move1';
+  const v = 'v=20260610-feed1';
   return pageHead({ lang, locale, title, desc, canonEn, canonEs, jsonld, extraCss: LAB_CSS }) + `
   <nav class="breadcrumb" aria-label="Breadcrumb">
     <a href="${base}/">${es ? 'Inicio' : 'Home'}</a> ›

@@ -17,7 +17,7 @@ const rules = rd('data/pressure-rules.json');
 const specs = (rd('data/pressure-source-specs.json').specs) || {};
 
 const REQUIRED = {
-  eia: ['series'], nass: ['query'], ams: ['report', 'field'],
+  eia: ['series'], fred: ['series'], nass: ['query'], ams: ['report', 'field'],
   'ams-move': ['commodity', 'emits'],
   usdm: ['areas', 'categories'], nws: ['events']
 };
@@ -52,6 +52,7 @@ const DISCOVERY = {
   ams:  'https://mymarketnews.ams.usda.gov/mymarketnews-api — confirm report slug + numeric field',
   'ams-move': 'MARS movement reports — run --probe; confirm cities-hit, weeks, and sane volume/imports/pace emits',
   eia:  'https://www.eia.gov/opendata/ — confirm the series id resolves',
+  fred: 'https://fred.stlouisfed.org — confirm series id resolves (free FRED_KEY)',
   usdm: 'https://droughtmonitor.unl.edu/DmData/DataDownload.aspx — keyless; confirm area FIPS',
   nws:  'https://api.weather.gov/alerts/active — keyless; confirm event name string'
 };

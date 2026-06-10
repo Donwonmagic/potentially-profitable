@@ -61,6 +61,7 @@
     'drought-id': L('Drought (Idaho)', 'Sequía (Idaho)'),
     'drought': L('Drought', 'Sequía'),
     'crop-condition': L('Crop condition', 'Condición del cultivo'),
+    'feed-grain': L('Feed grain (corn)', 'Grano forrajero (maíz)'),
     'diesel': L('Diesel / freight', 'Diésel / flete')
   };
   function indName(id) { return INDICATOR_NAME[id] || id; }

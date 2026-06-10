@@ -23,13 +23,13 @@
   },
   "observations": {
     "chicken-breast": {
-      "feed-futures": -0.09,
+      "feed-grain": -0.09,
       "broiler-placements": 0.04,
       "cold-storage-poultry": 0.01,
       "diesel": 0.01
     },
     "whole-chicken": {
-      "feed-futures": -0.07,
+      "feed-grain": -0.07,
       "broiler-placements": 0.03,
       "cold-storage-poultry": 0.01,
       "diesel": 0.01
@@ -37,24 +37,24 @@
     "ribeye": {
       "cattle-on-feed-placements": -0.05,
       "cold-storage-beef": -0.03,
-      "feed-futures": 0.01,
+      "feed-grain": 0.01,
       "diesel": 0.05
     },
     "beef-tenderloin": {
       "cattle-on-feed-placements": -0.04,
       "cold-storage-beef": -0.02,
-      "feed-futures": 0.01,
+      "feed-grain": 0.01,
       "diesel": 0.05
     },
     "pork-loin": {
       "hogs-market-supply": 0.05,
-      "feed-futures": -0.04,
+      "feed-grain": -0.04,
       "cold-storage-pork": 0.01,
       "diesel": 0.01
     },
     "pork-shoulder": {
       "hogs-market-supply": 0.04,
-      "feed-futures": -0.05,
+      "feed-grain": -0.05,
       "cold-storage-pork": 0.01,
       "diesel": 0.01
     },
@@ -92,13 +92,13 @@
     "butter": {
       "milk-production": 0.03,
       "cold-storage-butter": 0.04,
-      "feed-futures": -0.02,
+      "feed-grain": -0.02,
       "diesel": 0.01
     },
     "cheddar-cheese": {
       "milk-production": -0.04,
       "cold-storage-cheese": -0.03,
-      "feed-futures": 0.01,
+      "feed-grain": 0.01,
       "diesel": 0.05
     }
   }
