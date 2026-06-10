@@ -48,6 +48,50 @@ function changeFromRaw(spec, raw) {
   }
 }
 
+// ---- AMS produce MOVEMENT (multi-report aggregate) ------------------------
+// Every active Daily Movement city report. A `ams-move` spec pools Report Details
+// rows from ALL of these, filters to one commodity, and emits three signals
+// (national volume trend, import share, YoY pace). One fetch set, shared by every
+// produce item — a report carries every commodity. Discontinued cities omitted.
+const MOVEMENT_REPORTS = [
+  'tv_fv170', 'aj_fv170', 'mb_fv170', 'br_fv170', 'ca_fv170', 'fr_fv170', 'if_fv170',
+  'mh_fv170', 'or_fv170', 'el_fv170', 'mc_fv170', 'ng_fv170', 'ix_fv170', 'ra_fv170',
+  'on_fv170', 'wa_fv170', 'ya_fv170'
+];
+function amsAuth() { const k = process.env.AMS_KEY; return k ? 'Basic ' + Buffer.from(k + ':').toString('base64') : null; }
+function amsWindowQ(days) {
+  const fmt = (d) => `${('0' + (d.getMonth() + 1)).slice(-2)}/${('0' + d.getDate()).slice(-2)}/${d.getFullYear()}`;
+  const end = new Date(), start = new Date(end.getTime() - days * 864e5);
+  return `?q=${encodeURIComponent('report_begin_date=' + fmt(start) + ':' + fmt(end))}`;
+}
+// Fetch + merge Report Details rows across every movement city. A city that 404s
+// or times out is skipped (logged as a gap) — one flaky report can't drop the
+// whole national series. Returns { rows, cities, gaps } or { skip }.
+async function fetchMovement(spec) {
+  const auth = amsAuth();
+  if (!auth) return { skip: 'no AMS_KEY' };
+  const reports = spec.reports || MOVEMENT_REPORTS;
+  const q = amsWindowQ(spec.windowDays || 430);
+  let rows = [], cities = 0; const gaps = [];
+  for (const slug of reports) {
+    try {
+      const j = await fetchJson(`https://marsapi.ams.usda.gov/services/v1.2/reports/${encodeURIComponent(slug)}/${encodeURIComponent('Report Details')}${q}`, { headers: { Authorization: auth } });
+      const rs = (j && j.results) || [];
+      rows = rows.concat(rs); cities++;
+    } catch (e) { gaps.push(`${slug}:${e.message}`); }
+  }
+  return { rows, cities, gaps };
+}
+// Aggregate → the spec's emitted indicator observations (volume/imports/pace).
+function computeMovement(spec, rows) {
+  const agg = S.movementAggregate(rows, { commodity: spec.commodity, commodityExact: spec.commodityExact, commodityKey: spec.commodityKey, tail: spec.tail });
+  const emits = spec.emits || {}, out = {};
+  if (emits.volume) out[emits.volume] = S.windowChange(agg.volume);
+  if (emits.imports) out[emits.imports] = agg.importShare.length > 1 ? S.windowChange(agg.importShare) : null;
+  if (emits.pace) out[emits.pace] = agg.pace;
+  return { out, agg };
+}
+
 // ---- self-test: prove the dispatch on canned fixtures (no network) --------
 function selfTest() {
   // Fixtures mimic the MESSY real responses, not clean toy ones, so a green
@@ -74,6 +118,18 @@ function selfTest() {
     const v = changeFromRaw(c.spec, c.raw);
     const ok = v != null && c.want(v);
     console.log(`  ${t.padEnd(5)} → ${v}  ${ok ? 'OK' : 'FAIL'}`);
+    if (!ok) fail++;
+  }
+  // ams-move: synthetic movement rows (rising volume, an import stream, a decoy
+  // 'Potatoes, Seed' the exact filter must drop) → 3 non-null emits, volume up.
+  {
+    const rows = [];
+    const mk = (daysAgo, com, lbs, imp) => { const d = new Date(Date.now() - daysAgo * 864e5); rows.push({ report_begin_date: `${('0' + (d.getMonth() + 1)).slice(-2)}/${('0' + d.getDate()).slice(-2)}/${d.getFullYear()}`, commodity: com, '1 lb units': String(lbs), 'import/Export': imp ? 'I (import)' : 'D (domestic)' }); };
+    for (let w = 0; w < 60; w++) { const base = 100000 + (w < 8 ? (8 - w) * 5000 : 0); mk(w * 7 + 1, 'Potatoes', base, false); mk(w * 7 + 2, 'Potatoes', 40000, true); mk(w * 7 + 1, 'Potatoes, Seed', 9e6, false); }
+    const spec = { commodity: 'Potatoes', commodityExact: true, tail: 6, emits: { volume: 'v', imports: 'i', pace: 'p' } };
+    const { out, agg } = computeMovement(spec, rows);
+    const ok = out.v > 0 && out.i != null && out.p != null && agg.volume.every((x) => x < 9e6);
+    console.log(`  move  → v=${(out.v * 100).toFixed(1)}% i=${out.i == null ? 'n/a' : (out.i * 100).toFixed(1) + '%'} p=${out.p == null ? 'n/a' : (out.p * 100).toFixed(1) + '%'}  ${ok ? 'OK' : 'FAIL'}`);
     if (!ok) fail++;
   }
   console.log(fail ? `self-test: ${fail} FAIL` : 'self-test: OK — every source type normalizes to a change.');
@@ -172,6 +228,19 @@ async function probe() {
   console.log('Probing every spec live (writes nothing). NASS/EIA need keys; USDM/NWS keyless.\n');
   const ready = [];
   for (const [id, spec] of Object.entries(specs)) {
+    // ams-move: pool every movement city, aggregate the commodity, show the 3 emits.
+    if (spec.type === 'ams-move') {
+      const f = await fetchMovement(spec);
+      if (f.skip) { console.log(`  ✗ ${id.padEnd(26)} [ams-move] skipped: ${f.skip}`); continue; }
+      const { out, agg } = computeMovement(spec, f.rows);
+      const usable = out[spec.emits.volume] != null;
+      const fmtv = (k) => out[k] == null ? 'none' : (out[k] * 100).toFixed(1) + '%';
+      console.log(`  ${usable ? '✓' : '⚠'} ${id.padEnd(26)} [ams-move] cities=${f.cities}/${(spec.reports || MOVEMENT_REPORTS).length} weeks=${agg.weeks} rows=${f.rows.length}`);
+      console.log(`      ${spec.emits.volume}=${fmtv(spec.emits.volume)}  ${spec.emits.imports}=${fmtv(spec.emits.imports)}  ${spec.emits.pace}=${fmtv(spec.emits.pace)}  (latest weekly vol=${Math.round(agg.volume[agg.volume.length - 1] || 0).toLocaleString()} lb)`);
+      if (f.gaps.length) console.log(`      city gaps: ${f.gaps.slice(0, 4).join(' · ')}${f.gaps.length > 4 ? ` (+${f.gaps.length - 4})` : ''}`);
+      if (usable) ready.push(id);
+      continue;
+    }
     const u = urlFor(id, spec);
     if (u.skip) { console.log(`  ✗ ${id.padEnd(26)} [${spec.type}] skipped: ${u.skip}`); continue; }
     try {
@@ -273,9 +342,23 @@ async function live() {
   const asOf = new Date().toISOString().slice(0, 10);
   const ids = new Set();
   for (const panel of Object.values(rules.items || {})) (panel.indicators || []).forEach((i) => ids.add(i.id));
+  // First pass: every verified ams-move spec is fetched ONCE (each pools ~17 city
+  // reports) and emits its volume/imports/pace observations, which the produce
+  // panels reference by their emitted ids.
+  for (const [sid, spec] of Object.entries(specs)) {
+    if (spec.type !== 'ams-move' || spec.verified === false) continue;
+    const f = await fetchMovement(spec);
+    if (f.skip) { gaps.push(`${sid}: ${f.skip}`); continue; }
+    const { out } = computeMovement(spec, f.rows);
+    let got = 0;
+    for (const [k, v] of Object.entries(out)) { if (v != null) { observations[k] = v; got++; } }
+    if (!got) gaps.push(`${sid}: no movement series (cities ${f.cities})`);
+  }
   for (const id of ids) {
+    if (observations[id] != null) continue;       // already filled by an ams-move emit
     const spec = specs[id];
     if (!spec) { gaps.push(`${id}: no spec`); continue; }
+    if (spec.type === 'ams-move') continue;        // spec id isn't an indicator id; handled above
     if (spec.verified === false) { gaps.push(`${id}: spec not verified yet`); continue; }
     const u = urlFor(id, spec);
     if (u.skip) { gaps.push(`${id}: ${u.skip}`); continue; }

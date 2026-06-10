@@ -57,25 +57,33 @@
       { "id": "diesel", "source": "eia-diesel", "sign": 1, "weight": 1, "tier": "A", "window": "4w", "lead": { "min": 0, "max": 4, "unit": "week" }, "group": "freight", "cite": "eia-diesel" }
     ] },
     "romaine-lettuce": { "rule_version": "2026-Q2-1", "indicators": [
-      { "id": "ams-shipments", "source": "ams-movement", "sign": -1, "weight": 3, "tier": "A", "window": "1w", "lead": { "min": 0, "max": 2, "unit": "week" }, "cite": "ams-movement", "note": "shipments down → tightening → cost up; fastest produce tell" },
+      { "id": "lettuce-shipments", "source": "ams-movement", "sign": -1, "weight": 3, "tier": "A", "window": "6w", "lead": { "min": 0, "max": 3, "unit": "week" }, "group": "movement", "cite": "ams-movement", "note": "national arrivals up → supply up → cost down" },
+      { "id": "lettuce-imports", "source": "ams-movement", "sign": 1, "weight": 1, "tier": "B", "window": "6w", "lead": { "min": 1, "max": 6, "unit": "week" }, "group": "movement", "cite": "ams-movement", "note": "import share up → domestic supply tightening → cost up" },
+      { "id": "lettuce-pace", "source": "ams-movement", "sign": -1, "weight": 1, "tier": "B", "window": "52w", "lead": { "min": 2, "max": 10, "unit": "week" }, "group": "movement", "cite": "ams-movement", "note": "season pace above last year → ample supply → cost down" },
       { "id": "freeze-alert", "source": "nws-alerts", "sign": 1, "weight": 3, "tier": "A", "window": "active", "lead": { "min": 1, "max": 6, "unit": "week" }, "cite": "nws-alerts", "note": "active freeze in CA/AZ growing zone → spike in 1-6 wk" },
       { "id": "drought-ca-az", "source": "usdm-drought", "sign": 1, "weight": 2, "tier": "B", "window": "4w", "lead": { "min": 4, "max": 17, "unit": "week" }, "cite": "usdm-drought" },
       { "id": "diesel", "source": "eia-diesel", "sign": 1, "weight": 1, "tier": "A", "window": "4w", "lead": { "min": 0, "max": 4, "unit": "week" }, "group": "freight", "cite": "eia-diesel" }
     ] },
     "tomato": { "rule_version": "2026-Q2-1", "indicators": [
-      { "id": "ams-shipments", "source": "ams-movement", "sign": -1, "weight": 3, "tier": "A", "window": "1w", "lead": { "min": 0, "max": 2, "unit": "week" }, "cite": "ams-movement" },
+      { "id": "tomato-shipments", "source": "ams-movement", "sign": -1, "weight": 3, "tier": "A", "window": "6w", "lead": { "min": 0, "max": 3, "unit": "week" }, "group": "movement", "cite": "ams-movement", "note": "national arrivals up → supply up → cost down" },
+      { "id": "tomato-imports", "source": "ams-movement", "sign": 1, "weight": 1, "tier": "B", "window": "6w", "lead": { "min": 1, "max": 6, "unit": "week" }, "group": "movement", "cite": "ams-movement", "note": "import share up → domestic supply tightening → cost up" },
+      { "id": "tomato-pace", "source": "ams-movement", "sign": -1, "weight": 1, "tier": "B", "window": "52w", "lead": { "min": 2, "max": 10, "unit": "week" }, "group": "movement", "cite": "ams-movement", "note": "season pace above last year → ample supply → cost down" },
       { "id": "freeze-alert", "source": "nws-alerts", "sign": 1, "weight": 3, "tier": "A", "window": "active", "lead": { "min": 1, "max": 6, "unit": "week" }, "cite": "nws-alerts", "note": "FL freezes drove field tomato to an 8-yr high in 2026" },
       { "id": "drought-fl-ca", "source": "usdm-drought", "sign": 1, "weight": 2, "tier": "B", "window": "4w", "lead": { "min": 4, "max": 17, "unit": "week" }, "cite": "usdm-drought" },
       { "id": "diesel", "source": "eia-diesel", "sign": 1, "weight": 1, "tier": "A", "window": "4w", "lead": { "min": 0, "max": 4, "unit": "week" }, "group": "freight", "cite": "eia-diesel" }
     ] },
     "onion": { "rule_version": "2026-Q2-1", "indicators": [
-      { "id": "ams-shipments", "source": "ams-movement", "sign": -1, "weight": 2, "tier": "A", "window": "1w", "lead": { "min": 0, "max": 2, "unit": "week" }, "cite": "ams-movement" },
+      { "id": "onion-shipments", "source": "ams-movement", "sign": -1, "weight": 2, "tier": "A", "window": "6w", "lead": { "min": 0, "max": 3, "unit": "week" }, "group": "movement", "cite": "ams-movement", "note": "national arrivals up → supply up → cost down" },
+      { "id": "onion-imports", "source": "ams-movement", "sign": 1, "weight": 1, "tier": "B", "window": "6w", "lead": { "min": 1, "max": 6, "unit": "week" }, "group": "movement", "cite": "ams-movement", "note": "import share up → domestic supply tightening → cost up" },
+      { "id": "onion-pace", "source": "ams-movement", "sign": -1, "weight": 1, "tier": "B", "window": "52w", "lead": { "min": 2, "max": 10, "unit": "week" }, "group": "movement", "cite": "ams-movement", "note": "season pace above last year → ample supply → cost down" },
       { "id": "drought", "source": "usdm-drought", "sign": 1, "weight": 1, "tier": "C", "window": "4w", "lead": { "min": 4, "max": 17, "unit": "week" }, "cite": "usdm-drought" },
       { "id": "diesel", "source": "eia-diesel", "sign": 1, "weight": 1, "tier": "A", "window": "4w", "lead": { "min": 0, "max": 4, "unit": "week" }, "group": "freight", "cite": "eia-diesel" }
     ] },
     "russet-potato": { "rule_version": "2026-Q2-1", "indicators": [
       { "id": "crop-condition", "source": "nass-crop-progress", "sign": -1, "weight": 3, "tier": "B", "window": "2w", "lead": { "min": 2, "max": 8, "unit": "week" }, "cite": "nass-crop-progress" },
-      { "id": "ams-shipments", "source": "ams-movement", "sign": -1, "weight": 2, "tier": "A", "window": "1w", "lead": { "min": 0, "max": 2, "unit": "week" }, "cite": "ams-movement" },
+      { "id": "potato-shipments", "source": "ams-movement", "sign": -1, "weight": 2, "tier": "A", "window": "6w", "lead": { "min": 0, "max": 3, "unit": "week" }, "group": "movement", "cite": "ams-movement", "note": "national arrivals up → supply up → cost down" },
+      { "id": "potato-imports", "source": "ams-movement", "sign": 1, "weight": 1, "tier": "B", "window": "6w", "lead": { "min": 1, "max": 6, "unit": "week" }, "group": "movement", "cite": "ams-movement", "note": "import share up → domestic supply tightening → cost up" },
+      { "id": "potato-pace", "source": "ams-movement", "sign": -1, "weight": 1, "tier": "B", "window": "52w", "lead": { "min": 2, "max": 10, "unit": "week" }, "group": "movement", "cite": "ams-movement", "note": "season pace above last year → ample supply → cost down" },
       { "id": "drought", "source": "usdm-drought", "sign": 1, "weight": 1, "tier": "C", "window": "4w", "lead": { "min": 4, "max": 17, "unit": "week" }, "cite": "usdm-drought" },
       { "id": "diesel", "source": "eia-diesel", "sign": 1, "weight": 1, "tier": "A", "window": "4w", "lead": { "min": 0, "max": 4, "unit": "week" }, "group": "freight", "cite": "eia-diesel" }
     ] },

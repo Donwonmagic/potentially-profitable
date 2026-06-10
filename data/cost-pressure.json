@@ -482,9 +482,9 @@
     "romaine-lettuce": {
       "item": "romaine-lettuce",
       "direction": "building",
-      "confidence": "high",
+      "confidence": "moderate",
       "agreement": 1,
-      "score": 6,
+      "score": 3,
       "cutoff": 2,
       "freshness_weeks": 0,
       "anchor_print_date": "2026-06-05",
@@ -492,22 +492,6 @@
       "under_review": false,
       "rule_version": "2026-Q2-1",
       "contributors": [
-        {
-          "indicator": "ams-shipments",
-          "source": "ams-movement",
-          "signed_signal": 1,
-          "weight": 3,
-          "lead": {
-            "min": 0,
-            "max": 2,
-            "unit": "week"
-          },
-          "tier": "A",
-          "cite": "ams-movement",
-          "group": null,
-          "change_pct": -0.08,
-          "as_of": "2026-06-08"
-        },
         {
           "indicator": "drought-ca-az",
           "source": "usdm-drought",
@@ -544,10 +528,10 @@
     },
     "tomato": {
       "item": "tomato",
-      "direction": "steady",
-      "confidence": "low",
-      "agreement": 0.167,
-      "score": -1,
+      "direction": "building",
+      "confidence": "moderate",
+      "agreement": 0.667,
+      "score": 2,
       "cutoff": 2,
       "freshness_weeks": 0,
       "anchor_print_date": "2026-06-05",
@@ -555,22 +539,6 @@
       "under_review": false,
       "rule_version": "2026-Q2-1",
       "contributors": [
-        {
-          "indicator": "ams-shipments",
-          "source": "ams-movement",
-          "signed_signal": -1,
-          "weight": 3,
-          "lead": {
-            "min": 0,
-            "max": 2,
-            "unit": "week"
-          },
-          "tier": "A",
-          "cite": "ams-movement",
-          "group": null,
-          "change_pct": 0.04,
-          "as_of": "2026-06-08"
-        },
         {
           "indicator": "drought-fl-ca",
           "source": "usdm-drought",
@@ -608,9 +576,9 @@
     "onion": {
       "item": "onion",
       "direction": "building",
-      "confidence": "high",
+      "confidence": "moderate",
       "agreement": 1,
-      "score": 4,
+      "score": 2,
       "cutoff": 2,
       "freshness_weeks": 0,
       "anchor_print_date": "2026-06-05",
@@ -618,22 +586,6 @@
       "under_review": false,
       "rule_version": "2026-Q2-1",
       "contributors": [
-        {
-          "indicator": "ams-shipments",
-          "source": "ams-movement",
-          "signed_signal": 1,
-          "weight": 2,
-          "lead": {
-            "min": 0,
-            "max": 2,
-            "unit": "week"
-          },
-          "tier": "A",
-          "cite": "ams-movement",
-          "group": null,
-          "change_pct": -0.1,
-          "as_of": "2026-06-08"
-        },
         {
           "indicator": "drought",
           "source": "usdm-drought",
@@ -671,9 +623,9 @@
     "russet-potato": {
       "item": "russet-potato",
       "direction": "easing",
-      "confidence": "high",
-      "agreement": 0.714,
-      "score": -5,
+      "confidence": "moderate",
+      "agreement": 0.6,
+      "score": -3,
       "cutoff": 2,
       "freshness_weeks": 0,
       "anchor_print_date": "2026-06-05",
@@ -695,22 +647,6 @@
           "cite": "nass-crop-progress",
           "group": null,
           "change_pct": 0.04,
-          "as_of": "2026-06-08"
-        },
-        {
-          "indicator": "ams-shipments",
-          "source": "ams-movement",
-          "signed_signal": -1,
-          "weight": 2,
-          "lead": {
-            "min": 0,
-            "max": 2,
-            "unit": "week"
-          },
-          "tier": "A",
-          "cite": "ams-movement",
-          "group": null,
-          "change_pct": 0.05,
           "as_of": "2026-06-08"
         },
         {

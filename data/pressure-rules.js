@@ -418,19 +418,52 @@
       "rule_version": "2026-Q2-1",
       "indicators": [
         {
-          "id": "ams-shipments",
+          "id": "lettuce-shipments",
           "source": "ams-movement",
           "sign": -1,
           "weight": 3,
           "tier": "A",
-          "window": "1w",
+          "window": "6w",
           "lead": {
             "min": 0,
-            "max": 2,
+            "max": 3,
             "unit": "week"
           },
+          "group": "movement",
           "cite": "ams-movement",
-          "note": "shipments down → tightening → cost up; fastest produce tell"
+          "note": "national arrivals up → supply up → cost down"
+        },
+        {
+          "id": "lettuce-imports",
+          "source": "ams-movement",
+          "sign": 1,
+          "weight": 1,
+          "tier": "B",
+          "window": "6w",
+          "lead": {
+            "min": 1,
+            "max": 6,
+            "unit": "week"
+          },
+          "group": "movement",
+          "cite": "ams-movement",
+          "note": "import share up → domestic supply tightening → cost up"
+        },
+        {
+          "id": "lettuce-pace",
+          "source": "ams-movement",
+          "sign": -1,
+          "weight": 1,
+          "tier": "B",
+          "window": "52w",
+          "lead": {
+            "min": 2,
+            "max": 10,
+            "unit": "week"
+          },
+          "group": "movement",
+          "cite": "ams-movement",
+          "note": "season pace above last year → ample supply → cost down"
         },
         {
           "id": "freeze-alert",
@@ -482,18 +515,52 @@
       "rule_version": "2026-Q2-1",
       "indicators": [
         {
-          "id": "ams-shipments",
+          "id": "tomato-shipments",
           "source": "ams-movement",
           "sign": -1,
           "weight": 3,
           "tier": "A",
-          "window": "1w",
+          "window": "6w",
           "lead": {
             "min": 0,
-            "max": 2,
+            "max": 3,
             "unit": "week"
           },
-          "cite": "ams-movement"
+          "group": "movement",
+          "cite": "ams-movement",
+          "note": "national arrivals up → supply up → cost down"
+        },
+        {
+          "id": "tomato-imports",
+          "source": "ams-movement",
+          "sign": 1,
+          "weight": 1,
+          "tier": "B",
+          "window": "6w",
+          "lead": {
+            "min": 1,
+            "max": 6,
+            "unit": "week"
+          },
+          "group": "movement",
+          "cite": "ams-movement",
+          "note": "import share up → domestic supply tightening → cost up"
+        },
+        {
+          "id": "tomato-pace",
+          "source": "ams-movement",
+          "sign": -1,
+          "weight": 1,
+          "tier": "B",
+          "window": "52w",
+          "lead": {
+            "min": 2,
+            "max": 10,
+            "unit": "week"
+          },
+          "group": "movement",
+          "cite": "ams-movement",
+          "note": "season pace above last year → ample supply → cost down"
         },
         {
           "id": "freeze-alert",
@@ -545,18 +612,52 @@
       "rule_version": "2026-Q2-1",
       "indicators": [
         {
-          "id": "ams-shipments",
+          "id": "onion-shipments",
           "source": "ams-movement",
           "sign": -1,
           "weight": 2,
           "tier": "A",
-          "window": "1w",
+          "window": "6w",
           "lead": {
             "min": 0,
-            "max": 2,
+            "max": 3,
             "unit": "week"
           },
-          "cite": "ams-movement"
+          "group": "movement",
+          "cite": "ams-movement",
+          "note": "national arrivals up → supply up → cost down"
+        },
+        {
+          "id": "onion-imports",
+          "source": "ams-movement",
+          "sign": 1,
+          "weight": 1,
+          "tier": "B",
+          "window": "6w",
+          "lead": {
+            "min": 1,
+            "max": 6,
+            "unit": "week"
+          },
+          "group": "movement",
+          "cite": "ams-movement",
+          "note": "import share up → domestic supply tightening → cost up"
+        },
+        {
+          "id": "onion-pace",
+          "source": "ams-movement",
+          "sign": -1,
+          "weight": 1,
+          "tier": "B",
+          "window": "52w",
+          "lead": {
+            "min": 2,
+            "max": 10,
+            "unit": "week"
+          },
+          "group": "movement",
+          "cite": "ams-movement",
+          "note": "season pace above last year → ample supply → cost down"
         },
         {
           "id": "drought",
@@ -607,18 +708,52 @@
           "cite": "nass-crop-progress"
         },
         {
-          "id": "ams-shipments",
+          "id": "potato-shipments",
           "source": "ams-movement",
           "sign": -1,
           "weight": 2,
           "tier": "A",
-          "window": "1w",
+          "window": "6w",
           "lead": {
             "min": 0,
-            "max": 2,
+            "max": 3,
             "unit": "week"
           },
-          "cite": "ams-movement"
+          "group": "movement",
+          "cite": "ams-movement",
+          "note": "national arrivals up → supply up → cost down"
+        },
+        {
+          "id": "potato-imports",
+          "source": "ams-movement",
+          "sign": 1,
+          "weight": 1,
+          "tier": "B",
+          "window": "6w",
+          "lead": {
+            "min": 1,
+            "max": 6,
+            "unit": "week"
+          },
+          "group": "movement",
+          "cite": "ams-movement",
+          "note": "import share up → domestic supply tightening → cost up"
+        },
+        {
+          "id": "potato-pace",
+          "source": "ams-movement",
+          "sign": -1,
+          "weight": 1,
+          "tier": "B",
+          "window": "52w",
+          "lead": {
+            "min": 2,
+            "max": 10,
+            "unit": "week"
+          },
+          "group": "movement",
+          "cite": "ams-movement",
+          "note": "season pace above last year → ample supply → cost down"
         },
         {
           "id": "drought",
