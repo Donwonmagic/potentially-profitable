@@ -98,8 +98,11 @@ for (const [item, rec] of Object.entries(items)) {
   // A new measured print since the last recorded call → that call is now scorable.
   if (last && last.anchor && curAnchor && last.anchor !== curAnchor && last.realized == null) last.realized = realizedDir;
   if (!last || last.asOf !== rec.as_of) {
-    arr.push({ asOf: rec.as_of, anchor: curAnchor, direction: rec.direction, score: rec.score, realized: null });
-    while (arr.length > 26) arr.shift();
+    // Persist the point-in-time observation vector (% changes only) alongside the
+    // call. This is the seed the calibration harness validates against over time —
+    // what the panel actually saw on each date, not just the direction it produced.
+    arr.push({ asOf: rec.as_of, anchor: curAnchor, direction: rec.direction, score: rec.score, realized: null, obs: obsDoc.observations[item] || {} });
+    while (arr.length > 52) arr.shift();
   }
   // Regime-breaker: a cold streak flags the item under review (the renderer shows
   // "awaiting the next price"). We set ONLY under_review — never overriding the
