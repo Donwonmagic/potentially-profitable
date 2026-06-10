@@ -224,6 +224,24 @@ function nassDate(r) {
 }
 
 // ---- the run -------------------------------------------------------
+// Integer month ordinal (year*12 + month) so monthly buckets key the same way weekly
+// buckets do (integers) — the joint fit's `W − lag` arithmetic then works uniformly
+// at both resolutions ('YYYY-MM' strings would break Number()/subtraction).
+const monthOrd = (ymStr) => { const m = String(ymStr).match(/(\d{4})-(\d{2})/); return m ? (+m[1]) * 12 + (+m[2] - 1) : NaN; };
+const bucketKey = (r) => (r.wk != null ? r.wk : monthOrd(r.ym));
+// Native cadence of an indicator's own history: median gap between dated observations.
+// Month-stamped series ('YYYY-MM', no day) and ≤3-point series read as monthly. This
+// is what lets a MONTHLY driver be tested at monthly resolution against the monthly-
+// aggregated anchor, instead of being starved on a weekly grid.
+function medianCadence(pairs) {
+  const ds = (pairs || []).map((p) => normDate(p.date)).filter((s) => /^\d{4}-\d{2}-\d{2}$/.test(s)).sort();
+  if (ds.length < 4) return 'monthly';
+  const gaps = [];
+  for (let i = 1; i < ds.length; i++) { const a = Date.parse(ds[i - 1]), b = Date.parse(ds[i]); if (isFinite(a) && isFinite(b) && b > a) gaps.push((b - a) / 864e5); }
+  if (!gaps.length) return 'monthly';
+  gaps.sort((x, y) => x - y);
+  return gaps[Math.floor(gaps.length / 2)] <= 10 ? 'weekly' : 'monthly';
+}
 // stationary deseasonalized changes of an aligned [{x,y,mo|ym}] series, robust to
 // pctChange dropping a non-positive base (inner-join the x/y changes on their index).
 // Also returns xMap: the indicator change keyed by its week/month bucket (for the
@@ -234,7 +252,7 @@ function keyedChanges(al) {
   const idxs = [], xs = [], ys = [], mos = [];
   xCh.forEach((o) => { if (o.idx in ym) { idxs.push(o.idx); xs.push(o.v); ys.push(ym[o.idx]); const r = al[o.idx]; mos.push(r.mo != null ? r.mo : parseInt(String(r.ym).slice(5, 7), 10) - 1); } });
   const xc = C.deseasonalizeByMonth(xs, mos), yc = C.deseasonalizeByMonth(ys, mos);
-  const xMap = {}; idxs.forEach((idx, i) => { const r = al[idx]; xMap[r.wk != null ? r.wk : r.ym] = xc[i]; });
+  const xMap = {}; idxs.forEach((idx, i) => { xMap[bucketKey(al[idx])] = xc[i]; });
   return { xc, yc, xMap, n: xs.length };
 }
 // deseasonalized % change of a standalone series ([{wk,mo,v}] or [{ym,v}]), keyed by bucket.
@@ -242,12 +260,13 @@ function seriesChanges(series) {
   const ch = C.pctChange(series.map((p) => p.v), 1);
   const mos = ch.map((o) => { const r = series[o.idx]; return r.mo != null ? r.mo : parseInt(String(r.ym).slice(5, 7), 10) - 1; });
   const dc = C.deseasonalizeByMonth(ch.map((o) => o.v), mos);
-  const map = {}; ch.forEach((o, i) => { const r = series[o.idx]; map[r.wk != null ? r.wk : r.ym] = dc[i]; });
+  const map = {}; ch.forEach((o, i) => { map[bucketKey(series[o.idx])] = dc[i]; });
   return map;
 }
 // Joint per-item weight fit: assemble X from the survivors' lag-shifted change maps
-// (survivor predicts target week W via xMap[W − lag]) vs the target change, run the
-// sign-constrained NNLS. Weekly only (integer week keys; monthly-fallback items skip).
+// (survivor predicts target bucket W via xMap[W − lag]) vs the target change, run the
+// sign-constrained NNLS. Buckets are integers at BOTH resolutions (week index or month
+// ordinal), so the same W−lag join works weekly and monthly.
 function fitItemWeights(targetChg, survivors, minRows) {
   minRows = minRows || 30;
   const Ws = Object.keys(targetChg).map(Number).filter((w) => isFinite(w)).sort((a, b) => a - b);
@@ -263,60 +282,82 @@ function fitItemWeights(targetChg, survivors, minRows) {
   return { indicators: survivors.map((s, i) => ({ id: s.id, lag: s.lag, sign: s.sign, weight: Math.round(fit.weights[i] * 1000) / 1000 })), r2: Math.round(fit.r2 * 1000) / 1000, n: X.length };
 }
 
+// per-resolution test parameters.
+const RES = {
+  weekly:  { bucket: weeklyFromDated,  align: alignWeekly,  maxLag: 16, minN: 60, minAlign: 40, minFit: 30, unit: 'wk' },
+  monthly: { bucket: monthlyFromDated, align: alignMonthly, maxLag: 12, minN: 36, minAlign: 24, minFit: 20, unit: 'mo' }
+};
 async function calibrate(getProxy, getIndicator, getAnchor) {
   const edges = [];
   const proxyCache = {}, anchorCache = {}, indHistCache = {};   // share fetches across items
-  const perItem = {}, fits = {};   // per-item joint weight fit (weekly items)
+  const perItem = {}, fits = {};   // per-item joint weight fit
   for (const [item, panel] of Object.entries(rules.items || {})) {
-    // Prefer the WEEKLY anchor (the price we publish); fall back to monthly PPI.
-    let resolution = 'monthly', target = null, targetLabel = null;
+    // Build the published-anchor target at BOTH cadences. Each indicator is then tested
+    // at min(anchor cadence, its own cadence): a MONTHLY driver (feed-grain, cold storage)
+    // is judged at MONTHLY resolution against the monthly-AGGREGATED published price — not
+    // starved on a weekly grid (the bug that buried cheddar↔feed-grain at N=29), and not
+    // exiled to the PPI proxy. A WEEKLY driver (diesel, drought) still tests weekly.
+    let weeklyTarget = null, monthlyTarget = null, targetLabel = null, anchorWeekly = false;
     const aspec = ANCHOR[item];
     if (getAnchor && aspec) {
       try {
         const akey = `${aspec.report}|${aspec.section}|${aspec.winField || ''}|${aspec.serverFilter && aspec.match ? aspec.match.value : ''}`;   // shared by report (or report+commodity when server-filtered)
         const arows = anchorCache[akey] = anchorCache[akey] || await getAnchor(aspec);
-        const wk = weeklyFromDated(anchorSeries(arows, aspec));
-        if (wk.length >= 60) { resolution = 'weekly'; target = wk; targetLabel = `${aspec.host}:${aspec.report}`; }
+        const apairs = anchorSeries(arows, aspec);
+        const wk = weeklyFromDated(apairs);
+        if (wk.length >= 60) { weeklyTarget = wk; monthlyTarget = monthlyFromDated(apairs); anchorWeekly = true; targetLabel = `${aspec.host}:${aspec.report}`; }
       } catch (e) { /* fall back to PPI */ }
     }
-    if (!target) {
+    if (!anchorWeekly) {
       const proxyId = PROXY[item]; if (!proxyId) continue;
-      try { target = proxyCache[proxyId] = proxyCache[proxyId] || monthlyFromDated(await getProxy(proxyId)); targetLabel = proxyId; }
+      try { monthlyTarget = proxyCache[proxyId] = proxyCache[proxyId] || monthlyFromDated(await getProxy(proxyId)); targetLabel = proxyId; }
       catch (e) { console.log(`  target ${item} failed: ${e.message}`); continue; }
     }
-    if (resolution === 'weekly') perItem[item] = { targetChg: seriesChanges(target), cands: [] };
-    const bucket = resolution === 'weekly' ? weeklyFromDated : monthlyFromDated;
-    const align = resolution === 'weekly' ? alignWeekly : alignMonthly;
-    const maxLag = resolution === 'weekly' ? 16 : 12;     // 16 weeks vs 12 months
-    const minN = resolution === 'weekly' ? 60 : 36, minAlign = resolution === 'weekly' ? 40 : 24;
+    perItem[item] = {
+      weeklyChg: weeklyTarget ? seriesChanges(weeklyTarget) : null,
+      monthlyChg: monthlyTarget ? seriesChanges(monthlyTarget) : null,
+      cands: []
+    };
     for (const ind of (panel.indicators || [])) {
       const spec = specs[ind.id] || resolveMoveSpec(ind.id);
       const type = spec ? spec.type : '(emit)';
-      const rec = { item, indicator: ind.id, type, resolution, target: targetLabel, ruleSign: ind.sign, ruleWeight: ind.weight, ruleLeadWk: ind.lead ? `${ind.lead.min}-${ind.lead.max}` : null };
-      // WEEKLY resolution can fairly judge short-lead signals; monthly cannot.
-      rec.fairness = resolution === 'weekly' ? 'judgeable' : ((ind.lead && ind.lead.max >= 8) ? 'judgeable' : 'short-lead (monthly test blind)');
-      if (!spec || SKIP_TYPES.has(type)) { rec.status = 'skipped'; rec.reason = !spec ? 'no spec' : `type ${type}`; edges.push(rec); continue; }
+      const rec = { item, indicator: ind.id, type, target: targetLabel, ruleSign: ind.sign, ruleWeight: ind.weight, ruleLeadWk: ind.lead ? `${ind.lead.min}-${ind.lead.max}` : null };
+      if (!spec || SKIP_TYPES.has(type)) { rec.status = 'skipped'; rec.reason = !spec ? 'no spec' : `type ${type}`; rec.resolution = anchorWeekly ? 'weekly' : 'monthly'; edges.push(rec); continue; }
       let hist;
       try { hist = indHistCache[ind.id] = indHistCache[ind.id] || await getIndicator(spec); } catch (e) { rec.status = 'fetch-failed'; rec.reason = e.message; edges.push(rec); continue; }
       if (hist.skip) { rec.status = 'skipped'; rec.reason = hist.skip; edges.push(rec); continue; }
-      const al = align(bucket(hist.pairs), target);
-      if (al.length < minAlign) { rec.status = 'insufficient'; rec.n = al.length; edges.push(rec); continue; }
+      // resolution per EDGE = min(anchor cadence, indicator cadence).
+      const indWeekly = medianCadence(hist.pairs) === 'weekly';
+      const resolution = (anchorWeekly && indWeekly) ? 'weekly' : 'monthly';
+      const target = resolution === 'weekly' ? weeklyTarget : monthlyTarget;
+      const R = RES[resolution];
+      rec.resolution = resolution; rec.indCadence = indWeekly ? 'weekly' : 'monthly';
+      // weekly OR a long-lead monthly signal can be fairly judged; a short-lead signal on a monthly grid is blind.
+      rec.fairness = resolution === 'weekly' ? 'judgeable' : ((ind.lead && ind.lead.max >= 8) ? 'judgeable' : 'short-lead (monthly test blind)');
+      if (!target) { rec.status = 'skipped'; rec.reason = 'no target at resolution'; edges.push(rec); continue; }
+      const al = R.align(R.bucket(hist.pairs), target);
+      if (al.length < R.minAlign) { rec.status = 'insufficient'; rec.n = al.length; edges.push(rec); continue; }
       const ch = keyedChanges(al);
-      const ed = C.calibrateEdge(ch.xc, ch.yc, { maxLag, minN });
-      Object.assign(rec, ed, { status: ed.ok ? 'tested' : 'untestable', circular: CIRCULAR_SOURCES.has(ind.source), lagUnit: resolution === 'weekly' ? 'wk' : 'mo' });
-      if (rec.status === 'tested' && resolution === 'weekly' && perItem[item]) perItem[item].cands.push({ rec, lag: ed.lag, sign: ind.sign, xMap: ch.xMap });
+      const ed = C.calibrateEdge(ch.xc, ch.yc, { maxLag: R.maxLag, minN: R.minN });
+      Object.assign(rec, ed, { status: ed.ok ? 'tested' : 'untestable', circular: CIRCULAR_SOURCES.has(ind.source), lagUnit: R.unit });
+      if (rec.status === 'tested') perItem[item].cands.push({ id: ind.id, rec, lag: ed.lag, sign: ind.sign, xMap: ch.xMap, res: resolution });
       edges.push(rec);
     }
   }
   const tested = edges.filter((e) => e.status === 'tested' && typeof e.p === 'number');
   C.benjaminiHochberg(tested, 0.10);
   tested.forEach((e) => { e.suggestWeight = e.circular ? 0 : C.suggestWeight(e, 3); });
-  // Per-item joint NNLS fit over the survivors (BH+OOS+N) → suggested weights.
+  // Per-item joint NNLS over the survivors (BH+OOS+N), fit at the resolution where the
+  // item has the most survivors (lags share a unit only within a resolution).
   for (const [item, pi] of Object.entries(perItem)) {
-    const survivors = pi.cands.filter((c) => c.rec.bhPass && c.rec.oosPass && c.rec.enoughN);
+    const survivors = pi.cands.filter((c) => c.rec.bhPass && c.rec.oosPass && c.rec.enoughN && !c.rec.circular);
     if (!survivors.length) continue;
-    const f = fitItemWeights(pi.targetChg, survivors);
-    if (f) fits[item] = f;
+    const wkS = survivors.filter((c) => c.res === 'weekly'), moS = survivors.filter((c) => c.res === 'monthly');
+    const useWeekly = wkS.length >= moS.length;
+    const group = useWeekly ? wkS : moS, chg = useWeekly ? pi.weeklyChg : pi.monthlyChg;
+    if (!chg || !group.length) continue;
+    const f = fitItemWeights(chg, group, RES[useWeekly ? 'weekly' : 'monthly'].minFit);
+    if (f) { f.resolution = useWeekly ? 'weekly' : 'monthly'; f.unit = RES[useWeekly ? 'weekly' : 'monthly'].unit; fits[item] = f; }
   }
   return { edges, fits };
 }
@@ -351,7 +392,7 @@ function report(result) {
     console.log('\n  SUGGESTED WEIGHTS (sign-constrained NNLS over the survivors — review, then apply by hand + _version bump):');
     for (const it of items) {
       const f = fits[it];
-      console.log(`    ${it.padEnd(16)} R²=${f.r2} (N=${f.n}): ` + f.indicators.map((i) => `${i.id}=${i.weight}@${i.lag}${'wk'}`).join('  '));
+      console.log(`    ${it.padEnd(16)} [${f.resolution}] R²=${f.r2} (N=${f.n}): ` + f.indicators.map((i) => `${i.id}=${i.weight}@${i.lag}${f.unit || 'wk'}`).join('  '));
     }
   } else {
     console.log('\n  SUGGESTED WEIGHTS: none — no item had enough weekly survivors to fit (expected until the weekly anchor + signals clear the bar).');
@@ -443,6 +484,17 @@ function selftest() {
       ok(gw && gw.weight > 0.3, `fitItemWeights gives the true leader a real weight (got ${gw && gw.weight})`);
       ok(jw && Math.abs(jw.weight) < 0.2, `fitItemWeights pins the useless survivor near 0 (got ${jw && jw.weight})`);
     }
+    // monthOrd keying: a MONTHLY survivor (month-ordinal keys) must join + fit the same
+    // way — this is the per-edge-resolution unlock for feed-grain / cold storage.
+    ok(monthOrd('2024-01') + 12 === monthOrd('2025-01') && monthOrd('2024-03') - monthOrd('2024-01') === 2, 'monthOrd is a contiguous integer month index');
+    {
+      const rnd3 = mul(123), rn = () => { let u = 0, v = 0; while (!u) u = rnd3(); while (!v) v = rnd3(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); };
+      const tgt = {}, drv = {}, base = monthOrd('2016-01'), L = 2;
+      for (let i = 0; i < 90; i++) tgt[base + i] = 0.02 * rn();
+      for (let i = 0; i < 90; i++) drv[base + i - L] = tgt[base + i] + 0.3 * 0.02 * rn();   // leads target by L MONTHS, positive sign
+      const mf = fitItemWeights(tgt, [{ id: 'drvm', lag: L, sign: 1, xMap: drv }], 20);
+      ok(mf && mf.n >= 20 && Math.abs(mf.indicators[0].weight) > 0.3, `fitItemWeights joins monthly ordinals + fits (n=${mf && mf.n}, w=${mf && mf.indicators[0].weight})`);
+    }
     console.log(fail ? `\ncalibrate-pressure: ${fail} FAIL` : '\ncalibrate-pressure: OK — pipeline recovers truth, rejects noise.');
     process.exit(fail ? 1 : 0);
   });
@@ -455,7 +507,7 @@ else {
   calibrate(fetchProxy, fetchIndicatorHistory, getAnchor).then((result) => {
     report(result);
     const { edges, fits } = result;
-    const out = { _doc: 'GENERATED by scripts/calibrate-pressure.mjs — empirical lead/sign/strength per indicator→ingredient edge vs the hand-set rule. TARGET: each ingredient is backtested against the WEEKLY wholesale anchor it actually publishes (LMR cutout / AMS terminal / NDPSR dairy, via the same source specs as data/cost-index-sources.json) at WEEKLY resolution; items whose weekly anchor does not resolve fall back to the monthly BLS-PPI proxy (resolution:monthly). Informs human weight edits; NEVER auto-applied. No price. CAVEATS: weekly-anchor edges that still flip sign are real evidence (no resolution excuse); monthly-fallback edges keep the proxy mismatch caveat. Surviving edges are hypotheses to NNLS-fit + benchmark vs equal-weight OOS, then apply by hand with a _version bump. fits = the sign-constrained NNLS joint weight fit per item over its surviving weekly edges (suggestions only).', generatedAt: new Date().toISOString().slice(0, 10), edges, fits };
+    const out = { _doc: 'GENERATED by scripts/calibrate-pressure.mjs — empirical lead/sign/strength per indicator→ingredient edge vs the hand-set rule. TARGET: each ingredient is backtested against the wholesale anchor it actually publishes (LMR cutout / AMS terminal / NDPSR dairy, via the same source specs as data/cost-index-sources.json). RESOLUTION is matched PER EDGE = min(anchor cadence, indicator cadence): a weekly driver (diesel, drought) tests against the weekly anchor; a monthly driver (feed-grain, cold storage) tests against the same anchor AGGREGATED to monthly — so monthly inputs are no longer starved on a weekly grid. Items with no weekly anchor fall back to the monthly BLS-PPI proxy. Informs human weight edits; NEVER auto-applied. No price. CAVEATS: anchor edges that still flip sign are real evidence (no resolution excuse); monthly-PPI-fallback edges keep the proxy mismatch caveat. Surviving edges are hypotheses to NNLS-fit + benchmark vs equal-weight OOS, then apply by hand with a _version bump. fits = the sign-constrained NNLS joint weight fit per item over its surviving edges, fit at the resolution where the item has the most survivors (suggestions only).', generatedAt: new Date().toISOString().slice(0, 10), edges, fits };
     writeFileSync(path.join(repoRoot, 'data/pressure-calibration.json'), JSON.stringify(out, null, 2) + '\n');
     console.log('\nWrote data/pressure-calibration.json');
   }).catch((e) => { console.error('calibrate failed:', e.message); process.exit(1); });
