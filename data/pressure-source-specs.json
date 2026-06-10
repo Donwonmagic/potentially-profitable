@@ -18,7 +18,16 @@
     "feed-futures": { "type": "ams", "verified": false, "report": "ams_3046", "field": "close", "commodity": "Corn|Soybeans", "tail": 20,
       "_verify": "PERMANENTLY DEFERRED (wrong source): AMS_3046 is the Minneapolis Daily Grain NARRATIVE report — rows are report headers with a report_narrative text blob, no structured close/price field. CBOT futures settlement isn't AMS data anyway (that's CME). Leave as an unwired future slot on the meat panels (they already have 3 live signals); revisit only with a real structured grain/feed price source." },
     "ams-shipments": { "type": "ams", "verified": false, "report": "movement", "field": "shipments", "tail": 7,
-      "_verify": "DEFERRED: same — `ams` type unimplemented. Confirm the Fruit & Vegetable Movement report slug + shipment-volume field on My Market News (MARS v1.2) and add a urlFor case before flipping." },
+      "_verify": "SUPERSEDED — being replaced by per-commodity movement specs (onion-shipments / lettuce-shipments / tomato-shipments / potato-shipments). Once those verify in --probe, rewire the produce panels to them and delete this shared placeholder. Movement VOLUME (not terminal price) is the right signal: the produce measured anchor is ALREADY the AMS terminal price (cost-index-sources.json), so a price overlay would be circular." },
+
+    "onion-shipments": { "type": "ams", "verified": false, "report": "if_fv170", "commodity": "Onions, Dry", "commodityKey": "commodity", "field": "volume", "dateKey": "report_date", "tail": 10, "windowDays": 150,
+      "_verify": "Idaho Falls TRUCK/AIR/BOAT Daily Movement (Treasure-Valley onions). Re-probe: confirm the volume field name from the dumped keys (guess 'volume'), the commodity spelling present, and whether rows are 1-per-day (if multiple per day, amsSeries needs sum-by-date). sign should be -1 (more arrivals → more supply → cost down)." },
+    "lettuce-shipments": { "type": "ams", "verified": false, "report": "el_fv170", "commodity": "Lettuce, Romaine", "commodityKey": "commodity", "field": "volume", "dateKey": "report_date", "tail": 10, "windowDays": 150,
+      "_verify": "El Centro (Imperial/Yuma winter lettuce) Daily Movement. Seasonal — may be thin in summer (Salinas not in MARS). Confirm volume field + commodity spelling in --probe." },
+    "tomato-shipments": { "type": "ams", "verified": false, "report": "ng_fv170", "commodity": "Tomatoes", "commodityKey": "commodity", "field": "volume", "dateKey": "report_date", "tail": 10, "windowDays": 150,
+      "_verify": "Nogales AZ Daily Movement (the Mexican fresh-tomato gateway). Heaviest Oct–Jun. Confirm volume field + commodity spelling in --probe." },
+    "potato-shipments": { "type": "ams", "verified": false, "report": "if_fv170", "commodity": "Potatoes", "commodityKey": "commodity", "field": "volume", "dateKey": "report_date", "tail": 10, "windowDays": 150,
+      "_verify": "Idaho Falls Daily Movement (russet origin). Confirm volume field + commodity spelling in --probe; note 'Potatoes' vs 'Potatoes, Chipper/Seed' — pin the fresh table line." },
 
     "broiler-placements": { "type": "nass", "verified": true, "tail": 5,
       "query": { "source_desc": "SURVEY", "sector_desc": "ANIMALS & PRODUCTS", "commodity_desc": "CHICKENS", "class_desc": "BROILERS", "statisticcat_desc": "PLACEMENTS", "agg_level_desc": "NATIONAL", "short_desc": "CHICKENS, BROILERS - PLACEMENTS, MEASURED IN HEAD" },

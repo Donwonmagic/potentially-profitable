@@ -132,14 +132,22 @@ function urlFor(id, spec) {
   }
   if (spec.type === 'ams') {
     // USDA AMS My Market News (MARS v1.2). Auth: API key as the Basic-auth
-    // username, blank password → base64(key + ':'). One report per slug; the
-    // optional `q` filters server-side (e.g. "commodity=ONIONS;market_type=Movement").
+    // username, blank password → base64(key + ':'). The report DATA lives in a
+    // SECTION ("Report Details" on produce) — the bare report is just the header.
+    // Window on report_begin_date so a daily report returns a small recent slice
+    // (mirrors tools/_shared/cost-index-fetch.js). Commodity is filtered
+    // client-side in amsSeries (one report carries every commodity).
     const AMS_KEY = process.env.AMS_KEY;
     if (!AMS_KEY) return { skip: 'no AMS_KEY' };
     if (!spec.report) return { skip: 'no report slug' };
-    const qs = spec.q ? `?q=${encodeURIComponent(spec.q)}` : '';
     const auth = Buffer.from(AMS_KEY + ':').toString('base64');
-    return { url: `https://marsapi.ams.usda.gov/services/v1.2/reports/${encodeURIComponent(spec.report)}${qs}`, init: { headers: { Authorization: `Basic ${auth}` } } };
+    const section = spec.section == null ? 'Report Details' : spec.section;
+    const path = section ? `/${encodeURIComponent(section)}` : '';
+    const days = spec.windowDays || 150;
+    const fmt = (d) => `${('0' + (d.getMonth() + 1)).slice(-2)}/${('0' + d.getDate()).slice(-2)}/${d.getFullYear()}`;
+    const end = new Date(), start = new Date(end.getTime() - days * 864e5);
+    const q = `?q=${encodeURIComponent('report_begin_date=' + fmt(start) + ':' + fmt(end))}`;
+    return { url: `https://marsapi.ams.usda.gov/services/v1.2/reports/${encodeURIComponent(spec.report)}${path}${q}`, init: { headers: { Authorization: `Basic ${auth}` } } };
   }
   return { skip: 'unknown type' };
 }
@@ -241,15 +249,22 @@ async function amsDiscover() {
     const hits = arr.map((c) => (typeof c === 'string' ? c : (c.commodity || c.commodity_name || c.name || JSON.stringify(c)))).filter((c) => re.test(c));
     console.log(`\n  produce commodity names (${hits.length} of ${arr.length}): ${hits.join(' | ') || '(none matched)'}`);
   } catch (e) { console.log(`  commodities list failed: ${e.message}`); }
-  // 3) Sample the LA terminal-vegetable report so we see the fallback DATA shape
-  // (which field is volume vs price, the date field, the commodity column) — recent
-  // window so we don't pull years of history.
-  try {
-    const sample = await fetchJson(`${base}/reports/hc_fv020?q=commodity=Onions, Dry`, init);
-    const rows = (sample && sample.results) || (Array.isArray(sample) ? sample : []);
-    console.log(`\n  SAMPLE hc_fv020 (LA veg, q=Onions, Dry): ${rows.length} rows. keys: ${rows[0] ? Object.keys(rows[0]).join(', ') : '(none)'}`);
-    if (rows[0]) console.log(`  sample row: ${JSON.stringify(rows[0])}`);
-  } catch (e) { console.log(`  hc_fv020 sample failed: ${e.message}`); }
+  // 3) Sample a MOVEMENT report's Report Details (data lives in the section, not
+  // the bare report) so we see the volume field name, date field, and commodity
+  // column. Windowed to recent dates. Idaho Falls = potatoes + Treasure-Valley onions.
+  const fmt = (d) => `${('0' + (d.getMonth() + 1)).slice(-2)}/${('0' + d.getDate()).slice(-2)}/${d.getFullYear()}`;
+  const end = new Date(), start = new Date(end.getTime() - 150 * 864e5);
+  const win = `?q=${encodeURIComponent('report_begin_date=' + fmt(start) + ':' + fmt(end))}`;
+  for (const slug of ['if_fv170', 'ng_fv170']) {
+    try {
+      const sample = await fetchJson(`${base}/reports/${slug}/${encodeURIComponent('Report Details')}${win}`, init);
+      const rows = (sample && sample.results) || (Array.isArray(sample) ? sample : []);
+      console.log(`\n  SAMPLE ${slug} Report Details: ${rows.length} rows. keys: ${rows[0] ? Object.keys(rows[0]).join(', ') : '(none)'}`);
+      if (rows[0]) console.log(`  sample row: ${JSON.stringify(rows[0])}`);
+      const coms = []; rows.forEach((r) => { const c = r && (r.commodity || r.commodity_name); if (c && coms.indexOf(c) < 0 && coms.length < 20) coms.push(c); });
+      if (coms.length) console.log(`  commodities present: ${coms.join(' | ')}`);
+    } catch (e) { console.log(`\n  ${slug} sample failed: ${e.message}`); }
+  }
 }
 
 async function live() {
