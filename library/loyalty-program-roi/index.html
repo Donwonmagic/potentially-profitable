@@ -46,7 +46,7 @@
       "url": "https://muntin.digital/library/loyalty-program-roi/",
       "inLanguage": "en-US",
       "datePublished": "2026-05-11T08:30:00-04:00",
-      "dateModified": "2026-05-28",
+      "dateModified": "2026-06-10",
       "author": {
         "@id": "https://muntin.digital/#muntin-desk",
         "@type": "Organization",
@@ -491,38 +491,41 @@ main{padding-top:64px}
 
     <p>Every loyalty program a US independent restaurant runs fits one of four shapes. The implementations differ; the underlying economics don&rsquo;t. Walk through them in order of operator cost-to-implement.</p>
 
-    <figure class="viz-figure article-figure" data-audio-alt="Four loyalty program models for independent restaurants, ranked by monthly cost. Paper punch cards are essentially free, ten dollars a year for printing. POS-integrated loyalty (Toast Rewards or Square Loyalty) runs roughly forty-five to seventy-five dollars a month from the vendor pricing pages. Standalone loyalty platforms (Fivestars or Como) do not publish open pricing; historically they run materially higher than the POS-integrated tier. CRM-direct via Mailchimp or Klaviyo plus your own checkout runs twenty to eighty dollars a month from the vendor pricing pages. The kept-margin ranking, in operator practice, runs roughly inverse to cost-per-percentage-return: punch cards have the highest percentage return on a small base; CRM-direct has the highest absolute return on a converting direct channel; standalone platforms tend to be the worst percentage return because their cost structure is high relative to behavioral lift.">
+    <p>Cost-to-implement is the wrong axis to rank these on, because the cheapest model and the most expensive one are <em>both</em> live answers depending on the channel you already run. The axis that actually decides it is annual kept margin &mdash; the dollars the program returns after its own cost. On a roughly 500-customer base, in my own operator practice, the spread is the whole argument: the best model returns close to nine times the worst one still worth running. These are illustrative figures from one restaurant, not industry benchmarks.</p>
+
+    <figure class="viz-figure article-figure" data-audio-alt="Annual kept margin by loyalty model on a roughly five-hundred-customer base, illustrative operator figures from one restaurant. CRM plus direct returns the most: a mid-point near six thousand five hundred dollars a year on a band of five to eight thousand. POS-integrated loyalty returns about two thousand four hundred dollars a year. Paper punch cards return about seven hundred fifty dollars a year on essentially no cost. Standalone platforms publish no open pricing and, in operator practice, return the worst margin per dollar of the four, shown in rust as the worst case rather than a measured bar. A benchmark tick marks the roughly one-thousand-dollar-a-year line below which a program is not worth the operator's setup time.">
       <div class="viz-bars">
-        <p class="viz-bars__title">Four loyalty models, monthly cost (vendor-published, on a $0–$100/mo scale)</p>
+        <p class="viz-bars__title">Annual kept margin by model, ~500-customer base (illustrative, one restaurant)</p>
         <div class="viz-bars__row">
-          <p class="viz-bars__label">Paper punch cards</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.008"></span></div>
-          <p class="viz-bars__num">&lt;$1/mo (printing)</p>
-        </div>
-        <div class="viz-bars__row">
-          <p class="viz-bars__label">CRM + direct (Mailchimp / Klaviyo + own checkout)</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.50"></span></div>
-          <p class="viz-bars__num">$20&ndash;$80/mo</p>
+          <p class="viz-bars__label">CRM + direct (Klaviyo/Mailchimp + own checkout)</p>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.81"></span><span class="viz-bars__mark" data-tone="rust" style="--x:0.125" aria-hidden="true"></span></div>
+          <p class="viz-bars__num">~$6,500/yr</p>
         </div>
         <div class="viz-bars__row">
           <p class="viz-bars__label">POS loyalty (Toast Rewards / Square Loyalty)</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.375"></span></div>
-          <p class="viz-bars__num">$25&ndash;$50/mo</p>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.30"></span><span class="viz-bars__mark" data-tone="rust" style="--x:0.125" aria-hidden="true"></span></div>
+          <p class="viz-bars__num">~$2,400/yr</p>
+        </div>
+        <div class="viz-bars__row">
+          <p class="viz-bars__label">Paper punch cards</p>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.094"></span><span class="viz-bars__mark" data-tone="rust" style="--x:0.125" aria-hidden="true"></span></div>
+          <p class="viz-bars__num">~$750/yr</p>
         </div>
         <div class="viz-bars__row">
           <p class="viz-bars__label">Standalone platforms (Fivestars / Como)</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0"></span></div>
-          <p class="viz-bars__num">not openly published</p>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.094"></span><span class="viz-bars__mark" data-tone="rust" style="--x:0.125" aria-hidden="true"></span></div>
+          <p class="viz-bars__num">worst margin/$ (no open pricing)</p>
         </div>
+        <p class="viz-bars__note">The rust tick marks the <strong>~$1,000/yr</strong> floor below which a program isn&rsquo;t worth the setup time. Punch cards clear it on near-zero cost; the standalone platform, priced contact-for-quote above the POS tier, is the one model whose cost eats the lift.</p>
       </div>
-      <figcaption>Bars are mid-point of each vendor-published range on a $0–$100/mo scale. Standalone platforms publish no monthly cost — body prose discusses their historical positioning. Returns vary by restaurant; numbers are pricing, not outcomes.</figcaption>
+      <figcaption>Ranked on return, not price, the cheapest model (punch cards) outranks the most expensive (standalone) on margin per dollar &mdash; the reason cost-to-implement is the wrong axis.</figcaption>
     </figure>
     <details class="cite">
-      <summary>Source: vendor pricing pages</summary>
+      <summary>Source: operator practice + vendor pricing pages</summary>
       <div class="cite-body">
-        <p><span class="cite-source">Toast</span> &mdash; "Toast Rewards" add-on pricing on pos.toasttab.com (current public pricing page).</p>
-        <p><span class="cite-source">Square</span> &mdash; "Square Loyalty" pricing on squareup.com.</p>
-        <p><span class="cite-source">Fivestars</span> / <span class="cite-source">Como</span> &mdash; neither vendor publishes open monthly pricing; both are contact-for-quote. The range named in the prose reflects what operators report after vendor conversations.</p>
+        <p><span class="cite-source">Kept-margin figures</span> &mdash; illustrative, from running each model on a single ~500-customer restaurant between 2024 and 2025. Not industry benchmarks; your returns vary by channel mix and average check.</p>
+        <p><span class="cite-source">Toast</span> / <span class="cite-source">Square</span> &mdash; "Toast Rewards" and "Square Loyalty" public pricing on pos.toasttab.com and squareup.com.</p>
+        <p><span class="cite-source">Fivestars</span> / <span class="cite-source">Como</span> &mdash; neither publishes open monthly pricing; both are contact-for-quote and land above the POS-integrated tier per operator reports.</p>
         <p><span class="cite-source">Mailchimp</span> / <span class="cite-source">Klaviyo</span> &mdash; current published pricing tiers on mailchimp.com and klaviyo.com.</p>
       </div>
     </details>
@@ -595,6 +598,42 @@ main{padding-top:64px}
     <div class="callout">
       <p><strong>The loyalty conversation is downstream of the channel conversation.</strong> If your channel mix is wrong &mdash; mostly third-party app orders, no direct flow &mdash; no loyalty layer is going to fix it. Fix the channel first; layer the loyalty after. Run the loyalty program on the direct channel, where the margin is high enough to fund a real customer relationship.</p>
     </div>
+
+    <p>That ordering matters more than the model choice, because each step funds the one after it. Layering a paid loyalty platform onto a broken channel just meters spend against a leak. Here is the sequence I run, and the gate that has to clear before the next step earns its monthly fee.</p>
+
+    <figure class="viz-figure article-figure" data-audio-alt="The order to build loyalty in, because each stage funds the next. Step one, fix the channel: get a direct online ordering or reservation flow that converts, so guest data lands in something you own rather than a third-party app. This is the gate; until it clears, every paid loyalty layer just meters spend against a leak. Step two, capture the customer: a punch card at the counter or an email line at checkout costs near nothing and teaches the kitchen to track repeat behavior while the channel matures. Step three, segment on the data you now own: split weekly regulars from lapsed sixty-day guests and treat them differently, which is where the CRM plus direct path earns its two-times return. Step four, automate the re-engagement: a day-fifty-eight lapsed-guest email and a curated top-fifty regulars list, the highest-margin move, but only once the three steps under it are real.">
+      <ol class="viz-flow">
+        <li class="viz-flow__step" data-state="bad">
+          <span class="viz-flow__num">1</span>
+          <div class="viz-flow__body">
+            <p class="viz-flow__title">Fix the channel &mdash; the gate</p>
+            <p class="viz-flow__meta">Stand up a direct ordering or reservation flow that converts, so guest data lands somewhere <strong>you own</strong>. Until this clears, every paid loyalty layer meters spend against a leak. No direct channel yet? Stop here.</p>
+          </div>
+        </li>
+        <li class="viz-flow__step" data-state="warn">
+          <span class="viz-flow__num">2</span>
+          <div class="viz-flow__body">
+            <p class="viz-flow__title">Capture the customer cheaply</p>
+            <p class="viz-flow__meta">A counter punch card or a checkout email line costs near nothing &mdash; <strong>$10/yr, ~$750/yr kept margin</strong> &mdash; and teaches the kitchen to track repeat behavior while the channel matures.</p>
+          </div>
+        </li>
+        <li class="viz-flow__step" data-state="ok">
+          <span class="viz-flow__num">3</span>
+          <div class="viz-flow__body">
+            <p class="viz-flow__title">Segment on the data you now own</p>
+            <p class="viz-flow__meta">Split weekly regulars from 60-day-lapsed guests and treat them differently &mdash; tasting invite vs. $15-off. This split is where the <strong>CRM-direct 2x</strong> actually comes from.</p>
+          </div>
+        </li>
+        <li class="viz-flow__step" data-state="done">
+          <span class="viz-flow__num">4</span>
+          <div class="viz-flow__body">
+            <p class="viz-flow__title">Automate the re-engagement</p>
+            <p class="viz-flow__meta">A day-58 lapsed-guest email plus a curated top-50 regulars list &mdash; <strong>$5,000&ndash;$8,000/yr</strong>, the highest-margin move &mdash; but only once the three steps beneath it are real.</p>
+          </div>
+        </li>
+      </ol>
+      <figcaption>Build bottom-up: skip step 1 and the paid layers above it return a fraction of the kept-margin figures, because there&rsquo;s no owned data for them to work on.</figcaption>
+    </figure>
 
     <hr style="margin:48px 0 32px;border:0;border-top:1px solid var(--line)">
 
