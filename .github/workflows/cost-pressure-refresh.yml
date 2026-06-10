@@ -25,9 +25,9 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: 'probe = verify specs · ams-discover = find the MARS report slug · live = fetch + render + commit'
+        description: 'probe = verify specs · ams-discover = find MARS slug · calibrate = backtest weights · live = fetch + render + commit'
         type: choice
-        options: [probe, ams-discover, live]
+        options: [probe, ams-discover, calibrate, live]
         default: probe
   schedule:
     # Mondays 11:00 UTC — weekly cadence. The measured anchor refreshes on its own
@@ -75,6 +75,18 @@ jobs:
         env:
           AMS_KEY: ${{ secrets.AMS_KEY }}
         run: node scripts/fetch-pressure-observations.mjs --ams-discover
+
+      # --- Calibrate: backtest each indicator→ingredient edge (writes a report) ---
+      - name: Calibrate (writes nothing to the repo)
+        if: env.MODE == 'calibrate'
+        env:
+          EIA_KEY: ${{ secrets.EIA_KEY }}
+          NASS_KEY: ${{ secrets.NASS_KEY }}
+          FRED_KEY: ${{ secrets.FRED_KEY }}
+          BLS_KEY: ${{ secrets.BLS_KEY }}
+        run: |
+          node scripts/test-pressure-calibrate.mjs
+          node scripts/calibrate-pressure.mjs
 
       # --- Gates 3+4: live fetch → score → render → gate → commit -------------
       - name: Live refresh
