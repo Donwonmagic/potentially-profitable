@@ -217,15 +217,21 @@ async function amsDiscover() {
     const reports = await fetchJson(`${base}/reports`, init);
     const arr = Array.isArray(reports) ? reports : (reports.results || reports.reports || []);
     console.log(`reports: ${arr.length} total. first row keys: ${arr[0] ? Object.keys(arr[0]).join(', ') : '(none)'}`);
-    const re = /movement|shipment|arrival|specialty|fruit|vegetable|produce/i;
-    const hits = arr.filter((r) => re.test(JSON.stringify(r)));
-    console.log(`\n  movement/specialty-looking reports (${hits.length}):`);
-    hits.slice(0, 60).forEach((r) => {
-      const slug = r.slug_name || r.slug_id || r.slug || r.report_id || '?';
-      const title = r.report_title || r.report_name || r.title || r.name || '';
-      const mt = r.market_type ? ` {${r.market_type}}` : '';
-      console.log(`    [${slug} / id ${r.slug_id || '?'}]${mt} ${title}`);
-    });
+    const title = (r) => String(r.report_title || r.report_name || r.title || r.name || '');
+    const line = (r) => `    [${r.slug_name || r.slug_id || '?'} / id ${r.slug_id || '?'}] {mt: ${[].concat(r.market_types || r.market_type || []).join('; ') || '?'}} ${title(r)}`;
+    // 1) TRUE volume reports — movement / shipment / arrival in the title.
+    const vol = arr.filter((r) => /\bmovement\b|\bshipment|\barrival/i.test(title(r)));
+    console.log(`\n  VOLUME reports — movement/shipment/arrival (${vol.length}):`);
+    vol.forEach((r) => console.log(line(r)));
+    // 2) Report taxonomy — every distinct market_type, so we can see if there's a
+    // "Movement"/"Shipment"/"Shipping Point" family we should be querying instead.
+    const mts = {};
+    arr.forEach((r) => [].concat(r.market_types || r.market_type || []).forEach((m) => { mts[m] = (mts[m] || 0) + 1; }));
+    console.log(`\n  market_types across catalog: ${Object.entries(mts).sort((a, b) => b[1] - a[1]).map(([m, n]) => `${m}(${n})`).join(' | ')}`);
+    // 3) Fallback set — terminal-market VEGETABLE price reports (current, structured).
+    const veg = arr.filter((r) => /terminal market veget/i.test(title(r)) && !/discontinued/i.test(title(r)));
+    console.log(`\n  fallback — active Terminal Market Vegetable price reports (${veg.length}):`);
+    veg.slice(0, 20).forEach((r) => console.log(line(r)));
   } catch (e) { console.log(`  reports list failed: ${e.message}`); }
   // 2) Commodity names matching our produce items (exact spelling for the filter).
   try {
@@ -235,6 +241,15 @@ async function amsDiscover() {
     const hits = arr.map((c) => (typeof c === 'string' ? c : (c.commodity || c.commodity_name || c.name || JSON.stringify(c)))).filter((c) => re.test(c));
     console.log(`\n  produce commodity names (${hits.length} of ${arr.length}): ${hits.join(' | ') || '(none matched)'}`);
   } catch (e) { console.log(`  commodities list failed: ${e.message}`); }
+  // 3) Sample the LA terminal-vegetable report so we see the fallback DATA shape
+  // (which field is volume vs price, the date field, the commodity column) — recent
+  // window so we don't pull years of history.
+  try {
+    const sample = await fetchJson(`${base}/reports/hc_fv020?q=commodity=Onions, Dry`, init);
+    const rows = (sample && sample.results) || (Array.isArray(sample) ? sample : []);
+    console.log(`\n  SAMPLE hc_fv020 (LA veg, q=Onions, Dry): ${rows.length} rows. keys: ${rows[0] ? Object.keys(rows[0]).join(', ') : '(none)'}`);
+    if (rows[0]) console.log(`  sample row: ${JSON.stringify(rows[0])}`);
+  } catch (e) { console.log(`  hc_fv020 sample failed: ${e.message}`); }
 }
 
 async function live() {
