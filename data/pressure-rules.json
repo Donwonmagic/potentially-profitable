@@ -70,7 +70,6 @@
     ] },
     "onion": { "rule_version": "2026-Q2-1", "indicators": [
       { "id": "ams-shipments", "source": "ams-movement", "sign": -1, "weight": 2, "tier": "A", "window": "1w", "lead": { "min": 0, "max": 2, "unit": "week" }, "cite": "ams-movement" },
-      { "id": "crop-condition", "source": "nass-crop-progress", "sign": -1, "weight": 2, "tier": "B", "window": "2w", "lead": { "min": 2, "max": 8, "unit": "week" }, "cite": "nass-crop-progress", "note": "condition down → supply tightening → cost up" },
       { "id": "drought", "source": "usdm-drought", "sign": 1, "weight": 1, "tier": "C", "window": "4w", "lead": { "min": 4, "max": 17, "unit": "week" }, "cite": "usdm-drought" },
       { "id": "diesel", "source": "eia-diesel", "sign": 1, "weight": 1, "tier": "A", "window": "4w", "lead": { "min": 0, "max": 4, "unit": "week" }, "group": "freight", "cite": "eia-diesel" }
     ] },

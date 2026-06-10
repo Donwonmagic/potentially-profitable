@@ -559,21 +559,6 @@
           "cite": "ams-movement"
         },
         {
-          "id": "crop-condition",
-          "source": "nass-crop-progress",
-          "sign": -1,
-          "weight": 2,
-          "tier": "B",
-          "window": "2w",
-          "lead": {
-            "min": 2,
-            "max": 8,
-            "unit": "week"
-          },
-          "cite": "nass-crop-progress",
-          "note": "condition down → supply tightening → cost up"
-        },
-        {
           "id": "drought",
           "source": "usdm-drought",
           "sign": 1,
