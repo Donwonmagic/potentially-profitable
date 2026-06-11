@@ -315,6 +315,30 @@ async function fetchFOSS(spec) {
   return fossAggregate(items, spec.measure || 'kilos');
 }
 
+// ---- NOAA CPC ENSO / Oceanic Niño Index (keyless flat ASCII; monthly anomaly 1950+) -----
+// One text file: rows `SEAS YR TOTAL ANOM`, SEAS a 3-month season centered on its middle
+// month (DJF→Jan … NDJ→Dec). ANOM is the SST anomaly (°C, crosses zero) → use transform
+// 'level' downstream, not pct change. value = ANOM; date = the center month.
+const ONI_URL = 'https://www.cpc.ncep.noaa.gov/data/indices/oni.ascii.txt';
+const ONI_SEAS = { DJF: '01', JFM: '02', FMA: '03', MAM: '04', AMJ: '05', MJJ: '06', JJA: '07', JAS: '08', ASO: '09', SON: '10', OND: '11', NDJ: '12' };
+function parseONI(text) {
+  const out = [];
+  for (const line of String(text).split('\n')) {
+    const c = line.trim().split(/\s+/);
+    if (c.length < 4) continue;
+    const mo = ONI_SEAS[c[0].toUpperCase()], anom = Number(c[3]);
+    if (!mo || !/^\d{4}$/.test(c[1]) || !isFinite(anom)) continue;
+    out.push({ date: `${c[1]}-${mo}-15`, value: anom });
+  }
+  return out.sort((a, b) => a.date.localeCompare(b.date));
+}
+async function fetchText(url) {
+  const r = await fetch(url, { headers: { 'User-Agent': 'muntin.digital cost-index calibrate' } });
+  if (!r.ok) throw new Error('HTTP ' + r.status);
+  return r.text();
+}
+async function fetchONI(spec) { return parseONI(await fetchText(spec.url || ONI_URL)); }
+
 async function fetchIndicatorHistory(spec) {
   if (spec.type === 'fred') {
     const k = process.env.FRED_KEY; if (!k) return { skip: 'no FRED_KEY' };
@@ -328,6 +352,10 @@ async function fetchIndicatorHistory(spec) {
   if (spec.type === 'foss') {                               // NOAA Fisheries FOSS trade (keyless)
     try { return { pairs: await fetchFOSS(spec) }; }
     catch (e) { return { skip: `foss ${(spec.hts || []).join('/')}: ${e.message}` }; }
+  }
+  if (spec.type === 'noaa-oni') {                            // NOAA CPC ENSO/ONI (keyless flat file)
+    try { return { pairs: await fetchONI(spec) }; }
+    catch (e) { return { skip: `oni: ${e.message}` }; }
   }
   if (spec.type === 'eia') {
     const k = process.env.EIA_KEY; if (!k) return { skip: 'no EIA_KEY' };
@@ -394,10 +422,17 @@ function medianCadence(pairs) {
 }
 // stationary deseasonalized changes of an aligned [{x,y,mo|ym}] series, robust to
 // pctChange dropping a non-positive base (inner-join the x/y changes on their index).
-// Also returns xMap: the indicator change keyed by its week/month bucket (for the
-// per-item joint weight fit).
-function keyedChanges(al) {
-  const xCh = C.pctChange(al.map((p) => p.x), 1), yCh = C.pctChange(al.map((p) => p.y), 1);
+// xt = the INDICATOR transform: 'pct' (default, for prices), 'diff' (first difference) or
+// 'level' (use the raw value — correct for an already-stationary ANOMALY like ONI that
+// crosses zero, where pct change would explode). The TARGET (price) is always pct change.
+// Also returns xMap: the indicator change keyed by its week/month bucket (for the joint fit).
+function keyedChanges(al, xt) {
+  const xRaw = al.map((p) => p.x);
+  let xCh;
+  if (xt === 'level') xCh = xRaw.map((v, i) => ({ idx: i, v: Number(v) })).filter((o) => isFinite(o.v));
+  else if (xt === 'diff') { xCh = []; for (let i = 1; i < xRaw.length; i++) { const a = Number(xRaw[i - 1]), b = Number(xRaw[i]); if (isFinite(a) && isFinite(b)) xCh.push({ idx: i, v: b - a }); } }
+  else xCh = C.pctChange(xRaw, 1);
+  const yCh = C.pctChange(al.map((p) => p.y), 1);
   const ym = {}; yCh.forEach((o) => { ym[o.idx] = o.v; });
   const idxs = [], xs = [], ys = [], mos = [];
   xCh.forEach((o) => { if (o.idx in ym) { idxs.push(o.idx); xs.push(o.v); ys.push(ym[o.idx]); const r = al[o.idx]; mos.push(r.mo != null ? r.mo : parseInt(String(r.ym).slice(5, 7), 10) - 1); } });
@@ -500,9 +535,9 @@ async function calibrate(getProxy, getIndicator, getAnchor) {
       if (!target) { rec.status = 'skipped'; rec.reason = 'no target at resolution'; edges.push(rec); continue; }
       const al = R.align(R.bucket(hist.pairs), target);
       if (al.length < R.minAlign) { rec.status = 'insufficient'; rec.n = al.length; edges.push(rec); continue; }
-      const ch = keyedChanges(al);
+      const ch = keyedChanges(al, spec.transform);
       const ed = C.calibrateEdge(ch.xc, ch.yc, { maxLag: R.maxLag, minN: R.minN });
-      Object.assign(rec, ed, { status: ed.ok ? 'tested' : 'untestable', circular: CIRCULAR_SOURCES.has(ind.source), lagUnit: R.unit });
+      Object.assign(rec, ed, { status: ed.ok ? 'tested' : 'untestable', circular: CIRCULAR_SOURCES.has(ind.source), lagUnit: R.unit, transform: spec.transform || 'pct' });
       if (rec.status === 'tested') perItem[item].cands.push({ id: ind.id, rec, lag: ed.lag, sign: ind.sign, xMap: ch.xMap, res: resolution });
       edges.push(rec);
     }
@@ -751,6 +786,19 @@ function selftest() {
       const k = fossAggregate(items, 'kilos'), d = fossAggregate(items, 'val');
       ok(k.length === 2 && k[0].value === 150 && k[0].date === '2024-01-15', `fossAggregate sums kilos per month across countries (got ${k.length}, ${k[0] && k[0].value})`);
       ok(d.length === 2 && d[0].value === 1350, `fossAggregate can sum the $ measure too (got ${d[0] && d[0].value})`);
+    }
+    // ONI parse: 'SEAS YR TOTAL ANOM' → center-month date + anomaly (crosses zero).
+    {
+      const oni = parseONI('DJF 1999 25.0 -1.50\nNDJ 2015 27.2 2.31\nbad row\nNDJ 2015 27.2 2.31');
+      ok(oni.length === 3 && oni[0].date === '1999-01-15' && oni[0].value === -1.5, `parseONI maps SEAS→center month + signed anomaly (got ${oni.length}, ${oni[0] && oni[0].date}=${oni[0] && oni[0].value})`);
+      ok(oni[2].date === '2015-12-15' && oni[2].value === 2.31, `parseONI handles positive El Niño anomaly (got ${oni[2] && oni[2].value})`);
+    }
+    // keyedChanges transforms: 'level' must use the raw (zero-crossing-safe) x, not pct change.
+    {
+      const al = [{ x: -1, y: 100, ym: '2020-01' }, { x: 0, y: 102, ym: '2020-02' }, { x: 1, y: 101, ym: '2020-03' }, { x: 2, y: 105, ym: '2020-04' }];
+      const lev = keyedChanges(al, 'level'), pct = keyedChanges(al, 'pct');
+      ok(lev.xc.length === 3 && lev.xc.some((v) => v === 0 || Math.abs(v) <= 2), `keyedChanges 'level' keeps raw zero-crossing x (n=${lev.xc.length})`);
+      ok(pct.xc.length < lev.xc.length, `keyedChanges 'pct' drops the zero base that 'level' keeps (pct n=${pct.xc.length} < level n=${lev.xc.length})`);
     }
     // fitItemWeights: a survivor that leads the target by lag L with a known sign must
     // earn a positive-magnitude weight; a useless survivor must be pinned to ~0. Build a
