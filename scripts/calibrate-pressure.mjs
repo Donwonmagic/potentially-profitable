@@ -153,9 +153,24 @@ async function fetchReportWindowed(spec, years) {
     urls.push(`${base}${encodeURIComponent(spec.report)}${sect}?q=${encodeURIComponent(qstr)}`);
   }
   const init = auth ? { headers: { Authorization: auth } } : {};
-  const settled = await Promise.all(urls.map((u) => getJson(u, init).then((j) => (j && j.results) || []).catch(() => [])));
-  const out = [];
-  settled.forEach((rows) => rows.forEach((r) => out.push(r)));
+  // Determinism guard: firing ~29 windows at one host concurrently rate-limits some, and
+  // silently dropping them made the calibration non-reproducible (cheddar lost 43% of its
+  // history one run → beef-tenderloin's edge flipped). So RETRY each window with backoff and
+  // BOUND concurrency; if a window still fails after retries, count it and warn loudly so a
+  // degraded run is never mistaken for a real signal change.
+  async function getWindow(u) {
+    for (let a = 0; a < 4; a++) {
+      try { const j = await getJson(u, init); return (j && j.results) || []; }
+      catch (e2) { if (a < 3) await new Promise((r) => setTimeout(r, 400 * Math.pow(2, a))); }
+    }
+    return null;   // null = hard failure after retries (distinct from an empty window)
+  }
+  const CONC = 6, out = []; let failed = 0;
+  for (let i = 0; i < urls.length; i += CONC) {
+    const batch = await Promise.all(urls.slice(i, i + CONC).map(getWindow));
+    batch.forEach((rows) => { if (rows === null) failed++; else rows.forEach((r) => out.push(r)); });
+  }
+  if (failed) console.log(`  ⚠ ${spec.host}:${spec.report} — ${failed}/${urls.length} history windows failed after retries; this run's series is SHORT (verdicts may be unstable).`);
   return out;
 }
 // rows → [{date, value}] for one anchor: filter to the cut/commodity, read the price
