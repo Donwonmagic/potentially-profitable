@@ -8655,7 +8655,7 @@ async function handlePlausibleEvent(request, env, ctx) {
   return new Response(null, { status: upstreamRes.status });
 }
 
-const SUBSCRIBE_SOURCES = new Set(['footer', 'article-end', 'workshop-empty-state', 'window']);
+const SUBSCRIBE_SOURCES = new Set(['footer', 'article-end', 'workshop-empty-state', 'window', 'cost-index']);
 
 async function handleSubscribe(request, env, ctx) {
   if (!isOriginAllowed(request)) return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
