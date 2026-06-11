@@ -365,6 +365,20 @@ async function fetchEUAgri(spec) {
   throw lastErr || new Error('no EU agrifood host returned the series');
 }
 
+// ---- Open-Meteo ERA5 archive (keyless; daily weather → monthly anomaly) -----------------
+// One point, one daily variable, 2015→now. Zip daily.time[] + daily[var][] → [{date,value}];
+// the calibration aggregates to monthly + deseasonalizes (transform:level → the anomaly).
+function zipDaily(j, v) {
+  const t = (j && j.daily && j.daily.time) || [], val = (j && j.daily && j.daily[v]) || [], out = [];
+  for (let i = 0; i < t.length; i++) { const x = Number(val[i]); if (/^\d{4}-\d{2}-\d{2}/.test(t[i]) && isFinite(x)) out.push({ date: t[i], value: x }); }
+  return out;
+}
+async function fetchOpenMeteo(spec) {
+  const end = new Date().toISOString().slice(0, 10), v = spec.variable;
+  const url = `https://archive-api.open-meteo.com/v1/archive?latitude=${spec.lat}&longitude=${spec.lon}&start_date=2015-01-01&end_date=${end}&daily=${encodeURIComponent(v)}&timezone=UTC`;
+  return zipDaily(await uaGet(url), v);
+}
+
 async function fetchIndicatorHistory(spec) {
   if (spec.type === 'fred') {
     const k = process.env.FRED_KEY; if (!k) return { skip: 'no FRED_KEY' };
@@ -386,6 +400,10 @@ async function fetchIndicatorHistory(spec) {
   if (spec.type === 'eu-agri') {                             // EU Agri-food dairy prices (keyless)
     try { return { pairs: await fetchEUAgri(spec) }; }
     catch (e) { return { skip: `eu-agri ${spec.product}: ${e.message}` }; }
+  }
+  if (spec.type === 'open-meteo') {                          // Open-Meteo ERA5 archive (keyless)
+    try { return { pairs: await fetchOpenMeteo(spec) }; }
+    catch (e) { return { skip: `open-meteo ${spec.variable}: ${e.message}` }; }
   }
   if (spec.type === 'eia') {
     const k = process.env.EIA_KEY; if (!k) return { skip: 'no EIA_KEY' };
@@ -853,6 +871,11 @@ function selftest() {
       const eu = parseEUDairy([{ beginDate: '07/01/2024', price: '4 500,50' }, { beginDate: '14/01/2024', price: '€4600.00' }, { beginDate: 'bad', price: 'x' }]);
       ok(eu.length === 2 && eu[0].date === '2024-01-07' && Math.abs(eu[0].value - 4500.5) < 1e-6, `parseEUDairy reorders date + parses comma-decimal (got ${eu.length}, ${eu[0] && eu[0].date}=${eu[0] && eu[0].value})`);
       ok(eu[1].value === 4600, `parseEUDairy parses dot-decimal + strips currency (got ${eu[1] && eu[1].value})`);
+    }
+    // Open-Meteo zip: daily.time[] + daily[var][] → [{date,value}], junk dropped.
+    {
+      const z = zipDaily({ daily: { time: ['2024-01-01', '2024-01-02', 'bad'], soil_moisture_0_to_7cm: [0.31, 0.28, 9] } }, 'soil_moisture_0_to_7cm');
+      ok(z.length === 2 && z[1].date === '2024-01-02' && z[1].value === 0.28, `zipDaily pairs time+variable, drops bad dates (got ${z.length}, ${z[1] && z[1].value})`);
     }
     // keyedChanges transforms: 'level' must use the raw (zero-crossing-safe) x, not pct change.
     {
