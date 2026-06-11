@@ -415,7 +415,7 @@ async function anchorDiscover() {
   console.log('ANCHOR discovery — does each weekly target resolve to a price series? (writes nothing)\n');
   for (const [item, a] of Object.entries(ANCHOR)) {
     try {
-      const rows = await fetchReportWindowed(a, 6);                  // full live depth — so the span we print is real
+      const rows = await fetchReportWindowed(a, 12);                 // full live depth — so the span we print is the real archive reach
       const ser = anchorSeries(rows, a);                             // apply the configured extraction
       const ok = ser.length >= 4;
       console.log(`  ${ok ? '✓' : '✗'} ${item.padEnd(16)} [${a.host} ${a.report}/${a.section}] rows=${rows.length} → matched ${ser.length} priced weeks — ${a.note}`);
@@ -547,7 +547,7 @@ function selftest() {
 if (arg('--selftest')) { selftest(); }
 else if (arg('--anchor-discover')) { anchorDiscover(); }
 else {
-  const getAnchor = (spec) => fetchReportWindowed(spec, 6);   // ~6 years of anchor history — deeper archive lifts the starved monthly meat/dairy edges over the N gate (server-filtered + cached + concurrent windows)
+  const getAnchor = (spec) => fetchReportWindowed(spec, 12);  // ~12 years — pull the full report archive (2x the N-gate minimum) so the starved monthly meat/dairy edges clear; windows before a report existed return empty and drop out. Concurrent + server-filtered + cached keeps it inside the timeout.
   calibrate(fetchProxy, fetchIndicatorHistory, getAnchor).then((result) => {
     report(result);
     const { edges, fits } = result;
