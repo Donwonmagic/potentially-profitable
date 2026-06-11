@@ -1,7 +1,8 @@
 {
   "_doc": "Muntin Cost PRESSURE rules — the transparent, versioned manifest the deterministic engine (tools/_shared/cost-pressure.js) scores into an inferred 'where it's headed' direction per ingredient. THIS IS NOT A PRICE. Each indicator declares: a public free SOURCE, a direction SIGN (does indicator-up mean cost-up +1 or cost-down -1), an evidence-tier WEIGHT, a sourced LEAD range, and a CITE. The reports + lead ranges are USDA/EIA-sourced and citeable; the per-indicator WEIGHTS are Muntin's evidence-tier judgment (illustrative, frozen per _version). Enforced by scripts/check-pressure-honesty.mjs: every indicator needs source+lead+cite, weight above tier C needs a cite, and the rendered direction must equal what this manifest + the engine recompute. A weight/sign change REQUIRES a _version bump + changelog. Sequencing: status:'preview' (demo observations) until the free fetchers (NASS Quick Stats, EIA, AMS MMN/MARS, USDM, NWS) are wired; then live.",
-  "_version": "2026-Q2-3",
+  "_version": "2026-Q2-4",
   "_changelog": [
+    { "version": "2026-Q2-4", "date": "2026-06-11", "note": "Track 1 international — add salmon-fillet + shrimp to the pressure overlay (previously measured-index only, no nowcast). Both are import-dominated (US imports ~70% of salmon, ~90% of shrimp), so domestic USDA indicators are structurally blind; the leading signals are the IMF GLOBAL price (PSALMUSDM/PSHRIUSDM, world price → US import cost), aquaculture feed (soybean meal PSMEAUSDM), and FX (NOK/USD for Norway-dominated salmon). Target stays the deep US BLS seafood PPI (WPU0223 / WPU02230501). All FRED/BLS-accessible — no new fetchers. Specs verified:false pending probe; this is the calibration-first scaffold (a v1 indicator set, to be expanded by the international-indicator exploration). No existing item changed." },
     { "version": "2026-Q2-2", "date": "2026-06-11", "note": "Calibration validation (12-year LMR/MARS anchor backtest, data/pressure-calibration.json). beef-tenderloin/cattle-on-feed-placements and pork-loin/cold-storage-pork are the first edges to clear BH+OOS+N with the hand-set sign — annotated 'calibrated' (sign confirmed, empirical lag, OOS-shrunk weight). No weight/sign changed: the evidence corroborates the existing priors, so they stand; the deeper history merely lifted these two edges over the N gate. All other edges remain hand-set priors pending more anchor depth (chicken report is only 3.8y; romaine/onion anchors blocked by a marsapi comma-filter limitation)." },
     { "version": "2026-Q2-3", "date": "2026-06-11", "note": "Anchor track complete — all 12 anchors resolve on real weekly prices (romaine/onion via client-side filtering of LA-terminal 2307/2308; chicken monthly edges via the deep BLS-PPI guard now that 3646 is only 3.8y). romaine-lettuce/drought-ca-az is the third calibration-validated edge (+1 sign, holds OOS, N=293) — annotated; weak average R2 (0.007) is the expected shape of an episodic drought signal. With the engine now maximally fed (12y anchors, resolution-matched, deep-PPI guard), chicken/feed-grain is fairly tested at N=81 and honestly fails OOS — a real null, not a data limit. Net: 3 modest validated edges; the free-public-indicator nowcast remains weakly predictive, so the overlay stays held per the per-item proving gate." }
   ],
@@ -23,7 +24,11 @@
     "usdm-drought": "https://droughtmonitor.unl.edu/DmData/DataDownload/WebServiceInfo.aspx",
     "nws-alerts": "https://api.weather.gov/alerts/active",
     "ers-feed-cost": "https://www.ers.usda.gov/topics/animal-products/poultry-eggs/sector-at-a-glance",
-    "ers-cycles": "https://www.ers.usda.gov/amber-waves/2025/march/livestock-production-cycles-affect-long-term-price-outlook-for-cattle-hogs-and-chickens"
+    "ers-cycles": "https://www.ers.usda.gov/amber-waves/2025/march/livestock-production-cycles-affect-long-term-price-outlook-for-cattle-hogs-and-chickens",
+    "fred-imf-salmon": "https://fred.stlouisfed.org/series/PSALMUSDM",
+    "fred-imf-shrimp": "https://fred.stlouisfed.org/series/PSHRIUSDM",
+    "fred-nok-fx": "https://fred.stlouisfed.org/series/DEXNOUS",
+    "fred-soymeal": "https://fred.stlouisfed.org/series/PSMEAUSDM"
   },
   "items": {
     "chicken-breast": { "rule_version": "2026-Q2-1", "indicators": [
@@ -107,6 +112,17 @@
       { "id": "milk-production", "source": "nass-milk", "sign": -1, "weight": 2, "tier": "B", "window": "1m", "lead": { "min": 4, "max": 12, "unit": "week" }, "cite": "nass-milk" },
       { "id": "cold-storage-cheese", "source": "nass-cold-storage", "sign": -1, "weight": 2, "tier": "B", "window": "1m", "lead": { "min": 4, "max": 8, "unit": "week" }, "cite": "nass-cold-storage", "note": "Cold Storage tracks natural-cheese stocks" },
       { "id": "feed-grain", "source": "fred-feed", "sign": 1, "weight": 1, "tier": "C", "window": "4w", "lead": { "min": 13, "max": 26, "unit": "week" }, "cite": "fred-feed" },
+      { "id": "diesel", "source": "eia-diesel", "sign": 1, "weight": 1, "tier": "A", "window": "4w", "lead": { "min": 0, "max": 4, "unit": "week" }, "group": "freight", "cite": "eia-diesel" }
+    ] },
+    "salmon-fillet": { "rule_version": "2026-Q2-4", "indicators": [
+      { "id": "imf-salmon-price", "source": "fred-imf-salmon", "sign": 1, "weight": 2, "tier": "B", "window": "1m", "lead": { "min": 4, "max": 13, "unit": "week" }, "cite": "fred-imf-salmon", "note": "~70% of US salmon imported; the IMF world farmed-salmon price leads US import/wholesale cost as cargoes land (1-3 mo)" },
+      { "id": "nok-fx", "source": "fred-nok-fx", "sign": -1, "weight": 1, "tier": "C", "window": "4w", "lead": { "min": 2, "max": 8, "unit": "week" }, "cite": "fred-nok-fx", "note": "NOK/USD; stronger USD (DEXNOUS up) → Norwegian salmon cheaper in USD → cost down" },
+      { "id": "feed-soymeal", "source": "fred-soymeal", "sign": 1, "weight": 1, "tier": "C", "window": "4w", "lead": { "min": 13, "max": 26, "unit": "week" }, "cite": "fred-soymeal", "note": "soy-based aquaculture feed leads farmed-salmon price ~1-2 quarters" },
+      { "id": "diesel", "source": "eia-diesel", "sign": 1, "weight": 1, "tier": "A", "window": "4w", "lead": { "min": 0, "max": 4, "unit": "week" }, "group": "freight", "cite": "eia-diesel" }
+    ] },
+    "shrimp": { "rule_version": "2026-Q2-4", "indicators": [
+      { "id": "imf-shrimp-price", "source": "fred-imf-shrimp", "sign": 1, "weight": 2, "tier": "B", "window": "1m", "lead": { "min": 4, "max": 13, "unit": "week" }, "cite": "fred-imf-shrimp", "note": "~90% of US shrimp imported (Ecuador/India/Indonesia/Vietnam); the IMF world shrimp price leads US import cost" },
+      { "id": "feed-soymeal", "source": "fred-soymeal", "sign": 1, "weight": 1, "tier": "C", "window": "4w", "lead": { "min": 13, "max": 26, "unit": "week" }, "cite": "fred-soymeal", "note": "soy-based aquaculture feed; no single dominant exporter currency, so no clean FX channel for shrimp" },
       { "id": "diesel", "source": "eia-diesel", "sign": 1, "weight": 1, "tier": "A", "window": "4w", "lead": { "min": 0, "max": 4, "unit": "week" }, "group": "freight", "cite": "eia-diesel" }
     ] }
   }

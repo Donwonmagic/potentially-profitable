@@ -41,7 +41,10 @@ const PROXY = {
   'pork-loin': 'WPU022104', 'pork-shoulder': 'WPU022104',
   'chicken-breast': 'WPU022203', 'whole-chicken': 'WPU022203',
   'butter': 'WPU02320114', 'cheddar-cheese': 'WPU023',
-  'romaine-lettuce': 'WPU0113', 'tomato': 'WPU0113', 'onion': 'WPU0113', 'russet-potato': 'WPU0113'
+  'romaine-lettuce': 'WPU0113', 'tomato': 'WPU0113', 'onion': 'WPU0113', 'russet-potato': 'WPU0113',
+  // seafood (import-dominated): the deep US seafood PPI is the monthly target; the IMF
+  // global price + FX + feed are the international LEADING indicators tested against it.
+  'salmon-fillet': 'WPU0223', 'shrimp': 'WPU02230501'
 };
 // Indicator source families that are themselves a PRICE in the proxy's pipeline →
 // near-circular; calibrate for information but never suggest a weight.

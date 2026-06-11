@@ -19,6 +19,14 @@
 
     "feed-grain": { "type": "fred", "verified": false, "series": "PMAIZMTUSDM", "tail": 4, "limit": 24,
       "_verify": "Global corn price (IMF via FRED, monthly) as the feed-cost proxy — feed is 60-70% of meat/dairy cost, and the old AMS feed-futures was a narrative report (dead). Needs FRED_KEY (free, fredaccount.stlouisfed.org). Probe to confirm the series resolves + a sane monthly change, then flip. Soy-meal (PSMEAUSDM) blend is a documented fast-follow." },
+    "imf-salmon-price": { "type": "fred", "verified": false, "series": "PSALMUSDM", "tail": 4, "limit": 24,
+      "_verify": "IMF Global price of Fish/Salmon (index, monthly, via FRED). The INTERNATIONAL leading indicator for salmon-fillet: ~70% of US salmon is imported (Chile/Norway/Canada), so the world farmed-salmon price leads the US import/wholesale cost as cargoes land (~1-3 mo). Mirrors data/cost-index-sources.json salmon-fillet.fred. Needs FRED_KEY. Probe to confirm + a sane monthly change, then flip." },
+    "imf-shrimp-price": { "type": "fred", "verified": false, "series": "PSHRIUSDM", "tail": 4, "limit": 24,
+      "_verify": "IMF Global price of Shrimp (index, monthly, via FRED). The INTERNATIONAL leading indicator for shrimp: ~90% of US shrimp is imported (Ecuador/India/Indonesia/Vietnam), so the world shrimp price leads US import cost. Mirrors data/cost-index-sources.json shrimp.fred. Needs FRED_KEY." },
+    "nok-fx": { "type": "fred", "verified": false, "series": "DEXNOUS", "tail": 4, "limit": 24,
+      "_verify": "Norway Krone per USD (FRED DEXNOUS, daily→monthly). Norway is ~50% of globally-traded farmed salmon; a STRONGER USD (DEXNOUS up = more NOK/USD) makes NOK-priced salmon cheaper in USD → US cost down (sign -1). Needs FRED_KEY. Probe, then flip." },
+    "feed-soymeal": { "type": "fred", "verified": false, "series": "PSMEAUSDM", "tail": 4, "limit": 24,
+      "_verify": "IMF Global price of Soybean Meal (index, monthly, via FRED). Aquaculture feed (farmed salmon + shrimp) is increasingly soy-based; feed cost leads the farmed price ~1-2 quarters. Also the documented blend partner for feed-grain. Needs FRED_KEY." },
     "_movement_doc": "ams-move specs pool Report Details rows from ALL active Daily Movement city reports (default list MOVEMENT_REPORTS in fetch-pressure-observations.mjs), filter to one commodity (exact), and EMIT three indicator observations — volume (national weekly lbs trend), imports (import-share trend), pace (trailing-4wk vs ~52wk-ago). The emitted ids are the rule indicators; the spec id (e.g. onion-movement) is not itself an indicator. Volume field is '1 lb units'; import flag is 'import/Export' (I=import). check-pressure-sources resolves emits → indicators.",
 
     "onion-movement": { "type": "ams-move", "verified": true, "commodity": "Onions, Dry", "commodityExact": true, "windowDays": 430, "tail": 6,
