@@ -217,8 +217,8 @@ function emitThemePage(themeId, locale) {
   // the SERP ceiling. Composed as plain text then escaped once.
   const metaDesc = clampDesc(`${blurb} ${reviewedLabel} ${c.reviewedBy}, ${addedLabel} ${c.dateAdded}.`);
   const inspiredLabel = locale === 'es' ? 'Inspirado en' : 'Inspired by';
-  const tryLabel      = locale === 'es' ? 'Constrúyelo gratis — Conversor de menú →' : 'Build it free — Menu Converter →';
-  const tryHref       = `${baseSlash}/tools/menu-converter/`;
+  const tryLabel      = locale === 'es' ? 'Tus facturas, leídas y archivadas — Muntin Ledger →' : 'Your invoices, read and filed — Muntin Ledger →';
+  const tryHref       = 'https://ledger.muntin.digital/';
 
   const inspiredHtml = (c.inspiredBy || []).map(s => `<li>${escHtml(s)}</li>`).join('');
 

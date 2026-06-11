@@ -443,7 +443,7 @@ main{padding-top:64px}
     <p>${locale === 'es'
         ? '¿Quieres que construyamos tu menú?'
         : 'Want it built for you?'}
-       <a href="${baseSlash}/tools/menu-converter/">${locale === 'es' ? 'Constrúyelo gratis — Conversor de menú →' : 'Build it free — Menu Converter →'}</a></p>
+       <a href="https://ledger.muntin.digital/">${locale === 'es' ? 'Tus facturas, leídas y archivadas — Muntin Ledger →' : 'Your invoices, read and filed — Muntin Ledger →'}</a></p>
   </section>
 </div>
 </main>
