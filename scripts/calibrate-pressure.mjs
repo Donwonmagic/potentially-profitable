@@ -113,10 +113,10 @@ const ANCHOR = {
   'whole-chicken':   { host: 'mars', report: '3646', section: 'Report Detail', match: { field: 'item', value: 'Whole' }, field: 'wtd_avg_price', dateField: 'report_date', note: 'AMS 3646 / Whole' },
   'butter':          { host: 'lmr', report: '2993', section: 'Butter Prices and Sales', field: 'Butter_Price', dateField: 'week_ending_date', winField: 'week_ending_date', note: 'NDPSR 2993 butter' },
   'cheddar-cheese':  { host: 'lmr', report: '2993', section: '40 Pound Block Cheddar Cheese Prices and Sales', field: 'cheese_40_Price', dateField: 'week_ending_date', winField: 'week_ending_date', note: 'NDPSR 2993 block cheddar' },
-  'romaine-lettuce': { host: 'mars', report: '2307', section: 'Report Details', match: { field: 'commodity', value: 'Romaine' }, serverFilter: true, field: 'low_price', dateField: 'report_begin_date', note: 'LA terminal 2307 / Romaine (mirrors cost-index-sources)' },
-  'tomato':          { host: 'mars', report: '2307', section: 'Report Details', match: { field: 'commodity', value: 'Tomatoes' }, serverFilter: true, field: 'low_price', dateField: 'report_begin_date', note: 'LA terminal 2307 / Tomatoes (mirrors cost-index-sources)' },
-  'onion':           { host: 'mars', report: '2308', section: 'Report Details', match: { field: 'commodity', value: 'Onions' }, serverFilter: true, field: 'low_price', dateField: 'report_begin_date', note: 'LA terminal 2308 / Onions (mirrors cost-index-sources)' },
-  'russet-potato':   { host: 'mars', report: '2308', section: 'Report Details', match: { field: 'commodity', value: 'Russet' }, serverFilter: true, field: 'low_price', dateField: 'report_begin_date', note: 'LA terminal 2308 / Russet (mirrors cost-index-sources)' }
+  'romaine-lettuce': { host: 'mars', report: '2307', section: 'Report Details', match: { field: 'commodity', value: 'Lettuce, Romaine', exact: true }, serverFilter: true, field: 'low_price', dateField: 'report_begin_date', note: 'LA terminal 2307 / Lettuce, Romaine' },
+  'tomato':          { host: 'mars', report: '2307', section: 'Report Details', match: { field: 'commodity', value: 'Tomatoes', exact: true }, serverFilter: true, field: 'low_price', dateField: 'report_begin_date', note: 'LA terminal 2307 / Tomatoes' },
+  'onion':           { host: 'mars', report: '2308', section: 'Report Details', match: { field: 'commodity', value: 'Onions, Dry', exact: true }, serverFilter: true, field: 'low_price', dateField: 'report_begin_date', note: 'LA terminal 2308 / Onions, Dry' },
+  'russet-potato':   { host: 'mars', report: '2308', section: 'Report Details', match: { field: 'commodity', value: 'Potatoes', exact: true }, match2: { field: 'variety', value: 'Russet' }, serverFilter: true, field: 'low_price', dateField: 'report_begin_date', note: 'LA terminal 2308 / Potatoes×Russet variety' }
 };
 function amsAuth() { const k = process.env.AMS_KEY; return k ? 'Basic ' + Buffer.from(k + ':').toString('base64') : null; }
 // Stitch a report's section across ~150-day windows back `years` (the APIs cap each
@@ -151,14 +151,17 @@ async function fetchReportWindowed(spec, years) {
   return out;
 }
 // rows → [{date, value}] for one anchor: filter to the cut/commodity, read the price
-// column + the report's date column. Scale-free (calibration uses % changes).
+// column + the report's date column. Scale-free (calibration uses % changes). `match`
+// pins the commodity; optional `match2` narrows within it (e.g. variety=Russet inside
+// commodity=Potatoes, since the terminal report breaks russet out by variety).
+function matchRow(r, m) {
+  if (!m) return true;
+  const cv = String(r[m.field] || '');
+  return m.exact ? cv === m.value : cv.toUpperCase().indexOf(String(m.value).toUpperCase()) >= 0;
+}
 function anchorSeries(rows, spec) {
-  const m = spec.match;
-  return (rows || []).filter((r) => {
-    if (!m) return true;
-    const cv = String(r[m.field] || '');
-    return m.exact ? cv === m.value : cv.toUpperCase().indexOf(String(m.value).toUpperCase()) >= 0;
-  }).map((r) => ({ date: r[spec.dateField], value: r[spec.field] }))
+  return (rows || []).filter((r) => matchRow(r, spec.match) && matchRow(r, spec.match2))
+    .map((r) => ({ date: r[spec.dateField], value: r[spec.field] }))
     .filter((p) => p.date && p.value != null && p.value !== '' && isFinite(Number(String(p.value).replace(/[$,]/g, ''))));
 }
 
@@ -422,6 +425,9 @@ async function anchorDiscover() {
         console.log(`      → field '${a.field}' or match '${a.match ? a.match.field + '=' + a.match.value : '(none)'}' didn't resolve. value-candidates: ${nums.join(', ') || '(none)'}`);
         console.log(`      keys: ${Object.keys(r0).join(', ')}`);
         if (a.match) { const dv = []; rows.forEach((r) => { const c = r[a.match.field]; if (c && dv.indexOf(c) < 0 && dv.length < 40) dv.push(c); }); console.log(`      actual ${a.match.field} values: ${dv.join(' | ') || '(field empty/absent)'}`); }
+        // If a secondary (variety) filter is what's killing the match, dump its distinct
+        // values among the primary-matched rows so the right one can be pinned.
+        if (a.match2) { const dv = []; rows.filter((r) => matchRow(r, a.match)).forEach((r) => { const c = r[a.match2.field]; if (c && dv.indexOf(c) < 0 && dv.length < 40) dv.push(c); }); console.log(`      actual ${a.match2.field} values (within ${a.match.value}): ${dv.join(' | ') || '(field empty/absent)'}`); }
       } else if (ok) {
         console.log(`      latest: ${ser[ser.length - 1].date} = ${ser[ser.length - 1].value}`);
       } else {
