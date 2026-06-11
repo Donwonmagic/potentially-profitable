@@ -794,29 +794,6 @@ async function euDiscover() {
   console.log('\nThe ✓ host + the product/member that returns weeks tell me what to pin for butter/cheddar.');
 }
 
-// ---- AMS Mexico-crossings discovery: report 3264 section + volume field ------------------
-async function mxcrossDiscover() {
-  console.log('AMS Mexico-crossings discovery — report 3264 (FVDDAILY_MOVE) structure (writes nothing)\n');
-  if (!amsAuth()) { console.log('  needs AMS_KEY.'); return; }
-  for (const section of ['Volumes', 'Volume', 'Movement', 'Report Detail', 'Report Details', null]) {
-    const spec = { host: 'mars', report: 'FVDDAILY_MOVE', section, serverFilter: true, match: { field: 'commodity', value: 'Tomatoes' }, winField: 'report_begin_date' };
-    try {
-      const rows = await fetchReportWindowed(spec, 0.25);
-      if (!rows.length) { console.log(`  ✗ section '${section}': 0 rows`); continue; }
-      const r0 = rows[0];
-      const nums = Object.keys(r0).filter((k) => r0[k] !== '' && r0[k] != null && isFinite(Number(String(r0[k]).replace(/[$,]/g, ''))) && !/date|year|_id|code|format/i.test(k));
-      console.log(`  ✓ section '${section}': ${rows.length} rows`);
-      console.log(`      keys: ${Object.keys(r0).join(', ')}`);
-      console.log(`      numeric (volume?) candidates: ${nums.join(', ') || '(none)'}`);
-      const dv = []; rows.forEach((r) => { const c = r.commodity; if (c && dv.indexOf(c) < 0 && dv.length < 20) dv.push(c); });
-      console.log(`      commodity values: ${dv.join(' | ') || '(field empty)'}`);
-      const orig = []; rows.forEach((r) => { const c = r.origin || r.district || r.import_export; if (c && orig.indexOf(c) < 0 && orig.length < 20) orig.push(c); });
-      console.log(`      origin/district/import flags: ${orig.join(' | ') || '(none)'}`);
-      break;
-    } catch (e) { console.log(`  ✗ section '${section}': ${e.message}`); }
-  }
-  console.log('\nThe ✓ section + the volume field + the Mexico origin/import flag tell me what to pin for the crossings signal.');
-}
 
 // ---- selftest: synthetic dated series, no network ------------------
 function selftest() {
@@ -950,7 +927,6 @@ else if (arg('--anchor-discover')) { anchorDiscover(); }
 else if (arg('--ssb-discover')) { ssbDiscover(); }
 else if (arg('--foss-discover')) { fossDiscover(); }
 else if (arg('--eu-discover')) { euDiscover(); }
-else if (arg('--mxcross-discover')) { mxcrossDiscover(); }
 else {
   const getAnchor = (spec) => fetchReportWindowed(spec, 12);  // ~12 years — pull the full report archive (2x the N-gate minimum) so the starved monthly meat/dairy edges clear; windows before a report existed return empty and drop out. Concurrent + server-filtered + cached keeps it inside the timeout.
   calibrate(fetchProxy, fetchIndicatorHistory, getAnchor).then((result) => {
