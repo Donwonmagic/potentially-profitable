@@ -458,7 +458,16 @@ async function anchorDiscover() {
             raw.forEach((r) => { const c = r[a.match.field]; if (c && dv.indexOf(c) < 0) dv.push(c); });
             const matches = dv.filter((c) => String(c).toLowerCase().includes(hint));
             console.log(`      unfiltered (${where}): ${raw.length} rows. ${dv.length} distinct ${a.match.field}.`);
-            if (matches.length) console.log(`      → '${hint}*' matches: ${matches.join(' | ')}   ← pin one of these as the commodity value`);
+            if (matches.length) {
+              console.log(`      → '${hint}*' matches: ${matches.join(' | ')}   (commodity has a comma → marsapi exact-filter splits it on ','; need a comma-free handle)`);
+              // Dump the comma-free fields (category/group/variety) for the matched rows so a
+              // server-filterable handle without a comma can be pinned next pass.
+              const mr = raw.filter((r) => String(r[a.match.field] || '').toLowerCase().includes(hint));
+              for (const f of ['category', 'group', 'variety']) {
+                const vv = []; mr.forEach((r) => { const c = r[f]; if (c && vv.indexOf(c) < 0 && vv.length < 12) vv.push(c); });
+                if (vv.length) console.log(`        ${f}: ${vv.join(' | ')}`);
+              }
+            }
             else console.log(`      → no ${a.match.field} contains '${hint}' here. first 40: ${dv.slice(0, 40).join(' | ')}`);
             if (raw[0]) console.log(`      keys: ${Object.keys(raw[0]).join(', ')}`);
           }
