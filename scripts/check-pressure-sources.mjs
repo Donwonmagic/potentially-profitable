@@ -19,7 +19,7 @@ const specs = (rd('data/pressure-source-specs.json').specs) || {};
 const REQUIRED = {
   eia: ['series'], fred: ['series'], nass: ['query'], ams: ['report', 'field'],
   'ams-move': ['commodity', 'emits'],
-  ssb: ['table', 'measure'],
+  ssb: ['table', 'measure'], foss: ['hts', 'source'],
   usdm: ['areas', 'categories'], nws: ['events'], season: ['windows']
 };
 const fails = [], warns = [];
@@ -55,6 +55,7 @@ const DISCOVERY = {
   eia:  'https://www.eia.gov/opendata/ — confirm the series id resolves',
   fred: 'https://fred.stlouisfed.org — confirm series id resolves (free FRED_KEY)',
   ssb:  'https://data.ssb.no/api/pxwebapi/v2 — run calibrate --ssb-discover; confirm the table dims + price/volume picker (keyless, browser-UA)',
+  foss: 'https://www.st.nmfs.noaa.gov/ords/foss/trade_data — run calibrate --foss-discover; confirm HTS codes + kilos/year/month fields (keyless, browser-UA)',
   usdm: 'https://droughtmonitor.unl.edu/DmData/DataDownload.aspx — keyless; confirm area FIPS',
   nws:  'https://api.weather.gov/alerts/active — keyless; confirm event name string',
   season: 'deterministic calendar (no fetch) — confirm the transition windows look right'

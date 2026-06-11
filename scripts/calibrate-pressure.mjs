@@ -213,7 +213,7 @@ async function fetchProxy(seriesId) {                      // BLS PPI monthly, ~
 const SSB_DATA = (t) => `https://data.ssb.no/api/pxwebapi/v2/tables/${t}/data?lang=en&outputFormat=json-stat2&valueCodes%5BTid%5D=*`;
 const SSB_META = (t) => `https://data.ssb.no/api/pxwebapi/v2/tables/${t}/metadata?lang=en&outputFormat=json-px`;
 const SSB_UA = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36 muntin.digital';
-async function ssbGet(url) {
+async function uaGet(url) {
   const r = await fetch(url, { headers: { 'User-Agent': SSB_UA, Accept: 'application/json' } });
   if (!r.ok) throw new Error('HTTP ' + r.status);
   return r.json();
@@ -264,8 +264,40 @@ function ssbExtract(js, measure) {
   return out.sort((a, b) => a.date.localeCompare(b.date));
 }
 async function fetchSSB(spec) {
-  const js = await ssbGet(SSB_DATA(spec.table));
+  const js = await uaGet(SSB_DATA(spec.table));
   return ssbExtract(js, spec.measure || 'price');
+}
+
+// ---- NOAA Fisheries FOSS Foreign Trade API (keyless; monthly US seafood imports) -------
+// Oracle ORDS REST. We pull IMPORT rows for the spec's HTS codes, sum the measure (kilos =
+// supply, or val = $ landed) across all partner countries per year-month → a monthly supply
+// series. Import VOLUME up → US supply up → cost DOWN (-1). Bot-blocks default UAs → browser
+// UA (shared uaGet). ORDS pages via limit/offset + hasMore. 2009→present, ~6-8wk lag.
+const FOSS_BASE = 'https://www.st.nmfs.noaa.gov/ords/foss/trade_data/';
+function fossAggregate(items, measure) {                    // [{year,month,kilos,val,...}] → [{date,value}] (monthly sum)
+  const by = {};
+  for (const r of (items || [])) {
+    const y = parseInt(r.year, 10), m = parseInt(r.month, 10);
+    const v = Number(measure === 'val' ? r.val : r.kilos);
+    if (!(y >= 1990) || !(m >= 1 && m <= 12) || !isFinite(v)) continue;
+    const k = `${y}-${('0' + m).slice(-2)}`; by[k] = (by[k] || 0) + v;
+  }
+  return Object.keys(by).sort().map((k) => ({ date: `${k}-15`, value: by[k] }));
+}
+async function fetchFOSS(spec) {
+  const hts = spec.hts || [], source = spec.source || 'IMP';
+  const filter = { source };
+  if (hts.length) filter.hts_number = hts.length > 1 ? { $in: hts } : hts[0];
+  const q = encodeURIComponent(JSON.stringify(filter));
+  const items = []; let offset = 0;
+  for (let page = 0; page < 80; page++) {                   // page-cap guards a runaway loop
+    const j = await uaGet(`${FOSS_BASE}?q=${q}&limit=10000&offset=${offset}`);
+    const rows = (j && j.items) || [];
+    rows.forEach((r) => items.push(r));
+    if (!j || !j.hasMore) break;
+    offset += (j.limit || rows.length || 10000);
+  }
+  return fossAggregate(items, spec.measure || 'kilos');
 }
 
 async function fetchIndicatorHistory(spec) {
@@ -277,6 +309,10 @@ async function fetchIndicatorHistory(spec) {
   if (spec.type === 'ssb') {                                // Norway SSB PxWebApi v2 (keyless)
     try { return { pairs: await fetchSSB(spec) }; }
     catch (e) { return { skip: `ssb ${spec.table}: ${e.message}` }; }
+  }
+  if (spec.type === 'foss') {                               // NOAA Fisheries FOSS trade (keyless)
+    try { return { pairs: await fetchFOSS(spec) }; }
+    catch (e) { return { skip: `foss ${(spec.hts || []).join('/')}: ${e.message}` }; }
   }
   if (spec.type === 'eia') {
     const k = process.env.EIA_KEY; if (!k) return { skip: 'no EIA_KEY' };
@@ -587,7 +623,7 @@ async function ssbDiscover() {
   console.log('SSB discovery — Norway PxWebApi v2 table structure for the salmon signals (writes nothing)\n');
   for (const t of ['03024']) {
     try {
-      const js = await ssbGet(SSB_DATA(t));
+      const js = await uaGet(SSB_DATA(t));
       const dim = js.dimension || {}, ids = js.id || Object.keys(dim), sizes = js.size || [];
       console.log(`  ✓ table ${t}: dims = ${ids.map((id, i) => `${id}(${sizes[i]})`).join(' × ')}, ${(js.value || []).length} values`);
       for (const id of ids) {
@@ -606,6 +642,23 @@ async function ssbDiscover() {
     } catch (e) { console.log(`  ✗ table ${t} failed: ${e.message} (SSB bot-blocks non-browser UAs — confirm the UA + v2 query syntax)`); }
   }
   console.log('\nGreen = the salmon price/volume series resolve; I pin the exact ContentsCode + commodity selection from the dims above.');
+}
+
+// ---- FOSS discovery: confirm the ORDS trade API shape + the monthly import series ------
+async function fossDiscover() {
+  console.log('FOSS discovery — NOAA Fisheries trade API shape for the seafood import-volume signals (writes nothing)\n');
+  const probes = [
+    { id: 'salmon-import-volume', hts: ['030214', '030313', '030441', '030481'], source: 'IMP' },
+    { id: 'shrimp-import-volume', hts: ['030617', '160521', '160529'], source: 'IMP' }
+  ];
+  for (const p of probes) {
+    try {
+      const ser = await fetchFOSS(p);
+      if (!ser.length) { console.log(`  ✗ ${p.id}: 0 monthly points — confirm HTS codes / source=IMP / field names`); continue; }
+      console.log(`  ✓ ${p.id} [HTS ${p.hts.join(',')}]: ${ser.length} months, ${ser[0].date} → ${ser[ser.length - 1].date}, latest kilos=${Math.round(ser[ser.length - 1].value)}`);
+    } catch (e) { console.log(`  ✗ ${p.id} failed: ${e.message} (NOAA bot-blocks non-browser UAs; confirm the ORDS q= filter + kilos/year/month field names)`); }
+  }
+  console.log('\nGreen = import-volume series resolve; I wire them as the -1 supply signal (volume up → cost down).');
 }
 
 // ---- selftest: synthetic dated series, no network ------------------
@@ -666,6 +719,18 @@ function selftest() {
       ok(pr.length === 3 && pr[1].value === 81 && pr[1].date === '2024-04-08', `ssbExtract picks PRICE by keyword + ISO-week date (got ${pr.length}, ${pr[1] && pr[1].value}@${pr[1] && pr[1].date})`);
       ok(vol.length === 3 && vol[1].value === 510, `ssbExtract picks VOLUME measure (got ${vol[1] && vol[1].value})`);
     }
+    // FOSS aggregate: sum kilos across countries/HTS per year-month → monthly supply series.
+    {
+      const items = [
+        { year: 2024, month: 1, kilos: '100', val: '900', cntry_name: 'Chile' },
+        { year: 2024, month: 1, kilos: '50', val: '450', cntry_name: 'Norway' },
+        { year: 2024, month: 2, kilos: '200', val: '1800', cntry_name: 'Chile' },
+        { year: 'x', month: 1, kilos: '999' }   // junk row dropped
+      ];
+      const k = fossAggregate(items, 'kilos'), d = fossAggregate(items, 'val');
+      ok(k.length === 2 && k[0].value === 150 && k[0].date === '2024-01-15', `fossAggregate sums kilos per month across countries (got ${k.length}, ${k[0] && k[0].value})`);
+      ok(d.length === 2 && d[0].value === 1350, `fossAggregate can sum the $ measure too (got ${d[0] && d[0].value})`);
+    }
     // fitItemWeights: a survivor that leads the target by lag L with a known sign must
     // earn a positive-magnitude weight; a useless survivor must be pinned to ~0. Build a
     // weekly target change map + two survivor change maps keyed by integer week.
@@ -702,6 +767,7 @@ function selftest() {
 if (arg('--selftest')) { selftest(); }
 else if (arg('--anchor-discover')) { anchorDiscover(); }
 else if (arg('--ssb-discover')) { ssbDiscover(); }
+else if (arg('--foss-discover')) { fossDiscover(); }
 else {
   const getAnchor = (spec) => fetchReportWindowed(spec, 12);  // ~12 years — pull the full report archive (2x the N-gate minimum) so the starved monthly meat/dairy edges clear; windows before a report existed return empty and drop out. Concurrent + server-filtered + cached keeps it inside the timeout.
   calibrate(fetchProxy, fetchIndicatorHistory, getAnchor).then((result) => {
