@@ -92,6 +92,7 @@ jobs:
           node scripts/calibrate-pressure.mjs --anchor-discover
           node scripts/calibrate-pressure.mjs --ssb-discover || true
           node scripts/calibrate-pressure.mjs --foss-discover || true
+          node scripts/calibrate-pressure.mjs --eu-discover || true
           node scripts/calibrate-pressure.mjs
 
       # --- Gates 3+4: live fetch → score → render → gate → commit -------------

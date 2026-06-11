@@ -19,7 +19,7 @@ const specs = (rd('data/pressure-source-specs.json').specs) || {};
 const REQUIRED = {
   eia: ['series'], fred: ['series'], nass: ['query'], ams: ['report', 'field'],
   'ams-move': ['commodity', 'emits'],
-  ssb: ['table', 'measure'], foss: ['hts', 'source'], 'noaa-oni': [],
+  ssb: ['table', 'measure'], foss: ['hts', 'source'], 'noaa-oni': [], 'eu-agri': ['product'],
   usdm: ['areas', 'categories'], nws: ['events'], season: ['windows']
 };
 const fails = [], warns = [];
@@ -57,6 +57,7 @@ const DISCOVERY = {
   ssb:  'https://data.ssb.no/api/pxwebapi/v2 — run calibrate --ssb-discover; confirm the table dims + price/volume picker (keyless, browser-UA)',
   foss: 'https://www.st.nmfs.noaa.gov/ords/foss/trade_data — run calibrate --foss-discover; confirm HTS codes + kilos/year/month fields (keyless, browser-UA)',
   'noaa-oni': 'https://www.cpc.ncep.noaa.gov/data/indices/oni.ascii.txt — keyless flat file; calibrate fetches + parses it (no probe needed)',
+  'eu-agri': 'https://agridata.ec.europa.eu — run calibrate --eu-discover; confirm host + product/member codes (keyless)',
   usdm: 'https://droughtmonitor.unl.edu/DmData/DataDownload.aspx — keyless; confirm area FIPS',
   nws:  'https://api.weather.gov/alerts/active — keyless; confirm event name string',
   season: 'deterministic calendar (no fetch) — confirm the transition windows look right'

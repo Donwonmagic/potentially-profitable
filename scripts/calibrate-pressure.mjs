@@ -341,6 +341,30 @@ async function fetchText(url) {
 }
 async function fetchONI(spec) { return parseONI(await fetchText(spec.url || ONI_URL)); }
 
+// ---- EU Agri-food Data Portal — dairy prices (keyless; weekly butter + cheddar) ---------
+// The base host has moved; try a few. Endpoint /dairy/prices?products=&memberStateCodes=
+// returns weekly observations [{ beginDate(DD/MM/YYYY), price, product, memberStateName }].
+// EU price up → US dairy import cost up (sign +1). EU numbers may use a comma decimal.
+const EU_BASES = ['https://www.ec.europa.eu/agrifood/api', 'https://api.tech.ec.europa.eu/agrifood', 'https://ec.europa.eu/agrifood/api'];
+function euDate(s) { const m = String(s).match(/(\d{2})\/(\d{2})\/(\d{4})/); return m ? `${m[3]}-${m[2]}-${m[1]}` : (/^\d{4}-\d{2}-\d{2}/.test(s) ? String(s).slice(0, 10) : null); }
+function euNum(s) { let t = String(s).replace(/[^\d.,-]/g, ''); if (/,\d{1,2}$/.test(t) && !/\.\d/.test(t)) t = t.replace(/\./g, '').replace(',', '.'); else t = t.replace(/,/g, ''); return Number(t); }
+function parseEUDairy(rows) {
+  return (rows || []).map((r) => ({ date: euDate(r.beginDate || r.begindate || r.weekDate || r.date), value: euNum(r.price != null ? r.price : r.value) }))
+    .filter((p) => p.date && isFinite(p.value)).sort((a, b) => a.date.localeCompare(b.date));
+}
+async function fetchEUAgri(spec) {
+  const params = `products=${encodeURIComponent(spec.product)}&memberStateCodes=${encodeURIComponent(spec.member || 'EU')}`;
+  let lastErr;
+  for (const base of EU_BASES) {
+    try {
+      const j = await uaGet(`${base}/dairy/prices?${params}`);
+      const rows = Array.isArray(j) ? j : (j.results || j.data || j.items || []);
+      const s = parseEUDairy(rows); if (s.length >= 20) return s; lastErr = new Error(`${s.length} pts`);
+    } catch (e) { lastErr = e; }
+  }
+  throw lastErr || new Error('no EU agrifood host returned the series');
+}
+
 async function fetchIndicatorHistory(spec) {
   if (spec.type === 'fred') {
     const k = process.env.FRED_KEY; if (!k) return { skip: 'no FRED_KEY' };
@@ -358,6 +382,10 @@ async function fetchIndicatorHistory(spec) {
   if (spec.type === 'noaa-oni') {                            // NOAA CPC ENSO/ONI (keyless flat file)
     try { return { pairs: await fetchONI(spec) }; }
     catch (e) { return { skip: `oni: ${e.message}` }; }
+  }
+  if (spec.type === 'eu-agri') {                             // EU Agri-food dairy prices (keyless)
+    try { return { pairs: await fetchEUAgri(spec) }; }
+    catch (e) { return { skip: `eu-agri ${spec.product}: ${e.message}` }; }
   }
   if (spec.type === 'eia') {
     const k = process.env.EIA_KEY; if (!k) return { skip: 'no EIA_KEY' };
@@ -720,6 +748,30 @@ async function fossDiscover() {
   console.log('\nThe ✓ JSON host + the sample fields tell me the base URL + field names to pin.');
 }
 
+// ---- EU agri-food discovery: find the working host + confirm butter/cheddar series -------
+async function euDiscover() {
+  console.log('EU agri-food discovery — dairy prices host + product codes (writes nothing)\n');
+  for (const base of EU_BASES) {
+    const u = `${base}/dairy/prices?products=butter&memberStateCodes=EU`;
+    try {
+      const r = await fetch(u, { headers: { 'User-Agent': SSB_UA, Accept: 'application/json' } });
+      const txt = await r.text(); const json = txt.trim().startsWith('[') || txt.trim().startsWith('{');
+      console.log(`  ${json ? '✓' : '✗'} ${r.status} ${u}`);
+      if (json) {
+        const j = JSON.parse(txt); const rows = Array.isArray(j) ? j : (j.results || j.data || j.items || []);
+        console.log(`      rows=${rows.length}${rows[0] ? ` · keys: ${Object.keys(rows[0]).join(', ')}` : ''}`);
+        const s = parseEUDairy(rows); if (s.length) console.log(`      → ${s.length} weeks, ${s[0].date} → ${s[s.length - 1].date}, latest=${s[s.length - 1].value}`);
+        break;
+      } else console.log(`      ${txt.replace(/\s+/g, ' ').slice(0, 120)}`);
+    } catch (e) { console.log(`  ✗ ${u} — ${e.message}`); }
+  }
+  for (const [prod, ms] of [['butter', 'EU'], ['cheddar', 'IE'], ['cheddar', 'EU']]) {
+    try { const s = await fetchEUAgri({ product: prod, member: ms }); console.log(`  → ${prod}/${ms}: ${s.length} weeks${s.length ? `, latest ${s[s.length - 1].date}=${s[s.length - 1].value}` : ''}`); }
+    catch (e) { console.log(`  → ${prod}/${ms}: ${e.message}`); }
+  }
+  console.log('\nThe ✓ host + the product/member that returns weeks tell me what to pin for butter/cheddar.');
+}
+
 // ---- selftest: synthetic dated series, no network ------------------
 function selftest() {
   // Build a proxy (random-ish monthly walk) and an indicator that leads it by 3
@@ -796,6 +848,12 @@ function selftest() {
       ok(oni.length === 3 && oni[0].date === '1999-01-15' && oni[0].value === -1.5, `parseONI maps SEAS→center month + signed anomaly (got ${oni.length}, ${oni[0] && oni[0].date}=${oni[0] && oni[0].value})`);
       ok(oni[2].date === '2015-12-15' && oni[2].value === 2.31, `parseONI handles positive El Niño anomaly (got ${oni[2] && oni[2].value})`);
     }
+    // EU dairy parse: DD/MM/YYYY → YYYY-MM-DD, and comma-decimal European prices.
+    {
+      const eu = parseEUDairy([{ beginDate: '07/01/2024', price: '4 500,50' }, { beginDate: '14/01/2024', price: '€4600.00' }, { beginDate: 'bad', price: 'x' }]);
+      ok(eu.length === 2 && eu[0].date === '2024-01-07' && Math.abs(eu[0].value - 4500.5) < 1e-6, `parseEUDairy reorders date + parses comma-decimal (got ${eu.length}, ${eu[0] && eu[0].date}=${eu[0] && eu[0].value})`);
+      ok(eu[1].value === 4600, `parseEUDairy parses dot-decimal + strips currency (got ${eu[1] && eu[1].value})`);
+    }
     // keyedChanges transforms: 'level' must use the raw (zero-crossing-safe) x, not pct change.
     {
       const al = [{ x: -1, y: 100, ym: '2020-01' }, { x: 0, y: 102, ym: '2020-02' }, { x: 1, y: 101, ym: '2020-03' }, { x: 2, y: 105, ym: '2020-04' }];
@@ -840,6 +898,7 @@ if (arg('--selftest')) { selftest(); }
 else if (arg('--anchor-discover')) { anchorDiscover(); }
 else if (arg('--ssb-discover')) { ssbDiscover(); }
 else if (arg('--foss-discover')) { fossDiscover(); }
+else if (arg('--eu-discover')) { euDiscover(); }
 else {
   const getAnchor = (spec) => fetchReportWindowed(spec, 12);  // ~12 years — pull the full report archive (2x the N-gate minimum) so the starved monthly meat/dairy edges clear; windows before a report existed return empty and drop out. Concurrent + server-filtered + cached keeps it inside the timeout.
   calibrate(fetchProxy, fetchIndicatorHistory, getAnchor).then((result) => {
