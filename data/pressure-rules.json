@@ -1,7 +1,8 @@
 {
   "_doc": "Muntin Cost PRESSURE rules — the transparent, versioned manifest the deterministic engine (tools/_shared/cost-pressure.js) scores into an inferred 'where it's headed' direction per ingredient. THIS IS NOT A PRICE. Each indicator declares: a public free SOURCE, a direction SIGN (does indicator-up mean cost-up +1 or cost-down -1), an evidence-tier WEIGHT, a sourced LEAD range, and a CITE. The reports + lead ranges are USDA/EIA-sourced and citeable; the per-indicator WEIGHTS are Muntin's evidence-tier judgment (illustrative, frozen per _version). Enforced by scripts/check-pressure-honesty.mjs: every indicator needs source+lead+cite, weight above tier C needs a cite, and the rendered direction must equal what this manifest + the engine recompute. A weight/sign change REQUIRES a _version bump + changelog. Sequencing: status:'preview' (demo observations) until the free fetchers (NASS Quick Stats, EIA, AMS MMN/MARS, USDM, NWS) are wired; then live.",
-  "_version": "2026-Q2-4",
+  "_version": "2026-Q2-5",
   "_changelog": [
+    { "version": "2026-Q2-5", "date": "2026-06-11", "note": "Track 1 international batch 1 (FRED-only, zero new fetcher code) from the 7-desk exploration. Add verified international LEADING indicators to existing items: FX with verified quote conventions — mxn-fx (DEXMXUS,-1) on tomato/onion/romaine; aud-fx (DEXUSAL,+1) on ribeye/beef-tenderloin; nzd-fx (DEXUSNZ,+1) on butter/cheddar; inr-fx (DEXINUS,-1) on shrimp (Ecuador is dollarized → India is the FX channel). Ocean freight — deep-sea-freight (PCU483111483111,+1) on salmon-fillet/shrimp. Feed — feed-soymeal (PSMEAUSDM,+1) on chicken/pork as the protein-feed lead (the documented blend partner to corn feed-grain). All weight 1 tier C, verified:false (probe pending) — these are calibration CANDIDATES; the BH+OOS+N gates keep only what proves out, and the overlay stays held. Higher-effort new-fetcher sources (Norway SSB weekly salmon, NOAA FOSS import volume, NOAA ENSO/ONI, EU dairy API, NY Fed GSCPI, Open-Meteo) are batch 2." },
     { "version": "2026-Q2-4", "date": "2026-06-11", "note": "Track 1 international — add salmon-fillet + shrimp to the pressure overlay (previously measured-index only, no nowcast). Both are import-dominated (US imports ~70% of salmon, ~90% of shrimp), so domestic USDA indicators are structurally blind; the leading signals are the IMF GLOBAL price (PSALMUSDM/PSHRIUSDM, world price → US import cost), aquaculture feed (soybean meal PSMEAUSDM), and FX (NOK/USD for Norway-dominated salmon). Target stays the deep US BLS seafood PPI (WPU0223 / WPU02230501). All FRED/BLS-accessible — no new fetchers. Specs verified:false pending probe; this is the calibration-first scaffold (a v1 indicator set, to be expanded by the international-indicator exploration). No existing item changed." },
     { "version": "2026-Q2-2", "date": "2026-06-11", "note": "Calibration validation (12-year LMR/MARS anchor backtest, data/pressure-calibration.json). beef-tenderloin/cattle-on-feed-placements and pork-loin/cold-storage-pork are the first edges to clear BH+OOS+N with the hand-set sign — annotated 'calibrated' (sign confirmed, empirical lag, OOS-shrunk weight). No weight/sign changed: the evidence corroborates the existing priors, so they stand; the deeper history merely lifted these two edges over the N gate. All other edges remain hand-set priors pending more anchor depth (chicken report is only 3.8y; romaine/onion anchors blocked by a marsapi comma-filter limitation)." },
     { "version": "2026-Q2-3", "date": "2026-06-11", "note": "Anchor track complete — all 12 anchors resolve on real weekly prices (romaine/onion via client-side filtering of LA-terminal 2307/2308; chicken monthly edges via the deep BLS-PPI guard now that 3646 is only 3.8y). romaine-lettuce/drought-ca-az is the third calibration-validated edge (+1 sign, holds OOS, N=293) — annotated; weak average R2 (0.007) is the expected shape of an episodic drought signal. With the engine now maximally fed (12y anchors, resolution-matched, deep-PPI guard), chicken/feed-grain is fairly tested at N=81 and honestly fails OOS — a real null, not a data limit. Net: 3 modest validated edges; the free-public-indicator nowcast remains weakly predictive, so the overlay stays held per the per-item proving gate." }
@@ -28,46 +29,58 @@
     "fred-imf-salmon": "https://fred.stlouisfed.org/series/PSALMUSDM",
     "fred-imf-shrimp": "https://fred.stlouisfed.org/series/PSHRIUSDM",
     "fred-nok-fx": "https://fred.stlouisfed.org/series/DEXNOUS",
-    "fred-soymeal": "https://fred.stlouisfed.org/series/PSMEAUSDM"
+    "fred-soymeal": "https://fred.stlouisfed.org/series/PSMEAUSDM",
+    "fred-mxn-fx": "https://fred.stlouisfed.org/series/DEXMXUS",
+    "fred-aud-fx": "https://fred.stlouisfed.org/series/DEXUSAL",
+    "fred-nzd-fx": "https://fred.stlouisfed.org/series/DEXUSNZ",
+    "fred-inr-fx": "https://fred.stlouisfed.org/series/DEXINUS",
+    "fred-deep-sea-freight": "https://fred.stlouisfed.org/series/PCU483111483111"
   },
   "items": {
-    "chicken-breast": { "rule_version": "2026-Q2-1", "indicators": [
+    "chicken-breast": { "rule_version": "2026-Q2-5", "indicators": [
       { "id": "feed-grain", "source": "fred-feed", "sign": 1, "weight": 3, "tier": "A", "window": "4w", "lead": { "min": 6, "max": 9, "unit": "week" }, "cite": "fred-feed", "note": "feed is 50-70% of broiler cost (ERS); corn+soy settlements via AMS" },
+      { "id": "feed-soymeal", "source": "fred-soymeal", "sign": 1, "weight": 1, "tier": "C", "window": "4w", "lead": { "min": 6, "max": 13, "unit": "week" }, "group": "feed", "cite": "fred-soymeal", "note": "intl-test: soybean meal is the PROTEIN feed component (corn is energy); the documented feed lead beyond corn" },
       { "id": "broiler-placements", "source": "nass-broiler", "sign": -1, "weight": 2, "tier": "B", "window": "4w", "lead": { "min": 6, "max": 10, "unit": "week" }, "cite": "nass-broiler", "note": "more chicks placed → more meat ~6-10 wk out → cost down" },
       { "id": "cold-storage-poultry", "source": "nass-cold-storage", "sign": -1, "weight": 1, "tier": "C", "window": "1m", "lead": { "min": 4, "max": 8, "unit": "week" }, "cite": "nass-cold-storage" },
       { "id": "diesel", "source": "eia-diesel", "sign": 1, "weight": 1, "tier": "A", "window": "4w", "lead": { "min": 0, "max": 4, "unit": "week" }, "group": "freight", "cite": "eia-diesel", "note": "freight rides every ingredient" }
     ] },
-    "whole-chicken": { "rule_version": "2026-Q2-1", "indicators": [
+    "whole-chicken": { "rule_version": "2026-Q2-5", "indicators": [
       { "id": "feed-grain", "source": "fred-feed", "sign": 1, "weight": 3, "tier": "A", "window": "4w", "lead": { "min": 6, "max": 9, "unit": "week" }, "cite": "fred-feed" },
+      { "id": "feed-soymeal", "source": "fred-soymeal", "sign": 1, "weight": 1, "tier": "C", "window": "4w", "lead": { "min": 6, "max": 13, "unit": "week" }, "group": "feed", "cite": "fred-soymeal", "note": "intl-test: soybean-meal protein-feed lead beyond corn" },
       { "id": "broiler-placements", "source": "nass-broiler", "sign": -1, "weight": 2, "tier": "B", "window": "4w", "lead": { "min": 6, "max": 10, "unit": "week" }, "cite": "nass-broiler" },
       { "id": "cold-storage-poultry", "source": "nass-cold-storage", "sign": -1, "weight": 1, "tier": "C", "window": "1m", "lead": { "min": 4, "max": 8, "unit": "week" }, "cite": "nass-cold-storage" },
       { "id": "diesel", "source": "eia-diesel", "sign": 1, "weight": 1, "tier": "A", "window": "4w", "lead": { "min": 0, "max": 4, "unit": "week" }, "group": "freight", "cite": "eia-diesel" }
     ] },
-    "ribeye": { "rule_version": "2026-Q2-1", "indicators": [
+    "ribeye": { "rule_version": "2026-Q2-5", "indicators": [
+      { "id": "aud-fx", "source": "fred-aud-fx", "sign": 1, "weight": 1, "tier": "C", "window": "4w", "lead": { "min": 6, "max": 12, "unit": "week" }, "cite": "fred-aud-fx", "note": "intl-test: Australia lean-trim; USD-per-AUD, AUD stronger → US import beef cost up" },
       { "id": "cattle-on-feed-placements", "source": "nass-cattle-on-feed", "sign": -1, "weight": 2, "tier": "B", "window": "1m", "lead": { "min": 16, "max": 26, "unit": "week" }, "cite": "nass-cattle-on-feed", "note": "placements forecast marketings 4-6 mo out (NASS)" },
       { "id": "cold-storage-beef", "source": "nass-cold-storage", "sign": -1, "weight": 1, "tier": "C", "window": "1m", "lead": { "min": 4, "max": 8, "unit": "week" }, "cite": "nass-cold-storage" },
       { "id": "feed-grain", "source": "fred-feed", "sign": 1, "weight": 1, "tier": "C", "window": "4w", "lead": { "min": 26, "max": 78, "unit": "week" }, "cite": "fred-feed", "note": "feed is a weak NEAR-TERM lever for beef; herd cycle dominates" },
       { "id": "diesel", "source": "eia-diesel", "sign": 1, "weight": 1, "tier": "A", "window": "4w", "lead": { "min": 0, "max": 4, "unit": "week" }, "group": "freight", "cite": "eia-diesel" }
     ] },
-    "beef-tenderloin": { "rule_version": "2026-Q2-2", "indicators": [
+    "beef-tenderloin": { "rule_version": "2026-Q2-5", "indicators": [
+      { "id": "aud-fx", "source": "fred-aud-fx", "sign": 1, "weight": 1, "tier": "C", "window": "4w", "lead": { "min": 6, "max": 12, "unit": "week" }, "cite": "fred-aud-fx", "note": "intl-test: Australia lean-trim; USD-per-AUD, AUD stronger → US import beef cost up" },
       { "id": "cattle-on-feed-placements", "source": "nass-cattle-on-feed", "sign": -1, "weight": 2, "tier": "B", "window": "1m", "lead": { "min": 16, "max": 26, "unit": "week" }, "cite": "nass-cattle-on-feed", "calibrated": { "date": "2026-06-11", "empSign": -1, "empLeadWk": 13, "oos": "hold", "n": 42, "r2": 0.28, "suggestWeight": 0.1, "note": "12y LMR-2453 anchor backtest confirms the -1 sign and holds OOS (BH-passed). Lead kept biological 16-26w (NASS placements->marketings); |r|-best empirical lag was ~13w. OOS-shrunk weight 0.1 = real but weak; prior weight 2 retained as the operator's evidence-tier judgment." } },
       { "id": "cold-storage-beef", "source": "nass-cold-storage", "sign": -1, "weight": 1, "tier": "C", "window": "1m", "lead": { "min": 4, "max": 8, "unit": "week" }, "cite": "nass-cold-storage" },
       { "id": "feed-grain", "source": "fred-feed", "sign": 1, "weight": 1, "tier": "C", "window": "4w", "lead": { "min": 26, "max": 78, "unit": "week" }, "cite": "fred-feed" },
       { "id": "diesel", "source": "eia-diesel", "sign": 1, "weight": 1, "tier": "A", "window": "4w", "lead": { "min": 0, "max": 4, "unit": "week" }, "group": "freight", "cite": "eia-diesel" }
     ] },
-    "pork-loin": { "rule_version": "2026-Q2-2", "indicators": [
+    "pork-loin": { "rule_version": "2026-Q2-5", "indicators": [
       { "id": "hogs-market-supply", "source": "nass-hogs", "sign": -1, "weight": 2, "tier": "B", "window": "1q", "lead": { "min": 8, "max": 26, "unit": "week" }, "cite": "nass-hogs", "note": "weight-class bins map to slaughter windows; farrowing intentions lead ~8-10 mo" },
+      { "id": "feed-soymeal", "source": "fred-soymeal", "sign": 1, "weight": 1, "tier": "C", "window": "4w", "lead": { "min": 13, "max": 26, "unit": "week" }, "group": "feed", "cite": "fred-soymeal", "note": "intl-test: soybean-meal protein-feed lead beyond corn" },
       { "id": "feed-grain", "source": "fred-feed", "sign": 1, "weight": 2, "tier": "B", "window": "4w", "lead": { "min": 13, "max": 26, "unit": "week" }, "cite": "fred-feed" },
       { "id": "cold-storage-pork", "source": "nass-cold-storage", "sign": -1, "weight": 1, "tier": "C", "window": "1m", "lead": { "min": 4, "max": 8, "unit": "week" }, "cite": "nass-cold-storage", "calibrated": { "date": "2026-06-11", "empSign": -1, "empLeadWk": 0, "oos": "hold", "n": 102, "r2": 0.18, "suggestWeight": 0.1, "note": "12y LMR-2498 cutout anchor backtest confirms the -1 sign and holds OOS (BH-passed). Empirical relationship is ~coincident (|r|-best lag ~0w), so cold storage reads more as a concurrent supply confirm than a 4-8w leader; lead range retained pending more evidence. OOS-shrunk weight 0.1." } },
       { "id": "diesel", "source": "eia-diesel", "sign": 1, "weight": 1, "tier": "A", "window": "4w", "lead": { "min": 0, "max": 4, "unit": "week" }, "group": "freight", "cite": "eia-diesel" }
     ] },
-    "pork-shoulder": { "rule_version": "2026-Q2-1", "indicators": [
+    "pork-shoulder": { "rule_version": "2026-Q2-5", "indicators": [
       { "id": "hogs-market-supply", "source": "nass-hogs", "sign": -1, "weight": 2, "tier": "B", "window": "1q", "lead": { "min": 8, "max": 26, "unit": "week" }, "cite": "nass-hogs" },
+      { "id": "feed-soymeal", "source": "fred-soymeal", "sign": 1, "weight": 1, "tier": "C", "window": "4w", "lead": { "min": 13, "max": 26, "unit": "week" }, "group": "feed", "cite": "fred-soymeal", "note": "intl-test: soybean-meal protein-feed lead beyond corn" },
       { "id": "feed-grain", "source": "fred-feed", "sign": 1, "weight": 2, "tier": "B", "window": "4w", "lead": { "min": 13, "max": 26, "unit": "week" }, "cite": "fred-feed" },
       { "id": "cold-storage-pork", "source": "nass-cold-storage", "sign": -1, "weight": 1, "tier": "C", "window": "1m", "lead": { "min": 4, "max": 8, "unit": "week" }, "cite": "nass-cold-storage" },
       { "id": "diesel", "source": "eia-diesel", "sign": 1, "weight": 1, "tier": "A", "window": "4w", "lead": { "min": 0, "max": 4, "unit": "week" }, "group": "freight", "cite": "eia-diesel" }
     ] },
-    "romaine-lettuce": { "rule_version": "2026-Q2-3", "indicators": [
+    "romaine-lettuce": { "rule_version": "2026-Q2-5", "indicators": [
+      { "id": "mxn-fx", "source": "fred-mxn-fx", "sign": -1, "weight": 1, "tier": "C", "window": "4w", "lead": { "min": 3, "max": 8, "unit": "week" }, "cite": "fred-mxn-fx", "note": "intl-test: Mexico winter produce; peso-per-USD, peso weaker → cheaper in USD → cost down" },
       { "id": "lettuce-shipments", "source": "ams-movement", "sign": -1, "weight": 3, "tier": "A", "window": "6w", "lead": { "min": 0, "max": 3, "unit": "week" }, "group": "movement", "cite": "ams-movement", "note": "national arrivals up → supply up → cost down" },
       { "id": "lettuce-imports", "source": "ams-movement", "sign": 1, "weight": 1, "tier": "B", "window": "6w", "lead": { "min": 1, "max": 6, "unit": "week" }, "group": "movement", "cite": "ams-movement", "note": "import share up → domestic supply tightening → cost up" },
       { "id": "lettuce-pace", "source": "ams-movement", "sign": -1, "weight": 1, "tier": "B", "window": "52w", "lead": { "min": 2, "max": 10, "unit": "week" }, "group": "movement", "cite": "ams-movement", "note": "season pace above last year → ample supply → cost down" },
@@ -76,7 +89,8 @@
       { "id": "diesel", "source": "eia-diesel", "sign": 1, "weight": 1, "tier": "A", "window": "4w", "lead": { "min": 0, "max": 4, "unit": "week" }, "group": "freight", "cite": "eia-diesel" },
       { "id": "lettuce-transition", "source": "ams-shipping-point", "sign": 1, "weight": 1, "tier": "B", "window": "season", "lead": { "min": 1, "max": 4, "unit": "week" }, "cite": "ams-shipping-point", "note": "region handoff window → elevated spike risk" }
     ] },
-    "tomato": { "rule_version": "2026-Q2-1", "indicators": [
+    "tomato": { "rule_version": "2026-Q2-5", "indicators": [
+      { "id": "mxn-fx", "source": "fred-mxn-fx", "sign": -1, "weight": 1, "tier": "C", "window": "4w", "lead": { "min": 3, "max": 8, "unit": "week" }, "cite": "fred-mxn-fx", "note": "intl-test: Mexico dominates US winter tomatoes; peso weaker → cheaper in USD → cost down (Tomato Suspension Agreement USD floor may damp it)" },
       { "id": "tomato-shipments", "source": "ams-movement", "sign": -1, "weight": 3, "tier": "A", "window": "6w", "lead": { "min": 0, "max": 3, "unit": "week" }, "group": "movement", "cite": "ams-movement", "note": "national arrivals up → supply up → cost down" },
       { "id": "tomato-imports", "source": "ams-movement", "sign": 1, "weight": 1, "tier": "B", "window": "6w", "lead": { "min": 1, "max": 6, "unit": "week" }, "group": "movement", "cite": "ams-movement", "note": "import share up → domestic supply tightening → cost up" },
       { "id": "tomato-pace", "source": "ams-movement", "sign": -1, "weight": 1, "tier": "B", "window": "52w", "lead": { "min": 2, "max": 10, "unit": "week" }, "group": "movement", "cite": "ams-movement", "note": "season pace above last year → ample supply → cost down" },
@@ -85,7 +99,8 @@
       { "id": "diesel", "source": "eia-diesel", "sign": 1, "weight": 1, "tier": "A", "window": "4w", "lead": { "min": 0, "max": 4, "unit": "week" }, "group": "freight", "cite": "eia-diesel" },
       { "id": "tomato-transition", "source": "ams-shipping-point", "sign": 1, "weight": 1, "tier": "B", "window": "season", "lead": { "min": 1, "max": 4, "unit": "week" }, "cite": "ams-shipping-point", "note": "region handoff window → elevated spike risk" }
     ] },
-    "onion": { "rule_version": "2026-Q2-1", "indicators": [
+    "onion": { "rule_version": "2026-Q2-5", "indicators": [
+      { "id": "mxn-fx", "source": "fred-mxn-fx", "sign": -1, "weight": 1, "tier": "C", "window": "4w", "lead": { "min": 3, "max": 8, "unit": "week" }, "cite": "fred-mxn-fx", "note": "intl-test: Mexico winter onion share; peso weaker → cheaper in USD → cost down" },
       { "id": "onion-shipments", "source": "ams-movement", "sign": -1, "weight": 2, "tier": "A", "window": "6w", "lead": { "min": 0, "max": 3, "unit": "week" }, "group": "movement", "cite": "ams-movement", "note": "national arrivals up → supply up → cost down" },
       { "id": "onion-imports", "source": "ams-movement", "sign": 1, "weight": 1, "tier": "B", "window": "6w", "lead": { "min": 1, "max": 6, "unit": "week" }, "group": "movement", "cite": "ams-movement", "note": "import share up → domestic supply tightening → cost up" },
       { "id": "onion-pace", "source": "ams-movement", "sign": -1, "weight": 1, "tier": "B", "window": "52w", "lead": { "min": 2, "max": 10, "unit": "week" }, "group": "movement", "cite": "ams-movement", "note": "season pace above last year → ample supply → cost down" },
@@ -102,27 +117,32 @@
       { "id": "diesel", "source": "eia-diesel", "sign": 1, "weight": 1, "tier": "A", "window": "4w", "lead": { "min": 0, "max": 4, "unit": "week" }, "group": "freight", "cite": "eia-diesel" },
       { "id": "potato-transition", "source": "ams-shipping-point", "sign": 1, "weight": 1, "tier": "B", "window": "season", "lead": { "min": 1, "max": 4, "unit": "week" }, "cite": "ams-shipping-point", "note": "region handoff window → elevated spike risk" }
     ] },
-    "butter": { "rule_version": "2026-Q2-1", "indicators": [
+    "butter": { "rule_version": "2026-Q2-5", "indicators": [
+      { "id": "nzd-fx", "source": "fred-nzd-fx", "sign": 1, "weight": 1, "tier": "C", "window": "4w", "lead": { "min": 6, "max": 12, "unit": "week" }, "cite": "fred-nzd-fx", "note": "intl-test: NZ is the marginal global dairy price-setter; USD-per-NZD, NZD stronger → US butterfat import cost up (GDT clears in USD → partly pre-absorbed)" },
       { "id": "milk-production", "source": "nass-milk", "sign": -1, "weight": 2, "tier": "B", "window": "1m", "lead": { "min": 4, "max": 12, "unit": "week" }, "cite": "nass-milk", "note": "more milk → more butterfat → cost down; production leads the churn" },
       { "id": "cold-storage-butter", "source": "nass-cold-storage", "sign": -1, "weight": 2, "tier": "B", "window": "1m", "lead": { "min": 4, "max": 8, "unit": "week" }, "cite": "nass-cold-storage", "note": "Cold Storage tracks butter stocks; high stocks → downward pressure" },
       { "id": "feed-grain", "source": "fred-feed", "sign": 1, "weight": 1, "tier": "C", "window": "4w", "lead": { "min": 13, "max": 26, "unit": "week" }, "cite": "fred-feed", "note": "feed → milk cost is a slow, weaker channel" },
       { "id": "diesel", "source": "eia-diesel", "sign": 1, "weight": 1, "tier": "A", "window": "4w", "lead": { "min": 0, "max": 4, "unit": "week" }, "group": "freight", "cite": "eia-diesel" }
     ] },
-    "cheddar-cheese": { "rule_version": "2026-Q2-1", "indicators": [
+    "cheddar-cheese": { "rule_version": "2026-Q2-5", "indicators": [
+      { "id": "nzd-fx", "source": "fred-nzd-fx", "sign": 1, "weight": 1, "tier": "C", "window": "4w", "lead": { "min": 6, "max": 12, "unit": "week" }, "cite": "fred-nzd-fx", "note": "intl-test: NZ global dairy price-setter; USD-per-NZD, NZD stronger → US cheese import cost up" },
       { "id": "milk-production", "source": "nass-milk", "sign": -1, "weight": 2, "tier": "B", "window": "1m", "lead": { "min": 4, "max": 12, "unit": "week" }, "cite": "nass-milk" },
       { "id": "cold-storage-cheese", "source": "nass-cold-storage", "sign": -1, "weight": 2, "tier": "B", "window": "1m", "lead": { "min": 4, "max": 8, "unit": "week" }, "cite": "nass-cold-storage", "note": "Cold Storage tracks natural-cheese stocks" },
       { "id": "feed-grain", "source": "fred-feed", "sign": 1, "weight": 1, "tier": "C", "window": "4w", "lead": { "min": 13, "max": 26, "unit": "week" }, "cite": "fred-feed" },
       { "id": "diesel", "source": "eia-diesel", "sign": 1, "weight": 1, "tier": "A", "window": "4w", "lead": { "min": 0, "max": 4, "unit": "week" }, "group": "freight", "cite": "eia-diesel" }
     ] },
-    "salmon-fillet": { "rule_version": "2026-Q2-4", "indicators": [
+    "salmon-fillet": { "rule_version": "2026-Q2-5", "indicators": [
+      { "id": "deep-sea-freight", "source": "fred-deep-sea-freight", "sign": 1, "weight": 1, "tier": "C", "window": "4w", "lead": { "min": 4, "max": 10, "unit": "week" }, "group": "freight", "cite": "fred-deep-sea-freight", "note": "intl-test: ocean-freight PPI; air-freighted fresh salmon still rides landed-cost pressure" },
       { "id": "imf-salmon-price", "source": "fred-imf-salmon", "sign": 1, "weight": 2, "tier": "B", "window": "1m", "lead": { "min": 4, "max": 13, "unit": "week" }, "cite": "fred-imf-salmon", "note": "~70% of US salmon imported; the IMF world farmed-salmon price leads US import/wholesale cost as cargoes land (1-3 mo)" },
       { "id": "nok-fx", "source": "fred-nok-fx", "sign": -1, "weight": 1, "tier": "C", "window": "4w", "lead": { "min": 2, "max": 8, "unit": "week" }, "cite": "fred-nok-fx", "note": "NOK/USD; stronger USD (DEXNOUS up) → Norwegian salmon cheaper in USD → cost down" },
       { "id": "feed-soymeal", "source": "fred-soymeal", "sign": 1, "weight": 1, "tier": "C", "window": "4w", "lead": { "min": 13, "max": 26, "unit": "week" }, "cite": "fred-soymeal", "note": "soy-based aquaculture feed leads farmed-salmon price ~1-2 quarters" },
       { "id": "diesel", "source": "eia-diesel", "sign": 1, "weight": 1, "tier": "A", "window": "4w", "lead": { "min": 0, "max": 4, "unit": "week" }, "group": "freight", "cite": "eia-diesel" }
     ] },
-    "shrimp": { "rule_version": "2026-Q2-4", "indicators": [
+    "shrimp": { "rule_version": "2026-Q2-5", "indicators": [
       { "id": "imf-shrimp-price", "source": "fred-imf-shrimp", "sign": 1, "weight": 2, "tier": "B", "window": "1m", "lead": { "min": 4, "max": 13, "unit": "week" }, "cite": "fred-imf-shrimp", "note": "~90% of US shrimp imported (Ecuador/India/Indonesia/Vietnam); the IMF world shrimp price leads US import cost" },
-      { "id": "feed-soymeal", "source": "fred-soymeal", "sign": 1, "weight": 1, "tier": "C", "window": "4w", "lead": { "min": 13, "max": 26, "unit": "week" }, "cite": "fred-soymeal", "note": "soy-based aquaculture feed; no single dominant exporter currency, so no clean FX channel for shrimp" },
+      { "id": "inr-fx", "source": "fred-inr-fx", "sign": -1, "weight": 1, "tier": "C", "window": "4w", "lead": { "min": 4, "max": 10, "unit": "week" }, "cite": "fred-inr-fx", "note": "intl-test: India is the FX-active top US shrimp supplier (Ecuador, the largest, is dollarized → no FX); rupee weaker → cheaper in USD → cost down" },
+      { "id": "feed-soymeal", "source": "fred-soymeal", "sign": 1, "weight": 1, "tier": "C", "window": "4w", "lead": { "min": 13, "max": 26, "unit": "week" }, "cite": "fred-soymeal", "note": "soy-based aquaculture feed leads farmed shrimp ~1-2 quarters" },
+      { "id": "deep-sea-freight", "source": "fred-deep-sea-freight", "sign": 1, "weight": 1, "tier": "C", "window": "4w", "lead": { "min": 4, "max": 10, "unit": "week" }, "group": "freight", "cite": "fred-deep-sea-freight", "note": "intl-test: frozen shrimp ships by ocean container; freight up → landed cost up" },
       { "id": "diesel", "source": "eia-diesel", "sign": 1, "weight": 1, "tier": "A", "window": "4w", "lead": { "min": 0, "max": 4, "unit": "week" }, "group": "freight", "cite": "eia-diesel" }
     ] }
   }
