@@ -1,7 +1,8 @@
 {
   "_doc": "Muntin Cost PRESSURE rules — the transparent, versioned manifest the deterministic engine (tools/_shared/cost-pressure.js) scores into an inferred 'where it's headed' direction per ingredient. THIS IS NOT A PRICE. Each indicator declares: a public free SOURCE, a direction SIGN (does indicator-up mean cost-up +1 or cost-down -1), an evidence-tier WEIGHT, a sourced LEAD range, and a CITE. The reports + lead ranges are USDA/EIA-sourced and citeable; the per-indicator WEIGHTS are Muntin's evidence-tier judgment (illustrative, frozen per _version). Enforced by scripts/check-pressure-honesty.mjs: every indicator needs source+lead+cite, weight above tier C needs a cite, and the rendered direction must equal what this manifest + the engine recompute. A weight/sign change REQUIRES a _version bump + changelog. Sequencing: status:'preview' (demo observations) until the free fetchers (NASS Quick Stats, EIA, AMS MMN/MARS, USDM, NWS) are wired; then live.",
-  "_version": "2026-Q2-11",
+  "_version": "2026-Q2-12",
   "_changelog": [
+    { "version": "2026-Q2-12", "date": "2026-06-11", "note": "Track 1 international batch 2 #7 (final) — AMS Mexico border-crossings via the existing marsapi (new 'ams-report' type = a report read as an indicator). mx-tomato-crossings / mx-onion-crossings on tomato/onion (-1): Mexican crossing volume up → US supply up → cost down, ~3-14 day lead. Report 3264's exact section + volume field are a best guess; --mxcross-discover dumps the structure to pin them. verified:false; graceful fallback; no existing item changed. Batch 2 international sweep COMPLETE (7 fetchers: SSB, FOSS, ENSO, EU-dairy, Open-Meteo, AMS-crossings + the per-indicator transform)." },
     { "version": "2026-Q2-11", "date": "2026-06-11", "note": "Track 1 international batch 2 #6 — Open-Meteo ERA5 archive (new keyless 'open-meteo' fetcher). sa-soil-moisture (Brazil soy-belt root-zone moisture, -1, transform:level) on chicken as a long-lead feed signal; ca-frost (Yuma min-temp, -1, transform:level) on romaine — a CALIBRATABLE version of the NWS freeze-alert the calibration otherwise skips. zipDaily unit-tested offline; verified:false; graceful fallback; no existing item changed." },
     { "version": "2026-Q2-10", "date": "2026-06-11", "note": "Track 1 international batch 2 #4 — EU Agri-food Data Portal dairy prices (new keyless 'eu-agri' fetcher). Adds eu-butter (butter) + eu-cheddar (Ireland) to butter/cheddar (+1): the EU weekly butterfat/cheddar export price leads US dairy import cost (~2-6wk). The only non-paywalled dairy channel (GDT is paywalled, FRED has no intl dairy). parseEUDairy (DD/MM/YYYY + comma-decimal) unit-tested offline; host + product/member codes confirmed via the new --eu-discover. verified:false; graceful fallback; no existing item changed." },
     { "version": "2026-Q2-9", "date": "2026-06-11", "note": "First deterministic-run reconciliation. The fetch-determinism fix restored full data and CONFIRMED the prior meat annotations (beef-tenderloin/cattle-on-feed p=0.009 hold BH; pork-loin/cold-storage-pork p=0.008 hold BH) — they stand; the earlier 'fail' was the dropped-window artifact. Two NEW international edges cleared BH+OOS+N and are annotated: feed-soymeal->chicken (both items, +1, p=0.005, beats corn) and nok-fx->salmon-fillet (-1, p=0.013, R2=0.137 — the clearest FX edge, since Norwegian salmon is NOK-priced at origin). 6 validated edges total, 2 of them international — the international thesis is paying off. No weight/sign changed (evidence corroborates priors); annotations only." },
@@ -45,7 +46,8 @@
     "noaa-foss": "https://www.fisheries.noaa.gov/foss/f?p=215:2",
     "noaa-oni": "https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/ensostuff/ONI_v5.php",
     "eu-agrifood": "https://agridata.ec.europa.eu/extensions/DashboardDairy/DairyProductPrices.html",
-    "open-meteo": "https://open-meteo.com/en/docs/historical-weather-api"
+    "open-meteo": "https://open-meteo.com/en/docs/historical-weather-api",
+    "ams-3264": "https://mymarketnews.ams.usda.gov/viewReport/3264"
   },
   "items": {
     "chicken-breast": { "rule_version": "2026-Q2-11", "indicators": [
@@ -103,7 +105,8 @@
       { "id": "diesel", "source": "eia-diesel", "sign": 1, "weight": 1, "tier": "A", "window": "4w", "lead": { "min": 0, "max": 4, "unit": "week" }, "group": "freight", "cite": "eia-diesel" },
       { "id": "lettuce-transition", "source": "ams-shipping-point", "sign": 1, "weight": 1, "tier": "B", "window": "season", "lead": { "min": 1, "max": 4, "unit": "week" }, "cite": "ams-shipping-point", "note": "region handoff window → elevated spike risk" }
     ] },
-    "tomato": { "rule_version": "2026-Q2-5", "indicators": [
+    "tomato": { "rule_version": "2026-Q2-12", "indicators": [
+      { "id": "mx-tomato-crossings", "source": "ams-3264", "sign": -1, "weight": 1, "tier": "C", "window": "4w", "lead": { "min": 1, "max": 4, "unit": "week" }, "cite": "ams-3264", "note": "intl-test: Mexican border-crossing tomato volume; crossings up → US supply up → cost down (short lead)" },
       { "id": "mxn-fx", "source": "fred-mxn-fx", "sign": -1, "weight": 1, "tier": "C", "window": "4w", "lead": { "min": 3, "max": 8, "unit": "week" }, "cite": "fred-mxn-fx", "note": "intl-test: Mexico dominates US winter tomatoes; peso weaker → cheaper in USD → cost down (Tomato Suspension Agreement USD floor may damp it)" },
       { "id": "tomato-shipments", "source": "ams-movement", "sign": -1, "weight": 3, "tier": "A", "window": "6w", "lead": { "min": 0, "max": 3, "unit": "week" }, "group": "movement", "cite": "ams-movement", "note": "national arrivals up → supply up → cost down" },
       { "id": "tomato-imports", "source": "ams-movement", "sign": 1, "weight": 1, "tier": "B", "window": "6w", "lead": { "min": 1, "max": 6, "unit": "week" }, "group": "movement", "cite": "ams-movement", "note": "import share up → domestic supply tightening → cost up" },
@@ -113,7 +116,8 @@
       { "id": "diesel", "source": "eia-diesel", "sign": 1, "weight": 1, "tier": "A", "window": "4w", "lead": { "min": 0, "max": 4, "unit": "week" }, "group": "freight", "cite": "eia-diesel" },
       { "id": "tomato-transition", "source": "ams-shipping-point", "sign": 1, "weight": 1, "tier": "B", "window": "season", "lead": { "min": 1, "max": 4, "unit": "week" }, "cite": "ams-shipping-point", "note": "region handoff window → elevated spike risk" }
     ] },
-    "onion": { "rule_version": "2026-Q2-5", "indicators": [
+    "onion": { "rule_version": "2026-Q2-12", "indicators": [
+      { "id": "mx-onion-crossings", "source": "ams-3264", "sign": -1, "weight": 1, "tier": "C", "window": "4w", "lead": { "min": 1, "max": 4, "unit": "week" }, "cite": "ams-3264", "note": "intl-test: Mexican border-crossing onion volume; crossings up → cost down (short lead)" },
       { "id": "mxn-fx", "source": "fred-mxn-fx", "sign": -1, "weight": 1, "tier": "C", "window": "4w", "lead": { "min": 3, "max": 8, "unit": "week" }, "cite": "fred-mxn-fx", "note": "intl-test: Mexico winter onion share; peso weaker → cheaper in USD → cost down" },
       { "id": "onion-shipments", "source": "ams-movement", "sign": -1, "weight": 2, "tier": "A", "window": "6w", "lead": { "min": 0, "max": 3, "unit": "week" }, "group": "movement", "cite": "ams-movement", "note": "national arrivals up → supply up → cost down" },
       { "id": "onion-imports", "source": "ams-movement", "sign": 1, "weight": 1, "tier": "B", "window": "6w", "lead": { "min": 1, "max": 6, "unit": "week" }, "group": "movement", "cite": "ams-movement", "note": "import share up → domestic supply tightening → cost up" },
