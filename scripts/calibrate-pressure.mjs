@@ -415,7 +415,7 @@ async function anchorDiscover() {
   console.log('ANCHOR discovery — does each weekly target resolve to a price series? (writes nothing)\n');
   for (const [item, a] of Object.entries(ANCHOR)) {
     try {
-      const rows = await fetchReportWindowed(a, 0.5);                 // ~6 months
+      const rows = await fetchReportWindowed(a, 6);                  // full live depth — so the span we print is real
       const ser = anchorSeries(rows, a);                             // apply the configured extraction
       const ok = ser.length >= 4;
       console.log(`  ${ok ? '✓' : '✗'} ${item.padEnd(16)} [${a.host} ${a.report}/${a.section}] rows=${rows.length} → matched ${ser.length} priced weeks — ${a.note}`);
@@ -429,7 +429,12 @@ async function anchorDiscover() {
         // values among the primary-matched rows so the right one can be pinned.
         if (a.match2) { const dv = []; rows.filter((r) => matchRow(r, a.match)).forEach((r) => { const c = r[a.match2.field]; if (c && dv.indexOf(c) < 0 && dv.length < 40) dv.push(c); }); console.log(`      actual ${a.match2.field} values (within ${a.match.value}): ${dv.join(' | ') || '(field empty/absent)'}`); }
       } else if (ok) {
-        console.log(`      latest: ${ser[ser.length - 1].date} = ${ser[ser.length - 1].value}`);
+        // Print the TRUE span so we can see if an anchor is genuinely short (needs an
+        // archive/longer report) vs just truncated recent (a data-feed ceiling).
+        const wk = weeklyFromDated(ser);
+        const dates = ser.map((p) => normDate(p.date)).filter(Boolean).sort();
+        const yrs = ((Date.parse(dates[dates.length - 1]) - Date.parse(dates[0])) / (365 * 864e5));
+        console.log(`      span: ${dates[0]} → ${dates[dates.length - 1]} (${isFinite(yrs) ? yrs.toFixed(1) : '?'}y, ${wk.length} distinct weeks) · latest=${ser[ser.length - 1].value}`);
       } else {
         // 0 rows. Peel the query back one layer at a time to reveal WHY, so the right
         // report/section/commodity can be pinned next pass without guessing:
@@ -542,7 +547,7 @@ function selftest() {
 if (arg('--selftest')) { selftest(); }
 else if (arg('--anchor-discover')) { anchorDiscover(); }
 else {
-  const getAnchor = (spec) => fetchReportWindowed(spec, 4);   // ~4 years of weekly anchor history (server-filtered + cached)
+  const getAnchor = (spec) => fetchReportWindowed(spec, 6);   // ~6 years of anchor history — deeper archive lifts the starved monthly meat/dairy edges over the N gate (server-filtered + cached + concurrent windows)
   calibrate(fetchProxy, fetchIndicatorHistory, getAnchor).then((result) => {
     report(result);
     const { edges, fits } = result;
