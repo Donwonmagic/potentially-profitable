@@ -1,0 +1,459 @@
+{
+  "version": 1,
+  "generatedAt": "2026-06-11T05:45:45.406Z",
+  "engine": "f5",
+  "model": "don-reference.m4a",
+  "voice": "f5:don-reference.m4a",
+  "language": "en",
+  "total": 763.78,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "Op-ed &middot; 8 min read &middot; By The Muntin Desk",
+      "start": 0,
+      "end": 2.63
+    },
+    {
+      "id": 1,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Google&rsquo;s AI Overview answered 13.14% of US desktop searches in March twenty twenty-five. By the start of twenty twenty-six it&rsquo;s closer to one in five, and for restaurant queries it&rsquo;s higher. The question your guest used to type, &ldquo;is takeout open in Silver Spring&rdquo;, gets answered above the map pack now, in a paragraph Google wrote and cited. Three sources get named. If you&rsquo;re not one of them, you&rsquo;re not in the conversation. Here&rsquo;s how the citation is decided.",
+      "start": 3.18,
+      "end": 27.97
+    },
+    {
+      "id": 2,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "In short",
+      "start": 28.77,
+      "end": 29.74
+    },
+    {
+      "id": 3,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Google’s AI Overview answered 13.14% of US desktop searches in March twenty twenty-five and is approaching one in five in twenty twenty-six; restaurant queries trigger it more often.",
+      "start": 30.29,
+      "end": 39.52
+    },
+    {
+      "id": 4,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Five paragraph-level moves get a restaurant cited: answer-first ≤45-word paragraphs under each H2, numbers in the lede sentence, predicate-shaped “X is Y” sentences with no hedge words, schema-anchored entity matches between prose and Json-LD, and stable URLs once cited.",
+      "start": 40.02,
+      "end": 53.41
+    },
+    {
+      "id": 5,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Citation is a different ranking axis than blue-link S E O, the page with the most backlinks doesn’t always get cited; the page with the cleanest extractable answer does.",
+      "start": 53.91,
+      "end": 62.3
+    },
+    {
+      "id": 6,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "The pattern that decides which paragraphs get cited is visible if you do the obvious thing, type the natural-language questions your guests would type, watch which sources the box names, then read those paragraphs against the ones it didn&rsquo;t cite. The rules below are what falls out. None of them are about backlinks or domain authority or any of the levers S E O writing in twenty twenty-three was about. They&rsquo;re about paragraph shape.",
+      "start": 63.1,
+      "end": 84.62
+    },
+    {
+      "id": 7,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "AI Overview share of US desktop searches, both measurements from the same Search Engine Land analysis. January twenty twenty-five measured six point four nine percent. March twenty twenty-five measured thirteen point one four percent, the share doubled in two months. A tick on each bar marks the one-in-five level, twenty percent, the share this surface is approaching by the start of twenty twenty-six. The direction since the March measurement has been rising, not flat, and restaurant queries trigger the box more often than the all-categories average.",
+      "start": 85.72,
+      "end": 112.81
+    },
+    {
+      "id": 8,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Ranking and being cited are not the same job.",
+      "start": 114.31,
+      "end": 116.51
+    },
+    {
+      "id": 9,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "The S E O industry has spent twenty years optimizing pages to appear in the top three blue links. That job still exists. The new job, the one that pays bigger right now, is getting your single best paragraph lifted into the AI Overview as one of two or three named sources. The page below the box still gets clicks, but not the way it used to. AI Overviews don&rsquo;t replace organic traffic; they replace the click that used to read your answer. The citation is your remaining surface.",
+      "start": 117.46,
+      "end": 141.34
+    },
+    {
+      "id": 10,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "These two jobs don&rsquo;t actively fight each other. They reward different paragraphs. The page with the most backlinks doesn&rsquo;t always get cited, the page with the cleanest extractable answer does. Most restaurant content is written to rank. Almost none is written to be cited. The first independent operator in a market who flips that order owns the answer box for the next twelve months.",
+      "start": 142.14,
+      "end": 161.38
+    },
+    {
+      "id": 11,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "The five moves that get cited.",
+      "start": 162.88,
+      "end": 164.34
+    },
+    {
+      "id": 12,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "Before the moves, watch the machine. The diagram below is the walk an extractor makes through your page, the five stations where it decides what your page is worth quoting. The five moves that follow map onto these stations one to one, in the same order they pay off in.",
+      "start": 165.29,
+      "end": 178.33
+    },
+    {
+      "id": 13,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(2)",
+      "text": "How the AI Overview extractor walks a restaurant page, in five stations. Station one: it reads each H2 heading as the question that section answers; a vague heading means the extractor cannot tell what it found. Station two: it takes the first paragraph under the H2, the cut-point is usually thirty-five to fifty-five words, and shorter paragraphs are quoted verbatim more often than paraphrased. Station three: it parses each sentence into subject, predicate, object, and prunes hedge tokens like approximately and usually; a hedged sentence loses its fact before it ever ranks. Station four: it cross-references every entity in the prose, name, hours, prices, against the page's Json-LD; a match flags the page citation-worthy, a mismatch deboosts it. Station five: it lifts the cleanest extractable answer, names the source, and revisits that U R L more often than uncited ones. The five moves in this guide are the operator-side answer to these five stations.",
+      "start": 179.43,
+      "end": 226.15
+    },
+    {
+      "id": 14,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Move 1: Answer first, then explain.",
+      "start": 227.65,
+      "end": 229.36
+    },
+    {
+      "id": 15,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "The first paragraph below an H2 is the only one most extractors read. Everything after it is supporting context that may or may not get pulled in. If your first paragraph answers the H2&rsquo;s implied question completely, you have a citation. If it sets up the answer instead, the answer never gets quoted, because the paragraph it lives in is too far down the page.",
+      "start": 230.31,
+      "end": 248.12
+    },
+    {
+      "id": 16,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "Forty-five words is the ceiling. I&rsquo;ve seen the box quote longer paragraphs, but the cut-point is usually 35, 55 words, and shorter is more often quoted verbatim than paraphrased. Verbatim is what you want, paraphrase loses the entity-to-schema match the model just made.",
+      "start": 248.92,
+      "end": 262.26
+    },
+    {
+      "id": 17,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "Move 2: Anchor every entity in schema.",
+      "start": 263.76,
+      "end": 265.62
+    },
+    {
+      "id": 18,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "The model reads your prose, then reads your Json-LD, then asks itself: are these consistent? When the answer is yes, the page gets a citation-boost flag. When the answer is no, menu prices in prose don&rsquo;t match the Menu schema, hours in prose don&rsquo;t match OpeningHours, the page gets a deboost flag. There&rsquo;s no public signal for this. It&rsquo;s visible only in which pages get cited and which don&rsquo;t.",
+      "start": 266.57,
+      "end": 286.88
+    },
+    {
+      "id": 19,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "If you already have the six schema types Google uses wired up, you have move 2 done. The work that&rsquo;s usually missing: the prose has to actually match the schema. If your schema says you&rsquo;re open until 10 PM and your prose says &ldquo;late&rdquo;, you have a consistency gap. Both should say 10 PM.",
+      "start": 287.68,
+      "end": 302.59
+    },
+    {
+      "id": 20,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "Move 3: Numbers in the lede sentence.",
+      "start": 304.09,
+      "end": 305.89
+    },
+    {
+      "id": 21,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "The first sentence of your answering paragraph should contain at least one number. A price, a time, a count, a percentage, a year, doesn&rsquo;t matter which. Numbers are what get extracted; sentences without numbers compete with every other vague sentence on the internet, and the extractor picks the one that&rsquo;s the most specific.",
+      "start": 306.84,
+      "end": 323.17
+    },
+    {
+      "id": 22,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "This is the move that most restaurant content gets wrong. The instinct is to lead with welcome language, &ldquo;We&rsquo;re thrilled to share our menu&rdquo;, &ldquo;Come experience the warmth of our patio&rdquo;. Welcome language has zero entities and zero numbers. It&rsquo;s the first thing the extractor skips. Replace it with a sentence that names a thing and quantifies it.",
+      "start": 323.97,
+      "end": 342.37
+    },
+    {
+      "id": 23,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(6)",
+      "text": "Move 4: Predicate-shaped sentences. No hedges.",
+      "start": 343.87,
+      "end": 346.12
+    },
+    {
+      "id": 24,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "The extractor parses every sentence into a subject-predicate-object shape. &ldquo;DoorDash is a delivery platform&rdquo; parses cleanly. &ldquo;Many people consider DoorDash to be a delivery platform of some kind&rdquo; does not. The first sentence has one fact. The second has hedge tokens that the model treats as noise, and the underlying fact disappears under the hedging.",
+      "start": 347.07,
+      "end": 365.43
+    },
+    {
+      "id": 25,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "The words to strike on a citation rewrite: approximately , usually , in some cases , most , often , typically , around , tend to , may , can . Each one drops the citation odds. They&rsquo;re defensive lawyer-words from a different writing context. In the AI Overview context, they&rsquo;re costing you the box.",
+      "start": 366.23,
+      "end": 381.44
+    },
+    {
+      "id": 26,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(7)",
+      "text": "The before/after.",
+      "start": 382.94,
+      "end": 383.76
+    },
+    {
+      "id": 27,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "Take a typical restaurant F A Q paragraph and walk it through moves 1, 4. This is the kind of paragraph I see on 90% of independent sites; it&rsquo;s also the kind of paragraph that never gets cited.",
+      "start": 384.71,
+      "end": 394.48
+    },
+    {
+      "id": 28,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(3)",
+      "text": "The same answer to the same question, before and after the citation rewrite. Before: 'We are usually open for dinner, though our hours may vary by season. It is a good idea to call ahead to confirm. We serve a variety of dishes, with most entrees in the moderate price range.' That paragraph has zero entities, zero numbers, three hedge words (usually, may, most), and the price range is undefined. Citation odds, effectively zero. After: 'Roma Cucina is open for dinner Tuesday through Sunday, 5 PM to 10 PM. Entrees are priced between 18 dollars and 32 dollars. Reservations are recommended on Fridays and Saturdays.' That paragraph names the restaurant, the days, the times, the price range, and the recommendation, in 30 words. Every entity matches the schema. Every claim is a predicate. Citation odds, high.",
+      "start": 395.58,
+      "end": 435.33
+    },
+    {
+      "id": 29,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "Read both out loud. The first one feels human. The second one feels almost mechanical. That&rsquo;s the trade. The AI Overview surface doesn&rsquo;t reward conversational writing, the surface above it does. The conversation is what your menu page, your About page, your social channels are for. The citation paragraph is its own register. It exists to be quoted.",
+      "start": 436.33,
+      "end": 454.09
+    },
+    {
+      "id": 30,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(8)",
+      "text": "Move 5: Stable URLs. Stable answers.",
+      "start": 455.59,
+      "end": 457.34
+    },
+    {
+      "id": 31,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "This is the move that protects what moves 1, 4 earn you. The crawler revisits cited URLs faster than uncited ones, the model has marked the page as a known good source. If the U R L still resolves and the paragraph still answers the question, you stay cited. If the U R L 301s to a new path, or the paragraph has been paraphrased into something with a slightly different fact-set, you drop out of the rotation. Sometimes the drop is permanent; sometimes you have to re-earn the citation from scratch over the next 60 days.",
+      "start": 458.29,
+      "end": 483.5
+    },
+    {
+      "id": 32,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(19)",
+      "text": "The operational rule: when you publish a citation-shaped paragraph and it gets cited, leave it alone. Don&rsquo;t add a comma. Don&rsquo;t change the hours from &ldquo;5 PM&rdquo; to &ldquo;5:00 PM&rdquo;. Don&rsquo;t move the page from /blog/ to /info/. If the underlying fact changes, you&rsquo;re really open until 11 PM now, not 10 PM, change the number and only the number. Touch one fact, keep the rest. The crawler will re-fingerprint the page, see the targeted change, and update its cited extract.",
+      "start": 484.3,
+      "end": 508.73
+    },
+    {
+      "id": 33,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(9)",
+      "text": "How to test if you&rsquo;re cited.",
+      "start": 510.23,
+      "end": 511.88
+    },
+    {
+      "id": 34,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(20)",
+      "text": "Open Google in a clean browser session. Type the question your guest is most likely asking, not the S E O keyword, the natural-language question. &ldquo;Is Roma Cucina open on Sunday&rdquo;. &ldquo;Where can I get omakase in Silver Spring&rdquo;. &ldquo;Does Maketto take walk-ins&rdquo;. If the AI Overview box appears at the top, scroll to its bottom. There are citation chips, small icons with source labels. Yours should be one of them.",
+      "start": 512.83,
+      "end": 535.2
+    },
+    {
+      "id": 35,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(21)",
+      "text": "If it&rsquo;s not, you have a citation problem, not a ranking problem. Your page may rank number 1 in the blue links below the box and still not be cited. The box is judged on a separate axis. Track it weekly for ten or twenty of your most-likely questions; the trend over a quarter tells you whether the citation rewrites are working.",
+      "start": 536,
+      "end": 552.24
+    },
+    {
+      "id": 36,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(4)",
+      "text": "A three-level decision tree for diagnosing whether you have a citation problem or a ranking problem. Level one: did the AI Overview box appear for your query? If no, the surface did not trigger; this is a ranking problem, fix the blue-link page. If yes, level two: is your domain one of the citation chips at the bottom of the box? If yes, you are cited; protect the U R L and the paragraph. If no, level three: does your page rank in the top ten blue links below the box? If yes, ranking is fine but the paragraph is not extractable; rewrite the first paragraph under each H2. If no, both axes are broken; start with the citation rewrite, the ranking lift follows.",
+      "start": 553.34,
+      "end": 585.58
+    },
+    {
+      "id": 37,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(10)",
+      "text": "The reframe.",
+      "start": 587.08,
+      "end": 587.66
+    },
+    {
+      "id": 38,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(22)",
+      "text": "You&rsquo;re not writing for the human reader the way you used to. The human reader sees the AI Overview&rsquo;s paragraph, decides whether the answer is enough, and either acts on it or clicks through to one of the cited sources. The paragraph the human reads first is not the paragraph you wrote, it&rsquo;s the paragraph the extractor wrote, pieced together from yours and one or two others. Your audience is now the extractor that decides which paragraph the human reader sees. Write the paragraph the extractor wants to lift.",
+      "start": 588.61,
+      "end": 614.41
+    },
+    {
+      "id": 39,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(23)",
+      "text": "This is uncomfortable. It feels like writing to the algorithm. It is. The trade is that your most important informational pages, hours, menu, reservations, dietary, get to be the named source on the answer your guest sees. That&rsquo;s worth the register shift.",
+      "start": 615.21,
+      "end": 627.82
+    },
+    {
+      "id": 40,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(11)",
+      "text": "Where to start.",
+      "start": 629.32,
+      "end": 630.05
+    },
+    {
+      "id": 41,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(24)",
+      "text": "Pick three pages. Your hours/contact page, your menu page, and your most-trafficked blog post. Walk each through moves 1, 4 on the first paragraph below every H2. Don&rsquo;t touch the rest of the page yet. Publish, wait two weeks, then run the citation-check loop above on the questions those pages should be answering.",
+      "start": 631,
+      "end": 646.51
+    },
+    {
+      "id": 42,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(5)",
+      "text": "Time to first citation across the three priority pages, measured from publish date. Hours and contact page: two weeks. Menu page: three weeks. Most-trafficked blog post: four to six weeks. The simpler the answer the page exists to give, the faster the citation arrives. Hours pages clear first because the question is one short fact; blog posts take longer because the extractor has to settle on which paragraph carries the answer.",
+      "start": 647.61,
+      "end": 668.36
+    },
+    {
+      "id": 43,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(25)",
+      "text": "If you&rsquo;re showing up in the box on at least half of them by week four, the moves are working, do the rest of the site. If you&rsquo;re not, the most common culprit is the schema. The prose is fine; the Json-LD doesn&rsquo;t match it. Run the six schema types Google uses through your site once, then re-check.",
+      "start": 669.36,
+      "end": 684.61
+    },
+    {
+      "id": 44,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(26)",
+      "text": "Don Goldstein is a restaurant operator and runs Muntin Digital . The paragraph-shape rules above are derived from public AI Overview output patterns and Google&rsquo;s own guidance on what makes a passage extractable. The 13.14% figure for March twenty twenty-five is from a March twenty twenty-five Search Engine Land analysis of US desktop searches.",
+      "start": 685.41,
+      "end": 702.69
+    },
+    {
+      "id": 45,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(27)",
+      "text": "Keep going",
+      "start": 703.49,
+      "end": 703.97
+    },
+    {
+      "id": 46,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Restaurant schema markup: the 6 types Google uses, the Json-LD that anchors your prose",
+      "start": 704.52,
+      "end": 708.73
+    },
+    {
+      "id": 47,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "How to read your restaurant&rsquo;s Google Search Console, the queries that should be in your citation tracker",
+      "start": 709.23,
+      "end": 714.63
+    },
+    {
+      "id": 48,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "The 1% margin audit, the underlying study most of this site&rsquo;s research notes are built on",
+      "start": 715.13,
+      "end": 719.78
+    },
+    {
+      "id": 49,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "499 dollars audit, the written diagnosis if you&rsquo;d rather see the rewrites on paper",
+      "start": 720.28,
+      "end": 724.59
+    },
+    {
+      "id": 50,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(28)",
+      "text": "Key takeaways",
+      "start": 725.14,
+      "end": 725.76
+    },
+    {
+      "id": 51,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "Strike these hedge tokens on the citation rewrite: approximately, usually, in some cases, most, often, typically, around, tend to, may, can.",
+      "start": 726.31,
+      "end": 733.18
+    },
+    {
+      "id": 52,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "The first paragraph below each H2 is the only one most AI extractors read, bury the answer in paragraph three and the page is invisible to the box.",
+      "start": 733.68,
+      "end": 741.09
+    },
+    {
+      "id": 53,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "The model cross-references your prose against your Json-LD; mismatches between schema and prose drop citation odds, matches boost them.",
+      "start": 741.59,
+      "end": 748.21
+    },
+    {
+      "id": 54,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
+      "text": "Once cited, don’t move the page or paraphrase the paragraph, the crawler revisits cited URLs faster and a changed answer drops you from rotation.",
+      "start": 748.71,
+      "end": 755.92
+    },
+    {
+      "id": 55,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(5)",
+      "text": "If your traffic is mostly informational queries (hours, menu, reservations, dietary), pick citation; intent-rich (best Italian near me), keep ranking.",
+      "start": 756.42,
+      "end": 763.78
+    }
+  ]
+}
