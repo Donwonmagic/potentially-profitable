@@ -46,7 +46,7 @@
       "url": "https://muntin.digital/blog/google-ai-mode-restaurant-local-results-2026/",
       "inLanguage": "en-US",
       "datePublished": "2026-05-23T09:30:00-04:00",
-      "dateModified": "2026-05-23",
+      "dateModified": "2026-06-10",
       "author": {
         "@id": "https://muntin.digital/#don-goldstein",
         "@type": "Person",
@@ -538,33 +538,40 @@ header.nav{min-height:64px}
       <p><strong>Connect a booking provider.</strong> If you take reservations, get them into OpenTable, Resy, or Tock so the agent can finish the job. The how-to is in <a href="/library/ai-mode-reservation-strategy/">booking inside the AI answer</a>.</p>
       <p><strong>Write the answer in text.</strong> Put the facts a diner asks for in plain text, backed by <a href="/tools/schema-check/">restaurant schema</a> so the model can lift them, then check the whole front door with <a href="/tools/storefront-health/">storefront health</a>.</p>
 
-      <figure class="viz-figure article-figure" data-audio-alt="The three operator moves that keep a restaurant inside the generated AI Mode answer. One: complete the Google Business Profile — hours by day, cuisine, attributes, the menu link, no blanks — so the model has the facts it needs to name you. Two: connect a booking provider — OpenTable, Resy, or Tock — so the agent has a table it can actually book. Three: write the answer in plain text on your own site, backed by restaurant schema, so the model can lift what you serve, your hours, and whether you fit the ask.">
-        <div class="viz-flow">
-          <ol class="viz-flow__list">
-            <li class="viz-flow__step" data-tone="teal">
-              <span class="viz-flow__num">1</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">Complete the <!-- LIBRARY:autolink:start --><a href="/glossary/gbp/" data-glossary-head="Google Business Profile" data-glossary-aka="GBP, formerly Google My Business" data-glossary-blurb="Your business's free listing on Google Maps and Google Search — the panel on the right of a search that shows your name, hours, photos, reviews, and a link to your menu or booking.">Google Business Profile</a><!-- LIBRARY:autolink:end --></p>
-                <p class="viz-flow__detail">Hours by day, cuisine, attributes, the menu link &mdash; the fields the model quotes. No blanks. This is the file the answer is built from.</p>
+      <figure class="viz-figure article-figure" data-audio-alt="A three-question diagnostic an operator can walk to find out whether their restaurant is ready for the generated AI Mode answer, and what to fix first. Question one: is your Google Business Profile complete — hours by day, cuisine, attributes, and the menu link, with no blanks? If no, the model has gaps in the file it builds the answer from; fill the blank fields first. If yes, go on. Question two: are your reservations connected to a booking provider the agent can use — OpenTable, Resy, or Tock? If no, a phone-only restaurant gets named but cannot be booked inside the answer, so the diner picks one the agent can complete; connect a provider. If yes, go on. Question three: does the answer to what a diner would ask live in plain text on your own site, backed by restaurant schema? If no, the facts sit in a photo or a PDF the model cannot lift, so it quotes a competitor; write the answer in text and mark it up. If yes to all three, the model can read you and the agent can book you — you are built to stay in the answer.">
+        <ol class="viz-tree" aria-label="Diagnostic: is your restaurant ready for the generated AI Mode answer?">
+          <li class="viz-tree__node">
+            <details open>
+              <summary><span class="viz-tree__num">1</span><span class="viz-tree__title">Is your Google Business Profile complete, with no blanks?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+              <div class="viz-tree__body">
+                <p>Hours by day, cuisine, attributes, the menu link &mdash; the fields the model quotes. The <!-- LIBRARY:autolink:start --><a href="/glossary/gbp/" data-glossary-head="Google Business Profile" data-glossary-aka="GBP, formerly Google My Business" data-glossary-blurb="Your business's free listing on Google Maps and Google Search — the panel on the right of a search that shows your name, hours, photos, reviews, and a link to your menu or booking.">profile</a><!-- LIBRARY:autolink:end --> is the file the answer is built from.</p>
+                <p><span class="viz-tree__verdict" data-tone="pass">Yes &mdash; continue</span> The model has the facts it needs to name you. Drop to question 2.</p>
+                <p><span class="viz-tree__verdict" data-tone="fail">No &mdash; fix this first</span> Blank fields read as silence. Fill them before anything else &mdash; the <a href="/tools/gbp-grader/">GBP grader</a> finds them.</p>
               </div>
-            </li>
-            <li class="viz-flow__step" data-tone="teal">
-              <span class="viz-flow__num">2</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">Connect a booking provider</p>
-                <p class="viz-flow__detail">OpenTable, Resy, or Tock &mdash; the three providers AI Mode can hand the reservation to. A phone-only restaurant is skipped by the agent.</p>
+            </details>
+          </li>
+          <li class="viz-tree__node">
+            <details>
+              <summary><span class="viz-tree__num">2</span><span class="viz-tree__title">Are your reservations on a provider the agent can book?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+              <div class="viz-tree__body">
+                <p>OpenTable, Resy, or Tock &mdash; the three providers AI Mode can hand the reservation to inside the answer.</p>
+                <p><span class="viz-tree__verdict" data-tone="pass">Yes &mdash; continue</span> The agent can finish the booking without sending the diner away. Drop to question 3.</p>
+                <p><span class="viz-tree__verdict" data-tone="fail">No &mdash; connect a provider</span> A phone-only restaurant gets named but not booked &mdash; the diner picks one the agent can complete.</p>
               </div>
-            </li>
-            <li class="viz-flow__step" data-tone="teal">
-              <span class="viz-flow__num">3</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">Write the answer in plain text plus schema</p>
-                <p class="viz-flow__detail">Put what you serve, your hours, and whether you fit the diner&rsquo;s ask in lift-able text on your own pages, backed by restaurant schema so the model can read it cleanly.</p>
+            </details>
+          </li>
+          <li class="viz-tree__node">
+            <details>
+              <summary><span class="viz-tree__num">3</span><span class="viz-tree__title">Does the answer live in plain text plus schema on your site?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+              <div class="viz-tree__body">
+                <p>What you serve, your hours, whether you fit the ask &mdash; in lift-able text on your own pages, backed by <a href="/tools/schema-check/">restaurant schema</a>.</p>
+                <p><span class="viz-tree__verdict" data-tone="pass">Yes &mdash; you stay in the answer</span> The model can read you and the agent can book you. Re-check after each profile or menu change.</p>
+                <p><span class="viz-tree__verdict" data-tone="fail">No &mdash; write the answer in text</span> Facts trapped in a photo or PDF cannot be lifted, so the model quotes a competitor who wrote theirs in plain text.</p>
               </div>
-            </li>
-          </ol>
-        </div>
-        <figcaption>Three moves, none of them new, all of them newly load-bearing. The restaurants that stay named are the ones whose profile, booking, and on-site text the model can read in one pass.</figcaption>
+            </details>
+          </li>
+        </ol>
+        <figcaption>Walk it top to bottom; stop at the first &ldquo;no.&rdquo; None of the three moves is new &mdash; all three are newly load-bearing. The restaurants that stay named are the ones the model can read and the agent can book in one pass.</figcaption>
       </figure>
 
       <p>The rebuild is not a reason to panic. It is a reason to be legible. The restaurants that lose are the ones the model can&rsquo;t read and can&rsquo;t book &mdash; and both of those are fixable this week, without a contract or an ad spend.</p>

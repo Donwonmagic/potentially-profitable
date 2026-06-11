@@ -49,7 +49,7 @@
       "url": "https://muntin.digital/library/restaurant-website-legal-essentials/",
       "inLanguage": "en-US",
       "datePublished": "2026-06-03",
-      "dateModified": "2026-06-03",
+      "dateModified": "2026-06-10",
       "author": {
         "@id": "https://muntin.digital/#muntin-desk",
         "@type": "Organization",
@@ -555,6 +555,54 @@ main{padding-top:64px}
     <div class="disclaimer">
       <p><strong>A reminder, said plainly.</strong> Everything below names what a restaurant website needs and why &mdash; it is not legal advice. The exact language, retention windows, and notification timelines for your state, your country, and your operating profile come from counsel licensed in your jurisdiction.</p>
     </div>
+
+    <figure class="viz-figure" data-audio-alt="The six pieces of the legal and trust layer, each tinted by what skipping it actually triggers, so the cost reads as a gradient rather than a flat checklist. The SSL certificate is marked as the most immediate failure: a missing certificate puts a Not-secure warning in every modern browser, and the guest reads that warning before the menu, so the booking that would have happened does not. The footer year is marked as a quiet downgrade: a stale copyright reads to an out-of-town diner as a restaurant that may not have survived, the same way it reads on a Yelp listing. The cookie banner is marked as a compliance failure: a site serving EU or California guests with analytics cookies running underneath and no banner is shipping non-compliant from day one. The privacy policy is marked as a trust-and-exposure failure: missing it loses the trust signal a 2026 guest expects and, in some jurisdictions, opens the operator to regulatory action. The Terms of Service is marked as a liability failure: without it, the operator's liability sits open in any dispute the site itself touched, from a gift card that did not work to a misquoted reservation. The incident-response plan is marked as the worst-case failure: written before the breach it is a ten-minute call, and missing on the day of a breach it is a frantic search while the notification clock runs. Six pieces, three failure classes — bounce, downgrade, and liability — and the order on the page runs from the failure a guest punishes in seconds to the one that surfaces only under pressure.">
+      <ol class="viz-flow reveal" aria-label="The six trust-layer pieces, tinted by the failure each one triggers when skipped">
+        <li class="viz-flow__step" data-state="bad">
+          <span class="viz-flow__num">1</span>
+          <div class="viz-flow__body">
+            <p class="viz-flow__title">SSL certificate &mdash; <em>instant bounce</em></p>
+            <p class="viz-flow__meta">Skip it and every modern browser shows a <strong>&ldquo;Not secure&rdquo;</strong> warning the guest reads before the menu. The booking that would have happened does not. Free to install.</p>
+          </div>
+        </li>
+        <li class="viz-flow__step" data-state="warn">
+          <span class="viz-flow__num">2</span>
+          <div class="viz-flow__body">
+            <p class="viz-flow__title">Footer year &mdash; <em>quiet downgrade</em></p>
+            <p class="viz-flow__meta">A stale copyright reads to an out-of-town diner as <strong>a restaurant that may not have survived</strong> &mdash; the same freshness signal a stale year sends on a Yelp listing.</p>
+          </div>
+        </li>
+        <li class="viz-flow__step" data-state="warn">
+          <span class="viz-flow__num">3</span>
+          <div class="viz-flow__body">
+            <p class="viz-flow__title">Cookie banner &mdash; <em>compliance gap</em></p>
+            <p class="viz-flow__meta">Serving EU or California guests with analytics cookies running and no banner ships <strong>non-compliant from day one</strong>, where the law and the toolset require one.</p>
+          </div>
+        </li>
+        <li class="viz-flow__step" data-state="warn">
+          <span class="viz-flow__num">4</span>
+          <div class="viz-flow__body">
+            <p class="viz-flow__title">Privacy policy &mdash; <em>trust + exposure</em></p>
+            <p class="viz-flow__meta">Missing it loses the trust signal a 2026 guest expects and, in some jurisdictions, <strong>exposes the operator to regulatory action</strong>. One page of plain English for a small operator.</p>
+          </div>
+        </li>
+        <li class="viz-flow__step" data-state="bad">
+          <span class="viz-flow__num">5</span>
+          <div class="viz-flow__body">
+            <p class="viz-flow__title">Terms of Service &mdash; <em>open liability</em></p>
+            <p class="viz-flow__meta">Without it the operator&rsquo;s liability sits open in <strong>any dispute the site touched</strong> &mdash; a gift card that did not work, a misquoted reservation, a promotion that ran out at the door.</p>
+          </div>
+        </li>
+        <li class="viz-flow__step" data-state="bad">
+          <span class="viz-flow__num">6</span>
+          <div class="viz-flow__body">
+            <p class="viz-flow__title">Incident-response plan &mdash; <em>worst case</em></p>
+            <p class="viz-flow__meta">Written before the breach, it is a ten-minute call. Missing on the day, it is a <strong>frantic search while the notification clock runs</strong>. The decision walk below is the plan in one figure.</p>
+          </div>
+        </li>
+      </ol>
+      <figcaption>Six pieces, three failure classes &mdash; bounce, downgrade, liability. The order runs from the failure a guest punishes in seconds to the one that only surfaces under pressure, which is why none of them is optional.</figcaption>
+    </figure>
 
     <h2 id="terms-of-service">Terms of Service: what an independent restaurant actually needs in writing</h2>
 

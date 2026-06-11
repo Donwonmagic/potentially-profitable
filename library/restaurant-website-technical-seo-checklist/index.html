@@ -49,7 +49,7 @@
       "url": "https://muntin.digital/library/restaurant-website-technical-seo-checklist/",
       "inLanguage": "en-US",
       "datePublished": "2026-06-03",
-      "dateModified": "2026-06-03",
+      "dateModified": "2026-06-10",
       "author": {
         "@id": "https://muntin.digital/#muntin-desk",
         "@type": "Organization",
@@ -624,6 +624,90 @@ main{padding-top:64px}
         <a href="https://pagespeed.web.dev/" target="_blank" rel="noopener">pagespeed.web.dev</a>
       </div>
     </details>
+
+    <figure class="viz-figure" data-audio-alt="Three Lighthouse-style needle gauges, one per Core Web Vital, showing an illustrative single mobile audit of a typical restaurant homepage. The gauges are colored to Google's three bands: poor in rust, needs-improvement in gold, good in green. The first gauge is Largest Contentful Paint, reading three point one seconds against a good threshold of two point five seconds, so the needle sits in the gold needs-improvement band — usually an oversized hero image. The second gauge is Cumulative Layout Shift, reading zero point zero four against a good threshold of zero point one, so the needle sits in the green good band — the page holds still as it loads. The third gauge is Interaction to Next Paint, reading two hundred forty milliseconds against a good threshold of two hundred milliseconds, so the needle sits in the gold needs-improvement band — usually a third-party script blocking the first tap. The teaching point: a real audit is almost never all-green or all-red, it is mixed, which is why you fix the one metric in the worst band first rather than rebuilding the whole site. These are illustrative example readings, not a measurement of any specific restaurant; run your own URL in PageSpeed Insights to read your own three needles.">
+      <div class="viz-gauges">
+        <div class="viz-gauge" data-band="warn" style="--score:62;">
+          <svg class="viz-gauge__svg" viewBox="0 0 220 130" width="220" height="130" role="img" aria-labelledby="gauge-lcp-label" focusable="false">
+            <title id="gauge-lcp-label">Largest Contentful Paint: 3.1 seconds, Needs-improvement band</title>
+            <defs>
+              <linearGradient id="viz-gauge-band-lcp" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0" stop-color="#B8541A"/>
+                <stop offset="0.49" stop-color="#B8541A"/>
+                <stop offset="0.5" stop-color="#C5A059"/>
+                <stop offset="0.89" stop-color="#C5A059"/>
+                <stop offset="0.9" stop-color="#1F9D55"/>
+                <stop offset="1" stop-color="#1F9D55"/>
+              </linearGradient>
+            </defs>
+            <path class="viz-gauge__band" d="M 20 110 A 90 90 0 0 1 200 110" fill="none" stroke="url(#viz-gauge-band-lcp)" stroke-width="22" stroke-linecap="butt"/>
+            <path class="viz-gauge__track" d="M 20 110 A 90 90 0 0 1 200 110" fill="none" stroke-width="2"/>
+            <line class="viz-gauge__tick" x1="63.7" y1="38.6" x2="68.5" y2="44.6"/>
+            <line class="viz-gauge__tick" x1="156.3" y1="38.6" x2="151.5" y2="44.6"/>
+            <g class="viz-gauge__needle">
+              <line x1="110" y1="110" x2="110" y2="38" stroke-width="3" stroke-linecap="round"/>
+              <circle cx="110" cy="38" r="4"/>
+            </g>
+            <circle class="viz-gauge__pivot" cx="110" cy="110" r="7"/>
+          </svg>
+          <p class="viz-gauge__num">3.1s</p>
+          <p class="viz-gauge__label"><strong>LCP</strong><span>good is under 2.5s</span></p>
+        </div>
+        <div class="viz-gauge" data-band="good" style="--score:92;">
+          <svg class="viz-gauge__svg" viewBox="0 0 220 130" width="220" height="130" role="img" aria-labelledby="gauge-cls-label" focusable="false">
+            <title id="gauge-cls-label">Cumulative Layout Shift: 0.04, Good band</title>
+            <defs>
+              <linearGradient id="viz-gauge-band-cls" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0" stop-color="#B8541A"/>
+                <stop offset="0.49" stop-color="#B8541A"/>
+                <stop offset="0.5" stop-color="#C5A059"/>
+                <stop offset="0.89" stop-color="#C5A059"/>
+                <stop offset="0.9" stop-color="#1F9D55"/>
+                <stop offset="1" stop-color="#1F9D55"/>
+              </linearGradient>
+            </defs>
+            <path class="viz-gauge__band" d="M 20 110 A 90 90 0 0 1 200 110" fill="none" stroke="url(#viz-gauge-band-cls)" stroke-width="22" stroke-linecap="butt"/>
+            <path class="viz-gauge__track" d="M 20 110 A 90 90 0 0 1 200 110" fill="none" stroke-width="2"/>
+            <line class="viz-gauge__tick" x1="63.7" y1="38.6" x2="68.5" y2="44.6"/>
+            <line class="viz-gauge__tick" x1="156.3" y1="38.6" x2="151.5" y2="44.6"/>
+            <g class="viz-gauge__needle" style="transition-delay:120ms;">
+              <line x1="110" y1="110" x2="110" y2="38" stroke-width="3" stroke-linecap="round"/>
+              <circle cx="110" cy="38" r="4"/>
+            </g>
+            <circle class="viz-gauge__pivot" cx="110" cy="110" r="7"/>
+          </svg>
+          <p class="viz-gauge__num">0.04</p>
+          <p class="viz-gauge__label"><strong>CLS</strong><span>good is under 0.1</span></p>
+        </div>
+        <div class="viz-gauge" data-band="warn" style="--score:58;">
+          <svg class="viz-gauge__svg" viewBox="0 0 220 130" width="220" height="130" role="img" aria-labelledby="gauge-inp-label" focusable="false">
+            <title id="gauge-inp-label">Interaction to Next Paint: 240 milliseconds, Needs-improvement band</title>
+            <defs>
+              <linearGradient id="viz-gauge-band-inp" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0" stop-color="#B8541A"/>
+                <stop offset="0.49" stop-color="#B8541A"/>
+                <stop offset="0.5" stop-color="#C5A059"/>
+                <stop offset="0.89" stop-color="#C5A059"/>
+                <stop offset="0.9" stop-color="#1F9D55"/>
+                <stop offset="1" stop-color="#1F9D55"/>
+              </linearGradient>
+            </defs>
+            <path class="viz-gauge__band" d="M 20 110 A 90 90 0 0 1 200 110" fill="none" stroke="url(#viz-gauge-band-inp)" stroke-width="22" stroke-linecap="butt"/>
+            <path class="viz-gauge__track" d="M 20 110 A 90 90 0 0 1 200 110" fill="none" stroke-width="2"/>
+            <line class="viz-gauge__tick" x1="63.7" y1="38.6" x2="68.5" y2="44.6"/>
+            <line class="viz-gauge__tick" x1="156.3" y1="38.6" x2="151.5" y2="44.6"/>
+            <g class="viz-gauge__needle" style="transition-delay:240ms;">
+              <line x1="110" y1="110" x2="110" y2="38" stroke-width="3" stroke-linecap="round"/>
+              <circle cx="110" cy="38" r="4"/>
+            </g>
+            <circle class="viz-gauge__pivot" cx="110" cy="110" r="7"/>
+          </svg>
+          <p class="viz-gauge__num">240ms</p>
+          <p class="viz-gauge__label"><strong>INP</strong><span>good is under 200ms</span></p>
+        </div>
+      </div>
+      <figcaption>Illustrative single mobile audit &mdash; one green, two in the gold band. A real PageSpeed Insights run is almost never all-green or all-red, which is why you fix the metric in the worst band first instead of rebuilding. Bands: <span style="color:#B8541A">Poor</span> &middot; <span style="color:#C5A059">Needs work</span> &middot; <span style="color:#1F9D55">Good</span>.</figcaption>
+    </figure>
 
     <p>The way to run the audit is at <!-- LIBRARY:autolink:start --><a href="/glossary/pagespeed-insights/" data-glossary-head="PageSpeed Insights" data-glossary-aka="PSI, pagespeed.web.dev" data-glossary-blurb="Google's free web tool at pagespeed.web.dev that runs a Lighthouse audit on any URL and shows you your Core Web Vitals plus a prioritized list of fixes. Built on top of the Lighthouse engine.">PageSpeed Insights</a><!-- LIBRARY:autolink:end -->: paste the URL, run the mobile audit (not the desktop one &mdash; mobile is what Google ranks against), and read the three metrics at the top of the page. The tool also lists the specific fixes ranked by impact, which is the part most operators skip. The top three fixes on a typical restaurant audit are the same week after week: the hero image is too large and the wrong format, a layout shift comes from the reservation widget or the social-proof carousel loading after the page renders, and a third-party script &mdash; usually the analytics or a chat widget &mdash; is blocking interaction. Each fix is a single change, not a rebuild. For the verification dashboard that confirms the audit moved the metrics in the field, see <a href="/library/how-to-read-restaurant-google-search-console/">how to read restaurant Google Search Console</a>.</p>
 

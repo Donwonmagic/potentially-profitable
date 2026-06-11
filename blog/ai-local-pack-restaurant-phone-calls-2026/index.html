@@ -46,7 +46,7 @@
       "url": "https://muntin.digital/blog/ai-local-pack-restaurant-phone-calls-2026/",
       "inLanguage": "en-US",
       "datePublished": "2026-05-23T10:30:00-04:00",
-      "dateModified": "2026-05-23",
+      "dateModified": "2026-06-10",
       "author": {
         "@id": "https://muntin.digital/#don-goldstein",
         "@type": "Person",
@@ -478,21 +478,27 @@ header.nav{min-height:64px}
 
       <p>The numbers are real. A 2026 local-search analysis found restaurant Google Maps views down 40.1% and food orders from those listings down 25.7% over two years, even as rankings held. A separate 2026 survey found AI local packs &mdash; the AI-written block that sometimes replaces the classic three-pack &mdash; appearing on roughly 7% of tracked local searches, and dropping the <!-- LIBRARY:autolink:start --><a href="/glossary/click-to-call/" data-glossary-head="Click-to-call" data-glossary-aka="tap-to-call, tel: link" data-glossary-blurb="A phone number on your site that, when tapped on a phone, opens the dialer with your number pre-filled — instead of being plain text the visitor has to copy.">click-to-call</a><!-- LIBRARY:autolink:end --> button when they do.</p>
 
-      <figure class="viz-figure article-figure" data-audio-alt="What fell on restaurant Maps listings over two years, per a 2026 local-search analysis. Google Maps views for restaurants fell about forty percent. Food orders from those listings fell about twenty-six percent. Rankings held over the same period — the decline is in engagement, not position.">
+      <figure class="viz-figure article-figure" data-audio-alt="What moved on restaurant Maps listings over two years, per a 2026 local-search analysis, with each bar measured as a drop from the flat baseline where rankings sat. Average ranking position held essentially flat — no measurable change. Google Maps views for restaurants fell about forty percent. Food orders from those listings fell about twenty-six percent. The thin reference line on every track marks the flat rankings baseline, so the eye reads the gap directly: position did not move while engagement collapsed. The decline is in what diners do with the listing, not where it sits.">
         <div class="viz-bars">
-          <p class="viz-bars__title">What fell on restaurant Maps listings, 2-year change (bars scaled to a &minus;50% max)</p>
+          <p class="viz-bars__title">Two years of restaurant Maps listings: ranking held, engagement fell (bars scaled to a &minus;50% max; the tick marks the flat-ranking baseline)</p>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">Average ranking position</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:0.02"></span><span class="viz-bars__mark" data-tone="teal" style="--x:0.02" aria-hidden="true"></span></div>
+            <p class="viz-bars__num">~ flat</p>
+          </div>
           <div class="viz-bars__row">
             <p class="viz-bars__label">Maps views</p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.80"></span></div>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.80"></span><span class="viz-bars__mark" data-tone="teal" style="--x:0.02" aria-hidden="true"></span></div>
             <p class="viz-bars__num">&minus;40.1%</p>
           </div>
           <div class="viz-bars__row">
             <p class="viz-bars__label">Food orders</p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.51"></span></div>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.51"></span><span class="viz-bars__mark" data-tone="teal" style="--x:0.02" aria-hidden="true"></span></div>
             <p class="viz-bars__num">&minus;25.7%</p>
           </div>
+          <p class="viz-bars__note">The teal tick is where the ranking sat the whole time. The two rust bars are the gap between <strong>holding your position</strong> and <strong>keeping the engagement that used to come with it</strong>.</p>
         </div>
-        <figcaption>Restaurant Maps views and food orders over two years, per a 2026 local-search analysis &mdash; while rankings held. Bars scaled to a 50% range.</figcaption>
+        <figcaption>Position barely moved; Maps views and food orders fell hard over the same two years, per a 2026 local-search analysis. You can hold rank #1 and still lose the call.</figcaption>
       </figure>
       <details class="cite">
         <summary>Source: Rio SEO 2026 local-search report; Sterling Sky 2026</summary>
@@ -566,33 +572,37 @@ header.nav{min-height:64px}
       <h2 id="three-paths-that-replace-the-button">Three paths that replace the button</h2>
       <p>If the call is being intercepted, stop depending on it. Move the conversion onto paths the AI answer can&rsquo;t quietly remove.</p>
 
-      <figure class="viz-figure article-figure" data-audio-alt="Three conversion paths that replace the disappearing call button. One: a reservation or order link you own, so the conversion becomes a booking or an order rather than a phone call the AI can resolve. Two: an answer good enough to be chosen — a complete profile and fresh reviews, so when the AI summarizes you, the summary sells. Three: a captured customer — an email or loyalty sign-up, so the next visit doesn't route through Google at all.">
-        <div class="viz-flow">
-          <ol class="viz-flow__list">
-            <li class="viz-flow__step" data-tone="teal">
-              <span class="viz-flow__num">1</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">A booking or order link you own</p>
-                <p class="viz-flow__detail">The conversion becomes a reservation or an order &mdash; not a phone call the AI can answer for you.</p>
+      <figure class="viz-figure article-figure" data-audio-alt="A decision tree for picking which replacement path to build first, branching on what your restaurant already has. First question: do you take reservations or online orders? If yes, the fastest win is making your own booking or order link the primary call-to-action, so the conversion becomes a booking the AI cannot answer for you; if you are walk-in only, skip it. Second question: is your Google Business Profile complete with fresh reviews? If no, fix that first, because the AI summary is built from your profile and reviews, and a thin profile means the summary that replaces your listing does not sell. Third question: do you capture any diner contact today, an email or a loyalty sign-up? If no, this is the highest-leverage build, because a captured customer routes the next visit around Google and its AI entirely. The verdict pills mark which branch is the priority build for your situation.">
+        <ol class="viz-tree">
+          <li class="viz-tree__node">
+            <details>
+              <summary><span class="viz-tree__num">1</span><span class="viz-tree__title">Do you take reservations or online orders?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+              <div class="viz-tree__body">
+                <p><strong>Yes &rarr;</strong> <span class="viz-tree__verdict" data-tone="pass">Build first</span> Make your own booking or order link the primary button everywhere a diner lands. The conversion becomes a reservation or an order &mdash; not a phone call the AI can resolve in the answer.</p>
+                <p><strong>Walk-in only &rarr;</strong> <span class="viz-tree__verdict" data-tone="warn">Skip for now</span> There&rsquo;s no booking to move the tap onto. Jump to capture (node 3) instead.</p>
               </div>
-            </li>
-            <li class="viz-flow__step" data-tone="teal">
-              <span class="viz-flow__num">2</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">An answer good enough to be chosen</p>
-                <p class="viz-flow__detail">If the AI is going to summarize you, make the summary sell: a complete profile and fresh reviews.</p>
+            </details>
+          </li>
+          <li class="viz-tree__node">
+            <details>
+              <summary><span class="viz-tree__num">2</span><span class="viz-tree__title">Is your profile complete, with fresh reviews?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+              <div class="viz-tree__body">
+                <p><strong>No &rarr;</strong> <span class="viz-tree__verdict" data-tone="fail">Fix this first</span> The AI summary is assembled from your profile and your reviews. A thin profile means the answer that replaces your listing has nothing good to say &mdash; you lose before the tap is even in question.</p>
+                <p><strong>Yes &rarr;</strong> <span class="viz-tree__verdict" data-tone="pass">Maintain</span> Keep it fed. When the AI summarizes you, make the summary sell.</p>
               </div>
-            </li>
-            <li class="viz-flow__step" data-tone="rust">
-              <span class="viz-flow__num">3</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">A captured customer</p>
-                <p class="viz-flow__detail">An email or loyalty sign-up, so the next visit doesn&rsquo;t route through Google &mdash; or its AI &mdash; at all.</p>
+            </details>
+          </li>
+          <li class="viz-tree__node">
+            <details>
+              <summary><span class="viz-tree__num">3</span><span class="viz-tree__title">Do you capture any diner contact today?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+              <div class="viz-tree__body">
+                <p><strong>No &rarr;</strong> <span class="viz-tree__verdict" data-tone="fail">Highest leverage</span> An email or loyalty sign-up means the next visit doesn&rsquo;t route through Google &mdash; or its AI &mdash; at all. This is the one path the answer engine can never remove from you.</p>
+                <p><strong>Yes &rarr;</strong> <span class="viz-tree__verdict" data-tone="pass">Compound it</span> Use the list. Every captured diner is a conversion that no longer depends on a button Google controls.</p>
               </div>
-            </li>
-          </ol>
-        </div>
-        <figcaption>When the button disappears, the conversion has to move somewhere the answer can&rsquo;t intercept.</figcaption>
+            </details>
+          </li>
+        </ol>
+        <figcaption>Which replacement path to build first depends on what you already have. Walk the three questions; the first <span style="color:var(--rust)">Fix this first</span> or <span style="color:var(--rust)">Highest leverage</span> verdict is where to start.</figcaption>
       </figure>
 
       <p>Start by seeing your own <!-- LIBRARY:autolink:start --><a href="/glossary/funnel/" data-glossary-head="Funnel" data-glossary-aka="the path from visitor to customer" data-glossary-blurb="The sequence of steps a visitor goes through before becoming a customer — landing page → menu page → reserve button → reservation form → confirmation.">funnel</a><!-- LIBRARY:autolink:end -->: the <a href="/tools/storefront-health/">storefront health</a> check shows whether your booking and order paths actually work on a phone, and the <a href="/tools/gbp-grader/">GBP grader</a> shows whether the profile is complete enough to be chosen. The reservation side is covered in <a href="/library/reservation-conversion-guide/">why your restaurant loses reservations every night</a>. The phone may stay quiet. The covers don&rsquo;t have to.</p>

@@ -62,7 +62,7 @@
       },
       "url": "https://muntin.digital/library/restaurant-app-decision/",
       "datePublished": "2026-05-07",
-      "dateModified": "2026-05-28",
+      "dateModified": "2026-06-10",
       "inLanguage": "en-US",
       "wordCount": 2100,
       "author": {
@@ -789,11 +789,12 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           </div>
           <div class="viz-bars__row">
             <p class="viz-bars__label">Native app &mdash; still active at 6 mo</p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:0.006"></span></div>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.006"></span></div>
             <p class="viz-bars__num">&lt;0.6%</p>
           </div>
+          <p class="viz-bars__note">The app bars are slivers on purpose: install peaks under <strong>2%</strong> of guests, then two-thirds of those installers drift away by month six, leaving under <strong>0.6%</strong> of your base still using it. A website starts where the app finishes &mdash; full reach, zero install.</p>
         </div>
-        <figcaption>An independent-restaurant app reaches under 2% of guests at the install stage and under 0.6% at the six-month mark. Per industry benchmarks from Toast, Bluedot, and Restaurant Dive.</figcaption>
+        <figcaption>The website starts at 100% reach; the app never clears 2% and bleeds out to under 0.6% by six months. Per industry benchmarks from Toast, Bluedot, and Restaurant Dive.</figcaption>
       </figure>
 
       <p>This isn&rsquo;t because your restaurant isn&rsquo;t beloved. It&rsquo;s because your guests already have too many apps on their phone, and yours is the 187th notification competing for their attention. They love you. They also love the dry cleaner across the street and the gym around the corner, and none of those places have convinced them to install an app either. The friction-to-benefit ratio just isn&rsquo;t there.</p>
@@ -818,40 +819,50 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <p>If your concept is "sit-down independent restaurant where people walk in, eat, and leave," that isn&rsquo;t app-shaped. The app is marketing overhead. If your concept is "subscription tasting club that ships a box every Tuesday," the app might be the entire distribution mechanism. Different animals.</p>
 
-      <figure class="viz-figure article-figure" data-audio-alt="A four-question decision tree for whether your restaurant should build a native app. Question one: do you have at least five thousand app-relevant transactions per week — pre-orders, mobile orders, and reservations combined. If no, stop and don't build an app. If yes, go to question two. Question two: is the app the product itself — a subscription dining club, a meal-prep service, a ghost-kitchen aggregator. If yes, build the app, because the app is the product. If no, go to question three. Question three: are you already running five or more locations with mature loyalty velocity. If no, the math doesn't pencil out and you should not build. If yes, go to question four. Question four: has an honest profit-margin model shown payback inside eighteen months — not download counts, not engagement, actual recovered dollars. If yes, build. If no, don't. Steps one through three are in teal as gating questions; step four, the actual go-no-go gate, is in rust.">
-        <div class="viz-flow">
-          <ol class="viz-flow__list">
-            <li class="viz-flow__step" data-tone="teal">
-              <span class="viz-flow__num">1</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">5,000+ app-relevant transactions per week?</p>
-                <p class="viz-flow__detail">Pre-orders, mobile orders, and reservations combined. Below that volume, the build cost can&rsquo;t amortize. <strong>No &rarr; stop here.</strong> Yes &rarr; next question.</p>
+      <figure class="viz-figure article-figure" data-audio-alt="A four-gate decision tree for whether your restaurant should build a native app, where any single No ends the process. Gate one: do you have at least five thousand app-relevant transactions a week, counting pre-orders, mobile orders, and reservations together? No means stop and build nothing. Yes moves you to gate two. Gate two: is the app the product itself, like a subscription dining club, a meal-prep service, or a ghost-kitchen brand? Yes means build, because the app is the business, not a marketing layer. No moves you to gate three. Gate three: are you already running five or more locations with mature loyalty velocity? Two locations is not enough and the order-frequency math still fails, so No means do not build. Yes moves you to the final gate. Gate four: has an honest profit-margin model shown payback inside eighteen months in real recovered dollars, not download counts or engagement? Yes is the only path that justifies building. No means walk away. The verdict pills read build in green, stop in rust, and continue in amber so the reader can see at a glance that almost every independent restaurant fails at gate one.">
+        <ol class="viz-tree" aria-label="Four-gate decision tree for whether a restaurant should build a native app">
+          <li class="viz-tree__node">
+            <details open>
+              <summary><span class="viz-tree__num">1</span><span class="viz-tree__title">5,000+ app-relevant transactions per week?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+              <div class="viz-tree__body">
+                <p>Pre-orders, mobile orders, and reservations combined. Below that volume, the build cost never amortizes across enough transactions to matter.</p>
+                <p><span class="viz-tree__verdict" data-tone="fail">Stop</span> No &mdash; the volume isn&rsquo;t there. This is where almost every independent restaurant ends the process.</p>
+                <p><span class="viz-tree__verdict" data-tone="warn">Go to gate 2</span> Yes &mdash; you clear the volume floor. Keep going.</p>
               </div>
-            </li>
-            <li class="viz-flow__step" data-tone="teal">
-              <span class="viz-flow__num">2</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">Is the app the product itself?</p>
-                <p class="viz-flow__detail">Subscription dining club, meal-prep, ghost-kitchen <!-- LIBRARY:autolink:start --><a href="/glossary/aggregator/" data-glossary-head="Aggregator" data-glossary-aka="third-party delivery platform" data-glossary-blurb="A third-party marketplace that takes orders on your behalf (DoorDash, Uber Eats, Grubhub) and keeps a commission per transaction.">aggregator</a><!-- LIBRARY:autolink:end -->. <strong>Yes &rarr; build &mdash; the app IS the business.</strong> No &rarr; next question.</p>
+            </details>
+          </li>
+          <li class="viz-tree__node">
+            <details>
+              <summary><span class="viz-tree__num">2</span><span class="viz-tree__title">Is the app the product itself?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+              <div class="viz-tree__body">
+                <p>Subscription dining club, meal-prep, ghost-kitchen <!-- LIBRARY:autolink:start --><a href="/glossary/aggregator/" data-glossary-head="Aggregator" data-glossary-aka="third-party delivery platform" data-glossary-blurb="A third-party marketplace that takes orders on your behalf (DoorDash, Uber Eats, Grubhub) and keeps a commission per transaction.">aggregator</a><!-- LIBRARY:autolink:end --> &mdash; concepts where the app is the distribution mechanism, not a layer bolted onto a dining room.</p>
+                <p><span class="viz-tree__verdict" data-tone="pass">Build</span> Yes &mdash; the app is the business. This is one of the two situations where the spend is defensible.</p>
+                <p><span class="viz-tree__verdict" data-tone="warn">Go to gate 3</span> No &mdash; the app would be marketing overhead on a normal restaurant. Keep going.</p>
               </div>
-            </li>
-            <li class="viz-flow__step" data-tone="teal">
-              <span class="viz-flow__num">3</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">5+ locations with mature loyalty velocity?</p>
-                <p class="viz-flow__detail">Two locations isn&rsquo;t enough; the order-frequency math still doesn&rsquo;t work. <strong>No &rarr; don&rsquo;t build.</strong> Yes &rarr; final gate.</p>
+            </details>
+          </li>
+          <li class="viz-tree__node">
+            <details>
+              <summary><span class="viz-tree__num">3</span><span class="viz-tree__title">5+ locations with mature loyalty velocity?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+              <div class="viz-tree__body">
+                <p>Two locations isn&rsquo;t enough; the order-frequency math that pays for Starbucks- and Chipotle-scale apps still doesn&rsquo;t pencil out at a handful of sites.</p>
+                <p><span class="viz-tree__verdict" data-tone="fail">Stop</span> No &mdash; below five locations the loyalty math doesn&rsquo;t recover the build.</p>
+                <p><span class="viz-tree__verdict" data-tone="warn">Go to gate 4</span> Yes &mdash; you have the scale. One gate left, and it&rsquo;s the real one.</p>
               </div>
-            </li>
-            <li class="viz-flow__step" data-tone="rust">
-              <span class="viz-flow__num">4</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">Honest payback model under 18 months?</p>
-                <p class="viz-flow__detail">Recovered profit <!-- LIBRARY:autolink:start --><a href="/glossary/margin/" data-glossary-head="Margin" data-glossary-aka="sales minus costs; several kinds" data-glossary-blurb="Sales minus costs.">margin</a><!-- LIBRARY:autolink:end --> in real dollars &mdash; not downloads, not &ldquo;engagement.&rdquo; If your agency can&rsquo;t show this on a comparable client, the answer is no.</p>
+            </details>
+          </li>
+          <li class="viz-tree__node">
+            <details>
+              <summary><span class="viz-tree__num">4</span><span class="viz-tree__title">Honest payback model under 18 months?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+              <div class="viz-tree__body">
+                <p>Recovered profit <!-- LIBRARY:autolink:start --><a href="/glossary/margin/" data-glossary-head="Margin" data-glossary-aka="sales minus costs; several kinds" data-glossary-blurb="Sales minus costs.">margin</a><!-- LIBRARY:autolink:end --> in real dollars &mdash; not downloads, not &ldquo;engagement.&rdquo; If your agency can&rsquo;t show this on a comparable client, the model doesn&rsquo;t exist.</p>
+                <p><span class="viz-tree__verdict" data-tone="pass">Build</span> Yes &mdash; a real eighteen-month payback in recovered dollars is the only number that earns the spend.</p>
+                <p><span class="viz-tree__verdict" data-tone="fail">Stop</span> No &mdash; an app with no payback model is a retainer for the agency, not a profit vehicle for you.</p>
               </div>
-            </li>
-          </ol>
-        </div>
-        <figcaption>Four gates. Almost every independent restaurant stops at the first one. The two that survive all four are the only places the app math works.</figcaption>
+            </details>
+          </li>
+        </ol>
+        <figcaption>Four gates, any one No ends it &mdash; the volume floor at gate one is where almost every independent restaurant correctly stops.</figcaption>
       </figure>
 
       <p class="pull-quote">The reasons you want an app are real. The app is just a much more expensive and much less-used way to get them than the tools that already live on your guest&rsquo;s phone.</p>

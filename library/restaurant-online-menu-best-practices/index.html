@@ -49,7 +49,7 @@
       "url": "https://muntin.digital/library/restaurant-online-menu-best-practices/",
       "inLanguage": "en-US",
       "datePublished": "2026-05-31",
-      "dateModified": "2026-05-31",
+      "dateModified": "2026-06-10",
       "author": {
         "@id": "https://muntin.digital/#muntin-desk",
         "@type": "Organization",
@@ -674,6 +674,54 @@ main{padding-top:64px}
     <div class="callout">
       <p><strong>The order is the discipline.</strong> If the kitchen edits the source first, the HTML renders from it, the schema reads the HTML, and the photos sit beside the items, the page stays clean for years. Skip any one of those and the menu page drifts &mdash; usually quietly &mdash; into the version that costs you bookings.</p>
     </div>
+
+    <figure class="viz-figure article-figure" data-audio-alt="The six moves that build a menu page, drawn as a sequence where each step is a precondition for the next. Step one, pick a content source: choose one structured place where the menu lives — the POS catalog, a content store, or in the smallest case a Google Sheet the kitchen edits — and render the page from it, never from a re-typed copy. Step two, organize by service: break the page into service-shaped sections, brunch, lunch, dinner, and bar, each its own heading a diner can jump to. Step three, write extractable descriptions: one sentence per dish naming the main ingredient, the preparation, and one detail a diner would ask the server. Step four, set price display: every price in plain digits next to the dish, no currency-stripping and no hide-on-mobile. Step five, add dietary markers: V, V G, G F, D F chips inline next to each dish plus a one-line allergen note at the top of each section. Step six, add MenuItem schema: a JSON-LD Menu block reading the HTML you just built, with hasMenuSection wrapping hasMenuItem entries that each carry name, description, and an Offer with price and priceCurrency. The arrow runs one way: the source feeds the HTML, the HTML feeds the schema, and skipping a step breaks every step after it.">
+      <ol class="viz-flow reveal" aria-label="Six ordered moves that build a converting menu page">
+        <li class="viz-flow__step" data-state="done">
+          <span class="viz-flow__num">1</span>
+          <div class="viz-flow__body">
+            <p class="viz-flow__title">Pick one content source</p>
+            <p class="viz-flow__meta">The POS catalog, a CMS or JSON store, or a kitchen-edited sheet. <strong>The page renders from it</strong> &mdash; never from a re-typed copy. Everything downstream depends on this one decision.</p>
+          </div>
+        </li>
+        <li class="viz-flow__step" data-state="done">
+          <span class="viz-flow__num">2</span>
+          <div class="viz-flow__body">
+            <p class="viz-flow__title">Organize by service</p>
+            <p class="viz-flow__meta">Brunch, lunch, dinner, bar &mdash; each its own section with a heading a diner can jump to. <strong>Three scannable sections beat one cathedral menu.</strong></p>
+          </div>
+        </li>
+        <li class="viz-flow__step" data-state="done">
+          <span class="viz-flow__num">3</span>
+          <div class="viz-flow__body">
+            <p class="viz-flow__title">Write extractable descriptions</p>
+            <p class="viz-flow__meta">One sentence per dish &mdash; main ingredient, preparation, one detail a diner would ask the server. <strong>This is the field AI Overviews quote back.</strong></p>
+          </div>
+        </li>
+        <li class="viz-flow__step" data-state="done">
+          <span class="viz-flow__num">4</span>
+          <div class="viz-flow__body">
+            <p class="viz-flow__title">Set price display</p>
+            <p class="viz-flow__meta">Plain digits next to every dish. No currency-stripping, no hide-on-mobile, no missing prices &mdash; <strong>the diner filters you out for an unknown-price restaurant down the block.</strong></p>
+          </div>
+        </li>
+        <li class="viz-flow__step" data-state="done">
+          <span class="viz-flow__num">5</span>
+          <div class="viz-flow__body">
+            <p class="viz-flow__title">Add dietary markers inline</p>
+            <p class="viz-flow__meta">V, VG, GF, DF chips next to each dish, plus a one-line allergen note per section pointing anaphylactic guests to the staff. Scannable on the page, not buried in a footnote.</p>
+          </div>
+        </li>
+        <li class="viz-flow__step" data-state="done">
+          <span class="viz-flow__num">6</span>
+          <div class="viz-flow__body">
+            <p class="viz-flow__title">Add MenuItem schema underneath</p>
+            <p class="viz-flow__meta">A JSON-LD <code>Menu</code> block that reads the HTML you just built &mdash; <code>hasMenuSection</code> wrapping <code>hasMenuItem</code> entries with <code>name</code>, <code>description</code>, and an <code>Offer</code>. <strong>Schema without HTML has nothing to anchor to.</strong></p>
+          </div>
+        </li>
+      </ol>
+      <figcaption>The arrow runs one way &mdash; source feeds the HTML, the HTML feeds the schema &mdash; so skipping a step quietly breaks every step after it. That dependency is why the order is the discipline, not the checklist.</figcaption>
+    </figure>
 
     <h2 id="make-it-findable-menu-schema-and-ai">Make it findable: menu schema + AI</h2>
 

@@ -346,6 +346,13 @@ const CHECKS = [
   // upstream orchestrator confidences are reconciled (today: onion high → medium).
   ['Cost-index calibration (warn)','check-cost-index-calibration.mjs'],
   ['Cost-index calibration self-test','check-cost-index-calibration.mjs','--self-test'],
+  // Shippable bar — below-bar ingredients must stay out of the browser seed
+  // (no thin / no-level read on the dashboard; they live as expanding-coverage).
+  ['Cost-index shippable bar','check-shippable-bar.mjs'],
+  // Pressure honesty — the inferred outlook can't carry a price, can't use a
+  // banned verb, and its rendered direction must equal what the rules recompute.
+  ['Cost-pressure honesty','check-pressure-honesty.mjs'],
+  ['Cost-pressure sources (shape+readiness)','check-pressure-sources.mjs'],
   ['Security claims',      'check-security-claims.mjs'],
   ['Data promise rail',    'check-data-promise-rail.mjs'],
   ['Security locale parity','check-security-locale-parity.mjs'],

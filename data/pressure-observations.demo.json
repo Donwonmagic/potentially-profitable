@@ -1,0 +1,19 @@
+{
+  "_doc": "DEMO / illustrative leading-indicator changes for the PREVIEW Pressure layer — NOT live data. Each value is an illustrative % change over the indicator's declared window (data/pressure-rules.json). Replaced by the free fetchers (NASS Quick Stats, EIA, AMS MMN/MARS, US Drought Monitor, NWS alerts) in P2, at which point data/cost-pressure.json status flips preview → live. Crafted to exercise a spread of directions; do not read as real market movement.",
+  "_status": "preview",
+  "asOf": "2026-06-08",
+  "observations": {
+    "chicken-breast":  { "feed-futures": -0.09, "broiler-placements": 0.04, "cold-storage-poultry": 0.01, "diesel": 0.01 },
+    "whole-chicken":   { "feed-futures": -0.07, "broiler-placements": 0.03, "cold-storage-poultry": 0.01, "diesel": 0.01 },
+    "ribeye":          { "cattle-on-feed-placements": -0.05, "cold-storage-beef": -0.03, "feed-futures": 0.01, "diesel": 0.05 },
+    "beef-tenderloin": { "cattle-on-feed-placements": -0.04, "cold-storage-beef": -0.02, "feed-futures": 0.01, "diesel": 0.05 },
+    "pork-loin":       { "hogs-market-supply": 0.05, "feed-futures": -0.04, "cold-storage-pork": 0.01, "diesel": 0.01 },
+    "pork-shoulder":   { "hogs-market-supply": 0.04, "feed-futures": -0.05, "cold-storage-pork": 0.01, "diesel": 0.01 },
+    "romaine-lettuce": { "ams-shipments": -0.08, "drought-ca-az": 0.06, "diesel": 0.03 },
+    "tomato":          { "ams-shipments": 0.04, "drought-fl-ca": 0.05, "diesel": 0.01 },
+    "onion":           { "ams-shipments": -0.10, "crop-condition": -0.05, "drought": 0.03, "diesel": 0.04 },
+    "russet-potato":   { "crop-condition": 0.04, "ams-shipments": 0.05, "drought": 0.0, "diesel": 0.01 },
+    "butter":          { "milk-production": 0.03, "cold-storage-butter": 0.04, "feed-futures": -0.02, "diesel": 0.01 },
+    "cheddar-cheese":  { "milk-production": -0.04, "cold-storage-cheese": -0.03, "feed-futures": 0.01, "diesel": 0.05 }
+  }
+}

@@ -44,7 +44,7 @@
       "url": "https://muntin.digital/library/restaurant-local-seo/",
       "inLanguage": "en-US",
       "datePublished": "2026-05-30",
-      "dateModified": "2026-05-30",
+      "dateModified": "2026-06-10",
       "author": {
         "@id": "https://muntin.digital/#muntin-desk",
         "@type": "Organization",
@@ -528,19 +528,19 @@ main{padding-top:64px}
     <figure class="viz-figure article-figure" data-audio-alt="A decision tree of the four reasons a restaurant goes missing from the Google Maps three-pin pack, ordered from most common to least. Branch one: the Google Business Profile is not claimed — this is the single most common cause, roughly forty percent of cases, and you fix it by claiming the listing at business dot google dot com. Branch two: the primary category is wrong, roughly thirty percent of cases, and it is the most important Map-Pack signal — switch from the generic Restaurant to the narrowest cuisine-specific category. Branch three: the listing is suspended, roughly fifteen percent, usually from an address mismatch, and reinstatement takes seven to thirty days with a lease, license, or utility bill. Branch four: a duplicate listing exists, roughly fifteen percent, and you file a removal with proof, which takes fourteen to twenty-one days. The first three checks resolve the large majority of cases.">
       <div class="viz-tree">
         <details class="viz-tree__node" open>
-          <summary class="viz-tree__title"><span class="viz-tree__num">1</span>Is the Google Business Profile claimed? <em>(~40% of cases)</em><span class="viz-tree__verdict">Same-day</span></summary>
+          <summary class="viz-tree__title"><span class="viz-tree__num">1</span>Is the Google Business Profile claimed? <em>(~40% of cases)</em><span class="viz-tree__verdict" data-tone="pass">Same-day fix</span></summary>
           <div class="viz-tree__body">
             <p><strong>If no &rarr;</strong> Root cause: <strong>unclaimed listing</strong>. Google built an unmanaged listing from public data and nobody claimed it. Claim it at business.google.com; verification, then it can rank.</p>
             <details class="viz-tree__node" open>
-              <summary class="viz-tree__title"><span class="viz-tree__num">2</span>Is the primary category a specific cuisine, not &ldquo;Restaurant&rdquo;? <em>(~30%)</em><span class="viz-tree__verdict">Same-day</span></summary>
+              <summary class="viz-tree__title"><span class="viz-tree__num">2</span>Is the primary category a specific cuisine, not &ldquo;Restaurant&rdquo;? <em>(~30%)</em><span class="viz-tree__verdict" data-tone="pass">Same-day fix</span></summary>
               <div class="viz-tree__body">
                 <p><strong>If no &rarr;</strong> Root cause: <strong>wrong primary category</strong>. This is the biggest Map-Pack lever. &ldquo;Italian restaurant,&rdquo; not &ldquo;Restaurant.&rdquo; The narrower the category, the more queries you are eligible for inside it.</p>
                 <details class="viz-tree__node" open>
-                  <summary class="viz-tree__title"><span class="viz-tree__num">3</span>Is the listing free of a suspension banner? <em>(~15%)</em><span class="viz-tree__verdict">7&ndash;30 days</span></summary>
+                  <summary class="viz-tree__title"><span class="viz-tree__num">3</span>Is the listing free of a suspension banner? <em>(~15%)</em><span class="viz-tree__verdict" data-tone="warn">7&ndash;30 days</span></summary>
                   <div class="viz-tree__body">
                     <p><strong>If suspended &rarr;</strong> Root cause: <strong>suspended listing</strong>. Usually an address-format mismatch between the profile and the website. Reinstate with a lease, business license, or utility bill that matches the address.</p>
                     <details class="viz-tree__node" open>
-                      <summary class="viz-tree__title"><span class="viz-tree__num">4</span>Is there only one pin on your building? <em>(~15%)</em><span class="viz-tree__verdict">14&ndash;21 days</span></summary>
+                      <summary class="viz-tree__title"><span class="viz-tree__num">4</span>Is there only one pin on your building? <em>(~15%)</em><span class="viz-tree__verdict" data-tone="warn">14&ndash;21 days</span></summary>
                       <div class="viz-tree__body">
                         <p><strong>If two pins &rarr;</strong> Root cause: <strong>duplicate listing</strong>. Google cannot tell which is canonical, so it shows neither. File a removal of the stale duplicate with proof the canonical one is yours.</p>
                         <p><strong>If all four are clean &rarr;</strong> you are in the residual cases &mdash; usually a deeper name, address, and phone inconsistency across third-party directories. That one is a crawl-and-clean job, not a 10-minute fix.</p>
@@ -631,26 +631,51 @@ main{padding-top:64px}
 
     <p>A 2026 Uberall study found that 83% of restaurants never appear when a diner asks an AI assistant for a recommendation &mdash; even though 86% keep a Google profile &mdash; because assistants name only three to five places per query. Four numbers decide which side of that you land on: your rating against the floor (roughly 4.3 for ChatGPT, 4.1 for Perplexity, 3.9 for Gemini); review recency, not just count; profile completeness; and whether you own an answer the AI can lift (real text plus restaurant schema, not a photographed menu or a PDF). The reflexes that backfire are the same as everywhere else &mdash; buying reviews, and stuffing keywords into the business name.</p>
 
-    <figure class="viz-figure article-figure" data-audio-alt="A bar chart of the minimum star rating each AI assistant appears to require before it will name a restaurant at all, drawn on a scale from three point five stars to four point five stars. ChatGPT sits highest with a floor of about four point three stars. Perplexity is next at about four point one. Gemini is the most forgiving at about three point nine. The figures are Uberall's twenty twenty-six reported numbers from a study of multi-location quick-service brands. The practical read: a restaurant sitting at four point zero stars clears Gemini's floor but falls below both Perplexity and ChatGPT, so it would be named by one assistant of the three. Below an assistant's floor, completeness and ranking do not save you — you are filtered out before the assistant starts choosing.">
+    <figure class="viz-figure article-figure" data-audio-alt="Two ring charts that read together as the gap between being present on Google and being included in an AI answer, from Uberall's twenty twenty-six study. The first ring is eighty-six percent nearly full: the share of restaurants that keep a Google profile. The second ring is eighty-three percent and marked as the failing state: the share of restaurants that never appear when a diner asks an AI assistant for a recommendation. Read together, the two rings say almost everyone has done the table-stakes work of existing on Google, and almost everyone is still invisible to the assistants — because each assistant names only three to five places per query. The listing gets you into the pool; it does not get you into the sentence.">
+      <div class="viz-rings">
+        <div class="viz-ring" style="--score:86;">
+          <svg class="viz-ring__svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-labelledby="ring-presence" focusable="false">
+            <title id="ring-presence">86 percent of restaurants keep a Google profile</title>
+            <circle class="viz-ring__track" cx="60" cy="60" r="52" fill="none" stroke-width="8"/>
+            <circle class="viz-ring__fill" cx="60" cy="60" r="52" fill="none" stroke-width="8" transform="rotate(-90 60 60)"/>
+            <text class="viz-ring__num" x="60" y="60" text-anchor="middle">86%</text>
+          </svg>
+          <p class="viz-ring__label"><strong>Present</strong>keep a Google profile</p>
+        </div>
+        <div class="viz-ring" data-band="bad" style="--score:83;--delay:120ms;">
+          <svg class="viz-ring__svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-labelledby="ring-inclusion" focusable="false">
+            <title id="ring-inclusion">83 percent of restaurants are never named by an AI assistant</title>
+            <circle class="viz-ring__track" cx="60" cy="60" r="52" fill="none" stroke-width="8"/>
+            <circle class="viz-ring__fill" cx="60" cy="60" r="52" fill="none" stroke-width="8" transform="rotate(-90 60 60)"/>
+            <text class="viz-ring__num" x="60" y="60" text-anchor="middle">83%</text>
+          </svg>
+          <p class="viz-ring__label"><strong>Never included</strong>never named in an AI answer</p>
+        </div>
+      </div>
+      <figcaption>Presence is not inclusion: nearly every restaurant has the listing, and nearly every restaurant still misses the three-to-five-place shortlist an assistant writes (Uberall, 2026).</figcaption>
+    </figure>
+
+    <figure class="viz-figure article-figure" data-audio-alt="A bar chart of the minimum star rating each AI assistant appears to require before it will name a restaurant at all, drawn on a scale from three point five stars to four point five stars, with a vertical benchmark tick at four point zero stars running through every bar. ChatGPT sits highest with a floor of about four point three stars. Perplexity is next at about four point one. Gemini is the most forgiving at about three point nine. The figures are Uberall's twenty twenty-six reported numbers from a study of multi-location quick-service brands. The tick shows the practical read at a glance: a restaurant sitting at four point zero stars falls left of the ChatGPT and Perplexity bars but right of Gemini's, so it would be named by one assistant of the three. Below an assistant's floor, completeness and ranking do not save you — you are filtered out before the assistant starts choosing.">
       <div class="viz-bars">
         <p class="viz-bars__title">Star-rating floor to be named, by AI assistant (scale: 3.5&ndash;4.5&#9733;)</p>
         <div class="viz-bars__row">
           <p class="viz-bars__label">ChatGPT &middot; strictest floor</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.80"></span></div>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.80"></span><span class="viz-bars__mark" data-tone="ink" style="--x:0.50" aria-hidden="true"></span></div>
           <p class="viz-bars__num">4.3&#9733;</p>
         </div>
         <div class="viz-bars__row">
           <p class="viz-bars__label">Perplexity &middot; middle floor</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.60"></span></div>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.60"></span><span class="viz-bars__mark" data-tone="ink" style="--x:0.50" aria-hidden="true"></span></div>
           <p class="viz-bars__num">4.1&#9733;</p>
         </div>
         <div class="viz-bars__row">
           <p class="viz-bars__label">Gemini &middot; most forgiving floor</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.40"></span></div>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.40"></span><span class="viz-bars__mark" data-tone="ink" style="--x:0.50" aria-hidden="true"></span></div>
           <p class="viz-bars__num">3.9&#9733;</p>
         </div>
+        <p class="viz-bars__note">Tick = a <strong>4.0&#9733;</strong> restaurant. Any bar that ends past the tick is an assistant that filters that restaurant out before choosing.</p>
       </div>
-      <figcaption>Bars proportional to the 3.5&ndash;4.5&#9733; window. A restaurant at 4.0&#9733; clears Gemini but sits below Perplexity and ChatGPT &mdash; named by one assistant of three. Floors are Uberall&rsquo;s 2026 reported figures.</figcaption>
+      <figcaption>Where your rating sits against each bar decides which assistants can even consider you: at 4.0&#9733; you survive Gemini&rsquo;s filter and lose ChatGPT and Perplexity before ranking begins (Uberall, 2026).</figcaption>
     </figure>
 
     <details class="cite">

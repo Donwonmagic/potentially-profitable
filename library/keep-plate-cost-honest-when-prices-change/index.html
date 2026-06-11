@@ -62,7 +62,7 @@
       },
       "url": "https://muntin.digital/library/keep-plate-cost-honest-when-prices-change/",
       "datePublished": "2026-06-03",
-      "dateModified": "2026-06-03",
+      "dateModified": "2026-06-10",
       "inLanguage": "en-US",
       "wordCount": 2950,
       "author": {
@@ -789,6 +789,41 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <p>The cost target is the floor, not the answer. &ldquo;Cost divided by thirty percent&rdquo; produces a number, not a price &mdash; it ignores what the guest will pay, where the dish sits on the menu ladder, and whether the dish is an anchor or a signature. Anchor every target on your own number, the food-cost percent you decided this concept runs at, not a textbook 28 or 30. The textbook figure is a starting point; your own P&amp;L is the real one.</p>
 
       <p>Optimize contribution dollars across covers, not food-cost percent in isolation. A dish at thirty-five percent food cost that sells two hundred a week and clears strong contribution dollars is worth more to the business than a thirty-percent dish that sells twenty. <!-- LIBRARY:autolink:start --><a href="/glossary/menu-engineering/" data-glossary-head="Menu engineering" data-glossary-aka="treating each dish as a portfolio decision, not a P&amp;L line" data-glossary-blurb="A 50-year-old restaurant analysis (Kasavana &amp; Smith, 1990) that plots every menu item on a 2×2 of contribution margin (\$ per sale) against menu-mix share (popularity), splitting…">Menu engineering</a><!-- LIBRARY:autolink:end --> is the discipline of reading cost and volume together &mdash; which dishes earn their menu space, which ones sell but barely pay, which ones to push and which to quietly retire. A re-price decision made on percentage alone can cut the dish that funds the room.</p>
+
+      <p>The reason the recost is urgent is mechanical: on a held menu price, every cent a vendor adds to plate cost comes straight out of contribution. Take the $14 Caesar from the slider above, costed at a 30% food cost when the recipe was written &mdash; $4.20 of plate cost, $9.80 of contribution. Drag the plate-cost share and watch the contribution dollars fall one-for-one. Your own ceiling sits at 33%; the crept dish in this article runs 36%. The dishes are illustrative, but the one-for-one trade is exactly how the arithmetic behaves.</p>
+
+      <figure class="viz-figure article-figure" data-audio-alt="An interactive cost stack for one fourteen-dollar Caesar on a held menu price. As written, the dish runs a thirty-percent food cost: four dollars and twenty cents of plate cost, nine dollars and eighty cents of contribution margin. Drag the slider to move the plate-cost share from twenty-eight up to forty percent and watch the contribution segment shrink one-for-one, because the menu price is held. At your own thirty-three percent ceiling the contribution is nine dollars and thirty-eight cents; at the thirty-six percent the crept dish in this article runs, contribution falls to eight dollars and ninety-six cents, eighty-four cents a plate gone with nothing on the menu changed. These are illustrative figures, but the trade is exact: on a held price, every cent added to plate cost leaves contribution one-for-one.">
+        <div class="viz-waterfall" data-viz-waterfall data-vw-config='{"ticket":14,"variableSeg":"plate","baseRate":0.30,"baseKeep":0.70}'>
+          <p class="viz-waterfall__title">A held-price $14 Caesar: drag the plate-cost share, watch contribution fall</p>
+          <div class="viz-waterfall__bar" role="img" aria-label="A held $14 Caesar split into a plate-cost segment (30% as written) and a contribution segment (70%); moving the plate-cost share shrinks contribution one-for-one.">
+            <span class="viz-waterfall__seg" data-tone="rust" data-vw-seg="plate" style="--w:0.300">30%</span>
+            <span class="viz-waterfall__seg viz-waterfall__seg--keep" data-vw-seg="keep" style="--w:0.700">70%</span>
+          </div>
+          <div class="viz-waterfall__legend">
+            <div class="viz-waterfall__row" data-vw-row="plate">
+              <span class="viz-waterfall__swatch" data-tone="rust"></span>
+              <span>Plate cost (edible-portion ingredients, <span data-vw-display>30</span>% of the held $14 price)</span>
+              <span class="viz-waterfall__num">&minus;$<span data-vw-amount>4.20</span></span>
+              <span class="viz-waterfall__pct"><span data-vw-pct>30.0</span>%</span>
+            </div>
+            <div class="viz-waterfall__row" data-keep="true" data-vw-row="keep">
+              <span class="viz-waterfall__swatch" data-tone="teal"></span>
+              <span>Contribution margin (what the dish keeps toward labor, rent, profit)</span>
+              <span class="viz-waterfall__num">$<span data-vw-amount>9.80</span></span>
+              <span class="viz-waterfall__pct"><span data-vw-pct>70.0</span>%</span>
+            </div>
+          </div>
+          <div class="viz-slider">
+            <div class="viz-slider__label">
+              <span class="viz-slider__title">Plate-cost share (food cost %)</span>
+              <span class="viz-slider__readout"><span data-vw-display>30</span>%</span>
+            </div>
+            <input type="range" min="28" max="40" step="1" value="30" data-vw-slider aria-label="Plate-cost share of the held menu price, percent">
+            <p class="viz-slider__hint">As written: <b>30%</b>. Your own ceiling: <b>33%</b>. The crept Caesar in this article: <b>36%</b>. The teal segment is contribution &mdash; it shrinks dollar-for-dollar as the plate-cost share climbs on a held price.</p>
+          </div>
+        </div>
+        <figcaption><strong>Interactive:</strong> at the 30% it was written, the Caesar keeps $9.80. At your 33% ceiling, $9.38. At 36%, $8.96 &mdash; 84&cent; a plate, every cover, until the menu catches up.</figcaption>
+      </figure>
 
       <p>When the inputs are thin, widen the band rather than print false precision. A dish costed off two invoice prices and three estimates is a range, not a point, and saying so &mdash; &ldquo;this runs roughly $4.10 to $4.60 a plate, here is what we are sure of&rdquo; &mdash; is more useful than a confident $4.37 built on guesses. Confidence is a number the operator deserves to see alongside the cost; a low-confidence figure is a prompt to bind one more invoice, not a price to set in print.</p>
 

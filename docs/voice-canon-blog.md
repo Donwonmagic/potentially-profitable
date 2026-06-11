@@ -323,7 +323,7 @@ existing `viz-*` patterns from `assets/site-article.css`:
 
 | Pattern | When to use | Existing example |
 | --- | --- | --- |
-| `.viz-bars` | Comparing 2-5 numbers on a single axis (shares, percentages, time series) | Gemini referral share, AI Overview share over time |
+| `.viz-bars` | Comparing 2-5 numbers on a single axis (shares, percentages, time series). Use `viz-bars__mark` (`--x`: 0..1) for a benchmark tick inside a track and `viz-bars__note` for a full-width takeaway row inside the figure; never ship a zero-width bar as a stand-in for "no data" | Gemini referral share, AI Overview share over time |
 | `.viz-flow` | Stepwise process or hub-and-spoke convergence | "One profile, four surfaces" |
 | `.viz-ba` | Before/after rewrite, before/after measurement | The citation-rewrite paragraph in `how-to-get-cited` |
 | `.viz-tree` | Decision tree, diagnostic walk | "Citation problem or ranking problem?" |

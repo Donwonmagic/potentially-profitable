@@ -46,7 +46,7 @@
       "url": "https://muntin.digital/blog/30-days-after-leaving-doordash-restaurant-case-study/",
       "inLanguage": "en-US",
       "datePublished": "2026-05-11T08:00:00-04:00",
-      "dateModified": "2026-05-11",
+      "dateModified": "2026-06-10",
       "author": {
         "@id": "https://muntin.digital/#don-goldstein",
         "@type": "Person",
@@ -503,41 +503,33 @@ main{padding-top:64px}
 
     <p>The decision lands on a Sunday night: close the storefront, don&rsquo;t reopen, don&rsquo;t announce. The phone calls and walk-ins keep coming. The next four weeks have a shape worth knowing in advance.</p>
 
-    <figure class="viz-figure article-figure" data-audio-alt="Six headline metrics, the direction each one moves over the first thirty days after delisting. Weekly gross revenue: a single-digit dip in week one, recovers most of the gap by week four as direct backfills. Off-premise revenue, delivery plus takeout: drops sharply because third-party volume leaves the channel and direct only partially backfills. Average ticket size: rises because recaptured orders run larger than third-party orders. Repeat-customer rate: rises, because the orders flowing through your direct channel are mostly relationship orders that were already going to come back. Net dollars kept per ticket: this is the headline. It rises sharply because every recaptured order shifts from the eighteen percent kept-rate third-party channel to the twenty-nine percent kept-rate direct channel. Weekly marketing spend: drops to near zero because the sponsored-listing fee on the third-party app is no longer running.">
+    <figure class="viz-figure article-figure" data-audio-alt="The misread that the whole delisting turns on, shown as two splits of the same third-party order volume. Before delisting, the operator believes the platform is doing real discovery work: roughly forty percent net-new customers the restaurant would never have reached, sixty percent existing regulars using a more convenient app. After delisting, the recaptured-order data usually reveals the opposite shape: closer to ten percent net-new discovery, ninety percent displaced relationship orders that were always going to come back. The gap between those two pictures, an illustrative thirty-point swing, is why revenue recovers far faster than the operator braced for, and why the kept-margin lift on direct orders is nearly all upside.">
       <div class="viz-bars">
-        <p class="viz-bars__title">Six metrics, ranked by magnitude of change over 30 days (bars scaled to the largest move)</p>
+        <p class="viz-bars__title">What the third-party channel was actually doing: belief vs. recaptured-order reality (illustrative split of the same order volume)</p>
         <div class="viz-bars__row">
-          <p class="viz-bars__label">Weekly marketing spend</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:1.0">↓ Sponsored-listing fees stop entirely</span></div>
-          <p class="viz-bars__num">~ &minus;100%</p>
+          <p class="viz-bars__label">Belief — net-new discovery</p>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.40"></span></div>
+          <p class="viz-bars__num">~40%</p>
         </div>
         <div class="viz-bars__row">
-          <p class="viz-bars__label">Net dollars kept per ticket <strong>(headline)</strong></p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.83">↑ 18% &rarr; 29% kept rate</span></div>
-          <p class="viz-bars__num">+50 to +75%</p>
+          <p class="viz-bars__label">Belief — displaced regulars</p>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:0.60"></span></div>
+          <p class="viz-bars__num">~60%</p>
+        </div>
+        <p class="viz-bars__note"><strong>After delisting, the same volume usually re-sorts the other way:</strong></p>
+        <div class="viz-bars__row">
+          <p class="viz-bars__label">Reality — net-new discovery</p>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.10"></span></div>
+          <p class="viz-bars__num">~10%</p>
         </div>
         <div class="viz-bars__row">
-          <p class="viz-bars__label">Off-premise revenue (delivery + takeout)</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.37">↓ Sharp drop, partial direct backfill</span></div>
-          <p class="viz-bars__num">&minus;20 to &minus;35%</p>
+          <p class="viz-bars__label">Reality — displaced regulars</p>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.90"></span></div>
+          <p class="viz-bars__num">~90%</p>
         </div>
-        <div class="viz-bars__row">
-          <p class="viz-bars__label">Repeat-customer rate</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.20">↑ Relationship orders concentrate</span></div>
-          <p class="viz-bars__num">+10 to +20 pts</p>
-        </div>
-        <div class="viz-bars__row">
-          <p class="viz-bars__label">Average ticket size</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.17">↑ Direct orders run larger</span></div>
-          <p class="viz-bars__num">+10 to +15%</p>
-        </div>
-        <div class="viz-bars__row">
-          <p class="viz-bars__label">Weekly gross revenue</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:0.05">→ Single-digit dip, mostly recovered</span></div>
-          <p class="viz-bars__num">&minus;2 to &minus;5%</p>
-        </div>
+        <p class="viz-bars__note">Illustrative shares, not a measured cohort. The point is the <strong>direction</strong> of the misread: discovery is smaller, relationship is larger. That is what makes the recovery fast and the kept-margin lift nearly free.</p>
       </div>
-      <figcaption>Bars are absolute-magnitude proportional, ranked largest to smallest. The headline is the net-dollars-per-ticket gain — the kept-rate jump from 18% to 29% per the <a href="/library/third-party-delivery-economics/">DoorDash margin walk</a>. Marketing spend dropping to near-zero is the biggest single move; gross revenue barely budges.</figcaption>
+      <figcaption>The delisting decision rests on this re-sort. When most of the channel turns out to be displaced regulars rather than net-new discovery, those orders come back through the direct door at the 29% kept rate instead of 18% — per the <a href="/library/third-party-delivery-economics/">DoorDash margin walk</a>.</figcaption>
     </figure>
 
     <h2 id="week-1-panic-that-didn-t-arrive">Week 1: panic that didn&rsquo;t arrive</h2>
@@ -621,24 +613,24 @@ main{padding-top:64px}
 
     <p>The clearest way to see why is to put the two tickets side by side &mdash; the same $42 average order, run through the third-party fee stack and the direct fee stack:</p>
 
-    <figure class="viz-figure article-figure" data-audio-alt="Two ticket breakdowns side by side, both on a forty two dollar order. Day zero, on DoorDash: thirty percent commission takes twelve dollars sixty, payment processing takes one dollar forty three, sponsored listing fee takes one dollar twenty, packaging takes one dollar forty, food cost is twenty eight percent or eleven dollars seventy six, variable labor is fourteen percent or five dollars eighty eight. What stays in the restaurant: seven dollars seventy three, or eighteen point four percent of the ticket. Day thirty, off DoorDash, ordered direct: Stripe processing takes one dollar fifty one, direct-channel marketing amortization takes eighty cents per order, packaging takes one dollar forty, food cost is the same eleven dollars seventy six, variable labor is the same five dollars eighty eight, last-mile DoorDash Drive flat fee where applicable is eight dollars fifty. What stays in the restaurant: twelve dollars fifteen, or twenty eight point nine percent of the ticket. The keep rate per ticket climbed from eighteen point four percent to twenty eight point nine percent, a four dollar forty two swing per order toward the restaurant.">
-      <div class="viz-waterfall">
-        <p class="viz-waterfall__title">Day 0: a $42 ticket on DoorDash (kept 18.4%)</p>
+    <figure class="viz-figure article-figure" data-audio-alt="An interactive breakdown of a forty two dollar DoorDash ticket. At the default thirty percent Marketplace Plus commission, DoorDash takes twelve dollars sixty, payment processing takes one dollar forty three, the sponsored listing fee takes one dollar twenty, packaging takes one dollar forty, food cost is twenty eight percent or eleven dollars seventy six, variable labor is fourteen percent or five dollars eighty eight, and what stays in the restaurant is seven dollars seventy three, or eighteen point four percent of the ticket. Drag the slider from fifteen to thirty five percent commission to watch the kept share recompute in real time, point for point against the commission rate.">
+      <div class="viz-waterfall" data-viz-waterfall data-vw-config='{"ticket":42,"variableSeg":"commission","baseRate":0.30,"baseKeep":0.184}'>
+        <p class="viz-waterfall__title">Day 0: a $42 ticket on DoorDash &mdash; drag the commission rate</p>
         <div class="viz-waterfall__bar" role="img" aria-label="Day zero ticket stack: 30% DoorDash commission, 3.4% processing, 2.9% sponsored fee, 3.3% packaging, 28% food cost, 14% labor, 18.4% kept by the restaurant.">
-          <span class="viz-waterfall__seg" data-tone="rust" style="--w:0.300">30%</span>
+          <span class="viz-waterfall__seg" data-tone="rust" data-vw-seg="commission" style="--w:0.300">30%</span>
           <span class="viz-waterfall__seg" data-tone="stone" style="--w:0.034">3%</span>
           <span class="viz-waterfall__seg" data-tone="stone" style="--w:0.029">3%</span>
           <span class="viz-waterfall__seg" data-tone="stone" style="--w:0.033">3%</span>
           <span class="viz-waterfall__seg" data-tone="ink" style="--w:0.280">28%</span>
           <span class="viz-waterfall__seg" data-tone="ink" style="--w:0.140">14%</span>
-          <span class="viz-waterfall__seg viz-waterfall__seg--keep" style="--w:0.184">18.4%</span>
+          <span class="viz-waterfall__seg viz-waterfall__seg--keep" data-vw-seg="keep" style="--w:0.184">18.4%</span>
         </div>
         <div class="viz-waterfall__legend">
-          <div class="viz-waterfall__row">
+          <div class="viz-waterfall__row" data-vw-row="commission">
             <span class="viz-waterfall__swatch" data-tone="rust"></span>
-            <span>DoorDash <!-- LIBRARY:autolink:start --><a href="/glossary/commission/" data-glossary-head="Commission" data-glossary-aka="the % a platform takes per order" data-glossary-blurb="The percentage an aggregator or payment platform keeps per transaction.">commission</a><!-- LIBRARY:autolink:end --> (Marketplace Plus, 30%)</span>
-            <span class="viz-waterfall__num">&minus;$12.60</span>
-            <span class="viz-waterfall__pct">30.0%</span>
+            <span>DoorDash <!-- LIBRARY:autolink:start --><a href="/glossary/commission/" data-glossary-head="Commission" data-glossary-aka="the % a platform takes per order" data-glossary-blurb="The percentage an aggregator or payment platform keeps per transaction.">commission</a><!-- LIBRARY:autolink:end --> (Marketplace Plus, <span data-vw-display>30</span>%)</span>
+            <span class="viz-waterfall__num">&minus;$<span data-vw-amount>12.60</span></span>
+            <span class="viz-waterfall__pct"><span data-vw-pct>30.0</span>%</span>
           </div>
           <div class="viz-waterfall__row">
             <span class="viz-waterfall__swatch"></span>
@@ -670,15 +662,23 @@ main{padding-top:64px}
             <span class="viz-waterfall__num">&minus;$5.88</span>
             <span class="viz-waterfall__pct">14.0%</span>
           </div>
-          <div class="viz-waterfall__row" data-keep="true">
+          <div class="viz-waterfall__row" data-keep="true" data-vw-row="keep">
             <span class="viz-waterfall__swatch" data-tone="teal"></span>
-            <span>What stayed in the restaurant</span>
-            <span class="viz-waterfall__num">$7.73</span>
-            <span class="viz-waterfall__pct">18.4%</span>
+            <span>What stays in the restaurant</span>
+            <span class="viz-waterfall__num">$<span data-vw-amount>7.73</span></span>
+            <span class="viz-waterfall__pct"><span data-vw-pct>18.4</span>%</span>
           </div>
         </div>
+        <div class="viz-slider">
+          <div class="viz-slider__label">
+            <span class="viz-slider__title">DoorDash commission rate</span>
+            <span class="viz-slider__readout"><span data-vw-display>30</span>%</span>
+          </div>
+          <input type="range" min="15" max="35" step="1" value="30" data-vw-slider aria-label="DoorDash commission rate, percent">
+          <p class="viz-slider__hint">Marketplace tiers: <b>Basic 15%</b>, <b>Plus 25%</b>, <b>Premier 30%</b>. The kept share moves point-for-point against commission &mdash; every point you negotiate off is a point back in your pocket.</p>
+        </div>
       </div>
-      <figcaption>The day-0 ticket: 18.4&cent; on the dollar after the commission and the rest of the stack.</figcaption>
+      <figcaption>The commission line is the only segment that flexes &mdash; drag it and the teal keep absorbs the swing point-for-point. At the standard 30% Plus rate the restaurant keeps 18.4&cent; on the dollar.</figcaption>
     </figure>
 
     <figure class="viz-figure article-figure" data-audio-alt="The same forty two dollar ticket on day thirty, ordered direct. Stripe payment processing takes one dollar fifty one. Direct-channel marketing amortization, mostly the cost of the bag-stuffer cards and the operator time, takes eighty cents per order. Packaging stays at one dollar forty. Food cost stays at eleven dollars seventy six, twenty eight percent. Variable labor stays at five dollars eighty eight, fourteen percent. Last-mile DoorDash Drive flat fee, where it applies, takes eight dollars fifty. What stays in the restaurant: twelve dollars fifteen, or twenty eight point nine percent of the ticket. The keep rate per ticket climbed from eighteen point four percent on day zero to twenty eight point nine percent on day thirty, a four dollar forty two swing per order toward the restaurant.">

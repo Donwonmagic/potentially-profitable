@@ -49,7 +49,7 @@
       "url": "https://muntin.digital/library/restaurant-menu-engineering/",
       "inLanguage": "en-US",
       "datePublished": "2026-06-03",
-      "dateModified": "2026-06-03",
+      "dateModified": "2026-06-10",
       "author": {
         "@id": "https://muntin.digital/#muntin-desk",
         "@type": "Organization",
@@ -579,6 +579,37 @@ main{padding-top:64px}
     </details>
 
     <p>The operator move is to run a yield test on the five highest-volume protein ingredients the kitchen buys. Weigh in on receipt, weigh after primary butchery, weigh again after cooking if the cook causes meaningful shrink. Record yield as a percentage. Use that percentage in plate-cost computations going forward, and rerun the yield test every quarter or every time the kitchen changes purveyors. The first time a kitchen does this, the typical correction lands somewhere between 4 and 6 points of food cost &mdash; not because the kitchen was wasteful, but because the math the kitchen had been doing was running on the AP price instead of the EP price. Closing that gap is the cheapest margin recovery available to most independents, and it requires zero menu changes.</p>
+
+    <figure class="viz-figure" data-audio-alt="A cost stack of one eight-ounce strip portion showing what the yield correction does to its true plate cost. The honest plate cost is nine dollars and twenty-three cents. Of that, six dollars is the as-purchased read: eight ounces at the twelve-dollar-a-pound invoice price, the number a kitchen sees on the invoice and stops at. The remaining three dollars and twenty-three cents is the trim-and-shrink premium that nobody puts on the plate cost: the cost of the fat, silverskin, and end-cuts that were paid for but never reached the pass, because the strip only yields sixty-five percent. A kitchen that prices off the six-dollar as-purchased read instead of the nine-dollar-twenty-three honest plate cost is reading its margin on this dish roughly fifty percent light, which is where the four-to-six points of food cost hide.">
+      <div class="viz-waterfall">
+        <p class="viz-waterfall__title">One 8&nbsp;oz strip portion: as-purchased read vs. honest plate cost</p>
+        <div class="viz-waterfall__bar" role="img" aria-label="A $9.23 honest plate cost split into $6.00 of as-purchased portion (65%) and $3.23 of trim-and-shrink premium (35%).">
+          <span class="viz-waterfall__seg" data-tone="ink" style="--w:0.650">$6.00 AP read</span>
+          <span class="viz-waterfall__seg" data-tone="rust" style="--w:0.350">+$3.23 trim/shrink</span>
+        </div>
+        <div class="viz-waterfall__legend">
+          <div class="viz-waterfall__row">
+            <span class="viz-waterfall__swatch" data-tone="ink"></span>
+            <span>As-purchased read (8&nbsp;oz &times; $12/lb invoice price &mdash; where most kitchens stop)</span>
+            <span class="viz-waterfall__num">$6.00</span>
+            <span class="viz-waterfall__pct">65%</span>
+          </div>
+          <div class="viz-waterfall__row">
+            <span class="viz-waterfall__swatch" data-tone="rust"></span>
+            <span>Trim &amp; shrink premium (fat, silverskin, end-cuts paid for, never plated &mdash; 65% yield)</span>
+            <span class="viz-waterfall__num">+$3.23</span>
+            <span class="viz-waterfall__pct">35%</span>
+          </div>
+          <div class="viz-waterfall__row" data-keep="true">
+            <span class="viz-waterfall__swatch" data-tone="teal"></span>
+            <span>Honest plate cost (EP = AP &divide; yield)</span>
+            <span class="viz-waterfall__num">$9.23</span>
+            <span class="viz-waterfall__pct">100%</span>
+          </div>
+        </div>
+      </div>
+      <figcaption>Price off the $6.00 invoice read and this one dish runs ~50% under its true cost &mdash; the trim-and-shrink third is the part of plate cost that never shows on an invoice.</figcaption>
+    </figure>
 
     <div class="callout">
       <p><strong>The 30% figure in the H2.</strong> Roughly 30% of food cost in a typical full-service kitchen is the trim-and-shrink layer &mdash; the difference between what the invoice reads and what the plate carries. The number is directional, anchored to Muntin client audits across 2025&ndash;2026; specific share varies by concept (steakhouse 35%+ on protein-heavy plates, vegetable-forward kitchens 20% or lower). The takeaway is the size of the lever, not the exact percentage.</p>

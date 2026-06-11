@@ -23,14 +23,24 @@
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createRequire } from 'node:module';
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const require = createRequire(import.meta.url);
+// The shippable bar — keep below-bar ingredients out of the Cost Pulse seed too,
+// so the dashboard never shows a thin/no-level read the pages won't.
+const MuntinCostConfidence = require(path.join(repoRoot, 'tools/_shared/cost-confidence.js'));
 const DRY = process.argv.includes('--dry-run');
 const JSON_IN = path.join(repoRoot, 'data/cost-index.json');
 const LABELS_IN = path.join(repoRoot, 'data/cost-index-labels.json');
 const OUT = path.join(repoRoot, 'data/cost-index.js');
 
 const rd = (p) => JSON.parse(readFileSync(p, 'utf8'));
+
+const PRESSURE_ITEMS = (() => {
+  try { return rd(path.join(repoRoot, 'data/cost-pressure.json')).items || {}; }
+  catch { return {}; }
+})();
 
 function main() {
   const data = rd(JSON_IN);
@@ -47,6 +57,7 @@ function main() {
     const hasLevel = newest.level && typeof newest.level.medianCents === 'number';
     const hasTrend = newest.trend && typeof newest.trend.pct === 'number';
     if (!hasLevel && !hasTrend) continue;            // defensive — gate already enforces this
+    if (!MuntinCostConfidence.isShippable(newest)) continue;   // below the shippable bar → not on the dashboard
     const lab = labels[key];
     if (!lab) { missingLabel.push(key); continue; }  // no display label → can't render bilingually
 
@@ -68,6 +79,13 @@ function main() {
     // The spike-vs-structural flag (verdict + actionBias) — a build-time, fact-gated
     // "story so far" the renderer turns into a buy/hold/watch suggestion.
     if (ingredientsObj[key].flag) entry.flag = ingredientsObj[key].flag;
+    // Pressure overlay summary (inferred direction only — never a price). Trimmed
+    // to the headline so the dashboard can show "where it's headed" honestly.
+    const pr = PRESSURE_ITEMS[key];
+    if (pr && pr.direction && pr.direction !== 'unknown') {
+      entry.pressure = { direction: pr.direction, confidence: pr.confidence, freshness_weeks: pr.freshness_weeks, under_review: !!pr.under_review };
+      if (pr.track_record && pr.track_record.n) entry.pressure.track_record = pr.track_record;
+    }
     // Sparkline needs real history to be honest — a 2-point line can mislead
     // (and can straddle bases). Hold it until ~a month of weekly points exists.
     if (spark.length >= 4) {

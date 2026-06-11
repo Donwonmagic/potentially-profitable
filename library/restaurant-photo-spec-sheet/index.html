@@ -55,7 +55,7 @@
       "description": "Every image size, aspect ratio, and resolution your restaurant actually needs across GBP, Yelp, your site, social, and menu thumbnails — in one spec sheet.",
       "url": "https://muntin.digital/library/restaurant-photo-spec-sheet/",
       "datePublished": "2026-04-30",
-      "dateModified": "2026-05-28",
+      "dateModified": "2026-06-10",
       "author": {
         "@id": "https://muntin.digital/#muntin-desk",
         "@type": "Organization",
@@ -729,34 +729,22 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <p>For a 30-photo restaurant shoot, that's 150 seconds — or two minutes — of writing. Skip it and you've left every photo's SEO value on the floor.</p>
 
-      <figure class="article-figure" data-audio-alt="Three rules for restaurant alt text &mdash; what Google&rsquo;s parser keeps and what it discards. One: specific subject. &lsquo;Plate of carnitas&rsquo; &mdash; not &lsquo;delicious food&rsquo;, not &lsquo;lunch&rsquo;. Name the dish. Two: context noun. &lsquo;On a wood board.&rsquo; &lsquo;On the patio.&rsquo; Where the photo is, not just what&rsquo;s in it. Three: no filename, no marketing. &lsquo;I M G underscore 4 5 2 1 dot J P G&rsquo; is useless. &lsquo;Mouthwatering food&rsquo; is worse &mdash; Google strips marketing language entirely. Describe, don&rsquo;t sell.">
-        <div class="recovery-stack reveal" role="img" aria-label="What good alt text looks like — three rules">
-          <div class="recovery-row recovery-1">
-            <div class="recovery-num">1</div>
-            <div>
-              <h4 class="i18n">Specific subject</h4>
-              <p class="recovery-sub i18n">"Plate of carnitas" — not "delicious food", not "lunch".</p>
-            </div>
-            <div class="recovery-val">name the dish</div>
+      <figure class="viz-figure" data-audio-alt="A before-and-after of the alt-text attribute on the same carnitas photo, showing what Google's parser keeps and what it discards. The before version is the useless default: an alt value reading I M G underscore 4 5 2 1 dot J P G on one image, and a marketing line reading delicious food at our restaurant on the next. The filename names nothing, and Google strips the marketing language entirely, so the photo ranks for nothing and a screen-reader user hears noise. The after version follows the three rules the spec sheet teaches. Rule one, a specific subject: name the dish, plate of carnitas, not delicious food and not lunch. Rule two, a context noun: say where the photo is, with cilantro, white onion, and lime on a wood board, not just what is in it. Rule three, no filename and no marketing: describe, do not sell. The finished sentence reads plate of carnitas with cilantro, white onion, and lime on a wood board, and that one sentence earns the photo its SEO, its accessibility, and its AI-search citation for the five seconds it cost to write.">
+        <style>.viz-ba.viz-ba--stack{padding:16px}.viz-ba.viz-ba--stack .snippet-box{margin:0 0 12px;background:var(--cream)}.viz-ba.viz-ba--stack .snippet-box:last-child{margin-bottom:0}.snippet-box{padding:16px 20px;background:var(--cream-2);border:1px solid var(--line);border-radius:8px;margin:12px 0;font-size:15.5px;line-height:1.6;color:var(--ink)}.snippet-box[data-tone="bad"]{border-left:3px solid var(--rust)}.snippet-box[data-tone="good"]{border-left:3px solid var(--teal)}.snippet-label{display:block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--stone);margin-bottom:6px;font-weight:600}.snippet-box[data-tone="bad"] .snippet-label{color:var(--rust)}.snippet-box[data-tone="good"] .snippet-label{color:var(--teal)}.snippet-box p{margin:0 0 10px}.snippet-box p:last-child{margin-bottom:0}.snippet-box .snippet-note{font-size:13.5px;color:var(--stone);font-style:italic}.snippet-box code{font-family:ui-monospace,Menlo,Monaco,Consolas,monospace;font-size:13.5px;color:var(--ink)}</style>
+        <div class="viz-ba viz-ba--stack">
+          <div class="snippet-box" data-tone="bad">
+            <span class="snippet-label">What Google discards</span>
+            <p><code>alt=&quot;IMG_4521.jpg&quot;</code></p>
+            <p><code>alt=&quot;delicious food at our restaurant&quot;</code></p>
+            <p class="snippet-note">The filename names nothing; the marketing line is stripped entirely. The photo ranks for nothing and a screen-reader user hears noise.</p>
           </div>
-          <div class="recovery-row recovery-2">
-            <div class="recovery-num">2</div>
-            <div>
-              <h4 class="i18n">Context noun</h4>
-              <p class="recovery-sub i18n">"On a wood board." "On the patio." Where the photo is, not just what's in it.</p>
-            </div>
-            <div class="recovery-val">add the where</div>
-          </div>
-          <div class="recovery-row recovery-3">
-            <div class="recovery-num">3</div>
-            <div>
-              <h4 class="i18n">No filename, no marketing</h4>
-              <p class="recovery-sub i18n">"IMG_4521.jpg" is useless. "Mouthwatering food" is worse — Google strips it.</p>
-            </div>
-            <div class="recovery-val">describe, don't sell</div>
+          <div class="snippet-box" data-tone="good">
+            <span class="snippet-label">What Google keeps &mdash; the three rules</span>
+            <p><code>alt=&quot;Plate of carnitas with cilantro, white onion, and lime on a wood board&quot;</code></p>
+            <p class="snippet-note"><strong>Specific subject</strong> (name the dish) &middot; <strong>context noun</strong> (where it sits) &middot; <strong>no filename, no marketing</strong> (describe, don&rsquo;t sell). Five seconds of writing earns the SEO, the accessibility, and the AI-search citation.</p>
           </div>
         </div>
-        <figcaption class="i18n">Three rules for <!-- LIBRARY:autolink:start --><a href="/glossary/alt-text/" data-glossary-head="Alt text" data-glossary-aka="image descriptions" data-glossary-blurb="A short written description of every image, set via the alt=&quot;…&quot; attribute in the HTML.">alt text</a><!-- LIBRARY:autolink:end --> · what Google's parser keeps, what it discards</figcaption>
+        <figcaption class="i18n">The same photo, before and after the <!-- LIBRARY:autolink:start --><a href="/glossary/alt-text/" data-glossary-head="Alt text" data-glossary-aka="image descriptions" data-glossary-blurb="A short written description of every image, set via the alt=&quot;…&quot; attribute in the HTML.">alt text</a><!-- LIBRARY:autolink:end --> follows the three rules &mdash; specific subject, context noun, no filename or marketing. Describe, don&rsquo;t sell.</figcaption>
       </figure>
 
       <blockquote class="pullquote">

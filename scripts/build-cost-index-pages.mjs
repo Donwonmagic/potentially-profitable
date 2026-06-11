@@ -54,9 +54,21 @@ import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
+import { createRequire } from 'node:module';
 
 const __filename = fileURLToPath(import.meta.url);
 const repoRoot   = path.resolve(path.dirname(__filename), '..');
+const require    = createRequire(import.meta.url);
+// Reuse the shared, no-DOM inline-SVG sparkline primitive (the same one
+// Cost Pulse + the audits tool ship) rather than forking a renderer.
+const MuntinSparkline = require(path.join(repoRoot, 'tools/_shared/sparkline.js'));
+// ONE shared verdict voice — the same module the Cost Pulse dashboard uses, so
+// the static pages, the hub, and the live tool can never disagree (a thin-data
+// "structural" reads "Watch", not "Re-price", on every surface).
+const MuntinCostVerdict = require(path.join(repoRoot, 'tools/_shared/cost-verdict.js'));
+// Level/trend confidence split + the shippable bar — so a solid multi-market
+// price isn't buried under a noisy trend's "low", and nothing apologetic ships.
+const MuntinCostConfidence = require(path.join(repoRoot, 'tools/_shared/cost-confidence.js'));
 const checkMode  = process.argv.includes('--check');
 const onlyArg    = (process.argv.find((a) => a.startsWith('--only=')) || '').slice('--only='.length);
 const ONLY       = onlyArg ? new Set(onlyArg.split(',').map((s) => s.trim()).filter(Boolean)) : null;
@@ -104,12 +116,54 @@ const CI = (() => {
   catch { return { ingredients: {}, drivers: {} }; }
 })();
 const COST_INDEX = CI.ingredients || {};
+const DRIVERS = CI.drivers || {};
 const LABELS_DOC  = (() => {
   try { return JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/cost-index-labels.json'), 'utf8')); }
   catch { return { labels: {}, drivers: {} }; }
 })();
 const LABELS  = LABELS_DOC.labels || {};
 const DRIVER_LABELS = LABELS_DOC.drivers || {};
+
+// ---- Pressure (inferred outlook) layer -----------------------------
+const PRESSURE = (() => {
+  try { return JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/cost-pressure.json'), 'utf8')); }
+  catch { return { items: {} }; }
+})();
+const PRESSURE_ITEMS = PRESSURE.items || {};
+const PRESSURE_RULES = (() => {
+  try { return JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/pressure-rules.json'), 'utf8')); }
+  catch { return { sources: {} }; }
+})();
+const PRESSURE_SOURCES = PRESSURE_RULES.sources || {};
+const INDICATOR_NAME = {
+  'feed-futures':              { en: 'Feed (corn/soy) futures', es: 'Futuros de forraje (maíz/soya)' },
+  'broiler-placements':        { en: 'Broiler chick placements', es: 'Colocación de pollitos' },
+  'cattle-on-feed-placements': { en: 'Cattle-on-feed placements', es: 'Ganado en engorda (colocaciones)' },
+  'hogs-market-supply':        { en: 'Market-hog supply', es: 'Oferta de cerdos de mercado' },
+  'cold-storage-poultry':      { en: 'Cold-storage stocks', es: 'Inventario en frío' },
+  'cold-storage-beef':         { en: 'Cold-storage stocks', es: 'Inventario en frío' },
+  'cold-storage-pork':         { en: 'Cold-storage stocks', es: 'Inventario en frío' },
+  'cold-storage-butter':       { en: 'Cold-storage stocks', es: 'Inventario en frío' },
+  'cold-storage-cheese':       { en: 'Cold-storage stocks', es: 'Inventario en frío' },
+  'milk-production':           { en: 'Milk production', es: 'Producción de leche' },
+  'ams-shipments':             { en: 'Produce shipments', es: 'Envíos de producto' },
+  'freeze-alert':              { en: 'Freeze warnings', es: 'Alertas de helada' },
+  'drought-ca-az':             { en: 'Drought (CA/AZ)', es: 'Sequía (CA/AZ)' },
+  'drought-fl-ca':             { en: 'Drought (FL/CA)', es: 'Sequía (FL/CA)' },
+  'drought':                   { en: 'Drought (growing regions)', es: 'Sequía (regiones de cultivo)' },
+  'crop-condition':            { en: 'Crop condition', es: 'Condición del cultivo' },
+  'diesel':                    { en: 'Diesel / freight', es: 'Diésel / flete' }
+};
+function sourceShort(key) {
+  if (!key) return '';
+  if (key.indexOf('nass') === 0) return 'USDA NASS';
+  if (key.indexOf('ams') === 0) return 'USDA AMS';
+  if (key.indexOf('ers') === 0) return 'USDA ERS';
+  if (key.indexOf('eia') === 0) return 'EIA';
+  if (key.indexOf('usdm') === 0) return 'US Drought Monitor';
+  if (key.indexOf('nws') === 0) return 'NWS';
+  return key;
+}
 
 // Source-id prefix → { agency name, url } — derived map for citations.
 const SOURCE_AGENCY = [
@@ -199,11 +253,15 @@ function readingOf(slug) {
   const conf = point.confidence || 'low';
   const trend = point.trend || {};
   const hist = Array.isArray(entry.history) ? entry.history : [];
-  // What may render as a number, by confidence (honesty contract).
+  // Confidence is split: a measured wholesale LEVEL stands on its own even when
+  // the week-to-week TREND is choppy. The number renders by LEVEL confidence
+  // (not the headline min), so a solid 8-market range reads as the fact it is.
+  const levelConf = MuntinCostConfidence.levelConfidence(lvl);
+  const trendConf = MuntinCostConfidence.trendConfidence(trend);
   const distinctRange = !!(rc && rc[0] !== rc[1]);
-  const emitPoint = (conf === 'high' || conf === 'medium') && !!lvl && rc != null;
-  const emitRange = emitPoint || (conf === 'low' && distinctRange);
-  return { entry, point, lvl, rc, conf, trend, hist, distinctRange, emitPoint, emitRange,
+  const emitPoint = (levelConf === 'high' || levelConf === 'medium') && !!lvl && rc != null;
+  const emitRange = emitPoint || (levelConf === 'low' && distinctRange);
+  return { entry, point, lvl, rc, conf, levelConf, trendConf, trend, hist, distinctRange, emitPoint, emitRange,
     basis: (lvl && lvl.basis) || 'wholesale', asOf: point.asOf || null };
 }
 
@@ -214,56 +272,200 @@ function dirWord(trend, locale) {
   return es ? 'casi estable' : 'about flat';
 }
 
+// ---- The spike-vs-structural verdict, as a calibrated SUGGESTION ----
+// Delegates to the shared, confidence-aware MuntinCostVerdict so the static
+// pages, the hub, and the Cost Pulse dashboard speak identically — a thin-data
+// "structural" reads "Watch", not "Re-price", on every surface. The chip is
+// the terse action; the note is the calibrated reason. The flag is a build-
+// time, fact-gated qualitative read — no sourced numbers live here.
+const TONE_BIAS = { hold: 'hold', watch: 'watch', reprice: 're-price' };
+const TONE_LABEL = {
+  'hold':     { en: 'Hold',     es: 'Mantener' },
+  'watch':    { en: 'Watch',    es: 'Vigilar' },
+  're-price': { en: 'Re-price', es: 'Re-precificar' }
+};
+function verdictChip(v, locale) {
+  const bias = TONE_BIAS[v.tone] || 'watch';
+  const lab = TONE_LABEL[bias];
+  return `<span class="ci-read__verb" data-bias="${bias}">${lab[locale === 'es' ? 'es' : 'en']}</span>`;
+}
+function verdictLine(flag, confidence, locale) {
+  const v = MuntinCostVerdict.verdict(flag, confidence);
+  if (!v) return '';
+  const es = locale === 'es';
+  return `
+    <p class="ci-read__verdict">${verdictChip(v, locale)}${es ? v.note_es : v.note_en}</p>`;
+}
+
+// ---- Hub "what's moving now" + per-card action chip ----------------
+// Same shared verdict + confidence, so the hub never disagrees with the page
+// it links to. Surfaces the ones worth a look (re-price, then watch) first.
+const TONE_RANK = { reprice: 0, watch: 1, hold: 2 };
+const MOVING_REASON = {
+  reprice:      { en: 'elevated and sustained', es: 'elevado y sostenido' },
+  structural:   { en: 'up, but the data is thin', es: 'sube, pero hay pocos datos' },
+  emerging:     { en: 'a real move, not settled yet', es: 'un movimiento real, aún sin asentarse' },
+  insufficient: { en: 'too new to call', es: 'demasiado nuevo para concluir' }
+};
+function hubFlag(slug) { return (COST_INDEX[slug] || {}).flag || null; }
+function hubConf(slug) { const p = (COST_INDEX[slug] || {}).points; return (p && p[0] && p[0].confidence) || 'low'; }
+function ingVerdict(slug) { return MuntinCostVerdict.verdict(hubFlag(slug), hubConf(slug)); }
+function actionChip(slug, locale) { const v = ingVerdict(slug); return v ? verdictChip(v, locale) : ''; }
+function reasonFor(slug, v, locale) {
+  // reprice → firm structural; watch → name the underlying verdict honestly.
+  const key = v.tone === 'reprice' ? 'reprice' : ((hubFlag(slug) || {}).verdict || 'insufficient');
+  const r = MOVING_REASON[key] || MOVING_REASON.insufficient;
+  return locale === 'es' ? r.es : r.en;
+}
+function movingNowSection(slugs, locale) {
+  const es = locale === 'es';
+  const rows = slugs
+    .map((s) => ({ s, v: ingVerdict(s) }))
+    .filter((x) => x.v && x.v.tone !== 'hold')   // surface watch + reprice
+    .sort((a, b) => (TONE_RANK[a.v.tone] - TONE_RANK[b.v.tone]) || a.s.localeCompare(b.s));
+  const head = es ? 'Qué se está moviendo ahora' : "What's moving now";
+  if (!rows.length) {
+    const calm = es
+      ? `Nada exige acción esta semana — la mayoría de los ingredientes están en su rango habitual.`
+      : `Nothing needs action this week — most ingredients are sitting in their usual range.`;
+    return `<section class="ci-moving"><h2 class="ci-cat-h" id="moving">${head}</h2><p class="ci-moving-calm">${calm}</p></section>`;
+  }
+  const lis = rows.map((x) => {
+    const l = LABELS[x.s] || {};
+    const nm = (es ? (l.es || l.en) : l.en) || x.s;
+    const base = es ? '/es' : '';
+    return `<li class="ci-moving-item">${verdictChip(x.v, locale)}<a href="${base}/cost-index/${x.s}/">${escHtml(nm)}</a> <span class="ci-moving-reason">— ${escHtml(reasonFor(x.s, x.v, locale))}</span></li>`;
+  }).join('');
+  return `<section class="ci-moving"><h2 class="ci-cat-h" id="moving">${head}</h2><ul class="ci-moving-list">${lis}</ul></section>`;
+}
+
+// ---- History sparkline + "normally X–Y, right now Z" capsule -------
+// Charts the gated history series the page already ships as series.json,
+// so the trend the verdict asserts is visible, not just claimed. Numbers
+// only when confidence supports them (same gate as the market-read line);
+// the SVG carries a text alternative (role=img + aria-label) and a visible
+// capsule, closing the WCAG 1.1.1 gap. "Usual range" is the ingredient's
+// own tracked window — never implied as a seasonal/annual normal (which
+// would need ≥1yr of history we don't claim).
+function pctile(sorted, p) {
+  if (!sorted.length) return 0;
+  if (sorted.length === 1) return sorted[0];
+  const idx = (sorted.length - 1) * p, lo = Math.floor(idx), hi = Math.ceil(idx);
+  return lo === hi ? sorted[lo] : sorted[lo] + (sorted[hi] - sorted[lo]) * (idx - lo);
+}
+function medOf(a) { const s = a.slice().sort((x, y) => x - y); const n = s.length, m = Math.floor(n / 2); return n % 2 ? s[m] : (s[m - 1] + s[m]) / 2; }
+function sparkBlock(r, locale) {
+  const es = locale === 'es';
+  if (!r.emitPoint) return '';   // qualitative-only confidence → no chart, no numbers
+  const basis = r.basis;
+  const vals = (r.entry.history || [])
+    .filter((h) => h && h.basis === basis && typeof h.valueCents === 'number' && isFinite(h.valueCents) && h.valueCents > 0)
+    .map((h) => h.valueCents);
+  if (vals.length < 8) return '';   // too thin to chart an honest line
+  const sorted = vals.slice().sort((a, b) => a - b);
+  const lo = Math.round(pctile(sorted, 0.25)), hi = Math.round(pctile(sorted, 0.75));
+  const now = vals[vals.length - 1];
+  const pos = now < lo ? (es ? 'por debajo de su rango habitual — buena compra' : 'below its usual range — a good buy')
+    : now > hi ? (es ? 'en la parte alta de su rango habitual' : 'top of its usual range')
+    : (es ? 'dentro de su rango habitual' : 'inside its usual range');
+  const half = Math.floor(vals.length / 2);
+  const ch = (() => { const a = medOf(vals.slice(0, half)); const b = medOf(vals.slice(half)); return a > 0 ? (b - a) / a : 0; })();
+  const shape = ch > 0.03 ? (es ? 'subió a lo largo de la ventana' : 'rose over the tracked window')
+    : ch < -0.03 ? (es ? 'bajó a lo largo de la ventana' : 'eased over the tracked window')
+    : (es ? 'se mantuvo estable en la ventana' : 'held steady over the tracked window');
+  const windowNote = es ? 'en la ventana seguida' : 'over the tracked window';
+  const capsule = es
+    ? `Normalmente ${money(lo)}–${money(hi)}, ahora ${money(now)} — ${pos}.`
+    : `Normally ${money(lo)}–${money(hi)}, right now ${money(now)} — ${pos}.`;
+  // Percentile-of-history as a COUNT (never a smoothed "85th percentile"):
+  // the figure operators repeat. Last ≤12 prior reads, honesty-gated like
+  // the rest of the block.
+  const recent = vals.slice(Math.max(0, vals.length - 13), vals.length - 1);
+  const above = recent.filter((v) => now > v).length;
+  const rank = recent.length >= 8
+    ? (es ? `Más alto que ${above} de sus últimas ${recent.length} lecturas.` : `Higher than ${above} of its last ${recent.length} reads.`)
+    : '';
+  const alt = (es ? 'Precio ' : 'Price ') + shape + '. ' + capsule + (rank ? ' ' + rank : '');
+  const svg = MuntinSparkline.render(vals, {
+    width: 248, height: 46, stroke: '#2A50C8',
+    baseline: Math.round(pctile(sorted, 0.5)),
+    ariaLabel: alt
+  });
+  return `
+    <div class="ci-read__spark">${svg}<p class="ci-read__capsule">${capsule}${rank ? ` <span class="ci-read__rank">${rank}</span>` : ''} <span class="ci-read__capsule-note">(${windowNote})</span></p></div>`;
+}
+
 // ---- The visible "Market read" data block --------------------------
 function marketReadBlock(slug, locale) {
   const r = readingOf(slug);
   if (!r) return '';
   const es = locale === 'es';
+  const verdict = verdictLine(r.entry.flag, r.conf, locale);
+  const spark = sparkBlock(r, locale);
   const lab = LABELS[slug] || {};
   const unit = es ? (lab.unit_es || lab.unit_en) : lab.unit_en;
   const unitSfx = unit ? '/' + unit : '';
   const basisRef = es
     ? ({ wholesale: 'referencia mayorista', retail: 'referencia minorista', delivered: 'precio entregado' }[r.basis] || 'referencia')
     : ({ wholesale: 'wholesale reference', retail: 'retail reference', delivered: 'delivered' }[r.basis] || 'reference');
-  let rangeStr = '';
-  let hasNumber = false;
-  if (r.emitRange && r.distinctRange) {
-    rangeStr = `${money(r.rc[0])}–${money(r.rc[1])}${unitSfx} (${basisRef})`;
-    hasNumber = true;
-  } else if (r.emitPoint && r.rc) {
-    rangeStr = `${money(r.rc[0])}${unitSfx} (${basisRef}${es ? ', una fuente' : ', single source'})`;
-    hasNumber = true;
-  }
-  const trendStr = (r.emitPoint && typeof r.trend.pct === 'number')
-    ? `, ${dirWord(r.trend, locale)} ${(r.trend.pct >= 0 ? '+' : '')}${(r.trend.pct * 100).toFixed(1).replace(/\.0$/, '')}%`
-    : (r.trend.dir ? `, ${dirWord(r.trend, locale)}` : '');
-  const conf = r.conf;
-  const confWord = es ? ({ high: 'alta', medium: 'media', low: 'baja', directional: 'direccional' }[conf] || conf) : conf;
-  const agencies = citedAgencies(r.entry, r.point);
-  const shortList = [...new Set((r.point.provenance || []).map((p) => shortSource(p.source)))];
   const asOf = r.asOf || '—';
   const head = es ? 'Lectura de mercado' : 'Market read';
-  const dw = r.trend.dir ? dirWord(r.trend, locale) : null;
-  let line;
-  if (hasNumber) {
+  const nMk = (r.lvl && r.lvl.nFamilies) || 0;
+  const measured = !!(r.lvl && r.lvl.rangeBasis === 'markets' && nMk >= 3);
+  const srcNote = measured
+    ? (es ? ` en ${nMk} mercados USDA` : ` across ${nMk} USDA markets`)
+    : (es ? ', un mercado USDA' : ', single USDA market');
+  // The LEVEL — a dated, sourced wholesale fact (not "low"): a measured
+  // multi-market range, or a single authoritative market.
+  let line, hasNumber = false;
+  if (r.emitRange && r.distinctRange) {
     line = es
-      ? `Alrededor de ${rangeStr}${trendStr} en la ventana reciente.`
-      : `About ${rangeStr}${trendStr} over the recent window.`;
+      ? `Alrededor de ${money(r.rc[0])}–${money(r.rc[1])}${unitSfx} (${basisRef}${srcNote}), al ${asOf}.`
+      : `About ${money(r.rc[0])}–${money(r.rc[1])}${unitSfx} (${basisRef}${srcNote}), as of ${asOf}.`;
+    hasNumber = true;
+  } else if (r.emitPoint && r.rc) {
+    line = es
+      ? `Alrededor de ${money(r.rc[0])}${unitSfx} (${basisRef}${srcNote}), al ${asOf}.`
+      : `About ${money(r.rc[0])}${unitSfx} (${basisRef}${srcNote}), as of ${asOf}.`;
+    hasNumber = true;
   } else {
+    // Defensive only — the shippable-bar gate keeps no-level items off the site.
+    const dw = r.trend.dir ? dirWord(r.trend, locale) : null;
     line = es
-      ? `${dw ? 'Tendencia ' + dw : 'Sin tendencia clara'} en la ventana reciente — sin cifra publicada por ahora (poca coincidencia entre fuentes para fijar un número).`
-      : `${dw ? 'Trending ' + dw : 'No clear trend'} over the recent window — no published figure this period (too little source agreement to set a number).`;
+      ? `${dw ? 'Tendencia ' + dw : 'Sin tendencia clara'} en la ventana reciente.`
+      : `${dw ? 'Trending ' + dw : 'No clear trend'} over the recent window.`;
   }
+  // The TREND — its own honesty. A firm trend states the move; a low-confidence
+  // one is a hint with no number flaunted.
+  let trendLine = '';
+  if (hasNumber && typeof r.trend.pct === 'number' && r.trendConf) {
+    const dirw = dirWord(r.trend, locale);
+    if (r.trendConf === 'low') {
+      trendLine = `<p class="ci-read__trend">${es
+        ? `Tendencia ${dirw} en la ventana — pero las fuentes no coinciden; tómalo como una pista, no una cifra firme.`
+        : `Trend ${dirw} over the window — but the sources disagree; read it as a hint, not a firm move.`}</p>`;
+    } else {
+      const pctTxt = `${(r.trend.pct >= 0 ? '+' : '')}${(r.trend.pct * 100).toFixed(1).replace(/\.0$/, '')}%`;
+      trendLine = `<p class="ci-read__trend">${es
+        ? `Tendencia: ${dirw} ${pctTxt} en la ventana reciente.`
+        : `Trend: ${dirw} ${pctTxt} over the recent window.`}</p>`;
+    }
+  }
+  // Badge carries the LEVEL's own confidence (what the number is worth), dated.
+  const badgeConf = hasNumber ? r.levelConf : r.conf;
+  const confWord = es ? ({ high: 'alta', medium: 'media', low: 'baja', directional: 'direccional' }[badgeConf] || badgeConf) : badgeConf;
   const badge = `${es ? 'confianza' : 'confidence'} ${confWord} · ${es ? 'al' : 'as of'} ${asOf}`;
+  const agencies = citedAgencies(r.entry, r.point);
+  const shortList = [...new Set((r.point.provenance || []).map((p) => shortSource(p.source)))];
   const disclaimer = r.basis === 'retail'
     ? (es ? 'Referencia minorista, no el precio mayorista ni el entregado que pagas.' : 'Retail reference, not the wholesale or delivered price you pay.')
     : (es ? 'Referencia mayorista, no el precio entregado que pagas.' : 'Wholesale reference, not the delivered price you pay.');
   const srcBody = `${(shortList.length ? shortList.join(' · ') : agencies.map((a) => a.name).join(' · '))} — ${es ? 'datos públicos' : 'public data'}, ${es ? 'al' : 'as of'} ${asOf}. ${disclaimer}`;
   const liveLabel = es ? `Ver ${(lab.es || lab.en || slug).toLowerCase()} en vivo en Cost Pulse` : `See ${(lab.en || slug).toLowerCase()} live in Cost Pulse`;
   return `
-  <aside class="ci-read" aria-label="${es ? 'Lectura de mercado' : 'Market read'}">
+  <aside class="ci-read" data-layer="measured" aria-label="${es ? 'Lectura de mercado' : 'Market read'}">
     <p class="ci-read__head">${head}<span class="ci-read__badge">${badge}</span></p>
-    <p class="ci-read__line">${line}</p>
+    <p class="ci-read__line">${line}</p>${trendLine}${verdict}${spark}
     <details class="ci-read__src"><summary>${es ? 'Fuentes' : 'Sources'} · ${(shortList.length || agencies.length)}</summary><div>${srcBody}</div></details>
     <p class="ci-read__live"><a href="${es ? '/es' : ''}/tools/cost-pulse/#ci-${slug}">${liveLabel} <span aria-hidden="true">→</span></a></p>
   </aside>`;
@@ -493,6 +695,20 @@ main{padding-top:64px}
 .ci-read__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin:0 0 6px}
 .ci-read__badge{font-weight:600;text-transform:none;letter-spacing:0;font-size:12px;color:var(--ink-soft);margin-left:8px}
 .ci-read__line{font-size:16px;line-height:1.55;color:var(--ink);margin:0}
+.ci-read__trend{margin:6px 0 0;font-size:14.5px;line-height:1.5;color:var(--ink-soft)}
+.ci-read__verdict{margin:10px 0 0;font-size:15px;line-height:1.5;color:var(--ink)}
+.ci-read__verb{display:inline-block;font-weight:700;font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:999px;margin-right:8px;vertical-align:1px;background:var(--cream);border:1px solid var(--line);color:var(--ink-soft)}
+.ci-read__verb[data-bias="hold"]{color:#2A50C8;border-color:#2A50C8}
+.ci-read__verb[data-bias="watch"]{color:#8a6d1f;border-color:#cdb368}
+.ci-read__verb[data-bias="re-price"]{color:#A23B2D;border-color:#A23B2D}
+.ci-read__spark{margin:12px 0 0;display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px}
+.ci-read__spark .mtn-spark{flex:0 0 auto;overflow:visible}
+.ci-read__capsule{margin:0;font-size:14.5px;line-height:1.45;color:var(--ink)}
+.ci-read__capsule-note{color:var(--ink-soft);font-size:12.5px}
+.ci-read__rank{color:var(--ink-soft)}
+.ci-why{margin:14px 0 8px;padding:14px 18px;background:var(--white);border:1px solid var(--line);border-radius:12px}
+.ci-why__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 6px}
+.ci-why__line{font-size:15px;line-height:1.55;color:var(--ink);margin:0}
 .ci-read__src{margin-top:8px;font-size:12.5px}
 .ci-read__src summary{cursor:pointer;color:var(--ink-soft);font-weight:600}
 .ci-read__src div{margin-top:6px;color:var(--ink-soft);line-height:1.5}
@@ -514,6 +730,31 @@ main{padding-top:64px}
 .ci-card a:hover{color:var(--teal)}
 .ci-card-note{display:block;font-size:13px;color:var(--ink-soft);margin-top:4px}
 .ci-cat-h{font-family:var(--font-display);font-size:16px;color:var(--ink-soft);margin:30px 0 0;text-transform:uppercase;letter-spacing:.04em;font-weight:600}
+.ci-card-action{margin-top:10px}
+.ci-moving{margin:20px 0 8px;padding:16px 20px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:12px}
+.ci-moving .ci-cat-h{margin:0 0 10px}
+.ci-moving-list{list-style:none;margin:0;padding:0}
+.ci-moving-item{margin:0 0 8px;font-size:15.5px;line-height:1.5}
+.ci-moving-item a{color:var(--ink);text-decoration:none;font-weight:600;border-bottom:1px dashed var(--line)}
+.ci-moving-item a:hover{color:var(--teal)}
+.ci-moving-reason{color:var(--ink-soft);font-size:14px}
+.ci-moving-calm{margin:0;font-size:15.5px;color:var(--ink)}
+.ci-card--pending{opacity:.72;background:var(--cream-2)}
+.ci-card--pending a{color:var(--ink-soft)}
+.ci-pending-note{font-size:13.5px;color:var(--ink-soft);margin:8px 0 0}
+.ci-read--pending{border-left-color:#cdb368;background:var(--cream-2)}
+.ci-read--pending .ci-read__head{color:#8a6d1f}
+.ci-outlook{margin:14px 0 8px;padding:16px 20px;background:#fff;border:1px solid var(--line);border-left:4px solid #6b4fa1;border-radius:12px}
+.ci-outlook__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#6b4fa1;margin:0 0 6px}
+.ci-outlook__line{font-size:15.5px;line-height:1.5;color:var(--ink);margin:0}
+.ci-outlook__record{margin:6px 0 0;font-size:12.5px;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+.ci-outlook__how{margin-top:8px;font-size:12.5px}
+.ci-outlook__how summary{cursor:pointer;color:var(--ink-soft);font-weight:600}
+.ci-outlook__how div{margin-top:6px;color:var(--ink-soft);line-height:1.55}
+.ci-outlook__panel{margin:0 0 8px;padding-left:18px}
+.ci-outlook__panel li{margin:0 0 4px}
+.ci-outlook__lab{margin:10px 0 0;font-size:13.5px}
+.ci-outlook__lab a{color:#6b4fa1;text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=${SHELL_HASH.core}" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=${SHELL_HASH.article}" onload="this.onload=null;this.rel='stylesheet'">
@@ -543,6 +784,43 @@ const pageTail = `</div>
 `;
 
 // ---- Per-ingredient body content -----------------------------------
+// "Why it's moving now" — turns the static driver prose into a dated read:
+// each upstream input's CURRENT direction, with feed-grain framed as a
+// leading association (it has tended to move before protein prices) and
+// energy as coincident. Direction words only (allowed in prose, dated);
+// never a fabricated lag number — the driver/ingredient cadences differ,
+// so a build-time lag would be false precision. Honest rule: not a cause.
+function whyMovingBlock(slug, locale) {
+  const es = locale === 'es';
+  const meta = ING_META[slug] || { drivers: [] };
+  const rel = (meta.drivers || [])
+    .map((d) => ({ d, dr: DRIVERS[d] }))
+    .filter((x) => x.dr && x.dr.trend && x.dr.trend.dir);
+  if (!rel.length) return '';
+  const labelOf = (d) => ((es ? (DRIVER_LABELS[d] && DRIVER_LABELS[d].es) : (DRIVER_LABELS[d] && DRIVER_LABELS[d].en)) || d)
+    .replace(/\s*\([^)]*\)\s*$/, '');   // drop a trailing "(feed)" — the clause already says feed-grain
+  const part = (x) => `${escHtml(labelOf(x.d))} (${dirWord(x.dr.trend, locale)})`;
+  const feed = rel.filter((x) => x.dr.kind === 'feed-grain');
+  const energy = rel.filter((x) => x.dr.kind !== 'feed-grain');
+  const clauses = [];
+  if (feed.length) clauses.push(
+    (es ? 'forraje — ' : 'feed-grain — ') + feed.map(part).join(', ') +
+    (es ? ' — que ha tendido a moverse antes que los precios de proteína' : ' — which has tended to move before protein prices'));
+  if (energy.length) clauses.push(
+    energy.map(part).join(', ') + (es ? ', que se mueve junto al costo de los alimentos' : ', which moves alongside food costs'));
+  const lead = es ? 'Insumos río arriba ahora: ' : 'Upstream inputs right now: ';
+  const tail = es ? ' Asociación, no causa.' : ' Association, not cause.';
+  let asOf = null;
+  rel.forEach((x) => (x.dr.history || []).forEach((h) => { if (h.date && (!asOf || h.date > asOf)) asOf = h.date; }));
+  const head = es ? 'Por qué se mueve' : "Why it's moving";
+  const badge = asOf ? `<span class="ci-read__badge">${es ? 'al' : 'as of'} ${asOf}</span>` : '';
+  return `
+  <aside class="ci-why" aria-label="${head}">
+    <p class="ci-why__head">${head}${badge}</p>
+    <p class="ci-why__line">${lead}${clauses.join('; ')}.${tail}</p>
+  </aside>`;
+}
+
 function whyItMatters(slug, locale) {
   const es = locale === 'es';
   const lab = LABELS[slug] || {};
@@ -616,7 +894,139 @@ function ledeDirection(slug, locale) {
   return { word: dirWord(r.trend, locale), asOf: r.asOf };
 }
 
+// ---- The Pressure overlay — INFERRED outlook, structurally separate -------
+// A distinct data-layer="inferred" aside: direction + confidence + the leading-
+// indicator panel. NO price ever appears here (the record carries none);
+// check-pressure-honesty.mjs recomputes the arrow and scans this block for any
+// $. Verbs are honest — "looks to be", "tends to lead", never "will".
+function pressureBlock(slug, locale) {
+  const rec = PRESSURE_ITEMS[slug];
+  if (!rec || rec.direction === 'unknown') return '';
+  const es = locale === 'es';
+  const dir = rec.under_review ? 'review' : rec.direction;
+  const lines = {
+    building: { en: 'Cost pressure looks to be building — the leading signals lean higher.', es: 'La presión de costo parece ir en aumento — las señales adelantadas apuntan al alza.' },
+    easing:   { en: 'Cost pressure looks to be easing — the leading signals lean lower.', es: 'La presión de costo parece ceder — las señales adelantadas apuntan a la baja.' },
+    steady:   { en: 'Signals are mixed — no clear lean right now.', es: 'Señales mixtas — sin una tendencia clara por ahora.' },
+    review:   { en: 'Awaiting the next measured price — too far past the last print to call.', es: 'A la espera de la próxima lectura medida — demasiado tiempo desde la última cifra para concluir.' }
+  };
+  const line = lines[dir][es ? 'es' : 'en'];
+  const confWord = es ? ({ high: 'alta', moderate: 'media', low: 'baja' }[rec.confidence] || rec.confidence) : rec.confidence;
+  const fresh = rec.freshness_weeks != null ? rec.freshness_weeks : '—';
+  const head = es ? 'Perspectiva' : 'Outlook';
+  const chip = es
+    ? `inferido · confianza ${confWord} · hace ${fresh} sem de la última cifra`
+    : `inferred · ${confWord} confidence · ${fresh}w since last price`;
+  const rows = (rec.contributors || []).map((c) => {
+    const nm = (INDICATOR_NAME[c.indicator] && INDICATOR_NAME[c.indicator][es ? 'es' : 'en']) || c.indicator;
+    const src = sourceShort(c.source);
+    const url = PRESSURE_SOURCES[c.cite] || PRESSURE_SOURCES[c.source] || null;
+    const push = c.signed_signal > 0 ? (es ? 'empuja al alza' : 'pushing up')
+      : c.signed_signal < 0 ? (es ? 'empuja a la baja' : 'pushing down')
+      : (es ? 'neutral' : 'neutral');
+    const unit = c.lead ? (c.lead.unit === 'week' ? (es ? 'sem' : 'wk') : c.lead.unit) : '';
+    const lead = c.lead ? `~${c.lead.min}–${c.lead.max} ${unit}` : '';
+    const nameHtml = url ? `<a href="${url}" rel="noopener">${escHtml(nm)}</a>` : escHtml(nm);
+    return `<li>${nameHtml} (${escHtml(src)}) — ${push}${lead ? `; ${es ? 'suele anticipar' : 'tends to lead'} ${lead}` : ''}.</li>`;
+  }).join('');
+  const howHead = es ? 'Cómo se calcula' : 'How this is computed';
+  const note = es
+    ? `Dirección inferida de indicadores públicos adelantados — no es un precio. Regla ${rec.rule_version || ''}.`
+    : `Inferred direction from public leading indicators — not a price. Rule ${rec.rule_version || ''}.`;
+  return `
+  <aside class="ci-outlook" data-layer="inferred" data-as-of="${rec.as_of || ''}" data-rule-version="${rec.rule_version || ''}" aria-label="${head}">
+    <p class="ci-outlook__head">${head}<span class="ci-read__badge">${chip}</span></p>
+    <p class="ci-outlook__line" data-dir="${dir}">${line}</p>${(rec.track_record && rec.track_record.n) ? `
+    <p class="ci-outlook__record">${es ? `Acertó ${rec.track_record.hits} de las últimas ${rec.track_record.n} lecturas medidas.` : `Right on ${rec.track_record.hits} of the last ${rec.track_record.n} measured reads.`}</p>` : ''}
+    <details class="ci-outlook__how"><summary>${howHead}</summary><div><ul class="ci-outlook__panel">${rows}</ul><p>${note}</p></div></details>
+    <p class="ci-outlook__lab"><a href="${es ? '/es' : ''}/cost-index/lab/?it=${slug}">${es ? 'Juega con las señales' : 'Play with the signals'} <span aria-hidden="true">→</span></a></p>
+  </aside>`;
+}
+
+// The shippable bar (tools/_shared/cost-confidence.js): an ingredient earns a
+// full public reading only with a credible wholesale dollar level. Below the
+// bar it gets an honest "expanding coverage" page — URL kept alive (slugs are
+// final-forever), but no apologetic price.
+function shippable(slug) {
+  const e = COST_INDEX[slug];
+  const p = e && Array.isArray(e.points) && e.points[0];
+  return !!p && MuntinCostConfidence.isShippable(p);
+}
+
+// Expanding-coverage page: honest absence, not an apology. No price, no Dataset.
+function emitExpandingPage(slug, locale) {
+  const es = locale === 'es';
+  const lang = es ? 'es' : 'en';
+  const base = es ? '/es' : '';
+  const lab = LABELS[slug] || {};
+  const name = es ? (lab.es || lab.en || slug) : (lab.en || slug);
+  const lc = name.toLowerCase();
+  const meta = ING_META[slug] || { cat: 'pantry' };
+  const cat = CATEGORIES[meta.cat] || { en: 'Pantry', es: 'Despensa' };
+  const canonEn = `https://muntin.digital/cost-index/${slug}/`;
+  const canonEs = `https://muntin.digital/es/cost-index/${slug}/`;
+  const title = es
+    ? `${name} al mayoreo — cobertura en preparación | Muntin Digital`
+    : `${name} wholesale price — coverage in progress | Muntin Digital`;
+  const desc = es
+    ? `Aún no publicamos un precio mayorista para ${lc}: solo mostramos una cifra cuando los datos públicos respaldan una lectura honesta y completa.`
+    : `We don't publish a wholesale price for ${lc} yet — the index shows a number only when public data supports an honest, complete read.`;
+  const jsonld = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@graph': [
+      { '@type': 'WebPage', '@id': (es ? canonEs : canonEn) + '#page', 'url': es ? canonEs : canonEn,
+        'name': name, 'inLanguage': es ? 'es-US' : 'en-US', 'isPartOf': { '@id': 'https://muntin.digital/#website' },
+        'description': desc },
+      { '@type': 'BreadcrumbList', 'itemListElement': [
+        { '@type': 'ListItem', 'position': 1, 'name': es ? 'Inicio' : 'Home', 'item': es ? 'https://muntin.digital/es/' : 'https://muntin.digital/' },
+        { '@type': 'ListItem', 'position': 2, 'name': es ? 'Índice de costos' : 'Cost index', 'item': (es ? 'https://muntin.digital/es' : 'https://muntin.digital') + '/cost-index/' },
+        { '@type': 'ListItem', 'position': 3, 'name': name, 'item': es ? canonEs : canonEn } ] }
+    ]
+  });
+  const body = es
+    ? `<div class="ci-body">
+    <aside class="ci-read ci-read--pending" aria-label="Cobertura en preparación">
+      <p class="ci-read__head">Cobertura en preparación</p>
+      <p class="ci-read__line">Seguimos ${lc} para el índice, pero todavía no tenemos una lectura mayorista gratuita y completa que respaldaríamos — así que no publicamos una cifra. El índice muestra un precio solo cuando los datos públicos lo sostienen.</p>
+    </aside>
+    <h2>Por qué aún no hay número</h2>
+    <p>La regla es simple: un precio se publica solo cuando podemos obtenerlo de datos públicos (USDA, BLS, FRED) con una calidad sobre la que actuaríamos nosotros mismos. Para ${lc}, la serie mayorista gratuita que necesitamos aún no está conectada. Una estimación de una sola fuente sería peor que nada.</p>
+    <h2>Qué puedes hacer ahora</h2>
+    <p>Compara tu última factura de ${lc} con tus facturas recientes, o abre <a href="${base}/tools/cost-pulse/">Cost Pulse</a> para los ingredientes que sí cubrimos. Esta página se completará cuando lo hagan los datos.</p>
+    <div class="ci-cta-row">
+      <a class="btn btn-ghost" href="${base}/cost-index/">Ver todas las lecturas</a>
+      <a class="btn btn-ghost" href="${base}/glossary/cost-index/">Qué es un índice de costos</a>
+    </div>
+  </div>`
+    : `<div class="ci-body">
+    <aside class="ci-read ci-read--pending" aria-label="Coverage in progress">
+      <p class="ci-read__head">Coverage in progress</p>
+      <p class="ci-read__line">We track ${lc} for the index, but we don't yet have a complete, free wholesale read we'd stand behind — so we're not publishing a number. The index shows a price only when public data supports an honest one.</p>
+    </aside>
+    <h2>Why there's no number yet</h2>
+    <p>The rule is simple: a price ships only when we can source it from public USDA, BLS or FRED data at a quality we'd act on ourselves. For ${lc}, the free wholesale series we need isn't wired up yet — and a thin, single-source guess would be worse than nothing.</p>
+    <h2>What you can do now</h2>
+    <p>Check your last ${lc} invoice against your own recent ones, or open <a href="${base}/tools/cost-pulse/">Cost Pulse</a> for the ingredients we do cover. This page fills in when the data does.</p>
+    <div class="ci-cta-row">
+      <a class="btn btn-ghost" href="${base}/cost-index/">Browse all readings</a>
+      <a class="btn btn-ghost" href="${base}/glossary/cost-index/">What is a cost index?</a>
+    </div>
+  </div>`;
+  return pageHead({ lang, locale, title, desc, canonEn, canonEs, jsonld }) + `
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="${base}/">${es ? 'Inicio' : 'Home'}</a> ›
+    <a href="${base}/cost-index/">${es ? 'Índice de costos' : 'Cost index'}</a> ›
+    ${escHtml(name)}
+  </nav>
+  <section class="ci-hero">
+    <p class="ci-eyebrow"><a href="${base}/cost-index/#${meta.cat}">${escHtml(es ? cat.es : cat.en)}</a></p>
+    <h1>${escHtml(name)}</h1>
+  </section>
+  ${body}` + pageTail;
+}
+
 function emitIngredientPage(slug, locale) {
+  if (!shippable(slug)) return emitExpandingPage(slug, locale);
   const es = locale === 'es';
   const lang = es ? 'es' : 'en';
   const base = es ? '/es' : '';
@@ -673,6 +1083,8 @@ function emitIngredientPage(slug, locale) {
   </section>
   <div class="ci-body">
     ${marketReadBlock(slug, locale)}
+    ${pressureBlock(slug, locale)}
+    ${whyMovingBlock(slug, locale)}
     ${whyItMatters(slug, locale)}
     ${howToUse(slug, locale)}
     ${faqHtml}
@@ -699,24 +1111,29 @@ function emitHubPage(locale, slugs) {
   const base = es ? '/es' : '';
   const canonEn = 'https://muntin.digital/cost-index/';
   const canonEs = 'https://muntin.digital/es/cost-index/';
+  // Only ingredients past the shippable bar get a live reading; the rest are
+  // listed honestly under "expanding coverage" (no price, URL preserved).
+  const shipSlugs = slugs.filter(shippable);
+  const pendingSlugs = slugs.filter((s) => !shippable(s));
   const title = es ? 'Índice de costos de restaurante | Muntin Digital' : 'Restaurant ingredient cost index | Muntin Digital';
   const desc = es
     ? 'Dónde se cotizan al mayoreo ingredientes comunes de restaurante — un rango típico y la tendencia, de fuentes públicas (USDA, BLS, FRED) — para distinguir un movimiento de mercado de un sobreprecio.'
     : 'Where common restaurant ingredients are priced wholesale — a typical range and a trend, from public sources (USDA, BLS, FRED) — so you can tell a market move from a vendor markup.';
   const heroH1 = es ? 'Índice de costos de ingredientes' : 'Restaurant ingredient cost index';
   const heroLede = es
-    ? `Dónde se cotizan al mayoreo ${slugs.length} ingredientes comunes de restaurante — un rango típico y una tendencia, de datos públicos de USDA, BLS y FRED — para distinguir un movimiento real de mercado de un sobreprecio de proveedor. Elige un ingrediente para su lectura, o abre Cost Pulse para verlos todos a la vez.`
-    : `Where ${slugs.length} common restaurant ingredients are priced wholesale — a typical range and a trend, drawn from public USDA, BLS and FRED data — so you can tell a real market move from a vendor markup. Pick an ingredient for its reading, or open Cost Pulse to see them all at once.`;
+    ? `Dónde se cotizan al mayoreo ${shipSlugs.length} ingredientes comunes de restaurante — un rango típico y una tendencia, de datos públicos de USDA, BLS y FRED — para distinguir un movimiento real de mercado de un sobreprecio de proveedor. Elige un ingrediente para su lectura, o abre Cost Pulse para verlos todos a la vez.`
+    : `Where ${shipSlugs.length} common restaurant ingredients are priced wholesale — a typical range and a trend, drawn from public USDA, BLS and FRED data — so you can tell a real market move from a vendor markup. Pick an ingredient for its reading, or open Cost Pulse to see them all at once.`;
 
-  // Grouped cards by category.
+  // Grouped cards by category — shippable readings only.
   const byCat = {};
-  for (const s of slugs) { const c = (ING_META[s] || {}).cat || 'pantry'; (byCat[c] = byCat[c] || []).push(s); }
+  for (const s of shipSlugs) { const c = (ING_META[s] || {}).cat || 'pantry'; (byCat[c] = byCat[c] || []).push(s); }
   const sections = CATEGORY_ORDER.filter((c) => byCat[c] && byCat[c].length).map((c) => {
     const cat = CATEGORIES[c];
     const cards = byCat[c].map((s) => {
       const l = LABELS[s] || {};
       const nm = (es ? (l.es || l.en) : l.en) || s;
-      return `<div class="ci-card"><a href="${base}/cost-index/${s}/">${escHtml(nm)}</a><span class="ci-card-note">${escHtml(hubCardNote(s, locale))}</span></div>`;
+      const chip = actionChip(s, locale);
+      return `<div class="ci-card"><a href="${base}/cost-index/${s}/">${escHtml(nm)}</a><span class="ci-card-note">${escHtml(hubCardNote(s, locale))}</span>${chip ? `<div class="ci-card-action">${chip}</div>` : ''}</div>`;
     }).join('');
     return `<h2 class="ci-cat-h" id="${c}">${escHtml(es ? cat.es : cat.en)}</h2><div class="ci-grid">${cards}</div>`;
   }).join('\n');
@@ -727,11 +1144,16 @@ function emitHubPage(locale, slugs) {
 
   // Schema: DataCatalog + CollectionPage + ItemList + Breadcrumb.
   const baseUrl = es ? canonEs : canonEn;
-  const datasetRefs = slugs.map((s) => ({ '@id': `https://muntin.digital${base}/cost-index/${s}/#dataset` }));
-  const items = slugs.map((s, i) => {
+  // Catalog + ItemList carry only complete datasets (shippable readings).
+  const datasetRefs = shipSlugs.map((s) => ({ '@id': `https://muntin.digital${base}/cost-index/${s}/#dataset` }));
+  const items = shipSlugs.map((s, i) => {
     const l = LABELS[s] || {};
     return { '@type': 'ListItem', 'position': i + 1, 'name': (es ? (l.es || l.en) : l.en) || s, 'item': `${baseUrl}${s}/` };
   });
+  // Honest "expanding coverage" list — kept-alive URLs, no price claimed.
+  const pendingSection = pendingSlugs.length ? `<h2 class="ci-cat-h" id="expanding">${es ? 'Cobertura en preparación' : 'Expanding coverage'}</h2>
+    <p class="ci-pending-note">${es ? 'Seguimos estos, pero aún no publicamos un precio: solo mostramos una cifra cuando los datos públicos gratuitos la sostienen.' : 'We track these, but don\'t publish a price yet — the index shows a number only when free public data supports an honest one.'}</p>
+    <div class="ci-grid">${pendingSlugs.map((s) => { const l = LABELS[s] || {}; const nm = (es ? (l.es || l.en) : l.en) || s; return `<div class="ci-card ci-card--pending"><a href="${base}/cost-index/${s}/">${escHtml(nm)}</a><span class="ci-card-note">${es ? 'cobertura en preparación' : 'coverage in progress'}</span></div>`; }).join('')}</div>` : '';
   const crumb = es
     ? [['Inicio', 'https://muntin.digital/es/'], ['Índice de costos', baseUrl]]
     : [['Home', 'https://muntin.digital/'], ['Cost index', baseUrl]];
@@ -770,12 +1192,110 @@ function emitHubPage(locale, slugs) {
   <div class="ci-body">
     <div class="ci-cta-row">
       <a class="btn btn-primary" href="${base}/tools/cost-pulse/">${es ? 'Abrir Cost Pulse' : 'Open Cost Pulse'}</a>
+      <a class="btn btn-ghost" href="${base}/cost-index/lab/">${es ? 'Laboratorio de Presión' : 'Pressure Lab'}</a>
       <a class="btn btn-ghost" href="${base}/glossary/cost-index/">${es ? '¿Qué es un índice de costos?' : 'What is a cost index?'}</a>
     </div>
+    ${movingNowSection(shipSlugs, locale)}
     ${sections}
+    ${pendingSection}
     ${driverNote}
     <p class="ci-source"><strong>${es ? 'Fuente' : 'Sourced'}:</strong> ${es ? 'datos públicos de mercado (USDA AMS/LMR, BLS, FRED, EIA, NOAA), vía' : 'public market data (USDA AMS/LMR, BLS, FRED, EIA, NOAA), via'} <a href="${base}/tools/cost-pulse/">Cost Pulse</a>.</p>
   </div>` + pageTail;
+}
+
+// ---- Pressure Lab — the playable engine (a new tool page) -----------
+const LAB_CSS = `<style>
+#pressureLab[data-layer]{margin:18px 0}
+.plab-pick{display:flex;align-items:center;gap:8px;margin:0 0 14px;flex-wrap:wrap}
+.plab-pick__label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft)}
+.plab-pick__select{font:inherit;font-size:14px;padding:6px 10px;border:1px solid var(--line);border-radius:8px;background:var(--white);color:var(--ink)}
+.plab-verdict{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;padding:16px 20px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid #6b4fa1;border-radius:12px}
+.plab-arrow{font-size:22px;line-height:1}
+.plab-arrow[data-dir="building"]{color:#A23B2D}.plab-arrow[data-dir="easing"]{color:#2A50C8}.plab-arrow[data-dir="steady"]{color:#8a6d1f}
+.plab-verdict__line{font-size:16px;margin:0;font-weight:600;flex:1 1 60%}
+.plab-verdict__meta{font-size:11px;color:var(--ink-soft);margin:0;text-transform:uppercase;letter-spacing:.04em}
+.plab-sr{position:absolute;left:-9999px}
+.plab-board{margin:14px 0;display:grid;gap:8px}
+.plab-bar{display:grid;grid-template-columns:140px 1fr 70px;align-items:center;gap:10px;font-size:13px}
+.plab-bar__name{color:var(--ink-soft)}
+.plab-bar__track{height:14px;background:var(--cream-2);border-radius:8px;overflow:hidden}
+.plab-bar__fill{display:block;height:100%;border-radius:8px}
+.plab-bar__fill[data-push="up"]{background:#A23B2D}.plab-bar__fill[data-push="down"]{background:#2A50C8}.plab-bar__fill[data-push="flat"]{background:#9aa0ab}
+.plab-bar__fill[data-zero]{opacity:.4}
+.plab-bar__push{font-variant-numeric:tabular-nums;color:var(--ink-soft);text-align:right}
+.plab-sum{display:grid;grid-template-columns:140px 1fr 120px;align-items:center;gap:10px;margin-top:6px;font-size:13px}
+.plab-sum__label{color:var(--ink-soft)}
+.plab-meter{position:relative;height:18px;background:var(--cream-2);border-radius:9px}
+.plab-meter__line{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--ink-soft);opacity:.5}
+.plab-meter__needle{position:absolute;top:-4px;width:4px;height:26px;border-radius:2px;background:#6b4fa1;transform:translateX(-50%)}
+.plab-meter__needle[data-dir="building"]{background:#A23B2D}.plab-meter__needle[data-dir="easing"]{background:#2A50C8}
+.plab-sum__num{font-variant-numeric:tabular-nums;color:var(--ink-soft);text-align:right}
+.plab-controls{margin:16px 0;padding:14px 18px;background:var(--white);border:1px solid var(--line);border-radius:12px}
+.plab-controls__head{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft);margin:0 0 10px}
+.plab-ctrl{margin:0 0 10px}
+.plab-ctrl__label{display:flex;justify-content:space-between;font-size:13.5px;margin:0 0 2px}
+.plab-ctrl__val{font-variant-numeric:tabular-nums;color:#6b4fa1;font-weight:600}
+.plab-ctrl input[type=range]{width:100%;accent-color:#6b4fa1}
+.plab-reset,.plab-share{font:inherit;font-size:13px;cursor:pointer;border:1px solid var(--line);background:var(--cream);border-radius:999px;padding:6px 14px;margin:4px 6px 0 0}
+.plab-reset:hover,.plab-share:hover{border-color:#6b4fa1;color:#6b4fa1}
+.plab-foot{font-size:12.5px;color:var(--ink-soft);margin:8px 0 0}
+@media (max-width:560px){.plab-bar,.plab-sum{grid-template-columns:90px 1fr 56px}}
+</style>`;
+
+function emitLabPage(locale) {
+  const es = locale === 'es';
+  const lang = es ? 'es' : 'en';
+  const base = es ? '/es' : '';
+  const canonEn = 'https://muntin.digital/cost-index/lab/';
+  const canonEs = 'https://muntin.digital/es/cost-index/lab/';
+  const h1 = es ? 'Laboratorio de Presión' : 'Pressure Lab';
+  const title = es ? `${h1} — juega con lo que mueve tus costos | Muntin Digital`
+    : `${h1} — play with what's moving your food costs | Muntin Digital`;
+  const desc = es
+    ? 'Mueve un indicador adelantado y observa cómo cambia en vivo la perspectiva de costos — un modelo transparente, sin fetch, con datos públicos de USDA y EIA. Una dirección, nunca un precio.'
+    : 'Drag a leading indicator and watch the food-cost outlook change live — a transparent, no-fetch model fed by free USDA and EIA data. A direction, never a price.';
+  const lede = es
+    ? 'Este es el modelo real detrás de la perspectiva del Índice de Costos — y puedes jugarlo. Mueve una señal y observa cómo cambia la dirección. Nada aquí es un precio; es hacia dónde parecen ir los costos.'
+    : 'This is the actual model behind the Cost Index outlook — and you can play it. Move a signal and watch the direction change. Nothing here is a price; it\'s where costs look to be headed.';
+  const baseUrl = es ? canonEs : canonEn;
+  const jsonld = JSON.stringify({ '@context': 'https://schema.org', '@graph': [
+    { '@type': 'WebApplication', '@id': baseUrl + '#tool', 'name': h1, 'url': baseUrl, 'applicationCategory': 'BusinessApplication', 'operatingSystem': 'Web', 'inLanguage': es ? 'es' : 'en', 'isAccessibleForFree': true, 'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' }, 'creator': { '@id': 'https://muntin.digital/#business' }, 'description': desc },
+    { '@type': 'BreadcrumbList', 'itemListElement': [
+      { '@type': 'ListItem', 'position': 1, 'name': es ? 'Inicio' : 'Home', 'item': es ? 'https://muntin.digital/es/' : 'https://muntin.digital/' },
+      { '@type': 'ListItem', 'position': 2, 'name': es ? 'Índice de costos' : 'Cost index', 'item': (es ? 'https://muntin.digital/es' : 'https://muntin.digital') + '/cost-index/' },
+      { '@type': 'ListItem', 'position': 3, 'name': h1, 'item': baseUrl } ] }
+  ]});
+  const methodHead = es ? 'Cómo funciona' : 'How this works';
+  const methodBody = es
+    ? 'El modelo es una suma transparente: P = Σ(peso × signo × señal). Cada indicador público adelantado aporta un voto — al alza, a la baja o neutral dentro de una banda muerta — ponderado por su nivel de evidencia. Si P cruza la línea ±, la dirección cambia. Sin ajustes subjetivos: los mismos números que podrías rehacer a mano. Es una dirección inferida, no un precio; los rezagos vienen de USDA/EIA y la ponderación por semana es nuestra estimación.'
+    : 'The model is a transparent sum: P = Σ(weight × sign × signal). Each public leading indicator casts one vote — up, down, or neutral inside a deadband — weighted by its evidence tier. When P crosses the ± line, the direction flips. No subjective adjustments: the same numbers you could redo by hand. It is an inferred direction, not a price; the lead times come from USDA/EIA and the per-week weighting is our estimate.';
+  const noscript = es ? 'El Laboratorio de Presión necesita JavaScript. Verás la perspectiva en vivo en cada página de ingrediente.'
+    : 'The Pressure Lab needs JavaScript — you\'ll find the live outlook on each ingredient page.';
+  const v = 'v=20260608-lab1';
+  return pageHead({ lang, locale, title, desc, canonEn, canonEs, jsonld, extraCss: LAB_CSS }) + `
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="${base}/">${es ? 'Inicio' : 'Home'}</a> ›
+    <a href="${base}/cost-index/">${es ? 'Índice de costos' : 'Cost index'}</a> ›
+    ${escHtml(h1)}
+  </nav>
+  <section class="ci-hero">
+    <p class="ci-eyebrow"><a href="${base}/cost-index/">${es ? 'Índice de costos' : 'Cost index'}</a></p>
+    <h1>${escHtml(h1)}</h1>
+    <p class="ci-lede">${escHtml(lede)}</p>
+  </section>
+  <div class="ci-body">
+    <div id="pressureLab" data-layer="inferred"><noscript>${escHtml(noscript)}</noscript></div>
+    <details class="ci-read__src" style="margin-top:18px"><summary>${methodHead}</summary><div>${escHtml(methodBody)}</div></details>
+    <div class="ci-cta-row">
+      <a class="btn btn-ghost" href="${base}/cost-index/">${es ? 'Ver el índice' : 'Browse the index'}</a>
+      <a class="btn btn-ghost" href="${base}/tools/cost-pulse/">${es ? 'Abrir Cost Pulse' : 'Open Cost Pulse'}</a>
+    </div>
+  </div>
+  <script src="/tools/_shared/cost-pressure.js?${v}"></script>
+  <script src="/data/pressure-rules.js?${v}"></script>
+  <script src="/data/pressure-live.js?${v}"></script>
+  <script src="/tools/_shared/pressure-scenario.js?${v}"></script>
+  <script src="/tools/_shared/pressure-lab-ui.js?${v}"></script>` + pageTail;
 }
 
 // ---- Write or check ------------------------------------------------
@@ -790,14 +1310,24 @@ const targets = [];
 for (const slug of buildSlugs) {
   targets.push({ path: `cost-index/${slug}/index.html`,    content: emitIngredientPage(slug, 'en') });
   targets.push({ path: `es/cost-index/${slug}/index.html`, content: emitIngredientPage(slug, 'es') });
-  targets.push({ path: `cost-index/${slug}/series.json`,   content: seriesJson(slug), raw: true });
-  targets.push({ path: `cost-index/${slug}/series.csv`,    content: seriesCsv(slug),  raw: true });
+  // Downloadable series only for shippable readings — never expose the thin
+  // data behind an "expanding coverage" ingredient as a data file.
+  if (shippable(slug)) {
+    targets.push({ path: `cost-index/${slug}/series.json`,   content: seriesJson(slug), raw: true });
+    targets.push({ path: `cost-index/${slug}/series.csv`,    content: seriesCsv(slug),  raw: true });
+  }
 }
 // Hub lists every gated ingredient regardless of the --only subset, so it
 // never advertises a page that isn't built. When --only is active we still
 // build the hub from the full gated set so its ItemList stays complete.
 targets.push({ path: 'cost-index/index.html',    content: emitHubPage('en', allGated) });
 targets.push({ path: 'es/cost-index/index.html', content: emitHubPage('es', allGated) });
+// The Pressure Lab — the cost-index suite's playable instrument. Lives under
+// /cost-index/ (not /tools/) so it inherits the cost-index chrome + hreflang
+// skip and isn't held to the /tools/ shell conventions. Built whole regardless
+// of --only so EN/ES stay in parity.
+targets.push({ path: 'cost-index/lab/index.html',    content: emitLabPage('en') });
+targets.push({ path: 'es/cost-index/lab/index.html', content: emitLabPage('es') });
 
 let drift = 0;
 for (const tgt of targets) {

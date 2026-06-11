@@ -70,7 +70,7 @@
       },
       "url": "https://muntin.digital/library/reservation-conversion-guide/",
       "datePublished": "2026-04-17",
-      "dateModified": "2026-05-28",
+      "dateModified": "2026-06-10",
       "inLanguage": "en-US",
       "wordCount": 2440,
       "author": {
@@ -1021,54 +1021,42 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <h2 id="the-six-leaks-in-order">The six leaks, in order</h2>
       <p>Here's what's actually going wrong at each drop point, and how to plug it.</p>
 
-      <figure class="viz-figure article-figure" data-audio-alt="The six leaks in the order they hit a visitor on a restaurant website. One — your site is slow on a phone, the largest single drop at fifteen visitors per hundred. Two — your menu is a PDF that won't render on iPhone, costing eight more. Three — your hours are hiding in the footer, costing four. Four — the reservation button is buried or missing, costing ten. Five — the booking flow has too many fields and asks for an account, the second largest leak at thirteen. Six — confirmation anxiety after the booking, the smallest at three. The first four are code or copy fixes. The last two are platform and operations.">
-        <div class="viz-flow">
-          <ol class="viz-flow__list">
-            <li class="viz-flow__step" data-tone="rust">
-              <span class="viz-flow__num">1</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">Site slow on a phone</p>
-                <p class="viz-flow__detail">The largest single drop &mdash; about 15 visitors per 100 leave before the site finishes loading. Google's mobile benchmark threshold is 3 seconds; most restaurant sites land at 4-7.</p>
-              </div>
-            </li>
-            <li class="viz-flow__step" data-tone="rust">
-              <span class="viz-flow__num">2</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">Menu is a PDF</p>
-                <p class="viz-flow__detail">Costs another 8 visitors. Safari hands the PDF to a separate viewer, rendered at desktop size &mdash; a wall of pinch-zoom text on a phone.</p>
-              </div>
-            </li>
-            <li class="viz-flow__step" data-tone="rust">
-              <span class="viz-flow__num">3</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">Hours are hiding</p>
-                <p class="viz-flow__detail">Costs 4 more. The single most-asked question on a restaurant site is "are you open right now?" &mdash; and the answer is usually buried in the footer.</p>
-              </div>
-            </li>
-            <li class="viz-flow__step" data-tone="rust">
-              <span class="viz-flow__num">4</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">Reservation button buried or missing</p>
-                <p class="viz-flow__detail">Costs 10 visitors. Fitts's Law: the harder a button is to reach, the less often people press it. A sticky bottom CTA is roughly an hour of work.</p>
-              </div>
-            </li>
-            <li class="viz-flow__step" data-tone="rust">
-              <span class="viz-flow__num">5</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">Reservation flow friction</p>
-                <p class="viz-flow__detail">The second-largest leak at 13. Most third-party widgets demand 8-12 fields and a forced account; every extra screen correlates with dropoff.</p>
-              </div>
-            </li>
-            <li class="viz-flow__step" data-tone="rust">
-              <span class="viz-flow__num">6</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">Confirmation anxiety</p>
-                <p class="viz-flow__detail">Small on the funnel (3) but invisible to you. No email, no text, no paper trail &mdash; the customer doubts the booking and quietly calls somewhere else.</p>
-              </div>
-            </li>
-          </ol>
+      <figure class="viz-figure article-figure" data-audio-alt="The same six leaks, re-sorted by how much each one actually costs, biggest first, instead of by the order they hit. A slow phone load is the largest at fifteen visitors lost per hundred. Reservation-flow friction is second at thirteen. The buried reservation button is third at ten. A PDF menu is fourth at eight. Hidden hours costs four. Confirmation anxiety costs three. The illustrative reference line marks where the running total crosses half of all loss: it falls right after the top two leaks, which means slow load and flow friction together account for more than half of every diner you lose. Fix those two and you have closed the majority of the leak before touching the other four.">
+        <div class="viz-bars" data-animate="grow">
+          <p class="viz-bars__title">The six leaks, re-sorted by what each one costs (per 100 visitors)</p>
+          <p class="viz-bars__note">The reference line marks <strong>half of all loss</strong>. It lands right after leak #2 &mdash; the top two together cost more than the other four combined.</p>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">Slow phone load</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:1.00"></span><span class="viz-bars__mark" data-tone="ink" style="--x:0.93" aria-hidden="true"></span></div>
+            <p class="viz-bars__num">&minus;15</p>
+          </div>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">Reservation-flow friction</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.867"></span><span class="viz-bars__mark" data-tone="ink" style="--x:0.93" aria-hidden="true"></span></div>
+            <p class="viz-bars__num">&minus;13</p>
+          </div>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">Reservation button buried</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:0.667"></span></div>
+            <p class="viz-bars__num">&minus;10</p>
+          </div>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">Menu is a PDF</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:0.533"></span></div>
+            <p class="viz-bars__num">&minus;8</p>
+          </div>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">Hours hiding</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:0.267"></span></div>
+            <p class="viz-bars__num">&minus;4</p>
+          </div>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">Confirmation anxiety</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:0.20"></span></div>
+            <p class="viz-bars__num">&minus;3</p>
+          </div>
         </div>
-        <figcaption>The six leaks in order. Severity numbers are the illustrative per-100-visitor drops from the funnel above; the order is the order they hit the visitor.</figcaption>
+        <figcaption>The funnel above shows the leaks in the order a visitor hits them; this ranks them by cost. Two leaks &mdash; slow load and flow friction &mdash; carry more than half the loss. Illustrative per-100-visitor drops; bars scaled to the largest leak.</figcaption>
       </figure>
 
       <h3>Leak #1 — Your site is slow on a phone</h3>
