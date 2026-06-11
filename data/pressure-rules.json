@@ -1,6 +1,9 @@
 {
   "_doc": "Muntin Cost PRESSURE rules — the transparent, versioned manifest the deterministic engine (tools/_shared/cost-pressure.js) scores into an inferred 'where it's headed' direction per ingredient. THIS IS NOT A PRICE. Each indicator declares: a public free SOURCE, a direction SIGN (does indicator-up mean cost-up +1 or cost-down -1), an evidence-tier WEIGHT, a sourced LEAD range, and a CITE. The reports + lead ranges are USDA/EIA-sourced and citeable; the per-indicator WEIGHTS are Muntin's evidence-tier judgment (illustrative, frozen per _version). Enforced by scripts/check-pressure-honesty.mjs: every indicator needs source+lead+cite, weight above tier C needs a cite, and the rendered direction must equal what this manifest + the engine recompute. A weight/sign change REQUIRES a _version bump + changelog. Sequencing: status:'preview' (demo observations) until the free fetchers (NASS Quick Stats, EIA, AMS MMN/MARS, USDM, NWS) are wired; then live.",
-  "_version": "2026-Q2-1",
+  "_version": "2026-Q2-2",
+  "_changelog": [
+    { "version": "2026-Q2-2", "date": "2026-06-11", "note": "Calibration validation (12-year LMR/MARS anchor backtest, data/pressure-calibration.json). beef-tenderloin/cattle-on-feed-placements and pork-loin/cold-storage-pork are the first edges to clear BH+OOS+N with the hand-set sign — annotated 'calibrated' (sign confirmed, empirical lag, OOS-shrunk weight). No weight/sign changed: the evidence corroborates the existing priors, so they stand; the deeper history merely lifted these two edges over the N gate. All other edges remain hand-set priors pending more anchor depth (chicken report is only 3.8y; romaine/onion anchors blocked by a marsapi comma-filter limitation)." }
+  ],
   "_methodology": "P = Σ(weight × sign × discretize(window-change, deadband)); correlated indicators share one weight bucket (group); |P|≥cutoffT → building/easing else steady; confidence from sign-agreement, decayed by weeks since the last MEASURED print, suppressed to 'under review' past the floor. Lags are biological/empirical (USDA ERS); the month-by-month pass-through weighting is Muntin's estimate, never a USDA figure.",
   "defaults": { "deadband": 0.02, "cutoffT": 2, "agreement": { "highT": 0.66, "modT": 0.33 }, "decay": { "weeksPerNotch": 3, "floorWeeks": 8 }, "proving": { "minCalls": 12, "minHitRate": 0.6 } },
   "sources": {
@@ -40,16 +43,16 @@
       { "id": "feed-grain", "source": "fred-feed", "sign": 1, "weight": 1, "tier": "C", "window": "4w", "lead": { "min": 26, "max": 78, "unit": "week" }, "cite": "fred-feed", "note": "feed is a weak NEAR-TERM lever for beef; herd cycle dominates" },
       { "id": "diesel", "source": "eia-diesel", "sign": 1, "weight": 1, "tier": "A", "window": "4w", "lead": { "min": 0, "max": 4, "unit": "week" }, "group": "freight", "cite": "eia-diesel" }
     ] },
-    "beef-tenderloin": { "rule_version": "2026-Q2-1", "indicators": [
-      { "id": "cattle-on-feed-placements", "source": "nass-cattle-on-feed", "sign": -1, "weight": 2, "tier": "B", "window": "1m", "lead": { "min": 16, "max": 26, "unit": "week" }, "cite": "nass-cattle-on-feed" },
+    "beef-tenderloin": { "rule_version": "2026-Q2-2", "indicators": [
+      { "id": "cattle-on-feed-placements", "source": "nass-cattle-on-feed", "sign": -1, "weight": 2, "tier": "B", "window": "1m", "lead": { "min": 16, "max": 26, "unit": "week" }, "cite": "nass-cattle-on-feed", "calibrated": { "date": "2026-06-11", "empSign": -1, "empLeadWk": 13, "oos": "hold", "n": 42, "r2": 0.28, "suggestWeight": 0.1, "note": "12y LMR-2453 anchor backtest confirms the -1 sign and holds OOS (BH-passed). Lead kept biological 16-26w (NASS placements->marketings); |r|-best empirical lag was ~13w. OOS-shrunk weight 0.1 = real but weak; prior weight 2 retained as the operator's evidence-tier judgment." } },
       { "id": "cold-storage-beef", "source": "nass-cold-storage", "sign": -1, "weight": 1, "tier": "C", "window": "1m", "lead": { "min": 4, "max": 8, "unit": "week" }, "cite": "nass-cold-storage" },
       { "id": "feed-grain", "source": "fred-feed", "sign": 1, "weight": 1, "tier": "C", "window": "4w", "lead": { "min": 26, "max": 78, "unit": "week" }, "cite": "fred-feed" },
       { "id": "diesel", "source": "eia-diesel", "sign": 1, "weight": 1, "tier": "A", "window": "4w", "lead": { "min": 0, "max": 4, "unit": "week" }, "group": "freight", "cite": "eia-diesel" }
     ] },
-    "pork-loin": { "rule_version": "2026-Q2-1", "indicators": [
+    "pork-loin": { "rule_version": "2026-Q2-2", "indicators": [
       { "id": "hogs-market-supply", "source": "nass-hogs", "sign": -1, "weight": 2, "tier": "B", "window": "1q", "lead": { "min": 8, "max": 26, "unit": "week" }, "cite": "nass-hogs", "note": "weight-class bins map to slaughter windows; farrowing intentions lead ~8-10 mo" },
       { "id": "feed-grain", "source": "fred-feed", "sign": 1, "weight": 2, "tier": "B", "window": "4w", "lead": { "min": 13, "max": 26, "unit": "week" }, "cite": "fred-feed" },
-      { "id": "cold-storage-pork", "source": "nass-cold-storage", "sign": -1, "weight": 1, "tier": "C", "window": "1m", "lead": { "min": 4, "max": 8, "unit": "week" }, "cite": "nass-cold-storage" },
+      { "id": "cold-storage-pork", "source": "nass-cold-storage", "sign": -1, "weight": 1, "tier": "C", "window": "1m", "lead": { "min": 4, "max": 8, "unit": "week" }, "cite": "nass-cold-storage", "calibrated": { "date": "2026-06-11", "empSign": -1, "empLeadWk": 0, "oos": "hold", "n": 102, "r2": 0.18, "suggestWeight": 0.1, "note": "12y LMR-2498 cutout anchor backtest confirms the -1 sign and holds OOS (BH-passed). Empirical relationship is ~coincident (|r|-best lag ~0w), so cold storage reads more as a concurrent supply confirm than a 4-8w leader; lead range retained pending more evidence. OOS-shrunk weight 0.1." } },
       { "id": "diesel", "source": "eia-diesel", "sign": 1, "weight": 1, "tier": "A", "window": "4w", "lead": { "min": 0, "max": 4, "unit": "week" }, "group": "freight", "cite": "eia-diesel" }
     ] },
     "pork-shoulder": { "rule_version": "2026-Q2-1", "indicators": [
