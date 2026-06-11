@@ -212,14 +212,16 @@ async function fetchProxy(seriesId) {                      // BLS PPI monthly, ~
 // Scale-free (calibration uses % changes). Period codes like '2024U15' → that ISO week's Monday.
 const SSB_BASE = (t) => `https://data.ssb.no/api/pxwebapi/v2/tables/${t}`;
 // PxWebApi v2 data query — exact syntax is finicky; try a few forms and use the first that
-// returns parseable JSON-stat2. (HTTP 400 = query malformed; the error body says why.)
+// returns parseable JSON-stat2 WITH the full time series. The bare query returns only the
+// LATEST week, so we must select all of Tid — try top(N) (most-recent N, N>table size = all)
+// and the * wildcard. (HTTP 400 = query malformed; the error body says why.)
 function ssbDataUrls(t) {
-  const b = `${SSB_BASE(t)}/data`;
+  const b = `${SSB_BASE(t)}/data`, fmt = 'lang=en&outputFormat=json-stat2';
   return [
-    `${b}?lang=en&outputFormat=json-stat2`,
-    `${b}?lang=en&outputFormat=json-stat2&valueCodes%5BTid%5D=*`,
-    `${b}?lang=en&format=json-stat2`,
-    `${b}?lang=en`
+    `${b}?${fmt}&valueCodes%5BTid%5D=top(3000)`,
+    `${b}?${fmt}&valueCodes%5BTid%5D=*`,
+    `${b}?${fmt}&valueCodes[Tid]=*`,
+    `${b}?${fmt}`
   ];
 }
 const SSB_META = (t) => `${SSB_BASE(t)}/metadata?lang=en`;
@@ -277,10 +279,10 @@ function ssbExtract(js, measure) {
 async function fetchSSB(spec) {
   let lastErr;
   for (const u of ssbDataUrls(spec.table)) {
-    try { const s = ssbExtract(await uaGet(u), spec.measure || 'price'); if (s.length) return s; lastErr = new Error('parsed 0 points'); }
+    try { const s = ssbExtract(await uaGet(u), spec.measure || 'price'); if (s.length >= 60) return s; lastErr = new Error(`only ${s.length} pts (need the full time series, not just the latest week)`); }
     catch (e) { lastErr = e; }
   }
-  throw lastErr || new Error('no SSB query form worked');
+  throw lastErr || new Error('no SSB query form returned the full series');
 }
 
 // ---- NOAA Fisheries FOSS Foreign Trade API (keyless; monthly US seafood imports) -------
@@ -288,7 +290,12 @@ async function fetchSSB(spec) {
 // supply, or val = $ landed) across all partner countries per year-month → a monthly supply
 // series. Import VOLUME up → US supply up → cost DOWN (-1). Bot-blocks default UAs → browser
 // UA (shared uaGet). ORDS pages via limit/offset + hasMore. 2009→present, ~6-8wk lag.
-const FOSS_BASE = 'https://www.st.nmfs.noaa.gov/ords/foss/trade_data/';
+// ORDS host has moved before; the first that returns JSON (not an HTML app page) wins.
+const FOSS_BASES = [
+  'https://www.st.nmfs.noaa.gov/ords/foss/trade_data/',
+  'https://apps-st.fisheries.noaa.gov/ords/foss/trade_data/',
+  'https://www.fisheries.noaa.gov/foss/ords/foss/trade_data/'
+];
 function fossAggregate(items, measure) {                    // [{year,month,kilos,val,...}] → [{date,value}] (monthly sum)
   const by = {};
   for (const r of (items || [])) {
@@ -299,20 +306,28 @@ function fossAggregate(items, measure) {                    // [{year,month,kilo
   }
   return Object.keys(by).sort().map((k) => ({ date: `${k}-15`, value: by[k] }));
 }
-async function fetchFOSS(spec) {
-  const hts = spec.hts || [], source = spec.source || 'IMP';
-  const filter = { source };
+function fossQuery(spec) {
+  const filter = { source: spec.source || 'IMP' }, hts = spec.hts || [];
   if (hts.length) filter.hts_number = hts.length > 1 ? { $in: hts } : hts[0];
-  const q = encodeURIComponent(JSON.stringify(filter));
-  const items = []; let offset = 0;
-  for (let page = 0; page < 80; page++) {                   // page-cap guards a runaway loop
-    const j = await uaGet(`${FOSS_BASE}?q=${q}&limit=10000&offset=${offset}`);
-    const rows = (j && j.items) || [];
-    rows.forEach((r) => items.push(r));
-    if (!j || !j.hasMore) break;
-    offset += (j.limit || rows.length || 10000);
+  return encodeURIComponent(JSON.stringify(filter));
+}
+async function fetchFOSS(spec) {
+  const q = fossQuery(spec); let lastErr;
+  for (const base of FOSS_BASES) {
+    try {
+      const items = []; let offset = 0, ok = true;
+      for (let page = 0; page < 80; page++) {
+        const j = await uaGet(`${base}?q=${q}&limit=10000&offset=${offset}`);
+        if (!j || !Array.isArray(j.items)) { ok = false; break; }
+        j.items.forEach((r) => items.push(r));
+        if (!j.hasMore) break;
+        offset += (j.limit || j.items.length || 10000);
+      }
+      if (ok && items.length) return fossAggregate(items, spec.measure || 'kilos');
+      lastErr = new Error('no items');
+    } catch (e) { lastErr = e; }
   }
-  return fossAggregate(items, spec.measure || 'kilos');
+  throw lastErr || new Error('no FOSS host returned JSON');
 }
 
 // ---- NOAA CPC ENSO / Oceanic Niño Index (keyless flat ASCII; monthly anomaly 1950+) -----
@@ -693,28 +708,32 @@ async function ssbDiscover() {
   try { console.log(`  metadata ${SSB_META(t)}`); ssbDumpDims(await uaGet(SSB_META(t))); }
   catch (e) { console.log(`    ✗ metadata: ${e.message}`); }
   // 2) each data-query candidate — the first that returns parseable JSON-stat2 is the one I pin
-  for (const u of ssbDataUrls(t)) {
-    try { const js = await uaGet(u); console.log(`  ✓ ${u}`); ssbDumpDims(js); break; }
+  for (const u of ssbDataUrls(t)) {                          // try ALL — need the one that returns the FULL series, not just the latest week
+    try { const js = await uaGet(u); const n = (js.dimension && js.dimension.Tid && Object.keys(js.dimension.Tid.category.index).length) || 0; console.log(`  ✓ ${u}  → ${n} weeks`); if (n > 100) { ssbDumpDims(js); break; } }
     catch (e) { console.log(`  ✗ ${u}\n      ${e.message}`); }
   }
-  console.log('\nThe ✓ URL + its dims tell me the exact ContentsCode/commodity selection to pin; the ✗ bodies say what v2 wants.');
+  console.log('\nThe ✓ URL with the most weeks is the one I pin; the ✗ bodies say what v2 wants.');
 }
 
 // ---- FOSS discovery: confirm the ORDS trade API shape + the monthly import series ------
 async function fossDiscover() {
-  console.log('FOSS discovery — NOAA Fisheries trade API shape for the seafood import-volume signals (writes nothing)\n');
-  const probes = [
-    { id: 'salmon-import-volume', hts: ['030214', '030313', '030441', '030481'], source: 'IMP' },
-    { id: 'shrimp-import-volume', hts: ['030617', '160521', '160529'], source: 'IMP' }
-  ];
-  for (const p of probes) {
+  console.log('FOSS discovery — NOAA Fisheries ORDS trade API (writes nothing). Last run returned HTML → finding the JSON host.\n');
+  // 1) Which host serves JSON? Hit each with a tiny unfiltered query and show status + a snippet.
+  for (const base of FOSS_BASES) {
+    const u = `${base}?limit=2`;
     try {
-      const ser = await fetchFOSS(p);
-      if (!ser.length) { console.log(`  ✗ ${p.id}: 0 monthly points — confirm HTS codes / source=IMP / field names`); continue; }
-      console.log(`  ✓ ${p.id} [HTS ${p.hts.join(',')}]: ${ser.length} months, ${ser[0].date} → ${ser[ser.length - 1].date}, latest kilos=${Math.round(ser[ser.length - 1].value)}`);
-    } catch (e) { console.log(`  ✗ ${p.id} failed: ${e.message} (NOAA bot-blocks non-browser UAs; confirm the ORDS q= filter + kilos/year/month field names)`); }
+      const r = await fetch(u, { headers: { 'User-Agent': SSB_UA, Accept: 'application/json' } });
+      const t = (await r.text()).replace(/\s+/g, ' ').slice(0, 160);
+      const json = t.trim().startsWith('{');
+      console.log(`  ${json ? '✓' : '✗'} ${r.status} ${u}\n      ${json ? 'JSON: ' : 'HTML/other: '}${t}`);
+    } catch (e) { console.log(`  ✗ ${u} — ${e.message}`); }
   }
-  console.log('\nGreen = import-volume series resolve; I wire them as the -1 supply signal (volume up → cost down).');
+  // 2) If a host works, show the resolved monthly series + a sample row's field names.
+  for (const p of [{ id: 'salmon', hts: ['030214', '030313', '030441', '030481'], source: 'IMP' }, { id: 'shrimp', hts: ['030617', '160521', '160529'], source: 'IMP' }]) {
+    try { const ser = await fetchFOSS(p); console.log(`  → ${p.id}: ${ser.length} months${ser.length ? `, ${ser[0].date} → ${ser[ser.length - 1].date}, latest kilos=${Math.round(ser[ser.length - 1].value)}` : ''}`); }
+    catch (e) { console.log(`  → ${p.id}: ${e.message}`); }
+  }
+  console.log('\nThe ✓ JSON host + the sample fields tell me the base URL + field names to pin.');
 }
 
 // ---- selftest: synthetic dated series, no network ------------------
