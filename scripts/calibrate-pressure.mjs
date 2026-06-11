@@ -113,9 +113,13 @@ const ANCHOR = {
   'whole-chicken':   { host: 'mars', report: '3646', section: 'Report Detail', match: { field: 'item', value: 'Whole' }, field: 'wtd_avg_price', dateField: 'report_date', note: 'AMS 3646 / Whole' },
   'butter':          { host: 'lmr', report: '2993', section: 'Butter Prices and Sales', field: 'Butter_Price', dateField: 'week_ending_date', winField: 'week_ending_date', note: 'NDPSR 2993 butter' },
   'cheddar-cheese':  { host: 'lmr', report: '2993', section: '40 Pound Block Cheddar Cheese Prices and Sales', field: 'cheese_40_Price', dateField: 'week_ending_date', winField: 'week_ending_date', note: 'NDPSR 2993 block cheddar' },
-  'romaine-lettuce': { host: 'mars', report: '2307', section: 'Report Details', match: { field: 'commodity', value: 'Lettuce, Romaine', exact: true }, serverFilter: true, field: 'low_price', dateField: 'report_begin_date', note: 'LA terminal 2307 / Lettuce, Romaine' },
+  // romaine + onion commodities carry a comma ("Lettuce, Romaine" / "Onions, Dry"), which
+  // marsapi's exact filter splits on as its OR-separator → a server-side filter can never
+  // match. anchorSeries applies the exact match CLIENT-side anyway, so we just drop
+  // serverFilter and pull the report unfiltered, capped to maxYears to bound the download.
+  'romaine-lettuce': { host: 'mars', report: '2307', section: 'Report Details', match: { field: 'commodity', value: 'Lettuce, Romaine', exact: true }, maxYears: 6, field: 'low_price', dateField: 'report_begin_date', note: 'LA terminal 2307 / Lettuce, Romaine (client-filtered: comma defeats server filter)' },
   'tomato':          { host: 'mars', report: '2307', section: 'Report Details', match: { field: 'commodity', value: 'Tomatoes', exact: true }, serverFilter: true, field: 'low_price', dateField: 'report_begin_date', note: 'LA terminal 2307 / Tomatoes' },
-  'onion':           { host: 'mars', report: '2308', section: 'Report Details', match: { field: 'commodity', value: 'Onions, Dry', exact: true }, serverFilter: true, field: 'low_price', dateField: 'report_begin_date', note: 'LA terminal 2308 / Onions, Dry' },
+  'onion':           { host: 'mars', report: '2308', section: 'Report Details', match: { field: 'commodity', value: 'Onions, Dry', exact: true }, maxYears: 6, field: 'low_price', dateField: 'report_begin_date', note: 'LA terminal 2308 / Onions, Dry (client-filtered: comma defeats server filter)' },
   'russet-potato':   { host: 'mars', report: '2308', section: 'Report Details', match: { field: 'commodity', value: 'Potatoes', exact: true }, match2: { field: 'variety', value: 'Russet' }, serverFilter: true, field: 'low_price', dateField: 'report_begin_date', note: 'LA terminal 2308 / Potatoes×Russet variety' }
 };
 function amsAuth() { const k = process.env.AMS_KEY; return k ? 'Basic ' + Buffer.from(k + ':').toString('base64') : null; }
@@ -129,6 +133,7 @@ async function fetchReportWindowed(spec, years) {
   const winField = spec.winField || 'report_begin_date';
   const sect = spec.section ? `/${encodeURIComponent(spec.section)}` : '';
   const fmt = (d) => `${('0' + (d.getMonth() + 1)).slice(-2)}/${('0' + d.getDate()).slice(-2)}/${d.getFullYear()}`;
+  years = Math.min(years, spec.maxYears || years);          // per-anchor cap (bounds an unfiltered client-side fetch)
   const now = Date.now(); const step = 150 * 864e5;
   // Build every window's URL up front, then fetch them CONCURRENTLY — the windows are
   // independent, so the sequential await-loop (≈10 round trips per anchor) was the main
