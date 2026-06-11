@@ -798,7 +798,7 @@ async function euDiscover() {
 async function mxcrossDiscover() {
   console.log('AMS Mexico-crossings discovery — report 3264 (FVDDAILY_MOVE) structure (writes nothing)\n');
   if (!amsAuth()) { console.log('  needs AMS_KEY.'); return; }
-  for (const section of ['Report Detail', 'Report Details', 'Movement', 'Daily Movement', null]) {
+  for (const section of ['Volumes', 'Volume', 'Movement', 'Report Detail', 'Report Details', null]) {
     const spec = { host: 'mars', report: '3264', section, serverFilter: true, match: { field: 'commodity', value: 'Tomatoes' }, winField: 'report_begin_date' };
     try {
       const rows = await fetchReportWindowed(spec, 0.25);
