@@ -50,10 +50,27 @@
 /es/tools/invoice-decoder/*                      /es/tools/                     301
 /es/tools/menu-design/                           /es/tools/                     301
 /es/tools/menu-design/*                          /es/tools/                     301
-/services/menu-polish/                           /services/menu-drop-in/        301
-/services/menu-polish/*                          /services/menu-drop-in/        301
-/es/services/menu-polish/                        /es/services/menu-drop-in/     301
-/es/services/menu-polish/*                       /es/services/menu-drop-in/     301
+# Services sunset (Phase 9, 2026-06-11): the productized-services
+# business (audit, menu drop-in, menu polish, care plans) and the
+# studio booking/compare/city lead-gen children are retired — the
+# company is the product (Muntin Ledger) + the free cost-intelligence
+# surfaces. Same 301-not-410 rationale as the tools sunset above.
+#
+# DYNAMIC-RULE BUDGET: Cloudflare caps dynamic (_wildcard_) rules
+# well below the documented 100 in practice (build 105ed3d1 failed
+# at 42 source-wildcards; main passes at 26). So this block uses
+# TWO blankets per locale instead of per-page wildcards:
+#   /services/*  — covers every retired service page and sub-path
+#                  (menu-polish's old per-page rules included).
+#   /studio/*    — /studio/ has NO children after Phase 9, so the
+#                  blanket is safe. If a /studio/<child> page is
+#                  ever added, remove this blanket first.
+/services/                                       /studio/                       301
+/services/*                                      /studio/                       301
+/es/services/                                    /es/studio/                    301
+/es/services/*                                   /es/studio/                    301
+/studio/*                                        /studio/                       301
+/es/studio/*                                     /es/studio/                    301
 
 # Wellness retirement (Sprint K): the wellness audit and checklist
 # were removed in favor of a restaurant-first focus. Any inbound

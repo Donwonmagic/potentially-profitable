@@ -176,9 +176,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=933461d49609" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=15ac955f199e" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=933461d49609"><link rel="stylesheet" href="/assets/site-article.css?v=15ac955f199e"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=b70da981fa3f" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=36af39b8b96e" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=b70da981fa3f"><link rel="stylesheet" href="/assets/site-article.css?v=36af39b8b96e"></noscript>
 
 <!-- lazy-load:p --><script>(window.requestIdleCallback||function(c){return setTimeout(c,500);})(function(){var s=document.createElement("script");s.src="/assets/p.js?v=20260503";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:p -->
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
@@ -422,7 +422,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <ol>
       <li style="margin-bottom:14px"><strong>Horarios festivos (81% sin llenar).</strong> Es el error m&aacute;s barato de prevenir y el que nadie previene. El arreglo toma diez minutos por festivo, cuatro veces al a&ntilde;o. Care Plan Light maneja esto en agenda.</li>
       <li style="margin-bottom:14px"><strong>Actividad en preguntas (71% sin actividad).</strong> Los clientes publican preguntas en tu listado de GBP respondas o no. Las que se quedan sin respuesta se vuelven la respuesta de facto que muestra Google. Los operadores que responden a su Q&amp;A ven un alza medible en clics a &laquo;c&oacute;mo llegar&raquo;. (Fuente: encuesta Local Search Ranking Factors 2024 de Whitespark.)</li>
-      <li style="margin-bottom:14px"><strong>Enlace al men&uacute; (62% mal o ausente).</strong> Del 38% que ten&iacute;a enlace al men&uacute;, 23 apuntaban a un PDF o a una p&aacute;gina de agregador en lugar de a un men&uacute; HTML. Una p&aacute;gina HTML real (o un <a href="/es/services/menu-drop-in/" style="color:var(--teal)">menu drop-in</a>) es lo que el parser de Google indexa de verdad.</li>
       <li style="margin-bottom:14px"><strong>Deeplink de reservas (59% mal o ausente).</strong> O sin enlace, o con enlace a la home de OpenTable. Ambos fugan intenci&oacute;n &mdash; el patr&oacute;n correcto es un deeplink a <em>tu</em> p&aacute;gina del local en la plataforma.</li>
       <li style="margin-bottom:14px"><strong>Respuesta a rese&ntilde;as (56% bajo el umbral).</strong> La mayor&iacute;a de los operadores responden a las de una estrella e ignoran las de cuatro y cinco. El algoritmo de ranking de Google tambi&eacute;n lee el engagement en rese&ntilde;as positivas. Un &laquo;Gracias &mdash; vuelvan pronto&raquo; de 30 segundos cuenta.</li>
       <li><strong>Enlace al sitio (34% sin enlace).</strong> El modo de fallo m&aacute;s arreglable. Un tercio de los listados no tiene enlace al sitio o tiene un enlace que da 404. Esfuerzo del operador: 30 segundos en el dashboard de GBP.</li>
@@ -470,8 +469,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <li><strong>Lee tu pesta&ntilde;a de Q&amp;A.</strong> Contesta las que est&aacute;n sin respuesta. Si la pregunta es &laquo;&iquest;aceptan walk-ins?&raquo;, contesta &laquo;s&iacute; / no, as&iacute; funcionan las reservas&raquo;. Esa respuesta queda indexada.</li>
     </ol>
 
-    <p>Care Plan Light maneja esos tres chequeos, cada mes, por USD 99. <a href="/es/services/care-plan-light/" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none">Ver qu&eacute; incluye &rarr;</a></p>
-
     <hr style="margin:48px 0 32px;border:0;border-top:1px solid var(--line)">
 
     <p style="font-style:italic;font-size:15px;color:var(--ink-soft);text-align:center;margin:0">
@@ -484,7 +481,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <li><a href="/es/tools/gbp-grader/">Herramienta GBP Grader</a> &mdash; corre la misma auditor&iacute;a sobre tu listado</li>
         <li><a href="/es/library/how-to-set-up-google-business-profile-for-your-restaurant/">C&oacute;mo configurar Google Business Profile para tu restaurante</a></li>
         <li><a href="/es/library/how-to-get-more-google-reviews-for-your-restaurant/">C&oacute;mo conseguir m&aacute;s rese&ntilde;as en Google</a></li>
-        <li><a href="/es/services/care-plan-light/">Care Plan Light (USD 99/mes)</a> &mdash; higiene mensual de GBP</li>
         <li><a href="/es/blog/an-honest-doordash-math-for-independent-restaurants-2026/">Una cuenta honesta de DoorDash, 2026</a> &mdash; el recorrido de margen complementario</li>
       </ul>
     </section>
@@ -510,7 +506,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <nav class="foot-col" aria-labelledby="foot-explore">
         <p class="foot-heading" id="foot-explore">Explorar</p>
         <ul class="foot-links">
-          <li><a href="/es/services/">Servicios</a></li>
+          <li><a href="/es/studio/">Estudio</a></li>
           
           <li><a href="/es/about/">Sobre Don</a></li>
         </ul>

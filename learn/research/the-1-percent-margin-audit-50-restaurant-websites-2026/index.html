@@ -182,9 +182,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=933461d49609" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=15ac955f199e" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=933461d49609"><link rel="stylesheet" href="/assets/site-article.css?v=15ac955f199e"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=b70da981fa3f" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=36af39b8b96e" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=b70da981fa3f"><link rel="stylesheet" href="/assets/site-article.css?v=36af39b8b96e"></noscript>
 
 <!-- lazy-load:p --><script>(window.requestIdleCallback||function(c){return setTimeout(c,500);})(function(){var s=document.createElement("script");s.src="/assets/p.js?v=20260503";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:p -->
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
@@ -234,11 +234,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
          three-doors page). Tools is promoted from the old Library
          mega-menu to a top-level item. Studio replaces Services +
          Restaurants + About — they all live under /studio/ now,
-         either as anchored sections (#pricing, #offers, #cities,
-         #process, #about) or as full child pages (/studio/compare/,
-         /studio/silver-spring/, etc.). The old Services and
-         Restaurants pages remain reachable via /studio/ and the
-         _redirects table; /about/ is unchanged. The mega-menu is
+         as sections of the company page (Phase 9, 2026-06-11: the
+         services-era child pages and anchored offer sections are
+         retired; old paths 301 via the _redirects table). /about/ is unchanged. The mega-menu is
          retired (the hub IS the menu now); the controller script
          is gone too.
 
@@ -532,7 +530,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <li style="margin-bottom:14px"><strong>Direct-order CTA missing (30 minutes).</strong> Add a primary-color &ldquo;Order direct&rdquo; button above any third-party order link. Wire it to your POS&rsquo;s online-ordering URL (Toast, Square Online, Olo, ChowNow). Match-or-beat the third-party menu price.</li>
       <li style="margin-bottom:14px"><strong>Mobile LCP &gt; 3.0s (1&ndash;3 hours).</strong> Compress the hero image, switch to AVIF + WebP fallback, drop unused JS, lazy-load below-the-fold images. Test with Lighthouse on Slow 4G + 4&times; CPU before declaring victory.</li>
       <li style="margin-bottom:14px"><strong>Aggregator-only ordering (4&ndash;8 hours of setup, then maintenance).</strong> Stand up a Toast Online Ordering or Square Online flow if you don&rsquo;t already have one. Match menu prices. Mention the savings on the order receipt and on the takeout-bag insert. The hardest part is not the tech &mdash; it&rsquo;s the operational change of running two ordering flows in parallel for the first month.</li>
-      <li><strong>Real /es/ mirror (one week).</strong> The hardest of the six, and the one with the second-largest impact. A real localized mirror, not a Google Translate plugin. The <a href="/services/menu-drop-in/" style="color:var(--teal)">menu drop-in</a> covers this for the highest-leverage page; a full-site mirror is a Full Service tier project.</li>
     </ol>
 
     <p>The first three fixes &mdash; under an hour combined, no developer required &mdash; recover roughly half of the median leak. They&rsquo;re a Saturday afternoon, not a project.</p>
@@ -559,8 +556,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <h2 id="run-yours">Run yours</h2>
 
     <p>The free <a href="/tools/audits/restaurant/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">restaurant audit tool</a> grades your site on the same six leaks, in 30 seconds, in your browser. Result tells you which leaks you have and what they&rsquo;re likely costing you per month.</p>
-
-    <p>If you&rsquo;d rather have me run a $499 deep audit and walk you through the fixes on a Loom &mdash; <a href="/services/audit/" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none">/services/audit/</a>. The audit credits toward a build inside 60 days.</p>
 
     <hr style="margin:48px 0 32px;border:0;border-top:1px solid var(--line)">
 
@@ -603,7 +598,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->150<!-- /count --> glossary terms &mdash; with a one-person web studio behind it in Silver Spring, MD.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->150<!-- /count --> glossary terms &mdash; from Muntin Digital in Silver Spring, MD.</p>
       </div>
 
       <!-- Column order mirrors the 4-item primary nav
@@ -631,12 +626,17 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         </ul>
       </nav>
 
+      <!-- Phase 9 (services sunset, 2026-06-11): the Studio column's
+           Pricing / Compare / Process rows sold the retired services
+           business. The column is now the Company column — the product,
+           the public data, the company page, the founder. The retired services
+           and studio child pages 301 per the _redirects table. -->
       <nav class="foot-col" aria-labelledby="foot-studio">
-        <p class="foot-heading" id="foot-studio">Studio</p>
+        <p class="foot-heading" id="foot-studio">Company</p>
         <ul class="foot-links">
-          <li><a href="/studio/#pricing">Pricing</a></li>
-          <li><a href="/studio/compare/">Compare options</a></li>
-          <li><a href="/studio/#process">Process</a></li>
+          <li><a href="https://ledger.muntin.digital/">Muntin Ledger</a></li>
+          <li><a href="/cost-index/">Cost Index</a></li>
+          <li><a href="/studio/">The company</a></li>
           <li><a href="/about/">About Don</a></li>
         </ul>
       </nav>

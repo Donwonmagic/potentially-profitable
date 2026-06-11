@@ -767,7 +767,6 @@
       if (u.startsWith('/learn/checklists/')) return i18n('search.kind_resource',  'Guide');
       if (u.startsWith('/learn/'))           return i18n('search.kind_library',   'Library');
       if (u.startsWith('/work/'))      return i18n('search.kind_case',      'Case study');
-      if (u.startsWith('/services/'))  return i18n('search.kind_service',   'Services');
       if (u.startsWith('/for/'))       return i18n('search.kind_industry',  'For you');
       return i18n('search.kind_page', 'Page');
     }

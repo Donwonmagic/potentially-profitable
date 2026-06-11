@@ -56,9 +56,23 @@ import { fileURLToPath } from 'node:url';
 const __filename = fileURLToPath(import.meta.url);
 const repoRoot   = path.resolve(path.dirname(__filename), '..');
 
-const SERVICES = JSON.parse(
+const PRICING = JSON.parse(
   fs.readFileSync(path.join(repoRoot, 'data', 'services-pricing.json'), 'utf8')
-).services;
+);
+const SERVICES = PRICING.services;
+
+// Services sunset (Phase 9, 2026-06-11): the productized-services
+// business is retired — data/services-pricing.json stays as the
+// historical price record (stamped _retired). With the service pages
+// gone there is nothing to keep consistent; pass with a notice so
+// the gate self-revives if a service page ever reappears.
+const anyServicePageExists = SERVICES.some((svc) =>
+  svc.page && !svc.page.includes('#') &&
+  fs.existsSync(path.join(repoRoot, svc.page.replace(/^\//, ''), 'index.html')));
+if (PRICING._retired && !anyServicePageExists) {
+  console.log('check-pricing-consistency: services retired (data/services-pricing.json#_retired) and no service pages on disk — skipped.');
+  process.exit(0);
+}
 
 const SKIP_DIRS = new Set([
   '_includes', 'node_modules', '.git', '.github', 'dist', '.wrangler',

@@ -7,7 +7,7 @@ lettermark.
 
 The trust audit flagged this as the highest-leverage single trust fix
 on the site. A real photo of the founder beats a typographic placeholder
-on a one-person studio's About page, every time.
+on Muntin Digital's About page, every time.
 
 When you're ready to ship the photo:
 

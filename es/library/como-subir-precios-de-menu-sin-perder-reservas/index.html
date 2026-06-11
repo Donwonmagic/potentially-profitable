@@ -269,9 +269,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=933461d49609" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=15ac955f199e" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=933461d49609"><link rel="stylesheet" href="/assets/site-article.css?v=15ac955f199e"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=b70da981fa3f" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=36af39b8b96e" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=b70da981fa3f"><link rel="stylesheet" href="/assets/site-article.css?v=36af39b8b96e"></noscript>
 
 <style>
   /* ============ BLOG POST LAYOUT (shared with other posts; will extract to site.css in a later refactor) ============ */
@@ -946,10 +946,10 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
     <!-- field-notes:start --><!-- field-notes:end -->
       <!-- post-end-cta:start -->
-    <aside class="post-end-cta" aria-label="Siguiente paso en el Taller">
+    <aside class="post-end-cta" aria-label="Workshop next step">
       <p class="post-end-cta-headline">Corre tus números antes de publicar.</p>
-      <p class="post-end-cta-body">Margin Math corre la simulación de subida de precios en tu navegador. Guarda el resultado en el Taller y vas a ver cuándo se vuelvan a mover tus costos &mdash; sin tener que repetir la matemática.</p>
-      <a class="btn btn-primary" href="/es/tools/margin-math/?from=library%2Fcomo-subir-precios-de-menu-sin-perder-reservas&amp;intent=watch">Abrir Margin Math<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></a>
+      <p class="post-end-cta-body">Margin Math corre la simulación del aumento de precios en tu navegador. Guarda el resultado en el Taller y verás cuándo cambian tus costos otra vez — sin tener que repetir las cuentas.</p>
+      <a class="btn btn-primary" href="/es/tools/margin-math/?from=library%2Fhow-to-raise-restaurant-menu-prices-without-losing-reservations&amp;intent=watch">Abrir Margin Math<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></a>
     </aside>
     <!-- post-end-cta:end -->
 
@@ -1021,6 +1021,14 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 </aside>
 <!-- smart-next:end -->
 
+    <!-- ledger-cta:start -->
+    <aside class="post-end-cta" aria-label="Muntin Ledger">
+      <p class="post-end-cta-headline">Observa los costos tras el cambio.</p>
+      <p class="post-end-cta-body">Muntin Ledger archiva tus facturas de proveedores en un ledger que puedes buscar y exporta un CSV limpio — para que cuando los costos cambien otra vez, el registro ya esté ahí.</p>
+      <a class="btn btn-primary plausible-event-name=Ledger+Route+Click plausible-event-source=how-to-raise-restaurant-menu-prices-without-losing-reservations" href="https://ledger.muntin.digital/">Conoce Muntin Ledger<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></a>
+    </aside>
+    <!-- ledger-cta:end -->
+
     <!-- LIBRARY:see-also:start -->
 <aside class="see-also" aria-labelledby="see-also-h">
   <p class="see-also-label" id="see-also-h">Ver también</p>
@@ -1091,18 +1099,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <h4 class="i18n">Wix vs. a la medida para restaurantes: qué se rompe primero</h4>
         <p>La mitad de los operadores que no pueden subir precios en su sitio no pueden porque su plataforma no los deja. Aquí está donde Wix toca techo.</p>
       </a>
-      <a href="/es/services/menu-drop-in/">
-        <h4 class="i18n">Drop-in de menú por $1,500</h4>
-        <p>Si actualizar el precio del menú en tu sitio actual es la fricción &mdash; una página de menú HTML a la medida que se enchufa en Wix o Squarespace, con schema marcado, bilingüe EN/ES. Siete días hábiles.</p>
-      </a>
-      <a href="/es/services/care-plan-light/">
-        <h4 class="i18n">Care Plan Light por $99/mes</h4>
-        <p>Si el cuello de botella es mantener los precios sincronizados entre el sitio + Google Business Profile + Yelp + Apple Maps cada vez que la cocina pivota &mdash; eso es exactamente lo que hace el Care Plan.</p>
-      </a>
-      <a href="/es/services/audit/">
-        <h4 class="i18n">Auditoría profunda por $499</h4>
-        <p>Si prefieres que yo corra la auditoría de precios y escriba el plan de despliegue &mdash; Loom de 90 minutos + hoja de acción de 8 páginas, cinco días hábiles, créditos hacia un build.</p>
-      </a>
     </aside>
 
     <section class="sources" aria-labelledby="sources-heading">
@@ -1158,7 +1154,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">La ventana.</p>
-        <p class="foot-blurb">Una biblioteca gratuita para restaurantes &mdash; <!-- count:articles.library -->36<!-- /count --> art&iacute;culos, <!-- count:tools.live -->13<!-- /count --> herramientas y un glosario de <!-- count:glossary.terms -->150<!-- /count --> t&eacute;rminos &mdash; con un estudio web de una persona detr&aacute;s, en Silver Spring, MD. Se habla espa&ntilde;ol.</p>
+        <p class="foot-blurb">Una biblioteca gratuita para restaurantes &mdash; <!-- count:articles.library -->36<!-- /count --> art&iacute;culos, <!-- count:tools.live -->13<!-- /count --> herramientas y un glosario de <!-- count:glossary.terms -->150<!-- /count --> t&eacute;rminos &mdash; de Muntin Digital, en Silver Spring, MD. Se habla espa&ntilde;ol.</p>
       </div>
 
       <!-- El orden de columnas refleja la navegación principal de 5
@@ -1185,12 +1181,16 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
            /es/work/, el portafolio personal. Ese hub se retiró cuando
            la empresa pasó a ser el currículum; la fila ya no está y
            /es/work/* hace 301 a /es/studio/. -->
+      <!-- Fase 9 (cierre de servicios, 2026-06-11): las filas de
+           Precios / Comparar / Proceso vendían los servicios retirados.
+           La columna ahora es Empresa — el producto, los datos
+           públicos, la página de la empresa, el fundador. -->
       <nav class="foot-col" aria-labelledby="foot-studio">
-        <p class="foot-heading" id="foot-studio">Estudio</p>
+        <p class="foot-heading" id="foot-studio">Empresa</p>
         <ul class="foot-links">
-          <li><a href="/es/studio/#pricing">Precios</a></li>
-          <li><a href="/es/studio/compare/">Comparar opciones</a></li>
-          <li><a href="/es/studio/#process">Proceso</a></li>
+          <li><a href="https://ledger.muntin.digital/">Muntin Ledger</a></li>
+          <li><a href="/es/cost-index/">&Iacute;ndice de costos</a></li>
+          <li><a href="/es/studio/">La empresa</a></li>
           <li><a href="/es/about/">Sobre Don</a></li>
         </ul>
       </nav>

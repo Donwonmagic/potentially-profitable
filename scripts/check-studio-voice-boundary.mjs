@@ -10,6 +10,11 @@
  * this gate blocks the inverse — a fake-team / corporate "we" leaking into the
  * studio's own marketing voice.
  *
+ * Clarified v1.1 (2026-06-11, with the company repositioning): "Muntin
+ * Digital" as the COMPANY NAME is permitted on studio surfaces — the gate
+ * blocks the plural persona ("our team", "our staff", "we're a team"),
+ * never the name. See /methods/#voice-contract rule 1.
+ *
  * SCOPE: the studio's OWN-VOICE marketing surfaces only. CONTENT registers are
  * excluded by intent: library/blog/learn articles legitimately QUOTE operators
  * and show example copy ("Thank you — our team works hard…" in the

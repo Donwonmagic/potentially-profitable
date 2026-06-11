@@ -553,7 +553,7 @@ function navHeader(altUrl, bodyClass) {
       Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
     </a>
     <nav class="nav-links" aria-label="Primary">
-      <a href="/services/">Services</a>
+      <a href="/studio/">Studio</a>
       <a href="/for/restaurants/">Restaurants</a>
       <a href="/learn/">Learn</a>
       <a href="/about/">About</a>
@@ -578,7 +578,7 @@ function navHeader(altUrl, bodyClass) {
     </button>
   </div>
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
-    <a href="/services/">Services</a>
+    <a href="/studio/">Studio</a>
     <a href="/for/restaurants/">Restaurants</a>
     <a href="/learn/">Learn</a>
     <a href="/about/">About</a>
@@ -629,7 +629,7 @@ function siteFooter() {
       <nav class="foot-col" aria-labelledby="foot-explore">
         <p class="foot-heading" id="foot-explore">Explore</p>
         <ul class="foot-links">
-          <li><a href="/services/">Services</a></li>
+          <li><a href="/studio/">Studio</a></li>
           <li><a href="/for/restaurants/">For restaurants</a></li>
           <li><a href="/about/">About Don</a></li>
           <li><a href="/system/">The system</a></li>

@@ -133,9 +133,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=933461d49609" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-core.css?v=b70da981fa3f" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-tool.css?v=aee67503f378" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=933461d49609"><link rel="stylesheet" href="/assets/site-tool.css?v=aee67503f378"></noscript>
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=b70da981fa3f"><link rel="stylesheet" href="/assets/site-tool.css?v=aee67503f378"></noscript>
 <style>.breadcrumb{padding-top:100px}
 /* === Menu Copy Inspector tool-scoped styles. Page-prefix .mc-*. === */
 .mc-input{display:flex;flex-direction:column;gap:14px}
@@ -436,11 +436,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
          three-doors page). Tools is promoted from the old Library
          mega-menu to a top-level item. Studio replaces Services +
          Restaurants + About — they all live under /studio/ now,
-         either as anchored sections (#pricing, #offers, #cities,
-         #process, #about) or as full child pages (/studio/compare/,
-         /studio/silver-spring/, etc.). The old Services and
-         Restaurants pages remain reachable via /studio/ and the
-         _redirects table; /about/ is unchanged. The mega-menu is
+         as sections of the company page (Phase 9, 2026-06-11: the
+         services-era child pages and anchored offer sections are
+         retired; old paths 301 via the _redirects table). /about/ is unchanged. The mega-menu is
          retired (the hub IS the menu now); the controller script
          is gone too.
 
@@ -946,14 +944,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <p style="margin:0 0 8px;font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);">What this <em>is</em>: a permanent skill upgrade you can run quarterly.</p>
     <p style="margin:0;font-size:14px;line-height:1.65;color:var(--ink-soft);">Three audiences, three handoffs. The <strong>Copy Card</strong> is the visual a non-technical reader can use — bring it to the chef before the next menu reprint. The <strong>CSV</strong> is for the accountant or operator running quarterly comparisons. The <strong>JSON</strong> is for a developer building anything on top of your menu data. The Inspector itself is the slow-cooked benefit: ten owners who run it once a quarter for two years write better menus from scratch than they did before.</p>
   </div>
-
-  <div style="max-width:760px;margin:18px auto 0;padding:20px 22px;background:var(--teal-tint);border-radius:var(--r-input);border:1px solid var(--line);">
-    <p style="margin:0 0 8px;font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);">When you want a brand-voice rewrite, hire the studio.</p>
-    <p style="margin:0 0 14px;font-size:14px;line-height:1.6;color:var(--ink-soft);">If the Inspector flags &ldquo;Rewrite&rdquo; across most of your menu, you don't have a copy problem — you have a voice problem. Brand-voice work is the studio's actual paid offering. Bring your Copy Card to the kickoff call.</p>
-    <a href="/services/" style="display:inline-flex;align-items:center;gap:6px;padding:9px 18px;background:var(--teal);color:var(--cream);border-radius:999px;text-decoration:none;font-size:13px;font-weight:600;">See brand &amp; menu voice
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:12px;height:12px;"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
-    </a>
-  </div>
 </div></section>
 
 <section class="block"><div class="container">
@@ -964,7 +954,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <a href="/tools/margin-math/">Run the unit math: Margin Math</a>
       <a href="/glossary/menu-copy/">Glossary: Menu copy</a>
       <a href="/glossary/sensory-adjective/">Glossary: Sensory adjective</a>
-      <a href="/services/">Hire the studio for a brand-voice rewrite</a>
     </div>
   </div>
 </div></section>
@@ -2200,7 +2189,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     lines.push('Menu Copy Inspector is a free tool from **Muntin Digital** — a one-person restaurant web studio in Silver Spring, Maryland.');
     lines.push('');
     lines.push('- Studio: https://muntin.digital');
-    lines.push('- Brand voice (paid): https://muntin.digital/services/');
     lines.push('- Tool: https://muntin.digital/tools/menu-copy/');
     lines.push('');
     lines.push('> Structure brings clarity.');

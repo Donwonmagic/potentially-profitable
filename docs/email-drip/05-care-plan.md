@@ -22,11 +22,15 @@ Thanksgiving / Christmas / Valentine's / Mother's Day.
 
 If you've got a manager who already does this, great. Skip this email.
 
-If you don't, $99/month covers it. No code edits, no design work —
-just hours, prices, and uptime, kept current. Bookable without a sales
-call:
+If you don't, the free Holiday Hours tool builds the schema, the copy,
+and the GBP paste in about two minutes — and the Store Hours tool keeps
+the whole grid in one place you can re-run before every holiday:
 
-  https://muntin.digital/services/care-plan-light/
+  https://muntin.digital/tools/store-hours/
+
+(The old $99/mo care plan retired with the services business. The tool
+is the part of it you can run yourself, free, in less time than the
+email asking me to do it.)
 
 The boring stuff is what saves the next bad review.
 

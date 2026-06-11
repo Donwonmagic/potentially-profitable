@@ -39,9 +39,9 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=933461d49609" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=15ac955f199e" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=933461d49609"><link rel="stylesheet" href="/assets/site-article.css?v=15ac955f199e"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=b70da981fa3f" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=36af39b8b96e" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=b70da981fa3f"><link rel="stylesheet" href="/assets/site-article.css?v=36af39b8b96e"></noscript>
 
 <!-- topic-schema:start -->
 <script type="application/ld+json">
@@ -165,11 +165,9 @@
          three-doors page). Tools is promoted from the old Library
          mega-menu to a top-level item. Studio replaces Services +
          Restaurants + About — they all live under /studio/ now,
-         either as anchored sections (#pricing, #offers, #cities,
-         #process, #about) or as full child pages (/studio/compare/,
-         /studio/silver-spring/, etc.). The old Services and
-         Restaurants pages remain reachable via /studio/ and the
-         _redirects table; /about/ is unchanged. The mega-menu is
+         as sections of the company page (Phase 9, 2026-06-11: the
+         services-era child pages and anchored offer sections are
+         retired; old paths 301 via the _redirects table). /about/ is unchanged. The mega-menu is
          retired (the hub IS the menu now); the controller script
          is gone too.
 
@@ -607,7 +605,7 @@
 
       <ul>
         <li><strong>Reservation widgets.</strong> OpenTable, Resy, Tock, and the lesser platforms all ship hefty third-party JS bundles that load before the visitor can book. The newer &ldquo;direct&rdquo; or &ldquo;widgets v2&rdquo; APIs from each platform are smaller and faster than the legacy iframe embed; switching from iframe to direct typically saves 200&ndash;500ms of LCP. <a href="/library/reservation-conversion-guide/">How to recover reservations</a> covers the tradeoffs.</li>
-        <li><strong>Menu PDFs.</strong> Linking a 4MB PDF as the menu &ldquo;page&rdquo; means every visitor who clicks waits for the whole PDF to download before seeing anything. The fix is real HTML &mdash; use <a href="/tools/menu-converter/">Menu Converter</a> to turn pasted menu text into semantic HTML in two seconds. The <a href="/services/menu-drop-in/">$1,500 menu drop-in</a> ships the studio-built styled version.</li>
+        <li><strong>Menu PDFs.</strong> Linking a 4MB PDF as the menu &ldquo;page&rdquo; means every visitor who clicks waits for the whole PDF to download before seeing anything. The fix is real HTML &mdash; use <a href="/tools/menu-converter/">Menu Converter</a> to turn pasted menu text into semantic HTML in two seconds.</li>
         <li><strong>Background videos.</strong> The autoplaying hero-video pattern that became fashionable circa 2018 carries 8&ndash;15MB of JS-decoded video. On mobile, that&rsquo;s a multi-second LCP killer for a piece of decoration the visitor never asked for. Replace with a single AVIF still and call it done.</li>
       </ul>
 
@@ -621,7 +619,7 @@
         <li><strong>Pick the heaviest hero image you have. Re-encode it as AVIF.</strong> Drop the file size under 200KB. Replace the &lt;img&gt; src. Re-run both tools. The score moves; the visitor experience changes immediately.</li>
       </ol>
 
-      <p>Operators who want the studio-side version: the <a href="/services/audit/">$499 audit</a> includes the speed walkthrough on Loom; the <a href="/services/menu-drop-in/">$1,500 menu drop-in</a> ships a mobile-fast menu page that meets the launch plan&rsquo;s LCP &le; 2.0s gate by default; the full-build tiers ship every page under the gate.</p>
+      <p>0s gate by default; the full-build tiers ship every page under the gate.</p>
 
       <h3>Where this topic touches the others</h3>
 
@@ -681,7 +679,7 @@
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->150<!-- /count --> glossary terms &mdash; with a one-person web studio behind it in Silver Spring, MD.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->150<!-- /count --> glossary terms &mdash; from Muntin Digital in Silver Spring, MD.</p>
       </div>
 
       <!-- Column order mirrors the 4-item primary nav
@@ -709,12 +707,17 @@
         </ul>
       </nav>
 
+      <!-- Phase 9 (services sunset, 2026-06-11): the Studio column's
+           Pricing / Compare / Process rows sold the retired services
+           business. The column is now the Company column — the product,
+           the public data, the company page, the founder. The retired services
+           and studio child pages 301 per the _redirects table. -->
       <nav class="foot-col" aria-labelledby="foot-studio">
-        <p class="foot-heading" id="foot-studio">Studio</p>
+        <p class="foot-heading" id="foot-studio">Company</p>
         <ul class="foot-links">
-          <li><a href="/studio/#pricing">Pricing</a></li>
-          <li><a href="/studio/compare/">Compare options</a></li>
-          <li><a href="/studio/#process">Process</a></li>
+          <li><a href="https://ledger.muntin.digital/">Muntin Ledger</a></li>
+          <li><a href="/cost-index/">Cost Index</a></li>
+          <li><a href="/studio/">The company</a></li>
           <li><a href="/about/">About Don</a></li>
         </ul>
       </nav>
