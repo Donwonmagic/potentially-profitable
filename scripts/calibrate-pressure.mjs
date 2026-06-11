@@ -113,10 +113,10 @@ const ANCHOR = {
   'whole-chicken':   { host: 'mars', report: '3646', section: 'Report Detail', match: { field: 'item', value: 'Whole' }, field: 'wtd_avg_price', dateField: 'report_date', note: 'AMS 3646 / Whole' },
   'butter':          { host: 'lmr', report: '2993', section: 'Butter Prices and Sales', field: 'Butter_Price', dateField: 'week_ending_date', winField: 'week_ending_date', note: 'NDPSR 2993 butter' },
   'cheddar-cheese':  { host: 'lmr', report: '2993', section: '40 Pound Block Cheddar Cheese Prices and Sales', field: 'cheese_40_Price', dateField: 'week_ending_date', winField: 'week_ending_date', note: 'NDPSR 2993 block cheddar' },
-  'romaine-lettuce': { host: 'mars', report: 'hc_fv020', section: 'Report Details', match: { field: 'commodity', value: 'Lettuce, Romaine', exact: true }, serverFilter: true, field: 'low_price', dateField: 'report_begin_date', note: 'LA terminal / Romaine' },
-  'tomato':          { host: 'mars', report: 'hc_fv020', section: 'Report Details', match: { field: 'commodity', value: 'Tomatoes', exact: true }, serverFilter: true, field: 'low_price', dateField: 'report_begin_date', note: 'LA terminal / Tomatoes' },
-  'onion':           { host: 'mars', report: 'hc_fv020', section: 'Report Details', match: { field: 'commodity', value: 'Onions' }, serverFilter: true, field: 'low_price', dateField: 'report_begin_date', note: 'LA terminal / Onions' },
-  'russet-potato':   { host: 'mars', report: 'hc_fv020', section: 'Report Details', match: { field: 'commodity', value: 'Potatoes' }, serverFilter: true, field: 'low_price', dateField: 'report_begin_date', note: 'LA terminal / Potatoes (may be absent → monthly fallback)' }
+  'romaine-lettuce': { host: 'mars', report: '2307', section: 'Report Details', match: { field: 'commodity', value: 'Romaine' }, serverFilter: true, field: 'low_price', dateField: 'report_begin_date', note: 'LA terminal 2307 / Romaine (mirrors cost-index-sources)' },
+  'tomato':          { host: 'mars', report: '2307', section: 'Report Details', match: { field: 'commodity', value: 'Tomatoes' }, serverFilter: true, field: 'low_price', dateField: 'report_begin_date', note: 'LA terminal 2307 / Tomatoes (mirrors cost-index-sources)' },
+  'onion':           { host: 'mars', report: '2308', section: 'Report Details', match: { field: 'commodity', value: 'Onions' }, serverFilter: true, field: 'low_price', dateField: 'report_begin_date', note: 'LA terminal 2308 / Onions (mirrors cost-index-sources)' },
+  'russet-potato':   { host: 'mars', report: '2308', section: 'Report Details', match: { field: 'commodity', value: 'Russet' }, serverFilter: true, field: 'low_price', dateField: 'report_begin_date', note: 'LA terminal 2308 / Russet (mirrors cost-index-sources)' }
 };
 function amsAuth() { const k = process.env.AMS_KEY; return k ? 'Basic ' + Buffer.from(k + ':').toString('base64') : null; }
 // Stitch a report's section across ~150-day windows back `years` (the APIs cap each
@@ -425,20 +425,33 @@ async function anchorDiscover() {
       } else if (ok) {
         console.log(`      latest: ${ser[ser.length - 1].date} = ${ser[ser.length - 1].value}`);
       } else {
-        // 0 rows. If a SERVER-SIDE commodity filter was applied, it likely eliminated
-        // every row (wrong string) — re-probe UNFILTERED and dump the real commodity
-        // strings actually present, so the match value can be pinned.
+        // 0 rows. Peel the query back one layer at a time to reveal WHY, so the right
+        // report/section/commodity can be pinned next pass without guessing:
+        //   1) drop the server-side commodity filter (wrong string eliminates every row)
+        //   2) if still empty, drop the section too (wrong section name) — confirms the
+        //      report id itself resolves on marsapi and dumps whatever it returns.
         console.log('      (no rows under the configured query)');
-        if (a.serverFilter && a.match) {
-          const bare = Object.assign({}, a); delete bare.serverFilter;
-          try {
-            const raw = await fetchReportWindowed(bare, 0.25);          // ~3 months, unfiltered
+        const hint = item.split('-')[0].slice(0, 4).toLowerCase();      // e.g. 'roma','onio','russ','toma'
+        try {
+          const unfiltered = Object.assign({}, a); delete unfiltered.serverFilter;
+          let raw = await fetchReportWindowed(unfiltered, 0.25);          // ~3 months, no commodity filter
+          let where = `section '${a.section}'`;
+          if (!raw.length) {                                             // section likely wrong → drop it
+            const noSect = Object.assign({}, unfiltered); delete noSect.section;
+            raw = await fetchReportWindowed(noSect, 0.25);
+            where = 'no section';
+          }
+          if (!raw.length) { console.log(`      report ${a.report} returned nothing even unfiltered/section-less — confirm the report id resolves on marsapi.`); }
+          else {
             const dv = [];
-            raw.forEach((r) => { const c = r[a.match.field]; if (c && dv.indexOf(c) < 0 && dv.length < 60) dv.push(c); });
-            console.log(`      unfiltered probe: ${raw.length} rows. distinct ${a.match.field}: ${dv.join(' | ') || '(field empty/absent)'}`);
+            raw.forEach((r) => { const c = r[a.match.field]; if (c && dv.indexOf(c) < 0) dv.push(c); });
+            const matches = dv.filter((c) => String(c).toLowerCase().includes(hint));
+            console.log(`      unfiltered (${where}): ${raw.length} rows. ${dv.length} distinct ${a.match.field}.`);
+            if (matches.length) console.log(`      → '${hint}*' matches: ${matches.join(' | ')}   ← pin one of these as the commodity value`);
+            else console.log(`      → no ${a.match.field} contains '${hint}' here. first 40: ${dv.slice(0, 40).join(' | ')}`);
             if (raw[0]) console.log(`      keys: ${Object.keys(raw[0]).join(', ')}`);
-          } catch (e2) { console.log(`      unfiltered re-probe failed: ${e2.message}`); }
-        } else console.log('      confirm slug/section/host.');
+          }
+        } catch (e2) { console.log(`      re-probe failed: ${e2.message}`); }
       }
     } catch (e) { console.log(`  ✗ ${item.padEnd(16)} failed: ${e.message}`); }
   }
