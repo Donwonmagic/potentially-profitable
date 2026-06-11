@@ -310,7 +310,7 @@ async function calibrate(getProxy, getIndicator, getAnchor) {
     // is judged at MONTHLY resolution against the monthly-AGGREGATED published price — not
     // starved on a weekly grid (the bug that buried cheddar↔feed-grain at N=29), and not
     // exiled to the PPI proxy. A WEEKLY driver (diesel, drought) still tests weekly.
-    let weeklyTarget = null, monthlyTarget = null, targetLabel = null, anchorWeekly = false;
+    let weeklyTarget = null, monthlyTarget = null, weeklyLabel = null, monthlyLabel = null, anchorWeekly = false;
     const aspec = ANCHOR[item];
     if (getAnchor && aspec) {
       try {
@@ -318,14 +318,26 @@ async function calibrate(getProxy, getIndicator, getAnchor) {
         const arows = anchorCache[akey] = anchorCache[akey] || await getAnchor(aspec);
         const apairs = anchorSeries(arows, aspec);
         const wk = weeklyFromDated(apairs);
-        if (wk.length >= 60) { weeklyTarget = wk; monthlyTarget = monthlyFromDated(apairs); anchorWeekly = true; targetLabel = `${aspec.host}:${aspec.report}`; }
+        if (wk.length >= 60) {
+          weeklyTarget = wk; anchorWeekly = true; weeklyLabel = `${aspec.host}:${aspec.report}`;
+          const am = monthlyFromDated(apairs);
+          if (am.length >= 60) { monthlyTarget = am; monthlyLabel = weeklyLabel; }   // anchor deep enough to also be the monthly target
+        }
       } catch (e) { /* fall back to PPI */ }
     }
-    if (!anchorWeekly) {
-      const proxyId = PROXY[item]; if (!proxyId) continue;
-      try { monthlyTarget = proxyCache[proxyId] = proxyCache[proxyId] || monthlyFromDated(await getProxy(proxyId)); targetLabel = proxyId; }
-      catch (e) { console.log(`  target ${item} failed: ${e.message}`); continue; }
+    // Monthly target depth guard: a monthly edge needs depth (chicken's 3.8y anchor →
+    // only ~27 monthly points, under the gate). When the anchor's monthly history is short
+    // or absent, test MONTHLY edges against the DEEP BLS PPI index instead — decades-long,
+    // the same economic price quantity. Weekly edges still use the published weekly anchor;
+    // only the data-hungry monthly edges fall to the deep proxy (the mismatch caveat is in _doc).
+    if (!monthlyTarget) {
+      const proxyId = PROXY[item];
+      if (proxyId) {
+        try { monthlyTarget = proxyCache[proxyId] = proxyCache[proxyId] || monthlyFromDated(await getProxy(proxyId)); monthlyLabel = `${proxyId}${anchorWeekly ? ' (deep-proxy: anchor monthly <60mo)' : ''}`; }
+        catch (e) { /* maybe weekly-only */ }
+      }
     }
+    if (!weeklyTarget && !monthlyTarget) { console.log(`  target ${item}: neither anchor nor proxy resolved`); continue; }
     perItem[item] = {
       weeklyChg: weeklyTarget ? seriesChanges(weeklyTarget) : null,
       monthlyChg: monthlyTarget ? seriesChanges(monthlyTarget) : null,
@@ -334,7 +346,7 @@ async function calibrate(getProxy, getIndicator, getAnchor) {
     for (const ind of (panel.indicators || [])) {
       const spec = specs[ind.id] || resolveMoveSpec(ind.id);
       const type = spec ? spec.type : '(emit)';
-      const rec = { item, indicator: ind.id, type, target: targetLabel, ruleSign: ind.sign, ruleWeight: ind.weight, ruleLeadWk: ind.lead ? `${ind.lead.min}-${ind.lead.max}` : null };
+      const rec = { item, indicator: ind.id, type, ruleSign: ind.sign, ruleWeight: ind.weight, ruleLeadWk: ind.lead ? `${ind.lead.min}-${ind.lead.max}` : null };
       if (!spec || SKIP_TYPES.has(type)) { rec.status = 'skipped'; rec.reason = !spec ? 'no spec' : `type ${type}`; rec.resolution = anchorWeekly ? 'weekly' : 'monthly'; edges.push(rec); continue; }
       let hist;
       try { hist = indHistCache[ind.id] = indHistCache[ind.id] || await getIndicator(spec); } catch (e) { rec.status = 'fetch-failed'; rec.reason = e.message; edges.push(rec); continue; }
@@ -345,6 +357,7 @@ async function calibrate(getProxy, getIndicator, getAnchor) {
       const target = resolution === 'weekly' ? weeklyTarget : monthlyTarget;
       const R = RES[resolution];
       rec.resolution = resolution; rec.indCadence = indWeekly ? 'weekly' : 'monthly';
+      rec.target = resolution === 'weekly' ? weeklyLabel : monthlyLabel;
       // weekly OR a long-lead monthly signal can be fairly judged; a short-lead signal on a monthly grid is blind.
       rec.fairness = resolution === 'weekly' ? 'judgeable' : ((ind.lead && ind.lead.max >= 8) ? 'judgeable' : 'short-lead (monthly test blind)');
       if (!target) { rec.status = 'skipped'; rec.reason = 'no target at resolution'; edges.push(rec); continue; }
@@ -397,7 +410,7 @@ function report(result) {
   const judge = tested.filter((e) => e.fairness === 'judgeable');
   const pass = judge.filter((e) => e.bhPass && e.oosPass && e.enoughN);
   const holdRightSign = judge.filter((e) => e.oosPass && e.ruleSign === e.sign);
-  console.log(`\n  ${tested.length} edge(s) tested — ${wk.length} against the WEEKLY anchor (the price we publish), ${mo.length} on the monthly PPI fallback.`);
+  console.log(`\n  ${tested.length} edge(s) tested — ${wk.length} against the WEEKLY anchor (the price we publish), ${mo.length} at monthly resolution (anchor-monthly when the anchor is ≥60mo deep, else the deep BLS-PPI index).`);
   console.log(`  ${pass.length} survived BH+OOS+N · ${holdRightSign.length} hold OOS with the rule's sign · ${judge.filter((e) => e.ruleSign !== e.sign).length} sign disagreement(s).`);
   // Suggested weights — the sign-constrained NNLS fit over each item's survivors.
   const items = Object.keys(fits);
@@ -565,7 +578,7 @@ else {
   calibrate(fetchProxy, fetchIndicatorHistory, getAnchor).then((result) => {
     report(result);
     const { edges, fits } = result;
-    const out = { _doc: 'GENERATED by scripts/calibrate-pressure.mjs — empirical lead/sign/strength per indicator→ingredient edge vs the hand-set rule. TARGET: each ingredient is backtested against the wholesale anchor it actually publishes (LMR cutout / AMS terminal / NDPSR dairy, via the same source specs as data/cost-index-sources.json). RESOLUTION is matched PER EDGE = min(anchor cadence, indicator cadence): a weekly driver (diesel, drought) tests against the weekly anchor; a monthly driver (feed-grain, cold storage) tests against the same anchor AGGREGATED to monthly — so monthly inputs are no longer starved on a weekly grid. Items with no weekly anchor fall back to the monthly BLS-PPI proxy. Informs human weight edits; NEVER auto-applied. No price. CAVEATS: anchor edges that still flip sign are real evidence (no resolution excuse); monthly-PPI-fallback edges keep the proxy mismatch caveat. Surviving edges are hypotheses to NNLS-fit + benchmark vs equal-weight OOS, then apply by hand with a _version bump. fits = the sign-constrained NNLS joint weight fit per item over its surviving edges, fit at the resolution where the item has the most survivors (suggestions only).', generatedAt: new Date().toISOString().slice(0, 10), edges, fits };
+    const out = { _doc: 'GENERATED by scripts/calibrate-pressure.mjs — empirical lead/sign/strength per indicator→ingredient edge vs the hand-set rule. TARGET: each ingredient is backtested against the wholesale anchor it actually publishes (LMR cutout / AMS terminal / NDPSR dairy, via the same source specs as data/cost-index-sources.json). RESOLUTION is matched PER EDGE = min(anchor cadence, indicator cadence): a weekly driver (diesel, drought) tests against the weekly anchor; a monthly driver (feed-grain, cold storage) tests against the same anchor AGGREGATED to monthly — so monthly inputs are no longer starved on a weekly grid. MONTHLY-target depth guard: when the anchor monthly history is <60mo (e.g. chicken 3646 starts 2022) or absent, monthly edges test against the DEEP decades-long BLS-PPI index instead (same economic price, far more N); weekly edges still use the published weekly anchor. Informs human weight edits; NEVER auto-applied. No price. CAVEATS: anchor edges that still flip sign are real evidence (no resolution excuse); monthly-PPI-fallback edges keep the proxy mismatch caveat. Surviving edges are hypotheses to NNLS-fit + benchmark vs equal-weight OOS, then apply by hand with a _version bump. fits = the sign-constrained NNLS joint weight fit per item over its surviving edges, fit at the resolution where the item has the most survivors (suggestions only).', generatedAt: new Date().toISOString().slice(0, 10), edges, fits };
     writeFileSync(path.join(repoRoot, 'data/pressure-calibration.json'), JSON.stringify(out, null, 2) + '\n');
     console.log('\nWrote data/pressure-calibration.json');
   }).catch((e) => { console.error('calibrate failed:', e.message); process.exit(1); });
