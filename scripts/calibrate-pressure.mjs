@@ -211,20 +211,16 @@ async function fetchProxy(seriesId) {                      // BLS PPI monthly, ~
 // pick the price or volume measure by keyword, fix any other dims to their first category.
 // Scale-free (calibration uses % changes). Period codes like '2024U15' → that ISO week's Monday.
 const SSB_BASE = (t) => `https://data.ssb.no/api/pxwebapi/v2/tables/${t}`;
-// PxWebApi v2 data query — exact syntax is finicky; try a few forms and use the first that
-// returns parseable JSON-stat2 WITH the full time series. The bare query returns only the
-// LATEST week, so we must select all of Tid — try top(N) (most-recent N, N>table size = all)
-// and the * wildcard. (HTTP 400 = query malformed; the error body says why.)
-function ssbDataUrls(t) {
-  const b = `${SSB_BASE(t)}/data`, fmt = 'lang=en&outputFormat=json-stat2';
-  return [
-    `${b}?${fmt}&valueCodes%5BTid%5D=top(3000)`,
-    `${b}?${fmt}&valueCodes%5BTid%5D=*`,
-    `${b}?${fmt}&valueCodes[Tid]=*`,
-    `${b}?${fmt}`
-  ];
-}
 const SSB_META = (t) => `${SSB_BASE(t)}/metadata?lang=en`;
+// PxWebApi v2 requires a selection for EVERY mandatory variable once you select any one
+// ("Missing selection for mandatory variable"). So read the variable list from metadata and
+// select all values (*) of each — that returns the full table (all weeks × commodity ×
+// contents). ssbExtract then picks the time dim + the price/volume measure and fixes the
+// commodity dim to its first value (fresh salmon).
+function ssbAllVarsUrl(t, vars) {
+  const sel = vars.map((v) => `valueCodes%5B${encodeURIComponent(v)}%5D=*`).join('&');
+  return `${SSB_BASE(t)}/data?lang=en&outputFormat=json-stat2&${sel}`;
+}
 const SSB_UA = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36 muntin.digital';
 async function uaGet(url) {
   const r = await fetch(url, { headers: { 'User-Agent': SSB_UA, Accept: 'application/json' } });
@@ -277,12 +273,11 @@ function ssbExtract(js, measure) {
   return out.sort((a, b) => a.date.localeCompare(b.date));
 }
 async function fetchSSB(spec) {
-  let lastErr;
-  for (const u of ssbDataUrls(spec.table)) {
-    try { const s = ssbExtract(await uaGet(u), spec.measure || 'price'); if (s.length >= 60) return s; lastErr = new Error(`only ${s.length} pts (need the full time series, not just the latest week)`); }
-    catch (e) { lastErr = e; }
-  }
-  throw lastErr || new Error('no SSB query form returned the full series');
+  const meta = await uaGet(SSB_META(spec.table));
+  const vars = meta.id || Object.keys(meta.dimension || {});
+  const s = ssbExtract(await uaGet(ssbAllVarsUrl(spec.table, vars)), spec.measure || 'price');
+  if (s.length >= 60) return s;
+  throw new Error(`SSB ${spec.table}: only ${s.length} pts after all-vars selection`);
 }
 
 // ---- NOAA Fisheries FOSS Foreign Trade API (keyless; monthly US seafood imports) -------
@@ -290,12 +285,9 @@ async function fetchSSB(spec) {
 // supply, or val = $ landed) across all partner countries per year-month → a monthly supply
 // series. Import VOLUME up → US supply up → cost DOWN (-1). Bot-blocks default UAs → browser
 // UA (shared uaGet). ORDS pages via limit/offset + hasMore. 2009→present, ~6-8wk lag.
-// ORDS host has moved before; the first that returns JSON (not an HTML app page) wins.
-const FOSS_BASES = [
-  'https://www.st.nmfs.noaa.gov/ords/foss/trade_data/',
-  'https://apps-st.fisheries.noaa.gov/ords/foss/trade_data/',
-  'https://www.fisheries.noaa.gov/foss/ords/foss/trade_data/'
-];
+// Canonical ORDS endpoint (confirmed in NOAA's own developer docs). When it serves an HTML
+// "Under Maintenance" page, uaGet's JSON parse throws → the indicator skips gracefully.
+const FOSS_BASE = 'https://www.st.nmfs.noaa.gov/ords/foss/trade_data/';
 function fossAggregate(items, measure) {                    // [{year,month,kilos,val,...}] → [{date,value}] (monthly sum)
   const by = {};
   for (const r of (items || [])) {
@@ -306,28 +298,23 @@ function fossAggregate(items, measure) {                    // [{year,month,kilo
   }
   return Object.keys(by).sort().map((k) => ({ date: `${k}-15`, value: by[k] }));
 }
-function fossQuery(spec) {
-  const filter = { source: spec.source || 'IMP' }, hts = spec.hts || [];
-  if (hts.length) filter.hts_number = hts.length > 1 ? { $in: hts } : hts[0];
-  return encodeURIComponent(JSON.stringify(filter));
-}
+// One request per HTS code (avoids depending on ORDS '$in' support), paginated.
 async function fetchFOSS(spec) {
-  const q = fossQuery(spec); let lastErr;
-  for (const base of FOSS_BASES) {
-    try {
-      const items = []; let offset = 0, ok = true;
-      for (let page = 0; page < 80; page++) {
-        const j = await uaGet(`${base}?q=${q}&limit=10000&offset=${offset}`);
-        if (!j || !Array.isArray(j.items)) { ok = false; break; }
-        j.items.forEach((r) => items.push(r));
-        if (!j.hasMore) break;
-        offset += (j.limit || j.items.length || 10000);
-      }
-      if (ok && items.length) return fossAggregate(items, spec.measure || 'kilos');
-      lastErr = new Error('no items');
-    } catch (e) { lastErr = e; }
+  const source = spec.source || 'IMP', hts = (spec.hts && spec.hts.length) ? spec.hts : [null];
+  const items = [];
+  for (const code of hts) {
+    const filter = { source }; if (code) filter.hts_number = code;
+    const q = encodeURIComponent(JSON.stringify(filter));
+    let offset = 0;
+    for (let page = 0; page < 60; page++) {
+      const j = await uaGet(`${FOSS_BASE}?q=${q}&limit=10000&offset=${offset}`);
+      if (!j || !Array.isArray(j.items)) throw new Error('non-JSON response (endpoint under maintenance?)');
+      j.items.forEach((r) => items.push(r));
+      if (!j.hasMore) break;
+      offset += (j.limit || j.items.length || 10000);
+    }
   }
-  throw lastErr || new Error('no FOSS host returned JSON');
+  return fossAggregate(items, spec.measure || 'kilos');
 }
 
 // ---- NOAA CPC ENSO / Oceanic Niño Index (keyless flat ASCII; monthly anomaly 1950+) -----
@@ -702,30 +689,27 @@ function ssbDumpDims(js) {
   }
 }
 async function ssbDiscover() {
-  console.log('SSB discovery — Norway PxWebApi v2 (writes nothing). Browser UA cleared the 403; now probing the v2 query syntax.\n');
+  console.log('SSB discovery — Norway PxWebApi v2 (writes nothing). v2 needs ALL mandatory vars selected.\n');
   const t = '03024';
-  // 1) metadata (no value selection → reveals the real variable codes even if data-selection is finicky)
-  try { console.log(`  metadata ${SSB_META(t)}`); ssbDumpDims(await uaGet(SSB_META(t))); }
-  catch (e) { console.log(`    ✗ metadata: ${e.message}`); }
-  // 2) each data-query candidate — the first that returns parseable JSON-stat2 is the one I pin
-  for (const u of ssbDataUrls(t)) {                          // try ALL — need the one that returns the FULL series, not just the latest week
-    try { const js = await uaGet(u); const n = (js.dimension && js.dimension.Tid && Object.keys(js.dimension.Tid.category.index).length) || 0; console.log(`  ✓ ${u}  → ${n} weeks`); if (n > 100) { ssbDumpDims(js); break; } }
-    catch (e) { console.log(`  ✗ ${u}\n      ${e.message}`); }
-  }
-  console.log('\nThe ✓ URL with the most weeks is the one I pin; the ✗ bodies say what v2 wants.');
+  let vars;
+  try { const meta = await uaGet(SSB_META(t)); vars = meta.id || Object.keys(meta.dimension || {}); console.log(`  metadata ✓ — mandatory vars: ${vars.join(', ')}`); ssbDumpDims(meta); }
+  catch (e) { console.log(`  ✗ metadata: ${e.message}`); return; }
+  const u = ssbAllVarsUrl(t, vars);
+  try { const js = await uaGet(u); const n = (js.dimension && js.dimension.Tid && Object.keys(js.dimension.Tid.category.index).length) || 0; console.log(`  ✓ all-vars query → ${n} weeks\n      ${u}`); ssbDumpDims(js); }
+  catch (e) { console.log(`  ✗ ${u}\n      ${e.message}`); }
+  console.log('\nGreen all-vars query = salmon-norway-price/volume now resolve.');
 }
 
 // ---- FOSS discovery: confirm the ORDS trade API shape + the monthly import series ------
 async function fossDiscover() {
-  console.log('FOSS discovery — NOAA Fisheries ORDS trade API (writes nothing). Last run returned HTML → finding the JSON host.\n');
-  // 1) Which host serves JSON? Hit each with a tiny unfiltered query and show status + a snippet.
-  for (const base of FOSS_BASES) {
-    const u = `${base}?limit=2`;
+  console.log('FOSS discovery — NOAA Fisheries ORDS trade API (writes nothing). Endpoint confirmed in NOAA docs; last run it was "Under Maintenance".\n');
+  // 1) Is the canonical endpoint serving JSON yet? Show status + a snippet (HTML = still down).
+  for (const u of [`${FOSS_BASE}?limit=2`, 'https://www.st.nmfs.noaa.gov/ords/foss/metadata-catalog/trade_data/']) {
     try {
       const r = await fetch(u, { headers: { 'User-Agent': SSB_UA, Accept: 'application/json' } });
       const t = (await r.text()).replace(/\s+/g, ' ').slice(0, 160);
       const json = t.trim().startsWith('{');
-      console.log(`  ${json ? '✓' : '✗'} ${r.status} ${u}\n      ${json ? 'JSON: ' : 'HTML/other: '}${t}`);
+      console.log(`  ${json ? '✓' : '✗'} ${r.status} ${u}\n      ${json ? 'JSON: ' : 'HTML/down: '}${t}`);
     } catch (e) { console.log(`  ✗ ${u} — ${e.message}`); }
   }
   // 2) If a host works, show the resolved monthly series + a sample row's field names.
