@@ -210,12 +210,23 @@ async function fetchProxy(seriesId) {                      // BLS PPI monthly, ~
 // (Tid=all) as JSON-stat2 and flatten generically: locate the TIME dim + the CONTENTS dim,
 // pick the price or volume measure by keyword, fix any other dims to their first category.
 // Scale-free (calibration uses % changes). Period codes like '2024U15' → that ISO week's Monday.
-const SSB_DATA = (t) => `https://data.ssb.no/api/pxwebapi/v2/tables/${t}/data?lang=en&outputFormat=json-stat2&valueCodes%5BTid%5D=*`;
-const SSB_META = (t) => `https://data.ssb.no/api/pxwebapi/v2/tables/${t}/metadata?lang=en&outputFormat=json-px`;
+const SSB_BASE = (t) => `https://data.ssb.no/api/pxwebapi/v2/tables/${t}`;
+// PxWebApi v2 data query — exact syntax is finicky; try a few forms and use the first that
+// returns parseable JSON-stat2. (HTTP 400 = query malformed; the error body says why.)
+function ssbDataUrls(t) {
+  const b = `${SSB_BASE(t)}/data`;
+  return [
+    `${b}?lang=en&outputFormat=json-stat2`,
+    `${b}?lang=en&outputFormat=json-stat2&valueCodes%5BTid%5D=*`,
+    `${b}?lang=en&format=json-stat2`,
+    `${b}?lang=en`
+  ];
+}
+const SSB_META = (t) => `${SSB_BASE(t)}/metadata?lang=en`;
 const SSB_UA = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36 muntin.digital';
 async function uaGet(url) {
   const r = await fetch(url, { headers: { 'User-Agent': SSB_UA, Accept: 'application/json' } });
-  if (!r.ok) throw new Error('HTTP ' + r.status);
+  if (!r.ok) { let b = ''; try { b = (await r.text()).slice(0, 300).replace(/\s+/g, ' '); } catch (e) { /* no body */ } throw new Error(`HTTP ${r.status}${b ? ' · ' + b : ''}`); }
   return r.json();
 }
 // ISO-8601 week → Monday date (week 1 holds the year's first Thursday).
@@ -264,8 +275,12 @@ function ssbExtract(js, measure) {
   return out.sort((a, b) => a.date.localeCompare(b.date));
 }
 async function fetchSSB(spec) {
-  const js = await uaGet(SSB_DATA(spec.table));
-  return ssbExtract(js, spec.measure || 'price');
+  let lastErr;
+  for (const u of ssbDataUrls(spec.table)) {
+    try { const s = ssbExtract(await uaGet(u), spec.measure || 'price'); if (s.length) return s; lastErr = new Error('parsed 0 points'); }
+    catch (e) { lastErr = e; }
+  }
+  throw lastErr || new Error('no SSB query form worked');
 }
 
 // ---- NOAA Fisheries FOSS Foreign Trade API (keyless; monthly US seafood imports) -------
@@ -618,30 +633,36 @@ async function anchorDiscover() {
   console.log('\nGreen rows = the weekly target resolves; I wire those into calibrate. Red rows = paste the keys/candidates and I pin them.');
 }
 
-// ---- SSB discovery: dump the salmon table's structure + what the picker resolves --------
-async function ssbDiscover() {
-  console.log('SSB discovery — Norway PxWebApi v2 table structure for the salmon signals (writes nothing)\n');
-  for (const t of ['03024']) {
-    try {
-      const js = await uaGet(SSB_DATA(t));
-      const dim = js.dimension || {}, ids = js.id || Object.keys(dim), sizes = js.size || [];
-      console.log(`  ✓ table ${t}: dims = ${ids.map((id, i) => `${id}(${sizes[i]})`).join(' × ')}, ${(js.value || []).length} values`);
-      for (const id of ids) {
-        const cat = dim[id].category || { index: {} }, codes = Object.keys(cat.index || {});
-        const lab = cat.label || {}, unit = cat.unit || {};
-        const isTime = codes.length > 30 && codes.some((c) => /^\d{4}([UuVvMm]\d{1,2})?$/.test(c));
-        const show = isTime
-          ? `${codes[0]} … ${codes[codes.length - 1]} (${codes.length} periods)`
-          : codes.map((c) => `${c}=${lab[c] || ''}${unit[c] ? ` [${unit[c].base || unit[c].label || ''}]` : ''}`).join(' | ');
-        console.log(`      ${id} [${(dim[id] && dim[id].label) || ''}]: ${show}`);
-      }
-      for (const measure of ['price', 'volume']) {
-        const s = ssbExtract(js, measure);
-        console.log(`      → measure '${measure}': ${s.length} points` + (s.length ? `, ${s[0].date} → ${s[s.length - 1].date}, latest=${s[s.length - 1].value}` : ' (0 — adjust the keyword picker)'));
-      }
-    } catch (e) { console.log(`  ✗ table ${t} failed: ${e.message} (SSB bot-blocks non-browser UAs — confirm the UA + v2 query syntax)`); }
+// ---- SSB discovery: find the working v2 query, dump structure + what the picker resolves -
+function ssbDumpDims(js) {
+  const dim = js.dimension || {}, ids = js.id || Object.keys(dim), sizes = js.size || [];
+  console.log(`      dims = ${ids.map((id, i) => `${id}(${sizes[i] != null ? sizes[i] : '?'})`).join(' × ')}, ${(js.value || []).length} values`);
+  for (const id of ids) {
+    const cat = (dim[id] && dim[id].category) || { index: {} }, codes = Object.keys(cat.index || {});
+    const lab = cat.label || {}, unit = cat.unit || {};
+    const isTime = codes.length > 30 && codes.some((c) => /^\d{4}([UuVvMm]\d{1,2})?$/.test(c));
+    const show = isTime
+      ? `${codes[0]} … ${codes[codes.length - 1]} (${codes.length} periods)`
+      : codes.map((c) => `${c}=${lab[c] || ''}${unit[c] ? ` [${unit[c].base || unit[c].label || ''}]` : ''}`).join(' | ');
+    console.log(`      ${id} [${(dim[id] && dim[id].label) || ''}]: ${show}`);
   }
-  console.log('\nGreen = the salmon price/volume series resolve; I pin the exact ContentsCode + commodity selection from the dims above.');
+  for (const measure of ['price', 'volume']) {
+    const s = ssbExtract(js, measure);
+    console.log(`      → measure '${measure}': ${s.length} points` + (s.length ? `, ${s[0].date} → ${s[s.length - 1].date}, latest=${s[s.length - 1].value}` : ' (0 — adjust the keyword picker)'));
+  }
+}
+async function ssbDiscover() {
+  console.log('SSB discovery — Norway PxWebApi v2 (writes nothing). Browser UA cleared the 403; now probing the v2 query syntax.\n');
+  const t = '03024';
+  // 1) metadata (no value selection → reveals the real variable codes even if data-selection is finicky)
+  try { console.log(`  metadata ${SSB_META(t)}`); ssbDumpDims(await uaGet(SSB_META(t))); }
+  catch (e) { console.log(`    ✗ metadata: ${e.message}`); }
+  // 2) each data-query candidate — the first that returns parseable JSON-stat2 is the one I pin
+  for (const u of ssbDataUrls(t)) {
+    try { const js = await uaGet(u); console.log(`  ✓ ${u}`); ssbDumpDims(js); break; }
+    catch (e) { console.log(`  ✗ ${u}\n      ${e.message}`); }
+  }
+  console.log('\nThe ✓ URL + its dims tell me the exact ContentsCode/commodity selection to pin; the ✗ bodies say what v2 wants.');
 }
 
 // ---- FOSS discovery: confirm the ORDS trade API shape + the monthly import series ------
