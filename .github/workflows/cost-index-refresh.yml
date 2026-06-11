@@ -1,0 +1,94 @@
+# Cost Index weekly refresh — the freshness heartbeat.
+#
+# Every Monday 13:00 UTC (after Friday's USDA LMR/AMS reads settle and
+# before the US restaurant work week ramps): fetch the live public
+# sources (USDA AMS/LMR, BLS, FRED) for verified ingredients, compose
+# the honest artifact, run the fact + calibration gates, rebuild the
+# cost-index pages, and commit the result. This is the site's recurring
+# dated read — the un-backfillable track record AND the strongest
+# recency signal the site emits.
+#
+# Honest-failure posture (matches the engine):
+#   - No API keys configured  -> log + exit 0 (never a red X before the
+#     founder sets secrets; nothing is invented).
+#   - Live fetch composes 0 points -> fetch script REFUSES to write the
+#     artifact; the committed last-good data/cost-index.json stays.
+#   - Gates failing -> job fails, nothing is committed. A stale-but-true
+#     index beats a fresh-but-wrong one.
+#
+# Founder setup (repo Settings -> Secrets and variables -> Actions):
+#   FRED_KEY, BLS_KEY, AMS_KEY  (required for --live)
+#   LMR_KEY, EIA_KEY            (optional)
+
+name: Cost Index weekly refresh
+
+on:
+  schedule:
+    - cron: "0 13 * * 1" # Mondays 13:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write # commits the refreshed data + rebuilt pages
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Check keys are configured
+        id: keys
+        env:
+          FRED_KEY: ${{ secrets.FRED_KEY }}
+          BLS_KEY: ${{ secrets.BLS_KEY }}
+          AMS_KEY: ${{ secrets.AMS_KEY }}
+        run: |
+          if [ -z "$FRED_KEY" ] && [ -z "$BLS_KEY" ] && [ -z "$AMS_KEY" ]; then
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+            echo "No source API keys configured — skipping refresh (set FRED_KEY/BLS_KEY/AMS_KEY repo secrets to light the heartbeat)."
+          else
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Live fetch -> artifact
+        if: steps.keys.outputs.configured == 'true'
+        env:
+          FRED_KEY: ${{ secrets.FRED_KEY }}
+          BLS_KEY: ${{ secrets.BLS_KEY }}
+          AMS_KEY: ${{ secrets.AMS_KEY }}
+          LMR_KEY: ${{ secrets.LMR_KEY }}
+          EIA_KEY: ${{ secrets.EIA_KEY }}
+        run: node scripts/fetch-cost-index-sources.mjs --live --out /tmp/ci-artifact.json
+
+      - name: Build vendored cost-index from artifact
+        if: steps.keys.outputs.configured == 'true'
+        run: |
+          if [ ! -f /tmp/ci-artifact.json ]; then
+            echo "No artifact written (0 points composed) — keeping last-good data; see fetch log."
+            exit 0
+          fi
+          node scripts/build-cost-index.mjs --artifact /tmp/ci-artifact.json
+          node scripts/build-cost-index-pages.mjs
+
+      - name: Fact + calibration gates
+        if: steps.keys.outputs.configured == 'true'
+        run: |
+          node scripts/check-cost-index-sync.mjs
+          node scripts/check-cost-index-calibration.mjs
+
+      - name: Commit the weekly read
+        if: steps.keys.outputs.configured == 'true'
+        run: |
+          if git diff --quiet; then
+            echo "No data change this week — nothing to commit."
+            exit 0
+          fi
+          git config user.name "muntin-cost-index-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/cost-index.json cost-index/ es/cost-index/ sitemap.xml 2>/dev/null || git add -A
+          git commit -m "data(cost-index): weekly read $(date -u +%F)"
+          git push
