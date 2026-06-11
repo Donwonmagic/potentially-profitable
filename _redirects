@@ -62,15 +62,33 @@
 # TWO blankets per locale instead of per-page wildcards:
 #   /services/*  — covers every retired service page and sub-path
 #                  (menu-polish's old per-page rules included).
-#   /studio/*    — /studio/ has NO children after Phase 9, so the
-#                  blanket is safe. If a /studio/<child> page is
-#                  ever added, remove this blanket first.
+#   /studio/ children — exact static rules (see hotfix note below;
+#                  a /studio/* blanket self-loops because the splat
+#                  matches the empty remainder).
 /services/                                       /studio/                       301
 /services/*                                      /studio/                       301
 /es/services/                                    /es/studio/                    301
 /es/services/*                                   /es/studio/                    301
-/studio/*                                        /studio/                       301
-/es/studio/*                                     /es/studio/                    301
+# NOTE (hotfix 2026-06-11): a blanket /studio/* -> /studio/ LOOPS in
+# production — Cloudflare's splat also matches the EMPTY remainder, so
+# /studio/ matched its own redirect (ERR_TOO_MANY_REDIRECTS). The
+# retired children are enumerated as exact STATIC rules instead
+# (static rules are budget-cheap); deep sub-paths under them fall
+# through to the 404 scrub, which is acceptable for retired pages.
+/studio/call/                                    /studio/                       301
+/studio/compare/                                 /studio/                       301
+/studio/silver-spring/                           /studio/                       301
+/studio/dc/                                      /studio/                       301
+/studio/arlington/                               /studio/                       301
+/studio/bethesda/                                /studio/                       301
+/studio/takoma-park/                             /studio/                       301
+/es/studio/call/                                 /es/studio/                    301
+/es/studio/compare/                              /es/studio/                    301
+/es/studio/silver-spring/                        /es/studio/                    301
+/es/studio/dc/                                   /es/studio/                    301
+/es/studio/arlington/                            /es/studio/                    301
+/es/studio/bethesda/                             /es/studio/                    301
+/es/studio/takoma-park/                          /es/studio/                    301
 
 # Wellness retirement (Sprint K): the wellness audit and checklist
 # were removed in favor of a restaurant-first focus. Any inbound
