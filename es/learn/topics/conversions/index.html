@@ -612,7 +612,7 @@
       <ol>
         <li><strong>Pedidos solo por agregadores, sin camino directo</strong> &mdash; impacto del 0.45% sobre el ingreso cuando est&aacute; presente. Cada orden pasa por una comisi&oacute;n del 30% en lugar de una tarifa de procesador del 3.6%. Es tambi&eacute;n la fuga m&aacute;s f&aacute;cil de detectar en una prueba de cinco segundos en tu p&aacute;gina de men&uacute;.</li>
         <li><strong>El bot&oacute;n de reserva no hace deeplink</strong> &mdash; impacto del 0.34%, presente en el 59% de los sitios auditados. El bot&oacute;n de OpenTable / Resy / Tock manda al visitante a la p&aacute;gina principal de la plataforma en lugar de a la p&aacute;gina de tu local. Un clic de m&aacute;s es una reserva menos. Arreglo de cinco minutos.</li>
-        <li><strong>Solo en ingl&eacute;s en una zona biling&uuml;e</strong> &mdash; impacto del 0.31%, presente en el 38%. Un espejo real <code>/es/</code> con hreflang duplica la demanda accesible en aproximadamente el 35% de los barrios del DMV. El <a href="/es/services/menu-drop-in/">menu drop-in de $1,500</a> entrega la versi&oacute;n de la p&aacute;gina de men&uacute; en siete d&iacute;as; la versi&oacute;n de sitio completo va dentro de cualquiera de las tres tiers del estudio.</li>
+        <li><strong>Solo en ingl&eacute;s en una zona biling&uuml;e</strong> &mdash; impacto del 0.31%, presente en el 38%. Un espejo real <code>/es/</code> con hreflang duplica la demanda accesible en aproximadamente el 35% de los barrios del DMV.</li>
         <li><strong>Sin CTA de pedido directo arriba de los enlaces de terceros</strong> &mdash; impacto del 0.27%, presente en el 71%. El arreglo individual que m&aacute;s margen recupera: un bot&oacute;n &laquo;Pedir directo&raquo; en color primario, ubicado por encima de los enlaces a DoorDash / Uber Eats. Iguala el precio del men&uacute; del agregador; el cliente lo nota, t&uacute; te quedas con los 26.4 puntos.</li>
         <li><strong>Horarios escondidos debajo del fold en m&oacute;vil</strong> &mdash; impacto del 0.21%, presente en el 52%. Los tel&eacute;fonos pierden 800 ms con un hero pesado; el visitante se va antes de descubrir que est&aacute;s abierto. Mueve el bloque de horarios encima del hero. 15 minutos.</li>
         <li><strong>LCP m&oacute;vil &gt; 3.0s</strong> &mdash; impacto del 0.18%, presente en el 68%. La fuga m&aacute;s lenta de arreglar (1 a 3 horas de compresi&oacute;n de im&aacute;genes y poda de JS) pero la que se compone con cada otra fuga arriba.</li>
@@ -643,7 +643,7 @@
       <p>De las siete p&aacute;ginas que necesita el sitio de un restaurante independiente (<a href="/es/library/what-should-be-on-a-restaurant-website/">listadas aqu&iacute;</a>), tres cargan el 80% del peso de la conversi&oacute;n:</p>
 
       <ul>
-        <li><strong>P&aacute;gina de men&uacute;.</strong> Si es un PDF, est&aacute;s fugando. Un men&uacute; HTML real carga al instante, indexa para consultas como &laquo;cacio e pepe cerca de m&iacute;&raquo; y se ve bien en una pantalla de tel&eacute;fono de 360px. La <a href="/es/tools/menu-converter/">Menu Converter</a> gratuita convierte texto pegado del men&uacute; en HTML sem&aacute;ntico m&aacute;s schema JSON-LD <code>Menu</code> en dos segundos. La versi&oacute;n armada por el estudio es el <a href="/es/services/menu-drop-in/">menu drop-in de $1,500</a>.</li>
+        <li><strong>P&aacute;gina de men&uacute;.</strong> Si es un PDF, est&aacute;s fugando. Un men&uacute; HTML real carga al instante, indexa para consultas como &laquo;cacio e pepe cerca de m&iacute;&raquo; y se ve bien en una pantalla de tel&eacute;fono de 360px. La <a href="/es/tools/menu-converter/">Menu Converter</a> gratuita convierte texto pegado del men&uacute; en HTML sem&aacute;ntico m&aacute;s schema JSON-LD <code>Menu</code> en dos segundos.</li>
         <li><strong>Bloque de horarios.</strong> El visitante quiere saber si est&aacute;s abierto ahora. Cualquier cosa m&aacute;s es fricci&oacute;n. Por encima del fold, en texto plano, formato &laquo;Abierto hasta las 10 PM hoy&raquo; le gana a una tabla de horarios est&aacute;tica. Agrega horarios festivos con la <a href="/es/tools/store-hours/#holidays">Holiday Hours Generator</a>; la misma herramienta emite el override JSON-LD y el bloque de GBP.</li>
         <li><strong>P&aacute;gina de reservas.</strong> O &mdash; mejor &mdash; el widget de reservas embebido en la p&aacute;gina de men&uacute;. De un modo u otro: deeplink al local, no a la p&aacute;gina principal de la plataforma. Usa el script nativo de la plataforma (OpenTable Direct, Resy Widgets v2) en lugar de un iframe; el script nativo mantiene al visitante en tu dominio y te deja medir la conversi&oacute;n en tu propia anal&iacute;tica.</li>
       </ul>
@@ -658,7 +658,7 @@
         <li><strong>Elige una fuga. Arr&eacute;glala esta semana.</strong> Deeplink de reserva (5 min), horarios sobre el fold (15 min) o CTA de pedido directo (30 min) son los tres arreglos de menos de una hora. Elige el que tu auditor&iacute;a haya rankeado m&aacute;s alto. Vuelve a correr la auditor&iacute;a despu&eacute;s; el puntaje se mueve de inmediato.</li>
       </ol>
 
-      <p>Los operadores que no logran sacar la hora pueden tercerizarla: la <a href="/es/services/audit/">auditor&iacute;a a fondo de $499</a> entrega un Loom m&aacute;s una hoja de acci&oacute;n de 8 p&aacute;ginas en cinco d&iacute;as h&aacute;biles, ordenada por impacto en d&oacute;lares y con cr&eacute;dito hacia una construcci&oacute;n dentro de los 60 d&iacute;as. El <a href="/es/services/menu-drop-in/">menu drop-in de $1,500</a> resuelve la fuga de la p&aacute;gina de men&uacute; directamente; el <a href="/es/services/care-plan-light/">Care Plan Light</a> resuelve el lado de horarios e higiene cada mes.</p>
+      <p></p>
 
       <h3>D&oacute;nde este tema toca a los otros</h3>
 
@@ -769,7 +769,7 @@
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">La ventana.</p>
-        <p class="foot-blurb">Una biblioteca gratuita para restaurantes &mdash; <!-- count:articles.library -->36<!-- /count --> art&iacute;culos, <!-- count:tools.live -->13<!-- /count --> herramientas y un glosario de <!-- count:glossary.terms -->150<!-- /count --> t&eacute;rminos &mdash; con un estudio web de una persona detr&aacute;s, en Silver Spring, MD. Se habla espa&ntilde;ol.</p>
+        <p class="foot-blurb">Una biblioteca gratuita para restaurantes &mdash; <!-- count:articles.library -->36<!-- /count --> art&iacute;culos, <!-- count:tools.live -->13<!-- /count --> herramientas y un glosario de <!-- count:glossary.terms -->150<!-- /count --> t&eacute;rminos &mdash; de Muntin Digital, en Silver Spring, MD. Se habla espa&ntilde;ol.</p>
       </div>
 
       <!-- El orden de columnas refleja la navegación principal de 5
@@ -796,12 +796,16 @@
            /es/work/, el portafolio personal. Ese hub se retiró cuando
            la empresa pasó a ser el currículum; la fila ya no está y
            /es/work/* hace 301 a /es/studio/. -->
+      <!-- Fase 9 (cierre de servicios, 2026-06-11): las filas de
+           Precios / Comparar / Proceso vendían los servicios retirados.
+           La columna ahora es Empresa — el producto, los datos
+           públicos, la página de la empresa, el fundador. -->
       <nav class="foot-col" aria-labelledby="foot-studio">
-        <p class="foot-heading" id="foot-studio">Estudio</p>
+        <p class="foot-heading" id="foot-studio">Empresa</p>
         <ul class="foot-links">
-          <li><a href="/es/studio/#pricing">Precios</a></li>
-          <li><a href="/es/studio/compare/">Comparar opciones</a></li>
-          <li><a href="/es/studio/#process">Proceso</a></li>
+          <li><a href="https://ledger.muntin.digital/">Muntin Ledger</a></li>
+          <li><a href="/es/cost-index/">&Iacute;ndice de costos</a></li>
+          <li><a href="/es/studio/">La empresa</a></li>
           <li><a href="/es/about/">Sobre Don</a></li>
         </ul>
       </nav>

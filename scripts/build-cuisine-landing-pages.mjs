@@ -443,7 +443,7 @@ main{padding-top:64px}
     <p>${locale === 'es'
         ? '¿Quieres que construyamos tu menú?'
         : 'Want it built for you?'}
-       <a href="${baseSlash}/services/menu-drop-in/">${locale === 'es' ? 'Pídelo con Menu Drop-In →' : 'Get it built — Menu Drop-In →'}</a></p>
+       <a href="${baseSlash}/tools/menu-converter/">${locale === 'es' ? 'Constrúyelo gratis — Conversor de menú →' : 'Build it free — Menu Converter →'}</a></p>
   </section>
 </div>
 </main>

@@ -228,11 +228,9 @@ header.nav{min-height:64px}
          three-doors page). Tools is promoted from the old Library
          mega-menu to a top-level item. Studio replaces Services +
          Restaurants + About — they all live under /studio/ now,
-         either as anchored sections (#pricing, #offers, #cities,
-         #process, #about) or as full child pages (/studio/compare/,
-         /studio/silver-spring/, etc.). The old Services and
-         Restaurants pages remain reachable via /studio/ and the
-         _redirects table; /about/ is unchanged. The mega-menu is
+         as sections of the company page (Phase 9, 2026-06-11: the
+         services-era child pages and anchored offer sections are
+         retired; old paths 301 via the _redirects table). /about/ is unchanged. The mega-menu is
          retired (the hub IS the menu now); the controller script
          is gone too.
 
@@ -598,23 +596,25 @@ header.nav{min-height:64px}
   </aside>
 
   <!-- post-end-cta:start -->
-  <aside class="post-end-cta" aria-label="Workshop next step">
-    <p class="post-end-cta-headline">Want your Google profile read the way Gemini reads it?</p>
-    <p class="post-end-cta-body">The audit scores the profile and the on-site signals that feed Google's own AI — and names what's thin.</p>
-    <a class="btn btn-primary" href="/services/audit/?from=blog%2Fgemini-ai-referral-traffic-restaurants-2026">Run the audit<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></a>
-  </aside>
-  <!-- post-end-cta:end -->
-
-  <!-- smart-next:start -->
-<aside class="smart-next" aria-labelledby="smart-next-h">
-  <p class="smart-next__eyebrow" id="smart-next-h">What to do next</p>
-  <ol class="smart-next__list">
-        <li class="smart-next__item smart-next__read"><span class="smart-next__verb">Read:</span> <a href="/glossary/gbp/">the related glossary term →</a></li>
-        <li class="smart-next__item smart-next__try"><span class="smart-next__verb">Try:</span> <a href="/tools/audits/restaurant/?from=blog/gemini-ai-referral-traffic-restaurants-2026&intent=watch">the tool that pairs with this article →</a></li>
-        <li class="smart-next__item smart-next__note"><span class="smart-next__verb">Or send Don a note:</span> <a href="/window/?topic=gemini-ai-referral-traffic-restaurants-2026">The Window →</a></li>
+    <aside class="post-end-cta" aria-label="Workshop next step">
+      <p class="post-end-cta-headline">Want to see what Gemini can actually read on your site?</p>
+      <p class="post-end-cta-body">The SEO grader reads your pages the way an answer engine does — the plain-text answers it can lift, the restaurant schema underneath, the gaps in between. Run it on your homepage and a menu page; save both reads to the Workshop and compare after the rewrite.</p>
+      <a class="btn btn-primary" href="/tools/seo-grader/?from=blog%2Fgemini-ai-referral-traffic-restaurants-2026&amp;intent=watch">Run the SEO grader<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></a>
+    </aside>
+    <!-- post-end-cta:end -->
+<!-- knit-rail:start -->
+<aside class="knit-rail" data-knit="article" aria-labelledby="knit-rail-h-gemini-ai-referral-traffic-restaurants-2026">
+  <h3 class="knit-rail__h" id="knit-rail-h-gemini-ai-referral-traffic-restaurants-2026">Keep going.</h3>
+  <ol class="knit-rail__cols">
+    <li class="knit-rail__col"><span class="knit-rail__verb">Apply</span><a href="/tools/seo-grader/">the SEO grader</a></li>
+    <li class="knit-rail__col"><span class="knit-rail__verb">Read</span><a href="/blog/google-ai-mode-restaurant-local-results-2026/">Google rebuilt AI Mode at I/O 2026 — what it changes for your restaurant</a></li>
+    <li class="knit-rail__col"><span class="knit-rail__verb">Define</span><a href="/glossary/gbp/">Google Business Profile</a></li>
+    <li class="knit-rail__col"><span class="knit-rail__verb">Talk</span><a href="/window/?topic=gemini-ai-referral-traffic-restaurants-2026" class="js-window">Email Don</a></li>
   </ol>
 </aside>
-<!-- smart-next:end -->
+<!-- knit-rail:end -->
+
+  <!-- smart-next:start --><!-- smart-next:end -->
 
 </main>
 
@@ -640,7 +640,7 @@ header.nav{min-height:64px}
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->150<!-- /count --> glossary terms &mdash; with a one-person web studio behind it in Silver Spring, MD.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->150<!-- /count --> glossary terms &mdash; from Muntin Digital in Silver Spring, MD.</p>
       </div>
 
       <!-- Column order mirrors the 4-item primary nav
@@ -668,12 +668,17 @@ header.nav{min-height:64px}
         </ul>
       </nav>
 
+      <!-- Phase 9 (services sunset, 2026-06-11): the Studio column's
+           Pricing / Compare / Process rows sold the retired services
+           business. The column is now the Company column — the product,
+           the public data, the company page, the founder. The retired services
+           and studio child pages 301 per the _redirects table. -->
       <nav class="foot-col" aria-labelledby="foot-studio">
-        <p class="foot-heading" id="foot-studio">Studio</p>
+        <p class="foot-heading" id="foot-studio">Company</p>
         <ul class="foot-links">
-          <li><a href="/studio/#pricing">Pricing</a></li>
-          <li><a href="/studio/compare/">Compare options</a></li>
-          <li><a href="/studio/#process">Process</a></li>
+          <li><a href="https://ledger.muntin.digital/">Muntin Ledger</a></li>
+          <li><a href="/cost-index/">Cost Index</a></li>
+          <li><a href="/studio/">The company</a></li>
           <li><a href="/about/">About Don</a></li>
         </ul>
       </nav>

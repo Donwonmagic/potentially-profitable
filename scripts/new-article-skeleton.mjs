@@ -27,7 +27,7 @@
  *       "headline": "...",
  *       "body":     "...",
  *       "button":   "Run the audit",
- *       "href":     "/services/audit/?from=blog%2F<slug>"
+ *       "href":     "/tools/audits/restaurant/?from=blog%2F<slug>&intent=watch"
  *     },
  *     "smart_next": {
  *       "read_label":  "...",

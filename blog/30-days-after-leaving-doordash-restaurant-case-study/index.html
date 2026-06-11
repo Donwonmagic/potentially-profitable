@@ -260,11 +260,9 @@ main{padding-top:64px}
          three-doors page). Tools is promoted from the old Library
          mega-menu to a top-level item. Studio replaces Services +
          Restaurants + About — they all live under /studio/ now,
-         either as anchored sections (#pricing, #offers, #cities,
-         #process, #about) or as full child pages (/studio/compare/,
-         /studio/silver-spring/, etc.). The old Services and
-         Restaurants pages remain reachable via /studio/ and the
-         _redirects table; /about/ is unchanged. The mega-menu is
+         as sections of the company page (Phase 9, 2026-06-11: the
+         services-era child pages and anchored offer sections are
+         retired; old paths 301 via the _redirects table). /about/ is unchanged. The mega-menu is
          retired (the hub IS the menu now); the controller script
          is gone too.
 
@@ -775,7 +773,7 @@ main{padding-top:64px}
         <li><a href="/library/third-party-delivery-economics/">An honest DoorDash math</a> &mdash; the underlying margin walk</li>
         <li><a href="/library/third-party-delivery-comparison/">Uber vs DoorDash vs Grubhub</a> &mdash; the three-platform comparison</li>
         <li><a href="/tools/margin-math/">Margin Math tool</a> &mdash; run the projection on your own numbers before you decide</li>
-        <li><a href="/services/audit/">$499 audit</a> &mdash; the written diagnosis for your channel mix</li>
+        <li><a href="/tools/audits/restaurant/">Free site audit</a> &mdash; thirty seconds, no signup; flags the leaks this piece describes</li>
       </ul>
     </section>
 
@@ -819,19 +817,19 @@ main{padding-top:64px}
   </aside>
 
   <!-- post-end-cta:start -->
-  <aside class="post-end-cta" aria-label="Workshop next step">
-    <p class="post-end-cta-headline">Project your own 30-day numbers before you decide.</p>
-    <p class="post-end-cta-body">The Third-Party Channel P&L sheet runs the same calculation I ran on this restaurant &mdash; gross sales minus the full fee stack, minus food cost, minus the labor those orders cost. You enter your numbers; the page does the math and never sends it anywhere.</p>
-    <a class="btn btn-primary" href="/sheets/third-party-channel-pnl/?from=blog%2F30-days-after-leaving-doordash-restaurant-case-study&intent=save">Run your channel P&L<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></a>
-  </aside>
-  <!-- post-end-cta:end -->
+    <aside class="post-end-cta" aria-label="Workshop next step">
+      <p class="post-end-cta-headline">What would the same 30 days look like for your numbers?</p>
+      <p class="post-end-cta-body">The Margin Math tool takes your covers, ticket, and channel fees and shows what each delivery order actually leaves behind — the same arithmetic this case study walks through. Save your baseline to the Workshop so the before-and-after is yours, not ours.</p>
+      <a class="btn btn-primary" href="/tools/margin-math/?from=blog%2F30-days-after-leaving-doordash-restaurant-case-study&amp;intent=watch">Run the margin math<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></a>
+    </aside>
+    <!-- post-end-cta:end -->
 
   <!-- smart-next:start -->
 <aside class="smart-next" aria-labelledby="smart-next-h">
   <p class="smart-next__eyebrow" id="smart-next-h">What to do next</p>
   <ol class="smart-next__list">
         <li class="smart-next__item smart-next__read"><span class="smart-next__verb">Read:</span> <a href="/glossary/margin-math/">the related glossary term →</a></li>
-        <li class="smart-next__item smart-next__try"><span class="smart-next__verb">Try:</span> <a href="/tools/audits/restaurant/?from=blog/30-days-after-leaving-doordash-restaurant-case-study&intent=watch">the tool that pairs with this article →</a></li>
+        <li class="smart-next__item smart-next__try"><span class="smart-next__verb">Try:</span> <a href="/tools/margin-math/?from=blog/30-days-after-leaving-doordash-restaurant-case-study&intent=watch">the tool that pairs with this article →</a></li>
         <li class="smart-next__item smart-next__note"><span class="smart-next__verb">Or send Don a note:</span> <a href="/window/?topic=30-days-after-leaving-doordash-restaurant-case-study">The Window →</a></li>
   </ol>
 </aside>
@@ -889,7 +887,7 @@ main{padding-top:64px}
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->150<!-- /count --> glossary terms &mdash; with a one-person web studio behind it in Silver Spring, MD.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->150<!-- /count --> glossary terms &mdash; from Muntin Digital in Silver Spring, MD.</p>
       </div>
 
       <!-- Column order mirrors the 4-item primary nav
@@ -917,12 +915,17 @@ main{padding-top:64px}
         </ul>
       </nav>
 
+      <!-- Phase 9 (services sunset, 2026-06-11): the Studio column's
+           Pricing / Compare / Process rows sold the retired services
+           business. The column is now the Company column — the product,
+           the public data, the company page, the founder. The retired services
+           and studio child pages 301 per the _redirects table. -->
       <nav class="foot-col" aria-labelledby="foot-studio">
-        <p class="foot-heading" id="foot-studio">Studio</p>
+        <p class="foot-heading" id="foot-studio">Company</p>
         <ul class="foot-links">
-          <li><a href="/studio/#pricing">Pricing</a></li>
-          <li><a href="/studio/compare/">Compare options</a></li>
-          <li><a href="/studio/#process">Process</a></li>
+          <li><a href="https://ledger.muntin.digital/">Muntin Ledger</a></li>
+          <li><a href="/cost-index/">Cost Index</a></li>
+          <li><a href="/studio/">The company</a></li>
           <li><a href="/about/">About Don</a></li>
         </ul>
       </nav>

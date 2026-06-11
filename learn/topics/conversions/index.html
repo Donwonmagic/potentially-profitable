@@ -205,11 +205,9 @@
          three-doors page). Tools is promoted from the old Library
          mega-menu to a top-level item. Studio replaces Services +
          Restaurants + About — they all live under /studio/ now,
-         either as anchored sections (#pricing, #offers, #cities,
-         #process, #about) or as full child pages (/studio/compare/,
-         /studio/silver-spring/, etc.). The old Services and
-         Restaurants pages remain reachable via /studio/ and the
-         _redirects table; /about/ is unchanged. The mega-menu is
+         as sections of the company page (Phase 9, 2026-06-11: the
+         services-era child pages and anchored offer sections are
+         retired; old paths 301 via the _redirects table). /about/ is unchanged. The mega-menu is
          retired (the hub IS the menu now); the controller script
          is gone too.
 
@@ -685,7 +683,7 @@
       <ol>
         <li><strong>Aggregator-only ordering, no direct path</strong> &mdash; 0.45% revenue impact when present. Every order goes through a 30% commission instead of a 3.6% processor fee. Also the easiest leak to spot in a five-second test of your menu page.</li>
         <li><strong>Reservation button doesn&rsquo;t deeplink</strong> &mdash; 0.34% impact, present on 59% of sites audited. The OpenTable / Resy / Tock button sends the visitor to the platform&rsquo;s home page instead of your venue&rsquo;s page. One extra click is one reservation lost. Five-minute fix.</li>
-        <li><strong>EN-only on a bilingual block</strong> &mdash; 0.31% impact, present on 38%. A real <code>/es/</code> mirror with hreflang doubles addressable demand in roughly 35% of DMV neighborhoods. The <a href="/services/menu-drop-in/">$1,500 menu drop-in</a> ships the menu page version in seven days; the full-site version is in any of the three site tiers.</li>
+        <li><strong>EN-only on a bilingual block</strong> &mdash; 0.31% impact, present on 38%. A real <code>/es/</code> mirror with hreflang doubles addressable demand in roughly 35% of DMV neighborhoods.</li>
         <li><strong>No direct-order CTA above third-party links</strong> &mdash; 0.27% impact, present on 71%. The single fix that recovers the most margin: a primary-color &ldquo;Order direct&rdquo; button positioned above the DoorDash / Uber Eats links. Match the third-party menu price; the customer notices, you keep the 26.4 points.</li>
         <li><strong>Hours buried below the fold on mobile</strong> &mdash; 0.21% impact, present on 52%. Phones lose 800ms to a heavy hero photo; the visitor leaves before discovering you&rsquo;re open. Move the hours block above the hero. 15 minutes.</li>
         <li><strong>Mobile LCP &gt; 3.0s</strong> &mdash; 0.18% impact, present on 68%. The slowest leak to fix (1&ndash;3 hours of image compression and JS pruning) but the one that compounds with every other leak above it.</li>
@@ -716,7 +714,7 @@
       <p>Of the seven pages an independent restaurant website needs (<a href="/library/what-should-be-on-a-restaurant-website/">listed here</a>), three of them carry 80% of the conversion weight:</p>
 
       <ul>
-        <li><strong>Menu page.</strong> If it&rsquo;s a PDF, you&rsquo;re leaking. A real HTML menu loads instantly, indexes for &ldquo;cacio e pepe near me&rdquo; queries, and renders well on a 360px phone screen. The free <a href="/tools/menu-converter/">Menu Converter</a> turns pasted menu text into semantic HTML + JSON-LD <code>Menu</code> schema in two seconds. The studio-built version is the <a href="/services/menu-drop-in/">$1,500 menu drop-in</a>.</li>
+        <li><strong>Menu page.</strong> If it&rsquo;s a PDF, you&rsquo;re leaking. A real HTML menu loads instantly, indexes for &ldquo;cacio e pepe near me&rdquo; queries, and renders well on a 360px phone screen. The free <a href="/tools/menu-converter/">Menu Converter</a> turns pasted menu text into semantic HTML + JSON-LD <code>Menu</code> schema in two seconds.</li>
         <li><strong>Hours block.</strong> The visitor wants to know if you&rsquo;re open right now. Anything more than that is friction. Above the fold, plain text, &ldquo;Open until 10 PM today&rdquo; format wins over a static schedule table. Add holiday hours via the <a href="/tools/store-hours/#holidays">Holiday Hours Generator</a>; the same tool emits the JSON-LD override and the GBP block.</li>
         <li><strong>Reservation page.</strong> Or &mdash; better &mdash; the embedded reservation widget on the menu page. Either way: deeplink to your venue, not the platform&rsquo;s home page. Use the platform&rsquo;s native script (OpenTable Direct, Resy Widgets v2) rather than an iframe; the native script keeps the visitor on your domain and lets you measure the conversion in your own analytics.</li>
       </ul>
@@ -731,7 +729,7 @@
         <li><strong>Pick one leak. Fix it this week.</strong> Reservation deeplink (5 min), hours-above-the-fold (15 min), or direct-order CTA (30 min) are the three under-an-hour fixes. Pick whichever your audit ranked highest. Re-run the audit after; the score moves immediately.</li>
       </ol>
 
-      <p>Operators who can&rsquo;t carve out the hour can outsource it: the <a href="/services/audit/">$499 deep-read audit</a> ships a Loom + 8-page action sheet in five business days, ranked by dollar impact, with credits toward a build inside 60 days. The <a href="/services/menu-drop-in/">$1,500 menu drop-in</a> handles the menu-page leak directly; the <a href="/services/care-plan-light/">Care Plan Light</a> handles the hours-and-hygiene side monthly.</p>
+      <p></p>
 
       <h3>Where this topic touches the others</h3>
 
@@ -839,7 +837,7 @@
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->150<!-- /count --> glossary terms &mdash; with a one-person web studio behind it in Silver Spring, MD.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->150<!-- /count --> glossary terms &mdash; from Muntin Digital in Silver Spring, MD.</p>
       </div>
 
       <!-- Column order mirrors the 4-item primary nav
@@ -867,12 +865,17 @@
         </ul>
       </nav>
 
+      <!-- Phase 9 (services sunset, 2026-06-11): the Studio column's
+           Pricing / Compare / Process rows sold the retired services
+           business. The column is now the Company column — the product,
+           the public data, the company page, the founder. The retired services
+           and studio child pages 301 per the _redirects table. -->
       <nav class="foot-col" aria-labelledby="foot-studio">
-        <p class="foot-heading" id="foot-studio">Studio</p>
+        <p class="foot-heading" id="foot-studio">Company</p>
         <ul class="foot-links">
-          <li><a href="/studio/#pricing">Pricing</a></li>
-          <li><a href="/studio/compare/">Compare options</a></li>
-          <li><a href="/studio/#process">Process</a></li>
+          <li><a href="https://ledger.muntin.digital/">Muntin Ledger</a></li>
+          <li><a href="/cost-index/">Cost Index</a></li>
+          <li><a href="/studio/">The company</a></li>
           <li><a href="/about/">About Don</a></li>
         </ul>
       </nav>

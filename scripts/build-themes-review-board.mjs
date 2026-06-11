@@ -291,7 +291,7 @@ function emitPage(locale) {
   const ogLocale       = locale === 'es' ? 'es_US' : 'en_US';
   const ogLocaleAlt    = locale === 'es' ? 'en_US' : 'es_US';
   const libraryHref    = locale === 'es' ? '/es/library/' : '/library/';
-  const toolHref       = locale === 'es' ? '/es/services/menu-drop-in/' : '/services/menu-drop-in/';
+  const toolHref       = locale === 'es' ? '/es/tools/menu-converter/' : '/tools/menu-converter/';
   const breadcrumbHome = locale === 'es' ? 'Inicio' : 'Home';
   const breadcrumbLib  = locale === 'es' ? 'Biblioteca' : 'Library';
   const breadcrumbThis = locale === 'es' ? 'Mesa de revisión de temas' : 'Theme review board';
@@ -437,7 +437,7 @@ main{padding-top:64px}
     <h2>${escHtml(introH2)}</h2>
     <p>${escHtml(intro1)}</p>
     <p>${escHtml(intro2)}</p>
-    <p><a href="${escHtml(toolHref)}" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">${locale === 'es' ? 'Pídelo con Menu Drop-In →' : 'Get it built — Menu Drop-In →'}</a></p>
+    <p><a href="${escHtml(toolHref)}" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">${locale === 'es' ? 'Constrúyelo gratis — Conversor de menú →' : 'Build it free — Menu Converter →'}</a></p>
   </section>
 ${groupBlocks}${orphanBlock}
 </div>

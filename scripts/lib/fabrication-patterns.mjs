@@ -92,6 +92,16 @@ export const BLOCKED = [
     fix: 'Singular bio. Replace with "the restaurant" or rework.',
     langs: ['en'],
   },
+  {
+    // 2026-06-11: "two current DMV restaurants" survived in the about
+    // page's og:description because the pattern above required "the"
+    // and no adjective. Any "two … restaurants" framed as CURRENT is
+    // the same retired bio drift — catch the adjective variants.
+    pattern: /\btwo (?:current|active|running) (?:DMV |D\.C\.? |Maryland )?restaurants\b/gi,
+    label: 'bio: "two current/active DMV restaurants"',
+    fix: 'Singular bio: full-time FOH manager at Tacombi in Bethesda. Past roles live in /about/#timeline.',
+    langs: ['en'],
+  },
   // ES equivalents
   {
     pattern: /\bLlevo dos restaurantes\b/gi,
