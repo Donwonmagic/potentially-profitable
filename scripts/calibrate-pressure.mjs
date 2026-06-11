@@ -189,11 +189,79 @@ async function fetchProxy(seriesId) {                      // BLS PPI monthly, ~
   return data.filter((d) => /^M\d\d$/.test(d.period) && d.period !== 'M13')
     .map((d) => ({ date: `${d.year}-${d.period.slice(1)}`, value: d.value }));
 }
+
+// ---- Norway SSB PxWebApi v2 (keyless; weekly salmon export price + volume, 2000+) ------
+// SSB bot-blocks default UAs (returns 403), so send a browser UA. We pull the whole table
+// (Tid=all) as JSON-stat2 and flatten generically: locate the TIME dim + the CONTENTS dim,
+// pick the price or volume measure by keyword, fix any other dims to their first category.
+// Scale-free (calibration uses % changes). Period codes like '2024U15' → that ISO week's Monday.
+const SSB_DATA = (t) => `https://data.ssb.no/api/pxwebapi/v2/tables/${t}/data?lang=en&outputFormat=json-stat2&valueCodes%5BTid%5D=*`;
+const SSB_META = (t) => `https://data.ssb.no/api/pxwebapi/v2/tables/${t}/metadata?lang=en&outputFormat=json-px`;
+const SSB_UA = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36 muntin.digital';
+async function ssbGet(url) {
+  const r = await fetch(url, { headers: { 'User-Agent': SSB_UA, Accept: 'application/json' } });
+  if (!r.ok) throw new Error('HTTP ' + r.status);
+  return r.json();
+}
+// ISO-8601 week → Monday date (week 1 holds the year's first Thursday).
+function isoWeekToDate(y, w) {
+  const jan4 = new Date(Date.UTC(y, 0, 4));
+  const dow = jan4.getUTCDay() || 7;
+  const wk1Mon = new Date(jan4); wk1Mon.setUTCDate(jan4.getUTCDate() - dow + 1);
+  const d = new Date(wk1Mon); d.setUTCDate(wk1Mon.getUTCDate() + (w - 1) * 7);
+  return `${d.getUTCFullYear()}-${('0' + (d.getUTCMonth() + 1)).slice(-2)}-${('0' + d.getUTCDate()).slice(-2)}`;
+}
+function ssbPeriodToDate(code) {
+  let m = String(code).match(/^(\d{4})[UuVv](\d{1,2})$/); if (m) return isoWeekToDate(+m[1], +m[2]);   // week
+  m = String(code).match(/^(\d{4})[Mm](\d{2})$/); if (m) return `${m[1]}-${m[2]}-15`;                   // month
+  m = String(code).match(/^(\d{4})$/); if (m) return `${m[1]}-07-01`;                                    // year
+  return null;
+}
+// Flatten a JSON-stat2 dataset to [{date,value}] for the chosen measure.
+function ssbExtract(js, measure) {
+  const dim = js.dimension || {};
+  const ids = js.id || Object.keys(dim);
+  const sizes = js.size || ids.map((id) => Object.keys(dim[id].category.index).length);
+  const stride = new Array(ids.length); stride[ids.length - 1] = 1;
+  for (let i = ids.length - 2; i >= 0; i--) stride[i] = stride[i + 1] * sizes[i + 1];
+  // time dim: id 'Tid' or codes that look like periods
+  let timeI = ids.indexOf('Tid');
+  if (timeI < 0) timeI = ids.findIndex((id) => Object.keys(dim[id].category.index).some((c) => /^\d{4}([UuVvMm]\d{1,2})?$/.test(c)));
+  // contents dim: id 'ContentsCode' or the dim carrying units
+  let contI = ids.indexOf('ContentsCode');
+  if (contI < 0) contI = ids.findIndex((id) => dim[id].category && dim[id].category.unit);
+  if (timeI < 0) return [];
+  // pick the measure category (price = kr/NOK per kg; volume = tonn/kg/weight/mengde)
+  let contIdx = 0;
+  if (contI >= 0) {
+    const cat = dim[ids[contI]].category, lab = cat.label || {}, unit = cat.unit || {};
+    const want = measure === 'volume' ? /(tonn|weight|mengde|quantity|kvantum|volume)/i : /(kr|nok|price|pris|per kg|øre)/i;   // NB: price unit is "NOK per kg" → keep 'kg' OUT of the volume set
+    const code = Object.keys(cat.index).find((c) => want.test(`${lab[c] || ''} ${(unit[c] && (unit[c].base || unit[c].label)) || ''}`));
+    if (code != null) contIdx = cat.index[code];
+  }
+  const tcat = dim[ids[timeI]].category, out = [];
+  for (const [code, ti] of Object.entries(tcat.index)) {
+    let flat = 0;
+    for (let i = 0; i < ids.length; i++) flat += (i === timeI ? ti : i === contI ? contIdx : 0) * stride[i];
+    const v = Number(js.value[flat]); const date = ssbPeriodToDate(code);
+    if (date && isFinite(v)) out.push({ date, value: v });
+  }
+  return out.sort((a, b) => a.date.localeCompare(b.date));
+}
+async function fetchSSB(spec) {
+  const js = await ssbGet(SSB_DATA(spec.table));
+  return ssbExtract(js, spec.measure || 'price');
+}
+
 async function fetchIndicatorHistory(spec) {
   if (spec.type === 'fred') {
     const k = process.env.FRED_KEY; if (!k) return { skip: 'no FRED_KEY' };
     const j = await getJson(`https://api.stlouisfed.org/fred/series/observations?series_id=${encodeURIComponent(spec.series)}&api_key=${k}&file_type=json&observation_start=2015-01-01`);
     return { pairs: (j.observations || []).map((o) => ({ date: o.date, value: o.value })) };
+  }
+  if (spec.type === 'ssb') {                                // Norway SSB PxWebApi v2 (keyless)
+    try { return { pairs: await fetchSSB(spec) }; }
+    catch (e) { return { skip: `ssb ${spec.table}: ${e.message}` }; }
   }
   if (spec.type === 'eia') {
     const k = process.env.EIA_KEY; if (!k) return { skip: 'no EIA_KEY' };
@@ -499,6 +567,32 @@ async function anchorDiscover() {
   console.log('\nGreen rows = the weekly target resolves; I wire those into calibrate. Red rows = paste the keys/candidates and I pin them.');
 }
 
+// ---- SSB discovery: dump the salmon table's structure + what the picker resolves --------
+async function ssbDiscover() {
+  console.log('SSB discovery — Norway PxWebApi v2 table structure for the salmon signals (writes nothing)\n');
+  for (const t of ['03024']) {
+    try {
+      const js = await ssbGet(SSB_DATA(t));
+      const dim = js.dimension || {}, ids = js.id || Object.keys(dim), sizes = js.size || [];
+      console.log(`  ✓ table ${t}: dims = ${ids.map((id, i) => `${id}(${sizes[i]})`).join(' × ')}, ${(js.value || []).length} values`);
+      for (const id of ids) {
+        const cat = dim[id].category || { index: {} }, codes = Object.keys(cat.index || {});
+        const lab = cat.label || {}, unit = cat.unit || {};
+        const isTime = codes.length > 30 && codes.some((c) => /^\d{4}([UuVvMm]\d{1,2})?$/.test(c));
+        const show = isTime
+          ? `${codes[0]} … ${codes[codes.length - 1]} (${codes.length} periods)`
+          : codes.map((c) => `${c}=${lab[c] || ''}${unit[c] ? ` [${unit[c].base || unit[c].label || ''}]` : ''}`).join(' | ');
+        console.log(`      ${id} [${(dim[id] && dim[id].label) || ''}]: ${show}`);
+      }
+      for (const measure of ['price', 'volume']) {
+        const s = ssbExtract(js, measure);
+        console.log(`      → measure '${measure}': ${s.length} points` + (s.length ? `, ${s[0].date} → ${s[s.length - 1].date}, latest=${s[s.length - 1].value}` : ' (0 — adjust the keyword picker)'));
+      }
+    } catch (e) { console.log(`  ✗ table ${t} failed: ${e.message} (SSB bot-blocks non-browser UAs — confirm the UA + v2 query syntax)`); }
+  }
+  console.log('\nGreen = the salmon price/volume series resolve; I pin the exact ContentsCode + commodity selection from the dims above.');
+}
+
 // ---- selftest: synthetic dated series, no network ------------------
 function selftest() {
   // Build a proxy (random-ish monthly walk) and an indicator that leads it by 3
@@ -541,6 +635,22 @@ function selftest() {
       [{ commodity: 'Ribeye', Weighted_Average: '8.50', report_date: '2026-06-01' }, { commodity: 'Chuck', Weighted_Average: '4.00', report_date: '2026-06-01' }, { commodity: 'Ribeye', Weighted_Average: '', report_date: '2026-06-08' }],
       { match: { field: 'commodity', value: 'Ribeye' }, field: 'Weighted_Average', dateField: 'report_date' });
     ok(aser.length === 1 && aser[0].value === '8.50' && aser[0].date === '2026-06-01', `anchorSeries filters cut + reads price/date (got ${aser.length} priced rows)`);
+    // SSB JSON-stat2 flatten: a 2-measure × 3-week dataset must pick the right measure and
+    // map ISO-week codes to that week's Monday. value array is row-major over [ContentsCode, Tid].
+    ok(isoWeekToDate(2024, 15) === '2024-04-08', `isoWeekToDate(2024,W15) = Monday 2024-04-08 (got ${isoWeekToDate(2024, 15)})`);
+    {
+      const js = {
+        id: ['ContentsCode', 'Tid'], size: [2, 3],
+        dimension: {
+          ContentsCode: { label: 'contents', category: { index: { Pris: 0, Mengde: 1 }, label: { Pris: 'Price', Mengde: 'Weight' }, unit: { Pris: { base: 'NOK per kg' }, Mengde: { base: 'tonnes' } } } },
+          Tid: { label: 'week', category: { index: { '2024U14': 0, '2024U15': 1, '2024U16': 2 } } }
+        },
+        value: [80, 81, 82, /* price rows */ 500, 510, 520 /* volume rows */]
+      };
+      const pr = ssbExtract(js, 'price'), vol = ssbExtract(js, 'volume');
+      ok(pr.length === 3 && pr[1].value === 81 && pr[1].date === '2024-04-08', `ssbExtract picks PRICE by keyword + ISO-week date (got ${pr.length}, ${pr[1] && pr[1].value}@${pr[1] && pr[1].date})`);
+      ok(vol.length === 3 && vol[1].value === 510, `ssbExtract picks VOLUME measure (got ${vol[1] && vol[1].value})`);
+    }
     // fitItemWeights: a survivor that leads the target by lag L with a known sign must
     // earn a positive-magnitude weight; a useless survivor must be pinned to ~0. Build a
     // weekly target change map + two survivor change maps keyed by integer week.
@@ -576,6 +686,7 @@ function selftest() {
 
 if (arg('--selftest')) { selftest(); }
 else if (arg('--anchor-discover')) { anchorDiscover(); }
+else if (arg('--ssb-discover')) { ssbDiscover(); }
 else {
   const getAnchor = (spec) => fetchReportWindowed(spec, 12);  // ~12 years — pull the full report archive (2x the N-gate minimum) so the starved monthly meat/dairy edges clear; windows before a report existed return empty and drop out. Concurrent + server-filtered + cached keeps it inside the timeout.
   calibrate(fetchProxy, fetchIndicatorHistory, getAnchor).then((result) => {
