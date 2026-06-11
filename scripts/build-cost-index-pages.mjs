@@ -1233,6 +1233,21 @@ function emitHubPage(locale, slugs) {
     ${sections}
     ${pendingSection}
     ${driverNote}
+    <div class="ci-signup" id="weekly-email">
+      <div class="foot-newsletter">
+        <form action="/api/subscribe" method="post" class="foot-newsletter-form" data-locale="${lang}">
+          <p class="foot-newsletter-pitch">${es ? 'Recibe el índice cada semana por correo — una lectura corta de lo que se mueve y qué hacer al respecto. Cuatro líneas, sin relleno.' : 'Get the index in your inbox every week — a short read on what’s moving and what to do about it. A few lines, no funnels.'}</p>
+          <label class="foot-newsletter-label" for="ci-news-email">${es ? 'Tu correo' : 'Your email'}</label>
+          <input id="ci-news-email" name="email" type="email" required autocomplete="email" inputmode="email" enterkeyhint="send" autocapitalize="off" spellcheck="false" placeholder="you@yourrestaurant.com" />
+          <input type="hidden" name="locale" value="${lang}" />
+          <input type="hidden" name="source" value="cost-index" />
+          <input type="hidden" name="ts" value="" />
+          <input type="text" name="hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;" />
+          <div class="cf-turnstile" data-sitekey="0x4AAAAAADIgoGh56MvqeE8L" data-action="newsletter" data-size="flexible"></div>
+          <button type="submit">${es ? 'Enviarme el índice semanal' : 'Email me the weekly index'}</button>
+        </form>
+      </div>
+    </div>
     <p class="ci-source"><strong>${es ? 'Fuente' : 'Sourced'}:</strong> ${es ? 'datos públicos de mercado (USDA AMS/LMR, BLS, FRED, EIA, NOAA), vía' : 'public market data (USDA AMS/LMR, BLS, FRED, EIA, NOAA), via'} <a href="${base}/tools/cost-pulse/">Cost Pulse</a>.</p>
   </div>` + pageTail;
 }

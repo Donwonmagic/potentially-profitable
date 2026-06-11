@@ -315,6 +315,21 @@ main{padding-top:64px}
     <p class="ci-pending-note">Seguimos estos, pero aún no publicamos un precio: solo mostramos una cifra cuando los datos públicos gratuitos la sostienen.</p>
     <div class="ci-grid"><div class="ci-card ci-card--pending"><a href="/es/cost-index/shrimp/">Camarón</a><span class="ci-card-note">cobertura en preparación</span></div><div class="ci-card ci-card--pending"><a href="/es/cost-index/eggs/">Huevo</a><span class="ci-card-note">cobertura en preparación</span></div><div class="ci-card ci-card--pending"><a href="/es/cost-index/vegetable-oil/">Aceite vegetal</a><span class="ci-card-note">cobertura en preparación</span></div></div>
     <p>Río arriba, los precios se mueven con un puñado de materias primas que el tablero rastrea bajo “por qué se mueve”: maíz y soya (forraje), diésel y electricidad. Para lo que se está moviendo ahora mismo, <a href="/es/tools/cost-pulse/">abre Cost Pulse</a>.</p>
+    <div class="ci-signup" id="weekly-email">
+      <div class="foot-newsletter">
+        <form action="/api/subscribe" method="post" class="foot-newsletter-form" data-locale="es">
+          <p class="foot-newsletter-pitch">Recibe el índice cada semana por correo — una lectura corta de lo que se mueve y qué hacer al respecto. Cuatro líneas, sin relleno.</p>
+          <label class="foot-newsletter-label" for="ci-news-email">Tu correo</label>
+          <input id="ci-news-email" name="email" type="email" required autocomplete="email" inputmode="email" enterkeyhint="send" autocapitalize="off" spellcheck="false" placeholder="you@yourrestaurant.com" />
+          <input type="hidden" name="locale" value="es" />
+          <input type="hidden" name="source" value="cost-index" />
+          <input type="hidden" name="ts" value="" />
+          <input type="text" name="hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;" />
+          <div class="cf-turnstile" data-sitekey="0x4AAAAAADIgoGh56MvqeE8L" data-action="newsletter" data-size="flexible"></div>
+          <button type="submit">Enviarme el índice semanal</button>
+        </form>
+      </div>
+    </div>
     <p class="ci-source"><strong>Fuente:</strong> datos públicos de mercado (USDA AMS/LMR, BLS, FRED, EIA, NOAA), vía <a href="/es/tools/cost-pulse/">Cost Pulse</a>.</p>
   </div></div>
 </main>

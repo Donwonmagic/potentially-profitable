@@ -393,6 +393,21 @@ main{padding-top:64px}
     <p class="ci-pending-note">We track these, but don't publish a price yet — the index shows a number only when free public data supports an honest one.</p>
     <div class="ci-grid"><div class="ci-card ci-card--pending"><a href="/cost-index/shrimp/">Shrimp</a><span class="ci-card-note">coverage in progress</span></div><div class="ci-card ci-card--pending"><a href="/cost-index/eggs/">Eggs</a><span class="ci-card-note">coverage in progress</span></div><div class="ci-card ci-card--pending"><a href="/cost-index/vegetable-oil/">Vegetable oil</a><span class="ci-card-note">coverage in progress</span></div></div>
     <p>Upstream, prices move with a handful of commodities the dashboard tracks under “why it's moving”: corn and soybeans (feed), diesel, and electricity. For what's moving right now, <a href="/tools/cost-pulse/">open Cost Pulse</a>.</p>
+    <div class="ci-signup" id="weekly-email">
+      <div class="foot-newsletter">
+        <form action="/api/subscribe" method="post" class="foot-newsletter-form" data-locale="en">
+          <p class="foot-newsletter-pitch">Get the index in your inbox every week — a short read on what’s moving and what to do about it. A few lines, no funnels.</p>
+          <label class="foot-newsletter-label" for="ci-news-email">Your email</label>
+          <input id="ci-news-email" name="email" type="email" required autocomplete="email" inputmode="email" enterkeyhint="send" autocapitalize="off" spellcheck="false" placeholder="you@yourrestaurant.com" />
+          <input type="hidden" name="locale" value="en" />
+          <input type="hidden" name="source" value="cost-index" />
+          <input type="hidden" name="ts" value="" />
+          <input type="text" name="hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;" />
+          <div class="cf-turnstile" data-sitekey="0x4AAAAAADIgoGh56MvqeE8L" data-action="newsletter" data-size="flexible"></div>
+          <button type="submit">Email me the weekly index</button>
+        </form>
+      </div>
+    </div>
     <p class="ci-source"><strong>Sourced:</strong> public market data (USDA AMS/LMR, BLS, FRED, EIA, NOAA), via <a href="/tools/cost-pulse/">Cost Pulse</a>.</p>
   </div></div>
 </main>
