@@ -49,7 +49,9 @@ concurrency:
 jobs:
   refresh:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    # calibrate backtests years of windowed market-news history across every anchor +
+    # indicator; the other modes are quick. 30 min covers the slow backtest with margin.
+    timeout-minutes: 30
     steps:
       - name: Check out
         uses: actions/checkout@v5

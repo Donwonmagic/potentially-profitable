@@ -129,7 +129,12 @@ async function fetchReportWindowed(spec, years) {
   const winField = spec.winField || 'report_begin_date';
   const sect = spec.section ? `/${encodeURIComponent(spec.section)}` : '';
   const fmt = (d) => `${('0' + (d.getMonth() + 1)).slice(-2)}/${('0' + d.getDate()).slice(-2)}/${d.getFullYear()}`;
-  const out = []; const now = Date.now(); const step = 150 * 864e5;
+  const now = Date.now(); const step = 150 * 864e5;
+  // Build every window's URL up front, then fetch them CONCURRENTLY — the windows are
+  // independent, so the sequential await-loop (≈10 round trips per anchor) was the main
+  // thing pushing the calibrate job past its timeout. A failed window still drops out
+  // silently (one gap can't sink the series).
+  const urls = [];
   for (let end = now; end > now - years * 365 * 864e5; end -= step) {
     const e = new Date(end), s = new Date(end - step);
     // Server-side commodity filter (MARS supports `;`-AND) so a huge terminal report
@@ -137,12 +142,12 @@ async function fetchReportWindowed(spec, years) {
     // ~200-row response, which is what was timing the run out.
     let qstr = `${winField}=${fmt(s)}:${fmt(e)}`;
     if (spec.serverFilter && spec.match) qstr += `;${spec.match.field}=${spec.match.value}`;
-    const q = `?q=${encodeURIComponent(qstr)}`;
-    try {
-      const j = await getJson(`${base}${encodeURIComponent(spec.report)}${sect}${q}`, auth ? { headers: { Authorization: auth } } : {});
-      (j && j.results || []).forEach((r) => out.push(r));
-    } catch (e2) { /* skip this window */ }
+    urls.push(`${base}${encodeURIComponent(spec.report)}${sect}?q=${encodeURIComponent(qstr)}`);
   }
+  const init = auth ? { headers: { Authorization: auth } } : {};
+  const settled = await Promise.all(urls.map((u) => getJson(u, init).then((j) => (j && j.results) || []).catch(() => [])));
+  const out = [];
+  settled.forEach((rows) => rows.forEach((r) => out.push(r)));
   return out;
 }
 // rows → [{date, value}] for one anchor: filter to the cut/commodity, read the price
@@ -419,7 +424,22 @@ async function anchorDiscover() {
         if (a.match) { const dv = []; rows.forEach((r) => { const c = r[a.match.field]; if (c && dv.indexOf(c) < 0 && dv.length < 40) dv.push(c); }); console.log(`      actual ${a.match.field} values: ${dv.join(' | ') || '(field empty/absent)'}`); }
       } else if (ok) {
         console.log(`      latest: ${ser[ser.length - 1].date} = ${ser[ser.length - 1].value}`);
-      } else console.log('      (no rows — confirm slug/section/host)');
+      } else {
+        // 0 rows. If a SERVER-SIDE commodity filter was applied, it likely eliminated
+        // every row (wrong string) — re-probe UNFILTERED and dump the real commodity
+        // strings actually present, so the match value can be pinned.
+        console.log('      (no rows under the configured query)');
+        if (a.serverFilter && a.match) {
+          const bare = Object.assign({}, a); delete bare.serverFilter;
+          try {
+            const raw = await fetchReportWindowed(bare, 0.25);          // ~3 months, unfiltered
+            const dv = [];
+            raw.forEach((r) => { const c = r[a.match.field]; if (c && dv.indexOf(c) < 0 && dv.length < 60) dv.push(c); });
+            console.log(`      unfiltered probe: ${raw.length} rows. distinct ${a.match.field}: ${dv.join(' | ') || '(field empty/absent)'}`);
+            if (raw[0]) console.log(`      keys: ${Object.keys(raw[0]).join(', ')}`);
+          } catch (e2) { console.log(`      unfiltered re-probe failed: ${e2.message}`); }
+        } else console.log('      confirm slug/section/host.');
+      }
     } catch (e) { console.log(`  ✗ ${item.padEnd(16)} failed: ${e.message}`); }
   }
   console.log('\nGreen rows = the weekly target resolves; I wire those into calibrate. Red rows = paste the keys/candidates and I pin them.');
