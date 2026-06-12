@@ -344,8 +344,10 @@ const CHECKS = [
   // Confidence calibration (P1 #36) — min-of-gates ceiling governs precision.
   // Warn-only during rollout (FAIL_ON_DRIFT in the script); flip once the
   // upstream orchestrator confidences are reconciled (today: onion high → medium).
-  ['Cost-index calibration (warn)','check-cost-index-calibration.mjs'],
+  ['Cost-index calibration','check-cost-index-calibration.mjs'],
   ['Cost-index calibration self-test','check-cost-index-calibration.mjs','--self-test'],
+  ['Cost-index health (idem)','build-cost-index-health.mjs','--check'],
+  ['Cost-index health self-test','build-cost-index-health.mjs','--self-test'],
   // Shippable bar — below-bar ingredients must stay out of the browser seed
   // (no thin / no-level read on the dashboard; they live as expanding-coverage).
   ['Cost-index shippable bar','check-shippable-bar.mjs'],

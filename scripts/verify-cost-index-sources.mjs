@@ -47,7 +47,7 @@ async function probe(src, m) {
       // Prices live in a report SECTION ("Report Details"); the bare report is the header.
       const auth = 'Basic ' + Buffer.from(keys.AMS + ':').toString('base64');
       const j = await F.fetchAmsReport(m.reportId, m.section, auth, m.windowDays);
-      const o = S.normalizeAms(j, { source: 'usda-ams', basis: 'wholesale', reducer: m.reducer || 'mostlyMid', commodity: m.commodity, matchFields: m.matchFields, unit: m.unit, priceUnit: m.priceUnit, fields: m.fields, dateField: m.dateField });
+      const o = S.normalizeAms(j, { source: 'usda-ams', basis: 'wholesale', reducer: m.reducer || 'mostlyMid', commodity: m.commodity, matchFields: m.matchFields, commodityExact: m.commodityExact, filters: m.filters, priceUnitField: m.priceUnitField, unit: m.unit, priceUnit: m.priceUnit, fields: m.fields, dateField: m.dateField });
       const latest = o.points[o.points.length - 1];
       return latest ? { ok: true, n: o.points.length, latest: latest.value, date: latest.date, basis: 'wholesale', level: true }
         : { ok: false, err: `fetched OK, 0 priced rows matched${m.commodity ? ` commodity "${m.commodity}"` : ''}${F.AMS_WINDOW_DAYS ? ` (last ${F.AMS_WINDOW_DAYS}d — set AMS_WINDOW_DAYS=0 for full history)` : ''} (check report JSON shape / commodity term)` };
@@ -57,7 +57,7 @@ async function probe(src, m) {
       // same AMS normalizer. Optional LMR_KEY if the Datamart ever requires auth.
       const auth = process.env.LMR_KEY ? 'Basic ' + Buffer.from(process.env.LMR_KEY + ':').toString('base64') : undefined;
       const j = await F.fetchLmrReport(m.reportId, m.section, auth, m.windowDays, m.dateField);
-      const o = S.normalizeAms(j, { source: 'usda-lmr', basis: 'wholesale', reducer: m.reducer || 'mostlyMid', commodity: m.commodity, matchFields: m.matchFields, unit: m.unit, priceUnit: m.priceUnit, fields: m.fields, dateField: m.dateField });
+      const o = S.normalizeAms(j, { source: 'usda-lmr', basis: 'wholesale', reducer: m.reducer || 'mostlyMid', commodity: m.commodity, matchFields: m.matchFields, commodityExact: m.commodityExact, filters: m.filters, priceUnitField: m.priceUnitField, unit: m.unit, priceUnit: m.priceUnit, fields: m.fields, dateField: m.dateField });
       const latest = o.points[o.points.length - 1];
       return latest ? { ok: true, n: o.points.length, latest: latest.value, date: latest.date, basis: 'wholesale', level: true }
         : { ok: false, err: `fetched OK, 0 priced rows matched${m.commodity ? ` commodity "${m.commodity}"` : ''} (LMR Datamart — confirm slug via --discover-lmr + row/price fields)` };
@@ -65,7 +65,7 @@ async function probe(src, m) {
     if (src === 'noaa') {
       // NOAA Fisheries import unit value (keyless) → landed-adjacent $/lb level.
       const j = await F.fetchNoaaTrade({ years: m.years });
-      const o = S.normalizeNoaaTrade(j, { source: 'noaa', basis: 'wholesale', commodity: m.commodity, hts: m.hts, unit: m.unit || 'lb' });
+      const o = S.normalizeNoaaTrade(j, { source: 'noaa', basis: m.basis || 'wholesale', commodity: m.commodity, hts: m.hts, nameMatch: m.nameMatch, edibleOnly: m.edibleOnly, unit: m.unit || 'lb' });
       const latest = o.points[o.points.length - 1];
       return latest ? { ok: true, n: o.points.length, latest: latest.value, date: latest.date, basis: 'wholesale', level: true }
         : { ok: false, err: `fetched OK, 0 import rows matched${m.commodity ? ` "${m.commodity}"` : ''} (confirm NOAA trade_data fields / commodity / hts via a sample)` };
@@ -73,7 +73,7 @@ async function probe(src, m) {
     if (src === 'eia') {
       if (!process.env.EIA_KEY) return { ok: false, err: 'no EIA_KEY' };
       const j = await F.fetchEia(m);
-      const o = S.normalizeEia(j, { source: 'eia', basis: 'index', value: m.value });
+      const o = S.normalizeEia(j, { source: 'eia', basis: 'index', value: m.value || 'price' });
       const latest = o.points[o.points.length - 1];
       return latest ? { ok: true, n: o.points.length, latest: latest.value, date: latest.date, basis: 'index', level: false }
         : { ok: false, err: 'fetched OK, 0 points (confirm EIA route/facets/value field via a sample)' };
@@ -91,7 +91,7 @@ async function probe(src, m) {
     if (src === 'fred') {
       if (!keys.FRED) return { ok: false, err: 'no FRED_KEY' };
       const j = await F.fetchJson(`https://api.stlouisfed.org/fred/series/observations?series_id=${m.seriesId}&file_type=json&api_key=${keys.FRED}`);
-      const o = S.normalizeFred(j, { source: 'fred', basis: m.basis || 'index' });
+      const o = S.normalizeFred(j, { source: 'fred', basis: m.basis || 'index', unit: m.unit });
       const latest = o.points[o.points.length - 1];
       return latest ? { ok: true, n: o.points.length, latest: latest.value, date: latest.date, basis: m.basis || 'index', level: (m.basis === 'retail' || m.basis === 'wholesale') }
         : { ok: false, err: 'fetched OK, 0 data points (check series id)' };

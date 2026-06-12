@@ -219,6 +219,23 @@ test('STABILITY: a smooth steep move stays high; a jagged path is capped', () =>
   assert.notEqual(jagged.confidence, 'high');
 });
 
+test('STABILITY: a violently jagged trend (>20% noise) drops to low even with two clean dollar types', () => {
+  const r = C.assess({
+    levelObs: [
+      { source: 'usda-lmr', basis: 'wholesale', valueCents: 1300, family: 'lmr', type: 'usda-lmr' },
+      { source: 'cme', basis: 'wholesale', valueCents: 1320, family: 'cme', type: 'cme' },
+    ],
+    sourceSeries: {
+      'usda-lmr': { basis: 'wholesale', values: [1000, 1900, 1000, 1900, 1300], family: 'lmr', type: 'usda-lmr' },
+      cme: { basis: 'wholesale', values: [1020, 1920, 1020, 1920, 1320], family: 'cme', type: 'cme' },
+      bls: { basis: 'index', values: [100, 190, 100, 190, 130], family: 'bls', type: 'bls' },
+    },
+  });
+  assert.equal(r.level.nTypes, 2);          // level alone would allow high
+  assert.ok(r.trend.noise > 0.20);          // but the trend is pure scatter
+  assert.equal(r.confidence, 'low');        // → stability forces low
+});
+
 test('LEVEL-AGREEMENT: two independent types that DISAGREE on price cannot reach "high"', () => {
   const r = C.assess({
     levelObs: [

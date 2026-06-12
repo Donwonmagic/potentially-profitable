@@ -65,6 +65,72 @@ accuracy/coverage) drove a correctness + resilience pass. All shipped, check-all
 - **FRED search** (`--discover-fred`) + restored ribeye/russet/8-terminal slots (search/keep, never drop). vegetable-oil mirror legs collapsed to one family/type.
 - Shared resilient transport (retry/backoff/parallel/last-good), unit-aware adapter (cents→dollars, wtdAvg, scoped match, per-case produce). check-all 149/151; unit tests 153/153.
 
+## 2026-06-08 — P1 calibration SHIPPED + FIRST LIVE VENDOR (branch `claude/muntin-invoice-decoder-audit-d7upo`)
+
+**The Cost Index is live.** 16 ingredients vendored from a real founder fetch,
+basket 9.1% (100% covered), every confidence within its data-supported ceiling.
+
+**P1 headline quant item — DONE (the min-of-gates calibration + range-widening).**
+`confidenceFor` now computes level- and trend-confidence separately and publishes
+their **min**, each gated on:
+- **source independence** → distinct source TYPES (`nTypes`; correlated terminals collapse) `4dafbd1`/`07b4ab9`
+- **agreement** → `trend.agreement`
+- **completeness** → distinct ISO-week coverage (daily rows ≠ N weeks)
+- **stability** → Theil–Sen detrend, residual MAD (`trend.noise`; >20%→low, >8%→medium) `398afba`/`2724806`
+- **level-agreement** → per-type robust dispersion caps disagreeing dollar types `f972ebb`/`60a0133`
+- **range-widening** → rolling weekly-MAD band unioned with cross-market p25–p75; single-source items get an honest band, not `$X–$X` `f24e1d5`/`905976d`
+- **explicit type in provenance** so the gate and engine count types identically `592a921`/`c81698f`
+
+All parity-mirrored JS↔TS (Ledger `ledger-spec/cost-index/`), 19 vectors each side.
+**Calibration gate is now STRICT (fail-CI)** `4c34cbe` — `COST_INDEX_WARN_ONLY=1` to
+downgrade. First live data `55f9693`.
+
+**Live confidence distribution (honest, both directions):**
+- medium (10): proteins, chicken×2, salmon, **onion** (was falsely high; earned medium on a real BLS trend type), butter, cheddar
+- directional (2): shrimp, vegetable-oil (no dollar level exists)
+- low (4): romaine/tomato/eggs (trend noise 26–38% → stability cap), russet (trend agreement 0.22)
+
+**Honest ceiling finding:** `high` needs two independent-agency wholesale **dollar**
+levels that agree. Free public data gives exactly one per commodity (produce=AMS,
+proteins=LMR cut, dairy=NDPSR, seafood=NOAA). AMS Dairy Market News is CME-**basis**
+(`price_Unit:"Basis Pricing"`), not a price — unusable as a 2nd level. So **medium
+is the ceiling on free data**; `high` requires a paid feed (CME/Urner Barry/Mintec).
+Plan + per-ingredient detail: `docs/cost-index-confidence-plan.md`.
+
+**P1 experience-layer — already built in `cost-index-ui.js`** (ahead of this doc's
+old "NEXT"): honest-gaps sparkline (breaks at missing weeks), own-range p25–p75
+band (≥12wk), confidence as dash/weight, freshness as filled-vs-hollow end dot,
+`sparkShape` text alternative, `percentileLine` (count, not smoothed), `weekOverWeek`
+($-anchored, ~7d window, gap-safe), `flagVerb` buy/hold/watch.
+
+**P1 experience-layer — now EXTRACTED + TESTED** (`tools/_shared/cost-index-format.js`,
+factory `MuntinCostFormat(es)`, loaded before `cost-index-ui.js` like composite-price):
+the four honesty-phrasing helpers above are now a node-tested module (the UI
+delegates verbatim), plus **`vsLastYear`** SHIPPED — gap-safe ~365d comparison with
+an "about double/half" flourish, behind the index/directional guards. On today's
+data salmon activates live ("down −11% — about $0.72 a lb"); the daily-series items
+stay dormant until ~a year of history accrues, then self-activate. `cost-index-format.test.mjs`
+covers all of it.
+
+**Coverage matrix:** `scripts/build-cost-index-health.mjs` → `data/cost-index-health.json`
+(per-ingredient: dollar-level? · families · level/trend types · confidence · ceiling ·
+weeks · `toHigh` hint), `--check` idempotency wired into check-all. Self-prioritizes
+the family work and proves honest maintenance.
+
+**P1 remaining — DECIDED 2026-06-08 (founder):**
+- **Weekly heartbeat** → **keep the privacy promise; not wired.** A cross-visit
+  marker needs localStorage, which **/security/ claim #4 forbids** for this tool
+  (CI-enforced by `check-tool-no-fetch.mjs`). The `MuntinCostFormat.heartbeat`
+  phrasing helper is built + tested and left ready; wiring it would mean exempting
+  cost-pulse from claim 4 (a public-promise change) — declined for now. The
+  no-client-storage claim stays a trust differentiator.
+- **Driver lag-claim** → **deferred.** Lead-lag on the current ~6–26-week series
+  risks a spurious correlation and a causal-adjacent claim needs an editorial
+  honesty bar + ≥~1yr history. Revisit once history deepens.
+
+vs-last-year (the third old item) is now SHIPPED (above). **P1 experience layer is
+complete** for everything safely shippable today.
+
 ## NEXT — to get the Cost Index live (in priority order)
 
 1. **Re-run verify with the unit fix (founder, needs keys).** chicken-breast +
