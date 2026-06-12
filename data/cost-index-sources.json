@@ -548,6 +548,192 @@
         "type": "ppi-soybean-oil",
         "_report": "Soybean Oil PPI (trend). Retail APU0000716121 discontinued 2005 — no current free oil LEVEL via FRED/BLS. For a wholesale level, AMS report 3190 (GX_GR117, Crude Soybean Oil, Central IL, cents/lb) is the correct report (NOT 3511, which is feedstuffs/meal). Held directional: crude soybean oil runs well below refined fryer oil, so it would mislead as the operator-facing level."
       }
+    },
+    "bell-pepper": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Peppers, Bell Type",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — new produce coverage via the vegetable-terminal fan-out (same 8 reports as romaine/tomato), commodity row-filter \"Peppers, Bell Type\" (field-agnostic substring; confirm the exact AMS term via --verify). Run --verify to resolve the 8 markets + see real values; tighten bounds; add a BLS PPI trend (--discover-fred \"Peppers, Bell Type ppi\") to lift low->medium; then --flip. The /library/ingredient-yields/<slug>/ page already exists and lights up on build."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Peppers, Bell Type",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Peppers, Bell Type",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Peppers, Bell Type",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Peppers, Bell Type",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Peppers, Bell Type",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Peppers, Bell Type",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Peppers, Bell Type",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ]
+    },
+    "broccoli": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Broccoli",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — new produce coverage via the vegetable-terminal fan-out (same 8 reports as romaine/tomato), commodity row-filter \"Broccoli\" (field-agnostic substring; confirm the exact AMS term via --verify). Run --verify to resolve the 8 markets + see real values; tighten bounds; add a BLS PPI trend (--discover-fred \"Broccoli ppi\") to lift low->medium; then --flip. The /library/ingredient-yields/<slug>/ page already exists and lights up on build."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Broccoli",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Broccoli",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Broccoli",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Broccoli",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Broccoli",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Broccoli",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Broccoli",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ]
+    },
+    "cauliflower": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Cauliflower",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — new produce coverage via the vegetable-terminal fan-out (same 8 reports as romaine/tomato), commodity row-filter \"Cauliflower\" (field-agnostic substring; confirm the exact AMS term via --verify). Run --verify to resolve the 8 markets + see real values; tighten bounds; add a BLS PPI trend (--discover-fred \"Cauliflower ppi\") to lift low->medium; then --flip. The /library/ingredient-yields/<slug>/ page already exists and lights up on build."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Cauliflower",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Cauliflower",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Cauliflower",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Cauliflower",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Cauliflower",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Cauliflower",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Cauliflower",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ]
     }
   },
   "drivers": {
