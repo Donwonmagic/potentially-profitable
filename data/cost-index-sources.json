@@ -989,7 +989,7 @@
         {
           "reportId": "2278",
           "market": "Atlanta",
-          "commodity": "Sweet Corn",
+          "commodity": "Corn",
           "reducer": "mostlyMid",
           "unit": "carton",
           "_status": "STAGED — vegetable-terminal fan-out; commodity \"Sweet Corn\"; confirm via --verify; add BLS PPI."
@@ -997,49 +997,49 @@
         {
           "reportId": "2282",
           "market": "Baltimore",
-          "commodity": "Sweet Corn",
+          "commodity": "Corn",
           "reducer": "mostlyMid",
           "unit": "carton"
         },
         {
           "reportId": "2286",
           "market": "Boston",
-          "commodity": "Sweet Corn",
+          "commodity": "Corn",
           "reducer": "mostlyMid",
           "unit": "carton"
         },
         {
           "reportId": "2291",
           "market": "Chicago",
-          "commodity": "Sweet Corn",
+          "commodity": "Corn",
           "reducer": "mostlyMid",
           "unit": "carton"
         },
         {
           "reportId": "2303",
           "market": "Detroit",
-          "commodity": "Sweet Corn",
+          "commodity": "Corn",
           "reducer": "mostlyMid",
           "unit": "carton"
         },
         {
           "reportId": "2307",
           "market": "Los Angeles",
-          "commodity": "Sweet Corn",
+          "commodity": "Corn",
           "reducer": "mostlyMid",
           "unit": "carton"
         },
         {
           "reportId": "2311",
           "market": "Miami",
-          "commodity": "Sweet Corn",
+          "commodity": "Corn",
           "reducer": "mostlyMid",
           "unit": "carton"
         },
         {
           "reportId": "2315",
           "market": "New York",
-          "commodity": "Sweet Corn",
+          "commodity": "Corn",
           "reducer": "mostlyMid",
           "unit": "carton"
         }
@@ -1299,7 +1299,7 @@
         {
           "reportId": "2279",
           "market": "Atlanta",
-          "commodity": "Sweetpotatoes",
+          "commodity": "Sweet Potatoes",
           "reducer": "mostlyMid",
           "unit": "sack",
           "_status": "STAGED — potato-terminal fan-out (same reports as russet); commodity \"Sweetpotatoes\"; confirm via --verify; add BLS PPI."
@@ -1307,49 +1307,49 @@
         {
           "reportId": "2283",
           "market": "Baltimore",
-          "commodity": "Sweetpotatoes",
+          "commodity": "Sweet Potatoes",
           "reducer": "mostlyMid",
           "unit": "sack"
         },
         {
           "reportId": "2287",
           "market": "Boston",
-          "commodity": "Sweetpotatoes",
+          "commodity": "Sweet Potatoes",
           "reducer": "mostlyMid",
           "unit": "sack"
         },
         {
           "reportId": "2292",
           "market": "Chicago",
-          "commodity": "Sweetpotatoes",
+          "commodity": "Sweet Potatoes",
           "reducer": "mostlyMid",
           "unit": "sack"
         },
         {
           "reportId": "2304",
           "market": "Detroit",
-          "commodity": "Sweetpotatoes",
+          "commodity": "Sweet Potatoes",
           "reducer": "mostlyMid",
           "unit": "sack"
         },
         {
           "reportId": "2308",
           "market": "Los Angeles",
-          "commodity": "Sweetpotatoes",
+          "commodity": "Sweet Potatoes",
           "reducer": "mostlyMid",
           "unit": "sack"
         },
         {
           "reportId": "2312",
           "market": "Miami",
-          "commodity": "Sweetpotatoes",
+          "commodity": "Sweet Potatoes",
           "reducer": "mostlyMid",
           "unit": "sack"
         },
         {
           "reportId": "2316",
           "market": "New York",
-          "commodity": "Sweetpotatoes",
+          "commodity": "Sweet Potatoes",
           "reducer": "mostlyMid",
           "unit": "sack"
         }
@@ -1416,6 +1416,10 @@
         "priceUnit": "Cents Per Lb",
         "unit": "lb",
         "_status": "STAGED — mirror of chicken-breast (National Chicken Report 3646); confirm the item term (\"Thighs\" / \"Thighs - B/S\") via --verify."
+      },
+      "bls": {
+        "seriesId": "WPU0222",
+        "_status": "poultry PPI (covers thigh) — gives chicken-thigh a 2nd independent source → READY + medium."
       }
     },
     "striploin": {
@@ -1472,6 +1476,10 @@
         "unit": "lb",
         "years": 2,
         "_status": "STAGED — mirror of salmon-fillet; WHOLE salmon = HTS 0302/0303 (fresh/frozen whole) vs the fillet 0304 — confirm HTS via --verify. Landed-adjacent proxy, below delivered wholesale."
+      },
+      "bls": {
+        "seriesId": "WPU0223",
+        "_status": "aggregate seafood PPI (Unprocessed & Prepared Seafood) — independent trend for all seafood → READY + medium."
       }
     },
     "tuna-loin": {
@@ -1488,6 +1496,10 @@
         "unit": "lb",
         "years": 2,
         "_status": "STAGED — NOAA tuna lines (0302 fresh / 0304.87 frozen fillet); confirm HTS via --verify."
+      },
+      "bls": {
+        "seriesId": "WPU0223",
+        "_status": "aggregate seafood PPI (Unprocessed & Prepared Seafood) — independent trend for all seafood → READY + medium."
       }
     },
     "whole-lobster": {
@@ -1504,6 +1516,10 @@
         "unit": "lb",
         "years": 2,
         "_status": "STAGED — NOAA lobster lines (0306.12 frozen / 0306.32 live); confirm HTS via --verify."
+      },
+      "bls": {
+        "seriesId": "WPU0223",
+        "_status": "aggregate seafood PPI (Unprocessed & Prepared Seafood) — independent trend for all seafood → READY + medium."
       }
     },
     "whole-branzino": {
