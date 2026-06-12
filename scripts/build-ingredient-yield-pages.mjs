@@ -162,10 +162,14 @@ function costIndexBlock(slug, locale) {
   const verdictHtml = fv ? `\n  <p class="iy-ci-verdict iy-ci-${fv.tone}"><strong>${fv.verb}.</strong> ${fv.note}</p>` : '';
   const spread = cheapestLine(point, es);
   const spreadHtml = spread ? `\n  <p class="iy-ci-spread">${spread}</p>` : '';
-  // "Where today sits in its own range" — an honest COUNT over the vendored
-  // history, gated like the dashboard (never on a directional read).
+  // "Where today sits in its own range" — an honest COUNT of the PUBLISHED level
+  // vs the vendored weekly history. Anchor "today" to the level median (the
+  // authoritative current read), not the history's last point (which can lag the
+  // composite), so the percentile can't contradict the level/trend. Gated like the
+  // dashboard (never on a directional read).
   const hist = (entry.history || []).map((h) => h && h.valueCents).filter((v) => typeof v === 'number' && isFinite(v));
-  const pctl = conf !== 'directional' ? FMT.percentileLine(hist) : '';
+  const today = lvl && typeof lvl.medianCents === 'number' ? lvl.medianCents : null;
+  const pctl = (conf !== 'directional' && today != null) ? FMT.percentileLine([...hist, today]) : '';
   const pctlHtml = pctl ? `\n  <p class="iy-ci-pctl">${pctl}</p>` : '';
   return `
 <div class="iy-costindex">
