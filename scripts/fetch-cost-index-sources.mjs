@@ -279,8 +279,11 @@ async function main() {
   }
 
   // Drivers (corn/soybeans/diesel/electricity) — the "why" layer: index/trend +
-  // citeable index history + the ingredients each tends to lead. LIVE only; EIA
-  // (electricity) has no fetcher in this path yet, so it skips gracefully.
+  // citeable index history + the ingredients each tends to lead. LIVE only. Each
+  // driver runs through the same liveFetch→toOutputs path as an ingredient, so
+  // BLS (corn/soybeans), FRED (diesel) and EIA (electricity) are all wired; a
+  // driver with no key set, or whose live response composes 0 points, skips
+  // gracefully without sinking the run.
   const driverMap = rd('data/cost-index-sources.json').drivers || {};
   const drivers = {};
   let driversComposed = 0;
@@ -291,7 +294,7 @@ async function main() {
       try { raw = await liveFetch(d, driverMap[d]); } catch (e) { log(`\n■ driver ${d}  ·  fetch error: ${e.message}`); continue; }
       const outs = toOutputs(d, raw, driverMap[d]);
       const dp = composeDriver(outs);
-      if (!dp) { log(`\n■ driver ${d}  ·  no source data (EIA/electricity unsupported in this path yet)`); continue; }
+      if (!dp) { log(`\n■ driver ${d}  ·  no source data (no key set, or 0 points — for EIA confirm the route/facets via a sample)`); continue; }
       drivers[d] = { kind: driverMap[d].kind, leads: Array.isArray(driverMap[d].leads) ? driverMap[d].leads : [], trend: dp.trend, history: dp.history };
       driversComposed++;
     }

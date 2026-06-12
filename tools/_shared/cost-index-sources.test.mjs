@@ -196,3 +196,19 @@ test('normalizeEia parses response.data, skips nulls, sorts oldest→newest (bas
   assert.equal(out.basis, 'index');
   assert.deepEqual(out.points, [{ date: '2026-02-01', value: 12.61 }, { date: '2026-03-01', value: 12.88 }]);
 });
+
+test('EIA electricity driver composes an energy TREND (index only, never a level)', () => {
+  // Real EIA v2 electricity/retail-sales monthly shape (sorted desc by the API).
+  const eia = { response: { data: [
+    { period: '2026-04', price: '12.85', sectorid: 'COM', stateid: 'US', 'price-units': 'cents per kilowatthour' },
+    { period: '2026-03', price: '12.60', sectorid: 'COM', stateid: 'US' },
+    { period: '2026-02', price: '12.40', sectorid: 'COM', stateid: 'US' },
+    { period: '2026-01', price: '12.10', sectorid: 'COM', stateid: 'US' },
+  ] } };
+  const o = S.normalizeEia(eia, { source: 'eia', basis: 'index', value: 'price' });
+  o.family = 'energy'; o.type = 'eia';
+  const r = C.assess(S.buildCompositeInput([o]));
+  assert.equal(r.level, null);            // an energy index has no dollar level — driver is "why" only
+  assert.equal(r.trend.dir, 'up');        // 12.10 → 12.85 over the window
+  assert.ok(r.trend.pct > 0);
+});
