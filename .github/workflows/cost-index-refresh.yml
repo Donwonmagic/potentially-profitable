@@ -3,10 +3,11 @@
 # Every Monday 13:00 UTC (after Friday's USDA LMR/AMS reads settle and
 # before the US restaurant work week ramps): fetch the live public
 # sources (USDA AMS/LMR, BLS, FRED) for verified ingredients, compose
-# the honest artifact, run the fact + calibration gates, rebuild the
-# cost-index pages, and commit the result. This is the site's recurring
-# dated read — the un-backfillable track record AND the strongest
-# recency signal the site emits.
+# the honest artifact, vendor it through the build's own fact gate,
+# rebuild the browser seed + cost-index pages, run the fact + calibration
+# gates, and commit the result. This is the site's recurring dated read —
+# the un-backfillable track record AND the strongest recency signal the
+# site emits, and the numbers the weekly email reports.
 #
 # Honest-failure posture (matches the engine):
 #   - No API keys configured  -> log + exit 0 (never a red X before the
@@ -29,6 +30,10 @@ on:
 
 permissions:
   contents: write # commits the refreshed data + rebuilt pages
+
+concurrency:
+  group: cost-index-refresh-${{ github.ref }}
+  cancel-in-progress: false # never interrupt a run mid-commit
 
 jobs:
   refresh:
@@ -71,8 +76,16 @@ jobs:
             echo "No artifact written (0 points composed) — keeping last-good data; see fetch log."
             exit 0
           fi
+          # Vendor into data/cost-index.json — fact-gated inside build-cost-index.mjs.
           node scripts/build-cost-index.mjs --artifact /tmp/ci-artifact.json
+          # Rebuild the browser seed (data/cost-index.js) so Cost Pulse / the
+          # client read the fresh numbers — not just the server-rendered pages.
+          node scripts/build-cost-index-seed.mjs
+          # Re-render hub / per-ingredient / lab pages.
           node scripts/build-cost-index-pages.mjs
+          # Restore canonical nav — build-cost-index-pages emits skeleton include
+          # sentinels; without this the committed pages would ship stripped nav.
+          node scripts/sync-includes.mjs
 
       - name: Fact + calibration gates
         if: steps.keys.outputs.configured == 'true'
@@ -83,12 +96,16 @@ jobs:
       - name: Commit the weekly read
         if: steps.keys.outputs.configured == 'true'
         run: |
-          if git diff --quiet; then
+          git config user.name "muntin-cost-index-bot"
+          git config user.email "actions@users.noreply.github.com"
+          # Stage ONLY the measured data + the cost-index surfaces, then discard
+          # the incidental site-wide nav re-stamp from sync-includes, so the commit
+          # is always exactly the weekly read — never a surprise sweep.
+          git add data/cost-index.json data/cost-index.js cost-index/ es/cost-index/ sitemap.xml
+          git checkout -- . 2>/dev/null || true
+          if git diff --cached --quiet; then
             echo "No data change this week — nothing to commit."
             exit 0
           fi
-          git config user.name "muntin-cost-index-bot"
-          git config user.email "actions@users.noreply.github.com"
-          git add data/cost-index.json cost-index/ es/cost-index/ sitemap.xml 2>/dev/null || git add -A
           git commit -m "data(cost-index): weekly read $(date -u +%F)"
           git push

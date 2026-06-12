@@ -16,8 +16,13 @@
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createRequire } from 'node:module';
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const require = createRequire(import.meta.url);
+// The SAME predicate the hub uses to decide a live reading vs an "expanding
+// coverage" page — so the email never flags an ingredient the hub can't show.
+const { isShippable } = require('../tools/_shared/cost-confidence.js');
 const rd = (p) => JSON.parse(readFileSync(path.join(repoRoot, p), 'utf8'));
 const arg = (f) => process.argv.includes(f);
 const pct = (x) => `${x >= 0 ? '+' : ''}${(x * 100).toFixed(1)}%`;
@@ -28,15 +33,19 @@ function computeInsight() {
   const labels = (rd('data/cost-index-labels.json').labels) || {};
   const driverNames = (rd('data/cost-index-labels.json').drivers) || {};
   const name = (k) => (labels[k] && labels[k].en) || k;
+  const nameEs = (k) => (labels[k] && (labels[k].es || labels[k].en)) || k;
 
   const items = [];
   for (const [key, r] of Object.entries(ci.ingredients || {})) {
-    const p = (r.points || []).slice(-1)[0] || {};
+    const p = (r.points || [])[0] || {};   // points[0] is the CURRENT read (the hub's canonical point); later entries are older baseline
     const t = p.trend || {};
     const f = r.flag || {};
     if (typeof t.pct !== 'number') continue;
+    // Only ingredients that earn a live reading on the hub — never flag an item
+    // a clicked-through subscriber would find under "expanding coverage".
+    if (!isShippable(p)) continue;
     items.push({
-      key, name: name(key), pct: t.pct, dir: t.dir || (t.pct > 0 ? 'up' : t.pct < 0 ? 'down' : 'flat'),
+      key, name: name(key), nameEs: nameEs(key), pct: t.pct, dir: t.dir || (t.pct > 0 ? 'up' : t.pct < 0 ? 'down' : 'flat'),
       verdict: f.verdict || null, bias: f.actionBias || null, reason: f.reason || null,
       confidence: p.confidence || null, seasonal: !!(labels[key] && labels[key].seasonal)
     });
@@ -58,12 +67,13 @@ function computeInsight() {
   // come through with empty leads + artifact %, so they're filtered out as not-credible).
   const drivers = Object.entries(ci.drivers || {}).map(([dk, d]) => ({
     key: dk, name: (driverNames[dk] && driverNames[dk].en) || dk,
+    nameEs: (driverNames[dk] && (driverNames[dk].es || driverNames[dk].en)) || dk,
     pct: (d.trend || {}).pct, dir: (d.trend || {}).dir, leads: (d.leads || []).map(name)
   })).filter((d) => typeof d.pct === 'number' && d.leads.length > 0 && Math.abs(d.pct) < 1);
 
   // "Week of" = the freshest read across the panel (not the first item's).
   const asOfs = [];
-  for (const r of Object.values(ci.ingredients || {})) { const a = ((r.points || []).slice(-1)[0] || {}).asOf; if (a) asOfs.push(a); }
+  for (const r of Object.values(ci.ingredients || {})) { const a = ((r.points || [])[0] || {}).asOf; if (a) asOfs.push(a); }
   const asOf = asOfs.sort().slice(-1)[0] || ci._lastReviewed || ci.generatedAt || new Date().toISOString().slice(0, 10);
   const basket = ci.basket || null;
 
