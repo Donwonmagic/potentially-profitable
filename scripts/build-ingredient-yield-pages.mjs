@@ -79,6 +79,29 @@ const COST_INDEX = (() => {
   catch { return {}; }
 })();
 const CI_SOURCE_LABELS = { 'usda-ams': 'USDA AMS', bls: 'BLS PPI', fred: 'FRED', noaa: 'NOAA Fisheries' };
+// Surface WHY a read is the strength it is — the honesty engine's reasoning, in
+// plain language. Qualitative only (no numbers to fact-gate); mirrors the
+// confidenceFor min-of-gates on the vendored fields the point already carries.
+function whyConfidence(point, conf, es) {
+  const lvl = point.level, tr = point.trend || {};
+  if (!lvl) return es ? 'Solo dirección — aún sin un nivel de precio comparable.' : 'Direction only — no comparable dollar level yet.';
+  if (conf === 'high') return es ? 'Lectura sólida — fuentes independientes coinciden en el nivel y en el movimiento.' : 'Strong read — independent sources agree on both the level and the move.';
+  const lt = lvl.nTypes || 0, tt = tr.nTypes || 0;
+  const agree = typeof tr.agreement === 'number' ? tr.agreement : 1;
+  const noise = tr.noise == null ? 0 : tr.noise;
+  const disp = lvl.typeDispersion || 0;
+  const levelPart = lt >= 2 && disp > 0.15
+    ? (es ? 'Las fuentes de precio no coinciden en el nivel' : 'The dollar sources disagree on the level')
+    : lt >= 2
+      ? (es ? 'El nivel está bien respaldado' : 'The level is well backed')
+      : (es ? 'Una sola metodología de precio respalda el nivel' : 'One pricing methodology backs the level');
+  const trendCaveat = (typeof tr.pct !== 'number') ? ''
+    : noise > 0.20 ? (es ? 'pero los precios saltan semana a semana, así que la tendencia no es firme' : "but week-to-week prices are jagged, so the trend isn't firm")
+      : agree < 0.5 ? (es ? 'y los mercados no coinciden en la dirección' : 'and the markets disagree on direction')
+        : tt < 2 ? (es ? 'y la tendencia se apoya en una sola fuente independiente' : 'and the trend leans on a single independent source')
+          : '';
+  return `${levelPart}${trendCaveat ? ', ' + trendCaveat : ''}.`;
+}
 function costIndexBlock(slug, locale) {
   const entry = COST_INDEX[slug];
   const point = entry && Array.isArray(entry.points) && entry.points[0];
@@ -111,10 +134,12 @@ function costIndexBlock(slug, locale) {
     ? (es ? 'Referencia minorista, no el precio mayorista ni el entregado que pagas.' : 'Retail reference, not the wholesale or delivered price you pay.')
     : (es ? 'Referencia mayorista, no el precio entregado que pagas.' : 'Wholesale reference, not the delivered price you pay.');
   const srcBody = `${sources.join(' · ')} — ${es ? 'datos públicos' : 'public data'}, ${es ? 'al' : 'as of'} ${asOf}. ${disclaimer}`;
+  const why = whyConfidence(point, conf, es);
   return `
 <div class="iy-costindex">
   <p class="iy-ci-head">${head}<span class="iy-ci-badge">${badge}</span></p>
   <p class="iy-ci-line">${line}</p>
+  <p class="iy-ci-why">${why}</p>
   <details class="iy-ci-src"><summary>${srcSummary}</summary><div>${srcBody}</div></details>
 </div>`;
 }
@@ -335,6 +360,7 @@ main{padding-top:64px}
 .iy-ci-head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin:0 0 6px}
 .iy-ci-badge{font-weight:600;text-transform:none;letter-spacing:0;font-size:12px;color:var(--ink-soft);margin-left:8px}
 .iy-ci-line{font-size:14.5px;line-height:1.55;color:var(--ink);margin:0}
+.iy-ci-why{font-size:13px;line-height:1.5;color:var(--ink-soft);margin:5px 0 0}
 .iy-ci-src{margin-top:8px;font-size:12.5px}
 .iy-ci-src summary{cursor:pointer;color:var(--ink-soft);font-weight:600}
 .iy-ci-src div{margin-top:6px;color:var(--ink-soft);line-height:1.5}
