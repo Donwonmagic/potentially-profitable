@@ -1147,6 +1147,8 @@ export function subscriberConfirmEmail(body) {
 // lectura del índice medido — sin invención.
 export function costIndexWeeklyEmail(body) {
   const pc = (x) => `${x >= 0 ? '+' : ''}${(Number(x) * 100).toFixed(1)}%`;
+  // Spanish ingredient/driver label, falling back to the EN name the insight carries.
+  const nm = (i) => (i && (i.nameEs || i.name)) || '';
   const asOf = String(body.asOf || '').trim();
   const unsubUrl = String(body.unsubUrl || 'https://muntin.digital/es/sub/unsubscribe').trim();
   const postUrl = String(body.postUrl || 'https://muntin.digital/es/cost-index/').trim();
@@ -1157,18 +1159,18 @@ export function costIndexWeeklyEmail(body) {
   const drivers = Array.isArray(body.drivers) ? body.drivers : [];
 
   const subject = reprice.length
-    ? `Índice de costos: ${reprice[0].name} pide reprecio (semana del ${asOf})`
+    ? `Índice de costos: ${nm(reprice[0])} pide reprecio (semana del ${asOf})`
     : `Índice de costos — semana del ${asOf}`;
 
   const flashRow = (label, color, i) =>
-    `<p style="margin:0 0 10px;font-size:15px;line-height:1.5;color:#2A2D33;"><strong style="color:${color};">${label} — ${escapeHtml(i.name)} ${pc(i.pct)}</strong>${i.reason ? ` <span style="color:#5B5B5B;">— ${escapeHtml(i.reason)}</span>` : ''}</p>`;
+    `<p style="margin:0 0 10px;font-size:15px;line-height:1.5;color:#2A2D33;"><strong style="color:${color};">${label} — ${escapeHtml(nm(i))} ${pc(i.pct)}</strong>${i.reason ? ` <span style="color:#5B5B5B;">— ${escapeHtml(i.reason)}</span>` : ''}</p>`;
   const flashing = [
     ...reprice.map((i) => flashRow('Reprecio', '#9C3B2E', i)),
     ...watch.map((i) => flashRow('Vigilar', '#9A7A1F', i)),
   ].join('\n') || '<p style="margin:0 0 10px;font-size:15px;color:#5B5B5B;">Nada estructural esta semana — el panel lee estable en todo.</p>';
 
-  const moversLine = (arr) => arr.map((i) => `${escapeHtml(i.name)} ${pc(i.pct)}`).join(' &middot; ') || '—';
-  const driverLine = drivers.map((d) => `${escapeHtml(d.name)} ${pc(d.pct)}`).join(' &middot; ');
+  const moversLine = (arr) => arr.map((i) => `${escapeHtml(nm(i))} ${pc(i.pct)}`).join(' &middot; ') || '—';
+  const driverLine = drivers.map((d) => `${escapeHtml(nm(d))} ${pc(d.pct)}`).join(' &middot; ');
 
   const html = htmlShell(
     `Índice de costos — semana del ${asOf}`,
@@ -1191,12 +1193,12 @@ export function costIndexWeeklyEmail(body) {
     body.basket && typeof body.basket.pct === 'number' ? `Canasta: ${pc(body.basket.pct)} ${body.basket.dir || ''} (confianza ${body.basket.confidence || ''}).` : '',
     `${body.up} de ${body.count} por encima de la línea base, ${body.down} por debajo.`, '',
     'QUÉ ESTÁ MARCANDO:',
-    ...reprice.map((i) => `  REPRECIO  ${i.name} ${pc(i.pct)}${i.reason ? ' — ' + i.reason : ''}`),
-    ...watch.map((i) => `  VIGILAR   ${i.name} ${pc(i.pct)}${i.reason ? ' — ' + i.reason : ''}`),
+    ...reprice.map((i) => `  REPRECIO  ${nm(i)} ${pc(i.pct)}${i.reason ? ' — ' + i.reason : ''}`),
+    ...watch.map((i) => `  VIGILAR   ${nm(i)} ${pc(i.pct)}${i.reason ? ' — ' + i.reason : ''}`),
     (reprice.length || watch.length) ? '' : '  Nada estructural esta semana.', '',
-    `Suben: ${risers.map((i) => i.name + ' ' + pc(i.pct)).join(', ')}`,
-    `Bajan: ${fallers.map((i) => i.name + ' ' + pc(i.pct)).join(', ')}`, '',
-    driverLine ? `Río arriba: ${drivers.map((d) => d.name + ' ' + pc(d.pct)).join(', ')}` : '',
+    `Suben: ${risers.map((i) => nm(i) + ' ' + pc(i.pct)).join(', ')}`,
+    `Bajan: ${fallers.map((i) => nm(i) + ' ' + pc(i.pct)).join(', ')}`, '',
+    driverLine ? `Río arriba: ${drivers.map((d) => nm(d) + ' ' + pc(d.pct)).join(', ')}` : '',
     '', `Leer la semana completa: ${postUrl}`,
     '', 'Una lectura, no un consejo — niveles públicos de mayoreo, nunca tu precio entregado. — Don',
     '', 'Cancelar suscripción: ' + unsubUrl,
