@@ -5,7 +5,7 @@
   "basis": "wholesale",
   "currency": "USD",
   "note": "Wholesale reference prices compiled from public U.S. market sources (USDA AMS/LMR, BLS, FRED, EIA, NOAA). Values are in US dollars per unit. Not a delivered or retail price. Source: muntin.digital/cost-index/cheddar-cheese/",
-  "asOf": "2026-05-30",
+  "asOf": "2026-06-06",
   "observations": [
     {
       "date": "2026-03-14",
@@ -64,6 +64,11 @@
     },
     {
       "date": "2026-05-30",
+      "priceUsd": 1.66,
+      "source": "usda-lmr"
+    },
+    {
+      "date": "2026-06-06",
       "priceUsd": 1.66,
       "source": "usda-lmr"
     }
