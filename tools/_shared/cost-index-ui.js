@@ -472,7 +472,36 @@
   // command. Calibrated to confidence: a thin read can never say "re-price". The
   // operator decides; we only say what the data leans toward. Returns
   // { tone:'reprice'|'hold'|'watch', verb, note } or null.
-  function flagVerb(flag, confidence) { return FMT.flagVerb(flag, confidence); }
+  function flagVerb(flag, confidence) {
+    if (!flag || !flag.verdict) return null;
+    // Single source of truth: tools/_shared/cost-verdict.js. The inline switch
+    // below is kept as a fallback so the dashboard never breaks if that script
+    // isn't loaded (e.g. an older cached page).
+    var V = (typeof MuntinCostVerdict !== 'undefined' && MuntinCostVerdict) ||
+            (typeof self !== 'undefined' && self.MuntinCostVerdict) ||
+            (typeof window !== 'undefined' && window.MuntinCostVerdict);
+    if (V && V.verdict) {
+      var sv = V.verdict(flag, confidence);
+      return sv ? { tone: sv.tone, verb: L(sv.verb_en, sv.verb_es), note: L(sv.note_en, sv.note_es) } : null;
+    }
+    var thin = confidence === 'low' || confidence === 'directional';
+    var wk = flag.elevatedWeeks;
+    switch (flag.verdict) {
+      case 'structural':
+        if (thin) return { tone: 'watch', verb: L('Watch', 'Observa'), note: L('Up and holding, but the data is thin — wait for more before a big call.', 'Sube y se mantiene, pero hay pocos datos — espera más antes de una decisión grande.') };
+        return { tone: 'reprice', verb: L('Consider re-pricing', 'Considera ajustar el precio'), note: L('Up and holding' + (wk ? ' for ' + wk + ' weeks' : '') + ' — this looks like a real reset, not a blip. Many operators would re-price the dishes that use it.', 'Sube y se mantiene' + (wk ? ' por ' + wk + ' semanas' : '') + ' — parece un cambio real, no un repunte. Muchos operadores ajustarían el precio de los platillos que lo usan.') };
+      case 'spike':
+        return { tone: 'hold', verb: L('Hold', 'Espera'), note: L('Jumped, then pulled back — this often reverts. Re-pricing now risks chasing a number that is already falling.', 'Subió y luego bajó — suele revertir. Ajustar ahora arriesga perseguir un número que ya está cayendo.') };
+      case 'easing':
+        return { tone: 'hold', verb: L('Hold', 'Espera'), note: L('Easing — this can be a chance to renegotiate, not a reason to re-price.', 'Bajando — puede ser oportunidad de renegociar, no razón para reajustar.') };
+      case 'emerging':
+        return { tone: 'watch', verb: L('Watch', 'Observa'), note: L('A real move, but it has not held yet. Give it a couple of weeks.', 'Un movimiento real, pero aún no se sostiene. Dale un par de semanas.') };
+      case 'flat':
+        return { tone: 'hold', verb: L('Hold', 'Espera'), note: L('Inside its usual range — nothing to do.', 'Dentro de su rango usual — nada que hacer.') };
+      default: // insufficient
+        return { tone: 'watch', verb: L('Watch', 'Observa'), note: L('Too new to call — too little history so far. Treat the price as real until a pattern shows.', 'Muy nuevo para concluir — poco historial aún. Trata el precio como real hasta que se vea un patrón.') };
+    }
+  }
 
   var movers = [];
   (DATA.ingredients || []).forEach(function (ing) {
@@ -552,6 +581,27 @@
       vEl.appendChild(el('span', 'cp-verb-note', ' ' + fv.note));
       fig.appendChild(vEl);
       fig.setAttribute('data-audio-alt', (fig.getAttribute('data-audio-alt') || '') + ' ' + fv.verb + '. ' + fv.note);
+    }
+
+    // Outlook — the INFERRED pressure overlay (direction only, never a price).
+    // Fail-silent: shown only when the seed carries a pressure summary.
+    var pr = ing.pressure;
+    if (pr && pr.direction && pr.direction !== 'unknown') {
+      var dir = pr.under_review ? 'review' : pr.direction;
+      var oLine = ({
+        building: L('Outlook: cost pressure looks to be building.', 'Perspectiva: la presión de costo parece ir en aumento.'),
+        easing:   L('Outlook: cost pressure looks to be easing.', 'Perspectiva: la presión de costo parece ceder.'),
+        steady:   L('Outlook: signals are mixed — no clear lean yet.', 'Perspectiva: señales mixtas — sin tendencia clara aún.'),
+        review:   L('Outlook: awaiting the next measured price.', 'Perspectiva: a la espera de la próxima lectura medida.')
+      })[dir];
+      if (oLine) {
+        var oEl = el('p', 'cp-market-outlook');
+        oEl.setAttribute('data-layer', 'inferred');
+        oEl.appendChild(el('span', 'cp-outlook-line', oLine));
+        oEl.appendChild(el('span', 'cp-outlook-chip', ' (' + L('inferred', 'inferido') + ' · ' + (pr.confidence || '') + ')'));
+        fig.appendChild(oEl);
+        fig.setAttribute('data-audio-alt', (fig.getAttribute('data-audio-alt') || '') + ' ' + oLine);
+      }
     }
 
     var sparkVals = ing.spark || pickSeries(ing.input);

@@ -35,6 +35,14 @@ const CHECKS = [
   // the registry with a real source URL, be cited inline via a
   // <details class="cite"> drawer, or be labeled illustrative.
   ['Fabrication blocklist','check-fabrications.mjs',       '--check'],
+  // Per-language audio fact gate — the HTML gate above deliberately skips the
+  // narration JSON, but the renderer speaks chunks[].text verbatim in six
+  // languages. This applies the shared fabrication registry per spoken
+  // language (invariant URL rules everywhere; en/es/fr/it/pt/zh bio-drift
+  // rules to their tracks) plus a warn-first numeric-parity check. Pattern
+  // hits are fail-CI; known-stale pre-cleanup renders are waived (dated) in
+  // the script and re-render is tracked in docs/editorial/ground-truth-pack.md.
+  ['Audio fabrication blocklist','check-audio-fabrications.mjs','--check'],
   // Phase-2 cohesion guards. Sentinel-escape is fail-CI from day 1
   // (the regression cost was 247 frozen pages); banned-words is
   // warn-only at first so existing usage can be flagged + fixed
@@ -80,13 +88,20 @@ const CHECKS = [
   //          and sheets.css). Pairs with sync: one forbids the old
   //          values, the other pins the new ones.
   ['Token sync',          'check-tokens-sync.mjs'],
+  ['Token vendor',        'vendor-tokens.mjs'],
   ['Warm-palette purge',  'migrate-warm-palette.mjs',      '--check'],
+  ['Mark geometry',       'check-mark-geometry.mjs'],
   // Invoice-Decoder safety: the four server files in src/ that touch
   // the decoder pipeline must NOT contain any outbound network paths
   ['Dark-mode block',     'build-dark-mode.mjs',           '--check'],
   ['Dark contrast',       'check-dark-contrast.mjs'],
   ['Section contrast',    'check-contrast.mjs'],
-  ['Banned words',        'check-banned-words.mjs'],
+  ['Banned words',        'check-banned-words.mjs',        '--check'],
+  // Studio voice-boundary — mirror of the product's "Don" check. Blocks a
+  // fake-team / corporate "we" ("our team", "a team of") on the studio's own
+  // marketing surfaces; the studio is one person (Don, "I"). Marketing-scoped
+  // (content registers quote operators, so they are excluded).
+  ['Studio voice boundary','check-studio-voice-boundary.mjs','--check'],
   // Sprint M (2026-05-08): retired-slug regression guard. Fails CI
   // if either retired slug is reintroduced anywhere outside the
   // documented allow list (_redirects, 404.html, historical
@@ -333,6 +348,13 @@ const CHECKS = [
   ['Cost-index calibration self-test','check-cost-index-calibration.mjs','--self-test'],
   ['Cost-index health (idem)','build-cost-index-health.mjs','--check'],
   ['Cost-index health self-test','build-cost-index-health.mjs','--self-test'],
+  // Shippable bar — below-bar ingredients must stay out of the browser seed
+  // (no thin / no-level read on the dashboard; they live as expanding-coverage).
+  ['Cost-index shippable bar','check-shippable-bar.mjs'],
+  // Pressure honesty — the inferred outlook can't carry a price, can't use a
+  // banned verb, and its rendered direction must equal what the rules recompute.
+  ['Cost-pressure honesty','check-pressure-honesty.mjs'],
+  ['Cost-pressure sources (shape+readiness)','check-pressure-sources.mjs'],
   ['Security claims',      'check-security-claims.mjs'],
   ['Data promise rail',    'check-data-promise-rail.mjs'],
   ['Security locale parity','check-security-locale-parity.mjs'],

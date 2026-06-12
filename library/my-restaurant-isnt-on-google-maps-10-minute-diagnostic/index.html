@@ -46,7 +46,7 @@
       "url": "https://muntin.digital/library/my-restaurant-isnt-on-google-maps-10-minute-diagnostic/",
       "inLanguage": "en-US",
       "datePublished": "2026-05-10T21:00:00-04:00",
-      "dateModified": "2026-05-28",
+      "dateModified": "2026-06-10",
       "author": {
         "@id": "https://muntin.digital/#muntin-desk",
         "@type": "Organization",
@@ -244,11 +244,9 @@ main{padding-top:64px}
          three-doors page). Tools is promoted from the old Library
          mega-menu to a top-level item. Studio replaces Services +
          Restaurants + About — they all live under /studio/ now,
-         either as anchored sections (#pricing, #offers, #cities,
-         #process, #about) or as full child pages (/studio/compare/,
-         /studio/silver-spring/, etc.). The old Services and
-         Restaurants pages remain reachable via /studio/ and the
-         _redirects table; /about/ is unchanged. The mega-menu is
+         as sections of the company page (Phase 9, 2026-06-11: the
+         services-era child pages and anchored offer sections are
+         retired; old paths 301 via the _redirects table). /about/ is unchanged. The mega-menu is
          retired (the hub IS the menu now); the controller script
          is gone too.
 
@@ -260,7 +258,7 @@ main{padding-top:64px}
       <a href="/library/">Library</a>
       <a href="/start/">Start</a>
       <a href="/tools/">Tools</a>
-      <a href="/studio/">Studio</a>
+      <a href="/studio/">Company</a>
       <!-- Ledger — sister product (the privacy-forward invoice ledger)
            on its own subdomain. Plain external link so it passes link
            equity to ledger.muntin.digital; Plausible's automatic
@@ -322,7 +320,7 @@ main{padding-top:64px}
     <a href="/library/">Library</a>
     <a href="/start/">Start</a>
     <a href="/tools/">Tools</a>
-    <a href="/studio/">Studio</a>
+    <a href="/studio/">Company</a>
     <a href="https://ledger.muntin.digital/">Ledger</a>
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
@@ -487,22 +485,22 @@ main{padding-top:64px}
 
     <p>If you&rsquo;re reading this you&rsquo;ve probably already done a Google search for your restaurant&rsquo;s name + city and watched it not appear in the <a href="/glossary/map-pack/" style="color:var(--teal)">map pack</a> &mdash; the three-pin box at the top of the search result. That box is a separate ranking surface from organic results. A restaurant that ranks fine in blue links can be entirely missing from the map pack. The cause is almost never the website. It&rsquo;s almost always one of four things on the <a href="/glossary/gbp/" style="color:var(--teal)">Google Business Profile</a> side.</p>
 
-    <figure class="viz-figure article-figure" data-audio-alt="The diagnostic decision tree. Start at the top: have you claimed your Google Business Profile? If no, the root cause is an unclaimed listing &mdash; go claim it at business dot google dot com. If yes, ask: is your address, name, and phone consistent across three or more directories? If no, the root cause is NAP inconsistency &mdash; clean the top thirty citations. If yes, ask: is your primary category set to a specific restaurant category like Italian Restaurant or Vietnamese Restaurant, not the generic Restaurant? If no, the root cause is a wrong primary category &mdash; switch to the narrowest cuisine match. If yes, ask: are there five or more photos uploaded in the last sixty days? If no, the root cause is a stale profile &mdash; upload fresh photos this week. If yes, the root cause is almost certainly a suspended or duplicate listing &mdash; open the dashboard and look for the banner, then maps-search your address for a second pin.">
+    <figure class="viz-figure article-figure" data-audio-alt="The diagnostic decision tree. Start at the top: have you claimed your Google Business Profile? If no, the root cause is an unclaimed listing &mdash; go claim it at business dot google dot com. If yes, ask: is your address, name, and phone consistent across three or more directories? If no, the root cause is NAP inconsistency &mdash; clean the top thirty citations. If yes, ask: is your primary category set to a specific restaurant category like Italian Restaurant or Vietnamese Restaurant, not the generic Restaurant? If no, the root cause is a wrong primary category &mdash; switch to the narrowest cuisine match. If yes, ask: are there five or more photos uploaded in the last sixty days? If no, the root cause is a stale profile &mdash; upload fresh photos this week. If yes, the root cause is almost certainly a suspended or duplicate listing &mdash; open the dashboard and look for the banner, then maps-search your address for a second pin. Each question carries its fix timeline on a pill: claiming runs about five days by postcard, a NAP clean-up is sixty to ninety minutes across the top thirty directories, a category switch is a same-day change, and a photo refresh is a this-week job.">
       <div class="viz-tree">
         <details class="viz-tree__node" open>
-          <summary class="viz-tree__title"><span class="viz-tree__num">1</span>Have you claimed your Google Business Profile?<span class="viz-tree__verdict">Yes / No</span></summary>
+          <summary class="viz-tree__title"><span class="viz-tree__num">1</span>Have you claimed your Google Business Profile?<span class="viz-tree__verdict" data-tone="pass">Fix: claim &middot; ~5 days</span></summary>
           <div class="viz-tree__body">
             <p><strong>No &rarr;</strong> Root cause: <strong>unclaimed listing</strong>. Go to business.google.com, search your restaurant, hit &ldquo;Claim this Business.&rdquo; Postcard verification, 5 days, free.</p>
             <details class="viz-tree__node" open>
-              <summary class="viz-tree__title"><span class="viz-tree__num">2</span>Yes &mdash; is your NAP (name, address, phone) consistent across 3+ directories?<span class="viz-tree__verdict">Yes / No</span></summary>
+              <summary class="viz-tree__title"><span class="viz-tree__num">2</span>Yes &mdash; is your NAP (name, address, phone) consistent across 3+ directories?<span class="viz-tree__verdict" data-tone="warn">Fix: 60&ndash;90 min</span></summary>
               <div class="viz-tree__body">
                 <p><strong>No &rarr;</strong> Root cause: <strong>NAP inconsistency</strong>. Google&rsquo;s crawler can&rsquo;t reconcile conflicting citations. Clean the top 30 directories (60&ndash;90 min of work).</p>
                 <details class="viz-tree__node" open>
-                  <summary class="viz-tree__title"><span class="viz-tree__num">3</span>Yes &mdash; is your primary category a specific restaurant category (not just &ldquo;Restaurant&rdquo;)?<span class="viz-tree__verdict">Yes / No</span></summary>
+                  <summary class="viz-tree__title"><span class="viz-tree__num">3</span>Yes &mdash; is your primary category a specific restaurant category (not just &ldquo;Restaurant&rdquo;)?<span class="viz-tree__verdict" data-tone="pass">Fix: same day</span></summary>
                   <div class="viz-tree__body">
                     <p><strong>No &rarr;</strong> Root cause: <strong>wrong primary category</strong>. &ldquo;Italian restaurant&rdquo; not &ldquo;Restaurant.&rdquo; &ldquo;Vietnamese restaurant&rdquo; not &ldquo;Asian fusion.&rdquo; Narrower wins.</p>
                     <details class="viz-tree__node" open>
-                      <summary class="viz-tree__title"><span class="viz-tree__num">4</span>Yes &mdash; are there 5+ photos uploaded in the last 60 days?<span class="viz-tree__verdict">Yes / No</span></summary>
+                      <summary class="viz-tree__title"><span class="viz-tree__num">4</span>Yes &mdash; are there 5+ photos uploaded in the last 60 days?<span class="viz-tree__verdict" data-tone="pass">Fix: this week</span></summary>
                       <div class="viz-tree__body">
                         <p><strong>No &rarr;</strong> Root cause: <strong>stale profile signal</strong>. Upload 5&ndash;10 fresh photos this week (dish, room, exterior). Profile activity is a ranking input.</p>
                         <p><strong>Yes &rarr;</strong> Root cause: <strong>suspended or duplicate listing</strong>. Open the dashboard for the suspension banner; maps-search your address to count pins. See Cause 3 and Cause 4 below.</p>
@@ -542,48 +540,39 @@ main{padding-top:64px}
 
     <p>The diagnostic: do a Google Maps search for your exact address. If two pins drop on the same building, you have a duplicate. The fix: in your Business Profile dashboard, request removal of the duplicate. You&rsquo;ll have to prove the canonical one is yours and the duplicate is stale. Takes 14&ndash;21 days typically.</p>
 
-    <figure class="viz-figure article-figure" data-audio-alt="Where map-pack invisibility usually traces back to, ranked by relative frequency. Unclaimed Google Business Profile is the single most common cause. Inconsistent NAP &mdash; name, address, phone &mdash; across directories is the second most common. Wrong primary category is the third. Duplicate listings and suspended listings are less common but still account for a meaningful share. Everything else is the residual.">
+    <figure class="viz-figure article-figure" data-audio-alt="The four root causes of map-pack invisibility drawn against each other, using the same shares as the section headings above — Muntin's client-audit diagnostic frame, not a third-party statistic. An unclaimed Google Business Profile accounts for roughly forty percent of cases and is shown in teal because the fix starts the same day you find it. A wrong primary category is roughly thirty percent, also teal — a same-day switch in the dashboard. A suspended listing and a duplicate listing are roughly fifteen percent each, shown in rust because both put you in a queue with Google: seven to thirty days for reinstatement, fourteen to twenty-one days for a duplicate merge. The teal rows add up to about seventy percent of all cases — meaning roughly seven in ten restaurants reading this can have the root cause corrected before tonight's service, and the first three checks together cover about eighty-five percent.">
       <div class="viz-bars">
-        <p class="viz-bars__title">Where the problem usually is, ranked by frequency</p>
+        <p class="viz-bars__title">The four causes, by share of cases &mdash; tone = who controls the fix</p>
         <div class="viz-bars__row">
-          <p class="viz-bars__label">Unclaimed GBP</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:1.0"></span></div>
-          <p class="viz-bars__num">most common</p>
+          <p class="viz-bars__label">Unclaimed GBP &middot; claim it yourself</p>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.40"></span></div>
+          <p class="viz-bars__num">~40%</p>
         </div>
         <div class="viz-bars__row">
-          <p class="viz-bars__label">NAP inconsistency across directories</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.85"></span></div>
-          <p class="viz-bars__num">second most common</p>
+          <p class="viz-bars__label">Wrong primary category &middot; same-day switch</p>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.30"></span></div>
+          <p class="viz-bars__num">~30%</p>
         </div>
         <div class="viz-bars__row">
-          <p class="viz-bars__label">Wrong primary category</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.65"></span></div>
-          <p class="viz-bars__num">third most common</p>
+          <p class="viz-bars__label">Suspended listing &middot; Google&rsquo;s queue, 7&ndash;30 days</p>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.15"></span></div>
+          <p class="viz-bars__num">~15%</p>
         </div>
         <div class="viz-bars__row">
-          <p class="viz-bars__label">Duplicate listing</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.50"></span></div>
-          <p class="viz-bars__num">moderate frequency</p>
+          <p class="viz-bars__label">Duplicate listing &middot; Google&rsquo;s queue, 14&ndash;21 days</p>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.15"></span></div>
+          <p class="viz-bars__num">~15%</p>
         </div>
-        <div class="viz-bars__row">
-          <p class="viz-bars__label">Suspended / disabled</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.35"></span></div>
-          <p class="viz-bars__num">less common</p>
-        </div>
-        <div class="viz-bars__row">
-          <p class="viz-bars__label">Other</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.20"></span></div>
-          <p class="viz-bars__num">residual</p>
-        </div>
+        <p class="viz-bars__note"><strong>Teal rows (~70%)</strong> are fixes you control today; <strong>rust rows (~30%)</strong> are waits on Google&rsquo;s process. The first three checks together cover ~85% of cases.</p>
       </div>
-      <figcaption>Direction, not measured share. The top two rows account for the majority of cases in operator practice; both are operator-fixable the same day.</figcaption>
+      <figcaption>Seven in ten invisible restaurants are one same-day dashboard fix away from eligible; the other three in ten are starting a documented wait, so start the paperwork the day you find it. Shares are Muntin&rsquo;s client-audit frame, not a published statistic.</figcaption>
     </figure>
 
     <h2 id="the-10-minute-plan">The 10-minute plan</h2>
 
     <p>Set a timer. Ten checks, one minute each. Don&rsquo;t deliberate &mdash; if a step is a clean &ldquo;yes,&rdquo; move on; if it&rsquo;s a &ldquo;no,&rdquo; flag it and keep going. You can fix the flagged ones after the diagnostic.</p>
 
-    <figure class="viz-figure article-figure" data-audio-alt="The ten-minute diagnostic, step by step. Minute one: open the Google Business Profile dashboard at business dot google dot com. Minute two: verify your name, address, and phone match your storefront sign exactly. Minute three: check your primary category &mdash; it should be a specific cuisine, not generic Restaurant. Minute four: check your hours, including holidays and special hours. Minute five: maps-search your exact address and count pins for duplicates. Minute six: count photos uploaded in the last sixty days. Minute seven: search your restaurant name plus city on Google and see if you appear in the map pack. Minute eight: search a near-me query like Italian restaurant near me from inside your service radius. Minute nine: repeat both searches in an incognito or private window with location set to your storefront. Minute ten: if anything is off, file a Business Profile fix-it ticket and screenshot the dashboard for documentation.">
+    <figure class="viz-figure article-figure" data-audio-alt="The ten-minute diagnostic, step by step. Minute one: open the Google Business Profile dashboard at business dot google dot com. Minute two: verify your name, address, and phone match your storefront sign exactly. Minute three: check your primary category &mdash; it should be a specific cuisine, not generic Restaurant. Minute four: check your hours, including holidays and special hours. Minute five: maps-search your exact address and count pins for duplicates. Minute six: count photos uploaded in the last sixty days. Minute seven: search your restaurant name plus city on Google and see if you appear in the map pack. Minute eight: search a near-me query like Italian restaurant near me from inside your service radius. Minute nine: repeat both searches in an incognito or private window with location set to your storefront. Minute ten: if anything is off, file a Business Profile fix-it ticket and screenshot the dashboard for documentation. The walk splits in half: minutes one through six read the dashboard, minutes seven through nine read the public result — and the root cause usually hides in the mismatch between the two halves, which is why the incognito check in minute nine is the one not to skip.">
       <ol class="viz-flow" aria-label="The 10-minute diagnostic, step by step">
         <li class="viz-flow__step" data-state="ok">
           <span class="viz-flow__num">1</span>
@@ -641,11 +630,11 @@ main{padding-top:64px}
             <p class="viz-flow__meta">From inside your service radius. The category test in the wild.</p>
           </div>
         </li>
-        <li class="viz-flow__step" data-state="ok">
+        <li class="viz-flow__step" data-state="warn">
           <span class="viz-flow__num">9</span>
           <div class="viz-flow__body">
             <h4 class="viz-flow__title">Repeat both searches in incognito</h4>
-            <p class="viz-flow__meta">Removes personalization. If you vanish in incognito, you&rsquo;re actually invisible.</p>
+            <p class="viz-flow__meta">Removes personalization &mdash; the only check that shows what guests see. If you vanish here, you&rsquo;re actually invisible.</p>
           </div>
         </li>
         <li class="viz-flow__step" data-state="warn">
@@ -656,7 +645,7 @@ main{padding-top:64px}
           </div>
         </li>
       </ol>
-      <figcaption>Ten checks, one minute each. The first &ldquo;no&rdquo; usually IS the root cause &mdash; finish the walk anyway so you know what else is wobbly.</figcaption>
+      <figcaption>Minutes 1&ndash;6 read the dashboard; minutes 7&ndash;9 read the public result &mdash; the root cause usually hides in the mismatch between the halves, which is why operators who quit after step 4 miss it.</figcaption>
     </figure>
 
     <div class="callout">
@@ -681,7 +670,7 @@ main{padding-top:64px}
         <li><a href="/library/restaurant-schema-markup-guide/">The 6 schema types Google uses</a> &mdash; the next surface to check once the map pack is fixed</li>
         <li><a href="/library/how-to-read-restaurant-google-search-console/">How to read your Google Search Console</a> &mdash; the dashboard most operators have never opened</li>
         <li><a href="/tools/gbp-grader/">GBP grader tool</a> &mdash; runs the four-cause check against your listing automatically</li>
-        <li><a href="/services/audit/">$499 audit</a> &mdash; the written diagnosis if the 10-minute walk doesn&rsquo;t resolve it</li>
+        <li><a href="https://ledger.muntin.digital/">Muntin Ledger</a> &mdash; your vendor invoices, read and filed searchable, with price-hike flags against your own history</li>
       </ul>
     </section>
 
@@ -703,7 +692,7 @@ main{padding-top:64px}
   <div class="article-author-card__body" style="flex:1 1 280px;min-width:0">
     <p class="article-author-card__eyebrow" style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--stone);margin:0 0 4px" id="article-author-h">About the author</p>
     <p class="article-author-card__name" style="font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);margin:0 0 6px"><a href="/about/" style="color:var(--ink)">Don Goldstein</a></p>
-    <p class="article-author-card__bio" style="font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 10px">I&rsquo;m Don. I&rsquo;m front-of-house manager at Tacombi in Bethesda and run Muntin Digital, the one-person web studio behind this library. Every article here comes from a problem I saw on the floor or in a client audit.</p>
+    <p class="article-author-card__bio" style="font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 10px">I&rsquo;m Don. I&rsquo;m front-of-house manager at Tacombi in Bethesda and the founder of Muntin Digital &mdash; the company behind this library, the Cost Index, and Muntin Ledger. Every article here comes from a problem I saw on the floor.</p>
     <p class="article-author-card__creds" style="font-size:12px;color:var(--stone);margin:0 0 12px;letter-spacing:0.01em">ServSafe Manager &middot; ServSafe Allergens &middot; RAM Alcohol Awareness &middot; Maryland LLC</p>
     <p class="article-author-card__cta" style="font-size:14px;margin:0">
       <a href="/about/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none;margin-right:14px">More about Don &rarr;</a>
@@ -711,8 +700,7 @@ main{padding-top:64px}
     </p>
   </div>
 </aside>
-<!-- article-author-card:end -->
-  </article>
+<!-- article-author-card:end -->  </article>
 
   <aside class="post-end-mark" aria-hidden="true">
     <hr/>
@@ -823,7 +811,7 @@ main{padding-top:64px}
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->150<!-- /count --> glossary terms &mdash; with a one-person web studio behind it in Silver Spring, MD.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->150<!-- /count --> glossary terms &mdash; from Muntin Digital in Silver Spring, MD.</p>
       </div>
 
       <!-- Column order mirrors the 4-item primary nav
@@ -851,12 +839,17 @@ main{padding-top:64px}
         </ul>
       </nav>
 
+      <!-- Phase 9 (services sunset, 2026-06-11): the Studio column's
+           Pricing / Compare / Process rows sold the retired services
+           business. The column is now the Company column — the product,
+           the public data, the company page, the founder. The retired services
+           and studio child pages 301 per the _redirects table. -->
       <nav class="foot-col" aria-labelledby="foot-studio">
-        <p class="foot-heading" id="foot-studio">Studio</p>
+        <p class="foot-heading" id="foot-studio">Company</p>
         <ul class="foot-links">
-          <li><a href="/studio/#pricing">Pricing</a></li>
-          <li><a href="/studio/compare/">Compare options</a></li>
-          <li><a href="/studio/#process">Process</a></li>
+          <li><a href="https://ledger.muntin.digital/">Muntin Ledger</a></li>
+          <li><a href="/cost-index/">Cost Index</a></li>
+          <li><a href="/studio/">The company</a></li>
           <li><a href="/about/">About Don</a></li>
         </ul>
       </nav>

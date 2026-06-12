@@ -70,7 +70,7 @@
       },
       "url": "https://muntin.digital/library/what-should-be-on-a-restaurant-website/",
       "datePublished": "2026-04-28",
-      "dateModified": "2026-05-28",
+      "dateModified": "2026-06-10",
       "inLanguage": "en-US",
       "wordCount": 1100,
       "author": {
@@ -252,9 +252,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=933461d49609" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=15ac955f199e" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=933461d49609"><link rel="stylesheet" href="/assets/site-article.css?v=15ac955f199e"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=b70da981fa3f" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=36af39b8b96e" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=b70da981fa3f"><link rel="stylesheet" href="/assets/site-article.css?v=36af39b8b96e"></noscript>
 
 <style>
   .post-hero { max-width: 760px; margin: 0 auto; text-align: center; padding-bottom: 24px; }
@@ -404,11 +404,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
          three-doors page). Tools is promoted from the old Library
          mega-menu to a top-level item. Studio replaces Services +
          Restaurants + About — they all live under /studio/ now,
-         either as anchored sections (#pricing, #offers, #cities,
-         #process, #about) or as full child pages (/studio/compare/,
-         /studio/silver-spring/, etc.). The old Services and
-         Restaurants pages remain reachable via /studio/ and the
-         _redirects table; /about/ is unchanged. The mega-menu is
+         as sections of the company page (Phase 9, 2026-06-11: the
+         services-era child pages and anchored offer sections are
+         retired; old paths 301 via the _redirects table). /about/ is unchanged. The mega-menu is
          retired (the hub IS the menu now); the controller script
          is gone too.
 
@@ -420,7 +418,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <a href="/library/">Library</a>
       <a href="/start/">Start</a>
       <a href="/tools/">Tools</a>
-      <a href="/studio/">Studio</a>
+      <a href="/studio/">Company</a>
       <!-- Ledger — sister product (the privacy-forward invoice ledger)
            on its own subdomain. Plain external link so it passes link
            equity to ledger.muntin.digital; Plausible's automatic
@@ -482,7 +480,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <a href="/library/">Library</a>
     <a href="/start/">Start</a>
     <a href="/tools/">Tools</a>
-    <a href="/studio/">Studio</a>
+    <a href="/studio/">Company</a>
     <a href="https://ledger.muntin.digital/">Ledger</a>
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
@@ -680,61 +678,45 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <p>Most restaurant websites have too many pages. A "Careers" page nobody updates. An "Awards" page with a list from three years ago. A "Gallery" page with forty photos and no captions. Every dead page dilutes the pages that actually convert — and confuses Google about what the site is really about.</p>
       <p>Here are the seven pages that earn their keep on nearly every independent restaurant site. Each one has a job. If a page doesn't have a job, it doesn't earn its place on the nav bar.</p>
 
-      <figure class="viz-figure article-figure" data-audio-alt="The seven pages every independent restaurant website needs, in order, each with the single job it has to do. One — homepage — answer what kind of food, where, and how to book in under five seconds. Two — menu — let someone decide what to eat before they arrive. Three — about or our story — give a first-time customer a reason to choose you over the place next door. Four — reservations or order online — convert intent into action with the fewest possible clicks. Five — private events or catering — capture high-value inquiries that have nowhere else to live on Google. Six — location and hours — remove every friction point between I want to go and I am walking in the door. Seven — contact — give people a way to reach a human without calling during dinner rush.">
-        <div class="viz-flow">
-          <ol class="viz-flow__list">
-            <li class="viz-flow__step" data-tone="teal">
-              <span class="viz-flow__num">1</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">Homepage</p>
-                <p class="viz-flow__meta">Answer what kind of food, where, and how to book &mdash; in under five seconds.</p>
-              </div>
-            </li>
-            <li class="viz-flow__step" data-tone="teal">
-              <span class="viz-flow__num">2</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">Menu</p>
-                <p class="viz-flow__meta">Let someone decide what to eat before they arrive &mdash; in real HTML text, not a PDF.</p>
-              </div>
-            </li>
-            <li class="viz-flow__step" data-tone="teal">
-              <span class="viz-flow__num">3</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">About / Our Story</p>
-                <p class="viz-flow__meta">Give a first-time customer a reason to choose you over the identical-looking restaurant next door.</p>
-              </div>
-            </li>
-            <li class="viz-flow__step" data-tone="teal">
-              <span class="viz-flow__num">4</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">Reservations / Order Online</p>
-                <p class="viz-flow__meta">Convert intent into action with the fewest possible clicks. Embed; don&rsquo;t link out.</p>
-              </div>
-            </li>
-            <li class="viz-flow__step" data-tone="teal">
-              <span class="viz-flow__num">5</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">Private Events / Catering</p>
-                <p class="viz-flow__meta">Capture high-value inquiries that have nowhere to live on a <!-- LIBRARY:autolink:start --><a href="/glossary/gbp/" data-glossary-head="Google Business Profile" data-glossary-aka="GBP, formerly Google My Business" data-glossary-blurb="Your business's free listing on Google Maps and Google Search — the panel on the right of a search that shows your name, hours, photos, reviews, and a link to your menu or booking.">Google Business Profile</a><!-- LIBRARY:autolink:end -->.</p>
-              </div>
-            </li>
-            <li class="viz-flow__step" data-tone="teal">
-              <span class="viz-flow__num">6</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">Location &amp; Hours</p>
-                <p class="viz-flow__meta">Remove every friction point between &ldquo;I want to go&rdquo; and &ldquo;I&rsquo;m walking in the door.&rdquo;</p>
-              </div>
-            </li>
-            <li class="viz-flow__step" data-tone="teal">
-              <span class="viz-flow__num">7</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">Contact</p>
-                <p class="viz-flow__meta">Give people a way to reach a human without calling during dinner rush.</p>
-              </div>
-            </li>
-          </ol>
-        </div>
-        <figcaption>Seven pages, each with one job. Read the section below for the details of what belongs on each.</figcaption>
+      <figure class="viz-figure article-figure" data-audio-alt="The diner&rsquo;s walk from search result to front door, as five stations, each carried by one of the seven pages. Station one, the five-second test: the homepage answers what kind of food, where, and how to book before the thumb moves on &mdash; fail it and the visit ends on the sidewalk. Station two, the decision: the menu page, in real HTML text, lets the diner pick what to eat before they arrive &mdash; a PDF here means pinch-and-zoom in direct sunlight. Station three, the tiebreak: the about page gives a first-time customer a reason to choose you over the identical-looking restaurant next door &mdash; specifics, not passion-for-food copy. Station four, the conversion: the reservations or order page turns intent into action in the fewest possible taps, with the widget embedded rather than linked out. Station five, the arrival: location and hours remove every friction point between I want to go and I am walking in the door. Two of the seven pages sit off the walk on purpose: private events catches the high-value inquiry that has no Google Business Profile field, and contact catches everyone who needs a human without calling during dinner rush.">
+        <ol class="viz-flow">
+          <li class="viz-flow__step">
+            <span class="viz-flow__num">1</span>
+            <div class="viz-flow__body">
+              <p class="viz-flow__title">The five-second test &mdash; <strong>Homepage</strong></p>
+              <p class="viz-flow__meta">Phone in hand on the sidewalk: what kind of food, where, how to book &mdash; answered before the thumb moves on. Fail here and the walk ends.</p>
+            </div>
+          </li>
+          <li class="viz-flow__step">
+            <span class="viz-flow__num">2</span>
+            <div class="viz-flow__body">
+              <p class="viz-flow__title">The decision &mdash; <strong>Menu</strong></p>
+              <p class="viz-flow__meta">Real HTML text, so the diner decides what to eat before they arrive. A PDF here is pinch-and-zoom in direct sunlight.</p>
+            </div>
+          </li>
+          <li class="viz-flow__step">
+            <span class="viz-flow__num">3</span>
+            <div class="viz-flow__body">
+              <p class="viz-flow__title">The tiebreak &mdash; <strong>About / Our Story</strong></p>
+              <p class="viz-flow__meta">The reason to choose you over the identical-looking restaurant next door: sourcing, team, room &mdash; specifics, not &ldquo;passion for food.&rdquo;</p>
+            </div>
+          </li>
+          <li class="viz-flow__step" data-state="warn">
+            <span class="viz-flow__num">4</span>
+            <div class="viz-flow__body">
+              <p class="viz-flow__title">The conversion &mdash; <strong>Reservations / Order</strong></p>
+              <p class="viz-flow__meta">Intent becomes action in the fewest taps. Embed the widget; every link out of your site is a chance to get distracted &mdash; this is where the walk is most often lost.</p>
+            </div>
+          </li>
+          <li class="viz-flow__step" data-state="done">
+            <span class="viz-flow__num">5</span>
+            <div class="viz-flow__body">
+              <p class="viz-flow__title">The arrival &mdash; <strong>Location &amp; Hours</strong></p>
+              <p class="viz-flow__meta">Copyable address, map, today&rsquo;s hours, parking &mdash; zero friction between &ldquo;I want to go&rdquo; and &ldquo;I&rsquo;m walking in the door.&rdquo;</p>
+            </div>
+          </li>
+        </ol>
+        <figcaption>Five of the seven pages are stations on the diner&rsquo;s walk from search to door; the other two &mdash; Private Events and Contact &mdash; sit off the walk to catch the inquiries (buyouts, catering, a human question) that have nowhere to live on a <!-- LIBRARY:autolink:start --><a href="/glossary/gbp/" data-glossary-head="Google Business Profile" data-glossary-aka="GBP, formerly Google My Business" data-glossary-blurb="Your business's free listing on Google Maps and Google Search — the panel on the right of a search that shows your name, hours, photos, reviews, and a link to your menu or booking.">Google Business Profile</a><!-- LIBRARY:autolink:end -->.</figcaption>
       </figure>
 
       <h3>1. Homepage</h3>
@@ -920,7 +902,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   <div class="article-author-card__body" style="flex:1 1 280px;min-width:0">
     <p class="article-author-card__eyebrow" style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--stone);margin:0 0 4px" id="article-author-h">About the author</p>
     <p class="article-author-card__name" style="font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);margin:0 0 6px"><a href="/about/" style="color:var(--ink)">Don Goldstein</a></p>
-    <p class="article-author-card__bio" style="font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 10px">I&rsquo;m Don. I&rsquo;m front-of-house manager at Tacombi in Bethesda and run Muntin Digital, the one-person web studio behind this library. Every article here comes from a problem I saw on the floor or in a client audit.</p>
+    <p class="article-author-card__bio" style="font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 10px">I&rsquo;m Don. I&rsquo;m front-of-house manager at Tacombi in Bethesda and the founder of Muntin Digital &mdash; the company behind this library, the Cost Index, and Muntin Ledger. Every article here comes from a problem I saw on the floor.</p>
     <p class="article-author-card__creds" style="font-size:12px;color:var(--stone);margin:0 0 12px;letter-spacing:0.01em">ServSafe Manager &middot; ServSafe Allergens &middot; RAM Alcohol Awareness &middot; Maryland LLC</p>
     <p class="article-author-card__cta" style="font-size:14px;margin:0">
       <a href="/about/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none;margin-right:14px">More about Don &rarr;</a>
@@ -1114,7 +1096,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->150<!-- /count --> glossary terms &mdash; with a one-person web studio behind it in Silver Spring, MD.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->150<!-- /count --> glossary terms &mdash; from Muntin Digital in Silver Spring, MD.</p>
       </div>
 
       <!-- Column order mirrors the 4-item primary nav
@@ -1142,12 +1124,17 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         </ul>
       </nav>
 
+      <!-- Phase 9 (services sunset, 2026-06-11): the Studio column's
+           Pricing / Compare / Process rows sold the retired services
+           business. The column is now the Company column — the product,
+           the public data, the company page, the founder. The retired services
+           and studio child pages 301 per the _redirects table. -->
       <nav class="foot-col" aria-labelledby="foot-studio">
-        <p class="foot-heading" id="foot-studio">Studio</p>
+        <p class="foot-heading" id="foot-studio">Company</p>
         <ul class="foot-links">
-          <li><a href="/studio/#pricing">Pricing</a></li>
-          <li><a href="/studio/compare/">Compare options</a></li>
-          <li><a href="/studio/#process">Process</a></li>
+          <li><a href="https://ledger.muntin.digital/">Muntin Ledger</a></li>
+          <li><a href="/cost-index/">Cost Index</a></li>
+          <li><a href="/studio/">The company</a></li>
           <li><a href="/about/">About Don</a></li>
         </ul>
       </nav>

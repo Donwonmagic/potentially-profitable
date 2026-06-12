@@ -55,7 +55,7 @@
       "description": "A seven-question decision framework for whether to rebuild your restaurant website, with three case threads from real studio clients.",
       "url": "https://muntin.digital/library/when-to-rebuild-your-restaurant-website/",
       "datePublished": "2026-04-30",
-      "dateModified": "2026-05-28",
+      "dateModified": "2026-06-10",
       "author": {
         "@id": "https://muntin.digital/#muntin-desk",
         "@type": "Organization",
@@ -235,9 +235,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=933461d49609" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=15ac955f199e" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=933461d49609"><link rel="stylesheet" href="/assets/site-article.css?v=15ac955f199e"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=b70da981fa3f" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=36af39b8b96e" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=b70da981fa3f"><link rel="stylesheet" href="/assets/site-article.css?v=36af39b8b96e"></noscript>
 <!-- article-abstract-mentions:start -->
 <script type="application/ld+json">
 {
@@ -249,10 +249,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     {
       "@type": "DefinedTerm",
       "url": "https://muntin.digital/glossary/funnel/"
-    },
-    {
-      "@type": "DefinedTerm",
-      "url": "https://muntin.digital/glossary/cdn/"
     },
     {
       "@type": "DefinedTerm",
@@ -276,7 +272,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     },
     {
       "@type": "DefinedTerm",
-      "url": "https://muntin.digital/glossary/core-web-vitals/"
+      "url": "https://muntin.digital/glossary/cdn/"
     },
     {
       "@type": "DefinedTerm",
@@ -289,6 +285,10 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     {
       "@type": "DefinedTerm",
       "url": "https://muntin.digital/glossary/responsive-design/"
+    },
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/glossary/core-web-vitals/"
     },
     {
       "@type": "DefinedTerm",
@@ -344,11 +344,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
          three-doors page). Tools is promoted from the old Library
          mega-menu to a top-level item. Studio replaces Services +
          Restaurants + About — they all live under /studio/ now,
-         either as anchored sections (#pricing, #offers, #cities,
-         #process, #about) or as full child pages (/studio/compare/,
-         /studio/silver-spring/, etc.). The old Services and
-         Restaurants pages remain reachable via /studio/ and the
-         _redirects table; /about/ is unchanged. The mega-menu is
+         as sections of the company page (Phase 9, 2026-06-11: the
+         services-era child pages and anchored offer sections are
+         retired; old paths 301 via the _redirects table). /about/ is unchanged. The mega-menu is
          retired (the hub IS the menu now); the controller script
          is gone too.
 
@@ -360,7 +358,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <a href="/library/">Library</a>
       <a href="/start/">Start</a>
       <a href="/tools/">Tools</a>
-      <a href="/studio/">Studio</a>
+      <a href="/studio/">Company</a>
       <!-- Ledger — sister product (the privacy-forward invoice ledger)
            on its own subdomain. Plain external link so it passes link
            equity to ledger.muntin.digital; Plausible's automatic
@@ -422,7 +420,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <a href="/library/">Library</a>
     <a href="/start/">Start</a>
     <a href="/tools/">Tools</a>
-    <a href="/studio/">Studio</a>
+    <a href="/studio/">Company</a>
     <a href="https://ledger.muntin.digital/">Ledger</a>
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
@@ -611,34 +609,27 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <p>This is the seven-question diagnostic I run through before recommending a rebuild — or, just as often, recommending against one and pointing at three small changes that buy another year.</p>
 
-            <figure class="article-figure" data-audio-alt="Storefront Health score · what it tells you about rebuild readiness. Don't rebuild: Fix the lowest sub-score. Sometimes a CDN + image pass earns another year. (fix leaks). Maybe rebuild: Walk through the seven questions — three or more &quot;yes&quot; = rebuild. (diagnose). Rebuild: Every quarter you wait costs more than the rebuild itself. (rebuild now). Storefront Health score · what it tells you about rebuild readiness.">
-        <div class="recovery-stack reveal" role="img" aria-label="Storefront Health score · what it tells you about rebuild readiness">
-          <div class="recovery-row recovery-1">
-            <div class="recovery-num">80+</div>
-            <div>
-              <h4 class="i18n">Don't rebuild</h4>
-              <p class="recovery-sub i18n">Fix the lowest sub-score. Sometimes a <!-- LIBRARY:autolink:start --><a href="/glossary/cdn/" data-glossary-head="CDN" data-glossary-aka="Content Delivery Network, &quot;the edge&quot;" data-glossary-blurb="A global network of servers — Cloudflare, Fastly, AWS CloudFront — that keep cached copies of your site close to every visitor in the world, so the page travels 30 miles instead…">CDN</a><!-- LIBRARY:autolink:end --> + image pass earns another year.</p>
-            </div>
-            <div class="recovery-val">fix leaks</div>
+            <figure class="viz-figure article-figure" data-audio-alt="Where three example Storefront Health scores fall against the two decision lines on the zero-to-one-hundred scale. The rebuild line sits at sixty and the fix-the-leaks line sits at eighty. A site scoring fifty-five falls left of the rebuild line, so the platform is almost certainly the ceiling and a rebuild is the verdict. A site scoring sixty-eight lands in the band between the two lines, the maybe-rebuild zone where the seven questions decide it. A site scoring eighty-four clears the fix-the-leaks line, so a targeted CDN and image pass usually buys another year without a rebuild. Read your own score against the two lines before you price a single quote.">
+        <div class="viz-bars">
+          <p class="viz-bars__title">Your Storefront Health score against the two decision lines (0&ndash;100)</p>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">Scores 55</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.55"></span><span class="viz-bars__mark" data-tone="rust" style="--x:0.60" aria-hidden="true"></span><span class="viz-bars__mark" data-tone="teal" style="--x:0.80" aria-hidden="true"></span></div>
+            <p class="viz-bars__num">rebuild</p>
           </div>
-          <div class="recovery-row recovery-2">
-            <div class="recovery-num">60–79</div>
-            <div>
-              <h4 class="i18n">Maybe rebuild</h4>
-              <p class="recovery-sub i18n">Walk through the seven questions — three or more "yes" = rebuild.</p>
-            </div>
-            <div class="recovery-val">diagnose</div>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">Scores 68</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:0.68"></span><span class="viz-bars__mark" data-tone="rust" style="--x:0.60" aria-hidden="true"></span><span class="viz-bars__mark" data-tone="teal" style="--x:0.80" aria-hidden="true"></span></div>
+            <p class="viz-bars__num">diagnose</p>
           </div>
-          <div class="recovery-row recovery-3">
-            <div class="recovery-num"><60</div>
-            <div>
-              <h4 class="i18n">Rebuild</h4>
-              <p class="recovery-sub i18n">Every quarter you wait costs more than the rebuild itself.</p>
-            </div>
-            <div class="recovery-val">rebuild now</div>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">Scores 84</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.84"></span><span class="viz-bars__mark" data-tone="rust" style="--x:0.60" aria-hidden="true"></span><span class="viz-bars__mark" data-tone="teal" style="--x:0.80" aria-hidden="true"></span></div>
+            <p class="viz-bars__num">fix leaks</p>
           </div>
+          <p class="viz-bars__note">The rust tick is the <strong>rebuild line at 60</strong>; the teal tick is the <strong>fix-the-leaks line at 80</strong>. Where your bar ends against those two marks is the whole verdict.</p>
         </div>
-        <figcaption class="i18n">Storefront Health score · what it tells you about rebuild readiness</figcaption>
+        <figcaption class="i18n">Below 60 the platform is the ceiling and you rebuild; above 80 you fix the lowest sub-score; the band between is where the seven questions earn their keep.</figcaption>
       </figure>
 
       <h2 id="question-1-how-does-it-score-on-storefront-health">Question 1: How does it score on Storefront Health?</h2>
@@ -703,36 +694,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <h2 id="three-case-threads">Three case threads</h2>
 
-      <figure class="article-figure" data-audio-alt="Three rebuild verdicts mapped to score bands and typical payback. At a Storefront Health score of seventy-five, do not rebuild — fix the leak instead with a CDN, image compression, and schema repair; the score moves to roughly eighty-eight, and the rebuild defers by two years. Below sixty, a full rebuild is the right call — the platform itself is the ceiling; the new score lands in the high eighties or nineties with a payback window of nine to fourteen months. In the sixty-five to seventy band, a partial rebuild fits — front-end and photos rebuilt, the CMS kept; cost runs about forty percent of a full rebuild and the payback window is roughly twelve months.">
-        <div class="recovery-stack reveal" role="img" aria-label="Three rebuild verdicts · score band → action → typical payback">
-          <div class="recovery-row recovery-1">
-            <div class="recovery-num">75</div>
-            <div>
-              <h4 class="i18n">Don't rebuild — fix the leak</h4>
-              <p class="recovery-sub i18n">CDN + image compression + schema repair. Score moves to ~88.</p>
-            </div>
-            <div class="recovery-val">defer 2 yrs</div>
-          </div>
-          <div class="recovery-row recovery-2">
-            <div class="recovery-num">&lt;60</div>
-            <div>
-              <h4 class="i18n">Full rebuild</h4>
-              <p class="recovery-sub i18n">Platform itself is the ceiling. Score lands high-80s or 90s.</p>
-            </div>
-            <div class="recovery-val">9–14 mo payback</div>
-          </div>
-          <div class="recovery-row recovery-3">
-            <div class="recovery-num">65–70</div>
-            <div>
-              <h4 class="i18n">Partial rebuild</h4>
-              <p class="recovery-sub i18n">Front-end + photos, keep the CMS. ~40% of full-rebuild cost.</p>
-            </div>
-            <div class="recovery-val">~12 mo payback</div>
-          </div>
-        </div>
-        <figcaption class="i18n">Three rebuild verdicts in one line · matched to the case threads below</figcaption>
-      </figure>
-
       <p><strong>Case 1 — Bistro on a 75 score, doesn't rebuild:</strong> A six-year-old French bistro scoring 75 on Storefront Health. Mobile speed dragging the score down. We added a CDN, recompressed every image, fixed the menu schema. Score moved to 88; they deferred the rebuild for two more years and saved roughly $11K.</p>
 
       <p><strong>Case 2 — Site below 60, rebuilds:</strong> Old front-end, slow on mobile, menu schema malformed, booking funnel hidden. The platform itself is the ceiling. The rebuild here is full custom: real HTML menu, dish-level <!-- LIBRARY:autolink:start --><a href="/glossary/structured-data/" data-glossary-head="Structured data" data-glossary-aka="the machine-readable copy of your site that Google reads" data-glossary-blurb="A small JSON block embedded in your website's &lt;head&gt; that mirrors the human-facing content (hours, address, menu items, reviews, prices) in a format search engines can index…">structured data</a><!-- LIBRARY:autolink:end -->, the booking funnel cleaned up. Score lands in the high 80s or 90s. Search-driven reservations roughly triple within 90 days because the missing schema starts firing in local-pack queries the site never appeared for before. Payback windows on rebuilds in this range are typically 9-14 months — but the leverage compounds as Google's index updates.</p>
@@ -769,61 +730,74 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <p>Most operators don't rebuild because they can't picture what the rebuilt thing looks like. The framework is a forcing function. Run the questions. The answer almost always already exists.</p>
       </blockquote>
 
-      <figure class="viz-figure article-figure" data-audio-alt="The seven-question rebuild diagnostic as a checklist. One: how does the site score on Storefront Health — sub-sixty is a rebuild signal, sixty to seventy-nine is diagnose, eighty plus is fix the leaks. Two: can the CMS update without breaking — if last time it broke, that is a rebuild signal. Three: does the menu live in HTML — PDFs, images, and Wix widgets are invisible to dish-level search. Four: how does the site score on Core Web Vitals — LCP above four seconds on mobile, or CLS above zero point two five, both push toward rebuild. Five: can you ship a small change in under an hour — a holiday-hours update is the test. Six: does the brand match the room — homepage on the phone next to the dining room. Seven: what happens to bookings if you do nothing for eighteen months — flat-or-declining with a twenty-four-month-old site is rarely actually neutral. Three or more yes answers means the rebuild is past due.">
-        <div class="viz-flow">
-          <ol class="viz-flow__list">
-            <li class="viz-flow__step" data-tone="teal">
-              <span class="viz-flow__num">1</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">Storefront Health score</p>
-                <p class="viz-flow__detail">Sub-60 = rebuild now. 60&ndash;79 = walk the rest of the questions. 80+ = fix the lowest sub-score and defer.</p>
+      <figure class="viz-figure article-figure" data-audio-alt="The seven-question rebuild diagnostic, each question carrying the verdict its answer produces. Question one, the Storefront Health score: below sixty is a rebuild verdict on its own, sixty to seventy-nine sends you to keep walking the questions, eighty and up is a fix-the-leaks verdict. Question two, whether the CMS updates without breaking: if it broke last time, that is a rebuild signal. Question three, whether the menu lives in HTML: a PDF or widget menu is invisible to dish-level search and counts as a signal. Question four, Core Web Vitals: LCP above four seconds on mobile or CLS above zero point two five is a signal. Question five, whether a small change ships in under an hour: if it cannot, the operational burden is already a leak. Question six, whether the brand matches the room: a templated site behind a considered dining room is a brand-design signal. Question seven, the eighteen-month do-nothing projection: flat or declining bookings on a stale site is rarely neutral. Tally the signals — one or two means fix the leaks, three or more means the rebuild is past due.">
+        <ol class="viz-tree">
+          <li class="viz-tree__node">
+            <details open>
+              <summary><span class="viz-tree__num">1</span><span class="viz-tree__title">How does it score on Storefront Health?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+              <div class="viz-tree__body">
+                <p><span class="viz-tree__verdict" data-tone="fail">Sub-60 &middot; rebuild</span> The composite is below the leak-fixing ceiling &mdash; the platform itself is usually the cap.</p>
+                <p><span class="viz-tree__verdict" data-tone="warn">60&ndash;79 &middot; keep walking</span> One band away either direction. The next six questions decide it.</p>
+                <p><span class="viz-tree__verdict" data-tone="pass">80+ &middot; fix the leak</span> Fix the lowest sub-score; a <!-- LIBRARY:autolink:start --><a href="/glossary/cdn/" data-glossary-head="CDN" data-glossary-aka="Content Delivery Network">CDN</a><!-- LIBRARY:autolink:end --> and image pass usually buys another year.</p>
               </div>
-            </li>
-            <li class="viz-flow__step" data-tone="teal">
-              <span class="viz-flow__num">2</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">CMS updates without breaking</p>
-                <p class="viz-flow__detail">If the answer is &ldquo;we don&rsquo;t, because it broke last time,&rdquo; that&rsquo;s a rebuild signal &mdash; technical debt compounds quietly.</p>
+            </details>
+          </li>
+          <li class="viz-tree__node">
+            <details>
+              <summary><span class="viz-tree__num">2</span><span class="viz-tree__title">Can your CMS update without breaking the site?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+              <div class="viz-tree__body">
+                <p><span class="viz-tree__verdict" data-tone="fail">&ldquo;It broke last time&rdquo; &middot; signal</span> A platform you&rsquo;re afraid to patch is accruing <strong>technical debt</strong> quietly &mdash; that compounds into a rebuild.</p>
+                <p><span class="viz-tree__verdict" data-tone="pass">Updates cleanly &middot; no signal</span> The platform isn&rsquo;t the constraint. Look elsewhere.</p>
               </div>
-            </li>
-            <li class="viz-flow__step" data-tone="teal">
-              <span class="viz-flow__num">3</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">Menu lives in HTML</p>
-                <p class="viz-flow__detail">PDF, image, or Wix widget = invisible to dish-level Google queries and AI search. Real HTML menu alone sometimes defers a rebuild.</p>
+            </details>
+          </li>
+          <li class="viz-tree__node">
+            <details>
+              <summary><span class="viz-tree__num">3</span><span class="viz-tree__title">Does the menu live in HTML?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+              <div class="viz-tree__body">
+                <p><span class="viz-tree__verdict" data-tone="fail">PDF, image, or widget &middot; signal</span> Invisible to dish-level Google queries and AI search. But a real HTML menu alone sometimes <em>defers</em> the rebuild rather than forcing one.</p>
+                <p><span class="viz-tree__verdict" data-tone="pass">Real HTML menu &middot; no signal</span> Indexable at the dish level already.</p>
               </div>
-            </li>
-            <li class="viz-flow__step" data-tone="teal">
-              <span class="viz-flow__num">4</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title"><!-- LIBRARY:autolink:start --><a href="/glossary/core-web-vitals/" data-glossary-head="Core Web Vitals" data-glossary-aka="CWV" data-glossary-blurb="Google's three performance scores for a real page load on a phone — one for loading speed (LCP), one for layout stability (CLS), and one for responsiveness (INP).">Core Web Vitals</a><!-- LIBRARY:autolink:end --> pass</p>
-                <p class="viz-flow__detail">LCP above 4s on mobile, or CLS above 0.25, means you&rsquo;re both ranked-down and bouncing visitors before the menu loads.</p>
+            </details>
+          </li>
+          <li class="viz-tree__node">
+            <details>
+              <summary><span class="viz-tree__num">4</span><span class="viz-tree__title">How does it score on Core Web Vitals?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+              <div class="viz-tree__body">
+                <p><span class="viz-tree__verdict" data-tone="fail">LCP &gt; 4s or CLS &gt; 0.25 &middot; signal</span> You&rsquo;re ranked down <em>and</em> bouncing visitors before the menu paints. If only the menu page is slow, fix the page; if every page is slow, the platform is.</p>
+                <p><span class="viz-tree__verdict" data-tone="pass">Within thresholds &middot; no signal</span> Speed isn&rsquo;t the lever here.</p>
               </div>
-            </li>
-            <li class="viz-flow__step" data-tone="teal">
-              <span class="viz-flow__num">5</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">Small change ships in under an hour</p>
-                <p class="viz-flow__detail">Try updating <!-- LIBRARY:autolink:start --><a href="/glossary/special-hours/" data-glossary-head="Special hours" data-glossary-aka="the override for any day that doesn't follow your usual schedule" data-glossary-blurb="A separate entity in Google's data model from regular hours: per-date overrides for holidays, private events, weather closures, and modified-hours days (early-close on Christmas…">holiday hours</a><!-- LIBRARY:autolink:end --> right now. If you can&rsquo;t &mdash; no access, complex CMS, requires a developer &mdash; that operational burden is already a leak.</p>
+            </details>
+          </li>
+          <li class="viz-tree__node">
+            <details>
+              <summary><span class="viz-tree__num">5</span><span class="viz-tree__title">Can you ship a small change in under an hour?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+              <div class="viz-tree__body">
+                <p><span class="viz-tree__verdict" data-tone="fail">Needs a developer &middot; signal</span> Try editing <!-- LIBRARY:autolink:start --><a href="/glossary/special-hours/" data-glossary-head="Special hours" data-glossary-aka="per-date overrides">holiday hours</a><!-- LIBRARY:autolink:end --> right now. If you can&rsquo;t, every deferred edit is a small leak.</p>
+                <p><span class="viz-tree__verdict" data-tone="pass">You can self-serve &middot; no signal</span> Operational burden is low. Not a rebuild driver.</p>
               </div>
-            </li>
-            <li class="viz-flow__step" data-tone="rust">
-              <span class="viz-flow__num">6</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">Brand matches the room</p>
-                <p class="viz-flow__detail">Open the homepage on your phone, then walk into the dining room. If the room is considered and the site is templated, that&rsquo;s a separate brand-design signal.</p>
+            </details>
+          </li>
+          <li class="viz-tree__node">
+            <details>
+              <summary><span class="viz-tree__num">6</span><span class="viz-tree__title">Does the brand match the room?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+              <div class="viz-tree__body">
+                <p><span class="viz-tree__verdict" data-tone="warn">Site &ne; room &middot; brand signal</span> A considered dining room behind a templated site is a brand-design signal &mdash; separate from the technical ones, and it can justify a partial rebuild on its own.</p>
+                <p><span class="viz-tree__verdict" data-tone="pass">They feel like one place &middot; no signal</span> The brand is doing its job.</p>
               </div>
-            </li>
-            <li class="viz-flow__step" data-tone="rust">
-              <span class="viz-flow__num">7</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">18-month do-nothing projection</p>
-                <p class="viz-flow__detail">Flat-or-declining bookings on a 24-month-old site isn&rsquo;t neutral &mdash; the gap to local competitors widens even when your numbers look stable.</p>
+            </details>
+          </li>
+          <li class="viz-tree__node">
+            <details>
+              <summary><span class="viz-tree__num">7</span><span class="viz-tree__title">What happens to bookings if you do nothing for 18 months?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+              <div class="viz-tree__body">
+                <p><span class="viz-tree__verdict" data-tone="fail">Flat or declining &middot; signal</span> On a 24-month-old site, &ldquo;flat&rdquo; isn&rsquo;t neutral &mdash; the gap to local competitors widens even while your numbers hold.</p>
+                <p><span class="viz-tree__verdict" data-tone="pass">Clearly growing &middot; no signal</span> The site isn&rsquo;t holding you back yet.</p>
               </div>
-            </li>
-          </ol>
-        </div>
-        <figcaption>Seven questions, two phases. Steps 1&ndash;5 are technical signals; 6&ndash;7 are the brand and trend signals. Three or more &ldquo;yes&rdquo; answers means the rebuild is past due.</figcaption>
+            </details>
+          </li>
+        </ol>
+        <figcaption>Open each question and read the verdict its answer earns &mdash; one or two signals means fix the leaks, three or more means the rebuild is past due.</figcaption>
       </figure>
 
       <h2 id="how-to-use-this-framework">How to use this framework</h2>
@@ -1051,7 +1025,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   <div class="article-author-card__body" style="flex:1 1 280px;min-width:0">
     <p class="article-author-card__eyebrow" style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--stone);margin:0 0 4px" id="article-author-h">About the author</p>
     <p class="article-author-card__name" style="font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);margin:0 0 6px"><a href="/about/" style="color:var(--ink)">Don Goldstein</a></p>
-    <p class="article-author-card__bio" style="font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 10px">I&rsquo;m Don. I&rsquo;m front-of-house manager at Tacombi in Bethesda and run Muntin Digital, the one-person web studio behind this library. Every article here comes from a problem I saw on the floor or in a client audit.</p>
+    <p class="article-author-card__bio" style="font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 10px">I&rsquo;m Don. I&rsquo;m front-of-house manager at Tacombi in Bethesda and the founder of Muntin Digital &mdash; the company behind this library, the Cost Index, and Muntin Ledger. Every article here comes from a problem I saw on the floor.</p>
     <p class="article-author-card__creds" style="font-size:12px;color:var(--stone);margin:0 0 12px;letter-spacing:0.01em">ServSafe Manager &middot; ServSafe Allergens &middot; RAM Alcohol Awareness &middot; Maryland LLC</p>
     <p class="article-author-card__cta" style="font-size:14px;margin:0">
       <a href="/about/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none;margin-right:14px">More about Don &rarr;</a>
@@ -1086,7 +1060,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->150<!-- /count --> glossary terms &mdash; with a one-person web studio behind it in Silver Spring, MD.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->150<!-- /count --> glossary terms &mdash; from Muntin Digital in Silver Spring, MD.</p>
       </div>
 
       <!-- Column order mirrors the 4-item primary nav
@@ -1114,12 +1088,17 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         </ul>
       </nav>
 
+      <!-- Phase 9 (services sunset, 2026-06-11): the Studio column's
+           Pricing / Compare / Process rows sold the retired services
+           business. The column is now the Company column — the product,
+           the public data, the company page, the founder. The retired services
+           and studio child pages 301 per the _redirects table. -->
       <nav class="foot-col" aria-labelledby="foot-studio">
-        <p class="foot-heading" id="foot-studio">Studio</p>
+        <p class="foot-heading" id="foot-studio">Company</p>
         <ul class="foot-links">
-          <li><a href="/studio/#pricing">Pricing</a></li>
-          <li><a href="/studio/compare/">Compare options</a></li>
-          <li><a href="/studio/#process">Process</a></li>
+          <li><a href="https://ledger.muntin.digital/">Muntin Ledger</a></li>
+          <li><a href="/cost-index/">Cost Index</a></li>
+          <li><a href="/studio/">The company</a></li>
           <li><a href="/about/">About Don</a></li>
         </ul>
       </nav>

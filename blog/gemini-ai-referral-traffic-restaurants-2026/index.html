@@ -46,7 +46,7 @@
       "url": "https://muntin.digital/blog/gemini-ai-referral-traffic-restaurants-2026/",
       "inLanguage": "en-US",
       "datePublished": "2026-05-23T11:00:00-04:00",
-      "dateModified": "2026-05-23",
+      "dateModified": "2026-06-10",
       "author": {
         "@id": "https://muntin.digital/#don-goldstein",
         "@type": "Person",
@@ -228,11 +228,9 @@ header.nav{min-height:64px}
          three-doors page). Tools is promoted from the old Library
          mega-menu to a top-level item. Studio replaces Services +
          Restaurants + About — they all live under /studio/ now,
-         either as anchored sections (#pricing, #offers, #cities,
-         #process, #about) or as full child pages (/studio/compare/,
-         /studio/silver-spring/, etc.). The old Services and
-         Restaurants pages remain reachable via /studio/ and the
-         _redirects table; /about/ is unchanged. The mega-menu is
+         as sections of the company page (Phase 9, 2026-06-11: the
+         services-era child pages and anchored offer sections are
+         retired; old paths 301 via the _redirects table). /about/ is unchanged. The mega-menu is
          retired (the hub IS the menu now); the controller script
          is gone too.
 
@@ -244,7 +242,7 @@ header.nav{min-height:64px}
       <a href="/library/">Library</a>
       <a href="/start/">Start</a>
       <a href="/tools/">Tools</a>
-      <a href="/studio/">Studio</a>
+      <a href="/studio/">Company</a>
       <!-- Ledger — sister product (the privacy-forward invoice ledger)
            on its own subdomain. Plain external link so it passes link
            equity to ledger.muntin.digital; Plausible's automatic
@@ -306,7 +304,7 @@ header.nav{min-height:64px}
     <a href="/library/">Library</a>
     <a href="/start/">Start</a>
     <a href="/tools/">Tools</a>
-    <a href="/studio/">Studio</a>
+    <a href="/studio/">Company</a>
     <a href="https://ledger.muntin.digital/">Ledger</a>
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
@@ -470,17 +468,17 @@ header.nav{min-height:64px}
 
 <p>When an AI assistant sends a diner to your site, where did that visit come from? For most of the last two years the answer was simple: ChatGPT. It still leads &mdash; but its share of AI referral traffic is falling, from 89.2% to 81.4%, while one rival climbs fast. Gemini went from 4.3% of AI referrals to 11.6% in a single quarter, and 13.2% by April 2026 &mdash; the clear number two, and bigger than every other assistant combined.</p>
 
-      <figure class="viz-figure article-figure" data-audio-alt="Share of AI referral traffic in April twenty twenty-six. ChatGPT leads with about eighty-one percent, down from over eighty-nine percent. Gemini is second with about thirteen percent, up from four point three percent at the start of the quarter. Every other assistant combined is roughly five percent. The story is ChatGPT's slow decline and Gemini's fast climb.">
+      <figure class="viz-figure article-figure" data-audio-alt="Share of AI referral traffic, where each bar shows the April twenty twenty-six level and a tick marks where that source started the quarter, so you read the direction of travel. ChatGPT is at about eighty-one percent in April; the tick sits further right at over eighty-nine percent, so the bar has pulled back from its start — ChatGPT is sliding. Gemini is at about thirteen percent in April; its start-of-quarter tick sits far to the left near four percent, so the bar has surged past where it began — Gemini is climbing fast. Every other assistant combined is roughly five percent and barely moved. The story is not the snapshot; it is the two arrows pointing in opposite directions.">
         <div class="viz-bars">
-          <p class="viz-bars__title">Share of AI referral traffic (April 2026)</p>
+          <p class="viz-bars__title">AI referral share: April 2026 bar, with a tick where the quarter started (the gap is the trend)</p>
           <div class="viz-bars__row">
             <p class="viz-bars__label">ChatGPT</p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:0.81"></span></div>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:0.81"></span><span class="viz-bars__mark" data-tone="rust" style="--x:0.89" aria-hidden="true"></span></div>
             <p class="viz-bars__num">81.4%</p>
           </div>
           <div class="viz-bars__row">
             <p class="viz-bars__label">Gemini</p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.13"></span></div>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.13"></span><span class="viz-bars__mark" data-tone="rust" style="--x:0.043" aria-hidden="true"></span></div>
             <p class="viz-bars__num">13.2%</p>
           </div>
           <div class="viz-bars__row">
@@ -488,8 +486,9 @@ header.nav{min-height:64px}
             <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:0.05"></span></div>
             <p class="viz-bars__num">~5%</p>
           </div>
+          <p class="viz-bars__note">The rust tick is each source&rsquo;s <strong>start-of-quarter</strong> share. ChatGPT&rsquo;s bar fell back from its tick (89.2% &rarr; 81.4%); Gemini&rsquo;s bar surged past its tick (4.3% &rarr; 13.2%). Same dataset, opposite directions.</p>
         </div>
-        <figcaption>ChatGPT still leads but its share is falling (89.2% &rarr; 81.4%); Gemini rose from 4.3% to 11.6% in Q1 and 13.2% by April. Per BrightEdge, 2026.</figcaption>
+        <figcaption>Read the gap between bar and tick, not the bar alone: ChatGPT is sliding from 89.2% toward 81.4%, Gemini climbing from 4.3% past 13.2% in a quarter. Per BrightEdge, 2026.</figcaption>
       </figure>
       <details class="cite">
         <summary>Source: BrightEdge, May 2026</summary>
@@ -585,7 +584,22 @@ header.nav{min-height:64px}
               </ul>
             </aside>
             <!-- article-takeaways:end -->
-    </article>
+    <!-- article-author-card:start -->
+<aside class="article-author-card" aria-labelledby="article-author-h" style="margin:48px 0 0;padding:24px;border:1px solid var(--line);border-radius:12px;background:var(--cream-2);display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap">
+  <div class="article-author-card__avatar" aria-hidden="true" style="flex:0 0 auto;width:72px;height:72px;border-radius:50%;background:var(--teal);color:var(--cream);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:34px;font-weight:500;letter-spacing:-0.02em">D</div>
+  <div class="article-author-card__body" style="flex:1 1 280px;min-width:0">
+    <p class="article-author-card__eyebrow" style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--stone);margin:0 0 4px" id="article-author-h">About the author</p>
+    <p class="article-author-card__name" style="font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);margin:0 0 6px"><a href="/about/" style="color:var(--ink)">Don Goldstein</a></p>
+    <p class="article-author-card__bio" style="font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 10px">I&rsquo;m Don. I&rsquo;m front-of-house manager at Tacombi in Bethesda and the founder of Muntin Digital &mdash; the company behind this library, the Cost Index, and Muntin Ledger. Every article here comes from a problem I saw on the floor.</p>
+    <p class="article-author-card__creds" style="font-size:12px;color:var(--stone);margin:0 0 12px;letter-spacing:0.01em">ServSafe Manager &middot; ServSafe Allergens &middot; RAM Alcohol Awareness &middot; Maryland LLC</p>
+    <p class="article-author-card__cta" style="font-size:14px;margin:0">
+      <a href="/about/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none;margin-right:14px">More about Don &rarr;</a>
+      <a href="/window/" class="js-window" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">Email Don &rarr;</a>
+    </p>
+  </div>
+</aside>
+<!-- article-author-card:end -->
+  </article>
 
   <aside class="post-end-mark" aria-hidden="true">
     <hr/>
@@ -598,23 +612,25 @@ header.nav{min-height:64px}
   </aside>
 
   <!-- post-end-cta:start -->
-  <aside class="post-end-cta" aria-label="Workshop next step">
-    <p class="post-end-cta-headline">Want your Google profile read the way Gemini reads it?</p>
-    <p class="post-end-cta-body">The audit scores the profile and the on-site signals that feed Google's own AI — and names what's thin.</p>
-    <a class="btn btn-primary" href="/services/audit/?from=blog%2Fgemini-ai-referral-traffic-restaurants-2026">Run the audit<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></a>
-  </aside>
-  <!-- post-end-cta:end -->
-
-  <!-- smart-next:start -->
-<aside class="smart-next" aria-labelledby="smart-next-h">
-  <p class="smart-next__eyebrow" id="smart-next-h">What to do next</p>
-  <ol class="smart-next__list">
-        <li class="smart-next__item smart-next__read"><span class="smart-next__verb">Read:</span> <a href="/glossary/gbp/">the related glossary term →</a></li>
-        <li class="smart-next__item smart-next__try"><span class="smart-next__verb">Try:</span> <a href="/tools/audits/restaurant/?from=blog/gemini-ai-referral-traffic-restaurants-2026&intent=watch">the tool that pairs with this article →</a></li>
-        <li class="smart-next__item smart-next__note"><span class="smart-next__verb">Or send Don a note:</span> <a href="/window/?topic=gemini-ai-referral-traffic-restaurants-2026">The Window →</a></li>
+    <aside class="post-end-cta" aria-label="Workshop next step">
+      <p class="post-end-cta-headline">Want to see what Gemini can actually read on your site?</p>
+      <p class="post-end-cta-body">The SEO grader reads your pages the way an answer engine does — the plain-text answers it can lift, the restaurant schema underneath, the gaps in between. Run it on your homepage and a menu page; save both reads to the Workshop and compare after the rewrite.</p>
+      <a class="btn btn-primary" href="/tools/seo-grader/?from=blog%2Fgemini-ai-referral-traffic-restaurants-2026&amp;intent=watch">Run the SEO grader<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></a>
+    </aside>
+    <!-- post-end-cta:end -->
+<!-- knit-rail:start -->
+<aside class="knit-rail" data-knit="article" aria-labelledby="knit-rail-h-gemini-ai-referral-traffic-restaurants-2026">
+  <h3 class="knit-rail__h" id="knit-rail-h-gemini-ai-referral-traffic-restaurants-2026">Keep going.</h3>
+  <ol class="knit-rail__cols">
+    <li class="knit-rail__col"><span class="knit-rail__verb">Apply</span><a href="/tools/seo-grader/">the SEO grader</a></li>
+    <li class="knit-rail__col"><span class="knit-rail__verb">Read</span><a href="/blog/google-ai-mode-restaurant-local-results-2026/">Google rebuilt AI Mode at I/O 2026 — what it changes for your restaurant</a></li>
+    <li class="knit-rail__col"><span class="knit-rail__verb">Define</span><a href="/glossary/gbp/">Google Business Profile</a></li>
+    <li class="knit-rail__col"><span class="knit-rail__verb">Talk</span><a href="/window/?topic=gemini-ai-referral-traffic-restaurants-2026" class="js-window">Email Don</a></li>
   </ol>
 </aside>
-<!-- smart-next:end -->
+<!-- knit-rail:end -->
+
+  <!-- smart-next:start --><!-- smart-next:end -->
 
 </main>
 
@@ -640,7 +656,7 @@ header.nav{min-height:64px}
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->150<!-- /count --> glossary terms &mdash; with a one-person web studio behind it in Silver Spring, MD.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->150<!-- /count --> glossary terms &mdash; from Muntin Digital in Silver Spring, MD.</p>
       </div>
 
       <!-- Column order mirrors the 4-item primary nav
@@ -668,12 +684,17 @@ header.nav{min-height:64px}
         </ul>
       </nav>
 
+      <!-- Phase 9 (services sunset, 2026-06-11): the Studio column's
+           Pricing / Compare / Process rows sold the retired services
+           business. The column is now the Company column — the product,
+           the public data, the company page, the founder. The retired services
+           and studio child pages 301 per the _redirects table. -->
       <nav class="foot-col" aria-labelledby="foot-studio">
-        <p class="foot-heading" id="foot-studio">Studio</p>
+        <p class="foot-heading" id="foot-studio">Company</p>
         <ul class="foot-links">
-          <li><a href="/studio/#pricing">Pricing</a></li>
-          <li><a href="/studio/compare/">Compare options</a></li>
-          <li><a href="/studio/#process">Process</a></li>
+          <li><a href="https://ledger.muntin.digital/">Muntin Ledger</a></li>
+          <li><a href="/cost-index/">Cost Index</a></li>
+          <li><a href="/studio/">The company</a></li>
           <li><a href="/about/">About Don</a></li>
         </ul>
       </nav>

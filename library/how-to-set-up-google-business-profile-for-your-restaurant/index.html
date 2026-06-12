@@ -70,7 +70,7 @@
       },
       "url": "https://muntin.digital/library/how-to-set-up-google-business-profile-for-your-restaurant/",
       "datePublished": "2026-04-24",
-      "dateModified": "2026-05-28",
+      "dateModified": "2026-06-10",
       "inLanguage": "en-US",
       "wordCount": 1400,
       "author": {
@@ -252,9 +252,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=933461d49609" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=15ac955f199e" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=933461d49609"><link rel="stylesheet" href="/assets/site-article.css?v=15ac955f199e"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=b70da981fa3f" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=36af39b8b96e" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=b70da981fa3f"><link rel="stylesheet" href="/assets/site-article.css?v=36af39b8b96e"></noscript>
 
 <style>
   .post-hero { max-width: 760px; margin: 0 auto; text-align: center; padding-bottom: 24px; }
@@ -474,11 +474,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
          three-doors page). Tools is promoted from the old Library
          mega-menu to a top-level item. Studio replaces Services +
          Restaurants + About — they all live under /studio/ now,
-         either as anchored sections (#pricing, #offers, #cities,
-         #process, #about) or as full child pages (/studio/compare/,
-         /studio/silver-spring/, etc.). The old Services and
-         Restaurants pages remain reachable via /studio/ and the
-         _redirects table; /about/ is unchanged. The mega-menu is
+         as sections of the company page (Phase 9, 2026-06-11: the
+         services-era child pages and anchored offer sections are
+         retired; old paths 301 via the _redirects table). /about/ is unchanged. The mega-menu is
          retired (the hub IS the menu now); the controller script
          is gone too.
 
@@ -490,7 +488,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <a href="/library/">Library</a>
       <a href="/start/">Start</a>
       <a href="/tools/">Tools</a>
-      <a href="/studio/">Studio</a>
+      <a href="/studio/">Company</a>
       <!-- Ledger — sister product (the privacy-forward invoice ledger)
            on its own subdomain. Plain external link so it passes link
            equity to ledger.muntin.digital; Plausible's automatic
@@ -552,7 +550,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <a href="/library/">Library</a>
     <a href="/start/">Start</a>
     <a href="/tools/">Tools</a>
-    <a href="/studio/">Studio</a>
+    <a href="/studio/">Company</a>
     <a href="https://ledger.muntin.digital/">Ledger</a>
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
@@ -795,7 +793,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <p>Setting up a profile takes about thirty minutes. Optimizing it properly takes another hour. Most owners do the first part and skip the second — which is exactly why the left card is so much more common than the right one. Here's how to do both.</p>
 
-      <figure class="viz-figure article-figure" data-audio-alt="Here's the seven-step setup at a glance. Step one: claim or create your listing on business dot google dot com, about thirty minutes. Step two: verify ownership, usually by video, with a few days of waiting. Step three: choose the right primary category, about ten minutes, and one of the highest-leverage decisions in the whole process. Step four: complete every field, about thirty minutes — this is where most operators stop and shouldn't. Step five: add real photos, about an hour for a proper first batch. Step six: set up Google Posts, fifteen minutes weekly thereafter. Step seven: respond to every review, ten minutes weekly. The first four steps are one-time work; the last three are the habits that compound over a year.">
+      <figure class="viz-figure article-figure" data-audio-alt="The seven-step setup drawn as a time budget, splitting one-time work from the recurring habits. Step one: claim or create your listing on business dot google dot com, about thirty minutes, one-time. Step two: verify ownership, usually by video — fifteen minutes of work plus two to five days of waiting, the only step with a wait you cannot compress. Step three: choose the right primary category, about ten minutes, and one of the highest-leverage decisions in the whole process. Step four: complete every field, about thirty minutes — this is where most operators stop and shouldn't. Step five: add real photos, about an hour for a proper first batch, then a quarterly refresh. Step six: set up Google Posts, fifteen minutes weekly thereafter. Step seven: respond to every review, ten minutes weekly. Add it up: the one-time setup in steps one through five costs roughly two and a half hours, and keeping the profile alive costs about twenty-five minutes a week in steps six and seven. The weekly half is where profiles die — owners budget for the setup and not for the habit.">
         <ol class="viz-flow reveal" aria-label="Seven steps to a complete Google Business Profile">
           <li class="viz-flow__step" data-state="ok">
             <span class="viz-flow__num">1</span>
@@ -832,22 +830,22 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
               <p class="viz-flow__meta"><strong>~1 hour</strong> for a proper first batch &middot; refresh quarterly</p>
             </div>
           </li>
-          <li class="viz-flow__step" data-state="ok">
+          <li class="viz-flow__step" data-state="done">
             <span class="viz-flow__num">6</span>
             <div class="viz-flow__body">
               <h4 class="viz-flow__title">Set up Google Posts</h4>
-              <p class="viz-flow__meta"><strong>~15 min/week</strong> &middot; recurring habit</p>
+              <p class="viz-flow__meta"><strong>~15 min/week</strong> &middot; recurring &mdash; forever, not a setup task</p>
             </div>
           </li>
-          <li class="viz-flow__step" data-state="ok">
+          <li class="viz-flow__step" data-state="done">
             <span class="viz-flow__num">7</span>
             <div class="viz-flow__body">
               <h4 class="viz-flow__title">Respond to every review</h4>
-              <p class="viz-flow__meta"><strong>~10 min/week</strong> &middot; the habit that compounds</p>
+              <p class="viz-flow__meta"><strong>~10 min/week</strong> &middot; recurring &mdash; the habit that compounds</p>
             </div>
           </li>
         </ol>
-        <figcaption>The first four steps are one-time setup. The last three are the habits that compound a profile from &ldquo;claimed&rdquo; to &ldquo;complete.&rdquo;</figcaption>
+        <figcaption>The real budget: roughly two and a half hours of one-time work (steps 1&ndash;5), then ~25 minutes a week forever (steps 6&ndash;7) &mdash; profiles die in the weekly half, not the setup half.</figcaption>
       </figure>
 
       <h2 id="step-1-claim-or-create-your-listing">Step 1 — Claim or create your listing</h2>
@@ -952,7 +950,25 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <p class="pull-quote">The restaurant on the next block isn't beating you because their food is better. They're beating you because they filled in the attributes you left blank.</p>
 
       <h2 id="step-5-add-real-photos">Step 5 — Add real photos</h2>
-      <p>Profiles with photos get meaningfully more clicks and direction-requests than profiles without. Google has said this publicly for years. What they don't say out loud is which photos actually move the needle. After shooting a few hundred of them for restaurants, I can tell you the ranking is roughly: the exterior with your sign clearly visible, the dining room at dinner service with people in it, one hero plate of your signature dish, a clear shot of your menu board, and then everything else. Stock photography is worse than nothing — Google seems to detect and down-rank obvious stock.</p>
+      <p>Profiles with photos get meaningfully more clicks and direction-requests than profiles without. Google has said this publicly for years. What they don't say out loud is which photos actually earn the clicks. After shooting a few hundred of them for restaurants, I can tell you the ranking is roughly: the exterior with your sign clearly visible, the dining room at dinner service with people in it, one hero plate of your signature dish, a clear shot of your menu board, and then everything else. Stock photography is worse than nothing — Google seems to detect and down-rank obvious stock.</p>
+
+      <figure class="viz-figure article-figure" data-audio-alt="A bar chart of the two customer behaviors Google has long reported that photos move, comparing profiles with photos against profiles without. Requests for driving directions run forty-two percent higher for profiles with photos, and click-throughs to the website run thirty-five percent higher. Both bars measure the same intervention — adding real photos — against the same baseline of a photo-less profile, which is why photos belong in the setup checklist and not in the someday pile. The exact percentages have appeared in Google's own documentation for years and may have shifted, but the direction is consistent: photos change what searchers do next, they are not decoration.">
+        <div class="viz-bars">
+          <p class="viz-bars__title">What photos move: lift vs. a photo-less profile (Google&rsquo;s long-cited figures)</p>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">Requests for directions</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" style="--w:0.42"></span></div>
+            <p class="viz-bars__num">+42%</p>
+          </div>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">Clicks through to the website</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" style="--w:0.35"></span></div>
+            <p class="viz-bars__num">+35%</p>
+          </div>
+          <p class="viz-bars__note">Both lifts measure the same intervention &mdash; real photos &mdash; against the same baseline. The exact figures have aged in Google&rsquo;s docs; the direction hasn&rsquo;t.</p>
+        </div>
+        <figcaption>Photos are a behavior lever, not decoration: they move the two actions that put a guest at your door &mdash; directions and the website click.</figcaption>
+      </figure>
 
       <details class="cite">
         <summary>Source: Google on photos and engagement</summary>
@@ -1040,7 +1056,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   <div class="article-author-card__body" style="flex:1 1 280px;min-width:0">
     <p class="article-author-card__eyebrow" style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--stone);margin:0 0 4px" id="article-author-h">About the author</p>
     <p class="article-author-card__name" style="font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);margin:0 0 6px"><a href="/about/" style="color:var(--ink)">Don Goldstein</a></p>
-    <p class="article-author-card__bio" style="font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 10px">I&rsquo;m Don. I&rsquo;m front-of-house manager at Tacombi in Bethesda and run Muntin Digital, the one-person web studio behind this library. Every article here comes from a problem I saw on the floor or in a client audit.</p>
+    <p class="article-author-card__bio" style="font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 10px">I&rsquo;m Don. I&rsquo;m front-of-house manager at Tacombi in Bethesda and the founder of Muntin Digital &mdash; the company behind this library, the Cost Index, and Muntin Ledger. Every article here comes from a problem I saw on the floor.</p>
     <p class="article-author-card__creds" style="font-size:12px;color:var(--stone);margin:0 0 12px;letter-spacing:0.01em">ServSafe Manager &middot; ServSafe Allergens &middot; RAM Alcohol Awareness &middot; Maryland LLC</p>
     <p class="article-author-card__cta" style="font-size:14px;margin:0">
       <a href="/about/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none;margin-right:14px">More about Don &rarr;</a>
@@ -1228,14 +1244,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <h4>DMV restaurant GBP audit, 2026 — 100 listings graded</h4>
         <p>The companion research note: the eight GBP fields most often skipped, what each one is worth in click-through, and the median DMV restaurant&rsquo;s score (5.4/8).</p>
       </a>
-      <a href="/services/care-plan-light/">
-        <h4>$99/mo Care Plan Light</h4>
-        <p>If the bottleneck is keeping hours, holiday hours, and menu prices current across site + GBP + Yelp + Apple Maps every month &mdash; bookable without a sales call.</p>
-      </a>
-      <a href="/services/audit/">
-        <h4>$499 deep-read audit</h4>
-        <p>If you&rsquo;d rather have me run the GBP setup as a paid project: 90-min Loom + 8-page action sheet, in five business days. Credits toward a build inside 60 days.</p>
-      </a>
     </aside>
   </div>
 </section>
@@ -1264,7 +1272,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->150<!-- /count --> glossary terms &mdash; with a one-person web studio behind it in Silver Spring, MD.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->150<!-- /count --> glossary terms &mdash; from Muntin Digital in Silver Spring, MD.</p>
       </div>
 
       <!-- Column order mirrors the 4-item primary nav
@@ -1292,12 +1300,17 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         </ul>
       </nav>
 
+      <!-- Phase 9 (services sunset, 2026-06-11): the Studio column's
+           Pricing / Compare / Process rows sold the retired services
+           business. The column is now the Company column — the product,
+           the public data, the company page, the founder. The retired services
+           and studio child pages 301 per the _redirects table. -->
       <nav class="foot-col" aria-labelledby="foot-studio">
-        <p class="foot-heading" id="foot-studio">Studio</p>
+        <p class="foot-heading" id="foot-studio">Company</p>
         <ul class="foot-links">
-          <li><a href="/studio/#pricing">Pricing</a></li>
-          <li><a href="/studio/compare/">Compare options</a></li>
-          <li><a href="/studio/#process">Process</a></li>
+          <li><a href="https://ledger.muntin.digital/">Muntin Ledger</a></li>
+          <li><a href="/cost-index/">Cost Index</a></li>
+          <li><a href="/studio/">The company</a></li>
           <li><a href="/about/">About Don</a></li>
         </ul>
       </nav>

@@ -39,9 +39,9 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=933461d49609" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=15ac955f199e" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=933461d49609"><link rel="stylesheet" href="/assets/site-article.css?v=15ac955f199e"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=b70da981fa3f" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=36af39b8b96e" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=b70da981fa3f"><link rel="stylesheet" href="/assets/site-article.css?v=36af39b8b96e"></noscript>
 
 <!-- topic-schema:start -->
 <script type="application/ld+json">
@@ -210,11 +210,9 @@
          three-doors page). Tools is promoted from the old Library
          mega-menu to a top-level item. Studio replaces Services +
          Restaurants + About — they all live under /studio/ now,
-         either as anchored sections (#pricing, #offers, #cities,
-         #process, #about) or as full child pages (/studio/compare/,
-         /studio/silver-spring/, etc.). The old Services and
-         Restaurants pages remain reachable via /studio/ and the
-         _redirects table; /about/ is unchanged. The mega-menu is
+         as sections of the company page (Phase 9, 2026-06-11: the
+         services-era child pages and anchored offer sections are
+         retired; old paths 301 via the _redirects table). /about/ is unchanged. The mega-menu is
          retired (the hub IS the menu now); the controller script
          is gone too.
 
@@ -226,7 +224,7 @@
       <a href="/library/">Library</a>
       <a href="/start/">Start</a>
       <a href="/tools/">Tools</a>
-      <a href="/studio/">Studio</a>
+      <a href="/studio/">Company</a>
       <!-- Ledger — sister product (the privacy-forward invoice ledger)
            on its own subdomain. Plain external link so it passes link
            equity to ledger.muntin.digital; Plausible's automatic
@@ -288,7 +286,7 @@
     <a href="/library/">Library</a>
     <a href="/start/">Start</a>
     <a href="/tools/">Tools</a>
-    <a href="/studio/">Studio</a>
+    <a href="/studio/">Company</a>
     <a href="https://ledger.muntin.digital/">Ledger</a>
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
@@ -710,7 +708,7 @@
 
       <p>The <a href="/learn/research/the-1-percent-margin-audit-50-restaurant-websites-2026/">1% margin audit</a> graded 50 independent restaurant websites for six leaks that each cost a measurable percentage of revenue. The median operator leaks <strong>0.94%</strong>; worst-quartile leaks <strong>2.3%</strong>. Applied to a typical $1.6M-revenue operator, that&rsquo;s $1,250&ndash;$3,069 per month going to friction.</p>
 
-      <p>The cost-per-percent-recovered on a leak fix is roughly $200; the cost-per-percent-recovered on a full rebuild is roughly $4,000. The lesson: audit the funnel before you redesign the site. The free <a href="/tools/audits/restaurant/">Restaurant Audit</a> grades your site against the same six leaks in 30 seconds. The <a href="/services/audit/">$499 paid audit</a> writes the rollout plan in five business days.</p>
+      <p>The cost-per-percent-recovered on a leak fix is roughly $200; the cost-per-percent-recovered on a full rebuild is roughly $4,000. The lesson: audit the funnel before you redesign the site. The free <a href="/tools/audits/restaurant/">Restaurant Audit</a> grades your site against the same six leaks in 30 seconds.</p>
 
       <h3>Where pricing decisions actually live</h3>
 
@@ -729,10 +727,10 @@
       <ol>
         <li><strong>Run <a href="/tools/margin-math/">Margin Math</a> against your last quarter&rsquo;s P&amp;L.</strong> Prime cost, contribution margin per item, channel mix, current direct-ordering percentage. Save the result to your Workshop. The baseline is the only metric that matters; everything from here is delta against it.</li>
         <li><strong>Run <a href="/tools/menu-engineering/">Menu Engineering</a> on your current menu.</strong> Identify the three puzzles. Move each one up the page, rewrite its description, photograph it. Re-classify in 90 days. Most operators see one puzzle become a star, one stay a puzzle, and one drop to a dog.</li>
-        <li><strong>Audit your direct-order plumbing.</strong> Is &ldquo;Order direct&rdquo; the primary CTA on your menu page, above the DoorDash / Uber Eats links? Does the direct flow go to a Toast Online Ordering / Square Online / ChowNow page or a Wix forms page that emails you the order? The first is a real channel; the second is a side channel. The <a href="/services/menu-drop-in/">$1,500 menu drop-in</a> ships the studio-built version.</li>
+        <li><strong>Audit your direct-order plumbing.</strong> Is &ldquo;Order direct&rdquo; the primary CTA on your menu page, above the DoorDash / Uber Eats links? Does the direct flow go to a Toast Online Ordering / Square Online / ChowNow page or a Wix forms page that emails you the order? The first is a real channel; the second is a side channel.</li>
       </ol>
 
-      <p>Operators on the recurring-discipline track: the <a href="/services/care-plan-light/">Care Plan Light</a> at $99/month covers monthly hygiene; the full Care Plan ($225/mo) adds the quarterly margin re-run and the menu-engineering review.</p>
+      <p></p>
 
       <h3>Where this topic touches the others</h3>
 
@@ -868,7 +866,7 @@
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->150<!-- /count --> glossary terms &mdash; with a one-person web studio behind it in Silver Spring, MD.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->150<!-- /count --> glossary terms &mdash; from Muntin Digital in Silver Spring, MD.</p>
       </div>
 
       <!-- Column order mirrors the 4-item primary nav
@@ -896,12 +894,17 @@
         </ul>
       </nav>
 
+      <!-- Phase 9 (services sunset, 2026-06-11): the Studio column's
+           Pricing / Compare / Process rows sold the retired services
+           business. The column is now the Company column — the product,
+           the public data, the company page, the founder. The retired services
+           and studio child pages 301 per the _redirects table. -->
       <nav class="foot-col" aria-labelledby="foot-studio">
-        <p class="foot-heading" id="foot-studio">Studio</p>
+        <p class="foot-heading" id="foot-studio">Company</p>
         <ul class="foot-links">
-          <li><a href="/studio/#pricing">Pricing</a></li>
-          <li><a href="/studio/compare/">Compare options</a></li>
-          <li><a href="/studio/#process">Process</a></li>
+          <li><a href="https://ledger.muntin.digital/">Muntin Ledger</a></li>
+          <li><a href="/cost-index/">Cost Index</a></li>
+          <li><a href="/studio/">The company</a></li>
           <li><a href="/about/">About Don</a></li>
         </ul>
       </nav>

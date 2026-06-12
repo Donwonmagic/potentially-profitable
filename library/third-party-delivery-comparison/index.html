@@ -46,7 +46,7 @@
       "url": "https://muntin.digital/library/third-party-delivery-comparison/",
       "inLanguage": "en-US",
       "datePublished": "2026-05-11T07:30:00-04:00",
-      "dateModified": "2026-05-28",
+      "dateModified": "2026-06-10",
       "author": {
         "@id": "https://muntin.digital/#muntin-desk",
         "@type": "Organization",
@@ -248,11 +248,9 @@ main{padding-top:64px}
          three-doors page). Tools is promoted from the old Library
          mega-menu to a top-level item. Studio replaces Services +
          Restaurants + About — they all live under /studio/ now,
-         either as anchored sections (#pricing, #offers, #cities,
-         #process, #about) or as full child pages (/studio/compare/,
-         /studio/silver-spring/, etc.). The old Services and
-         Restaurants pages remain reachable via /studio/ and the
-         _redirects table; /about/ is unchanged. The mega-menu is
+         as sections of the company page (Phase 9, 2026-06-11: the
+         services-era child pages and anchored offer sections are
+         retired; old paths 301 via the _redirects table). /about/ is unchanged. The mega-menu is
          retired (the hub IS the menu now); the controller script
          is gone too.
 
@@ -264,7 +262,7 @@ main{padding-top:64px}
       <a href="/library/">Library</a>
       <a href="/start/">Start</a>
       <a href="/tools/">Tools</a>
-      <a href="/studio/">Studio</a>
+      <a href="/studio/">Company</a>
       <!-- Ledger — sister product (the privacy-forward invoice ledger)
            on its own subdomain. Plain external link so it passes link
            equity to ledger.muntin.digital; Plausible's automatic
@@ -326,7 +324,7 @@ main{padding-top:64px}
     <a href="/library/">Library</a>
     <a href="/start/">Start</a>
     <a href="/tools/">Tools</a>
-    <a href="/studio/">Studio</a>
+    <a href="/studio/">Company</a>
     <a href="https://ledger.muntin.digital/">Ledger</a>
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
@@ -749,26 +747,27 @@ main{padding-top:64px}
       <p>The 30% commission is on the menu price, not the take-home. Every $42 third-party ticket walks out of the kitchen owing $12.60 to the platform before you&rsquo;ve paid for the chicken.</p>
     </div>
 
-    <figure class="viz-figure article-figure" data-audio-alt="The twelve-month headline commission-rate trend across the three platforms. DoorDash Marketplace Plus is flat at thirty percent. Uber Eats standard is flat at thirty percent. Grubhub Premium is flat at thirty percent. The headline rate has not moved since 2023. Tier discounts in either direction move the effective rate by five points; the platforms negotiate on the second-layer fees, not the headline.">
+    <figure class="viz-figure article-figure" data-audio-alt="The second-layer fee on the same forty-two dollar ticket, the line that actually separates the three platforms. The headline commission is thirty percent on all three and has not moved since 2023, so the bars here draw the fee stacked on top of it. DoorDash&apos;s sponsored-listing promo fee averages a dollar twenty per opted-in order. Grubhub&apos;s order-relay communication fee is a dollar thirty-eight, and it is not opt-in &mdash; it lands on every order. Uber Eats&apos; Pro membership fee is two dollars twenty-five per opted-in order, nearly twice DoorDash&apos;s promo line on the same ticket. When a platform rep offers to negotiate, this layer is the one that moves &mdash; never the headline.">
       <div class="viz-bars">
-        <p class="viz-bars__title">Headline commission rate, rolling 12 months</p>
+        <p class="viz-bars__title">The second layer &mdash; the per-order fee stacked on the identical 30% headline ($42 ticket)</p>
         <div class="viz-bars__row">
-          <p class="viz-bars__label">DoorDash Marketplace Plus</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.30"></span></div>
-          <p class="viz-bars__num">30% &middot; flat</p>
+          <p class="viz-bars__label">DoorDash sponsored-listing / promo fee (opt-in)</p>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.53"></span></div>
+          <p class="viz-bars__num">$1.20 &middot; 2.9%</p>
         </div>
         <div class="viz-bars__row">
-          <p class="viz-bars__label">Uber Eats standard</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.30"></span></div>
-          <p class="viz-bars__num">30% &middot; flat</p>
+          <p class="viz-bars__label">Grubhub &ldquo;communication fee&rdquo; (not opt-in)</p>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.61"></span></div>
+          <p class="viz-bars__num">$1.38 &middot; 3.3%</p>
         </div>
         <div class="viz-bars__row">
-          <p class="viz-bars__label">Grubhub Premium</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.30"></span></div>
-          <p class="viz-bars__num">30% &middot; flat</p>
+          <p class="viz-bars__label">Uber Eats Pro membership fee (opt-in, in practice required)</p>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:1.00"></span></div>
+          <p class="viz-bars__num">$2.25 &middot; 5.4%</p>
         </div>
+        <p class="viz-bars__note"><strong>The headline 30% is identical on all three and has been flat since 2023.</strong> This layer is where the platforms differ &mdash; and the only layer they will actually negotiate.</p>
       </div>
-      <figcaption>Tier discounts move the effective rate &plusmn;5%; the headline rate has been flat since 2023. The platforms negotiate the second-layer fees, not the headline.</figcaption>
+      <figcaption>Negotiate the second layer, not the headline: Uber&rsquo;s Pro fee is nearly twice DoorDash&rsquo;s promo line on the same ticket, and Grubhub&rsquo;s is the only one you can&rsquo;t decline.</figcaption>
     </figure>
 
     <div class="callout">
@@ -786,7 +785,7 @@ main{padding-top:64px}
       <ul style="font-size:15.5px;line-height:1.7;color:var(--teal);margin:0;padding-left:22px">
         <li><a href="/library/third-party-delivery-economics/">An honest DoorDash math for independent restaurants</a> &mdash; the deeper dive on one platform, with the strategic frame</li>
         <li><a href="/tools/margin-math/">Margin Math tool</a> &mdash; run the calculation on your numbers</li>
-        <li><a href="/services/audit/">$499 audit</a> &mdash; the written diagnosis if you&rsquo;d rather see your channel mix on paper</li>
+        <li><a href="https://ledger.muntin.digital/">Muntin Ledger</a> &mdash; your vendor invoices, read and filed searchable, with price-hike flags against your own history</li>
       </ul>
     </section>
 
@@ -808,7 +807,7 @@ main{padding-top:64px}
   <div class="article-author-card__body" style="flex:1 1 280px;min-width:0">
     <p class="article-author-card__eyebrow" style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--stone);margin:0 0 4px" id="article-author-h">About the author</p>
     <p class="article-author-card__name" style="font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);margin:0 0 6px"><a href="/about/" style="color:var(--ink)">Don Goldstein</a></p>
-    <p class="article-author-card__bio" style="font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 10px">I&rsquo;m Don. I&rsquo;m front-of-house manager at Tacombi in Bethesda and run Muntin Digital, the one-person web studio behind this library. Every article here comes from a problem I saw on the floor or in a client audit.</p>
+    <p class="article-author-card__bio" style="font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 10px">I&rsquo;m Don. I&rsquo;m front-of-house manager at Tacombi in Bethesda and the founder of Muntin Digital &mdash; the company behind this library, the Cost Index, and Muntin Ledger. Every article here comes from a problem I saw on the floor.</p>
     <p class="article-author-card__creds" style="font-size:12px;color:var(--stone);margin:0 0 12px;letter-spacing:0.01em">ServSafe Manager &middot; ServSafe Allergens &middot; RAM Alcohol Awareness &middot; Maryland LLC</p>
     <p class="article-author-card__cta" style="font-size:14px;margin:0">
       <a href="/about/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none;margin-right:14px">More about Don &rarr;</a>
@@ -816,8 +815,7 @@ main{padding-top:64px}
     </p>
   </div>
 </aside>
-<!-- article-author-card:end -->
-  </article>
+<!-- article-author-card:end -->  </article>
 
   <aside class="post-end-mark" aria-hidden="true">
     <hr/>
@@ -964,7 +962,7 @@ main{padding-top:64px}
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->150<!-- /count --> glossary terms &mdash; with a one-person web studio behind it in Silver Spring, MD.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->150<!-- /count --> glossary terms &mdash; from Muntin Digital in Silver Spring, MD.</p>
       </div>
 
       <!-- Column order mirrors the 4-item primary nav
@@ -992,12 +990,17 @@ main{padding-top:64px}
         </ul>
       </nav>
 
+      <!-- Phase 9 (services sunset, 2026-06-11): the Studio column's
+           Pricing / Compare / Process rows sold the retired services
+           business. The column is now the Company column — the product,
+           the public data, the company page, the founder. The retired services
+           and studio child pages 301 per the _redirects table. -->
       <nav class="foot-col" aria-labelledby="foot-studio">
-        <p class="foot-heading" id="foot-studio">Studio</p>
+        <p class="foot-heading" id="foot-studio">Company</p>
         <ul class="foot-links">
-          <li><a href="/studio/#pricing">Pricing</a></li>
-          <li><a href="/studio/compare/">Compare options</a></li>
-          <li><a href="/studio/#process">Process</a></li>
+          <li><a href="https://ledger.muntin.digital/">Muntin Ledger</a></li>
+          <li><a href="/cost-index/">Cost Index</a></li>
+          <li><a href="/studio/">The company</a></li>
           <li><a href="/about/">About Don</a></li>
         </ul>
       </nav>

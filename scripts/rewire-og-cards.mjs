@@ -15,7 +15,6 @@ const MAP = [
   // ES side — every ES page gets its Spanish sibling.
   ['es/index.html',                                        'brand/og/home-es.svg'],
   ['es/about/index.html',                                  'brand/og/about-es.svg'],
-  ['es/services/index.html',                               'brand/og/services-es.svg'],
   ['es/glossary/index.html',                               'brand/og/glossary-es.svg'],
   ['es/for/restaurants/index.html',                        'brand/og/restaurants-es.svg'],
   // /es/work/* entries retired in Phase 8 (portfolio sunset) — the
@@ -34,7 +33,6 @@ const MAP = [
 
   // EN side — new cards for pages that previously shared a sibling's.
   ['about/index.html',                                     'brand/og/about.svg'],
-  ['services/index.html',                                  'brand/og/services.svg'],
   ['glossary/index.html',                                  'brand/og/glossary.svg'],
   ['tools/compare/index.html',                             'brand/og/tool-compare.svg'],
   ['tools/gbp-grader/index.html',                          'brand/og/tool-gbp-grader.svg'],

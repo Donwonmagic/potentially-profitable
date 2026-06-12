@@ -195,9 +195,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=933461d49609" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-core.css?v=b70da981fa3f" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-tool.css?v=aee67503f378" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=933461d49609"><link rel="stylesheet" href="/assets/site-tool.css?v=aee67503f378"></noscript>
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=b70da981fa3f"><link rel="stylesheet" href="/assets/site-tool.css?v=aee67503f378"></noscript>
 
 <!-- lazy-load:p --><script>(window.requestIdleCallback||function(c){return setTimeout(c,500);})(function(){var s=document.createElement("script");s.src="/assets/p.js?v=20260503";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:p -->
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
@@ -247,11 +247,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
          three-doors page). Tools is promoted from the old Library
          mega-menu to a top-level item. Studio replaces Services +
          Restaurants + About — they all live under /studio/ now,
-         either as anchored sections (#pricing, #offers, #cities,
-         #process, #about) or as full child pages (/studio/compare/,
-         /studio/silver-spring/, etc.). The old Services and
-         Restaurants pages remain reachable via /studio/ and the
-         _redirects table; /about/ is unchanged. The mega-menu is
+         as sections of the company page (Phase 9, 2026-06-11: the
+         services-era child pages and anchored offer sections are
+         retired; old paths 301 via the _redirects table). /about/ is unchanged. The mega-menu is
          retired (the hub IS the menu now); the controller script
          is gone too.
 
@@ -263,7 +261,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <a href="/library/">Library</a>
       <a href="/start/">Start</a>
       <a href="/tools/">Tools</a>
-      <a href="/studio/">Studio</a>
+      <a href="/studio/">Company</a>
       <!-- Ledger — sister product (the privacy-forward invoice ledger)
            on its own subdomain. Plain external link so it passes link
            equity to ledger.muntin.digital; Plausible's automatic
@@ -325,7 +323,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <a href="/library/">Library</a>
     <a href="/start/">Start</a>
     <a href="/tools/">Tools</a>
-    <a href="/studio/">Studio</a>
+    <a href="/studio/">Company</a>
     <a href="https://ledger.muntin.digital/">Ledger</a>
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
@@ -563,17 +561,12 @@ Tellicherry pepper, pecorino romano, finished tableside.</pre>
         <p style="margin:0 0 10px;font-size:12.5px;color:var(--stone);">Menu Engineering reads your structured menu, lets you tag star/plowhorse/puzzle/dog, and tells you which items to protect and which to retire.</p>
         <button type="button" id="mcvHandoffMenuDesignBtn" class="mc-btn" style="font-size:13px;padding:8px 14px;"></button>
       </aside>
-
-      <p style="font-size:13.5px;color:var(--stone);margin:14px 0 0;font-style:italic">
-        Want the menu page styled, mobile-fast, schema-validated, and bilingual EN/ES &mdash; without the rebuild? <a href="/services/menu-drop-in/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">$1,500 menu drop-in &rarr;</a>
-      </p>
     </section>
 
     <section style="margin-top:48px;padding-top:32px;border-top:1px solid var(--line)">
       <h2 style="font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0 0 14px">What this tool does NOT do.</h2>
       <ul style="font-size:15.5px;line-height:1.7;color:var(--ink);margin:0;padding-left:22px">
         <li style="margin-bottom:8px">It doesn&rsquo;t parse PDFs. The honest version is: PDFs vary too much (columns, tables, embedded fonts) for in-browser parsing to be reliable. Copy-paste the menu text and the parser does the rest in two seconds.</li>
-        <li style="margin-bottom:8px">It doesn&rsquo;t style the page. The HTML is semantic and unstyled; drop your own brand styles on top, or use the <a href="/services/menu-drop-in/" style="color:var(--teal)">$1,500 menu drop-in</a> if you want the styled version delivered to you.</li>
         <li>It doesn&rsquo;t translate. The output preserves whatever language you pasted; for an EN/ES bilingual page, run it twice and stack the results.</li>
       </ul>
     </section>
@@ -584,7 +577,6 @@ Tellicherry pepper, pecorino romano, finished tableside.</pre>
         <li><a href="/tools/menu-engineering/">Menu Engineering</a> &mdash; star/plowhorse/puzzle/dog analysis on your menu</li>
         <li><a href="/glossary/menu-schema/">Glossary: Menu schema</a></li>
         <li><a href="/library/restaurant-schema-markup-guide/">The 6 schema types Google actually uses</a></li>
-        <li><a href="/services/menu-drop-in/">$1,500 menu drop-in</a> &mdash; the studio-built version</li>
       </ul>
     </section>
   </article>
@@ -777,7 +769,7 @@ Tellicherry pepper, pecorino romano, finished tableside.</pre>
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->150<!-- /count --> glossary terms &mdash; with a one-person web studio behind it in Silver Spring, MD.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->150<!-- /count --> glossary terms &mdash; from Muntin Digital in Silver Spring, MD.</p>
       </div>
 
       <!-- Column order mirrors the 4-item primary nav
@@ -805,12 +797,17 @@ Tellicherry pepper, pecorino romano, finished tableside.</pre>
         </ul>
       </nav>
 
+      <!-- Phase 9 (services sunset, 2026-06-11): the Studio column's
+           Pricing / Compare / Process rows sold the retired services
+           business. The column is now the Company column — the product,
+           the public data, the company page, the founder. The retired services
+           and studio child pages 301 per the _redirects table. -->
       <nav class="foot-col" aria-labelledby="foot-studio">
-        <p class="foot-heading" id="foot-studio">Studio</p>
+        <p class="foot-heading" id="foot-studio">Company</p>
         <ul class="foot-links">
-          <li><a href="/studio/#pricing">Pricing</a></li>
-          <li><a href="/studio/compare/">Compare options</a></li>
-          <li><a href="/studio/#process">Process</a></li>
+          <li><a href="https://ledger.muntin.digital/">Muntin Ledger</a></li>
+          <li><a href="/cost-index/">Cost Index</a></li>
+          <li><a href="/studio/">The company</a></li>
           <li><a href="/about/">About Don</a></li>
         </ul>
       </nav>

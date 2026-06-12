@@ -154,9 +154,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=933461d49609" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=15ac955f199e" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=933461d49609"><link rel="stylesheet" href="/assets/site-article.css?v=15ac955f199e"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=b70da981fa3f" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=36af39b8b96e" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=b70da981fa3f"><link rel="stylesheet" href="/assets/site-article.css?v=36af39b8b96e"></noscript>
 
 <!-- lazy-load:p --><script>(window.requestIdleCallback||function(c){return setTimeout(c,500);})(function(){var s=document.createElement("script");s.src="/assets/p.js?v=20260503";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:p -->
 <script>
@@ -226,7 +226,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <a href="/es/library/">Biblioteca</a>
       <a href="/es/start/">Comienza</a>
       <a href="/es/tools/">Herramientas</a>
-      <a href="/es/studio/">Estudio</a>
+      <a href="/es/studio/">Empresa</a>
       <a href="https://ledger.muntin.digital/">Ledger</a>
       <a class="js-nav-signin nav-link-auth" href="/es/sign-in/" hidden>Acceder</a>
       <a class="js-nav-workshop nav-link-auth" href="/es/workbench/" hidden>El Taller</a>
@@ -256,7 +256,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <a href="/es/library/">Biblioteca</a>
     <a href="/es/start/">Comienza</a>
     <a href="/es/tools/">Herramientas</a>
-    <a href="/es/studio/">Estudio</a>
+    <a href="/es/studio/">Empresa</a>
     <a href="https://ledger.muntin.digital/">Ledger</a>
     <a class="js-nav-signin mobile-auth" href="/es/sign-in/" hidden>Acceder</a>
     <a class="js-nav-workshop mobile-auth" href="/es/workbench/" hidden>El Taller</a>
@@ -422,8 +422,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <ul style="font-size:15px;line-height:1.7;color:var(--ink);margin:0;padding-left:22px">
         <li><strong>Dos proyectos a la vez, sin excepciones.</strong> Si el calendario no puede cargar con tu proyecto, lo sabes el primer día con una fecha en la que entrarías, o una referencia. <a href="/never/" style="color:var(--teal)">/never/ #5</a>.</li>
         <li><strong>Respuesta en 4 horas, lunes a viernes.</strong> Publicado en cada página, medido en Plausible.</li>
-        <li><strong>Tres tiers de sitio, publicados por escrito.</strong> $2,500 Essentials &middot; $5&ndash;9k Full Service &middot; $8&ndash;15k+ Group. <a href="/es/services/" style="color:var(--teal)">Ver precios</a>.</li>
-        <li><strong>Tres ofertas productizadas, reservables sin llamada de venta.</strong> Auditoría de $499 &middot; menu drop-in de $1,500 &middot; Care Plan Light de $99/mes. <a href="/services/audit/" style="color:var(--teal)">Auditoría</a> &middot; <a href="/services/menu-drop-in/" style="color:var(--teal)">drop-in</a> &middot; <a href="/services/care-plan-light/" style="color:var(--teal)">Care Plan</a>.</li>
+        <li><strong>Precios del producto publicados por escrito.</strong> Los planes de Muntin Ledger y la cuenta del costo por factura viven en <a href="https://ledger.muntin.digital/" style="color:var(--teal)">ledger.muntin.digital</a>. (Los tiers y ofertas de la era de servicios se retiraron el 2026-06-11; sus p&aacute;ginas hacen 301 a <a href="/es/studio/" style="color:var(--teal)">/es/studio/</a>.)</li>
         <li><strong>Contenido de biblioteca licenciado CC&nbsp;BY-NC&nbsp;4.0.</strong> Cita, resume, traduce, deja que la IA cite libremente. Herramientas / marca / código explícitamente no licenciados para redistribución. <a href="/es/terms.html" style="color:var(--teal)">/terms.html &sect;4</a>.</li>
         <li><strong>Cinco cosas que este estudio nunca va a hacer.</strong> Sin lock-in, sin reventa de datos, sin precios ocultos, sin píxel de remarketing en la biblioteca, sin trabajo fuera del alcance cotizado. <a href="/never/" style="color:var(--teal)">/never/</a>.</li>
         <li><strong>Tres cookies funcionales, sin banner.</strong> <code>md_locale</code>, <code>lang_hint_dismissed</code>, <code>md_session</code>. Plausible no usa cookies. <a href="/es/cookies.html" style="color:var(--teal)">/cookies.html</a>.</li>
@@ -440,9 +439,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <li><strong><!-- count:tools.live -->13<!-- /count --> herramientas gratis activas</strong> (eran 13 al inicio de mayo de 2026; subieron a 15 a mitad de mes con el Generador de horarios de feriados + Conversor de menú; se asentaron en 13 tras retirar el Decodificador de facturas y la Suite de diseño de menú el 2026-05-08).</li>
         <li><strong>18 artículos</strong> (eran 17). Nuevo op-ed: <a href="/library/third-party-delivery-economics/" style="color:var(--teal)">Una matemática honesta de DoorDash, 2026</a>.</li>
         <li><strong>4 notas de investigación trimestrales</strong> (eran 2). Nuevas: <a href="/learn/research/dmv-restaurant-gbp-audit-2026/" style="color:var(--teal)">Auditoría de GBP en el DMV, 2026</a> y <a href="/learn/research/the-1-percent-margin-audit-50-restaurant-websites-2026/" style="color:var(--teal)">La auditoría del 1% de margen, 50 sitios</a>.</li>
-        <li><strong>3 páginas nuevas de oferta productizada</strong> en <a href="/services/audit/" style="color:var(--teal)">/services/audit/</a>, <a href="/services/menu-drop-in/" style="color:var(--teal)">/services/menu-drop-in/</a>, <a href="/services/care-plan-light/" style="color:var(--teal)">/services/care-plan-light/</a>.</li>
-        <li><strong>5 subpáginas de ciudades del DMV</strong> en <a href="/studio/silver-spring/" style="color:var(--teal)">/studio/silver-spring/</a>, <a href="/studio/bethesda/" style="color:var(--teal)">/bethesda/</a>, <a href="/studio/takoma-park/" style="color:var(--teal)">/takoma-park/</a>, <a href="/studio/dc/" style="color:var(--teal)">/dc/</a>, <a href="/studio/arlington/" style="color:var(--teal)">/arlington/</a>.</li>
-        <li><strong>4 páginas nuevas de confianza</strong>: <a href="/never/" style="color:var(--teal)">/never/</a>, <a href="/ai/" style="color:var(--teal)">/ai/</a>, <a href="/library/" style="color:var(--teal)">/library/</a>, <a href="/studio/" style="color:var(--teal)">/studio/</a> (más <a href="/studio/compare/" style="color:var(--teal)">/studio/compare/</a>). Cada una con su espejo en ES.</li>
+        <li><strong>3 páginas nuevas de oferta productizada</strong> en <code>services/audit</code>, <code>services/menu-drop-in</code>, <code>services/care-plan-light</code>.</li>
+        <li><strong>5 subpáginas de ciudades del DMV</strong> en <code>studio/silver-spring</code>, <code>/bethesda/</code>, <code>/takoma-park/</code>, <code>/dc/</code>, <code>/arlington/</code>.</li>
+        <li><strong>4 páginas nuevas de confianza</strong>: <a href="/never/" style="color:var(--teal)">/never/</a>, <a href="/ai/" style="color:var(--teal)">/ai/</a>, <a href="/library/" style="color:var(--teal)">/library/</a>, <a href="/studio/" style="color:var(--teal)">/studio/</a> (más <code>studio/compare</code>). Cada una con su espejo en ES.</li>
         <li><strong>2 scripts de build y 1 guardia de CI</strong>: <code>build-llms-full.mjs</code>, <code>check-cta-canon.mjs</code>, más el fix de idempotencia ya existente de <code>sync-includes.mjs</code>.</li>
         <li><strong>454 URLs en el sitemap</strong> (eran 430). 232 EN + 222 ES.</li>
         <li><strong>10 entradas en <code>sameAs</code></strong> (era 1). LinkedIn, Facebook, GitHub, Bluesky, Threads, Yelp, Google Maps, Bing Places, Apple Maps, más Instagram.</li>

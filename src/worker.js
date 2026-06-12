@@ -57,7 +57,7 @@ import { saveSnapshot, getSnapshot, getSnapshotOg, isValidTokenShape } from './l
 // Phase G.11 (Growth) — generalized share-snapshot store.
 import { SHARE_KINDS, saveShareSnapshot, getShareSnapshot, isValidShareKind, isValidShareTokenShape } from './lib/share-snapshots.js';
 // Phase G.11 (Growth) — lifecycle email dispatcher (cron-driven).
-import { dispatchLifecycleEmails } from './lib/lifecycle-emails.js';
+import { dispatchLifecycleEmails, iterateAllSubscribers } from './lib/lifecycle-emails.js';
 import {
   mintMagicLinkToken,
   mintSessionToken,
@@ -207,6 +207,8 @@ import {
   windowConfirmationEmail,
   // Phase G.10 (Growth) — newsletter double-opt confirmation email.
   subscriberConfirmEmail,
+  // Weekly Cost Index broadcast email.
+  costIndexWeeklyEmail,
 } from './lib/templates.js';
 import {
   // Phase F.3 (Field Notes) — server-side submission storage + validation.
@@ -458,6 +460,8 @@ const API_ROUTES = {
   '/api/admin/window/now':           handleAdminWindowNow,
   // Phase G.10 (Growth) — newsletter subscription + double-opt confirm.
   '/api/subscribe':                  handleSubscribe,
+  // Weekly Cost Index broadcast — secret-gated, called by the publish Action.
+  '/api/admin/cost-index-broadcast': handleCostIndexBroadcast,
   // Phase 3B — Plausible analytics events proxy. Self-hosted tracker
   // at /assets/p.js posts here; we forward to plausible.io with the
   // visitor's CF-Connecting-IP so analytics see the right client IP
@@ -8655,7 +8659,65 @@ async function handlePlausibleEvent(request, env, ctx) {
   return new Response(null, { status: upstreamRes.status });
 }
 
-const SUBSCRIBE_SOURCES = new Set(['footer', 'article-end', 'workshop-empty-state', 'window']);
+const SUBSCRIBE_SOURCES = new Set(['footer', 'article-end', 'workshop-empty-state', 'window', 'cost-index']);
+
+// Constant-time string equality (compares fixed-length SHA-256 digests so the
+// compare time is independent of where the strings first differ).
+async function constantTimeEqual(a, b) {
+  if (typeof a !== 'string' || typeof b !== 'string' || !a || !b) return false;
+  const enc = new TextEncoder();
+  const [ha, hb] = await Promise.all([
+    crypto.subtle.digest('SHA-256', enc.encode(a)),
+    crypto.subtle.digest('SHA-256', enc.encode(b)),
+  ]);
+  const va = new Uint8Array(ha), vb = new Uint8Array(hb);
+  let diff = 0;
+  for (let i = 0; i < va.length; i++) diff |= va[i] ^ vb[i];
+  return diff === 0;
+}
+
+// Weekly Cost Index broadcast. Called once a week by the publish Action (NOT a
+// browser) with a Bearer secret + the insight JSON computed by
+// scripts/build-cost-index-dispatch.mjs --json. Sends costIndexWeeklyEmail to
+// every ACTIVE subscriber whose source is 'cost-index' (so only people who opted
+// into the price index get it). Idempotent per week (re-runs/retries no-op).
+async function handleCostIndexBroadcast(request, env, ctx) {
+  if (request.method !== 'POST') return jsonResponse({ ok: false, error: 'method-not-allowed' }, 405);
+  const provided = (request.headers.get('authorization') || '').replace(/^Bearer\s+/i, '').trim();
+  if (!env.COST_INDEX_BROADCAST_SECRET) return jsonResponse({ ok: false, error: 'broadcast-not-configured' }, 503);
+  if (!(await constantTimeEqual(provided, String(env.COST_INDEX_BROADCAST_SECRET)))) return jsonResponse({ ok: false, error: 'unauthorized' }, 401);
+  if (!env.AUTH_SESSIONS) return jsonResponse({ ok: false, error: 'service-unavailable' }, 503);
+  if (!env.RESEND_API_KEY) return jsonResponse({ ok: false, error: 'service-unavailable' }, 503);
+
+  let insight;
+  try { insight = await request.json(); } catch (_) { return jsonResponse({ ok: false, error: 'invalid-body' }, 400); }
+  const asOf = String((insight && insight.asOf) || '').trim();
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(asOf)) return jsonResponse({ ok: false, error: 'invalid-asof' }, 400);
+
+  // Idempotency — never send the same week twice (Action retries, re-runs).
+  const stampKey = 'cost-index:broadcast:' + asOf;
+  const already = await env.AUTH_SESSIONS.get(stampKey);
+  if (already) { let s; try { s = JSON.parse(already); } catch (_) { s = {}; } return jsonResponse({ ok: true, status: 'already-sent', stamp: s }); }
+
+  const baseUrl = (env.MAGIC_LINK_BASE_URL && String(env.MAGIC_LINK_BASE_URL)) || 'https://muntin.digital';
+  const fromEmail = (env.FROM_EMAIL && String(env.FROM_EMAIL)) || 'Don Goldstein <don@muntin.digital>';
+  const postUrl = String((insight && insight.postUrl) || (baseUrl + '/cost-index/'));
+  const CAP = 90;   // Resend free tier is 100/day — stay under; larger lists need batching/queue.
+
+  let sent = 0, failed = 0, skipped = 0;
+  for await (const { key, sub } of iterateAllSubscribers(env)) {
+    if (!sub || sub.status !== 'active' || sub.source !== 'cost-index') continue;
+    if (sent >= CAP) { skipped++; continue; }
+    const unsubUrl = `${baseUrl}/sub/unsubscribe?t=${key.replace(/^sub:/, '')}`;
+    const msg = costIndexWeeklyEmail(Object.assign({}, insight, { locale: sub.locale, unsubUrl, postUrl }));
+    let res;
+    try { res = await sendEmail({ to: sub.email, from: fromEmail, replyTo: 'don@muntin.digital', subject: msg.subject, html: msg.html, text: msg.text }, env.RESEND_API_KEY); }
+    catch (e) { res = { ok: false, error: e && e.message }; }
+    if (res && res.ok) sent++; else failed++;
+  }
+  await env.AUTH_SESSIONS.put(stampKey, JSON.stringify({ sent, failed, skipped, at: Date.now() }), { expirationTtl: 120 * 24 * 3600 });
+  return jsonResponse({ ok: true, asOf, sent, failed, skipped });
+}
 
 async function handleSubscribe(request, env, ctx) {
   if (!isOriginAllowed(request)) return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);

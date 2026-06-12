@@ -46,7 +46,7 @@
       "url": "https://muntin.digital/library/ai-mode-reservation-strategy/",
       "inLanguage": "en-US",
       "datePublished": "2026-05-23T10:00:00-04:00",
-      "dateModified": "2026-05-28",
+      "dateModified": "2026-06-10",
       "author": {
         "@id": "https://muntin.digital/#muntin-desk",
         "@type": "Organization",
@@ -240,11 +240,9 @@ header.nav{min-height:64px}
          three-doors page). Tools is promoted from the old Library
          mega-menu to a top-level item. Studio replaces Services +
          Restaurants + About — they all live under /studio/ now,
-         either as anchored sections (#pricing, #offers, #cities,
-         #process, #about) or as full child pages (/studio/compare/,
-         /studio/silver-spring/, etc.). The old Services and
-         Restaurants pages remain reachable via /studio/ and the
-         _redirects table; /about/ is unchanged. The mega-menu is
+         as sections of the company page (Phase 9, 2026-06-11: the
+         services-era child pages and anchored offer sections are
+         retired; old paths 301 via the _redirects table). /about/ is unchanged. The mega-menu is
          retired (the hub IS the menu now); the controller script
          is gone too.
 
@@ -256,7 +254,7 @@ header.nav{min-height:64px}
       <a href="/library/">Library</a>
       <a href="/start/">Start</a>
       <a href="/tools/">Tools</a>
-      <a href="/studio/">Studio</a>
+      <a href="/studio/">Company</a>
       <!-- Ledger — sister product (the privacy-forward invoice ledger)
            on its own subdomain. Plain external link so it passes link
            equity to ledger.muntin.digital; Plausible's automatic
@@ -318,7 +316,7 @@ header.nav{min-height:64px}
     <a href="/library/">Library</a>
     <a href="/start/">Start</a>
     <a href="/tools/">Tools</a>
-    <a href="/studio/">Studio</a>
+    <a href="/studio/">Company</a>
     <a href="https://ledger.muntin.digital/">Ledger</a>
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
@@ -508,7 +506,7 @@ header.nav{min-height:64px}
           </div>
           <div class="viz-bars__row">
             <p class="viz-bars__label">Through a third-party platform</p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:0.35"></span></div>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.35"></span></div>
             <p class="viz-bars__num">35%</p>
           </div>
         </div>
@@ -524,71 +522,76 @@ header.nav{min-height:64px}
       </details>
 
       <figure class="viz-figure article-figure" data-audio-alt="The agentic booking path in Google's AI Mode. Step one: the diner asks the assistant for a table. Step two: the assistant finds tables it can actually book — only restaurants connected to a supported provider. Step three: it completes the reservation through OpenTable, Resy, or Tock, inside the answer. Step four: phone-only restaurants are skipped, because the agent cannot dial a phone.">
-        <div class="viz-flow">
-          <ol class="viz-flow__list">
-            <li class="viz-flow__step" data-tone="teal">
-              <span class="viz-flow__num">1</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">The diner asks the assistant for a table</p>
-                <p class="viz-flow__detail">&ldquo;Somewhere for six on Friday with a patio&rdquo; &mdash; spoken or typed into the <a href="/glossary/ai-overview/">AI answer</a>.</p>
-              </div>
-            </li>
-            <li class="viz-flow__step" data-tone="teal">
-              <span class="viz-flow__num">2</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">It shortlists tables it can book</p>
-                <p class="viz-flow__detail">Only restaurants connected to a supported provider &mdash; surfaced from your <a href="/glossary/gbp/">Google Business Profile</a> and the <a href="/glossary/map-pack/">map</a>.</p>
-              </div>
-            </li>
-            <li class="viz-flow__step" data-tone="teal">
-              <span class="viz-flow__num">3</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">It completes the reservation</p>
-                <p class="viz-flow__detail">Through OpenTable, Resy, or Tock, inside the answer &mdash; the diner confirms without leaving.</p>
-              </div>
-            </li>
-            <li class="viz-flow__step" data-tone="rust">
-              <span class="viz-flow__num">4</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">Phone-only restaurants are skipped</p>
-                <p class="viz-flow__detail">The agent can&rsquo;t dial a phone. No bookable inventory means no booking &mdash; the table goes to whoever is connected.</p>
-              </div>
-            </li>
-          </ol>
-        </div>
-        <figcaption>Where the booking goes &mdash; and where a phone-only restaurant drops out of the flow entirely.</figcaption>
+        <ol class="viz-flow reveal" aria-label="The agentic booking path in Google AI Mode, step by step">
+          <li class="viz-flow__step" data-state="done">
+            <span class="viz-flow__num">1</span>
+            <div class="viz-flow__body">
+              <h4 class="viz-flow__title">The diner asks the assistant for a table</h4>
+              <p class="viz-flow__meta">&ldquo;Somewhere for six on Friday with a patio&rdquo; &mdash; spoken or typed into the <a href="/glossary/ai-overview/">AI answer</a>.</p>
+            </div>
+          </li>
+          <li class="viz-flow__step" data-state="done">
+            <span class="viz-flow__num">2</span>
+            <div class="viz-flow__body">
+              <h4 class="viz-flow__title">It shortlists only tables it can book</h4>
+              <p class="viz-flow__meta">The filter that decides your fate: <strong>only restaurants connected to a supported provider</strong> make the list &mdash; surfaced from your <a href="/glossary/gbp/">Google Business Profile</a> and the <a href="/glossary/map-pack/">map</a>.</p>
+            </div>
+          </li>
+          <li class="viz-flow__step" data-state="done">
+            <span class="viz-flow__num">3</span>
+            <div class="viz-flow__body">
+              <h4 class="viz-flow__title">It completes the reservation in the answer</h4>
+              <p class="viz-flow__meta">Through OpenTable, Resy, or Tock &mdash; the diner confirms without ever opening your website or dialing your phone.</p>
+            </div>
+          </li>
+          <li class="viz-flow__step" data-state="bad">
+            <span class="viz-flow__num">4</span>
+            <div class="viz-flow__body">
+              <h4 class="viz-flow__title">Phone-only restaurants never enter the flow</h4>
+              <p class="viz-flow__meta">The drop-out point: the agent can&rsquo;t dial a phone, so no bookable inventory means <strong>no booking</strong> &mdash; the table goes to whoever is connected.</p>
+            </div>
+          </li>
+        </ol>
+        <figcaption>Step 2 is the gate: a restaurant that isn&rsquo;t on a supported provider is filtered out before the booking step it can never reach.</figcaption>
       </figure>
 
       <h2 id="what-to-check-this-week">What to check this week</h2>
       <p>Two things, both quick. First, confirm your reservations are live on a supported provider, not just a phone line &mdash; that&rsquo;s your ticket into the agent&rsquo;s shortlist. Second, open your own site on a phone and book a table yourself: if the <a href="/glossary/reservation-link/">reservation link</a> is slow, hidden below the fold, or dumps you into a clunky third-party frame, the repeat booking you should own goes back to the platform. The reservation-recovery playbook in <a href="/library/reservation-conversion-guide/">recovering reservations from Find a Table</a> covers the fixes; the <a href="/tools/storefront-health/">storefront health</a> check and the <a href="/tools/gbp-grader/">GBP grader</a> flag the broken paths before a diner finds them.</p>
 
-      <figure class="viz-figure article-figure" data-audio-alt="The operator's three-step setup to make sure your tables show up in the agentic booking flow. Step one: get a provider account live on OpenTable, Resy, or Tock with real inventory the agent can see. Step two: keep the menu and the photos current, since the agent's shortlist reads the profile fields. Step three: put the reservation link on your Google Business Profile and on your own site, above the fold on a phone, so the repeat booking comes back to you.">
-        <div class="viz-flow">
-          <ol class="viz-flow__list">
-            <li class="viz-flow__step" data-tone="teal">
-              <span class="viz-flow__num">1</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">Provider account live</p>
-                <p class="viz-flow__detail">An OpenTable, Resy, or Tock account with real inventory the agent can see &mdash; not a phone line, not a paper book. This is the ticket into the shortlist.</p>
+      <figure class="viz-figure article-figure" data-audio-alt="A decision tree the operator can walk to find out where the agentic booking flow breaks for their restaurant. Question one: are your tables live on a supported provider — OpenTable, Resy, or Tock — with real inventory, not just a phone line? If no, stop here; you are invisible to the agent, and nothing below this matters until you fix it. If yes, go on. Question two: are your menu and photos current on your Google Business Profile? If no, you may be in the candidate pool but you are a weak pick in a three-name answer; refresh the profile. If yes, go on. Question three: is your own reservation link above the fold on a phone, one tap to a real booking widget? If no, the agent still hands you the first booking, but the commission-free repeat booking leaks back to the platform; fix the mobile link. If yes to all three, you are bookable by the agent and built to keep the repeat. The order is the lesson: question one unlocks the agent, question three unlocks the commission-free repeat.">
+        <ol class="viz-tree" aria-label="Decision tree: where does the agentic booking flow break for your restaurant?">
+          <li class="viz-tree__node">
+            <details open>
+              <summary><span class="viz-tree__num">1</span><span class="viz-tree__title">Are your tables live on a supported provider?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+              <div class="viz-tree__body">
+                <p>OpenTable, Resy, or Tock, with real inventory the agent can see &mdash; not a phone line, not a paper book by the host stand.</p>
+                <p><span class="viz-tree__verdict" data-tone="pass">Yes &mdash; continue</span> You are a candidate the agent can actually book. Drop to question 2.</p>
+                <p><span class="viz-tree__verdict" data-tone="fail">No &mdash; stop here</span> You are invisible to the agent. Nothing below this matters until a provider is live &mdash; this is the gate, not a nicety.</p>
               </div>
-            </li>
-            <li class="viz-flow__step" data-tone="teal">
-              <span class="viz-flow__num">2</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">Menu and photos current</p>
-                <p class="viz-flow__detail">The agent reads your <a href="/glossary/gbp/">profile</a> fields to decide which tables fit the ask. A stale menu or missing photos is a vote against you in a three-name answer.</p>
+            </details>
+          </li>
+          <li class="viz-tree__node">
+            <details>
+              <summary><span class="viz-tree__num">2</span><span class="viz-tree__title">Are your menu and photos current on your profile?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+              <div class="viz-tree__body">
+                <p>The agent reads your <a href="/glossary/gbp/">Google Business Profile</a> fields to decide which tables fit the diner&rsquo;s ask.</p>
+                <p><span class="viz-tree__verdict" data-tone="pass">Yes &mdash; continue</span> You read as a strong fit. Drop to question 3.</p>
+                <p><span class="viz-tree__verdict" data-tone="warn">No &mdash; refresh first</span> You are in the pool but a weak pick. A stale menu or missing photos is a vote against you in a three-name answer.</p>
               </div>
-            </li>
-            <li class="viz-flow__step" data-tone="teal">
-              <span class="viz-flow__num">3</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">Reservation link on GBP and your own site</p>
-                <p class="viz-flow__detail"><!-- LIBRARY:autolink:start --><a href="/glossary/above-the-fold/" data-glossary-head="Above the fold" data-glossary-aka="the first screen, &quot;what loads first&quot;" data-glossary-blurb="The part of your homepage a visitor sees without scrolling.">Above the fold</a><!-- LIBRARY:autolink:end --> on a phone, one tap to a real booking widget. The first booking comes through the agent; the second one should come straight to you.</p>
+            </details>
+          </li>
+          <li class="viz-tree__node">
+            <details>
+              <summary><span class="viz-tree__num">3</span><span class="viz-tree__title">Is your own reservation link one tap, above the fold, on a phone?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+              <div class="viz-tree__body">
+                <p><!-- LIBRARY:autolink:start --><a href="/glossary/above-the-fold/" data-glossary-head="Above the fold" data-glossary-aka="the first screen, &quot;what loads first&quot;" data-glossary-blurb="The part of your homepage a visitor sees without scrolling.">Above the fold</a><!-- LIBRARY:autolink:end --> on a phone, one tap to a real booking widget &mdash; on your Google Business Profile and your own site.</p>
+                <p><span class="viz-tree__verdict" data-tone="pass">Yes &mdash; you keep the repeat</span> The agent hands you the first booking; your own link takes the second one, commission-free.</p>
+                <p><span class="viz-tree__verdict" data-tone="fail">No &mdash; the repeat leaks</span> The first booking still arrives through the agent, but the commission-free repeat goes back to the platform you pay.</p>
               </div>
-            </li>
-          </ol>
-        </div>
-        <figcaption>Three steps, in this order. Skip the first and you are invisible to the agent; skip the third and the repeat booking goes back to the platform.</figcaption>
+            </details>
+          </li>
+        </ol>
+        <figcaption>Walk it top to bottom and stop at the first &ldquo;no&rdquo; &mdash; that is the move to make this week. Question 1 unlocks the agent; question 3 unlocks the commission-free repeat. The order is the lesson.</figcaption>
       </figure>
 
       <p>Agentic booking isn&rsquo;t a threat to fight; it&rsquo;s a flow to be in. Be bookable so the agent can hand you the first reservation, and own your own booking so you keep the second one.</p>
@@ -604,7 +607,22 @@ header.nav{min-height:64px}
               </ul>
             </aside>
             <!-- article-takeaways:end -->
-    </article>
+    <!-- article-author-card:start -->
+<aside class="article-author-card" aria-labelledby="article-author-h" style="margin:48px 0 0;padding:24px;border:1px solid var(--line);border-radius:12px;background:var(--cream-2);display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap">
+  <div class="article-author-card__avatar" aria-hidden="true" style="flex:0 0 auto;width:72px;height:72px;border-radius:50%;background:var(--teal);color:var(--cream);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:34px;font-weight:500;letter-spacing:-0.02em">D</div>
+  <div class="article-author-card__body" style="flex:1 1 280px;min-width:0">
+    <p class="article-author-card__eyebrow" style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--stone);margin:0 0 4px" id="article-author-h">About the author</p>
+    <p class="article-author-card__name" style="font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);margin:0 0 6px"><a href="/about/" style="color:var(--ink)">Don Goldstein</a></p>
+    <p class="article-author-card__bio" style="font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 10px">I&rsquo;m Don. I&rsquo;m front-of-house manager at Tacombi in Bethesda and the founder of Muntin Digital &mdash; the company behind this library, the Cost Index, and Muntin Ledger. Every article here comes from a problem I saw on the floor.</p>
+    <p class="article-author-card__creds" style="font-size:12px;color:var(--stone);margin:0 0 12px;letter-spacing:0.01em">ServSafe Manager &middot; ServSafe Allergens &middot; RAM Alcohol Awareness &middot; Maryland LLC</p>
+    <p class="article-author-card__cta" style="font-size:14px;margin:0">
+      <a href="/about/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none;margin-right:14px">More about Don &rarr;</a>
+      <a href="/window/" class="js-window" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">Email Don &rarr;</a>
+    </p>
+  </div>
+</aside>
+<!-- article-author-card:end -->
+  </article>
 
   <aside class="post-end-mark" aria-hidden="true">
     <hr/>
@@ -617,12 +635,23 @@ header.nav{min-height:64px}
   </aside>
 
   <!-- post-end-cta:start -->
-  <aside class="post-end-cta" aria-label="Workshop next step">
-    <p class="post-end-cta-headline">Not sure your booking path survives the AI handoff?</p>
-    <p class="post-end-cta-body">The audit walks your reservation flow from the AI answer to the confirmation screen and flags where a diner drops.</p>
-    <a class="btn btn-primary" href="/services/audit/?from=blog%2Fgoogle-ai-mode-reservation-booking-restaurant-2026">Run the audit<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></a>
-  </aside>
-  <!-- post-end-cta:end -->
+    <aside class="post-end-cta" aria-label="Workshop next step">
+      <p class="post-end-cta-headline">Agentic booking starts from your profile.</p>
+      <p class="post-end-cta-body">AI Mode books from the Google Business Profile, not your homepage. The GBP grader walks yours field by field and returns the gaps in order of impact — thirty seconds, no signup; save the read to the Workshop for the re-check.</p>
+      <a class="btn btn-primary" href="/tools/gbp-grader/?from=library%2Fai-mode-reservation-strategy&amp;intent=watch">Grade my profile<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></a>
+    </aside>
+    <!-- post-end-cta:end -->
+<!-- knit-rail:start -->
+<aside class="knit-rail" data-knit="article" aria-labelledby="knit-rail-h-ai-mode-reservation-strategy">
+  <h3 class="knit-rail__h" id="knit-rail-h-ai-mode-reservation-strategy">Keep going.</h3>
+  <ol class="knit-rail__cols">
+    <li class="knit-rail__col"><span class="knit-rail__verb">Apply</span><a href="/tools/gbp-grader/">Grade my profile</a></li>
+    <li class="knit-rail__col"><span class="knit-rail__verb">Read</span><a href="/blog/may-2026-wave-publishing-for-citation/">The May 2026 wave: nine pieces, one operating thesis</a></li>
+    <li class="knit-rail__col"><span class="knit-rail__verb">Define</span><a href="/glossary/reservation-link/">reservation link</a></li>
+    <li class="knit-rail__col"><span class="knit-rail__verb">Talk</span><a href="/window/?topic=ai-mode-reservation-strategy" class="js-window">Email Don</a></li>
+  </ol>
+</aside>
+<!-- knit-rail:end -->
 
   <!-- companion-kit:start -->
   <aside class="companion-kit" data-surface="library" data-source-slug="ai-mode-reservation-strategy" aria-labelledby="companion-kit-h-library-ai-mode-reservation-strategy">
@@ -680,16 +709,7 @@ header.nav{min-height:64px}
   <!-- /companion-kit:end -->
 
 
-  <!-- smart-next:start -->
-<aside class="smart-next" aria-labelledby="smart-next-h">
-  <p class="smart-next__eyebrow" id="smart-next-h">What to do next</p>
-  <ol class="smart-next__list">
-        <li class="smart-next__item smart-next__read"><span class="smart-next__verb">Read:</span> <a href="/glossary/reservation-link/">the related glossary term →</a></li>
-        <li class="smart-next__item smart-next__try"><span class="smart-next__verb">Try:</span> <a href="/tools/audits/restaurant/?from=blog/ai-mode-reservation-strategy&intent=watch">the tool that pairs with this article →</a></li>
-        <li class="smart-next__item smart-next__note"><span class="smart-next__verb">Or send Don a note:</span> <a href="/window/?topic=ai-mode-reservation-strategy">The Window →</a></li>
-  </ol>
-</aside>
-<!-- smart-next:end -->
+  <!-- smart-next:start --><!-- smart-next:end -->
 
 </main>
 
@@ -715,7 +735,7 @@ header.nav{min-height:64px}
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->150<!-- /count --> glossary terms &mdash; with a one-person web studio behind it in Silver Spring, MD.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->150<!-- /count --> glossary terms &mdash; from Muntin Digital in Silver Spring, MD.</p>
       </div>
 
       <!-- Column order mirrors the 4-item primary nav
@@ -743,12 +763,17 @@ header.nav{min-height:64px}
         </ul>
       </nav>
 
+      <!-- Phase 9 (services sunset, 2026-06-11): the Studio column's
+           Pricing / Compare / Process rows sold the retired services
+           business. The column is now the Company column — the product,
+           the public data, the company page, the founder. The retired services
+           and studio child pages 301 per the _redirects table. -->
       <nav class="foot-col" aria-labelledby="foot-studio">
-        <p class="foot-heading" id="foot-studio">Studio</p>
+        <p class="foot-heading" id="foot-studio">Company</p>
         <ul class="foot-links">
-          <li><a href="/studio/#pricing">Pricing</a></li>
-          <li><a href="/studio/compare/">Compare options</a></li>
-          <li><a href="/studio/#process">Process</a></li>
+          <li><a href="https://ledger.muntin.digital/">Muntin Ledger</a></li>
+          <li><a href="/cost-index/">Cost Index</a></li>
+          <li><a href="/studio/">The company</a></li>
           <li><a href="/about/">About Don</a></li>
         </ul>
       </nav>

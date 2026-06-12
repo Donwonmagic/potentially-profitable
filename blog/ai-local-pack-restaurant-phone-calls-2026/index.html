@@ -46,7 +46,7 @@
       "url": "https://muntin.digital/blog/ai-local-pack-restaurant-phone-calls-2026/",
       "inLanguage": "en-US",
       "datePublished": "2026-05-23T10:30:00-04:00",
-      "dateModified": "2026-05-23",
+      "dateModified": "2026-06-10",
       "author": {
         "@id": "https://muntin.digital/#don-goldstein",
         "@type": "Person",
@@ -236,11 +236,9 @@ header.nav{min-height:64px}
          three-doors page). Tools is promoted from the old Library
          mega-menu to a top-level item. Studio replaces Services +
          Restaurants + About — they all live under /studio/ now,
-         either as anchored sections (#pricing, #offers, #cities,
-         #process, #about) or as full child pages (/studio/compare/,
-         /studio/silver-spring/, etc.). The old Services and
-         Restaurants pages remain reachable via /studio/ and the
-         _redirects table; /about/ is unchanged. The mega-menu is
+         as sections of the company page (Phase 9, 2026-06-11: the
+         services-era child pages and anchored offer sections are
+         retired; old paths 301 via the _redirects table). /about/ is unchanged. The mega-menu is
          retired (the hub IS the menu now); the controller script
          is gone too.
 
@@ -252,7 +250,7 @@ header.nav{min-height:64px}
       <a href="/library/">Library</a>
       <a href="/start/">Start</a>
       <a href="/tools/">Tools</a>
-      <a href="/studio/">Studio</a>
+      <a href="/studio/">Company</a>
       <!-- Ledger — sister product (the privacy-forward invoice ledger)
            on its own subdomain. Plain external link so it passes link
            equity to ledger.muntin.digital; Plausible's automatic
@@ -314,7 +312,7 @@ header.nav{min-height:64px}
     <a href="/library/">Library</a>
     <a href="/start/">Start</a>
     <a href="/tools/">Tools</a>
-    <a href="/studio/">Studio</a>
+    <a href="/studio/">Company</a>
     <a href="https://ledger.muntin.digital/">Ledger</a>
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
@@ -480,21 +478,27 @@ header.nav{min-height:64px}
 
       <p>The numbers are real. A 2026 local-search analysis found restaurant Google Maps views down 40.1% and food orders from those listings down 25.7% over two years, even as rankings held. A separate 2026 survey found AI local packs &mdash; the AI-written block that sometimes replaces the classic three-pack &mdash; appearing on roughly 7% of tracked local searches, and dropping the <!-- LIBRARY:autolink:start --><a href="/glossary/click-to-call/" data-glossary-head="Click-to-call" data-glossary-aka="tap-to-call, tel: link" data-glossary-blurb="A phone number on your site that, when tapped on a phone, opens the dialer with your number pre-filled — instead of being plain text the visitor has to copy.">click-to-call</a><!-- LIBRARY:autolink:end --> button when they do.</p>
 
-      <figure class="viz-figure article-figure" data-audio-alt="What fell on restaurant Maps listings over two years, per a 2026 local-search analysis. Google Maps views for restaurants fell about forty percent. Food orders from those listings fell about twenty-six percent. Rankings held over the same period — the decline is in engagement, not position.">
+      <figure class="viz-figure article-figure" data-audio-alt="What moved on restaurant Maps listings over two years, per a 2026 local-search analysis, with each bar measured as a drop from the flat baseline where rankings sat. Average ranking position held essentially flat — no measurable change. Google Maps views for restaurants fell about forty percent. Food orders from those listings fell about twenty-six percent. The thin reference line on every track marks the flat rankings baseline, so the eye reads the gap directly: position did not move while engagement collapsed. The decline is in what diners do with the listing, not where it sits.">
         <div class="viz-bars">
-          <p class="viz-bars__title">What fell on restaurant Maps listings, 2-year change (bars scaled to a &minus;50% max)</p>
+          <p class="viz-bars__title">Two years of restaurant Maps listings: ranking held, engagement fell (bars scaled to a &minus;50% max; the tick marks the flat-ranking baseline)</p>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">Average ranking position</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:0.02"></span><span class="viz-bars__mark" data-tone="teal" style="--x:0.02" aria-hidden="true"></span></div>
+            <p class="viz-bars__num">~ flat</p>
+          </div>
           <div class="viz-bars__row">
             <p class="viz-bars__label">Maps views</p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.80"></span></div>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.80"></span><span class="viz-bars__mark" data-tone="teal" style="--x:0.02" aria-hidden="true"></span></div>
             <p class="viz-bars__num">&minus;40.1%</p>
           </div>
           <div class="viz-bars__row">
             <p class="viz-bars__label">Food orders</p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.51"></span></div>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.51"></span><span class="viz-bars__mark" data-tone="teal" style="--x:0.02" aria-hidden="true"></span></div>
             <p class="viz-bars__num">&minus;25.7%</p>
           </div>
+          <p class="viz-bars__note">The teal tick is where the ranking sat the whole time. The two rust bars are the gap between <strong>holding your position</strong> and <strong>keeping the engagement that used to come with it</strong>.</p>
         </div>
-        <figcaption>Restaurant Maps views and food orders over two years, per a 2026 local-search analysis &mdash; while rankings held. Bars scaled to a 50% range.</figcaption>
+        <figcaption>Position barely moved; Maps views and food orders fell hard over the same two years, per a 2026 local-search analysis. You can hold rank #1 and still lose the call.</figcaption>
       </figure>
       <details class="cite">
         <summary>Source: Rio SEO 2026 local-search report; Sterling Sky 2026</summary>
@@ -568,33 +572,37 @@ header.nav{min-height:64px}
       <h2 id="three-paths-that-replace-the-button">Three paths that replace the button</h2>
       <p>If the call is being intercepted, stop depending on it. Move the conversion onto paths the AI answer can&rsquo;t quietly remove.</p>
 
-      <figure class="viz-figure article-figure" data-audio-alt="Three conversion paths that replace the disappearing call button. One: a reservation or order link you own, so the conversion becomes a booking or an order rather than a phone call the AI can resolve. Two: an answer good enough to be chosen — a complete profile and fresh reviews, so when the AI summarizes you, the summary sells. Three: a captured customer — an email or loyalty sign-up, so the next visit doesn't route through Google at all.">
-        <div class="viz-flow">
-          <ol class="viz-flow__list">
-            <li class="viz-flow__step" data-tone="teal">
-              <span class="viz-flow__num">1</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">A booking or order link you own</p>
-                <p class="viz-flow__detail">The conversion becomes a reservation or an order &mdash; not a phone call the AI can answer for you.</p>
+      <figure class="viz-figure article-figure" data-audio-alt="A decision tree for picking which replacement path to build first, branching on what your restaurant already has. First question: do you take reservations or online orders? If yes, the fastest win is making your own booking or order link the primary call-to-action, so the conversion becomes a booking the AI cannot answer for you; if you are walk-in only, skip it. Second question: is your Google Business Profile complete with fresh reviews? If no, fix that first, because the AI summary is built from your profile and reviews, and a thin profile means the summary that replaces your listing does not sell. Third question: do you capture any diner contact today, an email or a loyalty sign-up? If no, this is the highest-leverage build, because a captured customer routes the next visit around Google and its AI entirely. The verdict pills mark which branch is the priority build for your situation.">
+        <ol class="viz-tree">
+          <li class="viz-tree__node">
+            <details>
+              <summary><span class="viz-tree__num">1</span><span class="viz-tree__title">Do you take reservations or online orders?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+              <div class="viz-tree__body">
+                <p><strong>Yes &rarr;</strong> <span class="viz-tree__verdict" data-tone="pass">Build first</span> Make your own booking or order link the primary button everywhere a diner lands. The conversion becomes a reservation or an order &mdash; not a phone call the AI can resolve in the answer.</p>
+                <p><strong>Walk-in only &rarr;</strong> <span class="viz-tree__verdict" data-tone="warn">Skip for now</span> There&rsquo;s no booking to move the tap onto. Jump to capture (node 3) instead.</p>
               </div>
-            </li>
-            <li class="viz-flow__step" data-tone="teal">
-              <span class="viz-flow__num">2</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">An answer good enough to be chosen</p>
-                <p class="viz-flow__detail">If the AI is going to summarize you, make the summary sell: a complete profile and fresh reviews.</p>
+            </details>
+          </li>
+          <li class="viz-tree__node">
+            <details>
+              <summary><span class="viz-tree__num">2</span><span class="viz-tree__title">Is your profile complete, with fresh reviews?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+              <div class="viz-tree__body">
+                <p><strong>No &rarr;</strong> <span class="viz-tree__verdict" data-tone="fail">Fix this first</span> The AI summary is assembled from your profile and your reviews. A thin profile means the answer that replaces your listing has nothing good to say &mdash; you lose before the tap is even in question.</p>
+                <p><strong>Yes &rarr;</strong> <span class="viz-tree__verdict" data-tone="pass">Maintain</span> Keep it fed. When the AI summarizes you, make the summary sell.</p>
               </div>
-            </li>
-            <li class="viz-flow__step" data-tone="rust">
-              <span class="viz-flow__num">3</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">A captured customer</p>
-                <p class="viz-flow__detail">An email or loyalty sign-up, so the next visit doesn&rsquo;t route through Google &mdash; or its AI &mdash; at all.</p>
+            </details>
+          </li>
+          <li class="viz-tree__node">
+            <details>
+              <summary><span class="viz-tree__num">3</span><span class="viz-tree__title">Do you capture any diner contact today?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+              <div class="viz-tree__body">
+                <p><strong>No &rarr;</strong> <span class="viz-tree__verdict" data-tone="fail">Highest leverage</span> An email or loyalty sign-up means the next visit doesn&rsquo;t route through Google &mdash; or its AI &mdash; at all. This is the one path the answer engine can never remove from you.</p>
+                <p><strong>Yes &rarr;</strong> <span class="viz-tree__verdict" data-tone="pass">Compound it</span> Use the list. Every captured diner is a conversion that no longer depends on a button Google controls.</p>
               </div>
-            </li>
-          </ol>
-        </div>
-        <figcaption>When the button disappears, the conversion has to move somewhere the answer can&rsquo;t intercept.</figcaption>
+            </details>
+          </li>
+        </ol>
+        <figcaption>Which replacement path to build first depends on what you already have. Walk the three questions; the first <span style="color:var(--rust)">Fix this first</span> or <span style="color:var(--rust)">Highest leverage</span> verdict is where to start.</figcaption>
       </figure>
 
       <p>Start by seeing your own <!-- LIBRARY:autolink:start --><a href="/glossary/funnel/" data-glossary-head="Funnel" data-glossary-aka="the path from visitor to customer" data-glossary-blurb="The sequence of steps a visitor goes through before becoming a customer — landing page → menu page → reserve button → reservation form → confirmation.">funnel</a><!-- LIBRARY:autolink:end -->: the <a href="/tools/storefront-health/">storefront health</a> check shows whether your booking and order paths actually work on a phone, and the <a href="/tools/gbp-grader/">GBP grader</a> shows whether the profile is complete enough to be chosen. The reservation side is covered in <a href="/library/reservation-conversion-guide/">why your restaurant loses reservations every night</a>. The phone may stay quiet. The covers don&rsquo;t have to.</p>
@@ -610,7 +618,22 @@ header.nav{min-height:64px}
               </ul>
             </aside>
             <!-- article-takeaways:end -->
-    </article>
+    <!-- article-author-card:start -->
+<aside class="article-author-card" aria-labelledby="article-author-h" style="margin:48px 0 0;padding:24px;border:1px solid var(--line);border-radius:12px;background:var(--cream-2);display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap">
+  <div class="article-author-card__avatar" aria-hidden="true" style="flex:0 0 auto;width:72px;height:72px;border-radius:50%;background:var(--teal);color:var(--cream);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:34px;font-weight:500;letter-spacing:-0.02em">D</div>
+  <div class="article-author-card__body" style="flex:1 1 280px;min-width:0">
+    <p class="article-author-card__eyebrow" style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--stone);margin:0 0 4px" id="article-author-h">About the author</p>
+    <p class="article-author-card__name" style="font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);margin:0 0 6px"><a href="/about/" style="color:var(--ink)">Don Goldstein</a></p>
+    <p class="article-author-card__bio" style="font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 10px">I&rsquo;m Don. I&rsquo;m front-of-house manager at Tacombi in Bethesda and the founder of Muntin Digital &mdash; the company behind this library, the Cost Index, and Muntin Ledger. Every article here comes from a problem I saw on the floor.</p>
+    <p class="article-author-card__creds" style="font-size:12px;color:var(--stone);margin:0 0 12px;letter-spacing:0.01em">ServSafe Manager &middot; ServSafe Allergens &middot; RAM Alcohol Awareness &middot; Maryland LLC</p>
+    <p class="article-author-card__cta" style="font-size:14px;margin:0">
+      <a href="/about/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none;margin-right:14px">More about Don &rarr;</a>
+      <a href="/window/" class="js-window" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">Email Don &rarr;</a>
+    </p>
+  </div>
+</aside>
+<!-- article-author-card:end -->
+  </article>
 
   <aside class="post-end-mark" aria-hidden="true">
     <hr/>
@@ -623,23 +646,25 @@ header.nav{min-height:64px}
   </aside>
 
   <!-- post-end-cta:start -->
-  <aside class="post-end-cta" aria-label="Workshop next step">
-    <p class="post-end-cta-headline">Want to see which paths your diners actually take?</p>
-    <p class="post-end-cta-body">The audit traces how a diner moves from the search result to your door, and flags the taps that disappear before they reach you.</p>
-    <a class="btn btn-primary" href="/services/audit/?from=blog%2Fai-local-pack-restaurant-phone-calls-2026">Run the audit<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></a>
-  </aside>
-  <!-- post-end-cta:end -->
-
-  <!-- smart-next:start -->
-<aside class="smart-next" aria-labelledby="smart-next-h">
-  <p class="smart-next__eyebrow" id="smart-next-h">What to do next</p>
-  <ol class="smart-next__list">
-        <li class="smart-next__item smart-next__read"><span class="smart-next__verb">Read:</span> <a href="/glossary/click-to-call/">the related glossary term →</a></li>
-        <li class="smart-next__item smart-next__try"><span class="smart-next__verb">Try:</span> <a href="/tools/audits/restaurant/?from=blog/ai-local-pack-restaurant-phone-calls-2026&intent=watch">the tool that pairs with this article →</a></li>
-        <li class="smart-next__item smart-next__note"><span class="smart-next__verb">Or send Don a note:</span> <a href="/window/?topic=ai-local-pack-restaurant-phone-calls-2026">The Window →</a></li>
+    <aside class="post-end-cta" aria-label="Workshop next step">
+      <p class="post-end-cta-headline">Want to see which paths your diners actually take?</p>
+      <p class="post-end-cta-body">The free Restaurant Website Audit traces how a diner moves from the search result to your door and flags the taps that disappear before they reach you — about thirty seconds, no signup. Save the result to the Workshop and re-run it after each fix.</p>
+      <a class="btn btn-primary" href="/tools/audits/restaurant/?from=blog%2Fai-local-pack-restaurant-phone-calls-2026&amp;intent=watch">Run the free audit<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></a>
+    </aside>
+    <!-- post-end-cta:end -->
+<!-- knit-rail:start -->
+<aside class="knit-rail" data-knit="article" aria-labelledby="knit-rail-h-ai-local-pack-restaurant-phone-calls-2026">
+  <h3 class="knit-rail__h" id="knit-rail-h-ai-local-pack-restaurant-phone-calls-2026">Keep going.</h3>
+  <ol class="knit-rail__cols">
+    <li class="knit-rail__col"><span class="knit-rail__verb">Apply</span><a href="/tools/audits/restaurant/">the free audit</a></li>
+    <li class="knit-rail__col"><span class="knit-rail__verb">Read</span><a href="/blog/gemini-ai-referral-traffic-restaurants-2026/">Gemini quietly became your #2 AI referral source — and it reads your Google profile</a></li>
+    <li class="knit-rail__col"><span class="knit-rail__verb">Define</span><a href="/glossary/click-to-call/">call</a></li>
+    <li class="knit-rail__col"><span class="knit-rail__verb">Talk</span><a href="/window/?topic=ai-local-pack-restaurant-phone-calls-2026" class="js-window">Email Don</a></li>
   </ol>
 </aside>
-<!-- smart-next:end -->
+<!-- knit-rail:end -->
+
+  <!-- smart-next:start --><!-- smart-next:end -->
 
 </main>
 
@@ -665,7 +690,7 @@ header.nav{min-height:64px}
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->150<!-- /count --> glossary terms &mdash; with a one-person web studio behind it in Silver Spring, MD.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->150<!-- /count --> glossary terms &mdash; from Muntin Digital in Silver Spring, MD.</p>
       </div>
 
       <!-- Column order mirrors the 4-item primary nav
@@ -693,12 +718,17 @@ header.nav{min-height:64px}
         </ul>
       </nav>
 
+      <!-- Phase 9 (services sunset, 2026-06-11): the Studio column's
+           Pricing / Compare / Process rows sold the retired services
+           business. The column is now the Company column — the product,
+           the public data, the company page, the founder. The retired services
+           and studio child pages 301 per the _redirects table. -->
       <nav class="foot-col" aria-labelledby="foot-studio">
-        <p class="foot-heading" id="foot-studio">Studio</p>
+        <p class="foot-heading" id="foot-studio">Company</p>
         <ul class="foot-links">
-          <li><a href="/studio/#pricing">Pricing</a></li>
-          <li><a href="/studio/compare/">Compare options</a></li>
-          <li><a href="/studio/#process">Process</a></li>
+          <li><a href="https://ledger.muntin.digital/">Muntin Ledger</a></li>
+          <li><a href="/cost-index/">Cost Index</a></li>
+          <li><a href="/studio/">The company</a></li>
           <li><a href="/about/">About Don</a></li>
         </ul>
       </nav>

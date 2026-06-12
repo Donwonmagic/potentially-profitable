@@ -5,13 +5,8 @@
   "basis": "wholesale",
   "currency": "USD",
   "note": "Wholesale reference prices compiled from public U.S. market sources (USDA AMS/LMR, BLS, FRED, EIA, NOAA). Values are in US dollars per unit. Not a delivered or retail price. Source: muntin.digital/cost-index/whole-chicken/",
-  "asOf": "2026-06-01",
+  "asOf": "2026-06-08",
   "observations": [
-    {
-      "date": "2026-02-09",
-      "priceUsd": 1.21,
-      "source": "usda-ams-national"
-    },
     {
       "date": "2026-02-16",
       "priceUsd": 1.2,
@@ -90,6 +85,11 @@
     {
       "date": "2026-06-01",
       "priceUsd": 0.83,
+      "source": "usda-ams-national"
+    },
+    {
+      "date": "2026-06-08",
+      "priceUsd": 0.85,
       "source": "usda-ams-national"
     }
   ]

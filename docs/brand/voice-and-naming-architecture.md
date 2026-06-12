@@ -110,8 +110,18 @@ questions ("Can I export my data?"). None of that is a violation. The line is:
 | **Muntin Digital** | The studio / parent brand | Apex `muntin.digital`: titles, OG, JSON-LD, footers |
 | **Muntin Ledger** | The product | `ledger.muntin.digital`, app, product email, README |
 | **Muntin** | Short form | Only where space forces it: PWA `short_name`, ES "Registro" |
+| **the Workshop** | The studio's interactive **tool workspace** (save/watch tools) — a `{site}` surface, **not** the product | User copy on `muntin.digital`. Distinct from Muntin Ledger. |
 | `muntin.digital` / `ledger.muntin.digital` | Domains | URLs, email addresses, `security.txt` |
 | **Muntin `<Noun>`** | Future products | One word, a noun from the window/operator family |
+
+**the Workshop vs Muntin Ledger — do not conflate.** "the Workshop" is the studio's
+on-site tool workspace (the saved-tools canvas); **Muntin Ledger** is the standalone
+product at `ledger.muntin.digital`. Two different surfaces with two different names.
+
+**Legacy identifier — "Workbench":** the Workshop's pre-rename name. Retained **only**
+as a non-user identifier — the URL `/workbench/`, code (`MuntinWorkbench`, `wb-*`,
+`js-wb-*`), and analytics event names ("Workbench Save", …). **Never in user copy** —
+`{site}/scripts/check-name-coherence.mjs` (`--check`, fail-CI) enforces Workbench→Workshop.
 
 **Retired:** "Invoice Decoder" / "the Decoder" as a *product name*. It
 predates the Ledger naming. Retirement is **scoped to user-visible prose
@@ -123,6 +133,44 @@ name:
 - code/CSP comments and internal doc filenames;
 - the repo name `Muntin-Invoice-Decoder` itself (a separate, optional
   housekeeping decision — repo renames are out of scope here).
+
+---
+
+---
+
+## 3a. Banned vocabulary — two tiers
+
+One shared core, plus per-register extensions. This is the canon; the two gates
+(`{site}/scripts/check-banned-words.mjs`, `{product}/scripts/check-verboten-phrases.mjs`)
+each enforce **Tier 1 + their own Tier 2**. Keep Tier 1 in sync with this list.
+
+**Tier 1 — shared core (both repos retire).** Universal marketing-speak:
+
+> `world-class` · `best-in-class` · `synergize` · `growth-hack` · `game-changer` ·
+> `disrupt` · `paradigm` · `low-hanging fruit` · `move the needle`
+
+Enforced in both today. A second cluster — `seamless` · `powerful` · `Welcome to` ·
+`AI-powered` — is enforced in **{product}** and is core in spirit, but **{site}**
+adoption is pending a copy pass: live false-positive collisions exist (`Seamless` the
+delivery brand in a tool's aggregator list; "most powerful trust signal" in a library
+article; "Welcome to…" quoted as the *bad* example in critique pages). Logged as backlog,
+not silently enforced.
+
+**Tier 2 — per register.**
+
+- **Studio ({site}):** `X solutions` · meeting-speak (`circle back` / `loop in` /
+  `deep-dive`) · `leverage` *(verb)*. (Plus the historical list quoted on `/methods/`.)
+- **Product ({product}):** `99% accurate` · `no AI` · `just docling` · `deterministic` ·
+  `the engine` · `empowering` · `✨`/`sparkle` · `luddite`/`old-school`/`traditional` ·
+  exclamation points · and the Spanish set (`empoderar`, `potente`, `mundialmente
+  reconocido`, `sin esfuerzo`, `Bienvenido a`, `inteligencia artificial`).
+
+Both gates skip comment lines and scrub `<code>`/`<pre>`/`<script>`, so naming a banned
+word *as documentation* (like this section, or a gate's own rule list) does not trip them.
+
+**Enforcement posture:** **both** gates are now **fail-CI** —
+`{product}/check-verboten-phrases.mjs` and `{site}/check-banned-words.mjs` (`--check` in
+`check-all.mjs` since cycle 9, after the 13 pre-existing {site} hits were cleared).
 
 ---
 

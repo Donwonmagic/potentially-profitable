@@ -128,9 +128,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=933461d49609" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-core.css?v=b70da981fa3f" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-tool.css?v=aee67503f378" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=933461d49609"><link rel="stylesheet" href="/assets/site-tool.css?v=aee67503f378"></noscript>
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=b70da981fa3f"><link rel="stylesheet" href="/assets/site-tool.css?v=aee67503f378"></noscript>
 <style>
 .cp-shell{max-width:880px;margin:0 auto;padding:48px 16px 80px}
 .cp-hero h1{font-family:var(--font-display);font-size:36px;font-weight:500;color:var(--ink);margin:0 0 10px;line-height:1.15}
@@ -154,6 +154,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 .cp-market-trend[data-dir="down"]{color:var(--teal)}
 .cp-market-trend[data-dir="flat"]{color:var(--ink-soft)}
 .cp-market-verdict{font-size:13px;margin:4px 0 2px;line-height:1.45}
+.cp-market-outlook{font-size:12.5px;color:#6b4fa1;margin:3px 0 0;line-height:1.45}
+.cp-outlook-chip{color:var(--ink-soft)}
 .cp-verb{display:inline-block;padding:2px 9px;border-radius:999px;font-size:11.5px;font-weight:700;letter-spacing:.02em;vertical-align:baseline}
 .cp-verb[data-tone="reprice"]{background:var(--status-bad-tint,#F7E7DC);color:var(--rust)}
 .cp-verb[data-tone="hold"]{background:var(--status-good-tint,rgba(31,157,85,.14));color:var(--status-good,#1F9D55)}
@@ -322,7 +324,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <a href="/es/library/">Biblioteca</a>
       <a href="/es/start/">Comienza</a>
       <a href="/es/tools/">Herramientas</a>
-      <a href="/es/studio/">Estudio</a>
+      <a href="/es/studio/">Empresa</a>
       <a href="https://ledger.muntin.digital/">Ledger</a>
       <a class="js-nav-signin nav-link-auth" href="/es/sign-in/" hidden>Acceder</a>
       <a class="js-nav-workshop nav-link-auth" href="/es/workbench/" hidden>El Taller</a>
@@ -352,7 +354,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <a href="/es/library/">Biblioteca</a>
     <a href="/es/start/">Comienza</a>
     <a href="/es/tools/">Herramientas</a>
-    <a href="/es/studio/">Estudio</a>
+    <a href="/es/studio/">Empresa</a>
     <a href="https://ledger.muntin.digital/">Ledger</a>
     <a class="js-nav-signin mobile-auth" href="/es/sign-in/" hidden>Acceder</a>
     <a class="js-nav-workshop mobile-auth" href="/es/workbench/" hidden>El Taller</a>
@@ -442,7 +444,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
               <p class="tool-data-promise__links"><a href="/es/security/">Lee la promesa completa &rarr;</a> &middot; <a href="/es/learn/checklists/audit-any-tool/">Audita cualquier herramienta &rarr;</a></p>
             </aside>
             <!-- data-promise:end -->
-    <p class="cp-lede">Una lectura de mercado gratis de dónde se ubican los precios de ingredientes comunes de restaurante — un rango típico, la tendencia y qué tan fresco es cada dato, de fuentes públicas (USDA, BLS, FRED). Úsala para distinguir un movimiento real del mercado de un sobreprecio del proveedor. <span class="cp-lede-legacy">¿Facturas guardadas del decodificador retirado? Tu panel histórico está más abajo.</span></p>
+    <p class="cp-lede">Una lectura de mercado gratis de dónde se ubican los precios de ingredientes comunes de restaurante — un rango típico, la tendencia y qué tan fresco es cada dato, de fuentes públicas (USDA, BLS, FRED). Úsala para distinguir un movimiento real del mercado de un sobreprecio del proveedor — son niveles públicos de referencia al mayoreo, nunca tu precio entregado. <span class="cp-lede-legacy">¿Facturas guardadas del decodificador retirado? Tu panel histórico está más abajo.</span></p>
   </div>
 
   <div id="cpStatus"></div>
@@ -604,6 +606,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <script src="/tools/_shared/cost-trend.js?v=20260501-w4-8"></script>
 <script src="/tools/_shared/sparkline.js?v=20260501-w4-9"></script>
 <script src="/tools/_shared/composite-price.js?v=20260606-w15-1"></script>
+<script src="/tools/_shared/cost-verdict.js?v=20260608-w16-1"></script>
 <script src="/data/cost-index.js?v=20260607-live4"></script>
 <script src="/tools/_shared/cost-index-format.js?v=20260608-fmt1"></script>
 <script src="/tools/_shared/cost-index-ui.js?v=20260607-live10"></script>

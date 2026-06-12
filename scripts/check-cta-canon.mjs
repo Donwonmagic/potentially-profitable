@@ -10,7 +10,7 @@
  * Banned variants (with the canonical replacement):
  *   "Send to Don"                   → "Send the note"  (field-note form submit)
  *   "Enviar a Don"                  → "Enviar la nota" (ES field-note form submit)
- *   "Send & book your call"         → "Book a 20-min call"
+ *   "Send & book your call"         → "Send the note" (booking retired, Phase 9)
  *
  * Phase 8 (portfolio sunset): the case-study CTA entries
  * ("View case study", "Read the case study" → "See the case study")
@@ -65,8 +65,12 @@ const BANNED = [
   { phrase: 'Send to Don',            replace: 'Send the note' },
   { phrase: 'Enviar a Don',           replace: 'Enviar la nota' },
   // Legacy intake-form submit; intake form now uses "Send the note"
-  // and booking happens via /studio/call/.
-  { phrase: 'Send & book your call',  replace: '"Send the note" or "Book a 20-min call"' },
+  // and the booking page is retired (Phase 9, services sunset).
+  { phrase: 'Send & book your call',  replace: '"Send the note"' },
+  // Phase 9: the consult-booking funnel is retired with the services
+  // business — the calendar CTA must not come back in button copy.
+  { phrase: 'Book a 20-min call',     replace: '"Email Don" or "See pricing"' },
+  { phrase: 'Reservar una llamada de 20 min', replace: '"Escribirle a Don" o "Ver precios"' },
   // Phase 8 (portfolio sunset): the case-study CTA entries were
   // dropped when /work/ was retired. See the header docstring.
 ];

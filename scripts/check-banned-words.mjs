@@ -48,6 +48,12 @@ const BANNED = [
   // Each word includes a regex with word boundaries so we don't
   // false-positive on substrings ("solutionary", "leveraged" data
   // structures inside code blocks, etc.).
+  //
+  // Tier-1 entries (synergize … move the needle, incl. world-class +
+  // best-in-class) are the SHARED cross-brand core — the product's
+  // check-verboten-phrases.mjs enforces the same set. Canon:
+  // docs/brand/voice-and-naming-architecture.md §3a. The trailing entries
+  // (X solutions, meeting-speak, leverage-verb) are studio Tier-2.
   { rx: /\bsynergize[ds]?\b/gi,                             word: 'synergize' },
   { rx: /\bbest[- ]in[- ]class\b/gi,                        word: 'best-in-class' },
   { rx: /\bgrowth[- ]hack(?:s|er|ers|ed|ing)?\b/gi,         word: 'growth-hack' },
@@ -59,8 +65,10 @@ const BANNED = [
   { rx: /\bmove the needle\b/gi,                            word: 'move the needle' },
   { rx: /\b(circle back|loop in|deep[- ]div(?:e|ing))\b/gi, word: 'meeting-speak' },
   // "leverage" as a verb only — keeping the noun (financial leverage,
-  // operating leverage) is fine.
-  { rx: /\bleverag(?:e|es|ed|ing)\s+(?:our|the|your|a|an|every|all)\b/gi, word: 'leverage (verb)' },
+  // operating leverage) is fine. The (?<!-) excludes the hyphenated noun
+  // "highest-leverage / high-leverage <thing>" (which is allowed); only the
+  // bare verb "leverage the/our/your/a…" is retired.
+  { rx: /(?<!-)\bleverag(?:e|es|ed|ing)\s+(?:our|the|your|a|an|every|all)\b/gi, word: 'leverage (verb)' },
   // "solutions" used as a generic SaaS suffix.
   { rx: /\b(?:web|business|enterprise|digital|marketing)\s+solutions\b/gi, word: 'X solutions' },
 ];

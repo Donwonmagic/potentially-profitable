@@ -43,6 +43,19 @@ const repoRoot   = path.resolve(path.dirname(__filename), '..');
 const URL_RE  = /\/tools\/(?:invoice-decoder|menu-design)\//;
 const SLUG_RE = /"slug"\s*:\s*"(?:invoice-decoder|menu-design)"/;
 
+// Services sunset (Phase 9, 2026-06-11): the productized-services
+// business retired — /services/* plus the studio booking/compare/city
+// lead-gen children. /studio/ itself survives as the company page, so
+// the pattern names the retired children explicitly (never a blanket
+// /studio/ match). EN + ES (the /es/ prefix is part of the same path).
+// (?<![\w.]) keeps URL-path matches (preceded by a quote, '(' or
+// whitespace) while ignoring API hosts like marsapi…gov/services/v1.2.
+// 2026-06-12: /for/restaurants/ stays LIVE — rewritten to the product
+// era (Ledger + Cost Index + tools), not retired. Only the build-tier
+// content was removed, so the slug is intentionally NOT in this regex.
+const SERVICES_URL_RE =
+  /(?<![\w.])\/(?:es\/)?(?:services\/|studio\/(?:call|compare|silver-spring|dc|arlington|bethesda|takoma-park)\/)/;
+
 // ---- Allow list ----------------------------------------------
 const ALLOW_FILES = new Set([
   '_redirects',                            // 410 rules intentionally cite dead paths
@@ -50,13 +63,21 @@ const ALLOW_FILES = new Set([
   'scripts/check-removed-slugs.mjs',       // this file documents the patterns
   'feed-llm.json',                         // historical LLM snapshot
   'llms-full.txt',                         // historical LLM snapshot
+  'es/llms-full.txt',                      // historical LLM snapshot (ES)
   'data/tool-releases.json',               // historical release notes
+  // Services sunset (Phase 9, 2026-06-11) historical/prose surfaces:
+  'data/services-pricing.json',            // retired price record (_retired)
+  'scripts/check-pricing-consistency.mjs', // documents the retired paths
+  'scripts/inject-css-shells.mjs',         // prose comments name old pages
+  'scripts/check-locale-parity.mjs',       // prose comment names the convention
 ]);
 
 // Comment-only refs in scripts and _shared modules are noise.
 // Skip these directories entirely.
 const ALLOW_DIRS = [
   'tools/_shared/',
+  'changelog/',                            // historical entries cite old paths
+  'es/changelog/',
   'docs/',                                 // historical planning docs
   'scripts/build-pdf-fonts.mjs',
   'scripts/check-tests.mjs',
@@ -85,7 +106,7 @@ function walk(dir, hits) {
     try { body = fs.readFileSync(full, 'utf8'); } catch { continue; }
     const lines = body.split('\n');
     lines.forEach((line, i) => {
-      if (URL_RE.test(line) || SLUG_RE.test(line)) {
+      if (URL_RE.test(line) || SLUG_RE.test(line) || SERVICES_URL_RE.test(line)) {
         hits.push({ file: rel, line: i + 1, snippet: line.trim().slice(0, 160) });
       }
     });

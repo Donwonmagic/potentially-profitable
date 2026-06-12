@@ -70,7 +70,7 @@
       },
       "url": "https://muntin.digital/library/reservation-conversion-guide/",
       "datePublished": "2026-04-17",
-      "dateModified": "2026-05-28",
+      "dateModified": "2026-06-10",
       "inLanguage": "en-US",
       "wordCount": 2440,
       "author": {
@@ -275,9 +275,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=933461d49609" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=15ac955f199e" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=933461d49609"><link rel="stylesheet" href="/assets/site-article.css?v=15ac955f199e"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=b70da981fa3f" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=36af39b8b96e" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=b70da981fa3f"><link rel="stylesheet" href="/assets/site-article.css?v=36af39b8b96e"></noscript>
 
 <style>
   /* ============ BLOG POST LAYOUT STYLES ============ */
@@ -678,11 +678,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
          three-doors page). Tools is promoted from the old Library
          mega-menu to a top-level item. Studio replaces Services +
          Restaurants + About — they all live under /studio/ now,
-         either as anchored sections (#pricing, #offers, #cities,
-         #process, #about) or as full child pages (/studio/compare/,
-         /studio/silver-spring/, etc.). The old Services and
-         Restaurants pages remain reachable via /studio/ and the
-         _redirects table; /about/ is unchanged. The mega-menu is
+         as sections of the company page (Phase 9, 2026-06-11: the
+         services-era child pages and anchored offer sections are
+         retired; old paths 301 via the _redirects table). /about/ is unchanged. The mega-menu is
          retired (the hub IS the menu now); the controller script
          is gone too.
 
@@ -694,7 +692,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <a href="/library/">Library</a>
       <a href="/start/">Start</a>
       <a href="/tools/">Tools</a>
-      <a href="/studio/">Studio</a>
+      <a href="/studio/">Company</a>
       <!-- Ledger — sister product (the privacy-forward invoice ledger)
            on its own subdomain. Plain external link so it passes link
            equity to ledger.muntin.digital; Plausible's automatic
@@ -756,7 +754,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <a href="/library/">Library</a>
     <a href="/start/">Start</a>
     <a href="/tools/">Tools</a>
-    <a href="/studio/">Studio</a>
+    <a href="/studio/">Company</a>
     <a href="https://ledger.muntin.digital/">Ledger</a>
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
@@ -1023,54 +1021,42 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <h2 id="the-six-leaks-in-order">The six leaks, in order</h2>
       <p>Here's what's actually going wrong at each drop point, and how to plug it.</p>
 
-      <figure class="viz-figure article-figure" data-audio-alt="The six leaks in the order they hit a visitor on a restaurant website. One — your site is slow on a phone, the largest single drop at fifteen visitors per hundred. Two — your menu is a PDF that won't render on iPhone, costing eight more. Three — your hours are hiding in the footer, costing four. Four — the reservation button is buried or missing, costing ten. Five — the booking flow has too many fields and asks for an account, the second largest leak at thirteen. Six — confirmation anxiety after the booking, the smallest at three. The first four are code or copy fixes. The last two are platform and operations.">
-        <div class="viz-flow">
-          <ol class="viz-flow__list">
-            <li class="viz-flow__step" data-tone="rust">
-              <span class="viz-flow__num">1</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">Site slow on a phone</p>
-                <p class="viz-flow__detail">The largest single drop &mdash; about 15 visitors per 100 leave before the site finishes loading. Google's mobile benchmark threshold is 3 seconds; most restaurant sites land at 4-7.</p>
-              </div>
-            </li>
-            <li class="viz-flow__step" data-tone="rust">
-              <span class="viz-flow__num">2</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">Menu is a PDF</p>
-                <p class="viz-flow__detail">Costs another 8 visitors. Safari hands the PDF to a separate viewer, rendered at desktop size &mdash; a wall of pinch-zoom text on a phone.</p>
-              </div>
-            </li>
-            <li class="viz-flow__step" data-tone="rust">
-              <span class="viz-flow__num">3</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">Hours are hiding</p>
-                <p class="viz-flow__detail">Costs 4 more. The single most-asked question on a restaurant site is "are you open right now?" &mdash; and the answer is usually buried in the footer.</p>
-              </div>
-            </li>
-            <li class="viz-flow__step" data-tone="rust">
-              <span class="viz-flow__num">4</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">Reservation button buried or missing</p>
-                <p class="viz-flow__detail">Costs 10 visitors. Fitts's Law: the harder a button is to reach, the less often people press it. A sticky bottom CTA is roughly an hour of work.</p>
-              </div>
-            </li>
-            <li class="viz-flow__step" data-tone="rust">
-              <span class="viz-flow__num">5</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">Reservation flow friction</p>
-                <p class="viz-flow__detail">The second-largest leak at 13. Most third-party widgets demand 8-12 fields and a forced account; every extra screen correlates with dropoff.</p>
-              </div>
-            </li>
-            <li class="viz-flow__step" data-tone="rust">
-              <span class="viz-flow__num">6</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">Confirmation anxiety</p>
-                <p class="viz-flow__detail">Small on the funnel (3) but invisible to you. No email, no text, no paper trail &mdash; the customer doubts the booking and quietly calls somewhere else.</p>
-              </div>
-            </li>
-          </ol>
+      <figure class="viz-figure article-figure" data-audio-alt="The same six leaks, re-sorted by how much each one actually costs, biggest first, instead of by the order they hit. A slow phone load is the largest at fifteen visitors lost per hundred. Reservation-flow friction is second at thirteen. The buried reservation button is third at ten. A PDF menu is fourth at eight. Hidden hours costs four. Confirmation anxiety costs three. The illustrative reference line marks where the running total crosses half of all loss: it falls right after the top two leaks, which means slow load and flow friction together account for more than half of every diner you lose. Fix those two and you have closed the majority of the leak before touching the other four.">
+        <div class="viz-bars" data-animate="grow">
+          <p class="viz-bars__title">The six leaks, re-sorted by what each one costs (per 100 visitors)</p>
+          <p class="viz-bars__note">The reference line marks <strong>half of all loss</strong>. It lands right after leak #2 &mdash; the top two together cost more than the other four combined.</p>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">Slow phone load</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:1.00"></span><span class="viz-bars__mark" data-tone="ink" style="--x:0.93" aria-hidden="true"></span></div>
+            <p class="viz-bars__num">&minus;15</p>
+          </div>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">Reservation-flow friction</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.867"></span><span class="viz-bars__mark" data-tone="ink" style="--x:0.93" aria-hidden="true"></span></div>
+            <p class="viz-bars__num">&minus;13</p>
+          </div>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">Reservation button buried</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:0.667"></span></div>
+            <p class="viz-bars__num">&minus;10</p>
+          </div>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">Menu is a PDF</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:0.533"></span></div>
+            <p class="viz-bars__num">&minus;8</p>
+          </div>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">Hours hiding</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:0.267"></span></div>
+            <p class="viz-bars__num">&minus;4</p>
+          </div>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">Confirmation anxiety</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:0.20"></span></div>
+            <p class="viz-bars__num">&minus;3</p>
+          </div>
         </div>
-        <figcaption>The six leaks in order. Severity numbers are the illustrative per-100-visitor drops from the funnel above; the order is the order they hit the visitor.</figcaption>
+        <figcaption>The funnel above shows the leaks in the order a visitor hits them; this ranks them by cost. Two leaks &mdash; slow load and flow friction &mdash; carry more than half the loss. Illustrative per-100-visitor drops; bars scaled to the largest leak.</figcaption>
       </figure>
 
       <h3>Leak #1 — Your site is slow on a phone</h3>
@@ -1346,7 +1332,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   <div class="article-author-card__body" style="flex:1 1 280px;min-width:0">
     <p class="article-author-card__eyebrow" style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--stone);margin:0 0 4px" id="article-author-h">About the author</p>
     <p class="article-author-card__name" style="font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);margin:0 0 6px"><a href="/about/" style="color:var(--ink)">Don Goldstein</a></p>
-    <p class="article-author-card__bio" style="font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 10px">I&rsquo;m Don. I&rsquo;m front-of-house manager at Tacombi in Bethesda and run Muntin Digital, the one-person web studio behind this library. Every article here comes from a problem I saw on the floor or in a client audit.</p>
+    <p class="article-author-card__bio" style="font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 10px">I&rsquo;m Don. I&rsquo;m front-of-house manager at Tacombi in Bethesda and the founder of Muntin Digital &mdash; the company behind this library, the Cost Index, and Muntin Ledger. Every article here comes from a problem I saw on the floor.</p>
     <p class="article-author-card__creds" style="font-size:12px;color:var(--stone);margin:0 0 12px;letter-spacing:0.01em">ServSafe Manager &middot; ServSafe Allergens &middot; RAM Alcohol Awareness &middot; Maryland LLC</p>
     <p class="article-author-card__cta" style="font-size:14px;margin:0">
       <a href="/about/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none;margin-right:14px">More about Don &rarr;</a>
@@ -1521,7 +1507,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   <div class="article-author-card__body" style="flex:1 1 280px;min-width:0">
     <p class="article-author-card__eyebrow" style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--stone);margin:0 0 4px" id="article-author-h">About the author</p>
     <p class="article-author-card__name" style="font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);margin:0 0 6px"><a href="/about/" style="color:var(--ink)">Don Goldstein</a></p>
-    <p class="article-author-card__bio" style="font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 10px">I&rsquo;m Don. I&rsquo;m front-of-house manager at Tacombi in Bethesda and run Muntin Digital, the one-person web studio behind this library. Every article here comes from a problem I saw on the floor or in a client audit.</p>
+    <p class="article-author-card__bio" style="font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 10px">I&rsquo;m Don. I&rsquo;m front-of-house manager at Tacombi in Bethesda and the founder of Muntin Digital &mdash; the company behind this library, the Cost Index, and Muntin Ledger. Every article here comes from a problem I saw on the floor.</p>
     <p class="article-author-card__creds" style="font-size:12px;color:var(--stone);margin:0 0 12px;letter-spacing:0.01em">ServSafe Manager &middot; ServSafe Allergens &middot; RAM Alcohol Awareness &middot; Maryland LLC</p>
     <p class="article-author-card__cta" style="font-size:14px;margin:0">
       <a href="/about/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none;margin-right:14px">More about Don &rarr;</a>
@@ -1555,7 +1541,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   <div class="article-author-card__body" style="flex:1 1 280px;min-width:0">
     <p class="article-author-card__eyebrow" style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--stone);margin:0 0 4px" id="article-author-h">About the author</p>
     <p class="article-author-card__name" style="font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);margin:0 0 6px"><a href="/about/" style="color:var(--ink)">Don Goldstein</a></p>
-    <p class="article-author-card__bio" style="font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 10px">I&rsquo;m Don. I&rsquo;m front-of-house manager at Tacombi in Bethesda and run Muntin Digital, the one-person web studio behind this library. Every article here comes from a problem I saw on the floor or in a client audit.</p>
+    <p class="article-author-card__bio" style="font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 10px">I&rsquo;m Don. I&rsquo;m front-of-house manager at Tacombi in Bethesda and the founder of Muntin Digital &mdash; the company behind this library, the Cost Index, and Muntin Ledger. Every article here comes from a problem I saw on the floor.</p>
     <p class="article-author-card__creds" style="font-size:12px;color:var(--stone);margin:0 0 12px;letter-spacing:0.01em">ServSafe Manager &middot; ServSafe Allergens &middot; RAM Alcohol Awareness &middot; Maryland LLC</p>
     <p class="article-author-card__cta" style="font-size:14px;margin:0">
       <a href="/about/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none;margin-right:14px">More about Don &rarr;</a>
@@ -1691,18 +1677,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <h4>Free Restaurant Website Audit.</h4>
         <p>Drop your URL and get a real mobile Lighthouse audit in about thirty seconds — the fastest way to verify Leak #1 on your own site.</p>
       </a>
-      <a href="/services/audit/">
-        <h4>$499 deep-read audit.</h4>
-        <p>If you'd rather have me run the audit and walk you through the fixes — 90-minute Loom plus an 8-page action sheet, in five business days. Credits toward a build.</p>
-      </a>
-      <a href="/services/menu-drop-in/">
-        <h4>$1,500 menu drop-in.</h4>
-        <p>If your bottleneck is the menu page specifically — one custom HTML menu page that plugs into your existing Wix or Squarespace. Seven days. Bilingual.</p>
-      </a>
-      <a href="/services/care-plan-light/">
-        <h4>$99/mo Care Plan Light.</h4>
-        <p>For the hours-and-hygiene side of the leaks above — monthly verification across site + GBP + Yelp + Apple Maps. No sales call required.</p>
-      </a>
       <a href="/learn/">
         <h4 class="i18n">Back to the library.</h4>
         <p>Articles, tools, glossary, and the checklist — all in one shelf.</p>
@@ -1749,7 +1723,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->150<!-- /count --> glossary terms &mdash; with a one-person web studio behind it in Silver Spring, MD.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->150<!-- /count --> glossary terms &mdash; from Muntin Digital in Silver Spring, MD.</p>
       </div>
 
       <!-- Column order mirrors the 4-item primary nav
@@ -1777,12 +1751,17 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         </ul>
       </nav>
 
+      <!-- Phase 9 (services sunset, 2026-06-11): the Studio column's
+           Pricing / Compare / Process rows sold the retired services
+           business. The column is now the Company column — the product,
+           the public data, the company page, the founder. The retired services
+           and studio child pages 301 per the _redirects table. -->
       <nav class="foot-col" aria-labelledby="foot-studio">
-        <p class="foot-heading" id="foot-studio">Studio</p>
+        <p class="foot-heading" id="foot-studio">Company</p>
         <ul class="foot-links">
-          <li><a href="/studio/#pricing">Pricing</a></li>
-          <li><a href="/studio/compare/">Compare options</a></li>
-          <li><a href="/studio/#process">Process</a></li>
+          <li><a href="https://ledger.muntin.digital/">Muntin Ledger</a></li>
+          <li><a href="/cost-index/">Cost Index</a></li>
+          <li><a href="/studio/">The company</a></li>
           <li><a href="/about/">About Don</a></li>
         </ul>
       </nav>

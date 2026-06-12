@@ -114,9 +114,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=933461d49609" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=15ac955f199e" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=933461d49609"><link rel="stylesheet" href="/assets/site-article.css?v=15ac955f199e"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=b70da981fa3f" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=36af39b8b96e" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=b70da981fa3f"><link rel="stylesheet" href="/assets/site-article.css?v=36af39b8b96e"></noscript>
 </head>
 <body class="window-canvas" data-locale="en">
 
@@ -192,22 +192,23 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <!-- Sash—bottom (operable light): the note. -->
     <section class="sash--bottom" id="windowComposer">
 
-      <!-- Six on-ramp chips. Empathy chips lead (no price); productized
-           offers follow with their canonical labels; "Something else"
-           closes. Audit-pending: prepend strings are operator-note
-           skeletons in plain English (María-tested). -->
+      <!-- Six on-ramp chips. Empathy chips lead; product/company chips
+           follow (the services on-ramps — new site / audit / care plan —
+           were retired with the services sunset, 2026-06-12). "Something
+           else" closes. Prepend strings are operator-note skeletons in
+           plain English (María-tested). -->
       <div class="window-composer__onramps" id="windowOnramps" role="group" aria-label="What brings you in">
         <button type="button" class="window-onramp window-onramp--soft" data-prepend="I'm not sure yet. Here's what's going on: ">I&rsquo;m not sure yet &mdash; let me explain</button>
-        <button type="button" class="window-onramp window-onramp--soft" data-prepend="I'm not ready to hire — just want eyes on this: ">I&rsquo;m not ready to hire &mdash; just want a second pair of eyes</button>
-        <button type="button" class="window-onramp" data-prepend="Your place: . Your website (if you have one): . What I want a new site to fix: ">New website &middot; <em>$2,500&ndash;$15k</em></button>
-        <button type="button" class="window-onramp" data-prepend="My website: . What's bothering me about it: ">Look at my site &middot; <em>$499</em></button>
-        <button type="button" class="window-onramp" data-prepend="My website: . Who works on it now: . What's not working: ">Take care of my site every month &middot; <em>$225/mo</em></button>
+        <button type="button" class="window-onramp window-onramp--soft" data-prepend="I'm not ready to decide — just want eyes on this: ">Just want a second pair of eyes</button>
+        <button type="button" class="window-onramp" data-prepend="My restaurant: . How many vendor invoices I get a week: . What I want Muntin Ledger to help with: ">Try Muntin Ledger</button>
+        <button type="button" class="window-onramp" data-prepend="The tool or the Cost Index number I'm looking at: . My question: ">A question about a free tool or the Cost Index</button>
+        <button type="button" class="window-onramp" data-prepend="What looks off, and where I saw it: ">A correction &mdash; something looks wrong</button>
         <button type="button" class="window-onramp" data-prepend="">Something else</button>
       </div>
 
       <!-- Trust tell. Inherits the about-page voice into the composer:
            the operator learns, without being told, that Don will tell
-           them they don't need a $2,500 site if that's true. -->
+           them they don't need to pay for something if that's true. -->
       <p class="window-composer__trust-tell">If the answer is &lsquo;you don&rsquo;t need to spend money on this,&rsquo; that&rsquo;s what I&rsquo;ll tell you. Has happened before.</p>
 
       <!-- Hostess line — visible above the textarea (not buried inside
@@ -342,7 +343,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
          fallback flavor). -->
     <footer class="sill">
       <p class="sill__reassurance" id="windowReassurance">I read every one. Mondays through Fridays, within 4 hours. Weekends, by Monday morning. No commitment, no pitch.</p>
-      <p class="sill__alt-row">Prefer to talk? <a href="/studio/call/" rel="noopener" data-event="window-cal-link">Book a 20-minute call</a>. Prefer email? <a href="mailto:don@muntin.digital?subject=Hi%20Don" data-event="window-email-link">don@muntin.digital</a>. Prefer Instagram? <a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener" data-event="window-ig-link">@muntin.digital</a>.</p>
     </footer>
   </article>
 

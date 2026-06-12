@@ -130,9 +130,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=933461d49609" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-core.css?v=b70da981fa3f" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-tool.css?v=aee67503f378" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=933461d49609"><link rel="stylesheet" href="/assets/site-tool.css?v=aee67503f378"></noscript>
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=b70da981fa3f"><link rel="stylesheet" href="/assets/site-tool.css?v=aee67503f378"></noscript>
 <style>
 .cp-shell{max-width:880px;margin:0 auto;padding:48px 16px 80px}
 .cp-hero h1{font-family:var(--font-display);font-size:36px;font-weight:500;color:var(--ink);margin:0 0 10px;line-height:1.15}
@@ -156,6 +156,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 .cp-market-trend[data-dir="down"]{color:var(--teal)}
 .cp-market-trend[data-dir="flat"]{color:var(--ink-soft)}
 .cp-market-verdict{font-size:13px;margin:4px 0 2px;line-height:1.45}
+.cp-market-outlook{font-size:12.5px;color:#6b4fa1;margin:3px 0 0;line-height:1.45}
+.cp-outlook-chip{color:var(--ink-soft)}
 .cp-verb{display:inline-block;padding:2px 9px;border-radius:999px;font-size:11.5px;font-weight:700;letter-spacing:.02em;vertical-align:baseline}
 .cp-verb[data-tone="reprice"]{background:var(--status-bad-tint,#F7E7DC);color:var(--rust)}
 .cp-verb[data-tone="hold"]{background:var(--status-good-tint,rgba(31,157,85,.14));color:var(--status-good,#1F9D55)}
@@ -332,11 +334,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
          three-doors page). Tools is promoted from the old Library
          mega-menu to a top-level item. Studio replaces Services +
          Restaurants + About — they all live under /studio/ now,
-         either as anchored sections (#pricing, #offers, #cities,
-         #process, #about) or as full child pages (/studio/compare/,
-         /studio/silver-spring/, etc.). The old Services and
-         Restaurants pages remain reachable via /studio/ and the
-         _redirects table; /about/ is unchanged. The mega-menu is
+         as sections of the company page (Phase 9, 2026-06-11: the
+         services-era child pages and anchored offer sections are
+         retired; old paths 301 via the _redirects table). /about/ is unchanged. The mega-menu is
          retired (the hub IS the menu now); the controller script
          is gone too.
 
@@ -348,7 +348,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <a href="/library/">Library</a>
       <a href="/start/">Start</a>
       <a href="/tools/">Tools</a>
-      <a href="/studio/">Studio</a>
+      <a href="/studio/">Company</a>
       <!-- Ledger — sister product (the privacy-forward invoice ledger)
            on its own subdomain. Plain external link so it passes link
            equity to ledger.muntin.digital; Plausible's automatic
@@ -410,7 +410,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <a href="/library/">Library</a>
     <a href="/start/">Start</a>
     <a href="/tools/">Tools</a>
-    <a href="/studio/">Studio</a>
+    <a href="/studio/">Company</a>
     <a href="https://ledger.muntin.digital/">Ledger</a>
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
@@ -546,7 +546,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
               <p class="tool-data-promise__links"><a href="/security/">Read the full data promise &rarr;</a> &middot; <a href="/learn/checklists/audit-any-tool/">Audit any tool &rarr;</a></p>
             </aside>
             <!-- data-promise:end -->
-    <p class="cp-lede">A free market read of where common restaurant ingredients are priced — a typical range, the trend, and how fresh each number is, drawn from public sources (USDA, BLS, FRED). Use it to tell a real market move from a vendor markup. <span class="cp-lede-legacy">Saved invoices from the retired decoder? Your historical dashboard is further down.</span></p>
+    <p class="cp-lede">A free market read of where common restaurant ingredients are priced — a typical range, the trend, and how fresh each number is, drawn from public sources (USDA, BLS, FRED). Use it to tell a real market move from a vendor markup — these are public wholesale reference levels, never your delivered price. <span class="cp-lede-legacy">Saved invoices from the retired decoder? Your historical dashboard is further down.</span></p>
   </div>
 
   <div id="cpStatus"></div>
@@ -775,6 +775,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <script src="/tools/_shared/cost-trend.js?v=20260501-w4-8"></script>
 <script src="/tools/_shared/sparkline.js?v=20260501-w4-9"></script>
 <script src="/tools/_shared/composite-price.js?v=20260606-w15-1"></script>
+<script src="/tools/_shared/cost-verdict.js?v=20260608-w16-1"></script>
 <script src="/data/cost-index.js?v=20260607-live4"></script>
 <script src="/tools/_shared/stem.js?v=20260504-w10-0a"></script>
 <script src="/tools/_shared/portion-bridge.js?v=20260504-w10-2"></script>

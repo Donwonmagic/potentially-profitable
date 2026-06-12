@@ -37,7 +37,7 @@
       "@type": "WebPage",
       "@id": "https://muntin.digital/receipts/#webpage",
       "name": "Receipts — Muntin Digital",
-      "description": "Public counts and methods from the one-person studio. What we publish; what we don't track.",
+      "description": "Public counts and methods from Muntin Digital. What we publish; what we don't track.",
       "url": "https://muntin.digital/receipts/",
       "inLanguage": "en-US",
       "isPartOf": { "@id": "https://muntin.digital/#website" },
@@ -154,9 +154,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=933461d49609" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=15ac955f199e" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=933461d49609"><link rel="stylesheet" href="/assets/site-article.css?v=15ac955f199e"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=b70da981fa3f" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=36af39b8b96e" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=b70da981fa3f"><link rel="stylesheet" href="/assets/site-article.css?v=36af39b8b96e"></noscript>
 
 <!-- lazy-load:p --><script>(window.requestIdleCallback||function(c){return setTimeout(c,500);})(function(){var s=document.createElement("script");s.src="/assets/p.js?v=20260503";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:p -->
 <script>
@@ -210,11 +210,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
          three-doors page). Tools is promoted from the old Library
          mega-menu to a top-level item. Studio replaces Services +
          Restaurants + About — they all live under /studio/ now,
-         either as anchored sections (#pricing, #offers, #cities,
-         #process, #about) or as full child pages (/studio/compare/,
-         /studio/silver-spring/, etc.). The old Services and
-         Restaurants pages remain reachable via /studio/ and the
-         _redirects table; /about/ is unchanged. The mega-menu is
+         as sections of the company page (Phase 9, 2026-06-11: the
+         services-era child pages and anchored offer sections are
+         retired; old paths 301 via the _redirects table). /about/ is unchanged. The mega-menu is
          retired (the hub IS the menu now); the controller script
          is gone too.
 
@@ -226,7 +224,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <a href="/library/">Library</a>
       <a href="/start/">Start</a>
       <a href="/tools/">Tools</a>
-      <a href="/studio/">Studio</a>
+      <a href="/studio/">Company</a>
       <!-- Ledger — sister product (the privacy-forward invoice ledger)
            on its own subdomain. Plain external link so it passes link
            equity to ledger.muntin.digital; Plausible's automatic
@@ -288,7 +286,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <a href="/library/">Library</a>
     <a href="/start/">Start</a>
     <a href="/tools/">Tools</a>
-    <a href="/studio/">Studio</a>
+    <a href="/studio/">Company</a>
     <a href="https://ledger.muntin.digital/">Ledger</a>
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
@@ -500,8 +498,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <ul style="font-size:15px;line-height:1.7;color:var(--ink);margin:0;padding-left:22px">
         <li><strong>Two builds at a time, no exceptions.</strong> If the calendar can&rsquo;t carry your project, you hear about it on day one with a date you&rsquo;d be next, or a referral. <a href="/never/" style="color:var(--teal)">/never/ #5</a>.</li>
         <li><strong>Reply within 4 hours, Mon&ndash;Fri.</strong> Posted on every page, measured in Plausible.</li>
-        <li><strong>Three site tiers, posted in writing.</strong> $2,500 Essentials &middot; $5&ndash;9k Full Service &middot; $8&ndash;15k+ Group. <a href="/services/" style="color:var(--teal)">See pricing</a>.</li>
-        <li><strong>Three productized offers, bookable without a sales call.</strong> $499 audit &middot; $1,500 menu drop-in &middot; $99/mo Care Plan Light. <a href="/services/audit/" style="color:var(--teal)">Audit</a> &middot; <a href="/services/menu-drop-in/" style="color:var(--teal)">drop-in</a> &middot; <a href="/services/care-plan-light/" style="color:var(--teal)">Care Plan</a>.</li>
+        <li><strong>Product pricing posted in writing.</strong> Muntin Ledger&rsquo;s tiers and the per-invoice cost math live at <a href="https://ledger.muntin.digital/" style="color:var(--teal)">ledger.muntin.digital</a>. (The services-era tiers and offers were retired 2026-06-11; their pages 301 to <a href="/studio/" style="color:var(--teal)">/studio/</a>.)</li>
         <li><strong>Library content licensed CC&nbsp;BY-NC&nbsp;4.0.</strong> Quote, summarize, translate, AI-cite freely. Tools / brand / codebase explicitly not licensed for redistribution. <a href="/terms.html" style="color:var(--teal)">/terms.html &sect;4</a>.</li>
         <li><strong>Five things this studio will never do.</strong> No lock-in, no data resale, no hidden pricing, no remarketing pixel on the library, no work outside the quoted window. <a href="/never/" style="color:var(--teal)">/never/</a>.</li>
         <li><strong>Three functional cookies, no banner.</strong> <code>md_locale</code>, <code>lang_hint_dismissed</code>, <code>md_session</code>. Plausible is cookieless. <a href="/cookies.html" style="color:var(--teal)">/cookies.html</a>.</li>
@@ -518,9 +515,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <li><strong><!-- count:tools.live -->13<!-- /count --> free tools live</strong> (was 13 at the start of May 2026; rose to 15 mid-month with Holiday Hours Generator + Menu Converter; settled at 13 after retiring Invoice Decoder and Menu Design Suite on 2026-05-08).</li>
         <li><strong>18 articles</strong> (was 17). New op-ed: <a href="/library/third-party-delivery-economics/" style="color:var(--teal)">An honest DoorDash math, 2026</a>.</li>
         <li><strong>4 quarterly research notes</strong> (was 2). New: <a href="/learn/research/dmv-restaurant-gbp-audit-2026/" style="color:var(--teal)">DMV GBP audit, 2026</a> and <a href="/learn/research/the-1-percent-margin-audit-50-restaurant-websites-2026/" style="color:var(--teal)">The 1% margin audit, 50 sites</a>.</li>
-        <li><strong>3 new productized offer pages</strong> at <a href="/services/audit/" style="color:var(--teal)">/services/audit/</a>, <a href="/services/menu-drop-in/" style="color:var(--teal)">/services/menu-drop-in/</a>, <a href="/services/care-plan-light/" style="color:var(--teal)">/services/care-plan-light/</a>.</li>
-        <li><strong>5 DMV city subpages</strong> at <a href="/studio/silver-spring/" style="color:var(--teal)">/studio/silver-spring/</a>, <a href="/studio/bethesda/" style="color:var(--teal)">/bethesda/</a>, <a href="/studio/takoma-park/" style="color:var(--teal)">/takoma-park/</a>, <a href="/studio/dc/" style="color:var(--teal)">/dc/</a>, <a href="/studio/arlington/" style="color:var(--teal)">/arlington/</a>.</li>
-        <li><strong>4 new trust pages</strong>: <a href="/never/" style="color:var(--teal)">/never/</a>, <a href="/ai/" style="color:var(--teal)">/ai/</a>, <a href="/library/" style="color:var(--teal)">/library/</a>, <a href="/studio/" style="color:var(--teal)">/studio/</a> (plus <a href="/studio/compare/" style="color:var(--teal)">/studio/compare/</a>). Every one has an ES mirror.</li>
+        <li><strong>3 new productized offer pages</strong> at <code>services/audit</code>, <code>services/menu-drop-in</code>, <code>services/care-plan-light</code>.</li>
+        <li><strong>5 DMV city subpages</strong> at <code>studio/silver-spring</code>, <code>/bethesda/</code>, <code>/takoma-park/</code>, <code>/dc/</code>, <code>/arlington/</code>.</li>
+        <li><strong>4 new trust pages</strong>: <a href="/never/" style="color:var(--teal)">/never/</a>, <a href="/ai/" style="color:var(--teal)">/ai/</a>, <a href="/library/" style="color:var(--teal)">/library/</a>, <a href="/studio/" style="color:var(--teal)">/studio/</a> (plus <code>studio/compare</code>). Every one has an ES mirror.</li>
         <li><strong>2 build scripts and 1 CI guard</strong>: <code>build-llms-full.mjs</code>, <code>check-cta-canon.mjs</code>, plus the existing <code>sync-includes.mjs</code> idempotency fix.</li>
         <li><strong>454 URLs in the sitemap</strong> (was 430). 232 EN + 222 ES.</li>
         <li><strong>10 entries in <code>sameAs</code></strong> (was 1). LinkedIn, Facebook, GitHub, Bluesky, Threads, Yelp, Google Maps, Bing Places, Apple Maps, plus Instagram.</li>

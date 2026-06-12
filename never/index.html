@@ -154,9 +154,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=933461d49609" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=15ac955f199e" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=933461d49609"><link rel="stylesheet" href="/assets/site-article.css?v=15ac955f199e"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=b70da981fa3f" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=36af39b8b96e" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=b70da981fa3f"><link rel="stylesheet" href="/assets/site-article.css?v=36af39b8b96e"></noscript>
 
 <!-- lazy-load:p --><script>(window.requestIdleCallback||function(c){return setTimeout(c,500);})(function(){var s=document.createElement("script");s.src="/assets/p.js?v=20260503";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:p -->
 <script>
@@ -210,11 +210,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
          three-doors page). Tools is promoted from the old Library
          mega-menu to a top-level item. Studio replaces Services +
          Restaurants + About — they all live under /studio/ now,
-         either as anchored sections (#pricing, #offers, #cities,
-         #process, #about) or as full child pages (/studio/compare/,
-         /studio/silver-spring/, etc.). The old Services and
-         Restaurants pages remain reachable via /studio/ and the
-         _redirects table; /about/ is unchanged. The mega-menu is
+         as sections of the company page (Phase 9, 2026-06-11: the
+         services-era child pages and anchored offer sections are
+         retired; old paths 301 via the _redirects table). /about/ is unchanged. The mega-menu is
          retired (the hub IS the menu now); the controller script
          is gone too.
 
@@ -226,7 +224,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <a href="/library/">Library</a>
       <a href="/start/">Start</a>
       <a href="/tools/">Tools</a>
-      <a href="/studio/">Studio</a>
+      <a href="/studio/">Company</a>
       <!-- Ledger — sister product (the privacy-forward invoice ledger)
            on its own subdomain. Plain external link so it passes link
            equity to ledger.muntin.digital; Plausible's automatic
@@ -288,7 +286,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <a href="/library/">Library</a>
     <a href="/start/">Start</a>
     <a href="/tools/">Tools</a>
-    <a href="/studio/">Studio</a>
+    <a href="/studio/">Company</a>
     <a href="https://ledger.muntin.digital/">Ledger</a>
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
@@ -443,7 +441,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <li style="counter-increment:never;margin-bottom:36px;padding:24px 28px;background:var(--cream-2);border-left:3px solid var(--teal);border-radius:8px">
         <p style="font-family:var(--font-display);font-size:14px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--teal);margin:0 0 8px">Never &mdash; three</p>
         <h2 style="font-family:var(--font-display);font-size:24px;font-weight:500;line-height:1.2;color:var(--ink);margin:0 0 10px">I will never hide pricing behind a call.</h2>
-        <p style="font-size:16px;line-height:1.65;color:var(--ink);margin:0">Three site tiers, three productized offers, one care plan &mdash; ranges and inclusions are posted on <a href="/services/" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none">/services/</a>. If your project doesn&rsquo;t fit a tier, the quote arrives in writing within two business days, with the math shown. You decide whether to book a call once you&rsquo;ve seen the number.</p>
+        <p style="font-size:16px;line-height:1.65;color:var(--ink);margin:0">Muntin Ledger&rsquo;s tiers are posted in writing at <a href="https://ledger.muntin.digital/" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none">ledger.muntin.digital</a>, with the per-invoice cost math published beside them. The retired services business kept this same rule from its first day</p>
       </li>
       <li style="counter-increment:never;margin-bottom:36px;padding:24px 28px;background:var(--cream-2);border-left:3px solid var(--teal);border-radius:8px">
         <p style="font-family:var(--font-display);font-size:14px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--teal);margin:0 0 8px">Never &mdash; four</p>
@@ -469,12 +467,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <li>Bilingual EN+ES UI and a side-by-side bilingual ZIP export.</li>
         <li>Print-vendor PDF (PDF/X-3-flavored, 0.125&Prime; bleed, crop marks, sRGB OutputIntent, TrimBox + BleedBox) &mdash; this is the press-ready file, identical to what an operator would pay $249 for as a one-shot.</li>
         <li>Schema.org Menu JSON-LD for the operator&rsquo;s website, plus the QR-menu HTML and the tablet-kiosk HTML &mdash; all self-contained, host-anywhere.</li>
-        <li>Studio-handoff brief: when an operator does book Polish or Drop-In, the brief is auto-bundled (free), so they don&rsquo;t pay for me to round-trip the obvious.</li>
         <li>Service-worker offline mode and PWA installable shell &mdash; ship a menu in the kitchen at 11pm with no internet.</li>
       </ul>
-      <p style="font-size:15.5px;line-height:1.7;color:var(--ink);margin:0 0 14px">
-        The two paid services &mdash; <a href="/services/menu-polish/" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none">Menu Polish ($249)</a> and <a href="/services/menu-drop-in/" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none">Menu Drop-In ($1,500)</a> &mdash; are about my hands-on time, not feature unlocks. Polish is &ldquo;take what you built and refine it&rdquo;; Drop-In is &ldquo;design the menu from scratch with you.&rdquo; The free tool produces the same artifact shapes either way; the paid services produce the kind of refinement only a designer with 14 years on restaurant floors can add.
-      </p>
       <p style="font-size:15.5px;line-height:1.7;color:var(--ink-soft);margin:0">
         I don&rsquo;t want a million users. I want to serve a few hundred restaurants well. That&rsquo;s why this tool stays free, complete, and ad-less &mdash; and that&rsquo;s why the paid services have a waitlist (capacity-capped to six polishes and one drop-in per week). Constrained-by-design capacity is the feature, not a bug.
       </p>

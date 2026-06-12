@@ -18,7 +18,7 @@
 
 <meta property="og:type" content="article" />
 <meta property="og:title" content="Restaurant Schema Markup: The 6 Types Google Actually Uses" />
-<meta property="og:description" content="The six schema.org types that move the needle for restaurant search, with copy-paste JSON-LD examples." />
+<meta property="og:description" content="The six schema.org types that actually matter for restaurant search, with copy-paste JSON-LD examples." />
 <meta property="og:url" content="https://muntin.digital/library/restaurant-schema-markup-guide/" />
 <meta property="og:site_name" content="Muntin Digital" />
 <meta property="og:image" content="https://muntin.digital/brand/og/library-restaurant-schema-markup-guide.png" />
@@ -34,7 +34,7 @@
 
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Restaurant Schema Markup: The 6 Types Google Actually Uses" />
-<meta name="twitter:description" content="The six schema.org types that move the needle for restaurant search, with copy-paste JSON-LD." />
+<meta name="twitter:description" content="The six schema.org types that actually matter for restaurant search, with copy-paste JSON-LD." />
 <meta name="twitter:image" content="https://muntin.digital/brand/og/library-restaurant-schema-markup-guide.png" />
 
 <link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
@@ -52,10 +52,10 @@
       "@type": "BlogPosting",
       "@id": "https://muntin.digital/library/restaurant-schema-markup-guide/#article",
       "headline": "Restaurant Schema Markup: The 6 Types Google Actually Uses",
-      "description": "The six schema.org types that move the needle for restaurant search, with copy-paste JSON-LD examples for each.",
+      "description": "The six schema.org types that actually matter for restaurant search, with copy-paste JSON-LD examples for each.",
       "url": "https://muntin.digital/library/restaurant-schema-markup-guide/",
       "datePublished": "2026-04-30",
-      "dateModified": "2026-05-28",
+      "dateModified": "2026-06-10",
       "author": {
         "@id": "https://muntin.digital/#muntin-desk",
         "@type": "Organization",
@@ -241,9 +241,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=933461d49609" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=15ac955f199e" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=933461d49609"><link rel="stylesheet" href="/assets/site-article.css?v=15ac955f199e"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=b70da981fa3f" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=36af39b8b96e" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=b70da981fa3f"><link rel="stylesheet" href="/assets/site-article.css?v=36af39b8b96e"></noscript>
 <!-- article-abstract-mentions:start -->
 <script type="application/ld+json">
 {
@@ -258,15 +258,15 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     },
     {
       "@type": "DefinedTerm",
-      "url": "https://muntin.digital/glossary/opening-hours-specification/"
-    },
-    {
-      "@type": "DefinedTerm",
       "url": "https://muntin.digital/glossary/rich-results/"
     },
     {
       "@type": "DefinedTerm",
       "url": "https://muntin.digital/glossary/meta-description/"
+    },
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/glossary/opening-hours-specification/"
     },
     {
       "@type": "DefinedTerm",
@@ -334,11 +334,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
          three-doors page). Tools is promoted from the old Library
          mega-menu to a top-level item. Studio replaces Services +
          Restaurants + About — they all live under /studio/ now,
-         either as anchored sections (#pricing, #offers, #cities,
-         #process, #about) or as full child pages (/studio/compare/,
-         /studio/silver-spring/, etc.). The old Services and
-         Restaurants pages remain reachable via /studio/ and the
-         _redirects table; /about/ is unchanged. The mega-menu is
+         as sections of the company page (Phase 9, 2026-06-11: the
+         services-era child pages and anchored offer sections are
+         retired; old paths 301 via the _redirects table). /about/ is unchanged. The mega-menu is
          retired (the hub IS the menu now); the controller script
          is gone too.
 
@@ -350,7 +348,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <a href="/library/">Library</a>
       <a href="/start/">Start</a>
       <a href="/tools/">Tools</a>
-      <a href="/studio/">Studio</a>
+      <a href="/studio/">Company</a>
       <!-- Ledger — sister product (the privacy-forward invoice ledger)
            on its own subdomain. Plain external link so it passes link
            equity to ledger.muntin.digital; Plausible's automatic
@@ -412,7 +410,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <a href="/library/">Library</a>
     <a href="/start/">Start</a>
     <a href="/tools/">Tools</a>
-    <a href="/studio/">Studio</a>
+    <a href="/studio/">Company</a>
     <a href="https://ledger.muntin.digital/">Ledger</a>
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
@@ -541,7 +539,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <div class="post-hero">
         <h1>Restaurant Schema Markup: The 6 Types Google Actually Uses</h1>
         <p class="post-dek">
-          The six schema.org types that actually move the needle for restaurant search results — Restaurant, Menu, OpeningHoursSpecification, AggregateRating, Reservation, and FAQ — with copy-paste JSON-LD for each.
+          The six schema.org types that actually matter for restaurant search results — Restaurant, Menu, OpeningHoursSpecification, AggregateRating, Reservation, and FAQ — with copy-paste JSON-LD for each.
         </p>
         <p class="post-meta">
           9 min read · By <a href="/about/" class="author-chip"><strong>The Muntin Desk</strong></a>
@@ -601,54 +599,31 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <p>This post is the honest version of restaurant schema markup. The six types Google actually uses, what each one does for you, the minimum viable JSON-LD for each, and the tools that validate it.</p>
 
-            <figure class="viz-figure article-figure" data-audio-alt="The six schema-dot-org types Google reads first on a restaurant page, in the order they pay back. One, Restaurant — the foundational identity card that makes you eligible for cuisine queries and the local pack at all. Two, Menu with structured MenuItem and description fields — the long-tail surface that wins dish-level ranking and the A I Overview citation. Three, OpeningHoursSpecification — the open-now badge and the holiday-hours accuracy that drives walk-ins. Four, AggregateRating from reviews on your own site — the gold-star pattern that lifts C T R by eight to fifteen percent. Five, Reservation — the Reserve a Table button in your panel, if you’re not already publishing via OpenTable, Resy, Tock, or SevenRooms. Six, FAQ — the highest-leverage A I-citation surface a restaurant has in twenty twenty-six, the rarest of the six on real sites.">
-        <div class="viz-flow">
-          <ol class="viz-flow__list">
-            <li class="viz-flow__step" data-tone="teal">
-              <span class="viz-flow__num">1</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">Restaurant &mdash; the foundational identity card</p>
-                <p class="viz-flow__detail">Cuisine queries, local-pack eligibility, the basic business-type card. Without it you may not appear for &ldquo;Italian restaurants near me&rdquo; at all.</p>
-              </div>
-            </li>
-            <li class="viz-flow__step" data-tone="teal">
-              <span class="viz-flow__num">2</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">Menu &mdash; the long-tail surface</p>
-                <p class="viz-flow__detail">Dish-level ranking + the AI Overview citation of <code>MenuItem.description</code>. Empty descriptions = no AI citation, no dish-name ranking.</p>
-              </div>
-            </li>
-            <li class="viz-flow__step" data-tone="teal">
-              <span class="viz-flow__num">3</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title"><!-- LIBRARY:autolink:start --><a href="/glossary/opening-hours-specification/" data-glossary-head="OpeningHoursSpecification" data-glossary-aka="the Schema.org type Google reads to render your hours in search results" data-glossary-blurb="A specific Schema.org structured-data type for representing when a place is open.">OpeningHoursSpecification</a><!-- LIBRARY:autolink:end --> &mdash; the walk-in badge</p>
-                <p class="viz-flow__detail">&ldquo;Open now&rdquo; / &ldquo;Closes at 10 PM&rdquo; in your panel + holiday-hours accuracy. The schema that stops the angry-on-Christmas-Eve review.</p>
-              </div>
-            </li>
-            <li class="viz-flow__step" data-tone="teal">
-              <span class="viz-flow__num">4</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">AggregateRating &mdash; the CTR lift</p>
-                <p class="viz-flow__detail">The gold-star pattern in your snippet. CTR +8&ndash;15% on restaurant queries, sourced from reviews on your own site (Google&rsquo;s reviews can&rsquo;t be aggregated).</p>
-              </div>
-            </li>
-            <li class="viz-flow__step" data-tone="teal">
-              <span class="viz-flow__num">5</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">Reservation &mdash; the Reserve a Table button</p>
-                <p class="viz-flow__detail">Auto-published by OpenTable, Resy, Tock, SevenRooms. Custom booking forms need to publish this themselves to unlock the Find a Table button.</p>
-              </div>
-            </li>
-            <li class="viz-flow__step" data-tone="rust">
-              <span class="viz-flow__num">6</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">FAQ &mdash; the AI-citation magnet</p>
-                <p class="viz-flow__detail">The highest-leverage AI-citation surface on a restaurant page. Six well-written entries typically lift AI-search-driven traffic 20&ndash;40% within 60 days.</p>
-              </div>
-            </li>
-          </ol>
-        </div>
-        <figcaption>The six types Google reads first, in the order they pay back. The teal-to-rust break at step six marks where the surface shifts from classic Search to AI Overviews &mdash; the cheapest of the six to ship, and the one almost nobody ships.</figcaption>
+            <figure class="viz-figure article-figure" data-audio-alt="How Google reads a restaurant page, in two passes, and why schema is the second pass. Pass one: the crawler reads your visible prose — the menu text, the hours line, the About paragraph. It guesses you're a restaurant, but it has to infer your cuisine, your price band, and your hours from sentences written for humans, and it guesses wrong often. Pass two: the crawler reads your JSON-LD, the invisible structured block. Now the same facts arrive labeled — type Restaurant, servesCuisine Italian, priceRange one dollar sign, opens seventeen hundred. No inference, no guessing. The third beat is what changes on the results page: the labeled facts are what Google is willing to render as stars, an open-now chip, a price chip, and a Reserve button, because it now trusts them enough to show them. The prose alone gets you a plain blue link; the schema is what unlocks the rich result. That is the whole mechanism this guide installs.">
+        <ol class="viz-flow reveal" aria-label="How Google reads a restaurant page in two passes">
+          <li class="viz-flow__step" data-state="warn">
+            <span class="viz-flow__num">1</span>
+            <div class="viz-flow__body">
+              <p class="viz-flow__title">Pass one &mdash; Google reads your prose</p>
+              <p class="viz-flow__meta">The crawler reads the visible page: menu text, the hours line, the About paragraph. It can <strong>guess</strong> you&rsquo;re a restaurant &mdash; but it has to <em>infer</em> cuisine, price band, and hours from sentences written for humans, and it infers wrong often.</p>
+            </div>
+          </li>
+          <li class="viz-flow__step" data-state="done">
+            <span class="viz-flow__num">2</span>
+            <div class="viz-flow__body">
+              <p class="viz-flow__title">Pass two &mdash; Google reads your JSON-LD</p>
+              <p class="viz-flow__meta">The same facts arrive <strong>labeled</strong>: <code>@type: Restaurant</code>, <code>servesCuisine: Italian</code>, <code>priceRange: $</code>, <code>opens: 17:00</code>. No inference. This is the pass the rest of this guide is about &mdash; the six types are what fill it.</p>
+            </div>
+          </li>
+          <li class="viz-flow__step" data-state="done">
+            <span class="viz-flow__num">3</span>
+            <div class="viz-flow__body">
+              <p class="viz-flow__title">Result &mdash; what Google is willing to render</p>
+              <p class="viz-flow__meta">Labeled facts are what Google will <strong>show</strong> as stars, an open-now chip, a price chip, and a Reserve button &mdash; because it now trusts them. Prose alone earns a plain blue link; the schema is what unlocks the rich result.</p>
+            </div>
+          </li>
+        </ol>
+        <figcaption>Schema isn&rsquo;t a ranking trick &mdash; it&rsquo;s the second read. Pass one makes Google guess your facts from prose; pass two hands them over labeled, which is the only version Google trusts enough to render as a rich result.</figcaption>
       </figure>
 
       <h2 id="1-restaurant-the-foundational-type">1. Restaurant — the foundational type</h2>
@@ -835,6 +810,54 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <h2 id="how-to-check-what-you-have-today">How to check what you have today</h2>
 
+      <p>The coverage chart says which types are usually absent. But &ldquo;present&rdquo; isn&rsquo;t the same as &ldquo;working&rdquo; &mdash; the more common failure is schema that&rsquo;s technically on the page but silently disqualified. Walk the four questions below in order; the first &ldquo;no&rdquo; is your problem.</p>
+
+      <figure class="viz-figure article-figure" data-audio-alt="A four-question diagnostic for finding the schema type that's silently broken even though it's on the page. Question one: is there a JSON-LD script tag in the rendered head at all? If no, nothing downstream matters — the CMS or a template update stripped it, and that's the whole problem. Question two: does the validator pass with no red errors? A single unknown property or a missing required field disqualifies the whole block, so the stars never appear even though the rating value is right there. Question three: is the AggregateRating sourced from reviews on your own site rather than aggregated from Google? Aggregating Google's reviews violates policy and earns a manual action that pulls the stars and takes weeks to lift. Question four: does your name, address, and phone match across the site, Google Business Profile, and Yelp? If the NAP conflicts, valid schema still loses the local pack to the more coherent competitor, because schema can't paper over a contradiction. The first no is the fix.">
+        <ol class="viz-tree" aria-label="Four-question diagnostic for finding a silently-broken schema type">
+          <li class="viz-tree__node">
+            <details open>
+              <summary><span class="viz-tree__num">Q1</span><span class="viz-tree__title">Is a JSON-LD <code>&lt;script&gt;</code> tag in the <em>rendered</em> &lt;head&gt; at all?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+              <div class="viz-tree__body">
+                <p>View-source the live page and search for <code>application/ld+json</code>. A CMS theme swap or a plugin update can strip the tag overnight without touching the editor view.</p>
+                <p><span class="viz-tree__verdict" data-tone="fail">No tag</span> Stop here. Nothing downstream matters &mdash; re-ship the block and put a monthly check on the calendar. This is the most common silent failure.</p>
+                <p><span class="viz-tree__verdict" data-tone="pass">Tag present</span> Go to Q2.</p>
+              </div>
+            </details>
+          </li>
+          <li class="viz-tree__node">
+            <details>
+              <summary><span class="viz-tree__num">Q2</span><span class="viz-tree__title">Does <code>validator.schema.org</code> pass with no red errors?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+              <div class="viz-tree__body">
+                <p>One unknown property (a typo like <code>priceRnge</code>) or one missing required field disqualifies the whole block. The rating value can be sitting right there and the stars still never render.</p>
+                <p><span class="viz-tree__verdict" data-tone="fail">Red errors</span> Fix the red items &mdash; they&rsquo;re almost always a missing comma, a stray quote, or a misspelled property. Yellow warnings are usually fine to ship.</p>
+                <p><span class="viz-tree__verdict" data-tone="pass">Clean</span> Go to Q3.</p>
+              </div>
+            </details>
+          </li>
+          <li class="viz-tree__node">
+            <details>
+              <summary><span class="viz-tree__num">Q3</span><span class="viz-tree__title">Is <code>AggregateRating</code> sourced from <em>your own</em> reviews?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+              <div class="viz-tree__body">
+                <p>The rating has to come from reviews published on your own site. Copying your Google star average into <code>AggregateRating</code> is the trap that looks valid and isn&rsquo;t.</p>
+                <p><span class="viz-tree__verdict" data-tone="warn">Aggregated from Google</span> Remove it. Aggregating Google&rsquo;s reviews violates policy and can earn a manual action that pulls the stars and takes weeks to lift.</p>
+                <p><span class="viz-tree__verdict" data-tone="pass">Own-site reviews</span> Go to Q4.</p>
+              </div>
+            </details>
+          </li>
+          <li class="viz-tree__node">
+            <details>
+              <summary><span class="viz-tree__num">Q4</span><span class="viz-tree__title">Do your name, address, and phone match everywhere?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+              <div class="viz-tree__body">
+                <p>Compare the NAP on your site against Google Business Profile and Yelp, character for character. Schema can&rsquo;t resolve a contradiction it doesn&rsquo;t know about.</p>
+                <p><span class="viz-tree__verdict" data-tone="fail">Conflicts</span> Reconcile them first. Valid schema still loses the local pack to the more-coherent competitor when the NAP disagrees with itself.</p>
+                <p><span class="viz-tree__verdict" data-tone="pass">Consistent</span> Your schema is doing its job. Re-run this walk monthly &mdash; the failures here are silent until a one-star review tells you.</p>
+              </div>
+            </details>
+          </li>
+        </ol>
+        <figcaption>&ldquo;Present&rdquo; isn&rsquo;t &ldquo;working.&rdquo; Each question gates a different way valid-looking schema gets silently disqualified &mdash; stripped tag, validator error, policy violation, NAP conflict. The first &ldquo;no&rdquo; is the fix.</figcaption>
+      </figure>
+
       <p>Run your homepage through <a href="/tools/schema-check/">Schema Checker</a>. It returns a present/valid/missing verdict for each of these six types and points at the broken pieces. Save the result to your <a href="/tools/audits/restaurant/">Restaurant Audit</a> and re-run monthly — schema rots when CMS updates touch templates.</p>
 
       <p>The compounding argument: each missing schema type is a different Google surface you're not eligible for. The six types together unlock the local-pack card, AI Overview citations, the Reserve button, the rich snippet, and the holiday-hours badge. Add them in order, and the cumulative effect on impressions usually lands somewhere between 20% and 60% within a quarter.</p>
@@ -965,38 +988,36 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     </ol>
 
     <figure class="viz-figure article-figure" data-audio-alt="The four-step paste, test, wait, verify workflow after pasting the schema. Step one: paste the JSON-LD into the head of every public page, not just the homepage. Step two: run Google's Rich Results Test on three URLs and fix every red error before walking away. Step three: wait seven to fourteen days for the re-crawl — Googlebot needs to see the schema in production before any feature appears. Step four: verify in Search Console under Enhancements, where each schema type gets its own report showing valid pages and errors.">
-      <div class="viz-flow">
-        <ol class="viz-flow__list">
-          <li class="viz-flow__step" data-tone="teal">
+      <ol class="viz-flow reveal" aria-label="Four-step post-paste workflow">
+          <li class="viz-flow__step" data-state="done">
             <span class="viz-flow__num">1</span>
             <div class="viz-flow__body">
               <p class="viz-flow__title">Paste into the &lt;head&gt; of every public page</p>
-              <p class="viz-flow__detail">One <code>&lt;script type="application/ld+json"&gt;</code> tag per page. Homepage, menu page, reservations page, contact page. Not just the homepage.</p>
+              <p class="viz-flow__meta">One <code>&lt;script type="application/ld+json"&gt;</code> tag per page. Homepage, menu page, reservations page, contact page. <strong>Not just the homepage.</strong></p>
             </div>
           </li>
-          <li class="viz-flow__step" data-tone="teal">
+          <li class="viz-flow__step" data-state="done">
             <span class="viz-flow__num">2</span>
             <div class="viz-flow__body">
               <p class="viz-flow__title">Run Google&rsquo;s Rich Results Test on three URLs</p>
-              <p class="viz-flow__detail">Homepage, menu, reservations. Fix every red error before you walk away from the keyboard. Yellow warnings are usually fine to ship.</p>
+              <p class="viz-flow__meta">Homepage, menu, reservations. <strong>Fix every red error</strong> before you walk away from the keyboard. Yellow warnings are usually fine to ship.</p>
             </div>
           </li>
-          <li class="viz-flow__step" data-tone="teal">
+          <li class="viz-flow__step" data-state="warn">
             <span class="viz-flow__num">3</span>
             <div class="viz-flow__body">
               <p class="viz-flow__title">Wait 7&ndash;14 days for the re-crawl</p>
-              <p class="viz-flow__detail">Googlebot has to see the schema in production before any feature appears. The local-pack and stars land first; FAQ and Reserve take longer.</p>
+              <p class="viz-flow__meta">Googlebot has to see the schema in production before any feature appears. The local-pack and stars land first; FAQ and Reserve take longer. <strong>Skip this and you&rsquo;ll think it failed.</strong></p>
             </div>
           </li>
-          <li class="viz-flow__step" data-tone="teal">
+          <li class="viz-flow__step" data-state="done">
             <span class="viz-flow__num">4</span>
             <div class="viz-flow__body">
               <p class="viz-flow__title">Verify in Search Console &rsaquo; Enhancements</p>
-              <p class="viz-flow__detail">Each schema type gets its own report &mdash; Recipes, Local business, FAQ, Sitelinks. Valid pages count up; errors get flagged with the URL and the field.</p>
+              <p class="viz-flow__meta">Each schema type gets its own report &mdash; Local business, FAQ, Sitelinks. Valid pages count up; errors get flagged with the URL and the field.</p>
             </div>
           </li>
         </ol>
-      </div>
       <figcaption>The whole post-paste workflow in four steps. Skip step three and you&rsquo;ll think the schema didn&rsquo;t work; skip step four and you&rsquo;ll miss the silent drift when a template update strips a field.</figcaption>
     </figure>
 
@@ -1048,7 +1069,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     </div>
 
     <div class="callout">
-      <p><strong>Schema is plumbing.</strong> It doesn&rsquo;t move the needle on its own &mdash; it makes you eligible for surfaces you weren&rsquo;t eligible for before. Combined with the citation-shaped writing from the AI Overviews piece, it&rsquo;s the highest-leverage single edit a restaurant site can ship in 2026.</p>
+      <p><strong>Schema is plumbing.</strong> It doesn&rsquo;t lift rankings on its own &mdash; it makes you eligible for surfaces you weren&rsquo;t eligible for before. Combined with the citation-shaped writing from the AI Overviews piece, it&rsquo;s the highest-leverage single edit a restaurant site can ship in 2026.</p>
     </div>
 
     <hr style="margin:48px 0 32px;border:0;border-top:1px solid var(--line)">
@@ -1262,7 +1283,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   <div class="article-author-card__body" style="flex:1 1 280px;min-width:0">
     <p class="article-author-card__eyebrow" style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--stone);margin:0 0 4px" id="article-author-h">About the author</p>
     <p class="article-author-card__name" style="font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);margin:0 0 6px"><a href="/about/" style="color:var(--ink)">Don Goldstein</a></p>
-    <p class="article-author-card__bio" style="font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 10px">I&rsquo;m Don. I&rsquo;m front-of-house manager at Tacombi in Bethesda and run Muntin Digital, the one-person web studio behind this library. Every article here comes from a problem I saw on the floor or in a client audit.</p>
+    <p class="article-author-card__bio" style="font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 10px">I&rsquo;m Don. I&rsquo;m front-of-house manager at Tacombi in Bethesda and the founder of Muntin Digital &mdash; the company behind this library, the Cost Index, and Muntin Ledger. Every article here comes from a problem I saw on the floor.</p>
     <p class="article-author-card__creds" style="font-size:12px;color:var(--stone);margin:0 0 12px;letter-spacing:0.01em">ServSafe Manager &middot; ServSafe Allergens &middot; RAM Alcohol Awareness &middot; Maryland LLC</p>
     <p class="article-author-card__cta" style="font-size:14px;margin:0">
       <a href="/about/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none;margin-right:14px">More about Don &rarr;</a>
@@ -1297,7 +1318,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->150<!-- /count --> glossary terms &mdash; with a one-person web studio behind it in Silver Spring, MD.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->150<!-- /count --> glossary terms &mdash; from Muntin Digital in Silver Spring, MD.</p>
       </div>
 
       <!-- Column order mirrors the 4-item primary nav
@@ -1325,12 +1346,17 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         </ul>
       </nav>
 
+      <!-- Phase 9 (services sunset, 2026-06-11): the Studio column's
+           Pricing / Compare / Process rows sold the retired services
+           business. The column is now the Company column — the product,
+           the public data, the company page, the founder. The retired services
+           and studio child pages 301 per the _redirects table. -->
       <nav class="foot-col" aria-labelledby="foot-studio">
-        <p class="foot-heading" id="foot-studio">Studio</p>
+        <p class="foot-heading" id="foot-studio">Company</p>
         <ul class="foot-links">
-          <li><a href="/studio/#pricing">Pricing</a></li>
-          <li><a href="/studio/compare/">Compare options</a></li>
-          <li><a href="/studio/#process">Process</a></li>
+          <li><a href="https://ledger.muntin.digital/">Muntin Ledger</a></li>
+          <li><a href="/cost-index/">Cost Index</a></li>
+          <li><a href="/studio/">The company</a></li>
           <li><a href="/about/">About Don</a></li>
         </ul>
       </nav>
