@@ -92,6 +92,22 @@
     return num(pickField(row, fields.price, 'avg_price'));
   }
 
+  // The reported low–high band for ONE row (terminal market). Prefer the full
+  // low_price..high_price (the complete trading range); fall back to the
+  // mostly_low..mostly_high typical-trade range. Returns null unless both ends
+  // are present and ordered — a measured band must bracket, never invert.
+  function amsRowSpread(row, fields) {
+    fields = fields || {};
+    var lo = num(pickField(row, fields.low, 'low_price'));
+    var hi = num(pickField(row, fields.high, 'high_price'));
+    if (lo == null || hi == null) {
+      lo = num(pickField(row, fields.mostlyLow, 'mostly_low'));
+      hi = num(pickField(row, fields.mostlyHigh, 'mostly_high'));
+    }
+    if (lo == null || hi == null || hi < lo) return null;
+    return { lo: lo, hi: hi };
+  }
+
   // Convert a reported price unit to the composite's base ($ per the ingredient's
   // unit). Cents→dollars and $/cwt→$/lb both scale by 0.01; an unknown/absent
   // unit is left as-is. A wrong factor is caught downstream by the bounds gate.
@@ -143,18 +159,32 @@
       return true;
     };
     var byDateMap = {};
+    var spreadByDate = {};   // date → { lo: min reported low, hi: max reported high } across markets
     rows.forEach(function (r) {
       if (!r || !rowMatches(r) || !filtersMatch(r)) return;
       var v = reduceAmsRow(r, meta.reducer, meta.fields);
+      var sp = amsRowSpread(r, meta.fields);
       // Prefer the row's OWN reported unit (priceUnitField) over a fixed
       // meta.priceUnit — removes the cents-vs-dollars guess for mixed reports.
       var f = meta.priceUnitField ? priceUnitFactor(r[meta.priceUnitField]) : factor;
       if (v != null && isFinite(v)) v = v * f;                                 // unit-normalize before binning
       var date = isoDate(r[dateField]);
       if (date && v != null && isFinite(v)) (byDateMap[date] = byDateMap[date] || []).push(v);
+      // Same unit-normalization for the measured band; widen across markets.
+      if (date && sp && isFinite(sp.lo) && isFinite(sp.hi)) {
+        var slo = sp.lo * f, shi = sp.hi * f;
+        var cur = spreadByDate[date];
+        spreadByDate[date] = cur
+          ? { lo: Math.min(cur.lo, slo), hi: Math.max(cur.hi, shi) }
+          : { lo: slo, hi: shi };
+      }
     });
     var points = Object.keys(byDateMap)
-      .map(function (d) { return { date: d, value: amsMedian(byDateMap[d]) }; })
+      .map(function (d) {
+        var pt = { date: d, value: amsMedian(byDateMap[d]) };
+        if (spreadByDate[d]) { pt.lo = spreadByDate[d].lo; pt.hi = spreadByDate[d].hi; }
+        return pt;
+      })
       .sort(byDate);
     return { source: meta.source || 'usda-ams', basis: meta.basis || 'wholesale', unit: meta.unit || 'usd', points: points };
   }
@@ -245,7 +275,13 @@
       sourceSeries[o.source] = { basis: o.basis, values: o.points.map(function (p) { return p.value; }), weight: o.weight, family: o.family, type: o.type };
       if (o.basis !== 'index') {
         var latest = o.points[o.points.length - 1];
-        levelObs.push({ source: o.source, basis: o.basis, valueCents: Math.round(latest.value * 100), date: latest.date, family: o.family, type: o.type, recent: weeklyTail(o.points, 8) });
+        var obsRow = { source: o.source, basis: o.basis, valueCents: Math.round(latest.value * 100), date: latest.date, family: o.family, type: o.type, recent: weeklyTail(o.points, 8) };
+        // Carry the latest day's measured low–high band (cents) so compositeLevel
+        // can widen the range to the real reported spread, not just volatility.
+        if (typeof latest.lo === 'number' && typeof latest.hi === 'number' && isFinite(latest.lo) && isFinite(latest.hi)) {
+          obsRow.spreadCents = { lo: Math.round(latest.lo * 100), hi: Math.round(latest.hi * 100) };
+        }
+        levelObs.push(obsRow);
       }
     });
     return { levelObs: levelObs, sourceSeries: sourceSeries, asOf: opts.asOf || latestDate(outputs) };

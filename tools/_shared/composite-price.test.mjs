@@ -169,6 +169,33 @@ test('RANGE-WIDENING: a single market gets an honest band from recent volatility
   assert.ok(lvl.rangeCents[0] < 1400 && lvl.rangeCents[1] > 1400); // band straddles the median
 });
 
+test('MEASURED SPREAD: a reported market low–high widens the band and names it "measured"', () => {
+  const lvl = C.compositeLevel([
+    { source: 'usda-ams-boston', basis: 'wholesale', valueCents: 1400, family: 'boston', type: 'usda-ams', spreadCents: { lo: 1200, hi: 1500 } },
+    { source: 'usda-ams-chicago', basis: 'wholesale', valueCents: 1450, family: 'chicago', type: 'usda-ams', spreadCents: { lo: 1300, hi: 1650 } },
+  ]);
+  assert.equal(lvl.rangeBasis, 'measured');
+  assert.equal(lvl.rangeCents[0], 1200);   // min reported low across markets
+  assert.equal(lvl.rangeCents[1], 1650);   // max reported high across markets
+});
+
+test('MEASURED SPREAD: never narrows — a band already wider than the reported spread keeps its basis', () => {
+  const lvl = C.compositeLevel([
+    { source: 'a', basis: 'wholesale', valueCents: 1000, family: 'a', spreadCents: { lo: 1380, hi: 1420 } },
+    { source: 'b', basis: 'wholesale', valueCents: 1800, family: 'b', spreadCents: { lo: 1380, hi: 1420 } },
+  ]);
+  // p25–p75 across the two families already spans 1200–1600, wider than 1380–1420 → union is a no-op.
+  assert.notEqual(lvl.rangeBasis, 'measured');
+  assert.ok(lvl.rangeCents[0] <= 1380 && lvl.rangeCents[1] >= 1420);
+});
+
+test('MEASURED SPREAD: an inverted or non-positive band is ignored, never trusted', () => {
+  const lvl = C.compositeLevel([
+    { source: 'usda-lmr', basis: 'wholesale', valueCents: 1400, family: 'lmr', spreadCents: { lo: 1500, hi: 1300 } },
+  ]);
+  assert.notEqual(lvl.rangeBasis, 'measured');
+});
+
 test('RANGE-WIDENING: too few recent reads → honest point, no fabricated band', () => {
   const lvl = C.compositeLevel([
     { source: 'usda-lmr', basis: 'wholesale', valueCents: 1400, family: 'lmr', recent: [1390, 1410] },

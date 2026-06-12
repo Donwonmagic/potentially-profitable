@@ -93,6 +93,25 @@
             if (rangeBasis === 'point') rangeBasis = 'volatility';
           }
         }
+        // Measured market spread: the actual reported low–high band the source
+        // PUBLISHED (USDA AMS carries low_price/high_price per terminal). When
+        // present it's the most honest width we have — a real trading range, not a
+        // synthetic volatility or percentile band — so union it in and let it NAME
+        // the band whenever it sets an edge. Never narrows (union only).
+        var measLo = null, measHi = null;
+        obs.forEach(function (o) {
+          var sp = o.spreadCents;
+          if (!sp || typeof sp.lo !== 'number' || typeof sp.hi !== 'number') return;
+          if (!isFinite(sp.lo) || !isFinite(sp.hi) || sp.lo <= 0 || sp.hi < sp.lo) return;
+          measLo = measLo == null ? sp.lo : Math.min(measLo, sp.lo);
+          measHi = measHi == null ? sp.hi : Math.max(measHi, sp.hi);
+        });
+        if (measLo != null && measHi != null) {
+          var newLo = Math.min(range[0], Math.round(measLo));
+          var newHi = Math.max(range[1], Math.round(measHi));
+          if (newLo < range[0] || newHi > range[1]) rangeBasis = 'measured';
+          range = [newLo, newHi];
+        }
         // Level-agreement: do the INDEPENDENT methodologies (types) agree on the
         // dollar level? Robust relative dispersion of the per-type medians
         // (1.4826·MAD / median). When two+ types disagree, the level can't earn
@@ -204,6 +223,8 @@
   function levelPhrase(level) {
     var band = dollars(level.rangeCents[0]) + '–' + dollars(level.rangeCents[1]);
     var degenerate = level.rangeCents[0] === level.rangeCents[1];
+    if (level.rangeBasis === 'measured' && !degenerate)
+      return 'About ' + band + ' (' + level.basis + ' reference — band from reported market low–high)';
     if (level.rangeBasis === 'volatility' && !degenerate)
       return 'About ' + band + ' (' + level.basis + ' reference, single market — band from recent volatility)';
     if (level.rangeBasis === 'markets' && !degenerate)
