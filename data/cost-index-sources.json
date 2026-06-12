@@ -734,6 +734,192 @@
           "unit": "carton"
         }
       ]
+    },
+    "spinach": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Spinach",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — produce coverage via the vegetable-terminal fan-out (same 8 reports as romaine/tomato), commodity row-filter \"Spinach\" (field-agnostic substring; romaine uses the bare term \"Romaine\" and works, so \"Spinach\" should match — confirm via --verify). Resolve markets + real values, tighten bounds, add a BLS PPI trend (--discover-fred \"Spinach ppi\") to lift low->medium, then --flip. Page already exists."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Spinach",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Spinach",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Spinach",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Spinach",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Spinach",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Spinach",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Spinach",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ]
+    },
+    "asparagus": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Asparagus",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — produce coverage via the vegetable-terminal fan-out (same 8 reports as romaine/tomato), commodity row-filter \"Asparagus\" (field-agnostic substring; romaine uses the bare term \"Romaine\" and works, so \"Asparagus\" should match — confirm via --verify). Resolve markets + real values, tighten bounds, add a BLS PPI trend (--discover-fred \"Asparagus ppi\") to lift low->medium, then --flip. Page already exists."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Asparagus",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Asparagus",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Asparagus",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Asparagus",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Asparagus",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Asparagus",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Asparagus",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ]
+    },
+    "garlic": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Garlic",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — produce coverage via the vegetable-terminal fan-out (same 8 reports as romaine/tomato), commodity row-filter \"Garlic\" (field-agnostic substring; romaine uses the bare term \"Romaine\" and works, so \"Garlic\" should match — confirm via --verify). Resolve markets + real values, tighten bounds, add a BLS PPI trend (--discover-fred \"Garlic ppi\") to lift low->medium, then --flip. Page already exists."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Garlic",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Garlic",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Garlic",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Garlic",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Garlic",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Garlic",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Garlic",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ]
     }
   },
   "drivers": {
