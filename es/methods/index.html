@@ -154,9 +154,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=933461d49609" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=15ac955f199e" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=933461d49609"><link rel="stylesheet" href="/assets/site-article.css?v=15ac955f199e"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=b70da981fa3f" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=36af39b8b96e" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=b70da981fa3f"><link rel="stylesheet" href="/assets/site-article.css?v=36af39b8b96e"></noscript>
 
 <!-- lazy-load:p --><script>(window.requestIdleCallback||function(c){return setTimeout(c,500);})(function(){var s=document.createElement("script");s.src="/assets/p.js?v=20260503";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:p -->
 <script>
@@ -226,7 +226,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <a href="/es/library/">Biblioteca</a>
       <a href="/es/start/">Comienza</a>
       <a href="/es/tools/">Herramientas</a>
-      <a href="/es/studio/">Estudio</a>
+      <a href="/es/studio/">Empresa</a>
       <a href="https://ledger.muntin.digital/">Ledger</a>
       <a class="js-nav-signin nav-link-auth" href="/es/sign-in/" hidden>Acceder</a>
       <a class="js-nav-workshop nav-link-auth" href="/es/workbench/" hidden>El Taller</a>
@@ -256,7 +256,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <a href="/es/library/">Biblioteca</a>
     <a href="/es/start/">Comienza</a>
     <a href="/es/tools/">Herramientas</a>
-    <a href="/es/studio/">Estudio</a>
+    <a href="/es/studio/">Empresa</a>
     <a href="https://ledger.muntin.digital/">Ledger</a>
     <a class="js-nav-signin mobile-auth" href="/es/sign-in/" hidden>Acceder</a>
     <a class="js-nav-workshop mobile-auth" href="/es/workbench/" hidden>El Taller</a>
@@ -432,13 +432,12 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <li><strong>&ldquo;Email Don&rdquo;</strong> &mdash; la bandeja abierta, mailto + formulario de la Ventana. ES: <em>Escr&iacute;bele a Don.</em></li>
         <li><strong>&ldquo;Run my free audit&rdquo;</strong> &mdash; entrada principal a la herramienta. ES: <em>Audita mi sitio gratis.</em></li>
         <li><strong>&ldquo;See pricing&rdquo;</strong> &mdash; los números publicados por el estudio. ES: <em>Ver precios.</em></li>
-        <li><strong>&ldquo;Book a 20-min call&rdquo;</strong> &mdash; onramp al calendario, no un pitch de venta. ES: <em>Reservar una llamada de 20 min.</em></li>
         <li><strong>&ldquo;Try it free&rdquo;</strong> &mdash; entrada a una herramienta desde una página de marketing. ES: <em>Pru&eacute;balo gratis.</em></li>
         <li><strong>&ldquo;Save this&rdquo;</strong> &mdash; guardado en el Taller. ES: <em>Guardar esto.</em></li>
       </ul>
       <h3 style="font-size:16px;font-weight:600;color:var(--ink);margin:24px 0 10px">POV por tipo de página</h3>
       <ul style="font-size:14.5px;line-height:1.7;color:var(--ink);margin:0;padding-left:22px">
-        <li><strong>Páginas de marketing</strong> (portada, /services/, /work/, /studio/compare/) &mdash; primera persona Don.</li>
+        <li><strong>Páginas de marketing</strong> (portada, /es/studio/) &mdash; primera persona Don.</li>
         <li><strong>Artículos de biblioteca</strong> &mdash; byline de <em>The Muntin Desk</em>. El &ldquo;yo&rdquo; en primera persona aparece solo cuando se nombra una práctica personal del operador, nunca como narrador de un evento. Regla completa en <code>docs/voice-canon-library.md</code>.</li>
         <li><strong>Términos del glosario</strong> &mdash; referencia en tercera persona, sin &ldquo;yo&rdquo;; el término es el sujeto.</li>
         <li><strong>Páginas de herramientas</strong> &mdash; segunda persona dirigida al operador (&ldquo;tu menú, tus números&rdquo;), los bloques de resultados se dirigen a ti.</li>

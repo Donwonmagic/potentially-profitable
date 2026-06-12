@@ -46,7 +46,7 @@
       "url": "https://muntin.digital/library/third-party-delivery-economics/",
       "inLanguage": "en-US",
       "datePublished": "2026-05-02T10:30:00-04:00",
-      "dateModified": "2026-05-28",
+      "dateModified": "2026-06-10",
       "author": {
         "@id": "https://muntin.digital/#muntin-desk",
         "@type": "Organization",
@@ -224,9 +224,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=933461d49609" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=15ac955f199e" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=933461d49609"><link rel="stylesheet" href="/assets/site-article.css?v=15ac955f199e"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=b70da981fa3f" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=36af39b8b96e" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=b70da981fa3f"><link rel="stylesheet" href="/assets/site-article.css?v=36af39b8b96e"></noscript>
 
 <!-- lazy-load:p --><script>(window.requestIdleCallback||function(c){return setTimeout(c,500);})(function(){var s=document.createElement("script");s.src="/assets/p.js?v=20260503";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:p -->
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
@@ -340,11 +340,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
          three-doors page). Tools is promoted from the old Library
          mega-menu to a top-level item. Studio replaces Services +
          Restaurants + About — they all live under /studio/ now,
-         either as anchored sections (#pricing, #offers, #cities,
-         #process, #about) or as full child pages (/studio/compare/,
-         /studio/silver-spring/, etc.). The old Services and
-         Restaurants pages remain reachable via /studio/ and the
-         _redirects table; /about/ is unchanged. The mega-menu is
+         as sections of the company page (Phase 9, 2026-06-11: the
+         services-era child pages and anchored offer sections are
+         retired; old paths 301 via the _redirects table). /about/ is unchanged. The mega-menu is
          retired (the hub IS the menu now); the controller script
          is gone too.
 
@@ -356,7 +354,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <a href="/library/">Library</a>
       <a href="/start/">Start</a>
       <a href="/tools/">Tools</a>
-      <a href="/studio/">Studio</a>
+      <a href="/studio/">Company</a>
       <!-- Ledger — sister product (the privacy-forward invoice ledger)
            on its own subdomain. Plain external link so it passes link
            equity to ledger.muntin.digital; Plausible's automatic
@@ -418,7 +416,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <a href="/library/">Library</a>
     <a href="/start/">Start</a>
     <a href="/tools/">Tools</a>
-    <a href="/studio/">Studio</a>
+    <a href="/studio/">Company</a>
     <a href="https://ledger.muntin.digital/">Ledger</a>
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
@@ -760,8 +758,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
     <p><a href="/tools/margin-math/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">Run Margin Math &rarr;</a></p>
 
-    <p>If your site needs the &ldquo;Order direct&rdquo; button rebuilt and you&rsquo;d rather have someone else handle it, the <a href="/services/menu-drop-in/" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none">$1,500 menu drop-in</a> is the smaller commitment. The $499 audit gets you a written diagnosis first if you&rsquo;d rather see it on paper before you spend.</p>
-
     <p>The honest answer to &ldquo;is DoorDash worth it&rdquo; is the same as the honest answer to most operating questions: it depends on what else you&rsquo;re doing. If your direct channel is dormant, it&rsquo;s not worth it. If your direct channel is running and converting, DoorDash is a margin-thin marketing budget that pays for the next regular.</p>
 
     <h2 id="zoom-out-the-strategic-question">Zoom out: is DoorDash worth it?</h2>
@@ -812,7 +808,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
             </div>
           </div>
         </div>
-        <figcaption class="i18n">$100 of delivery revenue &middot; illustrative math for an independent restaurant on DoorDash&rsquo;s basic tier &middot; labor not shown (roughly equal on both sides)</figcaption>
+        <figcaption class="i18n">Illustrative math, DoorDash basic tier, labor not shown (roughly equal on both sides): the same $100 of guest spend leaves almost $20 more in the restaurant when the order arrives through your own site.</figcaption>
       </figure>
 
       <p>On the same hundred dollars of guest spend, <strong>you keep almost 20 additional dollars</strong> when it comes through your own site instead of DoorDash's. Over a year, even for a restaurant doing a modest $80K in delivery annually, that's around <strong>$15,000 staying in the business</strong> — roughly one line cook. And this isn&rsquo;t accounting for the fact that your own-site customer has given you their phone number and their email, which means you can bring them back at a marginal cost of zero.</p>
@@ -884,63 +880,25 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <p>If you want the shortcut version of this whole post, here&rsquo;s the framework I use when an operator asks me whether to stay, leave, or compete:</p>
 
-      <figure class="article-figure" data-audio-alt="What a hundred dollars of revenue actually becomes after each channel takes its cut. DoorDash Basic at thirty percent commission leaves you sixty-six to sixty-eight dollars net. Plus tier at twenty-five percent leaves seventy-one to seventy-three. Premier at fifteen percent leaves eighty-one to eighty-three — and that&apos;s before packaging. Toast or Square direct ordering nets you ninety-three to ninety-eight. ChowNow with a flat monthly fee nets ninety-six to ninety-eight. A dine-in cover with no third party is a clean hundred. The gap between DoorDash Basic and your own ordering is roughly thirty dollars on every hundred — that&apos;s the question this whole article exists to answer.">
-      <div class="table-scroll"><table class="comparison-table">
-        <caption>What $100 of revenue actually becomes — DoorDash vs. own-ordering vs. dine-in</caption>
+      <figure class="article-figure" data-audio-alt="What a hundred dollars of revenue actually becomes after each channel takes its cut, in a sortable table where every net-to-you cell carries a small magnitude bar. DoorDash Basic at thirty percent commission leaves you sixty-six to sixty-eight dollars net. Plus tier at twenty-five percent leaves seventy-one to seventy-three. Premier at fifteen percent leaves eighty-one to eighty-three — and that&apos;s before packaging. Toast or Square direct ordering nets you ninety-three to ninety-eight. ChowNow with a flat monthly fee nets ninety-six to ninety-eight. A dine-in cover with no third party is a clean hundred. The gap between DoorDash Basic and your own ordering is roughly thirty dollars on every hundred — that&apos;s the question this whole article exists to answer.">
+      <div class="table-scroll"><table class="comparison-table" data-viz-sortable>
+        <caption>What $100 of revenue actually becomes — DoorDash vs. own-ordering vs. dine-in (click a header to re-rank)</caption>
         <thead>
           <tr><th scope="col">Channel</th><th scope="col">Gross</th><th scope="col">Commission / fees</th><th scope="col">Packaging</th><th scope="col">Net to you</th></tr>
         </thead>
         <tbody>
-          <tr><th scope="row">DoorDash (Basic tier)</th><td>$100</td><td>−$30 (30%)</td><td>−$2-4</td><td><strong>$66-68</strong></td></tr>
-          <tr><th scope="row">DoorDash (Plus tier)</th><td>$100</td><td>−$25 (25%)</td><td>−$2-4</td><td><strong>$71-73</strong></td></tr>
-          <tr><th scope="row">DoorDash (Premier)</th><td>$100</td><td>−$15 (15%)</td><td>−$2-4</td><td><strong>$81-83</strong></td></tr>
-          <tr><th scope="row">Toast / Square <!-- LIBRARY:autolink:start --><a href="/glossary/direct-ordering/" data-glossary-head="Direct ordering" data-glossary-aka="orders through your own site" data-glossary-blurb="A customer ordering through your own website or POS (Toast, Square, Olo, ChowNow), bypassing aggregators.">direct ordering</a><!-- LIBRARY:autolink:end --></th><td>$100</td><td>−$0-3 (0-3%)</td><td>−$2-4</td><td><strong>$93-98</strong></td></tr>
-          <tr><th scope="row">ChowNow direct ordering</th><td>$100</td><td>flat $99-300/mo</td><td>−$2-4</td><td><strong>$96-98</strong></td></tr>
-          <tr><th scope="row">Dine-in (no third party)</th><td>$100</td><td>0%</td><td>$0</td><td><strong>$100</strong></td></tr>
+          <tr><th scope="row">DoorDash (Basic tier)</th><td>$100</td><td>−$30 (30%)</td><td>−$2-4</td><td><strong>$66-68</strong><span class="viz-magbar" style="--w:0.67" aria-hidden="true"></span></td></tr>
+          <tr><th scope="row">DoorDash (Plus tier)</th><td>$100</td><td>−$25 (25%)</td><td>−$2-4</td><td><strong>$71-73</strong><span class="viz-magbar" style="--w:0.72" aria-hidden="true"></span></td></tr>
+          <tr><th scope="row">DoorDash (Premier)</th><td>$100</td><td>−$15 (15%)</td><td>−$2-4</td><td><strong>$81-83</strong><span class="viz-magbar" data-tone="stone" style="--w:0.82" aria-hidden="true"></span></td></tr>
+          <tr><th scope="row">Toast / Square <!-- LIBRARY:autolink:start --><a href="/glossary/direct-ordering/" data-glossary-head="Direct ordering" data-glossary-aka="orders through your own site" data-glossary-blurb="A customer ordering through your own website or POS (Toast, Square, Olo, ChowNow), bypassing aggregators.">direct ordering</a><!-- LIBRARY:autolink:end --></th><td>$100</td><td>−$0-3 (0-3%)</td><td>−$2-4</td><td><strong>$93-98</strong><span class="viz-magbar" data-tone="teal" style="--w:0.95" aria-hidden="true"></span></td></tr>
+          <tr><th scope="row">ChowNow direct ordering</th><td>$100</td><td>flat $99-300/mo</td><td>−$2-4</td><td><strong>$96-98</strong><span class="viz-magbar" data-tone="teal" style="--w:0.97" aria-hidden="true"></span></td></tr>
+          <tr><th scope="row">Dine-in (no third party)</th><td>$100</td><td>0%</td><td>$0</td><td><strong>$100</strong><span class="viz-magbar" data-tone="teal" style="--w:1.00" aria-hidden="true"></span></td></tr>
         </tbody>
       </table></div>
       
-<figcaption class="figure-caption">What $100 of revenue actually becomes after each channel takes its cut</figcaption>
+<figcaption class="figure-caption">The teal bars are the channels where the customer relationship is yours; sort the net-to-you column and the rough $30-per-$100 gap between DoorDash Basic and direct ordering is the whole argument.</figcaption>
 </figure>
       <p>The numbers above don't include the prep-time delta — DoorDash orders take 4-6 minutes longer than dine-in on average — which is real <!-- LIBRARY:autolink:start --><a href="/glossary/labor-cost/" data-glossary-head="Labor cost" data-glossary-aka="wages + payroll taxes, as a % of sales" data-glossary-blurb="Wages, payroll taxes, and the tipped-employee contribution expressed as a percentage of sales.">labor cost</a><!-- LIBRARY:autolink:end --> most operators forget to model.</p>
-
-      <figure class="viz-figure article-figure" data-audio-alt="What stays with the restaurant on the same hundred dollars of guest spend, by channel. DoorDash Basic tier keeps sixty-seven dollars. DoorDash Plus keeps seventy-two dollars. DoorDash Premier keeps eighty-two dollars. Toast or Square direct ordering keeps ninety-six dollars. ChowNow direct, on a flat monthly, keeps ninety-seven dollars. Dine-in with no third party keeps the full hundred. The gap between the cheapest DoorDash tier and a direct order is roughly thirty dollars per hundred — about a thousand dollars a week for a restaurant doing twelve direct orders a night.">
-        <div class="viz-bars">
-          <p class="viz-bars__title">What stays with the restaurant on $100 of guest spend &mdash; by channel</p>
-          <div class="viz-bars__row">
-            <p class="viz-bars__label">DoorDash Basic tier (30% commission)</p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.67"></span></div>
-            <p class="viz-bars__num">$67 kept</p>
-          </div>
-          <div class="viz-bars__row">
-            <p class="viz-bars__label">DoorDash Plus tier (25%)</p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.72"></span></div>
-            <p class="viz-bars__num">$72 kept</p>
-          </div>
-          <div class="viz-bars__row">
-            <p class="viz-bars__label">DoorDash Premier tier (15%)</p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:0.82"></span></div>
-            <p class="viz-bars__num">$82 kept</p>
-          </div>
-          <div class="viz-bars__row">
-            <p class="viz-bars__label">Toast / Square direct ordering</p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.96"></span></div>
-            <p class="viz-bars__num">$96 kept</p>
-          </div>
-          <div class="viz-bars__row">
-            <p class="viz-bars__label">ChowNow direct (flat monthly)</p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.97"></span></div>
-            <p class="viz-bars__num">$97 kept</p>
-          </div>
-          <div class="viz-bars__row">
-            <p class="viz-bars__label">Dine-in (no third party)</p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:1.00"></span></div>
-            <p class="viz-bars__num">$100 kept</p>
-          </div>
-        </div>
-        <figcaption>Packaging, payment processing, and the prep-time labor delta are still on top of these &mdash; this is the channel fee alone. The teal bars are where you have the customer relationship.</figcaption>
-      </figure>
-
       <ol>
         <li><strong>Under 50 delivery orders a week.</strong> Stay on DoorDash, tighten your GBP, don&rsquo;t invest in own-ordering yet.</li>
         <li><strong>50&ndash;200 delivery orders a week.</strong> Stand up own-ordering on your existing POS (Square / Toast), link it from your website and Google Business Profile, <em>keep</em> DoorDash. Let regulars migrate themselves. Expect 30&ndash;50% of DoorDash volume to shift within 6 months.</li>
@@ -948,40 +906,62 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <li><strong>Either extreme of size &mdash; the new place with no audience or the institution with 15 years of regulars.</strong> The new place needs DoorDash as marketing. The institution shouldn&rsquo;t need DoorDash at all.</li>
       </ol>
 
-      <figure class="viz-figure article-figure" data-audio-alt="The decision tree by delivery volume. Step one: under fifty delivery orders a week. Stay on DoorDash, tighten your Google Business Profile, do not build own-ordering yet — the fixed costs eat the margin savings. Step two: fifty to two hundred delivery orders a week. Stand up own-ordering on your existing POS like Square or Toast, link it from your website and your Google profile, keep DoorDash running. Expect thirty to fifty percent of DoorDash volume to migrate within six months. Step three: two hundred plus delivery orders a week with clear name-search patterns in your DoorDash analytics. Run own-ordering as your primary channel, keep DoorDash at the minimum commission tier, use it purely for discovery. The math starts favoring you dramatically here. Step four: either extreme of size. A brand-new place with no audience needs DoorDash as marketing. An institution with fifteen years of regulars should not need DoorDash at all.">
-        <div class="viz-flow">
-          <ol class="viz-flow__list">
-            <li class="viz-flow__step" data-tone="rust">
-              <span class="viz-flow__num">1</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">Under 50 delivery orders / week &mdash; stay</p>
-                <p class="viz-flow__detail">Keep DoorDash, tighten your Google Business Profile, don&rsquo;t invest in own-ordering yet. Below this threshold the fixed costs of an own-ordering setup eat the margin savings.</p>
+      <figure class="viz-figure article-figure" data-audio-alt="A four-question volume diagnostic; walk the questions in order and stop at the first yes. Question one: are you under fifty delivery orders a week? If yes, stay on DoorDash, tighten your Google Business Profile, and hold off on own-ordering, because below this threshold the fixed costs of an own-ordering setup eat the margin savings. Question two: are you between fifty and two hundred delivery orders a week? If yes, stand up own-ordering on your existing POS such as Square or Toast, link it from your website and your Google profile, and keep DoorDash; expect thirty to fifty percent of DoorDash volume to migrate within six months. Question three: are you over two hundred delivery orders a week with clear name-search patterns in your DoorDash analytics? If yes, flip the primary: run own-ordering as your main channel and keep DoorDash at the minimum commission tier purely for discovery. Question four: are you at either extreme of size? A brand-new place with no audience needs DoorDash as marketing; an institution with fifteen years of regulars should not need DoorDash at all.">
+        <ol class="viz-tree" aria-label="Stay, run both, or flip the primary — the volume diagnostic">
+          <li class="viz-tree__node">
+            <details open>
+              <summary>
+                <span class="viz-tree__num">1</span>
+                <span class="viz-tree__title">Under 50 delivery orders a week?</span>
+                <span class="viz-tree__icon" aria-hidden="true">+</span>
+              </summary>
+              <div class="viz-tree__body">
+                <p><span class="viz-tree__verdict" data-tone="warn">Stay</span><strong>Keep DoorDash; don&rsquo;t build own-ordering yet.</strong> Below this threshold the fixed costs of an own-ordering setup eat the margin savings. Spend the energy tightening your Google Business Profile instead.</p>
+                <p><span class="viz-tree__verdict" data-tone="fail">No</span>More volume than that &mdash; go to question 2.</p>
               </div>
-            </li>
-            <li class="viz-flow__step" data-tone="teal">
-              <span class="viz-flow__num">2</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">50&ndash;200 orders / week &mdash; run both</p>
-                <p class="viz-flow__detail">Stand up own-ordering on your existing POS (Square / Toast), link it from your website and GBP, <em>keep</em> DoorDash. Expect 30&ndash;50% of DoorDash volume to migrate within 6 months.</p>
+            </details>
+          </li>
+          <li class="viz-tree__node">
+            <details>
+              <summary>
+                <span class="viz-tree__num">2</span>
+                <span class="viz-tree__title">Between 50 and 200 delivery orders a week?</span>
+                <span class="viz-tree__icon" aria-hidden="true">+</span>
+              </summary>
+              <div class="viz-tree__body">
+                <p><span class="viz-tree__verdict" data-tone="pass">Run both</span><strong>Stand up own-ordering on your existing POS</strong> (Square / Toast), link it from your website and your Google Business Profile, and keep DoorDash. Let regulars migrate themselves &mdash; expect 30&ndash;50% of DoorDash volume to shift within 6 months.</p>
+                <p><span class="viz-tree__verdict" data-tone="fail">No</span>More than 200 a week &mdash; go to question 3.</p>
               </div>
-            </li>
-            <li class="viz-flow__step" data-tone="teal">
-              <span class="viz-flow__num">3</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">200+ orders / week with name-search patterns &mdash; flip the primary</p>
-                <p class="viz-flow__detail">Run own-ordering as your primary channel, keep DoorDash at minimum commission tier, use it purely for discovery. The math favors you dramatically here.</p>
+            </details>
+          </li>
+          <li class="viz-tree__node">
+            <details>
+              <summary>
+                <span class="viz-tree__num">3</span>
+                <span class="viz-tree__title">200+ a week, with name-search patterns in your DoorDash analytics?</span>
+                <span class="viz-tree__icon" aria-hidden="true">+</span>
+              </summary>
+              <div class="viz-tree__body">
+                <p><span class="viz-tree__verdict" data-tone="pass">Flip the primary</span><strong>Run own-ordering as your main channel</strong>, keep DoorDash at the minimum commission tier, and use it purely for discovery. The math starts favoring you dramatically here.</p>
+                <p><span class="viz-tree__verdict" data-tone="warn">No clear pattern</span>Pull the order-source data from the merchant portal first &mdash; the name-search share is the number this branch turns on.</p>
               </div>
-            </li>
-            <li class="viz-flow__step" data-tone="stone">
-              <span class="viz-flow__num">4</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">Either extreme of size &mdash; opposite answers</p>
-                <p class="viz-flow__detail">A brand-new place with no audience needs DoorDash as marketing. An institution with 15 years of regulars shouldn&rsquo;t need DoorDash at all.</p>
+            </details>
+          </li>
+          <li class="viz-tree__node">
+            <details>
+              <summary>
+                <span class="viz-tree__num">4</span>
+                <span class="viz-tree__title">At either extreme of size?</span>
+                <span class="viz-tree__icon" aria-hidden="true">+</span>
+              </summary>
+              <div class="viz-tree__body">
+                <p><span class="viz-tree__verdict" data-tone="warn">New place</span>A brand-new restaurant with no audience needs DoorDash as marketing &mdash; pay the tax while you build the audience, then re-enter the tree at question 1.</p>
+                <p><span class="viz-tree__verdict" data-tone="fail">Institution</span>A restaurant with 15 years of regulars shouldn&rsquo;t need DoorDash at all &mdash; the regulars are loyal to you, not the app.</p>
               </div>
-            </li>
-          </ol>
-        </div>
-        <figcaption>The volume tier you sit in changes the answer. Rust is &ldquo;keep paying the tax for now,&rdquo; teal is &ldquo;build your own door,&rdquo; stone is &ldquo;your size decides.&rdquo;</figcaption>
+            </details>
+          </li>
+        </ol>
+        <figcaption>Walk the questions in order and stop at the first yes &mdash; your weekly volume, not the commission rate, decides whether DoorDash is marketing or a tax.</figcaption>
       </figure>
 
       <p>None of this is "fire DoorDash." It's "stop paying them for orders they didn&rsquo;t earn." Which is a very different move.</p>
@@ -1004,7 +984,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <li><a href="/blog/30-days-after-leaving-doordash-restaurant-case-study/">30 days after leaving DoorDash</a> &mdash; the field-notes case study</li>
         <li><a href="/library/loyalty-program-roi/">Loyalty programs that work</a> &mdash; what to layer on the direct channel</li>
         <li><a href="/tools/margin-math/">Margin Math tool</a> &mdash; run the calculation on your numbers</li>
-        <li><a href="/services/audit/">$499 audit</a> &mdash; the written diagnosis</li>
+        <li><a href="https://ledger.muntin.digital/">Muntin Ledger</a> &mdash; your vendor invoices, read and filed searchable, with price-hike flags against your own history</li>
       </ul>
     </section>
       <!-- article-takeaways:start -->
@@ -1025,7 +1005,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   <div class="article-author-card__body" style="flex:1 1 280px;min-width:0">
     <p class="article-author-card__eyebrow" style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--stone);margin:0 0 4px" id="article-author-h">About the author</p>
     <p class="article-author-card__name" style="font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);margin:0 0 6px"><a href="/about/" style="color:var(--ink)">Don Goldstein</a></p>
-    <p class="article-author-card__bio" style="font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 10px">I&rsquo;m Don. I&rsquo;m front-of-house manager at Tacombi in Bethesda and run Muntin Digital, the one-person web studio behind this library. Every article here comes from a problem I saw on the floor or in a client audit.</p>
+    <p class="article-author-card__bio" style="font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 10px">I&rsquo;m Don. I&rsquo;m front-of-house manager at Tacombi in Bethesda and the founder of Muntin Digital &mdash; the company behind this library, the Cost Index, and Muntin Ledger. Every article here comes from a problem I saw on the floor.</p>
     <p class="article-author-card__creds" style="font-size:12px;color:var(--stone);margin:0 0 12px;letter-spacing:0.01em">ServSafe Manager &middot; ServSafe Allergens &middot; RAM Alcohol Awareness &middot; Maryland LLC</p>
     <p class="article-author-card__cta" style="font-size:14px;margin:0">
       <a href="/about/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none;margin-right:14px">More about Don &rarr;</a>
@@ -1033,8 +1013,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     </p>
   </div>
 </aside>
-<!-- article-author-card:end -->
-  </article>
+<!-- article-author-card:end -->  </article>
 
     <aside class="post-end-mark" aria-hidden="true">
   <hr/>
@@ -1153,7 +1132,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->150<!-- /count --> glossary terms &mdash; with a one-person web studio behind it in Silver Spring, MD.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->150<!-- /count --> glossary terms &mdash; from Muntin Digital in Silver Spring, MD.</p>
       </div>
 
       <!-- Column order mirrors the 4-item primary nav
@@ -1181,12 +1160,17 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         </ul>
       </nav>
 
+      <!-- Phase 9 (services sunset, 2026-06-11): the Studio column's
+           Pricing / Compare / Process rows sold the retired services
+           business. The column is now the Company column — the product,
+           the public data, the company page, the founder. The retired services
+           and studio child pages 301 per the _redirects table. -->
       <nav class="foot-col" aria-labelledby="foot-studio">
-        <p class="foot-heading" id="foot-studio">Studio</p>
+        <p class="foot-heading" id="foot-studio">Company</p>
         <ul class="foot-links">
-          <li><a href="/studio/#pricing">Pricing</a></li>
-          <li><a href="/studio/compare/">Compare options</a></li>
-          <li><a href="/studio/#process">Process</a></li>
+          <li><a href="https://ledger.muntin.digital/">Muntin Ledger</a></li>
+          <li><a href="/cost-index/">Cost Index</a></li>
+          <li><a href="/studio/">The company</a></li>
           <li><a href="/about/">About Don</a></li>
         </ul>
       </nav>

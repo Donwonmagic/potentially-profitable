@@ -194,9 +194,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=933461d49609" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-core.css?v=b70da981fa3f" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-tool.css?v=aee67503f378" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=933461d49609"><link rel="stylesheet" href="/assets/site-tool.css?v=aee67503f378"></noscript>
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=b70da981fa3f"><link rel="stylesheet" href="/assets/site-tool.css?v=aee67503f378"></noscript>
 
 <!-- lazy-load:p --><script>(window.requestIdleCallback||function(c){return setTimeout(c,500);})(function(){var s=document.createElement("script");s.src="/assets/p.js?v=20260503";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:p -->
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
@@ -262,7 +262,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <a href="/es/library/">Biblioteca</a>
       <a href="/es/start/">Comienza</a>
       <a href="/es/tools/">Herramientas</a>
-      <a href="/es/studio/">Estudio</a>
+      <a href="/es/studio/">Empresa</a>
       <a href="https://ledger.muntin.digital/">Ledger</a>
       <a class="js-nav-signin nav-link-auth" href="/es/sign-in/" hidden>Acceder</a>
       <a class="js-nav-workshop nav-link-auth" href="/es/workbench/" hidden>El Taller</a>
@@ -292,7 +292,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <a href="/es/library/">Biblioteca</a>
     <a href="/es/start/">Comienza</a>
     <a href="/es/tools/">Herramientas</a>
-    <a href="/es/studio/">Estudio</a>
+    <a href="/es/studio/">Empresa</a>
     <a href="https://ledger.muntin.digital/">Ledger</a>
     <a class="js-nav-signin mobile-auth" href="/es/sign-in/" hidden>Acceder</a>
     <a class="js-nav-workshop mobile-auth" href="/es/workbench/" hidden>El Taller</a>
@@ -471,17 +471,12 @@ Pimienta Tellicherry, pecorino romano, terminado en mesa.</pre>
         <button type="button" class="mc-copy" data-target="mcOutSchemaBody">Copiar</button>
         <div id="mcOutSchemaBody"></div>
       </div>
-
-      <p style="font-size:13.5px;color:var(--stone);margin:14px 0 0;font-style:italic">
-        &iquest;Quieres la p&aacute;gina del men&uacute; estilada, r&aacute;pida en m&oacute;vil, con schema validado y biling&uuml;e EN/ES &mdash; sin reconstrucci&oacute;n? <a href="/services/menu-drop-in/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">Drop-in de men&uacute; $1.500 &rarr;</a>
-      </p>
     </section>
 
     <section style="margin-top:48px;padding-top:32px;border-top:1px solid var(--line)">
       <h2 style="font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0 0 14px">Lo que esta herramienta NO hace.</h2>
       <ul style="font-size:15.5px;line-height:1.7;color:var(--ink);margin:0;padding-left:22px">
         <li style="margin-bottom:8px">No parsea PDFs. Los PDFs var&iacute;an demasiado (columnas, tablas, fuentes embebidas) para que el parsing en navegador sea confiable. Copia y pega el texto del men&uacute;.</li>
-        <li style="margin-bottom:8px">No estiliza la p&aacute;gina. El HTML es sem&aacute;ntico y sin estilos; ponle tus propios estilos de marca encima, o usa el <a href="/services/menu-drop-in/" style="color:var(--teal)">drop-in de men&uacute;</a> para la versi&oacute;n estilada entregada.</li>
         <li>No traduce. La salida preserva el idioma que pegaste; para una p&aacute;gina biling&uuml;e EN/ES, c&oacute;rrelo dos veces y apila los resultados.</li>
       </ul>
     </section>
@@ -491,7 +486,6 @@ Pimienta Tellicherry, pecorino romano, terminado en mesa.</pre>
       <ul style="font-size:15.5px;line-height:1.7;color:var(--teal);margin:0;padding-left:22px">
         <li><a href="/es/tools/menu-engineering/">Ingenier&iacute;a de Men&uacute;</a> &mdash; an&aacute;lisis estrella/caballo/puzzle/perro</li>
         <li><a href="/es/library/los-6-tipos-de-schema-markup-que-google-usa/">Los 6 tipos de schema que Google usa</a></li>
-        <li><a href="/services/menu-drop-in/">Drop-in de men&uacute; $1.500</a> &mdash; la versi&oacute;n estilada por el estudio</li>
       </ul>
     </section>
   </article>
@@ -635,7 +629,7 @@ Pimienta Tellicherry, pecorino romano, terminado en mesa.</pre>
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">La ventana.</p>
-        <p class="foot-blurb">Una biblioteca gratuita para restaurantes &mdash; <!-- count:articles.library -->36<!-- /count --> art&iacute;culos, <!-- count:tools.live -->13<!-- /count --> herramientas y un glosario de <!-- count:glossary.terms -->150<!-- /count --> t&eacute;rminos &mdash; con un estudio web de una persona detr&aacute;s, en Silver Spring, MD. Se habla espa&ntilde;ol.</p>
+        <p class="foot-blurb">Una biblioteca gratuita para restaurantes &mdash; <!-- count:articles.library -->36<!-- /count --> art&iacute;culos, <!-- count:tools.live -->13<!-- /count --> herramientas y un glosario de <!-- count:glossary.terms -->150<!-- /count --> t&eacute;rminos &mdash; de Muntin Digital, en Silver Spring, MD. Se habla espa&ntilde;ol.</p>
       </div>
 
       <!-- El orden de columnas refleja la navegación principal de 5
@@ -662,12 +656,16 @@ Pimienta Tellicherry, pecorino romano, terminado en mesa.</pre>
            /es/work/, el portafolio personal. Ese hub se retiró cuando
            la empresa pasó a ser el currículum; la fila ya no está y
            /es/work/* hace 301 a /es/studio/. -->
+      <!-- Fase 9 (cierre de servicios, 2026-06-11): las filas de
+           Precios / Comparar / Proceso vendían los servicios retirados.
+           La columna ahora es Empresa — el producto, los datos
+           públicos, la página de la empresa, el fundador. -->
       <nav class="foot-col" aria-labelledby="foot-studio">
-        <p class="foot-heading" id="foot-studio">Estudio</p>
+        <p class="foot-heading" id="foot-studio">Empresa</p>
         <ul class="foot-links">
-          <li><a href="/es/studio/#pricing">Precios</a></li>
-          <li><a href="/es/studio/compare/">Comparar opciones</a></li>
-          <li><a href="/es/studio/#process">Proceso</a></li>
+          <li><a href="https://ledger.muntin.digital/">Muntin Ledger</a></li>
+          <li><a href="/es/cost-index/">&Iacute;ndice de costos</a></li>
+          <li><a href="/es/studio/">La empresa</a></li>
           <li><a href="/es/about/">Sobre Don</a></li>
         </ul>
       </nav>

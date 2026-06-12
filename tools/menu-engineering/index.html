@@ -133,9 +133,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=933461d49609" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-core.css?v=b70da981fa3f" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-tool.css?v=aee67503f378" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=933461d49609"><link rel="stylesheet" href="/assets/site-tool.css?v=aee67503f378"></noscript>
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=b70da981fa3f"><link rel="stylesheet" href="/assets/site-tool.css?v=aee67503f378"></noscript>
 <style>.breadcrumb{padding-top:100px}
 /* === Menu Engineering tool-scoped styles. Page-prefix .me-*. === */
 .me-input{display:flex;flex-direction:column;gap:14px}
@@ -403,11 +403,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
          three-doors page). Tools is promoted from the old Library
          mega-menu to a top-level item. Studio replaces Services +
          Restaurants + About — they all live under /studio/ now,
-         either as anchored sections (#pricing, #offers, #cities,
-         #process, #about) or as full child pages (/studio/compare/,
-         /studio/silver-spring/, etc.). The old Services and
-         Restaurants pages remain reachable via /studio/ and the
-         _redirects table; /about/ is unchanged. The mega-menu is
+         as sections of the company page (Phase 9, 2026-06-11: the
+         services-era child pages and anchored offer sections are
+         retired; old paths 301 via the _redirects table). /about/ is unchanged. The mega-menu is
          retired (the hub IS the menu now); the controller script
          is gone too.
 
@@ -419,7 +417,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <a href="/library/">Library</a>
       <a href="/start/">Start</a>
       <a href="/tools/">Tools</a>
-      <a href="/studio/">Studio</a>
+      <a href="/studio/">Company</a>
       <!-- Ledger — sister product (the privacy-forward invoice ledger)
            on its own subdomain. Plain external link so it passes link
            equity to ledger.muntin.digital; Plausible's automatic
@@ -481,7 +479,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <a href="/library/">Library</a>
     <a href="/start/">Start</a>
     <a href="/tools/">Tools</a>
-    <a href="/studio/">Studio</a>
+    <a href="/studio/">Company</a>
     <a href="https://ledger.muntin.digital/">Ledger</a>
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
@@ -845,14 +843,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <p style="margin:0 0 8px;font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);">What this <em>is</em>: a 30-minute exercise that pays for itself.</p>
     <p style="margin:0;font-size:14px;line-height:1.65;color:var(--ink-soft);">Three audiences, three handoffs. Bring the <strong>Menu Card</strong> to your chef — the four quadrants are the action plan. Bring the <strong>CSV</strong> to your accountant — the contribution-margin column is what they actually care about. Bring the <strong>JSON</strong> to a developer building anything on top of your menu data. The Card is the file your non-technical partners can actually use.</p>
   </div>
-
-  <div style="max-width:760px;margin:18px auto 0;padding:20px 22px;background:var(--teal-tint);border-radius:var(--r-input);border:1px solid var(--line);">
-    <p style="margin:0 0 8px;font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);">When you want a redesign, hire the studio.</p>
-    <p style="margin:0 0 14px;font-size:14px;line-height:1.6;color:var(--ink-soft);">A menu redesign turns the action plan into a printed, photographed, on-brand menu. Bring your Menu Card to the kickoff call — that's 30 minutes of the engagement already done.</p>
-    <a href="/services/" style="display:inline-flex;align-items:center;gap:6px;padding:9px 18px;background:var(--teal);color:var(--cream);border-radius:999px;text-decoration:none;font-size:13px;font-weight:600;">See Brand &amp; menu identity
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:12px;height:12px;"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
-    </a>
-  </div>
 </div></section>
 
 <section class="block"><div class="container">
@@ -863,7 +853,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <a href="/tools/brand-suite/">Re-photograph a Puzzle: Brand Suite</a>
       <a href="/tools/audits/restaurant/">Run the full Restaurant Audit</a>
       <a href="/glossary/menu-engineering/">Glossary: Menu engineering</a>
-      <a href="/services/">Hire the studio for a menu redesign</a>
     </div>
   </div>
 </div></section>
@@ -2074,7 +2063,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     lines.push('Menu Engineering Matrix is a free tool from **Muntin Digital** — a one-person restaurant web studio in Silver Spring, Maryland.');
     lines.push('');
     lines.push('- Studio: https://muntin.digital');
-    lines.push('- Brand Identity: https://muntin.digital/services/#brand');
     lines.push('- Tool: https://muntin.digital/tools/menu-engineering/');
     lines.push('');
     lines.push('> Structure brings clarity.');

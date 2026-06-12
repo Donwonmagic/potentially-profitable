@@ -3,50 +3,33 @@ sequence: drip-operator
 order: 4
 day: 22
 subject: Posted pricing, in writing
-preview: Three site tiers. Three smaller offers. No discovery call to see them.
+preview: The product's numbers, and the cost math behind them. No sales call to see either.
 from: Don Goldstein <don@muntin.digital>
 ---
 
 Two emails ago I said I'd show you the pricing in writing. Here it is.
 
-Three full-build tiers:
+The product is Muntin Ledger — the invoice ledger. You photograph a
+vendor invoice; it lands read, filed, and searchable. Price-hike flags
+run against your own six-month history. No language model ever reads
+your documents; a CI gate blocks anyone from adding one.
 
-  Essentials   — $2,500 to $4,000.    3–6 page custom site. 2–3 weeks.
-                 The version most owners need but most agencies refuse
-                 to quote because it doesn't justify their overhead.
+The tiers are posted at ledger.muntin.digital — and next to them, the
+per-invoice cost math: what an invoice costs us to read and what we
+charge. I publish both because opaque pricing is the thing this
+industry does to operators, and I'd rather lose a sale than copy the
+habit.
 
-  Full Service — $5,000 to $9,000.    Everything in Essentials, plus a
-                 lightweight CMS, integrations (reservations, ordering),
-                 copy polish, and a launch plan. 4–6 weeks.
+It's free while we're in private beta. Waitlist members lock the
+founding rate when billing turns on — no introductory asterisk, just
+the rate, in writing, before launch.
 
-  Group        — $8,000 to $15,000+.  For multi-unit operators or sites
-                 that need brand work alongside the build. 6–10 weeks.
+The free things stay free: the Cost Index, the plate-cost and margin
+tools, the library. They run on the same numbers the product runs on.
 
-Three smaller offers, for when a full rebuild isn't this quarter:
-
-  $499 audit              — A 90-min Loom + 8-page action sheet, in
-                            five business days. Credits toward a
-                            build inside 60 days.
-
-  $1,500 menu drop-in     — One custom menu page that plugs into your
-                            existing Wix or Squarespace site. Seven
-                            days. Bilingual EN/ES.
-
-  $99/mo Care Plan Light  — Hosting + monthly hours/menu hygiene.
-                            Bookable without a sales call.
-
-All seven on one page:
-
-  https://muntin.digital/services/
-
-If your project doesn't fit one of these (multi-location chain,
-custom Toast integration, a brand rebuild before the website), send
-me what you're thinking through The Window and the quote arrives in
-writing inside two business days:
-
-  https://muntin.digital/window/
-
-The studio runs two builds at a time. If the calendar can't carry you
-this month, you'll know on day one.
+  See pricing: https://ledger.muntin.digital/
 
 — Don
+
+P.S. Pricing questions get answered over email, in writing, same as
+everything else: don@muntin.digital.

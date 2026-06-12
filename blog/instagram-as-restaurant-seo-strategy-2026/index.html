@@ -46,7 +46,7 @@
       "url": "https://muntin.digital/blog/instagram-as-restaurant-seo-strategy-2026/",
       "inLanguage": "en-US",
       "datePublished": "2026-05-11T07:00:00-04:00",
-      "dateModified": "2026-05-11",
+      "dateModified": "2026-06-10",
       "author": {
         "@id": "https://muntin.digital/#don-goldstein",
         "@type": "Person",
@@ -239,11 +239,9 @@ main{padding-top:64px}
          three-doors page). Tools is promoted from the old Library
          mega-menu to a top-level item. Studio replaces Services +
          Restaurants + About — they all live under /studio/ now,
-         either as anchored sections (#pricing, #offers, #cities,
-         #process, #about) or as full child pages (/studio/compare/,
-         /studio/silver-spring/, etc.). The old Services and
-         Restaurants pages remain reachable via /studio/ and the
-         _redirects table; /about/ is unchanged. The mega-menu is
+         as sections of the company page (Phase 9, 2026-06-11: the
+         services-era child pages and anchored offer sections are
+         retired; old paths 301 via the _redirects table). /about/ is unchanged. The mega-menu is
          retired (the hub IS the menu now); the controller script
          is gone too.
 
@@ -255,7 +253,7 @@ main{padding-top:64px}
       <a href="/library/">Library</a>
       <a href="/start/">Start</a>
       <a href="/tools/">Tools</a>
-      <a href="/studio/">Studio</a>
+      <a href="/studio/">Company</a>
       <!-- Ledger — sister product (the privacy-forward invoice ledger)
            on its own subdomain. Plain external link so it passes link
            equity to ledger.muntin.digital; Plausible's automatic
@@ -317,7 +315,7 @@ main{padding-top:64px}
     <a href="/library/">Library</a>
     <a href="/start/">Start</a>
     <a href="/tools/">Tools</a>
-    <a href="/studio/">Studio</a>
+    <a href="/studio/">Company</a>
     <a href="https://ledger.muntin.digital/">Ledger</a>
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
@@ -486,36 +484,37 @@ main{padding-top:64px}
 
     <p>Treating an Instagram account as an SEO surface &mdash; not a billboard &mdash; produces materially higher saves and profile clicks than vibe-caption posting. Saves and profile clicks (not likes) are the Instagram metrics that correlate with reservations. The discipline below is what shifts the metric mix.</p>
 
-    <figure class="viz-figure article-figure" data-audio-alt="The relative direction of five Instagram traffic sources to a restaurant profile in 2026, after the iOS-17 referrer change and the algorithm penalty against stacked hashtags. Direct profile visits and story link-clicks have risen as the biggest channels. Saved-post discovery is rising because the in-app search now ranks against your save count. Hashtag traffic has diminished sharply because the algorithm penalizes stacked tags as low-quality content. Explore-page traffic is flat for established accounts. The point is the direction of each channel, not the exact share.">
+    <figure class="viz-figure article-figure" data-audio-alt="Five Instagram discovery channels for a restaurant profile, placed on an illustrative momentum scale that runs from falling on the left, through flat at the midpoint, to rising on the right. The midpoint tick is the flat line — no change. Saved-post discovery sits furthest right: it is the sleeper channel, rising hardest because the in-app search bar now ranks against your save count. Direct profile visits and story link-clicks also sit to the right of the flat line, rising. The Explore page sits right on the flat tick, neither gaining nor losing for established accounts. Hashtag traffic sits far to the left of the flat line, falling hard, because the 2024 algorithm update penalizes stacked tags as low-quality content. The shape to read is that the channels you control with caption writing are climbing while the channel you spam with hashtags is sinking. This is a directional, illustrative scale, not measured percentages.">
       <div class="viz-bars">
-        <p class="viz-bars__title">Instagram traffic-source direction for a restaurant profile, 2026 (rising / flat / falling)</p>
+        <p class="viz-bars__title">Where five Instagram discovery channels are heading, 2026 (illustrative momentum &mdash; the tick is the no-change line)</p>
+        <div class="viz-bars__row">
+          <p class="viz-bars__label">Saved-post discovery <strong>(sleeper)</strong></p>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.92"></span><span class="viz-bars__mark" data-tone="ink" style="--x:0.5" aria-hidden="true"></span></div>
+          <p class="viz-bars__num">↑↑ rising hard</p>
+        </div>
         <div class="viz-bars__row">
           <p class="viz-bars__label">Direct profile visits</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.85"></span></div>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.74"></span><span class="viz-bars__mark" data-tone="ink" style="--x:0.5" aria-hidden="true"></span></div>
           <p class="viz-bars__num">↑ rising</p>
         </div>
         <div class="viz-bars__row">
           <p class="viz-bars__label">Story link-clicks</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.85"></span></div>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.70"></span><span class="viz-bars__mark" data-tone="ink" style="--x:0.5" aria-hidden="true"></span></div>
           <p class="viz-bars__num">↑ rising</p>
         </div>
         <div class="viz-bars__row">
-          <p class="viz-bars__label">Saved-post discovery</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.85"></span></div>
-          <p class="viz-bars__num">↑ rising (sleeper)</p>
-        </div>
-        <div class="viz-bars__row">
           <p class="viz-bars__label">Explore page</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:0.50"></span></div>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:0.50"></span><span class="viz-bars__mark" data-tone="ink" style="--x:0.5" aria-hidden="true"></span></div>
           <p class="viz-bars__num">→ flat</p>
         </div>
         <div class="viz-bars__row">
           <p class="viz-bars__label">Hashtag traffic</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.20"></span></div>
-          <p class="viz-bars__num">↓ falling (algorithm penalty)</p>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.18"></span><span class="viz-bars__mark" data-tone="ink" style="--x:0.5" aria-hidden="true"></span></div>
+          <p class="viz-bars__num">↓ falling</p>
         </div>
+        <p class="viz-bars__note">Illustrative momentum, not measured share: bars to the <strong>right</strong> of the center tick are gaining, bars to the <strong>left</strong> are losing. The channels caption writing controls are the ones climbing; the hashtag wall is the one the 2024 update sank.</p>
       </div>
-      <figcaption>Three lanes — rising (teal), flat (stone), falling (rust). The bars encode direction, not magnitude. Hashtag traffic was a top-three source through 2022 and has been declining since the 2024 algorithm update.</figcaption>
+      <figcaption>The channels you win by writing for search &mdash; saves, direct visits, story clicks &mdash; are all climbing past the no-change line; the hashtag stack you can stop doing is the only one falling.</figcaption>
     </figure>
 
     <h2 id="why-the-platform-changed-and-almost-nobody-noticed">Why the platform changed and almost nobody noticed</h2>
@@ -639,7 +638,7 @@ main{padding-top:64px}
       <ul style="font-size:15.5px;line-height:1.7;color:var(--teal);margin:0;padding-left:22px">
         <li><a href="/library/how-to-get-cited-in-google-ai-overviews-restaurant/">How to get cited in Google&rsquo;s AI Overviews</a> &mdash; the same writing discipline, different surface</li>
         <li><a href="/library/restaurant-photo-spec-sheet/">The restaurant photo spec sheet</a> &mdash; what to shoot for the captions you&rsquo;re now writing</li>
-        <li><a href="/services/audit/">$499 audit</a> &mdash; if you want me to rewrite the last 30 captions on paper</li>
+        <li><a href="https://ledger.muntin.digital/">Muntin Ledger</a> &mdash; your vendor invoices, read and filed searchable, with price-hike flags against your own history</li>
       </ul>
     </section>
   <!-- article-takeaways:start -->
@@ -660,7 +659,7 @@ main{padding-top:64px}
   <div class="article-author-card__body" style="flex:1 1 280px;min-width:0">
     <p class="article-author-card__eyebrow" style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--stone);margin:0 0 4px" id="article-author-h">About the author</p>
     <p class="article-author-card__name" style="font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);margin:0 0 6px"><a href="/about/" style="color:var(--ink)">Don Goldstein</a></p>
-    <p class="article-author-card__bio" style="font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 10px">I&rsquo;m Don. I&rsquo;m front-of-house manager at Tacombi in Bethesda and run Muntin Digital, the one-person web studio behind this library. Every article here comes from a problem I saw on the floor or in a client audit.</p>
+    <p class="article-author-card__bio" style="font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 10px">I&rsquo;m Don. I&rsquo;m front-of-house manager at Tacombi in Bethesda and the founder of Muntin Digital &mdash; the company behind this library, the Cost Index, and Muntin Ledger. Every article here comes from a problem I saw on the floor.</p>
     <p class="article-author-card__creds" style="font-size:12px;color:var(--stone);margin:0 0 12px;letter-spacing:0.01em">ServSafe Manager &middot; ServSafe Allergens &middot; RAM Alcohol Awareness &middot; Maryland LLC</p>
     <p class="article-author-card__cta" style="font-size:14px;margin:0">
       <a href="/about/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none;margin-right:14px">More about Don &rarr;</a>
@@ -668,8 +667,7 @@ main{padding-top:64px}
     </p>
   </div>
 </aside>
-<!-- article-author-card:end -->
-  </article>
+<!-- article-author-card:end -->  </article>
 
   <aside class="post-end-mark" aria-hidden="true">
     <hr/>
@@ -682,19 +680,19 @@ main{padding-top:64px}
   </aside>
 
   <!-- post-end-cta:start -->
-  <aside class="post-end-cta" aria-label="Workshop next step">
-    <p class="post-end-cta-headline">Run the caption rewrite on your last 30 posts.</p>
-    <p class="post-end-cta-body">The $499 audit walks each of your last 30 captions through moves 1&ndash;5 and writes the rewrite. You get a CSV of paired old/new captions and a one-page summary. No retainer.</p>
-    <a class="btn btn-primary" href="/services/audit/?from=blog%2Finstagram-as-restaurant-seo-strategy-2026">Run the caption audit<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></a>
-  </aside>
-  <!-- post-end-cta:end -->
+    <aside class="post-end-cta" aria-label="Workshop next step">
+      <p class="post-end-cta-headline">Put one caption through the rewrite.</p>
+      <p class="post-end-cta-body">The Menu Copy tool takes one dish description or caption and walks the rewrite the post describes — plain words, the dish first, the place name where the engines can see it. Save the before-and-after to the Workshop and batch the rest on your own schedule.</p>
+      <a class="btn btn-primary" href="/tools/menu-copy/?from=blog%2Finstagram-as-restaurant-seo-strategy-2026&amp;intent=watch">Rewrite a caption<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></a>
+    </aside>
+    <!-- post-end-cta:end -->
 
   <!-- smart-next:start -->
 <aside class="smart-next" aria-labelledby="smart-next-h">
   <p class="smart-next__eyebrow" id="smart-next-h">What to do next</p>
   <ol class="smart-next__list">
         <li class="smart-next__item smart-next__read"><span class="smart-next__verb">Read:</span> <a href="/glossary/cover/">the related glossary term →</a></li>
-        <li class="smart-next__item smart-next__try"><span class="smart-next__verb">Try:</span> <a href="/tools/audits/restaurant/?from=blog/instagram-as-restaurant-seo-strategy-2026&intent=watch">the tool that pairs with this article →</a></li>
+        <li class="smart-next__item smart-next__try"><span class="smart-next__verb">Try:</span> <a href="/tools/menu-copy/?from=blog/instagram-as-restaurant-seo-strategy-2026&intent=watch">the tool that pairs with this article →</a></li>
         <li class="smart-next__item smart-next__note"><span class="smart-next__verb">Or send Don a note:</span> <a href="/window/?topic=instagram-as-restaurant-seo-strategy-2026">The Window →</a></li>
   </ol>
 </aside>
@@ -724,7 +722,7 @@ main{padding-top:64px}
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->150<!-- /count --> glossary terms &mdash; with a one-person web studio behind it in Silver Spring, MD.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->150<!-- /count --> glossary terms &mdash; from Muntin Digital in Silver Spring, MD.</p>
       </div>
 
       <!-- Column order mirrors the 4-item primary nav
@@ -752,12 +750,17 @@ main{padding-top:64px}
         </ul>
       </nav>
 
+      <!-- Phase 9 (services sunset, 2026-06-11): the Studio column's
+           Pricing / Compare / Process rows sold the retired services
+           business. The column is now the Company column — the product,
+           the public data, the company page, the founder. The retired services
+           and studio child pages 301 per the _redirects table. -->
       <nav class="foot-col" aria-labelledby="foot-studio">
-        <p class="foot-heading" id="foot-studio">Studio</p>
+        <p class="foot-heading" id="foot-studio">Company</p>
         <ul class="foot-links">
-          <li><a href="/studio/#pricing">Pricing</a></li>
-          <li><a href="/studio/compare/">Compare options</a></li>
-          <li><a href="/studio/#process">Process</a></li>
+          <li><a href="https://ledger.muntin.digital/">Muntin Ledger</a></li>
+          <li><a href="/cost-index/">Cost Index</a></li>
+          <li><a href="/studio/">The company</a></li>
           <li><a href="/about/">About Don</a></li>
         </ul>
       </nav>

@@ -13,22 +13,23 @@ want to read myself.
 
 One direct question before I move you over.
 
-If your restaurant's website is leaking covers and you know it, what's
-the thing that's stopping you from fixing it?
+If your invoices are a shoebox and your plate costs are a guess — and
+you know it — what's the thing that's stopping you from fixing it?
 
 The honest answers I hear most:
 
-  • The quote was too high.   →   Have you seen the $499 audit or the
-                                  $1,500 menu drop-in? Both posted at
-                                  https://muntin.digital/services/
+  • Software quotes are       →   Muntin Ledger is $25 a month at the
+    built for chains.             Solo tier, posted in writing with the
+                                  cost math beside it:
+                                  https://ledger.muntin.digital/
 
   • I don't trust the people  →   That's reasonable. Read /never/ and
     selling it to me.             /security/ before deciding anything.
                                   The receipts are on the wall.
 
-  • I'm scared of the lift.   →   That's why the studio runs two builds
-                                  at a time and quotes a finish date in
-                                  writing on day one. The lift is bounded.
+  • I'm scared of the lift.   →   The first invoice is a photo. That's
+                                  the whole onboarding. The free tools
+                                  need no account at all.
 
   • This isn't the quarter.   →   Got it. Library Letter quarterly. I
                                   won't pester. Reply with the quarter

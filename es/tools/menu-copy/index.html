@@ -131,9 +131,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=933461d49609" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-core.css?v=b70da981fa3f" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-tool.css?v=aee67503f378" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=933461d49609"><link rel="stylesheet" href="/assets/site-tool.css?v=aee67503f378"></noscript>
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=b70da981fa3f"><link rel="stylesheet" href="/assets/site-tool.css?v=aee67503f378"></noscript>
 <style>.breadcrumb{padding-top:100px}
 /* === Menu Copy Inspector tool-scoped styles. Page-prefix .mc-*. === */
 .mc-input{display:flex;flex-direction:column;gap:14px}
@@ -445,7 +445,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <a href="/es/library/">Biblioteca</a>
       <a href="/es/start/">Comienza</a>
       <a href="/es/tools/">Herramientas</a>
-      <a href="/es/studio/">Estudio</a>
+      <a href="/es/studio/">Empresa</a>
       <a href="https://ledger.muntin.digital/">Ledger</a>
       <a class="js-nav-signin nav-link-auth" href="/es/sign-in/" hidden>Acceder</a>
       <a class="js-nav-workshop nav-link-auth" href="/es/workbench/" hidden>El Taller</a>
@@ -475,7 +475,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <a href="/es/library/">Biblioteca</a>
     <a href="/es/start/">Comienza</a>
     <a href="/es/tools/">Herramientas</a>
-    <a href="/es/studio/">Estudio</a>
+    <a href="/es/studio/">Empresa</a>
     <a href="https://ledger.muntin.digital/">Ledger</a>
     <a class="js-nav-signin mobile-auth" href="/es/sign-in/" hidden>Acceder</a>
     <a class="js-nav-workshop mobile-auth" href="/es/workbench/" hidden>El Taller</a>
@@ -835,13 +835,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <p style="margin:0 0 8px;font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);">Lo que <em>sí</em> es: una mejora permanente de habilidad que puedes correr trimestralmente.</p>
     <p style="margin:0;font-size:14px;line-height:1.65;color:var(--ink-soft);">Tres audiencias, tres entregas. La <strong>Ficha de Copy</strong> es el visual que un lector no técnico puede usar — llévala al chef antes de la próxima reimpresión del menú. El <strong>CSV</strong> es para el contador o el operador haciendo comparaciones trimestrales. El <strong>JSON</strong> es para un desarrollador construyendo algo sobre tus datos. El Inspector mismo es el beneficio a fuego lento: diez dueños que lo corren una vez por trimestre durante dos años escriben mejores menús desde cero que antes.</p>
   </div>
-  <div style="max-width:760px;margin:18px auto 0;padding:20px 22px;background:var(--teal-tint);border-radius:var(--r-input);border:1px solid var(--line);">
-    <p style="margin:0 0 8px;font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);">Cuando quieras una reescritura de voz, contrata al estudio.</p>
-    <p style="margin:0 0 14px;font-size:14px;line-height:1.6;color:var(--ink-soft);">Si el Inspector marca &ldquo;Reescribir&rdquo; en la mayoría de tu menú, no tienes problema de copy — tienes problema de voz. El trabajo de voz de marca es la oferta paga del estudio. Trae tu Ficha de Copy a la primera llamada.</p>
-    <a href="/es/services/" style="display:inline-flex;align-items:center;gap:6px;padding:9px 18px;background:var(--teal);color:var(--cream);border-radius:999px;text-decoration:none;font-size:13px;font-weight:600;">Ver voz de marca y menú
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:12px;height:12px;"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
-    </a>
-  </div>
 </div></section>
 
 <section class="block"><div class="container">
@@ -852,7 +845,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <a href="/es/tools/margin-math/">Corre la matemática unitaria: Margin Math</a>
       <a href="/es/glossary/menu-copy/">Glosario: Copy de menú</a>
       <a href="/es/glossary/sensory-adjective/">Glosario: Adjetivo sensorial</a>
-      <a href="/es/services/">Contrata al estudio para reescribir tu voz de marca</a>
     </div>
   </div>
 </div></section>
@@ -1813,7 +1805,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     lines.push('Inspector de Copy de Menú es una herramienta gratuita de **Muntin Digital** — un estudio web de restaurantes de una sola persona en Silver Spring, Maryland.');
     lines.push('');
     lines.push('- Estudio: https://muntin.digital');
-    lines.push('- Voz de marca (pago): https://muntin.digital/es/services/');
     lines.push('- Herramienta: https://muntin.digital/es/tools/menu-copy/');
     lines.push('');
     lines.push('> La estructura aporta claridad.');

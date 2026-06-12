@@ -93,22 +93,25 @@ test('scanPatterns: a fabricated source deep-link is caught on EVERY track', () 
   }
 });
 
-test('extractNumbers normalizes locale separators to bare digits', () => {
-  // "$40,000" (en), "40.000" (it/pt), "40 000" (fr) must all compare equal.
-  assert.ok(extractNumbers('$40,000').has('40000'));
-  assert.ok(extractNumbers('40.000').has('40000'));
-  assert.ok(extractNumbers('40 000').has('40000'));
-  // decimals collapse too; leading zeros drop.
-  assert.ok(extractNumbers('13.14%').has('1314'));
-  assert.ok(extractNumbers('03').has('3'));
-  assert.ok(extractNumbers('2026').has('2026'));
+test('extractNumbers compares digit-runs, invariant to locale separators', () => {
+  const sorted = (x) => [...x].sort();
+  // "1.176,28" (es decimal) and "$1,176.28" (en) are the SAME figure — the
+  // digit-run multiset must match (the case that produced the phantom 117628 in v1).
+  assert.deepEqual(sorted(extractNumbers('1.176,28')), sorted(extractNumbers('$1,176.28')));
+  // Thousands groups are formatting noise: 40 is <=2 digits, 000 is all-zero.
+  assert.deepEqual([...extractNumbers('$40,000')], []);
+  assert.deepEqual([...extractNumbers('40.000')], []);
+  // Meaningful 3+ digit figures kept; sub-3-digit counts dropped.
+  assert.ok(extractNumbers('456 sites audited').has('456'));
+  assert.ok(extractNumbers('the year 2026').has('2026'));
+  assert.equal(extractNumbers('56 percent').has('56'), false);
 });
 
-test('numeric-parity building block: a stray figure is detectable', () => {
-  const source = extractNumbers('the article cites 30% and $1,200');
-  const spoken = extractNumbers('the translation says 56% and $1,200');
+test('numeric-parity building block: a stray 3+ digit figure is detectable', () => {
+  const source = extractNumbers('the article cites 300 invoices');
+  const spoken = extractNumbers('the translation says 456 invoices');
   const stray = [...spoken].filter((n) => !source.has(n));
-  assert.deepEqual(stray, ['56']); // invented 56% not in the source article
+  assert.deepEqual(stray, ['456']);
 });
 
 test('waiverFor matches known-stale dirs and nothing else', () => {

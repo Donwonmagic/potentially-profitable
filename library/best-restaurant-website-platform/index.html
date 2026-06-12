@@ -49,7 +49,7 @@
       "url": "https://muntin.digital/library/best-restaurant-website-platform/",
       "inLanguage": "en-US",
       "datePublished": "2026-05-31",
-      "dateModified": "2026-05-31",
+      "dateModified": "2026-06-10",
       "author": {
         "@id": "https://muntin.digital/#muntin-desk",
         "@type": "Organization",
@@ -223,9 +223,9 @@ main{padding-top:64px}
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-italic.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-italic.woff2" crossorigin>
-<link rel="preload" as="style" href="/assets/site-core.css?v=933461d49609" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=15ac955f199e" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=933461d49609"><link rel="stylesheet" href="/assets/site-article.css?v=15ac955f199e"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=b70da981fa3f" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=36af39b8b96e" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=b70da981fa3f"><link rel="stylesheet" href="/assets/site-article.css?v=36af39b8b96e"></noscript>
 
 <!-- lazy-load:p --><script>(window.requestIdleCallback||function(c){return setTimeout(c,500);})(function(){var s=document.createElement("script");s.src="/assets/p.js?v=20260503";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:p -->
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
@@ -331,11 +331,9 @@ main{padding-top:64px}
          three-doors page). Tools is promoted from the old Library
          mega-menu to a top-level item. Studio replaces Services +
          Restaurants + About — they all live under /studio/ now,
-         either as anchored sections (#pricing, #offers, #cities,
-         #process, #about) or as full child pages (/studio/compare/,
-         /studio/silver-spring/, etc.). The old Services and
-         Restaurants pages remain reachable via /studio/ and the
-         _redirects table; /about/ is unchanged. The mega-menu is
+         as sections of the company page (Phase 9, 2026-06-11: the
+         services-era child pages and anchored offer sections are
+         retired; old paths 301 via the _redirects table). /about/ is unchanged. The mega-menu is
          retired (the hub IS the menu now); the controller script
          is gone too.
 
@@ -347,7 +345,7 @@ main{padding-top:64px}
       <a href="/library/">Library</a>
       <a href="/start/">Start</a>
       <a href="/tools/">Tools</a>
-      <a href="/studio/">Studio</a>
+      <a href="/studio/">Company</a>
       <!-- Ledger — sister product (the privacy-forward invoice ledger)
            on its own subdomain. Plain external link so it passes link
            equity to ledger.muntin.digital; Plausible's automatic
@@ -409,7 +407,7 @@ main{padding-top:64px}
     <a href="/library/">Library</a>
     <a href="/start/">Start</a>
     <a href="/tools/">Tools</a>
-    <a href="/studio/">Studio</a>
+    <a href="/studio/">Company</a>
     <a href="https://ledger.muntin.digital/">Ledger</a>
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
@@ -593,7 +591,7 @@ main{padding-top:64px}
 
     <p>The four operating models worth knowing live on different points of the curve. A custom site pairs with your own payment processor &mdash; you pay roughly 2.9% plus thirty cents to Stripe or your processor of choice, and nothing to a website platform. Owner.com on its Flat plan and Toast on its direct-ordering pipeline both take 0% platform commission &mdash; Owner.com asks the guest to cover a support fee, Toast is bundled into the wider POS billing. BentoBox and Popmenu bolt online ordering on as an add-on with a per-order fee on top of the monthly base, which compounds with volume. And a <!-- LIBRARY:autolink:start --><a href="/glossary/third-party-marketplace/" data-glossary-head="Third-party marketplace" data-glossary-aka="aggregator, delivery marketplace" data-glossary-blurb="A platform like DoorDash, Uber Eats, or Grubhub that lists your restaurant alongside others and takes a per-order commission.">third-party marketplace</a><!-- LIBRARY:autolink:end --> &mdash; DoorDash, Uber Eats, Grubhub &mdash; keeps 15 to 30 percent of every order, the largest cut in restaurant tech. The same $100 ticket pays the platform anywhere from zero to about thirty dollars depending on which model it traveled through.</p>
 
-    <figure class="viz-figure" data-audio-alt="A horizontal bar chart of who keeps what from a one-hundred-dollar online order, across four channels. Channel one, custom website with your own payment processor: roughly three dollars goes to payment processing, the platform keeps zero, drawn teal. Channel two, Owner dot com on its flat plan: roughly five dollars in guest-paid support fees, the restaurant keeps the rest, drawn teal. Channel three, Toast direct ordering: roughly three dollars in payment processing on the online tier, the platform keeps zero, drawn teal. Channel four, a marketplace like DoorDash or Uber Eats: roughly fifteen to thirty dollars per order, the largest cut in the comparison, drawn rust. The visual takeaway: the three direct-ordering channels are within a couple of dollars of each other; the marketplace is an order of magnitude more expensive per order. Verify each figure on the vendor's pricing page before signing.">
+    <figure class="viz-figure" data-audio-alt="A horizontal bar chart of who keeps what from a one-hundred-dollar online order, across four channels. Channel one, custom website with your own payment processor: roughly three dollars goes to payment processing, the platform keeps zero, drawn teal. Channel two, Owner dot com on its flat plan: roughly five dollars in guest-paid support fees, the restaurant keeps the rest, drawn teal. Channel three, Toast direct ordering: roughly three dollars in payment processing on the online tier, the platform keeps zero, drawn teal. Channel four, a marketplace like DoorDash or Uber Eats: roughly fifteen to thirty dollars per order, the largest cut in the comparison, drawn rust, with a tick inside the bar marking the fifteen-dollar floor of the published fifteen-to-thirty-percent range. The visual takeaway: the three direct-ordering channels are within a couple of dollars of each other, and even the marketplace at its published floor costs several times any of them on the same ticket. Verify each figure on the vendor's pricing page before signing.">
       <div class="viz-bars">
         <p class="viz-bars__title">Who takes a cut of a $100 online order (lower is better)</p>
         <div class="viz-bars__row">
@@ -613,9 +611,10 @@ main{padding-top:64px}
         </div>
         <div class="viz-bars__row">
           <p class="viz-bars__label">Marketplace &middot; DoorDash, Uber Eats, Grubhub</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.75"></span></div>
+          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.75"></span><span class="viz-bars__mark" data-tone="teal" style="--x:0.5" aria-hidden="true"></span></div>
           <p class="viz-bars__num">~$15&ndash;30</p>
         </div>
+        <p class="viz-bars__note">The marketplace bar spans its published 15&ndash;30% range; the tick marks the <strong>$15 floor</strong> &mdash; the marketplace&rsquo;s best case still costs several times any direct channel on the same ticket.</p>
       </div>
       <figcaption>The platform cut on a $100 ticket. Three direct-ordering routes land within a couple of dollars; the marketplace is an order of magnitude more. Figures from each vendor&rsquo;s public pricing and secondary coverage as of May 2026.</figcaption>
     </figure>
@@ -750,18 +749,18 @@ main{padding-top:64px}
 
     <p>Reading the eight options on one row makes the choice clearer than any vendor comparison page. The columns that matter are ownership, the platform commission per online order, the monthly bill as of May 2026, and the operator profile each one actually fits.</p>
 
-    <p>The table below is the picture a vendor will never publish: their option on the same line as the seven others, with the trade-offs each one asks the operator to accept. Read the &ldquo;best for&rdquo; column twice &mdash; the platform that fits an upscale, brand-driven concept is not the platform that fits a high-volume pickup-only operation, and the platform that fits a Toast-on-POS shop is not the one that fits a no-POS dine-in restaurant.</p>
+    <p>The table below is the picture a vendor will never publish: their option on the same line as the seven others, with the trade-offs each one asks the operator to accept. Click any column header to re-rank the eight rows &mdash; the small bars under the monthly column draw each platform&rsquo;s bill against Toast&rsquo;s top of range, so the cost spread reads at a glance. Read the &ldquo;best for&rdquo; column twice &mdash; the platform that fits an upscale, brand-driven concept is not the platform that fits a high-volume pickup-only operation, and the platform that fits a Toast-on-POS shop is not the one that fits a no-POS dine-in restaurant.</p>
 
-    <figure style="margin:48px 0;" data-audio-alt="A comparison table of eight restaurant website platforms with four columns: do you own the site, the platform commission per online order, the monthly cost as of May twenty twenty-six, and the operator the platform fits. Row one, custom Muntin-built: yes you own it, zero percent platform commission on top of your own payment processor, roughly zero to ten dollars a month for hosting plus an annual domain on top of the upfront build, fits owner-operators who need to control the site for the long haul. Row two, Wix: no, lock-in to Wix, marketed as commission-free with tier-dependent fees per secondary coverage, sixteen to thirty-nine dollars a month on common tiers, fits a small dine-in restaurant launching tonight. Row three, Squarespace: no, content exports as XML only, zero percent platform commission with payment processor on top, twenty-three to forty-nine dollars a month on commerce tiers, fits a brand-led small restaurant whose ordering volume is low. Row four, Square Online: no, locked to Square Payments, no platform commission with processor fees varying by tier, free to about thirty-five dollars a month for the paid tier, fits a Square-on-POS shop that wants a basic ordering page. Row five, BentoBox: no, hosted by BentoBox, online ordering is a per-order or percentage add-on, two hundred seventy-nine to four hundred seventy-nine dollars a month plus add-ons per secondary coverage, fits an upscale full-service restaurant whose brand is the differentiator. Row six, Popmenu: no, hosted with a twelve-month contract, online ordering add-on around fifty dollars a month plus a dollar per order, one hundred seventy-nine to four hundred ninety-nine dollars a month plus three hundred dollars per extra location per secondary coverage, fits a multi-location group running marketing automation. Row seven, Owner dot com: no, hosted, zero percent platform commission with a five-percent guest support fee on Flat or five-percent restaurant commission on Flex, two hundred forty-nine to four hundred ninety-nine dollars a month, fits a restaurant whose direct ordering is the business. Row eight, Toast: no, hosted as part of the POS stack, zero percent platform commission on direct ordering with processing layered, three hundred to two thousand dollars a month all-in depending on terminals and add-ons, fits a restaurant where the website, the ordering, and the POS are one billed stack. The numbers are public-page reported figures or secondary coverage as of May twenty twenty-six. Verify with each vendor before signing.">
+    <figure class="viz-figure" style="margin:48px 0;" data-audio-alt="A sortable comparison table of eight restaurant website platforms with four columns: do you own the site, the platform commission per online order, the monthly cost as of May twenty twenty-six, and the operator the platform fits. Row one, custom Muntin-built: yes you own it, zero percent platform commission on top of your own payment processor, roughly zero to ten dollars a month for hosting plus an annual domain on top of the upfront build, fits owner-operators who need to control the site for the long haul. Row two, Wix: no, lock-in to Wix, marketed as commission-free with tier-dependent fees per secondary coverage, sixteen to thirty-nine dollars a month on common tiers, fits a small dine-in restaurant launching tonight. Row three, Squarespace: no, content exports as XML only, zero percent platform commission with payment processor on top, twenty-three to forty-nine dollars a month on commerce tiers, fits a brand-led small restaurant whose ordering volume is low. Row four, Square Online: no, locked to Square Payments, no platform commission with processor fees varying by tier, free to about thirty-five dollars a month for the paid tier, fits a Square-on-POS shop that wants a basic ordering page. Row five, BentoBox: no, hosted by BentoBox, online ordering is a per-order or percentage add-on, two hundred seventy-nine to four hundred seventy-nine dollars a month plus add-ons per secondary coverage, fits an upscale full-service restaurant whose brand is the differentiator. Row six, Popmenu: no, hosted with a twelve-month contract, online ordering add-on around fifty dollars a month plus a dollar per order, one hundred seventy-nine to four hundred ninety-nine dollars a month plus three hundred dollars per extra location per secondary coverage, fits a multi-location group running marketing automation. Row seven, Owner dot com: no, hosted, zero percent platform commission with a five-percent guest support fee on Flat or five-percent restaurant commission on Flex, two hundred forty-nine to four hundred ninety-nine dollars a month, fits a restaurant whose direct ordering is the business. Row eight, Toast: no, hosted as part of the POS stack, zero percent platform commission on direct ordering with processing layered, three hundred to two thousand dollars a month all-in depending on terminals and add-ons, fits a restaurant where the website, the ordering, and the POS are one billed stack. The numbers are public-page reported figures or secondary coverage as of May twenty twenty-six. Verify with each vendor before signing.">
       <div class="pos-table-wrap">
-        <div class="table-scroll"><table class="pos-table">
+        <div class="table-scroll"><table class="pos-table" data-viz-sortable>
           <thead>
             <tr>
               <th class="feature-col">Platform</th>
               <th>Own the site?</th>
               <th>Online-order commission</th>
               <th>Monthly (May 2026)</th>
-              <th>Best for</th>
+              <th data-viz-sortable-skip="true">Best for</th>
             </tr>
           </thead>
           <tbody>
@@ -769,63 +768,63 @@ main{padding-top:64px}
               <td class="feature-name">Custom (Muntin-built)<span class="note">HTML/CSS on a host you control</span></td>
               <td>Yes &mdash; files and domain in your name</td>
               <td>0% platform &middot; processor only (~2.9% + 30&cent;)</td>
-              <td>~$0&ndash;10/mo hosting + ~$10/yr domain<span class="note">Upfront build cost separate</span></td>
+              <td>~$0&ndash;10/mo hosting + ~$10/yr domain<span class="viz-magbar" style="--w:0.005" aria-hidden="true"></span><span class="note">Upfront build cost separate</span></td>
               <td>Owner-operators who plan to keep the site for years</td>
             </tr>
             <tr>
               <td class="feature-name">Wix<span class="note">All-in-one builder with restaurant tools</span></td>
               <td>No &mdash; proprietary, site cannot be exported</td>
               <td>Marketed 0%; tier-dependent fees reported<span class="note">Verify your tier on wix.com</span></td>
-              <td>~$16&ndash;39/mo<span class="note">Per Wix pricing pages, May 2026</span></td>
+              <td>~$16&ndash;39/mo<span class="viz-magbar" style="--w:0.02" aria-hidden="true"></span><span class="note">Per Wix pricing pages, May 2026</span></td>
               <td>Small dine-in launching tonight on a credit card</td>
             </tr>
             <tr>
               <td class="feature-name">Squarespace<span class="note">Template-quality leader; content-only export</span></td>
               <td>No &mdash; XML content export; design stays</td>
               <td>0% platform &middot; payment processor on top</td>
-              <td>~$23&ndash;49/mo on commerce tiers<span class="note">Per squarespace.com pricing, May 2026</span></td>
+              <td>~$23&ndash;49/mo on commerce tiers<span class="viz-magbar" style="--w:0.025" aria-hidden="true"></span><span class="note">Per squarespace.com pricing, May 2026</span></td>
               <td>Brand-led small restaurant, low ordering volume</td>
             </tr>
             <tr>
               <td class="feature-name">Square Online<span class="note">Free site bundled with Square POS</span></td>
               <td>No &mdash; locked to Square Payments</td>
               <td>0% platform &middot; processor tier-dependent</td>
-              <td>$0 free tier; ~$35/mo paid tier<span class="note">Per squareup.com pricing, May 2026</span></td>
+              <td>$0 free tier; ~$35/mo paid tier<span class="viz-magbar" style="--w:0.018" aria-hidden="true"></span><span class="note">Per squareup.com pricing, May 2026</span></td>
               <td>Square-on-POS shop wanting a basic ordering page</td>
             </tr>
             <tr>
               <td class="feature-name">BentoBox<span class="note">Done-for-you premium design</span></td>
               <td>No &mdash; hosted by BentoBox</td>
               <td>Add-on; per-order or % fee on ordering</td>
-              <td>~$279 (Foundations) to ~$479+ (Signature)<span class="note">Per secondary coverage; verify on getbento.com</span></td>
+              <td>~$279 (Foundations) to ~$479+ (Signature)<span class="viz-magbar" style="--w:0.24" aria-hidden="true"></span><span class="note">Per secondary coverage; verify on getbento.com</span></td>
               <td>Upscale full-service where brand is the differentiator</td>
             </tr>
             <tr>
               <td class="feature-name">Popmenu<span class="note">Per-dish SEO pages + marketing automation</span></td>
               <td>No &mdash; hosted; 12-month contract standard</td>
               <td>Ordering add-on ~$50/mo + ~$1/order</td>
-              <td>~$179 / $299 / $499/mo + ~$300/mo per extra location<span class="note">Per secondary coverage; verify on popmenu.com</span></td>
+              <td>~$179 / $299 / $499/mo + ~$300/mo per extra location<span class="viz-magbar" style="--w:0.25" aria-hidden="true"></span><span class="note">Per secondary coverage; verify on popmenu.com</span></td>
               <td>Multi-location group running marketing automation</td>
             </tr>
             <tr>
               <td class="feature-name">Owner.com<span class="note">Ordering-first commission-free stack</span></td>
               <td>No &mdash; hosted by Owner.com</td>
               <td>0% restaurant (Flat) with ~5% guest support fee; or ~5% restaurant (Flex)</td>
-              <td>~$249/mo (Flex) to ~$499/mo (Flat)<span class="note">Per owner.com pricing, May 2026</span></td>
+              <td>~$249/mo (Flex) to ~$499/mo (Flat)<span class="viz-magbar" style="--w:0.25" aria-hidden="true"></span><span class="note">Per owner.com pricing, May 2026</span></td>
               <td>Restaurant where direct ordering is the business</td>
             </tr>
             <tr>
               <td class="feature-name">Toast<span class="note">POS + website + ordering, one stack</span></td>
               <td>No &mdash; hosted as part of the POS stack</td>
               <td>0% platform commission on direct ordering; processing layered</td>
-              <td>~$300&ndash;700/mo (cafe) to $1,000&ndash;2,000+/mo (full-service)<span class="note">Directional all-in; verify quote on toasttab.com</span></td>
+              <td>~$300&ndash;700/mo (cafe) to $1,000&ndash;2,000+/mo (full-service)<span class="viz-magbar" style="--w:1" aria-hidden="true"></span><span class="note">Directional all-in; verify quote on toasttab.com</span></td>
               <td>Restaurant where website, ordering, and POS are one bill</td>
             </tr>
           </tbody>
         </table></div>
       </div>
       <figcaption style="font-size:11px; color:var(--stone); text-align:center; margin-top:16px; letter-spacing:0.15em; text-transform:uppercase; font-weight:600;">
-        Comparison from public docs/secondary sources as of May 2026 &mdash; verify with each vendor before signing.
+        Only the first row is a site you own; the bars under the monthly column show the cost spread, from ~$10 to ~$2,000 a month. Click a column header to sort. Public docs/secondary sources, May 2026 &mdash; verify before signing.
       </figcaption>
     </figure>
 
@@ -1093,21 +1092,20 @@ main{padding-top:64px}
   </aside>
 
   <!-- article-author-card:start -->
-  <aside class="article-author-card" aria-labelledby="article-author-h" style="margin:48px 0 0;padding:24px;border:1px solid var(--line);border-radius:12px;background:var(--cream-2);display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap">
-    <div class="article-author-card__avatar" aria-hidden="true" style="flex:0 0 auto;width:72px;height:72px;border-radius:50%;background:var(--teal);color:var(--cream);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:34px;font-weight:500;letter-spacing:-0.02em">D</div>
-    <div class="article-author-card__body" style="flex:1 1 280px;min-width:0">
-      <p class="article-author-card__eyebrow" style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--stone);margin:0 0 4px" id="article-author-h">About the author</p>
-      <p class="article-author-card__name" style="font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);margin:0 0 6px"><a href="/about/" style="color:var(--ink)">Don Goldstein</a></p>
-      <p class="article-author-card__bio" style="font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 10px">I&rsquo;m Don. I&rsquo;m front-of-house manager at Tacombi in Bethesda and run Muntin Digital, the one-person web studio behind this library. Every article here comes from a problem I saw on the floor or in a client audit.</p>
-      <p class="article-author-card__creds" style="font-size:12px;color:var(--stone);margin:0 0 12px;letter-spacing:0.01em">ServSafe Manager &middot; ServSafe Allergens &middot; RAM Alcohol Awareness &middot; Maryland LLC</p>
-      <p class="article-author-card__cta" style="font-size:14px;margin:0">
-        <a href="/about/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none;margin-right:14px">More about Don &rarr;</a>
-        <a href="/window/" class="js-window" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">Email Don &rarr;</a>
-      </p>
-    </div>
-  </aside>
-  <!-- article-author-card:end -->
-
+<aside class="article-author-card" aria-labelledby="article-author-h" style="margin:48px 0 0;padding:24px;border:1px solid var(--line);border-radius:12px;background:var(--cream-2);display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap">
+  <div class="article-author-card__avatar" aria-hidden="true" style="flex:0 0 auto;width:72px;height:72px;border-radius:50%;background:var(--teal);color:var(--cream);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:34px;font-weight:500;letter-spacing:-0.02em">D</div>
+  <div class="article-author-card__body" style="flex:1 1 280px;min-width:0">
+    <p class="article-author-card__eyebrow" style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--stone);margin:0 0 4px" id="article-author-h">About the author</p>
+    <p class="article-author-card__name" style="font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);margin:0 0 6px"><a href="/about/" style="color:var(--ink)">Don Goldstein</a></p>
+    <p class="article-author-card__bio" style="font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 10px">I&rsquo;m Don. I&rsquo;m front-of-house manager at Tacombi in Bethesda and the founder of Muntin Digital &mdash; the company behind this library, the Cost Index, and Muntin Ledger. Every article here comes from a problem I saw on the floor.</p>
+    <p class="article-author-card__creds" style="font-size:12px;color:var(--stone);margin:0 0 12px;letter-spacing:0.01em">ServSafe Manager &middot; ServSafe Allergens &middot; RAM Alcohol Awareness &middot; Maryland LLC</p>
+    <p class="article-author-card__cta" style="font-size:14px;margin:0">
+      <a href="/about/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none;margin-right:14px">More about Don &rarr;</a>
+      <a href="/window/" class="js-window" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">Email Don &rarr;</a>
+    </p>
+  </div>
+</aside>
+<!-- article-author-card:end -->
   </article>
 
 </main>
@@ -1134,7 +1132,7 @@ main{padding-top:64px}
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->150<!-- /count --> glossary terms &mdash; with a one-person web studio behind it in Silver Spring, MD.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->150<!-- /count --> glossary terms &mdash; from Muntin Digital in Silver Spring, MD.</p>
       </div>
 
       <!-- Column order mirrors the 4-item primary nav
@@ -1162,12 +1160,17 @@ main{padding-top:64px}
         </ul>
       </nav>
 
+      <!-- Phase 9 (services sunset, 2026-06-11): the Studio column's
+           Pricing / Compare / Process rows sold the retired services
+           business. The column is now the Company column — the product,
+           the public data, the company page, the founder. The retired services
+           and studio child pages 301 per the _redirects table. -->
       <nav class="foot-col" aria-labelledby="foot-studio">
-        <p class="foot-heading" id="foot-studio">Studio</p>
+        <p class="foot-heading" id="foot-studio">Company</p>
         <ul class="foot-links">
-          <li><a href="/studio/#pricing">Pricing</a></li>
-          <li><a href="/studio/compare/">Compare options</a></li>
-          <li><a href="/studio/#process">Process</a></li>
+          <li><a href="https://ledger.muntin.digital/">Muntin Ledger</a></li>
+          <li><a href="/cost-index/">Cost Index</a></li>
+          <li><a href="/studio/">The company</a></li>
           <li><a href="/about/">About Don</a></li>
         </ul>
       </nav>
@@ -1337,5 +1340,7 @@ main{padding-top:64px}
   <!-- glossary-script:start -->
   <script src="/assets/js/glossary.js?v=20260503-modsplit" defer></script>
   <!-- glossary-script:end -->
+  <!-- article-viz: sortable comparison table -->
+  <script src="/assets/article-viz.js" defer></script>
 </body>
 </html>

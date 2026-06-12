@@ -71,7 +71,7 @@
       },
       "url": "https://muntin.digital/library/wix-vs-custom-for-restaurants/",
       "datePublished": "2026-04-15",
-      "dateModified": "2026-05-28",
+      "dateModified": "2026-06-12",
       "inLanguage": "en-US",
       "wordCount": 2020,
       "keywords": "wix vs custom restaurant website, wix for restaurants, custom restaurant website, restaurant website platform comparison, wix restaurant limitations, custom vs template restaurant site",
@@ -278,9 +278,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=933461d49609" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=15ac955f199e" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=933461d49609"><link rel="stylesheet" href="/assets/site-article.css?v=15ac955f199e"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=b70da981fa3f" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=36af39b8b96e" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=b70da981fa3f"><link rel="stylesheet" href="/assets/site-article.css?v=36af39b8b96e"></noscript>
 
 <style>
   /* ============ BLOG POST LAYOUT STYLES ============ */
@@ -608,11 +608,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
          three-doors page). Tools is promoted from the old Library
          mega-menu to a top-level item. Studio replaces Services +
          Restaurants + About — they all live under /studio/ now,
-         either as anchored sections (#pricing, #offers, #cities,
-         #process, #about) or as full child pages (/studio/compare/,
-         /studio/silver-spring/, etc.). The old Services and
-         Restaurants pages remain reachable via /studio/ and the
-         _redirects table; /about/ is unchanged. The mega-menu is
+         as sections of the company page (Phase 9, 2026-06-11: the
+         services-era child pages and anchored offer sections are
+         retired; old paths 301 via the _redirects table). /about/ is unchanged. The mega-menu is
          retired (the hub IS the menu now); the controller script
          is gone too.
 
@@ -624,7 +622,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <a href="/library/">Library</a>
       <a href="/start/">Start</a>
       <a href="/tools/">Tools</a>
-      <a href="/studio/">Studio</a>
+      <a href="/studio/">Company</a>
       <!-- Ledger — sister product (the privacy-forward invoice ledger)
            on its own subdomain. Plain external link so it passes link
            equity to ledger.muntin.digital; Plausible's automatic
@@ -686,7 +684,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <a href="/library/">Library</a>
     <a href="/start/">Start</a>
     <a href="/tools/">Tools</a>
-    <a href="/studio/">Studio</a>
+    <a href="/studio/">Company</a>
     <a href="https://ledger.muntin.digital/">Ledger</a>
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
@@ -900,54 +898,52 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       </ul>
       <p>If you're brand new, cash is tight, and you can genuinely accept that the site is a placeholder — not a reflection of the room — Wix is fine. This post is not for you. Everything below is for the restaurant that's been open a year or more, has regulars, has a menu worth photographing, and is starting to notice that the site is a problem.</p>
 
-      <figure class="viz-figure article-figure" data-audio-alt="The six places Wix tends to run out of room for an established restaurant, in roughly the order an operator runs into them. One: menu management is a trap — the menu lives inside Wix's closed system, not in real HTML, so Google can't cleanly crawl individual dishes. Two: mobile load speed — Lighthouse scores on mobile Wix restaurant sites consistently land below sixty, costing hungry mobile traffic before anyone sees the menu. Three: reservations integration — defaults heavily to OpenTable; if you're on Resy, Tock, SevenRooms, or Square Reservations, you usually get a generic iframe or a link-out. Four: SEO is template-good, not actually good — title tags exist, but the schema, the canonicals, and the internal-linking sit at the floor, not the ceiling. Five: anything custom requires hiring a Wix Partner — the cost of the template's flexibility is real, just delayed. Six: exit costs — Wix doesn't let you export your content cleanly; you discover this the year you try to leave.">
-        <div class="viz-flow">
-          <ol class="viz-flow__list">
-            <li class="viz-flow__step" data-tone="rust">
-              <span class="viz-flow__num">1</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">Menu management is a trap</p>
-                <p class="viz-flow__detail">Menu lives inside Wix&rsquo;s closed system &mdash; Google can&rsquo;t cleanly crawl individual dishes; updates fan out to four places by hand.</p>
-              </div>
-            </li>
-            <li class="viz-flow__step" data-tone="rust">
-              <span class="viz-flow__num">2</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">Mobile load speed</p>
-                <p class="viz-flow__detail"><!-- LIBRARY:autolink:start --><a href="/glossary/lighthouse/" data-glossary-head="Lighthouse" data-glossary-aka="Google's audit engine" data-glossary-blurb="The open-source auditing tool Google ships inside Chrome and inside PageSpeed Insights.">Lighthouse</a><!-- LIBRARY:autolink:end --> mobile scores consistently below 60 in audit experience; hungry mobile traffic bounces before the menu ever paints.</p>
-              </div>
-            </li>
-            <li class="viz-flow__step" data-tone="rust">
-              <span class="viz-flow__num">3</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">Reservations integration</p>
-                <p class="viz-flow__detail">Defaults to OpenTable. On Resy, Tock, SevenRooms, or Square Reservations, you get a generic iframe or a link-out.</p>
-              </div>
-            </li>
-            <li class="viz-flow__step" data-tone="stone">
-              <span class="viz-flow__num">4</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">SEO is template-good, not actually good</p>
-                <p class="viz-flow__detail"><!-- LIBRARY:autolink:start --><a href="/glossary/title-tag/" data-glossary-head="Title tag" data-glossary-aka="the page's &lt;title&gt;" data-glossary-blurb="The line of text that shows up as the clickable blue headline of your page in Google search results, and as the name of the tab in a browser.">Title tags</a><!-- LIBRARY:autolink:end --> exist; schema, <!-- LIBRARY:autolink:start --><a href="/glossary/canonical-url/" data-glossary-head="Canonical URL" data-glossary-aka="rel=canonical, the &quot;official&quot; address" data-glossary-blurb="A tag in a page's HTML that tells Google &quot;this is the real address for this page, ignore any duplicates&quot;.">canonicals</a><!-- LIBRARY:autolink:end -->, and internal-linking sit at the floor, not the ceiling.</p>
-              </div>
-            </li>
-            <li class="viz-flow__step" data-tone="stone">
-              <span class="viz-flow__num">5</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">Anything custom requires a Wix Partner</p>
-                <p class="viz-flow__detail">The template&rsquo;s flexibility ceiling is real &mdash; you just don&rsquo;t hit it until the year you need something it doesn&rsquo;t do.</p>
-              </div>
-            </li>
-            <li class="viz-flow__step" data-tone="stone">
-              <span class="viz-flow__num">6</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">Exit costs are real</p>
-                <p class="viz-flow__detail">Wix doesn&rsquo;t let you export your content cleanly. You find this out the year you try to leave.</p>
-              </div>
-            </li>
-          </ol>
-        </div>
-        <figcaption>Six places Wix tends to run out of room for an established restaurant &mdash; in the order an operator usually meets them.</figcaption>
+      <figure class="viz-figure article-figure" data-audio-alt="The six places Wix tends to run out of room for an established restaurant, walked in the order an operator meets them, each with the moment it bites. One: menu management is a trap — it bites on every price change, because the menu lives inside Wix's closed system and every update fans out to four other places by hand. Two: mobile load speed — it bites from day one, because Lighthouse scores on mobile Wix restaurant sites consistently land below sixty and hungry mobile traffic bounces before the menu paints. Three: reservations integration — it bites the night a third-party embed URL changes, because anything that is not OpenTable is usually a generic iframe that breaks silently. Four: SEO is template-good, not actually good — it bites the quarter you start chasing cuisine-near-me rankings, because schema, canonicals, and internal linking sit at the floor. Five: anything custom requires hiring a Wix Partner — it bites the year you need something the template does not do, at custom-build rates inside the same ceiling. Six: exit costs — it bites the year you try to leave, because the content does not export cleanly and the rebuild starts from scratch. The first three and the last one are red, the middle two amber: the dearest walls are the ones at the start and at the exit.">
+        <ol class="viz-flow">
+          <li class="viz-flow__step" data-state="bad">
+            <span class="viz-flow__num">1</span>
+            <div class="viz-flow__body">
+              <p class="viz-flow__title">Menu management is a trap</p>
+              <p class="viz-flow__meta"><strong>Bites on every price change.</strong> The menu lives inside Wix&rsquo;s closed system &mdash; Google can&rsquo;t cleanly crawl individual dishes, and each update fans out to four other places by hand.</p>
+            </div>
+          </li>
+          <li class="viz-flow__step" data-state="bad">
+            <span class="viz-flow__num">2</span>
+            <div class="viz-flow__body">
+              <p class="viz-flow__title">Mobile load speed</p>
+              <p class="viz-flow__meta"><strong>Bites from day one.</strong> <!-- LIBRARY:autolink:start --><a href="/glossary/lighthouse/" data-glossary-head="Lighthouse" data-glossary-aka="Google's audit engine" data-glossary-blurb="The open-source auditing tool Google ships inside Chrome and inside PageSpeed Insights.">Lighthouse</a><!-- LIBRARY:autolink:end --> mobile scores consistently below 60 in audit experience; hungry mobile traffic bounces before the menu ever paints.</p>
+            </div>
+          </li>
+          <li class="viz-flow__step" data-state="bad">
+            <span class="viz-flow__num">3</span>
+            <div class="viz-flow__body">
+              <p class="viz-flow__title">Reservations integration</p>
+              <p class="viz-flow__meta"><strong>Bites the Friday night an embed URL changes.</strong> Defaults to OpenTable; on Resy, Tock, SevenRooms, or Square Reservations you get a generic iframe or a link-out that breaks silently.</p>
+            </div>
+          </li>
+          <li class="viz-flow__step" data-state="warn">
+            <span class="viz-flow__num">4</span>
+            <div class="viz-flow__body">
+              <p class="viz-flow__title">SEO is template-good, not actually good</p>
+              <p class="viz-flow__meta"><strong>Bites the quarter you chase &ldquo;[cuisine] near me.&rdquo;</strong> <!-- LIBRARY:autolink:start --><a href="/glossary/title-tag/" data-glossary-head="Title tag" data-glossary-aka="the page's &lt;title&gt;" data-glossary-blurb="The line of text that shows up as the clickable blue headline of your page in Google search results, and as the name of the tab in a browser.">Title tags</a><!-- LIBRARY:autolink:end --> exist; schema, <!-- LIBRARY:autolink:start --><a href="/glossary/canonical-url/" data-glossary-head="Canonical URL" data-glossary-aka="rel=canonical, the &quot;official&quot; address" data-glossary-blurb="A tag in a page's HTML that tells Google &quot;this is the real address for this page, ignore any duplicates&quot;.">canonicals</a><!-- LIBRARY:autolink:end -->, and internal-linking sit at the floor, not the ceiling.</p>
+            </div>
+          </li>
+          <li class="viz-flow__step" data-state="warn">
+            <span class="viz-flow__num">5</span>
+            <div class="viz-flow__body">
+              <p class="viz-flow__title">Anything custom requires a Wix Partner</p>
+              <p class="viz-flow__meta"><strong>Bites the year you outgrow the template.</strong> The flexibility ceiling is real &mdash; and crossing it means agency rates for work still constrained by Wix&rsquo;s architecture.</p>
+            </div>
+          </li>
+          <li class="viz-flow__step" data-state="bad">
+            <span class="viz-flow__num">6</span>
+            <div class="viz-flow__body">
+              <p class="viz-flow__title">Exit costs are real</p>
+              <p class="viz-flow__meta"><strong>Bites the year you try to leave.</strong> The content doesn&rsquo;t export cleanly &mdash; two or three years of work effectively starts over as a rebuild.</p>
+            </div>
+          </li>
+        </ol>
+        <figcaption>Each wall has a predictable moment it bites &mdash; the expensive ones sit at the start (menu, speed) and at the exit, which is why they never show up in the template preview.</figcaption>
       </figure>
 
       <h2 id="break-1-menu-management-is-a-trap">Break #1 — Menu management is a trap</h2>
@@ -1092,11 +1088,11 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <p>The rebuild is almost always the right move — but it's a rebuild. Two or three years of content you thought you owned, effectively starts over. A custom site built on real HTML can be picked up, hosted anywhere, edited by anyone with a text editor, and moved between providers in an afternoon. That ownership is a feature the monthly Wix fee doesn't buy you.</p>
       <h2 id="the-math-that-almost-always-works">The math that almost always works</h2>
       <p>Here is the comparison most restaurant owners never actually do:</p>
-      <figure class="article-figure" data-audio-alt="Two-year total cost, line by line. Wix DIY: roughly twenty-five dollars a month in software for six hundred over twenty-four months, no upfront, no explicit care plan, plus about three thousand dollars of your own time at a hundred twenty hours valued at twenty-five an hour. Real two-year total: about thirty-six hundred. Custom site, Muntin Essentials tier: twenty-five hundred upfront, hosting included, care plan one twenty-five to three fifty a month for three thousand to eighty-four hundred. Two-year total: fifty-five hundred to ten thousand nine hundred. The custom site is roughly two to three times the cash cost, but it owns the code and clocks a mobile speed score above ninety against Wix&apos;s forty to fifty. The question isn&apos;t which line item is cheaper — it&apos;s whether the next two years of reservations are worth the speed and ownership gap.">
+      <figure class="article-figure" data-audio-alt="Two-year total cost, line by line. Wix DIY: roughly twenty-five dollars a month in software for six hundred over twenty-four months, no upfront, no explicit care plan, plus about three thousand dollars of your own time at a hundred twenty hours valued at twenty-five an hour. Real two-year total: about thirty-six hundred. Custom site, small-studio base tier: twenty-five hundred upfront, hosting included, care plan one twenty-five to three fifty a month for three thousand to eighty-four hundred. Two-year total: fifty-five hundred to ten thousand nine hundred. The custom site is roughly two to three times the cash cost, but it owns the code and clocks a mobile speed score above ninety against Wix&apos;s forty to fifty. The question isn&apos;t which line item is cheaper — it&apos;s whether the next two years of reservations are worth the speed and ownership gap.">
       <div class="table-scroll"><table class="comparison-table">
         <caption>Two-year total cost: Wix vs. custom site for an independent restaurant</caption>
         <thead>
-          <tr><th scope="col">Line item</th><th scope="col">Wix (DIY)</th><th scope="col">Custom site (Muntin Essentials)</th></tr>
+          <tr><th scope="col">Line item</th><th scope="col">Wix (DIY)</th><th scope="col">Custom site (small-studio base build)</th></tr>
         </thead>
         <tbody>
           <tr><th scope="row">Software / hosting</th><td>~$25/mo × 24 = <strong>$600</strong></td><td>included in care plan</td></tr>
@@ -1113,14 +1109,14 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 </figure>
       <ul>
         <li><strong>Wix over two years:</strong> ~$25 a month × 24 months = <strong>$600</strong>, plus roughly 120 hours of your own time keeping it updated (at even a conservative $25/hour opportunity cost, that's another $3,000). Two-year real total: about <strong>$3,600</strong>.</li>
-        <li><strong>Custom site over two years:</strong> $2,500 upfront (Essentials tier from Muntin) + $125–$350/month care plan × 24 months ($3,000–$8,400). Two-year total: <strong>$5,500–$10,900</strong>.</li>
+        <li><strong>Custom site over two years:</strong> $2,500 upfront (a small-studio base tier — Muntin's own 2026 rate, before the build service retired) + $125–$350/month care plan × 24 months ($3,000–$8,400). Two-year total: <strong>$5,500–$10,900</strong>.</li>
       </ul>
       <details class="cite">
         <summary>Source: Wix pricing + Muntin pricing</summary>
         <div class="cite-body">
           <p><span class="cite-source">Wix.com</span> — Wix business plans for restaurants typically run $17–$29/month depending on the tier. The "$25/month" figure used in the ROI math is an approximation for a restaurant needing business features. Wix changes pricing regularly — verify the current rates on their pricing page before making decisions.</p>
           <a href="https://www.wix.com/upgrade/website" target="_blank" rel="noopener">Wix pricing page</a>
-          <p style="margin-top:10px;"><span class="cite-source">Muntin Digital</span> — Essentials tier starts at $2,500; care plans range $125–$350/month depending on scope. See the pricing breakdown post for the full line-item table.</p>
+          <p style="margin-top:10px;"><span class="cite-source">Muntin Digital (historical)</span> — Muntin's own base tier was $2,500 and care plans ran $125–$350/month until the build service was retired in June 2026. The figures stand as a verified small-studio data point; see the pricing breakdown post for the full line-item table.</p>
           <a href="/library/custom-restaurant-website-pricing/">How much does a custom restaurant website cost?</a>
         </div>
       </details>
@@ -1170,7 +1166,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   <div class="article-author-card__body" style="flex:1 1 280px;min-width:0">
     <p class="article-author-card__eyebrow" style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--stone);margin:0 0 4px" id="article-author-h">About the author</p>
     <p class="article-author-card__name" style="font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);margin:0 0 6px"><a href="/about/" style="color:var(--ink)">Don Goldstein</a></p>
-    <p class="article-author-card__bio" style="font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 10px">I&rsquo;m Don. I&rsquo;m front-of-house manager at Tacombi in Bethesda and run Muntin Digital, the one-person web studio behind this library. Every article here comes from a problem I saw on the floor or in a client audit.</p>
+    <p class="article-author-card__bio" style="font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 10px">I&rsquo;m Don. I&rsquo;m front-of-house manager at Tacombi in Bethesda and the founder of Muntin Digital &mdash; the company behind this library, the Cost Index, and Muntin Ledger. Every article here comes from a problem I saw on the floor.</p>
     <p class="article-author-card__creds" style="font-size:12px;color:var(--stone);margin:0 0 12px;letter-spacing:0.01em">ServSafe Manager &middot; ServSafe Allergens &middot; RAM Alcohol Awareness &middot; Maryland LLC</p>
     <p class="article-author-card__cta" style="font-size:14px;margin:0">
       <a href="/about/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none;margin-right:14px">More about Don &rarr;</a>
@@ -1362,15 +1358,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <h4 class="i18n">Free Restaurant Website Audit</h4>
         <p>Drop your Wix URL and get a real Lighthouse audit in about thirty seconds. This is the fastest way to see Break #2 for yourself, in numbers.</p>
       </a>
-      <a href="/services/menu-drop-in/">
-        <h4 class="i18n">$1,500 menu drop-in</h4>
-        <p>If your bones are fine but the menu page is the leak — one hand-coded HTML menu page that plugs into your existing Wix site. Seven days, bilingual EN/ES, schema-marked. Half a step out of Wix without the rebuild.</p>
-      </a>
-      <a href="/services/audit/">
-        <h4 class="i18n">$499 deep-read audit</h4>
-        <p>The diagnosis-on-paper version: 90-min Loom plus an 8-page action sheet, in five business days. Credits toward a Full Service rebuild if you decide to leave Wix entirely.</p>
-      </a>
-      <a href="/studio/compare/">
+      <a href="/studio/">
         <h4 class="i18n">DIY / vendor / agency / Muntin compared</h4>
         <p>The side-by-side comparison: pricing, ownership, who's at the keyboard, year-two costs. Wix is one of the four columns, with the same posted numbers.</p>
       </a>
@@ -1406,7 +1394,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->150<!-- /count --> glossary terms &mdash; with a one-person web studio behind it in Silver Spring, MD.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->150<!-- /count --> glossary terms &mdash; from Muntin Digital in Silver Spring, MD.</p>
       </div>
 
       <!-- Column order mirrors the 4-item primary nav
@@ -1434,12 +1422,17 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         </ul>
       </nav>
 
+      <!-- Phase 9 (services sunset, 2026-06-11): the Studio column's
+           Pricing / Compare / Process rows sold the retired services
+           business. The column is now the Company column — the product,
+           the public data, the company page, the founder. The retired services
+           and studio child pages 301 per the _redirects table. -->
       <nav class="foot-col" aria-labelledby="foot-studio">
-        <p class="foot-heading" id="foot-studio">Studio</p>
+        <p class="foot-heading" id="foot-studio">Company</p>
         <ul class="foot-links">
-          <li><a href="/studio/#pricing">Pricing</a></li>
-          <li><a href="/studio/compare/">Compare options</a></li>
-          <li><a href="/studio/#process">Process</a></li>
+          <li><a href="https://ledger.muntin.digital/">Muntin Ledger</a></li>
+          <li><a href="/cost-index/">Cost Index</a></li>
+          <li><a href="/studio/">The company</a></li>
           <li><a href="/about/">About Don</a></li>
         </ul>
       </nav>

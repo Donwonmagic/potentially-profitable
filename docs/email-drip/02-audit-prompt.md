@@ -35,11 +35,6 @@ one is yours:
 It runs in your browser. No signup, no upsell. The result tells you the
 estimated dollar leak per month, ranked.
 
-If you'd rather have me run it for you and write up the fix, the $499
-deep-read audit takes a week:
-
-  https://muntin.digital/services/audit/
-
 Either way — knowing which one is your leak is the part most owners
 skip. It's also the part that saves the most money.
 

@@ -52,6 +52,23 @@ const LOCALES = [
   { code: 'es', dirs: ['es/library', 'es/blog'] },
 ];
 
+// ES posts live under TRANSLATED slugs (data/i18n-slug-map.json,
+// en→es per namespace). Without this lookup the ES pass searched
+// es/blog/<EN-slug>, silently skipped every translated mirror, and
+// hand-written ES CTA blocks drifted from the data file (caught
+// during the 2026-06-11 services sunset: ES wave posts still carried
+// retired services CTAs after the EN pass replaced them).
+const slugMap = (() => {
+  try {
+    return JSON.parse(fs.readFileSync(path.join(repoRoot, 'data', 'i18n-slug-map.json'), 'utf8'));
+  } catch { return {}; }
+})();
+function esSlugFor(dir, enSlug) {
+  const ns = dir.replace(/^es\//, '');           // 'es/blog' -> 'blog'
+  const map = slugMap[ns];
+  return (map && map[enSlug]) || enSlug;          // same-slug mirrors fall through
+}
+
 function escapeAttr(s) {
   return String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' })[c]);
 }
@@ -97,7 +114,8 @@ for (const [slug, entry] of Object.entries(entries)) {
     let file = null;
     let foundIn = null;
     for (const dir of dirs) {
-      const candidate = path.join(repoRoot, dir, slug, 'index.html');
+      const localSlug = code === 'es' ? esSlugFor(dir, slug) : slug;
+      const candidate = path.join(repoRoot, dir, localSlug, 'index.html');
       if (fs.existsSync(candidate)) {
         file = candidate;
         foundIn = dir;

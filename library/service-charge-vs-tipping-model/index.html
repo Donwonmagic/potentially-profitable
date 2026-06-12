@@ -46,7 +46,7 @@
       "url": "https://muntin.digital/library/service-charge-vs-tipping-model/",
       "inLanguage": "en-US",
       "datePublished": "2026-05-11T09:00:00-04:00",
-      "dateModified": "2026-05-28",
+      "dateModified": "2026-06-10",
       "author": {
         "@id": "https://muntin.digital/#muntin-desk",
         "@type": "Organization",
@@ -256,11 +256,9 @@ main{padding-top:64px}
          three-doors page). Tools is promoted from the old Library
          mega-menu to a top-level item. Studio replaces Services +
          Restaurants + About — they all live under /studio/ now,
-         either as anchored sections (#pricing, #offers, #cities,
-         #process, #about) or as full child pages (/studio/compare/,
-         /studio/silver-spring/, etc.). The old Services and
-         Restaurants pages remain reachable via /studio/ and the
-         _redirects table; /about/ is unchanged. The mega-menu is
+         as sections of the company page (Phase 9, 2026-06-11: the
+         services-era child pages and anchored offer sections are
+         retired; old paths 301 via the _redirects table). /about/ is unchanged. The mega-menu is
          retired (the hub IS the menu now); the controller script
          is gone too.
 
@@ -272,7 +270,7 @@ main{padding-top:64px}
       <a href="/library/">Library</a>
       <a href="/start/">Start</a>
       <a href="/tools/">Tools</a>
-      <a href="/studio/">Studio</a>
+      <a href="/studio/">Company</a>
       <!-- Ledger — sister product (the privacy-forward invoice ledger)
            on its own subdomain. Plain external link so it passes link
            equity to ledger.muntin.digital; Plausible's automatic
@@ -334,7 +332,7 @@ main{padding-top:64px}
     <a href="/library/">Library</a>
     <a href="/start/">Start</a>
     <a href="/tools/">Tools</a>
-    <a href="/studio/">Studio</a>
+    <a href="/studio/">Company</a>
     <a href="https://ledger.muntin.digital/">Ledger</a>
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
@@ -614,26 +612,34 @@ main{padding-top:64px}
 
     <p>Three: it forces the operator&rsquo;s honesty about what the meal costs. The price on the menu plus the service charge is the price of the meal. Tipping let operators publish a menu price that lied to the guest about what they&rsquo;d actually pay. The service-charge model puts the real price on the check, which is the right thing to do regardless of compliance.</p>
 
-    <figure class="viz-figure article-figure" data-audio-alt="The three models side by side on the same two-hundred-dollar check, summarizing both sides of the bar. Model one, traditional tipping: thirty-two dollars to the server, seventy-three dollars net to the restaurant. Model two, twenty percent service charge: twenty-six dollars to the server, seventy-eight dollars net to the restaurant — five dollars more to the restaurant. Model three, hybrid: thirty-five dollars to the server, seventy-one dollars net to the restaurant — the highest server take-home and the lowest restaurant net. Server take-home varies nine dollars across the three. Restaurant net varies seven dollars.">
-      <div class="viz-bars">
-        <p class="viz-bars__title">What the $200 dinner check returns to each party, by model</p>
-        <div class="viz-bars__row">
-          <p class="viz-bars__label">Traditional tipping</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.914"></span></div>
-          <p class="viz-bars__num">$32 server &middot; $73 restaurant net</p>
-        </div>
-        <div class="viz-bars__row">
-          <p class="viz-bars__label">20% service charge &mdash; cleanest math</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.743"></span></div>
-          <p class="viz-bars__num">$26 server &middot; $78 restaurant net</p>
-        </div>
-        <div class="viz-bars__row">
-          <p class="viz-bars__label">Hybrid (5% menu lift + optional tip)</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:1.0"></span></div>
-          <p class="viz-bars__num">$35 server &middot; $71 restaurant net</p>
-        </div>
-      </div>
-      <figcaption>Same $200 check, three models, both sides of the bar. Server take-home varies $9. Restaurant net varies $7. Customer pays roughly the same all three ways.</figcaption>
+    <figure class="viz-figure article-figure" data-audio-alt="A decision tree for picking a compensation model, built from the failure points named in this article. First branch: do your slow seasons swing wide? If January and February soften covers and tips while server hourly stays fixed, traditional tipping is the model that breaks first, so lean service charge. Second branch: can you commit to door and menu signage plus a posted distribution policy? If yes, the service charge holds; if no, its complaint rate climbs and tipping is safer. Third branch: is your voluntary tip average holding at four percent or better? If a hybrid drops below four percent it becomes a stealth pay cut, and the verdict is migrate to a clean service charge.">
+      <ol class="viz-tree">
+        <li class="viz-tree__node">
+          <details>
+            <summary><span class="viz-tree__num">1</span><span class="viz-tree__title">Do your slow seasons swing wide?</span><span class="viz-tree__icon">+</span></summary>
+            <div class="viz-tree__body">
+              <p>January and February in the DMV soften covers and tip percentages while server hourly stays fixed at the prevailing wage. Under tipping, the front-of-house walks out with roughly $18 a shift instead of $32, and your best servers start shopping. <span class="viz-tree__verdict" data-tone="fail">Tipping breaks first</span> If slow-season variance is your risk, the service charge pays servers most consistently across a slow Tuesday.</p>
+            </div>
+          </details>
+        </li>
+        <li class="viz-tree__node">
+          <details>
+            <summary><span class="viz-tree__num">2</span><span class="viz-tree__title">Can you commit to signage plus a posted policy?</span><span class="viz-tree__icon">+</span></summary>
+            <div class="viz-tree__body">
+              <p>The service charge breaks when guests confuse the 20% line with tax. Door and menu signage, a written distribution policy (server X%, kitchen Y%), and FOH trained to mention the charge before the check cut the complaint rate to under 0.5%. <span class="viz-tree__verdict" data-tone="pass">Service charge holds</span> Skip the signage and the one-star reviews start &mdash; then traditional tipping is the lower-friction choice.</p>
+            </div>
+          </details>
+        </li>
+        <li class="viz-tree__node">
+          <details>
+            <summary><span class="viz-tree__num">3</span><span class="viz-tree__title">Running hybrid &mdash; is voluntary tip still at 4% or better?</span><span class="viz-tree__icon">+</span></summary>
+            <div class="viz-tree__body">
+              <p>The hybrid only holds together if voluntary tips average at least 4%. Below that, the server keeps the menu-lift hourly but loses the variable upside the model was supposed to preserve &mdash; a stealth pay cut dressed as a raise. <span class="viz-tree__verdict" data-tone="warn">Audit the tip rate</span> If it&rsquo;s materially below 4%, the verdict is migrate to a clean service charge.</p>
+            </div>
+          </details>
+        </li>
+      </ol>
+      <figcaption>Pick by the failure point you can least afford: slow-season variance pushes you off tipping, signage discipline keeps the service charge clean, and a sub-4% tip average ends the hybrid.</figcaption>
     </figure>
 
     <h2 id="what-i-d-watch-for-if-i-m-running-one-already">What I&rsquo;d watch for if I&rsquo;m running one already</h2>
@@ -668,7 +674,7 @@ main{padding-top:64px}
       <ul style="font-size:15.5px;line-height:1.7;color:var(--teal);margin:0;padding-left:22px">
         <li><a href="/library/third-party-delivery-economics/">The DoorDash margin walk</a> &mdash; the other big <!-- LIBRARY:autolink:start --><a href="/glossary/margin/" data-glossary-head="Margin" data-glossary-aka="sales minus costs; several kinds" data-glossary-blurb="Sales minus costs.">margin</a><!-- LIBRARY:autolink:end --> conversation</li>
         <li><a href="/library/loyalty-program-roi/">Loyalty programs that work</a> &mdash; the retention conversation</li>
-        <li><a href="/services/audit/">$499 audit</a> &mdash; the written diagnosis on your compensation-model fit</li>
+        <li><a href="https://ledger.muntin.digital/">Muntin Ledger</a> &mdash; your vendor invoices, read and filed searchable, with price-hike flags against your own history</li>
       </ul>
     </section>
 
@@ -690,7 +696,7 @@ main{padding-top:64px}
   <div class="article-author-card__body" style="flex:1 1 280px;min-width:0">
     <p class="article-author-card__eyebrow" style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--stone);margin:0 0 4px" id="article-author-h">About the author</p>
     <p class="article-author-card__name" style="font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);margin:0 0 6px"><a href="/about/" style="color:var(--ink)">Don Goldstein</a></p>
-    <p class="article-author-card__bio" style="font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 10px">I&rsquo;m Don. I&rsquo;m front-of-house manager at Tacombi in Bethesda and run Muntin Digital, the one-person web studio behind this library. Every article here comes from a problem I saw on the floor or in a client audit.</p>
+    <p class="article-author-card__bio" style="font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 10px">I&rsquo;m Don. I&rsquo;m front-of-house manager at Tacombi in Bethesda and the founder of Muntin Digital &mdash; the company behind this library, the Cost Index, and Muntin Ledger. Every article here comes from a problem I saw on the floor.</p>
     <p class="article-author-card__creds" style="font-size:12px;color:var(--stone);margin:0 0 12px;letter-spacing:0.01em">ServSafe Manager &middot; ServSafe Allergens &middot; RAM Alcohol Awareness &middot; Maryland LLC</p>
     <p class="article-author-card__cta" style="font-size:14px;margin:0">
       <a href="/about/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none;margin-right:14px">More about Don &rarr;</a>
@@ -698,8 +704,7 @@ main{padding-top:64px}
     </p>
   </div>
 </aside>
-<!-- article-author-card:end -->
-  </article>
+<!-- article-author-card:end -->  </article>
 
   <aside class="post-end-mark" aria-hidden="true">
     <hr/>
@@ -846,7 +851,7 @@ main{padding-top:64px}
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->150<!-- /count --> glossary terms &mdash; with a one-person web studio behind it in Silver Spring, MD.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->150<!-- /count --> glossary terms &mdash; from Muntin Digital in Silver Spring, MD.</p>
       </div>
 
       <!-- Column order mirrors the 4-item primary nav
@@ -874,12 +879,17 @@ main{padding-top:64px}
         </ul>
       </nav>
 
+      <!-- Phase 9 (services sunset, 2026-06-11): the Studio column's
+           Pricing / Compare / Process rows sold the retired services
+           business. The column is now the Company column — the product,
+           the public data, the company page, the founder. The retired services
+           and studio child pages 301 per the _redirects table. -->
       <nav class="foot-col" aria-labelledby="foot-studio">
-        <p class="foot-heading" id="foot-studio">Studio</p>
+        <p class="foot-heading" id="foot-studio">Company</p>
         <ul class="foot-links">
-          <li><a href="/studio/#pricing">Pricing</a></li>
-          <li><a href="/studio/compare/">Compare options</a></li>
-          <li><a href="/studio/#process">Process</a></li>
+          <li><a href="https://ledger.muntin.digital/">Muntin Ledger</a></li>
+          <li><a href="/cost-index/">Cost Index</a></li>
+          <li><a href="/studio/">The company</a></li>
           <li><a href="/about/">About Don</a></li>
         </ul>
       </nav>

@@ -133,9 +133,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=933461d49609" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-core.css?v=b70da981fa3f" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-tool.css?v=aee67503f378" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=933461d49609"><link rel="stylesheet" href="/assets/site-tool.css?v=aee67503f378"></noscript>
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=b70da981fa3f"><link rel="stylesheet" href="/assets/site-tool.css?v=aee67503f378"></noscript>
 <style>.breadcrumb{padding-top:100px}
 /* === Open Hours tool-scoped styles. Page-prefix .oh-*. === */
 .oh-form{display:flex;flex-direction:column;gap:18px}
@@ -478,11 +478,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
          three-doors page). Tools is promoted from the old Library
          mega-menu to a top-level item. Studio replaces Services +
          Restaurants + About — they all live under /studio/ now,
-         either as anchored sections (#pricing, #offers, #cities,
-         #process, #about) or as full child pages (/studio/compare/,
-         /studio/silver-spring/, etc.). The old Services and
-         Restaurants pages remain reachable via /studio/ and the
-         _redirects table; /about/ is unchanged. The mega-menu is
+         as sections of the company page (Phase 9, 2026-06-11: the
+         services-era child pages and anchored offer sections are
+         retired; old paths 301 via the _redirects table). /about/ is unchanged. The mega-menu is
          retired (the hub IS the menu now); the controller script
          is gone too.
 
@@ -494,7 +492,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <a href="/library/">Library</a>
       <a href="/start/">Start</a>
       <a href="/tools/">Tools</a>
-      <a href="/studio/">Studio</a>
+      <a href="/studio/">Company</a>
       <!-- Ledger — sister product (the privacy-forward invoice ledger)
            on its own subdomain. Plain external link so it passes link
            equity to ledger.muntin.digital; Plausible's automatic
@@ -556,7 +554,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <a href="/library/">Library</a>
     <a href="/start/">Start</a>
     <a href="/tools/">Tools</a>
-    <a href="/studio/">Studio</a>
+    <a href="/studio/">Company</a>
     <a href="https://ledger.muntin.digital/">Ledger</a>
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
@@ -1193,14 +1191,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <p style="margin:0 0 8px;font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);">What this <em>is</em>: 15 minutes that prevent a year of drift.</p>
     <p style="margin:0;font-size:14px;line-height:1.65;color:var(--ink-soft);">Four audiences, four artifacts. The <strong>Storefront Sign</strong> is for the diner walking past at 10 PM. The <strong>Google paste block</strong> is for the searcher checking their phone. The <strong>website code</strong> is for the developer who built your site (or the one who'll inherit it). The <strong>calendar file</strong> is for you, three weeks before each holiday, when you've forgotten you said you'd close.</p>
   </div>
-
-  <div style="max-width:760px;margin:18px auto 0;padding:20px 22px;background:var(--teal-tint);border-radius:var(--r-input);border:1px solid var(--line);">
-    <p style="margin:0 0 8px;font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);">When you want this kept synced for you, hire the studio.</p>
-    <p style="margin:0 0 14px;font-size:14px;line-height:1.6;color:var(--ink-soft);">A custom restaurant website built by us has hours wired to a single source — change them in one place, every page updates instantly, the JSON-LD stays current. The studio's web work is what turns this 15-minute tool into something that stays right by itself.</p>
-    <a href="/services/" style="display:inline-flex;align-items:center;gap:6px;padding:9px 18px;background:var(--teal);color:var(--cream);border-radius:999px;text-decoration:none;font-size:13px;font-weight:600;">See restaurant websites
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:12px;height:12px;"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
-    </a>
-  </div>
 </div></section>
 
 </div><!-- /panel-regular -->
@@ -1270,10 +1260,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <button type="button" class="hh-copy" data-target="hhOutGbp">Copy</button>
         <div id="hhOutGbpBody"></div>
       </div>
-
-      <p class="hh-note" style="margin-top:14px">
-        Want me to keep these current every month, plus run the same hygiene pass on your Yelp and Apple Maps cards? <a href="/services/care-plan-light/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">$99/mo Care Plan Light &rarr;</a>
-      </p>
     </section>
 
     <section style="margin-top:48px;padding-top:32px;border-top:1px solid var(--line)">
@@ -1281,7 +1267,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <ul style="font-size:15.5px;line-height:1.7;color:var(--ink);margin:0;padding-left:22px">
         <li style="margin-bottom:8px">It doesn&rsquo;t push to your GBP automatically. Google requires you to paste into Business Profile Manager yourself; that&rsquo;s a feature, not a bug &mdash; the dashboard is the audit trail.</li>
         <li style="margin-bottom:8px">It doesn&rsquo;t handle non-US holidays or religious observances. The eight US restaurant holidays are the ones that move covers; ask me directly if your concept needs more.</li>
-        <li>It doesn&rsquo;t track that you actually updated the hours. If you want monthly verification across your site, GBP, Yelp, and Apple Maps, that&rsquo;s what the <a href="/services/care-plan-light/" style="color:var(--teal)">Care Plan Light</a> covers.</li>
       </ul>
     </section>
   </article>
@@ -1301,7 +1286,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <a href="/tools/gbp-grader/">Grade your Google Business Profile</a>
       <a href="/glossary/opening-hours-specification/">Glossary: OpeningHoursSpecification</a>
       <a href="/glossary/holiday-hours/">Glossary: Holiday hours</a>
-      <a href="/services/">Hire the studio to keep this synced for you</a>
     </div>
   </div>
 </div></section>

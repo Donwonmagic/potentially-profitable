@@ -71,7 +71,7 @@
       },
       "url": "https://muntin.digital/library/toast-vs-square-vs-clover-for-restaurants/",
       "datePublished": "2026-05-07",
-      "dateModified": "2026-05-28",
+      "dateModified": "2026-06-10",
       "inLanguage": "en-US",
       "wordCount": 2800,
       "author": {
@@ -275,9 +275,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=933461d49609" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=15ac955f199e" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=933461d49609"><link rel="stylesheet" href="/assets/site-article.css?v=15ac955f199e"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=b70da981fa3f" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=36af39b8b96e" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=b70da981fa3f"><link rel="stylesheet" href="/assets/site-article.css?v=36af39b8b96e"></noscript>
 
 <style>
   /* ============ BLOG POST LAYOUT STYLES ============ */
@@ -633,11 +633,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
          three-doors page). Tools is promoted from the old Library
          mega-menu to a top-level item. Studio replaces Services +
          Restaurants + About — they all live under /studio/ now,
-         either as anchored sections (#pricing, #offers, #cities,
-         #process, #about) or as full child pages (/studio/compare/,
-         /studio/silver-spring/, etc.). The old Services and
-         Restaurants pages remain reachable via /studio/ and the
-         _redirects table; /about/ is unchanged. The mega-menu is
+         as sections of the company page (Phase 9, 2026-06-11: the
+         services-era child pages and anchored offer sections are
+         retired; old paths 301 via the _redirects table). /about/ is unchanged. The mega-menu is
          retired (the hub IS the menu now); the controller script
          is gone too.
 
@@ -649,7 +647,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <a href="/library/">Library</a>
       <a href="/start/">Start</a>
       <a href="/tools/">Tools</a>
-      <a href="/studio/">Studio</a>
+      <a href="/studio/">Company</a>
       <!-- Ledger — sister product (the privacy-forward invoice ledger)
            on its own subdomain. Plain external link so it passes link
            equity to ledger.muntin.digital; Plausible's automatic
@@ -711,7 +709,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <a href="/library/">Library</a>
     <a href="/start/">Start</a>
     <a href="/tools/">Tools</a>
-    <a href="/studio/">Studio</a>
+    <a href="/studio/">Company</a>
     <a href="https://ledger.muntin.digital/">Ledger</a>
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
@@ -962,7 +960,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <h2 id="side-by-side">Side by side</h2>
       <p>Here's the same question answered across ten features, in one glance. <strong>Green</strong> is a confident yes. <strong>Amber</strong> is a partial or "depends on your plan." <strong>Rust</strong> is a meaningful gap worth knowing about before you sign a contract.</p>
 
-      <figure class="viz-figure article-figure reveal" data-audio-alt="The ten-feature comparison rolled up to a single number per platform: Toast and Square both score 7 confident-yes marks out of 10. Clover scores 1 confident-yes mark out of 10, with seven of its rows landing in partial-or-depends. The 60-point gap between the leaders and Clover is the headline; the difference between Toast and Square is in which two features they each leave on the table.">
+      <figure class="viz-figure article-figure reveal" data-audio-alt="The ten-feature comparison rolled up to a single number per platform: Toast and Square both score 7 confident-yes marks out of 10. Toast pairs its seven with one partial and two outright gaps; Square pairs its seven with three partials and no outright gap. Clover scores 1 confident-yes mark out of 10, with eight of its rows landing in partial-or-depends. The 60-point gap between the leaders and Clover is the headline; the difference between Toast and Square is in which features each one leaves on the table.">
         <div class="viz-rings">
           <div class="viz-ring" data-band="warn" style="--score:70;">
             <svg class="viz-ring__svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-labelledby="ring-toast" focusable="false">
@@ -980,7 +978,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
               <circle class="viz-ring__fill" cx="60" cy="60" r="52" fill="none" stroke-width="8" transform="rotate(-90 60 60)"/>
               <text class="viz-ring__num" x="60" y="60" text-anchor="middle">7/10</text>
             </svg>
-            <p class="viz-ring__label"><strong>Square</strong>confident-yes &middot; 2 partial &middot; 1 gap</p>
+            <p class="viz-ring__label"><strong>Square</strong>confident-yes &middot; 3 partial &middot; 0 gaps</p>
           </div>
           <div class="viz-ring" data-band="bad" style="--score:10;--delay:240ms;">
             <svg class="viz-ring__svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-labelledby="ring-clover" focusable="false">
@@ -989,13 +987,13 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
               <circle class="viz-ring__fill" cx="60" cy="60" r="52" fill="none" stroke-width="8" transform="rotate(-90 60 60)"/>
               <text class="viz-ring__num" x="60" y="60" text-anchor="middle">1/10</text>
             </svg>
-            <p class="viz-ring__label"><strong>Clover</strong>confident-yes &middot; 7 partial &middot; 2 gaps</p>
+            <p class="viz-ring__label"><strong>Clover</strong>confident-yes &middot; 8 partial &middot; 1 gap</p>
           </div>
         </div>
         <figcaption>Confident-yes marks per platform across the ten features below. Toast and Square are roughly tied; Clover is materially behind on website integration specifically.</figcaption>
       </figure>
 
-      <figure style="margin:48px 0;" data-audio-alt="The ten-feature head-to-head: Toast, Square, and Clover scored across hardware, payment processing rates, online ordering, third-party delivery, reservations, gift cards, loyalty, analytics, payroll, and offline mode. Toast and Square each land seven confident yeses out of ten. Clover lands one — with seven of its rows reading as &apos;maybe, depending on the reseller you bought from.&apos; Toast wins on restaurant-built workflow: online ordering and reservations are first-party. Square wins on transparent pricing and fastest setup. Clover&apos;s feature list looks comparable on paper, but the reseller patchwork means two restaurants on Clover can have completely different software for the same monthly fee — which is the reason this scorecard exists.">
+      <figure class="viz-figure" style="margin:48px 0;" data-audio-alt="The ten-feature head-to-head: Toast, Square, and Clover scored across native online ordering, menu sync, real-time eighty-six, kitchen ticket pipeline, developer API, transparent pricing, custom-website pairing, hardware variety, contract flexibility, and restaurant-specific design. Toast and Square each land seven confident yeses out of ten. Clover lands one — with eight of its rows reading as &apos;maybe, depending on the reseller you bought from.&apos; Toast wins on restaurant-built workflow: online ordering and reservations are first-party. Square wins on transparent pricing and fastest setup. Clover&apos;s feature list looks comparable on paper, but the reseller patchwork means two restaurants on Clover can have completely different software for the same monthly fee — which is the reason this scorecard exists.">
         <div class="pos-table-wrap">
           <div class="table-scroll"><table class="pos-table">
             <thead>
@@ -1078,7 +1076,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <h2 id="which-one-i-d-pick-by-restaurant-type">Which one I'd pick, by restaurant type</h2>
       <p>Here's how I'd match each POS to a restaurant type, based on what I see in audits. These are opinions, not rules — your actual best fit depends on variables I can't see from a blog post, so treat this as a starting point for your own evaluation, not a verdict.</p>
 
-      <figure class="article-figure" data-audio-alt="Three POS picks mapped to restaurant shape, in a decision-tree shape. Branch one — single-location independent — Square for Restaurants is the best fit, because of the clean API, public flat-rate pricing, short contracts, and lower switching cost if you outgrow it. Branch two — growing two-to-five location group — Toast is the best fit, because of the native ordering pipeline, mature menu sync, real-time 86, and developer API that scales with the group; the 'it just works' factor is genuine when every integration has to survive a Saturday rush. Branch three — hardware-heavy or hybrid concept — Clover is the best fit, because of the widest hardware selection, handheld tableside, kiosk variants, integrated scales, and app marketplace depth. Three different operating realities, three different best fits.">
+      <figure class="article-figure" data-audio-alt="Three POS picks mapped to restaurant shape, in a decision-tree shape, each with the fit and the cost of that fit. Branch one — single-location independent — Square for Restaurants is the best fit, because of the clean API, public flat-rate pricing, short contracts, and lower switching cost if you outgrow it; the trade-off is thinner full-service features — deep modifier chains, coursing, and server-by-server reports trail Toast's restaurant-native build. Branch two — growing two-to-five location group — Toast is the best fit, because of the native ordering pipeline, mature menu sync, real-time 86, and developer API that scales with the group; the trade-off is the walled garden — multi-year contracts, and leaving Toast means leaving every layer at once. Branch three — hardware-heavy or hybrid concept — Clover is the best fit, because of the widest hardware selection, handheld tableside, kiosk variants, integrated scales, and app marketplace depth; the trade-off is the reseller patchwork — the feature set and fees depend on which bank or ISO sold the system, and pricing lives in the contract, not on a page. Three operating realities, three best fits, three named costs.">
         <ol class="viz-tree" aria-label="Three POS picks mapped to restaurant shape">
           <li class="viz-tree__node">
             <details open>
@@ -1086,6 +1084,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
               <div class="viz-tree__body">
                 <p>Clean API, public flat-rate pricing, short contracts, and a lower switching cost if you outgrow the fit. You get the website-integration quality you need for a first custom rebuild without committing to a walled garden before you&rsquo;re sure you want to stay.</p>
                 <p><span class="viz-tree__verdict" data-tone="pass">Best fit</span> Single-location operators who want a clean rebuild without long-term lock-in.</p>
+                <p><span class="viz-tree__verdict" data-tone="warn">The cost</span> Thinner full-service depth &mdash; deep modifier chains, complex coursing, and server-by-server reports trail Toast&rsquo;s restaurant-native build.</p>
               </div>
             </details>
           </li>
@@ -1095,6 +1094,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
               <div class="viz-tree__body">
                 <p>Native ordering pipeline, mature menu sync, real-time 86, and a developer API that scales alongside the group. The &ldquo;it just works&rdquo; factor is genuine when multi-location operations are on the line and you need every integration to survive a Saturday rush.</p>
                 <p><span class="viz-tree__verdict" data-tone="pass">Best fit</span> Operators scaling past one location who can&rsquo;t afford an integration to break under load.</p>
+                <p><span class="viz-tree__verdict" data-tone="warn">The cost</span> The walled garden &mdash; multi-year contracts are the norm, and leaving Toast means leaving the POS, the website, and the ordering pipeline at once.</p>
               </div>
             </details>
           </li>
@@ -1104,11 +1104,12 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
               <div class="viz-tree__body">
                 <p>Widest hardware selection, handheld tableside, kiosk variants, integrated scales, app marketplace depth. If a specific physical configuration or a merchant services relationship matters more than pure developer ergonomics, Clover earns its place.</p>
                 <p><span class="viz-tree__verdict" data-tone="pass">Best fit</span> Operators whose hardware needs or banking relationship outweigh integration ergonomics.</p>
+                <p><span class="viz-tree__verdict" data-tone="warn">The cost</span> The reseller patchwork &mdash; the feature set and the fees depend on which bank or ISO sold the system, and pricing lives in your contract, not on a public page.</p>
               </div>
             </details>
           </li>
         </ol>
-        <figcaption>Three picks, by restaurant shape &mdash; opinions anchored to audit experience, not rules.</figcaption>
+        <figcaption>Every pick carries a named cost &mdash; the right POS is the one whose trade-off your restaurant can actually live with, not the one with the cleanest scorecard.</figcaption>
       </figure>
 
       <h2 id="what-to-ask-your-pos-provider-before-you-build-a-website">What to ask your POS provider before you build a website</h2>
@@ -1176,7 +1177,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   <div class="article-author-card__body" style="flex:1 1 280px;min-width:0">
     <p class="article-author-card__eyebrow" style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--stone);margin:0 0 4px" id="article-author-h">About the author</p>
     <p class="article-author-card__name" style="font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);margin:0 0 6px"><a href="/about/" style="color:var(--ink)">Don Goldstein</a></p>
-    <p class="article-author-card__bio" style="font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 10px">I&rsquo;m Don. I&rsquo;m front-of-house manager at Tacombi in Bethesda and run Muntin Digital, the one-person web studio behind this library. Every article here comes from a problem I saw on the floor or in a client audit.</p>
+    <p class="article-author-card__bio" style="font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 10px">I&rsquo;m Don. I&rsquo;m front-of-house manager at Tacombi in Bethesda and the founder of Muntin Digital &mdash; the company behind this library, the Cost Index, and Muntin Ledger. Every article here comes from a problem I saw on the floor.</p>
     <p class="article-author-card__creds" style="font-size:12px;color:var(--stone);margin:0 0 12px;letter-spacing:0.01em">ServSafe Manager &middot; ServSafe Allergens &middot; RAM Alcohol Awareness &middot; Maryland LLC</p>
     <p class="article-author-card__cta" style="font-size:14px;margin:0">
       <a href="/about/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none;margin-right:14px">More about Don &rarr;</a>
@@ -1184,8 +1185,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     </p>
   </div>
 </aside>
-<!-- article-author-card:end -->
-  </article>
+<!-- article-author-card:end -->  </article>
 
     <aside class="post-end-mark" aria-hidden="true">
   <hr/>
@@ -1338,7 +1338,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->150<!-- /count --> glossary terms &mdash; with a one-person web studio behind it in Silver Spring, MD.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->150<!-- /count --> glossary terms &mdash; from Muntin Digital in Silver Spring, MD.</p>
       </div>
 
       <!-- Column order mirrors the 4-item primary nav
@@ -1366,12 +1366,17 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         </ul>
       </nav>
 
+      <!-- Phase 9 (services sunset, 2026-06-11): the Studio column's
+           Pricing / Compare / Process rows sold the retired services
+           business. The column is now the Company column — the product,
+           the public data, the company page, the founder. The retired services
+           and studio child pages 301 per the _redirects table. -->
       <nav class="foot-col" aria-labelledby="foot-studio">
-        <p class="foot-heading" id="foot-studio">Studio</p>
+        <p class="foot-heading" id="foot-studio">Company</p>
         <ul class="foot-links">
-          <li><a href="/studio/#pricing">Pricing</a></li>
-          <li><a href="/studio/compare/">Compare options</a></li>
-          <li><a href="/studio/#process">Process</a></li>
+          <li><a href="https://ledger.muntin.digital/">Muntin Ledger</a></li>
+          <li><a href="/cost-index/">Cost Index</a></li>
+          <li><a href="/studio/">The company</a></li>
           <li><a href="/about/">About Don</a></li>
         </ul>
       </nav>

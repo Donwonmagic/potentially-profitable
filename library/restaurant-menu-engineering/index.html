@@ -49,7 +49,7 @@
       "url": "https://muntin.digital/library/restaurant-menu-engineering/",
       "inLanguage": "en-US",
       "datePublished": "2026-06-03",
-      "dateModified": "2026-06-03",
+      "dateModified": "2026-06-10",
       "author": {
         "@id": "https://muntin.digital/#muntin-desk",
         "@type": "Organization",
@@ -193,9 +193,9 @@ main{padding-top:64px}
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-italic.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-italic.woff2" crossorigin>
-<link rel="preload" as="style" href="/assets/site-core.css?v=933461d49609" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=15ac955f199e" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=933461d49609"><link rel="stylesheet" href="/assets/site-article.css?v=15ac955f199e"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=b70da981fa3f" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=36af39b8b96e" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=b70da981fa3f"><link rel="stylesheet" href="/assets/site-article.css?v=36af39b8b96e"></noscript>
 
 <!-- lazy-load:p --><script>(window.requestIdleCallback||function(c){return setTimeout(c,500);})(function(){var s=document.createElement("script");s.src="/assets/p.js?v=20260503";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:p -->
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
@@ -298,11 +298,9 @@ main{padding-top:64px}
          three-doors page). Tools is promoted from the old Library
          mega-menu to a top-level item. Studio replaces Services +
          Restaurants + About — they all live under /studio/ now,
-         either as anchored sections (#pricing, #offers, #cities,
-         #process, #about) or as full child pages (/studio/compare/,
-         /studio/silver-spring/, etc.). The old Services and
-         Restaurants pages remain reachable via /studio/ and the
-         _redirects table; /about/ is unchanged. The mega-menu is
+         as sections of the company page (Phase 9, 2026-06-11: the
+         services-era child pages and anchored offer sections are
+         retired; old paths 301 via the _redirects table). /about/ is unchanged. The mega-menu is
          retired (the hub IS the menu now); the controller script
          is gone too.
 
@@ -314,7 +312,7 @@ main{padding-top:64px}
       <a href="/library/">Library</a>
       <a href="/start/">Start</a>
       <a href="/tools/">Tools</a>
-      <a href="/studio/">Studio</a>
+      <a href="/studio/">Company</a>
       <!-- Ledger — sister product (the privacy-forward invoice ledger)
            on its own subdomain. Plain external link so it passes link
            equity to ledger.muntin.digital; Plausible's automatic
@@ -376,7 +374,7 @@ main{padding-top:64px}
     <a href="/library/">Library</a>
     <a href="/start/">Start</a>
     <a href="/tools/">Tools</a>
-    <a href="/studio/">Studio</a>
+    <a href="/studio/">Company</a>
     <a href="https://ledger.muntin.digital/">Ledger</a>
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
@@ -581,6 +579,37 @@ main{padding-top:64px}
     </details>
 
     <p>The operator move is to run a yield test on the five highest-volume protein ingredients the kitchen buys. Weigh in on receipt, weigh after primary butchery, weigh again after cooking if the cook causes meaningful shrink. Record yield as a percentage. Use that percentage in plate-cost computations going forward, and rerun the yield test every quarter or every time the kitchen changes purveyors. The first time a kitchen does this, the typical correction lands somewhere between 4 and 6 points of food cost &mdash; not because the kitchen was wasteful, but because the math the kitchen had been doing was running on the AP price instead of the EP price. Closing that gap is the cheapest margin recovery available to most independents, and it requires zero menu changes.</p>
+
+    <figure class="viz-figure" data-audio-alt="A cost stack of one eight-ounce strip portion showing what the yield correction does to its true plate cost. The honest plate cost is nine dollars and twenty-three cents. Of that, six dollars is the as-purchased read: eight ounces at the twelve-dollar-a-pound invoice price, the number a kitchen sees on the invoice and stops at. The remaining three dollars and twenty-three cents is the trim-and-shrink premium that nobody puts on the plate cost: the cost of the fat, silverskin, and end-cuts that were paid for but never reached the pass, because the strip only yields sixty-five percent. A kitchen that prices off the six-dollar as-purchased read instead of the nine-dollar-twenty-three honest plate cost is reading its margin on this dish roughly fifty percent light, which is where the four-to-six points of food cost hide.">
+      <div class="viz-waterfall">
+        <p class="viz-waterfall__title">One 8&nbsp;oz strip portion: as-purchased read vs. honest plate cost</p>
+        <div class="viz-waterfall__bar" role="img" aria-label="A $9.23 honest plate cost split into $6.00 of as-purchased portion (65%) and $3.23 of trim-and-shrink premium (35%).">
+          <span class="viz-waterfall__seg" data-tone="ink" style="--w:0.650">$6.00 AP read</span>
+          <span class="viz-waterfall__seg" data-tone="rust" style="--w:0.350">+$3.23 trim/shrink</span>
+        </div>
+        <div class="viz-waterfall__legend">
+          <div class="viz-waterfall__row">
+            <span class="viz-waterfall__swatch" data-tone="ink"></span>
+            <span>As-purchased read (8&nbsp;oz &times; $12/lb invoice price &mdash; where most kitchens stop)</span>
+            <span class="viz-waterfall__num">$6.00</span>
+            <span class="viz-waterfall__pct">65%</span>
+          </div>
+          <div class="viz-waterfall__row">
+            <span class="viz-waterfall__swatch" data-tone="rust"></span>
+            <span>Trim &amp; shrink premium (fat, silverskin, end-cuts paid for, never plated &mdash; 65% yield)</span>
+            <span class="viz-waterfall__num">+$3.23</span>
+            <span class="viz-waterfall__pct">35%</span>
+          </div>
+          <div class="viz-waterfall__row" data-keep="true">
+            <span class="viz-waterfall__swatch" data-tone="teal"></span>
+            <span>Honest plate cost (EP = AP &divide; yield)</span>
+            <span class="viz-waterfall__num">$9.23</span>
+            <span class="viz-waterfall__pct">100%</span>
+          </div>
+        </div>
+      </div>
+      <figcaption>Price off the $6.00 invoice read and this one dish runs ~50% under its true cost &mdash; the trim-and-shrink third is the part of plate cost that never shows on an invoice.</figcaption>
+    </figure>
 
     <div class="callout">
       <p><strong>The 30% figure in the H2.</strong> Roughly 30% of food cost in a typical full-service kitchen is the trim-and-shrink layer &mdash; the difference between what the invoice reads and what the plate carries. The number is directional, anchored to Muntin client audits across 2025&ndash;2026; specific share varies by concept (steakhouse 35%+ on protein-heavy plates, vegetable-forward kitchens 20% or lower). The takeaway is the size of the lever, not the exact percentage.</p>
@@ -813,6 +842,14 @@ main{padding-top:64px}
 </aside>
 <!-- smart-next:end -->
 
+    <!-- ledger-cta:start -->
+    <aside class="post-end-cta" aria-label="Muntin Ledger">
+      <p class="post-end-cta-headline">Menu engineering needs live plate costs.</p>
+      <p class="post-end-cta-body">The quadrants only mean something if the cost column is current. Muntin Ledger reads your vendor invoices as they arrive and files them searchable, so the plate-cost number you engineer against is this week's, not last quarter's.</p>
+      <a class="btn btn-primary plausible-event-name=Ledger+Route+Click plausible-event-source=restaurant-menu-engineering" href="https://ledger.muntin.digital/">See Muntin Ledger<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></a>
+    </aside>
+    <!-- ledger-cta:end -->
+
   <aside class="post-end-mark" aria-hidden="true">
     <hr/>
     <span class="post-end-glyph"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
@@ -886,21 +923,20 @@ main{padding-top:64px}
   </aside>
 
   <!-- article-author-card:start -->
-  <aside class="article-author-card" aria-labelledby="article-author-h" style="margin:48px 0 0;padding:24px;border:1px solid var(--line);border-radius:12px;background:var(--cream-2);display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap">
-    <div class="article-author-card__avatar" aria-hidden="true" style="flex:0 0 auto;width:72px;height:72px;border-radius:50%;background:var(--teal);color:var(--cream);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:34px;font-weight:500;letter-spacing:-0.02em">D</div>
-    <div class="article-author-card__body" style="flex:1 1 280px;min-width:0">
-      <p class="article-author-card__eyebrow" style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--stone);margin:0 0 4px" id="article-author-h">About the author</p>
-      <p class="article-author-card__name" style="font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);margin:0 0 6px"><a href="/about/" style="color:var(--ink)">Don Goldstein</a></p>
-      <p class="article-author-card__bio" style="font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 10px">I&rsquo;m Don. I&rsquo;m front-of-house manager at Tacombi in Bethesda and run Muntin Digital, the one-person web studio behind this library. Every article here comes from a problem I saw on the floor or in a client audit.</p>
-      <p class="article-author-card__creds" style="font-size:12px;color:var(--stone);margin:0 0 12px;letter-spacing:0.01em">ServSafe Manager &middot; ServSafe Allergens &middot; RAM Alcohol Awareness &middot; Maryland LLC</p>
-      <p class="article-author-card__cta" style="font-size:14px;margin:0">
-        <a href="/about/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none;margin-right:14px">More about Don &rarr;</a>
-        <a href="/window/" class="js-window" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">Email Don &rarr;</a>
-      </p>
-    </div>
-  </aside>
-  <!-- article-author-card:end -->
-
+<aside class="article-author-card" aria-labelledby="article-author-h" style="margin:48px 0 0;padding:24px;border:1px solid var(--line);border-radius:12px;background:var(--cream-2);display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap">
+  <div class="article-author-card__avatar" aria-hidden="true" style="flex:0 0 auto;width:72px;height:72px;border-radius:50%;background:var(--teal);color:var(--cream);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:34px;font-weight:500;letter-spacing:-0.02em">D</div>
+  <div class="article-author-card__body" style="flex:1 1 280px;min-width:0">
+    <p class="article-author-card__eyebrow" style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--stone);margin:0 0 4px" id="article-author-h">About the author</p>
+    <p class="article-author-card__name" style="font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);margin:0 0 6px"><a href="/about/" style="color:var(--ink)">Don Goldstein</a></p>
+    <p class="article-author-card__bio" style="font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 10px">I&rsquo;m Don. I&rsquo;m front-of-house manager at Tacombi in Bethesda and the founder of Muntin Digital &mdash; the company behind this library, the Cost Index, and Muntin Ledger. Every article here comes from a problem I saw on the floor.</p>
+    <p class="article-author-card__creds" style="font-size:12px;color:var(--stone);margin:0 0 12px;letter-spacing:0.01em">ServSafe Manager &middot; ServSafe Allergens &middot; RAM Alcohol Awareness &middot; Maryland LLC</p>
+    <p class="article-author-card__cta" style="font-size:14px;margin:0">
+      <a href="/about/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none;margin-right:14px">More about Don &rarr;</a>
+      <a href="/window/" class="js-window" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">Email Don &rarr;</a>
+    </p>
+  </div>
+</aside>
+<!-- article-author-card:end -->
   </article>
 
 </main>
@@ -927,7 +963,7 @@ main{padding-top:64px}
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->150<!-- /count --> glossary terms &mdash; with a one-person web studio behind it in Silver Spring, MD.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->150<!-- /count --> glossary terms &mdash; from Muntin Digital in Silver Spring, MD.</p>
       </div>
 
       <!-- Column order mirrors the 4-item primary nav
@@ -955,12 +991,17 @@ main{padding-top:64px}
         </ul>
       </nav>
 
+      <!-- Phase 9 (services sunset, 2026-06-11): the Studio column's
+           Pricing / Compare / Process rows sold the retired services
+           business. The column is now the Company column — the product,
+           the public data, the company page, the founder. The retired services
+           and studio child pages 301 per the _redirects table. -->
       <nav class="foot-col" aria-labelledby="foot-studio">
-        <p class="foot-heading" id="foot-studio">Studio</p>
+        <p class="foot-heading" id="foot-studio">Company</p>
         <ul class="foot-links">
-          <li><a href="/studio/#pricing">Pricing</a></li>
-          <li><a href="/studio/compare/">Compare options</a></li>
-          <li><a href="/studio/#process">Process</a></li>
+          <li><a href="https://ledger.muntin.digital/">Muntin Ledger</a></li>
+          <li><a href="/cost-index/">Cost Index</a></li>
+          <li><a href="/studio/">The company</a></li>
           <li><a href="/about/">About Don</a></li>
         </ul>
       </nav>

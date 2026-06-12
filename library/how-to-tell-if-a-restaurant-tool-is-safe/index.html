@@ -50,7 +50,7 @@
       "description": "The 5-test audit framework + 4-tier data model + a worked example. Verifiable in your own browser, under a minute per test.",
       "url": "https://muntin.digital/library/how-to-tell-if-a-restaurant-tool-is-safe/",
       "datePublished": "2026-04-30",
-      "dateModified": "2026-05-28",
+      "dateModified": "2026-06-10",
       "author": {
         "@id": "https://muntin.digital/#muntin-desk",
         "@type": "Organization",
@@ -207,9 +207,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=933461d49609" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=15ac955f199e" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=933461d49609"><link rel="stylesheet" href="/assets/site-article.css?v=15ac955f199e"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=b70da981fa3f" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=36af39b8b96e" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=b70da981fa3f"><link rel="stylesheet" href="/assets/site-article.css?v=36af39b8b96e"></noscript>
 <!-- article-abstract-mentions:start -->
 <script type="application/ld+json">
 {
@@ -233,10 +233,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     {
       "@type": "DefinedTerm",
       "url": "https://muntin.digital/glossary/commission/"
-    },
-    {
-      "@type": "DefinedTerm",
-      "url": "https://muntin.digital/glossary/newsletter-capture/"
     },
     {
       "@type": "DefinedTerm",
@@ -300,11 +296,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
          three-doors page). Tools is promoted from the old Library
          mega-menu to a top-level item. Studio replaces Services +
          Restaurants + About — they all live under /studio/ now,
-         either as anchored sections (#pricing, #offers, #cities,
-         #process, #about) or as full child pages (/studio/compare/,
-         /studio/silver-spring/, etc.). The old Services and
-         Restaurants pages remain reachable via /studio/ and the
-         _redirects table; /about/ is unchanged. The mega-menu is
+         as sections of the company page (Phase 9, 2026-06-11: the
+         services-era child pages and anchored offer sections are
+         retired; old paths 301 via the _redirects table). /about/ is unchanged. The mega-menu is
          retired (the hub IS the menu now); the controller script
          is gone too.
 
@@ -316,7 +310,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <a href="/library/">Library</a>
       <a href="/start/">Start</a>
       <a href="/tools/">Tools</a>
-      <a href="/studio/">Studio</a>
+      <a href="/studio/">Company</a>
       <!-- Ledger — sister product (the privacy-forward invoice ledger)
            on its own subdomain. Plain external link so it passes link
            equity to ledger.muntin.digital; Plausible's automatic
@@ -378,7 +372,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <a href="/library/">Library</a>
     <a href="/start/">Start</a>
     <a href="/tools/">Tools</a>
-    <a href="/studio/">Studio</a>
+    <a href="/studio/">Company</a>
     <a href="https://ledger.muntin.digital/">Ledger</a>
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
@@ -728,47 +722,50 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <p>The full version with each claim's specific DevTools verification step lives at <a href="/security/">/security/</a>. Four of them (1, 2, 4, 5) are <strong>build invariants</strong> — the cohesion-check pass that runs on every deploy fails CI if a future tool ships a forbidden pattern. So &ldquo;verifiable&rdquo; isn't marketing copy; it's a contract enforced by the build, with a public hash of the production bundle published at <a href="/security/integrity.txt"><code>/security/integrity.txt</code></a>.</p>
 
-      <figure class="viz-figure article-figure" data-audio-alt="The five tests walked against a Muntin tool, in order, with the DevTools result at each station. Test one — Network on keystroke: zero new requests fire as you type, because every calculation runs in your browser. Pass. Test two — privacy claim at the point of input: the privacy line sits next to the input itself, not in a footer link. Pass. Test three — account or email gate: no sign-in, no email capture, no cookie wall sits between you and the result. Pass. Test four — third-party scripts: only Plausible analytics is loaded, and it only sees bucketed event names, never raw inputs. Pass. Test five — readable source: right-click and View Source returns a small, unminified script with every math function named, auditable in the browser. Pass. All five tests pass, four of them enforced as build invariants in continuous integration.">
-        <div class="viz-flow reveal">
-          <ol class="viz-flow__list">
-            <li class="viz-flow__step" data-state="done" data-tone="teal">
-              <span class="viz-flow__num">1</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">Network on keystroke &mdash; pass</p>
-                <p class="viz-flow__meta">No <code>fetch()</code>, no <code>XMLHttpRequest</code>, no form POST fires when you type a number. Every calc runs in the browser. <strong>Build invariant.</strong></p>
+      <figure class="viz-figure article-figure" data-audio-alt="A verdict tree for reading your DevTools results, where the failures are ordered by how serious they are. Start at the top. Did a network request fire on a keystroke, before you submitted anything? If yes, stop here and walk away — the tool is shipping your raw inputs to a server in real time, which is the most serious failure and overrides everything below it. If no, ask the next question: is there an account, email, or cookie gate between you and the result? If yes, the tool is not free; your numbers are the price of admission, so decline unless you would happily hand those numbers to the vendor's sales team. If no, ask whether third-party surveillance scripts like Meta Pixel, FullStory, or Hotjar are recording the page. If yes, treat it as a soft fail: the inputs may stay client-side, but the vendor invited watchers you never agreed to. If no third-party watchers, the last check is whether the source is readable and the privacy claim sits at the point of input. If both hold, the tool passes — it is at least honest about its data flow, the standard every Muntin tool is held to and enforces as a build invariant. The verdict pills read walk away in rust, not free and watched in amber, and safe to use in green.">
+        <ol class="viz-tree" aria-label="Verdict tree for interpreting your DevTools audit results">
+          <li class="viz-tree__node">
+            <details open>
+              <summary><span class="viz-tree__num">1</span><span class="viz-tree__title">Did a request fire on a keystroke?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+              <div class="viz-tree__body">
+                <p>The most serious failure, and it overrides every check below. A request per keystroke means the tool is streaming your raw inputs to a server before you ever press submit.</p>
+                <p><span class="viz-tree__verdict" data-tone="fail">Walk away</span> Yes &mdash; this is the one failure that ends the audit on its own, no matter how clean the rest looks.</p>
+                <p><span class="viz-tree__verdict" data-tone="warn">Keep checking</span> No &mdash; inputs stay on the page so far. Drop to the next gate.</p>
               </div>
-            </li>
-            <li class="viz-flow__step" data-state="done" data-tone="teal">
-              <span class="viz-flow__num">2</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">Privacy at the point of input &mdash; pass</p>
-                <p class="viz-flow__meta">The privacy line sits next to the input. No server to store inputs on, only <code>GET /tools/&lt;slug&gt;/</code> for the page itself. <strong>Build invariant.</strong></p>
+            </details>
+          </li>
+          <li class="viz-tree__node">
+            <details>
+              <summary><span class="viz-tree__num">2</span><span class="viz-tree__title">Is there an account / email / cookie gate?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+              <div class="viz-tree__body">
+                <p>&ldquo;Enter your email to see your results&rdquo; means the numbers are the cost of entry. The tool is not free; it is a lead-capture <!-- LIBRARY:autolink:start --><a href="/glossary/funnel/" data-glossary-head="Funnel" data-glossary-aka="the path from visitor to customer" data-glossary-blurb="The sequence of steps a visitor goes through before becoming a customer — landing page → menu page → reserve button → reservation form → confirmation.">funnel</a><!-- LIBRARY:autolink:end --> wearing a calculator costume.</p>
+                <p><span class="viz-tree__verdict" data-tone="fail">Walk away</span> Yes &mdash; unless you would hand those exact numbers to the vendor's sales team by name, decline.</p>
+                <p><span class="viz-tree__verdict" data-tone="warn">Keep checking</span> No gate &mdash; nothing stands between you and the result. Continue.</p>
               </div>
-            </li>
-            <li class="viz-flow__step" data-state="done" data-tone="teal">
-              <span class="viz-flow__num">3</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">Account / email / cookie gate &mdash; pass</p>
-                <p class="viz-flow__meta">No sign-in. No <!-- LIBRARY:autolink:start --><a href="/glossary/newsletter-capture/" data-glossary-head="Newsletter capture" data-glossary-aka="email signup, list-building" data-glossary-blurb="A simple form on your site that collects an email address in exchange for an actual reason to give it — &quot;first to know about the spring menu,&quot; &quot;event invites,&quot; a small perk on…">email capture</a><!-- LIBRARY:autolink:end -->. No cookie wall. No localStorage or sessionStorage holding your inputs &mdash; close the tab, the form is empty.</p>
+            </details>
+          </li>
+          <li class="viz-tree__node">
+            <details>
+              <summary><span class="viz-tree__num">3</span><span class="viz-tree__title">Are third-party surveillance scripts recording?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+              <div class="viz-tree__body">
+                <p>Meta Pixel, FullStory, Hotjar, HubSpot &mdash; vendors who were never part of the deal you thought you were making. Even if inputs stay client-side, watchers you never approved are on the page.</p>
+                <p><span class="viz-tree__verdict" data-tone="warn">Not free, watched</span> Yes &mdash; a soft fail. Usable only if the surveillance is genuinely incidental and nothing financial reaches it.</p>
+                <p><span class="viz-tree__verdict" data-tone="pass">Last gate</span> No watchers &mdash; one honest check left.</p>
               </div>
-            </li>
-            <li class="viz-flow__step" data-state="done" data-tone="teal">
-              <span class="viz-flow__num">4</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">Third-party scripts &mdash; pass</p>
-                <p class="viz-flow__meta">Only Plausible analytics loads, and it sees only bucketed event names &mdash; a $25 ticket becomes <code>25-39</code>. <strong>Build invariant.</strong></p>
+            </details>
+          </li>
+          <li class="viz-tree__node">
+            <details>
+              <summary><span class="viz-tree__num">4</span><span class="viz-tree__title">Readable source + privacy claim at the input?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+              <div class="viz-tree__body">
+                <p>A small, unminified script you can read in five minutes, with the privacy line sitting next to where you type &mdash; not buried in a footer. This is the standard every <span data-tone="teal">Muntin</span> tool meets and enforces as a build invariant.</p>
+                <p><span class="viz-tree__verdict" data-tone="pass">Safe to use</span> Yes &mdash; the tool is at least honest about its data flow, and you can confirm it yourself in the browser.</p>
+                <p><span class="viz-tree__verdict" data-tone="fail">Walk away</span> No &mdash; a tool you cannot audit is a tool asking for trust it has not earned.</p>
               </div>
-            </li>
-            <li class="viz-flow__step" data-state="done" data-tone="teal">
-              <span class="viz-flow__num">5</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">Readable source &mdash; pass</p>
-                <p class="viz-flow__meta">No build step, no minification, every math function named. View Source returns a script you can read in five minutes. <strong>Build invariant.</strong></p>
-              </div>
-            </li>
-          </ol>
-        </div>
-        <figcaption>The five tests run against a Muntin tool. Four of the five passes are enforced as build invariants &mdash; the cohesion check fails CI if a future tool ships a forbidden pattern.</figcaption>
+            </details>
+          </li>
+        </ol>
+        <figcaption>The same five tests read as a verdict, worst failure first: one keystroke leak ends it; a clean source with the privacy claim at the input is the only path to &ldquo;safe to use.&rdquo;</figcaption>
       </figure>
 
       <blockquote class="pullquote">
@@ -986,7 +983,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   <div class="article-author-card__body" style="flex:1 1 280px;min-width:0">
     <p class="article-author-card__eyebrow" style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--stone);margin:0 0 4px" id="article-author-h">About the author</p>
     <p class="article-author-card__name" style="font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);margin:0 0 6px"><a href="/about/" style="color:var(--ink)">Don Goldstein</a></p>
-    <p class="article-author-card__bio" style="font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 10px">I&rsquo;m Don. I&rsquo;m front-of-house manager at Tacombi in Bethesda and run Muntin Digital, the one-person web studio behind this library. Every article here comes from a problem I saw on the floor or in a client audit.</p>
+    <p class="article-author-card__bio" style="font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 10px">I&rsquo;m Don. I&rsquo;m front-of-house manager at Tacombi in Bethesda and the founder of Muntin Digital &mdash; the company behind this library, the Cost Index, and Muntin Ledger. Every article here comes from a problem I saw on the floor.</p>
     <p class="article-author-card__creds" style="font-size:12px;color:var(--stone);margin:0 0 12px;letter-spacing:0.01em">ServSafe Manager &middot; ServSafe Allergens &middot; RAM Alcohol Awareness &middot; Maryland LLC</p>
     <p class="article-author-card__cta" style="font-size:14px;margin:0">
       <a href="/about/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none;margin-right:14px">More about Don &rarr;</a>
@@ -1021,7 +1018,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->150<!-- /count --> glossary terms &mdash; with a one-person web studio behind it in Silver Spring, MD.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->150<!-- /count --> glossary terms &mdash; from Muntin Digital in Silver Spring, MD.</p>
       </div>
 
       <!-- Column order mirrors the 4-item primary nav
@@ -1049,12 +1046,17 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         </ul>
       </nav>
 
+      <!-- Phase 9 (services sunset, 2026-06-11): the Studio column's
+           Pricing / Compare / Process rows sold the retired services
+           business. The column is now the Company column — the product,
+           the public data, the company page, the founder. The retired services
+           and studio child pages 301 per the _redirects table. -->
       <nav class="foot-col" aria-labelledby="foot-studio">
-        <p class="foot-heading" id="foot-studio">Studio</p>
+        <p class="foot-heading" id="foot-studio">Company</p>
         <ul class="foot-links">
-          <li><a href="/studio/#pricing">Pricing</a></li>
-          <li><a href="/studio/compare/">Compare options</a></li>
-          <li><a href="/studio/#process">Process</a></li>
+          <li><a href="https://ledger.muntin.digital/">Muntin Ledger</a></li>
+          <li><a href="/cost-index/">Cost Index</a></li>
+          <li><a href="/studio/">The company</a></li>
           <li><a href="/about/">About Don</a></li>
         </ul>
       </nav>

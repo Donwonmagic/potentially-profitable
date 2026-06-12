@@ -66,6 +66,21 @@ const LOCALES = [
   { code: 'es', dirs: ['es/library', 'es/blog'] },
 ];
 
+// ES posts live under TRANSLATED slugs (data/i18n-slug-map.json) —
+// same fix as inject-post-end-cta.mjs (2026-06-11): without it the ES
+// pass searched es/*/<EN-slug> and silently skipped every translated
+// mirror, so the Spanish posts never carried the Ledger CTA at all.
+const slugMap = (() => {
+  try {
+    return JSON.parse(fs.readFileSync(path.join(repoRoot, 'data', 'i18n-slug-map.json'), 'utf8'));
+  } catch { return {}; }
+})();
+function esSlugFor(dir, enSlug) {
+  const ns = dir.replace(/^es\//, '');
+  const map = slugMap[ns];
+  return (map && map[enSlug]) || enSlug;
+}
+
 function escapeText(s) {
   return String(s == null ? '' : s).replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[c]);
 }
@@ -98,7 +113,8 @@ for (const [slug, entry] of Object.entries(entries)) {
   for (const { code, dirs } of LOCALES) {
     let file = null;
     for (const dir of dirs) {
-      const candidate = path.join(repoRoot, dir, slug, 'index.html');
+      const localSlug = code === 'es' ? esSlugFor(dir, slug) : slug;
+      const candidate = path.join(repoRoot, dir, localSlug, 'index.html');
       if (fs.existsSync(candidate)) { file = candidate; break; }
     }
     if (!file) {

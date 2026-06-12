@@ -1,128 +1,111 @@
-# Cost Index refresh — the weekly measured-price pipeline (the index's anchor).
+# Cost Index weekly refresh — the freshness heartbeat.
 #
-# This is the layer the weekly email actually reports. It fetches the verified
-# public price sources (USDA AMS + BLS + FRED, keyless USDA where applicable),
-# composites them into one honest point per ingredient (level range + blended
-# trend + confidence + provenance + as-of), vendors the result into
-# data/cost-index.json THROUGH THE BUILD'S OWN FACT GATE (build-cost-index.mjs
-# only writes a point that clears the exact predicate the CI gate enforces — a
-# verified source, a bounds entry, sourced provenance, an in-bounds level), then
-# re-renders the surfaces and commits the scoped result so the Cloudflare build
-# deploys it.
+# Every Monday 13:00 UTC (after Friday's USDA LMR/AMS reads settle and
+# before the US restaurant work week ramps): fetch the live public
+# sources (USDA AMS/LMR, BLS, FRED) for verified ingredients, compose
+# the honest artifact, vendor it through the build's own fact gate,
+# rebuild the browser seed + cost-index pages, run the fact + calibration
+# gates, and commit the result. This is the site's recurring dated read —
+# the un-backfillable track record AND the strongest recency signal the
+# site emits, and the numbers the weekly email reports.
 #
-# Runs MONDAY 09:00 UTC — ahead of the cost-pressure overlay (Mon 11:00, which
-# joins onto this measured anchor) and the weekly email (Tue 13:00). Order:
-#   measured prices (here)  →  pressure overlay  →  email.
+# Honest-failure posture (matches the engine):
+#   - No API keys configured  -> log + exit 0 (never a red X before the
+#     founder sets secrets; nothing is invented).
+#   - Live fetch composes 0 points -> fetch script REFUSES to write the
+#     artifact; the committed last-good data/cost-index.json stays.
+#   - Gates failing -> job fails, nothing is committed. A stale-but-true
+#     index beats a fresh-but-wrong one.
 #
-# Two ways to run:
-#   • workflow_dispatch, mode=probe → fetch live and PRINT the composite only,
-#     write nothing. Read the logs to confirm each source returns sane data.
-#   • workflow_dispatch, mode=live (or the weekly schedule) → fetch → vendor →
-#     re-render → gate → commit data/ + cost-index pages → Cloudflare deploys.
-#
-# Secrets (Settings → Secrets and variables → Actions) — all free:
-#   FRED_KEY  — https://fred.stlouisfed.org/docs/api/api_key.html
-#   BLS_KEY   — https://data.bls.gov/registrationEngine/
-#   AMS_KEY   — https://mymarketnews.ams.usda.gov/ (Market News API)
-#   LMR_KEY   — optional, USDA Livestock Mandatory Reporting (same portal as AMS)
-#   EIA_KEY   — optional, already set for the pressure pipeline
-# A missing key simply skips that source; the fact gate guarantees only
-# well-sourced points are ever vendored — a missing key can never publish a guess.
+# Founder setup (repo Settings -> Secrets and variables -> Actions):
+#   FRED_KEY, BLS_KEY, AMS_KEY  (required for --live)
+#   LMR_KEY, EIA_KEY            (optional)
 
-name: Cost Index refresh
+name: Cost Index weekly refresh
 
 on:
-  workflow_dispatch:
-    inputs:
-      mode:
-        description: 'probe = fetch + print, write nothing · live = fetch + vendor + render + gate + commit'
-        type: choice
-        options: [probe, live]
-        default: probe
   schedule:
-    # Mondays 09:00 UTC — before the pressure overlay (11:00) and the email (Tue).
-    - cron: '0 9 * * 1'
-
-# Scheduled runs have no inputs → default to 'live'. Dispatch honors the choice.
-env:
-  MODE: ${{ github.event.inputs.mode || 'live' }}
+    - cron: "0 13 * * 1" # Mondays 13:00 UTC
+  workflow_dispatch:
 
 permissions:
-  contents: write   # live mode commits the refreshed data + pages back
+  contents: write # commits the refreshed data + rebuilt pages
 
 concurrency:
   group: cost-index-refresh-${{ github.ref }}
-  cancel-in-progress: false   # never interrupt a run mid-commit
+  cancel-in-progress: false # never interrupt a run mid-commit
 
 jobs:
   refresh:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - name: Check out
-        uses: actions/checkout@v5
-
-      - name: Set up Node 20
-        uses: actions/setup-node@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
 
-      # --- probe: fetch live, print the composite, write nothing --------------
-      - name: Probe (writes nothing)
-        if: env.MODE == 'probe'
+      - name: Check keys are configured
+        id: keys
+        env:
+          FRED_KEY: ${{ secrets.FRED_KEY }}
+          BLS_KEY: ${{ secrets.BLS_KEY }}
+          AMS_KEY: ${{ secrets.AMS_KEY }}
+        run: |
+          if [ -z "$FRED_KEY" ] && [ -z "$BLS_KEY" ] && [ -z "$AMS_KEY" ]; then
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+            echo "No source API keys configured — skipping refresh (set FRED_KEY/BLS_KEY/AMS_KEY repo secrets to light the heartbeat)."
+          else
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Live fetch -> artifact
+        if: steps.keys.outputs.configured == 'true'
         env:
           FRED_KEY: ${{ secrets.FRED_KEY }}
           BLS_KEY: ${{ secrets.BLS_KEY }}
           AMS_KEY: ${{ secrets.AMS_KEY }}
           LMR_KEY: ${{ secrets.LMR_KEY }}
           EIA_KEY: ${{ secrets.EIA_KEY }}
-        run: node scripts/fetch-cost-index-sources.mjs --live
+        run: node scripts/fetch-cost-index-sources.mjs --live --out /tmp/ci-artifact.json
 
-      # --- live: fetch → vendor → render → gate → commit ----------------------
-      - name: Live refresh
-        if: env.MODE == 'live'
-        env:
-          FRED_KEY: ${{ secrets.FRED_KEY }}
-          BLS_KEY: ${{ secrets.BLS_KEY }}
-          AMS_KEY: ${{ secrets.AMS_KEY }}
-          LMR_KEY: ${{ secrets.LMR_KEY }}
-          EIA_KEY: ${{ secrets.EIA_KEY }}
+      - name: Build vendored cost-index from artifact
+        if: steps.keys.outputs.configured == 'true'
         run: |
-          set -e
-          # Wiring guard: the demo runs the engine on canned payloads (no network,
-          # no keys). If it can't produce a composite, stop before fetching live.
-          node scripts/fetch-cost-index-sources.mjs >/dev/null
-          # Fetch the verified live sources → composite artifact.
-          node scripts/fetch-cost-index-sources.mjs --live --out /tmp/ci-artifact.json
-          # Vendor into data/cost-index.json. The build's own fact gate drops any
-          # point that isn't verified + bounded + sourced + in-range.
-          node scripts/build-cost-index.mjs --artifact /tmp/ci-artifact.json
-          # Rebuild the browser seed + re-render hub / per-ingredient / lab pages.
-          node scripts/build-cost-index-seed.mjs
-          node scripts/build-cost-index-pages.mjs
-          # Restore canonical nav (the page build emits skeleton include sentinels).
-          node scripts/sync-includes.mjs
-          # HONESTY GATES — must pass before the commit step runs. A failure here
-          # fails this step, so the commit step is skipped and nothing reaches main.
-          node scripts/check-cost-index-sources.mjs
-          node scripts/check-cost-index-sync.mjs
-          node scripts/check-shippable-bar.mjs
-
-      - name: Commit scoped refresh
-        if: env.MODE == 'live'
-        run: |
-          set -e
-          git config user.name  "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          # Stage ONLY the measured data + the cost-index surfaces, then discard any
-          # incidental sweep (nav re-stamps on unrelated pages) so the commit is
-          # always exactly the price refresh, never a surprise.
-          git add data/cost-index.json data/cost-index.js \
-                  cost-index es/cost-index
-          git checkout -- . 2>/dev/null || true
-          if git diff --cached --quiet; then
-            echo "No change in the measured index this run — nothing to commit."
+          if [ ! -f /tmp/ci-artifact.json ]; then
+            echo "No artifact written (0 points composed) — keeping last-good data; see fetch log."
             exit 0
           fi
-          git commit -m "chore(cost-index): weekly measured-price refresh ($(date -u +%Y-%m-%d))"
+          # Vendor into data/cost-index.json — fact-gated inside build-cost-index.mjs.
+          node scripts/build-cost-index.mjs --artifact /tmp/ci-artifact.json
+          # Rebuild the browser seed (data/cost-index.js) so Cost Pulse / the
+          # client read the fresh numbers — not just the server-rendered pages.
+          node scripts/build-cost-index-seed.mjs
+          # Re-render hub / per-ingredient / lab pages.
+          node scripts/build-cost-index-pages.mjs
+          # Restore canonical nav — build-cost-index-pages emits skeleton include
+          # sentinels; without this the committed pages would ship stripped nav.
+          node scripts/sync-includes.mjs
+
+      - name: Fact + calibration gates
+        if: steps.keys.outputs.configured == 'true'
+        run: |
+          node scripts/check-cost-index-sync.mjs
+          node scripts/check-cost-index-calibration.mjs
+
+      - name: Commit the weekly read
+        if: steps.keys.outputs.configured == 'true'
+        run: |
+          git config user.name "muntin-cost-index-bot"
+          git config user.email "actions@users.noreply.github.com"
+          # Stage ONLY the measured data + the cost-index surfaces, then discard
+          # the incidental site-wide nav re-stamp from sync-includes, so the commit
+          # is always exactly the weekly read — never a surprise sweep.
+          git add data/cost-index.json data/cost-index.js cost-index/ es/cost-index/ sitemap.xml
+          git checkout -- . 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "No data change this week — nothing to commit."
+            exit 0
+          fi
+          git commit -m "data(cost-index): weekly read $(date -u +%F)"
           git push

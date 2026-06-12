@@ -56,9 +56,12 @@ function buildCard(locale) {
   const credLabel = locale === 'es'
     ? 'ServSafe Manager &middot; ServSafe Allergens &middot; RAM Alcohol Awareness &middot; LLC de Maryland'
     : 'ServSafe Manager &middot; ServSafe Allergens &middot; RAM Alcohol Awareness &middot; Maryland LLC';
+  // Company-era bio (2026-06-12): 'one-person web studio' + 'client
+  // audit' framed the retired services business. Muntin Digital is a
+  // product company now — the library, the Cost Index, Muntin Ledger.
   const bio = locale === 'es'
-    ? 'Soy Don. Soy gerente de sal&oacute;n en Tacombi en Bethesda y construyo Muntin Digital, el estudio web de una sola persona detr&aacute;s de esta biblioteca. Cada art&iacute;culo aqu&iacute; sale de un problema que vi en piso o en una auditor&iacute;a de cliente.'
-    : 'I&rsquo;m Don. I&rsquo;m front-of-house manager at Tacombi in Bethesda and run Muntin Digital, the one-person web studio behind this library. Every article here comes from a problem I saw on the floor or in a client audit.';
+    ? 'Soy Don. Soy gerente de sal&oacute;n en Tacombi en Bethesda y fundador de Muntin Digital &mdash; la empresa detr&aacute;s de esta biblioteca, el &Iacute;ndice de Costos y Muntin Ledger. Cada art&iacute;culo aqu&iacute; sale de un problema que vi en piso.'
+    : 'I&rsquo;m Don. I&rsquo;m front-of-house manager at Tacombi in Bethesda and the founder of Muntin Digital &mdash; the company behind this library, the Cost Index, and Muntin Ledger. Every article here comes from a problem I saw on the floor.';
   const moreLabel = locale === 'es' ? 'Conoce a Don &rarr;' : 'More about Don &rarr;';
   const writeLabel = locale === 'es' ? 'Escr&iacute;bele &rarr;' : 'Email Don &rarr;';
   return [

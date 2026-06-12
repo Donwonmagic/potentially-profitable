@@ -179,9 +179,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=933461d49609" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=15ac955f199e" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=933461d49609"><link rel="stylesheet" href="/assets/site-article.css?v=15ac955f199e"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=b70da981fa3f" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=36af39b8b96e" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=b70da981fa3f"><link rel="stylesheet" href="/assets/site-article.css?v=36af39b8b96e"></noscript>
 
 <!-- lazy-load:p --><script>(window.requestIdleCallback||function(c){return setTimeout(c,500);})(function(){var s=document.createElement("script");s.src="/assets/p.js?v=20260503";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:p -->
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
@@ -247,7 +247,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <a href="/es/library/">Biblioteca</a>
       <a href="/es/start/">Comienza</a>
       <a href="/es/tools/">Herramientas</a>
-      <a href="/es/studio/">Estudio</a>
+      <a href="/es/studio/">Empresa</a>
       <a href="https://ledger.muntin.digital/">Ledger</a>
       <a class="js-nav-signin nav-link-auth" href="/es/sign-in/" hidden>Acceder</a>
       <a class="js-nav-workshop nav-link-auth" href="/es/workbench/" hidden>El Taller</a>
@@ -277,7 +277,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <a href="/es/library/">Biblioteca</a>
     <a href="/es/start/">Comienza</a>
     <a href="/es/tools/">Herramientas</a>
-    <a href="/es/studio/">Estudio</a>
+    <a href="/es/studio/">Empresa</a>
     <a href="https://ledger.muntin.digital/">Ledger</a>
     <a class="js-nav-signin mobile-auth" href="/es/sign-in/" hidden>Acceder</a>
     <a class="js-nav-workshop mobile-auth" href="/es/workbench/" hidden>El Taller</a>
@@ -441,7 +441,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <li style="margin-bottom:14px"><strong>CTA de pedido directo ausente (30 minutos).</strong> Agrega un bot&oacute;n &laquo;Pedir directo&raquo; en color primario arriba de cualquier enlace a un pedido de tercero. Cabl&eacute;alo a la URL de pedido en l&iacute;nea de tu POS (Toast, Square Online, Olo, ChowNow). Iguala o gana al precio del men&uacute; del agregador.</li>
       <li style="margin-bottom:14px"><strong>LCP m&oacute;vil &gt; 3.0s (1 a 3 horas).</strong> Comprime el hero, cambia a AVIF con fallback WebP, recorta el JS sin uso, lazy-load las im&aacute;genes debajo del fold. Pru&eacute;balo con Lighthouse en Slow 4G y CPU a 4&times; antes de cantar victoria.</li>
       <li style="margin-bottom:14px"><strong>Pedidos solo por agregador (4 a 8 horas de setup, m&aacute;s mantenimiento).</strong> Levanta un Toast Online Ordering o un Square Online si a&uacute;n no lo tienes. Iguala precios del men&uacute;. Menciona el ahorro en el recibo del pedido y en el inserto de la bolsa de takeout. La parte m&aacute;s dura no es la t&eacute;cnica &mdash; es el cambio operacional de correr dos flujos de pedido en paralelo el primer mes.</li>
-      <li><strong>Mirror real <code>/es/</code> (una semana).</strong> El m&aacute;s dif&iacute;cil de los seis y el de segundo mayor impacto. Un mirror localizado de verdad, no un plugin de Google Translate. El <a href="/es/services/menu-drop-in/" style="color:var(--teal)">menu drop-in</a> cubre esto para la p&aacute;gina de mayor palanca; un mirror de sitio completo es un proyecto tier Servicio Completo.</li>
     </ol>
 
     <p>Los primeros tres arreglos &mdash; menos de una hora combinados, sin desarrollador &mdash; recuperan aproximadamente la mitad de la fuga mediana. Son una tarde de s&aacute;bado, no un proyecto.</p>
@@ -468,8 +467,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <h2 id="corre-la-tuya">Corre la tuya</h2>
 
     <p>La <a href="/es/tools/audits/restaurant/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">herramienta de auditor&iacute;a de restaurante gratis</a> califica tu sitio contra las mismas seis fugas, en 30 segundos, en tu navegador. El resultado te dice cu&aacute;les fugas tienes y qu&eacute; te est&aacute;n costando al mes.</p>
-
-    <p>Si prefieres que yo corra una auditor&iacute;a profunda de USD 499 y te recorra los arreglos en un Loom &mdash; <a href="/es/services/audit/" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none">/es/services/audit/</a>. La auditor&iacute;a se acredita hacia un build dentro de 60 d&iacute;as.</p>
 
     <hr style="margin:48px 0 32px;border:0;border-top:1px solid var(--line)">
 
@@ -509,7 +506,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <nav class="foot-col" aria-labelledby="foot-explore">
         <p class="foot-heading" id="foot-explore">Explorar</p>
         <ul class="foot-links">
-          <li><a href="/es/services/">Servicios</a></li>
+          <li><a href="/es/studio/">Estudio</a></li>
           
           <li><a href="/es/about/">Sobre Don</a></li>
         </ul>

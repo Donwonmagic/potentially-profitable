@@ -39,9 +39,9 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=933461d49609" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=15ac955f199e" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=933461d49609"><link rel="stylesheet" href="/assets/site-article.css?v=15ac955f199e"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=b70da981fa3f" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=36af39b8b96e" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=b70da981fa3f"><link rel="stylesheet" href="/assets/site-article.css?v=36af39b8b96e"></noscript>
 
 <!-- topic-schema:start -->
 <script type="application/ld+json">
@@ -210,11 +210,9 @@
          three-doors page). Tools is promoted from the old Library
          mega-menu to a top-level item. Studio replaces Services +
          Restaurants + About — they all live under /studio/ now,
-         either as anchored sections (#pricing, #offers, #cities,
-         #process, #about) or as full child pages (/studio/compare/,
-         /studio/silver-spring/, etc.). The old Services and
-         Restaurants pages remain reachable via /studio/ and the
-         _redirects table; /about/ is unchanged. The mega-menu is
+         as sections of the company page (Phase 9, 2026-06-11: the
+         services-era child pages and anchored offer sections are
+         retired; old paths 301 via the _redirects table). /about/ is unchanged. The mega-menu is
          retired (the hub IS the menu now); the controller script
          is gone too.
 
@@ -226,7 +224,7 @@
       <a href="/library/">Library</a>
       <a href="/start/">Start</a>
       <a href="/tools/">Tools</a>
-      <a href="/studio/">Studio</a>
+      <a href="/studio/">Company</a>
       <!-- Ledger — sister product (the privacy-forward invoice ledger)
            on its own subdomain. Plain external link so it passes link
            equity to ledger.muntin.digital; Plausible's automatic
@@ -288,7 +286,7 @@
     <a href="/library/">Library</a>
     <a href="/start/">Start</a>
     <a href="/tools/">Tools</a>
-    <a href="/studio/">Studio</a>
+    <a href="/studio/">Company</a>
     <a href="https://ledger.muntin.digital/">Ledger</a>
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
@@ -747,9 +745,9 @@
       <p>Local SEO is structurally national &mdash; the algorithm is the same in Bethesda as it is in Bismarck &mdash; but the operator-side competition isn&rsquo;t. The DMV (DC + suburban Maryland + northern Virginia) has the highest density of independent restaurants per capita on the East Coast, the second-largest bilingual restaurant scene in the US (Adams Morgan, Mt Pleasant, Wheaton, Columbia Pike, Long Branch), and a Sunday brunch demand curve that compresses bookings into a four-hour window every weekend. Three implications for local SEO in the DMV:</p>
 
       <ul>
-        <li><strong>EN-only listings concede the bilingual market.</strong> A real <code>/es/</code> mirror with hreflang, plus the menu and hours in Spanish on GBP, doubles addressable demand in roughly 35% of DMV neighborhoods. The <a href="/services/menu-drop-in/">$1,500 menu drop-in</a> ships the menu page version of this in seven days; the full-site version is in any of the <a href="/services/">three site tiers</a>.</li>
+        <li><strong>EN-only listings concede the bilingual market.</strong> A real <code>/es/</code> mirror with hreflang, plus the menu and hours in Spanish on GBP, doubles addressable demand in roughly 35% of DMV neighborhoods.</li>
         <li><strong>Holiday hours leak more in the DMV than the national average.</strong> 81% of DMV operators in our 100-restaurant audit had no holiday hours configured; the national average is closer to 65%. Memorial Day weekend, July 4, the four religious holidays in fall, Thanksgiving, and the Christmas/NYE block all drive 1.2&times; normal-volume search traffic in the DMV. Configure them once a year via the <a href="/tools/store-hours/#holidays">Holiday Hours Generator</a>.</li>
-        <li><strong>Citation parity is harder here.</strong> Multi-jurisdictional operators (a DC location and a Bethesda location, or a Tysons and a Reston) accumulate citation drift faster because every one of the four major directories &mdash; Yelp, Apple Business Connect, Bing Places, Yellow Pages &mdash; treats them as separate pins. The monthly hygiene pass in <a href="/services/care-plan-light/">Care Plan Light</a> is built around fixing this.</li>
+        <li><strong>Citation parity is harder here.</strong> Multi-jurisdictional operators (a DC location and a Bethesda location, or a Tysons and a Reston) accumulate citation drift faster because every one of the four major directories &mdash; Yelp, Apple Business Connect, Bing Places, Yellow Pages &mdash; treats them as separate pins.</li>
       </ul>
 
       <h3>What to do this week</h3>
@@ -762,7 +760,7 @@
         <li><strong>Stand up the 15-minute weekly habit.</strong> Same day each week (Tuesday morning, before lunch service, is what I do). One photo, one Google Post, replies to every review since last week. The habit is the multiplier; everything else is the platform.</li>
       </ol>
 
-      <p>Operators who can&rsquo;t carve out the 15 minutes can outsource it: <a href="/services/care-plan-light/">Care Plan Light at $99/month</a> covers monthly hygiene across site + GBP + Yelp + Apple Maps. The full Care Plan ($225/month) adds the weekly drumbeat. Either way, the answer is consistency, not a one-time push.</p>
+      <p> The full Care Plan ($225/month) adds the weekly drumbeat. Either way, the answer is consistency, not a one-time push.</p>
 
       <h3>Where this topic touches the others</h3>
 
@@ -872,7 +870,7 @@
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->150<!-- /count --> glossary terms &mdash; with a one-person web studio behind it in Silver Spring, MD.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->150<!-- /count --> glossary terms &mdash; from Muntin Digital in Silver Spring, MD.</p>
       </div>
 
       <!-- Column order mirrors the 4-item primary nav
@@ -900,12 +898,17 @@
         </ul>
       </nav>
 
+      <!-- Phase 9 (services sunset, 2026-06-11): the Studio column's
+           Pricing / Compare / Process rows sold the retired services
+           business. The column is now the Company column — the product,
+           the public data, the company page, the founder. The retired services
+           and studio child pages 301 per the _redirects table. -->
       <nav class="foot-col" aria-labelledby="foot-studio">
-        <p class="foot-heading" id="foot-studio">Studio</p>
+        <p class="foot-heading" id="foot-studio">Company</p>
         <ul class="foot-links">
-          <li><a href="/studio/#pricing">Pricing</a></li>
-          <li><a href="/studio/compare/">Compare options</a></li>
-          <li><a href="/studio/#process">Process</a></li>
+          <li><a href="https://ledger.muntin.digital/">Muntin Ledger</a></li>
+          <li><a href="/cost-index/">Cost Index</a></li>
+          <li><a href="/studio/">The company</a></li>
           <li><a href="/about/">About Don</a></li>
         </ul>
       </nav>
