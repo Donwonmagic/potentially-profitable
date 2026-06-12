@@ -10,10 +10,19 @@
  * week-over-week delta (we don't archive weekly snapshots yet). So the framing is a
  * state-of-play "what's flashing this week", never "X moved Y% since last week".
  *
+ *   node scripts/build-cost-index-dispatch.mjs --json      # print the computed insight as JSON, write nothing
  *   node scripts/build-cost-index-dispatch.mjs --dry-run   # print the computed narrative, write nothing
- *   node scripts/build-cost-index-dispatch.mjs             # (later) emit the dated dispatch + register it
+ *   node scripts/build-cost-index-dispatch.mjs             # emit the dated dispatch at blog/cost-index-week-<asOf>/
+ *
+ * The default invocation writes one dated post per week, unique by the insight's
+ * asOf date. Re-running for the same week overwrites in place and bumps dateModified.
+ * It also upserts the post's blog-index card source (data/library-tags.json), pruning
+ * any prior cost-index-week-* entry so the registration files never grow unbounded.
+ * After emission, run scripts/sync-includes.mjs and the build-chain inject/build scripts
+ * (build-blog-index, build-rss, build-sitemap, build-llms-txt, inject-* CTAs) so the post
+ * registers in the blog index, RSS, sitemap, smart-next, and the post-end CTA.
  */
-import { readFileSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
@@ -106,11 +115,468 @@ function narrate(ins) {
   return L.join('\n');
 }
 
-const ins = computeInsight();
-if (arg('--dry-run') || arg('--json')) {
+// ---- HTML emission ---------------------------------------------------------
+// The donor supplies byte-identical chrome (head boilerplate, batch banner,
+// platform-script + nav, footer, tail scripts) so sync-includes and every
+// idempotency gate accept the generated post without a rewrite.
+const DONOR = 'blog/ai-local-pack-restaurant-phone-calls-2026/index.html';
+
+const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const escAttr = (s) => esc(s).replace(/"/g, '&quot;');
+const widthOf = (p, max) => (max > 0 ? Math.min(1, Math.abs(p) / max) : 0);
+const fmtPct = (x) => `${x >= 0 ? '+' : '−'}${Math.abs(x * 100).toFixed(1)}%`; // − for display
+const fmtPctPlain = (x) => `${x >= 0 ? '+' : '-'}${Math.abs(x * 100).toFixed(1)}%`; // ascii, for narration
+
+function sliceDonor(html, startMarker, endMarker, { includeStart = true, includeEnd = true } = {}) {
+  const s = html.indexOf(startMarker);
+  const e = html.indexOf(endMarker, s + startMarker.length);
+  if (s === -1 || e === -1) throw new Error(`donor missing marker ${startMarker} / ${endMarker}`);
+  return html.slice(includeStart ? s : s + startMarker.length, includeEnd ? e + endMarker.length : e);
+}
+
+function buildBars(ins) {
+  const movers = [...ins.risers, ...ins.fallers]
+    .sort((a, b) => Math.abs(b.pct) - Math.abs(a.pct))
+    .slice(0, 6);
+  const max = Math.max(...movers.map((m) => Math.abs(m.pct)), 0.0001);
+  const rows = movers.map((m) => {
+    const tone = m.pct >= 0 ? 'rust' : 'teal';
+    const w = widthOf(m.pct, max).toFixed(3);
+    return `          <div class="viz-bars__row">
+            <p class="viz-bars__label">${esc(m.name)}</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="${tone}" style="--w:${w}"></span></div>
+            <p class="viz-bars__num">${fmtPct(m.pct)}</p>
+          </div>`;
+  }).join('\n');
+
+  const narr = movers.map((m) => `${m.name} ${fmtPctPlain(m.pct)} vs its tracked baseline`).join('; ');
+  const alt = `The widest gaps from baseline across the tracked panel this week, with bars scaled so the largest mover fills the track. Rust bars are ingredients reading above their own baseline window (cost building); teal bars are reading below it (cost easing). Each percentage is a state-of-play read versus that ingredient's own tracked baseline, not a week-over-week change. Reading the bars: ${narr}.`;
+
+  return `      <figure class="viz-figure article-figure" data-audio-alt="${escAttr(alt)}">
+        <div class="viz-bars">
+          <p class="viz-bars__title">Widest gaps from baseline this week (bars scaled to the largest mover; rust is building cost, teal is easing)</p>
+${rows}
+          <p class="viz-bars__note">Each bar is a read versus <strong>that ingredient's own tracked baseline window</strong> &mdash; a state-of-play snapshot of what's flashing, not a move since last week.</p>
+        </div>
+        <figcaption>The widest gaps from each ingredient's tracked baseline this week. Rust bars are building cost; teal bars are easing.</figcaption>
+      </figure>`;
+}
+
+function buildRings(ins) {
+  const total = ins.count || (ins.up + ins.down + ins.flat);
+  const upScore = total > 0 ? Math.round((ins.up / total) * 100) : 0;
+  const basket = ins.basket || {};
+  const basketPct = typeof basket.pct === 'number' ? basket.pct : null;
+  const basketScore = basketPct == null ? 0 : Math.min(100, Math.round((Math.abs(basketPct) / 0.5) * 100));
+  const basketBand = basketPct == null ? 'warn' : basketPct > 0 ? 'bad' : 'good';
+
+  const alt = `Two readings of where the panel sits this week. The first ring shows the spread: ${ins.up} of ${total} tracked ingredients are reading above their own baseline window, ${ins.down} below, and ${ins.flat} flat. The second ring shows the weighted basket${basket.asOf ? `, as of ${basket.asOf}` : ''}: it reads ${basketPct == null ? 'no value this week' : fmtPctPlain(basketPct)} against its baseline at ${basket.confidence || 'unstated'} confidence across ${basket.nContributing || total} contributing ingredients. Both are state-of-play reads versus each baseline window, never a move since last week.`;
+
+  const spreadRing = `          <div class="viz-ring" data-band="${ins.up > ins.down ? 'bad' : 'good'}" style="--score:${upScore};">
+            <svg class="viz-ring__svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-labelledby="ring-spread" focusable="false">
+              <title id="ring-spread">${ins.up} of ${total} ingredients reading above baseline</title>
+              <circle class="viz-ring__track" cx="60" cy="60" r="52" fill="none" stroke-width="8"/>
+              <circle class="viz-ring__fill" cx="60" cy="60" r="52" fill="none" stroke-width="8" transform="rotate(-90 60 60)"/>
+              <text class="viz-ring__num" x="60" y="60" text-anchor="middle">${ins.up}/${total}</text>
+            </svg>
+            <p class="viz-ring__label"><strong>Above baseline</strong>${ins.down} below &middot; ${ins.flat} flat</p>
+          </div>`;
+  const basketRing = `          <div class="viz-ring" data-band="${basketBand}" style="--score:${basketScore};--delay:120ms;">
+            <svg class="viz-ring__svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-labelledby="ring-basket" focusable="false">
+              <title id="ring-basket">Weighted basket reads ${basketPct == null ? 'no value' : fmtPctPlain(basketPct)} against baseline</title>
+              <circle class="viz-ring__track" cx="60" cy="60" r="52" fill="none" stroke-width="8"/>
+              <circle class="viz-ring__fill" cx="60" cy="60" r="52" fill="none" stroke-width="8" transform="rotate(-90 60 60)"/>
+              <text class="viz-ring__num" x="60" y="60" text-anchor="middle">${basketPct == null ? '&mdash;' : fmtPct(basketPct)}</text>
+            </svg>
+            <p class="viz-ring__label"><strong>Weighted basket</strong>${basket.confidence || 'n/a'} confidence &middot; ${basket.nContributing || total} ingredients</p>
+          </div>`;
+
+  return `      <figure class="viz-figure article-figure" data-audio-alt="${escAttr(alt)}">
+        <div class="viz-rings">
+${spreadRing}
+${basketRing}
+        </div>
+        <figcaption>Where the panel sits this week: the spread of reads above baseline, and the weighted basket's own reading. Both are reads versus each baseline window, not a week-over-week move.</figcaption>
+      </figure>`;
+}
+
+function buildFlow(ins) {
+  if (!ins.drivers.length) return '';
+  const d = ins.drivers[0];
+  const leads = d.leads.slice(0, 4).join(', ');
+  const dir = d.dir === 'down' ? 'easing' : 'building';
+  const tone = d.dir === 'down' ? 'teal' : 'rust';
+  const alt = `How the feed and input drivers connect to the proteins on the panel. Step one: ${d.name} reads ${fmtPctPlain(d.pct)} against its baseline this week. Step two: ${d.name} is a tracked input behind ${d.leads.length} of the proteins on the panel, including ${leads}. Step three: a feed read that is ${dir} flows through to those proteins on a lag, which is the context behind their own reads above or below baseline this week. The chain is directional context drawn from the measured index, never a forecast and never a delivered price.`;
+  return `      <figure class="viz-figure article-figure" data-audio-alt="${escAttr(alt)}">
+        <div class="viz-flow">
+          <ol class="viz-flow__list">
+            <li class="viz-flow__step" data-tone="${tone}">
+              <span class="viz-flow__num">1</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">${esc(d.name)} reads ${fmtPct(d.pct)}</p>
+                <p class="viz-flow__detail">A tracked feed input, read against its own baseline window this week.</p>
+              </div>
+            </li>
+            <li class="viz-flow__step" data-tone="${tone}">
+              <span class="viz-flow__num">2</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">It sits behind ${d.leads.length} proteins on the panel</p>
+                <p class="viz-flow__detail">Including ${esc(leads)} &mdash; the items whose cost the feed market helps set.</p>
+              </div>
+            </li>
+            <li class="viz-flow__step" data-tone="${tone}">
+              <span class="viz-flow__num">3</span>
+              <div class="viz-flow__body">
+                <p class="viz-flow__title">The read flows through on a lag</p>
+                <p class="viz-flow__detail">A ${dir} feed market is the context behind those proteins' own reads &mdash; directional, not a forecast.</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+        <figcaption>The feed-to-protein chain behind this week's reads. Directional context from the measured index, never a forecast.</figcaption>
+      </figure>`;
+}
+
+function repriceList(ins) {
+  const items = [];
+  for (const i of ins.reprice) items.push({ tag: 'Re-price', i });
+  for (const i of ins.watch) items.push({ tag: 'Watch', i });
+  if (!items.length) return '<p>Nothing structural is flashing this week &mdash; the panel reads hold across the board. That is its own signal: hold your prices and keep watching.</p>';
+  const lis = items.map(({ tag, i }) => {
+    const seasonal = i.seasonal ? ' This one is seasonal, so it typically eases when the season turns.' : '';
+    return `        <li><strong>${tag} &mdash; ${esc(i.name)}.</strong> It reads ${fmtPct(i.pct)} against its baseline; ${esc(i.reason || i.verdict || 'a move worth tracking')}.${seasonal}</li>`;
+  }).join('\n');
+  return `      <ul>\n${lis}\n      </ul>`;
+}
+
+function upsertLibraryTags(slug, asOf, basketPlain, ins) {
+  // build-blog-index.mjs renders the blog index card from this entry. One weekly
+  // dispatch entry at a time; prune stale cost-index-week-* keys so it never grows.
+  const f = path.join(repoRoot, 'data/library-tags.json');
+  const data = JSON.parse(readFileSync(f, 'utf8'));
+  data.blog_posts = data.blog_posts || {};
+  for (const k of Object.keys(data.blog_posts)) {
+    if (/^cost-index-week-\d{4}-\d{2}-\d{2}$/.test(k) && k !== slug) delete data.blog_posts[k];
+  }
+  data.blog_posts[slug] = {
+    topics: ['operations-margin'],
+    title: `Restaurant Cost Index: where the basket stands, week of ${asOf}`,
+    dek: `The weekly read on wholesale ingredient costs: the basket sits at ${basketPlain} against baseline, ${ins.up} of ${ins.count} ingredients above their tracked window. What's flashing a re-price or watch signal, and the feed context behind it. Public wholesale levels, never your delivered price.`,
+    date: asOf,
+    read_min: 5,
+    hide_from_recents: true,
+  };
+  writeFileSync(f, JSON.stringify(data, null, 2) + '\n');
+}
+
+function emit() {
+  const ins = computeInsight();
+  const asOf = ins.asOf;
+  const slug = `cost-index-week-${asOf}`;
+  const url = `https://muntin.digital/blog/${slug}/`;
+  const today = new Date().toISOString().slice(0, 10);
+
+  const donorHtml = readFileSync(path.join(repoRoot, DONOR), 'utf8');
+  const headBoiler = sliceDonor(donorHtml,
+    '<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>',
+    '<!-- /lazy-load:p -->');
+  const plausibleInit = sliceDonor(donorHtml,
+    "<script>window.plausible=window.plausible", '})</script>');
+  const batchBanner = sliceDonor(donorHtml, '<!-- batch-banner:start -->', '<!-- batch-banner:end -->');
+  const navBlock = sliceDonor(donorHtml, '<script>\n  /* Platform-aware kbd hint.', '</header>');
+  const footerBlock = sliceDonor(donorHtml, '<footer>', '</footer>');
+  const tailScripts = sliceDonor(donorHtml, '<!-- Phase 3D-perf', '<!-- /lazy-load:site -->');
+
+  const title = `Restaurant Cost Index: where the basket stands, week of ${asOf}`;
+  const descFull = `Week of ${asOf}: the basket reads ${fmtPctPlain(ins.basket && ins.basket.pct)} against baseline, ${ins.up} of ${ins.count} ingredients above their tracked window. Wholesale levels, not your delivered price.`;
+  const desc = descFull.length <= 155 ? descFull : (descFull.slice(0, 152).replace(/\s+\S*$/, '') + '…');
+  const basketRead = ins.basket && typeof ins.basket.pct === 'number' ? fmtPct(ins.basket.pct) : '&mdash;';
+  const basketPlain = ins.basket && typeof ins.basket.pct === 'number' ? fmtPctPlain(ins.basket.pct) : 'no reading';
+  const basketConf = (ins.basket && ins.basket.confidence) || 'unstated';
+
+  const tldr = [
+    `The weekly restaurant cost index for the week of ${asOf}: the weighted basket reads ${basketPlain} against its baseline at ${basketConf} confidence.`,
+    `${ins.up} of ${ins.count} tracked ingredients are reading above their own baseline window, ${ins.down} below, ${ins.flat} flat.`,
+    ins.reprice.length
+      ? `Flashing re-price: ${ins.reprice.map((i) => `${i.name} (${fmtPctPlain(i.pct)})`).join(', ')}. Each read is state-of-play versus that item's baseline, never a move since last week.`
+      : `Nothing structural is flashing this week; the panel reads hold across the board.`,
+  ];
+  const takeaways = [
+    `The basket reads ${basketPlain} against its baseline this week &mdash; public wholesale levels, never your delivered price.`,
+    `Each ingredient's percentage is a read versus its own tracked baseline window, a state-of-play "what's flashing", not a week-over-week move.`,
+    ins.reprice.length
+      ? `${ins.reprice[0].name} is the structural signal to act on first; ${ins.watch.length ? `${ins.watch[0].name} is on watch.` : 'nothing else is flashing yet.'}`
+      : `Nothing structural this week is a signal too: hold your prices and keep the panel in view.`,
+    `${ins.drivers.length ? `Feed context: ${ins.drivers.map((d) => `${d.name} ${fmtPctPlain(d.pct)}`).join(', ')}.` : 'No credible feed-driver read this week.'} Watch your own delivered invoices, not the wholesale panel alone.`,
+  ];
+
+  const barsFig = buildBars(ins);
+  const ringsFig = buildRings(ins);
+  const flowFig = buildFlow(ins);
+
+  const tldrLis = tldr.map((t) => `        <li>${esc(t)}</li>`).join('\n');
+  const takeLis = takeaways.map((t) => `        <li>${esc(t)}</li>`).join('\n');
+
+  const risersStr = ins.risers.map((i) => `${esc(i.name)} ${fmtPct(i.pct)}`).join(' &middot; ') || '&mdash;';
+  const fallersStr = ins.fallers.map((i) => `${esc(i.name)} ${fmtPct(i.pct)}`).join(' &middot; ') || '&mdash;';
+  const driverCtx = ins.drivers.length
+    ? ins.drivers.map((d) => `${esc(d.name)} reads ${fmtPct(d.pct)} against its baseline`).join(', and ')
+    : '';
+
+  const body = `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+<title>${esc(title)} | Muntin Digital</title>
+<meta name="description" content="${escAttr(desc)}" />
+<meta name="theme-color" content="#2A50C8" />
+<link rel="canonical" href="${url}" />
+<!-- i18n:hreflang START (generated by scripts/stamp-hreflang.mjs) -->
+<link rel="alternate" hreflang="en" href="${url}" />
+<link rel="alternate" hreflang="x-default" href="${url}" />
+<meta property="og:locale" content="en_US" />
+<!-- i18n:hreflang END -->
+
+<meta property="og:type" content="article" />
+<meta property="og:title" content="${escAttr(title)}" />
+<meta property="og:description" content="${escAttr(desc)}" />
+<meta property="og:url" content="${url}" />
+<meta property="og:site_name" content="Muntin Digital" />
+
+<meta property="og:image" content="https://muntin.digital/brand/og/blog-restaurant-cost.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="article:published_time" content="${asOf}T13:00:00-04:00" />
+<meta property="article:author" content="Don Goldstein" />
+
+<link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
+<link rel="icon" type="image/png" sizes="192x192" href="/brand/favicons/android-chrome-192x192.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
+<link rel="manifest" href="/brand/favicons/site.webmanifest" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "@id": "${url}#article",
+      "headline": ${JSON.stringify(title)},
+      "description": ${JSON.stringify(desc)},
+      "url": "${url}",
+      "inLanguage": "en-US",
+      "datePublished": "${asOf}T13:00:00-04:00",
+      "dateModified": "${today}",
+      "author": {
+        "@id": "https://muntin.digital/#don-goldstein",
+        "@type": "Person",
+        "name": "Don Goldstein",
+        "url": "https://muntin.digital/about/"
+      },
+      "publisher": {
+        "@id": "https://muntin.digital/#business"
+      },
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://muntin.digital/brand/og/blog-restaurant-cost.png",
+        "width": 1200,
+        "height": 630,
+        "caption": ${JSON.stringify(title)}
+      },
+      "mainEntityOfPage": {
+        "@id": "${url}"
+      },
+      "keywords": [
+        "restaurant cost index ${asOf}",
+        "restaurant food cost trends 2026",
+        "wholesale ingredient prices restaurant",
+        "restaurant menu re-price signal",
+        "restaurant cost pulse weekly"
+      ],
+      "speakable": {
+        "@type": "SpeakableSpecification",
+        "cssSelector": [
+          "article#post-body",
+          "h1",
+          ".post-dek"
+        ]
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Muntin Digital",
+          "item": "https://muntin.digital/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Articles",
+          "item": "https://muntin.digital/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": ${JSON.stringify(title)},
+          "item": "${url}"
+        }
+      ]
+    }
+  ]
+}
+</script>
+
+<style>
+.breadcrumb{padding-top:100px}
+.callout{padding:18px 22px;background:var(--cream-2);border-left:3px solid var(--teal);border-radius:8px;margin:24px 0}
+.callout p{margin:0;font-size:15.5px;line-height:1.6;color:var(--ink)}
+</style>
+<style>
+:root{--cream:#F6F7F8;--cream-2:#EDEEF1;--ink:#16181D;--ink-soft:#4A4F59;--teal:#2A50C8;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
+html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--cream);line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased}
+.container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
+.skip-link{position:absolute;left:-9999px;top:0}
+.skip-link:focus{position:static;display:inline-block;background:#16181D;color:#F6F7F8;padding:12px 16px;z-index:100}
+a{color:inherit}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:500;font-size:15px;text-decoration:none;white-space:nowrap;cursor:pointer}
+.btn-primary{background:var(--ink);color:var(--cream)}
+.btn-ghost{background:transparent;color:var(--ink);border:1px solid #D7DAE0}
+header.nav{min-height:64px}
+</style>
+${headBoiler}
+${plausibleInit}
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to main content</a>
+
+${batchBanner}
+${navBlock}
+
+<main id="main">
+  <nav class="breadcrumb container" aria-label="Breadcrumb" style="margin-top:90px">
+    <ol style="list-style:none;padding:0;margin:0;display:flex;gap:8px;font-size:13px;color:var(--stone)">
+      <li><a href="/" style="color:var(--teal)">Home</a></li>
+      <li aria-hidden="true">›</li>
+      <li><a href="/blog/" style="color:var(--teal)">Articles</a></li>
+      <li aria-hidden="true">›</li>
+      <li aria-current="page">Cost Index &middot; week of ${asOf}</li>
+    </ol>
+  </nav>
+
+  <article class="container article-body" id="post-body" style="max-width:720px;margin:32px auto 80px;padding:0 var(--pad-x)">
+    <header style="margin-bottom:32px">
+      <p class="eyebrow">The Cost Index &middot; week of ${asOf} &middot; 5 min read &middot; By <a href="/about/#don-goldstein" style="color:var(--teal)">Don Goldstein</a></p>
+      <h1 style="font-family:var(--font-display);font-size:clamp(36px,5.5vw,56px);font-weight:500;line-height:1.05;letter-spacing:-0.5px;margin:0 0 18px">
+        Where the basket stands this week. <span class="serif-italic">What's flashing.</span>
+      </h1>
+      <p class="post-dek" style="font-size:18px;line-height:1.55;color:var(--ink-soft);margin:0">The restaurant cost index for the week of ${asOf}: the weighted basket reads ${basketRead} against its baseline, ${ins.up} of ${ins.count} tracked ingredients above their own window. These are public wholesale levels, never your delivered price &mdash; a read on the market, so you can tell a real move from a vendor markup.</p>
+    </header>
+
+      <!-- article-tldr:start -->
+            <aside class="tldr" data-llm="tldr" aria-label="In short">
+              <p class="tldr__eyebrow">In short</p>
+              <ul class="tldr__list">
+${tldrLis}
+              </ul>
+            </aside>
+            <!-- article-tldr:end -->
+
+      <p>Here is the read I run on a Tuesday between the produce drop and the pre-shift, and it is the same read this dispatch carries. The cost index for the week of ${asOf} has the weighted basket sitting at <strong>${basketRead}</strong> against its baseline, at ${basketConf} confidence across ${ins.basket && ins.basket.nContributing || ins.count} contributing ingredients. You already watch your own invoices &mdash; this is the wholesale market underneath them, so a delivered-price jump can be checked against whether the market actually moved or your vendor did.</p>
+
+      <p>One honesty line before the numbers, because it changes how you read every one of them. Each ingredient's percentage here is its read against <em>its own tracked baseline window</em> &mdash; a state-of-play "what's flashing this week," never "moved ${basketPlain} since last week." The panel does not archive weekly snapshots yet, so I will not pretend it measures a week-over-week delta it cannot see. And every figure is a <strong>public wholesale level, never your delivered price</strong>: this is a read on the <a href="/glossary/cost-index/">cost index</a>, not a line for your <a href="/glossary/food-cost/">food cost</a> sheet. The point is direction and gap, not a number to paste into a cost sheet.</p>
+
+${ringsFig}
+
+      <h2 id="what-s-flashing-this-week">What's flashing this week</h2>
+      <p>The panel sorts into a short action list: ${ins.reprice.length ? `${ins.reprice.length} re-price signal${ins.reprice.length > 1 ? 's' : ''}` : 'no re-price signal'}, ${ins.watch.length ? `${ins.watch.length} on watch` : 'nothing on watch'}. A re-price flag means the move looks structural &mdash; elevated and sustained against the baseline. A watch flag means a real move that has not persisted long enough to act on yet. Neither is advice; both are calibrated, low-regret reads off the measured index.</p>
+
+${repriceList(ins)}
+
+      <p>If nothing here matches a line on your own menu, that is fine &mdash; only act where the flashing item is something you actually buy. The whole panel is filtered to the index's shippable set, so every name above is an ingredient the hub can show a live reading for.</p>
+
+      <h2 id="the-widest-gaps-from-baseline">The widest gaps from baseline</h2>
+      <p>Beyond the action flags, here is the full spread of movement. Reading above baseline this week: ${risersStr}. Reading below: ${fallersStr}. The bars below scale to the largest mover so the gaps are legible &mdash; rust where cost is building, teal where it is easing.</p>
+
+${barsFig}
+
+      <p>Read these as gaps, not verdicts. A wide rust bar on a seasonal item often unwinds when the season turns; a wide teal bar can be a vendor clearing inventory rather than a durable easing. The bar tells you where to look; your delivered invoice tells you whether it reached your back door.</p>
+
+      ${driverCtx ? `<h2 id="the-feed-context-behind-the-proteins">The feed context behind the proteins</h2>
+      <p>Proteins do not move on their own &mdash; the feed market underneath them sets a floor that flows through on a lag. This week, ${driverCtx}. A feed read that is easing is the context behind a protein reading softer than its baseline; a feed read that is building is the early-warning on one heading the other way.</p>
+
+${flowFig}
+
+      <p>The feed-to-protein chain is directional context, drawn from the same measured index &mdash; never a forecast and never a delivered price. It tells you which way the wind is blowing on the proteins you carry, so a quote that moves the other way is worth a question to your vendor.</p>` : ''}
+
+      <h2 id="how-to-read-this-and-what-it-is-not">How to read this, and what it is not</h2>
+      <p>Three rules keep this honest. First, every number is a <strong>public wholesale level, never your delivered price</strong> &mdash; freight, contract, and pack size all sit between this panel and your invoice. Second, each percentage is a read versus that ingredient's <em>own tracked baseline window</em>, a state-of-play snapshot of what is flashing, not a week-over-week move. Third, the panel is drawn from public USDA, BLS, and FRED data; when an input cannot earn a credible reading, it stays off the page rather than showing you a guess. Watch your own delivered invoices against these reads &mdash; the gap between the two is where a vendor conversation lives, and it is the first place a moving <a href="/glossary/prime-cost/">prime cost</a> shows up.</p>
+
+  <!-- article-takeaways:start -->
+            <aside class="key-takeaways" data-llm="takeaways" aria-label="Key takeaways">
+              <p class="key-takeaways__eyebrow">Key takeaways</p>
+              <ul class="key-takeaways__list">
+${takeLis}
+              </ul>
+            </aside>
+            <!-- article-takeaways:end -->
+  </article>
+
+  <aside class="post-end-mark" aria-hidden="true">
+    <hr/>
+    <span class="post-end-glyph"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
+      <rect x="4" y="4" width="16" height="16"/>
+      <line x1="12" y1="4" x2="12" y2="20"/>
+      <line x1="4" y1="10" x2="20" y2="10"/>
+    </svg></span>
+    <p>More from the library.</p>
+  </aside>
+
+  <!-- post-end-cta:start -->
+    <aside class="post-end-cta" aria-label="Workshop next step">
+      <p class="post-end-cta-headline">Get this read in your inbox every week.</p>
+      <p class="post-end-cta-body">The Cost Index sends one short note a week &mdash; where the basket stands, what's flashing a re-price or watch signal, and the feed context behind the proteins. Sign up on the hub, then open Cost Pulse to see every tracked ingredient at once. Public wholesale levels, never your delivered price.</p>
+      <a class="btn btn-primary" href="/cost-index/">Open the Cost Index<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></a>
+    </aside>
+    <!-- post-end-cta:end -->
+<!-- knit-rail:start --><!-- knit-rail:end -->
+
+  <!-- smart-next:start --><!-- smart-next:end -->
+
+</main>
+
+${footerBlock}
+${tailScripts}
+  <!-- listen-script:start --><!-- listen-script:end -->
+
+</body>
+</html>
+`;
+
+  upsertLibraryTags(slug, asOf, basketPlain, ins);
+
+  const outDir = path.join(repoRoot, 'blog', slug);
+  mkdirSync(outDir, { recursive: true });
+  const outFile = path.join(outDir, 'index.html');
+  const existed = existsSync(outFile);
+  writeFileSync(outFile, body);
+  console.log(`${existed ? 'overwrote' : 'wrote'} blog/${slug}/index.html  (basket ${basketPlain}, ${ins.up}/${ins.count} above baseline, asOf ${asOf})`);
+  console.log('Next: node scripts/sync-includes.mjs  +  the build-chain inject/build scripts, then node scripts/check-all.mjs');
+  return { slug, url, asOf };
+}
+
+if (arg('--json') || arg('--dry-run')) {
+  const ins = computeInsight();
   if (arg('--json')) console.log(JSON.stringify(ins, null, 2));
   else console.log(narrate(ins));
   process.exit(0);
 }
-console.log('Dispatch HTML emission is the next step. Run with --dry-run to preview the computed insight.');
-console.log(narrate(ins));
+
+emit();

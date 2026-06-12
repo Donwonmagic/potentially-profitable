@@ -1,13 +1,16 @@
-# Cost Index weekly dispatch — emails the weekly price index to opted-in subscribers.
+# Cost Index weekly dispatch — publishes the dated write-up, then emails it.
 #
-# Runs after the measured index has refreshed (data/cost-index.json is the source).
-# Computes the week's insight with build-cost-index-dispatch.mjs --json and POSTs it
-# to the Worker's secret-gated broadcast endpoint, which renders costIndexWeeklyEmail
-# and sends it to every ACTIVE subscriber whose source is 'cost-index'.
+# Runs after the Monday measured refresh has committed fresh data/cost-index.json.
+# Each Tuesday it: (1) generates the dated dispatch at blog/cost-index-week-<asOf>/,
+# registers it (RSS, sitemap, blog index, glossary backlinks), gates it, and commits
+# it so Cloudflare deploys the published post; then (2) POSTs the week's insight to
+# the Worker's secret-gated broadcast endpoint, which renders costIndexWeeklyEmail
+# and sends it to every ACTIVE 'cost-index' subscriber, linking to that dated post.
 #
 # The broadcast is IDEMPOTENT per week (Worker stamps the asOf), so a re-run never
-# double-sends. Nothing goes out unless COST_INDEX_BROADCAST_SECRET is set here AND
-# on the Worker (they must match).
+# double-sends. Nothing emails unless COST_INDEX_BROADCAST_SECRET is set here AND on
+# the Worker (they must match). Manual dispatch defaults to dry-run = preview only:
+# prints the insight, publishes nothing, sends nothing.
 #
 # Secret (Settings → Secrets and variables → Actions):
 #   COST_INDEX_BROADCAST_SECRET — high-entropy shared secret, also `wrangler secret put`
@@ -19,25 +22,25 @@ on:
   workflow_dispatch:
     inputs:
       dry-run:
-        description: 'dry-run = print the insight, send nothing'
+        description: 'dry-run = print the insight, publish nothing, send nothing'
         type: boolean
         default: true
   schedule:
     # Tuesdays 13:00 UTC — a day after the Monday measured/pressure refresh, so the
-    # week's data is settled before the email goes out.
+    # week's data is settled before the post publishes and the email goes out.
     - cron: '0 13 * * 2'
 
 permissions:
-  contents: read
+  contents: write   # publishes the dated dispatch post
 
 concurrency:
   group: cost-index-dispatch
-  cancel-in-progress: false   # never interrupt a send mid-flight
+  cancel-in-progress: false   # never interrupt a publish/send mid-flight
 
 jobs:
   dispatch:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 12
     steps:
       - name: Check out
         uses: actions/checkout@v5
@@ -52,9 +55,45 @@ jobs:
           set -e
           node scripts/build-cost-index-dispatch.mjs --dry-run
           node scripts/build-cost-index-dispatch.mjs --json > /tmp/insight.json
-          echo "asOf: $(node -e 'console.log(require("/tmp/insight.json").asOf)')"
+          ASOF=$(node -e 'console.log(require("/tmp/insight.json").asOf)')
+          echo "ASOF=$ASOF" >> "$GITHUB_ENV"
+          echo "asOf: $ASOF"
 
-      # Scheduled runs send; manual dispatch only sends when dry-run=false.
+      # Scheduled runs publish + send; manual dispatch only does so when dry-run=false.
+      - name: Publish the dated dispatch
+        if: ${{ github.event_name == 'schedule' || github.event.inputs.dry-run == 'false' }}
+        run: |
+          set -e
+          # Emit blog/cost-index-week-<asOf>/index.html from the measured index.
+          node scripts/build-cost-index-dispatch.mjs
+          # Restore canonical nav, then register the post in the standard surfaces
+          # (same scripts the deploy build runs — RSS, sitemap, blog index, glossary
+          # backlinks). The Cloudflare build regenerates these anyway, but committing
+          # them keeps git in sync and the gate green.
+          node scripts/sync-includes.mjs
+          node scripts/build-library-recent.mjs           || true
+          node scripts/wire-glossary-knit.mjs             || true
+          node scripts/inject-glossary-article-backlinks.mjs || true
+          node scripts/build-rss.mjs                       || true
+          node scripts/build-sitemap.mjs                   || true
+          node scripts/build-llms-txt.mjs                  || true
+          # Gate the generated post — fail the run before committing if it's malformed.
+          node scripts/check-article-graphics.mjs
+          # Scoped commit: only the post + its registration surfaces; discard the
+          # incidental site-wide sync-includes sweep so the commit is exactly the post.
+          git config user.name  "muntin-cost-index-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add "blog/cost-index-week-${ASOF}/" "es/blog/cost-index-week-${ASOF}/" \
+                  blog/index.html feed.xml sitemap.xml llms.txt data/library-tags.json \
+                  glossary 2>/dev/null || true
+          git checkout -- . 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "No dispatch change this week — nothing to commit."
+          else
+            git commit -m "data(cost-index): weekly dispatch ${ASOF}"
+            git push
+          fi
+
       - name: Broadcast the weekly email
         if: ${{ github.event_name == 'schedule' || github.event.inputs.dry-run == 'false' }}
         env:
@@ -65,8 +104,8 @@ jobs:
             echo "COST_INDEX_BROADCAST_SECRET not set — skipping send (nothing emailed)."
             exit 0
           fi
-          # postUrl points subscribers at the live hub (the dated blog archive is a follow-up).
-          node -e 'const i=require("/tmp/insight.json"); i.postUrl="https://muntin.digital/cost-index/"; require("fs").writeFileSync("/tmp/payload.json", JSON.stringify(i));'
+          # postUrl points subscribers at the dated dispatch just published above.
+          node -e 'const i=require("/tmp/insight.json"); i.postUrl="https://muntin.digital/blog/cost-index-week-"+i.asOf+"/"; require("fs").writeFileSync("/tmp/payload.json", JSON.stringify(i));'
           code=$(curl -sS -o /tmp/resp.json -w '%{http_code}' \
             -X POST 'https://muntin.digital/api/admin/cost-index-broadcast' \
             -H "Authorization: Bearer $BROADCAST_SECRET" \
