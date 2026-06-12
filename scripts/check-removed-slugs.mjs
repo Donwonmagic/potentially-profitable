@@ -50,8 +50,10 @@ const SLUG_RE = /"slug"\s*:\s*"(?:invoice-decoder|menu-design)"/;
 // /studio/ match). EN + ES (the /es/ prefix is part of the same path).
 // (?<![\w.]) keeps URL-path matches (preceded by a quote, '(' or
 // whitespace) while ignoring API hosts like marsapi…gov/services/v1.2.
+// 2026-06-12 follow-up: /for/restaurants/ retired too — it was the
+// last live services lead-gen surface (build tiers + Service JSON-LD).
 const SERVICES_URL_RE =
-  /(?<![\w.])\/(?:es\/)?(?:services\/|studio\/(?:call|compare|silver-spring|dc|arlington|bethesda|takoma-park)\/)/;
+  /(?<![\w.])\/(?:es\/)?(?:services\/|for\/restaurants\/|studio\/(?:call|compare|silver-spring|dc|arlington|bethesda|takoma-park)\/)/;
 
 // ---- Allow list ----------------------------------------------
 const ALLOW_FILES = new Set([
