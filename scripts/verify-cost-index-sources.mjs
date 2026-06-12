@@ -148,11 +148,21 @@ async function listCommodities(reportId, section) {
     if (secs.length) console.error('Sections in this report: ' + secs.map((s) => (typeof s === 'string' ? s : s.name)).join(' · ') + `\n  → re-run: --list-commodities ${reportId} "<section>"${useLmr ? ' --lmr' : ''}`);
     process.exit(1);
   }
-  const labelFields = ['commodity', 'item', 'variety', 'commodity_name', 'category', 'class'];
+  const labelFields = ['commodity', 'item', 'variety', 'commodity_name', 'cut', 'description', 'item_description'];
   const priceFields = ['avg_price', 'wtd_avg_price', 'mostly_low_price', 'low_price', 'price', 'Weighted_Average', 'weighted_average'];
   const unitFields = ['price_unit', 'price_Unit', 'priceUnit'];
-  let labelF = labelFields[0], best = 0;
-  for (const f of labelFields) { const n = new Set(rows.map((r) => r[f]).filter((v) => v != null && String(v).trim())).size; if (n > best) { best = n; labelF = f; } }
+  const skip = /date|price|_id\b|^id$|slug|year|week|begin|end|published|narrative|grade|unit|state|office|market|region|community|category/i;
+  const distinctText = (f) => new Set(rows.map((r) => r[f]).filter((v) => v != null && typeof v !== 'number' && String(v).trim() && isNaN(Number(String(v).replace(/[$,%]/g, ''))))).size;
+  let labelF = null, best = 0;
+  // 1) known commodity fields with real variety
+  for (const f of labelFields) { const n = distinctText(f); if (n >= 3 && n > best) { best = n; labelF = f; } }
+  // 2) fallback — most-varied label-like text field (catches LMR cut reports whose
+  //    cut name isn't in a 'commodity' field)
+  if (!labelF) for (const f of Object.keys(rows[0] || {})) { if (skip.test(f)) continue; const n = distinctText(f); if (n >= 2 && n <= 400 && n > best) { best = n; labelF = f; } }
+  if (!labelF) {
+    console.error(`Could not auto-detect a commodity label field in report ${reportId}. Row fields are:\n  ${Object.keys(rows[0] || {}).join(', ')}\nPick the descriptive one and use it as ams.matchFields, e.g. {"price":["${priceFields.find((f) => rows.some((r) => r[f] != null)) || 'price'}"]}.`);
+    process.exit(1);
+  }
   const priceF = priceFields.find((f) => rows.some((r) => r[f] != null && r[f] !== '')) || null;
   const unitF = unitFields.find((f) => rows.some((r) => r[f] != null)) || null;
   const tally = {};

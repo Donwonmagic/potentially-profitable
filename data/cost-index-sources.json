@@ -1297,61 +1297,61 @@
       "verified": false,
       "ams": [
         {
-          "reportId": "2279",
+          "reportId": "2278",
           "market": "Atlanta",
           "commodity": "Sweet Potatoes",
           "reducer": "mostlyMid",
-          "unit": "sack",
-          "_status": "STAGED — potato-terminal fan-out (same reports as russet); commodity \"Sweetpotatoes\"; confirm via --verify; add BLS PPI."
+          "unit": "carton",
+          "_status": "CONFIRMED via --list-commodities 2278 (850 rows, \"Sweet Potatoes\", e.g. $38/carton). Moved from the potato report."
         },
         {
-          "reportId": "2283",
+          "reportId": "2282",
           "market": "Baltimore",
           "commodity": "Sweet Potatoes",
           "reducer": "mostlyMid",
-          "unit": "sack"
+          "unit": "carton"
         },
         {
-          "reportId": "2287",
+          "reportId": "2286",
           "market": "Boston",
           "commodity": "Sweet Potatoes",
           "reducer": "mostlyMid",
-          "unit": "sack"
+          "unit": "carton"
         },
         {
-          "reportId": "2292",
+          "reportId": "2291",
           "market": "Chicago",
           "commodity": "Sweet Potatoes",
           "reducer": "mostlyMid",
-          "unit": "sack"
+          "unit": "carton"
         },
         {
-          "reportId": "2304",
+          "reportId": "2303",
           "market": "Detroit",
           "commodity": "Sweet Potatoes",
           "reducer": "mostlyMid",
-          "unit": "sack"
+          "unit": "carton"
         },
         {
-          "reportId": "2308",
+          "reportId": "2307",
           "market": "Los Angeles",
           "commodity": "Sweet Potatoes",
           "reducer": "mostlyMid",
-          "unit": "sack"
+          "unit": "carton"
         },
         {
-          "reportId": "2312",
+          "reportId": "2311",
           "market": "Miami",
           "commodity": "Sweet Potatoes",
           "reducer": "mostlyMid",
-          "unit": "sack"
+          "unit": "carton"
         },
         {
-          "reportId": "2316",
+          "reportId": "2315",
           "market": "New York",
           "commodity": "Sweet Potatoes",
           "reducer": "mostlyMid",
-          "unit": "sack"
+          "unit": "carton"
         }
       ]
     },
@@ -1359,11 +1359,61 @@
       "verified": false,
       "ams": [
         {
-          "reportId": "DISCOVER",
+          "reportId": "2277",
+          "market": "Atlanta",
           "commodity": "Avocados",
           "reducer": "mostlyMid",
           "unit": "carton",
-          "_status": "FRUIT terminal report — vegetables use 2278/2282/… per market; fruits have their own per-market reportIds. --discover \"fruit\" (or the terminal report list) for the 8 fruit IDs, then fan out like the vegetables. commodity \"Avocados\"."
+          "_status": "STAGED — terminal FRUIT fan-out (reportIds 2277/2281/2285/2290/2302/2306/2310/2314). commodity \"Avocados\" is a best-guess plural (veg uses \"Tomatoes\",\"Carrots\") — confirm exact term via --list-commodities 2277, then re-verify."
+        },
+        {
+          "reportId": "2281",
+          "market": "Baltimore",
+          "commodity": "Avocados",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2285",
+          "market": "Boston",
+          "commodity": "Avocados",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2290",
+          "market": "Chicago",
+          "commodity": "Avocados",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2302",
+          "market": "Detroit",
+          "commodity": "Avocados",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2306",
+          "market": "Los Angeles",
+          "commodity": "Avocados",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2310",
+          "market": "Miami",
+          "commodity": "Avocados",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2314",
+          "market": "New York",
+          "commodity": "Avocados",
+          "reducer": "mostlyMid",
+          "unit": "carton"
         }
       ]
     },
@@ -1371,11 +1421,61 @@
       "verified": false,
       "ams": [
         {
-          "reportId": "DISCOVER",
+          "reportId": "2277",
+          "market": "Atlanta",
           "commodity": "Lemons",
           "reducer": "mostlyMid",
           "unit": "carton",
-          "_status": "FRUIT terminal report — discover the 8 per-market fruit reportIds, then fan out. commodity \"Lemons\"."
+          "_status": "STAGED — terminal FRUIT fan-out (reportIds 2277/2281/2285/2290/2302/2306/2310/2314). commodity \"Lemons\" is a best-guess plural (veg uses \"Tomatoes\",\"Carrots\") — confirm exact term via --list-commodities 2277, then re-verify."
+        },
+        {
+          "reportId": "2281",
+          "market": "Baltimore",
+          "commodity": "Lemons",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2285",
+          "market": "Boston",
+          "commodity": "Lemons",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2290",
+          "market": "Chicago",
+          "commodity": "Lemons",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2302",
+          "market": "Detroit",
+          "commodity": "Lemons",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2306",
+          "market": "Los Angeles",
+          "commodity": "Lemons",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2310",
+          "market": "Miami",
+          "commodity": "Lemons",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2314",
+          "market": "New York",
+          "commodity": "Lemons",
+          "reducer": "mostlyMid",
+          "unit": "carton"
         }
       ]
     },
@@ -1383,11 +1483,61 @@
       "verified": false,
       "ams": [
         {
-          "reportId": "DISCOVER",
+          "reportId": "2277",
+          "market": "Atlanta",
           "commodity": "Limes",
           "reducer": "mostlyMid",
           "unit": "carton",
-          "_status": "FRUIT terminal report — discover the 8 fruit reportIds, then fan out. commodity \"Limes\"."
+          "_status": "STAGED — terminal FRUIT fan-out (reportIds 2277/2281/2285/2290/2302/2306/2310/2314). commodity \"Limes\" is a best-guess plural (veg uses \"Tomatoes\",\"Carrots\") — confirm exact term via --list-commodities 2277, then re-verify."
+        },
+        {
+          "reportId": "2281",
+          "market": "Baltimore",
+          "commodity": "Limes",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2285",
+          "market": "Boston",
+          "commodity": "Limes",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2290",
+          "market": "Chicago",
+          "commodity": "Limes",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2302",
+          "market": "Detroit",
+          "commodity": "Limes",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2306",
+          "market": "Los Angeles",
+          "commodity": "Limes",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2310",
+          "market": "Miami",
+          "commodity": "Limes",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2314",
+          "market": "New York",
+          "commodity": "Limes",
+          "reducer": "mostlyMid",
+          "unit": "carton"
         }
       ]
     },
@@ -1395,11 +1545,61 @@
       "verified": false,
       "ams": [
         {
-          "reportId": "DISCOVER",
+          "reportId": "2277",
+          "market": "Atlanta",
           "commodity": "Pineapples",
           "reducer": "mostlyMid",
           "unit": "carton",
-          "_status": "FRUIT terminal report — discover the 8 fruit reportIds, then fan out. commodity \"Pineapples\"."
+          "_status": "STAGED — terminal FRUIT fan-out (reportIds 2277/2281/2285/2290/2302/2306/2310/2314). commodity \"Pineapples\" is a best-guess plural (veg uses \"Tomatoes\",\"Carrots\") — confirm exact term via --list-commodities 2277, then re-verify."
+        },
+        {
+          "reportId": "2281",
+          "market": "Baltimore",
+          "commodity": "Pineapples",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2285",
+          "market": "Boston",
+          "commodity": "Pineapples",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2290",
+          "market": "Chicago",
+          "commodity": "Pineapples",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2302",
+          "market": "Detroit",
+          "commodity": "Pineapples",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2306",
+          "market": "Los Angeles",
+          "commodity": "Pineapples",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2310",
+          "market": "Miami",
+          "commodity": "Pineapples",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2314",
+          "market": "New York",
+          "commodity": "Pineapples",
+          "reducer": "mostlyMid",
+          "unit": "carton"
         }
       ]
     },
