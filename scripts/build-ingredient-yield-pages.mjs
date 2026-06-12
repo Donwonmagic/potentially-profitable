@@ -268,7 +268,16 @@ const INGREDIENTS = [
   { slug: 'basil',           en: 'Basil',            es: 'Albahaca',       yield: 0.50, cat: 'herbs',       unit_en: 'bunch', unit_es: 'manojo', apCents: 200 },
   { slug: 'cilantro',        en: 'Cilantro',         es: 'Cilantro',       yield: 0.70, cat: 'herbs',       unit_en: 'bunch', unit_es: 'manojo', apCents: 80 },
   { slug: 'lemon',           en: 'Lemon',            es: 'Limón amarillo', yield: 0.45, cat: 'citrus',      unit_en: 'each',  unit_es: 'pieza',  apCents: 40 },
-  { slug: 'pineapple',       en: 'Pineapple',        es: 'Piña',           yield: 0.50, cat: 'fruit',       unit_en: 'each',  unit_es: 'pieza',  apCents: 300 }
+  { slug: 'pineapple',       en: 'Pineapple',        es: 'Piña',           yield: 0.50, cat: 'fruit',       unit_en: 'each',  unit_es: 'pieza',  apCents: 300 },
+  // P2 produce coverage — yields per CIA Standard Yield Tables / USDA Food Buying Guide (cited on each page).
+  { slug: 'cucumber',        en: 'Cucumber',         es: 'Pepino',         yield: 0.95, cat: 'fruiting',    unit_en: 'lb',    unit_es: 'libra',  apCents: 150 },
+  { slug: 'celery',          en: 'Celery',           es: 'Apio',           yield: 0.75, cat: 'stalks',      unit_en: 'head',  unit_es: 'pieza',  apCents: 167 },
+  { slug: 'cabbage',         en: 'Cabbage',          es: 'Repollo',        yield: 0.80, cat: 'cruciferous', unit_en: 'head',  unit_es: 'pieza',  apCents: 110 },
+  { slug: 'eggplant',        en: 'Eggplant',         es: 'Berenjena',      yield: 0.81, cat: 'fruiting',    unit_en: 'lb',    unit_es: 'libra',  apCents: 146 },
+  { slug: 'zucchini',        en: 'Zucchini',         es: 'Calabacín',      yield: 0.95, cat: 'fruiting',    unit_en: 'lb',    unit_es: 'libra',  apCents: 161 },
+  { slug: 'beet',            en: 'Beet',             es: 'Remolacha',      yield: 0.75, cat: 'root',        unit_en: 'lb',    unit_es: 'libra',  apCents: 99  },
+  { slug: 'leek',            en: 'Leek',             es: 'Puerro',         yield: 0.50, cat: 'allium',      unit_en: 'lb',    unit_es: 'libra',  apCents: 139 },
+  { slug: 'ginger',          en: 'Ginger root',      es: 'Jengibre',       yield: 0.85, cat: 'root',        unit_en: 'lb',    unit_es: 'libra',  apCents: 100 }
 ];
 
 function relatedInCategory(ing, locale) {
