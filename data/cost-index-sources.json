@@ -1736,6 +1736,1350 @@
         "years": 2,
         "_status": "branzino (European seabass) is thin/absent in NOAA FOSS at volume — likely NO free wholesale source. --discover the HTS or accept no coverage (leave verified:false)."
       }
+    },
+    "cucumber": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Cucumbers",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — vegetable-terminal fan-out (8 reports), commodity \"Cucumbers\", confirmed present in --list-commodities 2278. Tighten bounds + --flip after --verify. Shared fresh-veg PPI WPU01130217 (same trend as onion/tomato) → medium."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Cucumbers",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Cucumbers",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Cucumbers",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Cucumbers",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Cucumbers",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Cucumbers",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Cucumbers",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls"
+      }
+    },
+    "celery": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Celery",
+          "commodityExact": true,
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — vegetable-terminal fan-out (8 reports), commodity \"Celery\" (commodityExact — avoids a longer-name collision), confirmed present in --list-commodities 2278. Tighten bounds + --flip after --verify. Shared fresh-veg PPI WPU01130217 (same trend as onion/tomato) → medium."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Celery",
+          "commodityExact": true,
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Celery",
+          "commodityExact": true,
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Celery",
+          "commodityExact": true,
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Celery",
+          "commodityExact": true,
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Celery",
+          "commodityExact": true,
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Celery",
+          "commodityExact": true,
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Celery",
+          "commodityExact": true,
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls"
+      }
+    },
+    "cabbage": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Cabbage",
+          "commodityExact": true,
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — vegetable-terminal fan-out (8 reports), commodity \"Cabbage\" (commodityExact — avoids a longer-name collision), confirmed present in --list-commodities 2278. Tighten bounds + --flip after --verify. Shared fresh-veg PPI WPU01130217 (same trend as onion/tomato) → medium."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Cabbage",
+          "commodityExact": true,
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Cabbage",
+          "commodityExact": true,
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Cabbage",
+          "commodityExact": true,
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Cabbage",
+          "commodityExact": true,
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Cabbage",
+          "commodityExact": true,
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Cabbage",
+          "commodityExact": true,
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Cabbage",
+          "commodityExact": true,
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls"
+      }
+    },
+    "eggplant": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Eggplant",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — vegetable-terminal fan-out (8 reports), commodity \"Eggplant\", confirmed present in --list-commodities 2278. Tighten bounds + --flip after --verify. Shared fresh-veg PPI WPU01130217 (same trend as onion/tomato) → medium."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Eggplant",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Eggplant",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Eggplant",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Eggplant",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Eggplant",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Eggplant",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Eggplant",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls"
+      }
+    },
+    "zucchini": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Squash, Zucchini",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — vegetable-terminal fan-out (8 reports), commodity \"Squash, Zucchini\", confirmed present in --list-commodities 2278. Tighten bounds + --flip after --verify. Shared fresh-veg PPI WPU01130217 (same trend as onion/tomato) → medium."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Squash, Zucchini",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Squash, Zucchini",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Squash, Zucchini",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Squash, Zucchini",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Squash, Zucchini",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Squash, Zucchini",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Squash, Zucchini",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls"
+      }
+    },
+    "beet": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Beets",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — vegetable-terminal fan-out (8 reports), commodity \"Beets\", confirmed present in --list-commodities 2278. Tighten bounds + --flip after --verify. Shared fresh-veg PPI WPU01130217 (same trend as onion/tomato) → medium."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Beets",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Beets",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Beets",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Beets",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Beets",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Beets",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Beets",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls"
+      }
+    },
+    "leek": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Leeks",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — vegetable-terminal fan-out (8 reports), commodity \"Leeks\", confirmed present in --list-commodities 2278. Tighten bounds + --flip after --verify. Shared fresh-veg PPI WPU01130217 (same trend as onion/tomato) → medium."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Leeks",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Leeks",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Leeks",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Leeks",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Leeks",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Leeks",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Leeks",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls"
+      }
+    },
+    "ginger": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Ginger Root",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — vegetable-terminal fan-out (8 reports), commodity \"Ginger Root\", confirmed present in --list-commodities 2278. Tighten bounds + --flip after --verify. Shared fresh-veg PPI WPU01130217 (same trend as onion/tomato) → medium."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Ginger Root",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Ginger Root",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Ginger Root",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Ginger Root",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Ginger Root",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Ginger Root",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Ginger Root",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls"
+      }
+    },
+    "yellow-squash": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Squash, Yellow Straightneck",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — vegetable-terminal fan-out (8 reports), commodity \"Squash, Yellow Straightneck\", confirmed present in --list-commodities 2278. Tighten bounds + --flip after --verify. Shared fresh-veg PPI WPU01130217 (same trend as onion/tomato) → medium."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Squash, Yellow Straightneck",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Squash, Yellow Straightneck",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Squash, Yellow Straightneck",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Squash, Yellow Straightneck",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Squash, Yellow Straightneck",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Squash, Yellow Straightneck",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Squash, Yellow Straightneck",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls"
+      }
+    },
+    "jalapeno": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Peppers, Jalapeno",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — vegetable-terminal fan-out (8 reports), commodity \"Peppers, Jalapeno\", confirmed present in --list-commodities 2278. Tighten bounds + --flip after --verify. Shared fresh-veg PPI WPU01130217 (same trend as onion/tomato) → medium."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Peppers, Jalapeno",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Peppers, Jalapeno",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Peppers, Jalapeno",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Peppers, Jalapeno",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Peppers, Jalapeno",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Peppers, Jalapeno",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Peppers, Jalapeno",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls"
+      }
+    },
+    "green-onion": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Onions, Green",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — vegetable-terminal fan-out (8 reports), commodity \"Onions, Green\", confirmed present in --list-commodities 2278. Tighten bounds + --flip after --verify. Shared fresh-veg PPI WPU01130217 (same trend as onion/tomato) → medium."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Onions, Green",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Onions, Green",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Onions, Green",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Onions, Green",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Onions, Green",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Onions, Green",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Onions, Green",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls"
+      }
+    },
+    "green-beans": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Beans, Round Green Type",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — vegetable-terminal fan-out (8 reports), commodity \"Beans, Round Green Type\", confirmed present in --list-commodities 2278. Tighten bounds + --flip after --verify. Shared fresh-veg PPI WPU01130217 (same trend as onion/tomato) → medium."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Beans, Round Green Type",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Beans, Round Green Type",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Beans, Round Green Type",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Beans, Round Green Type",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Beans, Round Green Type",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Beans, Round Green Type",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Beans, Round Green Type",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls"
+      }
+    },
+    "parsley": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Parsley",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — vegetable-terminal fan-out (8 reports), commodity \"Parsley\", confirmed present in --list-commodities 2278. Tighten bounds + --flip after --verify. Shared fresh-veg PPI WPU01130217 (same trend as onion/tomato) → medium."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Parsley",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Parsley",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Parsley",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Parsley",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Parsley",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Parsley",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Parsley",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls"
+      }
+    },
+    "brussels-sprouts": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Brussels Sprouts",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — vegetable-terminal fan-out (8 reports), commodity \"Brussels Sprouts\", confirmed present in --list-commodities 2278. Tighten bounds + --flip after --verify. Shared fresh-veg PPI WPU01130217 (same trend as onion/tomato) → medium."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Brussels Sprouts",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Brussels Sprouts",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Brussels Sprouts",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Brussels Sprouts",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Brussels Sprouts",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Brussels Sprouts",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Brussels Sprouts",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls"
+      }
+    },
+    "butternut-squash": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Squash, Butternut",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — vegetable-terminal fan-out (8 reports), commodity \"Squash, Butternut\", confirmed present in --list-commodities 2278. Tighten bounds + --flip after --verify. Shared fresh-veg PPI WPU01130217 (same trend as onion/tomato) → medium."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Squash, Butternut",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Squash, Butternut",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Squash, Butternut",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Squash, Butternut",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Squash, Butternut",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Squash, Butternut",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Squash, Butternut",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls"
+      }
+    },
+    "iceberg-lettuce": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Lettuce, Iceberg",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — vegetable-terminal fan-out (8 reports), commodity \"Lettuce, Iceberg\", confirmed present in --list-commodities 2278. Tighten bounds + --flip after --verify. Shared fresh-veg PPI WPU01130217 (same trend as onion/tomato) → medium."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Lettuce, Iceberg",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Lettuce, Iceberg",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Lettuce, Iceberg",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Lettuce, Iceberg",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Lettuce, Iceberg",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Lettuce, Iceberg",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Lettuce, Iceberg",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls"
+      }
+    },
+    "bok-choy": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Bok Choy",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — vegetable-terminal fan-out (8 reports), commodity \"Bok Choy\", confirmed present in --list-commodities 2278. Tighten bounds + --flip after --verify. Shared fresh-veg PPI WPU01130217 (same trend as onion/tomato) → medium."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Bok Choy",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Bok Choy",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Bok Choy",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Bok Choy",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Bok Choy",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Bok Choy",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Bok Choy",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls"
+      }
+    },
+    "artichoke": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Artichokes",
+          "commodityExact": true,
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — vegetable-terminal fan-out (8 reports), commodity \"Artichokes\" (commodityExact — avoids a longer-name collision), confirmed present in --list-commodities 2278. Tighten bounds + --flip after --verify. Shared fresh-veg PPI WPU01130217 (same trend as onion/tomato) → medium."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Artichokes",
+          "commodityExact": true,
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Artichokes",
+          "commodityExact": true,
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Artichokes",
+          "commodityExact": true,
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Artichokes",
+          "commodityExact": true,
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Artichokes",
+          "commodityExact": true,
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Artichokes",
+          "commodityExact": true,
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Artichokes",
+          "commodityExact": true,
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls"
+      }
+    },
+    "okra": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Okra",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — vegetable-terminal fan-out (8 reports), commodity \"Okra\", confirmed present in --list-commodities 2278. Tighten bounds + --flip after --verify. Shared fresh-veg PPI WPU01130217 (same trend as onion/tomato) → medium."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Okra",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Okra",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Okra",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Okra",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Okra",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Okra",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Okra",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls"
+      }
+    },
+    "snow-peas": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Peas, Snow",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — vegetable-terminal fan-out (8 reports), commodity \"Peas, Snow\", confirmed present in --list-commodities 2278. Tighten bounds + --flip after --verify. Shared fresh-veg PPI WPU01130217 (same trend as onion/tomato) → medium."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Peas, Snow",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Peas, Snow",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Peas, Snow",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Peas, Snow",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Peas, Snow",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Peas, Snow",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Peas, Snow",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls"
+      }
     }
   },
   "drivers": {
