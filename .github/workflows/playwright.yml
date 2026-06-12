@@ -13,6 +13,14 @@
 #   tests/course-baseline.spec.mjs  — every lesson page renders, the
 #                                     mark-complete + generator round-
 #                                     trips work end-to-end
+#   tests/marketing-render.spec.mjs — the load-bearing non-tool pages
+#                                     (home, /studio/ company page,
+#                                     /start/, /about/, cost-index hub,
+#                                     EN+ES) render with a real <h1>,
+#                                     no leaked markup, no retired
+#                                     services-era copy. Added after a
+#                                     stale hero + /studio/ loop reached
+#                                     production uncaught.
 #
 # Status: continue-on-error initially while baseline snapshots settle.
 # Promote to required-check once three consecutive PRs land green.

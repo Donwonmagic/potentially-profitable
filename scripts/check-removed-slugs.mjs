@@ -50,6 +50,9 @@ const SLUG_RE = /"slug"\s*:\s*"(?:invoice-decoder|menu-design)"/;
 // /studio/ match). EN + ES (the /es/ prefix is part of the same path).
 // (?<![\w.]) keeps URL-path matches (preceded by a quote, '(' or
 // whitespace) while ignoring API hosts like marsapi…gov/services/v1.2.
+// 2026-06-12: /for/restaurants/ stays LIVE — rewritten to the product
+// era (Ledger + Cost Index + tools), not retired. Only the build-tier
+// content was removed, so the slug is intentionally NOT in this regex.
 const SERVICES_URL_RE =
   /(?<![\w.])\/(?:es\/)?(?:services\/|studio\/(?:call|compare|silver-spring|dc|arlington|bethesda|takoma-park)\/)/;
 
