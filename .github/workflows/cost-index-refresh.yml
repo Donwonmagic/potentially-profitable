@@ -83,9 +83,18 @@ jobs:
           node scripts/build-cost-index-seed.mjs
           # Re-render hub / per-ingredient / lab pages.
           node scripts/build-cost-index-pages.mjs
-          # Restore canonical nav — build-cost-index-pages emits skeleton include
+          # Re-render the ingredient-yield library pages — their market-read block
+          # (live edible-unit cost, measured band, percentile, buy/hold verdict)
+          # reads data/cost-index.json at BUILD time, so without this they freeze
+          # at last build while the hub refreshes. Current information everywhere.
+          node scripts/build-ingredient-yield-pages.mjs
+          # Restore canonical nav — the page builders emit skeleton include
           # sentinels; without this the committed pages would ship stripped nav.
           node scripts/sync-includes.mjs
+          # Re-apply the deferred-script loader to the freshly generated pages, then
+          # refresh the sitemap (both required after any page generation).
+          node scripts/inject-lazy-script-loader.mjs
+          node scripts/build-sitemap.mjs
 
       - name: Fact + calibration gates
         if: steps.keys.outputs.configured == 'true'
@@ -101,7 +110,8 @@ jobs:
           # Stage ONLY the measured data + the cost-index surfaces, then discard
           # the incidental site-wide nav re-stamp from sync-includes, so the commit
           # is always exactly the weekly read — never a surprise sweep.
-          git add data/cost-index.json data/cost-index.js cost-index/ es/cost-index/ sitemap.xml
+          git add data/cost-index.json data/cost-index.js cost-index/ es/cost-index/ \
+            library/ingredient-yields/ es/library/ingredient-yields/ sitemap.xml
           git checkout -- . 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "No data change this week — nothing to commit."
