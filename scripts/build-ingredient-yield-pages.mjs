@@ -28,9 +28,13 @@ import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
+import { createRequire } from 'node:module';
 
 const __filename = fileURLToPath(import.meta.url);
 const repoRoot   = path.resolve(path.dirname(__filename), '..');
+// Reuse the SAME tested, localized buy/hold/watch helper the dashboard uses, so
+// the page verdict and the tool verdict can never drift.
+const makeFmt = createRequire(import.meta.url)(path.join(repoRoot, 'tools/_shared/cost-index-format.js'));
 const checkMode  = process.argv.includes('--check');
 
 function shellHash(name) {
@@ -135,10 +139,12 @@ function costIndexBlock(slug, locale) {
     : (es ? 'Referencia mayorista, no el precio entregado que pagas.' : 'Wholesale reference, not the delivered price you pay.');
   const srcBody = `${sources.join(' · ')} — ${es ? 'datos públicos' : 'public data'}, ${es ? 'al' : 'as of'} ${asOf}. ${disclaimer}`;
   const why = whyConfidence(point, conf, es);
+  const fv = makeFmt(es).flagVerb(entry.flag, conf);   // buy/hold/watch — same tested helper as the dashboard, hedged by confidence
+  const verdictHtml = fv ? `\n  <p class="iy-ci-verdict iy-ci-${fv.tone}"><strong>${fv.verb}.</strong> ${fv.note}</p>` : '';
   return `
 <div class="iy-costindex">
   <p class="iy-ci-head">${head}<span class="iy-ci-badge">${badge}</span></p>
-  <p class="iy-ci-line">${line}</p>
+  <p class="iy-ci-line">${line}</p>${verdictHtml}
   <p class="iy-ci-why">${why}</p>
   <details class="iy-ci-src"><summary>${srcSummary}</summary><div>${srcBody}</div></details>
 </div>`;
@@ -361,6 +367,9 @@ main{padding-top:64px}
 .iy-ci-badge{font-weight:600;text-transform:none;letter-spacing:0;font-size:12px;color:var(--ink-soft);margin-left:8px}
 .iy-ci-line{font-size:14.5px;line-height:1.55;color:var(--ink);margin:0}
 .iy-ci-why{font-size:13px;line-height:1.5;color:var(--ink-soft);margin:5px 0 0}
+.iy-ci-verdict{font-size:14px;line-height:1.5;color:var(--ink);margin:7px 0 0;padding:7px 11px;border-radius:6px;background:var(--surface-2,#f5f3ef);border-left:3px solid var(--stone)}
+.iy-ci-reprice{border-left-color:var(--rust)}
+.iy-ci-hold{border-left-color:var(--teal)}
 .iy-ci-src{margin-top:8px;font-size:12.5px}
 .iy-ci-src summary{cursor:pointer;color:var(--ink-soft);font-weight:600}
 .iy-ci-src div{margin-top:6px;color:var(--ink-soft);line-height:1.5}
