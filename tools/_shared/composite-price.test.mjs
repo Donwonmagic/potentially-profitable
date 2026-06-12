@@ -179,14 +179,22 @@ test('MEASURED SPREAD: a reported market low–high widens the band and names it
   assert.equal(lvl.rangeCents[1], 1650);   // max reported high across markets
 });
 
-test('MEASURED SPREAD: never narrows — a band already wider than the reported spread keeps its basis', () => {
+test('MEASURED SPREAD: a band that does NOT contain its own value is a unit mismatch — rejected', () => {
   const lvl = C.compositeLevel([
     { source: 'a', basis: 'wholesale', valueCents: 1000, family: 'a', spreadCents: { lo: 1380, hi: 1420 } },
     { source: 'b', basis: 'wholesale', valueCents: 1800, family: 'b', spreadCents: { lo: 1380, hi: 1420 } },
   ]);
-  // p25–p75 across the two families already spans 1200–1600, wider than 1380–1420 → union is a no-op.
+  // Neither value sits inside 1380–1420 (e.g. a $/lb value with a $/carton band) → band ignored.
   assert.notEqual(lvl.rangeBasis, 'measured');
-  assert.ok(lvl.rangeCents[0] <= 1380 && lvl.rangeCents[1] >= 1420);
+});
+
+test('MEASURED SPREAD: never narrows — a wider volatility band keeps its basis when the reported band is tighter', () => {
+  const lvl = C.compositeLevel([
+    { source: 'usda-lmr', basis: 'wholesale', valueCents: 1400, family: 'lmr', recent: [1150, 1650, 1200, 1600, 1400], spreadCents: { lo: 1380, hi: 1420 } },
+  ]);
+  // Volatility band already spans well past 1380–1420 → the contained reported band can't widen it.
+  assert.equal(lvl.rangeBasis, 'volatility');
+  assert.ok(lvl.rangeCents[0] < 1380 && lvl.rangeCents[1] > 1420);
 });
 
 test('MEASURED SPREAD: an inverted or non-positive band is ignored, never trusted', () => {

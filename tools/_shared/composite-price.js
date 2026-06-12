@@ -103,6 +103,11 @@
           var sp = o.spreadCents;
           if (!sp || typeof sp.lo !== 'number' || typeof sp.hi !== 'number') return;
           if (!isFinite(sp.lo) || !isFinite(sp.hi) || sp.lo <= 0 || sp.hi < sp.lo) return;
+          // Containment guard: a real reported band brackets its own value. If it
+          // doesn't, the band is in a different unit than the price (e.g. derived
+          // $/lb value vs $/carton low–high) — reject it rather than print a band
+          // that doesn't fit the level.
+          if (typeof o.valueCents === 'number' && (o.valueCents < sp.lo || o.valueCents > sp.hi)) return;
           measLo = measLo == null ? sp.lo : Math.min(measLo, sp.lo);
           measHi = measHi == null ? sp.hi : Math.max(measHi, sp.hi);
         });
