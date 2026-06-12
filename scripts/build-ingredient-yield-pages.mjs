@@ -277,7 +277,19 @@ const INGREDIENTS = [
   { slug: 'zucchini',        en: 'Zucchini',         es: 'Calabacín',      yield: 0.95, cat: 'fruiting',    unit_en: 'lb',    unit_es: 'libra',  apCents: 161 },
   { slug: 'beet',            en: 'Beet',             es: 'Remolacha',      yield: 0.75, cat: 'root',        unit_en: 'lb',    unit_es: 'libra',  apCents: 99  },
   { slug: 'leek',            en: 'Leek',             es: 'Puerro',         yield: 0.50, cat: 'allium',      unit_en: 'lb',    unit_es: 'libra',  apCents: 139 },
-  { slug: 'ginger',          en: 'Ginger root',      es: 'Jengibre',       yield: 0.85, cat: 'root',        unit_en: 'lb',    unit_es: 'libra',  apCents: 100 }
+  { slug: 'ginger',          en: 'Ginger root',      es: 'Jengibre',       yield: 0.85, cat: 'root',        unit_en: 'lb',    unit_es: 'libra',  apCents: 100 },
+  { slug: 'yellow-squash',   en: 'Yellow squash',    es: 'Calabaza amarilla', yield: 0.95, cat: 'fruiting', unit_en: 'lb',    unit_es: 'libra',  apCents: 176 },
+  { slug: 'jalapeno',        en: 'Jalapeño',         es: 'Chile jalapeño', yield: 0.85, cat: 'fruiting',    unit_en: 'lb',    unit_es: 'libra',  apCents: 106 },
+  { slug: 'green-onion',     en: 'Green onion',      es: 'Cebollín',       yield: 0.65, cat: 'allium',      unit_en: 'bunch', unit_es: 'manojo', apCents: 109 },
+  { slug: 'green-beans',     en: 'Green beans',      es: 'Ejotes',         yield: 0.88, cat: 'fruiting',    unit_en: 'lb',    unit_es: 'libra',  apCents: 191 },
+  { slug: 'parsley',         en: 'Parsley',          es: 'Perejil',        yield: 0.70, cat: 'herbs',       unit_en: 'bunch', unit_es: 'manojo', apCents: 100 },
+  { slug: 'brussels-sprouts',en: 'Brussels sprouts', es: 'Coles de Bruselas', yield: 0.80, cat: 'cruciferous', unit_en: 'lb', unit_es: 'libra',  apCents: 249 },
+  { slug: 'butternut-squash',en: 'Butternut squash', es: 'Calabaza moscada', yield: 0.70, cat: 'fruiting',  unit_en: 'lb',    unit_es: 'libra',  apCents: 115 },
+  { slug: 'iceberg-lettuce', en: 'Iceberg lettuce',  es: 'Lechuga iceberg', yield: 0.74, cat: 'greens',     unit_en: 'head',  unit_es: 'pieza',  apCents: 162 },
+  { slug: 'bok-choy',        en: 'Bok choy',         es: 'Bok choy',       yield: 0.80, cat: 'greens',      unit_en: 'lb',    unit_es: 'libra',  apCents: 199 },
+  { slug: 'artichoke',       en: 'Artichoke',        es: 'Alcachofa',      yield: 0.40, cat: 'stalks',      unit_en: 'each',  unit_es: 'pieza',  apCents: 350 },
+  { slug: 'okra',            en: 'Okra',             es: 'Quimbombó',      yield: 0.85, cat: 'fruiting',    unit_en: 'lb',    unit_es: 'libra',  apCents: 175 },
+  { slug: 'snow-peas',       en: 'Snow peas',        es: 'Arvejas de nieve', yield: 0.90, cat: 'fruiting',  unit_en: 'lb',    unit_es: 'libra',  apCents: 280 }
 ];
 
 function relatedInCategory(ing, locale) {
