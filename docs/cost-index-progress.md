@@ -89,6 +89,37 @@ Decisions recorded so they aren't relitigated:
   backfill — have the orchestrator emit historical points (FRED/BLS/AMS all carry
   history) so build-cost-index vendors the climb. Both run upstream (keys+egress).
 
+## P2 depth — page-level reads + measured spread (2026-06-12)
+- ✅ **Live edible-unit cost (Phase A.6)** on every ingredient-yield page that
+  carries a live point in a matching unit: today's sourced reference price ÷ the
+  page's cited yield → the number an operator repeats (ribeye $12.74/lb at 75% →
+  **$16.99 edible lb**; salmon $5.58 ÷ 0.95 → $5.87). Guarded by a unit match
+  (`CI_BOUNDS[slug].unit === manifest unit_en`) so we NEVER divide a $/carton
+  produce price by a per-head yield — produce reads correctly skip the line. Both
+  inputs are sourced, so it's a shown calculation, not a new claim. EN+ES. The
+  build also renders the confidence "why", the cross-market cheapest/priciest
+  spread, a level-anchored percentile, and a flagVerb buy/hold verdict.
+- ✅ **Measured market spread in the level band (Phase B)** — the engine now
+  widens `compositeLevel.rangeCents` to the ACTUAL reported trading range USDA AMS
+  publishes (`low_price..high_price` per terminal, min-low/max-high across
+  markets), not just a synthetic volatility band. `normalizeAms` captures the
+  per-day band, `buildCompositeInput` threads it as `spreadCents`, `compositeLevel`
+  unions it in and names the band `'measured'` whenever it sets an edge. UNION
+  ONLY (never narrows); an inverted/non-positive band is dropped; a band that
+  doesn't CONTAIN its own value is treated as a unit mismatch and dropped. New
+  label: "band from reported market low–high". Parity-mirrored to the Ledger TS
+  engine with 3 new vectors (24/24 storefront, TS harness green).
+- ⚠️ **Dormant until refetch**: `spreadCents` is optional, so the 16 vendored
+  points are untouched until the founder's next orchestrator run carries low/high.
+  No config change needed — the band flows straight from the report columns
+  (`low_price`/`high_price`, falling back to `mostly_low`/`mostly_high`). Expect
+  some ranges to widen visibly on refetch (e.g. romaine), which is the honest
+  picture, not a regression.
+- ☐ **Founder verify pass** (their laptop, has keys): `verify --flip` the 20 new
+  produce + earlier dormant batch; investigate the romaine trend (+159/169%)
+  series; confirm the 6 gap yields; close striploin price-0, leg-of-lamb PDF,
+  branzino NOAA.
+
 ## Gated — needs founder env (the big value)
 - ⛔ H2: flip index preview → live (USDA/BLS/FRED keys); real freshness/history; last-good banner.
 - ⛔ H3: `/v1/cost-index` = artifact ⨝ invoices; watchlist + alerts; market-vs-vendor → Plate
